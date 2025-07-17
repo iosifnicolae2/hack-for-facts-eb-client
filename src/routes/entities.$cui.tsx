@@ -6,6 +6,7 @@ import { EntityHeader } from '@/components/entities/EntityHeader';
 import { EntityFinancialSummary } from '@/components/entities/EntityFinancialSummary';
 import { EntityFinancialTrends } from '@/components/entities/EntityFinancialTrends';
 import { EntityTopItems } from '@/components/entities/EntityTopItems';
+import { EntityReports } from '@/components/entities/EntityReports';
 
 export const Route = createFileRoute('/entities/$cui')({
     component: EntityDetailsPage,
@@ -82,6 +83,8 @@ function EntityDetailsPage() {
                     topIncome={entity.topIncome}
                     currentYear={currentYear}
                 />
+
+                <EntityReports reports={entity.reports} />
             </div>
         </div>
     );

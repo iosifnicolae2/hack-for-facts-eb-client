@@ -47,6 +47,19 @@ export interface EntityDetailsData {
   topIncome?: {
     nodes: TopExecutionItem[];
   } | null;
+  reports: {
+    nodes: {
+      report_id: string;
+      reporting_year: number;
+      report_type: string;
+      report_date: string;
+      download_links: string[];
+      main_creditor: {
+        cui: string;
+        name: string;
+      };
+    }[];
+  } | null;
 }
 
 interface EntityDetailsResponse {
@@ -85,6 +98,19 @@ const GET_ENTITY_DETAILS_QUERY = `
       balanceTrend(startYear: $startYear, endYear: $endYear) {
         year
         totalAmount
+      }
+      reports {
+        nodes {
+          report_id
+          reporting_year
+          report_type
+          report_date
+          download_links
+          main_creditor {
+            cui
+            name
+          }
+        }
       }
       topExpenses: executionLineItems(
         filter: { account_categories: "ch", year: $year }
