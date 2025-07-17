@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { Link } from '@tanstack/react-router';
 import { ChevronDown, ChevronRight, Landmark, Search } from 'lucide-react';
+import Fuse from 'fuse.js';
 import { Input } from '@/components/ui/input';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { useVirtualizer } from '@tanstack/react-virtual';
@@ -29,13 +30,19 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
   const [searchTerm, setSearchTerm] = useState('');
   const parentRef = useRef<HTMLDivElement>(null);
 
+  const fuse = useMemo(
+    () =>
+      new Fuse(entities, {
+        keys: ['name', 'cui'],
+        threshold: 0.3,
+      }),
+    [entities]
+  );
+
   const filteredEntities = useMemo(() => {
     if (!searchTerm) return entities;
-    return entities.filter(entity =>
-      entity.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      entity.cui.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [entities, searchTerm]);
+    return fuse.search(searchTerm).map(result => result.item);
+  }, [entities, searchTerm, fuse]);
 
   const shouldShowAccordion = entities.length > maxVisibleItems;
   const shouldShowSearch = entities.length >= showSearchThreshold;
