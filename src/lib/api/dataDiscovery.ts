@@ -26,7 +26,7 @@ export type EntityData = {
 
 export type BudgetLineItem = {
   line_item_id: string;
-  report_id: string; // Kept as string to match current usage, even if schema ID is Int for report_id
+  report_id: string;
   entity_name: string;
   entity_cui: string;
   entity: {

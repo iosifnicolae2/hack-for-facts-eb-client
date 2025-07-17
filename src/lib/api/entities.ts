@@ -27,6 +27,14 @@ export interface EntityDetailsData {
     county_name?: string | null;
     name?: string | null;
   } | null;
+  children: {
+    cui: string;
+    name: string;
+  }[];
+  parents: {
+    cui: string;
+    name: string;
+  }[];
   totalIncome?: number | null;
   totalExpenses?: number | null;
   budgetBalance?: number | null;
@@ -53,6 +61,14 @@ const GET_ENTITY_DETAILS_QUERY = `
       address
       uat {
         county_name
+        name
+      }
+      children {
+        cui
+        name
+      }
+      parents {
+        cui
         name
       }
       totalIncome(year: $year)
@@ -175,7 +191,7 @@ export async function searchEntities(
     // Adjust based on how graphqlRequest is implemented.
     // The current type { entities: EntitySearchResult } assumes graphqlRequest returns the direct GQL response data.
     const response = await graphqlRequest<{ entities: EntitySearchResult }>(ENTITY_SEARCH_QUERY, variables);
-    
+
     // Check if response and response.entities and response.entities.nodes exist
     if (response && response.entities && response.entities.nodes) {
       return response.entities.nodes;

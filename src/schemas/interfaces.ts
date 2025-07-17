@@ -1,6 +1,6 @@
 export type LineItemsFilter = {
-  report_id?: number;
-  report_ids?: number[];
+  report_id?: string;
+  report_ids?: string[];
   entity_cuis?: string[];
   funding_source_id?: number;
   functional_codes?: string[];

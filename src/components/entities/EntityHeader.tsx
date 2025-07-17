@@ -1,8 +1,9 @@
 import React from 'react';
 import { EntityDetailsData } from '@/lib/api/entities';
+import { EntityRelationsList } from './EntityRelationsList';
 
 interface EntityHeaderProps {
-  entity: Pick<EntityDetailsData, 'name' | 'cui' | 'address' | 'uat'>;
+  entity: Pick<EntityDetailsData, 'name' | 'cui' | 'address' | 'uat' | 'children' | 'parents'>;
 }
 
 export const EntityHeader: React.FC<EntityHeaderProps> = ({ entity }) => {
@@ -18,6 +19,22 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({ entity }) => {
           UAT: {entity.uat.name} (County: {entity.uat.county_name || 'N/A'})
         </p>
       )}
+      
+      <EntityRelationsList
+        entities={entity.children}
+        title="Entitati finantate"
+        maxVisibleItems={3}
+        maxHeight="200px"
+        showSearchThreshold={10}
+      />
+      
+      <EntityRelationsList
+        entities={entity.parents}
+        title="Finantatori"
+        maxVisibleItems={3}
+        maxHeight="200px"
+        showSearchThreshold={10}
+      />
     </header>
   );
 }; 
