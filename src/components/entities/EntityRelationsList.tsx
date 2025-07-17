@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { Link } from '@tanstack/react-router';
-import { ChevronDown, ChevronRight, Search } from 'lucide-react';
+import { ChevronDown, ChevronRight, Landmark, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { useVirtualizer } from '@tanstack/react-virtual';
@@ -54,9 +54,9 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
   }
 
   const renderEntityItem = (entity: EntityRelation) => (
-    <Link 
-      to="/entities/$cui" 
-      params={{ cui: entity.cui }} 
+    <Link
+      to="/entities/$cui"
+      params={{ cui: entity.cui }}
       className="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 text-sm transition-colors block py-0.5"
     >
       {entity.name}
@@ -65,7 +65,7 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
 
   const renderEntityList = (entitiesToRender: EntityRelation[], showAll: boolean = false) => {
     const itemsToRender = showAll ? entitiesToRender : entitiesToRender.slice(0, maxVisibleItems);
-    
+
     if (!shouldUseVirtualization || !showAll) {
       return (
         <ul className="space-y-1">
@@ -115,11 +115,18 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
     );
   };
 
+  const titleChildren = (
+    <>
+      <Landmark className="h-4 w-4 text-slate-800 dark:text-slate-100" />
+      <span className="text-slate-800 dark:text-slate-100">{title} ({entities.length})</span> 
+    </>
+  );
+
   if (!shouldShowAccordion) {
     return (
       <div className="mt-4">
-        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
-          {title} ({entities.length})
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2 flex items-center gap-2">
+          {titleChildren}
         </h3>
         {renderEntityList(entities, true)}
       </div>
@@ -136,10 +143,10 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
             ) : (
               <ChevronRight className="h-4 w-4" />
             )}
-            {title} ({entities.length})
+            {titleChildren}
           </div>
         </CollapsibleTrigger>
-        
+
         <CollapsibleContent className="mt-2">
           {shouldShowSearch && (
             <div className="relative mb-3">
@@ -152,7 +159,7 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
               />
             </div>
           )}
-          
+
           <div className="pr-2">
             {filteredEntities.length > 0 ? (
               renderEntityList(filteredEntities, true)
