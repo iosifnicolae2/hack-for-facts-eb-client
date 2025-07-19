@@ -5,7 +5,7 @@ import { Loader2, AlertTriangle, Info } from 'lucide-react';
 import { EntityHeader } from '@/components/entities/EntityHeader';
 import { EntityFinancialSummary } from '@/components/entities/EntityFinancialSummary';
 import { EntityFinancialTrends } from '@/components/entities/EntityFinancialTrends';
-import { EntityTopItems } from '@/components/entities/EntityTopItems';
+import { EntityLineItems } from '@/components/entities/EntityTopItems';
 import { EntityReports } from '@/components/entities/EntityReports';
 
 export const Route = createFileRoute('/entities/$cui')({
@@ -78,9 +78,8 @@ function EntityDetailsPage() {
                     balanceTrend={entity.balanceTrend}
                 />
                 
-                <EntityTopItems 
-                    topExpenses={entity.topExpenses}
-                    topIncome={entity.topIncome}
+                <EntityLineItems 
+                    lineItems={entity.executionLineItems}
                     currentYear={currentYear}
                 />
 

@@ -9,12 +9,15 @@ export interface TrendPoint {
   totalAmount: number;
 }
 
-export interface TopExecutionItem {
+export interface ExecutionLineItem {
+  account_category: string
   economicClassification?: {
     economic_name: string;
+    economic_code: string;
   };
   functionalClassification?: {
     functional_name: string;
+    functional_code: string;
   };
   amount: number;
 }
@@ -41,11 +44,8 @@ export interface EntityDetailsData {
   incomeTrend?: TrendPoint[] | null;
   expenseTrend?: TrendPoint[] | null;
   balanceTrend?: TrendPoint[] | null;
-  topExpenses?: {
-    nodes: TopExecutionItem[];
-  } | null;
-  topIncome?: {
-    nodes: TopExecutionItem[];
+  executionLineItems?: {
+    nodes: ExecutionLineItem[];
   } | null;
   reports: {
     nodes: {
@@ -112,26 +112,20 @@ const GET_ENTITY_DETAILS_QUERY = `
           }
         }
       }
-      topExpenses: executionLineItems(
-        filter: { account_categories: "ch", year: $year }
+      executionLineItems(
+        filter: { year: $year }
         sort: { by: "amount", order: "DESC" }
-        limit: 5
+        limit: 1000
       ) {
         nodes {
-          economicClassification {
-            economic_name
-          }
-          amount
-        }
-      }
-      topIncome: executionLineItems(
-        filter: { account_categories: "vn", year: $year }
-        sort: { by: "amount", order: "DESC" }
-        limit: 5
-      ) {
-        nodes {
+          account_category
           functionalClassification {
             functional_name
+            functional_code
+          }
+          economicClassification {
+            economic_name
+            economic_code
           }
           amount
         }

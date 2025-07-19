@@ -1,10 +1,10 @@
 import React from 'react';
-import { TopExecutionItem } from '@/lib/api/entities';
+import { ExecutionLineItem } from '@/lib/api/entities';
 import { formatCurrency } from '@/lib/utils';
 // Lucide icons can be passed as props if needed, so removing direct imports here
 
 interface TopItemsListProps {
-  items: TopExecutionItem[] | undefined;
+  items: ExecutionLineItem[] | undefined;
   title: string;
   nameKey: 'economicClassification' | 'functionalClassification';
   currentYear: number;

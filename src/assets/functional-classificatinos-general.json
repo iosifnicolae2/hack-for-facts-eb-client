@@ -1,0 +1,373 @@
+{
+    "groups": [
+      {
+        "range": "01-09",
+        "description": "Venituri publice și taxe",
+        "chapters": [
+          {
+            "code": "01.XX",
+            "description": "Impozite pe venit, profit și câștiguri din capital"
+          },
+          {
+            "code": "02.XX",
+            "description": "Contribuții și taxe specifice"
+          },
+          {
+            "code": "03.XX",
+            "description": "Impozite și taxe pe proprietate"
+          },
+          {
+            "code": "04.XX",
+            "description": "Impozite pe bunuri și servicii"
+          },
+          {
+            "code": "05.XX",
+            "description": "Impozite pe comerțul exterior"
+          },
+          {
+            "code": "06.XX",
+            "description": "Alte impozite și taxe"
+          },
+          {
+            "code": "07.XX",
+            "description": "Taxe locale și teritoriale"
+          },
+          {
+            "code": "08.XX",
+            "description": "Venituri nefiscale"
+          },
+          {
+            "code": "09.XX",
+            "description": "Transferuri și subvenții primite"
+          }
+        ]
+      },
+      {
+        "range": "10-21",
+        "description": "Administrația publică centrală și locală",
+        "chapters": [
+          {
+            "code": "10.XX",
+            "description": "Structuri administrative centrale"
+          },
+          {
+            "code": "11.XX",
+            "description": "Servicii publice descentralizate"
+          },
+          {
+            "code": "12.XX",
+            "description": "Activități administrative specifice"
+          },
+          {
+            "code": "13.XX",
+            "description": "Servicii de planificare și statistică"
+          },
+          {
+            "code": "14.XX",
+            "description": "Servicii publice generale"
+          },
+          {
+            "code": "15.XX",
+            "description": "Servicii financiare și fiscale"
+          },
+          {
+            "code": "16.XX",
+            "description": "Activități de reglementare"
+          },
+          {
+            "code": "17.XX",
+            "description": "Servicii de relații externe"
+          },
+          {
+            "code": "18.XX",
+            "description": "Servicii de management public"
+          },
+          {
+            "code": "19.XX",
+            "description": "Alte servicii administrative"
+          },
+          {
+            "code": "20.XX",
+            "description": "Administrația publică locală"
+          },
+          {
+            "code": "21.XX",
+            "description": "Servicii publice comunitare"
+          }
+        ]
+      },
+      {
+        "range": "22-29",
+        "description": "Servicii publice generale și suport",
+        "chapters": [
+          {
+            "code": "22.XX",
+            "description": "Servicii de datorie publică"
+          },
+          {
+            "code": "23.XX",
+            "description": "Rezerve și fonduri de urgență"
+          },
+          {
+            "code": "24.XX",
+            "description": "Servicii de cercetare administrativă"
+          },
+          {
+            "code": "25.XX",
+            "description": "Servicii de IT și comunicații publice"
+          },
+          {
+            "code": "26.XX",
+            "description": "Servicii de arhivare și documentare"
+          },
+          {
+            "code": "27.XX",
+            "description": "Servicii de audit și control intern"
+          },
+          {
+            "code": "28.XX",
+            "description": "Alte servicii publice generale"
+          },
+          {
+            "code": "29.XX",
+            "description": "Transferuri administrative"
+          }
+        ]
+      },
+      {
+        "range": "30-49",
+        "description": "Funcții sociale și de dezvoltare",
+        "chapters": [
+          {
+            "code": "30.XX",
+            "description": "Servicii sociale de bază"
+          },
+          {
+            "code": "31.XX",
+            "description": "Protecție socială pentru copii și familii"
+          },
+          {
+            "code": "32.XX",
+            "description": "Servicii pentru persoane cu dizabilități"
+          },
+          {
+            "code": "33.XX",
+            "description": "Asistență socială"
+          },
+          {
+            "code": "34.XX",
+            "description": "Servicii pentru vârstnici"
+          },
+          {
+            "code": "35.XX",
+            "description": "Servicii de integrare socială"
+          },
+          {
+            "code": "36.XX",
+            "description": "Servicii de sănătate"
+          },
+          {
+            "code": "37.XX",
+            "description": "Servicii de prevenire a bolilor"
+          },
+          {
+            "code": "38.XX",
+            "description": "Servicii medicale de urgență"
+          },
+          {
+            "code": "39.XX",
+            "description": "Servicii educaționale"
+          },
+          {
+            "code": "40.XX",
+            "description": "Servicii culturale"
+          },
+          {
+            "code": "41.XX",
+            "description": "Servicii recreative și sportive"
+          },
+          {
+            "code": "42.XX",
+            "description": "Dezvoltare economică locală"
+          },
+          {
+            "code": "43.XX",
+            "description": "Servicii de infrastructură"
+          },
+          {
+            "code": "44.XX",
+            "description": "Dezvoltare urbană"
+          },
+          {
+            "code": "45.XX",
+            "description": "Servicii de utilități publice"
+          },
+          {
+            "code": "46.XX",
+            "description": "Servicii de energie"
+          },
+          {
+            "code": "47.XX",
+            "description": "Servicii de comunicații"
+          },
+          {
+            "code": "48.XX",
+            "description": "Servicii de transport"
+          },
+          {
+            "code": "49.XX",
+            "description": "Alte servicii de dezvoltare"
+          }
+        ]
+      },
+      {
+        "range": "50-59",
+        "description": "Funcții de stat și economie",
+        "chapters": [
+          {
+            "code": "50.XX",
+            "description": "Servicii publice generale"
+          },
+          {
+            "code": "51.XX",
+            "description": "Autorități publice și acțiuni externe"
+          },
+          {
+            "code": "52.XX",
+            "description": "Servicii financiare generale"
+          },
+          {
+            "code": "53.XX",
+            "description": "Cercetare fundamentală"
+          },
+          {
+            "code": "54.XX",
+            "description": "Alte servicii publice generale"
+          },
+          {
+            "code": "55.XX",
+            "description": "Tranzacții privind datoria publică"
+          },
+          {
+            "code": "56.XX",
+            "description": "Transferuri între nivelele administrației"
+          },
+          {
+            "codes": ["57.XX", "58.XX", "59.XX"],
+            "description": "Rezervate pentru extinderi"
+          }
+        ]
+      },
+      {
+        "range": "60-87",
+        "description": "Funcții de stat, economie și protecție",
+        "chapters": [
+          {
+            "code": "60.XX",
+            "description": "Apărare"
+          },
+          {
+            "code": "61.XX",
+            "description": "Ordine publică și siguranță națională"
+          },
+          {
+            "code": "62.XX",
+            "description": "Justiție"
+          },
+          {
+            "code": "63.XX",
+            "description": "Protecție civilă"
+          },
+          {
+            "code": "64.XX",
+            "description": "Cheltuieli social-culturale"
+          },
+          {
+            "code": "65.XX",
+            "description": "Învățământ"
+          },
+          {
+            "code": "66.XX",
+            "description": "Sănătate"
+          },
+          {
+            "code": "67.XX",
+            "description": "Cultură, recreere și religie"
+          },
+          {
+            "code": "68.XX",
+            "description": "Asigurări și asistență socială"
+          },
+          {
+            "code": "69.XX",
+            "description": "Pensie și beneficii sociale"
+          },
+          {
+            "code": "70.XX",
+            "description": "Locuințe, servicii și dezvoltare publică"
+          },
+          {
+            "code": "71.XX",
+            "description": "Dezvoltare rurală"
+          },
+          {
+            "code": "72.XX",
+            "description": "Apă și canalizare"
+          },
+          {
+            "code": "73.XX",
+            "description": "Alte servicii comunitare"
+          },
+          {
+            "code": "74.XX",
+            "description": "Protecția mediului"
+          },
+          {
+            "code": "75.XX",
+            "description": "Gestionarea deșeurilor"
+          },
+          {
+            "code": "76.XX",
+            "description": "Protecția biodiversității"
+          },
+          {
+            "codes": ["77.XX", "78.XX", "79.XX"],
+            "description": "Rezervate pentru protecție extinsă"
+          },
+          {
+            "code": "80.XX",
+            "description": "Acțiuni generale economice"
+          },
+          {
+            "code": "81.XX",
+            "description": "Comerț și industrie"
+          },
+          {
+            "code": "82.XX",
+            "description": "Turism"
+          },
+          {
+            "code": "83.XX",
+            "description": "Agricultură și silvicultură"
+          },
+          {
+            "code": "84.XX",
+            "description": "Transporturi"
+          },
+          {
+            "code": "85.XX",
+            "description": "Comunicații și IT"
+          },
+          {
+            "code": "86.XX",
+            "description": "Cercetare și dezvoltare economică"
+          },
+          {
+            "code": "87.XX",
+            "description": "Alte acțiuni economice"
+          }
+        ]
+      }
+    ]
+  }
+  
