@@ -7,6 +7,7 @@ import { EntityFinancialSummary } from '@/components/entities/EntityFinancialSum
 import { EntityFinancialTrends } from '@/components/entities/EntityFinancialTrends';
 import { EntityLineItems } from '@/components/entities/EntityTopItems';
 import { EntityReports } from '@/components/entities/EntityReports';
+import { LineItemsAnalytics } from '@/components/entities/LineItemsAnalytics';
 
 export const Route = createFileRoute('/entities/$cui')({
     component: EntityDetailsPage,
@@ -81,6 +82,13 @@ function EntityDetailsPage() {
                 <EntityLineItems 
                     lineItems={entity.executionLineItems}
                     currentYear={currentYear}
+                    totalIncome={entity.totalIncome}
+                    totalExpenses={entity.totalExpenses}
+                />
+
+                <LineItemsAnalytics
+                    lineItems={entity.executionLineItems}
+                    analyticsYear={currentYear}
                 />
 
                 <EntityReports reports={entity.reports} />

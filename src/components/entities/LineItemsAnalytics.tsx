@@ -1,0 +1,159 @@
+import React, { useMemo, useState } from 'react';
+import { BarChart, Bar, PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, XAxis, YAxis, CartesianGrid, LabelList } from 'recharts';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { ExecutionLineItem, EntityDetailsData } from '@/lib/api/entities';
+import { formatCurrency } from '@/lib/utils';
+import { PieChartIcon, BarChartIcon } from 'lucide-react';
+import classifications from '@/assets/functional-classificatinos-general.json';
+
+interface AnalyticsProps {
+    lineItems: EntityDetailsData['executionLineItems'];
+    analyticsYear: number;
+}
+
+type ChartType = 'bar' | 'pie';
+type DataType = 'income' | 'expense';
+
+const COLORS = ['#16a34a', '#3b82f6', '#f97316', '#fde047', '#a855f7', '#ec4899', '#78716c'];
+const TOP_N = 6; // Top N items to show, the rest will be "Other"
+
+const aggregateAndProcessData = (items: ExecutionLineItem[], chapterMap: Map<string, string>) => {
+    const map = new Map<string, number>();
+    items.forEach(item => {
+        let key = 'Unknown';
+        if (item.functionalClassification?.functional_code) {
+            const prefix = item.functionalClassification.functional_code.slice(0, 2);
+            key = chapterMap.get(prefix) || 'Unknown Chapter';
+        }
+        map.set(key, (map.get(key) || 0) + item.amount);
+    });
+
+    const sortedData = Array.from(map, ([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value);
+
+    if (sortedData.length > TOP_N) {
+        const topData = sortedData.slice(0, TOP_N);
+        const otherValue = sortedData.slice(TOP_N).reduce((acc, curr) => acc + curr.value, 0);
+        return [...topData, { name: 'Other', value: otherValue }];
+    }
+
+    return sortedData;
+};
+
+export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({ lineItems, analyticsYear }) => {
+    const [chartType, setChartType] = useState<ChartType>('bar');
+    const [dataType, setDataType] = useState<DataType>('expense');
+
+    const chapterMap = useMemo(() => {
+        const map = new Map<string, string>();
+        classifications.groups.forEach(group => {
+            group.chapters.forEach(ch => {
+                if (ch.code) {
+                    const prefix = ch.code.slice(0, 2);
+                    map.set(prefix, ch.description);
+                } else if (ch.codes) {
+                    ch.codes.forEach(c => {
+                        const prefix = c.slice(0, 2);
+                        map.set(prefix, ch.description);
+                    });
+                }
+            });
+        });
+        return map;
+    }, []);
+
+    const expenses = useMemo(() => lineItems?.nodes.filter(li => li.account_category === 'ch') || [], [lineItems]);
+    const incomes = useMemo(() => lineItems?.nodes.filter(li => li.account_category === 'vn') || [], [lineItems]);
+
+    const incomeData = useMemo(() => aggregateAndProcessData(incomes, chapterMap), [incomes, chapterMap]);
+    const expenseData = useMemo(() => aggregateAndProcessData(expenses, chapterMap), [expenses, chapterMap]);
+
+    const activeData = dataType === 'income' ? incomeData : expenseData;
+
+    const totalActiveAmount = useMemo(() => activeData.reduce((sum, d) => sum + d.value, 0), [activeData]);
+
+    // Recharts provides x, y, width, value with flexible types (string | number | undefined).
+    // We accept these as union types to satisfy TypeScript without resorting to `any`.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const renderBarLabel = (props: any) => {
+        const {
+            x = 0,
+            y = 0,
+            width = 0,
+            value = 0,
+        } = props;
+        const numericValue = Number(value);
+        const percent = totalActiveAmount ? (numericValue / totalActiveAmount) * 100 : 0;
+        return (
+            <text
+                x={Number(x) + Number(width) / 2}
+                y={Number(y) - 6}
+                fill="#334155"
+                textAnchor="middle"
+                fontSize="12px"
+            >
+                {`${percent.toFixed(0)}%`}
+            </text>
+        );
+    };
+
+    return (
+        <Card className="shadow-lg dark:bg-slate-800">
+            <CardHeader>
+                <div className="flex justify-between items-center">
+                    <CardTitle>Categorii principale {analyticsYear}</CardTitle>
+                    <div className="flex items-center space-x-2">
+                        <ToggleGroup type="single" variant="outline" size="sm" value={dataType} onValueChange={(value: DataType) => value && setDataType(value)}>
+                            <ToggleGroupItem value="income" aria-label="Income">Income</ToggleGroupItem>
+                            <ToggleGroupItem value="expense" aria-label="Expenses">Expenses</ToggleGroupItem>
+                        </ToggleGroup>
+                        <ToggleGroup type="single" variant="outline" size="sm" value={chartType} onValueChange={(value: ChartType) => value && setChartType(value)}>
+                            <ToggleGroupItem value="bar" aria-label="Bar chart">
+                                <BarChartIcon className="h-4 w-4" />
+                            </ToggleGroupItem>
+                            <ToggleGroupItem value="pie" aria-label="Pie chart">
+                                <PieChartIcon className="h-4 w-4" />
+                            </ToggleGroupItem>
+                        </ToggleGroup>
+                    </div>
+                </div>
+            </CardHeader>
+            <CardContent>
+                <div style={{ width: '100%', height: 480 }}>
+                    <ResponsiveContainer>
+                        {chartType === 'bar' ? (
+                            <BarChart data={activeData} margin={{ top: 40, right: 30, left: 100, bottom: 80 }}>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                                <XAxis dataKey="name" tick={{ fontSize: 12 }} angle={-45} textAnchor="end" interval={0} height={100} />
+                                <YAxis tickFormatter={(value) => formatCurrency(value, "compact")} />
+                                <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                                <Bar dataKey="value" fill={dataType === 'income' ? '#4ade80' : '#f87171'}>
+                                    <LabelList content={renderBarLabel} />
+                                </Bar>
+                            </BarChart>
+                        ) : (
+                            <PieChart>
+                                <Pie
+                                    data={activeData}
+                                    dataKey="value"
+                                    nameKey="name"
+                                    cx="50%"
+                                    cy="50%"
+                                    outerRadius={160}
+                                    labelLine={true}
+                                    label={({ name, percent }) => `${name.slice(0, 30)} (${((percent || 0) * 100).toFixed(0)}%)`}
+                                >
+                                    {activeData.map((_, index) => (
+                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                    ))}
+                                </Pie>
+                                <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                                <Legend verticalAlign="bottom" height={50} wrapperStyle={{ fontSize: '12px' }} />
+                            </PieChart>
+                        )}
+                    </ResponsiveContainer>
+                </div>
+            </CardContent>
+        </Card>
+    );
+}; 

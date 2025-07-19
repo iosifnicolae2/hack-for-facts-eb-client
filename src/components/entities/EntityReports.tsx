@@ -42,9 +42,9 @@ const ReportItem: React.FC<{ report: Report }> = ({ report }) => {
       </div>
       <div className="md:col-span-1 flex items-center gap-2">
         <Landmark className="h-4 w-4 text-slate-500 dark:text-slate-400" />
-        <Link 
-          to="/entities/$cui" 
-          params={{ cui: report.main_creditor.cui }} 
+        <Link
+          to="/entities/$cui"
+          params={{ cui: report.main_creditor.cui }}
           className="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 text-sm transition-colors"
         >
           {report.main_creditor.name}
@@ -69,13 +69,13 @@ export const EntityReports: React.FC<EntityReportsProps> = ({ reports }) => {
     return null;
   }
 
-  const sortedReports = [...reports.nodes].sort((a, b) => 
+  const sortedReports = [...reports.nodes].sort((a, b) =>
     b.reporting_year - a.reporting_year || parseInt(b.report_date) - parseInt(a.report_date)
   );
 
   return (
     <Card>
-      <Accordion type="single" collapsible className="w-full">
+      <Accordion type="single" defaultValue='reports' collapsible className="w-full">
         <AccordionItem value="reports" className="border-b-0">
           <AccordionTrigger className="p-6">
             <div className="flex items-center gap-2">
@@ -87,7 +87,7 @@ export const EntityReports: React.FC<EntityReportsProps> = ({ reports }) => {
             <div className="border-t border-slate-200 dark:border-slate-700">
               {sortedReports.map((report) => (
                 <div key={report.report_id} className="border-b border-slate-200 dark:border-slate-700 last:border-b-0">
-                    <ReportItem report={report} />
+                  <ReportItem report={report} />
                 </div>
               ))}
             </div>
