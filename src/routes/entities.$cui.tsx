@@ -1,4 +1,5 @@
-import { createFileRoute, useParams } from '@tanstack/react-router';
+import { createFileRoute, useParams, useSearch, useNavigate } from '@tanstack/react-router';
+import { z } from 'zod';
 import { useEntityDetails } from '@/lib/hooks/useEntityDetails';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Loader2, AlertTriangle, Info } from 'lucide-react';
@@ -8,20 +9,55 @@ import { EntityFinancialTrends } from '@/components/entities/EntityFinancialTren
 import { EntityLineItems } from '@/components/entities/EntityTopItems';
 import { EntityReports } from '@/components/entities/EntityReports';
 import { LineItemsAnalytics } from '@/components/entities/LineItemsAnalytics';
+import { useState, useMemo, useEffect } from 'react';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 
 export const Route = createFileRoute('/entities/$cui')({
+    validateSearch: z.object({
+        year: z.coerce.number().min(2016).max(2024).optional(),
+        trend: z.enum(['absolute', 'percent']).optional(),
+    }),
     component: EntityDetailsPage,
 });
 
 function EntityDetailsPage() {
     const { cui } = useParams({ from: Route.id });
-    const { data: entity, isLoading, isError, error } = useEntityDetails(cui);
+    const search = useSearch({ from: Route.id });
+    const navigate = useNavigate({ from: Route.id });
 
-    // Default year for display, can be made dynamic later
-    const currentYear = 2024; 
-    // Default trend years, can be made dynamic later
-    // const startTrendYear = 2016;
-    // const endTrendYear = 2025;
+    // Year selection setup
+    const CURRENT_YEAR = 2024; // hardcoded as requested
+    const START_YEAR = 2016;
+
+    const [selectedYear, setSelectedYear] = useState<number>(search.year ?? CURRENT_YEAR);
+
+    const [trendMode, setTrendMode] = useState<'absolute' | 'percent'>( (search.trend as 'absolute' | 'percent') ?? 'absolute');
+
+    // Pre-compute year options (descending: newest → oldest)
+    const years = useMemo(() =>
+        Array.from({ length: CURRENT_YEAR - START_YEAR + 1 }, (_, idx) => CURRENT_YEAR - idx),
+        []
+    );
+
+    // Fetch entity details for the chosen year and trend range
+    const { data: entity, isLoading, isError, error } = useEntityDetails(
+        cui,
+        selectedYear, // year for summary + line items
+        START_YEAR,   // trend from 2016 …
+        CURRENT_YEAR  // … up to 2024 (full range always shown)
+    );
+
+    // Sync state with URL search params when changes occur
+    useEffect(() => {
+        navigate({
+            search: prev => ({
+                ...prev,
+                year: selectedYear,
+                trend: trendMode,
+            }),
+            replace: true,
+        });
+    }, [selectedYear, trendMode, navigate]);
 
     if (isLoading) {
         return (
@@ -64,31 +100,51 @@ function EntityDetailsPage() {
     return (
         <div className="min-h-screen bg-slate-100 dark:bg-slate-900 p-4 md:p-8">
             <div className="container mx-auto max-w-7xl space-y-8">
-                <EntityHeader entity={entity} />
+                {/** Build year selector injected into header **/}
+                <EntityHeader 
+                    entity={entity} 
+                    yearSelector={
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-slate-700 dark:text-slate-300 hidden sm:inline">Reporting Year</span>
+                            <Select value={selectedYear.toString()} onValueChange={(val) => setSelectedYear(parseInt(val, 10))}>
+                                <SelectTrigger className="w-[110px]">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {years.map((year) => (
+                                        <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    }
+                />
 
                 <EntityFinancialSummary 
                     totalIncome={entity.totalIncome}
                     totalExpenses={entity.totalExpenses}
                     budgetBalance={entity.budgetBalance}
-                    currentYear={currentYear}
+                    currentYear={selectedYear}
                 />
 
                 <EntityFinancialTrends 
                     incomeTrend={entity.incomeTrend}
                     expenseTrend={entity.expenseTrend}
                     balanceTrend={entity.balanceTrend}
+                    mode={trendMode}
+                    onModeChange={setTrendMode}
                 />
                 
                 <EntityLineItems 
                     lineItems={entity.executionLineItems}
-                    currentYear={currentYear}
+                    currentYear={selectedYear}
                     totalIncome={entity.totalIncome}
                     totalExpenses={entity.totalExpenses}
                 />
 
                 <LineItemsAnalytics
                     lineItems={entity.executionLineItems}
-                    analyticsYear={currentYear}
+                    analyticsYear={selectedYear}
                 />
 
                 <EntityReports reports={entity.reports} />

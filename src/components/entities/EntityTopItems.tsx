@@ -70,6 +70,8 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({ lineItems, curr
       const funcCode = item.functionalClassification.functional_code;
       const funcName = item.functionalClassification.functional_name || 'Unknown';
 
+      if (!funcCode) return;
+
       let functional = chapter.functionals.get(funcCode);
       if (!functional) {
         functional = { economics: new Map(), total: 0, name: funcName };
@@ -178,7 +180,7 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({ lineItems, curr
                   ) : (
                     <div key={func.code} className="flex justify-between items-center py-2 px-4 border-b">
                       <div className="flex items-center">
-                        <span className="font-mono text-xs text-muted-foreground mr-2">{func.code}</span>
+                        <span className="font-mono text-xs text-muted-foreground mr-2">fn:{func.code}</span>
                         <span className="text-sm text-slate-700 dark:text-slate-300">{func.name}</span>
                       </div>
                       <span className="text-sm font-medium text-slate-900 dark:text-slate-100 flex-shrink-0 text-right">

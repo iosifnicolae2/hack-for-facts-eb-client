@@ -2,18 +2,22 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { EntityDetailsData } from '@/lib/api/entities';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { useMemo } from 'react';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { TrendingUp } from 'lucide-react';
 
 interface EntityFinancialTrendsProps {
   incomeTrend: EntityDetailsData['incomeTrend'];
   expenseTrend: EntityDetailsData['expenseTrend'];
   balanceTrend: EntityDetailsData['balanceTrend'];
+  mode: 'absolute' | 'percent';
+  onModeChange: (mode: 'absolute' | 'percent') => void;
 }
 
-export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ incomeTrend, expenseTrend, balanceTrend }) => {
+export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ incomeTrend, expenseTrend, balanceTrend, mode, onModeChange }) => {
   const trendsAvailable = incomeTrend?.length || expenseTrend?.length || balanceTrend?.length;
 
-  const mergedData = React.useMemo(() => {
+  const mergedData = useMemo(() => {
     const years = new Set([
       ...(incomeTrend || []).map(p => p.year),
       ...(expenseTrend || []).map(p => p.year),
@@ -28,6 +32,26 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
     }));
   }, [incomeTrend, expenseTrend, balanceTrend]);
 
+  // Compute YoY percentage change dataset
+  const percentData = useMemo(() => {
+    const data = mergedData.map((entry, idx, arr) => {
+      if (idx === 0) {
+        return { year: entry.year, income: 0, expense: 0, balance: 0 };
+      }
+      const prev = arr[idx - 1];
+      const pct = (curr: number, prevVal: number) => prevVal === 0 ? 0 : ((curr - prevVal) / prevVal) * 100;
+      return {
+        year: entry.year,
+        income: pct(entry.income, prev.income),
+        expense: pct(entry.expense, prev.expense),
+        balance: pct(entry.balance, prev.balance),
+      };
+    });
+    return data;
+  }, [mergedData]);
+
+  const displayData = mode === 'absolute' ? mergedData : percentData;
+
   const formatYAxis = (tickItem: number) => {
     if (Math.abs(tickItem) >= 1e9) {
       return `${(tickItem / 1e9).toFixed(1)}B`;
@@ -41,6 +65,8 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
     return tickItem.toString();
   };
 
+  const formatPercent = (val: number) => `${val.toFixed(1)}%`;
+
   const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: { name: string; value: number; color: string; dataKey: string; }[]; label?: string }) => {
     if (active && payload && payload.length) {
       return (
@@ -48,7 +74,7 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
           <p className="label font-bold mb-2">{`Anul: ${label}`}</p>
           {payload.map((pld) => (
             <p key={pld.dataKey} style={{ color: pld.color }} className="text-sm">
-              {`${pld.name}: ${formatYAxis(pld.value)}`}
+              {`${pld.name}: ${mode === 'absolute' ? formatYAxis(pld.value) : formatPercent(pld.value)}`}
             </p>
           ))}
         </div>
@@ -60,10 +86,21 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="h-6 w-6" />
-            <span>Evoluție Financiară</span>
-        </CardTitle>
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 w-full">
+          <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="h-6 w-6" />
+              <span>Evoluție Financiară</span>
+          </CardTitle>
+          <Select value={mode} onValueChange={(val) => onModeChange(val as 'absolute' | 'percent')}>
+            <SelectTrigger className="w-[160px] h-8 text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="absolute">Valori Absolute</SelectItem>
+              <SelectItem value="percent">Diferență % YoY</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </CardHeader>
       <CardContent className="pt-6">
         {!trendsAvailable ? (
@@ -71,7 +108,7 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
         ) : (
           <ResponsiveContainer width="100%" height={400}>
             <AreaChart 
-              data={mergedData}
+              data={displayData}
               margin={{ top: 5, right: 20, left: 30, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
@@ -82,7 +119,7 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
                 axisLine={false}
               />
               <YAxis 
-                tickFormatter={formatYAxis} 
+                tickFormatter={mode === 'absolute' ? formatYAxis : formatPercent} 
                 tick={{ fontSize: 12 }}
                 tickLine={false}
                 axisLine={false}
