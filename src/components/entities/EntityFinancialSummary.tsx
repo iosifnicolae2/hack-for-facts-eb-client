@@ -8,14 +8,16 @@ interface EntityFinancialSummaryCardProps {
   value: number | null | undefined;
   icon?: React.ElementType;
   currentYear: number;
+  color: string;
 }
 
-export const EntityFinancialSummaryCard: React.FC<EntityFinancialSummaryCardProps> = ({ title, value, icon: Icon, currentYear }) => {
+export const EntityFinancialSummaryCard: React.FC<EntityFinancialSummaryCardProps> = ({ title, value, icon: Icon, color, currentYear }) => {
   const displayValueCompact = value !== null && value !== undefined ? formatCurrency(value, "compact") : 'N/A';
   const displayValueStandard = value !== null && value !== undefined ? formatCurrency(value, "standard") : 'N/A';
   let iconColor = "text-slate-500 dark:text-slate-400";
-  if (title.toLowerCase().includes("income")) iconColor = "text-green-500 dark:text-green-400";
-  if (title.toLowerCase().includes("expenses")) iconColor = "text-red-500 dark:text-red-400";
+  if (color === "green") iconColor = "text-green-500 dark:text-green-400";
+  if (color === "red") iconColor = "text-red-500 dark:text-red-400";
+  if (color === "blue") iconColor = "text-blue-500 dark:text-blue-400";
 
   return (
     <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-slate-800">
@@ -45,9 +47,9 @@ export const EntityFinancialSummary: React.FC<EntityFinancialSummaryProps> = (
 ) => {
   return (
     <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <EntityFinancialSummaryCard title="Cheltuieli totale" value={totalExpenses} icon={TrendingDown} currentYear={currentYear} />
-      <EntityFinancialSummaryCard title="Venituri totale" value={totalIncome} icon={TrendingUp} currentYear={currentYear} />
-      <EntityFinancialSummaryCard title="Balanta bugetara" value={budgetBalance} icon={Scale} currentYear={currentYear} />
+      <EntityFinancialSummaryCard title="Cheltuieli totale" value={totalExpenses} icon={TrendingDown} color="red" currentYear={currentYear} />
+      <EntityFinancialSummaryCard title="Venituri totale" value={totalIncome} icon={TrendingUp} color="green" currentYear={currentYear} />
+      <EntityFinancialSummaryCard title="Balanta bugetara" value={budgetBalance} icon={Scale} color="blue" currentYear={currentYear} />
     </section>
   );
 }; 
