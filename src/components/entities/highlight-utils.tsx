@@ -52,8 +52,6 @@ export function normalizeText(input: string): string {
       .normalize('NFD')
       // strip combining diacritical marks
       .replace(/[\u0300-\u036f]/g, '')
-      // remove punctuation
-      .replace(/[^\p{L}\p{N}\s]/gu, '')
       // collapse multiple spaces
       .replace(/\s+/g, ' ')
       .trim()
@@ -71,10 +69,6 @@ export interface MatchRange {
  * Fold diacritics and lowercase, but leave all other characters in place.
  */
 function normalizeChar(ch: string): string {
-  // remove punctuation
-  if (/[^\p{L}\p{N}\s]/u.test(ch)) {
-    return '';
-  }
   return ch
     .normalize('NFD') // decompose accents
     .replace(/[\u0300-\u036f]/g, '') // strip combining marks
