@@ -99,7 +99,7 @@ const GET_ENTITY_DETAILS_QUERY = `
         year
         totalAmount
       }
-      reports {
+      reports(limit: 100) {
         nodes {
           report_id
           reporting_year
@@ -110,6 +110,10 @@ const GET_ENTITY_DETAILS_QUERY = `
             cui
             name
           }
+        }
+        pageInfo {
+          totalCount
+          hasNextPage
         }
       }
       executionLineItems(
