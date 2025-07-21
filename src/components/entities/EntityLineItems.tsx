@@ -228,6 +228,7 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
     }
     return sum + func.totalAmount;
   }, 0), 0), [filteredExpenseGroups]);
+  const totalFilteredExpensePercentage = useMemo(() => totalExpenses ? totalFilteredExpenses / totalExpenses * 100 : 0, [totalFilteredExpenses, totalExpenses]);
   const totalFilteredIncomes = useMemo(() => filteredIncomeGroups.reduce((sum, ch) => sum + ch.functionals.reduce((sum, func) => {
     // The economic code is 00.00.00 for incomes, and it is filtered out, so we need to add the total amount of the functional
     if (func.economics.length > 0) {
@@ -235,6 +236,7 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
     }
     return sum + func.totalAmount;
   }, 0), 0), [filteredIncomeGroups]);
+  const totalFilteredIncomePercentage = useMemo(() => totalIncome ? totalFilteredIncomes / totalIncome * 100 : 0, [totalFilteredIncomes, totalIncome]);
 
   const renderGroups = (
     groups: GroupedChapter[],
@@ -303,12 +305,15 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
             expenseBase,
             debouncedExpenseSearchTerm
           )}
-          <div className="flex justify-end m-4 font-semibold">
+          <div className="flex justify-end items-center m-4 font-semibold">
             Total:{" "}
             {new Intl.NumberFormat(undefined, {
               style: "currency",
               currency: "RON",
             }).format(totalFilteredExpenses)}
+            {totalFilteredExpensePercentage > 0 && totalFilteredExpensePercentage <= 99.99 && (
+              <span className="pl-2 text-sm text-muted-foreground">({totalFilteredExpensePercentage.toFixed(2)}%)</span>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -348,12 +353,15 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
             incomeBase,
             debouncedIncomeSearchTerm
           )}
-          <div className="flex justify-end m-4 font-semibold">
+          <div className="flex justify-end items-center m-4 font-semibold">
             Total:{" "}
             {new Intl.NumberFormat(undefined, {
               style: "currency",
               currency: "RON",
             }).format(totalFilteredIncomes)}
+            {totalFilteredIncomePercentage > 0 && totalFilteredIncomePercentage <= 99.99 && (
+              <span className="pl-2 text-sm text-muted-foreground">({totalFilteredIncomePercentage.toFixed(2)}%)</span>
+            )}
           </div>
         </CardContent>
       </Card>
