@@ -52,7 +52,7 @@ export const SearchToggleInput: React.FC<SearchToggleInputProps> = ({
             autoFocus
           />
           <X
-            className="h-4 w-4 cursor-pointer text-muted-foreground flex-shrink-0"
+            className="h-4 w-4 m-4 ml-0 cursor-pointer text-muted-foreground flex-shrink-0"
             onClick={() => handleClear()}
           />
         </motion.div>
@@ -66,7 +66,7 @@ export const SearchToggleInput: React.FC<SearchToggleInputProps> = ({
           onClick={() => onToggle(true)}
           className="text-muted-foreground"
         >
-          <Search className="h-4 w-4 cursor-pointer" />
+          <Search className="h-4 w-4 m-4 cursor-pointer" />
         </motion.button>
       )}
     </AnimatePresence>
