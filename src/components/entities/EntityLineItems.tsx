@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Accordion } from '@/components/ui/accordion';
 import { ExecutionLineItem, EntityDetailsData } from '@/lib/api/entities';
@@ -219,15 +219,25 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
     [incomeGroups, debouncedIncomeSearchTerm, filterGroups]
   );
 
-  const expenseBase =
-    totalExpenses ?? expenseGroups.reduce((sum, ch) => sum + ch.totalAmount, 0);
-  const incomeBase =
-    totalIncome ?? incomeGroups.reduce((sum, ch) => sum + ch.totalAmount, 0);
+  const expenseBase = useMemo(() => totalExpenses ?? expenseGroups.reduce((sum, ch) => sum + ch.totalAmount, 0), [totalExpenses, expenseGroups]);
+  const incomeBase = useMemo(() => totalIncome ?? incomeGroups.reduce((sum, ch) => sum + ch.totalAmount, 0), [totalIncome, incomeGroups]);
+
+  const totalFilteredExpenses = useMemo(() => filteredExpenseGroups.reduce((sum, ch) => sum + ch.functionals.reduce((sum, func) => {
+    if (func.economics.length > 0) {
+      return sum + func.economics.reduce((sum, eco) => sum + eco.amount, 0);
+    }
+    return sum + func.totalAmount;
+  }, 0), 0), [filteredExpenseGroups]);
+  const totalFilteredIncomes = useMemo(() => filteredIncomeGroups.reduce((sum, ch) => sum + ch.functionals.reduce((sum, func) => {
+    // The economic code is 00.00.00 for incomes, and it is filtered out, so we need to add the total amount of the functional
+    if (func.economics.length > 0) {
+      return sum + func.economics.reduce((sum, eco) => sum + eco.amount, 0);
+    }
+    return sum + func.totalAmount;
+  }, 0), 0), [filteredIncomeGroups]);
 
   const renderGroups = (
     groups: GroupedChapter[],
-    icon: React.ElementType,
-    iconColor: string,
     title: string,
     baseTotal: number,
     searchTerm: string
@@ -289,12 +299,17 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
         <CardContent className="flex-grow">
           {renderGroups(
             filteredExpenseGroups,
-            ArrowDownCircle,
-            "text-red-500 dark:text-red-400",
             "Expenses",
             expenseBase,
             debouncedExpenseSearchTerm
           )}
+          <div className="flex justify-end m-4 font-semibold">
+            Total:{" "}
+            {new Intl.NumberFormat(undefined, {
+              style: "currency",
+              currency: "RON",
+            }).format(totalFilteredExpenses)}
+          </div>
         </CardContent>
       </Card>
       <Card className="shadow-lg dark:bg-slate-800 h-full flex flex-col">
@@ -329,12 +344,17 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
         <CardContent className="flex-grow">
           {renderGroups(
             filteredIncomeGroups,
-            ArrowUpCircle,
-            "text-green-500 dark:text-green-400",
             "Incomes",
             incomeBase,
             debouncedIncomeSearchTerm
           )}
+          <div className="flex justify-end m-4 font-semibold">
+            Total:{" "}
+            {new Intl.NumberFormat(undefined, {
+              style: "currency",
+              currency: "RON",
+            }).format(totalFilteredIncomes)}
+          </div>
         </CardContent>
       </Card>
     </section>
