@@ -134,16 +134,6 @@ export const useFinancialData = (lineItems: ExecutionLineItem[], totalIncome: nu
     const [incomeSearchTerm, setIncomeSearchTerm] = React.useState(initialIncomeSearchTerm);
     const [expenseSearchActive, setExpenseSearchActive] = React.useState(!!initialExpenseSearchTerm);
     const [incomeSearchActive, setIncomeSearchActive] = React.useState(!!initialIncomeSearchTerm);
-
-    React.useEffect(() => {
-        setExpenseSearchTerm(initialExpenseSearchTerm);
-        setExpenseSearchActive(!!initialExpenseSearchTerm);
-    }, [initialExpenseSearchTerm]);
-
-    React.useEffect(() => {
-        setIncomeSearchTerm(initialIncomeSearchTerm);
-        setIncomeSearchActive(!!initialIncomeSearchTerm);
-    }, [initialIncomeSearchTerm]);
     
     const debouncedExpenseSearchTerm = useDebouncedValue(expenseSearchTerm, 300);
     const debouncedIncomeSearchTerm = useDebouncedValue(incomeSearchTerm, 300);
