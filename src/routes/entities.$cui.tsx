@@ -6,7 +6,7 @@ import { Loader2, AlertTriangle, Info } from 'lucide-react';
 import { EntityHeader } from '@/components/entities/EntityHeader';
 import { EntityFinancialSummary } from '@/components/entities/EntityFinancialSummary';
 import { EntityFinancialTrends } from '@/components/entities/EntityFinancialTrends';
-import { EntityLineItems } from '@/components/entities/EntityTopItems';
+import { EntityLineItems } from '@/components/entities/EntityLineItems';
 import { EntityReports } from '@/components/entities/EntityReports';
 import { LineItemsAnalytics } from '@/components/entities/LineItemsAnalytics';
 import { useState, useMemo, useEffect } from 'react';
