@@ -27,6 +27,12 @@ export const SearchToggleInput: React.FC<SearchToggleInputProps> = ({
     onChange(e.target.value);
   };
 
+  const handleClear = () => {
+    setSearchTerm("");
+    onChange("");
+    onToggle(false);
+  };
+
   return (
     <AnimatePresence initial={false} mode="wait">
       {active ? (
@@ -47,10 +53,7 @@ export const SearchToggleInput: React.FC<SearchToggleInputProps> = ({
           />
           <X
             className="h-4 w-4 cursor-pointer text-muted-foreground flex-shrink-0"
-            onClick={() => {
-              onChange("");
-              onToggle(false);
-            }}
+            onClick={() => handleClear()}
           />
         </motion.div>
       ) : (
