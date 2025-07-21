@@ -11,7 +11,8 @@ interface EntityFinancialSummaryCardProps {
 }
 
 export const EntityFinancialSummaryCard: React.FC<EntityFinancialSummaryCardProps> = ({ title, value, icon: Icon, currentYear }) => {
-  const displayValue = value !== null && value !== undefined ? formatCurrency(value) : 'N/A';
+  const displayValueCompact = value !== null && value !== undefined ? formatCurrency(value, "compact") : 'N/A';
+  const displayValueStandard = value !== null && value !== undefined ? formatCurrency(value, "standard") : 'N/A';
   let iconColor = "text-slate-500 dark:text-slate-400";
   if (title.toLowerCase().includes("income")) iconColor = "text-green-500 dark:text-green-400";
   if (title.toLowerCase().includes("expenses")) iconColor = "text-red-500 dark:text-red-400";
@@ -23,7 +24,8 @@ export const EntityFinancialSummaryCard: React.FC<EntityFinancialSummaryCardProp
         {Icon && <Icon className={`h-5 w-5 ${iconColor}`} />}
       </CardHeader>
       <CardContent>
-        <p className="text-3xl font-bold text-slate-900 dark:text-slate-100">{displayValue}</p>
+        <p className="text-3xl font-bold text-slate-900 dark:text-slate-100">{displayValueCompact}</p>
+        <p className="text-sm text-muted-foreground">{displayValueStandard}</p>
         {/* You could add a small percentage change here if data is available */}
         {/* <p className="text-xs text-muted-foreground">+20.1% from last month</p> */}
       </CardContent>
@@ -43,9 +45,9 @@ export const EntityFinancialSummary: React.FC<EntityFinancialSummaryProps> = (
 ) => {
   return (
     <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <EntityFinancialSummaryCard title="Total Income" value={totalIncome} icon={TrendingUp} currentYear={currentYear} />
-      <EntityFinancialSummaryCard title="Total Expenses" value={totalExpenses} icon={TrendingDown} currentYear={currentYear} />
-      <EntityFinancialSummaryCard title="Budget Balance" value={budgetBalance} icon={Scale} currentYear={currentYear} />
+      <EntityFinancialSummaryCard title="Cheltuieli totale" value={totalExpenses} icon={TrendingDown} currentYear={currentYear} />
+      <EntityFinancialSummaryCard title="Venituri totale" value={totalIncome} icon={TrendingUp} currentYear={currentYear} />
+      <EntityFinancialSummaryCard title="Balanta bugetara" value={budgetBalance} icon={Scale} currentYear={currentYear} />
     </section>
   );
 }; 

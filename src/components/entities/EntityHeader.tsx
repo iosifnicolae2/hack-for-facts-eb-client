@@ -31,16 +31,12 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({ entity, yearSelector
         entities={entity.children}
         title="Entitati finantate"
         maxVisibleItems={3}
-        maxHeight="200px"
-        showSearchThreshold={10}
       />
       
       <EntityRelationsList
         entities={entity.parents}
         title="Finantatori"
         maxVisibleItems={3}
-        maxHeight="200px"
-        showSearchThreshold={10}
       />
     </header>
   );

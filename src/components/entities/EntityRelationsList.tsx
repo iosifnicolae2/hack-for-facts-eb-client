@@ -23,8 +23,8 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
   entities,
   title,
   maxVisibleItems = 3,
-  maxHeight = '200px',
-  showSearchThreshold = 10,
+  maxHeight = '16rem',
+  showSearchThreshold = 7,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -125,7 +125,7 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
   const titleChildren = (
     <>
       <Landmark className="h-4 w-4 text-slate-800 dark:text-slate-100" />
-      <span className="text-slate-800 dark:text-slate-100">{title} ({entities.length})</span> 
+      <span className="text-slate-800 dark:text-slate-100 text-sm">{title} ({entities.length})</span> 
     </>
   );
 
@@ -167,7 +167,7 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
             </div>
           )}
 
-          <div className="pr-2">
+          <div className={`pr-2 max-h-[${maxHeight}] overflow-y-auto`}>
             {filteredEntities.length > 0 ? (
               renderEntityList(filteredEntities, true)
             ) : (

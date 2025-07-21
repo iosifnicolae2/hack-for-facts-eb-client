@@ -11,6 +11,7 @@ import {
 import { SearchToggleInput } from './SearchToggleInput';
 import GroupedChapterAccordion from "./GroupedChapterAccordion";
 import { GroupedChapter } from './EntityLineItems';
+import { formatCurrency, formatNumberRO } from '@/lib/utils';
 
 interface GroupedItemsDisplayProps {
   groups: GroupedChapter[];
@@ -71,17 +72,19 @@ const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.memo(
             searchTerm={searchTerm}
           />
         ))}
-        <div className="flex justify-end items-center m-4 font-semibold">
-          Total:{" "}
-          {new Intl.NumberFormat(undefined, {
-            style: "currency",
-            currency: "RON",
-          }).format(totalValueFiltered)}
-          {totalPercentageFiltered > 0 && totalPercentageFiltered <= 99.99 && (
-            <span className="pl-2 text-sm text-muted-foreground">
-              ({totalPercentageFiltered.toFixed(2)}%)
-            </span>
-          )}
+        <div className="flex flex-col">
+          <p className='flex justify-end items-center m-4 mb-0 font-semibold'>
+            Total:{" "}
+            {formatCurrency(totalValueFiltered, "standard")}
+            {totalPercentageFiltered > 0 && totalPercentageFiltered <= 99.99 && (
+              <span className="pl-2 text-sm text-muted-foreground">
+                ({formatNumberRO(totalPercentageFiltered)}%)
+              </span>
+            )}
+          </p>
+          <p className="text-sm text-muted-foreground text-right m-4 mt-0">
+            {formatCurrency(totalValueFiltered, "compact")}
+          </p>
         </div>
       </Accordion>
     );
@@ -91,74 +94,74 @@ const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.memo(
 GroupedItemsDisplay.displayName = "GroupedItemsDisplay";
 
 interface FinancialDataCardProps {
-    title: string;
-    iconType: 'income' | 'expense';
-    currentYear: number;
-    years: number[];
-    onYearChange: (year: number) => void;
-    searchTerm: string;
-    onSearchChange: (term: string) => void;
-    searchActive: boolean;
-    onSearchToggle: (active: boolean) => void;
-    groups: GroupedChapter[];
-    baseTotal: number;
-  }
-  
-  export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
-    title,
-    iconType,
-    currentYear,
-    years,
-    onYearChange,
-    searchTerm,
-    onSearchChange,
-    searchActive,
-    onSearchToggle,
-    groups,
-    baseTotal,
-  }) => {
-    const Icon = iconType === 'income' ? ArrowUpCircle : ArrowDownCircle;
-    const iconColor = iconType === 'income' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400';
-  
-    return (
-      <Card className="shadow-lg dark:bg-slate-800 h-full flex flex-col">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div className="flex items-center">
-            <Icon className={`h-6 w-6 mr-2 ${iconColor}`} />
-            <Select
-              value={currentYear.toString()}
-              onValueChange={(val) => onYearChange(parseInt(val, 10))}
-            >
-              <SelectTrigger className="w-auto border-0 shadow-none bg-transparent focus:ring-0">
-                <h3 className="text-lg font-semibold">
-                  {title} ({currentYear})
-                </h3>
-              </SelectTrigger>
-              <SelectContent>
-                {years.map((year) => (
-                  <SelectItem key={year} value={year.toString()}>
-                    {year}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <SearchToggleInput
-            active={searchActive}
-            initialSearchTerm={searchTerm}
-            onToggle={onSearchToggle}
-            onChange={onSearchChange}
-          />
-        </CardHeader>
-        <CardContent className="flex-grow">
-          <GroupedItemsDisplay
-            groups={groups}
-            title={title}
-            baseTotal={baseTotal}
-            searchTerm={searchTerm}
-            currentYear={currentYear}
-          />
-        </CardContent>
-      </Card>
-    );
-  }; 
+  title: string;
+  iconType: 'income' | 'expense';
+  currentYear: number;
+  years: number[];
+  onYearChange: (year: number) => void;
+  searchTerm: string;
+  onSearchChange: (term: string) => void;
+  searchActive: boolean;
+  onSearchToggle: (active: boolean) => void;
+  groups: GroupedChapter[];
+  baseTotal: number;
+}
+
+export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
+  title,
+  iconType,
+  currentYear,
+  years,
+  onYearChange,
+  searchTerm,
+  onSearchChange,
+  searchActive,
+  onSearchToggle,
+  groups,
+  baseTotal,
+}) => {
+  const Icon = iconType === 'income' ? ArrowUpCircle : ArrowDownCircle;
+  const iconColor = iconType === 'income' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400';
+
+  return (
+    <Card className="shadow-lg dark:bg-slate-800 h-full flex flex-col">
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div className="flex items-center">
+          <Icon className={`h-6 w-6 mr-2 ${iconColor}`} />
+          <Select
+            value={currentYear.toString()}
+            onValueChange={(val) => onYearChange(parseInt(val, 10))}
+          >
+            <SelectTrigger className="w-auto border-0 shadow-none bg-transparent focus:ring-0">
+              <h3 className="text-lg font-semibold">
+                {title} ({currentYear})
+              </h3>
+            </SelectTrigger>
+            <SelectContent>
+              {years.map((year) => (
+                <SelectItem key={year} value={year.toString()}>
+                  {year}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <SearchToggleInput
+          active={searchActive}
+          initialSearchTerm={searchTerm}
+          onToggle={onSearchToggle}
+          onChange={onSearchChange}
+        />
+      </CardHeader>
+      <CardContent className="flex-grow">
+        <GroupedItemsDisplay
+          groups={groups}
+          title={title}
+          baseTotal={baseTotal}
+          searchTerm={searchTerm}
+          currentYear={currentYear}
+        />
+      </CardContent>
+    </Card>
+  );
+}; 
