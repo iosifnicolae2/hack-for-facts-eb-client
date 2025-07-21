@@ -51,7 +51,8 @@ function EntityDetailsPage() {
         CURRENT_YEAR  // … up to 2024 (full range always shown)
     );
 
-    const handleSearchChange = (key: 'expenseSearch' | 'incomeSearch', value: string) => {
+    const handleSearchChange = (type: 'expense' | 'income', value: string) => {
+        const key = type + 'Search';
         navigate({
             search: (prev) => ({
                 ...prev,
@@ -169,10 +170,9 @@ function EntityDetailsPage() {
                     totalExpenses={entity.totalExpenses}
                     years={years}
                     onYearChange={setSelectedYear}
-                    expenseSearchTerm={search.expenseSearch ?? ''}
-                    onExpenseSearchChange={(term: string) => handleSearchChange('expenseSearch', term)}
-                    incomeSearchTerm={search.incomeSearch ?? ''}
-                    onIncomeSearchChange={(term: string) => handleSearchChange('incomeSearch', term)}
+                    initialExpenseSearchTerm={search.expenseSearch ?? ''}
+                    initialIncomeSearchTerm={search.incomeSearch ?? ''}
+                    onSearchChange={(type: 'expense' | 'income', term: string) => handleSearchChange(type, term)}
                 />
 
                 <LineItemsAnalytics
