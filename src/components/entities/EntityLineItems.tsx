@@ -281,7 +281,7 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
           </div>
           <SearchToggleInput
             active={expenseSearchActive}
-            searchTerm={expenseSearchTerm}
+            initialSearchTerm={expenseSearchTerm}
             onToggle={setExpenseSearchActive}
             onChange={onExpenseSearchChange}
           />
@@ -321,7 +321,7 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
           </div>
           <SearchToggleInput
             active={incomeSearchActive}
-            searchTerm={incomeSearchTerm}
+            initialSearchTerm={incomeSearchTerm}
             onToggle={setIncomeSearchActive}
             onChange={onIncomeSearchChange}
           />

@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X } from "lucide-react";
 
 interface SearchToggleInputProps {
   active: boolean;
-  searchTerm: string;
+  initialSearchTerm: string;
   onToggle: (active: boolean) => void;
   onChange: (value: string) => void;
   placeholder?: string;
@@ -14,12 +14,19 @@ interface SearchToggleInputProps {
 
 export const SearchToggleInput: React.FC<SearchToggleInputProps> = ({
   active,
-  searchTerm,
+  initialSearchTerm,
   onToggle,
   onChange,
   placeholder = "Search...",
   width = 160,
 }) => {
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    onChange(e.target.value);
+  };
+
   return (
     <AnimatePresence initial={false} mode="wait">
       {active ? (
@@ -33,7 +40,7 @@ export const SearchToggleInput: React.FC<SearchToggleInputProps> = ({
         >
           <Input
             value={searchTerm}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={handleChange}
             placeholder={placeholder}
             className="h-8 text-sm flex-1 m-2"
             autoFocus
