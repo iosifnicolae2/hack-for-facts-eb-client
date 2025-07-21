@@ -15,6 +15,84 @@ import GroupedChapterAccordion from "./GroupedChapterAccordion";
 import { useDebouncedValue } from "@/lib/hooks/useDebouncedValue";
 import { match } from "./highlight-utils";
 
+interface GroupedItemsDisplayProps {
+  groups: GroupedChapter[];
+  title: string;
+  baseTotal: number;
+  searchTerm: string;
+  currentYear: number;
+}
+
+const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.memo(
+  ({ groups, title, baseTotal, searchTerm, currentYear }) => {
+
+    const { totalValueFiltered, totalPercentageFiltered } = React.useMemo(() => {
+      const totalValue = groups.reduce(
+        (sum, ch) =>
+          sum +
+          ch.functionals.reduce((funcSum, func) => {
+            if (func.economics.length > 0) {
+              return (
+                funcSum +
+                func.economics.reduce((ecoSum, eco) => ecoSum + eco.amount, 0)
+              );
+            }
+            return funcSum + func.totalAmount;
+          }, 0),
+        0
+      );
+
+      const percentage = baseTotal > 0 ? (totalValue / baseTotal) * 100 : 0;
+      return { totalValueFiltered: totalValue, totalPercentageFiltered: percentage };
+    }, [groups, baseTotal]);
+
+    if (groups.length === 0) {
+      return (
+        <div className="flex flex-col items-center justify-center h-full p-4">
+          <p className="text-sm text-center text-slate-500 dark:text-slate-400">
+            {searchTerm
+              ? `No results for "${searchTerm}"`
+              : `No data available for ${title.toLowerCase()} in ${currentYear}.`}
+          </p>
+        </div>
+      );
+    }
+
+    const openChapters = searchTerm ? groups.map((ch) => ch.prefix) : [];
+
+    return (
+      <Accordion
+        type="multiple"
+        className="w-full"
+        {...(searchTerm ? { value: openChapters } : {})}
+      >
+        {groups.map((ch) => (
+          <GroupedChapterAccordion
+            key={ch.prefix}
+            ch={ch}
+            baseTotal={baseTotal}
+            searchTerm={searchTerm}
+          />
+        ))}
+        <div className="flex justify-end items-center m-4 font-semibold">
+          Total:{" "}
+          {new Intl.NumberFormat(undefined, {
+            style: "currency",
+            currency: "RON",
+          }).format(totalValueFiltered)}
+          {totalPercentageFiltered > 0 && totalPercentageFiltered <= 99.99 && (
+            <span className="pl-2 text-sm text-muted-foreground">
+              ({totalPercentageFiltered.toFixed(2)}%)
+            </span>
+          )}
+        </div>
+      </Accordion>
+    );
+  }
+);
+
+GroupedItemsDisplay.displayName = "GroupedItemsDisplay";
+
 export interface EntityTopItemsProps {
   lineItems: EntityDetailsData["executionLineItems"];
   currentYear: number;
@@ -60,28 +138,33 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
   incomeSearchTerm,
   onIncomeSearchChange,
 }) => {
-  const expenses =
-    lineItems?.nodes.filter((li) => li.account_category === "ch") || [];
-  const incomes =
-    lineItems?.nodes.filter((li) => li.account_category === "vn") || [];
+  const expenses = React.useMemo(() => {
+    return lineItems?.nodes.filter((li) => li.account_category === "ch") || [];
+  }, [lineItems]);
+  const incomes = React.useMemo(() => {
+    return lineItems?.nodes.filter((li) => li.account_category === "vn") || [];
+  }, [lineItems]);
 
   // Create chapter map: prefix -> description
-  const chapterMap = new Map<string, string>();
-  classifications.groups.forEach(group => {
-    group.chapters.forEach(ch => {
-      if (ch.code) {
-        const prefix = ch.code.slice(0, 2);
-        chapterMap.set(prefix, ch.description);
-      } else if (ch.codes) {
-        ch.codes.forEach(c => {
-          const prefix = c.slice(0, 2);
-          chapterMap.set(prefix, ch.description);
-        });
-      }
+  const chapterMap = React.useMemo(() => {
+    const map = new Map<string, string>();
+    classifications.groups.forEach(group => {
+      group.chapters.forEach(ch => {
+        if (ch.code) {
+          const prefix = ch.code.slice(0, 2);
+          map.set(prefix, ch.description);
+        } else if (ch.codes) {
+          ch.codes.forEach(c => {
+            const prefix = c.slice(0, 2);
+            map.set(prefix, ch.description);
+          });
+        }
+      });
     });
-  });
+    return map;
+  }, []);
 
-  const groupByFunctional = (items: ExecutionLineItem[]): GroupedChapter[] => {
+  const groupByFunctional = React.useCallback((items: ExecutionLineItem[]): GroupedChapter[] => {
     const chapterGroups = new Map<string, { functionals: Map<string, { economics: Map<string, { name: string; amount: number }>; total: number; name: string }>; total: number }>();
 
     items.forEach(item => {
@@ -139,23 +222,23 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
     });
     chapters.sort((a, b) => b.totalAmount - a.totalAmount);
     return chapters;
-  };
+  }, [chapterMap]);
 
-  const expenseGroups = groupByFunctional(expenses);
-  const incomeGroups = groupByFunctional(incomes);
+  const expenseGroups = React.useMemo(() => groupByFunctional(expenses), [groupByFunctional, expenses]);
+  const incomeGroups = React.useMemo(() => groupByFunctional(incomes), [groupByFunctional, incomes]);
 
   // ------ Search state ------
   const [expenseSearchActive, setExpenseSearchActive] = React.useState(
     !!expenseSearchTerm
   );
-  const debouncedExpenseSearchTerm = useDebouncedValue(expenseSearchTerm, 300);
+  const delay = 300;
+  const debouncedExpenseSearchTerm = useDebouncedValue(expenseSearchTerm, delay);
 
   const [incomeSearchActive, setIncomeSearchActive] = React.useState(
     !!incomeSearchTerm
   );
-  const debouncedIncomeSearchTerm = useDebouncedValue(incomeSearchTerm, 300);
+  const debouncedIncomeSearchTerm = useDebouncedValue(incomeSearchTerm, delay);
 
-  // ------ Helper: filter groups with Fuse.js ------
   const filterGroups = React.useCallback(
     (groups: GroupedChapter[], term: string): GroupedChapter[] => {
       const query = term.trim();
@@ -211,7 +294,9 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
   );
 
   const filteredExpenseGroups = React.useMemo(
-    () => filterGroups(expenseGroups, debouncedExpenseSearchTerm),
+    () => {
+      return filterGroups(expenseGroups, debouncedExpenseSearchTerm)
+    },
     [expenseGroups, debouncedExpenseSearchTerm, filterGroups]
   );
   const filteredIncomeGroups = React.useMemo(
@@ -221,51 +306,6 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
 
   const expenseBase = useMemo(() => totalExpenses ?? expenseGroups.reduce((sum, ch) => sum + ch.totalAmount, 0), [totalExpenses, expenseGroups]);
   const incomeBase = useMemo(() => totalIncome ?? incomeGroups.reduce((sum, ch) => sum + ch.totalAmount, 0), [totalIncome, incomeGroups]);
-
-  const totalFilteredExpenses = useMemo(() => filteredExpenseGroups.reduce((sum, ch) => sum + ch.functionals.reduce((sum, func) => {
-    if (func.economics.length > 0) {
-      return sum + func.economics.reduce((sum, eco) => sum + eco.amount, 0);
-    }
-    return sum + func.totalAmount;
-  }, 0), 0), [filteredExpenseGroups]);
-  const totalFilteredExpensePercentage = useMemo(() => totalExpenses ? totalFilteredExpenses / totalExpenses * 100 : 0, [totalFilteredExpenses, totalExpenses]);
-  const totalFilteredIncomes = useMemo(() => filteredIncomeGroups.reduce((sum, ch) => sum + ch.functionals.reduce((sum, func) => {
-    // The economic code is 00.00.00 for incomes, and it is filtered out, so we need to add the total amount of the functional
-    if (func.economics.length > 0) {
-      return sum + func.economics.reduce((sum, eco) => sum + eco.amount, 0);
-    }
-    return sum + func.totalAmount;
-  }, 0), 0), [filteredIncomeGroups]);
-  const totalFilteredIncomePercentage = useMemo(() => totalIncome ? totalFilteredIncomes / totalIncome * 100 : 0, [totalFilteredIncomes, totalIncome]);
-
-  const renderGroups = (
-    groups: GroupedChapter[],
-    title: string,
-    baseTotal: number,
-    searchTerm: string
-  ) => {
-    if (groups.length === 0) {
-      return (
-        <div className="flex flex-col items-center justify-center h-full p-4">
-          <p className="text-sm text-center text-slate-500 dark:text-slate-400">
-            {searchTerm
-              ? `No results for "${searchTerm}"`
-              : `No data available for ${title.toLowerCase()} in ${currentYear}.`}
-          </p>
-        </div>
-      );
-    }
-
-    const openChapters = searchTerm ? groups.map(ch => ch.prefix) : [];
-
-    return (
-      <Accordion type="multiple" className="w-full" {...(searchTerm ? { value: openChapters } : {})}>
-        {groups.map(ch => (
-          <GroupedChapterAccordion key={ch.prefix} ch={ch} baseTotal={baseTotal} searchTerm={searchTerm} />
-        ))}
-      </Accordion>
-    );
-  };
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -299,22 +339,13 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
           />
         </CardHeader>
         <CardContent className="flex-grow">
-          {renderGroups(
-            filteredExpenseGroups,
-            "Expenses",
-            expenseBase,
-            debouncedExpenseSearchTerm
-          )}
-          <div className="flex justify-end items-center m-4 font-semibold">
-            Total:{" "}
-            {new Intl.NumberFormat(undefined, {
-              style: "currency",
-              currency: "RON",
-            }).format(totalFilteredExpenses)}
-            {totalFilteredExpensePercentage > 0 && totalFilteredExpensePercentage <= 99.99 && (
-              <span className="pl-2 text-sm text-muted-foreground">({totalFilteredExpensePercentage.toFixed(2)}%)</span>
-            )}
-          </div>
+          <GroupedItemsDisplay
+            groups={filteredExpenseGroups}
+            title="Expenses"
+            baseTotal={expenseBase}
+            searchTerm={debouncedExpenseSearchTerm}
+            currentYear={currentYear}
+          />
         </CardContent>
       </Card>
       <Card className="shadow-lg dark:bg-slate-800 h-full flex flex-col">
@@ -347,22 +378,13 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
           />
         </CardHeader>
         <CardContent className="flex-grow">
-          {renderGroups(
-            filteredIncomeGroups,
-            "Incomes",
-            incomeBase,
-            debouncedIncomeSearchTerm
-          )}
-          <div className="flex justify-end items-center m-4 font-semibold">
-            Total:{" "}
-            {new Intl.NumberFormat(undefined, {
-              style: "currency",
-              currency: "RON",
-            }).format(totalFilteredIncomes)}
-            {totalFilteredIncomePercentage > 0 && totalFilteredIncomePercentage <= 99.99 && (
-              <span className="pl-2 text-sm text-muted-foreground">({totalFilteredIncomePercentage.toFixed(2)}%)</span>
-            )}
-          </div>
+          <GroupedItemsDisplay
+            groups={filteredIncomeGroups}
+            title="Incomes"
+            baseTotal={incomeBase}
+            searchTerm={debouncedIncomeSearchTerm}
+            currentYear={currentYear}
+          />
         </CardContent>
       </Card>
     </section>
