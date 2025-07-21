@@ -11,7 +11,6 @@ import {
   ZAxis,
 } from 'recharts';
 import { HeatmapUATDataPoint } from '@/lib/api/dataDiscovery';
-import { TooltipProps } from 'recharts/types/component/Tooltip';
 import { formatCurrency, formatNumberRO } from '@/lib/utils';
 
 interface UatPopulationSpendingScatterPlotProps {
@@ -22,17 +21,21 @@ interface UatPopulationSpendingScatterPlotProps {
   dotColor?: string;
 }
 
-// Define a type for the payload item if possible, or use a more specific one from Recharts if available
-// For now, we assume payload items in scatter plots might have `payload` as HeatmapUATDataPoint
-interface ScatterPayload {
-  payload: HeatmapUATDataPoint;
-  // Add other properties from Recharts payload item if needed
+// Define a proper interface for tooltip props with payload
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: Array<{
+    payload: HeatmapUATDataPoint;
+    value?: number;
+    name?: string;
+  }>;
+  label?: string | number;
 }
 
-const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
+const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
   // Check if payload exists and has at least one item with the expected structure
-  if (active && payload && payload.length && (payload[0] as unknown as ScatterPayload).payload) {
-    const dataPoint = (payload[0] as unknown as ScatterPayload).payload;
+  if (active && payload && payload.length && payload[0].payload) {
+    const dataPoint = payload[0].payload;
     return (
       <div className="bg-background p-2 border border-border rounded shadow-lg text-sm">
         <p className="font-semibold text-foreground">{dataPoint.uat_name}</p>

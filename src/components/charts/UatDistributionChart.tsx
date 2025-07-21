@@ -102,7 +102,7 @@ export const UatDistributionChart: React.FC<UatDistributionChartProps> = ({
           <Tooltip formatter={(value: number) => [value, 'Count']} />
           <Legend verticalAlign="top" height={36}/>
           <Bar dataKey="count" name="Number of UATs" fill={barColor}>
-            <LabelList dataKey="count" position="top" fontSize={10} formatter={(value: number) => value > 0 ? value.toString() : ''} />
+            <LabelList dataKey="count" position="top" fontSize={10} formatter={(value: React.ReactNode) => typeof value === 'number' && value > 0 ? value.toString() : ''} />
           </Bar>
         </BarChart>
       </ResponsiveContainer>

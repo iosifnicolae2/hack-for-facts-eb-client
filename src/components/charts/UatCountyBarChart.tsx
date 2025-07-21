@@ -65,7 +65,7 @@ export const UatCountyBarChart: React.FC<UatCountyBarChartProps> = ({
           <Tooltip formatter={(value: number) => [formatCurrency(value, 'compact'), 'Total Amount']} />
           <Legend verticalAlign="top" height={36} />
           <Bar dataKey="total_amount" name="Total Amount" fill={barColor}>
-            <LabelList dataKey="total_amount" position="top" angle={-45} offset={50} formatter={(value: number) => value > 0 ? formatCurrency(value, 'compact') : ''} fontSize={10} />
+            <LabelList dataKey="total_amount" position="top" angle={-45} offset={50} formatter={(value: React.ReactNode) => typeof value === 'number' && value > 0 ? formatCurrency(value, 'compact') : ''} fontSize={10} />
           </Bar>
         </BarChart>
       </ResponsiveContainer>

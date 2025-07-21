@@ -56,7 +56,13 @@ export const UatTopNBarChart: React.FC<UatTopNBarChartProps> = ({
     return formatNumberRO;
   };
 
-  const compactFormatter = getFormatter(true);
+  const compactFormatter = (value: React.ReactNode) => {
+    if (typeof value === 'number') {
+      return getFormatter(true)(value);
+    }
+    return '';
+  };
+  
   const tooltipFormatter = getFormatter(false);
 
   return (
@@ -74,7 +80,7 @@ export const UatTopNBarChart: React.FC<UatTopNBarChartProps> = ({
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis type="number" dataKey={valueKey as string} tickFormatter={compactFormatter} label={{ value: xAxisLabel, position: 'insideBottom', dy: 30, fontSize: 12 }} />
+          <XAxis type="number" dataKey={valueKey as string} tickFormatter={(value) => getFormatter(true)(value)} label={{ value: xAxisLabel, position: 'insideBottom', dy: 30, fontSize: 12 }} />
           <YAxis type="category" dataKey={nameKey as string} width={150} interval={0} tick={{ fontSize: 10 }} label={{ value: yAxisLabel, angle: -90, position: 'insideLeft', dx: -10, fontSize: 12 }}/>
           <Tooltip formatter={(value: number) => [tooltipFormatter(value), valueKey as string]} />
           {topN <= 15 && <Legend verticalAlign="top" height={36}/>}

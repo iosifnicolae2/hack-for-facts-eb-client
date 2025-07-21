@@ -72,7 +72,7 @@ export const UatAverageSpendingCountyChart: React.FC<UatAverageSpendingCountyCha
           <Tooltip formatter={(value: number) => [formatCurrency(value, 'compact'), 'Avg. Amount']} />
           <Legend verticalAlign="top" height={36} />
           <Bar dataKey="average_amount" name="Avg. Amount per UAT" fill={barColor}>
-            <LabelList dataKey="average_amount" position="top"  angle={-45} offset={50} formatter={(value: number) => value > 0 ? formatCurrency(value, 'compact') : ''} fontSize={10} />
+            <LabelList dataKey="average_amount" position="top"  angle={-45} offset={50} formatter={(value: React.ReactNode) => typeof value === 'number' && value > 0 ? formatCurrency(value, 'compact') : ''} fontSize={10} />
           </Bar>
         </BarChart>
       </ResponsiveContainer>
