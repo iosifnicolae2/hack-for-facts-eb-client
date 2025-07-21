@@ -70,7 +70,7 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({ lineItems, curr
       const funcCode = item.functionalClassification.functional_code;
       const funcName = item.functionalClassification.functional_name || 'Unknown';
 
-      if (!funcCode) return;
+      if (!funcCode || funcCode === '00.00.00') return;
 
       let functional = chapter.functionals.get(funcCode);
       if (!functional) {
@@ -85,6 +85,8 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({ lineItems, curr
       if (item.economicClassification?.economic_code && item.economicClassification.economic_code !== '0') {
         const ecoCode = item.economicClassification.economic_code;
         const ecoName = item.economicClassification.economic_name || 'Unknown';
+
+        if (!ecoCode || ecoCode === '00.00.00') return;
 
         let eco = functional.economics.get(ecoCode);
         if (!eco) {
@@ -132,7 +134,7 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({ lineItems, curr
       <Accordion type="multiple" className="w-full">
         {groups.map(ch => (
           <AccordionItem key={ch.prefix} value={ch.prefix}>
-            <AccordionTrigger className="flex justify-between items-center py-2 px-4 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+            <AccordionTrigger className="flex justify-between items-center py-2 px-4 hover:bg-slate-100 dark:hover:bg-slate-700 [&[data-state=open]]:bg-slate-200 dark:[&[data-state=open]]:bg-slate-700 transition-colors">
               <div className='flex justify-between w-full'>
                 <span className="text-base font-medium text-slate-800 dark:text-slate-200">{ch.description}</span>
                 <span className="text-sm font-semibold text-slate-900 dark:text-slate-100 flex-shrink-0 text-right">
@@ -147,7 +149,7 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({ lineItems, curr
                   func.economics.length > 0 ? (
                     <Accordion key={func.code} type="single" collapsible>
                       <AccordionItem value={func.code}>
-                        <AccordionTrigger className="flex justify-between items-center py-2 px-4 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        <AccordionTrigger className="flex justify-between items-center py-2 px-4 hover:bg-slate-100 dark:hover:bg-slate-700 [&[data-state=open]]:bg-slate-100 dark:[&[data-state=open]]:bg-slate-700 transition-colors">
                           <div className='flex justify-between w-full'>
                             <div className="flex items-center">
                               <span className="font-mono text-xs text-muted-foreground mr-2">fn:{func.code}</span>
