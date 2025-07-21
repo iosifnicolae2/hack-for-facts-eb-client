@@ -7,6 +7,7 @@ import { SearchToggleInput } from './SearchToggleInput';
 import classifications from '@/assets/functional-classificatinos-general.json';
 import GroupedChapterAccordion from './GroupedChapterAccordion';
 import { useDebouncedValue } from '@/lib/hooks/useDebouncedValue';
+import { match } from './highlight-utils';
 
 export interface EntityTopItemsProps {
   lineItems: EntityDetailsData['executionLineItems'];
@@ -128,128 +129,55 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({ lineItems, curr
   const debouncedIncomeSearchTerm = useDebouncedValue(incomeSearchTerm, 300);
 
   // ------ Helper: filter groups with Fuse.js ------
-  interface SearchItem {
-    id: string;
-    level: 'chapter' | 'functional' | 'economic';
-    text: string;
-    chapter: GroupedChapter;
-    functional?: GroupedFunctional;
-    economic?: GroupedEconomic;
-  }
-
   const filterGroups = React.useCallback((groups: GroupedChapter[], term: string): GroupedChapter[] => {
     const query = term.trim();
     if (!query) return groups;
 
-    function normalizeText(input: string): string {
-      return input
-        // decompose accents: “é” → “é”
-        .normalize('NFD')
-        // strip combining diacritical marks
-        .replace(/[\u0300-\u036f]/g, '')
-        // remove punctuation (optional—depends on your needs)
-        .replace(/[^\p{L}\p{N}\s]/gu, '')
-        // collapse multiple spaces
-        .replace(/\s+/g, ' ')
-        .trim()
-        .toLowerCase();
-    }
-
-    function makeItem(
-      id: string,
-      level: SearchItem['level'],
-      rawText: string,
-      chapter: GroupedChapter,
-      functional?: GroupedFunctional,
-      economic?: GroupedEconomic,
-    ): SearchItem {
-      return {
-        id,
-        level,
-        text: normalizeText(rawText),
-        chapter,
-        functional,
-        economic,
-      };
-    }
-
-    const searchData: SearchItem[] = groups.flatMap(chapter => {
-      const chapterText = `${chapter.description} ${chapter.prefix}`;
-      const chapterItem = makeItem(
-        `ch_${chapter.prefix}`,
-        'chapter',
-        chapterText,
-        chapter
-      );
-
-      const functionalItems = chapter.functionals.flatMap(func => {
-        const fnItem = makeItem(
-          `fn_${func.code}`,
-          'functional',
-          `${func.name} fn:${func.code}`,
-          chapter,
-          func
-        );
-
-        const economicItems = func.economics.map(eco =>
-          makeItem(
-            `ec_${eco.code}`,
-            'economic',
-            `${eco.name} ec:${eco.code}`,
-            chapter,
-            func,
-            eco
-          )
-        );
-
-        return [fnItem, ...economicItems];
-      });
-
-      return [chapterItem, ...functionalItems];
-    });
-
-    const queryNormalized = normalizeText(query);
-    const results = searchData.filter(item => item.text.includes(queryNormalized));
     const filteredChapters: { [prefix: string]: GroupedChapter } = {};
 
-    results.forEach(result => {
-      const { chapter, functional, economic, level } = result;
-
-      if (!filteredChapters[chapter.prefix]) {
-        filteredChapters[chapter.prefix] = { ...chapter, functionals: [] };
-      }
-
-      if (level === 'chapter') {
-        filteredChapters[chapter.prefix].functionals = chapter.functionals;
+    groups.forEach(chapter => {
+      const chapterText = `${chapter.description} ${chapter.prefix}`;
+      if (match(chapterText, query).length > 0) {
+        if (!filteredChapters[chapter.prefix]) {
+          filteredChapters[chapter.prefix] = { ...chapter, functionals: chapter.functionals };
+        }
+        // If chapter matches, we don't need to check children
         return;
       }
 
-      let currentFunctional = filteredChapters[chapter.prefix].functionals.find((f: GroupedFunctional) => f.code === functional!.code);
-      if (!currentFunctional) {
-        currentFunctional = { ...functional!, economics: [] };
-        filteredChapters[chapter.prefix].functionals.push(currentFunctional);
-      }
+      const matchingFunctionals: GroupedFunctional[] = [];
+      chapter.functionals.forEach(func => {
+        const funcText = `${func.name} fn:${func.code}`;
+        const matchingEconomics: GroupedEconomic[] = [];
+        let funcMatches = match(funcText, query).length > 0;
 
-      if (level === 'functional') {
-        currentFunctional.economics = functional!.economics;
-        return;
-      }
+        func.economics.forEach(eco => {
+          const ecoText = `${eco.name} ec:${eco.code}`;
+          if (match(ecoText, query).length > 0) {
+            matchingEconomics.push(eco);
+            // If an economic child matches, the parent functional should be included
+            funcMatches = true;
+          }
+        });
 
-      const currentEconomic = currentFunctional.economics.find((e: GroupedEconomic) => e.code === economic!.code);
-      if (!currentEconomic) {
-        currentFunctional.economics.push(economic!);
+        if (funcMatches) {
+          matchingFunctionals.push({
+            ...func,
+            // If the functional itself matched, include all economics, otherwise only matching ones
+            economics: match(funcText, query).length > 0 ? func.economics : matchingEconomics,
+          });
+        }
+      });
+
+      if (matchingFunctionals.length > 0) {
+        if (!filteredChapters[chapter.prefix]) {
+          filteredChapters[chapter.prefix] = { ...chapter, functionals: [] };
+        }
+        filteredChapters[chapter.prefix].functionals.push(...matchingFunctionals);
       }
     });
 
-    return Object.values(filteredChapters)
-      .map(ch => {
-        const functionals = ch.functionals.map((fn: GroupedFunctional) => {
-          const economics = fn.economics;
-          return { ...fn, economics };
-        });
-        return { ...ch, functionals };
-      })
-      .sort((a, b) => b.totalAmount - a.totalAmount);
+    return Object.values(filteredChapters).sort((a, b) => b.totalAmount - a.totalAmount);
   }, []);
 
   const filteredExpenseGroups = React.useMemo(() => filterGroups(expenseGroups, debouncedExpenseSearchTerm), [expenseGroups, debouncedExpenseSearchTerm, filterGroups]);

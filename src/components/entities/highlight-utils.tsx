@@ -45,19 +45,39 @@ export const highlightText = (
   return <>{elements}</>;
 };
 
+export function normalizeText(input: string): string {
+  return (
+    input
+      // decompose accents: “é” → “é”
+      .normalize('NFD')
+      // strip combining diacritical marks
+      .replace(/[\u0300-\u036f]/g, '')
+      // remove punctuation
+      .replace(/[^\p{L}\p{N}\s]/gu, '')
+      // collapse multiple spaces
+      .replace(/\s+/g, ' ')
+      .trim()
+      .toLowerCase()
+  );
+}
+
 // match.ts
 export interface MatchRange {
   start: number; // inclusive
-  end:   number; // exclusive
+  end: number; // exclusive
 }
 
 /**
  * Fold diacritics and lowercase, but leave all other characters in place.
  */
 function normalizeChar(ch: string): string {
+  // remove punctuation
+  if (/[^\p{L}\p{N}\s]/u.test(ch)) {
+    return '';
+  }
   return ch
-    .normalize('NFD')               // decompose accents
-    .replace(/[\u0300-\u036f]/g, '')// strip combining marks
+    .normalize('NFD') // decompose accents
+    .replace(/[\u0300-\u036f]/g, '') // strip combining marks
     .toLowerCase();
 }
 
@@ -81,10 +101,7 @@ export function match(text: string, query: string): MatchRange[] {
     }
   }
   const normText = normChars.join('');
-  const normQuery = q
-    .split('')
-    .map(normalizeChar)
-    .join('');
+  const normQuery = q.split('').map(normalizeChar).join('');
 
   const ranges: MatchRange[] = [];
   let idx = normText.indexOf(normQuery, 0);
@@ -93,7 +110,7 @@ export function match(text: string, query: string): MatchRange[] {
   while (idx !== -1) {
     // map normalized range back to original indices
     const origStart = normToOrig[idx];
-    const origEnd   = normToOrig[idx + qLen - 1] + 1; // +1 to make it exclusive
+    const origEnd = normToOrig[idx + qLen - 1] + 1; // +1 to make it exclusive
 
     ranges.push({ start: origStart, end: origEnd });
 
