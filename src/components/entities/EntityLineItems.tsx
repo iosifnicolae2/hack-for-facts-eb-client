@@ -5,15 +5,27 @@ import { ExecutionLineItem, EntityDetailsData } from '@/lib/api/entities';
 import { ArrowDownCircle, ArrowUpCircle } from 'lucide-react';
 import { SearchToggleInput } from './SearchToggleInput';
 import classifications from '@/assets/functional-classificatinos-general.json';
-import GroupedChapterAccordion from './GroupedChapterAccordion';
-import { useDebouncedValue } from '@/lib/hooks/useDebouncedValue';
-import { match } from './highlight-utils';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from "@/components/ui/select";
+import GroupedChapterAccordion from "./GroupedChapterAccordion";
+import { useDebouncedValue } from "@/lib/hooks/useDebouncedValue";
+import { match } from "./highlight-utils";
 
 export interface EntityTopItemsProps {
-  lineItems: EntityDetailsData['executionLineItems'];
+  lineItems: EntityDetailsData["executionLineItems"];
   currentYear: number;
   totalIncome?: number | null;
   totalExpenses?: number | null;
+  years: number[];
+  onYearChange: (year: number) => void;
+  expenseSearchTerm: string;
+  onExpenseSearchChange: (term: string) => void;
+  incomeSearchTerm: string;
+  onIncomeSearchChange: (term: string) => void;
 }
 
 export interface GroupedEconomic {
@@ -36,9 +48,22 @@ export interface GroupedChapter {
   functionals: GroupedFunctional[];
 }
 
-export const EntityLineItems: React.FC<EntityTopItemsProps> = ({ lineItems, currentYear, totalIncome, totalExpenses }) => {
-  const expenses = lineItems?.nodes.filter(li => li.account_category === 'ch') || [];
-  const incomes = lineItems?.nodes.filter(li => li.account_category === 'vn') || [];
+export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
+  lineItems,
+  currentYear,
+  totalIncome,
+  totalExpenses,
+  years,
+  onYearChange,
+  expenseSearchTerm,
+  onExpenseSearchChange,
+  incomeSearchTerm,
+  onIncomeSearchChange,
+}) => {
+  const expenses =
+    lineItems?.nodes.filter((li) => li.account_category === "ch") || [];
+  const incomes =
+    lineItems?.nodes.filter((li) => li.account_category === "vn") || [];
 
   // Create chapter map: prefix -> description
   const chapterMap = new Map<string, string>();
@@ -120,71 +145,84 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({ lineItems, curr
   const incomeGroups = groupByFunctional(incomes);
 
   // ------ Search state ------
-  const [expenseSearchActive, setExpenseSearchActive] = React.useState(false);
-  const [expenseSearchTerm, setExpenseSearchTerm] = React.useState('');
+  const [expenseSearchActive, setExpenseSearchActive] = React.useState(
+    !!expenseSearchTerm
+  );
   const debouncedExpenseSearchTerm = useDebouncedValue(expenseSearchTerm, 300);
 
-  const [incomeSearchActive, setIncomeSearchActive] = React.useState(false);
-  const [incomeSearchTerm, setIncomeSearchTerm] = React.useState('');
+  const [incomeSearchActive, setIncomeSearchActive] = React.useState(
+    !!incomeSearchTerm
+  );
   const debouncedIncomeSearchTerm = useDebouncedValue(incomeSearchTerm, 300);
 
   // ------ Helper: filter groups with Fuse.js ------
-  const filterGroups = React.useCallback((groups: GroupedChapter[], term: string): GroupedChapter[] => {
-    const query = term.trim();
-    if (!query) return groups;
+  const filterGroups = React.useCallback(
+    (groups: GroupedChapter[], term: string): GroupedChapter[] => {
+      const query = term.trim();
+      if (!query) return groups;
 
-    const filteredChapters: { [prefix: string]: GroupedChapter } = {};
+      const filteredChapters: { [prefix: string]: GroupedChapter } = {};
 
-    groups.forEach(chapter => {
-      const chapterText = `${chapter.description} ${chapter.prefix}`;
-      if (match(chapterText, query).length > 0) {
-        if (!filteredChapters[chapter.prefix]) {
-          filteredChapters[chapter.prefix] = { ...chapter, functionals: chapter.functionals };
+      groups.forEach(chapter => {
+        const chapterText = `${chapter.description} ${chapter.prefix}`;
+        if (match(chapterText, query).length > 0) {
+          if (!filteredChapters[chapter.prefix]) {
+            filteredChapters[chapter.prefix] = { ...chapter, functionals: chapter.functionals };
+          }
+          // If chapter matches, we don't need to check children
+          return;
         }
-        // If chapter matches, we don't need to check children
-        return;
-      }
 
-      const matchingFunctionals: GroupedFunctional[] = [];
-      chapter.functionals.forEach(func => {
-        const funcText = `${func.name} fn:${func.code}`;
-        const matchingEconomics: GroupedEconomic[] = [];
-        let funcMatches = match(funcText, query).length > 0;
+        const matchingFunctionals: GroupedFunctional[] = [];
+        chapter.functionals.forEach(func => {
+          const funcText = `${func.name} fn:${func.code}`;
+          const matchingEconomics: GroupedEconomic[] = [];
+          let funcMatches = match(funcText, query).length > 0;
 
-        func.economics.forEach(eco => {
-          const ecoText = `${eco.name} ec:${eco.code}`;
-          if (match(ecoText, query).length > 0) {
-            matchingEconomics.push(eco);
-            // If an economic child matches, the parent functional should be included
-            funcMatches = true;
+          func.economics.forEach(eco => {
+            const ecoText = `${eco.name} ec:${eco.code}`;
+            if (match(ecoText, query).length > 0) {
+              matchingEconomics.push(eco);
+              // If an economic child matches, the parent functional should be included
+              funcMatches = true;
+            }
+          });
+
+          if (funcMatches) {
+            matchingFunctionals.push({
+              ...func,
+              // If the functional itself matched, include all economics, otherwise only matching ones
+              economics: match(funcText, query).length > 0 ? func.economics : matchingEconomics,
+            });
           }
         });
 
-        if (funcMatches) {
-          matchingFunctionals.push({
-            ...func,
-            // If the functional itself matched, include all economics, otherwise only matching ones
-            economics: match(funcText, query).length > 0 ? func.economics : matchingEconomics,
-          });
+        if (matchingFunctionals.length > 0) {
+          if (!filteredChapters[chapter.prefix]) {
+            filteredChapters[chapter.prefix] = { ...chapter, functionals: [] };
+          }
+          filteredChapters[chapter.prefix].functionals.push(...matchingFunctionals);
         }
       });
 
-      if (matchingFunctionals.length > 0) {
-        if (!filteredChapters[chapter.prefix]) {
-          filteredChapters[chapter.prefix] = { ...chapter, functionals: [] };
-        }
-        filteredChapters[chapter.prefix].functionals.push(...matchingFunctionals);
-      }
-    });
+      return Object.values(filteredChapters).sort((a, b) => b.totalAmount - a.totalAmount);
+    },
+    []
+  );
 
-    return Object.values(filteredChapters).sort((a, b) => b.totalAmount - a.totalAmount);
-  }, []);
+  const filteredExpenseGroups = React.useMemo(
+    () => filterGroups(expenseGroups, debouncedExpenseSearchTerm),
+    [expenseGroups, debouncedExpenseSearchTerm, filterGroups]
+  );
+  const filteredIncomeGroups = React.useMemo(
+    () => filterGroups(incomeGroups, debouncedIncomeSearchTerm),
+    [incomeGroups, debouncedIncomeSearchTerm, filterGroups]
+  );
 
-  const filteredExpenseGroups = React.useMemo(() => filterGroups(expenseGroups, debouncedExpenseSearchTerm), [expenseGroups, debouncedExpenseSearchTerm, filterGroups]);
-  const filteredIncomeGroups = React.useMemo(() => filterGroups(incomeGroups, debouncedIncomeSearchTerm), [incomeGroups, debouncedIncomeSearchTerm, filterGroups]);
-
-  const expenseBase = totalExpenses ?? expenseGroups.reduce((sum, ch) => sum + ch.totalAmount, 0);
-  const incomeBase = totalIncome ?? incomeGroups.reduce((sum, ch) => sum + ch.totalAmount, 0);
+  const expenseBase =
+    totalExpenses ?? expenseGroups.reduce((sum, ch) => sum + ch.totalAmount, 0);
+  const incomeBase =
+    totalIncome ?? incomeGroups.reduce((sum, ch) => sum + ch.totalAmount, 0);
 
   const renderGroups = (
     groups: GroupedChapter[],
@@ -223,34 +261,80 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({ lineItems, curr
         <CardHeader className="flex flex-row items-center justify-between">
           <div className="flex items-center">
             <ArrowDownCircle className="h-6 w-6 mr-2 text-red-500 dark:text-red-400" />
-            <h3 className="text-lg font-semibold">Expenses ({currentYear})</h3>
+            <Select
+              value={currentYear.toString()}
+              onValueChange={(val) => onYearChange(parseInt(val, 10))}
+            >
+              <SelectTrigger className="w-auto border-0 shadow-none bg-transparent focus:ring-0">
+                <h3 className="text-lg font-semibold">
+                  Expenses ({currentYear})
+                </h3>
+              </SelectTrigger>
+              <SelectContent>
+                {years.map((year) => (
+                  <SelectItem key={year} value={year.toString()}>
+                    {year}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <SearchToggleInput
             active={expenseSearchActive}
             searchTerm={expenseSearchTerm}
             onToggle={setExpenseSearchActive}
-            onChange={setExpenseSearchTerm}
+            onChange={onExpenseSearchChange}
           />
         </CardHeader>
         <CardContent className="flex-grow">
-          {renderGroups(filteredExpenseGroups, ArrowDownCircle, 'text-red-500 dark:text-red-400', 'Expenses', expenseBase, debouncedExpenseSearchTerm)}
+          {renderGroups(
+            filteredExpenseGroups,
+            ArrowDownCircle,
+            "text-red-500 dark:text-red-400",
+            "Expenses",
+            expenseBase,
+            debouncedExpenseSearchTerm
+          )}
         </CardContent>
       </Card>
       <Card className="shadow-lg dark:bg-slate-800 h-full flex flex-col">
         <CardHeader className="flex flex-row items-center justify-between">
           <div className="flex items-center">
             <ArrowUpCircle className="h-6 w-6 mr-2 text-green-500 dark:text-green-400" />
-            <h3 className="text-lg font-semibold">Incomes ({currentYear})</h3>
+            <Select
+              value={currentYear.toString()}
+              onValueChange={(val) => onYearChange(parseInt(val, 10))}
+            >
+              <SelectTrigger className="w-auto border-0 shadow-none bg-transparent focus:ring-0">
+                <h3 className="text-lg font-semibold">
+                  Incomes ({currentYear})
+                </h3>
+              </SelectTrigger>
+              <SelectContent>
+                {years.map((year) => (
+                  <SelectItem key={year} value={year.toString()}>
+                    {year}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <SearchToggleInput
             active={incomeSearchActive}
             searchTerm={incomeSearchTerm}
             onToggle={setIncomeSearchActive}
-            onChange={setIncomeSearchTerm}
+            onChange={onIncomeSearchChange}
           />
         </CardHeader>
         <CardContent className="flex-grow">
-          {renderGroups(filteredIncomeGroups, ArrowUpCircle, 'text-green-500 dark:text-green-400', 'Incomes', incomeBase, debouncedIncomeSearchTerm)}
+          {renderGroups(
+            filteredIncomeGroups,
+            ArrowUpCircle,
+            "text-green-500 dark:text-green-400",
+            "Incomes",
+            incomeBase,
+            debouncedIncomeSearchTerm
+          )}
         </CardContent>
       </Card>
     </section>

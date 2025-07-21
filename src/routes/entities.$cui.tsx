@@ -16,6 +16,10 @@ export const Route = createFileRoute('/entities/$cui')({
     validateSearch: z.object({
         year: z.coerce.number().min(2016).max(2024).optional(),
         trend: z.enum(['absolute', 'percent']).optional(),
+        expenseSearch: z.string().optional(),
+        incomeSearch: z.string().optional(),
+        analyticsChartType: z.enum(['bar', 'pie']).optional(),
+        analyticsDataType: z.enum(['income', 'expense']).optional(),
     }),
     component: EntityDetailsPage,
 });
@@ -31,7 +35,7 @@ function EntityDetailsPage() {
 
     const [selectedYear, setSelectedYear] = useState<number>(search.year ?? CURRENT_YEAR);
 
-    const [trendMode, setTrendMode] = useState<'absolute' | 'percent'>( (search.trend as 'absolute' | 'percent') ?? 'absolute');
+    const [trendMode, setTrendMode] = useState<'absolute' | 'percent'>((search.trend as 'absolute' | 'percent') ?? 'absolute');
 
     // Pre-compute year options (descending: newest → oldest)
     const years = useMemo(() =>
@@ -46,6 +50,29 @@ function EntityDetailsPage() {
         START_YEAR,   // trend from 2016 …
         CURRENT_YEAR  // … up to 2024 (full range always shown)
     );
+
+    const handleSearchChange = (key: 'expenseSearch' | 'incomeSearch', value: string) => {
+        navigate({
+            search: (prev) => ({
+                ...prev,
+                [key]: value || undefined,
+            }),
+            replace: true,
+        });
+    };
+
+    const handleAnalyticsChange = (
+        key: 'analyticsChartType' | 'analyticsDataType',
+        value: 'bar' | 'pie' | 'income' | 'expense'
+    ) => {
+        navigate({
+            search: (prev) => ({
+                ...prev,
+                [key]: value,
+            }),
+            replace: true,
+        });
+    };
 
     // Sync state with URL search params when changes occur
     useEffect(() => {
@@ -101,8 +128,8 @@ function EntityDetailsPage() {
         <div className="min-h-screen bg-slate-100 dark:bg-slate-900 p-4 md:p-8">
             <div className="container mx-auto max-w-7xl space-y-8">
                 {/** Build year selector injected into header **/}
-                <EntityHeader 
-                    entity={entity} 
+                <EntityHeader
+                    entity={entity}
                     yearSelector={
                         <div className="flex items-center gap-2">
                             <span className="text-sm font-medium text-slate-700 dark:text-slate-300 hidden sm:inline">Reporting Year</span>
@@ -120,31 +147,43 @@ function EntityDetailsPage() {
                     }
                 />
 
-                <EntityFinancialSummary 
+                <EntityFinancialSummary
                     totalIncome={entity.totalIncome}
                     totalExpenses={entity.totalExpenses}
                     budgetBalance={entity.budgetBalance}
                     currentYear={selectedYear}
                 />
 
-                <EntityFinancialTrends 
+                <EntityFinancialTrends
                     incomeTrend={entity.incomeTrend}
                     expenseTrend={entity.expenseTrend}
                     balanceTrend={entity.balanceTrend}
                     mode={trendMode}
                     onModeChange={setTrendMode}
                 />
-                
-                <EntityLineItems 
+
+                <EntityLineItems
                     lineItems={entity.executionLineItems}
                     currentYear={selectedYear}
                     totalIncome={entity.totalIncome}
                     totalExpenses={entity.totalExpenses}
+                    years={years}
+                    onYearChange={setSelectedYear}
+                    expenseSearchTerm={search.expenseSearch ?? ''}
+                    onExpenseSearchChange={(term: string) => handleSearchChange('expenseSearch', term)}
+                    incomeSearchTerm={search.incomeSearch ?? ''}
+                    onIncomeSearchChange={(term: string) => handleSearchChange('incomeSearch', term)}
                 />
 
                 <LineItemsAnalytics
                     lineItems={entity.executionLineItems}
                     analyticsYear={selectedYear}
+                    years={years}
+                    onYearChange={setSelectedYear}
+                    chartType={search.analyticsChartType ?? 'bar'}
+                    onChartTypeChange={(type: 'bar' | 'pie') => handleAnalyticsChange('analyticsChartType', type)}
+                    dataType={search.analyticsDataType ?? 'expense'}
+                    onDataTypeChange={(type: 'income' | 'expense') => handleAnalyticsChange('analyticsDataType', type)}
                 />
 
                 <EntityReports reports={entity.reports} />

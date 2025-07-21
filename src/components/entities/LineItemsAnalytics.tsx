@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { BarChart, Bar, PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, XAxis, YAxis, CartesianGrid, LabelList } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
@@ -6,10 +6,22 @@ import { ExecutionLineItem, EntityDetailsData } from '@/lib/api/entities';
 import { formatCurrency } from '@/lib/utils';
 import { PieChartIcon, BarChartIcon } from 'lucide-react';
 import classifications from '@/assets/functional-classificatinos-general.json';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+} from "@/components/ui/select";
 
 interface AnalyticsProps {
     lineItems: EntityDetailsData['executionLineItems'];
     analyticsYear: number;
+    years: number[];
+    onYearChange: (year: number) => void;
+    chartType: ChartType;
+    onChartTypeChange: (type: ChartType) => void;
+    dataType: DataType;
+    onDataTypeChange: (type: DataType) => void;
 }
 
 type ChartType = 'bar' | 'pie';
@@ -40,10 +52,16 @@ const aggregateAndProcessData = (items: ExecutionLineItem[], chapterMap: Map<str
     return sortedData;
 };
 
-export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({ lineItems, analyticsYear }) => {
-    const [chartType, setChartType] = useState<ChartType>('bar');
-    const [dataType, setDataType] = useState<DataType>('expense');
-
+export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
+    lineItems,
+    analyticsYear,
+    years,
+    onYearChange,
+    chartType,
+    onChartTypeChange,
+    dataType,
+    onDataTypeChange
+}) => {
     const chapterMap = useMemo(() => {
         const map = new Map<string, string>();
         classifications.groups.forEach(group => {
@@ -101,13 +119,29 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({ lineItems, analyt
         <Card className="shadow-lg dark:bg-slate-800">
             <CardHeader>
                 <div className="flex justify-between items-center">
-                    <CardTitle>Categorii principale {analyticsYear}</CardTitle>
+                    <div className="flex items-center">
+                        <Select
+                            value={analyticsYear.toString()}
+                            onValueChange={(val) => onYearChange(parseInt(val, 10))}
+                        >
+                            <SelectTrigger className="w-auto border-0 shadow-none bg-transparent focus:ring-0">
+                                <CardTitle>Categorii principale {analyticsYear}</CardTitle>
+                            </SelectTrigger>
+                            <SelectContent>
+                                {years.map((year) => (
+                                    <SelectItem key={year} value={year.toString()}>
+                                        {year}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
                     <div className="flex items-center space-x-2">
-                        <ToggleGroup type="single" variant="outline" size="sm" value={dataType} onValueChange={(value: DataType) => value && setDataType(value)}>
+                        <ToggleGroup type="single" variant="outline" size="sm" value={dataType} onValueChange={(value: DataType) => value && onDataTypeChange(value)}>
                             <ToggleGroupItem value="income" aria-label="Income">Income</ToggleGroupItem>
                             <ToggleGroupItem value="expense" aria-label="Expenses">Expenses</ToggleGroupItem>
                         </ToggleGroup>
-                        <ToggleGroup type="single" variant="outline" size="sm" value={chartType} onValueChange={(value: ChartType) => value && setChartType(value)}>
+                        <ToggleGroup type="single" variant="outline" size="sm" value={chartType} onValueChange={(value: ChartType) => value && onChartTypeChange(value)}>
                             <ToggleGroupItem value="bar" aria-label="Bar chart">
                                 <BarChartIcon className="h-4 w-4" />
                             </ToggleGroupItem>
