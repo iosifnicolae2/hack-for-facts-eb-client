@@ -4,7 +4,6 @@ import { Accordion } from '@/components/ui/accordion';
 import { ExecutionLineItem, EntityDetailsData } from '@/lib/api/entities';
 import { ArrowDownCircle, ArrowUpCircle } from 'lucide-react';
 import { SearchToggleInput } from './SearchToggleInput';
-import Fuse from 'fuse.js';
 import classifications from '@/assets/functional-classificatinos-general.json';
 import GroupedChapterAccordion from './GroupedChapterAccordion';
 import { useDebouncedValue } from '@/lib/hooks/useDebouncedValue';
@@ -130,75 +129,127 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({ lineItems, curr
 
   // ------ Helper: filter groups with Fuse.js ------
   interface SearchItem {
-      id: string;
-      level: 'chapter' | 'functional' | 'economic';
-      text: string;
-      chapter: GroupedChapter;
-      functional?: GroupedFunctional;
-      economic?: GroupedEconomic;
+    id: string;
+    level: 'chapter' | 'functional' | 'economic';
+    text: string;
+    chapter: GroupedChapter;
+    functional?: GroupedFunctional;
+    economic?: GroupedEconomic;
   }
 
   const filterGroups = React.useCallback((groups: GroupedChapter[], term: string): GroupedChapter[] => {
-      const query = term.trim();
-      if (!query) return groups;
+    const query = term.trim();
+    if (!query) return groups;
 
-      const searchData: SearchItem[] = [];
-      groups.forEach(ch => {
-          searchData.push({ id: `ch_${ch.prefix}`, level: 'chapter', text: `${ch.description} ${ch.prefix}`, chapter: ch });
-          ch.functionals.forEach((func: GroupedFunctional) => {
-              searchData.push({ id: `fn_${func.code}`, level: 'functional', text: `${func.name} fn:${func.code}`, chapter: ch, functional: func });
-              func.economics.forEach((eco: GroupedEconomic) => {
-                  searchData.push({ id: `ec_${eco.code}`, level: 'economic', text: `${eco.name} ec:${eco.code}`, chapter: ch, functional: func, economic: eco });
-              });
-          });
+    function normalizeText(input: string): string {
+      return input
+        // decompose accents: “é” → “é”
+        .normalize('NFD')
+        // strip combining diacritical marks
+        .replace(/[\u0300-\u036f]/g, '')
+        // remove punctuation (optional—depends on your needs)
+        .replace(/[^\p{L}\p{N}\s]/gu, '')
+        // collapse multiple spaces
+        .replace(/\s+/g, ' ')
+        .trim()
+        .toLowerCase();
+    }
+
+    function makeItem(
+      id: string,
+      level: SearchItem['level'],
+      rawText: string,
+      chapter: GroupedChapter,
+      functional?: GroupedFunctional,
+      economic?: GroupedEconomic,
+    ): SearchItem {
+      return {
+        id,
+        level,
+        text: normalizeText(rawText),
+        chapter,
+        functional,
+        economic,
+      };
+    }
+
+    const searchData: SearchItem[] = groups.flatMap(chapter => {
+      const chapterText = `${chapter.description} ${chapter.prefix}`;
+      const chapterItem = makeItem(
+        `ch_${chapter.prefix}`,
+        'chapter',
+        chapterText,
+        chapter
+      );
+
+      const functionalItems = chapter.functionals.flatMap(func => {
+        const fnItem = makeItem(
+          `fn_${func.code}`,
+          'functional',
+          `${func.name} fn:${func.code}`,
+          chapter,
+          func
+        );
+
+        const economicItems = func.economics.map(eco =>
+          makeItem(
+            `ec_${eco.code}`,
+            'economic',
+            `${eco.name} ec:${eco.code}`,
+            chapter,
+            func,
+            eco
+          )
+        );
+
+        return [fnItem, ...economicItems];
       });
 
-      const fuse = new Fuse(searchData, {
-          keys: ['text'],
-          threshold: 0.2,
-      });
+      return [chapterItem, ...functionalItems];
+    });
 
-      const results = fuse.search(query);
-      const filteredChapters: { [prefix: string]: GroupedChapter } = {};
+    const queryNormalized = normalizeText(query);
+    const results = searchData.filter(item => item.text.includes(queryNormalized));
+    const filteredChapters: { [prefix: string]: GroupedChapter } = {};
 
-      results.forEach(result => {
-          const { chapter, functional, economic, level } = result.item;
+    results.forEach(result => {
+      const { chapter, functional, economic, level } = result;
 
-          if (!filteredChapters[chapter.prefix]) {
-              filteredChapters[chapter.prefix] = { ...chapter, functionals: [] };
-          }
+      if (!filteredChapters[chapter.prefix]) {
+        filteredChapters[chapter.prefix] = { ...chapter, functionals: [] };
+      }
 
-          if (level === 'chapter') {
-              filteredChapters[chapter.prefix].functionals = chapter.functionals;
-              return;
-          }
+      if (level === 'chapter') {
+        filteredChapters[chapter.prefix].functionals = chapter.functionals;
+        return;
+      }
 
-          let currentFunctional = filteredChapters[chapter.prefix].functionals.find((f: GroupedFunctional) => f.code === functional!.code);
-          if (!currentFunctional) {
-              currentFunctional = { ...functional!, economics: [] };
-              filteredChapters[chapter.prefix].functionals.push(currentFunctional);
-          }
+      let currentFunctional = filteredChapters[chapter.prefix].functionals.find((f: GroupedFunctional) => f.code === functional!.code);
+      if (!currentFunctional) {
+        currentFunctional = { ...functional!, economics: [] };
+        filteredChapters[chapter.prefix].functionals.push(currentFunctional);
+      }
 
-          if (level === 'functional') {
-              currentFunctional.economics = functional!.economics;
-              return;
-          }
+      if (level === 'functional') {
+        currentFunctional.economics = functional!.economics;
+        return;
+      }
 
-          const currentEconomic = currentFunctional.economics.find((e: GroupedEconomic) => e.code === economic!.code);
-          if (!currentEconomic) {
-              currentFunctional.economics.push(economic!);
-          }
-      });
+      const currentEconomic = currentFunctional.economics.find((e: GroupedEconomic) => e.code === economic!.code);
+      if (!currentEconomic) {
+        currentFunctional.economics.push(economic!);
+      }
+    });
 
-      return Object.values(filteredChapters)
-          .map(ch => {
-              const functionals = ch.functionals.map((fn: GroupedFunctional) => {
-                  const economics = fn.economics;
-                  return { ...fn, economics };
-              });
-              return { ...ch, functionals };
-          })
-          .sort((a, b) => b.totalAmount - a.totalAmount);
+    return Object.values(filteredChapters)
+      .map(ch => {
+        const functionals = ch.functionals.map((fn: GroupedFunctional) => {
+          const economics = fn.economics;
+          return { ...fn, economics };
+        });
+        return { ...ch, functionals };
+      })
+      .sort((a, b) => b.totalAmount - a.totalAmount);
   }, []);
 
   const filteredExpenseGroups = React.useMemo(() => filterGroups(expenseGroups, debouncedExpenseSearchTerm), [expenseGroups, debouncedExpenseSearchTerm, filterGroups]);
@@ -219,8 +270,8 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({ lineItems, curr
       return (
         <div className="flex flex-col items-center justify-center h-full p-4">
           <p className="text-sm text-center text-slate-500 dark:text-slate-400">
-            {searchTerm 
-              ? `No results for "${searchTerm}"` 
+            {searchTerm
+              ? `No results for "${searchTerm}"`
               : `No data available for ${title.toLowerCase()} in ${currentYear}.`}
           </p>
         </div>
