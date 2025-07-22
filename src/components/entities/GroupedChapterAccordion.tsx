@@ -24,7 +24,7 @@ const GroupedChapterAccordion: React.FC<GroupedChapterAccordionProps> = ({ ch, b
               {formatCurrency(ch.totalAmount, "compact")}
               <span className="text-xs text-muted-foreground w-12 text-left">{`(${formatNumberRO(ch.totalAmount / baseTotal * 100)}%)`}</span>
             </p>
-            <p className="text-xs text-muted-foreground">{formatCurrency(ch.totalAmount, "standard")}</p>
+            <p className="text-xs text-muted-foreground font-normal">{formatCurrency(ch.totalAmount, "standard")}</p>
           </div>
         </div>
       </AccordionTrigger>

@@ -23,7 +23,7 @@ const GroupedFunctionalAccordion: React.FC<GroupedFunctionalAccordionProps> = ({
             {formatCurrency(func.totalAmount, "compact")}
             <span className="text-xs text-muted-foreground w-12 text-left">{`(${(func.totalAmount / baseTotal * 100).toFixed(1)}%)`}</span>
           </p>
-          <p className="text-xs text-muted-foreground">{formatCurrency(func.totalAmount, "standard")}</p>
+          <p className="text-xs text-muted-foreground font-normal">{formatCurrency(func.totalAmount, "standard")}</p>
         </div>
       </div>
     );
@@ -43,7 +43,7 @@ const GroupedFunctionalAccordion: React.FC<GroupedFunctionalAccordionProps> = ({
                 {formatCurrency(func.totalAmount, "compact")}
                 <span className="text-xs text-muted-foreground w-12 text-left">{`(${(func.totalAmount / baseTotal * 100).toFixed(1)}%)`}</span>
               </p>
-              <p className="text-xs text-muted-foreground">{formatCurrency(func.totalAmount, "standard")}</p>
+              <p className="text-xs text-muted-foreground font-normal">{formatCurrency(func.totalAmount, "standard")}</p>
             </div>
           </div>
         </AccordionTrigger>
@@ -60,7 +60,7 @@ const GroupedFunctionalAccordion: React.FC<GroupedFunctionalAccordionProps> = ({
                     {formatCurrency(eco.amount, "compact")}
                     <span className="text-xs text-muted-foreground w-12 text-left">{`(${(eco.amount / baseTotal * 100).toFixed(1)}%)`}</span>
                   </p>
-                  <p className="text-xs text-muted-foreground">{formatCurrency(eco.amount, "standard")}</p>
+                  <p className="text-xs text-muted-foreground font-normal">{formatCurrency(eco.amount, "standard")}</p>
                 </div>
               </li>
             ))}
