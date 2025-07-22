@@ -85,48 +85,66 @@ const filterGroups = (groups: GroupedChapter[], term: string): GroupedChapter[] 
     const query = term.trim();
     if (!query) return groups;
 
-    const filteredChapters: { [prefix: string]: GroupedChapter } = {};
+    // Use Map to accumulate filtered chapters while ensuring uniqueness
+    const filteredChapters = new Map<string, GroupedChapter>();
 
-    groups.forEach(chapter => {
+    groups.forEach((chapter) => {
       const chapterText = `${chapter.description} ${chapter.prefix}`;
-      if (match(chapterText, query).length > 0) {
-        if (!filteredChapters[chapter.prefix]) {
-          filteredChapters[chapter.prefix] = { ...chapter, functionals: chapter.functionals };
-        }
-        return;
+      const chapterMatches = match(chapterText, query).length > 0;
+
+      // 1. If the chapter itself matches, include it entirely (keep original totals)
+      if (chapterMatches) {
+        filteredChapters.set(chapter.prefix, { ...chapter });
+        return; // no need to inspect functionals / economics
       }
 
-      const matchingFunctionals: GroupedFunctional[] = [];
-      chapter.functionals.forEach((func: GroupedFunctional) => {
-        const funcText = `${func.name} fn:${func.code}`;
-        const matchingEconomics: GroupedEconomic[] = [];
-        let funcMatches = match(funcText, query).length > 0;
+      // 2. Otherwise, inspect functionals & economics
+      const matchedFunctionals: GroupedFunctional[] = [];
 
-        func.economics.forEach((eco: GroupedEconomic) => {
+      chapter.functionals.forEach((func) => {
+        const funcText = `${func.name} fn:${func.code}`;
+        const funcMatches = match(funcText, query).length > 0;
+
+        // Case A: functional matches – keep it entirely (retain original total)
+        if (funcMatches) {
+          matchedFunctionals.push({ ...func });
+          return;
+        }
+
+        // Case B: functional doesn’t match, investigate economics
+        const matchedEconomics: GroupedEconomic[] = [];
+        func.economics.forEach((eco) => {
           const ecoText = `${eco.name} ec:${eco.code}`;
           if (match(ecoText, query).length > 0) {
-            matchingEconomics.push(eco);
-            funcMatches = true;
+            matchedEconomics.push({ ...eco });
           }
         });
 
-        if (funcMatches) {
-          matchingFunctionals.push({
+        if (matchedEconomics.length > 0) {
+          // Re-compute total based on matched economics only
+          const newTotal = matchedEconomics.reduce((sum, eco) => sum + eco.amount, 0);
+          matchedFunctionals.push({
             ...func,
-            economics: match(funcText, query).length > 0 ? func.economics : matchingEconomics,
+            economics: matchedEconomics,
+            totalAmount: newTotal,
           });
         }
       });
 
-      if (matchingFunctionals.length > 0) {
-        if (!filteredChapters[chapter.prefix]) {
-          filteredChapters[chapter.prefix] = { ...chapter, functionals: [] };
-        }
-        filteredChapters[chapter.prefix].functionals.push(...matchingFunctionals);
+      if (matchedFunctionals.length > 0) {
+        // Re-compute chapter total based on matched functionals
+        const newChapterTotal = matchedFunctionals.reduce((sum, f) => sum + f.totalAmount, 0);
+        const updatedChapter: GroupedChapter = {
+          ...chapter,
+          functionals: matchedFunctionals.sort((a, b) => b.totalAmount - a.totalAmount),
+          totalAmount: newChapterTotal,
+        };
+        filteredChapters.set(chapter.prefix, updatedChapter);
       }
     });
 
-    return Object.values(filteredChapters).sort((a, b) => b.totalAmount - a.totalAmount);
+    // Convert Map -> array, sort chapters by totalAmount desc
+    return Array.from(filteredChapters.values()).sort((a, b) => b.totalAmount - a.totalAmount);
 };
 
 export const useFinancialData = (lineItems: ExecutionLineItem[], totalIncome: number | null, totalExpenses: number | null, initialExpenseSearchTerm: string, initialIncomeSearchTerm: string) => {
