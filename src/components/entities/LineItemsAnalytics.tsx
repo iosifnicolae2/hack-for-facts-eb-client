@@ -173,6 +173,8 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
                                     nameKey="name"
                                     cx="50%"
                                     cy="50%"
+                                    animationBegin={0}
+                                    animationDuration={300}
                                     outerRadius={160}
                                     labelLine={true}
                                     label={({ name, percent }) => `${name.slice(0, 30)} (${((percent || 0) * 100).toFixed(0)}%)`}
