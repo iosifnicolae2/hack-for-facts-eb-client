@@ -10,3 +10,5 @@ alwaysApply: false
 - First, plan the task. Consider how deep you need to go with the implementation details.
 - Then, work hard and complete the task.
 - Make sure you cover all the cases. You can use as much tools and thinking time as you need.
+- Make sure all the lint warnings are fixed.
+- Run yarn build to make sure the project builds.

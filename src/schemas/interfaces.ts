@@ -21,6 +21,8 @@ export type LineItemsFilter = {
   is_uat?: boolean;
   page?: number;
   pageSize?: number;
+  functional_prefixes?: string[];
+  economic_prefixes?: string[];
 };
 
 export interface SortOrder {

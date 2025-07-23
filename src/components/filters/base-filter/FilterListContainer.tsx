@@ -4,7 +4,7 @@ import { OptionItem } from "./interfaces";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 
-const VISIBLE_BADGES_COUNT_IN_DISPLAY = 1; 
+const VISIBLE_BADGES_COUNT_IN_DISPLAY = 1;
 const MIN_ITEMS_FOR_COMPACT_VIEW_IN_DISPLAY = VISIBLE_BADGES_COUNT_IN_DISPLAY + 1;
 
 interface FilterContainerProps {
@@ -60,7 +60,7 @@ export function FilterListContainer({ listComponent: ListComponent, title, icon,
                             )}
                         </div>
                     </AccordionTrigger>
-                    <AccordionContent className="px-4 pb-4">
+                    <AccordionContent className="px-4 pb-4 pt-2">
                         <ListComponent
                             selectedOptions={selected}
                             toggleSelect={toggleSelect}

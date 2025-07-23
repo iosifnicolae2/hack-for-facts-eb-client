@@ -64,7 +64,7 @@ export function FilterRangeContainer({ rangeComponent: RangeComponent, title, un
                             )}
                         </div>
                     </AccordionTrigger>
-                    <AccordionContent className="p-4 pt-0">
+                    <AccordionContent className="p-4 pt-2">
                         <RangeComponent
                             minValue={minValue}
                             maxValue={maxValue}

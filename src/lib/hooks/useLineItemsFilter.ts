@@ -36,6 +36,8 @@ const InternalFiltersObjectSchema = z.object({
     reportType: z.string().optional(),
     isMainCreditor: z.boolean().optional(),
     isUat: z.boolean().optional(),
+    functionalPrefix: z.string().optional(),
+    economicPrefix: z.string().optional(),
     page: z.number().optional().default(1),
     pageSize: z.number().optional().default(25),
     sort: z.object({
@@ -65,6 +67,8 @@ interface FilterStoreActions {
     setReportType: (updater: string | undefined | ((prev: string | undefined) => string | undefined)) => void;
     setIsMainCreditor: (updater: boolean | undefined | ((prev: boolean | undefined) => boolean | undefined)) => void;
     setIsUat: (updater: boolean | undefined | ((prev: boolean | undefined) => boolean | undefined)) => void;
+    setFunctionalPrefix: (updater: string | undefined | ((prev: string | undefined) => string | undefined)) => void;
+    setEconomicPrefix: (updater: string | undefined | ((prev: string | undefined) => string | undefined)) => void;
     resetFilters: () => void;
 }
 
@@ -179,6 +183,12 @@ export const useLineItemsFilterStore = create<FilterStore>()(
             setIsUat: (updater) => set(state => ({
                 isUat: typeof updater === 'function' ? updater(state.isUat) : updater,
             })),
+            setFunctionalPrefix: (updater) => set(state => ({
+                functionalPrefix: typeof updater === 'function' ? updater(state.functionalPrefix) : updater,
+            })),
+            setEconomicPrefix: (updater) => set(state => ({
+                economicPrefix: typeof updater === 'function' ? updater(state.economicPrefix) : updater,
+            })),
             resetFilters: () => set(defaultInternalFiltersState),
         }),
         {
@@ -204,6 +214,8 @@ export const useFilterSearch = () => {
         reportType,
         isMainCreditor,
         isUat,
+        functionalPrefix,
+        economicPrefix,
         setSort,
         setSelectedYears,
         setSelectedEntities,
@@ -218,6 +230,8 @@ export const useFilterSearch = () => {
         setReportType,
         setIsMainCreditor,
         setIsUat,
+        setFunctionalPrefix,
+        setEconomicPrefix,
     } = useLineItemsFilterStore();
 
     const filter = useMemo((): LineItemsFilter => ({
@@ -232,7 +246,9 @@ export const useFilterSearch = () => {
         report_type: reportType,
         is_main_creditor: isMainCreditor,
         is_uat: isUat,
-    }), [entities, functionalClassifications, economicClassifications, accountTypes, uats, years, minAmount, maxAmount, reportType, isMainCreditor, isUat]);
+        functional_prefixes: functionalPrefix ? [functionalPrefix] : undefined,
+        economic_prefixes: economicPrefix ? [economicPrefix] : undefined,
+    }), [entities, functionalClassifications, economicClassifications, accountTypes, uats, years, minAmount, maxAmount, reportType, isMainCreditor, isUat, functionalPrefix, economicPrefix]);
 
     const filterHash = useMemo(() => {
         return generateHash(JSON.stringify(filter));
@@ -254,6 +270,8 @@ export const useFilterSearch = () => {
         reportType,
         isMainCreditor,
         isUat,
+        functionalPrefix,
+        economicPrefix,
 
         // Setters (actions)
         setSelectedYearOptions: setSelectedYears as OptionSetter,
@@ -270,6 +288,8 @@ export const useFilterSearch = () => {
         setReportType,
         setIsMainCreditor,
         setIsUat,
+        setFunctionalPrefix,
+        setEconomicPrefix,
 
         filter,
         filterHash,
