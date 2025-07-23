@@ -130,6 +130,7 @@ function EntityDetailsPage() {
             <div className="container mx-auto max-w-7xl space-y-8">
                 {/** Build year selector injected into header **/}
                 <EntityHeader
+                    className="md:sticky top-0 z-10 bg-white dark:bg-slate-900"
                     entity={entity}
                     yearSelector={
                         <div className="flex items-center gap-2">
