@@ -9,7 +9,7 @@ import { EntityFinancialTrends } from '@/components/entities/EntityFinancialTren
 import { EntityLineItems } from '@/components/entities/EntityLineItems';
 import { EntityReports } from '@/components/entities/EntityReports';
 import { LineItemsAnalytics } from '@/components/entities/LineItemsAnalytics';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { FloatingEntitySearch } from '@/components/entities/FloatingEntitySearch';
 import { entitySearchSchema } from '@/components/entities/validation';
@@ -24,7 +24,7 @@ export const Route = createFileRoute('/entities/$cui')({
 
 function EntityDetailsPage() {
     const { cui } = useParams({ from: Route.id });
-    const search = useSearch({ from: Route.id });
+    const search = useSearch({ from: Route.id }); // TODO: the state is out of sync with the internal state. Improve the state management. Make it atomic.
     const navigate = useNavigate({ from: Route.id });
 
     // Year selection setup
@@ -83,17 +83,21 @@ function EntityDetailsPage() {
         });
     };
 
-    // Sync state with URL search params when changes occur
-    useEffect(() => {
+    const handleYearChange = (year: number) => {
+        setSelectedYear(year);
         navigate({
-            search: prev => ({
-                ...prev,
-                year: selectedYear,
-                trend: trendMode,
-            }),
+            search: (prev) => ({ ...prev, year }),
             replace: true,
         });
-    }, [selectedYear, trendMode, navigate]);
+    };
+
+    const handleTrendModeChange = (mode: 'absolute' | 'percent') => {
+        setTrendMode(mode);
+        navigate({
+            search: (prev) => ({ ...prev, trend: mode }),
+            replace: true,
+        });
+    };
 
     if (isLoading) {
         return (
@@ -144,7 +148,7 @@ function EntityDetailsPage() {
                     yearSelector={
                         <div className="flex items-center gap-2">
                             <span className="text-sm font-medium text-slate-700 dark:text-slate-300 hidden sm:inline">Reporting Year</span>
-                            <Select value={selectedYear.toString()} onValueChange={(val) => setSelectedYear(parseInt(val, 10))}>
+                            <Select value={selectedYear.toString()} onValueChange={(val) => handleYearChange(parseInt(val, 10))}>
                                 <SelectTrigger className="w-[110px]">
                                     <SelectValue />
                                 </SelectTrigger>
@@ -170,7 +174,7 @@ function EntityDetailsPage() {
                     expenseTrend={entity.expenseTrend}
                     balanceTrend={entity.balanceTrend}
                     mode={trendMode}
-                    onModeChange={setTrendMode}
+                    onModeChange={handleTrendModeChange}
                 />
 
                 <EntityLineItems

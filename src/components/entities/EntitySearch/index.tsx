@@ -108,7 +108,10 @@ export function EntitySearchInput({
                                     entity={entity}
                                     isActive={activeIndex === index}
                                     baseSearch={baseSearch}
-                                    onClick={() => handleSelection(index)}
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        handleSelection(index)
+                                    }}
                                 />
                             ))}
                         </ul>

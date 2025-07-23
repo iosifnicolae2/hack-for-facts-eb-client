@@ -10,7 +10,7 @@ interface SearchResultItemProps {
     isActive: boolean;
     baseSearch?: EntitySearchSchema;
     id: string;
-    onClick: () => void;
+    onClick: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 export const SearchResultItem = forwardRef<HTMLAnchorElement, SearchResultItemProps>(
