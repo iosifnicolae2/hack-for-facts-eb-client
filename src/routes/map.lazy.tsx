@@ -27,6 +27,7 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const Route = createLazyFileRoute("/map")({
   component: MapPage,
@@ -35,6 +36,7 @@ export const Route = createLazyFileRoute("/map")({
 function MapPage() {
   const { heatmapFilterInput, activeView, setActiveView } = useMapFilter();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -42,6 +44,8 @@ function MapPage() {
   });
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [isLegendModalOpen, setIsLegendModalOpen] = useState(false);
+
+  const mapZoom = isMobile ? 6 : 7.5;
 
   const {
     data: heatmapData,
@@ -123,12 +127,13 @@ function MapPage() {
               <div className="p-4 text-center">Map data not available.</div>
             ) : (
               <>
-                <TabsContent value="map" className="h-full w-full m-0 data-[state=inactive]:hidden outline-none ring-0 focus:ring-0 focus-visible:ring-0 relative">
+                <TabsContent value="map" className="sm:h-screen md:h-[calc(100vh-10rem)] w-full m-0 data-[state=inactive]:hidden outline-none ring-0 focus:ring-0 focus-visible:ring-0 relative">
                   <UatMap
                     onUatClick={handleUatClick}
                     getFeatureStyle={aDynamicGetFeatureStyle}
                     heatmapData={heatmapData ?? []}
                     geoJsonData={geoJsonData}
+                    zoom={mapZoom}
                   />
                   <MapLegend
                     min={minAggregatedValue}
@@ -166,10 +171,10 @@ function MapPage() {
                     </DialogContent>
                   </Dialog>
                 </TabsContent>
-                <TabsContent value="table" className="h-full w-full m-0 data-[state=inactive]:hidden outline-none ring-0 focus:ring-0 focus-visible:ring-0">
-                  <div className="p-4 h-full flex flex-col">
-                    <h2 className="text-xl font-semibold mb-4 shrink-0">Data Table View</h2>
-                    <div className="flex-grow overflow-x-auto w-screen">
+                <TabsContent value="table" className="h-full m-0 data-[state=inactive]:hidden outline-none ring-0 focus:ring-0 focus-visible:ring-0">
+                  <div className="p-4 h-full flex flex-col overflow-auto">
+                    <h2 className="text-xl font-semibold mb-4">Data Table View</h2>
+                    <div className="flex-grow overflow-x-auto">
                       {heatmapData ? (
                         <HeatmapDataTable
                           data={heatmapData ?? []}

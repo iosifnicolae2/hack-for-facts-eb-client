@@ -46,7 +46,7 @@ export function FloatingEntitySearch({ baseSearch, className }: FloatingEntitySe
             </div>
 
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
-                <DialogTitle>Search for another entity</DialogTitle>
+                <DialogTitle className="sr-only">Search for another entity</DialogTitle>
                 <DialogContent hideCloseButton={true} className="fixed bottom-8 right-8 max-w-3xl w-full p-0 bg-transparent border-0 shadow-none outline-none focus:outline-none">
                     <EntitySearchInput
                         baseSearch={baseSearch}

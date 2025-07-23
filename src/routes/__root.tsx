@@ -17,7 +17,7 @@ export const Route = createRootRoute({
         <ThemeProvider defaultTheme="light" storageKey="ui-theme">
           <HotkeysProvider>
             <SidebarProvider>
-              <div className="flex min-h-screen min-w-screen">
+              <div className="flex min-h-screen min-w-full">
                 <AppSidebar />
                 <SidebarInset>
                   <main className="flex-1">
