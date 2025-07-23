@@ -10,10 +10,11 @@ interface EntityHeaderProps {
   entity: Pick<EntityDetailsData, 'name' | 'cui' | 'entity_type' | 'address' | 'uat' | 'children' | 'parents'>;
   /** Optional element (e.g., a Select) rendered to the right of the title */
   yearSelector?: React.ReactNode;
+  onTitleClick?: () => void;
   className?: string;
 }
 
-export const EntityHeader: React.FC<EntityHeaderProps> = ({ entity, yearSelector, className }) => {
+export const EntityHeader: React.FC<EntityHeaderProps> = ({ entity, yearSelector, className, onTitleClick }) => {
 
   const entityCategory = entity.entity_type ? entityCategories.categories[entity.entity_type as keyof typeof entityCategories.categories] : null;
 
@@ -22,7 +23,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({ entity, yearSelector
       <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
         <div className="flex-grow">
           <div className="flex items-center gap-3 flex-wrap mb-2">
-            <h1 className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-slate-100">{entity.name}</h1>
+            <h1 className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-slate-100 cursor-pointer" onClick={onTitleClick}>{entity.name}</h1>
             {entityCategory && (
               <Badge variant="secondary" className="px-2 py-1 text-xs sm:text-sm whitespace-nowrap">
                 <Building2 className="h-4 w-4 mr-1.5" />

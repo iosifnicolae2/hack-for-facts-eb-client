@@ -11,16 +11,14 @@ import { EntityReports } from '@/components/entities/EntityReports';
 import { LineItemsAnalytics } from '@/components/entities/LineItemsAnalytics';
 import { useState, useMemo, useEffect } from 'react';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { FloatingEntitySearch } from '@/components/entities/FloatingEntitySearch';
+import { entitySearchSchema } from '@/components/entities/validation';
+
+
+export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
 
 export const Route = createFileRoute('/entities/$cui')({
-    validateSearch: z.object({
-        year: z.coerce.number().min(2016).max(2024).optional(),
-        trend: z.enum(['absolute', 'percent']).optional(),
-        expenseSearch: z.string().optional(),
-        incomeSearch: z.string().optional(),
-        analyticsChartType: z.enum(['bar', 'pie']).optional(),
-        analyticsDataType: z.enum(['income', 'expense']).optional(),
-    }),
+    validateSearch: entitySearchSchema,
     component: EntityDetailsPage,
 });
 
@@ -72,6 +70,16 @@ function EntityDetailsPage() {
                 [key]: value,
             }),
             replace: true,
+        });
+    };
+
+
+
+    const handleTitleClick = () => {
+        navigate({
+            search: {},
+            replace: false,
+            reloadDocument: true,
         });
     };
 
@@ -132,6 +140,7 @@ function EntityDetailsPage() {
                 <EntityHeader
                     className="md:sticky top-0 z-10 bg-white dark:bg-slate-900"
                     entity={entity}
+                    onTitleClick={handleTitleClick}
                     yearSelector={
                         <div className="flex items-center gap-2">
                             <span className="text-sm font-medium text-slate-700 dark:text-slate-300 hidden sm:inline">Reporting Year</span>
@@ -189,6 +198,7 @@ function EntityDetailsPage() {
 
                 <EntityReports reports={entity.reports} />
             </div>
+            <FloatingEntitySearch baseSearch={search} />
         </div>
     );
 }

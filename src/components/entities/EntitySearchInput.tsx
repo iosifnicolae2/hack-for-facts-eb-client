@@ -7,6 +7,7 @@ import { EntitySearchNode } from "@/schemas/entities";
 import { useDebouncedValue } from "@/lib/hooks/useDebouncedValue";
 import { cn } from "@/lib/utils";
 import { Search, X, Loader2, ExternalLink, MapPin } from "lucide-react";
+import { EntitySearchSchema } from "@/routes/entities.$cui";
 
 interface EntitySearchInputProps {
   className?: string;
@@ -15,6 +16,7 @@ interface EntitySearchInputProps {
   dropdownClassName?: string;
   placeholder?: string;
   onResultClick?: () => void;
+  baseSearch?: EntitySearchSchema;
 }
 
 export function EntitySearchInput({
@@ -24,6 +26,7 @@ export function EntitySearchInput({
   dropdownClassName,
   placeholder = "Search entities by name or CUI...",
   onResultClick,
+  baseSearch
 }: EntitySearchInputProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebouncedValue(searchTerm, 500);
@@ -133,6 +136,7 @@ export function EntitySearchInput({
                   <Link
                     to="/entities/$cui"
                     params={{ cui: entity.cui }}
+                    search={baseSearch}
                     className={cn(
                         "block w-full px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-700 focus:bg-slate-50 dark:focus:bg-slate-700 focus:outline-none transition-colors group"
                     )}
