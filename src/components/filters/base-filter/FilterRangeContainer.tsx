@@ -1,9 +1,9 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { FunctionComponent, useMemo, useState } from "react";
-import { cn, formatNumberRO } from "@/lib/utils"; // Your utility for classnames
-import { SelectedOptionsDisplay } from "./SelectedOptionsDisplay"; // The new component
+import { formatNumberRO } from "@/lib/utils";
+import { SelectedOptionsDisplay } from "./SelectedOptionsDisplay";
 import { BaseListFilterProps, OptionItem } from "./interfaces";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Badge } from "@/components/ui/badge";
 
 interface FilterContainerProps {
     title: string;
@@ -19,17 +19,16 @@ interface FilterContainerProps {
 
 
 export function FilterRangeContainer({ rangeComponent: RangeComponent, title, unit, icon, minValue, maxValue, maxValueAllowed, onMinValueChange, onMaxValueChange }: FilterContainerProps) {
-    // State to manage if all selected items are shown or just the compact view (passed to SelectedOptionsDisplay)
     const [showAllSelected, setShowAllSelected] = useState(false);
 
     const activeRangeOptions = useMemo(() => {
         const options: OptionItem[] = [];
 
-        if (minValue !== undefined) {
+        if (minValue !== undefined && minValue !== '') {
             options.push({ id: "min", label: `min: ${formatNumberRO(Number(minValue))} ${unit}` });
         }
 
-        if (maxValue !== undefined) {
+        if (maxValue !== undefined && maxValue !== '') {
             options.push({ id: "max", label: `max: ${formatNumberRO(Number(maxValue))} ${unit}` });
         }
 
@@ -44,53 +43,48 @@ export function FilterRangeContainer({ rangeComponent: RangeComponent, title, un
         }
     };
 
-    /**
-     * Clears all currently selected entity options and resets the compact view state.
-     */
     const clearSelection = () => {
-        console.log("Clearing range");
         onMinValueChange(undefined);
         onMaxValueChange(undefined);
-        setShowAllSelected(false); // Reset view on clear
+        setShowAllSelected(false);
     };
 
     return (
-        <Card className={cn("w-full max-w-md shadow-none flex flex-col rounded-none")}>
-            <Accordion type="single" collapsible className="w-full px-4">
-                <AccordionItem value="item-1" className="border-none">
-                    <AccordionTrigger>
-                        <CardHeader className="flex flex-row items-center gap-2 p-0">
-                            <div className="w-4 h-4 mt-1">
-                                {icon}
-                            </div>
-                            <CardTitle>{title}</CardTitle>
-                        </CardHeader>
+        <div className="border-b">
+            <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value={title} className="border-none">
+                    <AccordionTrigger className="px-4 py-3 text-sm font-medium hover:bg-muted/50">
+                        <div className="flex items-center gap-2">
+                            {icon}
+                            <span>{title}</span>
+                            {activeRangeOptions.length > 0 && (
+                                <Badge variant="secondary" className="rounded-full px-2 text-xs">
+                                    {activeRangeOptions.length}
+                                </Badge>
+                            )}
+                        </div>
                     </AccordionTrigger>
-                    <AccordionContent>
-                        <CardContent className={cn("p-0 flex-grow")}>
-                            <RangeComponent
-                                minValue={minValue}
-                                maxValue={maxValue}
-                                unit={unit}
-                                onMinValueChange={onMinValueChange}
-                                onMaxValueChange={onMaxValueChange}
-                                maxValueAllowed={maxValueAllowed}
-                            />
-                        </CardContent>
-                    </AccordionContent>
-
-                    <CardFooter className="p-0">
-                        <SelectedOptionsDisplay
-                            selectedOptions={activeRangeOptions}
-                            toggleSelect={handleClearRange}
-                            clearSelection={clearSelection}
-                            showAllSelected={showAllSelected}
-                            setShowAllSelected={setShowAllSelected}
+                    <AccordionContent className="p-4 pt-0">
+                        <RangeComponent
+                            minValue={minValue}
+                            maxValue={maxValue}
+                            unit={unit}
+                            onMinValueChange={onMinValueChange}
+                            onMaxValueChange={onMaxValueChange}
+                            maxValueAllowed={maxValueAllowed}
                         />
-                    </CardFooter>
+                    </AccordionContent>
                 </AccordionItem>
             </Accordion>
-
-        </Card>
+            <div className="px-4">
+                <SelectedOptionsDisplay
+                    selectedOptions={activeRangeOptions}
+                    toggleSelect={handleClearRange}
+                    clearSelection={clearSelection}
+                    showAllSelected={showAllSelected}
+                    setShowAllSelected={setShowAllSelected}
+                />
+            </div>
+        </div>
     );
 }

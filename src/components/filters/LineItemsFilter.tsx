@@ -11,6 +11,11 @@ import { FilterRangeContainer } from "./base-filter/FilterRangeContainer";
 import { AccountTypeFilter } from "./account-type-filter/AccountTypeFilter";
 import { useFilterSearch } from "../../lib/hooks/useLineItemsFilter";
 import { Button } from "../ui/button";
+import { ReportTypeFilter } from "./report-type-filter";
+import { FilterRadioContainer } from "./base-filter/FilterRadioContainer";
+import { OptionItem } from "./base-filter/interfaces";
+import { FlagsFilter } from "./flags-filter";
+import { FilterContainer } from "./base-filter/FilterContainer";
 
 interface LineItemsFilterProps {
     isInModal?: boolean;
@@ -34,6 +39,12 @@ export function LineItemsFilter({ isInModal = false }: LineItemsFilterProps) {
         setMaxAmount,
         selectedAccountTypeOptions,
         setSelectedAccountTypeOptions,
+        reportType,
+        setReportType,
+        isMainCreditor,
+        setIsMainCreditor,
+        isUat,
+        setIsUat,
     } = useFilterSearch();
 
     const clearAllFilters = () => {
@@ -45,6 +56,9 @@ export function LineItemsFilter({ isInModal = false }: LineItemsFilterProps) {
         setMinAmount('');
         setMaxAmount('');
         setSelectedAccountTypeOptions([]);
+        setReportType(undefined);
+        setIsMainCreditor(undefined);
+        setIsUat(undefined);
     };
 
     const totalSelectedFilters =
@@ -57,7 +71,35 @@ export function LineItemsFilter({ isInModal = false }: LineItemsFilterProps) {
             selectedAccountTypeOptions,
         ].reduce((count, options) => count + options.length, 0) +
         (minAmount !== undefined && minAmount !== '' ? 1 : 0) +
-        (maxAmount !== undefined && maxAmount !== '' ? 1 : 0);
+        (maxAmount !== undefined && maxAmount !== '' ? 1 : 0) +
+        (reportType ? 1 : 0) +
+        (isMainCreditor !== undefined ? 1 : 0) +
+        (isUat !== undefined ? 1 : 0);
+
+    const reportTypeOption: OptionItem | null = reportType ? { id: reportType, label: reportType } : null;
+    
+    const flagsOptions: OptionItem[] = [];
+    if (isMainCreditor === true) flagsOptions.push({ id: 'isMainCreditor', label: 'Ordonator principal: Da' });
+    if (isMainCreditor === false) flagsOptions.push({ id: 'isMainCreditor', label: 'Ordonator principal: Nu' });
+    if (isUat === true) flagsOptions.push({ id: 'isUat', label: 'UAT: Da' });
+    if (isUat === false) flagsOptions.push({ id: 'isUat', label: 'UAT: Nu' });
+    
+    const handleClearReportType = () => {
+        setReportType(undefined);
+    }
+
+    const handleClearFlag = (option: OptionItem) => {
+        if (option.id === 'isMainCreditor') {
+            setIsMainCreditor(undefined);
+        } else if (option.id === 'isUat') {
+            setIsUat(undefined);
+        }
+    }
+
+    const handleClearAllFlags = () => {
+        setIsMainCreditor(undefined);
+        setIsUat(undefined);
+    }
 
     return (
         <Card className={`flex flex-col w-full ${isInModal ? 'shadow-none border-none h-full' : 'min-h-full shadow-lg'}`}>
@@ -74,7 +116,6 @@ export function LineItemsFilter({ isInModal = false }: LineItemsFilterProps) {
                     </div>
                 </CardHeader>
             )}
-            {/* Render clear all button inside modal if filters are active and it's in a modal */}
             {isInModal && totalSelectedFilters > 0 && (
                 <div className="p-4 border-b flex justify-end items-center">
                      <Button variant="ghost" size="sm" onClick={clearAllFilters} className="text-sm">
@@ -129,6 +170,23 @@ export function LineItemsFilter({ isInModal = false }: LineItemsFilterProps) {
                     maxValue={maxAmount}
                     onMaxValueChange={setMaxAmount}
                 />
+                <FilterRadioContainer
+                    title="Tip Raport"
+                    icon={<ArrowUpDown className="w-4 h-4" />}
+                    selectedOption={reportTypeOption}
+                    onClear={handleClearReportType}
+                >
+                    <ReportTypeFilter />
+                </FilterRadioContainer>
+                <FilterContainer
+                    title="Flags"
+                    icon={<ArrowUpDown className="w-4 h-4" />}
+                    selectedOptions={flagsOptions}
+                    onClearOption={handleClearFlag}
+                    onClearAll={handleClearAllFlags}
+                >
+                    <FlagsFilter />
+                </FilterContainer>
                 <FilterListContainer
                     title="Venituri/Cheltuieli"
                     icon={<ArrowUpDown className="w-4 h-4" />}

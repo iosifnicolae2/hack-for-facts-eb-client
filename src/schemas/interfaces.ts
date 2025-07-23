@@ -1,6 +1,7 @@
 export type LineItemsFilter = {
   report_id?: string;
   report_ids?: string[];
+  report_type?: string;
   entity_cuis?: string[];
   funding_source_id?: number;
   functional_codes?: string[];
@@ -16,6 +17,8 @@ export type LineItemsFilter = {
   start_year?: number;
   end_year?: number;
   search?: string;
+  is_main_creditor?: boolean;
+  is_uat?: boolean;
   page?: number;
   pageSize?: number;
 };

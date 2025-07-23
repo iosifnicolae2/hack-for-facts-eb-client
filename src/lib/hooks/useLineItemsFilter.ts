@@ -33,6 +33,9 @@ const InternalFiltersObjectSchema = z.object({
     minAmount: z.string().optional(),
     maxAmount: z.string().optional(),
     accountTypes: z.array(GenericOptionItemSchema).optional().default([]),
+    reportType: z.string().optional(),
+    isMainCreditor: z.boolean().optional(),
+    isUat: z.boolean().optional(),
     page: z.number().optional().default(1),
     pageSize: z.number().optional().default(25),
     sort: z.object({
@@ -59,6 +62,9 @@ interface FilterStoreActions {
     setPage: (updater: number | ((prev: number) => number)) => void;
     setPageSize: (updater: number | ((prev: number) => number)) => void;
     setSort: (updater: SortOrder | ((prev: SortOrder) => SortOrder)) => void;
+    setReportType: (updater: string | undefined | ((prev: string | undefined) => string | undefined)) => void;
+    setIsMainCreditor: (updater: boolean | undefined | ((prev: boolean | undefined) => boolean | undefined)) => void;
+    setIsUat: (updater: boolean | undefined | ((prev: boolean | undefined) => boolean | undefined)) => void;
     resetFilters: () => void;
 }
 
@@ -164,6 +170,15 @@ export const useLineItemsFilterStore = create<FilterStore>()(
             setSort: (updater) => set(state => ({
                 sort: typeof updater === 'function' ? updater(state.sort) : updater,
             })),
+            setReportType: (updater) => set(state => ({
+                reportType: typeof updater === 'function' ? updater(state.reportType) : updater,
+            })),
+            setIsMainCreditor: (updater) => set(state => ({
+                isMainCreditor: typeof updater === 'function' ? updater(state.isMainCreditor) : updater,
+            })),
+            setIsUat: (updater) => set(state => ({
+                isUat: typeof updater === 'function' ? updater(state.isUat) : updater,
+            })),
             resetFilters: () => set(defaultInternalFiltersState),
         }),
         {
@@ -186,6 +201,9 @@ export const useFilterSearch = () => {
         page,
         pageSize,
         sort,
+        reportType,
+        isMainCreditor,
+        isUat,
         setSort,
         setSelectedYears,
         setSelectedEntities,
@@ -197,6 +215,9 @@ export const useFilterSearch = () => {
         setSelectedAccountTypes,
         setPage,
         setPageSize,
+        setReportType,
+        setIsMainCreditor,
+        setIsUat,
     } = useLineItemsFilterStore();
 
     const filter = useMemo((): LineItemsFilter => ({
@@ -208,7 +229,10 @@ export const useFilterSearch = () => {
         years: years.map(year => year.id),
         min_amount: minAmount ? Number(minAmount) : undefined,
         max_amount: maxAmount ? Number(maxAmount) : undefined,
-    }), [entities, functionalClassifications, economicClassifications, accountTypes, uats, years, minAmount, maxAmount]);
+        report_type: reportType,
+        is_main_creditor: isMainCreditor,
+        is_uat: isUat,
+    }), [entities, functionalClassifications, economicClassifications, accountTypes, uats, years, minAmount, maxAmount, reportType, isMainCreditor, isUat]);
 
     const filterHash = useMemo(() => {
         return generateHash(JSON.stringify(filter));
@@ -227,6 +251,9 @@ export const useFilterSearch = () => {
         page,
         pageSize,
         sort,
+        reportType,
+        isMainCreditor,
+        isUat,
 
         // Setters (actions)
         setSelectedYearOptions: setSelectedYears as OptionSetter,
@@ -240,6 +267,9 @@ export const useFilterSearch = () => {
         setPage,
         setPageSize,
         setSort,
+        setReportType,
+        setIsMainCreditor,
+        setIsUat,
 
         filter,
         filterHash,
