@@ -17,6 +17,7 @@ import { OptionItem } from "./base-filter/interfaces";
 import { FlagsFilter } from "./flags-filter";
 import { FilterContainer } from "./base-filter/FilterContainer";
 import { FilterPrefixContainer, PrefixFilter } from "./prefix-filter";
+import { EntityTypeList } from "./entity-type-filter/EntityTypeList";
 
 interface LineItemsFilterProps {
     isInModal?: boolean;
@@ -50,6 +51,8 @@ export function LineItemsFilter({ isInModal = false }: LineItemsFilterProps) {
         setFunctionalPrefix,
         economicPrefix,
         setEconomicPrefix,
+        selectedEntityTypeOptions,
+        setSelectedEntityTypeOptions,
     } = useFilterSearch();
 
     const clearAllFilters = () => {
@@ -66,6 +69,7 @@ export function LineItemsFilter({ isInModal = false }: LineItemsFilterProps) {
         setIsUat(undefined);
         setFunctionalPrefix(undefined);
         setEconomicPrefix(undefined);
+        setSelectedEntityTypeOptions([]);
     };
 
     const totalSelectedFilters =
@@ -76,6 +80,7 @@ export function LineItemsFilter({ isInModal = false }: LineItemsFilterProps) {
             selectedEconomicClassificationOptions,
             selectedFunctionalClassificationOptions,
             selectedAccountTypeOptions,
+            selectedEntityTypeOptions,
         ].reduce((count, options) => count + options.length, 0) +
         (minAmount !== undefined && minAmount !== '' ? 1 : 0) +
         (maxAmount !== undefined && maxAmount !== '' ? 1 : 0) +
@@ -140,6 +145,13 @@ export function LineItemsFilter({ isInModal = false }: LineItemsFilterProps) {
                     listComponent={EntityList}
                     selected={selectedEntityOptions}
                     setSelected={setSelectedEntityOptions}
+                />
+                 <FilterListContainer
+                    title="Tip Entitate"
+                    icon={<Building2 className="w-4 h-4" />}
+                    listComponent={EntityTypeList}
+                    selected={selectedEntityTypeOptions}
+                    setSelected={setSelectedEntityTypeOptions}
                 />
                 <FilterListContainer
                     title="Unitati Administrativ Teritoriale (UAT)"

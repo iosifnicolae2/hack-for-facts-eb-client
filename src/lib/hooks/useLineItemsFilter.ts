@@ -38,6 +38,7 @@ const InternalFiltersObjectSchema = z.object({
     isUat: z.boolean().optional(),
     functionalPrefix: z.string().optional(),
     economicPrefix: z.string().optional(),
+    entityTypes: z.array(GenericOptionItemSchema).optional().default([]),
     page: z.number().optional().default(1),
     pageSize: z.number().optional().default(25),
     sort: z.object({
@@ -69,6 +70,7 @@ interface FilterStoreActions {
     setIsUat: (updater: boolean | undefined | ((prev: boolean | undefined) => boolean | undefined)) => void;
     setFunctionalPrefix: (updater: string | undefined | ((prev: string | undefined) => string | undefined)) => void;
     setEconomicPrefix: (updater: string | undefined | ((prev: string | undefined) => string | undefined)) => void;
+    setSelectedEntityTypes: (updater: GenericOptionItem[] | ((prev: GenericOptionItem[]) => GenericOptionItem[])) => void;
     resetFilters: () => void;
 }
 
@@ -189,6 +191,9 @@ export const useLineItemsFilterStore = create<FilterStore>()(
             setEconomicPrefix: (updater) => set(state => ({
                 economicPrefix: typeof updater === 'function' ? updater(state.economicPrefix) : updater,
             })),
+            setSelectedEntityTypes: (updater) => set(state => ({
+                entityTypes: typeof updater === 'function' ? updater(state.entityTypes) : updater,
+            })),
             resetFilters: () => set(defaultInternalFiltersState),
         }),
         {
@@ -216,6 +221,7 @@ export const useFilterSearch = () => {
         isUat,
         functionalPrefix,
         economicPrefix,
+        entityTypes,
         setSort,
         setSelectedYears,
         setSelectedEntities,
@@ -232,6 +238,7 @@ export const useFilterSearch = () => {
         setIsUat,
         setFunctionalPrefix,
         setEconomicPrefix,
+        setSelectedEntityTypes,
     } = useLineItemsFilterStore();
 
     const filter = useMemo((): LineItemsFilter => ({
@@ -248,7 +255,8 @@ export const useFilterSearch = () => {
         is_uat: isUat,
         functional_prefixes: functionalPrefix ? [functionalPrefix] : undefined,
         economic_prefixes: economicPrefix ? [economicPrefix] : undefined,
-    }), [entities, functionalClassifications, economicClassifications, accountTypes, uats, years, minAmount, maxAmount, reportType, isMainCreditor, isUat, functionalPrefix, economicPrefix]);
+        entity_types: entityTypes.map(et => et.id),
+    }), [entities, functionalClassifications, economicClassifications, accountTypes, uats, years, minAmount, maxAmount, reportType, isMainCreditor, isUat, functionalPrefix, economicPrefix, entityTypes]);
 
     const filterHash = useMemo(() => {
         return generateHash(JSON.stringify(filter));
@@ -272,6 +280,7 @@ export const useFilterSearch = () => {
         isUat,
         functionalPrefix,
         economicPrefix,
+        selectedEntityTypeOptions: entityTypes as OptionItem[],
 
         // Setters (actions)
         setSelectedYearOptions: setSelectedYears as OptionSetter,
@@ -290,6 +299,7 @@ export const useFilterSearch = () => {
         setIsUat,
         setFunctionalPrefix,
         setEconomicPrefix,
+        setSelectedEntityTypeOptions: setSelectedEntityTypes as OptionSetter,
 
         filter,
         filterHash,

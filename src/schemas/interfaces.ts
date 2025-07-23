@@ -23,6 +23,7 @@ export type LineItemsFilter = {
   pageSize?: number;
   functional_prefixes?: string[];
   economic_prefixes?: string[];
+  entity_types?: string[];
 };
 
 export interface SortOrder {

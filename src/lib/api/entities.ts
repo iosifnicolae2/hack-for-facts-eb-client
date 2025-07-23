@@ -26,6 +26,7 @@ export interface EntityDetailsData {
   cui: string;
   name: string;
   address?: string | null;
+  entity_type?: string | null;
   uat?: {
     county_name?: string | null;
     name?: string | null;
@@ -72,6 +73,7 @@ const GET_ENTITY_DETAILS_QUERY = `
       cui
       name
       address
+      entity_type
       uat {
         county_name
         name
