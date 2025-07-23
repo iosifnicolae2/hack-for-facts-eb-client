@@ -1,5 +1,5 @@
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
-import { EntitySearchInput } from "@/components/entities/EntitySearchInput";
+import { EntitySearchInput } from "@/components/entities/EntitySearch";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
@@ -8,13 +8,6 @@ export const Route = createLazyFileRoute("/")({
 function Index() {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-slate-50 to-slate-200 dark:from-slate-900 dark:to-slate-800">
-      {/* Optional: Navbar placeholder */}
-      {/* <header className="p-4">
-        <nav className="container mx-auto flex justify-between items-center">
-          <span className="text-xl font-bold text-slate-700 dark:text-slate-200">Graph Gurus</span>
-          <div> Nav links </div> 
-        </nav>
-      </header> */}
 
       <main className="flex-grow flex items-start justify-center p-4">
         <div className="container mx-auto flex flex-col items-center text-center space-y-10 py-16 md:py-24">
@@ -46,11 +39,6 @@ function Index() {
 
         </div>
       </main>
-
-      {/* Optional: Footer placeholder */}
-      {/* <footer className="p-4 text-center text-sm text-slate-500 dark:text-slate-400">
-        © {new Date().getFullYear()} Graph Gurus. All rights reserved.
-      </footer> */}
     </div>
   );
 }

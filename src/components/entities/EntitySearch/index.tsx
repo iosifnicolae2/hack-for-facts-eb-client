@@ -1,0 +1,124 @@
+import { useRef } from "react";
+import { cn } from "@/lib/utils";
+import { Search, X, Loader2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { EntitySearchSchema } from "@/routes/entities.$cui";
+import { useEntitySearch } from "./useEntitySearch";
+import { SearchResultItem } from "./SearchResultItems";
+import { EntitySearchNode } from "@/schemas/entities";
+
+interface EntitySearchInputProps {
+    className?: string;
+    placeholder?: string;
+    baseSearch?: EntitySearchSchema;
+    onSelect?: (entity: EntitySearchNode) => void;
+}
+
+export function EntitySearchInput({
+    className,
+    placeholder = "Search entities by name or CUI...",
+    baseSearch,
+    onSelect,
+}: EntitySearchInputProps) {
+    const {
+        searchTerm,
+        setSearchTerm,
+        results,
+        isLoading,
+        isError,
+        isDropdownOpen,
+        openDropdown,
+        closeDropdown,
+        activeIndex,
+        handleClearSearch,
+        handleSelection,
+        handleKeyDown,
+        debouncedSearchTerm,
+        id: searchId,
+    } = useEntitySearch({ onSelect, baseSearch });
+
+    const containerRef = useRef<HTMLDivElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    const showDropdown = isDropdownOpen && debouncedSearchTerm.trim().length > 2;
+    const activeDescendantId = activeIndex > -1 ? `${searchId}-result-${activeIndex}` : undefined;
+
+    return (
+        <div
+            ref={containerRef}
+            className={cn("relative w-full max-w-3xl mx-auto", className)}
+            // When focus leaves the component, close the dropdown
+            onBlur={(e) => {
+                if (!containerRef.current?.contains(e.relatedTarget)) {
+                    closeDropdown();
+                }
+            }}
+        >
+            <div className="relative">
+                <Search className="absolute left-7 top-1/2 h-8 w-8 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                <Input
+                    ref={inputRef}
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onFocus={openDropdown}
+                    onKeyDown={handleKeyDown}
+                    placeholder={placeholder}
+                    // ARIA attributes for accessibility
+                    role="combobox"
+                    aria-label={placeholder}
+                    aria-autocomplete="list"
+                    aria-expanded={showDropdown}
+                    aria-controls={`${searchId}-listbox`}
+                    aria-activedescendant={activeDescendantId}
+                    className="w-full pl-20 pr-20 py-7 text-xl md:text-xl bg-white dark:bg-slate-800 rounded-3xl placeholder:text-slate-400 shadow-lg hover:shadow-xl focus:shadow-2xl focus:ring-2 focus:ring-primary-focus focus:outline-none transition-all duration-300"
+                />
+                {searchTerm && (
+                    <button
+                        type="button"
+                        onClick={() => {
+                            handleClearSearch();
+                            inputRef.current?.focus();
+                        }}
+                        className="absolute right-7 top-1/2 -translate-y-1/2 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+                        aria-label="Clear search"
+                    >
+                        <X className="h-8 w-8" />
+                    </button>
+                )}
+            </div>
+
+            {showDropdown && (
+                <div className="absolute z-20 mt-3 w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xl rounded-3xl max-h-[65vh] overflow-y-auto">
+                    {isLoading ? (
+                        <div className="p-6 flex items-center justify-center text-slate-500 dark:text-slate-400">
+                            <Loader2 className="h-7 w-7 animate-spin mr-4" />
+                            <span className="text-xl">Searching...</span>
+                        </div>
+                    ) : isError ? (
+                        <div className="p-6 text-xl text-red-500 text-center">
+                            Error fetching results. Please try again.
+                        </div>
+                    ) : results.length > 0 ? (
+                        <ul id={`${searchId}-listbox`} role="listbox" className="py-2 divide-y divide-slate-100 dark:divide-slate-700">
+                            {results.map((entity, index) => (
+                                <SearchResultItem
+                                    key={entity.cui}
+                                    id={`${searchId}-result-${index}`}
+                                    entity={entity}
+                                    isActive={activeIndex === index}
+                                    baseSearch={baseSearch}
+                                    onClick={() => handleSelection(index)}
+                                />
+                            ))}
+                        </ul>
+                    ) : (
+                        <div className="p-6 text-xl text-slate-500 dark:text-slate-400 text-center">
+                            No entities found for "<strong>{debouncedSearchTerm}</strong>".
+                        </div>
+                    )}
+                </div>
+            )}
+        </div>
+    );
+}

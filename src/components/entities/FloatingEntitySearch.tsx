@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogClose, DialogContent, DialogTitle } from '@/components/ui/dialog';
-import { EntitySearchInput } from './EntitySearchInput';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { EntitySearchInput } from './EntitySearch';
 import { cn } from '@/lib/utils';
 import { EntitySearchSchema } from '@/routes/entities.$cui';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 interface FloatingEntitySearchProps {
     baseSearch?: EntitySearchSchema;
@@ -15,6 +16,18 @@ interface FloatingEntitySearchProps {
 export function FloatingEntitySearch({ baseSearch, className }: FloatingEntitySearchProps) {
     const [isOpen, setIsOpen] = useState(false);
     const isMobile = useIsMobile();
+
+    // Use keyboard shortcuts to open and close the dialog react-hotkeys-hook
+    useHotkeys('/', (e) => {
+        e.preventDefault();
+        setIsOpen(true)
+    });
+    useHotkeys('esc', () => setIsOpen(false));
+
+    const handleSelect = () => {
+        console.log('handleSelect');
+        setIsOpen(false);
+    };
 
     return (
         <>
@@ -35,7 +48,7 @@ export function FloatingEntitySearch({ baseSearch, className }: FloatingEntitySe
                 <DialogContent hideCloseButton={true} className="fixed bottom-8 right-8 max-w-3xl w-full p-0 bg-transparent border-0 shadow-none outline-none focus:outline-none">
                     <EntitySearchInput
                         baseSearch={baseSearch}
-                        onResultClick={() => setIsOpen(false)}
+                        onSelect={handleSelect}
                     />
                 </DialogContent>
             </Dialog>
