@@ -180,6 +180,7 @@ const ENTITY_SEARCH_QUERY = `
         cui
         uat {
           county_name
+          name
         }
       }
       # If your API returns pagination info for search, you can include it here

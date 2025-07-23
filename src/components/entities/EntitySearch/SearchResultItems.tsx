@@ -43,7 +43,7 @@ export const SearchResultItem = forwardRef<HTMLAnchorElement, SearchResultItemPr
                         {entity.uat?.county_name && (
                             <div className="mt-0.5 flex items-center text-xs text-slate-400 dark:text-slate-500">
                                 <MapPin className="h-3.5 w-3.5 mr-1.5 flex-shrink-0" />
-                                {entity.uat.county_name}
+                                {entity.uat.name} (Jud. {entity.uat.county_name})
                             </div>
                         )}
                     </div>

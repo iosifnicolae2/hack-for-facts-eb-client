@@ -3,6 +3,7 @@ export interface EntitySearchNode {
   name: string;
   uat?: {
     county_name?: string | null;
+    name?: string | null;
   } | null;
 }
 

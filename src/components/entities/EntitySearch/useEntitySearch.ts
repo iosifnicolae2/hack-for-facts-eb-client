@@ -26,7 +26,7 @@ export function useEntitySearch({ debounceMs = 500, onSelect, baseSearch }: UseE
         isError,
     } = useQuery<EntitySearchNode[], Error>({
         queryKey: ["entitySearch", debouncedSearchTerm],
-        queryFn: () => searchEntities(debouncedSearchTerm, 10),
+        queryFn: () => searchEntities(debouncedSearchTerm, 8),
         enabled: !!debouncedSearchTerm && debouncedSearchTerm.trim().length > 2,
     });
 

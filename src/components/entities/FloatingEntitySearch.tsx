@@ -18,9 +18,11 @@ export function FloatingEntitySearch({ baseSearch, className }: FloatingEntitySe
     const isMobile = useIsMobile();
 
     // Use keyboard shortcuts to open and close the dialog react-hotkeys-hook
-    useHotkeys('/', (e) => {
+    useHotkeys('ctrl+k', (e) => {
         e.preventDefault();
         setIsOpen(true)
+    }, {
+        enableOnFormTags: ['INPUT', 'TEXTAREA', 'SELECT'],
     });
     useHotkeys('esc', () => setIsOpen(false));
 
