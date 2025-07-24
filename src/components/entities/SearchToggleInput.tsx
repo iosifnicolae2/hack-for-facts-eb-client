@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X } from "lucide-react";
+import { useHotkeys } from "react-hotkeys-hook";
 
 interface SearchToggleInputProps {
   active: boolean;
@@ -10,6 +11,7 @@ interface SearchToggleInputProps {
   onChange: (value: string) => void;
   placeholder?: string;
   width?: number; // target width in px
+  focusKey?: string;
 }
 
 export const SearchToggleInput: React.FC<SearchToggleInputProps> = ({
@@ -19,8 +21,17 @@ export const SearchToggleInput: React.FC<SearchToggleInputProps> = ({
   onChange,
   placeholder = "Search...",
   width = 160,
+  focusKey = '',
 }) => {
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  const inputRef = useRef<HTMLInputElement>(null);
+  // Focus search using hotkeys
+  useHotkeys(focusKey, () => {
+    onToggle(true);
+    inputRef.current?.focus();
+  }, {
+    enableOnFormTags: ['INPUT', 'TEXTAREA', 'SELECT'],
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -45,6 +56,7 @@ export const SearchToggleInput: React.FC<SearchToggleInputProps> = ({
           className="flex items-center overflow-hidden space-x-1"
         >
           <Input
+            ref={inputRef}
             value={searchTerm}
             onChange={handleChange}
             placeholder={placeholder}

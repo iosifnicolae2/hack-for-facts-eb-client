@@ -6,12 +6,14 @@ import { EntitySearchSchema } from "@/routes/entities.$cui";
 import { useEntitySearch } from "./useEntitySearch";
 import { SearchResultItem } from "./SearchResultItems";
 import { EntitySearchNode } from "@/schemas/entities";
+import { useHotkeys } from "react-hotkeys-hook";
 
 interface EntitySearchInputProps {
     className?: string;
     placeholder?: string;
     baseSearch?: EntitySearchSchema;
     onSelect?: (entity: EntitySearchNode) => void;
+    autoFocus?: boolean;
 }
 
 export function EntitySearchInput({
@@ -19,6 +21,7 @@ export function EntitySearchInput({
     placeholder = "Search entities by name or CUI...",
     baseSearch,
     onSelect,
+    autoFocus,
 }: EntitySearchInputProps) {
     const {
         searchTerm,
@@ -39,6 +42,11 @@ export function EntitySearchInput({
 
     const containerRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
+
+    useHotkeys("mod+k", (e) => {
+        e.preventDefault();
+        inputRef.current?.focus();
+    });
 
     const showDropdown = isDropdownOpen && debouncedSearchTerm.trim().length > 2;
     const activeDescendantId = activeIndex > -1 ? `${searchId}-result-${activeIndex}` : undefined;
@@ -64,6 +72,7 @@ export function EntitySearchInput({
                     onFocus={openDropdown}
                     onKeyDown={handleKeyDown}
                     placeholder={placeholder}
+                    autoFocus={autoFocus}
                     // ARIA attributes for accessibility
                     role="combobox"
                     aria-label={placeholder}

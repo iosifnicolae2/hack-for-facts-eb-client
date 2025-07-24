@@ -19,10 +19,11 @@ interface GroupedItemsDisplayProps {
   baseTotal: number;
   searchTerm: string;
   currentYear: number;
+  showTotalValueHeader?: boolean;
 }
 
 const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.memo(
-  ({ groups, title, baseTotal, searchTerm, currentYear }) => {
+  ({ groups, title, baseTotal, searchTerm, currentYear, showTotalValueHeader = false }) => {
 
     const { totalValueFiltered, totalPercentageFiltered } = React.useMemo(() => {
       const totalValue = groups.reduce(
@@ -58,12 +59,31 @@ const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.memo(
 
     const openChapters = searchTerm ? groups.map((ch) => ch.prefix) : [];
 
+    const TotalValueComponent = () => (
+      <div className="flex flex-col">
+        <p className='flex justify-end items-center m-4 mb-0 font-semibold'>
+          Total:{" "}
+          {formatCurrency(totalValueFiltered, "standard")}
+          {totalPercentageFiltered > 0 && totalPercentageFiltered <= 99.99 && (
+            <span className="pl-2 text-sm text-muted-foreground">
+              ({formatNumberRO(totalPercentageFiltered)}%)
+            </span>
+          )}
+        </p>
+        <p className="text-sm text-muted-foreground text-right m-4 mt-0">
+          {formatCurrency(totalValueFiltered, "compact")}
+        </p>
+      </div>
+    )
+
     return (
       <Accordion
         type="multiple"
         className="w-full"
         {...(searchTerm ? { value: openChapters } : {})}
       >
+        {/* TODO: Find better design?? */}
+        {showTotalValueHeader && <TotalValueComponent />}
         {groups.map((ch) => (
           <GroupedChapterAccordion
             key={ch.prefix}
@@ -72,20 +92,7 @@ const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.memo(
             searchTerm={searchTerm}
           />
         ))}
-        <div className="flex flex-col">
-          <p className='flex justify-end items-center m-4 mb-0 font-semibold'>
-            Total:{" "}
-            {formatCurrency(totalValueFiltered, "standard")}
-            {totalPercentageFiltered > 0 && totalPercentageFiltered <= 99.99 && (
-              <span className="pl-2 text-sm text-muted-foreground">
-                ({formatNumberRO(totalPercentageFiltered)}%)
-              </span>
-            )}
-          </p>
-          <p className="text-sm text-muted-foreground text-right m-4 mt-0">
-            {formatCurrency(totalValueFiltered, "compact")}
-          </p>
-        </div>
+        <TotalValueComponent />
       </Accordion>
     );
   }
@@ -105,6 +112,7 @@ interface FinancialDataCardProps {
   onSearchToggle: (active: boolean) => void;
   groups: GroupedChapter[];
   baseTotal: number;
+  searchFocusKey?: string;
 }
 
 export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
@@ -119,6 +127,7 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
   onSearchToggle,
   groups,
   baseTotal,
+  searchFocusKey,
 }) => {
   const Icon = iconType === 'income' ? ArrowUpCircle : ArrowDownCircle;
   const iconColor = iconType === 'income' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400';
@@ -151,6 +160,7 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
           initialSearchTerm={searchTerm}
           onToggle={onSearchToggle}
           onChange={onSearchChange}
+          focusKey={searchFocusKey}
         />
       </CardHeader>
       <CardContent className="flex-grow">
@@ -160,6 +170,7 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
           baseTotal={baseTotal}
           searchTerm={searchTerm}
           currentYear={currentYear}
+          showTotalValueHeader={!!searchActive}
         />
       </CardContent>
     </Card>

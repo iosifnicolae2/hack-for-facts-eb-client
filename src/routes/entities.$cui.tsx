@@ -9,10 +9,11 @@ import { EntityFinancialTrends } from '@/components/entities/EntityFinancialTren
 import { EntityLineItems } from '@/components/entities/EntityLineItems';
 import { EntityReports } from '@/components/entities/EntityReports';
 import { LineItemsAnalytics } from '@/components/entities/LineItemsAnalytics';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { FloatingEntitySearch } from '@/components/entities/FloatingEntitySearch';
 import { entitySearchSchema } from '@/components/entities/validation';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 
 export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
@@ -26,6 +27,14 @@ function EntityDetailsPage() {
     const { cui } = useParams({ from: Route.id });
     const search = useSearch({ from: Route.id }); // TODO: the state is out of sync with the internal state. Improve the state management. Make it atomic.
     const navigate = useNavigate({ from: Route.id });
+    const yearSelectorRef = useRef<HTMLButtonElement>(null);
+
+    // Shortcuts key to focus year selection
+    useHotkeys('mod+;', () => {
+        yearSelectorRef.current?.click();
+    }, {
+        enableOnFormTags: ['INPUT', 'TEXTAREA', 'SELECT'],
+    });
 
     // Year selection setup
     const CURRENT_YEAR = 2024; // hardcoded as requested
@@ -149,7 +158,7 @@ function EntityDetailsPage() {
                         <div className="flex items-center gap-2">
                             <span className="text-sm font-medium text-slate-700 dark:text-slate-300 hidden sm:inline">Reporting Year</span>
                             <Select value={selectedYear.toString()} onValueChange={(val) => handleYearChange(parseInt(val, 10))}>
-                                <SelectTrigger className="w-[110px]">
+                                <SelectTrigger ref={yearSelectorRef} className="w-[110px]">
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>

@@ -87,6 +87,7 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
         onSearchToggle={onExpenseSearchToggle}
         groups={filteredExpenseGroups}
         baseTotal={expenseBase}
+        searchFocusKey="mod+j"
       />
       <FinancialDataCard
         title="Incomes"
@@ -100,6 +101,7 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
         onSearchToggle={onIncomeSearchToggle}
         groups={filteredIncomeGroups}
         baseTotal={incomeBase}
+        searchFocusKey="mod+l"
       />
     </section>
   );
