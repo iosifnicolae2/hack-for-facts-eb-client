@@ -17,10 +17,13 @@ export function FloatingEntitySearch({ baseSearch, className }: FloatingEntitySe
     const [isOpen, setIsOpen] = useState(false);
     const isMobile = useIsMobile();
 
+    const toggleSearchOpen = () => {
+        setIsOpen(!isOpen);
+    };
     // Use keyboard shortcuts to open and close the dialog react-hotkeys-hook
     useHotkeys('mod+k', (e) => {
         e.preventDefault();
-        setIsOpen(true)
+        toggleSearchOpen();
     }, {
         enableOnFormTags: ['INPUT', 'TEXTAREA', 'SELECT'],
     });
@@ -48,7 +51,7 @@ export function FloatingEntitySearch({ baseSearch, className }: FloatingEntitySe
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <DialogOverlay className="bg-slate-500/80" />
                 <DialogTitle className="sr-only">Search for another entity</DialogTitle>
-                <DialogContent hideCloseButton={true} className="fixed bottom-8 right-8 max-w-3xl w-full p-0 bg-transparent border-0 shadow-none outline-none focus:outline-none">
+                <DialogContent hideCloseButton={true} className="fixed top-1/3 max-w-3xl w-full p-0 bg-transparent border-0 shadow-none outline-none focus:outline-none">
                     <EntitySearchInput
                         baseSearch={baseSearch}
                         onSelect={handleSelect}
