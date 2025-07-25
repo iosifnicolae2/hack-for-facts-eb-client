@@ -20,8 +20,14 @@ import { Route as EntitiesCuiImport } from './routes/entities.$cui'
 const MapLazyImport = createFileRoute('/map')()
 const IndexLazyImport = createFileRoute('/')()
 const DataDiscoveryIndexLazyImport = createFileRoute('/data-discovery/')()
+const ChartsIndexLazyImport = createFileRoute('/charts/')()
 const AnomaliesIndexLazyImport = createFileRoute('/anomalies/')()
+const ChartsNewLazyImport = createFileRoute('/charts/new')()
 const AnomaliesAnomalyIdLazyImport = createFileRoute('/anomalies/$anomalyId')()
+const ChartsChartIdIndexLazyImport = createFileRoute('/charts/$chartId/')()
+const ChartsChartIdConfigLazyImport = createFileRoute(
+  '/charts/$chartId/config',
+)()
 
 // Create/Update Routes
 
@@ -45,6 +51,12 @@ const DataDiscoveryIndexLazyRoute = DataDiscoveryIndexLazyImport.update({
   import('./routes/data-discovery/index.lazy').then((d) => d.Route),
 )
 
+const ChartsIndexLazyRoute = ChartsIndexLazyImport.update({
+  id: '/charts/',
+  path: '/charts/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/charts/index.lazy').then((d) => d.Route))
+
 const AnomaliesIndexLazyRoute = AnomaliesIndexLazyImport.update({
   id: '/anomalies/',
   path: '/anomalies/',
@@ -52,6 +64,12 @@ const AnomaliesIndexLazyRoute = AnomaliesIndexLazyImport.update({
 } as any).lazy(() =>
   import('./routes/anomalies/index.lazy').then((d) => d.Route),
 )
+
+const ChartsNewLazyRoute = ChartsNewLazyImport.update({
+  id: '/charts/new',
+  path: '/charts/new',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/charts/new.lazy').then((d) => d.Route))
 
 const AnomaliesAnomalyIdLazyRoute = AnomaliesAnomalyIdLazyImport.update({
   id: '/anomalies/$anomalyId',
@@ -66,6 +84,22 @@ const EntitiesCuiRoute = EntitiesCuiImport.update({
   path: '/entities/$cui',
   getParentRoute: () => rootRoute,
 } as any)
+
+const ChartsChartIdIndexLazyRoute = ChartsChartIdIndexLazyImport.update({
+  id: '/charts/$chartId/',
+  path: '/charts/$chartId/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/charts/$chartId/index.lazy').then((d) => d.Route),
+)
+
+const ChartsChartIdConfigLazyRoute = ChartsChartIdConfigLazyImport.update({
+  id: '/charts/$chartId/config',
+  path: '/charts/$chartId/config',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/charts/$chartId/config.lazy').then((d) => d.Route),
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -99,6 +133,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnomaliesAnomalyIdLazyImport
       parentRoute: typeof rootRoute
     }
+    '/charts/new': {
+      id: '/charts/new'
+      path: '/charts/new'
+      fullPath: '/charts/new'
+      preLoaderRoute: typeof ChartsNewLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/anomalies/': {
       id: '/anomalies/'
       path: '/anomalies'
@@ -106,11 +147,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnomaliesIndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/charts/': {
+      id: '/charts/'
+      path: '/charts'
+      fullPath: '/charts'
+      preLoaderRoute: typeof ChartsIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/data-discovery/': {
       id: '/data-discovery/'
       path: '/data-discovery'
       fullPath: '/data-discovery'
       preLoaderRoute: typeof DataDiscoveryIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/charts/$chartId/config': {
+      id: '/charts/$chartId/config'
+      path: '/charts/$chartId/config'
+      fullPath: '/charts/$chartId/config'
+      preLoaderRoute: typeof ChartsChartIdConfigLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/charts/$chartId/': {
+      id: '/charts/$chartId/'
+      path: '/charts/$chartId'
+      fullPath: '/charts/$chartId'
+      preLoaderRoute: typeof ChartsChartIdIndexLazyImport
       parentRoute: typeof rootRoute
     }
   }
@@ -123,8 +185,12 @@ export interface FileRoutesByFullPath {
   '/map': typeof MapLazyRoute
   '/entities/$cui': typeof EntitiesCuiRoute
   '/anomalies/$anomalyId': typeof AnomaliesAnomalyIdLazyRoute
+  '/charts/new': typeof ChartsNewLazyRoute
   '/anomalies': typeof AnomaliesIndexLazyRoute
+  '/charts': typeof ChartsIndexLazyRoute
   '/data-discovery': typeof DataDiscoveryIndexLazyRoute
+  '/charts/$chartId/config': typeof ChartsChartIdConfigLazyRoute
+  '/charts/$chartId': typeof ChartsChartIdIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
@@ -132,8 +198,12 @@ export interface FileRoutesByTo {
   '/map': typeof MapLazyRoute
   '/entities/$cui': typeof EntitiesCuiRoute
   '/anomalies/$anomalyId': typeof AnomaliesAnomalyIdLazyRoute
+  '/charts/new': typeof ChartsNewLazyRoute
   '/anomalies': typeof AnomaliesIndexLazyRoute
+  '/charts': typeof ChartsIndexLazyRoute
   '/data-discovery': typeof DataDiscoveryIndexLazyRoute
+  '/charts/$chartId/config': typeof ChartsChartIdConfigLazyRoute
+  '/charts/$chartId': typeof ChartsChartIdIndexLazyRoute
 }
 
 export interface FileRoutesById {
@@ -142,8 +212,12 @@ export interface FileRoutesById {
   '/map': typeof MapLazyRoute
   '/entities/$cui': typeof EntitiesCuiRoute
   '/anomalies/$anomalyId': typeof AnomaliesAnomalyIdLazyRoute
+  '/charts/new': typeof ChartsNewLazyRoute
   '/anomalies/': typeof AnomaliesIndexLazyRoute
+  '/charts/': typeof ChartsIndexLazyRoute
   '/data-discovery/': typeof DataDiscoveryIndexLazyRoute
+  '/charts/$chartId/config': typeof ChartsChartIdConfigLazyRoute
+  '/charts/$chartId/': typeof ChartsChartIdIndexLazyRoute
 }
 
 export interface FileRouteTypes {
@@ -153,24 +227,36 @@ export interface FileRouteTypes {
     | '/map'
     | '/entities/$cui'
     | '/anomalies/$anomalyId'
+    | '/charts/new'
     | '/anomalies'
+    | '/charts'
     | '/data-discovery'
+    | '/charts/$chartId/config'
+    | '/charts/$chartId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/map'
     | '/entities/$cui'
     | '/anomalies/$anomalyId'
+    | '/charts/new'
     | '/anomalies'
+    | '/charts'
     | '/data-discovery'
+    | '/charts/$chartId/config'
+    | '/charts/$chartId'
   id:
     | '__root__'
     | '/'
     | '/map'
     | '/entities/$cui'
     | '/anomalies/$anomalyId'
+    | '/charts/new'
     | '/anomalies/'
+    | '/charts/'
     | '/data-discovery/'
+    | '/charts/$chartId/config'
+    | '/charts/$chartId/'
   fileRoutesById: FileRoutesById
 }
 
@@ -179,8 +265,12 @@ export interface RootRouteChildren {
   MapLazyRoute: typeof MapLazyRoute
   EntitiesCuiRoute: typeof EntitiesCuiRoute
   AnomaliesAnomalyIdLazyRoute: typeof AnomaliesAnomalyIdLazyRoute
+  ChartsNewLazyRoute: typeof ChartsNewLazyRoute
   AnomaliesIndexLazyRoute: typeof AnomaliesIndexLazyRoute
+  ChartsIndexLazyRoute: typeof ChartsIndexLazyRoute
   DataDiscoveryIndexLazyRoute: typeof DataDiscoveryIndexLazyRoute
+  ChartsChartIdConfigLazyRoute: typeof ChartsChartIdConfigLazyRoute
+  ChartsChartIdIndexLazyRoute: typeof ChartsChartIdIndexLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -188,8 +278,12 @@ const rootRouteChildren: RootRouteChildren = {
   MapLazyRoute: MapLazyRoute,
   EntitiesCuiRoute: EntitiesCuiRoute,
   AnomaliesAnomalyIdLazyRoute: AnomaliesAnomalyIdLazyRoute,
+  ChartsNewLazyRoute: ChartsNewLazyRoute,
   AnomaliesIndexLazyRoute: AnomaliesIndexLazyRoute,
+  ChartsIndexLazyRoute: ChartsIndexLazyRoute,
   DataDiscoveryIndexLazyRoute: DataDiscoveryIndexLazyRoute,
+  ChartsChartIdConfigLazyRoute: ChartsChartIdConfigLazyRoute,
+  ChartsChartIdIndexLazyRoute: ChartsChartIdIndexLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -206,8 +300,12 @@ export const routeTree = rootRoute
         "/map",
         "/entities/$cui",
         "/anomalies/$anomalyId",
+        "/charts/new",
         "/anomalies/",
-        "/data-discovery/"
+        "/charts/",
+        "/data-discovery/",
+        "/charts/$chartId/config",
+        "/charts/$chartId/"
       ]
     },
     "/": {
@@ -222,11 +320,23 @@ export const routeTree = rootRoute
     "/anomalies/$anomalyId": {
       "filePath": "anomalies/$anomalyId.lazy.tsx"
     },
+    "/charts/new": {
+      "filePath": "charts/new.lazy.tsx"
+    },
     "/anomalies/": {
       "filePath": "anomalies/index.lazy.tsx"
     },
+    "/charts/": {
+      "filePath": "charts/index.lazy.tsx"
+    },
     "/data-discovery/": {
       "filePath": "data-discovery/index.lazy.tsx"
+    },
+    "/charts/$chartId/config": {
+      "filePath": "charts/$chartId/config.lazy.tsx"
+    },
+    "/charts/$chartId/": {
+      "filePath": "charts/$chartId/index.lazy.tsx"
     }
   }
 }
