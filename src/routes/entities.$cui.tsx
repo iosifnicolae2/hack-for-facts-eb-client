@@ -184,6 +184,7 @@ function EntityDetailsPage() {
                     balanceTrend={entity.balanceTrend}
                     mode={trendMode}
                     onModeChange={handleTrendModeChange}
+                    onYearChange={handleYearChange}
                 />
 
                 <EntityLineItems

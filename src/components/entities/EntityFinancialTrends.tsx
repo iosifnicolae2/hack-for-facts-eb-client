@@ -12,9 +12,10 @@ interface EntityFinancialTrendsProps {
   balanceTrend: EntityDetailsData['balanceTrend'];
   mode: 'absolute' | 'percent';
   onModeChange: (mode: 'absolute' | 'percent') => void;
+  onYearChange?: (year: number) => void;
 }
 
-export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ incomeTrend, expenseTrend, balanceTrend, mode, onModeChange }) => {
+export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ incomeTrend, expenseTrend, balanceTrend, mode, onModeChange, onYearChange }) => {
   const trendsAvailable = incomeTrend?.length || expenseTrend?.length || balanceTrend?.length;
 
   const mergedData = useMemo(() => {
@@ -83,13 +84,26 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
     return null;
   };
 
+  const handleChartClick = (e: { activeLabel?: string | undefined } | null) => {
+    if (!e || !e.activeLabel) return;
+
+    if (!onYearChange) return;
+
+    const year = Number(e.activeLabel);
+    const isValidYear = !isNaN(year) && year > 2000 && year <= new Date().getFullYear();
+
+    if (isValidYear) {
+      onYearChange(year);
+    }
+  };
+
   return (
     <Card>
       <CardHeader>
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 w-full">
           <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="h-6 w-6" />
-              <span>Evoluție Financiară</span>
+            <TrendingUp className="h-6 w-6" />
+            <span>Evoluție Financiară</span>
           </CardTitle>
           <Select value={mode} onValueChange={(val) => onModeChange(val as 'absolute' | 'percent')}>
             <SelectTrigger className="w-[160px] h-8 text-xs">
@@ -107,19 +121,21 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
           <p className="text-center text-slate-500 dark:text-slate-400 py-4">Nu sunt date disponibile pentru afișarea evoluției financiare.</p>
         ) : (
           <ResponsiveContainer width="100%" height={400}>
-            <AreaChart 
+            <AreaChart
               data={displayData}
               margin={{ top: 5, right: 20, left: 30, bottom: 5 }}
+              onClick={handleChartClick}
+              className="cursor-pointer"
             >
               <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
-              <XAxis 
-                dataKey="year" 
+              <XAxis
+                dataKey="year"
                 tick={{ fontSize: 12 }}
                 tickLine={false}
                 axisLine={false}
               />
-              <YAxis 
-                tickFormatter={mode === 'absolute' ? formatYAxis : formatPercent} 
+              <YAxis
+                tickFormatter={mode === 'absolute' ? formatYAxis : formatPercent}
                 tick={{ fontSize: 12 }}
                 tickLine={false}
                 axisLine={false}
