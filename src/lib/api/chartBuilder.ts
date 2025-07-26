@@ -1,5 +1,5 @@
 import { graphqlRequest } from './graphql';
-import { AnalyticsInput, Chart } from '@/schemas/chartBuilder';
+import { AnalyticsInput, Chart, ChartSchema } from '@/schemas/chartBuilder';
 
 export interface YearlyTrendPoint {
   year: number;
@@ -47,9 +47,12 @@ export interface StoredChart extends Chart {
   deleted?: boolean;
 }
 
-export const loadSavedCharts = ({ filterDeleted = false }: { filterDeleted?: boolean } = {}): StoredChart[] => {
+export const loadSavedCharts = ({ filterDeleted = false, validate = false }: { filterDeleted?: boolean, validate?: boolean } = {}): StoredChart[] => {
   const chartsRaw = localStorage.getItem(chartsKey);
-  const charts = chartsRaw ? JSON.parse(chartsRaw) : [];
+  if (!chartsRaw) {
+    return [];
+  }
+  const charts = JSON.parse(chartsRaw).filter((c: StoredChart) => validate ? ChartSchema.safeParse(c).success : true);
   if (!filterDeleted) {
     return charts;
   }
@@ -71,6 +74,11 @@ export const saveChartToLocalStorage = (chart: StoredChart) => {
   const savedCharts = loadSavedCharts();
   const hasChart = savedCharts.some((c) => c.id === chart.id);
   if (hasChart) {
+    return;
+  }
+
+  if (!ChartSchema.safeParse(chart).success) {
+    console.error('Invalid chart', chart);
     return;
   }
 

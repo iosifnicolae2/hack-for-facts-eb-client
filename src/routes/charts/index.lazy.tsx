@@ -22,7 +22,7 @@ export const Route = createLazyFileRoute("/charts/")({
 });
 
 function ChartsListPage() {
-  const [charts, setCharts] = useState<StoredChart[]>(loadSavedCharts({ filterDeleted: true }));
+  const [charts, setCharts] = useState<StoredChart[]>(loadSavedCharts({ filterDeleted: true, validate: true }));
 
   const handleDeleteChart = async (chartId: string) => {
     try {

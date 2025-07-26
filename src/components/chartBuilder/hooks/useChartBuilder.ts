@@ -7,6 +7,7 @@ import {
 } from '@/schemas/chartBuilder';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { updateChartInLocalStorage } from '@/lib/api/chartBuilder';
+import { produce } from 'immer';
 
 interface ValidationResult {
   isValid: boolean;
@@ -19,7 +20,7 @@ interface UseChartBuilderReturn {
   seriesId?: string;
   updateChart: (updates: Partial<Chart>) => void;
   addSeries: () => void;
-  updateSeries: (seriesId: string, updates: Partial<SeriesConfiguration>) => void;
+  updateSeries: (seriesId: string, updates: Partial<SeriesConfiguration> | ((prevSeries: SeriesConfiguration) => Partial<SeriesConfiguration>)) => void;
   deleteSeries: (seriesId: string) => void;
   duplicateSeries: (seriesId: string) => void;
   moveSeriesUp: (seriesId: string) => void;
@@ -48,10 +49,10 @@ export function useChartBuilder(): UseChartBuilderReturn {
     navigate({ to: "/charts/$chartId", search: (prev) => ({ ...prev, view: "series-config", seriesId }), params: { chartId: chart.id }, replace: true });
   }, [chart.id, navigate]);
 
-  const updateChart = useCallback((updates: Partial<Chart>) => {
+  const updateChart = useCallback((updates: Partial<Chart> | ((prevChart?: Chart) => Partial<Chart>)) => {
     navigate({
       search: (prev) => {
-        const newChart = { ...prev.chart, ...updates } as Chart;
+        const newChart = { ...prev.chart, ...(typeof updates === 'function' ? updates(prev.chart) : updates) } as Chart;
         updateChartInLocalStorage(newChart);
         return { ...prev, chart: newChart } as unknown as never; // TODO: fix this
       },
@@ -83,11 +84,12 @@ export function useChartBuilder(): UseChartBuilderReturn {
     goToSeriesConfig(newSeries.id);
   }, [chart, updateChart, goToSeriesConfig]);
 
-  const updateSeries = useCallback((seriesId: string, updates: Partial<SeriesConfiguration>) => {
-    updateChart({
-      series: chart.series.map(s => s.id === seriesId ? { ...s, ...updates } : s),
-    });
-  }, [chart, updateChart]);
+  const updateSeries = useCallback((seriesId: string, updates: Partial<SeriesConfiguration> | ((prevSeries: SeriesConfiguration) => SeriesConfiguration)) => {
+    updateChart((prev) => ({
+      ...prev,
+      series: prev?.series.map(s => s.id === seriesId ? { ...s, ...(typeof updates === 'function' ? produce(s, (draft) => updates(draft)) : updates) } : s),
+    }));
+  }, [updateChart]);
 
   const duplicateSeries = useCallback((seriesId: string) => {
     const originalSeries = chart.series.find(s => s.id === seriesId);

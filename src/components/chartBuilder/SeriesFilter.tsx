@@ -80,16 +80,13 @@ export function SeriesFilter({ seriesId }: SeriesFilterProps) {
     const setSelectedEntityOptions: React.Dispatch<React.SetStateAction<OptionItem<string | number>[]>> = (action: React.SetStateAction<OptionItem<string | number>[]>) => {
         const newState = typeof action === 'function' ? action(selectedEntityOptions) : action;
         if (!seriesId) return;
-        updateSeries(seriesId, {
-            ...series,
-            filter: {
-                ...filter,
-                entity_cuis: newState.map(o => String(o.id))
-            },
-            filterMetadata: { // Cache the labels in the state.
-                ...series.filterMetadata,
+        updateSeries(seriesId, (prevSeries) =>{
+            prevSeries.filter.entity_cuis = newState.map(o => String(o.id))
+            prevSeries.filterMetadata = {
+                ...prevSeries.filterMetadata,
                 ...newState.reduce((acc, o) => ({ ...acc, [o.id]: o.label }), {})
             }
+            return prevSeries;
         });
 
         return newState;

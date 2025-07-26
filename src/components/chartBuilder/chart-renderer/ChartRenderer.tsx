@@ -151,7 +151,7 @@ export function ChartRenderer({ chart, data, className, height = 400 }: ChartRen
     const isRelative = chart.config.showRelativeValues ?? false;
 
     return (
-      <ChartComponent data={timeSeriesData} margin={{ top: 20, right: 0, left: 30, bottom: 20 }}>
+      <ChartComponent data={timeSeriesData} margin={{ top: 30, right: 50, left: 30, bottom: 20 }}>
         {chart.config.showGridLines && <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />}
         <XAxis dataKey="year" className="text-xs fill-muted-foreground" tick={{ fontSize: 12 }} />
         <YAxis
