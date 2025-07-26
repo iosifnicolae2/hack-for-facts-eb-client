@@ -1,12 +1,12 @@
-import { useState, useCallback, useEffect } from 'react';
-import { 
-  Chart, 
-  ChartBuilderState, 
-  SeriesConfiguration, 
+import { useCallback } from 'react';
+import {
+  Chart,
+  SeriesConfiguration,
   ChartSchema,
   SeriesConfigurationSchema,
-  DEFAULT_CHART_CONFIG
 } from '@/schemas/chartBuilder';
+import { useNavigate, useSearch } from '@tanstack/react-router';
+import { updateChartInLocalStorage } from '@/lib/api/chartBuilder';
 
 interface ValidationResult {
   isValid: boolean;
@@ -15,9 +15,9 @@ interface ValidationResult {
 
 interface UseChartBuilderReturn {
   chart: Chart;
-  builderState: ChartBuilderState;
+  view: string;
+  seriesId?: string;
   updateChart: (updates: Partial<Chart>) => void;
-  updateBuilderState: (updates: Partial<ChartBuilderState>) => void;
   addSeries: () => void;
   updateSeries: (seriesId: string, updates: Partial<SeriesConfiguration>) => void;
   deleteSeries: (seriesId: string) => void;
@@ -26,101 +26,69 @@ interface UseChartBuilderReturn {
   moveSeriesDown: (seriesId: string) => void;
   saveChart: () => Promise<void>;
   validateChart: () => ValidationResult;
-  resetChart: () => void;
+  goToConfig: () => void;
+  goToOverview: () => void;
+  goToSeriesConfig: (seriesId: string) => void;
 }
 
-export function useChartBuilder(existingChart?: Chart): UseChartBuilderReturn {
-  // Initialize chart with defaults or existing chart
-  const createDefaultChart = (): Chart => ({
-    id: crypto.randomUUID(),
-    title: '',
-    description: '',
-    config: { ...DEFAULT_CHART_CONFIG },
-    series: [],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  });
+export function useChartBuilder(): UseChartBuilderReturn {
+  const navigate = useNavigate();
+  const { chart, view, seriesId } = useSearch({ from: "/charts/$chartId" });
 
-  const [chart, setChart] = useState<Chart>(() => 
-    existingChart ? { ...existingChart } : createDefaultChart()
-  );
 
-  // Update chart when existingChart changes (important for async loading)
-  useEffect(() => {
-    if (existingChart) {
-      setChart({ ...existingChart });
-      setBuilderState(prev => ({ ...prev, isDirty: false }));
-    }
-  }, [existingChart]);
+  const goToConfig = useCallback(() => {
+    navigate({ to: "/charts/$chartId", search: (prev) => ({ ...prev, view: "config" }), params: { chartId: chart.id }, replace: true });
+  }, [chart.id, navigate]);
 
-  const [builderState, setBuilderState] = useState<ChartBuilderState>({
-    currentView: 'overview',
-    selectedSeriesId: undefined,
-    selectedAnnotationId: undefined,
-    isDirty: false,
-    validationErrors: {},
-  });
+  const goToOverview = useCallback(() => {
+    navigate({ to: "/charts/$chartId", search: (prev) => ({ ...prev, view: "overview" }), params: { chartId: chart.id }, replace: true });
+  }, [chart.id, navigate]);
 
-  // Mark as dirty when chart changes
-  useEffect(() => {
-    if (existingChart && JSON.stringify(chart) !== JSON.stringify(existingChart)) {
-      setBuilderState(prev => ({ ...prev, isDirty: true }));
-    } else if (!existingChart && (chart.title || chart.series.length > 0)) {
-      setBuilderState(prev => ({ ...prev, isDirty: true }));
-    }
-  }, [chart, existingChart]);
+  const goToSeriesConfig = useCallback((seriesId: string) => {
+    navigate({ to: "/charts/$chartId", search: (prev) => ({ ...prev, view: "series-config", seriesId }), params: { chartId: chart.id }, replace: true });
+  }, [chart.id, navigate]);
 
   const updateChart = useCallback((updates: Partial<Chart>) => {
-    setChart(prev => ({
-      ...prev,
-      ...updates,
-      updatedAt: new Date(),
-    }));
-  }, []);
+    navigate({
+      search: (prev) => {
+        const newChart = { ...prev.chart, ...updates } as Chart;
+        updateChartInLocalStorage(newChart);
+        return { ...prev, chart: newChart } as unknown as never; // TODO: fix this
+      },
+      replace: true,
+    });
+  }, [navigate]);
 
-  const updateBuilderState = useCallback((updates: Partial<ChartBuilderState>) => {
-    setBuilderState(prev => ({ ...prev, ...updates }));
-  }, []);
 
   const addSeries = useCallback(() => {
     const newSeries: SeriesConfiguration = {
       id: crypto.randomUUID(),
       enabled: true,
-      label: `Series ${chart.series.length + 1}`,
+      label: `New Series ${chart.series.length + 1}`,
       filter: {
-        account_category: 'ch',
+        account_categories: ['ch'],
       },
+      filterMetadata: {},
       config: {
         visible: true,
         yAxisId: 'left',
       },
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
 
     updateChart({
       series: [...chart.series, newSeries],
     });
-
-    // Navigate to series detail view
-    setBuilderState(prev => ({
-      ...prev,
-      currentView: 'series-detail',
-      selectedSeriesId: newSeries.id,
-    }));
-  }, [chart.series, updateChart]);
+    goToSeriesConfig(newSeries.id);
+  }, [chart, updateChart, goToSeriesConfig]);
 
   const updateSeries = useCallback((seriesId: string, updates: Partial<SeriesConfiguration>) => {
-    setChart(prev => ({
-      ...prev,
-      series: prev.series.map(s => 
-        s.id === seriesId 
-          ? { ...s, ...updates, updatedAt: new Date() }
-          : s
-      ),
-      updatedAt: new Date(),
-    }));
-  }, []);
+    console.log('updates', updates);
+    updateChart({
+      series: chart.series.map(s => s.id === seriesId ? { ...s, ...updates } : s),
+    });
+  }, [chart, updateChart]);
 
   const duplicateSeries = useCallback((seriesId: string) => {
     const originalSeries = chart.series.find(s => s.id === seriesId);
@@ -130,20 +98,13 @@ export function useChartBuilder(existingChart?: Chart): UseChartBuilderReturn {
       ...originalSeries,
       id: crypto.randomUUID(),
       label: `${originalSeries.label} (Copy)`,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
 
     updateChart({
       series: [...chart.series, duplicatedSeries],
     });
-
-    // Navigate to series detail view for the new series
-    setBuilderState(prev => ({
-      ...prev,
-      currentView: 'series-detail',
-      selectedSeriesId: duplicatedSeries.id,
-    }));
   }, [chart.series, updateChart]);
 
   const moveSeriesUp = useCallback((seriesId: string) => {
@@ -171,21 +132,11 @@ export function useChartBuilder(existingChart?: Chart): UseChartBuilderReturn {
   }, [chart.series, updateChart]);
 
   const deleteSeries = useCallback((seriesId: string) => {
-    setChart(prev => ({
-      ...prev,
-      series: prev.series.filter(s => s.id !== seriesId),
-      updatedAt: new Date(),
-    }));
+    updateChart({
+      series: chart.series.filter(s => s.id !== seriesId),
+    });
 
-    // If we're currently editing this series, go back to overview
-    if (builderState.selectedSeriesId === seriesId) {
-      setBuilderState(prev => ({
-        ...prev,
-        currentView: 'overview',
-        selectedSeriesId: undefined,
-      }));
-    }
-  }, [builderState.selectedSeriesId]);
+  }, [updateChart, chart]);
 
   const validateChart = useCallback((): ValidationResult => {
     const errors: Record<string, string[]> = {};
@@ -228,12 +179,6 @@ export function useChartBuilder(existingChart?: Chart): UseChartBuilderReturn {
     });
 
     const isValid = Object.keys(errors).length === 0;
-    
-    setBuilderState(prev => ({
-      ...prev,
-      validationErrors: errors,
-    }));
-
     return { isValid, errors };
   }, [chart]);
 
@@ -247,34 +192,22 @@ export function useChartBuilder(existingChart?: Chart): UseChartBuilderReturn {
     // For now, we'll save to localStorage as an example
     const savedCharts = JSON.parse(localStorage.getItem('savedCharts') || '[]');
     const chartIndex = savedCharts.findIndex((c: Chart) => c.id === chart.id);
-    
+
     if (chartIndex >= 0) {
       savedCharts[chartIndex] = chart;
     } else {
       savedCharts.push(chart);
     }
-    
-    localStorage.setItem('savedCharts', JSON.stringify(savedCharts));
-    
-    setBuilderState(prev => ({ ...prev, isDirty: false }));
-  }, [chart, validateChart]);
 
-  const resetChart = useCallback(() => {
-    setChart(createDefaultChart());
-    setBuilderState({
-      currentView: 'overview',
-      selectedSeriesId: undefined,
-      selectedAnnotationId: undefined,
-      isDirty: false,
-      validationErrors: {},
-    });
-  }, []);
+    localStorage.setItem('savedCharts', JSON.stringify(savedCharts));
+
+  }, [chart, validateChart]);
 
   return {
     chart,
-    builderState,
+    view,
+    seriesId,
     updateChart,
-    updateBuilderState,
     addSeries,
     updateSeries,
     deleteSeries,
@@ -283,6 +216,8 @@ export function useChartBuilder(existingChart?: Chart): UseChartBuilderReturn {
     moveSeriesDown,
     saveChart,
     validateChart,
-    resetChart,
+    goToConfig,
+    goToOverview,
+    goToSeriesConfig,
   };
 } 

@@ -3,8 +3,9 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Chart, ChartType } from '@/schemas/chartBuilder';
+import { Chart } from '@/schemas/chartBuilder';
 import { BarChart3, LineChart, TrendingUp, ScatterChart, PieChart } from 'lucide-react';
+import { ChartType } from '@/schemas/constants';
 
 interface ChartQuickConfigProps {
   chart: Chart;
@@ -17,8 +18,6 @@ export function ChartQuickConfig({ chart, onUpdateChart }: ChartQuickConfigProps
       case 'line': return <LineChart className="h-4 w-4" />;
       case 'bar': return <BarChart3 className="h-4 w-4" />;
       case 'area': return <TrendingUp className="h-4 w-4" />;
-      case 'scatter': return <ScatterChart className="h-4 w-4" />;
-      case 'pie': return <PieChart className="h-4 w-4" />;
       default: return <BarChart3 className="h-4 w-4" />;
     }
   };

@@ -105,7 +105,9 @@ export function EntityList({
                                 <ListOption
                                     key={option.cui}
                                     uniqueIdPart={option.cui}
-                                    onClick={() => toggleSelect({ id: option.cui, label })}
+                                    onClick={() => {
+                                        toggleSelect({ id: option.cui, label })
+                                    }}
                                     label={label}
                                     selected={isSelected}
                                     optionHeight={virtualRow.size}

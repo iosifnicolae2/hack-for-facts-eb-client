@@ -17,7 +17,7 @@ import {
   PieChart,
   AreaChart
 } from 'lucide-react';
-import { Chart, SeriesConfiguration, ChartType } from '@/schemas/chartBuilder';
+import { Chart, SeriesConfiguration } from '@/schemas/chartBuilder';
 import {
   Select,
   SelectContent,
@@ -36,6 +36,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
+import { ChartType } from '@/schemas/constants';
 
 interface ChartBuilderOverviewProps {
   chart: Chart;
@@ -46,7 +47,6 @@ interface ChartBuilderOverviewProps {
   onDuplicateSeries: (seriesId: string) => void;
   onMoveSeriesUp: (seriesId: string) => void;
   onMoveSeriesDown: (seriesId: string) => void;
-  validationErrors: Record<string, string[]>;
 }
 
 export function ChartBuilderOverview({
@@ -58,7 +58,6 @@ export function ChartBuilderOverview({
   onDuplicateSeries,
   onMoveSeriesUp,
   onMoveSeriesDown,
-  validationErrors
 }: ChartBuilderOverviewProps) {
 
   const getChartTypeIcon = (chartType: string) => {
@@ -75,18 +74,10 @@ export function ChartBuilderOverview({
     return series.config.color || chart.config.color || '#8884d8';
   };
 
-  const hasErrors = (field: string) => {
-    return validationErrors[field] && validationErrors[field].length > 0;
-  };
-
-  const getErrorMessage = (field: string) => {
-    return hasErrors(field) ? validationErrors[field][0] : '';
-  };
-
   const handleToggleSeriesEnabled = (seriesId: string, enabled: boolean) => {
     const updatedSeries = chart.series.map(series =>
       series.id === seriesId
-        ? { ...series, enabled, updatedAt: new Date() }
+        ? { ...series, enabled, updatedAt: new Date().toISOString() }
         : series
     );
     onUpdateChart({ series: updatedSeries });
@@ -113,11 +104,7 @@ export function ChartBuilderOverview({
               value={chart.title}
               onChange={(e) => onUpdateChart({ title: e.target.value })}
               placeholder="Enter chart title..."
-              className={hasErrors('title') ? 'border-destructive' : ''}
             />
-            {hasErrors('title') && (
-              <p className="text-sm text-destructive">{getErrorMessage('title')}</p>
-            )}
           </div>
 
           <div className="space-y-2">

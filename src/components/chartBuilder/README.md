@@ -158,7 +158,7 @@ const handleSubmit = async () => {
   
   try {
     await saveChart(chartData);
-    navigate({ to: `/charts/${chartData.id}` });
+    navigate({ to: `/charts/${chartData.id}`, search: (prev) => ({ ...prev, view: "overview" }), params: { chartId: chartData.id } });
   } catch (error) {
     setError('Failed to save chart. Please try again.');
   } finally {

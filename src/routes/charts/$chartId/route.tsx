@@ -1,20 +1,22 @@
-import { chartStateSchema } from "@/components/chartBuilder/validation";
-import { createFileRoute, Outlet, retainSearchParams, useSearch } from "@tanstack/react-router";
+import { saveChartToLocalStorage } from "@/lib/api/chartBuilder";
+import { ChartSchema } from "@/schemas/chartBuilder";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { z } from "zod";
+
+const stateSchema = z.object({
+    chart: ChartSchema,
+    view: z.enum(["overview", "config", "series-config"]).default("overview"),
+    seriesId: z.string().optional(),
+});
 
 export const Route = createFileRoute("/charts/$chartId")({
-    validateSearch: chartStateSchema,
+    validateSearch: stateSchema,
     component: RouteComponent,
-    search: {
-        middlewares: [retainSearchParams(true)],
+    onEnter: async ({ search }) => {
+        saveChartToLocalStorage(search.chart)
     },
 });
 
 function RouteComponent() {
-    const { seriesId } = useSearch({ from: Route.id });
-    console.log("Route", seriesId)
-    return (
-        <div>
-            <Outlet />
-        </div>
-    )
+    return <Outlet />
 }

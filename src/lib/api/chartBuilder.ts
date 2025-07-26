@@ -7,7 +7,7 @@ export interface YearlyTrendPoint {
 }
 
 export interface AnalyticsDataPoint {
-  label: string;
+  seriesId: string;
   yearlyTrend: YearlyTrendPoint[];
 }
 
@@ -24,7 +24,7 @@ export async function getChartAnalytics(inputs: AnalyticsInput[]): Promise<Analy
   const query = `
     query GetExecutionLineItems($inputs: [AnalyticsInput!]!) {
       executionAnalytics(inputs: $inputs) {
-        label
+        seriesId
         yearlyTrend {
           year
           totalAmount
@@ -40,35 +40,60 @@ export async function getChartAnalytics(inputs: AnalyticsInput[]): Promise<Analy
   return response.executionAnalytics;
 }
 
-/**
- * Save chart configuration (example implementation using localStorage)
- * In production, this would save to your backend
- */
-export async function saveChart(chart: Chart): Promise<void> {
-  const savedCharts = JSON.parse(localStorage.getItem('savedCharts') || '[]');
-  const existingIndex = savedCharts.findIndex((c: Chart) => c.id === chart.id);
-  
-  if (existingIndex >= 0) {
-    savedCharts[existingIndex] = chart;
-  } else {
-    savedCharts.push(chart);
+const chartsKey = 'savedCharts';
+
+export interface StoredChart extends Chart {
+  favorite?: boolean;
+  deleted?: boolean;
+}
+
+export const loadSavedCharts = ({ filterDeleted = false }: { filterDeleted?: boolean } = {}): StoredChart[] => {
+  const chartsRaw = localStorage.getItem(chartsKey);
+  const charts = chartsRaw ? JSON.parse(chartsRaw) : [];
+  if (!filterDeleted) {
+    return charts;
   }
-  
-  localStorage.setItem('savedCharts', JSON.stringify(savedCharts));
+  return charts.filter((c: StoredChart) => !c.deleted);
 }
 
-/**
- * Load saved charts
- */
-export async function loadSavedCharts(): Promise<Chart[]> {
-  return JSON.parse(localStorage.getItem('savedCharts') || '[]');
+export const deleteChart = (chartId: string) => {
+  const savedCharts = loadSavedCharts();
+  const newCharts = savedCharts.map((c: Chart) => {
+    if (c.id === chartId) {
+      return { ...c, deleted: true };
+    }
+    return c;
+  });
+  localStorage.setItem(chartsKey, JSON.stringify(newCharts));
 }
 
-/**
- * Delete a saved chart
- */
-export async function deleteChart(chartId: string): Promise<void> {
-  const savedCharts = JSON.parse(localStorage.getItem('savedCharts') || '[]');
-  const updatedCharts = savedCharts.filter((chart: Chart) => chart.id !== chartId);
-  localStorage.setItem('savedCharts', JSON.stringify(updatedCharts));
-} 
+export const saveChartToLocalStorage = (chart: StoredChart) => {
+  const savedCharts = loadSavedCharts();
+  const hasChart = savedCharts.some((c) => c.id === chart.id);
+  if (hasChart) {
+    return;
+  }
+
+  localStorage.setItem(chartsKey, JSON.stringify([
+    chart,
+    ...savedCharts,
+  ]));
+}
+
+export const updateChartInLocalStorage = (chart: Chart) => {
+  const savedCharts = loadSavedCharts();
+  localStorage.setItem(chartsKey, JSON.stringify([
+    chart,
+    ...savedCharts.filter((c: Chart) => c.id !== chart.id),
+  ]));
+}
+
+export const toggleChartFavorite = (chartId: string) => {
+  const savedCharts = loadSavedCharts();
+  const chart = savedCharts.find((c: StoredChart) => c.id === chartId);
+  if (!chart) {
+    return;
+  }
+  const newChart = { ...chart, favorite: !chart.favorite };
+  updateChartInLocalStorage(newChart);
+}

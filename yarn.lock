@@ -2406,13 +2406,6 @@
     lightningcss "1.29.2"
     tailwindcss "4.0.13"
 
-"@tanstack/form-core@0.23.3":
-  version "0.23.3"
-  resolved "https://registry.yarnpkg.com/@tanstack/form-core/-/form-core-0.23.3.tgz#c5003238b39b9977af9143c76a58b8faef76ec14"
-  integrity sha512-unm9IoFZQTNF8thAwWcQSolAzqVHZ7WqDxsCDazDqhrWXoWu1VfDcqKML6MBjaoUxLTictjHg/akrnXtEggnZw==
-  dependencies:
-    "@tanstack/store" "^0.5.0"
-
 "@tanstack/history@1.114.12":
   version "1.114.12"
   resolved "https://registry.yarnpkg.com/@tanstack/history/-/history-1.114.12.tgz#f5ff12bda71d75848e1a100a255832dfb8785562"
@@ -2427,15 +2420,6 @@
   version "5.67.3"
   resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.67.3.tgz#222795762c584d572f6f41bd4eb97f86f46f2eea"
   integrity sha512-pq76ObpjcaspAW4OmCbpXLF6BCZP2Zr/J5ztnyizXhSlNe7fIUp0QKZsd0JMkw9aDa+vxDX/OY7N+hjNY/dCGg==
-
-"@tanstack/react-form@^0.23.0":
-  version "0.23.3"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-form/-/react-form-0.23.3.tgz#4c41b9ad4f542902285ebeff445327f36ce22a93"
-  integrity sha512-Gy+nlOXmiT+2mvHNKCBzZ3g7MxhmdJnVRlX5IzGtA9KTFvHzJ+QC0MWdZ3kxb6xyOBT+0+LGNiiBiAY70gGtAw==
-  dependencies:
-    "@tanstack/form-core" "0.23.3"
-    "@tanstack/react-store" "^0.5.0"
-    decode-formdata "^0.7.5"
 
 "@tanstack/react-query@^5.67.3":
   version "5.67.3"
@@ -2463,14 +2447,6 @@
     jsesc "^3.1.0"
     tiny-invariant "^1.3.3"
     tiny-warning "^1.0.3"
-
-"@tanstack/react-store@^0.5.0":
-  version "0.5.8"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-store/-/react-store-0.5.8.tgz#26595fdd7b826df2111886bfa674879be02d9293"
-  integrity sha512-G8TFpT/QJv2B2vro4QOUypvMjjSrbLRR8VKNoBByr6gpXAhU7y7mkrsn55Ra6svplVuvF+rAPTvHcUJKtU6geQ==
-  dependencies:
-    "@tanstack/store" "0.5.5"
-    use-sync-external-store "^1.2.2"
 
 "@tanstack/react-store@^0.7.0":
   version "0.7.0"
@@ -2571,11 +2547,6 @@
     ansis "^3.11.0"
     diff "^7.0.0"
 
-"@tanstack/store@0.5.5", "@tanstack/store@^0.5.0":
-  version "0.5.5"
-  resolved "https://registry.yarnpkg.com/@tanstack/store/-/store-0.5.5.tgz#84d78568c4a71c885cb15754bf51eca42a776efe"
-  integrity sha512-EOSrgdDAJExbvRZEQ/Xhh9iZchXpMN+ga1Bnk8Nmygzs8TfiE6hbzThF+Pr2G19uHL6+DTDTHhJ8VQiOd7l4tA==
-
 "@tanstack/store@0.7.0", "@tanstack/store@^0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@tanstack/store/-/store-0.7.0.tgz#afef29b06c6b592e93181cee9baa62fe77454459"
@@ -2595,13 +2566,6 @@
   version "1.114.29"
   resolved "https://registry.yarnpkg.com/@tanstack/virtual-file-routes/-/virtual-file-routes-1.114.29.tgz#f431bd588fc4331bf604ecd06ea923887f0a14b2"
   integrity sha512-DufKsQy/qxDpOTiggJCgshhJkpSyUygwHHfl2LA66CXOf3aUjZtlNu4io1UpmJNf8C/9lVlGARhkoq5fTRRk0w==
-
-"@tanstack/zod-form-adapter@^0.23.0":
-  version "0.23.3"
-  resolved "https://registry.yarnpkg.com/@tanstack/zod-form-adapter/-/zod-form-adapter-0.23.3.tgz#1a41f7024434ce80baebccd9dc6f3a71695e1786"
-  integrity sha512-qiTpqcLjPl25TKjBfxKpyOY/YeyZsKjhDpihjYQd+X6CgUmnnapODxSpnxbp95PCMspG/tu88sK/DTvu7WUewA==
-  dependencies:
-    "@tanstack/form-core" "0.23.3"
 
 "@testing-library/dom@^10.0.0":
   version "10.4.0"
@@ -3765,11 +3729,6 @@ decimal.js@^10.4.3:
   version "10.5.0"
   resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.5.0.tgz#0f371c7cf6c4898ce0afb09836db73cd82010f22"
   integrity sha512-8vDa8Qxvr/+d94hSh5P3IJwI5t8/c0KsMp+g8bNw9cY2icONa5aPfvKeieW1WlG0WQYwwhJ7mjui2xtiePQSXw==
-
-decode-formdata@^0.7.5:
-  version "0.7.5"
-  resolved "https://registry.yarnpkg.com/decode-formdata/-/decode-formdata-0.7.5.tgz#b6f08fd6054a9335ced6db8af5dd3ebdea527b27"
-  integrity sha512-zwz+xh+Z2R1s2hk14pGiwgVnYiw1UnlsoxHZ5neSXnslgET1weO0dw0d9dLpf1rxAtcvNXo59IMKq5avdaOcvA==
 
 decode-named-character-reference@^1.0.0:
   version "1.1.0"

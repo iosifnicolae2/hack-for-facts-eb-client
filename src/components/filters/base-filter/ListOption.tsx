@@ -47,7 +47,10 @@ export function ListOption({
                 <Checkbox
                     id={checkboxId}
                     checked={selected}
-                    onCheckedChange={onClick}
+                    onCheckedChange={() => null}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                    }}
                     className="mr-3 shrink-0"
                     aria-labelledby={`${checkboxId}-label`}
                     tabIndex={-1}

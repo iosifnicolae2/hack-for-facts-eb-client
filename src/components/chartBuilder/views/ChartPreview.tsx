@@ -18,7 +18,7 @@ export function ChartPreview({ chart, onBack, onEdit }: ChartPreviewProps) {
   const analyticsInputs: AnalyticsInput[] = chart.series
     .filter(series => Object.keys(series.filter).length > 0) // Only include series with filters
     .map(series => ({
-      label: series.label,
+      seriesId: series.id,
       filter: series.filter
     }));
 
