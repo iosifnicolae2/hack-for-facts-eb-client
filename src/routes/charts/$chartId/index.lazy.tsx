@@ -47,7 +47,7 @@ function ChartDetailPage() {
         setIsLoadingChart(false);
       }
     };
-    
+
     loadChart();
   }, [chartId]);
 
@@ -77,11 +77,10 @@ function ChartDetailPage() {
     }
   };
 
-  const handleSeriesClick = (seriesId: string) => {
+  const handleSeriesClick = (_seriesId: string) => {
     navigate({
       to: '/charts/$chartId/config',
       params: { chartId },
-      search: { seriesId } // Pass series ID to auto-select it
     });
   };
 
@@ -176,10 +175,12 @@ function ChartDetailPage() {
     return (
       <div className="container mx-auto py-6 space-y-6">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" onClick={() => navigate({ to: '/charts' })} className="gap-2">
-            <ArrowLeft className="h-4 w-4" />
-            Back to Charts
-          </Button>
+          <Link to="/charts">
+            <Button variant="ghost" className="gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              Back to Charts
+            </Button>
+          </Link>
         </div>
 
         <Alert variant="destructive">
@@ -197,10 +198,12 @@ function ChartDetailPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" onClick={() => navigate({ to: '/charts' })} className="gap-2">
-            <ArrowLeft className="h-4 w-4" />
-            Back to Charts
-          </Button>
+          <Link to="/charts">
+            <Button variant="ghost" className="gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              Back to Charts
+            </Button>
+          </Link>
           <div>
             <div className="flex items-center gap-3">
               {getChartTypeIcon(chart.config.chartType, "h-8 w-8")}

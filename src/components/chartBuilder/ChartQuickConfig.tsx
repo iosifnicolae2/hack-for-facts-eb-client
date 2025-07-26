@@ -155,16 +155,14 @@ export function ChartQuickConfig({ chart, onUpdateChart }: ChartQuickConfigProps
             <Badge variant="outline">
               {chart.series.filter(s => s.enabled).length} Active Series
             </Badge>
-            {chart.config.yearRangeStart && chart.config.yearRangeEnd && (
+            {/* TODO: add year range selector */}
+            {/* {chart.config.yearRangeStart && chart.config.yearRangeEnd && (
               <Badge variant="outline">
                 {chart.config.yearRangeStart}-{chart.config.yearRangeEnd}
               </Badge>
-            )}
+            )} */}
             {chart.config.showRelativeValues && (
               <Badge variant="secondary">Relative Mode</Badge>
-            )}
-            {chart.config.stacked && (
-              <Badge variant="secondary">Stacked</Badge>
             )}
           </div>
         </div>

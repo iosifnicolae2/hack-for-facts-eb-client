@@ -68,8 +68,6 @@ export function ChartRenderer({ chart, data, className, height = 400 }: ChartRen
     return data.filter(d => enabledLabels.has(d.label));
   }, [data, enabledSeries]);
 
-  console.log({ enabledSeries, filteredData });
-
   const getSeriesColor = useCallback((seriesLabel: string): string => {
     const seriesConfig = enabledSeries.find(s => s.label === seriesLabel);
     // Fallback color generation is now more robust and distributed.
@@ -87,13 +85,15 @@ export function ChartRenderer({ chart, data, className, height = 400 }: ChartRen
 
     const sortedYears = Array.from(allYears).sort((a, b) => a - b);
 
-    const yearRange = chart.config.yearRangeStart || chart.config.yearRangeEnd;
-    const filteredYears = yearRange
-      ? sortedYears.filter(year =>
-        (chart.config.yearRangeStart === undefined || year >= chart.config.yearRangeStart) &&
-        (chart.config.yearRangeEnd === undefined || year <= chart.config.yearRangeEnd)
-      )
-      : sortedYears;
+    // TODO: add year range selector
+    // const yearRange = chart.config.yearRangeStart || chart.config.yearRangeEnd;
+    // const filteredYears = yearRange
+    //   ? sortedYears.filter(year =>
+    //     (chart.config.yearRangeStart === undefined || year >= chart.config.yearRangeStart) &&
+    //     (chart.config.yearRangeEnd === undefined || year <= chart.config.yearRangeEnd)
+    //   )
+    //   : sortedYears;
+    const filteredYears = sortedYears;
 
     const baseData = filteredYears.map(year => {
       const dataPoint: TimeSeriesDataPoint = { year } as TimeSeriesDataPoint;
@@ -129,7 +129,7 @@ export function ChartRenderer({ chart, data, className, height = 400 }: ChartRen
     }
 
     return baseData;
-  }, [filteredData, chart.config.showRelativeValues, chart.config.yearRangeStart, chart.config.yearRangeEnd]);
+  }, [filteredData, chart.config.showRelativeValues]);
 
   const pieData = useMemo((): PieDataPoint[] => {
     return filteredData.map(series => ({
@@ -162,7 +162,6 @@ export function ChartRenderer({ chart, data, className, height = 400 }: ChartRen
   ) => {
     const isRelative = chart.config.showRelativeValues ?? false;
 
-    console.log("renderTimeSeriesChart");
     return (
       <ChartComponent data={timeSeriesData} margin={{ top: 20, right: 30, left: 40, bottom: 20 }}>
         {chart.config.showGridLines && <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />}
@@ -182,7 +181,6 @@ export function ChartRenderer({ chart, data, className, height = 400 }: ChartRen
             name={series.label}
             fill={getSeriesColor(series.label)}
             stroke={getSeriesColor(series.label)}
-            stackId={chart.config.stacked ? "stack" : undefined}
             {...extraSeriesProps}
           >
             {chart.config.showDataLabels && (
@@ -199,27 +197,25 @@ export function ChartRenderer({ chart, data, className, height = 400 }: ChartRen
     );
   };
 
-  console.log("Return")
-
   const renderChart = () => {
     switch (chart.config.chartType) {
       case 'line':
         return renderTimeSeriesChart(LineChart, Line, {
           type: "monotone",
-          strokeWidth: chart.config.strokeWidth || 2,
+          strokeWidth: 2,
           dot: { r: 4 },
           activeDot: { r: 6 },
           connectNulls: false,
         });
       case 'bar':
         return renderTimeSeriesChart(BarChart, Bar, {
-          fillOpacity: chart.config.fillOpacity || 0.8,
+          fillOpacity: 0.8,
         });
       case 'area':
         return renderTimeSeriesChart(AreaChart, Area, {
           type: "monotone",
-          strokeWidth: chart.config.strokeWidth || 2,
-          fillOpacity: chart.config.fillOpacity || 0.6,
+          strokeWidth: 2,
+          fillOpacity: 0.6,
         });
       case 'scatter':
         return (

@@ -84,18 +84,15 @@ function NewChartPage() {
         title: formData.title,
         description: formData.description || undefined,
         config: formData.config,
-        series: [], // Will be added later
-        annotations: [],
+        series: [], // TODO: Should be added here
         createdAt: new Date(),
         updatedAt: new Date(),
-        isPublic: false,
-        tags: [],
       };
 
-      ChartSchema.omit({ series: true }).parse(chartToValidate);
-           } catch (validationError: unknown) {
-         if (validationError && typeof validationError === 'object' && 'errors' in validationError) {
-           (validationError as any).errors.forEach((err: any) => {
+      ChartSchema.parse(chartToValidate);
+    } catch (validationError: unknown) {
+      if (validationError && typeof validationError === 'object' && 'errors' in validationError) {
+        (validationError as any).errors.forEach((err: any) => {
           const path = err.path.join('.');
           if (!errors[path]) errors[path] = [];
           errors[path].push(err.message);
@@ -125,11 +122,8 @@ function NewChartPage() {
         description: formData.description || undefined,
         config: formData.config,
         series: [],
-        annotations: [],
         createdAt: new Date(),
         updatedAt: new Date(),
-        isPublic: false,
-        tags: [],
       };
 
       await saveChart(newChart);
@@ -241,7 +235,7 @@ function NewChartPage() {
                   <Label>Chart Type</Label>
                   <Select
                     value={formData.config.chartType}
-                                         onValueChange={(value) => updateConfig({ chartType: value as ChartType })}
+                    onValueChange={(value) => updateConfig({ chartType: value as ChartType })}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -315,7 +309,7 @@ function NewChartPage() {
                     {formData.config.chartType} chart
                   </p>
                 </div>
-                <div 
+                <div
                   className="w-8 h-8 rounded mx-auto border"
                   style={{ backgroundColor: formData.config.color }}
                 />
@@ -353,9 +347,9 @@ function NewChartPage() {
           <ArrowLeft className="h-4 w-4 mr-2" />
           Cancel
         </Button>
-        
-        <Button 
-          onClick={handleSubmit} 
+
+        <Button
+          onClick={handleSubmit}
           disabled={isLoading}
           className="gap-2"
         >

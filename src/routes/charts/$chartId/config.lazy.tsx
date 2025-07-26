@@ -1,4 +1,4 @@
-import { createLazyFileRoute, useParams, useNavigate, useSearch } from "@tanstack/react-router";
+import { createLazyFileRoute, useParams, useNavigate, Link } from "@tanstack/react-router";
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Eye } from 'lucide-react';
@@ -18,7 +18,7 @@ export const Route = createLazyFileRoute("/charts/$chartId/config")({
 function ChartConfigPage() {
   const { chartId } = useParams({ from: "/charts/$chartId/config" });
   const navigate = useNavigate();
-  const search = useSearch({ from: "/charts/$chartId/config" });
+  // const search = useSearch({ from: "/charts/$chartId/config" });
   const [existingChart, setExistingChart] = useState<Chart | null>(null);
   const [isLoadingChart, setIsLoadingChart] = useState(true);
   const [error, setError] = useState<string>('');
@@ -64,25 +64,26 @@ function ChartConfigPage() {
   }, [chartId]);
 
   // Handle automatic navigation to series detail if seriesId is provided
-  useEffect(() => {
-    if (search && typeof search === 'object' && 'seriesId' in search && search.seriesId && existingChart && builderState.currentView === 'overview') {
-      // Check if the series exists
-      const seriesExists = existingChart.series.find(s => s.id === search.seriesId);
-      if (seriesExists) {
-        updateBuilderState({
-          currentView: 'series-detail',
-          selectedSeriesId: search.seriesId as string
-        });
-        // Clear the search parameter to avoid navigation loops
-        navigate({
-          to: '/charts/$chartId/config',
-          params: { chartId },
-          search: {},
-          replace: true
-        });
-      }
-    }
-  }, [search, existingChart, builderState.currentView, updateBuilderState, navigate, chartId]);
+  // TODO: fix this
+  // useEffect(() => {
+  //   if (search && typeof search === 'object' && 'seriesId' in search && search.seriesId && existingChart && builderState.currentView === 'overview') {
+  //     // Check if the series exists
+  //     const seriesExists = existingChart.series.find(s => s.id === search.seriesId);
+  //     if (seriesExists) {
+  //       updateBuilderState({
+  //         currentView: 'series-detail',
+  //         selectedSeriesId: search.seriesId as string
+  //       });
+  //       // Clear the search parameter to avoid navigation loops
+  //       navigate({
+  //         to: '/charts/$chartId/config',
+  //         params: { chartId },
+  //         search: {},
+  //         replace: true
+  //       });
+  //     }
+  //   }
+  // }, [search, existingChart, builderState.currentView, updateBuilderState, navigate, chartId]);
 
   // Autosave functionality - save chart whenever it changes
   useEffect(() => {
@@ -137,10 +138,12 @@ function ChartConfigPage() {
     return (
       <div className="container mx-auto py-6 space-y-6">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" onClick={() => navigate({ to: '/charts' })} className="gap-2">
-            <ArrowLeft className="h-4 w-4" />
-            Back to Charts
-          </Button>
+          <Link to="/charts" search={{ seriesId: 1 }}>
+            <Button variant="ghost" className="gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              Back to Charts
+            </Button>
+          </Link>
         </div>
 
         <Alert variant="destructive">

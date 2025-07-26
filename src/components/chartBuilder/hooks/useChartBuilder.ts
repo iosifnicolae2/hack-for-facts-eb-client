@@ -37,11 +37,8 @@ export function useChartBuilder(existingChart?: Chart): UseChartBuilderReturn {
     description: '',
     config: { ...DEFAULT_CHART_CONFIG },
     series: [],
-    annotations: [],
     createdAt: new Date(),
     updatedAt: new Date(),
-    isPublic: false,
-    tags: [],
   });
 
   const [chart, setChart] = useState<Chart>(() => 
@@ -90,7 +87,9 @@ export function useChartBuilder(existingChart?: Chart): UseChartBuilderReturn {
       id: crypto.randomUUID(),
       enabled: true,
       label: `Series ${chart.series.length + 1}`,
-      filter: {},
+      filter: {
+        account_category: 'ch',
+      },
       config: {
         visible: true,
         yAxisId: 'left',

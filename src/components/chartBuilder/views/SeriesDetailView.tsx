@@ -83,9 +83,6 @@ export function SeriesDetailView({
     if (!series?.filter || hasInitializedFilters) return;
     
     // Set filter state from series configuration
-    if (series.filter.years) {
-      setSelectedYearOptions(series.filter.years.map(year => ({ id: year.toString(), value: year, label: year.toString() })));
-    }
     if (series.filter.entity_cuis) {
       setSelectedEntityOptions(series.filter.entity_cuis.map(cui => ({ id: cui, value: cui, label: cui })));
     }
@@ -98,12 +95,13 @@ export function SeriesDetailView({
     if (series.filter.functional_codes) {
       setSelectedFunctionalClassificationOptions(series.filter.functional_codes.map(code => ({ id: code, value: code, label: code })));
     }
-    if (series.filter.account_categories) {
-      setSelectedAccountTypeOptions(series.filter.account_categories.map(cat => ({ 
-        id: cat,
-        value: cat, 
-        label: cat === 'ch' ? 'Cheltuieli' : 'Venituri' 
-      })));
+    if (series.filter.account_category) {
+      // TODO: fix this
+      // setSelectedAccountTypeOption(series.filter.account_category.map(cat => ({ 
+      //   id: cat,
+      //   value: cat, 
+      //   label: cat === 'ch' ? 'Cheltuieli' : 'Venituri' 
+      // })));
     }
     if (series.filter.report_type) {
       setReportType(series.filter.report_type);

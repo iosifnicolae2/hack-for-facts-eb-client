@@ -5,39 +5,37 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
-import { Slider } from '@/components/ui/slider';
-import { 
-  Plus, 
-  Settings, 
-  Trash2, 
+import {
+  Plus,
+  Settings,
+  Trash2,
   Copy,
   ChevronUp,
   ChevronDown,
-  BarChart3, 
-  LineChart, 
-  PieChart, 
-  AreaChart 
+  BarChart3,
+  LineChart,
+  PieChart,
+  AreaChart
 } from 'lucide-react';
 import { Chart, SeriesConfiguration, ChartType } from '@/schemas/chartBuilder';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
 } from '@/components/ui/select';
-import { 
-  AlertDialog, 
-  AlertDialogAction, 
-  AlertDialogCancel, 
-  AlertDialogContent, 
-  AlertDialogDescription, 
-  AlertDialogFooter, 
-  AlertDialogHeader, 
-  AlertDialogTitle, 
-  AlertDialogTrigger 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
-import { useMemo } from 'react';
 
 interface ChartBuilderOverviewProps {
   chart: Chart;
@@ -62,7 +60,7 @@ export function ChartBuilderOverview({
   onMoveSeriesDown,
   validationErrors
 }: ChartBuilderOverviewProps) {
-  
+
   const getChartTypeIcon = (chartType: string) => {
     switch (chartType) {
       case 'line': return <LineChart className="h-4 w-4" />;
@@ -94,27 +92,6 @@ export function ChartBuilderOverview({
     onUpdateChart({ series: updatedSeries });
   };
 
-  // Calculate available year range from all series data
-  const availableYears = useMemo(() => {
-    const years = new Set<number>();
-    chart.series.forEach(series => {
-      if (series.filter.years) {
-        series.filter.years.forEach(year => years.add(year));
-      }
-    });
-    const sortedYears = Array.from(years).sort();
-    return {
-      min: sortedYears[0] || 2010,
-      max: sortedYears[sortedYears.length - 1] || new Date().getFullYear(),
-      available: sortedYears
-    };
-  }, [chart.series]);
-
-  const currentYearRange = [
-    chart.config.yearRangeStart || availableYears.min,
-    chart.config.yearRangeEnd || availableYears.max
-  ];
-
   return (
     <div className="space-y-6 p-1">
       {/* Chart Basic Information */}
@@ -142,7 +119,7 @@ export function ChartBuilderOverview({
               <p className="text-sm text-destructive">{getErrorMessage('title')}</p>
             )}
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="chart-description">Description</Label>
             <Textarea
@@ -173,11 +150,11 @@ export function ChartBuilderOverview({
               <Label>Chart Type</Label>
               <Select
                 value={chart.config.chartType}
-                                 onValueChange={(value) => 
-                   onUpdateChart({ 
-                     config: { ...chart.config, chartType: value as ChartType } 
-                   })
-                 }
+                onValueChange={(value) =>
+                  onUpdateChart({
+                    config: { ...chart.config, chartType: value as ChartType }
+                  })
+                }
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -218,18 +195,18 @@ export function ChartBuilderOverview({
                   id="default-color"
                   type="color"
                   value={chart.config.color}
-                  onChange={(e) => 
-                    onUpdateChart({ 
-                      config: { ...chart.config, color: e.target.value } 
+                  onChange={(e) =>
+                    onUpdateChart({
+                      config: { ...chart.config, color: e.target.value }
                     })
                   }
                   className="w-20 h-10 p-1 border rounded"
                 />
                 <Input
                   value={chart.config.color}
-                  onChange={(e) => 
-                    onUpdateChart({ 
-                      config: { ...chart.config, color: e.target.value } 
+                  onChange={(e) =>
+                    onUpdateChart({
+                      config: { ...chart.config, color: e.target.value }
                     })
                   }
                   placeholder="#8884d8"
@@ -246,9 +223,9 @@ export function ChartBuilderOverview({
               <Switch
                 id="show-grid-lines"
                 checked={chart.config.showGridLines}
-                onCheckedChange={(checked) => 
-                  onUpdateChart({ 
-                    config: { ...chart.config, showGridLines: checked } 
+                onCheckedChange={(checked) =>
+                  onUpdateChart({
+                    config: { ...chart.config, showGridLines: checked }
                   })
                 }
               />
@@ -260,9 +237,9 @@ export function ChartBuilderOverview({
               <Switch
                 id="show-legend"
                 checked={chart.config.showLegend}
-                onCheckedChange={(checked) => 
-                  onUpdateChart({ 
-                    config: { ...chart.config, showLegend: checked } 
+                onCheckedChange={(checked) =>
+                  onUpdateChart({
+                    config: { ...chart.config, showLegend: checked }
                   })
                 }
               />
@@ -274,23 +251,23 @@ export function ChartBuilderOverview({
               <Switch
                 id="show-data-labels"
                 checked={chart.config.showDataLabels}
-                onCheckedChange={(checked) => 
-                  onUpdateChart({ 
-                    config: { ...chart.config, showDataLabels: checked } 
+                onCheckedChange={(checked) =>
+                  onUpdateChart({
+                    config: { ...chart.config, showDataLabels: checked }
                   })
                 }
               />
             </div>
-            <div className="space-y-2">  
+            <div className="space-y-2">
               <Label htmlFor="show-relative-values">
                 Show Relative Values (%)
               </Label>
               <Switch
                 id="show-relative-values"
                 checked={chart.config.showRelativeValues}
-                onCheckedChange={(checked) => 
-                  onUpdateChart({ 
-                    config: { ...chart.config, showRelativeValues: checked } 
+                onCheckedChange={(checked) =>
+                  onUpdateChart({
+                    config: { ...chart.config, showRelativeValues: checked }
                   })
                 }
               />
@@ -300,44 +277,43 @@ export function ChartBuilderOverview({
       </Card>
 
       {/* Year Range Selector */}
-      {availableYears.available.length > 1 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Data Range</CardTitle>
-            <CardDescription>
-              Select the year range to display in your chart
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-3">
-              <div className="flex justify-between text-sm">
-                <span>From: {currentYearRange[0]}</span>
-                <span>To: {currentYearRange[1]}</span>
-              </div>
-              <Slider
-                value={currentYearRange}
-                onValueChange={(value) => {
-                  onUpdateChart({
-                    config: {
-                      ...chart.config,
-                      yearRangeStart: value[0],
-                      yearRangeEnd: value[1]
-                    }
-                  });
-                }}
-                min={availableYears.min}
-                max={availableYears.max}
-                step={1}
-                className="w-full"
-              />
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>{availableYears.min}</span>
-                <span>{availableYears.max}</span>
-              </div>
+      {/* TODO: add year range selector */}
+      {/* <Card>
+        <CardHeader>
+          <CardTitle>Data Range</CardTitle>
+          <CardDescription>
+            Select the year range to display in your chart
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-3">
+            <div className="flex justify-between text-sm">
+              <span>From: {chart.config.yearRangeStart}</span>
+              <span>To: {chart.config.yearRangeEnd}</span>
             </div>
-          </CardContent>
-        </Card>
-      )}
+            <Slider
+              value={currentYearRange}
+              onValueChange={(value) => {
+                onUpdateChart({
+                  config: {
+                    ...chart.config,
+                    yearRangeStart: value[0],
+                    yearRangeEnd: value[1]
+                  }
+                });
+              }}
+              min={availableYears.min}
+              max={availableYears.max}
+              step={1}
+              className="w-full"
+            />
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>{availableYears.min}</span>
+              <span>{availableYears.max}</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card> */}
 
       {/* Data Series */}
       <Card>
@@ -379,11 +355,10 @@ export function ChartBuilderOverview({
                       <div className="text-sm text-muted-foreground">
                         {series.config.chartType || chart.config.chartType} chart
                         {series.filter.entity_cuis?.length && ` • ${series.filter.entity_cuis.length} entities`}
-                        {series.filter.years?.length && ` • ${series.filter.years.length} years`}
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center gap-2">
                     <div className="flex items-center gap-2">
                       <Label htmlFor={`series-${series.id}-enabled`} className="text-xs text-muted-foreground">
