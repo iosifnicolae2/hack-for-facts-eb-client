@@ -151,7 +151,7 @@ export function ChartRenderer({ chart, data, className, height = 400 }: ChartRen
     const isRelative = chart.config.showRelativeValues ?? false;
 
     return (
-      <ChartComponent data={timeSeriesData} margin={{ top: 20, right: 30, left: 40, bottom: 20 }}>
+      <ChartComponent data={timeSeriesData} margin={{ top: 20, right: 0, left: 30, bottom: 20 }}>
         {chart.config.showGridLines && <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />}
         <XAxis dataKey="year" className="text-xs fill-muted-foreground" tick={{ fontSize: 12 }} />
         <YAxis
@@ -169,13 +169,16 @@ export function ChartRenderer({ chart, data, className, height = 400 }: ChartRen
             name={series.label || 'Untitled'}
             fill={getSeriesColor(series.id)}
             stroke={getSeriesColor(series.id)}
+            animationDuration={300}
+            animationEasing="ease-in-out"
             {...extraSeriesProps}
           >
-            {chart.config.showDataLabels && (
+            {(series.config.showDataLabels || chart.config.showDataLabels) && (
               <LabelList
                 dataKey={`${series.id}.value`}
                 position="top"
-                className="text-xs fill-foreground"
+                offset={20}
+                className="text-xs fill-foreground text-center font-bold"
                 formatter={(label: unknown) => dataLabelFormatter(Number(label as number), isRelative)}
               />
             )}

@@ -88,7 +88,7 @@ const SeriesList = ({ chart, onAddSeries, onSeriesClick, onToggleSeries, onMoveS
     <CardHeader>
       <CardTitle className="flex items-center justify-between">
         <span>Data Series</span>
-        <Button size="icon" onClick={onAddSeries} className="rounded-full w-7 h-7" aria-label="Add new series">
+        <Button size="icon" onClick={onAddSeries} className="rounded-full w-7 h-7 cursor-pointer" aria-label="Add new series">
           <Plus className="h-4 w-4" />
         </Button>
       </CardTitle>
@@ -209,11 +209,14 @@ const ChartDisplayArea = ({ chart, chartData, isLoading, error, onAddSeries }: {
   };
 
   return (
-    <Card className="flex flex-col w-full h-full">
+    <Card className="flex flex-col w-full h-full" id="chart-display-area">
       <CardContent className="p-4 flex-grow min-h-[500px] flex items-center justify-center bg-muted/20">
         {renderContent()}
       </CardContent>
-      <p className="flex items-center justify-end text-sm text-muted-foreground bg-muted/20 w-full p-4">
+      <p className="flex items-center justify-between text-sm text-muted-foreground bg-muted/20 w-full p-4">
+        <a href={window.location.href} target="_blank">
+          <span className="font-bold">Transparenta.eu</span>
+        </a>
         <a href="https://mfinante.gov.ro/transparenta-bugetara" target="_blank">
           Sursă date: <span className="font-bold">Ministerul Finanțelor</span>
         </a>
@@ -255,7 +258,7 @@ export function ChartView() {
     <div className="container mx-auto py-8 px-4 md:px-6 space-y-6">
       <ChartViewHeader chart={chart} onConfigure={goToConfig} />
 
-      <div className="flex flex-row gap-6">
+      <div className="flex flex-col lg:flex-row gap-6">
         <ChartDisplayArea
           chart={chart}
           chartData={chartData}

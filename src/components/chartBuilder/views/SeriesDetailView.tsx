@@ -14,6 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Switch } from '@/components/ui/switch';
 
 
 export function SeriesDetailView() {
@@ -83,6 +84,14 @@ export function SeriesDetailView() {
                 {series?.config.color || chart.config.color}
               </span>
             </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <Label htmlFor="series-show-data-labels">Show Data Labels</Label>
+            <Switch
+              id="series-show-data-labels"
+              checked={series?.config.showDataLabels ?? false}
+              onCheckedChange={(checked) => updateSeriesField('config', { ...series?.config, showDataLabels: checked })}
+            />
           </div>
         </CardContent>
       </Card>
