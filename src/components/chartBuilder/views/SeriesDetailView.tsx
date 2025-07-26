@@ -6,9 +6,18 @@ import { Trash2, Settings } from 'lucide-react';
 import { SeriesConfiguration } from '@/schemas/chartBuilder';
 import { useChartBuilder } from '../hooks/useChartBuilder';
 import { SeriesFilter } from '../SeriesFilter';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+
 
 export function SeriesDetailView() {
-  const { chart, seriesId, updateSeries, deleteSeries, goToOverview } = useChartBuilder();
+  const { chart, seriesId, updateSeries, deleteSeries, goToOverview, goToConfig } = useChartBuilder();
   const series = chart.series.find(s => s.id === seriesId)
 
 
@@ -25,8 +34,8 @@ export function SeriesDetailView() {
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
           <p className="text-muted-foreground">Series not found</p>
-          <Button onClick={goToOverview} className="mt-4">
-            Back to Overview
+          <Button onClick={goToConfig} className="mt-4">
+            Back to Configuration
           </Button>
         </div>
       </div>
@@ -34,9 +43,8 @@ export function SeriesDetailView() {
   }
 
   const handleDeleteSeries = () => {
-    // TODO: show confirmation dialog
-    deleteSeries(series?.id || '');
     goToOverview();
+    deleteSeries(series?.id || '');
   };
 
   return (
@@ -94,19 +102,36 @@ export function SeriesDetailView() {
 
       {/* Actions */}
       <div className="flex justify-between pt-4">
-        <Button onClick={goToOverview} variant="outline" className="gap-2">
+        <Button onClick={goToConfig} variant="outline" className="gap-2">
           <Settings className="h-4 w-4" />
           Back to Configuration
         </Button>
 
-        <Button
-          onClick={handleDeleteSeries}
-          variant="destructive"
-          className="gap-2"
-        >
-          <Trash2 className="h-4 w-4" />
-          Delete Series
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="destructive"
+              className="gap-2"
+            >
+              <Trash2 className="h-4 w-4" />
+              Delete Series
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56">
+            <DropdownMenuLabel>Are you sure you want to delete this series?</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={handleDeleteSeries}
+              className="text-destructive focus:bg-destructive focus:text-white"
+            >
+              Delete
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              Cancel
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
       </div>
     </div>
   );

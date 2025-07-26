@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Eye } from 'lucide-react';
+import { Eye } from 'lucide-react';
 import { useChartBuilder } from '@/components/chartBuilder/hooks/useChartBuilder';
-import { ChartBuilderOverview } from '@/components/chartBuilder/views/ChartBuilderOverview';
+import ChartBuilderOverview from '../views/ChartBuilderOverview';
 
 export function ChartConfig() {
     const {
@@ -22,14 +22,6 @@ export function ChartConfig() {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                    <Button
-                        variant="outline"
-                        className="gap-2"
-                        onClick={() => goToOverview()}
-                    >
-                        <ArrowLeft className="h-4 w-4" />
-                        Back
-                    </Button>
                     <div>
                         <div className="flex items-center gap-3">
                             <h1 className="text-3xl font-bold tracking-tight">

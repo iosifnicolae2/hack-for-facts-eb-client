@@ -84,7 +84,6 @@ export function useChartBuilder(): UseChartBuilderReturn {
   }, [chart, updateChart, goToSeriesConfig]);
 
   const updateSeries = useCallback((seriesId: string, updates: Partial<SeriesConfiguration>) => {
-    console.log('updates', updates);
     updateChart({
       series: chart.series.map(s => s.id === seriesId ? { ...s, ...updates } : s),
     });

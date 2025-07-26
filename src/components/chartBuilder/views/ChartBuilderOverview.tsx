@@ -1,9 +1,9 @@
+import React, { useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import {
   Plus,
@@ -14,7 +14,6 @@ import {
   ChevronDown,
   BarChart3,
   LineChart,
-  PieChart,
   AreaChart
 } from 'lucide-react';
 import { Chart, SeriesConfiguration } from '@/schemas/chartBuilder';
@@ -25,18 +24,8 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger
-} from '@/components/ui/alert-dialog';
 import { ChartType } from '@/schemas/constants';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 interface ChartBuilderOverviewProps {
   chart: Chart;
@@ -49,7 +38,284 @@ interface ChartBuilderOverviewProps {
   onMoveSeriesDown: (seriesId: string) => void;
 }
 
-export function ChartBuilderOverview({
+const CHART_TYPE_ICONS: Record<ChartType, React.ReactNode> = {
+  line: <LineChart className="h-4 w-4" />,
+  bar: <BarChart3 className="h-4 w-4" />,
+  area: <AreaChart className="h-4 w-4" />,
+};
+
+const getChartTypeIcon = (chartType: ChartType) => {
+  return CHART_TYPE_ICONS[chartType] || <BarChart3 className="h-4 w-4" />;
+};
+
+const SettingsCard = React.memo(({ icon, title, description, children }: { icon: React.ReactNode; title: string; description: string; children: React.ReactNode }) => (
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center gap-2">
+        {icon}
+        {title}
+      </CardTitle>
+      <CardDescription>{description}</CardDescription>
+    </CardHeader>
+    <CardContent>{children}</CardContent>
+  </Card>
+));
+
+const ChartTypeSelect = React.memo(({ value, onValueChange }: { value: ChartType, onValueChange: (value: ChartType) => void }) => (
+  <Select value={value} onValueChange={onValueChange}>
+    <SelectTrigger>
+      <SelectValue />
+    </SelectTrigger>
+    <SelectContent>
+      {Object.entries(CHART_TYPE_ICONS).map(([type, icon]) => (
+        <SelectItem key={type} value={type}>
+          <div className="flex items-center gap-2">
+            {icon}
+            {`${type.charAt(0).toUpperCase() + type.slice(1)} Chart`}
+          </div>
+        </SelectItem>
+      ))}
+    </SelectContent>
+  </Select>
+));
+
+const ColorPicker = React.memo(({ value, onChange }: { value: string, onChange: (value: string) => void }) => (
+  <div className="flex gap-2">
+    <Input
+      type="color"
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="w-20 h-10 p-1 border rounded"
+      aria-label="Color Picker"
+    />
+    <Input
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder="#0000ff"
+      className="flex-1"
+    />
+  </div>
+));
+
+const ToggleSwitch = React.memo(({ id, label, checked, onCheckedChange }: { id: string, label: string, checked: boolean, onCheckedChange: (checked: boolean) => void }) => (
+  <div className="flex items-center justify-between space-y-2">
+    <Label htmlFor={id}>{label}</Label>
+    <Switch id={id} checked={checked} onCheckedChange={onCheckedChange} />
+  </div>
+));
+
+
+// ========== CHART INFORMATION COMPONENT ==========
+
+const ChartInfoCard = React.memo(({ chart, onUpdateChart }: Pick<ChartBuilderOverviewProps, 'chart' | 'onUpdateChart'>) => (
+  <SettingsCard
+    icon={<Settings className="h-5 w-5" />}
+    title="Chart Information"
+    description="Set the basic properties for your chart"
+  >
+    <div className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="chart-title">Chart Title *</Label>
+        <Input
+          id="chart-title"
+          value={chart.title}
+          onChange={(e) => onUpdateChart({ title: e.target.value })}
+          placeholder="Enter chart title..."
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="chart-description">Description</Label>
+        <Textarea
+          id="chart-description"
+          value={chart.description || ''}
+          onChange={(e) => onUpdateChart({ description: e.target.value })}
+          placeholder="Optional description for your chart..."
+          rows={3}
+        />
+      </div>
+    </div>
+  </SettingsCard>
+));
+
+const GlobalSettingsCard = React.memo(({ chart, onUpdateChart }: Pick<ChartBuilderOverviewProps, 'chart' | 'onUpdateChart'>) => {
+  const handleConfigChange = useCallback((updates: Partial<Chart['config']>) => {
+    onUpdateChart({ config: { ...chart.config, ...updates } });
+  }, [chart.config, onUpdateChart]);
+
+  return (
+    <SettingsCard
+      icon={getChartTypeIcon(chart.config.chartType)}
+      title="Global Chart Settings"
+      description="Default settings that apply to all series (can be overridden per series)"
+    >
+      <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label>Chart Type</Label>
+            <ChartTypeSelect
+              value={chart.config.chartType}
+              onValueChange={(value) => handleConfigChange({ chartType: value })}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="default-color">Default Color</Label>
+            <ColorPicker
+              value={chart.config.color}
+              onChange={(value) => handleConfigChange({ color: value })}
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <ToggleSwitch id="show-grid-lines" label="Show Grid Lines" checked={chart.config.showGridLines} onCheckedChange={(checked) => handleConfigChange({ showGridLines: checked })} />
+          <ToggleSwitch id="show-legend" label="Show Legend" checked={chart.config.showLegend} onCheckedChange={(checked) => handleConfigChange({ showLegend: checked })} />
+          <ToggleSwitch id="show-data-labels" label="Show Data Labels" checked={chart.config.showDataLabels} onCheckedChange={(checked) => handleConfigChange({ showDataLabels: checked })} />
+          <ToggleSwitch id="show-relative-values" label="Show Relative Values (%)" checked={chart.config.showRelativeValues} onCheckedChange={(checked) => handleConfigChange({ showRelativeValues: checked })} />
+        </div>
+      </div>
+    </SettingsCard>
+  );
+});
+
+const DeleteSeriesDialog = React.memo(({ onDelete }: { onDelete: () => void }) => (
+  <DropdownMenu>
+    <DropdownMenuTrigger asChild>
+      <Button variant="ghost" size="sm" title="Delete series">
+        <Trash2 className="h-4 w-4 text-destructive" />
+      </Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent className="w-56" align="end">
+      <DropdownMenuLabel>Are you sure you want to delete this series?</DropdownMenuLabel>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem
+        onClick={onDelete}
+        className="text-destructive focus:bg-destructive focus:text-white"
+      >
+        Delete
+      </DropdownMenuItem>
+    </DropdownMenuContent>
+  </DropdownMenu>
+));
+
+const SeriesItem = React.memo(({
+  series,
+  isFirst,
+  isLast,
+  chartColor,
+  onEdit,
+  onDelete,
+  onDuplicate,
+  onMoveUp,
+  onMoveDown,
+  onToggleEnabled,
+}: {
+  series: SeriesConfiguration;
+  index: number;
+  isFirst: boolean;
+  isLast: boolean;
+  chartColor: string;
+  onEdit: () => void;
+  onDelete: () => void;
+  onDuplicate: () => void;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
+  onToggleEnabled: (enabled: boolean) => void;
+}) => {
+  const seriesColor = series.config.color || chartColor || '#0000ff';
+
+  return (
+    <div className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+      <div className="flex items-center gap-4 flex-1 min-w-0">
+        <div className="w-4 h-4 rounded-full border flex-shrink-0" style={{ backgroundColor: seriesColor }} />
+        <div className="flex-1 min-w-0">
+          <div className="font-medium cursor-pointer truncate" onClick={onEdit} title={series.label}>{series.label}</div>
+          <div className="text-sm text-muted-foreground">
+            {series.config.chartType || 'Default'} chart
+            {/* {series.filter.entity_cuis?.length > 0 && ` • ${series.filter.entity_cuis.length} entities`} */}
+          </div>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-1 sm:gap-2">
+        <Switch
+          id={`series-${series.id}-enabled`}
+          checked={series.enabled}
+          onCheckedChange={onToggleEnabled}
+          aria-label={series.enabled ? 'Disable series' : 'Enable series'}
+        />
+        <div className="flex items-center">
+          <Button variant="ghost" size="icon" onClick={onMoveUp} disabled={isFirst} title="Move up"><ChevronUp className="h-4 w-4" /></Button>
+          <Button variant="ghost" size="icon" onClick={onMoveDown} disabled={isLast} title="Move down"><ChevronDown className="h-4 w-4" /></Button>
+        </div>
+        <Button variant="ghost" size="icon" onClick={onDuplicate} title="Duplicate series"><Copy className="h-4 w-4" /></Button>
+        <Button variant="ghost" size="icon" onClick={onEdit} title="Edit series"><Settings className="h-4 w-4" /></Button>
+        <DeleteSeriesDialog onDelete={onDelete} />
+      </div>
+    </div>
+  );
+});
+
+const SeriesList = React.memo(({ chart, onUpdateChart, ...props }: Pick<ChartBuilderOverviewProps, 'chart' | 'onUpdateChart' | 'onEditSeries' | 'onDeleteSeries' | 'onDuplicateSeries' | 'onMoveSeriesUp' | 'onMoveSeriesDown'>) => {
+  const handleToggleSeriesEnabled = useCallback((seriesId: string, enabled: boolean) => {
+    const updatedSeries = chart.series.map(s =>
+      s.id === seriesId ? { ...s, enabled, updatedAt: new Date().toISOString() } : s
+    );
+    onUpdateChart({ series: updatedSeries });
+  }, [chart.series, onUpdateChart]);
+
+  if (chart.series.length === 0) {
+    return (
+      <div className="text-center py-8 text-muted-foreground">
+        <BarChart3 className="h-12 w-12 mx-auto mb-4 opacity-50" />
+        <p className="text-lg font-medium mb-2">No series added yet</p>
+        <p className="text-sm">Click "Add Series" to start building your chart</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      {chart.series.map((series, index) => (
+        <SeriesItem
+          key={series.id}
+          series={series}
+          index={index}
+          isFirst={index === 0}
+          isLast={index === chart.series.length - 1}
+          chartColor={chart.config.color}
+          onEdit={() => props.onEditSeries(series.id)}
+          onDelete={() => props.onDeleteSeries(series.id)}
+          onDuplicate={() => props.onDuplicateSeries(series.id)}
+          onMoveUp={() => props.onMoveSeriesUp(series.id)}
+          onMoveDown={() => props.onMoveSeriesDown(series.id)}
+          onToggleEnabled={(enabled) => handleToggleSeriesEnabled(series.id, enabled)}
+        />
+      ))}
+    </div>
+  );
+});
+
+const DataSeriesCard = React.memo((props: ChartBuilderOverviewProps) => (
+  <Card>
+    <CardHeader>
+      <div className="flex items-center justify-between">
+        <div>
+          <CardTitle>Data Series</CardTitle>
+          <CardDescription>Add and manage data series for your chart</CardDescription>
+        </div>
+        <Button onClick={props.onAddSeries} className="gap-2">
+          <Plus className="h-4 w-4" />
+          Add Series
+        </Button>
+      </div>
+    </CardHeader>
+    <CardContent>
+      <SeriesList {...props} />
+    </CardContent>
+  </Card>
+));
+
+
+export default function ChartBuilderOverview({
   chart,
   onUpdateChart,
   onAddSeries,
@@ -60,384 +326,21 @@ export function ChartBuilderOverview({
   onMoveSeriesDown,
 }: ChartBuilderOverviewProps) {
 
-  const getChartTypeIcon = (chartType: string) => {
-    switch (chartType) {
-      case 'line': return <LineChart className="h-4 w-4" />;
-      case 'bar': return <BarChart3 className="h-4 w-4" />;
-      case 'pie': return <PieChart className="h-4 w-4" />;
-      case 'area': return <AreaChart className="h-4 w-4" />;
-      default: return <BarChart3 className="h-4 w-4" />;
-    }
-  };
-
-  const getSeriesColor = (series: SeriesConfiguration) => {
-    return series.config.color || chart.config.color || '#8884d8';
-  };
-
-  const handleToggleSeriesEnabled = (seriesId: string, enabled: boolean) => {
-    const updatedSeries = chart.series.map(series =>
-      series.id === seriesId
-        ? { ...series, enabled, updatedAt: new Date().toISOString() }
-        : series
-    );
-    onUpdateChart({ series: updatedSeries });
-  };
-
   return (
     <div className="space-y-6 p-1">
-      {/* Chart Basic Information */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Settings className="h-5 w-5" />
-            Chart Information
-          </CardTitle>
-          <CardDescription>
-            Set the basic properties for your chart
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="chart-title">Chart Title *</Label>
-            <Input
-              id="chart-title"
-              value={chart.title}
-              onChange={(e) => onUpdateChart({ title: e.target.value })}
-              placeholder="Enter chart title..."
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="chart-description">Description</Label>
-            <Textarea
-              id="chart-description"
-              value={chart.description || ''}
-              onChange={(e) => onUpdateChart({ description: e.target.value })}
-              placeholder="Optional description for your chart..."
-              rows={3}
-            />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Global Chart Configuration */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            {getChartTypeIcon(chart.config.chartType)}
-            Global Chart Settings
-          </CardTitle>
-          <CardDescription>
-            Default settings that apply to all series (can be overridden per series)
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label>Chart Type</Label>
-              <Select
-                value={chart.config.chartType}
-                onValueChange={(value) =>
-                  onUpdateChart({
-                    config: { ...chart.config, chartType: value as ChartType }
-                  })
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="line">
-                    <div className="flex items-center gap-2">
-                      <LineChart className="h-4 w-4" />
-                      Line Chart
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="bar">
-                    <div className="flex items-center gap-2">
-                      <BarChart3 className="h-4 w-4" />
-                      Bar Chart
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="area">
-                    <div className="flex items-center gap-2">
-                      <AreaChart className="h-4 w-4" />
-                      Area Chart
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="pie">
-                    <div className="flex items-center gap-2">
-                      <PieChart className="h-4 w-4" />
-                      Pie Chart
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="default-color">Default Color</Label>
-              <div className="flex gap-2">
-                <Input
-                  id="default-color"
-                  type="color"
-                  value={chart.config.color}
-                  onChange={(e) =>
-                    onUpdateChart({
-                      config: { ...chart.config, color: e.target.value }
-                    })
-                  }
-                  className="w-20 h-10 p-1 border rounded"
-                />
-                <Input
-                  value={chart.config.color}
-                  onChange={(e) =>
-                    onUpdateChart({
-                      config: { ...chart.config, color: e.target.value }
-                    })
-                  }
-                  placeholder="#8884d8"
-                  className="flex-1"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="show-grid-lines">
-                Show Grid Lines
-              </Label>
-              <Switch
-                id="show-grid-lines"
-                checked={chart.config.showGridLines}
-                onCheckedChange={(checked) =>
-                  onUpdateChart({
-                    config: { ...chart.config, showGridLines: checked }
-                  })
-                }
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="show-legend">
-                Show Legend
-              </Label>
-              <Switch
-                id="show-legend"
-                checked={chart.config.showLegend}
-                onCheckedChange={(checked) =>
-                  onUpdateChart({
-                    config: { ...chart.config, showLegend: checked }
-                  })
-                }
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="show-data-labels">
-                Show Data Labels
-              </Label>
-              <Switch
-                id="show-data-labels"
-                checked={chart.config.showDataLabels}
-                onCheckedChange={(checked) =>
-                  onUpdateChart({
-                    config: { ...chart.config, showDataLabels: checked }
-                  })
-                }
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="show-relative-values">
-                Show Relative Values (%)
-              </Label>
-              <Switch
-                id="show-relative-values"
-                checked={chart.config.showRelativeValues}
-                onCheckedChange={(checked) =>
-                  onUpdateChart({
-                    config: { ...chart.config, showRelativeValues: checked }
-                  })
-                }
-              />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Year Range Selector */}
-      {/* TODO: add year range selector */}
-      {/* <Card>
-        <CardHeader>
-          <CardTitle>Data Range</CardTitle>
-          <CardDescription>
-            Select the year range to display in your chart
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-3">
-            <div className="flex justify-between text-sm">
-              <span>From: {chart.config.yearRangeStart}</span>
-              <span>To: {chart.config.yearRangeEnd}</span>
-            </div>
-            <Slider
-              value={currentYearRange}
-              onValueChange={(value) => {
-                onUpdateChart({
-                  config: {
-                    ...chart.config,
-                    yearRangeStart: value[0],
-                    yearRangeEnd: value[1]
-                  }
-                });
-              }}
-              min={availableYears.min}
-              max={availableYears.max}
-              step={1}
-              className="w-full"
-            />
-            <div className="flex justify-between text-xs text-muted-foreground">
-              <span>{availableYears.min}</span>
-              <span>{availableYears.max}</span>
-            </div>
-          </div>
-        </CardContent>
-      </Card> */}
-
-      {/* Data Series */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle>Data Series</CardTitle>
-              <CardDescription>
-                Add and manage data series for your chart
-              </CardDescription>
-            </div>
-            <Button onClick={onAddSeries} className="gap-2">
-              <Plus className="h-4 w-4" />
-              Add Series
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent>
-          {chart.series.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
-              <BarChart3 className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p className="text-lg font-medium mb-2">No series added yet</p>
-              <p className="text-sm">Click "Add Series" to start building your chart</p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {chart.series.map((series, index) => (
-                <div
-                  key={series.id}
-                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <div
-                      className="w-4 h-4 rounded-full border"
-                      style={{ backgroundColor: getSeriesColor(series) }}
-                    />
-                    <div>
-                      <div className="font-medium">{series.label}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {series.config.chartType || chart.config.chartType} chart
-                        {series.filter.entity_cuis?.length && ` • ${series.filter.entity_cuis.length} entities`}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-2">
-                      <Label htmlFor={`series-${series.id}-enabled`} className="text-xs text-muted-foreground">
-                        Enabled
-                      </Label>
-                      <Switch
-                        id={`series-${series.id}-enabled`}
-                        checked={series.enabled}
-                        onCheckedChange={(enabled) => handleToggleSeriesEnabled(series.id, enabled)}
-                      />
-                    </div>
-                    <Badge variant="outline" className="text-xs">
-                      Series {index + 1}
-                    </Badge>
-                    <div className="flex items-center">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => onMoveSeriesUp(series.id)}
-                        disabled={index === 0}
-                        title="Move up"
-                        className="h-8 w-8 p-1"
-                      >
-                        <ChevronUp className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => onMoveSeriesDown(series.id)}
-                        disabled={index === chart.series.length - 1}
-                        title="Move down"
-                        className="h-8 w-8 p-1"
-                      >
-                        <ChevronDown className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => onDuplicateSeries(series.id)}
-                      title="Duplicate series"
-                    >
-                      <Copy className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => onEditSeries(series.id)}
-                      title="Edit series"
-                    >
-                      <Settings className="h-4 w-4" />
-                    </Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="ghost" size="sm" title="Delete series">
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Delete Series</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Are you sure you want to delete "{series.label}"? This action cannot be undone.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => onDeleteSeries(series.id)}
-                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                          >
-                            Delete
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Preview Button */}
-      {chart.series.length > 0 && (
-        <div className="text-center pt-4">
-          <p className="text-sm text-muted-foreground">
-            Changes are automatically saved. View your chart on the main chart page.
-          </p>
-        </div>
-      )}
+      <ChartInfoCard chart={chart} onUpdateChart={onUpdateChart} />
+      <GlobalSettingsCard chart={chart} onUpdateChart={onUpdateChart} />
+      {/* TODO: Add Year Range Selector Card here */}
+      <DataSeriesCard
+        chart={chart}
+        onUpdateChart={onUpdateChart}
+        onAddSeries={onAddSeries}
+        onEditSeries={onEditSeries}
+        onDeleteSeries={onDeleteSeries}
+        onDuplicateSeries={onDuplicateSeries}
+        onMoveSeriesUp={onMoveSeriesUp}
+        onMoveSeriesDown={onMoveSeriesDown}
+      />
     </div>
   );
-} 
+}

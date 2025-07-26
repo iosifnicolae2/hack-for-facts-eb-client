@@ -6,7 +6,7 @@ import { ChartTypeEnum, DEFAULT_CHART } from './constants';
  */
 export const ChartConfigSchema = z.object({
   chartType: ChartTypeEnum,
-  color: z.string().default('#8884d8'),
+  color: z.string().default('#0000ff'),
   showDataLabels: z.boolean().default(false),
   showGridLines: z.boolean().default(true),
   showLegend: z.boolean().default(true),
@@ -55,9 +55,9 @@ export type AnalyticsFilterType = z.infer<typeof AnalyticsFilterSchema>;
 // ============================================================================
 
 export const SeriesConfigurationSchema = z.object({
-  id: z.string(),
+  id: z.string().default(() => crypto.randomUUID()),
   enabled: z.boolean().default(true),
-  label: z.string().min(1, 'Series label is required'),
+  label: z.string().default(''),
   filter: AnalyticsFilterSchema,
   filterMetadata: z.record(z.string(), z.string()).default({}),
   config: SeriesConfigSchema,

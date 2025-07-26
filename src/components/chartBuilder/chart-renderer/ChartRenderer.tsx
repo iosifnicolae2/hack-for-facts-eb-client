@@ -56,10 +56,10 @@ export function ChartRenderer({ chart, data, className, height = 400 }: ChartRen
     return data.filter(d => enabledLabels.has(d.seriesId));
   }, [data, enabledSeries]);
 
-  const getSeriesColor = useCallback((seriesLabel: string): string => {
-    const seriesConfig = enabledSeries.find(s => s.label === seriesLabel);
+  const getSeriesColor = useCallback((seriesId: string): string => {
+    const seriesConfig = enabledSeries.find(s => s.id === seriesId);
     // Fallback color generation is now more robust and distributed.
-    const index = enabledSeries.findIndex(s => s.label === seriesLabel);
+    const index = enabledSeries.findIndex(s => s.id === seriesId);
     return seriesConfig?.config.color || chart.config.color || `hsl(${index * 137.5 % 360}, 70%, 50%)`;
   }, [enabledSeries, chart.config.color]);
 
@@ -166,7 +166,7 @@ export function ChartRenderer({ chart, data, className, height = 400 }: ChartRen
           <SeriesComponent
             // The dataKey now points to the 'value' property within each series object.
             dataKey={`${series.id}.value`}
-            name={series.label}
+            name={series.label || 'Untitled'}
             fill={getSeriesColor(series.id)}
             stroke={getSeriesColor(series.id)}
             {...extraSeriesProps}
