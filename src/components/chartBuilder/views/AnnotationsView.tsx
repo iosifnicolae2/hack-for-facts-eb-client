@@ -15,7 +15,7 @@ export function AnnotationsView({
   onBack
 }: AnnotationsViewProps) {
   return (
-    <div className="space-y-6 max-h-[70vh] overflow-y-auto p-1">
+    <div className="space-y-6 p-1">
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">

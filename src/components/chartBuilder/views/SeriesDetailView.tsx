@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Save, Trash2, ArrowLeft, Filter } from 'lucide-react';
+import { Trash2, Filter, Settings } from 'lucide-react';
 import { Chart, SeriesConfiguration, AnalyticsFilterType } from '@/schemas/chartBuilder';
 import { useState, useEffect } from 'react';
 import { useFilterSearch } from '@/lib/hooks/useLineItemsFilter';
@@ -64,135 +64,82 @@ export function SeriesDetailView({
     setSelectedEntityTypeOptions,
   } = useFilterSearch();
 
-  // Initialize filter state from series when component mounts or series changes
+  // Auto-save whenever series data changes
   useEffect(() => {
-    if (!series || hasInitializedFilters) return;
+    if (!hasInitializedFilters || !series) return;
+    
+    const timeoutId = setTimeout(() => {
+      onUpdateSeries(series.id, {
+        filter: currentFilterState as AnalyticsFilterType,
+        updatedAt: new Date()
+      });
+    }, 1000); // Debounce auto-save by 1 second
 
-    console.log('Initializing filters from series:', series.filter);
+    return () => clearTimeout(timeoutId);
+  }, [currentFilterState, hasInitializedFilters, series?.id, onUpdateSeries]);
 
-    // Convert series filter back to UI state format
-    const { filter } = series;
-
-    // Clear existing filters first
-    setSelectedYearOptions([]);
-    setSelectedEntityOptions([]);
-    setSelectedUatOptions([]);
-    setSelectedEconomicClassificationOptions([]);
-    setSelectedFunctionalClassificationOptions([]);
-    setMinAmount(undefined);
-    setMaxAmount(undefined);
-    setSelectedAccountTypeOptions([]);
-    setReportType(undefined);
-    setIsMainCreditor(undefined);
-    setIsUat(undefined);
-    setFunctionalPrefix(undefined);
-    setEconomicPrefix(undefined);
-    setSelectedEntityTypeOptions([]);
-
-    // Then set values from series filter
-    if (filter.years?.length) {
-      setSelectedYearOptions(filter.years.map(year => ({ id: year, label: String(year) })));
+  // Initialize filters from series configuration when component mounts
+  useEffect(() => {
+    if (!series?.filter || hasInitializedFilters) return;
+    
+    // Set filter state from series configuration
+    if (series.filter.years) {
+      setSelectedYearOptions(series.filter.years.map(year => ({ id: year.toString(), value: year, label: year.toString() })));
     }
-    if (filter.entity_cuis?.length) {
-      setSelectedEntityOptions(filter.entity_cuis.map(cui => ({ id: cui, label: cui })));
+    if (series.filter.entity_cuis) {
+      setSelectedEntityOptions(series.filter.entity_cuis.map(cui => ({ id: cui, value: cui, label: cui })));
     }
-    if (filter.uat_ids?.length) {
-      setSelectedUatOptions(filter.uat_ids.map(id => ({ id: String(id), label: String(id) })));
+    if (series.filter.uat_ids) {
+      setSelectedUatOptions(series.filter.uat_ids.map(id => ({ id: id.toString(), value: id, label: id.toString() })));
     }
-    if (filter.economic_codes?.length) {
-      setSelectedEconomicClassificationOptions(filter.economic_codes.map(code => ({ id: code, label: code })));
+    if (series.filter.economic_codes) {
+      setSelectedEconomicClassificationOptions(series.filter.economic_codes.map(code => ({ id: code, value: code, label: code })));
     }
-    if (filter.functional_codes?.length) {
-      setSelectedFunctionalClassificationOptions(filter.functional_codes.map(code => ({ id: code, label: code })));
+    if (series.filter.functional_codes) {
+      setSelectedFunctionalClassificationOptions(series.filter.functional_codes.map(code => ({ id: code, value: code, label: code })));
     }
-    if (filter.min_amount !== undefined) {
-      setMinAmount(String(filter.min_amount));
+    if (series.filter.account_categories) {
+      setSelectedAccountTypeOptions(series.filter.account_categories.map(cat => ({ 
+        id: cat,
+        value: cat, 
+        label: cat === 'ch' ? 'Cheltuieli' : 'Venituri' 
+      })));
     }
-    if (filter.max_amount !== undefined) {
-      setMaxAmount(String(filter.max_amount));
+    if (series.filter.report_type) {
+      setReportType(series.filter.report_type);
     }
-    if (filter.account_categories?.length) {
-      setSelectedAccountTypeOptions(filter.account_categories.map(cat => ({ id: cat, label: cat === 'ch' ? 'Cheltuieli' : 'Venituri' })));
+    if (series.filter.min_amount !== undefined) {
+      setMinAmount(series.filter.min_amount.toString());
     }
-    if (filter.report_type) {
-      setReportType(filter.report_type);
+    if (series.filter.max_amount !== undefined) {
+      setMaxAmount(series.filter.max_amount.toString());
     }
-    if (filter.is_main_creditor !== undefined) {
-      setIsMainCreditor(filter.is_main_creditor);
+    if (series.filter.is_main_creditor !== undefined) {
+      setIsMainCreditor(series.filter.is_main_creditor);
     }
-    if (filter.is_uat !== undefined) {
-      setIsUat(filter.is_uat);
+    if (series.filter.is_uat !== undefined) {
+      setIsUat(series.filter.is_uat);
     }
-    if (filter.functional_prefixes?.length) {
-      setFunctionalPrefix(filter.functional_prefixes[0]);
+    if (series.filter.functional_prefixes && series.filter.functional_prefixes.length > 0) {
+      setFunctionalPrefix(series.filter.functional_prefixes[0]);
     }
-    if (filter.economic_prefixes?.length) {
-      setEconomicPrefix(filter.economic_prefixes[0]);
+    if (series.filter.economic_prefixes && series.filter.economic_prefixes.length > 0) {
+      setEconomicPrefix(series.filter.economic_prefixes[0]);
     }
-    if (filter.entity_types?.length) {
-      setSelectedEntityTypeOptions(filter.entity_types.map(type => ({ id: type, label: type })));
+    if (series.filter.entity_types) {
+      setSelectedEntityTypeOptions(series.filter.entity_types.map(type => ({ id: type, value: type, label: type })));
     }
-
+    
     setHasInitializedFilters(true);
-  }, [series, hasInitializedFilters]);
+  }, [series?.filter, hasInitializedFilters, setSelectedYearOptions, setSelectedEntityOptions, setSelectedUatOptions, setSelectedEconomicClassificationOptions, setSelectedFunctionalClassificationOptions, setSelectedAccountTypeOptions, setReportType, setMinAmount, setMaxAmount, setIsMainCreditor, setIsUat, setFunctionalPrefix, setEconomicPrefix, setSelectedEntityTypeOptions]);
 
-  // Reset initialization when series changes
-  useEffect(() => {
-    setHasInitializedFilters(false);
-  }, [selectedSeriesId]);
-
-  if (!series) {
-    return (
-      <div className="flex flex-col items-center justify-center h-64 space-y-4">
-        <p className="text-muted-foreground">Series not found</p>
-        <Button onClick={onBack} variant="outline">
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Overview
-        </Button>
-      </div>
-    );
-  }
-
-  const updateSeriesField = (field: keyof SeriesConfiguration, value: string | AnalyticsFilterType | Date) => {
-    onUpdateSeries(series.id, { [field]: value });
+  // Update series label with auto-save
+  const updateSeriesField = (field: keyof SeriesConfiguration, value: string | object) => {
+    if (!series) return;
+    onUpdateSeries(series.id, { [field]: value, updatedAt: new Date() });
   };
 
-  const updateSeriesConfig = (configUpdates: Partial<SeriesConfiguration['config']>) => {
-    onUpdateSeries(series.id, {
-      config: { ...series.config, ...configUpdates }
-    });
-  };
-
-  const handleSaveFilters = () => {
-    // Convert current filter state to AnalyticsFilter format and save to series
-    const analyticsFilter: AnalyticsFilterType = {
-      years: currentFilterState.years && currentFilterState.years.length > 0 ? currentFilterState.years : undefined,
-      entity_cuis: currentFilterState.entity_cuis && currentFilterState.entity_cuis.length > 0 ? currentFilterState.entity_cuis : undefined,
-      uat_ids: currentFilterState.uat_ids && currentFilterState.uat_ids.length > 0 ? currentFilterState.uat_ids : undefined,
-      economic_codes: currentFilterState.economic_codes && currentFilterState.economic_codes.length > 0 ? currentFilterState.economic_codes : undefined,
-      functional_codes: currentFilterState.functional_codes && currentFilterState.functional_codes.length > 0 ? currentFilterState.functional_codes : undefined,
-      min_amount: currentFilterState.min_amount,
-      max_amount: currentFilterState.max_amount,
-      account_categories: currentFilterState.account_categories && currentFilterState.account_categories.length > 0 ? currentFilterState.account_categories : undefined,
-      report_type: currentFilterState.report_type,
-      is_main_creditor: currentFilterState.is_main_creditor,
-      is_uat: currentFilterState.is_uat,
-      functional_prefixes: currentFilterState.functional_prefixes,
-      economic_prefixes: currentFilterState.economic_prefixes,
-      entity_types: currentFilterState.entity_types && currentFilterState.entity_types.length > 0 ? currentFilterState.entity_types : undefined,
-    };
-
-    console.log('Saving filters to series:', analyticsFilter);
-    
-    onUpdateSeries(series.id, { 
-      filter: analyticsFilter,
-      updatedAt: new Date() 
-    });
-    
-    onBack();
-  };
-
-  // Count active filters for display
+  // Calculate active filter count for display
   const activeFilterCount = [
     selectedYearOptions,
     selectedEntityOptions,
@@ -210,14 +157,110 @@ export function SeriesDetailView({
     (functionalPrefix ? 1 : 0) +
     (economicPrefix ? 1 : 0);
 
+  if (!series) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="text-center">
+          <p className="text-muted-foreground">Series not found</p>
+          <Button onClick={onBack} className="mt-4">
+            Back to Overview
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-6 max-h-[70vh] overflow-y-auto p-1">
+    <div className="space-y-6 p-1">
+      {/* Filter Summary - Moved to top */}
+      {activeFilterCount > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Filter className="h-4 w-4" />
+              Applied Filters ({activeFilterCount})
+            </CardTitle>
+            <CardDescription>
+              Current filter configuration for this data series
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+              {selectedYearOptions.length > 0 && (
+                <div className="flex flex-col gap-1">
+                  <strong className="text-foreground">Years:</strong>
+                  <div className="flex flex-wrap gap-1">
+                    {selectedYearOptions.map(year => (
+                      <Badge key={year.id} variant="secondary" className="text-xs">
+                        {year.label}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {selectedEntityOptions.length > 0 && (
+                <div className="flex flex-col gap-1">
+                  <strong className="text-foreground">Entities:</strong>
+                  <Badge variant="outline" className="text-xs w-fit">
+                    {selectedEntityOptions.length} selected
+                  </Badge>
+                </div>
+              )}
+              {selectedAccountTypeOptions.length > 0 && (
+                <div className="flex flex-col gap-1">
+                  <strong className="text-foreground">Account Types:</strong>
+                  <div className="flex flex-wrap gap-1">
+                    {selectedAccountTypeOptions.map(account => (
+                      <Badge key={account.id} variant="secondary" className="text-xs">
+                        {account.label}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {selectedEconomicClassificationOptions.length > 0 && (
+                <div className="flex flex-col gap-1">
+                  <strong className="text-foreground">Economic Classifications:</strong>
+                  <Badge variant="outline" className="text-xs w-fit">
+                    {selectedEconomicClassificationOptions.length} selected
+                  </Badge>
+                </div>
+              )}
+              {selectedFunctionalClassificationOptions.length > 0 && (
+                <div className="flex flex-col gap-1">
+                  <strong className="text-foreground">Functional Classifications:</strong>
+                  <Badge variant="outline" className="text-xs w-fit">
+                    {selectedFunctionalClassificationOptions.length} selected
+                  </Badge>
+                </div>
+              )}
+              {reportType && (
+                <div className="flex flex-col gap-1">
+                  <strong className="text-foreground">Report Type:</strong>
+                  <Badge variant="secondary" className="text-xs w-fit">{reportType}</Badge>
+                </div>
+              )}
+              {(minAmount || maxAmount) && (
+                <div className="flex flex-col gap-1">
+                  <strong className="text-foreground">Amount Range:</strong>
+                  <Badge variant="secondary" className="text-xs w-fit">
+                    {minAmount ? `≥ ${minAmount.toLocaleString()} RON` : ''} 
+                    {minAmount && maxAmount ? ' - ' : ''}
+                    {maxAmount ? `≤ ${maxAmount.toLocaleString()} RON` : ''}
+                  </Badge>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Series Basic Info */}
       <Card>
         <CardHeader>
           <CardTitle>Series Configuration</CardTitle>
           <CardDescription>
-            Configure the label, color, and chart type for this data series
+            Configure the label and appearance for this data series. Changes are automatically saved.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -225,115 +268,63 @@ export function SeriesDetailView({
             <Label htmlFor="series-label">Series Label *</Label>
             <Input
               id="series-label"
-              value={series.label}
+              value={series?.label || ''}
               onChange={(e) => updateSeriesField('label', e.target.value)}
               placeholder="Enter series label..."
             />
-            {validationErrors[`series.${series.id}.label`] && (
+            {validationErrors[`series.${series?.id}.label`] && (
               <p className="text-sm text-destructive">
-                {validationErrors[`series.${series.id}.label`][0]}
+                {validationErrors[`series.${series?.id}.label`][0]}
               </p>
             )}
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="series-color">Series Color</Label>
-            <div className="flex gap-2">
-              <Input
+            <div className="flex items-center gap-2">
+              <input
                 id="series-color"
                 type="color"
-                value={series.config.color || chart.config.color}
-                onChange={(e) => updateSeriesConfig({ color: e.target.value })}
-                className="w-20 h-10 p-1 border rounded"
+                value={series?.config.color || chart.config.color}
+                onChange={(e) => updateSeriesField('config', { ...series?.config, color: e.target.value })}
+                className="w-12 h-8 rounded border cursor-pointer"
               />
-              <Input
-                value={series.config.color || chart.config.color}
-                onChange={(e) => updateSeriesConfig({ color: e.target.value })}
-                placeholder="#8884d8"
-                className="flex-1"
-              />
+              <span className="text-sm text-muted-foreground">
+                {series?.config.color || chart.config.color}
+              </span>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Data Filters */}
+      {/* Filter Configuration */}
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="flex items-center gap-2">
-                <Filter className="h-5 w-5" />
-                Data Filters
-              </CardTitle>
-              <CardDescription>
-                Configure the filters to determine what data this series will display
-              </CardDescription>
-            </div>
-            {activeFilterCount > 0 && (
-              <Badge variant="secondary">
-                {activeFilterCount} filter{activeFilterCount !== 1 ? 's' : ''} active
-              </Badge>
-            )}
-          </div>
+          <CardTitle>Data Filters</CardTitle>
+          <CardDescription>
+            Use the filter options below to specify which data should be included in this series.
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="text-sm text-muted-foreground mb-4">
-            Use the filter options below to specify which data should be included in this series.
-            The selected filters will be used to query the analytics API.
-          </div>
           <LineItemsFilter isInModal={true} />
         </CardContent>
       </Card>
 
-      {/* Filter Preview */}
-      {activeFilterCount > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm">Filter Summary</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-xs text-muted-foreground space-y-1">
-              {selectedYearOptions.length > 0 && (
-                <div><strong>Years:</strong> {selectedYearOptions.map(y => y.label).join(', ')}</div>
-              )}
-              {selectedEntityOptions.length > 0 && (
-                <div><strong>Entities:</strong> {selectedEntityOptions.length} selected</div>
-              )}
-              {selectedAccountTypeOptions.length > 0 && (
-                <div><strong>Account Types:</strong> {selectedAccountTypeOptions.map(a => a.label).join(', ')}</div>
-              )}
-              {reportType && (
-                <div><strong>Report Type:</strong> {reportType}</div>
-              )}
-              {minAmount && <div><strong>Min Amount:</strong> {minAmount} RON</div>}
-              {maxAmount && <div><strong>Max Amount:</strong> {maxAmount} RON</div>}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
       {/* Actions */}
       <div className="flex justify-between pt-4">
         <Button onClick={onBack} variant="outline" className="gap-2">
-          <ArrowLeft className="h-4 w-4" />
-          Back to Overview
+          <Settings className="h-4 w-4" />
+          Back to Configuration
         </Button>
         
-        <div className="flex gap-2">
-          <Button
-            onClick={() => onDeleteSeries(series.id)}
-            variant="destructive"
-            className="gap-2"
-          >
-            <Trash2 className="h-4 w-4" />
-            Delete Series
-          </Button>
-          <Button onClick={handleSaveFilters} className="gap-2">
-            <Save className="h-4 w-4" />
-            Save & Continue
-          </Button>
-        </div>
+        <Button
+          onClick={() => onDeleteSeries(series?.id || '')}
+          variant="destructive"
+          className="gap-2"
+        >
+          <Trash2 className="h-4 w-4" />
+          Delete Series
+        </Button>
       </div>
     </div>
   );

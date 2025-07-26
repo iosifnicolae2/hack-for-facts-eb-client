@@ -27,6 +27,9 @@ export const ChartConfigSchema = z.object({
   showLegend: z.boolean().default(true),
   animationEnabled: z.boolean().default(true),
   stacked: z.boolean().default(false),
+  showRelativeValues: z.boolean().default(false),
+  yearRangeStart: z.number().optional(),
+  yearRangeEnd: z.number().optional(),
 });
 
 export type ChartConfig = z.infer<typeof ChartConfigSchema>;
@@ -70,6 +73,7 @@ export type AnalyticsFilterType = z.infer<typeof AnalyticsFilterSchema>;
 
 export const SeriesConfigurationSchema = z.object({
   id: z.string(),
+  enabled: z.boolean().default(true),
   label: z.string().min(1, 'Series label is required'),
   filter: AnalyticsFilterSchema,
   config: SeriesConfigSchema,
@@ -291,6 +295,7 @@ export const DEFAULT_CHART_CONFIG: ChartConfig = {
   showLegend: true,
   animationEnabled: true,
   stacked: false,
+  showRelativeValues: false,
 };
 
 export const DEFAULT_SERIES_CONFIG: SeriesConfig = {

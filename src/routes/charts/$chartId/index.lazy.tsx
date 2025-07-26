@@ -3,13 +3,16 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Settings, BarChart3, LineChart, TrendingUp, ScatterChart, AlertCircle } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { ArrowLeft, Settings, BarChart3, LineChart, TrendingUp, ScatterChart, AlertCircle, ChevronUp, ChevronDown } from 'lucide-react';
 import { Chart, AnalyticsInput } from '@/schemas/chartBuilder';
-import { loadSavedCharts, getChartAnalytics } from '@/lib/api/chartBuilder';
+import { loadSavedCharts, getChartAnalytics, saveChart } from '@/lib/api/chartBuilder';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { useQuery } from '@tanstack/react-query';
-import { ChartRenderer } from '@/components/chartBuilder/ChartRenderer';
+import { ChartRenderer } from '@/components/chartBuilder/chart-renderer/ChartRenderer';
+import { ChartQuickConfig } from '@/components/chartBuilder/ChartQuickConfig';
 
 export const Route = createLazyFileRoute("/charts/$chartId/")({
   component: ChartDetailPage,
@@ -24,34 +27,125 @@ function ChartDetailPage() {
 
   // Load chart data
   useEffect(() => {
+
+    const loadChart = async () => {
+      try {
+        setIsLoadingChart(true);
+        const savedCharts = await loadSavedCharts();
+        const foundChart = savedCharts.find((c: Chart) => c.id === chartId);
+
+        if (!foundChart) {
+          setError('Chart not found');
+          return;
+        }
+
+        setChart(foundChart);
+      } catch (loadError) {
+        console.error('Failed to load chart:', loadError);
+        setError('Failed to load chart');
+      } finally {
+        setIsLoadingChart(false);
+      }
+    };
+    
     loadChart();
   }, [chartId]);
 
-  const loadChart = async () => {
+
+  const handleToggleSeriesEnabled = async (seriesId: string, enabled: boolean) => {
+    if (!chart) return;
+
+    const updatedChart = {
+      ...chart,
+      series: chart.series.map(series =>
+        series.id === seriesId
+          ? { ...series, enabled, updatedAt: new Date() }
+          : series
+      ),
+      updatedAt: new Date()
+    };
+
+    setChart(updatedChart);
+
+    // Save the updated chart
     try {
-      setIsLoadingChart(true);
-      const savedCharts = await loadSavedCharts();
-      const foundChart = savedCharts.find((c: Chart) => c.id === chartId);
-      
-      if (!foundChart) {
-        setError('Chart not found');
-        return;
-      }
-      
-      setChart(foundChart);
-    } catch (loadError) {
-      console.error('Failed to load chart:', loadError);
-      setError('Failed to load chart');
-    } finally {
-      setIsLoadingChart(false);
+      await saveChart(updatedChart);
+    } catch (error) {
+      console.error('Failed to save chart:', error);
+      // Revert the change if save failed
+      setChart(chart);
     }
   };
 
-  // Prepare analytics inputs for data fetching
-  const analyticsInputs: AnalyticsInput[] = chart?.series.map(series => ({
-    label: series.label,
-    filter: series.filter
-  })) || [];
+  const handleSeriesClick = (seriesId: string) => {
+    navigate({
+      to: '/charts/$chartId/config',
+      params: { chartId },
+      search: { seriesId } // Pass series ID to auto-select it
+    });
+  };
+
+  const handleMoveSeriesUp = async (seriesId: string) => {
+    if (!chart) return;
+
+    const currentIndex = chart.series.findIndex(s => s.id === seriesId);
+    if (currentIndex <= 0) return; // Already at top or not found
+
+    const newSeries = [...chart.series];
+    [newSeries[currentIndex - 1], newSeries[currentIndex]] = [newSeries[currentIndex], newSeries[currentIndex - 1]];
+
+    const updatedChart = {
+      ...chart,
+      series: newSeries,
+      updatedAt: new Date()
+    };
+
+    setChart(updatedChart);
+
+    // Save the updated chart
+    try {
+      await saveChart(updatedChart);
+    } catch (error) {
+      console.error('Failed to save chart:', error);
+      // Revert the change if save failed
+      setChart(chart);
+    }
+  };
+
+  const handleMoveSeriesDown = async (seriesId: string) => {
+    if (!chart) return;
+
+    const currentIndex = chart.series.findIndex(s => s.id === seriesId);
+    if (currentIndex === -1 || currentIndex >= chart.series.length - 1) return; // Already at bottom or not found
+
+    const newSeries = [...chart.series];
+    [newSeries[currentIndex], newSeries[currentIndex + 1]] = [newSeries[currentIndex + 1], newSeries[currentIndex]];
+
+    const updatedChart = {
+      ...chart,
+      series: newSeries,
+      updatedAt: new Date()
+    };
+
+    setChart(updatedChart);
+
+    // Save the updated chart
+    try {
+      await saveChart(updatedChart);
+    } catch (error) {
+      console.error('Failed to save chart:', error);
+      // Revert the change if save failed
+      setChart(chart);
+    }
+  };
+
+  // Filter analytics inputs to only include enabled series
+  const analyticsInputs: AnalyticsInput[] = chart?.series
+    .filter(series => series.enabled) // Only include enabled series
+    .map(series => ({
+      label: series.label,
+      filter: series.filter
+    })) || [];
 
   // Fetch chart data
   const { data: chartData, isLoading: isLoadingData, error: dataError } = useQuery({
@@ -68,17 +162,6 @@ function ChartDetailPage() {
       case 'scatter': return <ScatterChart className={className} />;
       default: return <BarChart3 className={className} />;
     }
-  };
-
-  const formatDate = (date: string | Date) => {
-    const d = typeof date === 'string' ? new Date(date) : date;
-    return d.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
   };
 
   if (isLoadingChart) {
@@ -98,7 +181,7 @@ function ChartDetailPage() {
             Back to Charts
           </Button>
         </div>
-        
+
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
@@ -128,15 +211,10 @@ function ChartDetailPage() {
                 {chart.config.chartType}
               </Badge>
             </div>
-            {chart.description && (
-              <p className="text-muted-foreground mt-1">
-                {chart.description}
-              </p>
-            )}
           </div>
         </div>
-        
-                           <Link to="/charts/$chartId/config" params={{ chartId }}>
+
+        <Link to="/charts/$chartId/config" params={{ chartId }}>
           <Button className="gap-2">
             <Settings className="h-4 w-4" />
             Configure
@@ -148,105 +226,87 @@ function ChartDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         <div className="lg:col-span-3">
           <Card>
-            <CardHeader>
-              <CardTitle>Chart Visualization</CardTitle>
-              <CardDescription>
-                {chart.series.length === 0 
-                  ? 'No data series configured yet' 
-                  : `Displaying ${chart.series.length} data series`
-                }
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="border rounded-lg p-8 min-h-[500px] flex items-center justify-center bg-muted/20">
-                {chart.series.length === 0 ? (
-                  <div className="text-center space-y-4">
-                    <div className="h-16 w-16 mx-auto rounded-full bg-muted flex items-center justify-center">
-                      {getChartTypeIcon(chart.config.chartType, "h-8 w-8")}
-                    </div>
-                    <div>
-                      <p className="font-medium text-lg">No Data Series</p>
-                      <p className="text-sm text-muted-foreground">
-                        Add data series to see your chart visualization
-                      </p>
-                    </div>
-                    <Link to="/charts/$chartId/config" params={{ chartId }}>
-                      <Button>Add Data Series</Button>
-                    </Link>
+            <div className="p-4 min-h-[500px] flex items-center justify-center bg-muted/20">
+              {chart.series.length === 0 ? (
+                <div className="text-center space-y-4">
+                  <div className="h-16 w-16 mx-auto rounded-full bg-muted flex items-center justify-center">
+                    {getChartTypeIcon(chart.config.chartType, "h-8 w-8")}
                   </div>
-                ) : isLoadingData ? (
-                  <LoadingSpinner text="Loading chart data..." />
-                ) : dataError ? (
-                  <div className="text-center text-destructive space-y-2">
-                    <AlertCircle className="h-8 w-8 mx-auto" />
-                    <p className="font-medium">Error loading chart data</p>
-                    <p className="text-sm">{dataError.message}</p>
+                  <div>
+                    <p className="font-medium text-lg">No Data Series</p>
+                    <p className="text-sm text-muted-foreground">
+                      Add data series to see your chart visualization
+                    </p>
                   </div>
-                ) : !chartData || chartData.length === 0 ? (
-                  <div className="text-center text-muted-foreground space-y-2">
-                    <div className="h-16 w-16 mx-auto rounded-full bg-muted flex items-center justify-center">
-                      {getChartTypeIcon(chart.config.chartType, "h-8 w-8")}
-                    </div>
-                    <p className="font-medium">No Data Available</p>
-                    <p className="text-sm">Check your series filters and try again</p>
+                  <Link to="/charts/$chartId/config" params={{ chartId }}>
+                    <Button>Add Data Series</Button>
+                  </Link>
+                </div>
+              ) : isLoadingData ? (
+                <LoadingSpinner text="Loading chart data..." />
+              ) : dataError ? (
+                <div className="text-center text-destructive space-y-2">
+                  <AlertCircle className="h-8 w-8 mx-auto" />
+                  <p className="font-medium">Error loading chart data</p>
+                  <p className="text-sm">{dataError.message}</p>
+                </div>
+              ) : !chartData || chartData.length === 0 ? (
+                <div className="text-center text-muted-foreground space-y-2">
+                  <div className="h-16 w-16 mx-auto rounded-full bg-muted flex items-center justify-center">
+                    {getChartTypeIcon(chart.config.chartType, "h-8 w-8")}
                   </div>
-                ) : (
-                  <div className="w-full text-center space-y-4">
-                    <div className="h-16 w-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
-                      {getChartTypeIcon(chart.config.chartType, "h-8 w-8 text-primary")}
-                    </div>
-                    <div>
-                      <p className="font-medium text-lg">Chart Renderer</p>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        Chart visualization will be rendered here using Recharts/Visx
-                      </p>
-                      <div className="text-left max-w-md mx-auto space-y-2 text-sm">
-                                                 <ChartRenderer 
-                           chart={chart} 
-                           data={chartData} 
-                           height={400}
-                           className="w-full"
-                         />
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </CardContent>
+                  <p className="font-medium">No Data Available</p>
+                  <p className="text-sm">Check your series filters and try again</p>
+                </div>
+              ) : (
+                <div className="w-full text-center space-y-4">
+                  <h2 className="text-lg font-medium">
+                    {chart.title}
+                  </h2>
+                  <ChartRenderer
+                    chart={chart}
+                    data={chartData}
+                    height={400}
+                    className="w-full"
+                  />
+                  {chart.description && (
+                    <p className="text-sm text-muted-foreground">
+                      {chart.description}
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+            <p className="flex items-center justify-between text-sm text-muted-foreground bg-muted/20 w-full p-4">
+              <a href="https://transparenta.eu/" target="_blank">
+                <span className="hidden">transparenta.eu</span>
+              </a>
+              <a href="https://mfinante.gov.ro/transparenta-bugetara" target="_blank">
+                Sursă date: <span className="font-bold">Ministerul Finanțelor</span>
+              </a>
+            </p>
           </Card>
         </div>
 
         {/* Chart Information */}
         <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Chart Details</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 text-sm">
-              <div>
-                <p className="font-medium">Type</p>
-                <p className="text-muted-foreground capitalize">{chart.config.chartType} Chart</p>
-              </div>
-              <div>
-                <p className="font-medium">Default Color</p>
-                <div className="flex items-center gap-2">
-                  <div 
-                    className="w-4 h-4 rounded border"
-                    style={{ backgroundColor: chart.config.color }}
-                  />
-                  <span className="text-muted-foreground">{chart.config.color}</span>
-                </div>
-              </div>
-              <div>
-                <p className="font-medium">Created</p>
-                <p className="text-muted-foreground">{formatDate(chart.createdAt)}</p>
-              </div>
-              <div>
-                <p className="font-medium">Last Updated</p>
-                <p className="text-muted-foreground">{formatDate(chart.updatedAt)}</p>
-              </div>
-            </CardContent>
-          </Card>
+          <ChartQuickConfig
+            chart={chart}
+            onUpdateChart={async (updates) => {
+              const updatedChart = {
+                ...chart,
+                ...updates,
+                updatedAt: new Date()
+              };
+              setChart(updatedChart);
+              try {
+                await saveChart(updatedChart);
+              } catch (error) {
+                console.error('Failed to save chart:', error);
+                setChart(chart);
+              }
+            }}
+          />
 
           <Card>
             <CardHeader>
@@ -268,16 +328,65 @@ function ChartDetailPage() {
               ) : (
                 <div className="space-y-3">
                   {chart.series.map((series, index) => (
-                    <div key={series.id} className="flex items-center gap-2 text-sm">
+                    <div
+                      key={series.id}
+                      className="flex items-center justify-between p-3 border rounded hover:bg-muted/50 transition-colors"
+                    >
                       <div
-                        className="w-3 h-3 rounded-full border flex-shrink-0"
-                        style={{ backgroundColor: series.config.color || chart.config.color }}
-                      />
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium truncate">{series.label}</p>
-                        <p className="text-xs text-muted-foreground">
-                          Series {index + 1}
-                        </p>
+                        className="flex items-center gap-2 text-sm flex-1 cursor-pointer"
+                        onClick={() => handleSeriesClick(series.id)}
+                      >
+                        <div
+                          className="w-3 h-3 rounded-full border flex-shrink-0"
+                          style={{ backgroundColor: series.config.color || chart.config.color }}
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium truncate">{series.label}</p>
+                          <p className="text-xs text-muted-foreground">
+                            Series {index + 1}
+                            {!series.enabled && ' • Disabled'}
+                            {series.enabled && Object.keys(series.filter).length === 0 && ' • No filters'}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 ml-2">
+                        <div className="flex items-center">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleMoveSeriesUp(series.id);
+                            }}
+                            disabled={index === 0}
+                            title="Move up"
+                            className="h-8 w-8 p-1"
+                          >
+                            <ChevronUp className="h-3 w-3" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleMoveSeriesDown(series.id);
+                            }}
+                            disabled={index === chart.series.length - 1}
+                            title="Move down"
+                            className="h-8 w-8 p-1"
+                          >
+                            <ChevronDown className="h-3 w-3" />
+                          </Button>
+                        </div>
+                        <Label htmlFor={`series-${series.id}-enabled`} className="text-xs text-muted-foreground">
+                          Enable
+                        </Label>
+                        <Switch
+                          id={`series-${series.id}-enabled`}
+                          checked={series.enabled}
+                          onCheckedChange={(enabled) => handleToggleSeriesEnabled(series.id, enabled)}
+                          onClick={(e) => e.stopPropagation()} // Prevent triggering series click
+                        />
                       </div>
                     </div>
                   ))}

@@ -5,7 +5,7 @@ import { Chart, AnalyticsInput } from '@/schemas/chartBuilder';
 import { useQuery } from '@tanstack/react-query';
 import { getChartAnalytics } from '@/lib/api/chartBuilder';
 import { Badge } from '@/components/ui/badge';
-import { ChartRenderer } from '../ChartRenderer';
+import { ChartRenderer } from '../chart-renderer/ChartRenderer';
 
 interface ChartPreviewProps {
   chart: Chart;
@@ -70,17 +70,6 @@ export function ChartPreview({ chart, onBack, onEdit }: ChartPreviewProps) {
 
       {/* Chart Visualization */}
       <Card>
-        <CardHeader>
-          <CardTitle>Chart Preview</CardTitle>
-          <CardDescription>
-            {chart.series.length === 0 
-              ? 'No data series configured' 
-              : analyticsInputs.length === 0
-                ? `${chart.series.length} series configured, but no filters set`
-                : `${analyticsInputs.length} of ${chart.series.length} series ready for display`
-            }
-          </CardDescription>
-        </CardHeader>
         <CardContent>
           <div className="border rounded-lg p-8 min-h-[400px] flex items-center justify-center bg-muted/20">
             {chart.series.length === 0 ? (

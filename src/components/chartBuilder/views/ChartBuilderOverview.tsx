@@ -4,11 +4,15 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
+import { Slider } from '@/components/ui/slider';
 import { 
   Plus, 
   Settings, 
   Trash2, 
-  Eye, 
+  Copy,
+  ChevronUp,
+  ChevronDown,
   BarChart3, 
   LineChart, 
   PieChart, 
@@ -33,6 +37,7 @@ import {
   AlertDialogTitle, 
   AlertDialogTrigger 
 } from '@/components/ui/alert-dialog';
+import { useMemo } from 'react';
 
 interface ChartBuilderOverviewProps {
   chart: Chart;
@@ -40,7 +45,9 @@ interface ChartBuilderOverviewProps {
   onAddSeries: () => void;
   onEditSeries: (seriesId: string) => void;
   onDeleteSeries: (seriesId: string) => void;
-  onPreview: () => void;
+  onDuplicateSeries: (seriesId: string) => void;
+  onMoveSeriesUp: (seriesId: string) => void;
+  onMoveSeriesDown: (seriesId: string) => void;
   validationErrors: Record<string, string[]>;
 }
 
@@ -50,7 +57,9 @@ export function ChartBuilderOverview({
   onAddSeries,
   onEditSeries,
   onDeleteSeries,
-  onPreview,
+  onDuplicateSeries,
+  onMoveSeriesUp,
+  onMoveSeriesDown,
   validationErrors
 }: ChartBuilderOverviewProps) {
   
@@ -76,9 +85,39 @@ export function ChartBuilderOverview({
     return hasErrors(field) ? validationErrors[field][0] : '';
   };
 
+  const handleToggleSeriesEnabled = (seriesId: string, enabled: boolean) => {
+    const updatedSeries = chart.series.map(series =>
+      series.id === seriesId
+        ? { ...series, enabled, updatedAt: new Date() }
+        : series
+    );
+    onUpdateChart({ series: updatedSeries });
+  };
+
+  // Calculate available year range from all series data
+  const availableYears = useMemo(() => {
+    const years = new Set<number>();
+    chart.series.forEach(series => {
+      if (series.filter.years) {
+        series.filter.years.forEach(year => years.add(year));
+      }
+    });
+    const sortedYears = Array.from(years).sort();
+    return {
+      min: sortedYears[0] || 2010,
+      max: sortedYears[sortedYears.length - 1] || new Date().getFullYear(),
+      available: sortedYears
+    };
+  }, [chart.series]);
+
+  const currentYearRange = [
+    chart.config.yearRangeStart || availableYears.min,
+    chart.config.yearRangeEnd || availableYears.max
+  ];
+
   return (
-    <div className="space-y-6 max-h-[70vh] overflow-y-auto p-1">
-      {/* Chart Basic Info */}
+    <div className="space-y-6 p-1">
+      {/* Chart Basic Information */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -199,8 +238,106 @@ export function ChartBuilderOverview({
               </div>
             </div>
           </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="show-grid-lines">
+                Show Grid Lines
+              </Label>
+              <Switch
+                id="show-grid-lines"
+                checked={chart.config.showGridLines}
+                onCheckedChange={(checked) => 
+                  onUpdateChart({ 
+                    config: { ...chart.config, showGridLines: checked } 
+                  })
+                }
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="show-legend">
+                Show Legend
+              </Label>
+              <Switch
+                id="show-legend"
+                checked={chart.config.showLegend}
+                onCheckedChange={(checked) => 
+                  onUpdateChart({ 
+                    config: { ...chart.config, showLegend: checked } 
+                  })
+                }
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="show-data-labels">
+                Show Data Labels
+              </Label>
+              <Switch
+                id="show-data-labels"
+                checked={chart.config.showDataLabels}
+                onCheckedChange={(checked) => 
+                  onUpdateChart({ 
+                    config: { ...chart.config, showDataLabels: checked } 
+                  })
+                }
+              />
+            </div>
+            <div className="space-y-2">  
+              <Label htmlFor="show-relative-values">
+                Show Relative Values (%)
+              </Label>
+              <Switch
+                id="show-relative-values"
+                checked={chart.config.showRelativeValues}
+                onCheckedChange={(checked) => 
+                  onUpdateChart({ 
+                    config: { ...chart.config, showRelativeValues: checked } 
+                  })
+                }
+              />
+            </div>
+          </div>
         </CardContent>
       </Card>
+
+      {/* Year Range Selector */}
+      {availableYears.available.length > 1 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Data Range</CardTitle>
+            <CardDescription>
+              Select the year range to display in your chart
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-3">
+              <div className="flex justify-between text-sm">
+                <span>From: {currentYearRange[0]}</span>
+                <span>To: {currentYearRange[1]}</span>
+              </div>
+              <Slider
+                value={currentYearRange}
+                onValueChange={(value) => {
+                  onUpdateChart({
+                    config: {
+                      ...chart.config,
+                      yearRangeStart: value[0],
+                      yearRangeEnd: value[1]
+                    }
+                  });
+                }}
+                min={availableYears.min}
+                max={availableYears.max}
+                step={1}
+                className="w-full"
+              />
+              <div className="flex justify-between text-xs text-muted-foreground">
+                <span>{availableYears.min}</span>
+                <span>{availableYears.max}</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Data Series */}
       <Card>
@@ -248,19 +385,60 @@ export function ChartBuilderOverview({
                   </div>
                   
                   <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2">
+                      <Label htmlFor={`series-${series.id}-enabled`} className="text-xs text-muted-foreground">
+                        Enabled
+                      </Label>
+                      <Switch
+                        id={`series-${series.id}-enabled`}
+                        checked={series.enabled}
+                        onCheckedChange={(enabled) => handleToggleSeriesEnabled(series.id, enabled)}
+                      />
+                    </div>
                     <Badge variant="outline" className="text-xs">
                       Series {index + 1}
                     </Badge>
+                    <div className="flex items-center">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => onMoveSeriesUp(series.id)}
+                        disabled={index === 0}
+                        title="Move up"
+                        className="h-8 w-8 p-1"
+                      >
+                        <ChevronUp className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => onMoveSeriesDown(series.id)}
+                        disabled={index === chart.series.length - 1}
+                        title="Move down"
+                        className="h-8 w-8 p-1"
+                      >
+                        <ChevronDown className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => onDuplicateSeries(series.id)}
+                      title="Duplicate series"
+                    >
+                      <Copy className="h-4 w-4" />
+                    </Button>
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => onEditSeries(series.id)}
+                      title="Edit series"
                     >
                       <Settings className="h-4 w-4" />
                     </Button>
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" title="Delete series">
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </AlertDialogTrigger>
@@ -292,11 +470,10 @@ export function ChartBuilderOverview({
 
       {/* Preview Button */}
       {chart.series.length > 0 && (
-        <div className="flex justify-center pt-4">
-          <Button onClick={onPreview} size="lg" className="gap-2">
-            <Eye className="h-5 w-5" />
-            Preview Chart
-          </Button>
+        <div className="text-center pt-4">
+          <p className="text-sm text-muted-foreground">
+            Changes are automatically saved. View your chart on the main chart page.
+          </p>
         </div>
       )}
     </div>

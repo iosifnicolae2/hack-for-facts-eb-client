@@ -21,6 +21,9 @@ interface UseChartBuilderReturn {
   addSeries: () => void;
   updateSeries: (seriesId: string, updates: Partial<SeriesConfiguration>) => void;
   deleteSeries: (seriesId: string) => void;
+  duplicateSeries: (seriesId: string) => void;
+  moveSeriesUp: (seriesId: string) => void;
+  moveSeriesDown: (seriesId: string) => void;
   saveChart: () => Promise<void>;
   validateChart: () => ValidationResult;
   resetChart: () => void;
@@ -85,6 +88,7 @@ export function useChartBuilder(existingChart?: Chart): UseChartBuilderReturn {
   const addSeries = useCallback(() => {
     const newSeries: SeriesConfiguration = {
       id: crypto.randomUUID(),
+      enabled: true,
       label: `Series ${chart.series.length + 1}`,
       filter: {},
       config: {
@@ -118,6 +122,54 @@ export function useChartBuilder(existingChart?: Chart): UseChartBuilderReturn {
       updatedAt: new Date(),
     }));
   }, []);
+
+  const duplicateSeries = useCallback((seriesId: string) => {
+    const originalSeries = chart.series.find(s => s.id === seriesId);
+    if (!originalSeries) return;
+
+    const duplicatedSeries: SeriesConfiguration = {
+      ...originalSeries,
+      id: crypto.randomUUID(),
+      label: `${originalSeries.label} (Copy)`,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    updateChart({
+      series: [...chart.series, duplicatedSeries],
+    });
+
+    // Navigate to series detail view for the new series
+    setBuilderState(prev => ({
+      ...prev,
+      currentView: 'series-detail',
+      selectedSeriesId: duplicatedSeries.id,
+    }));
+  }, [chart.series, updateChart]);
+
+  const moveSeriesUp = useCallback((seriesId: string) => {
+    const currentIndex = chart.series.findIndex(s => s.id === seriesId);
+    if (currentIndex <= 0) return; // Already at top or not found
+
+    const newSeries = [...chart.series];
+    [newSeries[currentIndex - 1], newSeries[currentIndex]] = [newSeries[currentIndex], newSeries[currentIndex - 1]];
+
+    updateChart({
+      series: newSeries,
+    });
+  }, [chart.series, updateChart]);
+
+  const moveSeriesDown = useCallback((seriesId: string) => {
+    const currentIndex = chart.series.findIndex(s => s.id === seriesId);
+    if (currentIndex === -1 || currentIndex >= chart.series.length - 1) return; // Already at bottom or not found
+
+    const newSeries = [...chart.series];
+    [newSeries[currentIndex], newSeries[currentIndex + 1]] = [newSeries[currentIndex + 1], newSeries[currentIndex]];
+
+    updateChart({
+      series: newSeries,
+    });
+  }, [chart.series, updateChart]);
 
   const deleteSeries = useCallback((seriesId: string) => {
     setChart(prev => ({
@@ -227,6 +279,9 @@ export function useChartBuilder(existingChart?: Chart): UseChartBuilderReturn {
     addSeries,
     updateSeries,
     deleteSeries,
+    duplicateSeries,
+    moveSeriesUp,
+    moveSeriesDown,
     saveChart,
     validateChart,
     resetChart,

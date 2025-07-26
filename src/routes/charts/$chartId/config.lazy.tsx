@@ -1,7 +1,7 @@
-import { createLazyFileRoute, useParams, useNavigate } from "@tanstack/react-router";
+import { createLazyFileRoute, useParams, useNavigate, useSearch } from "@tanstack/react-router";
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Save, Eye, Loader2 } from 'lucide-react';
+import { ArrowLeft, Eye } from 'lucide-react';
 import { Chart } from '@/schemas/chartBuilder';
 import { loadSavedCharts, saveChart } from '@/lib/api/chartBuilder';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -9,7 +9,6 @@ import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { useChartBuilder } from '@/components/chartBuilder/hooks/useChartBuilder';
 import { ChartBuilderOverview } from '@/components/chartBuilder/views/ChartBuilderOverview';
 import { SeriesDetailView } from '@/components/chartBuilder/views/SeriesDetailView';
-import { ChartPreview } from '@/components/chartBuilder/views/ChartPreview';
 import { Badge } from '@/components/ui/badge';
 
 export const Route = createLazyFileRoute("/charts/$chartId/config")({
@@ -19,16 +18,27 @@ export const Route = createLazyFileRoute("/charts/$chartId/config")({
 function ChartConfigPage() {
   const { chartId } = useParams({ from: "/charts/$chartId/config" });
   const navigate = useNavigate();
+  const search = useSearch({ from: "/charts/$chartId/config" });
   const [existingChart, setExistingChart] = useState<Chart | null>(null);
   const [isLoadingChart, setIsLoadingChart] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string>('');
-  const [saveError, setSaveError] = useState<string>('');
+
+  // Initialize chart builder with existing chart
+  const {
+    chart,
+    builderState,
+    updateChart,
+    updateBuilderState,
+    addSeries,
+    updateSeries,
+    deleteSeries,
+    duplicateSeries,
+    moveSeriesUp,
+    moveSeriesDown,
+  } = useChartBuilder(existingChart || undefined);
 
   // Load chart data
   useEffect(() => {
-
-
     const loadChart = async () => {
       try {
         setIsLoadingChart(true);
@@ -53,51 +63,44 @@ function ChartConfigPage() {
     loadChart();
   }, [chartId]);
 
-
-  // Initialize chart builder with existing chart
-  const {
-    chart,
-    builderState,
-    updateChart,
-    updateBuilderState,
-    addSeries,
-    updateSeries,
-    deleteSeries,
-  } = useChartBuilder(existingChart || undefined);
-
-  const handleSave = async () => {
-    // const validation = validateChart();
-    // TODO: fix date validation errors
-    // if (!validation.isValid) {
-    //   setSaveError('Please fix validation errors before saving');
-    //   return;
-    // }
-
-    try {
-      setIsSaving(true);
-      setSaveError('');
-
-      // Update timestamps
-      const chartToSave = {
-        ...chart,
-        updatedAt: new Date()
-      };
-
-      await saveChart(chartToSave);
-
-      // Navigate back to chart detail page
-      navigate({ to: `/charts/${chartId}` });
-    } catch (error) {
-      console.error('Failed to save chart:', error);
-      setSaveError('Failed to save chart. Please try again.');
-    } finally {
-      setIsSaving(false);
+  // Handle automatic navigation to series detail if seriesId is provided
+  useEffect(() => {
+    if (search && typeof search === 'object' && 'seriesId' in search && search.seriesId && existingChart && builderState.currentView === 'overview') {
+      // Check if the series exists
+      const seriesExists = existingChart.series.find(s => s.id === search.seriesId);
+      if (seriesExists) {
+        updateBuilderState({
+          currentView: 'series-detail',
+          selectedSeriesId: search.seriesId as string
+        });
+        // Clear the search parameter to avoid navigation loops
+        navigate({
+          to: '/charts/$chartId/config',
+          params: { chartId },
+          search: {},
+          replace: true
+        });
+      }
     }
-  };
+  }, [search, existingChart, builderState.currentView, updateBuilderState, navigate, chartId]);
 
-  const handleBack = () => {
-    navigate({ to: `/charts/${chartId}` });
-  };
+  // Autosave functionality - save chart whenever it changes
+  useEffect(() => {
+    if (!existingChart || !chart || JSON.stringify(chart) === JSON.stringify(existingChart)) {
+      return; // Don't save if no changes or still loading
+    }
+
+    const timeoutId = setTimeout(async () => {
+      try {
+        await saveChart(chart);
+        console.log('Chart autosaved');
+      } catch (error) {
+        console.error('Failed to autosave chart:', error);
+      }
+    }, 1000); // Debounce saves by 1 second
+
+    return () => clearTimeout(timeoutId);
+  }, [chart, existingChart]);
 
   const handleBackToOverview = () => {
     updateBuilderState({
@@ -115,16 +118,12 @@ function ChartConfigPage() {
         const selectedSeries = chart.series.find(s => s.id === builderState.selectedSeriesId);
         return selectedSeries ? `Edit Series: ${selectedSeries.label}` : 'Add New Series';
       }
-      case 'preview':
-        return 'Chart Preview';
       default:
         return 'Chart Configuration';
     }
   };
 
   const showBackButton = builderState.currentView !== 'overview';
-  const showSaveButton = builderState.currentView === 'overview';
-  const showPreviewButton = builderState.currentView === 'preview';
 
   if (isLoadingChart) {
     return (
@@ -158,15 +157,10 @@ function ChartConfigPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          {showBackButton ? (
-            <Button variant="ghost" onClick={handleBackToOverview} className="gap-2">
+          {showBackButton && (
+            <Button onClick={handleBackToOverview} variant="outline" className="gap-2">
               <ArrowLeft className="h-4 w-4" />
               Back
-            </Button>
-          ) : (
-            <Button variant="ghost" onClick={handleBack} className="gap-2">
-              <ArrowLeft className="h-4 w-4" />
-              Back to Chart
             </Button>
           )}
           <div>
@@ -187,86 +181,57 @@ function ChartConfigPage() {
         </div>
 
         <div className="flex items-center gap-2">
-          {showPreviewButton && (
-            <Button onClick={() => updateBuilderState({ currentView: 'overview' })} variant="outline" className="gap-2">
+          {showBackButton && (
+            <Button onClick={handleBackToOverview} variant="outline" className="gap-2">
               <ArrowLeft className="h-4 w-4" />
-              Edit
+              Back
             </Button>
           )}
-          {showSaveButton && (
-            <>
-              <Button
-                onClick={() => updateBuilderState({ currentView: 'preview' })}
-                variant="outline"
-                className="gap-2"
-                disabled={chart.series.length === 0}
-              >
-                <Eye className="h-4 w-4" />
-                Preview
-              </Button>
-              <Button
-                onClick={handleSave}
-                disabled={isSaving}
-                className="gap-2"
-              >
-                {isSaving ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <Save className="h-4 w-4" />
-                )}
-                {isSaving ? 'Saving...' : 'Save Changes'}
-              </Button>
-            </>
-          )}
+          <Button onClick={() => navigate({ to: `/charts/${chartId}` })} className="gap-2">
+            <Eye className="h-4 w-4" />
+            View Chart
+          </Button>
         </div>
       </div>
 
       {/* Error Display */}
-      {saveError && (
+      {error && (
         <Alert variant="destructive">
-          <AlertDescription>{saveError}</AlertDescription>
+          <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
 
       {/* Content */}
-      <div className="bg-card rounded-lg border">
-        <div className="p-6">
-          {builderState.currentView === 'overview' && (
-            <ChartBuilderOverview
-              chart={chart}
-              onUpdateChart={updateChart}
-              onAddSeries={addSeries}
-              onEditSeries={(seriesId) =>
-                updateBuilderState({
-                  currentView: 'series-detail',
-                  selectedSeriesId: seriesId
-                })
-              }
-              onDeleteSeries={deleteSeries}
-              onPreview={() => updateBuilderState({ currentView: 'preview' })}
-              validationErrors={builderState.validationErrors}
-            />
-          )}
+      <div className="space-y-6">
+        {builderState.currentView === 'overview' && (
+          <ChartBuilderOverview
+            chart={chart}
+            onUpdateChart={updateChart}
+            onAddSeries={addSeries}
+            onEditSeries={(seriesId) =>
+              updateBuilderState({
+                currentView: 'series-detail',
+                selectedSeriesId: seriesId
+              })
+            }
+            onDeleteSeries={deleteSeries}
+            onDuplicateSeries={duplicateSeries}
+            onMoveSeriesUp={moveSeriesUp}
+            onMoveSeriesDown={moveSeriesDown}
+            validationErrors={builderState.validationErrors}
+          />
+        )}
 
-          {builderState.currentView === 'series-detail' && (
-            <SeriesDetailView
-              chart={chart}
-              selectedSeriesId={builderState.selectedSeriesId}
-              onUpdateSeries={updateSeries}
-              onDeleteSeries={deleteSeries}
-              onBack={handleBackToOverview}
-              validationErrors={builderState.validationErrors}
-            />
-          )}
-
-          {builderState.currentView === 'preview' && (
-            <ChartPreview
-              chart={chart}
-              onBack={handleBackToOverview}
-              onEdit={() => updateBuilderState({ currentView: 'overview' })}
-            />
-          )}
-        </div>
+        {builderState.currentView === 'series-detail' && (
+          <SeriesDetailView
+            chart={chart}
+            selectedSeriesId={builderState.selectedSeriesId}
+            onUpdateSeries={updateSeries}
+            onDeleteSeries={deleteSeries}
+            onBack={handleBackToOverview}
+            validationErrors={builderState.validationErrors}
+          />
+        )}
       </div>
     </div>
   );
