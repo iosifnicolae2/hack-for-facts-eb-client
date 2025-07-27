@@ -33,17 +33,17 @@ export type SeriesConfig = z.infer<typeof SeriesConfigSchema>;
 // ============================================================================
 
 export const AnalyticsFilterSchema = z.object({
+  years: z.array(z.number()).optional(),
   entity_cuis: z.array(z.string()).optional(),
   economic_prefixes: z.array(z.string()).optional(),
   functional_prefixes: z.array(z.string()).optional(),
-  report_type: z.string().optional(),
-  account_categories: z.array(z.enum(['ch', 'vn'])).default(['ch']),
+  report_type: z.enum(['Executie bugetara agregata la nivel de ordonator principal', 'Executie bugetara detaliata']).optional().default('Executie bugetara agregata la nivel de ordonator principal'),
+  account_category: z.enum(['ch', 'vn']).optional().default('ch'),
   economic_codes: z.array(z.string()).optional(),
   functional_codes: z.array(z.string()).optional(),
-  uat_ids: z.array(z.number()).optional(),
+  uat_ids: z.array(z.string()).optional(),
   min_amount: z.number().or(z.string()).optional(),
   max_amount: z.number().or(z.string()).optional(),
-  is_main_creditor: z.boolean().optional(),
   is_uat: z.boolean().optional(),
   entity_types: z.array(z.string()).optional(),
 });

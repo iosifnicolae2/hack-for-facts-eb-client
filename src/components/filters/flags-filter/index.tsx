@@ -1,20 +1,26 @@
-import { Label } from "@/components/ui/label";
-import { useFilterSearch } from "@/lib/hooks/useLineItemsFilter";
-import { YesNoRadioGroup } from "@/components/ui/yes-no-radio-group";
+import { RadioGroupButtons } from "@/components/ui/radio-group-buttons";
 
-export function FlagsFilter() {
-    const { isMainCreditor, setIsMainCreditor, isUat, setIsUat } = useFilterSearch();
+interface IsUatFilterProps {
+    isUat: boolean | undefined;
+    setIsUat: (value: boolean | undefined) => void;
+}
+export function IsUatFilter({ isUat, setIsUat }: IsUatFilterProps) {
+
+    const handleChange = (value: string | number | boolean | undefined) => {
+        if (value === undefined) {
+            setIsUat(undefined);
+        } else if (String(value) === 'true') {
+            setIsUat(true);
+        } else if (String(value) === 'false') {
+            setIsUat(false);
+        }
+    };
 
     return (
-        <div className="space-y-4">
-            <div className="flex items-center justify-between">
-                <Label>Este ordonator principal de credite</Label>
-                <YesNoRadioGroup value={isMainCreditor} onChange={setIsMainCreditor} />
-            </div>
-            <div className="flex items-center justify-between">
-                <Label>Este UAT</Label>
-                <YesNoRadioGroup value={isUat} onChange={setIsUat} />
-            </div>
-        </div>
+        <RadioGroupButtons
+            value={isUat}
+            onChange={handleChange}
+            options={[{ value: 'true', label: 'Da' }, { value: 'false', label: 'Nu' }]}
+        />
     );
 } 

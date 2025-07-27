@@ -20,7 +20,7 @@ interface UseChartBuilderReturn {
   seriesId?: string;
   updateChart: (updates: Partial<Chart>) => void;
   addSeries: () => void;
-  updateSeries: (seriesId: string, updates: Partial<SeriesConfiguration> | ((prevSeries: SeriesConfiguration) => Partial<SeriesConfiguration>)) => void;
+  updateSeries: (seriesId: string, updates: Partial<SeriesConfiguration> | ((prevSeries: SeriesConfiguration) => SeriesConfiguration)) => void;
   deleteSeries: (seriesId: string) => void;
   duplicateSeries: (seriesId: string) => void;
   moveSeriesUp: (seriesId: string) => void;
@@ -67,7 +67,8 @@ export function useChartBuilder(): UseChartBuilderReturn {
       enabled: true,
       label: `New Series ${chart.series.length + 1}`,
       filter: {
-        account_categories: ['ch'],
+        account_category: 'ch',
+        report_type: 'Executie bugetara agregata la nivel de ordonator principal',
       },
       filterMetadata: {},
       config: {

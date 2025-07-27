@@ -14,7 +14,7 @@ import { Button } from "../ui/button";
 import { ReportTypeFilter } from "./report-type-filter";
 import { FilterRadioContainer } from "./base-filter/FilterRadioContainer";
 import { OptionItem } from "./base-filter/interfaces";
-import { FlagsFilter } from "./flags-filter";
+import { IsUatFilter } from "./flags-filter";
 import { FilterContainer } from "./base-filter/FilterContainer";
 import { FilterPrefixContainer, PrefixFilter } from "./prefix-filter";
 import { EntityTypeList } from "./entity-type-filter/EntityTypeList";
@@ -43,8 +43,6 @@ export function LineItemsFilter({ isInModal = false }: LineItemsFilterProps) {
         setSelectedAccountTypeOptions,
         reportType,
         setReportType,
-        isMainCreditor,
-        setIsMainCreditor,
         isUat,
         setIsUat,
         functionalPrefix,
@@ -65,7 +63,6 @@ export function LineItemsFilter({ isInModal = false }: LineItemsFilterProps) {
         setMaxAmount('');
         setSelectedAccountTypeOptions([]);
         setReportType(undefined);
-        setIsMainCreditor(undefined);
         setIsUat(undefined);
         setFunctionalPrefix(undefined);
         setEconomicPrefix(undefined);
@@ -85,33 +82,27 @@ export function LineItemsFilter({ isInModal = false }: LineItemsFilterProps) {
         (minAmount !== undefined && minAmount !== '' ? 1 : 0) +
         (maxAmount !== undefined && maxAmount !== '' ? 1 : 0) +
         (reportType ? 1 : 0) +
-        (isMainCreditor !== undefined ? 1 : 0) +
         (isUat !== undefined ? 1 : 0) +
         (functionalPrefix ? 1 : 0) +
         (economicPrefix ? 1 : 0);
 
     const reportTypeOption: OptionItem | null = reportType ? { id: reportType, label: reportType } : null;
-    
+
     const flagsOptions: OptionItem[] = [];
-    if (isMainCreditor === true) flagsOptions.push({ id: 'isMainCreditor', label: 'Ordonator principal: Da' });
-    if (isMainCreditor === false) flagsOptions.push({ id: 'isMainCreditor', label: 'Ordonator principal: Nu' });
     if (isUat === true) flagsOptions.push({ id: 'isUat', label: 'UAT: Da' });
     if (isUat === false) flagsOptions.push({ id: 'isUat', label: 'UAT: Nu' });
-    
+
     const handleClearReportType = () => {
         setReportType(undefined);
     }
 
     const handleClearFlag = (option: OptionItem) => {
-        if (option.id === 'isMainCreditor') {
-            setIsMainCreditor(undefined);
-        } else if (option.id === 'isUat') {
+        if (option.id === 'isUat') {
             setIsUat(undefined);
         }
     }
 
     const handleClearAllFlags = () => {
-        setIsMainCreditor(undefined);
         setIsUat(undefined);
     }
 
@@ -132,7 +123,7 @@ export function LineItemsFilter({ isInModal = false }: LineItemsFilterProps) {
             )}
             {isInModal && totalSelectedFilters > 0 && (
                 <div className="p-4 border-b flex justify-end items-center">
-                     <Button variant="ghost" size="sm" onClick={clearAllFilters} className="text-sm">
+                    <Button variant="ghost" size="sm" onClick={clearAllFilters} className="text-sm">
                         <XCircle className="w-4 h-4 mr-1" />
                         Clear all ({totalSelectedFilters})
                     </Button>
@@ -146,7 +137,7 @@ export function LineItemsFilter({ isInModal = false }: LineItemsFilterProps) {
                     selected={selectedEntityOptions}
                     setSelected={setSelectedEntityOptions}
                 />
-                 <FilterListContainer
+                <FilterListContainer
                     title="Tip Entitate"
                     icon={<Building2 className="w-4 h-4" />}
                     listComponent={EntityTypeList}
@@ -211,16 +202,22 @@ export function LineItemsFilter({ isInModal = false }: LineItemsFilterProps) {
                     selectedOption={reportTypeOption}
                     onClear={handleClearReportType}
                 >
-                    <ReportTypeFilter />
+                    <ReportTypeFilter
+                        reportType={reportType}
+                        setReportType={setReportType}
+                    />
                 </FilterRadioContainer>
                 <FilterContainer
-                    title="Flags"
+                    title="Este UAT"
                     icon={<ArrowUpDown className="w-4 h-4" />}
                     selectedOptions={flagsOptions}
                     onClearOption={handleClearFlag}
                     onClearAll={handleClearAllFlags}
                 >
-                    <FlagsFilter />
+                    <IsUatFilter
+                        isUat={isUat}
+                        setIsUat={setIsUat}
+                    />
                 </FilterContainer>
                 <FilterListContainer
                     title="Venituri/Cheltuieli"
