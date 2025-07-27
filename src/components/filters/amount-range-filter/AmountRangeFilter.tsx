@@ -13,9 +13,8 @@ export function AmountRangeFilter({
     onMinValueChange,
     onMaxValueChange,
     className,
+    debounceMs = 1000,
 }: BaseListFilterProps) {
-
-    console.log("maxValueAllowed", maxValueAllowed);
 
     const [localMinValue, setLocalMinValue] = useState<string | undefined>(initialMinValue?.toString());
     const [localMaxValue, setLocalMaxValue] = useState<string | undefined>(initialMaxValue?.toString());
@@ -32,7 +31,7 @@ export function AmountRangeFilter({
         } else {
             onMinValueChange(value);
         }
-    }, 1000);
+    }, debounceMs);
 
     const debouncedMaxValueChange = useDebouncedCallback((value: string | undefined) => {
         if (value === "") {
@@ -40,7 +39,7 @@ export function AmountRangeFilter({
         } else {
             onMaxValueChange(value);
         }
-    }, 1000);
+    }, debounceMs);
 
     const parseValue = (value: string) => {
         let parsedValue = Number(value);

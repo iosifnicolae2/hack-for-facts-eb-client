@@ -28,4 +28,5 @@ export interface BaseListFilterProps {
     onMaxValueChange: (value: string | undefined) => void;
     maxValueAllowed?: number;
     className?: string;
+    debounceMs?: number;
 }

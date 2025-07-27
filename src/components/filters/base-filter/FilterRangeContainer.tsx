@@ -15,10 +15,11 @@ interface FilterContainerProps {
     onMinValueChange: (value: string | undefined) => void;
     onMaxValueChange: (value: string | undefined) => void;
     icon: React.ReactNode;
+    debounceMs?: number;
 }
 
 
-export function FilterRangeContainer({ rangeComponent: RangeComponent, title, unit, icon, minValue, maxValue, maxValueAllowed, onMinValueChange, onMaxValueChange }: FilterContainerProps) {
+export function FilterRangeContainer({ rangeComponent: RangeComponent, title, unit, icon, minValue, maxValue, maxValueAllowed, onMinValueChange, onMaxValueChange, debounceMs }: FilterContainerProps) {
     const [showAllSelected, setShowAllSelected] = useState(false);
 
     const activeRangeOptions = useMemo(() => {
@@ -72,6 +73,7 @@ export function FilterRangeContainer({ rangeComponent: RangeComponent, title, un
                             onMinValueChange={onMinValueChange}
                             onMaxValueChange={onMaxValueChange}
                             maxValueAllowed={maxValueAllowed}
+                            debounceMs={debounceMs}
                         />
                     </AccordionContent>
                 </AccordionItem>
