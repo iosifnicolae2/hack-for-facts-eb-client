@@ -187,19 +187,12 @@ export const AnalyticsInputSchema = z.object({
 export type AnalyticsInput = z.infer<typeof AnalyticsInputSchema>;
 
 // ============================================================================
-// Copy/duplicates schemas
+// Copy/Paste schemas
 // ============================================================================
 
-export const CopyActionSchema = z.object({
-  action: z.enum(['copy', 'duplicate']),
-  payload: z.union([
-    z.object({
-      series: z.array(SeriesConfigurationSchema),
-    }),
-    z.object({
-      chart: ChartSchema,
-    }),
-  ]),
+export const CopiedSeriesSchema = z.object({
+  type: z.literal('chart-series-copy'),
+  payload: z.array(SeriesConfigurationSchema),
 });
 
-export type CopySeries = z.infer<typeof CopyActionSchema>;
+export type CopiedSeries = z.infer<typeof CopiedSeriesSchema>;

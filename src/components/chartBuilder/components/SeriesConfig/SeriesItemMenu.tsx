@@ -12,9 +12,11 @@ interface SeriesItemMenuProps {
     onMoveUp: () => void;
     onMoveDown: () => void;
     onDelete: () => void;
+    onDuplicate: () => void;
+    onCopy: () => void;
 }
 
-export function SeriesItemMenu({ series, isMoveUpDisabled, isMoveDownDisabled, onToggleEnabled, onToggleDataLabels, onMoveUp, onMoveDown, onDelete }: SeriesItemMenuProps) {
+export function SeriesItemMenu({ series, isMoveUpDisabled, isMoveDownDisabled, onToggleEnabled, onToggleDataLabels, onMoveUp, onMoveDown, onDelete, onDuplicate, onCopy }: SeriesItemMenuProps) {
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
         // Not sure why, but the click was propagating without this.
@@ -43,11 +45,11 @@ export function SeriesItemMenu({ series, isMoveUpDisabled, isMoveDownDisabled, o
                     Move Down
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onSelect={() => console.log("Duplicate series")} onClick={handleClick}>
+                <DropdownMenuItem onSelect={onDuplicate} onClick={handleClick}>
                     <Copy className="mr-2 h-4 w-4" />
                     Duplicate Series
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => console.log("Copy series")} onClick={handleClick}>
+                <DropdownMenuItem onSelect={onCopy} onClick={handleClick}>
                     <Copy className="mr-2 h-4 w-4" />
                     Copy Series
                 </DropdownMenuItem>
