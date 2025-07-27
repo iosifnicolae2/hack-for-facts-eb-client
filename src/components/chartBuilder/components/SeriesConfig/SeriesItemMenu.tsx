@@ -1,5 +1,5 @@
 import { SeriesConfiguration } from "@/schemas/chartBuilder";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ArrowDown, ArrowUp, Copy, Eye, EyeOff, MoreVertical, Tags, Trash2 } from "lucide-react";
 import { Button } from "../../../ui/button";
 
@@ -57,12 +57,7 @@ export function SeriesItemMenu({ series, isMoveUpDisabled, isMoveDownDisabled, o
                     {series.enabled ? 'Disable series' : 'Enable series'}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onSelect={onDelete} className="text-destructive" onClick={handleClick}>
-                    <Trash2 className="mr-2 h-4 w-4" />
-                    Delete
-                </DropdownMenuItem>
-                {/* Delete confirmation. The design look odd. Maybe worth tested in future or removed from here. */}
-                {/* <DropdownMenuSub>
+                <DropdownMenuSub>
                     <DropdownMenuSubTrigger className="text-destructive">
                         <Trash2 className="mr-2 h-4 w-4" />
                         <span>Delete</span>
@@ -77,7 +72,7 @@ export function SeriesItemMenu({ series, isMoveUpDisabled, isMoveDownDisabled, o
                             </DropdownMenuItem>
                         </DropdownMenuSubContent>
                     </DropdownMenuPortal>
-                </DropdownMenuSub> */}
+                </DropdownMenuSub>
             </DropdownMenuContent>
         </DropdownMenu>
     );
