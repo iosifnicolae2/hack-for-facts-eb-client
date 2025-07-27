@@ -1,11 +1,12 @@
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Trash2, Settings } from 'lucide-react';
+import { Trash2, Settings, ChartBar } from 'lucide-react';
 import { SeriesConfiguration } from '@/schemas/chartBuilder';
 import { useChartBuilder } from '../hooks/useChartBuilder';
-import { SeriesFilter } from '../SeriesFilter';
+import { SeriesFilter } from '../components/SeriesConfig/SeriesFilter';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,16 +20,19 @@ import { Switch } from '@/components/ui/switch';
 
 export function SeriesDetailView() {
   const { chart, seriesId, updateSeries, deleteSeries, goToOverview, goToConfig } = useChartBuilder();
-  const series = chart.series.find(s => s.id === seriesId)
+  const series = chart.series.find(s => s.id === seriesId);
+  const seriesLabel = series?.label || '';
+  const [localLabel, setLocalLabel] = useState(seriesLabel);
 
 
+  useEffect(() => {
+    setLocalLabel(seriesLabel);
+  }, [seriesLabel]);
 
-  // Update series label with auto-save
   const updateSeriesField = (field: keyof SeriesConfiguration, value: string | object) => {
     if (!series) return;
-    updateSeries(series.id, { [field]: value, updatedAt: new Date().toISOString() });
+    updateSeries(series.id, (prev) => ({ ...prev, [field]: value, updatedAt: new Date().toISOString() }));
   };
-
 
   if (!series) {
     return (
@@ -54,7 +58,15 @@ export function SeriesDetailView() {
       {/* Series Basic Info */}
       <Card>
         <CardHeader>
-          <CardTitle>Series Configuration</CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle>
+              Series Configuration
+            </CardTitle>
+            <Button variant="default" onClick={() => goToOverview()}>
+              <ChartBar className="h-4 w-4" />
+              View Chart
+            </Button>
+          </div>
           <CardDescription>
             Configure the label and appearance for this data series. Changes are automatically saved.
           </CardDescription>
@@ -64,8 +76,11 @@ export function SeriesDetailView() {
             <Label htmlFor="series-label">Series Label *</Label>
             <Input
               id="series-label"
-              value={series?.label || ''}
-              onChange={(e) => updateSeriesField('label', e.target.value)}
+              value={localLabel}
+              onChange={(e) => {
+                setLocalLabel(e.target.value);
+                updateSeriesField('label', e.target.value);
+              }}
               placeholder="Enter series label..."
             />
           </div>
@@ -113,7 +128,7 @@ export function SeriesDetailView() {
       <div className="flex justify-between pt-4">
         <Button onClick={goToConfig} variant="outline" className="gap-2">
           <Settings className="h-4 w-4" />
-          Back to Configuration
+          Chart Configuration
         </Button>
 
         <DropdownMenu>
@@ -144,4 +159,4 @@ export function SeriesDetailView() {
       </div>
     </div>
   );
-} 
+}

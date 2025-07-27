@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -107,35 +107,51 @@ const ToggleSwitch = React.memo(({ id, label, checked, onCheckedChange }: { id: 
 
 // ========== CHART INFORMATION COMPONENT ==========
 
-const ChartInfoCard = React.memo(({ chart, onUpdateChart }: Pick<ChartBuilderOverviewProps, 'chart' | 'onUpdateChart'>) => (
-  <SettingsCard
-    icon={<Settings className="h-5 w-5" />}
-    title="Chart Information"
-    description="Set the basic properties for your chart"
-  >
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="chart-title">Chart Title *</Label>
-        <Input
-          id="chart-title"
-          value={chart.title}
-          onChange={(e) => onUpdateChart({ title: e.target.value })}
-          placeholder="Enter chart title..."
-        />
+const ChartInfoCard = React.memo(({ chart, onUpdateChart }: Pick<ChartBuilderOverviewProps, 'chart' | 'onUpdateChart'>) => {
+  const [localTitle, setLocalTitle] = useState(chart.title);
+  const [localDescription, setLocalDescription] = useState(chart.description || '');
+
+  useEffect(() => {
+    setLocalTitle(chart.title);
+    setLocalDescription(chart.description || '');
+  }, [chart.title, chart.description]);
+  
+  return (
+    <SettingsCard
+      icon={<Settings className="h-5 w-5" />}
+      title="Chart Information"
+      description="Set the basic properties for your chart"
+    >
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="chart-title">Chart Title *</Label>
+          <Input
+            id="chart-title"
+            value={localTitle}
+            onChange={(e) => {
+              setLocalTitle(e.target.value);
+              onUpdateChart({ title: e.target.value });
+            }}
+            placeholder="Enter chart title..."
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="chart-description">Description</Label>
+          <Textarea
+            id="chart-description"
+            value={localDescription}
+            onChange={(e) => {
+              setLocalDescription(e.target.value);
+              onUpdateChart({ description: e.target.value });
+            }}
+            placeholder="Optional description for your chart..."
+            rows={3}
+          />
+        </div>
       </div>
-      <div className="space-y-2">
-        <Label htmlFor="chart-description">Description</Label>
-        <Textarea
-          id="chart-description"
-          value={chart.description || ''}
-          onChange={(e) => onUpdateChart({ description: e.target.value })}
-          placeholder="Optional description for your chart..."
-          rows={3}
-        />
-      </div>
-    </div>
-  </SettingsCard>
-));
+    </SettingsCard>
+  );
+});
 
 const GlobalSettingsCard = React.memo(({ chart, onUpdateChart }: Pick<ChartBuilderOverviewProps, 'chart' | 'onUpdateChart'>) => {
   const handleConfigChange = useCallback((updates: Partial<Chart['config']>) => {

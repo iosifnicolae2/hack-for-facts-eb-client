@@ -1,17 +1,37 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from '@tanstack/react-query';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
-import { AlertCircle, ArrowLeft, BarChart3, ChevronDown, ChevronUp, LineChart, Plus, ScatterChart, Settings, TrendingUp } from 'lucide-react';
+import { AlertCircle, ArrowLeft, BarChart3, LineChart, Plus, ScatterChart, Settings, TrendingUp } from 'lucide-react';
 import { AnalyticsInput, Chart, SeriesConfiguration } from '@/schemas/chartBuilder';
-import { AnalyticsDataPoint, getChartAnalytics } from '@/lib/api/chartBuilder';
+import { AnalyticsDataPoint, deleteChart, getChartAnalytics } from '@/lib/api/chartBuilder';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { ChartRenderer } from '@/components/chartBuilder/chart-renderer/ChartRenderer';
-import { ChartQuickConfig } from '@/components/chartBuilder/ChartQuickConfig';
+import { ChartQuickConfig } from '@/components/chartBuilder/components/QuickChartConfig/ChartQuickConfig';
 import { useChartBuilder } from "@/components/chartBuilder/hooks/useChartBuilder";
+import { ChartFiltersOverview } from "@/components/chartBuilder/components/FitersOverview/ChartFiltersOverview";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors, DragEndEvent, KeyboardSensor
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+  useSortable
+} from '@dnd-kit/sortable';
+import { CSS } from "@dnd-kit/utilities";
+import { GripVertical } from "lucide-react";
+import { SeriesItemMenu } from "../components/SeriesConfig/SeriesItemMenu";
+import { Input } from "@/components/ui/input";
+import { useDebouncedCallback } from "@/lib/hooks/useDebouncedCallback";
 
 // Helper to get the correct icon for a chart type.
 const getChartTypeIcon = (chartType: string, className: string = "h-4 w-4") => {
@@ -28,7 +48,7 @@ const getChartTypeIcon = (chartType: string, className: string = "h-4 w-4") => {
 /**
  * Represents a single item in the data series list.
  */
-const SeriesListItem = ({ series, index, onToggle, onClick, onMoveUp, onMoveDown, isMoveUpDisabled, isMoveDownDisabled, chartColor }: {
+const SeriesListItem = ({ series, index, onToggle, onClick, onMoveUp, onMoveDown, isMoveUpDisabled, isMoveDownDisabled, chartColor, onUpdate, onDelete }: {
   series: SeriesConfiguration;
   index: number;
   onToggle: (enabled: boolean) => void;
@@ -38,89 +58,145 @@ const SeriesListItem = ({ series, index, onToggle, onClick, onMoveUp, onMoveDown
   isMoveUpDisabled: boolean;
   isMoveDownDisabled: boolean;
   chartColor?: string;
-}) => (
-  <div className="flex items-center justify-between p-2.5 border rounded-lg hover:bg-muted/50 transition-colors">
-    {/* By adding `min-w-0`, we allow this flex item to shrink, enabling the child `truncate` to work effectively. */}
-    <div
-      className="flex items-center gap-3 text-sm flex-1 cursor-pointer min-w-0"
-      onClick={onClick}
-    >
-      <div
-        className="w-3 h-3 rounded-full border flex-shrink-0"
-        style={{ backgroundColor: series.config.color || chartColor }}
-      />
-      <div className="flex-1 min-w-0">
-        <p className="font-medium truncate" title={series.label}>{series.label}</p>
-        <p className="text-xs text-muted-foreground">Series {index + 1}</p>
+  onUpdate: (updates: Partial<SeriesConfiguration>) => void;
+  onDelete: () => void;
+}) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id: series.id });
+  const [localColor, setLocalColor] = useState(series.config.color);
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  const handleColorChange = useDebouncedCallback((color: string) => {
+    setLocalColor(color);
+    onUpdate({ config: { ...series.config, color } });
+  }, 500);
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} className="flex items-center justify-between p-2.5 border rounded-lg hover:bg-muted/50 transition-colors">
+      <div className="flex items-center gap-3 text-sm flex-1 cursor-pointer min-w-0">
+        <div {...listeners} className="cursor-grab">
+          <GripVertical className="h-5 w-5 text-muted-foreground" />
+        </div>
+        <div className="flex items-center gap-2">
+          <Input
+            type="color"
+            value={localColor}
+            onChange={(e) => handleColorChange(e.target.value)}
+            className="w-6 h-4 rounded-full cursor-pointer shadow-gray-600/50 shadow-sm"
+            style={{ backgroundColor: series.config.color || chartColor, border: "none" }}
+            aria-label="Color Picker"
+          />
+        </div>
+        <div className="flex-1 min-w-0" onClick={onClick}>
+          <p className="font-medium truncate" title={series.label}>{series.label}</p>
+          <p className="text-xs text-muted-foreground">Series {index + 1}</p>
+        </div>
+      </div>
+      <div className="flex items-center gap-1 ml-2">
+        <Switch
+          checked={series.enabled}
+          onCheckedChange={onToggle}
+          onClick={(e) => e.stopPropagation()}
+          aria-label={`Toggle series ${series.label}`}
+        />
+        <SeriesItemMenu
+          series={series}
+          isMoveUpDisabled={isMoveUpDisabled}
+          isMoveDownDisabled={isMoveDownDisabled}
+          onToggleEnabled={() => onToggle(!series.enabled)}
+          onToggleDataLabels={() => onUpdate({ config: { ...series.config, showDataLabels: !series.config.showDataLabels } })}
+          onMoveUp={onMoveUp}
+          onMoveDown={onMoveDown}
+          onDelete={onDelete}
+        />
       </div>
     </div>
-    <div className="flex items-center gap-1 ml-2">
-      <div className="flex items-center">
-        <Button variant="ghost" size="icon" onClick={onMoveUp} disabled={isMoveUpDisabled} aria-label="Move series up" className="h-7 w-7">
-          <ChevronUp className="h-4 w-4" />
-        </Button>
-        <Button variant="ghost" size="icon" onClick={onMoveDown} disabled={isMoveDownDisabled} aria-label="Move series down" className="h-7 w-7">
-          <ChevronDown className="h-4 w-4" />
-        </Button>
-      </div>
-      <Switch
-        checked={series.enabled}
-        onCheckedChange={onToggle}
-        onClick={(e) => e.stopPropagation()} // Prevent card click
-        aria-label={`Toggle series ${series.label}`}
-      />
-    </div>
-  </div>
-);
+  )
+};
 
 /**
  * Manages and displays the list of data series.
  */
-const SeriesList = ({ chart, onAddSeries, onSeriesClick, onToggleSeries, onMoveSeriesUp, onMoveSeriesDown }: {
+const SeriesList = ({ chart, onAddSeries, onSeriesClick, onToggleSeries, onMoveSeriesUp, onMoveSeriesDown, updateSeries, setSeries, deleteSeries }: {
   chart: Chart;
   onAddSeries: () => void;
   onSeriesClick: (seriesId: string) => void;
   onToggleSeries: (seriesId: string, enabled: boolean) => void;
   onMoveSeriesUp: (seriesId: string) => void;
   onMoveSeriesDown: (seriesId: string) => void;
-}) => (
-  <Card>
-    <CardHeader>
-      <CardTitle className="flex items-center justify-between">
-        <span>Data Series</span>
-        <Button size="icon" onClick={onAddSeries} className="rounded-full w-7 h-7 cursor-pointer" aria-label="Add new series">
-          <Plus className="h-4 w-4" />
-        </Button>
-      </CardTitle>
-      <CardDescription>{chart.series.length} series configured</CardDescription>
-    </CardHeader>
-    <CardContent>
-      {chart.series.length === 0 ? (
-        <div className="text-center py-4">
-          <p className="text-sm text-muted-foreground mb-3">No data series yet.</p>
-          <Button size="sm" onClick={onAddSeries}>Add Series</Button>
-        </div>
-      ) : (
-        <div className="space-y-2">
-          {chart.series.map((series, index) => (
-            <SeriesListItem
-              key={series.id}
-              series={series}
-              index={index}
-              chartColor={chart.config.color}
-              onClick={() => onSeriesClick(series.id)}
-              onToggle={(enabled) => onToggleSeries(series.id, enabled)}
-              onMoveUp={() => onMoveSeriesUp(series.id)}
-              onMoveDown={() => onMoveSeriesDown(series.id)}
-              isMoveUpDisabled={index === 0}
-              isMoveDownDisabled={index === chart.series.length - 1}
-            />
-          ))}
-        </div>
-      )}
-    </CardContent>
-  </Card>
-);
+  updateSeries: (seriesId: string, updates: Partial<SeriesConfiguration>) => void;
+  setSeries: (series: SeriesConfiguration[]) => void;
+  deleteSeries: (seriesId: string) => void;
+}) => {
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      const oldIndex = chart.series.findIndex((s) => s.id === active.id);
+      const newIndex = chart.series.findIndex((s) => s.id === over.id);
+      setSeries(arrayMove(chart.series, oldIndex, newIndex));
+    }
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center justify-between">
+          <span>Data Series</span>
+          <Button size="icon" onClick={onAddSeries} className="rounded-full w-7 h-7 cursor-pointer" aria-label="Add new series">
+            <Plus className="h-4 w-4" />
+          </Button>
+        </CardTitle>
+        <CardDescription>{chart.series.length} series configured</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {chart.series.length === 0 ? (
+          <div className="text-center py-4">
+            <p className="text-sm text-muted-foreground mb-3">No data series yet.</p>
+            <Button size="sm" onClick={onAddSeries}>Add Series</Button>
+          </div>
+        ) : (
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <SortableContext items={chart.series.map(s => s.id)} strategy={verticalListSortingStrategy}>
+              <div className="space-y-2">
+                {chart.series.map((series, index) => (
+                  <SeriesListItem
+                    key={series.id}
+                    series={series}
+                    index={index}
+                    chartColor={chart.config.color}
+                    onClick={() => onSeriesClick(series.id)}
+                    onToggle={(enabled) => onToggleSeries(series.id, enabled)}
+                    onMoveUp={() => onMoveSeriesUp(series.id)}
+                    onMoveDown={() => onMoveSeriesDown(series.id)}
+                    isMoveUpDisabled={index === 0}
+                    isMoveDownDisabled={index === chart.series.length - 1}
+                    onUpdate={(updates) => updateSeries(series.id, updates)}
+                    onDelete={() => deleteSeries(series.id)}
+                  />
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
+        )}
+      </CardContent>
+    </Card>
+  )
+};
 
 
 /**
@@ -227,7 +303,8 @@ const ChartDisplayArea = ({ chart, chartData, isLoading, error, onAddSeries }: {
 
 
 export function ChartView() {
-  const { chart, updateChart, updateSeries, moveSeriesUp, moveSeriesDown, addSeries, goToConfig, goToSeriesConfig } = useChartBuilder();
+  const navigate = useNavigate();
+  const { chart, updateChart, updateSeries, moveSeriesUp, moveSeriesDown, addSeries, goToConfig, goToSeriesConfig, setSeries, deleteSeries } = useChartBuilder();
 
   const handleToggleSeriesEnabled = useCallback(async (seriesId: string, enabled: boolean) => {
     // FIX: Using `updateSeries` is more specific and better for state management encapsulation.
@@ -237,6 +314,11 @@ export function ChartView() {
   const handleUpdateChart = useCallback(async (updates: Partial<Chart>) => {
     updateChart(updates);
   }, [updateChart]);
+
+  const handleDeleteChart = useCallback(async () => {
+    await deleteChart(chart.id);
+    navigate({ to: "/charts" });
+  }, [chart.id, navigate]);
 
 
   const analyticsInputs: AnalyticsInput[] = chart.series
@@ -259,16 +341,26 @@ export function ChartView() {
       <ChartViewHeader chart={chart} onConfigure={goToConfig} />
 
       <div className="flex flex-col lg:flex-row gap-6">
-        <ChartDisplayArea
-          chart={chart}
-          chartData={chartData}
-          isLoading={isLoadingData}
-          error={dataError}
-          onAddSeries={addSeries}
-        />
+        <div className="flex flex-col flex-grow space-y-6">
+          <div>
+            <ChartDisplayArea
+              chart={chart}
+              chartData={chartData}
+              isLoading={isLoadingData}
+              error={dataError}
+              onAddSeries={addSeries}
+            />
+          </div>
+          <ChartFiltersOverview chart={chart} onFilterClick={goToSeriesConfig} />
+        </div>
 
-        <div className="space-y-6">
-          <ChartQuickConfig chart={chart} onUpdateChart={handleUpdateChart} />
+        <div className="lg:w-96 flex-shrink-0 space-y-6">
+          <ChartQuickConfig
+            chart={chart}
+            onUpdateChart={handleUpdateChart}
+            onDeleteChart={handleDeleteChart}
+            onOpenConfigPanel={goToConfig}
+          />
           <SeriesList
             chart={chart}
             onAddSeries={addSeries}
@@ -276,6 +368,9 @@ export function ChartView() {
             onToggleSeries={handleToggleSeriesEnabled}
             onMoveSeriesUp={moveSeriesUp}
             onMoveSeriesDown={moveSeriesDown}
+            updateSeries={updateSeries}
+            setSeries={setSeries}
+            deleteSeries={deleteSeries}
           />
         </div>
       </div>

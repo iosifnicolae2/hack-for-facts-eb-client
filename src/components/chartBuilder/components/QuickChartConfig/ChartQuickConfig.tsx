@@ -7,13 +7,16 @@ import { Chart } from '@/schemas/chartBuilder';
 import { BarChart3, LineChart, TrendingUp, ScatterChart, PieChart } from 'lucide-react';
 import { ChartType } from '@/schemas/constants';
 import { ShareChart } from './ShareChart';
+import { ChartQuickConfigMenu } from './ChartQuickConfigMenu';
 
 interface ChartQuickConfigProps {
   chart: Chart;
   onUpdateChart: (updates: Partial<Chart>) => void;
+  onDeleteChart: () => void;
+  onOpenConfigPanel: () => void;
 }
 
-export function ChartQuickConfig({ chart, onUpdateChart }: ChartQuickConfigProps) {
+export function ChartQuickConfig({ chart, onUpdateChart, onDeleteChart, onOpenConfigPanel }: ChartQuickConfigProps) {
   const getChartTypeIcon = (chartType: ChartType) => {
     switch (chartType) {
       case 'line': return <LineChart className="h-4 w-4" />;
@@ -33,10 +36,18 @@ export function ChartQuickConfig({ chart, onUpdateChart }: ChartQuickConfigProps
 
       <Card>
         <CardHeader>
-          <CardTitle>Quick Configuration</CardTitle>
-          <CardDescription>
-            Quickly adjust chart settings
-          </CardDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Quick Configuration</CardTitle>
+              <CardDescription>
+                Quickly adjust chart settings
+              </CardDescription>
+            </div>
+            <ChartQuickConfigMenu
+              onDelete={onDeleteChart}
+              onOpenConfigPanel={onOpenConfigPanel}
+            />
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Chart Type */}

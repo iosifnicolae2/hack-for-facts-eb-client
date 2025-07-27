@@ -22,6 +22,7 @@ interface UseChartBuilderReturn {
   addSeries: () => void;
   updateSeries: (seriesId: string, updates: Partial<SeriesConfiguration> | ((prevSeries: SeriesConfiguration) => SeriesConfiguration)) => void;
   deleteSeries: (seriesId: string) => void;
+  setSeries: (series: SeriesConfiguration[]) => void,
   duplicateSeries: (seriesId: string) => void;
   moveSeriesUp: (seriesId: string) => void;
   moveSeriesDown: (seriesId: string) => void;
@@ -140,6 +141,10 @@ export function useChartBuilder(): UseChartBuilderReturn {
 
   }, [updateChart, chart]);
 
+  const setSeries = useCallback((series: SeriesConfiguration[]) => {
+    updateChart({ series });
+  }, [updateChart]);
+
   const validateChart = useCallback((): ValidationResult => {
     const errors: Record<string, string[]> = {};
 
@@ -213,6 +218,7 @@ export function useChartBuilder(): UseChartBuilderReturn {
     addSeries,
     updateSeries,
     deleteSeries,
+    setSeries,
     duplicateSeries,
     moveSeriesUp,
     moveSeriesDown,

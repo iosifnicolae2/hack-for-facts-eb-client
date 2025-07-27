@@ -1,22 +1,22 @@
 import { Building2, XCircle, MapPin, EuroIcon, ChartBar, SlidersHorizontal, ArrowUpDown } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Button } from "../ui/button";
-import { FilterListContainer } from "../filters/base-filter/FilterListContainer";
-import { FilterPrefixContainer, PrefixFilter } from "../filters/prefix-filter";
-import { FilterRangeContainer } from "../filters/base-filter/FilterRangeContainer";
-import { FilterRadioContainer } from "../filters/base-filter/FilterRadioContainer";
-import { ReportTypeFilter } from "../filters/report-type-filter";
-import { FilterContainer } from "../filters/base-filter/FilterContainer";
-import { IsUatFilter } from "../filters/flags-filter";
-import { EconomicClassificationList } from "../filters/economic-classification-filter";
-import { UatList } from "../filters/uat-filter";
-import { EntityTypeList } from "../filters/entity-type-filter/EntityTypeList";
-import { AmountRangeFilter } from "../filters/amount-range-filter";
-import { EntityList } from "../filters/entity-filter";
-import { useChartBuilder } from "./hooks/useChartBuilder";
-import { OptionItem } from "../filters/base-filter/interfaces";
-import { FunctionalClassificationList } from "../filters/functional-classification-filter";
-import { AccountCategoryRadio } from "../filters/account-type-filter/AccountCategoryRadio";
+import { Card, CardContent, CardHeader, CardTitle } from "../../../ui/card";
+import { Button } from "../../../ui/button";
+import { FilterListContainer } from "../../../filters/base-filter/FilterListContainer";
+import { FilterPrefixContainer, PrefixFilter } from "../../../filters/prefix-filter";
+import { FilterRangeContainer } from "../../../filters/base-filter/FilterRangeContainer";
+import { FilterRadioContainer } from "../../../filters/base-filter/FilterRadioContainer";
+import { ReportTypeFilter } from "../../../filters/report-type-filter";
+import { FilterContainer } from "../../../filters/base-filter/FilterContainer";
+import { IsUatFilter } from "../../../filters/flags-filter";
+import { EconomicClassificationList } from "../../../filters/economic-classification-filter";
+import { UatList } from "../../../filters/uat-filter";
+import { EntityTypeList } from "../../../filters/entity-type-filter/EntityTypeList";
+import { AmountRangeFilter } from "../../../filters/amount-range-filter";
+import { EntityList } from "../../../filters/entity-filter";
+import { useChartBuilder } from "../../hooks/useChartBuilder";
+import { OptionItem } from "../../../filters/base-filter/interfaces";
+import { FunctionalClassificationList } from "../../../filters/functional-classification-filter";
+import { AccountCategoryRadio } from "../../../filters/account-type-filter/AccountCategoryRadio";
 
 interface SeriesFilterProps {
     seriesId?: string;
@@ -52,7 +52,7 @@ export function SeriesFilter({ seriesId }: SeriesFilterProps) {
         };
 
     // Generic updater for simple value filters
-    const createValueUpdater = (filterKey: keyof typeof filter, transform?: (value: string | number | boolean | undefined) => string | number | boolean | undefined) =>
+    const createValueUpdater = (filterKey: keyof typeof filter, transform?: (value: string | number | boolean | undefined) => string | number | boolean | (string | number)[] | undefined) =>
         (value: string | number | boolean | undefined) => {
             console.log('createValueUpdater', filterKey, value);
             if (!seriesId) return;
@@ -94,10 +94,10 @@ export function SeriesFilter({ seriesId }: SeriesFilterProps) {
     const reportTypeOption: OptionItem | null = reportType ? { id: reportType, label: reportType } : null;
 
     const functionalPrefix = filter.functional_prefixes?.[0];
-    const setFunctionalPrefix = createValueUpdater('functional_prefixes', (v) => v ? [v] : undefined);
+    const setFunctionalPrefix = createValueUpdater('functional_prefixes', (v) => v ? [String(v)] : undefined);
 
     const economicPrefix = filter.economic_prefixes?.[0];
-    const setEconomicPrefix = createValueUpdater('economic_prefixes', (v) => v ? [v] : undefined);
+    const setEconomicPrefix = createValueUpdater('economic_prefixes', (v) => v ? [String(v)] : undefined);
 
     const flagsOptions: OptionItem[] = [];
     if (filter.is_uat === true) flagsOptions.push({ id: 'isUat', label: 'UAT: Da' });
