@@ -107,7 +107,10 @@ export function ChartRenderer({ chart, data, className, height = 400 }: ChartRen
     });
 
     if (chart.config.showRelativeValues && filteredData.length > 0) {
-      const baseSeriesLabel = filteredData[0].seriesId;
+      const baseSeriesLabel = chart.series.find(s => s.enabled)?.id;
+      if (!baseSeriesLabel) {
+        return baseData;
+      }
       return baseData.map(dataPoint => {
         const baseValue = dataPoint[baseSeriesLabel].absolute;
         const relativeDataPoint: TimeSeriesDataPoint = { year: dataPoint.year } as TimeSeriesDataPoint;
