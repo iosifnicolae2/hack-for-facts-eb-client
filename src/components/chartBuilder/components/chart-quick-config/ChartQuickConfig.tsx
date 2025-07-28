@@ -4,7 +4,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Chart } from '@/schemas/charts';
-import { BarChart3, LineChart, TrendingUp, ScatterChart, PieChart } from 'lucide-react';
+import { BarChart3, LineChart, TrendingUp } from 'lucide-react';
 import { ChartType } from '@/schemas/constants';
 import { ShareChart } from './components/ShareChart';
 import { ChartQuickConfigMenu } from './components/ChartQuickConfigMenu';
@@ -82,24 +82,6 @@ export function ChartQuickConfig({ chart, onUpdateChart, onDeleteChart, onDuplic
                   <div className="flex items-center gap-2">
                     <BarChart3 className="h-4 w-4" />
                     Bar Chart
-                  </div>
-                </SelectItem>
-                <SelectItem value="area">
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className="h-4 w-4" />
-                    Area Chart
-                  </div>
-                </SelectItem>
-                <SelectItem value="scatter">
-                  <div className="flex items-center gap-2">
-                    <ScatterChart className="h-4 w-4" />
-                    Scatter Plot
-                  </div>
-                </SelectItem>
-                <SelectItem value="pie">
-                  <div className="flex items-center gap-2">
-                    <PieChart className="h-4 w-4" />
-                    Pie Chart
                   </div>
                 </SelectItem>
               </SelectContent>
