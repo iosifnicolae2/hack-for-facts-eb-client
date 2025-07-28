@@ -10,6 +10,8 @@ import { formatCurrency, formatNumberRO } from '@/lib/utils';
 import { AnalyticsDataPoint } from '@/lib/api/charts';
 import { CustomTimeSeriesTooltip } from './Tooltips';
 import { CartesianChartProps } from 'recharts/types/util/types';
+import { applyAlpha } from './utils';
+import { ChartLabel } from './ChartLabel';
 
 
 interface ChartRendererProps {
@@ -56,12 +58,19 @@ export function ChartRenderer({ chart, data, className, height = 400 }: ChartRen
     return data.filter(d => enabledLabels.has(d.seriesId));
   }, [data, enabledSeries]);
 
-  const getSeriesColor = useCallback((seriesId: string): string => {
-    const seriesConfig = enabledSeries.find(s => s.id === seriesId);
-    // Fallback color generation is now more robust and distributed.
-    const index = enabledSeries.findIndex(s => s.id === seriesId);
-    return seriesConfig?.config.color || chart.config.color || `hsl(${index * 137.5 % 360}, 70%, 50%)`;
-  }, [enabledSeries, chart.config.color]);
+  const getSeriesColor = useCallback(
+    (seriesId: string, opacity = 1): string => {
+      const seriesConfig = enabledSeries.find(s => s.id === seriesId);
+      const index = enabledSeries.findIndex(s => s.id === seriesId);
+      const base =
+        seriesConfig?.config.color ||
+        chart.config.color ||
+        `hsl(${(index * 137.5) % 360}, 70%, 50%)`;
+
+      return applyAlpha(base, opacity);
+    },
+    [enabledSeries, chart.config.color]
+  );
 
   const timeSeriesData = useMemo((): TimeSeriesDataPoint[] => {
     if (filteredData.length === 0) return [];
@@ -119,23 +128,6 @@ export function ChartRenderer({ chart, data, className, height = 400 }: ChartRen
     return baseData;
   }, [filteredData, chart.config.showRelativeValues]);
 
-  // const pieData = useMemo((): PieDataPoint[] => {
-  //   return filteredData.map(series => ({
-  //     name: series.label,
-  //     value: series.yearlyTrend.reduce((sum, point) => sum + point.totalAmount, 0),
-  //     fill: getSeriesColor(series.label),
-  //   }));
-  // }, [filteredData, getSeriesColor]);
-
-  // const scatterData = useMemo((): ScatterSeriesData[] => {
-  //   return filteredData.map(series => ({
-  //     name: series.label,
-  //     color: getSeriesColor(series.label),
-  //     points: series.yearlyTrend.map(point => ({ x: point.year, y: point.totalAmount })),
-  //   }));
-  // }, [filteredData, getSeriesColor]);
-
-
   if (filteredData.length === 0) {
     return (
       <div className="flex items-center justify-center h-full text-muted-foreground" style={{ height }}>
@@ -177,8 +169,9 @@ export function ChartRenderer({ chart, data, className, height = 400 }: ChartRen
               <LabelList
                 dataKey={`${series.id}.value`}
                 position="top"
-                offset={20}
+                offset={30}
                 className="text-xs fill-foreground text-center font-bold"
+                content={(props) => <ChartLabel {...props} series={series} dataLabelFormatter={dataLabelFormatter} getSeriesColor={getSeriesColor} isRelative={isRelative} />}
                 formatter={(label: unknown) => dataLabelFormatter(Number(label as number), isRelative)}
               />
             )}
