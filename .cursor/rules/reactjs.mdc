@@ -88,3 +88,9 @@ Example workflow:
 2. Break UI into small, reusable components
 3. Avoid unnecessary state
 4. Keep code simple and optimal
+
+## Sonner Toast
+
+- Use `toast.success` for success messages
+- Use `toast.error` for error messages
+- Use `toast.warning` for warning messages
