@@ -9,19 +9,19 @@ interface ChartLabelProps extends LabelProps {
 }
 
 export function ChartLabel(props: ChartLabelProps) {
-    const { x, y, value, offset, series, dataLabelFormatter, getSeriesColor, isRelative } = props;
+    const { x, y, value, offset, width, series, dataLabelFormatter, getSeriesColor, isRelative } = props;
     const xValue = isNaN(Number(x)) ? 0 : Number(x);
     const yValue = isNaN(Number(y)) ? 0 : Number(y);
     const offsetValue = isNaN(Number(offset)) ? 0 : Number(offset);
     const formattedValue = dataLabelFormatter(Number(value), isRelative);
+    const chartItemWidth = isNaN(Number(width)) ? 0 : Number(width);
 
     const increaseFactor = 7;
     const labelWidth = formattedValue.length > 6 ? formattedValue.length * increaseFactor : 50;
-
     return (
         <g>
             <rect
-                x={xValue - labelWidth / 2 + increaseFactor}
+                x={xValue - labelWidth / 2 + chartItemWidth / 2}
                 y={yValue - offsetValue}
                 width={labelWidth}
                 height={20}
@@ -30,7 +30,7 @@ export function ChartLabel(props: ChartLabelProps) {
                 opacity={0.9}
             />
             <text
-                x={xValue + 8}
+                x={xValue + chartItemWidth / 2}
                 y={yValue - offsetValue + 12}
                 textAnchor="middle"
                 dominantBaseline="middle"
