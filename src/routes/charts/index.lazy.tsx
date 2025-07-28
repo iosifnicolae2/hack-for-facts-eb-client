@@ -1,9 +1,8 @@
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { BarChart3, Plus, TrendingUp, LineChart, ScatterChart, Edit, Trash2, Eye, Star } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { BarChart3, Plus, Edit, Trash2, Eye, Star } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,6 +15,8 @@ import {
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
 import { deleteChart, loadSavedCharts, StoredChart, toggleChartFavorite } from '@/lib/api/charts';
+import { ChartPreview } from "@/components/chartBuilder/components/chart-preview/ChartPreview";
+import { Separator } from "@/components/ui/separator";
 
 export const Route = createLazyFileRoute("/charts/")({
   component: ChartsListPage,
@@ -85,6 +86,7 @@ function ChartsListPage() {
         ) : (
           <div className="flex flex-col gap-4">
             {favoriteCharts.length > 0 && <ChartSection title="Favorites" charts={favoriteCharts} onDelete={handleDeleteChart} onFavorite={handleToggleFavorite} />}
+            {favoriteCharts.length > 0 && nonFavoriteCharts.length > 0 && <Separator className="mt-4" />}
             {nonFavoriteCharts.length > 0 && <ChartSection title="" charts={nonFavoriteCharts} onDelete={handleDeleteChart} onFavorite={handleToggleFavorite} />}
           </div>
         )}
@@ -96,72 +98,18 @@ function ChartsListPage() {
 
 function ChartSection({ title, charts, onDelete, onFavorite }: { title: string, charts: StoredChart[], onDelete: (chartId: string) => void, onFavorite: (chartId: string) => void }) {
 
-
-  const getChartTypeIcon = (chartType: string) => {
-    switch (chartType) {
-      case 'line': return <LineChart className="h-4 w-4" />;
-      case 'bar': return <BarChart3 className="h-4 w-4" />;
-      case 'area': return <TrendingUp className="h-4 w-4" />;
-      case 'scatter': return <ScatterChart className="h-4 w-4" />;
-      default: return <BarChart3 className="h-4 w-4" />;
-    }
-  };
-
-  const formatDate = (date: string | Date) => {
-    const d = typeof date === 'string' ? new Date(date) : date;
-    return d.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-  };
-
   return (
     <div className="space-y-4">
       <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
       <div className="flex flex-wrap gap-4">
         {charts.map(chart => (
-          <Card key={chart.id} className="hover:shadow-md transition-shadow w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
-            <CardHeader className="pb-3">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-2">
-                  {getChartTypeIcon(chart.config.chartType)}
-                  <CardTitle className="text-lg line-clamp-1">
-                    {chart.title || 'Untitled Chart'}
-                  </CardTitle>
-                </div>
-                <Badge variant="outline" className="text-xs">
-                  {chart.config.chartType}
-                </Badge>
-              </div>
-              {chart.description && (
-                <CardDescription className="line-clamp-2">
-                  {chart.description}
-                </CardDescription>
-              )}
-            </CardHeader>
-
-            <CardContent className="pt-0">
-              <div className="space-y-3">
-                <div className="text-sm text-muted-foreground">
-                  <div className="flex justify-between">
-                    <span>Series: {chart.series.length}</span>
-                    <span>Updated: {formatDate(chart.updatedAt)}</span>
-                  </div>
-                </div>
-
-                <div className="flex gap-2">
-                  <Link to={`/charts/$chartId`} search={{ view: "overview", chart: chart }} params={{ chartId: chart.id }}>
-                    <Button
-                      variant="default"
-                      size="sm"
-                      className="flex-1"
-                    >
-                      <Eye className="h-4 w-4 mr-2" />
-                      View
-                    </Button>
-                  </Link>
-
+          <Card key={chart.id} className="hover:shadow-md transition-shadow w-full lg:w-[30%]">
+            <CardContent className="pt-4 flex flex-col">
+              <Link to={`/charts/$chartId`} search={{ view: "overview", chart: chart }} params={{ chartId: chart.id }}>
+                <ChartPreview chart={chart} className="py-2" />
+              </Link>
+              <div className="flex flex-row justify-between items-center">
+                <div className="flex gap-2 items-center">
                   <Link to={`/charts/$chartId`} search={{ view: "config", chart: chart }} params={{ chartId: chart.id }}>
                     <Button
                       variant="outline"
@@ -202,6 +150,17 @@ function ChartSection({ title, charts, onDelete, onFavorite }: { title: string, 
                     </AlertDialogContent>
                   </AlertDialog>
                 </div>
+
+                <Link to={`/charts/$chartId`} search={{ view: "overview", chart: chart }} params={{ chartId: chart.id }}>
+                  <Button
+                    variant="outline"
+                    size="default"
+                    className="flex-1"
+                  >
+                    <Eye className="h-4 w-4 mr-2" />
+                    View
+                  </Button>
+                </Link>
               </div>
             </CardContent>
           </Card>

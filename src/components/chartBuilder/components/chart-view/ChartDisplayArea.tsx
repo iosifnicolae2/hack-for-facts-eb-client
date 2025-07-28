@@ -10,12 +10,13 @@ import { AnalyticsDataPoint } from "@/lib/api/charts";
 interface ChartDisplayAreaProps {
   chart: Chart;
   chartData: AnalyticsDataPoint[] | undefined;
+  isPreview?: boolean;
   isLoading: boolean;
   error: Error | null;
   onAddSeries: () => void;
 }
 
-export function ChartDisplayArea({ chart, chartData, isLoading, error, onAddSeries }: ChartDisplayAreaProps) {
+export function ChartDisplayArea({ chart, chartData, isLoading, error, onAddSeries, isPreview = false }: ChartDisplayAreaProps) {
   const renderContent = () => {
     if (chart.series.length === 0) {
       return (
@@ -56,12 +57,20 @@ export function ChartDisplayArea({ chart, chartData, isLoading, error, onAddSeri
       <div className="w-full">
         <h2 className="text-center text-lg font-bold text-muted-foreground">{chart.title}</h2>
         <ChartRenderer chart={chart} data={chartData} />
-        {chart.description && (
+        {!isPreview && chart.description && (
           <p className="px-4 text-center text-sm text-muted-foreground">{chart.description}</p>
         )}
       </div>
     );
   };
+
+  if (isPreview) {
+    return (
+      <div className="w-full">
+        {renderContent()}
+      </div>
+    );
+  }
 
   return (
     <Card className="flex flex-col w-full h-full" id="chart-display-area">
