@@ -1,5 +1,5 @@
 import { graphqlRequest } from './graphql';
-import { AnalyticsInput, Chart, ChartSchema } from '@/schemas/chartBuilder';
+import { AnalyticsInput, Chart, ChartSchema } from '@/schemas/charts';
 
 export interface YearlyTrendPoint {
   year: number;

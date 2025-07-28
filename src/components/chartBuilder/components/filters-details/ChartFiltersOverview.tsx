@@ -1,7 +1,7 @@
 // src/components/charts/ChartFiltersOverview.tsx
 
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Chart } from "@/schemas/chartBuilder";
+import { Chart } from "@/schemas/charts";
 import { FilterIcon } from "lucide-react";
 import {
   Accordion,
@@ -62,7 +62,7 @@ export function ChartFiltersOverview({
             <div className="flex items-center gap-3 w-full">
               <CardTitle>
                 Filters info{" "}
-                <span className="text-muted-foreground font-normal">
+                <span className="text-muted-foreground font-normal text-sm">
                   ({totalFilters})
                 </span>
               </CardTitle>
@@ -73,9 +73,9 @@ export function ChartFiltersOverview({
               {activeSeriesWithFilters.map((series) => (
                 <div
                   key={series.id}
-                  className="pb-6 border-b border-border/60 last:border-b-0 last:pb-0"
+                  className="pb-4 border-b border-border/60 last:border-b-0 last:pb-0"
                 >
-                  <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-3">
                       <div
                         className="w-3 h-3 rounded-full border flex-shrink-0"

@@ -15,7 +15,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
-import { deleteChart, loadSavedCharts, StoredChart, toggleChartFavorite } from '@/lib/api/chartBuilder';
+import { deleteChart, loadSavedCharts, StoredChart, toggleChartFavorite } from '@/lib/api/charts';
 
 export const Route = createLazyFileRoute("/charts/")({
   component: ChartsListPage,

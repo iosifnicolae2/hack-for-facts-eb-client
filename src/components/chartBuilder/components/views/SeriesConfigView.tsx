@@ -2,11 +2,9 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Trash2, Settings, ChartBar } from 'lucide-react';
-import { SeriesConfiguration } from '@/schemas/chartBuilder';
-import { useChartBuilder } from '../hooks/useChartBuilder';
-import { SeriesFilter } from '../components/SeriesConfig/SeriesFilter';
+import { Card, CardContent } from '@/components/ui/card';
+import { Trash2, Settings, Eye } from 'lucide-react';
+import { SeriesConfiguration } from '@/schemas/charts';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,10 +14,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Switch } from '@/components/ui/switch';
+import { SeriesFilter } from '../series-config/SeriesFilter';
+import { useChartStore } from '../../hooks/useChartStore';
 
 
-export function SeriesDetailView() {
-  const { chart, seriesId, updateSeries, deleteSeries, goToOverview, goToConfig } = useChartBuilder();
+export function SeriesConfigView() {
+  const { chart, seriesId, updateSeries, deleteSeries, goToOverview, goToConfig } = useChartStore();
   const series = chart.series.find(s => s.id === seriesId);
   const seriesLabel = series?.label || '';
   const [localLabel, setLocalLabel] = useState(seriesLabel);
@@ -53,26 +53,21 @@ export function SeriesDetailView() {
   };
 
   return (
-    <div className="space-y-6 p-1">
+    <div className="flex flex-col space-y-6 p-2 w-full overflow-x-hidden">
 
       {/* Series Basic Info */}
+      <header className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold tracking-tight">
+          Series Configuration
+        </h1>
+        <Button onClick={goToOverview} className="gap-2">
+          <Eye className="h-4 w-4" />
+          View Chart
+        </Button>
+      </header>
       <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>
-              Series Configuration
-            </CardTitle>
-            <Button variant="default" onClick={() => goToOverview()}>
-              <ChartBar className="h-4 w-4" />
-              View Chart
-            </Button>
-          </div>
-          <CardDescription>
-            Configure the label and appearance for this data series. Changes are automatically saved.
-          </CardDescription>
-        </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-2">
+          <div className="space-y-2 pt-4">
             <Label htmlFor="series-label">Series Label *</Label>
             <Input
               id="series-label"
@@ -111,21 +106,11 @@ export function SeriesDetailView() {
         </CardContent>
       </Card>
 
-      {/* Filter Configuration */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Data Filters</CardTitle>
-          <CardDescription>
-            Use the filter options below to specify which data should be included in this series.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <SeriesFilter seriesId={seriesId} />
-        </CardContent>
-      </Card>
+      {/* ================= Series Filter ================= */}
+      <SeriesFilter seriesId={seriesId} />
 
-      {/* Actions */}
-      <div className="flex justify-between pt-4">
+      {/* ================= Series Delete ================= */}
+      <footer className="flex justify-between pt-4">
         <Button onClick={goToConfig} variant="outline" className="gap-2">
           <Settings className="h-4 w-4" />
           Chart Configuration
@@ -155,8 +140,7 @@ export function SeriesDetailView() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-
-      </div>
+      </footer>
     </div>
   );
 }

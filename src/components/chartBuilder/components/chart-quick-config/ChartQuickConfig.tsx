@@ -3,20 +3,21 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Chart } from '@/schemas/chartBuilder';
+import { Chart } from '@/schemas/charts';
 import { BarChart3, LineChart, TrendingUp, ScatterChart, PieChart } from 'lucide-react';
 import { ChartType } from '@/schemas/constants';
-import { ShareChart } from './ShareChart';
-import { ChartQuickConfigMenu } from './ChartQuickConfigMenu';
+import { ShareChart } from './components/ShareChart';
+import { ChartQuickConfigMenu } from './components/ChartQuickConfigMenu';
 
 interface ChartQuickConfigProps {
   chart: Chart;
   onUpdateChart: (updates: Partial<Chart>) => void;
   onDeleteChart: () => void;
+  onDuplicateChart: () => void;
   onOpenConfigPanel: () => void;
 }
 
-export function ChartQuickConfig({ chart, onUpdateChart, onDeleteChart, onOpenConfigPanel }: ChartQuickConfigProps) {
+export function ChartQuickConfig({ chart, onUpdateChart, onDeleteChart, onDuplicateChart, onOpenConfigPanel }: ChartQuickConfigProps) {
   const getChartTypeIcon = (chartType: ChartType) => {
     switch (chartType) {
       case 'line': return <LineChart className="h-4 w-4" />;
@@ -46,6 +47,7 @@ export function ChartQuickConfig({ chart, onUpdateChart, onDeleteChart, onOpenCo
             <ChartQuickConfigMenu
               onDelete={onDeleteChart}
               onOpenConfigPanel={onOpenConfigPanel}
+              onDuplicate={onDuplicateChart}
             />
           </div>
         </CardHeader>

@@ -1,4 +1,4 @@
-import { SeriesConfiguration } from "@/schemas/chartBuilder";
+import { SeriesConfiguration } from "@/schemas/charts";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ArrowDown, ArrowUp, Copy, Eye, EyeOff, MoreVertical, Tags, Trash2 } from "lucide-react";
 import { Button } from "../../../ui/button";

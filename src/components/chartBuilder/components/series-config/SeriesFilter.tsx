@@ -13,17 +13,19 @@ import { UatList } from "../../../filters/uat-filter";
 import { EntityTypeList } from "../../../filters/entity-type-filter/EntityTypeList";
 import { AmountRangeFilter } from "../../../filters/amount-range-filter";
 import { EntityList } from "../../../filters/entity-filter";
-import { useChartBuilder } from "../../hooks/useChartBuilder";
+import { useChartStore } from "../../hooks/useChartStore";
 import { OptionItem } from "../../../filters/base-filter/interfaces";
 import { FunctionalClassificationList } from "../../../filters/functional-classification-filter";
 import { AccountCategoryRadio } from "../../../filters/account-type-filter/AccountCategoryRadio";
+import { cn } from "@/lib/utils";
 
 interface SeriesFilterProps {
     seriesId?: string;
+    className?: string;
 }
 
-export function SeriesFilter({ seriesId }: SeriesFilterProps) {
-    const { chart, updateSeries } = useChartBuilder();
+export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
+    const { chart, updateSeries } = useChartStore();
     const series = chart.series.find(s => s.id === seriesId)
 
     if (!series) {
@@ -145,10 +147,12 @@ export function SeriesFilter({ seriesId }: SeriesFilterProps) {
     };
 
     return (
-        <Card className={`flex flex-col w-full`}>
+        <Card className={cn("flex flex-col", className)}>
             <CardHeader className="py-4 px-6 border-b">
                 <div className="flex justify-between items-center">
-                    <CardTitle className="text-lg font-semibold">Filtre</CardTitle>
+                    <CardTitle className="text-lg font-semibold">
+                        Filters
+                    </CardTitle>
                     {totalSelectedFilters > 0 && (
                         <Button variant="ghost" size="sm" onClick={clearAllFilters} className="text-sm">
                             <XCircle className="w-4 h-4 mr-1" />
@@ -157,7 +161,7 @@ export function SeriesFilter({ seriesId }: SeriesFilterProps) {
                     )}
                 </div>
             </CardHeader>
-            <CardContent className={`flex flex-col flex-grow p-0 overflow-y-auto`}>
+            <CardContent className={`flex flex-col p-0 overflow-y-auto`}>
                 <FilterRadioContainer
                     title="Venituri/Cheltuieli"
                     icon={<ArrowUpDown className="w-4 h-4" />}

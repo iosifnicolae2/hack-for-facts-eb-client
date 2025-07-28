@@ -4,21 +4,25 @@ import {
   SeriesConfiguration,
   ChartSchema,
   SeriesConfigurationSchema,
-} from '@/schemas/chartBuilder';
+} from '@/schemas/charts';
 import { useNavigate, useSearch } from '@tanstack/react-router';
-import { updateChartInLocalStorage } from '@/lib/api/chartBuilder';
+import { updateChartInLocalStorage } from '@/lib/api/charts';
 import { produce } from 'immer';
+import { deleteChart as deleteChartInLocalStorage } from '@/lib/api/charts';
+import { toast } from 'sonner';
 
 interface ValidationResult {
   isValid: boolean;
   errors: Record<string, string[]>;
 }
 
-interface UseChartBuilderReturn {
+interface UseChartStoreReturn {
   chart: Chart;
   view: string;
   seriesId?: string;
   updateChart: (updates: Partial<Chart>) => void;
+  deleteChart: () => Promise<void>;
+  duplicateChart: () => Promise<void>;
   addSeries: () => void;
   updateSeries: (seriesId: string, updates: Partial<SeriesConfiguration> | ((prevSeries: SeriesConfiguration) => SeriesConfiguration)) => void;
   deleteSeries: (seriesId: string) => void;
@@ -33,7 +37,7 @@ interface UseChartBuilderReturn {
   goToSeriesConfig: (seriesId: string) => void;
 }
 
-export function useChartBuilder(): UseChartBuilderReturn {
+export function useChartStore(): UseChartStoreReturn {
   const navigate = useNavigate();
   const { chart, view, seriesId } = useSearch({ from: "/charts/$chartId" });
 
@@ -60,6 +64,23 @@ export function useChartBuilder(): UseChartBuilderReturn {
       replace: true,
     });
   }, [navigate]);
+
+  const deleteChart = useCallback(async () => {
+    await deleteChartInLocalStorage(chart.id);
+    navigate({ to: "/charts" });
+    toast.success("Chart Deleted", {
+      description: "The chart has been deleted.",
+    });
+  }, [chart.id, navigate]);
+
+  const duplicateChart = useCallback(async () => {
+    const newChartId = crypto.randomUUID();
+    navigate({ to: "/charts/$chartId", params: { chartId: newChartId }, replace: false, search: (prev) => ({ ...prev, chart: { ...prev.chart, id: newChartId, title: `${prev.chart?.title} (Copy)` } as Chart }) });
+    toast.success("Chart Duplicated", {
+      description: "The chart has been duplicated.",
+    });
+  }, [navigate]);
+
 
 
   const addSeries = useCallback(() => {
@@ -215,6 +236,8 @@ export function useChartBuilder(): UseChartBuilderReturn {
     view,
     seriesId,
     updateChart,
+    deleteChart,
+    duplicateChart,
     addSeries,
     updateSeries,
     deleteSeries,

@@ -1,5 +1,5 @@
 import { formatCurrency } from '@/lib/utils';
-import { Chart } from '@/schemas/chartBuilder';
+import { Chart } from '@/schemas/charts';
 import type { ReactNode } from 'react';
 
 // ---------------------------------------------------------------------------

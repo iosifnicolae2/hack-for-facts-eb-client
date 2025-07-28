@@ -1,0 +1,90 @@
+import { SeriesConfiguration } from "@/schemas/charts";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { GripVertical } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { useDebouncedCallback } from "@/lib/hooks/useDebouncedCallback";
+import { useState } from "react";
+import { Switch } from "@/components/ui/switch";
+import { SeriesItemMenu } from "../../components/series-config/SeriesItemMenu";
+
+interface SeriesListItemProps {
+  series: SeriesConfiguration;
+  index: number;
+  onToggle: (enabled: boolean) => void;
+  onClick: () => void;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
+  isMoveUpDisabled: boolean;
+  isMoveDownDisabled: boolean;
+  chartColor?: string;
+  onUpdate: (updates: Partial<SeriesConfiguration>) => void;
+  onDelete: () => void;
+  onDuplicate: () => void;
+  onCopy: () => void;
+}
+
+export function SeriesListItem({ series, index, onToggle, onClick, onMoveUp, onMoveDown, isMoveUpDisabled, isMoveDownDisabled, chartColor, onUpdate, onDelete, onDuplicate, onCopy }: SeriesListItemProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id: series.id });
+  const [localColor, setLocalColor] = useState(series.config.color);
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  const handleColorChange = useDebouncedCallback((color: string) => {
+    setLocalColor(color);
+    onUpdate({ config: { ...series.config, color } });
+  }, 500);
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} className="flex items-center justify-between p-2.5 border rounded-lg hover:bg-muted/50 transition-colors">
+      <div className="flex items-center gap-3 text-sm flex-1 cursor-pointer min-w-0">
+        <div {...listeners} className="cursor-grab">
+          <GripVertical className="h-5 w-5 text-muted-foreground" />
+        </div>
+        <div className="flex items-center gap-2">
+          <Input
+            type="color"
+            value={localColor}
+            onChange={(e) => handleColorChange(e.target.value)}
+            className="w-6 h-4 rounded-full cursor-pointer shadow-gray-600/50 shadow-sm"
+            style={{ backgroundColor: series.config.color || chartColor, border: "none" }}
+            aria-label="Color Picker"
+          />
+        </div>
+        <div className="flex-1 min-w-0" onClick={onClick}>
+          <p className="font-medium truncate" title={series.label}>{series.label}</p>
+          <p className="text-xs text-muted-foreground">Series {index + 1}</p>
+        </div>
+      </div>
+      <div className="flex items-center gap-1 ml-2">
+        <Switch
+          checked={series.enabled}
+          onCheckedChange={onToggle}
+          onClick={(e) => e.stopPropagation()}
+          aria-label={`Toggle series ${series.label}`}
+        />
+        <SeriesItemMenu
+          series={series}
+          isMoveUpDisabled={isMoveUpDisabled}
+          isMoveDownDisabled={isMoveDownDisabled}
+          onToggleEnabled={() => onToggle(!series.enabled)}
+          onToggleDataLabels={() => onUpdate({ config: { ...series.config, showDataLabels: !series.config.showDataLabels } })}
+          onMoveUp={onMoveUp}
+          onMoveDown={onMoveDown}
+          onDelete={onDelete}
+          onDuplicate={onDuplicate}
+          onCopy={onCopy}
+        />
+      </div>
+    </div>
+  );
+} 

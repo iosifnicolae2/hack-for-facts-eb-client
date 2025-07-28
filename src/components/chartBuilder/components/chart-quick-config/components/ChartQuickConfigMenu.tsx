@@ -1,13 +1,14 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { MoreVertical, Settings, Trash2 } from "lucide-react";
-import { Button } from "../../../ui/button";
+import { Copy, MoreVertical, Settings, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface ChartQuickConfigMenuProps {
     onOpenConfigPanel: () => void;
     onDelete: () => void;
+    onDuplicate: () => void;
 }
 
-export function ChartQuickConfigMenu({ onOpenConfigPanel, onDelete }: ChartQuickConfigMenuProps) {
+export function ChartQuickConfigMenu({ onOpenConfigPanel, onDelete, onDuplicate }: ChartQuickConfigMenuProps) {
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
         // Not sure why, but the click was propagating without this.
@@ -29,7 +30,10 @@ export function ChartQuickConfigMenu({ onOpenConfigPanel, onDelete }: ChartQuick
                     <Settings className="mr-2 h-4 w-4" />
                     Open Config Panel
                 </DropdownMenuItem>
-                
+                <DropdownMenuItem onSelect={onDuplicate} onClick={handleClick}>
+                    <Copy className="mr-2 h-4 w-4" />
+                    Duplicate
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuSub>
                     <DropdownMenuSubTrigger className="text-destructive">

@@ -5,9 +5,9 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, Legend,
   ResponsiveContainer, LabelList,
 } from 'recharts';
-import { Chart } from '@/schemas/chartBuilder';
+import { Chart } from '@/schemas/charts';
 import { formatCurrency, formatNumberRO } from '@/lib/utils';
-import { AnalyticsDataPoint } from '@/lib/api/chartBuilder';
+import { AnalyticsDataPoint } from '@/lib/api/charts';
 import { CustomTimeSeriesTooltip } from './Tooltips';
 import { CartesianChartProps } from 'recharts/types/util/types';
 
