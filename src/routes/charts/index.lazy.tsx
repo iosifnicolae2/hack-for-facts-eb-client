@@ -81,7 +81,7 @@ function ChartsListPage() {
           <div className="flex flex-col gap-4">
             <ChartSection title="Favorites" charts={favoriteCharts} onDelete={handleDeleteChart} onToggleFavorite={handleToggleFavorite} />
             {favoriteCharts.length > 0 && nonFavoriteCharts.length > 0 && <Separator className="mt-4" />}
-            <ChartSection title="My Charts" charts={nonFavoriteCharts} onDelete={handleDeleteChart} onToggleFavorite={handleToggleFavorite} />
+            <ChartSection title="Recent Charts" charts={nonFavoriteCharts} onDelete={handleDeleteChart} onToggleFavorite={handleToggleFavorite} />
           </div>
         )}
       </div>

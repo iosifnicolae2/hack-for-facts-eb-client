@@ -71,6 +71,8 @@ export function CustomTimeSeriesTooltip({
 
     const isRelative = chartConfig.showRelativeValues ?? false;
 
+    const sortedPayload = payload.sort((a, b) => (b.value ?? 0) - (a.value ?? 0));
+
     return (
         <div className="bg-background border border-border rounded-lg shadow-lg p-4">
             <div className="font-semibold text-foreground mb-2 text-center border-b pb-1">
@@ -78,7 +80,7 @@ export function CustomTimeSeriesTooltip({
             </div>
 
             <div className="flex flex-col p-4 gap-6">
-                {payload.map((entry) => {
+                {sortedPayload.map((entry) => {
                     // Extract series label from dataKey e.g. "SeriesLabel.value" → "SeriesLabel"
                     const seriesLabel = entry.dataKey.split('.')[0];
                     const absolute = (entry.payload as TimeSeriesDataPoint)[seriesLabel]?.absolute ?? 0;

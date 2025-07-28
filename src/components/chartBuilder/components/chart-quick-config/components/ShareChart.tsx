@@ -225,30 +225,12 @@ export function ShareChart({
                                 disabled={loadingAction !== null}
                                 className="gap-2 w-full sm:w-auto"
                             >
-                                {loadingAction === 'link' ? (
-                                    <LoadingSpinner size="sm" />
-                                ) : copiedLink ? (
-                                    <Check className="h-3 w-3" />
-                                ) : (
-                                    <Link2 className="h-3 w-3" />
-                                )}
+                                {copiedLink ? <Check className="h-3 w-3" /> : <Link2 className="h-3 w-3" />}
                                 {copiedLink ? 'Copied!' : 'Copy Link'}
                             </Button>
                         </div>
                     </div>
                 </div>
-
-                {/* Loading State Info */}
-                {loadingAction && (
-                    <div className="flex items-center gap-2 p-2 bg-blue-50 dark:bg-blue-950/20 rounded-md">
-                        <AlertCircle className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                        <span className="text-sm text-blue-600 dark:text-blue-400">
-                            {loadingAction === 'png' && 'Generating PNG image...'}
-                            {loadingAction === 'svg' && 'Generating SVG image...'}
-                            {loadingAction === 'link' && 'Copying link...'}
-                        </span>
-                    </div>
-                )}
             </CardContent>
         </Card>
     );

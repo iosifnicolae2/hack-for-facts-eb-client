@@ -25,6 +25,7 @@ export function ChartPreview({ chart, className, onClick }: ChartPreviewProps) {
         return produce(chart, (draft: Chart) => {
             draft.config.showLegend = false;
             draft.config.showDataLabels = false;
+            draft.config.showGridLines = false;
             draft.series.forEach(series => {
                 series.config.showDataLabels = false;
             });
