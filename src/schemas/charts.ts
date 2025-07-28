@@ -56,6 +56,7 @@ export type AnalyticsFilterType = z.infer<typeof AnalyticsFilterSchema>;
 
 export const SeriesConfigurationSchema = z.object({
   id: z.string().default(() => crypto.randomUUID()),
+  type: z.literal('line-items-aggregated-yearly').default('line-items-aggregated-yearly'),
   enabled: z.boolean().default(true),
   label: z.string().default(''),
   filter: AnalyticsFilterSchema,
