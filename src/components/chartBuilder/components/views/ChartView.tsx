@@ -10,11 +10,10 @@ import { SeriesList } from "@/components/chartBuilder/components/chart-view/Seri
 import { useCopyPaste } from "../../hooks/useCopyPaste";
 import { useChartData } from '../../hooks/useChartData';
 
-
 export function ChartView() {
-  const { duplicateSeries, copySeries } = useCopyPaste();
   const { chart, updateChart, updateSeries, moveSeriesUp, moveSeriesDown, addSeries, goToConfig, goToSeriesConfig, setSeries, deleteSeries, deleteChart, duplicateChart } = useChartStore();
   const { chartData, isLoadingData, dataError } = useChartData({ chart });
+  const { duplicateSeries, copySeries, copyChart } = useCopyPaste(chartData);
 
   const handleToggleSeriesEnabled = useCallback(async (seriesId: string, enabled: boolean) => {
     updateSeries(seriesId, (prevSeries) => ({ ...prevSeries, enabled }));
@@ -53,6 +52,7 @@ export function ChartView() {
             onDeleteChart={deleteChart}
             onDuplicateChart={duplicateChart}
             onOpenConfigPanel={goToConfig}
+            onCopyData={copyChart}
           />
           <SeriesList
             chart={chart}

@@ -7,7 +7,6 @@ import {
     Image as ImageIcon,
     FileImage,
     Check,
-    AlertCircle,
     Share2
 } from 'lucide-react';
 import { toPng, toSvg } from 'html-to-image';

@@ -6,9 +6,10 @@ interface ChartQuickConfigMenuProps {
     onOpenConfigPanel: () => void;
     onDelete: () => void;
     onDuplicate: () => void;
+    onCopyData: () => void;
 }
 
-export function ChartQuickConfigMenu({ onOpenConfigPanel, onDelete, onDuplicate }: ChartQuickConfigMenuProps) {
+export function ChartQuickConfigMenu({ onOpenConfigPanel, onDelete, onDuplicate, onCopyData }: ChartQuickConfigMenuProps) {
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
         // Not sure why, but the click was propagating without this.
@@ -33,6 +34,10 @@ export function ChartQuickConfigMenu({ onOpenConfigPanel, onDelete, onDuplicate 
                 <DropdownMenuItem onSelect={onDuplicate} onClick={handleClick}>
                     <Copy className="mr-2 h-4 w-4" />
                     Duplicate
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={onCopyData} onClick={handleClick}>
+                    <Copy className="mr-2 h-4 w-4" />
+                    Copy Data
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuSub>

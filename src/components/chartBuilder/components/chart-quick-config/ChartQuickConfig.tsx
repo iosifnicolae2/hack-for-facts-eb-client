@@ -14,10 +14,11 @@ interface ChartQuickConfigProps {
   onUpdateChart: (updates: Partial<Chart>) => void;
   onDeleteChart: () => void;
   onDuplicateChart: () => void;
+  onCopyData: () => void;
   onOpenConfigPanel: () => void;
 }
 
-export function ChartQuickConfig({ chart, onUpdateChart, onDeleteChart, onDuplicateChart, onOpenConfigPanel }: ChartQuickConfigProps) {
+export function ChartQuickConfig({ chart, onUpdateChart, onDeleteChart, onDuplicateChart, onCopyData, onOpenConfigPanel }: ChartQuickConfigProps) {
   const getChartTypeIcon = (chartType: ChartType) => {
     switch (chartType) {
       case 'line': return <LineChart className="h-4 w-4" />;
@@ -48,6 +49,7 @@ export function ChartQuickConfig({ chart, onUpdateChart, onDeleteChart, onDuplic
               onDelete={onDeleteChart}
               onOpenConfigPanel={onOpenConfigPanel}
               onDuplicate={onDuplicateChart}
+              onCopyData={onCopyData}
             />
           </div>
         </CardHeader>
