@@ -77,14 +77,20 @@ export function ChartQuickConfig({ chart, onUpdateChart, onDeleteChart, onDuplic
                     <LineChart className="h-4 w-4" />
                     Line Chart
                   </div>
-                </SelectItem>
-                <SelectItem value="bar">
-                  <div className="flex items-center gap-2">
-                    <BarChart3 className="h-4 w-4" />
-                    Bar Chart
-                  </div>
-                </SelectItem>
-              </SelectContent>
+                  </SelectItem>
+                  <SelectItem value="bar">
+                    <div className="flex items-center gap-2">
+                      <BarChart3 className="h-4 w-4" />
+                      Bar Chart
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="area">
+                    <div className="flex items-center gap-2">
+                      <TrendingUp className="h-4 w-4" />
+                      Area Chart
+                    </div>
+                  </SelectItem>
+                </SelectContent>
             </Select>
           </div>
 
