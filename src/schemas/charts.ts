@@ -46,6 +46,8 @@ export const AnalyticsFilterSchema = z.object({
   max_amount: z.number().or(z.string()).optional(),
   is_uat: z.boolean().optional(),
   entity_types: z.array(z.string()).optional(),
+  budget_sector_ids: z.array(z.string()).optional(),
+  funding_source_ids: z.array(z.string()).optional(),
 });
 
 export type AnalyticsFilterType = z.infer<typeof AnalyticsFilterSchema>;

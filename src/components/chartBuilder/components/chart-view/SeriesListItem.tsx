@@ -45,7 +45,7 @@ export function SeriesListItem({ series, index, onToggle, onClick, onMoveUp, onM
   }, 500);
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} className="flex items-center justify-between p-2.5 border rounded-lg hover:bg-muted/50 transition-colors">
+    <div ref={setNodeRef} style={style} {...attributes} className="flex items-center justify-between p-2.5 border rounded-lg hover:bg-muted/50 bg-background/50 backdrop-blur-sm transition-colors">
       <div className="flex items-center gap-3 text-sm flex-1 cursor-pointer min-w-0">
         <div {...listeners} className="cursor-grab">
           <GripVertical className="h-5 w-5 text-muted-foreground" />

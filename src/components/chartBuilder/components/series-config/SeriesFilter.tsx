@@ -18,6 +18,8 @@ import { OptionItem } from "../../../filters/base-filter/interfaces";
 import { FunctionalClassificationList } from "../../../filters/functional-classification-filter";
 import { AccountCategoryRadio } from "../../../filters/account-type-filter/AccountCategoryRadio";
 import { cn } from "@/lib/utils";
+import { BudgetSectorList } from "@/components/filters/budget-sector-filter";
+import { FundingSourceList } from "@/components/filters/funding-source-filter";
 
 interface SeriesFilterProps {
     seriesId?: string;
@@ -100,6 +102,12 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
 
     const economicPrefix = filter.economic_prefixes?.[0];
     const setEconomicPrefix = createValueUpdater('economic_prefixes', (v) => v ? [String(v)] : undefined);
+
+    const selectedBudgetSectorOptions: OptionItem[] = filter.budget_sector_ids?.map(id => ({ id, label: series.filterMetadata[id] || String(id) })) || [];
+    const setSelectedBudgetSectorOptions = createListUpdater('budget_sector_ids');
+
+    const selectedFundingSourceOptions: OptionItem[] = filter.funding_source_ids?.map(id => ({ id, label: series.filterMetadata[id] || String(id) })) || [];
+    const setSelectedFundingSourceOptions = createListUpdater('funding_source_ids');
 
     const flagsOptions: OptionItem[] = [];
     if (filter.is_uat === true) flagsOptions.push({ id: 'isUat', label: 'UAT: Da' });
@@ -244,6 +252,20 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
                         setReportType={setReportType}
                     />
                 </FilterRadioContainer>
+                <FilterListContainer
+                    title="Sector Bugetar"
+                    icon={<Building2 className="w-4 h-4" />}
+                    listComponent={BudgetSectorList}
+                    selected={selectedBudgetSectorOptions}
+                    setSelected={setSelectedBudgetSectorOptions}
+                />
+                <FilterListContainer
+                    title="Sursa de Finantare"
+                    icon={<EuroIcon className="w-4 h-4" />}
+                    listComponent={FundingSourceList}
+                    selected={selectedFundingSourceOptions}
+                    setSelected={setSelectedFundingSourceOptions}
+                />
                 <FilterContainer
                     title="Este UAT"
                     icon={<ArrowUpDown className="w-4 h-4" />}
