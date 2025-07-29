@@ -171,9 +171,7 @@ export function ChartRenderer({ chart, data, className, height = 400 }: ChartRen
             {(series.config.showDataLabels || chart.config.showDataLabels) && (
               <LabelList
                 dataKey={`${series.id}.value`}
-                position="top"
                 offset={30}
-                className="text-xs fill-foreground text-center font-bold"
                 content={(props) => <ChartLabel {...props} series={series} dataLabelFormatter={dataLabelFormatter} getSeriesColor={getSeriesColor} isRelative={isRelative} />}
                 formatter={(label: unknown) => dataLabelFormatter(Number(label as number), isRelative)}
               />
