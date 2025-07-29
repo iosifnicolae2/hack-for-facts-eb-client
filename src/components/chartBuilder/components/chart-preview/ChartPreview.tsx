@@ -16,8 +16,8 @@ interface ChartPreviewProps {
 export function ChartPreview({ chart, className, onClick }: ChartPreviewProps) {
     const { ref, inView } = useInView({
         triggerOnce: true,
-        threshold: 0.5,
-        rootMargin: '0px 0px',
+        threshold: 0.1,
+        rootMargin: '50px 0px',
     });
 
     const previewChart: Chart = useMemo(() => {

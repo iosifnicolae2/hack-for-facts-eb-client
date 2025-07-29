@@ -154,8 +154,12 @@ export function ChartRenderer({ chart, data, className, height = 400 }: ChartRen
           tick={{ fontSize: 12 }}
           tickFormatter={(value: number) => yAxisTickFormatter(value, isRelative)}
         />
-        <Tooltip content={<CustomTimeSeriesTooltip chartConfig={chart.config} />} />
-        {chart.config.showLegend && <Legend />}
+        <Tooltip reverseDirection={{ y: true }} content={<CustomTimeSeriesTooltip chartConfig={chart.config} />} wrapperStyle={{ zIndex: 10 }} />
+        {chart.config.showLegend && <Legend
+          verticalAlign="bottom"
+          height={36}
+          wrapperStyle={{ zIndex: 1 }}
+        />}
 
         {enabledSeries.map(series => (
           <SeriesComponent
