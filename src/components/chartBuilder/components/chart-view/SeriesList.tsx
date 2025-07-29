@@ -16,6 +16,8 @@ import {
 } from '@dnd-kit/sortable';
 import { Plus } from "lucide-react";
 import { SeriesListItem } from "./SeriesListItem";
+import { useState } from "react";
+import { useClipboard } from "@/lib/hooks/useClipboard";
 
 interface SeriesListProps {
   chart: Chart;
@@ -38,6 +40,22 @@ export function SeriesList({ chart, onAddSeries, onSeriesClick, onToggleSeries, 
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+  const [selectedSeriesId, setSelectedSeriesId] = useState<string | null>(null);
+
+  useClipboard({
+    onCopy: () => {
+      if (selectedSeriesId) {
+        onCopySeries(selectedSeriesId);
+      }
+    },
+    onCut: () => {
+      if (selectedSeriesId) {
+        onCopySeries(selectedSeriesId);
+        deleteSeries(selectedSeriesId);
+      }
+    }
+  });
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (over && active.id !== over.id) {
@@ -45,6 +63,13 @@ export function SeriesList({ chart, onAddSeries, onSeriesClick, onToggleSeries, 
       const newIndex = chart.series.findIndex((s) => s.id === over.id);
       setSeries(arrayMove(chart.series, oldIndex, newIndex));
     }
+  };
+
+  const handleSelect = (seriesId: string) => {
+    setSelectedSeriesId(seriesId);
+  };
+  const handleDeselect = (seriesId: string) => {
+    setSelectedSeriesId(prev => prev === seriesId ? null : prev);
   };
 
   return (
@@ -73,6 +98,9 @@ export function SeriesList({ chart, onAddSeries, onSeriesClick, onToggleSeries, 
                     key={series.id}
                     series={series}
                     index={index}
+                    isSelected={selectedSeriesId === series.id}
+                    onSelect={() => handleSelect(series.id)}
+                    onDeselect={() => handleDeselect(series.id)}
                     chartColor={chart.config.color}
                     onClick={() => onSeriesClick(series.id)}
                     onToggle={(enabled) => onToggleSeries(series.id, enabled)}

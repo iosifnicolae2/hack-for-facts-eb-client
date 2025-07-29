@@ -7,13 +7,13 @@ import { ChartViewHeader } from "@/components/chartBuilder/components/chart-view
 import { ChartDisplayArea } from "@/components/chartBuilder/components/chart-view/ChartDisplayArea";
 import { ChartQuickConfig } from "@/components/chartBuilder/components/chart-quick-config/ChartQuickConfig";
 import { SeriesList } from "@/components/chartBuilder/components/chart-view/SeriesList";
-import { useCopyPaste } from "../../hooks/useCopyPaste";
+import { useCopyPasteChart } from "../../hooks/useCopyPaste";
 import { useChartData } from '../../hooks/useChartData';
 
 export function ChartView() {
   const { chart, updateChart, updateSeries, moveSeriesUp, moveSeriesDown, addSeries, goToConfig, goToSeriesConfig, setSeries, deleteSeries, deleteChart, duplicateChart } = useChartStore();
   const { chartData, isLoadingData, dataError } = useChartData({ chart });
-  const { duplicateSeries, copySeries, copyChart } = useCopyPaste(chartData);
+  const { duplicateSeries, copySeries, copyChart } = useCopyPasteChart(chartData);
 
   const handleToggleSeriesEnabled = useCallback(async (seriesId: string, enabled: boolean) => {
     updateSeries(seriesId, (prevSeries) => ({ ...prevSeries, enabled }));

@@ -4,9 +4,8 @@ import { CopiedSeriesSchema, SeriesConfiguration } from "@/schemas/charts";
 import { useChartStore } from "./useChartStore";
 import { ChartData } from "recharts/types/state/chartDataSlice";
 
-export function useCopyPaste(chartData?: ChartData) {
+export function useCopyPasteChart(chartData?: ChartData) {
     const { chart, setSeries } = useChartStore();
-
 
     const copyChart = useCallback(async () => {
         const clipboardData = {
@@ -56,7 +55,7 @@ export function useCopyPaste(chartData?: ChartData) {
         try {
             await navigator.clipboard.writeText(JSON.stringify(clipboardData));
             toast.success("Series Copied", {
-                description: "The series has been copied to the clipboard. You can paste it into another chart.",
+                description: `The series "${seriesToCopy.label}" has been copied to the clipboard. You can paste it into another chart.`,
             });
         } catch {
             toast.error("Copy Failed", {
@@ -83,7 +82,7 @@ export function useCopyPaste(chartData?: ChartData) {
                     setSeries([...chart.series, ...newSeriesData]);
 
                     toast.success("Series Pasted", {
-                        description: "The copied series has been added to the chart.",
+                        description: `The copied series ${newSeriesData.map(s => s.label).join(', ')} has been added to the chart.`,
                     });
                 }
             } catch {
