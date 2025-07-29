@@ -14,7 +14,7 @@ export const Route = createLazyFileRoute("/charts/")({
 const chartsStore = getChartsStore();
 
 function ChartsListPage() {
-  const [charts, setCharts] = useState<StoredChart[]>(chartsStore.loadSavedCharts({ filterDeleted: true }));
+  const [charts, setCharts] = useState<StoredChart[]>(chartsStore.loadSavedCharts({ filterDeleted: true, sort: true }));
 
   const handleDeleteChart = async (chartId: string) => {
     try {
@@ -38,7 +38,6 @@ function ChartsListPage() {
   };
 
   const favoriteCharts = useMemo(() => charts.filter(chart => chart.favorite), [charts]);
-  const nonFavoriteCharts = useMemo(() => charts.filter(chart => !chart.favorite), [charts]);
 
   return (
     <div className="container mx-auto py-6 space-y-8">
@@ -82,8 +81,8 @@ function ChartsListPage() {
         ) : (
           <div className="flex flex-col gap-4">
             <ChartSection title="Favorites" charts={favoriteCharts} onDelete={handleDeleteChart} onToggleFavorite={handleToggleFavorite} />
-            {favoriteCharts.length > 0 && nonFavoriteCharts.length > 0 && <Separator className="mt-4" />}
-            <ChartSection title="Recent Charts" charts={nonFavoriteCharts} onDelete={handleDeleteChart} onToggleFavorite={handleToggleFavorite} />
+            {favoriteCharts.length > 0 && charts.length > 0 && <Separator className="mt-4" />}
+            <ChartSection title="All Charts" charts={charts} onDelete={handleDeleteChart} onToggleFavorite={handleToggleFavorite} />
           </div>
         )}
       </div>
