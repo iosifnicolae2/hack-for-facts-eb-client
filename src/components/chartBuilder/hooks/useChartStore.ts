@@ -6,10 +6,9 @@ import {
   SeriesConfigurationSchema,
 } from '@/schemas/charts';
 import { useNavigate, useSearch } from '@tanstack/react-router';
-import { updateChartInLocalStorage } from '@/lib/api/charts';
 import { produce } from 'immer';
-import { deleteChart as deleteChartInLocalStorage } from '@/lib/api/charts';
 import { toast } from 'sonner';
+import { getChartsStore } from '../chartsStore';
 
 interface ValidationResult {
   isValid: boolean;
@@ -37,6 +36,8 @@ interface UseChartStoreReturn {
   goToSeriesConfig: (seriesId: string) => void;
 }
 
+const chartsStore = getChartsStore();
+
 export function useChartStore(): UseChartStoreReturn {
   const navigate = useNavigate();
   const { chart, view, seriesId } = useSearch({ from: "/charts/$chartId" });
@@ -58,7 +59,7 @@ export function useChartStore(): UseChartStoreReturn {
     navigate({
       search: (prev) => {
         const newChart = { ...prev.chart, ...(typeof updates === 'function' ? updates(prev.chart) : updates) } as Chart;
-        updateChartInLocalStorage(newChart);
+        chartsStore.updateChartInLocalStorage(newChart);
         return { ...prev, chart: newChart } as unknown as never; // TODO: fix this
       },
       replace: true,
@@ -66,7 +67,7 @@ export function useChartStore(): UseChartStoreReturn {
   }, [navigate]);
 
   const deleteChart = useCallback(async () => {
-    await deleteChartInLocalStorage(chart.id);
+    await chartsStore.deleteChart(chart.id);
     navigate({ to: "/charts" });
     toast.success("Chart Deleted", {
       description: "The chart has been deleted.",
@@ -86,6 +87,7 @@ export function useChartStore(): UseChartStoreReturn {
   const addSeries = useCallback(() => {
     const newSeries: SeriesConfiguration = {
       id: crypto.randomUUID(),
+      type: 'line-items-aggregated-yearly',
       enabled: true,
       label: `New Series ${chart.series.length + 1}`,
       filter: {

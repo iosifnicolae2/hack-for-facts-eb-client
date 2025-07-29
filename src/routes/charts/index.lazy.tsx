@@ -2,21 +2,23 @@ import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { BarChart3, Plus } from 'lucide-react';
-import { deleteChart, loadSavedCharts, StoredChart, toggleChartFavorite } from '@/lib/api/charts';
 import { Separator } from "@/components/ui/separator";
 import { ChartSection } from "@/components/charts/ChartSection";
 import { toast } from "sonner";
+import { StoredChart, getChartsStore } from "@/components/chartBuilder/chartsStore";
 
 export const Route = createLazyFileRoute("/charts/")({
   component: ChartsListPage,
 });
 
+const chartsStore = getChartsStore();
+
 function ChartsListPage() {
-  const [charts, setCharts] = useState<StoredChart[]>(loadSavedCharts({ filterDeleted: true, validate: true }));
+  const [charts, setCharts] = useState<StoredChart[]>(chartsStore.loadSavedCharts({ filterDeleted: true }));
 
   const handleDeleteChart = async (chartId: string) => {
     try {
-      await deleteChart(chartId);
+      await chartsStore.deleteChart(chartId);
       setCharts(prev => prev.filter(chart => chart.id !== chartId));
       toast.success("Chart Deleted");
     } catch (error) {
@@ -26,7 +28,7 @@ function ChartsListPage() {
   };
 
   const handleToggleFavorite = (chartId: string) => {
-    toggleChartFavorite(chartId);
+    chartsStore.toggleChartFavorite(chartId);
     setCharts(prev => {
       const chart = prev.find(c => c.id === chartId);
       const newCharts = prev.map(chart => chart.id === chartId ? { ...chart, favorite: !chart.favorite } : chart);

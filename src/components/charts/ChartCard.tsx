@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { StoredChart } from "@/lib/api/charts";
+import { StoredChart } from "@/components/chartBuilder/chartsStore";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Edit, Trash2, Star, Eye } from "lucide-react";

@@ -1,4 +1,4 @@
-import { saveChartToLocalStorage } from "@/lib/api/charts";
+import { getChartsStore } from "@/components/chartBuilder/chartsStore";
 import { ChartSchema } from "@/schemas/charts";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { z } from "zod";
@@ -9,6 +9,8 @@ const stateSchema = z.object({
     seriesId: z.string().optional(),
 });
 
+const chartsStore = getChartsStore();
+
 export const Route = createFileRoute("/charts/$chartId")({
     validateSearch: stateSchema,
     component: RouteComponent,
@@ -17,7 +19,7 @@ export const Route = createFileRoute("/charts/$chartId")({
             search.chart.id = params.chartId;
         }
 
-        saveChartToLocalStorage(search.chart)
+        chartsStore.saveChartToLocalStorage(search.chart)
 
         return {
             ...search,

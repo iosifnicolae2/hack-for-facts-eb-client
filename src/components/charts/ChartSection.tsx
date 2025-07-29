@@ -1,4 +1,4 @@
-import { StoredChart } from "@/lib/api/charts";
+import { StoredChart } from "@/components/chartBuilder/chartsStore";
 import { ChartList } from "./ChartList";
 
 interface ChartSectionProps {
