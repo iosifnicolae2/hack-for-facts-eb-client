@@ -130,20 +130,6 @@ export function ChartQuickConfig({ chartData }: ChartQuickConfigProps) {
               </div>
               <div className="flex items-center space-x-2">
                 <Switch
-                  id="show-grid-lines"
-                  checked={chart.config.showGridLines}
-                  onCheckedChange={(checked) =>
-                    updateChart({
-                      config: { ...chart.config, showGridLines: checked }
-                    })
-                  }
-                />
-                <Label htmlFor="show-grid-lines" className="text-sm">
-                  Grid Lines
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Switch
                   id="show-legend"
                   checked={chart.config.showLegend}
                   onCheckedChange={(checked) =>
@@ -179,6 +165,19 @@ export function ChartQuickConfig({ chartData }: ChartQuickConfigProps) {
                 />
                 <Label htmlFor="show-annotations" className="text-sm">
                   Show Annotations
+                </Label>
+              </div>
+              {/* Edit Annotations */}
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="edit-annotations"
+                  checked={chart.config.editAnnotations}
+                  onCheckedChange={(checked) =>
+                    updateChart({ config: { ...chart.config, editAnnotations: checked } })
+                  }
+                />
+                <Label htmlFor="edit-annotations" className="text-sm">
+                  Edit Annotations
                 </Label>
               </div>
             </div>

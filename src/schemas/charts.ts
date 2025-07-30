@@ -85,10 +85,13 @@ export const AnnotationSchema = z.object({
   title: z.string(),
   subtitle: z.string().optional(),
   color: z.string().default('#000'),
-  pX: z.number().min(-1).max(1).default(0.5).describe('Percentage of the x-axis to place the annotation'),
-  pY: z.number().min(-1).max(1).default(0.5).describe('Percentage of the y-axis to place the annotation'),
-  pXDelta: z.number().min(-1).max(1).default(0.05).describe('Percentage of the x-axis to move the annotation label'),
-  pYDelta: z.number().min(-1).max(1).default(0.05).describe('Percentage of the y-axis to move the annotation label'),
+  connector: z.boolean().default(true),
+  subject: z.boolean().default(false),
+  label: z.boolean().default(true),
+  pX: z.number().default(0.5).describe('Percentage of the x-axis to place the annotation'),
+  pY: z.number().default(0.5).describe('Percentage of the y-axis to place the annotation'),
+  pXDelta: z.number().default(0.05).describe('Percentage of the x-axis to move the annotation label'),
+  pYDelta: z.number().default(0.05).describe('Percentage of the y-axis to move the annotation label'),
 });
 
 export type TAnnotation = z.infer<typeof AnnotationSchema>;

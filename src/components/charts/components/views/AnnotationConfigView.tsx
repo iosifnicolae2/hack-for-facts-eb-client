@@ -28,7 +28,7 @@ export function AnnotationConfigView() {
     setLocalSubtitle(annotation?.subtitle || '');
   }, [annotation?.title, annotation?.subtitle]);
 
-  const updateAnnotationField = (field: keyof TAnnotation, value: any) => {
+  const updateAnnotationField = (field: keyof TAnnotation, value: boolean | string) => {
     if (!annotation) return;
     updateAnnotation(annotation.id, (prev) => ({ ...prev, [field]: value }));
   };
@@ -120,6 +120,30 @@ export function AnnotationConfigView() {
               id="annotation-locked"
               checked={annotation.locked}
               onCheckedChange={(checked) => updateAnnotationField('locked', checked)}
+            />
+          </div>
+          <div className="flex items-center gap-4">
+            <Label htmlFor="annotation-connector" className='flex items-center gap-2'>Connector</Label>
+            <Switch
+              id="annotation-connector"
+              checked={!!annotation.connector}
+              onCheckedChange={(checked) => updateAnnotationField('connector', checked)}
+            />
+          </div>
+          <div className="flex items-center gap-4">
+            <Label htmlFor="annotation-subject" className='flex items-center gap-2'>Subject</Label>
+            <Switch
+              id="annotation-subject"
+              checked={!!annotation.subject}
+              onCheckedChange={(checked) => updateAnnotationField('subject', checked)}
+            />
+          </div>
+          <div className="flex items-center gap-4">
+            <Label htmlFor="annotation-label" className='flex items-center gap-2'>Label</Label>
+            <Switch
+              id="annotation-label"
+              checked={!!annotation.label}
+              onCheckedChange={(checked) => updateAnnotationField('label', checked)}
             />
           </div>
         </CardContent>

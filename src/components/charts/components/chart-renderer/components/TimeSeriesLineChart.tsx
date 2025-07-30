@@ -4,7 +4,7 @@ import { ChartRendererProps } from './ChartRenderer';
 import { useChartData } from '../hooks/useChartData';
 import { ChartLabel } from './ChartLabel';
 import { formatCurrency, formatNumberRO } from '@/lib/utils';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { applyAlpha } from '../utils';
 
 const dataLabelFormatter = (value: number, isRelative: boolean) => {
@@ -17,7 +17,6 @@ const dataLabelFormatter = (value: number, isRelative: boolean) => {
 export function TimeSeriesLineChart({ chart, data, onAnnotationPositionChange }: ChartRendererProps) {
   const { timeSeriesData, enabledSeries } = useChartData(chart, data);
   const isRelative = chart.config.showRelativeValues ?? false;
-  const [size, setSize] = useState({ width: 0, height: 0 });
   const getSeriesColor = useCallback(
     (seriesId: string, opacity = 1): string => {
       const seriesConfig = enabledSeries.find(s => s.id === seriesId);
@@ -32,14 +31,10 @@ export function TimeSeriesLineChart({ chart, data, onAnnotationPositionChange }:
     [enabledSeries, chart.config.color]
   );
 
-  const handleResize = useCallback((width: number, height: number) => {
-    setSize({ width, height });
-  }, []);
-
   return (
-    <ResponsiveContainer width="100%" height="100%" onResize={handleResize}>
+    <ResponsiveContainer width="100%" height="100%">
       <LineChart data={timeSeriesData} margin={{ top: 30, right: 50, left: 30, bottom: 20 }}>
-        <ChartContainer chart={chart} size={size} onAnnotationPositionChange={onAnnotationPositionChange}>
+        <ChartContainer chart={chart} onAnnotationPositionChange={onAnnotationPositionChange}>
           {enabledSeries.map((series) => (
             <Line
               key={series.id}

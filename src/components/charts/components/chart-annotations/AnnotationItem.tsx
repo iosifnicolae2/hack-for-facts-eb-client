@@ -27,6 +27,8 @@ export function AnnotationItem({ annotation, index, isSelected, onOpenEdit, onTo
     onUpdate({ ...annotation, color });
   }, 500);
 
+  const displayTitle = annotation.title || annotation.subtitle;
+
   return (
     <div
       onFocus={onSelect}
@@ -44,7 +46,7 @@ export function AnnotationItem({ annotation, index, isSelected, onOpenEdit, onTo
           />
         </div>
         <div className="flex-1 min-w-0" onClick={onClick}>
-          <p className="font-medium truncate" title={annotation.title}>{annotation.title}</p>
+          <p className="font-medium truncate" title={displayTitle}>{displayTitle}</p>
           <p className="text-xs text-muted-foreground">Annotation {index + 1}</p>
         </div>
       </div>
@@ -53,7 +55,7 @@ export function AnnotationItem({ annotation, index, isSelected, onOpenEdit, onTo
           checked={annotation.enabled}
           onCheckedChange={onToggleEnable}
           onClick={(e) => e.stopPropagation()}
-          aria-label={`Toggle annotation ${annotation.title}`}
+          aria-label={`Toggle annotation ${displayTitle}`}
         />
         <AnnotationItemMenu
           annotation={annotation}

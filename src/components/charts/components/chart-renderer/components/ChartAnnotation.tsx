@@ -1,29 +1,38 @@
 import { Annotation, CircleSubject, Connector, EditableAnnotation, Label } from '@visx/annotation';
 import { TAnnotation } from '@/schemas/charts';
 import { AnnotationPositionChange } from './interfaces';
+import { useChartHeight, useChartWidth, usePlotArea } from 'recharts';
+import { applyAlpha } from '../utils';
 
 interface ChartAnnotationProps {
     annotation: TAnnotation;
-    size: { width: number; height: number };
     globalEditable: boolean;
     onPositionChange: (pos: AnnotationPositionChange) => void;
 }
 
-export function ChartAnnotation({ annotation, size, globalEditable, onPositionChange }: ChartAnnotationProps) {
-    if (size.width === 0 || size.height === 0) return null;
+export function ChartAnnotation({ annotation, globalEditable, onPositionChange }: ChartAnnotationProps) {
+
+    const chartWidth = useChartWidth();
+    const chartHeight = useChartHeight();
+    const plotArea = usePlotArea();
+
+    if (!plotArea || !chartWidth || !chartHeight) return null;
+
+    const xPos = annotation.pX * plotArea.width + plotArea.x;
+    const yPos = annotation.pY * plotArea.height + plotArea.y;
+    const xDelta = annotation.pXDelta * plotArea.width;
+    const yDelta = annotation.pYDelta * plotArea.height;
 
     if (!globalEditable && annotation.locked) {
         return (
             <Annotation
                 key={annotation.id}
-                x={annotation.pX * size.width}
-                y={annotation.pY * size.height}
-                dx={annotation.pXDelta * size.width}
-                dy={annotation.pYDelta * size.height}
+                x={xPos}
+                y={yPos}
+                dx={xDelta}
+                dy={yDelta}
             >
-                <Connector stroke={annotation.color} />
-                <CircleSubject stroke={annotation.color} />
-                <Label anchorLineStroke={annotation.color} title={annotation.title} subtitle={annotation.subtitle}></Label>
+                <AnnotationContent annotation={annotation} />
             </Annotation>
         )
     }
@@ -31,23 +40,37 @@ export function ChartAnnotation({ annotation, size, globalEditable, onPositionCh
     return (
         <EditableAnnotation
             key={annotation.id}
-            x={annotation.pX * size.width}
-            y={annotation.pY * size.height}
-            dx={annotation.pXDelta * size.width}
-            dy={annotation.pYDelta * size.height}
-            width={size.width}
-            height={size.height}
+            x={xPos}
+            y={yPos}
+            dx={xDelta}
+            dy={yDelta}
+            width={chartWidth}
+            height={chartHeight}
             onDragEnd={({ x, y, dx, dy }) => {
-                const pX = x / size.width;
-                const pY = y / size.height;
-                const pXDelta = dx / size.width;
-                const pYDelta = dy / size.height;
+                const pX = (x - plotArea.x) / plotArea.width;
+                const pY = (y - plotArea.y) / plotArea.height;
+                const pXDelta = dx / plotArea.width;
+                const pYDelta = dy / plotArea.height;
                 onPositionChange({ annotationId: annotation.id, position: { pX, pY, pXDelta, pYDelta } });
             }}
         >
-            <Connector stroke={annotation.color} />
-            <CircleSubject stroke={annotation.color} />
-            <Label anchorLineStroke={annotation.color} title={annotation.title} subtitle={annotation.subtitle} />
+            <AnnotationContent annotation={annotation} />
         </EditableAnnotation>
+    )
+}
+
+
+const AnnotationContent = ({ annotation }: { annotation: TAnnotation }) => {
+    return (
+        <>
+            {annotation.connector && <Connector stroke={annotation.color} type={annotation.subject ? 'line' : 'elbow'} />}
+            {annotation.subject && <CircleSubject stroke={annotation.color} />}
+            {annotation.label && <Label
+                anchorLineStroke={annotation.color}
+                title={annotation.title}
+                subtitle={annotation.subtitle}
+                backgroundFill={applyAlpha(annotation.color, 0.1)}
+            />}
+        </>
     )
 }

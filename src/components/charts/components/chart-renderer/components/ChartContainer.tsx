@@ -10,7 +10,6 @@ import { AnnotationPositionChange } from './interfaces';
 
 interface ChartContainerProps {
   chart: Chart;
-  size: { width: number; height: number };
   children: ReactNode;
   onAnnotationPositionChange: (pos: AnnotationPositionChange) => void;
 }
@@ -22,7 +21,7 @@ const yAxisTickFormatter = (value: number, isRelative: boolean) => {
   return formatCurrency(value, "compact");
 };
 
-export function ChartContainer({ chart, size, children, onAnnotationPositionChange }: ChartContainerProps) {
+export function ChartContainer({ chart, children, onAnnotationPositionChange }: ChartContainerProps) {
   const isRelative = chart.config.showRelativeValues ?? false;
 
   return (
@@ -46,7 +45,6 @@ export function ChartContainer({ chart, size, children, onAnnotationPositionChan
         <ChartAnnotation
           key={annotation.id}
           annotation={annotation}
-          size={size}
           globalEditable={chart.config.editAnnotations}
           onPositionChange={onAnnotationPositionChange}
         />

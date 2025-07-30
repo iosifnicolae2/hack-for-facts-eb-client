@@ -4,7 +4,7 @@ import { ChartRendererProps } from './ChartRenderer';
 import { useChartData } from '../hooks/useChartData';
 import { ChartLabel } from './ChartLabel';
 import { formatCurrency, formatNumberRO } from '@/lib/utils';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { applyAlpha } from '../utils';
 
 const dataLabelFormatter = (value: number, isRelative: boolean) => {
@@ -17,7 +17,6 @@ const dataLabelFormatter = (value: number, isRelative: boolean) => {
 export function TimeSeriesBarChart({ chart, data, onAnnotationPositionChange }: ChartRendererProps) {
     const { timeSeriesData, enabledSeries } = useChartData(chart, data);
     const isRelative = chart.config.showRelativeValues ?? false;
-    const [size, setSize] = useState({ width: 0, height: 0 });
 
     const getSeriesColor = useCallback(
         (seriesId: string, opacity = 1): string => {
@@ -33,19 +32,15 @@ export function TimeSeriesBarChart({ chart, data, onAnnotationPositionChange }: 
         [enabledSeries, chart.config.color]
     );
 
-    const handleResize = useCallback((width: number, height: number) => {
-        setSize({ width, height });
-    }, []);
-
     // There is a bug in bar order when shuffling them multiple times. This forces a re-render when the series order changes.
     const chartKey = useMemo(() => {
         return `${chart.id}-${enabledSeries.map(s => s.id).join('-')}`;
     }, [chart, enabledSeries]);
 
     return (
-        <ResponsiveContainer width="100%" height="100%" onResize={handleResize}>
+        <ResponsiveContainer width="100%" height="100%">
             <BarChart key={chartKey} data={timeSeriesData} margin={{ top: 30, right: 50, left: 30, bottom: 20 }}>
-                <ChartContainer chart={chart} size={size} onAnnotationPositionChange={onAnnotationPositionChange}>
+                <ChartContainer chart={chart} onAnnotationPositionChange={onAnnotationPositionChange}>
                     {enabledSeries.map((series) => (
                         <Bar
                             key={series.id}
