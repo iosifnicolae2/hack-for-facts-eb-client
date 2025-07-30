@@ -12,6 +12,8 @@ export const ChartConfigSchema = z.object({
   showLegend: z.boolean().default(true),
   showRelativeValues: z.boolean().default(false),
   showTooltip: z.boolean().default(true),
+  editAnnotations: z.boolean().default(true),
+  showAnnotations: z.boolean().default(true),
   // yearRangeEnabled: z.boolean().default(false),
   // yearRangeStart: z.number().optional(),
   // yearRangeEnd: z.number().optional(),
@@ -72,72 +74,24 @@ export const SeriesConfigurationSchema = z.object({
 export type SeriesConfiguration = z.infer<typeof SeriesConfigurationSchema>;
 
 // ============================================================================
-// ANNOTATIONS SYSTEM
+// ANNOTATIONS SCHEMA
 // ============================================================================
 
-export const PointAnnotationSchema = z.object({
-  type: z.literal('point'),
-  seriesId: z.string(),
-  dataIndex: z.number(),
+export const AnnotationSchema = z.object({
+  type: z.literal('annotation'),
+  id: z.string().default(() => crypto.randomUUID()),
+  enabled: z.boolean().default(true),
+  locked: z.boolean().default(true),
   title: z.string(),
-  description: z.string().optional(),
-  color: z.string().default('#ff0000'),
+  subtitle: z.string().optional(),
+  color: z.string().default('#000'),
+  pX: z.number().min(-1).max(1).default(0.5).describe('Percentage of the x-axis to place the annotation'),
+  pY: z.number().min(-1).max(1).default(0.5).describe('Percentage of the y-axis to place the annotation'),
+  pXDelta: z.number().min(-1).max(1).default(0.05).describe('Percentage of the x-axis to move the annotation label'),
+  pYDelta: z.number().min(-1).max(1).default(0.05).describe('Percentage of the y-axis to move the annotation label'),
 });
 
-export const LineAnnotationSchema = z.object({
-  type: z.literal('line'),
-  orientation: z.enum(['horizontal', 'vertical']),
-  value: z.number(),
-  title: z.string(),
-  description: z.string().optional(),
-  color: z.string().default('#ff0000'),
-  strokeDasharray: z.string().default('5,5'),
-});
-
-export const ThresholdAnnotationSchema = z.object({
-  type: z.literal('threshold'),
-  value: z.number(),
-  condition: z.enum(['above', 'below']),
-  title: z.string(),
-  description: z.string().optional(),
-  color: z.string().default('#ffa500'),
-});
-
-export const RegionAnnotationSchema = z.object({
-  type: z.literal('region'),
-  startValue: z.number(),
-  endValue: z.number(),
-  orientation: z.enum(['horizontal', 'vertical']),
-  title: z.string(),
-  description: z.string().optional(),
-  color: z.string().default('#ffcccc'),
-  opacity: z.number().min(0).max(1).default(0.3),
-});
-
-export const AnnotationSchema = z.discriminatedUnion('type', [
-  PointAnnotationSchema,
-  LineAnnotationSchema,
-  ThresholdAnnotationSchema,
-  RegionAnnotationSchema,
-]);
-
-export type Annotation = z.infer<typeof AnnotationSchema>;
-
-// ============================================================================
-// CHART AXIS CONFIGURATION
-// ============================================================================
-
-export const AxisConfigSchema = z.object({
-  label: z.string().optional(),
-  showTicks: z.boolean().default(true),
-  showTickLabels: z.boolean().default(true),
-  tickCount: z.number().min(2).max(20).optional(),
-  domain: z.tuple([z.union([z.number(), z.literal('auto')]), z.union([z.number(), z.literal('auto')])]).optional(),
-  scale: z.enum(['linear', 'log']).default('linear'),
-  formatter: z.enum(['number', 'currency', 'percentage', 'date']).default('number'),
-});
-
-export type AxisConfig = z.infer<typeof AxisConfigSchema>;
+export type TAnnotation = z.infer<typeof AnnotationSchema>;
 
 // ============================================================================
 // MAIN CHART SCHEMA
@@ -151,16 +105,11 @@ export const ChartSchema = z.object({
   // Global chart configuration
   config: ChartConfigSchema,
 
-  // Axis configurations. Disabled for now.
-  // xAxis: AxisConfigSchema.optional(),
-  // yAxis: AxisConfigSchema.optional(),
-  // rightYAxis: AxisConfigSchema.optional(),
-
   // Series data
   series: z.array(SeriesConfigurationSchema).default([]),
 
   // Annotations
-  // annotations: z.array(AnnotationSchema).default([]),
+  annotations: z.array(AnnotationSchema).default([]),
 
   // Metadata
   createdAt: z.string().default(() => new Date().toISOString()),

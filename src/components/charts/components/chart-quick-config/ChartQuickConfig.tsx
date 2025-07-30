@@ -3,22 +3,22 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Chart } from '@/schemas/charts';
 import { BarChart3, LineChart, TrendingUp } from 'lucide-react';
 import { ChartType } from '@/schemas/constants';
 import { ShareChart } from './components/ShareChart';
 import { ChartQuickConfigMenu } from './components/ChartQuickConfigMenu';
+import { useChartStore } from '../../hooks/useChartStore';
+import { AnalyticsDataPoint } from '@/lib/api/charts';
+import { useCopyPasteChart } from '../../hooks/useCopyPaste';
 
 interface ChartQuickConfigProps {
-  chart: Chart;
-  onUpdateChart: (updates: Partial<Chart>) => void;
-  onDeleteChart: () => void;
-  onDuplicateChart: () => void;
-  onCopyData: () => void;
-  onOpenConfigPanel: () => void;
+  chartData?: AnalyticsDataPoint[];
 }
 
-export function ChartQuickConfig({ chart, onUpdateChart, onDeleteChart, onDuplicateChart, onCopyData, onOpenConfigPanel }: ChartQuickConfigProps) {
+export function ChartQuickConfig({ chartData }: ChartQuickConfigProps) {
+  const { chart, updateChart, deleteChart, duplicateChart, goToConfig } = useChartStore();
+  const { copyChart } = useCopyPasteChart(chartData);
+
   const getChartTypeIcon = (chartType: ChartType) => {
     switch (chartType) {
       case 'line': return <LineChart className="h-4 w-4" />;
@@ -46,10 +46,10 @@ export function ChartQuickConfig({ chart, onUpdateChart, onDeleteChart, onDuplic
               </CardDescription>
             </div>
             <ChartQuickConfigMenu
-              onDelete={onDeleteChart}
-              onOpenConfigPanel={onOpenConfigPanel}
-              onDuplicate={onDuplicateChart}
-              onCopyData={onCopyData}
+              onDelete={deleteChart}
+              onOpenConfigPanel={goToConfig}
+              onDuplicate={duplicateChart}
+              onCopyData={copyChart}
             />
           </div>
         </CardHeader>
@@ -60,7 +60,7 @@ export function ChartQuickConfig({ chart, onUpdateChart, onDeleteChart, onDuplic
             <Select
               value={chart.config.chartType}
               onValueChange={(value: ChartType) =>
-                onUpdateChart({
+                updateChart({
                   config: { ...chart.config, chartType: value }
                 })
               }
@@ -79,20 +79,20 @@ export function ChartQuickConfig({ chart, onUpdateChart, onDeleteChart, onDuplic
                     <LineChart className="h-4 w-4" />
                     Line Chart
                   </div>
-                  </SelectItem>
-                  <SelectItem value="bar">
-                    <div className="flex items-center gap-2">
-                      <BarChart3 className="h-4 w-4" />
-                      Bar Chart
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="area">
-                    <div className="flex items-center gap-2">
-                      <TrendingUp className="h-4 w-4" />
-                      Area Chart
-                    </div>
-                  </SelectItem>
-                </SelectContent>
+                </SelectItem>
+                <SelectItem value="bar">
+                  <div className="flex items-center gap-2">
+                    <BarChart3 className="h-4 w-4" />
+                    Bar Chart
+                  </div>
+                </SelectItem>
+                <SelectItem value="area">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="h-4 w-4" />
+                    Area Chart
+                  </div>
+                </SelectItem>
+              </SelectContent>
             </Select>
           </div>
 
@@ -105,7 +105,7 @@ export function ChartQuickConfig({ chart, onUpdateChart, onDeleteChart, onDuplic
                   id="show-relative-values"
                   checked={chart.config.showRelativeValues}
                   onCheckedChange={(checked) =>
-                    onUpdateChart({
+                    updateChart({
                       config: { ...chart.config, showRelativeValues: checked }
                     })
                   }
@@ -119,7 +119,7 @@ export function ChartQuickConfig({ chart, onUpdateChart, onDeleteChart, onDuplic
                   id="show-data-labels"
                   checked={chart.config.showDataLabels}
                   onCheckedChange={(checked) =>
-                    onUpdateChart({
+                    updateChart({
                       config: { ...chart.config, showDataLabels: checked }
                     })
                   }
@@ -133,7 +133,7 @@ export function ChartQuickConfig({ chart, onUpdateChart, onDeleteChart, onDuplic
                   id="show-grid-lines"
                   checked={chart.config.showGridLines}
                   onCheckedChange={(checked) =>
-                    onUpdateChart({
+                    updateChart({
                       config: { ...chart.config, showGridLines: checked }
                     })
                   }
@@ -147,7 +147,7 @@ export function ChartQuickConfig({ chart, onUpdateChart, onDeleteChart, onDuplic
                   id="show-legend"
                   checked={chart.config.showLegend}
                   onCheckedChange={(checked) =>
-                    onUpdateChart({
+                    updateChart({
                       config: { ...chart.config, showLegend: checked }
                     })
                   }
@@ -161,11 +161,24 @@ export function ChartQuickConfig({ chart, onUpdateChart, onDeleteChart, onDuplic
                   id="show-tooltip"
                   checked={chart.config.showTooltip}
                   onCheckedChange={(checked) =>
-                    onUpdateChart({ config: { ...chart.config, showTooltip: checked } })
+                    updateChart({ config: { ...chart.config, showTooltip: checked } })
                   }
                 />
                 <Label htmlFor="show-tooltip" className="text-sm">
                   Tooltip
+                </Label>
+              </div>
+              {/* Show Annotations */}
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="show-annotations"
+                  checked={chart.config.showAnnotations}
+                  onCheckedChange={(checked) =>
+                    updateChart({ config: { ...chart.config, showAnnotations: checked } })
+                  }
+                />
+                <Label htmlFor="show-annotations" className="text-sm">
+                  Show Annotations
                 </Label>
               </div>
             </div>

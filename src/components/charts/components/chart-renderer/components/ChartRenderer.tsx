@@ -4,15 +4,17 @@ import { TimeSeriesLineChart } from './TimeSeriesLineChart';
 import { TimeSeriesBarChart } from './TimeSeriesBarChart';
 import { TimeSeriesAreaChart } from './TimeSeriesAreaChart';
 import { useChartData } from '../hooks/useChartData';
+import { AnnotationPositionChange } from './interfaces';
 
 export interface ChartRendererProps {
   chart: Chart;
   data: AnalyticsDataPoint[];
   className?: string;
   height?: number;
+  onAnnotationPositionChange: (pos: AnnotationPositionChange) => void;
 }
 
-export function ChartRenderer({ chart, data, className, height = 400 }: ChartRendererProps) {
+export function ChartRenderer({ chart, data, className, height = 400, onAnnotationPositionChange }: ChartRendererProps) {
   const { filteredData } = useChartData(chart, data);
 
   if (filteredData.length === 0) {
@@ -33,9 +35,9 @@ export function ChartRenderer({ chart, data, className, height = 400 }: ChartRen
 
   return (
     <div className={className} style={{ width: '100%', height }}>
-      {chart.config.chartType === 'line' && <TimeSeriesLineChart chart={chart} data={data} />}
-      {chart.config.chartType === 'bar' && <TimeSeriesBarChart chart={chart} data={data} />}
-      {chart.config.chartType === 'area' && <TimeSeriesAreaChart chart={chart} data={data} />}
+      {chart.config.chartType === 'line' && <TimeSeriesLineChart chart={chart} data={data} onAnnotationPositionChange={onAnnotationPositionChange} />}
+      {chart.config.chartType === 'bar' && <TimeSeriesBarChart chart={chart} data={data} onAnnotationPositionChange={onAnnotationPositionChange} />}
+      {chart.config.chartType === 'area' && <TimeSeriesAreaChart chart={chart} data={data} onAnnotationPositionChange={onAnnotationPositionChange} />}
     </div>
   );
 }

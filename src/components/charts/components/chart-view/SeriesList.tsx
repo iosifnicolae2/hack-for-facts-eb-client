@@ -1,4 +1,3 @@
-import { Chart, SeriesConfiguration } from "@/schemas/charts";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -16,24 +15,22 @@ import {
 } from '@dnd-kit/sortable';
 import { Plus } from "lucide-react";
 import { SeriesListItem } from "./SeriesListItem";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useClipboard } from "@/lib/hooks/useClipboard";
+import { useChartStore } from "../../hooks/useChartStore";
+import { useCopyPasteChart } from "../../hooks/useCopyPaste";
 
-interface SeriesListProps {
-  chart: Chart;
-  onAddSeries: () => void;
-  onSeriesClick: (seriesId: string) => void;
-  onToggleSeries: (seriesId: string, enabled: boolean) => void;
-  onMoveSeriesUp: (seriesId: string) => void;
-  onMoveSeriesDown: (seriesId: string) => void;
-  updateSeries: (seriesId: string, updates: Partial<SeriesConfiguration>) => void;
-  setSeries: (series: SeriesConfiguration[]) => void;
-  deleteSeries: (seriesId: string) => void;
-  onDuplicateSeries: (seriesId: string) => void;
-  onCopySeries: (seriesId: string) => void;
-}
+export function SeriesList() {
+  const { chart, updateSeries, moveSeriesUp, moveSeriesDown, addSeries, goToSeriesConfig, setSeries, deleteSeries } = useChartStore();
+  const { duplicateSeries, copySeries } = useCopyPasteChart();
 
-export function SeriesList({ chart, onAddSeries, onSeriesClick, onToggleSeries, onMoveSeriesUp, onMoveSeriesDown, updateSeries, setSeries, deleteSeries, onDuplicateSeries, onCopySeries }: SeriesListProps) {
+
+
+  const handleToggleSeriesEnabled = useCallback(async (seriesId: string, enabled: boolean) => {
+    updateSeries(seriesId, (prevSeries) => ({ ...prevSeries, enabled }));
+  }, [updateSeries]);
+
+
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -45,12 +42,12 @@ export function SeriesList({ chart, onAddSeries, onSeriesClick, onToggleSeries, 
   useClipboard({
     onCopy: () => {
       if (selectedSeriesId) {
-        onCopySeries(selectedSeriesId);
+        copySeries(selectedSeriesId);
       }
     },
     onCut: () => {
       if (selectedSeriesId) {
-        onCopySeries(selectedSeriesId);
+        copySeries(selectedSeriesId);
         deleteSeries(selectedSeriesId);
       }
     }
@@ -77,7 +74,7 @@ export function SeriesList({ chart, onAddSeries, onSeriesClick, onToggleSeries, 
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>Data Series</span>
-          <Button size="icon" onClick={onAddSeries} className="rounded-full w-7 h-7 cursor-pointer" aria-label="Add new series">
+          <Button size="icon" onClick={addSeries} className="rounded-full w-7 h-7 cursor-pointer" aria-label="Add new series">
             <Plus className="h-4 w-4" />
           </Button>
         </CardTitle>
@@ -87,7 +84,7 @@ export function SeriesList({ chart, onAddSeries, onSeriesClick, onToggleSeries, 
         {chart.series.length === 0 ? (
           <div className="text-center py-4">
             <p className="text-sm text-muted-foreground mb-3">No data series yet.</p>
-            <Button size="sm" onClick={onAddSeries}>Add Series</Button>
+            <Button size="sm" onClick={addSeries}>Add Series</Button>
           </div>
         ) : (
           <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
@@ -102,16 +99,16 @@ export function SeriesList({ chart, onAddSeries, onSeriesClick, onToggleSeries, 
                     onSelect={() => handleSelect(series.id)}
                     onDeselect={() => handleDeselect(series.id)}
                     chartColor={chart.config.color}
-                    onClick={() => onSeriesClick(series.id)}
-                    onToggle={(enabled) => onToggleSeries(series.id, enabled)}
-                    onMoveUp={() => onMoveSeriesUp(series.id)}
-                    onMoveDown={() => onMoveSeriesDown(series.id)}
+                    onClick={() => goToSeriesConfig(series.id)}
+                    onToggle={(enabled) => handleToggleSeriesEnabled(series.id, enabled)}
+                    onMoveUp={() => moveSeriesUp(series.id)}
+                    onMoveDown={() => moveSeriesDown(series.id)}
                     isMoveUpDisabled={index === 0}
                     isMoveDownDisabled={index === chart.series.length - 1}
                     onUpdate={(updates) => updateSeries(series.id, updates)}
                     onDelete={() => deleteSeries(series.id)}
-                    onDuplicate={() => onDuplicateSeries(series.id)}
-                    onCopy={() => onCopySeries(series.id)}
+                    onDuplicate={() => duplicateSeries(series.id)}
+                    onCopy={() => copySeries(series.id)}
                   />
                 ))}
               </div>

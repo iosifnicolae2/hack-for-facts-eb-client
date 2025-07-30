@@ -26,6 +26,7 @@ export function ChartPreview({ chart, className, onClick }: ChartPreviewProps) {
             draft.config.showLegend = false;
             draft.config.showDataLabels = false;
             draft.config.showGridLines = false;
+            draft.config.showAnnotations = false;
             draft.series.forEach(series => {
                 series.config.showDataLabels = false;
             });
@@ -51,6 +52,7 @@ export function ChartPreview({ chart, className, onClick }: ChartPreviewProps) {
                     isLoading={isLoadingData}
                     error={dataError}
                     onAddSeries={() => { }}
+                    onAnnotationPositionChange={() => { }}
                 />
             )}
         </div>

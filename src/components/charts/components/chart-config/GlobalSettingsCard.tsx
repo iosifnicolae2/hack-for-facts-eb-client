@@ -46,6 +46,8 @@ export const GlobalSettingsCard = React.memo(({ chart, onUpdateChart }: GlobalSe
                     <ToggleSwitch id="show-data-labels" label="Show Data Labels" checked={chart.config.showDataLabels} onCheckedChange={(checked) => handleConfigChange({ showDataLabels: checked })} />
                     <ToggleSwitch id="show-relative-values" label="Show Relative Values (%)" checked={chart.config.showRelativeValues} onCheckedChange={(checked) => handleConfigChange({ showRelativeValues: checked })} />
                     <ToggleSwitch id="show-tooltip" label="Show Tooltip" checked={chart.config.showTooltip} onCheckedChange={(checked) => handleConfigChange({ showTooltip: checked })} />
+                    <ToggleSwitch id="show-annotations" label="Show Annotations" checked={chart.config.showAnnotations} onCheckedChange={(checked) => handleConfigChange({ showAnnotations: checked })} />
+                    <ToggleSwitch id="edit-annotations" label="Edit Annotations" checked={chart.config.editAnnotations} onCheckedChange={(checked) => handleConfigChange({ editAnnotations: checked })} />
                 </div>
             </div>
         </SettingsCard>

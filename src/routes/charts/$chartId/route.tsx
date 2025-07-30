@@ -5,8 +5,9 @@ import { z } from "zod";
 
 const stateSchema = z.object({
     chart: ChartSchema,
-    view: z.enum(["overview", "config", "series-config"]).default("overview"),
+    view: z.enum(["overview", "config", "series-config", "annotation-config"]).default("overview"),
     seriesId: z.string().optional(),
+    annotationId: z.string().optional(),
 });
 
 const chartsStore = getChartsStore();

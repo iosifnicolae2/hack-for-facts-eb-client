@@ -6,10 +6,12 @@ import { Chart } from "@/schemas/charts";
 import { getChartTypeIcon } from "../../utils";
 import { ChartRenderer } from "../chart-renderer/components/ChartRenderer";
 import { AnalyticsDataPoint } from "@/lib/api/charts";
+import { AnnotationPositionChange } from "../chart-renderer/components/interfaces";
 
 interface ChartDisplayAreaProps {
   chart: Chart;
   chartData: AnalyticsDataPoint[] | undefined;
+  onAnnotationPositionChange: (pos: AnnotationPositionChange) => void;
   isPreview?: boolean;
   isLoading: boolean;
   error: Error | null;
@@ -51,11 +53,11 @@ function NoDataAvailable({ chart }: { chart: Chart }) {
   );
 }
 
-function ChartContent({ chart, chartData, isPreview }: { chart: Chart; chartData: AnalyticsDataPoint[]; isPreview: boolean }) {
+function ChartContent({ chart, chartData, isPreview, onAnnotationPositionChange }: { chart: Chart; chartData: AnalyticsDataPoint[]; isPreview: boolean, onAnnotationPositionChange: (pos: AnnotationPositionChange) => void }) {
   return (
     <div className="w-full">
       <h2 className="text-center text-lg font-bold text-muted-foreground">{chart.title}</h2>
-      <ChartRenderer chart={chart} data={chartData} />
+      <ChartRenderer chart={chart} data={chartData} onAnnotationPositionChange={onAnnotationPositionChange} />
       {!isPreview && chart.description && (
         <p className="px-4 text-center text-sm text-muted-foreground">{chart.description}</p>
       )}
@@ -63,13 +65,13 @@ function ChartContent({ chart, chartData, isPreview }: { chart: Chart; chartData
   );
 }
 
-export function ChartDisplayArea({ chart, chartData, isLoading, error, onAddSeries, isPreview = false }: ChartDisplayAreaProps) {
+export function ChartDisplayArea({ chart, chartData, isLoading, error, onAddSeries, isPreview = false, onAnnotationPositionChange }: ChartDisplayAreaProps) {
   const renderContent = () => {
     if (chart.series.length === 0) return <NoDataSeries onAddSeries={onAddSeries} chart={chart} />;
     if (isLoading) return <LoadingSpinner text="Loading chart data..." />;
     if (error) return <ErrorDisplay error={error} />;
     if (!chartData || chartData.length === 0) return <NoDataAvailable chart={chart} />;
-    return <ChartContent chart={chart} chartData={chartData} isPreview={isPreview} />;
+    return <ChartContent chart={chart} chartData={chartData} isPreview={isPreview} onAnnotationPositionChange={onAnnotationPositionChange} />;
   };
 
   const content = <div className="p-4 flex-grow min-h-[500px] flex items-center justify-center bg-muted/20">{renderContent()}</div>;

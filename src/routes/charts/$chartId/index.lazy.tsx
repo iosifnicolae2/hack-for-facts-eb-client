@@ -5,6 +5,7 @@ import { ChartView } from "@/components/charts/components/views/ChartView";
 import { SeriesConfigView } from "@/components/charts/components/views/SeriesConfigView";
 import { useChartStore } from "@/components/charts/hooks/useChartStore";
 import { useCallback } from "react";
+import { AnnotationConfigView } from "@/components/charts/components/views/AnnotationConfigView";
 
 export const Route = createLazyFileRoute("/charts/$chartId/")({
   component: ChartDetailPage,
@@ -22,12 +23,13 @@ function ChartDetailPage() {
   return (
     <>
       {view === "overview" && <ChartView />}
-      <Dialog open={view === "config" || view === "series-config"} onOpenChange={handleCloseDialog}>
+      <Dialog open={view === 'config' || view === 'series-config' || view === 'annotation-config'} onOpenChange={handleCloseDialog}>
         <DialogTitle className="sr-only">Configure Chart</DialogTitle>
         <DialogContent hideCloseButton className="max-w-4xl h-full overflow-y-auto">
           <DialogDescription className="sr-only">Configure Chart</DialogDescription>
           {view === "config" && <ChartConfigView />}
           {view === "series-config" && <SeriesConfigView />}
+          {view === "annotation-config" && <AnnotationConfigView />}
         </DialogContent>
       </Dialog>
     </>

@@ -4,6 +4,8 @@ import {
   SeriesConfiguration,
   ChartSchema,
   SeriesConfigurationSchema,
+  TAnnotation,
+  AnnotationSchema,
 } from '@/schemas/charts';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { produce } from 'immer';
@@ -15,32 +17,12 @@ interface ValidationResult {
   errors: Record<string, string[]>;
 }
 
-interface UseChartStoreReturn {
-  chart: Chart;
-  view: string;
-  seriesId?: string;
-  updateChart: (updates: Partial<Chart>) => void;
-  deleteChart: () => Promise<void>;
-  duplicateChart: () => Promise<void>;
-  addSeries: () => void;
-  updateSeries: (seriesId: string, updates: Partial<SeriesConfiguration> | ((prevSeries: SeriesConfiguration) => SeriesConfiguration)) => void;
-  deleteSeries: (seriesId: string) => void;
-  setSeries: (series: SeriesConfiguration[]) => void,
-  duplicateSeries: (seriesId: string) => void;
-  moveSeriesUp: (seriesId: string) => void;
-  moveSeriesDown: (seriesId: string) => void;
-  validateChart: () => ValidationResult;
-  goToConfig: () => void;
-  goToOverview: () => void;
-  goToSeriesConfig: (seriesId: string) => void;
-}
 
 const chartsStore = getChartsStore();
 
-export function useChartStore(): UseChartStoreReturn {
+export function useChartStore() {
   const navigate = useNavigate();
-  const { chart, view, seriesId } = useSearch({ from: "/charts/$chartId" });
-
+  const { chart, view, seriesId, annotationId } = useSearch({ from: "/charts/$chartId" });
 
   const goToConfig = useCallback(() => {
     navigate({ to: "/charts/$chartId", search: (prev) => ({ ...prev, view: "config" }), params: { chartId: chart.id }, replace: true });
@@ -52,6 +34,10 @@ export function useChartStore(): UseChartStoreReturn {
 
   const goToSeriesConfig = useCallback((seriesId: string) => {
     navigate({ to: "/charts/$chartId", search: (prev) => ({ ...prev, view: "series-config", seriesId }), params: { chartId: chart.id }, replace: true });
+  }, [chart.id, navigate]);
+
+  const goToAnnotationConfig = useCallback((annotationId: string) => {
+    navigate({ to: "/charts/$chartId", search: (prev) => ({ ...prev, view: "annotation-config", annotationId }), params: { chartId: chart.id }, replace: true });
   }, [chart.id, navigate]);
 
   const updateChart = useCallback((updates: Partial<Chart> | ((prevChart?: Chart) => Partial<Chart>)) => {
@@ -107,6 +93,35 @@ export function useChartStore(): UseChartStoreReturn {
     });
     goToSeriesConfig(newSeries.id);
   }, [chart, updateChart, goToSeriesConfig]);
+
+  const addAnnotation = useCallback(() => {
+    const newAnnotation: TAnnotation = AnnotationSchema.parse({
+      title: `New Annotation ${chart.annotations.length + 1}`,
+      type: 'annotation' as const,
+    });
+
+    updateChart((prev) => {
+      const newAnnotations = [...(prev?.annotations || []), newAnnotation];
+      return {
+        ...prev,
+        annotations: newAnnotations,
+      };
+    });
+  }, [chart, updateChart]);
+
+  const updateAnnotation = useCallback((annotationId: string, updates: Partial<TAnnotation> | ((prevAnnotation: TAnnotation) => TAnnotation)) => {
+    updateChart((prev) => ({
+      ...prev,
+      annotations: prev?.annotations.map(a => a.id === annotationId ? { ...a, ...(typeof updates === 'function' ? produce(a, (draft) => updates(draft)) : updates) } : a),
+    }));
+  }, [updateChart]);
+
+  const deleteAnnotation = useCallback((annotationId: string) => {
+    updateChart((prev) => ({
+      ...prev,
+      annotations: prev?.annotations.filter(a => a.id !== annotationId),
+    }));
+  }, [updateChart]);
 
   const updateSeries = useCallback((seriesId: string, updates: Partial<SeriesConfiguration> | ((prevSeries: SeriesConfiguration) => SeriesConfiguration)) => {
     updateChart((prev) => ({
@@ -215,6 +230,7 @@ export function useChartStore(): UseChartStoreReturn {
     chart,
     view,
     seriesId,
+    annotationId,
     updateChart,
     deleteChart,
     duplicateChart,
@@ -229,5 +245,9 @@ export function useChartStore(): UseChartStoreReturn {
     goToConfig,
     goToOverview,
     goToSeriesConfig,
+    goToAnnotationConfig,
+    addAnnotation,
+    updateAnnotation,
+    deleteAnnotation,
   };
 } 

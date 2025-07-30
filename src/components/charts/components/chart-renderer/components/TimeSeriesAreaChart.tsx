@@ -4,7 +4,7 @@ import { ChartRendererProps } from './ChartRenderer';
 import { useChartData } from '../hooks/useChartData';
 import { ChartLabel } from './ChartLabel';
 import { formatCurrency, formatNumberRO } from '@/lib/utils';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { applyAlpha } from '../utils';
 
 const dataLabelFormatter = (value: number, isRelative: boolean) => {
@@ -14,9 +14,10 @@ const dataLabelFormatter = (value: number, isRelative: boolean) => {
   return formatCurrency(value, "compact");
 };
 
-export function TimeSeriesAreaChart({ chart, data }: ChartRendererProps) {
+export function TimeSeriesAreaChart({ chart, data, onAnnotationPositionChange }: ChartRendererProps) {
   const { timeSeriesData, enabledSeries } = useChartData(chart, data);
   const isRelative = chart.config.showRelativeValues ?? false;
+  const [size, setSize] = useState({ width: 0, height: 0 });
 
   const getSeriesColor = useCallback(
     (seriesId: string, opacity = 1): string => {
@@ -32,10 +33,15 @@ export function TimeSeriesAreaChart({ chart, data }: ChartRendererProps) {
     [enabledSeries, chart.config.color]
   );
 
+  const handleResize = useCallback((width: number, height: number) => {
+    setSize({ width, height });
+  }, []);
+
+
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer width="100%" height="100%" onResize={handleResize}>
       <AreaChart data={timeSeriesData} margin={{ top: 30, right: 50, left: 30, bottom: 20 }}>
-        <ChartContainer chart={chart}>
+        <ChartContainer chart={chart} size={size} onAnnotationPositionChange={onAnnotationPositionChange}>
           {enabledSeries.map((series) => (
             <Area
               key={series.id}

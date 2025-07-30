@@ -5,10 +5,14 @@ import { Chart } from '@/schemas/charts';
 import { formatCurrency, formatNumberRO } from '@/lib/utils';
 import { CustomTimeSeriesTooltip } from './Tooltips';
 import { ReactNode } from 'react';
+import { ChartAnnotation } from './ChartAnnotation';
+import { AnnotationPositionChange } from './interfaces';
 
 interface ChartContainerProps {
   chart: Chart;
+  size: { width: number; height: number };
   children: ReactNode;
+  onAnnotationPositionChange: (pos: AnnotationPositionChange) => void;
 }
 
 const yAxisTickFormatter = (value: number, isRelative: boolean) => {
@@ -18,7 +22,7 @@ const yAxisTickFormatter = (value: number, isRelative: boolean) => {
   return formatCurrency(value, "compact");
 };
 
-export function ChartContainer({ chart, children }: ChartContainerProps) {
+export function ChartContainer({ chart, size, children, onAnnotationPositionChange }: ChartContainerProps) {
   const isRelative = chart.config.showRelativeValues ?? false;
 
   return (
@@ -38,6 +42,15 @@ export function ChartContainer({ chart, children }: ChartContainerProps) {
         itemSorter={() => 0} // Sort by default series order
       />}
       {children}
+      {chart.config.showAnnotations && chart.annotations.filter(a => a.enabled).map((annotation) => (
+        <ChartAnnotation
+          key={annotation.id}
+          annotation={annotation}
+          size={size}
+          globalEditable={chart.config.editAnnotations}
+          onPositionChange={onAnnotationPositionChange}
+        />
+      ))}
     </>
   );
 } 

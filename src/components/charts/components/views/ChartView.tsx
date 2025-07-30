@@ -1,5 +1,3 @@
-import { useCallback } from 'react';
-import { Chart } from '@/schemas/charts';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { useChartStore } from "@/components/charts/hooks/useChartStore";
 import { ChartFiltersOverview } from "@/components/charts/components/filters-details/ChartFiltersOverview";
@@ -7,25 +5,21 @@ import { ChartViewHeader } from "@/components/charts/components/chart-view/Chart
 import { ChartDisplayArea } from "@/components/charts/components/chart-view/ChartDisplayArea";
 import { ChartQuickConfig } from "@/components/charts/components/chart-quick-config/ChartQuickConfig";
 import { SeriesList } from "@/components/charts/components/chart-view/SeriesList";
-import { useCopyPasteChart } from "../../hooks/useCopyPaste";
 import { useChartData } from '../../hooks/useChartData';
+import { AnnotationsList } from '../chart-annotations/AnnotationsList';
+import { AnnotationPositionChange } from '../chart-renderer/components/interfaces';
 
 export function ChartView() {
-  const { chart, updateChart, updateSeries, moveSeriesUp, moveSeriesDown, addSeries, goToConfig, goToSeriesConfig, setSeries, deleteSeries, deleteChart, duplicateChart } = useChartStore();
+  const { chart, goToConfig, goToSeriesConfig, addSeries, updateAnnotation } = useChartStore();
   const { chartData, isLoadingData, dataError } = useChartData({ chart });
-  const { duplicateSeries, copySeries, copyChart } = useCopyPasteChart(chartData);
-
-  const handleToggleSeriesEnabled = useCallback(async (seriesId: string, enabled: boolean) => {
-    updateSeries(seriesId, (prevSeries) => ({ ...prevSeries, enabled }));
-  }, [updateSeries]);
-
-  const handleUpdateChart = useCallback(async (updates: Partial<Chart>) => {
-    updateChart(updates);
-  }, [updateChart]);
 
   if (!chart) {
     return <LoadingSpinner text="Loading chart configuration..." />;
   }
+
+  const handleAnnotationPositionChange = (pos: AnnotationPositionChange) => {
+    updateAnnotation(pos.annotationId, (prev) => ({ ...prev, ...pos.position }));
+  };
 
   return (
     <div className="container mx-auto py-8 px-4 md:px-6 space-y-6">
@@ -40,6 +34,7 @@ export function ChartView() {
               isLoading={isLoadingData}
               error={dataError}
               onAddSeries={addSeries}
+              onAnnotationPositionChange={handleAnnotationPositionChange}
             />
           </div>
           <ChartFiltersOverview chart={chart} onFilterClick={goToSeriesConfig} />
@@ -47,25 +42,11 @@ export function ChartView() {
 
         <div className="lg:w-96 flex-shrink-0 space-y-6">
           <ChartQuickConfig
-            chart={chart}
-            onUpdateChart={handleUpdateChart}
-            onDeleteChart={deleteChart}
-            onDuplicateChart={duplicateChart}
-            onOpenConfigPanel={goToConfig}
-            onCopyData={copyChart}
+            chartData={chartData}
           />
           <SeriesList
-            chart={chart}
-            onAddSeries={addSeries}
-            onSeriesClick={goToSeriesConfig}
-            onToggleSeries={handleToggleSeriesEnabled}
-            onMoveSeriesUp={moveSeriesUp}
-            onMoveSeriesDown={moveSeriesDown}
-            updateSeries={updateSeries}
-            setSeries={setSeries}
-            deleteSeries={deleteSeries}
-            onDuplicateSeries={duplicateSeries}
-            onCopySeries={copySeries}
+          />
+          <AnnotationsList
           />
         </div>
       </div>
