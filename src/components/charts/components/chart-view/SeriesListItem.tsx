@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useDebouncedCallback } from "@/lib/hooks/useDebouncedCallback";
 import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
-import { SeriesItemMenu } from "../../components/series-config/SeriesItemMenu";
+import { SeriesItemMenu } from "../series-config/SeriesItemMenu";
 import { cn } from "@/lib/utils";
 
 interface SeriesListItemProps {

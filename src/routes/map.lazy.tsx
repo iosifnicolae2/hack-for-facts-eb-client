@@ -12,7 +12,7 @@ import { useMapFilter } from "@/lib/hooks/useMapFilterStore";
 import { MapLegend } from "@/components/maps/MapLegend";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MapIcon, TableIcon, BarChart2Icon, Filter as FilterIcon, X, HelpCircleIcon } from "lucide-react";
-import { UatDataCharts } from "@/components/charts/UatDataCharts";
+import { UatDataCharts } from "@/components/maps/charts/UatDataCharts";
 import {
   SortingState,
   PaginationState,

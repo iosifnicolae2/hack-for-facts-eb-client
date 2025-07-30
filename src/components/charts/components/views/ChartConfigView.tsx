@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Eye } from 'lucide-react';
-import { useChartStore } from '@/components/chartBuilder/hooks/useChartStore';
+import { useChartStore } from '@/components/charts/hooks/useChartStore';
 import { ChartInfoCard } from '../chart-config/ChartInfoCard';
 import { GlobalSettingsCard } from '../chart-config/GlobalSettingsCard';
 import { DataSeriesCard } from '../chart-config/DataSeriesCard';

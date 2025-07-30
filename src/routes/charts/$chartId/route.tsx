@@ -1,4 +1,4 @@
-import { getChartsStore } from "@/components/chartBuilder/chartsStore";
+import { getChartsStore } from "@/components/charts/chartsStore";
 import { ChartSchema } from "@/schemas/charts";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { z } from "zod";

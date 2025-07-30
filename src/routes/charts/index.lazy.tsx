@@ -3,9 +3,9 @@ import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { BarChart3, Plus } from 'lucide-react';
 import { Separator } from "@/components/ui/separator";
-import { ChartSection } from "@/components/charts/ChartSection";
+import { ChartSection } from "@/components/charts/components/chart-list/ChartSection";
 import { toast } from "sonner";
-import { StoredChart, getChartsStore } from "@/components/chartBuilder/chartsStore";
+import { StoredChart, getChartsStore } from "@/components/charts/chartsStore";
 
 export const Route = createLazyFileRoute("/charts/")({
   component: ChartsListPage,

@@ -4,7 +4,7 @@ import { produce } from "immer";
 import { Chart } from "@/schemas/charts";
 import { useChartData } from "../../hooks/useChartData";
 import { ChartDisplayArea } from "../chart-view/ChartDisplayArea";
-import { ChartPreviewSkeleton } from "@/components/charts/ChartPreviewSkeleton";
+import { ChartPreviewSkeleton } from "@/components/charts/components/chart-list/ChartPreviewSkeleton";
 import { cn } from "@/lib/utils";
 
 interface ChartPreviewProps {

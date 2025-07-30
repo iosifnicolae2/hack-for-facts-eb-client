@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 import { Chart } from '@/schemas/charts';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
-import { useChartStore } from "@/components/chartBuilder/hooks/useChartStore";
-import { ChartFiltersOverview } from "@/components/chartBuilder/components/filters-details/ChartFiltersOverview";
-import { ChartViewHeader } from "@/components/chartBuilder/components/chart-view/ChartViewHeader";
-import { ChartDisplayArea } from "@/components/chartBuilder/components/chart-view/ChartDisplayArea";
-import { ChartQuickConfig } from "@/components/chartBuilder/components/chart-quick-config/ChartQuickConfig";
-import { SeriesList } from "@/components/chartBuilder/components/chart-view/SeriesList";
+import { useChartStore } from "@/components/charts/hooks/useChartStore";
+import { ChartFiltersOverview } from "@/components/charts/components/filters-details/ChartFiltersOverview";
+import { ChartViewHeader } from "@/components/charts/components/chart-view/ChartViewHeader";
+import { ChartDisplayArea } from "@/components/charts/components/chart-view/ChartDisplayArea";
+import { ChartQuickConfig } from "@/components/charts/components/chart-quick-config/ChartQuickConfig";
+import { SeriesList } from "@/components/charts/components/chart-view/SeriesList";
 import { useCopyPasteChart } from "../../hooks/useCopyPaste";
 import { useChartData } from '../../hooks/useChartData';
 

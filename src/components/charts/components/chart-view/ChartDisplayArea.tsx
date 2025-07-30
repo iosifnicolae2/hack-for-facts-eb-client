@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Chart } from "@/schemas/charts";
 import { getChartTypeIcon } from "../../utils";
-import { ChartRenderer } from "../../components/chart-renderer/ChartRenderer";
+import { ChartRenderer } from "../chart-renderer/ChartRenderer";
 import { AnalyticsDataPoint } from "@/lib/api/charts";
 
 interface ChartDisplayAreaProps {

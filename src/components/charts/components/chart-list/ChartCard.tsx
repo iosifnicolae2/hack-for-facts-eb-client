@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { StoredChart } from "@/components/chartBuilder/chartsStore";
+import { StoredChart } from "@/components/charts/chartsStore";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Edit, Trash2, Star, Eye } from "lucide-react";
@@ -14,7 +14,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { ChartPreview } from "@/components/chartBuilder/components/chart-preview/ChartPreview";
+import { ChartPreview } from "@/components/charts/components/chart-preview/ChartPreview";
 
 interface ChartCardProps {
     chart: StoredChart;
