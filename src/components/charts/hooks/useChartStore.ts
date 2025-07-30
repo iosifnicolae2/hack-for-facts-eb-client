@@ -29,7 +29,6 @@ interface UseChartStoreReturn {
   duplicateSeries: (seriesId: string) => void;
   moveSeriesUp: (seriesId: string) => void;
   moveSeriesDown: (seriesId: string) => void;
-  saveChart: () => Promise<void>;
   validateChart: () => ValidationResult;
   goToConfig: () => void;
   goToOverview: () => void;
@@ -212,27 +211,6 @@ export function useChartStore(): UseChartStoreReturn {
     return { isValid, errors };
   }, [chart]);
 
-  const saveChart = useCallback(async () => {
-    const validation = validateChart();
-    if (!validation.isValid) {
-      throw new Error('Chart validation failed');
-    }
-
-    // Here you would typically save to your backend
-    // For now, we'll save to localStorage as an example
-    const savedCharts = JSON.parse(localStorage.getItem('savedCharts') || '[]');
-    const chartIndex = savedCharts.findIndex((c: Chart) => c.id === chart.id);
-
-    if (chartIndex >= 0) {
-      savedCharts[chartIndex] = chart;
-    } else {
-      savedCharts.push(chart);
-    }
-
-    localStorage.setItem('savedCharts', JSON.stringify(savedCharts));
-
-  }, [chart, validateChart]);
-
   return {
     chart,
     view,
@@ -247,7 +225,6 @@ export function useChartStore(): UseChartStoreReturn {
     duplicateSeries,
     moveSeriesUp,
     moveSeriesDown,
-    saveChart,
     validateChart,
     goToConfig,
     goToOverview,

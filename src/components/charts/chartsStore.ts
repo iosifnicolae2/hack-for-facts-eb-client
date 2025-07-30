@@ -85,8 +85,11 @@ export const getChartsStore = () => {
 
     const updateChartInLocalStorage = (chart: Chart) => {
         const savedCharts = loadSavedCharts();
+        const chartIndex = savedCharts.findIndex((c: Chart) => c.id === chart.id);
+        const oldChart = savedCharts[chartIndex];
+        const newChart = { ...oldChart, ...chart };
         localStorage.setItem(chartsKey, JSON.stringify([
-            chart,
+            newChart,
             ...savedCharts.filter((c: Chart) => c.id !== chart.id),
         ]));
     }
