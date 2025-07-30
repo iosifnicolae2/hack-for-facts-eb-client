@@ -94,3 +94,7 @@ Example workflow:
 - Use `toast.success` for success messages
 - Use `toast.error` for error messages
 - Use `toast.warning` for warning messages
+
+## Testing
+
+Manual testing is preferred over automated testing.
