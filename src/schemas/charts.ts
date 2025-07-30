@@ -11,6 +11,7 @@ export const ChartConfigSchema = z.object({
   showGridLines: z.boolean().default(true),
   showLegend: z.boolean().default(true),
   showRelativeValues: z.boolean().default(false),
+  showTooltip: z.boolean().default(true),
   // yearRangeEnabled: z.boolean().default(false),
   // yearRangeStart: z.number().optional(),
   // yearRangeEnd: z.number().optional(),

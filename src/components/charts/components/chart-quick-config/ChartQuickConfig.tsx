@@ -156,6 +156,18 @@ export function ChartQuickConfig({ chart, onUpdateChart, onDeleteChart, onDuplic
                   Legend
                 </Label>
               </div>
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="show-tooltip"
+                  checked={chart.config.showTooltip}
+                  onCheckedChange={(checked) =>
+                    onUpdateChart({ config: { ...chart.config, showTooltip: checked } })
+                  }
+                />
+                <Label htmlFor="show-tooltip" className="text-sm">
+                  Tooltip
+                </Label>
+              </div>
             </div>
           </div>
 
