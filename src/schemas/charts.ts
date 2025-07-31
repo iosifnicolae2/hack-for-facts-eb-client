@@ -28,7 +28,8 @@ export type ChartConfig = z.infer<typeof ChartConfigSchema>;
 export const SeriesConfigSchema = z.object({
   visible: z.boolean().default(true),
   showDataLabels: z.boolean().default(false),
-  dataLabels: z.array(z.string()).default([]).describe('Data labels to show on the chart for the x axis'),
+  dataLabels: z.array(z.string()).optional().describe('Data labels to show on the chart for the x axis'),
+  dataLabelOffset: z.number().optional().describe('Offset of the data labels from the x axis'),
   color: z.string().default('#0000ff'),
 }).default({});
 

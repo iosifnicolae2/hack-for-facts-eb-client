@@ -17,6 +17,7 @@ import { Switch } from '@/components/ui/switch';
 import { SeriesFilter } from '../series-config/SeriesFilter';
 import { useChartStore } from '../../hooks/useChartStore';
 import { generateRandomColor } from '../chart-renderer/utils';
+import { Slider } from '@/components/ui/slider';
 import { DataLabelSelector } from '../series-config/DataLabelSelector';
 
 
@@ -139,6 +140,23 @@ export function SeriesConfigView() {
                   onChange={(labels) => updateSeriesConfig({ dataLabels: labels })}
                 />
               )}
+              <div className="space-y-3 pt-4">
+                <Label htmlFor="data-label-offset">Data Label Offset</Label>
+                <div className="flex items-center gap-4">
+                  <Slider
+                    id="data-label-offset"
+                    min={-100}
+                    max={100}
+                    step={1}
+                    value={[series.config.dataLabelOffset || 0]}
+                    onValueChange={(value) => updateSeriesConfig({ dataLabelOffset: value[0] })}
+                    className="w-full"
+                  />
+                  <span className="text-sm font-medium text-muted-foreground w-16 text-right">
+                    {series.config.dataLabelOffset || 0}px
+                  </span>
+                </div>
+              </div>
             </>
           )}
         </CardContent>

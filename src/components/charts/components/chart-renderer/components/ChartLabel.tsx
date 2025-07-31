@@ -13,6 +13,9 @@ export function ChartLabel(props: ChartLabelProps) {
     const xValue = isNaN(Number(x)) ? 0 : Number(x);
     const yValue = isNaN(Number(y)) ? 0 : Number(y);
     const offsetValue = isNaN(Number(offset)) ? 0 : Number(offset);
+
+    const seriesOffset = series.config.dataLabelOffset || 0;
+
     const formattedValue = dataLabelFormatter(Number(value), isRelative);
     const chartItemWidth = isNaN(Number(width)) ? 0 : Number(width);
 
@@ -22,7 +25,7 @@ export function ChartLabel(props: ChartLabelProps) {
         <g>
             <rect
                 x={xValue - labelWidth / 2 + chartItemWidth / 2}
-                y={yValue - offsetValue}
+                y={yValue - offsetValue + seriesOffset}
                 width={labelWidth}
                 height={20}
                 fill={getSeriesColor(series.id, 0.2)}
@@ -31,7 +34,7 @@ export function ChartLabel(props: ChartLabelProps) {
             />
             <text
                 x={xValue + chartItemWidth / 2}
-                y={yValue - offsetValue + 12}
+                y={yValue - offsetValue + 12 + seriesOffset}
                 textAnchor="middle"
                 dominantBaseline="middle"
                 fill="#000"
