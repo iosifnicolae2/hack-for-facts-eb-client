@@ -8,17 +8,17 @@ import { generateRandomColor } from '@/components/charts/components/chart-render
 export const ChartConfigSchema = z.object({
   chartType: ChartTypeEnum,
   color: z.string().default(generateRandomColor()),
-  showDataLabels: z.boolean().default(false),
+  showDataLabels: z.boolean().optional().describe('Show data labels on the chart for all the series'),
   showGridLines: z.boolean().default(true),
   showLegend: z.boolean().default(true),
-  showRelativeValues: z.boolean().default(false),
+  showRelativeValues: z.boolean().optional().describe('Show relative values on the chart for all the series using percentage and the first series as the base'),
   showTooltip: z.boolean().default(true),
-  editAnnotations: z.boolean().default(true),
-  showAnnotations: z.boolean().default(true),
+  editAnnotations: z.boolean().default(true).describe('Allow editing of annotations'),
+  showAnnotations: z.boolean().default(true).describe('Show annotations on the chart'),
   yearRange: z.object({
     start: z.number().optional(),
     end: z.number().optional(),
-  }).optional(),
+  }).optional().describe('Year range to show on the chart. If not set, the chart will show all years.'),
 });
 
 export type ChartConfig = z.infer<typeof ChartConfigSchema>;
@@ -27,10 +27,10 @@ export type ChartConfig = z.infer<typeof ChartConfigSchema>;
  * Series-specific configuration that can override global settings
  */
 export const SeriesConfigSchema = z.object({
-  visible: z.boolean().default(true),
-  showDataLabels: z.boolean().default(false),
-  dataLabels: z.array(z.string()).optional().describe('Data labels to show on the chart for the x axis'),
-  dataLabelOffset: z.number().optional().describe('Offset of the data labels from the x axis'),
+  visible: z.boolean().default(true).describe('Show the series on the chart'),
+  showDataLabels: z.boolean().default(false).describe('Show data labels on the chart for the y axis'),
+  dataLabels: z.array(z.string()).optional().describe('Data labels to show on the chart for the x axis. If not set, the chart will show all years.'),
+  dataLabelOffset: z.number().optional().describe('Offset of the data labels from the x axis. If not set, the chart will show the data labels at the default position.'),
   color: z.string().default('#0000ff'),
 }).default({});
 
@@ -41,14 +41,14 @@ export type SeriesConfig = z.infer<typeof SeriesConfigSchema>;
 // ============================================================================
 
 export const AnalyticsFilterSchema = z.object({
-  years: z.array(z.number()).optional(),
-  entity_cuis: z.array(z.string()).optional(),
-  economic_prefixes: z.array(z.string()).optional(),
-  functional_prefixes: z.array(z.string()).optional(),
-  report_type: z.enum(['Executie bugetara agregata la nivel de ordonator principal', 'Executie bugetara detaliata']).optional().default('Executie bugetara agregata la nivel de ordonator principal'),
-  account_category: z.enum(['ch', 'vn']).optional().default('ch'),
-  economic_codes: z.array(z.string()).optional(),
-  functional_codes: z.array(z.string()).optional(),
+  years: z.array(z.number()).optional().describe('Years to filter the data by. If not set, the chart will show all years.'),
+  entity_cuis: z.array(z.string()).optional().describe('The public entities cui of cif.'),
+  economic_prefixes: z.array(z.string()).optional().describe('The economic prefixes using Romanian COFOG3 codes.'),
+  functional_prefixes: z.array(z.string()).optional().describe('The functional prefixes using Romanian COFOG3 codes.'),
+  report_type: z.enum(['Executie bugetara agregata la nivel de ordonator principal', 'Executie bugetara detaliata']).optional().default('Executie bugetara agregata la nivel de ordonator principal').describe('The report type to filter the data by.'),
+  account_category: z.enum(['ch', 'vn']).default('ch').describe('Spending (ch) or Revenue (vn) used to aggregate the data. One of the two must be set.'),
+  economic_codes: z.array(z.string()).optional().describe('The economic codes to filter the data by using Romanian COFOG3 codes.'),
+  functional_codes: z.array(z.string()).optional().describe('The functional codes to filter the data by using Romanian COFOG3 codes.'),
   uat_ids: z.array(z.string()).optional(),
   min_amount: z.number().or(z.string()).optional(),
   max_amount: z.number().or(z.string()).optional(),
@@ -65,12 +65,11 @@ export type AnalyticsFilterType = z.infer<typeof AnalyticsFilterSchema>;
 // ============================================================================
 
 export const SeriesConfigurationSchema = z.object({
-  id: z.string().default(() => crypto.randomUUID()),
+  id: z.string().default(() => crypto.randomUUID()).describe('The id of the series. It should be unique and immutable.'),
   type: z.literal('line-items-aggregated-yearly').default('line-items-aggregated-yearly'),
-  enabled: z.boolean().default(true),
-  label: z.string().default(''),
-  filter: AnalyticsFilterSchema,
-  filterMetadata: z.record(z.string(), z.string()).default({}),
+  enabled: z.boolean().default(true).describe('Whether the series is shown on the chart.'),
+  label: z.string().default('').describe('The label of the series. It will be shown on the chart.'),
+  filter: AnalyticsFilterSchema.describe('The filter to apply to the series.'),
   config: SeriesConfigSchema,
   createdAt: z.string().default(() => new Date().toISOString()),
   updatedAt: z.string().default(() => new Date().toISOString()),
@@ -83,16 +82,16 @@ export type SeriesConfiguration = z.infer<typeof SeriesConfigurationSchema>;
 // ============================================================================
 
 export const AnnotationSchema = z.object({
-  type: z.literal('annotation'),
   id: z.string().default(() => crypto.randomUUID()),
+  type: z.literal('annotation'),
   enabled: z.boolean().default(true),
   locked: z.boolean().default(true),
-  title: z.string(),
-  subtitle: z.string().optional(),
-  color: z.string().default('#000'),
-  connector: z.boolean().default(true),
-  subject: z.boolean().default(false),
-  label: z.boolean().default(true),
+  title: z.string().describe('The title of the annotation.'),
+  subtitle: z.string().optional().describe('The subtitle of the annotation.'),
+  color: z.string().default('#000').describe('The color of the annotation.'),
+  connector: z.boolean().default(true).describe('Whether the annotation is connected to the chart.'),
+  subject: z.boolean().default(false).describe('Whether the annotation show a circle or icon around the point it starts from.'),
+  label: z.boolean().default(true).describe('Whether the annotation show a label using title and subtitle.'),
   pX: z.number().default(0.5).describe('Percentage of the x-axis to place the annotation'),
   pY: z.number().default(0.5).describe('Percentage of the y-axis to place the annotation'),
   pXDelta: z.number().default(0.05).describe('Percentage of the x-axis to move the annotation label'),
@@ -117,7 +116,7 @@ export const ChartSchema = z.object({
   series: z.array(SeriesConfigurationSchema).default([]),
 
   // Annotations
-  annotations: z.array(AnnotationSchema).default([]),
+  annotations: z.array(AnnotationSchema).default([]).describe('The annotations to show on the chart. Used to manually add annotations to the chart.'),
 
   // Metadata
   createdAt: z.string().default(() => new Date().toISOString()),
