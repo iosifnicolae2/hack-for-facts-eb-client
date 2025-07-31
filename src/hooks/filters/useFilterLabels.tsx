@@ -1,0 +1,107 @@
+import { getEntityLabels } from "@/lib/api/entities";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { GetLabels, LabelStore } from "./interfaces";
+import { OptionItem } from "@/lib/hooks/useLineItemsFilter";
+import { getUatLabels } from "@/lib/api/uats";
+
+const EntityStorageKey = 'entity-labels';
+const UatLabelStorageKey = 'uat-labels';
+
+const loadLocalData = (key: string): Record<string, string> => {
+    try {
+        const storage = localStorage.getItem(key);
+        const parseJson = storage ? JSON.parse(storage) : {};
+        const entitiesMap = Object.fromEntries(Object.entries(parseJson).map(([key, label]) => [String(key), String(label)]));
+        return entitiesMap;
+    } catch (error) {
+        console.error("Failed to parse data from localStorage for key", key, error);
+        return {};
+    }
+};
+
+const saveLocalData = (key: string, data: Record<string, string>) => {
+    localStorage.setItem(key, JSON.stringify(data));
+};
+
+export const useDataLabelBuilder = (key: string, getLabels: GetLabels, initialIds: string[]): LabelStore => {
+    const queryClient = useQueryClient();
+
+    const { data: dataMap } = useQuery<Record<string, string>>({
+        queryKey: [key],
+        queryFn: () => loadLocalData(key),
+        staleTime: Infinity,
+        initialData: loadLocalData(key),
+    });
+
+    /**
+     * Fetches labels for any given ids that are not already in the local cache,
+     * updates localStorage, and triggers a UI update.
+     * @param {string[]} ids - An array of ids to check and fetch.
+     */
+    const fetchMissingLabels = async (ids: string[], getLabels: GetLabels) => {
+        if (!ids || ids.length === 0) return;
+
+        const dataMap = loadLocalData(key);
+        const missingIds = ids.filter(id => !dataMap[id]);
+
+        if (missingIds.length === 0) return;
+
+        try {
+            // Correctly await the asynchronous API call.
+            const newLabels = await getLabels(missingIds);
+
+            newLabels.forEach(({ id, label }) => {
+                dataMap[String(id)] = String(label);
+            });
+
+            saveLocalData(key, dataMap);
+
+            // Invalidate the query. This tells TanStack Query to refetch the data
+            // (by running `loadEntities`) and update all subscribed components.
+            await queryClient.invalidateQueries({ queryKey: [key] });
+        } catch (error) {
+            console.error("Failed to fetch labels:", error);
+        }
+    };
+
+    /**
+     * Manually adds or updates labels in the cache from a list of OptionItems.
+     * @param {OptionItem[]} labels - An array of options with id and label.
+     */
+    const addKnownLabels = (labels: OptionItem[]) => {
+        const currentMap = loadLocalData(key);
+        labels.forEach(({ id, label }) => {
+            currentMap[String(id)] = String(label);
+        });
+
+        saveLocalData(key, currentMap);
+
+        // Optimistically update the query cache for an instant UI change.
+        // This is faster than invalidating and re-reading from localStorage.
+        queryClient.setQueryData([key], currentMap);
+    };
+
+    useEffect(() => {
+        if (initialIds) {
+            fetchMissingLabels(initialIds, getLabels);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- only run on mount to get not loaded entities
+    }, []);
+
+    const mapIdToLabel = (id: string | number) => dataMap?.[String(id)] ?? `id::${id}`;
+
+    return {
+        map: mapIdToLabel,
+        add: addKnownLabels,
+        fetch: fetchMissingLabels,
+    };
+};
+
+export const useEntityLabel = (initialIds: string[]) => {
+    return useDataLabelBuilder(EntityStorageKey, getEntityLabels, initialIds);
+};
+
+export const useUatLabel = (initialIds: string[]) => {
+    return useDataLabelBuilder(UatLabelStorageKey, getUatLabels, initialIds);
+};

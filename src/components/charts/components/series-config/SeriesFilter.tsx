@@ -20,6 +20,8 @@ import { AccountCategoryRadio } from "../../../filters/account-type-filter/Accou
 import { cn } from "@/lib/utils";
 import { BudgetSectorList } from "@/components/filters/budget-sector-filter";
 import { FundingSourceList } from "@/components/filters/funding-source-filter";
+import { useEntityLabel, useUatLabel } from "@/hooks/filters/useFilterLabels";
+import { LabelStore } from "@/hooks/filters/interfaces";
 
 interface SeriesFilterProps {
     seriesId?: string;
@@ -29,6 +31,8 @@ interface SeriesFilterProps {
 export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
     const { chart, updateSeries } = useChartStore();
     const series = chart.series.find(s => s.id === seriesId)
+    const entityLabelsStore = useEntityLabel(series?.filter.entity_cuis ?? []);
+    const uatLabelsStore = useUatLabel(series?.filter.uat_ids ?? []);
 
     if (!series) {
         return null;
@@ -37,12 +41,15 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
     const { filter } = series;
 
     // Generic updater for list-based filters
-    const createListUpdater = (filterKey: keyof typeof filter) =>
+    const createListUpdater = (filterKey: keyof typeof filter, labelStore?: LabelStore) =>
         (action: React.SetStateAction<OptionItem<string | number>[]>) => {
             if (!seriesId) return;
 
-            const currentOptions = (filter[filterKey] as (string | number)[])?.map(id => ({ id, label: String(id) })) || [];
+            const currentOptions = (filter[filterKey] as (string | number)[])?.map(id => ({ id, label: labelStore?.map(id) ?? String(id) })) || [];
             const newState = typeof action === 'function' ? action(currentOptions) : action;
+            if (labelStore) {
+                labelStore.add(newState);
+            }
 
             updateSeries(seriesId, (prevSeries) => {
                 (prevSeries.filter[filterKey] as (string | number)[]) = newState.map(o => o.id);
@@ -65,11 +72,11 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
 
     // State and Handlers
 
-    const selectedEntityOptions: OptionItem[] = filter.entity_cuis?.map(cui => ({ id: cui, label: cui })) || [];
-    const setSelectedEntityOptions = createListUpdater('entity_cuis');
+    const selectedEntityOptions: OptionItem[] = filter.entity_cuis?.map(cui => ({ id: cui, label: entityLabelsStore.map(cui) })) || [];
+    const setSelectedEntityOptions = createListUpdater('entity_cuis', entityLabelsStore);
 
-    const selectedUatOptions: OptionItem<string>[] = filter.uat_ids?.map(id => ({ id: id, label: id })) || [];
-    const setSelectedUatOptions = createListUpdater('uat_ids');
+    const selectedUatOptions: OptionItem<string>[] = filter.uat_ids?.map(id => ({ id: id, label: uatLabelsStore.map(id) })) || [];
+    const setSelectedUatOptions = createListUpdater('uat_ids', uatLabelsStore);
 
     const selectedEconomicClassificationOptions: OptionItem[] = filter.economic_codes?.map(id => ({ id, label: id })) || [];
     const setSelectedEconomicClassificationOptions = createListUpdater('economic_codes');
