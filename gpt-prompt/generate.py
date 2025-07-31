@@ -1,7 +1,7 @@
+
 import json
 import uuid
-import urllib.parse
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict
 from datetime import datetime, timezone
 
 def generate_urls(
@@ -11,7 +11,6 @@ def generate_urls(
     account_category: str = 'ch',
     chart_type: str = 'bar',
     description: Optional[str] = None,
-    economic_prefixes: Optional[List[str]] = None,
     functional_prefixes: Optional[List[str]] = None,
     entity_types: Optional[List[str]] = None
 ) -> Dict[str, Optional[str]]:
@@ -25,9 +24,8 @@ def generate_urls(
         account_category: 'ch' for spending (default), 'vn' for revenue.
         chart_type: 'bar' (default), 'line', or 'area'.
         description: Optional description for the chart.
-        economic_prefixes: Optional list of economic COFOG3 prefixes.
-        functional_prefixes: Optional list of functional COFOG3 prefixes.
-        entity_types: Optional list of entity types.
+        functional_prefixes: Optional list of functional prefixes from the functional-classificatinos-general.json file. Example: ["65."] for Education(Invatamant). Use only the valid number for the prefix.
+        entity_types: Optional list of entity types from the entity-categories.json file.
 
     Returns:
         A dictionary containing 'chart_url' and 'entity_url'.
@@ -41,8 +39,6 @@ def generate_urls(
         "account_category": account_category,
         "entity_cuis": entity_cuis,
     }
-    if economic_prefixes:
-        series_filter["economic_prefixes"] = economic_prefixes
     if functional_prefixes:
         series_filter["functional_prefixes"] = functional_prefixes
     if entity_types:
@@ -88,11 +84,12 @@ def generate_urls(
     if description:
         chart_object["description"] = description
 
-    # --- Build Chart URL ---
-    encoded_chart = urllib.parse.quote(json.dumps(chart_object, separators=(",", ":")))
-    chart_url = f"{base_url}/charts/{chart_id}?chart={encoded_chart}"
+    # --- Build Chart URL --- No need for encoding the url, only convert to json string
+    chart_url = f"{base_url}/charts/{chart_id}?chart={json.dumps(chart_object)}"
 
     # --- Build Entity URL (for the first CUI only) ---
-    entity_url = f"{base_url}/entities/{entity_cuis[0]}?year={year}" if entity_cuis else None
+    year_str = f"&year={year}" if year else ""
+    functional_prefix_str = f"&expenseSearch=fn%3A{functional_prefixes[0]}&incomeSearch=fn%3A{functional_prefixes[0]}" if functional_prefixes and len(functional_prefixes) > 0 else ""
+    entity_url = f"{base_url}/entities/{entity_cuis[0]}?ref=chatgpt{year_str}{functional_prefix_str}" if entity_cuis else None
 
     return {"chart_url": chart_url, "entity_url": entity_url}
