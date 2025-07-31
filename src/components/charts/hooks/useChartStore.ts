@@ -11,6 +11,7 @@ import { useNavigate, useSearch } from '@tanstack/react-router';
 import { produce } from 'immer';
 import { toast } from 'sonner';
 import { getChartsStore } from '../chartsStore';
+import { generateRandomColor } from '../components/chart-renderer/utils';
 
 interface ValidationResult {
   isValid: boolean;
@@ -70,7 +71,7 @@ export function useChartStore() {
 
 
   const addSeries = useCallback(() => {
-    const newSeries: SeriesConfiguration = {
+    const newSeries: SeriesConfiguration = SeriesConfigurationSchema.parse({
       id: crypto.randomUUID(),
       type: 'line-items-aggregated-yearly',
       enabled: true,
@@ -79,14 +80,12 @@ export function useChartStore() {
         account_category: 'ch',
         report_type: 'Executie bugetara agregata la nivel de ordonator principal',
       },
-      filterMetadata: {},
       config: {
         visible: true,
-        yAxisId: 'left',
+        showDataLabels: false,
+        color: generateRandomColor(),
       },
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+    });
 
     updateChart({
       series: [...chart.series, newSeries],

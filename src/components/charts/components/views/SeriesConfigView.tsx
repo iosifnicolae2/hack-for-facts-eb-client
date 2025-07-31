@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { Trash2, Settings, Eye } from 'lucide-react';
+import { Trash2, Settings, Eye, RotateCcw } from 'lucide-react';
 import { SeriesConfiguration } from '@/schemas/charts';
 import {
   DropdownMenu,
@@ -16,6 +16,7 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { SeriesFilter } from '../series-config/SeriesFilter';
 import { useChartStore } from '../../hooks/useChartStore';
+import { generateRandomColor } from '../chart-renderer/utils';
 
 
 export function SeriesConfigView() {
@@ -90,6 +91,9 @@ export function SeriesConfigView() {
                 onChange={(e) => updateSeriesField('config', { ...series?.config, color: e.target.value })}
                 className="w-12 h-8 rounded border cursor-pointer"
               />
+              <Button variant="outline" size="sm" onClick={() => updateSeriesField('config', { ...series?.config, color: generateRandomColor() })}>
+                <RotateCcw className="h-4 w-4" />
+              </Button>
               <span className="text-sm text-muted-foreground">
                 {series?.config.color || chart.config.color}
               </span>

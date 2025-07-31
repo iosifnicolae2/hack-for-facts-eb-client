@@ -1,12 +1,13 @@
 import { z } from 'zod';
 import { ChartTypeEnum, DEFAULT_CHART } from './constants';
+import { generateRandomColor } from '@/components/charts/components/chart-renderer/utils';
 
 /**
  * Global chart configuration that can be overridden by individual series
  */
 export const ChartConfigSchema = z.object({
   chartType: ChartTypeEnum,
-  color: z.string().default('#0000ff'),
+  color: z.string().default(generateRandomColor()),
   showDataLabels: z.boolean().default(false),
   showGridLines: z.boolean().default(true),
   showLegend: z.boolean().default(true),
@@ -24,9 +25,14 @@ export type ChartConfig = z.infer<typeof ChartConfigSchema>;
 /**
  * Series-specific configuration that can override global settings
  */
-export const SeriesConfigSchema = ChartConfigSchema.partial().extend({
+export const SeriesConfigSchema = z.object({
   visible: z.boolean().default(true),
-  yAxisId: z.enum(['left', 'right']).default('left'),
+  showDataLabels: z.boolean().default(false),
+  color: z.string().default('#0000ff'),
+}).default({
+  visible: true,
+  showDataLabels: false,
+  color: '#0000ff',
 });
 
 export type SeriesConfig = z.infer<typeof SeriesConfigSchema>;

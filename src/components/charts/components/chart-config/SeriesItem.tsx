@@ -39,7 +39,7 @@ export const SeriesItem = React.memo(({
                 <div className="flex-1 min-w-0">
                     <div className="font-medium cursor-pointer truncate" onClick={onEdit} title={series.label}>{series.label}</div>
                     <div className="text-sm text-muted-foreground">
-                        {series.config.chartType || 'Default'} chart
+                        {series.type || 'Default'} chart
                         {/* {series.filter.entity_cuis?.length > 0 && ` • ${series.filter.entity_cuis.length} entities`} */}
                     </div>
                 </div>
