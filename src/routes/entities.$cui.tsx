@@ -182,6 +182,7 @@ function EntityDetailsPage() {
                     incomeTrend={entity.incomeTrend}
                     expenseTrend={entity.expenseTrend}
                     balanceTrend={entity.balanceTrend}
+                    currentYear={selectedYear}
                     mode={trendMode}
                     onModeChange={handleTrendModeChange}
                     onYearChange={handleYearChange}

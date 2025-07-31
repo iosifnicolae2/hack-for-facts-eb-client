@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { EntityDetailsData } from '@/lib/api/entities';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine } from 'recharts';
 import { useMemo } from 'react';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { TrendingUp } from 'lucide-react';
@@ -10,12 +10,13 @@ interface EntityFinancialTrendsProps {
   incomeTrend: EntityDetailsData['incomeTrend'];
   expenseTrend: EntityDetailsData['expenseTrend'];
   balanceTrend: EntityDetailsData['balanceTrend'];
+  currentYear: number;
   mode: 'absolute' | 'percent';
   onModeChange: (mode: 'absolute' | 'percent') => void;
   onYearChange?: (year: number) => void;
 }
 
-export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ incomeTrend, expenseTrend, balanceTrend, mode, onModeChange, onYearChange }) => {
+export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ incomeTrend, expenseTrend, balanceTrend, currentYear, mode, onModeChange, onYearChange }) => {
   const trendsAvailable = incomeTrend?.length || expenseTrend?.length || balanceTrend?.length;
 
   const mergedData = useMemo(() => {
@@ -142,6 +143,7 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
               />
               <Tooltip content={<CustomTooltip />} />
               <Legend wrapperStyle={{ fontSize: '14px' }} />
+              <ReferenceLine x={currentYear} stroke="gray" strokeDasharray="6 3" strokeWidth={1} />
               <Area type="monotone" dataKey="income" name="Venituri" stroke="#10B981" fill="#10B981" fillOpacity={0.2} strokeWidth={2} />
               <Area type="monotone" dataKey="expense" name="Cheltuieli" stroke="#EF4444" fill="#EF4444" fillOpacity={0.2} strokeWidth={2} />
               <Area type="monotone" dataKey="balance" name="Balanță" stroke="#3B82F6" fill="#3B82F6" fillOpacity={0.2} strokeWidth={2} />

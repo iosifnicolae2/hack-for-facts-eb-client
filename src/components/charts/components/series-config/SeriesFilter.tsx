@@ -41,15 +41,11 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
         (action: React.SetStateAction<OptionItem<string | number>[]>) => {
             if (!seriesId) return;
 
-            const currentOptions = (filter[filterKey] as (string | number)[])?.map(id => ({ id, label: series.filterMetadata[id] || String(id) })) || [];
+            const currentOptions = (filter[filterKey] as (string | number)[])?.map(id => ({ id, label: String(id) })) || [];
             const newState = typeof action === 'function' ? action(currentOptions) : action;
 
             updateSeries(seriesId, (prevSeries) => {
                 (prevSeries.filter[filterKey] as (string | number)[]) = newState.map(o => o.id);
-                prevSeries.filterMetadata = {
-                    ...prevSeries.filterMetadata,
-                    ...newState.reduce((acc, o) => ({ ...acc, [o.id]: o.label }), {})
-                };
                 return prevSeries;
             });
             return newState;
@@ -69,23 +65,23 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
 
     // State and Handlers
 
-    const selectedEntityOptions: OptionItem[] = filter.entity_cuis?.map(cui => ({ id: cui, label: series.filterMetadata[cui] || cui })) || [];
+    const selectedEntityOptions: OptionItem[] = filter.entity_cuis?.map(cui => ({ id: cui, label: cui })) || [];
     const setSelectedEntityOptions = createListUpdater('entity_cuis');
 
-    const selectedUatOptions: OptionItem<string>[] = filter.uat_ids?.map(id => ({ id: id, label: series.filterMetadata[id] || String(id) })) || [];
+    const selectedUatOptions: OptionItem<string>[] = filter.uat_ids?.map(id => ({ id: id, label: id })) || [];
     const setSelectedUatOptions = createListUpdater('uat_ids');
 
-    const selectedEconomicClassificationOptions: OptionItem[] = filter.economic_codes?.map(id => ({ id, label: series.filterMetadata[id] || String(id) })) || [];
+    const selectedEconomicClassificationOptions: OptionItem[] = filter.economic_codes?.map(id => ({ id, label: id })) || [];
     const setSelectedEconomicClassificationOptions = createListUpdater('economic_codes');
 
-    const selectedFunctionalClassificationOptions: OptionItem[] = filter.functional_codes?.map(id => ({ id, label: series.filterMetadata[id] || String(id) })) || [];
+    const selectedFunctionalClassificationOptions: OptionItem[] = filter.functional_codes?.map(id => ({ id, label: id })) || [];
     const setSelectedFunctionalClassificationOptions = createListUpdater('functional_codes');
 
     const accountTypeLabels: Record<string, string> = { 'ch': 'Cheltuieli', 'vn': 'Venituri' };
     const selectedAccountTypeOption: OptionItem = filter.account_category ? { id: filter.account_category, label: accountTypeLabels[filter.account_category] } : { id: 'ch', label: accountTypeLabels['ch'] };
     const setSelectedAccountTypeOption = createValueUpdater('account_category', (v) => v ? v : undefined);
 
-    const selectedEntityTypeOptions: OptionItem[] = filter.entity_types?.map(id => ({ id, label: series.filterMetadata[id] || String(id) })) || [];
+    const selectedEntityTypeOptions: OptionItem[] = filter.entity_types?.map(id => ({ id, label: id })) || [];
     const setSelectedEntityTypeOptions = createListUpdater('entity_types');
 
     const minAmount = String(filter.min_amount ?? '');
@@ -103,10 +99,10 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
     const economicPrefix = filter.economic_prefixes?.[0];
     const setEconomicPrefix = createValueUpdater('economic_prefixes', (v) => v ? [String(v)] : undefined);
 
-    const selectedBudgetSectorOptions: OptionItem[] = filter.budget_sector_ids?.map(id => ({ id, label: series.filterMetadata[id] || String(id) })) || [];
+    const selectedBudgetSectorOptions: OptionItem[] = filter.budget_sector_ids?.map(id => ({ id, label: id })) || [];
     const setSelectedBudgetSectorOptions = createListUpdater('budget_sector_ids');
 
-    const selectedFundingSourceOptions: OptionItem[] = filter.funding_source_ids?.map(id => ({ id, label: series.filterMetadata[id] || String(id) })) || [];
+    const selectedFundingSourceOptions: OptionItem[] = filter.funding_source_ids?.map(id => ({ id, label: id })) || [];
     const setSelectedFundingSourceOptions = createListUpdater('funding_source_ids');
 
     const flagsOptions: OptionItem[] = [];

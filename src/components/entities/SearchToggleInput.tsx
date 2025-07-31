@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X } from "lucide-react";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useDebouncedCallback } from "@/lib/hooks/useDebouncedCallback";
 
 interface SearchToggleInputProps {
   active: boolean;
@@ -33,9 +34,11 @@ export const SearchToggleInput: React.FC<SearchToggleInputProps> = ({
     enableOnFormTags: ['INPUT', 'TEXTAREA', 'SELECT'],
   });
 
+  const debouncedOnChange = useDebouncedCallback(onChange, 500);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-    onChange(e.target.value);
+    debouncedOnChange(e.target.value);
   };
 
   const handleClear = () => {
