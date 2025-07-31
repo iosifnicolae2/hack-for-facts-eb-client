@@ -1,7 +1,7 @@
 import { BarChart, Bar, LabelList, ResponsiveContainer } from 'recharts';
 import { ChartContainer } from './ChartContainer';
 import { ChartRendererProps } from './ChartRenderer';
-import { useChartData } from '../hooks/useChartData';
+import { SeriesValue, useChartData } from '../hooks/useChartData';
 import { ChartLabel } from './ChartLabel';
 import { formatCurrency, formatNumberRO } from '@/lib/utils';
 import { useCallback, useMemo } from 'react';
@@ -51,14 +51,27 @@ export function TimeSeriesBarChart({ chart, data, onAnnotationPositionChange }: 
                             animationDuration={300}
                             animationEasing="ease-in-out"
                         >
-                            {(series.config.showDataLabels || chart.config.showDataLabels) && (
-                                <LabelList
-                                    dataKey={`${series.id}.value`}
-                                    offset={30}
-                                    content={(props) => <ChartLabel {...props} series={series} dataLabelFormatter={dataLabelFormatter} getSeriesColor={getSeriesColor} isRelative={isRelative} />}
-                                    formatter={(label: unknown) => dataLabelFormatter(Number(label as number), isRelative)}
-                                />
-                            )}
+                            <LabelList
+                                dataKey={`${series.id}`}
+                                offset={30}
+                                content={(props) => {
+                                    const isShowLabels = series.config.showDataLabels || chart.config.showDataLabels;
+                                    if (!isShowLabels) {
+                                        return null;
+                                    }
+
+                                    const payload = props.value as unknown as SeriesValue
+                                    const dataLabels = series.config.dataLabels || []
+                                    const year = String(payload.xValue)
+                                    if (dataLabels.length > 0 && !dataLabels.includes(year)) {
+                                        return null;
+                                    }
+                                    return (
+                                        <ChartLabel {...props} value={payload.value} series={series} dataLabelFormatter={dataLabelFormatter} getSeriesColor={getSeriesColor} isRelative={isRelative} />
+                                    )
+                                }}
+                                formatter={(label: unknown) => dataLabelFormatter(Number(label as number), isRelative)}
+                            />
                         </Bar>
                     )
                     )}

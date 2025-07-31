@@ -1,7 +1,7 @@
 import { LineChart, Line, LabelList, ResponsiveContainer } from 'recharts';
 import { ChartContainer } from './ChartContainer';
 import { ChartRendererProps } from './ChartRenderer';
-import { useChartData } from '../hooks/useChartData';
+import { SeriesValue, useChartData } from '../hooks/useChartData';
 import { ChartLabel } from './ChartLabel';
 import { formatCurrency, formatNumberRO } from '@/lib/utils';
 import { useCallback } from 'react';
@@ -35,30 +35,45 @@ export function TimeSeriesLineChart({ chart, data, onAnnotationPositionChange }:
     <ResponsiveContainer width="100%" height="100%">
       <LineChart data={timeSeriesData} margin={{ top: 30, right: 50, left: 30, bottom: 20 }}>
         <ChartContainer chart={chart} onAnnotationPositionChange={onAnnotationPositionChange}>
-          {enabledSeries.map((series) => (
-            <Line
-              key={series.id}
-              dataKey={`${series.id}.value`}
-              name={series.label || 'Untitled'}
-              stroke={getSeriesColor(series.id)}
-              type="monotone"
-              strokeWidth={2}
-              dot={{ r: 4 }}
-              activeDot={{ r: 6 }}
-              connectNulls={false}
-              animationDuration={300}
-              animationEasing="ease-in-out"
-            >
-              {(series.config.showDataLabels || chart.config.showDataLabels) && (
+          {enabledSeries.map((series) => {
+            return (
+              <Line
+                key={series.id}
+                dataKey={`${series.id}.value`}
+                name={series.label || 'Untitled'}
+                stroke={getSeriesColor(series.id)}
+                type="monotone"
+                strokeWidth={2}
+                dot={{ r: 4 }}
+                activeDot={{ r: 6 }}
+                connectNulls={false}
+                animationDuration={300}
+                animationEasing="ease-in-out"
+              >
                 <LabelList
-                  dataKey={`${series.id}.value`}
+                  dataKey={`${series.id}`}
                   offset={30}
-                  content={(props) => <ChartLabel {...props} series={series} dataLabelFormatter={dataLabelFormatter} getSeriesColor={getSeriesColor} isRelative={isRelative} />}
+                  content={(props) => {
+                    const isShowLabels = series.config.showDataLabels || chart.config.showDataLabels;
+                    if (!isShowLabels) {
+                      return null;
+                    }
+
+                    const payload = props.value as unknown as SeriesValue
+                    const dataLabels = series.config.dataLabels || []
+                    const year = String(payload.xValue)
+                    if (dataLabels.length > 0 && !dataLabels.includes(year)) {
+                      return null;
+                    }
+                    return (
+                      <ChartLabel {...props} value={payload.value} series={series} dataLabelFormatter={dataLabelFormatter} getSeriesColor={getSeriesColor} isRelative={isRelative} />
+                    )
+                  }}
                   formatter={(label: unknown) => dataLabelFormatter(Number(label as number), isRelative)}
                 />
-              )}
-            </Line>
-          ))}
+              </Line>
+            );
+          })}
         </ChartContainer>
       </LineChart>
     </ResponsiveContainer>

@@ -1,19 +1,17 @@
 import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { ChevronsUpDown } from "lucide-react";
+
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export type Option = {
   value: string;
@@ -26,10 +24,7 @@ interface MultiSelectProps {
   selected: string[];
   onChange: (values: string[]) => void;
   placeholder?: string;
-  searchPlaceholder?: string;
-  emptyText?: string;
   className?: string;
-  error?: boolean;
 }
 
 export function MultiSelect({
@@ -37,79 +32,93 @@ export function MultiSelect({
   selected,
   onChange,
   placeholder = "Select options",
-  searchPlaceholder = "Search options...",
-  emptyText = "No options found.",
   className,
-  error,
 }: MultiSelectProps) {
-  const [open, setOpen] = React.useState(false);
 
+  const handleSelect = (value: string) => {
+    const newSelected = selected.includes(value)
+      ? selected.filter((item) => item !== value)
+      : [...selected, value];
+    onChange(newSelected);
+  };
+
+  const handleClear = () => {
+    onChange([]);
+  };
   const selectedOptions = options.filter((option) =>
     selected.includes(option.value)
   );
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
           role="combobox"
-          aria-expanded={open}
           className={cn(
-            "w-full justify-between",
-            error && "border-destructive focus-visible:ring-destructive",
+            "h-auto min-h-10 w-full justify-between",
             className
           )}
         >
-          {selectedOptions.length > 0 ? (
-            <div className="flex items-center gap-2 flex-wrap">
-              {selectedOptions.map((option) => (
-                <div key={option.value} className="flex items-center gap-1">
-                  {option.icon && <option.icon className="h-4 w-4 shrink-0" />}
-                  <span className="truncate">{option.label}</span>
-                  {selectedOptions.length > 1 && ", "}
-                </div>
-              ))}
-            </div>
-          ) : (
-            <span className="text-muted-foreground">{placeholder}</span>
-          )}
+          <div className="flex flex-wrap items-center gap-2">
+            {selectedOptions.length > 0 ? (
+              selectedOptions.map((option) => (
+                <Badge
+                  key={option.value}
+                  variant="secondary"
+                  className="flex items-center gap-1 rounded-md px-2 py-1"
+                >
+                  {option.icon && (
+                    <option.icon className="h-4 w-4 shrink-0" />
+                  )}
+                  <span className="truncate font-normal">{option.label}</span>
+                </Badge>
+              ))
+            ) : (
+              <span className="text-muted-foreground font-normal">{placeholder}</span>
+            )}
+          </div>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-full p-0" align="start">
-        <Command>
-          <CommandInput placeholder={searchPlaceholder} />
-          <CommandEmpty>{emptyText}</CommandEmpty>
-          <CommandGroup className="max-h-64 overflow-auto">
-            {options.map((option) => (
-              <CommandItem
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        className="w-[var(--radix-dropdown-menu-trigger-width)] p-0"
+        align="start"
+      >
+        <div className="max-h-64 overflow-auto">
+          {options.length > 0 ? (
+            options.map((option) => (
+              <DropdownMenuCheckboxItem
                 key={option.value}
-                onSelect={() => {
-                  const newSelected = selected.includes(option.value)
-                    ? selected.filter((value) => value !== option.value)
-                    : [...selected, option.value];
-                  onChange(newSelected);
-                }}
-                className="flex items-center gap-2"
+                checked={selected.includes(option.value)}
+                onCheckedChange={() => handleSelect(option.value)}
+                onSelect={(e) => e.preventDefault()} // Prevent closing on select
+                className="flex cursor-pointer items-center gap-2"
               >
-                <div className="flex items-center gap-2 flex-1">
-                  {option.icon && <option.icon className="h-4 w-4 shrink-0" />}
-                  {option.label}
-                </div>
-                <Check
-                  className={cn(
-                    "h-4 w-4 shrink-0",
-                    selected.includes(option.value)
-                      ? "opacity-100"
-                      : "opacity-0"
-                  )}
-                />
-              </CommandItem>
-            ))}
-          </CommandGroup>
-        </Command>
-      </PopoverContent>
-    </Popover>
+                {option.icon && <option.icon className="h-4 w-4 shrink-0" />}
+                <span>{option.label}</span>
+              </DropdownMenuCheckboxItem>
+            ))
+          ) : (
+            <p className="p-2 text-center text-sm text-muted-foreground">
+              No options found.
+            </p>
+          )}
+        </div>
+
+        {selected.length > 0 && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onSelect={handleClear}
+              className="cursor-pointer justify-center text-center text-sm"
+            >
+              Clear all
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+          </>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

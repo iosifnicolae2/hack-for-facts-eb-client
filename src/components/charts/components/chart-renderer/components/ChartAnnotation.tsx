@@ -67,6 +67,8 @@ const AnnotationContent = ({ annotation }: { annotation: TAnnotation }) => {
             {annotation.subject && <CircleSubject stroke={annotation.color} />}
             {annotation.label && <Label
                 anchorLineStroke={annotation.color}
+                titleFontSize={14}
+                subtitleFontSize={12}
                 title={annotation.title}
                 subtitle={annotation.subtitle}
                 backgroundFill={applyAlpha(annotation.color, 0.1)}

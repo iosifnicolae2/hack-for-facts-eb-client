@@ -17,9 +17,11 @@ import { Switch } from '@/components/ui/switch';
 import { SeriesFilter } from '../series-config/SeriesFilter';
 import { useChartStore } from '../../hooks/useChartStore';
 import { generateRandomColor } from '../chart-renderer/utils';
+import { DataLabelSelector } from '../series-config/DataLabelSelector';
 
 
 export function SeriesConfigView() {
+  const [showAdvancedSettings, setShowAdvancedSettings] = useState(false);
   const { chart, seriesId, updateSeries, deleteSeries, goToOverview, goToConfig } = useChartStore();
   const series = chart.series.find(s => s.id === seriesId);
   const seriesLabel = series?.label || '';
@@ -33,6 +35,15 @@ export function SeriesConfigView() {
   const updateSeriesField = (field: keyof SeriesConfiguration, value: string | object) => {
     if (!series) return;
     updateSeries(series.id, (prev) => ({ ...prev, [field]: value, updatedAt: new Date().toISOString() }));
+  };
+
+  const updateSeriesConfig = (config: Partial<SeriesConfiguration['config']>) => {
+    if (!series) return;
+    updateSeries(series.id, (prev) => ({
+      ...prev,
+      config: { ...prev.config, ...config },
+      updatedAt: new Date().toISOString(),
+    }));
   };
 
   if (!series) {
@@ -88,10 +99,10 @@ export function SeriesConfigView() {
                 id="series-color"
                 type="color"
                 value={series?.config.color || chart.config.color}
-                onChange={(e) => updateSeriesField('config', { ...series?.config, color: e.target.value })}
+                onChange={(e) => updateSeriesConfig({ color: e.target.value })}
                 className="w-12 h-8 rounded border cursor-pointer"
               />
-              <Button variant="outline" size="sm" onClick={() => updateSeriesField('config', { ...series?.config, color: generateRandomColor() })}>
+              <Button variant="outline" size="sm" onClick={() => updateSeriesConfig({ color: generateRandomColor() })}>
                 <RotateCcw className="h-4 w-4" />
               </Button>
               <span className="text-sm text-muted-foreground">
@@ -99,14 +110,37 @@ export function SeriesConfigView() {
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <Label htmlFor="series-show-data-labels">Show Data Labels</Label>
-            <Switch
-              id="series-show-data-labels"
-              checked={series?.config.showDataLabels ?? false}
-              onCheckedChange={(checked) => updateSeriesField('config', { ...series?.config, showDataLabels: checked })}
-            />
-          </div>
+          <Button
+            variant="link"
+            className="p-0 h-auto text-sm font-normal text-muted-foreground"
+            onClick={() => setShowAdvancedSettings(!showAdvancedSettings)}
+          >
+            {showAdvancedSettings ? 'Hide advanced settings' : 'Show advanced settings'}
+          </Button>
+
+          {showAdvancedSettings && (
+            <>
+              <div className="flex items-center justify-between pt-4">
+                <Label htmlFor="series-show-data-labels" className="flex flex-col space-y-1">
+                  <span>Show Data Labels</span>
+                  <span className="font-normal leading-snug text-muted-foreground">
+                    Display data labels on the chart
+                  </span>
+                </Label>
+                <Switch
+                  id="series-show-data-labels"
+                  checked={series?.config.showDataLabels ?? false}
+                  onCheckedChange={(checked) => updateSeriesConfig({ showDataLabels: checked })}
+                />
+              </div>
+              {series?.config.showDataLabels && (
+                <DataLabelSelector
+                  selectedLabels={series.config.dataLabels || []}
+                  onChange={(labels) => updateSeriesConfig({ dataLabels: labels })}
+                />
+              )}
+            </>
+          )}
         </CardContent>
       </Card>
 

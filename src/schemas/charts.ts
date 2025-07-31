@@ -28,12 +28,9 @@ export type ChartConfig = z.infer<typeof ChartConfigSchema>;
 export const SeriesConfigSchema = z.object({
   visible: z.boolean().default(true),
   showDataLabels: z.boolean().default(false),
+  dataLabels: z.array(z.string()).default([]).describe('Data labels to show on the chart for the x axis'),
   color: z.string().default('#0000ff'),
-}).default({
-  visible: true,
-  showDataLabels: false,
-  color: '#0000ff',
-});
+}).default({});
 
 export type SeriesConfig = z.infer<typeof SeriesConfigSchema>;
 

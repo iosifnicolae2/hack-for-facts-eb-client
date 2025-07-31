@@ -6,6 +6,7 @@ import { AnalyticsDataPoint } from '@/lib/api/charts';
 export type SeriesValue = {
   value: number;
   absolute: number;
+  xValue: string | number;
 };
 
 export type TimeSeriesDataPoint = { year: number } & Record<string, SeriesValue>;
@@ -37,6 +38,7 @@ export function useChartData(chart: Chart, data: AnalyticsDataPoint[]) {
         dataPoint[series.seriesId] = {
           value: absoluteValue,
           absolute: absoluteValue,
+          xValue: year,
         };
       });
       return dataPoint;
@@ -62,6 +64,7 @@ export function useChartData(chart: Chart, data: AnalyticsDataPoint[]) {
           relativeDataPoint[series.seriesId] = {
             value: relativeValue,
             absolute: absoluteValue,
+            xValue: dataPoint.year,
           };
         });
         return relativeDataPoint;

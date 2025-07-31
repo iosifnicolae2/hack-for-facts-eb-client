@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { Trash2, Settings, Eye, Lock, Unlock } from 'lucide-react';
+import { Trash2, Settings, Eye, Lock, Unlock, RefreshCcw } from 'lucide-react';
 import { TAnnotation } from '@/schemas/charts';
 import {
   DropdownMenu,
@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Switch } from '@/components/ui/switch';
 import { useChartStore } from '../../hooks/useChartStore';
+import { generateRandomColor } from '../chart-renderer/utils';
 
 export function AnnotationConfigView() {
   const { chart, annotationId, updateAnnotation, deleteAnnotation, goToOverview, goToConfig } = useChartStore();
@@ -101,6 +102,9 @@ export function AnnotationConfigView() {
                 onChange={(e) => updateAnnotationField('color', e.target.value)}
                 className="w-12 h-8 rounded border cursor-pointer"
               />
+              <Button variant="outline" size="icon" onClick={() => updateAnnotationField('color', generateRandomColor())}>
+                <RefreshCcw className="h-4 w-4" />
+              </Button>
               <span className="text-sm text-muted-foreground">
                 {annotation.color}
               </span>
