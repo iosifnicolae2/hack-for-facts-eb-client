@@ -134,12 +134,10 @@ export function SeriesConfigView() {
                   onCheckedChange={(checked) => updateSeriesConfig({ showDataLabels: checked })}
                 />
               </div>
-              {series?.config.showDataLabels && (
-                <DataLabelSelector
-                  selectedLabels={series.config.dataLabels || []}
-                  onChange={(labels) => updateSeriesConfig({ dataLabels: labels })}
-                />
-              )}
+              <DataLabelSelector
+                selectedLabels={series.config.dataLabels || []}
+                onChange={(labels) => updateSeriesConfig({ dataLabels: labels })}
+              />
               <div className="space-y-3 pt-4">
                 <Label htmlFor="data-label-offset">Data Label Offset</Label>
                 <div className="flex items-center gap-4">
