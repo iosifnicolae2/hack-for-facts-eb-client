@@ -6,6 +6,7 @@ import { getChartTypeIcon } from '../../utils';
 import { ChartTypeSelect } from './ChartTypeSelect';
 import { ColorPicker } from './ColorPicker';
 import { ToggleSwitch } from './ToggleSwitch';
+import { YearRangeSlider } from './YearRangeSlider';
 
 interface GlobalSettingsCardProps {
     chart: Chart;
@@ -16,6 +17,15 @@ export const GlobalSettingsCard = React.memo(({ chart, onUpdateChart }: GlobalSe
     const handleConfigChange = useCallback((updates: Partial<Chart['config']>) => {
         onUpdateChart({ config: { ...chart.config, ...updates } });
     }, [chart.config, onUpdateChart]);
+
+    const handleYearRangeChange = useCallback((newRange: [number, number]) => {
+        handleConfigChange({ yearRange: { start: newRange[0], end: newRange[1] } });
+    }, [handleConfigChange]);
+
+    const minYear = 2016;
+    const maxYear = new Date().getFullYear();
+    const startYear = chart.config.yearRange?.start ?? minYear;
+    const endYear = chart.config.yearRange?.end ?? maxYear;
 
     return (
         <SettingsCard
@@ -40,6 +50,12 @@ export const GlobalSettingsCard = React.memo(({ chart, onUpdateChart }: GlobalSe
                         />
                     </div>
                 </div>
+                <YearRangeSlider
+                    value={[startYear, endYear]}
+                    onChange={handleYearRangeChange}
+                    min={minYear}
+                    max={maxYear}
+                />
                 <div className="grid grid-cols-2 gap-4">
                     <ToggleSwitch id="show-grid-lines" label="Show Grid Lines" checked={chart.config.showGridLines} onCheckedChange={(checked) => handleConfigChange({ showGridLines: checked })} />
                     <ToggleSwitch id="show-legend" label="Show Legend" checked={chart.config.showLegend} onCheckedChange={(checked) => handleConfigChange({ showLegend: checked })} />

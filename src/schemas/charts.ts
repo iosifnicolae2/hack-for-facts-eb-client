@@ -15,9 +15,10 @@ export const ChartConfigSchema = z.object({
   showTooltip: z.boolean().default(true),
   editAnnotations: z.boolean().default(true),
   showAnnotations: z.boolean().default(true),
-  // yearRangeEnabled: z.boolean().default(false),
-  // yearRangeStart: z.number().optional(),
-  // yearRangeEnd: z.number().optional(),
+  yearRange: z.object({
+    start: z.number().optional(),
+    end: z.number().optional(),
+  }).optional(),
 });
 
 export type ChartConfig = z.infer<typeof ChartConfigSchema>;

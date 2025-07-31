@@ -28,7 +28,10 @@ export function useChartData(chart: Chart, data: AnalyticsDataPoint[]) {
     });
 
     const sortedYears = Array.from(allYears).sort((a, b) => a - b);
-    const filteredYears = sortedYears;
+    const startYear = chart.config.yearRange?.start ?? sortedYears[0] ?? new Date().getFullYear() - 10;
+    const endYear = chart.config.yearRange?.end ?? sortedYears[sortedYears.length - 1] ?? new Date().getFullYear();
+
+    const filteredYears = sortedYears.filter(year => year >= startYear && year <= endYear);
 
     const baseData = filteredYears.map(year => {
       const dataPoint: TimeSeriesDataPoint = { year } as TimeSeriesDataPoint;
@@ -72,7 +75,7 @@ export function useChartData(chart: Chart, data: AnalyticsDataPoint[]) {
     }
 
     return baseData;
-  }, [filteredData, chart.config.showRelativeValues, chart.series]);
+  }, [filteredData, chart.config.showRelativeValues, chart.config.yearRange, chart.series]);
 
   return { timeSeriesData, enabledSeries, filteredData };
 } 
