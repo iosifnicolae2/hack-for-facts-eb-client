@@ -15,7 +15,7 @@ export function FilterPill({ label, value, href }: FilterPillProps) {
 
   const content = (
     <>
-      <span className="font-medium text-foreground/80">{label}:</span>
+      <span className="font-medium text-foreground/80 underline">{label}:</span>
       <span className="ml-1.5 font-semibold text-foreground">{value}</span>
       {isInteractive && <ChevronRight className="h-4 w-4 ml-1 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />}
     </>

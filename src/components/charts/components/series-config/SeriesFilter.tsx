@@ -20,7 +20,7 @@ import { AccountCategoryRadio } from "../../../filters/account-type-filter/Accou
 import { cn } from "@/lib/utils";
 import { BudgetSectorList } from "@/components/filters/budget-sector-filter";
 import { FundingSourceList } from "@/components/filters/funding-source-filter";
-import { useEntityLabel, useUatLabel } from "@/hooks/filters/useFilterLabels";
+import { useBudgetSectorLabel, useEconomicClassificationLabel, useEntityLabel, useFundingSourceLabel, useFunctionalClassificationLabel, useUatLabel, useEntityTypeLabel, useAccountCategoryLabel } from "@/hooks/filters/useFilterLabels";
 import { LabelStore } from "@/hooks/filters/interfaces";
 
 interface SeriesFilterProps {
@@ -33,6 +33,12 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
     const series = chart.series.find(s => s.id === seriesId)
     const entityLabelsStore = useEntityLabel(series?.filter.entity_cuis ?? []);
     const uatLabelsStore = useUatLabel(series?.filter.uat_ids ?? []);
+    const economicClassificationLabelsStore = useEconomicClassificationLabel(series?.filter.economic_codes ?? []);
+    const functionalClassificationLabelsStore = useFunctionalClassificationLabel(series?.filter.functional_codes ?? []);
+    const budgetSectorLabelsStore = useBudgetSectorLabel(series?.filter.budget_sector_ids ?? []);
+    const fundingSourceLabelsStore = useFundingSourceLabel(series?.filter.funding_source_ids ?? []);
+    const entityTypeLabelsStore = useEntityTypeLabel();
+    const accountCategoryLabelsStore = useAccountCategoryLabel();
 
     if (!series) {
         return null;
@@ -61,7 +67,6 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
     // Generic updater for simple value filters
     const createValueUpdater = (filterKey: keyof typeof filter, transform?: (value: string | number | boolean | undefined) => string | number | boolean | (string | number)[] | undefined) =>
         (value: string | number | boolean | undefined) => {
-            console.log('createValueUpdater', filterKey, value);
             if (!seriesId) return;
             updateSeries(seriesId, (prevSeries) => {
                 const newValue = typeof transform === 'function' ? transform(value) : value;
@@ -78,17 +83,16 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
     const selectedUatOptions: OptionItem<string>[] = filter.uat_ids?.map(id => ({ id: id, label: uatLabelsStore.map(id) })) || [];
     const setSelectedUatOptions = createListUpdater('uat_ids', uatLabelsStore);
 
-    const selectedEconomicClassificationOptions: OptionItem[] = filter.economic_codes?.map(id => ({ id, label: id })) || [];
-    const setSelectedEconomicClassificationOptions = createListUpdater('economic_codes');
+    const selectedEconomicClassificationOptions: OptionItem[] = filter.economic_codes?.map(id => ({ id, label: economicClassificationLabelsStore.map(id) })) || [];
+    const setSelectedEconomicClassificationOptions = createListUpdater('economic_codes', economicClassificationLabelsStore);
 
-    const selectedFunctionalClassificationOptions: OptionItem[] = filter.functional_codes?.map(id => ({ id, label: id })) || [];
-    const setSelectedFunctionalClassificationOptions = createListUpdater('functional_codes');
+    const selectedFunctionalClassificationOptions: OptionItem[] = filter.functional_codes?.map(id => ({ id, label: functionalClassificationLabelsStore.map(id) })) || [];
+    const setSelectedFunctionalClassificationOptions = createListUpdater('functional_codes', functionalClassificationLabelsStore);
 
-    const accountTypeLabels: Record<string, string> = { 'ch': 'Cheltuieli', 'vn': 'Venituri' };
-    const selectedAccountTypeOption: OptionItem = filter.account_category ? { id: filter.account_category, label: accountTypeLabels[filter.account_category] } : { id: 'ch', label: accountTypeLabels['ch'] };
+    const selectedAccountTypeOption: OptionItem = filter.account_category ? { id: filter.account_category, label: accountCategoryLabelsStore.map(filter.account_category) } : { id: 'ch', label: accountCategoryLabelsStore.map('ch') };
     const setSelectedAccountTypeOption = createValueUpdater('account_category', (v) => v ? v : undefined);
 
-    const selectedEntityTypeOptions: OptionItem[] = filter.entity_types?.map(id => ({ id, label: id })) || [];
+    const selectedEntityTypeOptions: OptionItem[] = filter.entity_types?.map(id => ({ id, label: entityTypeLabelsStore.map(id) })) || [];
     const setSelectedEntityTypeOptions = createListUpdater('entity_types');
 
     const minAmount = String(filter.min_amount ?? '');
@@ -106,11 +110,11 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
     const economicPrefix = filter.economic_prefixes?.[0];
     const setEconomicPrefix = createValueUpdater('economic_prefixes', (v) => v ? [String(v)] : undefined);
 
-    const selectedBudgetSectorOptions: OptionItem[] = filter.budget_sector_ids?.map(id => ({ id, label: id })) || [];
-    const setSelectedBudgetSectorOptions = createListUpdater('budget_sector_ids');
+    const selectedBudgetSectorOptions: OptionItem[] = filter.budget_sector_ids?.map(id => ({ id, label: budgetSectorLabelsStore.map(id) })) || [];
+    const setSelectedBudgetSectorOptions = createListUpdater('budget_sector_ids', budgetSectorLabelsStore);
 
-    const selectedFundingSourceOptions: OptionItem[] = filter.funding_source_ids?.map(id => ({ id, label: id })) || [];
-    const setSelectedFundingSourceOptions = createListUpdater('funding_source_ids');
+    const selectedFundingSourceOptions: OptionItem[] = filter.funding_source_ids?.map(id => ({ id, label: fundingSourceLabelsStore.map(id) })) || [];
+    const setSelectedFundingSourceOptions = createListUpdater('funding_source_ids', fundingSourceLabelsStore);
 
     const flagsOptions: OptionItem[] = [];
     if (filter.is_uat === true) flagsOptions.push({ id: 'isUat', label: 'UAT: Da' });

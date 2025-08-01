@@ -67,26 +67,6 @@ interface EntityDetailsResponse {
   entity: EntityDetailsData | null;
 }
 
-interface EntityNamesResponse {
-  entities: {
-    nodes: {
-      cui: string;
-      name: string;
-    }[];
-  }
-}
-
-const ENTITY_NAMES_QUERY = `
-  query EntityNames($entityCuis: [String!]) {
-    entities(filter: { cuis: $entityCuis }, limit: 1000) {
-      nodes {
-        cui
-        name
-      }
-    }
-  }
-`;
-
 const GET_ENTITY_DETAILS_QUERY = `
   query GetEntityDetails($cui: ID!, $year: Int!, $startYear: Int!, $endYear: Int!) {
     entity(cui: $cui) {
@@ -251,9 +231,4 @@ export async function searchEntities(
     // or return an empty array / specific error object.
     throw error; // Or return [];
   }
-}
-
-export async function getEntityLabels(ids: string[]): Promise<{ id: string; label: string }[]> {
-  const response = await graphqlRequest<EntityNamesResponse>(ENTITY_NAMES_QUERY, { entityCuis: ids });
-  return response.entities.nodes.map(({ cui, name }) => ({ id: cui, label: name }));
 }

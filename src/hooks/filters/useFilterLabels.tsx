@@ -1,12 +1,17 @@
-import { getEntityLabels } from "@/lib/api/entities";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { GetLabels, LabelStore } from "./interfaces";
 import { OptionItem } from "@/lib/hooks/useLineItemsFilter";
-import { getUatLabels } from "@/lib/api/uats";
+import { getBudgetSectorLabels, getEconomicClassificationLabels, getEntityLabels, getFundingSourceLabels, getFunctionalClassificationLabels, getUatLabels } from "@/lib/api/labels";
+import entityCategories from "@/assets/entity-categories.json";
 
 const EntityStorageKey = 'entity-labels';
 const UatLabelStorageKey = 'uat-labels';
+const EconomicClassificationLabelStorageKey = 'economic-classification-labels';
+const FunctionalClassificationLabelStorageKey = 'functional-classification-labels';
+const BudgetSectorLabelStorageKey = 'budget-sector-labels';
+const FundingSourceLabelStorageKey = 'funding-source-labels';
+
 
 const loadLocalData = (key: string): Record<string, string> => {
     try {
@@ -24,7 +29,7 @@ const saveLocalData = (key: string, data: Record<string, string>) => {
     localStorage.setItem(key, JSON.stringify(data));
 };
 
-export const useDataLabelBuilder = (key: string, getLabels: GetLabels, initialIds: string[]): LabelStore => {
+export const useDataLabelBuilder = (key: string, getLabels: GetLabels, initialIds: (string | number)[]): LabelStore => {
     const queryClient = useQueryClient();
 
     const { data: dataMap } = useQuery<Record<string, string>>({
@@ -39,11 +44,11 @@ export const useDataLabelBuilder = (key: string, getLabels: GetLabels, initialId
      * updates localStorage, and triggers a UI update.
      * @param {string[]} ids - An array of ids to check and fetch.
      */
-    const fetchMissingLabels = async (ids: string[], getLabels: GetLabels) => {
+    const fetchMissingLabels = async (ids: (string | number)[], getLabels: GetLabels) => {
         if (!ids || ids.length === 0) return;
 
         const dataMap = loadLocalData(key);
-        const missingIds = ids.filter(id => !dataMap[id]);
+        const missingIds = ids.filter(id => !dataMap[String(id)]);
 
         if (missingIds.length === 0) return;
 
@@ -105,3 +110,47 @@ export const useEntityLabel = (initialIds: string[]) => {
 export const useUatLabel = (initialIds: string[]) => {
     return useDataLabelBuilder(UatLabelStorageKey, getUatLabels, initialIds);
 };
+
+export const useEconomicClassificationLabel = (initialIds: string[]) => {
+    return useDataLabelBuilder(EconomicClassificationLabelStorageKey, getEconomicClassificationLabels, initialIds);
+}
+
+export const useFunctionalClassificationLabel = (initialIds: string[]) => {
+    return useDataLabelBuilder(FunctionalClassificationLabelStorageKey, getFunctionalClassificationLabels, initialIds);
+}
+
+export const useBudgetSectorLabel = (initialIds: (string | number)[]) => {
+    return useDataLabelBuilder(BudgetSectorLabelStorageKey, getBudgetSectorLabels, initialIds);
+}
+
+export const useFundingSourceLabel = (initialIds: (string | number)[]) => {
+    return useDataLabelBuilder(FundingSourceLabelStorageKey, getFundingSourceLabels, initialIds);
+}
+
+export const useEntityTypeLabel = () => {
+    const entityTypeOptions = useMemo(() => Object.entries(entityCategories.categories).reduce((acc, [key, value]) => {
+        acc[key] = value;
+        return acc;
+    }, {} as Record<string, string>), []);
+
+    return {
+        map: (id: string) => entityTypeOptions[id] ?? `id::${id}`,
+        add: () => { },
+        fetch: () => { },
+    }
+}
+
+export const useAccountCategoryLabel = () => {
+    const accountCategoryOptions = useMemo(() => {
+        return {
+            "ch": "Cheltuieli",
+            "vn": "Venituri"
+        }
+    }, []);
+
+    return {
+        map: (id: string) => accountCategoryOptions[id as keyof typeof accountCategoryOptions] ?? `id::${id}`,
+        add: () => { },
+        fetch: () => { },
+    }
+}
