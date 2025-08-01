@@ -286,6 +286,12 @@ export function calculateAllSeriesData(
         yearlyTrend,
       });
     }
+    if (s.type === 'custom-series' && s.enabled) {
+      result.set(s.id, {
+        seriesId: s.id,
+        yearlyTrend: s.data.map(d => ({ year: d.year, totalAmount: d.value })),
+      });
+    }
   }
   
   return result;

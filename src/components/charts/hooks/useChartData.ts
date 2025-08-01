@@ -14,7 +14,7 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
     const analyticsInputs = useMemo(() => {
         if (!chart) return [];
         return chart.series
-            .filter(series => series.type === 'line-items-aggregated-yearly' && series.enabled)
+            .filter(series => series.type === 'line-items-aggregated-yearly')
             .map(series => ({ seriesId: series.id, filter: series.filter as AnalyticsFilterType }));
     }, [chart]);
 
@@ -35,6 +35,18 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
         const baseDataMap = new Map<string, AnalyticsDataPoint>();
         baseChartData.forEach(data => {
             baseDataMap.set(data.seriesId, data);
+        });
+
+        // Add custom series data to baseDataMap
+        chart.series.forEach(series => {
+            if (series.type === 'custom-series') {
+                baseDataMap.set(series.id, {
+                    seriesId: series.id, yearlyTrend: series.data.map(data => ({
+                        year: data.year,
+                        totalAmount: data.value,
+                    }))
+                });
+            }
         });
 
         const calculatedDataMap = calculateAllSeriesData(chart.series, baseDataMap);

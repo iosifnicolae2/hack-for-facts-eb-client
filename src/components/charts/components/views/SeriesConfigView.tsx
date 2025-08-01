@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -21,6 +22,8 @@ import { Slider } from '@/components/ui/slider';
 import { DataLabelSelector } from '../series-config/DataLabelSelector';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CalculationConfig } from '../series-config/CalculationConfig';
+import { CustomSeriesDataEditor } from '../series-config/CustomSeriesDataEditor';
+import { CustomSeriesConfigurationSchema } from '@/schemas/charts';
 
 
 export function SeriesConfigView() {
@@ -107,6 +110,7 @@ export function SeriesConfigView() {
               <SelectContent>
                 <SelectItem value="line-items-aggregated-yearly">Line Items Aggregated Yearly</SelectItem>
                 <SelectItem value="aggregated-series-calculation">Aggregated Series Calculation</SelectItem>
+                <SelectItem value="custom-series">Custom Series</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -184,6 +188,9 @@ export function SeriesConfigView() {
       )}
       {series.type === 'aggregated-series-calculation' && (
         <CalculationConfig series={series as SeriesGroupConfiguration} />
+      )}
+      {series.type === 'custom-series' && (
+        <CustomSeriesDataEditor series={series as z.infer<typeof CustomSeriesConfigurationSchema>} />
       )}
 
       {/* ================= Series Delete ================= */}

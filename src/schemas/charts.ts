@@ -91,6 +91,7 @@ export const BaseSeriesConfigurationSchema = z.object({
   id: z.string().default(() => crypto.randomUUID()).describe('The id of the series. It should be unique and immutable.'),
   enabled: z.boolean().default(true).describe('Whether the series is shown on the chart.'),
   label: z.string().default('').describe('The label of the series. It will be shown on the chart.'),
+  unit: z.string().optional().describe('The unit of the series. It will be shown on the chart.'),
   config: SeriesConfigSchema,
   createdAt: z.string().default(() => new Date().toISOString()),
   updatedAt: z.string().default(() => new Date().toISOString()),
@@ -106,7 +107,19 @@ export const SeriesGroupConfigurationSchema = BaseSeriesConfigurationSchema.exte
   calculation: CalculationSchema.describe('Operation for generating a series from a set of series and applying an operation to them.').default({ op: 'sum', args: [] }),
 }).passthrough()
 
-export const SeriesSchema = z.discriminatedUnion('type', [SeriesConfigurationSchema, SeriesGroupConfigurationSchema]);
+// Add custom series with editable data values and unit
+const initialYear = 2016;
+const currentYear = new Date().getFullYear();
+export const CustomSeriesConfigurationSchema = BaseSeriesConfigurationSchema.extend({
+  type: z.literal('custom-series'),
+  data: z.array(z.object({
+    year: z.number(),
+    value: z.number().default(1),
+  })).default(Array.from({ length: currentYear - initialYear + 1 }, (_, index) => ({ year: index + initialYear, value: 1 }))),
+}).passthrough();
+
+
+export const SeriesSchema = z.discriminatedUnion('type', [SeriesConfigurationSchema, SeriesGroupConfigurationSchema, CustomSeriesConfigurationSchema]);
 
 export type SeriesConfiguration = z.infer<typeof SeriesConfigurationSchema>;
 export type SeriesGroupConfiguration = z.infer<typeof SeriesGroupConfigurationSchema>;

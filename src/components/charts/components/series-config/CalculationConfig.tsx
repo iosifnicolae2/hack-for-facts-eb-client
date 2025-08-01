@@ -180,7 +180,7 @@ function RecursiveCalculation({
                 <div>
                   <div className={cn("w-16 h-[2px] bg-border -ml-4", operandLabel && "w-4")} />
                 </div>
-                {operandLabel && <div className="text-sm text-muted-foreground w-24 text-right font-medium">{operandLabel}</div>}
+                {operandLabel && <div className="text-sm text-muted-foreground w-20 text-left font-medium">{operandLabel}</div>}
                 <div className="flex-grow">
                   {seriesOperand ? (
                     <SeriesOperand
