@@ -1,7 +1,7 @@
 // src/components/charts/ChartFiltersOverview.tsx
 
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { AnalyticsFilterType, Chart } from "@/schemas/charts";
+import { AnalyticsFilterType, Chart, SeriesConfiguration } from "@/schemas/charts";
 import { FilterIcon } from "lucide-react";
 import {
   Accordion,
@@ -29,19 +29,22 @@ export function ChartFiltersOverview({
   chart: Chart;
   onFilterClick: (seriesId: string) => void;
 }) {
+  const activeSeriesWithFilters = chart.series.filter(
+    (s): s is SeriesConfiguration =>
+      s.enabled && s.type === 'line-items-aggregated-yearly' && s.filter && Object.keys(s.filter).length > 0
+  );
+  
   const filters: FiltersWithLabels = {
-    entity_cuis: chart.series.flatMap(s => s.filter.entity_cuis ?? []),
-    economic_codes: chart.series.flatMap(s => s.filter.economic_codes ?? []),
-    functional_codes: chart.series.flatMap(s => s.filter.functional_codes ?? []),
-    budget_sector_ids: chart.series.flatMap(s => s.filter.budget_sector_ids ?? []),
-    funding_source_ids: chart.series.flatMap(s => s.filter.funding_source_ids ?? []),
-    uat_ids: chart.series.flatMap(s => s.filter.uat_ids ?? []),
+    entity_cuis: activeSeriesWithFilters.flatMap(s => s.filter.entity_cuis ?? []),
+    economic_codes: activeSeriesWithFilters.flatMap(s => s.filter.economic_codes ?? []),
+    functional_codes: activeSeriesWithFilters.flatMap(s => s.filter.functional_codes ?? []),
+    budget_sector_ids: activeSeriesWithFilters.flatMap(s => s.filter.budget_sector_ids ?? []),
+    funding_source_ids: activeSeriesWithFilters.flatMap(s => s.filter.funding_source_ids ?? []),
+    uat_ids: activeSeriesWithFilters.flatMap(s => s.filter.uat_ids ?? []),
   }
   const [isFiltersOpen, setIsFiltersOpen] = usePersistedState("chart-filters-summary-open", false);
   const { mapValueToLabel } = useMapFilterValue(filters);
-  const activeSeriesWithFilters = chart.series.filter(
-    (s) => s.enabled && s.filter && Object.keys(s.filter).length > 0
-  );
+
 
   const totalFilters = activeSeriesWithFilters.reduce(
     (acc, series) => acc + Object.keys(series.filter).length,

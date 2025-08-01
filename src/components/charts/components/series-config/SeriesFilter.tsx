@@ -22,6 +22,7 @@ import { BudgetSectorList } from "@/components/filters/budget-sector-filter";
 import { FundingSourceList } from "@/components/filters/funding-source-filter";
 import { useBudgetSectorLabel, useEconomicClassificationLabel, useEntityLabel, useFundingSourceLabel, useFunctionalClassificationLabel, useUatLabel, useEntityTypeLabel, useAccountCategoryLabel } from "@/hooks/filters/useFilterLabels";
 import { LabelStore } from "@/hooks/filters/interfaces";
+import { SeriesConfiguration } from "@/schemas/charts";
 
 interface SeriesFilterProps {
     seriesId?: string;
@@ -30,7 +31,7 @@ interface SeriesFilterProps {
 
 export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
     const { chart, updateSeries } = useChartStore();
-    const series = chart.series.find(s => s.id === seriesId)
+    const series = chart.series.find(s => s.id === seriesId && s.type === 'line-items-aggregated-yearly') as SeriesConfiguration;
     const entityLabelsStore = useEntityLabel(series?.filter.entity_cuis ?? []);
     const uatLabelsStore = useUatLabel(series?.filter.uat_ids ?? []);
     const economicClassificationLabelsStore = useEconomicClassificationLabel(series?.filter.economic_codes ?? []);
@@ -58,7 +59,9 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
             }
 
             updateSeries(seriesId, (prevSeries) => {
-                (prevSeries.filter[filterKey] as (string | number)[]) = newState.map(o => o.id);
+                if (prevSeries.type === 'line-items-aggregated-yearly') {
+                    (prevSeries.filter[filterKey] as (string | number)[]) = newState.map(o => o.id);
+                }
                 return prevSeries;
             });
             return newState;
@@ -70,7 +73,9 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
             if (!seriesId) return;
             updateSeries(seriesId, (prevSeries) => {
                 const newValue = typeof transform === 'function' ? transform(value) : value;
-                prevSeries.filter[filterKey] = newValue as never;
+                if (prevSeries.type === 'line-items-aggregated-yearly') {
+                    prevSeries.filter[filterKey] = newValue as never;
+                }
                 return prevSeries;
             });
         };
@@ -124,7 +129,9 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
     const clearAllFilters = () => {
         if (!seriesId) return;
         updateSeries(seriesId, (prevSeries) => {
-            prevSeries.filter = { account_category: 'ch', report_type: 'Executie bugetara agregata la nivel de ordonator principal' };
+            if (prevSeries.type === 'line-items-aggregated-yearly') {
+                prevSeries.filter = { account_category: 'ch', report_type: 'Executie bugetara agregata la nivel de ordonator principal' };
+            }
             return prevSeries;
         });
     };
@@ -148,7 +155,9 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
     const handleClearFlag = (option: OptionItem) => {
         if (!seriesId) return;
         updateSeries(seriesId, (prevSeries) => {
-            if (option.id === 'isUat') prevSeries.filter.is_uat = undefined;
+            if (prevSeries.type === 'line-items-aggregated-yearly') {
+                if (option.id === 'isUat') prevSeries.filter.is_uat = undefined;
+            }
             return prevSeries;
         });
     };
@@ -156,7 +165,9 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
     const handleClearAllFlags = () => {
         if (!seriesId) return;
         updateSeries(seriesId, (prevSeries) => {
-            prevSeries.filter.is_uat = undefined;
+            if (prevSeries.type === 'line-items-aggregated-yearly') {
+                prevSeries.filter.is_uat = undefined;
+            }
             return prevSeries;
         });
     };

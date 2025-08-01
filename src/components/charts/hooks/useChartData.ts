@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { getChartAnalytics } from "@/lib/api/charts";
-import { AnalyticsInput, Chart } from "@/schemas/charts";
+import { AnalyticsFilterType, AnalyticsInput, Chart, AnalyticsDataPoint } from "@/schemas/charts";
 import { useMemo } from "react";
 import { generateHash } from "@/lib/utils";
+import { calculateAllSeriesData } from "@/lib/chart-calculation-utils";
 
 interface UseChartDataProps {
     chart?: Chart;
@@ -10,18 +11,38 @@ interface UseChartDataProps {
 }
 
 export function useChartData({ chart, enabled = true }: UseChartDataProps) {
+    const analyticsInputs = useMemo(() => {
+        if (!chart) return [];
+        return chart.series
+            .filter(series => series.type === 'line-items-aggregated-yearly' && series.enabled)
+            .map(series => ({ seriesId: series.id, filter: series.filter as AnalyticsFilterType }));
+    }, [chart]);
 
-    const analyticsInputs = useMemo(() => chart?.series
-        .map(series => ({ seriesId: series.id, filter: series.filter })) || [], [chart]);
     const analyticsInputsHash = useMemo(() => getAnalyticsInputHash(analyticsInputs), [analyticsInputs]);
     const hasChart = !!chart;
     const hasFilters = analyticsInputs.length > 0;
 
-    const { data: chartData, isLoading: isLoadingData, error: dataError } = useQuery({
+    const { data: baseChartData, isLoading: isLoadingData, error: dataError } = useQuery({
         queryKey: ['chart-data', analyticsInputsHash],
         queryFn: () => getChartAnalytics(analyticsInputs),
         enabled: enabled && hasChart && hasFilters,
     });
+
+    const chartData = useMemo(() => {
+        if (!chart || !baseChartData) return undefined;
+
+        // Convert array to map for calculation function
+        const baseDataMap = new Map<string, AnalyticsDataPoint>();
+        baseChartData.forEach(data => {
+            baseDataMap.set(data.seriesId, data);
+        });
+
+        const calculatedDataMap = calculateAllSeriesData(chart.series, baseDataMap);
+
+        // Convert map back to array for UI
+        return Array.from(calculatedDataMap.values());
+
+    }, [chart, baseChartData]);
 
     return {
         chartData,
@@ -31,9 +52,12 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
 }
 
 function getAnalyticsInputHash(analyticsInputs: AnalyticsInput[]) {
-    const payloadHash = analyticsInputs.sort((a, b) => a.seriesId.localeCompare(b.seriesId)).reduce((acc, input) => {
-        return acc + input.seriesId + '::' + JSON.stringify(input.filter);
-    }, '');
+    if (analyticsInputs.length === 0) return '';
+    const payloadHash = analyticsInputs
+        .sort((a, b) => a.seriesId.localeCompare(b.seriesId))
+        .reduce((acc, input) => {
+            return acc + input.seriesId + '::' + JSON.stringify(input.filter);
+        }, '');
 
     return generateHash(payloadHash);
 }

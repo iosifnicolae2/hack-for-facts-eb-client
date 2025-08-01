@@ -64,18 +64,53 @@ export type AnalyticsFilterType = z.infer<typeof AnalyticsFilterSchema>;
 // SERIES CONFIGURATION
 // ============================================================================
 
-export const SeriesConfigurationSchema = z.object({
+type SeriesId = string;
+type Operand = SeriesId | Calculation;
+export type Operation = 'sum' | 'subtract' | 'multiply' | 'divide';
+// Add mechanism to avoid circular dependencies. Also, add validation for operations: Ex: divide by zero, etc.
+export interface Calculation {
+  op: Operation;
+  args: Array<Operand>;
+}
+
+const SeriesIdSchema = z.string();
+const OperationSchema = z.enum(['sum', 'subtract', 'multiply', 'divide']);
+
+const CalculationSchema: z.ZodType<Calculation> = z.lazy(() =>
+  z.object({
+    op: OperationSchema,
+    args: z.array(OperandSchema),
+  })
+);
+
+const OperandSchema: z.ZodType<Operand> = z.lazy(() =>
+  z.union([SeriesIdSchema, CalculationSchema])
+);
+
+export const BaseSeriesConfigurationSchema = z.object({
   id: z.string().default(() => crypto.randomUUID()).describe('The id of the series. It should be unique and immutable.'),
-  type: z.literal('line-items-aggregated-yearly').default('line-items-aggregated-yearly'),
   enabled: z.boolean().default(true).describe('Whether the series is shown on the chart.'),
   label: z.string().default('').describe('The label of the series. It will be shown on the chart.'),
-  filter: AnalyticsFilterSchema.describe('The filter to apply to the series.'),
   config: SeriesConfigSchema,
   createdAt: z.string().default(() => new Date().toISOString()),
   updatedAt: z.string().default(() => new Date().toISOString()),
 });
 
+export const SeriesConfigurationSchema = BaseSeriesConfigurationSchema.extend({
+  type: z.literal('line-items-aggregated-yearly'),
+  filter: AnalyticsFilterSchema.describe('The filter to apply to the series.').default({}),
+}).passthrough();
+
+export const SeriesGroupConfigurationSchema = BaseSeriesConfigurationSchema.extend({
+  type: z.literal('aggregated-series-calculation'),
+  calculation: CalculationSchema.describe('Operation for generating a series from a set of series and applying an operation to them.').default({ op: 'sum', args: [] }),
+}).passthrough()
+
+export const SeriesSchema = z.discriminatedUnion('type', [SeriesConfigurationSchema, SeriesGroupConfigurationSchema]);
+
 export type SeriesConfiguration = z.infer<typeof SeriesConfigurationSchema>;
+export type SeriesGroupConfiguration = z.infer<typeof SeriesGroupConfigurationSchema>;
+export type Series = z.infer<typeof SeriesSchema>;
 
 // ============================================================================
 // ANNOTATIONS SCHEMA
@@ -113,7 +148,7 @@ export const ChartSchema = z.object({
   config: ChartConfigSchema,
 
   // Series data
-  series: z.array(SeriesConfigurationSchema).default([]),
+  series: z.array(SeriesSchema).default([]),
 
   // Annotations
   annotations: z.array(AnnotationSchema).default([]).describe('The annotations to show on the chart. Used to manually add annotations to the chart.'),
@@ -133,11 +168,14 @@ export const YearlyTrendPointSchema = z.object({
   year: z.number(),
   totalAmount: z.number(),
 });
+export type YearlyTrendPoint = z.infer<typeof YearlyTrendPointSchema>;
 
 export const AnalyticsDataPointSchema = z.object({
-  label: z.string(),
+  seriesId: z.string(),
   yearlyTrend: z.array(YearlyTrendPointSchema),
 });
+export type AnalyticsDataPoint = z.infer<typeof AnalyticsDataPointSchema>;
+
 
 export const AnalyticsInputSchema = z.object({
   seriesId: z.string(),

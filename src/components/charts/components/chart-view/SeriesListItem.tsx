@@ -1,4 +1,4 @@
-import { SeriesConfiguration } from "@/schemas/charts";
+import { Series } from "@/schemas/charts";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
@@ -10,7 +10,7 @@ import { SeriesItemMenu } from "../series-config/SeriesItemMenu";
 import { cn } from "@/lib/utils";
 
 interface SeriesListItemProps {
-  series: SeriesConfiguration;
+  series: Series;
   index: number;
   isSelected: boolean;
   onToggle: (enabled: boolean) => void;
@@ -20,7 +20,7 @@ interface SeriesListItemProps {
   isMoveUpDisabled: boolean;
   isMoveDownDisabled: boolean;
   chartColor?: string;
-  onUpdate: (updates: Partial<SeriesConfiguration>) => void;
+  onUpdate: (updates: Partial<Series>) => void;
   onDelete: () => void;
   onDuplicate: () => void;
   onCopy: () => void;

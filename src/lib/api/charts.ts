@@ -22,7 +22,7 @@ export interface AnalyticsResponse {
  */
 export async function getChartAnalytics(inputs: AnalyticsInput[]): Promise<AnalyticsDataPoint[]> {
   const query = `
-    query GetExecutionLineItems($inputs: [AnalyticsInput!]!) {
+    query GetExecutionLineItemsAnalytics($inputs: [AnalyticsInput!]!) {
       executionAnalytics(inputs: $inputs) {
         seriesId
         yearlyTrend {

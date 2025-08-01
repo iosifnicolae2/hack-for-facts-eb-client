@@ -1,11 +1,11 @@
 import { useCallback } from 'react';
 import {
   Chart,
-  SeriesConfiguration,
   ChartSchema,
-  SeriesConfigurationSchema,
+  SeriesSchema,
   TAnnotation,
   AnnotationSchema,
+  Series,
 } from '@/schemas/charts';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { produce } from 'immer';
@@ -71,7 +71,7 @@ export function useChartStore() {
 
 
   const addSeries = useCallback(() => {
-    const newSeries: SeriesConfiguration = SeriesConfigurationSchema.parse({
+    const newSeries: Series = SeriesSchema.parse({
       id: crypto.randomUUID(),
       type: 'line-items-aggregated-yearly',
       enabled: true,
@@ -122,10 +122,10 @@ export function useChartStore() {
     }));
   }, [updateChart]);
 
-  const updateSeries = useCallback((seriesId: string, updates: Partial<SeriesConfiguration> | ((prevSeries: SeriesConfiguration) => SeriesConfiguration)) => {
+  const updateSeries = useCallback((seriesId: string, updates: Partial<Series> | ((prevSeries: Series) => Series)) => {
     updateChart((prev) => ({
       ...prev,
-      series: prev?.series.map(s => s.id === seriesId ? { ...s, ...(typeof updates === 'function' ? produce(s, (draft) => updates(draft)) : updates) } : s),
+      series: prev?.series.map(s => s.id === seriesId ? { ...s, ...(typeof updates === 'function' ? produce(s, (draft) => updates(draft)) : updates) } : s) as Series[],
     }));
   }, [updateChart]);
 
@@ -133,7 +133,7 @@ export function useChartStore() {
     const originalSeries = chart.series.find(s => s.id === seriesId);
     if (!originalSeries) return;
 
-    const duplicatedSeries: SeriesConfiguration = {
+    const duplicatedSeries: Series = {
       ...originalSeries,
       id: crypto.randomUUID(),
       label: `${originalSeries.label} (Copy)`,
@@ -177,7 +177,7 @@ export function useChartStore() {
 
   }, [updateChart, chart]);
 
-  const setSeries = useCallback((series: SeriesConfiguration[]) => {
+  const setSeries = useCallback((series: Series[]) => {
     updateChart({ series });
   }, [updateChart]);
 
@@ -204,7 +204,7 @@ export function useChartStore() {
     // Validate each series
     chart.series.forEach((series, index) => {
       try {
-        SeriesConfigurationSchema.parse(series);
+        SeriesSchema.parse(series);
       } catch (error: unknown) {
         if (error && typeof error === 'object' && 'errors' in error) {
           interface ZodError {

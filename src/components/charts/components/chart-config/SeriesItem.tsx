@@ -1,12 +1,12 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
-import { SeriesConfiguration } from '@/schemas/charts';
+import { Series } from '@/schemas/charts';
 import { Settings, Copy, ChevronUp, ChevronDown } from 'lucide-react';
 import { DeleteSeriesDialog } from './DeleteSeriesDialog';
 
 interface SeriesItemProps {
-    series: SeriesConfiguration;
+    series: Series;
     isFirst: boolean;
     isLast: boolean;
     chartColor: string;

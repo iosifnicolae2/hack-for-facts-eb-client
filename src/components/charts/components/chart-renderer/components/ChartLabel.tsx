@@ -1,8 +1,8 @@
 import { Props as LabelProps } from "recharts/types/component/Label";
-import { SeriesConfiguration } from "@/schemas/charts";
+import { Series } from "@/schemas/charts";
 
 interface ChartLabelProps extends LabelProps {
-    series: SeriesConfiguration
+    series: Series;
     dataLabelFormatter: (value: number, isRelative: boolean) => string;
     getSeriesColor: (seriesId: string, opacity?: number) => string;
     isRelative: boolean;

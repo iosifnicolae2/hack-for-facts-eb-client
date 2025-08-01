@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { Trash2, Settings, Eye, RotateCcw } from 'lucide-react';
-import { SeriesConfiguration } from '@/schemas/charts';
+import { Series, SeriesConfiguration, SeriesGroupConfiguration } from '@/schemas/charts';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,6 +19,8 @@ import { useChartStore } from '../../hooks/useChartStore';
 import { generateRandomColor } from '../chart-renderer/utils';
 import { Slider } from '@/components/ui/slider';
 import { DataLabelSelector } from '../series-config/DataLabelSelector';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { CalculationConfig } from '../series-config/CalculationConfig';
 
 
 export function SeriesConfigView() {
@@ -33,7 +35,7 @@ export function SeriesConfigView() {
     setLocalLabel(seriesLabel);
   }, [seriesLabel]);
 
-  const updateSeriesField = (field: keyof SeriesConfiguration, value: string | object) => {
+  const updateSeriesField = (field: keyof Series, value: string | object) => {
     if (!series) return;
     updateSeries(series.id, (prev) => ({ ...prev, [field]: value, updatedAt: new Date().toISOString() }));
   };
@@ -91,6 +93,22 @@ export function SeriesConfigView() {
               }}
               placeholder="Enter series label..."
             />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="series-type">Series Type</Label>
+            <Select
+              value={series?.type}
+              onValueChange={(value) => updateSeriesField('type', value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select series type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="line-items-aggregated-yearly">Line Items Aggregated Yearly</SelectItem>
+                <SelectItem value="aggregated-series-calculation">Aggregated Series Calculation</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="space-y-2">
@@ -160,8 +178,13 @@ export function SeriesConfigView() {
         </CardContent>
       </Card>
 
-      {/* ================= Series Filter ================= */}
-      <SeriesFilter seriesId={seriesId} />
+      {/* ================= Series Filter / Calculation ================= */}
+      {series.type === 'line-items-aggregated-yearly' && (
+        <SeriesFilter seriesId={seriesId} />
+      )}
+      {series.type === 'aggregated-series-calculation' && (
+        <CalculationConfig series={series as SeriesGroupConfiguration} />
+      )}
 
       {/* ================= Series Delete ================= */}
       <footer className="flex justify-between pt-4">

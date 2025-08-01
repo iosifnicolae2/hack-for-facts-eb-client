@@ -1,10 +1,10 @@
-import { SeriesConfiguration } from "@/schemas/charts";
+import { Series } from "@/schemas/charts";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ArrowDown, ArrowUp, Copy, Eye, EyeOff, MoreVertical, Tags, Trash2 } from "lucide-react";
 import { Button } from "../../../ui/button";
 
 interface SeriesItemMenuProps {
-    series: SeriesConfiguration;
+    series: Series;
     isMoveUpDisabled: boolean;
     isMoveDownDisabled: boolean;
     onToggleEnabled: () => void;
