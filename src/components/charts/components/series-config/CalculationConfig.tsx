@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
+import { Command, CommandEmpty, CommandGroup, CommandItem } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { hasCalculationCycle } from '@/lib/chart-calculation-utils';
 import { Calculation, Chart, Operation, Series, SeriesGroupConfiguration } from '@/schemas/charts';
-import { Check, DivideIcon, Minus, PlusCircle, Sigma, Trash2, X } from 'lucide-react';
+import { ArrowDown, ArrowUp, Check, DivideIcon, Minus, PlusCircle, Sigma, Trash2, X } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
@@ -60,8 +60,7 @@ type RecursiveCalculationProps = {
   allSeries: Series[];
   seriesId: string;
   chart: Chart;
-  onRemove?: () => void;
-};
+} & ControlPanelProps;
 
 function RecursiveCalculation({
   calculation,
@@ -69,7 +68,7 @@ function RecursiveCalculation({
   allSeries,
   seriesId,
   chart,
-  onRemove,
+  controls
 }: RecursiveCalculationProps) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const availableSeries = allSeries.filter(s => s.id !== seriesId);
@@ -87,6 +86,19 @@ function RecursiveCalculation({
   const handleAddNestedCalculation = () => {
     const newNestedCalc: Calculation = { op: 'sum', args: [] };
     const newArgs = [...calculation.args, newNestedCalc];
+    onChange({ ...calculation, args: newArgs });
+  };
+
+  const handleMoveOperand = (index: number, direction: 'up' | 'down') => {
+    const newArgs = [...calculation.args];
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+
+    if (targetIndex < 0 || targetIndex >= newArgs.length) {
+      return;
+    }
+    // Simple swap
+    [newArgs[index], newArgs[targetIndex]] = [newArgs[targetIndex], newArgs[index]];
+
     onChange({ ...calculation, args: newArgs });
   };
 
@@ -147,11 +159,7 @@ function RecursiveCalculation({
             </Button>
           </div>
         </div>
-        {onRemove && (
-          <Button variant="ghost" size="icon" onClick={onRemove}>
-            <Trash2 className="h-4 w-4 text-destructive" />
-          </Button>
-        )}
+        <ControlPanel controls={controls} forceVisible={true} />
       </div>
 
       <div className="space-y-3 pl-4 border-l-2 ml-2">
@@ -159,6 +167,14 @@ function RecursiveCalculation({
           calculation.args.map((arg, index) => {
             const operandLabel = getContextualOperandLabel(calculation.op, index);
             const seriesOperand = typeof arg === 'string' ? allSeries.find(s => s.id === arg) : null;
+
+            const controls = {
+              canMoveUp: index > 0,
+              canMoveDown: index < calculation.args.length - 1,
+              onMoveUp: () => handleMoveOperand(index, 'up'),
+              onMoveDown: () => handleMoveOperand(index, 'down'),
+              onRemove: () => handleRemoveOperand(index),
+            };
             return (
               <div key={index} className="flex items-center gap-4">
                 <div>
@@ -170,7 +186,7 @@ function RecursiveCalculation({
                     <SeriesOperand
                       series={seriesOperand}
                       chart={chart}
-                      onRemove={() => handleRemoveOperand(index)}
+                      controls={controls}
                     />
                   ) : typeof arg !== 'string' ? (
                     <RecursiveCalculation
@@ -179,10 +195,13 @@ function RecursiveCalculation({
                       allSeries={allSeries}
                       seriesId={seriesId}
                       chart={chart}
-                      onRemove={() => handleRemoveOperand(index)}
+                      controls={controls}
                     />
                   ) : (
-                    <NotFoundSeries seriesId={seriesId} onRemove={() => handleRemoveOperand(index)} />
+                    <NotFoundSeries
+                      seriesId={arg}
+                      controls={controls}
+                    />
                   )}
                 </div>
               </div>
@@ -202,32 +221,76 @@ function RecursiveCalculation({
 // Helper Components & Functions
 // ============================================================================
 
-function NotFoundSeries({ seriesId, onRemove }: { seriesId: string, onRemove: () => void }) {
+type NotFoundSeriesProps = {
+  seriesId: string;
+} & ControlPanelProps;
+
+function NotFoundSeries({
+  seriesId,
+  controls,
+}: NotFoundSeriesProps) {
   const idPrefix = seriesId.substring(0, 6);
   return (
-    <div className="text-destructive p-2 flex items-center gap-4">
+    <div className="group text-destructive p-2 flex items-center justify-between gap-4 border border-destructive/50 rounded-lg bg-destructive/10">
       <span>Error: Series not found {idPrefix}...</span>
-      <Button variant="ghost" size="icon" onClick={onRemove} className="flex-shrink-0">
-        <Trash2 className="h-4 w-4" />
-      </Button>
+      <ControlPanel controls={controls} />
     </div>
   );
 }
 
-function SeriesOperand({ series, chart, onRemove }: { series: Series, chart: Chart, onRemove: () => void }) {
+type SeriesOperandProps = {
+  series: Series;
+  chart: Chart;
+} & ControlPanelProps;
+
+function SeriesOperand({
+  series,
+  chart,
+  controls,
+}: SeriesOperandProps) {
   const color = series.config.color || chart.config.color;
   const label = series.label || 'Untitled Series';
   const idPrefix = series.id.substring(0, 6);
 
   return (
-    <div className="flex items-center justify-between p-2 pl-4 border rounded-lg bg-background w-full" style={{ backgroundColor: applyAlpha(color, 0.1) }}>
+    <div className="group flex items-center justify-between p-2 pl-4 border rounded-lg bg-background w-full" style={{ backgroundColor: applyAlpha(color, 0.1) }}>
       <div className="flex items-center gap-2 overflow-hidden">
         <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
         <span className="text-sm font-medium truncate" title={label}>{label}</span>
         <span className="text-xs text-muted-foreground">[id:{idPrefix}...]</span>
       </div>
-      <Button variant="ghost" size="icon" onClick={onRemove} className="flex-shrink-0">
-        <Trash2 className="h-4 w-4" />
+      <ControlPanel controls={controls} />
+    </div>
+  );
+}
+
+interface ControlPanelProps {
+  controls?: {
+    canMoveUp: boolean;
+    canMoveDown: boolean;
+    onMoveUp: () => void;
+    onMoveDown: () => void;
+    onRemove: () => void;
+  }
+  forceVisible?: boolean;
+}
+
+function ControlPanel({ controls, forceVisible }: ControlPanelProps) {
+  if (!controls) return null;
+  return (
+    <div className={
+      cn(
+        "flex items-center flex-shrink-0 group-hover:opacity-100 transition-opacity",
+        forceVisible ? "opacity-100" : "opacity-0",
+      )}>
+      <Button variant="ghost" size="icon" onClick={controls.onMoveUp} disabled={!controls.canMoveUp}>
+        <ArrowUp className="h-4 w-4" />
+      </Button>
+      <Button variant="ghost" size="icon" onClick={controls.onMoveDown} disabled={!controls.canMoveDown}>
+        <ArrowDown className="h-4 w-4" />
+      </Button>
+      <Button variant="ghost" size="icon" onClick={controls.onRemove} className="flex-shrink-0">
+        <Trash2 className="h-4 w-4 text-destructive" />
       </Button>
     </div>
   );
