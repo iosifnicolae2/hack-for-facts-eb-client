@@ -89,8 +89,7 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
     return (
       <div
         ref={parentRef}
-        className="overflow-auto"
-        style={{ maxHeight }}
+        className={`overflow-auto max-h-[${maxHeight}] `}
       >
         <div
           style={{
