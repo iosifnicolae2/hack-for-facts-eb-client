@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const ChartTypeEnum = z.enum(['line', 'bar', 'area']);
+export const ChartTypeEnum = z.enum(['line', 'bar', 'area', 'bar-aggr', 'pie-aggr', 'treemap-aggr', 'sankey-aggr']);
 export type ChartType = z.infer<typeof ChartTypeEnum>;
 
 export const AnnotationTypeEnum = z.enum(['point', 'line', 'threshold', 'region']);

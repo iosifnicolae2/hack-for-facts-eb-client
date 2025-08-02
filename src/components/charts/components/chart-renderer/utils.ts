@@ -1,3 +1,35 @@
+import { formatCurrency, formatNumberRO } from "@/lib/utils";
+import { Chart } from "@/schemas/charts";
+
+export const getYearRangeText = (chart: Chart) => {
+    const { yearRange } = chart.config;
+    const startYear = yearRange?.start ?? '...';
+    const endYear = yearRange?.end ?? '...';
+
+    if (yearRange?.start && yearRange?.end && yearRange.start === yearRange.end) {
+        return `${yearRange.start}`;
+    }
+
+    return `${startYear} - ${endYear}`;
+}
+
+export const unitFormatters: Record<string, (value: number) => string> = {
+    '%': (value) => `${formatNumberRO(value, 'compact')}%`,
+    'RON': (value) => formatCurrency(value, 'compact'),
+    'RON/pers.': (value) => formatCurrency(value, 'compact'),
+};
+
+export const yValueFormatter = (value: number, isRelative: boolean, unit: string = 'RON') => {
+    if (isRelative) {
+        return `${formatNumberRO(value, 'compact')}%`;
+    }
+    const formatter = unitFormatters[unit];
+    if (formatter) {
+        return formatter(value);
+    }
+    return `${formatNumberRO(value, 'compact')} ${unit}`;
+};
+
 /**
  * Apply an alpha (opacity) to a CSS color string.
  * Supports:

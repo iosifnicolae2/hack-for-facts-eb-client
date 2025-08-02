@@ -6,7 +6,7 @@ import { CustomTimeSeriesTooltip } from './Tooltips';
 import { ReactNode, useMemo } from 'react';
 import { ChartAnnotation } from './ChartAnnotation';
 import { AnnotationPositionChange } from './interfaces';
-import { yValueFormatter } from './utils';
+import { yValueFormatter } from '../utils';
 
 interface MultiAxisChartContainerProps {
   chart: Chart;

@@ -5,7 +5,7 @@ import { SeriesValue, useChartData } from '../hooks/useChartData';
 import { ChartLabel } from './ChartLabel';
 import { useCallback } from 'react';
 import { applyAlpha, generateRandomColor } from '../utils';
-import { yValueFormatter } from './utils';
+import { yValueFormatter } from '../utils';
 
 
 

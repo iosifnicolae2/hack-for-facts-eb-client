@@ -4,8 +4,7 @@ import { ChartRendererProps } from './ChartRenderer';
 import { SeriesValue, useChartData } from '../hooks/useChartData';
 import { ChartLabel } from './ChartLabel';
 import { useCallback, useMemo } from 'react';
-import { applyAlpha } from '../utils';
-import { yValueFormatter } from './utils';
+import { applyAlpha, generateRandomColor, yValueFormatter } from '../utils';
 
 
 
@@ -16,11 +15,10 @@ export function TimeSeriesBarChart({ chart, data, onAnnotationPositionChange }: 
     const getSeriesColor = useCallback(
         (seriesId: string, opacity = 1): string => {
             const seriesConfig = enabledSeries.find(s => s.id === seriesId);
-            const index = enabledSeries.findIndex(s => s.id === seriesId);
             const base =
                 seriesConfig?.config.color ||
                 chart.config.color ||
-                `hsl(${(index * 137.5) % 360}, 70%, 50%)`;
+                generateRandomColor();
 
             return applyAlpha(base, opacity);
         },

@@ -7,6 +7,8 @@ import { getChartTypeIcon } from "../../utils";
 import { ChartRenderer } from "../chart-renderer/components/ChartRenderer";
 import { AnalyticsDataPoint } from "@/lib/api/charts";
 import { AnnotationPositionChange } from "../chart-renderer/components/interfaces";
+import { ChartTitle } from "../chart-renderer/components/ChartTitle";
+import { getYearRangeText } from "../chart-renderer/utils";
 
 interface ChartDisplayAreaProps {
   chart: Chart;
@@ -54,9 +56,10 @@ function NoDataAvailable({ chart }: { chart: Chart }) {
 }
 
 function ChartContent({ chart, chartData, isPreview, onAnnotationPositionChange }: { chart: Chart; chartData: AnalyticsDataPoint[]; isPreview: boolean, onAnnotationPositionChange: (pos: AnnotationPositionChange) => void }) {
+  const aggregatedSubtitle = chart.config.chartType.endsWith('-aggr') ? `Date agregate ${getYearRangeText(chart)}` : undefined;
   return (
     <div className="w-full">
-      <h2 className="text-center text-lg font-bold text-muted-foreground">{chart.title}</h2>
+      <ChartTitle title={chart.title} subtitle={aggregatedSubtitle} />
       <ChartRenderer chart={chart} data={chartData} onAnnotationPositionChange={onAnnotationPositionChange} />
       {!isPreview && chart.description && (
         <p className="px-4 text-center text-sm text-muted-foreground">{chart.description}</p>

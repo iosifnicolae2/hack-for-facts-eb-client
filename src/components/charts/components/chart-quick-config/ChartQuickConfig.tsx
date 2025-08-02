@@ -3,7 +3,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { BarChart3, LineChart, TrendingUp } from 'lucide-react';
+import { BarChart3, LineChart, PieChart, Sandwich, TreesIcon, TrendingUp } from 'lucide-react';
 import { ChartType } from '@/schemas/constants';
 import { ShareChart } from './components/ShareChart';
 import { ChartQuickConfigMenu } from './components/ChartQuickConfigMenu';
@@ -15,18 +15,38 @@ interface ChartQuickConfigProps {
   chartData?: AnalyticsDataPoint[];
 }
 
+
+const getChartTypeIcon = (chartType: ChartType) => {
+  switch (chartType) {
+    case 'line': return <LineChart className="h-4 w-4" />;
+    case 'bar': return <BarChart3 className="h-4 w-4" />;
+    case 'area': return <TrendingUp className="h-4 w-4" />;
+    case 'pie-aggr': return <PieChart className="h-4 w-4" />;
+    case 'treemap-aggr': return <TreesIcon className="h-4 w-4" />;
+    case 'sankey-aggr': return <Sandwich className="h-4 w-4" />;
+    case 'bar-aggr': return <BarChart3 className="h-4 w-4" />;
+    default: return <BarChart3 className="h-4 w-4" />;
+  }
+};
+
+const chartTypes = [
+  { value: 'line', label: 'Line Chart', icon: <LineChart className="h-4 w-4" /> },
+  { value: 'bar', label: 'Bar Chart', icon: <BarChart3 className="h-4 w-4" /> },
+  { value: 'area', label: 'Area Chart', icon: <TrendingUp className="h-4 w-4" /> },
+  { value: 'bar-aggr', label: 'Bar Chart (Aggregated)', icon: <BarChart3 className="h-4 w-4" /> },
+  { value: 'pie-aggr', label: 'Pie Chart (Aggregated)', icon: <PieChart className="h-4 w-4" /> },
+  { value: 'treemap-aggr', label: 'Treemap Chart (Aggregated)', icon: <TreesIcon className="h-4 w-4" /> },
+  { value: 'sankey-aggr', label: 'Sankey Chart (Aggregated)', icon: <Sandwich className="h-4 w-4" /> },
+];
+
+const getChartTypeLabel = (chartType: ChartType) => {
+  return chartTypes.find(t => t.value === chartType)?.label || chartType;
+};
+
 export function ChartQuickConfig({ chartData }: ChartQuickConfigProps) {
   const { chart, updateChart, deleteChart, duplicateChart, goToConfig } = useChartStore();
   const { copyChart } = useCopyPasteChart(chartData);
 
-  const getChartTypeIcon = (chartType: ChartType) => {
-    switch (chartType) {
-      case 'line': return <LineChart className="h-4 w-4" />;
-      case 'bar': return <BarChart3 className="h-4 w-4" />;
-      case 'area': return <TrendingUp className="h-4 w-4" />;
-      default: return <BarChart3 className="h-4 w-4" />;
-    }
-  };
 
   return (
     <div className="space-y-6">
@@ -69,29 +89,19 @@ export function ChartQuickConfig({ chartData }: ChartQuickConfigProps) {
                 <SelectValue>
                   <div className="flex items-center gap-2">
                     {getChartTypeIcon(chart.config.chartType)}
-                    <span className="capitalize">{chart.config.chartType}</span>
+                    <span className="capitalize">{getChartTypeLabel(chart.config.chartType)}</span>
                   </div>
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="line">
-                  <div className="flex items-center gap-2">
-                    <LineChart className="h-4 w-4" />
-                    Line Chart
-                  </div>
-                </SelectItem>
-                <SelectItem value="bar">
-                  <div className="flex items-center gap-2">
-                    <BarChart3 className="h-4 w-4" />
-                    Bar Chart
-                  </div>
-                </SelectItem>
-                <SelectItem value="area">
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className="h-4 w-4" />
-                    Area Chart
-                  </div>
-                </SelectItem>
+                {chartTypes.map(({ value, label, icon }) => (
+                  <SelectItem key={value} value={value}>
+                    <div className="flex items-center gap-2">
+                      {icon}
+                      {label}
+                    </div>
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
