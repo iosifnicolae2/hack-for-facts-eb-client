@@ -203,7 +203,7 @@ export type AnalyticsInput = z.infer<typeof AnalyticsInputSchema>;
 
 export const CopiedSeriesSchema = z.object({
   type: z.literal('chart-series-copy'),
-  payload: z.array(SeriesConfigurationSchema),
+  payload: z.array(SeriesSchema),
 });
 
 export type CopiedSeries = z.infer<typeof CopiedSeriesSchema>;

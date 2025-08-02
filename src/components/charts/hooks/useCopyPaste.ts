@@ -1,8 +1,9 @@
 import { useCallback, useEffect } from "react";
 import { toast } from "sonner";
-import { CopiedSeriesSchema, SeriesConfiguration } from "@/schemas/charts";
+import { CopiedSeriesSchema, Series } from "@/schemas/charts";
 import { useChartStore } from "./useChartStore";
 import { ChartData } from "recharts/types/state/chartDataSlice";
+import { getAllDependencies } from "@/lib/chart-calculation-utils";
 
 export function useCopyPasteChart(chartData?: ChartData) {
     const { chart, setSeries } = useChartStore();
@@ -42,14 +43,14 @@ export function useCopyPasteChart(chartData?: ChartData) {
         const seriesToCopy = chart.series.find(s => s.id === seriesId);
         if (!seriesToCopy) return;
 
-        const newSeries = {
-            ...seriesToCopy,
-            id: crypto.randomUUID(),
-        };
+        let newSeries: Series[] = [seriesToCopy as Series];
+
+        const dependencies = getAllDependencies(seriesToCopy, chart);
+        newSeries = [...newSeries, ...dependencies];
 
         const clipboardData = {
             type: 'chart-series-copy',
-            payload: [newSeries],
+            payload: newSeries,
         };
 
         try {
@@ -62,7 +63,7 @@ export function useCopyPasteChart(chartData?: ChartData) {
                 description: "Could not copy the series to the clipboard.",
             });
         }
-    }, [chart.series]);
+    }, [chart]);
 
     useEffect(() => {
         const handlePaste = async () => {
@@ -72,14 +73,17 @@ export function useCopyPasteChart(chartData?: ChartData) {
             try {
                 const parsed = JSON.parse(text);
                 const validated = CopiedSeriesSchema.safeParse(parsed);
-
                 if (validated.success) {
-                    const newSeriesData: SeriesConfiguration[] = validated.data.payload.map(s => ({
-                        ...s,
-                        id: crypto.randomUUID(),
-                    }));
+                    const newSeriesData: Series[] = validated.data.payload;
 
-                    setSeries([...chart.series, ...newSeriesData]);
+                    const newSeriesIds = newSeriesData.map(s => s.id);
+                    const prevSeries = chart.series.filter(s => !newSeriesIds.includes(s.id));
+
+                    // Remove duplicates
+                    const series = [...prevSeries, ...newSeriesData].filter((s, index, self) =>
+                        index === self.findIndex((t) => t.id === s.id)
+                    );
+                    setSeries(series);
 
                     toast.success("Series Pasted", {
                         description: `The copied series ${newSeriesData.map(s => s.label).join(', ')} has been added to the chart.`,

@@ -1,4 +1,4 @@
-import { Series, Calculation, Operation, AnalyticsDataPoint, YearlyTrendPoint } from '@/schemas/charts';
+import { Series, Calculation, Operation, AnalyticsDataPoint, YearlyTrendPoint, Chart } from '@/schemas/charts';
 
 // ============================================================================
 // CYCLE DETECTION
@@ -18,14 +18,14 @@ export function hasCalculationCycle(
 ): boolean {
   const visited = new Set<string>();
   const recursionStack = new Set<string>();
-  
+
   // Build adjacency list for all calculation series
   const adjacencyList = new Map<string, Set<string>>();
-  
+
   // Add the current series being checked
   adjacencyList.set(seriesId, new Set());
   addCalculationDependencies(calculation, adjacencyList.get(seriesId)!);
-  
+
   // Add all existing calculation series
   for (const series of allSeries) {
     if (series.type === 'aggregated-series-calculation' && series.id !== seriesId) {
@@ -34,12 +34,12 @@ export function hasCalculationCycle(
       adjacencyList.set(series.id, dependencies);
     }
   }
-  
+
   // Check for cycles using DFS
   function hasCycleDFS(nodeId: string): boolean {
     visited.add(nodeId);
     recursionStack.add(nodeId);
-    
+
     const dependencies = adjacencyList.get(nodeId);
     if (dependencies) {
       for (const depId of dependencies) {
@@ -53,11 +53,11 @@ export function hasCalculationCycle(
         }
       }
     }
-    
+
     recursionStack.delete(nodeId);
     return false;
   }
-  
+
   // Start DFS from the series being checked
   return hasCycleDFS(seriesId);
 }
@@ -93,7 +93,7 @@ export function evaluateCalculation(
   allSeries: Series[]
 ): YearlyTrendPoint[] {
   const operandResults: YearlyTrendPoint[][] = [];
-  
+
   // Evaluate each operand
   for (const operand of calculation.args) {
     if (typeof operand === 'string') {
@@ -118,7 +118,7 @@ export function evaluateCalculation(
       operandResults.push(result);
     }
   }
-  
+
   // Perform the operation
   return performOperation(calculation.op, operandResults);
 }
@@ -133,7 +133,7 @@ function performOperation(
   if (operands.length === 0) {
     return [];
   }
-  
+
   // Get all unique years across all operands
   const allYears = new Set<number>();
   for (const operand of operands) {
@@ -141,10 +141,10 @@ function performOperation(
       allYears.add(point.year);
     }
   }
-  
+
   // Sort years
   const sortedYears = Array.from(allYears).sort((a, b) => a - b);
-  
+
   // Create maps for quick lookup
   const operandMaps = operands.map(operand => {
     const map = new Map<number, number>();
@@ -153,13 +153,13 @@ function performOperation(
     }
     return map;
   });
-  
+
   // Calculate result for each year
   const result: YearlyTrendPoint[] = [];
-  
+
   for (const year of sortedYears) {
     let value: number | null = null;
-    
+
     switch (operation) {
       case 'sum':
         value = 0;
@@ -167,7 +167,7 @@ function performOperation(
           value += operandMap.get(year) || 0;
         }
         break;
-        
+
       case 'subtract':
         if (operandMaps.length > 0) {
           value = operandMaps[0].get(year) || 0;
@@ -176,7 +176,7 @@ function performOperation(
           }
         }
         break;
-        
+
       case 'multiply':
         if (operandMaps.length > 0) {
           value = 1;
@@ -194,15 +194,15 @@ function performOperation(
           }
         }
         break;
-        
+
       case 'divide':
         if (operandMaps.length >= 2) {
           const numerator = operandMaps[0].get(year);
           const denominator = operandMaps[1].get(year);
-          
+
           if (numerator !== undefined && denominator !== undefined && denominator !== 0) {
             value = numerator / denominator;
-            
+
             // Handle additional divisors if any
             for (let i = 2; i < operandMaps.length; i++) {
               const divisor = operandMaps[i].get(year);
@@ -217,12 +217,12 @@ function performOperation(
         }
         break;
     }
-    
+
     if (value !== null) {
       result.push({ year, totalAmount: value });
     }
   }
-  
+
   return result;
 }
 
@@ -245,14 +245,14 @@ export function validateNewCalculationSeries(
       error: 'This calculation would create a circular dependency'
     };
   }
-  
+
   // Additional validation: check if all referenced series exist
   const allSeriesIds = new Set(existingSeries.map(s => s.id));
   allSeriesIds.add(seriesId); // Include the new series itself
-  
+
   const referencedIds = new Set<string>();
   addCalculationDependencies(calculation, referencedIds);
-  
+
   for (const refId of referencedIds) {
     if (!allSeriesIds.has(refId)) {
       return {
@@ -261,7 +261,7 @@ export function validateNewCalculationSeries(
       };
     }
   }
-  
+
   return { valid: true };
 }
 
@@ -273,10 +273,10 @@ export function calculateAllSeriesData(
   baseSeriesData: Map<string, AnalyticsDataPoint>
 ): Map<string, AnalyticsDataPoint> {
   const result = new Map(baseSeriesData);
-  
+
   // Sort series by dependency order (topological sort)
   const sortedSeries = topologicalSortSeries(series);
-  
+
   // Calculate each calculation series in order
   for (const s of sortedSeries) {
     if (s.type === 'aggregated-series-calculation' && s.enabled) {
@@ -293,7 +293,7 @@ export function calculateAllSeriesData(
       });
     }
   }
-  
+
   return result;
 }
 
@@ -303,19 +303,19 @@ export function calculateAllSeriesData(
 function topologicalSortSeries(series: Series[]): Series[] {
   const adjacencyList = new Map<string, Set<string>>();
   const inDegree = new Map<string, number>();
-  
+
   // Initialize
   for (const s of series) {
     adjacencyList.set(s.id, new Set());
     inDegree.set(s.id, 0);
   }
-  
+
   // Build graph
   for (const s of series) {
     if (s.type === 'aggregated-series-calculation') {
       const dependencies = new Set<string>();
       addCalculationDependencies(s.calculation, dependencies);
-      
+
       for (const dep of dependencies) {
         if (adjacencyList.has(dep)) {
           adjacencyList.get(dep)!.add(s.id);
@@ -324,35 +324,66 @@ function topologicalSortSeries(series: Series[]): Series[] {
       }
     }
   }
-  
+
   // Kahn's algorithm
   const queue: string[] = [];
   const sorted: Series[] = [];
-  
+
   // Find all nodes with no incoming edges
   for (const [id, degree] of inDegree) {
     if (degree === 0) {
       queue.push(id);
     }
   }
-  
+
   while (queue.length > 0) {
     const current = queue.shift()!;
     const currentSeries = series.find(s => s.id === current);
     if (currentSeries) {
       sorted.push(currentSeries);
     }
-    
+
     // Remove edges from current
     for (const neighbor of adjacencyList.get(current) || []) {
       const newDegree = (inDegree.get(neighbor) || 0) - 1;
       inDegree.set(neighbor, newDegree);
-      
+
       if (newDegree === 0) {
         queue.push(neighbor);
       }
     }
   }
-  
+
   return sorted;
+}
+
+/**
+ * Get the dependencies of a calculation
+ * @param calculation - The calculation to get the dependencies of
+ * @param series - The series to get the dependencies of
+ * @returns The dependencies of the calculation
+ */
+export function getCalculationDependencies(calculation: Calculation, series: Series[]): string[] {
+  const dependencies = new Set<string>();
+  addCalculationDependencies(calculation, dependencies);
+  return Array.from(dependencies).filter(id => series.find(s => s.id === id));
+}
+
+/**
+ * Get all dependencies of a series
+ * @param series - The series to get the dependencies of
+ * @param chart - The chart to get the dependencies of 
+ * @returns All dependencies of the series
+ */
+export function getAllDependencies(series: Series, chart: Chart): Series[] {
+  const seriesCalculation = series.calculation as Calculation;
+  if (!seriesCalculation) return [series];
+
+  const dependenciesIds = getCalculationDependencies(seriesCalculation, chart.series);
+  const dependencies = chart.series.filter(s => dependenciesIds.includes(s.id));
+  const allDependencies = [...dependencies, ...dependencies.flatMap(d => getAllDependencies(d, chart))];
+  // Deduplicate
+  return allDependencies.filter((s, index, self) =>
+    index === self.findIndex((t) => t.id === s.id)
+  );
 }

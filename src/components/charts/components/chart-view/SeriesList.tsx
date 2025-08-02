@@ -19,6 +19,7 @@ import { useCallback, useState } from "react";
 import { useClipboard } from "@/lib/hooks/useClipboard";
 import { useChartStore } from "../../hooks/useChartStore";
 import { useCopyPasteChart } from "../../hooks/useCopyPaste";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export function SeriesList() {
   const { chart, updateSeries, moveSeriesUp, moveSeriesDown, addSeries, goToSeriesConfig, setSeries, deleteSeries } = useChartStore();
@@ -50,6 +51,14 @@ export function SeriesList() {
         copySeries(selectedSeriesId);
         deleteSeries(selectedSeriesId);
       }
+    }
+  });
+
+
+  useHotkeys('mod+d', (e) => {
+    e.preventDefault();
+    if (selectedSeriesId) {
+      duplicateSeries(selectedSeriesId);
     }
   });
 
