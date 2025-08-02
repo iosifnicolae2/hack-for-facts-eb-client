@@ -116,6 +116,19 @@ export function SeriesConfigView() {
           </div>
 
           <div className="space-y-2">
+            <Label htmlFor="series-unit">Unit</Label>
+            <Input
+              id="series-unit"
+              value={series?.unit || ''}
+              onChange={(e) => updateSeriesField('unit', e.target.value)}
+              placeholder="e.g., RON, %, Units..."
+            />
+            <p className="text-sm text-muted-foreground">
+              Series with different units will be displayed on separate Y-axes
+            </p>
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="series-color">Series Color</Label>
             <div className="flex items-center gap-2">
               <input

@@ -1,4 +1,4 @@
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency, formatNumberRO } from '@/lib/utils';
 import { Chart } from '@/schemas/charts';
 import type { ReactNode } from 'react';
 
@@ -59,6 +59,7 @@ interface CustomTimeSeriesTooltipProps {
     payload?: TimeSeriesTooltipEntry[];
     label?: string | number;
     chartConfig: Chart['config'];
+    chart?: Chart;
 }
 
 export function CustomTimeSeriesTooltip({
@@ -66,6 +67,7 @@ export function CustomTimeSeriesTooltip({
     payload,
     label,
     chartConfig,
+    chart,
 }: CustomTimeSeriesTooltipProps): ReactNode {
     if (!active || !payload || payload.length === 0) return null;
 
@@ -82,8 +84,32 @@ export function CustomTimeSeriesTooltip({
             <div className="flex flex-col p-4 gap-6">
                 {sortedPayload.map((entry) => {
                     // Extract series label from dataKey e.g. "SeriesLabel.value" → "SeriesLabel"
-                    const seriesLabel = entry.dataKey.split('.')[0];
-                    const absolute = (entry.payload as TimeSeriesDataPoint)[seriesLabel]?.absolute ?? 0;
+                    const seriesId = entry.dataKey.split('.')[0];
+                    const absolute = (entry.payload as TimeSeriesDataPoint)[seriesId]?.absolute ?? 0;
+
+                    // Get series unit
+                    const series = chart?.series.find(s => s.id === seriesId);
+                    const unit = series?.unit || 'RON';
+
+                    const formatValue = (value: number, unit: string) => {
+                        if (unit === '%') {
+                            return `${formatNumberRO(value)}%`;
+                        }
+                        if (unit === 'RON') {
+                            return formatCurrency(value, 'compact');
+                        }
+                        return `${formatNumberRO(value)} ${unit}`;
+                    };
+
+                    const formatAbsolute = (value: number, unit: string) => {
+                        if (unit === '%') {
+                            return `${formatNumberRO(value)}%`;
+                        }
+                        if (unit === 'RON') {
+                            return formatCurrency(value, 'standard');
+                        }
+                        return `${formatNumberRO(value)} ${unit}`;
+                    };
 
                     return (
                         <div
@@ -105,11 +131,11 @@ export function CustomTimeSeriesTooltip({
                                         </span>
                                     ) : (
                                         <span className="text-sm font-semibold">
-                                            {formatCurrency(entry.value ?? 0, 'compact')}
+                                                {formatValue(entry.value ?? 0, unit)}
                                         </span>
                                     )}
                                     <span className="text-xs text-muted-foreground">
-                                        {formatCurrency(absolute, 'standard')}
+                                        {formatAbsolute(absolute, unit)}
                                     </span>
                                 </div>
                             </div>

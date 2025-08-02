@@ -1,18 +1,13 @@
 import { BarChart, Bar, LabelList, ResponsiveContainer } from 'recharts';
-import { ChartContainer } from './ChartContainer';
+import { MultiAxisChartContainer } from './MultiAxisChartContainer';
 import { ChartRendererProps } from './ChartRenderer';
 import { SeriesValue, useChartData } from '../hooks/useChartData';
 import { ChartLabel } from './ChartLabel';
-import { formatCurrency, formatNumberRO } from '@/lib/utils';
 import { useCallback, useMemo } from 'react';
 import { applyAlpha } from '../utils';
+import { yValueFormatter } from './utils';
 
-const dataLabelFormatter = (value: number, isRelative: boolean) => {
-    if (isRelative) {
-        return `${formatNumberRO(value)}%`;
-    }
-    return formatCurrency(value, "compact");
-};
+
 
 export function TimeSeriesBarChart({ chart, data, onAnnotationPositionChange }: ChartRendererProps) {
     const { timeSeriesData, enabledSeries } = useChartData(chart, data);
@@ -39,11 +34,12 @@ export function TimeSeriesBarChart({ chart, data, onAnnotationPositionChange }: 
 
     return (
         <ResponsiveContainer width="100%" height="100%">
-            <BarChart key={chartKey} data={timeSeriesData} margin={{ top: 30, right: 50, left: 30, bottom: 20 }}>
-                <ChartContainer chart={chart} onAnnotationPositionChange={onAnnotationPositionChange}>
-                    {enabledSeries.map((series) => (
+            <BarChart key={chartKey} data={timeSeriesData} margin={{ top: 30, right: 50, left: 50, bottom: 20 }}>
+                <MultiAxisChartContainer chart={chart} onAnnotationPositionChange={onAnnotationPositionChange}>
+                    {(getYAxisId: (seriesId: string) => string) => enabledSeries.map((series) => (
                         <Bar
                             key={series.id}
+                            yAxisId={getYAxisId(series.id)}
                             dataKey={`${series.id}.value`}
                             name={series.label || 'Untitled'}
                             fill={getSeriesColor(series.id)}
@@ -67,15 +63,15 @@ export function TimeSeriesBarChart({ chart, data, onAnnotationPositionChange }: 
                                         return null;
                                     }
                                     return (
-                                        <ChartLabel {...props} value={payload.value} series={series} dataLabelFormatter={dataLabelFormatter} getSeriesColor={getSeriesColor} isRelative={isRelative} />
+                                        <ChartLabel {...props} value={payload.value} series={series} dataLabelFormatter={(value, isRelative) => yValueFormatter(value, isRelative, series.unit)} getSeriesColor={getSeriesColor} isRelative={isRelative} />
                                     )
                                 }}
-                                formatter={(label: unknown) => dataLabelFormatter(Number(label as number), isRelative)}
+                                formatter={(label: unknown) => yValueFormatter(Number(label as number), isRelative, series.unit)}
                             />
                         </Bar>
                     )
                     )}
-                </ChartContainer>
+                </MultiAxisChartContainer>
             </BarChart>
         </ResponsiveContainer>
     );

@@ -33,7 +33,7 @@ export function ChartContainer({ chart, children, onAnnotationPositionChange }: 
         tick={{ fontSize: 12 }}
         tickFormatter={(value: number) => yAxisTickFormatter(value, isRelative)}
       />
-      {chart.config.showTooltip && <Tooltip reverseDirection={{ y: true }} content={<CustomTimeSeriesTooltip chartConfig={chart.config} />} wrapperStyle={{ zIndex: 10 }} />}
+      {chart.config.showTooltip && <Tooltip reverseDirection={{ y: true }} content={<CustomTimeSeriesTooltip chartConfig={chart.config} chart={chart} />} wrapperStyle={{ zIndex: 10 }} />}
       {chart.config.showLegend && <Legend
         verticalAlign="bottom"
         height={36}

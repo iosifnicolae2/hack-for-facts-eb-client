@@ -141,7 +141,7 @@ export const UatPopulationSpendingScatterPlot: React.FC<UatPopulationSpendingSca
             type="number"
             dataKey="population"
             name="Population"
-            tickFormatter={formatNumberRO}
+            tickFormatter={(value) => formatNumberRO(value, 'standard')}
             label={{ value: xAxisLabel, position: 'insideBottom', dy: 20, fontSize: 12 }}
             domain={['dataMin', 'dataMax']}
           />
