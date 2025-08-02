@@ -4,6 +4,8 @@ import { AnalyticsDataPoint } from '@/lib/api/charts';
 
 // Shape of each data point fed into Recharts time-series components.
 export type SeriesValue = {
+  id: string;
+  label?: string;
   value: number;
   absolute: number;
   xValue: string | number;
@@ -39,6 +41,7 @@ export function useChartData(chart: Chart, data: AnalyticsDataPoint[]) {
         const yearData = series.yearlyTrend.find(p => p.year === year);
         const absoluteValue = yearData?.totalAmount || 0;
         dataPoint[series.seriesId] = {
+          id: series.seriesId,
           value: absoluteValue,
           absolute: absoluteValue,
           xValue: year,
@@ -52,7 +55,7 @@ export function useChartData(chart: Chart, data: AnalyticsDataPoint[]) {
       if (!baseSeriesLabel) {
         return baseData;
       }
-      
+
       const baseSeriesHasData = baseData.some(d => d[baseSeriesLabel] !== undefined);
       if (!baseSeriesHasData) {
         return baseData;
@@ -65,6 +68,7 @@ export function useChartData(chart: Chart, data: AnalyticsDataPoint[]) {
           const absoluteValue = dataPoint[series.seriesId].absolute;
           const relativeValue = baseValue === 0 ? 0 : (absoluteValue / baseValue) * 100;
           relativeDataPoint[series.seriesId] = {
+            id: series.seriesId,
             value: relativeValue,
             absolute: absoluteValue,
             xValue: dataPoint.year,

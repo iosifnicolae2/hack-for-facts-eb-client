@@ -9,6 +9,7 @@ export interface AggregatedDataPoint {
     value: number;
     color: string;
     unit: string;
+    absolute: number;
 }
 
 export function useAggregatedData(chart: Chart, data: AnalyticsDataPoint[]) {
@@ -35,6 +36,7 @@ export function useAggregatedData(chart: Chart, data: AnalyticsDataPoint[]) {
                 id: s.id,
                 label: s.label || `Series ${index + 1}`,
                 value: totalValue,
+                absolute: totalValue,
                 color,
                 unit: s.unit || 'RON'
             };

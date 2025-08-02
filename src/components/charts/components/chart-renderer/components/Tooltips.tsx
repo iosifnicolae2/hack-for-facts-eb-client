@@ -1,50 +1,14 @@
 import { formatCurrency, formatNumberRO } from '@/lib/utils';
 import { Chart } from '@/schemas/charts';
 import type { ReactNode } from 'react';
-
-// ---------------------------------------------------------------------------
-// Pie Tooltip
-// ---------------------------------------------------------------------------
-
-interface PieTooltipPayload {
-    payload: {
-        name: string;
-        value: number;
-        fill: string;
-    };
-}
-
-interface CustomPieTooltipProps {
-    active?: boolean;
-    payload?: PieTooltipPayload[];
-}
-
-export function CustomPieTooltip({ active, payload }: CustomPieTooltipProps): ReactNode {
-    if (!active || !payload || payload.length === 0) return null;
-
-    const { name, value, fill } = payload[0].payload;
-
-    return (
-        <div className="bg-background border border-border rounded-lg shadow-lg p-3 flex items-center space-x-4">
-            <span className="inline-block w-3 h-3 rounded-full" style={{ backgroundColor: fill }} />
-            <div>
-                <div className="font-medium text-sm text-foreground">{name}</div>
-                <div className="text-sm text-muted-foreground">{formatCurrency(value)}</div>
-            </div>
-        </div>
-    );
-}
+import { getYearRangeText } from '../utils';
+import { AggregatedDataPoint } from '@/components/charts/hooks/useAggregatedData';
+import { TimeSeriesDataPoint, SeriesValue } from '../hooks/useChartData';
 
 // ---------------------------------------------------------------------------
 // Time-Series Tooltip
 // ---------------------------------------------------------------------------
 
-type SeriesValue = {
-    value: number;
-    absolute: number;
-};
-
-type TimeSeriesDataPoint = { year: number } & Record<string, SeriesValue>;
 
 interface TimeSeriesTooltipEntry {
     dataKey: string; // e.g. "SeriesLabel.value"
@@ -54,42 +18,54 @@ interface TimeSeriesTooltipEntry {
     payload: TimeSeriesDataPoint;
 }
 
-interface CustomTimeSeriesTooltipProps {
+interface CustomSeriesTooltipProps {
     active?: boolean;
-    payload?: TimeSeriesTooltipEntry[];
+    payload?: (TimeSeriesTooltipEntry | AggregatedDataPoint)[];
     label?: string | number;
     chartConfig: Chart['config'];
     chart?: Chart;
 }
 
-export function CustomTimeSeriesTooltip({
+export function CustomSeriesTooltip({
     active,
     payload,
     label,
     chartConfig,
     chart,
-}: CustomTimeSeriesTooltipProps): ReactNode {
+}: CustomSeriesTooltipProps): ReactNode {
     if (!active || !payload || payload.length === 0) return null;
 
     const isRelative = chartConfig.showRelativeValues ?? false;
 
-    const sortedPayload = payload.sort((a, b) => (b.value ?? 0) - (a.value ?? 0));
+    const mappedPayload = payload.map((entry) => {
+        if ('dataKey' in entry) { 
+            const seriesId = entry.dataKey.split('.')[0];
+            const seriesData = entry.payload[seriesId] as SeriesValue | undefined;
+            return {
+                id: seriesId,
+                label: entry.name,
+                value: entry.value ?? 0,
+                color: entry.color,
+                absolute: seriesData?.absolute ?? 0,
+                unit: chart?.series.find(s => s.id === seriesId)?.unit || 'RON',
+            };
+        }
+        return entry as AggregatedDataPoint; 
+    }).sort((a, b) => b.value - a.value);
+
+
+    const isAggregated = chartConfig.chartType.endsWith('-aggr');
+    const yearRangeText = isAggregated && chart ? getYearRangeText(chart as Chart) : undefined;
 
     return (
         <div className="bg-background/50 backdrop-blur-sm border border-border rounded-lg shadow-lg p-4 important:z-50">
             <div className="font-semibold text-foreground mb-2 text-center border-b pb-1">
-                Anul {label}
+                {isAggregated ? `Date agregate ${yearRangeText}` : `Anul ${label}`}
             </div>
 
             <div className="flex flex-col p-4 gap-6">
-                {sortedPayload.map((entry) => {
-                    // Extract series label from dataKey e.g. "SeriesLabel.value" → "SeriesLabel"
-                    const seriesId = entry.dataKey.split('.')[0];
-                    const absolute = (entry.payload as TimeSeriesDataPoint)[seriesId]?.absolute ?? 0;
-
-                    // Get series unit
-                    const series = chart?.series.find(s => s.id === seriesId);
-                    const unit = series?.unit || 'RON';
+                {mappedPayload.map((entry) => {
+                    const series = chart?.series.find(s => s.id === entry.id);
 
                     const formatValue = (value: number, unit: string) => {
                         if (unit === '%') {
@@ -113,7 +89,7 @@ export function CustomTimeSeriesTooltip({
 
                     return (
                         <div
-                            key={entry.dataKey}
+                            key={entry.id}
                             className="flex items-center gap-3 min-w-[140px]"
                         >
                             <span
@@ -122,20 +98,20 @@ export function CustomTimeSeriesTooltip({
                             />
                             <div className="flex flex-row justify-between gap-6 items-center w-full">
                                 <span className="font-medium text-sm text-foreground truncate">
-                                    {entry.name}
+                                    {entry.label}
                                 </span>
                                 <div className="flex flex-col items-end">
-                                    {isRelative ? (
+                                    {isRelative && (series?.config as { isRelative?: boolean })?.isRelative ? (
                                         <span className="font-semibold">
                                             {(entry.value ?? 0).toFixed(1)}%
                                         </span>
                                     ) : (
                                         <span className="text-sm font-semibold">
-                                                {formatValue(entry.value ?? 0, unit)}
+                                            {formatValue(entry.value ?? 0, entry.unit)}
                                         </span>
                                     )}
                                     <span className="text-xs text-muted-foreground">
-                                        {formatAbsolute(absolute, unit)}
+                                        {formatAbsolute(entry.absolute ?? entry.value, entry.unit)}
                                     </span>
                                 </div>
                             </div>
@@ -145,4 +121,5 @@ export function CustomTimeSeriesTooltip({
             </div>
         </div>
     );
-} 
+}
+ 

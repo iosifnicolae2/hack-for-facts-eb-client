@@ -3,7 +3,7 @@ import {
 } from 'recharts';
 import { Chart } from '@/schemas/charts';
 import { formatCurrency, formatNumberRO } from '@/lib/utils';
-import { CustomTimeSeriesTooltip } from './Tooltips';
+import { CustomSeriesTooltip } from './Tooltips';
 import { ReactNode } from 'react';
 import { ChartAnnotation } from './ChartAnnotation';
 import { AnnotationPositionChange } from './interfaces';
@@ -33,7 +33,7 @@ export function ChartContainer({ chart, children, onAnnotationPositionChange }: 
         tick={{ fontSize: 12 }}
         tickFormatter={(value: number) => yAxisTickFormatter(value, isRelative)}
       />
-      {chart.config.showTooltip && <Tooltip reverseDirection={{ y: true }} content={<CustomTimeSeriesTooltip chartConfig={chart.config} chart={chart} />} wrapperStyle={{ zIndex: 10 }} />}
+      {chart.config.showTooltip && <Tooltip reverseDirection={{ y: true }} content={<CustomSeriesTooltip chartConfig={chart.config} chart={chart} />} wrapperStyle={{ zIndex: 10 }} />}
       {chart.config.showLegend && <Legend
         verticalAlign="bottom"
         height={36}

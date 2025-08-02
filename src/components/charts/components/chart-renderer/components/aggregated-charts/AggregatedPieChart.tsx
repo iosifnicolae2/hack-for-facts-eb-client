@@ -1,8 +1,8 @@
 import { PieChart, Pie, Tooltip, ResponsiveContainer, Cell, Legend } from 'recharts';
 import { useAggregatedData } from '@/components/charts/hooks/useAggregatedData';
 import { ChartRendererProps } from '../ChartRenderer';
-import { CustomAggregatedTooltip } from './CustomAggregatedTooltip';
 import { AlertTriangle } from 'lucide-react';
+import { CustomSeriesTooltip } from '../Tooltips';
 
 export function AggregatedPieChart({ chart, data, height }: ChartRendererProps) {
     const { aggregatedData, units } = useAggregatedData(chart, data);
@@ -44,7 +44,7 @@ export function AggregatedPieChart({ chart, data, height }: ChartRendererProps) 
                         <Cell key={entry.id} fill={entry.color} />
                     ))}
                 </Pie>
-                <Tooltip content={<CustomAggregatedTooltip />} />
+                <Tooltip content={({ active, payload }) => <CustomSeriesTooltip active={active} payload={payload?.map(p => p.payload)} chartConfig={chart.config} chart={chart} />} />
                 <Legend
                     verticalAlign="bottom"
                     layout="horizontal"

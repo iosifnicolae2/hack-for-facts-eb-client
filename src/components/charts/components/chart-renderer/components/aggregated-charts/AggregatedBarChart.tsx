@@ -1,9 +1,10 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList, Cell } from 'recharts';
 import { useAggregatedData } from '@/components/charts/hooks/useAggregatedData';
 import { ChartRendererProps } from '../ChartRenderer';
-import { CustomAggregatedTooltip } from './CustomAggregatedTooltip';
 import { yValueFormatter } from '../../utils';
 import { ReactNode } from 'react';
+import { CustomSeriesTooltip } from '../Tooltips';
+
 interface CustomYAxisTickProps {
     y?: number;
     payload?: { value: string };
@@ -29,26 +30,26 @@ export function AggregatedBarChart({ chart, data, height }: ChartRendererProps) 
         <ResponsiveContainer width="100%" height={height}>
             <BarChart data={aggregatedData} layout="vertical" margin={{ top: 50, right: 40, left: 120, bottom: 20 }}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis 
-                    type="number" 
-                    tickFormatter={(value) => yValueFormatter(value, false, displayUnit)} 
+                <XAxis
+                    type="number"
+                    tickFormatter={(value) => yValueFormatter(value, false, displayUnit)}
                 />
-                <YAxis 
-                    dataKey="label" 
-                    type="category" 
+                <YAxis
+                    dataKey="label"
+                    type="category"
                     width={100}
                     tick={<CustomYAxisTick width={100} />}
                     interval={0}
                 />
                 <Tooltip
                     cursor={{ fill: 'rgba(206, 206, 206, 0.2)' }}
-                    content={<CustomAggregatedTooltip />} 
+                    content={({ active, payload }) => <CustomSeriesTooltip active={active} payload={payload?.map(p => p.payload)} chartConfig={chart.config} chart={chart} />}
                 />
                 <Bar dataKey="value" background={{ fill: '#eee' }}>
                     {aggregatedData.map((entry) => (
                         <Cell key={entry.id} fill={entry.color} />
                     ))}
-                    <LabelList 
+                    <LabelList
                         dataKey="value"
                         position="right"
                         formatter={(label: ReactNode) => {

@@ -1,10 +1,10 @@
 import { formatCurrency, formatNumberRO } from "@/lib/utils";
-import { Chart } from "@/schemas/charts";
+import { Chart, defaultYearRange } from "@/schemas/charts";
 
 export const getYearRangeText = (chart: Chart) => {
     const { yearRange } = chart.config;
-    const startYear = yearRange?.start ?? '...';
-    const endYear = yearRange?.end ?? '...';
+    const startYear = yearRange?.start ?? defaultYearRange.start;
+    const endYear = yearRange?.end ?? defaultYearRange.end;
 
     if (yearRange?.start && yearRange?.end && yearRange.start === yearRange.end) {
         return `${yearRange.start}`;

@@ -1,0 +1,41 @@
+# Aggregated Charts Feature Specifications
+
+When implementing or modifying aggregated chart functionality, follow these rules to ensure consistency and maintainability.
+
+## 1. Data Aggregation
+
+-   **Use the `useAggregatedData` hook**: All aggregated charts MUST use the `useAggregatedData` hook (`src/components/charts/hooks/useAggregatedData.ts`) to compute their data. This hook is the single source of truth for aggregation logic.
+-   **Aggregation Logic**: The hook calculates the total value for each enabled series by summing up `totalAmount` from `yearlyTrend` data points that fall within the selected `yearRange` from the chart's configuration.
+-   **Data Structure**: The hook returns `aggregatedData`, which is an array of `AggregatedDataPoint` objects. Each object contains `id`, `label`, `value`, `color`, and `unit`.
+
+## 2. Year Range Display
+
+-   **Header Subtitle**: The year range MUST be displayed in the `ChartViewHeader` as a subtitle for any chart where `chart.config.chartType` ends with `-aggr`.
+-   **In-Chart Subtitle**: The year range MUST also be rendered within the chart's SVG canvas using the `ChartTitle` component (`src/components/charts/components/chart-renderer/components/ChartTitle.tsx`). This ensures the context is preserved when exporting the chart as an SVG or PNG.
+-   **Formatting**: Use the `getYearRangeText` utility (`src/components/charts/components/chart-renderer/utils.ts`) to format the year range string consistently. It should display a single year if the start and end years are the same (e.g., "2023"), or a range if they are different (e.g., "2020 - 2023").
+
+## 3. Component Structure
+
+-   **Chart Components**: New aggregated chart components (e.g., for `treemap-aggr`) MUST be placed in `src/components/charts/components/chart-renderer/components/aggregated-charts/`.
+-   **Chart Renderer**: The main `ChartRenderer` (`src/components/charts/components/chart-renderer/components/ChartRenderer.tsx`) is responsible for conditionally rendering the correct chart component based on `chart.config.chartType`.
+-   **Reusable Components**:
+    -   `ChartTitle`: Use for displaying the main title and subtitle within the SVG.
+    -   `CustomAggregatedTooltip`: Use for displaying tooltips in aggregated charts to ensure a consistent look and feel.
+
+## 4. Handling Multiple Units
+
+-   **Bar Charts**: When multiple units are present, the bar chart should use the unit of the first series for the X-axis labels. This is a simplification, and future improvements could involve multiple axes.
+-   **Pie Charts**: If `useAggregatedData` reports more than one unique unit, the `AggregatedPieChart` MUST display a warning message instead of the chart. Combining different units in a pie chart is misleading and should be prevented.
+
+## 5. Styling and Colors
+
+-   **Color Generation**: The `useAggregatedData` hook assigns a color to each series. It prioritizes the series-specific color, falls back to the global chart color, and finally generates a deterministic color based on the series index if no color is specified.
+-   **Tooltips**: Tooltips should use the series color to create a visual link between the chart element and the tooltip information.
+
+## 6. Extending with New Aggregated Chart Types
+
+To add a new aggregated chart type (e.g., `treemap-aggr`):
+1.  Add the new type to `ChartTypeEnum` in `src/schemas/constants.ts`.
+2.  Update `ChartTypeSelect.tsx` to include the new option in the UI.
+3.  Create the new chart component (e.g., `AggregatedTreeMapChart.tsx`) in the `aggregated-charts` directory. It should use `useAggregatedData` and other reusable components.
+4.  Update `ChartRenderer.tsx` to render the new component when its type is selected.

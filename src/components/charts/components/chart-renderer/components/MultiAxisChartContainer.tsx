@@ -2,7 +2,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
 import { Chart } from '@/schemas/charts';
-import { CustomTimeSeriesTooltip } from './Tooltips';
+import { CustomSeriesTooltip } from './Tooltips';
 import { ReactNode, useMemo } from 'react';
 import { ChartAnnotation } from './ChartAnnotation';
 import { AnnotationPositionChange } from './interfaces';
@@ -57,7 +57,7 @@ export function MultiAxisChartContainer({ chart, children, onAnnotationPositionC
         />
       ))}
 
-      {chart.config.showTooltip && <Tooltip reverseDirection={{ y: true }} content={<CustomTimeSeriesTooltip chartConfig={chart.config} chart={chart} />} wrapperStyle={{ zIndex: 10 }} />}
+      {chart.config.showTooltip && <Tooltip reverseDirection={{ y: true }} content={<CustomSeriesTooltip chartConfig={chart.config} chart={chart} />} wrapperStyle={{ zIndex: 10 }} />}
       {chart.config.showLegend && <Legend
         verticalAlign="bottom"
         height={36}

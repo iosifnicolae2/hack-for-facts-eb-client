@@ -108,14 +108,16 @@ export const SeriesGroupConfigurationSchema = BaseSeriesConfigurationSchema.exte
 }).passthrough()
 
 // Add custom series with editable data values and unit
-const initialYear = 2016;
-const currentYear = new Date().getFullYear();
+export const defaultYearRange = {
+  start: 2016,
+  end: new Date().getFullYear(),
+};
 export const CustomSeriesConfigurationSchema = BaseSeriesConfigurationSchema.extend({
   type: z.literal('custom-series'),
   data: z.array(z.object({
     year: z.number(),
     value: z.number().default(1),
-  })).default(Array.from({ length: currentYear - initialYear + 1 }, (_, index) => ({ year: index + initialYear, value: 1 }))),
+  })).default(Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, index) => ({ year: index + defaultYearRange.start, value: 1 }))),
 }).passthrough();
 
 

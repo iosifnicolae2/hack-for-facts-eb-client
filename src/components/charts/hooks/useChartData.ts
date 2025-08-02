@@ -10,6 +10,14 @@ interface UseChartDataProps {
     enabled?: boolean;
 }
 
+export type SeriesValue = {
+  id: string;
+  value: number;
+  absolute: number;
+  xValue: string | number;
+};
+export type TimeSeriesDataPoint = { year: number } & Record<string, SeriesValue>;
+
 export function useChartData({ chart, enabled = true }: UseChartDataProps) {
     const analyticsInputs = useMemo(() => {
         if (!chart) return [];
