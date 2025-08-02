@@ -1,7 +1,7 @@
 // src/components/charts/ChartFiltersOverview.tsx
 
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { AnalyticsFilterType, Chart, SeriesConfiguration } from "@/schemas/charts";
+import { Chart } from "@/schemas/charts";
 import { FilterIcon } from "lucide-react";
 import {
   Accordion,
@@ -9,16 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { FilterPill } from "./FilterPill";
-import { FilterValueDisplay } from "./FilterValueDisplay";
-import {
-  createDataDiscoveryUrl,
-  createEntityUrl,
-  FiltersWithLabels,
-  getFilterDisplayName,
-  isInteractiveFilter,
-  useMapFilterValue,
-} from "@/lib/chart-filter-utils";
+import { SeriesFilterDisplay } from "./SeriesFilterDisplay";
 import { Button } from "../../../ui/button";
 import { usePersistedState } from "@/lib/hooks/usePersistedState";
 
@@ -29,34 +20,20 @@ export function ChartFiltersOverview({
   chart: Chart;
   onFilterClick: (seriesId: string) => void;
 }) {
-  const activeSeriesWithFilters = chart.series.filter(
-    (s): s is SeriesConfiguration =>
-      s.enabled && s.type === 'line-items-aggregated-yearly' && s.filter && Object.keys(s.filter).length > 0
+  const activeSeries = chart.series.filter(
+    (s) => s.enabled
   );
   
-  const filters: FiltersWithLabels = {
-    entity_cuis: activeSeriesWithFilters.flatMap(s => s.filter.entity_cuis ?? []),
-    economic_codes: activeSeriesWithFilters.flatMap(s => s.filter.economic_codes ?? []),
-    functional_codes: activeSeriesWithFilters.flatMap(s => s.filter.functional_codes ?? []),
-    budget_sector_ids: activeSeriesWithFilters.flatMap(s => s.filter.budget_sector_ids ?? []),
-    funding_source_ids: activeSeriesWithFilters.flatMap(s => s.filter.funding_source_ids ?? []),
-    uat_ids: activeSeriesWithFilters.flatMap(s => s.filter.uat_ids ?? []),
-  }
+  const totalFilters = activeSeries.length;
+
   const [isFiltersOpen, setIsFiltersOpen] = usePersistedState("chart-filters-summary-open", false);
-  const { mapValueToLabel } = useMapFilterValue(filters);
-
-
-  const totalFilters = activeSeriesWithFilters.reduce(
-    (acc, series) => acc + Object.keys(series.filter).length,
-    0
-  );
 
   const handleAccordionChange = (value: string) => {
     const isFiltersOpen = value === "filters";
     setIsFiltersOpen(isFiltersOpen);
   };
 
-  if (activeSeriesWithFilters.length === 0) {
+  if (activeSeries.length === 0) {
     return (
       <Card className="border-dashed">
         <CardHeader className="text-center">
@@ -90,7 +67,7 @@ export function ChartFiltersOverview({
           </AccordionTrigger>
           <AccordionContent>
             <div className="space-y-6 pb-6">
-              {activeSeriesWithFilters.map((series) => (
+              {activeSeries.map((series) => (
                 <div
                   key={series.id}
                   className="pb-4 border-b border-border/60 last:border-b-0 last:pb-0"
@@ -116,43 +93,7 @@ export function ChartFiltersOverview({
                       Edit
                     </Button>
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    {Object.entries(series.filter)
-                      .sort(([keyA], [keyB]) => getSortOrder(keyA as keyof AnalyticsFilterType, keyB as keyof AnalyticsFilterType))
-                      .filter(
-                        ([, value]) =>
-                          value !== undefined &&
-                          value !== null &&
-                          (Array.isArray(value)
-                            ? value.length > 0
-                            : String(value) !== "")
-                      )
-                      .map(([key, value]) => {
-                        if (key === "entity_cuis" && Array.isArray(value)) {
-                          return value.map((cui) => (
-                            <FilterPill
-                              key={String(cui)}
-                              label={getFilterDisplayName(key)}
-                              value={mapValueToLabel(key, cui)}
-                              href={createEntityUrl(String(cui))}
-                            />
-                          ));
-                        }
-
-                        return (
-                          <FilterPill
-                            key={key}
-                            label={getFilterDisplayName(key)}
-                            value={<FilterValueDisplay value={Array.isArray(value) ? value.map(v => mapValueToLabel(key, v)).join(", ") : mapValueToLabel(key, value)} />}
-                            href={
-                              isInteractiveFilter(key)
-                                ? createDataDiscoveryUrl(key, value)
-                                : undefined
-                            }
-                          />
-                        );
-                      })}
-                  </div>
+                  <SeriesFilterDisplay series={series} chart={chart} />
                 </div>
               ))}
             </div>
@@ -161,25 +102,4 @@ export function ChartFiltersOverview({
       </Accordion>
     </Card>
   );
-}
-
-function getSortOrder(keyA: keyof AnalyticsFilterType, keyB: keyof AnalyticsFilterType) {
-  const order = ["account_category", "entity_cuis", "entity_types", "uat_ids", "functional_prefixes", "economic_prefixes", "functional_codes", "economic_codes", "budget_sector_ids", "funding_source_ids", "is_uat", "min_amount", "max_amount", "report_type", "years"] as Array<keyof AnalyticsFilterType>;
-  const indexA = order.indexOf(keyA);
-  const indexB = order.indexOf(keyB);
-
-
-  if (indexA === -1 && indexB === -1) {
-    console.log(keyA, keyB, "are no order");
-    return 0;
-  }
-  if (indexA === -1) {
-    console.log(keyA, "is not in order");
-    return 1;
-  }
-  if (indexB === -1) {
-    console.log(keyB, "is not in order");
-    return -1;
-  }
-  return indexA - indexB;
 }

@@ -82,5 +82,34 @@ export const isEntityCui = (key: string): boolean => {
   return key === "cui";
 };
 export const isInteractiveFilter = (key: string): boolean => {
-  return key === "cui";
-}; 
+  const interactiveKeys = [
+    'cui', // TODO: add other interactive keys
+    // "economic_codes",
+    // "functional_codes",
+    // "uat_ids",
+    // "entity_types",
+    // "budget_sector_ids",
+    // "funding_source_ids",
+    // "economic_prefixes",
+    // "functional_prefixes",
+  ];
+  return interactiveKeys.includes(key);
+};
+
+export function getSortOrder(keyA: keyof AnalyticsFilterType, keyB: keyof AnalyticsFilterType) {
+  const order = ["account_category", "entity_cuis", "entity_types", "uat_ids", "functional_prefixes", "economic_prefixes", "functional_codes", "economic_codes", "budget_sector_ids", "funding_source_ids", "is_uat", "min_amount", "max_amount", "report_type", "years"] as Array<keyof AnalyticsFilterType>;
+  const indexA = order.indexOf(keyA);
+  const indexB = order.indexOf(keyB);
+
+
+  if (indexA === -1 && indexB === -1) {
+    return 0;
+  }
+  if (indexA === -1) {
+    return 1;
+  }
+  if (indexB === -1) {
+    return -1;
+  }
+  return indexA - indexB;
+} 

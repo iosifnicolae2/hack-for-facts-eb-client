@@ -5,13 +5,13 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { hasCalculationCycle } from '@/lib/chart-calculation-utils';
 import { Calculation, Chart, Operation, Series, SeriesGroupConfiguration } from '@/schemas/charts';
-import { ArrowDown, ArrowUp, Check, DivideIcon, Minus, PlusCircle, Sigma, Trash2, X } from 'lucide-react';
+import { ArrowDown, ArrowUp, Check, PlusCircle, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { useChartStore } from '../../hooks/useChartStore';
-import React from 'react';
 import { applyAlpha } from '../chart-renderer/utils';
+import { getContextualOperandLabel, operationIcons, operationLabels } from './utils';
 
 // ============================================================================
 // Main Component
@@ -295,29 +295,3 @@ function ControlPanel({ controls, forceVisible }: ControlPanelProps) {
     </div>
   );
 }
-
-function getContextualOperandLabel(op: Operation, index: number): string | null {
-  if (op === 'subtract') {
-    return index === 0 ? 'From' : 'Subtract';
-  }
-  if (op === 'divide') {
-    if (index === 0) return 'Numerator';
-    if (index === 1) return 'Denominator';
-    return `Divide by`;
-  }
-  return null;
-}
-
-const operationIcons: Record<Operation, React.ReactNode> = {
-  sum: <Sigma className="h-4 w-4" />,
-  subtract: <Minus className="h-4 w-4" />,
-  multiply: <X className="h-4 w-4" />,
-  divide: <DivideIcon className="h-4 w-4" />,
-};
-
-const operationLabels: Record<Operation, string> = {
-  sum: 'Sum',
-  subtract: 'Subtract',
-  multiply: 'Multiply',
-  divide: 'Divide',
-};

@@ -166,7 +166,7 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
             </div>
           )}
 
-          <div className={`pr-2 max-h-[${maxHeight}] overflow-y-auto`}>
+          <div className={`pr-2 overflow-y-auto`} style={{ maxHeight: maxHeight }}>
             {filteredEntities.length > 0 ? (
               renderEntityList(filteredEntities, true)
             ) : (
