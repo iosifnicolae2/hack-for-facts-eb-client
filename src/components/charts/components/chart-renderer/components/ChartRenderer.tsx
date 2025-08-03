@@ -6,6 +6,8 @@ import { TimeSeriesAreaChart } from './TimeSeriesAreaChart';
 import { AnnotationPositionChange } from './interfaces';
 import { AggregatedBarChart } from './aggregated-charts/AggregatedBarChart';
 import { AggregatedPieChart } from './aggregated-charts/AggregatedPieChart';
+import { AggregatedTreemapChart } from './aggregated-charts/AggregatedTreemapChart';
+import { AggregatedSankeyChart } from './aggregated-charts/AggregatedSankeyChart';
 
 export interface ChartRendererProps {
   chart: Chart;
@@ -43,6 +45,8 @@ export function ChartRenderer({ chart, data, className, height = 400, onAnnotati
       {!isAggregated && chart.config.chartType === 'area' && <TimeSeriesAreaChart chart={chart} data={data} onAnnotationPositionChange={onAnnotationPositionChange} />}
       {isAggregated && chart.config.chartType === 'bar-aggr' && <AggregatedBarChart chart={chart} data={data} onAnnotationPositionChange={onAnnotationPositionChange} />}
       {isAggregated && chart.config.chartType === 'pie-aggr' && <AggregatedPieChart chart={chart} data={data} onAnnotationPositionChange={onAnnotationPositionChange} />}
+      {isAggregated && chart.config.chartType === 'treemap-aggr' && <AggregatedTreemapChart chart={chart} data={data} onAnnotationPositionChange={onAnnotationPositionChange} />}
+      {isAggregated && chart.config.chartType === 'sankey-aggr' && <AggregatedSankeyChart chart={chart} data={data} onAnnotationPositionChange={onAnnotationPositionChange} />}
     </div>
   );
 }

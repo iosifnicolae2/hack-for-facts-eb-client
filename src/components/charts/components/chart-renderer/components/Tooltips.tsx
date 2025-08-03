@@ -60,7 +60,7 @@ export function CustomSeriesTooltip({
     return (
         <div className="bg-background/50 backdrop-blur-sm border border-border rounded-lg shadow-lg p-4 important:z-50">
             <div className="font-semibold text-foreground mb-2 text-center border-b pb-1">
-                {isAggregated ? `Date agregate ${yearRangeText}` : `Anul ${label}`}
+                {isAggregated ? `Date consolidate ${yearRangeText}` : `Anul ${label}`}
             </div>
 
             <div className="flex flex-col p-4 gap-6">

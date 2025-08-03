@@ -56,7 +56,7 @@ function NoDataAvailable({ chart }: { chart: Chart }) {
 }
 
 function ChartContent({ chart, chartData, isPreview, onAnnotationPositionChange }: { chart: Chart; chartData: AnalyticsDataPoint[]; isPreview: boolean, onAnnotationPositionChange: (pos: AnnotationPositionChange) => void }) {
-  const aggregatedSubtitle = chart.config.chartType.endsWith('-aggr') ? `Date agregate ${getYearRangeText(chart)}` : undefined;
+  const aggregatedSubtitle = chart.config.chartType.endsWith('-aggr') ? `Date consolidate ${getYearRangeText(chart)}` : undefined;
   return (
     <div className="w-full">
       <ChartTitle title={chart.title} subtitle={aggregatedSubtitle} />

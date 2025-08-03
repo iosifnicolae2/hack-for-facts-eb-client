@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Chart, Series } from '@/schemas/charts';
 import { AnalyticsDataPoint } from '@/lib/api/charts';
-import { hslToHex } from '../components/chart-renderer/utils';
+import { generateRandomColor, hslToHex } from '../components/chart-renderer/utils';
 
 export interface AggregatedDataPoint {
     id: string;
@@ -22,19 +22,19 @@ export function useAggregatedData(chart: Chart, data: AnalyticsDataPoint[]) {
         const startYear = yearRange?.start ?? -Infinity;
         const endYear = yearRange?.end ?? Infinity;
 
-        return enabledSeries.map((s: Series, index) => {
+        return enabledSeries.map((s: Series) => {
             const seriesAnalytics = data.find(d => d.seriesId === s.id);
-            
+
             const totalValue = seriesAnalytics?.yearlyTrend
                 .filter(trend => trend.year >= startYear && trend.year <= endYear)
                 .reduce((acc, trend) => acc + trend.totalAmount, 0) ?? 0;
 
-            const baseColor = s.config.color || chart.config.color || `hsl(${(index * 137.5) % 360}, 70%, 50%)`;
+            const baseColor = s.config.color || chart.config.color || generateRandomColor();
             const color = baseColor.startsWith('hsl') ? hslToHex(baseColor) : baseColor;
 
             return {
                 id: s.id,
-                label: s.label || `Series ${index + 1}`,
+                label: s.label || s.id.substring(0, 6),
                 value: totalValue,
                 absolute: totalValue,
                 color,
