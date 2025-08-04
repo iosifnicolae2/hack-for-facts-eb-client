@@ -1,4 +1,4 @@
-import { Series, Calculation, Operation, AnalyticsDataPoint, YearlyTrendPoint, Chart } from '@/schemas/charts';
+import { Series, Calculation, Operation, AnalyticsDataPoint, YearlyTrendPoint, Chart, defaultYearRange } from '@/schemas/charts';
 
 // ============================================================================
 // CYCLE DETECTION
@@ -275,13 +275,22 @@ export function calculateAllSeriesData(
   // Sort series by dependency order (topological sort)
   const sortedSeries = topologicalSortSeries(series);
 
-  // Set custom series data. Used by calculation series.
+  const defaultYears = Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, index) => index + defaultYearRange.start);
+
+  // Set custom series and custom value series data. Used by calculation series.
   for (const s of series) {
     if (s.type === 'custom-series') {
       dataSeriesMap.set(s.id, {
         seriesId: s.id,
         unit: s.unit,
         yearlyTrend: s.data.map(d => ({ year: d.year, totalAmount: d.value })),
+      });
+    }
+    if (s.type === 'custom-series-value') {
+      dataSeriesMap.set(s.id, {
+        seriesId: s.id,
+        unit: s.unit,
+        yearlyTrend: defaultYears.map(year => ({ year, totalAmount: s.value })),
       });
     }
   }

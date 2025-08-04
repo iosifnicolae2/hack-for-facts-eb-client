@@ -121,7 +121,14 @@ export const CustomSeriesConfigurationSchema = BaseSeriesConfigurationSchema.ext
 }).passthrough();
 
 
-export const SeriesSchema = z.discriminatedUnion('type', [SeriesConfigurationSchema, SeriesGroupConfigurationSchema, CustomSeriesConfigurationSchema]);
+export const CustomSeriesValueConfigurationSchema = BaseSeriesConfigurationSchema.extend({
+  type: z.literal('custom-series-value'),
+  value: z.number().default(1),
+  unit: z.string().optional().default('').describe('The unit of the series. It will be shown on the chart.'),
+}).passthrough();
+
+
+export const SeriesSchema = z.discriminatedUnion('type', [SeriesConfigurationSchema, SeriesGroupConfigurationSchema, CustomSeriesConfigurationSchema, CustomSeriesValueConfigurationSchema]);
 
 export type SeriesConfiguration = z.infer<typeof SeriesConfigurationSchema>;
 export type SeriesGroupConfiguration = z.infer<typeof SeriesGroupConfigurationSchema>;

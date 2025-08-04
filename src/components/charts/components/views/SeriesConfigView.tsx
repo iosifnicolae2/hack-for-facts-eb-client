@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { Trash2, Settings, Eye, RotateCcw } from 'lucide-react';
-import { Series, SeriesConfiguration, SeriesGroupConfiguration } from '@/schemas/charts';
+import { CustomSeriesValueConfigurationSchema, Series, SeriesConfiguration, SeriesGroupConfiguration } from '@/schemas/charts';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,6 +24,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { CalculationConfig } from '../series-config/CalculationConfig';
 import { CustomSeriesDataEditor } from '../series-config/CustomSeriesDataEditor';
 import { CustomSeriesConfigurationSchema } from '@/schemas/charts';
+import { CustomSeriesValueEditor } from '../series-config/CustomSeriesValueEditor';
+import { UnitInput } from '../series-config/UnitInput';
 
 
 export function SeriesConfigView() {
@@ -117,23 +119,18 @@ export function SeriesConfigView() {
                 <SelectItem value="line-items-aggregated-yearly">Line Items Aggregated Yearly</SelectItem>
                 <SelectItem value="aggregated-series-calculation">Aggregated Series Calculation</SelectItem>
                 <SelectItem value="custom-series">Custom Series</SelectItem>
+                <SelectItem value="custom-series-value">Custom Series Value</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           {series.type !== 'line-items-aggregated-yearly' && (
-            <div className="space-y-2">
-              <Label htmlFor="series-unit">Unit</Label>
-              <Input
-                id="series-unit"
-                value={series?.unit || ''}
-                onChange={(e) => updateSeriesField('unit', e.target.value)}
-                placeholder="e.g., RON, %, Units..."
-              />
-              <p className="text-sm text-muted-foreground">
-                Series with different units will be displayed on separate Y-axes
-              </p>
-            </div>
+            <UnitInput
+              id="series-unit"
+              value={series?.unit || ''}
+              onChange={(value) => updateSeriesField('unit', value)}
+              placeholder="e.g., RON, %, Units..."
+            />
           )}
 
           <div className="space-y-2">
@@ -212,6 +209,9 @@ export function SeriesConfigView() {
       )}
       {series.type === 'custom-series' && (
         <CustomSeriesDataEditor series={series as z.infer<typeof CustomSeriesConfigurationSchema>} />
+      )}
+      {series.type === 'custom-series-value' && (
+        <CustomSeriesValueEditor series={series as z.infer<typeof CustomSeriesValueConfigurationSchema>} />
       )}
 
       {/* ================= Series Delete ================= */}
