@@ -7,15 +7,16 @@ import { ReactNode, useMemo } from 'react';
 import { ChartAnnotation } from './ChartAnnotation';
 import { AnnotationPositionChange } from './interfaces';
 import { yValueFormatter } from '../utils';
+import { UnitMap } from '@/components/charts/hooks/useChartData';
 
 interface MultiAxisChartContainerProps {
   chart: Chart;
+  unitMap: UnitMap;
   children: ((getYAxisId: (seriesId: string) => string) => ReactNode) | ReactNode;
   onAnnotationPositionChange: (pos: AnnotationPositionChange) => void;
 }
 
-export function MultiAxisChartContainer({ chart, children, onAnnotationPositionChange }: MultiAxisChartContainerProps) {
-  const isRelative = chart.config.showRelativeValues ?? false;
+export function MultiAxisChartContainer({ unitMap, chart, children, onAnnotationPositionChange }: MultiAxisChartContainerProps) {
 
   // Group series by unit
   const unitGroups = useMemo(() => {
@@ -25,7 +26,7 @@ export function MultiAxisChartContainer({ chart, children, onAnnotationPositionC
     chart.series
       .filter(s => s.enabled)
       .forEach(series => {
-        const unit = series.unit || 'RON'; // Default unit
+        const unit = unitMap.get(series.id) || '';
         if (!groups.has(unit)) {
           groups.set(unit, { unit, series: [], index: index++ });
         }
@@ -33,7 +34,7 @@ export function MultiAxisChartContainer({ chart, children, onAnnotationPositionC
       });
 
     return Array.from(groups.values());
-  }, [chart.series]);
+  }, [chart.series, unitMap]);
 
   const getYAxisId = (seriesId: string) => {
     const group = unitGroups.find(g => g.series.includes(seriesId));
@@ -48,16 +49,25 @@ export function MultiAxisChartContainer({ chart, children, onAnnotationPositionC
 
       {/* Render Y-axes for each unit */}
       {unitGroups.map((group, index) => (
+        console.log(group),
         <YAxis
           key={`yaxis-${index}`}
           yAxisId={`yaxis-${index}`}
           orientation={index % 2 === 0 ? 'left' : 'right'}
           className="text-xs fill-muted-foreground"
-          tickFormatter={(value: number) => yValueFormatter(value, isRelative, group.unit)}
+          tickFormatter={(value: number) => yValueFormatter(value, group.unit)}
         />
       ))}
 
-      {chart.config.showTooltip && <Tooltip reverseDirection={{ y: true }} content={<CustomSeriesTooltip chartConfig={chart.config} chart={chart} />} wrapperStyle={{ zIndex: 10 }} />}
+      {chart.config.showTooltip && (
+        <Tooltip
+          reverseDirection={{ y: true }}
+          content={<CustomSeriesTooltip chartConfig={chart.config} chart={chart} />}
+          wrapperStyle={{ zIndex: 10 }}
+          cursor={{ stroke: 'rgba(0, 0, 0, 0.1)', strokeWidth: 1 }}
+        />
+      )}
+
       {chart.config.showLegend && <Legend
         verticalAlign="bottom"
         height={36}

@@ -13,21 +13,21 @@ export const getYearRangeText = (chart: Chart) => {
     return `${startYear} - ${endYear}`;
 }
 
-export const unitFormatters: Record<string, (value: number) => string> = {
-    '%': (value) => `${formatNumberRO(value, 'compact')}%`,
-    'RON': (value) => formatCurrency(value, 'compact'),
-    'RON/pers.': (value) => formatCurrency(value, 'compact'),
+export const unitFormatters: Record<string, (value: number, notation: 'standard' | 'compact') => string> = {
+    '%': (value, notation) => `${formatNumberRO(value, notation)}%`,
+    'RON': (value, notation) => formatCurrency(value, notation),
+    'RON/pers.': (value, notation) => formatCurrency(value, notation),
 };
 
-export const yValueFormatter = (value: number, isRelative: boolean, unit: string = 'RON') => {
-    if (isRelative) {
-        return `${formatNumberRO(value, 'compact')}%`;
-    }
+export const yValueFormatter = (value: number, unit: string = '', notation: 'standard' | 'compact' = 'compact') => {
     const formatter = unitFormatters[unit];
     if (formatter) {
-        return formatter(value);
+        return formatter(value, notation);
     }
-    return `${formatNumberRO(value, 'compact')} ${unit}`;
+    if (unit.includes('%')) {
+        return `${formatNumberRO(value, notation)}${unit}`.trim();
+    }
+    return `${formatNumberRO(value, notation)} ${unit}`.trim();
 };
 
 /**

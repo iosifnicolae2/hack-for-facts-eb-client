@@ -1,16 +1,15 @@
-import { BarChart, Bar, LabelList, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, ResponsiveContainer, LabelList } from 'recharts';
 import { MultiAxisChartContainer } from './MultiAxisChartContainer';
 import { ChartRendererProps } from './ChartRenderer';
-import { SeriesValue, useChartData } from '../hooks/useChartData';
-import { ChartLabel } from './ChartLabel';
 import { useCallback, useMemo } from 'react';
 import { applyAlpha, generateRandomColor, yValueFormatter } from '../utils';
+import { ChartLabel } from './ChartLabel';
+import { DataPointPayload } from '@/components/charts/hooks/useChartData';
 
 
 
-export function TimeSeriesBarChart({ chart, data, onAnnotationPositionChange }: ChartRendererProps) {
-    const { timeSeriesData, enabledSeries } = useChartData(chart, data);
-    const isRelative = chart.config.showRelativeValues ?? false;
+export function TimeSeriesBarChart({ chart, timeSeriesData, unitMap, onAnnotationPositionChange }: ChartRendererProps) {
+    const enabledSeries = chart.series.filter(s => s.enabled);
 
     const getSeriesColor = useCallback(
         (seriesId: string, opacity = 1): string => {
@@ -33,7 +32,7 @@ export function TimeSeriesBarChart({ chart, data, onAnnotationPositionChange }: 
     return (
         <ResponsiveContainer width="100%" height="100%">
             <BarChart key={chartKey} data={timeSeriesData} margin={{ top: 30, right: 50, left: 50, bottom: 20 }}>
-                <MultiAxisChartContainer chart={chart} onAnnotationPositionChange={onAnnotationPositionChange}>
+                <MultiAxisChartContainer chart={chart} unitMap={unitMap} onAnnotationPositionChange={onAnnotationPositionChange}>
                     {(getYAxisId: (seriesId: string) => string) => enabledSeries.map((series) => (
                         <Bar
                             key={series.id}
@@ -46,7 +45,7 @@ export function TimeSeriesBarChart({ chart, data, onAnnotationPositionChange }: 
                             animationEasing="ease-in-out"
                         >
                             <LabelList
-                                dataKey={`${series.id}`}
+                                dataKey={series.id}
                                 offset={30}
                                 content={(props) => {
                                     const isShowLabels = series.config.showDataLabels || chart.config.showDataLabels;
@@ -54,17 +53,23 @@ export function TimeSeriesBarChart({ chart, data, onAnnotationPositionChange }: 
                                         return null;
                                     }
 
-                                    const payload = props.value as unknown as SeriesValue
+                                    const payload = props.value as unknown as DataPointPayload
                                     const dataLabels = series.config.dataLabels || []
-                                    const year = String(payload.xValue)
+                                    const year = String(payload.year)
                                     if (dataLabels.length > 0 && !dataLabels.includes(year)) {
                                         return null;
                                     }
                                     return (
-                                        <ChartLabel {...props} value={payload.value} series={series} dataLabelFormatter={(value, isRelative) => yValueFormatter(value, isRelative, series.unit)} getSeriesColor={getSeriesColor} isRelative={isRelative} />
+                                        <ChartLabel
+                                            {...props}
+                                            value={payload.value}
+                                            series={series}
+                                            dataLabelFormatter={(value) => yValueFormatter(value, payload.unit)}
+                                            color={series.config.color}
+                                        />
                                     )
                                 }}
-                                formatter={(label: unknown) => yValueFormatter(Number(label as number), isRelative, series.unit)}
+                                formatter={(label: unknown) => yValueFormatter(Number(label as number), '')}
                             />
                         </Bar>
                     )

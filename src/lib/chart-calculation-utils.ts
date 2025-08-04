@@ -266,35 +266,39 @@ export function validateNewCalculationSeries(
 }
 
 /**
- * Example: Calculate all series data including calculations
+ * Example: Calculate all series data including calculations and update the dataSeriesMap.
  */
 export function calculateAllSeriesData(
   series: Series[],
-  baseSeriesData: Map<string, AnalyticsDataPoint>
+  dataSeriesMap: Map<string, AnalyticsDataPoint>
 ): Map<string, AnalyticsDataPoint> {
-  const result = new Map(baseSeriesData);
-
   // Sort series by dependency order (topological sort)
   const sortedSeries = topologicalSortSeries(series);
 
-  // Calculate each calculation series in order
-  for (const s of sortedSeries) {
-    if (s.type === 'aggregated-series-calculation' && s.enabled) {
-      const yearlyTrend = evaluateCalculation(s.calculation, result, series);
-      result.set(s.id, {
+  // Set custom series data. Used by calculation series.
+  for (const s of series) {
+    if (s.type === 'custom-series') {
+      dataSeriesMap.set(s.id, {
         seriesId: s.id,
-        yearlyTrend,
-      });
-    }
-    if (s.type === 'custom-series' && s.enabled) {
-      result.set(s.id, {
-        seriesId: s.id,
+        unit: s.unit,
         yearlyTrend: s.data.map(d => ({ year: d.year, totalAmount: d.value })),
       });
     }
   }
 
-  return result;
+  // Calculate each calculation series in order
+  for (const s of sortedSeries) {
+    if (s.type === 'aggregated-series-calculation') {
+      const yearlyTrend = evaluateCalculation(s.calculation, dataSeriesMap, series);
+      dataSeriesMap.set(s.id, {
+        seriesId: s.id,
+        unit: s.unit,
+        yearlyTrend,
+      });
+    }
+  }
+
+  return dataSeriesMap;
 }
 
 /**

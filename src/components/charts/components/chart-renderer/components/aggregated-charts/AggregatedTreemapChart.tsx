@@ -1,10 +1,10 @@
 import { Treemap, ResponsiveContainer, Tooltip } from 'recharts';
-import { useAggregatedData } from '@/components/charts/hooks/useAggregatedData';
 import { ChartRendererProps } from '../ChartRenderer';
 import { CustomSeriesTooltip } from '../Tooltips';
 import { AlertTriangle, Info } from 'lucide-react';
 import { useMemo } from 'react';
 import { yValueFormatter } from '../../utils';
+import { DataPointPayload } from '@/components/charts/hooks/useChartData';
 
 const MIN_WIDTH_FOR_LABEL = 80;
 const MIN_HEIGHT_FOR_LABEL = 25;
@@ -17,22 +17,18 @@ interface CustomizedContentProps {
     width: number;
     height: number;
     index: number;
-    name: string;
-    value: number;
-    color: string;
-    unit: string;
-    absolute: number;
+    payload?: DataPointPayload;
 }
 
 const CustomizedContent: React.FC<CustomizedContentProps> = (props) => {
-    const { depth, x, y, width, height, name, value, color, unit } = props;
+    const { depth, x, y, width, height, payload } = props;
 
-    if (isNaN(value) || !color) {
+    if (!payload || isNaN(payload.value) || !payload.series.config.color) {
         return null;
     }
 
-    const displayValue = yValueFormatter(value, false, unit);
-    const textColor = '#000';
+    const displayValue = yValueFormatter(payload.value, payload.unit, 'compact');
+    const textColor = '#000000';
 
     return (
         <g>
@@ -42,7 +38,7 @@ const CustomizedContent: React.FC<CustomizedContentProps> = (props) => {
                 width={width}
                 height={height}
                 style={{
-                    fill: color,
+                    fill: payload.series.config.color,
                     stroke: '#fff',
                     strokeWidth: 2 / (depth + 1e-10),
                     strokeOpacity: 1 / (depth + 1e-10),
@@ -57,7 +53,7 @@ const CustomizedContent: React.FC<CustomizedContentProps> = (props) => {
                     fontSize={14}
                     style={{ pointerEvents: 'none' }}
                 >
-                    {name}
+                    {payload.series.label}
                 </text>
             )}
             {width > MIN_WIDTH_FOR_LABEL && height > MIN_HEIGHT_FOR_VALUE && (
@@ -71,40 +67,41 @@ const CustomizedContent: React.FC<CustomizedContentProps> = (props) => {
 
 export type TreemapData = {
     name: string;
-    children: {
-        name: string;
-        value: number;
-        color: string;
-    }[];
+    value: number;
+    children: TreemapData[];
+    payload?: DataPointPayload;
 }
 
-export function AggregatedTreemapChart({ chart, data, height }: ChartRendererProps) {
-    const { aggregatedData, units } = useAggregatedData(chart, data);
+export function AggregatedTreemapChart({ chart, aggregatedData, unitMap, height }: ChartRendererProps) {
+    const units = new Set(unitMap.values());
 
     const treemapData: TreemapData[] = useMemo(() => {
         if (!aggregatedData || aggregatedData.length === 0) {
             return [];
         }
 
+        const totalValue = aggregatedData.reduce((acc, item) => acc + item.value, 0);
+
+        console.log("aggregatedData", aggregatedData, totalValue);
+
         return [{
             name: 'Aggregated Data',
+            value: totalValue,
             children: aggregatedData.map(item => ({
-                name: item.label,
+                name: item.series.label,
                 value: item.value,
-                label: item.label,
-                color: item.color,
-                unit: item.unit,
-                absolute: item.absolute,
+                payload: item,
+                children: [],
             })),
         }];
     }, [aggregatedData]);
 
-    if (units.length > 1) {
+    if (units.size > 1) {
         return (
             <div className="flex flex-col items-center justify-center h-full text-muted-foreground" style={{ height }}>
                 <AlertTriangle className="w-12 h-12 text-amber-500" />
                 <p className="mt-4 text-center text-lg">Multiple units selected</p>
-                <p className="text-sm text-center">Treemaps cannot effectively display series with different units ({units.join(', ')}).</p>
+                <p className="text-sm text-center">Treemaps cannot effectively display series with different units ({Array.from(units).join(', ')}).</p>
             </div>
         );
     }
@@ -125,8 +122,10 @@ export function AggregatedTreemapChart({ chart, data, height }: ChartRendererPro
                 data={treemapData}
                 dataKey="value"
                 nameKey="name"
-                content={(props) => <CustomizedContent {...props} color={props.color} unit={props.unit} absolute={props.absolute} />}
-                isAnimationActive={false}
+                animationEasing="ease-in-out"
+                animationDuration={300}
+                animationBegin={0}
+                content={(props) => <CustomizedContent {...(props)} />}
             >
                 <Tooltip
                     content={({ active, payload }) => <CustomSeriesTooltip active={active} payload={payload.map(p => p.payload)} chartConfig={chart.config} chart={chart} />}

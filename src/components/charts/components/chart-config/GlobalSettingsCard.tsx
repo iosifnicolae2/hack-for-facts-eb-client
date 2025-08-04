@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Label } from '@/components/ui/label';
-import { Chart } from '@/schemas/charts';
+import { Chart, defaultYearRange } from '@/schemas/charts';
 import { SettingsCard } from './SettingsCard';
 import { getChartTypeIcon } from '../../utils';
 import { ChartTypeSelect } from './ChartTypeSelect';
@@ -22,8 +22,8 @@ export const GlobalSettingsCard = React.memo(({ chart, onUpdateChart }: GlobalSe
         handleConfigChange({ yearRange: { start: newRange[0], end: newRange[1] } });
     }, [handleConfigChange]);
 
-    const minYear = 2016;
-    const maxYear = new Date().getFullYear();
+    const minYear = defaultYearRange.start;
+    const maxYear = defaultYearRange.end;
     const startYear = chart.config.yearRange?.start ?? minYear;
     const endYear = chart.config.yearRange?.end ?? maxYear;
 

@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 import { produce } from "immer";
 import { Chart } from "@/schemas/charts";
-import { useChartData } from "../../hooks/useChartData";
+import { convertToTimeSeriesData, convertToAggregatedData, useChartData, SeriesId, Unit } from "../../hooks/useChartData";
 import { ChartDisplayArea } from "../chart-view/ChartDisplayArea";
 import { ChartPreviewSkeleton } from "@/components/charts/components/chart-list/ChartPreviewSkeleton";
 import { cn } from "@/lib/utils";
@@ -33,12 +33,28 @@ export function ChartPreview({ chart, className, onClick }: ChartPreviewProps) {
         });
     }, [chart]);
 
-    const { chartData, isLoadingData, dataError } = useChartData({
+    const { dataSeriesMap, isLoadingData, dataError } = useChartData({
         chart: previewChart,
         enabled: inView,
     });
 
-    const showSkeleton = !inView || isLoadingData;
+
+  const data = useMemo(() => {
+    if (!dataSeriesMap) {
+      return { timeSeriesData: [], aggregatedData: [], unitMap: new Map<SeriesId, Unit>(), dataMap: null };
+    }
+
+    const isAggregated = chart.config.chartType.endsWith('-aggr');
+    if (!isAggregated) {
+      const { data: timeSeriesData, unitMap } = convertToTimeSeriesData(dataSeriesMap, chart);
+      return { timeSeriesData, aggregatedData: [], unitMap, dataMap: dataSeriesMap };
+    } else {
+      const { data: aggregatedData, unitMap } = convertToAggregatedData(dataSeriesMap, chart);
+      return { timeSeriesData: [], aggregatedData, unitMap, dataMap: dataSeriesMap };
+    }
+  }, [chart, dataSeriesMap]);
+
+    const showSkeleton = !inView || isLoadingData || !data.dataMap;
 
     return (
         <div ref={ref} className={cn("w-full", className)} onClick={onClick}>
@@ -46,9 +62,9 @@ export function ChartPreview({ chart, className, onClick }: ChartPreviewProps) {
                 <ChartPreviewSkeleton />
             ) : (
                 <ChartDisplayArea
+                    {...data}
                     isPreview={true}
                     chart={previewChart}
-                    chartData={chartData}
                     isLoading={isLoadingData}
                     error={dataError}
                     onAddSeries={() => { }}

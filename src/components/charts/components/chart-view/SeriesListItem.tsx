@@ -11,7 +11,6 @@ import { cn } from "@/lib/utils";
 
 interface SeriesListItemProps {
   series: Series;
-  index: number;
   isSelected: boolean;
   onToggle: (enabled: boolean) => void;
   onClick: () => void;
@@ -28,7 +27,7 @@ interface SeriesListItemProps {
   onDeselect: () => void;
 }
 
-export function SeriesListItem({ series, index, isSelected, onToggle, onClick, onMoveUp, onMoveDown, isMoveUpDisabled, isMoveDownDisabled, chartColor, onUpdate, onDelete, onDuplicate, onCopy, onSelect, onDeselect }: SeriesListItemProps) {
+export function SeriesListItem({ series, isSelected, onToggle, onClick, onMoveUp, onMoveDown, isMoveUpDisabled, isMoveDownDisabled, chartColor, onUpdate, onDelete, onDuplicate, onCopy, onSelect, onDeselect }: SeriesListItemProps) {
   const {
     attributes,
     listeners,
@@ -71,7 +70,7 @@ export function SeriesListItem({ series, index, isSelected, onToggle, onClick, o
         </div>
         <div className="flex-1 min-w-0" onClick={onClick}>
           <p className="font-medium truncate" title={series.label}>{series.label}</p>
-          <p className="text-xs text-muted-foreground">Series {index + 1}</p>
+          <p className="text-xs text-muted-foreground">{series.id.substring(0, 6)}</p>
         </div>
       </div>
       <div className="flex items-center gap-1 ml-2">

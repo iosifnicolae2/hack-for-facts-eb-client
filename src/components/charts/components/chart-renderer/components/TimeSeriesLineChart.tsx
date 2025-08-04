@@ -1,39 +1,25 @@
-import { LineChart, Line, LabelList, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, ResponsiveContainer, LabelList } from 'recharts';
 import { MultiAxisChartContainer } from './MultiAxisChartContainer';
 import { ChartRendererProps } from './ChartRenderer';
-import { SeriesValue, useChartData } from '../hooks/useChartData';
+import { DataPointPayload } from '@/components/charts/hooks/useChartData';
 import { ChartLabel } from './ChartLabel';
-import { useCallback } from 'react';
-import { applyAlpha, generateRandomColor, yValueFormatter } from '../utils';
+import { yValueFormatter } from '../utils';
 
 
-export function TimeSeriesLineChart({ chart, data, onAnnotationPositionChange }: ChartRendererProps) {
-  const { timeSeriesData, enabledSeries } = useChartData(chart, data);
-  const isRelative = chart.config.showRelativeValues ?? false;
-  const getSeriesColor = useCallback(
-    (seriesId: string, opacity = 1): string => {
-      const seriesConfig = enabledSeries.find(s => s.id === seriesId);
-      const base =
-        seriesConfig?.config.color ||
-        chart.config.color ||
-        generateRandomColor();
-
-      return applyAlpha(base, opacity);
-    },
-    [enabledSeries, chart.config.color]
-  );
+export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotationPositionChange }: ChartRendererProps) {
+  const enabledSeries = chart.series.filter(s => s.enabled);
 
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart data={timeSeriesData} margin={{ top: 30, right: 50, left: 50, bottom: 20 }}>
-        <MultiAxisChartContainer chart={chart} onAnnotationPositionChange={onAnnotationPositionChange}>
+        <MultiAxisChartContainer chart={chart} unitMap={unitMap} onAnnotationPositionChange={onAnnotationPositionChange}>
           {(getYAxisId: (seriesId: string) => string) => enabledSeries.map((series) => (
             <Line
               key={series.id}
               yAxisId={getYAxisId(series.id)}
               dataKey={`${series.id}.value`}
               name={series.label || 'Untitled'}
-              stroke={getSeriesColor(series.id)}
+              stroke={series.config.color}
               type="monotone"
               strokeWidth={2}
               dot={{ r: 4 }}
@@ -51,17 +37,23 @@ export function TimeSeriesLineChart({ chart, data, onAnnotationPositionChange }:
                     return null;
                   }
 
-                  const payload = props.value as unknown as SeriesValue
+                  const payload = props.value as unknown as DataPointPayload
                   const dataLabels = series.config.dataLabels || []
-                  const year = String(payload.xValue)
+                  const year = String(payload.year)
                   if (dataLabels.length > 0 && !dataLabels.includes(year)) {
                     return null;
                   }
                   return (
-                    <ChartLabel {...props} value={payload.value} series={series} dataLabelFormatter={(value, isRelative) => yValueFormatter(value, isRelative, series.unit)} getSeriesColor={getSeriesColor} isRelative={isRelative} />
+                    <ChartLabel
+                      {...props}
+                      value={payload.value}
+                      series={series}
+                      dataLabelFormatter={(value) => yValueFormatter(value, payload.unit)}
+                      color={series.config.color}
+                    />
                   )
                 }}
-                formatter={(label: unknown) => yValueFormatter(Number(label as number), isRelative, series.unit)}
+                formatter={(label: unknown) => yValueFormatter(Number(label as number), '')}
               />
             </Line>
           ))}

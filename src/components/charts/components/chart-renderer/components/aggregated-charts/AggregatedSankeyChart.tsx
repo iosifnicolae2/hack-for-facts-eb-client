@@ -1,10 +1,10 @@
 import { ResponsiveContainer, Sankey, Tooltip, Layer } from 'recharts';
-import { useAggregatedData } from '@/components/charts/hooks/useAggregatedData';
 import { ChartRendererProps } from '../ChartRenderer';
 import { CustomSeriesTooltip } from '../Tooltips';
-import { useMemo, memo, useCallback, SVGProps, ReactElement } from 'react';
+import { useMemo, memo, SVGProps, ReactElement } from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { yValueFormatter } from '../../utils';
+import { DataPointPayload } from '@/components/charts/hooks/useChartData';
 
 // Constants
 const CHART_MARGINS = {
@@ -41,17 +41,10 @@ const THEME = {
     },
 } as const;
 
-// Types
-interface SankeyNode {
-    name: string;
-    color: string;
-    value: number;
-}
-
 export interface NodeProps extends Omit<SVGProps<SVGRectElement>, 'height' | 'width'> {
     height: number;
     width: number;
-    payload: SankeyNode;
+    payload: DataPointPayload;
     index: number;
     x: number;
     y: number;
@@ -66,7 +59,7 @@ interface SankeyLink {
 }
 
 interface SankeyData {
-    nodes: SankeyNode[];
+    nodes: DataPointPayload[];
     links: SankeyLink[];
 }
 
@@ -76,7 +69,7 @@ interface SankeyNodeProps {
     width: number;
     height: number;
     index: number;
-    payload: SankeyNode;
+    payload: DataPointPayload;
     containerWidth: number;
 }
 
@@ -95,10 +88,10 @@ const SankeyNodeComponent = memo<SankeyNodeProps>(
                     y={y}
                     width={width}
                     height={height}
-                    fill={payload.color}
+                    fill={payload.series.config.color}
                     fillOpacity="1"
                     role="img"
-                    aria-label={`${payload.name}: ${yValueFormatter(payload.value, false, 'RON')}`}
+                    aria-label={`${payload.series.label}: ${yValueFormatter(payload.value, payload.unit)}`}
                 />
                 <text
                     textAnchor={textAnchor}
@@ -108,7 +101,7 @@ const SankeyNodeComponent = memo<SankeyNodeProps>(
                     fill={THEME.node.text}
                     opacity={THEME.node.textOpacity.primary}
                 >
-                    {payload.name}
+                    {payload.series.label}
                 </text>
                 <text
                     textAnchor={textAnchor}
@@ -118,7 +111,7 @@ const SankeyNodeComponent = memo<SankeyNodeProps>(
                     fill={THEME.node.text}
                     opacity={THEME.node.textOpacity.secondary}
                 >
-                    {yValueFormatter(payload.value, false, 'RON')}
+                    {yValueFormatter(payload.value, payload.unit)}
                 </text>
             </Layer>
         );
@@ -130,41 +123,52 @@ SankeyNodeComponent.displayName = 'SankeyNodeComponent';
 // Error display component
 const MultiUnitError: React.FC<{ units: string[]; height: number }> = memo(({ units, height }) => (
     <div
-        className="flex flex-col items-center justify-center h-full text-muted-foreground p-4"
-        style={{ height }}
+        className="h-full p-4 "
         role="alert"
         aria-live="polite"
+        style={{ height }}
     >
-        <AlertTriangle className="w-12 h-12 text-amber-500" aria-hidden="true" />
-        <h3 className="mt-4 text-center text-lg font-medium">Multiple units selected</h3>
-        <p className="text-sm text-center mt-2 max-w-md">
-            Sankey charts cannot effectively display series with different units
-            ({units.join(', ')}). Please select series with the same unit.
-        </p>
+        <div className="flex flex-col items-center justify-center text-muted-foreground m-30">
+            <AlertTriangle className="w-12 h-12 text-amber-500" aria-hidden="true" />
+            <h3 className="mt-4 text-center text-lg font-medium">Multiple units selected</h3>
+            <p className="text-sm text-center mt-2 max-w-md">
+                Sankey charts cannot effectively display series with different units
+                ({units.join(', ')}). Please select series with the same unit.
+            </p>
+        </div>
     </div>
 ));
 
 MultiUnitError.displayName = 'MultiUnitError';
 
 // Helper function to prepare Sankey data
-const prepareSankeyData = (aggregatedData: Array<{ label: string; color: string; value: number }>): SankeyData => {
+const prepareSankeyData = (aggregatedData: DataPointPayload[]): SankeyData => {
     if (!aggregatedData || aggregatedData.length === 0) {
         return { nodes: [], links: [] };
     }
 
     const totalValue = aggregatedData.reduce((acc, d) => acc + d.value, 0);
 
-    const nodes: SankeyNode[] = [
-        ...aggregatedData.map((d) => ({
-            name: d.label,
-            color: d.color,
-            value: d.value
-        })),
-        {
-            name: 'Total',
-            color: THEME.total.color,
-            value: totalValue
+    // Node for the total value
+    const totalNode: DataPointPayload = {
+        value: totalValue,
+        unit: aggregatedData[0]?.unit,
+        initialValue: totalValue,
+        initialUnit: aggregatedData[0]?.unit,
+        year: aggregatedData[0]?.year,
+        id: 'total',
+        series: {
+            id: 'total',
+            label: 'Total',
+            config: {
+                color: THEME.total.color,
+            },
         },
+    }
+
+    const nodes: DataPointPayload[] = [
+        ...aggregatedData,
+        totalNode,
     ];
 
     const links: SankeyLink[] = aggregatedData.map((_, index) => ({
@@ -177,25 +181,17 @@ const prepareSankeyData = (aggregatedData: Array<{ label: string; color: string;
 };
 
 
-export function AggregatedSankeyChart({ chart, data, height }: ChartRendererProps) {
-    const { aggregatedData, units } = useAggregatedData(chart, data);
-
+export function AggregatedSankeyChart({ chart, aggregatedData, unitMap, height }: ChartRendererProps) {
+    const units = new Set(unitMap.values());
     // Memoize Sankey data preparation
     const sankeyData = useMemo(
         () => prepareSankeyData(aggregatedData),
         [aggregatedData]
     );
 
-
-    // Memoize node renderer to prevent recreation on every render
-    const nodeRenderer: SankeyNodeOptions = useCallback(
-        (props: NodeProps) => <SankeyNodeComponent {...props} containerWidth={props.width} />,
-        []
-    );
-
     // Handle multiple units error case
-    if (units.length > 1) {
-        return <MultiUnitError units={units} height={height ?? 0} />;
+    if (units.size > 1) {
+        return <MultiUnitError units={Array.from(units)} height={height ?? 0} />;
     }
 
     // Handle empty data case
@@ -218,23 +214,28 @@ export function AggregatedSankeyChart({ chart, data, height }: ChartRendererProp
                 nodeWidth={NODE_CONFIG.width}
                 linkCurvature={0.5}
                 iterations={32}
-                node={(props) => nodeRenderer(props as unknown as NodeProps)} // TODO: fix this
+                node={(props) => <SankeyNodeComponent {...props} payload={props.payload as unknown as DataPointPayload} containerWidth={props.width} />}
                 margin={CHART_MARGINS}
                 link={{
                     stroke: THEME.link.color,
                     strokeOpacity: THEME.link.opacity
                 }}
             >
-                <Tooltip
-                    content={({ active, payload }) => (
-                        <CustomSeriesTooltip
-                            active={active}
-                            payload={payload?.map(p => p.payload)}
-                            chartConfig={chart.config}
-                            chart={chart}
-                        />
-                    )}
-                />
+                {chart.config.showTooltip && (
+                    <Tooltip
+                        content={(props) => (
+                            <CustomSeriesTooltip
+                                {...props}
+                                payload={props.payload?.map(p => ({
+                                    ...p.payload,
+                                    dataKey: 'source.value',
+                                }))}
+                                chartConfig={chart.config}
+                                chart={chart}
+                            />
+                        )}
+                    />
+                )}
             </Sankey>
         </ResponsiveContainer>
     );

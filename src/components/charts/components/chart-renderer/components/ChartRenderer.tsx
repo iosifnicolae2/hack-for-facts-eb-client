@@ -1,5 +1,4 @@
 import { Chart } from '@/schemas/charts';
-import { AnalyticsDataPoint } from '@/lib/api/charts';
 import { TimeSeriesLineChart } from './TimeSeriesLineChart';
 import { TimeSeriesBarChart } from './TimeSeriesBarChart';
 import { TimeSeriesAreaChart } from './TimeSeriesAreaChart';
@@ -8,16 +7,20 @@ import { AggregatedBarChart } from './aggregated-charts/AggregatedBarChart';
 import { AggregatedPieChart } from './aggregated-charts/AggregatedPieChart';
 import { AggregatedTreemapChart } from './aggregated-charts/AggregatedTreemapChart';
 import { AggregatedSankeyChart } from './aggregated-charts/AggregatedSankeyChart';
+import { DataPointPayload, DataSeriesMap, TimeSeriesDataPoint, UnitMap } from '../../../hooks/useChartData';
 
 export interface ChartRendererProps {
   chart: Chart;
-  data: AnalyticsDataPoint[];
+  dataMap: DataSeriesMap;
+  timeSeriesData: TimeSeriesDataPoint[];
+  aggregatedData: DataPointPayload[];
+  unitMap: UnitMap;
   className?: string;
   height?: number;
   onAnnotationPositionChange: (pos: AnnotationPositionChange) => void;
 }
 
-export function ChartRenderer({ chart, data, className, height = 400, onAnnotationPositionChange }: ChartRendererProps) {
+export function ChartRenderer({ chart, dataMap, unitMap, aggregatedData, timeSeriesData, className, height = 400, onAnnotationPositionChange }: ChartRendererProps) {
 
   if (chart.series.filter(s => s.enabled).length === 0) {
     return (
@@ -37,16 +40,24 @@ export function ChartRenderer({ chart, data, className, height = 400, onAnnotati
   }
 
   const isAggregated = chart.config.chartType.endsWith('-aggr');
+  const data = {
+    chart,
+    dataMap,
+    unitMap,
+    aggregatedData,
+    timeSeriesData,
+  }
+
 
   return (
     <div className={className} style={{ width: '100%', height }}>
-      {!isAggregated && chart.config.chartType === 'line' && <TimeSeriesLineChart chart={chart} data={data} onAnnotationPositionChange={onAnnotationPositionChange} />}
-      {!isAggregated && chart.config.chartType === 'bar' && <TimeSeriesBarChart chart={chart} data={data} onAnnotationPositionChange={onAnnotationPositionChange} />}
-      {!isAggregated && chart.config.chartType === 'area' && <TimeSeriesAreaChart chart={chart} data={data} onAnnotationPositionChange={onAnnotationPositionChange} />}
-      {isAggregated && chart.config.chartType === 'bar-aggr' && <AggregatedBarChart chart={chart} data={data} onAnnotationPositionChange={onAnnotationPositionChange} />}
-      {isAggregated && chart.config.chartType === 'pie-aggr' && <AggregatedPieChart chart={chart} data={data} onAnnotationPositionChange={onAnnotationPositionChange} />}
-      {isAggregated && chart.config.chartType === 'treemap-aggr' && <AggregatedTreemapChart chart={chart} data={data} onAnnotationPositionChange={onAnnotationPositionChange} />}
-      {isAggregated && chart.config.chartType === 'sankey-aggr' && <AggregatedSankeyChart chart={chart} data={data} onAnnotationPositionChange={onAnnotationPositionChange} />}
+      {!isAggregated && chart.config.chartType === 'line' && <TimeSeriesLineChart {...data} onAnnotationPositionChange={onAnnotationPositionChange} />}
+      {!isAggregated && chart.config.chartType === 'bar' && <TimeSeriesBarChart {...data} onAnnotationPositionChange={onAnnotationPositionChange} />}
+      {!isAggregated && chart.config.chartType === 'area' && <TimeSeriesAreaChart {...data} onAnnotationPositionChange={onAnnotationPositionChange} />}
+      {isAggregated && chart.config.chartType === 'bar-aggr' && <AggregatedBarChart {...data} onAnnotationPositionChange={onAnnotationPositionChange} />}
+      {isAggregated && chart.config.chartType === 'pie-aggr' && <AggregatedPieChart {...data} onAnnotationPositionChange={onAnnotationPositionChange} />}
+      {isAggregated && chart.config.chartType === 'treemap-aggr' && <AggregatedTreemapChart {...data} onAnnotationPositionChange={onAnnotationPositionChange} />}
+      {isAggregated && chart.config.chartType === 'sankey-aggr' && <AggregatedSankeyChart {...data} onAnnotationPositionChange={onAnnotationPositionChange} />}
     </div>
   );
 }

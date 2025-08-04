@@ -1,4 +1,5 @@
 import { MultiSelect } from "@/components/ui/multi-select";
+import { defaultYearRange } from "@/schemas/charts";
 
 type DataLabelSelectorProps = {
   selectedLabels: string[];
@@ -6,8 +7,7 @@ type DataLabelSelectorProps = {
 };
 
 export function DataLabelSelector({ selectedLabels, onChange }: DataLabelSelectorProps) {
-  const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: currentYear - 2016 + 1 }, (_, i) => 2016 + i).map(year => ({
+  const years = Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, i) => defaultYearRange.start + i).map(year => ({
     value: year.toString(),
     label: year.toString(),
   }));

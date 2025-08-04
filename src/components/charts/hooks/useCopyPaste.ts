@@ -2,17 +2,17 @@ import { useCallback, useEffect } from "react";
 import { toast } from "sonner";
 import { CopiedSeriesSchema, Series } from "@/schemas/charts";
 import { useChartStore } from "./useChartStore";
-import { ChartData } from "recharts/types/state/chartDataSlice";
 import { getAllDependencies } from "@/lib/chart-calculation-utils";
+import { DataSeriesMap } from "./useChartData";
 
-export function useCopyPasteChart(chartData?: ChartData) {
+export function useCopyPasteChart(dataMap?: DataSeriesMap) {
     const { chart, setSeries } = useChartStore();
 
     const copyChart = useCallback(async () => {
         const clipboardData = {
             type: 'chart-copy',
             payload: {
-                data: chartData,
+                data: dataMap,
                 chart: chart,
             },
         };
@@ -21,7 +21,7 @@ export function useCopyPasteChart(chartData?: ChartData) {
             description: "The chart data has been copied to the clipboard.",
         });
 
-    }, [chart, chartData]);
+    }, [chart, dataMap]);
 
     const duplicateSeries = useCallback((seriesId: string) => {
         const seriesToDuplicate = chart.series.find(s => s.id === seriesId);

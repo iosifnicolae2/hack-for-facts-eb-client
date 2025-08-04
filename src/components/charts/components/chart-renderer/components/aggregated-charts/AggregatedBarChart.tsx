@@ -1,5 +1,4 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList, Cell } from 'recharts';
-import { useAggregatedData } from '@/components/charts/hooks/useAggregatedData';
 import { ChartRendererProps } from '../ChartRenderer';
 import { yValueFormatter } from '../../utils';
 import { ReactNode } from 'react';
@@ -22,9 +21,9 @@ const CustomYAxisTick = ({ y, payload, width }: CustomYAxisTickProps) => {
     );
 };
 
-export function AggregatedBarChart({ chart, data, height }: ChartRendererProps) {
-    const { aggregatedData, units } = useAggregatedData(chart, data);
-    const displayUnit = units[0] || 'RON';
+export function AggregatedBarChart({ chart, aggregatedData, unitMap, height }: ChartRendererProps) {
+
+    const displayUnit = unitMap.get(aggregatedData[0]?.id) || '';
 
     return (
         <ResponsiveContainer width="100%" height={height}>
@@ -32,10 +31,10 @@ export function AggregatedBarChart({ chart, data, height }: ChartRendererProps) 
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                     type="number"
-                    tickFormatter={(value) => yValueFormatter(value, false, displayUnit)}
+                    tickFormatter={(value) => yValueFormatter(value, displayUnit)}
                 />
                 <YAxis
-                    dataKey="label"
+                    dataKey="series.label"
                     type="category"
                     width={100}
                     tick={<CustomYAxisTick width={100} />}
@@ -43,18 +42,25 @@ export function AggregatedBarChart({ chart, data, height }: ChartRendererProps) 
                 />
                 <Tooltip
                     cursor={{ fill: 'rgba(206, 206, 206, 0.2)' }}
-                    content={({ active, payload }) => <CustomSeriesTooltip active={active} payload={payload?.map(p => p.payload)} chartConfig={chart.config} chart={chart} />}
+                    content={(props) => (
+                        <CustomSeriesTooltip
+                            {...props}
+                            payload={props.payload?.map(p => p.payload)}
+                            chartConfig={chart.config}
+                            chart={chart}
+                        />
+                    )}
                 />
                 <Bar dataKey="value" background={{ fill: '#eee' }}>
                     {aggregatedData.map((entry) => (
-                        <Cell key={entry.id} fill={entry.color} />
+                        <Cell key={entry.id} fill={entry.series.config.color} />
                     ))}
                     <LabelList
                         dataKey="value"
                         position="right"
                         formatter={(label: ReactNode) => {
                             if (typeof label === 'number') {
-                                return yValueFormatter(label, false, displayUnit);
+                                return yValueFormatter(label, displayUnit);
                             }
                             return null;
                         }}

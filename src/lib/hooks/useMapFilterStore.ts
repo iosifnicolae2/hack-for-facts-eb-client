@@ -3,6 +3,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { z } from 'zod';
 import { HeatmapFilterInput } from "@/lib/api/dataDiscovery";
+import { defaultYearRange } from '@/schemas/charts';
 
 // --- Schemas for individual option items ---
 const AccountCategoryOptionItemSchema = z.object({
@@ -60,7 +61,7 @@ interface NonPersistedState {
 
 const defaultNormalization: NormalizationOptionItem = { id: "total", label: "Total" };
 const defaultAccountCategory: AccountCategoryOptionItem = { id: "ch", label: "Cheltuieli" };
-const defaultYears: YearOptionItem[] = [{ id: new Date().getFullYear() - 1, label: String(new Date().getFullYear() - 1) }];
+const defaultYears: YearOptionItem[] = [{ id: defaultYearRange.end, label: String(defaultYearRange.end) }];
 
 const defaultInternalMapFiltersState: InternalMapFiltersState = {
     normalization: defaultNormalization,

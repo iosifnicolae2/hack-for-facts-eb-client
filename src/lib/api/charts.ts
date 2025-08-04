@@ -8,6 +8,7 @@ export interface YearlyTrendPoint {
 
 export interface AnalyticsDataPoint {
   seriesId: string;
+  unit: string;
   yearlyTrend: YearlyTrendPoint[];
 }
 
@@ -25,6 +26,7 @@ export async function getChartAnalytics(inputs: AnalyticsInput[]): Promise<Analy
     query GetExecutionLineItemsAnalytics($inputs: [AnalyticsInput!]!) {
       executionAnalytics(inputs: $inputs) {
         seriesId
+        unit
         yearlyTrend {
           year
           totalAmount

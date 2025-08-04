@@ -1,26 +1,16 @@
-import { formatCurrency, formatNumberRO } from '@/lib/utils';
 import { Chart } from '@/schemas/charts';
-import type { ReactNode } from 'react';
-import { getYearRangeText } from '../utils';
-import { AggregatedDataPoint } from '@/components/charts/hooks/useAggregatedData';
-import { TimeSeriesDataPoint, SeriesValue } from '../hooks/useChartData';
+import { useMemo, type ReactNode } from 'react';
+import { getYearRangeText, yValueFormatter } from '../utils';
+import { SeriesId, DataPointPayload } from '../../../hooks/useChartData';
 
 // ---------------------------------------------------------------------------
 // Time-Series Tooltip
 // ---------------------------------------------------------------------------
 
 
-interface TimeSeriesTooltipEntry {
-    dataKey: string; // e.g. "SeriesLabel.value"
-    name: string;
-    color: string;
-    value?: number;
-    payload: TimeSeriesDataPoint;
-}
-
 interface CustomSeriesTooltipProps {
     active?: boolean;
-    payload?: (TimeSeriesTooltipEntry | AggregatedDataPoint)[];
+    payload?: Array<{ dataKey: string, payload: Record<SeriesId, DataPointPayload> }> | DataPointPayload[];
     label?: string | number;
     chartConfig: Chart['config'];
     chart?: Chart;
@@ -33,29 +23,29 @@ export function CustomSeriesTooltip({
     chartConfig,
     chart,
 }: CustomSeriesTooltipProps): ReactNode {
-    if (!active || !payload || payload.length === 0) return null;
-
-    const isRelative = chartConfig.showRelativeValues ?? false;
-
-    const mappedPayload = payload.map((entry) => {
-        if ('dataKey' in entry) { 
-            const seriesId = entry.dataKey.split('.')[0];
-            const seriesData = entry.payload[seriesId] as SeriesValue | undefined;
-            return {
-                id: seriesId,
-                label: entry.name,
-                value: entry.value ?? 0,
-                color: entry.color,
-                absolute: seriesData?.absolute ?? 0,
-                unit: chart?.series.find(s => s.id === seriesId)?.unit || 'RON',
-            };
-        }
-        return entry as AggregatedDataPoint; 
-    }).sort((a, b) => b.value - a.value);
-
 
     const isAggregated = chartConfig.chartType.endsWith('-aggr');
     const yearRangeText = isAggregated && chart ? getYearRangeText(chart as Chart) : undefined;
+
+    const mappedPayload = useMemo(() => {
+        if (!payload) {
+            return [];
+        }
+        return payload.map((entry) => {
+            if ('dataKey' in entry) {
+                const seriesId = entry.dataKey.split('.')[0]; // the dataKey has the format: ${seriesId}.value
+                const customPayload = entry.payload[seriesId];
+                if (customPayload) {
+                    return customPayload as DataPointPayload;
+                }
+            } else if ('payload' in entry) {
+                return entry.payload as DataPointPayload;
+            }
+            return entry as DataPointPayload;
+        }).filter(p => p.id).sort((a, b) => b.value - a.value);
+    }, [payload]);
+
+    if (!active || !mappedPayload || mappedPayload.length === 0) return null;
 
     return (
         <div className="bg-background/50 backdrop-blur-sm border border-border rounded-lg shadow-lg p-4 important:z-50">
@@ -64,54 +54,31 @@ export function CustomSeriesTooltip({
             </div>
 
             <div className="flex flex-col p-4 gap-6">
-                {mappedPayload.map((entry) => {
-                    const series = chart?.series.find(s => s.id === entry.id);
+                {mappedPayload.map((dataPoint) => {
+                    const { value, unit, initialValue, initialUnit } = dataPoint;
 
-                    const formatValue = (value: number, unit: string) => {
-                        if (unit === '%') {
-                            return `${formatNumberRO(value)}%`;
-                        }
-                        if (unit === 'RON') {
-                            return formatCurrency(value, 'compact');
-                        }
-                        return `${formatNumberRO(value)} ${unit}`;
-                    };
-
-                    const formatAbsolute = (value: number, unit: string) => {
-                        if (unit === '%') {
-                            return `${formatNumberRO(value)}%`;
-                        }
-                        if (unit === 'RON') {
-                            return formatCurrency(value, 'standard');
-                        }
-                        return `${formatNumberRO(value)} ${unit}`;
-                    };
+                    const primaryDisplayValue = yValueFormatter(value, unit, 'compact');
+                    const secondaryDisplayValue = yValueFormatter(initialValue, initialUnit, 'standard');
 
                     return (
                         <div
-                            key={entry.id}
+                            key={dataPoint.id}
                             className="flex items-center gap-3 min-w-[140px]"
                         >
                             <span
                                 className="inline-block w-3 h-3 rounded-full flex-shrink-0"
-                                style={{ backgroundColor: entry.color }}
+                                style={{ backgroundColor: dataPoint.series?.config.color }}
                             />
                             <div className="flex flex-row justify-between gap-6 items-center w-full">
                                 <span className="font-medium text-sm text-foreground truncate">
-                                    {entry.label}
+                                    {dataPoint.series?.label}
                                 </span>
                                 <div className="flex flex-col items-end">
-                                    {isRelative && (series?.config as { isRelative?: boolean })?.isRelative ? (
-                                        <span className="font-semibold">
-                                            {(entry.value ?? 0).toFixed(1)}%
-                                        </span>
-                                    ) : (
-                                        <span className="text-sm font-semibold">
-                                            {formatValue(entry.value ?? 0, entry.unit)}
-                                        </span>
-                                    )}
+                                    <span className="text-sm font-semibold">
+                                        {primaryDisplayValue}
+                                    </span>
                                     <span className="text-xs text-muted-foreground">
-                                        {formatAbsolute(entry.absolute ?? entry.value, entry.unit)}
+                                        {secondaryDisplayValue}
                                     </span>
                                 </div>
                             </div>
@@ -122,4 +89,3 @@ export function CustomSeriesTooltip({
         </div>
     );
 }
- 

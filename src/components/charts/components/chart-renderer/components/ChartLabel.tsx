@@ -1,22 +1,22 @@
 import { Props as LabelProps } from "recharts/types/component/Label";
 import { Series } from "@/schemas/charts";
+import { applyAlpha } from "../utils";
 
 interface ChartLabelProps extends LabelProps {
     series: Series;
-    dataLabelFormatter: (value: number, isRelative: boolean) => string;
-    getSeriesColor: (seriesId: string, opacity?: number) => string;
-    isRelative: boolean;
+    dataLabelFormatter: (value: number) => string;
+    color: string;
 }
 
 export function ChartLabel(props: ChartLabelProps) {
-    const { x, y, value, offset, width, series, dataLabelFormatter, getSeriesColor, isRelative } = props;
+    const { x, y, value, offset, width, series, dataLabelFormatter, color } = props;
     const xValue = isNaN(Number(x)) ? 0 : Number(x);
     const yValue = isNaN(Number(y)) ? 0 : Number(y);
     const offsetValue = isNaN(Number(offset)) ? 0 : Number(offset);
 
     const seriesOffset = series.config.dataLabelOffset || 0;
 
-    const formattedValue = dataLabelFormatter(Number(value), isRelative);
+    const formattedValue = dataLabelFormatter(Number(value));
     const chartItemWidth = isNaN(Number(width)) ? 0 : Number(width);
 
     const increaseFactor = 7;
@@ -28,7 +28,7 @@ export function ChartLabel(props: ChartLabelProps) {
                 y={yValue - offsetValue + seriesOffset}
                 width={labelWidth}
                 height={20}
-                fill={getSeriesColor(series.id, 0.2)}
+                fill={applyAlpha(color, 0.2)}
                 rx={4}
                 opacity={0.9}
             />
@@ -37,7 +37,7 @@ export function ChartLabel(props: ChartLabelProps) {
                 y={yValue - offsetValue + 12 + seriesOffset}
                 textAnchor="middle"
                 dominantBaseline="middle"
-                fill="#000"
+                fill="#000000"
                 fontSize="10px"
                 fontWeight="bold"
             >

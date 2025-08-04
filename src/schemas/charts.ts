@@ -91,7 +91,7 @@ export const BaseSeriesConfigurationSchema = z.object({
   id: z.string().default(() => crypto.randomUUID()).describe('The id of the series. It should be unique and immutable.'),
   enabled: z.boolean().default(true).describe('Whether the series is shown on the chart.'),
   label: z.string().default('').describe('The label of the series. It will be shown on the chart.'),
-  unit: z.string().optional().describe('The unit of the series. It will be shown on the chart.'),
+  unit: z.string().optional().default('RON').describe('The unit of the series. It will be shown on the chart.'),
   config: SeriesConfigSchema,
   createdAt: z.string().default(() => new Date().toISOString()),
   updatedAt: z.string().default(() => new Date().toISOString()),
@@ -110,7 +110,7 @@ export const SeriesGroupConfigurationSchema = BaseSeriesConfigurationSchema.exte
 // Add custom series with editable data values and unit
 export const defaultYearRange = {
   start: 2016,
-  end: new Date().getFullYear(),
+  end: 2024,
 };
 export const CustomSeriesConfigurationSchema = BaseSeriesConfigurationSchema.extend({
   type: z.literal('custom-series'),
@@ -187,6 +187,7 @@ export type YearlyTrendPoint = z.infer<typeof YearlyTrendPointSchema>;
 
 export const AnalyticsDataPointSchema = z.object({
   seriesId: z.string(),
+  unit: z.string().optional(),
   yearlyTrend: z.array(YearlyTrendPointSchema),
 });
 export type AnalyticsDataPoint = z.infer<typeof AnalyticsDataPointSchema>;

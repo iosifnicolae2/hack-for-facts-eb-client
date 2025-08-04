@@ -3,8 +3,9 @@ import { BaseListProps } from "../base-filter/interfaces";
 import { cn } from "@/lib/utils";
 import { ListOption } from "../base-filter/ListOption";
 import { ListContainerSimple } from "../base-filter/ListContainerSimple";
+import { defaultYearRange } from "@/schemas/charts";
 
-const years = Array.from({ length: new Date().getFullYear() - 2016 + 1 }, (_, i) => 2016 + i).reverse();
+const years = Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, i) => defaultYearRange.end - i).reverse();
 const rowHight = 35;
 
 export function YearFilter({ selectedOptions, toggleSelect, className }: BaseListProps) {

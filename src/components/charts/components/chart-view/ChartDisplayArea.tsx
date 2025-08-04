@@ -5,19 +5,22 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Chart } from "@/schemas/charts";
 import { getChartTypeIcon } from "../../utils";
 import { ChartRenderer } from "../chart-renderer/components/ChartRenderer";
-import { AnalyticsDataPoint } from "@/lib/api/charts";
 import { AnnotationPositionChange } from "../chart-renderer/components/interfaces";
 import { ChartTitle } from "../chart-renderer/components/ChartTitle";
 import { getYearRangeText } from "../chart-renderer/utils";
+import { DataPointPayload, DataSeriesMap, TimeSeriesDataPoint, UnitMap } from "../../hooks/useChartData";
 
 interface ChartDisplayAreaProps {
   chart: Chart;
-  chartData: AnalyticsDataPoint[] | undefined;
-  onAnnotationPositionChange: (pos: AnnotationPositionChange) => void;
+  timeSeriesData: TimeSeriesDataPoint[];
+  aggregatedData: DataPointPayload[];
+  dataMap: DataSeriesMap;
+  unitMap: UnitMap;
   isPreview?: boolean;
   isLoading: boolean;
-  error: Error | null;
+  error: Error | null | undefined;
   onAddSeries: () => void;
+  onAnnotationPositionChange: (pos: AnnotationPositionChange) => void;
 }
 
 function NoDataSeries({ onAddSeries, chart }: { onAddSeries: () => void; chart: Chart }) {
@@ -55,12 +58,12 @@ function NoDataAvailable({ chart }: { chart: Chart }) {
   );
 }
 
-function ChartContent({ chart, chartData, isPreview, onAnnotationPositionChange }: { chart: Chart; chartData: AnalyticsDataPoint[]; isPreview: boolean, onAnnotationPositionChange: (pos: AnnotationPositionChange) => void }) {
+function ChartContent({ chart, timeSeriesData, aggregatedData, dataMap, unitMap, isPreview, onAnnotationPositionChange }: { chart: Chart; timeSeriesData: TimeSeriesDataPoint[]; aggregatedData: DataPointPayload[]; dataMap: DataSeriesMap; unitMap: UnitMap; isPreview: boolean, onAnnotationPositionChange: (pos: AnnotationPositionChange) => void }) {
   const aggregatedSubtitle = chart.config.chartType.endsWith('-aggr') ? `Date consolidate ${getYearRangeText(chart)}` : undefined;
   return (
     <div className="w-full">
       <ChartTitle title={chart.title} subtitle={aggregatedSubtitle} />
-      <ChartRenderer chart={chart} data={chartData} onAnnotationPositionChange={onAnnotationPositionChange} />
+      <ChartRenderer chart={chart} timeSeriesData={timeSeriesData} aggregatedData={aggregatedData} dataMap={dataMap} unitMap={unitMap} onAnnotationPositionChange={onAnnotationPositionChange} />
       {!isPreview && chart.description && (
         <p className="px-4 text-center text-sm text-muted-foreground">{chart.description}</p>
       )}
@@ -68,13 +71,13 @@ function ChartContent({ chart, chartData, isPreview, onAnnotationPositionChange 
   );
 }
 
-export function ChartDisplayArea({ chart, chartData, isLoading, error, onAddSeries, isPreview = false, onAnnotationPositionChange }: ChartDisplayAreaProps) {
+export function ChartDisplayArea({ chart, timeSeriesData, aggregatedData, dataMap, unitMap, isLoading, error, onAddSeries, isPreview = false, onAnnotationPositionChange }: ChartDisplayAreaProps) {
   const renderContent = () => {
     if (chart.series.length === 0) return <NoDataSeries onAddSeries={onAddSeries} chart={chart} />;
     if (isLoading) return <LoadingSpinner text="Loading chart data..." />;
     if (error) return <ErrorDisplay error={error} />;
-    if (!chartData || chartData.length === 0) return <NoDataAvailable chart={chart} />;
-    return <ChartContent chart={chart} chartData={chartData} isPreview={isPreview} onAnnotationPositionChange={onAnnotationPositionChange} />;
+    if (!dataMap || dataMap.size === 0) return <NoDataAvailable chart={chart} />;
+    return <ChartContent chart={chart} timeSeriesData={timeSeriesData} aggregatedData={aggregatedData} dataMap={dataMap} unitMap={unitMap} isPreview={isPreview} onAnnotationPositionChange={onAnnotationPositionChange} />;
   };
 
   const content = <div className="p-4 flex-grow min-h-[500px] flex items-center justify-center bg-muted/20">{renderContent()}</div>;

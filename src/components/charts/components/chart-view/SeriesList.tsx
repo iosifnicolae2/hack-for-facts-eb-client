@@ -103,7 +103,6 @@ export function SeriesList() {
                   <SeriesListItem
                     key={series.id}
                     series={series}
-                    index={index}
                     isSelected={selectedSeriesId === series.id}
                     onSelect={() => handleSelect(series.id)}
                     onDeselect={() => handleDeselect(series.id)}

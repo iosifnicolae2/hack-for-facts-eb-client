@@ -8,11 +8,11 @@ import { ChartType } from '@/schemas/constants';
 import { ShareChart } from './components/ShareChart';
 import { ChartQuickConfigMenu } from './components/ChartQuickConfigMenu';
 import { useChartStore } from '../../hooks/useChartStore';
-import { AnalyticsDataPoint } from '@/lib/api/charts';
 import { useCopyPasteChart } from '../../hooks/useCopyPaste';
+import { DataSeriesMap } from '../../hooks/useChartData';
 
 interface ChartQuickConfigProps {
-  chartData?: AnalyticsDataPoint[];
+  dataMap?: DataSeriesMap;
 }
 
 
@@ -43,9 +43,9 @@ const getChartTypeLabel = (chartType: ChartType) => {
   return chartTypes.find(t => t.value === chartType)?.label || chartType;
 };
 
-export function ChartQuickConfig({ chartData }: ChartQuickConfigProps) {
+export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
   const { chart, updateChart, deleteChart, duplicateChart, goToConfig } = useChartStore();
-  const { copyChart } = useCopyPasteChart(chartData);
+  const { copyChart } = useCopyPasteChart(dataMap);
 
 
   return (
