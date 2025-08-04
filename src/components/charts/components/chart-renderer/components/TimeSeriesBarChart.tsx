@@ -34,7 +34,7 @@ export function TimeSeriesBarChart({ chart, unitMap, timeSeriesData, onAnnotatio
         onMouseUp={handleMouseUp}
         onMouseLeave={clearSelection}
       >
-        <MultiAxisChartContainer chart={chart} unitMap={unitMap} onAnnotationPositionChange={onAnnotationPositionChange}>
+        <MultiAxisChartContainer disableTooltip={diffEnabled || chart.config.editAnnotations} chart={chart} unitMap={unitMap} onAnnotationPositionChange={onAnnotationPositionChange}>
           {(getYAxisId: (seriesId: string) => string) => (
             <>
               {enabledSeries.map((series) => (

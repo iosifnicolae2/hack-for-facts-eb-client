@@ -48,7 +48,7 @@ export function CustomSeriesTooltip({
     if (!active || !mappedPayload || mappedPayload.length === 0) return null;
 
     return (
-        <div className="bg-background/50 backdrop-blur-sm border border-border rounded-lg shadow-lg p-4 important:z-50">
+        <div className="bg-background/50 backdrop-blur-sm border border-border rounded-lg shadow-lg p-4 important:z-50 select-none">
             <div className="font-semibold text-foreground mb-2 text-center border-b pb-1">
                 {isAggregated ? `Date consolidate ${yearRangeText}` : `Anul ${label}`}
             </div>

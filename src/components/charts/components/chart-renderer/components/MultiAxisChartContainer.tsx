@@ -14,9 +14,10 @@ interface MultiAxisChartContainerProps {
   unitMap: UnitMap;
   children: ((getYAxisId: (seriesId: string) => string) => ReactNode) | ReactNode;
   onAnnotationPositionChange: (pos: AnnotationPositionChange) => void;
+  disableTooltip?: boolean;
 }
 
-export function MultiAxisChartContainer({ unitMap, chart, children, onAnnotationPositionChange }: MultiAxisChartContainerProps) {
+export function MultiAxisChartContainer({ unitMap, chart, children, onAnnotationPositionChange, disableTooltip }: MultiAxisChartContainerProps) {
 
   // Group series by unit
   const unitGroups = useMemo(() => {
@@ -58,7 +59,7 @@ export function MultiAxisChartContainer({ unitMap, chart, children, onAnnotation
         />
       ))}
 
-      {chart.config.showTooltip && (
+      {chart.config.showTooltip && !disableTooltip && (
         <Tooltip
           reverseDirection={{ y: true }}
           content={<CustomSeriesTooltip chartConfig={chart.config} chart={chart} />}

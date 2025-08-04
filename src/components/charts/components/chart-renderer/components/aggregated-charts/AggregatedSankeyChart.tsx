@@ -149,14 +149,19 @@ const prepareSankeyData = (aggregatedData: DataPointPayload[]): SankeyData => {
     }
 
     const totalValue = aggregatedData.reduce((acc, d) => acc + d.value, 0);
+    const unit = aggregatedData[0]?.unit;
+    const year = aggregatedData[0]?.year;
+
+    // Filter smaller values
+    const aggregatedDataDisplayed = aggregatedData.filter(d => d.value > 1);
 
     // Node for the total value
     const totalNode: DataPointPayload = {
         value: totalValue,
-        unit: aggregatedData[0]?.unit,
+        unit: unit,
         initialValue: totalValue,
-        initialUnit: aggregatedData[0]?.unit,
-        year: aggregatedData[0]?.year,
+        initialUnit: unit,
+        year: year,
         id: 'total',
         series: {
             id: 'total',
@@ -168,14 +173,14 @@ const prepareSankeyData = (aggregatedData: DataPointPayload[]): SankeyData => {
     }
 
     const nodes: DataPointPayload[] = [
-        ...aggregatedData,
+        ...aggregatedDataDisplayed,
         totalNode,
     ];
 
-    const links: SankeyLink[] = aggregatedData.map((_, index) => ({
+    const links: SankeyLink[] = aggregatedDataDisplayed.map((_, index) => ({
         source: index,
-        target: aggregatedData.length, // Total node index
-        value: aggregatedData[index].value,
+        target: aggregatedDataDisplayed.length, // Total node index
+        value: aggregatedDataDisplayed[index].value,
     }));
 
     return { nodes, links };
