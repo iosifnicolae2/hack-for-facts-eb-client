@@ -13,6 +13,7 @@ export const ChartConfigSchema = z.object({
   showLegend: z.boolean().default(true),
   showRelativeValues: z.boolean().optional().describe('Show relative values on the chart for all the series using percentage and the first series as the base'),
   showTooltip: z.boolean().default(true),
+  showDiffControl: z.boolean().optional().describe('Show a control to select a range and calculate the difference between the start and end values.'),
   editAnnotations: z.boolean().default(true).describe('Allow editing of annotations'),
   showAnnotations: z.boolean().default(true).describe('Show annotations on the chart'),
   yearRange: z.object({

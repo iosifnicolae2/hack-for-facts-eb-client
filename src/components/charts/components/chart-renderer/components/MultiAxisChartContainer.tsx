@@ -45,7 +45,7 @@ export function MultiAxisChartContainer({ unitMap, chart, children, onAnnotation
   return (
     <>
       {chart.config.showGridLines && <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />}
-      <XAxis dataKey="year" className="text-xs fill-muted-foreground" tick={{ fontSize: 12 }} />
+      <XAxis dataKey="year" className="text-xs fill-muted-foreground select-none" tick={{ fontSize: 12 }} />
 
       {/* Render Y-axes for each unit */}
       {unitGroups.map((group, index) => (
@@ -53,7 +53,7 @@ export function MultiAxisChartContainer({ unitMap, chart, children, onAnnotation
           key={`yaxis-${index}`}
           yAxisId={`yaxis-${index}`}
           orientation={index % 2 === 0 ? 'left' : 'right'}
-          className="text-xs fill-muted-foreground"
+          className="text-xs fill-muted-foreground select-none"
           tickFormatter={(value: number) => yValueFormatter(value, group.unit)}
         />
       ))}
