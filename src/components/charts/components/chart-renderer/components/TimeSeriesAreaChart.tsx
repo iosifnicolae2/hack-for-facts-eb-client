@@ -1,37 +1,25 @@
-import { AreaChart, Area, ResponsiveContainer, LabelList, ReferenceArea } from 'recharts';
+import { Area, AreaChart, LabelList, ResponsiveContainer } from 'recharts';
 import { MultiAxisChartContainer } from './MultiAxisChartContainer';
 import { ChartRendererProps } from './ChartRenderer';
-import { useCallback } from 'react';
-import { applyAlpha, generateRandomColor, yValueFormatter } from '../utils';
 import { ChartLabel } from './ChartLabel';
 import { DataPointPayload } from '@/components/charts/hooks/useChartData';
+import { yValueFormatter } from '../utils';
 import { useChartDiff } from '../hooks/useChartDiff';
-import { DiffLabel } from './DiffLabel';
+import { DiffArea } from './diff-select/DiffArea';
+import { useMemo } from 'react';
 
-export function TimeSeriesAreaChart({ chart, timeSeriesData, unitMap, onAnnotationPositionChange }: ChartRendererProps) {
-  const enabledSeries = chart.series.filter(s => s.enabled);
+export function TimeSeriesAreaChart({ chart, unitMap, timeSeriesData, onAnnotationPositionChange }: ChartRendererProps) {
+  const enabledSeries = useMemo(() => chart.series.filter(s => s.enabled), [chart.series]);
   const {
-    refAreaLeft,
-    refAreaRight,
-    diffs,
     handleMouseDown,
     handleMouseMove,
     handleMouseUp,
     clearSelection,
+    refAreaLeft,
+    refAreaRight,
+    diffs,
   } = useChartDiff(timeSeriesData, enabledSeries);
-
-  const getSeriesColor = useCallback(
-    (seriesId: string, opacity = 1): string => {
-      const seriesConfig = enabledSeries.find(s => s.id === seriesId);
-      const base =
-        seriesConfig?.config.color ||
-        chart.config.color ||
-        generateRandomColor();
-
-      return applyAlpha(base, opacity);
-    },
-    [enabledSeries, chart.config.color]
-  );
+  const diffEnabled = chart.config.showDiffControl && !!refAreaLeft && !!refAreaRight && enabledSeries.length > 0;
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -52,8 +40,8 @@ export function TimeSeriesAreaChart({ chart, timeSeriesData, unitMap, onAnnotati
                   yAxisId={getYAxisId(series.id)}
                   dataKey={`${series.id}.value`}
                   name={series.label || 'Untitled'}
-                  stroke={getSeriesColor(series.id)}
-                  fill={getSeriesColor(series.id, 0.6)}
+                  stroke={series.config.color}
+                  fill={series.config.color}
                   type="monotone"
                   strokeWidth={2}
                   fillOpacity={0.6}
@@ -65,16 +53,10 @@ export function TimeSeriesAreaChart({ chart, timeSeriesData, unitMap, onAnnotati
                     offset={30}
                     content={(props) => {
                       const isShowLabels = series.config.showDataLabels || chart.config.showDataLabels;
-                      if (!isShowLabels) {
-                        return null;
-                      }
-
-                      const payload = props.value as unknown as DataPointPayload
-                      const dataLabels = series.config.dataLabels || []
-                      const year = String(payload.year)
-                      if (dataLabels.length > 0 && !dataLabels.includes(year)) {
-                        return null;
-                      }
+                      if (!isShowLabels) return null;
+                      const payload = props.value as unknown as DataPointPayload;
+                      const dataLabels = series.config.dataLabels || [];
+                      if (dataLabels.length > 0 && !dataLabels.includes(String(payload.year))) return null;
                       return (
                         <ChartLabel
                           {...props}
@@ -83,23 +65,18 @@ export function TimeSeriesAreaChart({ chart, timeSeriesData, unitMap, onAnnotati
                           dataLabelFormatter={(value) => yValueFormatter(value, payload.unit)}
                           color={series.config.color}
                         />
-                      )
+                      );
                     }}
                     formatter={(label: unknown) => yValueFormatter(Number(label as number), '')}
                   />
                 </Area>
               ))}
-              {refAreaLeft && refAreaRight && (
-                <ReferenceArea
-                  yAxisId={getYAxisId(enabledSeries[0]?.id)}
-                  x1={refAreaLeft}
-                  x2={refAreaRight}
-                  stroke="#3399FF"
-                  strokeOpacity={0.7}
-                  fill="#3399FF"
-                  fillOpacity={0.1}
-                  ifOverflow="visible"
-                  label={<DiffLabel data={diffs} start={refAreaLeft} end={refAreaRight} />}
+              {diffEnabled && (
+                <DiffArea
+                  yAxisId={getYAxisId(enabledSeries[0].id)}
+                  refAreaLeft={refAreaLeft}
+                  refAreaRight={refAreaRight}
+                  diffs={diffs}
                 />
               )}
             </>

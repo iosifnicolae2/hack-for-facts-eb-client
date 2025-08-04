@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { DataPointPayload, TimeSeriesDataPoint } from '@/components/charts/hooks/useChartData';
 import { Series } from '@/schemas/charts';
-import { DiffInfo } from '../components/DiffLabel';
+import { DiffInfo } from '../components/diff-select/DiffLabel';
 
 export const useChartDiff = (timeSeriesData: TimeSeriesDataPoint[], enabledSeries: Series[]) => {
   const [refAreaLeft, setRefAreaLeft] = useState<string | number>('');
@@ -47,13 +47,13 @@ export const useChartDiff = (timeSeriesData: TimeSeriesDataPoint[], enabledSerie
     setDiffs(calculatedDiffs);
   }, [timeSeriesData, enabledSeries]);
 
-  const handleMouseDown = (e: any) => {
+  const handleMouseDown = (e: { activeLabel: string | undefined } | undefined) => {
     if (e && e.activeLabel) {
       setDragStart(e.activeLabel);
     }
   };
 
-  const handleMouseMove = (e: any) => {
+  const handleMouseMove = (e: { activeLabel: string | undefined } | undefined) => {
     if (dragStart && e && e.activeLabel) {
       setRefAreaLeft(dragStart);
       setRefAreaRight(e.activeLabel);

@@ -1,23 +1,24 @@
-import { LineChart, Line, ResponsiveContainer, LabelList, ReferenceArea } from 'recharts';
+import { LineChart, Line, ResponsiveContainer, LabelList } from 'recharts';
 import { MultiAxisChartContainer } from './MultiAxisChartContainer';
 import { ChartRendererProps } from './ChartRenderer';
 import { DataPointPayload } from '@/components/charts/hooks/useChartData';
 import { ChartLabel } from './ChartLabel';
 import { yValueFormatter } from '../utils';
 import { useChartDiff } from '../hooks/useChartDiff';
-import { DiffLabel } from './DiffLabel';
+import { DiffArea } from './diff-select/DiffArea';
 
 export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotationPositionChange }: ChartRendererProps) {
   const enabledSeries = chart.series.filter(s => s.enabled);
   const {
-    refAreaLeft,
-    refAreaRight,
-    diffs,
     handleMouseDown,
     handleMouseMove,
     handleMouseUp,
     clearSelection,
+    refAreaLeft,
+    refAreaRight,
+    diffs,
   } = useChartDiff(timeSeriesData, enabledSeries);
+  const diffEnabled = chart.config.showDiffControl && !!refAreaLeft && !!refAreaRight && enabledSeries.length > 0;
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -72,18 +73,12 @@ export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotati
                   />
                 </Line>
               ))}
-
-              {refAreaLeft && refAreaRight && (
-                <ReferenceArea
-                  yAxisId={getYAxisId(enabledSeries[0]?.id)}
-                  x1={refAreaLeft}
-                  x2={refAreaRight}
-                  stroke="#3399FF"
-                  strokeOpacity={0.7}
-                  fill="#3399FF"
-                  fillOpacity={0.1}
-                  ifOverflow="visible"
-                  label={<DiffLabel data={diffs} start={refAreaLeft} end={refAreaRight} />}
+              {diffEnabled && (
+                <DiffArea
+                  yAxisId={getYAxisId(enabledSeries[0].id)}
+                  refAreaLeft={refAreaLeft}
+                  refAreaRight={refAreaRight}
+                  diffs={diffs}
                 />
               )}
             </>

@@ -3,6 +3,7 @@ import { ChartRendererProps } from '../ChartRenderer';
 import { yValueFormatter } from '../../utils';
 import { ReactNode } from 'react';
 import { CustomSeriesTooltip } from '../Tooltips';
+import { AlertTriangle } from 'lucide-react';
 
 interface CustomYAxisTickProps {
     y?: number;
@@ -24,6 +25,18 @@ const CustomYAxisTick = ({ y, payload, width }: CustomYAxisTickProps) => {
 export function AggregatedBarChart({ chart, aggregatedData, unitMap, height }: ChartRendererProps) {
 
     const displayUnit = unitMap.get(aggregatedData[0]?.id) || '';
+
+    const units = new Set(unitMap.values());
+    if (units.size > 1) {
+        return (
+            <div className="flex flex-col items-center justify-center h-full text-muted-foreground" style={{ height }}>
+                <AlertTriangle className="w-12 h-12 text-amber-500" />
+                <p className="mt-4 text-center text-lg">Multiple units selected</p>
+                <p className="text-sm text-center">Bar charts cannot effectively display series with different units ({Array.from(units).join(', ')}).</p>
+            </div>
+        );
+    }
+
 
     return (
         <ResponsiveContainer width="100%" height={height}>
