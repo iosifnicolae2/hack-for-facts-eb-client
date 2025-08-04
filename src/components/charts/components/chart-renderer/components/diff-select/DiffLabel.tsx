@@ -28,12 +28,13 @@ export const DiffLabel = ({ viewBox, data, start, end }: DiffLabelProps) => {
   if (!viewBox || !data.length) return null;
 
   const { x, y, width, height } = viewBox;
+  const isAnimationActive = false;
 
   const [displayStart, displayEnd] = [start, end].sort((a, b) => Number(a) - Number(b));
 
   return (
     <foreignObject x={x} y={y} width={width} height={height} className="overflow-visible">
-      <div className="w-full h-full flex justify-center items-center pointer-events-none ease-in duration-[50ms] fade-in-0 animate-in">
+      <div className={cn("w-full h-full flex justify-center items-center pointer-events-none", isAnimationActive && "ease-in duration-[100ms] fade-in-0 animate-in")}>
         <div
           className="bg-background/80 backdrop-blur-sm border rounded-lg p-3 shadow-lg select-none pointer-events-auto w-64"
         >

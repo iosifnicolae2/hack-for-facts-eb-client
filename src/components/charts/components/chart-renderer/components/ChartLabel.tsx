@@ -22,7 +22,7 @@ export function ChartLabel(props: ChartLabelProps) {
     const increaseFactor = 7;
     const labelWidth = formattedValue.length > 6 ? formattedValue.length * increaseFactor : 50;
     return (
-        <g>
+        <g className="select-none">
             <rect
                 x={xValue - labelWidth / 2 + chartItemWidth / 2}
                 y={yValue - offsetValue + seriesOffset}

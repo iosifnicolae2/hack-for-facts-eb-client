@@ -1,4 +1,4 @@
-import { LineChart, Line, ResponsiveContainer, LabelList } from 'recharts';
+import { LabelList, Line, LineChart, ResponsiveContainer } from 'recharts';
 import { MultiAxisChartContainer } from './MultiAxisChartContainer';
 import { ChartRendererProps } from './ChartRenderer';
 import { DataPointPayload } from '@/components/charts/hooks/useChartData';
@@ -6,9 +6,12 @@ import { ChartLabel } from './ChartLabel';
 import { yValueFormatter } from '../utils';
 import { useChartDiff } from '../hooks/useChartDiff';
 import { DiffArea } from './diff-select/DiffArea';
+import { useChartAnimation } from '../hooks/useChartAnimatin';
 
 export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotationPositionChange }: ChartRendererProps) {
   const enabledSeries = chart.series.filter(s => s.enabled);
+  const animationDuration = 300;
+  const { isAnimationActive } = useChartAnimation(animationDuration);
   const {
     handleMouseDown,
     handleMouseMove,
@@ -45,7 +48,8 @@ export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotati
                   dot={{ r: 4 }}
                   activeDot={{ r: 6 }}
                   connectNulls={false}
-                  animationDuration={300}
+                  isAnimationActive={isAnimationActive}
+                  animationDuration={animationDuration}
                   animationEasing="ease-in-out"
                 >
                   <LabelList

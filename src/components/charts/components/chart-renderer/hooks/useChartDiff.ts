@@ -50,6 +50,7 @@ export const useChartDiff = (timeSeriesData: TimeSeriesDataPoint[], enabledSerie
   const handleMouseDown = (e: { activeLabel: string | undefined } | undefined) => {
     if (e && e.activeLabel) {
       setDragStart(e.activeLabel);
+      setRefAreaRight('');
     }
   };
 

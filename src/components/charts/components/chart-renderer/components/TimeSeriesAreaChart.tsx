@@ -7,9 +7,12 @@ import { yValueFormatter } from '../utils';
 import { useChartDiff } from '../hooks/useChartDiff';
 import { DiffArea } from './diff-select/DiffArea';
 import { useMemo } from 'react';
+import { useChartAnimation } from '../hooks/useChartAnimatin';
 
 export function TimeSeriesAreaChart({ chart, unitMap, timeSeriesData, onAnnotationPositionChange }: ChartRendererProps) {
   const enabledSeries = useMemo(() => chart.series.filter(s => s.enabled), [chart.series]);
+  const animationDuration = 300;
+  const { isAnimationActive } = useChartAnimation(animationDuration);
   const {
     handleMouseDown,
     handleMouseMove,
@@ -45,7 +48,8 @@ export function TimeSeriesAreaChart({ chart, unitMap, timeSeriesData, onAnnotati
                   type="monotone"
                   strokeWidth={2}
                   fillOpacity={0.6}
-                  animationDuration={300}
+                  animationDuration={animationDuration}
+                  isAnimationActive={isAnimationActive}
                   animationEasing="ease-in-out"
                 >
                   <LabelList
