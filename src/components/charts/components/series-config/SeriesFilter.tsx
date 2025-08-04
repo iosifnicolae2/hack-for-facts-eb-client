@@ -29,6 +29,8 @@ interface SeriesFilterProps {
     className?: string;
 }
 
+type FilterValue = string | number | boolean | undefined;
+
 export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
     const { chart, updateSeries } = useChartStore();
     const series = chart.series.find(s => s.id === seriesId && s.type === 'line-items-aggregated-yearly') as SeriesConfiguration;
@@ -67,9 +69,8 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
             return newState;
         };
 
-    // Generic updater for simple value filters
-    const createValueUpdater = (filterKey: keyof typeof filter, transform?: (value: string | number | boolean | undefined) => string | number | boolean | (string | number)[] | undefined) =>
-        (value: string | number | boolean | undefined) => {
+    const createValueUpdater = (filterKey: keyof typeof filter, transform?: (value: FilterValue) => FilterValue) =>
+        (value: FilterValue) => {
             if (!seriesId) return;
             updateSeries(seriesId, (prevSeries) => {
                 const newValue = typeof transform === 'function' ? transform(value) : value;
@@ -79,6 +80,18 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
                 return prevSeries;
             });
         };
+
+    const createPrefixListUpdater = (filterKey: 'functional_prefixes' | 'economic_prefixes') =>
+        (value: string[] | undefined) => {
+            if (!seriesId) return;
+            updateSeries(seriesId, (prevSeries) => {
+                if (prevSeries.type === 'line-items-aggregated-yearly') {
+                    prevSeries.filter[filterKey] = value && value.length > 0 ? value : undefined;
+                }
+                return prevSeries;
+            });
+        };
+
 
     // State and Handlers
 
@@ -109,11 +122,11 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
     const setReportType = createValueUpdater('report_type', (v) => v ? v : undefined);
     const reportTypeOption: OptionItem | null = reportType ? { id: reportType, label: reportType } : null;
 
-    const functionalPrefix = filter.functional_prefixes?.[0];
-    const setFunctionalPrefix = createValueUpdater('functional_prefixes', (v) => v ? [String(v)] : undefined);
+    const functionalPrefixes = filter.functional_prefixes ?? [];
+    const setFunctionalPrefixes = createPrefixListUpdater('functional_prefixes');
 
-    const economicPrefix = filter.economic_prefixes?.[0];
-    const setEconomicPrefix = createValueUpdater('economic_prefixes', (v) => v ? [String(v)] : undefined);
+    const economicPrefixes = filter.economic_prefixes ?? [];
+    const setEconomicPrefixes = createPrefixListUpdater('economic_prefixes');
 
     const selectedBudgetSectorOptions: OptionItem[] = filter.budget_sector_ids?.map(id => ({ id, label: budgetSectorLabelsStore.map(id) })) || [];
     const setSelectedBudgetSectorOptions = createListUpdater('budget_sector_ids', budgetSectorLabelsStore);
@@ -139,16 +152,18 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
     const totalSelectedFilters =
         (filter.entity_cuis?.length ?? 0) +
         (filter.uat_ids?.length ?? 0) +
-        (filter.economic_prefixes?.length ?? 0) +
-        (filter.functional_prefixes?.length ?? 0) +
+        (filter.economic_codes?.length ?? 0) +
+        (filter.functional_codes?.length ?? 0) +
+        (filter.budget_sector_ids?.length ?? 0) +
+        (filter.funding_source_ids?.length ?? 0) +
         (filter.account_category ? 1 : 0) +
         (filter.entity_types?.length ?? 0) +
         (filter.min_amount != null ? 1 : 0) +
         (filter.max_amount != null ? 1 : 0) +
         (reportType ? 1 : 0) +
         (filter.is_uat !== undefined ? 1 : 0) +
-        (functionalPrefix ? 1 : 0) +
-        (economicPrefix ? 1 : 0);
+        (filter.functional_prefixes?.length ?? 0) +
+        (filter.economic_prefixes?.length ?? 0);
 
     const handleClearReportType = () => setReportType(undefined);
 
@@ -238,15 +253,15 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
                     title="Prefix Clasificare Functionala"
                     icon={<ChartBar className="w-4 h-4" />}
                     prefixComponent={PrefixFilter}
-                    value={functionalPrefix}
-                    onValueChange={setFunctionalPrefix}
+                    value={functionalPrefixes}
+                    onValueChange={setFunctionalPrefixes}
                 />
                 <FilterPrefixContainer
                     title="Prefix Clasificare Economica"
                     icon={<EuroIcon className="w-4 h-4" />}
                     prefixComponent={PrefixFilter}
-                    value={economicPrefix}
-                    onValueChange={setEconomicPrefix}
+                    value={economicPrefixes}
+                    onValueChange={setEconomicPrefixes}
                 />
                 <FilterRangeContainer
                     title="Interval Valoare"

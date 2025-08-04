@@ -35,8 +35,8 @@ const InternalFiltersObjectSchema = z.object({
     accountTypes: z.array(GenericOptionItemSchema).optional().default([]),
     reportType: z.string().optional(),
     isUat: z.boolean().optional(),
-    functionalPrefix: z.string().optional(),
-    economicPrefix: z.string().optional(),
+    functionalPrefixes: z.array(z.string()).optional().default([]),
+    economicPrefixes: z.array(z.string()).optional().default([]),
     entityTypes: z.array(GenericOptionItemSchema).optional().default([]),
     page: z.number().optional().default(1),
     pageSize: z.number().optional().default(25),
@@ -66,8 +66,8 @@ interface FilterStoreActions {
     setSort: (updater: SortOrder | ((prev: SortOrder) => SortOrder)) => void;
     setReportType: (updater: string | undefined | ((prev: string | undefined) => string | undefined)) => void;
     setIsUat: (updater: boolean | undefined | ((prev: boolean | undefined) => boolean | undefined)) => void;
-    setFunctionalPrefix: (updater: string | undefined | ((prev: string | undefined) => string | undefined)) => void;
-    setEconomicPrefix: (updater: string | undefined | ((prev: string | undefined) => string | undefined)) => void;
+    setFunctionalPrefixes: (updater: string[] | undefined | ((prev: string[] | undefined) => string[] | undefined)) => void;
+    setEconomicPrefixes: (updater: string[] | undefined | ((prev: string[] | undefined) => string[] | undefined)) => void;
     setSelectedEntityTypes: (updater: GenericOptionItem[] | ((prev: GenericOptionItem[]) => GenericOptionItem[])) => void;
     resetFilters: () => void;
 }
@@ -180,11 +180,11 @@ export const useLineItemsFilterStore = create<FilterStore>()(
             setIsUat: (updater) => set(state => ({
                 isUat: typeof updater === 'function' ? updater(state.isUat) : updater,
             })),
-            setFunctionalPrefix: (updater) => set(state => ({
-                functionalPrefix: typeof updater === 'function' ? updater(state.functionalPrefix) : updater,
+            setFunctionalPrefixes: (updater) => set(state => ({
+                functionalPrefixes: typeof updater === 'function' ? updater(state.functionalPrefixes) : updater,
             })),
-            setEconomicPrefix: (updater) => set(state => ({
-                economicPrefix: typeof updater === 'function' ? updater(state.economicPrefix) : updater,
+            setEconomicPrefixes: (updater) => set(state => ({
+                economicPrefixes: typeof updater === 'function' ? updater(state.economicPrefixes) : updater,
             })),
             setSelectedEntityTypes: (updater) => set(state => ({
                 entityTypes: typeof updater === 'function' ? updater(state.entityTypes) : updater,
@@ -213,8 +213,8 @@ export const useFilterSearch = () => {
         sort,
         reportType,
         isUat,
-        functionalPrefix,
-        economicPrefix,
+        functionalPrefixes,
+        economicPrefixes,
         entityTypes,
         setSort,
         setSelectedYears,
@@ -229,8 +229,8 @@ export const useFilterSearch = () => {
         setPageSize,
         setReportType,
         setIsUat,
-        setFunctionalPrefix,
-        setEconomicPrefix,
+        setFunctionalPrefixes,
+        setEconomicPrefixes,
         setSelectedEntityTypes,
     } = useLineItemsFilterStore();
 
@@ -245,10 +245,10 @@ export const useFilterSearch = () => {
         max_amount: maxAmount ? Number(maxAmount) : undefined,
         report_type: reportType,
         is_uat: isUat,
-        functional_prefixes: functionalPrefix ? [functionalPrefix] : undefined,
-        economic_prefixes: economicPrefix ? [economicPrefix] : undefined,
+        functional_prefixes: functionalPrefixes,
+        economic_prefixes: economicPrefixes,
         entity_types: entityTypes.map(et => et.id),
-    }), [entities, functionalClassifications, economicClassifications, accountTypes, uats, years, minAmount, maxAmount, reportType, isUat, functionalPrefix, economicPrefix, entityTypes]);
+    }), [entities, functionalClassifications, economicClassifications, accountTypes, uats, years, minAmount, maxAmount, reportType, isUat, functionalPrefixes, economicPrefixes, entityTypes]);
 
     const filterHash = useMemo(() => {
         return generateHash(JSON.stringify(filter));
@@ -269,8 +269,8 @@ export const useFilterSearch = () => {
         sort,
         reportType,
         isUat,
-        functionalPrefix,
-        economicPrefix,
+        functionalPrefixes,
+        economicPrefixes,
         selectedEntityTypeOptions: entityTypes as OptionItem[],
 
         // Setters (actions)
@@ -287,8 +287,8 @@ export const useFilterSearch = () => {
         setSort,
         setReportType,
         setIsUat,
-        setFunctionalPrefix,
-        setEconomicPrefix,
+        setFunctionalPrefixes,
+        setEconomicPrefixes,
         setSelectedEntityTypeOptions: setSelectedEntityTypes as OptionSetter,
 
         filter,

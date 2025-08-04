@@ -45,10 +45,10 @@ export function LineItemsFilter({ isInModal = false }: LineItemsFilterProps) {
         setReportType,
         isUat,
         setIsUat,
-        functionalPrefix,
-        setFunctionalPrefix,
-        economicPrefix,
-        setEconomicPrefix,
+        functionalPrefixes,
+        setFunctionalPrefixes,
+        economicPrefixes,
+        setEconomicPrefixes,
         selectedEntityTypeOptions,
         setSelectedEntityTypeOptions,
     } = useFilterSearch();
@@ -64,8 +64,8 @@ export function LineItemsFilter({ isInModal = false }: LineItemsFilterProps) {
         setSelectedAccountTypeOptions([]);
         setReportType(undefined);
         setIsUat(undefined);
-        setFunctionalPrefix(undefined);
-        setEconomicPrefix(undefined);
+        setFunctionalPrefixes(undefined);
+        setEconomicPrefixes(undefined);
         setSelectedEntityTypeOptions([]);
     };
 
@@ -83,8 +83,8 @@ export function LineItemsFilter({ isInModal = false }: LineItemsFilterProps) {
         (maxAmount !== undefined && maxAmount !== '' ? 1 : 0) +
         (reportType ? 1 : 0) +
         (isUat !== undefined ? 1 : 0) +
-        (functionalPrefix ? 1 : 0) +
-        (economicPrefix ? 1 : 0);
+        (functionalPrefixes?.length ?? 0) +
+        (economicPrefixes?.length ?? 0);
 
     const reportTypeOption: OptionItem | null = reportType ? { id: reportType, label: reportType } : null;
 
@@ -169,15 +169,15 @@ export function LineItemsFilter({ isInModal = false }: LineItemsFilterProps) {
                     title="Prefix Clasificare Functionala"
                     icon={<ChartBar className="w-4 h-4" />}
                     prefixComponent={PrefixFilter}
-                    value={functionalPrefix}
-                    onValueChange={setFunctionalPrefix}
+                    value={functionalPrefixes}
+                    onValueChange={setFunctionalPrefixes}
                 />
                 <FilterPrefixContainer
                     title="Prefix Clasificare Economica"
                     icon={<EuroIcon className="w-4 h-4" />}
                     prefixComponent={PrefixFilter}
-                    value={economicPrefix}
-                    onValueChange={setEconomicPrefix}
+                    value={economicPrefixes}
+                    onValueChange={setEconomicPrefixes}
                 />
                 <FilterListContainer
                     title="Anul"
