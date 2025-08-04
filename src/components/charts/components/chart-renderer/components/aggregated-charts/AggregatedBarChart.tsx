@@ -13,7 +13,7 @@ interface CustomYAxisTickProps {
 const CustomYAxisTick = ({ y, payload, width }: CustomYAxisTickProps) => {
     if (!payload) return null;
     return (
-        <g transform={`translate(0,${y})`}>
+        <g transform={`translate(30,${y})`}>
             <text x={0} y={0} dy={4} width={width} textAnchor="start" fill="#666" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {payload.value}
             </text>
@@ -27,7 +27,7 @@ export function AggregatedBarChart({ chart, aggregatedData, unitMap, height }: C
 
     return (
         <ResponsiveContainer width="100%" height={height}>
-            <BarChart data={aggregatedData} layout="vertical" margin={{ top: 50, right: 40, left: 120, bottom: 20 }}>
+            <BarChart data={aggregatedData} layout="vertical" margin={{ top: 50, right: 40, left: 80, bottom: 20 }}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                     type="number"
@@ -40,17 +40,19 @@ export function AggregatedBarChart({ chart, aggregatedData, unitMap, height }: C
                     tick={<CustomYAxisTick width={100} />}
                     interval={0}
                 />
-                <Tooltip
-                    cursor={{ fill: 'rgba(206, 206, 206, 0.2)' }}
-                    content={(props) => (
-                        <CustomSeriesTooltip
-                            {...props}
-                            payload={props.payload?.map(p => p.payload)}
-                            chartConfig={chart.config}
-                            chart={chart}
-                        />
-                    )}
-                />
+                {chart.config.showTooltip && (
+                    <Tooltip
+                        cursor={{ fill: 'rgba(206, 206, 206, 0.2)' }}
+                        content={(props) => (
+                            <CustomSeriesTooltip
+                                {...props}
+                                payload={props.payload?.map(p => p.payload)}
+                                chartConfig={chart.config}
+                                chart={chart}
+                            />
+                        )}
+                    />
+                )}
                 <Bar dataKey="value" background={{ fill: '#eee' }}>
                     {aggregatedData.map((entry) => (
                         <Cell key={entry.id} fill={entry.series.config.color} />

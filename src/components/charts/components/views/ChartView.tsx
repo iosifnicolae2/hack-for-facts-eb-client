@@ -33,10 +33,6 @@ export function ChartView() {
     return <LoadingSpinner text="Loading chart configuration..." />;
   }
 
-  if (!dataSeriesMap) {
-    return <LoadingSpinner text="Loading chart data..." />;
-  }
-
   const handleAnnotationPositionChange = (pos: AnnotationPositionChange) => {
     updateAnnotation(pos.annotationId, (prev) => ({ ...prev, ...pos.position }));
   };

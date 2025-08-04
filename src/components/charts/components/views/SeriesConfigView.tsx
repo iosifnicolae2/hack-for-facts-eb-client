@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -32,11 +32,16 @@ export function SeriesConfigView() {
   const series = chart.series.find(s => s.id === seriesId);
   const seriesLabel = series?.label || '';
   const [localLabel, setLocalLabel] = useState(seriesLabel);
+  const inputRef = useRef<HTMLInputElement>(null);
 
 
   useEffect(() => {
     setLocalLabel(seriesLabel);
   }, [seriesLabel]);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   const updateSeriesField = (field: keyof Series, value: string | object) => {
     if (!series) return;
@@ -88,6 +93,7 @@ export function SeriesConfigView() {
           <div className="space-y-2 pt-4">
             <Label htmlFor="series-label">Series Label *</Label>
             <Input
+              ref={inputRef}
               id="series-label"
               value={localLabel}
               onChange={(e) => {

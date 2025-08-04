@@ -17,7 +17,7 @@ interface ChartDisplayAreaProps {
   chart: Chart;
   timeSeriesData: TimeSeriesDataPoint[];
   aggregatedData: DataPointPayload[];
-  dataMap: DataSeriesMap;
+  dataMap?: DataSeriesMap;
   unitMap: UnitMap;
   isLoading: boolean;
   error: Error | null | undefined;
@@ -91,6 +91,8 @@ const ChartContent = React.memo(
           : undefined,
       [chart]
     );
+
+    if (!dataMap) return <LoadingSpinner text="Loading chart data..." />;
 
     return (
       <div className="w-full">

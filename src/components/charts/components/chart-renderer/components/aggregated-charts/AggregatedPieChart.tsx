@@ -2,6 +2,7 @@ import { PieChart, Pie, Tooltip, ResponsiveContainer, Cell, Legend } from 'recha
 import { ChartRendererProps } from '../ChartRenderer';
 import { AlertTriangle } from 'lucide-react';
 import { CustomSeriesTooltip } from '../Tooltips';
+import { yValueFormatter } from '../../utils';
 
 export function AggregatedPieChart({ chart, aggregatedData, unitMap, height }: ChartRendererProps) {
 
@@ -42,9 +43,9 @@ export function AggregatedPieChart({ chart, aggregatedData, unitMap, height }: C
                                 <text x={x} y={y} textAnchor={align} dominantBaseline="central">
                                     {`${(percent * 100).toFixed(0)}%`}
                                 </text>
-                                {chart.config.showDataLabels && (
-                                    <text x={xLabel} y={y} fill={payload?.series.config.color} textAnchor={align} dominantBaseline="central">
-                                        {align === 'start' ? ' - ' : ''} {payload?.series.label} {align === 'start' ? '' : ' - '}
+                                {chart.config.showDataLabels && payload && (
+                                    <text x={xLabel} y={y} fill={payload.series.config.color} textAnchor={align} dominantBaseline="central">
+                                        {align === 'start' ? ' - ' : ''} {`${payload.series.label} (${yValueFormatter(payload.initialValue, payload.initialUnit, 'compact')})`} {align === 'start' ? '' : ' - '}
                                     </text>
                                 )}
                             </g>
