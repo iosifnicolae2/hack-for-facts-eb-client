@@ -3,7 +3,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { BarChart3, LineChart, PieChart, Sandwich, TreesIcon, TrendingUp } from 'lucide-react';
+import { BarChart3, ChartNetworkIcon, LineChart, PieChart, TreesIcon, TrendingUp } from 'lucide-react';
 import { ChartType } from '@/schemas/constants';
 import { ShareChart } from './components/ShareChart';
 import { ChartQuickConfigMenu } from './components/ChartQuickConfigMenu';
@@ -23,7 +23,7 @@ const getChartTypeIcon = (chartType: ChartType) => {
     case 'area': return <TrendingUp className="h-4 w-4" />;
     case 'pie-aggr': return <PieChart className="h-4 w-4" />;
     case 'treemap-aggr': return <TreesIcon className="h-4 w-4" />;
-    case 'sankey-aggr': return <Sandwich className="h-4 w-4" />;
+    case 'sankey-aggr': return <ChartNetworkIcon className="h-4 w-4" />;
     case 'bar-aggr': return <BarChart3 className="h-4 w-4" />;
     default: return <BarChart3 className="h-4 w-4" />;
   }
@@ -36,7 +36,7 @@ const chartTypes = [
   { value: 'bar-aggr', label: 'Bar Chart (Aggregated)', icon: <BarChart3 className="h-4 w-4" /> },
   { value: 'pie-aggr', label: 'Pie Chart (Aggregated)', icon: <PieChart className="h-4 w-4" /> },
   { value: 'treemap-aggr', label: 'Treemap Chart (Aggregated)', icon: <TreesIcon className="h-4 w-4" /> },
-  { value: 'sankey-aggr', label: 'Sankey Chart (Aggregated)', icon: <Sandwich className="h-4 w-4" /> },
+  { value: 'sankey-aggr', label: 'Sankey Chart (Aggregated)', icon: <ChartNetworkIcon className="h-4 w-4" /> },
 ];
 
 const getChartTypeLabel = (chartType: ChartType) => {
@@ -199,12 +199,6 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
               <Badge variant="outline">
                 {chart.series.filter(s => s.enabled).length} Active Series
               </Badge>
-              {/* TODO: add year range selector */}
-              {/* {chart.config.yearRangeStart && chart.config.yearRangeEnd && (
-                <Badge variant="outline">
-                  {chart.config.yearRangeStart}-{chart.config.yearRangeEnd}
-                </Badge>
-              )} */}
               {chart.config.showRelativeValues && (
                 <Badge variant="secondary">Relative Mode</Badge>
               )}

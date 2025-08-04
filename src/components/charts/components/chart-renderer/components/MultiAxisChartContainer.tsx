@@ -49,7 +49,6 @@ export function MultiAxisChartContainer({ unitMap, chart, children, onAnnotation
 
       {/* Render Y-axes for each unit */}
       {unitGroups.map((group, index) => (
-        console.log(group),
         <YAxis
           key={`yaxis-${index}`}
           yAxisId={`yaxis-${index}`}

@@ -2,7 +2,7 @@ import { Chart } from '@/schemas/charts';
 import { TimeSeriesLineChart } from './TimeSeriesLineChart';
 import { TimeSeriesBarChart } from './TimeSeriesBarChart';
 import { TimeSeriesAreaChart } from './TimeSeriesAreaChart';
-import { AnnotationPositionChange } from './interfaces';
+import { AnnotationPositionChange, ChartMargins } from './interfaces';
 import { AggregatedBarChart } from './aggregated-charts/AggregatedBarChart';
 import { AggregatedPieChart } from './aggregated-charts/AggregatedPieChart';
 import { AggregatedTreemapChart } from './aggregated-charts/AggregatedTreemapChart';
@@ -17,10 +17,12 @@ export interface ChartRendererProps {
   unitMap: UnitMap;
   className?: string;
   height?: number;
+  margins?: Partial<ChartMargins>;
+  isPreview?: boolean;
   onAnnotationPositionChange: (pos: AnnotationPositionChange) => void;
 }
 
-export function ChartRenderer({ chart, dataMap, unitMap, aggregatedData, timeSeriesData, className, height = 400, onAnnotationPositionChange }: ChartRendererProps) {
+export function ChartRenderer({ chart, dataMap, unitMap, aggregatedData, timeSeriesData, className, height = 400, isPreview, onAnnotationPositionChange }: ChartRendererProps) {
 
   if (chart.series.filter(s => s.enabled).length === 0) {
     return (
@@ -48,6 +50,8 @@ export function ChartRenderer({ chart, dataMap, unitMap, aggregatedData, timeSer
     timeSeriesData,
   }
 
+  const sankeyMargins = isPreview ? { left: 120, bottom: 50, right: 10 } : { left: 240, bottom: 30, right: 50 };
+
 
   return (
     <div className={className} style={{ width: '100%', height }}>
@@ -57,7 +61,7 @@ export function ChartRenderer({ chart, dataMap, unitMap, aggregatedData, timeSer
       {isAggregated && chart.config.chartType === 'bar-aggr' && <AggregatedBarChart {...data} onAnnotationPositionChange={onAnnotationPositionChange} />}
       {isAggregated && chart.config.chartType === 'pie-aggr' && <AggregatedPieChart {...data} onAnnotationPositionChange={onAnnotationPositionChange} />}
       {isAggregated && chart.config.chartType === 'treemap-aggr' && <AggregatedTreemapChart {...data} onAnnotationPositionChange={onAnnotationPositionChange} />}
-      {isAggregated && chart.config.chartType === 'sankey-aggr' && <AggregatedSankeyChart {...data} onAnnotationPositionChange={onAnnotationPositionChange} />}
+      {isAggregated && chart.config.chartType === 'sankey-aggr' && <AggregatedSankeyChart {...data} onAnnotationPositionChange={onAnnotationPositionChange} margins={sankeyMargins} />}
     </div>
   );
 }

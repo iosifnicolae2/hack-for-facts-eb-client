@@ -25,7 +25,7 @@ export const Route = createFileRoute('/entities/$cui')({
 
 function EntityDetailsPage() {
     const { cui } = useParams({ from: Route.id });
-    const search = useSearch({ from: Route.id }); // TODO: the state is out of sync with the internal state. Improve the state management. Make it atomic.
+    const search = useSearch({ from: Route.id });
     const navigate = useNavigate({ from: Route.id });
     const yearSelectorRef = useRef<HTMLButtonElement>(null);
 

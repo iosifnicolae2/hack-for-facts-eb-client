@@ -5,13 +5,14 @@ import { useMemo, memo, SVGProps, ReactElement } from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { yValueFormatter } from '../../utils';
 import { DataPointPayload } from '@/components/charts/hooks/useChartData';
+import { ChartMargins } from '../interfaces';
 
 // Constants
-const CHART_MARGINS = {
+const CHART_MARGINS: ChartMargins = {
     top: 50,
-    right: 120,
-    bottom: 20,
-    left: 320,
+    right: 30,
+    bottom: 30,
+    left: 120,
 } as const;
 
 const NODE_CONFIG = {
@@ -181,7 +182,7 @@ const prepareSankeyData = (aggregatedData: DataPointPayload[]): SankeyData => {
 };
 
 
-export function AggregatedSankeyChart({ chart, aggregatedData, unitMap, height }: ChartRendererProps) {
+export function AggregatedSankeyChart({ chart, aggregatedData, unitMap, height, margins }: ChartRendererProps) {
     const units = new Set(unitMap.values());
     // Memoize Sankey data preparation
     const sankeyData = useMemo(
@@ -215,7 +216,7 @@ export function AggregatedSankeyChart({ chart, aggregatedData, unitMap, height }
                 linkCurvature={0.5}
                 iterations={32}
                 node={(props) => <SankeyNodeComponent {...props} payload={props.payload as unknown as DataPointPayload} containerWidth={props.width} />}
-                margin={CHART_MARGINS}
+                margin={{ ...CHART_MARGINS, ...margins }}
                 link={{
                     stroke: THEME.link.color,
                     strokeOpacity: THEME.link.opacity

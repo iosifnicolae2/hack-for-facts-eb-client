@@ -9,3 +9,11 @@ export interface AnnotationPositionChange {
     annotationId: string;
     position: AnnotationPosition;
 }
+
+
+export type ChartMargins = {
+    top: number;
+    right: number;
+    bottom: number;
+    left: number;
+}

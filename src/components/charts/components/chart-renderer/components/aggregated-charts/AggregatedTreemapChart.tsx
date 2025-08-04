@@ -82,8 +82,6 @@ export function AggregatedTreemapChart({ chart, aggregatedData, unitMap, height 
 
         const totalValue = aggregatedData.reduce((acc, item) => acc + item.value, 0);
 
-        console.log("aggregatedData", aggregatedData, totalValue);
-
         return [{
             name: 'Aggregated Data',
             value: totalValue,

@@ -82,7 +82,6 @@ const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.memo(
         className="w-full"
         {...(searchTerm ? { value: openChapters } : {})}
       >
-        {/* TODO: Find better design?? */}
         {showTotalValueHeader && <TotalValueComponent />}
         {groups.map((ch) => (
           <GroupedChapterAccordion
