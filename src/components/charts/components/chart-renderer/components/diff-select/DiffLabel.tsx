@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils';
 import { yValueFormatter } from '../../utils';
 import { ChartArea } from 'lucide-react';
+import { useChartWidth } from 'recharts';
 
 export type DiffInfo = {
   label: string;
@@ -25,9 +26,14 @@ interface DiffLabelProps {
 }
 
 export const DiffLabel = ({ viewBox, data, start, end }: DiffLabelProps) => {
+  const chartWidth = useChartWidth() ?? 0;
   if (!viewBox || !data.length) return null;
+  const { x: xValue, y, width, height } = viewBox;
 
-  const { x, y, width, height } = viewBox;
+  // If the center is to close to the right edge, move it to the left
+  const estimatedLabelWidth = 200;
+  const x = xValue + estimatedLabelWidth > chartWidth ? chartWidth - estimatedLabelWidth : xValue;
+  
   const isAnimationActive = false;
 
   const [displayStart, displayEnd] = [start, end].sort((a, b) => Number(a) - Number(b));
