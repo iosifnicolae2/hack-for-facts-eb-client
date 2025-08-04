@@ -33,7 +33,7 @@ export const DiffLabel = ({ viewBox, data, start, end }: DiffLabelProps) => {
 
   return (
     <foreignObject x={x} y={y} width={width} height={height} className="overflow-visible">
-      <div className="w-full h-full flex justify-center items-center pointer-events-none">
+      <div className="w-full h-full flex justify-center items-center pointer-events-none ease-in duration-[50ms] fade-in-0 animate-in">
         <div
           className="bg-background/80 backdrop-blur-sm border rounded-lg p-3 shadow-lg select-none pointer-events-auto w-64"
         >
@@ -48,7 +48,7 @@ export const DiffLabel = ({ viewBox, data, start, end }: DiffLabelProps) => {
                     className="w-3 h-3 rounded-full mr-2 flex-shrink-0"
                     style={{ backgroundColor: item.color }}
                   />
-                  <span className="font-semibold truncate" style={{ color: item.color }}>
+                  <span className="font-semibold truncate" >
                     {item.label}
                   </span>
                 </div>
