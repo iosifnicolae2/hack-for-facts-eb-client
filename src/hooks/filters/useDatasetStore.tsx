@@ -18,6 +18,18 @@ const saveLocalData = (data: Record<string, Dataset>) => {
     localStorage.setItem(DatasetStorageKey, JSON.stringify(data));
 };
 
+const updateLocalData = (data: Record<string, Dataset>): Record<string, Dataset> => {
+    const currentData = loadLocalData();
+    // Deduplicate data
+    data = Object.fromEntries(Object.entries(data).filter(([key]) => !currentData[key]));
+    Object.assign(currentData, data);
+    saveLocalData(currentData);
+    return currentData;
+};
+
+// We need to track pending requests to avoid duplicate requests
+const pendingDatasetRequests = new Set<string>();
+
 export const useDatasetStore = (initialIds: (string | number)[]) => {
     const queryClient = useQueryClient();
 
@@ -32,22 +44,25 @@ export const useDatasetStore = (initialIds: (string | number)[]) => {
         if (!ids || ids.length === 0) return;
 
         const dataMap = loadLocalData();
-        const missingIds = ids.filter(id => !dataMap[String(id)]);
+        const missingIds = ids.filter(id => !dataMap[String(id)] && !pendingDatasetRequests.has(String(id)));
 
         if (missingIds.length === 0) return;
 
         try {
+            missingIds.forEach(id => pendingDatasetRequests.add(String(id)));
             const newDatasets = await getDatasets(missingIds);
 
             newDatasets.forEach((dataset) => {
                 dataMap[String(dataset.id)] = dataset;
             });
 
-            saveLocalData(dataMap);
+            updateLocalData(dataMap);
 
             await queryClient.invalidateQueries({ queryKey: [DatasetStorageKey] });
         } catch (error) {
             console.error("Failed to fetch datasets:", error);
+        } finally {
+            missingIds.forEach(id => pendingDatasetRequests.delete(String(id)));
         }
     };
 
@@ -57,9 +72,9 @@ export const useDatasetStore = (initialIds: (string | number)[]) => {
             currentMap[String(dataset.id)] = dataset;
         });
 
-        saveLocalData(currentMap);
+        const updatedData = updateLocalData(currentMap);
 
-        queryClient.setQueryData([DatasetStorageKey], currentMap);
+        queryClient.setQueryData([DatasetStorageKey], updatedData);
     };
 
     useEffect(() => {

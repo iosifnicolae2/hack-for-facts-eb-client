@@ -1,12 +1,20 @@
 import { StaticSeriesConfiguration } from "@/schemas/charts";
 import { useDatasetStore } from "@/hooks/filters/useDatasetStore";
+import { Chart } from "@/schemas/charts";
 
 interface StaticSeriesFilterProps {
   series: StaticSeriesConfiguration;
+  chart: Chart;
 }
 
-export function StaticSeriesFilter({ series }: StaticSeriesFilterProps) {
-  const { get: getDataset } = useDatasetStore(series.datasetId ? [series.datasetId] : []);
+export function StaticSeriesFilter({ series, chart }: StaticSeriesFilterProps) {
+  // Series ids used to load the initial data
+  const staticSeriesIds = chart.series
+    .filter(s => s.type === "static-series")
+    .map(s => s.datasetId)
+    .filter(id => id !== undefined);
+
+  const { get: getDataset } = useDatasetStore(staticSeriesIds);
   const dataset = series.datasetId ? getDataset(series.datasetId) : null;
 
   if (!dataset) {

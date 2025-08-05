@@ -22,7 +22,7 @@ export function SeriesFilterDisplay({ series, chart }: SeriesFilterDisplayProps)
     case "custom-series-value":
       return <CustomSeriesValueSeriesFilter series={series as z.infer<typeof CustomSeriesValueConfigurationSchema>} />;
     case "static-series":
-      return <StaticSeriesFilter series={series} />;
+      return <StaticSeriesFilter series={series} chart={chart} />;
     default:
       return null;
   }
