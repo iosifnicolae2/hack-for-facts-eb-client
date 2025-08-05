@@ -22,166 +22,166 @@ classifications.groups.forEach(group => {
 });
 
 const groupByFunctional = (items: ExecutionLineItem[]): GroupedChapter[] => {
-    const chapterGroups = new Map<string, { functionals: Map<string, { economics: Map<string, { name: string; amount: number }>; total: number; name: string }>; total: number }>();
+  const chapterGroups = new Map<string, { functionals: Map<string, { economics: Map<string, { name: string; amount: number }>; total: number; name: string }>; total: number }>();
 
-    items.forEach(item => {
-      if (!item.functionalClassification?.functional_code) return;
-      const prefix = item.functionalClassification.functional_code.slice(0, 2);
-      if (!chapterMap.has(prefix)) return;
+  items.forEach(item => {
+    if (!item.functionalClassification?.functional_code) return;
+    const prefix = item.functionalClassification.functional_code.slice(0, 2);
+    if (!chapterMap.has(prefix)) return;
 
-      let chapter = chapterGroups.get(prefix);
-      if (!chapter) {
-        chapter = { functionals: new Map(), total: 0 };
-        chapterGroups.set(prefix, chapter);
+    let chapter = chapterGroups.get(prefix);
+    if (!chapter) {
+      chapter = { functionals: new Map(), total: 0 };
+      chapterGroups.set(prefix, chapter);
+    }
+
+    const funcCode = item.functionalClassification.functional_code;
+    const funcName = item.functionalClassification.functional_name || 'Unknown';
+
+    if (!funcCode || funcCode === '00.00.00') return;
+
+    let functional = chapter.functionals.get(funcCode);
+    if (!functional) {
+      functional = { economics: new Map(), total: 0, name: funcName };
+      chapter.functionals.set(funcCode, functional);
+    }
+
+    const amount = item.amount || 0;
+    functional.total += amount;
+    chapter.total += amount;
+
+    if (item.economicClassification?.economic_code && item.economicClassification.economic_code !== '0') {
+      const ecoCode = item.economicClassification.economic_code;
+      const ecoName = item.economicClassification.economic_name || 'Unknown';
+
+      if (!ecoCode || ecoCode === '00.00.00') return;
+
+      let eco = functional.economics.get(ecoCode);
+      if (!eco) {
+        eco = { name: ecoName, amount: 0 };
+        functional.economics.set(ecoCode, eco);
       }
+      eco.amount += amount;
+    }
+  });
 
-      const funcCode = item.functionalClassification.functional_code;
-      const funcName = item.functionalClassification.functional_name || 'Unknown';
-
-      if (!funcCode || funcCode === '00.00.00') return;
-
-      let functional = chapter.functionals.get(funcCode);
-      if (!functional) {
-        functional = { economics: new Map(), total: 0, name: funcName };
-        chapter.functionals.set(funcCode, functional);
-      }
-
-      const amount = item.amount || 0;
-      functional.total += amount;
-      chapter.total += amount;
-
-      if (item.economicClassification?.economic_code && item.economicClassification.economic_code !== '0') {
-        const ecoCode = item.economicClassification.economic_code;
-        const ecoName = item.economicClassification.economic_name || 'Unknown';
-
-        if (!ecoCode || ecoCode === '00.00.00') return;
-
-        let eco = functional.economics.get(ecoCode);
-        if (!eco) {
-          eco = { name: ecoName, amount: 0 };
-          functional.economics.set(ecoCode, eco);
-        }
-        eco.amount += amount;
-      }
+  const chapters: GroupedChapter[] = [];
+  chapterGroups.forEach((ch, prefix) => {
+    const description = chapterMap.get(prefix) || 'Unknown';
+    const functionals: GroupedFunctional[] = [];
+    ch.functionals.forEach((f, code) => {
+      const economics: GroupedEconomic[] = Array.from(f.economics, ([ecoCode, eco]) => ({ code: ecoCode, name: eco.name, amount: eco.amount }))
+        .sort((a, b) => b.amount - a.amount);
+      functionals.push({ code, name: f.name, totalAmount: f.total, economics });
     });
-
-    const chapters: GroupedChapter[] = [];
-    chapterGroups.forEach((ch, prefix) => {
-      const description = chapterMap.get(prefix) || 'Unknown';
-      const functionals: GroupedFunctional[] = [];
-      ch.functionals.forEach((f, code) => {
-        const economics: GroupedEconomic[] = Array.from(f.economics, ([ecoCode, eco]) => ({ code: ecoCode, name: eco.name, amount: eco.amount }))
-          .sort((a, b) => b.amount - a.amount);
-        functionals.push({ code, name: f.name, totalAmount: f.total, economics });
-      });
-      functionals.sort((a, b) => b.totalAmount - a.totalAmount);
-      chapters.push({ prefix, description, totalAmount: ch.total, functionals });
-    });
-    chapters.sort((a, b) => b.totalAmount - a.totalAmount);
-    return chapters;
+    functionals.sort((a, b) => b.totalAmount - a.totalAmount);
+    chapters.push({ prefix, description, totalAmount: ch.total, functionals });
+  });
+  chapters.sort((a, b) => b.totalAmount - a.totalAmount);
+  return chapters;
 };
 
 const filterGroups = (groups: GroupedChapter[], term: string): GroupedChapter[] => {
-    const query = term.trim();
-    if (!query) return groups;
+  const query = term.trim();
+  if (!query) return groups;
 
-    // Use Map to accumulate filtered chapters while ensuring uniqueness
-    const filteredChapters = new Map<string, GroupedChapter>();
+  // Use Map to accumulate filtered chapters while ensuring uniqueness
+  const filteredChapters = new Map<string, GroupedChapter>();
 
-    groups.forEach((chapter) => {
-      const chapterText = `${chapter.description} ${chapter.prefix}`;
-      const chapterMatches = match(chapterText, query).length > 0;
+  groups.forEach((chapter) => {
+    const chapterText = `${chapter.description} ${chapter.prefix}`;
+    const chapterMatches = match(chapterText, query).length > 0;
 
-      // 1. If the chapter itself matches, include it entirely (keep original totals)
-      if (chapterMatches) {
-        filteredChapters.set(chapter.prefix, { ...chapter });
-        return; // no need to inspect functionals / economics
+    // 1. If the chapter itself matches, include it entirely (keep original totals)
+    if (chapterMatches) {
+      filteredChapters.set(chapter.prefix, { ...chapter });
+      return; // no need to inspect functionals / economics
+    }
+
+    // 2. Otherwise, inspect functionals & economics
+    const matchedFunctionals: GroupedFunctional[] = [];
+
+    chapter.functionals.forEach((func) => {
+      const funcText = `${func.name} fn:${func.code}`;
+      const funcMatches = match(funcText, query).length > 0;
+
+      // Case A: functional matches – keep it entirely (retain original total)
+      if (funcMatches) {
+        matchedFunctionals.push({ ...func });
+        return;
       }
 
-      // 2. Otherwise, inspect functionals & economics
-      const matchedFunctionals: GroupedFunctional[] = [];
-
-      chapter.functionals.forEach((func) => {
-        const funcText = `${func.name} fn:${func.code}`;
-        const funcMatches = match(funcText, query).length > 0;
-
-        // Case A: functional matches – keep it entirely (retain original total)
-        if (funcMatches) {
-          matchedFunctionals.push({ ...func });
-          return;
-        }
-
-        // Case B: functional doesn’t match, investigate economics
-        const matchedEconomics: GroupedEconomic[] = [];
-        func.economics.forEach((eco) => {
-          const ecoText = `${eco.name} ec:${eco.code}`;
-          if (match(ecoText, query).length > 0) {
-            matchedEconomics.push({ ...eco });
-          }
-        });
-
-        if (matchedEconomics.length > 0) {
-          // Re-compute total based on matched economics only
-          const newTotal = matchedEconomics.reduce((sum, eco) => sum + eco.amount, 0);
-          matchedFunctionals.push({
-            ...func,
-            economics: matchedEconomics,
-            totalAmount: newTotal,
-          });
+      // Case B: functional doesn’t match, investigate economics
+      const matchedEconomics: GroupedEconomic[] = [];
+      func.economics.forEach((eco) => {
+        const ecoText = `${eco.name} ec:${eco.code}`;
+        if (match(ecoText, query).length > 0) {
+          matchedEconomics.push({ ...eco });
         }
       });
 
-      if (matchedFunctionals.length > 0) {
-        // Re-compute chapter total based on matched functionals
-        const newChapterTotal = matchedFunctionals.reduce((sum, f) => sum + f.totalAmount, 0);
-        const updatedChapter: GroupedChapter = {
-          ...chapter,
-          functionals: matchedFunctionals.sort((a, b) => b.totalAmount - a.totalAmount),
-          totalAmount: newChapterTotal,
-        };
-        filteredChapters.set(chapter.prefix, updatedChapter);
+      if (matchedEconomics.length > 0) {
+        // Re-compute total based on matched economics only
+        const newTotal = matchedEconomics.reduce((sum, eco) => sum + eco.amount, 0);
+        matchedFunctionals.push({
+          ...func,
+          economics: matchedEconomics,
+          totalAmount: newTotal,
+        });
       }
     });
 
-    // Convert Map -> array, sort chapters by totalAmount desc
-    return Array.from(filteredChapters.values()).sort((a, b) => b.totalAmount - a.totalAmount);
+    if (matchedFunctionals.length > 0) {
+      // Re-compute chapter total based on matched functionals
+      const newChapterTotal = matchedFunctionals.reduce((sum, f) => sum + f.totalAmount, 0);
+      const updatedChapter: GroupedChapter = {
+        ...chapter,
+        functionals: matchedFunctionals.sort((a, b) => b.totalAmount - a.totalAmount),
+        totalAmount: newChapterTotal,
+      };
+      filteredChapters.set(chapter.prefix, updatedChapter);
+    }
+  });
+
+  // Convert Map -> array, sort chapters by totalAmount desc
+  return Array.from(filteredChapters.values()).sort((a, b) => b.totalAmount - a.totalAmount);
 };
 
-export const useFinancialData = (lineItems: ExecutionLineItem[], totalIncome: number | null, totalExpenses: number | null, initialExpenseSearchTerm: string, initialIncomeSearchTerm: string) => {
-    const [expenseSearchTerm, setExpenseSearchTerm] = React.useState(initialExpenseSearchTerm);
-    const [incomeSearchTerm, setIncomeSearchTerm] = React.useState(initialIncomeSearchTerm);
-    const [expenseSearchActive, setExpenseSearchActive] = React.useState(!!initialExpenseSearchTerm);
-    const [incomeSearchActive, setIncomeSearchActive] = React.useState(!!initialIncomeSearchTerm);
-    
-    const debouncedExpenseSearchTerm = useDebouncedValue(expenseSearchTerm, 300);
-    const debouncedIncomeSearchTerm = useDebouncedValue(incomeSearchTerm, 300);
+export const useFinancialData = (lineItems: ExecutionLineItem[], totalIncome: number | null, totalExpenses: number | null, initialExpenseSearchTerm?: string, initialIncomeSearchTerm?: string) => {
+  const [expenseSearchTerm, setExpenseSearchTerm] = React.useState(initialExpenseSearchTerm ?? '');
+  const [incomeSearchTerm, setIncomeSearchTerm] = React.useState(initialIncomeSearchTerm ?? '');
+  const [expenseSearchActive, setExpenseSearchActive] = React.useState(!!initialExpenseSearchTerm);
+  const [incomeSearchActive, setIncomeSearchActive] = React.useState(!!initialIncomeSearchTerm);
 
-    const expenses = React.useMemo(() => lineItems.filter((li) => li.account_category === "ch"), [lineItems]);
-    const incomes = React.useMemo(() => lineItems.filter((li) => li.account_category === "vn"), [lineItems]);
+  const debouncedExpenseSearchTerm = useDebouncedValue(expenseSearchTerm, 300);
+  const debouncedIncomeSearchTerm = useDebouncedValue(incomeSearchTerm, 300);
 
-    const expenseGroups = React.useMemo(() => groupByFunctional(expenses), [expenses]);
-    const incomeGroups = React.useMemo(() => groupByFunctional(incomes), [incomes]);
+  const expenses = React.useMemo(() => lineItems.filter((li) => li.account_category === "ch"), [lineItems]);
+  const incomes = React.useMemo(() => lineItems.filter((li) => li.account_category === "vn"), [lineItems]);
 
-    const filteredExpenseGroups = React.useMemo(() => filterGroups(expenseGroups, debouncedExpenseSearchTerm), [expenseGroups, debouncedExpenseSearchTerm]);
-    const filteredIncomeGroups = React.useMemo(() => filterGroups(incomeGroups, debouncedIncomeSearchTerm), [incomeGroups, debouncedIncomeSearchTerm]);
+  const expenseGroups = React.useMemo(() => groupByFunctional(expenses), [expenses]);
+  const incomeGroups = React.useMemo(() => groupByFunctional(incomes), [incomes]);
 
-    const expenseBase = React.useMemo(() => totalExpenses ?? expenseGroups.reduce((sum, ch) => sum + ch.totalAmount, 0), [totalExpenses, expenseGroups]);
-    const incomeBase = React.useMemo(() => totalIncome ?? incomeGroups.reduce((sum, ch) => sum + ch.totalAmount, 0), [totalIncome, incomeGroups]);
+  const filteredExpenseGroups = React.useMemo(() => filterGroups(expenseGroups, debouncedExpenseSearchTerm), [expenseGroups, debouncedExpenseSearchTerm]);
+  const filteredIncomeGroups = React.useMemo(() => filterGroups(incomeGroups, debouncedIncomeSearchTerm), [incomeGroups, debouncedIncomeSearchTerm]);
 
-    return {
-        expenseSearchTerm,
-        onExpenseSearchChange: setExpenseSearchTerm,
-        expenseSearchActive,
-        onExpenseSearchToggle: setExpenseSearchActive,
-        debouncedExpenseSearchTerm,
-        filteredExpenseGroups,
-        expenseBase,
-        incomeSearchTerm,
-        onIncomeSearchChange: setIncomeSearchTerm,
-        incomeSearchActive,
-        onIncomeSearchToggle: setIncomeSearchActive,
-        debouncedIncomeSearchTerm,
-        filteredIncomeGroups,
-        incomeBase
-    };
+  const expenseBase = React.useMemo(() => totalExpenses ?? expenseGroups.reduce((sum, ch) => sum + ch.totalAmount, 0), [totalExpenses, expenseGroups]);
+  const incomeBase = React.useMemo(() => totalIncome ?? incomeGroups.reduce((sum, ch) => sum + ch.totalAmount, 0), [totalIncome, incomeGroups]);
+
+  return {
+    expenseSearchTerm,
+    onExpenseSearchChange: setExpenseSearchTerm,
+    expenseSearchActive,
+    onExpenseSearchToggle: setExpenseSearchActive,
+    debouncedExpenseSearchTerm,
+    filteredExpenseGroups,
+    expenseBase,
+    incomeSearchTerm,
+    onIncomeSearchChange: setIncomeSearchTerm,
+    incomeSearchActive,
+    onIncomeSearchToggle: setIncomeSearchActive,
+    debouncedIncomeSearchTerm,
+    filteredIncomeGroups,
+    incomeBase
+  };
 } 

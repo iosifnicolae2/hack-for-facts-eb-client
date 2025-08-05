@@ -1,6 +1,6 @@
 import React from 'react';
 import { Accordion, AccordionItem, AccordionContent, AccordionTrigger } from '@/components/ui/accordion';
-import { GroupedFunctional, GroupedEconomic } from './EntityLineItems';
+import { GroupedFunctional, GroupedEconomic } from '@/schemas/financial';
 import { highlightText } from './highlight-utils';
 import { formatCurrency } from '@/lib/utils';
 

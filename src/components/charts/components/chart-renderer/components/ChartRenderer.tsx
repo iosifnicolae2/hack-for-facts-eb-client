@@ -19,10 +19,12 @@ export interface ChartRendererProps {
   height?: number;
   margins?: Partial<ChartMargins>;
   isPreview?: boolean;
+  xAxisMarker?: number;
+  onXAxisClick?: (value: number | string) => void;
   onAnnotationPositionChange: (pos: AnnotationPositionChange) => void;
 }
 
-export function ChartRenderer({ chart, dataMap, unitMap, aggregatedData, timeSeriesData, className, height = 400, isPreview, onAnnotationPositionChange }: ChartRendererProps) {
+export function ChartRenderer({ chart, dataMap, unitMap, aggregatedData, timeSeriesData, className, height = 400, isPreview, onAnnotationPositionChange, xAxisMarker, onXAxisClick }: ChartRendererProps) {
 
   if (chart.series.filter(s => s.enabled).length === 0) {
     return (
@@ -48,6 +50,8 @@ export function ChartRenderer({ chart, dataMap, unitMap, aggregatedData, timeSer
     unitMap,
     aggregatedData,
     timeSeriesData,
+    xAxisMarker,
+    onXAxisClick,
   }
 
   const sankeyMargins = isPreview ? { left: 120, bottom: 50, right: 10 } : { left: 240, bottom: 30, right: 50 };

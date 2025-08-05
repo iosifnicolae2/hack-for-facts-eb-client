@@ -15,26 +15,6 @@ export interface EntityTopItemsProps {
   onSearchChange: (type: 'expense' | 'income', term: string) => void;
 }
 
-export interface GroupedEconomic {
-  code: string;
-  name: string;
-  amount: number;
-}
-
-export interface GroupedFunctional {
-  code: string;
-  name: string;
-  totalAmount: number;
-  economics: GroupedEconomic[];
-}
-
-export interface GroupedChapter {
-  prefix: string;
-  description: string;
-  totalAmount: number;
-  functionals: GroupedFunctional[];
-}
-
 export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
   lineItems,
   currentYear,
@@ -105,4 +85,4 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
       />
     </section>
   );
-}; 
+};

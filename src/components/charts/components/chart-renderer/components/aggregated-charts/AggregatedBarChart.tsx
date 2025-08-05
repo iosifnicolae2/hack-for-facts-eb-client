@@ -5,22 +5,6 @@ import { ReactNode } from 'react';
 import { CustomSeriesTooltip } from '../Tooltips';
 import { AlertTriangle } from 'lucide-react';
 
-interface CustomYAxisTickProps {
-    y?: number;
-    payload?: { value: string };
-    width?: number;
-}
-
-const CustomYAxisTick = ({ y, payload, width }: CustomYAxisTickProps) => {
-    if (!payload) return null;
-    return (
-        <g transform={`translate(30,${y})`}>
-            <text x={0} y={0} dy={4} width={width} textAnchor="start" fill="#666" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                {payload.value}
-            </text>
-        </g>
-    );
-};
 
 export function AggregatedBarChart({ chart, aggregatedData, unitMap, height }: ChartRendererProps) {
 
@@ -40,7 +24,7 @@ export function AggregatedBarChart({ chart, aggregatedData, unitMap, height }: C
 
     return (
         <ResponsiveContainer width="100%" height={height}>
-            <BarChart data={aggregatedData} layout="vertical" margin={{ top: 50, right: 40, left: 80, bottom: 20 }}>
+            <BarChart data={aggregatedData} layout="vertical" margin={{ top: 50, right: 40, left: 40, bottom: 20 }}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                     type="number"
@@ -50,7 +34,6 @@ export function AggregatedBarChart({ chart, aggregatedData, unitMap, height }: C
                     dataKey="series.label"
                     type="category"
                     width={100}
-                    tick={<CustomYAxisTick width={100} />}
                     interval={0}
                 />
                 {chart.config.showTooltip && (

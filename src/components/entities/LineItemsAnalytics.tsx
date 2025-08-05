@@ -2,16 +2,16 @@ import React, { useMemo } from 'react';
 import { BarChart, Bar, PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, XAxis, YAxis, CartesianGrid, LabelList } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { ExecutionLineItem, EntityDetailsData } from '@/lib/api/entities';
+import { EntityDetailsData } from '@/lib/api/entities';
 import { formatCurrency } from '@/lib/utils';
 import { PieChartIcon, BarChartIcon } from 'lucide-react';
-import classifications from '@/assets/functional-classificatinos-general.json';
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
 } from "@/components/ui/select";
+import { processDataForAnalyticsChart } from '@/lib/analytics-utils';
 
 interface AnalyticsProps {
     lineItems: EntityDetailsData['executionLineItems'];
@@ -28,29 +28,6 @@ type ChartType = 'bar' | 'pie';
 type DataType = 'income' | 'expense';
 
 const COLORS = ['#16a34a', '#3b82f6', '#f97316', '#fde047', '#a855f7', '#ec4899', '#78716c'];
-const TOP_N = 6; // Top N items to show, the rest will be "Other"
-
-const aggregateAndProcessData = (items: ExecutionLineItem[], chapterMap: Map<string, string>) => {
-    const map = new Map<string, number>();
-    items.forEach(item => {
-        let key = 'Unknown';
-        if (item.functionalClassification?.functional_code) {
-            const prefix = item.functionalClassification.functional_code.slice(0, 2);
-            key = chapterMap.get(prefix) || 'Unknown Chapter';
-        }
-        map.set(key, (map.get(key) || 0) + item.amount);
-    });
-
-    const sortedData = Array.from(map, ([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value);
-
-    if (sortedData.length > TOP_N) {
-        const topData = sortedData.slice(0, TOP_N);
-        const otherValue = sortedData.slice(TOP_N).reduce((acc, curr) => acc + curr.value, 0);
-        return [...topData, { name: 'Other', value: otherValue }];
-    }
-
-    return sortedData;
-};
 
 export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
     lineItems,
@@ -62,29 +39,11 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
     dataType,
     onDataTypeChange
 }) => {
-    const chapterMap = useMemo(() => {
-        const map = new Map<string, string>();
-        classifications.groups.forEach(group => {
-            group.chapters.forEach(ch => {
-                if (ch.code) {
-                    const prefix = ch.code.slice(0, 2);
-                    map.set(prefix, ch.description);
-                } else if (ch.codes) {
-                    ch.codes.forEach(c => {
-                        const prefix = c.slice(0, 2);
-                        map.set(prefix, ch.description);
-                    });
-                }
-            });
-        });
-        return map;
-    }, []);
-
     const expenses = useMemo(() => lineItems?.nodes.filter(li => li.account_category === 'ch') || [], [lineItems]);
     const incomes = useMemo(() => lineItems?.nodes.filter(li => li.account_category === 'vn') || [], [lineItems]);
 
-    const incomeData = useMemo(() => aggregateAndProcessData(incomes, chapterMap), [incomes, chapterMap]);
-    const expenseData = useMemo(() => aggregateAndProcessData(expenses, chapterMap), [expenses, chapterMap]);
+    const incomeData = useMemo(() => processDataForAnalyticsChart(incomes), [incomes]);
+    const expenseData = useMemo(() => processDataForAnalyticsChart(expenses), [expenses]);
 
     const activeData = dataType === 'income' ? incomeData : expenseData;
 
@@ -192,4 +151,4 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
             </CardContent>
         </Card>
     );
-}; 
+};

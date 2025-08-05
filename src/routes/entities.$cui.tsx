@@ -78,6 +78,8 @@ function EntityDetailsPage() {
         });
     };
 
+
+
     const handleAnalyticsChange = (
         key: 'analyticsChartType' | 'analyticsDataType',
         value: 'bar' | 'pie' | 'income' | 'expense'
@@ -156,7 +158,9 @@ function EntityDetailsPage() {
     }
 
     const renderContent = () => {
-        switch (search.view) {
+        const activeView = search.view ?? 'overview';
+
+        switch (activeView) {
             case 'overview':
                 return <Overview
                     entity={entity}
@@ -170,14 +174,28 @@ function EntityDetailsPage() {
                 />;
             case 'reports':
                 return <EntityReports reports={entity.reports} />;
-            case 'trends':
-                return <TrendsView />;
+            case 'expense-trends':
+                return <TrendsView entity={entity} type="expense" currentYear={selectedYear} onYearClick={handleYearChange} initialExpenseSearch={search.expenseSearch} initialIncomeSearch={search.incomeSearch} onSearchChange={handleSearchChange} />;
+            case 'income-trends':
+                return <TrendsView entity={entity} type="income" currentYear={selectedYear} onYearClick={handleYearChange} initialIncomeSearch={search.incomeSearch} initialExpenseSearch={search.expenseSearch} onSearchChange={handleSearchChange} />;
             case 'map':
                 return <MapView />;
             default:
-                return null;
+                // Default to overview if the view is not recognized
+                return <Overview
+                    entity={entity}
+                    selectedYear={selectedYear}
+                    trendMode={trendMode}
+                    years={years}
+                    search={search}
+                    onChartTrendModeChange={handleTrendModeChange}
+                    onYearChange={handleYearChange}
+                    onSearchChange={handleSearchChange}
+                    onAnalyticsChange={handleAnalyticsChange}
+                />;
         }
     };
+
 
     return (
         <div className="min-h-screen bg-slate-100 dark:bg-slate-900 p-4 md:p-8">

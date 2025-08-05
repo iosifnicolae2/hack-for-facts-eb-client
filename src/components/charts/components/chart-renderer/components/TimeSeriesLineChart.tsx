@@ -1,4 +1,4 @@
-import { LabelList, Line, LineChart, ResponsiveContainer } from 'recharts';
+import { LabelList, Line, LineChart, ReferenceLine, ResponsiveContainer } from 'recharts';
 import { MultiAxisChartContainer } from './MultiAxisChartContainer';
 import { ChartRendererProps } from './ChartRenderer';
 import { DataPointPayload } from '@/components/charts/hooks/useChartData';
@@ -8,7 +8,7 @@ import { useChartDiff } from '../hooks/useChartDiff';
 import { DiffArea } from './diff-select/DiffArea';
 import { useChartAnimation } from '../hooks/useChartAnimatin';
 
-export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotationPositionChange }: ChartRendererProps) {
+export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotationPositionChange, onXAxisClick, xAxisMarker }: ChartRendererProps) {
   const enabledSeries = chart.series.filter(s => s.enabled);
   const animationDuration = 300;
   const { isAnimationActive } = useChartAnimation(animationDuration);
@@ -27,7 +27,12 @@ export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotati
       <LineChart
         data={timeSeriesData}
         margin={{ top: 30, right: 50, left: 50, bottom: 20 }}
-        onMouseDown={handleMouseDown}
+        onMouseDown={(e) => {
+          handleMouseDown(e)
+          if (e.activeLabel) {
+            onXAxisClick?.(e.activeLabel);
+          }
+        }}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
       >
@@ -41,7 +46,7 @@ export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotati
                   dataKey={`${series.id}.value`}
                   name={series.label || 'Untitled'}
                   stroke={series.config.color}
-                  type="monotone"
+                  type="natural"
                   strokeWidth={2}
                   dot={{ r: 4 }}
                   activeDot={{ r: 6 }}
@@ -75,6 +80,19 @@ export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotati
                   />
                 </Line>
               ))}
+
+              {xAxisMarker && (
+                <ReferenceLine
+                  x={xAxisMarker}
+                  yAxisId={getYAxisId('')}
+                  stroke="black"
+                  strokeDasharray="3 3"
+                  strokeWidth={1}
+                  strokeOpacity={0.5}
+                  strokeLinecap="round"
+                  ifOverflow="visible"
+                />
+              )}
               {diffEnabled && (
                 <DiffArea
                   yAxisId={getYAxisId(enabledSeries[0].id)}

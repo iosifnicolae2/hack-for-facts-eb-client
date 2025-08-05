@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select";
 import { SearchToggleInput } from './SearchToggleInput';
 import GroupedChapterAccordion from "./GroupedChapterAccordion";
-import { GroupedChapter } from './EntityLineItems';
+import { GroupedChapter, GroupedFunctional, GroupedEconomic } from '@/schemas/financial';
 import { formatCurrency, formatNumberRO } from '@/lib/utils';
 
 interface GroupedItemsDisplayProps {
@@ -29,11 +29,11 @@ const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.memo(
       const totalValue = groups.reduce(
         (sum, ch) =>
           sum +
-          ch.functionals.reduce((funcSum, func) => {
+          ch.functionals.reduce((funcSum: number, func: GroupedFunctional) => {
             if (func.economics.length > 0) {
               return (
                 funcSum +
-                func.economics.reduce((ecoSum, eco) => ecoSum + eco.amount, 0)
+                func.economics.reduce((ecoSum: number, eco: GroupedEconomic) => ecoSum + eco.amount, 0)
               );
             }
             return funcSum + func.totalAmount;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { AccordionItem, AccordionContent, AccordionTrigger } from '@/components/ui/accordion';
-import { GroupedChapter } from './EntityLineItems';
+import { GroupedChapter, GroupedFunctional } from '@/schemas/financial';
 import GroupedFunctionalAccordion from './GroupedFunctionalAccordion';
 import { highlightText } from './highlight-utils.tsx';
 import { formatCurrency, formatNumberRO } from '@/lib/utils';
@@ -30,7 +30,7 @@ const GroupedChapterAccordion: React.FC<GroupedChapterAccordionProps> = ({ ch, b
       </AccordionTrigger>
       <AccordionContent className='border-x-2 border-b-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800/50'>
         <div className="space-y-2 px-4 py-2">
-          {ch.functionals.map((func) => (
+          {ch.functionals.map((func: GroupedFunctional) => (
             <GroupedFunctionalAccordion key={func.code} func={func} baseTotal={baseTotal} searchTerm={searchTerm} />
           ))}
         </div>

@@ -5,6 +5,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { useMemo } from 'react';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { TrendingUp } from 'lucide-react';
+import { yValueFormatter } from '../charts/components/chart-renderer/utils';
 
 interface EntityFinancialTrendsProps {
   incomeTrend: EntityDetailsData['incomeTrend'];
@@ -54,30 +55,16 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
 
   const displayData = mode === 'absolute' ? mergedData : percentData;
 
-  const formatYAxis = (tickItem: number) => {
-    if (Math.abs(tickItem) >= 1e9) {
-      return `${(tickItem / 1e9).toFixed(1)}B`;
-    }
-    if (Math.abs(tickItem) >= 1e6) {
-      return `${(tickItem / 1e6).toFixed(1)}M`;
-    }
-    if (Math.abs(tickItem) >= 1e3) {
-      return `${(tickItem / 1e3).toFixed(1)}K`;
-    }
-    return tickItem.toString();
-  };
-
-  const formatPercent = (val: number) => `${val.toFixed(1)}%`;
-
   const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: { name: string; value: number; color: string; dataKey: string; }[]; label?: string }) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-white dark:bg-slate-800 p-3 border border-slate-300 dark:border-slate-700 rounded shadow-lg">
           <p className="label font-bold mb-2">{`Anul: ${label}`}</p>
           {payload.map((pld) => (
-            <p key={pld.dataKey} style={{ color: pld.color }} className="text-sm">
-              {`${pld.name}: ${mode === 'absolute' ? formatYAxis(pld.value) : formatPercent(pld.value)}`}
-            </p>
+            <div key={pld.dataKey} style={{ color: pld.color }} className="flex flex-row gap-2 justify-between text-sm">
+              <p>{pld.name}</p>
+              <p>{mode === 'absolute' ? yValueFormatter(pld.value, 'RON') : yValueFormatter(pld.value, '%')}</p>
+            </div>
           ))}
         </div>
       );
@@ -124,7 +111,7 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
           <ResponsiveContainer width="100%" height={400}>
             <AreaChart
               data={displayData}
-              margin={{ top: 5, right: 20, left: 30, bottom: 5 }}
+              margin={{ top: 5, right: 40, left: 40, bottom: 5 }}
               onClick={handleChartClick}
               className="cursor-pointer"
             >
@@ -136,7 +123,7 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
                 axisLine={false}
               />
               <YAxis
-                tickFormatter={mode === 'absolute' ? formatYAxis : formatPercent}
+                tickFormatter={mode === 'absolute' ? (val) => yValueFormatter(val, 'RON') : (val) => yValueFormatter(val, '%')}
                 tick={{ fontSize: 12 }}
                 tickLine={false}
                 axisLine={false}

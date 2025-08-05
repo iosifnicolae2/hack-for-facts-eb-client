@@ -15,12 +15,18 @@ export const useEntityViews = (entity: EntityDetailsData | null | undefined): En
     return views;
   }
 
-  if (entity.reports && entity.reports.nodes.length > 0) {
-    views.push({ id: 'reports', label: 'Reports' });
+  const hasIncomeData = entity.executionLineItems?.nodes.some(node => node.account_category === 'vn' && node.amount > 0);
+  const hasExpenseData = entity.executionLineItems?.nodes.some(node => node.account_category === 'ch' && node.amount > 0);
+
+  if (hasExpenseData) {
+    views.push({ id: 'expense-trends', label: 'Expense Trends' });
+  }
+  if (hasIncomeData) {
+    views.push({ id: 'income-trends', label: 'Income Trends' });
   }
 
-  if (entity.incomeTrend && entity.expenseTrend && (entity.incomeTrend.length > 0 || entity.expenseTrend.length > 0)) {
-    views.push({ id: 'trends', label: 'Trends' });
+  if (entity.reports && entity.reports.nodes.length > 0) {
+    views.push({ id: 'reports', label: 'Reports' });
   }
 
   if (entity.entity_type === 'UAT' || entity.entity_type === 'JUDET') {

@@ -23,8 +23,72 @@ interface ChartDisplayAreaProps {
   error: Error | null | undefined;
   onAddSeries: () => void;
   onAnnotationPositionChange: (pos: AnnotationPositionChange) => void;
+  onXAxisClick?: (value: number | string) => void;
   isPreview?: boolean;
+  xAxisMarker?: number;
 }
+
+
+/**
+ * Orchestrates the display of the chart area, handling all possible states:
+ * no series, loading, error, no data, and success.
+ */
+export const ChartDisplayArea = React.memo(
+  ({
+    chart,
+    timeSeriesData,
+    aggregatedData,
+    dataMap,
+    unitMap,
+    isLoading,
+    error,
+    xAxisMarker,
+    onAddSeries,
+    onAnnotationPositionChange,
+    onXAxisClick,
+    isPreview = false,
+  }: ChartDisplayAreaProps) => {
+
+    const ChartContentWrapper = React.memo(() => {
+      if (chart.series.length === 0) return <NoDataSeries onAddSeries={onAddSeries} chart={chart} />;
+      if (isLoading) return <LoadingSpinner text="Loading chart data..." />;
+      if (error) return <ErrorDisplay error={error} />;
+      if (!dataMap || dataMap.size === 0) return <NoDataAvailable chart={chart} />;
+
+      return (
+        <ChartContent
+          chart={chart}
+          timeSeriesData={timeSeriesData}
+          aggregatedData={aggregatedData}
+          dataMap={dataMap}
+          unitMap={unitMap}
+          isPreview={isPreview}
+          onAnnotationPositionChange={onAnnotationPositionChange}
+          onXAxisClick={onXAxisClick}
+          xAxisMarker={xAxisMarker}
+        />
+      );
+    });
+
+    if (isPreview) {
+      return (
+        <div className="w-full h-full flex items-center justify-center">
+          <ChartContentWrapper />
+        </div>
+      );
+    }
+
+    return (
+      <Card className="flex flex-col w-full h-full" id="chart-display-area">
+        <div className="p-4 flex-grow min-h-[500px] flex items-center justify-center bg-muted/20">
+          <ChartContentWrapper />
+        </div>
+        <ChartFooter />
+      </Card>
+    );
+  }
+);
+
 
 /**
  * Renders a placeholder when no data series have been added to the chart.
@@ -82,6 +146,8 @@ const ChartContent = React.memo(
     unitMap,
     isPreview,
     onAnnotationPositionChange,
+    onXAxisClick,
+    xAxisMarker
   }: Omit<ChartDisplayAreaProps, "isLoading" | "error" | "onAddSeries">) => {
     // useMemo ensures this string is only re-calculated when the chart object changes.
     const aggregatedSubtitle = React.useMemo(
@@ -105,6 +171,8 @@ const ChartContent = React.memo(
           dataMap={dataMap}
           unitMap={unitMap}
           onAnnotationPositionChange={onAnnotationPositionChange}
+          xAxisMarker={xAxisMarker}
+          onXAxisClick={onXAxisClick}
         />
         {!isPreview && chart.description && (
           <p className="px-4 text-center text-sm text-muted-foreground">{chart.description}</p>
@@ -128,59 +196,3 @@ const ChartFooter = React.memo(() => (
     </a>
   </p>
 ));
-
-/**
- * Orchestrates the display of the chart area, handling all possible states:
- * no series, loading, error, no data, and success.
- */
-export const ChartDisplayArea = React.memo(
-  ({
-    chart,
-    timeSeriesData,
-    aggregatedData,
-    dataMap,
-    unitMap,
-    isLoading,
-    error,
-    onAddSeries,
-    onAnnotationPositionChange,
-    isPreview = false,
-  }: ChartDisplayAreaProps) => {
-
-    const ChartContentWrapper = React.memo(() => {
-      if (chart.series.length === 0) return <NoDataSeries onAddSeries={onAddSeries} chart={chart} />;
-      if (isLoading) return <LoadingSpinner text="Loading chart data..." />;
-      if (error) return <ErrorDisplay error={error} />;
-      if (!dataMap || dataMap.size === 0) return <NoDataAvailable chart={chart} />;
-
-      return (
-        <ChartContent
-          chart={chart}
-          timeSeriesData={timeSeriesData}
-          aggregatedData={aggregatedData}
-          dataMap={dataMap}
-          unitMap={unitMap}
-          isPreview={isPreview}
-          onAnnotationPositionChange={onAnnotationPositionChange}
-        />
-      );
-    });
-
-    if (isPreview) {
-      return (
-        <div className="w-full h-full flex items-center justify-center">
-          <ChartContentWrapper />
-        </div>
-      );
-    }
-
-    return (
-      <Card className="flex flex-col w-full h-full" id="chart-display-area">
-        <div className="p-4 flex-grow min-h-[500px] flex items-center justify-center bg-muted/20">
-          <ChartContentWrapper />
-        </div>
-        <ChartFooter />
-      </Card>
-    );
-  }
-);

@@ -16,7 +16,7 @@ interface OverviewProps {
         analyticsDataType?: 'expense' | 'income';
     };
     onChartTrendModeChange: (mode: 'absolute' | 'percent') => void;
-    onYearChange: (year: number) => void;
+        onYearChange: (year: number) => void;
     onSearchChange: (type: 'expense' | 'income', term: string) => void;
     onAnalyticsChange: (type: 'analyticsChartType' | 'analyticsDataType', value: 'bar' | 'pie' | 'income' | 'expense') => void;
 }
@@ -61,6 +61,8 @@ export const Overview = ({
                 onModeChange={onChartTrendModeChange}
                 onYearChange={onYearChange}
             />
+
+
 
             <EntityLineItems
                 lineItems={entity.executionLineItems}

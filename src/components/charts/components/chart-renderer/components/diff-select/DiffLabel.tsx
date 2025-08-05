@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { yValueFormatter } from '../../utils';
 import { ChartArea } from 'lucide-react';
-import { useChartWidth } from 'recharts';
+import { useChartHeight, useChartWidth, usePlotArea } from 'recharts';
 
 export type DiffInfo = {
   label: string;
@@ -27,22 +27,25 @@ interface DiffLabelProps {
 
 export const DiffLabel = ({ viewBox, data, start, end }: DiffLabelProps) => {
   const chartWidth = useChartWidth() ?? 0;
+  const chartHeight = useChartHeight() ?? 0;
   if (!viewBox || !data.length) return null;
-  const { x: xValue, y, width, height } = viewBox;
+  const { x: xValue, width, height } = viewBox;
 
   // If the center is to close to the right edge, move it to the left
   const estimatedLabelWidth = 200;
+  const topMargin = 50;
   const x = xValue + estimatedLabelWidth > chartWidth ? chartWidth - estimatedLabelWidth : xValue;
-  
+  const y = Math.min(chartHeight - height, topMargin)
+
   const isAnimationActive = false;
 
   const [displayStart, displayEnd] = [start, end].sort((a, b) => Number(a) - Number(b));
 
   return (
     <foreignObject x={x} y={y} width={width} height={height} className="overflow-visible">
-      <div className={cn("w-full h-full flex justify-center items-center pointer-events-none", isAnimationActive && "ease-in duration-[100ms] fade-in-0 animate-in")}>
+      <div className={cn("w-full h-full flex justify-center items-center pointer-events-none bg-transparent", isAnimationActive && "ease-in duration-[100ms] fade-in-0 animate-in")}>
         <div
-          className="bg-background/80 backdrop-blur-sm border rounded-lg p-3 shadow-lg select-none pointer-events-auto w-64"
+          className="bg-transparent backdrop-blur-sm border rounded-lg p-3 shadow-lg select-none pointer-events-auto"
         >
           <h4 className="font-bold text-sm mb-2 text-foreground flex items-center">
             <ChartArea className="w-4 h-4 mr-2" /> {displayStart} - {displayEnd}

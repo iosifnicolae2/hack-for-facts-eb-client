@@ -62,6 +62,7 @@ export function MultiAxisChartContainer({ unitMap, chart, children, onAnnotation
       {chart.config.showTooltip && !disableTooltip && (
         <Tooltip
           reverseDirection={{ y: true }}
+          animationDuration={100}
           content={<CustomSeriesTooltip chartConfig={chart.config} chart={chart} />}
           wrapperStyle={{ zIndex: 10 }}
           cursor={{ stroke: 'rgba(0, 0, 0, 0.1)', strokeWidth: 1 }}
