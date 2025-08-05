@@ -91,7 +91,7 @@ export function EconomicClassificationList({
                             // It's good practice to ensure option exists, though virtualizer count should match items.length
                             if (!option) return null;
                             const isSelected = selectedOptions.some(item => item.id === option.economic_code);
-                            const label = `${option.economic_name} [${option.economic_code}]`;
+                            const label = `${option.economic_code} - ${option.economic_name}`;
                             return (
                                 <ListOption
                                     key={option.economic_code}

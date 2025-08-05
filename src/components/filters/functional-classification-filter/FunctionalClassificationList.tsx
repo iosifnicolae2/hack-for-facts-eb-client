@@ -91,7 +91,7 @@ export function FunctionalClassificationList({
                             // It's good practice to ensure option exists, though virtualizer count should match items.length
                             if (!option) return null;
                             const isSelected = selectedOptions.some(item => item.id === option.functional_code);
-                            const label = `${option.functional_name} [${option.functional_code}]`;
+                            const label = `${option.functional_code} - ${option.functional_name}`;
                             return (
                                 <ListOption
                                     key={option.functional_code}
