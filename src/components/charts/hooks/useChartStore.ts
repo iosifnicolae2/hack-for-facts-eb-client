@@ -22,7 +22,7 @@ interface ValidationResult {
 const chartsStore = getChartsStore();
 
 export function useChartStore() {
-  const navigate = useNavigate();
+  const navigate = useNavigate({ from: '/charts/$chartId' });
   const { chart, view, seriesId, annotationId } = useSearch({ from: "/charts/$chartId" });
 
   const goToConfig = useCallback(() => {
@@ -46,7 +46,7 @@ export function useChartStore() {
       search: (prev) => {
         const newChart = { ...prev.chart, ...(typeof updates === 'function' ? updates(prev.chart) : updates) } as Chart;
         chartsStore.updateChartInLocalStorage(newChart);
-        return { ...prev, chart: newChart } as unknown as never; // TODO: fix this
+        return { ...prev, chart: newChart };
       },
       replace: true,
     });

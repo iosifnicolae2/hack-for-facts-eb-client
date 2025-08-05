@@ -5,16 +5,21 @@ import { Building2 } from 'lucide-react';
 import entityCategories from '@/assets/entity-categories.json';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { EntityViewSwitcher } from './EntityViewSwitcher';
+import { EntityView } from '@/hooks/useEntityViews';
 
 interface EntityHeaderProps {
   entity: Pick<EntityDetailsData, 'name' | 'cui' | 'entity_type' | 'address' | 'uat' | 'children' | 'parents'>;
+  views: EntityView[];
+  activeView: string;
+  onViewChange: (viewId: string) => void;
   /** Optional element (e.g., a Select) rendered to the right of the title */
   yearSelector?: React.ReactNode;
   onTitleClick?: () => void;
   className?: string;
 }
 
-export const EntityHeader: React.FC<EntityHeaderProps> = ({ entity, yearSelector, className, onTitleClick }) => {
+export const EntityHeader: React.FC<EntityHeaderProps> = ({ entity, views, activeView, onViewChange, yearSelector, className, onTitleClick }) => {
 
   const entityCategory = entity.entity_type ? entityCategories.categories[entity.entity_type as keyof typeof entityCategories.categories] : null;
 
@@ -51,6 +56,13 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({ entity, yearSelector
           {yearSelector}
         </div>
       </div>
+
+      <EntityViewSwitcher
+        views={views}
+        activeView={activeView}
+        onViewChange={onViewChange}
+        className="mt-4 max-w-[100vw]"
+      />
 
       {(entity.children.length > 0 || entity.parents.length > 0) && (
         <div className="mt-4 border-t border-slate-200 dark:border-slate-700 space-y-4">

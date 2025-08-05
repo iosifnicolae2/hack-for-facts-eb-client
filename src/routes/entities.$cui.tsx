@@ -4,17 +4,17 @@ import { useEntityDetails } from '@/lib/hooks/useEntityDetails';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Loader2, AlertTriangle, Info } from 'lucide-react';
 import { EntityHeader } from '@/components/entities/EntityHeader';
-import { EntityFinancialSummary } from '@/components/entities/EntityFinancialSummary';
-import { EntityFinancialTrends } from '@/components/entities/EntityFinancialTrends';
-import { EntityLineItems } from '@/components/entities/EntityLineItems';
 import { EntityReports } from '@/components/entities/EntityReports';
-import { LineItemsAnalytics } from '@/components/entities/LineItemsAnalytics';
 import { useState, useMemo, useRef } from 'react';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { FloatingEntitySearch } from '@/components/entities/FloatingEntitySearch';
 import { entitySearchSchema } from '@/components/entities/validation';
 import { useHotkeys } from 'react-hotkeys-hook';
+import { useEntityViews } from '@/hooks/useEntityViews';
 
+import { TrendsView } from '@/components/entities/views/TrendsView';
+import { MapView } from '@/components/entities/views/MapView';
+import { Overview } from '@/components/entities/views/Overview';
 
 export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
 
@@ -57,6 +57,15 @@ function EntityDetailsPage() {
         START_YEAR,   // trend from 2016 …
         CURRENT_YEAR  // … up to 2024 (full range always shown)
     );
+
+    const views = useEntityViews(entity);
+
+    const handleViewChange = (viewId: string) => {
+        navigate({
+            search: (prev) => ({ ...prev, view: viewId }),
+            replace: true,
+        });
+    };
 
     const handleSearchChange = (type: 'expense' | 'income', value: string) => {
         const key = type + 'Search';
@@ -146,6 +155,30 @@ function EntityDetailsPage() {
         );
     }
 
+    const renderContent = () => {
+        switch (search.view) {
+            case 'overview':
+                return <Overview
+                    entity={entity}
+                    selectedYear={selectedYear}
+                    trendMode={trendMode} years={years}
+                    search={search}
+                    onChartTrendModeChange={handleTrendModeChange}
+                    onYearChange={handleYearChange}
+                    onSearchChange={handleSearchChange}
+                    onAnalyticsChange={handleAnalyticsChange}
+                />;
+            case 'reports':
+                return <EntityReports reports={entity.reports} />;
+            case 'trends':
+                return <TrendsView />;
+            case 'map':
+                return <MapView />;
+            default:
+                return null;
+        }
+    };
+
     return (
         <div className="min-h-screen bg-slate-100 dark:bg-slate-900 p-4 md:p-8">
             <div className="container mx-auto max-w-7xl space-y-8">
@@ -153,6 +186,9 @@ function EntityDetailsPage() {
                 <EntityHeader
                     className="md:sticky top-0 z-10 bg-white dark:bg-slate-900"
                     entity={entity}
+                    views={views}
+                    activeView={search.view ?? 'overview'}
+                    onViewChange={handleViewChange}
                     onTitleClick={handleTitleClick}
                     yearSelector={
                         <div className="flex items-center gap-2">
@@ -171,47 +207,10 @@ function EntityDetailsPage() {
                     }
                 />
 
-                <EntityFinancialSummary
-                    totalIncome={entity.totalIncome}
-                    totalExpenses={entity.totalExpenses}
-                    budgetBalance={entity.budgetBalance}
-                    currentYear={selectedYear}
-                />
 
-                <EntityFinancialTrends
-                    incomeTrend={entity.incomeTrend}
-                    expenseTrend={entity.expenseTrend}
-                    balanceTrend={entity.balanceTrend}
-                    currentYear={selectedYear}
-                    mode={trendMode}
-                    onModeChange={handleTrendModeChange}
-                    onYearChange={handleYearChange}
-                />
 
-                <EntityLineItems
-                    lineItems={entity.executionLineItems}
-                    currentYear={selectedYear}
-                    totalIncome={entity.totalIncome}
-                    totalExpenses={entity.totalExpenses}
-                    years={years}
-                    onYearChange={setSelectedYear}
-                    initialExpenseSearchTerm={search.expenseSearch ?? ''}
-                    initialIncomeSearchTerm={search.incomeSearch ?? ''}
-                    onSearchChange={(type: 'expense' | 'income', term: string) => handleSearchChange(type, term)}
-                />
+                {renderContent()}
 
-                <LineItemsAnalytics
-                    lineItems={entity.executionLineItems}
-                    analyticsYear={selectedYear}
-                    years={years}
-                    onYearChange={setSelectedYear}
-                    chartType={search.analyticsChartType ?? 'bar'}
-                    onChartTypeChange={(type: 'bar' | 'pie') => handleAnalyticsChange('analyticsChartType', type)}
-                    dataType={search.analyticsDataType ?? 'expense'}
-                    onDataTypeChange={(type: 'income' | 'expense') => handleAnalyticsChange('analyticsDataType', type)}
-                />
-
-                <EntityReports reports={entity.reports} />
             </div>
             <FloatingEntitySearch baseSearch={search} />
         </div>
