@@ -291,7 +291,7 @@ function ControlPanel({ controls, forceVisible }: ControlPanelProps) {
   return (
     <div className={
       cn(
-        "flex items-center flex-shrink-0 group-hover:opacity-100 transition-opacity",
+        "flex items-center flex-shrink-0 group-hover:opacity-100 transition-opacity mx-2",
         forceVisible ? "opacity-100" : "opacity-0",
       )}>
       <Button variant="ghost" size="icon" onClick={controls.onMoveUp} disabled={!controls.canMoveUp}>
