@@ -69,7 +69,7 @@ function addCalculationDependencies(calculation: Calculation, dependencies: Set<
   for (const arg of calculation.args) {
     if (typeof arg === 'string') {
       dependencies.add(arg);
-    } else {
+    } else if (typeof arg === 'object') {
       // Recursive calculation
       addCalculationDependencies(arg, dependencies);
     }
@@ -96,7 +96,11 @@ export function evaluateCalculation(
 
   // Evaluate each operand
   for (const operand of calculation.args) {
-    if (typeof operand === 'string') {
+    if (typeof operand === 'number') {
+      // Number operand
+      const years = Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, i) => i + defaultYearRange.start);
+      operandResults.push(years.map(year => ({ year, totalAmount: operand })));
+    } else if (typeof operand === 'string') {
       // Direct series reference
       const data = seriesData.get(operand);
       if (data) {

@@ -1,4 +1,4 @@
-import { Calculation, Chart, SeriesGroupConfiguration } from "@/schemas/charts";
+import { Operand, SeriesGroupConfiguration, Chart } from "@/schemas/charts";
 import { FilterPill } from "./FilterPill";
 import { useMemo } from "react";
 import { FilterValueDisplay } from "./FilterValueDisplay";
@@ -16,8 +16,10 @@ export function AggregatedSeriesCalculationSeriesFilter({ series, chart }: Aggre
         }, {} as Record<string, string>);
     }, [chart.series]);
 
-    const formatOperand = (operand: string | Calculation): string => {
-        if (typeof operand === 'string') {
+    const formatOperand = (operand: Operand): string => {
+        if (typeof operand === 'number') {
+            return String(operand);
+        } else if (typeof operand === 'string') {
             return seriesIdMapToLabel[operand] || operand;
         } else if (operand.op && operand.args) {
             const op = operand.op === 'sum' ? '+' : operand.op === 'subtract' ? '-' : operand.op === 'multiply' ? '*' : '/';

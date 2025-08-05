@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Command, CommandEmpty, CommandGroup, CommandItem } from '@/components/ui/command';
+import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { hasCalculationCycle } from '@/lib/chart-calculation-utils';
@@ -102,7 +103,7 @@ function RecursiveCalculation({
     onChange({ ...calculation, args: newArgs });
   };
 
-  const handleOperandChange = (index: number, newOperand: Calculation) => {
+  const handleOperandChange = (index: number, newOperand: Calculation | number) => {
     const newArgs = [...calculation.args];
     newArgs[index] = newOperand;
     onChange({ ...calculation, args: newArgs });
@@ -154,6 +155,10 @@ function RecursiveCalculation({
                 </Command>
               </PopoverContent>
             </Popover>
+
+            <Button variant="outline" size="sm" className="gap-2 bg-background/50" onClick={() => onChange({ ...calculation, args: [...calculation.args, 0] })}>
+              <PlusCircle className="h-4 w-4" /> Add Number
+            </Button>
             <Button variant="outline" size="sm" className="gap-2 bg-background/50" onClick={handleAddNestedCalculation}>
               <PlusCircle className="h-4 w-4" /> Add Calculation
             </Button>
@@ -186,6 +191,12 @@ function RecursiveCalculation({
                     <SeriesOperand
                       series={seriesOperand}
                       chart={chart}
+                      controls={controls}
+                    />
+                  ) : typeof arg === 'number' ? (
+                    <NumberOperand
+                      value={arg}
+                      onChange={(newVal) => handleOperandChange(index, newVal)}
                       controls={controls}
                     />
                   ) : typeof arg !== 'string' ? (
@@ -292,6 +303,25 @@ function ControlPanel({ controls, forceVisible }: ControlPanelProps) {
       <Button variant="ghost" size="icon" onClick={controls.onRemove} className="flex-shrink-0">
         <Trash2 className="h-4 w-4 text-destructive" />
       </Button>
+    </div>
+  );
+}
+
+type NumberOperandProps = {
+  value: number;
+  onChange: (value: number) => void;
+} & ControlPanelProps;
+
+function NumberOperand({ value, onChange, controls }: NumberOperandProps) {
+  return (
+    <div className="group flex items-center justify-between p-2 pl-4 border rounded-lg bg-background w-full">
+      <Input
+        type="number"
+        value={value}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(Number(e.target.value))}
+        className="w-full"
+      />
+      <ControlPanel controls={controls} />
     </div>
   );
 }

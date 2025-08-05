@@ -87,7 +87,7 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
                 if (series.datasetId) {
                     const data = staticServerChartDataMap.get(series.datasetId);
                     if (data) {
-                        dataSeriesMap.set(series.id, { ...data, seriesId: series.id });
+                        dataSeriesMap.set(series.id, { ...data, seriesId: series.id, unit: series.unit || data.unit });
                     }
                 }
             });

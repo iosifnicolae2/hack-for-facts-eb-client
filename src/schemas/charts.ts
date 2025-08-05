@@ -66,7 +66,7 @@ export type AnalyticsFilterType = z.infer<typeof AnalyticsFilterSchema>;
 // ============================================================================
 
 type SeriesId = string;
-type Operand = SeriesId | Calculation;
+export type Operand = SeriesId | Calculation | number;
 export type Operation = 'sum' | 'subtract' | 'multiply' | 'divide';
 // Add mechanism to avoid circular dependencies. Also, add validation for operations: Ex: divide by zero, etc.
 export interface Calculation {
@@ -85,7 +85,7 @@ const CalculationSchema: z.ZodType<Calculation> = z.lazy(() =>
 );
 
 const OperandSchema: z.ZodType<Operand> = z.lazy(() =>
-  z.union([SeriesIdSchema, CalculationSchema])
+  z.union([SeriesIdSchema, CalculationSchema, z.number()])
 );
 
 export const BaseSeriesConfigurationSchema = z.object({
