@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getChartAnalytics } from "@/lib/api/charts";
-import { AnalyticsFilterType, AnalyticsInput, Chart, AnalyticsDataPoint, Series, defaultYearRange, SeriesConfig } from "@/schemas/charts";
+import { getChartAnalytics, getStaticChartAnalytics, StaticAnalyticsDataPoint } from "@/lib/api/charts";
+import { AnalyticsFilterType, AnalyticsInput, Chart, AnalyticsDataPoint, Series, defaultYearRange, SeriesConfig, StaticSeriesConfiguration } from "@/schemas/charts";
 import { useMemo } from "react";
 import { generateHash } from "@/lib/utils";
 import { calculateAllSeriesData } from "@/lib/chart-calculation-utils";
@@ -38,9 +38,19 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
             .map(series => ({ seriesId: series.id, filter: series.filter as AnalyticsFilterType }));
     }, [chart]);
 
+    const staticSeries = useMemo(() => {
+        if (!chart) return [];
+        return chart.series
+            .filter(series => series.type === 'static-series')
+            .map(series => series as StaticSeriesConfiguration);
+    }, [chart]);
+
     const analyticsInputsHash = useMemo(() => getAnalyticsInputHash(analyticsInputs), [analyticsInputs]);
+    const staticSeriesDatasetIds = useMemo(() => [...new Set(staticSeries.map(s => s.datasetId).filter((id): id is string => !!id))], [staticSeries]);
+    const staticSeriesDatasetIdsHash = useMemo(() => getStaticSeriesInputHash(staticSeriesDatasetIds), [staticSeriesDatasetIds]);
     const hasChart = !!chart;
     const hasFilters = analyticsInputs.length > 0;
+    const hasStaticSeries = staticSeries.length > 0;
 
     // Use the chart series filters to get series data.
     const { data: serverChartData, isLoading: isLoadingData, error: dataError } = useQuery({
@@ -49,27 +59,50 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
         enabled: enabled && hasChart && hasFilters,
     });
 
+    const { data: staticServerChartData, isLoading: isLoadingStaticData, error: staticDataError } = useQuery({
+        queryKey: ['chart-data', staticSeriesDatasetIdsHash],
+        queryFn: () => getStaticChartAnalytics(staticSeriesDatasetIds),
+        enabled: enabled && hasChart && hasStaticSeries,
+    });
+
 
     // Transform server data to our custom data format.
     const dataSeriesMap = useMemo(() => {
-        if (!chart || !serverChartData) return undefined;
+        if (!chart) return undefined;
 
-        // Convert array to map for calculation function
         const dataSeriesMap = new Map<SeriesId, AnalyticsDataPoint>();
-        serverChartData.forEach(data => {
-            dataSeriesMap.set(data.seriesId, data);
-        });
+        if (serverChartData) {
+            serverChartData.forEach(data => {
+                dataSeriesMap.set(data.seriesId, data);
+            });
+        }
+
+        if (staticServerChartData) {
+            const staticServerChartDataMap = staticServerChartData.reduce((acc, data) => {
+                acc.set(data.datasetId, data);
+                return acc;
+            }, new Map<string, StaticAnalyticsDataPoint>());
+
+            staticSeries.forEach(series => {
+                if (series.datasetId) {
+                    const data = staticServerChartDataMap.get(series.datasetId);
+                    if (data) {
+                        dataSeriesMap.set(series.id, { ...data, seriesId: series.id });
+                    }
+                }
+            });
+        }
 
         // Updates the dataSeriesMap with the calculated data, custom series, etc.
         calculateAllSeriesData(chart.series, dataSeriesMap);
         return dataSeriesMap;
 
-    }, [chart, serverChartData]);
+    }, [chart, serverChartData, staticServerChartData, staticSeries]);
 
     return {
         dataSeriesMap,
-        isLoadingData,
-        dataError,
+        isLoadingData: isLoadingData || isLoadingStaticData,
+        dataError: dataError || staticDataError,
     };
 }
 
@@ -83,6 +116,18 @@ function getAnalyticsInputHash(analyticsInputs: AnalyticsInput[]) {
 
     return generateHash(payloadHash);
 }
+
+function getStaticSeriesInputHash(datasetIds: string[]) {
+    if (datasetIds.length === 0) return '';
+    const payloadHash = datasetIds
+        .sort((a, b) => a.localeCompare(b))
+        .reduce((acc, input) => {
+            return acc + input;
+        }, '');
+
+    return generateHash(payloadHash);
+}
+
 
 export function convertToTimeSeriesData(dataSeriesMap: Map<SeriesId, AnalyticsDataPoint>, chart: Chart): { data: TimeSeriesDataPoint[], unitMap: UnitMap } {
     if (dataSeriesMap.size === 0) return { data: [], unitMap: new Map<SeriesId, Unit>() };

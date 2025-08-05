@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { Trash2, Settings, Eye, RotateCcw } from 'lucide-react';
-import { CustomSeriesValueConfigurationSchema, Series, SeriesConfiguration, SeriesGroupConfiguration } from '@/schemas/charts';
+import { CustomSeriesValueConfigurationSchema, Series, SeriesConfiguration, SeriesGroupConfiguration, StaticSeriesConfigurationSchema } from '@/schemas/charts';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,6 +26,7 @@ import { CustomSeriesDataEditor } from '../series-config/CustomSeriesDataEditor'
 import { CustomSeriesConfigurationSchema } from '@/schemas/charts';
 import { CustomSeriesValueEditor } from '../series-config/CustomSeriesValueEditor';
 import { UnitInput } from '../series-config/UnitInput';
+import { StaticSeriesEditor } from '../series-config/StaticSeriesEditor';
 
 
 export function SeriesConfigView() {
@@ -120,6 +121,7 @@ export function SeriesConfigView() {
                 <SelectItem value="aggregated-series-calculation">Aggregated Series Calculation</SelectItem>
                 <SelectItem value="custom-series">Custom Series</SelectItem>
                 <SelectItem value="custom-series-value">Custom Series Value</SelectItem>
+                <SelectItem value="static-series">Static Series</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -212,6 +214,9 @@ export function SeriesConfigView() {
       )}
       {series.type === 'custom-series-value' && (
         <CustomSeriesValueEditor series={series as z.infer<typeof CustomSeriesValueConfigurationSchema>} />
+      )}
+      {series.type === 'static-series' && (
+        <StaticSeriesEditor series={series as z.infer<typeof StaticSeriesConfigurationSchema>} />
       )}
 
       {/* ================= Series Delete ================= */}

@@ -18,6 +18,12 @@ export interface AnalyticsResponse {
   };
 }
 
+export interface StaticAnalyticsDataPoint {
+  datasetId: string;
+  unit: string;
+  yearlyTrend: YearlyTrendPoint[];
+}
+
 /**
  * Fetch analytics data for chart rendering
  */
@@ -40,4 +46,25 @@ export async function getChartAnalytics(inputs: AnalyticsInput[]): Promise<Analy
   }>(query, { inputs });
 
   return response.executionAnalytics;
+}
+
+export async function getStaticChartAnalytics(datasetIds: string[]): Promise<StaticAnalyticsDataPoint[]> {
+  const query = `
+    query GetStaticChartAnalytics($datasetIds: [ID!]!) {
+      staticChartAnalytics(datasetIds: $datasetIds) {
+        datasetId
+        unit
+        yearlyTrend {
+          year
+          totalAmount
+        }
+      }
+    }
+  `;
+
+  const response = await graphqlRequest<{
+    staticChartAnalytics: StaticAnalyticsDataPoint[];
+  }>(query, { datasetIds });
+
+  return response.staticChartAnalytics;
 }

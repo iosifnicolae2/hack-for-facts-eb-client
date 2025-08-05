@@ -3,6 +3,7 @@ import { LineItemsAggregatedYearlySeriesFilter } from "./LineItemsAggregatedYear
 import { AggregatedSeriesCalculationSeriesFilter } from "./AggregatedSeriesCalculationSeriesFilter";
 import { CustomSeriesSeriesFilter } from "./CustomSeriesSeriesFilter";
 import { CustomSeriesValueSeriesFilter } from "./CustomSeriesValueSeriesFilter";
+import { StaticSeriesFilter } from "./StaticSeriesFilter";
 import { z } from "zod";
 
 interface SeriesFilterDisplayProps {
@@ -20,6 +21,8 @@ export function SeriesFilterDisplay({ series, chart }: SeriesFilterDisplayProps)
       return <CustomSeriesSeriesFilter series={series} />;
     case "custom-series-value":
       return <CustomSeriesValueSeriesFilter series={series as z.infer<typeof CustomSeriesValueConfigurationSchema>} />;
+    case "static-series":
+      return <StaticSeriesFilter series={series} />;
     default:
       return null;
   }

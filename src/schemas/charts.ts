@@ -128,11 +128,23 @@ export const CustomSeriesValueConfigurationSchema = BaseSeriesConfigurationSchem
   unit: z.string().optional().default('').describe('The unit of the series. It will be shown on the chart.'),
 }).passthrough();
 
+export const StaticSeriesConfigurationSchema = BaseSeriesConfigurationSchema.extend({
+  type: z.literal('static-series'),
+  datasetId: z.string().optional().describe('The id of the dataset to use for the static series. The data is fetched from the server.'),
+}).passthrough();
 
-export const SeriesSchema = z.discriminatedUnion('type', [SeriesConfigurationSchema, SeriesGroupConfigurationSchema, CustomSeriesConfigurationSchema, CustomSeriesValueConfigurationSchema]);
+
+export const SeriesSchema = z.discriminatedUnion('type', [
+  SeriesConfigurationSchema,
+  SeriesGroupConfigurationSchema,
+  CustomSeriesConfigurationSchema,
+  CustomSeriesValueConfigurationSchema,
+  StaticSeriesConfigurationSchema,
+]);
 
 export type SeriesConfiguration = z.infer<typeof SeriesConfigurationSchema>;
 export type SeriesGroupConfiguration = z.infer<typeof SeriesGroupConfigurationSchema>;
+export type StaticSeriesConfiguration = z.infer<typeof StaticSeriesConfigurationSchema>;
 export type Series = z.infer<typeof SeriesSchema>;
 
 // ============================================================================
