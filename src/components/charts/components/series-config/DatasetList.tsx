@@ -1,6 +1,6 @@
 import { useMultiSelectInfinite } from '@/components/filters/base-filter/hooks/useMultiSelectInfinite';
 import { graphqlRequest } from '@/lib/api/graphql';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { SearchInput } from '@/components/filters/base-filter/SearchInput';
 import { BaseListProps, PageData, OptionItem } from '@/components/filters/base-filter/interfaces';
 import { ErrorDisplay } from '@/components/filters/base-filter/ErrorDisplay';
@@ -8,17 +8,21 @@ import { ListContainer } from '@/components/filters/base-filter/ListContainer';
 import { ListOption } from '@/components/filters/base-filter/ListOption';
 import { cn } from '@/lib/utils';
 import { VirtualItem } from '@tanstack/react-virtual';
-import { useDatasetStore } from '@/hooks/filters/useDatasetStore';
 import { Dataset } from '@/lib/api/datasets';
+
+interface DatasetListProps extends Omit<BaseListProps, 'toggleSelect'> {
+    addDatasets: (datasets: Dataset[]) => void;
+    toggleSelect: (dataset: Dataset) => void;
+}
 
 export function DatasetList({
     selectedOptions,
     toggleSelect,
     pageSize = 100,
     className,
-}: BaseListProps) {
+    addDatasets,
+}: DatasetListProps) {
     const [searchFilter, setSearchFilter] = useState("");
-    const { add: addDatasets } = useDatasetStore([]);
     const {
         items,
         parentRef, // This ref needs to be passed to the scrollable element in FilterContainer
@@ -41,6 +45,7 @@ export function DatasetList({
                         description
                         sourceName
                         sourceUrl
+                        unit
                     }
                   pageInfo { totalCount hasNextPage }
                 }
@@ -51,6 +56,7 @@ export function DatasetList({
             const response = await graphqlRequest<{
                 datasets: { nodes: Dataset[]; pageInfo: { totalCount: number; hasNextPage: boolean; hasPreviousPage: boolean } };
             }>(query, variables);
+            addDatasets(response.datasets.nodes);
             return {
                 nodes: response.datasets.nodes,
                 pageInfo: response.datasets.pageInfo,
@@ -58,12 +64,6 @@ export function DatasetList({
             };
         }
     });
-
-    useEffect(() => {
-        if (items.length > 0) {
-            addDatasets(items);
-        }
-    }, [items, addDatasets]);
 
     const showNoResults = !isLoading && !isError && items.length === 0 && searchFilter.length > 0;
     const isEmpty = !isLoading && !isError && items.length === 0 && !searchFilter;
@@ -104,7 +104,7 @@ export function DatasetList({
                                     key={option.id}
                                     uniqueIdPart={option.id}
                                     onClick={() => {
-                                        toggleSelect({ id: option.id, label: option.name })
+                                        toggleSelect(option)
                                     }}
                                     label={option.name}
                                     selected={isSelected}

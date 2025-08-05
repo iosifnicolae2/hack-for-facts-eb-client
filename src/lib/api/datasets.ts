@@ -7,6 +7,7 @@ export interface Dataset {
   description: string;
   sourceName: string;
   sourceUrl: string;
+  unit: string;
 }
 
 export async function getDatasets(ids: (string | number)[]): Promise<Dataset[]> {
@@ -19,6 +20,7 @@ export async function getDatasets(ids: (string | number)[]): Promise<Dataset[]> 
           description
           sourceName
           sourceUrl
+          unit
         }
       }
     }

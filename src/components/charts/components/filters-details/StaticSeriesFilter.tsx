@@ -1,6 +1,5 @@
 import { StaticSeriesConfiguration } from "@/schemas/charts";
 import { useDatasetStore } from "@/hooks/filters/useDatasetStore";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface StaticSeriesFilterProps {
   series: StaticSeriesConfiguration;

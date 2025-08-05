@@ -3,8 +3,8 @@ import { StaticSeriesConfigurationSchema } from '@/schemas/charts';
 import { useChartStore } from '../../hooks/useChartStore';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DatasetList } from './DatasetList';
-import { OptionItem } from '@/components/filters/base-filter/interfaces';
 import { useDatasetStore } from '@/hooks/filters/useDatasetStore';
+import { Dataset } from '@/lib/api/datasets';
 
 interface StaticSeriesEditorProps {
   series: z.infer<typeof StaticSeriesConfigurationSchema>;
@@ -12,13 +12,14 @@ interface StaticSeriesEditorProps {
 
 export function StaticSeriesEditor({ series }: StaticSeriesEditorProps) {
   const { updateSeries } = useChartStore();
-  const { get: getDataset } = useDatasetStore(series.datasetId ? [series.datasetId] : []);
+  const { get: getDataset, add: addDatasets } = useDatasetStore(series.datasetId ? [series.datasetId] : []);
   const dataset = series.datasetId ? getDataset(series.datasetId) : null;
 
-  const handleDatasetChange = (dataset: OptionItem) => {
+  const handleDatasetChange = (dataset: Dataset) => {
     updateSeries(series.id, { 
-      datasetId: dataset.id as string,
-      label: dataset.label,
+      datasetId: dataset.id,
+      label: dataset.name,
+      unit: dataset.unit,
       updatedAt: new Date().toISOString(),
     });
   };
@@ -32,6 +33,7 @@ export function StaticSeriesEditor({ series }: StaticSeriesEditorProps) {
         <DatasetList
           selectedOptions={series.datasetId ? [{ id: series.datasetId, label: dataset?.name ?? '' }] : []}
           toggleSelect={handleDatasetChange}
+          addDatasets={addDatasets}
         />
         {dataset && (
           <Card>
