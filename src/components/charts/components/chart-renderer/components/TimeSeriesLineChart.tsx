@@ -36,7 +36,7 @@ export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotati
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
       >
-        <MultiAxisChartContainer disableTooltip={diffEnabled || chart.config.editAnnotations} chart={chart} unitMap={unitMap} onAnnotationPositionChange={onAnnotationPositionChange}>
+        <MultiAxisChartContainer disableTooltip={diffEnabled} chart={chart} unitMap={unitMap} onAnnotationPositionChange={onAnnotationPositionChange}>
           {(getYAxisId: (seriesId: string) => string) => (
             <>
               {enabledSeries.map((series) => (

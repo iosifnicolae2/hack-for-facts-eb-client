@@ -21,7 +21,7 @@ export function formatCurrency(amount: number, notation?: "standard" | "compact"
  */
 export const formatNumberRO = (value: number | null | undefined, notation?: "standard" | "compact"): string => {
   if (value === null || value === undefined || isNaN(value)) return 'N/A';
-  
+
   return new Intl.NumberFormat("ro-RO", {
     style: "decimal",
     notation: notation || "standard",
@@ -42,4 +42,8 @@ export function generateHash(message: string): string {
   }
 
   return Math.abs(hash).toString(16).padStart(8, '0');
+}
+
+export function capitalize(str: string) {
+  return str.toLocaleLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 }

@@ -25,6 +25,9 @@ export const useEntityViews = (entity: EntityDetailsData | null | undefined): En
     views.push({ id: 'income-trends', label: 'Income Trends' });
   }
 
+
+  views.push({ id: 'ranking', label: 'Ranking' });
+
   if (entity.reports && entity.reports.nodes.length > 0) {
     views.push({ id: 'reports', label: 'Reports' });
   }
@@ -32,6 +35,7 @@ export const useEntityViews = (entity: EntityDetailsData | null | undefined): En
   if (entity.entity_type === 'UAT' || entity.entity_type === 'JUDET') {
     views.push({ id: 'map', label: 'Map Data' });
   }
+
 
   return views;
 };

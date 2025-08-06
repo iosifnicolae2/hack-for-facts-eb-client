@@ -1,6 +1,7 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { EntitySearchInput } from "@/components/entities/EntitySearch";
 import { PageCard } from "@/components/landing/PageCard";
+import { QuickEntityAccess } from "@/components/entities/QuickEntityAccess";
 import mapPreview from "@/assets/images/map.png";
 import chartPreview from "@/assets/images/chart.png";
 
@@ -21,11 +22,12 @@ function Index() {
             Search and analyze public spending data for entities across Romania.
           </p>
 
-          <div className="w-full max-w-2xl lg:max-w-3xl mt-8">
+          <div className="w-full max-w-2xl lg:max-w-3xl mt-8 space-y-6">
             <EntitySearchInput
               placeholder="Enter entity name or CUI..."
               autoFocus
             />
+            <QuickEntityAccess />
           </div>
 
           {/* Quick navigation cards */}

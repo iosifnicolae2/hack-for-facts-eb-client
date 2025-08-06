@@ -20,23 +20,20 @@ interface EntityFinancialTrendsProps {
 }
 
 export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ incomeTrend, expenseTrend, balanceTrend, currentYear, mode, onModeChange, onYearChange, isLoading }) => {
-  if (isLoading) {
-    return <EntityFinancialTrendsSkeleton />;
-  }
-  
+
   const trendsAvailable = incomeTrend?.length || expenseTrend?.length || balanceTrend?.length;
 
   const mergedData = useMemo(() => {
     const years = new Set([
-      ...(incomeTrend || []).map(p => p.year),
       ...(expenseTrend || []).map(p => p.year),
+      ...(incomeTrend || []).map(p => p.year),
       ...(balanceTrend || []).map(p => p.year)
-    ]);
+    ],);
 
     return Array.from(years).sort().map(year => ({
       year,
-      income: incomeTrend?.find(p => p.year === year)?.totalAmount ?? 0,
       expense: expenseTrend?.find(p => p.year === year)?.totalAmount ?? 0,
+      income: incomeTrend?.find(p => p.year === year)?.totalAmount ?? 0,
       balance: balanceTrend?.find(p => p.year === year)?.totalAmount ?? 0,
     }));
   }, [incomeTrend, expenseTrend, balanceTrend]);
@@ -51,8 +48,8 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
       const pct = (curr: number, prevVal: number) => prevVal === 0 ? 0 : ((curr - prevVal) / prevVal) * 100;
       return {
         year: entry.year,
-        income: pct(entry.income, prev.income),
         expense: pct(entry.expense, prev.expense),
+        income: pct(entry.income, prev.income),
         balance: pct(entry.balance, prev.balance),
       };
     });
@@ -64,14 +61,16 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
   const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: { name: string; value: number; color: string; dataKey: string; }[]; label?: string }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white dark:bg-slate-800 p-3 border border-slate-300 dark:border-slate-700 rounded shadow-lg">
+        <div className="bg-white/50 dark:bg-slate-800/90 backdrop-blur-xs p-3 border border-slate-300 dark:border-slate-700 rounded shadow-lg">
           <p className="label font-bold mb-2">{`Anul: ${label}`}</p>
-          {payload.map((pld) => (
-            <div key={pld.dataKey} style={{ color: pld.color }} className="flex flex-row gap-2 justify-between text-sm">
-              <p>{pld.name}</p>
-              <p>{mode === 'absolute' ? yValueFormatter(pld.value, 'RON') : yValueFormatter(pld.value, '%')}</p>
-            </div>
-          ))}
+          <div className="flex flex-col gap-2">
+            {payload.map((pld) => (
+              <div key={pld.dataKey} style={{ color: pld.color }} className="flex flex-row gap-4 justify-between items-center text-sm">
+                <p>{pld.name}</p>
+                <p className="font-mono text-md font-bold text-slate-800 dark:text-slate-400">{mode === 'absolute' ? yValueFormatter(pld.value, 'RON') : yValueFormatter(pld.value, '%')}</p>
+              </div>
+            ))}
+          </div>
         </div>
       );
     }
@@ -90,6 +89,10 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
       onYearChange(year);
     }
   };
+
+  if (isLoading) {
+    return <EntityFinancialTrendsSkeleton />;
+  }
 
   return (
     <Card>

@@ -11,10 +11,13 @@ import { FloatingEntitySearch } from '@/components/entities/FloatingEntitySearch
 import { entitySearchSchema } from '@/components/entities/validation';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useEntityViews } from '@/hooks/useEntityViews';
+import { useRecentEntities } from '@/hooks/useRecentEntities';
 
 import { TrendsView } from '@/components/entities/views/TrendsView';
 import { MapView } from '@/components/entities/views/MapView';
 import { Overview } from '@/components/entities/views/Overview';
+import { defaultYearRange } from '@/schemas/charts';
+import { RankingView } from '@/components/entities/views/RankingView';
 
 export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
 
@@ -36,29 +39,30 @@ function EntityDetailsPage() {
         enableOnFormTags: ['INPUT', 'TEXTAREA', 'SELECT'],
     });
 
-    // Year selection setup
-    const CURRENT_YEAR = 2024; // hardcoded as requested
-    const START_YEAR = 2016;
+    const START_YEAR = defaultYearRange.start;
+    const END_YEAR = defaultYearRange.end;
 
-    const [selectedYear, setSelectedYear] = useState<number>(search.year ?? CURRENT_YEAR);
+    const [selectedYear, setSelectedYear] = useState<number>(search.year ?? END_YEAR);
 
     const [trendMode, setTrendMode] = useState<'absolute' | 'percent'>((search.trend as 'absolute' | 'percent') ?? 'absolute');
 
-    // Pre-compute year options (descending: newest → oldest)
+    // Options for year selection
     const years = useMemo(() =>
-        Array.from({ length: CURRENT_YEAR - START_YEAR + 1 }, (_, idx) => CURRENT_YEAR - idx),
-        []
+        Array.from({ length: END_YEAR - START_YEAR + 1 }, (_, idx) => END_YEAR - idx),
+        [START_YEAR, END_YEAR]
     );
 
     // Fetch entity details for the chosen year and trend range
     const { data: entity, isLoading, isError, error } = useEntityDetails(
         cui,
-        selectedYear, // year for summary + line items
-        START_YEAR,   // trend from 2016 …
-        CURRENT_YEAR  // … up to 2024 (full range always shown)
+        selectedYear,
+        START_YEAR,
+        END_YEAR
     );
 
+    useRecentEntities(entity); // Adds entity to recent entities list
     const views = useEntityViews(entity);
+
 
     const handleViewChange = (viewId: string) => {
         navigate({
@@ -172,6 +176,8 @@ function EntityDetailsPage() {
                 return <TrendsView entity={entity ?? undefined} type="income" isLoading={isLoading} currentYear={selectedYear} onYearClick={handleYearChange} initialIncomeSearch={search.incomeSearch} initialExpenseSearch={search.expenseSearch} onSearchChange={handleSearchChange} />;
             case 'map':
                 return <MapView />;
+            case 'ranking':
+                return <RankingView />;
             default:
                 // Default to overview if the view is not recognized
                 return <Overview

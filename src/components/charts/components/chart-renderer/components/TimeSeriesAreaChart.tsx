@@ -34,7 +34,7 @@ export function TimeSeriesAreaChart({ chart, unitMap, timeSeriesData, onAnnotati
         onMouseUp={handleMouseUp}
         onMouseLeave={clearSelection}
       >
-        <MultiAxisChartContainer disableTooltip={diffEnabled || chart.config.editAnnotations} chart={chart} unitMap={unitMap} onAnnotationPositionChange={onAnnotationPositionChange}>
+        <MultiAxisChartContainer disableTooltip={diffEnabled} chart={chart} unitMap={unitMap} onAnnotationPositionChange={onAnnotationPositionChange}>
           {(getYAxisId: (seriesId: string) => string) => (
             <>
               {enabledSeries.map((series) => (

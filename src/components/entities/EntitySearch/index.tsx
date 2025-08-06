@@ -80,7 +80,7 @@ export function EntitySearchInput({
                     aria-expanded={showDropdown}
                     aria-controls={`${searchId}-listbox`}
                     aria-activedescendant={activeDescendantId}
-                    className="w-full pl-20 pr-20 py-7 text-xl md:text-xl bg-white dark:bg-slate-800 rounded-3xl placeholder:text-slate-400 shadow-lg hover:shadow-xl focus:shadow-2xl focus:ring-2 focus:ring-primary-focus focus:outline-none transition-all duration-300"
+                    className="w-full pl-20 pr-20 py-7 text-xl md:text-xl bg-white dark:bg-slate-800 rounded-3xl placeholder:text-slate-400 shadow-sm hover:shadow-md focus:shadow-lg transition-all duration-300"
                 />
                 {searchTerm && (
                     <button
@@ -98,7 +98,7 @@ export function EntitySearchInput({
             </div>
 
             {showDropdown && (
-                <div className="absolute z-20 mt-3 w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xl rounded-3xl max-h-[65vh] overflow-y-auto">
+                <div className="absolute z-20 mt-3 w-full bg-white dark:bg-slate-800 border border-slate-400 dark:border-slate-700 shadow-2xl rounded-3xl max-h-[65vh] overflow-y-auto">
                     {isLoading ? (
                         <div className="p-6 flex items-center justify-center text-slate-500 dark:text-slate-400">
                             <Loader2 className="h-7 w-7 animate-spin mr-4" />

@@ -30,7 +30,7 @@ export function PageCard({
     <Link
       to={to}
       className={cn(
-        "group relative block h-full w-full overflow-hidden rounded-2xl bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-105 dark:bg-slate-800/80",
+        "group relative block h-full w-full overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-100 ease-in-out hover:shadow-xl hover:scale-[1.01] dark:hover:bg-slate-700 dark:bg-slate-800/80",
         className,
       )}
     >
