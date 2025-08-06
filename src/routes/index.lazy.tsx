@@ -1,5 +1,8 @@
-import { createLazyFileRoute, Link } from "@tanstack/react-router";
+import { createLazyFileRoute } from "@tanstack/react-router";
 import { EntitySearchInput } from "@/components/entities/EntitySearch";
+import { PageCard } from "@/components/landing/PageCard";
+import mapPreview from "@/assets/images/map.png";
+import chartPreview from "@/assets/images/chart.png";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
@@ -25,17 +28,22 @@ function Index() {
             />
           </div>
 
-          {/* Placeholder for maybe some quick link cards or stats if needed later */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
-            <Link to="/data-discovery" className="p-6 bg-white dark:bg-slate-800/50 rounded-xl shadow-md text-left">
-              <h3 className="font-semibold text-slate-800 dark:text-slate-100">Explore Data</h3>
-              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Advanced filtering & analysis.</p>
-            </Link>
-
-            <Link to="/map" className="p-6 bg-white dark:bg-slate-800/50 rounded-xl shadow-md text-left">
-              <h3 className="font-semibold text-slate-800 dark:text-slate-100">Map</h3>
-              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Explore spending by UAT.</p>
-            </Link>
+          {/* Quick navigation cards */}
+          <div className="mt-20 grid w-full max-w-5xl grid-cols-1 gap-8 md:grid-cols-2">
+            <PageCard
+              title="Explore Data"
+              description="Advanced filtering & analysis."
+              to="/data-discovery"
+              image={chartPreview}
+              imageAlt="Charts preview"
+            />
+            <PageCard
+              title="Map"
+              description="Explore spending by UAT."
+              to="/map"
+              image={mapPreview}
+              imageAlt="Map preview"
+            />
           </div>
 
         </div>
