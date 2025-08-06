@@ -2,9 +2,10 @@ import React, { useMemo } from 'react';
 import { EntityDetailsData } from '@/lib/api/entities';
 import { useFinancialData } from '@/hooks/useFinancialData';
 import { FinancialDataCard } from './FinancialDataCard';
+import { EntityLineItemsSkeleton } from './EntityLineItemsSkeleton';
 
 export interface EntityTopItemsProps {
-  lineItems: EntityDetailsData["executionLineItems"];
+  lineItems?: EntityDetailsData["executionLineItems"];
   currentYear: number;
   totalIncome?: number | null;
   totalExpenses?: number | null;
@@ -13,6 +14,7 @@ export interface EntityTopItemsProps {
   initialExpenseSearchTerm: string;
   initialIncomeSearchTerm: string;
   onSearchChange: (type: 'expense' | 'income', term: string) => void;
+  isLoading?: boolean;
 }
 
 export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
@@ -25,6 +27,7 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
   initialExpenseSearchTerm,
   initialIncomeSearchTerm,
   onSearchChange,
+  isLoading,
 }) => {
   const initialTotalIncome = totalIncome ?? 0;
   const initialTotalExpenses = totalExpenses ?? 0;
@@ -52,6 +55,10 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
     onSearchChange('income', term);
     onIncomeSearchChange(term);
   };
+
+  if (isLoading) {
+    return <EntityLineItemsSkeleton />;
+  }
 
   return (
     <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">

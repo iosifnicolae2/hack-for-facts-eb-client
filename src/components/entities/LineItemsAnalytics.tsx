@@ -12,9 +12,10 @@ import {
     SelectTrigger,
 } from "@/components/ui/select";
 import { processDataForAnalyticsChart } from '@/lib/analytics-utils';
+import { LineItemsAnalyticsSkeleton } from './LineItemsAnalyticsSkeleton';
 
 interface AnalyticsProps {
-    lineItems: EntityDetailsData['executionLineItems'];
+    lineItems?: EntityDetailsData['executionLineItems'];
     analyticsYear: number;
     years: number[];
     onYearChange: (year: number) => void;
@@ -22,6 +23,7 @@ interface AnalyticsProps {
     onChartTypeChange: (type: ChartType) => void;
     dataType: DataType;
     onDataTypeChange: (type: DataType) => void;
+    isLoading?: boolean;
 }
 
 type ChartType = 'bar' | 'pie';
@@ -37,7 +39,8 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
     chartType,
     onChartTypeChange,
     dataType,
-    onDataTypeChange
+    onDataTypeChange,
+    isLoading,
 }) => {
     const expenses = useMemo(() => lineItems?.nodes.filter(li => li.account_category === 'ch') || [], [lineItems]);
     const incomes = useMemo(() => lineItems?.nodes.filter(li => li.account_category === 'vn') || [], [lineItems]);
@@ -73,6 +76,10 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
             </text>
         );
     };
+
+    if (isLoading) {
+        return <LineItemsAnalyticsSkeleton />;
+    }
 
     return (
         <Card className="shadow-lg dark:bg-slate-800">

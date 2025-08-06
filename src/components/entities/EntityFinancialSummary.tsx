@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
 import { TrendingUp, TrendingDown, Scale } from 'lucide-react'; // Example icons
+import { EntityFinancialSummarySkeleton } from './EntityFinancialSummarySkeleton';
 
 interface EntityFinancialSummaryCardProps {
   title: string;
@@ -40,11 +41,16 @@ interface EntityFinancialSummaryProps {
   totalExpenses: number | null | undefined;
   budgetBalance: number | null | undefined;
   currentYear: number;
+  isLoading?: boolean;
 }
 
 export const EntityFinancialSummary: React.FC<EntityFinancialSummaryProps> = (
-  { totalIncome, totalExpenses, budgetBalance, currentYear }
+  { totalIncome, totalExpenses, budgetBalance, currentYear, isLoading }
 ) => {
+  if (isLoading) {
+    return <EntityFinancialSummarySkeleton />;
+  }
+
   return (
     <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       <EntityFinancialSummaryCard title="Cheltuieli totale" value={totalExpenses} icon={TrendingDown} color="red" currentYear={currentYear} />

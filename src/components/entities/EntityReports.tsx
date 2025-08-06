@@ -5,11 +5,13 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Button } from '@/components/ui/button';
 import { Link } from '@tanstack/react-router';
 import { Download, FileText, Landmark, Calendar } from 'lucide-react';
+import { EntityReportsSkeleton } from './EntityReportsSkeleton';
 
 type Report = NonNullable<EntityDetailsData['reports']>['nodes'][0];
 
 interface EntityReportsProps {
   reports: EntityDetailsData['reports'] | null;
+  isLoading?: boolean;
 }
 
 const ReportItem: React.FC<{ report: Report }> = ({ report }) => {
@@ -64,7 +66,11 @@ const ReportItem: React.FC<{ report: Report }> = ({ report }) => {
   );
 };
 
-export const EntityReports: React.FC<EntityReportsProps> = ({ reports }) => {
+export const EntityReports: React.FC<EntityReportsProps> = ({ reports, isLoading }) => {
+  if (isLoading) {
+    return <EntityReportsSkeleton />;
+  }
+
   if (!reports || reports.nodes.length === 0) {
     return null;
   }

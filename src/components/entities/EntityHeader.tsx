@@ -7,9 +7,10 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { EntityViewSwitcher } from './EntityViewSwitcher';
 import { EntityView } from '@/hooks/useEntityViews';
+import { EntityHeaderSkeleton } from './EntityHeaderSkeleton';
 
 interface EntityHeaderProps {
-  entity: Pick<EntityDetailsData, 'name' | 'cui' | 'entity_type' | 'address' | 'uat' | 'children' | 'parents'>;
+  entity?: Pick<EntityDetailsData, 'name' | 'cui' | 'entity_type' | 'address' | 'uat' | 'children' | 'parents'>;
   views: EntityView[];
   activeView: string;
   onViewChange: (viewId: string) => void;
@@ -17,9 +18,14 @@ interface EntityHeaderProps {
   yearSelector?: React.ReactNode;
   onTitleClick?: () => void;
   className?: string;
+  isLoading?: boolean;
 }
 
-export const EntityHeader: React.FC<EntityHeaderProps> = ({ entity, views, activeView, onViewChange, yearSelector, className, onTitleClick }) => {
+export const EntityHeader: React.FC<EntityHeaderProps> = ({ entity, views, activeView, onViewChange, yearSelector, className, onTitleClick, isLoading }) => {
+
+  if (isLoading || !entity) {
+    return <EntityHeaderSkeleton className={className} />;
+  }
 
   const entityCategory = entity.entity_type ? entityCategories.categories[entity.entity_type as keyof typeof entityCategories.categories] : null;
 

@@ -2,7 +2,7 @@ import { createFileRoute, useParams, useSearch, useNavigate } from '@tanstack/re
 import { z } from 'zod';
 import { useEntityDetails } from '@/lib/hooks/useEntityDetails';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, AlertTriangle, Info } from 'lucide-react';
+import { AlertTriangle, Info } from 'lucide-react';
 import { EntityHeader } from '@/components/entities/EntityHeader';
 import { EntityReports } from '@/components/entities/EntityReports';
 import { useState, useMemo, useRef } from 'react';
@@ -119,15 +119,6 @@ function EntityDetailsPage() {
         });
     };
 
-    if (isLoading) {
-        return (
-            <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex flex-col justify-center items-center p-4">
-                <Loader2 className="h-16 w-16 animate-spin text-blue-600 dark:text-blue-400 mb-4" />
-                <p className="text-lg text-slate-700 dark:text-slate-300">Loading entity details...</p>
-            </div>
-        );
-    }
-
     if (isError) {
         return (
             <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex flex-col justify-center items-center p-4">
@@ -143,7 +134,7 @@ function EntityDetailsPage() {
         );
     }
 
-    if (!entity) {
+    if (!isLoading && !entity) {
         return (
             <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex flex-col justify-center items-center p-4">
                 <Alert className="max-w-lg w-full bg-blue-50 dark:bg-blue-900 border-blue-500 dark:border-blue-700">
@@ -163,7 +154,8 @@ function EntityDetailsPage() {
         switch (activeView) {
             case 'overview':
                 return <Overview
-                    entity={entity}
+                    entity={entity ?? undefined}
+                    isLoading={isLoading}
                     selectedYear={selectedYear}
                     trendMode={trendMode} years={years}
                     search={search}
@@ -173,17 +165,18 @@ function EntityDetailsPage() {
                     onAnalyticsChange={handleAnalyticsChange}
                 />;
             case 'reports':
-                return <EntityReports reports={entity.reports} />;
+                return <EntityReports reports={entity?.reports ?? null} isLoading={isLoading} />;
             case 'expense-trends':
-                return <TrendsView entity={entity} type="expense" currentYear={selectedYear} onYearClick={handleYearChange} initialExpenseSearch={search.expenseSearch} initialIncomeSearch={search.incomeSearch} onSearchChange={handleSearchChange} />;
+                return <TrendsView entity={entity ?? undefined} type="expense" isLoading={isLoading} currentYear={selectedYear} onYearClick={handleYearChange} initialExpenseSearch={search.expenseSearch} initialIncomeSearch={search.incomeSearch} onSearchChange={handleSearchChange} />;
             case 'income-trends':
-                return <TrendsView entity={entity} type="income" currentYear={selectedYear} onYearClick={handleYearChange} initialIncomeSearch={search.incomeSearch} initialExpenseSearch={search.expenseSearch} onSearchChange={handleSearchChange} />;
+                return <TrendsView entity={entity ?? undefined} type="income" isLoading={isLoading} currentYear={selectedYear} onYearClick={handleYearChange} initialIncomeSearch={search.incomeSearch} initialExpenseSearch={search.expenseSearch} onSearchChange={handleSearchChange} />;
             case 'map':
                 return <MapView />;
             default:
                 // Default to overview if the view is not recognized
                 return <Overview
-                    entity={entity}
+                    entity={entity ?? undefined}
+                    isLoading={isLoading}
                     selectedYear={selectedYear}
                     trendMode={trendMode}
                     years={years}
@@ -203,7 +196,8 @@ function EntityDetailsPage() {
                 {/** Build year selector injected into header **/}
                 <EntityHeader
                     className="md:sticky top-0 z-10 bg-white dark:bg-slate-900"
-                    entity={entity}
+                    entity={entity ?? undefined}
+                    isLoading={isLoading}
                     views={views}
                     activeView={search.view ?? 'overview'}
                     onViewChange={handleViewChange}

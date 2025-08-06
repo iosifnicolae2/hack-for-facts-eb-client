@@ -7,33 +7,37 @@ import { getSeriesColor } from '@/components/charts/components/chart-renderer/ut
 import { useFinancialData } from '@/hooks/useFinancialData';
 import { FinancialDataCard } from '../FinancialDataCard';
 import { ChartCard } from './ChartCard';
+import { TrendsViewSkeleton } from './TrendsViewSkeleton';
 
 interface BaseTrendsViewProps {
-  entity: EntityDetailsData;
+  entity?: EntityDetailsData;
   type: 'income' | 'expense';
   currentYear: number;
   onYearClick: (year: number) => void;
   initialIncomeSearch?: string;
   initialExpenseSearch?: string;
   onSearchChange: (type: 'income' | 'expense', search: string) => void;
+  isLoading?: boolean;
 }
 
 const TOP_CATEGORIES_COUNT = 10;
 
-export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, currentYear, onYearClick, initialIncomeSearch, initialExpenseSearch, onSearchChange }) => {
+export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, currentYear, onYearClick, initialIncomeSearch, initialExpenseSearch, onSearchChange, isLoading }) => {
   const { cui } = useParams({ from: '/entities/$cui' });
   const chapterMap = getChapterMap();
 
   const lineItems = useMemo(() => {
+    if (!entity) return [];
     const accountCategory = type === 'income' ? 'vn' : 'ch';
     return entity.executionLineItems?.nodes.filter(item => item.account_category === accountCategory) || [];
-  }, [entity.executionLineItems, type]);
+  }, [entity, type]);
 
   const topFunctionalGroups = useMemo(() => {
     return getTopFunctionalGroupCodes(lineItems, TOP_CATEGORIES_COUNT);
   }, [lineItems]);
 
-  const trendChart = useMemo<Chart>(() => {
+  const trendChart = useMemo<Chart | null>(() => {
+    if (!entity) return null;
     const accountCategory = type === 'income' ? 'vn' : 'ch';
     const entityName = entity.name.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     const title = type === 'income' ? `Top ${TOP_CATEGORIES_COUNT} Income Categories for ${entityName}` : `Top ${TOP_CATEGORIES_COUNT} Spending Categories for ${entityName}`;
@@ -68,7 +72,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
       },
       series,
     } as Chart;
-  }, [topFunctionalGroups, cui, entity.name, type, chapterMap]);
+  }, [topFunctionalGroups, cui, entity, type, chapterMap]);
 
   const {
     expenseSearchTerm,
@@ -95,10 +99,15 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
   };
 
   const years = useMemo(() => {
+    if (!entity) return [];
     const trend = type === 'income' ? entity.incomeTrend : entity.expenseTrend;
     const allYears = new Set(trend?.map(item => item.year));
     return Array.from(allYears).sort((a, b) => b - a);
-  }, [entity.incomeTrend, entity.expenseTrend, type]);
+  }, [entity, type]);
+
+  if (isLoading || !entity || !trendChart) {
+    return <TrendsViewSkeleton />;
+  }
 
   if (type === 'income') {
     return (

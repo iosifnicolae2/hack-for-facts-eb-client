@@ -6,18 +6,24 @@ import { useMemo } from 'react';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { TrendingUp } from 'lucide-react';
 import { yValueFormatter } from '../charts/components/chart-renderer/utils';
+import { EntityFinancialTrendsSkeleton } from './EntityFinancialTrendsSkeleton';
 
 interface EntityFinancialTrendsProps {
-  incomeTrend: EntityDetailsData['incomeTrend'];
-  expenseTrend: EntityDetailsData['expenseTrend'];
-  balanceTrend: EntityDetailsData['balanceTrend'];
+  incomeTrend?: EntityDetailsData['incomeTrend'];
+  expenseTrend?: EntityDetailsData['expenseTrend'];
+  balanceTrend?: EntityDetailsData['balanceTrend'];
   currentYear: number;
   mode: 'absolute' | 'percent';
   onModeChange: (mode: 'absolute' | 'percent') => void;
   onYearChange?: (year: number) => void;
+  isLoading?: boolean;
 }
 
-export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ incomeTrend, expenseTrend, balanceTrend, currentYear, mode, onModeChange, onYearChange }) => {
+export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ incomeTrend, expenseTrend, balanceTrend, currentYear, mode, onModeChange, onYearChange, isLoading }) => {
+  if (isLoading) {
+    return <EntityFinancialTrendsSkeleton />;
+  }
+  
   const trendsAvailable = incomeTrend?.length || expenseTrend?.length || balanceTrend?.length;
 
   const mergedData = useMemo(() => {

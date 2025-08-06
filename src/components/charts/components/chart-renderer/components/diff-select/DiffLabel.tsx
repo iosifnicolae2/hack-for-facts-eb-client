@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { yValueFormatter } from '../../utils';
 import { ChartArea } from 'lucide-react';
-import { useChartHeight, useChartWidth, usePlotArea } from 'recharts';
+import { useChartHeight, useChartWidth } from 'recharts';
 
 export type DiffInfo = {
   label: string;
