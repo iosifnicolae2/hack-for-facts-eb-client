@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { EntityViewSwitcher } from './EntityViewSwitcher';
 import { EntityView } from '@/hooks/useEntityViews';
 import { EntityHeaderSkeleton } from './EntityHeaderSkeleton';
+import { Link } from '@tanstack/react-router';
 
 interface EntityHeaderProps {
   entity?: Pick<EntityDetailsData, 'name' | 'cui' | 'entity_type' | 'address' | 'uat' | 'children' | 'parents'>;
@@ -16,12 +17,11 @@ interface EntityHeaderProps {
   onViewChange: (viewId: string) => void;
   /** Optional element (e.g., a Select) rendered to the right of the title */
   yearSelector?: React.ReactNode;
-  onTitleClick?: () => void;
   className?: string;
   isLoading?: boolean;
 }
 
-export const EntityHeader: React.FC<EntityHeaderProps> = ({ entity, views, activeView, onViewChange, yearSelector, className, onTitleClick, isLoading }) => {
+export const EntityHeader: React.FC<EntityHeaderProps> = ({ entity, views, activeView, onViewChange, yearSelector, className, isLoading }) => {
 
   if (isLoading || !entity) {
     return <EntityHeaderSkeleton className={className} />;
@@ -34,7 +34,11 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({ entity, views, activ
       <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
         <div className="flex-grow">
           <div className="flex items-center gap-3 flex-wrap mb-2">
-            <h1 className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-slate-100 cursor-pointer" onClick={onTitleClick}>{entity.name}</h1>
+            <h1 className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-slate-100 cursor-pointer">
+              <Link to={`/entities/$cui`} params={{ cui: entity.cui }}>
+                {entity.name}
+              </Link>
+            </h1>
             {entityCategory && (
               <Badge variant="secondary" className="px-2 py-1 text-xs sm:text-sm whitespace-nowrap">
                 <Building2 className="h-4 w-4 mr-1.5" />

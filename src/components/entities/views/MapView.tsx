@@ -10,10 +10,10 @@ import { useGeoJsonData } from '@/hooks/useGeoJson';
 import { createHeatmapStyleFunction, getPercentileValues } from '@/components/maps/utils';
 import { EntityDetailsData } from '@/lib/api/entities';
 import { getEntityFeatureInfo } from '@/components/entities/utils';
-import { useEntityHeatmapData } from '@/hooks/useEntityHeatmapData';
-import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
+import { HeatmapFilterInput, HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { UatProperties } from '@/components/maps/interfaces';
+import { useHeatmapData } from '@/hooks/useHeatmapData';
 import { InternalMapFiltersState } from '@/lib/hooks/useMapFilterStore';
 
 interface MapViewProps {
@@ -22,52 +22,72 @@ interface MapViewProps {
 }
 
 export const MapView: React.FC<MapViewProps> = ({ entity, selectedYear }) => {
-  const [dataType, setDataType] = useState<'income' | 'expense'>('expense');
-  const [normalization, setNormalization] = useState<'per_capita_amount' | 'total_amount'>('per_capita_amount');
+  const mapViewType = entity?.entity_type === 'admin_county_council' ? 'Judet' : 'UAT';
+  const [accountCategory, setAccountCategory] = useState<'vn' | 'ch'>('ch');
+  const [normalization, setNormalization] = useState<'per_capita' | 'total'>('per_capita');
   const navigate = useNavigate();
 
   const {
     data: geoJsonData,
     isLoading: isLoadingGeoJson,
     error: geoJsonError,
-  } = useGeoJsonData();
+  } = useGeoJsonData(mapViewType);
 
+  const mapFilters: HeatmapFilterInput = {
+    years: [selectedYear],
+    account_categories: [accountCategory],
+    normalization,
+  };
+
+  const mapHeight = '60vh';
   const { center, zoom, featureId } = useMemo(() => {
-    const defaultState = { center: [43.9432, 24.9668] as [number, number], zoom: 7, featureId: '' };
-    if (!entity || !geoJsonData) return defaultState;
+    const defaultState = { center: undefined, zoom: 7, featureId: '' };
+    if (!entity || !geoJsonData) {
+      return defaultState;
+    }
+
     const featureInfo = getEntityFeatureInfo(entity, geoJsonData);
-    if (!featureInfo) return defaultState;
-    return featureInfo;
+    if (!featureInfo) {
+      return defaultState;
+    } else {
+      return featureInfo;
+    }
   }, [entity, geoJsonData]);
 
   const {
     data: heatmapData,
     isLoading: isLoadingHeatmap,
     error: heatmapError,
-  } = useEntityHeatmapData(entity, selectedYear, dataType);
+  } = useHeatmapData(mapFilters, mapViewType);
 
   const { min: minAggregatedValue, max: maxAggregatedValue } = useMemo(() => {
     if (!heatmapData || !Array.isArray(heatmapData)) return { min: 0, max: 0 };
-    return getPercentileValues(heatmapData, 5, 95, normalization);
+    return getPercentileValues(heatmapData, 5, 95, normalization === 'per_capita' ? 'per_capita_amount' : 'total_amount');
   }, [heatmapData, normalization]);
 
   const getFeatureStyle = useMemo(() => {
-    if (!heatmapData || !Array.isArray(heatmapData)) return () => ({});
-    return createHeatmapStyleFunction(heatmapData, minAggregatedValue, maxAggregatedValue, entity?.entity_type === 'JUDET' ? 'Judet' : 'UAT', normalization);
-  }, [heatmapData, minAggregatedValue, maxAggregatedValue, entity?.entity_type, normalization]);
+    if (!heatmapData || !Array.isArray(heatmapData)) {
+      return () => ({});
+    }
+    const valueKey = normalization === 'per_capita' ? 'per_capita_amount' : 'total_amount';
+    return createHeatmapStyleFunction(heatmapData, minAggregatedValue, maxAggregatedValue, mapViewType, valueKey);
+  }, [heatmapData, minAggregatedValue, maxAggregatedValue, mapViewType, normalization]);
 
   const handleOpenMap = () => {
-    const mapFilters: Partial<InternalMapFiltersState> = {
+    const filterUrlState: InternalMapFiltersState = {
+      accountCategory: { id: accountCategory, label: accountCategory },
+      normalization: { id: normalization === 'per_capita' ? 'per-capita' : 'total', label: normalization },
       years: [{ id: selectedYear, label: selectedYear.toString() }],
-      accountCategory: { id: dataType === 'income' ? 'vn' : 'ch', label: dataType === 'income' ? 'Venituri' : 'Cheltuieli' },
-      mapViewType: entity?.entity_type === 'JUDET' ? 'Judet' : 'UAT',
-      normalization: { id: normalization === 'per_capita_amount' ? 'per-capita' : 'total', label: normalization === 'per_capita_amount' ? 'Per Capita' : 'Total' }
+      functionalClassifications: [],
+      economicClassifications: [],
+      activeView: 'map',
+      mapViewType: mapViewType,
     };
 
     navigate({
       to: '/map',
       search: {
-        'map-filters': JSON.stringify(mapFilters),
+        'map-filters': filterUrlState,
       },
     });
   };
@@ -107,13 +127,13 @@ export const MapView: React.FC<MapViewProps> = ({ entity, selectedYear }) => {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <CardTitle>Geographical View</CardTitle>
           <div className="flex flex-wrap items-center gap-4">
-            <ToggleGroup type="single" size="sm" value={dataType} onValueChange={(value: 'income' | 'expense') => { if (value) setDataType(value) }}>
-              <ToggleGroupItem value="expense">Cheltuieli</ToggleGroupItem>
-              <ToggleGroupItem value="income">Venituri</ToggleGroupItem>
+            <ToggleGroup type="single" size="sm" value={accountCategory} onValueChange={(value: 'vn' | 'ch') => { if (value) setAccountCategory(value) }}>
+              <ToggleGroupItem value="ch">Cheltuieli</ToggleGroupItem>
+              <ToggleGroupItem value="vn">Venituri</ToggleGroupItem>
             </ToggleGroup>
-            <ToggleGroup type="single" size="sm" value={normalization} onValueChange={(value: 'per_capita_amount' | 'total_amount') => { if (value) setNormalization(value) }}>
-              <ToggleGroupItem value="per_capita_amount">Per Capita</ToggleGroupItem>
-              <ToggleGroupItem value="total_amount">Total</ToggleGroupItem>
+            <ToggleGroup type="single" size="sm" value={normalization} onValueChange={(value: 'per_capita' | 'total') => { if (value) setNormalization(value) }}>
+              <ToggleGroupItem value="per_capita">Per Capita</ToggleGroupItem>
+              <ToggleGroupItem value="total">Total</ToggleGroupItem>
             </ToggleGroup>
             <Button onClick={handleOpenMap} variant="outline" size="sm">
               <Maximize className="mr-2 h-4 w-4" />
@@ -123,7 +143,7 @@ export const MapView: React.FC<MapViewProps> = ({ entity, selectedYear }) => {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="h-[60vh] w-full relative rounded-md overflow-hidden border">
+        <div className="w-full relative rounded-md overflow-hidden border" style={{ height: mapHeight }}>
           {(isLoadingGeoJson || isLoadingHeatmap) &&
             <div className="absolute inset-0 bg-background/50 flex items-center justify-center z-20">
               <LoadingSpinner text={isLoadingGeoJson ? "Loading map geometry..." : "Loading financial data..."} />
@@ -133,12 +153,14 @@ export const MapView: React.FC<MapViewProps> = ({ entity, selectedYear }) => {
             <InteractiveMap
               onFeatureClick={handleFeatureClick}
               getFeatureStyle={getFeatureStyle}
-              heatmapData={heatmapData as (HeatmapUATDataPoint[] | HeatmapJudetDataPoint[]) || []}
+              heatmapData={heatmapData || []}
               geoJsonData={geoJsonData}
               center={center}
               zoom={zoom}
               highlightedFeatureId={featureId?.toString()}
               scrollWheelZoom={false}
+              mapHeight={mapHeight}
+              mapViewType={mapViewType}
             />
           )}
         </div>

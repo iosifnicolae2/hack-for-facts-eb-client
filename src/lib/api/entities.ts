@@ -29,7 +29,9 @@ export interface EntityDetailsData {
   entity_type?: string | null;
   uat?: {
     county_name?: string | null;
+    county_code?: string | null;
     name?: string | null;
+    siruta_code?: number | null;
   } | null;
   children: {
     cui: string;
@@ -76,7 +78,9 @@ const GET_ENTITY_DETAILS_QUERY = `
       entity_type
       uat {
         county_name
+        county_code
         name
+        siruta_code
       }
       children {
         cui

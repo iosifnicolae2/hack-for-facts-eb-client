@@ -30,8 +30,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useHeatmapData } from "@/hooks/useHeatmapData";
 
 const MapPage: React.FC = React.memo(() => {
-  console.log('MapPage entered')
-  const { activeView, setActiveView, mapViewType, selectedNormalization } = useMapFilter();
+  const { activeView, setActiveView, mapViewType, selectedNormalization, heatmapFilterInput } = useMapFilter();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -48,10 +47,9 @@ const MapPage: React.FC = React.memo(() => {
     data: heatmapData,
     isLoading: isLoadingHeatmap,
     error: heatmapError,
-  } = useHeatmapData();
+  } = useHeatmapData(heatmapFilterInput, mapViewType);
 
   const handleFeatureClick = (properties: UatProperties) => {
-    console.log(properties);
     if (mapViewType === 'UAT') {
       const uatCui = (heatmapData as HeatmapUATDataPoint[])?.find(
         (data) => data.siruta_code === properties.natcode
@@ -73,7 +71,7 @@ const MapPage: React.FC = React.memo(() => {
     data: geoJsonData,
     isLoading: isLoadingGeoJson,
     error: geoJsonError
-  } = useGeoJsonData();
+  } = useGeoJsonData(mapViewType);
 
   const valueKey = selectedNormalization.id === 'total' ? 'total_amount' : 'per_capita_amount';
 
@@ -98,8 +96,6 @@ const MapPage: React.FC = React.memo(() => {
   } else if (isLoadingGeoJson) {
     loadingText = "Loading map data...";
   }
-
-  console.log('Rendering map page')
 
   return (
     <div className="flex flex-col md:flex-row md:h-screen bg-background">
@@ -146,6 +142,7 @@ const MapPage: React.FC = React.memo(() => {
                       heatmapData={heatmapData}
                       geoJsonData={geoJsonData}
                       zoom={mapZoom}
+                      mapViewType={mapViewType}
                     />
                   ) : (
                     <div className="flex items-center justify-center h-full w-full">

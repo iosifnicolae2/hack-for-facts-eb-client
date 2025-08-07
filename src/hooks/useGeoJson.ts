@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { GeoJsonObject } from 'geojson';
-import { useMapFilter } from "@/lib/hooks/useMapFilterStore";
 
 const fetchGeoJsonData = async (path: string): Promise<GeoJsonObject> => {
     const response = await fetch(path);
@@ -11,9 +10,7 @@ const fetchGeoJsonData = async (path: string): Promise<GeoJsonObject> => {
     return data;
 };
 
-export const useGeoJsonData = () => {
-    const { mapViewType } = useMapFilter();
-
+export const useGeoJsonData = (mapViewType: 'UAT' | 'Judet') => {
     const geoJsonPath = mapViewType === 'UAT' ? '/assets/geojson/uat.json' : '/assets/geojson/judete.json';
 
     return useQuery<GeoJsonObject, Error>({

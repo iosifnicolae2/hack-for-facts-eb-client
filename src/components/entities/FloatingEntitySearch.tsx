@@ -30,7 +30,6 @@ export function FloatingEntitySearch({ baseSearch, className }: FloatingEntitySe
     useHotkeys('esc', () => setIsOpen(false));
 
     const handleSelect = () => {
-        console.log('handleSelect');
         setIsOpen(false);
     };
 

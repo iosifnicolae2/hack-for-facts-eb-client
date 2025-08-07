@@ -1,6 +1,6 @@
 import 'leaflet/dist/leaflet.css';
-import React, { useCallback, useMemo, useRef } from 'react';
-import { MapContainer, GeoJSON } from 'react-leaflet';
+import React, { useCallback, useMemo, useRef, useEffect } from 'react';
+import { MapContainer, GeoJSON, useMap } from 'react-leaflet';
 import L, { LeafletMouseEvent, PathOptions, Layer, LatLngExpression, LatLngBoundsExpression } from 'leaflet';
 import { Feature, Geometry, GeoJsonObject } from 'geojson';
 import { createTooltipContent } from './utils';
@@ -16,7 +16,6 @@ import {
   PERMANENT_HIGHLIGHT_STYLE,
 } from './constants';
 import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
-import { useMapFilter } from '@/lib/hooks/useMapFilterStore';
 import { generateHash } from '@/lib/utils';
 
 
@@ -32,6 +31,8 @@ interface InteractiveMapProps {
   geoJsonData: GeoJsonObject | null;
   highlightedFeatureId?: string | number;
   scrollWheelZoom?: boolean;
+  mapHeight?: string;
+  mapViewType: 'UAT' | 'Judet';
 }
 
 export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
@@ -42,19 +43,17 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
   minZoom = DEFAULT_MIN_ZOOM,
   maxZoom = DEFAULT_MAX_ZOOM,
   maxBounds = DEFAULT_MAX_BOUNDS,
+  mapHeight = '100vh',
+  mapViewType,
   heatmapData,
   geoJsonData,
   highlightedFeatureId,
   scrollWheelZoom = true,
 }) => {
   const geoJsonLayerRef = useRef<L.GeoJSON | null>(null);
-  const { mapViewType } = useMapFilter();
-
-  console.log('heatmapData', heatmapData);
 
   const heatmapDataMap = useMemo(() => {
     const map = new Map<string | number, HeatmapUATDataPoint | HeatmapJudetDataPoint>();
-    console.log('updating heatmapDataMap');
     heatmapData.forEach(item => {
       const key = 'uat_code' in item ? item.uat_code : item.county_code;
       map.set(key, item);
@@ -132,14 +131,16 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
       center={center}
       zoom={zoom}
       zoomSnap={0.1}
+      wheelPxPerZoomLevel={3}
       minZoom={minZoom}
       maxZoom={maxZoom}
       maxBounds={maxBounds}
       scrollWheelZoom={scrollWheelZoom}
-      style={{ height: '100vh', width: '100%', backgroundColor: 'transparent' }}
+      style={{ height: mapHeight, width: '100%', backgroundColor: 'transparent' }}
       className="z-10"
       preferCanvas={true}
     >
+      <MapUpdater center={center} zoom={zoom} />
       {geoJsonData.type === 'FeatureCollection' && (
         <GeoJSON
           key={`geojson-layer-${mapViewType}-${heatmapDataHash}`}
@@ -152,3 +153,19 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
     </MapContainer>
   );
 });
+
+
+/**
+ * This component is used to update the map center and zoom when the center or zoom changes.
+ * It is used to ensure that the map is updated when the center or zoom changes.
+ * It is used to ensure that the map is updated when the center or zoom changes.
+ */
+const MapUpdater: React.FC<{ center: LatLngExpression, zoom: number }> = ({ center, zoom }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (center && zoom) {
+      map.setView(center, zoom);
+    }
+  }, [center, zoom, map]);
+  return null;
+}

@@ -97,16 +97,6 @@ function EntityDetailsPage() {
         });
     };
 
-
-
-    const handleTitleClick = () => {
-        navigate({
-            search: {},
-            replace: false,
-            reloadDocument: true,
-        });
-    };
-
     const handleYearChange = (year: number) => {
         setSelectedYear(year);
         navigate({
@@ -174,7 +164,7 @@ function EntityDetailsPage() {
                 return <TrendsView entity={entity ?? undefined} type="expense" isLoading={isLoading} currentYear={selectedYear} onYearClick={handleYearChange} initialExpenseSearch={search.expenseSearch} initialIncomeSearch={search.incomeSearch} onSearchChange={handleSearchChange} />;
             case 'income-trends':
                 return <TrendsView entity={entity ?? undefined} type="income" isLoading={isLoading} currentYear={selectedYear} onYearClick={handleYearChange} initialIncomeSearch={search.incomeSearch} initialExpenseSearch={search.expenseSearch} onSearchChange={handleSearchChange} />;
-                        case 'map':
+            case 'map':
                 return <MapView entity={entity ?? null} selectedYear={selectedYear} />;
             case 'ranking':
                 return <RankingView />;
@@ -207,7 +197,6 @@ function EntityDetailsPage() {
                     views={views}
                     activeView={search.view ?? 'overview'}
                     onViewChange={handleViewChange}
-                    onTitleClick={handleTitleClick}
                     yearSelector={
                         <div className="flex items-center gap-2">
                             <span className="text-sm font-medium text-slate-700 dark:text-slate-300 hidden sm:inline">Reporting Year</span>
