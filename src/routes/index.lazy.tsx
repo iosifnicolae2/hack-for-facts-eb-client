@@ -50,15 +50,15 @@ function Index() {
           {/* Quick navigation cards */}
           <div className="mt-20 grid w-full max-w-5xl grid-cols-1 gap-8 md:grid-cols-2">
             <PageCard
-              title="Explore Data"
-              description="Advanced filtering & analysis."
-              to="/data-discovery"
+              title="Charts"
+              description="Explore data through charts."
+              to="/charts"
               image={chartPreview}
               imageAlt="Charts preview"
             />
             <PageCard
               title="Map"
-              description="Explore spending by UAT."
+              description="Explore data through a map."
               to="/map"
               image={mapPreview}
               imageAlt="Map preview"

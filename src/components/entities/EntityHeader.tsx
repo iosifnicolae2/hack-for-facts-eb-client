@@ -80,7 +80,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({ entity, views, activ
             <EntityRelationsList
               entities={entity.children}
               title="Entități finanțate"
-              maxVisibleItems={3}
+              maxVisibleItems={0}
             />
           )}
 
@@ -88,7 +88,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({ entity, views, activ
             <EntityRelationsList
               entities={entity.parents}
               title="Finanțatori"
-              maxVisibleItems={3}
+              maxVisibleItems={0}
             />
           )}
         </div>
