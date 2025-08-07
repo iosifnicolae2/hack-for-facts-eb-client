@@ -29,6 +29,22 @@ npx tsc -b --noEmit
 
 No tests yet. Only manual testing.
 
+# Instructions for Git Operations in This Repository
+
+## Stash Usage Rules
+
+* Before making any modifications via shell commands, always run `git stash push --keep-index -m "gemini-temp-[current-date-time]-[summary-of-changes]"` to save the current working state without losing staged changes. Replace [current-date-time] with the actual timestamp (e.g., "gemini-temp-2025-08-07-10AM").
+
+* Use this special "gemini-temp-" tag for all stashes you create to mark them as AI-generated temporaries.
+* Always check `git stash list` first to avoid overwriting existing stashes.
+* Never use stash commands that could revert or lose state, like generic `git stash` without --keep-index.
+
+## Example Workflow
+
+1. Stash: `git stash push --keep-index -m "gemini-temp-2025-08-07-10AM-fix-bug-in-map-view"`
+2. Perform safe modifications (e.g., via allowed Git commands).
+3. Retrieve: `git stash apply` (if needed).
+
 # Development Conventions
 
 * The project uses TypeScript for static typing.

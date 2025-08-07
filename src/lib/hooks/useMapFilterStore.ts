@@ -107,9 +107,9 @@ const urlQueryStorageMap = {
             return JSON.stringify({ state: parsedState, version: 0 }); // Zustand persist expects this format
         } catch (error) {
             console.error("Failed to parse or validate map filters from URL. Resetting.", error);
-            const newSearchParams = new URLSearchParams(window.location.search);
-            newSearchParams.delete(urlParamKey);
-            const newSearch = newSearchParams.toString();
+            const searchParams = new URLSearchParams(window.location.search);
+            searchParams.delete(urlParamKey);
+            const newSearch = searchParams.toString();
             window.history.replaceState(null, '', newSearch ? `${window.location.pathname}?${newSearch}` : window.location.pathname);
             return null;
         }
@@ -263,4 +263,4 @@ export const useMapFilter = () => {
         mapViewType,
         setMapViewType,
     };
-}; 
+};

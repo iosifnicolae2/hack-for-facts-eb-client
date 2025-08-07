@@ -14,12 +14,12 @@ const fetchGeoJsonData = async (path: string): Promise<GeoJsonObject> => {
 export const useGeoJsonData = () => {
     const { mapViewType } = useMapFilter();
 
-    const geoJsonPath = mapViewType === 'UAT' ? 'assets/geojson/uat.json' : 'assets/geojson/judete.json';
+    const geoJsonPath = mapViewType === 'UAT' ? '/assets/geojson/uat.json' : '/assets/geojson/judete.json';
 
     return useQuery<GeoJsonObject, Error>({
-        queryKey: ['geoJsonData', mapViewType], // Dynamic query key
+        queryKey: ['geoJsonData', mapViewType],
         queryFn: () => fetchGeoJsonData(geoJsonPath),
-        staleTime: 1000 * 60 * 60 * 24, // 24 hours
-        enabled: !!mapViewType, // Ensure mapViewType is available
+        staleTime: 1000 * 60 * 60 * 24,
+        enabled: !!mapViewType,
     });
 };

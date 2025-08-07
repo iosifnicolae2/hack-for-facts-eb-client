@@ -1,3 +1,18 @@
 {
-  "preferredEditor": "vim"
+  "preferredEditor": "vim",
+  "coreTools": [
+    "run_shell_command(git diff)",
+    "run_shell_command(git status)",
+    "run_shell_command(git status --verbose)",
+    "run_shell_command(git log)",
+    "run_shell_command(git stash push --keep-index -m)",
+    "run_shell_command(git stash list)",
+    "run_shell_command(git stash apply)",
+  ],
+  "excludeTools": [
+    "run_shell_command(git reset)",
+    "run_shell_command(git restore)",
+    "run_shell_command(git revert)",
+    "run_shell_command(git stash)"
+  ]
 }
