@@ -2,7 +2,7 @@ import React from 'react';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { z } from 'zod';
-import { HeatmapFilterInput } from "@/lib/api/dataDiscovery";
+import { HeatmapFilterInput } from "@/schemas/heatmap";
 import { defaultYearRange } from '@/schemas/charts';
 
 // --- Schemas for individual option items ---
@@ -51,13 +51,9 @@ const InternalMapFiltersObjectSchema = z.object({
     minPopulation: z.string().optional(),
     maxPopulation: z.string().optional(),
     activeView: z.enum(["map", "table", "chart"]),
+    mapViewType: z.enum(["UAT", "Judet"]),
 });
 export type InternalMapFiltersState = z.infer<typeof InternalMapFiltersObjectSchema>;
-
-// Store state that is NOT persisted in the URL
-interface NonPersistedState {
-    activeView: MapPageView;
-}
 
 const defaultNormalization: NormalizationOptionItem = { id: "total", label: "Total" };
 const defaultAccountCategory: AccountCategoryOptionItem = { id: "ch", label: "Cheltuieli" };
@@ -74,6 +70,7 @@ const defaultInternalMapFiltersState: InternalMapFiltersState = {
     minPopulation: undefined,
     maxPopulation: undefined,
     activeView: "map",
+    mapViewType: "UAT",
 };
 
 const defaultInternalFiltersJSON = JSON.stringify(defaultInternalMapFiltersState); // For comparison in URL storage
@@ -90,9 +87,10 @@ interface MapFilterStoreActions {
     setMaxPopulation: (updater: string | undefined | ((prev: string | undefined) => string | undefined)) => void;
     resetMapFilters: () => void;
     setActiveView: (view: MapPageView) => void; // Setter for active view
+    setMapViewType: (viewType: "UAT" | "Judet") => void;
 }
 
-type MapFilterStore = InternalMapFiltersState & NonPersistedState & MapFilterStoreActions;
+type MapFilterStore = InternalMapFiltersState & MapFilterStoreActions;
 
 const urlQueryStorageMap = {
     getItem: (): string | null => {
@@ -183,6 +181,7 @@ export const useMapFilterStore = create<MapFilterStore>()(
             })),
             resetMapFilters: () => set({ ...defaultInternalMapFiltersState }),
             setActiveView: (view) => set({ activeView: view }),
+            setMapViewType: (viewType) => set({ mapViewType: viewType }),
         }),
         {
             name: 'map-url-filter-storage', // Unique name for localStorage if URL storage fails or for migration
@@ -215,6 +214,8 @@ export const useMapFilter = () => {
         // Active view state and setter
         activeView,
         setActiveView,
+        mapViewType,
+        setMapViewType,
     } = useMapFilterStore();
 
     const heatmapFilterInput = React.useMemo((): HeatmapFilterInput => ({
@@ -259,5 +260,7 @@ export const useMapFilter = () => {
         // Active view
         activeView,
         setActiveView,
+        mapViewType,
+        setMapViewType,
     };
 }; 

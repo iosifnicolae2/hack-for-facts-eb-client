@@ -10,11 +10,11 @@ import {
   Legend,
   ZAxis,
 } from 'recharts';
-import { HeatmapUATDataPoint } from '@/lib/api/dataDiscovery';
+import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { formatCurrency, formatNumberRO } from '@/lib/utils';
 
 interface UatPopulationSpendingScatterPlotProps {
-  data: HeatmapUATDataPoint[];
+  data: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[];
   chartTitle?: string;
   xAxisLabel?: string;
   yAxisLabel?: string;
@@ -25,7 +25,7 @@ interface UatPopulationSpendingScatterPlotProps {
 interface CustomTooltipProps {
   active?: boolean;
   payload?: Array<{
-    payload: HeatmapUATDataPoint;
+    payload: HeatmapUATDataPoint | HeatmapJudetDataPoint;
     value?: number;
     name?: string;
   }>;
@@ -36,10 +36,12 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
   // Check if payload exists and has at least one item with the expected structure
   if (active && payload && payload.length && payload[0].payload) {
     const dataPoint = payload[0].payload;
+    const name = "uat_name" in dataPoint ? dataPoint.uat_name : dataPoint.county_name;
+    const population = "population" in dataPoint ? dataPoint.population : dataPoint.county_population;
     return (
       <div className="bg-background p-2 border border-border rounded shadow-lg text-sm">
-        <p className="font-semibold text-foreground">{dataPoint.uat_name}</p>
-        <p>Population: {formatNumberRO(dataPoint.population ?? 0)}</p>
+        <p className="font-semibold text-foreground">{name}</p>
+        <p>Population: {formatNumberRO(population ?? 0)}</p>
         <p>Amount: {formatCurrency(dataPoint.amount)}</p>
       </div>
     );
@@ -56,9 +58,9 @@ export const UatPopulationSpendingScatterPlot: React.FC<UatPopulationSpendingSca
 }) => {
   const saneData = React.useMemo(() =>
     data.filter(d =>
-      typeof d.population === 'number' &&
+      (typeof ("population" in d ? d.population : d.county_population) === 'number') &&
       typeof d.amount === 'number' &&
-      d.uat_name // Ensure uat_name exists for map keys and labels
+      ("uat_name" in d || "county_name" in d)
     ), [data]);
 
   const processedForScatter = React.useMemo(() => {
@@ -70,11 +72,12 @@ export const UatPopulationSpendingScatterPlot: React.FC<UatPopulationSpendingSca
       return saneData; // Show all if data is too sparse
     }
 
-    const outliersMap = new Map<string, HeatmapUATDataPoint>();
+    const outliersMap = new Map<string, HeatmapUATDataPoint | HeatmapJudetDataPoint>();
 
-    const addOutliersToMap = (points: HeatmapUATDataPoint[]) => {
+    const addOutliersToMap = (points: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[]) => {
       points.slice(0, TOP_N).forEach(p => {
-        if (p.uat_name) outliersMap.set(p.uat_name, p);
+        const name = "uat_name" in p ? p.uat_name : p.county_name;
+        if (name) outliersMap.set(name, p);
       });
     };
 
@@ -82,15 +85,15 @@ export const UatPopulationSpendingScatterPlot: React.FC<UatPopulationSpendingSca
     addOutliersToMap([...saneData].sort((a, b) => b.amount - a.amount));
 
     // 2. Top N by population
-    addOutliersToMap([...saneData].sort((a, b) => (b.population ?? 0) - (a.population ?? 0)));
+    addOutliersToMap([...saneData].sort((a, b) => (("population" in b ? b.population : b.county_population) ?? 0) - (("population" in a ? a.population : a.county_population) ?? 0)));
 
     // Data for ratio calculation (population > 0)
-    const ratioData = saneData.filter(p => p.population && p.population > 0);
+    const ratioData = saneData.filter(p => (("population" in p ? p.population : p.county_population) ?? 0) > 0);
 
     if (ratioData.length > 0) {
       // 3. Top N by amount/population ratio (higher spending per capita)
       const sortedByRatioDesc = [...ratioData].sort((a, b) =>
-        (b.amount / (b.population as number)) - (a.amount / (a.population as number))
+        (b.amount / (("population" in b ? b.population : b.county_population) as number)) - (a.amount / (("population" in a ? a.population : a.county_population) as number))
       );
       addOutliersToMap(sortedByRatioDesc);
 
@@ -99,7 +102,7 @@ export const UatPopulationSpendingScatterPlot: React.FC<UatPopulationSpendingSca
       const ratioDataWithSpending = ratioData.filter(p => p.amount > 0);
       if (ratioDataWithSpending.length > 0) {
         const sortedByRatioAsc = [...ratioDataWithSpending].sort((a, b) =>
-          (a.amount / (a.population as number)) - (b.amount / (b.population as number))
+          (a.amount / (("population" in a ? a.population : a.county_population) as number)) - (b.amount / (("population" in b ? b.population : b.county_population) as number))
         );
         addOutliersToMap(sortedByRatioAsc);
       }

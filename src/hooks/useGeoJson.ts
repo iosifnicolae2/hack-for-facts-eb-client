@@ -1,19 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
 import { GeoJsonObject } from 'geojson';
+import { useMapFilter } from "@/lib/hooks/useMapFilterStore";
 
-const fetchGeoJsonData = async (): Promise<GeoJsonObject> => {
-  // Assuming uats.json is in the public folder or served at this path
-  const response = await fetch('assets/uats.json');
-  if (!response.ok) {
-    throw new Error('Network response was not ok when fetching uats.json');
-  }
-  return response.json();
+const fetchGeoJsonData = async (path: string): Promise<GeoJsonObject> => {
+    const response = await fetch(path);
+    if (!response.ok) {
+        throw new Error(`Network response was not ok when fetching ${path}`);
+    }
+    const data = await response.json();
+    return data;
 };
 
-export const useGeoJson = () => {
-  return useQuery<GeoJsonObject, Error>({
-    queryKey: ['geoJsonUatData'], // Unique key for this query
-    queryFn: fetchGeoJsonData,
-    staleTime: 1000 * 60 * 60 * 24, // 1 day
-  });
-}; 
+export const useGeoJsonData = () => {
+    const { mapViewType } = useMapFilter();
+
+    const geoJsonPath = mapViewType === 'UAT' ? 'assets/geojson/uat.json' : 'assets/geojson/judete.json';
+
+    return useQuery<GeoJsonObject, Error>({
+        queryKey: ['geoJsonData', mapViewType], // Dynamic query key
+        queryFn: () => fetchGeoJsonData(geoJsonPath),
+        staleTime: 1000 * 60 * 60 * 24, // 24 hours
+        enabled: !!mapViewType, // Ensure mapViewType is available
+    });
+};

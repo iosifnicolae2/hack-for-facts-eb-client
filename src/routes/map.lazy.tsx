@@ -1,12 +1,11 @@
-import { getHeatmapUATData, HeatmapUATDataPoint } from "@/lib/api/dataDiscovery";
+import { HeatmapUATDataPoint, HeatmapJudetDataPoint } from "@/schemas/heatmap";
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { getPercentileValues, createHeatmapStyleFunction } from "@/components/maps/utils";
-import { UatMap } from "@/components/maps/UatMap";
+import { InteractiveMap } from "@/components/maps/InteractiveMap";
 import { UatProperties } from "@/components/maps/interfaces";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { useGeoJson } from "@/hooks/useGeoJson";
+import { useGeoJsonData } from "@/hooks/useGeoJson";
 import { MapFilter } from "@/components/filters/MapFilter";
 import { useMapFilter } from "@/lib/hooks/useMapFilterStore";
 import { MapLegend } from "@/components/maps/MapLegend";
@@ -28,13 +27,11 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useHeatmapData } from "@/hooks/useHeatmapData";
 
-export const Route = createLazyFileRoute("/map")({
-  component: MapPage,
-});
-
-function MapPage() {
-  const { heatmapFilterInput, activeView, setActiveView } = useMapFilter();
+const MapPage: React.FC = React.memo(() => {
+  console.log('MapPage entered')
+  const { activeView, setActiveView, mapViewType, selectedNormalization } = useMapFilter();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -50,17 +47,25 @@ function MapPage() {
   const {
     data: heatmapData,
     isLoading: isLoadingHeatmap,
-    error: heatmapError
-  } = useQuery<HeatmapUATDataPoint[], Error>({
-    queryKey: ["heatmapUATData", heatmapFilterInput],
-    queryFn: () => getHeatmapUATData(heatmapFilterInput),
-  });
+    error: heatmapError,
+  } = useHeatmapData();
 
-  const handleUatClick = (properties: UatProperties) => {
-    const natCode = properties.natcode;
-    const uatCui = heatmapData?.find((data) => data.siruta_code === natCode)?.uat_code;
-    if (uatCui) {
-      navigate({ to: `/entities/${uatCui}` });
+  const handleFeatureClick = (properties: UatProperties) => {
+    console.log(properties);
+    if (mapViewType === 'UAT') {
+      const uatCui = (heatmapData as HeatmapUATDataPoint[])?.find(
+        (data) => data.siruta_code === properties.natcode
+      )?.uat_code;
+      if (uatCui) {
+        navigate({ to: `/entities/${uatCui}` });
+      }
+    } else {
+      const countyCui = (heatmapData as HeatmapJudetDataPoint[])?.find(
+        (data) => data.county_code === properties.mnemonic
+      )?.county_entity?.cui;
+      if (countyCui) {
+        navigate({ to: `/entities/${countyCui}` });
+      }
     }
   };
 
@@ -68,15 +73,19 @@ function MapPage() {
     data: geoJsonData,
     isLoading: isLoadingGeoJson,
     error: geoJsonError
-  } = useGeoJson();
+  } = useGeoJsonData();
+
+  const valueKey = selectedNormalization.id === 'total' ? 'total_amount' : 'per_capita_amount';
 
   const { min: minAggregatedValue, max: maxAggregatedValue } = React.useMemo(() => {
-    return getPercentileValues(heatmapData, 5, 95);
-  }, [heatmapData]);
+    if (!heatmapData) return { min: 0, max: 0 };
+    return getPercentileValues(heatmapData, 5, 95, valueKey);
+  }, [heatmapData, valueKey]);
 
   const aDynamicGetFeatureStyle = React.useMemo(() => {
-    return createHeatmapStyleFunction(heatmapData, minAggregatedValue, maxAggregatedValue);
-  }, [heatmapData, minAggregatedValue, maxAggregatedValue]);
+    if (!heatmapData) return () => ({});
+    return createHeatmapStyleFunction(heatmapData, minAggregatedValue, maxAggregatedValue, mapViewType, valueKey);
+  }, [heatmapData, minAggregatedValue, maxAggregatedValue, mapViewType, valueKey]);
 
   const isLoading = isLoadingHeatmap || isLoadingGeoJson;
   const error = heatmapError || geoJsonError;
@@ -89,6 +98,8 @@ function MapPage() {
   } else if (isLoadingGeoJson) {
     loadingText = "Loading map data...";
   }
+
+  console.log('Rendering map page')
 
   return (
     <div className="flex flex-col md:flex-row md:h-screen bg-background">
@@ -128,18 +139,24 @@ function MapPage() {
             ) : (
               <>
                 <TabsContent value="map" className="sm:h-screen md:h-[calc(100vh-10rem)] w-full m-0 data-[state=inactive]:hidden outline-none ring-0 focus:ring-0 focus-visible:ring-0 relative">
-                  <UatMap
-                    onUatClick={handleUatClick}
-                    getFeatureStyle={aDynamicGetFeatureStyle}
-                    heatmapData={heatmapData ?? []}
-                    geoJsonData={geoJsonData}
-                    zoom={mapZoom}
-                  />
+                  {heatmapData ? (
+                    <InteractiveMap
+                      onFeatureClick={handleFeatureClick}
+                      getFeatureStyle={aDynamicGetFeatureStyle}
+                      heatmapData={heatmapData}
+                      geoJsonData={geoJsonData}
+                      zoom={mapZoom}
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-full w-full">
+                      No data available for the map.
+                    </div>
+                  )}
                   <MapLegend
                     min={minAggregatedValue}
                     max={maxAggregatedValue}
                     className="absolute bottom-4 right-4 z-10 hidden md:block"
-                    title="Aggregated Value Legend"
+                    title="Interval Valori"
                   />
                   <Dialog open={isLegendModalOpen} onOpenChange={setIsLegendModalOpen}>
                     <DialogTrigger asChild>
@@ -177,7 +194,7 @@ function MapPage() {
                     <div className="flex-grow overflow-x-auto">
                       {heatmapData ? (
                         <HeatmapDataTable
-                          data={heatmapData ?? []}
+                          data={heatmapData}
                           isLoading={isLoadingHeatmap}
                           sorting={sorting}
                           setSorting={setSorting}
@@ -240,4 +257,8 @@ function MapPage() {
       </div>
     </div>
   );
-}
+});
+
+export const Route = createLazyFileRoute("/map")({
+  component: MapPage,
+});

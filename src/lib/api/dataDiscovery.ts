@@ -1,108 +1,34 @@
 import { createLogger } from "../logger";
-import { LineItemsFilter, SortOrder } from "@/schemas/interfaces";
 import { graphqlRequest } from "./graphql";
+import { HeatmapFilterInput, HeatmapJudetDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
+import { BudgetLineItem, PaginatedResult, EntityData, AggregatedBudgetData, GetDataParams } from "@/schemas/dataDiscovery";
 
 const logger = createLogger("data-discovery-api");
-
-// Types based on the GraphQL schema
-export type UATData = {
-  uat_code?: string;
-  name?: string;
-  county_name?: string;
-  county_code?: string;
-  region?: string;
-  population?: number;
-};
-
-export type EntityData = {
-  cui: string;
-  name: string;
-  sector_type?: string; // Renamed from uat_type, maps to Entity.sector_type
-  // Fields from UAT relation
-  uat?: UATData;
-  address?: string;
-  // budget_summary was removed as it's not directly on Entity in the new schema
-};
-
-export type BudgetLineItem = {
-  line_item_id: string;
-  report_id: string;
-  entity_name: string;
-  entity_cui: string;
-  entity: {
-    cui: string;
-    name: string;
-  };
-  functional_code: string;
-  functional_name?: string;
-  economic_code?: string; // Made optional to match schema: economic_code: String
-  economic_name?: string;
-  amount: number;
-  year: number;
-  account_category: string;
-  functionalClassification?: {
-    functional_name: string;
-  };
-  economicClassification?: {
-    economic_name: string;
-  };
-};
-
-export type AggregatedBudgetData = {
-  id: string;
-  category: string;
-  name: string;
-  value: number;
-  percentage: number;
-  children?: AggregatedBudgetData[];
-};
-export type GetDataParams = {
-  filters: LineItemsFilter;
-  sort?: SortOrder;
-  page?: number;
-  pageSize?: number;
-};
-
-export type PaginatedResult<T> = {
-  data: T[];
-  totalCount: number;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-  currentPage: number;
-  pageSize: number;
-  totalPages: number;
-};
-
-// --- BEGIN HEATMAP TYPES ---
-export interface HeatmapUATDataPoint {
-  uat_id: string;
-  uat_code: string;
-  uat_name: string;
-  siruta_code: string;
-  county_code?: string | null;
-  county_name?: string | null;
-  population?: number | null;
-  amount: number;
-  total_amount: number;
-  per_capita_amount: number;
-}
-
-export interface HeatmapFilterInput {
-  functional_codes?: string[];
-  economic_codes?: string[];
-  account_categories: string[];
-  normalization?: 'total' | 'per_capita';
-  years: number[];
-  min_amount?: number;
-  max_amount?: number;
-  min_population?: number;
-  max_population?: number;
-}
 
 interface HeatmapUATDataApiResponse {
   heatmapUATData: HeatmapUATDataPoint[];
 }
+
+interface HeatmapJudetDataApiResponse {
+  heatmapJudetData: HeatmapJudetDataPoint[];
+}
 // --- END HEATMAP TYPES ---
+
+const GET_HEATMAP_JUDET_DATA_QUERY = `
+  query GetHeatmapJudetData($filter: HeatmapFilterInput!) {
+    heatmapJudetData(filter: $filter) {
+      county_code
+      county_name
+      county_population
+      total_amount
+      per_capita_amount
+      county_entity {
+        cui
+        name
+      }
+    }
+  }
+`;
 
 // Query to get entities with filtering
 const GET_ENTITIES_QUERY = `
@@ -495,3 +421,31 @@ export async function getHeatmapUATData(
   }
 }
 // --- END GET HEATMAP UAT DATA FUNCTION ---
+
+// --- BEGIN GET HEATMAP JUDET DATA FUNCTION ---
+export async function getHeatmapJudetData(
+  filter: HeatmapFilterInput
+): Promise<HeatmapJudetDataPoint[]> {
+  logger.info("Fetching heatmap JUDET data with filter", { filter });
+
+  try {
+    const response = await graphqlRequest<HeatmapJudetDataApiResponse>(
+      GET_HEATMAP_JUDET_DATA_QUERY,
+      { filter }
+    );
+
+    if (!response || !response.heatmapJudetData) {
+      logger.warn("Received null or undefined response for heatmapJudetData", {
+        response,
+      });
+      return [];
+    }
+
+    return response.heatmapJudetData;
+  } catch (error) {
+    logger.error("Error fetching heatmap JUDET data", { error, filter });
+    throw error;
+  }
+}
+// --- END GET HEATMAP JUDET DATA FUNCTION ---
+

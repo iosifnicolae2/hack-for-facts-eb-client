@@ -12,7 +12,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { BudgetLineItem } from "@/lib/api/dataDiscovery";
+import { BudgetLineItem } from "@/schemas/dataDiscovery";
 import { formatCurrency } from "@/lib/utils";
 import { useMemo } from "react";
 import { ChevronUp, ChevronDown, ArrowUpDown } from "lucide-react";

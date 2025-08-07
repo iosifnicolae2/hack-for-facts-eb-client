@@ -1,6 +1,6 @@
 import { FilterListContainer } from "./base-filter/FilterListContainer";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { ArrowUpDown, Calendar, ChartBar, Divide, Globe, SlidersHorizontal, Tags, XCircle } from "lucide-react";
+import { ArrowUpDown, Calendar, ChartBar, Divide, Globe, Map, SlidersHorizontal, Tags, XCircle } from "lucide-react";
 import { YearFilter } from "./year-filter";
 import { AccountCategoryRadioGroup } from "./account-type-filter/AccountCategoryRadioGroup";
 import { Button } from "../ui/button";
@@ -11,6 +11,8 @@ import { FunctionalClassificationList } from "./functional-classification-filter
 import { PopulationRadioGroup } from "./account-type-filter/PopulationRadioGroup";
 import { FilterRangeContainer } from "./base-filter/FilterRangeContainer";
 import { AmountRangeFilter } from "./amount-range-filter";
+import { MapViewTypeRadioGroup } from "./account-type-filter/MapViewTypeRadioGroup";
+
 export function MapFilter() {
     const {
         selectedYears,
@@ -57,6 +59,14 @@ export function MapFilter() {
                 </div>
             </CardHeader>
             <CardContent className="flex flex-col flex-grow p-0 space-y-1">
+                <div className="p-3 border-b">
+                    <h4 className="mb-2 text-sm font-medium flex items-center">
+                        <Map className="w-4 h-4 mr-2" />
+                        Vizualizare
+                    </h4>
+                    <MapViewTypeRadioGroup />
+                </div>
+
                 <div className="p-3 border-b">
                     <h4 className="mb-2 text-sm font-medium flex items-center">
                         <ArrowUpDown className="w-4 h-4 mr-2" />

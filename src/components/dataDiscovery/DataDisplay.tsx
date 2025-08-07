@@ -6,10 +6,7 @@ import {
   ChevronsRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  BudgetLineItem,
-  PaginatedResult,
-} from "@/lib/api/dataDiscovery";
+import { PaginatedResult, BudgetLineItem } from "@/schemas/dataDiscovery";
 import {
   Select,
   SelectContent,

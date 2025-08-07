@@ -10,7 +10,7 @@ import {
   LabelList,
   Legend,
 } from 'recharts';
-import { HeatmapUATDataPoint } from '@/lib/api/dataDiscovery';
+import { HeatmapUATDataPoint } from '@/schemas/heatmap';
 
 interface UatDistributionChartProps {
   data: HeatmapUATDataPoint[];

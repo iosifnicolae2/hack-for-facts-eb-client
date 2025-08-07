@@ -10,11 +10,11 @@ import {
   ResponsiveContainer,
   LabelList,
 } from 'recharts';
-import { HeatmapUATDataPoint } from '@/lib/api/dataDiscovery';
+import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { formatCurrency } from '@/lib/utils';
 
 interface UatCountyBarChartProps {
-  data: HeatmapUATDataPoint[];
+  data: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[];
   chartTitle?: string;
   barColor?: string;
   xAxisLabel?: string;

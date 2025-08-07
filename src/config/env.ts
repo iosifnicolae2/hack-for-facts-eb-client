@@ -4,6 +4,7 @@ const envSchema = z.object({
   VITE_APP_VERSION: z.string().min(1),
   VITE_APP_NAME: z.string().min(1),
   VITE_APP_ENVIRONMENT: z.string().min(1),
+  VITE_API_URL: z.string().url(),
 
   // Environment
   NODE_ENV: z

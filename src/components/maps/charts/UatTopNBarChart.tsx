@@ -10,13 +10,13 @@ import {
   ResponsiveContainer,
   LabelList,
 } from 'recharts';
-import { HeatmapUATDataPoint } from '@/lib/api/dataDiscovery';
+import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { formatCurrency, formatNumberRO } from '@/lib/utils';
 
 interface UatTopNBarChartProps {
-  data: HeatmapUATDataPoint[];
-  valueKey: keyof HeatmapUATDataPoint; 
-  nameKey: keyof HeatmapUATDataPoint;  
+  data: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[];
+  valueKey: keyof (HeatmapUATDataPoint & HeatmapJudetDataPoint); 
+  nameKey: keyof (HeatmapUATDataPoint & HeatmapJudetDataPoint);  
   topN?: number;
   chartTitle?: string;
   barColor?: string;
@@ -38,10 +38,10 @@ export const UatTopNBarChart: React.FC<UatTopNBarChartProps> = ({
 }) => {
   const processedData = React.useMemo(() => {
     return data
-      .filter(item => typeof item[valueKey] === 'number' && item[nameKey])
-      .sort((a, b) => (b[valueKey] as number) - (a[valueKey] as number))
+      .filter(item => typeof (item as any)[valueKey] === 'number' && (item as any)[nameKey])
+      .sort((a, b) => ((b as any)[valueKey] as number) - ((a as any)[valueKey] as number))
       .slice(0, topN)
-      .map(item => ({ ...item, [valueKey]: item[valueKey] as number, [nameKey]: String(item[nameKey]) }));
+      .map(item => ({ ...item, [valueKey]: (item as any)[valueKey] as number, [nameKey]: String((item as any)[nameKey]) }));
   }, [data, valueKey, nameKey, topN]);
 
   if (processedData.length === 0) {

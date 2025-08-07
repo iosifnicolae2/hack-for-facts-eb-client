@@ -14,23 +14,24 @@ import {
   DEFAULT_MAX_ZOOM,
   DEFAULT_MAX_BOUNDS,
 } from './constants';
-import { HeatmapUATDataPoint } from '@/lib/api/dataDiscovery';
+import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { generateHash } from '@/lib/utils';
+import { useMapFilter } from '@/lib/hooks/useMapFilterStore';
 
-interface UatMapProps {
-  onUatClick: (properties: UatProperties, event: LeafletMouseEvent) => void;
-  getFeatureStyle: (feature: UatFeature, heatmapData: HeatmapUATDataPoint[]) => PathOptions;
+interface InteractiveMapProps {
+  onFeatureClick: (properties: UatProperties, event: LeafletMouseEvent) => void;
+  getFeatureStyle: (feature: UatFeature, heatmapData: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[]) => PathOptions;
   center?: LatLngExpression;
   zoom?: number;
   minZoom?: number;
   maxZoom?: number;
   maxBounds?: LatLngBoundsExpression;
-  heatmapData: HeatmapUATDataPoint[];
+  heatmapData: HeatmapUATDataPoint[] | HeatmapJudetDataPoint[];
   geoJsonData: GeoJsonObject | null;
 }
 
-export const UatMap: React.FC<UatMapProps> = ({
-  onUatClick,
+export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
+  onFeatureClick,
   getFeatureStyle,
   center = DEFAULT_MAP_CENTER,
   zoom = DEFAULT_MAP_ZOOM,
@@ -41,44 +42,38 @@ export const UatMap: React.FC<UatMapProps> = ({
   geoJsonData,
 }) => {
   const geoJsonLayerRef = useRef<L.GeoJSON | null>(null);
-
-  // Callback for handling clicks on a feature
+  const { mapViewType } = useMapFilter();
   const handleFeatureClick = useCallback(
     (feature: UatFeature, event: LeafletMouseEvent) => {
-      if (onUatClick && feature.properties) {
-        onUatClick(feature.properties, event);
+      if (onFeatureClick && feature.properties) {
+        onFeatureClick(feature.properties, event);
       }
     },
-    [onUatClick] // Recreate if onUatClick handler changes
+    [onFeatureClick]
   );
 
-  // Callback to highlight a feature on mouseover
   const highlightFeature = useCallback((layer: Layer) => {
-    if (layer instanceof L.Path) { // Check if it's a vector layer that can be styled
+    if (layer instanceof L.Path) {
       layer.setStyle(HIGHLIGHT_FEATURE_STYLE);
       layer.bringToFront();
     }
-  }, []); // No dependencies, this function is stable
+  }, []);
 
-  // Callback to reset feature highlight on mouseout
   const resetHighlight = useCallback((layer: Layer) => {
-    // Use geoJsonLayerRef to reset to the style defined by the styleFunction or defaultStyle
     if (geoJsonLayerRef.current) {
       geoJsonLayerRef.current.resetStyle(layer);
     }
-  }, []); // No dependencies, this function is stable
+  }, []);
 
 
-  // Function executed for each feature in the GeoJSON layer
   const onEachFeature = useCallback(
     (feature: Feature<Geometry, unknown>, layer: Layer) => {
-      // Ensure properties exist before trying to access them
       if (!feature.properties) {
         return;
       }
       const uatProperties = feature.properties as UatProperties;
 
-      const tooltipContent = createTooltipContent(uatProperties, heatmapData);
+      const tooltipContent = createTooltipContent(uatProperties, heatmapData, mapViewType);
       layer.bindTooltip(tooltipContent);
 
       layer.on({
@@ -87,19 +82,17 @@ export const UatMap: React.FC<UatMapProps> = ({
         click: (e) => handleFeatureClick(feature as UatFeature, e),
       });
     },
-    [handleFeatureClick, highlightFeature, resetHighlight, heatmapData] // Dependencies that affect event handlers or popup content
+    [handleFeatureClick, highlightFeature, resetHighlight, heatmapData, mapViewType]
   );
 
-  // Function to determine the style of each GeoJSON feature
   const styleFunction = useCallback(
     (feature?: Feature<Geometry, unknown>): PathOptions => {
       if (getFeatureStyle && feature && feature.properties) {
-        // Ensure the feature is cast to the correct type for getFeatureStyle
         return getFeatureStyle(feature as UatFeature, heatmapData);
       }
       return DEFAULT_FEATURE_STYLE;
     },
-    [getFeatureStyle, heatmapData] // Recreate if styling logic or data changes
+    [getFeatureStyle, heatmapData]
   );
 
   const mapKey = useMemo(() => {
@@ -108,8 +101,6 @@ export const UatMap: React.FC<UatMapProps> = ({
     return `${geoKeyPart}-${heatmapKeyPart}`;
   }, [geoJsonData, heatmapData]);
 
-
-  // --- Render Logic ---
 
   if (!geoJsonData) {
     return (
@@ -127,13 +118,12 @@ export const UatMap: React.FC<UatMapProps> = ({
       maxZoom={maxZoom}
       maxBounds={maxBounds}
       scrollWheelZoom={true}
-      style={{ height: '100vh', width: '100%' }} // Consider making height configurable via props
-      className="bg-background z-10" // Ensure this class is defined or Tailwind is configured
+      style={{ height: '100vh', width: '100%' }}
+      className="bg-background z-10"
     >
-      {/* Render GeoJSON only if data is a FeatureCollection and not null */}
       {geoJsonData && geoJsonData.type === 'FeatureCollection' && (
         <GeoJSON
-          key={mapKey} // Force re-render when key changes
+          key={mapKey}
           ref={geoJsonLayerRef}
           data={geoJsonData}
           style={styleFunction}
@@ -142,4 +132,4 @@ export const UatMap: React.FC<UatMapProps> = ({
       )}
     </MapContainer>
   );
-};
+});
