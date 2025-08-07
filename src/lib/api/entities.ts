@@ -34,6 +34,10 @@ export interface EntityDetailsData {
     county_code?: string | null;
     name?: string | null;
     siruta_code?: number | null;
+    county_entity?: {
+      cui: string;
+      name: string;
+    } | null;
   } | null;
   children: {
     cui: string;
@@ -85,6 +89,10 @@ const GET_ENTITY_DETAILS_QUERY = `
         county_code
         name
         siruta_code
+        county_entity{
+          cui
+          name
+        }
       }
       children {
         cui

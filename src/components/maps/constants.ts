@@ -26,7 +26,7 @@ export const HIGHLIGHT_FEATURE_STYLE: PathOptions = {
 };
 
 export const PERMANENT_HIGHLIGHT_STYLE: PathOptions = {
-    weight: 3,
-    dashArray: '10, 10',
-    color: '#000000', // A distinct black color for the border  
+    weight: 5,
+    dashArray: '10 5',
+    color: '#000000', // Border color for permanent highlight
 };
