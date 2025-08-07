@@ -161,6 +161,7 @@ function MapPage() {
                       geoJsonData={geoJsonData}
                       zoom={mapZoom}
                       mapViewType={mapState.mapViewType}
+                      filters={mapState.filters}
                     />
                   ) : (
                     <div className="flex items-center justify-center h-full w-full">

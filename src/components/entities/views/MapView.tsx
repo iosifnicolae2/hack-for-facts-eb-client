@@ -147,6 +147,7 @@ export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapF
               scrollWheelZoom={false}
               mapHeight={mapHeight}
               mapViewType={mapViewType}
+              filters={mapFilters}
             />
           )}
         </div>

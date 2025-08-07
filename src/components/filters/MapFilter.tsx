@@ -61,19 +61,19 @@ export function MapFilter() {
     };
 
     const updateMinValueAmount = (minAmount: string | undefined) => {
-        setFilters({ min_amount: minAmount });
+        setFilters({ min_amount: Number(minAmount) });
     };
 
     const updateMaxValueAmount = (maxAmount: string | undefined) => {
-        setFilters({ max_amount: maxAmount });
+        setFilters({ max_amount: Number(maxAmount) });
     };
 
     const updateMinValuePopulation = (minPopulation: string | undefined) => {
-        setFilters({ min_population: minPopulation });
+        setFilters({ min_population: Number(minPopulation) });
     };
 
     const updateMaxValuePopulation = (maxPopulation: string | undefined) => {
-        setFilters({ max_population: maxPopulation });
+        setFilters({ max_population: Number(maxPopulation) });
     };
 
     return (

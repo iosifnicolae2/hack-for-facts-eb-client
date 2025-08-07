@@ -1,5 +1,5 @@
 import { EntityDetailsData } from '@/lib/api/entities';
-import { FileIcon, HomeIcon, MapIcon, TrendingDownIcon, TrendingUpIcon } from 'lucide-react';
+import { FileText, HomeIcon, MapIcon, TrendingDownIcon, TrendingUpIcon } from 'lucide-react';
 
 export type EntityView = {
   id: string;
@@ -35,7 +35,7 @@ export const useEntityViews = (entity: EntityDetailsData | null | undefined): En
   }
 
   if (entity.reports && entity.reports.nodes.length > 0) {
-    views.push({ id: 'reports', label: 'Reports', icon: <FileIcon className="w-4 h-4" /> });
+    views.push({ id: 'reports', label: 'Reports', icon: <FileText className="w-4 h-4" /> });
   }
 
 

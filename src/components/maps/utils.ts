@@ -2,60 +2,151 @@ import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
 import { UatFeature, UatProperties } from './interfaces';
 import { formatCurrency } from '@/lib/utils';
 import { DEFAULT_FEATURE_STYLE } from './constants';
+import type { MapFilters } from '@/schemas/map-filters';
 
 
 /**
- * Generates HTML content for a feature's tooltip.
- * Prioritizes data from heatmapData if available for the UAT.
+ * Creates a concise summary of the active map filters.
+ */
+const createFilterSummary = (filters: MapFilters): string => {
+    const summaryItems: string[] = [];
+
+    if (filters.years && filters.years.length > 0) {
+        summaryItems.push(`<strong>An:</strong> ${filters.years.join(', ')}`);
+    }
+
+    if (filters.account_categories && filters.account_categories.length > 0) {
+        const categories = filters.account_categories
+            .map(cat => cat === 'ch' ? 'Cheltuieli' : 'Venituri')
+            .join(' & ');
+        summaryItems.push(`<strong>Tip:</strong> ${categories}`);
+    }
+
+    if (filters.functional_codes?.length) {
+        summaryItems.push(`<strong>Fn:</strong> ${filters.functional_codes.length} cod(uri) funcționale`);
+    }
+
+    if (filters.economic_codes?.length) {
+        summaryItems.push(`<strong>Ec:</strong> ${filters.economic_codes.length} cod(uri) economice`);
+    }
+
+    if (summaryItems.length === 0) {
+        return '';
+    }
+
+    return `
+      <div style="font-size: 0.85em; color: #444; border-top: 1px solid #eee; padding-top: 8px; margin-top: 8px; width: 100%;">
+        <div style="font-weight: bold;">Filtre active (${summaryItems.length}):</div>
+        <div style="display: flex; flex-direction: column; font-size: 0.75em;">
+          ${summaryItems.map(item => `<span style="font-weight: bold;">${item}</span>`).join('')}
+          <span style="font-weight: bold;">*Check filters panel for more details.</span>
+        </div>
+      </div>
+    `;
+};
+
+
+/**
+ * Generates enhanced HTML content for a feature's tooltip.
+ * The tooltip has a better design and includes a summary of active filters.
+ * It prioritizes data from heatmapData if available for the UAT/Județ.
  */
 export const createTooltipContent = (
     properties: UatProperties,
     heatmapData: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[] | undefined,
-    mapViewType: 'UAT' | 'Judet'
+    mapViewType: 'UAT' | 'Judet',
+    filters: MapFilters
 ): string => {
     const isUAT = mapViewType === 'UAT';
     const featureIdentifier = isUAT ? properties.natcode : properties.mnemonic;
+    const filterSummaryHtml = createFilterSummary(filters);
 
-    // Find data point
+    // Common styles for the tooltip
+    const styles = {
+        container: `font-family: 'Inter', sans-serif; font-size: 14px; max-width: 250px; padding: 10px; color: #333;`,
+        header: `font-size: 1.1em; font-weight: bold; margin-bottom: 4px;`,
+        subHeader: `color: #666; font-size: 0.9em; margin-bottom: 12px;`,
+        dataGrid: `display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: center;`,
+        dataLabel: `font-weight: 600; color: #555;`,
+        dataValue: `text-align: right;`,
+        highlight: `font-weight: bold; color: #000;`,
+        noData: `font-style: italic; color: #666; margin-top: 4px; display: flex; flex-direction: column; `
+    };
+
+    // Find the corresponding data point from the heatmap data
     const dataPoint = heatmapData?.find(d => {
         if (isUAT && 'siruta_code' in d) return d.siruta_code === featureIdentifier;
         if (!isUAT && 'county_code' in d) return d.county_code === featureIdentifier;
         return false;
     });
 
+    // --- Tooltip for features WITH data ---
     if (dataPoint) {
+        const isPerCapitaNorm = filters.normalization === 'per_capita';
+        let name, subtext, population, perCapitaAmount, totalAmount;
+
         if (isUAT && 'siruta_code' in dataPoint) {
-            return `
-        <div>
-          <strong>${dataPoint.uat_name || properties.name}</strong> (${dataPoint.siruta_code || featureIdentifier})<br/>
-          Județ: ${dataPoint.county_name || properties.county || 'N/A'}<br/>
-          Populație: ${dataPoint.population !== undefined && dataPoint.population !== null ? dataPoint.population.toLocaleString('ro-RO') : 'N/A'}<br/>
-          Suma/Cap de locuitor: <strong>${formatCurrency(dataPoint.per_capita_amount, "compact")}</strong><br/>
-          Suma totală: <strong>${formatCurrency(dataPoint.total_amount, "compact")}</strong>
-        </div>
-      `;
-        } else if (!isUAT && 'county_code' in dataPoint) {
-            const judetData = dataPoint as HeatmapJudetDataPoint;
-            return `
-        <div>
-          <strong>${judetData.county_name || properties.name}</strong><br/>
-          Populație: ${judetData.county_population !== undefined && judetData.county_population !== null ? judetData.county_population.toLocaleString('ro-RO') : 'N/A'}<br/>
-          Suma/Cap de locuitor: <strong>${formatCurrency(judetData.per_capita_amount, "compact")}</strong><br/>
-          Suma totală: <strong>${formatCurrency(judetData.total_amount, "compact")}</strong>
-        </div>
-      `;
+            name = dataPoint.uat_name || properties.name;
+            subtext = `Județ: ${dataPoint.county_name || properties.county || 'N/A'}`;
+            population = dataPoint.population;
+            perCapitaAmount = dataPoint.per_capita_amount;
+            totalAmount = dataPoint.total_amount;
+        } else if (!isUAT && 'county_code' && 'county_population' in dataPoint) {
+            name = dataPoint.county_name || properties.name;
+            subtext = `Indicativ: ${featureIdentifier}`;
+            population = dataPoint.county_population;
+            perCapitaAmount = dataPoint.per_capita_amount;
+            totalAmount = dataPoint.total_amount;
+        } else {
+            // Fallback if dataPoint is found but type guard fails
+            return `<div>Error: Invalid data point type.</div>`;
         }
+
+        return `
+      <div style="${styles.container}">
+        <div style="${styles.header}">${name}</div>
+        <div style="${styles.subHeader}">${subtext}</div>
+        <div style="${styles.dataGrid}">
+          <div style="${styles.dataLabel}">Populație</div>
+          <div style="${styles.dataValue}">
+            ${population?.toLocaleString('ro-RO') ?? 'N/A'}
+          </div>
+
+          <div style="${styles.dataLabel}">Sumă Totală</div>
+          <div style="${styles.dataValue} ${!isPerCapitaNorm ? styles.highlight : ''}">
+            ${formatCurrency(totalAmount, 'compact')}
+          </div>
+
+          <div style="${styles.dataLabel}">Sumă/Locuitor</div>
+          <div style="${styles.dataValue} ${isPerCapitaNorm ? styles.highlight : ''}">
+            ${formatCurrency(perCapitaAmount, 'compact')}
+          </div>
+        </div>
+        ${filterSummaryHtml}
+      </div>
+    `;
     }
 
+    // --- Tooltip for features WITHOUT data ---
+    const locationName = properties.name;
+    const locationSubtext = isUAT ? `Județ: ${properties.county || 'N/A'}` : `Indicativ: ${featureIdentifier}`;
+
     return `
-    <div>
-      <strong>${properties.name}</strong> (${featureIdentifier})<br/>
-      ${isUAT ? `Județ: ${properties.county || 'N/A'}<br/>` : ''}
-      <em style="font-size: 0.9em; color: #666;">No aggregated data available for current filters.</em>
+    <div style="${styles.container}">
+      <div style="${styles.header}">${locationName}</div>
+      <div style="${styles.subHeader}">${locationSubtext}</div>
+      <div style="${styles.noData}">
+        <span>
+            Nu există date agregate
+        </span>
+        <span>
+            pentru filtrele selectate.
+        </span>
+      </div>
+      ${filterSummaryHtml}
     </div>
   `;
 };
-
 
 // Helper function to calculate percentile values
 export const getPercentileValues = (

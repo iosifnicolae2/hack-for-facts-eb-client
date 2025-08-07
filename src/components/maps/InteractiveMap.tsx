@@ -17,6 +17,7 @@ import {
 } from './constants';
 import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { generateHash } from '@/lib/utils';
+import { MapFilters } from '@/schemas/map-filters';
 
 
 interface InteractiveMapProps {
@@ -33,6 +34,7 @@ interface InteractiveMapProps {
   scrollWheelZoom?: boolean;
   mapHeight?: string;
   mapViewType: 'UAT' | 'Judet';
+  filters: MapFilters;
 }
 
 export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
@@ -49,6 +51,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
   geoJsonData,
   highlightedFeatureId,
   scrollWheelZoom = true,
+  filters,
 }) => {
   const geoJsonLayerRef = useRef<L.GeoJSON | null>(null);
 
@@ -89,7 +92,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
         mouseover: (e) => {
           highlightFeature(e.target);
           if (!layer.getTooltip()) {
-            const tooltipContent = createTooltipContent(uatProperties, heatmapData, mapViewType);
+            const tooltipContent = createTooltipContent(uatProperties, heatmapData, mapViewType, filters);
             layer.bindTooltip(tooltipContent).openTooltip();
           }
         },
@@ -101,7 +104,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
         },
       });
     },
-    [highlightFeature, resetHighlight, onFeatureClick, heatmapData, mapViewType]
+    [highlightFeature, resetHighlight, onFeatureClick, heatmapData, mapViewType, filters]
   );
 
   const styleFunction = useCallback(
