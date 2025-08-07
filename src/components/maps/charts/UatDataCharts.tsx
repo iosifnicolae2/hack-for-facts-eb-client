@@ -4,14 +4,13 @@ import { UatTopNBarChart } from './UatTopNBarChart';
 import { UatCountyBarChart } from './UatCountyBarChart';
 import { UatPopulationSpendingScatterPlot } from './UatPopulationSpendingScatterPlot';
 import { UatAverageSpendingCountyChart } from './UatAverageSpendingCountyChart';
-import { useMapFilter } from '@/lib/hooks/useMapFilterStore';
 
 interface UatDataChartsProps {
     data: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[];
+    mapViewType: "UAT" | "Judet";
 }
 
-export const UatDataCharts: React.FC<UatDataChartsProps> = ({ data }) => {
-    const { mapViewType } = useMapFilter();
+export const UatDataCharts: React.FC<UatDataChartsProps> = ({ data, mapViewType }) => {
     if (!data || data.length === 0) {
         return <p className="text-center text-muted-foreground">No data available to display charts.</p>;
     }
@@ -66,4 +65,3 @@ export const UatDataCharts: React.FC<UatDataChartsProps> = ({ data }) => {
         </div>
     );
 };
- 

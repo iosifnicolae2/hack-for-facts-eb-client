@@ -1,32 +1,38 @@
-import { useMapFilter } from '@/lib/hooks/useMapFilterStore';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { AccountCategoryOptionItem } from '@/lib/hooks/useMapFilterStore';
-import { cn } from '@/lib/utils'; // Import cn utility
+import { cn } from '@/lib/utils';
+
+type AccountCategoryOptionItem = {
+    id: "ch" | "vn";
+    label: string;
+};
 
 const accountCategories: AccountCategoryOptionItem[] = [
     { id: "ch", label: "Cheltuieli" },
     { id: "vn", label: "Venituri" },
 ];
 
-export function AccountCategoryRadioGroup() {
-    const { selectedAccountCategory, setAccountCategory } = useMapFilter();
+interface AccountCategoryRadioGroupProps {
+    value: "ch" | "vn";
+    onChange: (value: "ch" | "vn") => void;
+}
 
+export function AccountCategoryRadioGroup({ value, onChange }: AccountCategoryRadioGroupProps) {
     const handleValueChange = (value: string) => {
         const selected = accountCategories.find(cat => cat.id === value);
         if (selected) {
-            setAccountCategory(selected);
+            onChange(selected.id);
         }
     };
 
     return (
         <RadioGroup
-            value={selectedAccountCategory.id}
+            value={value}
             onValueChange={handleValueChange}
             className="flex space-x-2"
         >
             {accountCategories.map((category) => {
-                const isSelected = selectedAccountCategory.id === category.id;
+                const isSelected = value === category.id;
                 return (
                     <Label
                         key={category.id}
@@ -41,7 +47,7 @@ export function AccountCategoryRadioGroup() {
                         <RadioGroupItem
                             value={category.id}
                             id={`map-ac-${category.id}`}
-                            className="sr-only" // Visually hide the radio button
+                            className="sr-only"
                         />
                         {category.label}
                     </Label>
@@ -49,4 +55,4 @@ export function AccountCategoryRadioGroup() {
             })}
         </RadioGroup>
     );
-} 
+}

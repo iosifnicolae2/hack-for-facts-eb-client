@@ -1,8 +1,8 @@
 import { getHeatmapJudetData, getHeatmapUATData } from "@/lib/api/dataDiscovery";
 import { useQuery } from "@tanstack/react-query";
-import { HeatmapFilterInput } from "@/schemas/heatmap";
+import { MapFilters } from "@/schemas/map-filters";
 
-export function useHeatmapData(heatmapFilterInput: HeatmapFilterInput, mapViewType: 'UAT' | 'Judet') {
+export function useHeatmapData(heatmapFilterInput: MapFilters, mapViewType: 'UAT' | 'Judet') {
     const uatQuery = useQuery({
         queryKey: ['heatmapUATData', heatmapFilterInput],
         queryFn: () => getHeatmapUATData(heatmapFilterInput),

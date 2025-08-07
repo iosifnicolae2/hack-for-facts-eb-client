@@ -10,11 +10,11 @@ import { useGeoJsonData } from '@/hooks/useGeoJson';
 import { createHeatmapStyleFunction, getPercentileValues } from '@/components/maps/utils';
 import { EntityDetailsData } from '@/lib/api/entities';
 import { getEntityFeatureInfo } from '@/components/entities/utils';
-import { HeatmapFilterInput, HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
+import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { UatProperties } from '@/components/maps/interfaces';
 import { useHeatmapData } from '@/hooks/useHeatmapData';
-import { InternalMapFiltersState } from '@/lib/hooks/useMapFilterStore';
+import { MapFilters } from '@/schemas/map-filters';
 
 interface MapViewProps {
   entity: EntityDetailsData | null;
@@ -33,7 +33,7 @@ export const MapView: React.FC<MapViewProps> = ({ entity, selectedYear }) => {
     error: geoJsonError,
   } = useGeoJsonData(mapViewType);
 
-  const mapFilters: HeatmapFilterInput = {
+  const mapFilters: MapFilters = {
     years: [selectedYear],
     account_categories: [accountCategory],
     normalization,
@@ -74,20 +74,13 @@ export const MapView: React.FC<MapViewProps> = ({ entity, selectedYear }) => {
   }, [heatmapData, minAggregatedValue, maxAggregatedValue, mapViewType, normalization]);
 
   const handleOpenMap = () => {
-    const filterUrlState: InternalMapFiltersState = {
-      accountCategory: { id: accountCategory, label: accountCategory },
-      normalization: { id: normalization === 'per_capita' ? 'per-capita' : 'total', label: normalization },
-      years: [{ id: selectedYear, label: selectedYear.toString() }],
-      functionalClassifications: [],
-      economicClassifications: [],
-      activeView: 'map',
-      mapViewType: mapViewType,
-    };
 
     navigate({
       to: '/map',
       search: {
-        'map-filters': filterUrlState,
+        filters: mapFilters,
+        mapViewType: mapViewType,
+        activeView: 'map',
       },
     });
   };

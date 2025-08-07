@@ -31,16 +31,3 @@ export interface HeatmapJudetDataPoint {
   county_entity: Entity;
 }
 
-export interface HeatmapFilterInput {
-  functional_codes?: string[];
-  economic_codes?: string[];
-  account_categories: string[];
-  years: number[];
-  min_amount?: number;
-  max_amount?: number;
-  normalization?: 'total' | 'per_capita';
-  min_population?: number;
-  max_population?: number;
-  county_codes?: string[];
-  regions?: string[];
-}

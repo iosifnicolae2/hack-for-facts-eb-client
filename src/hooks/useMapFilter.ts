@@ -1,0 +1,103 @@
+import { useMemo } from 'react';
+import { useNavigate, useSearch } from '@tanstack/react-router';
+import { mapStateSchema, MapState, MapFilters } from '@/schemas/map-filters';
+import { useEconomicClassificationLabel, useFunctionalClassificationLabel, useAccountCategoryLabel } from '@/hooks/filters/useFilterLabels';
+import { OptionItem } from '@/components/filters/base-filter/interfaces';
+import { defaultYearRange } from '@/schemas/charts';
+import { LabelStore } from '@/hooks/filters/interfaces';
+
+export function useMapFilter() {
+    const navigate = useNavigate({ from: '/map' });
+    const search = useSearch({ from: '/map' });
+    const mapState = mapStateSchema.parse(search);
+
+    const economicClassificationLabelsStore = useEconomicClassificationLabel(mapState.filters.economic_codes ?? []);
+    const functionalClassificationLabelsStore = useFunctionalClassificationLabel(mapState.filters.functional_codes ?? []);
+    const accountCategoryLabelsStore = useAccountCategoryLabel();
+
+    const updateMapState = (newState: Partial<MapState>) => {
+        navigate({ search: (prev) => ({ ...prev, ...newState, filters: { ...(prev as MapState)?.filters, ...newState.filters } }), replace: true });
+    };
+
+    const setFilters = (filters: Partial<MapFilters>) => {
+        navigate({
+            search: (prev) => {
+                const newFilters = { ...prev, filters: { ...(prev as MapState)?.filters, ...filters } }
+                if (newFilters.filters.years?.length === 0) {
+                    newFilters.filters.years = [defaultYearRange.end];
+                }
+                if (newFilters.filters.account_categories.length === 0) {
+                    newFilters.filters.account_categories = ["ch"];
+                }
+                return newFilters;
+            }, replace: true
+        });
+    };
+
+    // Helper to create list updaters for filters with label stores
+    const createListUpdater = <K extends keyof MapFilters>(filterKey: K, labelStore?: LabelStore) =>
+        (action: React.SetStateAction<OptionItem<string | number>[]>) => {
+            const currentOptions = (mapState.filters[filterKey] as (string | number)[])?.map(id => ({ id, label: labelStore?.map(id) ?? String(id) })) ?? [];
+            const newState = typeof action === 'function' ? action(currentOptions) : action;
+            if (labelStore) {
+                labelStore.add(newState);
+            }
+            setFilters({ [filterKey]: newState.map(o => o.id as string) } as Partial<MapFilters>);
+        };
+
+    // Setters for map filter classifications
+    const setSelectedFunctionalClassificationOptions = createListUpdater('functional_codes', functionalClassificationLabelsStore);
+    const setSelectedEconomicClassificationOptions = createListUpdater('economic_codes', economicClassificationLabelsStore);
+
+    const selectedEconomicClassificationOptions: OptionItem[] = useMemo(() =>
+        mapState.filters.economic_codes?.map(id => ({ id, label: economicClassificationLabelsStore.map(id) })) ?? [],
+        [mapState.filters.economic_codes, economicClassificationLabelsStore]
+    );
+
+    const selectedFunctionalClassificationOptions: OptionItem[] = useMemo(() =>
+        mapState.filters.functional_codes?.map(id => ({ id, label: functionalClassificationLabelsStore.map(id) })) ?? [],
+        [mapState.filters.functional_codes, functionalClassificationLabelsStore]
+    );
+
+    const selectedAccountCategoryOption: OptionItem = useMemo(() =>
+        ({ id: mapState.filters.account_categories[0], label: accountCategoryLabelsStore.map(mapState.filters.account_categories[0]) }),
+        [mapState.filters.account_categories, accountCategoryLabelsStore]
+    );
+
+    const clearAllFilters = () => {
+        setFilters({
+            years: [defaultYearRange.end],
+            functional_codes: [],
+            economic_codes: [],
+            account_categories: ["ch"],
+            normalization: "per_capita",
+            county_codes: [],
+            regions: [],
+            min_amount: undefined,
+            max_amount: undefined,
+            min_population: undefined,
+            max_population: undefined,
+        });
+    };
+
+    const setActiveView = (view: "map" | "table" | "chart") => {
+        updateMapState({ activeView: view });
+    };
+
+    const setMapViewType = (viewType: "UAT" | "Judet") => {
+        updateMapState({ mapViewType: viewType });
+    };
+
+    return {
+        mapState,
+        setFilters,
+        selectedEconomicClassificationOptions,
+        setSelectedEconomicClassificationOptions,
+        selectedFunctionalClassificationOptions,
+        setSelectedFunctionalClassificationOptions,
+        selectedAccountCategoryOption,
+        clearAllFilters,
+        setActiveView,
+        setMapViewType,
+    };
+}

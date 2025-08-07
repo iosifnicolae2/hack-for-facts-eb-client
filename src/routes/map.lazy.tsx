@@ -7,7 +7,6 @@ import { UatProperties } from "@/components/maps/interfaces";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useGeoJsonData } from "@/hooks/useGeoJson";
 import { MapFilter } from "@/components/filters/MapFilter";
-import { useMapFilter } from "@/lib/hooks/useMapFilterStore";
 import { MapLegend } from "@/components/maps/MapLegend";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MapIcon, TableIcon, BarChart2Icon, Filter as FilterIcon, X, HelpCircleIcon } from "lucide-react";
@@ -28,10 +27,16 @@ import {
 } from "@/components/ui/dialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useHeatmapData } from "@/hooks/useHeatmapData";
+import { useMapFilter } from "@/hooks/useMapFilter";
 
-const MapPage: React.FC = React.memo(() => {
-  const { activeView, setActiveView, mapViewType, selectedNormalization, heatmapFilterInput } = useMapFilter();
-  const navigate = useNavigate();
+export const Route = createLazyFileRoute("/map")({
+  component: MapPage,
+});
+
+function MapPage() {
+  const navigate = useNavigate({ from: '/map' });
+  const { mapState, setActiveView } = useMapFilter();
+
   const isMobile = useIsMobile();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -47,10 +52,10 @@ const MapPage: React.FC = React.memo(() => {
     data: heatmapData,
     isLoading: isLoadingHeatmap,
     error: heatmapError,
-  } = useHeatmapData(heatmapFilterInput, mapViewType);
+  } = useHeatmapData(mapState.filters, mapState.mapViewType);
 
   const handleFeatureClick = (properties: UatProperties) => {
-    if (mapViewType === 'UAT') {
+    if (mapState.mapViewType === 'UAT') {
       const uatCui = (heatmapData as HeatmapUATDataPoint[])?.find(
         (data) => data.siruta_code === properties.natcode
       )?.uat_code;
@@ -71,9 +76,9 @@ const MapPage: React.FC = React.memo(() => {
     data: geoJsonData,
     isLoading: isLoadingGeoJson,
     error: geoJsonError
-  } = useGeoJsonData(mapViewType);
+  } = useGeoJsonData(mapState.mapViewType);
 
-  const valueKey = selectedNormalization.id === 'total' ? 'total_amount' : 'per_capita_amount';
+  const valueKey = mapState.filters.normalization === 'total' ? 'total_amount' : 'per_capita_amount';
 
   const { min: minAggregatedValue, max: maxAggregatedValue } = React.useMemo(() => {
     if (!heatmapData) return { min: 0, max: 0 };
@@ -82,8 +87,8 @@ const MapPage: React.FC = React.memo(() => {
 
   const aDynamicGetFeatureStyle = React.useMemo(() => {
     if (!heatmapData) return () => ({});
-    return createHeatmapStyleFunction(heatmapData, minAggregatedValue, maxAggregatedValue, mapViewType, valueKey);
-  }, [heatmapData, minAggregatedValue, maxAggregatedValue, mapViewType, valueKey]);
+    return createHeatmapStyleFunction(heatmapData, minAggregatedValue, maxAggregatedValue, mapState.mapViewType, valueKey);
+  }, [heatmapData, minAggregatedValue, maxAggregatedValue, mapState.mapViewType, valueKey]);
 
   const isLoading = isLoadingHeatmap || isLoadingGeoJson;
   const error = heatmapError || geoJsonError;
@@ -104,7 +109,7 @@ const MapPage: React.FC = React.memo(() => {
       </div>
       <div className="flex-grow flex flex-col relative">
         <Tabs
-          value={activeView}
+          value={mapState.activeView}
           onValueChange={(value) => setActiveView(value as "map" | "table" | "chart")}
           className="flex flex-col flex-grow"
         >
@@ -142,7 +147,7 @@ const MapPage: React.FC = React.memo(() => {
                       heatmapData={heatmapData}
                       geoJsonData={geoJsonData}
                       zoom={mapZoom}
-                      mapViewType={mapViewType}
+                      mapViewType={mapState.mapViewType}
                     />
                   ) : (
                     <div className="flex items-center justify-center h-full w-full">
@@ -197,6 +202,7 @@ const MapPage: React.FC = React.memo(() => {
                           setSorting={setSorting}
                           pagination={pagination}
                           setPagination={setPagination}
+                          mapViewType={mapState.mapViewType}
                         />
                       ) : isLoadingHeatmap ? (
                         <div className="flex items-center justify-center h-full">
@@ -213,7 +219,7 @@ const MapPage: React.FC = React.memo(() => {
                 <TabsContent value="chart" className="h-full w-full m-0 data-[state=inactive]:hidden outline-none ring-0 focus:ring-0 focus-visible:ring-0">
                   <div className="h-full w-full p-4 overflow-y-auto">
                     {heatmapData && geoJsonData ? (
-                      <UatDataCharts data={heatmapData} />
+                      <UatDataCharts data={heatmapData} mapViewType={mapState.mapViewType} />
                     ) : (
                       <p className="text-center text-muted-foreground">Chart data is loading or not available.</p>
                     )}
@@ -254,8 +260,4 @@ const MapPage: React.FC = React.memo(() => {
       </div>
     </div>
   );
-});
-
-export const Route = createLazyFileRoute("/map")({
-  component: MapPage,
-});
+}

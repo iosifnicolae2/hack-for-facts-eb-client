@@ -1,7 +1,8 @@
 import { createLogger } from "../logger";
 import { graphqlRequest } from "./graphql";
-import { HeatmapFilterInput, HeatmapJudetDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
+import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
 import { BudgetLineItem, PaginatedResult, EntityData, AggregatedBudgetData, GetDataParams } from "@/schemas/dataDiscovery";
+import { MapFilters } from "@/schemas/map-filters";
 
 const logger = createLogger("data-discovery-api");
 
@@ -394,7 +395,7 @@ export async function getUniqueCounties(): Promise<
 
 // --- BEGIN GET HEATMAP UAT DATA FUNCTION ---
 export async function getHeatmapUATData(
-  filter: HeatmapFilterInput
+  filter: MapFilters
 ): Promise<HeatmapUATDataPoint[]> {
   logger.info("Fetching heatmap UAT data with filter", { filter });
 
@@ -424,7 +425,7 @@ export async function getHeatmapUATData(
 
 // --- BEGIN GET HEATMAP JUDET DATA FUNCTION ---
 export async function getHeatmapJudetData(
-  filter: HeatmapFilterInput
+  filter: MapFilters
 ): Promise<HeatmapJudetDataPoint[]> {
   logger.info("Fetching heatmap JUDET data with filter", { filter });
 

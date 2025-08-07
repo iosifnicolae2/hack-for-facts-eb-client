@@ -37,7 +37,6 @@ import {
 import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
 import { formatCurrency, formatNumberRO } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
-import { useMapFilter } from "@/lib/hooks/useMapFilterStore";
 
 interface HeatmapDataTableProps {
     data: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[];
@@ -46,6 +45,7 @@ interface HeatmapDataTableProps {
     setSorting: React.Dispatch<React.SetStateAction<SortingState>>;
     pagination: PaginationState;
     setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
+    mapViewType: "UAT" | "Judet";
 }
 
 export function HeatmapDataTable({
@@ -55,8 +55,8 @@ export function HeatmapDataTable({
     setSorting,
     pagination,
     setPagination,
+    mapViewType,
 }: HeatmapDataTableProps) {
-    const { mapViewType } = useMapFilter();
     const isUatView = mapViewType === 'UAT';
 
     const columns = useMemo<ColumnDef<HeatmapUATDataPoint | HeatmapJudetDataPoint>[]>(
@@ -335,4 +335,3 @@ export function HeatmapDataTable({
         </div>
     );
 }
- 

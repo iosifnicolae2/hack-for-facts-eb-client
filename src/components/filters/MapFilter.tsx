@@ -4,46 +4,77 @@ import { ArrowUpDown, Calendar, ChartBar, Divide, Globe, Map, SlidersHorizontal,
 import { YearFilter } from "./year-filter";
 import { AccountCategoryRadioGroup } from "./account-type-filter/AccountCategoryRadioGroup";
 import { Button } from "../ui/button";
-import { OptionItem } from "./base-filter/interfaces";
-import { useMapFilter, EconomicClassificationOptionItem } from "@/lib/hooks/useMapFilterStore";
 import { EconomicClassificationList } from "./economic-classification-filter";
 import { FunctionalClassificationList } from "./functional-classification-filter";
 import { PopulationRadioGroup } from "./account-type-filter/PopulationRadioGroup";
 import { FilterRangeContainer } from "./base-filter/FilterRangeContainer";
 import { AmountRangeFilter } from "./amount-range-filter";
 import { MapViewTypeRadioGroup } from "./account-type-filter/MapViewTypeRadioGroup";
+import { useMapFilter } from "@/hooks/useMapFilter";
+import { useMemo } from "react";
+import { OptionItem } from "./base-filter/interfaces";
 
 export function MapFilter() {
     const {
-        selectedYears,
-        selectedFunctionalClassifications,
-        selectedEconomicClassifications,
-        selectedMinAmount,
-        selectedMaxAmount,
-        selectedMinPopulation,
-        selectedMaxPopulation,
-        setSelectedYears,
-        setSelectedFunctionalClassifications,
-        setSelectedEconomicClassifications,
-        setMinAmount,
-        setMaxAmount,
-        setMinPopulation,
-        setMaxPopulation,
-        resetMapFilters,
+        mapState,
+        setFilters,
+        clearAllFilters,
+        setMapViewType,
+        selectedFunctionalClassificationOptions,
+        setSelectedFunctionalClassificationOptions,
+        selectedEconomicClassificationOptions,
+        setSelectedEconomicClassificationOptions
     } = useMapFilter();
 
-    const clearAllFilters = () => {
-        resetMapFilters();
+    const totalOptionalFilters =
+        (mapState.filters.years?.length ?? 0) +
+        (mapState.filters.functional_codes?.length ?? 0) +
+        (mapState.filters.economic_codes?.length ?? 0) +
+        (mapState.filters.min_amount ? 1 : 0) +
+        (mapState.filters.max_amount ? 1 : 0) +
+        (mapState.filters.min_population ? 1 : 0) +
+        (mapState.filters.max_population ? 1 : 0);
+
+    const selectedAccountCategoryOption = useMemo(() => {
+        return mapState.filters.account_categories[0];
+    }, [mapState.filters.account_categories]);
+
+    const updateAccountCategory = (accountCategory: "ch" | "vn") => {
+        setFilters({ account_categories: [accountCategory] });
     };
 
-    const totalOptionalFilters =
-        selectedYears.length +
-        selectedFunctionalClassifications.length +
-        selectedEconomicClassifications.length +
-        (selectedMinAmount ? 1 : 0) +
-        (selectedMaxAmount ? 1 : 0) +
-        (selectedMinPopulation ? 1 : 0) +
-        (selectedMaxPopulation ? 1 : 0);
+    const selectedNormalizationOption = useMemo(() => {
+        return mapState.filters.normalization;
+    }, [mapState.filters.normalization]);
+
+    const updateNormalization = (normalization: "total" | "per_capita") => {
+        setFilters({ normalization });
+    };
+
+    const selectedYearOptions = useMemo(() => {
+        return mapState.filters.years?.map(y => ({ id: y, label: String(y) })) ?? [];
+    }, [mapState.filters.years]);
+
+    const updateYearOptions = (years: OptionItem<string | number>[] | ((prevState: OptionItem<string | number>[]) => OptionItem<string | number>[])) => {
+        const newYears = typeof years === 'function' ? years(selectedYearOptions) : years;
+        setFilters({ years: newYears.map(y => Number(y.id)) });
+    };
+
+    const updateMinValueAmount = (minAmount: string | undefined) => {
+        setFilters({ min_amount: minAmount });
+    };
+
+    const updateMaxValueAmount = (maxAmount: string | undefined) => {
+        setFilters({ max_amount: maxAmount });
+    };
+
+    const updateMinValuePopulation = (minPopulation: string | undefined) => {
+        setFilters({ min_population: minPopulation });
+    };
+
+    const updateMaxValuePopulation = (maxPopulation: string | undefined) => {
+        setFilters({ max_population: maxPopulation });
+    };
 
     return (
         <Card className="flex flex-col w-full min-h-full shadow-lg">
@@ -64,7 +95,10 @@ export function MapFilter() {
                         <Map className="w-4 h-4 mr-2" />
                         Vizualizare
                     </h4>
-                    <MapViewTypeRadioGroup />
+                    <MapViewTypeRadioGroup
+                        value={mapState.mapViewType}
+                        onChange={(mapViewType) => setMapViewType(mapViewType)}
+                    />
                 </div>
 
                 <div className="p-3 border-b">
@@ -72,7 +106,10 @@ export function MapFilter() {
                         <ArrowUpDown className="w-4 h-4 mr-2" />
                         Venituri/Cheltuieli
                     </h4>
-                    <AccountCategoryRadioGroup />
+                    <AccountCategoryRadioGroup
+                        value={selectedAccountCategoryOption}
+                        onChange={updateAccountCategory}
+                    />
                 </div>
 
                 <div className="p-3 border-b">
@@ -80,52 +117,55 @@ export function MapFilter() {
                         <Divide className="w-4 h-4 mr-2" />
                         Sumă totală
                     </h4>
-                    <PopulationRadioGroup />
+                    <PopulationRadioGroup
+                        value={selectedNormalizationOption}
+                        onChange={updateNormalization}
+                    />
                 </div>
 
                 <FilterListContainer
                     title="Anul"
                     icon={<Calendar className="w-4 h-4" />}
                     listComponent={YearFilter}
-                    selected={selectedYears}
-                    setSelected={(items) => setSelectedYears(items as OptionItem<number>[])}
+                    selected={selectedYearOptions}
+                    setSelected={updateYearOptions}
                 />
                 <FilterListContainer
                     title="Clasificare Functionala"
                     icon={<ChartBar className="w-4 h-4" />}
                     listComponent={FunctionalClassificationList}
-                    selected={selectedFunctionalClassifications}
-                    setSelected={(items) => setSelectedFunctionalClassifications(items as OptionItem<string>[])}
+                    selected={selectedFunctionalClassificationOptions}
+                    setSelected={setSelectedFunctionalClassificationOptions}
                 />
                 <FilterListContainer
                     title="Clasificare Economică"
                     icon={<Tags className="w-4 h-4" />}
                     listComponent={EconomicClassificationList}
-                    selected={selectedEconomicClassifications}
-                    setSelected={(items) => setSelectedEconomicClassifications(items as EconomicClassificationOptionItem[])}
+                    selected={selectedEconomicClassificationOptions}
+                    setSelected={setSelectedEconomicClassificationOptions}
                 />
                 <FilterRangeContainer
                     title="Interval Valoare"
                     icon={<SlidersHorizontal className="w-4 h-4" />}
                     unit="RON"
                     rangeComponent={AmountRangeFilter}
-                    minValue={selectedMinAmount}
-                    onMinValueChange={setMinAmount}
-                    maxValue={selectedMaxAmount}
-                    onMaxValueChange={setMaxAmount}
+                    minValue={mapState.filters.min_amount}
+                    onMinValueChange={updateMinValueAmount}
+                    maxValue={mapState.filters.max_amount}
+                    onMaxValueChange={updateMaxValueAmount}
                 />
                 <FilterRangeContainer
                     title="Interval Populație"
                     unit="locuitori"
                     icon={<Globe className="w-4 h-4" />}
                     rangeComponent={AmountRangeFilter}
-                    minValue={selectedMinPopulation}
-                    onMinValueChange={setMinPopulation}
-                    maxValue={selectedMaxPopulation}
+                    minValue={mapState.filters.min_population}
+                    onMinValueChange={updateMinValuePopulation}
+                    maxValue={mapState.filters.max_population}
                     maxValueAllowed={100_000_000}
-                    onMaxValueChange={setMaxPopulation}
+                    onMaxValueChange={updateMaxValuePopulation}
                 />
             </CardContent>
         </Card>
     );
-} 
+}

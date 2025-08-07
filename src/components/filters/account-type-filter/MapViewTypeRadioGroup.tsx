@@ -1,4 +1,3 @@
-import { useMapFilter } from "@/lib/hooks/useMapFilterStore";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 
@@ -7,16 +6,20 @@ const viewOptions = [
     { id: "Judet", label: "Județ" },
 ] as const;
 
-export function MapViewTypeRadioGroup() {
-    const { mapViewType, setMapViewType } = useMapFilter();
+interface MapViewTypeRadioGroupProps {
+    value: "UAT" | "Judet";
+    onChange: (value: "UAT" | "Judet") => void;
+}
+
+export function MapViewTypeRadioGroup({ value, onChange }: MapViewTypeRadioGroupProps) {
 
     const handleValueChange = (value: "UAT" | "Judet") => {
-        setMapViewType(value);
+        onChange(value);
     };
 
     return (
         <RadioGroup
-            defaultValue={mapViewType}
+            defaultValue={value}
             className="grid grid-cols-2 gap-4"
             onValueChange={handleValueChange}
         >

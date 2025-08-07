@@ -1,32 +1,39 @@
-import { useMapFilter } from '@/lib/hooks/useMapFilterStore';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { NormalizationOptionItem } from '@/lib/hooks/useMapFilterStore';
-import { cn } from '@/lib/utils'; // Import cn utility
+import { cn } from '@/lib/utils';
+
+type NormalizationOptionItem = {
+    id: "total" | "per_capita";
+    label: string;
+};
 
 const normalizationFilter: NormalizationOptionItem[] = [
     { id: "total", label: "Total" },
-    { id: "per-capita", label: "Per Capita" },
+    { id: "per_capita", label: "Per Capita" },
 ];
 
-export function PopulationRadioGroup() {
-    const { selectedNormalization, setNormalization } = useMapFilter();
+interface PopulationRadioGroupProps {
+    value: "total" | "per_capita";
+    onChange: (value: "total" | "per_capita") => void;
+}
+
+export function PopulationRadioGroup({ value, onChange }: PopulationRadioGroupProps) {
 
     const handleValueChange = (value: string) => {
         const selected = normalizationFilter.find(cat => cat.id === value);
         if (selected) {
-            setNormalization(selected);
+            onChange(selected.id);
         }
     };
 
     return (
         <RadioGroup
-            value={selectedNormalization.id}
+            value={value}
             onValueChange={handleValueChange}
             className="flex space-x-2"
         >
             {normalizationFilter.map((category) => {
-                const isSelected = selectedNormalization.id === category.id;
+                const isSelected = value === category.id;
                 return (
                     <Label
                         key={category.id}
@@ -41,7 +48,7 @@ export function PopulationRadioGroup() {
                         <RadioGroupItem
                             value={category.id}
                             id={`map-ac-${category.id}`}
-                            className="sr-only" // Visually hide the radio button
+                            className="sr-only"
                         />
                         {category.label}
                     </Label>
@@ -49,4 +56,4 @@ export function PopulationRadioGroup() {
             })}
         </RadioGroup>
     );
-} 
+}
