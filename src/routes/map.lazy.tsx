@@ -42,7 +42,7 @@ const MapPage: React.FC = React.memo(() => {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [isLegendModalOpen, setIsLegendModalOpen] = useState(false);
 
-  const mapZoom = isMobile ? 6 : 7.5;
+  const mapZoom = isMobile ? 6 : 7.7;
 
   const {
     data: heatmapData,

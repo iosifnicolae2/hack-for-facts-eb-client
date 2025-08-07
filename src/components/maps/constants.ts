@@ -7,8 +7,8 @@ export const DEFAULT_MAX_ZOOM = 12;
 
 // Romania bounding box
 export const DEFAULT_MAX_BOUNDS: LatLngBoundsExpression = [
-    [43.5, 20.0],
-    [48.5, 30.0],
+    [35.5, 20.0],
+    [50.5, 30.0],
 ];
 
 export const DEFAULT_FEATURE_STYLE: PathOptions = {

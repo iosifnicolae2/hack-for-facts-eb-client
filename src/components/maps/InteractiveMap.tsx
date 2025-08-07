@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css';
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { MapContainer, GeoJSON } from 'react-leaflet';
 import L, { LeafletMouseEvent, PathOptions, Layer, LatLngExpression, LatLngBoundsExpression } from 'leaflet';
 import { Feature, Geometry, GeoJsonObject } from 'geojson';
@@ -131,6 +131,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
     <MapContainer
       center={center}
       zoom={zoom}
+      zoomSnap={0.1}
       minZoom={minZoom}
       maxZoom={maxZoom}
       maxBounds={maxBounds}
