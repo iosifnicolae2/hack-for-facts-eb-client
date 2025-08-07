@@ -25,8 +25,8 @@ export const EntityHeaderSkeleton = ({
             <div className="mt-2">
                 <Skeleton className="h-10 w-full" />
             </div>
-            <div className="mt-2 border-t border-slate-200 dark:border-slate-700 pt-4 space-y-4">
-                <Skeleton className="h-8 w-1/4 mb-2" />
+            <div className="mt-2 border-t border-slate-200 dark:border-slate-700 pt-2 space-y-4">
+                <Skeleton className="h-7 w-1/4 mb-0" />
             </div>
         </header>
     );

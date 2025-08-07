@@ -16,7 +16,7 @@ export const EntityRelationships: React.FC<EntityRelationshipsProps> = ({ parent
     }
 
     return (
-        <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 space-y-4">
+        <div className="mt-2 pt-0 border-t border-slate-200 dark:border-slate-700 space-y-4">
             {hasChildren && (
                 <EntityRelationsList
                     entities={children}

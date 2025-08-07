@@ -124,7 +124,7 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
   const titleChildren = (
     <>
       <Landmark className="h-4 w-4 text-slate-800 dark:text-slate-100" />
-      <span className="text-slate-800 dark:text-slate-100 text-sm">{title} ({entities.length})</span> 
+      <span className="text-slate-800 dark:text-slate-100 text-sm">{title} ({entities.length})</span>
     </>
   );
 

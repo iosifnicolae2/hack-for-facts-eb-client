@@ -44,7 +44,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
         views={views}
         activeView={activeView}
         onViewChange={onViewChange}
-        className="mt-4"
+        className="mt-2"
       />
 
       {/* Related entities (funding and funded) */}
