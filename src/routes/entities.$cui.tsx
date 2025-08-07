@@ -18,6 +18,7 @@ import { MapView } from '@/components/entities/views/MapView';
 import { Overview } from '@/components/entities/views/Overview';
 import { defaultYearRange } from '@/schemas/charts';
 import { RankingView } from '@/components/entities/views/RankingView';
+import { useEntityMapFilter } from '@/components/entities/hooks/useEntityMapFilter';
 
 export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
 
@@ -61,6 +62,7 @@ function EntityDetailsPage() {
     );
 
     useRecentEntities(entity); // Adds entity to recent entities list
+    const { mapFilters, updateMapFilters } = useEntityMapFilter({ year: selectedYear });
     const views = useEntityViews(entity);
 
 
@@ -81,7 +83,6 @@ function EntityDetailsPage() {
             replace: true,
         });
     };
-
 
 
     const handleAnalyticsChange = (
@@ -165,7 +166,7 @@ function EntityDetailsPage() {
             case 'income-trends':
                 return <TrendsView entity={entity ?? undefined} type="income" isLoading={isLoading} currentYear={selectedYear} onYearClick={handleYearChange} initialIncomeSearch={search.incomeSearch} initialExpenseSearch={search.expenseSearch} onSearchChange={handleSearchChange} />;
             case 'map':
-                return <MapView entity={entity ?? null} selectedYear={selectedYear} />;
+                return <MapView entity={entity ?? null} mapFilters={mapFilters} updateMapFilters={updateMapFilters} />;
             case 'ranking':
                 return <RankingView />;
             default:

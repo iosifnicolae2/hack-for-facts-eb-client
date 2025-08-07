@@ -50,7 +50,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
         entity_cuis: [cui],
         functional_prefixes: [prefix],
         account_category: accountCategory,
-        report_type: 'Executie bugetara agregata la nivel de ordonator principal',
+        report_type: entity.is_main_creditor ? 'Executie bugetara agregata la nivel de ordonator principal' : 'Executie bugetara detaliata',
       },
       enabled: true,
       config: { color: getSeriesColor(index), visible: true, showDataLabels: false },

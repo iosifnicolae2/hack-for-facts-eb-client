@@ -27,6 +27,8 @@ export interface EntityDetailsData {
   name: string;
   address?: string | null;
   entity_type?: string | null;
+  is_uat?: boolean | null;
+  is_main_creditor?: boolean | null;
   uat?: {
     county_name?: string | null;
     county_code?: string | null;
@@ -76,6 +78,8 @@ const GET_ENTITY_DETAILS_QUERY = `
       name
       address
       entity_type
+      is_uat
+      is_main_creditor
       uat {
         county_name
         county_code

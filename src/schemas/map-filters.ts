@@ -7,7 +7,7 @@ const MapViewEnum = z.enum(["map", "table", "chart"]);
 const MapViewTypeEnum = z.enum(["UAT", "Judet"]);
 
 
-const mapFiltersSchema = z.object({
+export const mapFiltersSchema = z.object({
   functional_codes: z.array(z.string()).optional(),
   account_categories: z.array(AccountCategoryEnum).default(["ch"]),
   normalization: NormalizationEnum.default("per_capita"),

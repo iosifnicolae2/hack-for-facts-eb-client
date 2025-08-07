@@ -25,7 +25,12 @@ export const EntityViewSwitcher: React.FC<EntityViewSwitcherProps> = ({ views, a
               }
             )}
           >
-            {view.label}
+            <div className="flex items-center">
+              {view.icon}
+              <span className="ml-2">
+                {view.label}
+              </span>
+            </div>
           </button>
         ))}
       </div>

@@ -55,19 +55,32 @@ function MapPage() {
   } = useHeatmapData(mapState.filters, mapState.mapViewType);
 
   const handleFeatureClick = (properties: UatProperties) => {
+    // The entity map support only a limited set of filters, so we need to pass them as a search param.
+    // If we set all the filters, the data doesn't make sense for the entity page, as the filters are not visible.
+    const { years, account_categories, normalization } = mapState.filters;
+    const activeYear = years?.[0];
+    const searchParams = {
+      year: activeYear,
+      mapFilters: {
+        account_categories,
+        normalization,
+        years: [activeYear],
+      },
+    };
+
     if (mapState.mapViewType === 'UAT') {
       const uatCui = (heatmapData as HeatmapUATDataPoint[])?.find(
         (data) => data.siruta_code === properties.natcode
       )?.uat_code;
       if (uatCui) {
-        navigate({ to: `/entities/${uatCui}` });
+        navigate({ to: `/entities/${uatCui}`, search: { ...searchParams } });
       }
     } else {
       const countyCui = (heatmapData as HeatmapJudetDataPoint[])?.find(
         (data) => data.county_code === properties.mnemonic
       )?.county_entity?.cui;
       if (countyCui) {
-        navigate({ to: `/entities/${countyCui}` });
+        navigate({ to: `/entities/${countyCui}`, search: { ...searchParams } });
       }
     }
   };

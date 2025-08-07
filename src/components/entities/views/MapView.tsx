@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { InteractiveMap } from '@/components/maps/InteractiveMap';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -18,13 +18,12 @@ import { MapFilters } from '@/schemas/map-filters';
 
 interface MapViewProps {
   entity: EntityDetailsData | null;
-  selectedYear: number;
+  mapFilters: MapFilters;
+  updateMapFilters: (filters: Partial<MapFilters>) => void;
 }
 
-export const MapView: React.FC<MapViewProps> = ({ entity, selectedYear }) => {
+export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapFilters }) => {
   const mapViewType = entity?.entity_type === 'admin_county_council' ? 'Judet' : 'UAT';
-  const [accountCategory, setAccountCategory] = useState<'vn' | 'ch'>('ch');
-  const [normalization, setNormalization] = useState<'per_capita' | 'total'>('per_capita');
   const navigate = useNavigate();
 
   const {
@@ -32,12 +31,6 @@ export const MapView: React.FC<MapViewProps> = ({ entity, selectedYear }) => {
     isLoading: isLoadingGeoJson,
     error: geoJsonError,
   } = useGeoJsonData(mapViewType);
-
-  const mapFilters: MapFilters = {
-    years: [selectedYear],
-    account_categories: [accountCategory],
-    normalization,
-  };
 
   const mapHeight = '60vh';
   const { center, zoom, featureId } = useMemo(() => {
@@ -62,16 +55,16 @@ export const MapView: React.FC<MapViewProps> = ({ entity, selectedYear }) => {
 
   const { min: minAggregatedValue, max: maxAggregatedValue } = useMemo(() => {
     if (!heatmapData || !Array.isArray(heatmapData)) return { min: 0, max: 0 };
-    return getPercentileValues(heatmapData, 5, 95, normalization === 'per_capita' ? 'per_capita_amount' : 'total_amount');
-  }, [heatmapData, normalization]);
+    return getPercentileValues(heatmapData, 5, 95, mapFilters.normalization === 'per_capita' ? 'per_capita_amount' : 'total_amount');
+  }, [heatmapData, mapFilters.normalization]);
 
   const getFeatureStyle = useMemo(() => {
     if (!heatmapData || !Array.isArray(heatmapData)) {
       return () => ({});
     }
-    const valueKey = normalization === 'per_capita' ? 'per_capita_amount' : 'total_amount';
+    const valueKey = mapFilters.normalization === 'per_capita' ? 'per_capita_amount' : 'total_amount';
     return createHeatmapStyleFunction(heatmapData, minAggregatedValue, maxAggregatedValue, mapViewType, valueKey);
-  }, [heatmapData, minAggregatedValue, maxAggregatedValue, mapViewType, normalization]);
+  }, [heatmapData, minAggregatedValue, maxAggregatedValue, mapViewType, mapFilters.normalization]);
 
   const handleOpenMap = () => {
 
@@ -120,11 +113,11 @@ export const MapView: React.FC<MapViewProps> = ({ entity, selectedYear }) => {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <CardTitle>Geographical View</CardTitle>
           <div className="flex flex-wrap items-center gap-4">
-            <ToggleGroup type="single" size="sm" value={accountCategory} onValueChange={(value: 'vn' | 'ch') => { if (value) setAccountCategory(value) }}>
+            <ToggleGroup type="single" size="sm" value={mapFilters.account_categories[0]} onValueChange={(value: 'vn' | 'ch') => { if (value) updateMapFilters({ account_categories: [value] }) }}>
               <ToggleGroupItem value="ch">Cheltuieli</ToggleGroupItem>
               <ToggleGroupItem value="vn">Venituri</ToggleGroupItem>
             </ToggleGroup>
-            <ToggleGroup type="single" size="sm" value={normalization} onValueChange={(value: 'per_capita' | 'total') => { if (value) setNormalization(value) }}>
+            <ToggleGroup type="single" size="sm" value={mapFilters.normalization} onValueChange={(value: 'per_capita' | 'total') => { if (value) updateMapFilters({ normalization: value }) }}>
               <ToggleGroupItem value="per_capita">Per Capita</ToggleGroupItem>
               <ToggleGroupItem value="total">Total</ToggleGroupItem>
             </ToggleGroup>
