@@ -27,7 +27,7 @@ interface MapViewProps {
 }
 
 export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapFilters, selectedYear, years, onYearChange }) => {
-  const mapViewType = entity?.entity_type === 'admin_county_council' ? 'Judet' : 'UAT';
+  const mapViewType = entity?.entity_type === 'admin_county_council' || entity?.cui === '4267117' ? 'Judet' : 'UAT';
   const navigate = useNavigate();
 
   const {

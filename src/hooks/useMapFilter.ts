@@ -26,7 +26,7 @@ export function useMapFilter() {
                 if (newFilters.filters.years?.length === 0) {
                     newFilters.filters.years = [defaultYearRange.end];
                 }
-                if (newFilters.filters.account_categories.length === 0) {
+                if (newFilters.filters.account_categories?.length === 0) {
                     newFilters.filters.account_categories = ["ch"];
                 }
                 return newFilters;
