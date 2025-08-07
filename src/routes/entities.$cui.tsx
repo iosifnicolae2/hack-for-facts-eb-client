@@ -166,7 +166,14 @@ function EntityDetailsPage() {
             case 'income-trends':
                 return <TrendsView entity={entity ?? undefined} type="income" isLoading={isLoading} currentYear={selectedYear} onYearClick={handleYearChange} initialIncomeSearch={search.incomeSearch} initialExpenseSearch={search.expenseSearch} onSearchChange={handleSearchChange} />;
             case 'map':
-                return <MapView entity={entity ?? null} mapFilters={mapFilters} updateMapFilters={updateMapFilters} />;
+                return <MapView
+                    entity={entity ?? null}
+                    mapFilters={mapFilters}
+                    updateMapFilters={updateMapFilters}
+                    selectedYear={selectedYear}
+                    years={years}
+                    onYearChange={handleYearChange}
+                />;
             case 'ranking':
                 return <RankingView />;
             default:

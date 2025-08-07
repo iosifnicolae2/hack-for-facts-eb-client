@@ -1,6 +1,6 @@
 import { FilterListContainer } from "./base-filter/FilterListContainer";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { ArrowUpDown, Calendar, ChartBar, Divide, Globe, Map, Navigation, SlidersHorizontal, Tags, XCircle } from "lucide-react";
+import { ArrowUpDown, Calendar, ChartBar, Divide, Globe, Map, SlidersHorizontal, Tags, XCircle } from "lucide-react";
 import { YearFilter } from "./year-filter";
 import { AccountCategoryRadioGroup } from "./account-type-filter/AccountCategoryRadioGroup";
 import { Button } from "../ui/button";

@@ -11,18 +11,22 @@ import { createHeatmapStyleFunction, getPercentileValues } from '@/components/ma
 import { EntityDetailsData } from '@/lib/api/entities';
 import { getEntityFeatureInfo } from '@/components/entities/utils';
 import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { UatProperties } from '@/components/maps/interfaces';
 import { useHeatmapData } from '@/hooks/useHeatmapData';
 import { MapFilters } from '@/schemas/map-filters';
+import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select';
 
 interface MapViewProps {
   entity: EntityDetailsData | null;
   mapFilters: MapFilters;
   updateMapFilters: (filters: Partial<MapFilters>) => void;
+  selectedYear: number;
+  years: number[];
+  onYearChange: (year: number) => void;
 }
 
-export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapFilters }) => {
+export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapFilters, selectedYear, years, onYearChange }) => {
   const mapViewType = entity?.entity_type === 'admin_county_council' ? 'Judet' : 'UAT';
   const navigate = useNavigate();
 
@@ -51,7 +55,7 @@ export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapF
     data: heatmapData,
     isLoading: isLoadingHeatmap,
     error: heatmapError,
-  } = useHeatmapData(mapFilters, mapViewType);
+  } = useHeatmapData({ ...mapFilters, years: [selectedYear] }, mapViewType);
 
   const { min: minAggregatedValue, max: maxAggregatedValue } = useMemo(() => {
     if (!heatmapData || !Array.isArray(heatmapData)) return { min: 0, max: 0 };
@@ -111,7 +115,23 @@ export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapF
     <Card>
       <CardHeader>
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <CardTitle>Geographical View</CardTitle>
+          <div className="flex items-center">
+            <Select
+              value={selectedYear.toString()}
+              onValueChange={(val) => onYearChange(parseInt(val, 10))}
+            >
+              <SelectTrigger className="w-auto border-0 shadow-none bg-transparent focus:ring-0">
+                <h3 className="text-lg font-semibold">
+                  Geographical View ({selectedYear})
+                </h3>
+              </SelectTrigger>
+              <SelectContent>
+                {years.map((year) => (
+                  <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
           <div className="flex flex-wrap items-center gap-4">
             <ToggleGroup type="single" size="sm" value={mapFilters.account_categories[0]} onValueChange={(value: 'vn' | 'ch') => { if (value) updateMapFilters({ account_categories: [value] }) }}>
               <ToggleGroupItem value="ch">Cheltuieli</ToggleGroupItem>
