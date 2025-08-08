@@ -48,8 +48,7 @@ export const ChartDisplayArea = React.memo(
     onXAxisClick,
     isPreview = false,
   }: ChartDisplayAreaProps) => {
-
-    const ChartContentWrapper = React.memo(() => {
+    const content = (() => {
       if (chart.series.length === 0) return <NoDataSeries onAddSeries={onAddSeries} chart={chart} />;
       if (isLoading) return <LoadingSpinner text="Loading chart data..." />;
       if (error) return <ErrorDisplay error={error} />;
@@ -68,12 +67,12 @@ export const ChartDisplayArea = React.memo(
           xAxisMarker={xAxisMarker}
         />
       );
-    });
+    })();
 
     if (isPreview) {
       return (
         <div className="w-full h-full flex items-center justify-center">
-          <ChartContentWrapper />
+          {content}
         </div>
       );
     }
@@ -81,7 +80,7 @@ export const ChartDisplayArea = React.memo(
     return (
       <Card className="flex flex-col w-full h-full" id="chart-display-area">
         <div className="p-4 flex-grow min-h-[500px] flex items-center justify-center bg-muted/20">
-          <ChartContentWrapper />
+          {content}
         </div>
         <ChartFooter />
       </Card>

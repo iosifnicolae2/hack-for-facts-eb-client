@@ -6,12 +6,12 @@ import { ChartLabel } from './ChartLabel';
 import { yValueFormatter } from '../utils';
 import { useChartDiff } from '../hooks/useChartDiff';
 import { DiffArea } from './diff-select/DiffArea';
-import { useChartAnimation } from '../hooks/useChartAnimatin';
+import { useChartAnimation } from '../hooks/useChartAnimation';
 
 export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotationPositionChange, onXAxisClick, xAxisMarker }: ChartRendererProps) {
   const enabledSeries = chart.series.filter(s => s.enabled);
   const animationDuration = 300;
-  const { isAnimationActive } = useChartAnimation(animationDuration);
+  const { isAnimationActive } = useChartAnimation(animationDuration, chart);
   const {
     handleMouseDown,
     handleMouseMove,

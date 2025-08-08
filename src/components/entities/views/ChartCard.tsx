@@ -1,5 +1,4 @@
-
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Chart } from '@/schemas/charts';
 import { useChartData, convertToTimeSeriesData, convertToAggregatedData } from '@/components/charts/hooks/useChartData';
 import { ChartDisplayArea } from '@/components/charts/components/chart-view/ChartDisplayArea';
@@ -14,29 +13,29 @@ interface ChartCardProps {
     onYearClick?: (year: number) => void;
 }
 
-export const ChartCard: React.FC<ChartCardProps> = ({ chart, onYearClick, currentYear }) => {
+function ChartCardComponent({ chart, onYearClick, currentYear }: ChartCardProps) {
     const { dataSeriesMap, isLoadingData, dataError } = useChartData({ chart });
     const { data: timeSeriesData, unitMap: timeSeriesUnitMap } = useMemo(() => convertToTimeSeriesData(dataSeriesMap!, chart), [dataSeriesMap, chart]);
     const { data: aggregatedData, unitMap: aggregatedUnitMap } = useMemo(() => convertToAggregatedData(dataSeriesMap!, chart), [dataSeriesMap, chart]);
 
-    const getChartState = () => {
-        return {
-            ...chart,
-            config: {
-                ...chart.config,
-                showTooltip: true,
-                showLegend: true,
-            }
-        };
-    };
+    const getChartState = useMemo(() => ({
+        ...chart,
+        config: {
+            ...chart.config,
+            showTooltip: true,
+            showLegend: true,
+        }
+    }), [chart]);
 
-    const handleXAxisClick = (value: number | string) => {
+    const handleXAxisClick = useCallback((value: number | string) => {
         const year = Number(value);
         const isValidYear = !isNaN(year) && year > 1900 && year < 2100;
         if (isValidYear) {
             onYearClick?.(year);
         }
-    };
+    }, [onYearClick]);
+
+    const noop = useCallback(() => { }, []);
 
     return (
         <Card>
@@ -46,7 +45,7 @@ export const ChartCard: React.FC<ChartCardProps> = ({ chart, onYearClick, curren
                 </div>
 
                 <Button asChild variant="outline" size="sm">
-                    <Link to={`/charts/$chartId`} params={{ chartId: chart.id }} search={{ chart: getChartState() }} preload="intent">
+                    <Link to={`/charts/$chartId`} params={{ chartId: chart.id }} search={{ chart: getChartState }} preload="intent">
                         <ExternalLink className="h-4 w-4 mr-2" />
                         Open in Chart Editor
                     </Link>
@@ -62,8 +61,8 @@ export const ChartCard: React.FC<ChartCardProps> = ({ chart, onYearClick, curren
                         unitMap={timeSeriesUnitMap || aggregatedUnitMap}
                         isLoading={isLoadingData}
                         error={dataError}
-                        onAddSeries={() => { }}
-                        onAnnotationPositionChange={() => { }}
+                        onAddSeries={noop}
+                        onAnnotationPositionChange={noop}
                         onXAxisClick={handleXAxisClick}
                         xAxisMarker={currentYear}
                     />
@@ -71,4 +70,6 @@ export const ChartCard: React.FC<ChartCardProps> = ({ chart, onYearClick, curren
             </CardContent>
         </Card >
     );
-};
+}
+
+export const ChartCard = React.memo(ChartCardComponent);

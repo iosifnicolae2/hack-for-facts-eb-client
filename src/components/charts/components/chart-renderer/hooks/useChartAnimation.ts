@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
+import { Chart } from "@/schemas/charts";
 
-export const useChartAnimation = (delay: number = 500) => {
+export const useChartAnimation = (delay: number = 500, chart: Chart) => {
     const [isAnimationActive, setIsAnimationActive] = useState(true);
 
 
     useEffect(() => {
+        setIsAnimationActive(true);
         const timer = setTimeout(() => setIsAnimationActive(false), delay);
-        console.log("useChartAnimation", delay);
         return () => clearTimeout(timer);
-    }, [delay]);
+    }, [delay, chart]);
 
     return { isAnimationActive, setIsAnimationActive };
 };

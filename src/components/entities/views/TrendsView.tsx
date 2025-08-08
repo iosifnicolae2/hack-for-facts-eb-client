@@ -24,7 +24,7 @@ const TOP_CATEGORIES_COUNT = 10;
 
 export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, currentYear, onYearClick, initialIncomeSearch, initialExpenseSearch, onSearchChange, isLoading }) => {
   const { cui } = useParams({ from: '/entities/$cui' });
-  const chapterMap = getChapterMap();
+  const chapterMap = useMemo(() => getChapterMap(), []);
 
   const lineItems = useMemo(() => {
     if (!entity) return [];
@@ -36,10 +36,13 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
     return getTopFunctionalGroupCodes(lineItems, TOP_CATEGORIES_COUNT);
   }, [lineItems]);
 
+  const entityNameRaw = entity?.name ?? '';
+  const isMainCreditor = !!entity?.is_main_creditor;
+
   const trendChart = useMemo<Chart | null>(() => {
     if (!entity) return null;
     const accountCategory = type === 'income' ? 'vn' : 'ch';
-    const entityName = entity.name.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    const entityName = entityNameRaw.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     const title = type === 'income' ? `Top ${TOP_CATEGORIES_COUNT} Income Categories for ${entityName}` : `Top ${TOP_CATEGORIES_COUNT} Spending Categories for ${entityName}`;
 
     const series: SeriesConfiguration[] = topFunctionalGroups.map((prefix, index) => ({
@@ -50,7 +53,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
         entity_cuis: [cui],
         functional_prefixes: [prefix],
         account_category: accountCategory,
-        report_type: entity.is_main_creditor ? 'Executie bugetara agregata la nivel de ordonator principal' : 'Executie bugetara detaliata',
+        report_type: isMainCreditor ? 'Executie bugetara agregata la nivel de ordonator principal' : 'Executie bugetara detaliata',
       },
       enabled: true,
       config: { color: getSeriesColor(index), visible: true, showDataLabels: false },
@@ -72,7 +75,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
       },
       series,
     } as Chart;
-  }, [topFunctionalGroups, cui, entity, type, chapterMap]);
+  }, [topFunctionalGroups, cui, type, chapterMap, entity, entityNameRaw, isMainCreditor]);
 
   const {
     expenseSearchTerm,
