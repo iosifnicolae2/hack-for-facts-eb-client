@@ -1,4 +1,4 @@
-# Graph Gurus Client
+# Transparenta.eu Client
 
 We are building a platform for analyzing public data spending.The target audience is the public sector and independent journalists that need a easy and accessible way of finding anomalies in public spending.
 

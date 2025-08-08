@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarRail,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "@/components/ui/sidebar";
 import Logo from "./logo";
 import { NavMain } from "./nav-main";
 import { useLocation } from "@tanstack/react-router";
@@ -29,12 +22,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <NavMain />
         </div>
       </SidebarContent>
-      <SidebarFooter>
-        <div className="group-data-[state=collapsed]:visible invisible">
-          <SidebarTrigger />
-        </div>
-      </SidebarFooter>
-      <SidebarRail />
+      <SidebarFooter></SidebarFooter>
     </Sidebar>
   );
 }

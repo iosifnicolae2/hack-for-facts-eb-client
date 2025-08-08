@@ -36,7 +36,18 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
       {/* Main content: Info and Year Selector */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
         <EntityInfo entity={entity} />
-        {yearSelector && <div className="flex-shrink-0">{yearSelector}</div>}
+        {yearSelector && (
+          <div
+            className={cn(
+              "flex-shrink-0",
+              "rounded-xl border border-slate-200/80 dark:border-slate-700/70",
+              "bg-white/70 dark:bg-slate-900/40 backdrop-blur supports-[backdrop-filter]:bg-white/30",
+              "px-3 py-2 shadow-sm",
+            )}
+          >
+            {yearSelector}
+          </div>
+        )}
       </div>
 
       {/* View switcher for different data visualizations */}
@@ -44,7 +55,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
         views={views}
         activeView={activeView}
         onViewChange={onViewChange}
-        className="mt-2"
+        className="mt-2 pt-[1px]"
       />
 
       {/* Related entities (funding and funded) */}

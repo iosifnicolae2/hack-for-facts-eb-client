@@ -63,7 +63,10 @@ export function FunctionalClassificationList({
         <div className={cn("w-full flex flex-col space-y-3", className)}>
             <SearchInput
                 onChange={setSearchFilter}
-                placeholder="Cauta clasificare functionala (ex: Ajutor social)"
+                placeholder="Cauta după nume sau cod (ex: Ajutor social, 7.06, fn:7.06)"
+                helpText={
+                    "Poti căuta după: nume (ex: Ajutor social) • cod (ex: 7.06, 7.06.02) • prefix explicit: fn:7.06"
+                }
                 initialValue={searchFilter}
             />
 

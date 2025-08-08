@@ -22,7 +22,8 @@ export const EntityHeaderSkeleton = ({
                     <Skeleton className="h-10 w-[110px]" />
                 </div>
             </div>
-            <div className="mt-2">
+            {/* View Switcher */}
+            <div className="mt-2 pt-[2px]"> 
                 <Skeleton className="h-10 w-full" />
             </div>
             <div className="mt-2 border-t border-slate-200 dark:border-slate-700 pt-2 space-y-4">

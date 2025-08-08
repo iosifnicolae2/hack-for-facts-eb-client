@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export const EntityFinancialTrendsSkeleton = () => {
     return (
-        <Card className="shadow-lg mb-8">
+        <Card className="mb-8">
             <CardHeader>
                 <div className="flex justify-between items-center">
                     <Skeleton className="h-6 w-1/4" />
@@ -14,7 +14,7 @@ export const EntityFinancialTrendsSkeleton = () => {
                 </div>
             </CardHeader>
             <CardContent>
-                <Skeleton className="h-64 w-full" />
+                <Skeleton className="h-[26rem] w-full" />
             </CardContent>
         </Card>
     );

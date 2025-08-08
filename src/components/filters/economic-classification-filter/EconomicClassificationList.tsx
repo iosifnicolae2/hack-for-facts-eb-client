@@ -63,7 +63,10 @@ export function EconomicClassificationList({
         <div className={cn("w-full flex flex-col space-y-3", className)}>
             <SearchInput
                 onChange={setSearchFilter}
-                placeholder="Cauta clasificare economica (ex: Agricultura)"
+                placeholder="Cauta după nume sau cod (ex: Agricultura, 43.00, ec:43.00)"
+                helpText={
+                    "Poti căuta după: nume (ex: Agricultura) • cod (ex: 43.00, 43.00.10) • prefix explicit: ec:43.00"
+                }
                 initialValue={searchFilter}
             />
 

@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import {
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
@@ -63,7 +62,6 @@ export function NavMain() {
     <div className="flex h-full flex-col">
       <div className="flex-1 py-2">
         <SidebarGroup>
-          {!collapsed && <SidebarGroupLabel>Platform</SidebarGroupLabel>}
           <SidebarMenu>
             {mainItems.map((item) => (
               <SidebarMenuItem key={item.url}>

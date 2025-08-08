@@ -23,9 +23,9 @@ function Index() {
           {/* Title Container - applies gradient styles to its children */}
           <div
             className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight
-           bg-gradient-to-b from-slate-200/80 to-white
+           bg-gradient-to-b from-slate-50 via-white to-slate-50
            bg-clip-text text-transparent
-           drop-shadow-2xl"
+           drop-shadow-[0_10px_22px_rgba(0,0,0,0.35)]"
           >
             {animationActive ? (
               <AnimatedTitle />
