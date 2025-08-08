@@ -14,11 +14,11 @@ export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
 
 export const Route = createFileRoute('/entities/$cui')({
     validateSearch: entitySearchSchema,
-    beforeLoad: async ({ params, search }) => {
+    beforeLoad: ({ params, search }) => {
         const START_YEAR = defaultYearRange.start;
         const END_YEAR = defaultYearRange.end;
         const year = (search?.year as number | undefined) ?? END_YEAR;
-        await queryClient.prefetchQuery(
+        queryClient.prefetchQuery(
             entityDetailsQueryOptions(params.cui, year, START_YEAR, END_YEAR)
         );
 
@@ -33,12 +33,12 @@ export const Route = createFileRoute('/entities/$cui')({
 
         if (desiredView === 'map' && entity?.is_uat) {
             const mapViewType = entity.entity_type === 'admin_county_council' || entity.cui === '4267117' ? 'Judet' : 'UAT';
-            await queryClient.prefetchQuery(geoJsonQueryOptions(mapViewType));
+            queryClient.prefetchQuery(geoJsonQueryOptions(mapViewType));
             const filters = (search?.mapFilters as { years: number[]; account_categories: ('ch' | 'vn')[]; normalization: 'per_capita' | 'total' }) || { years: [year], account_categories: ['ch'] as ('ch' | 'vn')[], normalization: 'per_capita' as const };
             if (mapViewType === 'UAT') {
-                await queryClient.prefetchQuery(heatmapUATQueryOptions(filters));
+                queryClient.prefetchQuery(heatmapUATQueryOptions(filters));
             } else {
-                await queryClient.prefetchQuery(heatmapJudetQueryOptions(filters));
+                queryClient.prefetchQuery(heatmapJudetQueryOptions(filters));
             }
         }
 
@@ -63,7 +63,7 @@ export const Route = createFileRoute('/entities/$cui')({
                     .sort((a, b) => a.seriesId.localeCompare(b.seriesId))
                     .reduce((acc, input) => acc + input.seriesId + '::' + JSON.stringify(input.filter), '');
                 const hash = generateHash(payloadHash);
-                await queryClient.prefetchQuery({
+                queryClient.prefetchQuery({
                     queryKey: ['chart-data', hash],
                     queryFn: () => getChartAnalytics(inputs),
                     staleTime: 1000 * 60 * 60 * 24,

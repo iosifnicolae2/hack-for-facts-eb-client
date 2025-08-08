@@ -8,7 +8,7 @@ import { defaultYearRange } from '@/schemas/charts'
 type MapViewType = 'UAT' | 'Judet'
 
 export const Route = createFileRoute('/map')({
-  beforeLoad: async ({ search }) => {
+  beforeLoad: ({ search }) => {
     // Parse and normalize search params using zod defaults to ensure valid filters
     const parsed = mapStateSchema.parse(search)
     const viewType: MapViewType = parsed.mapViewType
@@ -25,11 +25,11 @@ export const Route = createFileRoute('/map')({
       normalization: filters.normalization ?? 'per_capita',
     }
 
-    await queryClient.prefetchQuery(geoJsonQueryOptions(viewType))
+    queryClient.prefetchQuery(geoJsonQueryOptions(viewType))
     if (viewType === 'UAT') {
-      await queryClient.prefetchQuery(heatmapUATQueryOptions(normalizedFilters))
+      queryClient.prefetchQuery(heatmapUATQueryOptions(normalizedFilters))
     } else {
-      await queryClient.prefetchQuery(heatmapJudetQueryOptions(normalizedFilters))
+      queryClient.prefetchQuery(heatmapJudetQueryOptions(normalizedFilters))
     }
   },
 })
