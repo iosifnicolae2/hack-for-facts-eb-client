@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { EntityAnalyticsViewToggle } from './EntityAnalyticsViewToggle'
 import { AccountCategoryRadioGroup } from './account-type-filter/AccountCategoryRadioGroup'
 import { PopulationRadioGroup } from './account-type-filter/PopulationRadioGroup'
 import { FilterListContainer } from './base-filter/FilterListContainer'
@@ -29,7 +28,7 @@ import { ReportTypeFilter } from './report-type-filter'
 import { IsUatFilter } from './flags-filter'
 
 export function EntityAnalyticsFilter() {
-  const { filter, setFilter, view, setView, resetFilter } = useEntityAnalyticsFilter()
+  const { filter, setFilter, resetFilter } = useEntityAnalyticsFilter()
 
   // Label stores (cache + API-backed)
   const entityLabelsStore = useEntityLabel((filter.entity_cuis ?? []) as string[])
@@ -192,14 +191,6 @@ export function EntityAnalyticsFilter() {
         </div>
       </CardHeader>
       <CardContent className="flex flex-col flex-grow p-0 space-y-1">
-        <div className="p-3 border-b">
-          <h4 className="mb-2 text-sm font-medium flex items-center">
-            <ChartBar className="w-4 h-4 mr-2" />
-            Data View
-          </h4>
-          <EntityAnalyticsViewToggle value={view} onChange={setView} />
-        </div>
-
         <div className="p-3 border-b">
           <h4 className="mb-2 text-sm font-medium flex items-center">
             <ArrowUpDown className="w-4 h-4 mr-2" />

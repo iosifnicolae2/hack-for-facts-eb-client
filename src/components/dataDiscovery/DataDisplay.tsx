@@ -1,20 +1,14 @@
 import { DataTable } from "./DataTable";
-import {
-  ChevronLeft,
-  ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { PaginatedResult, BudgetLineItem } from "@/schemas/dataDiscovery";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { SortOrder } from "@/schemas/interfaces";
+import { Pagination } from "@/components/ui/pagination";
+import { ActiveFiltersBar, type FilterItem } from "@/components/ui/active-filters-bar";
+import type { QuickFilter } from "./DataTable";
+import { useMemo } from "react";
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { SlidersHorizontal } from "lucide-react";
+import { useTablePreferences } from "@/hooks/useTablePreferences";
 
 interface DataDisplayProps {
   budgetItems: PaginatedResult<BudgetLineItem>;
@@ -23,9 +17,11 @@ interface DataDisplayProps {
   onPageSizeChange: (pageSize: number) => void;
   sort: SortOrder;
   onSortColumn: (columnId: string) => void;
+  activeFilters?: FilterItem[];
+  onRemoveFilter?: (key: string, id?: string) => void;
+  onClearFilters?: () => void;
+  onQuickFilter?: (qf: QuickFilter) => void;
 }
-
-const MAX_VISIBLE_PAGES = 3; // Max number of page buttons to show (excluding prev/next, first/last)
 
 export function DataDisplay({
   budgetItems,
@@ -34,182 +30,122 @@ export function DataDisplay({
   onPageSizeChange,
   sort,
   onSortColumn,
+  activeFilters = [],
+  onRemoveFilter,
+  onClearFilters,
+  onQuickFilter,
 }: DataDisplayProps) {
-
-  const renderPageNumbers = () => {
-    const { currentPage, totalPages } = budgetItems;
-    const pageNumbers = [];
-
-    if (totalPages <= MAX_VISIBLE_PAGES + 2) { // Show all if few pages
-      for (let i = 1; i <= totalPages; i++) {
-        pageNumbers.push(
-          <Button
-            key={i}
-            variant={currentPage === i ? "default" : "outline"}
-            size="sm"
-            className="h-9 min-w-9 w-auto px-3 text-sm hidden sm:inline-flex" // Hidden on xs, visible sm+
-            onClick={() => onPageChange(i)}
-            aria-label={`Go to page ${i}`}
-          >
-            {i}
-          </Button>
-        );
-      }
-    } else {
-      // Always show first page
-      pageNumbers.push(
-        <Button
-          key={1}
-          variant={currentPage === 1 ? "default" : "outline"}
-          size="sm"
-          className="h-9 min-w-9 w-auto px-3 text-sm hidden sm:inline-flex"
-          onClick={() => onPageChange(1)}
-          aria-label="Go to page 1"
-        >
-          1
-        </Button>
-      );
-
-      let startPage = Math.max(2, currentPage - Math.floor((MAX_VISIBLE_PAGES -1) / 2));
-      let endPage = Math.min(totalPages - 1, startPage + MAX_VISIBLE_PAGES - 2 );
-
-      if (currentPage < MAX_VISIBLE_PAGES) {
-        endPage = Math.min(totalPages -1, MAX_VISIBLE_PAGES);
-      }
-
-      if (currentPage > totalPages - (MAX_VISIBLE_PAGES-1)){
-        startPage = Math.max(2, totalPages - MAX_VISIBLE_PAGES +1 );
-      }
-
-      if (startPage > 2) {
-        pageNumbers.push(<span key="ellipsis-start" className="mx-1 hidden sm:inline">...</span>);
-      }
-
-      for (let i = startPage; i <= endPage; i++) {
-        pageNumbers.push(
-          <Button
-            key={i}
-            variant={currentPage === i ? "default" : "outline"}
-            size="sm"
-            className="h-9 min-w-9 w-auto px-3 text-sm hidden sm:inline-flex"
-            onClick={() => onPageChange(i)}
-            aria-label={`Go to page ${i}`}
-          >
-            {i}
-          </Button>
-        );
-      }
-
-      if (endPage < totalPages - 1) {
-        pageNumbers.push(<span key="ellipsis-end" className="mx-1 hidden sm:inline">...</span>);
-      }
-
-      // Always show last page
-      pageNumbers.push(
-        <Button
-          key={totalPages}
-          variant={currentPage === totalPages ? "default" : "outline"}
-          size="sm"
-          className="h-9 min-w-9 w-auto px-3 text-sm hidden sm:inline-flex"
-          onClick={() => onPageChange(totalPages)}
-          aria-label={`Go to last page (${totalPages})`}
-        >
-          {totalPages}
-        </Button>
-      );
+  const { density, setDensity, columnVisibility, setColumnVisibility, columnPinning, setColumnPinning, columnSizing, setColumnSizing, columnOrder, setColumnOrder, currencyFormat, setCurrencyFormat } = useTablePreferences('data-discovery', {
+    columnVisibility: {
+      entity_name: true,
+      year: true,
+      account_category: true,
+      functional_name: true,
+      economic_name: true,
+      amount: true,
     }
-    return pageNumbers;
-  };
+  });
+  const totalCount = useMemo(() => budgetItems.totalCount || 0, [budgetItems.totalCount]);
+  const rowNumberStart = useMemo(() => Math.max(0, (budgetItems.currentPage - 1) * budgetItems.pageSize), [budgetItems.currentPage, budgetItems.pageSize]);
 
   return (
     <div className="space-y-4">
+      <div className="flex items-center justify-between gap-2">
+        <ActiveFiltersBar
+          filters={activeFilters}
+          onRemoveFilter={(key, id) => onRemoveFilter?.(key, id)}
+          onClearFilters={() => onClearFilters?.()}
+        />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="gap-2">
+              <SlidersHorizontal className="w-4 h-4" />
+              View
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuLabel>Density</DropdownMenuLabel>
+            <DropdownMenuCheckboxItem checked={density === 'comfortable'} onCheckedChange={() => setDensity('comfortable')}>Comfortable</DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem checked={density === 'compact'} onCheckedChange={() => setDensity('compact')}>Compact</DropdownMenuCheckboxItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>Currency</DropdownMenuLabel>
+            <DropdownMenuItem onSelect={() => setCurrencyFormat('standard')}>
+              Standard
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setCurrencyFormat('compact')}>
+              Compact
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setCurrencyFormat('both')}>
+              Both
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>Columns</DropdownMenuLabel>
+            {/* Hardcode toggles for now to avoid coupling to table instance */}
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.entity_name !== false}
+              onCheckedChange={(v) => setColumnVisibility((prev: Record<string, boolean>) => ({ ...prev, entity_name: Boolean(v) }))}
+            >
+              Entity
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.year !== false}
+              onCheckedChange={(v) => setColumnVisibility((prev: Record<string, boolean>) => ({ ...prev, year: Boolean(v) }))}
+            >
+              Year
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.account_category !== false}
+              onCheckedChange={(v) => setColumnVisibility((prev: Record<string, boolean>) => ({ ...prev, account_category: Boolean(v) }))}
+            >
+              Account Category
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.functional_name !== false}
+              onCheckedChange={(v) => setColumnVisibility((prev: Record<string, boolean>) => ({ ...prev, functional_name: Boolean(v) }))}
+            >
+              Functional Category
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.economic_name !== false}
+              onCheckedChange={(v) => setColumnVisibility((prev: Record<string, boolean>) => ({ ...prev, economic_name: Boolean(v) }))}
+            >
+              Economic Category
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.amount !== false}
+              onCheckedChange={(v) => setColumnVisibility((prev: Record<string, boolean>) => ({ ...prev, amount: Boolean(v) }))}
+            >
+              Amount
+            </DropdownMenuCheckboxItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
       <DataTable
         data={budgetItems.data}
         isLoading={isLoading}
         sort={sort}
         onSortColumn={onSortColumn}
+        density={density}
+        columnVisibility={columnVisibility}
+        onColumnVisibilityChange={setColumnVisibility}
+        onQuickFilter={onQuickFilter}
+        columnPinning={columnPinning}
+        onColumnPinningChange={setColumnPinning}
+        columnSizing={columnSizing}
+        onColumnSizingChange={setColumnSizing}
+        columnOrder={columnOrder}
+        onColumnOrderChange={setColumnOrder}
+        currencyFormat={currencyFormat}
+        rowNumberStart={rowNumberStart}
       />
       {!isLoading && budgetItems.totalCount > 0 && (
-        <div className="flex flex-col items-center justify-between gap-4 rounded-lg border border-border bg-background p-3 shadow-sm md:flex-row md:gap-6 md:p-4">
-          {/* Left Side: Entries Info & Page Size Selector */}
-          <div className="flex w-full flex-col items-center gap-2 text-sm text-muted-foreground sm:flex-row sm:gap-4 md:w-auto">
-            <span>
-              Showing {budgetItems.data.length} of {budgetItems.totalCount} entries
-            </span>
-            <div className="flex items-center space-x-2">
-              <span>Rows:</span>
-              <Select
-                value={budgetItems.pageSize.toString()}
-                onValueChange={(value) => onPageSizeChange(parseInt(value))}
-              >
-                <SelectTrigger className="h-9 w-[75px] text-sm" aria-label="Select page size">
-                  <SelectValue placeholder={budgetItems.pageSize.toString()} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="10">10</SelectItem>
-                  <SelectItem value="25">25</SelectItem>
-                  <SelectItem value="50">50</SelectItem>
-                  <SelectItem value="100">100</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Right Side: Pagination Controls */}
-          <div className="flex w-full flex-wrap items-center justify-center gap-2 md:w-auto md:justify-end">
-             <Button
-                variant="outline"
-                size="sm"
-                className="h-9 px-2 sm:px-3" // More compact on xs
-                onClick={() => onPageChange(1)}
-                disabled={!budgetItems.hasPreviousPage || budgetItems.currentPage === 1}
-                aria-label="Go to first page"
-              >
-                <ChevronsLeft className="h-4 w-4 sm:mr-1" /> 
-                <span className="hidden sm:inline">First</span>
-              </Button>
-            <Button
-              variant="outline"
-              size="sm" 
-              className="h-9 px-2 sm:px-3"
-              onClick={() => onPageChange(budgetItems.currentPage - 1)}
-              disabled={!budgetItems.hasPreviousPage}
-              aria-label="Previous page"
-            >
-              <ChevronLeft className="h-4 w-4 sm:mr-1" />
-              <span className="hidden sm:inline">Previous</span>
-            </Button>
-
-            <div className="items-center space-x-1 hidden sm:flex">{renderPageNumbers()}</div>
-            {/* Mobile specific page info */}
-            <div className="sm:hidden flex items-center justify-center px-2 text-sm font-medium">
-                Page {budgetItems.currentPage} of {budgetItems.totalPages}
-            </div>
-
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-9 px-2 sm:px-3"
-              onClick={() => onPageChange(budgetItems.currentPage + 1)}
-              disabled={!budgetItems.hasNextPage}
-              aria-label="Next page"
-            >
-               <span className="hidden sm:inline">Next</span>
-              <ChevronRight className="h-4 w-4 sm:ml-1" />
-            </Button>
-             <Button
-                variant="outline"
-                size="sm"
-                className="h-9 px-2 sm:px-3"
-                onClick={() => onPageChange(budgetItems.totalPages)}
-                disabled={!budgetItems.hasNextPage || budgetItems.currentPage === budgetItems.totalPages}
-                aria-label={`Go to last page (${budgetItems.totalPages})`}
-              >
-                <span className="hidden sm:inline">Last</span>
-                <ChevronsRight className="h-4 w-4 sm:ml-1" />
-              </Button>
-          </div>
-        </div>
+        <Pagination
+          currentPage={budgetItems.currentPage}
+          pageSize={budgetItems.pageSize}
+          totalCount={totalCount}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+        />
       )}
     </div>
   );

@@ -232,6 +232,7 @@ export const useFilterSearch = () => {
         setFunctionalPrefixes,
         setEconomicPrefixes,
         setSelectedEntityTypes,
+        resetFilters,
     } = useLineItemsFilterStore();
 
     const filter = useMemo((): LineItemsFilter => ({
@@ -290,6 +291,7 @@ export const useFilterSearch = () => {
         setFunctionalPrefixes,
         setEconomicPrefixes,
         setSelectedEntityTypeOptions: setSelectedEntityTypes as OptionSetter,
+        resetFilters,
 
         filter,
         filterHash,
