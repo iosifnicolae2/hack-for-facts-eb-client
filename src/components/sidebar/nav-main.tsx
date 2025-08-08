@@ -68,6 +68,7 @@ export function NavMain() {
                 <SidebarMenuButton asChild>
                   <Link
                     to={item.url}
+                    preload="intent"
                     onClick={handleLinkClick}
                     className={cn(
                       buttonVariants({ variant: "ghost" }),

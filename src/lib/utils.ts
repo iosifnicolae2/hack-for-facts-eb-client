@@ -47,3 +47,7 @@ export function generateHash(message: string): string {
 export function capitalize(str: string) {
   return str.toLocaleLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 }
+
+export function convertDaysToMs(days: number): number {
+  return days * 24 * 60 * 60 * 1000;
+}

@@ -1,22 +1,28 @@
 import React from 'react';
 import { EntityView } from '@/hooks/useEntityViews';
 import { cn } from '@/lib/utils';
+import { Link, useParams, useSearch } from '@tanstack/react-router';
 
 interface EntityViewSwitcherProps {
   views: EntityView[];
   activeView: string;
-  onViewChange: (viewId: string) => void;
   className?: string;
 }
 
-export const EntityViewSwitcher: React.FC<EntityViewSwitcherProps> = ({ views, activeView, onViewChange, className }) => {
+export const EntityViewSwitcher: React.FC<EntityViewSwitcherProps> = ({ views, activeView, className }) => {
+  const { cui } = useParams({ from: '/entities/$cui' });
+  const search = useSearch({ from: '/entities/$cui' });
+
   return (
     <div className={cn("relative", className)}>
       <div className="overflow-x-auto whitespace-nowrap pb-2 scrollbar-hide">
         {views.map((view) => (
-          <button
+          <Link
             key={view.id}
-            onClick={() => onViewChange(view.id)}
+            to="/entities/$cui"
+            params={{ cui }}
+            search={{ ...search, view: view.id }}
+            preload="intent"
             className={cn(
               'inline-block border-1 px-3 py-1.5 mr-2 rounded-lg text-sm font-medium transition-colors duration-200 cursor-pointer',
               {
@@ -31,7 +37,7 @@ export const EntityViewSwitcher: React.FC<EntityViewSwitcherProps> = ({ views, a
                 {view.label}
               </span>
             </div>
-          </button>
+          </Link>
         ))}
       </div>
     </div>

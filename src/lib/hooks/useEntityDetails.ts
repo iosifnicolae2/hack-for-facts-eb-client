@@ -1,24 +1,36 @@
 import { useQuery } from '@tanstack/react-query';
 import { getEntityDetails, EntityDetailsData } from '@/lib/api/entities';
+import { convertDaysToMs } from '@/lib/utils';
 
 export const ENTITY_DETAILS_QUERY_KEY = 'entityDetails';
 
-export function useEntityDetails(cui: string | undefined, year?: number, startYear?: number, endYear?: number) {
-  return useQuery<
-    EntityDetailsData | null,
-    Error,
-    EntityDetailsData | null,
-    [string, string | undefined, number | undefined, number | undefined, number | undefined]
-  >({
-    queryKey: [ENTITY_DETAILS_QUERY_KEY, cui, year, startYear, endYear],
+export function entityDetailsQueryOptions(
+  cui: string | undefined,
+  year?: number,
+  startYear?: number,
+  endYear?: number
+) {
+  return {
+    queryKey: [ENTITY_DETAILS_QUERY_KEY, cui, year, startYear, endYear] as const,
     queryFn: async () => {
       if (!cui) {
-        return null;
+        return null as EntityDetailsData | null;
       }
       return getEntityDetails(cui, year, startYear, endYear);
     },
-    enabled: !!cui, // Only run the query if CUI is available
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    // You can add more React Query options here if needed, e.g., refetchOnWindowFocus, retry, etc.
+    staleTime: convertDaysToMs(1),
+    gcTime: convertDaysToMs(72),
+  };
+}
+
+export function useEntityDetails(cui: string | undefined, year?: number, startYear?: number, endYear?: number) {
+  const options = entityDetailsQueryOptions(cui, year, startYear, endYear);
+  return useQuery({
+    ...options,
+    staleTime: convertDaysToMs(1),
+    enabled: !!cui,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
   });
-} 
+}

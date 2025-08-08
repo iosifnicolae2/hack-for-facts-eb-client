@@ -8,15 +8,19 @@ import "./index.css";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
+import { queryClient } from "@/lib/queryClient";
 import { env } from "./config/env";
 
 // Create a new router instance
-const router = createRouter({ routeTree });
+const router = createRouter({ routeTree, context: { queryClient } });
 
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {
   interface Register {
     router: typeof router;
+    context: {
+      queryClient: typeof queryClient;
+    };
   }
 }
 
@@ -28,9 +32,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       options={
         env.VITE_POSTHOG_ENABLED
           ? {
-              api_host: env.VITE_POSTHOG_HOST,
-              person_profiles: env.VITE_POSTHOG_PERSON_PROFILES,
-            }
+            api_host: env.VITE_POSTHOG_HOST,
+            person_profiles: env.VITE_POSTHOG_PERSON_PROFILES,
+          }
           : undefined
       }
     >

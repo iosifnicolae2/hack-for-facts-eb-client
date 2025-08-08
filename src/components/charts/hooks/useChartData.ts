@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getChartAnalytics, getStaticChartAnalytics, StaticAnalyticsDataPoint } from "@/lib/api/charts";
 import { AnalyticsFilterType, AnalyticsInput, Chart, AnalyticsDataPoint, Series, defaultYearRange, SeriesConfig, StaticSeriesConfiguration } from "@/schemas/charts";
 import { useMemo } from "react";
-import { generateHash } from "@/lib/utils";
+import { generateHash, convertDaysToMs } from "@/lib/utils";
 import { calculateAllSeriesData } from "@/lib/chart-calculation-utils";
 
 interface UseChartDataProps {
@@ -57,12 +57,16 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
         queryKey: ['chart-data', analyticsInputsHash],
         queryFn: () => getChartAnalytics(analyticsInputs),
         enabled: enabled && hasChart && hasFilters,
+        staleTime: convertDaysToMs(1),
+        gcTime: convertDaysToMs(3),
     });
 
     const { data: staticServerChartData, isLoading: isLoadingStaticData, error: staticDataError } = useQuery({
         queryKey: ['chart-data', staticSeriesDatasetIdsHash],
         queryFn: () => getStaticChartAnalytics(staticSeriesDatasetIds),
         enabled: enabled && hasChart && hasStaticSeries,
+        staleTime: convertDaysToMs(1),
+        gcTime: convertDaysToMs(3),
     });
 
 

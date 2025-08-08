@@ -13,6 +13,7 @@ export default defineConfig({
       typescript: true,
     }),
   ],
+  // Static assets will be fingerprinted by Vite and can be cached long-term by the browser/CDN
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

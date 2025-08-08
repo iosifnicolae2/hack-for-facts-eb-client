@@ -4,7 +4,7 @@ import { useNavigate, useSearch } from "@tanstack/react-router";
 
 const defaultMapFilters: MapFilters = {
     years: [defaultYearRange.end],
-    account_categories: ['ch'],
+    account_categories: ['ch'] as ('ch' | 'vn')[],
     normalization: 'per_capita',
 };
 

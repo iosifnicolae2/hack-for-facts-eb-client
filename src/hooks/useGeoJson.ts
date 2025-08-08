@@ -1,8 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, type QueryOptions } from "@tanstack/react-query";
 import { GeoJsonObject } from 'geojson';
+import { convertDaysToMs } from '@/lib/utils';
 
 const fetchGeoJsonData = async (path: string): Promise<GeoJsonObject> => {
-    const response = await fetch(path);
+    const response = await fetch(path, {
+        cache: 'force-cache',
+        headers: {
+            // This header instructs the browser and intermediate caches to store the response for 7 days (max-age=604800),
+            // and allows serving stale content while revalidating for up to 1 year (stale-while-revalidate=31536000).
+            'Cache-Control': 'public, max-age=604800, stale-while-revalidate=31536000',
+        },
+    });
     if (!response.ok) {
         throw new Error(`Network response was not ok when fetching ${path}`);
     }
@@ -10,13 +18,28 @@ const fetchGeoJsonData = async (path: string): Promise<GeoJsonObject> => {
     return data;
 };
 
-export const useGeoJsonData = (mapViewType: 'UAT' | 'Judet') => {
+export function geoJsonQueryOptions(mapViewType: 'UAT' | 'Judet') {
     const geoJsonPath = mapViewType === 'UAT' ? '/assets/geojson/uat.json' : '/assets/geojson/judete.json';
-
-    return useQuery<GeoJsonObject, Error>({
-        queryKey: ['geoJsonData', mapViewType],
+    return {
+        queryKey: ['geoJsonData', mapViewType] as const,
         queryFn: () => fetchGeoJsonData(geoJsonPath),
-        staleTime: 1000 * 60 * 60 * 24,
+        staleTime: convertDaysToMs(1),
+        gcTime: convertDaysToMs(7),
+    } satisfies QueryOptions<GeoJsonObject, Error, GeoJsonObject, readonly [string, 'UAT' | 'Judet']> & {
+        staleTime?: number;
+        gcTime?: number;
+    };
+}
+
+export const useGeoJsonData = (mapViewType: 'UAT' | 'Judet') => {
+    return useQuery<GeoJsonObject, Error>({
+        ...geoJsonQueryOptions(mapViewType),
+        staleTime: convertDaysToMs(1),
+        gcTime: convertDaysToMs(7),
+        placeholderData: (prev: GeoJsonObject | undefined) => prev,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        refetchOnMount: false,
         enabled: !!mapViewType,
     });
 };

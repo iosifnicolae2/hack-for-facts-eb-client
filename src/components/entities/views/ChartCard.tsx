@@ -19,17 +19,16 @@ export const ChartCard: React.FC<ChartCardProps> = ({ chart, onYearClick, curren
     const { data: timeSeriesData, unitMap: timeSeriesUnitMap } = useMemo(() => convertToTimeSeriesData(dataSeriesMap!, chart), [dataSeriesMap, chart]);
     const { data: aggregatedData, unitMap: aggregatedUnitMap } = useMemo(() => convertToAggregatedData(dataSeriesMap!, chart), [dataSeriesMap, chart]);
 
-    const chartUrl = useMemo(() => {
-        const chartData = JSON.stringify({
+    const getChartState = () => {
+        return {
             ...chart,
             config: {
                 ...chart.config,
                 showTooltip: true,
                 showLegend: true,
             }
-        });
-        return `/charts/${chart.id}?chart=${encodeURIComponent(chartData)}`;
-    }, [chart]);
+        };
+    };
 
     const handleXAxisClick = (value: number | string) => {
         const year = Number(value);
@@ -47,7 +46,7 @@ export const ChartCard: React.FC<ChartCardProps> = ({ chart, onYearClick, curren
                 </div>
 
                 <Button asChild variant="outline" size="sm">
-                    <Link to={chartUrl} target="_blank">
+                    <Link to={`/charts/$chartId`} params={{ chartId: chart.id }} search={{ chart: getChartState() }} preload="intent">
                         <ExternalLink className="h-4 w-4 mr-2" />
                         Open in Chart Editor
                     </Link>
@@ -70,6 +69,6 @@ export const ChartCard: React.FC<ChartCardProps> = ({ chart, onYearClick, curren
                     />
                 </div>
             </CardContent>
-        </Card>
+        </Card >
     );
 };

@@ -1,14 +1,13 @@
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { Toaster } from "sonner";
 import { ErrorProvider } from "@/contexts/ErrorContext";
 import { HotkeysProvider } from "react-hotkeys-hook";
 import { MobileSidebarFab } from "@/components/sidebar/mobile-sidebar-fab";
-
-const queryClient = new QueryClient();
+import { queryClient } from "@/lib/queryClient";
 
 export const Route = createRootRoute({
   component: () => (

@@ -1,233 +1,76 @@
-import { createFileRoute, useParams, useSearch, useNavigate } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 import { z } from 'zod';
-import { useEntityDetails } from '@/lib/hooks/useEntityDetails';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { AlertTriangle, Info } from 'lucide-react';
-import { EntityHeader } from '@/components/entities/EntityHeader';
-import { EntityReports } from '@/components/entities/EntityReports';
-import { useState, useMemo, useRef } from 'react';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-import { FloatingEntitySearch } from '@/components/entities/FloatingEntitySearch';
+import { entityDetailsQueryOptions } from '@/lib/hooks/useEntityDetails';
+import { queryClient } from '@/lib/queryClient';
 import { entitySearchSchema } from '@/components/entities/validation';
-import { useHotkeys } from 'react-hotkeys-hook';
-import { useEntityViews } from '@/hooks/useEntityViews';
-import { useRecentEntities } from '@/hooks/useRecentEntities';
-
-import { TrendsView } from '@/components/entities/views/TrendsView';
-import { MapView } from '@/components/entities/views/MapView';
-import { Overview } from '@/components/entities/views/Overview';
 import { defaultYearRange } from '@/schemas/charts';
-import { RankingView } from '@/components/entities/views/RankingView';
-import { useEntityMapFilter } from '@/components/entities/hooks/useEntityMapFilter';
+import { geoJsonQueryOptions } from '@/hooks/useGeoJson';
+import { heatmapJudetQueryOptions, heatmapUATQueryOptions } from '@/hooks/useHeatmapData';
+import { getTopFunctionalGroupCodes } from '@/lib/analytics-utils';
+import { getChartAnalytics } from '@/lib/api/charts';
+import { generateHash } from '@/lib/utils';
 
 export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
 
 export const Route = createFileRoute('/entities/$cui')({
     validateSearch: entitySearchSchema,
-    component: EntityDetailsPage,
-});
-
-function EntityDetailsPage() {
-    const { cui } = useParams({ from: Route.id });
-    const search = useSearch({ from: Route.id });
-    const navigate = useNavigate({ from: Route.id });
-    const yearSelectorRef = useRef<HTMLButtonElement>(null);
-
-    // Shortcuts key to focus year selection
-    useHotkeys('mod+;', () => {
-        yearSelectorRef.current?.click();
-    }, {
-        enableOnFormTags: ['INPUT', 'TEXTAREA', 'SELECT'],
-    });
-
-    const START_YEAR = defaultYearRange.start;
-    const END_YEAR = defaultYearRange.end;
-
-    const [selectedYear, setSelectedYear] = useState<number>(search.year ?? END_YEAR);
-
-    const [trendMode, setTrendMode] = useState<'absolute' | 'percent'>((search.trend as 'absolute' | 'percent') ?? 'absolute');
-
-    // Options for year selection
-    const years = useMemo(() =>
-        Array.from({ length: END_YEAR - START_YEAR + 1 }, (_, idx) => END_YEAR - idx),
-        [START_YEAR, END_YEAR]
-    );
-
-    // Fetch entity details for the chosen year and trend range
-    const { data: entity, isLoading, isError, error } = useEntityDetails(
-        cui,
-        selectedYear,
-        START_YEAR,
-        END_YEAR
-    );
-
-    useRecentEntities(entity); // Adds entity to recent entities list
-    const { mapFilters, updateMapFilters } = useEntityMapFilter({ year: selectedYear });
-    const views = useEntityViews(entity);
-
-
-    const handleViewChange = (viewId: string) => {
-        navigate({
-            search: (prev) => ({ ...prev, view: viewId }),
-            replace: true,
-        });
-    };
-
-    const handleSearchChange = (type: 'expense' | 'income', value: string) => {
-        const key = type + 'Search';
-        navigate({
-            search: (prev) => ({
-                ...prev,
-                [key]: value || undefined,
-            }),
-            replace: true,
-        });
-    };
-
-
-    const handleAnalyticsChange = (
-        key: 'analyticsChartType' | 'analyticsDataType',
-        value: 'bar' | 'pie' | 'income' | 'expense'
-    ) => {
-        navigate({
-            search: (prev) => ({
-                ...prev,
-                [key]: value,
-            }),
-            replace: true,
-        });
-    };
-
-    const handleYearChange = (year: number) => {
-        setSelectedYear(year);
-        navigate({
-            search: (prev) => ({ ...prev, year }),
-            replace: true,
-        });
-    };
-
-    const handleTrendModeChange = (mode: 'absolute' | 'percent') => {
-        setTrendMode(mode);
-        navigate({
-            search: (prev) => ({ ...prev, trend: mode }),
-            replace: true,
-        });
-    };
-
-    if (isError) {
-        return (
-            <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex flex-col justify-center items-center p-4">
-                <Alert variant="destructive" className="max-w-lg w-full bg-red-50 dark:bg-red-900 border-red-500 dark:border-red-700">
-                    <AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400" />
-                    <AlertTitle className="text-red-700 dark:text-red-300">Error Fetching Entity Details</AlertTitle>
-                    <AlertDescription className="text-red-600 dark:text-red-400">
-                        There was a problem fetching the details for CUI: <strong>{cui}</strong>.
-                        {error && <p className="mt-2 text-sm">Details: {error.message}</p>}
-                    </AlertDescription>
-                </Alert>
-            </div>
+    beforeLoad: async ({ params, search }) => {
+        const START_YEAR = defaultYearRange.start;
+        const END_YEAR = defaultYearRange.end;
+        const year = (search?.year as number | undefined) ?? END_YEAR;
+        await queryClient.prefetchQuery(
+            entityDetailsQueryOptions(params.cui, year, START_YEAR, END_YEAR)
         );
-    }
 
-    if (!isLoading && !entity) {
-        return (
-            <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex flex-col justify-center items-center p-4">
-                <Alert className="max-w-lg w-full bg-blue-50 dark:bg-blue-900 border-blue-500 dark:border-blue-700">
-                    <Info className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                    <AlertTitle className="text-blue-700 dark:text-blue-300">No Data Found</AlertTitle>
-                    <AlertDescription className="text-blue-600 dark:text-blue-400">
-                        No entity details found for CUI: <strong>{cui}</strong>. It's possible this entity does not exist or has no associated data.
-                    </AlertDescription>
-                </Alert>
-            </div>
-        );
-    }
+        const desiredView = (search?.view as string | undefined) ?? 'overview';
+        const entity = queryClient.getQueryData<{
+            is_uat?: boolean | null;
+            entity_type?: string | null;
+            cui: string;
+            is_main_creditor?: boolean | null;
+            executionLineItems?: { nodes?: { account_category: 'vn' | 'ch' }[] } | null;
+        }>(['entityDetails', params.cui, year, START_YEAR, END_YEAR]);
 
-    const renderContent = () => {
-        const activeView = search.view ?? 'overview';
-
-        switch (activeView) {
-            case 'overview':
-                return <Overview
-                    entity={entity ?? undefined}
-                    isLoading={isLoading}
-                    selectedYear={selectedYear}
-                    trendMode={trendMode} years={years}
-                    search={search}
-                    onChartTrendModeChange={handleTrendModeChange}
-                    onYearChange={handleYearChange}
-                    onSearchChange={handleSearchChange}
-                    onAnalyticsChange={handleAnalyticsChange}
-                />;
-            case 'reports':
-                return <EntityReports reports={entity?.reports ?? null} isLoading={isLoading} />;
-            case 'expense-trends':
-                return <TrendsView entity={entity ?? undefined} type="expense" isLoading={isLoading} currentYear={selectedYear} onYearClick={handleYearChange} initialExpenseSearch={search.expenseSearch} initialIncomeSearch={search.incomeSearch} onSearchChange={handleSearchChange} />;
-            case 'income-trends':
-                return <TrendsView entity={entity ?? undefined} type="income" isLoading={isLoading} currentYear={selectedYear} onYearClick={handleYearChange} initialIncomeSearch={search.incomeSearch} initialExpenseSearch={search.expenseSearch} onSearchChange={handleSearchChange} />;
-            case 'map':
-                return <MapView
-                    entity={entity ?? null}
-                    mapFilters={mapFilters}
-                    updateMapFilters={updateMapFilters}
-                    selectedYear={selectedYear}
-                    years={years}
-                    onYearChange={handleYearChange}
-                />;
-            case 'ranking':
-                return <RankingView />;
-            default:
-                // Default to overview if the view is not recognized
-                return <Overview
-                    entity={entity ?? undefined}
-                    isLoading={isLoading}
-                    selectedYear={selectedYear}
-                    trendMode={trendMode}
-                    years={years}
-                    search={search}
-                    onChartTrendModeChange={handleTrendModeChange}
-                    onYearChange={handleYearChange}
-                    onSearchChange={handleSearchChange}
-                    onAnalyticsChange={handleAnalyticsChange}
-                />;
+        if (desiredView === 'map' && entity?.is_uat) {
+            const mapViewType = entity.entity_type === 'admin_county_council' || entity.cui === '4267117' ? 'Judet' : 'UAT';
+            await queryClient.prefetchQuery(geoJsonQueryOptions(mapViewType));
+            const filters = (search?.mapFilters as { years: number[]; account_categories: ('ch' | 'vn')[]; normalization: 'per_capita' | 'total' }) || { years: [year], account_categories: ['ch'] as ('ch' | 'vn')[], normalization: 'per_capita' as const };
+            if (mapViewType === 'UAT') {
+                await queryClient.prefetchQuery(heatmapUATQueryOptions(filters));
+            } else {
+                await queryClient.prefetchQuery(heatmapJudetQueryOptions(filters));
+            }
         }
-    };
 
-
-    return (
-        <div className="min-h-screen bg-slate-100 dark:bg-slate-900 p-4 md:p-8">
-            <div className="container mx-auto max-w-7xl space-y-8">
-                {/** Build year selector injected into header **/}
-                <EntityHeader
-                    className="md:sticky top-0 z-10 bg-white dark:bg-slate-900"
-                    entity={entity ?? undefined}
-                    isLoading={isLoading}
-                    views={views}
-                    activeView={search.view ?? 'overview'}
-                    onViewChange={handleViewChange}
-                    yearSelector={
-                        <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium text-slate-700 dark:text-slate-300 hidden sm:inline">Reporting Year</span>
-                            <Select value={selectedYear.toString()} onValueChange={(val) => handleYearChange(parseInt(val, 10))}>
-                                <SelectTrigger ref={yearSelectorRef} className="w-[110px]">
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {years.map((year) => (
-                                        <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
-                    }
-                />
-
-
-
-                {renderContent()}
-
-            </div>
-            <FloatingEntitySearch baseSearch={search} />
-        </div>
-    );
-}
+        if (desiredView === 'income-trends' || desiredView === 'expense-trends') {
+            const accountCategory: 'vn' | 'ch' = desiredView === 'income-trends' ? 'vn' : 'ch';
+            const lineItems = entity?.executionLineItems?.nodes ?? [];
+            type MinimalLineItem = { account_category: 'vn' | 'ch'; amount: number; functionalClassification?: { functional_code?: string | null } };
+            const filtered = (lineItems as MinimalLineItem[]).filter((li) => li.account_category === accountCategory);
+            const topGroups: string[] = getTopFunctionalGroupCodes(filtered as unknown as import('@/lib/api/entities').ExecutionLineItem[], 10);
+            if (topGroups.length > 0) {
+                const inputs: import('@/schemas/charts').AnalyticsInput[] = topGroups.map((prefix: string) => ({
+                    seriesId: `${prefix}${params.cui}-${desiredView === 'income-trends' ? 'income' : 'expense'}`,
+                    filter: {
+                        entity_cuis: [params.cui],
+                        functional_prefixes: [prefix],
+                        account_category: accountCategory,
+                        report_type: (entity?.is_main_creditor ? 'Executie bugetara agregata la nivel de ordonator principal' : 'Executie bugetara detaliata') as 'Executie bugetara agregata la nivel de ordonator principal' | 'Executie bugetara detaliata',
+                    },
+                }));
+                const payloadHash = inputs
+                    .slice()
+                    .sort((a, b) => a.seriesId.localeCompare(b.seriesId))
+                    .reduce((acc, input) => acc + input.seriesId + '::' + JSON.stringify(input.filter), '');
+                const hash = generateHash(payloadHash);
+                await queryClient.prefetchQuery({
+                    queryKey: ['chart-data', hash],
+                    queryFn: () => getChartAnalytics(inputs),
+                    staleTime: 1000 * 60 * 60 * 24,
+                    gcTime: 1000 * 60 * 60 * 24 * 3,
+                } as Parameters<typeof queryClient.prefetchQuery>[0]);
+            }
+        }
+    },
+    component: () => null,
+});

@@ -8,11 +8,14 @@ import { EntityInfo } from './EntityInfo';
 import { EntityRelationships } from './EntityRelationships';
 import { EntityViewSwitcher } from './EntityViewSwitcher';
 
+type HeaderEntity = Pick<EntityDetailsData, 'name' | 'cui' | 'entity_type' | 'address' | 'uat' | 'children' | 'parents' | 'executionLineItems' | 'is_main_creditor'> & {
+  is_uat?: boolean;
+};
+
 interface EntityHeaderProps {
-  entity?: Pick<EntityDetailsData, 'name' | 'cui' | 'entity_type' | 'address' | 'uat' | 'children' | 'parents'>;
+  entity?: HeaderEntity;
   views: EntityView[];
   activeView: string;
-  onViewChange: (viewId: string) => void;
   yearSelector?: React.ReactNode;
   className?: string;
   isLoading?: boolean;
@@ -22,7 +25,6 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
   entity,
   views,
   activeView,
-  onViewChange,
   yearSelector,
   className,
   isLoading,
@@ -54,7 +56,6 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
       <EntityViewSwitcher
         views={views}
         activeView={activeView}
-        onViewChange={onViewChange}
         className="mt-2 pt-[1px]"
       />
 

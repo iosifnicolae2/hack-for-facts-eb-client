@@ -50,7 +50,7 @@ export function useEntitySearch({ debounceMs = 500, onSelect, baseSearch }: UseE
         if (results?.[index]) {
             const selectedEntity = results[index];
             // Navigate programmatically
-            navigate({ to: "/entities/$cui", params: { cui: selectedEntity.cui }, search: { ...baseSearch }, reloadDocument: true });
+            navigate({ to: "/entities/$cui", params: { cui: selectedEntity.cui }, search: { ...baseSearch } });
             handleClearSearch();
             onSelect?.(selectedEntity);
         }

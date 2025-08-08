@@ -26,7 +26,7 @@ export function QuickEntityAccess() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.05 }}
           >
-            <Link to="/entities/$cui" params={{ cui: entity.cui }}>
+            <Link to="/entities/$cui" params={{ cui: entity.cui }} preload="intent">
               <Badge
                 variant="outline"
                 className="bg-white dark:bg-slate-800 px-4 py-2 border-1 border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition duration-200 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer"
