@@ -34,7 +34,7 @@ export const SearchToggleInput: React.FC<SearchToggleInputProps> = ({
     enableOnFormTags: ['INPUT', 'TEXTAREA', 'SELECT'],
   });
 
-  const debouncedOnChange = useDebouncedCallback(onChange, 500);
+  const debouncedOnChange = useDebouncedCallback<[string]>((value) => onChange(value), 500);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);

@@ -23,7 +23,7 @@ interface AnnotationItemProps {
 
 export function AnnotationItem({ annotation, index, isSelected, onOpenEdit, onToggleEnable, onToggleLocked, onClick, onUpdate, onDelete, onDuplicate, onCopy, onSelect, onDeselect }: AnnotationItemProps) {
 
-  const handleColorChange = useDebouncedCallback((color: string) => {
+  const handleColorChange = useDebouncedCallback<[string]>((color) => {
     onUpdate({ ...annotation, color });
   }, 500);
 

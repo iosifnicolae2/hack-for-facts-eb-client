@@ -48,9 +48,16 @@ export type AggregatedBudgetData = {
   children?: AggregatedBudgetData[];
 };
 
+export type SortOrder = {
+  by: string;
+  order: 'asc' | 'desc';
+};
+
+export type EntityFilter = Record<string, unknown>;
+
 export type GetDataParams = {
-  filters: any;
-  sort?: any;
+  filters: EntityFilter;
+  sort?: SortOrder;
   page?: number;
   pageSize?: number;
 };

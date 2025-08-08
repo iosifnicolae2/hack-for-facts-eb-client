@@ -1,7 +1,5 @@
-interface ExtraInfo {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
-}
+type Primitive = string | number | boolean | null | undefined
+type ExtraInfo = Record<string, unknown> | Primitive
 
 enum LogLevel {
   VERBOSE = 0,

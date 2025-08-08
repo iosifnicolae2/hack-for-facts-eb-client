@@ -52,16 +52,15 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
 
     const totalActiveAmount = useMemo(() => activeData.reduce((sum, d) => sum + d.value, 0), [activeData]);
 
-    // Recharts provides x, y, width, value with flexible types (string | number | undefined).
-    // We accept these as union types to satisfy TypeScript without resorting to `any`.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const renderBarLabel = (props: any) => {
-        const {
-            x = 0,
-            y = 0,
-            width = 0,
-            value = 0,
-        } = props;
+    type BarLabelProps = {
+        x?: number | string;
+        y?: number | string;
+        width?: number | string;
+        value?: number | string;
+    };
+
+    const renderBarLabel = (props: BarLabelProps) => {
+        const { x = 0, y = 0, width = 0, value = 0 } = props;
         const numericValue = Number(value);
         const percent = totalActiveAmount ? (numericValue / totalActiveAmount) * 100 : 0;
         return (

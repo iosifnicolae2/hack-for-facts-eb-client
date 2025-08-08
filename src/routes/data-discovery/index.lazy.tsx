@@ -5,7 +5,8 @@ import { DataDiscoveryLayout } from "@/components/dataDiscovery/DataDiscoveryLay
 import { useEffect, useMemo } from "react";
 import { getBudgetLineItems } from "@/lib/api/dataDiscovery";
 import { useFilterSearch } from "@/lib/hooks/useLineItemsFilter";
-import { SortOrder } from "@/schemas/interfaces";
+import type { SortOrder as APISortOrder } from "@/schemas/dataDiscovery";
+import type { SortOrder as UISortOrder } from "@/schemas/interfaces";
 
 export const Route = createLazyFileRoute("/data-discovery/")({
   component: DataDiscoveryPage,
@@ -38,7 +39,7 @@ function DataDiscoveryPage() {
     queryFn: () =>
       getBudgetLineItems({
         filters: filter,
-        sort,
+        sort: (sort as UISortOrder)?.by ? ({ by: (sort as UISortOrder).by!, order: (sort as UISortOrder).order ?? 'asc' } as APISortOrder) : undefined,
         page,
         pageSize,
       }),
@@ -96,12 +97,13 @@ function DataDiscoveryPage() {
 
   const handleSortColumn = (columnId: string) => {
     const sortBy = mapColumnIdToSortBy(columnId);
-    if (sort.by !== sortBy) {
-      setSort({ by: sortBy, order: 'asc' });
-    } else if (sort.order === 'asc') {
-      setSort({ by: sortBy, order: 'desc' });
+    const current = sort as UISortOrder;
+    if (current.by !== sortBy) {
+      setSort({ by: sortBy, order: 'asc' } as UISortOrder);
+    } else if (current.order === 'asc') {
+      setSort({ by: sortBy, order: 'desc' } as UISortOrder);
     } else {
-      setSort({ by: null, order: null });
+      setSort({ by: 'amount', order: 'asc' } as UISortOrder);
     }
   };
 
@@ -140,7 +142,7 @@ function DataDiscoveryPage() {
   );
 }
 
-const mapColumnIdToSortBy = (columnId: string): SortOrder['by'] => {
+const mapColumnIdToSortBy = (columnId: string): UISortOrder['by'] => {
   switch (columnId) {
     case "entity_name":
       return "entity_cui";
@@ -155,6 +157,6 @@ const mapColumnIdToSortBy = (columnId: string): SortOrder['by'] => {
     case "economic_name":
       return "economic_code";
     default:
-      return null;
+      return 'amount';
   }
 };

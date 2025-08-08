@@ -25,7 +25,7 @@ export function AmountRangeFilter({
         setLocalMaxValue(initialMaxValue?.toString());
     }, [initialMinValue, initialMaxValue]);
 
-    const debouncedMinValueChange = useDebouncedCallback((value: string | undefined) => {
+    const debouncedMinValueChange = useDebouncedCallback<[string | undefined]>((value) => {
         if (value === "") {
             onMinValueChange(undefined);
         } else {
@@ -33,7 +33,7 @@ export function AmountRangeFilter({
         }
     }, debounceMs);
 
-    const debouncedMaxValueChange = useDebouncedCallback((value: string | undefined) => {
+    const debouncedMaxValueChange = useDebouncedCallback<[string | undefined]>((value) => {
         if (value === "") {
             onMaxValueChange(undefined);
         } else {

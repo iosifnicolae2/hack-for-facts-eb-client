@@ -37,12 +37,28 @@ export const UatTopNBarChart: React.FC<UatTopNBarChartProps> = ({
   isCurrency = true, // Default to true as this chart is often used for amounts
 }) => {
   const processedData = React.useMemo(() => {
+    type ValueType = number | undefined
+    type NameType = string | undefined
+    const getNumber = (v: unknown): number | undefined => typeof v === 'number' ? v : undefined
+    const getString = (v: unknown): string | undefined => typeof v === 'string' ? v : undefined
+
     return data
-      .filter(item => typeof (item as any)[valueKey] === 'number' && (item as any)[nameKey])
-      .sort((a, b) => ((b as any)[valueKey] as number) - ((a as any)[valueKey] as number))
+      .map((item) => {
+        const record = item as unknown as Record<string, unknown>
+        const rawValue = record[valueKey as string]
+        const rawName = record[nameKey as string]
+        const value = getNumber(rawValue) as ValueType
+        const name = getString(rawName) as NameType
+        return value !== undefined && name ? { ...item, [valueKey]: value, [nameKey]: name } : undefined
+      })
+      .filter((x): x is (HeatmapUATDataPoint & HeatmapJudetDataPoint) => Boolean(x))
+      .sort((a, b) => {
+        const ra = a as unknown as Record<string, unknown>
+        const rb = b as unknown as Record<string, unknown>
+        return Number(rb[valueKey as string]) - Number(ra[valueKey as string])
+      })
       .slice(0, topN)
-      .map(item => ({ ...item, [valueKey]: (item as any)[valueKey] as number, [nameKey]: String((item as any)[nameKey]) }));
-  }, [data, valueKey, nameKey, topN]);
+  }, [data, valueKey, nameKey, topN])
 
   if (processedData.length === 0) {
     return <p className="text-center text-sm text-muted-foreground">Not enough data to display this chart.</p>;

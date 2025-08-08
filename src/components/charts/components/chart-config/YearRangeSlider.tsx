@@ -17,7 +17,7 @@ export const YearRangeSlider = ({ value, onChange, min, max }: YearRangeSliderPr
     setLocalValue(value);
   }, [value]);
 
-  const debouncedOnChange = useDebouncedCallback(onChange, 500);
+  const debouncedOnChange = useDebouncedCallback<[[number, number]]>((val) => onChange(val), 500);
 
   const handleValueChange = (newValue: number[]) => {
     const newRange = newValue as [number, number];

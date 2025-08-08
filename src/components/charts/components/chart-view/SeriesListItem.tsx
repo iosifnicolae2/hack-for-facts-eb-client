@@ -44,7 +44,7 @@ export function SeriesListItem({ series, isSelected, onToggle, onClick, onMoveUp
     zIndex: isDragging ? 10 : 'auto',
   };
 
-  const handleColorChange = useDebouncedCallback((color: string) => {
+  const handleColorChange = useDebouncedCallback<[string]>((color) => {
     setLocalColor(color);
     onUpdate({ config: { ...series.config, color } });
   }, 500);

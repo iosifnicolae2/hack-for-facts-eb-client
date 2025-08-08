@@ -7,17 +7,16 @@ import { useEffect, useRef, useCallback } from 'react';
  * @param delay The debounce delay in milliseconds.
  * @returns A memoized, debounced version of the callback function.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useDebouncedCallback<T extends (...args: any[]) => void>(
-    callback: T,
+export function useDebouncedCallback<TArgs extends unknown[]>(
+    callback: (...args: TArgs) => void,
     delay: number
-): (...args: Parameters<T>) => void {
+): (...args: TArgs) => void {
     // Ref to store the timeout ID
     const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     // Ref to store the latest callback function.
     // This ensures that the debounced function always calls the most recent
     // version of the callback, even if the callback prop changes.
-    const callbackRef = useRef<T>(callback);
+    const callbackRef = useRef<typeof callback>(callback);
 
     // Update the stored callback if the callback prop changes
     useEffect(() => {
@@ -35,7 +34,7 @@ export function useDebouncedCallback<T extends (...args: any[]) => void>(
     }, [delay]); // Also re-run cleanup if delay changes, to cancel previous timer with old delay
 
     // The memoized debounced function
-    const debouncedCallback = useCallback((...args: Parameters<T>) => {
+    const debouncedCallback = useCallback((...args: TArgs) => {
         // Clear any existing timeout
         if (timeoutIdRef.current) {
             clearTimeout(timeoutIdRef.current);
