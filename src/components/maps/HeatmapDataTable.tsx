@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import {
     ColumnDef,
     flexRender,
@@ -18,25 +18,22 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
+// Removed unused Select components
 import {
     ChevronUp,
     ChevronDown,
     ArrowUpDown,
     ChevronLeft,
     ChevronRight,
-    ChevronsLeft,
-    ChevronsRight,
+    MoreHorizontal,
 } from "lucide-react";
 import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
 import { formatCurrency, formatNumberRO } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
+import { getMergedColumnOrder, moveColumnOrder } from "@/lib/table-utils";
+import { useTablePreferences } from "@/hooks/useTablePreferences";
+import { Pagination } from "@/components/ui/pagination";
 
 interface HeatmapDataTableProps {
     data: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[];
@@ -59,25 +56,84 @@ export function HeatmapDataTable({
 }: HeatmapDataTableProps) {
     const isUatView = mapViewType === 'UAT';
 
+    const { density, setDensity, columnVisibility, setColumnVisibility, currencyFormat, setCurrencyFormat } = useTablePreferences('heatmap-data-table', {
+        columnVisibility: {
+            name: true,
+            county_name: isUatView,
+            population: true,
+            total_amount: true,
+            per_capita_amount: true,
+        },
+    });
+
     const columns = useMemo<ColumnDef<HeatmapUATDataPoint | HeatmapJudetDataPoint>[]>(
         () => [
             {
+                id: 'row_number',
+                header: () => <span className="text-xs text-muted-foreground pl-2">#</span>,
+                size: 30,
+                minSize: 30,
+                maxSize: 56,
+                enableResizing: true,
+                enableHiding: false,
+                cell: ({ row, table }) => {
+                    const { pageIndex, pageSize } = table.getState().pagination
+                    const start = pageIndex * pageSize
+                    return (
+                        <span className="block text-left w-full text-xs text-muted-foreground pl-2" aria-label={`Row ${start + row.index + 1}`}>
+                            {start + row.index + 1}
+                        </span>
+                    );
+                },
+            },
+            {
                 accessorKey: "name",
-                header: ({ column }) => (
-                    <div
-                        className="flex items-center gap-1 cursor-pointer"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    >
-                        Nume
-                        {column.getIsSorted() === "asc" ? (
-                            <ChevronUp className="w-4 h-4" />
-                        ) : column.getIsSorted() === "desc" ? (
-                            <ChevronDown className="w-4 h-4" />
-                        ) : (
-                            <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
-                        )}
-                    </div>
-                ),
+                header: ({ column, table }) => {
+                    const merged = getMergedColumnOrder(table, ['row_number'])
+                    const movable = merged.filter((id) => id !== 'row_number')
+                    const idx = movable.indexOf(column.id!)
+                    const disableLeft = idx <= 0 || idx === -1
+                    const disableRight = idx === -1 || idx >= movable.length - 1
+                    const move = (dir: 'left' | 'right') => {
+                        const updated = moveColumnOrder(merged, column.id!, dir, ['row_number'])
+                        table.setColumnOrder(updated)
+                    }
+                    return (
+                        <div className="flex items-center gap-1 select-none">
+                            <div
+                                className="flex items-center gap-1 cursor-pointer"
+                                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                            >
+                                Nume
+                                {column.getIsSorted() === "asc" ? (
+                                    <ChevronUp className="w-4 h-4" />
+                                ) : column.getIsSorted() === "desc" ? (
+                                    <ChevronDown className="w-4 h-4" />
+                                ) : (
+                                    <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
+                                )}
+                            </div>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" size="icon" className="h-6 w-6" aria-label={`${column.id} menu`} onClick={(e) => e.stopPropagation()}>
+                                        <MoreHorizontal className="h-4 w-4" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="start" className="w-44" onClick={(e) => e.stopPropagation()}>
+                                    <DropdownMenuLabel>Column</DropdownMenuLabel>
+                                    <DropdownMenuItem disabled={disableLeft} onSelect={() => !disableLeft && move('left')}>
+                                        <ChevronLeft className="w-3 h-3 mr-1" /> Move left
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem disabled={disableRight} onSelect={() => !disableRight && move('right')}>
+                                        <ChevronRight className="w-3 h-3 mr-1" /> Move right
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem onSelect={() => column.toggleVisibility(false)}>Hide</DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
+                    )
+                },
                 cell: ({ row }) => {
                     const original = row.original;
                     const name = 'uat_name' in original ? original.uat_name : original.county_name;
@@ -91,21 +147,52 @@ export function HeatmapDataTable({
             },
             {
                 accessorKey: "county_name",
-                header: ({ column }) => (
-                    <div
-                        className="flex items-center gap-1 cursor-pointer"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    >
-                        Județ
-                        {column.getIsSorted() === "asc" ? (
-                            <ChevronUp className="w-4 h-4" />
-                        ) : column.getIsSorted() === "desc" ? (
-                            <ChevronDown className="w-4 h-4" />
-                        ) : (
-                            <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
-                        )}
-                    </div>
-                ),
+                header: ({ column, table }) => {
+                    const merged = getMergedColumnOrder(table, ['row_number'])
+                    const movable = merged.filter((id) => id !== 'row_number')
+                    const idx = movable.indexOf(column.id!)
+                    const disableLeft = idx <= 0 || idx === -1
+                    const disableRight = idx === -1 || idx >= movable.length - 1
+                    const move = (dir: 'left' | 'right') => {
+                        const updated = moveColumnOrder(merged, column.id!, dir, ['row_number'])
+                        table.setColumnOrder(updated)
+                    }
+                    return (
+                        <div className="flex items-center gap-1 select-none">
+                            <div
+                                className="flex items-center gap-1 cursor-pointer"
+                                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                            >
+                                Județ
+                                {column.getIsSorted() === "asc" ? (
+                                    <ChevronUp className="w-4 h-4" />
+                                ) : column.getIsSorted() === "desc" ? (
+                                    <ChevronDown className="w-4 h-4" />
+                                ) : (
+                                    <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
+                                )}
+                            </div>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" size="icon" className="h-6 w-6" aria-label={`${column.id} menu`} onClick={(e) => e.stopPropagation()}>
+                                        <MoreHorizontal className="h-4 w-4" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="start" className="w-44" onClick={(e) => e.stopPropagation()}>
+                                    <DropdownMenuLabel>Column</DropdownMenuLabel>
+                                    <DropdownMenuItem disabled={disableLeft} onSelect={() => !disableLeft && move('left')}>
+                                        <ChevronLeft className="w-3 h-3 mr-1" /> Move left
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem disabled={disableRight} onSelect={() => !disableRight && move('right')}>
+                                        <ChevronRight className="w-3 h-3 mr-1" /> Move right
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem onSelect={() => column.toggleVisibility(false)}>Hide</DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
+                    )
+                },
                 cell: ({ row }) => {
                     const original = row.original;
                     return 'county_name' in original ? original.county_name : '-';
@@ -114,21 +201,52 @@ export function HeatmapDataTable({
             },
             {
                 accessorKey: "population",
-                header: ({ column }) => (
-                    <div
-                        className="flex items-center gap-1 cursor-pointer text-right w-full justify-end"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    >
-                        Populație
-                        {column.getIsSorted() === "asc" ? (
-                            <ChevronUp className="w-4 h-4" />
-                        ) : column.getIsSorted() === "desc" ? (
-                            <ChevronDown className="w-4 h-4" />
-                        ) : (
-                            <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
-                        )}
-                    </div>
-                ),
+                header: ({ column, table }) => {
+                    const merged = getMergedColumnOrder(table, ['row_number'])
+                    const movable = merged.filter((id) => id !== 'row_number')
+                    const idx = movable.indexOf(column.id!)
+                    const disableLeft = idx <= 0 || idx === -1
+                    const disableRight = idx === -1 || idx >= movable.length - 1
+                    const move = (dir: 'left' | 'right') => {
+                        const updated = moveColumnOrder(merged, column.id!, dir, ['row_number'])
+                        table.setColumnOrder(updated)
+                    }
+                    return (
+                        <div className="flex items-center gap-1 select-none justify-end w-full text-right">
+                            <div
+                                className="flex items-center gap-1 cursor-pointer"
+                                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                            >
+                                Populație
+                                {column.getIsSorted() === "asc" ? (
+                                    <ChevronUp className="w-4 h-4" />
+                                ) : column.getIsSorted() === "desc" ? (
+                                    <ChevronDown className="w-4 h-4" />
+                                ) : (
+                                    <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
+                                )}
+                            </div>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" size="icon" className="h-6 w-6" aria-label={`${column.id} menu`} onClick={(e) => e.stopPropagation()}>
+                                        <MoreHorizontal className="h-4 w-4" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="w-44" onClick={(e) => e.stopPropagation()}>
+                                    <DropdownMenuLabel>Column</DropdownMenuLabel>
+                                    <DropdownMenuItem disabled={disableLeft} onSelect={() => !disableLeft && move('left')}>
+                                        <ChevronLeft className="w-3 h-3 mr-1" /> Move left
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem disabled={disableRight} onSelect={() => !disableRight && move('right')}>
+                                        <ChevronRight className="w-3 h-3 mr-1" /> Move right
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem onSelect={() => column.toggleVisibility(false)}>Hide</DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
+                    )
+                },
                 cell: ({ row }) => {
                     const original = row.original;
                     const population = 'population' in original ? original.population : ('county_population' in original ? original.county_population : null);
@@ -137,44 +255,128 @@ export function HeatmapDataTable({
             },
             {
                 accessorKey: "total_amount",
-                header: ({ column }) => (
-                    <div
-                        className="flex items-center gap-1 cursor-pointer text-right w-full justify-end"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    >
-                        Suma Totală
-                        {column.getIsSorted() === "asc" ? (
-                            <ChevronUp className="w-4 h-4" />
-                        ) : column.getIsSorted() === "desc" ? (
-                            <ChevronDown className="w-4 h-4" />
-                        ) : (
-                            <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
-                        )}
-                    </div>
-                ),
-                cell: ({ row }) => <div className="text-right">{formatCurrency(row.getValue("total_amount"))}</div>,
+                header: ({ column, table }) => {
+                    const merged = getMergedColumnOrder(table, ['row_number'])
+                    const movable = merged.filter((id) => id !== 'row_number')
+                    const idx = movable.indexOf(column.id!)
+                    const disableLeft = idx <= 0 || idx === -1
+                    const disableRight = idx === -1 || idx >= movable.length - 1
+                    const move = (dir: 'left' | 'right') => {
+                        const updated = moveColumnOrder(merged, column.id!, dir, ['row_number'])
+                        table.setColumnOrder(updated)
+                    }
+                    return (
+                        <div className="flex items-center gap-1 select-none justify-end w-full text-right">
+                            <div
+                                className="flex items-center gap-1 cursor-pointer"
+                                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                            >
+                                Suma Totală
+                                {column.getIsSorted() === "asc" ? (
+                                    <ChevronUp className="w-4 h-4" />
+                                ) : column.getIsSorted() === "desc" ? (
+                                    <ChevronDown className="w-4 h-4" />
+                                ) : (
+                                    <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
+                                )}
+                            </div>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" size="icon" className="h-6 w-6" aria-label={`${column.id} menu`} onClick={(e) => e.stopPropagation()}>
+                                        <MoreHorizontal className="h-4 w-4" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="w-44" onClick={(e) => e.stopPropagation()}>
+                                    <DropdownMenuLabel>Column</DropdownMenuLabel>
+                                    <DropdownMenuItem disabled={disableLeft} onSelect={() => !disableLeft && move('left')}>
+                                        <ChevronLeft className="w-3 h-3 mr-1" /> Move left
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem disabled={disableRight} onSelect={() => !disableRight && move('right')}>
+                                        <ChevronRight className="w-3 h-3 mr-1" /> Move right
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem onSelect={() => column.toggleVisibility(false)}>Hide</DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
+                    )
+                },
+                cell: ({ row }) => {
+                    const value = row.getValue("total_amount") as number;
+                    if (currencyFormat === 'both') {
+                        return (
+                            <div className="text-right">
+                                <span className="block text-xs" title={formatCurrency(value, 'standard')}>{formatCurrency(value, 'standard')}</span>
+                                <span className="block text-xs text-muted-foreground">{formatCurrency(value, 'compact')}</span>
+                            </div>
+                        );
+                    }
+                    return <span className="block text-right text-xs" title={formatCurrency(value, 'standard')}>{formatCurrency(value, currencyFormat)}</span>
+                },
             },
             {
                 accessorKey: "per_capita_amount",
-                header: ({ column }) => (
-                    <div
-                        className="flex items-center gap-1 cursor-pointer text-right w-full justify-end"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    >
-                        Suma/Cap de locuitor
-                        {column.getIsSorted() === "asc" ? (
-                            <ChevronUp className="w-4 h-4" />
-                        ) : column.getIsSorted() === "desc" ? (
-                            <ChevronDown className="w-4 h-4" />
-                        ) : (
-                            <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
-                        )}
-                    </div>
-                ),
-                cell: ({ row }) => <div className="text-right">{formatCurrency(row.getValue("per_capita_amount"))}</div>,
+                header: ({ column, table }) => {
+                    const merged = getMergedColumnOrder(table, ['row_number'])
+                    const movable = merged.filter((id) => id !== 'row_number')
+                    const idx = movable.indexOf(column.id!)
+                    const disableLeft = idx <= 0 || idx === -1
+                    const disableRight = idx === -1 || idx >= movable.length - 1
+                    const move = (dir: 'left' | 'right') => {
+                        const updated = moveColumnOrder(merged, column.id!, dir, ['row_number'])
+                        table.setColumnOrder(updated)
+                    }
+                    return (
+                        <div className="flex items-center gap-1 select-none justify-end w-full text-right">
+                            <div
+                                className="flex items-center gap-1 cursor-pointer"
+                                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                            >
+                                Suma/Cap de locuitor
+                                {column.getIsSorted() === "asc" ? (
+                                    <ChevronUp className="w-4 h-4" />
+                                ) : column.getIsSorted() === "desc" ? (
+                                    <ChevronDown className="w-4 h-4" />
+                                ) : (
+                                    <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
+                                )}
+                            </div>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" size="icon" className="h-6 w-6" aria-label={`${column.id} menu`} onClick={(e) => e.stopPropagation()}>
+                                        <MoreHorizontal className="h-4 w-4" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="w-44" onClick={(e) => e.stopPropagation()}>
+                                    <DropdownMenuLabel>Column</DropdownMenuLabel>
+                                    <DropdownMenuItem disabled={disableLeft} onSelect={() => !disableLeft && move('left')}>
+                                        <ChevronLeft className="w-3 h-3 mr-1" /> Move left
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem disabled={disableRight} onSelect={() => !disableRight && move('right')}>
+                                        <ChevronRight className="w-3 h-3 mr-1" /> Move right
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem onSelect={() => column.toggleVisibility(false)}>Hide</DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
+                    )
+                },
+                cell: ({ row }) => {
+                    const value = row.getValue("per_capita_amount") as number;
+                    if (currencyFormat === 'both') {
+                        return (
+                            <div className="text-right">
+                                <span className="block text-xs" title={formatCurrency(value, 'standard')}>{formatCurrency(value, 'standard')}</span>
+                                <span className="block text-xs text-muted-foreground">{formatCurrency(value, 'compact')}</span>
+                            </div>
+                        );
+                    }
+                    return <span className="block text-right text-xs" title={formatCurrency(value, 'standard')}>{formatCurrency(value, currencyFormat)}</span>
+                },
             },
         ],
-        [isUatView]
+        [currencyFormat]
     );
 
     const table = useReactTable({
@@ -183,18 +385,23 @@ export function HeatmapDataTable({
         state: {
             sorting,
             pagination,
-            columnVisibility: {
-                county_name: isUatView,
-            }
+            columnVisibility,
         },
         onSortingChange: setSorting,
         onPaginationChange: setPagination,
+        onColumnVisibilityChange: setColumnVisibility,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         manualPagination: false,
         manualSorting: false,
     });
+
+    useEffect(() => {
+        // Keep county column visibility in sync with map view type by default
+        setColumnVisibility((v: Record<string, boolean>) => ({ ...v, county_name: isUatView }))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isUatView])
 
     if (isLoading) {
         return (
@@ -207,8 +414,34 @@ export function HeatmapDataTable({
         );
     }
 
+    const totalCount = data?.length ?? 0;
+
     return (
         <div className="flex flex-col h-full">
+            <div className="flex items-center justify-end gap-2 py-2">
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="outline" size="sm">View</Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56">
+                        <DropdownMenuLabel>Density</DropdownMenuLabel>
+                        <DropdownMenuCheckboxItem checked={density === 'comfortable'} onCheckedChange={(c) => c && setDensity('comfortable')}>Comfortable</DropdownMenuCheckboxItem>
+                        <DropdownMenuCheckboxItem checked={density === 'compact'} onCheckedChange={(c) => c && setDensity('compact')}>Compact</DropdownMenuCheckboxItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuLabel>Currency</DropdownMenuLabel>
+                        <DropdownMenuCheckboxItem checked={currencyFormat === 'standard'} onCheckedChange={(c) => c && setCurrencyFormat('standard')}>Standard</DropdownMenuCheckboxItem>
+                        <DropdownMenuCheckboxItem checked={currencyFormat === 'compact'} onCheckedChange={(c) => c && setCurrencyFormat('compact')}>Compact</DropdownMenuCheckboxItem>
+                        <DropdownMenuCheckboxItem checked={currencyFormat === 'both'} onCheckedChange={(c) => c && setCurrencyFormat('both')}>Both</DropdownMenuCheckboxItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuLabel>Columns</DropdownMenuLabel>
+                        <DropdownMenuCheckboxItem checked={columnVisibility?.name !== false} onCheckedChange={(c) => setColumnVisibility((v: Record<string, boolean>) => ({ ...v, name: Boolean(c) }))}>Name</DropdownMenuCheckboxItem>
+                        <DropdownMenuCheckboxItem checked={columnVisibility?.county_name !== false} onCheckedChange={(c) => setColumnVisibility((v: Record<string, boolean>) => ({ ...v, county_name: Boolean(c) }))}>County</DropdownMenuCheckboxItem>
+                        <DropdownMenuCheckboxItem checked={columnVisibility?.population !== false} onCheckedChange={(c) => setColumnVisibility((v: Record<string, boolean>) => ({ ...v, population: Boolean(c) }))}>Population</DropdownMenuCheckboxItem>
+                        <DropdownMenuCheckboxItem checked={columnVisibility?.total_amount !== false} onCheckedChange={(c) => setColumnVisibility((v: Record<string, boolean>) => ({ ...v, total_amount: Boolean(c) }))}>Total Amount</DropdownMenuCheckboxItem>
+                        <DropdownMenuCheckboxItem checked={columnVisibility?.per_capita_amount !== false} onCheckedChange={(c) => setColumnVisibility((v: Record<string, boolean>) => ({ ...v, per_capita_amount: Boolean(c) }))}>Per Capita</DropdownMenuCheckboxItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
             <div className="rounded-md border bg-card overflow-auto scrollbar-thin scrollbar-thumb-muted/40 scrollbar-track-transparent flex-grow">
                 <Table className="min-w-[700px] md:min-w-full text-sm md:text-base relative">
                     <TableHeader className="sticky top-0 z-10 bg-card/95 backdrop-blur border-b">
@@ -217,8 +450,7 @@ export function HeatmapDataTable({
                                 {headerGroup.headers.map((header) => (
                                     <TableHead
                                         key={header.id}
-                                        className="font-bold px-2 py-3 md:px-4 md:py-3 whitespace-nowrap text-xs md:text-sm bg-card/95 cursor-pointer"
-                                        onClick={header.column.getToggleSortingHandler()}
+                                        className={`font-bold ${density === 'compact' ? 'px-2 py-2' : 'px-2 py-3 md:px-4 md:py-3'} whitespace-nowrap text-xs md:text-sm bg-card/95`}
                                         style={{ textAlign: header.column.id === 'name' ? 'left' : 'right' }}
                                     >
                                         <div className={`flex items-center gap-1 ${header.column.id === 'name' ? '' : 'justify-end'}`}>
@@ -243,7 +475,7 @@ export function HeatmapDataTable({
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell
                                             key={cell.id}
-                                            className="px-2 py-2 md:px-4 md:py-3 max-w-[140px] md:max-w-[220px] truncate align-middle text-xs md:text-sm"
+                                            className={`${density === 'compact' ? 'px-2 py-1.5' : 'px-2 py-2 md:px-4 md:py-3'} max-w-[140px] md:max-w-[220px] truncate align-middle text-xs md:text-sm`}
                                             title={String(cell.getValue())}
                                             style={{ textAlign: cell.column.id === 'name' ? 'left' : 'right' }}
                                         >
@@ -264,73 +496,14 @@ export function HeatmapDataTable({
                     </TableBody>
                 </Table>
             </div>
-            <div className="flex flex-col md:flex-row items-center justify-between mt-auto gap-4 p-2 md:p-4 border-t bg-card">
-                <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 md:space-x-4 w-full md:w-auto text-xs md:text-sm">
-                    <span className="text-muted-foreground">
-                        Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount() > 0 ? table.getPageCount() : 1}
-                    </span>
-                    <div className="flex items-center space-x-1 md:space-x-2">
-                        <span className="text-muted-foreground">| Show</span>
-                        <Select
-                            value={table.getState().pagination.pageSize.toString()}
-                            onValueChange={(value) => table.setPageSize(parseInt(value))}
-                        >
-                            <SelectTrigger className="h-7 md:h-8 w-[60px] md:w-[70px] text-xs md:text-sm" aria-label="Select page size">
-                                <SelectValue placeholder={table.getState().pagination.pageSize.toString()} />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {[10, 15, 20, 30, 50, 100].map((size) => (
-                                    <SelectItem key={size} value={size.toString()}>{size}</SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                        <span className="text-muted-foreground">of {table.getFilteredRowModel().rows.length} entries</span>
-                    </div>
-                </div>
-
-                <div className="flex flex-wrap items-center space-x-1 md:space-x-2 w-full md:w-auto justify-center md:justify-end">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-7 w-7 md:h-8 md:w-8 p-0"
-                        onClick={() => table.setPageIndex(0)}
-                        disabled={!table.getCanPreviousPage()}
-                        aria-label="Go to first page"
-                    >
-                        <ChevronsLeft className="h-3 w-3 md:h-4 md:w-4" />
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-7 w-7 md:h-8 md:w-8 p-0"
-                        onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage()}
-                        aria-label="Previous page"
-                    >
-                        <ChevronLeft className="h-3 w-3 md:h-4 md:w-4" />
-                    </Button>
-
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-7 w-7 md:h-8 md:w-8 p-0"
-                        onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage()}
-                        aria-label="Next page"
-                    >
-                        <ChevronRight className="h-3 w-3 md:h-4 md:w-4" />
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-7 w-7 md:h-8 md:w-8 p-0"
-                        onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                        disabled={!table.getCanNextPage() || table.getPageCount() === 0}
-                        aria-label="Go to last page"
-                    >
-                        <ChevronsRight className="h-3 w-3 md:h-4 md:w-4" />
-                    </Button>
-                </div>
+            <div className="mt-auto p-2 md:p-4 border-t bg-card">
+                <Pagination
+                    currentPage={table.getState().pagination.pageIndex + 1}
+                    pageSize={table.getState().pagination.pageSize}
+                    totalCount={totalCount}
+                    onPageChange={(p) => table.setPageIndex(Math.max(0, p - 1))}
+                    onPageSizeChange={(s) => table.setPageSize(s)}
+                />
             </div>
         </div>
     );
