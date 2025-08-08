@@ -3,7 +3,7 @@ import React, { useCallback, useMemo, useRef, useEffect } from 'react';
 import { MapContainer, GeoJSON, useMap } from 'react-leaflet';
 import L, { LeafletMouseEvent, PathOptions, Layer, LatLngExpression, LatLngBoundsExpression } from 'leaflet';
 import { Feature, Geometry, GeoJsonObject } from 'geojson';
-import { createTooltipContent } from './utils';
+import { createTooltipContent, buildHeatmapDataMap, restyleAllFeatures, getStyleForFeature } from './utils';
 import { UatProperties, UatFeature } from './interfaces';
 import {
   DEFAULT_MAP_CENTER,
@@ -13,11 +13,11 @@ import {
   DEFAULT_MIN_ZOOM,
   DEFAULT_MAX_ZOOM,
   DEFAULT_MAX_BOUNDS,
-  PERMANENT_HIGHLIGHT_STYLE,
 } from './constants';
 import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { generateHash } from '@/lib/utils';
 import { MapFilters } from '@/schemas/map-filters';
+
 
 
 interface InteractiveMapProps {
@@ -54,19 +54,11 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
   filters,
 }) => {
   const geoJsonLayerRef = useRef<L.GeoJSON | null>(null);
+  const latestStyleFnRef = useRef<(feature?: Feature<Geometry, unknown>) => PathOptions>(() => DEFAULT_FEATURE_STYLE);
 
-  const heatmapDataMap = useMemo(() => {
-    const map = new Map<string | number, HeatmapUATDataPoint | HeatmapJudetDataPoint>();
-    heatmapData.forEach(item => {
-      const key = 'uat_code' in item ? item.uat_code : item.county_code;
-      map.set(key, item);
-    });
-    return map;
-  }, [heatmapData]);
+  const heatmapDataMap = useMemo(() => buildHeatmapDataMap(heatmapData), [heatmapData]);
 
-  const heatmapDataHash = useMemo(() => {
-    return generateHash(JSON.stringify(heatmapData));
-  }, [heatmapData]);
+  const heatmapDataContentHash = useMemo(() => generateHash(JSON.stringify(heatmapData)), [heatmapData]);
 
   const highlightFeature = useCallback((layer: Layer) => {
     if (layer instanceof L.Path) {
@@ -77,50 +69,48 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
 
 
   const styleFunction = useCallback(
-    (feature?: Feature<Geometry, unknown>): PathOptions => {
-      if (feature?.properties) {
-        const uatProperties = feature.properties as UatProperties;
-        const baseStyle = heatmapDataMap.size > 0 ? getFeatureStyle(feature as UatFeature, heatmapDataMap) : DEFAULT_FEATURE_STYLE;
-
-        // Check if the feature is the one to be permanently highlighted
-        if (highlightedFeatureId && (uatProperties.natcode === highlightedFeatureId || uatProperties.mnemonic === highlightedFeatureId)) {
-          return { ...baseStyle, ...PERMANENT_HIGHLIGHT_STYLE };
-        }
-
-        return baseStyle;
-      }
-      return DEFAULT_FEATURE_STYLE;
-    },
-    [getFeatureStyle, heatmapDataMap, highlightedFeatureId]
+    (feature?: Feature<Geometry, unknown>): PathOptions =>
+      getStyleForFeature(feature, { heatmapDataMap, getFeatureStyle, highlightedFeatureId }),
+    [heatmapDataMap, getFeatureStyle, highlightedFeatureId]
   );
+
+  // Keep a ref to the latest style function so event handlers always use fresh logic
+  useEffect(() => {
+    latestStyleFnRef.current = styleFunction;
+  }, [styleFunction]);
+
+  // Re-apply styles to all features when the style function logic changes (e.g., normalization toggles)
+  useEffect(() => {
+    restyleAllFeatures(geoJsonLayerRef.current, latestStyleFnRef.current);
+  }, [styleFunction]);
 
 
   const onEachFeature = useCallback(
     (feature: Feature<Geometry, unknown>, layer: Layer) => {
       if (!feature.properties) return;
 
-      const uatProperties = feature.properties as UatProperties;
+      const uatProps = feature.properties as UatProperties;
 
       // Lazy tooltip creation: create it only on mouseover for better initial performance.
       layer.on({
         mouseover: (e) => {
           highlightFeature(e.target);
           if (!layer.getTooltip()) {
-            const tooltipContent = createTooltipContent(uatProperties, heatmapData, mapViewType, filters);
-            layer.bindTooltip(tooltipContent).openTooltip();
+            const tooltipHtml = createTooltipContent(uatProps, heatmapData, mapViewType, filters);
+            layer.bindTooltip(tooltipHtml).openTooltip();
           }
         },
         mouseout: (e) => {
-          e.target.setStyle(styleFunction(feature));
+          // Use latest style function to avoid stale styling after data/normalization changes
+          const nextStyle = latestStyleFnRef.current(feature);
+          (e.target as L.Path).setStyle(nextStyle);
         },
         click: (e) => {
-          if (onFeatureClick) {
-            onFeatureClick(uatProperties, e);
-          }
+          onFeatureClick(uatProps, e);
         },
       });
     },
-    [highlightFeature, onFeatureClick, heatmapData, mapViewType, filters, styleFunction]
+    [highlightFeature, onFeatureClick, heatmapData, mapViewType, filters]
   );
 
   if (!geoJsonData) {
@@ -144,7 +134,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
       <MapUpdater center={center} zoom={zoom} />
       {geoJsonData.type === 'FeatureCollection' && (
         <GeoJSON
-          key={`geojson-layer-${mapViewType}-${heatmapDataHash}-${highlightedFeatureId}`}
+          key={`geojson-layer-${mapViewType}-${heatmapDataContentHash}-${highlightedFeatureId}`}
           ref={geoJsonLayerRef}
           data={geoJsonData}
           style={styleFunction}

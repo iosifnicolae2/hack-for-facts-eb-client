@@ -1,8 +1,11 @@
 import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
 import { UatFeature, UatProperties } from './interfaces';
 import { formatCurrency } from '@/lib/utils';
-import { DEFAULT_FEATURE_STYLE } from './constants';
+import { DEFAULT_FEATURE_STYLE, PERMANENT_HIGHLIGHT_STYLE } from './constants';
 import type { MapFilters } from '@/schemas/map-filters';
+import L, { PathOptions } from 'leaflet';
+import { Feature, Geometry } from 'geojson';
+// duplicates removed
 
 
 /**
@@ -307,4 +310,73 @@ export const createHeatmapStyleFunction = (
         return finalStyle;
     };
 };
+
+// ================= Additional utilities extracted from InteractiveMap =================
+
+/**
+ * Pure style computer – given a GeoJSON feature and inputs, returns a Leaflet style.
+ * Keeping this pure avoids stale closures and makes behavior predictable.
+ */
+export function getStyleForFeature(
+  feature: Feature<Geometry, unknown> | undefined,
+  args: {
+    heatmapDataMap: Map<string | number, HeatmapUATDataPoint | HeatmapJudetDataPoint>;
+    getFeatureStyle: (feature: UatFeature, heatmapDataMap: Map<string | number, HeatmapUATDataPoint | HeatmapJudetDataPoint>) => PathOptions;
+    highlightedFeatureId?: string | number;
+  }
+): PathOptions {
+  if (feature?.properties) {
+    const uatProperties = feature.properties as UatProperties;
+    const baseStyle = args.heatmapDataMap.size > 0
+      ? args.getFeatureStyle(feature as UatFeature, args.heatmapDataMap)
+      : DEFAULT_FEATURE_STYLE;
+
+    if (
+      args.highlightedFeatureId &&
+      (uatProperties.natcode === args.highlightedFeatureId ||
+        uatProperties.mnemonic === args.highlightedFeatureId)
+    ) {
+      return { ...baseStyle, ...PERMANENT_HIGHLIGHT_STYLE };
+    }
+
+    return baseStyle;
+  }
+  return DEFAULT_FEATURE_STYLE;
+}
+
+/**
+ * Builds a lookup map from heatmap data for O(1) access by feature key.
+ */
+export function buildHeatmapDataMap(
+  heatmapData: Array<HeatmapUATDataPoint | HeatmapJudetDataPoint>
+): Map<string | number, HeatmapUATDataPoint | HeatmapJudetDataPoint> {
+  const map = new Map<string | number, HeatmapUATDataPoint | HeatmapJudetDataPoint>();
+  for (const item of heatmapData) {
+    const key = 'uat_code' in item ? item.uat_code : item.county_code;
+    map.set(key, item);
+  }
+  return map;
+}
+
+/**
+ * Re-applies styles to all features from the current GeoJSON layer group.
+ */
+export function restyleAllFeatures(
+  layerGroup: L.GeoJSON | null,
+  styleFn: (feature?: Feature<Geometry, unknown>) => PathOptions
+) {
+  if (!layerGroup) return;
+  try {
+    layerGroup.eachLayer((layer) => {
+      const feature = (layer as unknown as { feature?: Feature<Geometry, unknown> }).feature;
+      if (!feature) return;
+      const nextStyle = styleFn(feature);
+      if (layer instanceof L.Path) {
+        layer.setStyle(nextStyle);
+      }
+    });
+  } catch {
+    // Silently ignore styling errors for resilience in production
+  }
+}
 
