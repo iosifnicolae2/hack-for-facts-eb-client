@@ -80,7 +80,7 @@ export function EntitySearchInput({
                     aria-expanded={showDropdown}
                     aria-controls={`${searchId}-listbox`}
                     aria-activedescendant={activeDescendantId}
-                    className="w-full pl-20 pr-20 py-7 text-xl md:text-xl bg-white dark:bg-slate-800 rounded-3xl placeholder:text-slate-400 shadow-sm hover:shadow-md focus:shadow-lg transition-all duration-300"
+                    className="w-full pl-20 pr-20 py-7 text-xl md:text-xl bg-white dark:bg-slate-800 rounded-3xl placeholder:text-slate-400 shadow-sm hover:shadow-md focus:shadow-lg transition-all duration-300 border-slate-300 dark:border-slate-700 focus:border-slate-400 dark:focus:border-slate-600 focus-visible:ring-slate-400 dark:focus-visible:ring-slate-600"
                 />
                 {searchTerm && (
                     <button
