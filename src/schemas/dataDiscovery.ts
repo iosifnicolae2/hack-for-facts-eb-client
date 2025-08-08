@@ -10,7 +10,7 @@ export type UATData = {
 export type EntityData = {
   cui: string;
   name: string;
-  sector_type?: string;
+  entity_type?: string;
   uat?: UATData;
   address?: string;
 };

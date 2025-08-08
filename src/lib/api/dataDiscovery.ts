@@ -38,7 +38,7 @@ const GET_ENTITIES_QUERY = `
       nodes {
         cui
         name
-        sector_type
+        entity_type
         uat {
           name
           county_code
@@ -112,7 +112,6 @@ export async function getEntities({
   pageSize = 50,
 }: GetDataParams): Promise<PaginatedResult<EntityData>> {
   logger.info("Fetching entities with filters", { filters, page, pageSize });
-
   try {
     const offset = (page - 1) * pageSize;
 
@@ -130,7 +129,7 @@ export async function getEntities({
       limit: pageSize,
       offset,
     });
-
+    
     const { nodes, pageInfo } = response.entities;
     const totalPages = Math.ceil(pageInfo.totalCount / pageSize);
 
@@ -350,7 +349,7 @@ export async function getUniqueEntityTypes(): Promise<string[]> {
       pageSize: 100, // Fetch enough entities to get a good sample of types
     });
 
-    return Array.from(new Set(result.data.map((entity) => entity.sector_type).filter(Boolean) as string[]));
+    return Array.from(new Set(result.data.map((entity) => entity.entity_type).filter(Boolean) as string[]));
   } catch (error) {
     logger.error("Error fetching entity types", { error });
     return [];

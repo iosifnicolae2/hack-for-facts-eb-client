@@ -9,7 +9,6 @@ import { FilterRangeContainer } from './base-filter/FilterRangeContainer'
 import { AmountRangeFilter } from './amount-range-filter'
 import { Calendar, ChartBar, Tags, SlidersHorizontal, MapPinned, Building2, EuroIcon, MapPin, XCircle, ArrowUpDown, Divide, Globe } from 'lucide-react'
 import { useMemo } from 'react'
-import { useQuery } from '@tanstack/react-query'
 import { useEntityAnalyticsFilter } from '@/hooks/useEntityAnalyticsFilter'
 import type { OptionItem } from './base-filter/interfaces'
 import { CountyList } from './county-filter/CountyList'
@@ -19,7 +18,6 @@ import { UatList } from './uat-filter/UatList'
 import { EntityTypeList } from './entity-type-filter/EntityTypeList'
 import { EntityList } from './entity-filter/EntityList'
 import { useEntityLabel, useUatLabel, useEconomicClassificationLabel, useFunctionalClassificationLabel, useBudgetSectorLabel, useFundingSourceLabel, useEntityTypeLabel } from '@/hooks/filters/useFilterLabels'
-import { getUniqueCounties } from '@/lib/api/dataDiscovery'
 import { Button } from '@/components/ui/button'
 import { FilterPrefixContainer, PrefixFilter } from './prefix-filter'
 import { FilterRadioContainer } from './base-filter/FilterRadioContainer'
@@ -39,16 +37,6 @@ export function EntityAnalyticsFilter() {
   const fundingSourceLabelsStore = useFundingSourceLabel(filter.funding_source_ids ?? [])
   const entityTypeLabelsStore = useEntityTypeLabel()
 
-  const { data: counties = [] } = useQuery({
-    queryKey: ['counties'],
-    queryFn: getUniqueCounties,
-    staleTime: 1000 * 60 * 60 * 24,
-  })
-  const countyLabelMap = useMemo<Record<string, string>>(
-    () => Object.fromEntries(counties.map((c) => [c.code, `${c.name} (${c.code})`] as const)),
-    [counties],
-  )
-
   // Selected options builders
   const selectedYearOptions = useMemo<OptionItem<number>[]>(() => (filter.years ?? []).map((y) => ({ id: y, label: String(y) })), [filter.years])
   const selectedUatOptions = useMemo<OptionItem<string | number>[]>(
@@ -60,8 +48,8 @@ export function EntityAnalyticsFilter() {
     [filter.entity_cuis, entityLabelsStore],
   )
   const selectedCountyOptions = useMemo<OptionItem<string>[]>(
-    () => (filter.county_codes ?? (filter.county_code ? [filter.county_code] : [])).map((c) => ({ id: c, label: countyLabelMap[c] ?? String(c) })),
-    [filter.county_codes, filter.county_code, countyLabelMap],
+    () => (filter.county_codes ?? []).map((c) => ({ id: c, label: String(c) })),
+    [filter.county_codes],
   )
   const selectedEntityTypeOptions = useMemo<OptionItem<string>[]>(
     () => (filter.entity_types ?? []).map((id) => ({ id, label: entityTypeLabelsStore.map(id) })),
