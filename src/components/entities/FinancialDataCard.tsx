@@ -155,6 +155,7 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
           </Select>
         </div>
         <SearchToggleInput
+          key={iconType}
           active={searchActive}
           initialSearchTerm={searchTerm}
           onToggle={onSearchToggle}

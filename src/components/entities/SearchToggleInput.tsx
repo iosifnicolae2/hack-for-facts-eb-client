@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X } from "lucide-react";
@@ -26,6 +26,11 @@ export const SearchToggleInput: React.FC<SearchToggleInputProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
   const inputRef = useRef<HTMLInputElement>(null);
+  
+  // Keep local state in sync when the initial value coming from props changes
+  useEffect(() => {
+    setSearchTerm(initialSearchTerm);
+  }, [initialSearchTerm]);
   // Focus search using hotkeys
   useHotkeys(focusKey, () => {
     onToggle(true);
