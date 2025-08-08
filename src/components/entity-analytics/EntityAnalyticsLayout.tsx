@@ -20,7 +20,7 @@ export function EntityAnalyticsLayout({ filters, children, title = 'Entity Analy
         {subtitle ? <p className="text-muted-foreground text-sm md:text-base">{subtitle}</p> : null}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-[320px_minmax(0,1fr)] gap-4 w-full items-start">
+      <div className="grid grid-cols-1 md:grid-cols-[360px_minmax(0,1fr)] lg:grid-cols-[400px_minmax(0,1fr)] gap-4 w-full items-start">
         <aside className="hidden md:block">
           <div className="sticky top-4 space-y-3">{filters}</div>
         </aside>

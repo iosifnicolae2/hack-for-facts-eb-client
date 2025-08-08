@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 interface EntityTypeListProps {
     selectedOptions: OptionItem[];
     toggleSelect: (option: OptionItem) => void;
+    pageSize?: number;
     className?: string;
 }
 
