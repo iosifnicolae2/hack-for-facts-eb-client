@@ -6,7 +6,7 @@ export const useChartAnimation = (delay: number = 500) => {
 
     useEffect(() => {
         const timer = setTimeout(() => setIsAnimationActive(false), delay);
-
+        console.log("useChartAnimation", delay);
         return () => clearTimeout(timer);
     }, [delay]);
 

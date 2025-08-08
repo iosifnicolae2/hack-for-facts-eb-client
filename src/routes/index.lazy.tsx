@@ -63,6 +63,13 @@ function Index() {
               image={mapPreview}
               imageAlt="Map preview"
             />
+            <PageCard
+              title="Entity Analytics"
+              description="Compare entities by aggregated values."
+              to="/entity-analytics"
+              image={chartPreview}
+              imageAlt="Entity analytics preview"
+            />
           </div>
         </div>
       </main>

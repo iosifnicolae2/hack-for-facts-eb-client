@@ -14,6 +14,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as MapImport } from './routes/map'
+import { Route as EntityAnalyticsImport } from './routes/entity-analytics'
 import { Route as EntitiesCuiImport } from './routes/entities.$cui'
 import { Route as ChartsChartIdRouteImport } from './routes/charts/$chartId/route'
 
@@ -34,6 +35,14 @@ const MapRoute = MapImport.update({
   path: '/map',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/map.lazy').then((d) => d.Route))
+
+const EntityAnalyticsRoute = EntityAnalyticsImport.update({
+  id: '/entity-analytics',
+  path: '/entity-analytics',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/entity-analytics.lazy').then((d) => d.Route),
+)
 
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
@@ -106,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/entity-analytics': {
+      id: '/entity-analytics'
+      path: '/entity-analytics'
+      fullPath: '/entity-analytics'
+      preLoaderRoute: typeof EntityAnalyticsImport
       parentRoute: typeof rootRoute
     }
     '/map': {
@@ -189,6 +205,7 @@ const ChartsChartIdRouteRouteWithChildren =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
+  '/entity-analytics': typeof EntityAnalyticsRoute
   '/map': typeof MapRoute
   '/charts/$chartId': typeof ChartsChartIdRouteRouteWithChildren
   '/entities/$cui': typeof EntitiesCuiRoute
@@ -202,6 +219,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
+  '/entity-analytics': typeof EntityAnalyticsRoute
   '/map': typeof MapRoute
   '/entities/$cui': typeof EntitiesCuiRoute
   '/anomalies/$anomalyId': typeof AnomaliesAnomalyIdLazyRoute
@@ -215,6 +233,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
+  '/entity-analytics': typeof EntityAnalyticsRoute
   '/map': typeof MapRoute
   '/charts/$chartId': typeof ChartsChartIdRouteRouteWithChildren
   '/entities/$cui': typeof EntitiesCuiRoute
@@ -230,6 +249,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/entity-analytics'
     | '/map'
     | '/charts/$chartId'
     | '/entities/$cui'
@@ -242,6 +262,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/entity-analytics'
     | '/map'
     | '/entities/$cui'
     | '/anomalies/$anomalyId'
@@ -253,6 +274,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/entity-analytics'
     | '/map'
     | '/charts/$chartId'
     | '/entities/$cui'
@@ -267,6 +289,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
+  EntityAnalyticsRoute: typeof EntityAnalyticsRoute
   MapRoute: typeof MapRoute
   ChartsChartIdRouteRoute: typeof ChartsChartIdRouteRouteWithChildren
   EntitiesCuiRoute: typeof EntitiesCuiRoute
@@ -279,6 +302,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
+  EntityAnalyticsRoute: EntityAnalyticsRoute,
   MapRoute: MapRoute,
   ChartsChartIdRouteRoute: ChartsChartIdRouteRouteWithChildren,
   EntitiesCuiRoute: EntitiesCuiRoute,
@@ -300,6 +324,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/entity-analytics",
         "/map",
         "/charts/$chartId",
         "/entities/$cui",
@@ -312,6 +337,9 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.lazy.tsx"
+    },
+    "/entity-analytics": {
+      "filePath": "entity-analytics.tsx"
     },
     "/map": {
       "filePath": "map.tsx"
