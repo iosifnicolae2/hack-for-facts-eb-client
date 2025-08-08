@@ -1,9 +1,7 @@
 import React from 'react';
 import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { UatTopNBarChart } from './UatTopNBarChart';
-import { UatCountyBarChart } from './UatCountyBarChart';
 import { UatPopulationSpendingScatterPlot } from './UatPopulationSpendingScatterPlot';
-import { UatAverageSpendingCountyChart } from './UatAverageSpendingCountyChart';
 
 interface UatDataChartsProps {
     data: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[];
@@ -41,27 +39,7 @@ export const UatDataCharts: React.FC<UatDataChartsProps> = ({ data, mapViewType 
                 />
             </div>
 
-            {isUatView && (
-                <>
-                    <div className="p-4 border rounded-lg bg-card shadow-lg">
-                        <UatCountyBarChart
-                            data={data as HeatmapUATDataPoint[]}
-                            chartTitle="Suma totală pe județ"
-                            xAxisLabel="Județ"
-                            yAxisLabel="Suma totală"
-                        />
-                    </div>
-
-                    <div className="p-4 border rounded-lg bg-card shadow-lg">
-                        <UatAverageSpendingCountyChart
-                            data={data as HeatmapUATDataPoint[]}
-                            chartTitle="Suma medie per UAT pe județ"
-                            xAxisLabel="Județ"
-                            yAxisLabel="Suma medie"
-                        />
-                    </div>
-                </>
-            )}
+            {/* Removed county-level charts per request */}
         </div>
     );
 };

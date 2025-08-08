@@ -17,7 +17,7 @@ import {
 import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { generateHash } from '@/lib/utils';
 import { MapFilters } from '@/schemas/map-filters';
-
+import { ScrollWheelZoomControl } from './ScrollWheelZoomControl';
 
 
 interface InteractiveMapProps {
@@ -126,11 +126,12 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
       minZoom={minZoom}
       maxZoom={maxZoom}
       maxBounds={maxBounds}
-      scrollWheelZoom={scrollWheelZoom}
+      scrollWheelZoom={false}
       style={{ height: mapHeight, width: '100%', backgroundColor: 'transparent' }}
       className="z-10"
       preferCanvas={true}
     >
+      {scrollWheelZoom !== false && <ScrollWheelZoomControl />}
       <MapUpdater center={center} zoom={zoom} />
       {geoJsonData.type === 'FeatureCollection' && (
         <GeoJSON
@@ -159,4 +160,4 @@ const MapUpdater: React.FC<{ center: LatLngExpression, zoom: number }> = ({ cent
     }
   }, [center, zoom, map]);
   return null;
-}
+};
