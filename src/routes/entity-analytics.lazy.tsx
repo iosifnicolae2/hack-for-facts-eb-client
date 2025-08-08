@@ -1,14 +1,13 @@
 import { useMemo, useState } from 'react'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
-import { EntityAnalyticsFilter } from '@/components/filters/EntityAnalyticsFilter'
+import { EntityAnalyticsFilter as EntityAnalyticsFilterPanel } from '@/components/filters/EntityAnalyticsFilter'
 import { useEntityAnalyticsFilter } from '@/hooks/useEntityAnalyticsFilter'
 import { fetchEntityAnalytics } from '@/lib/api/entity-analytics'
 import { EntityAnalyticsTable } from '@/components/entity-analytics/EntityAnalyticsTable'
 import { EntityAnalyticsCharts } from '@/components/entity-analytics/EntityAnalyticsCharts'
 import type { EntityAnalyticsDataPoint } from '@/schemas/entity-analytics'
 import { Button } from '@/components/ui/button'
-import { EntityAnalyticsKPIs } from '@/components/entity-analytics/EntityAnalyticsKPIs'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { EntityAnalyticsLayout } from '@/components/entity-analytics/EntityAnalyticsLayout'
 
@@ -26,8 +25,10 @@ function EntityAnalyticsPage() {
     queryKey: ['entity-analytics', filter, sortBy, sortOrder, page, pageSize],
     queryFn: () =>
       fetchEntityAnalytics({
-        filter,
-        sort: sortBy ? { by: sortBy, order: (sortOrder ?? 'desc') as 'asc' | 'desc' } : undefined,
+        filter: normalizeFilterForSort(filter, sortBy),
+        sort: sortBy
+          ? { by: mapColumnIdToSortBy(sortBy), order: (normalizeOrder(sortOrder) as 'asc' | 'desc') }
+          : undefined,
         limit: pageSize,
         offset,
       }),
@@ -45,8 +46,8 @@ function EntityAnalyticsPage() {
       const all: EntityAnalyticsDataPoint[] = []
       for (let i = 0; i < pages; i++) {
         const batch = await fetchEntityAnalytics({
-          filter,
-          sort: sortBy ? { by: sortBy, order: (sortOrder ?? 'desc') as 'asc' | 'desc' } : undefined,
+          filter: normalizeFilterForSort(filter, sortBy),
+          sort: sortBy ? { by: mapColumnIdToSortBy(sortBy), order: (normalizeOrder(sortOrder) as 'asc' | 'desc') } : undefined,
           limit: pageSizeBatch,
           offset: i * pageSizeBatch,
         })
@@ -90,7 +91,7 @@ function EntityAnalyticsPage() {
   return (
     <div className="container mx-auto py-4 px-2 md:px-6 max-w-full">
       <EntityAnalyticsLayout
-        filters={<EntityAnalyticsFilter />}
+        filters={<EntityAnalyticsFilterPanel />}
         subtitle="Analyze aggregated values per entity and explore top entities."
       >
       {error ? (
@@ -102,27 +103,22 @@ function EntityAnalyticsPage() {
         </div>
       ) : view === 'table' ? (
         <div className="space-y-4">
-          <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-3">
-            <div className="flex-1 min-w-0">
-              <EntityAnalyticsKPIs data={nodes} />
+          <div className="flex items-center justify-end gap-2">
+            <Button variant="ghost" size="sm" onClick={() => resetFilter()}>Clear filters</Button>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">Rows per page</span>
+              <Select value={String(pageSize)} onValueChange={(v) => setPagination(1, Number(v))}>
+                <SelectTrigger className="h-8 w-[90px]"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {[25, 50, 100].map((s) => (
+                    <SelectItem key={s} value={String(s)}>
+                      {s}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-            <div className="flex items-center gap-2 self-end md:self-auto">
-              <Button variant="ghost" size="sm" onClick={() => resetFilter()}>Clear filters</Button>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">Rows per page</span>
-                <Select value={String(pageSize)} onValueChange={(v) => setPagination(1, Number(v))}>
-                  <SelectTrigger className="h-8 w-[90px]"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {[25, 50, 100].map((s) => (
-                      <SelectItem key={s} value={String(s)}>
-                        {s}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <Button variant="outline" size="sm" disabled={exporting || (data?.pageInfo?.totalCount ?? 0) === 0} onClick={handleExportCsv}>{exporting ? 'Exporting…' : 'Export CSV'}</Button>
-            </div>
+            <Button variant="outline" size="sm" disabled={exporting || (data?.pageInfo?.totalCount ?? 0) === 0} onClick={handleExportCsv}>{exporting ? 'Exporting…' : 'Export CSV'}</Button>
           </div>
           <EntityAnalyticsTable
             data={nodes}
@@ -158,6 +154,42 @@ function EntityAnalyticsPage() {
       </EntityAnalyticsLayout>
     </div>
   )
+}
+
+function mapColumnIdToSortBy(columnId: string): string {
+  switch (columnId) {
+    case 'entity_name':
+      return 'entity_name'
+    case 'entity_type':
+      return 'entity_type'
+    case 'county_name':
+      return 'county_code'
+    case 'population':
+      return 'population'
+    case 'amount':
+      return 'amount'
+    case 'total_amount':
+      return 'total_amount'
+    case 'per_capita_amount':
+      return 'per_capita_amount'
+    default:
+      return columnId
+  }
+}
+
+function normalizeOrder(order?: string): 'asc' | 'desc' {
+  if (!order) return 'desc'
+  return order.toLowerCase() === 'asc' ? 'asc' : 'desc'
+}
+
+import type { EntityAnalyticsFilter as EntityAnalyticsFilterType } from '@/schemas/entity-analytics'
+
+function normalizeFilterForSort(filter: EntityAnalyticsFilterType, sortBy?: string) {
+  // Ensure the server interprets `amount` according to normalization:
+  // - if sorting explicitly by `amount`, we let the API map it based on normalization
+  // - otherwise pass filter as-is
+  if (!sortBy) return filter
+  return filter
 }
 
 

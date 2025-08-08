@@ -8,7 +8,7 @@ import { FunctionalClassificationList } from './functional-classification-filter
 import { EconomicClassificationList } from './economic-classification-filter'
 import { FilterRangeContainer } from './base-filter/FilterRangeContainer'
 import { AmountRangeFilter } from './amount-range-filter'
-import { Calendar, ChartBar, Tags, SlidersHorizontal, MapPinned, Building2, EuroIcon, MapPin, XCircle, ArrowUpDown, Divide } from 'lucide-react'
+import { Calendar, ChartBar, Tags, SlidersHorizontal, MapPinned, Building2, EuroIcon, MapPin, XCircle, ArrowUpDown, Divide, Globe } from 'lucide-react'
 import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useEntityAnalyticsFilter } from '@/hooks/useEntityAnalyticsFilter'
@@ -23,6 +23,10 @@ import { useEntityLabel, useUatLabel, useEconomicClassificationLabel, useFunctio
 import { getUniqueCounties } from '@/lib/api/dataDiscovery'
 import { Button } from '@/components/ui/button'
 import { FilterPrefixContainer, PrefixFilter } from './prefix-filter'
+import { FilterRadioContainer } from './base-filter/FilterRadioContainer'
+import { FilterContainer } from './base-filter/FilterContainer'
+import { ReportTypeFilter } from './report-type-filter'
+import { IsUatFilter } from './flags-filter'
 
 export function EntityAnalyticsFilter() {
   const { filter, setFilter, view, setView, resetFilter } = useEntityAnalyticsFilter()
@@ -147,6 +151,10 @@ export function EntityAnalyticsFilter() {
   const updateNormalization = (normalization: 'total' | 'per_capita') => setFilter({ normalization })
   const updateMinAmount = (minAmount: string | undefined) => setFilter({ min_amount: minAmount ? Number(minAmount) : undefined })
   const updateMaxAmount = (maxAmount: string | undefined) => setFilter({ max_amount: maxAmount ? Number(maxAmount) : undefined })
+  const updateMinPopulation = (min: string | undefined) => setFilter({ min_population: min ? Number(min) : undefined })
+  const updateMaxPopulation = (max: string | undefined) => setFilter({ max_population: max ? Number(max) : undefined })
+  const setReportType = (value: string | undefined) => setFilter({ report_type: value })
+  const setIsUat = (value: boolean | undefined) => setFilter({ is_uat: value })
 
   // Count selected filters similar to LineItemsFilter
   const totalSelectedFilters =
@@ -162,7 +170,13 @@ export function EntityAnalyticsFilter() {
       selectedFundingSourceOptions,
     ].reduce((count, options) => count + options.length, 0) +
     (filter.min_amount !== undefined ? 1 : 0) +
-    (filter.max_amount !== undefined ? 1 : 0)
+    (filter.max_amount !== undefined ? 1 : 0) +
+    (filter.min_population !== undefined ? 1 : 0) +
+    (filter.max_population !== undefined ? 1 : 0) +
+    (filter.report_type ? 1 : 0) +
+    (filter.is_uat !== undefined ? 1 : 0) +
+    (filter.functional_prefixes?.length ?? 0) +
+    (filter.economic_prefixes?.length ?? 0)
 
   return (
     <Card className="flex flex-col w-full min-h-full overflow-y-auto shadow-lg">
@@ -290,6 +304,25 @@ export function EntityAnalyticsFilter() {
           setSelected={updateFundingSourceOptions}
         />
 
+        <FilterRadioContainer
+          title="Report Type"
+          icon={<ArrowUpDown className="w-4 h-4" />}
+          selectedOption={filter.report_type ? { id: filter.report_type, label: filter.report_type } : null}
+          onClear={() => setReportType(undefined)}
+        >
+          <ReportTypeFilter reportType={filter.report_type} setReportType={setReportType} />
+        </FilterRadioContainer>
+
+        <FilterContainer
+          title="Is UAT"
+          icon={<ArrowUpDown className="w-4 h-4" />}
+          selectedOptions={filter.is_uat === undefined ? [] : [{ id: 'isUat', label: filter.is_uat ? 'UAT: Da' : 'UAT: Nu' }]}
+          onClearOption={() => setIsUat(undefined)}
+          onClearAll={() => setIsUat(undefined)}
+        >
+          <IsUatFilter isUat={filter.is_uat} setIsUat={setIsUat} />
+        </FilterContainer>
+
         <FilterRangeContainer
           title="Amount Range"
           icon={<SlidersHorizontal className="w-4 h-4" />}
@@ -299,6 +332,18 @@ export function EntityAnalyticsFilter() {
           onMinValueChange={updateMinAmount}
           maxValue={filter.max_amount}
           onMaxValueChange={updateMaxAmount}
+        />
+
+        <FilterRangeContainer
+          title="Population Range"
+          icon={<Globe className="w-4 h-4" />}
+          unit="people"
+          rangeComponent={AmountRangeFilter}
+          minValue={filter.min_population}
+          onMinValueChange={updateMinPopulation}
+          maxValue={filter.max_population}
+          onMaxValueChange={updateMaxPopulation}
+          maxValueAllowed={100_000_000}
         />
       </CardContent>
     </Card>

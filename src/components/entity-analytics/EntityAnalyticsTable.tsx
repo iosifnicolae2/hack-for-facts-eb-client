@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+//
 import {
   ColumnDef,
   flexRender,
@@ -18,11 +18,11 @@ interface Props {
   sortBy?: string
   sortOrder?: 'asc' | 'desc'
   onSortChange: (by: string, order: 'asc' | 'desc') => void
+  normalization?: 'total' | 'per_capita'
 }
 
 export function EntityAnalyticsTable({ data, isLoading, sortBy, sortOrder, onSortChange }: Props) {
-  const columns = useMemo<ColumnDef<EntityAnalyticsDataPoint>[]>(
-    () => [
+  const columns: ColumnDef<EntityAnalyticsDataPoint>[] = [
       {
         id: 'entity_name',
         header: ({ column }) => (
@@ -58,16 +58,6 @@ export function EntityAnalyticsTable({ data, isLoading, sortBy, sortOrder, onSor
         cell: ({ row }) => (row.original.population != null ? formatNumberRO(row.original.population) : '-'),
       },
       {
-        id: 'total_amount',
-        header: ({ column }) => (
-          <div className="flex items-center gap-1 cursor-pointer" onClick={() => toggle(column.id)}>
-            Total Amount
-            {renderSortIcon(column.id)}
-          </div>
-        ),
-        cell: ({ row }) => formatCurrency(row.original.total_amount),
-      },
-      {
         id: 'per_capita_amount',
         header: ({ column }) => (
           <div className="flex items-center gap-1 cursor-pointer" onClick={() => toggle(column.id)}>
@@ -75,16 +65,36 @@ export function EntityAnalyticsTable({ data, isLoading, sortBy, sortOrder, onSor
             {renderSortIcon(column.id)}
           </div>
         ),
-        cell: ({ row }) => formatCurrency(row.original.per_capita_amount),
+        cell: ({ row }) => (
+          row.original.population != null ? (
+            <span title={formatCurrency(row.original.per_capita_amount, 'standard')}>
+              {formatCurrency(row.original.per_capita_amount, 'compact')}
+            </span>
+          ) : '-'
+        ),
       },
-    ],
-    [sortBy, sortOrder],
-  )
+      {
+        id: 'total_amount',
+        header: ({ column }) => (
+          <div className="flex items-center gap-1 cursor-pointer" onClick={() => toggle(column.id)}>
+            Total Amount
+            {renderSortIcon(column.id)}
+          </div>
+        ),
+        cell: ({ row }) => (
+          <span title={formatCurrency(row.original.total_amount, 'standard')}>
+            {formatCurrency(row.original.total_amount, 'compact')}
+          </span>
+        ),
+      },
+  ]
 
   const toggle = (id: string) => {
-    if (sortBy !== id) onSortChange(id, 'asc')
-    else if (sortOrder === 'asc') onSortChange(id, 'desc')
-    else onSortChange('total_amount', 'desc')
+    if (sortBy !== id) {
+      onSortChange(id, 'asc')
+      return
+    }
+    onSortChange(id, sortOrder === 'asc' ? 'desc' : 'asc')
   }
 
   const renderSortIcon = (id: string) => {

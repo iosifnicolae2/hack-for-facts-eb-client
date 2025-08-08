@@ -59,13 +59,16 @@ export const entityAnalyticsFilterSchema = z.object({
   min_amount: z.number().optional(),
   max_amount: z.number().optional(),
   normalization: normalizationEnum.optional(),
+  // Population constraints
+  min_population: z.number().optional(),
+  max_population: z.number().optional(),
 })
 
 export type EntityAnalyticsFilter = z.infer<typeof entityAnalyticsFilterSchema>
 
 export type SortOrder = {
   by: string
-  order: 'asc' | 'desc'
+  order: 'asc' | 'desc' | 'ASC' | 'DESC'
 }
 
 

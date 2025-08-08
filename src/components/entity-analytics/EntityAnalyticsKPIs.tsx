@@ -10,8 +10,8 @@ export function EntityAnalyticsKPIs({ data }: Props) {
   const totalEntities = data.length
   const totalAmount = data.reduce((acc, d) => acc + (d.total_amount ?? 0), 0)
   const avgPerCapita = (() => {
-    const valid = data.filter((d) => d.per_capita_amount != null)
-    if (valid.length === 0) return 0
+    const valid = data.filter((d) => d.per_capita_amount != null && d.population != null)
+    if (valid.length === 0) return null
     return valid.reduce((acc, d) => acc + (d.per_capita_amount ?? 0), 0) / valid.length
   })()
 
@@ -32,7 +32,7 @@ export function EntityAnalyticsKPIs({ data }: Props) {
       <Card>
         <CardContent className="p-4">
           <div className="text-sm text-muted-foreground">Avg per-capita</div>
-          <div className="text-2xl font-semibold">{formatCurrency(avgPerCapita)}</div>
+          <div className="text-2xl font-semibold">{avgPerCapita == null ? '-' : formatCurrency(avgPerCapita)}</div>
         </CardContent>
       </Card>
     </div>
