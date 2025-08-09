@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { GitGraph } from "lucide-react";
+import { SquareSquare } from "lucide-react";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 import { Link } from "@tanstack/react-router";
 
@@ -14,7 +14,7 @@ const Logo: FC = () => {
             asChild
           >
             <Link to="/" className="flex w-full items-center gap-2">
-              <GitGraph className="h-6 w-6 text-black dark:text-white" />
+              <SquareSquare className="h-6 w-6 text-black dark:text-white" />
               <span
                 className="font-semibold text-lg whitespace-nowrap transition-opacity duration-200 group-data-[collapsible=icon]:opacity-0"
               >
