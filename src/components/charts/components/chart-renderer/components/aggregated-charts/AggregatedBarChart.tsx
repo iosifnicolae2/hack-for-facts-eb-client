@@ -22,6 +22,13 @@ export function AggregatedBarChart({ chart, aggregatedData, unitMap, height }: C
     }
 
 
+    // Limit very long left-side labels so they don't stretch the chart when many series are present
+    const truncateLabel = (value: unknown, maxLength: number = 28): string => {
+        const text = String(value ?? '');
+        if (text.length <= maxLength) return text;
+        return `${text.slice(0, Math.max(0, maxLength - 1)).trimEnd()}…`;
+    };
+
     return (
         <ResponsiveContainer width="100%" height={height}>
             <BarChart data={aggregatedData} layout="vertical" margin={{ top: 50, right: 40, left: 40, bottom: 20 }}>
@@ -33,8 +40,9 @@ export function AggregatedBarChart({ chart, aggregatedData, unitMap, height }: C
                 <YAxis
                     dataKey="series.label"
                     type="category"
-                    width={100}
+                    width={120}
                     interval={0}
+                    tickFormatter={(value) => truncateLabel(value, aggregatedData.length > 5 ? 14 : 100)}
                 />
                 {chart.config.showTooltip && (
                     <Tooltip
