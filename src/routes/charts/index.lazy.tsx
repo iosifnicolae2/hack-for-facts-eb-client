@@ -196,7 +196,7 @@ function ChartsListPage() {
 
   return (
     <div className="container mx-auto py-8 space-y-6">
-      <div className="rounded-xl border bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-6 md:p-8">
+      <div className="rounded-xl border bg-gradient-to-br from-primary/5 via-white to-secondary/5 p-6 md:p-8 shadow-md">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="space-y-2">
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight flex items-center gap-3">
@@ -273,8 +273,8 @@ function ChartsListPage() {
         >
           <div className="max-w-full overflow-x-auto hide-scrollbar">
             <TabsList className="inline-flex items-center gap-1 whitespace-nowrap h-8 bg-muted/30 p-1 rounded-md min-w-max">
-              <TabsTrigger className="h-7 px-2 text-xs" value="all">All</TabsTrigger>
-              <TabsTrigger className="h-7 px-2 text-xs" value="favorites" disabled={favoritesCount === 0}>
+              <TabsTrigger className={cn("h-7 px-2 text-xs", activeTab === "all" && "bg-white border-slate-200 shadow-md data-[state=active]:bg-white data-[state=active]:border-slate-200 data-[state=active]:shadow-md")} value="all">All</TabsTrigger>
+              <TabsTrigger className={cn("h-7 px-2 text-xs", activeTab === "favorites" && "bg-white border-slate-200 shadow-md data-[state=active]:bg-white data-[state=active]:border-slate-200 data-[state=active]:shadow-md")} value="favorites" disabled={favoritesCount === 0}>
                 Favorites
               </TabsTrigger>
               {categories.map((cat) => (
@@ -424,8 +424,8 @@ type CategoryTabProps = {
 
 function CategoryTab({ category, selected, onRename, onDelete, onSelect }: CategoryTabProps) {
   return (
-    <div className={cn("inline-flex items-center border-1 rounded-md", selected && "bg-white border-slate-200 shadow-md")}>
-      <TabsTrigger value={`category:${category.id}`} className="flex items-center gap-1 h-7 px-2 text-xs" onClick={onSelect}>
+    <div className={cn("inline-flex items-center border-1 rounded-md", selected && "bg-white border-slate-200 shadow-md data-[state=active]:bg-white data-[state=active]:border-slate-200 data-[state=active]:shadow-md")}>
+      <TabsTrigger value={`category:${category.id}`} className="flex items-center gap-1 h-7 px-2 text-xs data-[state=active]:bg-white data-[state=active]:border-none data-[state=active]:shadow-none" onClick={onSelect}>
         <Tag className="h-3.5 w-3.5" />
         {category.name}
       </TabsTrigger>

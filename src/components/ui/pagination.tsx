@@ -51,7 +51,7 @@ export function Pagination({
   const canNext = safeCurrent < totalPages && !isLoading;
 
   return (
-    <div className={cn("flex flex-col items-center justify-between gap-4 rounded-lg border border-border bg-background p-3 shadow-sm md:flex-row md:gap-6 md:p-4", className)}>
+    <div className={cn("flex flex-col items-center justify-between gap-4 rounded-lg border border-border bg-white p-3 shadow-sm md:flex-row md:gap-6 md:p-4", className)}>
       {/* Left: entries info + page size */}
       <div className="flex w-full flex-col items-center gap-2 text-sm text-muted-foreground sm:flex-row sm:gap-4 md:w-auto">
         <span aria-live="polite">

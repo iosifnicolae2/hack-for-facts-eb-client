@@ -134,12 +134,12 @@ export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapF
           </div>
           <div className="flex flex-wrap items-center gap-4">
             <ToggleGroup type="single" size="sm" value={mapFilters.account_categories[0]} onValueChange={(value: 'vn' | 'ch') => { if (value) updateMapFilters({ account_categories: [value] }) }}>
-              <ToggleGroupItem value="ch">Cheltuieli</ToggleGroupItem>
-              <ToggleGroupItem value="vn">Venituri</ToggleGroupItem>
+              <ToggleGroupItem value="ch" className='px-4' >Cheltuieli</ToggleGroupItem>
+              <ToggleGroupItem value="vn" className='px-4'>Venituri</ToggleGroupItem>
             </ToggleGroup>
             <ToggleGroup type="single" size="sm" value={mapFilters.normalization} onValueChange={(value: 'per_capita' | 'total') => { if (value) updateMapFilters({ normalization: value }) }}>
-              <ToggleGroupItem value="per_capita">Per Capita</ToggleGroupItem>
-              <ToggleGroupItem value="total">Total</ToggleGroupItem>
+              <ToggleGroupItem value="per_capita" className='px-4'>Per Capita</ToggleGroupItem>
+              <ToggleGroupItem value="total" className='px-4'>Total</ToggleGroupItem>
             </ToggleGroup>
             <Button onClick={handleOpenMap} variant="outline" size="sm">
               <Maximize className="mr-2 h-4 w-4" />
