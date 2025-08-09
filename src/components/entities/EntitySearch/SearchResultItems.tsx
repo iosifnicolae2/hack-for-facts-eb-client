@@ -3,24 +3,25 @@ import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { EntitySearchNode } from "@/schemas/entities";
 import { ExternalLink, MapPin } from "lucide-react";
-import { EntitySearchSchema } from "@/routes/entities.$cui";
 
 interface SearchResultItemProps {
     entity: EntitySearchNode;
     isActive: boolean;
-    baseSearch?: EntitySearchSchema;
     id: string;
     onClick: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 export const SearchResultItem = forwardRef<HTMLAnchorElement, SearchResultItemProps>(
-    ({ entity, isActive, baseSearch, id, onClick }, ref) => (
+    ({ entity, isActive, id, onClick }, ref) => (
         <li role="option" id={id} aria-selected={isActive}>
             <Link
                 ref={ref}
                 to="/entities/$cui"
                 params={{ cui: entity.cui }}
-                search={baseSearch}
+                search={(prev) => {
+                    console.log('prev', prev)
+                    return { ...prev };
+                }}
                 onClick={onClick}
                 className={cn(
                     "block w-full px-6 py-4 transition-colors group focus:outline-none",

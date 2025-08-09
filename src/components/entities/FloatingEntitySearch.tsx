@@ -4,16 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogOverlay, DialogTitle } from '@/components/ui/dialog';
 import { EntitySearchInput } from './EntitySearch';
 import { cn } from '@/lib/utils';
-import { EntitySearchSchema } from '@/routes/entities.$cui';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 interface FloatingEntitySearchProps {
-    baseSearch?: EntitySearchSchema;
     className?: string;
 }
 
-export function FloatingEntitySearch({ baseSearch, className }: FloatingEntitySearchProps) {
+export function FloatingEntitySearch({ className }: FloatingEntitySearchProps) {
     const [isOpen, setIsOpen] = useState(false);
     const isMobile = useIsMobile();
 
@@ -38,9 +36,9 @@ export function FloatingEntitySearch({ baseSearch, className }: FloatingEntitySe
             <div className={cn(className)}>
                 <Button
                     onClick={() => setIsOpen(true)}
-                    className={cn(isMobile ? "fixed bottom-24 right-6 h-14 w-14 rounded-full shadow-lg z-40" : "fixed bottom-8 right-8 h-16 w-16 rounded-full shadow-lg z-40")}
+                    className={cn(isMobile ? "fixed bottom-24 right-6 h-14 w-14 rounded-full shadow-lg z-40" : "fixed top-8 right-8 h-8 w-8 rounded-full shadow-lg z-40 border-1 border-slate-200 dark:border-slate-700")}
                     aria-label="Search for another entity"
-                    variant="default"
+                    variant="ghost"
                     size="icon"
                 >
                     <Search className="h-8 w-8" />
@@ -52,7 +50,6 @@ export function FloatingEntitySearch({ baseSearch, className }: FloatingEntitySe
                 <DialogTitle className="sr-only">Search for another entity</DialogTitle>
                 <DialogContent hideCloseButton={true} className="fixed top-1/3 max-w-3xl w-full p-0 bg-transparent border-0 shadow-none outline-none focus:outline-none">
                     <EntitySearchInput
-                        baseSearch={baseSearch}
                         onSelect={handleSelect}
                     />
                 </DialogContent>

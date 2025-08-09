@@ -5,7 +5,6 @@ import { EntityHeader } from '@/components/entities/EntityHeader'
 import { EntityReports } from '@/components/entities/EntityReports'
 import { useState, useMemo, useRef } from 'react'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
-import { FloatingEntitySearch } from '@/components/entities/FloatingEntitySearch'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { useEntityViews } from '@/hooks/useEntityViews'
 import { useRecentEntities } from '@/hooks/useRecentEntities'
@@ -202,7 +201,6 @@ function EntityDetailsPage() {
 
         {renderContent()}
       </div>
-      <FloatingEntitySearch baseSearch={search} />
     </div>
   )
 }

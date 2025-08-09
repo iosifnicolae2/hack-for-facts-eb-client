@@ -2,7 +2,6 @@ import { useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Search, X, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { EntitySearchSchema } from "@/routes/entities.$cui";
 import { useEntitySearch } from "./useEntitySearch";
 import { SearchResultItem } from "./SearchResultItems";
 import { EntitySearchNode } from "@/schemas/entities";
@@ -11,7 +10,6 @@ import { useHotkeys } from "react-hotkeys-hook";
 interface EntitySearchInputProps {
     className?: string;
     placeholder?: string;
-    baseSearch?: EntitySearchSchema;
     onSelect?: (entity: EntitySearchNode) => void;
     autoFocus?: boolean;
 }
@@ -19,7 +17,6 @@ interface EntitySearchInputProps {
 export function EntitySearchInput({
     className,
     placeholder = "Search entities by name or CUI...",
-    baseSearch,
     onSelect,
     autoFocus,
 }: EntitySearchInputProps) {
@@ -38,7 +35,7 @@ export function EntitySearchInput({
         handleKeyDown,
         debouncedSearchTerm,
         id: searchId,
-    } = useEntitySearch({ onSelect, baseSearch });
+    } = useEntitySearch({ onSelect });
 
     const containerRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -116,7 +113,6 @@ export function EntitySearchInput({
                                     id={`${searchId}-result-${index}`}
                                     entity={entity}
                                     isActive={activeIndex === index}
-                                    baseSearch={baseSearch}
                                     onClick={(e) => {
                                         e.preventDefault()
                                         handleSelection(index)

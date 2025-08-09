@@ -4,15 +4,13 @@ import { useNavigate } from "@tanstack/react-router";
 import { useDebouncedValue } from "@/lib/hooks/useDebouncedValue";
 import { searchEntities } from "@/lib/api/entities";
 import { EntitySearchNode } from "@/schemas/entities";
-import { EntitySearchSchema } from "@/routes/entities.$cui";
 
 interface UseEntitySearchProps {
     debounceMs?: number;
     onSelect?: (entity: EntitySearchNode) => void;
-    baseSearch?: EntitySearchSchema;
 }
 
-export function useEntitySearch({ debounceMs = 500, onSelect, baseSearch }: UseEntitySearchProps = {}) {
+export function useEntitySearch({ debounceMs = 500, onSelect }: UseEntitySearchProps = {}) {
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState("");
     const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -50,11 +48,11 @@ export function useEntitySearch({ debounceMs = 500, onSelect, baseSearch }: UseE
         if (results?.[index]) {
             const selectedEntity = results[index];
             // Navigate programmatically
-            navigate({ to: "/entities/$cui", params: { cui: selectedEntity.cui }, search: { ...baseSearch } });
+            navigate({ to: "/entities/$cui", params: { cui: selectedEntity.cui }, search: (prev) => ({ ...prev }) });
             handleClearSearch();
             onSelect?.(selectedEntity);
         }
-    }, [results, navigate, handleClearSearch, onSelect, baseSearch]);
+    }, [results, navigate, handleClearSearch, onSelect]);
 
     const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
         if (!isDropdownOpen || results.length === 0) return;
