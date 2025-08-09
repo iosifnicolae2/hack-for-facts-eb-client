@@ -1,9 +1,10 @@
 import { FC } from "react";
 import { SquareSquare } from "lucide-react";
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "../ui/sidebar";
 import { Link } from "@tanstack/react-router";
 
 const Logo: FC = () => {
+  const { setOpenMobile } = useSidebar();
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -11,6 +12,7 @@ const Logo: FC = () => {
           <SidebarMenuButton
             size={"default"}
             className="h-8 w-full overflow-hidden"
+            onClick={() => setOpenMobile(false)}
             asChild
           >
             <Link to="/" className="flex w-full items-center gap-2">
