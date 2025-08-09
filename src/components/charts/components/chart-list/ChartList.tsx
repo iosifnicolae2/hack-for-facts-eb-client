@@ -1,13 +1,16 @@
-import { StoredChart } from "@/components/charts/chartsStore";
+import { ChartCategory, StoredChart } from "@/components/charts/chartsStore";
 import { ChartCard } from "./ChartCard";
 
 interface ChartListProps {
     charts: StoredChart[];
     onDelete: (chartId: string) => void;
     onToggleFavorite: (chartId: string) => void;
+    categories?: readonly ChartCategory[];
+    onToggleCategory?: (chartId: string, categoryId: string) => void;
+    onOpenCategory?: (categoryId: string) => void;
 }
 
-export function ChartList({ charts, onDelete, onToggleFavorite }: ChartListProps) {
+export function ChartList({ charts, onDelete, onToggleFavorite, categories = [], onToggleCategory, onOpenCategory }: ChartListProps) {
 
     return (
         <div className="w-full">
@@ -18,6 +21,9 @@ export function ChartList({ charts, onDelete, onToggleFavorite }: ChartListProps
                         chart={chart}
                         onDelete={onDelete}
                         onToggleFavorite={onToggleFavorite}
+                        categories={categories}
+                        onToggleCategory={onToggleCategory}
+                        onOpenCategory={onOpenCategory}
                     />
                 ))}
             </div>

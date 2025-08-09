@@ -26,6 +26,7 @@ interface ChartDisplayAreaProps {
   onXAxisClick?: (value: number | string) => void;
   isPreview?: boolean;
   xAxisMarker?: number;
+  height?: number;
 }
 
 
@@ -47,6 +48,7 @@ export const ChartDisplayArea = React.memo(
     onAnnotationPositionChange,
     onXAxisClick,
     isPreview = false,
+    height,
   }: ChartDisplayAreaProps) => {
     const content = (() => {
       if (chart.series.length === 0) return <NoDataSeries onAddSeries={onAddSeries} chart={chart} />;
@@ -65,6 +67,7 @@ export const ChartDisplayArea = React.memo(
           onAnnotationPositionChange={onAnnotationPositionChange}
           onXAxisClick={onXAxisClick}
           xAxisMarker={xAxisMarker}
+          height={height}
         />
       );
     })();
@@ -146,7 +149,8 @@ const ChartContent = React.memo(
     isPreview,
     onAnnotationPositionChange,
     onXAxisClick,
-    xAxisMarker
+    xAxisMarker,
+    height
   }: Omit<ChartDisplayAreaProps, "isLoading" | "error" | "onAddSeries">) => {
     // useMemo ensures this string is only re-calculated when the chart object changes.
     const aggregatedSubtitle = React.useMemo(
@@ -172,6 +176,7 @@ const ChartContent = React.memo(
           onAnnotationPositionChange={onAnnotationPositionChange}
           xAxisMarker={xAxisMarker}
           onXAxisClick={onXAxisClick}
+          height={height}
         />
         {!isPreview && chart.description && (
           <p className="px-4 text-center text-sm text-muted-foreground">{chart.description}</p>

@@ -10,10 +10,11 @@ import { cn } from "@/lib/utils";
 interface ChartPreviewProps {
     chart: Chart;
     className?: string;
+    height?: number;
     onClick?: () => void;
 }
 
-export function ChartPreview({ chart, className, onClick }: ChartPreviewProps) {
+export function ChartPreview({ chart, className, height, onClick }: ChartPreviewProps) {
     const { ref, inView } = useInView({
         triggerOnce: true,
         threshold: 0.1,
@@ -39,20 +40,20 @@ export function ChartPreview({ chart, className, onClick }: ChartPreviewProps) {
     });
 
 
-  const data = useMemo(() => {
-    if (!dataSeriesMap) {
-      return { timeSeriesData: [], aggregatedData: [], unitMap: new Map<SeriesId, Unit>(), dataMap: null };
-    }
+    const data = useMemo(() => {
+        if (!dataSeriesMap) {
+            return { timeSeriesData: [], aggregatedData: [], unitMap: new Map<SeriesId, Unit>(), dataMap: null };
+        }
 
-    const isAggregated = chart.config.chartType.endsWith('-aggr');
-    if (!isAggregated) {
-      const { data: timeSeriesData, unitMap } = convertToTimeSeriesData(dataSeriesMap, chart);
-      return { timeSeriesData, aggregatedData: [], unitMap, dataMap: dataSeriesMap };
-    } else {
-      const { data: aggregatedData, unitMap } = convertToAggregatedData(dataSeriesMap, chart);
-      return { timeSeriesData: [], aggregatedData, unitMap, dataMap: dataSeriesMap };
-    }
-  }, [chart, dataSeriesMap]);
+        const isAggregated = chart.config.chartType.endsWith('-aggr');
+        if (!isAggregated) {
+            const { data: timeSeriesData, unitMap } = convertToTimeSeriesData(dataSeriesMap, chart);
+            return { timeSeriesData, aggregatedData: [], unitMap, dataMap: dataSeriesMap };
+        } else {
+            const { data: aggregatedData, unitMap } = convertToAggregatedData(dataSeriesMap, chart);
+            return { timeSeriesData: [], aggregatedData, unitMap, dataMap: dataSeriesMap };
+        }
+    }, [chart, dataSeriesMap]);
 
     const showSkeleton = !inView || isLoadingData || !data.dataMap;
 
@@ -69,6 +70,7 @@ export function ChartPreview({ chart, className, onClick }: ChartPreviewProps) {
                     error={dataError}
                     onAddSeries={() => { }}
                     onAnnotationPositionChange={() => { }}
+                    height={height}
                 />
             )}
         </div>
