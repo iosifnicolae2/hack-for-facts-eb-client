@@ -18,10 +18,7 @@ export const SearchResultItem = forwardRef<HTMLAnchorElement, SearchResultItemPr
                 ref={ref}
                 to="/entities/$cui"
                 params={{ cui: entity.cui }}
-                search={(prev) => {
-                    console.log('prev', prev)
-                    return { ...prev };
-                }}
+                search={(prev) => ({ ...prev })}
                 onClick={onClick}
                 className={cn(
                     "block w-full px-6 py-4 transition-colors group focus:outline-none",

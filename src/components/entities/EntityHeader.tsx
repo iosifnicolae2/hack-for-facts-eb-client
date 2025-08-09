@@ -44,7 +44,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
               "flex-shrink-0",
               "rounded-xl border border-slate-200/80 dark:border-slate-700/70",
               "bg-white/70 dark:bg-slate-900/40 backdrop-blur supports-[backdrop-filter]:bg-white/30",
-              "px-3 py-2 shadow-sm",
+              "px-2 py-1 shadow-sm",
             )}
           >
             {yearSelector}

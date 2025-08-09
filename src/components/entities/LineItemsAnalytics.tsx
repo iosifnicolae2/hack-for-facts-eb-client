@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { processDataForAnalyticsChart } from '@/lib/analytics-utils';
 import { LineItemsAnalyticsSkeleton } from './LineItemsAnalyticsSkeleton';
+import { applyAlpha } from '../charts/components/chart-renderer/utils';
 
 interface AnalyticsProps {
     lineItems?: EntityDetailsData['executionLineItems'];
@@ -126,7 +127,7 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
                                 <XAxis dataKey="name" tick={{ fontSize: 12 }} angle={-45} textAnchor="end" interval={0} height={100} />
                                 <YAxis tickFormatter={(value) => formatCurrency(value, "compact")} />
                                 <Tooltip formatter={(value: number) => formatCurrency(value)} />
-                                <Bar dataKey="value" fill={dataType === 'income' ? '#4ade80' : '#f87171'}>
+                                <Bar dataKey="value" fill={dataType === 'income' ? applyAlpha('#4ade80', 0.8) : applyAlpha('#f87171', 0.8)}>
                                     <LabelList content={renderBarLabel} />
                                 </Bar>
                             </BarChart>
