@@ -79,6 +79,8 @@
     "@tanstack/router-core": "^1.114.17",
     "@tanstack/router-devtools-core": "^1.114.17",
     "@testing-library/dom": "^10.0.0",
+    "@turf/bbox": "^7.2.0",
+    "@turf/center": "^7.2.0",
     "@uiw/codemirror-theme-vscode": "^4.23.10",
     "@uiw/react-codemirror": "^4.23.10",
     "@visx/annotation": "^3.12.0",
