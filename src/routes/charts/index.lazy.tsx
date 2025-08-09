@@ -15,7 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { ChartCategory, StoredChart, getChartsStore } from "@/components/charts/chartsStore";
 import { ChartList } from "@/components/charts/components/chart-list/ChartList";
-import { slugify } from "@/lib/utils";
+import { cn, slugify } from "@/lib/utils";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Input as UITextInput } from "@/components/ui/input";
@@ -281,6 +281,7 @@ function ChartsListPage() {
                 <CategoryTab
                   key={cat.id}
                   category={cat}
+                  selected={activeTab === `category:${cat.id}`}
                   onRename={() => openRenameCategory(cat.id)}
                   onDelete={() => handleDeleteCategory(cat.id)}
                   onSelect={() => setActiveTab(`category:${cat.id}`)}
@@ -418,11 +419,12 @@ type CategoryTabProps = {
   onRename: () => void;
   onDelete: () => void;
   onSelect: () => void;
+  selected: boolean;
 };
 
-function CategoryTab({ category, onRename, onDelete, onSelect }: CategoryTabProps) {
+function CategoryTab({ category, selected, onRename, onDelete, onSelect }: CategoryTabProps) {
   return (
-    <div className="inline-flex items-center">
+    <div className={cn("inline-flex items-center border-1 rounded-md", selected && "bg-white border-slate-200 shadow-md")}>
       <TabsTrigger value={`category:${category.id}`} className="flex items-center gap-1 h-7 px-2 text-xs" onClick={onSelect}>
         <Tag className="h-3.5 w-3.5" />
         {category.name}
