@@ -28,12 +28,12 @@ import { formatDistanceToNow } from "date-fns";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 interface ChartCardProps {
-    chart: StoredChart;
-    onDelete: (chartId: string) => void;
-    onToggleFavorite: (chartId: string) => void;
-    categories?: readonly ChartCategory[];
-    onToggleCategory?: (chartId: string, categoryId: string) => void;
-    onOpenCategory?: (categoryId: string) => void;
+  chart: StoredChart;
+  onDelete: (chartId: string) => void;
+  onToggleFavorite: (chartId: string) => void;
+  categories?: readonly ChartCategory[];
+  onToggleCategory?: (chartId: string, categoryId: string) => void;
+  onOpenCategory?: (categoryId: string) => void;
 }
 
 export function ChartCard({ chart, onDelete, onToggleFavorite, categories = [], onToggleCategory, onOpenCategory }: ChartCardProps) {
@@ -46,75 +46,20 @@ export function ChartCard({ chart, onDelete, onToggleFavorite, categories = [], 
 
   return (
     <Card className="group relative flex flex-col h-full hover:shadow-md transition-shadow overflow-hidden">
-      <CardHeader className="p-4 pb-2">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0 flex-1">
-            <CardTitle className="text-base md:text-lg line-clamp-1">
-              <Link
-                to={`/charts/$chartId`}
-                params={{ chartId: chart.id }}
-                search={{ view: "overview", chart: chart }}
-                className="hover:underline"
-              >
-                {title}
-              </Link>
-            </CardTitle>
-            <CardDescription className="mt-1 flex flex-wrap items-center gap-2">
-              <Badge variant="secondary" className="shrink-0">
-                {chartType}
-              </Badge>
-              <span className="shrink-0">{seriesCount} series</span>
-              <span className="text-muted-foreground shrink-0">• {updatedRelative}</span>
-              {categories.length > 0 && (chart.categories ?? []).length > 0 ? (
-                <div className="basis-full flex flex-wrap items-center gap-1.5">
-                  {(chart.categories ?? []).map((catId) => {
-                    const cat = categories.find((c) => c.id === catId);
-                    if (!cat) return null;
-                    return (
-                      <button
-                        key={cat.id}
-                        type="button"
-                        className="inline-flex items-center align-middle"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          onOpenCategory?.(cat.id);
-                        }}
-                        title={`Open ${cat.name}`}
-                      >
-                        <Badge variant="outline" className="text-xs cursor-pointer hover:bg-muted">
-                          #{cat.name}
-                        </Badge>
-                      </button>
-                    );
-                  })}
-                </div>
-              ) : null}
-            </CardDescription>
-          </div>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-muted-foreground hover:text-foreground"
-                  aria-label={chart.favorite ? "Remove from favorites" : "Add to favorites"}
-                  onClick={() => onToggleFavorite(chart.id)}
-                >
-                  <Star
-                    className="h-4 w-4"
-                    fill={chart.favorite ? "currentColor" : "none"}
-                  />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                {chart.favorite ? "Unfavorite" : "Favorite"}
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-      </CardHeader>
+      <ChartCardHeader
+        title={title}
+        chartType={chartType}
+        seriesCount={seriesCount}
+        updatedRelative={updatedRelative}
+        categories={categories}
+        chartCategories={chart.categories ?? []}
+        onOpenCategory={onOpenCategory}
+        onToggleFavorite={() => onToggleFavorite(chart.id)}
+        isFavorite={!!chart.favorite}
+        chartId={chart.id}
+      />
       <CardContent className="px-4 pb-3">
+        {/* Main component in the chart card */}
         <Link
           to={`/charts/$chartId`}
           params={{ chartId: chart.id }}
@@ -126,6 +71,7 @@ export function ChartCard({ chart, onDelete, onToggleFavorite, categories = [], 
           </div>
         </Link>
       </CardContent>
+
       <CardFooter className="flex justify-between items-center mt-auto pt-0 pb-3 px-4">
         <div className="flex gap-1 items-center">
           <Link
@@ -143,7 +89,7 @@ export function ChartCard({ chart, onDelete, onToggleFavorite, categories = [], 
               <Tooltip>
                 <AlertDialogTrigger asChild>
                   <TooltipTrigger asChild>
-                    <Button variant="destructive" size="sm" className="h-8 px-2" aria-label="Delete chart">
+                    <Button variant="outline" size="sm" className="h-8 px-2" aria-label="Delete chart">
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </TooltipTrigger>
@@ -170,32 +116,11 @@ export function ChartCard({ chart, onDelete, onToggleFavorite, categories = [], 
             </AlertDialogContent>
           </AlertDialog>
           {categories.length > 0 ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="h-8 px-2">
-                  <Tag className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start">
-                <DropdownMenuLabel>Add to category</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {categories.map((cat) => {
-                  const checked = (chart.categories ?? []).includes(cat.id);
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={cat.id}
-                      checked={checked}
-                      onCheckedChange={() => onToggleCategory?.(chart.id, cat.id)}
-                    >
-                      {cat.name}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-                {categories.length === 0 ? (
-                  <DropdownMenuItem disabled>No categories</DropdownMenuItem>
-                ) : null}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <ChartCategoriesMenu
+              categories={categories}
+              chartCategoryIds={chart.categories ?? []}
+              onToggle={(categoryId) => onToggleCategory?.(chart.id, categoryId)}
+            />
           ) : null}
         </div>
 
@@ -203,13 +128,126 @@ export function ChartCard({ chart, onDelete, onToggleFavorite, categories = [], 
           to={`/charts/$chartId`}
           params={{ chartId: chart.id }}
           search={{ view: "overview", chart: chart }}
-         >
-           <Button variant="outline" size="default" className="h-8 px-3">
-             <Eye className="h-4 w-4 mr-2" />
-             View
-           </Button>
+        >
+          <Button variant="outline" size="default" className="h-8 px-3">
+            <Eye className="h-4 w-4 mr-2" />
+            View
+          </Button>
         </Link>
       </CardFooter>
     </Card>
+  );
+}
+
+// Sub-components to declutter card layout
+type ChartCardHeaderProps = {
+  title: string;
+  chartType: string;
+  seriesCount: number;
+  updatedRelative: string;
+  categories: readonly ChartCategory[];
+  chartCategories: readonly string[];
+  onOpenCategory?: (categoryId: string) => void;
+  onToggleFavorite: () => void;
+  isFavorite: boolean;
+  chartId: string;
+};
+
+function ChartCardHeader({ title, chartType, seriesCount, updatedRelative, categories, chartCategories, onOpenCategory, onToggleFavorite, isFavorite, chartId }: ChartCardHeaderProps) {
+  return (
+    <CardHeader className="p-4 pb-2">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <CardTitle className="text-base md:text-lg line-clamp-1">
+            <Link
+              to={`/charts/$chartId`}
+              params={{ chartId }}
+              search={{ view: "overview" }}
+              className="hover:underline"
+            >
+              {title}
+            </Link>
+          </CardTitle>
+          <CardDescription className="mt-1 flex flex-wrap items-center gap-2">
+            <Badge variant="secondary" className="shrink-0">
+              {chartType}
+            </Badge>
+            <span className="shrink-0">{seriesCount} series</span>
+            <span className="text-muted-foreground shrink-0">• {updatedRelative}</span>
+            {categories.length > 0 && chartCategories.length > 0 ? (
+              <div className="basis-full flex flex-wrap items-center gap-1.5">
+                {chartCategories.map((catId) => {
+                  const cat = categories.find((c) => c.id === catId);
+                  if (!cat) return null;
+                  return (
+                    <button
+                      key={cat.id}
+                      type="button"
+                      className="inline-flex items-center align-middle"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onOpenCategory?.(cat.id);
+                      }}
+                      title={`Open ${cat.name}`}
+                    >
+                      <Badge variant="outline" className="text-xs cursor-pointer hover:bg-muted">
+                        #{cat.name}
+                      </Badge>
+                    </button>
+                  );
+                })}
+              </div>
+            ) : null}
+          </CardDescription>
+        </div>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-muted-foreground hover:text-foreground"
+                aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+                onClick={onToggleFavorite}
+              >
+                <Star className="h-4 w-4" fill={isFavorite ? "currentColor" : "none"} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>{isFavorite ? "Unfavorite" : "Favorite"}</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
+    </CardHeader>
+  );
+}
+
+type ChartCategoriesMenuProps = {
+  categories: readonly ChartCategory[];
+  chartCategoryIds: readonly string[];
+  onToggle: (categoryId: string) => void;
+};
+
+function ChartCategoriesMenu({ categories, chartCategoryIds, onToggle }: ChartCategoriesMenuProps) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="sm" className="h-8 px-2">
+          <Tag className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start">
+        <DropdownMenuLabel>Add to category</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {categories.map((cat) => {
+          const checked = chartCategoryIds.includes(cat.id);
+          return (
+            <DropdownMenuCheckboxItem key={cat.id} checked={checked} onCheckedChange={() => onToggle(cat.id)}>
+              {cat.name}
+            </DropdownMenuCheckboxItem>
+          );
+        })}
+        {categories.length === 0 ? <DropdownMenuItem disabled>No categories</DropdownMenuItem> : null}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

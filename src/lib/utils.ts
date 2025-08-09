@@ -51,3 +51,15 @@ export function capitalize(str: string) {
 export function convertDaysToMs(days: number): number {
   return days * 24 * 60 * 60 * 1000;
 }
+
+/**
+ * Converts input into a URL-friendly slug.
+ * Lowercases, trims, replaces non-alphanumerics with dashes, and collapses repeats.
+ */
+export function slugify(input: string): string {
+  return input
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)+/g, '');
+}

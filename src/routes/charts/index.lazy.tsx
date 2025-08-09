@@ -15,9 +15,11 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { ChartCategory, StoredChart, getChartsStore } from "@/components/charts/chartsStore";
 import { ChartList } from "@/components/charts/components/chart-list/ChartList";
+import { slugify } from "@/lib/utils";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Input as UITextInput } from "@/components/ui/input";
+import { usePersistedState } from "@/lib/hooks/usePersistedState";
 
 export const Route = createLazyFileRoute("/charts/")({
   component: ChartsListPage,
@@ -29,21 +31,13 @@ type SortOption = "newest" | "oldest" | "a-z" | "z-a" | "favorites-first";
 
 type ActiveTab = "all" | "favorites" | `category:${string}`;
 
-function toSlug(input: string): string {
-  return input
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)+/g, "");
-}
-
 function ChartsListPage() {
   const [charts, setCharts] = useState<StoredChart[]>(
     chartsStore.loadSavedCharts({ filterDeleted: true, sort: true })
   );
   const [search, setSearch] = useState<string>("");
   const [activeTab, setActiveTab] = useState<ActiveTab>("all");
-  const [sortBy, setSortBy] = useState<SortOption>("newest");
+  const [sortBy, setSortBy] = usePersistedState<SortOption>("charts-page-sort-by", "newest");
   const [categories, setCategories] = useState<readonly ChartCategory[]>(chartsStore.loadCategories());
   const [isCreateCategoryOpen, setIsCreateCategoryOpen] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
@@ -94,7 +88,7 @@ function ChartsListPage() {
   const baseFilteredSortedCharts = useMemo(() => {
     const rawQuery = search.trim();
     const hashtagMatches = Array.from(rawQuery.matchAll(/#([\p{L}\p{N}_-]+)/gu)).map((m) =>
-      toSlug(m[1])
+      slugify(m[1])
     );
     const queryText = rawQuery.replace(/#([\p{L}\p{N}_-]+)/gu, " ").trim().toLowerCase();
 
@@ -109,7 +103,7 @@ function ChartsListPage() {
       const chartCategorySlugs = (c.categories ?? [])
         .map((id) => categories.find((cat) => cat.id === id)?.name)
         .filter(Boolean)
-        .map((name) => toSlug(name as string));
+        .map((name) => slugify(name as string));
 
       const tagsMatch = hashtagMatches.every((t) =>
         chartCategorySlugs.some((slug) => slug.startsWith(t))
@@ -284,36 +278,13 @@ function ChartsListPage() {
                 Favorites
               </TabsTrigger>
               {categories.map((cat) => (
-                <div key={cat.id} className="inline-flex items-center">
-                  <TabsTrigger value={`category:${cat.id}`} className="flex items-center gap-1 h-7 px-2 text-xs">
-                    <Tag className="h-3.5 w-3.5" />
-                    {cat.name}
-                  </TabsTrigger>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon" className="ml-1 h-7 w-7">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start">
-                      <DropdownMenuItem onClick={() => openRenameCategory(cat.id)}>
-                        <Pencil className="h-4 w-4" /> Rename
-                      </DropdownMenuItem>
-                      <DropdownMenuSub>
-                        <DropdownMenuSubTrigger className="text-destructive">
-                          <Trash2 className="h-4 w-4" /> Delete
-                        </DropdownMenuSubTrigger>
-                        <DropdownMenuSubContent>
-                          <DropdownMenuItem className="text-destructive" onClick={() => handleDeleteCategory(cat.id)}>
-                            Confirm Delete
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem>Cancel</DropdownMenuItem>
-                        </DropdownMenuSubContent>
-                      </DropdownMenuSub>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
+                <CategoryTab
+                  key={cat.id}
+                  category={cat}
+                  onRename={() => openRenameCategory(cat.id)}
+                  onDelete={() => handleDeleteCategory(cat.id)}
+                  onSelect={() => setActiveTab(`category:${cat.id}`)}
+                />
               ))}
               <Button
                 type="button"
@@ -437,6 +408,49 @@ function ChartsListPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+    </div>
+  );
+}
+
+// Sub-components for readability
+type CategoryTabProps = {
+  category: ChartCategory;
+  onRename: () => void;
+  onDelete: () => void;
+  onSelect: () => void;
+};
+
+function CategoryTab({ category, onRename, onDelete, onSelect }: CategoryTabProps) {
+  return (
+    <div className="inline-flex items-center">
+      <TabsTrigger value={`category:${category.id}`} className="flex items-center gap-1 h-7 px-2 text-xs" onClick={onSelect}>
+        <Tag className="h-3.5 w-3.5" />
+        {category.name}
+      </TabsTrigger>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon" className="ml-1 h-7 w-7">
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          <DropdownMenuItem onClick={onRename}>
+            <Pencil className="h-4 w-4" /> Rename
+          </DropdownMenuItem>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger className="text-destructive">
+              <Trash2 className="h-4 w-4" /> Delete
+            </DropdownMenuSubTrigger>
+            <DropdownMenuSubContent>
+              <DropdownMenuItem className="text-destructive" onClick={onDelete}>
+                Confirm Delete
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Cancel</DropdownMenuItem>
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }
