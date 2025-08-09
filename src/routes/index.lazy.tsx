@@ -9,6 +9,7 @@ import mapPreview from "@/assets/images/map.png";
 import chartPreview from "@/assets/images/chart.png";
 import entityAnalyticsPreview from "@/assets/images/entity-analytics.png";
 import morePreview from "@/assets/images/more-to-come.png";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
@@ -18,6 +19,7 @@ const title = "Transparenta.eu";
 
 function Index() {
   const { animationActive } = useTitleAnimation()
+  const isMobile = useIsMobile();
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-slate-50 to-slate-200 dark:from-slate-900 dark:to-slate-800">
       <main className="flex-grow flex items-start justify-center p-4">
@@ -44,7 +46,7 @@ function Index() {
           <div className="w-full max-w-2xl lg:max-w-3xl mt-8 space-y-6">
             <EntitySearchInput
               placeholder="Enter entity name or CUI..."
-              autoFocus
+              autoFocus={!isMobile}
             />
             <QuickEntityAccess />
           </div>
