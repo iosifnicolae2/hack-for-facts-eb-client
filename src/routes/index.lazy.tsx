@@ -7,6 +7,8 @@ import { PageCard } from "@/components/landing/PageCard";
 import { QuickEntityAccess } from "@/components/entities/QuickEntityAccess";
 import mapPreview from "@/assets/images/map.png";
 import chartPreview from "@/assets/images/chart.png";
+import entityAnalyticsPreview from "@/assets/images/entity-analytics.png";
+import morePreview from "@/assets/images/more-to-come.png";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
@@ -64,13 +66,22 @@ function Index() {
               imageAlt="Map preview"
             />
             <PageCard
-              title="Entity Analytics"
-              description="Compare entities by aggregated values."
+              title="Entities"
+              description="Explore entities by aggregated values."
               to="/entity-analytics"
-              image={chartPreview}
+              image={entityAnalyticsPreview}
               imageAlt="Entity analytics preview"
             />
+
+            <PageCard
+              title="More"
+              description="More to come."
+              to="/"
+              image={morePreview}
+              imageAlt="More preview"
+            />
           </div>
+
         </div>
       </main>
     </div>
