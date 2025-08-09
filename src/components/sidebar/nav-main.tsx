@@ -1,4 +1,4 @@
-import { LayoutDashboard, BarChart2, Map, Sheet, ListOrdered } from "lucide-react";
+import { LayoutDashboard, BarChart2, Map, ListOrdered } from "lucide-react";
 import { Link, useMatches } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
@@ -21,11 +21,6 @@ const mainItems = [
   //   url: "/anomalies",
   //   icon: AlertTriangle,
   // },
-  {
-    title: "Data Discovery",
-    url: "/data-discovery",
-    icon: Sheet,
-  },
   {
     title: "Map",
     url: "/map",
