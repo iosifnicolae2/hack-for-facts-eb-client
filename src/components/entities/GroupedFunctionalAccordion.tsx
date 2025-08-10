@@ -29,6 +29,7 @@ const GroupedFunctionalAccordion: React.FC<GroupedFunctionalAccordionProps> = ({
     );
   }
 
+  // If this is a .00 item and it's the only child (handled at subchapter level), we already render a non-accordion row.
   return (
     <Accordion key={func.code} type="single" collapsible {...(searchTerm ? { defaultValue: func.code } : {})}>
       <AccordionItem value={func.code}>

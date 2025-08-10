@@ -26,20 +26,22 @@ const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.memo(
   ({ groups, title, baseTotal, searchTerm, currentYear, showTotalValueHeader = false }) => {
 
     const { totalValueFiltered, totalPercentageFiltered } = React.useMemo(() => {
-      const totalValue = groups.reduce(
-        (sum, ch) =>
-          sum +
-          ch.functionals.reduce((funcSum: number, func: GroupedFunctional) => {
-            if (func.economics.length > 0) {
-              return (
-                funcSum +
-                func.economics.reduce((ecoSum: number, eco: GroupedEconomic) => ecoSum + eco.amount, 0)
-              );
-            }
-            return funcSum + func.totalAmount;
-          }, 0),
-        0
-      );
+      const sumFunctionalList = (funcs: GroupedFunctional[]): number =>
+        funcs.reduce((funcSum: number, func: GroupedFunctional) => {
+          if (func.economics.length > 0) {
+            return funcSum + func.economics.reduce((ecoSum: number, eco: GroupedEconomic) => ecoSum + eco.amount, 0);
+          }
+          return funcSum + func.totalAmount;
+        }, 0);
+
+      const totalValue = groups.reduce((sum, ch) => {
+        const fromFunctionals = sumFunctionalList(ch.functionals);
+        const fromSubchapters = (ch.subchapters ?? []).reduce(
+          (s, sub) => s + sumFunctionalList(sub.functionals),
+          0
+        );
+        return sum + fromFunctionals + fromSubchapters;
+      }, 0);
 
       const percentage = baseTotal > 0 ? (totalValue / baseTotal) * 100 : 0;
       return { totalValueFiltered: totalValue, totalPercentageFiltered: percentage };

@@ -8,6 +8,7 @@ interface BudgetNode {
 }
 
 let chapterMapInstance: Map<string, string> | null = null;
+let incomeSubchapterMapInstance: Map<string, string> | null = null;
 
 /** Trim + normalize odd spaces/BOM. */
 const tidy = (s: string | null | undefined) =>
@@ -23,6 +24,14 @@ const twoDigitPrefix = (codeLike: string | null | undefined): string | null => {
   const raw = tidy(codeLike).replace(/\.$/, '');
   const m = raw.match(/^(\d{2})/);
   return m ? m[1] : null;
+};
+
+/** First two groups from any code-like string (e.g. "01.02" from "01.02" or "01.02.03"). */
+const twoGroupPrefix = (codeLike: string | null | undefined): string | null => {
+  if (!codeLike) return null;
+  const raw = tidy(codeLike).replace(/\.$/, '');
+  const m = raw.match(/^(\d{2})\.(\d{2})/);
+  return m ? `${m[1]}.${m[2]}` : null;
 };
 
 /** Build a prefix→description map by walking the BudgetNode tree. */
@@ -63,6 +72,45 @@ export const getChapterMap = (): Map<string, string> => {
   const tree = classifications as unknown as BudgetNode[];
   chapterMapInstance = buildChapterMapFromTree(Array.isArray(tree) ? tree : []);
   return chapterMapInstance!;
+};
+
+/** Build a map of income subchapters (NN.MM) to their descriptions. */
+const buildIncomeSubchapterMapFromTree = (roots: BudgetNode[]): Map<string, string> => {
+  type Entry = { name: string; depth: number; exact: boolean };
+  const best = new Map<string, Entry>();
+
+  const isIncomeRoot = (s: string) => /VENITURI/i.test(tidy(s));
+
+  const visit = (node: BudgetNode, depth: number) => {
+    const code = node.code ? twoGroupPrefix(node.code) : null;
+    if (code) {
+      const exact = /^\d{2}\.\d{2}$/.test(tidy(node.code!));
+      const name = tidy(node.description) || code;
+
+      const prev = best.get(code);
+      if (!prev || (!prev.exact && exact) || (prev.exact === exact && depth < prev.depth)) {
+        best.set(code, { name, depth, exact });
+      }
+    }
+    if (node.children?.length) {
+      for (const child of node.children) visit(child, depth + 1);
+    }
+  };
+
+  for (const root of roots) {
+    if (isIncomeRoot(root.description)) visit(root, 0);
+  }
+
+  const map = new Map<string, string>();
+  best.forEach((v, k) => map.set(k, v.name));
+  return map;
+};
+
+export const getIncomeSubchapterMap = (): Map<string, string> => {
+  if (incomeSubchapterMapInstance) return incomeSubchapterMapInstance;
+  const tree = classifications as unknown as BudgetNode[];
+  incomeSubchapterMapInstance = buildIncomeSubchapterMapFromTree(Array.isArray(tree) ? tree : []);
+  return incomeSubchapterMapInstance!;
 };
 
 const aggregateByFunctionalCode = (items: ExecutionLineItem[]): Map<string, number> => {
