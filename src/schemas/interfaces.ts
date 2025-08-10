@@ -1,31 +1,3 @@
-export type LineItemsFilter = {
-  report_id?: string;
-  report_ids?: string[];
-  report_type?: string;
-  entity_cuis?: string[];
-  funding_source_id?: number;
-  functional_codes?: string[];
-  economic_codes?: string[];
-  account_categories?: ("vn" | "ch")[];
-  min_amount?: number;
-  max_amount?: number;
-  program_code?: string;
-  county_code?: string;
-  uat_ids?: number[];
-  year?: number;
-  years?: number[];
-  start_year?: number;
-  end_year?: number;
-  search?: string;
-  is_main_creditor?: boolean;
-  is_uat?: boolean;
-  page?: number;
-  pageSize?: number;
-  functional_prefixes?: string[];
-  economic_prefixes?: string[];
-  entity_types?: string[];
-};
-
 export interface SortOrder {
   by?:
   'line_item_id' |

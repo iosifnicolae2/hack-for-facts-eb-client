@@ -22,7 +22,7 @@ export const getFilterDisplayName = (key: string): string => {
       return "Sursă de finanțare";
     case "account_category":
       return "Tip de cont";
-    case "report_types":
+    case "report_type":
       return "Tip de raport";
     case "is_uat":
       return "Este UAT";
@@ -97,7 +97,7 @@ export const isInteractiveFilter = (key: string): boolean => {
 };
 
 export function getSortOrder(keyA: keyof AnalyticsFilterType, keyB: keyof AnalyticsFilterType) {
-  const order = ["account_category", "entity_cuis", "entity_types", "uat_ids", "functional_prefixes", "economic_prefixes", "functional_codes", "economic_codes", "budget_sector_ids", "funding_source_ids", "is_uat", "item_min_amount", "item_max_amount", "report_types", "years"] as Array<keyof AnalyticsFilterType>;
+  const order = ["account_category", "entity_cuis", "entity_types", "uat_ids", "functional_prefixes", "economic_prefixes", "functional_codes", "economic_codes", "budget_sector_ids", "funding_source_ids", "is_uat", "aggregate_min_amount", "aggregate_max_amount", "report_type", "years"] as Array<keyof AnalyticsFilterType>;
   const indexA = order.indexOf(keyA);
   const indexB = order.indexOf(keyB);
 

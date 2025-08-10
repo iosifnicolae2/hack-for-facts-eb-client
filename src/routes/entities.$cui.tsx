@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { entityDetailsQueryOptions } from '@/lib/hooks/useEntityDetails';
 import { queryClient } from '@/lib/queryClient';
 import { entitySearchSchema } from '@/components/entities/validation';
-import { defaultYearRange } from '@/schemas/charts';
+import { AnalyticsInput, defaultYearRange } from '@/schemas/charts';
 import { geoJsonQueryOptions } from '@/hooks/useGeoJson';
 import { heatmapJudetQueryOptions, heatmapUATQueryOptions } from '@/hooks/useHeatmapData';
 import { getTopFunctionalGroupCodes } from '@/lib/analytics-utils';
@@ -49,13 +49,13 @@ export const Route = createFileRoute('/entities/$cui')({
             const filtered = (lineItems as MinimalLineItem[]).filter((li) => li.account_category === accountCategory);
             const topGroups: string[] = getTopFunctionalGroupCodes(filtered as unknown as import('@/lib/api/entities').ExecutionLineItem[], 10);
             if (topGroups.length > 0) {
-                const inputs: import('@/schemas/charts').AnalyticsInput[] = topGroups.map((prefix: string) => ({
+                const inputs: AnalyticsInput[] = topGroups.map((prefix: string) => ({
                     seriesId: `${prefix}${params.cui}-${desiredView === 'income-trends' ? 'income' : 'expense'}`,
                     filter: {
                         entity_cuis: [params.cui],
                         functional_prefixes: [prefix],
                         account_category: accountCategory,
-                        report_types: [(entity?.is_main_creditor ? 'Executie bugetara agregata la nivel de ordonator principal' : 'Executie bugetara detaliata') as 'Executie bugetara agregata la nivel de ordonator principal' | 'Executie bugetara detaliata'],
+                        report_type: (entity?.is_main_creditor ? 'Executie bugetara agregata la nivel de ordonator principal' : 'Executie bugetara detaliata') as 'Executie bugetara agregata la nivel de ordonator principal' | 'Executie bugetara detaliata',
                     },
                 }));
                 const payloadHash = inputs

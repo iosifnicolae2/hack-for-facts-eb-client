@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { ReportTypeEnum } from './charts'
 
 export type EntityAnalyticsDataPoint = {
   entity_cui: string
@@ -33,7 +34,7 @@ export const entityAnalyticsFilterSchema = z.object({
 
   // Line-item dimensional filters
   report_ids: z.array(z.string()).optional(),
-  report_types: z.array(z.string()).optional(),
+  report_type: ReportTypeEnum.optional(),
   reporting_years: z.array(z.number()).optional(),
   entity_cuis: z.array(z.string()).optional(),
   functional_codes: z.array(z.string()).optional(),

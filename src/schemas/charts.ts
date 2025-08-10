@@ -50,6 +50,9 @@ export type SeriesConfig = z.infer<typeof SeriesConfigSchema>;
 // ANALYTICS FILTER SCHEMA (reusable from existing system)
 // ============================================================================
 
+export const ReportTypeEnum = z.enum(['Executie bugetara agregata la nivel de ordonator principal', 'Executie bugetara detaliata']);
+export type ReportType = z.infer<typeof ReportTypeEnum>;
+
 export const AnalyticsFilterSchema = z.object({
   // Required
   years: z.array(z.number()).optional().describe('Years to filter the data by. If not set, the chart will show all years.'),
@@ -57,7 +60,7 @@ export const AnalyticsFilterSchema = z.object({
 
   // Dimensional filters
   report_ids: z.array(z.string()).optional(),
-  report_types: z.array(z.string()).optional(),
+  report_type: ReportTypeEnum.optional(),
   reporting_years: z.array(z.number()).optional(),
   entity_cuis: z.array(z.string()).optional().describe('The public entities cui of cif.'),
   functional_codes: z.array(z.string()).optional().describe('The functional codes using Romanian COFOG3 codes.'),
@@ -135,7 +138,7 @@ export const SeriesConfigurationSchema = BaseSeriesConfigurationSchema.extend({
   filter: AnalyticsFilterSchema.describe('The filter to apply to the series.').default({
     years: [defaultYearRange.end],
     account_category: 'ch',
-    report_types: ['Executie bugetara agregata la nivel de ordonator principal'],
+    report_type: 'Executie bugetara agregata la nivel de ordonator principal',
   }),
 }).loose();
 

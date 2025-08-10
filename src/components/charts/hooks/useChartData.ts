@@ -33,9 +33,20 @@ export type UnitMap = Map<SeriesId, Unit>;
 export function useChartData({ chart, enabled = true }: UseChartDataProps) {
     const analyticsInputs = useMemo(() => {
         if (!chart) return [];
+
+        const buildDefaultYears = () =>
+            Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, i) => defaultYearRange.start + i);
+
         return chart.series
             .filter(series => series.type === 'line-items-aggregated-yearly')
-            .map(series => ({ seriesId: series.id, filter: series.filter as AnalyticsFilterType }));
+            .map(series => {
+                const filter = series.filter as AnalyticsFilterType;
+                const years = (Array.isArray(filter.years) && filter.years.length > 0)
+                    ? filter.years
+                    : buildDefaultYears();
+                const account_category = (filter.account_category ?? 'ch') as 'ch' | 'vn';
+                return { seriesId: series.id, filter: { ...filter, years, account_category } as AnalyticsFilterType };
+            });
     }, [chart]);
 
     const staticSeries = useMemo(() => {

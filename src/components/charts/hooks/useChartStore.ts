@@ -78,7 +78,7 @@ export function useChartStore() {
       label: `New Series ${chart.series.length + 1}`,
       filter: {
         account_category: 'ch',
-        report_types: ['Executie bugetara agregata la nivel de ordonator principal'],
+        report_type: 'Executie bugetara agregata la nivel de ordonator principal',
       },
       config: {
         visible: true,

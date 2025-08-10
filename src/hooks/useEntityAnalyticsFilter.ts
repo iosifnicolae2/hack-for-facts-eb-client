@@ -8,7 +8,7 @@ const viewEnum = z.enum(['table', 'chart'])
 export const defaultEntityAnalyticsFilter: EntityAnalyticsFilter = {
   account_category: 'ch',
   years: [defaultYearRange.end],
-  normalization: 'per_capita',
+  normalization: 'total',
 }
 
 const searchSchema = z.object({
