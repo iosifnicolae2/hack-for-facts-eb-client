@@ -1,7 +1,7 @@
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { BarChart3, Plus, Search as SearchIcon, MoreHorizontal, Pencil, Trash2, Tag } from "lucide-react";
+import { BarChart3, Plus, Search as SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -16,10 +16,8 @@ import { toast } from "sonner";
 import { ChartCategory, StoredChart, getChartsStore } from "@/components/charts/chartsStore";
 import { ChartList } from "@/components/charts/components/chart-list/ChartList";
 import { cn, slugify } from "@/lib/utils";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-import { Input as UITextInput } from "@/components/ui/input";
 import { usePersistedState } from "@/lib/hooks/usePersistedState";
+import { ChartCategories } from "@/components/charts/components/chart-categories/ChartCategories";
 
 export const Route = createLazyFileRoute("/charts/")({
   component: ChartsListPage,
@@ -39,11 +37,6 @@ function ChartsListPage() {
   const [activeTab, setActiveTab] = useState<ActiveTab>("all");
   const [sortBy, setSortBy] = usePersistedState<SortOption>("charts-page-sort-by", "newest");
   const [categories, setCategories] = useState<readonly ChartCategory[]>(chartsStore.loadCategories());
-  const [isCreateCategoryOpen, setIsCreateCategoryOpen] = useState(false);
-  const [newCategoryName, setNewCategoryName] = useState("");
-  const [isRenameCategoryOpen, setIsRenameCategoryOpen] = useState(false);
-  const [renameCategoryId, setRenameCategoryId] = useState<string | null>(null);
-  const [renameCategoryName, setRenameCategoryName] = useState("");
 
   const handleDeleteChart = useCallback(async (chartId: string) => {
     try {
@@ -138,57 +131,6 @@ function ChartsListPage() {
     [baseFilteredSortedCharts]
   );
 
-  const handleCreateCategory = useCallback(() => {
-    const name = newCategoryName.trim();
-    if (!name) {
-      toast.error("Please enter a category name");
-      return;
-    }
-    try {
-      const created = chartsStore.createCategory(name);
-      setCategories(chartsStore.loadCategories());
-      setIsCreateCategoryOpen(false);
-      setNewCategoryName("");
-      // Switch to the new category tab
-      setActiveTab(`category:${created.id}`);
-      toast.success("Category created");
-    } catch (err: unknown) {
-      toast.error((err as Error).message ?? "Failed to create category");
-    }
-  }, [newCategoryName]);
-
-  const openRenameCategory = useCallback((id: string) => {
-    const current = categories.find((c) => c.id === id);
-    if (!current) return;
-    setRenameCategoryId(id);
-    setRenameCategoryName(current.name);
-    setIsRenameCategoryOpen(true);
-  }, [categories]);
-
-  const submitRenameCategory = useCallback(() => {
-    const id = renameCategoryId;
-    const name = renameCategoryName.trim();
-    if (!id) return;
-    if (!name) {
-      toast.error("Please enter a category name");
-      return;
-    }
-    chartsStore.renameCategory(id, name);
-    setCategories(chartsStore.loadCategories());
-    setIsRenameCategoryOpen(false);
-    toast.success("Category renamed");
-  }, [renameCategoryId, renameCategoryName]);
-
-  const handleDeleteCategory = useCallback((id: string) => {
-    const current = categories.find((c) => c.id === id);
-    if (!current) return;
-    chartsStore.deleteCategory(id);
-    setCategories(chartsStore.loadCategories());
-    setCharts(chartsStore.loadSavedCharts({ filterDeleted: true, sort: true }));
-    if (activeTab === `category:${id}`) setActiveTab("all");
-    toast.success("Category deleted");
-  }, [categories, activeTab]);
-
   const handleToggleChartCategory = useCallback((chartId: string, categoryId: string) => {
     chartsStore.toggleChartCategory(chartId, categoryId);
     setCharts((prev) => prev.map((c) => c.id === chartId ? { ...c, categories: (c.categories ?? []).includes(categoryId) ? (c.categories ?? []).filter((id) => id !== categoryId) : [...(c.categories ?? []), categoryId] } : c));
@@ -277,27 +219,13 @@ function ChartsListPage() {
               <TabsTrigger className={cn("h-7 px-2 text-xs", activeTab === "favorites" && "bg-white border-slate-200 shadow-md data-[state=active]:bg-white data-[state=active]:border-slate-200 data-[state=active]:shadow-md")} value="favorites" disabled={favoritesCount === 0}>
                 Favorites
               </TabsTrigger>
-              {categories.map((cat) => (
-                <CategoryTab
-                  key={cat.id}
-                  category={cat}
-                  selected={activeTab === `category:${cat.id}`}
-                  onRename={() => openRenameCategory(cat.id)}
-                  onDelete={() => handleDeleteCategory(cat.id)}
-                  onSelect={() => setActiveTab(`category:${cat.id}`)}
-                />
-              ))}
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="ml-1 h-7 w-7"
-                onClick={() => setIsCreateCategoryOpen(true)}
-                aria-label="New category"
-                title="New category"
-              >
-                <Plus className="h-4 w-4" />
-              </Button>
+              <ChartCategories
+                categories={categories}
+                activeTab={activeTab}
+                onChangeActiveTab={(tab) => setActiveTab(tab)}
+                onCategoriesChange={(next) => setCategories(next)}
+                refreshCharts={() => setCharts(chartsStore.loadSavedCharts({ filterDeleted: true, sort: true }))}
+              />
             </TabsList>
           </div>
 
@@ -368,91 +296,9 @@ function ChartsListPage() {
         </Tabs>
       )}
 
-      <Dialog open={isCreateCategoryOpen} onOpenChange={setIsCreateCategoryOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Create category</DialogTitle>
-            <DialogDescription>Group charts with a custom category. You can search by category using #hashtag.</DialogDescription>
-          </DialogHeader>
-          <div className="py-2">
-            <UITextInput
-              autoFocus
-              value={newCategoryName}
-              onChange={(e) => setNewCategoryName(e.currentTarget.value)}
-              placeholder="Category name"
-            />
-          </div>
-          <DialogFooter>
-            <Button variant="ghost" onClick={() => setIsCreateCategoryOpen(false)}>Cancel</Button>
-            <Button onClick={handleCreateCategory}>Create</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={isRenameCategoryOpen} onOpenChange={setIsRenameCategoryOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Rename category</DialogTitle>
-            <DialogDescription>Update the category name. You can still search it with #hashtag.</DialogDescription>
-          </DialogHeader>
-          <div className="py-2">
-            <UITextInput
-              autoFocus
-              value={renameCategoryName}
-              onChange={(e) => setRenameCategoryName(e.currentTarget.value)}
-              placeholder="Category name"
-            />
-          </div>
-          <DialogFooter>
-            <Button variant="ghost" onClick={() => setIsRenameCategoryOpen(false)}>Cancel</Button>
-            <Button onClick={submitRenameCategory}>Save</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {/* Category dialogs and triggers moved into ChartCategories to avoid rerenders of the list when typing */}
     </div>
   );
 }
 
-// Sub-components for readability
-type CategoryTabProps = {
-  category: ChartCategory;
-  onRename: () => void;
-  onDelete: () => void;
-  onSelect: () => void;
-  selected: boolean;
-};
-
-function CategoryTab({ category, selected, onRename, onDelete, onSelect }: CategoryTabProps) {
-  return (
-    <div className={cn("inline-flex items-center border-1 rounded-md", selected && "bg-white border-slate-200 shadow-md data-[state=active]:bg-white data-[state=active]:border-slate-200 data-[state=active]:shadow-md")}>
-      <TabsTrigger value={`category:${category.id}`} className="flex items-center gap-1 h-7 px-2 text-xs data-[state=active]:bg-white data-[state=active]:border-none data-[state=active]:shadow-none" onClick={onSelect}>
-        <Tag className="h-3.5 w-3.5" />
-        {category.name}
-      </TabsTrigger>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="ml-1 h-7 w-7">
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="start">
-          <DropdownMenuItem onClick={onRename}>
-            <Pencil className="h-4 w-4" /> Rename
-          </DropdownMenuItem>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger className="text-destructive">
-              <Trash2 className="h-4 w-4" /> Delete
-            </DropdownMenuSubTrigger>
-            <DropdownMenuSubContent>
-              <DropdownMenuItem className="text-destructive" onClick={onDelete}>
-                Confirm Delete
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Cancel</DropdownMenuItem>
-            </DropdownMenuSubContent>
-          </DropdownMenuSub>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
-  );
-}
+// Category triggers and dialogs moved to ChartCategories component
