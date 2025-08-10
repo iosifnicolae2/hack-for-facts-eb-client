@@ -177,7 +177,7 @@ function EntityDetailsPage() {
     <div className="min-h-screen bg-slate-100 dark:bg-slate-900 p-4 md:p-8">
       <div className="container mx-auto max-w-7xl space-y-8">
         <EntityHeader
-          className="md:sticky top-0 z-10 bg-white dark:bg-slate-900"
+          className="md:sticky top-0 z-30 bg-white dark:bg-slate-900"
           entity={entity ? { ...entity, is_uat: !!entity.is_uat } : undefined}
           isLoading={isLoading}
           views={views}

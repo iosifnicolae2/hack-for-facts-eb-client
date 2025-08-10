@@ -128,7 +128,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
       maxBounds={maxBounds}
       scrollWheelZoom={false}
       style={{ height: mapHeight, width: '100%', backgroundColor: 'transparent' }}
-      className="z-10"
+      className="z-0 isolate"
       preferCanvas={true}
     >
       {scrollWheelZoom !== false && <ScrollWheelZoomControl />}
