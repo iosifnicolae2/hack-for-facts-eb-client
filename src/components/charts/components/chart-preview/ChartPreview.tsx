@@ -28,6 +28,8 @@ export function ChartPreview({ chart, className, height, onClick }: ChartPreview
             draft.config.showDataLabels = false;
             draft.config.showGridLines = false;
             draft.config.showAnnotations = false;
+            draft.config.showTooltip = false;
+            draft.config.showDiffControl = false;
             draft.series.forEach(series => {
                 series.config.showDataLabels = false;
             });

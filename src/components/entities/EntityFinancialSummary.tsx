@@ -55,7 +55,7 @@ export const EntityFinancialSummary: React.FC<EntityFinancialSummaryProps> = (
     <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       <EntityFinancialSummaryCard title="Cheltuieli totale" value={totalExpenses} icon={TrendingDown} color="red" currentYear={currentYear} />
       <EntityFinancialSummaryCard title="Venituri totale" value={totalIncome} icon={TrendingUp} color="green" currentYear={currentYear} />
-      <EntityFinancialSummaryCard title="Balanta bugetara" value={budgetBalance} icon={Scale} color="blue" currentYear={currentYear} />
+      <EntityFinancialSummaryCard title="Venituri - Cheltuieli" value={budgetBalance} icon={Scale} color="blue" currentYear={currentYear} />
     </section>
   );
 }; 
