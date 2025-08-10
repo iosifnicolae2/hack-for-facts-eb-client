@@ -63,9 +63,6 @@ export function CookieConsentBanner(): ReactElement | null {
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-0">
-          <p className="text-sm text-muted-foreground">
-            We don’t enable analytics until you accept. You can change your choice anytime in Cookie Settings.
-          </p>
           <div className="mt-4 flex flex-col items-center justify-center gap-3 sm:flex-row sm:justify-end">
             <Button variant="link" onClick={declineCookies} className="text-amber-600">
               Essential only
