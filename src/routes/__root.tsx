@@ -9,6 +9,7 @@ import { HotkeysProvider } from "react-hotkeys-hook";
 import { MobileSidebarFab } from "@/components/sidebar/mobile-sidebar-fab";
 import { queryClient } from "@/lib/queryClient";
 import { FloatingEntitySearch } from "@/components/entities/FloatingEntitySearch";
+import { AppFooter } from "@/components/footer/AppFooter";
 
 export const Route = createRootRoute({
   component: () => (
@@ -27,6 +28,7 @@ export const Route = createRootRoute({
                       <FloatingEntitySearch />
                     </div>
                   </main>
+                  <AppFooter />
                   <MobileSidebarFab />
                 </SidebarInset>
               </div>
