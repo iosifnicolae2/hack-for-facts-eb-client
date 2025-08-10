@@ -2,6 +2,11 @@ import { z } from 'zod';
 import { ChartTypeEnum, DEFAULT_CHART } from './constants';
 import { generateRandomColor } from '@/components/charts/components/chart-renderer/utils';
 
+export const defaultYearRange = {
+  start: 2016,
+  end: 2024,
+};
+
 /**
  * Global chart configuration that can be overridden by individual series
  */
@@ -33,7 +38,11 @@ export const SeriesConfigSchema = z.object({
   dataLabels: z.array(z.string()).optional().describe('Data labels to show on the chart for the x axis. If not set, the chart will show all years.'),
   dataLabelOffset: z.number().optional().describe('Offset of the data labels from the x axis. If not set, the chart will show the data labels at the default position.'),
   color: z.string().default('#0000ff'),
-}).default({});
+}).default({
+  visible: true,
+  showDataLabels: false,
+  color: '#0000ff',
+});
 
 export type SeriesConfig = z.infer<typeof SeriesConfigSchema>;
 
@@ -100,26 +109,26 @@ export const BaseSeriesConfigurationSchema = z.object({
 
 export const SeriesConfigurationSchema = BaseSeriesConfigurationSchema.extend({
   type: z.literal('line-items-aggregated-yearly'),
-  filter: AnalyticsFilterSchema.describe('The filter to apply to the series.').default({}),
-}).passthrough();
+  filter: AnalyticsFilterSchema.describe('The filter to apply to the series.').default({
+    years: [defaultYearRange.end],
+    account_category: 'ch',
+    report_type: 'Executie bugetara agregata la nivel de ordonator principal',
+  }),
+}).loose();
 
 export const SeriesGroupConfigurationSchema = BaseSeriesConfigurationSchema.extend({
   type: z.literal('aggregated-series-calculation'),
   calculation: CalculationSchema.describe('Operation for generating a series from a set of series and applying an operation to them.').default({ op: 'sum', args: [] }),
-}).passthrough()
+}).loose()
 
 // Add custom series with editable data values and unit
-export const defaultYearRange = {
-  start: 2016,
-  end: 2024,
-};
 export const CustomSeriesConfigurationSchema = BaseSeriesConfigurationSchema.extend({
   type: z.literal('custom-series'),
   data: z.array(z.object({
     year: z.number(),
     value: z.number().default(1),
   })).default(Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, index) => ({ year: index + defaultYearRange.start, value: 1 }))),
-}).passthrough();
+}).loose();
 
 
 export const CustomSeriesValueConfigurationSchema = BaseSeriesConfigurationSchema.extend({

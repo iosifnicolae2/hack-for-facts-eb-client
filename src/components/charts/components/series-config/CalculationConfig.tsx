@@ -268,7 +268,7 @@ function SeriesOperand({
       <div className="flex items-center gap-2 overflow-hidden">
         <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
         <span className="text-sm font-medium truncate" title={label}>{label}</span>
-        <span className="text-xs text-muted-foreground">[id:{idPrefix}...]</span>
+        <span className="text-xs text-muted-foreground">[id::{idPrefix}...]</span>
       </div>
       <ControlPanel controls={controls} />
     </div>

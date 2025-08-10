@@ -22,7 +22,11 @@ export const mapFiltersSchema = z.object({
 });
 
 export const mapStateSchema = z.object({
-  filters: mapFiltersSchema.default({}),
+  filters: mapFiltersSchema.default({
+    account_categories: ["ch"],
+    normalization: "per_capita",
+    years: [defaultYearRange.end],
+  }),
   activeView: MapViewEnum.default("map"),
   mapViewType: MapViewTypeEnum.default("UAT"),
 });

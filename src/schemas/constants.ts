@@ -13,6 +13,9 @@ export const DEFAULT_CHART_CONFIG = {
     showGridLines: true,
     showLegend: true,
     showRelativeValues: false,
+    showTooltip: true,
+    editAnnotations: true,
+    showAnnotations: true,
 };
 
 export const DEFAULT_SERIES_CONFIG = {
@@ -36,4 +39,5 @@ export const DEFAULT_CHART = {
     series: [],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    annotations: [],
 };

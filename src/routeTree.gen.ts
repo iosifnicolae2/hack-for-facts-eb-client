@@ -10,192 +10,79 @@
 
 import { createFileRoute } from '@tanstack/react-router'
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as MapRouteImport } from './routes/map'
+import { Route as EntityAnalyticsRouteImport } from './routes/entity-analytics'
+import { Route as CookiesRouteImport } from './routes/cookies'
+import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
+import { Route as EntitiesCuiRouteImport } from './routes/entities.$cui'
+import { Route as ChartsChartIdRouteRouteImport } from './routes/charts/$chartId/route'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as PrivacyImport } from './routes/privacy'
-import { Route as MapImport } from './routes/map'
-import { Route as EntityAnalyticsImport } from './routes/entity-analytics'
-import { Route as CookiesImport } from './routes/cookies'
-import { Route as CookiePolicyImport } from './routes/cookie-policy'
-import { Route as EntitiesCuiImport } from './routes/entities.$cui'
-import { Route as ChartsChartIdRouteImport } from './routes/charts/$chartId/route'
+const IndexLazyRouteImport = createFileRoute('/')()
+const ChartsIndexLazyRouteImport = createFileRoute('/charts/')()
+const ChartsNewLazyRouteImport = createFileRoute('/charts/new')()
+const ChartsChartIdIndexLazyRouteImport = createFileRoute('/charts/$chartId/')()
 
-// Create Virtual Routes
-
-const IndexLazyImport = createFileRoute('/')()
-const ChartsIndexLazyImport = createFileRoute('/charts/')()
-const ChartsNewLazyImport = createFileRoute('/charts/new')()
-const ChartsChartIdIndexLazyImport = createFileRoute('/charts/$chartId/')()
-
-// Create/Update Routes
-
-const PrivacyRoute = PrivacyImport.update({
+const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/privacy.lazy').then((d) => d.Route))
-
-const MapRoute = MapImport.update({
+const MapRoute = MapRouteImport.update({
   id: '/map',
   path: '/map',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/map.lazy').then((d) => d.Route))
-
-const EntityAnalyticsRoute = EntityAnalyticsImport.update({
+const EntityAnalyticsRoute = EntityAnalyticsRouteImport.update({
   id: '/entity-analytics',
   path: '/entity-analytics',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any).lazy(() =>
   import('./routes/entity-analytics.lazy').then((d) => d.Route),
 )
-
-const CookiesRoute = CookiesImport.update({
+const CookiesRoute = CookiesRouteImport.update({
   id: '/cookies',
   path: '/cookies',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/cookies.lazy').then((d) => d.Route))
-
-const CookiePolicyRoute = CookiePolicyImport.update({
+const CookiePolicyRoute = CookiePolicyRouteImport.update({
   id: '/cookie-policy',
   path: '/cookie-policy',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/cookie-policy.lazy').then((d) => d.Route))
-
-const IndexLazyRoute = IndexLazyImport.update({
+const IndexLazyRoute = IndexLazyRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
-
-const ChartsIndexLazyRoute = ChartsIndexLazyImport.update({
+const ChartsIndexLazyRoute = ChartsIndexLazyRouteImport.update({
   id: '/charts/',
   path: '/charts/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/charts/index.lazy').then((d) => d.Route))
-
-const ChartsNewLazyRoute = ChartsNewLazyImport.update({
+const ChartsNewLazyRoute = ChartsNewLazyRouteImport.update({
   id: '/charts/new',
   path: '/charts/new',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/charts/new.lazy').then((d) => d.Route))
-
-const EntitiesCuiRoute = EntitiesCuiImport.update({
+const EntitiesCuiRoute = EntitiesCuiRouteImport.update({
   id: '/entities/$cui',
   path: '/entities/$cui',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/entities.$cui.lazy').then((d) => d.Route))
-
-const ChartsChartIdRouteRoute = ChartsChartIdRouteImport.update({
+const ChartsChartIdRouteRoute = ChartsChartIdRouteRouteImport.update({
   id: '/charts/$chartId',
   path: '/charts/$chartId',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const ChartsChartIdIndexLazyRoute = ChartsChartIdIndexLazyImport.update({
+const ChartsChartIdIndexLazyRoute = ChartsChartIdIndexLazyRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => ChartsChartIdRouteRoute,
 } as any).lazy(() =>
   import('./routes/charts/$chartId/index.lazy').then((d) => d.Route),
 )
-
-// Populate the FileRoutesByPath interface
-
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/cookie-policy': {
-      id: '/cookie-policy'
-      path: '/cookie-policy'
-      fullPath: '/cookie-policy'
-      preLoaderRoute: typeof CookiePolicyImport
-      parentRoute: typeof rootRoute
-    }
-    '/cookies': {
-      id: '/cookies'
-      path: '/cookies'
-      fullPath: '/cookies'
-      preLoaderRoute: typeof CookiesImport
-      parentRoute: typeof rootRoute
-    }
-    '/entity-analytics': {
-      id: '/entity-analytics'
-      path: '/entity-analytics'
-      fullPath: '/entity-analytics'
-      preLoaderRoute: typeof EntityAnalyticsImport
-      parentRoute: typeof rootRoute
-    }
-    '/map': {
-      id: '/map'
-      path: '/map'
-      fullPath: '/map'
-      preLoaderRoute: typeof MapImport
-      parentRoute: typeof rootRoute
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyImport
-      parentRoute: typeof rootRoute
-    }
-    '/charts/$chartId': {
-      id: '/charts/$chartId'
-      path: '/charts/$chartId'
-      fullPath: '/charts/$chartId'
-      preLoaderRoute: typeof ChartsChartIdRouteImport
-      parentRoute: typeof rootRoute
-    }
-    '/entities/$cui': {
-      id: '/entities/$cui'
-      path: '/entities/$cui'
-      fullPath: '/entities/$cui'
-      preLoaderRoute: typeof EntitiesCuiImport
-      parentRoute: typeof rootRoute
-    }
-    '/charts/new': {
-      id: '/charts/new'
-      path: '/charts/new'
-      fullPath: '/charts/new'
-      preLoaderRoute: typeof ChartsNewLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/charts/': {
-      id: '/charts/'
-      path: '/charts'
-      fullPath: '/charts'
-      preLoaderRoute: typeof ChartsIndexLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/charts/$chartId/': {
-      id: '/charts/$chartId/'
-      path: '/'
-      fullPath: '/charts/$chartId/'
-      preLoaderRoute: typeof ChartsChartIdIndexLazyImport
-      parentRoute: typeof ChartsChartIdRouteImport
-    }
-  }
-}
-
-// Create and export the route tree
-
-interface ChartsChartIdRouteRouteChildren {
-  ChartsChartIdIndexLazyRoute: typeof ChartsChartIdIndexLazyRoute
-}
-
-const ChartsChartIdRouteRouteChildren: ChartsChartIdRouteRouteChildren = {
-  ChartsChartIdIndexLazyRoute: ChartsChartIdIndexLazyRoute,
-}
-
-const ChartsChartIdRouteRouteWithChildren =
-  ChartsChartIdRouteRoute._addFileChildren(ChartsChartIdRouteRouteChildren)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
@@ -210,7 +97,6 @@ export interface FileRoutesByFullPath {
   '/charts': typeof ChartsIndexLazyRoute
   '/charts/$chartId/': typeof ChartsChartIdIndexLazyRoute
 }
-
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/cookie-policy': typeof CookiePolicyRoute
@@ -223,9 +109,8 @@ export interface FileRoutesByTo {
   '/charts': typeof ChartsIndexLazyRoute
   '/charts/$chartId': typeof ChartsChartIdIndexLazyRoute
 }
-
 export interface FileRoutesById {
-  __root__: typeof rootRoute
+  __root__: typeof rootRouteImport
   '/': typeof IndexLazyRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/cookies': typeof CookiesRoute
@@ -238,7 +123,6 @@ export interface FileRoutesById {
   '/charts/': typeof ChartsIndexLazyRoute
   '/charts/$chartId/': typeof ChartsChartIdIndexLazyRoute
 }
-
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
@@ -280,7 +164,6 @@ export interface FileRouteTypes {
     | '/charts/$chartId/'
   fileRoutesById: FileRoutesById
 }
-
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   CookiePolicyRoute: typeof CookiePolicyRoute
@@ -294,6 +177,99 @@ export interface RootRouteChildren {
   ChartsIndexLazyRoute: typeof ChartsIndexLazyRoute
 }
 
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/map': {
+      id: '/map'
+      path: '/map'
+      fullPath: '/map'
+      preLoaderRoute: typeof MapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/entity-analytics': {
+      id: '/entity-analytics'
+      path: '/entity-analytics'
+      fullPath: '/entity-analytics'
+      preLoaderRoute: typeof EntityAnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cookies': {
+      id: '/cookies'
+      path: '/cookies'
+      fullPath: '/cookies'
+      preLoaderRoute: typeof CookiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cookie-policy': {
+      id: '/cookie-policy'
+      path: '/cookie-policy'
+      fullPath: '/cookie-policy'
+      preLoaderRoute: typeof CookiePolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/charts/': {
+      id: '/charts/'
+      path: '/charts'
+      fullPath: '/charts'
+      preLoaderRoute: typeof ChartsIndexLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/charts/new': {
+      id: '/charts/new'
+      path: '/charts/new'
+      fullPath: '/charts/new'
+      preLoaderRoute: typeof ChartsNewLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/entities/$cui': {
+      id: '/entities/$cui'
+      path: '/entities/$cui'
+      fullPath: '/entities/$cui'
+      preLoaderRoute: typeof EntitiesCuiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/charts/$chartId': {
+      id: '/charts/$chartId'
+      path: '/charts/$chartId'
+      fullPath: '/charts/$chartId'
+      preLoaderRoute: typeof ChartsChartIdRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/charts/$chartId/': {
+      id: '/charts/$chartId/'
+      path: '/'
+      fullPath: '/charts/$chartId/'
+      preLoaderRoute: typeof ChartsChartIdIndexLazyRouteImport
+      parentRoute: typeof ChartsChartIdRouteRoute
+    }
+  }
+}
+
+interface ChartsChartIdRouteRouteChildren {
+  ChartsChartIdIndexLazyRoute: typeof ChartsChartIdIndexLazyRoute
+}
+
+const ChartsChartIdRouteRouteChildren: ChartsChartIdRouteRouteChildren = {
+  ChartsChartIdIndexLazyRoute: ChartsChartIdIndexLazyRoute,
+}
+
+const ChartsChartIdRouteRouteWithChildren =
+  ChartsChartIdRouteRoute._addFileChildren(ChartsChartIdRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   CookiePolicyRoute: CookiePolicyRoute,
@@ -306,66 +282,6 @@ const rootRouteChildren: RootRouteChildren = {
   ChartsNewLazyRoute: ChartsNewLazyRoute,
   ChartsIndexLazyRoute: ChartsIndexLazyRoute,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/cookie-policy",
-        "/cookies",
-        "/entity-analytics",
-        "/map",
-        "/privacy",
-        "/charts/$chartId",
-        "/entities/$cui",
-        "/charts/new",
-        "/charts/"
-      ]
-    },
-    "/": {
-      "filePath": "index.lazy.tsx"
-    },
-    "/cookie-policy": {
-      "filePath": "cookie-policy.tsx"
-    },
-    "/cookies": {
-      "filePath": "cookies.tsx"
-    },
-    "/entity-analytics": {
-      "filePath": "entity-analytics.tsx"
-    },
-    "/map": {
-      "filePath": "map.tsx"
-    },
-    "/privacy": {
-      "filePath": "privacy.tsx"
-    },
-    "/charts/$chartId": {
-      "filePath": "charts/$chartId/route.tsx",
-      "children": [
-        "/charts/$chartId/"
-      ]
-    },
-    "/entities/$cui": {
-      "filePath": "entities.$cui.tsx"
-    },
-    "/charts/new": {
-      "filePath": "charts/new.lazy.tsx"
-    },
-    "/charts/": {
-      "filePath": "charts/index.lazy.tsx"
-    },
-    "/charts/$chartId/": {
-      "filePath": "charts/$chartId/index.lazy.tsx",
-      "parent": "/charts/$chartId"
-    }
-  }
-}
-ROUTE_MANIFEST_END */
