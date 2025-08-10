@@ -116,13 +116,13 @@ export function AppFooter(): ReactElement {
                         <h2 id="footer-legal-heading" className="font-medium text-foreground text-base">Legal</h2>
                         <ul className="space-y-2 text-sm">
                             <li>
-                                <a href="#" className="hover:text-foreground">Privacy Policy</a>
+                                <Link to="/privacy" className="hover:text-foreground">Privacy Policy</Link>
                             </li>
                             <li>
                                 <a href="#" className="hover:text-foreground">Terms of Service</a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-foreground">Cookie Policy</a>
+                                <Link to="/cookies" className="hover:text-foreground">Cookie Settings</Link>
                             </li>
                         </ul>
                     </nav>

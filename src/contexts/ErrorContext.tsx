@@ -2,6 +2,7 @@ import React, { createContext, useContext, useCallback, useState } from "react";
 import { AppError, ErrorSource } from "@/lib/errors/types";
 import { logger } from "@/lib/logger";
 import posthog from "posthog-js";
+import { hasAnalyticsConsent } from "@/lib/consent";
 
 interface ErrorContextValue {
   error: AppError | null;
@@ -37,14 +38,16 @@ export function ErrorProvider({ children, onError }: ErrorProviderProps) {
         context: appError.context,
       });
 
-      // Track error in PostHog
-      posthog.capture("error_occurred", {
-        error_type: appError.type,
-        error_code: appError.code,
-        error_message: appError.message,
-        error_severity: appError.severity,
-        error_context: appError.context,
-      });
+      // Track error in PostHog only if analytics consent is granted
+      if (hasAnalyticsConsent()) {
+        posthog.capture("error_occurred", {
+          error_type: appError.type,
+          error_code: appError.code,
+          error_message: appError.message,
+          error_severity: appError.severity,
+          error_context: appError.context,
+        });
+      }
 
       // Call custom error handler if provided
       if (onError) {

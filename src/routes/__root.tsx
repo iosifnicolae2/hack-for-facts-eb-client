@@ -10,6 +10,7 @@ import { MobileSidebarFab } from "@/components/sidebar/mobile-sidebar-fab";
 import { queryClient } from "@/lib/queryClient";
 import { FloatingEntitySearch } from "@/components/entities/FloatingEntitySearch";
 import { AppFooter } from "@/components/footer/AppFooter";
+import { CookieConsentBanner } from "@/components/privacy/CookieConsentBanner";
 
 export const Route = createRootRoute({
   component: () => (
@@ -30,6 +31,7 @@ export const Route = createRootRoute({
                   </main>
                   <AppFooter />
                   <MobileSidebarFab />
+                  <CookieConsentBanner />
                 </SidebarInset>
               </div>
             </SidebarProvider>

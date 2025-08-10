@@ -2,6 +2,8 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { PostHogProvider } from "posthog-js/react";
+import posthog from "posthog-js";
+import { hasAnalyticsConsent, onConsentChange } from "@/lib/consent";
 
 import "./index.css";
 
@@ -24,7 +26,27 @@ declare module "@tanstack/react-router" {
   }
 }
 
-// Initialize MSW and then render the app
+// Configure PostHog to respect consent before rendering
+if (!hasAnalyticsConsent()) {
+  posthog.opt_out_capturing();
+} else {
+  posthog.opt_in_capturing();
+  posthog.capture('$pageview');
+}
+
+// React to consent changes at runtime
+if (typeof window !== 'undefined') {
+  onConsentChange((prefs) => {
+    if (prefs.analytics) {
+      posthog.opt_in_capturing();
+      posthog.capture('$pageview');
+    } else {
+      posthog.opt_out_capturing();
+    }
+  });
+}
+
+// Initialize app
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <PostHogProvider
@@ -34,6 +56,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           ? {
             api_host: env.VITE_POSTHOG_HOST,
             person_profiles: env.VITE_POSTHOG_PERSON_PROFILES,
+            opt_out_capturing_by_default: true,
+            autocapture: false,
+            capture_pageview: false,
+            disable_session_recording: true,
           }
           : undefined
       }

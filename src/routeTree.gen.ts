@@ -13,8 +13,11 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as PrivacyImport } from './routes/privacy'
 import { Route as MapImport } from './routes/map'
 import { Route as EntityAnalyticsImport } from './routes/entity-analytics'
+import { Route as CookiesImport } from './routes/cookies'
+import { Route as CookiePolicyImport } from './routes/cookie-policy'
 import { Route as EntitiesCuiImport } from './routes/entities.$cui'
 import { Route as ChartsChartIdRouteImport } from './routes/charts/$chartId/route'
 
@@ -27,6 +30,12 @@ const ChartsNewLazyImport = createFileRoute('/charts/new')()
 const ChartsChartIdIndexLazyImport = createFileRoute('/charts/$chartId/')()
 
 // Create/Update Routes
+
+const PrivacyRoute = PrivacyImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/privacy.lazy').then((d) => d.Route))
 
 const MapRoute = MapImport.update({
   id: '/map',
@@ -41,6 +50,18 @@ const EntityAnalyticsRoute = EntityAnalyticsImport.update({
 } as any).lazy(() =>
   import('./routes/entity-analytics.lazy').then((d) => d.Route),
 )
+
+const CookiesRoute = CookiesImport.update({
+  id: '/cookies',
+  path: '/cookies',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/cookies.lazy').then((d) => d.Route))
+
+const CookiePolicyRoute = CookiePolicyImport.update({
+  id: '/cookie-policy',
+  path: '/cookie-policy',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/cookie-policy.lazy').then((d) => d.Route))
 
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
@@ -99,6 +120,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/cookie-policy': {
+      id: '/cookie-policy'
+      path: '/cookie-policy'
+      fullPath: '/cookie-policy'
+      preLoaderRoute: typeof CookiePolicyImport
+      parentRoute: typeof rootRoute
+    }
+    '/cookies': {
+      id: '/cookies'
+      path: '/cookies'
+      fullPath: '/cookies'
+      preLoaderRoute: typeof CookiesImport
+      parentRoute: typeof rootRoute
+    }
     '/entity-analytics': {
       id: '/entity-analytics'
       path: '/entity-analytics'
@@ -111,6 +146,13 @@ declare module '@tanstack/react-router' {
       path: '/map'
       fullPath: '/map'
       preLoaderRoute: typeof MapImport
+      parentRoute: typeof rootRoute
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyImport
       parentRoute: typeof rootRoute
     }
     '/charts/$chartId': {
@@ -173,8 +215,11 @@ const ChartsChartIdRouteRouteWithChildren =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
+  '/cookie-policy': typeof CookiePolicyRoute
+  '/cookies': typeof CookiesRoute
   '/entity-analytics': typeof EntityAnalyticsRoute
   '/map': typeof MapRoute
+  '/privacy': typeof PrivacyRoute
   '/charts/$chartId': typeof ChartsChartIdRouteRouteWithChildren
   '/entities/$cui': typeof EntitiesCuiRoute
   '/charts/new': typeof ChartsNewLazyRoute
@@ -185,8 +230,11 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
+  '/cookie-policy': typeof CookiePolicyRoute
+  '/cookies': typeof CookiesRoute
   '/entity-analytics': typeof EntityAnalyticsRoute
   '/map': typeof MapRoute
+  '/privacy': typeof PrivacyRoute
   '/entities/$cui': typeof EntitiesCuiRoute
   '/charts/new': typeof ChartsNewLazyRoute
   '/charts': typeof ChartsIndexLazyRoute
@@ -197,8 +245,11 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
+  '/cookie-policy': typeof CookiePolicyRoute
+  '/cookies': typeof CookiesRoute
   '/entity-analytics': typeof EntityAnalyticsRoute
   '/map': typeof MapRoute
+  '/privacy': typeof PrivacyRoute
   '/charts/$chartId': typeof ChartsChartIdRouteRouteWithChildren
   '/entities/$cui': typeof EntitiesCuiRoute
   '/charts/new': typeof ChartsNewLazyRoute
@@ -211,8 +262,11 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/cookie-policy'
+    | '/cookies'
     | '/entity-analytics'
     | '/map'
+    | '/privacy'
     | '/charts/$chartId'
     | '/entities/$cui'
     | '/charts/new'
@@ -222,8 +276,11 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/cookie-policy'
+    | '/cookies'
     | '/entity-analytics'
     | '/map'
+    | '/privacy'
     | '/entities/$cui'
     | '/charts/new'
     | '/charts'
@@ -232,8 +289,11 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/cookie-policy'
+    | '/cookies'
     | '/entity-analytics'
     | '/map'
+    | '/privacy'
     | '/charts/$chartId'
     | '/entities/$cui'
     | '/charts/new'
@@ -245,8 +305,11 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
+  CookiePolicyRoute: typeof CookiePolicyRoute
+  CookiesRoute: typeof CookiesRoute
   EntityAnalyticsRoute: typeof EntityAnalyticsRoute
   MapRoute: typeof MapRoute
+  PrivacyRoute: typeof PrivacyRoute
   ChartsChartIdRouteRoute: typeof ChartsChartIdRouteRouteWithChildren
   EntitiesCuiRoute: typeof EntitiesCuiRoute
   ChartsNewLazyRoute: typeof ChartsNewLazyRoute
@@ -256,8 +319,11 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
+  CookiePolicyRoute: CookiePolicyRoute,
+  CookiesRoute: CookiesRoute,
   EntityAnalyticsRoute: EntityAnalyticsRoute,
   MapRoute: MapRoute,
+  PrivacyRoute: PrivacyRoute,
   ChartsChartIdRouteRoute: ChartsChartIdRouteRouteWithChildren,
   EntitiesCuiRoute: EntitiesCuiRoute,
   ChartsNewLazyRoute: ChartsNewLazyRoute,
@@ -276,8 +342,11 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/cookie-policy",
+        "/cookies",
         "/entity-analytics",
         "/map",
+        "/privacy",
         "/charts/$chartId",
         "/entities/$cui",
         "/charts/new",
@@ -288,11 +357,20 @@ export const routeTree = rootRoute
     "/": {
       "filePath": "index.lazy.tsx"
     },
+    "/cookie-policy": {
+      "filePath": "cookie-policy.tsx"
+    },
+    "/cookies": {
+      "filePath": "cookies.tsx"
+    },
     "/entity-analytics": {
       "filePath": "entity-analytics.tsx"
     },
     "/map": {
       "filePath": "map.tsx"
+    },
+    "/privacy": {
+      "filePath": "privacy.tsx"
     },
     "/charts/$chartId": {
       "filePath": "charts/$chartId/route.tsx",
