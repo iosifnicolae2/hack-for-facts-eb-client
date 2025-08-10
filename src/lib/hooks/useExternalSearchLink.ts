@@ -2,8 +2,7 @@ import { EntityDetailsData } from '../api/entities';
 import { useMemo } from 'react';
 
 /**
- * Returns a Wikipedia URL for an entity by querying the MediaWiki search API.
- * If no exact result is found, falls back to the generic Special:Search page.
+ * Returns a Google search URL 
  */
 export function useExternalSearchLink(
     entity: Pick<EntityDetailsData, 'name' | 'uat'>,
@@ -29,7 +28,7 @@ function formatSearchQuery(entity: Pick<EntityDetailsData, 'name' | 'entity_type
         return 'Primaria Municipiului Bucuresti'
     }
     if (['admin_municipality', 'admin_town_hall', 'admin_commune_hall', 'admin_sector_hall'].includes(entity.entity_type ?? '')) {
-        return `Primaria ${entity.name.trim()}`
+        return `Primaria ${entity.name.trim()}, Județul ${entity.uat?.county_name?.trim()}`
     }
     return `${entity.name.trim()}, ${entity.uat?.county_name?.trim()}`
 }

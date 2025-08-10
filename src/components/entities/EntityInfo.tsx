@@ -6,7 +6,7 @@ import { EntityDetailsData } from '@/lib/api/entities';
 import entityCategories from '@/assets/entity-categories.json';
 import { Badge } from '@/components/ui/badge';
 import { UatDisplay } from './UatDisplay';
-import { useExternalSearchLink } from '@/lib/hooks/useWikipediaLink';
+import { useExternalSearchLink } from '@/lib/hooks/useExternalSearchLink';
 
 interface EntityInfoProps {
     entity: Pick<EntityDetailsData, 'name' | 'cui' | 'entity_type' | 'address' | 'uat' | 'children' | 'parents'>;

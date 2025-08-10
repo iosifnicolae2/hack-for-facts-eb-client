@@ -1,2 +1,2 @@
 export * from "./useDebouncedValue";
-export * from "./useWikipediaLink";
+export * from "./useExternalSearchLink";
