@@ -18,11 +18,11 @@
         },
         {
           "code": "04.XX",
-          "description": "Cote și sume defalcate din impozitul pe venit (se scad)"
+          "description": "Cote și sume defalcate din impozitul pe venit"
         },
         {
           "code": "05.XX",
-          "description": "Alte impozite pe venit, profit și câștiguri din capital de la persoane fizice"
+          "description": "Alte impozite pe venit, profit și câștiguri din capital"
         },
         {
           "code": "06.XX",
@@ -52,11 +52,11 @@
         },
         {
           "code": "11.XX",
-          "description": "Servicii publice descentralizate"
+          "description": "Sume defalcate din taxa pe valoarea adăugată"
         },
         {
           "code": "12.XX",
-          "description": "Contribuții la bugetul Uniunii Europene și cofinanțări UE"
+          "description": "Alte impozite și taxe generale pe bunuri și servicii"
         },
         {
           "code": "13.XX",
@@ -68,11 +68,11 @@
         },
         {
           "code": "15.XX",
-          "description": "Tranzacții privind datoria publică și împrumuturi"
+          "description": "Taxe pe servicii specifice"
         },
         {
           "code": "16.XX",
-          "description": "Transferuri cu caracter general între nivelele administrației"
+          "description": "Taxe pe utilizarea bunurilor, autorizarea utilizării bunurilor sau pe desfășurarea de activități"
         },
         {
           "code": "17.XX",
@@ -80,7 +80,7 @@
         },
         {
           "code": "18.XX",
-          "description": "Management public general"
+          "description": "Alte impozite și taxe fiscale"
         },
         {
           "code": "19.XX",
@@ -140,11 +140,11 @@
       "chapters": [
         {
           "code": "30.XX",
-          "description": "Servicii sociale de bază"
+          "description": "Venituri din proprietate"
         },
         {
           "code": "31.XX",
-          "description": "Protecție socială pentru copii și familii"
+          "description": "Venituri din dobânzi"
         },
         {
           "code": "32.XX",
@@ -152,23 +152,23 @@
         },
         {
           "code": "33.XX",
-          "description": "Asistență socială"
+          "description": "Venituri din prestări de servicii și alte activități"
         },
         {
           "code": "34.XX",
-          "description": "Servicii pentru vârstnici"
+          "description": "Venituri din taxe administrative, eliberări permise"
         },
         {
           "code": "35.XX",
-          "description": "Servicii de integrare socială"
+          "description": "Amenzi, penalități și confiscări"
         },
         {
           "code": "36.XX",
-          "description": "Sănătate"
+          "description": "Diverse venituri"
         },
         {
           "code": "37.XX",
-          "description": "Servicii de prevenire a bolilor"
+          "description": "Transferuri voluntare, altele decât subvențiile"
         },
         {
           "code": "38.XX",
@@ -176,19 +176,19 @@
         },
         {
           "code": "39.XX",
-          "description": "Învățământ"
+          "description": "Venituri din valorificarea bunurilor"
         },
         {
           "code": "40.XX",
-          "description": "Cultură, recreere și religie"
+          "description": "Încasări din rambursarea împrumuturilor acordate"
         },
         {
           "code": "41.XX",
-          "description": "Servicii recreative și sportive"
+          "description": "Alte operațiuni financiare"
         },
         {
           "code": "42.XX",
-          "description": "Dezvoltare economică locală"
+          "description": "Subvenții de la bugetul de stat"
         },
         {
           "code": "43.XX",
@@ -200,19 +200,19 @@
         },
         {
           "code": "45.XX",
-          "description": "Servicii de utilități publice"
+          "description": "Sume primite de la UE/alți donatori în contul plăților efectuate și prefinanțări"
         },
         {
           "code": "46.XX",
-          "description": "Energie"
+          "description": "Alte sume primite de la UE"
         },
         {
           "code": "47.XX",
-          "description": "Comunicații"
+          "description": "Sume în curs de distribuire"
         },
         {
           "code": "48.XX",
-          "description": "Transporturi"
+          "description": "Sume primite de la UE/alti donatori in contul platilor efectuate si prefinantari aferente cadrului financiar 2014-2020"
         },
         {
           "code": "49.XX",
