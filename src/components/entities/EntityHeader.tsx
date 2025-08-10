@@ -41,7 +41,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
         {yearSelector && (
           <div
             className={cn(
-              "flex-shrink-0",
+              "w-1/3 sm:w-auto",
               "rounded-xl border border-slate-200/80 dark:border-slate-700/70",
               "bg-white/70 dark:bg-slate-900/40 backdrop-blur supports-[backdrop-filter]:bg-white/30",
               "px-2 py-1 shadow-sm",

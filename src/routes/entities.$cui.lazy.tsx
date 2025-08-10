@@ -184,9 +184,13 @@ function EntityDetailsPage() {
           activeView={search.view ?? 'overview'}
           yearSelector={
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-slate-700 dark:text-slate-300 hidden sm:inline">Reporting Year:</span>
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-300 sm:inline">Reporting Year:</span>
               <Select value={selectedYear.toString()} onValueChange={(val) => handleYearChange(parseInt(val, 10))}>
-                <SelectTrigger ref={yearSelectorRef} className="w-[5rem] border-none shadow-none font-bold">
+                <SelectTrigger
+                  ref={yearSelectorRef}
+                  aria-label="Reporting year"
+                  className="h-7 sm:h-9 w-[4.5rem] sm:w-[5rem] px-2 border-none shadow-none font-bold text-sm sm:text-base"
+                >
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
