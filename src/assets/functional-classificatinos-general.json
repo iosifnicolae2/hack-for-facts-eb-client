@@ -19,11 +19,11 @@
                         "code": "01",
                         "children": [
                           {
-                            "description": "Impozit pe profit de la agentii economici *)",
+                            "description": "Impozit pe profit de la agentii economici",
                             "code": "01.01"
                           },
                           {
-                            "description": "Impozit pe profit de la bancile comerciale *)",
+                            "description": "Impozit pe profit de la bancile comerciale",
                             "code": "01.02"
                           },
                           {
@@ -245,7 +245,7 @@
                         "code": "05",
                         "children": [
                           {
-                            "description": "Impozit pe veniturile realizate de persoanele nerezidente*)",
+                            "description": "Impozit pe veniturile realizate de persoanele nerezidente",
                             "code": "05.01"
                           },
                           {
@@ -312,11 +312,11 @@
                     "code": "10",
                     "children": [
                       {
-                        "description": "Taxa pe valoarea adaugata incasata *)",
+                        "description": "Taxa pe valoarea adaugata incasata",
                         "code": "10.01"
                       },
                       {
-                        "description": "T.V.A restituita (se scade) *)",
+                        "description": "T.V.A restituita (se scade)",
                         "code": "10.02"
                       },
                       {
@@ -438,83 +438,83 @@
                     ]
                   },
                   {
-                    "description": "Accize *)",
+                    "description": "Accize",
                     "code": "14",
                     "children": [
                       {
-                        "description": "Accize incasate din vanzarea produselor energetice *)",
+                        "description": "Accize incasate din vanzarea produselor energetice",
                         "code": "14.01"
                       },
                       {
-                        "description": "Accize incasate din vanzarea de alcool etilic, produse intermediare, vinuri spumoase, bauturi fermentate spumoase şi bere *)",
+                        "description": "Accize incasate din vanzarea de alcool etilic, produse intermediare, vinuri spumoase, bauturi fermentate spumoase şi bere",
                         "code": "14.02"
                       },
                       {
-                        "description": "Accize incasate din vanzarea produselor din tutun *)",
+                        "description": "Accize incasate din vanzarea produselor din tutun",
                         "code": "14.03"
                       },
                       {
-                        "description": "Accize incasate din vanzarea de cafea *)",
+                        "description": "Accize incasate din vanzarea de cafea",
                         "code": "14.04"
                       },
                       {
-                        "description": "Accize incasate din vanzarea altor produse *)",
+                        "description": "Accize incasate din vanzarea altor produse",
                         "code": "14.05"
                       },
                       {
-                        "description": "Accize încasate din vânzarea energiei electrice din productia interna *)",
+                        "description": "Accize încasate din vânzarea energiei electrice din productia interna",
                         "code": "14.06"
                       },
                       {
-                        "description": "Accize încasate din vânzarea autoturismelor din productia interna, datorate pana la data de 31 decembrie 2006 *)",
+                        "description": "Accize încasate din vânzarea autoturismelor din productia interna, datorate pana la data de 31 decembrie 2006",
                         "code": "14.07"
                       },
                       {
-                        "description": "Accize încasate pentru autoturismele din producţia internă cu contracte de leasing iniţiate înainte de 1 ianuarie 2007*)",
+                        "description": "Accize încasate pentru autoturismele din producţia internă cu contracte de leasing iniţiate înainte de 1 ianuarie 2007",
                         "code": "14.09"
                       },
                       {
-                        "description": "Accize încasate din vânzarea băuturilor nealcoolice cu zahăr adăugat*)",
+                        "description": "Accize încasate din vânzarea băuturilor nealcoolice cu zahăr adăugat",
                         "code": "14.10"
                       },
                       {
-                        "description": "Accize incasate în vama din importul produselor energetice *)”",
+                        "description": "Accize incasate în vama din importul produselor energetice ”",
                         "code": "14.11"
                       },
                       {
-                        "description": "Accize încasate în vamă din importul de alcool etilic, produse intermediare, vinuri spumoase, băuturi fermentate spumoase şi bere, inclusiv sume datorate pana la data de 31 decembrie 2006 *)",
+                        "description": "Accize încasate în vamă din importul de alcool etilic, produse intermediare, vinuri spumoase, băuturi fermentate spumoase şi bere, inclusiv sume datorate pana la data de 31 decembrie 2006",
                         "code": "14.12"
                       },
                       {
-                        "description": "Accize încasate în vamă din importul de produse din tutun *)",
+                        "description": "Accize încasate în vamă din importul de produse din tutun",
                         "code": "14.13"
                       },
                       {
-                        "description": "Accize încasate în vamă din importul de cafea *)",
+                        "description": "Accize încasate în vamă din importul de cafea",
                         "code": "14.14"
                       },
                       {
-                        "description": "Accize încasate în vamă din importul energiei electrice *)",
+                        "description": "Accize încasate în vamă din importul energiei electrice",
                         "code": "14.15"
                       },
                       {
-                        "description": "Accize încasate în vamă din importul altor produse *)",
+                        "description": "Accize încasate în vamă din importul altor produse",
                         "code": "14.16"
                       },
                       {
-                        "description": "Accize încasate în vamă din importul autoturismelor,  datorate pana la data de 31 decembrie 2006 *)",
+                        "description": "Accize încasate în vamă din importul autoturismelor,  datorate pana la data de 31 decembrie 2006",
                         "code": "14.17"
                       },
                       {
-                        "description": "Accize încasate în vamă pentru autoturismele cu contracte de leasing iniţiate înainte de 1 ianuarie 2007*)",
+                        "description": "Accize încasate în vamă pentru autoturismele cu contracte de leasing iniţiate înainte de 1 ianuarie 2007",
                         "code": "14.19"
                       },
                       {
-                        "description": "Accize încasate în vamă din importul băuturilor nealcoolice cu zahăr adăugat*)",
+                        "description": "Accize încasate în vamă din importul băuturilor nealcoolice cu zahăr adăugat",
                         "code": "14.20"
                       },
                       {
-                        "description": "Accize de restituit/ de compensat *)",
+                        "description": "Accize de restituit/ de compensat",
                         "code": "14.50"
                       }
                     ]
@@ -608,11 +608,11 @@
                     "code": "18",
                     "children": [
                       {
-                        "description": "Majorări de întârziere aferente taxelor vamale, taxelor agricole si taxelor anti-dumping*)",
+                        "description": "Majorări de întârziere aferente taxelor vamale, taxelor agricole si taxelor anti-dumping",
                         "code": "18.01"
                       },
                       {
-                        "description": "Taxe vamale  din sumele datorate până la data de 31.12.2006  *)",
+                        "description": "Taxe vamale  din sumele datorate până la data de 31.12.2006",
                         "code": "18.02"
                       },
                       {
@@ -709,11 +709,11 @@
                         "code": "30.04"
                       },
                       {
-                        "description": "Venituri din concesiuni si inchirieri *)",
+                        "description": "Venituri din concesiuni si inchirieri",
                         "code": "30.05"
                       },
                       {
-                        "description": "Venituri din dividende *)",
+                        "description": "Venituri din dividende",
                         "code": "30.08"
                       },
                       {
