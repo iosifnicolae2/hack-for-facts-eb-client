@@ -113,13 +113,21 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
     const selectedEntityTypeOptions: OptionItem[] = filter.entity_types?.map(id => ({ id, label: entityTypeLabelsStore.map(id) })) || [];
     const setSelectedEntityTypeOptions = createListUpdater('entity_types');
 
-    const minAmount = String(filter.min_amount ?? '');
-    const maxAmount = String(filter.max_amount ?? '');
-    const setMinAmount = createValueUpdater('min_amount', (v) => v ? Number(v) : undefined);
-    const setMaxAmount = createValueUpdater('max_amount', (v) => v ? Number(v) : undefined);
+    const minAmount = String(filter.item_min_amount ?? '');
+    const maxAmount = String(filter.item_max_amount ?? '');
+    const setMinAmount = createValueUpdater('item_min_amount', (v) => v ? Number(v) : undefined);
+    const setMaxAmount = createValueUpdater('item_max_amount', (v) => v ? Number(v) : undefined);
 
-    const reportType = filter.report_type;
-    const setReportType = createValueUpdater('report_type', (v) => v ? v : undefined);
+    const reportType = filter.report_types?.[0];
+    const setReportType = (v: FilterValue) => {
+        if (!seriesId) return;
+        updateSeries(seriesId, (prevSeries) => {
+            if (prevSeries.type === 'line-items-aggregated-yearly') {
+                prevSeries.filter.report_types = v ? [String(v)] : undefined;
+            }
+            return prevSeries;
+        });
+    };
     const reportTypeOption: OptionItem | null = reportType ? { id: reportType, label: reportType } : null;
 
     const functionalPrefixes = filter.functional_prefixes ?? [];
@@ -143,7 +151,7 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
         if (!seriesId) return;
         updateSeries(seriesId, (prevSeries) => {
             if (prevSeries.type === 'line-items-aggregated-yearly') {
-                prevSeries.filter = { account_category: 'ch', report_type: 'Executie bugetara agregata la nivel de ordonator principal' };
+                prevSeries.filter = { account_category: 'ch', report_types: ['Executie bugetara agregata la nivel de ordonator principal'] };
             }
             return prevSeries;
         });
@@ -158,9 +166,9 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
         (filter.funding_source_ids?.length ?? 0) +
         (filter.account_category ? 1 : 0) +
         (filter.entity_types?.length ?? 0) +
-        (filter.min_amount != null ? 1 : 0) +
-        (filter.max_amount != null ? 1 : 0) +
-        (reportType ? 1 : 0) +
+        (filter.item_min_amount != null ? 1 : 0) +
+        (filter.item_max_amount != null ? 1 : 0) +
+        ((filter.report_types?.length ?? 0) > 0 ? 1 : 0) +
         (filter.is_uat !== undefined ? 1 : 0) +
         (filter.functional_prefixes?.length ?? 0) +
         (filter.economic_prefixes?.length ?? 0);

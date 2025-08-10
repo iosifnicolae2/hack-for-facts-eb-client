@@ -71,9 +71,7 @@ export interface EntityDetailsData {
   } | null;
 }
 
-interface EntityDetailsResponse {
-  entity: EntityDetailsData | null;
-}
+// removed old EntityDetailsResponse; response shape is declared inline below
 
 const GET_ENTITY_DETAILS_QUERY = `
   query GetEntityDetails($cui: ID!, $year: Int!, $startYear: Int!, $endYear: Int!) {
@@ -134,8 +132,26 @@ const GET_ENTITY_DETAILS_QUERY = `
           hasNextPage
         }
       }
-      executionLineItems(
-        filter: { year: $year }
+      executionLineItemsCh: executionLineItems(
+        filter: { years: [$year], account_category: ch }
+        sort: { by: "amount", order: "DESC" }
+        limit: 1000
+      ) {
+        nodes {
+          account_category
+          functionalClassification {
+            functional_name
+            functional_code
+          }
+          economicClassification {
+            economic_name
+            economic_code
+          }
+          amount
+        }
+      }
+      executionLineItemsVn: executionLineItems(
+        filter: { years: [$year], account_category: vn }
         sort: { by: "amount", order: "DESC" }
         limit: 1000
       ) {
@@ -165,7 +181,12 @@ export async function getEntityDetails(
   logger.info(`Fetching entity details for CUI: ${cui}`, { cui, year, startYear, endYear });
 
   try {
-    const response = await graphqlRequest<EntityDetailsResponse>(
+    const response = await graphqlRequest<{
+      entity: (EntityDetailsData & {
+        executionLineItemsCh?: { nodes: ExecutionLineItem[] } | null
+        executionLineItemsVn?: { nodes: ExecutionLineItem[] } | null
+      }) | null
+    }>(
       GET_ENTITY_DETAILS_QUERY,
       { cui, year, startYear, endYear }
     );
@@ -178,7 +199,15 @@ export async function getEntityDetails(
       return null;
     }
 
-    return response.entity;
+    // Merge aliased execution line items back into a single field for consumers
+    const chNodes = response.entity.executionLineItemsCh?.nodes ?? [];
+    const vnNodes = response.entity.executionLineItemsVn?.nodes ?? [];
+    const merged: EntityDetailsData = {
+      ...response.entity,
+      executionLineItems: { nodes: [...chNodes, ...vnNodes] },
+    } as EntityDetailsData;
+
+    return merged;
   } catch (error) {
     logger.error(`Error fetching entity details for CUI: ${cui}`, {
       error,

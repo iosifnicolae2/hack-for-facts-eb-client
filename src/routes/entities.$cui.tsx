@@ -55,7 +55,7 @@ export const Route = createFileRoute('/entities/$cui')({
                         entity_cuis: [params.cui],
                         functional_prefixes: [prefix],
                         account_category: accountCategory,
-                        report_type: (entity?.is_main_creditor ? 'Executie bugetara agregata la nivel de ordonator principal' : 'Executie bugetara detaliata') as 'Executie bugetara agregata la nivel de ordonator principal' | 'Executie bugetara detaliata',
+                        report_types: [(entity?.is_main_creditor ? 'Executie bugetara agregata la nivel de ordonator principal' : 'Executie bugetara detaliata') as 'Executie bugetara agregata la nivel de ordonator principal' | 'Executie bugetara detaliata'],
                     },
                 }));
                 const payloadHash = inputs

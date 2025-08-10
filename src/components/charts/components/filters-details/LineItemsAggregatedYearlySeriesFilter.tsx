@@ -40,6 +40,17 @@ export function LineItemsAggregatedYearlySeriesFilter({ series }: LineItemsAggre
               : String(value) !== "")
         )
         .map(([key, value]) => {
+          // Ensure we format report_types (array) similarly to old report_type (single)
+          if (key === 'report_types' && Array.isArray(value) && value.length > 0) {
+            const v = value[0]
+            return (
+              <FilterPill
+                key={key}
+                label={getFilterDisplayName(key)}
+                value={String(v)}
+              />
+            )
+          }
           if (key === "entity_cuis" && Array.isArray(value)) {
             return value.map((cui) => (
               <FilterPill

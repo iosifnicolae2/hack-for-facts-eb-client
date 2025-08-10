@@ -16,7 +16,7 @@ interface HeatmapJudetDataApiResponse {
 // --- END HEATMAP TYPES ---
 
 const GET_HEATMAP_JUDET_DATA_QUERY = `
-  query GetHeatmapJudetData($filter: HeatmapFilterInput!) {
+  query GetHeatmapJudetData($filter: AnalyticsFilterInput!) {
     heatmapJudetData(filter: $filter) {
       county_code
       county_name
@@ -57,7 +57,7 @@ const GET_ENTITIES_QUERY = `
 
 // Query to get execution line items with filtering
 const GET_EXECUTION_LINE_ITEMS_QUERY = `
-  query GetExecutionLineItems($filter: ExecutionLineItemFilter, $sort: SortOrder, $limit: Int, $offset: Int) {
+  query GetExecutionLineItems($filter: AnalyticsFilterInput, $sort: SortOrder, $limit: Int, $offset: Int) {
     executionLineItems(filter: $filter, sort: $sort, limit: $limit, offset: $offset) {
       nodes {
         line_item_id
@@ -89,7 +89,7 @@ const GET_EXECUTION_LINE_ITEMS_QUERY = `
 
 // --- BEGIN HEATMAP QUERY ---
 const GET_HEATMAP_UAT_DATA_QUERY = `
-  query GetHeatmapUATData($filter: HeatmapFilterInput!) {
+  query GetHeatmapUATData($filter: AnalyticsFilterInput!) {
     heatmapUATData(filter: $filter) {
       uat_id
       uat_name
@@ -393,6 +393,23 @@ export async function getUniqueCounties(): Promise<
 }
 
 // --- BEGIN GET HEATMAP UAT DATA FUNCTION ---
+function mapFiltersToAnalyticsFilter(filter: MapFilters) {
+  return {
+    years: filter.years,
+    account_category: (filter.account_categories?.[0] ?? 'ch') as 'ch' | 'vn',
+    normalization: filter.normalization,
+    functional_codes: filter.functional_codes,
+    economic_codes: filter.economic_codes,
+    county_codes: filter.county_codes,
+    regions: filter.regions,
+    // Map UI aggregated amount range to aggregate_* thresholds for heatmaps
+    aggregate_min_amount: filter.min_amount,
+    aggregate_max_amount: filter.max_amount,
+    min_population: filter.min_population,
+    max_population: filter.max_population,
+  } as const;
+}
+
 export async function getHeatmapUATData(
   filter: MapFilters
 ): Promise<HeatmapUATDataPoint[]> {
@@ -401,7 +418,7 @@ export async function getHeatmapUATData(
   try {
     const response = await graphqlRequest<HeatmapUATDataApiResponse>(
       GET_HEATMAP_UAT_DATA_QUERY,
-      { filter }
+      { filter: mapFiltersToAnalyticsFilter(filter) }
     );
 
     if (!response || !response.heatmapUATData) {
@@ -431,7 +448,7 @@ export async function getHeatmapJudetData(
   try {
     const response = await graphqlRequest<HeatmapJudetDataApiResponse>(
       GET_HEATMAP_JUDET_DATA_QUERY,
-      { filter }
+      { filter: mapFiltersToAnalyticsFilter(filter) }
     );
 
     if (!response || !response.heatmapJudetData) {

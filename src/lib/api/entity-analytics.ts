@@ -2,7 +2,7 @@ import { graphqlRequest } from './graphql'
 import type { EntityAnalyticsConnection, EntityAnalyticsFilter, SortOrder } from '@/schemas/entity-analytics'
 
 const ENTITY_ANALYTICS_QUERY = /* GraphQL */ `
-  query EntityAnalytics($filter: EntityAnalyticsFilterInput!, $sort: SortOrder, $limit: Int, $offset: Int) {
+  query EntityAnalytics($filter: AnalyticsFilterInput!, $sort: SortOrder, $limit: Int, $offset: Int) {
     entityAnalytics(filter: $filter, sort: $sort, limit: $limit, offset: $offset) {
       nodes {
         entity_cui

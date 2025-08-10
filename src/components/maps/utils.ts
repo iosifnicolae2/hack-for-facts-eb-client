@@ -85,7 +85,7 @@ export const createTooltipContent = (
 
     // --- Tooltip for features WITH data ---
     if (dataPoint) {
-        const isPerCapitaNorm = filters.normalization === 'per_capita';
+    const isPerCapitaNorm = filters.normalization === 'per_capita';
         let name, subtext, population, perCapitaAmount, totalAmount;
 
         if (isUAT && 'siruta_code' in dataPoint) {

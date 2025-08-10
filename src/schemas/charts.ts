@@ -51,21 +51,44 @@ export type SeriesConfig = z.infer<typeof SeriesConfigSchema>;
 // ============================================================================
 
 export const AnalyticsFilterSchema = z.object({
+  // Required
   years: z.array(z.number()).optional().describe('Years to filter the data by. If not set, the chart will show all years.'),
+  account_category: z.enum(['ch', 'vn']).default('ch').describe('Spending (ch) or Revenue (vn).'),
+
+  // Dimensional filters
+  report_ids: z.array(z.string()).optional(),
+  report_types: z.array(z.string()).optional(),
+  reporting_years: z.array(z.number()).optional(),
   entity_cuis: z.array(z.string()).optional().describe('The public entities cui of cif.'),
-  economic_prefixes: z.array(z.string()).optional().describe('The economic prefixes using Romanian COFOG3 codes.'),
+  functional_codes: z.array(z.string()).optional().describe('The functional codes using Romanian COFOG3 codes.'),
   functional_prefixes: z.array(z.string()).optional().describe('The functional prefixes using Romanian COFOG3 codes.'),
-  report_type: z.enum(['Executie bugetara agregata la nivel de ordonator principal', 'Executie bugetara detaliata']).optional().default('Executie bugetara agregata la nivel de ordonator principal').describe('The report type to filter the data by.'),
-  account_category: z.enum(['ch', 'vn']).default('ch').describe('Spending (ch) or Revenue (vn) used to aggregate the data. One of the two must be set.'),
-  economic_codes: z.array(z.string()).optional().describe('The economic codes to filter the data by using Romanian COFOG3 codes.'),
-  functional_codes: z.array(z.string()).optional().describe('The functional codes to filter the data by using Romanian COFOG3 codes.'),
-  uat_ids: z.array(z.string()).optional(),
-  min_amount: z.number().or(z.string()).optional(),
-  max_amount: z.number().or(z.string()).optional(),
-  is_uat: z.boolean().optional(),
-  entity_types: z.array(z.string()).optional(),
-  budget_sector_ids: z.array(z.string()).optional(),
+  economic_codes: z.array(z.string()).optional().describe('The economic codes using Romanian COFOG3 codes.'),
+  economic_prefixes: z.array(z.string()).optional().describe('The economic prefixes using Romanian COFOG3 codes.'),
   funding_source_ids: z.array(z.string()).optional(),
+  budget_sector_ids: z.array(z.string()).optional(),
+  expense_types: z.array(z.enum(['dezvoltare', 'functionare'])).optional(),
+  program_codes: z.array(z.string()).optional(),
+
+  // Geography
+  county_codes: z.array(z.string()).optional(),
+  regions: z.array(z.string()).optional(),
+  uat_ids: z.array(z.string()).optional(),
+  entity_types: z.array(z.string()).optional(),
+  is_uat: z.boolean().optional(),
+  search: z.string().optional(),
+
+  // Population
+  min_population: z.number().optional(),
+  max_population: z.number().optional(),
+
+  // Aggregates & transforms
+  normalization: z.enum(['total', 'per_capita']).optional(),
+  aggregate_min_amount: z.number().or(z.string()).optional(),
+  aggregate_max_amount: z.number().or(z.string()).optional(),
+
+  // Per-item thresholds
+  item_min_amount: z.number().or(z.string()).optional(),
+  item_max_amount: z.number().or(z.string()).optional(),
 });
 
 export type AnalyticsFilterType = z.infer<typeof AnalyticsFilterSchema>;
@@ -112,7 +135,7 @@ export const SeriesConfigurationSchema = BaseSeriesConfigurationSchema.extend({
   filter: AnalyticsFilterSchema.describe('The filter to apply to the series.').default({
     years: [defaultYearRange.end],
     account_category: 'ch',
-    report_type: 'Executie bugetara agregata la nivel de ordonator principal',
+    report_types: ['Executie bugetara agregata la nivel de ordonator principal'],
   }),
 }).loose();
 

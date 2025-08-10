@@ -136,11 +136,11 @@ export function EntityAnalyticsFilter() {
 
   const updateAccountCategory = (accountCategory: 'ch' | 'vn') => setFilter({ account_category: accountCategory })
   const updateNormalization = (normalization: 'total' | 'per_capita') => setFilter({ normalization })
-  const updateMinAmount = (minAmount: string | undefined) => setFilter({ min_amount: minAmount ? Number(minAmount) : undefined })
-  const updateMaxAmount = (maxAmount: string | undefined) => setFilter({ max_amount: maxAmount ? Number(maxAmount) : undefined })
+  const updateMinAmount = (minAmount: string | undefined) => setFilter({ item_min_amount: minAmount ? Number(minAmount) : undefined })
+  const updateMaxAmount = (maxAmount: string | undefined) => setFilter({ item_max_amount: maxAmount ? Number(maxAmount) : undefined })
   const updateMinPopulation = (min: string | undefined) => setFilter({ min_population: min ? Number(min) : undefined })
   const updateMaxPopulation = (max: string | undefined) => setFilter({ max_population: max ? Number(max) : undefined })
-  const setReportType = (value: string | undefined) => setFilter({ report_type: value })
+  const setReportType = (value: string | undefined) => setFilter({ report_types: value ? [value] : undefined })
   const setIsUat = (value: boolean | undefined) => setFilter({ is_uat: value })
 
   // Count selected filters similar to LineItemsFilter
@@ -156,11 +156,11 @@ export function EntityAnalyticsFilter() {
       selectedBudgetSectorOptions,
       selectedFundingSourceOptions,
     ].reduce((count, options) => count + options.length, 0) +
-    (filter.min_amount !== undefined ? 1 : 0) +
-    (filter.max_amount !== undefined ? 1 : 0) +
+    (filter.item_min_amount !== undefined ? 1 : 0) +
+    (filter.item_max_amount !== undefined ? 1 : 0) +
     (filter.min_population !== undefined ? 1 : 0) +
     (filter.max_population !== undefined ? 1 : 0) +
-    (filter.report_type ? 1 : 0) +
+    ((filter.report_types?.length ?? 0) > 0 ? 1 : 0) +
     (filter.is_uat !== undefined ? 1 : 0) +
     (filter.functional_prefixes?.length ?? 0) +
     (filter.economic_prefixes?.length ?? 0)
@@ -286,10 +286,10 @@ export function EntityAnalyticsFilter() {
         <FilterRadioContainer
           title="Report Type"
           icon={<ArrowUpDown className="w-4 h-4" />}
-          selectedOption={filter.report_type ? { id: filter.report_type, label: filter.report_type } : null}
+          selectedOption={(filter.report_types && filter.report_types[0]) ? { id: filter.report_types[0], label: filter.report_types[0] } : null}
           onClear={() => setReportType(undefined)}
         >
-          <ReportTypeFilter reportType={filter.report_type} setReportType={setReportType} />
+          <ReportTypeFilter reportType={filter.report_types?.[0]} setReportType={setReportType} />
         </FilterRadioContainer>
 
         <FilterContainer
@@ -307,9 +307,9 @@ export function EntityAnalyticsFilter() {
           icon={<SlidersHorizontal className="w-4 h-4" />}
           unit="RON"
           rangeComponent={AmountRangeFilter}
-          minValue={filter.min_amount}
+          minValue={filter.item_min_amount}
           onMinValueChange={updateMinAmount}
-          maxValue={filter.max_amount}
+          maxValue={filter.item_max_amount}
           onMaxValueChange={updateMaxAmount}
         />
 
