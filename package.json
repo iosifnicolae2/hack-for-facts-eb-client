@@ -1,5 +1,5 @@
 {
-  "name": "graph-gurus",
+  "name": "transparenta.eu",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -100,10 +100,5 @@
     "vite": "^7.1.1",
     "vite-plugin-checker": "^0.10.2",
     "vitest": "^3.2.4"
-  },
-  "msw": {
-    "workerDirectory": [
-      "public"
-    ]
   }
 }
