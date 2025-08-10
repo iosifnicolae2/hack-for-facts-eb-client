@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { GetLabels, LabelStore } from "./interfaces";
-import { OptionItem } from "@/lib/hooks/useLineItemsFilter";
+import { OptionItem } from "@/components/filters/base-filter/interfaces";
 import { getBudgetSectorLabels, getEconomicClassificationLabels, getEntityLabels, getFundingSourceLabels, getFunctionalClassificationLabels, getUatLabels } from "@/lib/api/labels";
 import entityCategories from "@/assets/entity-categories.json";
 

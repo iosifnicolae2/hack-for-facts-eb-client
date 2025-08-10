@@ -1,3 +1,18 @@
+## Sentry
+
+Client-side Sentry is integrated using `@sentry/react` with TanStack Router tracing and the user feedback widget.
+
+Environment variables (set in Vercel or local `.env`):
+
+```
+VITE_SENTRY_ENABLED=true
+VITE_SENTRY_DSN=your_public_dsn
+VITE_SENTRY_TRACES_SAMPLE_RATE=0.1
+VITE_SENTRY_FEEDBACK_ENABLED=true
+```
+
+Consent: events and feedback are only sent if analytics consent is granted. The feedback button appears in the footer and can be opened programmatically.
+
 # Transparenta.eu Client
 
 We are building a platform for analyzing public data spending.The target audience is the public sector and independent journalists that need a easy and accessible way of finding anomalies in public spending.

@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 import { Link } from "@tanstack/react-router";
 import { Github, Linkedin } from "lucide-react";
+import { openSentryFeedback } from "@/lib/sentry";
 
 /**
  * App-wide footer displayed at the bottom of the main layout.
@@ -61,11 +62,6 @@ export function AppFooter(): ReactElement {
                             <li>
                                 <Link to="/entity-analytics" className="hover:text-foreground">
                                     For Developers
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/data-discovery" className="hover:text-foreground">
-                                    Data Discovery
                                 </Link>
                             </li>
                             <li>
@@ -170,6 +166,14 @@ export function AppFooter(): ReactElement {
                         >
                             Feedback / Report an issue
                         </a>
+                        <button
+                          type="button"
+                          className="underline hover:text-foreground"
+                          onClick={() => openSentryFeedback?.()}
+                          aria-label="Open feedback dialog"
+                        >
+                          Send feedback
+                        </button>
                     </div>
                     <button
                         type="button"

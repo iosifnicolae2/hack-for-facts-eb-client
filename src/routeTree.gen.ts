@@ -24,7 +24,6 @@ import { Route as ChartsChartIdRouteImport } from './routes/charts/$chartId/rout
 // Create Virtual Routes
 
 const IndexLazyImport = createFileRoute('/')()
-const DataDiscoveryIndexLazyImport = createFileRoute('/data-discovery/')()
 const ChartsIndexLazyImport = createFileRoute('/charts/')()
 const ChartsNewLazyImport = createFileRoute('/charts/new')()
 const ChartsChartIdIndexLazyImport = createFileRoute('/charts/$chartId/')()
@@ -68,14 +67,6 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
-
-const DataDiscoveryIndexLazyRoute = DataDiscoveryIndexLazyImport.update({
-  id: '/data-discovery/',
-  path: '/data-discovery/',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./routes/data-discovery/index.lazy').then((d) => d.Route),
-)
 
 const ChartsIndexLazyRoute = ChartsIndexLazyImport.update({
   id: '/charts/',
@@ -183,13 +174,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChartsIndexLazyImport
       parentRoute: typeof rootRoute
     }
-    '/data-discovery/': {
-      id: '/data-discovery/'
-      path: '/data-discovery'
-      fullPath: '/data-discovery'
-      preLoaderRoute: typeof DataDiscoveryIndexLazyImport
-      parentRoute: typeof rootRoute
-    }
     '/charts/$chartId/': {
       id: '/charts/$chartId/'
       path: '/'
@@ -224,7 +208,6 @@ export interface FileRoutesByFullPath {
   '/entities/$cui': typeof EntitiesCuiRoute
   '/charts/new': typeof ChartsNewLazyRoute
   '/charts': typeof ChartsIndexLazyRoute
-  '/data-discovery': typeof DataDiscoveryIndexLazyRoute
   '/charts/$chartId/': typeof ChartsChartIdIndexLazyRoute
 }
 
@@ -238,7 +221,6 @@ export interface FileRoutesByTo {
   '/entities/$cui': typeof EntitiesCuiRoute
   '/charts/new': typeof ChartsNewLazyRoute
   '/charts': typeof ChartsIndexLazyRoute
-  '/data-discovery': typeof DataDiscoveryIndexLazyRoute
   '/charts/$chartId': typeof ChartsChartIdIndexLazyRoute
 }
 
@@ -254,7 +236,6 @@ export interface FileRoutesById {
   '/entities/$cui': typeof EntitiesCuiRoute
   '/charts/new': typeof ChartsNewLazyRoute
   '/charts/': typeof ChartsIndexLazyRoute
-  '/data-discovery/': typeof DataDiscoveryIndexLazyRoute
   '/charts/$chartId/': typeof ChartsChartIdIndexLazyRoute
 }
 
@@ -271,7 +252,6 @@ export interface FileRouteTypes {
     | '/entities/$cui'
     | '/charts/new'
     | '/charts'
-    | '/data-discovery'
     | '/charts/$chartId/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -284,7 +264,6 @@ export interface FileRouteTypes {
     | '/entities/$cui'
     | '/charts/new'
     | '/charts'
-    | '/data-discovery'
     | '/charts/$chartId'
   id:
     | '__root__'
@@ -298,7 +277,6 @@ export interface FileRouteTypes {
     | '/entities/$cui'
     | '/charts/new'
     | '/charts/'
-    | '/data-discovery/'
     | '/charts/$chartId/'
   fileRoutesById: FileRoutesById
 }
@@ -314,7 +292,6 @@ export interface RootRouteChildren {
   EntitiesCuiRoute: typeof EntitiesCuiRoute
   ChartsNewLazyRoute: typeof ChartsNewLazyRoute
   ChartsIndexLazyRoute: typeof ChartsIndexLazyRoute
-  DataDiscoveryIndexLazyRoute: typeof DataDiscoveryIndexLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -328,7 +305,6 @@ const rootRouteChildren: RootRouteChildren = {
   EntitiesCuiRoute: EntitiesCuiRoute,
   ChartsNewLazyRoute: ChartsNewLazyRoute,
   ChartsIndexLazyRoute: ChartsIndexLazyRoute,
-  DataDiscoveryIndexLazyRoute: DataDiscoveryIndexLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -350,8 +326,7 @@ export const routeTree = rootRoute
         "/charts/$chartId",
         "/entities/$cui",
         "/charts/new",
-        "/charts/",
-        "/data-discovery/"
+        "/charts/"
       ]
     },
     "/": {
@@ -386,9 +361,6 @@ export const routeTree = rootRoute
     },
     "/charts/": {
       "filePath": "charts/index.lazy.tsx"
-    },
-    "/data-discovery/": {
-      "filePath": "data-discovery/index.lazy.tsx"
     },
     "/charts/$chartId/": {
       "filePath": "charts/$chartId/index.lazy.tsx",

@@ -22,6 +22,20 @@ const envSchema = z.object({
   VITE_POSTHOG_PERSON_PROFILES: z
     .enum(["identified_only", "always"])
     .optional(),
+
+  // Sentry
+  VITE_SENTRY_ENABLED: z
+    .enum(["true", "false"]) // must be provided explicitly to enable
+    .optional()
+    .transform((val) => val === "true"),
+  VITE_SENTRY_DSN: z.string().min(1).optional(),
+  VITE_SENTRY_TRACES_SAMPLE_RATE: z
+    .string()
+    .optional(),
+  VITE_SENTRY_FEEDBACK_ENABLED: z
+    .enum(["true", "false"]) // enabled unless explicitly set to false
+    .optional()
+    .transform((val) => val !== "false"),
 });
 
 export type Env = z.infer<typeof envSchema>;

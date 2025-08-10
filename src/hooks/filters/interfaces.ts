@@ -1,4 +1,4 @@
-import { OptionItem } from "@/lib/hooks/useLineItemsFilter";
+import { OptionItem } from "@/components/filters/base-filter/interfaces";
 
 export interface LabelStore {
     map: (id: string | number) => string;

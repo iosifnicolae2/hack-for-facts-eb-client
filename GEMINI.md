@@ -53,6 +53,15 @@ No tests yet. Only manual testing.
 * The application uses Tanstack Router for routing. Route definitions are generated automatically. To regenerate the routes, run `yarn router:generate`.
 * For type checking, run `npx tsc -b --noEmit`.
 
-## Context
+# Sentry Integration Spec
+
+* Goals
+  * Capture runtime errors and React render errors in production via Sentry
+  * Enable performance tracing (configurable sampling) and TanStack Router navigation spans
+  * Respect cookie consent: do not send any events without analytics consent
+  * Provide end-user feedback via Sentry's Feedback widget, with programmatic open
+  * Upload sourcemaps in CI/build using `@sentry/vite-plugin`
+
+# Context
 
 Use the files in the `gpt-prompt` directory to help you understand the project.
