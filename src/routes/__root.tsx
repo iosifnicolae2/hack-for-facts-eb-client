@@ -9,7 +9,7 @@ import { HotkeysProvider } from "react-hotkeys-hook";
 import { MobileSidebarFab } from "@/components/sidebar/mobile-sidebar-fab";
 import { queryClient } from "@/lib/queryClient";
 import { FloatingEntitySearch } from "@/components/entities/FloatingEntitySearch";
-import { AppFooter } from "@/components/footer/AppFooter";
+import { AppFooter, ReportBugFab } from "@/components/footer/AppFooter";
 import { CookieConsentBanner } from "@/components/privacy/CookieConsentBanner";
 
 export const Route = createRootRoute({
@@ -30,6 +30,7 @@ export const Route = createRootRoute({
                     </div>
                   </main>
                   <AppFooter />
+                  <ReportBugFab />
                   <MobileSidebarFab />
                   <CookieConsentBanner />
                 </SidebarInset>
