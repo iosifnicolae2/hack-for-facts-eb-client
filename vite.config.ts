@@ -38,28 +38,5 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     chunkSizeWarningLimit: 1500,
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes("node_modules")) {
-            if (id.match(/[\\/]node_modules[\\/](react|react-dom|react-is)[\\/]/)) return "react";
-            if (id.match(/[\\/]node_modules[\\/](@tanstack)[\\/]/)) return "tanstack";
-            if (id.match(/[\\/]node_modules[\\/](recharts|d3-sankey)[\\/]/)) return "recharts";
-            if (id.match(/[\\/]node_modules[\\/](leaflet|react-leaflet|@turf)[\\/]/)) return "leaflet";
-            if (id.match(/[\\/]node_modules[\\/](@radix-ui)[\\/]/)) return "radix";
-            if (id.match(/[\\/]node_modules[\\/](lucide-react)[\\/]/)) return "icons";
-            if (id.match(/[\\/]node_modules[\\/](immer|zod|clsx|class-variance-authority|tailwind-merge)[\\/]/)) return "utility";
-            if (id.match(/[\\/]node_modules[\\/](posthog-js)[\\/]/)) return "analytics";
-            if (id.match(/[\\/]node_modules[\\/](@sentry)[\\/]/)) return "sentry";
-            if (id.match(/[\\/]node_modules[\\/](motion)[\\/]/)) return "motion";
-            if (id.match(/[\\/]node_modules[\\/](fuse.js)[\\/]/)) return "search";
-            if (id.match(/[\\/]node_modules[\\/](@dnd-kit)[\\/]/)) return "dnd";
-            if (id.match(/[\\/]node_modules[\\/](@tanstack)[\\/]/)) return "tanstack";
-            return "vendor";
-          }
-          return "others";
-        },
-      },
-    },
   },
 }));
