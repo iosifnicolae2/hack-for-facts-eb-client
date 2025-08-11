@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/react";
 import { env } from "@/config/env";
-import { hasAnalyticsConsent } from "@/lib/consent";
+import { hasAnalyticsConsent, hasSentryConsent } from "@/lib/consent";
 import { captureConsoleIntegration, extraErrorDataIntegration, replayIntegration } from "@sentry/react";
 
 /**
@@ -38,17 +38,18 @@ export function initSentry(router: unknown): void {
     return;
   }
 
-  const consentGranted = hasAnalyticsConsent();
+  const analyticsConsent = hasAnalyticsConsent();
+  const sentryConsent = hasSentryConsent();
 
   const integrations: unknown[] = [];
 
-  if (consentGranted) {
+  if (analyticsConsent) {
     integrations.push(replayIntegration());
   }
 
   // Wire TanStack Router tracing only when sampling is enabled AND analytics consent granted
   const configuredTracesSampleRate = Number(env.VITE_SENTRY_TRACES_SAMPLE_RATE ?? 0);
-  const tracesSampleRate = consentGranted && !Number.isNaN(configuredTracesSampleRate)
+  const tracesSampleRate = analyticsConsent && !Number.isNaN(configuredTracesSampleRate)
     ? configuredTracesSampleRate
     : 0;
   if (tracesSampleRate > 0 && router) {
@@ -64,7 +65,7 @@ export function initSentry(router: unknown): void {
   // Configure the Feedback widget (only if consent granted)
   let feedbackIntegration: ReturnType<typeof Sentry.feedbackIntegration> | null = null;
   const feedbackEnabled = env.VITE_SENTRY_FEEDBACK_ENABLED !== false;
-  if (feedbackEnabled && consentGranted) {
+  if (feedbackEnabled && sentryConsent) {
     feedbackIntegration = Sentry.feedbackIntegration({
       colorScheme: "system",
       enableScreenshot: true,
@@ -114,10 +115,10 @@ export function initSentry(router: unknown): void {
     // Performance
     tracesSampleRate,
     replaysOnErrorSampleRate: 1.0,
-    replaysSessionSampleRate: consentGranted ? 0.1 : 0,
+    replaysSessionSampleRate: analyticsConsent ? 0.1 : 0,
     // Respect privacy consent — never send events if analytics is disabled
     beforeSend(event, _hint) {
-      if (!hasAnalyticsConsent()) {
+      if (!hasSentryConsent()) {
         // Send a minimal, anonymous error payload (no breadcrumbs/contexts/user/request)
         const sanitized = sanitizeEventForNoConsent(event as unknown as SentryEventLike);
         return sanitized as unknown as typeof event;
@@ -127,7 +128,7 @@ export function initSentry(router: unknown): void {
   });
 
   // Make sure no user identity is attached when analytics consent is not granted
-  if (!consentGranted) {
+  if (!sentryConsent) {
     Sentry.setUser(null);
   }
 

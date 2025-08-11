@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ReactElement } from "react";
 import { Cookie } from "lucide-react";
-import { acceptAll, declineAll } from "@/lib/consent";
+import { acceptAll, declineAll, getConsent, setConsent } from "@/lib/consent";
 import { Link } from "@tanstack/react-router";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -58,8 +58,8 @@ export function CookieConsentBanner(): ReactElement | null {
             <CardTitle className="text-lg md:text-xl">Cookie settings</CardTitle>
           </div>
           <CardDescription>
-            Essential cookies keep the app working. With your permission, we also use analytics cookies (PostHog) to
-            understand usage and improve Transparenta.eu.
+            Essential cookies keep the app working. With your permission, we also use analytics (PostHog) and optional
+            error reporting (Sentry) to understand issues and improve Transparenta.eu.
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-0">
@@ -68,7 +68,7 @@ export function CookieConsentBanner(): ReactElement | null {
               Essential only
             </Button>
             <Button onClick={acceptCookies} className="px-6">
-              Accept analytics
+              Accept all
             </Button>
             <Button asChild variant="link">
               <Link to="/cookies">Cookie Settings</Link>

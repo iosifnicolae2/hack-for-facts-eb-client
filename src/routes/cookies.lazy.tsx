@@ -71,9 +71,36 @@ function CookieSettingsPage() {
           </CardContent>
         </Card>
 
+        <Card>
+          <CardHeader>
+            <CardTitle>Error reporting (Sentry)</CardTitle>
+            <CardDescription>
+              Help us fix problems by sending error reports. When disabled, we only send anonymous, minimal error
+              telemetry necessary to keep the service reliable.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="font-medium">Enhanced error reporting</div>
+                <div className="text-sm text-muted-foreground">Includes additional error context. No user identity is attached.</div>
+              </div>
+              <Switch
+                checked={prefs.sentry}
+                onCheckedChange={(v) => {
+                  const next = { ...prefs, sentry: Boolean(v) }
+                  setConsent(next)
+                  setPrefs(getConsent())
+                }}
+                aria-label="Toggle enhanced error reporting"
+              />
+            </div>
+          </CardContent>
+        </Card>
+
         <div className="flex flex-wrap items-center gap-3">
           <Button variant="secondary" onClick={() => { declineAll(); setPrefs(getConsent()) }}>Essential only</Button>
-          <Button onClick={() => { acceptAll(); setPrefs(getConsent()) }}>Accept analytics</Button>
+          <Button onClick={() => { acceptAll(); setPrefs(getConsent()) }}>Accept all</Button>
           <Button variant="ghost" onClick={onSave}>Save preferences</Button>
           <span className="text-sm text-muted-foreground">Updated: {new Date(prefs.updatedAt).toLocaleString()}</span>
         </div>
