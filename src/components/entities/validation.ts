@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { mapFiltersSchema } from '@/schemas/map-filters';
+import { AnalyticsFilterSchema } from "@/schemas/charts";
 
 
 export const entitySearchSchema = z.object({
@@ -10,7 +10,7 @@ export const entitySearchSchema = z.object({
     incomeSearch: z.string().optional(),
     analyticsChartType: z.enum(['bar', 'pie']).optional(),
     analyticsDataType: z.enum(['income', 'expense']).optional(),
-    mapFilters: mapFiltersSchema.optional(),
+    mapFilters: AnalyticsFilterSchema.optional(),
 });
 
 export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;

@@ -12,6 +12,7 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { SlidersHorizontal } from 'lucide-react'
 import { useTablePreferences } from '@/hooks/useTablePreferences'
 import { EntityAnalyticsLayout } from '@/components/entity-analytics/EntityAnalyticsLayout'
+import { AnalyticsFilterType } from '@/schemas/charts'
 
 export const Route = createLazyFileRoute('/entity-analytics')({
   component: EntityAnalyticsPage,
@@ -204,9 +205,7 @@ function normalizeOrder(order?: string): 'asc' | 'desc' {
   return order.toLowerCase() === 'asc' ? 'asc' : 'desc'
 }
 
-import type { EntityAnalyticsFilter as EntityAnalyticsFilterType } from '@/schemas/entity-analytics'
-
-function normalizeFilterForSort(filter: EntityAnalyticsFilterType, sortBy?: string) {
+function normalizeFilterForSort(filter: AnalyticsFilterType, sortBy?: string) {
   // Ensure the server interprets `amount` according to normalization:
   // - if sorting explicitly by `amount`, we let the API map it based on normalization
   // - otherwise pass filter as-is

@@ -2,8 +2,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import { queryClient } from '@/lib/queryClient'
 import { geoJsonQueryOptions } from '@/hooks/useGeoJson'
 import { heatmapJudetQueryOptions, heatmapUATQueryOptions } from '@/hooks/useHeatmapData'
-import { mapStateSchema, type MapFilters } from '@/schemas/map-filters'
-import { defaultYearRange } from '@/schemas/charts'
+import { mapStateSchema } from '@/schemas/map-filters'
+import { AnalyticsFilterType, defaultYearRange } from '@/schemas/charts'
 
 type MapViewType = 'UAT' | 'Judet'
 
@@ -15,13 +15,10 @@ export const Route = createFileRoute('/map')({
     const filters = parsed.filters
 
     // Ensure required filter fields are populated for prefetch
-    const normalizedFilters: MapFilters = {
+    const normalizedFilters: AnalyticsFilterType = {
       ...filters,
       years: filters.years && filters.years.length > 0 ? filters.years : [defaultYearRange.end],
-      account_categories:
-        filters.account_categories && filters.account_categories.length > 0
-          ? filters.account_categories
-          : (['ch'] as ('ch' | 'vn')[]),
+      account_category: filters.account_category ?? 'ch',
       normalization: filters.normalization ?? 'per_capita',
     }
 

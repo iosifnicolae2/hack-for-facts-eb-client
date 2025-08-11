@@ -1,5 +1,6 @@
 import { graphqlRequest } from './graphql'
-import type { EntityAnalyticsConnection, EntityAnalyticsFilter, SortOrder } from '@/schemas/entity-analytics'
+import type { EntityAnalyticsConnection, SortOrder } from '@/schemas/entity-analytics'
+import { AnalyticsFilterType } from '@/schemas/charts'
 
 const ENTITY_ANALYTICS_QUERY = /* GraphQL */ `
   query EntityAnalytics($filter: AnalyticsFilterInput!, $sort: SortOrder, $limit: Int, $offset: Int) {
@@ -26,7 +27,7 @@ const ENTITY_ANALYTICS_QUERY = /* GraphQL */ `
 `
 
 export async function fetchEntityAnalytics(params: {
-  filter: EntityAnalyticsFilter
+  filter: AnalyticsFilterType
   sort?: SortOrder
   limit?: number
   offset?: number

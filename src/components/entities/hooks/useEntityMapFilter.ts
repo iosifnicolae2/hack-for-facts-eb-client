@@ -1,10 +1,9 @@
-import { defaultYearRange } from "@/schemas/charts";
-import { MapFilters } from "@/schemas/map-filters";
+import { AnalyticsFilterType, defaultYearRange } from "@/schemas/charts";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 
-const defaultMapFilters: MapFilters = {
+const defaultMapFilters: AnalyticsFilterType = {
     years: [defaultYearRange.end],
-    account_categories: ['ch'] as ('ch' | 'vn')[],
+    account_category: 'ch',
     normalization: 'per_capita',
 };
 
@@ -19,7 +18,7 @@ export const useEntityMapFilter = ({ year }: UseEntityMapFilterProps) => {
 
     // We want the year from the entity page to override the year from the map filters.
     mapFilters.years = [year];
-    const updateMapFilters = (filters: Partial<MapFilters>) => {
+    const updateMapFilters = (filters: Partial<AnalyticsFilterType>) => {
         navigate({ search: (prev) => ({ ...prev, mapFilters: { ...(prev)?.mapFilters, ...filters } }), replace: true });
     };
     return { mapFilters, updateMapFilters };

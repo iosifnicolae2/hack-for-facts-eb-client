@@ -2,42 +2,38 @@ import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
 import { UatFeature, UatProperties } from './interfaces';
 import { formatCurrency } from '@/lib/utils';
 import { DEFAULT_FEATURE_STYLE, PERMANENT_HIGHLIGHT_STYLE } from './constants';
-import type { MapFilters } from '@/schemas/map-filters';
 import L, { PathOptions } from 'leaflet';
 import { Feature, Geometry } from 'geojson';
-// duplicates removed
+import { AnalyticsFilterType } from "@/schemas/charts";
 
 
 /**
  * Creates a concise summary of the active map filters.
  */
-const createFilterSummary = (filters: MapFilters): string => {
-    const summaryItems: string[] = [];
+const createFilterSummary = (filters: AnalyticsFilterType): string => {
+  const summaryItems: string[] = [];
 
-    if (filters.years && filters.years.length > 0) {
-        summaryItems.push(`<strong>An:</strong> ${filters.years.join(', ')}`);
-    }
+  if (filters.years && filters.years.length > 0) {
+    summaryItems.push(`<strong>An:</strong> ${filters.years.join(', ')}`);
+  }
 
-    if (filters.account_categories && filters.account_categories.length > 0) {
-        const categories = filters.account_categories
-            .map(cat => cat === 'ch' ? 'Cheltuieli' : 'Venituri')
-            .join(' & ');
-        summaryItems.push(`<strong>Tip:</strong> ${categories}`);
-    }
+  if (filters.account_category) {
+    summaryItems.push(`<strong>Tip:</strong> ${filters.account_category === 'ch' ? 'Cheltuieli' : 'Venituri'}`);
+  }
 
-    if (filters.functional_codes?.length) {
-        summaryItems.push(`<strong>Fn:</strong> ${filters.functional_codes.length} cod(uri) funcționale`);
-    }
+  if (filters.functional_codes?.length) {
+    summaryItems.push(`<strong>Fn:</strong> ${filters.functional_codes.length} cod(uri) funcționale`);
+  }
 
-    if (filters.economic_codes?.length) {
-        summaryItems.push(`<strong>Ec:</strong> ${filters.economic_codes.length} cod(uri) economice`);
-    }
+  if (filters.economic_codes?.length) {
+    summaryItems.push(`<strong>Ec:</strong> ${filters.economic_codes.length} cod(uri) economice`);
+  }
 
-    if (summaryItems.length === 0) {
-        return '';
-    }
+  if (summaryItems.length === 0) {
+    return '';
+  }
 
-    return `
+  return `
       <div style="font-size: 0.85em; color: #444; border-top: 1px solid #eee; padding-top: 8px; margin-top: 8px; width: 100%;">
         <div style="font-weight: bold;">Filtre active (${summaryItems.length}):</div>
         <div style="display: flex; flex-direction: column; font-size: 0.75em;">
@@ -55,57 +51,57 @@ const createFilterSummary = (filters: MapFilters): string => {
  * It prioritizes data from heatmapData if available for the UAT/Județ.
  */
 export const createTooltipContent = (
-    properties: UatProperties,
-    heatmapData: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[] | undefined,
-    mapViewType: 'UAT' | 'Judet',
-    filters: MapFilters
+  properties: UatProperties,
+  heatmapData: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[] | undefined,
+  mapViewType: 'UAT' | 'Judet',
+  filters: AnalyticsFilterType
 ): string => {
-    const isUAT = mapViewType === 'UAT';
-    const featureIdentifier = isUAT ? properties.natcode : properties.mnemonic;
-    const filterSummaryHtml = createFilterSummary(filters);
+  const isUAT = mapViewType === 'UAT';
+  const featureIdentifier = isUAT ? properties.natcode : properties.mnemonic;
+  const filterSummaryHtml = createFilterSummary(filters);
 
-    // Common styles for the tooltip
-    const styles = {
-        container: `font-family: 'Inter', sans-serif; font-size: 14px; max-width: 250px; padding: 10px; color: #333;`,
-        header: `font-size: 1.1em; font-weight: bold; margin-bottom: 4px;`,
-        subHeader: `color: #666; font-size: 0.9em; margin-bottom: 12px;`,
-        dataGrid: `display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: center;`,
-        dataLabel: `font-weight: 600; color: #555;`,
-        dataValue: `text-align: right;`,
-        highlight: `font-weight: bold; color: #000;`,
-        noData: `font-style: italic; color: #666; margin-top: 4px; display: flex; flex-direction: column; `
-    };
+  // Common styles for the tooltip
+  const styles = {
+    container: `font-family: 'Inter', sans-serif; font-size: 14px; max-width: 250px; padding: 10px; color: #333;`,
+    header: `font-size: 1.1em; font-weight: bold; margin-bottom: 4px;`,
+    subHeader: `color: #666; font-size: 0.9em; margin-bottom: 12px;`,
+    dataGrid: `display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: center;`,
+    dataLabel: `font-weight: 600; color: #555;`,
+    dataValue: `text-align: right;`,
+    highlight: `font-weight: bold; color: #000;`,
+    noData: `font-style: italic; color: #666; margin-top: 4px; display: flex; flex-direction: column; `
+  };
 
-    // Find the corresponding data point from the heatmap data
-    const dataPoint = heatmapData?.find(d => {
-        if (isUAT && 'siruta_code' in d) return d.siruta_code === featureIdentifier;
-        if (!isUAT && 'county_code' in d) return d.county_code === featureIdentifier;
-        return false;
-    });
+  // Find the corresponding data point from the heatmap data
+  const dataPoint = heatmapData?.find(d => {
+    if (isUAT && 'siruta_code' in d) return d.siruta_code === featureIdentifier;
+    if (!isUAT && 'county_code' in d) return d.county_code === featureIdentifier;
+    return false;
+  });
 
-    // --- Tooltip for features WITH data ---
-    if (dataPoint) {
+  // --- Tooltip for features WITH data ---
+  if (dataPoint) {
     const isPerCapitaNorm = filters.normalization === 'per_capita';
-        let name, subtext, population, perCapitaAmount, totalAmount;
+    let name, subtext, population, perCapitaAmount, totalAmount;
 
-        if (isUAT && 'siruta_code' in dataPoint) {
-            name = dataPoint.uat_name || properties.name;
-            subtext = `Județ: ${dataPoint.county_name || properties.county || 'N/A'}`;
-            population = dataPoint.population;
-            perCapitaAmount = dataPoint.per_capita_amount;
-            totalAmount = dataPoint.total_amount;
-        } else if (!isUAT && 'county_code' && 'county_population' in dataPoint) {
-            name = dataPoint.county_name || properties.name;
-            subtext = `Indicativ: ${featureIdentifier}`;
-            population = dataPoint.county_population;
-            perCapitaAmount = dataPoint.per_capita_amount;
-            totalAmount = dataPoint.total_amount;
-        } else {
-            // Fallback if dataPoint is found but type guard fails
-            return `<div>Error: Invalid data point type.</div>`;
-        }
+    if (isUAT && 'siruta_code' in dataPoint) {
+      name = dataPoint.uat_name || properties.name;
+      subtext = `Județ: ${dataPoint.county_name || properties.county || 'N/A'}`;
+      population = dataPoint.population;
+      perCapitaAmount = dataPoint.per_capita_amount;
+      totalAmount = dataPoint.total_amount;
+    } else if (!isUAT && 'county_code' && 'county_population' in dataPoint) {
+      name = dataPoint.county_name || properties.name;
+      subtext = `Indicativ: ${featureIdentifier}`;
+      population = dataPoint.county_population;
+      perCapitaAmount = dataPoint.per_capita_amount;
+      totalAmount = dataPoint.total_amount;
+    } else {
+      // Fallback if dataPoint is found but type guard fails
+      return `<div>Error: Invalid data point type.</div>`;
+    }
 
-        return `
+    return `
       <div style="${styles.container}">
         <div style="${styles.header}">${name}</div>
         <div style="${styles.subHeader}">${subtext}</div>
@@ -128,13 +124,13 @@ export const createTooltipContent = (
         ${filterSummaryHtml}
       </div>
     `;
-    }
+  }
 
-    // --- Tooltip for features WITHOUT data ---
-    const locationName = properties.name;
-    const locationSubtext = isUAT ? `Județ: ${properties.county || 'N/A'}` : `Indicativ: ${featureIdentifier}`;
+  // --- Tooltip for features WITHOUT data ---
+  const locationName = properties.name;
+  const locationSubtext = isUAT ? `Județ: ${properties.county || 'N/A'}` : `Indicativ: ${featureIdentifier}`;
 
-    return `
+  return `
     <div style="${styles.container}">
       <div style="${styles.header}">${locationName}</div>
       <div style="${styles.subHeader}">${locationSubtext}</div>
@@ -153,162 +149,162 @@ export const createTooltipContent = (
 
 // Helper function to calculate percentile values
 export const getPercentileValues = (
-    data: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[] | undefined,
-    lowerPercentile: number,
-    upperPercentile: number,
-    valueKey: 'total_amount' | 'per_capita_amount'
+  data: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[] | undefined,
+  lowerPercentile: number,
+  upperPercentile: number,
+  valueKey: 'total_amount' | 'per_capita_amount'
 ): { min: number; max: number } => {
-    if (!data || data.length === 0) {
-        return { min: 0, max: 0 };
+  if (!data || data.length === 0) {
+    return { min: 0, max: 0 };
+  }
+
+  const amounts = data.map(d => {
+    if (valueKey in d && typeof d[valueKey] === 'number') {
+      return d[valueKey] as number;
     }
+    return 0;
+  }).sort((a, b) => a - b);
 
-    const amounts = data.map(d => {
-        if (valueKey in d && typeof d[valueKey] === 'number') {
-            return d[valueKey] as number;
+
+  const lowerIndex = Math.floor((lowerPercentile / 100) * (amounts.length - 1));
+  const upperIndex = Math.ceil((upperPercentile / 100) * (amounts.length - 1));
+
+
+  let min = amounts[lowerIndex];
+  let max = amounts[upperIndex];
+
+  if (min === max) {
+    if (amounts.length > 0) {
+      const actualMin = amounts[0];
+      const actualMax = amounts[amounts.length - 1];
+      if (actualMin === actualMax) {
+        min = actualMin * 0.9;
+        max = actualMax * 1.1;
+        if (min === 0 && max === 0 && actualMin === 0) {
+          return { min: 0, max: 1 };
         }
-        return 0;
-    }).sort((a, b) => a - b);
-
-
-    const lowerIndex = Math.floor((lowerPercentile / 100) * (amounts.length - 1));
-    const upperIndex = Math.ceil((upperPercentile / 100) * (amounts.length - 1));
-
-
-    let min = amounts[lowerIndex];
-    let max = amounts[upperIndex];
-
-    if (min === max) {
-        if (amounts.length > 0) {
-            const actualMin = amounts[0];
-            const actualMax = amounts[amounts.length - 1];
-            if (actualMin === actualMax) {
-                min = actualMin * 0.9;
-                max = actualMax * 1.1;
-                if (min === 0 && max === 0 && actualMin === 0) {
-                    return { min: 0, max: 1 };
-                }
-            } else {
-                min = actualMin;
-                max = actualMax;
-            }
-        } else {
-            return { min: 0, max: 1 };
-        }
+      } else {
+        min = actualMin;
+        max = actualMax;
+      }
+    } else {
+      return { min: 0, max: 1 };
     }
+  }
 
 
-    return {
-        min,
-        max,
-    };
+  return {
+    min,
+    max,
+  };
 };
 
 // Helper function to normalize a value within a given range
 export const normalizeValue = (value: number, min: number, max: number): number => {
-    if (max === min) {
-        return value === 0 ? 0 : 0.5;
-    }
-    const clampedValue = Math.max(min, Math.min(value, max));
-    return (clampedValue - min) / (max - min);
+  if (max === min) {
+    return value === 0 ? 0 : 0.5;
+  }
+  const clampedValue = Math.max(min, Math.min(value, max));
+  return (clampedValue - min) / (max - min);
 };
 
 // Helper function to get a heatmap color (blue -> yellow -> red) for a normalized value (0-1)
 const parseHsl = (hslColor: string): [number, number, number] | null => {
-    const match = hslColor.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/);
-    if (!match) return null;
-    return [parseInt(match[1], 10), parseInt(match[2], 10), parseInt(match[3], 10)];
+  const match = hslColor.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/);
+  if (!match) return null;
+  return [parseInt(match[1], 10), parseInt(match[2], 10), parseInt(match[3], 10)];
 };
 
 export const getHeatmapColor = (value: number): string => {
-    const clampedValue = Math.max(0, Math.min(1, value));
-    const colors = [
-        { stop: 0, color: 'hsl(60, 100%, 90%)' },    // Light Yellow
-        { stop: 0.25, color: 'hsl(55, 100%, 75%)' }, // Yellow
-        { stop: 0.5, color: 'hsl(40, 100%, 60%)' },    // Orange
-        { stop: 0.75, color: 'hsl(20, 100%, 55%)' }, // Orange-Red
-        { stop: 1, color: 'hsl(0, 100%, 50%)' },      // Red
-    ];
+  const clampedValue = Math.max(0, Math.min(1, value));
+  const colors = [
+    { stop: 0, color: 'hsl(60, 100%, 90%)' },    // Light Yellow
+    { stop: 0.25, color: 'hsl(55, 100%, 75%)' }, // Yellow
+    { stop: 0.5, color: 'hsl(40, 100%, 60%)' },    // Orange
+    { stop: 0.75, color: 'hsl(20, 100%, 55%)' }, // Orange-Red
+    { stop: 1, color: 'hsl(0, 100%, 50%)' },      // Red
+  ];
 
-    for (let i = 1; i < colors.length; i++) {
-        if (clampedValue <= colors[i].stop) {
-            const lower = colors[i - 1];
-            const upper = colors[i];
+  for (let i = 1; i < colors.length; i++) {
+    if (clampedValue <= colors[i].stop) {
+      const lower = colors[i - 1];
+      const upper = colors[i];
 
-            const lowerHsl = parseHsl(lower.color);
-            const upperHsl = parseHsl(upper.color);
+      const lowerHsl = parseHsl(lower.color);
+      const upperHsl = parseHsl(upper.color);
 
-            if (!lowerHsl || !upperHsl) {
-                return colors[0].color; // Fallback to a default color
-            }
+      if (!lowerHsl || !upperHsl) {
+        return colors[0].color; // Fallback to a default color
+      }
 
-            const [h1, s1, l1] = lowerHsl;
-            const [h2, s2, l2] = upperHsl;
+      const [h1, s1, l1] = lowerHsl;
+      const [h2, s2, l2] = upperHsl;
 
-            const range = upper.stop - lower.stop;
-            const scaledValue = (clampedValue - lower.stop) / range;
+      const range = upper.stop - lower.stop;
+      const scaledValue = (clampedValue - lower.stop) / range;
 
-            const h = h1 + (h2 - h1) * scaledValue;
-            const s = s1 + (s2 - s1) * scaledValue;
-            const l = l1 + (l2 - l1) * scaledValue;
+      const h = h1 + (h2 - h1) * scaledValue;
+      const s = s1 + (s2 - s1) * scaledValue;
+      const l = l1 + (l2 - l1) * scaledValue;
 
-            return `hsl(${h}, ${s}%, ${l}%)`;
-        }
+      return `hsl(${h}, ${s}%, ${l}%)`;
     }
-    return colors[colors.length - 1].color;
+  }
+  return colors[colors.length - 1].color;
 };
 
 
 export const createHeatmapStyleFunction = (
-    heatmapData: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[] | undefined,
-    min: number,
-    max: number,
-    mapViewType: 'UAT' | 'Judet',
-    valueKey: 'total_amount' | 'per_capita_amount'
+  heatmapData: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[] | undefined,
+  min: number,
+  max: number,
+  mapViewType: 'UAT' | 'Judet',
+  valueKey: 'total_amount' | 'per_capita_amount'
 ): ((feature: UatFeature) => L.PathOptions) => {
 
-    return (feature: UatFeature) => {
-        if (!feature || !feature.properties) {
-            return DEFAULT_FEATURE_STYLE;
-        }
+  return (feature: UatFeature) => {
+    if (!feature || !feature.properties) {
+      return DEFAULT_FEATURE_STYLE;
+    }
 
-        const isUAT = mapViewType === 'UAT';
-        const featureKey = isUAT ? feature.properties.natcode : feature.properties.mnemonic;
+    const isUAT = mapViewType === 'UAT';
+    const featureKey = isUAT ? feature.properties.natcode : feature.properties.mnemonic;
 
-        if (!heatmapData) {
-            return DEFAULT_FEATURE_STYLE;
-        }
+    if (!heatmapData) {
+      return DEFAULT_FEATURE_STYLE;
+    }
 
-        const dataPoint = heatmapData.find(d => {
-            if (isUAT && 'siruta_code' in d) return d.siruta_code === featureKey;
-            if (!isUAT && 'county_code' in d) return d.county_code === featureKey;
-            return false;
-        });
+    const dataPoint = heatmapData.find(d => {
+      if (isUAT && 'siruta_code' in d) return d.siruta_code === featureKey;
+      if (!isUAT && 'county_code' in d) return d.county_code === featureKey;
+      return false;
+    });
 
-        if (!dataPoint) {
-            return { ...DEFAULT_FEATURE_STYLE, fillOpacity: 0.1, fillColor: "#cccccc" };
-        }
+    if (!dataPoint) {
+      return { ...DEFAULT_FEATURE_STYLE, fillOpacity: 0.1, fillColor: "#cccccc" };
+    }
 
-        const value = (valueKey in dataPoint && typeof dataPoint[valueKey] === 'number') ? dataPoint[valueKey] : 0;
+    const value = (valueKey in dataPoint && typeof dataPoint[valueKey] === 'number') ? dataPoint[valueKey] : 0;
 
-        if (min === max) {
-            const style = {
-                ...DEFAULT_FEATURE_STYLE,
-                fillColor: value !== 0 ? getHeatmapColor(0.5) : DEFAULT_FEATURE_STYLE.fillColor,
-                fillOpacity: 0.7,
-            };
-            return style;
-        }
+    if (min === max) {
+      const style = {
+        ...DEFAULT_FEATURE_STYLE,
+        fillColor: value !== 0 ? getHeatmapColor(0.5) : DEFAULT_FEATURE_STYLE.fillColor,
+        fillOpacity: 0.7,
+      };
+      return style;
+    }
 
-        const normalized = normalizeValue(value, min, max);
-        const color = getHeatmapColor(normalized);
-        const finalStyle = {
-            ...DEFAULT_FEATURE_STYLE,
-            fillColor: color,
-            fillOpacity: 0.7,
-        };
-
-        return finalStyle;
+    const normalized = normalizeValue(value, min, max);
+    const color = getHeatmapColor(normalized);
+    const finalStyle = {
+      ...DEFAULT_FEATURE_STYLE,
+      fillColor: color,
+      fillOpacity: 0.7,
     };
+
+    return finalStyle;
+  };
 };
 
 // ================= Additional utilities extracted from InteractiveMap =================

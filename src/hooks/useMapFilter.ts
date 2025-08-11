@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import { useNavigate, useSearch } from '@tanstack/react-router';
-import { mapStateSchema, MapState, MapFilters } from '@/schemas/map-filters';
+import { mapStateSchema, MapState } from '@/schemas/map-filters';
 import { useEconomicClassificationLabel, useFunctionalClassificationLabel, useAccountCategoryLabel } from '@/hooks/filters/useFilterLabels';
 import { OptionItem } from '@/components/filters/base-filter/interfaces';
-import { defaultYearRange } from '@/schemas/charts';
+import { AnalyticsFilterType, defaultYearRange } from '@/schemas/charts';
 import { LabelStore } from '@/hooks/filters/interfaces';
 
 export function useMapFilter() {
@@ -19,15 +19,15 @@ export function useMapFilter() {
         navigate({ search: (prev) => ({ ...prev, ...newState, filters: { ...(prev as MapState)?.filters, ...newState.filters } }), replace: true });
     };
 
-    const setFilters = (filters: Partial<MapFilters>) => {
+    const setFilters = (filters: Partial<AnalyticsFilterType>) => {
         navigate({
             search: (prev) => {
                 const newFilters = { ...prev, filters: { ...(prev as MapState)?.filters, ...filters } }
                 if (newFilters.filters.years?.length === 0) {
                     newFilters.filters.years = [defaultYearRange.end];
                 }
-                if (newFilters.filters.account_categories?.length === 0) {
-                    newFilters.filters.account_categories = ["ch"];
+                if (!newFilters.filters.account_category) {
+                    newFilters.filters.account_category = "ch";
                 }
                 return newFilters;
             }, replace: true
@@ -35,14 +35,14 @@ export function useMapFilter() {
     };
 
     // Helper to create list updaters for filters with label stores
-    const createListUpdater = <K extends keyof MapFilters>(filterKey: K, labelStore?: LabelStore) =>
+    const createListUpdater = <K extends keyof AnalyticsFilterType>(filterKey: K, labelStore?: LabelStore) =>
         (action: React.SetStateAction<OptionItem<string | number>[]>) => {
             const currentOptions = (mapState.filters[filterKey] as (string | number)[])?.map(id => ({ id, label: labelStore?.map(id) ?? String(id) })) ?? [];
             const newState = typeof action === 'function' ? action(currentOptions) : action;
             if (labelStore) {
                 labelStore.add(newState);
             }
-            setFilters({ [filterKey]: newState.map(o => o.id as string) } as Partial<MapFilters>);
+            setFilters({ [filterKey]: newState.map(o => o.id as string) } as Partial<AnalyticsFilterType>);
         };
 
     // Setters for map filter classifications
@@ -60,8 +60,8 @@ export function useMapFilter() {
     );
 
     const selectedAccountCategoryOption: OptionItem = useMemo(() =>
-        ({ id: mapState.filters.account_categories[0], label: accountCategoryLabelsStore.map(mapState.filters.account_categories[0]) }),
-        [mapState.filters.account_categories, accountCategoryLabelsStore]
+        ({ id: mapState.filters.account_category, label: accountCategoryLabelsStore.map(mapState.filters.account_category) }),
+        [mapState.filters.account_category, accountCategoryLabelsStore]
     );
 
     const clearAllFilters = () => {
@@ -69,14 +69,16 @@ export function useMapFilter() {
             years: [defaultYearRange.end],
             functional_codes: [],
             economic_codes: [],
-            account_categories: ["ch"],
+            account_category: "ch",
             normalization: "per_capita",
             county_codes: [],
             regions: [],
-            min_amount: undefined,
-            max_amount: undefined,
             min_population: undefined,
             max_population: undefined,
+            aggregate_min_amount: undefined,
+            aggregate_max_amount: undefined,
+            item_min_amount: undefined,
+            item_max_amount: undefined,
         });
     };
 

@@ -1,33 +1,33 @@
 import { getHeatmapJudetData, getHeatmapUATData } from "@/lib/api/dataDiscovery";
 import { useQuery, type QueryOptions, keepPreviousData } from "@tanstack/react-query";
-import { MapFilters } from "@/schemas/map-filters";
+import { AnalyticsFilterType } from "@/schemas/charts";
 import { convertDaysToMs } from "@/lib/utils";
 
-export function heatmapUATQueryOptions(filter: MapFilters) {
+export function heatmapUATQueryOptions(filter: AnalyticsFilterType) {
     return {
         queryKey: ['heatmapUATData', filter] as const,
         queryFn: () => getHeatmapUATData(filter),
         staleTime: convertDaysToMs(1),
         gcTime: convertDaysToMs(3),
-    } satisfies QueryOptions<unknown, Error, unknown, readonly [string, MapFilters]> & {
+    } satisfies QueryOptions<unknown, Error, unknown, readonly [string, AnalyticsFilterType]> & {
         staleTime?: number;
         gcTime?: number;
     };
 }
 
-export function heatmapJudetQueryOptions(filter: MapFilters) {
+export function heatmapJudetQueryOptions(filter: AnalyticsFilterType) {
     return {
         queryKey: ['heatmapJudetData', filter] as const,
         queryFn: () => getHeatmapJudetData(filter),
         staleTime: convertDaysToMs(1),
         gcTime: convertDaysToMs(3),
-    } satisfies QueryOptions<unknown, Error, unknown, readonly [string, MapFilters]> & {
+    } satisfies QueryOptions<unknown, Error, unknown, readonly [string, AnalyticsFilterType]> & {
         staleTime?: number;
         gcTime?: number;
     };
 }
 
-export function useHeatmapData(heatmapFilterInput: MapFilters, mapViewType: 'UAT' | 'Judet') {
+export function useHeatmapData(heatmapFilterInput: AnalyticsFilterType, mapViewType: 'UAT' | 'Judet') {
     const uatQuery = useQuery({
         ...heatmapUATQueryOptions(heatmapFilterInput),
         staleTime: convertDaysToMs(1),

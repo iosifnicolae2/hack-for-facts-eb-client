@@ -2,8 +2,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
 import { queryClient } from '@/lib/queryClient'
 import { fetchEntityAnalytics } from '@/lib/api/entity-analytics'
-import { entityAnalyticsFilterSchema } from '@/schemas/entity-analytics'
 import { defaultEntityAnalyticsFilter } from '@/hooks/useEntityAnalyticsFilter'
+import { AnalyticsFilterSchema } from '@/schemas/charts'
 
 const viewEnum = z.enum(['table', 'chart'])
 
@@ -13,7 +13,7 @@ const searchSchema = z.object({
   sortOrder: z.enum(['asc', 'desc']).default('desc'),
   page: z.number().default(1),
   pageSize: z.number().default(25),
-  filter: entityAnalyticsFilterSchema.default(defaultEntityAnalyticsFilter),
+  filter: AnalyticsFilterSchema.default(defaultEntityAnalyticsFilter),
 })
 
 function mapColumnIdToSortBy(columnId: string): string {

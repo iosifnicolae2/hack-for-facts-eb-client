@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { entityDetailsQueryOptions } from '@/lib/hooks/useEntityDetails';
 import { queryClient } from '@/lib/queryClient';
 import { entitySearchSchema } from '@/components/entities/validation';
-import { AnalyticsInput, defaultYearRange } from '@/schemas/charts';
+import { AnalyticsFilterType, AnalyticsInput, defaultYearRange } from '@/schemas/charts';
 import { geoJsonQueryOptions } from '@/hooks/useGeoJson';
 import { heatmapJudetQueryOptions, heatmapUATQueryOptions } from '@/hooks/useHeatmapData';
 import { getTopFunctionalGroupCodes } from '@/lib/analytics-utils';
@@ -34,7 +34,7 @@ export const Route = createFileRoute('/entities/$cui')({
         if (desiredView === 'map' && entity?.is_uat) {
             const mapViewType = entity.entity_type === 'admin_county_council' || entity.cui === '4267117' ? 'Judet' : 'UAT';
             queryClient.prefetchQuery(geoJsonQueryOptions(mapViewType));
-            const filters = (search?.mapFilters as { years: number[]; account_categories: ('ch' | 'vn')[]; normalization: 'per_capita' | 'total' }) || { years: [year], account_categories: ['ch'] as ('ch' | 'vn')[], normalization: 'per_capita' as const };
+            const filters = (search?.mapFilters as AnalyticsFilterType) || { years: [year], account_category: 'ch', normalization: 'per_capita' };
             if (mapViewType === 'UAT') {
                 queryClient.prefetchQuery(heatmapUATQueryOptions(filters));
             } else {

@@ -16,8 +16,8 @@ import {
 } from './constants';
 import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { generateHash } from '@/lib/utils';
-import { MapFilters } from '@/schemas/map-filters';
 import { ScrollWheelZoomControl } from './ScrollWheelZoomControl';
+import { AnalyticsFilterType } from '@/schemas/charts';
 
 
 interface InteractiveMapProps {
@@ -34,7 +34,7 @@ interface InteractiveMapProps {
   scrollWheelZoom?: boolean;
   mapHeight?: string;
   mapViewType: 'UAT' | 'Judet';
-  filters: MapFilters;
+  filters: AnalyticsFilterType;
 }
 
 export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({

@@ -14,13 +14,13 @@ import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { UatProperties } from '@/components/maps/interfaces';
 import { useHeatmapData } from '@/hooks/useHeatmapData';
-import { MapFilters } from '@/schemas/map-filters';
+import { AnalyticsFilterType } from '@/schemas/charts';
 import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select';
 
 interface MapViewProps {
   entity: EntityDetailsData | null;
-  mapFilters: MapFilters;
-  updateMapFilters: (filters: Partial<MapFilters>) => void;
+  mapFilters: AnalyticsFilterType;
+  updateMapFilters: (filters: Partial<AnalyticsFilterType>) => void;
   selectedYear: number;
   years: number[];
   onYearChange: (year: number) => void;
@@ -133,7 +133,7 @@ export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapF
             </Select>
           </div>
           <div className="flex flex-wrap items-center gap-4">
-            <ToggleGroup type="single" size="sm" value={mapFilters.account_categories[0]} onValueChange={(value: 'vn' | 'ch') => { if (value) updateMapFilters({ account_categories: [value] }) }}>
+            <ToggleGroup type="single" size="sm" value={mapFilters.account_category} onValueChange={(value: 'vn' | 'ch') => { if (value) updateMapFilters({ account_category: value }) }}>
               <ToggleGroupItem value="ch" className='px-4' >Cheltuieli</ToggleGroupItem>
               <ToggleGroupItem value="vn" className='px-4'>Venituri</ToggleGroupItem>
             </ToggleGroup>
@@ -170,7 +170,7 @@ export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapF
               filters={mapFilters}
             />
           )}
-        </div>
+          </div>
       </CardContent>
     </Card>
   );

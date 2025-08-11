@@ -27,6 +27,7 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useHeatmapData } from "@/hooks/useHeatmapData";
 import { useMapFilter } from "@/hooks/useMapFilter";
+import { FloatingQuickNav } from "@/components/ui/FloatingQuickNav";
 
 export const Route = createLazyFileRoute("/map")({
   component: MapPage,
@@ -56,12 +57,12 @@ function MapPage() {
   const handleFeatureClick = (properties: UatProperties) => {
     // The entity map support only a limited set of filters, so we need to pass them as a search param.
     // If we set all the filters, the data doesn't make sense for the entity page, as the filters are not visible.
-    const { years, account_categories, normalization } = mapState.filters;
+    const { years, account_category, normalization } = mapState.filters;
     const activeYear = years?.[0];
     const searchParams = {
       year: activeYear,
       mapFilters: {
-        account_categories,
+        account_category,
         normalization,
         years: [activeYear],
       },
@@ -120,115 +121,120 @@ function MapPage() {
         <MapFilter />
       </div>
       <div className="flex-grow flex flex-col relative">
-        
-          <div className="flex-grow overflow-hidden">
-            {isLoading && !heatmapData ? (
-              <div className="flex items-center justify-center h-full w-full" aria-live="polite" aria-busy="true">
-                <LoadingSpinner size="lg" text={loadingText} />
-              </div>
-            ) : error ? (
-              <div className="p-4 text-center text-red-500">Error loading data: {error.message}</div>
-            ) : !geoJsonData ? (
-              <div className="p-4 text-center">Map data not available.</div>
-            ) : (
-              <>
-                {mapState.activeView === "map" && (
-                  <div className="sm:h-screen md:h-[calc(100vh-10rem)] w-full m-0 relative">
-                    {heatmapData ? (
-                      <InteractiveMap
-                        onFeatureClick={handleFeatureClick}
-                        getFeatureStyle={aDynamicGetFeatureStyle}
-                        heatmapData={heatmapData}
-                        geoJsonData={geoJsonData}
-                        zoom={mapZoom}
-                        mapViewType={mapState.mapViewType}
-                        filters={mapState.filters}
-                      />
-                    ) : (
-                      <div className="flex items-center justify-center h-full w-full">
-                        No data available for the map.
-                      </div>
-                    )}
-                    <MapLegend
-                      min={minAggregatedValue}
-                      max={maxAggregatedValue}
-                      className="absolute bottom-[-6rem] right-[4rem] z-10 hidden md:block"
-                      title="Interval Valori"
+        <FloatingQuickNav
+          tableActive
+          chartActive
+          filterInput={mapState.filters}
+        />
+
+        <div className="flex-grow overflow-hidden">
+          {isLoading && !heatmapData ? (
+            <div className="flex items-center justify-center h-full w-full" aria-live="polite" aria-busy="true">
+              <LoadingSpinner size="lg" text={loadingText} />
+            </div>
+          ) : error ? (
+            <div className="p-4 text-center text-red-500">Error loading data: {error.message}</div>
+          ) : !geoJsonData ? (
+            <div className="p-4 text-center">Map data not available.</div>
+          ) : (
+            <>
+              {mapState.activeView === "map" && (
+                <div className="sm:h-screen md:h-[calc(100vh-10rem)] w-full m-0 relative">
+                  {heatmapData ? (
+                    <InteractiveMap
+                      onFeatureClick={handleFeatureClick}
+                      getFeatureStyle={aDynamicGetFeatureStyle}
+                      heatmapData={heatmapData}
+                      geoJsonData={geoJsonData}
+                      zoom={mapZoom}
+                      mapViewType={mapState.mapViewType}
+                      filters={mapState.filters}
                     />
-                    <Dialog open={isLegendModalOpen} onOpenChange={setIsLegendModalOpen}>
-                      <DialogTrigger asChild>
-                        <Button
-                          variant="secondary"
-                          size="icon"
-                          className="absolute top-4 right-4 md:hidden rounded-full shadow-lg w-14 h-14 z-50"
-                        >
-                          <HelpCircleIcon className="w-6 h-6" />
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent hideCloseButton={true} className="p-0 m-0 w-full max-w-full h-full max-h-full sm:h-[calc(100%-2rem)] sm:max-h-[calc(100%-2rem)] sm:w-[calc(100%-2rem)] sm:max-w-md sm:rounded-lg flex flex-col">
-                        <DialogHeader className="p-4 border-b flex flex-row justify-between items-center shrink-0">
-                          <DialogTitle className="text-lg font-semibold">Legend</DialogTitle>
-                          <DialogClose asChild>
-                            <Button variant="ghost" size="icon" className="rounded-full">
-                              <X className="h-5 w-5" />
-                            </Button>
-                          </DialogClose>
-                        </DialogHeader>
-                        <div className="p-4 overflow-y-auto">
-                          <MapLegend
-                            min={minAggregatedValue}
-                            max={maxAggregatedValue}
-                            title="Aggregated Value Legend"
-                            isInModal={true}
-                          />
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-                  </div>
-                )}
-                {mapState.activeView === "table" && (
-                  <div className="h-full m-0">
-                    <div className="p-4 h-full flex flex-col overflow-auto">
-                      <h2 className="text-xl font-semibold mb-4">Data Table View</h2>
-                      <div className="flex-grow overflow-x-auto">
-                        {heatmapData ? (
-                          <HeatmapDataTable
-                            data={heatmapData}
-                            isLoading={isLoadingHeatmap}
-                            sorting={sorting}
-                            setSorting={setSorting}
-                            pagination={pagination}
-                            setPagination={setPagination}
-                            mapViewType={mapState.mapViewType}
-                          />
-                        ) : isLoadingHeatmap ? (
-                          <div className="flex items-center justify-center h-full">
-                            <LoadingSpinner size="md" text="Loading table data..." />
-                          </div>
-                        ) : (
-                          <div className="flex items-center justify-center h-full">
-                            <p className="text-muted-foreground">No data available for the table.</p>
-                          </div>
-                        )}
-                      </div>
+                  ) : (
+                    <div className="flex items-center justify-center h-full w-full">
+                      No data available for the map.
                     </div>
-                  </div>
-                )}
-                {mapState.activeView === "chart" && (
-                  <div className="h-full w-full m-0">
-                    <div className="h-full w-full p-4 overflow-y-auto">
-                      {heatmapData && geoJsonData ? (
-                        <UatDataCharts data={heatmapData} mapViewType={mapState.mapViewType} />
+                  )}
+                  <MapLegend
+                    min={minAggregatedValue}
+                    max={maxAggregatedValue}
+                    className="absolute bottom-[-6rem] right-[4rem] z-10 hidden md:block"
+                    title="Interval Valori"
+                  />
+                  <Dialog open={isLegendModalOpen} onOpenChange={setIsLegendModalOpen}>
+                    <DialogTrigger asChild>
+                      <Button
+                        variant="secondary"
+                        size="icon"
+                        className="absolute top-4 right-4 md:hidden rounded-full shadow-lg w-14 h-14 z-50"
+                      >
+                        <HelpCircleIcon className="w-6 h-6" />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent hideCloseButton={true} className="p-0 m-0 w-full max-w-full h-full max-h-full sm:h-[calc(100%-2rem)] sm:max-h-[calc(100%-2rem)] sm:w-[calc(100%-2rem)] sm:max-w-md sm:rounded-lg flex flex-col">
+                      <DialogHeader className="p-4 border-b flex flex-row justify-between items-center shrink-0">
+                        <DialogTitle className="text-lg font-semibold">Legend</DialogTitle>
+                        <DialogClose asChild>
+                          <Button variant="ghost" size="icon" className="rounded-full">
+                            <X className="h-5 w-5" />
+                          </Button>
+                        </DialogClose>
+                      </DialogHeader>
+                      <div className="p-4 overflow-y-auto">
+                        <MapLegend
+                          min={minAggregatedValue}
+                          max={maxAggregatedValue}
+                          title="Aggregated Value Legend"
+                          isInModal={true}
+                        />
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              )}
+              {mapState.activeView === "table" && (
+                <div className="h-full m-0">
+                  <div className="p-4 h-full flex flex-col overflow-auto">
+                    <h2 className="text-xl font-semibold mb-4">Data Table View</h2>
+                    <div className="flex-grow overflow-x-auto">
+                      {heatmapData ? (
+                        <HeatmapDataTable
+                          data={heatmapData}
+                          isLoading={isLoadingHeatmap}
+                          sorting={sorting}
+                          setSorting={setSorting}
+                          pagination={pagination}
+                          setPagination={setPagination}
+                          mapViewType={mapState.mapViewType}
+                        />
+                      ) : isLoadingHeatmap ? (
+                        <div className="flex items-center justify-center h-full">
+                          <LoadingSpinner size="md" text="Loading table data..." />
+                        </div>
                       ) : (
-                        <p className="text-center text-muted-foreground">Chart data is loading or not available.</p>
+                        <div className="flex items-center justify-center h-full">
+                          <p className="text-muted-foreground">No data available for the table.</p>
+                        </div>
                       )}
                     </div>
                   </div>
-                )}
-              </>
-            )}
-          </div>
-        
+                </div>
+              )}
+              {mapState.activeView === "chart" && (
+                <div className="h-full w-full m-0">
+                  <div className="h-full w-full p-4 overflow-y-auto">
+                    {heatmapData && geoJsonData ? (
+                      <UatDataCharts data={heatmapData} mapViewType={mapState.mapViewType} />
+                    ) : (
+                      <p className="text-center text-muted-foreground">Chart data is loading or not available.</p>
+                    )}
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+
       </div>
 
       <div className="md:hidden fixed right-6 bottom-[5.75rem] z-50 flex flex-col items-end gap-3">

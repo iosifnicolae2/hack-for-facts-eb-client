@@ -1,11 +1,10 @@
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { z } from 'zod'
-import { defaultYearRange } from '@/schemas/charts'
-import { entityAnalyticsFilterSchema, type EntityAnalyticsFilter } from '@/schemas/entity-analytics'
+import { AnalyticsFilterSchema, AnalyticsFilterType, defaultYearRange } from '@/schemas/charts'
 
 const viewEnum = z.enum(['table', 'chart'])
 
-export const defaultEntityAnalyticsFilter: EntityAnalyticsFilter = {
+export const defaultEntityAnalyticsFilter: AnalyticsFilterType = {
   account_category: 'ch',
   years: [defaultYearRange.end],
   normalization: 'total',
@@ -17,7 +16,7 @@ const searchSchema = z.object({
   sortOrder: z.enum(['asc', 'desc']).default('desc'),
   page: z.number().default(1),
   pageSize: z.number().default(25),
-  filter: entityAnalyticsFilterSchema.default(defaultEntityAnalyticsFilter as EntityAnalyticsFilter),
+  filter: AnalyticsFilterSchema.default(defaultEntityAnalyticsFilter as AnalyticsFilterType),
 })
 
 export type EntityAnalyticsSearch = z.infer<typeof searchSchema>
@@ -27,7 +26,7 @@ export function useEntityAnalyticsFilter() {
   const raw = useSearch({ from: '/entity-analytics' })
   const search = searchSchema.parse(raw)
 
-  const setFilter = (partial: Partial<EntityAnalyticsFilter>) => {
+  const setFilter = (partial: Partial<AnalyticsFilterType>) => {
     navigate({
       search: (prev) => {
         const prevFilter = (prev as EntityAnalyticsSearch).filter ?? {}

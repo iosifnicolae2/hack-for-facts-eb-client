@@ -1,19 +1,11 @@
 import { getChartsStore } from "@/components/charts/chartsStore";
-import { ChartSchema } from "@/schemas/charts";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
-import { z } from "zod";
-
-const stateSchema = z.object({
-    chart: ChartSchema,
-    view: z.enum(["overview", "config", "series-config", "annotation-config"]).default("overview"),
-    seriesId: z.string().optional(),
-    annotationId: z.string().optional(),
-});
+import { chartUrlStateSchema } from "./_schema";
 
 const chartsStore = getChartsStore();
 
 export const Route = createFileRoute("/charts/$chartId")({
-    validateSearch: stateSchema,
+    validateSearch: chartUrlStateSchema,
     component: RouteComponent,
     onEnter: async ({ params, search }) => {
         if (search.chart.id !== params.chartId) {

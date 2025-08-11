@@ -2,7 +2,7 @@ import { createLogger } from "../logger";
 import { graphqlRequest } from "./graphql";
 import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
 import { BudgetLineItem, PaginatedResult, EntityData, AggregatedBudgetData, GetDataParams } from "@/schemas/dataDiscovery";
-import { MapFilters } from "@/schemas/map-filters";
+import { AnalyticsFilterType } from "@/schemas/charts";
 
 const logger = createLogger("data-discovery-api");
 
@@ -129,7 +129,7 @@ export async function getEntities({
       limit: pageSize,
       offset,
     });
-    
+
     const { nodes, pageInfo } = response.entities;
     const totalPages = Math.ceil(pageInfo.totalCount / pageSize);
 
@@ -393,25 +393,25 @@ export async function getUniqueCounties(): Promise<
 }
 
 // --- BEGIN GET HEATMAP UAT DATA FUNCTION ---
-function mapFiltersToAnalyticsFilter(filter: MapFilters) {
+function mapFiltersToAnalyticsFilter(filter: AnalyticsFilterType) {
   return {
     years: filter.years,
-    account_category: (filter.account_categories?.[0] ?? 'ch') as 'ch' | 'vn',
+    account_category: filter.account_category,
     normalization: filter.normalization,
     functional_codes: filter.functional_codes,
     economic_codes: filter.economic_codes,
     county_codes: filter.county_codes,
     regions: filter.regions,
     // Map UI aggregated amount range to aggregate_* thresholds for heatmaps
-    aggregate_min_amount: filter.min_amount,
-    aggregate_max_amount: filter.max_amount,
+    aggregate_min_amount: filter.aggregate_min_amount,
+    aggregate_max_amount: filter.aggregate_max_amount,
     min_population: filter.min_population,
     max_population: filter.max_population,
   } as const;
 }
 
 export async function getHeatmapUATData(
-  filter: MapFilters
+  filter: AnalyticsFilterType
 ): Promise<HeatmapUATDataPoint[]> {
   logger.info("Fetching heatmap UAT data with filter", { filter });
 
@@ -441,7 +441,7 @@ export async function getHeatmapUATData(
 
 // --- BEGIN GET HEATMAP JUDET DATA FUNCTION ---
 export async function getHeatmapJudetData(
-  filter: MapFilters
+  filter: AnalyticsFilterType
 ): Promise<HeatmapJudetDataPoint[]> {
   logger.info("Fetching heatmap JUDET data with filter", { filter });
 

@@ -32,21 +32,21 @@ export function MapFilter() {
         (mapState.filters.years?.length ?? 0) +
         (mapState.filters.functional_codes?.length ?? 0) +
         (mapState.filters.economic_codes?.length ?? 0) +
-        (mapState.filters.min_amount ? 1 : 0) +
-        (mapState.filters.max_amount ? 1 : 0) +
+        (mapState.filters.aggregate_min_amount ? 1 : 0) +
+        (mapState.filters.aggregate_max_amount ? 1 : 0) +
         (mapState.filters.min_population ? 1 : 0) +
         (mapState.filters.max_population ? 1 : 0);
 
     const selectedAccountCategoryOption = useMemo(() => {
-        return mapState.filters.account_categories[0];
-    }, [mapState.filters.account_categories]);
+        return mapState.filters.account_category;
+    }, [mapState.filters.account_category]);
 
     const updateAccountCategory = (accountCategory: "ch" | "vn") => {
-        setFilters({ account_categories: [accountCategory] });
+        setFilters({ account_category: accountCategory });
     };
 
     const selectedNormalizationOption = useMemo(() => {
-        return mapState.filters.normalization;
+        return mapState.filters.normalization ?? 'total';
     }, [mapState.filters.normalization]);
 
     const updateNormalization = (normalization: "total" | "per_capita") => {
@@ -63,11 +63,11 @@ export function MapFilter() {
     };
 
     const updateMinValueAmount = (minAmount: string | undefined) => {
-        setFilters({ min_amount: minAmount ? Number(minAmount) : undefined });
+        setFilters({ aggregate_min_amount: minAmount ? Number(minAmount) : undefined });
     };
 
     const updateMaxValueAmount = (maxAmount: string | undefined) => {
-        setFilters({ max_amount: maxAmount ? Number(maxAmount) : undefined });
+        setFilters({ aggregate_max_amount: maxAmount ? Number(maxAmount) : undefined });
     };
 
     const updateMinValuePopulation = (minPopulation: string | undefined) => {
@@ -160,9 +160,9 @@ export function MapFilter() {
                     icon={<SlidersHorizontal className="w-4 h-4" />}
                     unit="RON"
                     rangeComponent={AmountRangeFilter}
-                    minValue={mapState.filters.min_amount}
+                    minValue={mapState.filters.aggregate_min_amount}
                     onMinValueChange={updateMinValueAmount}
-                    maxValue={mapState.filters.max_amount}
+                    maxValue={mapState.filters.aggregate_max_amount}
                     onMaxValueChange={updateMaxValueAmount}
                 />
                 <FilterRangeContainer
