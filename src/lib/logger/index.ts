@@ -1,3 +1,5 @@
+import { env } from "@/config/env";
+
 type Primitive = string | number | boolean | null | undefined
 type ExtraInfo = Record<string, unknown> | Primitive
 
@@ -12,7 +14,9 @@ enum LogLevel {
 const logLevel = LogLevel.INFO;
 
 const emitLog = (level: string, body: unknown, extraInfo?: ExtraInfo) => {
-  console.log(level, body, extraInfo);
+  if (env.VITE_APP_ENVIRONMENT === "development") {
+    console.log(level, body, extraInfo);
+  }
 };
 
 /**

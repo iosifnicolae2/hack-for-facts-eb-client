@@ -34,11 +34,11 @@ export function AnnotationsList() {
   };
 
   const onDuplicateAnnotation = (annotationId: string) => {
-    console.log('duplicate annotation', annotationId);
+    console.warn('duplicate annotation not implemented', annotationId);
   };
 
   const onCopyAnnotation = (annotationId: string) => {
-    console.log('copy annotation', annotationId);
+    console.warn('copy annotation not implemented', annotationId);
   };
 
   const handleOpenEdit = (annotationId: string) => {

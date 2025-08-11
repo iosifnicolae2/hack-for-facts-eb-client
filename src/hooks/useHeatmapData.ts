@@ -30,7 +30,6 @@ export function heatmapJudetQueryOptions(filter: AnalyticsFilterType) {
 }
 
 export function useHeatmapData(heatmapFilterInput: AnalyticsFilterType, mapViewType: 'UAT' | 'Judet') {
-    console.log('heatmapFilterInput', heatmapFilterInput);
     const uatQuery = useQuery({
         ...heatmapUATQueryOptions(heatmapFilterInput),
         staleTime: convertDaysToMs(1),
