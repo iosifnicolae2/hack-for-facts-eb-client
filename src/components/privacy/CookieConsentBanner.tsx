@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ReactElement } from "react";
 import { Cookie } from "lucide-react";
-import { acceptAll, declineAll, getConsent, setConsent } from "@/lib/consent";
+import { acceptAll, declineAll } from "@/lib/consent";
 import { Link } from "@tanstack/react-router";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -44,9 +44,8 @@ export function CookieConsentBanner(): ReactElement | null {
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-50 p-3 md:p-6 transition-transform duration-500 ease-in-out ${
-        isExiting ? "translate-y-full" : "translate-y-0"
-      }`}
+      className={`fixed inset-x-0 bottom-0 z-50 p-3 md:p-6 transition-transform duration-500 ease-in-out ${isExiting ? "translate-y-full" : "translate-y-0"
+        }`}
       role="dialog"
       aria-live="polite"
       aria-label="Cookie consent"
