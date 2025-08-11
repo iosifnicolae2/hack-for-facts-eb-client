@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { queryClient } from '@/lib/queryClient'
 import { geoJsonQueryOptions } from '@/hooks/useGeoJson'
 import { heatmapJudetQueryOptions, heatmapUATQueryOptions } from '@/hooks/useHeatmapData'
-import { mapStateSchema } from '@/schemas/map-filters'
+import { MapStateSchema } from '@/schemas/map-filters'
 import { AnalyticsFilterType, defaultYearRange } from '@/schemas/charts'
 
 type MapViewType = 'UAT' | 'Judet'
@@ -10,7 +10,7 @@ type MapViewType = 'UAT' | 'Judet'
 export const Route = createFileRoute('/map')({
   beforeLoad: ({ search }) => {
     // Parse and normalize search params using zod defaults to ensure valid filters
-    const parsed = mapStateSchema.parse(search)
+    const parsed = MapStateSchema.parse(search)
     const viewType: MapViewType = parsed.mapViewType
     const filters = parsed.filters
 

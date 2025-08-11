@@ -125,6 +125,7 @@ function MapPage() {
           tableActive
           chartActive
           filterInput={mapState.filters}
+          mapViewType={mapState.mapViewType}
         />
 
         <div className="flex-grow overflow-hidden">

@@ -5,7 +5,7 @@ const MapViewEnum = z.enum(["map", "table", "chart"]);
 const MapViewTypeEnum = z.enum(["UAT", "Judet"]);
 
 
-export const mapStateSchema = z.object({
+export const MapStateSchema = z.object({
   filters: AnalyticsFilterSchema.default({
     account_category: 'ch',
     years: [defaultYearRange.end],
@@ -17,5 +17,5 @@ export const mapStateSchema = z.object({
   mapViewType: MapViewTypeEnum.default("UAT"),
 });
 
-export type MapState = z.infer<typeof mapStateSchema>;
+export type MapUrlState = z.infer<typeof MapStateSchema>;
 

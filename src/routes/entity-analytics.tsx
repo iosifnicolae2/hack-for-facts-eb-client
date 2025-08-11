@@ -7,7 +7,7 @@ import { AnalyticsFilterSchema } from '@/schemas/charts'
 
 const viewEnum = z.enum(['table', 'chart'])
 
-const searchSchema = z.object({
+const EntityAnalyticsSchema = z.object({
   view: viewEnum.default('table'),
   sortBy: z.string().optional(),
   sortOrder: z.enum(['asc', 'desc']).default('desc'),
@@ -15,6 +15,8 @@ const searchSchema = z.object({
   pageSize: z.number().default(25),
   filter: AnalyticsFilterSchema.default(defaultEntityAnalyticsFilter),
 })
+
+export type EntityAnalyticsUrlState = z.infer<typeof EntityAnalyticsSchema>
 
 function mapColumnIdToSortBy(columnId: string): string {
   switch (columnId) {
@@ -39,7 +41,7 @@ function mapColumnIdToSortBy(columnId: string): string {
 
 export const Route = createFileRoute('/entity-analytics')({
   beforeLoad: ({ search }) => {
-    const parsed = searchSchema.parse(search)
+    const parsed = EntityAnalyticsSchema.parse(search)
     const offset = (parsed.page - 1) * parsed.pageSize
     const sort = parsed.sortBy
       ? ({ by: mapColumnIdToSortBy(parsed.sortBy), order: parsed.sortOrder } as const)

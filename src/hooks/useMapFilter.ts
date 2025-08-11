@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useNavigate, useSearch } from '@tanstack/react-router';
-import { mapStateSchema, MapState } from '@/schemas/map-filters';
+import { MapStateSchema, MapUrlState } from '@/schemas/map-filters';
 import { useEconomicClassificationLabel, useFunctionalClassificationLabel, useAccountCategoryLabel } from '@/hooks/filters/useFilterLabels';
 import { OptionItem } from '@/components/filters/base-filter/interfaces';
 import { AnalyticsFilterType, defaultYearRange } from '@/schemas/charts';
@@ -9,20 +9,20 @@ import { LabelStore } from '@/hooks/filters/interfaces';
 export function useMapFilter() {
     const navigate = useNavigate({ from: '/map' });
     const search = useSearch({ from: '/map' });
-    const mapState = mapStateSchema.parse(search);
+    const mapState = MapStateSchema.parse(search);
 
     const economicClassificationLabelsStore = useEconomicClassificationLabel(mapState.filters.economic_codes ?? []);
     const functionalClassificationLabelsStore = useFunctionalClassificationLabel(mapState.filters.functional_codes ?? []);
     const accountCategoryLabelsStore = useAccountCategoryLabel();
 
-    const updateMapState = (newState: Partial<MapState>) => {
-        navigate({ search: (prev) => ({ ...prev, ...newState, filters: { ...(prev as MapState)?.filters, ...newState.filters } }), replace: true });
+    const updateMapState = (newState: Partial<MapUrlState>) => {
+        navigate({ search: (prev) => ({ ...prev, ...newState, filters: { ...(prev as MapUrlState)?.filters, ...newState.filters } }), replace: true });
     };
 
     const setFilters = (filters: Partial<AnalyticsFilterType>) => {
         navigate({
             search: (prev) => {
-                const newFilters = { ...prev, filters: { ...(prev as MapState)?.filters, ...filters } }
+                const newFilters = { ...prev, filters: { ...(prev as MapUrlState)?.filters, ...filters } }
                 if (newFilters.filters.years?.length === 0) {
                     newFilters.filters.years = [defaultYearRange.end];
                 }
