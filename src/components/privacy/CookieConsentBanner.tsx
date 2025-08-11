@@ -51,7 +51,7 @@ export function CookieConsentBanner(): ReactElement | null {
       aria-live="polite"
       aria-label="Cookie consent"
     >
-      <Card className="mx-auto max-w-5xl rounded-2xl border bg-card/40 shadow-xl backdrop-blur supports-[backdrop-filter]:bg-card/40">
+      <Card className="mx-auto max-w-5xl rounded-2xl border bg-card/80 shadow-xl backdrop-blur supports-[backdrop-filter]:bg-card/80">
         <CardHeader className="pb-3">
           <div className="flex items-center gap-3">
             <Cookie className="h-6 w-6 text-primary" />
