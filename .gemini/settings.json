@@ -1,18 +1,56 @@
 {
   "preferredEditor": "vim",
+  "sandbox": true,
   "coreTools": [
+    // Gemini tools
+    "read_file",
+    "read_many_files",
+    "write_file",
+    "web_fetch",
+    "google_web_search",    
+    "save_memory",
+
+    // Shell commands
+    "run_shell_command(ls)",
+    "run_shell_command(tree)",
+    "run_shell_command(find)",
+    "run_shell_command(grep)",
+    "run_shell_command(cat)",
+    "run_shell_command(tail)",
+    "run_shell_command(head)",
+    "run_shell_command(wc)",
+    "run_shell_command(sort)",
+    "run_shell_command(uniq)",
+    "run_shell_command(cut)",
+    "run_shell_command(sed)",
+    "run_shell_command(awk)",
+    "run_shell_command(tr)",
+    "run_shell_command(paste)",
+    "run_shell_command(join)",
+    "run_shell_command(split)",
+    "run_shell_command(npx tsc -b --noEmit)",
+
+    // Git safe commands
     "run_shell_command(git diff)",
     "run_shell_command(git status)",
     "run_shell_command(git status --verbose)",
     "run_shell_command(git log)",
-    "run_shell_command(git stash push --keep-index -m)",
     "run_shell_command(git stash list)",
     "run_shell_command(git stash apply)"
   ],
   "excludeTools": [
+    // Destructive file operations
+    "run_shell_command(rm)",
+    "run_shell_command(rm -rf)",
+    "run_shell_command(mv)",
+    "run_shell_command(cp -f)",
+    "run_shell_command(chmod)",
+    "run_shell_command(chown)",
+
+    // Destructive git commands
     "run_shell_command(git reset)",
     "run_shell_command(git restore)",
     "run_shell_command(git revert)",
-    "run_shell_command(git stash)"
+    "run_shell_command(git stash)" // bare stash clears all
   ]
 }
