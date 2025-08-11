@@ -1,6 +1,6 @@
 import { FilterListContainer } from "./base-filter/FilterListContainer";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { ArrowUpDown, Calendar, ChartBar, Divide, Globe, Map, SlidersHorizontal, Tags, XCircle } from "lucide-react";
+import { ArrowUpDown, Calendar, ChartBar, Divide, Globe, Map, SlidersHorizontal, Tags, XCircle, Building2, HandCoins, Building, MapPin, MapPinned } from "lucide-react";
 import { YearFilter } from "./year-filter";
 import { AccountCategoryRadioGroup } from "./account-type-filter/AccountCategoryRadioGroup";
 import { Button } from "../ui/button";
@@ -12,71 +12,64 @@ import { AmountRangeFilter } from "./amount-range-filter";
 import { MapViewTypeRadioGroup } from "./MapViewTypeRadioGroup";
 import { useMapFilter } from "@/hooks/useMapFilter";
 import { useMemo } from "react";
-import { OptionItem } from "./base-filter/interfaces";
 import { ViewTypeRadioGroup } from "./ViewTypeRadioGroup";
+import { EntityTypeList } from './entity-type-filter/EntityTypeList';
+import { BudgetSectorList } from './budget-sector-filter/BudgetSectorFilter';
+import { FundingSourceList } from './funding-source-filter/FundingSourceFilter';
+import { PrefixFilter, FilterPrefixContainer } from './prefix-filter';
+import { UatList } from './uat-filter/UatList';
+import { CountyList } from './county-filter/CountyList';
 
 export function MapFilter() {
     const {
         mapState,
-        setFilters,
         clearAllFilters,
         setMapViewType,
         setActiveView,
         selectedFunctionalClassificationOptions,
         setSelectedFunctionalClassificationOptions,
         selectedEconomicClassificationOptions,
-        setSelectedEconomicClassificationOptions
+        setSelectedEconomicClassificationOptions,
+        setAccountCategory,
+        setNormalization,
+        setYears,
+        selectedUatOptions,
+        setSelectedUatOptions,
+        setSelectedCountyOptions,
+        setSelectedEntityTypeOptions,
+        setSelectedBudgetSectorOptions,
+        setSelectedFundingSourceOptions,
+        setFunctionalPrefixes,
+        setEconomicPrefixes,
+        setMinPopulation,
+        setMaxPopulation,
+        setAggregateMinAmount,
+        setAggregateMaxAmount,
     } = useMapFilter();
 
     const totalOptionalFilters =
         (mapState.filters.years?.length ?? 0) +
         (mapState.filters.functional_codes?.length ?? 0) +
         (mapState.filters.economic_codes?.length ?? 0) +
+        (mapState.filters.functional_prefixes?.length ?? 0) +
+        (mapState.filters.economic_prefixes?.length ?? 0) +
+        (mapState.filters.entity_types?.length ?? 0) +
+        (mapState.filters.budget_sector_ids?.length ?? 0) +
+        (mapState.filters.funding_source_ids?.length ?? 0) +
+        (mapState.filters.program_codes?.length ?? 0) +
+        (mapState.filters.expense_types?.length ?? 0) +
+        (mapState.filters.uat_ids?.length ?? 0) +
+        (mapState.filters.county_codes?.length ?? 0) +
         (mapState.filters.aggregate_min_amount ? 1 : 0) +
         (mapState.filters.aggregate_max_amount ? 1 : 0) +
         (mapState.filters.min_population ? 1 : 0) +
         (mapState.filters.max_population ? 1 : 0);
 
-    const selectedAccountCategoryOption = useMemo(() => {
-        return mapState.filters.account_category;
-    }, [mapState.filters.account_category]);
-
-    const updateAccountCategory = (accountCategory: "ch" | "vn") => {
-        setFilters({ account_category: accountCategory });
-    };
-
-    const selectedNormalizationOption = useMemo(() => {
-        return mapState.filters.normalization ?? 'total';
-    }, [mapState.filters.normalization]);
-
-    const updateNormalization = (normalization: "total" | "per_capita") => {
-        setFilters({ normalization });
-    };
-
+    const selectedAccountCategoryOption = useMemo(() => mapState.filters.account_category, [mapState.filters.account_category]);
+    const selectedNormalizationOption = useMemo(() => mapState.filters.normalization ?? 'total', [mapState.filters.normalization]);
     const selectedYearOptions = useMemo(() => {
         return mapState.filters.years?.map(y => ({ id: y, label: String(y) })) ?? [];
     }, [mapState.filters.years]);
-
-    const updateYearOptions = (years: OptionItem<string | number>[] | ((prevState: OptionItem<string | number>[]) => OptionItem<string | number>[])) => {
-        const newYears = typeof years === 'function' ? years(selectedYearOptions) : years;
-        setFilters({ years: newYears.map(y => Number(y.id)) });
-    };
-
-    const updateMinValueAmount = (minAmount: string | undefined) => {
-        setFilters({ aggregate_min_amount: minAmount ? Number(minAmount) : undefined });
-    };
-
-    const updateMaxValueAmount = (maxAmount: string | undefined) => {
-        setFilters({ aggregate_max_amount: maxAmount ? Number(maxAmount) : undefined });
-    };
-
-    const updateMinValuePopulation = (minPopulation: string | undefined) => {
-        setFilters({ min_population: minPopulation ? Number(minPopulation) : undefined });
-    };
-
-    const updateMaxValuePopulation = (maxPopulation: string | undefined) => {
-        setFilters({ max_population: maxPopulation ? Number(maxPopulation) : undefined });
-    };
 
     return (
         <Card className="flex flex-col w-full min-h-full overflow-y-auto shadow-lg">
@@ -119,7 +112,7 @@ export function MapFilter() {
                     </h4>
                     <AccountCategoryRadioGroup
                         value={selectedAccountCategoryOption}
-                        onChange={updateAccountCategory}
+                        onChange={setAccountCategory}
                     />
                 </div>
 
@@ -130,7 +123,7 @@ export function MapFilter() {
                     </h4>
                     <PopulationRadioGroup
                         value={selectedNormalizationOption}
-                        onChange={updateNormalization}
+                        onChange={setNormalization}
                     />
                 </div>
 
@@ -139,14 +132,37 @@ export function MapFilter() {
                     icon={<Calendar className="w-4 h-4" />}
                     listComponent={YearFilter}
                     selected={selectedYearOptions}
-                    setSelected={updateYearOptions}
+                    setSelected={setYears}
                 />
+                <FilterListContainer
+                    title="UAT-uri"
+                    icon={<MapPin className="w-4 h-4" />}
+                    listComponent={UatList}
+                    selected={selectedUatOptions}
+                    setSelected={setSelectedUatOptions}
+                />
+
+                <FilterListContainer
+                    title="Județe"
+                    icon={<MapPinned className="w-4 h-4" />}
+                    listComponent={CountyList}
+                    selected={(mapState.filters.county_codes ?? []).map((c) => ({ id: c, label: String(c) }))}
+                    setSelected={setSelectedCountyOptions}
+                />
+
                 <FilterListContainer
                     title="Clasificare Functionala"
                     icon={<ChartBar className="w-4 h-4" />}
                     listComponent={FunctionalClassificationList}
                     selected={selectedFunctionalClassificationOptions}
                     setSelected={setSelectedFunctionalClassificationOptions}
+                />
+                <FilterPrefixContainer
+                    title="Prefix Clasificare Functionala"
+                    icon={<ChartBar className="w-4 h-4" />}
+                    prefixComponent={PrefixFilter}
+                    value={mapState.filters.functional_prefixes}
+                    onValueChange={setFunctionalPrefixes}
                 />
                 <FilterListContainer
                     title="Clasificare Economică"
@@ -155,15 +171,46 @@ export function MapFilter() {
                     selected={selectedEconomicClassificationOptions}
                     setSelected={setSelectedEconomicClassificationOptions}
                 />
+                <FilterPrefixContainer
+                    title="Prefix Clasificare Economică"
+                    icon={<Tags className="w-4 h-4" />}
+                    prefixComponent={PrefixFilter}
+                    value={mapState.filters.economic_prefixes}
+                    onValueChange={setEconomicPrefixes}
+                />
+
+                <FilterListContainer
+                    title="Tip entitate"
+                    icon={<Building className="w-4 h-4" />}
+                    listComponent={EntityTypeList}
+                    selected={(mapState.filters.entity_types ?? []).map(id => ({ id, label: id }))}
+                    setSelected={setSelectedEntityTypeOptions}
+                />
+
+                <FilterListContainer
+                    title="Sector bugetar"
+                    icon={<Building2 className="w-4 h-4" />}
+                    listComponent={BudgetSectorList}
+                    selected={(mapState.filters.budget_sector_ids ?? []).map(id => ({ id, label: String(id) }))}
+                    setSelected={setSelectedBudgetSectorOptions}
+                />
+
+                <FilterListContainer
+                    title="Sursă de finanțare"
+                    icon={<HandCoins className="w-4 h-4" />}
+                    listComponent={FundingSourceList}
+                    selected={(mapState.filters.funding_source_ids ?? []).map(id => ({ id, label: String(id) }))}
+                    setSelected={setSelectedFundingSourceOptions}
+                />
                 <FilterRangeContainer
                     title="Interval Valoare"
                     icon={<SlidersHorizontal className="w-4 h-4" />}
                     unit="RON"
                     rangeComponent={AmountRangeFilter}
                     minValue={mapState.filters.aggregate_min_amount}
-                    onMinValueChange={updateMinValueAmount}
+                    onMinValueChange={(v) => setAggregateMinAmount(v ? Number(v) : undefined)}
                     maxValue={mapState.filters.aggregate_max_amount}
-                    onMaxValueChange={updateMaxValueAmount}
+                    onMaxValueChange={(v) => setAggregateMaxAmount(v ? Number(v) : undefined)}
                 />
                 <FilterRangeContainer
                     title="Interval Populație"
@@ -171,10 +218,10 @@ export function MapFilter() {
                     icon={<Globe className="w-4 h-4" />}
                     rangeComponent={AmountRangeFilter}
                     minValue={mapState.filters.min_population}
-                    onMinValueChange={updateMinValuePopulation}
+                    onMinValueChange={(v) => setMinPopulation(v ? Number(v) : undefined)}
                     maxValue={mapState.filters.max_population}
                     maxValueAllowed={100_000_000}
-                    onMaxValueChange={updateMaxValuePopulation}
+                    onMaxValueChange={(v) => setMaxPopulation(v ? Number(v) : undefined)}
                 />
             </CardContent>
         </Card>

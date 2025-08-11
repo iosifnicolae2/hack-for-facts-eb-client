@@ -216,19 +216,7 @@ function convertFilterInputToMapState(filterInput: AnalyticsFilterType, mapViewT
     const accountCategory = (filterInput.account_category ?? 'ch') as 'ch' | 'vn'
 
     return {
-        filters: {
-            years,
-            account_category: accountCategory,
-            normalization: filterInput.normalization,
-            functional_codes: filterInput.functional_codes,
-            economic_codes: filterInput.economic_codes,
-            county_codes: filterInput.county_codes,
-            regions: filterInput.regions,
-            aggregate_min_amount: filterInput.aggregate_min_amount as number | undefined,
-            aggregate_max_amount: filterInput.aggregate_max_amount as number | undefined,
-            min_population: filterInput.min_population as number | undefined,
-            max_population: filterInput.max_population as number | undefined,
-        },
+        filters: { ...filterInput, years, account_category: accountCategory },
         mapViewType: mapViewType,
         activeView: 'map',
     }

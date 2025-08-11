@@ -392,24 +392,6 @@ export async function getUniqueCounties(): Promise<
   }
 }
 
-// --- BEGIN GET HEATMAP UAT DATA FUNCTION ---
-function mapFiltersToAnalyticsFilter(filter: AnalyticsFilterType) {
-  return {
-    years: filter.years,
-    account_category: filter.account_category,
-    normalization: filter.normalization,
-    functional_codes: filter.functional_codes,
-    economic_codes: filter.economic_codes,
-    county_codes: filter.county_codes,
-    regions: filter.regions,
-    // Map UI aggregated amount range to aggregate_* thresholds for heatmaps
-    aggregate_min_amount: filter.aggregate_min_amount,
-    aggregate_max_amount: filter.aggregate_max_amount,
-    min_population: filter.min_population,
-    max_population: filter.max_population,
-  } as const;
-}
-
 export async function getHeatmapUATData(
   filter: AnalyticsFilterType
 ): Promise<HeatmapUATDataPoint[]> {
@@ -418,7 +400,7 @@ export async function getHeatmapUATData(
   try {
     const response = await graphqlRequest<HeatmapUATDataApiResponse>(
       GET_HEATMAP_UAT_DATA_QUERY,
-      { filter: mapFiltersToAnalyticsFilter(filter) }
+      { filter }
     );
 
     if (!response || !response.heatmapUATData) {
@@ -448,7 +430,7 @@ export async function getHeatmapJudetData(
   try {
     const response = await graphqlRequest<HeatmapJudetDataApiResponse>(
       GET_HEATMAP_JUDET_DATA_QUERY,
-      { filter: mapFiltersToAnalyticsFilter(filter) }
+      { filter }
     );
 
     if (!response || !response.heatmapJudetData) {
