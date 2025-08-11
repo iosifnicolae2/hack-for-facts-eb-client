@@ -69,6 +69,7 @@ export function initSentry(router: unknown): void {
     feedbackIntegration = Sentry.feedbackIntegration({
       colorScheme: "system",
       enableScreenshot: true,
+      position: "bottom-left",
     });
     integrations.push(feedbackIntegration);
   }
