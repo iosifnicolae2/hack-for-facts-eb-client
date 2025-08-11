@@ -7,6 +7,8 @@ import { ChartUrlState } from '@/components/charts/page-schema';
 import { MapUrlState } from '@/schemas/map-filters';
 import { EntityAnalyticsUrlState } from '@/routes/entity-analytics';
 import { generateRandomColor } from '../charts/components/chart-renderer/utils';
+import { useUatLabel } from '@/hooks/filters/useFilterLabels';
+import { LabelStore } from '@/hooks/filters/interfaces';
 
 type View = 'map' | 'table' | 'chart';
 
@@ -29,6 +31,7 @@ interface FloatingQuickNavProps {
 
 export function FloatingQuickNav({ className, mapViewType, mapActive, tableActive, chartActive, filterInput }: FloatingQuickNavProps) {
 
+    const uatLabelMap = useUatLabel((filterInput.uat_ids ?? []).map(String));
     const navigate = useNavigate();
 
     const handleMapNavigate = () => {
@@ -42,8 +45,8 @@ export function FloatingQuickNav({ className, mapViewType, mapActive, tableActiv
     }
 
     const handleChartNavigate = () => {
-        const next = convertFilterInputToChartState(filterInput)
-        navigate({ to: '/charts/$chartId', params: { chartId: crypto.randomUUID() }, search: next });
+        const next = convertFilterInputToChartState(filterInput, uatLabelMap)
+        navigate({ to: '/charts/$chartId', params: { chartId: next.chart.id }, search: next });
     }
 
     const actions: Action[] = [
@@ -87,7 +90,7 @@ function ensureYears(filter: AnalyticsFilterType): number[] {
     return [currentYear]
 }
 
-function convertFilterInputToChartState(filterInput: AnalyticsFilterType): ChartUrlState {
+function convertFilterInputToChartState(filterInput: AnalyticsFilterType, uatLabelMap: LabelStore): ChartUrlState {
     const accountCategory = (filterInput.account_category ?? 'ch') as 'ch' | 'vn'
     const reportType = coerceReportType(filterInput) ?? 'Executie bugetara agregata la nivel de ordonator principal'
     const years = Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, i) => defaultYearRange.end - i).reverse();
@@ -105,7 +108,7 @@ function convertFilterInputToChartState(filterInput: AnalyticsFilterType): Chart
                 id: crypto.randomUUID(),
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
-                label: `UAT ${uatId}`,
+                label: uatLabelMap.map(uatId),
                 unit: 'RON',
                 filter: {
                     ...filterInput,
