@@ -46,9 +46,12 @@ export function initSentry(router: unknown): void {
     integrations.push(replayIntegration());
   }
 
-  // Wire TanStack Router tracing only when sampling is enabled
-  const tracesSampleRate = Number(env.VITE_SENTRY_TRACES_SAMPLE_RATE ?? 0);
-  if (!Number.isNaN(tracesSampleRate) && tracesSampleRate > 0 && router) {
+  // Wire TanStack Router tracing only when sampling is enabled AND analytics consent granted
+  const configuredTracesSampleRate = Number(env.VITE_SENTRY_TRACES_SAMPLE_RATE ?? 0);
+  const tracesSampleRate = consentGranted && !Number.isNaN(configuredTracesSampleRate)
+    ? configuredTracesSampleRate
+    : 0;
+  if (tracesSampleRate > 0 && router) {
     const anySentry = Sentry as unknown as Record<string, unknown>;
     const tanstack = anySentry["tanstackRouterBrowserTracingIntegration"];
     if (typeof tanstack === "function") {
@@ -77,6 +80,32 @@ export function initSentry(router: unknown): void {
     levels: ["error", "warn", "log", "info", "debug"],
   }));
 
+  // Helper to aggressively sanitize events when analytics consent is not granted
+  type SentryEventLike = {
+    readonly [key: string]: unknown;
+    user?: unknown;
+    request?: unknown;
+    breadcrumbs?: unknown;
+    extra?: unknown;
+    contexts?: unknown;
+    tags?: unknown;
+    server_name?: unknown;
+  };
+
+  function sanitizeEventForNoConsent(event: SentryEventLike): SentryEventLike {
+    // Remove anything that could be considered personal or behavioral data.
+    return {
+      ...event,
+      user: undefined,
+      request: undefined,
+      breadcrumbs: undefined,
+      extra: undefined,
+      contexts: undefined,
+      tags: undefined,
+      server_name: undefined,
+    };
+  }
+
   Sentry.init({
     dsn: env.VITE_SENTRY_DSN!,
     environment: env.VITE_APP_ENVIRONMENT,
@@ -87,13 +116,20 @@ export function initSentry(router: unknown): void {
     replaysOnErrorSampleRate: 1.0,
     replaysSessionSampleRate: consentGranted ? 0.1 : 0,
     // Respect privacy consent — never send events if analytics is disabled
-    beforeSend(event) {
+    beforeSend(event, _hint) {
       if (!hasAnalyticsConsent()) {
-        return null;
+        // Send a minimal, anonymous error payload (no breadcrumbs/contexts/user/request)
+        const sanitized = sanitizeEventForNoConsent(event as unknown as SentryEventLike);
+        return sanitized as unknown as typeof event;
       }
       return event;
     },
   });
+
+  // Make sure no user identity is attached when analytics consent is not granted
+  if (!consentGranted) {
+    Sentry.setUser(null);
+  }
 
   // Expose a programmatic opener for feedback if available
   if (feedbackIntegration) {
