@@ -16,6 +16,7 @@ import { env } from "./config/env";
 // Create a new router instance
 const router = createRouter({ routeTree, context: { queryClient } });
 
+
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {
   interface Register {
