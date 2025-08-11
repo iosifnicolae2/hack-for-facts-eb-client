@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Map, BarChart2, Table } from 'lucide-react';
 import { AnalyticsFilterType, Chart, ChartSchema, defaultYearRange, ReportType } from '@/schemas/charts';
 import { useNavigate } from '@tanstack/react-router';
-import { ChartUrlState } from '@/routes/charts/$chartId/_schema';
+import { ChartUrlState } from '@/components/charts/page-schema';
 import { MapUrlState } from '@/schemas/map-filters';
 import { EntityAnalyticsUrlState } from '@/routes/entity-analytics';
 import { generateRandomColor } from '../charts/components/chart-renderer/utils';

@@ -1,6 +1,6 @@
 import { getChartsStore } from "@/components/charts/chartsStore";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
-import { chartUrlStateSchema } from "./_schema";
+import { chartUrlStateSchema } from "../../../components/charts/page-schema";
 
 const chartsStore = getChartsStore();
 
