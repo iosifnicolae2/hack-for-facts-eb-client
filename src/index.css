@@ -287,4 +287,5 @@ details> :not(summary) {
 
 #sentry-feedback {
   /* Add sentry feedback style */
+  /* https://docs.sentry.io/platforms/javascript/guides/solid/user-feedback/configuration/ */
 }

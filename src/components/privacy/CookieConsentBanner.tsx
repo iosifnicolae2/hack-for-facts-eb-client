@@ -29,6 +29,7 @@ export function CookieConsentBanner(): ReactElement | null {
     setTimeout(() => {
       acceptAll();
       setShowBanner(false);
+      window.location.reload();
     }, 400);
   };
 
