@@ -38,6 +38,7 @@ export function PageCard({
         <img
           src={image}
           alt={imageAlt || title}
+          loading="lazy"
           className="absolute right-0 top-1/2 h-[150%] w-auto max-w-none -translate-y-1/2 translate-x-1/4 transform object-cover opacity-50 blur-[0.01px] transition-all duration-500 group-hover:opacity-100 group-hover:blur-none"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent dark:from-slate-900 dark:via-slate-900/70" />
