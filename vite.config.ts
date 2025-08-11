@@ -45,6 +45,7 @@ export default defineConfig(({ mode }) => ({
   build: {
     chunkSizeWarningLimit: 1500,
     rollupOptions: {
+      // THIS CAUSED PRODUCTION APP TO BREAK. BLACK PAGE OF DEATH ☠️
       // output: {
       //   // Separate frequently used vendor libs and domain-based app chunks
       //   manualChunks(id) {
