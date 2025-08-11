@@ -12,9 +12,13 @@ import "./index.css";
 import { routeTree } from "./routeTree.gen";
 import { queryClient } from "@/lib/queryClient";
 import { env } from "./config/env";
+import { getReactRootErrorHandlers, initSentry } from "./lib/sentry";
 
 // Create a new router instance
 const router = createRouter({ routeTree, context: { queryClient } });
+
+// Initialize Sentry early (before rendering)
+initSentry(router);
 
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {
@@ -47,7 +51,7 @@ if (typeof window !== 'undefined') {
 }
 
 // Initialize app
-ReactDOM.createRoot(document.getElementById("root")!).render(
+ReactDOM.createRoot(document.getElementById("root")!, getReactRootErrorHandlers()).render(
   <StrictMode>
     <PostHogProvider
       apiKey={env.VITE_POSTHOG_API_KEY || ""}
