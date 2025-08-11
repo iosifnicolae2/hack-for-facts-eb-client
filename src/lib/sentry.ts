@@ -70,9 +70,24 @@ export function initSentry(router: unknown): void {
       colorScheme: "system",
       enableScreenshot: true,
       autoInject: false,
+
+      // Text customization
+      formTitle: "Send Feedback",                // modal title
+      messageLabel: "What happened?",            // textarea label
+      messagePlaceholder:
+        "Describe the bug or request. Steps to reproduce, expected vs. actual…",
+      submitButtonLabel: "Send Feedback",
+      cancelButtonLabel: "Close",
     });
     integrations.push(feedbackIntegration);
   }
+
+  // If you ever use your own button instead of autoInject, you can also override per - button
+  // const feedback = Sentry.getFeedback();
+  // feedback?.attachTo(document.querySelector("#feedback-btn"), {
+  //   formTitle: "Feature request",
+  //   messagePlaceholder: "What should we build next?"
+  // });
 
   integrations.push(extraErrorDataIntegration({
     depth: 5,
