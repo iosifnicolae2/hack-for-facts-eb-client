@@ -54,8 +54,10 @@ export default defineConfig(({ mode }) => ({
             if (id.match(/[\\/]node_modules[\\/](motion)[\\/]/)) return "motion";
             if (id.match(/[\\/]node_modules[\\/](fuse.js)[\\/]/)) return "search";
             if (id.match(/[\\/]node_modules[\\/](@dnd-kit)[\\/]/)) return "dnd";
+            if (id.match(/[\\/]node_modules[\\/](@tanstack)[\\/]/)) return "tanstack";
             return "vendor";
           }
+          return "others";
         },
       },
     },
