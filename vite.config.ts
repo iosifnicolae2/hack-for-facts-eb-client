@@ -4,20 +4,14 @@ import react from "@vitejs/plugin-react-swc";
 import checker from "vite-plugin-checker";
 import tanstackRouter from "@tanstack/router-plugin/vite";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
-import tailwindcss from "@tailwindcss/postcss";
+import tailwindcss from "@tailwindcss/vite";
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
-  css: {
-    postcss: {
-      plugins: [
-        tailwindcss(),
-      ],
-    },
-  },
   plugins: [
     tanstackRouter(),
     react(),
+    tailwindcss(),
     checker({
       typescript: true,
     }),
@@ -45,32 +39,25 @@ export default defineConfig(({ mode }) => ({
   build: {
     chunkSizeWarningLimit: 1500,
     rollupOptions: {
-      // THIS CAUSED PRODUCTION APP TO BREAK. BLACK PAGE OF DEATH ☠️
-      // output: {
-      //   // Separate frequently used vendor libs and domain-based app chunks
-      //   manualChunks(id) {
-      //     if (id.includes("node_modules")) {
-      //       if (id.match(/[\\/]node_modules[\\/](react|react-dom)[\\/]/)) return "react";
-      //       if (id.match(/[\\/]node_modules[\\/](?:@tanstack)[\\/]/)) return "tanstack";
-      //       if (id.match(/[\\/]node_modules[\\/](recharts|d3-sankey)[\\/]/)) return "recharts";
-      //       if (id.match(/[\\/]node_modules[\\/](leaflet|react-leaflet|@turf)[\\/]/)) return "leaflet";
-      //       if (id.match(/[\\/]node_modules[\\/](?:@radix-ui)[\\/]/)) return "radix";
-      //       if (id.match(/[\\/]node_modules[\\/](lucide-react)[\\/]/)) return "icons";
-      //       if (id.match(/[\\/]node_modules[\\/](immer|zod|clsx|class-variance-authority|tailwind-merge)[\\/]/)) return "utility";
-      //       if (id.match(/[\\/]node_modules[\\/](posthog-js)[\\/]/)) return "analytics";
-      //       if (id.match(/[\\/]node_modules[\\/](?:@sentry|sentry)[\\/]/)) return "sentry";
-      //       if (id.match(/[\\/]node_modules[\\/](motion)[\\/]/)) return "motion";
-      //       if (id.match(/[\\/]node_modules[\\/](fuse\.js)[\\/]/)) return "search";
-      //       return "vendor";
-      //     }
-      //     if (id.includes("/src/components/charts/")) return "charts-core";
-      //     if (id.includes("/src/components/maps/")) return "map-core";
-      //     if (id.includes("/src/components/entities/")) return "entities-core";
-      //     if (id.includes("/src/components/ui/")) return "ui-core";
-      //     if (id.includes("/src/lib/")) return "lib-core";
-      //     if (id.includes("/src/hooks/")) return "hooks-core";
-      //   },
-      // },
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (id.match(/[\\/]node_modules[\\/](react|react-dom|react-is)[\\/]/)) return "react";
+            if (id.match(/[\\/]node_modules[\\/](@tanstack)[\\/]/)) return "tanstack";
+            if (id.match(/[\\/]node_modules[\\/](recharts|d3-sankey)[\\/]/)) return "recharts";
+            if (id.match(/[\\/]node_modules[\\/](leaflet|react-leaflet|@turf)[\\/]/)) return "leaflet";
+            if (id.match(/[\\/]node_modules[\\/](@radix-ui)[\\/]/)) return "radix";
+            if (id.match(/[\\/]node_modules[\\/](lucide-react)[\\/]/)) return "icons";
+            if (id.match(/[\\/]node_modules[\\/](immer|zod|clsx|class-variance-authority|tailwind-merge)[\\/]/)) return "utility";
+            if (id.match(/[\\/]node_modules[\\/](posthog-js)[\\/]/)) return "analytics";
+            if (id.match(/[\\/]node_modules[\\/](@sentry)[\\/]/)) return "sentry";
+            if (id.match(/[\\/]node_modules[\\/](motion)[\\/]/)) return "motion";
+            if (id.match(/[\\/]node_modules[\\/](fuse.js)[\\/]/)) return "search";
+            if (id.match(/[\\/]node_modules[\\/](@dnd-kit)[\\/]/)) return "dnd";
+            return "vendor";
+          }
+        },
+      },
     },
   },
 }));
