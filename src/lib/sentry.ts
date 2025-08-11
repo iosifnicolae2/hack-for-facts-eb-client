@@ -1,6 +1,7 @@
 import * as Sentry from "@sentry/react";
 import { env } from "@/config/env";
 import { hasAnalyticsConsent } from "@/lib/consent";
+import { captureConsoleIntegration, extraErrorDataIntegration, replayIntegration } from "@sentry/react";
 
 /**
  * Public handle to open the Sentry User Feedback dialog programmatically.
@@ -13,10 +14,17 @@ export let openSentryFeedback: (() => void) | null = null;
  * These will capture uncaught, caught, and recoverable errors via Sentry.
  */
 export function getReactRootErrorHandlers() {
+  const sentryErrorHandler = Sentry.reactErrorHandler();
   return {
-    onUncaughtError: Sentry.reactErrorHandler(),
-    onCaughtError: Sentry.reactErrorHandler(),
-    onRecoverableError: Sentry.reactErrorHandler(),
+    onUncaughtError: (error: unknown, errorInfo: { componentStack?: string }) => {
+      sentryErrorHandler(error, errorInfo);
+    },
+    onCaughtError: (error: unknown, errorInfo: { componentStack?: string }) => {
+      sentryErrorHandler(error, errorInfo);
+    },
+    onRecoverableError: (error: unknown, errorInfo: { componentStack?: string }) => {
+      sentryErrorHandler(error, errorInfo);
+    }
   } as const;
 }
 
@@ -33,6 +41,10 @@ export function initSentry(router: unknown): void {
   const consentGranted = hasAnalyticsConsent();
 
   const integrations: unknown[] = [];
+
+  if (consentGranted) {
+    integrations.push(replayIntegration());
+  }
 
   // Wire TanStack Router tracing only when sampling is enabled
   const tracesSampleRate = Number(env.VITE_SENTRY_TRACES_SAMPLE_RATE ?? 0);
@@ -57,6 +69,14 @@ export function initSentry(router: unknown): void {
     integrations.push(feedbackIntegration);
   }
 
+  integrations.push(extraErrorDataIntegration({
+    depth: 5,
+  }));
+
+  integrations.push(captureConsoleIntegration({
+    levels: ["error", "warn", "log", "info", "debug"],
+  }));
+
   Sentry.init({
     dsn: env.VITE_SENTRY_DSN!,
     environment: env.VITE_APP_ENVIRONMENT,
@@ -64,6 +84,8 @@ export function initSentry(router: unknown): void {
     integrations: integrations as NonNullable<Parameters<typeof Sentry.init>[0]>["integrations"],
     // Performance
     tracesSampleRate,
+    replaysOnErrorSampleRate: 1.0,
+    replaysSessionSampleRate: consentGranted ? 0.1 : 0,
     // Respect privacy consent — never send events if analytics is disabled
     beforeSend(event) {
       if (!hasAnalyticsConsent()) {

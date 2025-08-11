@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useCallback, useState } from "react";
+import * as Sentry from "@sentry/react";
 import { AppError, ErrorSource } from "@/lib/errors/types";
 import { logger } from "@/lib/logger";
 import posthog from "posthog-js";
@@ -36,6 +37,16 @@ export function ErrorProvider({ children, onError }: ErrorProviderProps) {
         severity: appError.severity,
         timestamp: appError.timestamp,
         context: appError.context,
+      });
+
+      // Capture error in Sentry
+      Sentry.captureException(appError, {
+        extra: {
+          type: appError.type,
+          code: appError.code,
+          severity: appError.severity,
+          context: appError.context,
+        },
       });
 
       // Track error in PostHog only if analytics consent is granted
