@@ -1,11 +1,12 @@
-import { cn } from '@/lib/utils';
+import { cn, generateHash } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Map, BarChart2, Table } from 'lucide-react';
-import { AnalyticsFilterType, ChartSchema, ReportType } from '@/schemas/charts';
+import { AnalyticsFilterType, Chart, ChartSchema, defaultYearRange, ReportType } from '@/schemas/charts';
 import { useNavigate } from '@tanstack/react-router';
 import { ChartUrlState } from '@/routes/charts/$chartId/_schema';
 import { MapUrlState } from '@/schemas/map-filters';
 import { EntityAnalyticsUrlState } from '@/routes/entity-analytics';
+import { generateRandomColor } from '../charts/components/chart-renderer/utils';
 
 type View = 'map' | 'table' | 'chart';
 
@@ -41,7 +42,7 @@ export function FloatingQuickNav({ className, mapViewType, mapActive, tableActiv
     }
 
     const handleChartNavigate = () => {
-        const next = convertFilterInputToChartState(filterInput, mapViewType)
+        const next = convertFilterInputToChartState(filterInput)
         navigate({ to: '/charts/$chartId', params: { chartId: crypto.randomUUID() }, search: next });
     }
 
@@ -86,63 +87,70 @@ function ensureYears(filter: AnalyticsFilterType): number[] {
     return [currentYear]
 }
 
-function convertFilterInputToChartState(filterInput: AnalyticsFilterType, mapViewType: 'UAT' | 'Judet'): ChartUrlState {
-    const years = ensureYears(filterInput)
+function convertFilterInputToChartState(filterInput: AnalyticsFilterType): ChartUrlState {
     const accountCategory = (filterInput.account_category ?? 'ch') as 'ch' | 'vn'
     const reportType = coerceReportType(filterInput) ?? 'Executie bugetara agregata la nivel de ordonator principal'
-
-    const series = [] as any[]
+    const years = Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, i) => defaultYearRange.end - i).reverse();
+    const series: Chart['series'] = []
 
     // Edge cases:
     // - If Judet view and entity_cuis contains a county entity (admin_county_council), keep CUI as-is
     // - If Judet view and no entities selected but county_codes present, create one series per county
     // - If UAT view and entity_cuis provided, create one series per entity
 
-    if (mapViewType === 'Judet') {
-        if (filterInput.entity_cuis && filterInput.entity_cuis.length > 0) {
-            // One series per selected entity (assumed county councils)
-            filterInput.entity_cuis.forEach((cui) => {
-                series.push({
-                    id: crypto.randomUUID(),
-                    type: 'line-items-aggregated-yearly',
-                    enabled: true,
-                    label: `CJ ${cui}`,
-                    filter: {
-                        ...filterInput,
-                        years,
-                        account_category: accountCategory,
-                        report_type: reportType,
-                        entity_cuis: [cui],
-                        county_codes: undefined,
-                        is_uat: undefined,
-                    },
-                    config: {},
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString(),
-                })
+    if (filterInput.uat_ids && filterInput.uat_ids.length > 0) {
+        // One series per selected entity (assumed county councils)
+        filterInput.uat_ids.forEach((uatId) => {
+            series.push({
+                id: crypto.randomUUID(),
+                type: 'line-items-aggregated-yearly',
+                enabled: true,
+                label: `UAT ${uatId}`,
+                unit: 'RON',
+                filter: {
+                    ...filterInput,
+                    years: years,
+                    account_category: accountCategory,
+                    report_type: reportType,
+                    uat_ids: [uatId],
+                    county_codes: undefined,
+                    is_uat: undefined,
+                },
+                config: {
+                    visible: true,
+                    showDataLabels: false,
+                    color: generateRandomColor(),
+                },
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
             })
-        } else if (filterInput.county_codes && filterInput.county_codes.length > 0) {
-            filterInput.county_codes.forEach((cc) => {
-                series.push({
-                    id: crypto.randomUUID(),
-                    type: 'line-items-aggregated-yearly',
-                    enabled: true,
-                    label: `Județ ${cc}`,
-                    filter: {
-                        ...filterInput,
-                        years,
-                        account_category: accountCategory,
-                        report_type: reportType,
-                        county_codes: [cc],
-                        entity_cuis: undefined,
-                        is_uat: undefined,
-                    },
-                    config: {},
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString(),
-                })
+        })
+    } else if (filterInput.county_codes && filterInput.county_codes.length > 0) {
+        filterInput.county_codes.forEach((cc) => {
+            series.push({
+                id: crypto.randomUUID(),
+                type: 'line-items-aggregated-yearly',
+                enabled: true,
+                label: `Județ ${cc}`,
+                unit: 'RON',
+                filter: {
+                    ...filterInput,
+                    years: years,
+                    account_category: accountCategory,
+                    report_type: reportType,
+                    county_codes: [cc],
+                    uat_ids: undefined,
+                    is_uat: undefined,
+                },
+                config: {
+                    visible: true,
+                    showDataLabels: false,
+                    color: generateRandomColor(),
+                },
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
             })
-        }
+        })
     }
 
     if (series.length === 0) {
@@ -152,23 +160,32 @@ function convertFilterInputToChartState(filterInput: AnalyticsFilterType, mapVie
             type: 'line-items-aggregated-yearly',
             enabled: true,
             label: 'Series',
+            unit: 'RON',
             filter: {
                 ...filterInput,
-                years,
+                years: years,
                 account_category: accountCategory,
                 report_type: reportType,
             },
-            config: {},
+            config: {
+                visible: true,
+                showDataLabels: false,
+                color: generateRandomColor(),
+            },
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
         })
     }
 
+    const chartId = generateHash(JSON.stringify(filterInput))
     const chartState: ChartUrlState = {
         chart: ChartSchema.parse({
-            id: crypto.randomUUID(),
+            id: chartId,
             title: 'Analytics',
-            config: { chartType: 'bar' },
+            config: {
+                chartType: 'bar',
+                yearRange: { start: years[0], end: years[years.length - 1] }
+            },
             series,
             annotations: [],
             createdAt: new Date().toISOString(),
@@ -190,18 +207,18 @@ function convertFilterInputToEntityTableState(filterInput: AnalyticsFilterType, 
         filter: { ...filterInput, years, account_category: accountCategory },
     }
 
-    // Edge cases for entity table:
-    // - If switching from Judet with no entities, aggregate at county level: use entity_types admin_county_council
-    // - If Judet and entities selected -> prefer entity_cuis
-    // - If UAT view and entities selected, keep is_uat true
+    // Edge cases for uat table:
+    // - If switching from Judet with no uat_ids, aggregate at county level: use entity_types admin_county_council
+    // - If Judet and uat_ids selected -> prefer uat_ids
+    // - If UAT view and uat_ids selected, keep is_uat true
     if (mapViewType === 'Judet') {
-        if (filterInput.entity_cuis && filterInput.entity_cuis.length > 0) {
-            base.filter = { ...base.filter, entity_cuis: filterInput.entity_cuis, entity_types: undefined, is_uat: undefined }
+        if (filterInput.uat_ids && filterInput.uat_ids.length > 0) {
+            base.filter = { ...base.filter, uat_ids: filterInput.uat_ids, entity_types: undefined, is_uat: undefined }
         } else {
             base.filter = { ...base.filter, entity_types: ['admin_county_council'], is_uat: undefined }
         }
     } else {
-        if (filterInput.entity_cuis && filterInput.entity_cuis.length > 0) {
+        if (filterInput.county_codes && filterInput.county_codes.length > 0) {
             base.filter = { ...base.filter, is_uat: undefined }
         } else {
             base.filter = { ...base.filter, is_uat: true }
