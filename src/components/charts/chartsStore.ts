@@ -22,6 +22,41 @@ const categorySchema = z.object({
 });
 export type ChartCategory = z.infer<typeof categorySchema>;
 
+// Backup file schema
+const chartsBackupSchema = z.object({
+    type: z.literal('charts-backup').default('charts-backup'),
+    version: z.literal(1).default(1),
+    exportedAt: z.string().optional(),
+    charts: z.array(storedChartSchema).default([]),
+    categories: z.array(categorySchema).default([]),
+}).passthrough();
+
+export type ChartsBackupFile = z.infer<typeof chartsBackupSchema>;
+
+export type ImportConflict = {
+    readonly id: string;
+    readonly currentTitle: string;
+    readonly importedTitle: string;
+};
+
+export type ImportPreview = {
+    readonly totalCharts: number;
+    readonly unique: number;
+    readonly conflicts: readonly ImportConflict[];
+    readonly totalCategories: number;
+    readonly categoriesNew: number;
+    readonly categoriesMatchedByName: number;
+};
+
+export type ConflictStrategy = 'skip' | 'replace' | 'keep-both';
+
+export type ImportResult = {
+    readonly added: number;
+    readonly replaced: number;
+    readonly duplicated: number;
+    readonly skipped: number;
+};
+
 
 export const getChartsStore = () => {
 
@@ -196,6 +231,171 @@ export const getChartsStore = () => {
         updateChartInLocalStorage(updated);
     };
 
+    // ==========================
+    // Backup & Restore utilities
+    // ==========================
+
+    const createBackup = (): ChartsBackupFile => {
+        const charts = loadSavedCharts({ filterDeleted: false, sort: false });
+        const categories = loadCategories();
+        return {
+            type: 'charts-backup',
+            version: 1,
+            exportedAt: new Date().toISOString(),
+            charts,
+            categories,
+        };
+    };
+
+    const previewImport = (input: unknown): { ok: true; preview: ImportPreview; backup: ChartsBackupFile } | { ok: false; error: string } => {
+        const parsed = chartsBackupSchema.safeParse(input);
+        if (!parsed.success) {
+            return { ok: false, error: parsed.error.flatten().formErrors.join('\n') };
+        }
+        const backup = parsed.data;
+
+        const currentCharts = loadSavedCharts({ filterDeleted: false, sort: false });
+        const currentIds = new Set(currentCharts.map((c) => c.id));
+        const conflicts: ImportConflict[] = [];
+        let unique = 0;
+        for (const imported of backup.charts) {
+            if (currentIds.has(imported.id)) {
+                const existing = currentCharts.find((c) => c.id === imported.id)!;
+                conflicts.push({ id: imported.id, currentTitle: existing.title, importedTitle: imported.title });
+            } else {
+                unique += 1;
+            }
+        }
+
+        // Categories: estimate how many will be matched by name and how many are new
+        const currentCategories = loadCategories();
+        const currentByName = new Map(currentCategories.map((c) => [c.name.toLowerCase(), c]));
+        let categoriesMatchedByName = 0;
+        let categoriesNew = 0;
+        for (const cat of backup.categories) {
+            if (currentByName.has(cat.name.toLowerCase())) categoriesMatchedByName += 1; else categoriesNew += 1;
+        }
+
+        const preview: ImportPreview = {
+            totalCharts: backup.charts.length,
+            unique,
+            conflicts,
+            totalCategories: backup.categories.length,
+            categoriesNew,
+            categoriesMatchedByName,
+        };
+        return { ok: true, preview, backup };
+    };
+
+    const importBackup = (input: unknown, strategy: ConflictStrategy): { ok: true; result: ImportResult } | { ok: false; error: string } => {
+        const parsed = chartsBackupSchema.safeParse(input);
+        if (!parsed.success) {
+            return { ok: false, error: parsed.error.flatten().formErrors.join('\n') };
+        }
+        const backup = parsed.data;
+
+        const currentCharts = loadSavedCharts({ filterDeleted: false, sort: false });
+        const currentById = new Map(currentCharts.map((c) => [c.id, c]));
+
+        // Categories merge: prefer existing categories by name; create those that don't exist
+        const currentCategories = loadCategories();
+        const currentCategoriesById = new Map(currentCategories.map((c) => [c.id, c]));
+        const currentCategoriesByName = new Map(currentCategories.map((c) => [c.name.toLowerCase(), c]));
+
+        const categoryIdMap = new Map<string, string>(); // importedId -> effectiveId
+        const categoriesToAdd: ChartCategory[] = [];
+
+        for (const importedCat of backup.categories) {
+            const existingById = currentCategoriesById.get(importedCat.id);
+            if (existingById) {
+                categoryIdMap.set(importedCat.id, existingById.id);
+                continue;
+            }
+            const existingByName = currentCategoriesByName.get(importedCat.name.toLowerCase());
+            if (existingByName) {
+                categoryIdMap.set(importedCat.id, existingByName.id);
+                continue;
+            }
+            // Add as new category (preserve id)
+            categoriesToAdd.push(importedCat);
+            categoryIdMap.set(importedCat.id, importedCat.id);
+        }
+
+        const nextCategories = [...currentCategories, ...categoriesToAdd]
+            .sort((a, b) => a.name.localeCompare(b.name));
+        if (categoriesToAdd.length > 0) {
+            saveCategories(nextCategories);
+        }
+
+        // Prepare charts
+        const normalizeChartCategories = (chart: StoredChart): StoredChart => {
+            const nextIds = (chart.categories ?? []).map((id) => categoryIdMap.get(id) ?? id);
+            const dedup = Array.from(new Set(nextIds));
+            return { ...chart, categories: dedup };
+        };
+
+        const importedCharts = backup.charts.map(normalizeChartCategories);
+        const uniqueToAdd: StoredChart[] = [];
+        const conflicts: StoredChart[] = [];
+        for (const c of importedCharts) {
+            if (currentById.has(c.id)) conflicts.push(c); else uniqueToAdd.push(c);
+        }
+
+        let added = 0;
+        let replaced = 0;
+        let duplicated = 0;
+        let skipped = 0;
+
+        let nextCharts = [...currentCharts];
+
+        // Unique additions
+        if (uniqueToAdd.length > 0) {
+            added += uniqueToAdd.length;
+            nextCharts = [...uniqueToAdd, ...nextCharts];
+        }
+
+        // Handle conflicts based on strategy
+        if (conflicts.length > 0) {
+            if (strategy === 'skip') {
+                skipped += conflicts.length;
+                // do nothing
+            } else if (strategy === 'replace') {
+                const replacements = new Map(conflicts.map((c) => [c.id, c]));
+                nextCharts = nextCharts.map((existing) => {
+                    const incoming = replacements.get(existing.id);
+                    if (!incoming) return existing;
+                    // Preserve favorite and deleted flags from existing
+                    const preserved = {
+                        favorite: (existing as StoredChart).favorite ?? false,
+                        deleted: (existing as StoredChart).deleted ?? false,
+                    } as Pick<StoredChart, 'favorite' | 'deleted'>;
+                    replaced += 1;
+                    return {
+                        ...incoming,
+                        ...preserved,
+                        updatedAt: new Date().toISOString(),
+                    } as StoredChart;
+                });
+            } else if (strategy === 'keep-both') {
+                // Duplicate imported charts with new ids
+                const duplicatedCharts = conflicts.map((c) => ({
+                    ...c,
+                    id: crypto.randomUUID(),
+                    title: c.title ? `${c.title} (Imported)` : 'Imported Chart',
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                }));
+                duplicated += duplicatedCharts.length;
+                nextCharts = [...duplicatedCharts, ...nextCharts];
+            }
+        }
+
+        // Persist
+        localStorage.setItem(chartsKey, JSON.stringify(nextCharts));
+
+        return { ok: true, result: { added, replaced, duplicated, skipped } };
+    };
+
     return {
         loadSavedCharts,
         loadCategories,
@@ -207,5 +407,8 @@ export const getChartsStore = () => {
         updateChartInLocalStorage,
         toggleChartFavorite,
         toggleChartCategory,
+        createBackup,
+        previewImport,
+        importBackup,
     }
 }

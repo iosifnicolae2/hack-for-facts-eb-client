@@ -18,6 +18,7 @@ import { ChartList } from "@/components/charts/components/chart-list/ChartList";
 import { cn, slugify } from "@/lib/utils";
 import { usePersistedState } from "@/lib/hooks/usePersistedState";
 import { ChartCategories } from "@/components/charts/components/chart-categories/ChartCategories";
+import ChartsBackupRestore from "@/components/charts/components/backup-restore/ChartsBackupRestore";
 
 export const Route = createLazyFileRoute("/charts/")({
   component: ChartsListPage,
@@ -37,6 +38,7 @@ function ChartsListPage() {
   const [activeTab, setActiveTab] = useState<ActiveTab>("all");
   const [sortBy, setSortBy] = usePersistedState<SortOption>("charts-page-sort-by", "newest");
   const [categories, setCategories] = useState<readonly ChartCategory[]>(chartsStore.loadCategories());
+  //
 
   const handleDeleteChart = useCallback(async (chartId: string) => {
     try {
@@ -71,6 +73,8 @@ function ChartsListPage() {
     window.addEventListener("storage", reloadFromStorage);
     return () => window.removeEventListener("storage", reloadFromStorage);
   }, []);
+
+  // Backup/Restore moved into ChartsBackupRestore component
 
   const totalCount = charts.length;
   const favoritesCount = useMemo(
@@ -156,6 +160,10 @@ function ChartsListPage() {
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <ChartsBackupRestore onAfterImport={() => {
+              setCharts(chartsStore.loadSavedCharts({ filterDeleted: true, sort: true }));
+              setCategories(chartsStore.loadCategories());
+            }} />
             <Link to="/charts/new" replace={false}>
               <Button size="lg" className="text-base h-11 px-6">
                 <Plus className="mr-2 h-5 w-5" />
