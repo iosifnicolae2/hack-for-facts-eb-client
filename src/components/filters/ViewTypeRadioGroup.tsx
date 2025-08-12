@@ -2,21 +2,25 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { MapIcon, TableIcon, BarChart2Icon } from "lucide-react";
+import { ElementType } from "react";
 
-const viewOptions = [
+type ViewOption<T extends string> = { id: T, label: string, icon: ElementType }
+
+const defaultViewOptions: ViewOption<string>[] = [
     { id: "map", label: "Map", icon: MapIcon },
     { id: "table", label: "Table", icon: TableIcon },
     { id: "chart", label: "Chart", icon: BarChart2Icon },
-] as const;
+];
 
-interface ViewTypeRadioGroupProps {
-    value: "map" | "table" | "chart";
-    onChange: (value: "map" | "table" | "chart") => void;
+interface ViewTypeRadioGroupProps<T extends string> {
+    value: T;
+    onChange: (value: T) => void;
+    viewOptions?: ViewOption<T>[];
 }
 
-export function ViewTypeRadioGroup({ value, onChange }: ViewTypeRadioGroupProps) {
+export function ViewTypeRadioGroup<T extends string>({ value, onChange, viewOptions = defaultViewOptions as ViewOption<T>[] }: ViewTypeRadioGroupProps<T>) {
 
-    const handleValueChange = (value: "map" | "table" | "chart") => {
+    const handleValueChange = (value: T) => {
         onChange(value);
     };
 

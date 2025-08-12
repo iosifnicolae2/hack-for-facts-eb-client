@@ -2,12 +2,13 @@ import { useNavigate, useSearch } from '@tanstack/react-router'
 import { z } from 'zod'
 import { AnalyticsFilterSchema, AnalyticsFilterType, defaultYearRange } from '@/schemas/charts'
 
-const viewEnum = z.enum(['table', 'chart'])
+const viewEnum = z.enum(['table', 'chart', 'line-items'])
 
 export const defaultEntityAnalyticsFilter: AnalyticsFilterType = {
   account_category: 'ch',
   years: [defaultYearRange.end],
   normalization: 'total',
+  report_type: 'Executie bugetara agregata la nivel de ordonator principal',
 }
 
 const searchSchema = z.object({
@@ -43,7 +44,7 @@ export function useEntityAnalyticsFilter() {
     })
   }
 
-  const setView = (view: 'table' | 'chart') => {
+  const setView = (view: 'table' | 'chart' | 'line-items') => {
     navigate({ search: (prev) => ({ ...prev, view }), replace: true })
   }
 

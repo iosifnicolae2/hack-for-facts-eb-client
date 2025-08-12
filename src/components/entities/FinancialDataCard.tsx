@@ -22,7 +22,7 @@ interface GroupedItemsDisplayProps {
   showTotalValueHeader?: boolean;
 }
 
-const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.memo(
+export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.memo(
   ({ groups, title, baseTotal, searchTerm, currentYear, showTotalValueHeader = false }) => {
 
     const { totalValueFiltered, totalPercentageFiltered } = React.useMemo(() => {

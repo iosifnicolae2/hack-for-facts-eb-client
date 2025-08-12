@@ -1,11 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
 import { queryClient } from '@/lib/queryClient'
-import { fetchEntityAnalytics } from '@/lib/api/entity-analytics'
+import { fetchAggregatedLineItems, fetchEntityAnalytics } from '@/lib/api/entity-analytics'
 import { defaultEntityAnalyticsFilter } from '@/hooks/useEntityAnalyticsFilter'
 import { AnalyticsFilterSchema } from '@/schemas/charts'
+import { convertDaysToMs, generateHash } from '@/lib/utils'
 
-const viewEnum = z.enum(['table', 'chart'])
+const viewEnum = z.enum(['table', 'chart', 'line-items'])
 
 const EntityAnalyticsSchema = z.object({
   view: viewEnum.default('table'),
@@ -46,20 +47,23 @@ export const Route = createFileRoute('/entity-analytics')({
     const sort = parsed.sortBy
       ? ({ by: mapColumnIdToSortBy(parsed.sortBy), order: parsed.sortOrder } as const)
       : undefined
+    const filterHash = generateHash(JSON.stringify(parsed.filter))
 
     // Prime the list query so the page renders instantly
-    queryClient.prefetchQuery({
-      queryKey: ['entity-analytics', parsed.filter, parsed.sortBy, parsed.sortOrder, parsed.page, parsed.pageSize],
-      queryFn: () =>
-        fetchEntityAnalytics({
-          filter: parsed.filter,
-          sort,
-          limit: parsed.pageSize,
-          offset,
-        }),
-      staleTime: 1000 * 60 * 5,
-      gcTime: 1000 * 60 * 60 * 24 * 3,
-    } as Parameters<typeof queryClient.prefetchQuery>[0])
+    if (parsed.view === 'table') {
+      queryClient.prefetchQuery({
+        queryKey: ['entity-analytics', filterHash, parsed.sortBy, parsed.sortOrder, parsed.page, parsed.pageSize],
+        queryFn: () =>
+          fetchEntityAnalytics({
+            filter: parsed.filter,
+            sort,
+            limit: parsed.pageSize,
+            offset,
+          }),
+        staleTime: convertDaysToMs(5),
+        gcTime: convertDaysToMs(3),
+      } as Parameters<typeof queryClient.prefetchQuery>[0])
+    }
   },
 })
 

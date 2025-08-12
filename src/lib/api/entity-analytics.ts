@@ -1,6 +1,10 @@
 import { graphqlRequest } from './graphql'
-import type { EntityAnalyticsConnection, SortOrder } from '@/schemas/entity-analytics'
-import { AnalyticsFilterType } from '@/schemas/charts'
+import type {
+  EntityAnalyticsConnection,
+  SortOrder,
+  AggregatedLineItemConnection,
+} from "@/schemas/entity-analytics";
+import { AnalyticsFilterType } from "@/schemas/charts";
 
 const ENTITY_ANALYTICS_QUERY = /* GraphQL */ `
   query EntityAnalytics($filter: AnalyticsFilterInput!, $sort: SortOrder, $limit: Int, $offset: Int) {
@@ -26,6 +30,30 @@ const ENTITY_ANALYTICS_QUERY = /* GraphQL */ `
   }
 `
 
+const AGGREGATED_LINE_ITEMS_QUERY = /* GraphQL */ `
+  query AggregatedLineItems(
+    $filter: AnalyticsFilterInput!
+    $limit: Int
+    $offset: Int
+  ) {
+    aggregatedLineItems(filter: $filter, limit: $limit, offset: $offset) {
+      nodes {
+        fn_c: functional_code
+        fn_n: functional_name
+        ec_c: economic_code
+        ec_n: economic_name
+        amount
+        count
+      }
+      pageInfo {
+        totalCount
+        hasNextPage
+        hasPreviousPage
+      }
+    }
+  }
+`;
+
 export async function fetchEntityAnalytics(params: {
   filter: AnalyticsFilterType
   sort?: SortOrder
@@ -42,6 +70,21 @@ export async function fetchEntityAnalytics(params: {
     },
   )
   return data.entityAnalytics
+}
+
+export async function fetchAggregatedLineItems(params: {
+  filter: AnalyticsFilterType;
+  limit?: number;
+  offset?: number;
+}): Promise<AggregatedLineItemConnection> {
+  const data = await graphqlRequest<{
+    aggregatedLineItems: AggregatedLineItemConnection;
+  }>(AGGREGATED_LINE_ITEMS_QUERY, {
+    filter: params.filter,
+    limit: params.limit,
+    offset: params.offset,
+  });
+  return data.aggregatedLineItems;
 }
 
 

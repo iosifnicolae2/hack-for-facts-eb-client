@@ -13,19 +13,22 @@ import { SlidersHorizontal } from 'lucide-react'
 import { useTablePreferences } from '@/hooks/useTablePreferences'
 import { EntityAnalyticsLayout } from '@/components/entity-analytics/EntityAnalyticsLayout'
 import { AnalyticsFilterType } from '@/schemas/charts'
+import { EntityAnalyticsLineItems } from '@/components/entity-analytics/EntityAnalyticsLineItems'
+import { generateHash } from '@/lib/utils'
 
 export const Route = createLazyFileRoute('/entity-analytics')({
   component: EntityAnalyticsPage,
 })
 
 function EntityAnalyticsPage() {
-  const { filter, sortBy, sortOrder, setSorting, page, pageSize, setPagination, resetFilter } = useEntityAnalyticsFilter()
+  const { filter, sortBy, sortOrder, setSorting, page, pageSize, setPagination, resetFilter, view } = useEntityAnalyticsFilter()
   const [exporting, setExporting] = useState(false)
 
   const offset = useMemo(() => (page - 1) * pageSize, [page, pageSize])
+  const filterHash = useMemo(() => generateHash(JSON.stringify(filter)), [filter])
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['entity-analytics', filter, sortBy, sortOrder, page, pageSize],
+    queryKey: ['entity-analytics', filterHash, sortBy, sortOrder, page, pageSize],
     queryFn: () =>
       fetchEntityAnalytics({
         filter: normalizeFilterForSort(filter, sortBy),
@@ -35,6 +38,7 @@ function EntityAnalyticsPage() {
         limit: pageSize,
         offset,
       }),
+    enabled: view === 'table',
   })
 
   const nodes: readonly EntityAnalyticsDataPoint[] = data?.nodes ?? []
@@ -105,75 +109,85 @@ function EntityAnalyticsPage() {
         filters={<EntityAnalyticsFilterPanel />}
         subtitle="Analyze aggregated values per entity and explore top entities."
       >
-      {error ? (
-        <div className="p-6 flex items-center justify-center h-64">
-          <div className="text-center">
-            <h3 className="font-medium text-red-500">Error loading analytics</h3>
-            <p className="text-muted-foreground mt-2">{error instanceof Error ? error.message : 'Unknown error'}</p>
-          </div>
+        <div className="flex justify-end">
+          {/* EntityAnalyticsViewToggle removed, now handled within filter */}
         </div>
-      ) : (
-        <div className="space-y-4">
-          <div className="flex items-center justify-end gap-2">
-            <Button variant="ghost" size="sm" onClick={() => resetFilter()}>Clear filters</Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="gap-2">
-                  <SlidersHorizontal className="w-4 h-4" />
-                  View
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>Density</DropdownMenuLabel>
-                <DropdownMenuCheckboxItem checked={density === 'comfortable'} onCheckedChange={() => setDensity('comfortable')}>Comfortable</DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem checked={density === 'compact'} onCheckedChange={() => setDensity('compact')}>Compact</DropdownMenuCheckboxItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuLabel>Currency</DropdownMenuLabel>
-                <DropdownMenuCheckboxItem checked={currencyFormat === 'standard'} onCheckedChange={() => setCurrencyFormat('standard')}>Standard</DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem checked={currencyFormat === 'compact'} onCheckedChange={() => setCurrencyFormat('compact')}>Compact</DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem checked={currencyFormat === 'both'} onCheckedChange={() => setCurrencyFormat('both')}>Both</DropdownMenuCheckboxItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuLabel>Columns</DropdownMenuLabel>
-                <DropdownMenuCheckboxItem checked={columnVisibility.entity_name !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, entity_name: Boolean(v) }))}>Entity</DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem checked={columnVisibility.county_name !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, county_name: Boolean(v) }))}>County</DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem checked={columnVisibility.population !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, population: Boolean(v) }))}>Population</DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem checked={columnVisibility.per_capita_amount !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, per_capita_amount: Boolean(v) }))}>Per Capita</DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem checked={columnVisibility.total_amount !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, total_amount: Boolean(v) }))}>Total Amount</DropdownMenuCheckboxItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <Button variant="outline" size="sm" disabled={exporting || (data?.pageInfo?.totalCount ?? 0) === 0} onClick={handleExportCsv}>{exporting ? 'Exporting…' : 'Export CSV'}</Button>
+        {error ? (
+          <div className="p-6 flex items-center justify-center h-64">
+            <div className="text-center">
+              <h3 className="font-medium text-red-500">Error loading analytics</h3>
+              <p className="text-muted-foreground mt-2">{error instanceof Error ? error.message : 'Unknown error'}</p>
+            </div>
           </div>
-          <EntityAnalyticsTable
-            data={nodes}
-            isLoading={isLoading}
-            sortBy={sortBy}
-            sortOrder={sortOrder as 'asc' | 'desc' | undefined}
-            onSortChange={(by, order) => setSorting(by, order)}
-            density={density}
-            columnVisibility={columnVisibility}
-            onColumnVisibilityChange={setColumnVisibility}
-            columnPinning={columnPinning}
-            onColumnPinningChange={setColumnPinning}
-            columnSizing={columnSizing}
-            onColumnSizingChange={setColumnSizing}
-            columnOrder={columnOrder}
-            onColumnOrderChange={setColumnOrder}
-            currencyFormat={currencyFormat}
-            rowNumberStart={offset}
-          />
-          {data?.pageInfo?.totalCount ? (
-            <Pagination
-              currentPage={page}
-              pageSize={pageSize}
-              totalCount={data.pageInfo.totalCount || 0}
-              onPageChange={(p: number) => setPagination(p)}
-              onPageSizeChange={(s: number) => setPagination(1, s)}
+        ) : view === 'table' ? (
+          <div className="space-y-4">
+            <div className="flex items-center justify-end gap-2">
+              <Button variant="ghost" size="sm" onClick={() => resetFilter()}>Clear filters</Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="gap-2">
+                    <SlidersHorizontal className="w-4 h-4" />
+                    View
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>Density</DropdownMenuLabel>
+                  <DropdownMenuCheckboxItem checked={density === 'comfortable'} onCheckedChange={() => setDensity('comfortable')}>Comfortable</DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem checked={density === 'compact'} onCheckedChange={() => setDensity('compact')}>Compact</DropdownMenuCheckboxItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuLabel>Currency</DropdownMenuLabel>
+                  <DropdownMenuCheckboxItem checked={currencyFormat === 'standard'} onCheckedChange={() => setCurrencyFormat('standard')}>Standard</DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem checked={currencyFormat === 'compact'} onCheckedChange={() => setCurrencyFormat('compact')}>Compact</DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem checked={currencyFormat === 'both'} onCheckedChange={() => setCurrencyFormat('both')}>Both</DropdownMenuCheckboxItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuLabel>Columns</DropdownMenuLabel>
+                  <DropdownMenuCheckboxItem checked={columnVisibility.entity_name !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, entity_name: Boolean(v) }))}>Entity</DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem checked={columnVisibility.county_name !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, county_name: Boolean(v) }))}>County</DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem checked={columnVisibility.population !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, population: Boolean(v) }))}>Population</DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem checked={columnVisibility.per_capita_amount !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, per_capita_amount: Boolean(v) }))}>Per Capita</DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem checked={columnVisibility.total_amount !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, total_amount: Boolean(v) }))}>Total Amount</DropdownMenuCheckboxItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <Button variant="outline" size="sm" disabled={exporting || (data?.pageInfo?.totalCount ?? 0) === 0} onClick={handleExportCsv}>{exporting ? 'Exporting…' : 'Export CSV'}</Button>
+            </div>
+            <EntityAnalyticsTable
+              data={nodes}
               isLoading={isLoading}
-              pageSizeOptions={[25, 50, 100]}
+              sortBy={sortBy}
+              sortOrder={sortOrder as 'asc' | 'desc' | undefined}
+              onSortChange={(by, order) => setSorting(by, order)}
+              density={density}
+              columnVisibility={columnVisibility}
+              onColumnVisibilityChange={setColumnVisibility}
+              columnPinning={columnPinning}
+              onColumnPinningChange={setColumnPinning}
+              columnSizing={columnSizing}
+              onColumnSizingChange={setColumnSizing}
+              columnOrder={columnOrder}
+              onColumnOrderChange={setColumnOrder}
+              currencyFormat={currencyFormat}
+              rowNumberStart={offset}
             />
-          ) : null}
-        </div>
-      )}
+            {data?.pageInfo?.totalCount ? (
+              <Pagination
+                currentPage={page}
+                pageSize={pageSize}
+                totalCount={data.pageInfo.totalCount || 0}
+                onPageChange={(p: number) => setPagination(p)}
+                onPageSizeChange={(s: number) => setPagination(1, s)}
+                isLoading={isLoading}
+                pageSizeOptions={[25, 50, 100]}
+              />
+            ) : null}
+          </div>
+        ) : (
+          <div className="mt-4">
+            <EntityAnalyticsLineItems
+              filter={filter}
+              title={filter.account_category === 'vn' ? 'Income' : 'Expenses'}
+            />
+          </div>
+        )}
       </EntityAnalyticsLayout>
     </div>
   )

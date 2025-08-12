@@ -25,4 +25,22 @@ export type SortOrder = {
   order: 'asc' | 'desc' | 'ASC' | 'DESC'
 }
 
+export type AggregatedLineItem = {
+  fn_c: string; // functional code
+  fn_n: string; // functional name
+  ec_c: string; // economic code
+  ec_n: string; // economic name
+  amount: number;
+  count: number;
+}
+
+export type AggregatedLineItemConnection = {
+  nodes: AggregatedLineItem[];
+  pageInfo: {
+    totalCount: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+  };
+};
+
 
