@@ -9,6 +9,10 @@ import { useFinancialData } from "@/hooks/useFinancialData";
 import type { ExecutionLineItem } from "@/lib/api/entities";
 import { EntityAnalyticsLineItemsSkeleton } from "./EntityAnalyticsLineItemsSkeleton";
 import { convertDaysToMs, generateHash } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { ArrowUpWideNarrow, BarChart2Icon } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
+import { generateChartFromTopGroups } from "@/lib/chart-generation-utils";
 
 interface EntityAnalyticsLineItemsProps {
   filter: AnalyticsFilterType;
@@ -89,6 +93,19 @@ export const EntityAnalyticsLineItems: React.FC<
     }
   };
 
+  const navigate = useNavigate();
+
+  const handleViewChart = () => {
+    const newChart = generateChartFromTopGroups(
+      groupsToDisplay,
+      baseTotalToDisplay,
+      filter,
+      title,
+      filterHash
+    );
+    navigate({ to: `/charts/${newChart.id}`, search: { chart: newChart, view: 'overview' } });
+  };
+
   const groupsToDisplay = filter.account_category === 'vn' ? filteredIncomeGroups : filteredExpenseGroups;
   const baseTotalToDisplay = filter.account_category === 'vn' ? incomeBase : expenseBase;
   const currentSearchTerm = filter.account_category === 'vn' ? incomeSearchTerm : expenseSearchTerm;
@@ -97,7 +114,13 @@ export const EntityAnalyticsLineItems: React.FC<
   return (
     <Card className="shadow-lg dark:bg-slate-800 h-full flex flex-col">
       <CardHeader className="flex flex-row items-center justify-between">
-        <h3 className="text-lg font-semibold">{title}</h3>
+        <div className="flex items-center gap-4">
+          <h3 className="text-lg font-semibold">{title}</h3>
+          <Button variant="outline" size="sm" onClick={handleViewChart}>
+            <BarChart2Icon className="w-4 h-4" />
+            View Chart
+          </Button>
+        </div>
         <SearchToggleInput
           active={currentSearchActive}
           initialSearchTerm={currentSearchTerm}
