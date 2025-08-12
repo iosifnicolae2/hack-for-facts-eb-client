@@ -21,13 +21,13 @@ export const EntityFinancialSummaryCard: React.FC<EntityFinancialSummaryCardProp
   if (color === "blue") iconColor = "text-blue-500 dark:text-blue-400";
 
   return (
-    <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-slate-800">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+    <Card className="flex flex-col items-center justify-center shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-slate-800">
+      <CardHeader className="flex flex-row items-center space-y-0 space-x-4 pb-2 ">
         <CardTitle className="text-sm font-medium text-slate-700 dark:text-slate-300">{title} ({currentYear})</CardTitle>
         {Icon && <Icon className={`h-5 w-5 ${iconColor}`} />}
       </CardHeader>
-      <CardContent>
-        <p className="text-3xl font-bold text-slate-900 dark:text-slate-100">{displayValueCompact}</p>
+      <CardContent className="flex flex-col items-center justify-center">
+        <p className="text-4xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">{displayValueCompact}</p>
         <p className="text-sm text-muted-foreground">{displayValueStandard}</p>
         {/* You could add a small percentage change here if data is available */}
         {/* <p className="text-xs text-muted-foreground">+20.1% from last month</p> */}
