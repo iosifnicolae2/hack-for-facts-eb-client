@@ -20,7 +20,7 @@ export function IsUatFilter({ isUat, setIsUat }: IsUatFilterProps) {
         <RadioGroupButtons
             value={isUat}
             onChange={handleChange}
-            options={[{ value: 'true', label: 'Da' }, { value: 'false', label: 'Nu' }]}
+            options={[{ value: true, label: 'Da' }, { value: false, label: 'Nu' }]}
         />
     );
 } 

@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
 import { queryClient } from '@/lib/queryClient'
-import { fetchAggregatedLineItems, fetchEntityAnalytics } from '@/lib/api/entity-analytics'
+import { fetchEntityAnalytics } from '@/lib/api/entity-analytics'
 import { defaultEntityAnalyticsFilter } from '@/hooks/useEntityAnalyticsFilter'
 import { AnalyticsFilterSchema } from '@/schemas/charts'
 import { convertDaysToMs, generateHash } from '@/lib/utils'
