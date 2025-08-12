@@ -21,7 +21,7 @@ export const EntityInfo: React.FC<EntityInfoProps> = ({ entity }) => {
         <div className="flex-grow">
             {/* Title and Category Badge */}
             <div className="flex items-center gap-4 flex-wrap mb-2">
-                <h1 className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                <h1 className="text-3xl lg:text-5xl font-extrabold underline text-slate-900 dark:text-slate-100 flex items-center gap-2">
                     <Link to={`/entities/$cui`} params={{ cui: entity.cui }}>
                         {entity.name}
                     </Link>
