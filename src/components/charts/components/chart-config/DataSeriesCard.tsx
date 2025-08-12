@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus } from 'lucide-react';
 import { SeriesList } from './SeriesList';
+import { SeriesToolbar } from './SeriesToolbar';
 import { useChartStore } from '../../hooks/useChartStore';
 
 export const DataSeriesCard = React.memo(() => {
@@ -21,7 +22,8 @@ export const DataSeriesCard = React.memo(() => {
                     </Button>
                 </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-4">
+                <SeriesToolbar />
                 <SeriesList />
             </CardContent>
         </Card>

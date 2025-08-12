@@ -3,6 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Chart } from "@/schemas/charts";
 import { getChartTypeIcon } from "../../utils";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { useNavigate } from "@tanstack/react-router";
 
 interface ChartViewHeaderProps {
   chart: Chart;
@@ -10,20 +12,36 @@ interface ChartViewHeaderProps {
 }
 
 export function ChartViewHeader({ chart, onConfigure }: ChartViewHeaderProps) {
+  const navigate = useNavigate();
   const chartTitle = chart.title || 'Untitled Chart';
   return (
-    <div className="flex flex-wrap items-center justify-between gap-4">
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-3">
-          {getChartTypeIcon(chart.config.chartType, "h-8 w-8 text-muted-foreground")}
-          <h1 className="text-3xl font-bold tracking-tight">{chartTitle}</h1>
-          <Badge variant="outline" className="capitalize">{chart.config.chartType}</Badge>
+    <div className="space-y-2">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <a href="#" onClick={(e) => { e.preventDefault(); navigate({ to: "/charts" }); }}>Charts</a>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Chart</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            {getChartTypeIcon(chart.config.chartType, "h-8 w-8 text-muted-foreground")}
+            <h1 className="text-3xl font-bold tracking-tight">{chartTitle}</h1>
+            <Badge variant="outline" className="capitalize">{chart.config.chartType}</Badge>
+          </div>
         </div>
+        <Button className="gap-2" onClick={onConfigure}>
+          <Settings className="h-4 w-4" />
+          Configure
+        </Button>
       </div>
-      <Button className="gap-2" onClick={onConfigure}>
-        <Settings className="h-4 w-4" />
-        Configure
-      </Button>
     </div>
   );
 }; 

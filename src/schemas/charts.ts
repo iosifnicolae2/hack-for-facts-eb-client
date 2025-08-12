@@ -193,7 +193,7 @@ export const AnnotationSchema = z.object({
   locked: z.boolean().default(true),
   title: z.string().describe('The title of the annotation.'),
   subtitle: z.string().optional().describe('The subtitle of the annotation.'),
-  color: z.string().default('#000').describe('The color of the annotation.'),
+  color: z.string().default('#0062ff').describe('The color of the annotation.'),
   connector: z.boolean().default(true).describe('Whether the annotation is connected to the chart.'),
   subject: z.boolean().default(false).describe('Whether the annotation show a circle or icon around the point it starts from.'),
   label: z.boolean().default(true).describe('Whether the annotation show a label using title and subtitle.'),

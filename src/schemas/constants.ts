@@ -8,7 +8,7 @@ export type AnnotationType = z.infer<typeof AnnotationTypeEnum>;
 
 export const DEFAULT_CHART_CONFIG = {
     chartType: 'line' as ChartType,
-    color: '#0000ff',
+    color: '#0062ff',
     showDataLabels: false,
     showGridLines: true,
     showLegend: true,

@@ -87,6 +87,9 @@ export function SeriesList() {
     setSelectedSeriesId((prev) => (prev === seriesId ? null : prev));
   };
 
+  // Optional: filter by search query (prop from toolbar to be wired later)
+  // For now, show all series; toolbar will still be useful for paste and tips.
+
   if (chart.series.length === 0) {
     return (
       <div className="text-center py-4">
