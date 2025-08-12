@@ -1,9 +1,12 @@
+/* Inter (variable). Prefer WOFF2, fallback to TTF. */
 @font-face {
   font-family: 'Inter';
   font-style: normal;
-  font-weight: 100 900;  /* Range from Thin (100) to Black (900) */
+  font-weight: 100 900; /* Thin (100) → Black (900) */
   font-display: swap;
-  src: url('/fonts/Inter/Inter-VariableFont_opsz,wght.ttf') format('truetype-variations');
+  src:
+    url('/fonts/Inter/Inter-VariableFont_opsz,wght.woff2') format('woff2'),
+    url('/fonts/Inter/Inter-VariableFont_opsz,wght.ttf') format('truetype-variations');
 }
 
 @font-face {
@@ -11,5 +14,32 @@
   font-style: italic;
   font-weight: 100 900;
   font-display: swap;
-  src: url('/fonts/Inter/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype-variations');
-} 
+  src:
+    url('/fonts/Inter/Inter-Italic-VariableFont_opsz,wght.woff2') format('woff2'),
+    url('/fonts/Inter/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype-variations');
+}
+
+/* Noto Sans (variable) as IPA-capable fallback. Limited to IPA + combining diacritics via unicode-range to avoid unnecessary downloads. */
+@font-face {
+  font-family: 'Noto Sans Fallback';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src:
+    url('/fonts/NotoSans/NotoSans-VariableFont_wdth,wght.woff2') format('woff2'),
+    url('/fonts/NotoSans/NotoSans-VariableFont_wdth,wght.ttf') format('truetype-variations');
+  /* IPA Extensions U+0250–02AF, Spacing Modifier Letters U+02B0–02FF,
+     Combining Diacritical Marks U+0300–036F */
+  unicode-range: U+0250-02AF, U+02B0-02FF, U+0300-036F;
+}
+
+@font-face {
+  font-family: 'Noto Sans Fallback';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src:
+    url('/fonts/NotoSans/NotoSans-Italic-VariableFont_wdth,wght.woff2') format('woff2'),
+    url('/fonts/NotoSans/NotoSans-Italic-VariableFont_wdth,wght.ttf') format('truetype-variations');
+  unicode-range: U+0250-02AF, U+02B0-02FF, U+0300-036F;
+}
