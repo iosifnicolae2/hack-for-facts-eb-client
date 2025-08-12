@@ -27,7 +27,15 @@ export const Route = createRootRoute({
                   <main className="flex-1">
                     <div>
                       {/* Global SEO defaults. Child routes can render their own <Seo /> to override. */}
-                      <Seo />
+                      <Seo
+                        additionalMeta={[
+                          {
+                            name: 'keywords',
+                            content:
+                              'execuții bugetare, executii bugetare, bugetul statului, transparență bugetară, transparenta bugetara, analiză bugetară, analiza bugetara, cheltuieli publice, venituri publice, buget local, buget județean, UAT, hartă cheltuieli, harta cheltuieli, vizualizare buget, vizualizare date, finanțe publice, finante publice, România, Romania',
+                          },
+                        ]}
+                      />
                       <JsonLd data={{
                         '@context': 'https://schema.org',
                         '@type': 'WebSite',

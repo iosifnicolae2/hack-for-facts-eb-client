@@ -18,6 +18,7 @@ import { useEntityDetails } from '@/lib/hooks/useEntityDetails'
 import type { EntitySearchSchema } from '@/routes/entities.$cui'
 import { Analytics } from '@/lib/analytics'
 import { Seo } from '@/lib/seo'
+import { buildEntitySeo } from '@/lib/seo-entity'
 
 export const Route = createLazyFileRoute('/entities/$cui')({
   component: EntityDetailsPage,
@@ -182,13 +183,11 @@ function EntityDetailsPage() {
     }
   }
 
+  const { title: metaTitle, description: metaDescription } = buildEntitySeo(entity ?? null, cui, selectedYear)
+
   return (
     <div className="min-h-screen p-4 md:p-8">
-      <Seo
-        title={`${entity?.name ?? 'Entity'} – Transparenta.eu`}
-        description={`Explore budget trends, reports, and map for entity ${entity?.name ?? cui}.`}
-        type="article"
-      />
+      <Seo title={metaTitle} description={metaDescription} type="article" />
       <div className="container mx-auto max-w-7xl space-y-8">
         <EntityHeader
           className="md:sticky top-0 z-30"
