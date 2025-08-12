@@ -1,7 +1,11 @@
 import * as Sentry from "@sentry/react";
 import { env } from "@/config/env";
 import { hasAnalyticsConsent, hasSentryConsent } from "@/lib/consent";
-import { captureConsoleIntegration, extraErrorDataIntegration, replayIntegration } from "@sentry/react";
+import {
+  captureConsoleIntegration,
+  extraErrorDataIntegration,
+  replayIntegration,
+} from "@sentry/react";
 
 /**
  * Public handle to open the Sentry User Feedback dialog programmatically.
@@ -14,7 +18,10 @@ export let openSentryFeedback: (() => void) | null = null;
  */
 export function cleanupSentry(): void {
   if (typeof window === "undefined") return;
-  Sentry.close();
+  const client = Sentry.getClient();
+  if (client) {
+    client.getOptions().enabled = false;
+  }
   openSentryFeedback = null;
 }
 
@@ -42,8 +49,16 @@ export function getReactRootErrorHandlers() {
  * Should be called before rendering React.
  */
 export function initSentry(router: unknown): void {
-  const sentryEnabled = Boolean(env.VITE_SENTRY_ENABLED) && Boolean(env.VITE_SENTRY_DSN);
+  const sentryEnabled =
+    Boolean(env.VITE_SENTRY_ENABLED) && Boolean(env.VITE_SENTRY_DSN);
   if (!sentryEnabled || typeof window === "undefined") {
+    return;
+  }
+
+  // If Sentry is already initialized, just enable it
+  const client = Sentry.getClient();
+  if (client) {
+    client.getOptions().enabled = true;
     return;
   }
 
