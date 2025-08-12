@@ -21,7 +21,7 @@ function Index() {
   const { animationActive } = useTitleAnimation()
   const isMobile = useIsMobile();
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-slate-50 to-slate-200 dark:from-slate-900 dark:to-slate-800">
+    <div className="flex flex-col min-h-screen">
       <main className="flex-grow flex items-start justify-center p-4">
         <div className="container mx-auto flex flex-col items-center text-center space-y-10 py-16 md:py-24 relative">
           {/* Title Container - applies gradient styles to its children */}

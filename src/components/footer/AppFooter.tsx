@@ -20,7 +20,7 @@ export function AppFooter(): ReactElement {
         <footer className="w-full border-t bg-muted/30 text-muted-foreground">
             <div className="mx-auto w-full max-w-7xl px-6 py-10">
 
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
                     {/* Brand + short description */}
                     <div className="space-y-3">
                         <div className="font-semibold text-lg text-foreground">Transparenta.eu</div>
@@ -57,13 +57,13 @@ export function AppFooter(): ReactElement {
                         <h2 id="footer-product-heading" className="font-medium text-foreground text-base">Product</h2>
                         <ul className="space-y-2 text-sm">
                             <li>
-                                <Link to="/charts" className="hover:text-foreground">
-                                    Features
+                                <Link to="/" className="hover:text-foreground">
+                                    Home
                                 </Link>
                             </li>
                             <li>
                                 <Link to="/entity-analytics" className="hover:text-foreground">
-                                    For Developers
+                                    Entity Analytics
                                 </Link>
                             </li>
                             <li>
@@ -71,40 +71,10 @@ export function AppFooter(): ReactElement {
                                     Maps
                                 </Link>
                             </li>
-                        </ul>
-                    </nav>
-
-                    {/* Company */}
-                    <nav aria-label="Company" className="space-y-3" aria-labelledby="footer-company-heading">
-                        <h2 id="footer-company-heading" className="font-medium text-foreground text-base">Company</h2>
-                        <ul className="space-y-2 text-sm">
                             <li>
-                                <a
-                                    href="https://transparenta.eu"
-                                    target="_blank"
-                                    rel="noreferrer noopener"
-                                    className="hover:text-foreground"
-                                >
-                                    About
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://transparenta.eu/blog"
-                                    target="_blank"
-                                    rel="noreferrer noopener"
-                                    className="hover:text-foreground"
-                                >
-                                    Blog
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="mailto:contact@transparenta.eu"
-                                    className="hover:text-foreground"
-                                >
-                                    Contact
-                                </a>
+                                <Link to="/charts" className="hover:text-foreground">
+                                    Charts
+                                </Link>
                             </li>
                         </ul>
                     </nav>
