@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { getSiteUrl } from '@/config/env'
 import { useLocation } from '@tanstack/react-router'
+import serialize from 'serialize-javascript'
 
 export type SeoProps = {
   readonly title?: string
@@ -18,7 +19,7 @@ export type SeoProps = {
 const DEFAULTS = {
   title: 'Transparenta.eu',
   description:
-    'Explore Romania public finance data with charts, maps, and analytics. Local-first, consent-based analytics and error reporting.',
+    'Explore Romania public finance data with charts, maps, and analytics.',
   image: '/logo.png',
   type: 'website' as const,
   siteName: 'Transparenta.eu',
@@ -110,7 +111,7 @@ export function Seo(props: SeoProps): null {
       // If needed, implement more granular cleanup here.
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title, description, image, type, url, siteName, locale, props.noindex])
+  }, [title, description, image, type, url, siteName, locale, props.noindex, props.canonical, props.additionalMeta])
 
   return null
 }
@@ -129,20 +130,26 @@ function absoluteUrl(pathOrUrl: string, siteUrl: string): string {
 
 // Simple CSS value escaper for attribute selectors
 function cssEscape(value: string): string {
-  return value.replace(/"/g, '\\"')
+  if (typeof CSS !== 'undefined' && typeof CSS.escape === 'function') {
+    return CSS.escape(value)
+  }
+  // Basic fallback for older browsers
+  return value
+    .replace(/["\\/&!$'()*+,.:;<=>?@[\]^`{|}~]/g, '\\$&')
+    .replace(/\u0000/g, '\\0')
 }
 
 /**
  * Renders structured data as JSON-LD. Can be placed anywhere; search engines accept body scripts.
  */
 export function JsonLd({ data }: { readonly data: Record<string, unknown> }) {
+  const json = serialize(data, { isJSON: true }) as string
   return (
     <script
       type="application/ld+json"
       // eslint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: json }}
     />
   )
 }
-
 
