@@ -30,7 +30,7 @@ export function useEntityAnalyticsFilter() {
   const setFilter = (partial: Partial<AnalyticsFilterType>) => {
     navigate({
       search: (prev) => {
-        const prevFilter = (prev as EntityAnalyticsSearch).filter ?? {}
+        const prevFilter = (prev as EntityAnalyticsSearch).filter ?? defaultEntityAnalyticsFilter
         const merged = { ...prevFilter, ...partial }
         if (!merged.years || merged.years.length === 0) {
           merged.years = [defaultYearRange.end]
