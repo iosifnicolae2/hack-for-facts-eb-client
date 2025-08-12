@@ -64,9 +64,9 @@
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 45%;
 
-    /* Accent - Neutral highlight color */
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 24%;
+    /* Accent - Subtle navy-tinted surfaces */
+    --accent: 220 20% 96%;
+    --accent-foreground: 220 25% 22%;
 
     /* Destructive - For warnings and errors */
     --destructive: 0 84.2% 60.2%;
@@ -77,12 +77,12 @@
     --input: 0 0% 90%;
     --ring: var(--primary);
 
-    /* Chart colors - Grayscale palette */
-    --chart-1: 0 0% 12%;
-    --chart-2: 0 0% 30%;
-    --chart-3: 0 0% 45%;
-    --chart-4: 0 0% 62%;
-    --chart-5: 0 0% 80%;
+    /* Chart colors - Navy-first, then neutral steps */
+    --chart-1: var(--primary);
+    --chart-2: 220 10% 45%;
+    --chart-3: 0 0% 50%;
+    --chart-4: 0 0% 65%;
+    --chart-5: 0 0% 82%;
 
     /* Scrollbar colors */
     --scrollbar-track: 0 0% 95% / 0.1;
@@ -123,7 +123,7 @@
     --muted: 0 0% 14%;
     --muted-foreground: 0 0% 65%;
 
-    --accent: 0 0% 14%;
+    --accent: 220 25% 18%;
     --accent-foreground: 0 0% 96%;
 
     --destructive: 0 62.8% 30.6%;
@@ -145,12 +145,12 @@
     --sidebar-border: 0 0% 16%;
     --sidebar-ring: 0 0% 60%;
 
-    /* Chart colors - Grayscale palette for dark mode */
-    --chart-1: 0 0% 85%;
-    --chart-2: 0 0% 70%;
-    --chart-3: 0 0% 55%;
-    --chart-4: 0 0% 40%;
-    --chart-5: 0 0% 25%;
+    /* Chart colors - Navy-first for dark */
+    --chart-1: var(--primary);
+    --chart-2: 220 10% 70%;
+    --chart-3: 0 0% 60%;
+    --chart-4: 0 0% 42%;
+    --chart-5: 0 0% 28%;
   }
 }
 

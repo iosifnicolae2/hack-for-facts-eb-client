@@ -115,7 +115,7 @@ export default {
               fontWeight: "700",
             },
             a: {
-              color: "hsl(var(--foreground))",
+              color: "hsl(var(--primary))",
               textDecoration: "underline",
               fontWeight: "500",
             },
