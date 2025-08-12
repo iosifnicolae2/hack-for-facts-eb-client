@@ -1,11 +1,11 @@
 import { useMemo, useState } from "react";
 import { ListContainerSimple } from "../base-filter/ListContainerSimple";
 import { ListOption } from "../base-filter/ListOption";
-import entityCategories from "@/assets/entity-categories.json";
 import { OptionItem } from "../base-filter/interfaces";
 import { SearchInput } from "../base-filter/SearchInput";
 import Fuse from "fuse.js";
 import { cn } from "@/lib/utils";
+import { useEntityTypeOptions } from "@/hooks/filters/useFilterLabels";
 
 interface EntityTypeListProps {
     selectedOptions: OptionItem[];
@@ -17,10 +17,7 @@ interface EntityTypeListProps {
 export function EntityTypeList({ selectedOptions, toggleSelect, className }: EntityTypeListProps) {
     const [searchFilter, setSearchFilter] = useState("");
 
-    const entityTypeOptions = useMemo(() => Object.entries(entityCategories.categories).map(([key, value]) => ({
-        id: key,
-        label: value,
-    })), []);
+    const { options: entityTypeOptions } = useEntityTypeOptions();
 
     const fuse = useMemo(
         () =>

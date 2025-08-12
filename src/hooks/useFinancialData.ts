@@ -1,16 +1,11 @@
 import React from 'react';
 import { GroupedChapter, GroupedFunctional, GroupedEconomic, GroupedSubchapter } from '@/schemas/financial';
 import { ExecutionLineItem } from '@/lib/api/entities';
-import classifications from '@/assets/functional-classificatinos-general.json';
 import { useDebouncedValue } from '@/lib/hooks/useDebouncedValue';
 import { match } from '@/components/entities/highlight-utils';
-import { getIncomeSubchapterMap } from '@/lib/analytics-utils';
+import { useChapterMap, useIncomeSubchapterMap } from '@/lib/analytics-utils';
 
-interface BudgetNode {
-  description: string;
-  code?: string;
-  children?: BudgetNode[];
-}
+// Keeping local type helpers minimal to avoid unused warnings
 
 const robustTrim = (s: string | null | undefined) =>
   (s ?? '')
@@ -33,48 +28,7 @@ const twoGroupFromAnyCode = (codeLike: string | number | null | undefined): stri
   return m ? `${m[1]}.${m[2]}` : null;
 };
 
-const isIncomeRoot = (s: string) => /VENITURI/i.test(robustTrim(s));
-const isExpenseRoot = (s: string) => /CHELTUIELI/i.test(robustTrim(s));
-
-/** Walk a subtree and collect nodes with a 2-digit code as "chapters". */
-const collectChapterMap = (roots: BudgetNode[]): Map<string, string> => {
-  const map = new Map<string, string>();
-  const stack = [...roots];
-
-  while (stack.length) {
-    const node = stack.pop()!;
-    const code = node.code ? twoDigitFromAnyCode(node.code) : null;
-
-    if (code && /^\d{2}$/.test(code)) {
-      const label = robustTrim(node.description) || code;
-      if (!map.has(code)) map.set(code, label);
-    }
-    if (node.children?.length) {
-      // depth-first; order doesn’t matter for the map
-      for (let i = node.children.length - 1; i >= 0; i--) stack.push(node.children[i]);
-    }
-  }
-  return map;
-};
-
-/** Build two maps straight from your JSON tree. */
-const buildChapterMaps = (data: BudgetNode[]) => {
-  const incomeRoots: BudgetNode[] = [];
-  const expenseRoots: BudgetNode[] = [];
-
-  for (const root of data) {
-    if (isIncomeRoot(root.description)) incomeRoots.push(root);
-    else if (isExpenseRoot(root.description)) expenseRoots.push(root);
-  }
-
-  const incomeChapterMap = collectChapterMap(incomeRoots);
-  const expenseChapterMap = collectChapterMap(expenseRoots);
-
-  return { incomeChapterMap, expenseChapterMap };
-};
-
-const { incomeChapterMap, expenseChapterMap } = buildChapterMaps(classifications as BudgetNode[]);
-const incomeSubchapterMap = getIncomeSubchapterMap();
+// Chapter map and income subchapter map are now loaded lazily via React Query hooks
 
 const groupByFunctional = (
   items: ExecutionLineItem[],
@@ -163,7 +117,11 @@ const groupByFunctional = (
 };
 
 /** Group incomes by subchapter (NN.MM) inside each chapter. Expenses remain chapter → functional. */
-const groupIncomeBySubchapter = (items: ExecutionLineItem[]): GroupedChapter[] => {
+const groupIncomeBySubchapter = (
+  items: ExecutionLineItem[],
+  incomeSubchapterMap: Map<string, string>,
+  chapterMap: Map<string, string>
+): GroupedChapter[] => {
   type EconAgg = { name: string; amount: number };
   type FuncAgg = { economics: Map<string, EconAgg>; total: number; name: string };
   type SubAgg = { functionals: Map<string, FuncAgg>; total: number; name: string };
@@ -186,13 +144,13 @@ const groupIncomeBySubchapter = (items: ExecutionLineItem[]): GroupedChapter[] =
     const prefix = twoDigitFromAnyCode(funcCode);
     if (!prefix) continue;
 
-    let chapter = chapters.get(prefix);
+      let chapter = chapters.get(prefix);
     if (!chapter) {
       chapter = {
         functionals: new Map(),
         subchapters: new Map(),
         total: 0,
-        description: incomeChapterMap.get(prefix) ?? 'Neclasificat',
+          description: chapterMap.get(prefix) ?? 'Neclasificat',
       };
       chapters.set(prefix, chapter);
     }
@@ -276,7 +234,7 @@ const groupIncomeBySubchapter = (items: ExecutionLineItem[]): GroupedChapter[] =
 
     out.push({
       prefix,
-      description: ch.description ?? incomeChapterMap.get(prefix) ?? 'Neclasificat',
+      description: ch.description ?? chapterMap.get(prefix) ?? 'Neclasificat',
       totalAmount: ch.total,
       functionals,
       subchapters,
@@ -392,6 +350,10 @@ export const useFinancialData = (
   initialExpenseSearchTerm?: string,
   initialIncomeSearchTerm?: string
 ) => {
+  // Lazy maps
+  const { data: chapterMap = new Map<string, string>() } = useChapterMap();
+  const { data: incomeSubchapterMap = new Map<string, string>() } = useIncomeSubchapterMap();
+
   const [expenseSearchTerm, setExpenseSearchTerm] = React.useState(initialExpenseSearchTerm ?? '');
   const [incomeSearchTerm, setIncomeSearchTerm] = React.useState(initialIncomeSearchTerm ?? '');
   const [expenseSearchActive, setExpenseSearchActive] = React.useState(!!initialExpenseSearchTerm);
@@ -403,9 +365,9 @@ export const useFinancialData = (
   const expenses = React.useMemo(() => lineItems.filter((li) => li.account_category === 'ch'), [lineItems]);
   const incomes = React.useMemo(() => lineItems.filter((li) => li.account_category === 'vn'), [lineItems]);
 
-  // Group with maps built from the new tree
-  const expenseGroups = React.useMemo(() => groupByFunctional(expenses, expenseChapterMap), [expenses]);
-  const incomeGroups = React.useMemo(() => groupIncomeBySubchapter(incomes), [incomes]);
+  // Group using lazily loaded maps
+  const expenseGroups = React.useMemo(() => groupByFunctional(expenses, chapterMap), [expenses, chapterMap]);
+  const incomeGroups = React.useMemo(() => groupIncomeBySubchapter(incomes, incomeSubchapterMap, chapterMap), [incomes, incomeSubchapterMap, chapterMap]);
 
   const filteredExpenseGroups = React.useMemo(
     () => filterGroups(expenseGroups, debouncedExpenseSearchTerm),

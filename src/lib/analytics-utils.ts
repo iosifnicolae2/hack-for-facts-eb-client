@@ -1,4 +1,4 @@
-import classifications from '@/assets/functional-classificatinos-general.json';
+import { useQuery } from '@tanstack/react-query';
 import { ExecutionLineItem } from '@/lib/api/entities';
 
 interface BudgetNode {
@@ -9,6 +9,42 @@ interface BudgetNode {
 
 let chapterMapInstance: Map<string, string> | null = null;
 let incomeSubchapterMapInstance: Map<string, string> | null = null;
+let chapterMapPromise: Promise<Map<string, string>> | null = null;
+let incomeSubchapterMapPromise: Promise<Map<string, string>> | null = null;
+
+type FunctionalTree = BudgetNode[];
+
+const CHAPTER_MAP_CACHE_KEY = 'functional-chapter-map-cache-v1';
+const INCOME_SUBCHAPTER_MAP_CACHE_KEY = 'functional-income-subchapter-map-cache-v1';
+
+const canUseStorage = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+
+const tryLoadMapCache = (key: string): Map<string, string> | null => {
+  if (!canUseStorage) return null;
+  try {
+    const raw = window.localStorage.getItem(key);
+    if (!raw) return null;
+    const obj = JSON.parse(raw) as Record<string, string>;
+    return new Map(Object.entries(obj));
+  } catch {
+    return null;
+  }
+};
+
+const trySaveMapCache = (key: string, map: Map<string, string>): void => {
+  if (!canUseStorage) return;
+  try {
+    const obj = Object.fromEntries(map.entries());
+    window.localStorage.setItem(key, JSON.stringify(obj));
+  } catch {
+    // ignore cache write errors
+  }
+};
+
+const fetchFunctionalTree = async (): Promise<FunctionalTree> => {
+  const mod = await import('@/assets/functional-classificatinos-general.json');
+  return (mod as { default: unknown }).default as FunctionalTree;
+};
 
 /** Trim + normalize odd spaces/BOM. */
 const tidy = (s: string | null | undefined) =>
@@ -67,11 +103,32 @@ const buildChapterMapFromTree = (roots: BudgetNode[]): Map<string, string> => {
   return map;
 };
 
+const ensureChapterMap = async (): Promise<Map<string, string>> => {
+  if (chapterMapInstance) return chapterMapInstance;
+  if (chapterMapPromise) return chapterMapPromise;
+  const cached = tryLoadMapCache(CHAPTER_MAP_CACHE_KEY);
+  if (cached) {
+    chapterMapInstance = cached;
+    return cached;
+  }
+  chapterMapPromise = fetchFunctionalTree().then((tree) => {
+    const map = buildChapterMapFromTree(Array.isArray(tree) ? tree : []);
+    chapterMapInstance = map;
+    trySaveMapCache(CHAPTER_MAP_CACHE_KEY, map);
+    return map;
+  });
+  return chapterMapPromise;
+};
+
 export const getChapterMap = (): Map<string, string> => {
   if (chapterMapInstance) return chapterMapInstance;
-  const tree = classifications as unknown as BudgetNode[];
-  chapterMapInstance = buildChapterMapFromTree(Array.isArray(tree) ? tree : []);
-  return chapterMapInstance!;
+  const cached = tryLoadMapCache(CHAPTER_MAP_CACHE_KEY);
+  if (cached) {
+    chapterMapInstance = cached;
+    return cached;
+  }
+  // Not yet loaded; return empty map as a safe fallback.
+  return new Map<string, string>();
 };
 
 /** Build a map of income subchapters (NN.MM) to their descriptions. */
@@ -106,11 +163,48 @@ const buildIncomeSubchapterMapFromTree = (roots: BudgetNode[]): Map<string, stri
   return map;
 };
 
+const ensureIncomeSubchapterMap = async (): Promise<Map<string, string>> => {
+  if (incomeSubchapterMapInstance) return incomeSubchapterMapInstance;
+  if (incomeSubchapterMapPromise) return incomeSubchapterMapPromise;
+  const cached = tryLoadMapCache(INCOME_SUBCHAPTER_MAP_CACHE_KEY);
+  if (cached) {
+    incomeSubchapterMapInstance = cached;
+    return cached;
+  }
+  incomeSubchapterMapPromise = fetchFunctionalTree().then((tree) => {
+    const map = buildIncomeSubchapterMapFromTree(Array.isArray(tree) ? tree : []);
+    incomeSubchapterMapInstance = map;
+    trySaveMapCache(INCOME_SUBCHAPTER_MAP_CACHE_KEY, map);
+    return map;
+  });
+  return incomeSubchapterMapPromise;
+};
+
 export const getIncomeSubchapterMap = (): Map<string, string> => {
   if (incomeSubchapterMapInstance) return incomeSubchapterMapInstance;
-  const tree = classifications as unknown as BudgetNode[];
-  incomeSubchapterMapInstance = buildIncomeSubchapterMapFromTree(Array.isArray(tree) ? tree : []);
-  return incomeSubchapterMapInstance!;
+  const cached = tryLoadMapCache(INCOME_SUBCHAPTER_MAP_CACHE_KEY);
+  if (cached) {
+    incomeSubchapterMapInstance = cached;
+    return cached;
+  }
+  // Not yet loaded; return empty map as a safe fallback.
+  return new Map<string, string>();
+};
+
+export const useChapterMap = () => {
+  return useQuery<Map<string, string>>({
+    queryKey: ['functional-chapter-map'],
+    queryFn: ensureChapterMap,
+    staleTime: Infinity,
+  });
+};
+
+export const useIncomeSubchapterMap = () => {
+  return useQuery<Map<string, string>>({
+    queryKey: ['functional-income-subchapter-map'],
+    queryFn: ensureIncomeSubchapterMap,
+    staleTime: Infinity,
+  });
 };
 
 const aggregateByFunctionalCode = (items: ExecutionLineItem[]): Map<string, number> => {

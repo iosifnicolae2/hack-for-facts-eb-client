@@ -1,9 +1,8 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { GetLabels, LabelStore } from "./interfaces";
 import { OptionItem } from "@/components/filters/base-filter/interfaces";
 import { getBudgetSectorLabels, getEconomicClassificationLabels, getEntityLabels, getFundingSourceLabels, getFunctionalClassificationLabels, getUatLabels } from "@/lib/api/labels";
-import entityCategories from "@/assets/entity-categories.json";
 
 const EntityStorageKey = 'entity-labels';
 const UatLabelStorageKey = 'uat-labels';
@@ -127,18 +126,44 @@ export const useFundingSourceLabel = (initialIds: (string | number)[]) => {
     return useDataLabelBuilder(FundingSourceLabelStorageKey, getFundingSourceLabels, initialIds);
 }
 
-export const useEntityTypeLabel = () => {
-    const entityTypeOptions = useMemo(() => Object.entries(entityCategories.categories).reduce((acc, [key, value]) => {
-        acc[key] = value;
-        return acc;
-    }, {} as Record<string, string>), []);
+type EntityCategoriesJson = { readonly categories: Record<string, string> };
+
+const fetchEntityCategories = async (): Promise<Record<string, string>> => {
+    const mod = await import("@/assets/entity-categories.json");
+    const json = (mod as { default: EntityCategoriesJson }).default;
+    return json.categories;
+};
+
+export const useEntityTypeLabel = (): LabelStore => {
+    const { data: categories } = useQuery<Record<string, string>>({
+        queryKey: ["entity-categories"],
+        queryFn: fetchEntityCategories,
+        staleTime: Infinity,
+    });
+
+    const mapIdToLabel = useCallback((id: string | number) => (categories?.[String(id)] ?? `id::${id}`), [categories]);
 
     return {
-        map: (id: string) => entityTypeOptions[id] ?? `id::${id}`,
+        map: mapIdToLabel,
         add: () => { },
-        fetch: () => { },
-    }
-}
+        fetch: async () => { },
+    };
+};
+
+export const useEntityTypeOptions = () => {
+    const { data: categories } = useQuery<Record<string, string>>({
+        queryKey: ["entity-categories"],
+        queryFn: fetchEntityCategories,
+        staleTime: Infinity,
+    });
+
+    const options = useMemo<OptionItem<string>[]>(() => {
+        if (!categories) return [];
+        return Object.entries(categories).map(([key, value]) => ({ id: key, label: value }));
+    }, [categories]);
+
+    return { options };
+};
 
 export const useAccountCategoryLabel = () => {
     const accountCategoryOptions = useMemo(() => {

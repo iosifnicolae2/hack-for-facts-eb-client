@@ -3,19 +3,18 @@ import { Link } from '@tanstack/react-router';
 import { Building2, ExternalLink } from 'lucide-react';
 
 import { EntityDetailsData } from '@/lib/api/entities';
-import entityCategories from '@/assets/entity-categories.json';
 import { Badge } from '@/components/ui/badge';
 import { UatDisplay } from './UatDisplay';
 import { useExternalSearchLink } from '@/lib/hooks/useExternalSearchLink';
+import { useEntityTypeLabel } from '@/hooks/filters/useFilterLabels';
 
 interface EntityInfoProps {
     entity: Pick<EntityDetailsData, 'name' | 'cui' | 'entity_type' | 'address' | 'uat' | 'children' | 'parents'>;
 }
 
 export const EntityInfo: React.FC<EntityInfoProps> = ({ entity }) => {
-    const entityCategory = entity.entity_type
-        ? entityCategories.categories[entity.entity_type as keyof typeof entityCategories.categories]
-        : null;
+    const entityTypeLabel = useEntityTypeLabel();
+    const entityCategory = entity.entity_type ? entityTypeLabel.map(entity.entity_type) : null;
     const { url: wikipediaUrl } = useExternalSearchLink(entity);
 
     return (
