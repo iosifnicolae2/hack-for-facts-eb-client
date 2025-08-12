@@ -34,7 +34,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
   }
 
   return (
-    <header className={cn("bg-slate-50 dark:bg-slate-800 p-6 rounded-lg shadow-md relative z-30", className)}>
+    <header className={cn("bg-background p-6 rounded-lg shadow-lg relative z-30", className)}>
       {/* Main content: Info and Year Selector */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
         <EntityInfo entity={entity} />
