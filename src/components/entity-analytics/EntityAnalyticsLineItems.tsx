@@ -10,7 +10,7 @@ import type { ExecutionLineItem } from "@/lib/api/entities";
 import { EntityAnalyticsLineItemsSkeleton } from "./EntityAnalyticsLineItemsSkeleton";
 import { convertDaysToMs, generateHash } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ArrowUpWideNarrow, BarChart2Icon } from "lucide-react";
+import { BarChart2Icon } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
 import { generateChartFromTopGroups } from "@/lib/chart-generation-utils";
 
