@@ -26,19 +26,14 @@ export function CookieConsentBanner(): ReactElement | null {
 
   const acceptCookies = () => {
     setIsExiting(true);
-    setTimeout(() => {
-      acceptAll();
-      setShowBanner(false);
-      window.location.reload();
-    }, 400);
+    acceptAll();
+    setShowBanner(false);
   };
 
   const declineCookies = () => {
     setIsExiting(true);
-    setTimeout(() => {
-      declineAll();
-      setShowBanner(false);
-    }, 400);
+    declineAll();
+    setShowBanner(false);
   };
 
   if (!showBanner) return null;

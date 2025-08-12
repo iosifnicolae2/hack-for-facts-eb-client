@@ -1,24 +1,21 @@
-import { StrictMode } from "react";
+import { StrictMode, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { PostHogProvider } from "posthog-js/react";
 import posthog from "posthog-js";
 import { hasAnalyticsConsent, onConsentChange } from "@/lib/consent";
+import { useSentryConsent } from "@/hooks/useSentryConsent";
 
 import "./index.css";
-
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
 import { queryClient } from "@/lib/queryClient";
 import { env } from "./config/env";
-import { getReactRootErrorHandlers, initSentry } from "./lib/sentry";
+import { cleanupSentry, getReactRootErrorHandlers, initSentry } from "./lib/sentry";
 
 // Create a new router instance
 const router = createRouter({ routeTree, context: { queryClient } });
-
-// Initialize Sentry early (before rendering)
-initSentry(router);
 
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {
@@ -50,9 +47,16 @@ if (typeof window !== 'undefined') {
   });
 }
 
-// Initialize app
-ReactDOM.createRoot(document.getElementById("root")!, getReactRootErrorHandlers()).render(
-  <StrictMode>
+const App = () => {
+  const hasConsent = useSentryConsent();
+  useEffect(() => {
+    if (hasConsent) {
+      initSentry(router);
+    } else {
+      cleanupSentry();
+    }
+  }, [hasConsent]);
+  return (
     <PostHogProvider
       apiKey={env.VITE_POSTHOG_API_KEY || ""}
       options={
@@ -70,5 +74,12 @@ ReactDOM.createRoot(document.getElementById("root")!, getReactRootErrorHandlers(
     >
       <RouterProvider router={router} />
     </PostHogProvider>
+  )
+}
+
+// Initialize app
+ReactDOM.createRoot(document.getElementById("root")!, getReactRootErrorHandlers()).render(
+  <StrictMode>
+    <App />
   </StrictMode>
 );

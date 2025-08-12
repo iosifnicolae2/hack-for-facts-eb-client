@@ -2,6 +2,7 @@ import type { ReactElement } from "react";
 import { Link } from "@tanstack/react-router";
 import { Github, Linkedin, MessageSquare } from "lucide-react";
 import { openSentryFeedback } from "@/lib/sentry";
+import { useSentryConsent } from "@/hooks/useSentryConsent";
 
 /**
  * App-wide footer displayed at the bottom of the main layout.
@@ -13,6 +14,7 @@ import { openSentryFeedback } from "@/lib/sentry";
  */
 export function AppFooter(): ReactElement {
     const currentYear = new Date().getFullYear();
+    const showSentryFeedback = useSentryConsent();
 
     return (
         <footer className="w-full border-t bg-muted/30 text-muted-foreground">
@@ -28,7 +30,7 @@ export function AppFooter(): ReactElement {
                         </p>
                         <div className="flex items-center gap-4 pt-1">
                             <a
-                                href="https://github.com/"
+                                href="https://github.com/ClaudiuBogdan/hack-for-facts-eb-client"
                                 target="_blank"
                                 rel="noreferrer noopener"
                                 className="inline-flex items-center gap-2 hover:text-foreground"
@@ -38,7 +40,7 @@ export function AppFooter(): ReactElement {
                                 <span className="text-sm">GitHub</span>
                             </a>
                             <a
-                                href="https://www.linkedin.com/"
+                                href="https://www.linkedin.com/in/claudiuconstantinbogdan/"
                                 target="_blank"
                                 rel="noreferrer noopener"
                                 className="inline-flex items-center gap-2 hover:text-foreground"
@@ -159,21 +161,23 @@ export function AppFooter(): ReactElement {
                 <div className="mt-6 flex flex-wrap items-center justify-between gap-3 text-xs">
                     <div className="flex items-center gap-4">
                         <a
-                            href="https://github.com/"
+                            href="https://github.com/ClaudiuBogdan/hack-for-facts-eb-client/issues"
                             target="_blank"
                             rel="noreferrer noopener"
                             className="underline hover:text-foreground"
                         >
                             Feedback / Report an issue
                         </a>
-                        <button
-                          type="button"
-                          className="underline hover:text-foreground"
-                          onClick={() => openSentryFeedback?.()}
-                          aria-label="Open feedback dialog"
-                        >
-                          Send feedback
-                        </button>
+                        {showSentryFeedback && (
+                            <button
+                                type="button"
+                                className="underline hover:text-foreground"
+                                onClick={() => openSentryFeedback?.()}
+                                aria-label="Open feedback dialog"
+                            >
+                                Send feedback
+                            </button>
+                        )}
                     </div>
                     <button
                         type="button"
@@ -191,17 +195,20 @@ export function AppFooter(): ReactElement {
 
 // Floating report-a-bug button rendered at the end of the footer tree so it's present on all pages.
 // Mobile: bottom-left; Desktop: bottom-right.
-export function ReportBugFab(): ReactElement {
-  return (
-    <button
-      type="button"
-      onClick={() => openSentryFeedback?.()}
-      aria-label="Report a bug"
-      className="fixed z-50 bottom-6 left-6 md:right-6 md:left-auto inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg h-12 w-12 hover:opacity-90 focus-visible:outline-2"
-    >
-      <MessageSquare className="h-5 w-5" />
-    </button>
-  );
+export function ReportBugFab(): ReactElement | null {
+    const showSentryFeedback = useSentryConsent();
+
+    if (!showSentryFeedback) return null;
+    return (
+        <button
+            type="button"
+            onClick={() => openSentryFeedback?.()}
+            aria-label="Report a bug"
+            className="fixed z-50 bottom-6 left-6 md:right-6 md:left-auto inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg h-12 w-12 hover:opacity-90 focus-visible:outline-2"
+        >
+            <MessageSquare className="h-5 w-5" />
+        </button>
+    );
 }
 
 

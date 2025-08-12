@@ -10,6 +10,15 @@ import { captureConsoleIntegration, extraErrorDataIntegration, replayIntegration
 export let openSentryFeedback: (() => void) | null = null;
 
 /**
+ * Disables Sentry by closing it.
+ */
+export function cleanupSentry(): void {
+  if (typeof window === "undefined") return;
+  Sentry.close();
+  openSentryFeedback = null;
+}
+
+/**
  * React 19 error handlers for createRoot options.
  * These will capture uncaught, caught, and recoverable errors via Sentry.
  */
