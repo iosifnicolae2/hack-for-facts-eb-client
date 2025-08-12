@@ -122,6 +122,26 @@ export function useChartStore() {
     }));
   }, [updateChart]);
 
+  const duplicateAnnotation = useCallback((annotationId: string) => {
+    const original = chart.annotations.find(a => a.id === annotationId);
+    if (!original) return;
+
+    const duplicated: TAnnotation = {
+      ...original,
+      id: crypto.randomUUID(),
+      title: original.title ? `${original.title} (Copy)` : original.title,
+    };
+
+    updateChart((prev) => ({
+      ...prev,
+      annotations: [...(prev?.annotations || []), duplicated],
+    }));
+  }, [chart.annotations, updateChart]);
+
+  const setAnnotations = useCallback((annotations: ReadonlyArray<TAnnotation>) => {
+    updateChart({ annotations: [...annotations] });
+  }, [updateChart]);
+
   const updateSeries = useCallback((seriesId: string, updates: Partial<Series> | ((prevSeries: Series) => Series)) => {
     updateChart((prev) => ({
       ...prev,
@@ -248,5 +268,7 @@ export function useChartStore() {
     addAnnotation,
     updateAnnotation,
     deleteAnnotation,
+    duplicateAnnotation,
+    setAnnotations,
   };
 } 

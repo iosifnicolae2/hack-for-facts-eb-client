@@ -43,7 +43,7 @@ export function AnnotationItemMenu({ annotation, onOpenEdit, onToggleEnabled, on
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onSelect={onDuplicate} onClick={handleClick}>
                     <Copy className="mr-2 h-4 w-4" />
-                    Duplicate Series
+                    Duplicate Annotation
                 </DropdownMenuItem>
                 <DropdownMenuItem onSelect={onCopy} onClick={handleClick}>
                     <Copy className="mr-2 h-4 w-4" />

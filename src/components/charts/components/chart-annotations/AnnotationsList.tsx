@@ -4,9 +4,11 @@ import { Plus } from "lucide-react";
 import { AnnotationItem } from "./AnnotationItem";
 import { useState } from "react";
 import { useChartStore } from "../../hooks/useChartStore";
+import { useCopyPasteAnnotations } from "../../hooks/useCopyPasteAnnotations";
 
 export function AnnotationsList() {
-  const { chart, addAnnotation, updateAnnotation, deleteAnnotation, goToAnnotationConfig } = useChartStore();
+  const { chart, addAnnotation, updateAnnotation, deleteAnnotation, goToAnnotationConfig, duplicateAnnotation } = useChartStore();
+  const { copyAnnotation } = useCopyPasteAnnotations();
 
   const [selectedAnnotationId, setSelectedAnnotationId] = useState<string | null>(null);
 
@@ -34,11 +36,11 @@ export function AnnotationsList() {
   };
 
   const onDuplicateAnnotation = (annotationId: string) => {
-    console.warn('duplicate annotation not implemented', annotationId);
+    duplicateAnnotation(annotationId);
   };
 
   const onCopyAnnotation = (annotationId: string) => {
-    console.warn('copy annotation not implemented', annotationId);
+    copyAnnotation(annotationId);
   };
 
   const handleOpenEdit = (annotationId: string) => {

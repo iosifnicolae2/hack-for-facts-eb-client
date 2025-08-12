@@ -265,3 +265,11 @@ export const CopiedSeriesSchema = z.object({
 });
 
 export type CopiedSeries = z.infer<typeof CopiedSeriesSchema>;
+
+// Allow copying annotations between charts
+export const CopiedAnnotationsSchema = z.object({
+  type: z.literal('chart-annotations-copy'),
+  payload: z.array(AnnotationSchema),
+});
+
+export type CopiedAnnotations = z.infer<typeof CopiedAnnotationsSchema>;
