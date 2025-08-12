@@ -43,7 +43,7 @@ export const CopyButton = ({ onCopy, className }: CopyButtonProps) => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.5, opacity: 0 }}
             transition={{ duration: 0.05 }}
-            className="absolute inset-0 flex items-center justify-center text-green-500"
+            className="absolute inset-0 flex items-center justify-center text-foreground"
           >
             <Check className="h-4 w-4" strokeWidth={3} />
           </motion.span>

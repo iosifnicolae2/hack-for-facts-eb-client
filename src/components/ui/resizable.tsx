@@ -41,7 +41,7 @@ const ResizableHandle = ({
     className={cn(
       "group/handle relative flex items-center justify-center",
       // Base styles
-      "bg-gray-500 dark:bg-border transition-all z-10",
+      "bg-border transition-all z-10",
       "w-[3px]",
       "data-[panel-group-direction=vertical]:h-[3px] data-[panel-group-direction=vertical]:w-full",
       className
@@ -54,7 +54,7 @@ const ResizableHandle = ({
           "opacity-0 group-hover/handle:opacity-100 transition-opacity absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
         )}
       >
-        <GripVertical className="h-3 w-3 z-100 text-foreground bg-gray-300 dark:bg-gray-700 rounded-sm" />
+        <GripVertical className="h-3 w-3 z-100 text-foreground bg-muted rounded-sm" />
       </div>
     )}
   </ResizablePrimitive.PanelResizeHandle>

@@ -29,7 +29,7 @@ function Index() {
             className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight
            bg-gradient-to-b from-slate-50 via-white to-slate-50
            bg-clip-text text-transparent
-           drop-shadow-[0_10px_22px_rgba(0,0,0,0.35)]"
+           drop-shadow-[0_10px_22px_rgba(0,0,0,0.8)]"
           >
             {animationActive ? (
               <AnimatedTitle />
@@ -38,7 +38,7 @@ function Index() {
             )}
           </div>
 
-          <p className="max-w-2xl text-lg sm:text-xl text-slate-200 dark:text-slate-300">
+          <p className="max-w-2xl text-lg sm:text-xl text-slate-300 dark:text-slate-300">
             <code className="mr-4">[trans.paˈren.t͡sə]</code>
             <span>See-through, clear</span>
           </p>

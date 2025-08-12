@@ -41,53 +41,48 @@
   :root {
     overscroll-behavior: none;
     /* Base colors */
-    --background: 210 40% 96.1%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 0 0% 99%;
+    --foreground: 0 0% 12%;
 
     /* Card colors */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 12%;
 
     /* Popover colors */
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 12%;
 
-    /* Primary - Using a vibrant blue for main actions */
-    --primary: 221 83% 53%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary - Blue-navy for actions */
+    --primary: 220 80% 35%;
+    --primary-foreground: 0 0% 98%;
 
-    /* Secondary - Softer blue for supporting elements */
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary - Subtle gray for supporting elements */
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 10%;
 
     /* Muted - Subtle background variations */
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
 
-    /* Accent - Highlight color */
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent - Neutral highlight color */
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 24%;
 
     /* Destructive - For warnings and errors */
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
     /* Border and input styles */
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221 83% 53%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: var(--primary);
 
-    /* Chart colors - Using a cohesive palette */
-    --chart-1: 221 83% 53%;
-    /* Blue */
-    --chart-2: 262 83% 58%;
-    /* Purple */
-    --chart-3: 291 70% 50%;
-    /* Pink */
-    --chart-4: 326 100% 54%;
-    /* Magenta */
-    --chart-5: 174 84% 32%;
-    /* Teal */
+    /* Chart colors - Grayscale palette */
+    --chart-1: 0 0% 12%;
+    --chart-2: 0 0% 30%;
+    --chart-3: 0 0% 45%;
+    --chart-4: 0 0% 62%;
+    --chart-5: 0 0% 80%;
 
     /* Scrollbar colors */
     --scrollbar-track: 0 0% 95% / 0.1;
@@ -100,55 +95,62 @@
     --line-height: 1.5;
     --letter-spacing: 0.02em;
     --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-foreground: 0 0% 26%;
+    --sidebar-primary: 222 47% 20%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-border: 0 0% 88%;
+    --sidebar-ring: 0 0% 40%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 7%;
+    --foreground: 0 0% 96%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 96%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 96%;
 
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 220 80% 64%;
+    --primary-foreground: 0 0% 10%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 0 0% 14%;
+    --secondary-foreground: 0 0% 96%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 0 0% 14%;
+    --muted-foreground: 0 0% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 0 0% 14%;
+    --accent-foreground: 0 0% 96%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: var(--primary);
     /* Scrollbar colors for dark theme */
-    --scrollbar-track: 240 5.9% 10% / 0.1;
-    --scrollbar-thumb: 240 3.7% 25% / 0.4;
-    --scrollbar-thumb-hover: 240 3.7% 35% / 0.6;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --scrollbar-track: 0 0% 10% / 0.1;
+    --scrollbar-thumb: 0 0% 25% / 0.4;
+    --scrollbar-thumb-hover: 0 0% 35% / 0.6;
+    --sidebar-background: 0 0% 10%;
+    --sidebar-foreground: 0 0% 96%;
+    --sidebar-primary: 220 80% 64%;
+    --sidebar-primary-foreground: 0 0% 10%;
+    --sidebar-accent: 0 0% 16%;
+    --sidebar-accent-foreground: 0 0% 96%;
+    --sidebar-border: 0 0% 16%;
+    --sidebar-ring: 0 0% 60%;
+
+    /* Chart colors - Grayscale palette for dark mode */
+    --chart-1: 0 0% 85%;
+    --chart-2: 0 0% 70%;
+    --chart-3: 0 0% 55%;
+    --chart-4: 0 0% 40%;
+    --chart-5: 0 0% 25%;
   }
 }
 

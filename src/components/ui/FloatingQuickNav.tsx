@@ -70,7 +70,7 @@ export function FloatingQuickNav({ className, mapViewType, mapActive, tableActiv
                     aria-label={action.label}
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8 rounded-full shadow-lg border border-slate-200 dark:border-slate-700"
+                    className="h-8 w-8 rounded-full shadow-lg border border-border"
                     onClick={action.onClick}
                 >
                     {action.icon}
