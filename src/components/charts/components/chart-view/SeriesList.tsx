@@ -117,6 +117,7 @@ export function SeriesList() {
                     onDelete={() => deleteSeries(series.id)}
                     onDuplicate={() => duplicateSeries(series.id)}
                     onCopy={() => copySeries(series.id)}
+                    onConfig={() => goToSeriesConfig(series.id)}
                   />
                 ))}
               </div>

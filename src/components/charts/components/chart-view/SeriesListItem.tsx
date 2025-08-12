@@ -23,11 +23,12 @@ interface SeriesListItemProps {
   onDelete: () => void;
   onDuplicate: () => void;
   onCopy: () => void;
+  onConfig: () => void;
   onSelect: () => void;
   onDeselect: () => void;
 }
 
-export function SeriesListItem({ series, isSelected, onToggle, onClick, onMoveUp, onMoveDown, isMoveUpDisabled, isMoveDownDisabled, chartColor, onUpdate, onDelete, onDuplicate, onCopy, onSelect, onDeselect }: SeriesListItemProps) {
+export function SeriesListItem({ series, isSelected, onToggle, onClick, onMoveUp, onMoveDown, isMoveUpDisabled, isMoveDownDisabled, chartColor, onUpdate, onDelete, onDuplicate, onCopy, onConfig, onSelect, onDeselect }: SeriesListItemProps) {
   const {
     attributes,
     listeners,
@@ -91,6 +92,7 @@ export function SeriesListItem({ series, isSelected, onToggle, onClick, onMoveUp
           onDelete={onDelete}
           onDuplicate={onDuplicate}
           onCopy={onCopy}
+          onConfig={onConfig}
         />
       </div>
     </div>

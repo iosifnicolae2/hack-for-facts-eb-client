@@ -1,6 +1,6 @@
 import { Series } from "@/schemas/charts";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ArrowDown, ArrowUp, Copy, Eye, EyeOff, MoreVertical, Tags, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, Copy, Eye, EyeOff, MoreVertical, Settings, Tags, Trash2 } from "lucide-react";
 import { Button } from "../../../ui/button";
 
 interface SeriesItemMenuProps {
@@ -14,9 +14,10 @@ interface SeriesItemMenuProps {
     onDelete: () => void;
     onDuplicate: () => void;
     onCopy: () => void;
+    onConfig: () => void;
 }
 
-export function SeriesItemMenu({ series, isMoveUpDisabled, isMoveDownDisabled, onToggleEnabled, onToggleDataLabels, onMoveUp, onMoveDown, onDelete, onDuplicate, onCopy }: SeriesItemMenuProps) {
+export function SeriesItemMenu({ series, isMoveUpDisabled, isMoveDownDisabled, onToggleEnabled, onToggleDataLabels, onMoveUp, onMoveDown, onDelete, onDuplicate, onCopy, onConfig }: SeriesItemMenuProps) {
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
         // Not sure why, but the click was propagating without this.
@@ -31,6 +32,11 @@ export function SeriesItemMenu({ series, isMoveUpDisabled, isMoveDownDisabled, o
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
+                <DropdownMenuItem onSelect={onConfig} onClick={handleClick}>
+                    <Settings className="mr-2 h-4 w-4" />
+                    Configure
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem onSelect={onToggleDataLabels} onClick={handleClick}>
                     <Tags className="mr-2 h-4 w-4" />
                     {series.config.showDataLabels ? "Hide" : "Show"} Data Labels

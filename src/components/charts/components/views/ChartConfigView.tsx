@@ -6,17 +6,7 @@ import { GlobalSettingsCard } from '../chart-config/GlobalSettingsCard';
 import { DataSeriesCard } from '../chart-config/DataSeriesCard';
 
 export function ChartConfigView() {
-    const {
-        chart,
-        updateChart,
-        addSeries,
-        deleteSeries,
-        duplicateSeries,
-        moveSeriesUp,
-        moveSeriesDown,
-        goToSeriesConfig,
-        goToOverview,
-    } = useChartStore();
+    const { chart, updateChart, goToOverview } = useChartStore();
 
 
     return (
@@ -41,16 +31,7 @@ export function ChartConfigView() {
             <div className="space-y-6">
                 <ChartInfoCard chart={chart} onUpdateChart={updateChart} />
                 <GlobalSettingsCard chart={chart} onUpdateChart={updateChart} />
-                <DataSeriesCard
-                    chart={chart}
-                    onUpdateChart={updateChart}
-                    onAddSeries={addSeries}
-                    onEditSeries={goToSeriesConfig}
-                    onDeleteSeries={deleteSeries}
-                    onDuplicateSeries={duplicateSeries}
-                    onMoveSeriesUp={moveSeriesUp}
-                    onMoveSeriesDown={moveSeriesDown}
-                />
+                <DataSeriesCard />
             </div>
         </div>
     );
