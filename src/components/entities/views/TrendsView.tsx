@@ -8,6 +8,7 @@ import { useFinancialData } from '@/hooks/useFinancialData';
 import { FinancialDataCard } from '../FinancialDataCard';
 import { ChartCard } from './ChartCard';
 import { TrendsViewSkeleton } from './TrendsViewSkeleton';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface BaseTrendsViewProps {
   entity?: EntityDetailsData;
@@ -24,6 +25,7 @@ const TOP_CATEGORIES_COUNT = 10;
 
 export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, currentYear, onYearClick, initialIncomeSearch, initialExpenseSearch, onSearchChange, isLoading }) => {
   const { cui } = useParams({ from: '/entities/$cui' });
+  const isMobile = useIsMobile();
   const chapterMap = useMemo(() => getChapterMap(), []);
 
   const lineItems = useMemo(() => {
@@ -69,7 +71,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
         chartType: 'line',
         showLegend: false,
         showGridLines: true,
-        showTooltip: true,
+        showTooltip: isMobile ? false : true,
         showDiffControl: true,
         editAnnotations: false,
       },
