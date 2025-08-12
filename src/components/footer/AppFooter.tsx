@@ -87,7 +87,7 @@ export function AppFooter(): ReactElement {
                                 <Link to="/privacy" className="hover:text-foreground">Privacy Policy</Link>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-foreground">Terms of Service</a>
+                                <Link to="/terms" className="hover:text-foreground">Terms of Service</Link>
                             </li>
                             <li>
                                 <Link to="/cookies" className="hover:text-foreground">Cookie Settings</Link>

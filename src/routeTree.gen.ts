@@ -20,11 +20,17 @@ import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
 import { Route as EntitiesCuiRouteImport } from './routes/entities.$cui'
 import { Route as ChartsChartIdRouteRouteImport } from './routes/charts/$chartId/route'
 
+const TermsLazyRouteImport = createFileRoute('/terms')()
 const IndexLazyRouteImport = createFileRoute('/')()
 const ChartsIndexLazyRouteImport = createFileRoute('/charts/')()
 const ChartsNewLazyRouteImport = createFileRoute('/charts/new')()
 const ChartsChartIdIndexLazyRouteImport = createFileRoute('/charts/$chartId/')()
 
+const TermsLazyRoute = TermsLazyRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/terms.lazy').then((d) => d.Route))
 const TestErrorRoute = TestErrorRouteImport.update({
   id: '/test-error',
   path: '/test-error',
@@ -98,6 +104,7 @@ export interface FileRoutesByFullPath {
   '/map': typeof MapRoute
   '/privacy': typeof PrivacyRoute
   '/test-error': typeof TestErrorRoute
+  '/terms': typeof TermsLazyRoute
   '/charts/$chartId': typeof ChartsChartIdRouteRouteWithChildren
   '/entities/$cui': typeof EntitiesCuiRoute
   '/charts/new': typeof ChartsNewLazyRoute
@@ -112,6 +119,7 @@ export interface FileRoutesByTo {
   '/map': typeof MapRoute
   '/privacy': typeof PrivacyRoute
   '/test-error': typeof TestErrorRoute
+  '/terms': typeof TermsLazyRoute
   '/entities/$cui': typeof EntitiesCuiRoute
   '/charts/new': typeof ChartsNewLazyRoute
   '/charts': typeof ChartsIndexLazyRoute
@@ -126,6 +134,7 @@ export interface FileRoutesById {
   '/map': typeof MapRoute
   '/privacy': typeof PrivacyRoute
   '/test-error': typeof TestErrorRoute
+  '/terms': typeof TermsLazyRoute
   '/charts/$chartId': typeof ChartsChartIdRouteRouteWithChildren
   '/entities/$cui': typeof EntitiesCuiRoute
   '/charts/new': typeof ChartsNewLazyRoute
@@ -142,6 +151,7 @@ export interface FileRouteTypes {
     | '/map'
     | '/privacy'
     | '/test-error'
+    | '/terms'
     | '/charts/$chartId'
     | '/entities/$cui'
     | '/charts/new'
@@ -156,6 +166,7 @@ export interface FileRouteTypes {
     | '/map'
     | '/privacy'
     | '/test-error'
+    | '/terms'
     | '/entities/$cui'
     | '/charts/new'
     | '/charts'
@@ -169,6 +180,7 @@ export interface FileRouteTypes {
     | '/map'
     | '/privacy'
     | '/test-error'
+    | '/terms'
     | '/charts/$chartId'
     | '/entities/$cui'
     | '/charts/new'
@@ -184,6 +196,7 @@ export interface RootRouteChildren {
   MapRoute: typeof MapRoute
   PrivacyRoute: typeof PrivacyRoute
   TestErrorRoute: typeof TestErrorRoute
+  TermsLazyRoute: typeof TermsLazyRoute
   ChartsChartIdRouteRoute: typeof ChartsChartIdRouteRouteWithChildren
   EntitiesCuiRoute: typeof EntitiesCuiRoute
   ChartsNewLazyRoute: typeof ChartsNewLazyRoute
@@ -192,6 +205,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/test-error': {
       id: '/test-error'
       path: '/test-error'
@@ -298,6 +318,7 @@ const rootRouteChildren: RootRouteChildren = {
   MapRoute: MapRoute,
   PrivacyRoute: PrivacyRoute,
   TestErrorRoute: TestErrorRoute,
+  TermsLazyRoute: TermsLazyRoute,
   ChartsChartIdRouteRoute: ChartsChartIdRouteRouteWithChildren,
   EntitiesCuiRoute: EntitiesCuiRoute,
   ChartsNewLazyRoute: ChartsNewLazyRoute,
