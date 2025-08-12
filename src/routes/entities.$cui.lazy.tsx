@@ -17,6 +17,7 @@ import { useEntityMapFilter } from '@/components/entities/hooks/useEntityMapFilt
 import { useEntityDetails } from '@/lib/hooks/useEntityDetails'
 import type { EntitySearchSchema } from '@/routes/entities.$cui'
 import { Analytics } from '@/lib/analytics'
+import { Seo } from '@/lib/seo'
 
 export const Route = createLazyFileRoute('/entities/$cui')({
   component: EntityDetailsPage,
@@ -104,6 +105,7 @@ function EntityDetailsPage() {
   if (isError) {
     return (
       <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex flex-col justify-center items-center p-4">
+        <Seo title={`Entity ${cui} – Not found`} description={`No data found for CUI ${cui}.`} noindex />
         <Alert variant="destructive" className="max-w-lg w-full bg-red-50 dark:bg-red-900 border-red-500 dark:border-red-700">
           <AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400" />
           <AlertTitle className="text-red-700 dark:text-red-300">Error Fetching Entity Details</AlertTitle>
@@ -119,6 +121,7 @@ function EntityDetailsPage() {
   if (!isLoading && !entity) {
     return (
       <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex flex-col justify-center items-center p-4">
+        <Seo title={`Entity ${cui} – Not found`} description={`No data found for CUI ${cui}.`} noindex />
         <Alert className="max-w-lg w-full bg-blue-50 dark:bg-blue-900 border-blue-500 dark:border-blue-700">
           <Info className="h-5 w-5 text-blue-600 dark:text-blue-400" />
           <AlertTitle className="text-blue-700 dark:text-blue-300">No Data Found</AlertTitle>
@@ -181,6 +184,11 @@ function EntityDetailsPage() {
 
   return (
     <div className="min-h-screen p-4 md:p-8">
+      <Seo
+        title={`${entity?.name ?? 'Entity'} – Transparenta.eu`}
+        description={`Explore budget trends, reports, and map for entity ${entity?.name ?? cui}.`}
+        type="article"
+      />
       <div className="container mx-auto max-w-7xl space-y-8">
         <EntityHeader
           className="md:sticky top-0 z-30"

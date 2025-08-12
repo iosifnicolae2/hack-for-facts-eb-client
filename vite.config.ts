@@ -38,5 +38,19 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     chunkSizeWarningLimit: 1500,
+    // Generate smaller assets filenames for better sharing previews and cacheability
+    rollupOptions: {
+      output: {
+        assetFileNames: (assetInfo) => {
+          if (/\.(png|jpe?g|gif|webp|svg)$/i.test(assetInfo.name || '')) {
+            return `assets/images/[name]-[hash][extname]`
+          }
+          if (/\.(woff2?|ttf|otf)$/i.test(assetInfo.name || '')) {
+            return `assets/fonts/[name]-[hash][extname]`
+          }
+          return `assets/[name]-[hash][extname]`
+        },
+      },
+    },
   },
 }));

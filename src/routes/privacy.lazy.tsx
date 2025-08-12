@@ -1,4 +1,5 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
+import { Seo } from '@/lib/seo'
 
 export const Route = createLazyFileRoute('/privacy')({
   component: PrivacyPage,
@@ -9,6 +10,7 @@ function PrivacyPage() {
   const version = '1.0'
   return (
     <div className="mx-auto w-full max-w-4xl p-6 space-y-6">
+      <Seo title="Privacy Policy – Transparenta.eu" description="How Transparenta.eu handles data, analytics, and error reporting with consent." />
       <div>
         <h1 className="text-3xl font-semibold">Privacy Policy</h1>
         <p className="text-sm text-muted-foreground">Effective Date: {effectiveDate} • Version: {version}</p>

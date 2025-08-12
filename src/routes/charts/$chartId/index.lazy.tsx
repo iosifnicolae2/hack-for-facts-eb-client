@@ -6,6 +6,7 @@ import { SeriesConfigView } from "@/components/charts/components/views/SeriesCon
 import { useChartStore } from "@/components/charts/hooks/useChartStore";
 import { useCallback } from "react";
 import { AnnotationConfigView } from "@/components/charts/components/views/AnnotationConfigView";
+import { Seo } from "@/lib/seo";
 
 export const Route = createLazyFileRoute("/charts/$chartId/")({
   component: ChartDetailPage,
@@ -22,6 +23,11 @@ function ChartDetailPage() {
 
   return (
     <>
+      <Seo
+        title={view === 'overview' ? 'Chart – Transparenta.eu' : 'Configure chart – Transparenta.eu'}
+        description={view === 'overview' ? 'View and share your chart.' : 'Configure chart options, series, and annotations.'}
+        type={view === 'overview' ? 'article' : 'website'}
+      />
       {view === "overview" && <ChartView />}
       <Dialog open={view === 'config' || view === 'series-config' || view === 'annotation-config'} onOpenChange={handleCloseDialog}>
         <DialogTitle className="sr-only">Configure Chart</DialogTitle>

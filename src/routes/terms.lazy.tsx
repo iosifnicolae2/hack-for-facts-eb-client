@@ -1,5 +1,6 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Link } from '@tanstack/react-router'
+import { Seo } from '@/lib/seo'
 
 export const Route = createLazyFileRoute('/terms')({
   component: TermsPage,
@@ -10,6 +11,7 @@ function TermsPage() {
   const version = '1.0'
   return (
     <div className="mx-auto w-full max-w-4xl p-6 space-y-6">
+      <Seo title="Terms of Use – Transparenta.eu" description="Terms for using the Transparenta.eu service and visualizations." />
       <div>
         <h1 className="text-3xl font-semibold">Terms of Use</h1>
         <p className="text-sm text-muted-foreground">Effective Date: {effectiveDate} • Version: {version}</p>

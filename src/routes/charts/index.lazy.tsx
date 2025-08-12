@@ -19,6 +19,7 @@ import { cn, slugify } from "@/lib/utils";
 import { usePersistedState } from "@/lib/hooks/usePersistedState";
 import { ChartCategories } from "@/components/charts/components/chart-categories/ChartCategories";
 import ChartsBackupRestore from "@/components/charts/components/backup-restore/ChartsBackupRestore";
+import { Seo } from "@/lib/seo";
 
 export const Route = createLazyFileRoute("/charts/")({
   component: ChartsListPage,
@@ -142,6 +143,10 @@ function ChartsListPage() {
 
   return (
     <div className="container mx-auto py-8 space-y-6">
+      <Seo
+        title="Saved charts – Transparenta.eu"
+        description="Manage and search your locally saved charts. Create, favorite, categorize, and share your visualizations."
+      />
       <div className="rounded-xl border bg-gradient-to-br from-primary/5 via-white to-secondary/5 p-6 md:p-8 shadow-md">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="space-y-2">

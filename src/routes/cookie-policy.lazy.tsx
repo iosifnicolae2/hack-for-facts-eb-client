@@ -1,5 +1,6 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Link } from '@tanstack/react-router'
+import { Seo } from '@/lib/seo'
 
 export const Route = createLazyFileRoute('/cookie-policy')({
   component: CookiePolicyPage,
@@ -8,6 +9,7 @@ export const Route = createLazyFileRoute('/cookie-policy')({
 function CookiePolicyPage() {
   return (
     <div className="mx-auto w-full max-w-4xl p-6 space-y-6">
+      <Seo title="Cookie Policy – Transparenta.eu" description="Details on cookies and localStorage used by Transparenta.eu, with consent choices." />
       <div>
         <h1 className="text-3xl font-semibold">Cookie Policy</h1>
         <p className="text-sm text-muted-foreground">Effective Date: August 12, 2025 • Version: 1.0</p>

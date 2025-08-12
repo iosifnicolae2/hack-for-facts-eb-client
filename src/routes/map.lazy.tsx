@@ -28,6 +28,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useHeatmapData } from "@/hooks/useHeatmapData";
 import { useMapFilter } from "@/hooks/useMapFilter";
 import { FloatingQuickNav } from "@/components/ui/FloatingQuickNav";
+import { Seo } from "@/lib/seo";
 
 export const Route = createLazyFileRoute("/map")({
   component: MapPage,
@@ -117,6 +118,10 @@ function MapPage() {
 
   return (
     <div className="flex flex-col md:flex-row md:h-screen bg-background">
+      <Seo
+        title="Romania spending heatmap – Transparenta.eu"
+        description="Explore choropleth maps of public spending by UAT/Judet with per-capita or total normalization."
+      />
       <div className="hidden md:flex md:flex-col w-[320px] lg:w-[360px] flex-shrink-0 border-r border-border bg-card text-card-foreground overflow-y-auto">
         <MapFilter />
       </div>

@@ -5,6 +5,8 @@ const envSchema = z.object({
   VITE_APP_NAME: z.string().min(1),
   VITE_APP_ENVIRONMENT: z.string().min(1),
   VITE_API_URL: z.string().url(),
+  // Optional canonical site URL used for SEO metadata generation
+  VITE_SITE_URL: z.string().url().optional(),
 
   // Environment
   NODE_ENV: z
@@ -58,3 +60,14 @@ function validateEnv(): Env {
 }
 
 export const env = validateEnv();
+
+/**
+ * Returns the absolute site URL used for generating canonical URLs and OpenGraph `og:url`.
+ * Falls back to the browser origin at runtime if not provided via VITE_SITE_URL.
+ */
+export function getSiteUrl(): string {
+  if (env.VITE_SITE_URL) return env.VITE_SITE_URL;
+  if (typeof window !== 'undefined' && window.location?.origin) return window.location.origin;
+  // Sensible default for build-time usage where window is not available
+  return 'https://transparenta.eu';
+}

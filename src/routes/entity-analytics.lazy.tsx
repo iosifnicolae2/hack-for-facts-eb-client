@@ -16,6 +16,7 @@ import { AnalyticsFilterType } from '@/schemas/charts'
 import { EntityAnalyticsLineItems } from '@/components/entity-analytics/EntityAnalyticsLineItems'
 import { generateHash } from '@/lib/utils'
 import { Analytics } from '@/lib/analytics'
+import { Seo } from '@/lib/seo'
 
 export const Route = createLazyFileRoute('/entity-analytics')({
   component: EntityAnalyticsPage,
@@ -110,6 +111,10 @@ function EntityAnalyticsPage() {
 
   return (
     <div className="container mx-auto py-4 px-2 md:px-6 max-w-full">
+      <Seo
+        title="Entity analytics – Transparenta.eu"
+        description="Analyze aggregated values per entity and explore top entities by amount and per capita."
+      />
       <EntityAnalyticsLayout
         filters={<EntityAnalyticsFilterPanel />}
         subtitle="Analyze aggregated values per entity and explore top entities."
