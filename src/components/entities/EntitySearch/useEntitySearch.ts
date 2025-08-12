@@ -4,6 +4,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useDebouncedValue } from "@/lib/hooks/useDebouncedValue";
 import { searchEntities } from "@/lib/api/entities";
 import { EntitySearchNode } from "@/schemas/entities";
+import { Analytics } from "@/lib/analytics";
 
 interface UseEntitySearchProps {
     debounceMs?: number;
@@ -18,6 +19,9 @@ export function useEntitySearch({ debounceMs = 500, onSelect }: UseEntitySearchP
 
     const debouncedSearchTerm = useDebouncedValue(searchTerm, debounceMs);
 
+    // Track meaningful searches (>= 3 chars) after debounce
+    const lastSearchPayload = useMemo(() => ({ q: debouncedSearchTerm?.trim() ?? "" }), [debouncedSearchTerm]);
+
     const {
         data: results = [],
         isLoading,
@@ -27,6 +31,16 @@ export function useEntitySearch({ debounceMs = 500, onSelect }: UseEntitySearchP
         queryFn: () => searchEntities(debouncedSearchTerm, 8),
         enabled: !!debouncedSearchTerm && debouncedSearchTerm.trim().length > 2,
     });
+
+    useEffect(() => {
+        const q = lastSearchPayload.q;
+        if (!q || q.length < 3) return;
+        Analytics.capture(Analytics.EVENTS.EntitySearchPerformed, {
+            query_len: q.length,
+            results_count: results?.length ?? 0,
+            has_results: (results?.length ?? 0) > 0,
+        });
+    }, [lastSearchPayload, results]);
 
     // Reset active index when results change
     useEffect(() => {
@@ -47,6 +61,9 @@ export function useEntitySearch({ debounceMs = 500, onSelect }: UseEntitySearchP
     const handleSelection = useCallback((index: number) => {
         if (results?.[index]) {
             const selectedEntity = results[index];
+            Analytics.capture(Analytics.EVENTS.EntitySearchSelected, {
+                cui: selectedEntity.cui,
+            });
             // Navigate programmatically
             navigate({ to: "/entities/$cui", params: { cui: selectedEntity.cui }, search: (prev) => ({ ...prev }) });
             handleClearSearch();

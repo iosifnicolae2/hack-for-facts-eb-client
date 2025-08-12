@@ -12,6 +12,7 @@ import { produce } from 'immer';
 import { toast } from 'sonner';
 import { getChartsStore } from '../chartsStore';
 import { generateRandomColor } from '../components/chart-renderer/utils';
+import { Analytics } from '@/lib/analytics';
 
 interface ValidationResult {
   isValid: boolean;
@@ -26,18 +27,22 @@ export function useChartStore() {
   const { chart, view, seriesId, annotationId } = useSearch({ from: "/charts/$chartId" });
 
   const goToConfig = useCallback(() => {
+    Analytics.capture(Analytics.EVENTS.ChartViewChanged, { chart_id: chart.id, view: 'config' });
     navigate({ to: "/charts/$chartId", search: (prev) => ({ ...prev, view: "config" }), params: { chartId: chart.id }, replace: true });
   }, [chart.id, navigate]);
 
   const goToOverview = useCallback(() => {
+    Analytics.capture(Analytics.EVENTS.ChartViewChanged, { chart_id: chart.id, view: 'overview' });
     navigate({ to: "/charts/$chartId", search: (prev) => ({ ...prev, view: "overview" }), params: { chartId: chart.id }, replace: true });
   }, [chart.id, navigate]);
 
   const goToSeriesConfig = useCallback((seriesId: string) => {
+    Analytics.capture(Analytics.EVENTS.ChartViewChanged, { chart_id: chart.id, view: 'series-config', series_id: seriesId });
     navigate({ to: "/charts/$chartId", search: (prev) => ({ ...prev, view: "series-config", seriesId }), params: { chartId: chart.id }, replace: true });
   }, [chart.id, navigate]);
 
   const goToAnnotationConfig = useCallback((annotationId: string) => {
+    Analytics.capture(Analytics.EVENTS.ChartViewChanged, { chart_id: chart.id, view: 'annotation-config', annotation_id: annotationId });
     navigate({ to: "/charts/$chartId", search: (prev) => ({ ...prev, view: "annotation-config", annotationId }), params: { chartId: chart.id }, replace: true });
   }, [chart.id, navigate]);
 
@@ -46,6 +51,12 @@ export function useChartStore() {
       search: (prev) => {
         const newChart = { ...prev.chart, ...(typeof updates === 'function' ? updates(prev.chart) : updates) } as Chart;
         chartsStore.updateChartInLocalStorage(newChart);
+        // Lightweight change summary
+        Analytics.capture(Analytics.EVENTS.ChartUpdated, {
+          chart_id: newChart.id,
+          series_count: Array.isArray(newChart.series) ? newChart.series.length : 0,
+          annotations_count: Array.isArray(newChart.annotations) ? newChart.annotations.length : 0,
+        });
         return { ...prev, chart: newChart };
       },
       replace: true,
@@ -54,6 +65,7 @@ export function useChartStore() {
 
   const deleteChart = useCallback(async () => {
     await chartsStore.deleteChart(chart.id);
+    Analytics.capture(Analytics.EVENTS.ChartDeleted, { chart_id: chart.id });
     navigate({ to: "/charts" });
     toast.success("Chart Deleted", {
       description: "The chart has been deleted.",
@@ -62,6 +74,7 @@ export function useChartStore() {
 
   const duplicateChart = useCallback(async () => {
     const newChartId = crypto.randomUUID();
+    Analytics.capture(Analytics.EVENTS.ChartDuplicated, { chart_id: chart.id, new_chart_id: newChartId });
     navigate({ to: "/charts/$chartId", params: { chartId: newChartId }, replace: false, search: (prev) => ({ ...prev, chart: { ...prev.chart, id: newChartId, title: `${prev.chart?.title} (Copy)` } as Chart }) });
     toast.success("Chart Duplicated", {
       description: "The chart has been duplicated.",
@@ -90,6 +103,7 @@ export function useChartStore() {
     updateChart({
       series: [...chart.series, newSeries],
     });
+    Analytics.capture(Analytics.EVENTS.ChartSeriesAdded, { chart_id: chart.id, series_id: newSeries.id });
     goToSeriesConfig(newSeries.id);
   }, [chart, updateChart, goToSeriesConfig]);
 
@@ -106,6 +120,7 @@ export function useChartStore() {
         annotations: newAnnotations,
       };
     });
+    Analytics.capture(Analytics.EVENTS.ChartAnnotationAdded, { chart_id: chart.id });
   }, [chart, updateChart]);
 
   const updateAnnotation = useCallback((annotationId: string, updates: Partial<TAnnotation> | ((prevAnnotation: TAnnotation) => TAnnotation)) => {
@@ -113,6 +128,7 @@ export function useChartStore() {
       ...prev,
       annotations: prev?.annotations.map(a => a.id === annotationId ? { ...a, ...(typeof updates === 'function' ? produce(a, (draft) => updates(draft)) : updates) } : a),
     }));
+    Analytics.capture(Analytics.EVENTS.ChartAnnotationUpdated, { chart_id: chart.id, annotation_id: annotationId });
   }, [updateChart]);
 
   const deleteAnnotation = useCallback((annotationId: string) => {
@@ -120,6 +136,7 @@ export function useChartStore() {
       ...prev,
       annotations: prev?.annotations.filter(a => a.id !== annotationId),
     }));
+    Analytics.capture(Analytics.EVENTS.ChartAnnotationDeleted, { chart_id: chart.id, annotation_id: annotationId });
   }, [updateChart]);
 
   const duplicateAnnotation = useCallback((annotationId: string) => {
@@ -136,6 +153,7 @@ export function useChartStore() {
       ...prev,
       annotations: [...(prev?.annotations || []), duplicated],
     }));
+    Analytics.capture(Analytics.EVENTS.ChartAnnotationDuplicated, { chart_id: chart.id, annotation_id: annotationId });
   }, [chart.annotations, updateChart]);
 
   const setAnnotations = useCallback((annotations: ReadonlyArray<TAnnotation>) => {
@@ -164,6 +182,7 @@ export function useChartStore() {
     updateChart({
       series: [...chart.series, duplicatedSeries],
     });
+    Analytics.capture(Analytics.EVENTS.ChartSeriesDuplicated, { chart_id: chart.id, series_id: seriesId, new_series_id: duplicatedSeries.id });
   }, [chart.series, updateChart]);
 
   const moveSeriesUp = useCallback((seriesId: string) => {
@@ -176,6 +195,7 @@ export function useChartStore() {
     updateChart({
       series: newSeries,
     });
+    Analytics.capture(Analytics.EVENTS.ChartSeriesReordered, { chart_id: chart.id, series_id: seriesId, direction: 'up' });
   }, [chart.series, updateChart]);
 
   const moveSeriesDown = useCallback((seriesId: string) => {
@@ -188,13 +208,14 @@ export function useChartStore() {
     updateChart({
       series: newSeries,
     });
+    Analytics.capture(Analytics.EVENTS.ChartSeriesReordered, { chart_id: chart.id, series_id: seriesId, direction: 'down' });
   }, [chart.series, updateChart]);
 
   const deleteSeries = useCallback((seriesId: string) => {
     updateChart({
       series: chart.series.filter(s => s.id !== seriesId),
     });
-
+    Analytics.capture(Analytics.EVENTS.ChartSeriesDeleted, { chart_id: chart.id, series_id: seriesId });
   }, [updateChart, chart]);
 
   const setSeries = useCallback((series: Series[]) => {

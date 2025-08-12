@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { getChartsStore } from "@/components/charts/chartsStore";
 import { useClipboard } from "@/lib/hooks/useClipboard";
+import { Analytics } from "@/lib/analytics";
 
 export type ConflictStrategy = 'skip' | 'replace' | 'keep-both';
 
@@ -56,6 +57,10 @@ export function ChartsBackupRestore({ onAfterImport }: ChartsBackupRestoreProps)
       a.remove();
       URL.revokeObjectURL(url);
       toast.success("Backup exported");
+      Analytics.capture(Analytics.EVENTS.ChartsBackupExported, {
+        charts_count: backup.charts.length,
+        categories_count: backup.categories.length,
+      });
     } catch (err) {
       console.error(err);
       toast.error("Failed to export backup");
@@ -87,6 +92,12 @@ export function ChartsBackupRestore({ onAfterImport }: ChartsBackupRestoreProps)
         if (result.ok) {
           onAfterImport?.();
           toast.success(`Imported ${result.result.added} charts`);
+          Analytics.capture(Analytics.EVENTS.ChartsBackupImported, {
+            added: result.result.added,
+            replaced: result.result.replaced,
+            duplicated: result.result.duplicated,
+            skipped: result.result.skipped,
+          });
         } else {
           toast.error("Failed to import backup");
         }
@@ -112,6 +123,12 @@ export function ChartsBackupRestore({ onAfterImport }: ChartsBackupRestoreProps)
         skipped ? `${skipped} skipped` : null,
       ].filter(Boolean);
       toast.success(`Import complete${parts.length ? `: ${parts.join(', ')}` : ''}`);
+      Analytics.capture(Analytics.EVENTS.ChartsBackupImported, {
+        added,
+        replaced,
+        duplicated,
+        skipped,
+      });
     } else {
       toast.error("Failed to import backup");
     }

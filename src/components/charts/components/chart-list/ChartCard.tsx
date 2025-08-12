@@ -26,6 +26,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { formatDistanceToNow } from "date-fns";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Analytics } from "@/lib/analytics";
 
 interface ChartCardProps {
   chart: StoredChart;
@@ -65,6 +66,7 @@ export function ChartCard({ chart, onDelete, onToggleFavorite, categories = [], 
           params={{ chartId: chart.id }}
           search={{ view: "overview", chart: chart }}
           className="block"
+          onClick={() => Analytics.capture(Analytics.EVENTS.ChartOpened, { chart_id: chart.id, source: 'card_preview' })}
         >
           <div className="rounded-lg border bg-muted/30 overflow-hidden aspect-[16/9]">
             <ChartPreview chart={chart} className="h-full" height={300} />
@@ -78,6 +80,7 @@ export function ChartCard({ chart, onDelete, onToggleFavorite, categories = [], 
             to={`/charts/$chartId`}
             params={{ chartId: chart.id }}
             search={{ view: "config", chart: chart }}
+            onClick={() => Analytics.capture(Analytics.EVENTS.ChartViewChanged, { chart_id: chart.id, view: 'config', source: 'card_footer' })}
           >
             <Button variant="outline" size="sm" className="h-8 px-2">
               <Edit className="h-4 w-4" />
@@ -119,7 +122,10 @@ export function ChartCard({ chart, onDelete, onToggleFavorite, categories = [], 
             <ChartCategoriesMenu
               categories={categories}
               chartCategoryIds={chart.categories ?? []}
-              onToggle={(categoryId) => onToggleCategory?.(chart.id, categoryId)}
+              onToggle={(categoryId) => {
+                Analytics.capture(Analytics.EVENTS.ChartCategoryToggled, { chart_id: chart.id, category_id: categoryId });
+                onToggleCategory?.(chart.id, categoryId);
+              }}
             />
           ) : null}
         </div>
@@ -128,6 +134,7 @@ export function ChartCard({ chart, onDelete, onToggleFavorite, categories = [], 
           to={`/charts/$chartId`}
           params={{ chartId: chart.id }}
           search={{ view: "overview", chart: chart }}
+          onClick={() => Analytics.capture(Analytics.EVENTS.ChartOpened, { chart_id: chart.id, source: 'card_button' })}
         >
           <Button variant="outline" size="default" className="h-8 px-3">
             <Eye className="h-4 w-4 mr-2" />
@@ -208,7 +215,10 @@ function ChartCardHeader({ title, chartType, seriesCount, updatedRelative, categ
                 size="icon"
                 className="text-muted-foreground hover:text-foreground"
                 aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
-                onClick={onToggleFavorite}
+                onClick={() => {
+                  Analytics.capture(Analytics.EVENTS.ChartFavoritedToggled, { chart_id: chartId, now_favorite: !isFavorite });
+                  onToggleFavorite();
+                }}
               >
                 <Star className="h-4 w-4" fill={isFavorite ? "currentColor" : "none"} />
               </Button>

@@ -6,6 +6,8 @@ import { acceptAll, declineAll } from "@/lib/consent";
 import { Link } from "@tanstack/react-router";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { onConsentChange } from "@/lib/consent";
+import { Analytics } from "@/lib/analytics";
 
 /**
  * CookieConsentBanner
@@ -73,6 +75,20 @@ export function CookieConsentBanner(): ReactElement | null {
       </Card>
     </div>
   );
+}
+
+// Emit analytics when consent changes (runs once in module scope; safe in client)
+if (typeof window !== 'undefined') {
+  try {
+    onConsentChange((prefs) => {
+      Analytics.capture(Analytics.EVENTS.CookieConsentChanged, {
+        analytics: prefs.analytics,
+        sentry: prefs.sentry,
+      });
+    });
+  } catch {
+    // ignore
+  }
 }
 
 

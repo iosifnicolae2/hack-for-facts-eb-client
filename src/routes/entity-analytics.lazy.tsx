@@ -15,6 +15,7 @@ import { EntityAnalyticsLayout } from '@/components/entity-analytics/EntityAnaly
 import { AnalyticsFilterType } from '@/schemas/charts'
 import { EntityAnalyticsLineItems } from '@/components/entity-analytics/EntityAnalyticsLineItems'
 import { generateHash } from '@/lib/utils'
+import { Analytics } from '@/lib/analytics'
 
 export const Route = createLazyFileRoute('/entity-analytics')({
   component: EntityAnalyticsPage,
@@ -98,6 +99,10 @@ function EntityAnalyticsPage() {
       a.download = 'entity-analytics.csv'
       a.click()
       URL.revokeObjectURL(url)
+      Analytics.capture(Analytics.EVENTS.EntityAnalyticsExportCsv, {
+        rows: all.length,
+        filter_hash: filterHash,
+      })
     } finally {
       setExporting(false)
     }

@@ -11,6 +11,7 @@ import { queryClient } from "@/lib/queryClient";
 import { FloatingEntitySearch } from "@/components/entities/FloatingEntitySearch";
 import { AppFooter, ReportBugFab } from "@/components/footer/AppFooter";
 import { CookieConsentBanner } from "@/components/privacy/CookieConsentBanner";
+import { Analytics } from "@/lib/analytics";
 
 export const Route = createRootRoute({
   component: () => (
@@ -24,6 +25,8 @@ export const Route = createRootRoute({
                 <SidebarInset>
                   <main className="flex-1">
                     <div>
+                      {/* Global pageview tracking tied to router location */}
+                      <AnalyticsPageviewBridge />
                       <Outlet />
                       <Toaster />
                       <FloatingEntitySearch />
@@ -43,3 +46,8 @@ export const Route = createRootRoute({
   ),
   beforeLoad: async () => { },
 });
+
+function AnalyticsPageviewBridge() {
+  Analytics.pageviewHook();
+  return null;
+}

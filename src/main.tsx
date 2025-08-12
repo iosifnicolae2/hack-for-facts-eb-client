@@ -27,12 +27,11 @@ declare module "@tanstack/react-router" {
   }
 }
 
-// Configure PostHog to respect consent before rendering
+// Configure PostHog to respect consent before rendering (no initial $pageview here)
 if (!hasAnalyticsConsent()) {
   posthog.opt_out_capturing();
 } else {
   posthog.opt_in_capturing();
-  posthog.capture('$pageview');
 }
 
 // React to consent changes at runtime
@@ -40,11 +39,21 @@ if (typeof window !== 'undefined') {
   onConsentChange((prefs) => {
     if (prefs.analytics) {
       posthog.opt_in_capturing();
-      posthog.capture('$pageview');
     } else {
       posthog.opt_out_capturing();
     }
   });
+}
+
+// Register app-level super properties for all events
+if (env.VITE_POSTHOG_ENABLED) {
+  try {
+    posthog.register({
+      app_version: env.VITE_APP_VERSION,
+      app_name: env.VITE_APP_NAME,
+      environment: env.VITE_APP_ENVIRONMENT,
+    });
+  } catch {}
 }
 
 const App = () => {

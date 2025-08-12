@@ -1,6 +1,7 @@
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { z } from 'zod'
 import { AnalyticsFilterSchema, AnalyticsFilterType, defaultYearRange } from '@/schemas/charts'
+import { Analytics } from '@/lib/analytics'
 
 const viewEnum = z.enum(['table', 'chart', 'line-items'])
 
@@ -38,6 +39,11 @@ export function useEntityAnalyticsFilter() {
         if (!merged.account_category) {
           merged.account_category = 'ch'
         }
+    const filterHash = JSON.stringify(merged)
+    Analytics.capture(Analytics.EVENTS.EntityAnalyticsFilterChanged, {
+      filter_hash: filterHash,
+      ...Analytics.summarizeFilter(merged),
+    })
         return { ...prev, filter: merged }
       },
       replace: true,
@@ -45,14 +51,17 @@ export function useEntityAnalyticsFilter() {
   }
 
   const setView = (view: 'table' | 'chart' | 'line-items') => {
+    Analytics.capture(Analytics.EVENTS.EntityAnalyticsViewChanged, { view })
     navigate({ search: (prev) => ({ ...prev, view }), replace: true })
   }
 
   const setSorting = (by: string, order: 'asc' | 'desc') => {
+    Analytics.capture(Analytics.EVENTS.EntityAnalyticsSortChanged, { by, order })
     navigate({ search: (prev) => ({ ...prev, sortBy: by, sortOrder: order }), replace: true })
   }
 
   const setPagination = (page: number, pageSize?: number) => {
+    Analytics.capture(Analytics.EVENTS.EntityAnalyticsPaginationChanged, { page, pageSize: pageSize ?? (search as EntityAnalyticsSearch).pageSize })
     navigate({
       search: (prev) => ({ ...prev, page, pageSize: pageSize ?? (prev as EntityAnalyticsSearch).pageSize }),
       replace: true,
@@ -60,6 +69,7 @@ export function useEntityAnalyticsFilter() {
   }
 
   const resetFilter = () => {
+    Analytics.capture(Analytics.EVENTS.EntityAnalyticsFilterReset)
     navigate({
       search: (prev) => ({ ...prev, filter: defaultEntityAnalyticsFilter }),
       replace: true,

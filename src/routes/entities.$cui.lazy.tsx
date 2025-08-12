@@ -16,6 +16,7 @@ import { RankingView } from '@/components/entities/views/RankingView'
 import { useEntityMapFilter } from '@/components/entities/hooks/useEntityMapFilter'
 import { useEntityDetails } from '@/lib/hooks/useEntityDetails'
 import type { EntitySearchSchema } from '@/routes/entities.$cui'
+import { Analytics } from '@/lib/analytics'
 
 export const Route = createLazyFileRoute('/entities/$cui')({
   component: EntityDetailsPage,
@@ -92,6 +93,11 @@ function EntityDetailsPage() {
     navigate({
       search: (prev) => ({ ...prev, trend: mode }),
       replace: true,
+    })
+    Analytics.capture(Analytics.EVENTS.EntityViewOpened, {
+      cui,
+      view: search.view ?? 'overview',
+      trend_mode: mode,
     })
   }
 

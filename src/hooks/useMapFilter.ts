@@ -5,6 +5,7 @@ import { useEconomicClassificationLabel, useFunctionalClassificationLabel, useAc
 import { OptionItem } from '@/components/filters/base-filter/interfaces';
 import { AnalyticsFilterType, defaultYearRange } from '@/schemas/charts';
 import { LabelStore } from '@/hooks/filters/interfaces';
+import { Analytics } from '@/lib/analytics';
 
 export function useMapFilter() {
     const navigate = useNavigate({ from: '/map' });
@@ -28,6 +29,12 @@ export function useMapFilter() {
                 if (!newFilters.filters.account_category) {
                     newFilters.filters.account_category = "ch";
                 }
+                // Emit a summarized change to avoid sending sensitive data
+                const filterHash = JSON.stringify(newFilters.filters);
+                Analytics.capture(Analytics.EVENTS.MapFilterChanged, {
+                    filter_hash: filterHash,
+                    ...Analytics.summarizeFilter(newFilters.filters),
+                });
                 return newFilters;
             },
             replace: true,
@@ -117,10 +124,12 @@ export function useMapFilter() {
     };
 
     const setActiveView = (view: "map" | "table" | "chart") => {
+        Analytics.capture(Analytics.EVENTS.MapActiveViewChanged, { view });
         navigate({ search: (prev) => ({ ...prev, activeView: view }), replace: true });
     };
 
     const setMapViewType = (viewType: "UAT" | "Judet") => {
+        Analytics.capture(Analytics.EVENTS.MapViewTypeChanged, { view_type: viewType });
         navigate({ search: (prev) => ({ ...prev, mapViewType: viewType }), replace: true });
     };
 

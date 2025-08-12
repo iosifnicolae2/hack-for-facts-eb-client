@@ -1,5 +1,6 @@
 import { Chart, ChartSchema } from "@/schemas/charts";
 import { z } from "zod";
+import { Analytics } from "@/lib/analytics";
 
 const chartsKey = 'saved-charts';
 const categoriesKey = 'chart-categories';
@@ -176,6 +177,7 @@ export const getChartsStore = () => {
             return c;
         });
         localStorage.setItem(chartsKey, JSON.stringify(newCharts));
+        Analytics.capture(Analytics.EVENTS.ChartDeleted, { chart_id: chartId });
     }
 
     const saveChartToLocalStorage = (chart: Chart) => {
@@ -194,6 +196,7 @@ export const getChartsStore = () => {
             chart,
             ...savedCharts,
         ]));
+        Analytics.capture(Analytics.EVENTS.ChartOpened, { chart_id: chart.id, action: 'saved_to_local_storage' });
     }
 
     const updateChartInLocalStorage = (chart: Chart) => {

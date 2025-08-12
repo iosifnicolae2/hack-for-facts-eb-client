@@ -19,6 +19,7 @@ import { generateHash } from '@/lib/utils';
 import { ScrollWheelZoomControl } from './ScrollWheelZoomControl';
 import { AnalyticsFilterType } from '@/schemas/charts';
 import { AnimatePresence, motion } from 'framer-motion';
+import { Analytics } from '@/lib/analytics';
 
 
 interface InteractiveMapProps {
@@ -107,6 +108,10 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
           (e.target as L.Path).setStyle(nextStyle);
         },
         click: (e) => {
+          Analytics.capture(Analytics.EVENTS.MapFeatureClicked, {
+            map_view_type: mapViewType,
+            feature_id: uatProps?.natcode ?? uatProps?.mnemonic ?? uatProps?.id,
+          });
           onFeatureClick(uatProps, e);
         },
       });
