@@ -9,6 +9,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Trash2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { AnnotationsList } from '../chart-annotations/AnnotationsList';
+import { FilterBulkEdit } from '../chart-config/FilterBulkEdit';
 
 export function ChartConfigView() {
     const { chart, updateChart, goToOverview, deleteChart } = useChartStore();
@@ -48,6 +49,9 @@ export function ChartConfigView() {
                 <div className="space-y-6">
                     <ChartInfoCard chart={chart} onUpdateChart={updateChart} />
                     <GlobalSettingsCard chart={chart} onUpdateChart={updateChart} />
+
+                    {/* Bulk Filter Edit */}
+                    {/* moved to a dedicated component and to the page bottom */}
                 </div>
 
                 <div className="space-y-6">
@@ -58,6 +62,9 @@ export function ChartConfigView() {
                     <AnnotationsList />
                 </div>
             </div>
+
+            {/* Bulk edit filters at the bottom of config */}
+            <FilterBulkEdit withCard />
 
             {/* Danger zone */}
             <Card>

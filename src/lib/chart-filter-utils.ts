@@ -1,7 +1,7 @@
 // src/lib/chart-filter-utils.ts
 
 import { useAccountCategoryLabel, useBudgetSectorLabel, useEconomicClassificationLabel, useEntityLabel, useEntityTypeLabel, useFunctionalClassificationLabel, useFundingSourceLabel, useUatLabel } from "@/hooks/filters/useFilterLabels";
-import { AnalyticsFilterType } from "@/schemas/charts";
+import { AnalyticsFilterType, Chart } from "@/schemas/charts";
 
 export type FiltersWithLabels = Pick<AnalyticsFilterType, "entity_cuis" | "economic_codes" | "functional_codes" | "budget_sector_ids" | "funding_source_ids" | "uat_ids">;
 
@@ -113,3 +113,88 @@ export function getSortOrder(keyA: keyof AnalyticsFilterType, keyB: keyof Analyt
   }
   return indexA - indexB;
 } 
+
+// ============================================================================
+// Bulk filter edit helpers
+// ============================================================================
+
+export type ReplaceableFilterKey =
+  | "entity_cuis"
+  | "uat_ids"
+  | "economic_codes"
+  | "functional_codes"
+  | "budget_sector_ids"
+  | "funding_source_ids"
+  | "entity_types"
+  | "account_category"
+  | "report_type"
+  | "functional_prefixes"
+  | "economic_prefixes"
+  | "is_uat";
+
+export function collectUniqueFilterValues(chart: Chart, key: ReplaceableFilterKey): string[] {
+  const values = new Set<string>();
+  for (const s of chart.series) {
+    if (s.type !== "line-items-aggregated-yearly") continue;
+    const f = s.filter as AnalyticsFilterType;
+    const v = (f as Record<string, unknown>)[key];
+    if (v == null) continue;
+    if (Array.isArray(v)) {
+      for (const item of v) {
+        if (item != null) values.add(String(item));
+      }
+    } else {
+      values.add(String(v));
+    }
+  }
+  return Array.from(values);
+}
+
+export function countPotentialReplacements(chart: Chart, key: ReplaceableFilterKey, fromValue: string): number {
+  let count = 0;
+  for (const s of chart.series) {
+    if (s.type !== "line-items-aggregated-yearly") continue;
+    const f = s.filter as AnalyticsFilterType;
+    const v = (f as Record<string, unknown>)[key];
+    if (v == null) continue;
+    if (Array.isArray(v)) {
+      count += v.filter((x) => String(x) === fromValue).length;
+    } else if (String(v) === fromValue) {
+      count += 1;
+    }
+  }
+  return count;
+}
+
+export function replaceFilterValue(chart: Chart, key: ReplaceableFilterKey, fromValue: string, toValue: string): Chart {
+  const next: Chart = {
+    ...chart,
+    series: chart.series.map((s) => {
+      if (s.type !== "line-items-aggregated-yearly") return s;
+      const f = { ...(s.filter as AnalyticsFilterType) } as Record<string, unknown>;
+      const v = f[key];
+      if (v == null) return s;
+
+      // Coerce types where appropriate
+      const coerce = (value: string): unknown => {
+        if (key === "is_uat") {
+          if (value.toLowerCase() === "true") return true;
+          if (value.toLowerCase() === "false") return false;
+          return undefined;
+        }
+        return value;
+      };
+
+      if (Array.isArray(v)) {
+        const replaced = v.map((x) => (String(x) === fromValue ? (coerce(toValue) as unknown as string) : x)).filter((x) => x !== undefined) as string[];
+        return { ...s, filter: { ...(s.filter as AnalyticsFilterType), [key]: replaced } };
+      } else if (String(v) === fromValue) {
+        const coerced = coerce(toValue) as unknown;
+        return { ...s, filter: { ...(s.filter as AnalyticsFilterType), [key]: coerced } };
+      }
+      return s;
+    }),
+    updatedAt: new Date().toISOString(),
+  };
+  return next;
+}

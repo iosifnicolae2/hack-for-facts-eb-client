@@ -13,6 +13,8 @@ import { DataSeriesMap } from '../../hooks/useChartData';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { usePersistedState } from '@/lib/hooks/usePersistedState';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { FilterBulkEdit } from '../chart-config/FilterBulkEdit';
 
 interface ChartQuickConfigProps {
   dataMap?: DataSeriesMap;
@@ -48,6 +50,7 @@ const getChartTypeLabel = (chartType: ChartType) => {
 
 export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
   const [showMoreOptions, setShowMoreOptions] = usePersistedState('chart-quick-config-show-more-options', false);
+  const [bulkEditOpen, setBulkEditOpen] = usePersistedState('chart-quick-config-bulk-edit-open', false);
   const { chart, updateChart, deleteChart, duplicateChart, goToConfig } = useChartStore();
   const { copyChart } = useCopyPasteChart(dataMap);
 
@@ -74,10 +77,19 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
               onOpenConfigPanel={goToConfig}
               onDuplicate={duplicateChart}
               onCopyData={copyChart}
+              onOpenBulkEdit={() => setBulkEditOpen(true)}
             />
           </div>
         </CardHeader>
         <CardContent className="space-y-2">
+          <Dialog open={bulkEditOpen} onOpenChange={setBulkEditOpen}>
+            <DialogContent className="max-w-3xl">
+              <DialogHeader>
+                <DialogTitle>Bulk edit filters</DialogTitle>
+              </DialogHeader>
+              <FilterBulkEdit withCard={false} />
+            </DialogContent>
+          </Dialog>
           {/* Chart Type */}
           <div className="space-y-2">
             <Label>Chart Type</Label>
@@ -227,6 +239,7 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
               {chart.config.showRelativeValues && (
                 <Badge variant="secondary">Relative Mode</Badge>
               )}
+              {/* quick menu item opens modal above; button removed as requested */}
             </div>
           </div>
         </CardContent>

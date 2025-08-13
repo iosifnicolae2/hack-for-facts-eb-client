@@ -1,5 +1,5 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Copy, MoreVertical, Settings, Trash2 } from "lucide-react";
+import { ArrowLeftRight, Copy, MoreVertical, Settings, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface ChartQuickConfigMenuProps {
@@ -7,9 +7,10 @@ interface ChartQuickConfigMenuProps {
     onDelete: () => void;
     onDuplicate: () => void;
     onCopyData: () => void;
+    onOpenBulkEdit: () => void;
 }
 
-export function ChartQuickConfigMenu({ onOpenConfigPanel, onDelete, onDuplicate, onCopyData }: ChartQuickConfigMenuProps) {
+export function ChartQuickConfigMenu({ onOpenConfigPanel, onDelete, onDuplicate, onCopyData, onOpenBulkEdit }: ChartQuickConfigMenuProps) {
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
         // Not sure why, but the click was propagating without this.
@@ -38,6 +39,10 @@ export function ChartQuickConfigMenu({ onOpenConfigPanel, onDelete, onDuplicate,
                 <DropdownMenuItem onSelect={onCopyData} onClick={handleClick}>
                     <Copy className="mr-2 h-4 w-4" />
                     Copy Data
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={onOpenBulkEdit} onClick={handleClick}>
+                    <ArrowLeftRight className="mr-2 h-4 w-4" />
+                    Bulk edit filters
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuSub>
