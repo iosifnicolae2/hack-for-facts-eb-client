@@ -6,12 +6,14 @@ slug: /
 
 Welcome to the Transparenta.eu documentation.
 
-Start with the Overview to learn the main tools, then follow the suggested workflow.
+New here? Start with Getting Started and Quickstart, then explore the core tools.
 
-- Overview: [overview](overview)
-- Workflow: [workflow](workflow)
+- Getting Started: [getting-started](getting-started)
+- Quickstart tutorial: [quickstart](quickstart)
+- Overview of the product: [overview](overview)
+- Suggested workflow: [workflow](workflow)
 
-Or jump directly to a page guide:
+Core tools
 
 - [Entity Details](entity-details)
 - [Map](map)
@@ -19,4 +21,14 @@ Or jump directly to a page guide:
 - [Charts – Library](charts-list)
 - [Charts – Detail](charts-detail)
 
+How‑to guides
 
+- [Compare two cities](how-to/compare-two-cities)
+- [Find top spenders](how-to/find-top-spenders)
+- [Share a reproducible chart](how-to/share-a-reproducible-chart)
+- [Use functional/economic prefixes](how-to/use-prefix-filters)
+
+Help
+
+- [FAQ](faq)
+- [Glossary](glossary)
