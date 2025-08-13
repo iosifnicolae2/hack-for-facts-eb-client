@@ -14,6 +14,24 @@ Filters
   - Aggregates: `normalization`, `aggregate_min_amount`, `aggregate_max_amount`
   - Per‑item thresholds: `item_min_amount`, `item_max_amount`
 
+Cheat‑sheet (WHERE vs HAVING and performance tips)
+
+| Field | Applies to | SQL placement | Notes |
+| --- | --- | --- | --- |
+| years | Analytics | WHERE on `eli.year` | Required |
+| account_category | Analytics | WHERE on `eli.account_category` | Required (`vn` or `ch`) |
+| functional_prefixes | Analytics | WHERE on `eli.functional_code LIKE ANY($)` | Uses `varchar_pattern_ops` index |
+| economic_prefixes | Analytics | WHERE on `eli.economic_code LIKE ANY($)` | Uses `varchar_pattern_ops` index |
+| item_min/max_amount | Analytics | WHERE on `eli.amount` | Per‑item threshold before grouping |
+| aggregate_min/max_amount | Analytics | HAVING on aggregated `amount` | Respects `normalization` |
+| reporting_years | Analytics | WHERE on `Reports.reporting_year` | Requires join to `Reports`; combine with `years` |
+| search | Analytics | WHERE on `Entities.name ILIKE` | In repos, trigram used for ranking where applicable |
+
+Callouts
+
+- Always set `years` and `account_category` for analytics queries.
+- Per‑capita: if population is `0` or `NULL`, per‑capita becomes `0` (see analytics pages for details).
+
 Pagination
 
 - All list/connection queries accept `limit` and `offset` and return `pageInfo`:
@@ -34,5 +52,7 @@ Best practices
 Related
 
 - See [Unified Filter – Deep Dive](./unified-filter-interface.md) for SQL mappings, join behavior, and population/per‑capita semantics.
+
+- See also: [API Cookbook](./cookbook.md) for copy‑paste recipes.
 
 

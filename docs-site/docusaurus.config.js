@@ -39,7 +39,7 @@ const config = {
     navbar: {
       title: 'Transparenta.eu',
       items: [
-        { type: 'doc', docId: 'overview', label: 'Docs', position: 'left' },
+        { type: 'doc', docId: 'index', label: 'Docs', position: 'left' },
         { href: 'https://github.com/ClaudiuBogdan/hack-for-facts-eb-client', label: 'GitHub', position: 'right' },
         { type: 'localeDropdown', position: 'right' },
       ],

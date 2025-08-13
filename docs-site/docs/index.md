@@ -4,14 +4,16 @@ title: Transparenta.eu – Documentation Home
 slug: /
 ---
 
-Welcome to the Transparenta.eu documentation.
+Welcome to the Transparenta.eu documentation. If you are new, start with the quick tour and try a hands‑on task.
 
-New here? Start with Getting Started and Quickstart, then explore the core tools.
+**Who it's for**: Curious citizens, journalists, analysts, and developers
 
-- Getting Started: [getting-started](getting-started)
-- Quickstart tutorial: [quickstart](quickstart)
-- Overview of the product: [overview](overview)
-- Suggested workflow: [workflow](workflow)
+**Outcomes**: Find reliable answers quickly and share reproducible links
+
+Start here
+
+- Quickstart: [quickstart](quickstart)
+- Workflow: [workflow](workflow)
 
 Core tools
 
@@ -21,7 +23,7 @@ Core tools
 - [Charts – Library](charts-list)
 - [Charts – Detail](charts-detail)
 
-How‑to guides
+How‑to (Tasks)
 
 - [Compare two cities](how-to/compare-two-cities)
 - [Find top spenders](how-to/find-top-spenders)

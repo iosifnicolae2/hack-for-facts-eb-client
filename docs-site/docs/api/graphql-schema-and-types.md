@@ -3,6 +3,10 @@ id: api-graphql-schema-and-types
 title: GraphQL – Schema and Types
 ---
 
+**Who it's for**: Developers exploring the structure of the API.
+
+**Outcomes**: Understand available objects, connections, and filter inputs.
+
 Core scalar/object types
 
 - `YearlyAmount { year: Int!, totalAmount: Float! }`
@@ -46,5 +50,10 @@ Notes
 
 - All amounts are in RON unless specified.
 - Where `ID` is used, it is delivered as a string in GraphQL responses.
+
+See also
+
+- Queries and examples: [api-graphql-queries](./graphql-queries.md)
+- Filters cheat‑sheet: [api-filters-pagination-sorting](./filters-pagination-sorting.md)
 
 

@@ -5,6 +5,10 @@ title: REST – Health, AI Helpers, MCP
 
 Base URL: `http://localhost:3000`
 
+**Who it's for**: Developers who prefer simple REST helpers.
+
+**Outcomes**: Quickly search entities, get analyses, and fetch schema info.
+
 Health
 
 - `GET /healthz`
@@ -51,5 +55,10 @@ Notes
 
 - CORS is permissive in non‑production; in production, allowed origins are configured via environment variables.
 - Rate limiting is enabled; see Rate limits for details.
+
+See also
+
+- GraphQL Getting Started: [api-getting-started](./getting-started.md)
+- API Cookbook: [api-cookbook](./cookbook.md)
 
 

@@ -3,6 +3,10 @@ id: api-authentication-and-security
 title: Authentication and Security
 ---
 
+**Who it's for**: Operators and developers deploying/integrating the API.
+
+**Outcomes**: Understand auth defaults, rate‑limit keys, and CORS in prod.
+
 Authentication
 
 - Read access requires no authentication by default. Endpoints are public for querying data.

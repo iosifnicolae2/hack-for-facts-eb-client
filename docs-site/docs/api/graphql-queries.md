@@ -3,6 +3,10 @@ id: api-graphql-queries
 title: GraphQL – Queries and Examples
 ---
 
+**Who it's for**: Developers who want ready‑to‑use GraphQL examples.
+
+**Outcomes**: Copy/paste queries for common tasks and adapt quickly.
+
 Entities
 
 ```graphql
@@ -109,5 +113,10 @@ Notes
 
 - Use `AnalyticsFilterInput` to scope by year(s), account category (`vn` or `ch`), and optional dimensional or geographic filters.
 - For meaningful per‑capita values, ensure population is available for the selected geography.
+
+See also
+
+- Schema and types: [api-graphql-schema-and-types](./graphql-schema-and-types.md)
+- Cookbook: [api-cookbook](./cookbook.md)
 
 

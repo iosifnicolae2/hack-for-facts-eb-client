@@ -19,6 +19,10 @@ Overview
   - Aggregated thresholds (`aggregate_min_amount`, `aggregate_max_amount`) filter on an aggregated measure (HAVING) and respect `normalization`
 - Normalization: `normalization: total | per_capita` controls which measure is used by analytics queries
 
+**Who it's for**: Developers needing precise SQL mappings and semantics.
+
+**Outcomes**: Confidently map input fields to joins/WHERE/HAVING with performance context.
+
 Field-to-SQL mapping
 
 - Required

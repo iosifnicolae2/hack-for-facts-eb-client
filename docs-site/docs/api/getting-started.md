@@ -22,7 +22,7 @@ Example: entity analytics (per‑capita expenses)
 curl -X POST http://localhost:3000/graphql \
   -H 'content-type: application/json' \
   -d '{
-  "query": "query($f:AnalyticsFilterInput!){ entityAnalytics(filter:$f, limit:10){ nodes{ entity_cui entity_name per_capita_amount } pageInfo{ totalCount } } }",
+  "query": "query($f:AnalyticsFilterInput!){ entityAnalytics(filter:$f, limit:10){ nodes{ entity_cui entity_name per_capita_amount total_amount } pageInfo{ totalCount } } }",
   "variables": { "f": { "years": [2024], "account_category": "ch", "normalization": "per_capita" } }
 }'
 ```
@@ -49,5 +49,11 @@ Notes
 - GraphiQL is available in development at `/graphiql`.
 - Introspection is disabled in production. Use this documentation or the MCP definition at `/mcp/v1/definition` to discover the schema.
 - Batched GraphQL queries are disabled.
+
+See also
+
+- Queries and examples: [api-graphql-queries](./graphql-queries.md)
+- Cookbook recipes: [api-cookbook](./cookbook.md)
+- Analytics filter deep dive: [api-unified-filter-interface](./unified-filter-interface.md)
 
 

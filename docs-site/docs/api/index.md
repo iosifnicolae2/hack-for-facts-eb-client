@@ -11,6 +11,10 @@ This section documents the Transparenta.eu Public Spending API. The platform exp
 - GraphiQL (development only): `GET /graphiql`
 - REST docs (development only): Swagger UI at `GET /docs`
 
+**Who it's for**: Developers integrating or scripting the API.
+
+**Outcomes**: Make a first request, navigate schema and examples, and discover helpers.
+
 What’s available
 
 - GraphQL: entities, reports, execution line items, classifications, analytics (heatmaps, entity analytics, totals/trends), datasets, and aggregated line items.
@@ -30,5 +34,10 @@ Next steps
 - Filters, pagination, and sorting: input types and usage patterns
 - REST endpoints: health, AI helpers, and MCP
 - Errors and rate limits: response shapes, constraints, and limits
+
+See also
+
+- API Getting Started: [api-getting-started](./getting-started.md)
+- Cookbook recipes: [api-cookbook](./cookbook.md)
 
 

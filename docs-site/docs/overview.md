@@ -12,4 +12,13 @@ Transparenta.eu helps you explore Romanian public finance data across four main 
 
 Use the workflow to move from “what stands out?” to “why does it happen?” and finally “how do we tell the story?”
 
+**Who it's for**: Everyone who needs a map of the product.
+
+**Outcomes**: Understand when to use each tool and how they connect.
+
+See also
+
+- Getting Started: [getting-started](./getting-started.md)
+- Workflow: [workflow](./workflow.md)
+
 

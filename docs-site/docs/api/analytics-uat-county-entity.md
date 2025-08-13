@@ -53,6 +53,12 @@ Notes
 - Population is taken directly from `UATs.population`. If 0 or null, `per_capita_amount` returns 0.
 - Prefix LIKE conditions are index-backed (`varchar_pattern_ops`).
 
+Population rules at a glance
+
+- UATs: per‑capita divides by `UATs.population`.
+- Counties: per‑capita divides by the main administrative UAT (Bucharest special case: `siruta_code='179132'`).
+- Entities: if `is_uat=true` use its UAT’s population; if `entity_type='admin_county_council'` use county population; otherwise population may be `NULL`.
+
 ### County analytics (heatmapJudetData)
 
 Purpose: aggregate execution amounts at county level; normalize per capita by the county’s main administrative unit.
@@ -84,6 +90,11 @@ Notes
 
 - County population is derived as described; if unavailable, per-capita amounts fall back to 0.
 - `county_entity` is resolved post-query from the computed county CUI.
+
+See also
+
+- Filters cheat‑sheet: [api-filters-pagination-sorting](./filters-pagination-sorting.md)
+- Cookbook: [api-cookbook](./cookbook.md)
 
 ### Entity analytics (entityAnalytics)
 

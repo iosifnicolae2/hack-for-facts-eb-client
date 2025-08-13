@@ -3,6 +3,10 @@ id: api-errors-and-rate-limits
 title: Errors and Rate Limits
 ---
 
+**Who it's for**: Developers handling error responses and throughput limits.
+
+**Outcomes**: Know how errors are shaped and how rate limiting works.
+
 Errors
 
 - GraphQL errors follow standard GraphQL error objects in the `errors` array. Resolver implementations throw descriptive errors for validation issues and generic messages for server failures.
@@ -22,6 +26,11 @@ Security and production behavior
 
 Performance notes
 
+
+See also
+
+- Authentication & Security: [api-authentication-and-security](./authentication-and-security.md)
+- REST endpoints: [api-rest-endpoints](./rest-endpoints.md)
 - Batched GraphQL queries are disabled.
 - Prefer pagination and targeted filters to reduce payload sizes.
 

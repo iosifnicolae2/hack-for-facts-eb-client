@@ -5,6 +5,10 @@ title: Search – Entities and Classifications
 
 This page explains how search works for entities and classification datasets (functional, economic, funding sources, budget sectors, UATs), with examples and tips to get better results.
 
+**Who it's for**: Developers and users searching across datasets.
+
+**Outcomes**: Compose effective search queries and prefer indexed modes.
+
 ### How matching works
 
 - Case-insensitive: all textual search is case-insensitive via `ILIKE`.
@@ -158,6 +162,11 @@ Notes
 
 ### Tips & tricks
 
+
+See also
+
+- REST helpers: [api-rest-endpoints](./rest-endpoints.md)
+- GraphQL queries: [api-graphql-queries](./graphql-queries.md)
 - Prefer code-prefix searches (`fn:`/`ec:`) when you know the classification families; they are fast and precise.
 - Use short, distinctive tokens for name searches; trigram will rank close matches higher.
 - For entity/UAT searches, add structural filters (`is_uat`, `entity_type`, `county_code`) to narrow candidates.

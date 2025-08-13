@@ -5,6 +5,10 @@ title: Quickstart – from question to answer
 
 Follow this hands‑on walkthrough to produce a simple, shareable analysis in 10–15 minutes.
 
+**Who it's for**: Anyone who prefers a guided, practical start.
+
+**Outcomes**: Build and share a two‑series chart comparing cities.
+
 ## Goal
 
 “Which cities spend the most per capita on Education in 2024, and how does one city’s spending trend look over time?”

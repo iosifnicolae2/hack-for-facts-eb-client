@@ -5,6 +5,10 @@ title: Getting Started – new to Transparenta.eu
 
 Welcome! This guide is for first‑time users. You’ll learn what the app does, the basic concepts, and the quickest way to find useful insights.
 
+**Who it's for**: New users who want a guided tour.
+
+**Outcomes**: Understand the core tools and complete your first analysis.
+
 ## What you can do
 
 - Understand a single institution with Entity Details
