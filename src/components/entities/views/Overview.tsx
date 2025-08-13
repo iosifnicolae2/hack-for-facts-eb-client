@@ -61,6 +61,7 @@ export const Overview = ({
                 expenseTrend={entity?.expenseTrend}
                 balanceTrend={entity?.balanceTrend}
                 currentYear={selectedYear}
+                entityName={entity?.name ?? ''}
                 mode={trendMode}
                 onModeChange={onChartTrendModeChange}
                 onYearChange={onYearChange}

@@ -1,25 +1,31 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { EntityDetailsData } from '@/lib/api/entities';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine } from 'recharts';
-import { useMemo } from 'react';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-import { TrendingUp } from 'lucide-react';
+import { TrendingUp, BarChart2 } from 'lucide-react';
 import { yValueFormatter } from '../charts/components/chart-renderer/utils';
 import { EntityFinancialTrendsSkeleton } from './EntityFinancialTrendsSkeleton';
+import { Link } from '@tanstack/react-router';
+import { Button } from '@/components/ui/button';
+import { useParams } from '@tanstack/react-router';
+import { buildEntityIncomeExpenseChartLink } from '@/lib/chart-links';
 
 interface EntityFinancialTrendsProps {
   incomeTrend?: EntityDetailsData['incomeTrend'];
   expenseTrend?: EntityDetailsData['expenseTrend'];
   balanceTrend?: EntityDetailsData['balanceTrend'];
   currentYear: number;
+  entityName: string;
   mode: 'absolute' | 'percent';
   onModeChange: (mode: 'absolute' | 'percent') => void;
   onYearChange?: (year: number) => void;
   isLoading?: boolean;
 }
 
-export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ incomeTrend, expenseTrend, balanceTrend, currentYear, mode, onModeChange, onYearChange, isLoading }) => {
+export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ incomeTrend, expenseTrend, balanceTrend, currentYear, entityName, mode, onModeChange, onYearChange, isLoading }) => {
+
+  const { cui } = useParams({ from: '/entities/$cui' });
 
   const trendsAvailable = incomeTrend?.length || expenseTrend?.length || balanceTrend?.length;
 
@@ -90,6 +96,8 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
     }
   };
 
+  const incomeExpenseChartLink = useMemo(() => cui ? buildEntityIncomeExpenseChartLink(cui, entityName) : null, [cui]);
+
   if (isLoading) {
     return <EntityFinancialTrendsSkeleton />;
   }
@@ -101,6 +109,11 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
           <CardTitle className="flex items-center gap-2">
             <TrendingUp className="h-6 w-6" />
             <span>Evoluție Financiară</span>
+            <Button asChild variant="ghost" size="icon" className="h-7 w-7 ml-1" aria-label="Deschide în editorul de grafice">
+              <Link to={incomeExpenseChartLink?.to ?? '/charts/$chartId'} params={incomeExpenseChartLink?.params as any} search={incomeExpenseChartLink?.search as any} preload="intent">
+                <BarChart2 className="h-4 w-4" />
+              </Link>
+            </Button>
           </CardTitle>
           <Select value={mode} onValueChange={(val) => onModeChange(val as 'absolute' | 'percent')}>
             <SelectTrigger className="w-[160px] h-8 text-xs">
