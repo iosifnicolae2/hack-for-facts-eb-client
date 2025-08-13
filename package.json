@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "NODE_OPTIONS=--max-http-header-size=64384 vite",
     "dev:lint": "concurrently \"vite\" \"tsc -w\" \"eslint ./src\"",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && yarn docs:build && node scripts/postbuild-docs.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",

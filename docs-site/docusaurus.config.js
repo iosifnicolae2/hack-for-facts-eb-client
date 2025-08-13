@@ -4,7 +4,7 @@ const config = {
   title: 'Transparenta.eu Documentation',
   tagline: 'Explore Romanian public finance data – user guide and developer specs',
   url: 'https://transparenta.eu',
-  baseUrl: '/',
+  baseUrl: '/docs/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
