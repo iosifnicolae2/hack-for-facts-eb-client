@@ -1,5 +1,4 @@
 ---
-id: compare-two-cities
 title: How to compare two cities
 ---
 

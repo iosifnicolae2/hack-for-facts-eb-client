@@ -4,6 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "docusaurus start",
+    "start:ro": "docusaurus start --locale ro",
+    "start:en": "docusaurus start --locale en",
     "build": "docusaurus build",
     "serve": "docusaurus serve",
     "clear": "docusaurus clear",

@@ -5,6 +5,14 @@ const config = {
   tagline: 'Explore Romanian public finance data – user guide and developer specs',
   url: 'https://transparenta.eu',
   baseUrl: '/docs/',
+  i18n: {
+    defaultLocale: 'ro',
+    locales: ['ro', 'en'],
+    localeConfigs: {
+      en: { label: 'English' },
+      ro: { label: 'Română' },
+    },
+  },
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
@@ -31,8 +39,9 @@ const config = {
     navbar: {
       title: 'Transparenta.eu',
       items: [
-        { to: '/overview', label: 'Docs', position: 'left' },
+        { type: 'doc', docId: 'overview', label: 'Docs', position: 'left' },
         { href: 'https://github.com/ClaudiuBogdan/hack-for-facts-eb-client', label: 'GitHub', position: 'right' },
+        { type: 'localeDropdown', position: 'right' },
       ],
     },
     footer: {
