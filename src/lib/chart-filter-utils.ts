@@ -5,37 +5,23 @@ import { AnalyticsFilterType, Chart } from "@/schemas/charts";
 
 export type FiltersWithLabels = Pick<AnalyticsFilterType, "entity_cuis" | "economic_codes" | "functional_codes" | "budget_sector_ids" | "funding_source_ids" | "uat_ids">;
 
-// All your helper functions from the original component go here:
-export const getFilterDisplayName = (key: string): string => {
-  switch (key) {
-    case "entity_cuis":
-      return "Entitate";
-    case "uat_ids":
-      return "UAT";
-    case "economic_codes":
-      return "Clasificare economică";
-    case "functional_codes":
-      return "Clasificare funcțională";
-    case "budget_sector_ids":
-      return "Sector bugetar";
-    case "funding_source_ids":
-      return "Sursă de finanțare";
-    case "account_category":
-      return "Tip de cont";
-    case "report_type":
-      return "Tip de raport";
-    case "is_uat":
-      return "Este UAT";
-    case "functional_prefixes":
-      return "Prefix funcțional";
-    case "economic_prefixes":
-      return "Prefix economic";
-    case "entity_types":
-      return "Tip de entitate";
-    default:
-      return key;
-  }
+// Display names for filter keys
+const FILTER_DISPLAY_NAME: Record<string, string> = {
+  entity_cuis: "Entitate",
+  uat_ids: "UAT",
+  economic_codes: "Clasificare economică",
+  functional_codes: "Clasificare funcțională",
+  budget_sector_ids: "Sector bugetar",
+  funding_source_ids: "Sursă de finanțare",
+  account_category: "Tip de cont",
+  report_type: "Tip de raport",
+  is_uat: "Este UAT",
+  functional_prefixes: "Prefix funcțional",
+  economic_prefixes: "Prefix economic",
+  entity_types: "Tip de entitate",
 };
+
+export const getFilterDisplayName = (key: string): string => FILTER_DISPLAY_NAME[key] ?? key;
 
 export const useMapFilterValue = (filter: FiltersWithLabels) => {
   const entityLabelsStore = useEntityLabel(filter.entity_cuis ?? []);
@@ -97,22 +83,30 @@ export const isInteractiveFilter = (key: string): boolean => {
 };
 
 export function getSortOrder(keyA: keyof AnalyticsFilterType, keyB: keyof AnalyticsFilterType) {
-  const order = ["account_category", "entity_cuis", "entity_types", "uat_ids", "functional_prefixes", "economic_prefixes", "functional_codes", "economic_codes", "budget_sector_ids", "funding_source_ids", "is_uat", "aggregate_min_amount", "aggregate_max_amount", "report_type", "years"] as Array<keyof AnalyticsFilterType>;
-  const indexA = order.indexOf(keyA);
-  const indexB = order.indexOf(keyB);
-
-
-  if (indexA === -1 && indexB === -1) {
-    return 0;
-  }
-  if (indexA === -1) {
-    return 1;
-  }
-  if (indexB === -1) {
-    return -1;
-  }
+  const ORDER: ReadonlyArray<keyof AnalyticsFilterType> = [
+    "account_category",
+    "entity_cuis",
+    "entity_types",
+    "uat_ids",
+    "functional_prefixes",
+    "economic_prefixes",
+    "functional_codes",
+    "economic_codes",
+    "budget_sector_ids",
+    "funding_source_ids",
+    "is_uat",
+    "aggregate_min_amount",
+    "aggregate_max_amount",
+    "report_type",
+    "years",
+  ];
+  const indexA = ORDER.indexOf(keyA);
+  const indexB = ORDER.indexOf(keyB);
+  if (indexA === -1 && indexB === -1) return 0;
+  if (indexA === -1) return 1;
+  if (indexB === -1) return -1;
   return indexA - indexB;
-} 
+}
 
 // ============================================================================
 // Bulk filter edit helpers
@@ -132,17 +126,44 @@ export type ReplaceableFilterKey =
   | "economic_prefixes"
   | "is_uat";
 
+// Convenience: list of replaceable keys for UIs
+export const REPLACEABLE_FILTER_KEYS: ReadonlyArray<ReplaceableFilterKey> = [
+  "entity_cuis",
+  "entity_types",
+  "uat_ids",
+  "functional_codes",
+  "economic_codes",
+  "budget_sector_ids",
+  "funding_source_ids",
+  "functional_prefixes",
+  "economic_prefixes",
+  "account_category",
+  "report_type",
+  "is_uat",
+];
+
+const isAggregatedYearlySeries = (s: { type?: unknown }) => s?.type === "line-items-aggregated-yearly";
+
+// Coerce filter values to the correct type. Some keys are booleans, and need to be parsed from strings.
+const parseFilterValueForKey = (key: ReplaceableFilterKey, value: string): unknown => {
+  if (key === "is_uat") {
+    const lower = value.toLowerCase();
+    if (lower === "true") return true;
+    if (lower === "false") return false;
+    return undefined;
+  }
+  return value;
+};
+
 export function collectUniqueFilterValues(chart: Chart, key: ReplaceableFilterKey): string[] {
   const values = new Set<string>();
   for (const s of chart.series) {
-    if (s.type !== "line-items-aggregated-yearly") continue;
+    if (!isAggregatedYearlySeries(s)) continue;
     const f = s.filter as AnalyticsFilterType;
     const v = (f as Record<string, unknown>)[key];
     if (v == null) continue;
     if (Array.isArray(v)) {
-      for (const item of v) {
-        if (item != null) values.add(String(item));
-      }
+      for (const item of v) if (item != null) values.add(String(item));
     } else {
       values.add(String(v));
     }
@@ -153,7 +174,7 @@ export function collectUniqueFilterValues(chart: Chart, key: ReplaceableFilterKe
 export function countPotentialReplacements(chart: Chart, key: ReplaceableFilterKey, fromValue: string): number {
   let count = 0;
   for (const s of chart.series) {
-    if (s.type !== "line-items-aggregated-yearly") continue;
+    if (!isAggregatedYearlySeries(s)) continue;
     const f = s.filter as AnalyticsFilterType;
     const v = (f as Record<string, unknown>)[key];
     if (v == null) continue;
@@ -167,34 +188,30 @@ export function countPotentialReplacements(chart: Chart, key: ReplaceableFilterK
 }
 
 export function replaceFilterValue(chart: Chart, key: ReplaceableFilterKey, fromValue: string, toValue: string): Chart {
-  const next: Chart = {
+  const replacementValue = parseFilterValueForKey(key, toValue);
+  const nextSeries = chart.series.map((s) => {
+    if (!isAggregatedYearlySeries(s)) return s;
+    const f = { ...(s.filter as AnalyticsFilterType) } as Record<string, unknown>;
+    const v = f[key];
+    if (v == null) return s;
+
+    if (Array.isArray(v)) {
+      const replaced = (v as unknown[])
+        .map((x) => (String(x) === fromValue ? (replacementValue as never) : x))
+        .filter((x) => x !== undefined);
+      return { ...s, filter: { ...(s.filter as AnalyticsFilterType), [key]: replaced } };
+    }
+
+    if (String(v) === fromValue) {
+      return { ...s, filter: { ...(s.filter as AnalyticsFilterType), [key]: replacementValue } };
+    }
+
+    return s;
+  });
+
+  return {
     ...chart,
-    series: chart.series.map((s) => {
-      if (s.type !== "line-items-aggregated-yearly") return s;
-      const f = { ...(s.filter as AnalyticsFilterType) } as Record<string, unknown>;
-      const v = f[key];
-      if (v == null) return s;
-
-      // Coerce types where appropriate
-      const coerce = (value: string): unknown => {
-        if (key === "is_uat") {
-          if (value.toLowerCase() === "true") return true;
-          if (value.toLowerCase() === "false") return false;
-          return undefined;
-        }
-        return value;
-      };
-
-      if (Array.isArray(v)) {
-        const replaced = v.map((x) => (String(x) === fromValue ? (coerce(toValue) as unknown as string) : x)).filter((x) => x !== undefined) as string[];
-        return { ...s, filter: { ...(s.filter as AnalyticsFilterType), [key]: replaced } };
-      } else if (String(v) === fromValue) {
-        const coerced = coerce(toValue) as unknown;
-        return { ...s, filter: { ...(s.filter as AnalyticsFilterType), [key]: coerced } };
-      }
-      return s;
-    }),
+    series: nextSeries,
     updatedAt: new Date().toISOString(),
   };
-  return next;
 }

@@ -49,9 +49,6 @@ export function ChartConfigView() {
                 <div className="space-y-6">
                     <ChartInfoCard chart={chart} onUpdateChart={updateChart} />
                     <GlobalSettingsCard chart={chart} onUpdateChart={updateChart} />
-
-                    {/* Bulk Filter Edit */}
-                    {/* moved to a dedicated component and to the page bottom */}
                 </div>
 
                 <div className="space-y-6">
@@ -63,7 +60,6 @@ export function ChartConfigView() {
                 </div>
             </div>
 
-            {/* Bulk edit filters at the bottom of config */}
             <FilterBulkEdit withCard />
 
             {/* Danger zone */}
