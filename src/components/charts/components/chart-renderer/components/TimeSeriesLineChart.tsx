@@ -6,12 +6,9 @@ import { ChartLabel } from './ChartLabel';
 import { yValueFormatter } from '../utils';
 import { useChartDiff } from '../hooks/useChartDiff';
 import { DiffArea } from './diff-select/DiffArea';
-import { useChartAnimation } from '../hooks/useChartAnimation';
 
 export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotationPositionChange, onXAxisClick, xAxisMarker }: ChartRendererProps) {
   const enabledSeries = chart.series.filter(s => s.enabled);
-  const animationDuration = 300;
-  const { isAnimationActive } = useChartAnimation(animationDuration, chart);
   const {
     handleMouseDown,
     handleMouseMove,
@@ -51,8 +48,8 @@ export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotati
                   dot={{ r: 4 }}
                   activeDot={{ r: 6 }}
                   connectNulls={false}
-                  isAnimationActive={isAnimationActive}
-                  animationDuration={animationDuration}
+                  isAnimationActive={true}
+                  animationDuration={300}
                   animationEasing="ease-in-out"
                 >
                   <LabelList
