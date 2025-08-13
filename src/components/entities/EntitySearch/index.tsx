@@ -114,8 +114,13 @@ export function EntitySearchInput({
                                     entity={entity}
                                     isActive={activeIndex === index}
                                     onClick={(e) => {
-                                        e.preventDefault()
-                                        handleSelection(index)
+                                        // Allow browser default for new-tab/window gestures
+                                        if (e.metaKey || e.ctrlKey) {
+                                            handleSelection(index, { skipNavigate: true });
+                                            return;
+                                        }
+                                        e.preventDefault();
+                                        handleSelection(index);
                                     }}
                                 />
                             ))}

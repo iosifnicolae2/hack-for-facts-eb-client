@@ -58,14 +58,16 @@ export function useEntitySearch({ debounceMs = 500, onSelect }: UseEntitySearchP
         closeDropdown();
     }, [closeDropdown]);
 
-    const handleSelection = useCallback((index: number) => {
+    const handleSelection = useCallback((index: number, options?: { skipNavigate?: boolean }) => {
         if (results?.[index]) {
             const selectedEntity = results[index];
             Analytics.capture(Analytics.EVENTS.EntitySearchSelected, {
                 cui: selectedEntity.cui,
             });
-            // Navigate programmatically
-            navigate({ to: "/entities/$cui", params: { cui: selectedEntity.cui }, search: (prev) => ({ ...prev }) });
+            // Navigate programmatically unless explicitly skipped (e.g., Cmd/Ctrl+Click opens new tab)
+            if (!options?.skipNavigate) {
+                navigate({ to: "/entities/$cui", params: { cui: selectedEntity.cui }, search: (prev) => ({ ...prev }) });
+            }
             handleClearSearch();
             onSelect?.(selectedEntity);
         }
