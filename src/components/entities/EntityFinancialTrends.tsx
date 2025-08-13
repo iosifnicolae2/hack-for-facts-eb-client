@@ -96,7 +96,7 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
     }
   };
 
-  const incomeExpenseChartLink = useMemo(() => cui ? buildEntityIncomeExpenseChartLink(cui, entityName) : null, [cui]);
+  const incomeExpenseChartLink = useMemo(() => cui ? buildEntityIncomeExpenseChartLink(cui, entityName) : null, [cui, entityName]);
 
   if (isLoading) {
     return <EntityFinancialTrendsSkeleton />;

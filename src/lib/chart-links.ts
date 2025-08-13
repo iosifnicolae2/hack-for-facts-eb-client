@@ -26,6 +26,10 @@ export function buildEntityIncomeExpenseChartState(
     const incomeColor = options?.incomeColor ?? '#10B981';
     const expenseColor = options?.expenseColor ?? '#EF4444';
 
+    const incomeSeriesId = `${cui}-income-series`;
+    const expenseSeriesId = `${cui}-expense-series`;
+    const balanceSeriesId = `${cui}-balance-series`;
+
     const chart: Chart = ChartSchema.parse({
         id: chartId,
         title,
@@ -41,7 +45,7 @@ export function buildEntityIncomeExpenseChartState(
         },
         series: [
             {
-                id: `${cui}-income-series`,
+                id: incomeSeriesId,
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
                 label: 'Venituri',
@@ -56,7 +60,7 @@ export function buildEntityIncomeExpenseChartState(
                 updatedAt: new Date().toISOString(),
             },
             {
-                id: `${cui}-expense-series`,
+                id: expenseSeriesId,
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
                 label: 'Cheltuieli',
@@ -67,6 +71,20 @@ export function buildEntityIncomeExpenseChartState(
                     report_type: reportType,
                 },
                 config: { visible: true, showDataLabels: false, color: expenseColor },
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+            },
+            {
+                id: balanceSeriesId,
+                type: 'aggregated-series-calculation',
+                enabled: true,
+                label: 'Balanță',
+                unit: 'RON',
+                config: { visible: true, showDataLabels: false, color: '#ee8420' },
+                calculation: {
+                    op: 'subtract',
+                    args: [incomeSeriesId, expenseSeriesId],
+                },
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString(),
             },
