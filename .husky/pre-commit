@@ -1,0 +1,7 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# placeholder for future checks (lint, tests)
+exit 0
+
+

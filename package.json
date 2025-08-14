@@ -23,11 +23,13 @@
     "docs:serve": "yarn --cwd docs-site serve",
     "docs:clear": "yarn --cwd docs-site clear",
     "docs:swizzle": "yarn --cwd docs-site swizzle",
+    "release:notes": "node scripts/generate-release-post.cjs",
     "tutorials:test": "playwright test tests/tutorial",
     "tutorials:ui": "playwright test tests/tutorial --ui",
     "i18n:extract": "lingui extract",
     "i18n:compile": "lingui compile",
-    "i18n:clean": "lingui extract --clean"
+    "i18n:clean": "lingui extract --clean",
+    "prepare": "husky"
   },
   "scripts-info": {
     "i18n:extract": "Scan source files for Lingui message IDs and update locale catalogs (adds new keys, keeps obsolete ones).",
@@ -104,6 +106,9 @@
     "zod": "^4.0.17"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.6.1",
+    "@commitlint/config-conventional": "^19.6.0",
+    "husky": "^9.1.6",
     "@lingui/cli": "^5.4.1",
     "@lingui/swc-plugin": "^5.6.0",
     "@lingui/vite-plugin": "^5.4.1",
