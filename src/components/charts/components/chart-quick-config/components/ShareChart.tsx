@@ -181,7 +181,7 @@ export function ShareChart({
                 {/* Export Options */}
                 <div className="space-y-3">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                        <span className="text-sm font-medium">Export as Image</span>
+                        <span className="text-sm font-medium"><Trans>Export as Image</Trans></span>
                         <div className="flex gap-2 w-full sm:w-auto">
                             <Button
                                 size="sm"

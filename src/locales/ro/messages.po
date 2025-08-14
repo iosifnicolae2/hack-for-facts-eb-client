@@ -954,6 +954,10 @@ msgstr "Explorați entitățile după valorile cumulate."
 msgid "Explore Full Map"
 msgstr "Explorează harta completă"
 
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:184
+msgid "Export as Image"
+msgstr "Exportă ca Imagine"
+
 #: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:177
 msgid "Export as image or share with a link"
 msgstr "Exportă ca imagine sau partajează printr-un link"

@@ -954,6 +954,10 @@ msgstr "Explore entities by aggregated values."
 msgid "Explore Full Map"
 msgstr "Explore Full Map"
 
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:184
+msgid "Export as Image"
+msgstr "Export as Image"
+
 #: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:177
 msgid "Export as image or share with a link"
 msgstr "Export as image or share with a link"
