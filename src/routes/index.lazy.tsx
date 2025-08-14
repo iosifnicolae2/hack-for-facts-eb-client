@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { Trans } from "@lingui/macro";
+import { Trans } from "@lingui/react/macro";
+import { t } from "@lingui/core/macro";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { usePersistedState } from "@/lib/hooks/usePersistedState";
 import { createLazyFileRoute } from "@tanstack/react-router";
@@ -61,30 +62,30 @@ function Index() {
           {/* Quick navigation cards */}
           <div className="mt-20 grid w-full max-w-5xl grid-cols-1 gap-8 md:grid-cols-2">
             <PageCard
-              title={"Charts"}
-              description={"Explore data through charts."}
+              title={t`Charts`}
+              description={t`Explore data through charts.`}
               to="/charts"
               image={chartPreview}
               imageAlt="Charts preview"
             />
             <PageCard
-              title={"Map"}
-              description={"Explore data through a map."}
+              title={t`Map`}
+              description={t`Explore data through a map.`}
               to="/map"
               image={mapPreview}
               imageAlt="Map preview"
             />
             <PageCard
-              title={"Entities"}
-              description={"Explore entities by aggregated values."}
+              title={t`Entities`}
+              description={t`Explore entities by aggregated values.`}
               to="/entity-analytics"
               image={entityAnalyticsPreview}
               imageAlt="Entity analytics preview"
             />
 
             <PageCard
-              title={"More"}
-              description={"More to come."}
+              title={t`More`}
+              description={t`More to come.`}
               to="/"
               image={morePreview}
               imageAlt="More preview"

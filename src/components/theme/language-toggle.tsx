@@ -1,20 +1,14 @@
-import { Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { i18n } from "@lingui/core";
 import { dynamicActivate } from "@/lib/i18n";
-import { Trans } from "@lingui/react";
+import { Trans } from "@lingui/react/macro";
+import { SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "../ui/sidebar";
+import { Analytics } from "@/lib/analytics";
 
 export function LanguageToggle() {
-    const currentLocale = i18n.locale || "en";
+    const { state } = useSidebar();
+    const collapsed = state === "collapsed";
 
     async function setLocale(locale: "en" | "ro"): Promise<void> {
-        if (locale === currentLocale) return;
         await dynamicActivate(locale);
         try {
             window.localStorage.setItem("locale", locale);
@@ -22,25 +16,30 @@ export function LanguageToggle() {
         try {
             document.documentElement.setAttribute("lang", locale);
         } catch { }
+        Analytics.capture(Analytics.EVENTS.LanguageChanged, { locale });
     }
 
     return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon">
-                    <Globe className="h-[1.2rem] w-[1.2rem]" />
-                    <span className="sr-only"><Trans>Toggle language</Trans></span>
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setLocale("en")}>
-                    <Trans>English</Trans>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setLocale("ro")}>
-                    <Trans>Romanian</Trans>
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenu>
+        <SidebarGroup>
+            <SidebarMenu>
+                <SidebarMenuItem>
+                    <SidebarMenuButton asChild onClick={() => setLocale("en")}>
+                        <Button variant="ghost" size="icon">
+                            <span>🇬🇧</span>
+                            {!collapsed && <span className="flex-1"><Trans>English</Trans></span>}
+                        </Button>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                    <SidebarMenuButton asChild onClick={() => setLocale("ro")}>
+                        <Button variant="ghost" size="icon">
+                            <span>🇷🇴</span>
+                            {!collapsed && <span className="flex-1"><Trans>Romanian</Trans></span>}
+                        </Button>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+            </SidebarMenu>
+        </SidebarGroup>
     );
 }
 

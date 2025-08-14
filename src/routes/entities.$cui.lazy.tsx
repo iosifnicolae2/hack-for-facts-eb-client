@@ -19,7 +19,8 @@ import type { EntitySearchSchema } from '@/routes/entities.$cui'
 import { Analytics } from '@/lib/analytics'
 import { Seo } from '@/lib/seo'
 import { buildEntitySeo } from '@/lib/seo-entity'
-import { Trans, t } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
+import { t } from '@lingui/core/macro'
 
 export const Route = createLazyFileRoute('/entities/$cui')({
   component: EntityDetailsPage,

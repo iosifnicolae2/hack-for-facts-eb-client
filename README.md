@@ -77,7 +77,7 @@ yarn i18n:compile
 Use Lingui macros to mark translatable text:
 
 ```tsx
-import { t, Trans } from "@lingui/macro";
+import { t, Trans } from "@lingui/core/macro";
 
 const title = t`Charts`;
 

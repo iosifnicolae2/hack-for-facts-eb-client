@@ -3,7 +3,7 @@ import { EntityDetailsData } from '@/lib/api/entities';
 import { useFinancialData } from '@/hooks/useFinancialData';
 import { FinancialDataCard } from './FinancialDataCard';
 import { EntityLineItemsSkeleton } from './EntityLineItemsSkeleton';
-import { t } from '@lingui/macro';
+import { t } from '@lingui/core/macro';
 
 export interface EntityTopItemsProps {
   lineItems?: EntityDetailsData["executionLineItems"];

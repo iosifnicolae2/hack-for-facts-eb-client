@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { ExternalLink } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
+import { Trans } from '@lingui/react/macro';
 
 interface ChartCardProps {
     chart: Chart;
@@ -47,7 +48,7 @@ function ChartCardComponent({ chart, onYearClick, currentYear }: ChartCardProps)
                 <Button asChild variant="outline" size="sm">
                     <Link to={`/charts/$chartId`} params={{ chartId: chart.id }} search={{ chart: getChartState }} preload="intent">
                         <ExternalLink className="h-4 w-4 mr-2" />
-                        Open in Chart Editor
+                        <Trans>Open in Chart Editor</Trans>
                     </Link>
                 </Button>
             </CardHeader>

@@ -34,7 +34,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { getMergedColumnOrder, moveColumnOrder } from "@/lib/table-utils";
 import { useTablePreferences } from "@/hooks/useTablePreferences";
 import { Pagination } from "@/components/ui/pagination";
-import { Trans, t } from "@lingui/macro";
+import { Trans } from "@lingui/react/macro";
+import { t } from "@lingui/core/macro";
 
 interface HeatmapDataTableProps {
     data: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[];

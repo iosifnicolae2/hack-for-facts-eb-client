@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
 import { TrendingUp, TrendingDown, Scale } from 'lucide-react'; // Example icons
 import { EntityFinancialSummarySkeleton } from './EntityFinancialSummarySkeleton';
-import { t } from '@lingui/macro';
+import { t } from '@lingui/core/macro';
 
 interface EntityFinancialSummaryCardProps {
   title: string;

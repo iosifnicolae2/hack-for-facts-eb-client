@@ -29,7 +29,8 @@ import { useHeatmapData } from "@/hooks/useHeatmapData";
 import { useMapFilter } from "@/hooks/useMapFilter";
 import { FloatingQuickNav } from "@/components/ui/FloatingQuickNav";
 import { Seo } from "@/lib/seo";
-import { Trans, t } from "@lingui/macro";
+import { Trans } from "@lingui/react/macro";
+import { t } from "@lingui/core/macro";
 
 export const Route = createLazyFileRoute("/map")({
   component: MapPage,

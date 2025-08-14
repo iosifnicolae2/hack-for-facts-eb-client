@@ -4,7 +4,8 @@ import { getConsent, setConsent, type ConsentPreferences, onConsentChange, accep
 import { Switch } from '@/components/ui/switch'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Trans, t } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
+import { t } from '@lingui/core/macro'
 
 export const Route = createLazyFileRoute('/cookies')({
   component: CookieSettingsPage,

@@ -15,6 +15,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { getChartsStore } from "@/components/charts/chartsStore";
 import { useClipboard } from "@/lib/hooks/useClipboard";
 import { Analytics } from "@/lib/analytics";
+import { Trans } from "@lingui/react/macro";
 
 export type ConflictStrategy = 'skip' | 'replace' | 'keep-both';
 
@@ -177,11 +178,11 @@ export function ChartsBackupRestore({ onAfterImport }: ChartsBackupRestoreProps)
     <>
       <Button variant="outline" onClick={handleExportBackup} className="h-11 px-4">
         <Download className="mr-2 h-5 w-5" />
-        Backup
+        <Trans>Backup</Trans>
       </Button>
       <Button variant="outline" onClick={handleStartImport} className="h-11 px-4">
         <Upload className="mr-2 h-5 w-5" />
-        Restore
+        <Trans>Restore</Trans>
       </Button>
       <input
         ref={fileInputRef}

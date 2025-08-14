@@ -6,7 +6,7 @@ import { EntitySearchInput } from './EntitySearch';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useHotkeys } from 'react-hotkeys-hook';
-import { t } from '@lingui/macro';
+import { t } from '@lingui/core/macro';
 
 interface FloatingEntitySearchProps {
     className?: string;

@@ -7,7 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { UatDisplay } from './UatDisplay';
 import { useExternalSearchLink } from '@/lib/hooks/useExternalSearchLink';
 import { useEntityTypeLabel } from '@/hooks/filters/useFilterLabels';
-import { Trans, t } from '@lingui/macro';
+import { Trans } from '@lingui/react/macro';
+import { t } from '@lingui/core/macro';
 
 interface EntityInfoProps {
     entity: Pick<EntityDetailsData, 'name' | 'cui' | 'entity_type' | 'address' | 'uat' | 'children' | 'parents'>;

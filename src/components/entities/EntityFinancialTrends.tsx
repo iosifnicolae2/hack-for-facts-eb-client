@@ -10,7 +10,8 @@ import { Link } from '@tanstack/react-router';
 import { Button } from '@/components/ui/button';
 import { useParams } from '@tanstack/react-router';
 import { buildEntityIncomeExpenseChartLink } from '@/lib/chart-links';
-import { Trans, t } from '@lingui/macro';
+import { Trans } from '@lingui/react/macro';
+import { t } from '@lingui/core/macro';
 
 interface EntityFinancialTrendsProps {
   incomeTrend?: EntityDetailsData['incomeTrend'];

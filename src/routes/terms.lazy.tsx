@@ -1,7 +1,8 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Link } from '@tanstack/react-router'
 import { Seo } from '@/lib/seo'
-import { Trans, t } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
+import { t } from '@lingui/core/macro'
 
 export const Route = createLazyFileRoute('/terms')({
   component: TermsPage,

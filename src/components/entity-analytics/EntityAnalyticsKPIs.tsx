@@ -1,7 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { formatCurrency, formatNumberRO } from '@/lib/utils'
 import type { EntityAnalyticsDataPoint } from '@/schemas/entity-analytics'
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 
 interface Props {
   data: readonly EntityAnalyticsDataPoint[]

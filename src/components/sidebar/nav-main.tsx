@@ -9,7 +9,7 @@ import {
   SidebarMenuButton,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Trans } from "@lingui/macro";
+import { Trans } from "@lingui/react/macro";
 
 const mainItems = [
   {

@@ -2,7 +2,7 @@ import React from 'react';
 import { getHeatmapColor } from './utils';
 import { formatCurrency } from '@/lib/utils';
 import { cn } from '@/lib/utils';
-import { t } from '@lingui/macro';
+import { t } from '@lingui/core/macro';
 
 interface MapLegendProps {
   min: number;

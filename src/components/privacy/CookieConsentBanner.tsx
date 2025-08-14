@@ -8,7 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { onConsentChange } from "@/lib/consent";
 import { Analytics } from "@/lib/analytics";
-import { Trans, t } from "@lingui/macro";
+import { Trans } from "@lingui/react/macro";
+import { t } from "@lingui/core/macro";
 
 /**
  * CookieConsentBanner

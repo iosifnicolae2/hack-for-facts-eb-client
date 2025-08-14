@@ -2,7 +2,7 @@ import { ReactNode, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Filter as FilterIcon, X } from 'lucide-react'
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
 
 interface Props {
   filters: ReactNode

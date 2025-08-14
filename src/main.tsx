@@ -53,7 +53,7 @@ if (env.VITE_POSTHOG_ENABLED) {
       app_name: env.VITE_APP_NAME,
       environment: env.VITE_APP_ENVIRONMENT,
     });
-  } catch {}
+  } catch { }
 }
 
 const App = () => {
@@ -65,6 +65,7 @@ const App = () => {
       cleanupSentry();
     }
   }, [hasConsent]);
+
   return (
     <PostHogProvider
       apiKey={env.VITE_POSTHOG_API_KEY || ""}

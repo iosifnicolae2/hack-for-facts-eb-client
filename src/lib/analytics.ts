@@ -46,6 +46,8 @@ const EVENTS = {
   EntityAnalyticsExportCsv: "entity_analytics_export_csv",
 
   CookieConsentChanged: "cookie_consent_changed",
+  LanguageChanged: "language_changed",
+  DefaultLanguage: "default_language",
 } as const;
 
 export type AnalyticsEventName = typeof EVENTS[keyof typeof EVENTS];

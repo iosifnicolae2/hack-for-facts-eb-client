@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { BarChart2Icon } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
 import { generateChartFromTopGroups } from "@/lib/chart-generation-utils";
-import { Trans } from "@lingui/macro";
+import { Trans } from "@lingui/react/macro";
 
 interface EntityAnalyticsLineItemsProps {
   filter: AnalyticsFilterType;

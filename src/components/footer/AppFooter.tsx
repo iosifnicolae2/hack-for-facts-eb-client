@@ -3,7 +3,8 @@ import { Link } from "@tanstack/react-router";
 import { MessageSquare } from "lucide-react";
 import { openSentryFeedback } from "@/lib/sentry";
 import { useSentryConsent } from "@/hooks/useSentryConsent";
-import { Trans, t } from "@lingui/macro";
+import { Trans } from "@lingui/react/macro";
+import { t } from "@lingui/core/macro";
 
 /**
  * App-wide footer displayed at the bottom of the main layout.

@@ -1,9 +1,5 @@
 /// <reference types="vite/client" />
 
-declare module "@lingui/macro";
-declare module "@lingui/react";
-declare module "@lingui/core";
-
 interface ImportMetaEnv {
   readonly PYODIDE_CDN_URL: string;
   readonly VITE_SENTRY_ENABLED?: string;

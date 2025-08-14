@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from "./theme-provider";
-import { Trans } from "@lingui/react";
+import { Trans } from "@lingui/react/macro";
 
 export function ModeToggle() {
   const { setTheme } = useTheme()

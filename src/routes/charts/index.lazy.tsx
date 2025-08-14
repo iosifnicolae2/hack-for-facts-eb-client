@@ -20,7 +20,8 @@ import { usePersistedState } from "@/lib/hooks/usePersistedState";
 import { ChartCategories } from "@/components/charts/components/chart-categories/ChartCategories";
 import ChartsBackupRestore from "@/components/charts/components/backup-restore/ChartsBackupRestore";
 import { Seo } from "@/lib/seo";
-import { Trans, t } from "@lingui/macro";
+import { Trans } from "@lingui/react/macro";
+import { t } from "@lingui/core/macro";
 
 export const Route = createLazyFileRoute("/charts/")({
   component: ChartsListPage,

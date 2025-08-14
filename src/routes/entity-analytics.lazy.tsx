@@ -17,7 +17,8 @@ import { EntityAnalyticsLineItems } from '@/components/entity-analytics/EntityAn
 import { generateHash } from '@/lib/utils'
 import { Analytics } from '@/lib/analytics'
 import { Seo } from '@/lib/seo'
-import { Trans, t } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
+import { t } from '@lingui/core/macro'
 
 export const Route = createLazyFileRoute('/entity-analytics')({
   component: EntityAnalyticsPage,

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from '@tanstack/react-router';
 import { Download, FileText, Landmark, Calendar } from 'lucide-react';
 import { EntityReportsSkeleton } from './EntityReportsSkeleton';
-import { Trans } from '@lingui/macro';
+import { Trans } from '@lingui/react/macro';
 
 type Report = NonNullable<EntityDetailsData['reports']>['nodes'][0];
 

@@ -3,7 +3,6 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "@/compone
 import Logo from "./logo";
 import { NavMain } from "./nav-main";
 import { useLocation } from "@tanstack/react-router";
-import { ModeToggle } from "@/components/theme/mode-toggle";
 import { LanguageToggle } from "@/components/theme/language-toggle";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -27,7 +26,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter>
         <div className="flex items-center gap-2">
           <LanguageToggle />
-          <ModeToggle />
         </div>
       </SidebarFooter>
     </Sidebar>

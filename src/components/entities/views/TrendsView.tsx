@@ -9,7 +9,7 @@ import { FinancialDataCard } from '../FinancialDataCard';
 import { ChartCard } from './ChartCard';
 import { TrendsViewSkeleton } from './TrendsViewSkeleton';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { t } from '@lingui/macro';
+import { t } from '@lingui/core/macro';
 
 interface BaseTrendsViewProps {
   entity?: EntityDetailsData;
