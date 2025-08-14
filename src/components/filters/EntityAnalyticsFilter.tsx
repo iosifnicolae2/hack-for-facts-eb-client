@@ -322,7 +322,7 @@ export function EntityAnalyticsFilter() {
         <FilterContainer
           title={t`Is UAT`}
           icon={<ArrowUpDown className="w-4 h-4" />}
-          selectedOptions={filter.is_uat === undefined ? [] : [{ id: 'is_uat', label: filter.is_uat ? "UAT: Yes" : "UAT: No" }]}
+          selectedOptions={filter.is_uat === undefined ? [] : [{ id: 'is_uat', label: filter.is_uat ? t`UAT: Yes` : t`UAT: No` }]}
           onClearOption={() => setIsUat(undefined)}
           onClearAll={() => setIsUat(undefined)}
         >

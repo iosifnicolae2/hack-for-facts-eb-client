@@ -21,6 +21,8 @@ import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
 import { FilterRadioContainer } from "./base-filter/FilterRadioContainer";
 import { ReportTypeFilter } from "./report-type-filter";
+import { IsUatFilter } from './flags-filter';
+import { FilterContainer } from './base-filter/FilterContainer';
 
 export function MapFilter() {
     const {
@@ -50,6 +52,7 @@ export function MapFilter() {
         setAggregateMinAmount,
         setAggregateMaxAmount,
         setReportType,
+        setIsUat,
     } = useMapFilter();
 
     const totalOptionalFilters =
@@ -69,6 +72,7 @@ export function MapFilter() {
         (mapState.filters.aggregate_min_amount ? 1 : 0) +
         (mapState.filters.aggregate_max_amount ? 1 : 0) +
         (mapState.filters.report_type ? 1 : 0) +
+        (mapState.filters.is_uat !== undefined ? 1 : 0) +
         (mapState.filters.min_population ? 1 : 0) +
         (mapState.filters.max_population ? 1 : 0);
 
@@ -246,6 +250,16 @@ export function MapFilter() {
                         setReportType={(v) => setReportType(v as 'Executie bugetara agregata la nivel de ordonator principal' | 'Executie bugetara detaliata' | undefined)}
                     />
                 </FilterRadioContainer>
+
+                <FilterContainer
+                    title={t`Is UAT`}
+                    icon={<ArrowUpDown className="w-4 h-4" />}
+                    selectedOptions={mapState.filters.is_uat === undefined ? [] : [{ id: 'is_uat', label: mapState.filters.is_uat ? t`UAT: Yes` : t`UAT: No` }]}
+                    onClearOption={() => setIsUat(true)}
+                    onClearAll={() => setIsUat(true)}
+                >
+                    <IsUatFilter isUat={mapState.filters.is_uat} setIsUat={setIsUat} />
+                </FilterContainer>
 
                 <FilterRangeContainer
                     title={t`Amount Range`}
