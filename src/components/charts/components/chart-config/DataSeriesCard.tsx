@@ -5,6 +5,7 @@ import { Plus } from 'lucide-react';
 import { SeriesList } from './SeriesList';
 import { SeriesToolbar } from './SeriesToolbar';
 import { useChartStore } from '../../hooks/useChartStore';
+import { Trans } from '@lingui/react/macro';
 
 export const DataSeriesCard = React.memo(() => {
     const { addSeries } = useChartStore();
@@ -13,12 +14,12 @@ export const DataSeriesCard = React.memo(() => {
             <CardHeader>
                 <div className="flex items-center justify-between">
                     <div>
-                        <CardTitle>Data Series</CardTitle>
-                        <CardDescription>Add and manage data series for your chart</CardDescription>
+                        <CardTitle><Trans>Data Series</Trans></CardTitle>
+                        <CardDescription><Trans>Add and manage data series for your chart</Trans></CardDescription>
                     </div>
                     <Button onClick={addSeries} className="gap-2">
                         <Plus className="h-4 w-4" />
-                        Add Series
+                        <Trans>Add Series</Trans>
                     </Button>
                 </div>
             </CardHeader>

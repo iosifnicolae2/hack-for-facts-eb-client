@@ -3,6 +3,8 @@ import { ClipboardPaste } from 'lucide-react';
 import { useChartStore } from '../../hooks/useChartStore';
 import { CopiedSeriesSchema, Series } from '@/schemas/charts';
 import { toast } from 'sonner';
+import { Trans } from '@lingui/react/macro';
+import { t } from '@lingui/core/macro';
 
 export function SeriesToolbar() {
   const { chart, setSeries } = useChartStore();
@@ -13,7 +15,7 @@ export function SeriesToolbar() {
       const parsed = JSON.parse(text);
       const validated = CopiedSeriesSchema.safeParse(parsed);
       if (!validated.success) {
-        toast.warning('Nothing to paste', { description: 'Clipboard does not contain copied chart series.' });
+        toast.warning(t`Nothing to paste`, { description: t`Clipboard does not contain copied chart series.` });
         return;
       }
       const newSeriesData: Series[] = validated.data.payload as Series[];
@@ -32,9 +34,9 @@ export function SeriesToolbar() {
       <div className="flex items-center gap-2 text-muted-foreground">
         <Button variant="outline" size="sm" onClick={handlePaste} className="gap-2">
           <ClipboardPaste className="h-4 w-4" />
-          Paste
+          <Trans>Paste</Trans>
         </Button>
-        <span className="hidden md:block text-xs">Tip: Copy/Cut/Paste with ⌘/Ctrl+C, X, V. Duplicate with ⌘/Ctrl+D.</span>
+        <span className="hidden md:block text-xs"><Trans>Tip: Copy/Cut/Paste with ⌘/Ctrl+C, X, V. Duplicate with ⌘/Ctrl+D.</Trans></span>
       </div>
     </div>
   );

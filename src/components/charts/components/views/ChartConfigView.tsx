@@ -10,6 +10,7 @@ import { Trash2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { AnnotationsList } from '../chart-annotations/AnnotationsList';
 import { FilterBulkEdit } from '../chart-config/FilterBulkEdit';
+import { Trans } from '@lingui/react/macro';
 
 export function ChartConfigView() {
     const { chart, updateChart, goToOverview, deleteChart } = useChartStore();
@@ -32,14 +33,16 @@ export function ChartConfigView() {
                 </Breadcrumb>
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Chart Configuration</h1>
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            <Trans>Chart Configuration</Trans>
+                        </h1>
                         <p className="text-muted-foreground">{chart.title || 'Untitled Chart'}</p>
                     </div>
 
                     <div className="flex items-center gap-2">
                         <Button onClick={goToOverview} className="gap-2">
                             <Eye className="h-4 w-4" />
-                            View Chart
+                            <Trans>View Chart</Trans>
                         </Button>
                     </div>
                 </div>
@@ -66,26 +69,28 @@ export function ChartConfigView() {
             <Card>
                 <CardContent className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-6">
                     <div>
-                        <p className="font-medium">Delete Chart</p>
-                        <p className="text-sm text-muted-foreground">This action cannot be undone. It will permanently remove the chart and its configuration.</p>
+                        <p className="font-medium"><Trans>Delete Chart</Trans></p>
+                        <p className="text-sm text-muted-foreground"><Trans>This action cannot be undone. It will permanently remove the chart and its configuration.</Trans></p>
                     </div>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="destructive" className="gap-2">
                                 <Trash2 className="h-4 w-4" />
-                                Delete Chart
+                                <Trans>Delete Chart</Trans>
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-64">
-                            <DropdownMenuLabel>Delete this chart?</DropdownMenuLabel>
+                            <DropdownMenuLabel><Trans>Delete this chart?</Trans></DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                                 className="text-destructive focus:bg-destructive focus:text-white"
                                 onClick={deleteChart}
                             >
-                                Confirm Delete
+                                <Trans>Confirm Delete</Trans>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>Cancel</DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <Trans>Cancel</Trans>
+                            </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </CardContent>

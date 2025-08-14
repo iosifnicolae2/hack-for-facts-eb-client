@@ -7,6 +7,7 @@ import { ChartTypeSelect } from './ChartTypeSelect';
 import { ColorPicker } from './ColorPicker';
 import { ToggleSwitch } from './ToggleSwitch';
 import { YearRangeSlider } from './YearRangeSlider';
+import { t } from '@lingui/core/macro';
 
 interface GlobalSettingsCardProps {
     chart: Chart;
@@ -30,20 +31,20 @@ export const GlobalSettingsCard = React.memo(({ chart, onUpdateChart }: GlobalSe
     return (
         <SettingsCard
             icon={getChartTypeIcon(chart.config.chartType)}
-            title="Global Chart Settings"
-            description="Default settings that apply to all series (can be overridden per series)"
+            title={t`Global Chart Settings`}
+            description={t`Default settings that apply to all series (can be overridden per series)`}
         >
             <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                        <Label>Chart Type</Label>
+                        <Label>{t`Chart Type`}</Label>
                         <ChartTypeSelect
                             value={chart.config.chartType}
                             onValueChange={(value) => handleConfigChange({ chartType: value })}
                         />
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="default-color">Default Color</Label>
+                        <Label htmlFor="default-color">{t`Default Color`}</Label>
                         <ColorPicker
                             value={chart.config.color}
                             onChange={(value) => handleConfigChange({ color: value })}
@@ -57,13 +58,13 @@ export const GlobalSettingsCard = React.memo(({ chart, onUpdateChart }: GlobalSe
                     max={maxYear}
                 />
                 <div className="grid grid-cols-2 gap-4">
-                    <ToggleSwitch id="show-grid-lines" label="Show Grid Lines" checked={chart.config.showGridLines ?? false} onCheckedChange={(checked) => handleConfigChange({ showGridLines: checked })} />
-                    <ToggleSwitch id="show-legend" label="Show Legend" checked={chart.config.showLegend ?? false} onCheckedChange={(checked) => handleConfigChange({ showLegend: checked })} />
-                    <ToggleSwitch id="show-data-labels" label="Show Data Labels" checked={chart.config.showDataLabels ?? false} onCheckedChange={(checked) => handleConfigChange({ showDataLabels: checked })} />
-                    <ToggleSwitch id="show-relative-values" label="Show Relative Values (%)" checked={chart.config.showRelativeValues ?? false} onCheckedChange={(checked) => handleConfigChange({ showRelativeValues: checked })} />
-                    <ToggleSwitch id="show-tooltip" label="Show Tooltip" checked={chart.config.showTooltip ?? false} onCheckedChange={(checked) => handleConfigChange({ showTooltip: checked })} />
-                    <ToggleSwitch id="show-annotations" label="Show Annotations" checked={chart.config.showAnnotations ?? false} onCheckedChange={(checked) => handleConfigChange({ showAnnotations: checked })} />
-                    <ToggleSwitch id="edit-annotations" label="Edit Annotations" checked={chart.config.editAnnotations ?? false} onCheckedChange={(checked) => handleConfigChange({ editAnnotations: checked })} />
+                    <ToggleSwitch id="show-grid-lines" label={t`Show Grid Lines`} checked={chart.config.showGridLines ?? false} onCheckedChange={(checked) => handleConfigChange({ showGridLines: checked })} />
+                    <ToggleSwitch id="show-legend" label={t`Show Legend`} checked={chart.config.showLegend ?? false} onCheckedChange={(checked) => handleConfigChange({ showLegend: checked })} />
+                    <ToggleSwitch id="show-data-labels" label={t`Show Data Labels`} checked={chart.config.showDataLabels ?? false} onCheckedChange={(checked) => handleConfigChange({ showDataLabels: checked })} />
+                    <ToggleSwitch id="show-relative-values" label={t`Show Relative Values (%)`} checked={chart.config.showRelativeValues ?? false} onCheckedChange={(checked) => handleConfigChange({ showRelativeValues: checked })} />
+                    <ToggleSwitch id="show-tooltip" label={t`Show Tooltip`} checked={chart.config.showTooltip ?? false} onCheckedChange={(checked) => handleConfigChange({ showTooltip: checked })} />
+                    <ToggleSwitch id="show-annotations" label={t`Show Annotations`} checked={chart.config.showAnnotations ?? false} onCheckedChange={(checked) => handleConfigChange({ showAnnotations: checked })} />
+                    <ToggleSwitch id="edit-annotations" label={t`Edit Annotations`} checked={chart.config.editAnnotations ?? false} onCheckedChange={(checked) => handleConfigChange({ editAnnotations: checked })} />
                 </div>
             </div>
         </SettingsCard>

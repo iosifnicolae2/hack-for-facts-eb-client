@@ -141,14 +141,14 @@ export function SeriesConfigView() {
                 onValueChange={(value) => updateSeriesField('type', value)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder={t`Select series type`} />
+                  <SelectValue placeholder={t`Select Series Type`} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="line-items-aggregated-yearly">Line Items Aggregated Yearly</SelectItem>
-                  <SelectItem value="aggregated-series-calculation">Aggregated Series Calculation</SelectItem>
-                  <SelectItem value="custom-series">Custom Series</SelectItem>
-                  <SelectItem value="custom-series-value">Custom Series Value</SelectItem>
-                  <SelectItem value="static-series">Static Series</SelectItem>
+                  <SelectItem value="line-items-aggregated-yearly"><Trans>Line Items Aggregated Yearly</Trans></SelectItem>
+                  <SelectItem value="aggregated-series-calculation"><Trans>Aggregated Series Calculation</Trans></SelectItem>
+                  <SelectItem value="custom-series"><Trans>Custom Series</Trans></SelectItem>
+                  <SelectItem value="custom-series-value"><Trans>Custom Series Value</Trans></SelectItem>
+                  <SelectItem value="static-series"><Trans>Static Series</Trans></SelectItem>
                 </SelectContent>
               </Select>
             </div>
