@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
-import { TrendingUp, TrendingDown, Scale } from 'lucide-react'; // Example icons
+import { TrendingUp, TrendingDown, Scale, BadgeEuro } from 'lucide-react';
 import { EntityFinancialSummarySkeleton } from './EntityFinancialSummarySkeleton';
 import { t } from '@lingui/core/macro';
 
@@ -29,7 +29,12 @@ export const EntityFinancialSummaryCard: React.FC<EntityFinancialSummaryCardProp
       </CardHeader>
       <CardContent className="flex flex-col items-center justify-center">
         <p className="text-4xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">{displayValueCompact}</p>
-        <p className="text-sm text-muted-foreground">{displayValueStandard}</p>
+        <p className="flex items-center gap-1">
+          <span className="text-sm text-muted-foreground">{displayValueStandard}</span>
+          <a href={`https://www.google.com/search?q=${displayValueStandard} to euro`} target="_blank" rel="noopener noreferrer" className="text-muted-foreground">
+            <BadgeEuro className="h-4 w-4" />
+          </a>
+        </p>
         {/* You could add a small percentage change here if data is available */}
         {/* <p className="text-xs text-muted-foreground">+20.1% from last month</p> */}
       </CardContent>
