@@ -2,6 +2,7 @@ import React from 'react';
 import { getHeatmapColor } from './utils';
 import { formatCurrency } from '@/lib/utils';
 import { cn } from '@/lib/utils';
+import { t } from '@lingui/macro';
 
 interface MapLegendProps {
   min: number;
@@ -20,7 +21,7 @@ export const MapLegend: React.FC<MapLegendProps> = ({
   min,
   max,
   className = '',
-  title = 'Aggregated Value (RON)',
+  title = t`Aggregated Value (RON)`,
   isInModal = false,
 }) => {
   if (typeof min !== 'number' || typeof max !== 'number' || min > max) {
@@ -36,7 +37,7 @@ export const MapLegend: React.FC<MapLegendProps> = ({
           <div
             className="w-5 h-5 border border-border"
             style={{ backgroundColor: color }}
-            aria-label={`Color for value ${formatLegendValue(min)}`}
+            aria-label={t`Color for value ${formatLegendValue(min)}`}
           />
           <span className={cn("text-xs", isInModal ? 'text-foreground' : 'text-card-foreground')}>{formatLegendValue(min)}</span>
         </div>

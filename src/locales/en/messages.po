@@ -1,0 +1,1043 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-08-14 00:00+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/routes/index.lazy.tsx:44
+#~ msgid "{title}"
+#~ msgstr "{title}"
+
+#: src/components/footer/AppFooter.tsx:146
+msgid "© {currentYear} Transparenta.eu. Toate drepturile rezervate."
+msgstr "© {currentYear} Transparenta.eu. Toate drepturile rezervate."
+
+#: src/routes/cookie-policy.lazy.tsx:34
+msgid "<0>Analytics (opt-in)</0>: PostHog custom events only (no autocapture)."
+msgstr "<0>Analytics (opt-in)</0>: PostHog custom events only (no autocapture)."
+
+#: src/routes/terms.lazy.tsx:39
+msgid "<0>Data Accuracy Is Not Guaranteed:</0> The financial data is sourced from third-party government portals. We do not create, verify, or audit this data and are not responsible for any errors, omissions, or inaccuracies it may contain. You acknowledge that the data may be incomplete, out of date, or incorrect."
+msgstr "<0>Data Accuracy Is Not Guaranteed:</0> The financial data is sourced from third-party government portals. We do not create, verify, or audit this data and are not responsible for any errors, omissions, or inaccuracies it may contain. You acknowledge that the data may be incomplete, out of date, or incorrect."
+
+#: src/routes/terms.lazy.tsx:38
+msgid "<0>Disclaimer of Warranties and Guarantees:</0> The Service and all data, content, and visualizations are provided on an “as is” and “as available” basis, without any warranties or guarantees of any kind, express or implied. We explicitly disclaim all warranties, including but not limited to warranties of merchantability, fitness for a particular purpose, accuracy, completeness, timeliness, reliability, or non-infringement. We do not guarantee that the Service will be uninterrupted, error-free, or secure."
+msgstr "<0>Disclaimer of Warranties and Guarantees:</0> The Service and all data, content, and visualizations are provided on an “as is” and “as available” basis, without any warranties or guarantees of any kind, express or implied. We explicitly disclaim all warranties, including but not limited to warranties of merchantability, fitness for a particular purpose, accuracy, completeness, timeliness, reliability, or non-infringement. We do not guarantee that the Service will be uninterrupted, error-free, or secure."
+
+#: src/routes/terms.lazy.tsx:45
+msgid "<0>Duty to Verify:</0> You are solely responsible for independently verifying all information against original, official sources before using it for any purpose, including but not limited to journalistic, academic, financial, or legal matters. The content on this site is for general informational purposes only and is not professional, financial, or legal advice."
+msgstr "<0>Duty to Verify:</0> You are solely responsible for independently verifying all information against original, official sources before using it for any purpose, including but not limited to journalistic, academic, financial, or legal matters. The content on this site is for general informational purposes only and is not professional, financial, or legal advice."
+
+#: src/routes/cookie-policy.lazy.tsx:35
+msgid "<0>Enhanced error reporting (opt-in)</0>: Sentry optional context."
+msgstr "<0>Enhanced error reporting (opt-in)</0>: Sentry optional context."
+
+#: src/routes/cookie-policy.lazy.tsx:33
+msgid "<0>Essential</0>: consent preferences and core UI state."
+msgstr "<0>Essential</0>: consent preferences and core UI state."
+
+#: src/routes/terms.lazy.tsx:44
+msgid "<0>Full Assumption of Risk:</0> Your use of the Service and reliance on any information or visualization provided is done entirely at your own risk. You are solely responsible for any decisions made or actions taken based on this information."
+msgstr "<0>Full Assumption of Risk:</0> Your use of the Service and reliance on any information or visualization provided is done entirely at your own risk. You are solely responsible for any decisions made or actions taken based on this information."
+
+#: src/routes/terms.lazy.tsx:46
+msgid "<0>Lawful Use:</0> You agree to use the Service only for lawful purposes and in a manner that does not harm the Service or its users. You must not remove or obscure any attribution notices on exported content."
+msgstr "<0>Lawful Use:</0> You agree to use the Service only for lawful purposes and in a manner that does not harm the Service or its users. You must not remove or obscure any attribution notices on exported content."
+
+#: src/routes/terms.lazy.tsx:37
+msgid "<0>No Government Affiliation:</0> Transparenta.eu is an independent project and is not affiliated with, authorized, maintained, sponsored, or endorsed by any Romanian government entity."
+msgstr "<0>No Government Affiliation:</0> Transparenta.eu is an independent project and is not affiliated with, authorized, maintained, sponsored, or endorsed by any Romanian government entity."
+
+#: src/routes/terms.lazy.tsx:58
+msgid "<0>Recommended:</0> Chart: „Titlul Graficului” | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
+msgstr "<0>Recommended:</0> Chart: „Titlul Graficului” | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
+
+#: src/routes/cookies.lazy.tsx:105
+msgid "Accept all"
+msgstr "Accept all"
+
+#: src/routes/terms.lazy.tsx:31
+msgid "Acceptance"
+msgstr "Acceptance"
+
+#: src/components/entities/EntityInfo.tsx:56
+msgid "Adresă:"
+msgstr "Adresă:"
+
+#: src/components/maps/MapLegend.tsx:24
+msgid "Aggregated Value (RON)"
+msgstr "Aggregated Value (RON)"
+
+#: src/routes/map.lazy.tsx:195
+msgid "Aggregated Value Legend"
+msgstr "Aggregated Value Legend"
+
+#: src/routes/charts/index.lazy.tsx:230
+#~ msgid "All"
+#~ msgstr "All"
+
+#: src/routes/cookies.lazy.tsx:45
+msgid "Always enabled"
+msgstr "Always enabled"
+
+#: src/routes/cookie-policy.lazy.tsx:24
+msgid "Analytics and enhanced error reporting are opt-in."
+msgstr "Analytics and enhanced error reporting are opt-in."
+
+#: src/routes/privacy.lazy.tsx:24
+msgid "Analytics and enhanced error reporting only with your consent."
+msgstr "Analytics and enhanced error reporting only with your consent."
+
+#: src/routes/cookies.lazy.tsx:51
+msgid "Analytics cookies (PostHog)"
+msgstr "Analytics cookies (PostHog)"
+
+#: src/routes/entity-analytics.lazy.tsx:117
+msgid "Analyze aggregated values per entity and explore top entities by amount and per capita."
+msgstr "Analyze aggregated values per entity and explore top entities by amount and per capita."
+
+#: src/routes/entity-analytics.lazy.tsx:121
+msgid "Analyze aggregated values per entity and explore top entities."
+msgstr "Analyze aggregated values per entity and explore top entities."
+
+#: src/routes/cookies.lazy.tsx:60
+msgid "Anonymous usage patterns, page views, interactions."
+msgstr "Anonymous usage patterns, page views, interactions."
+
+#: src/routes/cookie-policy.lazy.tsx:21
+#: src/routes/privacy.lazy.tsx:21
+#: src/routes/terms.lazy.tsx:22
+msgid "At a Glance"
+msgstr "At a Glance"
+
+#: src/routes/terms.lazy.tsx:64
+msgid "Availability and changes"
+msgstr "Availability and changes"
+
+#: src/components/entity-analytics/EntityAnalyticsKPIs.tsx:35
+msgid "Avg per-capita"
+msgstr "Avg per-capita"
+
+#: src/components/footer/AppFooter.tsx:176
+#~ msgid "Back to top"
+#~ msgstr "Back to top"
+
+#: src/components/entities/EntityFinancialTrends.tsx:159
+msgid "Balanță"
+msgstr "Balanță"
+
+#: src/routes/entity-analytics.lazy.tsx:152
+msgid "Both"
+msgstr "Both"
+
+#: src/routes/charts/index.lazy.tsx:159
+#~ msgid "Build and manage custom visualizations of public spending data."
+#~ msgstr "Build and manage custom visualizations of public spending data."
+
+#: src/routes/terms.lazy.tsx:32
+msgid "By using the Service, you agree to these Terms. If you disagree, please do not use the Service."
+msgstr "By using the Service, you agree to these Terms. If you disagree, please do not use the Service."
+
+#: src/routes/cookie-policy.lazy.tsx:31
+msgid "Categories"
+msgstr "Categories"
+
+#: src/components/filters/budget-sector-filter/BudgetSectorFilter.tsx:67
+msgid "Cauta sectoare bugetare"
+msgstr "Cauta sectoare bugetare"
+
+#: src/routes/privacy.lazy.tsx:66
+msgid "Changes"
+msgstr "Changes"
+
+#: src/routes/charts/$chartId/index.lazy.tsx:29
+msgid "Chart – Transparenta.eu"
+msgstr "Chart – Transparenta.eu"
+
+#: src/routes/map.lazy.tsx:236
+#~ msgid "Chart data is loading or not available."
+#~ msgstr "Chart data is loading or not available."
+
+#: src/components/footer/AppFooter.tsx:94
+#: src/components/sidebar/nav-main.tsx:31
+#: src/routes/charts/index.lazy.tsx:156
+#~ msgid "Charts"
+#~ msgstr "Charts"
+
+#: src/components/entities/EntityFinancialTrends.tsx:158
+msgid "Cheltuieli"
+msgstr "Cheltuieli"
+
+#: src/components/entities/EntityFinancialSummary.tsx:57
+msgid "Cheltuieli totale"
+msgstr "Cheltuieli totale"
+
+#: src/routes/privacy.lazy.tsx:63
+msgid "Children"
+msgstr "Children"
+
+#: src/routes/entity-analytics.lazy.tsx:136
+msgid "Clear filters"
+msgstr "Clear filters"
+
+#: src/components/filters/base-filter/SearchInput.tsx:55
+msgid "Clear search"
+msgstr "Clear search"
+
+#: src/components/maps/MapLegend.tsx:40
+msgid "Color for value {0}"
+msgstr "Color for value {0}"
+
+#: src/components/maps/HeatmapDataTable.tsx:124
+#: src/components/maps/HeatmapDataTable.tsx:183
+#: src/components/maps/HeatmapDataTable.tsx:237
+#: src/components/maps/HeatmapDataTable.tsx:291
+#: src/components/maps/HeatmapDataTable.tsx:352
+#~ msgid "Column"
+#~ msgstr "Column"
+
+#: src/routes/entity-analytics.lazy.tsx:154
+msgid "Columns"
+msgstr "Columns"
+
+#: src/routes/entity-analytics.lazy.tsx:146
+msgid "Comfortable"
+msgstr "Comfortable"
+
+#: src/routes/entity-analytics.lazy.tsx:147
+#: src/routes/entity-analytics.lazy.tsx:151
+msgid "Compact"
+msgstr "Compact"
+
+#: src/routes/charts/$chartId/index.lazy.tsx:34
+#: src/routes/charts/$chartId/index.lazy.tsx:36
+#~ msgid "Configure Chart"
+#~ msgstr "Configure Chart"
+
+#: src/routes/charts/$chartId/index.lazy.tsx:29
+msgid "Configure chart – Transparenta.eu"
+msgstr "Configure chart – Transparenta.eu"
+
+#: src/routes/charts/$chartId/index.lazy.tsx:30
+msgid "Configure chart options, series, and annotations."
+msgstr "Configure chart options, series, and annotations."
+
+#: src/routes/terms.lazy.tsx:70
+msgid "Contact"
+msgstr "Contact"
+
+#: src/routes/terms.lazy.tsx:71
+msgid "Contact us at contact@devostack.com. See also our <0>Privacy Policy</0> and <1>Cookie Policy</1>."
+msgstr "Contact us at contact@devostack.com. See also our <0>Privacy Policy</0> and <1>Cookie Policy</1>."
+
+#: src/routes/privacy.lazy.tsx:32
+msgid "Controller: Claudiu Constantin Bogdan, persoana fizica. Contact: contact@devostack.com."
+msgstr "Controller: Claudiu Constantin Bogdan, persoana fizica. Contact: contact@devostack.com."
+
+#: src/components/privacy/CookieConsentBanner.tsx:51
+msgid "Cookie consent"
+msgstr "Cookie consent"
+
+#: src/routes/cookie-policy.lazy.tsx:17
+#: src/routes/cookie-policy.tsx:6
+msgid "Cookie Policy"
+msgstr "Cookie Policy"
+
+#: src/routes/cookie-policy.lazy.tsx:15
+msgid "Cookie Policy – Transparenta.eu"
+msgstr "Cookie Policy – Transparenta.eu"
+
+#: src/components/privacy/CookieConsentBanner.tsx:56
+#~ msgid "Cookie settings"
+#~ msgstr "Cookie settings"
+
+#: src/routes/cookies.lazy.tsx:31
+#: src/routes/cookies.tsx:6
+msgid "Cookie Settings"
+msgstr "Cookie Settings"
+
+#: src/components/filters/budget-sector-filter/BudgetSectorFilter.tsx:75
+msgid "Could Not Load Budget Sectors"
+msgstr "Could Not Load Budget Sectors"
+
+#: src/routes/entity-analytics.lazy.tsx:156
+msgid "County"
+msgstr "County"
+
+#: src/routes/charts/index.lazy.tsx:176
+#~ msgid "Create chart"
+#~ msgstr "Create chart"
+
+#: src/routes/charts/index.lazy.tsx:218
+#~ msgid "Create your first chart"
+#~ msgstr "Create your first chart"
+
+#: src/routes/charts/index.lazy.tsx:214
+#~ msgid "Create your first chart to start visualizing public spending data."
+#~ msgstr "Create your first chart to start visualizing public spending data."
+
+#: src/routes/entity-analytics.lazy.tsx:149
+msgid "Currency"
+msgstr "Currency"
+
+#: src/components/theme/mode-toggle.tsx:30
+#~ msgid "Dark"
+#~ msgstr "Dark"
+
+#: src/components/sidebar/nav-main.tsx:16
+#~ msgid "Dashboard"
+#~ msgstr "Dashboard"
+
+#: src/routes/privacy.lazy.tsx:49
+msgid "Data sources and licensing"
+msgstr "Data sources and licensing"
+
+#: src/routes/map.lazy.tsx:205
+#~ msgid "Data Table View"
+#~ msgstr "Data Table View"
+
+#: src/routes/entity-analytics.lazy.tsx:145
+msgid "Density"
+msgstr "Density"
+
+#: src/components/entities/EntityFinancialTrends.tsx:113
+msgid "Deschide în editorul de grafice"
+msgstr "Deschide în editorul de grafice"
+
+#: src/routes/cookie-policy.lazy.tsx:15
+msgid "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
+msgstr "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
+
+#: src/routes/entities.$cui.lazy.tsx:116
+msgid "Details:"
+msgstr "Details:"
+
+#: src/components/entities/EntityFinancialTrends.tsx:125
+msgid "Diferență % YoY"
+msgstr "Diferență % YoY"
+
+#: src/routes/cookie-policy.lazy.tsx:18
+#: src/routes/privacy.lazy.tsx:17
+#: src/routes/terms.lazy.tsx:18
+msgid "Effective Date: {effectiveDate} • Version: {version}"
+msgstr "Effective Date: {effectiveDate} • Version: {version}"
+
+#: src/routes/cookies.lazy.tsx:87
+msgid "Enhanced error reporting"
+msgstr "Enhanced error reporting"
+
+#: src/routes/privacy.lazy.tsx:39
+msgid "Enhanced error reporting via Sentry (consent-only); minimal telemetry otherwise."
+msgstr "Enhanced error reporting via Sentry (consent-only); minimal telemetry otherwise."
+
+#: src/components/entity-analytics/EntityAnalyticsKPIs.tsx:23
+msgid "Entities"
+msgstr "Entities"
+
+#: src/routes/entity-analytics.lazy.tsx:155
+msgid "Entity"
+msgstr "Entity"
+
+#: src/routes/entities.$cui.lazy.tsx:110
+#: src/routes/entities.$cui.lazy.tsx:126
+msgid "Entity {cui} – Not found"
+msgstr "Entity {cui} – Not found"
+
+#: src/components/footer/AppFooter.tsx:84
+#: src/components/sidebar/nav-main.tsx:36
+#~ msgid "Entity Analytics"
+#~ msgstr "Entity Analytics"
+
+#: src/routes/entity-analytics.lazy.tsx:116
+msgid "Entity analytics – Transparenta.eu"
+msgstr "Entity analytics – Transparenta.eu"
+
+#: src/routes/entities.$cui.lazy.tsx:113
+msgid "Error Fetching Entity Details"
+msgstr "Error Fetching Entity Details"
+
+#: src/routes/entity-analytics.lazy.tsx:129
+msgid "Error loading analytics"
+msgstr "Error loading analytics"
+
+#: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:136
+#~ msgid "Error loading data"
+#~ msgstr "Error loading data"
+
+#: src/routes/map.lazy.tsx:143
+#~ msgid "Error loading data:"
+#~ msgstr "Error loading data:"
+
+#: src/routes/cookies.lazy.tsx:77
+msgid "Error reporting (Sentry)"
+msgstr "Error reporting (Sentry)"
+
+#: src/routes/cookies.lazy.tsx:38
+msgid "Essential cookies"
+msgstr "Essential cookies"
+
+#: src/components/privacy/CookieConsentBanner.tsx:59
+#~ msgid "Essential cookies keep the app working. With your permission, we also use analytics (PostHog) and optional error reporting (Sentry) to understand issues and improve Transparenta.eu."
+#~ msgstr "Essential cookies keep the app working. With your permission, we also use analytics (PostHog) and optional error reporting (Sentry) to understand issues and improve Transparenta.eu."
+
+#: src/routes/cookies.lazy.tsx:104
+msgid "Essential only"
+msgstr "Essential only"
+
+#: src/routes/cookie-policy.lazy.tsx:23
+msgid "Essential storage is required for the app to work."
+msgstr "Essential storage is required for the app to work."
+
+#: src/routes/privacy.lazy.tsx:37
+msgid "Essential technical data and consent preferences (legitimate interests)."
+msgstr "Essential technical data and consent preferences (legitimate interests)."
+
+#: src/components/entities/EntityFinancialTrends.tsx:112
+msgid "Evoluție Financiară"
+msgstr "Evoluție Financiară"
+
+#: src/routes/cookie-policy.lazy.tsx:37
+msgid "Examples"
+msgstr "Examples"
+
+#: src/components/entities/EntityLineItems.tsx:67
+#: src/components/entities/views/TrendsView.tsx:152
+#: src/routes/entity-analytics.lazy.tsx:198
+msgid "Expenses"
+msgstr "Expenses"
+
+#: src/routes/map.lazy.tsx:125
+msgid "Explore choropleth maps of public spending by UAT/Judet with per-capita or total normalization."
+msgstr "Explore choropleth maps of public spending by UAT/Judet with per-capita or total normalization."
+
+#: src/routes/entity-analytics.lazy.tsx:162
+msgid "Export CSV"
+msgstr "Export CSV"
+
+#: src/routes/entity-analytics.lazy.tsx:162
+msgid "Exporting…"
+msgstr "Exporting…"
+
+#: src/routes/terms.lazy.tsx:55
+msgid "Exports and attribution"
+msgstr "Exports and attribution"
+
+#: src/routes/terms.lazy.tsx:26
+msgid "Exports must include attribution to data source and Transparenta.eu."
+msgstr "Exports must include attribution to data source and Transparenta.eu."
+
+#: src/routes/charts/index.lazy.tsx:164
+#~ msgid "favorites"
+#~ msgstr "favorites"
+
+#: src/routes/charts/index.lazy.tsx:232
+#~ msgid "Favorites"
+#~ msgstr "Favorites"
+
+#: src/routes/charts/index.lazy.tsx:204
+#~ msgid "Favorites first"
+#~ msgstr "Favorites first"
+
+#: src/components/footer/AppFooter.tsx:157
+#~ msgid "Feedback / Report an issue"
+#~ msgstr "Feedback / Report an issue"
+
+#: src/components/entity-analytics/EntityAnalyticsLayout.tsx:45
+msgid "Filters"
+msgstr "Filters"
+
+#: src/routes/privacy.lazy.tsx:61
+msgid "GDPR rights incl. access, erasure, objection, withdrawal of consent, and complaint to ANSPDCP."
+msgstr "GDPR rights incl. access, erasure, objection, withdrawal of consent, and complaint to ANSPDCP."
+
+#: src/routes/terms.lazy.tsx:67
+msgid "Governing law"
+msgstr "Governing law"
+
+# Example message to validate build
+#~ msgid "Hello"
+#~ msgstr "Hello"
+
+#: src/routes/cookies.lazy.tsx:79
+msgid "Help us fix problems by sending error reports. When disabled, we only send anonymous, minimal error telemetry necessary to keep the service reliable."
+msgstr "Help us fix problems by sending error reports. When disabled, we only send anonymous, minimal error telemetry necessary to keep the service reliable."
+
+#: src/routes/cookies.lazy.tsx:53
+msgid "Help us understand usage to improve the product. No analytics is sent unless you opt in."
+msgstr "Help us understand usage to improve the product. No analytics is sent unless you opt in."
+
+#: src/components/maps/HeatmapDataTable.tsx:132
+#: src/components/maps/HeatmapDataTable.tsx:191
+#: src/components/maps/HeatmapDataTable.tsx:245
+#: src/components/maps/HeatmapDataTable.tsx:299
+#: src/components/maps/HeatmapDataTable.tsx:360
+#~ msgid "Hide"
+#~ msgstr "Hide"
+
+#: src/components/footer/AppFooter.tsx:79
+#~ msgid "Home"
+#~ msgstr "Home"
+
+#: src/routes/privacy.lazy.tsx:14
+msgid "How Transparenta.eu handles data, analytics, and error reporting with consent."
+msgstr "How Transparenta.eu handles data, analytics, and error reporting with consent."
+
+#: src/routes/privacy.lazy.tsx:46
+msgid "Improve product and fix issues (consent for analytics/error context)."
+msgstr "Improve product and fix issues (consent for analytics/error context)."
+
+#: src/components/footer/AppFooter.tsx:175
+msgid "Înapoi sus"
+msgstr "Înapoi sus"
+
+#: src/routes/terms.lazy.tsx:56
+msgid "Include visible attribution to the data source and Transparenta.eu when sharing charts/maps."
+msgstr "Include visible attribution to the data source and Transparenta.eu when sharing charts/maps."
+
+#: src/routes/cookies.lazy.tsx:88
+msgid "Includes additional error context. No user identity is attached."
+msgstr "Includes additional error context. No user identity is attached."
+
+#: src/routes/entity-analytics.lazy.tsx:198
+msgid "Income"
+msgstr "Income"
+
+#: src/components/entities/EntityLineItems.tsx:81
+#: src/components/entities/views/TrendsView.tsx:127
+msgid "Incomes"
+msgstr "Incomes"
+
+#: src/routes/terms.lazy.tsx:25
+msgid "Independent project; no government affiliation."
+msgstr "Independent project; no government affiliation."
+
+#: src/routes/terms.lazy.tsx:24
+msgid "Informational purposes only; no warranties."
+msgstr "Informational purposes only; no warranties."
+
+#: src/routes/terms.lazy.tsx:49
+msgid "Intellectual property"
+msgstr "Intellectual property"
+
+#: src/routes/map.lazy.tsx:170
+msgid "Interval Valori"
+msgstr "Interval Valori"
+
+#: src/components/maps/HeatmapDataTable.tsx:167
+#~ msgid "Județ"
+#~ msgstr "Județ"
+
+#: src/components/footer/AppFooter.tsx:102
+#~ msgid "Legal"
+#~ msgstr "Legal"
+
+#: src/routes/map.lazy.tsx:183
+#~ msgid "Legend"
+#~ msgstr "Legend"
+
+#: src/components/theme/mode-toggle.tsx:27
+#~ msgid "Light"
+#~ msgstr "Light"
+
+#: src/routes/terms.lazy.tsx:61
+msgid "Limitation of liability"
+msgstr "Limitation of liability"
+
+#: src/routes/map.lazy.tsx:220
+msgid "Loading table data..."
+msgstr "Loading table data..."
+
+#: src/routes/privacy.lazy.tsx:23
+msgid "Local-first: charts and preferences are stored in your browser."
+msgstr "Local-first: charts and preferences are stored in your browser."
+
+#: src/routes/cookie-policy.lazy.tsx:39
+msgid "localStorage: <0>cookie-consent</0>, <1>saved-charts</1>, <2>chart-categories</2>."
+msgstr "localStorage: <0>cookie-consent</0>, <1>saved-charts</1>, <2>chart-categories</2>."
+
+#: src/routes/privacy.lazy.tsx:57
+msgid "LocalStorage: until you clear it."
+msgstr "LocalStorage: until you clear it."
+
+#: src/routes/charts/index.lazy.tsx:150
+msgid "Manage and search your locally saved charts. Create, favorite, categorize, and share your visualizations."
+msgstr "Manage and search your locally saved charts. Create, favorite, categorize, and share your visualizations."
+
+#: src/routes/cookie-policy.lazy.tsx:25
+msgid "Manage preferences anytime in <0>Cookie Settings</0>."
+msgstr "Manage preferences anytime in <0>Cookie Settings</0>."
+
+#: src/routes/cookies.lazy.tsx:32
+msgid "Manage your preferences for Transparenta.eu."
+msgstr "Manage your preferences for Transparenta.eu."
+
+#: src/routes/cookie-policy.lazy.tsx:43
+msgid "Managing preferences"
+msgstr "Managing preferences"
+
+#: src/components/sidebar/nav-main.tsx:26
+#~ msgid "Map"
+#~ msgstr "Map"
+
+#: src/routes/map.lazy.tsx:145
+#~ msgid "Map data not available."
+#~ msgstr "Map data not available."
+
+#: src/components/footer/AppFooter.tsx:89
+#~ msgid "Maps"
+#~ msgstr "Maps"
+
+#: src/routes/charts/index.lazy.tsx:266
+#~ msgid "Mark charts as favorites to quickly find them here."
+#~ msgstr "Mark charts as favorites to quickly find them here."
+
+#: src/components/maps/HeatmapDataTable.tsx:126
+#: src/components/maps/HeatmapDataTable.tsx:185
+#: src/components/maps/HeatmapDataTable.tsx:239
+#: src/components/maps/HeatmapDataTable.tsx:293
+#: src/components/maps/HeatmapDataTable.tsx:354
+#~ msgid "Move left"
+#~ msgstr "Move left"
+
+#: src/components/maps/HeatmapDataTable.tsx:129
+#: src/components/maps/HeatmapDataTable.tsx:188
+#: src/components/maps/HeatmapDataTable.tsx:242
+#: src/components/maps/HeatmapDataTable.tsx:296
+#: src/components/maps/HeatmapDataTable.tsx:357
+#~ msgid "Move right"
+#~ msgstr "Move right"
+
+#: src/components/maps/HeatmapDataTable.tsx:438
+#~ msgid "Name"
+#~ msgstr "Name"
+
+#: src/routes/charts/index.lazy.tsx:200
+#~ msgid "Newest"
+#~ msgstr "Newest"
+
+#: src/routes/privacy.lazy.tsx:25
+msgid "No accounts required; no selling of personal data."
+msgstr "No accounts required; no selling of personal data."
+
+#: src/routes/charts/index.lazy.tsx:286
+#~ msgid "No charts in “{0}”"
+#~ msgstr "No charts in “{0}”"
+
+#: src/routes/charts/index.lazy.tsx:213
+#~ msgid "No charts yet"
+#~ msgstr "No charts yet"
+
+#: src/components/entities/FinancialDataCard.tsx:57
+msgid "No data available for {0} in {currentYear}."
+msgstr "No data available for {0} in {currentYear}."
+
+#: src/routes/map.lazy.tsx:162
+#~ msgid "No data available for the map."
+#~ msgstr "No data available for the map."
+
+#: src/routes/map.lazy.tsx:223
+#~ msgid "No data available for the table."
+#~ msgstr "No data available for the table."
+
+#: src/routes/entities.$cui.lazy.tsx:129
+msgid "No Data Found"
+msgstr "No Data Found"
+
+#: src/routes/entities.$cui.lazy.tsx:110
+#: src/routes/entities.$cui.lazy.tsx:126
+msgid "No data found for CUI {cui}."
+msgstr "No data found for CUI {cui}."
+
+#: src/routes/entities.$cui.lazy.tsx:131
+msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
+msgstr "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
+
+#: src/routes/charts/index.lazy.tsx:265
+#~ msgid "No favorites yet"
+#~ msgstr "No favorites yet"
+
+#: src/routes/charts/index.lazy.tsx:247
+#~ msgid "No results"
+#~ msgstr "No results"
+
+#: src/components/entities/FinancialDataCard.tsx:56
+msgid "No results for \"{searchTerm}\""
+msgstr "No results for \"{searchTerm}\""
+
+#: src/components/maps/HeatmapDataTable.tsx:493
+#~ msgid "No results found."
+#~ msgstr "No results found."
+
+#: src/routes/privacy.lazy.tsx:64
+msgid "Not directed to children under 16."
+msgstr "Not directed to children under 16."
+
+#: src/components/entities/EntityFinancialTrends.tsx:132
+msgid "Nu sunt date disponibile pentru afișarea evoluției financiare."
+msgstr "Nu sunt date disponibile pentru afișarea evoluției financiare."
+
+#: src/components/maps/HeatmapDataTable.tsx:108
+#~ msgid "Nume"
+#~ msgstr "Nume"
+
+#: src/routes/charts/index.lazy.tsx:201
+#~ msgid "Oldest"
+#~ msgstr "Oldest"
+
+#: src/routes/terms.lazy.tsx:51
+msgid "Open data follows the source license."
+msgstr "Open data follows the source license."
+
+#: src/components/footer/AppFooter.tsx:165
+msgid "Open feedback dialog"
+msgstr "Open feedback dialog"
+
+#: src/components/entities/EntityInfo.tsx:41
+msgid "Open on Wikipedia"
+msgstr "Open on Wikipedia"
+
+#: src/routes/privacy.lazy.tsx:45
+msgid "Operate and secure the service (legitimate interests)."
+msgstr "Operate and secure the service (legitimate interests)."
+
+#: src/routes/entity-analytics.lazy.tsx:158
+msgid "Per Capita"
+msgstr "Per Capita"
+
+#: src/components/footer/AppFooter.tsx:29
+#~ msgid "Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice, și alte persoane interesate."
+#~ msgstr "Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice, și alte persoane interesate."
+
+#: src/components/maps/HeatmapDataTable.tsx:221
+#~ msgid "Populație"
+#~ msgstr "Populație"
+
+#: src/routes/entity-analytics.lazy.tsx:157
+msgid "Population"
+msgstr "Population"
+
+#: src/routes/privacy.lazy.tsx:53
+msgid "PostHog (analytics), Sentry (error reporting), hosting providers. EU-first; safeguards for transfers."
+msgstr "PostHog (analytics), Sentry (error reporting), hosting providers. EU-first; safeguards for transfers."
+
+#: src/routes/cookie-policy.lazy.tsx:40
+msgid "PostHog: <0>ph_*</0> identifiers when analytics is enabled."
+msgstr "PostHog: <0>ph_*</0> identifiers when analytics is enabled."
+
+#: src/routes/privacy.lazy.tsx:16
+#: src/routes/privacy.tsx:6
+msgid "Privacy Policy"
+msgstr "Privacy Policy"
+
+#: src/routes/privacy.lazy.tsx:14
+msgid "Privacy Policy – Transparenta.eu"
+msgstr "Privacy Policy – Transparenta.eu"
+
+#: src/components/footer/AppFooter.tsx:75
+#~ msgid "Product"
+#~ msgstr "Product"
+
+#: src/routes/privacy.lazy.tsx:50
+msgid "Public sector information from Ministerul Finanțelor, made available as open data. No government affiliation."
+msgstr "Public sector information from Ministerul Finanțelor, made available as open data. No government affiliation."
+
+#: src/routes/privacy.lazy.tsx:43
+msgid "Purposes and legal bases"
+msgstr "Purposes and legal bases"
+
+#: src/components/entities/EntityReports.tsx:90
+msgid "Rapoarte Financiare"
+msgstr "Rapoarte Financiare"
+
+#: src/routes/cookies.lazy.tsx:111
+msgid "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
+msgstr "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
+
+#: src/components/footer/AppFooter.tsx:195
+msgid "Report a bug"
+msgstr "Report a bug"
+
+#: src/routes/entities.$cui.lazy.tsx:205
+msgid "Reporting year"
+msgstr "Reporting year"
+
+#: src/routes/entities.$cui.lazy.tsx:201
+msgid "Reporting Year:"
+msgstr "Reporting Year:"
+
+#: src/routes/cookies.lazy.tsx:40
+msgid "Required for core functionality like security and preferences. Always on."
+msgstr "Required for core functionality like security and preferences. Always on."
+
+#: src/routes/privacy.lazy.tsx:55
+msgid "Retention"
+msgstr "Retention"
+
+#: src/routes/map.lazy.tsx:124
+msgid "Romania spending heatmap – Transparenta.eu"
+msgstr "Romania spending heatmap – Transparenta.eu"
+
+#: src/routes/terms.lazy.tsx:68
+msgid "Romanian law and applicable EU law. Venue: Sibiu, Romania."
+msgstr "Romanian law and applicable EU law. Venue: Sibiu, Romania."
+
+#: src/components/maps/HeatmapDataTable.tsx:85
+msgid "Row {0}"
+msgstr "Row {0}"
+
+#: src/routes/cookies.lazy.tsx:106
+msgid "Save preferences"
+msgstr "Save preferences"
+
+#: src/routes/charts/index.lazy.tsx:149
+msgid "Saved charts – Transparenta.eu"
+msgstr "Saved charts – Transparenta.eu"
+
+#: src/routes/charts/index.lazy.tsx:192
+msgid "Search charts"
+msgstr "Search charts"
+
+#: src/routes/charts/index.lazy.tsx:190
+msgid "Search charts…"
+msgstr "Search charts…"
+
+#: src/components/entities/FloatingEntitySearch.tsx:41
+#: src/components/entities/FloatingEntitySearch.tsx:51
+#~ msgid "Search for another entity"
+#~ msgstr "Search for another entity"
+
+#: src/components/filters/base-filter/SearchInput.tsx:67
+msgid "Search help"
+msgstr "Search help"
+
+#: src/routes/cookie-policy.lazy.tsx:45
+msgid "See also our <0>Privacy Policy</0>."
+msgstr "See also our <0>Privacy Policy</0>."
+
+#: src/routes/index.lazy.tsx:50
+#~ msgid "See-through, clear"
+#~ msgstr "See-through, clear"
+
+#: src/components/footer/AppFooter.tsx:166
+#~ msgid "Send feedback"
+#~ msgstr "Send feedback"
+
+#: src/routes/cookie-policy.lazy.tsx:41
+msgid "Sentry: session keys for replay if enabled."
+msgstr "Sentry: session keys for replay if enabled."
+
+#: src/routes/terms.lazy.tsx:34
+msgid "Service and data sources"
+msgstr "Service and data sources"
+
+#: src/routes/privacy.lazy.tsx:52
+msgid "Sharing and processors"
+msgstr "Sharing and processors"
+
+#: src/components/footer/AppFooter.tsx:134
+#~ msgid "și"
+#~ msgstr "și"
+
+#: src/routes/charts/index.lazy.tsx:198
+msgid "Sort by"
+msgstr "Sort by"
+
+#: src/routes/entity-analytics.lazy.tsx:150
+msgid "Standard"
+msgstr "Standard"
+
+#: src/components/maps/HeatmapDataTable.tsx:275
+#~ msgid "Suma Totală"
+#~ msgstr "Suma Totală"
+
+#: src/components/maps/HeatmapDataTable.tsx:336
+#~ msgid "Suma/Cap de locuitor"
+#~ msgstr "Suma/Cap de locuitor"
+
+#: src/components/footer/AppFooter.tsx:123
+#~ msgid "Sursa datelor: portalul „Transparența Bugetară” administrat de ANAF/Ministerul Finanțelor, disponibil ca date deschise (Open Data). Vezi resursele oficiale:"
+#~ msgstr "Sursa datelor: portalul „Transparența Bugetară” administrat de ANAF/Ministerul Finanțelor, disponibil ca date deschise (Open Data). Vezi resursele oficiale:"
+
+#: src/components/theme/mode-toggle.tsx:33
+#~ msgid "System"
+#~ msgstr "System"
+
+#: src/routes/cookie-policy.lazy.tsx:29
+msgid "Technologies we use"
+msgstr "Technologies we use"
+
+#: src/routes/terms.lazy.tsx:15
+msgid "Terms for using the Transparenta.eu service and visualizations."
+msgstr "Terms for using the Transparenta.eu service and visualizations."
+
+#: src/components/footer/AppFooter.tsx:108
+#~ msgid "Terms of Service"
+#~ msgstr "Terms of Service"
+
+#: src/routes/terms.lazy.tsx:17
+msgid "Terms of Use"
+msgstr "Terms of Use"
+
+#: src/routes/terms.lazy.tsx:15
+msgid "Terms of Use – Transparenta.eu"
+msgstr "Terms of Use – Transparenta.eu"
+
+#: src/routes/test-error.tsx:9
+msgid "Test error"
+msgstr "Test error"
+
+#: src/routes/terms.lazy.tsx:35
+msgid "The Service provides tools to explore, analyze, and visualize public budget execution data from Romania."
+msgstr "The Service provides tools to explore, analyze, and visualize public budget execution data from Romania."
+
+#: src/routes/entities.$cui.lazy.tsx:115
+msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
+msgstr "There was a problem fetching the details for CUI: <0>{cui}</0>."
+
+#: src/routes/charts/index.lazy.tsx:202
+#~ msgid "Title A–Z"
+#~ msgstr "Title A–Z"
+
+#: src/routes/charts/index.lazy.tsx:203
+#~ msgid "Title Z–A"
+#~ msgstr "Title Z–A"
+
+#: src/routes/terms.lazy.tsx:62
+msgid "To the maximum extent permitted by applicable law, Claudiu Constantin Bogdan and any owners, contributors, and affiliates shall not be liable for any direct, indirect, incidental, special, consequential, or exemplary damages, including but not limited to, damages for loss of profits, revenue, data, goodwill, or other intangible losses, resulting from: (i) your access to, use of, or inability to use the Service; (ii) any reliance on the data, content, or visualizations presented by the Service, regardless of any errors, omissions, or inaccuracies therein; or (iii) any financial, professional, personal, or other loss or damage incurred as a result of using the information from the Service. This limitation applies whether the alleged liability is based on contract, tort, negligence, strict liability, or any other basis, even if we have been advised of the possibility of such damage. Your sole and exclusive remedy for any dispute with us is to stop using the Service."
+msgstr "To the maximum extent permitted by applicable law, Claudiu Constantin Bogdan and any owners, contributors, and affiliates shall not be liable for any direct, indirect, incidental, special, consequential, or exemplary damages, including but not limited to, damages for loss of profits, revenue, data, goodwill, or other intangible losses, resulting from: (i) your access to, use of, or inability to use the Service; (ii) any reliance on the data, content, or visualizations presented by the Service, regardless of any errors, omissions, or inaccuracies therein; or (iii) any financial, professional, personal, or other loss or damage incurred as a result of using the information from the Service. This limitation applies whether the alleged liability is based on contract, tort, negligence, strict liability, or any other basis, even if we have been advised of the possibility of such damage. Your sole and exclusive remedy for any dispute with us is to stop using the Service."
+
+#: src/routes/cookies.lazy.tsx:69
+msgid "Toggle analytics cookies"
+msgstr "Toggle analytics cookies"
+
+#: src/routes/cookies.lazy.tsx:97
+msgid "Toggle enhanced error reporting"
+msgstr "Toggle enhanced error reporting"
+
+#: src/components/theme/mode-toggle.tsx:22
+#~ msgid "Toggle theme"
+#~ msgstr "Toggle theme"
+
+#: src/components/entities/views/TrendsView.tsx:49
+msgid "Top {TOP_CATEGORIES_COUNT} Income Categories for {entityName}"
+msgstr "Top {TOP_CATEGORIES_COUNT} Income Categories for {entityName}"
+
+#: src/components/entities/views/TrendsView.tsx:49
+msgid "Top {TOP_CATEGORIES_COUNT} Spending Categories for {entityName}"
+msgstr "Top {TOP_CATEGORIES_COUNT} Spending Categories for {entityName}"
+
+#: src/routes/charts/index.lazy.tsx:162
+#~ msgid "total"
+#~ msgstr "total"
+
+#: src/components/entity-analytics/EntityAnalyticsKPIs.tsx:29
+msgid "Total amount"
+msgstr "Total amount"
+
+#: src/routes/entity-analytics.lazy.tsx:159
+msgid "Total Amount"
+msgstr "Total Amount"
+
+#: src/components/entities/FinancialDataCard.tsx:68
+msgid "Total:"
+msgstr "Total:"
+
+#: src/routes/charts/index.lazy.tsx:248
+#~ msgid "Try a different search term or sorting."
+#~ msgstr "Try a different search term or sorting."
+
+#: src/routes/entity-analytics.lazy.tsx:130
+msgid "Unknown error"
+msgstr "Unknown error"
+
+#: src/routes/cookies.lazy.tsx:107
+msgid "Updated:"
+msgstr "Updated:"
+
+#: src/routes/cookies.lazy.tsx:59
+msgid "Usage analytics"
+msgstr "Usage analytics"
+
+#: src/routes/privacy.lazy.tsx:38
+msgid "Usage analytics via PostHog (consent-only, custom events, no autocapture)."
+msgstr "Usage analytics via PostHog (consent-only, custom events, no autocapture)."
+
+#: src/routes/cookie-policy.lazy.tsx:44
+msgid "Use <0>Cookie Settings</0> or your browser controls to clear site data."
+msgstr "Use <0>Cookie Settings</0> or your browser controls to clear site data."
+
+#: src/routes/charts/index.lazy.tsx:287
+#~ msgid "Use the tag menu on a chart card to add it to this category."
+#~ msgstr "Use the tag menu on a chart card to add it to this category."
+
+#: src/routes/terms.lazy.tsx:52
+msgid "User annotations created locally remain yours."
+msgstr "User annotations created locally remain yours."
+
+#: src/routes/terms.lazy.tsx:42
+msgid "User responsibilities and assumption of risk"
+msgstr "User responsibilities and assumption of risk"
+
+#: src/routes/privacy.lazy.tsx:40
+msgid "User-created charts/annotations/filters stored locally (localStorage)."
+msgstr "User-created charts/annotations/filters stored locally (localStorage)."
+
+#: src/components/entities/EntityFinancialTrends.tsx:124
+msgid "Valori Absolute"
+msgstr "Valori Absolute"
+
+#: src/components/entities/EntityFinancialTrends.tsx:157
+msgid "Venituri"
+msgstr "Venituri"
+
+#: src/components/entities/EntityFinancialSummary.tsx:59
+msgid "Venituri - Cheltuieli"
+msgstr "Venituri - Cheltuieli"
+
+#: src/components/entities/EntityFinancialSummary.tsx:58
+msgid "Venituri totale"
+msgstr "Venituri totale"
+
+#: src/routes/entity-analytics.lazy.tsx:141
+msgid "View"
+msgstr "View"
+
+#: src/routes/charts/$chartId/index.lazy.tsx:30
+msgid "View and share your chart."
+msgstr "View and share your chart."
+
+#: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:122
+#~ msgid "View Chart"
+#~ msgstr "View Chart"
+
+#: src/routes/terms.lazy.tsx:65
+msgid "We may change or discontinue the Service at any time."
+msgstr "We may change or discontinue the Service at any time."
+
+#: src/routes/privacy.lazy.tsx:67
+msgid "We may update this policy; we’ll post changes with a new effective date."
+msgstr "We may update this policy; we’ll post changes with a new effective date."
+
+#: src/routes/cookie-policy.lazy.tsx:30
+msgid "We use cookies and localStorage to operate the app and, with consent, to measure usage and improve reliability."
+msgstr "We use cookies and localStorage to operate the app and, with consent, to measure usage and improve reliability."
+
+#: src/routes/privacy.lazy.tsx:35
+msgid "What we process"
+msgstr "What we process"
+
+#: src/routes/privacy.lazy.tsx:30
+msgid "Who we are"
+msgstr "Who we are"
+
+#: src/routes/privacy.lazy.tsx:60
+msgid "Your rights"
+msgstr "Your rights"

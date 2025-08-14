@@ -3,6 +3,7 @@ import { Search, X, Info } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { t } from "@lingui/macro";
 
 interface SearchInputProps {
     onChange: (val: string) => void;
@@ -51,7 +52,7 @@ export function SearchInput({
                         type="button"
                         onClick={handleClearSearch}
                         className="p-1 text-muted-foreground hover:text-foreground"
-                        aria-label="Clear search"
+                        aria-label={t`Clear search`}
                     >
                         <X className="h-4 w-4" />
                     </button>
@@ -63,7 +64,7 @@ export function SearchInput({
                                 <button
                                     type="button"
                                     className="p-1 text-muted-foreground hover:text-foreground"
-                                    aria-label="Search help"
+                                    aria-label={t`Search help`}
                                 >
                                     <Info className="h-4 w-4" />
                                 </button>

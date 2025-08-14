@@ -5,12 +5,15 @@ import checker from "vite-plugin-checker";
 import tanstackRouter from "@tanstack/router-plugin/vite";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
+import { lingui } from "@lingui/vite-plugin";
 
-// https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
   plugins: [
+    lingui(),
     tanstackRouter(),
-    react(),
+    react({
+      plugins: [["@lingui/swc-plugin", {}]],
+    }),
     tailwindcss(),
     checker({
       typescript: true,

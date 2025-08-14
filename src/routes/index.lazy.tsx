@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Trans } from "@lingui/macro";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { usePersistedState } from "@/lib/hooks/usePersistedState";
 import { createLazyFileRoute } from "@tanstack/react-router";
@@ -40,18 +41,18 @@ function Index() {
             {animationActive ? (
               <AnimatedTitle />
             ) : (
-              <h1>{title}</h1>
+              <h1><Trans>{title}</Trans></h1>
             )}
           </div>
 
           <p className="max-w-2xl text-lg sm:text-xl text-slate-300 dark:text-slate-300">
             <code className="mr-4">[trans.paˈren.t͡sə]</code>
-            <span>See-through, clear</span>
+            <span><Trans>See-through, clear</Trans></span>
           </p>
 
           <div className="w-full max-w-2xl lg:max-w-3xl mt-8 space-y-6">
             <EntitySearchInput
-              placeholder="Enter entity name or CUI..."
+              placeholder={"Enter entity name or CUI..."}
               autoFocus={!isMobile}
             />
             <QuickEntityAccess />
@@ -60,30 +61,30 @@ function Index() {
           {/* Quick navigation cards */}
           <div className="mt-20 grid w-full max-w-5xl grid-cols-1 gap-8 md:grid-cols-2">
             <PageCard
-              title="Charts"
-              description="Explore data through charts."
+              title={"Charts"}
+              description={"Explore data through charts."}
               to="/charts"
               image={chartPreview}
               imageAlt="Charts preview"
             />
             <PageCard
-              title="Map"
-              description="Explore data through a map."
+              title={"Map"}
+              description={"Explore data through a map."}
               to="/map"
               image={mapPreview}
               imageAlt="Map preview"
             />
             <PageCard
-              title="Entities"
-              description="Explore entities by aggregated values."
+              title={"Entities"}
+              description={"Explore entities by aggregated values."}
               to="/entity-analytics"
               image={entityAnalyticsPreview}
               imageAlt="Entity analytics preview"
             />
 
             <PageCard
-              title="More"
-              description="More to come."
+              title={"More"}
+              description={"More to come."}
               to="/"
               image={morePreview}
               imageAlt="More preview"

@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { UatDisplay } from './UatDisplay';
 import { useExternalSearchLink } from '@/lib/hooks/useExternalSearchLink';
 import { useEntityTypeLabel } from '@/hooks/filters/useFilterLabels';
+import { Trans, t } from '@lingui/macro';
 
 interface EntityInfoProps {
     entity: Pick<EntityDetailsData, 'name' | 'cui' | 'entity_type' | 'address' | 'uat' | 'children' | 'parents'>;
@@ -37,7 +38,7 @@ export const EntityInfo: React.FC<EntityInfoProps> = ({ entity }) => {
                         href={wikipediaUrl}
                         target="_blank"
                         rel="noreferrer noopener"
-                        aria-label="Open on Wikipedia"
+                        aria-label={t`Open on Wikipedia`}
                         className="inline-flex items-center text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 gap-1"
                     >
                         <ExternalLink className="h-4 w-4" />
@@ -52,7 +53,7 @@ export const EntityInfo: React.FC<EntityInfoProps> = ({ entity }) => {
                 </p>
                 {entity.address && (
                     <p>
-                        <span className="font-semibold text-slate-700 dark:text-slate-300">Adresă:</span> {entity.address}
+                        <span className="font-semibold text-slate-700 dark:text-slate-300"><Trans>Adresă:</Trans></span> {entity.address}
                     </p>
                 )}
                 {entity.uat && (

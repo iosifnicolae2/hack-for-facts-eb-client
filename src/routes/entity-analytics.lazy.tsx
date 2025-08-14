@@ -17,6 +17,7 @@ import { EntityAnalyticsLineItems } from '@/components/entity-analytics/EntityAn
 import { generateHash } from '@/lib/utils'
 import { Analytics } from '@/lib/analytics'
 import { Seo } from '@/lib/seo'
+import { Trans, t } from '@lingui/macro'
 
 export const Route = createLazyFileRoute('/entity-analytics')({
   component: EntityAnalyticsPage,
@@ -112,12 +113,12 @@ function EntityAnalyticsPage() {
   return (
     <div className="container mx-auto py-4 px-2 md:px-6 max-w-full">
       <Seo
-        title="Entity analytics – Transparenta.eu"
-        description="Analyze aggregated values per entity and explore top entities by amount and per capita."
+        title={t`Entity analytics – Transparenta.eu`}
+        description={t`Analyze aggregated values per entity and explore top entities by amount and per capita.`}
       />
       <EntityAnalyticsLayout
         filters={<EntityAnalyticsFilterPanel />}
-        subtitle="Analyze aggregated values per entity and explore top entities."
+        subtitle={t`Analyze aggregated values per entity and explore top entities.`}
       >
         <div className="flex justify-end">
           {/* EntityAnalyticsViewToggle removed, now handled within filter */}
@@ -125,40 +126,40 @@ function EntityAnalyticsPage() {
         {error ? (
           <div className="p-6 flex items-center justify-center h-64">
             <div className="text-center">
-              <h3 className="font-medium text-red-500">Error loading analytics</h3>
-              <p className="text-muted-foreground mt-2">{error instanceof Error ? error.message : 'Unknown error'}</p>
+              <h3 className="font-medium text-red-500"><Trans>Error loading analytics</Trans></h3>
+              <p className="text-muted-foreground mt-2">{error instanceof Error ? error.message : t`Unknown error`}</p>
             </div>
           </div>
         ) : view === 'table' ? (
           <div className="space-y-4">
             <div className="flex items-center justify-end gap-2">
-              <Button variant="ghost" size="sm" onClick={() => resetFilter()}>Clear filters</Button>
+              <Button variant="ghost" size="sm" onClick={() => resetFilter()}><Trans>Clear filters</Trans></Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="sm" className="gap-2">
                     <SlidersHorizontal className="w-4 h-4" />
-                    View
+                    <Trans>View</Trans>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuLabel>Density</DropdownMenuLabel>
-                  <DropdownMenuCheckboxItem checked={density === 'comfortable'} onCheckedChange={() => setDensity('comfortable')}>Comfortable</DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem checked={density === 'compact'} onCheckedChange={() => setDensity('compact')}>Compact</DropdownMenuCheckboxItem>
+                  <DropdownMenuLabel><Trans>Density</Trans></DropdownMenuLabel>
+                  <DropdownMenuCheckboxItem checked={density === 'comfortable'} onCheckedChange={() => setDensity('comfortable')}><Trans>Comfortable</Trans></DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem checked={density === 'compact'} onCheckedChange={() => setDensity('compact')}><Trans>Compact</Trans></DropdownMenuCheckboxItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuLabel>Currency</DropdownMenuLabel>
-                  <DropdownMenuCheckboxItem checked={currencyFormat === 'standard'} onCheckedChange={() => setCurrencyFormat('standard')}>Standard</DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem checked={currencyFormat === 'compact'} onCheckedChange={() => setCurrencyFormat('compact')}>Compact</DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem checked={currencyFormat === 'both'} onCheckedChange={() => setCurrencyFormat('both')}>Both</DropdownMenuCheckboxItem>
+                  <DropdownMenuLabel><Trans>Currency</Trans></DropdownMenuLabel>
+                  <DropdownMenuCheckboxItem checked={currencyFormat === 'standard'} onCheckedChange={() => setCurrencyFormat('standard')}><Trans>Standard</Trans></DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem checked={currencyFormat === 'compact'} onCheckedChange={() => setCurrencyFormat('compact')}><Trans>Compact</Trans></DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem checked={currencyFormat === 'both'} onCheckedChange={() => setCurrencyFormat('both')}><Trans>Both</Trans></DropdownMenuCheckboxItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuLabel>Columns</DropdownMenuLabel>
-                  <DropdownMenuCheckboxItem checked={columnVisibility.entity_name !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, entity_name: Boolean(v) }))}>Entity</DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem checked={columnVisibility.county_name !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, county_name: Boolean(v) }))}>County</DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem checked={columnVisibility.population !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, population: Boolean(v) }))}>Population</DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem checked={columnVisibility.per_capita_amount !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, per_capita_amount: Boolean(v) }))}>Per Capita</DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem checked={columnVisibility.total_amount !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, total_amount: Boolean(v) }))}>Total Amount</DropdownMenuCheckboxItem>
+                  <DropdownMenuLabel><Trans>Columns</Trans></DropdownMenuLabel>
+                  <DropdownMenuCheckboxItem checked={columnVisibility.entity_name !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, entity_name: Boolean(v) }))}><Trans>Entity</Trans></DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem checked={columnVisibility.county_name !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, county_name: Boolean(v) }))}><Trans>County</Trans></DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem checked={columnVisibility.population !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, population: Boolean(v) }))}><Trans>Population</Trans></DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem checked={columnVisibility.per_capita_amount !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, per_capita_amount: Boolean(v) }))}><Trans>Per Capita</Trans></DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem checked={columnVisibility.total_amount !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, total_amount: Boolean(v) }))}><Trans>Total Amount</Trans></DropdownMenuCheckboxItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-              <Button variant="outline" size="sm" disabled={exporting || (data?.pageInfo?.totalCount ?? 0) === 0} onClick={handleExportCsv}>{exporting ? 'Exporting…' : 'Export CSV'}</Button>
+              <Button variant="outline" size="sm" disabled={exporting || (data?.pageInfo?.totalCount ?? 0) === 0} onClick={handleExportCsv}>{exporting ? t`Exporting…` : t`Export CSV`}</Button>
             </div>
             <EntityAnalyticsTable
               data={nodes}
@@ -194,7 +195,7 @@ function EntityAnalyticsPage() {
           <div className="mt-4">
             <EntityAnalyticsLineItems
               filter={filter}
-              title={filter.account_category === 'vn' ? 'Income' : 'Expenses'}
+              title={filter.account_category === 'vn' ? t`Income` : t`Expenses`}
             />
           </div>
         )}

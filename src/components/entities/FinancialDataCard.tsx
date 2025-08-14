@@ -12,6 +12,7 @@ import { SearchToggleInput } from './SearchToggleInput';
 import GroupedChapterAccordion from "./GroupedChapterAccordion";
 import { GroupedChapter, GroupedFunctional, GroupedEconomic } from '@/schemas/financial';
 import { formatCurrency, formatNumberRO } from '@/lib/utils';
+import { Trans, t } from '@lingui/macro';
 
 interface GroupedItemsDisplayProps {
   groups: GroupedChapter[];
@@ -52,8 +53,8 @@ export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.mem
         <div className="flex flex-col items-center justify-center h-full p-4">
           <p className="text-sm text-center text-slate-500 dark:text-slate-400">
             {searchTerm
-              ? `No results for "${searchTerm}"`
-              : `No data available for ${title.toLowerCase()} in ${currentYear}.`}
+              ? t`No results for "${searchTerm}"`
+              : t`No data available for ${title.toLowerCase()} in ${currentYear}.`}
           </p>
         </div>
       );
@@ -64,7 +65,7 @@ export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.mem
     const TotalValueComponent = () => (
       <div className="flex flex-col">
         <p className='flex justify-end items-center m-4 mb-0 font-semibold'>
-          Total:{" "}
+          <Trans>Total:</Trans>{" "}
           {formatCurrency(totalValueFiltered, "standard")}
           {totalPercentageFiltered > 0 && totalPercentageFiltered <= 99.99 && (
             <span className="pl-2 text-sm text-muted-foreground">

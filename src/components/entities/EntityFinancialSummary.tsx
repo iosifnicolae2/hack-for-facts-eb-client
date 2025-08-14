@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
 import { TrendingUp, TrendingDown, Scale } from 'lucide-react'; // Example icons
 import { EntityFinancialSummarySkeleton } from './EntityFinancialSummarySkeleton';
+import { t } from '@lingui/macro';
 
 interface EntityFinancialSummaryCardProps {
   title: string;
@@ -53,9 +54,9 @@ export const EntityFinancialSummary: React.FC<EntityFinancialSummaryProps> = (
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-      <EntityFinancialSummaryCard title="Cheltuieli totale" value={totalExpenses} icon={TrendingDown} color="red" currentYear={currentYear} />
-      <EntityFinancialSummaryCard title="Venituri totale" value={totalIncome} icon={TrendingUp} color="green" currentYear={currentYear} />
-      <EntityFinancialSummaryCard title="Venituri - Cheltuieli" value={budgetBalance} icon={Scale} color="blue" currentYear={currentYear} />
+      <EntityFinancialSummaryCard title={t`Cheltuieli totale`} value={totalExpenses} icon={TrendingDown} color="red" currentYear={currentYear} />
+      <EntityFinancialSummaryCard title={t`Venituri totale`} value={totalIncome} icon={TrendingUp} color="green" currentYear={currentYear} />
+      <EntityFinancialSummaryCard title={t`Venituri - Cheltuieli`} value={budgetBalance} icon={Scale} color="blue" currentYear={currentYear} />
     </section>
   );
 }; 

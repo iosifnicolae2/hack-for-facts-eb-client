@@ -6,6 +6,7 @@ import { EntitySearchInput } from './EntitySearch';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useHotkeys } from 'react-hotkeys-hook';
+import { t } from '@lingui/macro';
 
 interface FloatingEntitySearchProps {
     className?: string;
@@ -37,7 +38,7 @@ export function FloatingEntitySearch({ className }: FloatingEntitySearchProps) {
                 <Button
                     onClick={() => setIsOpen(true)}
                     className={cn(isMobile ? "fixed bottom-24 right-6 h-14 w-14 rounded-full shadow-lg z-40" : "fixed top-8 right-8 h-8 w-8 rounded-full shadow-lg z-40 border-1 border-slate-200 dark:border-slate-700")}
-                    aria-label="Search for another entity"
+                    aria-label={t`Search for another entity`}
                     variant="ghost"
                     size="icon"
                 >
@@ -47,7 +48,7 @@ export function FloatingEntitySearch({ className }: FloatingEntitySearchProps) {
 
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <DialogOverlay className="bg-slate-500/80" />
-                <DialogTitle className="sr-only">Search for another entity</DialogTitle>
+                <DialogTitle className="sr-only">{t`Search for another entity`}</DialogTitle>
                 <DialogContent hideCloseButton={true} className="fixed top-1/3 max-w-3xl w-full p-0 bg-transparent border-0 shadow-none outline-none focus:outline-none">
                     <EntitySearchInput
                         onSelect={handleSelect}

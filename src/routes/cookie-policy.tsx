@@ -1,8 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { t } from '@lingui/macro'
 
 export const Route = createFileRoute('/cookie-policy')({
   staticData: {
-    title: 'Cookie Policy',
+    title: t`Cookie Policy`,
   },
 })
 

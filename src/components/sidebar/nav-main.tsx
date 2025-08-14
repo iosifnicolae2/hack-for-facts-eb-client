@@ -9,10 +9,11 @@ import {
   SidebarMenuButton,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { Trans } from "@lingui/macro";
 
 const mainItems = [
   {
-    title: "Dashboard",
+    title: <Trans>Dashboard</Trans>,
     url: "/",
     icon: LayoutDashboard,
   },
@@ -22,17 +23,17 @@ const mainItems = [
   //   icon: AlertTriangle,
   // },
   {
-    title: "Map",
+    title: <Trans>Map</Trans>,
     url: "/map",
     icon: Map,
   },
   {
-    title: "Charts",
+    title: <Trans>Charts</Trans>,
     url: "/charts",
     icon: BarChart2,
   },
   {
-    title: "Entity Analytics",
+    title: <Trans>Entity Analytics</Trans>,
     url: "/entity-analytics",
     icon: ListOrdered,
   },

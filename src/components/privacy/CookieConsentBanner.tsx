@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { onConsentChange } from "@/lib/consent";
 import { Analytics } from "@/lib/analytics";
+import { Trans, t } from "@lingui/macro";
 
 /**
  * CookieConsentBanner
@@ -46,29 +47,28 @@ export function CookieConsentBanner(): ReactElement | null {
         }`}
       role="dialog"
       aria-live="polite"
-      aria-label="Cookie consent"
+      aria-label={t`Cookie consent`}
     >
       <Card className="mx-auto max-w-5xl rounded-2xl border bg-card/80 shadow-xl backdrop-blur supports-[backdrop-filter]:bg-card/80">
         <CardHeader className="pb-3">
           <div className="flex items-center gap-3">
             <Cookie className="h-6 w-6 text-primary" />
-            <CardTitle className="text-lg md:text-xl">Cookie settings</CardTitle>
+            <CardTitle className="text-lg md:text-xl"><Trans>Cookie settings</Trans></CardTitle>
           </div>
           <CardDescription>
-            Essential cookies keep the app working. With your permission, we also use analytics (PostHog) and optional
-            error reporting (Sentry) to understand issues and improve Transparenta.eu.
+            <Trans>Essential cookies keep the app working. With your permission, we also use analytics (PostHog) and optional error reporting (Sentry) to understand issues and improve Transparenta.eu.</Trans>
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-0">
           <div className="mt-4 flex flex-col items-center justify-center gap-3 sm:flex-row sm:justify-end">
             <Button variant="link" onClick={declineCookies} className="text-amber-600">
-              Essential only
+              <Trans>Essential only</Trans>
             </Button>
             <Button onClick={acceptCookies} className="px-6">
-              Accept all
+              <Trans>Accept all</Trans>
             </Button>
             <Button asChild variant="link">
-              <Link to="/cookies">Cookie Settings</Link>
+              <Link to="/cookies"><Trans>Cookie Settings</Trans></Link>
             </Button>
           </div>
         </CardContent>

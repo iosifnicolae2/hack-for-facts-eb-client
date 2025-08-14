@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { MessageSquare } from "lucide-react";
 import { openSentryFeedback } from "@/lib/sentry";
 import { useSentryConsent } from "@/hooks/useSentryConsent";
+import { Trans, t } from "@lingui/macro";
 
 /**
  * App-wide footer displayed at the bottom of the main layout.
@@ -25,7 +26,7 @@ export function AppFooter(): ReactElement {
                     <div className="space-y-3">
                         <div className="font-semibold text-lg text-foreground">Transparenta.eu</div>
                         <p className="text-sm leading-relaxed">
-                            Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice, și alte persoane interesate.
+                            <Trans>Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice, și alte persoane interesate.</Trans>
                         </p>
                         <div className="flex items-center gap-4 pt-1">
                             <a
@@ -71,26 +72,26 @@ export function AppFooter(): ReactElement {
 
                     {/* Product */}
                     <nav aria-label="Product" className="space-y-3" aria-labelledby="footer-product-heading">
-                        <h2 id="footer-product-heading" className="font-medium text-foreground text-base">Product</h2>
+                        <h2 id="footer-product-heading" className="font-medium text-foreground text-base"><Trans>Product</Trans></h2>
                         <ul className="space-y-2 text-sm">
                             <li>
                                 <Link to="/" className="hover:text-foreground">
-                                    Home
+                                    <Trans>Home</Trans>
                                 </Link>
                             </li>
                             <li>
                                 <Link to="/entity-analytics" className="hover:text-foreground">
-                                    Entity Analytics
+                                    <Trans>Entity Analytics</Trans>
                                 </Link>
                             </li>
                             <li>
                                 <Link to="/map" className="hover:text-foreground">
-                                    Maps
+                                    <Trans>Maps</Trans>
                                 </Link>
                             </li>
                             <li>
                                 <Link to="/charts" className="hover:text-foreground">
-                                    Charts
+                                    <Trans>Charts</Trans>
                                 </Link>
                             </li>
                         </ul>
@@ -98,16 +99,16 @@ export function AppFooter(): ReactElement {
 
                     {/* Legal */}
                     <nav aria-label="Legal" className="space-y-3" aria-labelledby="footer-legal-heading">
-                        <h2 id="footer-legal-heading" className="font-medium text-foreground text-base">Legal</h2>
+                        <h2 id="footer-legal-heading" className="font-medium text-foreground text-base"><Trans>Legal</Trans></h2>
                         <ul className="space-y-2 text-sm">
                             <li>
-                                <Link to="/privacy" className="hover:text-foreground">Privacy Policy</Link>
+                                <Link to="/privacy" className="hover:text-foreground"><Trans>Privacy Policy</Trans></Link>
                             </li>
                             <li>
-                                <Link to="/terms" className="hover:text-foreground">Terms of Service</Link>
+                                <Link to="/terms" className="hover:text-foreground"><Trans>Terms of Service</Trans></Link>
                             </li>
                             <li>
-                                <Link to="/cookies" className="hover:text-foreground">Cookie Settings</Link>
+                                <Link to="/cookies" className="hover:text-foreground"><Trans>Cookie Settings</Trans></Link>
                             </li>
                         </ul>
                     </nav>
@@ -119,8 +120,8 @@ export function AppFooter(): ReactElement {
                 {/* Data source and copyright */}
                 <div className="flex flex-col items-start justify-between gap-4 text-xs text-muted-foreground md:flex-row">
                     <p>
-                        Sursa datelor: portalul „Transparența Bugetară” administrat de ANAF/Ministerul
-                        Finanțelor, disponibil ca date deschise (Open Data). Vezi resursele oficiale:
+                        <Trans>Sursa datelor: portalul „Transparența Bugetară” administrat de ANAF/Ministerul
+                        Finanțelor, disponibil ca date deschise (Open Data). Vezi resursele oficiale:</Trans>
                         {" "}
                         <a
                             href="https://mfinante.gov.ro/transparenta-bugetara"
@@ -130,7 +131,7 @@ export function AppFooter(): ReactElement {
                         >
                             mfinante.gov.ro/transparenta-bugetara
                         </a>
-                        {" "}și{" "}
+                        {" "}<Trans>și</Trans>{" "}
                         <a
                             href="https://extranet.anaf.mfinante.gov.ro/anaf/extranet/EXECUTIEBUGETARA"
                             target="_blank"
@@ -141,7 +142,7 @@ export function AppFooter(): ReactElement {
                         </a>
                         .
                     </p>
-                    <p className="whitespace-nowrap">© {currentYear} Transparenta.eu. Toate drepturile rezervate.</p>
+                    <p className="whitespace-nowrap">{t`© ${currentYear} Transparenta.eu. Toate drepturile rezervate.`}</p>
                 </div>
 
                 {/* Bottom utilities: Feedback / Status / Back to top */}
@@ -153,16 +154,16 @@ export function AppFooter(): ReactElement {
                             rel="noreferrer noopener"
                             className="underline hover:text-foreground"
                         >
-                            Feedback / Report an issue
+                            <Trans>Feedback / Report an issue</Trans>
                         </a>
                         {showSentryFeedback && (
                             <button
                                 type="button"
                                 className="underline hover:text-foreground"
                                 onClick={() => openSentryFeedback?.()}
-                                aria-label="Open feedback dialog"
+                                aria-label={t`Open feedback dialog`}
                             >
-                                Send feedback
+                                <Trans>Send feedback</Trans>
                             </button>
                         )}
                     </div>
@@ -170,9 +171,9 @@ export function AppFooter(): ReactElement {
                         type="button"
                         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                         className="rounded-md border px-2.5 py-1.5 text-[11px] font-medium text-foreground hover:bg-muted"
-                        aria-label="Înapoi sus"
+                        aria-label={t`Înapoi sus`}
                     >
-                        Back to top
+                        <Trans>Back to top</Trans>
                     </button>
                 </div>
             </div>
@@ -190,7 +191,7 @@ export function ReportBugFab(): ReactElement | null {
         <button
             type="button"
             onClick={() => openSentryFeedback?.()}
-            aria-label="Report a bug"
+            aria-label={t`Report a bug`}
             className="fixed z-50 bottom-6 left-6 md:right-6 md:left-auto inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg h-12 w-12 hover:opacity-90 focus-visible:outline-2"
         >
             <MessageSquare className="h-5 w-5" />

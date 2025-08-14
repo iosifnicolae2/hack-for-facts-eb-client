@@ -1,5 +1,6 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Seo } from '@/lib/seo'
+import { Trans, t } from '@lingui/macro'
 
 export const Route = createLazyFileRoute('/privacy')({
   component: PrivacyPage,
@@ -10,62 +11,60 @@ function PrivacyPage() {
   const version = '1.0'
   return (
     <div className="mx-auto w-full max-w-4xl p-6 space-y-6">
-      <Seo title="Privacy Policy – Transparenta.eu" description="How Transparenta.eu handles data, analytics, and error reporting with consent." />
+      <Seo title={t`Privacy Policy – Transparenta.eu`} description={t`How Transparenta.eu handles data, analytics, and error reporting with consent.`} />
       <div>
-        <h1 className="text-3xl font-semibold">Privacy Policy</h1>
-        <p className="text-sm text-muted-foreground">Effective Date: {effectiveDate} • Version: {version}</p>
+        <h1 className="text-3xl font-semibold"><Trans>Privacy Policy</Trans></h1>
+        <p className="text-sm text-muted-foreground"><Trans>Effective Date: {effectiveDate} • Version: {version}</Trans></p>
       </div>
 
       <div className="space-y-2">
-        <h2 className="text-lg font-medium">At a Glance</h2>
+        <h2 className="text-lg font-medium"><Trans>At a Glance</Trans></h2>
         <ul className="list-disc pl-6 text-sm text-muted-foreground space-y-1">
-          <li>Local-first: charts and preferences are stored in your browser.</li>
-          <li>Analytics and enhanced error reporting only with your consent.</li>
-          <li>No accounts required; no selling of personal data.</li>
+          <li><Trans>Local-first: charts and preferences are stored in your browser.</Trans></li>
+          <li><Trans>Analytics and enhanced error reporting only with your consent.</Trans></li>
+          <li><Trans>No accounts required; no selling of personal data.</Trans></li>
         </ul>
       </div>
 
       <div className="prose prose-slate dark:prose-invert max-w-none">
-        <h3>Who we are</h3>
+        <h3><Trans>Who we are</Trans></h3>
         <p>
-          Controller: Claudiu Constantin Bogdan, persoana fizica. Contact: contact@devostack.com.
+          <Trans>Controller: Claudiu Constantin Bogdan, persoana fizica. Contact: contact@devostack.com.</Trans>
         </p>
 
-        <h3>What we process</h3>
+        <h3><Trans>What we process</Trans></h3>
         <ul>
-          <li>Essential technical data and consent preferences (legitimate interests).</li>
-          <li>Usage analytics via PostHog (consent-only, custom events, no autocapture).</li>
-          <li>Enhanced error reporting via Sentry (consent-only); minimal telemetry otherwise.</li>
-          <li>User-created charts/annotations/filters stored locally (localStorage).</li>
+          <li><Trans>Essential technical data and consent preferences (legitimate interests).</Trans></li>
+          <li><Trans>Usage analytics via PostHog (consent-only, custom events, no autocapture).</Trans></li>
+          <li><Trans>Enhanced error reporting via Sentry (consent-only); minimal telemetry otherwise.</Trans></li>
+          <li><Trans>User-created charts/annotations/filters stored locally (localStorage).</Trans></li>
         </ul>
 
-        <h3>Purposes and legal bases</h3>
+        <h3><Trans>Purposes and legal bases</Trans></h3>
         <ul>
-          <li>Operate and secure the service (legitimate interests).</li>
-          <li>Improve product and fix issues (consent for analytics/error context).</li>
+          <li><Trans>Operate and secure the service (legitimate interests).</Trans></li>
+          <li><Trans>Improve product and fix issues (consent for analytics/error context).</Trans></li>
         </ul>
 
-        <h3>Data sources and licensing</h3>
-        <p>
-          Public sector information from Ministerul Finanțelor, made available as open data. No government affiliation.
-        </p>
+        <h3><Trans>Data sources and licensing</Trans></h3>
+        <p><Trans>Public sector information from Ministerul Finanțelor, made available as open data. No government affiliation.</Trans></p>
 
-        <h3>Sharing and processors</h3>
-        <p>PostHog (analytics), Sentry (error reporting), hosting providers. EU-first; safeguards for transfers.</p>
+        <h3><Trans>Sharing and processors</Trans></h3>
+        <p><Trans>PostHog (analytics), Sentry (error reporting), hosting providers. EU-first; safeguards for transfers.</Trans></p>
 
-        <h3>Retention</h3>
+        <h3><Trans>Retention</Trans></h3>
         <ul>
-          <li>LocalStorage: until you clear it.</li>
+          <li><Trans>LocalStorage: until you clear it.</Trans></li>
         </ul>
 
-        <h3>Your rights</h3>
-        <p>GDPR rights incl. access, erasure, objection, withdrawal of consent, and complaint to ANSPDCP.</p>
+        <h3><Trans>Your rights</Trans></h3>
+        <p><Trans>GDPR rights incl. access, erasure, objection, withdrawal of consent, and complaint to ANSPDCP.</Trans></p>
 
-        <h3>Children</h3>
-        <p>Not directed to children under 16.</p>
+        <h3><Trans>Children</Trans></h3>
+        <p><Trans>Not directed to children under 16.</Trans></p>
 
-        <h3>Changes</h3>
-        <p>We may update this policy; we’ll post changes with a new effective date.</p>
+        <h3><Trans>Changes</Trans></h3>
+        <p><Trans>We may update this policy; we’ll post changes with a new effective date.</Trans></p>
       </div>
     </div>
   )

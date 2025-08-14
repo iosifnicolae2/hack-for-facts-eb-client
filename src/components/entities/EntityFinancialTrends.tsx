@@ -10,6 +10,7 @@ import { Link } from '@tanstack/react-router';
 import { Button } from '@/components/ui/button';
 import { useParams } from '@tanstack/react-router';
 import { buildEntityIncomeExpenseChartLink } from '@/lib/chart-links';
+import { Trans, t } from '@lingui/macro';
 
 interface EntityFinancialTrendsProps {
   incomeTrend?: EntityDetailsData['incomeTrend'];
@@ -108,8 +109,8 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 w-full">
           <CardTitle className="flex items-center gap-2">
             <TrendingUp className="h-6 w-6" />
-            <span>Evoluție Financiară</span>
-            <Button asChild variant="ghost" size="icon" className="h-7 w-7 ml-1" aria-label="Deschide în editorul de grafice">
+            <span><Trans>Evoluție Financiară</Trans></span>
+            <Button asChild variant="ghost" size="icon" className="h-7 w-7 ml-1" aria-label={t`Deschide în editorul de grafice`}>
               <Link to={incomeExpenseChartLink?.to ?? '/charts/$chartId'} params={incomeExpenseChartLink?.params as any} search={incomeExpenseChartLink?.search as any} preload="intent">
                 <BarChart2 className="h-4 w-4" />
               </Link>
@@ -120,15 +121,15 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="absolute">Valori Absolute</SelectItem>
-              <SelectItem value="percent">Diferență % YoY</SelectItem>
+              <SelectItem value="absolute"><Trans>Valori Absolute</Trans></SelectItem>
+              <SelectItem value="percent"><Trans>Diferență % YoY</Trans></SelectItem>
             </SelectContent>
           </Select>
         </div>
       </CardHeader>
       <CardContent className="pt-6">
         {!trendsAvailable ? (
-          <p className="text-center text-slate-500 dark:text-slate-400 py-4">Nu sunt date disponibile pentru afișarea evoluției financiare.</p>
+          <p className="text-center text-slate-500 dark:text-slate-400 py-4"><Trans>Nu sunt date disponibile pentru afișarea evoluției financiare.</Trans></p>
         ) : (
           <ResponsiveContainer width="100%" height={400}>
             <AreaChart
@@ -153,9 +154,9 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
               <Tooltip content={<CustomTooltip />} />
               <Legend wrapperStyle={{ fontSize: '14px' }} />
               <ReferenceLine x={currentYear} stroke="gray" strokeDasharray="6 3" strokeWidth={1} />
-              <Area type="monotone" dataKey="income" name="Venituri" stroke="#10B981" fill="#10B981" fillOpacity={0.2} strokeWidth={2} />
-              <Area type="monotone" dataKey="expense" name="Cheltuieli" stroke="#EF4444" fill="#EF4444" fillOpacity={0.2} strokeWidth={2} />
-              <Area type="monotone" dataKey="balance" name="Balanță" stroke="#3B82F6" fill="#3B82F6" fillOpacity={0.2} strokeWidth={2} />
+              <Area type="monotone" dataKey="income" name={t`Venituri`} stroke="#10B981" fill="#10B981" fillOpacity={0.2} strokeWidth={2} />
+              <Area type="monotone" dataKey="expense" name={t`Cheltuieli`} stroke="#EF4444" fill="#EF4444" fillOpacity={0.2} strokeWidth={2} />
+              <Area type="monotone" dataKey="balance" name={t`Balanță`} stroke="#3B82F6" fill="#3B82F6" fillOpacity={0.2} strokeWidth={2} />
             </AreaChart>
           </ResponsiveContainer>
         )}

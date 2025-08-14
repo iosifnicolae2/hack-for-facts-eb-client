@@ -9,6 +9,7 @@ import { FinancialDataCard } from '../FinancialDataCard';
 import { ChartCard } from './ChartCard';
 import { TrendsViewSkeleton } from './TrendsViewSkeleton';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { t } from '@lingui/macro';
 
 interface BaseTrendsViewProps {
   entity?: EntityDetailsData;
@@ -45,7 +46,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
     if (!entity) return null;
     const accountCategory = type === 'income' ? 'vn' : 'ch';
     const entityName = entityNameRaw.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-    const title = type === 'income' ? `Top ${TOP_CATEGORIES_COUNT} Income Categories for ${entityName}` : `Top ${TOP_CATEGORIES_COUNT} Spending Categories for ${entityName}`;
+    const title = type === 'income' ? t`Top ${TOP_CATEGORIES_COUNT} Income Categories for ${entityName}` : t`Top ${TOP_CATEGORIES_COUNT} Spending Categories for ${entityName}`;
 
     const series: SeriesConfiguration[] = topFunctionalGroups.map((prefix, index) => ({
       id: `${prefix}${cui}-${type}`,
@@ -123,7 +124,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
           currentYear={currentYear}
         />
         <FinancialDataCard
-          title={'Incomes'}
+          title={t`Incomes`}
           iconType={'income'}
           currentYear={currentYear}
           searchTerm={incomeSearchTerm}
@@ -148,7 +149,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
         currentYear={currentYear}
       />
       <FinancialDataCard
-        title="Expenses"
+        title={t`Expenses`}
         iconType="expense"
         currentYear={currentYear}
         searchTerm={expenseSearchTerm}

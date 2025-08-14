@@ -3,6 +3,7 @@ import { EntityDetailsData } from '@/lib/api/entities';
 import { useFinancialData } from '@/hooks/useFinancialData';
 import { FinancialDataCard } from './FinancialDataCard';
 import { EntityLineItemsSkeleton } from './EntityLineItemsSkeleton';
+import { t } from '@lingui/macro';
 
 export interface EntityTopItemsProps {
   lineItems?: EntityDetailsData["executionLineItems"];
@@ -63,7 +64,7 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
   return (
     <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
       <FinancialDataCard
-        title="Expenses"
+        title={t`Expenses`}
         iconType="expense"
         currentYear={currentYear}
         years={years}
@@ -77,7 +78,7 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
         searchFocusKey="mod+j"
       />
       <FinancialDataCard
-        title="Incomes"
+        title={t`Incomes`}
         iconType="income"
         currentYear={currentYear}
         years={years}

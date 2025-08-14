@@ -20,6 +20,7 @@ import { usePersistedState } from "@/lib/hooks/usePersistedState";
 import { ChartCategories } from "@/components/charts/components/chart-categories/ChartCategories";
 import ChartsBackupRestore from "@/components/charts/components/backup-restore/ChartsBackupRestore";
 import { Seo } from "@/lib/seo";
+import { Trans, t } from "@lingui/macro";
 
 export const Route = createLazyFileRoute("/charts/")({
   component: ChartsListPage,
@@ -144,23 +145,23 @@ function ChartsListPage() {
   return (
     <div className="container mx-auto py-8 space-y-6">
       <Seo
-        title="Saved charts – Transparenta.eu"
-        description="Manage and search your locally saved charts. Create, favorite, categorize, and share your visualizations."
+        title={t`Saved charts – Transparenta.eu`}
+        description={t`Manage and search your locally saved charts. Create, favorite, categorize, and share your visualizations.`}
       />
       <div className="rounded-xl border bg-gradient-to-br from-primary/5 via-white to-secondary/5 p-6 md:p-8 shadow-md">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="space-y-2">
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight flex items-center gap-3">
               <BarChart3 className="h-8 w-8 md:h-10 md:w-10 text-primary" />
-              Charts
+              <Trans>Charts</Trans>
             </h1>
             <p className="text-muted-foreground max-w-2xl">
-              Build and manage custom visualizations of public spending data.
+              <Trans>Build and manage custom visualizations of public spending data.</Trans>
             </p>
             <div className="flex gap-2 pt-1">
-              <Badge variant="secondary">{totalCount} total</Badge>
+              <Badge variant="secondary">{totalCount} <Trans>total</Trans></Badge>
               {favoritesCount > 0 ? (
-                <Badge variant="success">{favoritesCount} favorites</Badge>
+                <Badge variant="success">{favoritesCount} <Trans>favorites</Trans></Badge>
               ) : null}
             </div>
           </div>
@@ -172,7 +173,7 @@ function ChartsListPage() {
             <Link to="/charts/new" replace={false}>
               <Button size="lg" className="text-base h-11 px-6">
                 <Plus className="mr-2 h-5 w-5" />
-                Create chart
+                <Trans>Create chart</Trans>
               </Button>
             </Link>
           </div>
@@ -185,22 +186,22 @@ function ChartsListPage() {
           <Input
             value={search}
             onChange={(e) => setSearch(e.currentTarget.value)}
-            placeholder="Search charts…"
+            placeholder={t`Search charts…`}
             className="pl-9"
-            aria-label="Search charts"
+            aria-label={t`Search charts`}
           />
         </div>
         <div className="flex items-center gap-3">
           <Select value={sortBy} onValueChange={(v) => setSortBy(v as SortOption)}>
             <SelectTrigger className="w-[200px]">
-              <SelectValue placeholder="Sort by" />
+              <SelectValue placeholder={t`Sort by`} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="newest">Newest</SelectItem>
-              <SelectItem value="oldest">Oldest</SelectItem>
-              <SelectItem value="a-z">Title A–Z</SelectItem>
-              <SelectItem value="z-a">Title Z–A</SelectItem>
-              <SelectItem value="favorites-first">Favorites first</SelectItem>
+              <SelectItem value="newest"><Trans>Newest</Trans></SelectItem>
+              <SelectItem value="oldest"><Trans>Oldest</Trans></SelectItem>
+              <SelectItem value="a-z"><Trans>Title A–Z</Trans></SelectItem>
+              <SelectItem value="z-a"><Trans>Title Z–A</Trans></SelectItem>
+              <SelectItem value="favorites-first"><Trans>Favorites first</Trans></SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -209,14 +210,12 @@ function ChartsListPage() {
       {totalCount === 0 ? (
         <div className="text-center py-16">
           <BarChart3 className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-          <h3 className="text-xl font-semibold text-foreground mb-2">No charts yet</h3>
-          <p className="text-muted-foreground mb-6">
-            Create your first chart to start visualizing public spending data.
-          </p>
+          <h3 className="text-xl font-semibold text-foreground mb-2"><Trans>No charts yet</Trans></h3>
+          <p className="text-muted-foreground mb-6"><Trans>Create your first chart to start visualizing public spending data.</Trans></p>
           <Link to="/charts/new">
             <Button className="gap-2">
               <Plus className="h-4 w-4" />
-              Create your first chart
+              <Trans>Create your first chart</Trans>
             </Button>
           </Link>
         </div>
@@ -228,9 +227,9 @@ function ChartsListPage() {
         >
           <div className="max-w-full overflow-x-auto hide-scrollbar">
             <TabsList className="inline-flex items-center gap-1 whitespace-nowrap h-8 bg-muted/30 p-1 rounded-md min-w-max">
-              <TabsTrigger className={cn("h-7 px-2 text-xs", activeTab === "all" && "bg-white border-slate-200 shadow-md data-[state=active]:bg-white data-[state=active]:border-slate-200 data-[state=active]:shadow-md")} value="all">All</TabsTrigger>
+              <TabsTrigger className={cn("h-7 px-2 text-xs", activeTab === "all" && "bg-white border-slate-200 shadow-md data-[state=active]:bg-white data-[state=active]:border-slate-200 data-[state=active]:shadow-md")} value="all"><Trans>All</Trans></TabsTrigger>
               <TabsTrigger className={cn("h-7 px-2 text-xs", activeTab === "favorites" && "bg-white border-slate-200 shadow-md data-[state=active]:bg-white data-[state=active]:border-slate-200 data-[state=active]:shadow-md")} value="favorites" disabled={favoritesCount === 0}>
-                Favorites
+                <Trans>Favorites</Trans>
               </TabsTrigger>
               <ChartCategories
                 categories={categories}
@@ -245,10 +244,8 @@ function ChartsListPage() {
           <TabsContent value="all">
             {filteredAllCharts.length === 0 ? (
               <div className="text-center py-12">
-                <h4 className="text-lg font-medium mb-1">No results</h4>
-                <p className="text-muted-foreground">
-                  Try a different search term or sorting.
-                </p>
+                <h4 className="text-lg font-medium mb-1"><Trans>No results</Trans></h4>
+                <p className="text-muted-foreground"><Trans>Try a different search term or sorting.</Trans></p>
               </div>
             ) : (
               <ChartList
@@ -265,10 +262,8 @@ function ChartsListPage() {
           <TabsContent value="favorites">
             {filteredFavoriteCharts.length === 0 ? (
               <div className="text-center py-12">
-                <h4 className="text-lg font-medium mb-1">No favorites yet</h4>
-                <p className="text-muted-foreground">
-                  Mark charts as favorites to quickly find them here.
-                </p>
+                <h4 className="text-lg font-medium mb-1"><Trans>No favorites yet</Trans></h4>
+                <p className="text-muted-foreground"><Trans>Mark charts as favorites to quickly find them here.</Trans></p>
               </div>
             ) : (
               <ChartList
@@ -288,10 +283,8 @@ function ChartsListPage() {
               <TabsContent key={cat.id} value={`category:${cat.id}`}>
                 {chartsInCat.length === 0 ? (
                   <div className="text-center py-12">
-                    <h4 className="text-lg font-medium mb-1">No charts in “{cat.name}”</h4>
-                    <p className="text-muted-foreground">
-                      Use the tag menu on a chart card to add it to this category.
-                    </p>
+                    <h4 className="text-lg font-medium mb-1"><Trans>No charts in “{cat.name}”</Trans></h4>
+                    <p className="text-muted-foreground"><Trans>Use the tag menu on a chart card to add it to this category.</Trans></p>
                   </div>
                 ) : (
                   <ChartList

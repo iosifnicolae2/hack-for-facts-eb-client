@@ -1,4 +1,5 @@
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import { I18nAppProvider } from "@/lib/i18n";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
@@ -25,6 +26,7 @@ export const Route = createRootRoute({
                 <AppSidebar />
                 <SidebarInset>
                   <main className="flex-1">
+                    <I18nAppProvider>
                     <div>
                       {/* Global SEO defaults. Child routes can render their own <Seo /> to override. */}
                       <Seo
@@ -53,6 +55,7 @@ export const Route = createRootRoute({
                       <Toaster />
                       <FloatingEntitySearch />
                     </div>
+                    </I18nAppProvider>
                   </main>
                   <AppFooter />
                   <ReportBugFab />

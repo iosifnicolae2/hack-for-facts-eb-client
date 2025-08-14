@@ -34,6 +34,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { getMergedColumnOrder, moveColumnOrder } from "@/lib/table-utils";
 import { useTablePreferences } from "@/hooks/useTablePreferences";
 import { Pagination } from "@/components/ui/pagination";
+import { Trans, t } from "@lingui/macro";
 
 interface HeatmapDataTableProps {
     data: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[];
@@ -80,7 +81,7 @@ export function HeatmapDataTable({
                     const { pageIndex, pageSize } = table.getState().pagination
                     const start = pageIndex * pageSize
                     return (
-                        <span className="block text-left w-full text-xs text-muted-foreground pl-2" aria-label={`Row ${start + row.index + 1}`}>
+                        <span className="block text-left w-full text-xs text-muted-foreground pl-2" aria-label={t`Row ${start + row.index + 1}`}>
                             {start + row.index + 1}
                         </span>
                     );
@@ -104,7 +105,7 @@ export function HeatmapDataTable({
                                 className="flex items-center gap-1 cursor-pointer"
                                 onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                             >
-                                Nume
+                                <Trans>Nume</Trans>
                                 {column.getIsSorted() === "asc" ? (
                                     <ChevronUp className="w-4 h-4" />
                                 ) : column.getIsSorted() === "desc" ? (
@@ -120,15 +121,15 @@ export function HeatmapDataTable({
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="start" className="w-44" onClick={(e) => e.stopPropagation()}>
-                                    <DropdownMenuLabel>Column</DropdownMenuLabel>
+                                    <DropdownMenuLabel><Trans>Column</Trans></DropdownMenuLabel>
                                     <DropdownMenuItem disabled={disableLeft} onSelect={() => !disableLeft && move('left')}>
-                                        <ChevronLeft className="w-3 h-3 mr-1" /> Move left
+                                        <ChevronLeft className="w-3 h-3 mr-1" /> <Trans>Move left</Trans>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem disabled={disableRight} onSelect={() => !disableRight && move('right')}>
-                                        <ChevronRight className="w-3 h-3 mr-1" /> Move right
+                                        <ChevronRight className="w-3 h-3 mr-1" /> <Trans>Move right</Trans>
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuItem onSelect={() => column.toggleVisibility(false)}>Hide</DropdownMenuItem>
+                                    <DropdownMenuItem onSelect={() => column.toggleVisibility(false)}><Trans>Hide</Trans></DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </div>
@@ -163,7 +164,7 @@ export function HeatmapDataTable({
                                 className="flex items-center gap-1 cursor-pointer"
                                 onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                             >
-                                Județ
+                                <Trans>Județ</Trans>
                                 {column.getIsSorted() === "asc" ? (
                                     <ChevronUp className="w-4 h-4" />
                                 ) : column.getIsSorted() === "desc" ? (
@@ -179,15 +180,15 @@ export function HeatmapDataTable({
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="start" className="w-44" onClick={(e) => e.stopPropagation()}>
-                                    <DropdownMenuLabel>Column</DropdownMenuLabel>
+                                    <DropdownMenuLabel><Trans>Column</Trans></DropdownMenuLabel>
                                     <DropdownMenuItem disabled={disableLeft} onSelect={() => !disableLeft && move('left')}>
-                                        <ChevronLeft className="w-3 h-3 mr-1" /> Move left
+                                        <ChevronLeft className="w-3 h-3 mr-1" /> <Trans>Move left</Trans>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem disabled={disableRight} onSelect={() => !disableRight && move('right')}>
-                                        <ChevronRight className="w-3 h-3 mr-1" /> Move right
+                                        <ChevronRight className="w-3 h-3 mr-1" /> <Trans>Move right</Trans>
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuItem onSelect={() => column.toggleVisibility(false)}>Hide</DropdownMenuItem>
+                                    <DropdownMenuItem onSelect={() => column.toggleVisibility(false)}><Trans>Hide</Trans></DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </div>
@@ -217,7 +218,7 @@ export function HeatmapDataTable({
                                 className="flex items-center gap-1 cursor-pointer"
                                 onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                             >
-                                Populație
+                                <Trans>Populație</Trans>
                                 {column.getIsSorted() === "asc" ? (
                                     <ChevronUp className="w-4 h-4" />
                                 ) : column.getIsSorted() === "desc" ? (
@@ -233,15 +234,15 @@ export function HeatmapDataTable({
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end" className="w-44" onClick={(e) => e.stopPropagation()}>
-                                    <DropdownMenuLabel>Column</DropdownMenuLabel>
+                                    <DropdownMenuLabel><Trans>Column</Trans></DropdownMenuLabel>
                                     <DropdownMenuItem disabled={disableLeft} onSelect={() => !disableLeft && move('left')}>
-                                        <ChevronLeft className="w-3 h-3 mr-1" /> Move left
+                                        <ChevronLeft className="w-3 h-3 mr-1" /> <Trans>Move left</Trans>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem disabled={disableRight} onSelect={() => !disableRight && move('right')}>
-                                        <ChevronRight className="w-3 h-3 mr-1" /> Move right
+                                        <ChevronRight className="w-3 h-3 mr-1" /> <Trans>Move right</Trans>
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuItem onSelect={() => column.toggleVisibility(false)}>Hide</DropdownMenuItem>
+                                    <DropdownMenuItem onSelect={() => column.toggleVisibility(false)}><Trans>Hide</Trans></DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </div>
@@ -271,7 +272,7 @@ export function HeatmapDataTable({
                                 className="flex items-center gap-1 cursor-pointer"
                                 onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                             >
-                                Suma Totală
+                                <Trans>Suma Totală</Trans>
                                 {column.getIsSorted() === "asc" ? (
                                     <ChevronUp className="w-4 h-4" />
                                 ) : column.getIsSorted() === "desc" ? (
@@ -287,15 +288,15 @@ export function HeatmapDataTable({
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end" className="w-44" onClick={(e) => e.stopPropagation()}>
-                                    <DropdownMenuLabel>Column</DropdownMenuLabel>
+                                    <DropdownMenuLabel><Trans>Column</Trans></DropdownMenuLabel>
                                     <DropdownMenuItem disabled={disableLeft} onSelect={() => !disableLeft && move('left')}>
-                                        <ChevronLeft className="w-3 h-3 mr-1" /> Move left
+                                        <ChevronLeft className="w-3 h-3 mr-1" /> <Trans>Move left</Trans>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem disabled={disableRight} onSelect={() => !disableRight && move('right')}>
-                                        <ChevronRight className="w-3 h-3 mr-1" /> Move right
+                                        <ChevronRight className="w-3 h-3 mr-1" /> <Trans>Move right</Trans>
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuItem onSelect={() => column.toggleVisibility(false)}>Hide</DropdownMenuItem>
+                                    <DropdownMenuItem onSelect={() => column.toggleVisibility(false)}><Trans>Hide</Trans></DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </div>
@@ -332,7 +333,7 @@ export function HeatmapDataTable({
                                 className="flex items-center gap-1 cursor-pointer"
                                 onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                             >
-                                Suma/Cap de locuitor
+                                <Trans>Suma/Cap de locuitor</Trans>
                                 {column.getIsSorted() === "asc" ? (
                                     <ChevronUp className="w-4 h-4" />
                                 ) : column.getIsSorted() === "desc" ? (
@@ -348,15 +349,15 @@ export function HeatmapDataTable({
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end" className="w-44" onClick={(e) => e.stopPropagation()}>
-                                    <DropdownMenuLabel>Column</DropdownMenuLabel>
+                                    <DropdownMenuLabel><Trans>Column</Trans></DropdownMenuLabel>
                                     <DropdownMenuItem disabled={disableLeft} onSelect={() => !disableLeft && move('left')}>
-                                        <ChevronLeft className="w-3 h-3 mr-1" /> Move left
+                                        <ChevronLeft className="w-3 h-3 mr-1" /> <Trans>Move left</Trans>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem disabled={disableRight} onSelect={() => !disableRight && move('right')}>
-                                        <ChevronRight className="w-3 h-3 mr-1" /> Move right
+                                        <ChevronRight className="w-3 h-3 mr-1" /> <Trans>Move right</Trans>
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuItem onSelect={() => column.toggleVisibility(false)}>Hide</DropdownMenuItem>
+                                    <DropdownMenuItem onSelect={() => column.toggleVisibility(false)}><Trans>Hide</Trans></DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </div>
@@ -421,24 +422,24 @@ export function HeatmapDataTable({
             <div className="flex items-center justify-end gap-2 py-2">
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="outline" size="sm">View</Button>
+                        <Button variant="outline" size="sm"><Trans>View</Trans></Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-56">
-                        <DropdownMenuLabel>Density</DropdownMenuLabel>
-                        <DropdownMenuCheckboxItem checked={density === 'comfortable'} onCheckedChange={(c) => c && setDensity('comfortable')}>Comfortable</DropdownMenuCheckboxItem>
-                        <DropdownMenuCheckboxItem checked={density === 'compact'} onCheckedChange={(c) => c && setDensity('compact')}>Compact</DropdownMenuCheckboxItem>
+                        <DropdownMenuLabel><Trans>Density</Trans></DropdownMenuLabel>
+                        <DropdownMenuCheckboxItem checked={density === 'comfortable'} onCheckedChange={(c) => c && setDensity('comfortable')}><Trans>Comfortable</Trans></DropdownMenuCheckboxItem>
+                        <DropdownMenuCheckboxItem checked={density === 'compact'} onCheckedChange={(c) => c && setDensity('compact')}><Trans>Compact</Trans></DropdownMenuCheckboxItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuLabel>Currency</DropdownMenuLabel>
-                        <DropdownMenuCheckboxItem checked={currencyFormat === 'standard'} onCheckedChange={(c) => c && setCurrencyFormat('standard')}>Standard</DropdownMenuCheckboxItem>
-                        <DropdownMenuCheckboxItem checked={currencyFormat === 'compact'} onCheckedChange={(c) => c && setCurrencyFormat('compact')}>Compact</DropdownMenuCheckboxItem>
-                        <DropdownMenuCheckboxItem checked={currencyFormat === 'both'} onCheckedChange={(c) => c && setCurrencyFormat('both')}>Both</DropdownMenuCheckboxItem>
+                        <DropdownMenuLabel><Trans>Currency</Trans></DropdownMenuLabel>
+                        <DropdownMenuCheckboxItem checked={currencyFormat === 'standard'} onCheckedChange={(c) => c && setCurrencyFormat('standard')}><Trans>Standard</Trans></DropdownMenuCheckboxItem>
+                        <DropdownMenuCheckboxItem checked={currencyFormat === 'compact'} onCheckedChange={(c) => c && setCurrencyFormat('compact')}><Trans>Compact</Trans></DropdownMenuCheckboxItem>
+                        <DropdownMenuCheckboxItem checked={currencyFormat === 'both'} onCheckedChange={(c) => c && setCurrencyFormat('both')}><Trans>Both</Trans></DropdownMenuCheckboxItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuLabel>Columns</DropdownMenuLabel>
-                        <DropdownMenuCheckboxItem checked={columnVisibility?.name !== false} onCheckedChange={(c) => setColumnVisibility((v: Record<string, boolean>) => ({ ...v, name: Boolean(c) }))}>Name</DropdownMenuCheckboxItem>
-                        <DropdownMenuCheckboxItem checked={columnVisibility?.county_name !== false} onCheckedChange={(c) => setColumnVisibility((v: Record<string, boolean>) => ({ ...v, county_name: Boolean(c) }))}>County</DropdownMenuCheckboxItem>
-                        <DropdownMenuCheckboxItem checked={columnVisibility?.population !== false} onCheckedChange={(c) => setColumnVisibility((v: Record<string, boolean>) => ({ ...v, population: Boolean(c) }))}>Population</DropdownMenuCheckboxItem>
-                        <DropdownMenuCheckboxItem checked={columnVisibility?.total_amount !== false} onCheckedChange={(c) => setColumnVisibility((v: Record<string, boolean>) => ({ ...v, total_amount: Boolean(c) }))}>Total Amount</DropdownMenuCheckboxItem>
-                        <DropdownMenuCheckboxItem checked={columnVisibility?.per_capita_amount !== false} onCheckedChange={(c) => setColumnVisibility((v: Record<string, boolean>) => ({ ...v, per_capita_amount: Boolean(c) }))}>Per Capita</DropdownMenuCheckboxItem>
+                        <DropdownMenuLabel><Trans>Columns</Trans></DropdownMenuLabel>
+                        <DropdownMenuCheckboxItem checked={columnVisibility?.name !== false} onCheckedChange={(c) => setColumnVisibility((v: Record<string, boolean>) => ({ ...v, name: Boolean(c) }))}><Trans>Name</Trans></DropdownMenuCheckboxItem>
+                        <DropdownMenuCheckboxItem checked={columnVisibility?.county_name !== false} onCheckedChange={(c) => setColumnVisibility((v: Record<string, boolean>) => ({ ...v, county_name: Boolean(c) }))}><Trans>County</Trans></DropdownMenuCheckboxItem>
+                        <DropdownMenuCheckboxItem checked={columnVisibility?.population !== false} onCheckedChange={(c) => setColumnVisibility((v: Record<string, boolean>) => ({ ...v, population: Boolean(c) }))}><Trans>Population</Trans></DropdownMenuCheckboxItem>
+                        <DropdownMenuCheckboxItem checked={columnVisibility?.total_amount !== false} onCheckedChange={(c) => setColumnVisibility((v: Record<string, boolean>) => ({ ...v, total_amount: Boolean(c) }))}><Trans>Total Amount</Trans></DropdownMenuCheckboxItem>
+                        <DropdownMenuCheckboxItem checked={columnVisibility?.per_capita_amount !== false} onCheckedChange={(c) => setColumnVisibility((v: Record<string, boolean>) => ({ ...v, per_capita_amount: Boolean(c) }))}><Trans>Per Capita</Trans></DropdownMenuCheckboxItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
@@ -489,7 +490,7 @@ export function HeatmapDataTable({
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                                    No results found.
+                                    <Trans>No results found.</Trans>
                                 </TableCell>
                             </TableRow>
                         )}

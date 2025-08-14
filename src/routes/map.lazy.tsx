@@ -29,6 +29,7 @@ import { useHeatmapData } from "@/hooks/useHeatmapData";
 import { useMapFilter } from "@/hooks/useMapFilter";
 import { FloatingQuickNav } from "@/components/ui/FloatingQuickNav";
 import { Seo } from "@/lib/seo";
+import { Trans, t } from "@lingui/macro";
 
 export const Route = createLazyFileRoute("/map")({
   component: MapPage,
@@ -119,8 +120,8 @@ function MapPage() {
   return (
     <div className="flex flex-col md:flex-row md:h-screen bg-background">
       <Seo
-        title="Romania spending heatmap – Transparenta.eu"
-        description="Explore choropleth maps of public spending by UAT/Judet with per-capita or total normalization."
+        title={t`Romania spending heatmap – Transparenta.eu`}
+        description={t`Explore choropleth maps of public spending by UAT/Judet with per-capita or total normalization.`}
       />
       <div className="hidden md:flex md:flex-col w-[320px] lg:w-[360px] flex-shrink-0 border-r border-border bg-card text-card-foreground overflow-y-auto">
         <MapFilter />
@@ -139,9 +140,9 @@ function MapPage() {
               <LoadingSpinner size="lg" text={loadingText} />
             </div>
           ) : error ? (
-            <div className="p-4 text-center text-red-500">Error loading data: {error.message}</div>
+            <div className="p-4 text-center text-red-500"><Trans>Error loading data:</Trans> {error.message}</div>
           ) : !geoJsonData ? (
-            <div className="p-4 text-center">Map data not available.</div>
+            <div className="p-4 text-center"><Trans>Map data not available.</Trans></div>
           ) : (
             <>
               {mapState.activeView === "map" && (
@@ -158,14 +159,14 @@ function MapPage() {
                     />
                   ) : (
                     <div className="flex items-center justify-center h-full w-full">
-                      No data available for the map.
+                      <Trans>No data available for the map.</Trans>
                     </div>
                   )}
                   <MapLegend
                     min={minAggregatedValue}
                     max={maxAggregatedValue}
                     className="absolute bottom-[-6rem] right-[4rem] z-10 hidden md:block"
-                    title="Interval Valori"
+                    title={t`Interval Valori`}
                   />
                   <Dialog open={isLegendModalOpen} onOpenChange={setIsLegendModalOpen}>
                     <DialogTrigger asChild>
@@ -179,7 +180,7 @@ function MapPage() {
                     </DialogTrigger>
                     <DialogContent hideCloseButton={true} className="p-0 m-0 w-full max-w-full h-full max-h-full sm:h-[calc(100%-2rem)] sm:max-h-[calc(100%-2rem)] sm:w-[calc(100%-2rem)] sm:max-w-md sm:rounded-lg flex flex-col">
                       <DialogHeader className="p-4 border-b flex flex-row justify-between items-center shrink-0">
-                        <DialogTitle className="text-lg font-semibold">Legend</DialogTitle>
+                        <DialogTitle className="text-lg font-semibold"><Trans>Legend</Trans></DialogTitle>
                         <DialogClose asChild>
                           <Button variant="ghost" size="icon" className="rounded-full">
                             <X className="h-5 w-5" />
@@ -190,7 +191,7 @@ function MapPage() {
                         <MapLegend
                           min={minAggregatedValue}
                           max={maxAggregatedValue}
-                          title="Aggregated Value Legend"
+                          title={t`Aggregated Value Legend`}
                           isInModal={true}
                         />
                       </div>
@@ -201,7 +202,7 @@ function MapPage() {
               {mapState.activeView === "table" && (
                 <div className="h-full m-0">
                   <div className="p-4 h-full flex flex-col overflow-auto">
-                    <h2 className="text-xl font-semibold mb-4">Data Table View</h2>
+                    <h2 className="text-xl font-semibold mb-4"><Trans>Data Table View</Trans></h2>
                     <div className="flex-grow overflow-x-auto">
                       {heatmapData ? (
                         <HeatmapDataTable
@@ -215,11 +216,11 @@ function MapPage() {
                         />
                       ) : isLoadingHeatmap ? (
                         <div className="flex items-center justify-center h-full">
-                          <LoadingSpinner size="md" text="Loading table data..." />
+                          <LoadingSpinner size="md" text={t`Loading table data...`} />
                         </div>
                       ) : (
                         <div className="flex items-center justify-center h-full">
-                          <p className="text-muted-foreground">No data available for the table.</p>
+                          <p className="text-muted-foreground"><Trans>No data available for the table.</Trans></p>
                         </div>
                       )}
                     </div>
@@ -232,7 +233,7 @@ function MapPage() {
                     {heatmapData && geoJsonData ? (
                       <UatDataCharts data={heatmapData} mapViewType={mapState.mapViewType} />
                     ) : (
-                      <p className="text-center text-muted-foreground">Chart data is loading or not available.</p>
+                      <p className="text-center text-muted-foreground"><Trans>Chart data is loading or not available.</Trans></p>
                     )}
                   </div>
                 </div>
@@ -257,7 +258,7 @@ function MapPage() {
           </DialogTrigger>
           <DialogContent hideCloseButton={true} className="p-0 m-0 w-full max-w-full h-full max-h-full sm:h-[calc(100%-2rem)] sm:max-h-[calc(100%-2rem)] sm:w-[calc(100%-2rem)] sm:max-w-md sm:rounded-lg flex flex-col">
             <DialogHeader className="p-4 border-b flex flex-row justify-between items-center shrink-0">
-              <DialogTitle className="text-lg font-semibold">Filters</DialogTitle>
+              <DialogTitle className="text-lg font-semibold"><Trans>Filters</Trans></DialogTitle>
               <DialogClose asChild>
                 <Button variant="ghost" size="icon" className="rounded-full">
                   <X className="h-5 w-5" />

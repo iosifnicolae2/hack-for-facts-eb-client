@@ -19,6 +19,7 @@ import type { EntitySearchSchema } from '@/routes/entities.$cui'
 import { Analytics } from '@/lib/analytics'
 import { Seo } from '@/lib/seo'
 import { buildEntitySeo } from '@/lib/seo-entity'
+import { Trans, t } from '@lingui/macro'
 
 export const Route = createLazyFileRoute('/entities/$cui')({
   component: EntityDetailsPage,
@@ -106,13 +107,13 @@ function EntityDetailsPage() {
   if (isError) {
     return (
       <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex flex-col justify-center items-center p-4">
-        <Seo title={`Entity ${cui} – Not found`} description={`No data found for CUI ${cui}.`} noindex />
+        <Seo title={t`Entity ${cui} – Not found`} description={t`No data found for CUI ${cui}.`} noindex />
         <Alert variant="destructive" className="max-w-lg w-full bg-red-50 dark:bg-red-900 border-red-500 dark:border-red-700">
           <AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400" />
-          <AlertTitle className="text-red-700 dark:text-red-300">Error Fetching Entity Details</AlertTitle>
+          <AlertTitle className="text-red-700 dark:text-red-300"><Trans>Error Fetching Entity Details</Trans></AlertTitle>
           <AlertDescription className="text-red-600 dark:text-red-400">
-            There was a problem fetching the details for CUI: <strong>{cui}</strong>.
-            {error && <p className="mt-2 text-sm">Details: {error.message}</p>}
+            <Trans>There was a problem fetching the details for CUI: <strong>{cui}</strong>.</Trans>
+            {error && <p className="mt-2 text-sm"><Trans>Details:</Trans> {error.message}</p>}
           </AlertDescription>
         </Alert>
       </div>
@@ -122,12 +123,12 @@ function EntityDetailsPage() {
   if (!isLoading && !entity) {
     return (
       <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex flex-col justify-center items-center p-4">
-        <Seo title={`Entity ${cui} – Not found`} description={`No data found for CUI ${cui}.`} noindex />
+        <Seo title={t`Entity ${cui} – Not found`} description={t`No data found for CUI ${cui}.`} noindex />
         <Alert className="max-w-lg w-full bg-blue-50 dark:bg-blue-900 border-blue-500 dark:border-blue-700">
           <Info className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-          <AlertTitle className="text-blue-700 dark:text-blue-300">No Data Found</AlertTitle>
+          <AlertTitle className="text-blue-700 dark:text-blue-300"><Trans>No Data Found</Trans></AlertTitle>
           <AlertDescription className="text-blue-600 dark:text-blue-400">
-            No entity details found for CUI: <strong>{cui}</strong>. It's possible this entity does not exist or has no associated data.
+            <Trans>No entity details found for CUI: <strong>{cui}</strong>. It's possible this entity does not exist or has no associated data.</Trans>
           </AlertDescription>
         </Alert>
       </div>
@@ -197,11 +198,11 @@ function EntityDetailsPage() {
           activeView={search.view ?? 'overview'}
           yearSelector={
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-slate-700 dark:text-slate-300 sm:inline">Reporting Year:</span>
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-300 sm:inline"><Trans>Reporting Year:</Trans></span>
               <Select value={selectedYear.toString()} onValueChange={(val) => handleYearChange(parseInt(val, 10))}>
                 <SelectTrigger
                   ref={yearSelectorRef}
-                  aria-label="Reporting year"
+                  aria-label={t`Reporting year`}
                   className="h-7 sm:h-9 w-[4.5rem] sm:w-[5rem] px-2 border-none shadow-none font-bold text-sm sm:text-base"
                 >
                   <SelectValue />

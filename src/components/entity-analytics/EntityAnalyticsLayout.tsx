@@ -2,6 +2,7 @@ import { ReactNode, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Filter as FilterIcon, X } from 'lucide-react'
+import { Trans } from '@lingui/macro'
 
 interface Props {
   filters: ReactNode
@@ -41,7 +42,7 @@ export function EntityAnalyticsLayout({ filters, children, title = 'Entity Analy
           </DialogTrigger>
           <DialogContent hideCloseButton={true} className="p-0 m-0 w-full max-w-full h-full max-h-full sm:h-[calc(100%-2rem)] sm:max-h-[calc(100%-2rem)] sm:w-[calc(100%-2rem)] sm:max-w-md sm:rounded-lg flex flex-col">
             <DialogHeader className="p-4 border-b flex flex-row justify-between items-center shrink-0">
-              <DialogTitle className="text-lg font-semibold">Filters</DialogTitle>
+              <DialogTitle className="text-lg font-semibold"><Trans>Filters</Trans></DialogTitle>
               <DialogClose asChild>
                 <Button variant="ghost" size="icon" className="rounded-full">
                   <X className="h-5 w-5" />

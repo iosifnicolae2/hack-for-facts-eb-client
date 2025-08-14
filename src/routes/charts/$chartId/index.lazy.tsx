@@ -7,6 +7,7 @@ import { useChartStore } from "@/components/charts/hooks/useChartStore";
 import { useCallback } from "react";
 import { AnnotationConfigView } from "@/components/charts/components/views/AnnotationConfigView";
 import { Seo } from "@/lib/seo";
+import { t, Trans } from "@lingui/macro";
 
 export const Route = createLazyFileRoute("/charts/$chartId/")({
   component: ChartDetailPage,
@@ -24,15 +25,15 @@ function ChartDetailPage() {
   return (
     <>
       <Seo
-        title={view === 'overview' ? 'Chart – Transparenta.eu' : 'Configure chart – Transparenta.eu'}
-        description={view === 'overview' ? 'View and share your chart.' : 'Configure chart options, series, and annotations.'}
+        title={view === 'overview' ? t`Chart – Transparenta.eu` : t`Configure chart – Transparenta.eu`}
+        description={view === 'overview' ? t`View and share your chart.` : t`Configure chart options, series, and annotations.`}
         type={view === 'overview' ? 'article' : 'website'}
       />
       {view === "overview" && <ChartView />}
       <Dialog open={view === 'config' || view === 'series-config' || view === 'annotation-config'} onOpenChange={handleCloseDialog}>
-        <DialogTitle className="sr-only">Configure Chart</DialogTitle>
+        <DialogTitle className="sr-only"><Trans>Configure Chart</Trans></DialogTitle>
         <DialogContent hideCloseButton className="max-w-4xl h-full overflow-y-auto">
-          <DialogDescription className="sr-only">Configure Chart</DialogDescription>
+          <DialogDescription className="sr-only"><Trans>Configure Chart</Trans></DialogDescription>
           {view === "config" && <ChartConfigView />}
           {view === "series-config" && <SeriesConfigView />}
           {view === "annotation-config" && <AnnotationConfigView />}

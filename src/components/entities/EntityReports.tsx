@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from '@tanstack/react-router';
 import { Download, FileText, Landmark, Calendar } from 'lucide-react';
 import { EntityReportsSkeleton } from './EntityReportsSkeleton';
+import { Trans } from '@lingui/macro';
 
 type Report = NonNullable<EntityDetailsData['reports']>['nodes'][0];
 
@@ -86,7 +87,7 @@ export const EntityReports: React.FC<EntityReportsProps> = ({ reports, isLoading
           <AccordionTrigger className="p-6">
             <div className="flex items-center gap-2">
               <FileText className="h-6 w-6" />
-              <CardTitle>Rapoarte Financiare ({sortedReports.length})</CardTitle>
+              <CardTitle><Trans>Rapoarte Financiare</Trans> ({sortedReports.length})</CardTitle>
             </div>
           </AccordionTrigger>
           <AccordionContent className="p-6 pt-0">

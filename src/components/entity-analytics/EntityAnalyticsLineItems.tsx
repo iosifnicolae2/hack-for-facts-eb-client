@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { BarChart2Icon } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
 import { generateChartFromTopGroups } from "@/lib/chart-generation-utils";
+import { Trans } from "@lingui/macro";
 
 interface EntityAnalyticsLineItemsProps {
   filter: AnalyticsFilterType;
@@ -118,7 +119,7 @@ export const EntityAnalyticsLineItems: React.FC<
           <h3 className="text-lg font-semibold">{title}</h3>
           <Button variant="outline" size="sm" onClick={handleViewChart}>
             <BarChart2Icon className="w-4 h-4" />
-            View Chart
+            <Trans>View Chart</Trans>
           </Button>
         </div>
         <SearchToggleInput
@@ -132,7 +133,7 @@ export const EntityAnalyticsLineItems: React.FC<
         {isLoading ? (
           <EntityAnalyticsLineItemsSkeleton itemCount={10} />
         ) : error ? (
-          <p>Error loading data</p>
+          <p><Trans>Error loading data</Trans></p>
         ) : (
           <GroupedItemsDisplay
             groups={groupsToDisplay}

@@ -50,6 +50,67 @@ yarn dev
 yarn build
 ```
 
+## Internationalization (i18n)
+
+This app uses Lingui for translations. Catalogs live in `src/locales/{locale}/messages.po` and are loaded dynamically via the Vite Lingui plugin.
+
+### Scripts (from `package.json`)
+
+- `yarn i18n:extract`: Scan source files for message IDs and update locale catalogs (adds new keys, keeps obsolete ones).
+- `yarn i18n:compile`: Compile translated catalogs into runtime assets used in production.
+- `yarn i18n:clean`: Extract and remove obsolete/unused message IDs from catalogs.
+
+Typical workflow:
+
+```bash
+# 1) Add or change messages in code
+yarn i18n:extract
+
+# 2) Translate .po files in src/locales/{locale}/messages.po
+
+# 3) Optional: validate/prepare runtime assets
+yarn i18n:compile
+```
+
+### Adding messages in code
+
+Use Lingui macros to mark translatable text:
+
+```tsx
+import { t, Trans } from "@lingui/macro";
+
+const title = t`Charts`;
+
+export function Example() {
+  return <h1><Trans>Welcome to the app</Trans></h1>;
+}
+```
+
+Run `yarn i18n:extract` after adding messages to update `.po` files.
+
+### Switching locale at runtime
+
+Translations are provided via `I18nAppProvider` and loaded on demand. Call `dynamicActivate(locale)` to switch:
+
+```tsx
+import { dynamicActivate } from "@/lib/i18n";
+
+await dynamicActivate("ro"); // e.g., after a user changes language
+```
+
+`I18nAppProvider` is already wired in `src/routes/__root.tsx`.
+
+### Adding a new locale
+
+1. Update `locales` in `lingui.config.ts` (e.g., `["en", "ro", "de"]`).
+2. Run `yarn i18n:extract` to create `src/locales/{new-locale}/messages.po`.
+3. Translate the new `.po` file and run `yarn i18n:compile`.
+
+Notes:
+
+- Vite is configured with `@lingui/vite-plugin` and `@lingui/swc-plugin` (see `vite.config.ts`).
+- Source locale is `en`; catalogs are stored in PO format.
+
 ## AI Filter Generator
 
 The AI Filter Generator allows users to generate filters using natural language. For example, a user can enter a query like "Show me education spending in Cluj from last year" and the AI will automatically set the appropriate filters.
