@@ -54,9 +54,9 @@ export const EntityFinancialSummary: React.FC<EntityFinancialSummaryProps> = (
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-      <EntityFinancialSummaryCard title={t`Cheltuieli totale`} value={totalExpenses} icon={TrendingDown} color="red" currentYear={currentYear} />
-      <EntityFinancialSummaryCard title={t`Venituri totale`} value={totalIncome} icon={TrendingUp} color="green" currentYear={currentYear} />
-      <EntityFinancialSummaryCard title={t`Venituri - Cheltuieli`} value={budgetBalance} icon={Scale} color="blue" currentYear={currentYear} />
+      <EntityFinancialSummaryCard title={t`Total Expenses`} value={totalExpenses} icon={TrendingDown} color="red" currentYear={currentYear} />
+      <EntityFinancialSummaryCard title={t`Total Income`} value={totalIncome} icon={TrendingUp} color="green" currentYear={currentYear} />
+      <EntityFinancialSummaryCard title={t`Income - Expenses`} value={budgetBalance} icon={Scale} color="blue" currentYear={currentYear} />
     </section>
   );
 }; 

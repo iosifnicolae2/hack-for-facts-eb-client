@@ -354,10 +354,6 @@ msgstr "Grafice"
 msgid "Check your series filters and try again."
 msgstr "Verificați filtrele seriei și încercați din nou."
 
-#: src/components/entities/EntityFinancialSummary.tsx:57
-msgid "Cheltuieli totale"
-msgstr "Cheltuieli totale"
-
 #: src/routes/privacy.lazy.tsx:64
 msgid "Children"
 msgstr "Copii"
@@ -1130,6 +1126,10 @@ msgstr "Include context suplimentar pentru erori. Nu se atașează nicio identit
 msgid "Income"
 msgstr "Venituri"
 
+#: src/components/entities/EntityFinancialSummary.tsx:59
+msgid "Income - Expenses"
+msgstr "Venituri - Cheltuieli"
+
 #: src/hooks/useEntityViews.tsx:28
 msgid "Income Trends"
 msgstr "Evoluția veniturilor"
@@ -1716,7 +1716,7 @@ msgstr "Caută după nume sau cod (ex: Agricultură, 43.00, ec:43.00)"
 
 #: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:67
 msgid "Search by name or code (ex: Social assistance, 7.06, fn:7.06)"
-msgstr ""
+msgstr "Caută după nume sau cod (ex: Ajutor social, 7.06, fn:7.06)"
 
 #: src/routes/charts/index.lazy.tsx:192
 msgid "Search charts"
@@ -2066,6 +2066,14 @@ msgstr "Sumă totală"
 msgid "Total Amount"
 msgstr "Sumă totală"
 
+#: src/components/entities/EntityFinancialSummary.tsx:57
+msgid "Total Expenses"
+msgstr "Total Cheltuieli"
+
+#: src/components/entities/EntityFinancialSummary.tsx:58
+msgid "Total Income"
+msgstr "Total Venituri"
+
 #: src/components/entities/FinancialDataCard.tsx:69
 msgid "Total:"
 msgstr "Total:"
@@ -2169,12 +2177,12 @@ msgid "Value"
 msgstr "Valoare"
 
 #: src/components/entities/EntityFinancialSummary.tsx:59
-msgid "Venituri - Cheltuieli"
-msgstr "Venituri - Cheltuieli"
+#~ msgid "Venituri - Cheltuieli"
+#~ msgstr "Venituri - Cheltuieli"
 
 #: src/components/entities/EntityFinancialSummary.tsx:58
-msgid "Venituri totale"
-msgstr "Venituri totale"
+#~ msgid "Venituri totale"
+#~ msgstr "Venituri totale"
 
 #: src/components/filters/EntityAnalyticsFilter.tsx:188
 #: src/components/maps/HeatmapDataTable.tsx:426
@@ -2222,11 +2230,11 @@ msgstr "An"
 
 #: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:69
 msgid "You can search by: name (ex: Agriculture) • code (ex: 43.00, 43.00.10) • explicit prefix: ec:43.00"
-msgstr ""
+msgstr "Poți căuta după: nume (ex: Agricultură) • cod (ex: 43.00, 43.00.10) • prefix explicit: ec:43.00"
 
 #: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:69
 msgid "You can search by: name (ex: Social assistance) • code (ex: 7.06, 7.06.02) • explicit prefix: fn:7.06"
-msgstr ""
+msgstr "Poți căuta după: nume (ex: Asistență socială) • cod (ex: 7.06, 7.06.02) • prefix explicit: fn:7.06"
 
 #: src/routes/privacy.lazy.tsx:61
 msgid "Your rights"

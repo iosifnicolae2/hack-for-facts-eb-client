@@ -354,10 +354,6 @@ msgstr "Charts"
 msgid "Check your series filters and try again."
 msgstr "Check your series filters and try again."
 
-#: src/components/entities/EntityFinancialSummary.tsx:57
-msgid "Cheltuieli totale"
-msgstr "Cheltuieli totale"
-
 #: src/routes/privacy.lazy.tsx:64
 msgid "Children"
 msgstr "Children"
@@ -1129,6 +1125,10 @@ msgstr "Includes additional error context. No user identity is attached."
 #: src/routes/entity-analytics.lazy.tsx:199
 msgid "Income"
 msgstr "Income"
+
+#: src/components/entities/EntityFinancialSummary.tsx:59
+msgid "Income - Expenses"
+msgstr "Income - Expenses"
 
 #: src/hooks/useEntityViews.tsx:28
 msgid "Income Trends"
@@ -2062,6 +2062,14 @@ msgstr "Total amount"
 msgid "Total Amount"
 msgstr "Total Amount"
 
+#: src/components/entities/EntityFinancialSummary.tsx:57
+msgid "Total Expenses"
+msgstr "Cheltuieli totale"
+
+#: src/components/entities/EntityFinancialSummary.tsx:58
+msgid "Total Income"
+msgstr "Total Income"
+
 #: src/components/entities/FinancialDataCard.tsx:69
 msgid "Total:"
 msgstr "Total:"
@@ -2165,12 +2173,12 @@ msgid "Value"
 msgstr "Value"
 
 #: src/components/entities/EntityFinancialSummary.tsx:59
-msgid "Venituri - Cheltuieli"
-msgstr "Venituri - Cheltuieli"
+#~ msgid "Venituri - Cheltuieli"
+#~ msgstr "Venituri - Cheltuieli"
 
 #: src/components/entities/EntityFinancialSummary.tsx:58
-msgid "Venituri totale"
-msgstr "Venituri totale"
+#~ msgid "Venituri totale"
+#~ msgstr "Venituri totale"
 
 #: src/components/filters/EntityAnalyticsFilter.tsx:188
 #: src/components/maps/HeatmapDataTable.tsx:426
