@@ -2,7 +2,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
 import { Chart } from '@/schemas/charts';
-import { formatCurrency, formatNumberRO } from '@/lib/utils';
+import { formatCurrency, formatNumber } from '@/lib/utils';
 import { CustomSeriesTooltip } from './Tooltips';
 import { ReactNode } from 'react';
 import { ChartAnnotation } from './ChartAnnotation';
@@ -16,7 +16,7 @@ interface ChartContainerProps {
 
 const yAxisTickFormatter = (value: number, isRelative: boolean) => {
   if (isRelative) {
-    return `${formatNumberRO(value)}%`;
+    return `${formatNumber(value)}%`;
   }
   return formatCurrency(value, "compact");
 };

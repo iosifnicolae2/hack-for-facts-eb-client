@@ -6,7 +6,9 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatCurrency(amount: number, notation?: "standard" | "compact"): string {
-  return new Intl.NumberFormat("ro-RO", {
+  const locale = getUserLocale();
+  const numberLocale = locale === "ro" ? "ro-RO" : "en-US";
+  return new Intl.NumberFormat(numberLocale, {
     style: "currency",
     currency: "RON",
     notation: notation || "standard",
@@ -16,13 +18,16 @@ export function formatCurrency(amount: number, notation?: "standard" | "compact"
 }
 
 /**
- * Formats a number according to Romanian locale settings.
+ * Formats a number according to locale settings.
  * Handles thousands separators (.) and decimal comma (,).
  */
-export const formatNumberRO = (value: number | null | undefined, notation?: "standard" | "compact"): string => {
+export const formatNumber = (value: number | null | undefined, notation?: "standard" | "compact"): string => {
   if (value === null || value === undefined || isNaN(value)) return 'N/A';
 
-  return new Intl.NumberFormat("ro-RO", {
+  const locale = getUserLocale();
+
+  const numberLocale = locale === "ro" ? "ro-RO" : "en-US";
+  return new Intl.NumberFormat(numberLocale, {
     style: "decimal",
     notation: notation || "standard",
     minimumFractionDigits: 0,
@@ -62,4 +67,17 @@ export function slugify(input: string): string {
     .trim()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)+/g, '');
+}
+
+export function getUserLocale(): string {
+  const savedLocale = typeof window !== 'undefined' ? window.localStorage.getItem('user-locale') : null;
+  const browserLocale = typeof navigator !== 'undefined' ? navigator.language : 'en';
+  const initialLocale = savedLocale || (browserLocale?.toLowerCase().startsWith('ro') ? 'ro' : 'en');
+  return initialLocale;
+}
+
+export function setUserLocale(locale: string): void {
+  if (typeof window !== 'undefined') {
+    window.localStorage.setItem('user-locale', locale);
+  }
 }

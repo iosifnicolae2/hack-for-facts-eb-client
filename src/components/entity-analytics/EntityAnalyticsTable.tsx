@@ -11,7 +11,7 @@ import {
   ColumnSizingState,
 } from '@tanstack/react-table'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { formatCurrency, formatNumberRO } from '@/lib/utils'
+import { formatCurrency, formatNumber } from '@/lib/utils'
 import type { EntityAnalyticsDataPoint } from '@/schemas/entity-analytics'
 import { ArrowUpDown, ChevronDown, ChevronUp, MoreHorizontal, ChevronLeft, ChevronRight } from 'lucide-react'
 import { getMergedColumnOrder, moveColumnOrder } from '@/lib/table-utils'
@@ -91,7 +91,7 @@ export function EntityAnalyticsTable({ data, isLoading, sortBy, sortOrder, onSor
       ),
       cell: ({ row }) => (
         <div className="text-right">
-          {row.original.population != null ? formatNumberRO(row.original.population) : '-'}
+          {row.original.population != null ? formatNumber(row.original.population) : '-'}
         </div>
       ),
     },

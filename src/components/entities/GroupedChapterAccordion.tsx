@@ -4,7 +4,7 @@ import { GroupedChapter, GroupedFunctional, GroupedSubchapter } from '@/schemas/
 import GroupedFunctionalAccordion from './GroupedFunctionalAccordion';
 import GroupedSubchapterAccordion from './GroupedSubchapterAccordion';
 import { highlightText } from './highlight-utils.tsx';
-import { formatCurrency, formatNumberRO } from '@/lib/utils';
+import { formatCurrency, formatNumber } from '@/lib/utils';
 
 interface GroupedChapterAccordionProps {
   ch: GroupedChapter;
@@ -23,7 +23,7 @@ const GroupedChapterAccordion: React.FC<GroupedChapterAccordionProps> = ({ ch, b
           <div className="text-sm font-semibold text-slate-900 dark:text-slate-100 text-right mr-4">
             <p className="flex justify-end items-center gap-1.5">
               {formatCurrency(ch.totalAmount, "compact")}
-              <span className="text-xs text-muted-foreground w-12 text-left">{`(${formatNumberRO(ch.totalAmount / baseTotal * 100)}%)`}</span>
+              <span className="text-xs text-muted-foreground w-12 text-left">{`(${formatNumber(ch.totalAmount / baseTotal * 100)}%)`}</span>
             </p>
             <p className="text-xs text-muted-foreground font-normal">{formatCurrency(ch.totalAmount, "standard")}</p>
           </div>

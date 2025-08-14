@@ -11,7 +11,7 @@ import {
   ZAxis,
 } from 'recharts';
 import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
-import { formatCurrency, formatNumberRO } from '@/lib/utils';
+import { formatCurrency, formatNumber } from '@/lib/utils';
 
 interface UatPopulationSpendingScatterPlotProps {
   data: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[];
@@ -41,7 +41,7 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
     return (
       <div className="bg-background p-2 border border-border rounded shadow-lg text-sm">
         <p className="font-semibold text-foreground">{name}</p>
-        <p>Population: {formatNumberRO(population ?? 0)}</p>
+        <p>Population: {formatNumber(population ?? 0)}</p>
         <p>Amount: {formatCurrency(dataPoint.amount)}</p>
       </div>
     );
@@ -144,7 +144,7 @@ export const UatPopulationSpendingScatterPlot: React.FC<UatPopulationSpendingSca
             type="number"
             dataKey="population"
             name="Population"
-            tickFormatter={(value) => formatNumberRO(value, 'standard')}
+            tickFormatter={(value) => formatNumber(value, 'standard')}
             label={{ value: xAxisLabel, position: 'insideBottom', dy: 20, fontSize: 12 }}
             domain={['dataMin', 'dataMax']}
           />

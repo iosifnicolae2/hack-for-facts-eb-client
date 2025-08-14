@@ -1,5 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card'
-import { formatCurrency, formatNumberRO } from '@/lib/utils'
+import { formatCurrency, formatNumber } from '@/lib/utils'
 import type { EntityAnalyticsDataPoint } from '@/schemas/entity-analytics'
 import { Trans } from '@lingui/react/macro'
 
@@ -21,7 +21,7 @@ export function EntityAnalyticsKPIs({ data }: Props) {
       <Card>
         <CardContent className="p-4">
           <div className="text-sm text-muted-foreground"><Trans>Entities</Trans></div>
-          <div className="text-2xl font-semibold">{formatNumberRO(totalEntities)}</div>
+          <div className="text-2xl font-semibold">{formatNumber(totalEntities)}</div>
         </CardContent>
       </Card>
       <Card>

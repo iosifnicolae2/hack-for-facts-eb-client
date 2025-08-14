@@ -1,4 +1,4 @@
-import { formatCurrency, formatNumberRO } from "@/lib/utils";
+import { formatCurrency, formatNumber } from "@/lib/utils";
 import { Chart, defaultYearRange } from "@/schemas/charts";
 
 export const getYearRangeText = (chart: Chart) => {
@@ -14,7 +14,7 @@ export const getYearRangeText = (chart: Chart) => {
 }
 
 export const unitFormatters: Record<string, (value: number, notation: 'standard' | 'compact') => string> = {
-    '%': (value, notation) => `${formatNumberRO(value, notation)}%`,
+    '%': (value, notation) => `${formatNumber(value, notation)}%`,
     'RON': (value, notation) => formatCurrency(value, notation),
     'RON/pers.': (value, notation) => formatCurrency(value, notation),
 };
@@ -25,9 +25,9 @@ export const yValueFormatter = (value: number, unit: string = '', notation: 'sta
         return formatter(value, notation);
     }
     if (unit.includes('%')) {
-        return `${formatNumberRO(value, notation)}${unit}`.trim();
+        return `${formatNumber(value, notation)}${unit}`.trim();
     }
-    return `${formatNumberRO(value, notation)} ${unit}`.trim();
+    return `${formatNumber(value, notation)} ${unit}`.trim();
 };
 
 /**

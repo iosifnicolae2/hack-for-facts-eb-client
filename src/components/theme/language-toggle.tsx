@@ -3,6 +3,7 @@ import { dynamicActivate } from "@/lib/i18n";
 import { Trans } from "@lingui/react/macro";
 import { SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "../ui/sidebar";
 import { Analytics } from "@/lib/analytics";
+import { setUserLocale } from "@/lib/utils";
 
 export function LanguageToggle() {
     const { state } = useSidebar();
@@ -10,12 +11,8 @@ export function LanguageToggle() {
 
     async function setLocale(locale: "en" | "ro"): Promise<void> {
         await dynamicActivate(locale);
-        try {
-            window.localStorage.setItem("locale", locale);
-        } catch { }
-        try {
-            document.documentElement.setAttribute("lang", locale);
-        } catch { }
+        setUserLocale(locale);
+        document.documentElement.setAttribute("lang", locale);
         Analytics.capture(Analytics.EVENTS.LanguageChanged, { locale });
         window.location.reload();
     }

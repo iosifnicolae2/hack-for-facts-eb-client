@@ -11,7 +11,7 @@ import {
 import { SearchToggleInput } from './SearchToggleInput';
 import GroupedChapterAccordion from "./GroupedChapterAccordion";
 import { GroupedChapter, GroupedFunctional, GroupedEconomic } from '@/schemas/financial';
-import { formatCurrency, formatNumberRO } from '@/lib/utils';
+import { formatCurrency, formatNumber } from '@/lib/utils';
 import { Trans } from '@lingui/react/macro';
 
 interface GroupedItemsDisplayProps {
@@ -70,7 +70,7 @@ export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.mem
           {formatCurrency(totalValueFiltered, "standard")}
           {totalPercentageFiltered > 0 && totalPercentageFiltered <= 99.99 && (
             <span className="pl-2 text-sm text-muted-foreground">
-              ({formatNumberRO(totalPercentageFiltered)}%)
+              ({formatNumber(totalPercentageFiltered)}%)
             </span>
           )}
         </p>

@@ -11,7 +11,7 @@ import {
   LabelList,
 } from 'recharts';
 import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
-import { formatCurrency, formatNumberRO } from '@/lib/utils';
+import { formatCurrency, formatNumber } from '@/lib/utils';
 
 interface UatTopNBarChartProps {
   data: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[];
@@ -69,7 +69,7 @@ export const UatTopNBarChart: React.FC<UatTopNBarChartProps> = ({
       const view = compactView ? 'compact' : 'standard'
       return (value: number) => formatCurrency(value, view);
     }
-    return formatNumberRO;
+    return formatNumber;
   };
 
   const compactFormatter = (value: React.ReactNode) => {

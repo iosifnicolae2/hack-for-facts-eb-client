@@ -1,5 +1,5 @@
 import { SeriesConfiguration } from "@/schemas/charts";
-import { formatCurrency, formatNumberRO } from "@/lib/utils";
+import { formatCurrency, formatNumber } from "@/lib/utils";
 
 type CustomLabelProps = {
     x?: number;
@@ -12,7 +12,7 @@ type CustomLabelProps = {
 
 const dataLabelFormatter = (value: number, isRelative: boolean) => {
     if (isRelative) {
-        return `${formatNumberRO(value)}%`;
+        return `${formatNumber(value)}%`;
     }
     return formatCurrency(value, "compact");
 };

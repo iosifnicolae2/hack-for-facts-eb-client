@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import type { EntityAnalyticsDataPoint } from '@/schemas/entity-analytics'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ScatterChart, Scatter, Cell } from 'recharts'
-import { formatCurrency, formatNumberRO } from '@/lib/utils'
+import { formatCurrency, formatNumber } from '@/lib/utils'
 import { useEntityAnalyticsFilter } from '@/hooks/useEntityAnalyticsFilter'
 
 interface Props {
@@ -47,7 +47,7 @@ export function EntityAnalyticsCharts({ data, normalization = 'per_capita' }: Pr
             <BarChart data={topByTotal} margin={{ top: 8, right: 16, bottom: 24, left: 16 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="entity_name" tick={{ fontSize: 10 }} angle={-25} textAnchor="end" interval={0} />
-              <YAxis tickFormatter={(v) => formatNumberRO(v)} />
+              <YAxis tickFormatter={(v) => formatNumber(v)} />
               <Tooltip formatter={(v: number) => formatCurrency(v)} />
               <Legend />
               <Bar dataKey={barKey} name={barLabel} fill="#3b82f6">
@@ -74,11 +74,11 @@ export function EntityAnalyticsCharts({ data, normalization = 'per_capita' }: Pr
           <ResponsiveContainer width="100%" height="100%">
             <ScatterChart margin={{ top: 8, right: 16, bottom: 24, left: 16 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="population" name="Population" tickFormatter={(v) => formatNumberRO(v)} />
-              <YAxis dataKey="per_capita_amount" name="Per Capita" tickFormatter={(v) => formatNumberRO(v)} />
+              <XAxis dataKey="population" name="Population" tickFormatter={(v) => formatNumber(v)} />
+              <YAxis dataKey="per_capita_amount" name="Per Capita" tickFormatter={(v) => formatNumber(v)} />
               <Tooltip
                 formatter={(v: number, name: string) => [formatCurrency(v), name]}
-                labelFormatter={(label: any) => `Population: ${formatNumberRO(label)}`}
+                labelFormatter={(label: any) => `Population: ${formatNumber(label)}`}
               />
               <Legend />
               <Scatter data={scatterData} name="Entities" fill="#10b981" />
@@ -96,7 +96,7 @@ export function EntityAnalyticsCharts({ data, normalization = 'per_capita' }: Pr
             <BarChart data={countyAgg} margin={{ top: 8, right: 16, bottom: 24, left: 16 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="county_name" tick={{ fontSize: 11 }} angle={-25} textAnchor="end" interval={0} />
-              <YAxis tickFormatter={(v) => formatNumberRO(v)} />
+              <YAxis tickFormatter={(v) => formatNumber(v)} />
               <Tooltip formatter={(v: number) => formatCurrency(v)} />
               <Legend />
               <Bar dataKey={barKey} name={barLabel} fill="#6366f1">

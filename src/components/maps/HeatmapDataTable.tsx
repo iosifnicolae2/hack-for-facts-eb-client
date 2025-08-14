@@ -28,7 +28,7 @@ import {
     MoreHorizontal,
 } from "lucide-react";
 import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
-import { formatCurrency, formatNumberRO } from "@/lib/utils";
+import { formatCurrency, formatNumber } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
 import { getMergedColumnOrder, moveColumnOrder } from "@/lib/table-utils";
@@ -252,7 +252,7 @@ export function HeatmapDataTable({
                 cell: ({ row }) => {
                     const original = row.original;
                     const population = 'population' in original ? original.population : ('county_population' in original ? original.county_population : null);
-                    return <div className="text-right">{population ? formatNumberRO(population) : "-"}</div>;
+                    return <div className="text-right">{population ? formatNumber(population) : "-"}</div>;
                 },
             },
             {

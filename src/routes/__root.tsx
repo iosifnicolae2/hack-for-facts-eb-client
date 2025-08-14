@@ -17,17 +17,16 @@ import { Analytics } from "@/lib/analytics";
 import { Seo, JsonLd } from "@/lib/seo";
 import { useEffect } from "react";
 import { I18nProvider } from "@lingui/react";
+import { getUserLocale } from "@/lib/utils";
 
 export const Route = createRootRoute({
   component: () => {
     useEffect(() => {
-      const savedLocale = typeof window !== 'undefined' ? window.localStorage.getItem('locale') : null;
-      const browserLocale = typeof navigator !== 'undefined' ? navigator.language : 'en';
-      const initialLocale = savedLocale || (browserLocale?.toLowerCase().startsWith('ro') ? 'ro' : 'en');
-      dynamicActivate(initialLocale);
-      Analytics.capture(Analytics.EVENTS.DefaultLanguage, { locale: initialLocale });
+      const userLocale = getUserLocale();
+      dynamicActivate(userLocale);
+      Analytics.capture(Analytics.EVENTS.DefaultLanguage, { locale: userLocale });
       try {
-        document.documentElement.setAttribute('lang', initialLocale);
+        document.documentElement.setAttribute('lang', userLocale);
       } catch { }
     }, []);
 

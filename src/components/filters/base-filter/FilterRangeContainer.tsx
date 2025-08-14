@@ -1,5 +1,5 @@
 import { FunctionComponent, useMemo, useState } from "react";
-import { formatNumberRO } from "@/lib/utils";
+import { formatNumber } from "@/lib/utils";
 import { SelectedOptionsDisplay } from "./SelectedOptionsDisplay";
 import { BaseListFilterProps, OptionItem } from "./interfaces";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -26,11 +26,11 @@ export function FilterRangeContainer({ rangeComponent: RangeComponent, title, un
         const options: OptionItem[] = [];
 
         if (minValue !== undefined && minValue !== '') {
-            options.push({ id: "min", label: `min: ${formatNumberRO(Number(minValue))} ${unit}` });
+            options.push({ id: "min", label: `min: ${formatNumber(Number(minValue))} ${unit}` });
         }
 
         if (maxValue !== undefined && maxValue !== '') {
-            options.push({ id: "max", label: `max: ${formatNumberRO(Number(maxValue))} ${unit}` });
+            options.push({ id: "max", label: `max: ${formatNumber(Number(maxValue))} ${unit}` });
         }
 
         return options;
