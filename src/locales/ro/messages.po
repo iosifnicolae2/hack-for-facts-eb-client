@@ -345,7 +345,7 @@ msgstr "Diferență % de la an la an"
 msgid "Effective Date: {effectiveDate} • Version: {version}"
 msgstr "Data intrării în vigoare: {effectiveDate} • Versiunea: {version}"
 
-#: src/components/theme/language-toggle.tsx:27
+#: src/components/theme/language-toggle.tsx:29
 msgid "English"
 msgstr "Engleză"
 
@@ -856,7 +856,7 @@ msgstr "Păstrarea datelor"
 msgid "Romania spending heatmap – Transparenta.eu"
 msgstr "Hartă termică a cheltuielilor din România – Transparenta.eu"
 
-#: src/components/theme/language-toggle.tsx:35
+#: src/components/theme/language-toggle.tsx:37
 msgid "Romanian"
 msgstr "Română"
 
