@@ -1,15 +1,12 @@
 import { FilterListContainer } from "./base-filter/FilterListContainer";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { ArrowUpDown, Calendar, ChartBar, Divide, Globe, Map, SlidersHorizontal, Tags, XCircle, Building2, HandCoins, Building, MapPin, MapPinned } from "lucide-react";
+import { ArrowUpDown, Calendar, ChartBar, Divide, Globe, Map, SlidersHorizontal, Tags, XCircle, Building2, HandCoins, Building, MapPin, MapPinned, TableIcon, BarChart2Icon, MapIcon } from "lucide-react";
 import { YearFilter } from "./year-filter";
-import { AccountCategoryRadioGroup } from "./account-type-filter/AccountCategoryRadioGroup";
 import { Button } from "../ui/button";
 import { EconomicClassificationList } from "./economic-classification-filter";
 import { FunctionalClassificationList } from "./functional-classification-filter";
-import { PopulationRadioGroup } from "./account-type-filter/PopulationRadioGroup";
 import { FilterRangeContainer } from "./base-filter/FilterRangeContainer";
 import { AmountRangeFilter } from "./amount-range-filter";
-import { MapViewTypeRadioGroup } from "./MapViewTypeRadioGroup";
 import { useMapFilter } from "@/hooks/useMapFilter";
 import { useMemo } from "react";
 import { ViewTypeRadioGroup } from "./ViewTypeRadioGroup";
@@ -95,6 +92,11 @@ export function MapFilter() {
                     <ViewTypeRadioGroup
                         value={mapState.activeView}
                         onChange={(activeView) => setActiveView(activeView)}
+                        viewOptions={[
+                            { id: 'map', label: t`Map`, icon: MapIcon },
+                            { id: 'table', label: t`Table`, icon: TableIcon },
+                            { id: 'chart', label: t`Chart`, icon: BarChart2Icon },
+                        ]}
                     />
                 </div>
                 <div className="p-3 border-b">
@@ -102,9 +104,13 @@ export function MapFilter() {
                         <Map className="w-4 h-4 mr-2" />
                         <Trans>Map View</Trans>
                     </h4>
-                    <MapViewTypeRadioGroup
-                        value={mapState.mapViewType as "UAT" | "County"}
+                    <ViewTypeRadioGroup
+                        value={mapState.mapViewType}
                         onChange={(mapViewType) => setMapViewType(mapViewType)}
+                        viewOptions={[
+                            { id: 'UAT', label: t`UAT` },
+                            { id: 'County', label: t`County` },
+                        ]}
                     />
                 </div>
                 <div className="p-3 border-b">
@@ -112,9 +118,13 @@ export function MapFilter() {
                         <ArrowUpDown className="w-4 h-4 mr-2" />
                         <Trans>Income/Expenses</Trans>
                     </h4>
-                    <AccountCategoryRadioGroup
+                    <ViewTypeRadioGroup
                         value={selectedAccountCategoryOption}
-                        onChange={setAccountCategory}
+                        onChange={(accountCategory) => setAccountCategory(accountCategory)}
+                        viewOptions={[
+                            { id: 'ch', label: t`Expenses` },
+                            { id: 'vn', label: t`Income` },
+                        ]}
                     />
                 </div>
 
@@ -123,9 +133,13 @@ export function MapFilter() {
                         <Divide className="w-4 h-4 mr-2" />
                         <Trans>Total Amount</Trans>
                     </h4>
-                    <PopulationRadioGroup
+                    <ViewTypeRadioGroup
                         value={selectedNormalizationOption}
-                        onChange={setNormalization}
+                        onChange={(normalization) => setNormalization(normalization)}
+                        viewOptions={[
+                            { id: 'total', label: t`Total` },
+                            { id: 'per_capita', label: t`Per Capita` },
+                        ]}
                     />
                 </div>
 

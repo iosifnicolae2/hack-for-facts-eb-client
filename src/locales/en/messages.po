@@ -117,7 +117,8 @@ msgstr "Amount"
 msgid "Amount Per Capita"
 msgstr "Amount Per Capita"
 
-#: src/components/filters/MapFilter.tsx:208
+#: src/components/filters/EntityAnalyticsFilter.tsx:333
+#: src/components/filters/MapFilter.tsx:222
 msgid "Amount Range"
 msgstr "Amount Range"
 
@@ -197,7 +198,8 @@ msgstr "Bar Chart (Aggregated)"
 msgid "Both"
 msgstr "Both"
 
-#: src/components/filters/MapFilter.tsx:193
+#: src/components/filters/EntityAnalyticsFilter.tsx:298
+#: src/components/filters/MapFilter.tsx:207
 msgid "Budget Sector"
 msgstr "Budget Sector"
 
@@ -216,6 +218,10 @@ msgstr "Categories"
 #: src/routes/privacy.lazy.tsx:67
 msgid "Changes"
 msgstr "Changes"
+
+#: src/components/filters/MapFilter.tsx:98
+msgid "Chart"
+msgstr "Chart"
 
 #: src/routes/charts/$chartId/index.lazy.tsx:29
 msgid "Chart – Transparenta.eu"
@@ -248,12 +254,12 @@ msgstr "Children"
 msgid "Clear all ({totalSelectedFilters})"
 msgstr "Clear all ({totalSelectedFilters})"
 
-#: src/components/filters/EntityAnalyticsFilter.tsx:179
+#: src/components/filters/EntityAnalyticsFilter.tsx:178
 #: src/routes/entity-analytics.lazy.tsx:137
 msgid "Clear filters"
 msgstr "Clear filters"
 
-#: src/components/filters/MapFilter.tsx:84
+#: src/components/filters/MapFilter.tsx:81
 msgid "Clear filters ({totalOptionalFilters})"
 msgstr "Clear filters ({totalOptionalFilters})"
 
@@ -338,10 +344,12 @@ msgstr "Cookie settings"
 msgid "Cookie Settings"
 msgstr "Cookie Settings"
 
-#: src/components/filters/MapFilter.tsx:148
+#: src/components/filters/MapFilter.tsx:162
 msgid "Counties"
 msgstr "Counties"
 
+#: src/components/filters/EntityAnalyticsFilter.tsx:250
+#: src/components/filters/MapFilter.tsx:112
 #: src/components/maps/charts/UatDataCharts.tsx:29
 #: src/components/maps/HeatmapDataTable.tsx:440
 #: src/routes/entity-analytics.lazy.tsx:157
@@ -394,7 +402,7 @@ msgstr "Data sources and licensing"
 msgid "Data Table View"
 msgstr "Data Table View"
 
-#: src/components/filters/MapFilter.tsx:93
+#: src/components/filters/MapFilter.tsx:90
 msgid "Data View"
 msgstr "Data View"
 
@@ -427,17 +435,22 @@ msgstr "Display Options"
 msgid "Ec"
 msgstr "Ec"
 
-#: src/components/filters/MapFilter.tsx:170
+#: src/components/filters/EntityAnalyticsFilter.tsx:282
+#: src/components/filters/MapFilter.tsx:184
 msgid "Economic Classification"
 msgstr "Economic Classification"
 
-#: src/components/filters/MapFilter.tsx:177
+#: src/components/filters/MapFilter.tsx:191
 msgid "Economic Classification Prefix"
 msgstr "Economic Classification Prefix"
 
 #: src/components/maps/utils.ts:30
 msgid "economic codes"
 msgstr "economic codes"
+
+#: src/components/filters/EntityAnalyticsFilter.tsx:290
+msgid "Economic Prefixes"
+msgstr "Economic Prefixes"
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:209
 msgid "Edit Annotations"
@@ -449,7 +462,7 @@ msgstr "Edit Annotations"
 msgid "Effective Date: {effectiveDate} • Version: {version}"
 msgstr "Effective Date: {effectiveDate} • Version: {version}"
 
-#: src/components/theme/language-toggle.tsx:29
+#: src/components/theme/language-toggle.tsx:30
 msgid "English"
 msgstr "English"
 
@@ -462,6 +475,7 @@ msgid "Enhanced error reporting via Sentry (consent-only); minimal telemetry oth
 msgstr "Enhanced error reporting via Sentry (consent-only); minimal telemetry otherwise."
 
 #: src/components/entity-analytics/EntityAnalyticsKPIs.tsx:23
+#: src/components/filters/EntityAnalyticsFilter.tsx:234
 #: src/routes/index.lazy.tsx:79
 msgid "Entities"
 msgstr "Entities"
@@ -485,7 +499,8 @@ msgstr "Entity Analytics"
 msgid "Entity analytics – Transparenta.eu"
 msgstr "Entity analytics – Transparenta.eu"
 
-#: src/components/filters/MapFilter.tsx:185
+#: src/components/filters/EntityAnalyticsFilter.tsx:258
+#: src/components/filters/MapFilter.tsx:199
 msgid "Entity Type"
 msgstr "Entity Type"
 
@@ -549,6 +564,8 @@ msgstr "Expense Trends"
 #: src/components/entities/EntityFinancialTrends.tsx:159
 #: src/components/entities/EntityLineItems.tsx:67
 #: src/components/entities/views/TrendsView.tsx:152
+#: src/components/filters/EntityAnalyticsFilter.tsx:204
+#: src/components/filters/MapFilter.tsx:125
 #: src/components/maps/utils.ts:22
 #: src/hooks/filters/useFilterLabels.tsx:172
 #: src/routes/entity-analytics.lazy.tsx:199
@@ -609,7 +626,7 @@ msgstr "Feedback / Report an issue"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:204
 #: src/components/entity-analytics/EntityAnalyticsLayout.tsx:46
-#: src/components/filters/EntityAnalyticsFilter.tsx:175
+#: src/components/filters/EntityAnalyticsFilter.tsx:174
 #: src/routes/map.lazy.tsx:262
 msgid "Filters"
 msgstr "Filters"
@@ -630,17 +647,22 @@ msgstr "Fn"
 msgid "for the selected filters."
 msgstr "for the selected filters."
 
-#: src/components/filters/MapFilter.tsx:156
+#: src/components/filters/EntityAnalyticsFilter.tsx:266
+#: src/components/filters/MapFilter.tsx:170
 msgid "Functional Classification"
 msgstr "Functional Classification"
 
-#: src/components/filters/MapFilter.tsx:163
+#: src/components/filters/MapFilter.tsx:177
 msgid "Functional Classification Prefix"
 msgstr "Functional Classification Prefix"
 
 #: src/components/maps/utils.ts:26
 msgid "functional codes"
 msgstr "functional codes"
+
+#: src/components/filters/EntityAnalyticsFilter.tsx:274
+msgid "Functional Prefixes"
+msgstr "Functional Prefixes"
 
 #: src/components/entities/EntityRelationships.tsx:24
 msgid "Funded Entities"
@@ -650,7 +672,8 @@ msgstr "Funded Entities"
 msgid "Funding Entities"
 msgstr "Funding Entities"
 
-#: src/components/filters/MapFilter.tsx:201
+#: src/components/filters/EntityAnalyticsFilter.tsx:306
+#: src/components/filters/MapFilter.tsx:215
 msgid "Funding Source"
 msgstr "Funding Source"
 
@@ -699,6 +722,8 @@ msgid "Includes additional error context. No user identity is attached."
 msgstr "Includes additional error context. No user identity is attached."
 
 #: src/components/entities/EntityFinancialTrends.tsx:158
+#: src/components/filters/EntityAnalyticsFilter.tsx:205
+#: src/components/filters/MapFilter.tsx:126
 #: src/components/maps/utils.ts:22
 #: src/hooks/filters/useFilterLabels.tsx:173
 #: src/routes/entity-analytics.lazy.tsx:199
@@ -709,7 +734,7 @@ msgstr "Income"
 msgid "Income Trends"
 msgstr "Income Trends"
 
-#: src/components/filters/MapFilter.tsx:113
+#: src/components/filters/MapFilter.tsx:119
 msgid "Income/Expenses"
 msgstr "Income/Expenses"
 
@@ -726,13 +751,17 @@ msgstr "Independent project; no government affiliation."
 msgid "Informational purposes only; no warranties."
 msgstr "Informational purposes only; no warranties."
 
-#: src/components/filters/MapFilter.tsx:219
+#: src/components/filters/MapFilter.tsx:233
 msgid "inhabitants"
 msgstr "inhabitants"
 
 #: src/routes/terms.lazy.tsx:50
 msgid "Intellectual property"
 msgstr "Intellectual property"
+
+#: src/components/filters/EntityAnalyticsFilter.tsx:323
+msgid "Is UAT"
+msgstr "Is UAT"
 
 #: src/components/maps/HeatmapDataTable.tsx:168
 msgid "Județ"
@@ -807,6 +836,7 @@ msgstr "Manage your preferences for Transparenta.eu."
 msgid "Managing preferences"
 msgstr "Managing preferences"
 
+#: src/components/filters/MapFilter.tsx:96
 #: src/components/sidebar/nav-main.tsx:26
 #: src/hooks/useEntityViews.tsx:35
 #: src/routes/index.lazy.tsx:72
@@ -817,11 +847,11 @@ msgstr "Map"
 msgid "Map data not available."
 msgstr "Map data not available."
 
-#: src/components/filters/MapFilter.tsx:80
+#: src/components/filters/MapFilter.tsx:77
 msgid "Map Filters"
 msgstr "Map Filters"
 
-#: src/components/filters/MapFilter.tsx:103
+#: src/components/filters/MapFilter.tsx:105
 msgid "Map View"
 msgstr "Map View"
 
@@ -939,7 +969,7 @@ msgstr "No results"
 msgid "No results found."
 msgstr "No results found."
 
-#: src/components/filters/EntityAnalyticsFilter.tsx:207
+#: src/components/filters/EntityAnalyticsFilter.tsx:213
 msgid "Normalization"
 msgstr "Normalization"
 
@@ -975,6 +1005,8 @@ msgstr "Operate and secure the service (legitimate interests)."
 msgid "Overview"
 msgstr "Overview"
 
+#: src/components/filters/EntityAnalyticsFilter.tsx:220
+#: src/components/filters/MapFilter.tsx:141
 #: src/routes/entity-analytics.lazy.tsx:159
 msgid "Per Capita"
 msgstr "Per Capita"
@@ -995,7 +1027,8 @@ msgstr "Platformă de explorare a datelor financiare publice pentru cetățeni, 
 msgid "Population"
 msgstr "Population"
 
-#: src/components/filters/MapFilter.tsx:218
+#: src/components/filters/EntityAnalyticsFilter.tsx:344
+#: src/components/filters/MapFilter.tsx:232
 msgid "Population Range"
 msgstr "Population Range"
 
@@ -1056,6 +1089,10 @@ msgstr "Relative Values"
 msgid "Report a bug"
 msgstr "Report a bug"
 
+#: src/components/filters/EntityAnalyticsFilter.tsx:314
+msgid "Report Type"
+msgstr "Report Type"
+
 #: src/routes/entities.$cui.lazy.tsx:206
 msgid "Reporting year"
 msgstr "Reporting year"
@@ -1080,7 +1117,7 @@ msgstr "Restore"
 msgid "Retention"
 msgstr "Retention"
 
-#: src/components/filters/EntityAnalyticsFilter.tsx:199
+#: src/components/filters/EntityAnalyticsFilter.tsx:198
 msgid "Revenues/Expenses"
 msgstr "Revenues/Expenses"
 
@@ -1088,7 +1125,7 @@ msgstr "Revenues/Expenses"
 msgid "Romania spending heatmap – Transparenta.eu"
 msgstr "Romania spending heatmap – Transparenta.eu"
 
-#: src/components/theme/language-toggle.tsx:37
+#: src/components/theme/language-toggle.tsx:38
 msgid "Romanian"
 msgstr "Romanian"
 
@@ -1195,6 +1232,10 @@ msgstr "Standard"
 msgid "System"
 msgstr "System"
 
+#: src/components/filters/MapFilter.tsx:97
+msgid "Table"
+msgstr "Table"
+
 #: src/routes/cookie-policy.lazy.tsx:30
 msgid "Technologies we use"
 msgstr "Technologies we use"
@@ -1275,11 +1316,16 @@ msgstr "Top 15 UATs by Total Amount"
 msgid "total"
 msgstr "total"
 
+#: src/components/filters/EntityAnalyticsFilter.tsx:219
+#: src/components/filters/MapFilter.tsx:140
+msgid "Total"
+msgstr "Total"
+
 #: src/components/entity-analytics/EntityAnalyticsKPIs.tsx:29
 msgid "Total amount"
 msgstr "Total amount"
 
-#: src/components/filters/MapFilter.tsx:124
+#: src/components/filters/MapFilter.tsx:134
 #: src/components/maps/HeatmapDataTable.tsx:276
 #: src/components/maps/HeatmapDataTable.tsx:442
 #: src/components/maps/utils.ts:115
@@ -1287,7 +1333,7 @@ msgstr "Total amount"
 msgid "Total Amount"
 msgstr "Total Amount"
 
-#: src/components/entities/FinancialDataCard.tsx:70
+#: src/components/entities/FinancialDataCard.tsx:69
 msgid "Total:"
 msgstr "Total:"
 
@@ -1303,11 +1349,13 @@ msgstr "Try a different search term or sorting."
 msgid "Type"
 msgstr "Type"
 
+#: src/components/filters/EntityAnalyticsFilter.tsx:242
+#: src/components/filters/MapFilter.tsx:111
 #: src/components/maps/charts/UatDataCharts.tsx:29
 msgid "UAT"
 msgstr "UAT"
 
-#: src/components/filters/MapFilter.tsx:140
+#: src/components/filters/MapFilter.tsx:154
 msgid "UATs"
 msgstr "UATs"
 
@@ -1355,7 +1403,7 @@ msgstr "Venituri - Cheltuieli"
 msgid "Venituri totale"
 msgstr "Venituri totale"
 
-#: src/components/filters/EntityAnalyticsFilter.tsx:189
+#: src/components/filters/EntityAnalyticsFilter.tsx:188
 #: src/components/maps/HeatmapDataTable.tsx:426
 #: src/routes/entity-analytics.lazy.tsx:142
 msgid "View"
@@ -1389,7 +1437,8 @@ msgstr "What we process"
 msgid "Who we are"
 msgstr "Who we are"
 
-#: src/components/filters/MapFilter.tsx:133
+#: src/components/filters/EntityAnalyticsFilter.tsx:226
+#: src/components/filters/MapFilter.tsx:147
 #: src/components/maps/utils.ts:18
 msgid "Year"
 msgstr "Year"

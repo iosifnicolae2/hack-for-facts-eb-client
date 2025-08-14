@@ -1,6 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { AccountCategoryRadioGroup } from './account-type-filter/AccountCategoryRadioGroup'
-import { PopulationRadioGroup } from './account-type-filter/PopulationRadioGroup'
 import { FilterListContainer } from './base-filter/FilterListContainer'
 import { YearFilter } from './year-filter/YearFilter'
 import { FunctionalClassificationList } from './functional-classification-filter'
@@ -26,6 +24,7 @@ import { ReportTypeFilter } from './report-type-filter'
 import { IsUatFilter } from './flags-filter'
 import { ViewTypeRadioGroup } from './ViewTypeRadioGroup'
 import { TableIcon, BarChart2Icon } from 'lucide-react'
+import { t } from '@lingui/core/macro'
 import { Trans } from "@lingui/react/macro";
 
 export function EntityAnalyticsFilter() {
@@ -198,7 +197,14 @@ export function EntityAnalyticsFilter() {
             <ArrowUpDown className="w-4 h-4 mr-2" />
             <Trans>Revenues/Expenses</Trans>
           </h4>
-          <AccountCategoryRadioGroup value={filter.account_category} onChange={updateAccountCategory} />
+          <ViewTypeRadioGroup
+            value={filter.account_category}
+            onChange={(accountCategory) => updateAccountCategory(accountCategory)}
+            viewOptions={[
+              { id: 'ch', label: t`Expenses` },
+              { id: 'vn', label: t`Income` },
+            ]}
+          />
         </div>
 
         <div className="p-3 border-b">
@@ -206,11 +212,18 @@ export function EntityAnalyticsFilter() {
             <Divide className="w-4 h-4 mr-2" />
             <Trans>Normalization</Trans>
           </h4>
-          <PopulationRadioGroup value={filter.normalization ?? 'per_capita'} onChange={updateNormalization} />
+          <ViewTypeRadioGroup
+            value={filter.normalization ?? 'per_capita'}
+            onChange={(normalization) => updateNormalization(normalization)}
+            viewOptions={[
+              { id: 'total', label: t`Total` },
+              { id: 'per_capita', label: t`Per Capita` },
+            ]}
+          />
         </div>
 
         <FilterListContainer
-          title="Year"
+          title={t`Year`}
           icon={<Calendar className="w-4 h-4" />}
           listComponent={YearFilter}
           selected={selectedYearOptions}
@@ -218,7 +231,7 @@ export function EntityAnalyticsFilter() {
         />
 
         <FilterListContainer
-          title="Entities"
+          title={t`Entities`}
           icon={<Building2 className="w-4 h-4" />}
           listComponent={EntityList}
           selected={selectedEntityOptions}
@@ -226,7 +239,7 @@ export function EntityAnalyticsFilter() {
         />
 
         <FilterListContainer
-          title="UAT"
+          title={t`UAT`}
           icon={<MapPin className="w-4 h-4" />}
           listComponent={UatList}
           selected={selectedUatOptions}
@@ -234,7 +247,7 @@ export function EntityAnalyticsFilter() {
         />
 
         <FilterListContainer
-          title="County"
+          title={t`County`}
           icon={<MapPinned className="w-4 h-4" />}
           listComponent={CountyList}
           selected={selectedCountyOptions}
@@ -242,7 +255,7 @@ export function EntityAnalyticsFilter() {
         />
 
         <FilterListContainer
-          title="Entity Type"
+          title={t`Entity Type`}
           icon={<ChartBar className="w-4 h-4" />}
           listComponent={EntityTypeList}
           selected={selectedEntityTypeOptions}
@@ -250,7 +263,7 @@ export function EntityAnalyticsFilter() {
         />
 
         <FilterListContainer
-          title="Functional Classification"
+          title={t`Functional Classification`}
           icon={<ChartBar className="w-4 h-4" />}
           listComponent={FunctionalClassificationList}
           selected={selectedFunctionalOptions}
@@ -258,7 +271,7 @@ export function EntityAnalyticsFilter() {
         />
 
         <FilterPrefixContainer
-          title="Functional Prefixes"
+          title={t`Functional Prefixes`}
           icon={<ChartBar className="w-4 h-4" />}
           prefixComponent={PrefixFilter}
           value={filter.functional_prefixes}
@@ -266,7 +279,7 @@ export function EntityAnalyticsFilter() {
         />
 
         <FilterListContainer
-          title="Economic Classification"
+          title={t`Economic Classification`}
           icon={<Tags className="w-4 h-4" />}
           listComponent={EconomicClassificationList}
           selected={selectedEconomicOptions}
@@ -274,7 +287,7 @@ export function EntityAnalyticsFilter() {
         />
 
         <FilterPrefixContainer
-          title="Economic Prefixes"
+          title={t`Economic Prefixes`}
           icon={<Tags className="w-4 h-4" />}
           prefixComponent={PrefixFilter}
           value={filter.economic_prefixes}
@@ -282,7 +295,7 @@ export function EntityAnalyticsFilter() {
         />
 
         <FilterListContainer
-          title="Budget Sector"
+          title={t`Budget Sector`}
           icon={<Building2 className="w-4 h-4" />}
           listComponent={BudgetSectorList}
           selected={selectedBudgetSectorOptions}
@@ -290,7 +303,7 @@ export function EntityAnalyticsFilter() {
         />
 
         <FilterListContainer
-          title="Funding Source"
+          title={t`Funding Source`}
           icon={<EuroIcon className="w-4 h-4" />}
           listComponent={FundingSourceList}
           selected={selectedFundingSourceOptions}
@@ -298,7 +311,7 @@ export function EntityAnalyticsFilter() {
         />
 
         <FilterRadioContainer
-          title="Report Type"
+          title={t`Report Type`}
           icon={<ArrowUpDown className="w-4 h-4" />}
           selectedOption={(filter.report_type) ? { id: filter.report_type, label: filter.report_type } : null}
           onClear={() => setReportType(undefined)}
@@ -307,7 +320,7 @@ export function EntityAnalyticsFilter() {
         </FilterRadioContainer>
 
         <FilterContainer
-          title="Is UAT"
+          title={t`Is UAT`}
           icon={<ArrowUpDown className="w-4 h-4" />}
           selectedOptions={filter.is_uat === undefined ? [] : [{ id: 'is_uat', label: filter.is_uat ? "UAT: Yes" : "UAT: No" }]}
           onClearOption={() => setIsUat(undefined)}
@@ -317,7 +330,7 @@ export function EntityAnalyticsFilter() {
         </FilterContainer>
 
         <FilterRangeContainer
-          title="Amount Range"
+          title={t`Amount Range`}
           icon={<SlidersHorizontal className="w-4 h-4" />}
           unit="RON"
           rangeComponent={AmountRangeFilter}
@@ -328,7 +341,7 @@ export function EntityAnalyticsFilter() {
         />
 
         <FilterRangeContainer
-          title="Population Range"
+          title={t`Population Range`}
           icon={<Globe className="w-4 h-4" />}
           unit="people"
           rangeComponent={AmountRangeFilter}

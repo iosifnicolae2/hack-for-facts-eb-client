@@ -1,26 +1,17 @@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { BarChart2Icon, MapIcon, TableIcon } from "lucide-react";
 import { ElementType } from "react";
 
-type ViewOption<T extends string> = { id: T, label: string, icon: ElementType }
-
-const defaultViewOptions: ViewOption<string>[] = [
-    { id: "map", label: "Map", icon: MapIcon },
-    {
-        id: "table", label: "Table", icon: TableIcon
-    },
-    { id: "chart", label: "Chart", icon: BarChart2Icon },
-];
+type ViewOption<T extends string> = { id: T, label: string, icon?: ElementType }
 
 interface ViewTypeRadioGroupProps<T extends string> {
     value: T;
     onChange: (value: T) => void;
-    viewOptions?: ViewOption<T>[];
+    viewOptions: ViewOption<T>[];
 }
 
-export function ViewTypeRadioGroup<T extends string>({ value, onChange, viewOptions = defaultViewOptions as ViewOption<T>[] }: ViewTypeRadioGroupProps<T>) {
+export function ViewTypeRadioGroup<T extends string>({ value, onChange, viewOptions }: ViewTypeRadioGroupProps<T>) {
 
     const handleValueChange = (value: T) => {
         onChange(value);
@@ -51,7 +42,7 @@ export function ViewTypeRadioGroup<T extends string>({ value, onChange, viewOpti
                             id={`view-type-${option.id}`}
                             className="sr-only"
                         />
-                        <Icon className="h-4 w-4 mr-2" />
+                        {Icon && <Icon className="h-4 w-4 mr-2" />}
                         {option.label}
                     </Label>
                 );
