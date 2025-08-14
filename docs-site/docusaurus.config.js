@@ -39,7 +39,7 @@ const config = {
           blogDescription: 'News, release notes, and deep dives into Transparenta.eu features and data workflows.',
           editUrl: 'https://github.com/ClaudiuBogdan/hack-for-facts-eb-client/edit/dev/docs-site/blog/',
           editLocalizedFiles: true,
-          authorsMapPath: './authors.yml',
+          authorsMapPath: '../authors.yml',
           feedOptions: {
             type: 'all',
             copyright: `© ${new Date().getFullYear()} Transparenta.eu`,
@@ -63,7 +63,9 @@ const config = {
       title: 'Transparenta.eu',
       items: [
         { type: 'doc', docId: 'index', label: 'Docs', position: 'left' },
+        { type: 'doc', docsPluginId: 'learn', docId: 'intro', label: 'Learn', position: 'left' },
         { to: '/blog', label: 'Blog', position: 'left' },
+        { to: '/releases', label: 'Releases', position: 'left' },
         // { to: '/blog/tags', label: 'Tags', position: 'left' },
         // { to: '/blog/archive', label: 'Archive', position: 'left' },
         // { to: '/blog/authors', label: 'Authors', position: 'left' },
@@ -84,6 +86,13 @@ const config = {
           ],
         },
         {
+          title: 'Docs & Updates',
+          items: [
+            { label: 'Learn', href: '/docs/learn/intro' },
+            { label: 'Releases', href: '/docs/releases' },
+          ],
+        },
+        {
           title: 'Legal',
           items: [
             { label: 'Privacy Policy', href: 'https://transparenta.eu/privacy' },
@@ -92,7 +101,7 @@ const config = {
           ],
         },
       ],
-      copyright: `© ${new Date().getFullYear()} Transparenta.eu` ,
+      copyright: `© ${new Date().getFullYear()} Transparenta.eu`,
     },
     breadcrumbs: true,
     prism: {},
@@ -105,10 +114,47 @@ const config = {
         hashed: false,
         indexDocs: true,
         indexBlog: true,
-        docsRouteBasePath: '/',
-        blogRouteBasePath: '/blog',
+        docsRouteBasePath: ['/', '/learn'],
+        blogRouteBasePath: ['/blog', '/releases'],
         language: ['ro', 'en'],
         highlightSearchTermsOnTargetPage: true,
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'learn',
+        path: 'learn',
+        routeBasePath: 'learn',
+        sidebarPath: './sidebars.learn.js',
+        editUrl: undefined,
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-blog',
+      {
+        id: 'releases',
+        path: 'releases',
+        routeBasePath: 'releases',
+        showReadingTime: false,
+        blogTitle: 'Releases',
+        blogDescription: 'Release notes and version history for Transparenta.eu.',
+        blogSidebarTitle: 'All Releases',
+        blogSidebarCount: 20,
+        editUrl: 'https://github.com/ClaudiuBogdan/hack-for-facts-eb-client/edit/dev/docs-site/releases/',
+        editLocalizedFiles: true,
+        authorsMapPath: '../authors.yml',
+        feedOptions: {
+          type: 'all',
+          copyright: `© ${new Date().getFullYear()} Transparenta.eu`,
+          createFeedItems: async (params) => {
+            const { blogPosts, defaultCreateFeedItems, ...rest } = params;
+            return defaultCreateFeedItems({
+              blogPosts: blogPosts.slice(0, 20),
+              ...rest,
+            });
+          },
+        },
       },
     ],
   ],

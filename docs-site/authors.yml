@@ -1,7 +1,13 @@
 claudiu:
   name: Claudiu C. Bogdan
-  title: Maintainer @ Transparenta.eu
+  title: Founder @ Transparenta.eu
   url: https://transparenta.eu
   image_url: https://media.licdn.com/dms/image/v2/D4D03AQF0xLiW_uxDhg/profile-displayphoto-shrink_400_400/B4DZWFQB6cGcAg-/0/1741697327316?e=1758153600&v=beta&t=PKRX5qne1qhEvDXEK980Ccgbozeu5G3xK7N9cDk-jC0
   page: true
 
+tester:
+  name: Tester User
+  title: Tester @ Transparenta.eu
+  url: https://transparenta.eu/tester
+  image_url: https://i.pravatar.cc/150?img=1
+  page: true
