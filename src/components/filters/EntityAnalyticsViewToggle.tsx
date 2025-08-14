@@ -2,7 +2,6 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
 import { TableIcon, BarChart2Icon } from 'lucide-react'
-import { Trans } from '@lingui/react/macro'
 
 const viewOptions = [
   { id: 'table', label: "Table", icon: TableIcon },
@@ -35,7 +34,7 @@ export function EntityAnalyticsViewToggle({ value, onChange }: Props) {
           >
             <RadioGroupItem value={option.id} id={`ea-view-${option.id}`} className="sr-only" />
             <Icon className="h-4 w-4 mr-2" />
-            <Trans>{option.label}</Trans>
+            {option.label}
           </Label>
         )
       })}

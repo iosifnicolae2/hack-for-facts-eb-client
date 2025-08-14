@@ -42,7 +42,7 @@ function Index() {
             {animationActive ? (
               <AnimatedTitle />
             ) : (
-              <h1><Trans>{title}</Trans></h1>
+              <h1>{title}</h1>
             )}
           </div>
 

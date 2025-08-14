@@ -5,7 +5,7 @@ import { SelectedOptionsDisplay } from "./SelectedOptionsDisplay";
 import { OptionItem } from "./interfaces";
 
 interface FilterRadioContainerProps {
-    title: React.ReactNode;
+    title: string;
     icon: React.ReactNode;
     children: React.ReactNode;
     selectedOption: OptionItem | null;
@@ -39,7 +39,7 @@ export function FilterRadioContainer({
     return (
         <div className="border-b">
             <Accordion type="single" collapsible onValueChange={handleOpenChange} value={isOpen ? title : ''}>
-                <AccordionItem value={title} className="border-none">
+                <AccordionItem value={title} className="border-none" disabled={true}>
                     <AccordionTrigger className="px-4 py-3 text-sm font-medium hover:bg-muted/50">
                         <div className="flex items-center gap-2">
                             {icon}

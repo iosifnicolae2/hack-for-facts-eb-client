@@ -49,7 +49,7 @@ export function buildEntityIncomeExpenseChartState(
                 id: incomeSeriesId,
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
-                label: t`Income`,
+                label: "Income",
                 unit: 'RON',
                 filter: {
                     entity_cuis: [cui],
@@ -64,7 +64,7 @@ export function buildEntityIncomeExpenseChartState(
                 id: expenseSeriesId,
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
-                label: t`Expenses`,
+                label: "Expenses",
                 unit: 'RON',
                 filter: {
                     entity_cuis: [cui],
@@ -79,7 +79,7 @@ export function buildEntityIncomeExpenseChartState(
                 id: balanceSeriesId,
                 type: 'aggregated-series-calculation',
                 enabled: true,
-                label: t`Balance`,
+                label: "Balance",
                 unit: 'RON',
                 config: { visible: true, showDataLabels: false, color: '#ee8420' },
                 calculation: {

@@ -2,6 +2,7 @@ import { ReactNode, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Filter as FilterIcon, X } from 'lucide-react'
+import { t } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 
 interface Props {
@@ -11,7 +12,7 @@ interface Props {
   subtitle?: string
 }
 
-export function EntityAnalyticsLayout({ filters, children, title = 'Entity Analytics', subtitle }: Props) {
+export function EntityAnalyticsLayout({ filters, children, title = t`Entity Analytics`, subtitle }: Props) {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
 
   return (

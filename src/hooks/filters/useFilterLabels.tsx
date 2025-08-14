@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo } from "react";
 import { GetLabels, LabelStore } from "./interfaces";
 import { OptionItem } from "@/components/filters/base-filter/interfaces";
 import { getBudgetSectorLabels, getEconomicClassificationLabels, getEntityLabels, getFundingSourceLabels, getFunctionalClassificationLabels, getUatLabels } from "@/lib/api/labels";
+import { t } from "@lingui/core/macro";
 
 const EntityStorageKey = 'entity-labels';
 const UatLabelStorageKey = 'uat-labels';
@@ -168,8 +169,8 @@ export const useEntityTypeOptions = () => {
 export const useAccountCategoryLabel = () => {
     const accountCategoryOptions = useMemo(() => {
         return {
-            "ch": "Cheltuieli",
-            "vn": "Venituri"
+            "ch": t`Expenses`,
+            "vn": t`Income`
         }
     }, []);
 

@@ -27,7 +27,6 @@ import { IsUatFilter } from './flags-filter'
 import { ViewTypeRadioGroup } from './ViewTypeRadioGroup'
 import { TableIcon, BarChart2Icon } from 'lucide-react'
 import { Trans } from "@lingui/react/macro";
-import { t } from "@lingui/core/macro";
 
 export function EntityAnalyticsFilter() {
   const { filter, setFilter, resetFilter, view, setView } = useEntityAnalyticsFilter()
@@ -177,7 +176,7 @@ export function EntityAnalyticsFilter() {
           {totalSelectedFilters > 0 && (
             <Button variant="ghost" size="sm" onClick={resetFilter} className="text-sm">
               <XCircle className="w-4 h-4 mr-1" />
-              <Trans>Clear filters ({totalSelectedFilters})</Trans>
+              <Trans>Clear filters</Trans> ({totalSelectedFilters})
             </Button>
           )}
         </div>
@@ -310,7 +309,7 @@ export function EntityAnalyticsFilter() {
         <FilterContainer
           title="Is UAT"
           icon={<ArrowUpDown className="w-4 h-4" />}
-          selectedOptions={filter.is_uat === undefined ? [] : [{ id: 'is_uat', label: filter.is_uat ? t`UAT: Yes` : t`UAT: No` }]}
+          selectedOptions={filter.is_uat === undefined ? [] : [{ id: 'is_uat', label: filter.is_uat ? "UAT: Yes" : "UAT: No" }]}
           onClearOption={() => setIsUat(undefined)}
           onClearAll={() => setIsUat(undefined)}
         >

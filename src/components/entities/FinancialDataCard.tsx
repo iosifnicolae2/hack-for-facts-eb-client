@@ -54,8 +54,9 @@ export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.mem
         <div className="flex flex-col items-center justify-center h-full p-4">
           <p className="text-sm text-center text-slate-500 dark:text-slate-400">
             {searchTerm
-              ? t`No results for "${searchTerm}"`
-              : t`No data available for ${title.toLowerCase()} in ${currentYear}.`}
+              ? <span>No results for "{searchTerm}"</span>
+              : <span>No data available for {title} in {currentYear}.</span>
+            }
           </p>
         </div>
       );

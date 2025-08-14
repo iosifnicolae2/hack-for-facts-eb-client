@@ -51,9 +51,9 @@ export function FloatingQuickNav({ className, mapViewType, mapActive, tableActiv
     }
 
     const actions: Action[] = [
-        { key: 'map', label: t`Go to Map`, onClick: handleMapNavigate, icon: <Map className="h-5 w-5" />, active: mapActive },
-        { key: 'table', label: t`Go to Entity Table`, onClick: handleTableNavigate, icon: <Table className="h-5 w-5" />, active: tableActive },
-        { key: 'chart', label: t`Go to Chart View`, onClick: handleChartNavigate, icon: <BarChart2 className="h-5 w-5" />, active: chartActive },
+        { key: 'map', label: "Go to Map", onClick: handleMapNavigate, icon: <Map className="h-5 w-5" />, active: mapActive },
+        { key: 'table', label: "Go to Entity Table", onClick: handleTableNavigate, icon: <Table className="h-5 w-5" />, active: tableActive },
+        { key: 'chart', label: "Go to Chart View", onClick: handleChartNavigate, icon: <BarChart2 className="h-5 w-5" />, active: chartActive },
     ]
 
     const visibleActions = actions.filter(a => a.active);
@@ -135,7 +135,7 @@ function convertFilterInputToChartState(filterInput: AnalyticsFilterType, uatLab
                 id: crypto.randomUUID(),
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
-                label: t`County ${cc}`,
+                label: `County ${cc}`,
                 unit: 'RON',
                 filter: {
                     ...filterInput,
@@ -163,7 +163,7 @@ function convertFilterInputToChartState(filterInput: AnalyticsFilterType, uatLab
             id: crypto.randomUUID(),
             type: 'line-items-aggregated-yearly',
             enabled: true,
-            label: t`Series`,
+            label: "Series",
             unit: 'RON',
             filter: {
                 ...filterInput,

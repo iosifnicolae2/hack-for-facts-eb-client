@@ -6,7 +6,6 @@ import {
   extraErrorDataIntegration,
   replayIntegration,
 } from "@sentry/react";
-import { t } from "@lingui/core/macro";
 
 /**
  * Public handle to open the Sentry User Feedback dialog programmatically.
@@ -97,12 +96,12 @@ export function initSentry(router: unknown): void {
       autoInject: false,
 
       // Text customization
-      formTitle: t`Send Feedback`,                // modal title
-      messageLabel: t`What happened?`,            // textarea label
+      formTitle: "Send Feedback",                // modal title
+      messageLabel: "What happened?",            // textarea label
       messagePlaceholder:
-        t`Describe the bug or request. Steps to reproduce, expected vs. actual…`,
-      submitButtonLabel: t`Send Feedback`,
-      cancelButtonLabel: t`Close`,
+        "Describe the bug or request. Steps to reproduce, expected vs. actual…",
+      submitButtonLabel: "Send Feedback",
+      cancelButtonLabel: "Close",
     });
     integrations.push(feedbackIntegration);
   }

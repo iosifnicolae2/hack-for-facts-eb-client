@@ -3,7 +3,6 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { BarChart2Icon, MapIcon, TableIcon } from "lucide-react";
 import { ElementType } from "react";
-import { Trans } from "@lingui/react/macro";
 
 type ViewOption<T extends string> = { id: T, label: string, icon: ElementType }
 
@@ -53,7 +52,7 @@ export function ViewTypeRadioGroup<T extends string>({ value, onChange, viewOpti
                             className="sr-only"
                         />
                         <Icon className="h-4 w-4 mr-2" />
-                        <Trans>{option.label}</Trans>
+                        {option.label}
                     </Label>
                 );
             })}

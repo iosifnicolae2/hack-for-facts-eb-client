@@ -1,6 +1,7 @@
 import React from 'react';
 import { EntityDetailsData } from '@/lib/api/entities';
 import { EntityRelationsList } from './EntityRelationsList';
+import { t } from '@lingui/core/macro';
 
 interface EntityRelationshipsProps {
     parents: EntityDetailsData['parents'];
@@ -20,14 +21,14 @@ export const EntityRelationships: React.FC<EntityRelationshipsProps> = ({ parent
             {hasChildren && (
                 <EntityRelationsList
                     entities={children}
-                    title="Entități finanțate"
+                    title={t`Funded Entities`}
                     maxVisibleItems={0}
                 />
             )}
             {hasParents && (
                 <EntityRelationsList
                     entities={parents}
-                    title="Finanțatori"
+                    title={t`Funding Entities`}
                     maxVisibleItems={0}
                 />
             )}

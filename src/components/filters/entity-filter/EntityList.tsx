@@ -7,6 +7,7 @@ import { ErrorDisplay } from '../base-filter/ErrorDisplay';
 import { ListContainer } from '../base-filter/ListContainer';
 import { ListOption } from '../base-filter/ListOption';
 import { cn } from '@/lib/utils';
+import { t } from '@lingui/core/macro';
 
 export interface EntityOption {
     name: string;
@@ -71,7 +72,7 @@ export function EntityList({
         <div className={cn("w-full flex flex-col space-y-3", className)}>
             <SearchInput
                 onChange={setSearchFilter}
-                placeholder="Cauta entitati (ex: Primaria Arad)"
+                placeholder={t`Search entities (ex: Primaria Arad)`}
                 initialValue={searchFilter}
             />
 

@@ -1,9 +1,8 @@
 import { RadioGroupButtons } from "@/components/ui/radio-group-buttons";
-import { t } from "@lingui/core/macro";
 
 const VALID_REPORT_TYPES = [
-    { value: 'Executie bugetara agregata la nivel de ordonator principal', label: t`Aggregated Budget Execution at Main Ordering Level` },
-    { value: 'Executie bugetara detaliata', label: t`Detailed Budget Execution` },
+    { value: 'Executie bugetara agregata la nivel de ordonator principal', label: "Aggregated Budget Execution at Main Ordering Level" },
+    { value: 'Executie bugetara detaliata', label: "Detailed Budget Execution" },
 ];
 
 

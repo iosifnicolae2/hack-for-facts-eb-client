@@ -1,7 +1,6 @@
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
-import { Trans } from '@lingui/react/macro';
 
 type AccountCategoryOptionItem = {
     id: "ch" | "vn";
@@ -50,7 +49,7 @@ export function AccountCategoryRadioGroup({ value, onChange }: AccountCategoryRa
                             id={`map-ac-${category.id}`}
                             className="sr-only"
                         />
-                        <Trans>{category.label}</Trans>
+                        {category.label}
                     </Label>
                 );
             })}

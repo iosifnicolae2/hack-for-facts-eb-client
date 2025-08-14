@@ -1,11 +1,10 @@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { t } from "@lingui/core/macro";
 
 const MAP_VIEW_TYPES = [
-    { id: "UAT", label: t`UAT` },
-    { id: "County", label: t`County` },
+    { id: "UAT", label: "UAT" },
+    { id: "County", label: "County" },
 ];
 
 interface MapViewTypeRadioGroupProps {

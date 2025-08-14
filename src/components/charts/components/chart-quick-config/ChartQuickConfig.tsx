@@ -1,5 +1,4 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { t } from '@lingui/core/macro';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
@@ -17,6 +16,7 @@ import { usePersistedState } from '@/lib/hooks/usePersistedState';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { FilterBulkEdit } from '../chart-config/FilterBulkEdit';
 import { Trans } from '@lingui/react/macro';
+import { t } from '@lingui/core/macro';
 
 interface ChartQuickConfigProps {
   dataMap?: DataSeriesMap;
@@ -36,19 +36,6 @@ const getChartTypeIcon = (chartType: ChartType) => {
   }
 };
 
-const chartTypes = [
-  { value: 'line', label: "Line Char", icon: <LineChart className="h-4 w-4" /> },
-  { value: 'bar', label: "Bar Char", icon: <BarChart3 className="h-4 w-4" /> },
-  { value: 'area', label: "Area Char", icon: <TrendingUp className="h-4 w-4" /> },
-  { value: 'bar-aggr', label: "Bar Chart (Aggregated)", icon: <BarChart3 className="h-4 w-4" /> },
-  { value: 'pie-aggr', label: "Pie Chart (Aggregated)", icon: <PieChart className="h-4 w-4" /> },
-  { value: 'treemap-aggr', label: "Treemap Chart (Aggregated)", icon: <TreesIcon className="h-4 w-4" /> },
-  { value: 'sankey-aggr', label: "Sankey Chart (Aggregated)", icon: <ChartNetworkIcon className="h-4 w-4" /> },
-];
-
-const getChartTypeLabel = (chartType: ChartType) => {
-  return chartTypes.find(t => t.value === chartType)?.label || chartType;
-};
 
 export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
   const [showMoreOptions, setShowMoreOptions] = usePersistedState('chart-quick-config-show-more-options', false);
@@ -56,6 +43,20 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
   const { chart, updateChart, deleteChart, duplicateChart, goToConfig } = useChartStore();
   const { copyChart } = useCopyPasteChart(dataMap);
 
+
+  const chartTypes = [
+    { value: 'line', label: t`Line Chart`, icon: <LineChart className="h-4 w-4" /> },
+    { value: 'bar', label: t`Bar Chart`, icon: <BarChart3 className="h-4 w-4" /> },
+    { value: 'area', label: t`Area Chart`, icon: <TrendingUp className="h-4 w-4" /> },
+    { value: 'bar-aggr', label: t`Bar Chart (Aggregated)`, icon: <BarChart3 className="h-4 w-4" /> },
+    { value: 'pie-aggr', label: t`Pie Chart (Aggregated)`, icon: <PieChart className="h-4 w-4" /> },
+    { value: 'treemap-aggr', label: t`Treemap Chart (Aggregated)`, icon: <TreesIcon className="h-4 w-4" /> },
+    { value: 'sankey-aggr', label: t`Sankey Chart (Aggregated)`, icon: <ChartNetworkIcon className="h-4 w-4" /> },
+  ];
+
+  const getChartTypeLabel = (chartType: ChartType) => {
+    return chartTypes.find(t => t.value === chartType)?.label || chartType;
+  };
 
   return (
     <div className="space-y-4">
@@ -107,7 +108,7 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
                 <SelectValue>
                   <div className="flex items-center gap-2">
                     {getChartTypeIcon(chart.config.chartType)}
-                    <span className="capitalize"><Trans>{getChartTypeLabel(chart.config.chartType)}</Trans></span>
+                    <span className="capitalize">{getChartTypeLabel(chart.config.chartType)}</span>
                   </div>
                 </SelectValue>
               </SelectTrigger>
@@ -116,7 +117,7 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
                   <SelectItem key={value} value={value}>
                     <div className="flex items-center gap-2">
                       {icon}
-                      <Trans>{label}</Trans>
+                      {label}
                     </div>
                   </SelectItem>
                 ))}
@@ -236,7 +237,7 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
           <div className="pt-4 border-t">
             <div className="flex flex-wrap gap-2">
               <Badge variant="outline">
-                <Trans>{chart.series.filter(s => s.enabled).length} Active Series</Trans>
+                {chart.series.filter(s => s.enabled).length} <Trans>Active Series</Trans>
               </Badge>
               {chart.config.showRelativeValues && (
                 <Badge variant="secondary"><Trans>Relative Mode</Trans></Badge>
