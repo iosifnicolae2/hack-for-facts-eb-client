@@ -23,7 +23,6 @@ import { FundingSourceList } from "@/components/filters/funding-source-filter";
 import { useBudgetSectorLabel, useEconomicClassificationLabel, useEntityLabel, useFundingSourceLabel, useFunctionalClassificationLabel, useUatLabel, useEntityTypeLabel, useAccountCategoryLabel } from "@/hooks/filters/useFilterLabels";
 import { LabelStore } from "@/hooks/filters/interfaces";
 import { ReportType, SeriesConfiguration } from "@/schemas/charts";
-import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 
 interface SeriesFilterProps {
@@ -145,8 +144,8 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
     const setSelectedFundingSourceOptions = createListUpdater('funding_source_ids', fundingSourceLabelsStore);
 
     const flagsOptions: OptionItem[] = [];
-    if (filter.is_uat === true) flagsOptions.push({ id: 'isUat', label: t`UAT: Yes` });
-    if (filter.is_uat === false) flagsOptions.push({ id: 'isUat', label: t`UAT: No` });
+    if (filter.is_uat === true) flagsOptions.push({ id: 'isUat', label: "UAT: Yes" });
+    if (filter.is_uat === false) flagsOptions.push({ id: 'isUat', label: "UAT: No" });
     const setIsUat = createValueUpdater('is_uat', (v) => v !== undefined ? v : undefined);
 
     const clearAllFilters = () => {
@@ -214,7 +213,7 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
             </CardHeader>
             <CardContent className={`flex flex-col p-0 overflow-y-auto`}>
                 <FilterRadioContainer
-                    title={t`Income/Expenses`}
+                    title="Income/Expenses"
                     icon={<ArrowUpDown className="w-4 h-4" />}
                     selectedOption={selectedAccountTypeOption}
                     onClear={() => setSelectedAccountTypeOption('ch')}
@@ -225,57 +224,57 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
                     />
                 </FilterRadioContainer>
                 <FilterListContainer
-                    title={t`Public Entities`}
+                    title="Public Entities"
                     icon={<Building2 className="w-4 h-4" />}
                     listComponent={EntityList}
                     selected={selectedEntityOptions}
                     setSelected={setSelectedEntityOptions}
                 />
                 <FilterListContainer
-                    title={t`Entity Type`}
+                    title="Entity Type"
                     icon={<Building2 className="w-4 h-4" />}
                     listComponent={EntityTypeList}
                     selected={selectedEntityTypeOptions}
                     setSelected={setSelectedEntityTypeOptions}
                 />
                 <FilterListContainer
-                    title={t`Territorial Administrative Units (UAT)`}
+                    title="Territorial Administrative Units (UAT)"
                     icon={<MapPin className="w-4 h-4" />}
                     listComponent={UatList}
                     selected={selectedUatOptions}
                     setSelected={setSelectedUatOptions}
                 />
                 <FilterListContainer
-                    title={t`Economic Classification`}
+                    title="Economic Classification"
                     icon={<EuroIcon className="w-4 h-4" />}
                     listComponent={EconomicClassificationList}
                     selected={selectedEconomicClassificationOptions}
                     setSelected={setSelectedEconomicClassificationOptions}
                 />
                 <FilterListContainer
-                    title={t`Functional Classification`}
+                    title="Functional Classification"
                     icon={<ChartBar className="w-4 h-4" />}
                     listComponent={FunctionalClassificationList}
                     selected={selectedFunctionalClassificationOptions}
                     setSelected={setSelectedFunctionalClassificationOptions}
                 />
                 <FilterPrefixContainer
-                    title={t`Functional Classification Prefix`}
+                    title="Functional Classification Prefix"
                     icon={<ChartBar className="w-4 h-4" />}
                     prefixComponent={PrefixFilter}
                     value={functionalPrefixes}
                     onValueChange={setFunctionalPrefixes}
                 />
                 <FilterPrefixContainer
-                    title={t`Economic Classification Prefix`}
+                    title="Economic Classification Prefix"
                     icon={<EuroIcon className="w-4 h-4" />}
                     prefixComponent={PrefixFilter}
                     value={economicPrefixes}
                     onValueChange={setEconomicPrefixes}
                 />
                 <FilterRangeContainer
-                    title={t`Amount Range`}
-                    unit={t`RON`}
+                    title="Amount Range"
+                    unit="RON"
                     icon={<SlidersHorizontal className="w-4 h-4" />}
                     rangeComponent={AmountRangeFilter}
                     minValue={minAmount}
@@ -285,7 +284,7 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
                     debounceMs={0}
                 />
                 <FilterRadioContainer
-                    title={t`Report Type`}
+                    title="Report Type"
                     icon={<ArrowUpDown className="w-4 h-4" />}
                     selectedOption={reportTypeOption}
                     onClear={handleClearReportType}
@@ -296,21 +295,21 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
                     />
                 </FilterRadioContainer>
                 <FilterListContainer
-                    title={t`Budget Sector`}
+                    title="Budget Sector"
                     icon={<Building2 className="w-4 h-4" />}
                     listComponent={BudgetSectorList}
                     selected={selectedBudgetSectorOptions}
                     setSelected={setSelectedBudgetSectorOptions}
                 />
                 <FilterListContainer
-                    title={t`Funding Source`}
+                    title="Funding Source"
                     icon={<EuroIcon className="w-4 h-4" />}
                     listComponent={FundingSourceList}
                     selected={selectedFundingSourceOptions}
                     setSelected={setSelectedFundingSourceOptions}
                 />
                 <FilterContainer
-                    title={t`Is UAT`}
+                    title="Is UAT"
                     icon={<ArrowUpDown className="w-4 h-4" />}
                     selectedOptions={flagsOptions}
                     onClearOption={handleClearFlag}

@@ -12,6 +12,7 @@ import {
 import { toPng, toSvg } from 'html-to-image';
 import { saveAs } from 'file-saver';
 import { toast } from 'sonner';
+import { Trans } from '@lingui/react/macro';
 
 export interface ShareChartProps {
     /** Chart ID for generating the share link */
@@ -170,10 +171,10 @@ export function ShareChart({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <Share2 className="h-4 w-4" />
-                    Share Chart
+                    <Trans>Share Chart</Trans>
                 </CardTitle>
                 <CardDescription>
-                    Export as image or share with a link
+                    <Trans>Export as image or share with a link</Trans>
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -216,7 +217,9 @@ export function ShareChart({
                     {/* Share Link */}
                     <div className="space-y-2">
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                            <span className="text-sm font-medium">Share Link</span>
+                            <span className="text-sm font-medium">
+                                <Trans>Share Link</Trans>
+                            </span>
                             <Button
                                 size="sm"
                                 variant={copiedLink ? "default" : "outline"}

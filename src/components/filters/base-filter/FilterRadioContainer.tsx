@@ -5,7 +5,7 @@ import { SelectedOptionsDisplay } from "./SelectedOptionsDisplay";
 import { OptionItem } from "./interfaces";
 
 interface FilterRadioContainerProps {
-    title: string;
+    title: React.ReactNode;
     icon: React.ReactNode;
     children: React.ReactNode;
     selectedOption: OptionItem | null;

@@ -26,7 +26,8 @@ import { ReportTypeFilter } from './report-type-filter'
 import { IsUatFilter } from './flags-filter'
 import { ViewTypeRadioGroup } from './ViewTypeRadioGroup'
 import { TableIcon, BarChart2Icon } from 'lucide-react'
-import { t } from '@lingui/core/macro'
+import { Trans } from "@lingui/react/macro";
+import { t } from "@lingui/core/macro";
 
 export function EntityAnalyticsFilter() {
   const { filter, setFilter, resetFilter, view, setView } = useEntityAnalyticsFilter()
@@ -172,11 +173,11 @@ export function EntityAnalyticsFilter() {
     <Card className="flex flex-col w-full min-h-full overflow-y-auto shadow-lg">
       <CardHeader className="py-4 px-6 border-b">
         <div className="flex justify-between items-center">
-          <CardTitle className="text-lg font-semibold">Filters</CardTitle>
+          <CardTitle className="text-lg font-semibold"><Trans>Filters</Trans></CardTitle>
           {totalSelectedFilters > 0 && (
             <Button variant="ghost" size="sm" onClick={resetFilter} className="text-sm">
               <XCircle className="w-4 h-4 mr-1" />
-              Clear filters ({totalSelectedFilters})
+              <Trans>Clear filters ({totalSelectedFilters})</Trans>
             </Button>
           )}
         </div>
@@ -186,17 +187,17 @@ export function EntityAnalyticsFilter() {
         <div className="p-3 border-b">
           <h4 className="mb-2 text-sm font-medium flex items-center">
             <BarChart2Icon className="w-4 h-4 mr-2" />
-            View
+            <Trans>View</Trans>
           </h4>
           <ViewTypeRadioGroup value={view} onChange={(v) => setView(v)} viewOptions={[
-            { id: 'table', label: t`Table`, icon: TableIcon },
-            { id: 'line-items', label: t`Line Items`, icon: BarChart2Icon },
+            { id: 'table', label: "Table", icon: TableIcon },
+            { id: 'line-items', label: "Line Items", icon: BarChart2Icon },
           ]} />
         </div>
         <div className="p-3 border-b">
           <h4 className="mb-2 text-sm font-medium flex items-center">
             <ArrowUpDown className="w-4 h-4 mr-2" />
-            Revenues/Expenses
+            <Trans>Revenues/Expenses</Trans>
           </h4>
           <AccountCategoryRadioGroup value={filter.account_category} onChange={updateAccountCategory} />
         </div>
@@ -204,7 +205,7 @@ export function EntityAnalyticsFilter() {
         <div className="p-3 border-b">
           <h4 className="mb-2 text-sm font-medium flex items-center">
             <Divide className="w-4 h-4 mr-2" />
-            Normalization
+            <Trans>Normalization</Trans>
           </h4>
           <PopulationRadioGroup value={filter.normalization ?? 'per_capita'} onChange={updateNormalization} />
         </div>
@@ -309,7 +310,7 @@ export function EntityAnalyticsFilter() {
         <FilterContainer
           title="Is UAT"
           icon={<ArrowUpDown className="w-4 h-4" />}
-          selectedOptions={filter.is_uat === undefined ? [] : [{ id: 'is_uat', label: filter.is_uat ? 'UAT: Da' : 'UAT: Nu' }]}
+          selectedOptions={filter.is_uat === undefined ? [] : [{ id: 'is_uat', label: filter.is_uat ? t`UAT: Yes` : t`UAT: No` }]}
           onClearOption={() => setIsUat(undefined)}
           onClearAll={() => setIsUat(undefined)}
         >

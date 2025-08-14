@@ -37,13 +37,13 @@ const getChartTypeIcon = (chartType: ChartType) => {
 };
 
 const chartTypes = [
-  { value: 'line', label: t`Line Chart`, icon: <LineChart className="h-4 w-4" /> },
-  { value: 'bar', label: t`Bar Chart`, icon: <BarChart3 className="h-4 w-4" /> },
-  { value: 'area', label: t`Area Chart`, icon: <TrendingUp className="h-4 w-4" /> },
-  { value: 'bar-aggr', label: t`Bar Chart (Aggregated)`, icon: <BarChart3 className="h-4 w-4" /> },
-  { value: 'pie-aggr', label: t`Pie Chart (Aggregated)`, icon: <PieChart className="h-4 w-4" /> },
-  { value: 'treemap-aggr', label: t`Treemap Chart (Aggregated)`, icon: <TreesIcon className="h-4 w-4" /> },
-  { value: 'sankey-aggr', label: t`Sankey Chart (Aggregated)`, icon: <ChartNetworkIcon className="h-4 w-4" /> },
+  { value: 'line', label: "Line Char", icon: <LineChart className="h-4 w-4" /> },
+  { value: 'bar', label: "Bar Char", icon: <BarChart3 className="h-4 w-4" /> },
+  { value: 'area', label: "Area Char", icon: <TrendingUp className="h-4 w-4" /> },
+  { value: 'bar-aggr', label: "Bar Chart (Aggregated)", icon: <BarChart3 className="h-4 w-4" /> },
+  { value: 'pie-aggr', label: "Pie Chart (Aggregated)", icon: <PieChart className="h-4 w-4" /> },
+  { value: 'treemap-aggr', label: "Treemap Chart (Aggregated)", icon: <TreesIcon className="h-4 w-4" /> },
+  { value: 'sankey-aggr', label: "Sankey Chart (Aggregated)", icon: <ChartNetworkIcon className="h-4 w-4" /> },
 ];
 
 const getChartTypeLabel = (chartType: ChartType) => {
@@ -107,7 +107,7 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
                 <SelectValue>
                   <div className="flex items-center gap-2">
                     {getChartTypeIcon(chart.config.chartType)}
-                    <span className="capitalize">{getChartTypeLabel(chart.config.chartType)}</span>
+                    <span className="capitalize"><Trans>{getChartTypeLabel(chart.config.chartType)}</Trans></span>
                   </div>
                 </SelectValue>
               </SelectTrigger>
@@ -116,7 +116,7 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
                   <SelectItem key={value} value={value}>
                     <div className="flex items-center gap-2">
                       {icon}
-                      {label}
+                      <Trans>{label}</Trans>
                     </div>
                   </SelectItem>
                 ))}

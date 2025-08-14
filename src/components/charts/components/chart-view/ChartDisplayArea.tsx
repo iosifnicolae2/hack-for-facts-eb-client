@@ -10,6 +10,7 @@ import { AnnotationPositionChange } from "../chart-renderer/components/interface
 import { ChartTitle } from "../chart-renderer/components/ChartTitle";
 import { getYearRangeText } from "../chart-renderer/utils";
 import { DataPointPayload, DataSeriesMap, TimeSeriesDataPoint, UnitMap } from "../../hooks/useChartData";
+import { Trans } from "@lingui/react/macro";
 
 // --- Type Definitions ---
 
@@ -104,7 +105,7 @@ const NoDataSeries = React.memo(
       </div>
       <p className="font-medium text-lg">No Data Series</p>
       <p className="text-sm text-muted-foreground">Add a series to visualize your data.</p>
-      <Button onClick={onAddSeries}>Add Data Series</Button>
+      <Button onClick={onAddSeries}><Trans>Add Data Series</Trans></Button>
     </div>
   )
 );

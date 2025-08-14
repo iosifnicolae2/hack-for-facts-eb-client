@@ -1,7 +1,7 @@
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
-import { t } from '@lingui/core/macro';
+import { Trans } from '@lingui/react/macro';
 
 type AccountCategoryOptionItem = {
     id: "ch" | "vn";
@@ -9,8 +9,8 @@ type AccountCategoryOptionItem = {
 };
 
 const accountCategories: AccountCategoryOptionItem[] = [
-    { id: "ch", label: t`Expenses` },
-    { id: "vn", label: t`Income` },
+    { id: "ch", label: "Expenses" },
+    { id: "vn", label: "Income" },
 ];
 
 interface AccountCategoryRadioGroupProps {
@@ -50,7 +50,7 @@ export function AccountCategoryRadioGroup({ value, onChange }: AccountCategoryRa
                             id={`map-ac-${category.id}`}
                             className="sr-only"
                         />
-                        {category.label}
+                        <Trans>{category.label}</Trans>
                     </Label>
                 );
             })}

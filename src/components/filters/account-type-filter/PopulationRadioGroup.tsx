@@ -1,7 +1,7 @@
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
-import { t } from '@lingui/core/macro';
+import { Trans } from '@lingui/react/macro';
 
 type NormalizationOptionItem = {
     id: "total" | "per_capita";
@@ -9,8 +9,8 @@ type NormalizationOptionItem = {
 };
 
 const normalizationFilter: NormalizationOptionItem[] = [
-    { id: "total", label: t`Total` },
-    { id: "per_capita", label: t`Per Capita` },
+    { id: "total", label: "Total" },
+    { id: "per_capita", label: "Per Capita" },
 ];
 
 interface PopulationRadioGroupProps {
@@ -51,7 +51,7 @@ export function PopulationRadioGroup({ value, onChange }: PopulationRadioGroupPr
                             id={`map-ac-${category.id}`}
                             className="sr-only"
                         />
-                        {category.label}
+                        <Trans>{category.label}</Trans>
                     </Label>
                 );
             })}

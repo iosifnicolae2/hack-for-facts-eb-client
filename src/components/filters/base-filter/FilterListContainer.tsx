@@ -3,6 +3,7 @@ import { SelectedOptionsDisplay } from "./SelectedOptionsDisplay";
 import { OptionItem } from "./interfaces";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
+import { Trans } from "@lingui/react/macro";
 
 const VISIBLE_BADGES_COUNT_IN_DISPLAY = 1;
 const MIN_ITEMS_FOR_COMPACT_VIEW_IN_DISPLAY = VISIBLE_BADGES_COUNT_IN_DISPLAY + 1;
@@ -52,7 +53,7 @@ export function FilterListContainer({ listComponent: ListComponent, title, icon,
                     <AccordionTrigger className="px-4 py-3 text-sm font-medium hover:bg-muted/50">
                         <div className="flex items-center gap-2">
                             {icon}
-                            <span>{title}</span>
+                            <span><Trans>{title}</Trans></span>
                             {selected.length > 0 && (
                                 <Badge variant="secondary" className="rounded-full px-2 text-xs">
                                     {selected.length}

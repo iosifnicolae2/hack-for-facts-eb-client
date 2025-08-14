@@ -3,16 +3,16 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { BarChart2Icon, MapIcon, TableIcon } from "lucide-react";
 import { ElementType } from "react";
-import { t } from "@lingui/core/macro"
+import { Trans } from "@lingui/react/macro";
 
 type ViewOption<T extends string> = { id: T, label: string, icon: ElementType }
 
 const defaultViewOptions: ViewOption<string>[] = [
-    { id: "map", label: t`Map`, icon: MapIcon },
+    { id: "map", label: "Map", icon: MapIcon },
     {
-        id: "table", label: t`Table`, icon: TableIcon
+        id: "table", label: "Table", icon: TableIcon
     },
-    { id: "chart", label: t`Chart`, icon: BarChart2Icon },
+    { id: "chart", label: "Chart", icon: BarChart2Icon },
 ];
 
 interface ViewTypeRadioGroupProps<T extends string> {
@@ -53,7 +53,7 @@ export function ViewTypeRadioGroup<T extends string>({ value, onChange, viewOpti
                             className="sr-only"
                         />
                         <Icon className="h-4 w-4 mr-2" />
-                        {option.label}
+                        <Trans>{option.label}</Trans>
                     </Label>
                 );
             })}
