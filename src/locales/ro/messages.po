@@ -1252,6 +1252,10 @@ msgstr "Blochează adnotarea"
 msgid "Locked"
 msgstr "Blocat"
 
+#: src/components/entities/LineItemsAnalytics.tsx:95
+msgid "Main Categories"
+msgstr "Categorii Principale"
+
 #: src/routes/charts/index.lazy.tsx:150
 msgid "Manage and search your locally saved charts. Create, favorite, categorize, and share your visualizations."
 msgstr "Gestionați și căutați graficele salvate local. Creați, adăugați la favorite, clasificați și partajați vizualizările."
@@ -1537,7 +1541,7 @@ msgid "Pie Chart (Aggregated)"
 msgstr "Grafic circular (agregat)"
 
 #: src/components/footer/AppFooter.tsx:30
-msgid "Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice, și alte persoane interesate."
+msgid "A platform for exploring public financial data for citizens, journalists, public figures, and other interested parties."
 msgstr "Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice și alte persoane interesate."
 
 #: src/components/entity-analytics/EntityAnalyticsTable.tsx:88

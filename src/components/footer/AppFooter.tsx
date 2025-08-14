@@ -27,7 +27,7 @@ export function AppFooter(): ReactElement {
                     <div className="space-y-3">
                         <div className="font-semibold text-lg text-foreground">Transparenta.eu</div>
                         <p className="text-sm leading-relaxed">
-                            <Trans>Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice, și alte persoane interesate.</Trans>
+                            <Trans>A platform for exploring public financial data for citizens, journalists, public figures, and other interested parties.</Trans>
                         </p>
                         <div className="flex items-center gap-4 pt-1">
                             <a

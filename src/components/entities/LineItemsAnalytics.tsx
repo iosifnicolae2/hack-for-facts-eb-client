@@ -14,6 +14,7 @@ import {
 import { processDataForAnalyticsChart } from '@/lib/analytics-utils';
 import { LineItemsAnalyticsSkeleton } from './LineItemsAnalyticsSkeleton';
 import { applyAlpha } from '../charts/components/chart-renderer/utils';
+import { Trans } from '@lingui/react/macro';
 
 interface AnalyticsProps {
     lineItems?: EntityDetailsData['executionLineItems'];
@@ -91,7 +92,7 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
                             onValueChange={(val) => onYearChange(parseInt(val, 10))}
                         >
                             <SelectTrigger className="w-auto border-0 shadow-none bg-transparent focus:ring-0">
-                                <CardTitle>Categorii principale {analyticsYear}</CardTitle>
+                                <CardTitle><Trans>Main Categories</Trans> {analyticsYear}</CardTitle>
                             </SelectTrigger>
                             <SelectContent>
                                 {years.map((year) => (
