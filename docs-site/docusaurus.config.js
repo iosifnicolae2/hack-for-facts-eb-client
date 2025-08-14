@@ -101,7 +101,8 @@ const config = {
     [
       require.resolve('@easyops-cn/docusaurus-search-local'),
       {
-        hashed: true,
+        // Use non-hashed filename to satisfy consumers expecting `search-index.json`
+        hashed: false,
         indexDocs: true,
         indexBlog: true,
         docsRouteBasePath: '/',
