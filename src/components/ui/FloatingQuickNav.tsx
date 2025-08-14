@@ -6,8 +6,8 @@ import { useNavigate } from '@tanstack/react-router';
 import { ChartUrlState } from '@/components/charts/page-schema';
 import { MapUrlState } from '@/schemas/map-filters';
 import { EntityAnalyticsUrlState } from '@/routes/entity-analytics';
-import { generateRandomColor } from '../charts/components/chart-renderer/utils';
-import { useUatLabel } from '@/hooks/filters/useFilterLabels';
+import { getSeriesColor } from '../charts/components/chart-renderer/utils';
+import { useEntityLabel, useUatLabel } from '@/hooks/filters/useFilterLabels';
 import { LabelStore } from '@/hooks/filters/interfaces';
 import { t } from '@lingui/core/macro';
 
@@ -33,6 +33,7 @@ interface FloatingQuickNavProps {
 export function FloatingQuickNav({ className, mapViewType, mapActive, tableActive, chartActive, filterInput }: FloatingQuickNavProps) {
 
     const uatLabelMap = useUatLabel((filterInput.uat_ids ?? []).map(String));
+    const entityLabelMap = useEntityLabel((filterInput.entity_cuis ?? []) as string[]);
     const navigate = useNavigate();
 
     const handleMapNavigate = () => {
@@ -46,14 +47,14 @@ export function FloatingQuickNav({ className, mapViewType, mapActive, tableActiv
     }
 
     const handleChartNavigate = () => {
-        const next = convertFilterInputToChartState(filterInput, uatLabelMap)
+        const next = convertFilterInputToChartState(filterInput, { uatLabelMap, entityLabelMap })
         navigate({ to: '/charts/$chartId', params: { chartId: next.chart.id }, search: next });
     }
 
     const actions: Action[] = [
-        { key: 'map', label: "Go to Map", onClick: handleMapNavigate, icon: <Map className="h-5 w-5" />, active: mapActive },
-        { key: 'table', label: "Go to Entity Table", onClick: handleTableNavigate, icon: <Table className="h-5 w-5" />, active: tableActive },
-        { key: 'chart', label: "Go to Chart View", onClick: handleChartNavigate, icon: <BarChart2 className="h-5 w-5" />, active: chartActive },
+        { key: 'map', label: t`Go to Map`, onClick: handleMapNavigate, icon: <Map className="h-5 w-5" />, active: mapActive },
+        { key: 'table', label: t`Go to Entity Table`, onClick: handleTableNavigate, icon: <Table className="h-5 w-5" />, active: tableActive },
+        { key: 'chart', label: t`Go to Chart View`, onClick: handleChartNavigate, icon: <BarChart2 className="h-5 w-5" />, active: chartActive },
     ]
 
     const visibleActions = actions.filter(a => a.active);
@@ -69,6 +70,7 @@ export function FloatingQuickNav({ className, mapViewType, mapActive, tableActiv
                 <Button
                     key={action.key}
                     aria-label={action.label}
+                    title={action.label}
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8 rounded-full shadow-lg border border-border"
@@ -91,7 +93,10 @@ function ensureYears(filter: AnalyticsFilterType): number[] {
     return [currentYear]
 }
 
-function convertFilterInputToChartState(filterInput: AnalyticsFilterType, uatLabelMap: LabelStore): ChartUrlState {
+function convertFilterInputToChartState(
+    filterInput: AnalyticsFilterType,
+    labelMaps: { uatLabelMap: LabelStore; entityLabelMap: LabelStore }
+): ChartUrlState {
     const accountCategory = (filterInput.account_category ?? 'ch') as 'ch' | 'vn'
     const reportType = coerceReportType(filterInput) ?? 'Executie bugetara agregata la nivel de ordonator principal'
     const years = Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, i) => defaultYearRange.end - i).reverse();
@@ -102,14 +107,39 @@ function convertFilterInputToChartState(filterInput: AnalyticsFilterType, uatLab
     // - If Judet view and no entities selected but county_codes present, create one series per county
     // - If UAT view and entity_cuis provided, create one series per entity
 
-    if (filterInput.uat_ids && filterInput.uat_ids.length > 0) {
-        // One series per selected entity (assumed county councils)
-        filterInput.uat_ids.forEach((uatId) => {
+    if (filterInput.entity_cuis && filterInput.entity_cuis.length > 0) {
+        // One series per selected entity CUI
+        filterInput.entity_cuis.forEach((cui, index) => {
             series.push({
                 id: crypto.randomUUID(),
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
-                label: uatLabelMap.map(uatId),
+                label: labelMaps.entityLabelMap.map(cui),
+                unit: 'RON',
+                filter: {
+                    ...filterInput,
+                    years: years,
+                    account_category: accountCategory,
+                    report_type: reportType,
+                    entity_cuis: [cui],
+                },
+                config: {
+                    visible: true,
+                    showDataLabels: false,
+                    color: getSeriesColor(index),
+                },
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+            })
+        })
+    } else if (filterInput.uat_ids && filterInput.uat_ids.length > 0) {
+        // One series per selected entity (assumed county councils)
+        filterInput.uat_ids.forEach((uatId, index) => {
+            series.push({
+                id: crypto.randomUUID(),
+                type: 'line-items-aggregated-yearly',
+                enabled: true,
+                label: labelMaps.uatLabelMap.map(uatId),
                 unit: 'RON',
                 filter: {
                     ...filterInput,
@@ -117,20 +147,18 @@ function convertFilterInputToChartState(filterInput: AnalyticsFilterType, uatLab
                     account_category: accountCategory,
                     report_type: reportType,
                     uat_ids: [uatId],
-                    county_codes: undefined,
-                    is_uat: undefined,
                 },
                 config: {
                     visible: true,
                     showDataLabels: false,
-                    color: generateRandomColor(),
+                    color: getSeriesColor(index),
                 },
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString(),
             })
         })
     } else if (filterInput.county_codes && filterInput.county_codes.length > 0) {
-        filterInput.county_codes.forEach((cc) => {
+        filterInput.county_codes.forEach((cc, index) => {
             series.push({
                 id: crypto.randomUUID(),
                 type: 'line-items-aggregated-yearly',
@@ -143,13 +171,11 @@ function convertFilterInputToChartState(filterInput: AnalyticsFilterType, uatLab
                     account_category: accountCategory,
                     report_type: reportType,
                     county_codes: [cc],
-                    uat_ids: undefined,
-                    is_uat: undefined,
                 },
                 config: {
                     visible: true,
                     showDataLabels: false,
-                    color: generateRandomColor(),
+                    color: getSeriesColor(index),
                 },
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString(),
@@ -174,7 +200,7 @@ function convertFilterInputToChartState(filterInput: AnalyticsFilterType, uatLab
             config: {
                 visible: true,
                 showDataLabels: false,
-                color: generateRandomColor(),
+                color: getSeriesColor(0),
             },
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),

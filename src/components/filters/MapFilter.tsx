@@ -15,6 +15,7 @@ import { BudgetSectorList } from './budget-sector-filter/BudgetSectorFilter';
 import { FundingSourceList } from './funding-source-filter/FundingSourceFilter';
 import { PrefixFilter, FilterPrefixContainer } from './prefix-filter';
 import { UatList } from './uat-filter/UatList';
+import { EntityList } from './entity-filter/EntityList';
 import { CountyList } from './county-filter/CountyList';
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
@@ -33,7 +34,9 @@ export function MapFilter() {
         setNormalization,
         setYears,
         selectedUatOptions,
+        selectedEntityOptions,
         setSelectedUatOptions,
+        setSelectedEntityOptions,
         setSelectedCountyOptions,
         setSelectedEntityTypeOptions,
         setSelectedBudgetSectorOptions,
@@ -52,6 +55,7 @@ export function MapFilter() {
         (mapState.filters.economic_codes?.length ?? 0) +
         (mapState.filters.functional_prefixes?.length ?? 0) +
         (mapState.filters.economic_prefixes?.length ?? 0) +
+        (mapState.filters.entity_cuis?.length ?? 0) +
         (mapState.filters.entity_types?.length ?? 0) +
         (mapState.filters.budget_sector_ids?.length ?? 0) +
         (mapState.filters.funding_source_ids?.length ?? 0) +
@@ -150,6 +154,14 @@ export function MapFilter() {
                     selected={selectedYearOptions}
                     setSelected={setYears}
                 />
+                <FilterListContainer
+                    title={t`Entities`}
+                    icon={<Building2 className="w-4 h-4" />}
+                    listComponent={EntityList}
+                    selected={selectedEntityOptions}
+                    setSelected={setSelectedEntityOptions}
+                />
+
                 <FilterListContainer
                     title={t`UATs`}
                     icon={<MapPin className="w-4 h-4" />}

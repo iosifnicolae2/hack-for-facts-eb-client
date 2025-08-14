@@ -19,6 +19,7 @@ import { Analytics } from '@/lib/analytics'
 import { Seo } from '@/lib/seo'
 import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
+import { FloatingQuickNav } from '@/components/ui/FloatingQuickNav'
 
 export const Route = createLazyFileRoute('/entity-analytics')({
   component: EntityAnalyticsPage,
@@ -30,6 +31,14 @@ function EntityAnalyticsPage() {
 
   const offset = useMemo(() => (page - 1) * pageSize, [page, pageSize])
   const filterHash = useMemo(() => generateHash(JSON.stringify(filter)), [filter])
+
+  const mapViewType = useMemo<'UAT' | 'County'>(() => {
+    if ((filter.county_codes?.length ?? 0) > 0) return 'County'
+    if (filter.entity_types?.includes('admin_county_council')) return 'County'
+    if (filter.is_uat === true) return 'UAT'
+    if ((filter.uat_ids?.length ?? 0) > 0) return 'UAT'
+    return 'UAT'
+  }, [filter.county_codes, filter.entity_types, filter.is_uat, filter.uat_ids])
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['entity-analytics', filterHash, sortBy, sortOrder, page, pageSize],
@@ -121,6 +130,13 @@ function EntityAnalyticsPage() {
         filters={<EntityAnalyticsFilterPanel />}
         subtitle={t`Analyze aggregated values per entity and explore top entities.`}
       >
+        <FloatingQuickNav
+          className=""
+          mapViewType={mapViewType}
+          mapActive
+          chartActive
+          filterInput={filter}
+        />
         <div className="flex justify-end">
           {/* EntityAnalyticsViewToggle removed, now handled within filter */}
         </div>

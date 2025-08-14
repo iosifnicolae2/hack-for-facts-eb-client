@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { defaultMapFilters, MapStateSchema, MapUrlState } from '@/schemas/map-filters';
-import { useEconomicClassificationLabel, useFunctionalClassificationLabel, useAccountCategoryLabel, useUatLabel } from '@/hooks/filters/useFilterLabels';
+import { useEconomicClassificationLabel, useFunctionalClassificationLabel, useAccountCategoryLabel, useUatLabel, useEntityLabel } from '@/hooks/filters/useFilterLabels';
 import { OptionItem } from '@/components/filters/base-filter/interfaces';
 import { AnalyticsFilterType, defaultYearRange } from '@/schemas/charts';
 import { LabelStore } from '@/hooks/filters/interfaces';
@@ -16,6 +16,7 @@ export function useMapFilter() {
     const functionalClassificationLabelsStore = useFunctionalClassificationLabel(mapState.filters.functional_codes ?? []);
     const accountCategoryLabelsStore = useAccountCategoryLabel();
     const uatLabelsStore = useUatLabel((mapState.filters.uat_ids ?? []).map(String));
+    const entityLabelsStore = useEntityLabel((mapState.filters.entity_cuis ?? []) as string[]);
 
     const setFilters = (filters: Partial<AnalyticsFilterType>) => {
         navigate({
@@ -59,6 +60,7 @@ export function useMapFilter() {
     const setSelectedFunctionalClassificationOptions = createListUpdater('functional_codes', functionalClassificationLabelsStore);
     const setSelectedEconomicClassificationOptions = createListUpdater('economic_codes', economicClassificationLabelsStore);
     const setSelectedUatOptions = createListUpdater('uat_ids', uatLabelsStore);
+    const setSelectedEntityOptions = createListUpdater('entity_cuis', entityLabelsStore);
     const setSelectedCountyOptions = createListUpdater('county_codes');
     const setSelectedEntityTypeOptions = createListUpdater('entity_types');
     const setSelectedBudgetSectorOptions = createListUpdater('budget_sector_ids');
@@ -95,6 +97,11 @@ export function useMapFilter() {
     const selectedUatOptions: OptionItem<string | number>[] = useMemo(() =>
         (mapState.filters.uat_ids ?? []).map((id) => ({ id, label: uatLabelsStore.map(String(id)) })),
         [mapState.filters.uat_ids, uatLabelsStore],
+    );
+
+    const selectedEntityOptions: OptionItem<string | number>[] = useMemo(() =>
+        (mapState.filters.entity_cuis ?? []).map((cui) => ({ id: cui, label: entityLabelsStore.map(String(cui)) })),
+        [mapState.filters.entity_cuis, entityLabelsStore],
     );
 
     const clearAllFilters = () => {
@@ -149,6 +156,8 @@ export function useMapFilter() {
         setYears,
         selectedUatOptions,
         setSelectedUatOptions,
+        selectedEntityOptions,
+        setSelectedEntityOptions,
         setSelectedCountyOptions,
         setSelectedEntityTypeOptions,
         setSelectedBudgetSectorOptions,
