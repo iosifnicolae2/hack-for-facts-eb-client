@@ -17,6 +17,7 @@ export function LanguageToggle() {
             document.documentElement.setAttribute("lang", locale);
         } catch { }
         Analytics.capture(Analytics.EVENTS.LanguageChanged, { locale });
+        window.location.reload();
     }
 
     return (
@@ -24,7 +25,7 @@ export function LanguageToggle() {
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton asChild onClick={() => setLocale("en")}>
-                        <Button variant="ghost" size="icon">
+                        <Button variant="ghost" size="icon" className="w-full justify-start gap-2">
                             <span>🇬🇧</span>
                             {!collapsed && <span className="flex-1"><Trans>English</Trans></span>}
                         </Button>
@@ -32,7 +33,7 @@ export function LanguageToggle() {
                 </SidebarMenuItem>
                 <SidebarMenuItem>
                     <SidebarMenuButton asChild onClick={() => setLocale("ro")}>
-                        <Button variant="ghost" size="icon">
+                        <Button variant="ghost" size="icon" className="w-full justify-start gap-2">
                             <span>🇷🇴</span>
                             {!collapsed && <span className="flex-1"><Trans>Romanian</Trans></span>}
                         </Button>
