@@ -308,14 +308,6 @@ msgstr "Categorii"
 msgid "Category name"
 msgstr "Nume categorie"
 
-#: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:67
-msgid "Cauta după nume sau cod (ex: Agricultura, 43.00, ec:43.00)"
-msgstr "Caută după nume sau cod (ex: Agricultură, 43.00, ec:43.00)"
-
-#: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:67
-msgid "Cauta după nume sau cod (ex: Ajutor social, 7.06, fn:7.06)"
-msgstr "Caută după nume sau cod (ex: Ajutor social, 7.06, fn:7.06)"
-
 #: src/routes/privacy.lazy.tsx:67
 msgid "Changes"
 msgstr "Modificări"
@@ -1578,14 +1570,6 @@ msgstr "PostHog (analiză), Sentry (raportare erori), furnizori de găzduire. Pr
 msgid "PostHog: <0>ph_*</0> identifiers when analytics is enabled."
 msgstr "PostHog: identificatori <0>ph_*</0> când analiza este activată."
 
-#: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:69
-msgid "Poti căuta după: nume (ex: Agricultura) • cod (ex: 43.00, 43.00.10) • prefix explicit: ec:43.00"
-msgstr "Poți căuta după: nume (ex: Agricultură) • cod (ex: 43.00, 43.00.10) • prefix explicit: ec:43.00"
-
-#: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:69
-msgid "Poti căuta după: nume (ex: Ajutor social) • cod (ex: 7.06, 7.06.02) • prefix explicit: fn:7.06"
-msgstr "Poți căuta după: nume (ex: Ajutor social) • cod (ex: 7.06, 7.06.02) • prefix explicit: fn:7.06"
-
 #: src/components/footer/AppFooter.tsx:106
 #: src/routes/privacy.lazy.tsx:17
 msgid "Privacy Policy"
@@ -1721,6 +1705,18 @@ msgstr "Caută {0}..."
 #: src/components/filters/budget-sector-filter/BudgetSectorFilter.tsx:67
 msgid "Search budget sectors"
 msgstr "Caută sectoare bugetare"
+
+#: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:67
+msgid "Search by name or code (ex: Agriculture, 43.00, ec:43.00)"
+msgstr "Caută după nume sau cod (ex: Agricultură, 43.00, ec:43.00)"
+
+#: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:67
+#~ msgid "Search by name or code (ex: Ajutor social, 7.06, fn:7.06)"
+#~ msgstr "Caută după nume sau cod (ex: Ajutor social, 7.06, fn:7.06)"
+
+#: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:67
+msgid "Search by name or code (ex: Social assistance, 7.06, fn:7.06)"
+msgstr ""
 
 #: src/routes/charts/index.lazy.tsx:192
 msgid "Search charts"
@@ -2223,6 +2219,14 @@ msgstr "Cine suntem"
 #: src/components/maps/utils.ts:18
 msgid "Year"
 msgstr "An"
+
+#: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:69
+msgid "You can search by: name (ex: Agriculture) • code (ex: 43.00, 43.00.10) • explicit prefix: ec:43.00"
+msgstr ""
+
+#: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:69
+msgid "You can search by: name (ex: Social assistance) • code (ex: 7.06, 7.06.02) • explicit prefix: fn:7.06"
+msgstr ""
 
 #: src/routes/privacy.lazy.tsx:61
 msgid "Your rights"

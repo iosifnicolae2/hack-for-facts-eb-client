@@ -64,9 +64,9 @@ export function FunctionalClassificationList({
         <div className={cn("w-full flex flex-col space-y-3", className)}>
             <SearchInput
                 onChange={setSearchFilter}
-                placeholder={t`Cauta după nume sau cod (ex: Ajutor social, 7.06, fn:7.06)`}
+                placeholder={t`Search by name or code (ex: Social assistance, 7.06, fn:7.06)`}
                 helpText={
-                    t`Poti căuta după: nume (ex: Ajutor social) • cod (ex: 7.06, 7.06.02) • prefix explicit: fn:7.06`
+                    t`You can search by: name (ex: Social assistance) • code (ex: 7.06, 7.06.02) • explicit prefix: fn:7.06`
                 }
                 initialValue={searchFilter}
             />
