@@ -5,6 +5,8 @@ import Fuse from 'fuse.js';
 import { Input } from '@/components/ui/input';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { useVirtualizer } from '@tanstack/react-virtual';
+import { t } from '@lingui/core/macro';
+import { Trans } from '@lingui/react/macro';
 
 interface EntityRelation {
   cui: string;
@@ -159,7 +161,7 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
             <div className="relative mb-3">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
               <Input
-                placeholder={`Search ${title.toLowerCase()}...`}
+                placeholder={t`Search ${title.toLowerCase()}...`}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 text-sm"
@@ -172,7 +174,7 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
               renderEntityList(filteredEntities, true)
             ) : (
               <p className="text-sm text-slate-500 dark:text-slate-400">
-                No {title.toLowerCase()} found matching "{searchTerm}"
+                <Trans>No {title.toLowerCase()} found matching "{searchTerm}"</Trans>
               </p>
             )}
           </div>

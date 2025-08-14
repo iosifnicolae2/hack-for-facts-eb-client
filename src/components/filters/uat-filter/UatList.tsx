@@ -7,6 +7,7 @@ import { ErrorDisplay } from '../base-filter/ErrorDisplay';
 import { ListContainer } from '../base-filter/ListContainer';
 import { ListOption } from '../base-filter/ListOption';
 import { cn } from '@/lib/utils';
+import { t } from '@lingui/core/macro';
 
 export interface UatOption {
     id: string;
@@ -67,7 +68,7 @@ export function UatList({
         <div className={cn("w-full flex flex-col space-y-3", className)}>
             <SearchInput
                 onChange={setSearchFilter}
-                placeholder="Cauta UAT (ex: Municipiul Arad)"
+                placeholder={t`Search UATs (ex: Municipiul Arad)`}
                 initialValue={searchFilter}
             />
 
@@ -75,7 +76,7 @@ export function UatList({
                 <ErrorDisplay
                     error={error as Error}
                     refetch={refetch}
-                    title="Could Not Load Entities"
+                    title={t`Could Not Load UATs`}
                 />
             )}
 

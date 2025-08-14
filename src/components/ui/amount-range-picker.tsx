@@ -3,6 +3,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
+import { t } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 
 export type AmountRangePickerProps = {
   value: {
@@ -105,7 +107,7 @@ export function AmountRangePicker({
       <div className="flex flex-col space-y-1.5">
         <div className="flex items-center gap-2">
           <div className="flex-1">
-            <Label htmlFor="min-amount">Minimum</Label>
+            <Label htmlFor="min-amount"><Trans>Minimum</Trans></Label>
             <div className="relative mt-1">
               <span className="absolute left-3 top-2.5 text-muted-foreground">
                 {currency}
@@ -113,7 +115,7 @@ export function AmountRangePicker({
               <Input
                 id="min-amount"
                 type="text"
-                placeholder="No minimum"
+                placeholder={t`No minimum`}
                 value={minText}
                 onChange={handleMinChange}
                 onBlur={handleMinBlur}
@@ -123,7 +125,7 @@ export function AmountRangePicker({
           </div>
 
           <div className="flex-1">
-            <Label htmlFor="max-amount">Maximum</Label>
+            <Label htmlFor="max-amount"><Trans>Maximum</Trans></Label>
             <div className="relative mt-1">
               <span className="absolute left-3 top-2.5 text-muted-foreground">
                 {currency}
@@ -131,7 +133,7 @@ export function AmountRangePicker({
               <Input
                 id="max-amount"
                 type="text"
-                placeholder="No maximum"
+                placeholder={t`No maximum`}
                 value={maxText}
                 onChange={handleMaxChange}
                 onBlur={handleMaxBlur}

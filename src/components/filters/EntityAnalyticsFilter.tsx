@@ -188,8 +188,8 @@ export function EntityAnalyticsFilter() {
             <Trans>View</Trans>
           </h4>
           <ViewTypeRadioGroup value={view} onChange={(v) => setView(v)} viewOptions={[
-            { id: 'table', label: "Table", icon: TableIcon },
-            { id: 'line-items', label: "Line Items", icon: BarChart2Icon },
+            { id: 'table', label: t`Table`, icon: TableIcon },
+            { id: 'line-items', label: t`Line Items`, icon: BarChart2Icon },
           ]} />
         </div>
         <div className="p-3 border-b">

@@ -6,6 +6,7 @@ import { SearchInput } from "../base-filter/SearchInput";
 import Fuse from "fuse.js";
 import { cn } from "@/lib/utils";
 import { useEntityTypeOptions } from "@/hooks/filters/useFilterLabels";
+import { t } from "@lingui/core/macro";
 
 interface EntityTypeListProps {
     selectedOptions: OptionItem[];
@@ -42,8 +43,7 @@ export function EntityTypeList({ selectedOptions, toggleSelect, className }: Ent
         <div className={cn("w-full flex flex-col space-y-3", className)}>
             <SearchInput
                 onChange={setSearchFilter}
-                placeholder="Cauta tip entitate (ex: Spital)"
-                initialValue={searchFilter}
+                placeholder={t`Search entity types (ex: Hospital)`}
             />
             <ListContainerSimple height={filteredOptions.length * rowHeight}>
                 {filteredOptions.map((option, index) => (

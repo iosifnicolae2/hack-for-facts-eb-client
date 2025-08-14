@@ -5,7 +5,8 @@ import { Chart } from "@/schemas/charts";
 import { getChartTypeIcon } from "../../utils";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { useNavigate } from "@tanstack/react-router";
-
+import { Trans } from "@lingui/react/macro";
+import { t } from "@lingui/core/macro";
 interface ChartViewHeaderProps {
   chart: Chart;
   onConfigure: () => void;
@@ -13,7 +14,8 @@ interface ChartViewHeaderProps {
 
 export function ChartViewHeader({ chart, onConfigure }: ChartViewHeaderProps) {
   const navigate = useNavigate();
-  const chartTitle = chart.title || 'Untitled Chart';
+  const chartTitle = chart.title || t`Untitled Chart`;
+
   return (
     <div className="space-y-2">
       <Breadcrumb>
@@ -39,7 +41,7 @@ export function ChartViewHeader({ chart, onConfigure }: ChartViewHeaderProps) {
         </div>
         <Button className="gap-2" onClick={onConfigure}>
           <Settings className="h-4 w-4" />
-          Configure
+          <Trans>Configure</Trans>
         </Button>
       </div>
     </div>

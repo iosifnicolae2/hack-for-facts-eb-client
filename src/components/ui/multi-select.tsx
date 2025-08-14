@@ -12,6 +12,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Trans } from "@lingui/react/macro";
+import { t } from "@lingui/core/macro";
 
 export type Option = {
   value: string;
@@ -31,7 +33,7 @@ export function MultiSelect({
   options,
   selected,
   onChange,
-  placeholder = "Select options",
+  placeholder = t`Select options`,
   className,
 }: MultiSelectProps) {
 
@@ -101,7 +103,7 @@ export function MultiSelect({
             ))
           ) : (
             <p className="p-2 text-center text-sm text-muted-foreground">
-              No options found.
+              <Trans>No options found.</Trans>
             </p>
           )}
         </div>
@@ -113,7 +115,7 @@ export function MultiSelect({
               onSelect={handleClear}
               className="cursor-pointer justify-center text-center text-sm"
             >
-              Clear all
+              <Trans>Clear all</Trans>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
           </>

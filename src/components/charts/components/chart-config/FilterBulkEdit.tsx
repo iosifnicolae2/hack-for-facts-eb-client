@@ -8,8 +8,10 @@ import { Button } from '@/components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { toast } from 'sonner';
 import { Analytics } from '@/lib/analytics';
-import { collectUniqueFilterValues, countPotentialReplacements, getFilterDisplayName, ReplaceableFilterKey, replaceFilterValue } from '@/lib/chart-filter-utils';
+import { collectUniqueFilterValues, countPotentialReplacements, ReplaceableFilterKey, replaceFilterValue, useFilterKeyLabel } from '@/lib/chart-filter-utils';
 import { ArrowLeftRight, CheckCircle2, RefreshCw } from 'lucide-react';
+import { t } from '@lingui/core/macro';
+import { Trans } from '@lingui/react/macro';
 
 interface FilterBulkEditProps {
     withCard?: boolean;
@@ -17,6 +19,7 @@ interface FilterBulkEditProps {
 
 export function FilterBulkEdit({ withCard = true }: FilterBulkEditProps) {
     const { chart, updateChart } = useChartStore();
+    const filterKeyMap = useFilterKeyLabel();
     const [bulkField, setBulkField] = useState<ReplaceableFilterKey | ''>('');
     const currentOptions = useMemo(() => bulkField ? collectUniqueFilterValues(chart, bulkField) : [], [chart, bulkField]);
     const [fromValue, setFromValue] = useState<string>('');
@@ -39,7 +42,7 @@ export function FilterBulkEdit({ withCard = true }: FilterBulkEditProps) {
                     <Label>Filter field</Label>
                     <Select value={bulkField} onValueChange={(v) => { setBulkField(v as ReplaceableFilterKey); setFromValue(''); }}>
                         <SelectTrigger>
-                            <SelectValue placeholder="Select field" />
+                            <SelectValue placeholder={t`Select field`} />
                         </SelectTrigger>
                         <SelectContent>
                             {(([
@@ -56,7 +59,7 @@ export function FilterBulkEdit({ withCard = true }: FilterBulkEditProps) {
                                 'report_type',
                                 'is_uat',
                             ]) as ReplaceableFilterKey[]).map((key) => (
-                                <SelectItem key={key} value={key}>{getFilterDisplayName(key)}</SelectItem>
+                                <SelectItem key={key} value={key}>{filterKeyMap(key)}</SelectItem>
                             ))}
                         </SelectContent>
                     </Select>
@@ -66,7 +69,7 @@ export function FilterBulkEdit({ withCard = true }: FilterBulkEditProps) {
                     <Label>Replace value</Label>
                     <Select value={fromValue} onValueChange={setFromValue} disabled={!bulkField || currentOptions.length === 0}>
                         <SelectTrigger>
-                            <SelectValue placeholder={bulkField ? (currentOptions.length ? 'Select current value' : 'No values to replace') : 'Select field first'} />
+                            <SelectValue placeholder={bulkField ? (currentOptions.length ? t`Select current value` : t`No values to replace`) : t`Select field first`} />
                         </SelectTrigger>
                         <SelectContent>
                             {currentOptions.map((opt) => (
@@ -78,13 +81,13 @@ export function FilterBulkEdit({ withCard = true }: FilterBulkEditProps) {
 
                 <div className="space-y-2">
                     <Label>New value</Label>
-                    <Input placeholder="Enter new value" value={toValue} onChange={(e) => setToValue(e.target.value)} disabled={!bulkField || !fromValue} />
+                    <Input placeholder={t`Enter new value`} value={toValue} onChange={(e) => setToValue(e.target.value)} disabled={!bulkField || !fromValue} />
                 </div>
             </div>
 
             <div className="mt-4 flex items-center justify-between">
                 <div className="text-sm text-muted-foreground">
-                    {replacementCount > 0 ? `${replacementCount} occurrence${replacementCount === 1 ? '' : 's'} found` : 'No matches yet'}
+                    {replacementCount > 0 ? `${replacementCount} occurrence${replacementCount === 1 ? '' : 's'} found` : t`No matches yet`}
                 </div>
                 <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
                     <AlertDialogTrigger asChild>
@@ -94,18 +97,18 @@ export function FilterBulkEdit({ withCard = true }: FilterBulkEditProps) {
                             variant="secondary"
                         >
                             <ArrowLeftRight className="h-4 w-4" />
-                            Replace
+                            <Trans>Replace</Trans>
                         </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                         <AlertDialogHeader>
-                            <AlertDialogTitle>Confirm replace</AlertDialogTitle>
+                            <AlertDialogTitle><Trans>Confirm replace</Trans></AlertDialogTitle>
                             <AlertDialogDescription>
-                                {`Replace "${fromValue}" with "${toValue}" in ${getFilterDisplayName(bulkField || '')} across ${replacementCount} occurrence${replacementCount === 1 ? '' : 's'}?`}
+                                {`Replace "${fromValue}" with "${toValue}" in ${filterKeyMap(bulkField || '')} across ${replacementCount} occurrence${replacementCount === 1 ? '' : 's'}?`}
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogCancel><Trans>Cancel</Trans></AlertDialogCancel>
                             <AlertDialogAction
                                 onClick={() => {
                                     if (!bulkField) return;
@@ -118,7 +121,7 @@ export function FilterBulkEdit({ withCard = true }: FilterBulkEditProps) {
                                     setToValue('');
                                 }}
                             >
-                                Confirm
+                                <Trans>Confirm</Trans>
                             </AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>

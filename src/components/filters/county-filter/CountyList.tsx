@@ -7,6 +7,7 @@ import { SearchInput } from '../base-filter/SearchInput'
 import { useMultiSelectInfinite } from '../base-filter/hooks/useMultiSelectInfinite'
 import { graphqlRequest } from '@/lib/api/graphql'
 import { ErrorDisplay } from '../base-filter/ErrorDisplay'
+import { t } from '@lingui/core/macro'
 
 type CountyOption = {
   county_code: string
@@ -58,9 +59,9 @@ export function CountyList({ selectedOptions, toggleSelect, pageSize = 100, clas
 
   return (
     <div className={cn('w-full flex flex-col space-y-3', className)}>
-      <SearchInput onChange={setSearchFilter} placeholder={"Search counties..."} initialValue={searchFilter} />
+      <SearchInput onChange={setSearchFilter} placeholder={t`Search counties...`} initialValue={searchFilter} />
 
-      {isError && error && <ErrorDisplay error={error as Error} refetch={refetch} title={"Could Not Load Counties"} />}
+      {isError && error && <ErrorDisplay error={error as Error} refetch={refetch} title={t`Could Not Load Counties`} />}
 
       {!isError && (
         <ListContainer

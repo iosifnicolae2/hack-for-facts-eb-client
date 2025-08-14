@@ -11,6 +11,7 @@ import { ChartTitle } from "../chart-renderer/components/ChartTitle";
 import { getYearRangeText } from "../chart-renderer/utils";
 import { DataPointPayload, DataSeriesMap, TimeSeriesDataPoint, UnitMap } from "../../hooks/useChartData";
 import { Trans } from "@lingui/react/macro";
+import { t } from "@lingui/core/macro";
 
 // --- Type Definitions ---
 
@@ -53,7 +54,7 @@ export const ChartDisplayArea = React.memo(
   }: ChartDisplayAreaProps) => {
     const content = (() => {
       if (chart.series.length === 0) return <NoDataSeries onAddSeries={onAddSeries} chart={chart} />;
-      if (isLoading) return <LoadingSpinner text="Loading chart data..." />;
+      if (isLoading) return <LoadingSpinner text={t`Loading chart data...`} />;
       if (error) return <ErrorDisplay error={error} />;
       if (!dataMap || dataMap.size === 0) return <NoDataAvailable chart={chart} />;
 
@@ -103,8 +104,8 @@ const NoDataSeries = React.memo(
       <div className="h-16 w-16 mx-auto rounded-full bg-muted flex items-center justify-center">
         {getChartTypeIcon(chart.config.chartType, "h-8 w-8 text-muted-foreground")}
       </div>
-      <p className="font-medium text-lg">No Data Series</p>
-      <p className="text-sm text-muted-foreground">Add a series to visualize your data.</p>
+      <p className="font-medium text-lg"><Trans>No Data Series</Trans></p>
+      <p className="text-sm text-muted-foreground"><Trans>Add a series to visualize your data.</Trans></p>
       <Button onClick={onAddSeries}><Trans>Add Data Series</Trans></Button>
     </div>
   )
@@ -117,7 +118,7 @@ const NoDataSeries = React.memo(
 const ErrorDisplay = React.memo(({ error }: { error: Error }) => (
   <div className="text-center text-destructive space-y-2">
     <AlertCircle className="h-8 w-8 mx-auto" />
-    <p className="font-medium">Error Loading Chart Data</p>
+    <p className="font-medium"><Trans>Error Loading Chart Data</Trans></p>
     <p className="text-sm">{error.message}</p>
   </div>
 ));
@@ -131,8 +132,8 @@ const NoDataAvailable = React.memo(({ chart }: { chart: Chart }) => (
     <div className="h-16 w-16 mx-auto rounded-full bg-muted flex items-center justify-center">
       {getChartTypeIcon(chart.config.chartType, "h-8 w-8")}
     </div>
-    <p className="font-medium">No Data Available</p>
-    <p className="text-sm">Check your series filters and try again.</p>
+    <p className="font-medium"><Trans>No Data Available</Trans></p>
+    <p className="text-sm"><Trans>Check your series filters and try again.</Trans></p>
   </div>
 ));
 
@@ -162,7 +163,7 @@ const ChartContent = React.memo(
       [chart]
     );
 
-    if (!dataMap) return <LoadingSpinner text="Loading chart data..." />;
+    if (!dataMap) return <LoadingSpinner text={t`Loading chart data...`} />;
 
     return (
       <div className="w-full">
@@ -197,7 +198,7 @@ const ChartFooter = React.memo(() => (
       <span className="font-bold">Transparenta.eu</span>
     </a>
     <a href="https://mfinante.gov.ro/transparenta-bugetara" target="_blank" rel="noopener noreferrer">
-      Sursă date: <span className="font-bold">Ministerul Finanțelor</span>
+      <Trans>Source: </Trans><span className="font-bold">Ministerul Finanțelor</span>
     </a>
   </p>
 ));

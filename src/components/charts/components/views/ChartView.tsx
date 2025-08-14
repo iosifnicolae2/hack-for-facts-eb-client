@@ -9,6 +9,7 @@ import { convertToAggregatedData, convertToTimeSeriesData, SeriesId, Unit, useCh
 import { AnnotationsList } from '../chart-annotations/AnnotationsList';
 import { AnnotationPositionChange } from '../chart-renderer/components/interfaces';
 import { useMemo } from 'react';
+import { t } from '@lingui/core/macro';
 
 export function ChartView() {
   const { chart, goToConfig, goToSeriesConfig, addSeries, updateAnnotation } = useChartStore();
@@ -30,7 +31,7 @@ export function ChartView() {
   }, [chart, dataSeriesMap]);
 
   if (!chart) {
-    return <LoadingSpinner text="Loading chart configuration..." />;
+    return <LoadingSpinner text={t`Loading chart configuration...`} />;
   }
 
   const handleAnnotationPositionChange = (pos: AnnotationPositionChange) => {

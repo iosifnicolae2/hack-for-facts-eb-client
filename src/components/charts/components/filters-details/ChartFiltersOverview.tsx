@@ -2,7 +2,7 @@
 
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Chart } from "@/schemas/charts";
-import { FilterIcon } from "lucide-react";
+import { Edit, FilterIcon } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -12,6 +12,7 @@ import {
 import { SeriesFilterDisplay } from "./SeriesFilterDisplay";
 import { Button } from "../../../ui/button";
 import { usePersistedState } from "@/lib/hooks/usePersistedState";
+import { Trans } from "@lingui/react/macro";
 
 export function ChartFiltersOverview({
   chart,
@@ -23,7 +24,7 @@ export function ChartFiltersOverview({
   const activeSeries = chart.series.filter(
     (s) => s.enabled
   );
-  
+
   const totalFilters = activeSeries.length;
 
   const [isFiltersOpen, setIsFiltersOpen] = usePersistedState("chart-filters-summary-open", false);
@@ -41,10 +42,10 @@ export function ChartFiltersOverview({
             <FilterIcon className="h-6 w-6 text-muted-foreground" />
           </div>
           <CardTitle className="text-base font-normal text-muted-foreground">
-            No Filters Applied
+            <Trans>No Filters Applied</Trans>
           </CardTitle>
           <CardDescription>
-            Filters applied to data series will appear here.
+            <Trans>Filters applied to data series will appear here.</Trans>
           </CardDescription>
         </CardHeader>
       </Card>
@@ -58,7 +59,7 @@ export function ChartFiltersOverview({
           <AccordionTrigger>
             <div className="flex items-center gap-3 w-full">
               <CardTitle>
-                Filters info{" "}
+                <Trans>Filters info</Trans>{" "}
                 <span className="text-muted-foreground font-normal text-sm">
                   ({totalFilters})
                 </span>
@@ -90,7 +91,7 @@ export function ChartFiltersOverview({
                       size="sm"
                       onClick={() => onFilterClick(series.id)}
                     >
-                      Edit
+                      <Edit className="h-4 w-4 text-muted-foreground" />
                     </Button>
                   </div>
                   <SeriesFilterDisplay series={series} chart={chart} />

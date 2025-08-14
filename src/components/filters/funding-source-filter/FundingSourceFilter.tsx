@@ -7,6 +7,7 @@ import { ErrorDisplay } from '../base-filter/ErrorDisplay';
 import { ListContainer } from '../base-filter/ListContainer';
 import { ListOption } from '../base-filter/ListOption';
 import { cn } from '@/lib/utils';
+import { t } from '@lingui/core/macro';
 
 export interface FundingSourceOption {
     source_id: string;
@@ -63,7 +64,7 @@ export function FundingSourceList({
         <div className={cn("w-full flex flex-col space-y-3", className)}>
             <SearchInput
                 onChange={setSearchFilter}
-                placeholder="Cauta sectoare bugetare"
+                placeholder={t`Search funding sources`}
                 initialValue={searchFilter}
             />
 
@@ -71,7 +72,7 @@ export function FundingSourceList({
                 <ErrorDisplay
                     error={error as Error}
                     refetch={refetch}
-                    title="Could Not Load Budget Sectors"
+                    title={t`Could Not Load Funding Sources`}
                 />
             )}
 

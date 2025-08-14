@@ -62,7 +62,7 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
     <div className="space-y-4">
       <ShareChart
         chartId={chart.id}
-        chartTitle={chart.title || 'Untitled Chart'}
+        chartTitle={chart.title || t`Untitled Chart`}
         targetElementId="chart-display-area"
       />
 
@@ -88,7 +88,7 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
           <Dialog open={bulkEditOpen} onOpenChange={setBulkEditOpen}>
             <DialogContent className="max-w-3xl">
               <DialogHeader>
-                <DialogTitle>Bulk edit filters</DialogTitle>
+                <DialogTitle><Trans>Bulk edit filters</Trans></DialogTitle>
               </DialogHeader>
               <FilterBulkEdit withCard={false} />
             </DialogContent>

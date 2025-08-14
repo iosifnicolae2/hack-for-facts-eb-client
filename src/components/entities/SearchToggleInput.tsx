@@ -4,7 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, X } from "lucide-react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useDebouncedCallback } from "@/lib/hooks/useDebouncedCallback";
-
+import { t } from "@lingui/core/macro";
+    
 interface SearchToggleInputProps {
   active: boolean;
   initialSearchTerm: string;
@@ -20,7 +21,7 @@ export const SearchToggleInput: React.FC<SearchToggleInputProps> = ({
   initialSearchTerm,
   onToggle,
   onChange,
-  placeholder = "Search...",
+  placeholder = t`Search...`,
   width = 160,
   focusKey = '',
 }) => {

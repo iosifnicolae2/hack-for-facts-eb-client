@@ -29,7 +29,8 @@ import { CustomSeriesValueEditor } from '../series-config/CustomSeriesValueEdito
 import { UnitInput } from '../series-config/UnitInput';
 import { StaticSeriesEditor } from '../series-config/StaticSeriesEditor';
 import { useCopyPasteChart } from '../../hooks/useCopyPaste';
-
+import { t } from '@lingui/core/macro';
+import { Trans } from '@lingui/react/macro';
 
 export function SeriesConfigView() {
   const [showAdvancedSettings, setShowAdvancedSettings] = useState(false);
@@ -67,9 +68,9 @@ export function SeriesConfigView() {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
-          <p className="text-muted-foreground">Series not found</p>
+          <p className="text-muted-foreground"><Trans>Series not found</Trans></p>
           <Button onClick={goToConfig} className="mt-4">
-            Back to Configuration
+            <Trans>Back to Configuration</Trans>
           </Button>
         </div>
       </div>
@@ -105,11 +106,11 @@ export function SeriesConfigView() {
           </BreadcrumbList>
         </Breadcrumb>
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold tracking-tight">Series Configuration</h1>
+          <h1 className="text-3xl font-bold tracking-tight"><Trans>Series Configuration</Trans></h1>
           <div className="flex items-center gap-2">
             <Button onClick={goToOverview} className="gap-2">
               <Eye className="h-4 w-4" />
-              View Chart
+              <Trans>View Chart</Trans>
             </Button>
           </div>
         </div>
@@ -120,7 +121,7 @@ export function SeriesConfigView() {
         <Card>
           <CardContent className="space-y-4">
             <div className="space-y-2 pt-4">
-              <Label htmlFor="series-label">Series Label *</Label>
+              <Label htmlFor="series-label"><Trans>Series Label</Trans> *</Label>
               <Input
                 ref={inputRef}
                 id="series-label"
@@ -129,18 +130,18 @@ export function SeriesConfigView() {
                   setLocalLabel(e.target.value);
                   updateSeriesField('label', e.target.value);
                 }}
-                placeholder="Enter series label..."
+                placeholder={t`Enter series label...`}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="series-type">Series Type</Label>
+              <Label htmlFor="series-type"><Trans>Series Type</Trans></Label>
               <Select
                 value={series?.type}
                 onValueChange={(value) => updateSeriesField('type', value)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select series type" />
+                  <SelectValue placeholder={t`Select series type`} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="line-items-aggregated-yearly">Line Items Aggregated Yearly</SelectItem>
@@ -155,7 +156,7 @@ export function SeriesConfigView() {
             {/* Quick settings placed directly under type */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="series-enabled">Enabled</Label>
+                <Label htmlFor="series-enabled"><Trans>Enabled</Trans></Label>
                 <div className="h-10 flex items-center">
                   <Switch
                     id="series-enabled"
@@ -165,7 +166,7 @@ export function SeriesConfigView() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="series-color">Series Color</Label>
+                <Label htmlFor="series-color"><Trans>Series Color</Trans></Label>
                 <div className="flex items-center gap-2">
                   <input
                     id="series-color"
@@ -180,13 +181,13 @@ export function SeriesConfigView() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label>Quick Actions</Label>
+                <Label><Trans>Quick Actions</Trans></Label>
                 <div className="flex items-center gap-2">
                   <Button variant="outline" size="sm" onClick={() => duplicateSeries(series!.id)} title="Duplicate series">
-                    Duplicate
+                    <Trans>Duplicate</Trans>
                   </Button>
                   <Button variant="outline" size="sm" onClick={() => copySeries(series!.id)} title="Copy series">
-                    Copy
+                    <Trans>Copy</Trans>
                   </Button>
                 </div>
               </div>
@@ -197,7 +198,7 @@ export function SeriesConfigView() {
                 id="series-unit"
                 value={series?.unit || ''}
                 onChange={(value) => updateSeriesField('unit', value)}
-                placeholder="e.g., RON, %, Units..."
+                placeholder={t`e.g., RON, %, Units...`}
               />
             )}
 
@@ -206,16 +207,16 @@ export function SeriesConfigView() {
               className="p-0 h-auto text-sm font-normal text-muted-foreground"
               onClick={() => setShowAdvancedSettings(!showAdvancedSettings)}
             >
-              {showAdvancedSettings ? 'Hide advanced settings' : 'Show advanced settings'}
+              {showAdvancedSettings ? <Trans>Hide advanced settings</Trans> : <Trans>Show advanced settings</Trans>}
             </Button>
 
             {showAdvancedSettings && (
               <>
                 <div className="flex items-center justify-between pt-4">
                   <Label htmlFor="series-show-data-labels" className="flex flex-col space-y-1">
-                    <span>Show Data Labels</span>
+                    <span><Trans>Show Data Labels</Trans></span>
                     <span className="font-normal leading-snug text-muted-foreground">
-                      Display data labels on the chart
+                      <Trans>Display data labels on the chart</Trans>
                     </span>
                   </Label>
                   <Switch
@@ -229,7 +230,7 @@ export function SeriesConfigView() {
                   onChange={(labels) => updateSeriesConfig({ dataLabels: labels })}
                 />
                 <div className="space-y-3 pt-4">
-                  <Label htmlFor="data-label-offset">Data Label Offset</Label>
+                  <Label htmlFor="data-label-offset"><Trans>Data Label Offset</Trans></Label>
                   <div className="flex items-center gap-4">
                     <Slider
                       id="data-label-offset"
@@ -271,7 +272,7 @@ export function SeriesConfigView() {
         <footer className="flex justify-between pt-4">
           <Button onClick={goToConfig} variant="outline" className="gap-2">
             <Settings className="h-4 w-4" />
-            Chart Configuration
+            <Trans>Chart Configuration</Trans>
           </Button>
 
           <DropdownMenu>
@@ -281,20 +282,20 @@ export function SeriesConfigView() {
                 className="gap-2"
               >
                 <Trash2 className="h-4 w-4" />
-                Delete Series
+                <Trans>Delete Series</Trans>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
-              <DropdownMenuLabel>Are you sure you want to delete this series?</DropdownMenuLabel>
+              <DropdownMenuLabel><Trans>Are you sure you want to delete this series?</Trans></DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={handleDeleteSeries}
                 className="text-destructive focus:bg-destructive focus:text-white"
               >
-                Delete
+                <Trans>Delete</Trans>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                Cancel
+                <Trans>Cancel</Trans>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

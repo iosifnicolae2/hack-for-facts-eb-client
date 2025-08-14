@@ -72,7 +72,7 @@ export function EntityList({
         <div className={cn("w-full flex flex-col space-y-3", className)}>
             <SearchInput
                 onChange={setSearchFilter}
-                placeholder={t`Search entities (ex: Primaria Arad)`}
+                placeholder={t`Search entities (ex: Municipiul Arad)`}
                 initialValue={searchFilter}
             />
 
@@ -80,7 +80,7 @@ export function EntityList({
                 <ErrorDisplay
                     error={error as Error}
                     refetch={refetch}
-                    title="Could Not Load Entities"
+                    title={t`Could Not Load Entities`}
                 />
             )}
 

@@ -1,6 +1,7 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ArrowLeftRight, Copy, MoreVertical, Settings, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Trans } from "@lingui/react/macro";
 
 interface ChartQuickConfigMenuProps {
     onOpenConfigPanel: () => void;
@@ -30,33 +31,33 @@ export function ChartQuickConfigMenu({ onOpenConfigPanel, onDelete, onDuplicate,
             }}>
                 <DropdownMenuItem onSelect={onOpenConfigPanel} onClick={handleClick}>
                     <Settings className="mr-2 h-4 w-4" />
-                    Open Config Panel
+                    <Trans>Open Config Panel</Trans>
                 </DropdownMenuItem>
                 <DropdownMenuItem onSelect={onDuplicate} onClick={handleClick}>
                     <Copy className="mr-2 h-4 w-4" />
-                    Duplicate
+                    <Trans>Duplicate</Trans>
                 </DropdownMenuItem>
                 <DropdownMenuItem onSelect={onCopyData} onClick={handleClick}>
                     <Copy className="mr-2 h-4 w-4" />
-                    Copy Data
+                    <Trans>Copy Data</Trans>
                 </DropdownMenuItem>
                 <DropdownMenuItem onSelect={onOpenBulkEdit} onClick={handleClick}>
                     <ArrowLeftRight className="mr-2 h-4 w-4" />
-                    Bulk edit filters
+                    <Trans>Bulk edit filters</Trans>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuSub>
                     <DropdownMenuSubTrigger className="text-destructive">
                         <Trash2 className="mr-2 h-4 w-4" />
-                        <span>Delete</span>
+                        <Trans>Delete</Trans>
                     </DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
                         <DropdownMenuSubContent className="mx-1 mt-0">
                             <DropdownMenuItem className="text-destructive" onSelect={onDelete} onClick={handleClick}>
-                                Confirm Delete
+                                <Trans>Confirm Delete</Trans>
                             </DropdownMenuItem>
                             <DropdownMenuItem>
-                                Cancel
+                                <Trans>Cancel</Trans>
                             </DropdownMenuItem>
                         </DropdownMenuSubContent>
                     </DropdownMenuPortal>

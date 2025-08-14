@@ -1,7 +1,9 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
-
+import { Trans } from "@lingui/react/macro";
+import { t } from "@lingui/core/macro";
+    
 interface UnitInputProps {
     id?: string;
     value: string;
@@ -9,7 +11,7 @@ interface UnitInputProps {
     placeholder?: string;
 }
 
-export function UnitInput({ id, value, onChange, placeholder = "e.g., RON, %, Units..." }: UnitInputProps) {
+export function UnitInput({ id, value, onChange, placeholder = t`e.g., RON, %, Units...` }: UnitInputProps) {
     const [localValue, setLocalValue] = useState(value);
 
     useEffect(() => {
@@ -23,7 +25,7 @@ export function UnitInput({ id, value, onChange, placeholder = "e.g., RON, %, Un
 
     return (
         <div className="space-y-2">
-            <Label htmlFor="series-unit">Unit</Label>
+            <Label htmlFor="series-unit"><Trans>Unit</Trans></Label>
             <Input
                 id={id}
                 value={localValue}
@@ -31,7 +33,7 @@ export function UnitInput({ id, value, onChange, placeholder = "e.g., RON, %, Un
                 placeholder={placeholder}
             />
             <p className="text-sm text-muted-foreground">
-                Series with different units will be displayed on separate Y-axes
+                <Trans>Series with different units will be displayed on separate Y-axes</Trans>
             </p>
         </div>
     );

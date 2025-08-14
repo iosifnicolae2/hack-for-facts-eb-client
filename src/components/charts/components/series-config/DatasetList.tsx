@@ -9,6 +9,7 @@ import { ListOption } from '@/components/filters/base-filter/ListOption';
 import { cn } from '@/lib/utils';
 import { VirtualItem } from '@tanstack/react-virtual';
 import { Dataset } from '@/lib/api/datasets';
+import { t } from '@lingui/core/macro';
 
 interface DatasetListProps extends Omit<BaseListProps, 'toggleSelect'> {
     addDatasets: (datasets: Dataset[]) => void;
@@ -71,7 +72,7 @@ export function DatasetList({
         <div className={cn("w-full flex flex-col space-y-3", className)}>
             <SearchInput
                 onChange={setSearchFilter}
-                placeholder="Cauta seturi de date (ex: PIB)"
+                placeholder={t`Search datasets (ex: PIB)`}
                 initialValue={searchFilter}
             />
 
@@ -79,7 +80,7 @@ export function DatasetList({
                 <ErrorDisplay
                     error={error as Error}
                     refetch={refetch}
-                    title="Could Not Load Datasets"
+                    title={t`Could Not Load Datasets`}
                 />
             )}
 

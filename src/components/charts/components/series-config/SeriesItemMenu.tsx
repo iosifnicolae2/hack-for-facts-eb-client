@@ -2,6 +2,7 @@ import { Series } from "@/schemas/charts";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ArrowDown, ArrowUp, Copy, Eye, EyeOff, MoreVertical, Settings, Tags, Trash2 } from "lucide-react";
 import { Button } from "../../../ui/button";
+import { Trans } from "@lingui/react/macro";
 
 interface SeriesItemMenuProps {
     series: Series;
@@ -34,49 +35,49 @@ export function SeriesItemMenu({ series, isMoveUpDisabled, isMoveDownDisabled, o
             <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
                 <DropdownMenuItem onSelect={onConfig} onClick={handleClick}>
                     <Settings className="mr-2 h-4 w-4" />
-                    Configure
+                    <Trans>Configure</Trans>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onSelect={onToggleDataLabels} onClick={handleClick}>
                     <Tags className="mr-2 h-4 w-4" />
-                    {series.config.showDataLabels ? "Hide" : "Show"} Data Labels
+                    {series.config.showDataLabels ? <Trans>Hide</Trans> : <Trans>Show</Trans>} <Trans>Data Labels</Trans>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onSelect={onMoveUp} disabled={isMoveUpDisabled} onClick={handleClick}>
                     <ArrowUp className="mr-2 h-4 w-4" />
-                    Move Up
+                    <Trans>Move Up</Trans>
                 </DropdownMenuItem>
                 <DropdownMenuItem onSelect={onMoveDown} disabled={isMoveDownDisabled} onClick={handleClick}>
                     <ArrowDown className="mr-2 h-4 w-4" />
-                    Move Down
+                    <Trans>Move Down</Trans>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onSelect={onDuplicate} onClick={handleClick}>
                     <Copy className="mr-2 h-4 w-4" />
-                    Duplicate Series
+                    <Trans>Duplicate Series</Trans>
                 </DropdownMenuItem>
                 <DropdownMenuItem onSelect={onCopy} onClick={handleClick}>
                     <Copy className="mr-2 h-4 w-4" />
-                    Copy Series
+                    <Trans>Copy Series</Trans>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onSelect={onToggleEnabled} onClick={handleClick}>
                     {series.enabled ? <EyeOff className="mr-2 h-4 w-4" /> : <Eye className="mr-2 h-4 w-4" />}
-                    {series.enabled ? 'Disable series' : 'Enable series'}
+                    {series.enabled ? <Trans>Disable Series</Trans> : <Trans>Enable Series</Trans>}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuSub>
                     <DropdownMenuSubTrigger className="text-destructive">
                         <Trash2 className="mr-2 h-4 w-4" />
-                        <span>Delete</span>
+                        <Trans>Delete</Trans>
                     </DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
                         <DropdownMenuSubContent className="mx-1 mt-0">
                             <DropdownMenuItem className="text-destructive" onSelect={onDelete}>
-                                Confirm Delete
+                                <Trans>Confirm Delete</Trans>
                             </DropdownMenuItem>
                             <DropdownMenuItem>
-                                Cancel
+                                <Trans>Cancel</Trans>
                             </DropdownMenuItem>
                         </DropdownMenuSubContent>
                     </DropdownMenuPortal>

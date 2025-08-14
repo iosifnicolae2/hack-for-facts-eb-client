@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Chart } from '@/schemas/charts';
 import { SettingsCard } from './SettingsCard';
+import { t } from '@lingui/core/macro';
 
 interface ChartInfoCardProps {
     chart: Chart;
@@ -23,12 +24,12 @@ export const ChartInfoCard = React.memo(({ chart, onUpdateChart }: ChartInfoCard
     return (
         <SettingsCard
             icon={<Settings className="h-5 w-5" />}
-            title="Chart Information"
-            description="Set the basic properties for your chart"
+            title={t`Chart Information`}
+            description={t`Set the basic properties for your chart`}
         >
             <div className="space-y-4">
                 <div className="space-y-2">
-                    <Label htmlFor="chart-title">Chart Title *</Label>
+                    <Label htmlFor="chart-title">{t`Chart Title`} *</Label>
                     <Input
                         id="chart-title"
                         value={localTitle}
@@ -36,7 +37,7 @@ export const ChartInfoCard = React.memo(({ chart, onUpdateChart }: ChartInfoCard
                             setLocalTitle(e.target.value);
                             onUpdateChart({ title: e.target.value });
                         }}
-                        placeholder="Enter chart title..."
+                        placeholder={t`Enter chart title...`}
                     />
                 </div>
                 <div className="space-y-2">
@@ -48,7 +49,7 @@ export const ChartInfoCard = React.memo(({ chart, onUpdateChart }: ChartInfoCard
                             setLocalDescription(e.target.value);
                             onUpdateChart({ description: e.target.value });
                         }}
-                        placeholder="Optional description for your chart..."
+                        placeholder={t`Optional description for your chart...`}
                         rows={3}
                     />
                 </div>

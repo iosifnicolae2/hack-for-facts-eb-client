@@ -6,6 +6,7 @@ import { useEntitySearch } from "./useEntitySearch";
 import { SearchResultItem } from "./SearchResultItems";
 import { EntitySearchNode } from "@/schemas/entities";
 import { useHotkeys } from "react-hotkeys-hook";
+import { t } from "@lingui/core/macro";
 
 interface EntitySearchInputProps {
     className?: string;
@@ -16,7 +17,7 @@ interface EntitySearchInputProps {
 
 export function EntitySearchInput({
     className,
-    placeholder = "Search entities by name or CUI...",
+    placeholder = t`Search entities by name or CUI...`,
     onSelect,
     autoFocus,
 }: EntitySearchInputProps) {

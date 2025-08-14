@@ -12,6 +12,11 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: nplurals=3; plural=(n==1?0:(n==0||(n%100>=1&&n%100<=19))?1:2);\n"
 
+#. placeholder {0}: chart.series.length
+#: src/components/charts/components/chart-view/SeriesList.tsx:91
+msgid "{0} series configured"
+msgstr "{0} serii configurate"
+
 #: src/components/maps/utils.ts:42
 msgid "*Check filters panel for more details."
 msgstr "*Verificați panoul de filtre pentru mai multe detalii."
@@ -73,6 +78,10 @@ msgstr "Acceptă toate"
 msgid "Acceptance"
 msgstr "Acceptarea"
 
+#: src/lib/chart-filter-utils.ts:18
+msgid "Account category"
+msgstr "Categorie cont"
+
 #: src/components/maps/utils.ts:39
 msgid "Active filters"
 msgstr "Filtre active"
@@ -82,8 +91,24 @@ msgid "Active Series"
 msgstr "Serie Activată"
 
 #: src/components/charts/components/chart-view/ChartDisplayArea.tsx:108
+msgid "Add a series to visualize your data."
+msgstr "Adăugați o serie pentru a vizualiza datele."
+
+#: src/components/charts/components/series-config/CalculationConfig.tsx:165
+msgid "Add Calculation"
+msgstr "Adaugă calcul"
+
+#: src/components/charts/components/chart-view/ChartDisplayArea.tsx:109
 msgid "Add Data Series"
-msgstr "Adauga Serie"
+msgstr "Adaugă serie de date"
+
+#: src/components/charts/components/series-config/CalculationConfig.tsx:162
+msgid "Add Number"
+msgstr "Adaugă număr"
+
+#: src/components/charts/components/chart-view/SeriesList.tsx:97
+msgid "Add Series"
+msgstr "Adaugă serie"
 
 #: src/components/entities/EntityInfo.tsx:57
 msgid "Address:"
@@ -150,9 +175,25 @@ msgstr "Analizați valorile cumulate pe entitate și explorați entitățile de 
 msgid "and"
 msgstr "și"
 
+#: src/components/charts/components/views/AnnotationConfigView.tsx:69
+msgid "Annotation Configuration"
+msgstr "Configurare adnotare"
+
+#: src/components/charts/components/views/AnnotationConfigView.tsx:50
+msgid "Annotation not found"
+msgstr "Adnotarea nu a fost găsită"
+
 #: src/routes/cookies.lazy.tsx:61
 msgid "Anonymous usage patterns, page views, interactions."
 msgstr "Modele de utilizare anonime, vizualizări de pagină, interacțiuni."
+
+#: src/components/charts/components/views/SeriesConfigView.tsx:289
+msgid "Are you sure you want to delete this series?"
+msgstr "Sunteți sigur că doriți să ștergeți această serie?"
+
+#: src/components/charts/components/views/AnnotationConfigView.tsx:234
+msgid "Are you sure?"
+msgstr "Sunteți sigur?"
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:50
 msgid "Area Chart"
@@ -171,6 +212,11 @@ msgstr "Disponibilitate și modificări"
 #: src/components/entity-analytics/EntityAnalyticsKPIs.tsx:35
 msgid "Avg per-capita"
 msgstr "Medie pe cap de locuitor"
+
+#: src/components/charts/components/views/AnnotationConfigView.tsx:52
+#: src/components/charts/components/views/SeriesConfigView.tsx:73
+msgid "Back to Configuration"
+msgstr "Înapoi la configurare"
 
 #: src/components/footer/AppFooter.tsx:174
 #: src/components/footer/AppFooter.tsx:176
@@ -198,6 +244,10 @@ msgstr "Grafic bare (agregat)"
 msgid "Both"
 msgstr "Ambele"
 
+#: src/lib/chart-filter-utils.ts:16
+msgid "Budget sector"
+msgstr "Sector bugetar"
+
 #: src/components/filters/EntityAnalyticsFilter.tsx:298
 #: src/components/filters/MapFilter.tsx:207
 msgid "Budget Sector"
@@ -207,13 +257,52 @@ msgstr "Sector bugetar"
 msgid "Build and manage custom visualizations of public spending data."
 msgstr "Creați și gestionați vizualizări personalizate ale datelor privind cheltuielile publice."
 
+#: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:65
+msgid "Bulk Edit"
+msgstr "Editare în masă"
+
+#: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:69
+msgid "Bulk Edit Data"
+msgstr "Editare date în masă"
+
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:91
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:46
+msgid "Bulk edit filters"
+msgstr "Editare în masă a filtrelor"
+
 #: src/routes/terms.lazy.tsx:33
 msgid "By using the Service, you agree to these Terms. If you disagree, please do not use the Service."
 msgstr "Prin utilizarea Serviciului, sunteți de acord cu acești Termeni. Dacă nu sunteți de acord, vă rugăm să nu utilizați Serviciul."
 
+#: src/components/charts/components/series-config/CalculationConfig.tsx:41
+msgid "Calculation"
+msgstr "Calcul"
+
+#: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:65
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:111
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:60
+#: src/components/charts/components/series-config/SeriesItemMenu.tsx:80
+#: src/components/charts/components/views/AnnotationConfigView.tsx:243
+#: src/components/charts/components/views/SeriesConfigView.tsx:298
+msgid "Cancel"
+msgstr "Anulează"
+
 #: src/routes/cookie-policy.lazy.tsx:32
 msgid "Categories"
 msgstr "Categorii"
+
+#: src/components/charts/components/chart-categories/ChartCategories.tsx:131
+#: src/components/charts/components/chart-categories/ChartCategories.tsx:156
+msgid "Category name"
+msgstr "Nume categorie"
+
+#: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:67
+msgid "Cauta după nume sau cod (ex: Agricultura, 43.00, ec:43.00)"
+msgstr "Caută după nume sau cod (ex: Agricultură, 43.00, ec:43.00)"
+
+#: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:67
+msgid "Cauta după nume sau cod (ex: Ajutor social, 7.06, fn:7.06)"
+msgstr "Caută după nume sau cod (ex: Ajutor social, 7.06, fn:7.06)"
 
 #: src/routes/privacy.lazy.tsx:67
 msgid "Changes"
@@ -227,9 +316,22 @@ msgstr "Grafic"
 msgid "Chart – Transparenta.eu"
 msgstr "Grafic – Transparenta.eu"
 
+#: src/components/charts/components/views/AnnotationConfigView.tsx:211
+#: src/components/charts/components/views/SeriesConfigView.tsx:275
+msgid "Chart Configuration"
+msgstr "Configurare grafic"
+
 #: src/routes/map.lazy.tsx:237
 msgid "Chart data is loading or not available."
 msgstr "Datele graficului se încarcă sau nu sunt disponibile."
+
+#: src/components/charts/components/chart-config/ChartInfoCard.tsx:27
+msgid "Chart Information"
+msgstr "Informații grafic"
+
+#: src/components/charts/components/chart-config/ChartInfoCard.tsx:32
+msgid "Chart Title"
+msgstr "Titlu grafic"
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:98
 msgid "Chart Type"
@@ -242,6 +344,10 @@ msgstr "Tip grafic"
 msgid "Charts"
 msgstr "Grafice"
 
+#: src/components/charts/components/chart-view/ChartDisplayArea.tsx:136
+msgid "Check your series filters and try again."
+msgstr "Verificați filtrele seriei și încercați din nou."
+
 #: src/components/entities/EntityFinancialSummary.tsx:57
 msgid "Cheltuieli totale"
 msgstr "Cheltuieli totale"
@@ -249,6 +355,14 @@ msgstr "Cheltuieli totale"
 #: src/routes/privacy.lazy.tsx:64
 msgid "Children"
 msgstr "Copii"
+
+#: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:73
+msgid "Clear"
+msgstr "Șterge"
+
+#: src/components/ui/multi-select.tsx:118
+msgid "Clear all"
+msgstr "Șterge tot"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:209
 msgid "Clear all ({totalSelectedFilters})"
@@ -267,11 +381,16 @@ msgstr "Șterge filtrele ({totalOptionalFilters})"
 msgid "Clear search"
 msgstr "Șterge căutarea"
 
+#: src/components/charts/components/views/AnnotationConfigView.tsx:109
+msgid "Color"
+msgstr "Culoare"
+
 #. placeholder {0}: formatLegendValue(min)
 #: src/components/maps/MapLegend.tsx:40
 msgid "Color for value {0}"
 msgstr "Culoare pentru valoarea {0}"
 
+#: src/components/entity-analytics/EntityAnalyticsTable.tsx:242
 #: src/components/maps/HeatmapDataTable.tsx:125
 #: src/components/maps/HeatmapDataTable.tsx:184
 #: src/components/maps/HeatmapDataTable.tsx:238
@@ -297,6 +416,11 @@ msgstr "Confortabil"
 msgid "Compact"
 msgstr "Compact"
 
+#: src/components/charts/components/chart-view/ChartViewHeader.tsx:44
+#: src/components/charts/components/series-config/SeriesItemMenu.tsx:38
+msgid "Configure"
+msgstr "Configurează"
+
 #: src/routes/charts/$chartId/index.lazy.tsx:35
 #: src/routes/charts/$chartId/index.lazy.tsx:37
 msgid "Configure Chart"
@@ -309,6 +433,28 @@ msgstr "Configurează graficul – Transparenta.eu"
 #: src/routes/charts/$chartId/index.lazy.tsx:30
 msgid "Configure chart options, series, and annotations."
 msgstr "Configurați opțiunile graficului, seriile și adnotările."
+
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:124
+msgid "Confirm"
+msgstr "Confirmă"
+
+#: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:62
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:57
+#: src/components/charts/components/series-config/SeriesItemMenu.tsx:77
+msgid "Confirm Delete"
+msgstr "Confirmă ștergerea"
+
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:105
+msgid "Confirm replace"
+msgstr "Confirmă înlocuirea"
+
+#: src/components/charts/components/views/AnnotationConfigView.tsx:135
+msgid "Connector"
+msgstr "Conector"
+
+#: src/components/charts/components/series-config/CustomSeriesValueEditor.tsx:34
+msgid "Constant Value"
+msgstr "Valoare constantă"
 
 #: src/routes/terms.lazy.tsx:71
 msgid "Contact"
@@ -344,10 +490,54 @@ msgstr "Setări cookie-uri"
 msgid "Cookie Settings"
 msgstr "Setări cookie-uri"
 
+#: src/components/charts/components/views/AnnotationConfigView.tsx:217
+#: src/components/charts/components/views/SeriesConfigView.tsx:190
+msgid "Copy"
+msgstr "Copiază"
+
+#: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:51
+msgid "Copy Annotation"
+msgstr "Copiază adnotarea"
+
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:42
+msgid "Copy Data"
+msgstr "Copiază datele"
+
+#: src/components/charts/components/series-config/SeriesItemMenu.tsx:61
+msgid "Copy Series"
+msgstr "Copiază seria"
+
+#: src/components/filters/budget-sector-filter/BudgetSectorFilter.tsx:75
+msgid "Could Not Load Budget Sectors"
+msgstr "Sectoarele bugetare nu au putut fi încărcate"
+
+#: src/components/filters/county-filter/CountyList.tsx:64
+msgid "Could Not Load Counties"
+msgstr "Județele nu au putut fi încărcate"
+
+#: src/components/charts/components/series-config/DatasetList.tsx:83
+msgid "Could Not Load Datasets"
+msgstr "Seturile de date nu au putut fi încărcate"
+
+#: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:78
+#: src/components/filters/entity-filter/EntityList.tsx:83
+#: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:78
+msgid "Could Not Load Entities"
+msgstr "Entitățile nu au putut fi încărcate"
+
+#: src/components/filters/funding-source-filter/FundingSourceFilter.tsx:75
+msgid "Could Not Load Funding Sources"
+msgstr "Sursele de finanțare nu au putut fi încărcate"
+
+#: src/components/filters/uat-filter/UatList.tsx:79
+msgid "Could Not Load UATs"
+msgstr "UAT-urile nu au putut fi încărcate"
+
 #: src/components/filters/MapFilter.tsx:162
 msgid "Counties"
 msgstr "Județe"
 
+#: src/components/entity-analytics/EntityAnalyticsTable.tsx:78
 #: src/components/filters/EntityAnalyticsFilter.tsx:250
 #: src/components/filters/MapFilter.tsx:112
 #: src/components/maps/charts/UatDataCharts.tsx:29
@@ -378,6 +568,10 @@ msgstr "Creați primul dumneavoastră grafic pentru a începe vizualizarea datel
 msgid "Currency"
 msgstr "Monedă"
 
+#: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:62
+msgid "Custom Data"
+msgstr "Date personalizate"
+
 #: src/components/theme/mode-toggle.tsx:30
 msgid "Dark"
 msgstr "Întunecat"
@@ -386,9 +580,19 @@ msgstr "Întunecat"
 msgid "Dashboard"
 msgstr "Tablou de bord"
 
+#: src/components/charts/components/views/SeriesConfigView.tsx:233
+msgid "Data Label Offset"
+msgstr "Decalaj etichetă de date"
+
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:144
+#: src/components/charts/components/series-config/DataLabelSelector.tsx:20
+#: src/components/charts/components/series-config/SeriesItemMenu.tsx:43
 msgid "Data Labels"
 msgstr "Etichete de date"
+
+#: src/components/charts/components/chart-view/SeriesList.tsx:86
+msgid "Data Series"
+msgstr "Serie de date"
 
 #: src/components/footer/AppFooter.tsx:124
 msgid "Data source: \"Budget Transparency\" portal administered by ANAF/Ministry of Finance, available as open data. See official resources:"
@@ -405,6 +609,19 @@ msgstr "Vizualizare tabelară"
 #: src/components/filters/MapFilter.tsx:90
 msgid "Data View"
 msgstr "Vizualizare date"
+
+#: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:57
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:52
+#: src/components/charts/components/series-config/SeriesItemMenu.tsx:72
+#: src/components/charts/components/views/AnnotationConfigView.tsx:230
+#: src/components/charts/components/views/AnnotationConfigView.tsx:240
+#: src/components/charts/components/views/SeriesConfigView.tsx:295
+msgid "Delete"
+msgstr "Șterge"
+
+#: src/components/charts/components/views/SeriesConfigView.tsx:285
+msgid "Delete Series"
+msgstr "Șterge seria"
 
 #: src/components/maps/HeatmapDataTable.tsx:429
 #: src/routes/entity-analytics.lazy.tsx:146
@@ -427,13 +644,48 @@ msgstr "Detalii:"
 msgid "Difference % YoY"
 msgstr "Diferență % de la an la an"
 
+#: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:38
+msgid "Disable annotation"
+msgstr "Dezactivează adnotarea"
+
+#: src/components/charts/components/series-config/SeriesItemMenu.tsx:66
+msgid "Disable Series"
+msgstr "Dezactivează seria"
+
+#: src/components/charts/components/views/SeriesConfigView.tsx:219
+msgid "Display data labels on the chart"
+msgstr "Afișează etichetele de date pe grafic"
+
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:130
 msgid "Display Options"
 msgstr "Opțiuni de afișare"
 
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:38
+#: src/components/charts/components/views/AnnotationConfigView.tsx:221
+#: src/components/charts/components/views/SeriesConfigView.tsx:187
+msgid "Duplicate"
+msgstr "Duplică"
+
+#: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:47
+msgid "Duplicate Annotation"
+msgstr "Duplică adnotarea"
+
+#: src/components/charts/components/series-config/SeriesItemMenu.tsx:57
+msgid "Duplicate Series"
+msgstr "Duplică seria"
+
+#: src/components/charts/components/series-config/UnitInput.tsx:14
+#: src/components/charts/components/views/SeriesConfigView.tsx:201
+msgid "e.g., RON, %, Units..."
+msgstr "ex: RON, %, Unități..."
+
 #: src/components/maps/utils.ts:30
 msgid "Ec"
 msgstr "Ec"
+
+#: src/lib/chart-filter-utils.ts:14
+msgid "Economic classification"
+msgstr "Clasificație economică"
 
 #: src/components/filters/EntityAnalyticsFilter.tsx:282
 #: src/components/filters/MapFilter.tsx:184
@@ -448,9 +700,17 @@ msgstr "Prefix clasificație economică"
 msgid "economic codes"
 msgstr "coduri economice"
 
+#: src/lib/chart-filter-utils.ts:22
+msgid "Economic prefix"
+msgstr "Prefix economic"
+
 #: src/components/filters/EntityAnalyticsFilter.tsx:290
 msgid "Economic Prefixes"
-msgstr "Prefix Economic"
+msgstr "Prefix economic"
+
+#: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:34
+msgid "Edit Annotation"
+msgstr "Editează adnotarea"
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:209
 msgid "Edit Annotations"
@@ -461,6 +721,19 @@ msgstr "Editează adnotări"
 #: src/routes/terms.lazy.tsx:19
 msgid "Effective Date: {effectiveDate} • Version: {version}"
 msgstr "Data intrării în vigoare: {effectiveDate} • Versiunea: {version}"
+
+#: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:38
+msgid "Enable annotation"
+msgstr "Activează adnotarea"
+
+#: src/components/charts/components/series-config/SeriesItemMenu.tsx:66
+msgid "Enable Series"
+msgstr "Activează seria"
+
+#: src/components/charts/components/views/AnnotationConfigView.tsx:127
+#: src/components/charts/components/views/SeriesConfigView.tsx:159
+msgid "Enabled"
+msgstr "Activat"
 
 #: src/components/theme/language-toggle.tsx:30
 msgid "English"
@@ -474,12 +747,38 @@ msgstr "Raportare avansată a erorilor"
 msgid "Enhanced error reporting via Sentry (consent-only); minimal telemetry otherwise."
 msgstr "Raportare avansată a erorilor prin Sentry (doar cu consimțământ); în rest, telemetrie minimă."
 
+#: src/components/charts/components/series-config/CustomSeriesValueEditor.tsx:44
+msgid "Enter a constant value"
+msgstr "Introduceți o valoare constantă"
+
+#: src/components/charts/components/views/AnnotationConfigView.tsx:101
+msgid "Enter annotation subtitle..."
+msgstr "Introduceți subtitlul adnotării..."
+
+#: src/components/charts/components/views/AnnotationConfigView.tsx:88
+msgid "Enter annotation title..."
+msgstr "Introduceți titlul adnotării..."
+
+#: src/components/charts/components/chart-config/ChartInfoCard.tsx:40
+msgid "Enter chart title..."
+msgstr "Introduceți titlul graficului..."
+
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:84
+msgid "Enter new value"
+msgstr "Introduceți valoarea nouă"
+
+#: src/components/charts/components/views/SeriesConfigView.tsx:133
+msgid "Enter series label..."
+msgstr "Introduceți eticheta seriei..."
+
 #: src/components/entity-analytics/EntityAnalyticsKPIs.tsx:23
 #: src/components/filters/EntityAnalyticsFilter.tsx:234
 #: src/routes/index.lazy.tsx:79
 msgid "Entities"
 msgstr "Entități"
 
+#: src/components/entity-analytics/EntityAnalyticsTable.tsx:64
+#: src/lib/chart-filter-utils.ts:12
 #: src/routes/entity-analytics.lazy.tsx:156
 msgid "Entity"
 msgstr "Entitate"
@@ -499,6 +798,10 @@ msgstr "Analiza entităților"
 msgid "Entity analytics – Transparenta.eu"
 msgstr "Analiza entităților – Transparenta.eu"
 
+#: src/lib/chart-filter-utils.ts:23
+msgid "Entity type"
+msgstr "Tip entitate"
+
 #: src/components/filters/EntityAnalyticsFilter.tsx:258
 #: src/components/filters/MapFilter.tsx:199
 msgid "Entity Type"
@@ -511,6 +814,10 @@ msgstr "Eroare la preluarea detaliilor entității"
 #: src/routes/entity-analytics.lazy.tsx:130
 msgid "Error loading analytics"
 msgstr "Eroare la încărcarea analizei"
+
+#: src/components/charts/components/chart-view/ChartDisplayArea.tsx:121
+msgid "Error Loading Chart Data"
+msgstr "Eroare la încărcarea datelor graficului"
 
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:136
 msgid "Error loading data"
@@ -527,6 +834,10 @@ msgstr "Raportarea erorilor (Sentry)"
 #: src/components/maps/utils.ts:102
 msgid "Error: Invalid data point type."
 msgstr "Eroare: Tip de dată invalid."
+
+#: src/components/charts/components/series-config/CalculationConfig.tsx:248
+msgid "Error: Series not found"
+msgstr "Eroare: Seria nu a fost găsită"
 
 #: src/routes/cookies.lazy.tsx:39
 msgid "Essential cookies"
@@ -563,6 +874,7 @@ msgstr "Evoluția cheltuielilor"
 
 #: src/components/entities/EntityFinancialTrends.tsx:159
 #: src/components/entities/EntityLineItems.tsx:67
+#: src/components/entities/views/MapView.tsx:138
 #: src/components/entities/views/TrendsView.tsx:152
 #: src/components/filters/EntityAnalyticsFilter.tsx:204
 #: src/components/filters/MapFilter.tsx:125
@@ -587,6 +899,10 @@ msgstr "Explorați datele folosind grafice."
 #: src/routes/index.lazy.tsx:80
 msgid "Explore entities by aggregated values."
 msgstr "Explorați entitățile după valorile cumulate."
+
+#: src/components/entities/views/MapView.tsx:147
+msgid "Explore Full Map"
+msgstr "Explorează harta completă"
 
 #: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:177
 msgid "Export as image or share with a link"
@@ -631,6 +947,14 @@ msgstr "Feedback / Raportați o problemă"
 msgid "Filters"
 msgstr "Filtre"
 
+#: src/components/charts/components/filters-details/ChartFiltersOverview.tsx:48
+msgid "Filters applied to data series will appear here."
+msgstr "Filtrele aplicate seriilor de date vor apărea aici."
+
+#: src/components/charts/components/filters-details/ChartFiltersOverview.tsx:62
+msgid "Filters info"
+msgstr "Informații filtre"
+
 #: src/lib/chart-links.ts:25
 msgid "Financial Evolution - {entityName}"
 msgstr "Evoluție financiară - {entityName}"
@@ -647,6 +971,10 @@ msgstr "Fn"
 msgid "for the selected filters."
 msgstr "pentru filtrele selectate."
 
+#: src/lib/chart-filter-utils.ts:15
+msgid "Functional classification"
+msgstr "Clasificație funcțională"
+
 #: src/components/filters/EntityAnalyticsFilter.tsx:266
 #: src/components/filters/MapFilter.tsx:170
 msgid "Functional Classification"
@@ -660,9 +988,13 @@ msgstr "Prefix clasificație funcțională"
 msgid "functional codes"
 msgstr "coduri funcționale"
 
+#: src/lib/chart-filter-utils.ts:21
+msgid "Functional prefix"
+msgstr "Prefix Funcțional"
+
 #: src/components/filters/EntityAnalyticsFilter.tsx:274
 msgid "Functional Prefixes"
-msgstr "Prefix Functional"
+msgstr "Prefix Funcțional"
 
 #: src/components/entities/EntityRelationships.tsx:24
 msgid "Funded Entities"
@@ -672,14 +1004,22 @@ msgstr "Entități Finanțate"
 msgid "Funding Entities"
 msgstr "Entități Finanțatoare"
 
+#: src/lib/chart-filter-utils.ts:17
+msgid "Funding source"
+msgstr "Sursă de finanțare"
+
 #: src/components/filters/EntityAnalyticsFilter.tsx:306
 #: src/components/filters/MapFilter.tsx:215
 msgid "Funding Source"
-msgstr "Sursă de finanțare"
+msgstr "Sursă de Finanțare"
 
 #: src/routes/privacy.lazy.tsx:62
 msgid "GDPR rights incl. access, erasure, objection, withdrawal of consent, and complaint to ANSPDCP."
 msgstr "Drepturi GDPR, inclusiv acces, ștergere, opoziție, retragerea consimțământului și dreptul de a depune o plângere la ANSPDCP."
+
+#: src/components/entities/views/MapView.tsx:126
+msgid "Geographical View"
+msgstr "Vizualizare geografică"
 
 #: src/routes/terms.lazy.tsx:68
 msgid "Governing law"
@@ -693,6 +1033,8 @@ msgstr "Ajutați-ne să remediem problemele trimițând rapoarte de erori. Când
 msgid "Help us understand usage to improve the product. No analytics is sent unless you opt in."
 msgstr "Ajutați-ne să înțelegem modul de utilizare pentru a îmbunătăți produsul. Nu se trimit date de analiză decât dacă optați explicit pentru aceasta."
 
+#: src/components/charts/components/series-config/SeriesItemMenu.tsx:43
+#: src/components/entity-analytics/EntityAnalyticsTable.tsx:258
 #: src/components/maps/HeatmapDataTable.tsx:133
 #: src/components/maps/HeatmapDataTable.tsx:192
 #: src/components/maps/HeatmapDataTable.tsx:246
@@ -700,6 +1042,10 @@ msgstr "Ajutați-ne să înțelegem modul de utilizare pentru a îmbunătăți p
 #: src/components/maps/HeatmapDataTable.tsx:361
 msgid "Hide"
 msgstr "Ascunde"
+
+#: src/components/charts/components/views/SeriesConfigView.tsx:210
+msgid "Hide advanced settings"
+msgstr "Ascunde setările avansate"
 
 #: src/components/footer/AppFooter.tsx:80
 msgid "Home"
@@ -722,6 +1068,7 @@ msgid "Includes additional error context. No user identity is attached."
 msgstr "Include context suplimentar pentru erori. Nu se atașează nicio identitate a utilizatorului."
 
 #: src/components/entities/EntityFinancialTrends.tsx:158
+#: src/components/entities/views/MapView.tsx:139
 #: src/components/filters/EntityAnalyticsFilter.tsx:205
 #: src/components/filters/MapFilter.tsx:126
 #: src/components/maps/utils.ts:22
@@ -760,12 +1107,17 @@ msgid "Intellectual property"
 msgstr "Proprietate intelectuală"
 
 #: src/components/filters/EntityAnalyticsFilter.tsx:323
+#: src/lib/chart-filter-utils.ts:20
 msgid "Is UAT"
 msgstr "Este UAT"
 
 #: src/components/maps/HeatmapDataTable.tsx:168
 msgid "Județ"
 msgstr "Județ"
+
+#: src/components/charts/components/views/AnnotationConfigView.tsx:143
+msgid "Label"
+msgstr "Etichetă"
 
 #: src/components/footer/AppFooter.tsx:103
 msgid "Legal"
@@ -787,6 +1139,19 @@ msgstr "Limitarea răspunderii"
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:48
 msgid "Line Chart"
 msgstr "Grafic linie"
+
+#: src/components/filters/EntityAnalyticsFilter.tsx:192
+msgid "Line Items"
+msgstr "Linii bugetare"
+
+#: src/components/charts/components/views/ChartView.tsx:34
+msgid "Loading chart configuration..."
+msgstr "Se încarcă configurația graficului..."
+
+#: src/components/charts/components/chart-view/ChartDisplayArea.tsx:57
+#: src/components/charts/components/chart-view/ChartDisplayArea.tsx:166
+msgid "Loading chart data..."
+msgstr "Se încarcă datele graficului..."
 
 #: src/routes/map.lazy.tsx:112
 msgid "Loading data..."
@@ -819,6 +1184,14 @@ msgstr "localStorage: <0>cookie-consent</0>, <1>saved-charts</1>, <2>chart-categ
 #: src/routes/privacy.lazy.tsx:58
 msgid "LocalStorage: until you clear it."
 msgstr "Stocare locală (LocalStorage): până la ștergerea manuală."
+
+#: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:42
+msgid "Lock annotation"
+msgstr "Blochează adnotarea"
+
+#: src/components/charts/components/views/AnnotationConfigView.tsx:131
+msgid "Locked"
+msgstr "Blocat"
 
 #: src/routes/charts/index.lazy.tsx:150
 msgid "Manage and search your locally saved charts. Create, favorite, categorize, and share your visualizations."
@@ -863,6 +1236,14 @@ msgstr "Hărți"
 msgid "Mark charts as favorites to quickly find them here."
 msgstr "Marcați graficele ca favorite pentru a le găsi rapid aici."
 
+#: src/components/ui/amount-range-picker.tsx:128
+msgid "Maximum"
+msgstr "Maxim"
+
+#: src/components/ui/amount-range-picker.tsx:110
+msgid "Minimum"
+msgstr "Minim"
+
 #: src/components/maps/utils.ts:96
 #: src/components/maps/utils.ts:132
 msgid "Mnemonic:"
@@ -876,6 +1257,11 @@ msgstr "Mai mult"
 msgid "More to come."
 msgstr "Mai multe în curând."
 
+#: src/components/charts/components/series-config/SeriesItemMenu.tsx:52
+msgid "Move Down"
+msgstr "Mută mai jos"
+
+#: src/components/entity-analytics/EntityAnalyticsTable.tsx:252
 #: src/components/maps/HeatmapDataTable.tsx:127
 #: src/components/maps/HeatmapDataTable.tsx:186
 #: src/components/maps/HeatmapDataTable.tsx:240
@@ -884,6 +1270,7 @@ msgstr "Mai multe în curând."
 msgid "Move left"
 msgstr "Mută la stânga"
 
+#: src/components/entity-analytics/EntityAnalyticsTable.tsx:255
 #: src/components/maps/HeatmapDataTable.tsx:130
 #: src/components/maps/HeatmapDataTable.tsx:189
 #: src/components/maps/HeatmapDataTable.tsx:243
@@ -891,6 +1278,10 @@ msgstr "Mută la stânga"
 #: src/components/maps/HeatmapDataTable.tsx:358
 msgid "Move right"
 msgstr "Mută la dreapta"
+
+#: src/components/charts/components/series-config/SeriesItemMenu.tsx:48
+msgid "Move Up"
+msgstr "Mută mai sus"
 
 #: src/components/maps/utils.ts:90
 #: src/components/maps/utils.ts:112
@@ -906,6 +1297,11 @@ msgstr "Nume"
 #: src/routes/charts/index.lazy.tsx:201
 msgid "Newest"
 msgstr "Cele mai noi"
+
+#. placeholder {0}: title.toLowerCase()
+#: src/components/entities/EntityRelationsList.tsx:177
+msgid "No {0} found matching \"{searchTerm}\""
+msgstr "Nu s-au găsit {0} care să corespundă cu \"{searchTerm}\""
 
 #: src/routes/privacy.lazy.tsx:26
 msgid "No accounts required; no selling of personal data."
@@ -924,9 +1320,9 @@ msgstr "Niciun grafic în „{0}”"
 msgid "No charts yet"
 msgstr "Niciun grafic încă"
 
-#: src/components/entities/FinancialDataCard.tsx:58
-#~ msgid "No data available for {0} in {currentYear}."
-#~ msgstr "Nu sunt date disponibile pentru {0} în {currentYear}."
+#: src/components/charts/components/chart-view/ChartDisplayArea.tsx:135
+msgid "No Data Available"
+msgstr "Nu există date disponibile"
 
 #: src/routes/map.lazy.tsx:163
 msgid "No data available for the map."
@@ -949,6 +1345,18 @@ msgstr "Nu s-au găsit date"
 msgid "No data found for CUI {cui}."
 msgstr "Nu s-au găsit date pentru CUI {cui}."
 
+#: src/components/charts/components/chart-view/ChartDisplayArea.tsx:107
+msgid "No Data Series"
+msgstr "Nicio serie de date"
+
+#: src/components/charts/components/chart-view/SeriesList.tsx:96
+msgid "No data series yet."
+msgstr "Nicio serie de date încă."
+
+#: src/components/charts/components/chart-renderer/components/ChartRenderer.tsx:33
+msgid "No enabled series data available to display."
+msgstr "Nu există date disponibile în seriile activate pentru a fi afișate."
+
 #: src/routes/entities.$cui.lazy.tsx:132
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "Nu s-au găsit detalii despre entitate pentru CUI: <0>{cui}</0>. Este posibil ca această entitate să nu existe sau să nu aibă date asociate."
@@ -957,17 +1365,49 @@ msgstr "Nu s-au găsit detalii despre entitate pentru CUI: <0>{cui}</0>. Este po
 msgid "No favorites yet"
 msgstr "Niciun favorit încă"
 
+#: src/components/charts/components/filters-details/ChartFiltersOverview.tsx:45
+msgid "No Filters Applied"
+msgstr "Niciun filtru aplicat"
+
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:90
+msgid "No matches yet"
+msgstr "Nicio potrivire încă"
+
+#: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:54
+msgid "No matching years found to update."
+msgstr "Nu s-au găsit ani corespunzători pentru actualizare."
+
+#: src/components/ui/amount-range-picker.tsx:136
+msgid "No maximum"
+msgstr "Fără maxim"
+
+#: src/components/ui/amount-range-picker.tsx:118
+msgid "No minimum"
+msgstr "Fără minim"
+
+#: src/components/charts/components/series-config/CalculationConfig.tsx:225
+msgid "No operands. Add a series or a new calculation."
+msgstr "Niciun operand. Adăugați o serie sau un calcul nou."
+
+#: src/components/ui/multi-select.tsx:106
+msgid "No options found."
+msgstr "Nu s-au găsit opțiuni."
+
 #: src/routes/charts/index.lazy.tsx:248
 msgid "No results"
 msgstr "Niciun rezultat"
 
-#: src/components/entities/FinancialDataCard.tsx:57
-#~ msgid "No results for \"{searchTerm}\""
-#~ msgstr "Niciun rezultat pentru „{searchTerm}”"
-
 #: src/components/maps/HeatmapDataTable.tsx:494
 msgid "No results found."
 msgstr "Nu s-au găsit rezultate."
+
+#: src/components/charts/components/series-config/CalculationConfig.tsx:148
+msgid "No series found."
+msgstr "Nu s-a găsit nicio serie."
+
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:72
+msgid "No values to replace"
+msgstr "Nicio valoare de înlocuit"
 
 #: src/components/filters/EntityAnalyticsFilter.tsx:213
 msgid "Normalization"
@@ -980,6 +1420,10 @@ msgstr "Nu se adresează copiilor sub 16 ani."
 #: src/routes/charts/index.lazy.tsx:202
 msgid "Oldest"
 msgstr "Cele mai vechi"
+
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:34
+msgid "Open Config Panel"
+msgstr "Deschide panoul de configurare"
 
 #: src/routes/terms.lazy.tsx:52
 msgid "Open data follows the source license."
@@ -1001,10 +1445,20 @@ msgstr "Deschide pe Wikipedia"
 msgid "Operate and secure the service (legitimate interests)."
 msgstr "Operarea și securizarea serviciului (interese legitime)."
 
+#: src/components/charts/components/chart-config/ChartInfoCard.tsx:52
+msgid "Optional description for your chart..."
+msgstr "Descriere opțională pentru graficul dumneavoastră..."
+
 #: src/hooks/useEntityViews.tsx:14
 msgid "Overview"
 msgstr "Prezentare generală"
 
+#: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:73
+msgid "Paste data from a spreadsheet. Each line should contain a year and a value, separated by a space or tab."
+msgstr "Lipiți date dintr-o foaie de calcul. Fiecare linie trebuie să conțină un an și o valoare, separate prin spațiu sau tab."
+
+#: src/components/entities/views/MapView.tsx:142
+#: src/components/entity-analytics/EntityAnalyticsTable.tsx:102
 #: src/components/filters/EntityAnalyticsFilter.tsx:220
 #: src/components/filters/MapFilter.tsx:141
 #: src/routes/entity-analytics.lazy.tsx:159
@@ -1019,6 +1473,7 @@ msgstr "Grafic circular (agregat)"
 msgid "Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice, și alte persoane interesate."
 msgstr "Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice și alte persoane interesate."
 
+#: src/components/entity-analytics/EntityAnalyticsTable.tsx:88
 #: src/components/maps/charts/UatDataCharts.tsx:38
 #: src/components/maps/HeatmapDataTable.tsx:222
 #: src/components/maps/HeatmapDataTable.tsx:441
@@ -1036,6 +1491,10 @@ msgstr "Interval populație"
 msgid "Population vs. Total Amount"
 msgstr "Populație vs. Sumă totală"
 
+#: src/components/charts/components/views/AnnotationConfigView.tsx:148
+msgid "Position"
+msgstr "Poziție"
+
 #: src/routes/privacy.lazy.tsx:54
 msgid "PostHog (analytics), Sentry (error reporting), hosting providers. EU-first; safeguards for transfers."
 msgstr "PostHog (analiză), Sentry (raportare erori), furnizori de găzduire. Prioritate UE; garanții pentru transferuri."
@@ -1043,6 +1502,14 @@ msgstr "PostHog (analiză), Sentry (raportare erori), furnizori de găzduire. Pr
 #: src/routes/cookie-policy.lazy.tsx:41
 msgid "PostHog: <0>ph_*</0> identifiers when analytics is enabled."
 msgstr "PostHog: identificatori <0>ph_*</0> când analiza este activată."
+
+#: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:69
+msgid "Poti căuta după: nume (ex: Agricultura) • cod (ex: 43.00, 43.00.10) • prefix explicit: ec:43.00"
+msgstr "Poți căuta după: nume (ex: Agricultură) • cod (ex: 43.00, 43.00.10) • prefix explicit: ec:43.00"
+
+#: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:69
+msgid "Poti căuta după: nume (ex: Ajutor social) • cod (ex: 7.06, 7.06.02) • prefix explicit: fn:7.06"
+msgstr "Poți căuta după: nume (ex: Ajutor social) • cod (ex: 7.06, 7.06.02) • prefix explicit: fn:7.06"
 
 #: src/components/footer/AppFooter.tsx:106
 #: src/routes/privacy.lazy.tsx:17
@@ -1065,6 +1532,10 @@ msgstr "Informații din sectorul public de la Ministerul Finanțelor, disponibil
 msgid "Purposes and legal bases"
 msgstr "Scopuri și temeiuri legale"
 
+#: src/components/charts/components/views/SeriesConfigView.tsx:184
+msgid "Quick Actions"
+msgstr "Acțiuni rapide"
+
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:73
 msgid "Quick Configuration"
 msgstr "Configurare rapidă"
@@ -1085,9 +1556,17 @@ msgstr "Mod relativ"
 msgid "Relative Values"
 msgstr "Valori relative"
 
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:100
+msgid "Replace"
+msgstr "Înlocuiește"
+
 #: src/components/footer/AppFooter.tsx:194
 msgid "Report a bug"
 msgstr "Raportați o eroare"
+
+#: src/lib/chart-filter-utils.ts:19
+msgid "Report type"
+msgstr "Tip Raportare"
 
 #: src/components/filters/EntityAnalyticsFilter.tsx:314
 msgid "Report Type"
@@ -1138,6 +1617,10 @@ msgstr "Legea română și legislația UE aplicabilă. Jurisdicție: Sibiu, Rom�
 msgid "Row {0}"
 msgstr "Rândul {0}"
 
+#: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:52
+msgid "rows updated successfully."
+msgstr "rânduri actualizate cu succes."
+
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:54
 msgid "Sankey Chart (Aggregated)"
 msgstr "Diagramă Sankey (agregată)"
@@ -1150,6 +1633,15 @@ msgstr "Salvează preferințele"
 msgid "Saved charts – Transparenta.eu"
 msgstr "Grafice salvate – Transparenta.eu"
 
+#. placeholder {0}: title.toLowerCase()
+#: src/components/entities/EntityRelationsList.tsx:164
+msgid "Search {0}..."
+msgstr "Caută {0}..."
+
+#: src/components/filters/budget-sector-filter/BudgetSectorFilter.tsx:67
+msgid "Search budget sectors"
+msgstr "Caută sectoare bugetare"
+
 #: src/routes/charts/index.lazy.tsx:192
 msgid "Search charts"
 msgstr "Caută grafice"
@@ -1158,18 +1650,46 @@ msgstr "Caută grafice"
 msgid "Search charts…"
 msgstr "Caută grafice…"
 
+#: src/components/filters/county-filter/CountyList.tsx:62
+msgid "Search counties..."
+msgstr "Caută județe..."
+
+#: src/components/charts/components/series-config/DatasetList.tsx:75
+msgid "Search datasets (ex: PIB)"
+msgstr "Caută seturi de date (ex: PIB)"
+
 #: src/components/filters/entity-filter/EntityList.tsx:75
-msgid "Search entities (ex: Primaria Arad)"
-msgstr "Caută entități (ex: Primăria Arad)"
+msgid "Search entities (ex: Municipiul Arad)"
+msgstr "Caută entități (ex: Municipiul Arad)"
+
+#: src/components/entities/EntitySearch/index.tsx:20
+msgid "Search entities by name or CUI..."
+msgstr "Caută entități după nume sau CUI..."
+
+#: src/components/filters/entity-type-filter/EntityTypeList.tsx:46
+msgid "Search entity types (ex: Hospital)"
+msgstr "Caută tipuri de entități (ex: Spital)"
 
 #: src/components/entities/FloatingEntitySearch.tsx:41
 #: src/components/entities/FloatingEntitySearch.tsx:51
 msgid "Search for another entity"
 msgstr "Caută o altă entitate"
 
+#: src/components/filters/funding-source-filter/FundingSourceFilter.tsx:67
+msgid "Search funding sources"
+msgstr "Caută surse de finanțare"
+
 #: src/components/filters/base-filter/SearchInput.tsx:67
 msgid "Search help"
 msgstr "Ajutor pentru căutare"
+
+#: src/components/filters/uat-filter/UatList.tsx:71
+msgid "Search UATs (ex: Municipiul Arad)"
+msgstr "Caută UAT-uri (ex: Municipiul Arad)"
+
+#: src/components/entities/SearchToggleInput.tsx:24
+msgid "Search..."
+msgstr "Caută..."
 
 #: src/routes/cookie-policy.lazy.tsx:46
 msgid "See also our <0>Privacy Policy</0>."
@@ -1179,6 +1699,42 @@ msgstr "Consultați și <0>Politica de confidențialitate</0>."
 msgid "See-through, clear"
 msgstr "Ușor de înțeles, clar"
 
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:72
+msgid "Select current value"
+msgstr "Selectează valoarea curentă"
+
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:45
+msgid "Select field"
+msgstr "Selectează câmpul"
+
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:72
+msgid "Select field first"
+msgstr "Selectează mai întâi câmpul"
+
+#: src/components/charts/components/series-config/CalculationConfig.tsx:125
+msgid "Select operation"
+msgstr "Selectează operația"
+
+#: src/components/ui/multi-select.tsx:36
+msgid "Select options"
+msgstr "Selectează opțiuni"
+
+#: src/components/charts/components/views/SeriesConfigView.tsx:144
+msgid "Select series type"
+msgstr "Selectează tipul seriei"
+
+#: src/components/charts/components/series-config/DataLabelSelector.tsx:22
+msgid "Select specific years. If none selected, all years will be shown."
+msgstr "Selectați anii specifici. Dacă nu se selectează niciunul, se vor afișa toți anii."
+
+#: src/components/charts/components/series-config/DataLabelSelector.tsx:29
+msgid "Select years..."
+msgstr "Selectează anii..."
+
+#: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:47
+msgid "Selected"
+msgstr "Selectat"
+
 #: src/components/footer/AppFooter.tsx:166
 msgid "Send feedback"
 msgstr "Trimite feedback"
@@ -1187,9 +1743,37 @@ msgstr "Trimite feedback"
 msgid "Sentry: session keys for replay if enabled."
 msgstr "Sentry: chei de sesiune pentru reluare, dacă opțiunea este activată."
 
+#: src/components/charts/components/views/SeriesConfigView.tsx:169
+msgid "Series Color"
+msgstr "Culoare serie"
+
+#: src/components/charts/components/views/SeriesConfigView.tsx:109
+msgid "Series Configuration"
+msgstr "Configurare serie"
+
+#: src/components/charts/components/views/SeriesConfigView.tsx:124
+msgid "Series Label"
+msgstr "Etichetă serie"
+
+#: src/components/charts/components/views/SeriesConfigView.tsx:71
+msgid "Series not found"
+msgstr "Seria nu a fost găsită"
+
+#: src/components/charts/components/views/SeriesConfigView.tsx:138
+msgid "Series Type"
+msgstr "Tip serie"
+
+#: src/components/charts/components/series-config/UnitInput.tsx:36
+msgid "Series with different units will be displayed on separate Y-axes"
+msgstr "Seriile cu unități diferite vor fi afișate pe axe Y separate"
+
 #: src/routes/terms.lazy.tsx:35
 msgid "Service and data sources"
 msgstr "Serviciul și sursele de date"
+
+#: src/components/charts/components/chart-config/ChartInfoCard.tsx:28
+msgid "Set the basic properties for your chart"
+msgstr "Setați proprietățile de bază pentru graficul dumneavoastră"
 
 #: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:174
 msgid "Share Chart"
@@ -1203,9 +1787,21 @@ msgstr "Partajează link-ul"
 msgid "Sharing and processors"
 msgstr "Partajare și împuterniciți"
 
+#: src/components/charts/components/series-config/SeriesItemMenu.tsx:43
+msgid "Show"
+msgstr "Afișează"
+
+#: src/components/charts/components/views/SeriesConfigView.tsx:210
+msgid "Show advanced settings"
+msgstr "Afișează setările avansate"
+
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:197
 msgid "Show Annotations"
 msgstr "Afișează adnotări"
+
+#: src/components/charts/components/views/SeriesConfigView.tsx:217
+msgid "Show Data Labels"
+msgstr "Afișează etichetele de date"
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:222
 msgid "Show Diff"
@@ -1223,15 +1819,28 @@ msgstr "Afișează mai mult"
 msgid "Sort by"
 msgstr "Sortează după"
 
+#: src/components/charts/components/chart-view/ChartDisplayArea.tsx:201
+msgid "Source: "
+msgstr "Sursă: "
+
 #: src/components/maps/HeatmapDataTable.tsx:434
 #: src/routes/entity-analytics.lazy.tsx:151
 msgid "Standard"
 msgstr "Standard"
 
+#: src/components/charts/components/views/AnnotationConfigView.tsx:139
+msgid "Subject"
+msgstr "Subiect"
+
+#: src/components/charts/components/views/AnnotationConfigView.tsx:93
+msgid "Subtitle"
+msgstr "Subtitlu"
+
 #: src/components/theme/mode-toggle.tsx:33
 msgid "System"
 msgstr "Sistem"
 
+#: src/components/filters/EntityAnalyticsFilter.tsx:191
 #: src/components/filters/MapFilter.tsx:97
 msgid "Table"
 msgstr "Tabel"
@@ -1267,6 +1876,14 @@ msgstr "Serviciul oferă instrumente pentru explorarea, analizarea și vizualiza
 #: src/routes/entities.$cui.lazy.tsx:116
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "A apărut o problemă la preluarea detaliilor pentru CUI: <0>{cui}</0>."
+
+#: src/components/charts/components/series-config/CustomSeriesValueEditor.tsx:47
+msgid "This value will be used for every year in the chart's range."
+msgstr "Această valoare va fi utilizată pentru fiecare an din intervalul graficului."
+
+#: src/components/charts/components/views/AnnotationConfigView.tsx:79
+msgid "Title"
+msgstr "Titlu"
 
 #: src/routes/charts/index.lazy.tsx:203
 msgid "Title A–Z"
@@ -1316,6 +1933,7 @@ msgstr "Top 15 UAT-uri după suma totală"
 msgid "total"
 msgstr "total"
 
+#: src/components/entities/views/MapView.tsx:143
 #: src/components/filters/EntityAnalyticsFilter.tsx:219
 #: src/components/filters/MapFilter.tsx:140
 msgid "Total"
@@ -1325,6 +1943,7 @@ msgstr "Total"
 msgid "Total amount"
 msgstr "Sumă totală"
 
+#: src/components/entity-analytics/EntityAnalyticsTable.tsx:129
 #: src/components/filters/MapFilter.tsx:134
 #: src/components/maps/HeatmapDataTable.tsx:276
 #: src/components/maps/HeatmapDataTable.tsx:442
@@ -1352,6 +1971,7 @@ msgstr "Tip"
 #: src/components/filters/EntityAnalyticsFilter.tsx:242
 #: src/components/filters/MapFilter.tsx:111
 #: src/components/maps/charts/UatDataCharts.tsx:29
+#: src/lib/chart-filter-utils.ts:13
 msgid "UAT"
 msgstr "UAT"
 
@@ -1359,9 +1979,35 @@ msgstr "UAT"
 msgid "UATs"
 msgstr "UAT-uri"
 
+#: src/components/charts/components/series-config/UnitInput.tsx:28
+msgid "Unit"
+msgstr "Unitate"
+
 #: src/routes/entity-analytics.lazy.tsx:131
 msgid "Unknown error"
 msgstr "Eroare necunoscută"
+
+#: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:42
+msgid "Unlock annotation"
+msgstr "Deblochează adnotarea"
+
+#. placeholder {0}: chart.config.chartType
+#: src/components/charts/components/chart-renderer/components/ChartRenderer.tsx:42
+msgid "Unsupported chart type: {0}"
+msgstr "Tip de grafic neacceptat: {0}"
+
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:65
+#: src/components/charts/components/chart-view/ChartViewHeader.tsx:17
+msgid "Untitled Chart"
+msgstr "Grafic fără titlu"
+
+#: src/components/charts/components/series-config/CalculationConfig.tsx:265
+msgid "Untitled Series"
+msgstr "Serie fără titlu"
+
+#: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:81
+msgid "Update Data"
+msgstr "Actualizează datele"
 
 #: src/routes/cookies.lazy.tsx:108
 msgid "Updated:"
@@ -1395,6 +2041,11 @@ msgstr "Responsabilitățile utilizatorului și asumarea riscului"
 msgid "User-created charts/annotations/filters stored locally (localStorage)."
 msgstr "Grafice/adnotări/filtre create de utilizator, stocate local (localStorage)."
 
+#: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:92
+#: src/components/charts/components/series-config/CustomSeriesValueEditor.tsx:38
+msgid "Value"
+msgstr "Valoare"
+
 #: src/components/entities/EntityFinancialSummary.tsx:59
 msgid "Venituri - Cheltuieli"
 msgstr "Venituri - Cheltuieli"
@@ -1413,6 +2064,8 @@ msgstr "Vizualizare"
 msgid "View and share your chart."
 msgstr "Vizualizați și partajați graficul."
 
+#: src/components/charts/components/views/AnnotationConfigView.tsx:73
+#: src/components/charts/components/views/SeriesConfigView.tsx:113
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:122
 msgid "View Chart"
 msgstr "Vezi graficul"
@@ -1437,6 +2090,7 @@ msgstr "Ce date prelucrăm"
 msgid "Who we are"
 msgstr "Cine suntem"
 
+#: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:91
 #: src/components/filters/EntityAnalyticsFilter.tsx:226
 #: src/components/filters/MapFilter.tsx:147
 #: src/components/maps/utils.ts:18

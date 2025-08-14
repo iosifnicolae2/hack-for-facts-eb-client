@@ -1,6 +1,8 @@
 import { MultiSelect } from "@/components/ui/multi-select";
 import { defaultYearRange } from "@/schemas/charts";
-
+import { t } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
+  
 type DataLabelSelectorProps = {
   selectedLabels: string[];
   onChange: (selected: string[]) => void;
@@ -15,16 +17,16 @@ export function DataLabelSelector({ selectedLabels, onChange }: DataLabelSelecto
   return (
     <div className="space-y-2">
       <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium">Data Labels</label>
+        <label className="text-sm font-medium"><Trans>Data Labels</Trans></label>
         <p className="text-sm text-muted-foreground">
-          Select specific years. If none selected, all years will be shown.
+          <Trans>Select specific years. If none selected, all years will be shown.</Trans>
         </p>
       </div>
       <MultiSelect
         options={years}
         selected={selectedLabels}
         onChange={onChange}
-        placeholder="Select years..."
+        placeholder={t`Select years...`}
       />
     </div>
   );

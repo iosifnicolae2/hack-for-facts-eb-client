@@ -5,9 +5,9 @@ import {
   createDataDiscoveryUrl,
   createEntityUrl,
   FiltersWithLabels,
-  getFilterDisplayName,
   getSortOrder,
   isInteractiveFilter,
+  useFilterKeyLabel,
   useMapFilterValue,
 } from "@/lib/chart-filter-utils";
 
@@ -26,6 +26,7 @@ export function LineItemsAggregatedYearlySeriesFilter({ series }: LineItemsAggre
     uat_ids: series.filter.uat_ids ?? [],
   };
   const { mapValueToLabel } = useMapFilterValue(filters);
+  const filterKeyMap = useFilterKeyLabel();
 
   return (
     <div className="flex flex-wrap gap-2">
@@ -44,7 +45,7 @@ export function LineItemsAggregatedYearlySeriesFilter({ series }: LineItemsAggre
             return (
               <FilterPill
                 key={key}
-                label={getFilterDisplayName(key)}
+                label={filterKeyMap(key)}
                 value={String(value)}
               />
             )
@@ -53,7 +54,7 @@ export function LineItemsAggregatedYearlySeriesFilter({ series }: LineItemsAggre
             return value.map((cui) => (
               <FilterPill
                 key={String(cui)}
-                label={getFilterDisplayName(key)}
+                label={filterKeyMap(key)}
                 value={mapValueToLabel(key, cui)}
                 href={createEntityUrl(String(cui))}
               />
@@ -63,7 +64,7 @@ export function LineItemsAggregatedYearlySeriesFilter({ series }: LineItemsAggre
           return (
             <FilterPill
               key={key}
-              label={getFilterDisplayName(key)}
+              label={filterKeyMap(key)}
               value={<FilterValueDisplay value={Array.isArray(value) ? value.map(v => mapValueToLabel(key, v)).join(", ") : mapValueToLabel(key, value)} />}
               href={
                 isInteractiveFilter(key)

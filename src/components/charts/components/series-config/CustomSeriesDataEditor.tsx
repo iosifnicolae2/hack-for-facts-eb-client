@@ -9,6 +9,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import { t } from '@lingui/core/macro';
+import { Trans } from '@lingui/react/macro';
 
 type CustomSeriesDataEditorProps = {
   series: z.infer<typeof CustomSeriesConfigurationSchema>;
@@ -47,9 +49,9 @@ export function CustomSeriesDataEditor({ series }: CustomSeriesDataEditorProps) 
 
     if (updatedCount > 0) {
       updateSeries(series.id, { ...series, data: newData });
-      toast.success(`${updatedCount} rows updated successfully.`);
+      toast.success(`${updatedCount} ${t`rows updated successfully.`}`);
     } else {
-      toast.warning('No matching years found to update.');
+      toast.warning(t`No matching years found to update.`);
     }
     setIsBulkEditOpen(false);
   };
@@ -57,18 +59,18 @@ export function CustomSeriesDataEditor({ series }: CustomSeriesDataEditorProps) 
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Custom Data</CardTitle>
+        <CardTitle><Trans>Custom Data</Trans></CardTitle>
         <Dialog open={isBulkEditOpen} onOpenChange={setIsBulkEditOpen}>
           <DialogTrigger asChild>
-            <Button variant="outline">Bulk Edit</Button>
+            <Button variant="outline"><Trans>Bulk Edit</Trans></Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Bulk Edit Data</DialogTitle>
+              <DialogTitle><Trans>Bulk Edit Data</Trans></DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                Paste data from a spreadsheet. Each line should contain a year and a value, separated by a space or tab.
+                <Trans>Paste data from a spreadsheet. Each line should contain a year and a value, separated by a space or tab.</Trans>
               </p>
               <Textarea
                 value={bulkData}
@@ -76,7 +78,7 @@ export function CustomSeriesDataEditor({ series }: CustomSeriesDataEditorProps) 
                 rows={10}
                 placeholder="2020 1500&#10;2021 2300&#10;2022 1800"
               />
-              <Button onClick={handleBulkUpdate}>Update Data</Button>
+              <Button onClick={handleBulkUpdate}><Trans>Update Data</Trans></Button>
             </div>
           </DialogContent>
         </Dialog>
@@ -86,8 +88,8 @@ export function CustomSeriesDataEditor({ series }: CustomSeriesDataEditorProps) 
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Year</TableHead>
-                <TableHead>Value</TableHead>
+                <TableHead><Trans>Year</Trans></TableHead>
+                <TableHead><Trans>Value</Trans></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

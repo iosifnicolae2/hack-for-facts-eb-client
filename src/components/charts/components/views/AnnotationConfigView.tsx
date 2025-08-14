@@ -17,6 +17,8 @@ import { Switch } from '@/components/ui/switch';
 import { useChartStore } from '../../hooks/useChartStore';
 import { useCopyPasteAnnotations } from '../../hooks/useCopyPasteAnnotations';
 import { generateRandomColor } from '../chart-renderer/utils';
+import { t } from '@lingui/core/macro';
+import { Trans } from '@lingui/react/macro';
 
 export function AnnotationConfigView() {
   const { chart, annotationId, updateAnnotation, deleteAnnotation, goToOverview, goToConfig, duplicateAnnotation } = useChartStore();
@@ -45,9 +47,9 @@ export function AnnotationConfigView() {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
-          <p className="text-muted-foreground">Annotation not found</p>
+          <p className="text-muted-foreground"><Trans>Annotation not found</Trans></p>
           <Button onClick={goToConfig} className="mt-4">
-            Back to Configuration
+            <Trans>Back to Configuration</Trans>
           </Button>
         </div>
       </div>
@@ -64,17 +66,17 @@ export function AnnotationConfigView() {
 
       <header className="flex items-center justify-between">
         <h1 className="text-3xl font-bold tracking-tight">
-          Annotation Configuration
+          <Trans>Annotation Configuration</Trans>
         </h1>
         <Button onClick={goToOverview} className="gap-2">
           <Eye className="h-4 w-4" />
-          View Chart
+          <Trans>View Chart</Trans>
         </Button>
       </header>
       <Card>
         <CardContent className="space-y-4 pt-4">
           <div className="space-y-2">
-            <Label htmlFor="annotation-title">Title *</Label>
+            <Label htmlFor="annotation-title"><Trans>Title</Trans> *</Label>
             <Input
               ref={titleInputRef}
               id="annotation-title"
@@ -83,12 +85,12 @@ export function AnnotationConfigView() {
                 setLocalTitle(e.target.value);
                 updateAnnotationField('title', e.target.value);
               }}
-              placeholder="Enter annotation title..."
+              placeholder={t`Enter annotation title...`}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="annotation-subtitle">Subtitle</Label>
+            <Label htmlFor="annotation-subtitle"><Trans>Subtitle</Trans></Label>
             <Input
               id="annotation-subtitle"
               value={localSubtitle}
@@ -96,7 +98,7 @@ export function AnnotationConfigView() {
                 setLocalSubtitle(e.target.value);
                 updateAnnotationField('subtitle', e.target.value);
               }}
-              placeholder="Enter annotation subtitle..."
+              placeholder={t`Enter annotation subtitle...`}
             />
           </div>
 
@@ -104,7 +106,7 @@ export function AnnotationConfigView() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="annotation-color">Color</Label>
+                <Label htmlFor="annotation-color"><Trans>Color</Trans></Label>
                 <div className="flex items-center gap-2">
                   <input
                     id="annotation-color"
@@ -122,28 +124,28 @@ export function AnnotationConfigView() {
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                <Label htmlFor="annotation-enabled">Enabled</Label>
+                <Label htmlFor="annotation-enabled"><Trans>Enabled</Trans></Label>
                 <Switch id="annotation-enabled" checked={annotation.enabled} onCheckedChange={(checked) => updateAnnotationField('enabled', checked)} />
               </div>
               <div className="flex items-center justify-between">
-                <Label htmlFor="annotation-locked" className='flex items-center gap-2'>{annotation.locked ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />} Locked</Label>
+                <Label htmlFor="annotation-locked" className='flex items-center gap-2'>{annotation.locked ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />} <Trans>Locked</Trans></Label>
                 <Switch id="annotation-locked" checked={annotation.locked} onCheckedChange={(checked) => updateAnnotationField('locked', checked)} />
               </div>
               <div className="flex items-center justify-between">
-                <Label htmlFor="annotation-connector" className='flex items-center gap-2'>Connector</Label>
+                <Label htmlFor="annotation-connector" className='flex items-center gap-2'><Trans>Connector</Trans></Label>
                 <Switch id="annotation-connector" checked={!!annotation.connector} onCheckedChange={(checked) => updateAnnotationField('connector', checked)} />
               </div>
               <div className="flex items-center justify-between">
-                <Label htmlFor="annotation-subject" className='flex items-center gap-2'>Subject</Label>
+                <Label htmlFor="annotation-subject" className='flex items-center gap-2'><Trans>Subject</Trans></Label>
                 <Switch id="annotation-subject" checked={!!annotation.subject} onCheckedChange={(checked) => updateAnnotationField('subject', checked)} />
               </div>
               <div className="flex items-center justify-between">
-                <Label htmlFor="annotation-label" className='flex items-center gap-2'>Label</Label>
+                <Label htmlFor="annotation-label" className='flex items-center gap-2'><Trans>Label</Trans></Label>
                 <Switch id="annotation-label" checked={!!annotation.label} onCheckedChange={(checked) => updateAnnotationField('label', checked)} />
               </div>
             </div>
             <div className="space-y-3">
-              <Label>Position</Label>
+              <Label><Trans>Position</Trans></Label>
               <div className="space-y-2">
                 <div className="flex items-center gap-3">
                   <span className="w-16 text-xs text-muted-foreground">X (%)</span>
@@ -206,17 +208,17 @@ export function AnnotationConfigView() {
       <footer className="flex justify-between pt-4">
         <Button onClick={goToConfig} variant="outline" className="gap-2">
           <Settings className="h-4 w-4" />
-          Chart Configuration
+          <Trans>Chart Configuration</Trans>
         </Button>
 
         <div className="flex items-center gap-2">
           <Button variant="secondary" className="gap-2" onClick={() => copyAnnotation(annotation.id)}>
             <Copy className="h-4 w-4" />
-            Copy
+            <Trans>Copy</Trans>
           </Button>
           <Button variant="secondary" className="gap-2" onClick={() => duplicateAnnotation(annotation.id)}>
             <Layers className="h-4 w-4" />
-            Duplicate
+            <Trans>Duplicate</Trans>
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -225,20 +227,20 @@ export function AnnotationConfigView() {
                 className="gap-2"
               >
                 <Trash2 className="h-4 w-4" />
-                Delete
+                <Trans>Delete</Trans>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
-              <DropdownMenuLabel>Are you sure?</DropdownMenuLabel>
+              <DropdownMenuLabel><Trans>Are you sure?</Trans></DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={handleDeleteAnnotation}
                 className="text-destructive focus:bg-destructive focus:text-white"
               >
-                Delete
+                <Trans>Delete</Trans>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                Cancel
+                <Trans>Cancel</Trans>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

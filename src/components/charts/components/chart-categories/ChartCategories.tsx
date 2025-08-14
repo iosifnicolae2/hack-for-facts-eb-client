@@ -8,6 +8,7 @@ import { MoreHorizontal, Pencil, Tag, Trash2, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { ChartCategory, getChartsStore } from "@/components/charts/chartsStore";
+import { t } from "@lingui/core/macro";
 
 type ActiveTab = "all" | "favorites" | `category:${string}`;
 
@@ -127,7 +128,7 @@ export const ChartCategories = memo(function ChartCategories({
               autoFocus
               value={newCategoryName}
               onChange={(e) => setNewCategoryName(e.currentTarget.value)}
-              placeholder="Category name"
+              placeholder={t`Category name`}
             />
           </div>
           <DialogFooter>
@@ -152,7 +153,7 @@ export const ChartCategories = memo(function ChartCategories({
               autoFocus
               value={renameCategoryName}
               onChange={(e) => setRenameCategoryName(e.currentTarget.value)}
-              placeholder="Category name"
+              placeholder={t`Category name`}
             />
           </div>
           <DialogFooter>

@@ -4,6 +4,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { X as XIcon, ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { OptionItem } from "./interfaces";
+import { Trans } from "@lingui/react/macro";
 
 // Number of badges to show before collapsing into "+X more"
 const VISIBLE_BADGES_COUNT = 1;
@@ -43,7 +44,7 @@ export function SelectedOptionsDisplay({
         <div className={cn("px-0 py-4 w-full", className)}>
             <div className={cn("flex items-center justify-between mb-2 min-h-[28px]")}>
                 <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Selected ({selected.length})
+                    <Trans>Selected</Trans> ({selected.length})
                 </span>
                 <div className="flex items-center gap-2">
                     {selected.length > MIN_ITEMS_FOR_COMPACT_VIEW && (
@@ -68,7 +69,8 @@ export function SelectedOptionsDisplay({
                         onClick={clearSelection}
                         className={cn("h-auto py-1 px-2 text-xs")}
                     >
-                        <XIcon className="w-3 h-3 mr-1" /> Clear All
+                        <XIcon className="w-3 h-3 mr-1" /> 
+                        <Trans>Clear</Trans>
                     </Button>
                 </div>
             </div>

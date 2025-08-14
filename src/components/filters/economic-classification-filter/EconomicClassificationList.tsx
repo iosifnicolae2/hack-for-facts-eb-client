@@ -7,6 +7,7 @@ import { ErrorDisplay } from '../base-filter/ErrorDisplay';
 import { ListContainer } from '../base-filter/ListContainer';
 import { ListOption } from '../base-filter/ListOption';
 import { cn } from '@/lib/utils';
+import { t } from '@lingui/core/macro';
 
 export interface EconomicClassificationOption {
     economic_code: string;
@@ -63,9 +64,9 @@ export function EconomicClassificationList({
         <div className={cn("w-full flex flex-col space-y-3", className)}>
             <SearchInput
                 onChange={setSearchFilter}
-                placeholder="Cauta după nume sau cod (ex: Agricultura, 43.00, ec:43.00)"
+                placeholder={t`Cauta după nume sau cod (ex: Agricultura, 43.00, ec:43.00)`}
                 helpText={
-                    "Poti căuta după: nume (ex: Agricultura) • cod (ex: 43.00, 43.00.10) • prefix explicit: ec:43.00"
+                    t`Poti căuta după: nume (ex: Agricultura) • cod (ex: 43.00, 43.00.10) • prefix explicit: ec:43.00`
                 }
                 initialValue={searchFilter}
             />
@@ -74,7 +75,7 @@ export function EconomicClassificationList({
                 <ErrorDisplay
                     error={error as Error}
                     refetch={refetch}
-                    title="Could Not Load Entities"
+                    title={t`Could Not Load Entities`}
                 />
             )}
 

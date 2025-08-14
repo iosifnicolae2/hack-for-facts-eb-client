@@ -2,26 +2,29 @@
 
 import { useAccountCategoryLabel, useBudgetSectorLabel, useEconomicClassificationLabel, useEntityLabel, useEntityTypeLabel, useFunctionalClassificationLabel, useFundingSourceLabel, useUatLabel } from "@/hooks/filters/useFilterLabels";
 import { AnalyticsFilterType, Chart } from "@/schemas/charts";
+import { t } from "@lingui/core/macro";
 
 export type FiltersWithLabels = Pick<AnalyticsFilterType, "entity_cuis" | "economic_codes" | "functional_codes" | "budget_sector_ids" | "funding_source_ids" | "uat_ids">;
 
-// Display names for filter keys
-const FILTER_DISPLAY_NAME: Record<string, string> = {
-  entity_cuis: "Entitate",
-  uat_ids: "UAT",
-  economic_codes: "Clasificare economică",
-  functional_codes: "Clasificare funcțională",
-  budget_sector_ids: "Sector bugetar",
-  funding_source_ids: "Sursă de finanțare",
-  account_category: "Tip de cont",
-  report_type: "Tip de raport",
-  is_uat: "Este UAT",
-  functional_prefixes: "Prefix funcțional",
-  economic_prefixes: "Prefix economic",
-  entity_types: "Tip de entitate",
-};
+export const useFilterKeyLabel = () => {
+  // Display names for filter keys
+  const FILTER_DISPLAY_NAME: Record<string, string> = {
+    entity_cuis: t`Entity`,
+    uat_ids: t`UAT`,
+    economic_codes: t`Economic classification`,
+    functional_codes: t`Functional classification`,
+    budget_sector_ids: t`Budget sector`,
+    funding_source_ids: t`Funding source`,
+    account_category: t`Account category`,
+    report_type: t`Report type`,
+    is_uat: t`Is UAT`,
+    functional_prefixes: t`Functional prefix`,
+    economic_prefixes: t`Economic prefix`,
+    entity_types: t`Entity type`,
+  };
 
-export const getFilterDisplayName = (key: string): string => FILTER_DISPLAY_NAME[key] ?? key;
+  return (key: string) => FILTER_DISPLAY_NAME[key] ?? key;
+};
 
 export const useMapFilterValue = (filter: FiltersWithLabels) => {
   const entityLabelsStore = useEntityLabel(filter.entity_cuis ?? []);

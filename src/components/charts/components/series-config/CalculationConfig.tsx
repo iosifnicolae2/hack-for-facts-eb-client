@@ -13,6 +13,8 @@ import { cn } from '@/lib/utils';
 import { useChartStore } from '../../hooks/useChartStore';
 import { applyAlpha } from '../chart-renderer/utils';
 import { getContextualOperandLabel, operationIcons, operationLabels } from './utils';
+import { t } from '@lingui/core/macro';
+import { Trans } from '@lingui/react/macro';
 
 // ============================================================================
 // Main Component
@@ -36,7 +38,7 @@ export function CalculationConfig({ series }: CalculationConfigProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Calculation</CardTitle>
+        <CardTitle><Trans>Calculation</Trans></CardTitle>
       </CardHeader>
       <CardContent>
         <RecursiveCalculation
@@ -120,7 +122,7 @@ function RecursiveCalculation({
         <div className="flex items-center gap-2">
           <Select value={calculation.op} onValueChange={handleOpChange}>
             <SelectTrigger className="w-[150px] bg-background/50">
-              <SelectValue placeholder="Select operation" />
+              <SelectValue placeholder={t`Select operation`} />
             </SelectTrigger>
             <SelectContent>
               {['sum', 'subtract', 'multiply', 'divide'].map((op) => (
@@ -143,7 +145,7 @@ function RecursiveCalculation({
               </PopoverTrigger>
               <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
                 <Command>
-                  <CommandEmpty>No series found.</CommandEmpty>
+                  <CommandEmpty><Trans>No series found.</Trans></CommandEmpty>
                   <CommandGroup>
                     {availableSeries.map((s) => (
                       <CommandItem key={s.id} value={s.id} onSelect={handleAddSeries}>
@@ -157,10 +159,10 @@ function RecursiveCalculation({
             </Popover>
 
             <Button variant="outline" size="sm" className="gap-2 bg-background/50" onClick={() => onChange({ ...calculation, args: [...calculation.args, 0] })}>
-              <PlusCircle className="h-4 w-4" /> Add Number
+              <PlusCircle className="h-4 w-4" /> <Trans>Add Number</Trans>
             </Button>
             <Button variant="outline" size="sm" className="gap-2 bg-background/50" onClick={handleAddNestedCalculation}>
-              <PlusCircle className="h-4 w-4" /> Add Calculation
+              <PlusCircle className="h-4 w-4" /> <Trans>Add Calculation</Trans>
             </Button>
           </div>
         </div>
@@ -220,7 +222,7 @@ function RecursiveCalculation({
           })
         ) : (
           <div className="text-sm text-muted-foreground text-center py-4">
-            No operands. Add a series or a new calculation.
+            <Trans>No operands. Add a series or a new calculation.</Trans>
           </div>
         )}
       </div>
@@ -243,7 +245,7 @@ function NotFoundSeries({
   const idPrefix = seriesId.substring(0, 6);
   return (
     <div className="group text-destructive p-2 flex items-center justify-between gap-4 border border-destructive/50 rounded-lg bg-destructive/10">
-      <span>Error: Series not found {idPrefix}...</span>
+      <span><Trans>Error: Series not found</Trans> {idPrefix}...</span>
       <ControlPanel controls={controls} />
     </div>
   );
@@ -260,7 +262,7 @@ function SeriesOperand({
   controls,
 }: SeriesOperandProps) {
   const color = series.config.color || chart.config.color;
-  const label = series.label || 'Untitled Series';
+  const label = series.label || t`Untitled Series`;
   const idPrefix = series.id.substring(0, 6);
 
   return (

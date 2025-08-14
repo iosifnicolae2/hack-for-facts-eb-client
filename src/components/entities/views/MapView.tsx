@@ -16,6 +16,7 @@ import { UatProperties } from '@/components/maps/interfaces';
 import { useHeatmapData } from '@/hooks/useHeatmapData';
 import { AnalyticsFilterType } from '@/schemas/charts';
 import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select';
+import { Trans } from '@lingui/react/macro';
 
 interface MapViewProps {
   entity: EntityDetailsData | null;
@@ -122,7 +123,7 @@ export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapF
             >
               <SelectTrigger className="w-auto border-0 shadow-none bg-transparent focus:ring-0">
                 <h3 className="text-lg font-semibold">
-                  Geographical View ({selectedYear})
+                  <Trans>Geographical View</Trans> ({selectedYear})
                 </h3>
               </SelectTrigger>
               <SelectContent>
@@ -134,16 +135,16 @@ export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapF
           </div>
           <div className="flex flex-wrap items-center gap-4">
             <ToggleGroup type="single" size="sm" value={mapFilters.account_category} onValueChange={(value: 'vn' | 'ch') => { if (value) updateMapFilters({ account_category: value }) }}>
-              <ToggleGroupItem value="ch" className='px-4' >Cheltuieli</ToggleGroupItem>
-              <ToggleGroupItem value="vn" className='px-4'>Venituri</ToggleGroupItem>
+              <ToggleGroupItem value="ch" className='px-4' ><Trans>Expenses</Trans></ToggleGroupItem>
+              <ToggleGroupItem value="vn" className='px-4'><Trans>Income</Trans></ToggleGroupItem>
             </ToggleGroup>
             <ToggleGroup type="single" size="sm" value={mapFilters.normalization} onValueChange={(value: 'per_capita' | 'total') => { if (value) updateMapFilters({ normalization: value }) }}>
-              <ToggleGroupItem value="per_capita" className='px-4'>Per Capita</ToggleGroupItem>
-              <ToggleGroupItem value="total" className='px-4'>Total</ToggleGroupItem>
+              <ToggleGroupItem value="per_capita" className='px-4'><Trans>Per Capita</Trans></ToggleGroupItem>
+              <ToggleGroupItem value="total" className='px-4'><Trans>Total</Trans></ToggleGroupItem>
             </ToggleGroup>
             <Button onClick={handleOpenMap} variant="outline" size="sm">
               <Maximize className="mr-2 h-4 w-4" />
-              Explore Full Map
+              <Trans>Explore Full Map</Trans>
             </Button>
           </div>
         </div>
@@ -170,7 +171,7 @@ export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapF
               filters={mapFilters}
             />
           )}
-          </div>
+        </div>
       </CardContent>
     </Card>
   );

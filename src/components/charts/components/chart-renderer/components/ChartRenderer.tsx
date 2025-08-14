@@ -8,6 +8,7 @@ import { AggregatedPieChart } from './aggregated-charts/AggregatedPieChart';
 import { AggregatedTreemapChart } from './aggregated-charts/AggregatedTreemapChart';
 import { AggregatedSankeyChart } from './aggregated-charts/AggregatedSankeyChart';
 import { DataPointPayload, DataSeriesMap, TimeSeriesDataPoint, UnitMap } from '../../../hooks/useChartData';
+import { Trans } from '@lingui/react/macro';
 
 export interface ChartRendererProps {
   chart: Chart;
@@ -29,7 +30,7 @@ export function ChartRenderer({ chart, dataMap, unitMap, aggregatedData, timeSer
   if (chart.series.filter(s => s.enabled).length === 0) {
     return (
       <div className="flex items-center justify-center h-full text-muted-foreground" style={{ height }}>
-        <p>No enabled series data available to display.</p>
+        <p><Trans>No enabled series data available to display.</Trans></p>
       </div>
     );
   }
@@ -38,7 +39,7 @@ export function ChartRenderer({ chart, dataMap, unitMap, aggregatedData, timeSer
   if (!supportedChartTypes.includes(chart.config.chartType)) {
     return (
       <div className="flex items-center justify-center h-full text-muted-foreground">
-        <p>Unsupported chart type: {chart.config.chartType}</p>
+        <p><Trans>Unsupported chart type: {chart.config.chartType}</Trans></p>
       </div>
     )
   }

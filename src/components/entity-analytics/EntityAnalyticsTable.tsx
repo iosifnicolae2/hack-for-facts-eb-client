@@ -18,6 +18,7 @@ import { getMergedColumnOrder, moveColumnOrder } from '@/lib/table-utils'
 import { Link } from '@tanstack/react-router'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
+import { Trans } from '@lingui/react/macro'
 
 interface Props {
   data: readonly EntityAnalyticsDataPoint[]
@@ -41,111 +42,111 @@ interface Props {
 
 export function EntityAnalyticsTable({ data, isLoading, sortBy, sortOrder, onSortChange, density = 'comfortable', columnVisibility, onColumnVisibilityChange, columnPinning, onColumnPinningChange, columnSizing, onColumnSizingChange, columnOrder, onColumnOrderChange, currencyFormat = 'compact', rowNumberStart = 0 }: Props) {
   const columns: ColumnDef<EntityAnalyticsDataPoint>[] = [
-      {
-        id: 'row_number',
-        header: () => <span className="text-xs text-muted-foreground">#</span>,
-        cell: ({ row }) => (
-          <span className="block text-left w-full text-xs text-muted-foreground pl-2" aria-label={`Row ${rowNumberStart + row.index + 1}`}>
-            {rowNumberStart + row.index + 1}
-          </span>
-        ),
-        size: 30,
-        minSize: 30,
-        maxSize: 56,
-        enableResizing: true,
-        enableHiding: false,
-      },
-      {
-        id: 'entity_name',
-        size: 500,
-        header: ({ column }) => (
-          <div className="flex items-center gap-1 cursor-pointer" onClick={() => toggle(column.id)}>
-            Entity
-            {renderSortIcon(column.id)}
-          </div>
-        ),
-        cell: ({ row }) => (
-          <Link to="/entities/$cui" params={{ cui: row.original.entity_cui }} className="truncate hover:underline" title={row.original.entity_name}>
-            {row.original.entity_name}
-          </Link>
-        ),
-      },
-      {
-        id: 'county_name',
-        header: ({ column }) => (
-          <div className="flex items-center gap-1 cursor-pointer" onClick={() => toggle(column.id)}>
-            County
-            {renderSortIcon(column.id)}
-          </div>
-        ),
-        cell: ({ row }) => row.original.county_name ?? '-',
-      },
-      {
-        id: 'population',
-        header: ({ column }) => (
-          <div className="flex items-center gap-1 cursor-pointer" onClick={() => toggle(column.id)}>
-            Population
-            {renderSortIcon(column.id)}
-          </div>
-        ),
-        cell: ({ row }) => (
-          <div className="text-right">
-            {row.original.population != null ? formatNumberRO(row.original.population) : '-'}
-          </div>
-        ),
-      },
-      {
-        id: 'per_capita_amount',
-        header: ({ column }) => (
-          <div className="flex items-center gap-1 cursor-pointer" onClick={() => toggle(column.id)}>
-            Per Capita
-            {renderSortIcon(column.id)}
-          </div>
-        ),
-        cell: ({ row }) => (
-          row.original.population != null ? (
-            currencyFormat === 'both' ? (
-              <div className="text-right">
-                <span className="block text-xs" title={formatCurrency(row.original.per_capita_amount, 'standard')}>
-                  {formatCurrency(row.original.per_capita_amount, 'standard')}
-                </span>
-                <span className="block text-xs text-muted-foreground">
-                  {formatCurrency(row.original.per_capita_amount, 'compact')}
-                </span>
-              </div>
-            ) : (
-              <span className="block text-right text-xs" title={formatCurrency(row.original.per_capita_amount, 'standard')}>
-                {formatCurrency(row.original.per_capita_amount, currencyFormat)}
-              </span>
-            )
-          ) : <span className="block text-right text-xs text-muted-foreground">-</span>
-        ),
-      },
-      {
-        id: 'total_amount',
-        header: ({ column }) => (
-          <div className="flex items-center gap-1 cursor-pointer" onClick={() => toggle(column.id)}>
-            Total Amount
-            {renderSortIcon(column.id)}
-          </div>
-        ),
-        cell: ({ row }) => (
+    {
+      id: 'row_number',
+      header: () => <span className="text-xs text-muted-foreground">#</span>,
+      cell: ({ row }) => (
+        <span className="block text-left w-full text-xs text-muted-foreground pl-2" aria-label={`Row ${rowNumberStart + row.index + 1}`}>
+          {rowNumberStart + row.index + 1}
+        </span>
+      ),
+      size: 30,
+      minSize: 30,
+      maxSize: 56,
+      enableResizing: true,
+      enableHiding: false,
+    },
+    {
+      id: 'entity_name',
+      size: 500,
+      header: ({ column }) => (
+        <div className="flex items-center gap-1 cursor-pointer" onClick={() => toggle(column.id)}>
+          <Trans>Entity</Trans>
+          {renderSortIcon(column.id)}
+        </div>
+      ),
+      cell: ({ row }) => (
+        <Link to="/entities/$cui" params={{ cui: row.original.entity_cui }} className="truncate hover:underline" title={row.original.entity_name}>
+          {row.original.entity_name}
+        </Link>
+      ),
+    },
+    {
+      id: 'county_name',
+      header: ({ column }) => (
+        <div className="flex items-center gap-1 cursor-pointer" onClick={() => toggle(column.id)}>
+          <Trans>County</Trans>
+          {renderSortIcon(column.id)}
+        </div>
+      ),
+      cell: ({ row }) => row.original.county_name ?? '-',
+    },
+    {
+      id: 'population',
+      header: ({ column }) => (
+        <div className="flex items-center gap-1 cursor-pointer" onClick={() => toggle(column.id)}>
+          <Trans>Population</Trans>
+          {renderSortIcon(column.id)}
+        </div>
+      ),
+      cell: ({ row }) => (
+        <div className="text-right">
+          {row.original.population != null ? formatNumberRO(row.original.population) : '-'}
+        </div>
+      ),
+    },
+    {
+      id: 'per_capita_amount',
+      header: ({ column }) => (
+        <div className="flex items-center gap-1 cursor-pointer" onClick={() => toggle(column.id)}>
+          <Trans>Per Capita</Trans>
+          {renderSortIcon(column.id)}
+        </div>
+      ),
+      cell: ({ row }) => (
+        row.original.population != null ? (
           currencyFormat === 'both' ? (
             <div className="text-right">
-              <span className="block text-xs" title={formatCurrency(row.original.total_amount, 'standard')}>
-                {formatCurrency(row.original.total_amount, 'standard')}
+              <span className="block text-xs" title={formatCurrency(row.original.per_capita_amount, 'standard')}>
+                {formatCurrency(row.original.per_capita_amount, 'standard')}
               </span>
               <span className="block text-xs text-muted-foreground">
-                {formatCurrency(row.original.total_amount, 'compact')}
+                {formatCurrency(row.original.per_capita_amount, 'compact')}
               </span>
             </div>
           ) : (
-            <span className="block text-right text-xs" title={formatCurrency(row.original.total_amount, 'standard')}>
-              {formatCurrency(row.original.total_amount, currencyFormat)}
+            <span className="block text-right text-xs" title={formatCurrency(row.original.per_capita_amount, 'standard')}>
+              {formatCurrency(row.original.per_capita_amount, currencyFormat)}
             </span>
           )
-        ),
-      },
+        ) : <span className="block text-right text-xs text-muted-foreground">-</span>
+      ),
+    },
+    {
+      id: 'total_amount',
+      header: ({ column }) => (
+        <div className="flex items-center gap-1 cursor-pointer" onClick={() => toggle(column.id)}>
+          <Trans>Total Amount</Trans> 
+          {renderSortIcon(column.id)}
+        </div>
+      ),
+      cell: ({ row }) => (
+        currencyFormat === 'both' ? (
+          <div className="text-right">
+            <span className="block text-xs" title={formatCurrency(row.original.total_amount, 'standard')}>
+              {formatCurrency(row.original.total_amount, 'standard')}
+            </span>
+            <span className="block text-xs text-muted-foreground">
+              {formatCurrency(row.original.total_amount, 'compact')}
+            </span>
+          </div>
+        ) : (
+          <span className="block text-right text-xs" title={formatCurrency(row.original.total_amount, 'standard')}>
+            {formatCurrency(row.original.total_amount, currencyFormat)}
+          </span>
+        )
+      ),
+    },
   ]
 
   const toggle = (id: string) => {
@@ -222,46 +223,46 @@ export function EntityAnalyticsTable({ data, isLoading, sortBy, sortOrder, onSor
                         {flexRender(header.column.columnDef.header, header.getContext())}
                       </div>
                     ) : (
-                    <div className="flex items-center gap-1 select-none">
-                      <div className="min-w-0 flex items-center gap-1">
-                        {flexRender(header.column.columnDef.header, header.getContext())}
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-6 w-6"
-                              aria-label={`${header.column.id} menu`}
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="start" className="w-44" onClick={(e) => e.stopPropagation()}>
-                            <DropdownMenuLabel>Column</DropdownMenuLabel>
-                            {(() => {
-                              const merged = getMergedColumnOrder(table, ['row_number'])
-                              const movable = merged.filter((id) => id !== 'row_number')
-                              const idx = movable.indexOf(header.column.id)
-                              const disableLeft = idx <= 0 || idx === -1
-                              const disableRight = idx === -1 || idx >= movable.length - 1
-                              return (
-                                <>
-                                  <DropdownMenuItem disabled={disableLeft} onSelect={() => !disableLeft && moveColumn(header.column.id, 'left')}>
-                                    <ChevronLeft className="w-3 h-3 mr-1" /> Move left
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem disabled={disableRight} onSelect={() => !disableRight && moveColumn(header.column.id, 'right')}>
-                                    <ChevronRight className="w-3 h-3 mr-1" /> Move right
-                                  </DropdownMenuItem>
-                                  <DropdownMenuSeparator />
-                                  <DropdownMenuItem onSelect={() => header.column.toggleVisibility(false)}>Hide</DropdownMenuItem>
-                                </>
-                              )
-                            })()}
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                      <div className="flex items-center gap-1 select-none">
+                        <div className="min-w-0 flex items-center gap-1">
+                          {flexRender(header.column.columnDef.header, header.getContext())}
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-6 w-6"
+                                aria-label={`${header.column.id} menu`}
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="start" className="w-44" onClick={(e) => e.stopPropagation()}>
+                              <DropdownMenuLabel><Trans>Column</Trans></DropdownMenuLabel>
+                              {(() => {
+                                const merged = getMergedColumnOrder(table, ['row_number'])
+                                const movable = merged.filter((id) => id !== 'row_number')
+                                const idx = movable.indexOf(header.column.id)
+                                const disableLeft = idx <= 0 || idx === -1
+                                const disableRight = idx === -1 || idx >= movable.length - 1
+                                return (
+                                  <>
+                                    <DropdownMenuItem disabled={disableLeft} onSelect={() => !disableLeft && moveColumn(header.column.id, 'left')}>
+                                      <ChevronLeft className="w-3 h-3 mr-1" /> <Trans>Move left</Trans>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem disabled={disableRight} onSelect={() => !disableRight && moveColumn(header.column.id, 'right')}>
+                                      <ChevronRight className="w-3 h-3 mr-1" /> <Trans>Move right</Trans>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem onSelect={() => header.column.toggleVisibility(false)}><Trans>Hide</Trans></DropdownMenuItem>
+                                  </>
+                                )
+                              })()}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
                       </div>
-                    </div>
                     )
                   )}
                   {header.column.id === 'row_number' ? null : header.column.getCanResize?.() ? (

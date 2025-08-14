@@ -20,6 +20,7 @@ import { useClipboard } from "@/lib/hooks/useClipboard";
 import { useChartStore } from "../../hooks/useChartStore";
 import { useCopyPasteChart } from "../../hooks/useCopyPaste";
 import { useHotkeys } from "react-hotkeys-hook";
+import { Trans } from "@lingui/react/macro";
 
 export function SeriesList() {
   const { chart, updateSeries, moveSeriesUp, moveSeriesDown, addSeries, goToSeriesConfig, setSeries, deleteSeries } = useChartStore();
@@ -82,18 +83,18 @@ export function SeriesList() {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
-          <span>Data Series</span>
+          <span><Trans>Data Series</Trans></span>
           <Button size="icon" onClick={addSeries} className="rounded-full w-7 h-7 cursor-pointer" aria-label="Add new series">
             <Plus className="h-4 w-4" />
           </Button>
         </CardTitle>
-        <CardDescription>{chart.series.length} series configured</CardDescription>
+        <CardDescription><Trans>{chart.series.length} series configured</Trans></CardDescription>
       </CardHeader>
       <CardContent>
         {chart.series.length === 0 ? (
           <div className="text-center py-4">
-            <p className="text-sm text-muted-foreground mb-3">No data series yet.</p>
-            <Button size="sm" onClick={addSeries}>Add Series</Button>
+            <p className="text-sm text-muted-foreground mb-3"><Trans>No data series yet.</Trans></p>
+            <Button size="sm" onClick={addSeries}><Trans>Add Series</Trans></Button>
           </div>
         ) : (
           <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
