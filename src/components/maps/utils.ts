@@ -63,7 +63,7 @@ export const createTooltipContent = (
 
   // Common styles for the tooltip
   const styles = {
-    container: `font-family: 'Inter', sans-serif; font-size: 14px; max-width: 250px; padding: 10px; color: #333;`,
+    container: `font-family: 'Inter', sans-serif; font-size: 14px; max-width: 350px; padding: 10px; color: #333;`,
     header: `font-size: 1.1em; font-weight: bold; margin-bottom: 4px;`,
     subHeader: `color: #666; font-size: 0.9em; margin-bottom: 12px;`,
     dataGrid: `display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: center;`,
