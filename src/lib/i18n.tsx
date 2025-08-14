@@ -9,6 +9,12 @@ export async function dynamicActivate(locale: string): Promise<void> {
   i18n.activate(locale);
 }
 
+export async function activate(locale: string) {
+  const { messages } = await import(`./locales/${locale}/messages.po`);
+  i18n.load(locale, messages);
+  i18n.activate(locale);
+}
+
 type I18nAppProviderProps = {
   readonly children: ReactNode;
 };

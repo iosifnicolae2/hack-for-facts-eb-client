@@ -1,5 +1,5 @@
 import { ThemeProvider } from "@/components/theme/theme-provider";
-import { I18nAppProvider } from "@/lib/i18n";
+import { I18nAppProvider, dynamicActivate } from "@/lib/i18n";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
@@ -14,9 +14,20 @@ import { AppFooter, ReportBugFab } from "@/components/footer/AppFooter";
 import { CookieConsentBanner } from "@/components/privacy/CookieConsentBanner";
 import { Analytics } from "@/lib/analytics";
 import { Seo, JsonLd } from "@/lib/seo";
+import { useEffect } from "react";
 
 export const Route = createRootRoute({
-  component: () => (
+  component: () => {
+    useEffect(() => {
+      const savedLocale = typeof window !== 'undefined' ? window.localStorage.getItem('locale') : null;
+      const browserLocale = typeof navigator !== 'undefined' ? navigator.language : 'en';
+      const initialLocale = savedLocale || (browserLocale?.toLowerCase().startsWith('ro') ? 'ro' : 'en');
+      dynamicActivate(initialLocale);
+      try {
+        document.documentElement.setAttribute('lang', initialLocale);
+      } catch {}
+    }, []);
+    return (
     <ErrorProvider>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider defaultTheme="light" storageKey="ui-theme">
@@ -68,7 +79,8 @@ export const Route = createRootRoute({
         </ThemeProvider>
       </QueryClientProvider>
     </ErrorProvider>
-  ),
+    );
+  },
   beforeLoad: async () => { },
 });
 

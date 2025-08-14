@@ -112,10 +112,10 @@ Provider usage (already wired):
 
 ## Marking messages
 
-Use `@lingui/macro` for developer ergonomics:
+Use `@lingui/react` for developer ergonomics:
 
 ```tsx
-import { Trans } from "@lingui/macro";
+import { Trans } from "@lingui/react";
 
 <h1><Trans>Transparenta.eu</Trans></h1>
 <p><Trans>See-through, clear</Trans></p>
