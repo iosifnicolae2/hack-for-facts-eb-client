@@ -26,7 +26,7 @@ export const formatNumber = (value: number | null | undefined, notation?: "stand
 
   const locale = getUserLocale();
 
-  const numberLocale = locale === "ro" ? "ro-RO" : "en-US";
+  const numberLocale = locale === "ro" ? "ro-RO" : "en-GB";
   return new Intl.NumberFormat(numberLocale, {
     style: "decimal",
     notation: notation || "standard",
