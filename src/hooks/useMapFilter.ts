@@ -73,6 +73,7 @@ export function useMapFilter() {
     const setMaxPopulation = createValueUpdater('max_population');
     const setAggregateMinAmount = createValueUpdater('aggregate_min_amount');
     const setAggregateMaxAmount = createValueUpdater('aggregate_max_amount');
+    const setReportType = createValueUpdater('report_type');
     const setYears = (years: OptionItem<string | number>[] | ((prevState: OptionItem<string | number>[]) => OptionItem<string | number>[])) => {
         const selectedYearOptions = mapState.filters.years?.map(y => ({ id: y, label: String(y) })) ?? [];
         const newYears = typeof years === 'function' ? years(selectedYearOptions) : years;
@@ -127,6 +128,7 @@ export function useMapFilter() {
             program_codes: [],
             expense_types: [],
             uat_ids: [],
+            report_type: 'Executie bugetara agregata la nivel de ordonator principal',
         });
     };
 
@@ -168,5 +170,6 @@ export function useMapFilter() {
         setMaxPopulation,
         setAggregateMinAmount,
         setAggregateMaxAmount,
+        setReportType,
     };
 }

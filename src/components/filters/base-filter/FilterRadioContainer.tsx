@@ -23,7 +23,7 @@ export function FilterRadioContainer({
 }: FilterRadioContainerProps) {
     const [isOpen, setIsOpen] = useState(defaultOpen);
     const [showAllSelected, setShowAllSelected] = useState(false);
-    
+
     const selectedOptions = selectedOption ? [selectedOption] : [];
     const activeCount = selectedOptions.length;
 
@@ -39,7 +39,7 @@ export function FilterRadioContainer({
     return (
         <div className="border-b">
             <Accordion type="single" collapsible onValueChange={handleOpenChange} value={isOpen ? title : ''}>
-                <AccordionItem value={title} className="border-none" disabled={true}>
+                <AccordionItem value={title} className="border-none">
                     <AccordionTrigger className="px-4 py-3 text-sm font-medium hover:bg-muted/50">
                         <div className="flex items-center gap-2">
                             {icon}

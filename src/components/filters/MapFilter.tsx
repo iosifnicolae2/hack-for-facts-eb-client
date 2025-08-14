@@ -19,6 +19,8 @@ import { EntityList } from './entity-filter/EntityList';
 import { CountyList } from './county-filter/CountyList';
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
+import { FilterRadioContainer } from "./base-filter/FilterRadioContainer";
+import { ReportTypeFilter } from "./report-type-filter";
 
 export function MapFilter() {
     const {
@@ -47,6 +49,7 @@ export function MapFilter() {
         setMaxPopulation,
         setAggregateMinAmount,
         setAggregateMaxAmount,
+        setReportType,
     } = useMapFilter();
 
     const totalOptionalFilters =
@@ -65,6 +68,7 @@ export function MapFilter() {
         (mapState.filters.county_codes?.length ?? 0) +
         (mapState.filters.aggregate_min_amount ? 1 : 0) +
         (mapState.filters.aggregate_max_amount ? 1 : 0) +
+        (mapState.filters.report_type ? 1 : 0) +
         (mapState.filters.min_population ? 1 : 0) +
         (mapState.filters.max_population ? 1 : 0);
 
@@ -230,6 +234,19 @@ export function MapFilter() {
                     selected={(mapState.filters.funding_source_ids ?? []).map(id => ({ id, label: String(id) }))}
                     setSelected={setSelectedFundingSourceOptions}
                 />
+
+                <FilterRadioContainer
+                    title={t`Report Type`}
+                    icon={<ArrowUpDown className="w-4 h-4" />}
+                    selectedOption={(mapState.filters.report_type) ? { id: mapState.filters.report_type, label: mapState.filters.report_type } : null}
+                    onClear={() => setReportType(undefined)}
+                >
+                    <ReportTypeFilter
+                        reportType={mapState.filters.report_type}
+                        setReportType={(v) => setReportType(v as 'Executie bugetara agregata la nivel de ordonator principal' | 'Executie bugetara detaliata' | undefined)}
+                    />
+                </FilterRadioContainer>
+
                 <FilterRangeContainer
                     title={t`Amount Range`}
                     icon={<SlidersHorizontal className="w-4 h-4" />}
