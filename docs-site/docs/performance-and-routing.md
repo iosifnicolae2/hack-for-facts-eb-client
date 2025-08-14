@@ -16,7 +16,7 @@ The app is designed to feel instant. Pages pre‑load what you need, heavy piece
 4) On a slow network, switch to Total or shorten prefixes to load faster.
 5) Share deep‑links so others open the same pre‑filtered view.
 
-![IMG PLACEHOLDER — Performance quickstart](./images/PLACEHOLDER-performance-quickstart.png "Search, navigate, skeletons, deep‑links")
+<!-- ![IMG PLACEHOLDER — Performance quickstart](./images/PLACEHOLDER-performance-quickstart.png "Search, navigate, skeletons, deep‑links") -->
 
 ### Guided Tour
 
@@ -31,7 +31,7 @@ The app is designed to feel instant. Pages pre‑load what you need, heavy piece
 - Example
   - Open Map → click a city → its entity opens with your chosen year.
 - Media
-  - ![IMG PLACEHOLDER — Context preserved](./images/PLACEHOLDER-performance-context.png "Filters/year preserved while navigating")
+  <!-- - ![IMG PLACEHOLDER — Context preserved](./images/PLACEHOLDER-performance-context.png "Filters/year preserved while navigating") -->
 
 #### Smart loading (skeletons and on‑demand)
 - What you see
@@ -43,7 +43,7 @@ The app is designed to feel instant. Pages pre‑load what you need, heavy piece
 - Example
   - The Entities ranking shows instantly; rows fill as they arrive.
 - Media
-  - [GIF PLACEHOLDER — Skeletons](./gifs/PLACEHOLDER-performance-skeletons.gif)
+  <!-- - [GIF PLACEHOLDER — Skeletons](./gifs/PLACEHOLDER-performance-skeletons.gif) -->
 
 #### Mobile‑friendly routing
 - What you see
@@ -54,7 +54,7 @@ The app is designed to feel instant. Pages pre‑load what you need, heavy piece
 - Example
   - Switch between Map and entity without losing the chosen year.
 - Media
-  - ![IMG PLACEHOLDER — Mobile routing](./images/PLACEHOLDER-performance-mobile.png "Filters modal and back gesture")
+  <!-- - ![IMG PLACEHOLDER — Mobile routing](./images/PLACEHOLDER-performance-mobile.png "Filters modal and back gesture") -->
 
 #### Sharing and re‑opening views
 - What you see
@@ -65,7 +65,7 @@ The app is designed to feel instant. Pages pre‑load what you need, heavy piece
 - Example
   - Share “Education per capita in 2024” from Entities.
 - Media
-  - [GIF PLACEHOLDER — Deep‑link](./gifs/PLACEHOLDER-performance-deeplink.gif)
+  <!-- - [GIF PLACEHOLDER — Deep‑link](./gifs/PLACEHOLDER-performance-deeplink.gif) -->
 
 ### Common Tasks (recipes)
 
@@ -78,7 +78,7 @@ The app is designed to feel instant. Pages pre‑load what you need, heavy piece
 - Tip
   - If context resets, re‑apply from tags or filter panels.
 - Link
-  - [LINK PLACEHOLDER — Context walkthrough](#TODO-performance-context)
+  - LINK PLACEHOLDER — Context walkthrough
 
 #### Make a slow page load faster
 - Steps
@@ -90,7 +90,7 @@ The app is designed to feel instant. Pages pre‑load what you need, heavy piece
 - Tip
   - Avoid combining many filters at once on slow networks.
 - Link
-  - [LINK PLACEHOLDER — Performance tips](#TODO-performance-tips)
+  - LINK PLACEHOLDER — Performance tips
 
 #### Share a fast‑opening link
 - Steps
@@ -101,7 +101,7 @@ The app is designed to feel instant. Pages pre‑load what you need, heavy piece
 - Tip
   - Prefer short prefixes for broader, faster results.
 - Link
-  - [LINK PLACEHOLDER — Shareable links](#TODO-performance-share)
+  - LINK PLACEHOLDER — Shareable links
 
 ### Understanding the Numbers & States
 - Per Capita vs Total

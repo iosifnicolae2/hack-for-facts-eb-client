@@ -10,5 +10,21 @@
   "item.label.GitHub": {
     "message": "GitHub",
     "description": "Navbar item with label GitHub"
+  },
+  "item.label.Blog": {
+    "message": "Blog",
+    "description": "Navbar item with label Blog"
+  },
+  "item.label.Tags": {
+    "message": "Etichete",
+    "description": "Navbar item with label Tags"
+  },
+  "item.label.Archive": {
+    "message": "Arhivă",
+    "description": "Navbar item with label Archive"
+  },
+  "item.label.Authors": {
+    "message": "Autori",
+    "description": "Navbar item with label Authors"
   }
 }

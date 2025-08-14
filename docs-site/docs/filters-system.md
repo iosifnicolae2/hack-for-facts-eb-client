@@ -16,7 +16,7 @@ Filters help you focus on a topic, time, place, and scale across pages (Map, Ent
 4) Add Functional prefix “65” (Education)
 5) Export CSV, or switch to Charts to visualize: [Charts – New](https://transparenta.eu/charts/new)
 
-![IMG PLACEHOLDER — Filters quickstart](./images/PLACEHOLDER-filters-quickstart.png "Side, normalization, year, topic")
+<!-- ![IMG PLACEHOLDER — Filters quickstart](./images/PLACEHOLDER-filters-quickstart.png "Side, normalization, year, topic") -->
 
 ### Guided Tour
 
@@ -35,7 +35,7 @@ Filters help you focus on a topic, time, place, and scale across pages (Map, Ent
 - Example
   - Expenses, Per Capita, 2024, Functional 65.
 - Media
-  - ![IMG PLACEHOLDER — Shared filters](./images/PLACEHOLDER-filters-shared.png "Common controls across pages")
+  <!-- - ![IMG PLACEHOLDER — Shared filters](./images/PLACEHOLDER-filters-shared.png "Common controls across pages") -->
 
 #### Functional vs Economic prefixes
 - What you see
@@ -48,7 +48,7 @@ Filters help you focus on a topic, time, place, and scale across pages (Map, Ent
 - Example
   - 65 + 10.01 for salaries in Education.
 - Media
-  - [GIF PLACEHOLDER — Enter prefixes](./gifs/PLACEHOLDER-filters-prefixes.gif)
+  <!-- - [GIF PLACEHOLDER — Enter prefixes](./gifs/PLACEHOLDER-filters-prefixes.gif) -->
 
 #### Geography and entities
 - What you see
@@ -60,7 +60,7 @@ Filters help you focus on a topic, time, place, and scale across pages (Map, Ent
 - Example
   - UAT, Per Capita, 2024, Functional 65 → Export CSV.
 - Media
-  - ![IMG PLACEHOLDER — Geo filters](./images/PLACEHOLDER-filters-geo.png "Map/Entities geography controls")
+  <!-- - ![IMG PLACEHOLDER — Geo filters](./images/PLACEHOLDER-filters-geo.png "Map/Entities geography controls") -->
 
 #### Clearing and sharing
 - What you see
@@ -72,7 +72,7 @@ Filters help you focus on a topic, time, place, and scale across pages (Map, Ent
 - Example
   - Share a link for “Education per capita in 2024”.
 - Media
-  - [GIF PLACEHOLDER — Clear & share](./gifs/PLACEHOLDER-filters-clear-share.gif)
+  <!-- - [GIF PLACEHOLDER — Clear & share](./gifs/PLACEHOLDER-filters-clear-share.gif) -->
 
 ### Common Tasks (recipes)
 
@@ -86,7 +86,7 @@ Filters help you focus on a topic, time, place, and scale across pages (Map, Ent
 - Tip
   - Shorter prefix = broader family; start broad, then refine.
 - Link
-  - [LINK PLACEHOLDER — Topic filtering flow](#TODO-filters-topic)
+  - LINK PLACEHOLDER — Topic filtering flow
 
 #### Add an Economic prefix for detail
 - Steps
@@ -98,7 +98,7 @@ Filters help you focus on a topic, time, place, and scale across pages (Map, Ent
 - Tip
   - Combining both prefixes narrows results quickly.
 - Link
-  - [LINK PLACEHOLDER — Combined prefixes](#TODO-filters-combined)
+  - LINK PLACEHOLDER — Combined prefixes
 
 #### Limit to a geography
 - Steps
@@ -110,7 +110,7 @@ Filters help you focus on a topic, time, place, and scale across pages (Map, Ent
 - Tip
   - Use Entities (ranking) for CSV exports.
 - Link
-  - [LINK PLACEHOLDER — Geography walkthrough](#TODO-filters-geo)
+  - LINK PLACEHOLDER — Geography walkthrough
 
 #### Build a chart from a filtered view
 - Steps
@@ -122,7 +122,7 @@ Filters help you focus on a topic, time, place, and scale across pages (Map, Ent
 - Tip
   - Name series clearly (city, topic, normalization).
 - Link
-  - [LINK PLACEHOLDER — Chart series setup](#TODO-filters-to-chart)
+  - LINK PLACEHOLDER — Chart series setup
 
 ### Understanding the Numbers
 - Per Capita vs Total
@@ -169,8 +169,8 @@ Filters help you focus on a topic, time, place, and scale across pages (Map, Ent
 ### See also
 - Global Search & Navigation: [global-search-and-navigation](./global-search-and-navigation.md)
 - Data & Analytics — Beginner Guide: [data-and-analytics-utilities](./data-and-analytics-utilities.md)
-- Filters cheat‑sheet (API): [api-filters-pagination-sorting](./api/filters-pagination-sorting.md)
-- Unified filter deep dive (API): [api-unified-filter-interface](./api/unified-filter-interface.md)
+- Filters cheat‑sheet (API): [filters-pagination-sorting](./api/filters-pagination-sorting.md)
+- Unified filter deep dive (API): [unified-filter-interface](./api/unified-filter-interface.md)
  - Deep‑links & shareable views: [deeplinks-and-python-tools](./deeplinks-and-python-tools.md)
 
 ### === SCREENSHOT & MEDIA CHECKLIST ===

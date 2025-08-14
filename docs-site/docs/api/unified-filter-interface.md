@@ -1,5 +1,5 @@
 ---
-id: api-unified-filter-interface
+id: unified-filter-interface
 title: Unified Filter – Deep Dive (AnalyticsFilter)
 ---
 

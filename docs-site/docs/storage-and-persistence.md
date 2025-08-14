@@ -11,7 +11,7 @@ A beginner‑friendly guide to how Transparenta.eu stores your charts and prefer
 3) Your chart saves locally on your device.
 4) Back it up from the Charts page when you’re ready.
 
-![IMG PLACEHOLDER — Quick tour](./images/PLACEHOLDER-storage-quickstart.png "Create chart and see it saved locally")
+<!-- ![IMG PLACEHOLDER — Quick tour](./images/PLACEHOLDER-storage-quickstart.png "Create chart and see it saved locally") -->
 
 ### Guided Tour
 
@@ -26,7 +26,7 @@ A beginner‑friendly guide to how Transparenta.eu stores your charts and prefer
 - Example
   - Favorite a chart to find it faster next time.
 - Media
-  - [GIF PLACEHOLDER — Browse saved charts](./gifs/PLACEHOLDER-storage-browse.gif)
+  <!-- - [GIF PLACEHOLDER — Browse saved charts](./gifs/PLACEHOLDER-storage-browse.gif) -->
 
 #### Create and autosave
 - What you see
@@ -39,7 +39,7 @@ A beginner‑friendly guide to how Transparenta.eu stores your charts and prefer
 - Example
   - Title your chart for easier search later.
 - Media
-  - ![IMG PLACEHOLDER — Create chart](./images/PLACEHOLDER-storage-create.png "Create and autosave chart")
+  <!-- - ![IMG PLACEHOLDER — Create chart](./images/PLACEHOLDER-storage-create.png "Create and autosave chart") -->
 
 #### Backup and restore
 - What you see
@@ -52,7 +52,7 @@ A beginner‑friendly guide to how Transparenta.eu stores your charts and prefer
 - Example
   - Move charts from your laptop to your desktop.
 - Media
-  - [GIF PLACEHOLDER — Backup and restore](./gifs/PLACEHOLDER-storage-backup.gif)
+  <!-- - [GIF PLACEHOLDER — Backup and restore](./gifs/PLACEHOLDER-storage-backup.gif) -->
 
 #### Empty and error states
 - Empty list
@@ -74,7 +74,7 @@ A beginner‑friendly guide to how Transparenta.eu stores your charts and prefer
 - Tip
   - Keep the file in cloud storage for safety.
 - Link
-  - [LINK PLACEHOLDER — Backup flow](#TODO-backup)
+  - LINK PLACEHOLDER — Backup flow
 
 #### Restore charts on a new device
 - Steps
@@ -86,7 +86,7 @@ A beginner‑friendly guide to how Transparenta.eu stores your charts and prefer
 - Tip
   - If nothing appears, confirm the backup is recent and valid.
 - Link
-  - [LINK PLACEHOLDER — Restore flow](#TODO-restore)
+  - LINK PLACEHOLDER — Restore flow
 
 #### Organize with favorites and categories
 - Steps
@@ -98,7 +98,7 @@ A beginner‑friendly guide to how Transparenta.eu stores your charts and prefer
 - Tip
   - Use short, meaningful category names.
 - Link
-  - [LINK PLACEHOLDER — Organize charts](#TODO-organize)
+  - LINK PLACEHOLDER — Organize charts
 
 ### Understanding the Numbers
 - Local‑first

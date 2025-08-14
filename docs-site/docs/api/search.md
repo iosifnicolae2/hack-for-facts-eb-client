@@ -165,12 +165,12 @@ Notes
 
 See also
 
-- REST helpers: [api-rest-endpoints](./rest-endpoints.md)
-- GraphQL queries: [api-graphql-queries](./graphql-queries.md)
+- REST helpers: [rest-endpoints](./rest-endpoints.md)
+- GraphQL queries: [graphql-queries](./graphql-queries.md)
 - Prefer code-prefix searches (`fn:`/`ec:`) when you know the classification families; they are fast and precise.
 - Use short, distinctive tokens for name searches; trigram will rank close matches higher.
 - For entity/UAT searches, add structural filters (`is_uat`, `entity_type`, `county_code`) to narrow candidates.
 - Combine search with analytics filters to immediately scope results (e.g., search economic code then query entity analytics with that code prefix).
- - Filters, pagination, and sorting: [api-filters-pagination-sorting](./filters-pagination-sorting.md)
+ - Filters, pagination, and sorting: [filters-pagination-sorting](./filters-pagination-sorting.md)
 
 

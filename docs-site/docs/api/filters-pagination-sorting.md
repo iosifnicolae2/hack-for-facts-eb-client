@@ -1,5 +1,5 @@
 ---
-id: api-filters-pagination-sorting
+id: filters-pagination-sorting
 title: Filters, Pagination, and Sorting
 ---
 

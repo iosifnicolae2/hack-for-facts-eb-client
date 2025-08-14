@@ -1,5 +1,5 @@
 ---
-id: api-graphql-queries
+id: graphql-queries
 title: GraphQL – Queries and Examples
 ---
 
@@ -128,7 +128,7 @@ Notes
 
 See also
 
-- Schema and types: [api-graphql-schema-and-types](./graphql-schema-and-types.md)
-- Cookbook: [api-cookbook](./cookbook.md)
+- Schema and types: [graphql-schema-and-types](./graphql-schema-and-types.md)
+- Cookbook: [cookbook](./cookbook.md)
 
 

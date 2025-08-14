@@ -14,7 +14,7 @@ Learn to explore Romanian public spending with simple steps. Search an instituti
 6) Add a Functional code prefix (e.g., 65)
 7) Export CSV or copy a chart link
 
-![IMG PLACEHOLDER — Quick Start](./images/PLACEHOLDER-index-quickstart.png "Home, search, entity, filters, export/share")
+<!-- ![IMG PLACEHOLDER — Quick Start](./images/PLACEHOLDER-index-quickstart.png "Home, search, entity, filters, export/share") -->
 
 ### Guided Tour
 
@@ -29,7 +29,7 @@ Learn to explore Romanian public spending with simple steps. Search an instituti
 - Example
   - “Municipiul Sibiu”
 - Media
-  - [GIF PLACEHOLDER — Home search](./gifs/PLACEHOLDER-home-search.gif)
+  <!-- - [GIF PLACEHOLDER — Home search](./gifs/PLACEHOLDER-home-search.gif) -->
 
 #### Entity page
 - What you see
@@ -47,8 +47,8 @@ Learn to explore Romanian public spending with simple steps. Search an instituti
 - Example
   - Year 2024, search Expenses for “Învățământ”
 - Media
-  - ![IMG PLACEHOLDER — Entity page](./images/PLACEHOLDER-entity.png "Header, Year, KPIs, columns")
-  - [GIF PLACEHOLDER — Year + trend](./gifs/PLACEHOLDER-entity-year.gif)
+  <!-- - ![IMG PLACEHOLDER — Entity page](./images/PLACEHOLDER-entity.png "Header, Year, KPIs, columns") -->
+  <!-- - [GIF PLACEHOLDER — Year + trend](./gifs/PLACEHOLDER-entity-year.gif) -->
 
 #### Spending + Filters
 - What you see
@@ -64,7 +64,7 @@ Learn to explore Romanian public spending with simple steps. Search an instituti
 - Example
   - Expenses, Per Capita, Year 2024, Functional 65.
 - Media
-  - ![IMG PLACEHOLDER — Filters](./images/PLACEHOLDER-index-filters.png "Account side, normalization, year, prefixes")
+  <!-- - ![IMG PLACEHOLDER — Filters](./images/PLACEHOLDER-index-filters.png "Account side, normalization, year, prefixes") -->
 
 #### Compare
 - What you see
@@ -80,7 +80,7 @@ Learn to explore Romanian public spending with simple steps. Search an instituti
 - Example
   - Compare two municipalities on Education per capita
 - Media
-  - ![IMG PLACEHOLDER — Compare](./images/PLACEHOLDER-index-compare.png "Map + ranking + chart")
+  <!-- - ![IMG PLACEHOLDER — Compare](./images/PLACEHOLDER-index-compare.png "Map + ranking + chart") -->
 
 #### Export / Share
 - What you see
@@ -93,12 +93,12 @@ Learn to explore Romanian public spending with simple steps. Search an instituti
 - Example
   - Download 2024 Education ranking
 - Media
-  - [GIF PLACEHOLDER — Export CSV](./gifs/PLACEHOLDER-index-export-csv.gif)
-  - [GIF PLACEHOLDER — Copy Link](./gifs/PLACEHOLDER-index-copy-link.gif)
+  <!-- - [GIF PLACEHOLDER — Export CSV](./gifs/PLACEHOLDER-index-export-csv.gif) -->
+  <!-- - [GIF PLACEHOLDER — Copy Link](./gifs/PLACEHOLDER-index-copy-link.gif) -->
 
 ### Common Tasks (recipes)
 
-#### Find spending for {Entity, Year}
+#### Find spending for `{Entity, Year}`
 - Steps
   1) Search and open the entity page
   2) Select “Reporting Year:”
@@ -108,7 +108,7 @@ Learn to explore Romanian public spending with simple steps. Search an instituti
 - Tip
   - Click a year on the trend to sync
 - Link
-  - [LINK PLACEHOLDER — Entity flow](#TODO-index-entity-year)
+  - LINK PLACEHOLDER — Entity flow
 
 #### Filter by code
 - Steps
@@ -121,7 +121,7 @@ Learn to explore Romanian public spending with simple steps. Search an instituti
 - Tip
   - Prefix filters are fast and precise
 - Link
-  - [LINK PLACEHOLDER — Topic filters](#TODO-index-topic-filters)
+  - LINK PLACEHOLDER — Topic filters
 
 #### Compare years for one entity
 - Steps
@@ -133,7 +133,7 @@ Learn to explore Romanian public spending with simple steps. Search an instituti
 - Tip
   - Use Charts for multi‑series comparisons
 - Link
-  - [LINK PLACEHOLDER — Trend walkthrough](#TODO-index-trend)
+  - LINK PLACEHOLDER — Trend walkthrough
 
 #### Download a CSV ranking
 - Steps
@@ -146,7 +146,7 @@ Learn to explore Romanian public spending with simple steps. Search an instituti
 - Tip
   - Sort by Per Capita for fair comparisons
 - Link
-  - [LINK PLACEHOLDER — Entities ranking](#TODO-index-entities-ranking)
+  - LINK PLACEHOLDER — Entities ranking
 
 ### Understanding the Numbers
 - Totals vs sub‑totals

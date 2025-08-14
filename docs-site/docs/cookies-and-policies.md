@@ -13,7 +13,7 @@ You choose what’s shared. Transparenta.eu works with essential cookies only. W
 5) Click “Cookie Settings” to review later
 6) You can export/share data regardless of your choice
 
-![IMG PLACEHOLDER — Cookies quickstart](./images/PLACEHOLDER-cookies-quickstart.png "Cookie settings banner with Essential only / Accept all / Cookie Settings")
+<!-- ![IMG PLACEHOLDER — Cookies quickstart](./images/PLACEHOLDER-cookies-quickstart.png "Cookie settings banner with Essential only / Accept all / Cookie Settings") -->
 
 ### Guided Tour
 
@@ -28,7 +28,7 @@ You choose what’s shared. Transparenta.eu works with essential cookies only. W
 - Example
   - Pick “Essential only” to opt‑out of analytics
 - Media
-  - [GIF PLACEHOLDER — Accept/Decline banner](./gifs/PLACEHOLDER-cookies-banner.gif)
+  <!-- - [GIF PLACEHOLDER — Accept/Decline banner](./gifs/PLACEHOLDER-cookies-banner.gif) -->
 
 #### Entity page
 - What you see
@@ -40,7 +40,7 @@ You choose what’s shared. Transparenta.eu works with essential cookies only. W
 - Example
   - View 2024 Expenses with consent set to “Essential only”
 - Media
-  - ![IMG PLACEHOLDER — Entity with cookies set](./images/PLACEHOLDER-cookies-entity.png "Entity features unaffected by consent")
+  <!-- - ![IMG PLACEHOLDER — Entity with cookies set](./images/PLACEHOLDER-cookies-entity.png "Entity features unaffected by consent") -->
 
 #### Spending + Filters
 - What you see
@@ -51,7 +51,7 @@ You choose what’s shared. Transparenta.eu works with essential cookies only. W
 - Example
   - Per Capita + Functional 65 on Map or Entities
 - Media
-  - ![IMG PLACEHOLDER — Filters](./images/PLACEHOLDER-cookies-filters.png "Filters work the same with any choice")
+  <!-- - ![IMG PLACEHOLDER — Filters](./images/PLACEHOLDER-cookies-filters.png "Filters work the same with any choice") -->
 
 #### Compare
 - What you see
@@ -62,7 +62,7 @@ You choose what’s shared. Transparenta.eu works with essential cookies only. W
 - Example
   - Export a ranking while on “Essential only”
 - Media
-  - [GIF PLACEHOLDER — Export CSV](./gifs/PLACEHOLDER-cookies-export-csv.gif)
+  <!-- - [GIF PLACEHOLDER — Export CSV](./gifs/PLACEHOLDER-cookies-export-csv.gif) -->
 
 #### Export / Share
 - What you see
@@ -75,7 +75,7 @@ You choose what’s shared. Transparenta.eu works with essential cookies only. W
 - Example
   - Share a chart link without enabling analytics
 - Media
-  - [GIF PLACEHOLDER — Copy Link](./gifs/PLACEHOLDER-cookies-copy-link.gif)
+  <!-- - [GIF PLACEHOLDER — Copy Link](./gifs/PLACEHOLDER-cookies-copy-link.gif) -->
 
 ### Common Tasks (recipes)
 
@@ -88,7 +88,7 @@ You choose what’s shared. Transparenta.eu works with essential cookies only. W
 - Tip
   - You can change your mind anytime
 - Link
-  - [LINK PLACEHOLDER — Cookie Settings page](#TODO-cookies-settings)
+  - LINK PLACEHOLDER — Cookie Settings page
 
 #### Control analytics and enhanced errors
 - Steps
@@ -100,7 +100,7 @@ You choose what’s shared. Transparenta.eu works with essential cookies only. W
 - Tip
   - Leaving analytics off is okay — the app still works
 - Link
-  - [LINK PLACEHOLDER — Privacy policy](#TODO-cookies-privacy)
+  - LINK PLACEHOLDER — Privacy policy
 
 #### Continue with Essential only
 - Steps
@@ -111,7 +111,7 @@ You choose what’s shared. Transparenta.eu works with essential cookies only. W
 - Tip
   - You can still export CSV and share charts
 - Link
-  - [LINK PLACEHOLDER — Learn more](#TODO-cookies-learn)
+  - LINK PLACEHOLDER — Learn more
 
 ### Understanding the Numbers
 - Cookies vs data

@@ -14,7 +14,7 @@ Move fast with a consistent layout, clear navigation, and simple privacy control
 6) Use sidebar cards to open “Map”, “Entities”, or “Charts”
 7) Copy or share when ready
 
-![IMG PLACEHOLDER — App shell quickstart](./images/PLACEHOLDER-app-shell-quickstart.png "Home, search, sidebar, mobile menus")
+<!-- ![IMG PLACEHOLDER — App shell quickstart](./images/PLACEHOLDER-app-shell-quickstart.png "Home, search, sidebar, mobile menus") -->
 
 ### Guided Tour
 
@@ -29,7 +29,7 @@ Move fast with a consistent layout, clear navigation, and simple privacy control
 - Example
   - Open “Municipiul Sibiu”
 - Media
-  - [GIF PLACEHOLDER — Home search](./gifs/PLACEHOLDER-app-shell-home-search.gif)
+  <!-- - [GIF PLACEHOLDER — Home search](./gifs/PLACEHOLDER-app-shell-home-search.gif) -->
 
 #### Entity page
 - What you see
@@ -45,7 +45,7 @@ Move fast with a consistent layout, clear navigation, and simple privacy control
 - Example
   - Year 2024; search “Învățământ” in Expenses
 - Media
-  - ![IMG PLACEHOLDER — Entity page](./images/PLACEHOLDER-app-shell-entity.png "Header, Year, KPIs, columns")
+  <!-- - ![IMG PLACEHOLDER — Entity page](./images/PLACEHOLDER-app-shell-entity.png "Header, Year, KPIs, columns") -->
 
 #### Spending + Filters
 - What you see
@@ -61,7 +61,7 @@ Move fast with a consistent layout, clear navigation, and simple privacy control
 - Example
   - Per Capita + Functional 65 (Education)
 - Media
-  - ![IMG PLACEHOLDER — Filters](./images/PLACEHOLDER-app-shell-filters.png "Side, normalization, year, prefixes")
+  <!-- - ![IMG PLACEHOLDER — Filters](./images/PLACEHOLDER-app-shell-filters.png "Side, normalization, year, prefixes") -->
 
 #### Classifications (Functional/Economic)
 - What you see
@@ -74,7 +74,7 @@ Move fast with a consistent layout, clear navigation, and simple privacy control
 - Example
   - “65” + “10.01” for salaries in Education
 - Media
-  - [GIF PLACEHOLDER — Add prefixes](./gifs/PLACEHOLDER-app-shell-prefixes.gif)
+  <!-- - [GIF PLACEHOLDER — Add prefixes](./gifs/PLACEHOLDER-app-shell-prefixes.gif) -->
 
 #### Compare
 - What you see
@@ -90,7 +90,7 @@ Move fast with a consistent layout, clear navigation, and simple privacy control
 - Example
   - Compare cities on Education per capita
 - Media
-  - ![IMG PLACEHOLDER — Compare](./images/PLACEHOLDER-app-shell-compare.png "Map + ranking + chart")
+  <!-- - ![IMG PLACEHOLDER — Compare](./images/PLACEHOLDER-app-shell-compare.png "Map + ranking + chart") -->
 
 #### Export / Share
 - What you see
@@ -103,12 +103,12 @@ Move fast with a consistent layout, clear navigation, and simple privacy control
 - Example
   - Download a 2024 Education ranking; share a chart link
 - Media
-  - [GIF PLACEHOLDER — Export CSV](./gifs/PLACEHOLDER-app-shell-export-csv.gif)
-  - [GIF PLACEHOLDER — Copy Link](./gifs/PLACEHOLDER-app-shell-copy-link.gif)
+  <!-- - [GIF PLACEHOLDER — Export CSV](./gifs/PLACEHOLDER-app-shell-export-csv.gif) -->
+  <!-- - [GIF PLACEHOLDER — Copy Link](./gifs/PLACEHOLDER-app-shell-copy-link.gif) -->
 
 ### Common Tasks (recipes)
 
-#### Find spending for {Entity, Year}
+#### Find spending for `{Entity, Year}`
 - Steps
   1) Search the entity
   2) Select “Reporting Year:”
@@ -118,7 +118,7 @@ Move fast with a consistent layout, clear navigation, and simple privacy control
 - Tip
   - Click a chart year to sync sections
 - Link
-  - [LINK PLACEHOLDER — Entity flow](#TODO-app-shell-entity-year)
+  - LINK PLACEHOLDER — Entity flow
 
 #### Filter by code (topic)
 - Steps
@@ -131,7 +131,7 @@ Move fast with a consistent layout, clear navigation, and simple privacy control
 - Tip
   - Shorter prefixes give broader coverage
 - Link
-  - [LINK PLACEHOLDER — Topic filters](#TODO-app-shell-topic)
+  - LINK PLACEHOLDER — Topic filters
 
 #### Compare years for one entity
 - Steps
@@ -143,7 +143,7 @@ Move fast with a consistent layout, clear navigation, and simple privacy control
 - Tip
   - Use Charts for multi‑series comparisons
 - Link
-  - [LINK PLACEHOLDER — Trend walkthrough](#TODO-app-shell-trend)
+  - LINK PLACEHOLDER — Trend walkthrough
 
 #### Download a CSV ranking
 - Steps
@@ -155,7 +155,7 @@ Move fast with a consistent layout, clear navigation, and simple privacy control
 - Tip
   - Sort by Per Capita for fair rankings
 - Link
-  - [LINK PLACEHOLDER — Entities ranking](#TODO-app-shell-csv)
+  - LINK PLACEHOLDER — Entities ranking
 
 ### Understanding the Numbers
 - Totals vs sub‑totals

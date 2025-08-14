@@ -1,5 +1,5 @@
 ---
-id: api-getting-started
+id: getting-started
 title: API – Getting Started
 ---
 
@@ -75,8 +75,8 @@ Notes
 
 See also
 
-- Queries and examples: [api-graphql-queries](./graphql-queries.md)
-- Cookbook recipes: [api-cookbook](./cookbook.md)
-- Analytics filter deep dive: [api-unified-filter-interface](./unified-filter-interface.md)
+- Queries and examples: [graphql-queries](./graphql-queries.md)
+- Cookbook recipes: [cookbook](./cookbook.md)
+- Analytics filter deep dive: [unified-filter-interface](./unified-filter-interface.md)
 
 

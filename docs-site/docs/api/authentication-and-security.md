@@ -1,5 +1,5 @@
 ---
-id: api-authentication-and-security
+id: authentication-and-security
 title: Authentication and Security
 ---
 

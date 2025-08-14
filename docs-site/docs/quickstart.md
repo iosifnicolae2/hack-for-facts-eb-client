@@ -14,7 +14,7 @@ A beginner‑friendly tour of Transparenta.eu. Learn to search an entity, see sp
 6) Add a Functional code prefix (e.g., 65 for Education)
 7) Export CSV or copy a chart link
 
-![IMG PLACEHOLDER — Quick Start](./images/PLACEHOLDER-quickstart.png "Home, search, entity, filters, share")
+<!-- ![IMG PLACEHOLDER — Quick Start](./images/PLACEHOLDER-quickstart.png "Home, search, entity, filters, share") -->
 
 ### Guided Tour
 
@@ -29,7 +29,7 @@ A beginner‑friendly tour of Transparenta.eu. Learn to search an entity, see sp
 - Example
   - Type “Sibiu”. Open “Municipiul Sibiu”.
 - Media
-  - [GIF PLACEHOLDER — Search and open entity](./gifs/PLACEHOLDER-home-search.gif)
+  <!-- - [GIF PLACEHOLDER — Search and open entity](./gifs/PLACEHOLDER-home-search.gif) -->
 
 #### Entity page
 - What you see
@@ -47,8 +47,8 @@ A beginner‑friendly tour of Transparenta.eu. Learn to search an entity, see sp
 - Example
   - Set Year=2024, search Expenses for “Învățământ” (Education).
 - Media
-  - ![IMG PLACEHOLDER — Entity page](./images/PLACEHOLDER-entity.png "Header, Year, KPIs, columns")
-  - [GIF PLACEHOLDER — Trend and column search](./gifs/PLACEHOLDER-entity-trend-search.gif)
+  <!-- - ![IMG PLACEHOLDER — Entity page](./images/PLACEHOLDER-entity.png "Header, Year, KPIs, columns") -->
+  <!-- - [GIF PLACEHOLDER — Trend and column search](./gifs/PLACEHOLDER-entity-trend-search.gif) -->
 
 #### Spending + Filters
 - What you see
@@ -64,7 +64,7 @@ A beginner‑friendly tour of Transparenta.eu. Learn to search an entity, see sp
 - Example
   - Expenses, Per Capita, Year=2024, Functional prefix=65 (Education).
 - Media
-  - ![IMG PLACEHOLDER — Filters](./images/PLACEHOLDER-filters.png "Account type, normalization, codes")
+  <!-- - ![IMG PLACEHOLDER — Filters](./images/PLACEHOLDER-filters.png "Account type, normalization, codes") -->
 
 #### Classifications (Functional/Economic)
 - What you see
@@ -77,7 +77,7 @@ A beginner‑friendly tour of Transparenta.eu. Learn to search an entity, see sp
 - Example
   - Functional “65” + Economic “10.01”.
 - Media
-  - [GIF PLACEHOLDER — Add prefixes](./gifs/PLACEHOLDER-prefixes.gif)
+  <!-- - [GIF PLACEHOLDER — Add prefixes](./gifs/PLACEHOLDER-prefixes.gif) -->
 
 #### Compare
 - What you see
@@ -93,7 +93,7 @@ A beginner‑friendly tour of Transparenta.eu. Learn to search an entity, see sp
 - Example
   - Compare two municipalities on Education per capita in 2024.
 - Media
-  - ![IMG PLACEHOLDER — Compare](./images/PLACEHOLDER-compare.png "Map + Analytics + Chart")
+  <!-- - ![IMG PLACEHOLDER — Compare](./images/PLACEHOLDER-compare.png "Map + Analytics + Chart") -->
 
 #### Export / Share
 - What you see
@@ -106,8 +106,8 @@ A beginner‑friendly tour of Transparenta.eu. Learn to search an entity, see sp
 - Example
   - Download top per-capita spenders for Education and attach to a story.
 - Media
-  - [GIF PLACEHOLDER — Export CSV](./gifs/PLACEHOLDER-export-csv.gif)
-  - [GIF PLACEHOLDER — Share chart link](./gifs/PLACEHOLDER-share-chart.gif)
+  <!-- - [GIF PLACEHOLDER — Export CSV](./gifs/PLACEHOLDER-export-csv.gif) -->
+  <!-- - [GIF PLACEHOLDER — Share chart link](./gifs/PLACEHOLDER-share-chart.gif) -->
 
 ### Common Tasks (recipes)
 
@@ -121,7 +121,7 @@ A beginner‑friendly tour of Transparenta.eu. Learn to search an entity, see sp
 - Tip
   - Click a year on the trend chart to sync details.
 - Link
-  - [LINK PLACEHOLDER — Entity page flow](#TODO-entity-flow)
+  - LINK PLACEHOLDER — Entity page flow
 
 #### Filter by code (topic)
 - Steps
@@ -134,7 +134,7 @@ A beginner‑friendly tour of Transparenta.eu. Learn to search an entity, see sp
 - Tip
   - Prefix searches are fast and precise.
 - Link
-  - [LINK PLACEHOLDER — Codes guide](#TODO-codes-guide)
+  - LINK PLACEHOLDER — Codes guide
 
 #### Compare years for one entity
 - Steps
@@ -146,7 +146,7 @@ A beginner‑friendly tour of Transparenta.eu. Learn to search an entity, see sp
 - Tip
   - Use charts for multi‑series comparisons over time.
 - Link
-  - [LINK PLACEHOLDER — Trend walkthrough](#TODO-trend)
+  - LINK PLACEHOLDER — Trend walkthrough
 
 #### Download a CSV ranking
 - Steps
@@ -159,7 +159,7 @@ A beginner‑friendly tour of Transparenta.eu. Learn to search an entity, see sp
 - Tip
   - Sort by Per Capita to see fair comparisons first.
 - Link
-  - [LINK PLACEHOLDER — Entity Analytics](#TODO-entity-analytics)
+  - LINK PLACEHOLDER — Entity Analytics
 
 ### Understanding the Numbers
 - Totals vs sub‑totals

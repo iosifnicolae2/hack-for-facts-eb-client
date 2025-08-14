@@ -14,7 +14,7 @@ Rank institutions by spending or revenue. Filter by topic, sort columns, switch 
 6) Add a Functional prefix (e.g., 65)
 7) Click “Export CSV”
 
-![IMG PLACEHOLDER — Entity Analytics quickstart](./images/PLACEHOLDER-entity-analytics-quickstart.png "Open Entities, set filters, export CSV")
+<!-- ![IMG PLACEHOLDER — Entity Analytics quickstart](./images/PLACEHOLDER-entity-analytics-quickstart.png "Open Entities, set filters, export CSV") -->
 
 ### Guided Tour
 
@@ -28,7 +28,7 @@ Rank institutions by spending or revenue. Filter by topic, sort columns, switch 
 - Example
   - Open “Entities” to rank all city halls
 - Media
-  - [GIF PLACEHOLDER — Open Entities](./gifs/PLACEHOLDER-entity-analytics-open.gif)
+  <!-- - [GIF PLACEHOLDER — Open Entities](./gifs/PLACEHOLDER-entity-analytics-open.gif) -->
 
 #### Entity Analytics page
 - What you see
@@ -46,8 +46,8 @@ Rank institutions by spending or revenue. Filter by topic, sort columns, switch 
 - Example
   - Expenses, Per Capita, Year 2024, Functional 65; sort by Per Capita
 - Media
-  - ![IMG PLACEHOLDER — Ranking table](./images/PLACEHOLDER-entity-analytics-table.png "Filters, table, actions")
-  - [GIF PLACEHOLDER — Sort and export](./gifs/PLACEHOLDER-entity-analytics-sort-export.gif)
+  <!-- - ![IMG PLACEHOLDER — Ranking table](./images/PLACEHOLDER-entity-analytics-table.png "Filters, table, actions") -->
+  <!-- - [GIF PLACEHOLDER — Sort and export](./gifs/PLACEHOLDER-entity-analytics-sort-export.gif) -->
 
 #### Spending + Filters
 - What you see
@@ -65,7 +65,7 @@ Rank institutions by spending or revenue. Filter by topic, sort columns, switch 
 - Example
   - Expenses, Per Capita, 2024, Functional 65
 - Media
-  - ![IMG PLACEHOLDER — Filters panel](./images/PLACEHOLDER-entity-analytics-filters.png "Side, normalization, year, prefixes")
+  <!-- - ![IMG PLACEHOLDER — Filters panel](./images/PLACEHOLDER-entity-analytics-filters.png "Side, normalization, year, prefixes") -->
 
 #### Classifications (Functional/Economic)
 - What you see
@@ -78,7 +78,7 @@ Rank institutions by spending or revenue. Filter by topic, sort columns, switch 
 - Example
   - Functional “65” + Economic “10.01”
 - Media
-  - [GIF PLACEHOLDER — Add prefixes](./gifs/PLACEHOLDER-entity-analytics-prefixes.gif)
+  <!-- - [GIF PLACEHOLDER — Add prefixes](./gifs/PLACEHOLDER-entity-analytics-prefixes.gif) -->
 
 #### Compare
 - What you see
@@ -94,7 +94,7 @@ Rank institutions by spending or revenue. Filter by topic, sort columns, switch 
 - Example
   - Compact density + Both currency formats + Per Capita sort
 - Media
-  - ![IMG PLACEHOLDER — View menu](./images/PLACEHOLDER-entity-analytics-view.png "Density, Currency, Columns")
+  <!-- - ![IMG PLACEHOLDER — View menu](./images/PLACEHOLDER-entity-analytics-view.png "Density, Currency, Columns") -->
 
 #### Export / Share
 - What you see
@@ -107,7 +107,7 @@ Rank institutions by spending or revenue. Filter by topic, sort columns, switch 
 - Example
   - Download the 2024 Education per‑capita ranking
 - Media
-  - [GIF PLACEHOLDER — Export CSV](./gifs/PLACEHOLDER-entity-analytics-export-csv.gif)
+  <!-- - [GIF PLACEHOLDER — Export CSV](./gifs/PLACEHOLDER-entity-analytics-export-csv.gif) -->
 
 ### See also
 - Entity Details — deep‑dive a single institution: [entity-details](./entity-details.md)
@@ -116,7 +116,7 @@ Rank institutions by spending or revenue. Filter by topic, sort columns, switch 
 
 ### Common Tasks (recipes)
 
-#### Find spending for {Entity, Year}
+#### Find spending for `{Entity, Year}`
 - Steps
   1) Open “Entities”
   2) Set Cheltuieli or Venituri
@@ -127,7 +127,7 @@ Rank institutions by spending or revenue. Filter by topic, sort columns, switch 
 - Tip
   - Use Per Capita for fairness
 - Link
-  - [LINK PLACEHOLDER — Entity/year ranking](#TODO-entity-analytics-entity-year)
+  - LINK PLACEHOLDER — Entity/year ranking
 
 #### Filter by code (topic)
 - Steps
@@ -140,7 +140,7 @@ Rank institutions by spending or revenue. Filter by topic, sort columns, switch 
 - Tip
   - Shorter prefixes give broader coverage
 - Link
-  - [LINK PLACEHOLDER — Topic filters](#TODO-entity-analytics-topic)
+  - LINK PLACEHOLDER — Topic filters
 
 #### Compare years for one entity
 - Steps
@@ -152,7 +152,7 @@ Rank institutions by spending or revenue. Filter by topic, sort columns, switch 
 - Tip
   - Use Charts to compare multiple entities
 - Link
-  - [LINK PLACEHOLDER — Trend walkthrough](#TODO-entity-analytics-trend)
+  - LINK PLACEHOLDER — Trend walkthrough
 
 #### Download CSV
 - Steps
@@ -164,7 +164,7 @@ Rank institutions by spending or revenue. Filter by topic, sort columns, switch 
 - Tip
   - Sort by Per Capita for fair comparisons
 - Link
-  - [LINK PLACEHOLDER — CSV export](#TODO-entity-analytics-csv)
+  - LINK PLACEHOLDER — CSV export
 
 ### Understanding the Numbers
 - Per Capita vs Total

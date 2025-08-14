@@ -18,7 +18,7 @@ A clear path to go from a question to an answer you can share. This workflow use
 6) Build a chart to compare two cities: [Charts – New](https://transparenta.eu/charts/new)
 7) Click Share Chart → Copy Link and paste it
 
-![IMG PLACEHOLDER — Workflow quickstart](./images/PLACEHOLDER-workflow-quickstart.png "Entities → Map → Entity → Chart → Share")
+<!-- ![IMG PLACEHOLDER — Workflow quickstart](./images/PLACEHOLDER-workflow-quickstart.png "Entities → Map → Entity → Chart → Share") -->
 
 ### Guided Tour
 
@@ -32,7 +32,7 @@ A clear path to go from a question to an answer you can share. This workflow use
 - Example
   - Top Education per‑capita spenders in 2024.
 - Media
-  - ![IMG PLACEHOLDER — Entities ranking](./images/PLACEHOLDER-workflow-entities.png "Filters + sortable table")
+  <!-- - ![IMG PLACEHOLDER — Entities ranking](./images/PLACEHOLDER-workflow-entities.png "Filters + sortable table") -->
 
 #### 2) Validate patterns on the Map
 - What you see
@@ -44,7 +44,7 @@ A clear path to go from a question to an answer you can share. This workflow use
 - Example
   - Counties with higher Education per‑capita spending cluster regionally.
 - Media
-  - ![IMG PLACEHOLDER — Map validation](./images/PLACEHOLDER-workflow-map.png "Heatmap + legend")
+  <!-- - ![IMG PLACEHOLDER — Map validation](./images/PLACEHOLDER-workflow-map.png "Heatmap + legend") -->
 
 #### 3) Investigate on the Entity page
 - What you see
@@ -57,7 +57,7 @@ A clear path to go from a question to an answer you can share. This workflow use
 - Example
   - See whether Education levels or growth rates explain the ranking.
 - Media
-  - ![IMG PLACEHOLDER — Entity deep‑dive](./images/PLACEHOLDER-workflow-entity.png "Year + trend + columns + analytics")
+  <!-- - ![IMG PLACEHOLDER — Entity deep‑dive](./images/PLACEHOLDER-workflow-entity.png "Year + trend + columns + analytics") -->
 
 #### 4) Communicate with Charts (and share)
 - What you see
@@ -70,7 +70,7 @@ A clear path to go from a question to an answer you can share. This workflow use
 - Example
   - “Sibiu vs Cluj — Education per capita (2019–2024)”.
 - Media
-  - ![IMG PLACEHOLDER — Shareable chart](./images/PLACEHOLDER-workflow-chart.png "Series + type + share")
+  <!-- - ![IMG PLACEHOLDER — Shareable chart](./images/PLACEHOLDER-workflow-chart.png "Series + type + share") -->
 
 ### Common Tasks (recipes)
 

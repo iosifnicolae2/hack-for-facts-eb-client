@@ -28,7 +28,30 @@ const config = {
           sidebarPath: './sidebars.js',
           editUrl: undefined,
         },
-        blog: false,
+        blog: {
+          path: 'blog',
+          routeBasePath: '/blog',
+          showReadingTime: true,
+          blogSidebarTitle: 'Recent posts',
+          blogSidebarCount: 10,
+          postsPerPage: 10,
+          blogTitle: 'Transparenta.eu Blog',
+          blogDescription: 'News, release notes, and deep dives into Transparenta.eu features and data workflows.',
+          editUrl: 'https://github.com/ClaudiuBogdan/hack-for-facts-eb-client/edit/dev/docs-site/blog/',
+          editLocalizedFiles: true,
+          authorsMapPath: './authors.yml',
+          feedOptions: {
+            type: 'all',
+            copyright: `© ${new Date().getFullYear()} Transparenta.eu`,
+            createFeedItems: async (params) => {
+              const { blogPosts, defaultCreateFeedItems, ...rest } = params;
+              return defaultCreateFeedItems({
+                blogPosts: blogPosts.slice(0, 10),
+                ...rest,
+              });
+            },
+          },
+        },
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -40,6 +63,10 @@ const config = {
       title: 'Transparenta.eu',
       items: [
         { type: 'doc', docId: 'index', label: 'Docs', position: 'left' },
+        { to: '/blog', label: 'Blog', position: 'left' },
+        // { to: '/blog/tags', label: 'Tags', position: 'left' },
+        // { to: '/blog/archive', label: 'Archive', position: 'left' },
+        // { to: '/blog/authors', label: 'Authors', position: 'left' },
         { href: 'https://github.com/ClaudiuBogdan/hack-for-facts-eb-client', label: 'GitHub', position: 'right' },
         { type: 'localeDropdown', position: 'right' },
       ],
@@ -67,8 +94,23 @@ const config = {
       ],
       copyright: `© ${new Date().getFullYear()} Transparenta.eu` ,
     },
+    breadcrumbs: true,
     prism: {},
   },
+  plugins: [
+    [
+      require.resolve('@easyops-cn/docusaurus-search-local'),
+      {
+        hashed: true,
+        indexDocs: true,
+        indexBlog: true,
+        docsRouteBasePath: '/',
+        blogRouteBasePath: '/blog',
+        language: ['ro', 'en'],
+        highlightSearchTermsOnTargetPage: true,
+      },
+    ],
+  ],
 };
 
 module.exports = config;

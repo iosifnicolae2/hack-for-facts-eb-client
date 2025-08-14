@@ -95,8 +95,8 @@ Notes
 
 See also
 
-- Filters cheat‑sheet: [api-filters-pagination-sorting](./filters-pagination-sorting.md)
-- Cookbook: [api-cookbook](./cookbook.md)
+- Filters cheat‑sheet: [filters-pagination-sorting](./filters-pagination-sorting.md)
+- Cookbook: [cookbook](./cookbook.md)
 
 ### Entity analytics (entityAnalytics)
 

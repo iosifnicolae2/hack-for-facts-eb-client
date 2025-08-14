@@ -210,8 +210,8 @@ Notes
 
 ### See also
 
-- GraphQL schema & types: [api-graphql-schema-and-types](./graphql-schema-and-types.md)
-- GraphQL queries & examples: [api-graphql-queries](./graphql-queries.md)
-- Unified filter deep dive (SQL mappings): [api-unified-filter-interface](./unified-filter-interface.md)
+- GraphQL schema & types: [graphql-schema-and-types](./graphql-schema-and-types.md)
+- GraphQL queries & examples: [graphql-queries](./graphql-queries.md)
+- Unified filter deep dive (SQL mappings): [unified-filter-interface](./unified-filter-interface.md)
 
 

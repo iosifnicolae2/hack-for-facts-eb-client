@@ -14,7 +14,7 @@ See public spending across Romania on a heatmap. Compare UATs and counties, swit
 6) Click a region to open its entity
 7) Switch to “Data Table View” if needed
 
-![IMG PLACEHOLDER — Map quickstart](./images/PLACEHOLDER-map-quickstart.png "Open Map, set filters, click a region")
+<!-- ![IMG PLACEHOLDER — Map quickstart](./images/PLACEHOLDER-map-quickstart.png "Open Map, set filters, click a region") -->
 
 ### Guided Tour
 
@@ -28,7 +28,7 @@ See public spending across Romania on a heatmap. Compare UATs and counties, swit
 - Example
   - Open “Map” to start broad
 - Media
-  - [GIF PLACEHOLDER — Open Map](./gifs/PLACEHOLDER-map-open.gif)
+  <!-- - [GIF PLACEHOLDER — Open Map](./gifs/PLACEHOLDER-map-open.gif) -->
 
 #### Entity page
 - What you see
@@ -42,7 +42,7 @@ See public spending across Romania on a heatmap. Compare UATs and counties, swit
 - Example
   - Click “Sibiu” on the map, open the entity
 - Media
-  - ![IMG PLACEHOLDER — Entity from map](./images/PLACEHOLDER-map-to-entity.png "Click region → entity")
+  <!-- - ![IMG PLACEHOLDER — Entity from map](./images/PLACEHOLDER-map-to-entity.png "Click region → entity") -->
 
 #### Spending + Filters (on Map)
 - What you see
@@ -60,8 +60,8 @@ See public spending across Romania on a heatmap. Compare UATs and counties, swit
 - Example
   - UAT, Cheltuieli, Per Capita, Year 2024, Functional 65
 - Media
-  - ![IMG PLACEHOLDER — Filters](./images/PLACEHOLDER-map-filters.png "UAT/Județ, account side, normalization, year")
-  - [GIF PLACEHOLDER — Legend on mobile](./gifs/PLACEHOLDER-map-legend.gif)
+  <!-- - ![IMG PLACEHOLDER — Filters](./images/PLACEHOLDER-map-filters.png "UAT/Județ, account side, normalization, year") -->
+  <!-- - [GIF PLACEHOLDER — Legend on mobile](./gifs/PLACEHOLDER-map-legend.gif) -->
 
 #### Classifications (Functional/Economic)
 - What you see
@@ -74,7 +74,7 @@ See public spending across Romania on a heatmap. Compare UATs and counties, swit
 - Example
   - “65” for Education
 - Media
-  - [GIF PLACEHOLDER — Add prefixes](./gifs/PLACEHOLDER-map-prefixes.gif)
+  <!-- - [GIF PLACEHOLDER — Add prefixes](./gifs/PLACEHOLDER-map-prefixes.gif) -->
 
 #### Compare
 - What you see
@@ -89,7 +89,7 @@ See public spending across Romania on a heatmap. Compare UATs and counties, swit
 - Example
   - Compare counties by Education per capita in 2024
 - Media
-  - ![IMG PLACEHOLDER — Map compare](./images/PLACEHOLDER-map-compare.png "Heatmap + table")
+  <!-- - ![IMG PLACEHOLDER — Map compare](./images/PLACEHOLDER-map-compare.png "Heatmap + table") -->
 
 #### Export/Share
 - What you see
@@ -102,12 +102,12 @@ See public spending across Romania on a heatmap. Compare UATs and counties, swit
 - Example
   - Export a county ranking for a story
 - Media
-  - [GIF PLACEHOLDER — Export CSV](./gifs/PLACEHOLDER-export-csv.gif)
-  - [GIF PLACEHOLDER — Copy chart link](./gifs/PLACEHOLDER-copy-link.gif)
+  <!-- - [GIF PLACEHOLDER — Export CSV](./gifs/PLACEHOLDER-export-csv.gif) -->
+  <!-- - [GIF PLACEHOLDER — Copy chart link](./gifs/PLACEHOLDER-copy-link.gif) -->
 
 ### Common Tasks (recipes)
 
-#### Find spending for {Entity, Year}
+#### Find spending for `{Entity, Year}`
 - Steps
   1) On Map, click the region
   2) On the entity page, set “Reporting Year:”
@@ -117,7 +117,7 @@ See public spending across Romania on a heatmap. Compare UATs and counties, swit
 - Tip
   - Click a year on the trend to sync sections
 - Link
-  - [LINK PLACEHOLDER — Entity from map](#TODO-map-to-entity)
+  <!-- - [LINK PLACEHOLDER — Entity from map](#TODO-map-to-entity) -->
 
 #### Filter by code (topic)
 - Steps
@@ -130,7 +130,7 @@ See public spending across Romania on a heatmap. Compare UATs and counties, swit
 - Tip
   - Use short prefixes for broader coverage
 - Link
-  - [LINK PLACEHOLDER — Prefix filters](#TODO-map-prefixes)
+  <!-- - [LINK PLACEHOLDER — Prefix filters](#TODO-map-prefixes) -->
 
 #### Compare years for one area
 - Steps
@@ -142,7 +142,7 @@ See public spending across Romania on a heatmap. Compare UATs and counties, swit
 - Tip
   - Use charts to visualize multi‑year lines
 - Link
-  - [LINK PLACEHOLDER — Year comparison](#TODO-map-year-compare)
+  - LINK PLACEHOLDER — Year comparison
 
 #### Download a CSV
 - Steps
@@ -155,7 +155,7 @@ See public spending across Romania on a heatmap. Compare UATs and counties, swit
 - Tip
   - Sort by Per Capita for fair rankings
 - Link
-  - [LINK PLACEHOLDER — Entities ranking](#TODO-entities-ranking)
+  - LINK PLACEHOLDER — Entities ranking
 
 ### Understanding the Numbers
 - Per Capita vs Total

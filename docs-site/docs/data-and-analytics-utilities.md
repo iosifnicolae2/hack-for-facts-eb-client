@@ -14,7 +14,7 @@ Turn questions into clear answers. Search an institution, see Cheltuieli/Venitur
 6) Add a Functional prefix (e.g., 65)
 7) Export CSV or copy a chart link
 
-![IMG PLACEHOLDER — Data & Analytics quickstart](./images/PLACEHOLDER-data-and-analytics-utilities.png "Home, search, entity, filters, export/share")
+<!-- ![IMG PLACEHOLDER — Data & Analytics quickstart](./images/PLACEHOLDER-data-and-analytics-utilities.png "Home, search, entity, filters, export/share") -->
 
 ## Guided Tour
 
@@ -29,7 +29,7 @@ Turn questions into clear answers. Search an institution, see Cheltuieli/Venitur
 - Example
   - Open “Municipiul Sibiu”
 - Media
-  - [GIF PLACEHOLDER — Home search](./gifs/PLACEHOLDER-data-and-analytics-utilities-home-search.gif)
+  <!-- - [GIF PLACEHOLDER — Home search](./gifs/PLACEHOLDER-data-and-analytics-utilities-home-search.gif) -->
 
 ### Entity page
 - What you see
@@ -47,8 +47,8 @@ Turn questions into clear answers. Search an institution, see Cheltuieli/Venitur
 - Example
   - Year 2024. Search Expenses for “Învățământ”
 - Media
-  - ![IMG PLACEHOLDER — Entity page](./images/PLACEHOLDER-data-and-analytics-utilities-entity.png "Header, Year, KPIs, columns")
-  - [GIF PLACEHOLDER — Year + trend](./gifs/PLACEHOLDER-data-and-analytics-utilities-entity-year.gif)
+  <!-- - ![IMG PLACEHOLDER — Entity page](./images/PLACEHOLDER-data-and-analytics-utilities-entity.png "Header, Year, KPIs, columns") -->
+  <!-- - [GIF PLACEHOLDER — Year + trend](./gifs/PLACEHOLDER-data-and-analytics-utilities-entity-year.gif) -->
 
 ### Spending + Filters
 - What you see
@@ -65,7 +65,7 @@ Turn questions into clear answers. Search an institution, see Cheltuieli/Venitur
 - Example
   - Expenses, Per Capita, 2024, Functional 65
 - Media
-  - ![IMG PLACEHOLDER — Filters](./images/PLACEHOLDER-data-and-analytics-utilities-filters.png "Side, normalization, year, codes")
+  <!-- - ![IMG PLACEHOLDER — Filters](./images/PLACEHOLDER-data-and-analytics-utilities-filters.png "Side, normalization, year, codes") -->
 
 ### Classifications (Functional/Economic)
 - What you see
@@ -78,7 +78,7 @@ Turn questions into clear answers. Search an institution, see Cheltuieli/Venitur
 - Example
   - 65 + 10.01 for salaries in Education
 - Media
-  - [GIF PLACEHOLDER — Add prefixes](./gifs/PLACEHOLDER-data-and-analytics-utilities-prefixes.gif)
+  <!-- - [GIF PLACEHOLDER — Add prefixes](./gifs/PLACEHOLDER-data-and-analytics-utilities-prefixes.gif) -->
 
 ### Compare
 - What you see
@@ -93,7 +93,7 @@ Turn questions into clear answers. Search an institution, see Cheltuieli/Venitur
 - Example
   - Compare two cities on Education per capita
 - Media
-  - ![IMG PLACEHOLDER — Compare](./images/PLACEHOLDER-data-and-analytics-utilities-compare.png "Map + ranking + chart")
+  <!-- - ![IMG PLACEHOLDER — Compare](./images/PLACEHOLDER-data-and-analytics-utilities-compare.png "Map + ranking + chart") -->
 
 ### Export / Share
 - What you see
@@ -106,12 +106,12 @@ Turn questions into clear answers. Search an institution, see Cheltuieli/Venitur
 - Example
   - Export 2024 Education ranking; share a chart link
 - Media
-  - [GIF PLACEHOLDER — Export CSV](./gifs/PLACEHOLDER-data-and-analytics-utilities-export-csv.gif)
-  - [GIF PLACEHOLDER — Copy Link](./gifs/PLACEHOLDER-data-and-analytics-utilities-copy-link.gif)
+  <!-- - [GIF PLACEHOLDER — Export CSV](./gifs/PLACEHOLDER-data-and-analytics-utilities-export-csv.gif) -->
+  <!-- - [GIF PLACEHOLDER — Copy Link](./gifs/PLACEHOLDER-data-and-analytics-utilities-copy-link.gif) -->
 
 ## Common Tasks (recipes)
 
-### Find spending for {Entity, Year}
+### Find spending for `{Entity, Year}`
 - Steps
   1) Search and open the entity
   2) Select “Reporting Year:”
@@ -121,7 +121,7 @@ Turn questions into clear answers. Search an institution, see Cheltuieli/Venitur
 - Tip
   - Click a year on the chart to sync
 - Link
-  - [LINK PLACEHOLDER — Entity flow](#TODO-data-and-analytics-utilities-entity-year)
+  - LINK PLACEHOLDER — Entity flow
 
 ### Filter by code (topic)
 - Steps
@@ -134,7 +134,7 @@ Turn questions into clear answers. Search an institution, see Cheltuieli/Venitur
 - Tip
   - Shorter prefix = broader results
 - Link
-  - [LINK PLACEHOLDER — Topic filters](#TODO-data-and-analytics-utilities-topic)
+  - LINK PLACEHOLDER — Topic filters
 
 ### Compare years for one entity
 - Steps
@@ -146,7 +146,7 @@ Turn questions into clear answers. Search an institution, see Cheltuieli/Venitur
 - Tip
   - Use Charts for multi‑series comparisons
 - Link
-  - [LINK PLACEHOLDER — Trend walkthrough](#TODO-data-and-analytics-utilities-trend)
+  - LINK PLACEHOLDER — Trend walkthrough
 
 ### Download a CSV ranking
 - Steps
@@ -159,7 +159,7 @@ Turn questions into clear answers. Search an institution, see Cheltuieli/Venitur
 - Tip
   - Sort by Per Capita for fair comparisons
 - Link
-  - [LINK PLACEHOLDER — Entities ranking](#TODO-data-and-analytics-utilities-csv)
+  - LINK PLACEHOLDER — Entities ranking
 
 ## Understanding the Numbers
 - Totals vs sub‑totals

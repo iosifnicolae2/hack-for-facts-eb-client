@@ -16,7 +16,7 @@ Transparenta.eu is designed to fail safely and respect your privacy. If somethin
 4) If you opted‑in, enhanced error reports help us fix issues faster.
 5) You can change your choice anytime from Cookie Settings.
 
-![IMG PLACEHOLDER — Error & telemetry quickstart](./images/PLACEHOLDER-error-quickstart.png "Cookie banner, error message with retry")
+<!-- ![IMG PLACEHOLDER — Error & telemetry quickstart](./images/PLACEHOLDER-eryror-quickstart.png "Cookie banner, error message with retry") -->
 
 ### Guided Tour
 
@@ -30,7 +30,7 @@ Transparenta.eu is designed to fail safely and respect your privacy. If somethin
 - Example
   - Start with Essential only; turn analytics on later.
 - Media
-  - [GIF PLACEHOLDER — Cookie consent](./gifs/PLACEHOLDER-error-cookies.gif)
+  <!-- - [GIF PLACEHOLDER — Cookie consent](./gifs/PLACEHOLDER-error-cookies.gif) -->
 
 #### Error boundaries (safe failure)
 - What you see
@@ -43,7 +43,7 @@ Transparenta.eu is designed to fail safely and respect your privacy. If somethin
 - Example
   - Network hiccup while loading a chart → Retry succeeds.
 - Media
-  - ![IMG PLACEHOLDER — Error UI](./images/PLACEHOLDER-error-ui.png "Error message with retry and guidance")
+  <!-- - ![IMG PLACEHOLDER — Error UI](./images/PLACEHOLDER-error-ui.png "Error message with retry and guidance") -->
 
 #### Enhanced error reports (opt‑in)
 - What you see
@@ -55,7 +55,7 @@ Transparenta.eu is designed to fail safely and respect your privacy. If somethin
 - Example
   - A rare UI crash is reported (without personal content) to help fix it.
 - Media
-  - [GIF PLACEHOLDER — Toggle enhanced errors](./gifs/PLACEHOLDER-error-toggle.gif)
+  <!-- - [GIF PLACEHOLDER — Toggle enhanced errors](./gifs/PLACEHOLDER-error-toggle.gif) -->
 
 #### Network and data errors
 - What you see
@@ -67,7 +67,7 @@ Transparenta.eu is designed to fail safely and respect your privacy. If somethin
 - Example
   - A slow connection causes a timeout; Retry works.
 - Media
-  - ![IMG PLACEHOLDER — Network error](./images/PLACEHOLDER-error-network.png "Retry and guidance for data errors")
+  <!-- - ![IMG PLACEHOLDER — Network error](./images/PLACEHOLDER-error-network.png "Retry and guidance for data errors") -->
 
 ### Common Tasks (recipes)
 
@@ -80,7 +80,7 @@ Transparenta.eu is designed to fail safely and respect your privacy. If somethin
 - Tip
   - You can keep analytics off and still use all features.
 - Link
-  - [LINK PLACEHOLDER — Cookie Settings](#TODO-error-cookies)
+  - LINK PLACEHOLDER — Cookie Settings
 
 #### Recover from an error
 - Steps
@@ -92,7 +92,7 @@ Transparenta.eu is designed to fail safely and respect your privacy. If somethin
 - Tip
   - For charts, try re‑opening from the Charts list.
 - Link
-  - [LINK PLACEHOLDER — Error recovery](#TODO-error-recovery)
+  - LINK PLACEHOLDER — Error recovery
 
 #### Report an issue (with consent)
 - Steps
@@ -104,7 +104,7 @@ Transparenta.eu is designed to fail safely and respect your privacy. If somethin
 - Tip
   - If you prefer, keep Essential only; the app works the same.
 - Link
-  - [LINK PLACEHOLDER — Contact support](#TODO-error-contact)
+  - LINK PLACEHOLDER — Contact support
 
 ### Understanding the Numbers & Data
 - Consent‑aware telemetry

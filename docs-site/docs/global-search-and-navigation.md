@@ -18,7 +18,7 @@ Find what you need fast. Use the Home search, keyboard shortcuts, and clear page
 6) Switch Cheltuieli (Expenses) or Venituri (Revenues)
 7) Use sidebar cards to open “Map”, “Entities”, or “Charts”
 
-![IMG PLACEHOLDER — Quick Start](./images/PLACEHOLDER-global-search-quickstart.png "Home, search, entity, navigate")
+<!-- ![IMG PLACEHOLDER — Quick Start](./images/PLACEHOLDER-global-search-quickstart.png "Home, search, entity, navigate") -->
 
 ### Guided Tour
 
@@ -33,7 +33,7 @@ Find what you need fast. Use the Home search, keyboard shortcuts, and clear page
 - Example
   - Search “Sibiu”, open “Municipiul Sibiu”
 - Media
-  - [GIF PLACEHOLDER — Home search](./gifs/PLACEHOLDER-global-search-home.gif)
+  <!-- - [GIF PLACEHOLDER — Home search](./gifs/PLACEHOLDER-global-search-home.gif) -->
 
 #### Entity page
 - What you see
@@ -49,7 +49,7 @@ Find what you need fast. Use the Home search, keyboard shortcuts, and clear page
 - Example
   - Year 2024, search “Învățământ” in Expenses
 - Media
-  - ![IMG PLACEHOLDER — Entity page](./images/PLACEHOLDER-global-search-entity.png "Header, Year, KPIs, columns")
+  <!-- - ![IMG PLACEHOLDER — Entity page](./images/PLACEHOLDER-global-search-entity.png "Header, Year, KPIs, columns") -->
 
 #### Spending + Filters
 - What you see
@@ -64,7 +64,7 @@ Find what you need fast. Use the Home search, keyboard shortcuts, and clear page
 - Example
   - Per Capita, Year 2024, Functional 65 (Education)
 - Media
-  - ![IMG PLACEHOLDER — Filters](./images/PLACEHOLDER-global-search-filters.png "Account side, normalization, codes")
+  <!-- - ![IMG PLACEHOLDER — Filters](./images/PLACEHOLDER-global-search-filters.png "Account side, normalization, codes") -->
 
 #### Classifications (Functional/Economic)
 - What you see
@@ -77,7 +77,7 @@ Find what you need fast. Use the Home search, keyboard shortcuts, and clear page
 - Example
   - “65” + “10.01” to focus salaries in Education
 - Media
-  - [GIF PLACEHOLDER — Add prefixes](./gifs/PLACEHOLDER-global-search-prefixes.gif)
+  <!-- - [GIF PLACEHOLDER — Add prefixes](./gifs/PLACEHOLDER-global-search-prefixes.gif) -->
 
 #### Compare
 - What you see
@@ -93,7 +93,7 @@ Find what you need fast. Use the Home search, keyboard shortcuts, and clear page
 - Example
   - Compare two cities on per‑capita Education
 - Media
-  - ![IMG PLACEHOLDER — Compare](./images/PLACEHOLDER-global-search-compare.png "Map + ranking + chart")
+  <!-- - ![IMG PLACEHOLDER — Compare](./images/PLACEHOLDER-global-search-compare.png "Map + ranking + chart") -->
 
 #### Export / Share
 - What you see
@@ -106,12 +106,12 @@ Find what you need fast. Use the Home search, keyboard shortcuts, and clear page
 - Example
   - Download a 2024 Education ranking
 - Media
-  - [GIF PLACEHOLDER — Export CSV](./gifs/PLACEHOLDER-global-search-export-csv.gif)
-  - [GIF PLACEHOLDER — Copy Link](./gifs/PLACEHOLDER-global-search-copy-link.gif)
+  <!-- - [GIF PLACEHOLDER — Export CSV](./gifs/PLACEHOLDER-global-search-export-csv.gif) -->
+  <!-- - [GIF PLACEHOLDER — Copy Link](./gifs/PLACEHOLDER-global-search-copy-link.gif) -->
 
 ### Common Tasks (recipes)
 
-#### Find spending for {Entity, Year}
+#### Find spending for `{Entity, Year}`
 - Steps
   1) Press ⌘/Ctrl+K, search, open the entity
   2) Select “Reporting Year:”
@@ -121,7 +121,7 @@ Find what you need fast. Use the Home search, keyboard shortcuts, and clear page
 - Tip
   - Click a year on the trend to sync
 - Link
-  - [LINK PLACEHOLDER — Entity flow](#TODO-global-search-entity-year)
+  - LINK PLACEHOLDER — Entity flow
 
 #### Filter by code (topic)
 - Steps
@@ -134,7 +134,7 @@ Find what you need fast. Use the Home search, keyboard shortcuts, and clear page
 - Tip
   - Prefer prefixes for speed and clarity
 - Link
-  - [LINK PLACEHOLDER — Topic filters](#TODO-global-search-topic-filters)
+  - LINK PLACEHOLDER — Topic filters
 
 #### Compare years for one entity
 - Steps
@@ -146,7 +146,7 @@ Find what you need fast. Use the Home search, keyboard shortcuts, and clear page
 - Tip
   - Use a chart for multi‑series views
 - Link
-  - [LINK PLACEHOLDER — Trend walkthrough](#TODO-global-search-trend)
+  - LINK PLACEHOLDER — Trend walkthrough
 
 #### Download a CSV ranking
 - Steps
@@ -159,7 +159,7 @@ Find what you need fast. Use the Home search, keyboard shortcuts, and clear page
 - Tip
   - Sort by Per Capita for fair comparisons
 - Link
-  - [LINK PLACEHOLDER — Entities ranking](#TODO-global-search-entities-ranking)
+  - LINK PLACEHOLDER — Entities ranking
 
 ### Understanding the Numbers
 - Totals vs sub‑totals
@@ -190,6 +190,23 @@ Find what you need fast. Use the Home search, keyboard shortcuts, and clear page
   - ⌘/Ctrl+C/X/V copy/cut/paste series; ⌘/Ctrl+D duplicate
 - Mobile
   - On Map, “Filters” and “Legend” open as modals
+
+### Keyboard shortcuts
+
+Use these shortcuts to move faster across pages. On macOS, “mod” is Cmd (⌘); on Windows/Linux, it’s Ctrl.
+
+| Shortcut | Where it works | What it does |
+| --- | --- | --- |
+| mod+K | Home, most pages | Focus or toggle global entity search |
+| mod+; | Entity page | Open the “Reporting Year” selector |
+| mod+D | Charts – Series list | Duplicate selected series |
+| Esc | Floating search dialog | Close dialog |
+| Cmd/Ctrl (hold) | Map | Temporarily enable scroll wheel zoom while pressed |
+
+Notes
+
+- Some shortcuts are context‑aware and only act when the component exists on the page (e.g., Year selector on the entity page).
+- On Map, you can also toggle persistent scroll zoom from the map control; holding Cmd/Ctrl enables it temporarily.
 
 ### Privacy & Data
 - Sources

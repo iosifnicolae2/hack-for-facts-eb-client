@@ -1,5 +1,4 @@
 ---
-id: api-index
 title: API – Overview
 slug: /api
 ---
@@ -37,8 +36,8 @@ Next steps
 
 See also
 
-- API Getting Started: [api-getting-started](./getting-started.md)
-- Cookbook recipes: [api-cookbook](./cookbook.md)
- - Filters, pagination, sorting: [api-filters-pagination-sorting](./filters-pagination-sorting.md)
+- API Getting Started: [getting-started](./getting-started.md)
+- Cookbook recipes: [cookbook](./cookbook.md)
+ - Filters, pagination, sorting: [filters-pagination-sorting](./filters-pagination-sorting.md)
 
 

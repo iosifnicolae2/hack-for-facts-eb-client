@@ -1,5 +1,5 @@
 ---
-id: api-graphql-reference
+id: graphql-reference
 title: GraphQL – Query Reference
 ---
 

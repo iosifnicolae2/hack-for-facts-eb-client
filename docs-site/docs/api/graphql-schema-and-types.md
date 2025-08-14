@@ -1,5 +1,5 @@
 ---
-id: api-graphql-schema-and-types
+id: graphql-schema-and-types
 title: GraphQL – Schema and Types
 ---
 
@@ -54,7 +54,7 @@ Notes
 
 See also
 
-- Queries and examples: [api-graphql-queries](./graphql-queries.md)
-- Filters cheat‑sheet: [api-filters-pagination-sorting](./filters-pagination-sorting.md)
+- Queries and examples: [graphql-queries](./graphql-queries.md)
+- Filters cheat‑sheet: [filters-pagination-sorting](./filters-pagination-sorting.md)
 
 

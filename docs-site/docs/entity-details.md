@@ -14,7 +14,7 @@ See a complete view of one institution. Pick the year, read KPIs, scan Expenses 
 6) Search “Învățământ” in Expenses
 7) Open “Reports” to download files
 
-![IMG PLACEHOLDER — Entity quickstart](./images/PLACEHOLDER-entity-quickstart.png "Header, Year, KPIs, columns")
+<!-- ![IMG PLACEHOLDER — Entity quickstart](./images/PLACEHOLDER-entity-quickstart.png "Header, Year, KPIs, columns") -->
 
 ### Guided Tour
 
@@ -29,7 +29,7 @@ See a complete view of one institution. Pick the year, read KPIs, scan Expenses 
 - Example
   - Open “Municipiul Sibiu”
 - Media
-  - [GIF PLACEHOLDER — Home search](./gifs/PLACEHOLDER-entity-home-search.gif)
+  <!-- - [GIF PLACEHOLDER — Home search](./gifs/PLACEHOLDER-entity-home-search.gif) -->
 
 #### Entity page
 - What you see
@@ -47,8 +47,8 @@ See a complete view of one institution. Pick the year, read KPIs, scan Expenses 
 - Example
   - Year 2024. Search Expenses for “Învățământ”
 - Media
-  - ![IMG PLACEHOLDER — Entity page](./images/PLACEHOLDER-entity-page.png "Header, Year, KPIs, columns")
-  - [GIF PLACEHOLDER — Year + trend](./gifs/PLACEHOLDER-entity-year.gif)
+  <!-- - ![IMG PLACEHOLDER — Entity page](./images/PLACEHOLDER-entity-page.png "Header, Year, KPIs, columns") -->
+  <!-- - [GIF PLACEHOLDER — Year + trend](./gifs/PLACEHOLDER-entity-year.gif) -->
 
 #### Spending + Filters
 - What you see
@@ -64,7 +64,7 @@ See a complete view of one institution. Pick the year, read KPIs, scan Expenses 
 - Example
   - Expenses + Bar, highlight “Învățământ”
 - Media
-  - ![IMG PLACEHOLDER — Spending filters](./images/PLACEHOLDER-entity-spending.png "Columns, trend, analytics")
+  <!-- - ![IMG PLACEHOLDER — Spending filters](./images/PLACEHOLDER-entity-spending.png "Columns, trend, analytics") -->
 
 #### Classifications (Functional/Economic)
 - What you see
@@ -77,7 +77,7 @@ See a complete view of one institution. Pick the year, read KPIs, scan Expenses 
 - Example
   - Highlight Education, then switch to Bar
 - Media
-  - [GIF PLACEHOLDER — Column search](./gifs/PLACEHOLDER-entity-column-search.gif)
+  <!-- - [GIF PLACEHOLDER — Column search](./gifs/PLACEHOLDER-entity-column-search.gif) -->
 
 #### Compare
 - What you see
@@ -91,7 +91,7 @@ See a complete view of one institution. Pick the year, read KPIs, scan Expenses 
 - Example
   - Compare two municipalities on Education per capita
 - Media
-  - ![IMG PLACEHOLDER — Compare](./images/PLACEHOLDER-entity-compare.png "Map + ranking + chart")
+  <!-- - ![IMG PLACEHOLDER — Compare](./images/PLACEHOLDER-entity-compare.png "Map + ranking + chart") -->
 
 #### Export / Share
 - What you see
@@ -103,8 +103,8 @@ See a complete view of one institution. Pick the year, read KPIs, scan Expenses 
 - Example
   - Download a CSV for your topic and year
 - Media
-  - [GIF PLACEHOLDER — Export CSV](./gifs/PLACEHOLDER-entity-export-csv.gif)
-  - [GIF PLACEHOLDER — Copy Link](./gifs/PLACEHOLDER-entity-copy-link.gif)
+  <!-- - [GIF PLACEHOLDER — Export CSV](./gifs/PLACEHOLDER-entity-export-csv.gif) -->
+  <!-- - [GIF PLACEHOLDER — Copy Link](./gifs/PLACEHOLDER-entity-copy-link.gif) -->
 
 ### See also
 - Entity Analytics (ranking): [entity-analytics](./entity-analytics.md)
@@ -113,7 +113,7 @@ See a complete view of one institution. Pick the year, read KPIs, scan Expenses 
 
 ### Common Tasks (recipes)
 
-#### Find spending for {Entity, Year}
+#### Find spending for `{Entity, Year}`
 - Steps
   1) Search and open the entity
   2) Select “Reporting Year:”
@@ -123,7 +123,7 @@ See a complete view of one institution. Pick the year, read KPIs, scan Expenses 
 - Tip
   - Click a year on the chart to sync
 - Link
-  - [LINK PLACEHOLDER — Entity flow](#TODO-entity-flow)
+  - LINK PLACEHOLDER — Entity flow
 
 #### Filter by topic (simple)
 - Steps
@@ -135,7 +135,7 @@ See a complete view of one institution. Pick the year, read KPIs, scan Expenses 
 - Tip
   - Start general, then refine
 - Link
-  - [LINK PLACEHOLDER — Topic search](#TODO-topic-search)
+  - LINK PLACEHOLDER — Topic search
 
 #### Compare years for one entity
 - Steps
@@ -147,7 +147,7 @@ See a complete view of one institution. Pick the year, read KPIs, scan Expenses 
 - Tip
   - Use Charts for multi‑series comparisons
 - Link
-  - [LINK PLACEHOLDER — Trend walkthrough](#TODO-trend)
+  - LINK PLACEHOLDER — Trend walkthrough
 
 #### Download a CSV ranking
 - Steps
@@ -160,7 +160,7 @@ See a complete view of one institution. Pick the year, read KPIs, scan Expenses 
 - Tip
   - Sort by Per Capita for fair comparisons
 - Link
-  - [LINK PLACEHOLDER — Entities ranking](#TODO-entities-ranking)
+  - LINK PLACEHOLDER — Entities ranking
 
 ### Understanding the Numbers
 - Totals vs sub‑totals

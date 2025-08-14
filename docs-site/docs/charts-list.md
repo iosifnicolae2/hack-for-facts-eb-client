@@ -13,7 +13,7 @@ Save, find, and organize your charts. Search by text or hashtags, favorite often
 5) Click “Backup” to download your library
 6) Click “Restore” to import a backup
 
-![IMG PLACEHOLDER — Charts library quickstart](./images/PLACEHOLDER-charts-list-quickstart.png "Create, search, favorite, backup")
+<!-- ![IMG PLACEHOLDER — Charts library quickstart](./images/PLACEHOLDER-charts-list-quickstart.png "Create, search, favorite, backup") -->
 
 ### Guided Tour
 
@@ -29,7 +29,7 @@ Save, find, and organize your charts. Search by text or hashtags, favorite often
 - Example
   - Search “education #report” and sort by Newest
 - Media
-  - [GIF PLACEHOLDER — Search and sort](./gifs/PLACEHOLDER-charts-list-search.gif)
+  <!-- - [GIF PLACEHOLDER — Search and sort](./gifs/PLACEHOLDER-charts-list-search.gif) -->
 
 #### Entity page (context)
 - What you see
@@ -40,7 +40,7 @@ Save, find, and organize your charts. Search by text or hashtags, favorite often
 - Example
   - Turn an Education trend into a chart
 - Media
-  - ![IMG PLACEHOLDER — From entity to chart](./images/PLACEHOLDER-charts-list-entity.png "Entity → chart flow")
+  <!-- - ![IMG PLACEHOLDER — From entity to chart](./images/PLACEHOLDER-charts-list-entity.png "Entity → chart flow") -->
 
 #### Spending + Filters (inside chart creation)
 - What you see
@@ -52,7 +52,7 @@ Save, find, and organize your charts. Search by text or hashtags, favorite often
 - Example
   - Two city series, Education, per‑capita trend
 - Media
-  - [GIF PLACEHOLDER — Create series](./gifs/PLACEHOLDER-charts-list-create.gif)
+  <!-- - [GIF PLACEHOLDER — Create series](./gifs/PLACEHOLDER-charts-list-create.gif) -->
 
 #### Organize (Favorites & Categories)
 - What you see
@@ -65,7 +65,7 @@ Save, find, and organize your charts. Search by text or hashtags, favorite often
 - Example
   - Tag a chart “Education” and “2024”
 - Media
-  - ![IMG PLACEHOLDER — Favorites & categories](./images/PLACEHOLDER-charts-list-organize.png "Star + tags + tabs")
+  <!-- - ![IMG PLACEHOLDER — Favorites & categories](./images/PLACEHOLDER-charts-list-organize.png "Star + tags + tabs") -->
 
 #### Backup / Restore
 - What you see
@@ -78,7 +78,7 @@ Save, find, and organize your charts. Search by text or hashtags, favorite often
 - Example
   - Move your library to another device
 - Media
-  - [GIF PLACEHOLDER — Backup & restore](./gifs/PLACEHOLDER-charts-list-backup.gif)
+  <!-- - [GIF PLACEHOLDER — Backup & restore](./gifs/PLACEHOLDER-charts-list-backup.gif) -->
 
 #### Export / Share (chart detail)
 - What you see
@@ -90,7 +90,7 @@ Save, find, and organize your charts. Search by text or hashtags, favorite often
 - Example
   - Share a two‑city Education chart
 - Media
-  - [GIF PLACEHOLDER — Share chart](./gifs/PLACEHOLDER-charts-list-share.gif)
+  <!-- - [GIF PLACEHOLDER — Share chart](./gifs/PLACEHOLDER-charts-list-share.gif) -->
 
 ### Common Tasks (recipes)
 
@@ -103,7 +103,7 @@ Save, find, and organize your charts. Search by text or hashtags, favorite often
 - Tip
   - You can mix text and multiple hashtags
 - Link
-  - [LINK PLACEHOLDER — Hashtag search](#TODO-charts-list-hashtags)
+  - LINK PLACEHOLDER — Hashtag search
 
 #### Favorite and filter
 - Steps
@@ -114,7 +114,7 @@ Save, find, and organize your charts. Search by text or hashtags, favorite often
 - Tip
   - Use Favorites for quick access
 - Link
-  - [LINK PLACEHOLDER — Favorites](#TODO-charts-list-favorites)
+  - LINK PLACEHOLDER — Favorites
 
 #### Back up your library
 - Steps
@@ -125,7 +125,7 @@ Save, find, and organize your charts. Search by text or hashtags, favorite often
 - Tip
   - Keep it in cloud storage
 - Link
-  - [LINK PLACEHOLDER — Backup](#TODO-charts-list-backup)
+  - LINK PLACEHOLDER — Backup
 
 #### Restore a library
 - Steps
@@ -137,7 +137,7 @@ Save, find, and organize your charts. Search by text or hashtags, favorite often
 - Tip
   - “Keep both” duplicates imported charts as new
 - Link
-  - [LINK PLACEHOLDER — Restore](#TODO-charts-list-restore)
+  - LINK PLACEHOLDER — Restore
 
 ### Understanding the Numbers
 - Local‑first storage

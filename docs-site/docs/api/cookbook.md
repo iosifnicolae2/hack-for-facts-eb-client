@@ -1,5 +1,5 @@
 ---
-id: api-cookbook
+id: cookbook
 title: API – Cookbook (copy‑paste recipes)
 ---
 
@@ -166,8 +166,8 @@ query($ids:[ID!]!) {
 
 See also
 
-- GraphQL queries: [api-graphql-queries](./graphql-queries.md)
-- Unified filter deep dive: [api-unified-filter-interface](./unified-filter-interface.md)
-- Filters cheat‑sheet: [api-filters-pagination-sorting](./filters-pagination-sorting.md)
+- GraphQL queries: [graphql-queries](./graphql-queries.md)
+- Unified filter deep dive: [unified-filter-interface](./unified-filter-interface.md)
+- Filters cheat‑sheet: [filters-pagination-sorting](./filters-pagination-sorting.md)
 
 

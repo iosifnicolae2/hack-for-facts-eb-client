@@ -1,5 +1,5 @@
 ---
-id: api-errors-and-rate-limits
+id: errors-and-rate-limits
 title: Errors and Rate Limits
 ---
 
@@ -34,8 +34,8 @@ Best practices
 
 See also
 
-- Authentication & Security: [api-authentication-and-security](./authentication-and-security.md)
-- REST endpoints: [api-rest-endpoints](./rest-endpoints.md)
+- Authentication & Security: [authentication-and-security](./authentication-and-security.md)
+- REST endpoints: [rest-endpoints](./rest-endpoints.md)
 - Batched GraphQL queries are disabled.
 - Prefer pagination and targeted filters to reduce payload sizes.
 

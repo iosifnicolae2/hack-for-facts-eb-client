@@ -14,7 +14,7 @@ Share exactly what you see with a link. Transparenta.eu saves your current view 
 6) Send the link to anyone
 7) They’ll open the same view
 
-![IMG PLACEHOLDER — Deep‑links quickstart](./images/PLACEHOLDER-deeplinks-quickstart.png "Copy URL from Entity/Map/Entities; Copy Link from Charts")
+<!-- ![IMG PLACEHOLDER — Deep‑links quickstart](./images/PLACEHOLDER-deeplinks-quickstart.png "Copy URL from Entity/Map/Entities; Copy Link from Charts") -->
 
 ### Guided Tour
 
@@ -29,7 +29,7 @@ Share exactly what you see with a link. Transparenta.eu saves your current view 
 - Example
   - Open “Municipiul Sibiu”
 - Media
-  - [GIF PLACEHOLDER — Home search](./gifs/PLACEHOLDER-deeplinks-home-search.gif)
+  <!-- - [GIF PLACEHOLDER — Home search](./gifs/PLACEHOLDER-deeplinks-home-search.gif) -->
 
 #### Entity page
 - What you see
@@ -46,7 +46,7 @@ Share exactly what you see with a link. Transparenta.eu saves your current view 
 - Example
   - Share the entity view for 2024 with Expenses highlighted
 - Media
-  - ![IMG PLACEHOLDER — Entity deep‑link](./images/PLACEHOLDER-deeplinks-entity.png "Year, topic search, copy URL")
+  <!-- - ![IMG PLACEHOLDER — Entity deep‑link](./images/PLACEHOLDER-deeplinks-entity.png "Year, topic search, copy URL") -->
 
 #### Spending + Filters
 - What you see
@@ -63,7 +63,7 @@ Share exactly what you see with a link. Transparenta.eu saves your current view 
 - Example
   - A link to “Expenses, Per Capita, 2024, Education”
 - Media
-  - ![IMG PLACEHOLDER — Filters shared](./images/PLACEHOLDER-deeplinks-filters.png "Side, normalization, year, prefixes")
+  <!-- - ![IMG PLACEHOLDER — Filters shared](./images/PLACEHOLDER-deeplinks-filters.png "Side, normalization, year, prefixes") -->
 
 #### Classifications (Functional/Economic)
 - What you see
@@ -76,7 +76,7 @@ Share exactly what you see with a link. Transparenta.eu saves your current view 
 - Example
   - Share “Education (65) + Salaries (10.01)”
 - Media
-  - [GIF PLACEHOLDER — Add prefixes](./gifs/PLACEHOLDER-deeplinks-prefixes.gif)
+  <!-- - [GIF PLACEHOLDER — Add prefixes](./gifs/PLACEHOLDER-deeplinks-prefixes.gif) -->
 
 #### Compare
 - What you see
@@ -90,7 +90,7 @@ Share exactly what you see with a link. Transparenta.eu saves your current view 
 - Example
   - Share a Map link for “Education per capita in 2024”
 - Media
-  - ![IMG PLACEHOLDER — Compare deep‑links](./images/PLACEHOLDER-deeplinks-compare.png "Map/Entities/Charts shared views")
+  <!-- - ![IMG PLACEHOLDER — Compare deep‑links](./images/PLACEHOLDER-deeplinks-compare.png "Map/Entities/Charts shared views") -->
 
 #### Export / Share
 - What you see
@@ -103,8 +103,8 @@ Share exactly what you see with a link. Transparenta.eu saves your current view 
 - Example
   - Include a chart link and a CSV in a report
 - Media
-  - [GIF PLACEHOLDER — Copy chart link](./gifs/PLACEHOLDER-deeplinks-copy-link.gif)
-  - [GIF PLACEHOLDER — Export CSV](./gifs/PLACEHOLDER-deeplinks-export-csv.gif)
+  <!-- - [GIF PLACEHOLDER — Copy chart link](./gifs/PLACEHOLDER-deeplinks-copy-link.gif) -->
+  <!-- - [GIF PLACEHOLDER — Export CSV](./gifs/PLACEHOLDER-deeplinks-export-csv.gif) -->
 
 ### Common Tasks (recipes)
 
@@ -119,7 +119,7 @@ Share exactly what you see with a link. Transparenta.eu saves your current view 
 - Tip
   - Click a year on the trend to sync sections
 - Link
-  - [LINK PLACEHOLDER — Share entity view](#TODO-deeplinks-entity)
+  - LINK PLACEHOLDER — Share entity view
 
 #### Share a Map view for a topic
 - Steps
@@ -134,7 +134,7 @@ Share exactly what you see with a link. Transparenta.eu saves your current view 
 - Tip
   - On mobile, use the “Filters” button and “Legend” modal
 - Link
-  - [LINK PLACEHOLDER — Share map view](#TODO-deeplinks-map)
+  - LINK PLACEHOLDER — Share map view
 
 #### Share a chart with two cities
 - Steps
@@ -146,7 +146,7 @@ Share exactly what you see with a link. Transparenta.eu saves your current view 
 - Tip
   - Label series clearly before sharing
 - Link
-  - [LINK PLACEHOLDER — Share chart](#TODO-deeplinks-chart)
+  - LINK PLACEHOLDER — Share chart
 
 #### Download a CSV ranking to attach
 - Steps
@@ -158,7 +158,7 @@ Share exactly what you see with a link. Transparenta.eu saves your current view 
 - Tip
   - Sort by Per Capita for fairness
 - Link
-  - [LINK PLACEHOLDER — CSV ranking](#TODO-deeplinks-csv)
+  - LINK PLACEHOLDER — CSV ranking
 
 ### Understanding the Numbers
 - Per Capita vs Total

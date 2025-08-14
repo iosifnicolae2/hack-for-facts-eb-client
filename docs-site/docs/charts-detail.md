@@ -14,7 +14,7 @@ Build a clear chart, adjust its look, add notes, and share it. Chart settings an
 6) Click “Share Chart” → “Copy Link”
 7) Paste the link into your article or chat
 
-![IMG PLACEHOLDER — Chart Detail quickstart](./images/PLACEHOLDER-charts-detail-quickstart.png "Create, configure, share")
+<!-- ![IMG PLACEHOLDER — Chart Detail quickstart](./images/PLACEHOLDER-charts-detail-quickstart.png "Create, configure, share") -->
 
 ### Guided Tour
 
@@ -28,7 +28,7 @@ Build a clear chart, adjust its look, add notes, and share it. Chart settings an
 - Example
   - Build a chart for two cities on Education
 - Media
-  - [GIF PLACEHOLDER — Open Charts](./gifs/PLACEHOLDER-charts-detail-open.gif)
+  <!-- - [GIF PLACEHOLDER — Open Charts](./gifs/PLACEHOLDER-charts-detail-open.gif) -->
 
 #### Chart page (overview)
 - What you see
@@ -44,7 +44,7 @@ Build a clear chart, adjust its look, add notes, and share it. Chart settings an
 - Example
   - Switch to Area; show Legend; enable Annotations
 - Media
-  - ![IMG PLACEHOLDER — Quick config](./images/PLACEHOLDER-charts-detail-config.png "Type, legend, labels, tooltip")
+  <!-- - ![IMG PLACEHOLDER — Quick config](./images/PLACEHOLDER-charts-detail-config.png "Type, legend, labels, tooltip") -->
 
 #### Series configuration
 - What you see
@@ -59,7 +59,7 @@ Build a clear chart, adjust its look, add notes, and share it. Chart settings an
 - Example
   - Two cities, Education (65), Per Capita
 - Media
-  - [GIF PLACEHOLDER — Add series](./gifs/PLACEHOLDER-charts-detail-series.gif)
+  <!-- - [GIF PLACEHOLDER — Add series](./gifs/PLACEHOLDER-charts-detail-series.gif) -->
 
 #### Annotate your chart
 - What you see
@@ -72,7 +72,7 @@ Build a clear chart, adjust its look, add notes, and share it. Chart settings an
 - Example
   - Mark a policy change date on the line
 - Media
-  - ![IMG PLACEHOLDER — Annotations](./images/PLACEHOLDER-charts-detail-annotations.png "Toggle and place notes")
+  <!-- - ![IMG PLACEHOLDER — Annotations](./images/PLACEHOLDER-charts-detail-annotations.png "Toggle and place notes") -->
 
 #### Export / Share
 - What you see
@@ -84,11 +84,11 @@ Build a clear chart, adjust its look, add notes, and share it. Chart settings an
 - Example
   - Paste the link in a newsroom chat
 - Media
-  - [GIF PLACEHOLDER — Share Chart](./gifs/PLACEHOLDER-charts-detail-share.gif)
+  <!-- - [GIF PLACEHOLDER — Share Chart](./gifs/PLACEHOLDER-charts-detail-share.gif) -->
 
 ### Common Tasks (recipes)
 
-#### Find spending for {Entity, Year}
+#### Find spending for `{Entity, Year}`
 - Steps
   1) Add an Aggregated yearly series
   2) Pick entity and “Reporting Year(s)”
@@ -98,7 +98,7 @@ Build a clear chart, adjust its look, add notes, and share it. Chart settings an
 - Tip
   - Keep series names descriptive
 - Link
-  - [LINK PLACEHOLDER — Aggregated series](#TODO-charts-detail-aggr)
+  - LINK PLACEHOLDER — Aggregated series
 
 #### Filter by code (topic)
 - Steps
@@ -110,7 +110,7 @@ Build a clear chart, adjust its look, add notes, and share it. Chart settings an
 - Tip
   - Shorter prefixes give broader coverage
 - Link
-  - [LINK PLACEHOLDER — Topic filters](#TODO-charts-detail-topic)
+  - LINK PLACEHOLDER — Topic filters
 
 #### Compare years or entities
 - Steps
@@ -122,7 +122,7 @@ Build a clear chart, adjust its look, add notes, and share it. Chart settings an
 - Tip
   - Avoid mixing units/normalizations
 - Link
-  - [LINK PLACEHOLDER — Compare series](#TODO-charts-detail-compare)
+  - LINK PLACEHOLDER — Compare series
 
 #### Download CSV (from ranking)
 - Steps
@@ -134,7 +134,7 @@ Build a clear chart, adjust its look, add notes, and share it. Chart settings an
 - Tip
   - Use the CSV in spreadsheets for extra analysis
 - Link
-  - [LINK PLACEHOLDER — Entities ranking](#TODO-charts-detail-csv)
+  - LINK PLACEHOLDER — Entities ranking
 
 ### Understanding the Numbers
 - Per Capita vs Total

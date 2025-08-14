@@ -14,7 +14,7 @@ Create a shareable chart from your question. Add one or more series (with filter
 6) Toggle chart type and Legend/Tooltip
 7) “Share Chart” → “Copy Link”
 
-![IMG PLACEHOLDER — Charts create quickstart](./images/PLACEHOLDER-charts-create-quickstart.png "Create, add series, configure, share")
+<!-- ![IMG PLACEHOLDER — Charts create quickstart](./images/PLACEHOLDER-charts-create-quickstart.png "Create, add series, configure, share") -->
 
 ### Guided Tour
 
@@ -28,7 +28,7 @@ Create a shareable chart from your question. Add one or more series (with filter
 - Example
   - Build a chart to compare two cities
 - Media
-  - [GIF PLACEHOLDER — Open Charts](./gifs/PLACEHOLDER-charts-create-open.gif)
+  <!-- - [GIF PLACEHOLDER — Open Charts](./gifs/PLACEHOLDER-charts-create-open.gif) -->
 
 #### Create chart flow
 - What you see
@@ -41,7 +41,7 @@ Create a shareable chart from your question. Add one or more series (with filter
 - Example
   - Two series: Sibiu vs Cluj, Education (65), Per Capita
 - Media
-  - ![IMG PLACEHOLDER — Series config](./images/PLACEHOLDER-charts-create-series.png "Add and configure series")
+  <!-- - ![IMG PLACEHOLDER — Series config](./images/PLACEHOLDER-charts-create-series.png "Add and configure series") -->
 
 #### Configure chart
 - What you see
@@ -55,7 +55,7 @@ Create a shareable chart from your question. Add one or more series (with filter
 - Example
   - Line chart, Legend on, Data Labels off
 - Media
-  - [GIF PLACEHOLDER — Configure chart](./gifs/PLACEHOLDER-charts-create-config.gif)
+  <!-- - [GIF PLACEHOLDER — Configure chart](./gifs/PLACEHOLDER-charts-create-config.gif) -->
 
 #### Export / Share
 - What you see
@@ -66,11 +66,11 @@ Create a shareable chart from your question. Add one or more series (with filter
 - Example
   - Share a chart link in your report
 - Media
-  - [GIF PLACEHOLDER — Share chart](./gifs/PLACEHOLDER-charts-create-share.gif)
+  <!-- - [GIF PLACEHOLDER — Share chart](./gifs/PLACEHOLDER-charts-create-share.gif) -->
 
 ### Common Tasks (recipes)
 
-#### Find spending for {Entity, Year}
+#### Find spending for `{Entity, Year}`
 - Steps
   1) Add an “Aggregated yearly” series
   2) Select entity and “Reporting Year(s)”
@@ -80,7 +80,7 @@ Create a shareable chart from your question. Add one or more series (with filter
 - Tip
   - Name the series clearly (e.g., “Sibiu — Edu (Per Capita)”) 
 - Link
-  - [LINK PLACEHOLDER — Aggregated series](#TODO-charts-create-series)
+  - LINK PLACEHOLDER — Aggregated series
 
 #### Filter by code (topic)
 - Steps
@@ -92,7 +92,7 @@ Create a shareable chart from your question. Add one or more series (with filter
 - Tip
   - Shorter prefixes provide broader coverage
 - Link
-  - [LINK PLACEHOLDER — Topic filters](#TODO-charts-create-topic)
+  - LINK PLACEHOLDER — Topic filters
 
 #### Compare years or cities
 - Steps
@@ -104,7 +104,7 @@ Create a shareable chart from your question. Add one or more series (with filter
 - Tip
   - Avoid mixing Total and Per Capita
 - Link
-  - [LINK PLACEHOLDER — Compare series](#TODO-charts-create-compare)
+  - LINK PLACEHOLDER — Compare series
 
 #### Download a CSV ranking (outside charts)
 - Steps
@@ -116,7 +116,7 @@ Create a shareable chart from your question. Add one or more series (with filter
 - Tip
   - Use CSV to validate chart insights
 - Link
-  - [LINK PLACEHOLDER — Entities ranking](#TODO-charts-create-csv)
+  - LINK PLACEHOLDER — Entities ranking
 
 ### Understanding the Numbers
 - Per Capita vs Total

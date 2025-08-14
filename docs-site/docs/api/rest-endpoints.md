@@ -1,5 +1,5 @@
 ---
-id: api-rest-endpoints
+id: rest-endpoints
 title: REST – Health, AI Helpers, MCP
 ---
 
@@ -58,8 +58,8 @@ Notes
 
 See also
 
-- GraphQL Getting Started: [api-getting-started](./getting-started.md)
-- API Cookbook: [api-cookbook](./cookbook.md)
- - Errors & Rate Limits: [api-errors-and-rate-limits](./errors-and-rate-limits.md)
+- GraphQL Getting Started: [getting-started](./getting-started.md)
+- API Cookbook: [cookbook](./cookbook.md)
+ - Errors & Rate Limits: [errors-and-rate-limits](./errors-and-rate-limits.md)
 
 
