@@ -109,20 +109,20 @@ function MapPage() {
   const isLoading = isLoadingHeatmap || isLoadingGeoJson;
   const error = heatmapError || geoJsonError;
 
-  let loadingText = "Loading data...";
+  let loadingText = t`Loading data...`;
   if (isLoadingHeatmap && isLoadingGeoJson) {
-    loadingText = "Loading map and heatmap data...";
+    loadingText = t`Loading map and heatmap data...`;
   } else if (isLoadingHeatmap) {
-    loadingText = "Loading heatmap data...";
+    loadingText = t`Loading heatmap data...`;
   } else if (isLoadingGeoJson) {
-    loadingText = "Loading map data...";
+    loadingText = t`Loading map data...`;
   }
 
   return (
     <div className="flex flex-col md:flex-row md:h-screen bg-background">
       <Seo
         title={t`Romania spending heatmap – Transparenta.eu`}
-        description={t`Explore choropleth maps of public spending by UAT/Judet with per-capita or total normalization.`}
+        description={t`Explore choropleth maps of public spending by UAT/County with per-capita or total normalization.`}
       />
       <div className="hidden md:flex md:flex-col w-[320px] lg:w-[360px] flex-shrink-0 border-r border-border bg-card text-card-foreground overflow-y-auto">
         <MapFilter />
@@ -167,7 +167,7 @@ function MapPage() {
                     min={minAggregatedValue}
                     max={maxAggregatedValue}
                     className="absolute bottom-[-6rem] right-[4rem] z-10 hidden md:block"
-                    title={t`Interval Valori`}
+                    title={t`Aggregated Value Legend`}
                   />
                   <Dialog open={isLegendModalOpen} onOpenChange={setIsLegendModalOpen}>
                     <DialogTrigger asChild>

@@ -44,7 +44,7 @@ interface HeatmapDataTableProps {
     setSorting: React.Dispatch<React.SetStateAction<SortingState>>;
     pagination: PaginationState;
     setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
-    mapViewType: "UAT" | "Judet";
+    mapViewType: "UAT" | "County";
 }
 
 export function HeatmapDataTable({
@@ -106,7 +106,7 @@ export function HeatmapDataTable({
                                 className="flex items-center gap-1 cursor-pointer"
                                 onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                             >
-                                <Trans>Nume</Trans>
+                                <Trans>Name</Trans>
                                 {column.getIsSorted() === "asc" ? (
                                     <ChevronUp className="w-4 h-4" />
                                 ) : column.getIsSorted() === "desc" ? (
@@ -219,7 +219,7 @@ export function HeatmapDataTable({
                                 className="flex items-center gap-1 cursor-pointer"
                                 onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                             >
-                                <Trans>Populație</Trans>
+                                <Trans>Population</Trans>
                                 {column.getIsSorted() === "asc" ? (
                                     <ChevronUp className="w-4 h-4" />
                                 ) : column.getIsSorted() === "desc" ? (
@@ -273,7 +273,7 @@ export function HeatmapDataTable({
                                 className="flex items-center gap-1 cursor-pointer"
                                 onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                             >
-                                <Trans>Suma Totală</Trans>
+                                <Trans>Total Amount</Trans>
                                 {column.getIsSorted() === "asc" ? (
                                     <ChevronUp className="w-4 h-4" />
                                 ) : column.getIsSorted() === "desc" ? (
@@ -334,7 +334,7 @@ export function HeatmapDataTable({
                                 className="flex items-center gap-1 cursor-pointer"
                                 onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                             >
-                                <Trans>Suma/Cap de locuitor</Trans>
+                                <Trans>Amount Per Capita</Trans>
                                 {column.getIsSorted() === "asc" ? (
                                     <ChevronUp className="w-4 h-4" />
                                 ) : column.getIsSorted() === "desc" ? (
@@ -440,7 +440,7 @@ export function HeatmapDataTable({
                         <DropdownMenuCheckboxItem checked={columnVisibility?.county_name !== false} onCheckedChange={(c) => setColumnVisibility((v: Record<string, boolean>) => ({ ...v, county_name: Boolean(c) }))}><Trans>County</Trans></DropdownMenuCheckboxItem>
                         <DropdownMenuCheckboxItem checked={columnVisibility?.population !== false} onCheckedChange={(c) => setColumnVisibility((v: Record<string, boolean>) => ({ ...v, population: Boolean(c) }))}><Trans>Population</Trans></DropdownMenuCheckboxItem>
                         <DropdownMenuCheckboxItem checked={columnVisibility?.total_amount !== false} onCheckedChange={(c) => setColumnVisibility((v: Record<string, boolean>) => ({ ...v, total_amount: Boolean(c) }))}><Trans>Total Amount</Trans></DropdownMenuCheckboxItem>
-                        <DropdownMenuCheckboxItem checked={columnVisibility?.per_capita_amount !== false} onCheckedChange={(c) => setColumnVisibility((v: Record<string, boolean>) => ({ ...v, per_capita_amount: Boolean(c) }))}><Trans>Per Capita</Trans></DropdownMenuCheckboxItem>
+                        <DropdownMenuCheckboxItem checked={columnVisibility?.per_capita_amount !== false} onCheckedChange={(c) => setColumnVisibility((v: Record<string, boolean>) => ({ ...v, per_capita_amount: Boolean(c) }))}><Trans>Amount Per Capita</Trans></DropdownMenuCheckboxItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>

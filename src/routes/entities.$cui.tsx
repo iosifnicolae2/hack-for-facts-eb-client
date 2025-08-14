@@ -32,7 +32,7 @@ export const Route = createFileRoute('/entities/$cui')({
         }>(['entityDetails', params.cui, year, START_YEAR, END_YEAR]);
 
         if (desiredView === 'map' && entity?.is_uat) {
-            const mapViewType = entity.entity_type === 'admin_county_council' || entity.cui === '4267117' ? 'Judet' : 'UAT';
+            const mapViewType = entity.entity_type === 'admin_county_council' || entity.cui === '4267117' ? 'County' : 'UAT';
             queryClient.prefetchQuery(geoJsonQueryOptions(mapViewType));
             const filters = (search?.mapFilters as AnalyticsFilterType) || { years: [year], account_category: 'ch', normalization: 'per_capita' };
             if (mapViewType === 'UAT') {

@@ -35,7 +35,7 @@ interface InteractiveMapProps {
   highlightedFeatureId?: string | number;
   scrollWheelZoom?: boolean;
   mapHeight?: string;
-  mapViewType: 'UAT' | 'Judet';
+  mapViewType: 'UAT' | 'County';
   filters: AnalyticsFilterType;
 }
 

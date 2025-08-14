@@ -128,7 +128,7 @@ export function useMapFilter() {
         navigate({ search: (prev) => ({ ...prev, activeView: view }), replace: true });
     };
 
-    const setMapViewType = (viewType: "UAT" | "Judet") => {
+    const setMapViewType = (viewType: "UAT" | "County") => {
         Analytics.capture(Analytics.EVENTS.MapViewTypeChanged, { view_type: viewType });
         navigate({ search: (prev) => ({ ...prev, mapViewType: viewType }), replace: true });
     };

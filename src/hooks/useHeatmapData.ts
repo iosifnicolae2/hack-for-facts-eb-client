@@ -29,7 +29,7 @@ export function heatmapJudetQueryOptions(filter: AnalyticsFilterType) {
     };
 }
 
-export function useHeatmapData(heatmapFilterInput: AnalyticsFilterType, mapViewType: 'UAT' | 'Judet') {
+export function useHeatmapData(heatmapFilterInput: AnalyticsFilterType, mapViewType: 'UAT' | 'County') {
     const uatQuery = useQuery({
         ...heatmapUATQueryOptions(heatmapFilterInput),
         staleTime: convertDaysToMs(1),
@@ -49,7 +49,7 @@ export function useHeatmapData(heatmapFilterInput: AnalyticsFilterType, mapViewT
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchOnMount: false,
-        enabled: mapViewType === 'Judet',
+        enabled: mapViewType === 'County',
     });
 
 

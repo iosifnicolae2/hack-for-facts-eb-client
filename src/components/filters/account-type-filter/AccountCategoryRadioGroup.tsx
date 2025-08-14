@@ -1,6 +1,7 @@
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
+import { t } from '@lingui/core/macro';
 
 type AccountCategoryOptionItem = {
     id: "ch" | "vn";
@@ -8,8 +9,8 @@ type AccountCategoryOptionItem = {
 };
 
 const accountCategories: AccountCategoryOptionItem[] = [
-    { id: "ch", label: "Cheltuieli" },
-    { id: "vn", label: "Venituri" },
+    { id: "ch", label: t`Expenses` },
+    { id: "vn", label: t`Income` },
 ];
 
 interface AccountCategoryRadioGroupProps {

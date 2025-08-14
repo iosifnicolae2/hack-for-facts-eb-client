@@ -5,7 +5,7 @@ import { heatmapJudetQueryOptions, heatmapUATQueryOptions } from '@/hooks/useHea
 import { MapStateSchema } from '@/schemas/map-filters'
 import { AnalyticsFilterType, defaultYearRange } from '@/schemas/charts'
 
-type MapViewType = 'UAT' | 'Judet'
+type MapViewType = 'UAT' | 'County'
 
 export const Route = createFileRoute('/map')({
   beforeLoad: ({ search }) => {

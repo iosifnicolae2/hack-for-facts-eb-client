@@ -5,6 +5,7 @@ import { DEFAULT_FEATURE_STYLE, PERMANENT_HIGHLIGHT_STYLE } from './constants';
 import L, { PathOptions } from 'leaflet';
 import { Feature, Geometry } from 'geojson';
 import { AnalyticsFilterType } from "@/schemas/charts";
+import { t } from "@lingui/core/macro";
 
 
 /**
@@ -14,19 +15,19 @@ const createFilterSummary = (filters: AnalyticsFilterType): string => {
   const summaryItems: string[] = [];
 
   if (filters.years && filters.years.length > 0) {
-    summaryItems.push(`<strong>An:</strong> ${filters.years.join(', ')}`);
+    summaryItems.push(`<strong>${t`Year`}:</strong> ${filters.years.join(', ')}`);
   }
 
   if (filters.account_category) {
-    summaryItems.push(`<strong>Tip:</strong> ${filters.account_category === 'ch' ? 'Cheltuieli' : 'Venituri'}`);
+    summaryItems.push(`<strong>${t`Type`}:</strong> ${filters.account_category === 'ch' ? t`Expenses` : t`Income`}`);
   }
 
   if (filters.functional_codes?.length) {
-    summaryItems.push(`<strong>Fn:</strong> ${filters.functional_codes.length} cod(uri) funcționale`);
+    summaryItems.push(`<strong>${t`Fn`}:</strong> ${filters.functional_codes.length} ${t`functional codes`}`);
   }
 
   if (filters.economic_codes?.length) {
-    summaryItems.push(`<strong>Ec:</strong> ${filters.economic_codes.length} cod(uri) economice`);
+    summaryItems.push(`<strong>${t`Ec`}:</strong> ${filters.economic_codes.length} ${t`economic codes`}`);
   }
 
   if (summaryItems.length === 0) {
@@ -35,10 +36,10 @@ const createFilterSummary = (filters: AnalyticsFilterType): string => {
 
   return `
       <div style="font-size: 0.85em; color: #444; border-top: 1px solid #eee; padding-top: 8px; margin-top: 8px; width: 100%;">
-        <div style="font-weight: bold;">Filtre active (${summaryItems.length}):</div>
+        <div style="font-weight: bold;">${t`Active filters`} (${summaryItems.length}):</div>
         <div style="display: flex; flex-direction: column; font-size: 0.75em;">
           ${summaryItems.map(item => `<span style="font-weight: bold;">${item}</span>`).join('')}
-          <span style="font-weight: bold;">*Check filters panel for more details.</span>
+          <span style="font-weight: bold;">${t`*Check filters panel for more details.`}</span>
         </div>
       </div>
     `;
@@ -53,7 +54,7 @@ const createFilterSummary = (filters: AnalyticsFilterType): string => {
 export const createTooltipContent = (
   properties: UatProperties,
   heatmapData: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[] | undefined,
-  mapViewType: 'UAT' | 'Judet',
+  mapViewType: 'UAT' | 'County',
   filters: AnalyticsFilterType
 ): string => {
   const isUAT = mapViewType === 'UAT';
@@ -86,19 +87,19 @@ export const createTooltipContent = (
 
     if (isUAT && 'siruta_code' in dataPoint) {
       name = dataPoint.uat_name || properties.name;
-      subtext = `Județ: ${dataPoint.county_name || properties.county || 'N/A'}`;
+      subtext = t`County:` + ` ${dataPoint.county_name || properties.county || t`N/A`}`;
       population = dataPoint.population;
       perCapitaAmount = dataPoint.per_capita_amount;
       totalAmount = dataPoint.total_amount;
     } else if (!isUAT && 'county_code' && 'county_population' in dataPoint) {
       name = dataPoint.county_name || properties.name;
-      subtext = `Indicativ: ${featureIdentifier}`;
+      subtext = t`Mnemonic:` + ` ${featureIdentifier}`;
       population = dataPoint.county_population;
       perCapitaAmount = dataPoint.per_capita_amount;
       totalAmount = dataPoint.total_amount;
     } else {
       // Fallback if dataPoint is found but type guard fails
-      return `<div>Error: Invalid data point type.</div>`;
+      return `<div>${t`Error: Invalid data point type.`}</div>`;
     }
 
     return `
@@ -106,17 +107,17 @@ export const createTooltipContent = (
         <div style="${styles.header}">${name}</div>
         <div style="${styles.subHeader}">${subtext}</div>
         <div style="${styles.dataGrid}">
-          <div style="${styles.dataLabel}">Populație</div>
+          <div style="${styles.dataLabel}">${t`Population`}</div>
           <div style="${styles.dataValue}">
-            ${population?.toLocaleString('ro-RO') ?? 'N/A'}
+            ${population?.toLocaleString('ro-RO') ?? t`N/A`}
           </div>
 
-          <div style="${styles.dataLabel}">Sumă Totală</div>
+          <div style="${styles.dataLabel}">${t`Total Amount`}</div>
           <div style="${styles.dataValue} ${!isPerCapitaNorm ? styles.highlight : ''}">
             ${formatCurrency(totalAmount, 'compact')}
           </div>
 
-          <div style="${styles.dataLabel}">Sumă/Locuitor</div>
+          <div style="${styles.dataLabel}">${t`Amount Per Capita`}</div>
           <div style="${styles.dataValue} ${isPerCapitaNorm ? styles.highlight : ''}">
             ${formatCurrency(perCapitaAmount, 'compact')}
           </div>
@@ -128,7 +129,7 @@ export const createTooltipContent = (
 
   // --- Tooltip for features WITHOUT data ---
   const locationName = properties.name;
-  const locationSubtext = isUAT ? `Județ: ${properties.county || 'N/A'}` : `Indicativ: ${featureIdentifier}`;
+  const locationSubtext = isUAT ? t`County:` + ` ${properties.county || t`N/A`}` : t`Mnemonic:` + ` ${featureIdentifier}`;
 
   return `
     <div style="${styles.container}">
@@ -136,16 +137,17 @@ export const createTooltipContent = (
       <div style="${styles.subHeader}">${locationSubtext}</div>
       <div style="${styles.noData}">
         <span>
-            Nu există date agregate
+            ${t`No aggregated data`}
         </span>
         <span>
-            pentru filtrele selectate.
+            ${t`for the selected filters.`}
         </span>
       </div>
       ${filterSummaryHtml}
     </div>
   `;
 };
+
 
 // Helper function to calculate percentile values
 export const getPercentileValues = (
@@ -258,7 +260,7 @@ export const createHeatmapStyleFunction = (
   heatmapData: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[] | undefined,
   min: number,
   max: number,
-  mapViewType: 'UAT' | 'Judet',
+  mapViewType: 'UAT' | 'County',
   valueKey: 'total_amount' | 'per_capita_amount'
 ): ((feature: UatFeature) => L.PathOptions) => {
 

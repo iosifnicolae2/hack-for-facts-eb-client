@@ -2,6 +2,8 @@ import { useQuery, type QueryOptions } from "@tanstack/react-query";
 import { GeoJsonObject } from 'geojson';
 import { convertDaysToMs } from '@/lib/utils';
 
+type MapViewType = 'UAT' | 'County'
+
 const fetchGeoJsonData = async (path: string): Promise<GeoJsonObject> => {
     const response = await fetch(path, {
         cache: 'force-cache',
@@ -18,20 +20,20 @@ const fetchGeoJsonData = async (path: string): Promise<GeoJsonObject> => {
     return data;
 };
 
-export function geoJsonQueryOptions(mapViewType: 'UAT' | 'Judet') {
+export function geoJsonQueryOptions(mapViewType: MapViewType) {
     const geoJsonPath = mapViewType === 'UAT' ? '/assets/geojson/uat.json' : '/assets/geojson/judete.json';
     return {
         queryKey: ['geoJsonData', mapViewType] as const,
         queryFn: () => fetchGeoJsonData(geoJsonPath),
         staleTime: convertDaysToMs(1),
         gcTime: convertDaysToMs(7),
-    } satisfies QueryOptions<GeoJsonObject, Error, GeoJsonObject, readonly [string, 'UAT' | 'Judet']> & {
+    } satisfies QueryOptions<GeoJsonObject, Error, GeoJsonObject, readonly [string, MapViewType]> & {
         staleTime?: number;
         gcTime?: number;
     };
 }
 
-export const useGeoJsonData = (mapViewType: 'UAT' | 'Judet') => {
+export const useGeoJsonData = (mapViewType: MapViewType) => {
     return useQuery<GeoJsonObject, Error>({
         ...geoJsonQueryOptions(mapViewType),
         staleTime: convertDaysToMs(1),

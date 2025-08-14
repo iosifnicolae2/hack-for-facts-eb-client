@@ -3,10 +3,11 @@ import { BaseListProps } from "../base-filter/interfaces";
 import { cn } from "@/lib/utils";
 import { ListOption } from "../base-filter/ListOption";
 import { ListContainerSimple } from "../base-filter/ListContainerSimple";
+import { t } from "@lingui/core/macro";
 
 const accountTypes = [
-    { id: "ch", label: "Cheltuieli" },
-    { id: "vn", label: "Venituri" },
+    { id: "ch", label: t`Expenses` },
+    { id: "vn", label: t`Income` },
 ];
 const rowHight = 35;
 

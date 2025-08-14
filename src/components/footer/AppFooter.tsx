@@ -121,8 +121,7 @@ export function AppFooter(): ReactElement {
                 {/* Data source and copyright */}
                 <div className="flex flex-col items-start justify-between gap-4 text-xs text-muted-foreground md:flex-row">
                     <p>
-                        <Trans>Sursa datelor: portalul „Transparența Bugetară” administrat de ANAF/Ministerul
-                        Finanțelor, disponibil ca date deschise (Open Data). Vezi resursele oficiale:</Trans>
+                        <Trans>Data source: &quot;Budget Transparency&quot; portal administered by ANAF/Ministry of Finance, available as open data. See official resources:</Trans>
                         {" "}
                         <a
                             href="https://mfinante.gov.ro/transparenta-bugetara"
@@ -132,7 +131,7 @@ export function AppFooter(): ReactElement {
                         >
                             mfinante.gov.ro/transparenta-bugetara
                         </a>
-                        {" "}<Trans>și</Trans>{" "}
+                        {" "}<Trans>and</Trans>{" "}
                         <a
                             href="https://extranet.anaf.mfinante.gov.ro/anaf/extranet/EXECUTIEBUGETARA"
                             target="_blank"
@@ -143,7 +142,7 @@ export function AppFooter(): ReactElement {
                         </a>
                         .
                     </p>
-                    <p className="whitespace-nowrap">{t`© ${currentYear} Transparenta.eu. Toate drepturile rezervate.`}</p>
+                    <p className="whitespace-nowrap"><Trans>&copy; {currentYear} Transparenta.eu. All rights reserved.</Trans></p>
                 </div>
 
                 {/* Bottom utilities: Feedback / Status / Back to top */}
@@ -172,7 +171,7 @@ export function AppFooter(): ReactElement {
                         type="button"
                         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                         className="rounded-md border px-2.5 py-1.5 text-[11px] font-medium text-foreground hover:bg-muted"
-                        aria-label={t`Înapoi sus`}
+                        aria-label={t`Back to top`}
                     >
                         <Trans>Back to top</Trans>
                     </button>

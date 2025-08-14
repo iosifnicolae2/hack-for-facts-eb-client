@@ -26,6 +26,7 @@ import { ReportTypeFilter } from './report-type-filter'
 import { IsUatFilter } from './flags-filter'
 import { ViewTypeRadioGroup } from './ViewTypeRadioGroup'
 import { TableIcon, BarChart2Icon } from 'lucide-react'
+import { t } from '@lingui/core/macro'
 
 export function EntityAnalyticsFilter() {
   const { filter, setFilter, resetFilter, view, setView } = useEntityAnalyticsFilter()
@@ -188,8 +189,8 @@ export function EntityAnalyticsFilter() {
             View
           </h4>
           <ViewTypeRadioGroup value={view} onChange={(v) => setView(v)} viewOptions={[
-            { id: 'table', label: 'Table', icon: TableIcon },
-            { id: 'line-items', label: 'Line Items', icon: BarChart2Icon },
+            { id: 'table', label: t`Table`, icon: TableIcon },
+            { id: 'line-items', label: t`Line Items`, icon: BarChart2Icon },
           ]} />
         </div>
         <div className="p-3 border-b">

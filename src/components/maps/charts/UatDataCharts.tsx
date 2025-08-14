@@ -2,10 +2,11 @@ import React from 'react';
 import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { UatTopNBarChart } from './UatTopNBarChart';
 import { UatPopulationSpendingScatterPlot } from './UatPopulationSpendingScatterPlot';
+import { t } from '@lingui/core/macro';
 
 interface UatDataChartsProps {
     data: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[];
-    mapViewType: "UAT" | "Judet";
+    mapViewType: "UAT" | "County";
 }
 
 export const UatDataCharts: React.FC<UatDataChartsProps> = ({ data, mapViewType }) => {
@@ -23,9 +24,9 @@ export const UatDataCharts: React.FC<UatDataChartsProps> = ({ data, mapViewType 
                     valueKey="total_amount"
                     nameKey={isUatView ? "uat_name" : "county_name"}
                     topN={15}
-                    chartTitle={isUatView ? "Top 15 UAT-uri după suma totală" : "Top 15 județe după suma totală"}
-                    xAxisLabel="Suma"
-                    yAxisLabel={isUatView ? "UAT" : "Județ"}
+                    chartTitle={isUatView ? t`Top 15 UATs by Total Amount` : t`Top 15 Counties by Total Amount`}
+                    xAxisLabel={t`Amount`}
+                    yAxisLabel={isUatView ? t`UAT` : t`County`}
                     isCurrency={true}
                 />
             </div>
@@ -33,9 +34,9 @@ export const UatDataCharts: React.FC<UatDataChartsProps> = ({ data, mapViewType 
             <div className="p-4 border rounded-lg bg-card shadow-lg">
                 <UatPopulationSpendingScatterPlot
                     data={data}
-                    chartTitle="Populație vs. Suma Totală"
-                    xAxisLabel="Populație"
-                    yAxisLabel="Suma"
+                    chartTitle={t`Population vs. Total Amount`}
+                    xAxisLabel={t`Population`}
+                    yAxisLabel={t`Amount`}
                 />
             </div>
 

@@ -1,4 +1,5 @@
 import { RadioGroupButtons } from "@/components/ui/radio-group-buttons";
+import { t } from "@lingui/core/macro";
 
 interface IsUatFilterProps {
     isUat: boolean | undefined;
@@ -20,7 +21,6 @@ export function IsUatFilter({ isUat, setIsUat }: IsUatFilterProps) {
         <RadioGroupButtons
             value={isUat}
             onChange={handleChange}
-            options={[{ value: true, label: 'Da' }, { value: false, label: 'Nu' }]}
-        />
+            options={[{ value: true, label: t`Yes` }, { value: false, label: t`No` }]} />
     );
 } 

@@ -122,15 +122,15 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="absolute"><Trans>Valori Absolute</Trans></SelectItem>
-              <SelectItem value="percent"><Trans>Diferență % YoY</Trans></SelectItem>
+              <SelectItem value="absolute"><Trans>Absolute Values</Trans></SelectItem>
+              <SelectItem value="percent"><Trans>Difference % YoY</Trans></SelectItem>
             </SelectContent>
           </Select>
         </div>
       </CardHeader>
       <CardContent className="pt-6">
         {!trendsAvailable ? (
-          <p className="text-center text-slate-500 dark:text-slate-400 py-4"><Trans>Nu sunt date disponibile pentru afișarea evoluției financiare.</Trans></p>
+          <p className="text-center text-slate-500 dark:text-slate-400 py-4"><Trans>No data available to display financial evolution.</Trans></p>
         ) : (
           <ResponsiveContainer width="100%" height={400}>
             <AreaChart
@@ -155,9 +155,9 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
               <Tooltip content={<CustomTooltip />} />
               <Legend wrapperStyle={{ fontSize: '14px' }} />
               <ReferenceLine x={currentYear} stroke="gray" strokeDasharray="6 3" strokeWidth={1} />
-              <Area type="monotone" dataKey="income" name={t`Venituri`} stroke="#10B981" fill="#10B981" fillOpacity={0.2} strokeWidth={2} />
-              <Area type="monotone" dataKey="expense" name={t`Cheltuieli`} stroke="#EF4444" fill="#EF4444" fillOpacity={0.2} strokeWidth={2} />
-              <Area type="monotone" dataKey="balance" name={t`Balanță`} stroke="#3B82F6" fill="#3B82F6" fillOpacity={0.2} strokeWidth={2} />
+              <Area type="monotone" dataKey="income" name={t`Income`} stroke="#10B981" fill="#10B981" fillOpacity={0.2} strokeWidth={2} />
+              <Area type="monotone" dataKey="expense" name={t`Expenses`} stroke="#EF4444" fill="#EF4444" fillOpacity={0.2} strokeWidth={2} />
+              <Area type="monotone" dataKey="balance" name={t`Balance`} stroke="#3B82F6" fill="#3B82F6" fillOpacity={0.2} strokeWidth={2} />
             </AreaChart>
           </ResponsiveContainer>
         )}

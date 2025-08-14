@@ -2,6 +2,7 @@ import { ChartSchema, defaultYearRange, ReportType } from '@/schemas/charts';
 import type { Chart } from '@/schemas/charts';
 import type { ChartUrlState } from '@/components/charts/page-schema';
 import { generateHash } from '@/lib/utils';
+import { t } from '@lingui/core/macro';
 
 interface BuildEntityIncomeExpenseChartOptions {
     title?: string;
@@ -21,7 +22,7 @@ export function buildEntityIncomeExpenseChartState(
 ): ChartUrlState {
     const years = Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, i) => defaultYearRange.start + i);
     const chartId = generateHash(JSON.stringify({ cui, kind: 'income-expense' }));
-    const title = options?.title ?? `Evoluție Financiară - ${entityName}`;
+    const title = options?.title ?? t`Financial Evolution - ${entityName}`;
     const reportType = options?.reportType ?? 'Executie bugetara agregata la nivel de ordonator principal';
     const incomeColor = options?.incomeColor ?? '#10B981';
     const expenseColor = options?.expenseColor ?? '#EF4444';
@@ -48,7 +49,7 @@ export function buildEntityIncomeExpenseChartState(
                 id: incomeSeriesId,
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
-                label: 'Venituri',
+                label: t`Income`,
                 unit: 'RON',
                 filter: {
                     entity_cuis: [cui],
@@ -63,7 +64,7 @@ export function buildEntityIncomeExpenseChartState(
                 id: expenseSeriesId,
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
-                label: 'Cheltuieli',
+                label: t`Expenses`,
                 unit: 'RON',
                 filter: {
                     entity_cuis: [cui],
@@ -78,7 +79,7 @@ export function buildEntityIncomeExpenseChartState(
                 id: balanceSeriesId,
                 type: 'aggregated-series-calculation',
                 enabled: true,
-                label: 'Balanță',
+                label: t`Balance`,
                 unit: 'RON',
                 config: { visible: true, showDataLabels: false, color: '#ee8420' },
                 calculation: {

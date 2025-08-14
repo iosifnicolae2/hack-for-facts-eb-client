@@ -87,7 +87,7 @@ export const EntityReports: React.FC<EntityReportsProps> = ({ reports, isLoading
           <AccordionTrigger className="p-6">
             <div className="flex items-center gap-2">
               <FileText className="h-6 w-6" />
-              <CardTitle><Trans>Rapoarte Financiare</Trans> ({sortedReports.length})</CardTitle>
+              <CardTitle><Trans>Financial Reports</Trans> ({sortedReports.length})</CardTitle>
             </div>
           </AccordionTrigger>
           <AccordionContent className="p-6 pt-0">

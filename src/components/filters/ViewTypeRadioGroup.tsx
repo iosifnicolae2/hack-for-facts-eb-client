@@ -1,15 +1,18 @@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { MapIcon, TableIcon, BarChart2Icon } from "lucide-react";
+import { BarChart2Icon, MapIcon, TableIcon } from "lucide-react";
 import { ElementType } from "react";
+import { t } from "@lingui/core/macro"
 
 type ViewOption<T extends string> = { id: T, label: string, icon: ElementType }
 
 const defaultViewOptions: ViewOption<string>[] = [
-    { id: "map", label: "Map", icon: MapIcon },
-    { id: "table", label: "Table", icon: TableIcon },
-    { id: "chart", label: "Chart", icon: BarChart2Icon },
+    { id: "map", label: t`Map`, icon: MapIcon },
+    {
+        id: "table", label: t`Table`, icon: TableIcon
+    },
+    { id: "chart", label: t`Chart`, icon: BarChart2Icon },
 ];
 
 interface ViewTypeRadioGroupProps<T extends string> {

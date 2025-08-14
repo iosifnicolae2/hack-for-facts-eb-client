@@ -2,10 +2,11 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
 import { TableIcon, BarChart2Icon } from 'lucide-react'
+import { t } from '@lingui/core/macro';
 
 const viewOptions = [
-  { id: 'table', label: 'Table', icon: TableIcon },
-  { id: 'chart', label: 'Chart', icon: BarChart2Icon },
+  { id: 'table', label: t`Table`, icon: TableIcon },
+  { id: 'chart', label: t`Chart`, icon: BarChart2Icon },
 ] as const
 
 interface Props {

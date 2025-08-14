@@ -1,4 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { t } from '@lingui/core/macro';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
@@ -15,6 +16,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { usePersistedState } from '@/lib/hooks/usePersistedState';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { FilterBulkEdit } from '../chart-config/FilterBulkEdit';
+import { Trans } from '@lingui/react/macro';
 
 interface ChartQuickConfigProps {
   dataMap?: DataSeriesMap;
@@ -35,13 +37,13 @@ const getChartTypeIcon = (chartType: ChartType) => {
 };
 
 const chartTypes = [
-  { value: 'line', label: 'Line Chart', icon: <LineChart className="h-4 w-4" /> },
-  { value: 'bar', label: 'Bar Chart', icon: <BarChart3 className="h-4 w-4" /> },
-  { value: 'area', label: 'Area Chart', icon: <TrendingUp className="h-4 w-4" /> },
-  { value: 'bar-aggr', label: 'Bar Chart (Aggregated)', icon: <BarChart3 className="h-4 w-4" /> },
-  { value: 'pie-aggr', label: 'Pie Chart (Aggregated)', icon: <PieChart className="h-4 w-4" /> },
-  { value: 'treemap-aggr', label: 'Treemap Chart (Aggregated)', icon: <TreesIcon className="h-4 w-4" /> },
-  { value: 'sankey-aggr', label: 'Sankey Chart (Aggregated)', icon: <ChartNetworkIcon className="h-4 w-4" /> },
+  { value: 'line', label: t`Line Chart`, icon: <LineChart className="h-4 w-4" /> },
+  { value: 'bar', label: t`Bar Chart`, icon: <BarChart3 className="h-4 w-4" /> },
+  { value: 'area', label: t`Area Chart`, icon: <TrendingUp className="h-4 w-4" /> },
+  { value: 'bar-aggr', label: t`Bar Chart (Aggregated)`, icon: <BarChart3 className="h-4 w-4" /> },
+  { value: 'pie-aggr', label: t`Pie Chart (Aggregated)`, icon: <PieChart className="h-4 w-4" /> },
+  { value: 'treemap-aggr', label: t`Treemap Chart (Aggregated)`, icon: <TreesIcon className="h-4 w-4" /> },
+  { value: 'sankey-aggr', label: t`Sankey Chart (Aggregated)`, icon: <ChartNetworkIcon className="h-4 w-4" /> },
 ];
 
 const getChartTypeLabel = (chartType: ChartType) => {
@@ -67,9 +69,9 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle>Quick Configuration</CardTitle>
+              <CardTitle><Trans>Quick Configuration</Trans></CardTitle>
               <CardDescription>
-                Quickly adjust chart settings
+                <Trans>Quickly adjust chart settings</Trans>
               </CardDescription>
             </div>
             <ChartQuickConfigMenu
@@ -92,7 +94,7 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
           </Dialog>
           {/* Chart Type */}
           <div className="space-y-2">
-            <Label>Chart Type</Label>
+            <Label><Trans>Chart Type</Trans></Label>
             <Select
               value={chart.config.chartType}
               onValueChange={(value: ChartType) =>
@@ -124,7 +126,7 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
 
           {/* Display Options */}
           <div className="space-y-2">
-            <Label>Display Options</Label>
+            <Label><Trans>Display Options</Trans></Label>
             <Collapsible open={showMoreOptions} onOpenChange={setShowMoreOptions} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex items-center space-x-2">
@@ -138,7 +140,7 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
                     }
                   />
                   <Label htmlFor="show-data-labels" className="text-sm">
-                    Data Labels
+                    <Trans>Data Labels</Trans>
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -152,7 +154,7 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
                     }
                   />
                   <Label htmlFor="show-legend" className="text-sm">
-                    Legend
+                    <Trans>Legend</Trans>
                   </Label>
                 </div>
                 <CollapsibleContent className="contents">
@@ -167,7 +169,7 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
                       }
                     />
                     <Label htmlFor="show-relative-values" className="text-sm">
-                      Relative Values
+                      <Trans>Relative Values</Trans>
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -179,7 +181,7 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
                       }
                     />
                     <Label htmlFor="show-tooltip" className="text-sm">
-                      Tooltip
+                      <Trans>Tooltip</Trans>
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -191,7 +193,7 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
                       }
                     />
                     <Label htmlFor="show-annotations" className="text-sm">
-                      Show Annotations
+                      <Trans>Show Annotations</Trans>
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -203,7 +205,7 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
                       }
                     />
                     <Label htmlFor="edit-annotations" className="text-sm">
-                      Edit Annotations
+                      <Trans>Edit Annotations</Trans>
                     </Label>
                   </div>
 
@@ -216,14 +218,14 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
                       }
                     />
                     <Label htmlFor="enable-diff-control" className="text-sm">
-                      Show Diff
+                      <Trans>Show Diff</Trans>
                     </Label>
                   </div>
                 </CollapsibleContent>
               </div>
               <CollapsibleTrigger asChild>
                 <Button variant="ghost" className="p-1 h-auto text-sm flex items-center gap-1 mx-auto w-full">
-                  {showMoreOptions ? 'Show Less' : 'Show More'}
+                  {showMoreOptions ? <Trans>Show Less</Trans> : <Trans>Show More</Trans>}
                   <ChevronDown className={`h-4 w-4 transition-transform ${showMoreOptions ? 'rotate-180' : ''}`} />
                 </Button>
               </CollapsibleTrigger>
@@ -234,10 +236,10 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
           <div className="pt-4 border-t">
             <div className="flex flex-wrap gap-2">
               <Badge variant="outline">
-                {chart.series.filter(s => s.enabled).length} Active Series
+                <Trans>{chart.series.filter(s => s.enabled).length} Active Series</Trans>
               </Badge>
               {chart.config.showRelativeValues && (
-                <Badge variant="secondary">Relative Mode</Badge>
+                <Badge variant="secondary"><Trans>Relative Mode</Trans></Badge>
               )}
               {/* quick menu item opens modal above; button removed as requested */}
             </div>

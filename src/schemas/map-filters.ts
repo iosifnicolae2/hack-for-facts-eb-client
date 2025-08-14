@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { AnalyticsFilterSchema, AnalyticsFilterType, defaultYearRange } from '@/schemas/charts';
 
 const MapViewEnum = z.enum(["map", "table", "chart"]);
-const MapViewTypeEnum = z.enum(["UAT", "Judet"]);
+const MapViewTypeEnum = z.enum(["UAT", "County"]);
 
 export const defaultMapFilters: AnalyticsFilterType = {
   account_category: 'ch',

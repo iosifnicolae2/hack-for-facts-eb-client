@@ -19,6 +19,8 @@ import { FundingSourceList } from './funding-source-filter/FundingSourceFilter';
 import { PrefixFilter, FilterPrefixContainer } from './prefix-filter';
 import { UatList } from './uat-filter/UatList';
 import { CountyList } from './county-filter/CountyList';
+import { Trans } from "@lingui/react/macro";
+import { t } from "@lingui/core/macro";
 
 export function MapFilter() {
     const {
@@ -75,11 +77,11 @@ export function MapFilter() {
         <Card className="flex flex-col w-full min-h-full overflow-y-auto shadow-lg">
             <CardHeader className="py-4 px-6 border-b">
                 <div className="flex justify-between items-center">
-                    <CardTitle className="text-lg font-semibold">Filtre Hartă</CardTitle>
+                    <CardTitle className="text-lg font-semibold"><Trans>Map Filters</Trans></CardTitle>
                     {totalOptionalFilters > 0 && (
                         <Button variant="ghost" size="sm" onClick={clearAllFilters} className="text-sm">
                             <XCircle className="w-4 h-4 mr-1" />
-                            Șterge filtre ({totalOptionalFilters})
+                            <Trans>Clear filters ({totalOptionalFilters})</Trans>
                         </Button>
                     )}
                 </div>
@@ -88,7 +90,7 @@ export function MapFilter() {
                 <div className="p-3 border-b">
                     <h4 className="mb-2 text-sm font-medium flex items-center">
                         <ChartBar className="w-4 h-4 mr-2" />
-                        Vizualizare Date
+                        <Trans>Data View</Trans>
                     </h4>
                     <ViewTypeRadioGroup
                         value={mapState.activeView}
@@ -98,17 +100,17 @@ export function MapFilter() {
                 <div className="p-3 border-b">
                     <h4 className="mb-2 text-sm font-medium flex items-center">
                         <Map className="w-4 h-4 mr-2" />
-                        Vizualizare Hartă
+                        <Trans>Map View</Trans>
                     </h4>
                     <MapViewTypeRadioGroup
-                        value={mapState.mapViewType}
+                        value={mapState.mapViewType as "UAT" | "County"}
                         onChange={(mapViewType) => setMapViewType(mapViewType)}
                     />
                 </div>
                 <div className="p-3 border-b">
                     <h4 className="mb-2 text-sm font-medium flex items-center">
                         <ArrowUpDown className="w-4 h-4 mr-2" />
-                        Venituri/Cheltuieli
+                        <Trans>Income/Expenses</Trans>
                     </h4>
                     <AccountCategoryRadioGroup
                         value={selectedAccountCategoryOption}
@@ -119,7 +121,7 @@ export function MapFilter() {
                 <div className="p-3 border-b">
                     <h4 className="mb-2 text-sm font-medium flex items-center">
                         <Divide className="w-4 h-4 mr-2" />
-                        Sumă totală
+                        <Trans>Total Amount</Trans>
                     </h4>
                     <PopulationRadioGroup
                         value={selectedNormalizationOption}
@@ -128,14 +130,14 @@ export function MapFilter() {
                 </div>
 
                 <FilterListContainer
-                    title="Anul"
+                    title={t`Year`}
                     icon={<Calendar className="w-4 h-4" />}
                     listComponent={YearFilter}
                     selected={selectedYearOptions}
                     setSelected={setYears}
                 />
                 <FilterListContainer
-                    title="UAT-uri"
+                    title={t`UATs`}
                     icon={<MapPin className="w-4 h-4" />}
                     listComponent={UatList}
                     selected={selectedUatOptions}
@@ -143,7 +145,7 @@ export function MapFilter() {
                 />
 
                 <FilterListContainer
-                    title="Județe"
+                    title={t`Counties`}
                     icon={<MapPinned className="w-4 h-4" />}
                     listComponent={CountyList}
                     selected={(mapState.filters.county_codes ?? []).map((c) => ({ id: c, label: String(c) }))}
@@ -151,28 +153,28 @@ export function MapFilter() {
                 />
 
                 <FilterListContainer
-                    title="Clasificare Functionala"
+                    title={t`Functional Classification`}
                     icon={<ChartBar className="w-4 h-4" />}
                     listComponent={FunctionalClassificationList}
                     selected={selectedFunctionalClassificationOptions}
                     setSelected={setSelectedFunctionalClassificationOptions}
                 />
                 <FilterPrefixContainer
-                    title="Prefix Clasificare Functionala"
+                    title={t`Functional Classification Prefix`}
                     icon={<ChartBar className="w-4 h-4" />}
                     prefixComponent={PrefixFilter}
                     value={mapState.filters.functional_prefixes}
                     onValueChange={setFunctionalPrefixes}
                 />
                 <FilterListContainer
-                    title="Clasificare Economică"
+                    title={t`Economic Classification`}
                     icon={<Tags className="w-4 h-4" />}
                     listComponent={EconomicClassificationList}
                     selected={selectedEconomicClassificationOptions}
                     setSelected={setSelectedEconomicClassificationOptions}
                 />
                 <FilterPrefixContainer
-                    title="Prefix Clasificare Economică"
+                    title={t`Economic Classification Prefix`}
                     icon={<Tags className="w-4 h-4" />}
                     prefixComponent={PrefixFilter}
                     value={mapState.filters.economic_prefixes}
@@ -180,7 +182,7 @@ export function MapFilter() {
                 />
 
                 <FilterListContainer
-                    title="Tip entitate"
+                    title={t`Entity Type`}
                     icon={<Building className="w-4 h-4" />}
                     listComponent={EntityTypeList}
                     selected={(mapState.filters.entity_types ?? []).map(id => ({ id, label: id }))}
@@ -188,7 +190,7 @@ export function MapFilter() {
                 />
 
                 <FilterListContainer
-                    title="Sector bugetar"
+                    title={t`Budget Sector`}
                     icon={<Building2 className="w-4 h-4" />}
                     listComponent={BudgetSectorList}
                     selected={(mapState.filters.budget_sector_ids ?? []).map(id => ({ id, label: String(id) }))}
@@ -196,14 +198,14 @@ export function MapFilter() {
                 />
 
                 <FilterListContainer
-                    title="Sursă de finanțare"
+                    title={t`Funding Source`}
                     icon={<HandCoins className="w-4 h-4" />}
                     listComponent={FundingSourceList}
                     selected={(mapState.filters.funding_source_ids ?? []).map(id => ({ id, label: String(id) }))}
                     setSelected={setSelectedFundingSourceOptions}
                 />
                 <FilterRangeContainer
-                    title="Interval Valoare"
+                    title={t`Amount Range`}
                     icon={<SlidersHorizontal className="w-4 h-4" />}
                     unit="RON"
                     rangeComponent={AmountRangeFilter}
@@ -213,8 +215,8 @@ export function MapFilter() {
                     onMaxValueChange={(v) => setAggregateMaxAmount(v ? Number(v) : undefined)}
                 />
                 <FilterRangeContainer
-                    title="Interval Populație"
-                    unit="locuitori"
+                    title={t`Population Range`}
+                    unit={t`inhabitants`}
                     icon={<Globe className="w-4 h-4" />}
                     rangeComponent={AmountRangeFilter}
                     minValue={mapState.filters.min_population}

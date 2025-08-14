@@ -1,20 +1,21 @@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { t } from "@lingui/core/macro";
 
-const viewOptions = [
-    { id: "UAT", label: "UAT" },
-    { id: "Judet", label: "Județ" },
-] as const;
+const MAP_VIEW_TYPES = [
+    { id: "UAT", label: t`UAT` },
+    { id: "County", label: t`County` },
+];
 
 interface MapViewTypeRadioGroupProps {
-    value: "UAT" | "Judet";
-    onChange: (value: "UAT" | "Judet") => void;
+    value: "UAT" | "County";
+    onChange: (value: "UAT" | "County") => void;
 }
 
 export function MapViewTypeRadioGroup({ value, onChange }: MapViewTypeRadioGroupProps) {
 
-    const handleValueChange = (value: "UAT" | "Judet") => {
+    const handleValueChange = (value: "UAT" | "County") => {
         onChange(value);
     };
 
@@ -24,7 +25,7 @@ export function MapViewTypeRadioGroup({ value, onChange }: MapViewTypeRadioGroup
             className="flex space-x-2"
             onValueChange={handleValueChange}
         >
-            {viewOptions.map(option => {
+            {MAP_VIEW_TYPES.map(option => {
                 const isSelected = value === option.id;
                 return (
                     <Label

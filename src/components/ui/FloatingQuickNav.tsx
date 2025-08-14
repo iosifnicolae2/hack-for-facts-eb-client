@@ -9,6 +9,7 @@ import { EntityAnalyticsUrlState } from '@/routes/entity-analytics';
 import { generateRandomColor } from '../charts/components/chart-renderer/utils';
 import { useUatLabel } from '@/hooks/filters/useFilterLabels';
 import { LabelStore } from '@/hooks/filters/interfaces';
+import { t } from '@lingui/core/macro';
 
 type View = 'map' | 'table' | 'chart';
 
@@ -22,7 +23,7 @@ type Action = {
 
 interface FloatingQuickNavProps {
     className?: string;
-    mapViewType: 'UAT' | 'Judet';
+    mapViewType: 'UAT' | 'County';
     mapActive?: boolean;
     tableActive?: boolean;
     chartActive?: boolean;
@@ -50,9 +51,9 @@ export function FloatingQuickNav({ className, mapViewType, mapActive, tableActiv
     }
 
     const actions: Action[] = [
-        { key: 'map', label: 'Go to Map', onClick: handleMapNavigate, icon: <Map className="h-5 w-5" />, active: mapActive },
-        { key: 'table', label: 'Go to Entity Table', onClick: handleTableNavigate, icon: <Table className="h-5 w-5" />, active: tableActive },
-        { key: 'chart', label: 'Go to Chart View', onClick: handleChartNavigate, icon: <BarChart2 className="h-5 w-5" />, active: chartActive },
+        { key: 'map', label: t`Go to Map`, onClick: handleMapNavigate, icon: <Map className="h-5 w-5" />, active: mapActive },
+        { key: 'table', label: t`Go to Entity Table`, onClick: handleTableNavigate, icon: <Table className="h-5 w-5" />, active: tableActive },
+        { key: 'chart', label: t`Go to Chart View`, onClick: handleChartNavigate, icon: <BarChart2 className="h-5 w-5" />, active: chartActive },
     ]
 
     const visibleActions = actions.filter(a => a.active);
@@ -134,7 +135,7 @@ function convertFilterInputToChartState(filterInput: AnalyticsFilterType, uatLab
                 id: crypto.randomUUID(),
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
-                label: `Județ ${cc}`,
+                label: t`County ${cc}`,
                 unit: 'RON',
                 filter: {
                     ...filterInput,
@@ -162,7 +163,7 @@ function convertFilterInputToChartState(filterInput: AnalyticsFilterType, uatLab
             id: crypto.randomUUID(),
             type: 'line-items-aggregated-yearly',
             enabled: true,
-            label: 'Series',
+            label: t`Series`,
             unit: 'RON',
             filter: {
                 ...filterInput,
@@ -184,7 +185,7 @@ function convertFilterInputToChartState(filterInput: AnalyticsFilterType, uatLab
     const chartState: ChartUrlState = {
         chart: ChartSchema.parse({
             id: chartId,
-            title: 'Analytics',
+            title: t`Analytics`,
             config: {
                 chartType: 'bar',
                 yearRange: { start: years[0], end: years[years.length - 1] }
@@ -199,7 +200,7 @@ function convertFilterInputToChartState(filterInput: AnalyticsFilterType, uatLab
     return chartState
 }
 
-function convertFilterInputToEntityTableState(filterInput: AnalyticsFilterType, mapViewType: 'UAT' | 'Judet'): EntityAnalyticsUrlState {
+function convertFilterInputToEntityTableState(filterInput: AnalyticsFilterType, mapViewType: 'UAT' | 'County'): EntityAnalyticsUrlState {
     const years = ensureYears(filterInput)
     const accountCategory = (filterInput.account_category ?? 'ch') as 'ch' | 'vn'
     const base: EntityAnalyticsUrlState = {
@@ -214,7 +215,7 @@ function convertFilterInputToEntityTableState(filterInput: AnalyticsFilterType, 
     // - If switching from Judet with no uat_ids, aggregate at county level: use entity_types admin_county_council
     // - If Judet and uat_ids selected -> prefer uat_ids
     // - If UAT view and uat_ids selected, keep is_uat true
-    if (mapViewType === 'Judet') {
+    if (mapViewType === 'County') {
         if (filterInput.uat_ids && filterInput.uat_ids.length > 0) {
             base.filter = { ...base.filter, uat_ids: filterInput.uat_ids, entity_types: undefined, is_uat: undefined }
         } else {
@@ -231,7 +232,7 @@ function convertFilterInputToEntityTableState(filterInput: AnalyticsFilterType, 
     return base
 }
 
-function convertFilterInputToMapState(filterInput: AnalyticsFilterType, mapViewType: 'UAT' | 'Judet'): MapUrlState {
+function convertFilterInputToMapState(filterInput: AnalyticsFilterType, mapViewType: 'UAT' | 'County'): MapUrlState {
     const years = ensureYears(filterInput)
     const accountCategory = (filterInput.account_category ?? 'ch') as 'ch' | 'vn'
 
