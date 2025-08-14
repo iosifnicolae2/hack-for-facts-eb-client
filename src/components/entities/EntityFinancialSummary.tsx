@@ -31,7 +31,7 @@ export const EntityFinancialSummaryCard: React.FC<EntityFinancialSummaryCardProp
         <p className="text-4xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">{displayValueCompact}</p>
         <p className="flex items-center gap-1">
           <span className="text-sm text-muted-foreground">{displayValueStandard}</span>
-          <a href={`https://www.google.com/search?q=${displayValueStandard} to euro`} target="_blank" rel="noopener noreferrer" className="text-muted-foreground">
+          <a href={`https://www.google.com/search?q=${value} RON to EUR`} target="_blank" rel="noopener noreferrer" className="text-muted-foreground">
             <BadgeEuro className="h-4 w-4" />
           </a>
         </p>
