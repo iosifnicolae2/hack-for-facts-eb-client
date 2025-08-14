@@ -26,6 +26,11 @@ Security and production behavior
 
 Performance notes
 
+Best practices
+
+- Prefer pagination and targeted filters to reduce payload sizes.
+- Avoid deeply nested GraphQL queries; depth limits apply.
+- Handle 429s by backing off and retrying after the window.
 
 See also
 

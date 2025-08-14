@@ -50,6 +50,7 @@ Notes
 
 - All amounts are in RON unless specified.
 - Where `ID` is used, it is delivered as a string in GraphQL responses.
+ - In production, introspection is disabled; see `/mcp/v1/definition` or this documentation.
 
 See also
 

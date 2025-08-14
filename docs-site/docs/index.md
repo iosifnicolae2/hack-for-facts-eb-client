@@ -34,3 +34,9 @@ Help
 
 - [FAQ](faq)
 - [Glossary](glossary)
+
+See also
+
+- App shell & navigation: [app-shell-and-navigation](app-shell-and-navigation)
+- Filters system: [filters-system](filters-system)
+- Deep‑links & shareable views: [deeplinks-and-python-tools](deeplinks-and-python-tools)

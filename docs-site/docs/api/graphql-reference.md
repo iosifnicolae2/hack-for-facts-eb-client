@@ -72,5 +72,6 @@ Notes
 
 - See Filters page for input details; see Queries page for examples.
 - All list fields return a `Connection` with `nodes` and `pageInfo`.
+ - Sorting is `{ by: String!, order: String! }` and `order` is `ASC` or `DESC`.
 
 

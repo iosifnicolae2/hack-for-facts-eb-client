@@ -171,5 +171,6 @@ See also
 - Use short, distinctive tokens for name searches; trigram will rank close matches higher.
 - For entity/UAT searches, add structural filters (`is_uat`, `entity_type`, `county_code`) to narrow candidates.
 - Combine search with analytics filters to immediately scope results (e.g., search economic code then query entity analytics with that code prefix).
+ - Filters, pagination, and sorting: [api-filters-pagination-sorting](./filters-pagination-sorting.md)
 
 

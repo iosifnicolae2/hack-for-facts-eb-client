@@ -57,7 +57,8 @@ Population rules at a glance
 
 - UATs: per‑capita divides by `UATs.population`.
 - Counties: per‑capita divides by the main administrative UAT (Bucharest special case: `siruta_code='179132'`).
-- Entities: if `is_uat=true` use its UAT’s population; if `entity_type='admin_county_council'` use county population; otherwise population may be `NULL`.
+ - Entities: if `is_uat=true` use its UAT’s population; if `entity_type='admin_county_council'` use county population; otherwise population may be `NULL`.
+ - If population is 0 or `NULL`, `per_capita_amount` becomes 0. Prefer Total when population is unavailable.
 
 ### County analytics (heatmapJudetData)
 
@@ -90,6 +91,7 @@ Notes
 
 - County population is derived as described; if unavailable, per-capita amounts fall back to 0.
 - `county_entity` is resolved post-query from the computed county CUI.
+ - Use `item_min_amount` to remove tiny items before grouping; use `aggregate_min_amount` after grouping (HAVING). HAVING respects `normalization`.
 
 See also
 

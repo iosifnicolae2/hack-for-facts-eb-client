@@ -60,5 +60,6 @@ See also
 
 - GraphQL Getting Started: [api-getting-started](./getting-started.md)
 - API Cookbook: [api-cookbook](./cookbook.md)
+ - Errors & Rate Limits: [api-errors-and-rate-limits](./errors-and-rate-limits.md)
 
 

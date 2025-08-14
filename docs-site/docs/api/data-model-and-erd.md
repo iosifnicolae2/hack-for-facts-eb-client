@@ -3,6 +3,10 @@ id: data-model-and-erd
 title: Data Model & ERD – Core Tables and GraphQL Mapping
 ---
 
+**Who it's for**: Developers needing to understand how GraphQL maps to DB tables
+
+**Outcomes**: Know where each field lives in the schema and how entities relate
+
 This page documents the core data model (tables and relationships) and maps GraphQL fields to database columns. It covers:
 
 - UATs (administrative units)
@@ -202,5 +206,12 @@ Notes
 
 - Foreign keys connect facts to dimensions (see ERD edges). Deletions are restricted for most dimensions; `Reports → ExecutionLineItems` uses `ON DELETE CASCADE` to keep facts aligned with report lifecycle.
 - Checks enforce domain constraints: `account_category IN ('vn','ch')`, `year` range, `economic_code` required for `ch` items, etc.
+
+
+### See also
+
+- GraphQL schema & types: [api-graphql-schema-and-types](./graphql-schema-and-types.md)
+- GraphQL queries & examples: [api-graphql-queries](./graphql-queries.md)
+- Unified filter deep dive (SQL mappings): [api-unified-filter-interface](./unified-filter-interface.md)
 
 

@@ -7,6 +7,17 @@ title: GraphQL – Queries and Examples
 
 **Outcomes**: Copy/paste queries for common tasks and adapt quickly.
 
+Quickstart
+
+```bash
+curl -X POST http://localhost:3000/graphql \
+  -H 'content-type: application/json' \
+  -d '{
+  "query": "query($f:AnalyticsFilterInput!){ entityAnalytics(filter:$f, limit:3){ nodes{ entity_cui entity_name total_amount per_capita_amount } pageInfo{ totalCount } } }",
+  "variables": { "f": { "years": [2024], "account_category": "ch" } }
+}'
+```
+
 Entities
 
 ```graphql
@@ -113,6 +124,7 @@ Notes
 
 - Use `AnalyticsFilterInput` to scope by year(s), account category (`vn` or `ch`), and optional dimensional or geographic filters.
 - For meaningful per‑capita values, ensure population is available for the selected geography.
+ - Prefer pagination (`limit`/`offset`) and targeted filters to keep responses small.
 
 See also
 

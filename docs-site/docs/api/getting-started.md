@@ -3,6 +3,29 @@ id: api-getting-started
 title: API – Getting Started
 ---
 
+**Who it's for**: Developers who want to make a working request in seconds
+
+**Outcomes**: Issue a minimal GraphQL query, understand required fields, explore more examples
+
+Quickstart (copy‑paste)
+
+```bash
+curl -X POST http://localhost:3000/graphql \
+  -H 'content-type: application/json' \
+  -d '{
+  "query": "query($f:AnalyticsFilterInput!){ entityAnalytics(filter:$f, limit:3){ nodes{ entity_cui entity_name total_amount per_capita_amount } pageInfo{ totalCount } } }",
+  "variables": { "f": { "years": [2024], "account_category": "ch" } }
+}'
+```
+
+Notes
+
+- Required fields for analytics: `years` and `account_category` (`vn` revenues, `ch` expenses)
+- Add `normalization: "per_capita"` to compare fairly across different sizes; otherwise totals are returned
+- See more examples below or the Cookbook
+
+Basics
+
 Send GraphQL requests to `POST /graphql` with a JSON body containing a `query` string and optional `variables`.
 
 Example: list entities

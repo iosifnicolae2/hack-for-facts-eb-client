@@ -3,6 +3,10 @@ id: api-filters-pagination-sorting
 title: Filters, Pagination, and Sorting
 ---
 
+**Who it's for**: Developers building analytics queries confidently and efficiently
+
+**Outcomes**: Pick the right filter fields, know WHERE vs HAVING, and avoid common pitfalls
+
 Filters
 
 - `EntityFilter`, `UATFilter`, `ReportFilter`, `FundingSourceFilterInput`, `BudgetSectorFilterInput`, `DatasetFilter` apply to their respective list queries.
@@ -31,6 +35,7 @@ Callouts
 
 - Always set `years` and `account_category` for analytics queries.
 - Per‑capita: if population is `0` or `NULL`, per‑capita becomes `0` (see analytics pages for details).
+ - Prefix filters use `varchar_pattern_ops` indexes (`LIKE 'xx%'` is indexable); text search uses trigram where available.
 
 Pagination
 
