@@ -88,8 +88,8 @@ const config = {
         {
           title: 'Docs & Updates',
           items: [
-            { label: 'Learn', href: '/docs/learn/intro' },
-            { label: 'Releases', href: '/docs/releases' },
+            { label: 'Learn', to: '/learn/intro' },
+            { label: 'Releases', to: '/releases' },
           ],
         },
         {
