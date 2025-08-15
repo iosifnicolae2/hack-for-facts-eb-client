@@ -349,6 +349,7 @@ msgstr "Chart Type"
 
 #: src/components/footer/AppFooter.tsx:95
 #: src/components/sidebar/nav-main.tsx:31
+#: src/hooks/useEntityViews.tsx:38
 #: src/routes/charts/index.lazy.tsx:157
 #: src/routes/index.lazy.tsx:65
 msgid "Charts"
@@ -559,9 +560,17 @@ msgstr "County"
 msgid "County:"
 msgstr "County:"
 
+#: src/components/entities/views/RelatedChartsView.tsx:59
+msgid "Create a chart for this entity to start tracking its financial evolution."
+msgstr "Create a chart for this entity to start tracking its financial evolution."
+
 #: src/routes/charts/index.lazy.tsx:177
 msgid "Create chart"
 msgstr "Create chart"
+
+#: src/components/entities/views/RelatedChartsView.tsx:64
+msgid "Create chart for this entity"
+msgstr "Create chart for this entity"
 
 #: src/routes/charts/index.lazy.tsx:219
 msgid "Create your first chart"
@@ -674,7 +683,7 @@ msgstr "Detailed Budget Execution"
 msgid "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
 msgstr "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
 
-#: src/routes/entities.$cui.lazy.tsx:122
+#: src/routes/entities.$cui.lazy.tsx:123
 msgid "Details:"
 msgstr "Details:"
 
@@ -821,8 +830,8 @@ msgstr "Entities"
 msgid "Entity"
 msgstr "Entity"
 
-#: src/routes/entities.$cui.lazy.tsx:116
-#: src/routes/entities.$cui.lazy.tsx:132
+#: src/routes/entities.$cui.lazy.tsx:117
+#: src/routes/entities.$cui.lazy.tsx:133
 msgid "Entity {cui} – Not found"
 msgstr "Entity {cui} – Not found"
 
@@ -846,7 +855,7 @@ msgstr "Entity type"
 msgid "Entity Type"
 msgstr "Entity Type"
 
-#: src/routes/entities.$cui.lazy.tsx:119
+#: src/routes/entities.$cui.lazy.tsx:120
 msgid "Error Fetching Entity Details"
 msgstr "Error Fetching Entity Details"
 
@@ -995,7 +1004,7 @@ msgstr "Filters applied to data series will appear here."
 msgid "Filters info"
 msgstr "Filters info"
 
-#: src/lib/chart-links.ts:25
+#: src/lib/chart-links.ts:26
 msgid "Financial Evolution - {entityName}"
 msgstr "Financial Evolution - {entityName}"
 
@@ -1419,12 +1428,12 @@ msgstr "No data available for the table."
 msgid "No data available to display financial evolution."
 msgstr "No data available to display financial evolution."
 
-#: src/routes/entities.$cui.lazy.tsx:135
+#: src/routes/entities.$cui.lazy.tsx:136
 msgid "No Data Found"
 msgstr "No Data Found"
 
-#: src/routes/entities.$cui.lazy.tsx:116
-#: src/routes/entities.$cui.lazy.tsx:132
+#: src/routes/entities.$cui.lazy.tsx:117
+#: src/routes/entities.$cui.lazy.tsx:133
 msgid "No data found for CUI {cui}."
 msgstr "No data found for CUI {cui}."
 
@@ -1440,7 +1449,7 @@ msgstr "No data series yet."
 msgid "No enabled series data available to display."
 msgstr "No enabled series data available to display."
 
-#: src/routes/entities.$cui.lazy.tsx:137
+#: src/routes/entities.$cui.lazy.tsx:138
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 
@@ -1475,6 +1484,10 @@ msgstr "No operands. Add a series or a new calculation."
 #: src/components/ui/multi-select.tsx:106
 msgid "No options found."
 msgstr "No options found."
+
+#: src/components/entities/views/RelatedChartsView.tsx:57
+msgid "No related charts yet"
+msgstr "No related charts yet"
 
 #: src/routes/charts/index.lazy.tsx:248
 msgid "No results"
@@ -1642,6 +1655,10 @@ msgstr "Quickly adjust chart settings"
 msgid "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 msgstr "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 
+#: src/hooks/useEntityViews.tsx:38
+#~ msgid "Related charts"
+#~ msgstr "Related charts"
+
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:243
 msgid "Relative Mode"
 msgstr "Relative Mode"
@@ -1668,15 +1685,15 @@ msgstr "Report type"
 msgid "Report Type"
 msgstr "Report Type"
 
-#: src/routes/entities.$cui.lazy.tsx:212
+#: src/routes/entities.$cui.lazy.tsx:215
 msgid "Reporting year"
 msgstr "Reporting year"
 
-#: src/routes/entities.$cui.lazy.tsx:208
+#: src/routes/entities.$cui.lazy.tsx:211
 msgid "Reporting Year:"
 msgstr "Reporting Year:"
 
-#: src/hooks/useEntityViews.tsx:39
+#: src/hooks/useEntityViews.tsx:42
 msgid "Reports"
 msgstr "Reports"
 
@@ -2003,7 +2020,7 @@ msgstr "Test error"
 msgid "The Service provides tools to explore, analyze, and visualize public budget execution data from Romania."
 msgstr "The Service provides tools to explore, analyze, and visualize public budget execution data from Romania."
 
-#: src/routes/entities.$cui.lazy.tsx:121
+#: src/routes/entities.$cui.lazy.tsx:122
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "There was a problem fetching the details for CUI: <0>{cui}</0>."
 

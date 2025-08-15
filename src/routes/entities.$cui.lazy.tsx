@@ -13,6 +13,7 @@ import { MapView } from '@/components/entities/views/MapView'
 import { Overview } from '@/components/entities/views/Overview'
 import { defaultYearRange } from '@/schemas/charts'
 import { RankingView } from '@/components/entities/views/RankingView'
+import { RelatedChartsView } from '@/components/entities/views/RelatedChartsView'
 import { useEntityMapFilter } from '@/components/entities/hooks/useEntityMapFilter'
 import { useEntityDetails } from '@/lib/hooks/useEntityDetails'
 import { Analytics } from '@/lib/analytics'
@@ -175,6 +176,8 @@ function EntityDetailsPage() {
         />
       case 'ranking':
         return <RankingView />
+      case 'related-charts':
+        return <RelatedChartsView entity={entity ?? undefined} normalization={normalization} />
       default:
         return <Overview
           entity={entity ?? undefined}

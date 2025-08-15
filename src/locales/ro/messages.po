@@ -349,6 +349,7 @@ msgstr "Tip grafic"
 
 #: src/components/footer/AppFooter.tsx:95
 #: src/components/sidebar/nav-main.tsx:31
+#: src/hooks/useEntityViews.tsx:38
 #: src/routes/charts/index.lazy.tsx:157
 #: src/routes/index.lazy.tsx:65
 msgid "Charts"
@@ -559,9 +560,17 @@ msgstr "Județ"
 msgid "County:"
 msgstr "Județ:"
 
+#: src/components/entities/views/RelatedChartsView.tsx:59
+msgid "Create a chart for this entity to start tracking its financial evolution."
+msgstr "Creează un grafic pentru această entitate pentru a începe să-i urmărești evoluția financiară."
+
 #: src/routes/charts/index.lazy.tsx:177
 msgid "Create chart"
 msgstr "Creează grafic"
+
+#: src/components/entities/views/RelatedChartsView.tsx:64
+msgid "Create chart for this entity"
+msgstr "Creează grafic pentru această entitate"
 
 #: src/routes/charts/index.lazy.tsx:219
 msgid "Create your first chart"
@@ -674,7 +683,7 @@ msgstr "Executie bugetara detaliata"
 msgid "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
 msgstr "Detalii despre cookie-urile și stocarea locală (localStorage) utilizate de Transparenta.eu, cu opțiuni de consimțământ."
 
-#: src/routes/entities.$cui.lazy.tsx:122
+#: src/routes/entities.$cui.lazy.tsx:123
 msgid "Details:"
 msgstr "Detalii:"
 
@@ -821,8 +830,8 @@ msgstr "Entități"
 msgid "Entity"
 msgstr "Entitate"
 
-#: src/routes/entities.$cui.lazy.tsx:116
-#: src/routes/entities.$cui.lazy.tsx:132
+#: src/routes/entities.$cui.lazy.tsx:117
+#: src/routes/entities.$cui.lazy.tsx:133
 msgid "Entity {cui} – Not found"
 msgstr "Entitatea {cui} – Nu a fost găsită"
 
@@ -846,7 +855,7 @@ msgstr "Tip entitate"
 msgid "Entity Type"
 msgstr "Tip entitate"
 
-#: src/routes/entities.$cui.lazy.tsx:119
+#: src/routes/entities.$cui.lazy.tsx:120
 msgid "Error Fetching Entity Details"
 msgstr "Eroare la preluarea detaliilor entității"
 
@@ -995,7 +1004,7 @@ msgstr "Filtrele aplicate seriilor de date vor apărea aici."
 msgid "Filters info"
 msgstr "Informații filtre"
 
-#: src/lib/chart-links.ts:25
+#: src/lib/chart-links.ts:26
 msgid "Financial Evolution - {entityName}"
 msgstr "Evoluție financiară - {entityName}"
 
@@ -1419,12 +1428,12 @@ msgstr "Nu sunt date disponibile pentru tabel."
 msgid "No data available to display financial evolution."
 msgstr "Nu sunt date disponibile pentru afișarea evoluției financiare."
 
-#: src/routes/entities.$cui.lazy.tsx:135
+#: src/routes/entities.$cui.lazy.tsx:136
 msgid "No Data Found"
 msgstr "Nu s-au găsit date"
 
-#: src/routes/entities.$cui.lazy.tsx:116
-#: src/routes/entities.$cui.lazy.tsx:132
+#: src/routes/entities.$cui.lazy.tsx:117
+#: src/routes/entities.$cui.lazy.tsx:133
 msgid "No data found for CUI {cui}."
 msgstr "Nu s-au găsit date pentru CUI {cui}."
 
@@ -1440,7 +1449,7 @@ msgstr "Nicio serie de date încă."
 msgid "No enabled series data available to display."
 msgstr "Nu există date disponibile în seriile activate pentru a fi afișate."
 
-#: src/routes/entities.$cui.lazy.tsx:137
+#: src/routes/entities.$cui.lazy.tsx:138
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "Nu s-au găsit detalii despre entitate pentru CUI: <0>{cui}</0>. Este posibil ca această entitate să nu existe sau să nu aibă date asociate."
 
@@ -1475,6 +1484,10 @@ msgstr "Niciun operand. Adăugați o serie sau un calcul nou."
 #: src/components/ui/multi-select.tsx:106
 msgid "No options found."
 msgstr "Nu s-au găsit opțiuni."
+
+#: src/components/entities/views/RelatedChartsView.tsx:57
+msgid "No related charts yet"
+msgstr "Încă nu există grafice asociate"
 
 #: src/routes/charts/index.lazy.tsx:248
 msgid "No results"
@@ -1642,6 +1655,10 @@ msgstr "Ajustați rapid setările graficului"
 msgid "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 msgstr "Citiți <0>Politica privind cookie-urile</0> și <1>Politica de confidențialitate</1>."
 
+#: src/hooks/useEntityViews.tsx:38
+#~ msgid "Related charts"
+#~ msgstr "Grafice asociate"
+
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:243
 msgid "Relative Mode"
 msgstr "Mod relativ"
@@ -1668,15 +1685,15 @@ msgstr "Tip Raportare"
 msgid "Report Type"
 msgstr "Tip Raportare"
 
-#: src/routes/entities.$cui.lazy.tsx:212
+#: src/routes/entities.$cui.lazy.tsx:215
 msgid "Reporting year"
 msgstr "Anul raportării"
 
-#: src/routes/entities.$cui.lazy.tsx:208
+#: src/routes/entities.$cui.lazy.tsx:211
 msgid "Reporting Year:"
 msgstr "Anul raportării:"
 
-#: src/hooks/useEntityViews.tsx:39
+#: src/hooks/useEntityViews.tsx:42
 msgid "Reports"
 msgstr "Rapoarte"
 
@@ -2003,7 +2020,7 @@ msgstr "Eroare de test"
 msgid "The Service provides tools to explore, analyze, and visualize public budget execution data from Romania."
 msgstr "Serviciul oferă instrumente pentru explorarea, analizarea și vizualizarea datelor privind execuția bugetară publică din România."
 
-#: src/routes/entities.$cui.lazy.tsx:121
+#: src/routes/entities.$cui.lazy.tsx:122
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "A apărut o problemă la preluarea detaliilor pentru CUI: <0>{cui}</0>."
 
