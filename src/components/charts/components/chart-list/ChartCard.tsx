@@ -39,7 +39,6 @@ interface ChartCardProps {
 
 export function ChartCard({ chart, onDelete, onToggleFavorite, categories = [], onToggleCategory, onOpenCategory }: ChartCardProps) {
   const title = chart.title?.trim() || "Untitled chart";
-  const chartType = chart.config?.chartType ?? "";
   const seriesCount = Array.isArray(chart.series) ? chart.series.length : 0;
   const updatedRelative = formatDistanceToNow(new Date(chart.updatedAt), {
     addSuffix: true,
@@ -49,7 +48,6 @@ export function ChartCard({ chart, onDelete, onToggleFavorite, categories = [], 
     <Card className="group relative flex flex-col h-full hover:shadow-md transition-shadow overflow-hidden">
       <ChartCardHeader
         title={title}
-        chartType={chartType}
         seriesCount={seriesCount}
         updatedRelative={updatedRelative}
         categories={categories}
@@ -57,7 +55,7 @@ export function ChartCard({ chart, onDelete, onToggleFavorite, categories = [], 
         onOpenCategory={onOpenCategory}
         onToggleFavorite={() => onToggleFavorite(chart.id)}
         isFavorite={!!chart.favorite}
-        chartId={chart.id}
+        chart={chart}
       />
       <CardContent className="px-4 pb-3">
         {/* Main component in the chart card */}
@@ -149,7 +147,6 @@ export function ChartCard({ chart, onDelete, onToggleFavorite, categories = [], 
 // Sub-components to declutter card layout
 type ChartCardHeaderProps = {
   title: string;
-  chartType: string;
   seriesCount: number;
   updatedRelative: string;
   categories: readonly ChartCategory[];
@@ -157,10 +154,10 @@ type ChartCardHeaderProps = {
   onOpenCategory?: (categoryId: string) => void;
   onToggleFavorite: () => void;
   isFavorite: boolean;
-  chartId: string;
+  chart: StoredChart;
 };
 
-function ChartCardHeader({ title, chartType, seriesCount, updatedRelative, categories, chartCategories, onOpenCategory, onToggleFavorite, isFavorite, chartId }: ChartCardHeaderProps) {
+function ChartCardHeader({ title, seriesCount, updatedRelative, categories, chartCategories, onOpenCategory, onToggleFavorite, isFavorite, chart }: ChartCardHeaderProps) {
   return (
     <CardHeader className="p-4 pb-2">
       <div className="flex items-start justify-between gap-3">
@@ -168,8 +165,8 @@ function ChartCardHeader({ title, chartType, seriesCount, updatedRelative, categ
           <CardTitle className="text-base md:text-lg line-clamp-1">
             <Link
               to={`/charts/$chartId`}
-              params={{ chartId }}
-              search={{ view: "overview" }}
+              params={{ chartId: chart.id }}
+              search={{ view: "overview", chart: chart }}
               className="hover:underline"
             >
               {title}
@@ -177,7 +174,7 @@ function ChartCardHeader({ title, chartType, seriesCount, updatedRelative, categ
           </CardTitle>
           <CardDescription className="mt-1 flex flex-wrap items-center gap-2">
             <Badge variant="secondary" className="shrink-0">
-              {chartType}
+              {chart.config?.chartType}
             </Badge>
             <span className="shrink-0">{seriesCount} series</span>
             <span className="text-muted-foreground shrink-0">• {updatedRelative}</span>
@@ -216,7 +213,7 @@ function ChartCardHeader({ title, chartType, seriesCount, updatedRelative, categ
                 className="text-muted-foreground hover:text-foreground"
                 aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
                 onClick={() => {
-                  Analytics.capture(Analytics.EVENTS.ChartFavoritedToggled, { chart_id: chartId, now_favorite: !isFavorite });
+                  Analytics.capture(Analytics.EVENTS.ChartFavoritedToggled, { chart_id: chart.id, now_favorite: !isFavorite });
                   onToggleFavorite();
                 }}
               >
