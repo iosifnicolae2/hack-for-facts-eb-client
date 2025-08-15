@@ -12,12 +12,14 @@ import { collectUniqueFilterValues, countPotentialReplacements, ReplaceableFilte
 import { ArrowLeftRight, CheckCircle2, RefreshCw } from 'lucide-react';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
+import { ChartSchema } from '@/schemas/charts';
 
 interface FilterBulkEditProps {
     withCard?: boolean;
+    onClose?: () => void;
 }
 
-export function FilterBulkEdit({ withCard = true }: FilterBulkEditProps) {
+export function FilterBulkEdit({ withCard = true, onClose }: FilterBulkEditProps) {
     const { chart, updateChart } = useChartStore();
     const filterKeyMap = useFilterKeyLabel();
     const [bulkField, setBulkField] = useState<ReplaceableFilterKey | ''>('');
@@ -26,6 +28,27 @@ export function FilterBulkEdit({ withCard = true }: FilterBulkEditProps) {
     const [toValue, setToValue] = useState<string>('');
     const replacementCount = useMemo(() => (bulkField && fromValue) ? countPotentialReplacements(chart, bulkField, fromValue) : 0, [chart, bulkField, fromValue]);
     const [confirmOpen, setConfirmOpen] = useState(false);
+
+    const handleReplace = () => {
+        if (!bulkField) return;
+        const updated = replaceFilterValue(chart, bulkField, fromValue, toValue);
+
+        // Validate chart schema
+        try {
+            ChartSchema.parse(updated);
+        } catch (error) {
+            toast.error(t`Invalid chart schema`);
+            return;
+        }
+
+        updateChart(updated);
+        setConfirmOpen(false);
+        Analytics.capture(Analytics.EVENTS.ChartUpdated, { action: 'bulk_filter_replace', field: bulkField, from: fromValue, to: toValue, occurrences: replacementCount });
+        toast.success('Filters updated', { description: `Replaced ${replacementCount} occurrence${replacementCount === 1 ? '' : 's'}.`, icon: <CheckCircle2 className="h-4 w-4 text-green-600" /> });
+        setFromValue('');
+        setToValue('');
+        onClose?.();
+    }
 
     const Content = (
         <div className="py-6">
@@ -111,16 +134,7 @@ export function FilterBulkEdit({ withCard = true }: FilterBulkEditProps) {
                         <AlertDialogFooter>
                             <AlertDialogCancel><Trans>Cancel</Trans></AlertDialogCancel>
                             <AlertDialogAction
-                                onClick={() => {
-                                    if (!bulkField) return;
-                                    const updated = replaceFilterValue(chart, bulkField, fromValue, toValue);
-                                    updateChart(updated);
-                                    setConfirmOpen(false);
-                                    Analytics.capture(Analytics.EVENTS.ChartUpdated, { action: 'bulk_filter_replace', field: bulkField, from: fromValue, to: toValue, occurrences: replacementCount });
-                                    toast.success('Filters updated', { description: `Replaced ${replacementCount} occurrence${replacementCount === 1 ? '' : 's'}.`, icon: <CheckCircle2 className="h-4 w-4 text-green-600" /> });
-                                    setFromValue('');
-                                    setToValue('');
-                                }}
+                                onClick={handleReplace}
                             >
                                 <Trans>Confirm</Trans>
                             </AlertDialogAction>

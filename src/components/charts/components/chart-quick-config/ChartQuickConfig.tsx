@@ -90,7 +90,7 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
               <DialogHeader>
                 <DialogTitle><Trans>Bulk edit filters</Trans></DialogTitle>
               </DialogHeader>
-              <FilterBulkEdit withCard={false} />
+              <FilterBulkEdit withCard={false} onClose={() => setBulkEditOpen(false)} />
             </DialogContent>
           </Dialog>
           {/* Chart Type */}
