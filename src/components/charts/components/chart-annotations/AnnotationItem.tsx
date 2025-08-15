@@ -4,6 +4,7 @@ import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { AnnotationItemMenu } from "./AnnotationItemMenu";
 import { useDebouncedCallback } from "@/lib/hooks/useDebouncedCallback";
+import { Trans } from "@lingui/react/macro";
 
 interface AnnotationItemProps {
   annotation: TAnnotation;
@@ -47,7 +48,7 @@ export function AnnotationItem({ annotation, index, isSelected, onOpenEdit, onTo
         </div>
         <div className="flex-1 min-w-0" onClick={onClick}>
           <p className="font-medium truncate" title={displayTitle}>{displayTitle}</p>
-          <p className="text-xs text-muted-foreground">Annotation {index + 1}</p>
+          <p className="text-xs text-muted-foreground"><Trans>Annotation {index + 1}</Trans></p>
         </div>
       </div>
       <div className="flex items-center gap-1 ml-2">

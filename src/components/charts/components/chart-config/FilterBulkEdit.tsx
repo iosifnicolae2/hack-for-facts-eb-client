@@ -39,7 +39,7 @@ export function FilterBulkEdit({ withCard = true }: FilterBulkEditProps) {
 
             <div className="grid sm:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                    <Label>Filter field</Label>
+                    <Label><Trans>Filter field</Trans></Label>
                     <Select value={bulkField} onValueChange={(v) => { setBulkField(v as ReplaceableFilterKey); setFromValue(''); }}>
                         <SelectTrigger>
                             <SelectValue placeholder={t`Select field`} />
@@ -58,6 +58,7 @@ export function FilterBulkEdit({ withCard = true }: FilterBulkEditProps) {
                                 'account_category',
                                 'report_type',
                                 'is_uat',
+                                'normalization',
                             ]) as ReplaceableFilterKey[]).map((key) => (
                                 <SelectItem key={key} value={key}>{filterKeyMap(key)}</SelectItem>
                             ))}
@@ -66,7 +67,7 @@ export function FilterBulkEdit({ withCard = true }: FilterBulkEditProps) {
                 </div>
 
                 <div className="space-y-2">
-                    <Label>Replace value</Label>
+                    <Label><Trans>Replace value</Trans></Label>
                     <Select value={fromValue} onValueChange={setFromValue} disabled={!bulkField || currentOptions.length === 0}>
                         <SelectTrigger>
                             <SelectValue placeholder={bulkField ? (currentOptions.length ? t`Select current value` : t`No values to replace`) : t`Select field first`} />
@@ -80,14 +81,14 @@ export function FilterBulkEdit({ withCard = true }: FilterBulkEditProps) {
                 </div>
 
                 <div className="space-y-2">
-                    <Label>New value</Label>
+                    <Label><Trans>New value</Trans></Label>
                     <Input placeholder={t`Enter new value`} value={toValue} onChange={(e) => setToValue(e.target.value)} disabled={!bulkField || !fromValue} />
                 </div>
             </div>
 
             <div className="mt-4 flex items-center justify-between">
                 <div className="text-sm text-muted-foreground">
-                    {replacementCount > 0 ? `${replacementCount} occurrence${replacementCount === 1 ? '' : 's'} found` : t`No matches yet`}
+                    {replacementCount > 0 ? <Trans>Found {replacementCount} occurrence{replacementCount === 1 ? '' : 's'}</Trans> : <Trans>No matches yet</Trans>}
                 </div>
                 <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
                     <AlertDialogTrigger asChild>
