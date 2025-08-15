@@ -12,6 +12,11 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: nplurals=3; plural=(n==1?0:(n==0||(n%100>=1&&n%100<=19))?1:2);\n"
 
+#. placeholder {0}: chart.annotations.length
+#: src/components/charts/components/chart-annotations/AnnotationsList.tsx:61
+msgid "{0} annotations"
+msgstr "{0} adnotări"
+
 #. placeholder {0}: chart.series.length
 #: src/components/charts/components/chart-view/SeriesList.tsx:91
 msgid "{0} series configured"
@@ -98,6 +103,10 @@ msgstr "Adăugați o serie pentru a vizualiza datele."
 msgid "Add and manage data series for your chart"
 msgstr "Adăugați și gestionați seriile de date pentru graficul dumneavoastră"
 
+#: src/components/charts/components/chart-annotations/AnnotationsList.tsx:67
+msgid "Add Annotation"
+msgstr "Adaugă adnotare"
+
 #: src/components/charts/components/series-config/CalculationConfig.tsx:165
 msgid "Add Calculation"
 msgstr "Adaugă calcul"
@@ -161,7 +170,7 @@ msgstr "Sumă pe cap de locuitor"
 msgid "Amount Range"
 msgstr "Interval sumă"
 
-#: src/components/ui/FloatingQuickNav.tsx:214
+#: src/components/ui/FloatingQuickNav.tsx:212
 msgid "Analytics"
 msgstr "Analiză"
 
@@ -189,6 +198,11 @@ msgstr "Analizați valorile cumulate pe entitate și explorați entitățile de 
 msgid "and"
 msgstr "și"
 
+#. placeholder {0}: index + 1
+#: src/components/charts/components/chart-annotations/AnnotationItem.tsx:51
+msgid "Annotation {0}"
+msgstr "Adnotarea {0}"
+
 #: src/components/charts/components/views/AnnotationConfigView.tsx:69
 msgid "Annotation Configuration"
 msgstr "Configurare adnotare"
@@ -196,6 +210,10 @@ msgstr "Configurare adnotare"
 #: src/components/charts/components/views/AnnotationConfigView.tsx:50
 msgid "Annotation not found"
 msgstr "Adnotarea nu a fost găsită"
+
+#: src/components/charts/components/chart-annotations/AnnotationsList.tsx:56
+msgid "Annotations"
+msgstr "Adnotări"
 
 #: src/routes/cookies.lazy.tsx:61
 msgid "Anonymous usage patterns, page views, interactions."
@@ -241,7 +259,7 @@ msgstr "Înapoi sus"
 msgid "Backup"
 msgstr "Copie de rezervă"
 
-#: src/components/entities/EntityFinancialTrends.tsx:145
+#: src/components/entities/EntityFinancialTrends.tsx:137
 msgid "Balance"
 msgstr "Balanță"
 
@@ -294,7 +312,7 @@ msgid "Calculation"
 msgstr "Calcul"
 
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:65
-#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:111
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:135
 #: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:60
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:80
 #: src/components/charts/components/views/AnnotationConfigView.tsx:243
@@ -442,7 +460,7 @@ msgstr "Configurează graficul – Transparenta.eu"
 msgid "Configure chart options, series, and annotations."
 msgstr "Configurați opțiunile graficului, seriile și adnotările."
 
-#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:124
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:139
 msgid "Confirm"
 msgstr "Confirmă"
 
@@ -453,7 +471,7 @@ msgstr "Confirmă"
 msgid "Confirm Delete"
 msgstr "Confirmă ștergerea"
 
-#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:105
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:129
 msgid "Confirm replace"
 msgstr "Confirmă înlocuirea"
 
@@ -671,7 +689,7 @@ msgstr "Ștergeți acest grafic?"
 msgid "Density"
 msgstr "Densitate"
 
-#: src/components/entities/EntityFinancialTrends.tsx:97
+#: src/components/entities/EntityFinancialTrends.tsx:99
 msgid "Deschide în editorul de grafice"
 msgstr "Deschide în editorul de grafice"
 
@@ -809,7 +827,7 @@ msgstr "Introduceți titlul adnotării..."
 msgid "Enter chart title..."
 msgstr "Introduceți titlul graficului..."
 
-#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:84
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:108
 msgid "Enter new value"
 msgstr "Introduceți valoarea nouă"
 
@@ -916,10 +934,10 @@ msgstr "Exemple"
 msgid "Expense Trends"
 msgstr "Evoluția cheltuielilor"
 
-#: src/components/entities/EntityFinancialTrends.tsx:144
+#: src/components/entities/EntityFinancialTrends.tsx:136
 #: src/components/entities/EntityLineItems.tsx:67
 #: src/components/entities/views/MapView.tsx:138
-#: src/components/entities/views/TrendsView.tsx:152
+#: src/components/entities/views/TrendsView.tsx:159
 #: src/components/filters/account-type-filter/AccountCategoryRadio.tsx:12
 #: src/components/filters/EntityAnalyticsFilter.tsx:204
 #: src/components/filters/MapFilter.tsx:137
@@ -989,6 +1007,10 @@ msgstr "Favoritele primele"
 msgid "Feedback / Report an issue"
 msgstr "Feedback / Raportați o problemă"
 
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:65
+msgid "Filter field"
+msgstr "Câmp de filtrare"
+
 #: src/components/charts/components/series-config/SeriesFilter.tsx:211
 #: src/components/entity-analytics/EntityAnalyticsLayout.tsx:46
 #: src/components/filters/EntityAnalyticsFilter.tsx:174
@@ -1012,7 +1034,7 @@ msgstr "Evoluție financiară - {entityName}"
 msgid "Financial Reports"
 msgstr "Rapoarte Financiare"
 
-#: src/components/entities/EntityFinancialTrends.tsx:96
+#: src/components/entities/EntityFinancialTrends.tsx:98
 msgid "Financial Trends"
 msgstr "Evoluție Financiară"
 
@@ -1023,6 +1045,11 @@ msgstr "Fn"
 #: src/components/maps/utils.ts:143
 msgid "for the selected filters."
 msgstr "pentru filtrele selectate."
+
+#. placeholder {0}: replacementCount === 1 ? '' : 's'
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:114
+msgid "Found {replacementCount} occurrence{0}"
+msgstr "S-au găsit {replacementCount} apariții"
 
 #: src/lib/chart-filter-utils.ts:15
 msgid "Functional classification"
@@ -1139,7 +1166,7 @@ msgstr "Includeți o atribuire vizibilă a sursei datelor și a Transparenta.eu 
 msgid "Includes additional error context. No user identity is attached."
 msgstr "Include context suplimentar pentru erori. Nu se atașează nicio identitate a utilizatorului."
 
-#: src/components/entities/EntityFinancialTrends.tsx:143
+#: src/components/entities/EntityFinancialTrends.tsx:135
 #: src/components/entities/views/MapView.tsx:139
 #: src/components/filters/account-type-filter/AccountCategoryRadio.tsx:13
 #: src/components/filters/EntityAnalyticsFilter.tsx:205
@@ -1164,7 +1191,7 @@ msgid "Income/Expenses"
 msgstr "Venituri/Cheltuieli"
 
 #: src/components/entities/EntityLineItems.tsx:81
-#: src/components/entities/views/TrendsView.tsx:127
+#: src/components/entities/views/TrendsView.tsx:132
 msgid "Incomes"
 msgstr "Venituri"
 
@@ -1183,6 +1210,10 @@ msgstr "locuitori"
 #: src/routes/terms.lazy.tsx:50
 msgid "Intellectual property"
 msgstr "Proprietate intelectuală"
+
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:40
+msgid "Invalid chart schema"
+msgstr "Schemă grafic invalidă"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:330
 #: src/components/filters/EntityAnalyticsFilter.tsx:323
@@ -1382,6 +1413,10 @@ msgstr "N/A"
 msgid "Name"
 msgstr "Nume"
 
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:107
+msgid "New value"
+msgstr "Valoare nouă"
+
 #: src/routes/charts/index.lazy.tsx:201
 msgid "Newest"
 msgstr "Cele mai noi"
@@ -1402,6 +1437,10 @@ msgstr "Nu sunt necesare conturi; nu vindem date cu caracter personal."
 #: src/components/maps/utils.ts:140
 msgid "No aggregated data"
 msgstr "Nu există date agregate"
+
+#: src/components/charts/components/chart-annotations/AnnotationsList.tsx:66
+msgid "No annotations yet."
+msgstr "Încă nu există adnotări."
 
 #. placeholder {0}: cat.name
 #: src/routes/charts/index.lazy.tsx:287
@@ -1424,7 +1463,7 @@ msgstr "Nu sunt date disponibile pentru hartă."
 msgid "No data available for the table."
 msgstr "Nu sunt date disponibile pentru tabel."
 
-#: src/components/entities/EntityFinancialTrends.tsx:118
+#: src/components/entities/EntityFinancialTrends.tsx:110
 msgid "No data available to display financial evolution."
 msgstr "Nu sunt date disponibile pentru afișarea evoluției financiare."
 
@@ -1461,7 +1500,7 @@ msgstr "Niciun favorit încă"
 msgid "No Filters Applied"
 msgstr "Niciun filtru aplicat"
 
-#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:90
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:114
 msgid "No matches yet"
 msgstr "Nicio potrivire încă"
 
@@ -1501,12 +1540,13 @@ msgstr "Nu s-au găsit rezultate."
 msgid "No series found."
 msgstr "Nu s-a găsit nicio serie."
 
-#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:72
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:96
 msgid "No values to replace"
 msgstr "Nicio valoare de înlocuit"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:305
 #: src/components/filters/EntityAnalyticsFilter.tsx:213
+#: src/lib/chart-filter-utils.ts:24
 msgid "Normalization"
 msgstr "Normalizare"
 
@@ -1571,12 +1611,12 @@ msgstr "Lipiți date dintr-o foaie de calcul. Fiecare linie trebuie să conțin�
 msgid "Per Capita"
 msgstr "Pe cap de locuitor"
 
-#: src/components/entities/EntityFinancialTrends.tsx:111
+#: src/components/common/NormalizationSelector.tsx:21
 #: src/components/filters/normalization-filter/NormalizationFilter.tsx:16
 msgid "Per Capita (EUR)"
 msgstr "Pe cap de locuitor (EUR)"
 
-#: src/components/entities/EntityFinancialTrends.tsx:110
+#: src/components/common/NormalizationSelector.tsx:20
 msgid "Per Capita (RON)"
 msgstr "Pe cap de locuitor (RON)"
 
@@ -1667,9 +1707,13 @@ msgstr "Mod relativ"
 msgid "Relative Values"
 msgstr "Valori relative"
 
-#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:100
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:124
 msgid "Replace"
 msgstr "Înlocuiește"
+
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:93
+msgid "Replace value"
+msgstr "Înlocuiește valoarea"
 
 #: src/components/footer/AppFooter.tsx:194
 msgid "Report a bug"
@@ -1820,15 +1864,15 @@ msgstr "Consultați și <0>Politica de confidențialitate</0>."
 msgid "See-through, clear"
 msgstr "Ușor de înțeles, clar"
 
-#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:72
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:96
 msgid "Select current value"
 msgstr "Selectează valoarea curentă"
 
-#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:45
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:68
 msgid "Select field"
 msgstr "Selectează câmpul"
 
-#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:72
+#: src/components/charts/components/chart-config/FilterBulkEdit.tsx:96
 msgid "Select field first"
 msgstr "Selectează mai întâi câmpul"
 
@@ -2068,11 +2112,11 @@ msgstr "Comută tema"
 msgid "Tooltip"
 msgstr "Indiciu"
 
-#: src/components/entities/views/TrendsView.tsx:49
+#: src/components/entities/views/TrendsView.tsx:51
 msgid "Top {TOP_CATEGORIES_COUNT} Income Categories for {entityName}"
 msgstr "Top {TOP_CATEGORIES_COUNT} categorii de venituri pentru {entityName}"
 
-#: src/components/entities/views/TrendsView.tsx:49
+#: src/components/entities/views/TrendsView.tsx:51
 msgid "Top {TOP_CATEGORIES_COUNT} Spending Categories for {entityName}"
 msgstr "Top {TOP_CATEGORIES_COUNT} categorii de cheltuieli pentru {entityName}"
 
@@ -2095,12 +2139,12 @@ msgstr "total"
 msgid "Total"
 msgstr "Total"
 
-#: src/components/entities/EntityFinancialTrends.tsx:109
+#: src/components/common/NormalizationSelector.tsx:19
 #: src/components/filters/normalization-filter/NormalizationFilter.tsx:15
 msgid "Total (EUR)"
 msgstr "Total (EUR)"
 
-#: src/components/entities/EntityFinancialTrends.tsx:108
+#: src/components/common/NormalizationSelector.tsx:18
 msgid "Total (RON)"
 msgstr "Total (RON)"
 
