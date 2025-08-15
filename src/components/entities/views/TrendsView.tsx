@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { EntityDetailsData, YearlyAmount } from '@/lib/api/entities';
-import { Chart, SeriesConfiguration } from '@/schemas/charts';
+import { Chart, SeriesConfiguration, Normalization } from '@/schemas/charts';
 import { useParams } from '@tanstack/react-router';
 import { getChapterMap, getTopFunctionalGroupCodes } from '@/lib/analytics-utils';
 import { getSeriesColor } from '@/components/charts/components/chart-renderer/utils';
@@ -20,11 +20,13 @@ interface BaseTrendsViewProps {
   initialExpenseSearch?: string;
   onSearchChange: (type: 'income' | 'expense', search: string) => void;
   isLoading?: boolean;
+  normalization: Normalization;
+  onNormalizationChange: (mode: Normalization) => void;
 }
 
 const TOP_CATEGORIES_COUNT = 10;
 
-export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, currentYear, onYearClick, initialIncomeSearch, initialExpenseSearch, onSearchChange, isLoading }) => {
+export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, currentYear, onYearClick, initialIncomeSearch, initialExpenseSearch, onSearchChange, isLoading, normalization, onNormalizationChange }) => {
   const { cui } = useParams({ from: '/entities/$cui' });
   const isMobile = useIsMobile();
   const chapterMap = useMemo(() => getChapterMap(), []);
@@ -57,6 +59,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
         functional_prefixes: [prefix],
         account_category: accountCategory,
         report_type: isMainCreditor ? 'Executie bugetara agregata la nivel de ordonator principal' : 'Executie bugetara detaliata',
+        normalization,
       },
       enabled: true,
       config: { color: getSeriesColor(index), visible: true, showDataLabels: false },
@@ -78,7 +81,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
       },
       series,
     } as Chart;
-  }, [topFunctionalGroups, cui, type, chapterMap, entity, entityNameRaw, isMainCreditor]);
+  }, [topFunctionalGroups, cui, type, chapterMap, entity, entityNameRaw, isMainCreditor, normalization]);
 
   const {
     expenseSearchTerm,
@@ -122,6 +125,8 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
           chart={trendChart}
           onYearClick={onYearClick}
           currentYear={currentYear}
+          normalization={normalization}
+          onNormalizationChange={onNormalizationChange}
         />
         <FinancialDataCard
           title={t`Incomes`}
@@ -147,6 +152,8 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
         chart={trendChart}
         onYearClick={onYearClick}
         currentYear={currentYear}
+        normalization={normalization}
+        onNormalizationChange={onNormalizationChange}
       />
       <FinancialDataCard
         title={t`Expenses`}

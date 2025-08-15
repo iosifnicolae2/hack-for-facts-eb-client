@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine } from 'recharts';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+// Removed direct Select usage; using NormalizationSelector
 import { TrendingUp, BarChart2 } from 'lucide-react';
 import { yValueFormatter } from '../charts/components/chart-renderer/utils';
 import { EntityFinancialTrendsSkeleton } from './EntityFinancialTrendsSkeleton';
@@ -13,6 +13,7 @@ import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
 import { YearlyAmount } from '@/lib/api/entities';
 import { Normalization } from '@/schemas/charts';
+import { NormalizationSelector } from '@/components/common/NormalizationSelector';
 
 interface EntityFinancialTrendsProps {
   incomeTrend?: YearlyAmount[] | null;
@@ -100,17 +101,7 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
               </Link>
             </Button>
           </CardTitle>
-          <Select value={normalization} onValueChange={(val) => onNormalizationChange(val as Normalization)}>
-            <SelectTrigger className="w-[160px] h-8 text-xs">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="total"><Trans>Total (RON)</Trans></SelectItem>
-              <SelectItem value="total_euro"><Trans>Total (EUR)</Trans></SelectItem>
-              <SelectItem value="per_capita"><Trans>Per Capita (RON)</Trans></SelectItem>
-              <SelectItem value="per_capita_euro"><Trans>Per Capita (EUR)</Trans></SelectItem>
-            </SelectContent>
-          </Select>
+          <NormalizationSelector value={normalization} onChange={onNormalizationChange} />
         </div>
       </CardHeader>
       <CardContent className="pt-6">

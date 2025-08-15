@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { Chart } from '@/schemas/charts';
+import { Chart, Normalization } from '@/schemas/charts';
 import { useChartData, convertToTimeSeriesData, convertToAggregatedData } from '@/components/charts/hooks/useChartData';
 import { ChartDisplayArea } from '@/components/charts/components/chart-view/ChartDisplayArea';
 import { Button } from '@/components/ui/button';
@@ -7,14 +7,17 @@ import { ExternalLink } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
 import { Trans } from '@lingui/react/macro';
+import { NormalizationSelector } from '@/components/common/NormalizationSelector';
 
 interface ChartCardProps {
     chart: Chart;
     currentYear?: number;
     onYearClick?: (year: number) => void;
+    normalization: Normalization;
+    onNormalizationChange: (normalization: Normalization) => void;
 }
 
-function ChartCardComponent({ chart, onYearClick, currentYear }: ChartCardProps) {
+export const ChartCard = React.memo(({ chart, onYearClick, currentYear, normalization, onNormalizationChange }: ChartCardProps) => {
     const { dataSeriesMap, isLoadingData, dataError } = useChartData({ chart });
     const { data: timeSeriesData, unitMap: timeSeriesUnitMap } = useMemo(() => convertToTimeSeriesData(dataSeriesMap!, chart), [dataSeriesMap, chart]);
     const { data: aggregatedData, unitMap: aggregatedUnitMap } = useMemo(() => convertToAggregatedData(dataSeriesMap!, chart), [dataSeriesMap, chart]);
@@ -40,17 +43,15 @@ function ChartCardComponent({ chart, onYearClick, currentYear }: ChartCardProps)
 
     return (
         <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <div className='flex flex-col gap-2'>
-                    <CardDescription className="sr-only">{chart.description}</CardDescription>
-                </div>
-
+            <CardDescription className="sr-only">{chart.description}</CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 gap-4">
                 <Button asChild variant="outline" size="sm">
                     <Link to={`/charts/$chartId`} params={{ chartId: chart.id }} search={{ chart: getChartState }} preload="intent">
                         <ExternalLink className="h-4 w-4 mr-2" />
                         <Trans>Open in Chart Editor</Trans>
                     </Link>
                 </Button>
+                <NormalizationSelector value={normalization} onChange={onNormalizationChange} />
             </CardHeader>
             <CardContent>
                 <div>
@@ -71,6 +72,5 @@ function ChartCardComponent({ chart, onYearClick, currentYear }: ChartCardProps)
             </CardContent>
         </Card >
     );
-}
+});
 
-export const ChartCard = React.memo(ChartCardComponent);
