@@ -117,6 +117,7 @@ function convertFilterInputToChartState(
                 unit: getNormalizationUnit(filterInput.normalization),
                 filter: {
                     ...filterInput,
+                    years: undefined,
                     account_category: accountCategory,
                     report_type: reportType,
                     entity_cuis: [cui],
@@ -141,6 +142,7 @@ function convertFilterInputToChartState(
                 unit: getNormalizationUnit(filterInput.normalization),
                 filter: {
                     ...filterInput,
+                    years: undefined,
                     account_category: accountCategory,
                     report_type: reportType,
                     uat_ids: [uatId],
@@ -164,6 +166,7 @@ function convertFilterInputToChartState(
                 unit: getNormalizationUnit(filterInput.normalization),
                 filter: {
                     ...filterInput,
+                    years: undefined,
                     account_category: accountCategory,
                     report_type: reportType,
                     county_codes: [cc],
