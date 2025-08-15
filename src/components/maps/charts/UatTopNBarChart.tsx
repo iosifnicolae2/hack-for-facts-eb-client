@@ -10,13 +10,13 @@ import {
   ResponsiveContainer,
   LabelList,
 } from 'recharts';
-import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
+import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { formatCurrency, formatNumber } from '@/lib/utils';
 
 interface UatTopNBarChartProps {
-  data: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[];
-  valueKey: keyof (HeatmapUATDataPoint & HeatmapJudetDataPoint); 
-  nameKey: keyof (HeatmapUATDataPoint & HeatmapJudetDataPoint);  
+  data: (HeatmapUATDataPoint | HeatmapCountyDataPoint)[];
+  valueKey: keyof (HeatmapUATDataPoint & HeatmapCountyDataPoint); 
+  nameKey: keyof (HeatmapUATDataPoint & HeatmapCountyDataPoint);  
   topN?: number;
   chartTitle?: string;
   barColor?: string;
@@ -51,7 +51,7 @@ export const UatTopNBarChart: React.FC<UatTopNBarChartProps> = ({
         const name = getString(rawName) as NameType
         return value !== undefined && name ? { ...item, [valueKey]: value, [nameKey]: name } : undefined
       })
-      .filter((x): x is (HeatmapUATDataPoint & HeatmapJudetDataPoint) => Boolean(x))
+      .filter((x): x is (HeatmapUATDataPoint & HeatmapCountyDataPoint) => Boolean(x))
       .sort((a, b) => {
         const ra = a as unknown as Record<string, unknown>
         const rb = b as unknown as Record<string, unknown>

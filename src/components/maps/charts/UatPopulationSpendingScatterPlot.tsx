@@ -10,11 +10,11 @@ import {
   Legend,
   ZAxis,
 } from 'recharts';
-import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
+import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { formatCurrency, formatNumber } from '@/lib/utils';
 
 interface UatPopulationSpendingScatterPlotProps {
-  data: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[];
+  data: (HeatmapUATDataPoint | HeatmapCountyDataPoint)[];
   chartTitle?: string;
   xAxisLabel?: string;
   yAxisLabel?: string;
@@ -25,7 +25,7 @@ interface UatPopulationSpendingScatterPlotProps {
 interface CustomTooltipProps {
   active?: boolean;
   payload?: Array<{
-    payload: HeatmapUATDataPoint | HeatmapJudetDataPoint;
+    payload: HeatmapUATDataPoint | HeatmapCountyDataPoint;
     value?: number;
     name?: string;
   }>;
@@ -72,9 +72,9 @@ export const UatPopulationSpendingScatterPlot: React.FC<UatPopulationSpendingSca
       return saneData; // Show all if data is too sparse
     }
 
-    const outliersMap = new Map<string, HeatmapUATDataPoint | HeatmapJudetDataPoint>();
+    const outliersMap = new Map<string, HeatmapUATDataPoint | HeatmapCountyDataPoint>();
 
-    const addOutliersToMap = (points: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[]) => {
+    const addOutliersToMap = (points: (HeatmapUATDataPoint | HeatmapCountyDataPoint)[]) => {
       points.slice(0, TOP_N).forEach(p => {
         const name = "uat_name" in p ? p.uat_name : p.county_name;
         if (name) outliersMap.set(name, p);

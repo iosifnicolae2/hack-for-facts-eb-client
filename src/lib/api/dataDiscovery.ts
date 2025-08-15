@@ -1,6 +1,6 @@
 import { createLogger } from "../logger";
 import { graphqlRequest } from "./graphql";
-import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
+import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
 import { BudgetLineItem, PaginatedResult, EntityData, AggregatedBudgetData, GetDataParams } from "@/schemas/dataDiscovery";
 import { AnalyticsFilterType } from "@/schemas/charts";
 
@@ -10,14 +10,14 @@ interface HeatmapUATDataApiResponse {
   heatmapUATData: HeatmapUATDataPoint[];
 }
 
-interface HeatmapJudetDataApiResponse {
-  heatmapJudetData: HeatmapJudetDataPoint[];
+interface HeatmapCountyDataApiResponse {
+  heatmapCountyData: HeatmapCountyDataPoint[];
 }
 // --- END HEATMAP TYPES ---
 
 const GET_HEATMAP_JUDET_DATA_QUERY = `
-  query GetHeatmapJudetData($filter: AnalyticsFilterInput!) {
-    heatmapJudetData(filter: $filter) {
+  query GetHeatmapCountyData($filter: AnalyticsFilterInput!) {
+    heatmapCountyData(filter: $filter) {
       county_code
       county_name
       county_population
@@ -422,25 +422,25 @@ export async function getHeatmapUATData(
 // --- END GET HEATMAP UAT DATA FUNCTION ---
 
 // --- BEGIN GET HEATMAP JUDET DATA FUNCTION ---
-export async function getHeatmapJudetData(
+export async function getHeatmapCountyData(
   filter: AnalyticsFilterType
-): Promise<HeatmapJudetDataPoint[]> {
+): Promise<HeatmapCountyDataPoint[]> {
   logger.info("Fetching heatmap JUDET data with filter", { filter });
 
   try {
-    const response = await graphqlRequest<HeatmapJudetDataApiResponse>(
+    const response = await graphqlRequest<HeatmapCountyDataApiResponse>(
       GET_HEATMAP_JUDET_DATA_QUERY,
       { filter }
     );
 
-    if (!response || !response.heatmapJudetData) {
-      logger.warn("Received null or undefined response for heatmapJudetData", {
+    if (!response || !response.heatmapCountyData) {
+      logger.warn("Received null or undefined response for heatmapCountyData", {
         response,
       });
       return [];
     }
 
-    return response.heatmapJudetData;
+    return response.heatmapCountyData;
   } catch (error) {
     logger.error("Error fetching heatmap JUDET data", { error, filter });
     throw error;

@@ -14,7 +14,7 @@ import {
   DEFAULT_MAX_ZOOM,
   DEFAULT_MAX_BOUNDS,
 } from './constants';
-import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
+import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { generateHash } from '@/lib/utils';
 import { ScrollWheelZoomControl } from './ScrollWheelZoomControl';
 import { AnalyticsFilterType } from '@/schemas/charts';
@@ -24,13 +24,13 @@ import { Analytics } from '@/lib/analytics';
 
 interface InteractiveMapProps {
   onFeatureClick: (properties: UatProperties, event: LeafletMouseEvent) => void;
-  getFeatureStyle: (feature: UatFeature, heatmapDataMap: Map<string | number, HeatmapUATDataPoint | HeatmapJudetDataPoint>) => PathOptions;
+  getFeatureStyle: (feature: UatFeature, heatmapDataMap: Map<string | number, HeatmapUATDataPoint | HeatmapCountyDataPoint>) => PathOptions;
   center?: LatLngExpression;
   zoom?: number;
   minZoom?: number;
   maxZoom?: number;
   maxBounds?: LatLngBoundsExpression;
-  heatmapData: HeatmapUATDataPoint[] | HeatmapJudetDataPoint[];
+  heatmapData: HeatmapUATDataPoint[] | HeatmapCountyDataPoint[];
   geoJsonData: GeoJsonObject | null;
   highlightedFeatureId?: string | number;
   scrollWheelZoom?: boolean;

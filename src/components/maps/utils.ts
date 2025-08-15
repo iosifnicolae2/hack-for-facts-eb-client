@@ -1,4 +1,4 @@
-import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
+import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
 import { UatFeature, UatProperties } from './interfaces';
 import { formatCurrency } from '@/lib/utils';
 import { DEFAULT_FEATURE_STYLE, PERMANENT_HIGHLIGHT_STYLE } from './constants';
@@ -53,7 +53,7 @@ const createFilterSummary = (filters: AnalyticsFilterType): string => {
  */
 export const createTooltipContent = (
   properties: UatProperties,
-  heatmapData: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[] | undefined,
+  heatmapData: (HeatmapUATDataPoint | HeatmapCountyDataPoint)[] | undefined,
   mapViewType: 'UAT' | 'County',
   filters: AnalyticsFilterType
 ): string => {
@@ -151,7 +151,7 @@ export const createTooltipContent = (
 
 // Helper function to calculate percentile values
 export const getPercentileValues = (
-  data: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[] | undefined,
+  data: (HeatmapUATDataPoint | HeatmapCountyDataPoint)[] | undefined,
   lowerPercentile: number,
   upperPercentile: number,
   valueKey: 'total_amount' | 'per_capita_amount'
@@ -257,7 +257,7 @@ export const getHeatmapColor = (value: number): string => {
 
 
 export const createHeatmapStyleFunction = (
-  heatmapData: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[] | undefined,
+  heatmapData: (HeatmapUATDataPoint | HeatmapCountyDataPoint)[] | undefined,
   min: number,
   max: number,
   mapViewType: 'UAT' | 'County',
@@ -318,8 +318,8 @@ export const createHeatmapStyleFunction = (
 export function getStyleForFeature(
   feature: Feature<Geometry, unknown> | undefined,
   args: {
-    heatmapDataMap: Map<string | number, HeatmapUATDataPoint | HeatmapJudetDataPoint>;
-    getFeatureStyle: (feature: UatFeature, heatmapDataMap: Map<string | number, HeatmapUATDataPoint | HeatmapJudetDataPoint>) => PathOptions;
+    heatmapDataMap: Map<string | number, HeatmapUATDataPoint | HeatmapCountyDataPoint>;
+    getFeatureStyle: (feature: UatFeature, heatmapDataMap: Map<string | number, HeatmapUATDataPoint | HeatmapCountyDataPoint>) => PathOptions;
     highlightedFeatureId?: string | number;
   }
 ): PathOptions {
@@ -346,9 +346,9 @@ export function getStyleForFeature(
  * Builds a lookup map from heatmap data for O(1) access by feature key.
  */
 export function buildHeatmapDataMap(
-  heatmapData: Array<HeatmapUATDataPoint | HeatmapJudetDataPoint>
-): Map<string | number, HeatmapUATDataPoint | HeatmapJudetDataPoint> {
-  const map = new Map<string | number, HeatmapUATDataPoint | HeatmapJudetDataPoint>();
+  heatmapData: Array<HeatmapUATDataPoint | HeatmapCountyDataPoint>
+): Map<string | number, HeatmapUATDataPoint | HeatmapCountyDataPoint> {
+  const map = new Map<string | number, HeatmapUATDataPoint | HeatmapCountyDataPoint>();
   for (const item of heatmapData) {
     const key = 'uat_code' in item ? item.uat_code : item.county_code;
     map.set(key, item);

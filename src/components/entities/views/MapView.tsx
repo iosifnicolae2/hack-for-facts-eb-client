@@ -10,7 +10,7 @@ import { useGeoJsonData } from '@/hooks/useGeoJson';
 import { createHeatmapStyleFunction, getPercentileValues } from '@/components/maps/utils';
 import { EntityDetailsData } from '@/lib/api/entities';
 import { getEntityFeatureInfo } from '@/components/entities/utils';
-import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
+import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { UatProperties } from '@/components/maps/interfaces';
 import { useHeatmapData } from '@/hooks/useHeatmapData';
@@ -87,7 +87,7 @@ export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapF
     const clickedFeatureId = properties.natcode || properties.mnemonic;
     if (clickedFeatureId === featureId) return;
 
-    const targetEntity = (heatmapData as (HeatmapUATDataPoint[] | HeatmapJudetDataPoint[]))?.find(d => {
+    const targetEntity = (heatmapData as (HeatmapUATDataPoint[] | HeatmapCountyDataPoint[]))?.find(d => {
       if ('uat_code' in d) return d.siruta_code?.toString() === clickedFeatureId;
       if ('county_code' in d) return d.county_code === clickedFeatureId;
       return false;

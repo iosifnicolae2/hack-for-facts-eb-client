@@ -1,4 +1,4 @@
-import { HeatmapUATDataPoint, HeatmapJudetDataPoint } from "@/schemas/heatmap";
+import { HeatmapUATDataPoint, HeatmapCountyDataPoint } from "@/schemas/heatmap";
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 import React, { useState } from "react";
 import { getPercentileValues, createHeatmapStyleFunction } from "@/components/maps/utils";
@@ -79,7 +79,7 @@ function MapPage() {
         navigate({ to: `/entities/${uatCui}`, search: { ...searchParams } });
       }
     } else {
-      const countyCui = (heatmapData as HeatmapJudetDataPoint[])?.find(
+      const countyCui = (heatmapData as HeatmapCountyDataPoint[])?.find(
         (data) => data.county_code === properties.mnemonic
       )?.county_entity?.cui;
       if (countyCui) {

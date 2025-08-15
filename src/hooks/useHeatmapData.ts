@@ -1,4 +1,4 @@
-import { getHeatmapJudetData, getHeatmapUATData } from "@/lib/api/dataDiscovery";
+import { getHeatmapCountyData, getHeatmapUATData } from "@/lib/api/dataDiscovery";
 import { useQuery, type QueryOptions, keepPreviousData } from "@tanstack/react-query";
 import { AnalyticsFilterType } from "@/schemas/charts";
 import { convertDaysToMs, generateHash } from "@/lib/utils";
@@ -19,8 +19,8 @@ export function heatmapUATQueryOptions(filter: AnalyticsFilterType) {
 export function heatmapJudetQueryOptions(filter: AnalyticsFilterType) {
     const filterHash = generateHash(JSON.stringify(filter));
     return {
-        queryKey: ['heatmapJudetData', filterHash] as const,
-        queryFn: () => getHeatmapJudetData(filter),
+        queryKey: ['heatmapCountyData', filterHash] as const,
+        queryFn: () => getHeatmapCountyData(filter),
         staleTime: convertDaysToMs(1),
         gcTime: convertDaysToMs(3),
     } satisfies QueryOptions<unknown, Error, unknown, readonly [string, string]> & {

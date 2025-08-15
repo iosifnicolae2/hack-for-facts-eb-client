@@ -21,7 +21,7 @@ interface Entity {
   name: string;
 }
 
-export interface HeatmapJudetDataPoint {
+export interface HeatmapCountyDataPoint {
   county_code: string;
   county_name: string;
   county_population: number;

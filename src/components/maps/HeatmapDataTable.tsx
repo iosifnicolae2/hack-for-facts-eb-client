@@ -27,7 +27,7 @@ import {
     ChevronRight,
     MoreHorizontal,
 } from "lucide-react";
-import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
+import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
 import { formatCurrency, formatNumber } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
@@ -38,7 +38,7 @@ import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
 
 interface HeatmapDataTableProps {
-    data: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[];
+    data: (HeatmapUATDataPoint | HeatmapCountyDataPoint)[];
     isLoading: boolean;
     sorting: SortingState;
     setSorting: React.Dispatch<React.SetStateAction<SortingState>>;
@@ -68,7 +68,7 @@ export function HeatmapDataTable({
         },
     });
 
-    const columns = useMemo<ColumnDef<HeatmapUATDataPoint | HeatmapJudetDataPoint>[]>(
+    const columns = useMemo<ColumnDef<HeatmapUATDataPoint | HeatmapCountyDataPoint>[]>(
         () => [
             {
                 id: 'row_number',

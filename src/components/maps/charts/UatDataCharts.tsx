@@ -1,11 +1,11 @@
 import React from 'react';
-import { HeatmapJudetDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
+import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { UatTopNBarChart } from './UatTopNBarChart';
 import { UatPopulationSpendingScatterPlot } from './UatPopulationSpendingScatterPlot';
 import { t } from '@lingui/core/macro';
 
 interface UatDataChartsProps {
-    data: (HeatmapUATDataPoint | HeatmapJudetDataPoint)[];
+    data: (HeatmapUATDataPoint | HeatmapCountyDataPoint)[];
     mapViewType: "UAT" | "County";
 }
 
