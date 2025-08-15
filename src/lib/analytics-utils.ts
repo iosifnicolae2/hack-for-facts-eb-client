@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { ExecutionLineItem } from '@/lib/api/entities';
+import { getUserLocale } from './utils';
 
 interface BudgetNode {
   description: string;
@@ -14,8 +15,9 @@ let incomeSubchapterMapPromise: Promise<Map<string, string>> | null = null;
 
 type FunctionalTree = BudgetNode[];
 
-const CHAPTER_MAP_CACHE_KEY = 'functional-chapter-map-cache-v1';
-const INCOME_SUBCHAPTER_MAP_CACHE_KEY = 'functional-income-subchapter-map-cache-v1';
+const userLocale = getUserLocale();
+const CHAPTER_MAP_CACHE_KEY = `functional-chapter-map-cache-${userLocale}-v1`;
+const INCOME_SUBCHAPTER_MAP_CACHE_KEY = `functional-income-subchapter-map-cache-${userLocale}-v1`;
 
 const canUseStorage = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
 
@@ -42,7 +44,9 @@ const trySaveMapCache = (key: string, map: Map<string, string>): void => {
 };
 
 const fetchFunctionalTree = async (): Promise<FunctionalTree> => {
-  const mod = await import('@/assets/functional-classificatinos-general.json');
+  const mod = userLocale == 'ro' ?
+    await import('@/assets/functional-classifications-general-ro.json') :
+    await import('@/assets/functional-classifications-general-en.json');
   return (mod as { default: unknown }).default as FunctionalTree;
 };
 

@@ -23,7 +23,7 @@ const GroupedSubchapterAccordion: React.FC<GroupedSubchapterAccordionProps> = ({
     if (singleZeroChild || singleSameDescriptionChild) {
         // Render as a single non-accordion row to avoid duplicating the same item
         const fnCode = sub.functionals[0].code;
-        const fnName = sub.functionals[0].name;
+        const fnName = sub.name;
         return (
             <div className="grid grid-cols-[1fr_auto] items-center gap-4 py-2 px-4 border-b">
                 <div className="flex items-center overflow-hidden">
