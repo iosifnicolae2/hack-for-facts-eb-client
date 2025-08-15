@@ -57,9 +57,9 @@ export const Overview = ({
             />
 
             <EntityFinancialTrends
-                incomeTrend={entity?.incomeTrend}
-                expenseTrend={entity?.expenseTrend}
-                balanceTrend={entity?.balanceTrend}
+                incomeTrend={entity?.incomeTrend ?? []}
+                expenseTrend={entity?.expenseTrend ?? []}
+                balanceTrend={entity?.balanceTrend ?? []}
                 currentYear={selectedYear}
                 entityName={entity?.name ?? ''}
                 mode={trendMode}

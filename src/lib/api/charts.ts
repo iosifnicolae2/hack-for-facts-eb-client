@@ -35,7 +35,7 @@ export async function getChartAnalytics(inputs: AnalyticsInput[]): Promise<Analy
         unit
         yearlyTrend {
           year
-          totalAmount
+          value
         }
       }
     }
@@ -56,7 +56,7 @@ export async function getStaticChartAnalytics(seriesIds: string[]): Promise<Stat
         unit
         yearlyTrend {
           year
-          totalAmount
+          value
         }
       }
     }

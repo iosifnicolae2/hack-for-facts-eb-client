@@ -85,7 +85,7 @@ export const AnalyticsFilterSchema = z.object({
   max_population: z.number().optional(),
 
   // Aggregates & transforms
-  normalization: z.enum(['total', 'per_capita']).optional(),
+  normalization: z.enum(['total', 'per_capita', 'total_euro', 'per_capita_euro']).optional(),
   aggregate_min_amount: z.number().or(z.string()).optional(),
   aggregate_max_amount: z.number().or(z.string()).optional(),
 

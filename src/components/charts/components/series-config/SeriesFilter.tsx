@@ -25,6 +25,7 @@ import { LabelStore } from "@/hooks/filters/interfaces";
 import { ReportType, SeriesConfiguration } from "@/schemas/charts";
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
+import { NormalizationFilter } from "@/components/filters/normalization-filter/NormalizationFilter";
 
 interface SeriesFilterProps {
     seriesId?: string;
@@ -130,8 +131,12 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
             return prevSeries;
         });
     };
+    const normalization = filter.normalization;
+    const setNormalization = createValueUpdater('normalization', (v) => v ? v : undefined);
+    const normalizationOption: OptionItem | null = normalization ? { id: normalization, label: normalization } : null;
+    
     const reportTypeOption: OptionItem | null = reportType ? { id: reportType, label: reportType } : null;
-
+    
     const functionalPrefixes = filter.functional_prefixes ?? [];
     const setFunctionalPrefixes = createPrefixListUpdater('functional_prefixes');
 
@@ -171,12 +176,13 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
         (filter.aggregate_min_amount != null ? 1 : 0) +
         (filter.aggregate_max_amount != null ? 1 : 0) +
         (filter.report_type ? 1 : 0) +
+        (filter.normalization ? 1 : 0) +
         (filter.is_uat !== undefined ? 1 : 0) +
         (filter.functional_prefixes?.length ?? 0) +
         (filter.economic_prefixes?.length ?? 0);
 
     const handleClearReportType = () => setReportType(undefined);
-
+    const handleClearNormalization = () => setNormalization(undefined);
     const handleClearFlag = (option: OptionItem) => {
         if (!seriesId) return;
         updateSeries(seriesId, (prevSeries) => {
@@ -293,6 +299,17 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
                     <ReportTypeFilter
                         reportType={reportType}
                         setReportType={setReportType}
+                    />
+                </FilterRadioContainer>
+                <FilterRadioContainer
+                    title={t`Normalization`}
+                    icon={<ArrowUpDown className="w-4 h-4" />}
+                    selectedOption={normalizationOption}
+                    onClear={handleClearNormalization}
+                >
+                    <NormalizationFilter
+                        normalization={normalization}
+                        setNormalization={setNormalization}
                     />
                 </FilterRadioContainer>
                 <FilterListContainer

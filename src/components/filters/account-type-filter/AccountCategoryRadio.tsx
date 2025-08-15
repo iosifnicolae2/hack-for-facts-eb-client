@@ -1,10 +1,6 @@
 import { RadioGroupButtons } from "@/components/ui/radio-group-buttons";
 import { OptionItem } from "../base-filter/interfaces";
-
-const accountCategories: OptionItem<string>[] = [
-    { id: 'ch', label: "Expenses" },
-    { id: 'vn', label: "Income" },
-];
+import { t } from "@lingui/core/macro";
 
 interface AccountCategoryRadioProps {
     accountCategory: 'ch' | 'vn';
@@ -12,6 +8,11 @@ interface AccountCategoryRadioProps {
 }
 
 export function AccountCategoryRadio({ accountCategory, setAccountCategory }: AccountCategoryRadioProps) {
+    const accountCategories: OptionItem<string>[] = [
+        { id: 'ch', label: t`Expenses` },
+        { id: 'vn', label: t`Income` },
+    ];
+
     const handleChange = (value?: string | boolean | number | undefined) => {
         setAccountCategory(value as string || accountCategory);
     };

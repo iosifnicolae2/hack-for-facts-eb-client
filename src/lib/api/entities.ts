@@ -4,9 +4,15 @@ import { EntitySearchResult, EntitySearchNode } from "@/schemas/entities";
 
 const logger = createLogger("entities-api");
 
-export interface TrendPoint {
+export interface YearlyAmount {
   year: number;
-  totalAmount: number;
+  value: number;
+}
+
+export interface AnalyticsResult {
+  seriesId: string;
+  unit: string;
+  yearlyTrend: YearlyAmount[];
 }
 
 export interface ExecutionLineItem {
@@ -50,9 +56,9 @@ export interface EntityDetailsData {
   totalIncome?: number | null;
   totalExpenses?: number | null;
   budgetBalance?: number | null;
-  incomeTrend?: TrendPoint[] | null;
-  expenseTrend?: TrendPoint[] | null;
-  balanceTrend?: TrendPoint[] | null;
+  incomeTrend?: YearlyAmount[] | null;
+  expenseTrend?: YearlyAmount[] | null;
+  balanceTrend?: YearlyAmount[] | null;
   executionLineItems?: {
     nodes: ExecutionLineItem[];
   } | null;
@@ -104,16 +110,22 @@ const GET_ENTITY_DETAILS_QUERY = `
       totalExpenses(year: $year)
       budgetBalance(year: $year)
       incomeTrend(startYear: $startYear, endYear: $endYear) {
-        year
-        totalAmount
+        yearlyTrend {
+          year
+          value
+        }
       }
       expenseTrend(startYear: $startYear, endYear: $endYear) {
-        year
-        totalAmount
+        yearlyTrend {
+          year
+          value
+        }
       }
       balanceTrend(startYear: $startYear, endYear: $endYear) {
-        year
-        totalAmount
+        yearlyTrend {
+          year
+          value
+        }
       }
       reports(limit: 100) {
         nodes {
@@ -182,10 +194,13 @@ export async function getEntityDetails(
 
   try {
     const response = await graphqlRequest<{
-      entity: (EntityDetailsData & {
-        executionLineItemsCh?: { nodes: ExecutionLineItem[] } | null
-        executionLineItemsVn?: { nodes: ExecutionLineItem[] } | null
-      }) | null
+      entity: (Omit<EntityDetailsData, 'incomeTrend' | 'expenseTrend' | 'balanceTrend'> & {
+        incomeTrend?: AnalyticsResult | null;
+        expenseTrend?: AnalyticsResult | null;
+        balanceTrend?: AnalyticsResult | null;
+        executionLineItemsCh?: { nodes: ExecutionLineItem[] } | null;
+        executionLineItemsVn?: { nodes: ExecutionLineItem[] } | null;
+      }) | null;
     }>(
       GET_ENTITY_DETAILS_QUERY,
       { cui, year, startYear, endYear }
@@ -200,11 +215,21 @@ export async function getEntityDetails(
     }
 
     // Merge aliased execution line items back into a single field for consumers
-    const chNodes = response.entity.executionLineItemsCh?.nodes ?? [];
-    const vnNodes = response.entity.executionLineItemsVn?.nodes ?? [];
+    const incomeTrendData = response.entity.incomeTrend?.yearlyTrend ?? [];
+    const expenseTrendData = response.entity.expenseTrend?.yearlyTrend ?? [];
+    const balanceTrendData = response.entity.balanceTrend?.yearlyTrend ?? [];
+
     const merged: EntityDetailsData = {
       ...response.entity,
-      executionLineItems: { nodes: [...chNodes, ...vnNodes] },
+      incomeTrend: incomeTrendData,
+      expenseTrend: expenseTrendData,
+      balanceTrend: balanceTrendData,
+      executionLineItems: {
+        nodes: [
+          ...(response.entity.executionLineItemsCh?.nodes ?? []),
+          ...(response.entity.executionLineItemsVn?.nodes ?? []),
+        ],
+      },
     } as EntityDetailsData;
 
     return merged;

@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { EntityDetailsData } from '@/lib/api/entities';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine } from 'recharts';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { TrendingUp, BarChart2 } from 'lucide-react';
@@ -12,11 +11,12 @@ import { useParams } from '@tanstack/react-router';
 import { buildEntityIncomeExpenseChartLink } from '@/lib/chart-links';
 import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
+import { YearlyAmount } from '@/lib/api/entities';
 
 interface EntityFinancialTrendsProps {
-  incomeTrend?: EntityDetailsData['incomeTrend'];
-  expenseTrend?: EntityDetailsData['expenseTrend'];
-  balanceTrend?: EntityDetailsData['balanceTrend'];
+  incomeTrend?: YearlyAmount[] | null;
+  expenseTrend?: YearlyAmount[] | null;
+  balanceTrend?: YearlyAmount[] | null;
   currentYear: number;
   entityName: string;
   mode: 'absolute' | 'percent';
@@ -40,9 +40,9 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
 
     return Array.from(years).sort().map(year => ({
       year,
-      expense: expenseTrend?.find(p => p.year === year)?.totalAmount ?? 0,
-      income: incomeTrend?.find(p => p.year === year)?.totalAmount ?? 0,
-      balance: balanceTrend?.find(p => p.year === year)?.totalAmount ?? 0,
+      expense: expenseTrend?.find(p => p.year === year)?.value ?? 0,
+      income: incomeTrend?.find(p => p.year === year)?.value ?? 0,
+      balance: balanceTrend?.find(p => p.year === year)?.value ?? 0,
     }));
   }, [incomeTrend, expenseTrend, balanceTrend]);
 

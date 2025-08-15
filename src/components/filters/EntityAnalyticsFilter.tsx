@@ -137,7 +137,7 @@ export function EntityAnalyticsFilter() {
   }
 
   const updateAccountCategory = (accountCategory: 'ch' | 'vn') => setFilter({ account_category: accountCategory })
-  const updateNormalization = (normalization: 'total' | 'per_capita') => setFilter({ normalization })
+  const updateNormalization = (normalization: 'total' | 'per_capita' | 'total_euro' | 'per_capita_euro') => setFilter({ normalization })
   const updateMinAmount = (minAmount: string | undefined) => setFilter({ aggregate_min_amount: minAmount ? Number(minAmount) : undefined })
   const updateMaxAmount = (maxAmount: string | undefined) => setFilter({ aggregate_max_amount: maxAmount ? Number(maxAmount) : undefined })
   const updateMinPopulation = (min: string | undefined) => setFilter({ min_population: min ? Number(min) : undefined })
