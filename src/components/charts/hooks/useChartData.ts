@@ -57,8 +57,8 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
     }, [chart]);
 
     const analyticsInputsHash = useMemo(() => getAnalyticsInputHash(analyticsInputs), [analyticsInputs]);
-    const staticSeriesDatasetIds = useMemo(() => [...new Set(staticSeries.map(s => s.datasetId).filter((id): id is string => !!id))], [staticSeries]);
-    const staticSeriesDatasetIdsHash = useMemo(() => getStaticSeriesInputHash(staticSeriesDatasetIds), [staticSeriesDatasetIds]);
+    const staticSeriesIds = useMemo(() => [...new Set(staticSeries.map(s => s.seriesId).filter((id): id is string => !!id))], [staticSeries]);
+    const staticSeriesIdsHash = useMemo(() => getStaticSeriesInputHash(staticSeriesIds), [staticSeriesIds]);
     const hasChart = !!chart;
     const hasFilters = analyticsInputs.length > 0;
     const hasStaticSeries = staticSeries.length > 0;
@@ -73,8 +73,8 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
     });
 
     const { data: staticServerChartData, isLoading: isLoadingStaticData, error: staticDataError } = useQuery({
-        queryKey: ['chart-data', staticSeriesDatasetIdsHash],
-        queryFn: () => getStaticChartAnalytics(staticSeriesDatasetIds),
+        queryKey: ['chart-data', staticSeriesIdsHash],
+        queryFn: () => getStaticChartAnalytics(staticSeriesIds),
         enabled: enabled && hasChart && hasStaticSeries,
         staleTime: convertDaysToMs(1),
         gcTime: convertDaysToMs(3),
@@ -94,13 +94,13 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
 
         if (staticServerChartData) {
             const staticServerChartDataMap = staticServerChartData.reduce((acc, data) => {
-                acc.set(data.datasetId, data);
+                acc.set(data.seriesId, data);
                 return acc;
             }, new Map<string, StaticAnalyticsDataPoint>());
 
             staticSeries.forEach(series => {
-                if (series.datasetId) {
-                    const data = staticServerChartDataMap.get(series.datasetId);
+                if (series.seriesId) {
+                    const data = staticServerChartDataMap.get(series.seriesId);
                     if (data) {
                         dataSeriesMap.set(series.id, { ...data, seriesId: series.id, unit: series.unit || data.unit });
                     }
@@ -132,9 +132,9 @@ function getAnalyticsInputHash(analyticsInputs: AnalyticsInput[]) {
     return generateHash(payloadHash);
 }
 
-function getStaticSeriesInputHash(datasetIds: string[]) {
-    if (datasetIds.length === 0) return '';
-    const payloadHash = datasetIds
+function getStaticSeriesInputHash(seriesIds: string[]) {
+    if (seriesIds.length === 0) return '';
+    const payloadHash = seriesIds
         .sort((a, b) => a.localeCompare(b))
         .reduce((acc, input) => {
             return acc + input;
@@ -169,7 +169,7 @@ export function convertToTimeSeriesData(dataSeriesMap: Map<SeriesId, AnalyticsDa
         const dataPoint: TimeSeriesDataPoint = {} as TimeSeriesDataPoint;
         dataSeriesMap.forEach((data, seriesId) => {
             const yearData = data.yearlyTrend.find(p => p.year === year);
-            const initialValue = yearData?.totalAmount || 0;
+            const initialValue = yearData?.value || 0;
             const initialUnit = data.unit || '';
 
             const series = seriesMap[seriesId];
@@ -196,7 +196,7 @@ export function convertToTimeSeriesData(dataSeriesMap: Map<SeriesId, AnalyticsDa
                 const unit = data?.unit || '';
                 const firstSeries = firstSeriesMap.get(unit);
                 if (!firstSeries) {
-                    const value = data?.yearlyTrend.find(p => p.year === year)?.totalAmount || 0;
+                    const value = data?.yearlyTrend.find(p => p.year === year)?.value || 0;
                     firstSeriesMap.set(unit, { unit, value });
                 }
             })
@@ -243,7 +243,7 @@ export function convertToAggregatedData(dataSeriesMap: DataSeriesMap, chart: Cha
         const dataSeries = dataSeriesMap.get(series.id);
         const totalValue = dataSeries?.yearlyTrend
             .filter(trend => trend.year >= startYear && trend.year <= endYear)
-            .reduce((acc, trend) => acc + trend.totalAmount, 0) ?? 0;
+            .reduce((acc, trend) => acc + trend.value, 0) ?? 0;
 
         const initialValue = totalValue;
         const initialUnit = dataSeries?.unit || '';

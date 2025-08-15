@@ -11,11 +11,11 @@ export function StaticSeriesFilter({ series, chart }: StaticSeriesFilterProps) {
   // Series ids used to load the initial data
   const staticSeriesIds = chart.series
     .filter(s => s.type === "static-series")
-    .map(s => s.datasetId)
+    .map(s => s.seriesId)
     .filter(id => id !== undefined);
 
   const { get: getDataset } = useDatasetStore(staticSeriesIds);
-  const dataset = series.datasetId ? getDataset(series.datasetId) : null;
+  const dataset = series.seriesId ? getDataset(series.seriesId) : null;
 
   if (!dataset) {
     return null;

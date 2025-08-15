@@ -99,7 +99,7 @@ export function evaluateCalculation(
     if (typeof operand === 'number') {
       // Number operand
       const years = Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, i) => i + defaultYearRange.start);
-      operandResults.push(years.map(year => ({ year, totalAmount: operand })));
+      operandResults.push(years.map(year => ({ year, value: operand })));
     } else if (typeof operand === 'string') {
       // Direct series reference
       const data = seriesData.get(operand);
@@ -153,7 +153,7 @@ function performOperation(
   const operandMaps = operands.map(operand => {
     const map = new Map<number, number>();
     for (const point of operand) {
-      map.set(point.year, point.totalAmount);
+      map.set(point.year, point.value);
     }
     return map;
   });
@@ -223,7 +223,7 @@ function performOperation(
     }
 
     if (value !== null) {
-      result.push({ year, totalAmount: value });
+      result.push({ year, value });
     }
   }
 
@@ -287,14 +287,14 @@ export function calculateAllSeriesData(
       dataSeriesMap.set(s.id, {
         seriesId: s.id,
         unit: s.unit,
-        yearlyTrend: s.data.map(d => ({ year: d.year, totalAmount: d.value })),
+        yearlyTrend: s.data.map(d => ({ year: d.year, value: d.value })),
       });
     }
     if (s.type === 'custom-series-value') {
       dataSeriesMap.set(s.id, {
         seriesId: s.id,
         unit: s.unit,
-        yearlyTrend: defaultYears.map(year => ({ year, totalAmount: s.value })),
+        yearlyTrend: defaultYears.map(year => ({ year, value: s.value })),
       });
     }
   }

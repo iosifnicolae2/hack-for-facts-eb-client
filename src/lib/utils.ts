@@ -5,12 +5,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatCurrency(amount: number, notation?: "standard" | "compact"): string {
+export function formatCurrency(amount: number, notation?: "standard" | "compact", currency: "RON" | "EUR" = "RON"): string {
   const locale = getUserLocale();
   const numberLocale = locale === "ro" ? "ro-RO" : "en-US";
   return new Intl.NumberFormat(numberLocale, {
     style: "currency",
-    currency: "RON",
+    currency: currency,
     notation: notation || "standard",
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,

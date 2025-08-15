@@ -313,6 +313,11 @@ export function HeatmapDataTable({
                             </div>
                         );
                     }
+                    if (currencyFormat === 'euro') {
+                        const euroRonRate = 1 / 5; // 1 EUR = 5 RON
+                        const totalAmountInEur = value * euroRonRate;
+                        return <span className="block text-right text-xs" title={formatCurrency(totalAmountInEur, 'standard', 'EUR')}>{formatCurrency(totalAmountInEur, 'compact', 'EUR')}</span>
+                    }
                     return <span className="block text-right text-xs" title={formatCurrency(value, 'standard')}>{formatCurrency(value, currencyFormat)}</span>
                 },
             },
@@ -373,6 +378,11 @@ export function HeatmapDataTable({
                                 <span className="block text-xs text-muted-foreground">{formatCurrency(value, 'compact')}</span>
                             </div>
                         );
+                    }
+                    if (currencyFormat === 'euro') {
+                        const euroRonRate = 1 / 5; // 1 EUR = 5 RON
+                        const perCapitaAmountInEur = value * euroRonRate;
+                        return <span className="block text-right text-xs" title={formatCurrency(perCapitaAmountInEur, 'standard', 'EUR')}>{formatCurrency(perCapitaAmountInEur, 'compact', 'EUR')}</span>
                     }
                     return <span className="block text-right text-xs" title={formatCurrency(value, 'standard')}>{formatCurrency(value, currencyFormat)}</span>
                 },

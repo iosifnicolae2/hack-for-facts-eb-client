@@ -21,7 +21,7 @@ A new series type has been defined to represent a static series.
 *   **`StaticSeriesConfigurationSchema`**: A Zod schema that defines the configuration for a static series.
     *   It extends the `BaseSeriesConfigurationSchema`, inheriting fields like `id`, `label`, `unit`, and `config`.
     *   `type`: A literal string set to `'static-series'`.
-    *   `datasetId`: A string that uniquely identifies the dataset to be fetched from the server.
+    *   `seriesId`: A string that uniquely identifies the dataset to be fetched from the server.
 
 *   **`SeriesSchema`**: The main discriminated union for all series types has been updated to include `StaticSeriesConfigurationSchema`.
 
@@ -30,7 +30,7 @@ A new series type has been defined to represent a static series.
 
 export const StaticSeriesConfigurationSchema = BaseSeriesConfigurationSchema.extend({
   type: z.literal('static-series'),
-  datasetId: z.string().describe('The id of the dataset to use for the static series. The data is fetched from the server.'),
+  seriesId: z.string().describe('The id of the dataset to use for the static series. The data is fetched from the server.'),
 }).passthrough();
 
 export const SeriesSchema = z.discriminatedUnion('type', [
@@ -48,28 +48,28 @@ export type StaticSeriesConfiguration = z.infer<typeof StaticSeriesConfiguration
 
 A new function has been added to handle fetching data for static series.
 
-*   **`getStaticChartAnalytics(datasetIds: string[])`**: An async function that takes an array of unique `datasetId`s.
+*   **`getStaticChartAnalytics(seriesIds: string[])`**: An async function that takes an array of unique `seriesId`s.
 *   It makes a GraphQL query to the `staticChartAnalytics` endpoint.
-*   **`StaticAnalyticsDataPoint`**: A new interface defining the shape of the response data for each dataset, including `datasetId`, `unit`, and `yearlyTrend`.
+*   **`StaticAnalyticsDataPoint`**: A new interface defining the shape of the response data for each dataset, including `seriesId`, `unit`, and `yearlyTrend`.
 
 ```typescript
 // src/lib/api/charts.ts
 
 export interface StaticAnalyticsDataPoint {
-  datasetId: string;
+  seriesId: string;
   unit: string;
   yearlyTrend: YearlyTrendPoint[];
 }
 
-export async function getStaticChartAnalytics(datasetIds: string[]): Promise<StaticAnalyticsDataPoint[]> {
+export async function getStaticChartAnalytics(seriesIds: string[]): Promise<StaticAnalyticsDataPoint[]> {
   const query = `
-    query GetStaticChartAnalytics($datasetIds: [String!]!) {
-      staticChartAnalytics(datasetIds: $datasetIds) {
-        datasetId
+    query GetStaticChartAnalytics($seriesIds: [String!]!) {
+      staticChartAnalytics(seriesIds: $seriesIds) {
+        seriesId
         unit
         yearlyTrend {
           year
-          totalAmount
+          value
         }
       }
     }
@@ -83,9 +83,9 @@ export async function getStaticChartAnalytics(datasetIds: string[]): Promise<Sta
 The main data hook has been updated to handle the new series type.
 
 *   It now identifies all series of type `'static-series'`.
-*   It creates a unique list of `datasetId`s from these series to avoid redundant API calls.
-*   A **new `useQuery` hook** is used to call `getStaticChartAnalytics` with the unique `datasetId`s.
-*   **Data Merging**: The fetched static data is merged into the main `dataSeriesMap`. The logic maps the data from a single `datasetId` back to each `series.id` that uses it. This is crucial for allowing multiple series on the same chart to share the same underlying dataset.
+*   It creates a unique list of `seriesId`s from these series to avoid redundant API calls.
+*   A **new `useQuery` hook** is used to call `getStaticChartAnalytics` with the unique `seriesId`s.
+*   **Data Merging**: The fetched static data is merged into the main `dataSeriesMap`. The logic maps the data from a single `seriesId` back to each `series.id` that uses it. This is crucial for allowing multiple series on the same chart to share the same underlying dataset.
 *   The hook's final output (`isLoadingData`, `dataError`) combines the states of both the dynamic and static data queries.
 
 ##### **`src/components/charts/components/views/SeriesConfigView.tsx` - Main Configuration UI**
@@ -101,7 +101,7 @@ This is the primary UI for configuring a static series.
 
 *   It contains the logic for handling the selection of a dataset.
 *   It uses the `DatasetList` component to render the search and selection interface.
-*   When a dataset is selected, it calls the `updateSeries` function from `useChartStore` to update the current series' `datasetId` and `label`.
+*   When a dataset is selected, it calls the `updateSeries` function from `useChartStore` to update the current series' `seriesId` and `label`.
 
 ##### **`src/components/charts/components/series-config/DatasetList.tsx` - Dataset Search/Selection UI**
 
@@ -135,13 +135,13 @@ input DatasetFilter {
 }
 
 type StaticAnalyticsDataPoint {
-  datasetId: ID!
+  seriesId: ID!
   unit: String
   yearlyTrend: [YearlyTrendPoint!]!
 }
 
 extend type Query {
   datasets(filter: DatasetFilter, limit: Int, offset: Int): DatasetConnection!
-  staticChartAnalytics(datasetIds: [ID!]!): [StaticAnalyticsDataPoint!]!
+  staticChartAnalytics(seriesIds: [ID!]!): [StaticAnalyticsDataPoint!]!
 }
 ```

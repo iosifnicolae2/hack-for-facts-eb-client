@@ -12,12 +12,12 @@ interface StaticSeriesEditorProps {
 
 export function StaticSeriesEditor({ series }: StaticSeriesEditorProps) {
   const { updateSeries } = useChartStore();
-  const { get: getDataset, add: addDatasets } = useDatasetStore(series.datasetId ? [series.datasetId] : []);
-  const dataset = series.datasetId ? getDataset(series.datasetId) : null;
+  const { get: getDataset, add: addDatasets } = useDatasetStore(series.seriesId ? [series.seriesId] : []);
+  const dataset = series.seriesId ? getDataset(series.seriesId) : null;
 
   const handleDatasetChange = (dataset: Dataset) => {
     updateSeries(series.id, { 
-      datasetId: dataset.id,
+      seriesId: dataset.id,
       label: dataset.name,
       unit: dataset.unit,
       updatedAt: new Date().toISOString(),
@@ -31,7 +31,7 @@ export function StaticSeriesEditor({ series }: StaticSeriesEditorProps) {
       </CardHeader>
       <CardContent className="space-y-4">
         <DatasetList
-          selectedOptions={series.datasetId ? [{ id: series.datasetId, label: dataset?.name ?? '' }] : []}
+          selectedOptions={series.seriesId ? [{ id: series.seriesId, label: dataset?.name ?? '' }] : []}
           toggleSelect={handleDatasetChange}
           addDatasets={addDatasets}
         />

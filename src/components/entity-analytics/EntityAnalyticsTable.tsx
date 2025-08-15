@@ -36,7 +36,7 @@ interface Props {
   onColumnSizingChange?: OnChangeFn<ColumnSizingState>
   columnOrder?: string[]
   onColumnOrderChange?: OnChangeFn<string[]>
-  currencyFormat?: 'standard' | 'compact' | 'both'
+  currencyFormat?: 'standard' | 'compact' | 'both' | 'euro'
   rowNumberStart?: number
 }
 
@@ -103,49 +103,79 @@ export function EntityAnalyticsTable({ data, isLoading, sortBy, sortOrder, onSor
           {renderSortIcon(column.id)}
         </div>
       ),
-      cell: ({ row }) => (
-        row.original.population != null ? (
-          currencyFormat === 'both' ? (
+      cell: ({ row }) => {
+        if (row.original.population == null) {
+          return <span className="block text-right text-xs text-muted-foreground">-</span>
+        }
+
+        if (currencyFormat === 'both') {
+          return (
             <div className="text-right">
               <span className="block text-xs" title={formatCurrency(row.original.per_capita_amount, 'standard')}>
-                {formatCurrency(row.original.per_capita_amount, 'standard')}
+                {formatCurrency(row.original.per_capita_amount, 'standard', 'EUR')}
               </span>
               <span className="block text-xs text-muted-foreground">
-                {formatCurrency(row.original.per_capita_amount, 'compact')}
+                {formatCurrency(row.original.per_capita_amount, 'compact', 'EUR')}
               </span>
             </div>
-          ) : (
-            <span className="block text-right text-xs" title={formatCurrency(row.original.per_capita_amount, 'standard')}>
-              {formatCurrency(row.original.per_capita_amount, currencyFormat)}
+          )
+        }
+
+        if (currencyFormat === 'euro') {
+          const euroRonRate = 1 / 5; // 1 EUR = 5 RON
+          const perCapitaAmountInRon = row.original.per_capita_amount * euroRonRate;
+          return (
+            <span className="block text-right text-xs" title={formatCurrency(perCapitaAmountInRon, 'standard', 'EUR')}>
+              {formatCurrency(perCapitaAmountInRon, 'compact', 'EUR')}
             </span>
           )
-        ) : <span className="block text-right text-xs text-muted-foreground">-</span>
-      ),
+        }
+
+        return (
+          <span className="block text-right text-xs" title={formatCurrency(row.original.per_capita_amount, 'standard')}>
+            {formatCurrency(row.original.per_capita_amount, currencyFormat)}
+          </span>
+        )
+      }
     },
     {
       id: 'total_amount',
       header: ({ column }) => (
         <div className="flex items-center gap-1 cursor-pointer" onClick={() => toggle(column.id)}>
-          <Trans>Total Amount</Trans> 
+          <Trans>Total Amount</Trans>
           {renderSortIcon(column.id)}
         </div>
       ),
-      cell: ({ row }) => (
-        currencyFormat === 'both' ? (
-          <div className="text-right">
-            <span className="block text-xs" title={formatCurrency(row.original.total_amount, 'standard')}>
-              {formatCurrency(row.original.total_amount, 'standard')}
+      cell: ({ row }) => {
+        if (currencyFormat === 'both') {
+          return (
+            <div className="text-right">
+              <span className="block text-xs" title={formatCurrency(row.original.total_amount, 'standard')}>
+                {formatCurrency(row.original.total_amount, 'standard')}
+              </span>
+              <span className="block text-xs text-muted-foreground">
+                {formatCurrency(row.original.total_amount, 'compact')}
+              </span>
+            </div>
+          )
+        }
+
+        if (currencyFormat === 'euro') {
+          const euroRonRate = 1 / 5; // 1 EUR = 5 RON
+          const totalAmountInEur = row.original.total_amount * euroRonRate;
+          return (
+            <span className="block text-right text-xs" title={formatCurrency(totalAmountInEur, 'standard', 'EUR')}>
+              {formatCurrency(totalAmountInEur, 'compact', 'EUR')}
             </span>
-            <span className="block text-xs text-muted-foreground">
-              {formatCurrency(row.original.total_amount, 'compact')}
-            </span>
-          </div>
-        ) : (
+          )
+        }
+
+        return (
           <span className="block text-right text-xs" title={formatCurrency(row.original.total_amount, 'standard')}>
             {formatCurrency(row.original.total_amount, currencyFormat)}
           </span>
         )
-      ),
+      },
     },
   ]
 

@@ -7,7 +7,7 @@ export type TablePreferences = {
   columnPinning?: ColumnPinningState
   columnSizing?: ColumnSizingState
   columnOrder?: string[]
-  currencyFormat?: 'standard' | 'compact' | 'both'
+  currencyFormat?: 'standard' | 'compact' | 'both' | 'euro'
 }
 
 const STORAGE_KEY_PREFIX = 'table-preferences:'
@@ -41,7 +41,7 @@ export function useTablePreferences(
   const setColumnOrder = (updater: any) => {
     setPrefs((prev) => ({ ...prev, columnOrder: typeof updater === 'function' ? updater(prev.columnOrder) : updater }))
   }
-  const setCurrencyFormat = (next: ((prev: 'standard' | 'compact' | 'both') => 'standard' | 'compact' | 'both') | 'standard' | 'compact' | 'both') => {
+  const setCurrencyFormat = (next: ((prev: 'standard' | 'compact' | 'both' | 'euro') => 'standard' | 'compact' | 'both' | 'euro') | 'standard' | 'compact' | 'both' | 'euro') => {
     setPrefs((prev) => ({ ...prev, currencyFormat: typeof next === 'function' ? (next as any)(prev.currencyFormat ?? 'both') : next }))
   }
 

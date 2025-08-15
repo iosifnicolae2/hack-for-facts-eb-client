@@ -3,7 +3,7 @@ import { AnalyticsInput } from '@/schemas/charts';
 
 export interface YearlyTrendPoint {
   year: number;
-  totalAmount: number;
+  value: number;
 }
 
 export interface AnalyticsDataPoint {
@@ -19,7 +19,7 @@ export interface AnalyticsResponse {
 }
 
 export interface StaticAnalyticsDataPoint {
-  datasetId: string;
+  seriesId: string;
   unit: string;
   yearlyTrend: YearlyTrendPoint[];
 }
@@ -48,11 +48,11 @@ export async function getChartAnalytics(inputs: AnalyticsInput[]): Promise<Analy
   return response.executionAnalytics;
 }
 
-export async function getStaticChartAnalytics(datasetIds: string[]): Promise<StaticAnalyticsDataPoint[]> {
+export async function getStaticChartAnalytics(seriesIds: string[]): Promise<StaticAnalyticsDataPoint[]> {
   const query = `
-    query GetStaticChartAnalytics($datasetIds: [ID!]!) {
-      staticChartAnalytics(datasetIds: $datasetIds) {
-        datasetId
+    query GetStaticChartAnalytics($seriesIds: [ID!]!) {
+      staticChartAnalytics(seriesIds: $seriesIds) {
+        seriesId
         unit
         yearlyTrend {
           year
@@ -64,7 +64,7 @@ export async function getStaticChartAnalytics(datasetIds: string[]): Promise<Sta
 
   const response = await graphqlRequest<{
     staticChartAnalytics: StaticAnalyticsDataPoint[];
-  }>(query, { datasetIds });
+  }>(query, { seriesIds });
 
   return response.staticChartAnalytics;
 }

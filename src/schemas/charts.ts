@@ -135,6 +135,7 @@ export const BaseSeriesConfigurationSchema = z.object({
 
 export const SeriesConfigurationSchema = BaseSeriesConfigurationSchema.extend({
   type: z.literal('line-items-aggregated-yearly'),
+  unit: z.string().optional().default('').describe('The unit of the series. The unit should come from the api.'),
   filter: AnalyticsFilterSchema.describe('The filter to apply to the series.').default({
     years: [defaultYearRange.end],
     account_category: 'ch',
@@ -165,7 +166,7 @@ export const CustomSeriesValueConfigurationSchema = BaseSeriesConfigurationSchem
 
 export const StaticSeriesConfigurationSchema = BaseSeriesConfigurationSchema.extend({
   type: z.literal('static-series'),
-  datasetId: z.string().optional().describe('The id of the dataset to use for the static series. The data is fetched from the server.'),
+  seriesId: z.string().optional().describe('The id of the dataset to use for the static series. The data is fetched from the server.'),
 }).passthrough();
 
 
@@ -236,7 +237,7 @@ export type Chart = z.infer<typeof ChartSchema>;
 
 export const YearlyTrendPointSchema = z.object({
   year: z.number(),
-  totalAmount: z.number(),
+  value: z.number(),
 });
 export type YearlyTrendPoint = z.infer<typeof YearlyTrendPointSchema>;
 
