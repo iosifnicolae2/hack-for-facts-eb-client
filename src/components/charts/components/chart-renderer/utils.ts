@@ -16,7 +16,10 @@ export const getYearRangeText = (chart: Chart) => {
 export const unitFormatters: Record<string, (value: number, notation: 'standard' | 'compact') => string> = {
     '%': (value, notation) => `${formatNumber(value, notation)}%`,
     'RON': (value, notation) => formatCurrency(value, notation),
-    'RON/pers.': (value, notation) => formatCurrency(value, notation),
+    'RON/pers.': (value, notation) => formatCurrency(value, notation) + '/pers.',
+    'EUR': (value, notation) => formatCurrency(value, notation, 'EUR'),
+    'EUR/capita': (value, notation) => formatCurrency(value, notation, 'EUR') + '/capita',
+    'RON/capita': (value, notation) => formatCurrency(value, notation, 'RON') + '/capita',
 };
 
 export const yValueFormatter = (value: number, unit: string = '', notation: 'standard' | 'compact' = 'compact') => {

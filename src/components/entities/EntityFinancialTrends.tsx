@@ -14,6 +14,7 @@ import { t } from '@lingui/core/macro';
 import { YearlyAmount } from '@/lib/api/entities';
 import { Normalization } from '@/schemas/charts';
 import { NormalizationSelector } from '@/components/common/NormalizationSelector';
+import { getNormalizationUnit } from '@/lib/utils';
 
 interface EntityFinancialTrendsProps {
   incomeTrend?: YearlyAmount[] | null;
@@ -59,7 +60,7 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
             {payload.map((pld) => (
               <div key={pld.dataKey} style={{ color: pld.color }} className="flex flex-row gap-4 justify-between items-center text-sm">
                 <p>{pld.name}</p>
-                <p className="font-mono text-md font-bold text-slate-800 dark:text-slate-400">{yValueFormatter(pld.value, normalization === 'per_capita_euro' || normalization === 'total_euro' ? 'EUR' : 'RON')}</p>
+                <p className="font-mono text-md font-bold text-slate-800 dark:text-slate-400">{yValueFormatter(pld.value, getNormalizationUnit(normalization))}</p>
               </div>
             ))}
           </div>
@@ -111,7 +112,7 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
           <ResponsiveContainer width="100%" height={400}>
             <AreaChart
               data={displayData}
-              margin={{ top: 5, right: 40, left: 40, bottom: 5 }}
+              margin={{ top: 5, right: 40, left: getNormalizationUnit(normalization).length * 5 + 30, bottom: 5 }}
               onClick={handleChartClick}
               className="cursor-pointer"
             >
@@ -123,7 +124,7 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
                 axisLine={false}
               />
               <YAxis
-                tickFormatter={(val) => yValueFormatter(val, normalization === 'per_capita_euro' || normalization === 'total_euro' ? 'EUR' : 'RON')}
+                tickFormatter={(val) => yValueFormatter(val, getNormalizationUnit(normalization))}
                 tick={{ fontSize: 12 }}
                 tickLine={false}
                 axisLine={false}
