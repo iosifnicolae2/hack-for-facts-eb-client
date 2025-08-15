@@ -4,6 +4,7 @@ import { GetLabels, LabelStore } from "./interfaces";
 import { OptionItem } from "@/components/filters/base-filter/interfaces";
 import { getBudgetSectorLabels, getEconomicClassificationLabels, getEntityLabels, getFundingSourceLabels, getFunctionalClassificationLabels, getUatLabels } from "@/lib/api/labels";
 import { t } from "@lingui/core/macro";
+import { getUserLocale } from "@/lib/utils";
 
 const EntityStorageKey = 'entity-labels';
 const UatLabelStorageKey = 'uat-labels';
@@ -130,7 +131,10 @@ export const useFundingSourceLabel = (initialIds: (string | number)[]) => {
 type EntityCategoriesJson = { readonly categories: Record<string, string> };
 
 const fetchEntityCategories = async (): Promise<Record<string, string>> => {
-    const mod = await import("@/assets/entity-categories.json");
+    const lang = getUserLocale();
+    const mod = lang == 'ro' ?
+        await import('@/assets/entity-categories-ro.json') :
+        await import('@/assets/entity-categories-en.json');
     const json = (mod as { default: EntityCategoriesJson }).default;
     return json.categories;
 };
