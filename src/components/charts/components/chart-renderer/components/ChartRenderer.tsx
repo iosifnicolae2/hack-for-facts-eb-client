@@ -45,6 +45,9 @@ export function ChartRenderer({ chart, dataMap, unitMap, aggregatedData, timeSer
   }
 
   const isAggregated = chart.config.chartType.endsWith('-aggr');
+  const chartMargins = isPreview ? { top: 10, right: 0, bottom: 0, left: 0 } : undefined;
+  const sankeyMargins = isPreview ? { left: 120, bottom: 50, right: 10 } : { left: 240, bottom: 30, right: 50 };
+
   const data = {
     chart,
     dataMap,
@@ -53,9 +56,9 @@ export function ChartRenderer({ chart, dataMap, unitMap, aggregatedData, timeSer
     timeSeriesData,
     xAxisMarker,
     onXAxisClick,
+    margins: chartMargins,
   }
 
-  const sankeyMargins = isPreview ? { left: 120, bottom: 50, right: 10 } : { left: 240, bottom: 30, right: 50 };
 
 
   return (

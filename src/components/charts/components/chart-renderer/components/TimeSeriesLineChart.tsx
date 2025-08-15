@@ -7,7 +7,7 @@ import { yValueFormatter } from '../utils';
 import { useChartDiff } from '../hooks/useChartDiff';
 import { DiffArea } from './diff-select/DiffArea';
 
-export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotationPositionChange, onXAxisClick, xAxisMarker }: ChartRendererProps) {
+export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotationPositionChange, onXAxisClick, xAxisMarker, margins }: ChartRendererProps) {
   const enabledSeries = chart.series.filter(s => s.enabled);
   const {
     handleMouseDown,
@@ -23,7 +23,7 @@ export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotati
     <ResponsiveContainer width="100%" height="100%">
       <LineChart
         data={timeSeriesData}
-        margin={{ top: 30, right: 50, left: 50, bottom: 20 }}
+        margin={{ top: 30, right: 50, left: 50, bottom: 20, ...margins }}
         onMouseDown={(e) => {
           handleMouseDown(e)
           if (e.activeLabel) {
