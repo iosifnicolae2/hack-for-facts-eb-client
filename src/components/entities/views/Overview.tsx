@@ -4,12 +4,13 @@ import { EntityFinancialTrends } from "../EntityFinancialTrends"
 import { EntityLineItems } from "../EntityLineItems"
 import { LineItemsAnalytics } from "../LineItemsAnalytics"
 import { EntityReports } from "../EntityReports";
+import { Normalization } from "@/schemas/charts";
 
 interface OverviewProps {
     entity?: EntityDetailsData;
     isLoading: boolean;
     selectedYear: number;
-    trendMode: 'absolute' | 'percent';
+    normalization: Normalization;
     years: number[];
     search: {
         expenseSearch?: string;
@@ -17,7 +18,7 @@ interface OverviewProps {
         analyticsChartType?: 'bar' | 'pie';
         analyticsDataType?: 'expense' | 'income';
     };
-    onChartTrendModeChange: (mode: 'absolute' | 'percent') => void;
+    onChartNormalizationChange: (mode: Normalization) => void;
     onYearChange: (year: number) => void;
     onSearchChange: (type: 'expense' | 'income', term: string) => void;
     onAnalyticsChange: (type: 'analyticsChartType' | 'analyticsDataType', value: 'bar' | 'pie' | 'income' | 'expense') => void;
@@ -27,10 +28,10 @@ export const Overview = ({
     entity,
     isLoading,
     selectedYear,
-    trendMode,
+    normalization,
     years,
     search,
-    onChartTrendModeChange,
+    onChartNormalizationChange,
     onYearChange,
     onSearchChange,
     onAnalyticsChange
@@ -62,8 +63,8 @@ export const Overview = ({
                 balanceTrend={entity?.balanceTrend ?? []}
                 currentYear={selectedYear}
                 entityName={entity?.name ?? ''}
-                mode={trendMode}
-                onModeChange={onChartTrendModeChange}
+                normalization={normalization}
+                onNormalizationChange={onChartNormalizationChange}
                 onYearChange={onYearChange}
                 isLoading={isLoading}
             />

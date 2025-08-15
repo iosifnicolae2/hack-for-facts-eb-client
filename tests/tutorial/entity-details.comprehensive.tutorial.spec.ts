@@ -6,7 +6,6 @@
  *
  * Covers:
  * - Header controls (year selector, view switcher, UAT/County chips, Wikipedia link)
- * - Overview KPIs & Trends (Absolute vs YoY), composition analytics toggles
  * - Expenses/Incomes accordions (expand basics)
  * - Reports (open accordion, show links)
  * - Expense Trends, Income Trends views
@@ -50,15 +49,6 @@ test.describe('Tutorial – Entity Details (comprehensive)', () => {
       await waitIdle(page)
     }
     await next('Changed reporting year via header selector')
-
-    // Step 4: Trends mode (Absolute → YoY%)
-    const trendsMode = page.getByRole('combobox').filter({ hasText: /Valori Absolute|Diferență % YoY/ }).first()
-    if (await trendsMode.count()) {
-      await trendsMode.click()
-      const yoy = page.getByRole('option', { name: /Diferență % YoY/ }).first()
-      if (await yoy.count()) await yoy.click()
-    }
-    await next('Switched trends from Absolute to YoY%')
 
     // Step 5: Composition analytics toggles (Income/Expenses, Bar/Pie)
     const incomeRadio = page.getByRole('radio', { name: 'Income' })

@@ -15,12 +15,13 @@ import { defaultYearRange } from '@/schemas/charts'
 import { RankingView } from '@/components/entities/views/RankingView'
 import { useEntityMapFilter } from '@/components/entities/hooks/useEntityMapFilter'
 import { useEntityDetails } from '@/lib/hooks/useEntityDetails'
-import type { EntitySearchSchema } from '@/routes/entities.$cui'
 import { Analytics } from '@/lib/analytics'
 import { Seo } from '@/lib/seo'
 import { buildEntitySeo } from '@/lib/seo-entity'
 import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
+import { Normalization } from '@/schemas/charts'
+import { EntitySearchSchema } from '@/components/entities/validation'
 
 export const Route = createLazyFileRoute('/entities/$cui')({
   component: EntityDetailsPage,
@@ -42,7 +43,7 @@ function EntityDetailsPage() {
   const END_YEAR = defaultYearRange.end
 
   const [selectedYear, setSelectedYear] = useState<number>(search.year ?? END_YEAR)
-  const [trendMode, setTrendMode] = useState<'absolute' | 'percent'>((search.trend as 'absolute' | 'percent') ?? 'absolute')
+  const [normalization, setNormalization] = useState<Normalization>(search.normalization ?? 'total')
 
   const years = useMemo(() =>
     Array.from({ length: END_YEAR - START_YEAR + 1 }, (_, idx) => END_YEAR - idx),
@@ -53,7 +54,8 @@ function EntityDetailsPage() {
     cui,
     selectedYear,
     START_YEAR,
-    END_YEAR
+    END_YEAR,
+    normalization
   )
 
   useRecentEntities(entity)
@@ -92,16 +94,19 @@ function EntityDetailsPage() {
     })
   }
 
-  const handleTrendModeChange = (mode: 'absolute' | 'percent') => {
-    setTrendMode(mode)
+  const handleNormalizationChange = (norm: Normalization) => {
+    setNormalization(norm)
     navigate({
-      search: (prev) => ({ ...prev, trend: mode }),
+      search: (prev) => ({
+        ...prev,
+        normalization: norm,
+      }),
       replace: true,
     })
     Analytics.capture(Analytics.EVENTS.EntityViewOpened, {
       cui,
       view: search.view ?? 'overview',
-      trend_mode: mode,
+      normalization: norm,
     })
   }
 
@@ -145,9 +150,10 @@ function EntityDetailsPage() {
           entity={entity ?? undefined}
           isLoading={isLoading}
           selectedYear={selectedYear}
-          trendMode={trendMode} years={years}
+          normalization={normalization}
+          years={years}
           search={search}
-          onChartTrendModeChange={handleTrendModeChange}
+          onChartNormalizationChange={handleNormalizationChange}
           onYearChange={handleYearChange}
           onSearchChange={handleSearchChange}
           onAnalyticsChange={handleAnalyticsChange}
@@ -174,10 +180,10 @@ function EntityDetailsPage() {
           entity={entity ?? undefined}
           isLoading={isLoading}
           selectedYear={selectedYear}
-          trendMode={trendMode}
+          normalization={normalization}
           years={years}
           search={search}
-          onChartTrendModeChange={handleTrendModeChange}
+          onChartNormalizationChange={handleNormalizationChange}
           onYearChange={handleYearChange}
           onSearchChange={handleSearchChange}
           onAnalyticsChange={handleAnalyticsChange}

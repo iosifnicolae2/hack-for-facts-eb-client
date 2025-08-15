@@ -12,6 +12,7 @@ import { buildEntityIncomeExpenseChartLink } from '@/lib/chart-links';
 import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
 import { YearlyAmount } from '@/lib/api/entities';
+import { Normalization } from '@/schemas/charts';
 
 interface EntityFinancialTrendsProps {
   incomeTrend?: YearlyAmount[] | null;
@@ -19,13 +20,13 @@ interface EntityFinancialTrendsProps {
   balanceTrend?: YearlyAmount[] | null;
   currentYear: number;
   entityName: string;
-  mode: 'absolute' | 'percent';
-  onModeChange: (mode: 'absolute' | 'percent') => void;
+  normalization: Normalization;
+  onNormalizationChange: (mode: Normalization) => void;
   onYearChange?: (year: number) => void;
   isLoading?: boolean;
 }
 
-export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ incomeTrend, expenseTrend, balanceTrend, currentYear, entityName, mode, onModeChange, onYearChange, isLoading }) => {
+export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ incomeTrend, expenseTrend, balanceTrend, currentYear, entityName, normalization, onNormalizationChange, onYearChange, isLoading }) => {
 
   const { cui } = useParams({ from: '/entities/$cui' });
 
@@ -46,25 +47,7 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
     }));
   }, [incomeTrend, expenseTrend, balanceTrend]);
 
-  // Compute YoY percentage change dataset
-  const percentData = useMemo(() => {
-    const data = mergedData.map((entry, idx, arr) => {
-      if (idx === 0) {
-        return { year: entry.year, income: 0, expense: 0, balance: 0 };
-      }
-      const prev = arr[idx - 1];
-      const pct = (curr: number, prevVal: number) => prevVal === 0 ? 0 : ((curr - prevVal) / prevVal) * 100;
-      return {
-        year: entry.year,
-        expense: pct(entry.expense, prev.expense),
-        income: pct(entry.income, prev.income),
-        balance: pct(entry.balance, prev.balance),
-      };
-    });
-    return data;
-  }, [mergedData]);
-
-  const displayData = mode === 'absolute' ? mergedData : percentData;
+  const displayData = mergedData;
 
   const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: { name: string; value: number; color: string; dataKey: string; }[]; label?: string }) => {
     if (active && payload && payload.length) {
@@ -75,7 +58,7 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
             {payload.map((pld) => (
               <div key={pld.dataKey} style={{ color: pld.color }} className="flex flex-row gap-4 justify-between items-center text-sm">
                 <p>{pld.name}</p>
-                <p className="font-mono text-md font-bold text-slate-800 dark:text-slate-400">{mode === 'absolute' ? yValueFormatter(pld.value, 'RON') : yValueFormatter(pld.value, '%')}</p>
+                <p className="font-mono text-md font-bold text-slate-800 dark:text-slate-400">{yValueFormatter(pld.value, normalization === 'per_capita_euro' || normalization === 'total_euro' ? 'EUR' : 'RON')}</p>
               </div>
             ))}
           </div>
@@ -98,7 +81,7 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
     }
   };
 
-  const incomeExpenseChartLink = useMemo(() => cui ? buildEntityIncomeExpenseChartLink(cui, entityName) : null, [cui, entityName]);
+  const incomeExpenseChartLink = useMemo(() => cui ? buildEntityIncomeExpenseChartLink(cui, entityName, normalization) : null, [cui, entityName, normalization]);
 
   if (isLoading) {
     return <EntityFinancialTrendsSkeleton />;
@@ -110,20 +93,22 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 w-full">
           <CardTitle className="flex items-center gap-2">
             <TrendingUp className="h-6 w-6" />
-            <span><Trans>Evoluție Financiară</Trans></span>
+            <span><Trans>Financial Trends</Trans></span>
             <Button asChild variant="ghost" size="icon" className="h-7 w-7 ml-1" aria-label={t`Deschide în editorul de grafice`}>
               <Link to={incomeExpenseChartLink?.to ?? '/charts/$chartId'} params={incomeExpenseChartLink?.params as any} search={incomeExpenseChartLink?.search as any} preload="intent">
                 <BarChart2 className="h-4 w-4" />
               </Link>
             </Button>
           </CardTitle>
-          <Select value={mode} onValueChange={(val) => onModeChange(val as 'absolute' | 'percent')}>
+          <Select value={normalization} onValueChange={(val) => onNormalizationChange(val as Normalization)}>
             <SelectTrigger className="w-[160px] h-8 text-xs">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="absolute"><Trans>Absolute Values</Trans></SelectItem>
-              <SelectItem value="percent"><Trans>Difference % YoY</Trans></SelectItem>
+              <SelectItem value="total"><Trans>Total (RON)</Trans></SelectItem>
+              <SelectItem value="total_euro"><Trans>Total (EUR)</Trans></SelectItem>
+              <SelectItem value="per_capita"><Trans>Per Capita (RON)</Trans></SelectItem>
+              <SelectItem value="per_capita_euro"><Trans>Per Capita (EUR)</Trans></SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -147,7 +132,7 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
                 axisLine={false}
               />
               <YAxis
-                tickFormatter={mode === 'absolute' ? (val) => yValueFormatter(val, 'RON') : (val) => yValueFormatter(val, '%')}
+                tickFormatter={(val) => yValueFormatter(val, normalization === 'per_capita_euro' || normalization === 'total_euro' ? 'EUR' : 'RON')}
                 tick={{ fontSize: 12 }}
                 tickLine={false}
                 axisLine={false}

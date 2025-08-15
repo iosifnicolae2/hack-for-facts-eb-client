@@ -1,5 +1,5 @@
 import { ChartSchema, defaultYearRange, ReportType } from '@/schemas/charts';
-import type { Chart } from '@/schemas/charts';
+import type { Chart, Normalization } from '@/schemas/charts';
 import type { ChartUrlState } from '@/components/charts/page-schema';
 import { generateHash } from '@/lib/utils';
 import { t } from '@lingui/core/macro';
@@ -18,6 +18,7 @@ interface BuildEntityIncomeExpenseChartOptions {
 export function buildEntityIncomeExpenseChartState(
     cui: string,
     entityName: string,
+    normalization: Normalization,
     options?: BuildEntityIncomeExpenseChartOptions
 ): ChartUrlState {
     const years = Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, i) => defaultYearRange.start + i);
@@ -50,11 +51,12 @@ export function buildEntityIncomeExpenseChartState(
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
                 label: "Income",
-                unit: 'RON',
+                unit: '',
                 filter: {
                     entity_cuis: [cui],
                     account_category: 'vn',
                     report_type: reportType,
+                    normalization,
                 },
                 config: { visible: true, showDataLabels: false, color: incomeColor },
                 createdAt: new Date().toISOString(),
@@ -65,11 +67,12 @@ export function buildEntityIncomeExpenseChartState(
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
                 label: "Expenses",
-                unit: 'RON',
+                unit: '',
                 filter: {
                     entity_cuis: [cui],
                     account_category: 'ch',
                     report_type: reportType,
+                    normalization,
                 },
                 config: { visible: true, showDataLabels: false, color: expenseColor },
                 createdAt: new Date().toISOString(),
@@ -80,7 +83,7 @@ export function buildEntityIncomeExpenseChartState(
                 type: 'aggregated-series-calculation',
                 enabled: true,
                 label: "Balance",
-                unit: 'RON',
+                unit: '',
                 config: { visible: true, showDataLabels: false, color: '#ee8420' },
                 calculation: {
                     op: 'subtract',
@@ -104,9 +107,10 @@ export function buildEntityIncomeExpenseChartState(
 export function buildEntityIncomeExpenseChartLink(
     cui: string,
     entityName: string,
+    normalization: Normalization,
     options?: BuildEntityIncomeExpenseChartOptions
 ) {
-    const search = buildEntityIncomeExpenseChartState(cui, entityName, options);
+    const search = buildEntityIncomeExpenseChartState(cui, entityName, normalization, options);
     const params = { chartId: search.chart.id } as const;
     return { to: '/charts/$chartId' as const, params, search };
 }

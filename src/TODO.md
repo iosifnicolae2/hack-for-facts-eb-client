@@ -57,7 +57,6 @@
   - Header: entity identity, sticky year selector, views switcher with availability rules.
   - Overview view
     - Financial summary (income, expense, balance) cards.
-    - Trends chart: absolute vs YoY%, year click interaction and sync with page.
     - Line items: dual-column accordion (expense/income), chapter/function/economic hierarchy, search, highlight, skeletons.
     - Line items analytics: data type toggle, chart type toggle, independent year selector, top categories logic.
   - Reports view: list, metadata, download links.

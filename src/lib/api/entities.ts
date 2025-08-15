@@ -1,6 +1,7 @@
 import { graphqlRequest } from "./graphql";
 import { createLogger } from "../logger";
 import { EntitySearchResult, EntitySearchNode } from "@/schemas/entities";
+import { Normalization } from '@/schemas/charts';
 
 const logger = createLogger("entities-api");
 
@@ -80,7 +81,7 @@ export interface EntityDetailsData {
 // removed old EntityDetailsResponse; response shape is declared inline below
 
 const GET_ENTITY_DETAILS_QUERY = `
-  query GetEntityDetails($cui: ID!, $year: Int!, $startYear: Int!, $endYear: Int!) {
+  query GetEntityDetails($cui: ID!, $year: Int!, $startYear: Int!, $endYear: Int!, $normalization: Normalization) {
     entity(cui: $cui) {
       cui
       name
@@ -109,19 +110,19 @@ const GET_ENTITY_DETAILS_QUERY = `
       totalIncome(year: $year)
       totalExpenses(year: $year)
       budgetBalance(year: $year)
-      incomeTrend(startYear: $startYear, endYear: $endYear) {
+      incomeTrend(startYear: $startYear, endYear: $endYear, normalization: $normalization) {
         yearlyTrend {
           year
           value
         }
       }
-      expenseTrend(startYear: $startYear, endYear: $endYear) {
+      expenseTrend(startYear: $startYear, endYear: $endYear, normalization: $normalization) {
         yearlyTrend {
           year
           value
         }
       }
-      balanceTrend(startYear: $startYear, endYear: $endYear) {
+      balanceTrend(startYear: $startYear, endYear: $endYear, normalization: $normalization) {
         yearlyTrend {
           year
           value
@@ -188,9 +189,10 @@ export async function getEntityDetails(
   cui: string,
   year: number = 2024, // Defaulting to 2024 as in the query
   startYear: number = 2016, // Defaulting as in the query
-  endYear: number = 2025 // Defaulting as in the query
+  endYear: number = 2025, // Defaulting as in the query
+  normalization: Normalization = 'total' // Defaulting to total
 ): Promise<EntityDetailsData | null> {
-  logger.info(`Fetching entity details for CUI: ${cui}`, { cui, year, startYear, endYear });
+  logger.info(`Fetching entity details for CUI: ${cui}`, { cui, year, startYear, endYear, normalization });
 
   try {
     const response = await graphqlRequest<{
@@ -203,7 +205,7 @@ export async function getEntityDetails(
       }) | null;
     }>(
       GET_ENTITY_DETAILS_QUERY,
-      { cui, year, startYear, endYear }
+      { cui, year, startYear, endYear, normalization }
     );
 
     if (!response || !response.entity) {

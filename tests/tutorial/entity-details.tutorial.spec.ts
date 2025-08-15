@@ -28,15 +28,6 @@ test.describe('Tutorial – Entity Details', () => {
     await waitIdle(page)
     await captureStep(page, testInfo, 2, 'Change reporting year and refresh overview')
 
-    // Step 3: Toggle trends mode (Absolute → YoY%)
-    const trendsMode = page.getByRole('combobox').filter({ hasText: /Valori Absolute|Diferență % YoY/ }).first()
-    await trendsMode.click()
-    const yoy = page.getByRole('option', { name: /Diferență % YoY/ })
-    if (await yoy.count()) {
-      await yoy.click()
-    }
-    await captureStep(page, testInfo, 3, 'Switch trends mode to YoY%')
-
     // Step 4: Click a year in the chart (if accessible via axis labels)
     // Fallback: re-select 2024 to demonstrate sync
     await yearSelector.first().click()

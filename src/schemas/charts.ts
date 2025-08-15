@@ -53,6 +53,9 @@ export type SeriesConfig = z.infer<typeof SeriesConfigSchema>;
 export const ReportTypeEnum = z.enum(['Executie bugetara agregata la nivel de ordonator principal', 'Executie bugetara detaliata']);
 export type ReportType = z.infer<typeof ReportTypeEnum>;
 
+export const Normalization = z.enum(['total', 'total_euro', 'per_capita', 'per_capita_euro']);
+export type Normalization = z.infer<typeof Normalization>;
+
 export const AnalyticsFilterSchema = z.object({
   // Required
   years: z.array(z.number()).optional().describe('Years to filter the data by. If not set, the chart will show all years.'),

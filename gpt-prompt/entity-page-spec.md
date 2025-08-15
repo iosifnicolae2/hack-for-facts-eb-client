@@ -54,7 +54,6 @@ The page is composed of several modular React components, each responsible for a
   - Expenses
   - Balance
 - **Interactive Elements:**
-  - **Mode Toggle:** Switch the chart view between `Valori Absolute` (absolute currency values) and `Diferență % YoY` (year-over-year percentage change).
   - **Year Selection:** Clicking a specific year on the chart updates the page to reflect that year's data.
   - A reference line indicates the currently selected year.
 
