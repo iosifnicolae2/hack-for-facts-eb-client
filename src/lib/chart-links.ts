@@ -1,7 +1,7 @@
 import { ChartSchema, defaultYearRange, ReportType } from '@/schemas/charts';
 import type { Chart, Normalization } from '@/schemas/charts';
 import type { ChartUrlState } from '@/components/charts/page-schema';
-import { generateHash } from '@/lib/utils';
+import { generateHash, getNormalizationUnit } from '@/lib/utils';
 import { t } from '@lingui/core/macro';
 
 interface BuildEntityIncomeExpenseChartOptions {
@@ -83,7 +83,7 @@ export function buildEntityIncomeExpenseChartState(
                 type: 'aggregated-series-calculation',
                 enabled: true,
                 label: "Balance",
-                unit: '',
+                unit: getNormalizationUnit(normalization),
                 config: { visible: true, showDataLabels: false, color: '#ee8420' },
                 calculation: {
                     op: 'subtract',

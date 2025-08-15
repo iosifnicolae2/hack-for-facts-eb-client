@@ -81,3 +81,20 @@ export function setUserLocale(locale: string): void {
     window.localStorage.setItem('user-locale', locale);
   }
 }
+
+
+export function getNormalizationUnit(normalization: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro' | undefined) {
+  if (!normalization || normalization === 'total') {
+    return 'RON';
+  }
+  if (normalization === 'total_euro') {
+    return 'EUR';
+  }
+  if (normalization === 'per_capita') {
+    return 'RON/capita';
+  }
+  if (normalization === 'per_capita_euro') {
+    return 'EUR/capita';
+  }
+  throw new Error(`Unknown normalization mode: ${normalization}`);
+}
