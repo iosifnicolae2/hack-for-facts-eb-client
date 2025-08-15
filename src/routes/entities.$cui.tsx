@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { entityDetailsQueryOptions } from '@/lib/hooks/useEntityDetails';
 import { queryClient } from '@/lib/queryClient';
 import { entitySearchSchema } from '@/components/entities/validation';
-import { AnalyticsFilterType, AnalyticsInput, defaultYearRange } from '@/schemas/charts';
+import { AnalyticsFilterType, AnalyticsInput, defaultYearRange, Normalization } from '@/schemas/charts';
 import { geoJsonQueryOptions } from '@/hooks/useGeoJson';
 import { heatmapJudetQueryOptions, heatmapUATQueryOptions } from '@/hooks/useHeatmapData';
 import { getTopFunctionalGroupCodes } from '@/lib/analytics-utils';
@@ -18,8 +18,9 @@ export const Route = createFileRoute('/entities/$cui')({
         const START_YEAR = defaultYearRange.start;
         const END_YEAR = defaultYearRange.end;
         const year = (search?.year as number | undefined) ?? END_YEAR;
+        const normalization = (search?.normalization as Normalization | undefined) ?? 'total';
         queryClient.prefetchQuery(
-            entityDetailsQueryOptions(params.cui, year, START_YEAR, END_YEAR)
+            entityDetailsQueryOptions(params.cui, year, START_YEAR, END_YEAR, normalization)
         );
 
         const desiredView = (search?.view as string | undefined) ?? 'overview';
