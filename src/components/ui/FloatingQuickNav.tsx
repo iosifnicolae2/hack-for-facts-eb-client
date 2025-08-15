@@ -1,7 +1,7 @@
-import { cn, generateHash } from '@/lib/utils';
+import { cn, generateHash, getNormalizationUnit } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Map, BarChart2, Table } from 'lucide-react';
-import { AnalyticsFilterType, Chart, ChartSchema, defaultYearRange, ReportType } from '@/schemas/charts';
+import { AnalyticsFilterType, Chart, ChartSchema, ReportType } from '@/schemas/charts';
 import { useNavigate } from '@tanstack/react-router';
 import { ChartUrlState } from '@/components/charts/page-schema';
 import { MapUrlState } from '@/schemas/map-filters';
@@ -99,12 +99,11 @@ function convertFilterInputToChartState(
 ): ChartUrlState {
     const accountCategory = (filterInput.account_category ?? 'ch') as 'ch' | 'vn'
     const reportType = coerceReportType(filterInput) ?? 'Executie bugetara agregata la nivel de ordonator principal'
-    const years = Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, i) => defaultYearRange.end - i).reverse();
     const series: Chart['series'] = []
 
     // Edge cases:
-    // - If Judet view and entity_cuis contains a county entity (admin_county_council), keep CUI as-is
-    // - If Judet view and no entities selected but county_codes present, create one series per county
+    // - If County view and entity_cuis contains a county entity (admin_county_council), keep CUI as-is
+    // - If County view and no entities selected but county_codes present, create one series per county
     // - If UAT view and entity_cuis provided, create one series per entity
 
     if (filterInput.entity_cuis && filterInput.entity_cuis.length > 0) {
@@ -115,10 +114,9 @@ function convertFilterInputToChartState(
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
                 label: labelMaps.entityLabelMap.map(cui),
-                unit: 'RON',
+                unit: getNormalizationUnit(filterInput.normalization),
                 filter: {
                     ...filterInput,
-                    years: years,
                     account_category: accountCategory,
                     report_type: reportType,
                     entity_cuis: [cui],
@@ -140,10 +138,9 @@ function convertFilterInputToChartState(
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
                 label: labelMaps.uatLabelMap.map(uatId),
-                unit: 'RON',
+                unit: getNormalizationUnit(filterInput.normalization),
                 filter: {
                     ...filterInput,
-                    years: years,
                     account_category: accountCategory,
                     report_type: reportType,
                     uat_ids: [uatId],
@@ -164,10 +161,9 @@ function convertFilterInputToChartState(
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
                 label: `County ${cc}`,
-                unit: 'RON',
+                unit: getNormalizationUnit(filterInput.normalization),
                 filter: {
                     ...filterInput,
-                    years: years,
                     account_category: accountCategory,
                     report_type: reportType,
                     county_codes: [cc],
@@ -190,10 +186,9 @@ function convertFilterInputToChartState(
             type: 'line-items-aggregated-yearly',
             enabled: true,
             label: "Series",
-            unit: 'RON',
+            unit: getNormalizationUnit(filterInput.normalization),
             filter: {
                 ...filterInput,
-                years: years,
                 account_category: accountCategory,
                 report_type: reportType,
             },
@@ -214,7 +209,6 @@ function convertFilterInputToChartState(
             title: t`Analytics`,
             config: {
                 chartType: 'bar',
-                yearRange: { start: years[0], end: years[years.length - 1] }
             },
             series,
             annotations: [],
@@ -238,8 +232,8 @@ function convertFilterInputToEntityTableState(filterInput: AnalyticsFilterType, 
     }
 
     // Edge cases for uat table:
-    // - If switching from Judet with no uat_ids, aggregate at county level: use entity_types admin_county_council
-    // - If Judet and uat_ids selected -> prefer uat_ids
+    // - If switching from County with no uat_ids, aggregate at county level: use entity_types admin_county_council
+    // - If County and uat_ids selected -> prefer uat_ids
     // - If UAT view and uat_ids selected, keep is_uat true
     if (mapViewType === 'County') {
         if (filterInput.uat_ids && filterInput.uat_ids.length > 0) {

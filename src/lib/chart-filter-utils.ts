@@ -21,6 +21,7 @@ export const useFilterKeyLabel = () => {
     functional_prefixes: t`Functional prefix`,
     economic_prefixes: t`Economic prefix`,
     entity_types: t`Entity type`,
+    normalization: t`Normalization`,
   };
 
   return (key: string) => FILTER_DISPLAY_NAME[key] ?? key;
