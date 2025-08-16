@@ -23,7 +23,7 @@ export function LanguageToggle() {
                 <SidebarMenuItem>
                     <SidebarMenuButton asChild onClick={() => setLocale("en")}>
                         <Button variant="ghost" size="icon" className="w-full justify-start gap-2">
-                            <span className="text-lg">🇬🇧</span>
+                            <span className="text-md">🇬🇧</span>
                             {!collapsed && <span className="flex-1"><Trans>English</Trans></span>}
                         </Button>
                     </SidebarMenuButton>
@@ -31,7 +31,7 @@ export function LanguageToggle() {
                 <SidebarMenuItem>
                     <SidebarMenuButton asChild onClick={() => setLocale("ro")}>
                         <Button variant="ghost" size="icon" className="w-full justify-start gap-2">
-                            <span className="text-lg">🇷🇴</span>
+                            <span className="text-md">🇷🇴</span>
                             {!collapsed && <span className="flex-1"><Trans>Romanian</Trans></span>}
                         </Button>
                     </SidebarMenuButton>

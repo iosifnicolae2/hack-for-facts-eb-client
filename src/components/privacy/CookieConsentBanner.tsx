@@ -1,43 +1,35 @@
-"use client";
-
 import { useEffect, useState, type ReactElement } from "react";
-import { Cookie } from "lucide-react";
+import { CookieIcon } from "lucide-react";
 import { acceptAll, declineAll } from "@/lib/consent";
-import { Link } from "@tanstack/react-router";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { onConsentChange } from "@/lib/consent";
 import { Analytics } from "@/lib/analytics";
 import { Trans } from "@lingui/react/macro";
-import { t } from "@lingui/core/macro";
+import { Link } from "@tanstack/react-router";
 
 /**
  * CookieConsentBanner
  *
- * Shown only when the user hasn't made a consent choice yet.
- * Defaults to essential-only (analytics disabled) until explicit opt-in.
+ * A GDPR-compliant cookie consent banner that clearly explains data usage,
+ * provides balanced choices, and respects user privacy.
  */
 export function CookieConsentBanner(): ReactElement | null {
   const [showBanner, setShowBanner] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
 
   useEffect(() => {
+    // We only want to run this logic on the client
     if (typeof window === "undefined") return;
-    // If user hasn't explicitly accepted analytics yet AND no stored key (first visit), show banner
-    const stored = window.localStorage.getItem("cookie-consent");
-    setShowBanner(!stored);
+
+    // Show the banner only if the user hasn't made a choice yet.
+    const storedConsent = window.localStorage.getItem("cookie-consent");
+    setShowBanner(!storedConsent);
   }, []);
 
-  const acceptCookies = () => {
+  const handleDecision = (consentFunction: () => void) => {
     setIsExiting(true);
-    acceptAll();
-    setShowBanner(false);
-  };
-
-  const declineCookies = () => {
-    setIsExiting(true);
-    declineAll();
-    setShowBanner(false);
+    consentFunction();
+    // Hide banner after the exit animation completes
+    setTimeout(() => setShowBanner(false), 500);
   };
 
   if (!showBanner) return null;
@@ -48,38 +40,56 @@ export function CookieConsentBanner(): ReactElement | null {
         }`}
       role="dialog"
       aria-live="polite"
-      aria-label={t`Cookie consent`}
+      aria-label="Cookie consent"
     >
-      <Card className="mx-auto max-w-5xl rounded-2xl border bg-card/80 shadow-xl backdrop-blur supports-[backdrop-filter]:bg-card/80">
-        <CardHeader className="pb-3">
+      <div className="mx-auto max-w-5xl rounded-2xl border border-slate-200/30 bg-white/80 shadow-2xl backdrop-blur-lg supports-[backdrop-filter]:bg-white/80">
+        <div className="p-6">
           <div className="flex items-center gap-3">
-            <Cookie className="h-6 w-6 text-primary" />
-            <CardTitle className="text-lg md:text-xl"><Trans>Cookie settings</Trans></CardTitle>
+            <CookieIcon className="h-6 w-6 text-blue-600" />
+            <h2 className="text-lg font-semibold md:text-xl text-gray-900">
+              <Trans>We value your privacy</Trans>
+            </h2>
           </div>
-          <CardDescription>
-            <Trans>Essential cookies keep the app working. With your permission, we also use analytics (PostHog) and optional error reporting (Sentry) to understand issues and improve Transparenta.eu.</Trans>
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="pt-0">
-          <div className="mt-4 flex flex-col items-center justify-center gap-3 sm:flex-row sm:justify-end">
-            <Button variant="link" onClick={declineCookies} className="text-amber-600">
-              <Trans>Essential only</Trans>
-            </Button>
-            <Button onClick={acceptCookies} className="px-6">
-              <Trans>Accept all</Trans>
-            </Button>
-            <Button asChild variant="link">
-              <Link to="/cookies"><Trans>Cookie Settings</Trans></Link>
-            </Button>
+          <p className="mt-3 text-sm text-gray-600">
+            <Trans>
+              We use cookies and similar technologies to enhance your experience, analyze our traffic, and report errors. With your permission, we use PostHog for analytics and Sentry for error reporting to improve our service. You can change your preferences at any time. For more information, please see our{" "}
+              <Link to="/privacy" className="font-medium text-blue-600 hover:underline">
+                Privacy Policy
+              </Link>.
+            </Trans>
+          </p>
+
+          <div className="mt-5 flex flex-col sm:flex-row sm:items-center gap-3">
+            {/* The order is intentional: Customize, then Reject, then Accept */}
+            <Link
+              to="/cookies"
+              className="w-full sm:w-auto rounded-lg py-2 px-5 text-center text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors"
+            >
+              <Trans>Customize</Trans>
+            </Link>
+            <div className="flex w-full sm:w-auto sm:ml-auto gap-3">
+              <button
+                onClick={() => handleDecision(declineAll)}
+                className="w-full sm:w-auto rounded-lg py-2 px-5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors"
+              >
+                <Trans>Reject All</Trans>
+              </button>
+              <button
+                onClick={() => handleDecision(acceptAll)}
+                className="w-full sm:w-auto rounded-lg bg-blue-600 py-2 px-5 text-sm font-medium text-white hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                <Trans>Accept All</Trans>
+              </button>
+            </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }
 
 // Emit analytics when consent changes (runs once in module scope; safe in client)
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   try {
     onConsentChange((prefs) => {
       Analytics.capture(Analytics.EVENTS.CookieConsentChanged, {
@@ -91,5 +101,3 @@ if (typeof window !== 'undefined') {
     // ignore
   }
 }
-
-
