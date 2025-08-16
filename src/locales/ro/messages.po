@@ -74,10 +74,13 @@ msgstr "<0>Recomandat:</0> Grafic: „Titlul graficului” | Sursa: Ministerul F
 msgid "A platform for exploring public financial data for citizens, journalists, public figures, and other interested parties."
 msgstr "Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice și alte persoane interesate."
 
-#: src/components/privacy/CookieConsentBanner.tsx:69
 #: src/routes/cookies.lazy.tsx:106
 msgid "Accept all"
 msgstr "Acceptă toate"
+
+#: src/components/privacy/CookieConsentBanner.tsx:81
+msgid "Accept All"
+msgstr "Acceptă tot"
 
 #: src/routes/terms.lazy.tsx:32
 msgid "Acceptance"
@@ -496,8 +499,8 @@ msgid "Controller: Claudiu Constantin Bogdan, persoana fizica. Contact: contact@
 msgstr "Operator: Claudiu Constantin Bogdan, persoană fizică. Contact: contact@devostack.com."
 
 #: src/components/privacy/CookieConsentBanner.tsx:51
-msgid "Cookie consent"
-msgstr "Consimțământ cookie-uri"
+#~ msgid "Cookie consent"
+#~ msgstr "Consimțământ cookie-uri"
 
 #: src/routes/cookie-policy.lazy.tsx:18
 msgid "Cookie Policy"
@@ -508,11 +511,10 @@ msgid "Cookie Policy – Transparenta.eu"
 msgstr "Politica privind cookie-urile – Transparenta.eu"
 
 #: src/components/privacy/CookieConsentBanner.tsx:57
-msgid "Cookie settings"
-msgstr "Setări cookie-uri"
+#~ msgid "Cookie settings"
+#~ msgstr "Setări cookie-uri"
 
 #: src/components/footer/AppFooter.tsx:112
-#: src/components/privacy/CookieConsentBanner.tsx:72
 #: src/routes/cookies.lazy.tsx:32
 msgid "Cookie Settings"
 msgstr "Setări cookie-uri"
@@ -614,6 +616,10 @@ msgstr "Serie personalizată"
 #: src/components/charts/components/views/SeriesConfigView.tsx:150
 msgid "Custom Series Value"
 msgstr "Valoare serie personalizată"
+
+#: src/components/privacy/CookieConsentBanner.tsx:68
+msgid "Customize"
+msgstr "Personalizează"
 
 #: src/components/theme/mode-toggle.tsx:30
 msgid "Dark"
@@ -910,10 +916,9 @@ msgid "Essential cookies"
 msgstr "Cookie-uri esențiale"
 
 #: src/components/privacy/CookieConsentBanner.tsx:60
-msgid "Essential cookies keep the app working. With your permission, we also use analytics (PostHog) and optional error reporting (Sentry) to understand issues and improve Transparenta.eu."
-msgstr "Cookie-urile esențiale asigură funcționarea aplicației. Cu permisiunea dumneavoastră, folosim și module de analiză (PostHog) și raportare opțională a erorilor (Sentry) pentru a înțelege problemele și a îmbunătăți Transparenta.eu."
+#~ msgid "Essential cookies keep the app working. With your permission, we also use analytics (PostHog) and optional error reporting (Sentry) to understand issues and improve Transparenta.eu."
+#~ msgstr "Cookie-urile esențiale asigură funcționarea aplicației. Cu permisiunea dumneavoastră, folosim și module de analiză (PostHog) și raportare opțională a erorilor (Sentry) pentru a înțelege problemele și a îmbunătăți Transparenta.eu."
 
-#: src/components/privacy/CookieConsentBanner.tsx:66
 #: src/routes/cookies.lazy.tsx:105
 msgid "Essential only"
 msgstr "Doar esențiale"
@@ -942,7 +947,7 @@ msgstr "Evoluția cheltuielilor"
 #: src/components/filters/EntityAnalyticsFilter.tsx:204
 #: src/components/filters/MapFilter.tsx:137
 #: src/components/maps/utils.ts:22
-#: src/hooks/filters/useFilterLabels.tsx:172
+#: src/hooks/filters/useFilterLabels.tsx:176
 #: src/routes/entity-analytics.lazy.tsx:216
 msgid "Expenses"
 msgstr "Cheltuieli"
@@ -1172,7 +1177,7 @@ msgstr "Include context suplimentar pentru erori. Nu se atașează nicio identit
 #: src/components/filters/EntityAnalyticsFilter.tsx:205
 #: src/components/filters/MapFilter.tsx:138
 #: src/components/maps/utils.ts:22
-#: src/hooks/filters/useFilterLabels.tsx:173
+#: src/hooks/filters/useFilterLabels.tsx:177
 #: src/routes/entity-analytics.lazy.tsx:216
 msgid "Income"
 msgstr "Venituri"
@@ -1624,6 +1629,7 @@ msgstr "Pe cap de locuitor (RON)"
 msgid "Pie Chart (Aggregated)"
 msgstr "Grafic circular (agregat)"
 
+#: src/components/entities/UatDisplay.tsx:47
 #: src/components/entity-analytics/EntityAnalyticsTable.tsx:88
 #: src/components/maps/charts/UatDataCharts.tsx:38
 #: src/components/maps/HeatmapDataTable.tsx:222
@@ -1694,6 +1700,10 @@ msgstr "Ajustați rapid setările graficului"
 #: src/routes/cookies.lazy.tsx:112
 msgid "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 msgstr "Citiți <0>Politica privind cookie-urile</0> și <1>Politica de confidențialitate</1>."
+
+#: src/components/privacy/CookieConsentBanner.tsx:75
+msgid "Reject All"
+msgstr "Refuză tot"
 
 #: src/hooks/useEntityViews.tsx:38
 #~ msgid "Related charts"
@@ -2303,6 +2313,14 @@ msgstr "Putem actualiza această politică; vom publica modificările cu o nouă
 #: src/routes/cookie-policy.lazy.tsx:31
 msgid "We use cookies and localStorage to operate the app and, with consent, to measure usage and improve reliability."
 msgstr "Folosim cookie-uri și stocare locală (localStorage) pentru a opera aplicația și, cu consimțământ, pentru a măsura utilizarea și a îmbunătăți fiabilitatea."
+
+#: src/components/privacy/CookieConsentBanner.tsx:54
+msgid "We use cookies and similar technologies to enhance your experience, analyze our traffic, and report errors. With your permission, we use PostHog for analytics and Sentry for error reporting to improve our service. You can change your preferences at any time. For more information, please see our <0>Privacy Policy</0>."
+msgstr "Folosim cookie-uri și tehnologii similare pentru a vă îmbunătăți experiența, pentru a analiza traficul nostru și pentru a raporta erorile. Cu permisiunea dumneavoastră, folosim PostHog pentru analiză și Sentry pentru raportarea erorilor pentru a ne îmbunătăți serviciul. Vă puteți schimba preferințele în orice moment. Pentru mai multe informații, vă rugăm să consultați <0>Politica de Confidențialitate</0>."
+
+#: src/components/privacy/CookieConsentBanner.tsx:50
+msgid "We value your privacy"
+msgstr "Confidențialitatea dumneavoastră este importantă pentru noi"
 
 #: src/routes/privacy.lazy.tsx:36
 msgid "What we process"
