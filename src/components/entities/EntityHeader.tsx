@@ -10,6 +10,7 @@ import { EntityViewSwitcher } from './EntityViewSwitcher';
 
 type HeaderEntity = Pick<EntityDetailsData, 'name' | 'cui' | 'entity_type' | 'address' | 'uat' | 'children' | 'parents' | 'executionLineItems' | 'is_main_creditor'> & {
   is_uat?: boolean;
+  population?: number | null;
 };
 
 interface EntityHeaderProps {
