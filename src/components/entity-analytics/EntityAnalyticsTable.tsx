@@ -112,10 +112,10 @@ export function EntityAnalyticsTable({ data, isLoading, sortBy, sortOrder, onSor
           return (
             <div className="text-right">
               <span className="block text-xs" title={formatCurrency(row.original.per_capita_amount, 'standard')}>
-                {formatCurrency(row.original.per_capita_amount, 'standard', 'EUR')}
+                {formatCurrency(row.original.per_capita_amount, 'standard')}
               </span>
               <span className="block text-xs text-muted-foreground">
-                {formatCurrency(row.original.per_capita_amount, 'compact', 'EUR')}
+                {formatCurrency(row.original.per_capita_amount, 'compact')}
               </span>
             </div>
           )
