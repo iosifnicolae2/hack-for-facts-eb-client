@@ -7,6 +7,7 @@ import { SearchResultItem } from "./SearchResultItems";
 import { EntitySearchNode } from "@/schemas/entities";
 import { useHotkeys } from "react-hotkeys-hook";
 import { t } from "@lingui/core/macro";
+import { useGuardedBlur } from "@/lib/hooks/useGuardedBlur";
 
 interface EntitySearchInputProps {
     className?: string;
@@ -38,7 +39,7 @@ export function EntitySearchInput({
         id: searchId,
     } = useEntitySearch({ onSelect });
 
-    const containerRef = useRef<HTMLDivElement>(null);
+    const { containerRef, onBlur } = useGuardedBlur<HTMLDivElement>(closeDropdown);
     const inputRef = useRef<HTMLInputElement>(null);
 
     useHotkeys("mod+k", (e) => {
@@ -53,12 +54,8 @@ export function EntitySearchInput({
         <div
             ref={containerRef}
             className={cn("relative w-full max-w-3xl mx-auto", className)}
-            // When focus leaves the component, close the dropdown
-            onBlur={(e) => {
-                if (!containerRef.current?.contains(e.relatedTarget)) {
-                    closeDropdown();
-                }
-            }}
+            // When focus leaves the component, close the dropdown (guarded for iOS tap ordering)
+            onBlur={onBlur}
         >
             <div className="relative">
                 <Search className="absolute left-7 top-1/2 h-8 w-8 -translate-y-1/2 text-slate-400 pointer-events-none" />
