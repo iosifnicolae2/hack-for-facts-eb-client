@@ -128,8 +128,12 @@ msgid "Add Series"
 msgstr "Adaugă serie"
 
 #: src/components/entities/EntityInfo.tsx:57
-msgid "Address:"
-msgstr "Adresă:"
+msgid "Address"
+msgstr "Adresă"
+
+#: src/components/entities/EntityInfo.tsx:57
+#~ msgid "Address:"
+#~ msgstr "Adresă:"
 
 #: src/components/filters/report-type-filter/index.tsx:13
 msgid "Aggregated Budget Execution at Main Ordering Level"
@@ -566,6 +570,7 @@ msgstr "UAT-urile nu au putut fi încărcate"
 msgid "Counties"
 msgstr "Județe"
 
+#: src/components/entities/UatDisplay.tsx:60
 #: src/components/entity-analytics/EntityAnalyticsTable.tsx:78
 #: src/components/filters/EntityAnalyticsFilter.tsx:250
 #: src/components/filters/MapFilter.tsx:124
@@ -1629,7 +1634,7 @@ msgstr "Pe cap de locuitor (RON)"
 msgid "Pie Chart (Aggregated)"
 msgstr "Grafic circular (agregat)"
 
-#: src/components/entities/UatDisplay.tsx:47
+#: src/components/entities/UatDisplay.tsx:39
 #: src/components/entity-analytics/EntityAnalyticsTable.tsx:88
 #: src/components/maps/charts/UatDataCharts.tsx:38
 #: src/components/maps/HeatmapDataTable.tsx:222

@@ -128,8 +128,12 @@ msgid "Add Series"
 msgstr "Add Series"
 
 #: src/components/entities/EntityInfo.tsx:57
-msgid "Address:"
-msgstr "Address:"
+msgid "Address"
+msgstr "Address"
+
+#: src/components/entities/EntityInfo.tsx:57
+#~ msgid "Address:"
+#~ msgstr "Address:"
 
 #: src/components/filters/report-type-filter/index.tsx:13
 msgid "Aggregated Budget Execution at Main Ordering Level"
@@ -566,6 +570,7 @@ msgstr "Could Not Load UATs"
 msgid "Counties"
 msgstr "Counties"
 
+#: src/components/entities/UatDisplay.tsx:60
 #: src/components/entity-analytics/EntityAnalyticsTable.tsx:78
 #: src/components/filters/EntityAnalyticsFilter.tsx:250
 #: src/components/filters/MapFilter.tsx:124
@@ -1629,7 +1634,7 @@ msgstr "Per Capita (RON)"
 msgid "Pie Chart (Aggregated)"
 msgstr "Pie Chart (Aggregated)"
 
-#: src/components/entities/UatDisplay.tsx:47
+#: src/components/entities/UatDisplay.tsx:39
 #: src/components/entity-analytics/EntityAnalyticsTable.tsx:88
 #: src/components/maps/charts/UatDataCharts.tsx:38
 #: src/components/maps/HeatmapDataTable.tsx:222
