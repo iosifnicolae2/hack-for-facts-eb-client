@@ -17,6 +17,7 @@ import { Route as MapRouteImport } from './routes/map'
 import { Route as EntityAnalyticsRouteImport } from './routes/entity-analytics'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
+import { Route as SettingsProfileRouteImport } from './routes/settings/profile'
 import { Route as EntitiesCuiRouteImport } from './routes/entities.$cui'
 import { Route as ChartsChartIdRouteRouteImport } from './routes/charts/$chartId/route'
 
@@ -78,6 +79,11 @@ const ChartsNewLazyRoute = ChartsNewLazyRouteImport.update({
   path: '/charts/new',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/charts/new.lazy').then((d) => d.Route))
+const SettingsProfileRoute = SettingsProfileRouteImport.update({
+  id: '/settings/profile',
+  path: '/settings/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EntitiesCuiRoute = EntitiesCuiRouteImport.update({
   id: '/entities/$cui',
   path: '/entities/$cui',
@@ -107,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsLazyRoute
   '/charts/$chartId': typeof ChartsChartIdRouteRouteWithChildren
   '/entities/$cui': typeof EntitiesCuiRoute
+  '/settings/profile': typeof SettingsProfileRoute
   '/charts/new': typeof ChartsNewLazyRoute
   '/charts': typeof ChartsIndexLazyRoute
   '/charts/$chartId/': typeof ChartsChartIdIndexLazyRoute
@@ -121,6 +128,7 @@ export interface FileRoutesByTo {
   '/test-error': typeof TestErrorRoute
   '/terms': typeof TermsLazyRoute
   '/entities/$cui': typeof EntitiesCuiRoute
+  '/settings/profile': typeof SettingsProfileRoute
   '/charts/new': typeof ChartsNewLazyRoute
   '/charts': typeof ChartsIndexLazyRoute
   '/charts/$chartId': typeof ChartsChartIdIndexLazyRoute
@@ -137,6 +145,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsLazyRoute
   '/charts/$chartId': typeof ChartsChartIdRouteRouteWithChildren
   '/entities/$cui': typeof EntitiesCuiRoute
+  '/settings/profile': typeof SettingsProfileRoute
   '/charts/new': typeof ChartsNewLazyRoute
   '/charts/': typeof ChartsIndexLazyRoute
   '/charts/$chartId/': typeof ChartsChartIdIndexLazyRoute
@@ -154,6 +163,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/charts/$chartId'
     | '/entities/$cui'
+    | '/settings/profile'
     | '/charts/new'
     | '/charts'
     | '/charts/$chartId/'
@@ -168,6 +178,7 @@ export interface FileRouteTypes {
     | '/test-error'
     | '/terms'
     | '/entities/$cui'
+    | '/settings/profile'
     | '/charts/new'
     | '/charts'
     | '/charts/$chartId'
@@ -183,6 +194,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/charts/$chartId'
     | '/entities/$cui'
+    | '/settings/profile'
     | '/charts/new'
     | '/charts/'
     | '/charts/$chartId/'
@@ -199,6 +211,7 @@ export interface RootRouteChildren {
   TermsLazyRoute: typeof TermsLazyRoute
   ChartsChartIdRouteRoute: typeof ChartsChartIdRouteRouteWithChildren
   EntitiesCuiRoute: typeof EntitiesCuiRoute
+  SettingsProfileRoute: typeof SettingsProfileRoute
   ChartsNewLazyRoute: typeof ChartsNewLazyRoute
   ChartsIndexLazyRoute: typeof ChartsIndexLazyRoute
 }
@@ -275,6 +288,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChartsNewLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/profile': {
+      id: '/settings/profile'
+      path: '/settings/profile'
+      fullPath: '/settings/profile'
+      preLoaderRoute: typeof SettingsProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/entities/$cui': {
       id: '/entities/$cui'
       path: '/entities/$cui'
@@ -321,6 +341,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsLazyRoute: TermsLazyRoute,
   ChartsChartIdRouteRoute: ChartsChartIdRouteRouteWithChildren,
   EntitiesCuiRoute: EntitiesCuiRoute,
+  SettingsProfileRoute: SettingsProfileRoute,
   ChartsNewLazyRoute: ChartsNewLazyRoute,
   ChartsIndexLazyRoute: ChartsIndexLazyRoute,
 }

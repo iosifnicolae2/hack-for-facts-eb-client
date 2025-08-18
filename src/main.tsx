@@ -5,6 +5,7 @@ import { PostHogProvider } from "posthog-js/react";
 import posthog from "posthog-js";
 import { hasAnalyticsConsent, onConsentChange } from "@/lib/consent";
 import { useSentryConsent } from "@/hooks/useSentryConsent";
+import { AuthProvider, authKey } from "@/lib/auth";
 
 import "./index.css";
 
@@ -56,8 +57,9 @@ if (env.VITE_POSTHOG_ENABLED) {
   } catch { }
 }
 
-const App = () => {
+function App() {
   const hasConsent = useSentryConsent();
+
   useEffect(() => {
     if (hasConsent) {
       initSentry(router);
@@ -90,6 +92,8 @@ const App = () => {
 // Initialize app
 ReactDOM.createRoot(document.getElementById("root")!, getReactRootErrorHandlers()).render(
   <StrictMode>
-    <App />
+    <AuthProvider publishableKey={authKey}>
+      <App />
+    </AuthProvider>
   </StrictMode>
 );

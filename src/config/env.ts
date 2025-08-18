@@ -38,6 +38,9 @@ const envSchema = z.object({
     .enum(["true", "false"]) // enabled unless explicitly set to false
     .optional()
     .transform((val) => val !== "false"),
+
+  // Clerk
+  VITE_CLERK_PUBLISHABLE_KEY: z.string().min(1).optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;
