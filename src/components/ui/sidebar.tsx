@@ -141,24 +141,18 @@ const Sidebar = React.forwardRef<
     const { isMobile, state, open, setOpen, openMobile, setOpenMobile } =
       useSidebar();
 
-    // Track whether we opened the sidebar due to hover so we can revert on mouse leave
-    const hoverOpenedRef = React.useRef(false);
     const [hoverOverlay, setHoverOverlay] = React.useState(false);
 
     const handleMouseEnter = React.useCallback(() => {
       if (isMobile) return;
       if (collapsible !== "icon") return;
       if (state !== "collapsed") return;
-      hoverOpenedRef.current = true;
       setHoverOverlay(true);
       setOpen(true);
     }, [isMobile, collapsible, state, setOpen]);
 
     const handleMouseLeave = React.useCallback(() => {
-      if (!hoverOpenedRef.current) return;
-      hoverOpenedRef.current = false;
       setHoverOverlay(false);
-      // Only close back if we are still open (i.e., opened due to hover)
       if (open) {
         setOpen(false);
       }
@@ -218,7 +212,7 @@ const Sidebar = React.forwardRef<
             variant === "floating" || variant === "inset"
               ? "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4)))]"
               : "group-data-[collapsible=icon]:w-(--sidebar-width-icon)"
-          ,
+            ,
             // Keep the gap at icon width while overlay is open on hover
             hoverOverlay
               ? variant === "floating" || variant === "inset"
@@ -611,7 +605,7 @@ const SidebarMenuAction = React.forwardRef<
         "peer-data-[size=lg]/menu-button:top-2.5",
         "group-data-[collapsible=icon]:hidden",
         showOnHover &&
-          "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0",
+        "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0",
         className
       )}
       {...props}
