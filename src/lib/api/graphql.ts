@@ -1,4 +1,5 @@
 import { createLogger } from "../logger";
+import { getAuthToken } from "../auth";
 
 const logger = createLogger("graphql-client");
 
@@ -27,16 +28,20 @@ export async function graphqlRequest<T = unknown>(
   try {
     logger.info("Making GraphQL request", { query, variables });
 
+    // Get a fresh token for the request; Clerk manages token lifecycle
+    const token = await getAuthToken();
+
     const response = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
       body: JSON.stringify({
         query,
         variables,
       }),
-    });
+    })
 
     if (!response.ok) {
       const errorText = await response.text();

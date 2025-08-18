@@ -8,7 +8,14 @@ import {
   useAuth as useClerkAuth,
   useUser as useClerkUser,
 } from '@clerk/clerk-react'
+import type { LoadedClerk } from '@clerk/types'
 import { env } from '@/config/env'
+
+declare global {
+  interface Window {
+    Clerk?: LoadedClerk
+  }
+}
 
 // Public, provider-agnostic user shape used across the app
 export type AuthUser = {
@@ -23,7 +30,7 @@ type AuthContextValue = {
   readonly isLoaded: boolean
   readonly isSignedIn: boolean
   readonly user: AuthUser | null
-  readonly signOut: () => Promise<void> | void
+  readonly signOut: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
@@ -49,8 +56,8 @@ function ClerkAuthBridge({ children }: PropsWithChildren) {
       signOut: async () => {
         try {
           await signOut()
-        } catch {
-          // no-op
+        } catch (error) {
+          console.error('Failed to sign out:', error)
         }
       },
     }
@@ -66,7 +73,7 @@ function NoopAuthProvider({ children }: PropsWithChildren) {
       isLoaded: true,
       isSignedIn: false,
       user: null,
-      signOut: () => {},
+      signOut: () => Promise.resolve(),
     }),
     [],
   )
@@ -96,36 +103,47 @@ export function useUser() {
 }
 
 // UI wrappers to avoid leaking Clerk primitives
-export function AuthSignIn(props: { path?: string }) {
+export function AuthSignIn({ path = '/sign-in' }: { path?: string }) {
   const { isEnabled } = useAuth()
   if (!isEnabled) {
     return <div className="text-sm text-muted-foreground">Authentication is disabled.</div>
   }
-  return <ClerkSignIn routing="path" path={props.path ?? '/sign-in'} />
+  return <ClerkSignIn routing="path" path={path} />
 }
 
-export function AuthSignUp(props: { path?: string }) {
+export function AuthSignUp({ path = '/sign-up' }: { path?: string }) {
   const { isEnabled } = useAuth()
   if (!isEnabled) {
     return <div className="text-sm text-muted-foreground">Authentication is disabled.</div>
   }
-  return <ClerkSignUp routing="path" path={props.path ?? '/sign-up'} />
+  return <ClerkSignUp routing="path" path={path} />
 }
 
-export function AuthSignInButton({ children }: PropsWithChildren) {
+export function AuthSignInButton({ children = 'Sign in' }: PropsWithChildren) {
   const { isEnabled } = useAuth()
   if (!isEnabled) {
-    return <span>{children ?? 'Sign in'}</span>
+    return <span>{children}</span>
   }
-  return <ClerkSignInButton>{children ?? 'Sign in'}</ClerkSignInButton>
+  return <ClerkSignInButton>{children}</ClerkSignInButton>
 }
 
-export function AuthSignOutButton({ children }: PropsWithChildren) {
+export function AuthSignOutButton({ children = 'Sign out' }: PropsWithChildren) {
   const { isEnabled } = useAuth()
   if (!isEnabled) {
-    return <span>{children ?? 'Sign out'}</span>
+    return <span>{children}</span>
   }
-  return <ClerkSignOutButton>{children ?? 'Sign out'}</ClerkSignOutButton>
+  return <ClerkSignOutButton>{children}</ClerkSignOutButton>
 }
 
 export const authKey = env.VITE_CLERK_PUBLISHABLE_KEY
+
+// Safe function for non-React modules to fetch a fresh auth token
+export async function getAuthToken(): Promise<string | null> {
+  try {
+    const token = await window.Clerk?.session?.getToken()
+    return token ?? null
+  } catch (error) {
+    console.error('Failed to get auth token:', error)
+    return null
+  }
+}
