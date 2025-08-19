@@ -876,6 +876,10 @@ msgstr "Enter annotation title..."
 msgid "Enter chart title..."
 msgstr "Enter chart title..."
 
+#: src/routes/index.lazy.tsx:56
+msgid "Enter entity name or CUI..."
+msgstr "Enter entity name or CUI..."
+
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:108
 msgid "Enter new value"
 msgstr "Enter new value"
