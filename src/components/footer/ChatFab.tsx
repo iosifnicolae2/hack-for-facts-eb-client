@@ -6,10 +6,6 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
     DropdownMenuGroup,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
-    DropdownMenuPortal,
 } from "@/components/ui/dropdown-menu";
 import { SendErrorAction } from "@/components/sentry/SendErrorAction";
 import { SendFeedbackAction } from "@/components/sentry/SendFeedbackAction";
@@ -19,7 +15,6 @@ import {
     MessageSquare,
     BookOpen,
     Bot,
-    Mail,
     LifeBuoy,
     ExternalLink,
     Copy,
@@ -89,6 +84,16 @@ export function ChatFab(): ReactElement {
         { type: 'component', component: <SendFeedbackAction /> },
         { type: 'component', component: <SendErrorAction /> },
         { type: 'separator' },
+        {
+            label: t`Contact Support`,
+            icon: <Send className="h-4 w-4" />,
+            action: openMailClient,
+        },
+        {
+            label: t`Copy Support Email`,
+            icon: <Copy className="h-4 w-4" />,
+            action: copyEmailAddress,
+        },
     ];
 
     return (
@@ -109,7 +114,7 @@ export function ChatFab(): ReactElement {
                     <MessageSquare className="h-6 w-6" />
                 </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" sideOffset={10} className="w-64">
+            <DropdownMenuContent align="end" sideOffset={10} className="w-64 py-2">
                 <DropdownMenuLabel className="flex items-center gap-2 font-semibold">
                     <LifeBuoy className="h-5 w-5" />
                     {t`Need help?`}
@@ -123,7 +128,7 @@ export function ChatFab(): ReactElement {
                             return <DropdownMenuSeparator key={`sep-${index}`} />;
                         }
                         if ('type' in item && item.type === 'component') {
-                            return item.component;
+                            return <div key={`comp-${index}`}>{item.component}</div>;
                         }
                         const actionItem = item as ActionItem;
                         return (
@@ -136,26 +141,6 @@ export function ChatFab(): ReactElement {
                             </DropdownMenuItem>
                         );
                     })}
-                    <DropdownMenuSub>
-                        <DropdownMenuSubTrigger className="cursor-pointer">
-                            <div className="flex items-center gap-2">
-                                <Mail className="h-4 w-4" />
-                                <span>{t`Contact Support`}</span>
-                            </div>
-                        </DropdownMenuSubTrigger>
-                        <DropdownMenuPortal>
-                            <DropdownMenuSubContent>
-                                <DropdownMenuItem onSelect={openMailClient} className="cursor-pointer">
-                                    <Send className="mr-2 h-4 w-4" />
-                                    <span>{t`Open Email App`}</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onSelect={copyEmailAddress} className="cursor-pointer">
-                                    <Copy className="mr-2 h-4 w-4" />
-                                    <span>{t`Copy Email Address`}</span>
-                                </DropdownMenuItem>
-                            </DropdownMenuSubContent>
-                        </DropdownMenuPortal>
-                    </DropdownMenuSub>
                 </DropdownMenuGroup>
             </DropdownMenuContent>
         </DropdownMenu>
