@@ -37,7 +37,7 @@ function Index() {
             className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight
            bg-gradient-to-b from-slate-50 via-white to-slate-50
            bg-clip-text text-transparent
-           drop-shadow-[0_10px_22px_rgba(0,0,0,0.8)]"
+           drop-shadow-[0_20px_44px_rgba(18,65,161,0.5),0_10px_22px_rgba(18,65,161,0.8),0_10px_22px_rgba(200,65,161,0.8)]"
           >
             {animationActive ? (
               <AnimatedTitle />
