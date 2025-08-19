@@ -39,6 +39,10 @@ export default defineConfig(({ mode }) => ({
       authToken: process.env.SENTRY_AUTH_TOKEN,
       disable: mode !== "production",
       telemetry: false,
+      sourcemaps: {
+        // Specify the directory containing the build artifacts.
+        assets: "./dist/**",
+      },
     }),
   ],
   // Static assets will be fingerprinted by Vite and can be cached long-term by the browser/CDN
@@ -58,6 +62,9 @@ export default defineConfig(({ mode }) => ({
     https: getHttpsConfig()
   },
   build: {
+    // Generate sourcemaps in production so Sentry can upload and map stack traces
+    // Using 'hidden' avoids adding sourceMappingURL references to the bundled files
+    sourcemap: 'hidden',
     chunkSizeWarningLimit: 1500,
   },
 }));
