@@ -15,7 +15,7 @@ export type AuthErrorCode =
   | "auth/account-exists-with-different-credential";
 
 export type ErrorSeverity = "fatal" | "error" | "warning";
-export type ErrorSource = "auth" | "api" | "validation" | "runtime" | "network";
+export type ErrorSource = "auth" | "api" | "validation" | "runtime" | "network" | "global-error-page";
 
 export interface AppErrorMetadata {
   type: ErrorSource;

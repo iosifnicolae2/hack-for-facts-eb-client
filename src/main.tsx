@@ -1,6 +1,7 @@
 import { StrictMode, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
+import GlobalErrorPage from "@/components/errors/GlobalErrorPage";
 import { PostHogProvider } from "posthog-js/react";
 import posthog from "posthog-js";
 import { hasAnalyticsConsent, onConsentChange } from "@/lib/consent";
@@ -16,7 +17,11 @@ import { env } from "./config/env";
 import { cleanupSentry, getReactRootErrorHandlers, initSentry } from "./lib/sentry";
 
 // Create a new router instance
-const router = createRouter({ routeTree, context: { queryClient } });
+const router = createRouter({
+  routeTree,
+  context: { queryClient },
+  defaultErrorComponent: ({ error }) => <GlobalErrorPage error={error} />,
+});
 
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {

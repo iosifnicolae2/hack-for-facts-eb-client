@@ -18,8 +18,10 @@ import { Seo, JsonLd } from "@/lib/seo";
 import { useEffect } from "react";
 import { I18nProvider } from "@lingui/react";
 import { getUserLocale } from "@/lib/utils";
+import GlobalErrorPage from "@/components/errors/GlobalErrorPage";
 
 export const Route = createRootRoute({
+  errorComponent: ({ error }) => <GlobalErrorPage error={error} />,
   component: () => {
     useEffect(() => {
       const userLocale = getUserLocale();
