@@ -26,7 +26,7 @@ msgstr "{0} serii configurate"
 msgid "*Check filters panel for more details."
 msgstr "*Verificați panoul de filtre pentru mai multe detalii."
 
-#: src/components/footer/AppFooter.tsx:145
+#: src/components/footer/AppFooter.tsx:144
 msgid "© {currentYear} Transparenta.eu. All rights reserved."
 msgstr "© {currentYear} Transparenta.eu. Toate drepturile rezervate."
 
@@ -75,7 +75,7 @@ msgstr "<0>Recomandat:</0> Grafic: „Titlul graficului” | Sursa: Ministerul F
 msgid "error.updateAvailable"
 msgstr "O nouă versiune a aplicației este disponibilă. Vă rugăm să reîncărcați pagina pentru a obține cele mai recente actualizări."
 
-#: src/components/footer/AppFooter.tsx:30
+#: src/components/footer/AppFooter.tsx:29
 msgid "A platform for exploring public financial data for citizens, journalists, public figures, and other interested parties."
 msgstr "Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice și alte persoane interesate."
 
@@ -83,7 +83,7 @@ msgstr "Platformă de explorare a datelor financiare publice pentru cetățeni, 
 msgid "Accept all"
 msgstr "Acceptă toate"
 
-#: src/components/privacy/CookieConsentBanner.tsx:81
+#: src/components/privacy/CookieConsentBanner.tsx:91
 msgid "Accept All"
 msgstr "Acceptă tot"
 
@@ -206,7 +206,7 @@ msgstr "Analizați valorile cumulate pe entitate și explorați entitățile de 
 msgid "Analyze aggregated values per entity and explore top entities."
 msgstr "Analizați valorile cumulate pe entitate și explorați entitățile de top."
 
-#: src/components/footer/AppFooter.tsx:134
+#: src/components/footer/AppFooter.tsx:133
 msgid "and"
 msgstr "și"
 
@@ -243,6 +243,10 @@ msgstr "Sunteți sigur?"
 msgid "Area Chart"
 msgstr "Grafic arie"
 
+#: src/components/footer/ChatFab.tsx:82
+msgid "Ask AI Assistant"
+msgstr "Întreabă Asistentul AI"
+
 #: src/routes/cookie-policy.lazy.tsx:22
 #: src/routes/privacy.lazy.tsx:22
 #: src/routes/terms.lazy.tsx:23
@@ -262,8 +266,8 @@ msgstr "Medie pe cap de locuitor"
 msgid "Back to Configuration"
 msgstr "Înapoi la configurare"
 
-#: src/components/footer/AppFooter.tsx:174
-#: src/components/footer/AppFooter.tsx:176
+#: src/components/footer/AppFooter.tsx:173
+#: src/components/footer/AppFooter.tsx:175
 msgid "Back to top"
 msgstr "Înapoi sus"
 
@@ -377,7 +381,7 @@ msgstr "Titlu grafic"
 msgid "Chart Type"
 msgstr "Tip grafic"
 
-#: src/components/footer/AppFooter.tsx:95
+#: src/components/footer/AppFooter.tsx:94
 #: src/components/sidebar/nav-main.tsx:31
 #: src/hooks/useEntityViews.tsx:38
 #: src/routes/charts/index.lazy.tsx:157
@@ -499,6 +503,10 @@ msgstr "Valoare constantă"
 msgid "Contact"
 msgstr "Contact"
 
+#: src/components/footer/ChatFab.tsx:142
+msgid "Contact Support"
+msgstr "Contactează Suportul"
+
 #: src/routes/terms.lazy.tsx:72
 msgid "Contact us at contact@devostack.com. See also our <0>Privacy Policy</0> and <1>Cookie Policy</1>."
 msgstr "Contactați-ne la adresa contact@devostack.com. Consultați și <0>Politica de confidențialitate</0> și <1>Politica privind cookie-urile</1>."
@@ -510,6 +518,11 @@ msgstr "Operator: Claudiu Constantin Bogdan, persoană fizică. Contact: contact
 #: src/components/privacy/CookieConsentBanner.tsx:51
 #~ msgid "Cookie consent"
 #~ msgstr "Consimțământ cookie-uri"
+
+#: src/components/sentry/SendErrorAction.tsx:17
+#: src/components/sentry/SendFeedbackAction.tsx:16
+msgid "Cookie consent required"
+msgstr "Este necesar consimțământul pentru cookie-uri"
 
 #: src/routes/cookie-policy.lazy.tsx:18
 msgid "Cookie Policy"
@@ -523,7 +536,7 @@ msgstr "Politica privind cookie-urile – Transparenta.eu"
 #~ msgid "Cookie settings"
 #~ msgstr "Setări cookie-uri"
 
-#: src/components/footer/AppFooter.tsx:112
+#: src/components/footer/AppFooter.tsx:111
 #: src/routes/cookies.lazy.tsx:32
 msgid "Cookie Settings"
 msgstr "Setări cookie-uri"
@@ -540,6 +553,10 @@ msgstr "Copiază adnotarea"
 #: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:42
 msgid "Copy Data"
 msgstr "Copiază datele"
+
+#: src/components/footer/ChatFab.tsx:153
+msgid "Copy Email Address"
+msgstr "Copiază Adresa de Email"
 
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:61
 msgid "Copy Series"
@@ -570,6 +587,10 @@ msgstr "Sursele de finanțare nu au putut fi încărcate"
 #: src/components/filters/uat-filter/UatList.tsx:79
 msgid "Could Not Load UATs"
 msgstr "UAT-urile nu au putut fi încărcate"
+
+#: src/components/sentry/SendErrorAction.tsx:41
+msgid "Could not send error report."
+msgstr "Nu s-a putut trimite raportul de eroare."
 
 #: src/components/filters/MapFilter.tsx:182
 msgid "Counties"
@@ -627,7 +648,7 @@ msgstr "Serie personalizată"
 msgid "Custom Series Value"
 msgstr "Valoare serie personalizată"
 
-#: src/components/privacy/CookieConsentBanner.tsx:68
+#: src/components/privacy/CookieConsentBanner.tsx:78
 msgid "Customize"
 msgstr "Personalizează"
 
@@ -654,9 +675,9 @@ msgstr "Etichete de date"
 msgid "Data Series"
 msgstr "Serie de date"
 
-#: src/components/footer/AppFooter.tsx:124
+#: src/components/footer/AppFooter.tsx:123
 msgid "Data source: \"Budget Transparency\" portal administered by ANAF/Ministry of Finance, available as open data. See official resources:"
-msgstr "Sursa datelor: portalul „Transparența Bugetară” administrat de ANAF/Ministerul Finanțelor, disponibil ca date deschise (Open Data). Vedeți resursele oficiale:"
+msgstr "Sursa datelor: portalul „Transparența Bugetară" administrat de ANAF/Ministerul Finanțelor, disponibil ca date deschise (Open Data). Vedeți resursele oficiale:"
 
 #: src/routes/privacy.lazy.tsx:50
 msgid "Data sources and licensing"
@@ -802,6 +823,10 @@ msgstr "Editează adnotări"
 msgid "Effective Date: {effectiveDate} • Version: {version}"
 msgstr "Data intrării în vigoare: {effectiveDate} • Versiunea: {version}"
 
+#: src/components/footer/ChatFab.tsx:54
+msgid "Email address copied to clipboard!"
+msgstr "Adresa de email a fost copiată în clipboard!"
+
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:38
 msgid "Enable annotation"
 msgstr "Activează adnotarea"
@@ -870,7 +895,7 @@ msgid "Entity {cui} – Not found"
 msgstr "Entitatea {cui} – Nu a fost găsită"
 
 #: src/components/entity-analytics/EntityAnalyticsLayout.tsx:15
-#: src/components/footer/AppFooter.tsx:85
+#: src/components/footer/AppFooter.tsx:84
 #: src/components/sidebar/nav-main.tsx:36
 msgid "Entity Analytics"
 msgstr "Analiza entităților"
@@ -912,6 +937,10 @@ msgstr "Eroare la încărcarea datelor:"
 #: src/routes/cookies.lazy.tsx:78
 msgid "Error reporting (Sentry)"
 msgstr "Raportarea erorilor (Sentry)"
+
+#: src/components/sentry/SendErrorAction.tsx:38
+msgid "Error signal sent"
+msgstr "Semnal de eroare trimis"
 
 #: src/components/maps/utils.ts:102
 msgid "Error: Invalid data point type."
@@ -1006,6 +1035,10 @@ msgstr "Exporturi și atribuire"
 msgid "Exports must include attribution to data source and Transparenta.eu."
 msgstr "Exporturile trebuie să includă atribuirea sursei datelor și a Transparenta.eu."
 
+#: src/components/footer/ChatFab.tsx:57
+msgid "Failed to copy email address."
+msgstr "Copierea adresei de email a eșuat."
+
 #: src/routes/charts/index.lazy.tsx:165
 msgid "favorites"
 msgstr "favorite"
@@ -1018,9 +1051,13 @@ msgstr "Favorite"
 msgid "Favorites first"
 msgstr "Favoritele primele"
 
-#: src/components/footer/AppFooter.tsx:157
+#: src/components/footer/AppFooter.tsx:156
 msgid "Feedback / Report an issue"
 msgstr "Feedback / Raportați o problemă"
+
+#: src/components/sentry/SendFeedbackAction.tsx:33
+msgid "Feedback is currently unavailable."
+msgstr "Feedback-ul este indisponibil momentan."
 
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:65
 msgid "Filter field"
@@ -1052,6 +1089,10 @@ msgstr "Rapoarte Financiare"
 #: src/components/entities/EntityFinancialTrends.tsx:98
 msgid "Financial Trends"
 msgstr "Evoluție Financiară"
+
+#: src/components/footer/ChatFab.tsx:117
+msgid "Find resources, report issues, or get in touch."
+msgstr "Găsește resurse, raportează probleme sau ia legătura cu noi."
 
 #: src/components/maps/utils.ts:26
 msgid "Fn"
@@ -1131,7 +1172,7 @@ msgstr "Vezi Grafic"
 msgid "Go to Entity Table"
 msgstr "Vezi Tabel"
 
-#: src/components/errors/GlobalErrorPage.tsx:65
+#: src/components/errors/GlobalErrorPage.tsx:66
 msgid "Go to Homepage"
 msgstr "Mergi la pagina principală"
 
@@ -1142,6 +1183,16 @@ msgstr "Vezi harta"
 #: src/routes/terms.lazy.tsx:68
 msgid "Governing law"
 msgstr "Legea aplicabilă"
+
+#. placeholder {0}: typeof window !== 'undefined' ? window.location.href : 'N/A'
+#: src/components/footer/ChatFab.tsx:46
+msgid ""
+"Hello,\n"
+"\n"
+"I need help with: \n"
+"\n"
+"Page: {0}"
+msgstr "Pagina: {0}"
 
 #: src/routes/cookies.lazy.tsx:80
 msgid "Help us fix problems by sending error reports. When disabled, we only send anonymous, minimal error telemetry necessary to keep the service reliable."
@@ -1165,7 +1216,7 @@ msgstr "Ascunde"
 msgid "Hide advanced settings"
 msgstr "Ascunde setările avansate"
 
-#: src/components/footer/AppFooter.tsx:80
+#: src/components/footer/AppFooter.tsx:79
 msgid "Home"
 msgstr "Acasă"
 
@@ -1249,7 +1300,7 @@ msgstr "Județ"
 msgid "Label"
 msgstr "Etichetă"
 
-#: src/components/footer/AppFooter.tsx:103
+#: src/components/footer/AppFooter.tsx:102
 msgid "Legal"
 msgstr "Legal"
 
@@ -1366,7 +1417,7 @@ msgstr "Filtre hartă"
 msgid "Map View"
 msgstr "Vizualizare hartă"
 
-#: src/components/footer/AppFooter.tsx:90
+#: src/components/footer/AppFooter.tsx:89
 msgid "Maps"
 msgstr "Hărți"
 
@@ -1432,6 +1483,10 @@ msgstr "N/A"
 msgid "Name"
 msgstr "Nume"
 
+#: src/components/footer/ChatFab.tsx:114
+msgid "Need help?"
+msgstr "Ai nevoie de ajutor?"
+
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:107
 msgid "New value"
 msgstr "Valoare nouă"
@@ -1463,8 +1518,8 @@ msgstr "Încă nu există adnotări."
 
 #. placeholder {0}: cat.name
 #: src/routes/charts/index.lazy.tsx:287
-msgid "No charts in “{0}”"
-msgstr "Niciun grafic în „{0}”"
+msgid "No charts in "{0}"
+msgstr "Niciun grafic în "{0}"
 
 #: src/routes/charts/index.lazy.tsx:214
 msgid "No charts yet"
@@ -1585,11 +1640,20 @@ msgstr "Cele mai vechi"
 msgid "Open Config Panel"
 msgstr "Deschide panoul de configurare"
 
+#: src/components/sentry/SendErrorAction.tsx:20
+#: src/components/sentry/SendFeedbackAction.tsx:19
+msgid "Open cookies"
+msgstr "Deschide setările cookie"
+
 #: src/routes/terms.lazy.tsx:52
 msgid "Open data follows the source license."
 msgstr "Datele deschise respectă licența sursei."
 
-#: src/components/footer/AppFooter.tsx:164
+#: src/components/footer/ChatFab.tsx:149
+msgid "Open Email App"
+msgstr "Deschide Aplicația de Email"
+
+#: src/components/footer/AppFooter.tsx:163
 msgid "Open feedback dialog"
 msgstr "Deschide fereastra de feedback"
 
@@ -1600,6 +1664,14 @@ msgstr "Deschide în Editorul de Grafice"
 #: src/components/entities/EntityInfo.tsx:42
 msgid "Open on Wikipedia"
 msgstr "Deschide pe Wikipedia"
+
+#: src/components/footer/ChatFab.tsx:84
+msgid "Opening AI Assistant..."
+msgstr "Se deschide Asistentul AI..."
+
+#: src/components/footer/ChatFab.tsx:78
+msgid "Opening docs..."
+msgstr "Se deschide documentația..."
 
 #: src/routes/privacy.lazy.tsx:46
 msgid "Operate and secure the service (legitimate interests)."
@@ -1679,7 +1751,7 @@ msgstr "PostHog (analiză), Sentry (raportare erori), furnizori de găzduire. Pr
 msgid "PostHog: <0>ph_*</0> identifiers when analytics is enabled."
 msgstr "PostHog: identificatori <0>ph_*</0> când analiza este activată."
 
-#: src/components/footer/AppFooter.tsx:106
+#: src/components/footer/AppFooter.tsx:105
 #: src/routes/privacy.lazy.tsx:17
 msgid "Privacy Policy"
 msgstr "Politica de confidențialitate"
@@ -1688,7 +1760,7 @@ msgstr "Politica de confidențialitate"
 msgid "Privacy Policy – Transparenta.eu"
 msgstr "Politica de confidențialitate – Transparenta.eu"
 
-#: src/components/footer/AppFooter.tsx:76
+#: src/components/footer/AppFooter.tsx:75
 msgid "Product"
 msgstr "Produs"
 
@@ -1704,6 +1776,10 @@ msgstr "Informații din sectorul public de la Ministerul Finanțelor, disponibil
 msgid "Purposes and legal bases"
 msgstr "Scopuri și temeiuri legale"
 
+#: src/components/footer/ChatFab.tsx:98
+msgid "Quick actions"
+msgstr "Acțiuni rapide"
+
 #: src/components/charts/components/views/SeriesConfigView.tsx:184
 msgid "Quick Actions"
 msgstr "Acțiuni rapide"
@@ -1716,11 +1792,15 @@ msgstr "Configurare rapidă"
 msgid "Quickly adjust chart settings"
 msgstr "Ajustați rapid setările graficului"
 
+#: src/components/footer/ChatFab.tsx:76
+msgid "Read Documentation"
+msgstr "Citește Documentația"
+
 #: src/routes/cookies.lazy.tsx:112
 msgid "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 msgstr "Citiți <0>Politica privind cookie-urile</0> și <1>Politica de confidențialitate</1>."
 
-#: src/components/privacy/CookieConsentBanner.tsx:75
+#: src/components/privacy/CookieConsentBanner.tsx:85
 msgid "Reject All"
 msgstr "Refuză tot"
 
@@ -1736,7 +1816,7 @@ msgstr "Mod relativ"
 msgid "Relative Values"
 msgstr "Valori relative"
 
-#: src/components/errors/GlobalErrorPage.tsx:56
+#: src/components/errors/GlobalErrorPage.tsx:57
 msgid "Reload Page"
 msgstr "Reîncarcă pagina"
 
@@ -1749,8 +1829,8 @@ msgid "Replace value"
 msgstr "Înlocuiește valoarea"
 
 #: src/components/footer/AppFooter.tsx:194
-msgid "Report a bug"
-msgstr "Raportați o eroare"
+#~ msgid "Report a bug"
+#~ msgstr "Raportați o eroare"
 
 #: src/lib/chart-filter-utils.ts:19
 msgid "Report type"
@@ -1838,7 +1918,7 @@ msgstr "Caută după nume sau cod (ex: Agricultură, 43.00, ec:43.00)"
 
 #: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:67
 msgid "Search by name or code (ex: Social assistance, 7.06, fn:7.06)"
-msgstr "Caută după nume sau cod (ex: Ajutor social, 7.06, fn:7.06)"
+msgstr "Caută după nume sau cod (ex: Asistență socială, 7.06, fn:7.06)"
 
 #: src/routes/charts/index.lazy.tsx:192
 msgid "Search charts"
@@ -1933,7 +2013,12 @@ msgstr "Selectează anii..."
 msgid "Selected"
 msgstr "Selectat"
 
-#: src/components/footer/AppFooter.tsx:166
+#: src/components/sentry/SendErrorAction.tsx:48
+msgid "Send error"
+msgstr "Trimite eroare"
+
+#: src/components/footer/AppFooter.tsx:165
+#: src/components/sentry/SendFeedbackAction.tsx:39
 msgid "Send feedback"
 msgstr "Trimite feedback"
 
@@ -2027,7 +2112,7 @@ msgstr "Afișează mai mult"
 msgid "Show Relative Values (%)"
 msgstr "Afișează valori relative (%)"
 
-#: src/components/errors/GlobalErrorPage.tsx:72
+#: src/components/errors/GlobalErrorPage.tsx:73
 msgid "Show Technical Details"
 msgstr "Arată detaliile tehnice"
 
@@ -2082,7 +2167,7 @@ msgstr "Tehnologiile pe care le folosim"
 msgid "Terms for using the Transparenta.eu service and visualizations."
 msgstr "Termeni și condiții pentru utilizarea serviciului și a vizualizărilor Transparenta.eu."
 
-#: src/components/footer/AppFooter.tsx:109
+#: src/components/footer/AppFooter.tsx:108
 msgid "Terms of Service"
 msgstr "Termeni și condiții"
 
@@ -2214,6 +2299,10 @@ msgstr "Total Venituri"
 #: src/components/entities/FinancialDataCard.tsx:69
 msgid "Total:"
 msgstr "Total:"
+
+#: src/components/footer/ChatFab.tsx:44
+msgid "Transparenta.eu – Support"
+msgstr "Transparenta.eu – Suport"
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:53
 msgid "Treemap Chart (Aggregated)"
@@ -2349,18 +2438,18 @@ msgid "We may change or discontinue the Service at any time."
 msgstr "Putem modifica sau întrerupe Serviciul în orice moment."
 
 #: src/routes/privacy.lazy.tsx:68
-msgid "We may update this policy; we’ll post changes with a new effective date."
+msgid "We may update this policy; we'll post changes with a new effective date."
 msgstr "Putem actualiza această politică; vom publica modificările cu o nouă dată de intrare în vigoare."
 
 #: src/routes/cookie-policy.lazy.tsx:31
 msgid "We use cookies and localStorage to operate the app and, with consent, to measure usage and improve reliability."
 msgstr "Folosim cookie-uri și stocare locală (localStorage) pentru a opera aplicația și, cu consimțământ, pentru a măsura utilizarea și a îmbunătăți fiabilitatea."
 
-#: src/components/privacy/CookieConsentBanner.tsx:54
+#: src/components/privacy/CookieConsentBanner.tsx:64
 msgid "We use cookies and similar technologies to enhance your experience, analyze our traffic, and report errors. With your permission, we use PostHog for analytics and Sentry for error reporting to improve our service. You can change your preferences at any time. For more information, please see our <0>Privacy Policy</0>."
 msgstr "Folosim cookie-uri și tehnologii similare pentru a vă îmbunătăți experiența, pentru a analiza traficul nostru și pentru a raporta erorile. Cu permisiunea dumneavoastră, folosim PostHog pentru analiză și Sentry pentru raportarea erorilor pentru a ne îmbunătăți serviciul. Vă puteți schimba preferințele în orice moment. Pentru mai multe informații, vă rugăm să consultați <0>Politica de Confidențialitate</0>."
 
-#: src/components/privacy/CookieConsentBanner.tsx:50
+#: src/components/privacy/CookieConsentBanner.tsx:60
 msgid "We value your privacy"
 msgstr "Confidențialitatea dumneavoastră este importantă pentru noi"
 
@@ -2390,6 +2479,14 @@ msgstr "Poți căuta după: nume (ex: Agricultură) • cod (ex: 43.00, 43.00.10
 #: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:69
 msgid "You can search by: name (ex: Social assistance) • code (ex: 7.06, 7.06.02) • explicit prefix: fn:7.06"
 msgstr "Poți căuta după: nume (ex: Asistență socială) • cod (ex: 7.06, 7.06.02) • prefix explicit: fn:7.06"
+
+#: src/components/sentry/SendErrorAction.tsx:18
+msgid "You need to accept cookies to send an error report."
+msgstr "Trebuie să accepți cookie-urile pentru a trimite un raport de eroare."
+
+#: src/components/sentry/SendFeedbackAction.tsx:17
+msgid "You need to accept cookies to send feedback."
+msgstr "Trebuie să accepți cookie-urile pentru a trimite feedback."
 
 #: src/routes/privacy.lazy.tsx:61
 msgid "Your rights"

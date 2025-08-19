@@ -12,6 +12,7 @@ import {
  * Will be set when Sentry has been initialized and the feedback integration is available.
  */
 export let openSentryFeedback: (() => void) | null = null;
+export let openSentryBugReport: (() => void) | null = null;
 
 /**
  * Disables Sentry by closing it.
@@ -23,6 +24,7 @@ export function cleanupSentry(): void {
     client.getOptions().enabled = false;
   }
   openSentryFeedback = null;
+  openSentryBugReport = null;
 }
 
 /**
@@ -176,14 +178,62 @@ export function initSentry(router: unknown): void {
   if (feedbackIntegration) {
     try {
       const formPromise = feedbackIntegration.createForm();
-      openSentryFeedback = () => {
-        void formPromise.then((form) => {
-          form.appendToDom();
-          form.open();
-        });
-      };
+      // Prefer the global feedback API if available to allow per-open overrides
+      const feedbackApi: any = (Sentry as unknown as Record<string, unknown>)[
+        "getFeedback"
+      ];
+      if (typeof feedbackApi === "function") {
+        const api = feedbackApi();
+        openSentryFeedback = () => {
+          try {
+            api.open?.({
+              formTitle: "Send Feedback",
+              messageLabel: "What happened?",
+              messagePlaceholder:
+                "Describe your feedback or idea. Steps, expectations, or suggestions…",
+              submitButtonLabel: "Send Feedback",
+            });
+          } catch {
+            void formPromise.then((form) => {
+              form.appendToDom();
+              form.open();
+            });
+          }
+        };
+        openSentryBugReport = () => {
+          try {
+            api.open?.({
+              formTitle: "Report a Bug",
+              messageLabel: "What is the bug?",
+              messagePlaceholder:
+                "Describe the bug. Include steps to reproduce, expected vs actual, and any screenshots.",
+              submitButtonLabel: "Report Bug",
+            });
+          } catch {
+            void formPromise.then((form) => {
+              form.appendToDom();
+              form.open();
+            });
+          }
+        };
+      } else {
+        // Fallback: open the same generic form
+        openSentryFeedback = () => {
+          void formPromise.then((form) => {
+            form.appendToDom();
+            form.open();
+          });
+        };
+        openSentryBugReport = () => {
+          void formPromise.then((form) => {
+            form.appendToDom();
+            form.open();
+          });
+        };
+      }
     } catch {
       openSentryFeedback = null;
+      openSentryBugReport = null;
     }
   }
 }

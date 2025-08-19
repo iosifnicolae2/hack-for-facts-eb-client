@@ -11,7 +11,8 @@ import { HotkeysProvider } from "react-hotkeys-hook";
 import { MobileSidebarFab } from "@/components/sidebar/mobile-sidebar-fab";
 import { queryClient } from "@/lib/queryClient";
 import { FloatingEntitySearch } from "@/components/entities/FloatingEntitySearch";
-import { AppFooter, ReportBugFab } from "@/components/footer/AppFooter";
+import { AppFooter } from "@/components/footer/AppFooter";
+import { ChatFab } from "@/components/footer/ChatFab";
 import { CookieConsentBanner } from "@/components/privacy/CookieConsentBanner";
 import { Analytics } from "@/lib/analytics";
 import { Seo, JsonLd } from "@/lib/seo";
@@ -73,7 +74,7 @@ export const Route = createRootRoute({
                         </div>
                       </main>
                       <AppFooter />
-                      <ReportBugFab />
+                      <ChatFab />
                       <MobileSidebarFab />
                       <CookieConsentBanner />
                     </SidebarInset>

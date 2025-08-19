@@ -1,6 +1,5 @@
 import type { ReactElement } from "react";
 import { Link } from "@tanstack/react-router";
-import { MessageSquare } from "lucide-react";
 import { openSentryFeedback } from "@/lib/sentry";
 import { useSentryConsent } from "@/hooks/useSentryConsent";
 import { Trans } from "@lingui/react/macro";
@@ -178,24 +177,6 @@ export function AppFooter(): ReactElement {
                 </div>
             </div>
         </footer>
-    );
-}
-
-// Floating report-a-bug button rendered at the end of the footer tree so it's present on all pages.
-// Mobile: bottom-left; Desktop: bottom-right.
-export function ReportBugFab(): ReactElement | null {
-    const showSentryFeedback = useSentryConsent();
-
-    if (!showSentryFeedback) return null;
-    return (
-        <button
-            type="button"
-            onClick={() => openSentryFeedback?.()}
-            aria-label={t`Report a bug`}
-            className="fixed z-50 bottom-6 left-6 md:right-6 md:left-auto inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg h-12 w-12 hover:opacity-90 focus-visible:outline-2"
-        >
-            <MessageSquare className="h-5 w-5" />
-        </button>
     );
 }
 

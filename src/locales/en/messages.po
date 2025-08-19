@@ -26,7 +26,7 @@ msgstr "{0} series configured"
 msgid "*Check filters panel for more details."
 msgstr "*Check filters panel for more details."
 
-#: src/components/footer/AppFooter.tsx:145
+#: src/components/footer/AppFooter.tsx:144
 msgid "© {currentYear} Transparenta.eu. All rights reserved."
 msgstr "© {currentYear} Transparenta.eu. All rights reserved."
 
@@ -67,15 +67,15 @@ msgid "<0>No Government Affiliation:</0> Transparenta.eu is an independent proje
 msgstr "<0>No Government Affiliation:</0> Transparenta.eu is an independent project and is not affiliated with, authorized, maintained, sponsored, or endorsed by any Romanian government entity."
 
 #: src/routes/terms.lazy.tsx:59
-msgid "<0>Recommended:</0> Chart: „Titlul Graficului” | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
-msgstr "<0>Recommended:</0> Chart: „Titlul Graficului” | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
+msgid "<0>Recommended:</0> Chart: „Titlul Graficului" | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
+msgstr "<0>Recommended:</0> Chart: „Titlul Graficului" | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
 
 #. js-lingui-explicit-id
 #: src/lib/errors-utils.ts:9
 msgid "error.updateAvailable"
 msgstr "A new version of the app is available. Please reload the page to get the latest updates."
 
-#: src/components/footer/AppFooter.tsx:30
+#: src/components/footer/AppFooter.tsx:29
 msgid "A platform for exploring public financial data for citizens, journalists, public figures, and other interested parties."
 msgstr "Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice, și alte persoane interesate."
 
@@ -83,7 +83,7 @@ msgstr "Platformă de explorare a datelor financiare publice pentru cetățeni, 
 msgid "Accept all"
 msgstr "Accept all"
 
-#: src/components/privacy/CookieConsentBanner.tsx:81
+#: src/components/privacy/CookieConsentBanner.tsx:91
 msgid "Accept All"
 msgstr "Accept All"
 
@@ -206,7 +206,7 @@ msgstr "Analyze aggregated values per entity and explore top entities by amount 
 msgid "Analyze aggregated values per entity and explore top entities."
 msgstr "Analyze aggregated values per entity and explore top entities."
 
-#: src/components/footer/AppFooter.tsx:134
+#: src/components/footer/AppFooter.tsx:133
 msgid "and"
 msgstr "and"
 
@@ -243,6 +243,10 @@ msgstr "Are you sure?"
 msgid "Area Chart"
 msgstr "Area Chart"
 
+#: src/components/footer/ChatFab.tsx:82
+msgid "Ask AI Assistant"
+msgstr "Ask AI Assistant"
+
 #: src/routes/cookie-policy.lazy.tsx:22
 #: src/routes/privacy.lazy.tsx:22
 #: src/routes/terms.lazy.tsx:23
@@ -262,8 +266,8 @@ msgstr "Avg per-capita"
 msgid "Back to Configuration"
 msgstr "Back to Configuration"
 
-#: src/components/footer/AppFooter.tsx:174
-#: src/components/footer/AppFooter.tsx:176
+#: src/components/footer/AppFooter.tsx:173
+#: src/components/footer/AppFooter.tsx:175
 msgid "Back to top"
 msgstr "Back to top"
 
@@ -377,7 +381,7 @@ msgstr "Chart Title"
 msgid "Chart Type"
 msgstr "Chart Type"
 
-#: src/components/footer/AppFooter.tsx:95
+#: src/components/footer/AppFooter.tsx:94
 #: src/components/sidebar/nav-main.tsx:31
 #: src/hooks/useEntityViews.tsx:38
 #: src/routes/charts/index.lazy.tsx:157
@@ -499,6 +503,10 @@ msgstr "Constant Value"
 msgid "Contact"
 msgstr "Contact"
 
+#: src/components/footer/ChatFab.tsx:142
+msgid "Contact Support"
+msgstr "Contact Support"
+
 #: src/routes/terms.lazy.tsx:72
 msgid "Contact us at contact@devostack.com. See also our <0>Privacy Policy</0> and <1>Cookie Policy</1>."
 msgstr "Contact us at contact@devostack.com. See also our <0>Privacy Policy</0> and <1>Cookie Policy</1>."
@@ -510,6 +518,11 @@ msgstr "Controller: Claudiu Constantin Bogdan, persoana fizica. Contact: contact
 #: src/components/privacy/CookieConsentBanner.tsx:51
 #~ msgid "Cookie consent"
 #~ msgstr "Cookie consent"
+
+#: src/components/sentry/SendErrorAction.tsx:17
+#: src/components/sentry/SendFeedbackAction.tsx:16
+msgid "Cookie consent required"
+msgstr "Cookie consent required"
 
 #: src/routes/cookie-policy.lazy.tsx:18
 msgid "Cookie Policy"
@@ -523,7 +536,7 @@ msgstr "Cookie Policy – Transparenta.eu"
 #~ msgid "Cookie settings"
 #~ msgstr "Cookie settings"
 
-#: src/components/footer/AppFooter.tsx:112
+#: src/components/footer/AppFooter.tsx:111
 #: src/routes/cookies.lazy.tsx:32
 msgid "Cookie Settings"
 msgstr "Cookie Settings"
@@ -540,6 +553,10 @@ msgstr "Copy Annotation"
 #: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:42
 msgid "Copy Data"
 msgstr "Copy Data"
+
+#: src/components/footer/ChatFab.tsx:153
+msgid "Copy Email Address"
+msgstr "Copy Email Address"
 
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:61
 msgid "Copy Series"
@@ -570,6 +587,10 @@ msgstr "Could Not Load Funding Sources"
 #: src/components/filters/uat-filter/UatList.tsx:79
 msgid "Could Not Load UATs"
 msgstr "Could Not Load UATs"
+
+#: src/components/sentry/SendErrorAction.tsx:41
+msgid "Could not send error report."
+msgstr "Could not send error report."
 
 #: src/components/filters/MapFilter.tsx:182
 msgid "Counties"
@@ -627,7 +648,7 @@ msgstr "Custom Series"
 msgid "Custom Series Value"
 msgstr "Custom Series Value"
 
-#: src/components/privacy/CookieConsentBanner.tsx:68
+#: src/components/privacy/CookieConsentBanner.tsx:78
 msgid "Customize"
 msgstr "Customize"
 
@@ -654,7 +675,7 @@ msgstr "Data Labels"
 msgid "Data Series"
 msgstr "Data Series"
 
-#: src/components/footer/AppFooter.tsx:124
+#: src/components/footer/AppFooter.tsx:123
 msgid "Data source: \"Budget Transparency\" portal administered by ANAF/Ministry of Finance, available as open data. See official resources:"
 msgstr "Data source: \"Budget Transparency\" portal administered by ANAF/Ministry of Finance, available as open data. See official resources:"
 
@@ -802,6 +823,10 @@ msgstr "Edit Annotations"
 msgid "Effective Date: {effectiveDate} • Version: {version}"
 msgstr "Effective Date: {effectiveDate} • Version: {version}"
 
+#: src/components/footer/ChatFab.tsx:54
+msgid "Email address copied to clipboard!"
+msgstr "Email address copied to clipboard!"
+
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:38
 msgid "Enable annotation"
 msgstr "Enable annotation"
@@ -870,7 +895,7 @@ msgid "Entity {cui} – Not found"
 msgstr "Entity {cui} – Not found"
 
 #: src/components/entity-analytics/EntityAnalyticsLayout.tsx:15
-#: src/components/footer/AppFooter.tsx:85
+#: src/components/footer/AppFooter.tsx:84
 #: src/components/sidebar/nav-main.tsx:36
 msgid "Entity Analytics"
 msgstr "Entity Analytics"
@@ -912,6 +937,10 @@ msgstr "Error loading data:"
 #: src/routes/cookies.lazy.tsx:78
 msgid "Error reporting (Sentry)"
 msgstr "Error reporting (Sentry)"
+
+#: src/components/sentry/SendErrorAction.tsx:38
+msgid "Error signal sent"
+msgstr "Error signal sent"
 
 #: src/components/maps/utils.ts:102
 msgid "Error: Invalid data point type."
@@ -1006,6 +1035,10 @@ msgstr "Exports and attribution"
 msgid "Exports must include attribution to data source and Transparenta.eu."
 msgstr "Exports must include attribution to data source and Transparenta.eu."
 
+#: src/components/footer/ChatFab.tsx:57
+msgid "Failed to copy email address."
+msgstr "Failed to copy email address."
+
 #: src/routes/charts/index.lazy.tsx:165
 msgid "favorites"
 msgstr "favorites"
@@ -1018,9 +1051,13 @@ msgstr "Favorites"
 msgid "Favorites first"
 msgstr "Favorites first"
 
-#: src/components/footer/AppFooter.tsx:157
+#: src/components/footer/AppFooter.tsx:156
 msgid "Feedback / Report an issue"
 msgstr "Feedback / Report an issue"
+
+#: src/components/sentry/SendFeedbackAction.tsx:33
+msgid "Feedback is currently unavailable."
+msgstr "Feedback is currently unavailable."
 
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:65
 msgid "Filter field"
@@ -1052,6 +1089,10 @@ msgstr "Financial Reports"
 #: src/components/entities/EntityFinancialTrends.tsx:98
 msgid "Financial Trends"
 msgstr "Financial Trends"
+
+#: src/components/footer/ChatFab.tsx:117
+msgid "Find resources, report issues, or get in touch."
+msgstr "Find resources, report issues, or get in touch."
 
 #: src/components/maps/utils.ts:26
 msgid "Fn"
@@ -1131,7 +1172,7 @@ msgstr "Go to Chart View"
 msgid "Go to Entity Table"
 msgstr "Go to Entity Table"
 
-#: src/components/errors/GlobalErrorPage.tsx:65
+#: src/components/errors/GlobalErrorPage.tsx:66
 msgid "Go to Homepage"
 msgstr "Go to Homepage"
 
@@ -1142,6 +1183,21 @@ msgstr "Go to Map"
 #: src/routes/terms.lazy.tsx:68
 msgid "Governing law"
 msgstr "Governing law"
+
+#. placeholder {0}: typeof window !== 'undefined' ? window.location.href : 'N/A'
+#: src/components/footer/ChatFab.tsx:46
+msgid ""
+"Hello,\n"
+"\n"
+"I need help with: \n"
+"\n"
+"Page: {0}"
+msgstr ""
+"Hello,\n"
+"\n"
+"I need help with: \n"
+"\n"
+"Page: {0}"
 
 #: src/routes/cookies.lazy.tsx:80
 msgid "Help us fix problems by sending error reports. When disabled, we only send anonymous, minimal error telemetry necessary to keep the service reliable."
@@ -1165,7 +1221,7 @@ msgstr "Hide"
 msgid "Hide advanced settings"
 msgstr "Hide advanced settings"
 
-#: src/components/footer/AppFooter.tsx:80
+#: src/components/footer/AppFooter.tsx:79
 msgid "Home"
 msgstr "Home"
 
@@ -1249,7 +1305,7 @@ msgstr "Județ"
 msgid "Label"
 msgstr "Label"
 
-#: src/components/footer/AppFooter.tsx:103
+#: src/components/footer/AppFooter.tsx:102
 msgid "Legal"
 msgstr "Legal"
 
@@ -1366,7 +1422,7 @@ msgstr "Map Filters"
 msgid "Map View"
 msgstr "Map View"
 
-#: src/components/footer/AppFooter.tsx:90
+#: src/components/footer/AppFooter.tsx:89
 msgid "Maps"
 msgstr "Maps"
 
@@ -1432,6 +1488,10 @@ msgstr "N/A"
 msgid "Name"
 msgstr "Name"
 
+#: src/components/footer/ChatFab.tsx:114
+msgid "Need help?"
+msgstr "Need help?"
+
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:107
 msgid "New value"
 msgstr "New value"
@@ -1463,8 +1523,8 @@ msgstr "No annotations yet."
 
 #. placeholder {0}: cat.name
 #: src/routes/charts/index.lazy.tsx:287
-msgid "No charts in “{0}”"
-msgstr "No charts in “{0}”"
+msgid "No charts in "{0}"
+msgstr "No charts in "{0}"
 
 #: src/routes/charts/index.lazy.tsx:214
 msgid "No charts yet"
@@ -1585,11 +1645,20 @@ msgstr "Oldest"
 msgid "Open Config Panel"
 msgstr "Open Config Panel"
 
+#: src/components/sentry/SendErrorAction.tsx:20
+#: src/components/sentry/SendFeedbackAction.tsx:19
+msgid "Open cookies"
+msgstr "Open cookies"
+
 #: src/routes/terms.lazy.tsx:52
 msgid "Open data follows the source license."
 msgstr "Open data follows the source license."
 
-#: src/components/footer/AppFooter.tsx:164
+#: src/components/footer/ChatFab.tsx:149
+msgid "Open Email App"
+msgstr "Open Email App"
+
+#: src/components/footer/AppFooter.tsx:163
 msgid "Open feedback dialog"
 msgstr "Open feedback dialog"
 
@@ -1600,6 +1669,14 @@ msgstr "Open in Chart Editor"
 #: src/components/entities/EntityInfo.tsx:42
 msgid "Open on Wikipedia"
 msgstr "Open on Wikipedia"
+
+#: src/components/footer/ChatFab.tsx:84
+msgid "Opening AI Assistant..."
+msgstr "Opening AI Assistant..."
+
+#: src/components/footer/ChatFab.tsx:78
+msgid "Opening docs..."
+msgstr "Opening docs..."
 
 #: src/routes/privacy.lazy.tsx:46
 msgid "Operate and secure the service (legitimate interests)."
@@ -1679,7 +1756,7 @@ msgstr "PostHog (analytics), Sentry (error reporting), hosting providers. EU-fir
 msgid "PostHog: <0>ph_*</0> identifiers when analytics is enabled."
 msgstr "PostHog: <0>ph_*</0> identifiers when analytics is enabled."
 
-#: src/components/footer/AppFooter.tsx:106
+#: src/components/footer/AppFooter.tsx:105
 #: src/routes/privacy.lazy.tsx:17
 msgid "Privacy Policy"
 msgstr "Privacy Policy"
@@ -1688,7 +1765,7 @@ msgstr "Privacy Policy"
 msgid "Privacy Policy – Transparenta.eu"
 msgstr "Privacy Policy – Transparenta.eu"
 
-#: src/components/footer/AppFooter.tsx:76
+#: src/components/footer/AppFooter.tsx:75
 msgid "Product"
 msgstr "Product"
 
@@ -1704,6 +1781,10 @@ msgstr "Public sector information from Ministerul Finanțelor, made available as
 msgid "Purposes and legal bases"
 msgstr "Purposes and legal bases"
 
+#: src/components/footer/ChatFab.tsx:98
+msgid "Quick actions"
+msgstr "Quick actions"
+
 #: src/components/charts/components/views/SeriesConfigView.tsx:184
 msgid "Quick Actions"
 msgstr "Quick Actions"
@@ -1716,11 +1797,15 @@ msgstr "Quick Configuration"
 msgid "Quickly adjust chart settings"
 msgstr "Quickly adjust chart settings"
 
+#: src/components/footer/ChatFab.tsx:76
+msgid "Read Documentation"
+msgstr "Read Documentation"
+
 #: src/routes/cookies.lazy.tsx:112
 msgid "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 msgstr "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 
-#: src/components/privacy/CookieConsentBanner.tsx:75
+#: src/components/privacy/CookieConsentBanner.tsx:85
 msgid "Reject All"
 msgstr "Reject All"
 
@@ -1736,7 +1821,7 @@ msgstr "Relative Mode"
 msgid "Relative Values"
 msgstr "Relative Values"
 
-#: src/components/errors/GlobalErrorPage.tsx:56
+#: src/components/errors/GlobalErrorPage.tsx:57
 msgid "Reload Page"
 msgstr "Reload Page"
 
@@ -1749,8 +1834,8 @@ msgid "Replace value"
 msgstr "Replace value"
 
 #: src/components/footer/AppFooter.tsx:194
-msgid "Report a bug"
-msgstr "Report a bug"
+#~ msgid "Report a bug"
+#~ msgstr "Report a bug"
 
 #: src/lib/chart-filter-utils.ts:19
 msgid "Report type"
@@ -1933,7 +2018,12 @@ msgstr "Select years..."
 msgid "Selected"
 msgstr "Selected"
 
-#: src/components/footer/AppFooter.tsx:166
+#: src/components/sentry/SendErrorAction.tsx:48
+msgid "Send error"
+msgstr "Send error"
+
+#: src/components/footer/AppFooter.tsx:165
+#: src/components/sentry/SendFeedbackAction.tsx:39
 msgid "Send feedback"
 msgstr "Send feedback"
 
@@ -2027,7 +2117,7 @@ msgstr "Show More"
 msgid "Show Relative Values (%)"
 msgstr "Show Relative Values (%)"
 
-#: src/components/errors/GlobalErrorPage.tsx:72
+#: src/components/errors/GlobalErrorPage.tsx:73
 msgid "Show Technical Details"
 msgstr "Show Technical Details"
 
@@ -2082,7 +2172,7 @@ msgstr "Technologies we use"
 msgid "Terms for using the Transparenta.eu service and visualizations."
 msgstr "Terms for using the Transparenta.eu service and visualizations."
 
-#: src/components/footer/AppFooter.tsx:109
+#: src/components/footer/AppFooter.tsx:108
 msgid "Terms of Service"
 msgstr "Terms of Service"
 
@@ -2214,6 +2304,10 @@ msgstr "Total Income"
 #: src/components/entities/FinancialDataCard.tsx:69
 msgid "Total:"
 msgstr "Total:"
+
+#: src/components/footer/ChatFab.tsx:44
+msgid "Transparenta.eu – Support"
+msgstr "Transparenta.eu – Support"
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:53
 msgid "Treemap Chart (Aggregated)"
@@ -2349,18 +2443,18 @@ msgid "We may change or discontinue the Service at any time."
 msgstr "We may change or discontinue the Service at any time."
 
 #: src/routes/privacy.lazy.tsx:68
-msgid "We may update this policy; we’ll post changes with a new effective date."
-msgstr "We may update this policy; we’ll post changes with a new effective date."
+msgid "We may update this policy; we'll post changes with a new effective date."
+msgstr "We may update this policy; we'll post changes with a new effective date."
 
 #: src/routes/cookie-policy.lazy.tsx:31
 msgid "We use cookies and localStorage to operate the app and, with consent, to measure usage and improve reliability."
 msgstr "We use cookies and localStorage to operate the app and, with consent, to measure usage and improve reliability."
 
-#: src/components/privacy/CookieConsentBanner.tsx:54
+#: src/components/privacy/CookieConsentBanner.tsx:64
 msgid "We use cookies and similar technologies to enhance your experience, analyze our traffic, and report errors. With your permission, we use PostHog for analytics and Sentry for error reporting to improve our service. You can change your preferences at any time. For more information, please see our <0>Privacy Policy</0>."
 msgstr "We use cookies and similar technologies to enhance your experience, analyze our traffic, and report errors. With your permission, we use PostHog for analytics and Sentry for error reporting to improve our service. You can change your preferences at any time. For more information, please see our <0>Privacy Policy</0>."
 
-#: src/components/privacy/CookieConsentBanner.tsx:50
+#: src/components/privacy/CookieConsentBanner.tsx:60
 msgid "We value your privacy"
 msgstr "We value your privacy"
 
@@ -2390,6 +2484,14 @@ msgstr "You can search by: name (ex: Agriculture) • code (ex: 43.00, 43.00.10)
 #: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:69
 msgid "You can search by: name (ex: Social assistance) • code (ex: 7.06, 7.06.02) • explicit prefix: fn:7.06"
 msgstr "You can search by: name (ex: Social assistance) • code (ex: 7.06, 7.06.02) • explicit prefix: fn:7.06"
+
+#: src/components/sentry/SendErrorAction.tsx:18
+msgid "You need to accept cookies to send an error report."
+msgstr "You need to accept cookies to send an error report."
+
+#: src/components/sentry/SendFeedbackAction.tsx:17
+msgid "You need to accept cookies to send feedback."
+msgstr "You need to accept cookies to send feedback."
 
 #: src/routes/privacy.lazy.tsx:61
 msgid "Your rights"
