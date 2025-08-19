@@ -37,7 +37,7 @@ function Index() {
             className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight
            bg-gradient-to-b from-slate-50 via-white to-slate-50
            bg-clip-text text-transparent
-           drop-shadow-[0_20px_44px_rgba(18,65,161,0.5),0_10px_22px_rgba(18,65,161,0.8),0_10px_22px_rgba(200,65,161,0.8)]"
+           drop-shadow-[0_20px_44px_rgba(18,65,161,0.8),0_10px_22px_rgba(18,65,161,0.8),0_10px_22px_rgba(200,65,161,0.8),0_1px_1px_rgba(250,65,250,0.8)]"
           >
             {animationActive ? (
               <AnimatedTitle />
@@ -46,7 +46,7 @@ function Index() {
             )}
           </div>
 
-          <p className="max-w-2xl text-lg sm:text-xl text-slate-300 dark:text-slate-300">
+          <p className="max-w-2xl text-lg sm:text-xl text-slate-400 dark:text-slate-300">
             <code className="mr-4">[trans.paˈren.t͡sə]</code>
             <span><Trans>See-through, clear</Trans></span>
           </p>
