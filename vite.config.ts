@@ -8,6 +8,19 @@ import tailwindcss from "@tailwindcss/vite";
 import { lingui } from "@lingui/vite-plugin";
 import fs from "fs";
 
+const getHttpsConfig = () => {
+  try {
+    return {
+      // Generate ssl certs using ./ssl.sh
+      key: fs.readFileSync(path.resolve(__dirname, "localhost-key.pem")),
+      cert: fs.readFileSync(path.resolve(__dirname, "localhost-cert.pem")),
+    }
+  } catch (e) {
+    console.warn('Run ./ssl.sh to generate the local certs')
+    return undefined
+  }
+}
+
 export default defineConfig(({ mode }) => ({
   plugins: [
     lingui(),
@@ -42,11 +55,7 @@ export default defineConfig(({ mode }) => ({
     allowedHosts: [
       String(process.env.VITE_ALLOWED_HOST)
     ],
-    https: {
-      // Generate ssl certs using ./ssl.sh
-      key: fs.readFileSync(path.resolve(__dirname, "localhost-key.pem")),
-      cert: fs.readFileSync(path.resolve(__dirname, "localhost-cert.pem")),
-    }
+    https: getHttpsConfig()
   },
   build: {
     chunkSizeWarningLimit: 1500,
