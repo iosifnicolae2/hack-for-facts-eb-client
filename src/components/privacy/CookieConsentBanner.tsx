@@ -1,10 +1,10 @@
-import { useEffect, useState, type ReactElement } from "react";
+import { useCallback, useEffect, useState, type ReactElement } from "react";
 import { CookieIcon } from "lucide-react";
 import { acceptAll, declineAll } from "@/lib/consent";
 import { onConsentChange } from "@/lib/consent";
 import { Analytics } from "@/lib/analytics";
 import { Trans } from "@lingui/react/macro";
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 
 /**
  * CookieConsentBanner
@@ -13,26 +13,36 @@ import { Link } from "@tanstack/react-router";
  * provides balanced choices, and respects user privacy.
  */
 export function CookieConsentBanner(): ReactElement | null {
-  const [showBanner, setShowBanner] = useState(false);
+  const [isBannerVisible, setBannerVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+  const { pathname } = useLocation();
 
-  useEffect(() => {
+  const showBanner = useCallback(() => {
     // We only want to run this logic on the client
     if (typeof window === "undefined") return;
 
+    if (pathname.includes("/cookies")) {
+      setBannerVisible(false);
+      return
+    }
+
     // Show the banner only if the user hasn't made a choice yet.
     const storedConsent = window.localStorage.getItem("cookie-consent");
-    setShowBanner(!storedConsent);
-  }, []);
+    setBannerVisible(!storedConsent);
+  }, [pathname]);
+
+  useEffect(() => {
+    showBanner()
+  }, [pathname]);
 
   const handleDecision = (consentFunction: () => void) => {
     setIsExiting(true);
     consentFunction();
     // Hide banner after the exit animation completes
-    setTimeout(() => setShowBanner(false), 500);
+    setTimeout(() => setBannerVisible(false), 500);
   };
 
-  if (!showBanner) return null;
+  if (!isBannerVisible) return null;
 
   return (
     <div
