@@ -4,7 +4,7 @@ import { Trans } from "@lingui/react/macro";
 import { AlertTriangle, Home, RefreshCcw } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { classifyError, getTechnicalMessage } from "@/lib/errors-utils";
-import { useErrorHandler } from "@/contexts/ErrorContext";
+import { env } from "@/config/env";
 
 type GlobalErrorPageProps = {
     readonly error: unknown;
@@ -22,13 +22,14 @@ const hardReloadPage = () => window.location.reload();
 const navigateHomeAndReload = () => window.location.assign("/");
 
 export function GlobalErrorPage({ error }: GlobalErrorPageProps) {
-    const { handleError } = useErrorHandler();
     // Classify the error to get user-friendly, translatable messages
     const classifiedError = useMemo(() => classifyError(error), [error]);
     const technicalMessage = useMemo(() => getTechnicalMessage(error), [error]);
 
     useEffect(() => {
-        handleError(error as Error, "global-error-page");
+        if (env.NODE_ENV === "development") {
+            console.error("A global error was caught:", error);
+        }
     }, [error]);
 
     return (
