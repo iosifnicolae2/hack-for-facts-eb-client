@@ -33,7 +33,12 @@ const SUPPORT_EMAIL = 'contact@devostack.com';
 
 const openInNewTab = (url: string, fallbackMessage: string) => {
     try {
-        window.open(url, '_blank', 'noopener,noreferrer');
+        // A popup blocker might prevent the window from opening without throwing an error
+        const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+        if (!newWindow) {
+            console.error("Popup blocker likely prevented opening new tab.");
+            toast.info(fallbackMessage);
+        }
     } catch (error) {
         console.error("Failed to open new tab:", error);
         toast.info(fallbackMessage);
@@ -56,8 +61,7 @@ const copyEmailAddress = async () => {
         console.error('Failed to copy email: ', err);
         toast.error(t`Failed to copy email address.`);
     }
-};
-
+}
 
 type ActionItem = {
     label: string;
@@ -122,11 +126,21 @@ export function ChatFab(): ReactElement {
                             return <DropdownMenuSeparator key={`sep-${index}`} />;
                         }
                         if ('type' in item && item.type === 'component') {
-                            return <div key={`comp-${index}`}>{item.component}</div>;
+                            // Wrap the component in a DropdownMenuItem and prevent the
+                            // default onSelect behavior (which is to close the menu).
+                            return (
+                                <DropdownMenuItem
+                                    key={`comp-${index}`}
+                                    onSelect={(event) => event.preventDefault()}
+                                    className="p-0 focus:bg-transparent"
+                                >
+                                    {item.component}
+                                </DropdownMenuItem>
+                            );
                         }
                         const actionItem = item as ActionItem;
                         return (
-                            <DropdownMenuItem key={actionItem.label} onClick={actionItem.action} className="flex justify-between items-center">
+                            <DropdownMenuItem key={actionItem.label} onSelect={actionItem.action} className="flex cursor-pointer justify-between items-center">
                                 <div className="flex items-center gap-2">
                                     {actionItem.icon}
                                     <span>{actionItem.label}</span>
@@ -136,7 +150,7 @@ export function ChatFab(): ReactElement {
                         );
                     })}
                     <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>
+                        <DropdownMenuSubTrigger className="cursor-pointer">
                             <div className="flex items-center gap-2">
                                 <Mail className="h-4 w-4" />
                                 <span>{t`Contact Support`}</span>
@@ -144,18 +158,17 @@ export function ChatFab(): ReactElement {
                         </DropdownMenuSubTrigger>
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>
-                                <DropdownMenuItem onClick={openMailClient}>
+                                <DropdownMenuItem onSelect={openMailClient} className="cursor-pointer">
                                     <Send className="mr-2 h-4 w-4" />
                                     <span>{t`Open Email App`}</span>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={copyEmailAddress}>
+                                <DropdownMenuItem onSelect={copyEmailAddress} className="cursor-pointer">
                                     <Copy className="mr-2 h-4 w-4" />
                                     <span>{t`Copy Email Address`}</span>
                                 </DropdownMenuItem>
                             </DropdownMenuSubContent>
                         </DropdownMenuPortal>
                     </DropdownMenuSub>
-
                 </DropdownMenuGroup>
             </DropdownMenuContent>
         </DropdownMenu>

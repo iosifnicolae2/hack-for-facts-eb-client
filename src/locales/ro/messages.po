@@ -243,7 +243,7 @@ msgstr "Sunteți sigur?"
 msgid "Area Chart"
 msgstr "Grafic arie"
 
-#: src/components/footer/ChatFab.tsx:82
+#: src/components/footer/ChatFab.tsx:86
 msgid "Ask AI Assistant"
 msgstr "Întreabă Asistentul AI"
 
@@ -503,7 +503,7 @@ msgstr "Valoare constantă"
 msgid "Contact"
 msgstr "Contact"
 
-#: src/components/footer/ChatFab.tsx:142
+#: src/components/footer/ChatFab.tsx:156
 msgid "Contact Support"
 msgstr "Contactează Suportul"
 
@@ -554,7 +554,7 @@ msgstr "Copiază adnotarea"
 msgid "Copy Data"
 msgstr "Copiază datele"
 
-#: src/components/footer/ChatFab.tsx:153
+#: src/components/footer/ChatFab.tsx:167
 msgid "Copy Email Address"
 msgstr "Copiază Adresa de Email"
 
@@ -677,7 +677,7 @@ msgstr "Serie de date"
 
 #: src/components/footer/AppFooter.tsx:123
 msgid "Data source: \"Budget Transparency\" portal administered by ANAF/Ministry of Finance, available as open data. See official resources:"
-msgstr "Sursa datelor: portalul „Transparența Bugetară" administrat de ANAF/Ministerul Finanțelor, disponibil ca date deschise (Open Data). Vedeți resursele oficiale:"
+msgstr "Sursa datelor: portalul „Transparența Bugetară\" administrat de ANAF/Ministerul Finanțelor, disponibil ca date deschise (Open Data). Vedeți resursele oficiale:"
 
 #: src/routes/privacy.lazy.tsx:50
 msgid "Data sources and licensing"
@@ -823,7 +823,7 @@ msgstr "Editează adnotări"
 msgid "Effective Date: {effectiveDate} • Version: {version}"
 msgstr "Data intrării în vigoare: {effectiveDate} • Versiunea: {version}"
 
-#: src/components/footer/ChatFab.tsx:54
+#: src/components/footer/ChatFab.tsx:59
 msgid "Email address copied to clipboard!"
 msgstr "Adresa de email a fost copiată în clipboard!"
 
@@ -1035,7 +1035,7 @@ msgstr "Exporturi și atribuire"
 msgid "Exports must include attribution to data source and Transparenta.eu."
 msgstr "Exporturile trebuie să includă atribuirea sursei datelor și a Transparenta.eu."
 
-#: src/components/footer/ChatFab.tsx:57
+#: src/components/footer/ChatFab.tsx:62
 msgid "Failed to copy email address."
 msgstr "Copierea adresei de email a eșuat."
 
@@ -1090,7 +1090,7 @@ msgstr "Rapoarte Financiare"
 msgid "Financial Trends"
 msgstr "Evoluție Financiară"
 
-#: src/components/footer/ChatFab.tsx:117
+#: src/components/footer/ChatFab.tsx:121
 msgid "Find resources, report issues, or get in touch."
 msgstr "Găsește resurse, raportează probleme sau ia legătura cu noi."
 
@@ -1185,7 +1185,7 @@ msgid "Governing law"
 msgstr "Legea aplicabilă"
 
 #. placeholder {0}: typeof window !== 'undefined' ? window.location.href : 'N/A'
-#: src/components/footer/ChatFab.tsx:46
+#: src/components/footer/ChatFab.tsx:51
 msgid ""
 "Hello,\n"
 "\n"
@@ -1483,7 +1483,7 @@ msgstr "N/A"
 msgid "Name"
 msgstr "Nume"
 
-#: src/components/footer/ChatFab.tsx:114
+#: src/components/footer/ChatFab.tsx:118
 msgid "Need help?"
 msgstr "Ai nevoie de ajutor?"
 
@@ -1516,10 +1516,14 @@ msgstr "Nu există date agregate"
 msgid "No annotations yet."
 msgstr "Încă nu există adnotări."
 
+#: src/routes/charts/index.lazy.tsx:287
+#~ msgid "No charts in \"{0}"
+#~ msgstr "Niciun grafic în \"{0}"
+
 #. placeholder {0}: cat.name
 #: src/routes/charts/index.lazy.tsx:287
-msgid "No charts in "{0}"
-msgstr "Niciun grafic în "{0}"
+msgid "No charts in “{0}”"
+msgstr "Nu există grafice în „{0}”"
 
 #: src/routes/charts/index.lazy.tsx:214
 msgid "No charts yet"
@@ -1649,7 +1653,7 @@ msgstr "Deschide setările cookie"
 msgid "Open data follows the source license."
 msgstr "Datele deschise respectă licența sursei."
 
-#: src/components/footer/ChatFab.tsx:149
+#: src/components/footer/ChatFab.tsx:163
 msgid "Open Email App"
 msgstr "Deschide Aplicația de Email"
 
@@ -1665,11 +1669,11 @@ msgstr "Deschide în Editorul de Grafice"
 msgid "Open on Wikipedia"
 msgstr "Deschide pe Wikipedia"
 
-#: src/components/footer/ChatFab.tsx:84
+#: src/components/footer/ChatFab.tsx:88
 msgid "Opening AI Assistant..."
 msgstr "Se deschide Asistentul AI..."
 
-#: src/components/footer/ChatFab.tsx:78
+#: src/components/footer/ChatFab.tsx:82
 msgid "Opening docs..."
 msgstr "Se deschide documentația..."
 
@@ -1776,7 +1780,7 @@ msgstr "Informații din sectorul public de la Ministerul Finanțelor, disponibil
 msgid "Purposes and legal bases"
 msgstr "Scopuri și temeiuri legale"
 
-#: src/components/footer/ChatFab.tsx:98
+#: src/components/footer/ChatFab.tsx:102
 msgid "Quick actions"
 msgstr "Acțiuni rapide"
 
@@ -1792,7 +1796,7 @@ msgstr "Configurare rapidă"
 msgid "Quickly adjust chart settings"
 msgstr "Ajustați rapid setările graficului"
 
-#: src/components/footer/ChatFab.tsx:76
+#: src/components/footer/ChatFab.tsx:80
 msgid "Read Documentation"
 msgstr "Citește Documentația"
 
@@ -2300,7 +2304,7 @@ msgstr "Total Venituri"
 msgid "Total:"
 msgstr "Total:"
 
-#: src/components/footer/ChatFab.tsx:44
+#: src/components/footer/ChatFab.tsx:49
 msgid "Transparenta.eu – Support"
 msgstr "Transparenta.eu – Suport"
 
@@ -2438,7 +2442,11 @@ msgid "We may change or discontinue the Service at any time."
 msgstr "Putem modifica sau întrerupe Serviciul în orice moment."
 
 #: src/routes/privacy.lazy.tsx:68
-msgid "We may update this policy; we'll post changes with a new effective date."
+#~ msgid "We may update this policy; we'll post changes with a new effective date."
+#~ msgstr "Putem actualiza această politică; vom publica modificările cu o nouă dată de intrare în vigoare."
+
+#: src/routes/privacy.lazy.tsx:68
+msgid "We may update this policy; we’ll post changes with a new effective date."
 msgstr "Putem actualiza această politică; vom publica modificările cu o nouă dată de intrare în vigoare."
 
 #: src/routes/cookie-policy.lazy.tsx:31

@@ -67,8 +67,12 @@ msgid "<0>No Government Affiliation:</0> Transparenta.eu is an independent proje
 msgstr "<0>No Government Affiliation:</0> Transparenta.eu is an independent project and is not affiliated with, authorized, maintained, sponsored, or endorsed by any Romanian government entity."
 
 #: src/routes/terms.lazy.tsx:59
-msgid "<0>Recommended:</0> Chart: „Titlul Graficului" | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
-msgstr "<0>Recommended:</0> Chart: „Titlul Graficului" | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
+#~ msgid "<0>Recommended:</0> Chart: „Titlul Graficului\" | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
+#~ msgstr "<0>Recommended:</0> Chart: „Titlul Graficului\" | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
+
+#: src/routes/terms.lazy.tsx:59
+msgid "<0>Recommended:</0> Chart: „Titlul Graficului” | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
+msgstr "<0>Recommended:</0> Chart: „Titlul Graficului” | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
 
 #. js-lingui-explicit-id
 #: src/lib/errors-utils.ts:9
@@ -243,7 +247,7 @@ msgstr "Are you sure?"
 msgid "Area Chart"
 msgstr "Area Chart"
 
-#: src/components/footer/ChatFab.tsx:82
+#: src/components/footer/ChatFab.tsx:86
 msgid "Ask AI Assistant"
 msgstr "Ask AI Assistant"
 
@@ -503,7 +507,7 @@ msgstr "Constant Value"
 msgid "Contact"
 msgstr "Contact"
 
-#: src/components/footer/ChatFab.tsx:142
+#: src/components/footer/ChatFab.tsx:156
 msgid "Contact Support"
 msgstr "Contact Support"
 
@@ -554,7 +558,7 @@ msgstr "Copy Annotation"
 msgid "Copy Data"
 msgstr "Copy Data"
 
-#: src/components/footer/ChatFab.tsx:153
+#: src/components/footer/ChatFab.tsx:167
 msgid "Copy Email Address"
 msgstr "Copy Email Address"
 
@@ -823,7 +827,7 @@ msgstr "Edit Annotations"
 msgid "Effective Date: {effectiveDate} • Version: {version}"
 msgstr "Effective Date: {effectiveDate} • Version: {version}"
 
-#: src/components/footer/ChatFab.tsx:54
+#: src/components/footer/ChatFab.tsx:59
 msgid "Email address copied to clipboard!"
 msgstr "Email address copied to clipboard!"
 
@@ -1035,7 +1039,7 @@ msgstr "Exports and attribution"
 msgid "Exports must include attribution to data source and Transparenta.eu."
 msgstr "Exports must include attribution to data source and Transparenta.eu."
 
-#: src/components/footer/ChatFab.tsx:57
+#: src/components/footer/ChatFab.tsx:62
 msgid "Failed to copy email address."
 msgstr "Failed to copy email address."
 
@@ -1090,7 +1094,7 @@ msgstr "Financial Reports"
 msgid "Financial Trends"
 msgstr "Financial Trends"
 
-#: src/components/footer/ChatFab.tsx:117
+#: src/components/footer/ChatFab.tsx:121
 msgid "Find resources, report issues, or get in touch."
 msgstr "Find resources, report issues, or get in touch."
 
@@ -1185,7 +1189,7 @@ msgid "Governing law"
 msgstr "Governing law"
 
 #. placeholder {0}: typeof window !== 'undefined' ? window.location.href : 'N/A'
-#: src/components/footer/ChatFab.tsx:46
+#: src/components/footer/ChatFab.tsx:51
 msgid ""
 "Hello,\n"
 "\n"
@@ -1488,7 +1492,7 @@ msgstr "N/A"
 msgid "Name"
 msgstr "Name"
 
-#: src/components/footer/ChatFab.tsx:114
+#: src/components/footer/ChatFab.tsx:118
 msgid "Need help?"
 msgstr "Need help?"
 
@@ -1521,10 +1525,14 @@ msgstr "No aggregated data"
 msgid "No annotations yet."
 msgstr "No annotations yet."
 
+#: src/routes/charts/index.lazy.tsx:287
+#~ msgid "No charts in \"{0}"
+#~ msgstr "No charts in \"{0}"
+
 #. placeholder {0}: cat.name
 #: src/routes/charts/index.lazy.tsx:287
-msgid "No charts in "{0}"
-msgstr "No charts in "{0}"
+msgid "No charts in “{0}”"
+msgstr "No charts in “{0}”"
 
 #: src/routes/charts/index.lazy.tsx:214
 msgid "No charts yet"
@@ -1654,7 +1662,7 @@ msgstr "Open cookies"
 msgid "Open data follows the source license."
 msgstr "Open data follows the source license."
 
-#: src/components/footer/ChatFab.tsx:149
+#: src/components/footer/ChatFab.tsx:163
 msgid "Open Email App"
 msgstr "Open Email App"
 
@@ -1670,11 +1678,11 @@ msgstr "Open in Chart Editor"
 msgid "Open on Wikipedia"
 msgstr "Open on Wikipedia"
 
-#: src/components/footer/ChatFab.tsx:84
+#: src/components/footer/ChatFab.tsx:88
 msgid "Opening AI Assistant..."
 msgstr "Opening AI Assistant..."
 
-#: src/components/footer/ChatFab.tsx:78
+#: src/components/footer/ChatFab.tsx:82
 msgid "Opening docs..."
 msgstr "Opening docs..."
 
@@ -1781,7 +1789,7 @@ msgstr "Public sector information from Ministerul Finanțelor, made available as
 msgid "Purposes and legal bases"
 msgstr "Purposes and legal bases"
 
-#: src/components/footer/ChatFab.tsx:98
+#: src/components/footer/ChatFab.tsx:102
 msgid "Quick actions"
 msgstr "Quick actions"
 
@@ -1797,7 +1805,7 @@ msgstr "Quick Configuration"
 msgid "Quickly adjust chart settings"
 msgstr "Quickly adjust chart settings"
 
-#: src/components/footer/ChatFab.tsx:76
+#: src/components/footer/ChatFab.tsx:80
 msgid "Read Documentation"
 msgstr "Read Documentation"
 
@@ -2305,7 +2313,7 @@ msgstr "Total Income"
 msgid "Total:"
 msgstr "Total:"
 
-#: src/components/footer/ChatFab.tsx:44
+#: src/components/footer/ChatFab.tsx:49
 msgid "Transparenta.eu – Support"
 msgstr "Transparenta.eu – Support"
 
@@ -2443,8 +2451,12 @@ msgid "We may change or discontinue the Service at any time."
 msgstr "We may change or discontinue the Service at any time."
 
 #: src/routes/privacy.lazy.tsx:68
-msgid "We may update this policy; we'll post changes with a new effective date."
-msgstr "We may update this policy; we'll post changes with a new effective date."
+#~ msgid "We may update this policy; we'll post changes with a new effective date."
+#~ msgstr "We may update this policy; we'll post changes with a new effective date."
+
+#: src/routes/privacy.lazy.tsx:68
+msgid "We may update this policy; we’ll post changes with a new effective date."
+msgstr "We may update this policy; we’ll post changes with a new effective date."
 
 #: src/routes/cookie-policy.lazy.tsx:31
 msgid "We use cookies and localStorage to operate the app and, with consent, to measure usage and improve reliability."
