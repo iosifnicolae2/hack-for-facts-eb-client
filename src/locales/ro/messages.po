@@ -243,7 +243,7 @@ msgstr "Sunteți sigur?"
 msgid "Area Chart"
 msgstr "Grafic arie"
 
-#: src/components/footer/ChatFab.tsx:86
+#: src/components/footer/ChatFab.tsx:78
 msgid "Ask AI Assistant"
 msgstr "Întreabă Asistentul AI"
 
@@ -503,7 +503,7 @@ msgstr "Valoare constantă"
 msgid "Contact"
 msgstr "Contact"
 
-#: src/components/footer/ChatFab.tsx:146
+#: src/components/footer/ChatFab.tsx:88
 msgid "Contact Support"
 msgstr "Contactează Suportul"
 
@@ -555,12 +555,16 @@ msgid "Copy Data"
 msgstr "Copiază datele"
 
 #: src/components/footer/ChatFab.tsx:157
-msgid "Copy Email Address"
-msgstr "Copiază Adresa de Email"
+#~ msgid "Copy Email Address"
+#~ msgstr "Copiază Adresa de Email"
 
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:61
 msgid "Copy Series"
 msgstr "Copiază seria"
+
+#: src/components/footer/ChatFab.tsx:93
+msgid "Copy Support Email"
+msgstr "Copiază Emailul de Suport"
 
 #: src/components/filters/budget-sector-filter/BudgetSectorFilter.tsx:75
 msgid "Could Not Load Budget Sectors"
@@ -823,7 +827,7 @@ msgstr "Editează adnotări"
 msgid "Effective Date: {effectiveDate} • Version: {version}"
 msgstr "Data intrării în vigoare: {effectiveDate} • Versiunea: {version}"
 
-#: src/components/footer/ChatFab.tsx:59
+#: src/components/footer/ChatFab.tsx:51
 msgid "Email address copied to clipboard!"
 msgstr "Adresa de email a fost copiată în clipboard!"
 
@@ -1035,9 +1039,13 @@ msgstr "Exporturi și atribuire"
 msgid "Exports must include attribution to data source and Transparenta.eu."
 msgstr "Exporturile trebuie să includă atribuirea sursei datelor și a Transparenta.eu."
 
-#: src/components/footer/ChatFab.tsx:62
+#: src/components/footer/ChatFab.tsx:54
 msgid "Failed to copy email address."
 msgstr "Copierea adresei de email a eșuat."
+
+#: src/components/footer/ChatFab.tsx:36
+msgid "Failed to open new tab."
+msgstr "Nu s-a putut deschide un tab nou."
 
 #: src/routes/charts/index.lazy.tsx:165
 msgid "favorites"
@@ -1090,7 +1098,7 @@ msgstr "Rapoarte Financiare"
 msgid "Financial Trends"
 msgstr "Evoluție Financiară"
 
-#: src/components/footer/ChatFab.tsx:121
+#: src/components/footer/ChatFab.tsx:123
 msgid "Find resources, report issues, or get in touch."
 msgstr "Găsește resurse, raportează probleme sau ia legătura cu noi."
 
@@ -1185,7 +1193,7 @@ msgid "Governing law"
 msgstr "Legea aplicabilă"
 
 #. placeholder {0}: typeof window !== 'undefined' ? window.location.href : 'N/A'
-#: src/components/footer/ChatFab.tsx:51
+#: src/components/footer/ChatFab.tsx:43
 msgid ""
 "Hello,\n"
 "\n"
@@ -1483,7 +1491,7 @@ msgstr "N/A"
 msgid "Name"
 msgstr "Nume"
 
-#: src/components/footer/ChatFab.tsx:118
+#: src/components/footer/ChatFab.tsx:120
 msgid "Need help?"
 msgstr "Ai nevoie de ajutor?"
 
@@ -1654,8 +1662,8 @@ msgid "Open data follows the source license."
 msgstr "Datele deschise respectă licența sursei."
 
 #: src/components/footer/ChatFab.tsx:153
-msgid "Open Email App"
-msgstr "Deschide Aplicația de Email"
+#~ msgid "Open Email App"
+#~ msgstr "Deschide Aplicația de Email"
 
 #: src/components/footer/AppFooter.tsx:163
 msgid "Open feedback dialog"
@@ -1670,12 +1678,12 @@ msgid "Open on Wikipedia"
 msgstr "Deschide pe Wikipedia"
 
 #: src/components/footer/ChatFab.tsx:88
-msgid "Opening AI Assistant..."
-msgstr "Se deschide Asistentul AI..."
+#~ msgid "Opening AI Assistant..."
+#~ msgstr "Se deschide Asistentul AI..."
 
 #: src/components/footer/ChatFab.tsx:82
-msgid "Opening docs..."
-msgstr "Se deschide documentația..."
+#~ msgid "Opening docs..."
+#~ msgstr "Se deschide documentația..."
 
 #: src/routes/privacy.lazy.tsx:46
 msgid "Operate and secure the service (legitimate interests)."
@@ -1780,7 +1788,7 @@ msgstr "Informații din sectorul public de la Ministerul Finanțelor, disponibil
 msgid "Purposes and legal bases"
 msgstr "Scopuri și temeiuri legale"
 
-#: src/components/footer/ChatFab.tsx:102
+#: src/components/footer/ChatFab.tsx:104
 msgid "Quick actions"
 msgstr "Acțiuni rapide"
 
@@ -1796,7 +1804,7 @@ msgstr "Configurare rapidă"
 msgid "Quickly adjust chart settings"
 msgstr "Ajustați rapid setările graficului"
 
-#: src/components/footer/ChatFab.tsx:80
+#: src/components/footer/ChatFab.tsx:72
 msgid "Read Documentation"
 msgstr "Citește Documentația"
 
@@ -1836,7 +1844,7 @@ msgstr "Înlocuiește valoarea"
 #~ msgid "Report a bug"
 #~ msgstr "Raportați o eroare"
 
-#: src/components/sentry/SendErrorAction.tsx:17
+#: src/components/sentry/SendErrorAction.tsx:16
 msgid "Report bug"
 msgstr "Raportați eroarea"
 
@@ -2026,7 +2034,7 @@ msgstr "Selectat"
 #~ msgstr "Trimite eroare"
 
 #: src/components/footer/AppFooter.tsx:165
-#: src/components/sentry/SendFeedbackAction.tsx:18
+#: src/components/sentry/SendFeedbackAction.tsx:17
 msgid "Send feedback"
 msgstr "Trimite feedback"
 
@@ -2308,7 +2316,7 @@ msgstr "Total Venituri"
 msgid "Total:"
 msgstr "Total:"
 
-#: src/components/footer/ChatFab.tsx:49
+#: src/components/footer/ChatFab.tsx:41
 msgid "Transparenta.eu – Support"
 msgstr "Transparenta.eu – Suport"
 
