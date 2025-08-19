@@ -8,8 +8,7 @@ export function SendErrorAction(): ReactElement {
   const sendBugReport = useSendBugReport();
   return (
     <DropdownMenuItem
-      onSelect={(e) => {
-        e.preventDefault();
+      onSelect={() => {
         sendBugReport();
       }}
     >

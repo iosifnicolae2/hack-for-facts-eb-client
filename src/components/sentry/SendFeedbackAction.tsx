@@ -9,8 +9,7 @@ export function SendFeedbackAction(): ReactElement {
 
   return (
     <DropdownMenuItem
-      onSelect={(e) => {
-        e.preventDefault();
+      onSelect={() => {
         sendFeedback();
       }}
     >
