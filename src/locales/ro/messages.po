@@ -70,6 +70,11 @@ msgstr "<0>Nicio afiliere guvernamentală:</0> Transparenta.eu este un proiect i
 msgid "<0>Recommended:</0> Chart: „Titlul Graficului” | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
 msgstr "<0>Recomandat:</0> Grafic: „Titlul graficului” | Sursa: Ministerul Finanțelor (Date Deschise), via Transparenta.eu."
 
+#. js-lingui-explicit-id
+#: src/lib/errors-utils.ts:9
+msgid "error.updateAvailable"
+msgstr "O nouă versiune a aplicației este disponibilă. Vă rugăm să reîncărcați pagina pentru a obține cele mai recente actualizări."
+
 #: src/components/footer/AppFooter.tsx:30
 msgid "A platform for exploring public financial data for citizens, journalists, public figures, and other interested parties."
 msgstr "Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice și alte persoane interesate."
@@ -1126,6 +1131,10 @@ msgstr "Vezi Grafic"
 msgid "Go to Entity Table"
 msgstr "Vezi Tabel"
 
+#: src/components/errors/GlobalErrorPage.tsx:65
+msgid "Go to Homepage"
+msgstr "Mergi la pagina principală"
+
 #: src/components/ui/FloatingQuickNav.tsx:55
 msgid "Go to Map"
 msgstr "Vezi harta"
@@ -1604,6 +1613,11 @@ msgstr "Descriere opțională pentru graficul dumneavoastră..."
 msgid "Overview"
 msgstr "Prezentare generală"
 
+#. js-lingui-explicit-id
+#: src/lib/errors-utils.ts:17
+msgid "error.pageRenderErrorTitle"
+msgstr "Eroare la încărcarea paginii"
+
 #: src/components/charts/components/chart-config/SeriesToolbar.tsx:37
 msgid "Paste"
 msgstr "Lipește"
@@ -1721,6 +1735,10 @@ msgstr "Mod relativ"
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:173
 msgid "Relative Values"
 msgstr "Valori relative"
+
+#: src/components/errors/GlobalErrorPage.tsx:56
+msgid "Reload Page"
+msgstr "Reîncarcă pagina"
 
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:124
 msgid "Replace"
@@ -1842,7 +1860,7 @@ msgstr "Caută seturi de date (ex: PIB)"
 msgid "Search entities (ex: Municipiul Arad)"
 msgstr "Caută entități (ex: Municipiul Arad)"
 
-#: src/components/entities/EntitySearch/index.tsx:20
+#: src/components/entities/EntitySearch/index.tsx:21
 msgid "Search entities by name or CUI..."
 msgstr "Caută entități după nume sau CUI..."
 
@@ -2009,9 +2027,18 @@ msgstr "Afișează mai mult"
 msgid "Show Relative Values (%)"
 msgstr "Afișează valori relative (%)"
 
+#: src/components/errors/GlobalErrorPage.tsx:72
+msgid "Show Technical Details"
+msgstr "Arată detaliile tehnice"
+
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:65
 msgid "Show Tooltip"
 msgstr "Afișează indiciu"
+
+#. js-lingui-explicit-id
+#: src/lib/errors-utils.ts:21
+msgid "error.genericError"
+msgstr "Ceva nu a funcționat corect la redarea acestei pagini."
 
 #: src/routes/charts/index.lazy.tsx:198
 msgid "Sort by"
@@ -2249,6 +2276,11 @@ msgstr "Grafic fără titlu"
 msgid "Untitled Series"
 msgstr "Serie fără titlu"
 
+#. js-lingui-explicit-id
+#: src/lib/errors-utils.ts:5
+msgid "error.updateAvailableTitle"
+msgstr "Actualizare disponibilă"
+
 #: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:81
 msgid "Update Data"
 msgstr "Actualizează datele"
@@ -2306,6 +2338,11 @@ msgstr "Vizualizați și partajați graficul."
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:122
 msgid "View Chart"
 msgstr "Vezi graficul"
+
+#. js-lingui-explicit-id
+#: src/lib/errors-utils.ts:13
+msgid "error.validationIssue"
+msgstr "Nu am putut afișa această pagină din cauza unei probleme de validare a datelor."
 
 #: src/routes/terms.lazy.tsx:66
 msgid "We may change or discontinue the Service at any time."
