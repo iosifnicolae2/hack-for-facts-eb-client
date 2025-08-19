@@ -126,17 +126,7 @@ export function ChatFab(): ReactElement {
                             return <DropdownMenuSeparator key={`sep-${index}`} />;
                         }
                         if ('type' in item && item.type === 'component') {
-                            // Wrap the component in a DropdownMenuItem and prevent the
-                            // default onSelect behavior (which is to close the menu).
-                            return (
-                                <DropdownMenuItem
-                                    key={`comp-${index}`}
-                                    onSelect={(event) => event.preventDefault()}
-                                    className="p-0 focus:bg-transparent"
-                                >
-                                    {item.component}
-                                </DropdownMenuItem>
-                            );
+                            return item.component;
                         }
                         const actionItem = item as ActionItem;
                         return (
