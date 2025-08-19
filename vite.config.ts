@@ -6,6 +6,7 @@ import tanstackRouter from "@tanstack/router-plugin/vite";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import { lingui } from "@lingui/vite-plugin";
+import fs from "fs";
 
 export default defineConfig(({ mode }) => ({
   plugins: [
@@ -38,6 +39,14 @@ export default defineConfig(({ mode }) => ({
       "Cross-Origin-Opener-Policy": "same-origin",
       "Cross-Origin-Embedder-Policy": "require-corp",
     },
+    allowedHosts: [
+      String(process.env.VITE_ALLOWED_HOST)
+    ],
+    https: {
+      // Generate ssl certs using ./ssl.sh
+      key: fs.readFileSync(path.resolve(__dirname, "localhost-key.pem")),
+      cert: fs.readFileSync(path.resolve(__dirname, "localhost-cert.pem")),
+    }
   },
   build: {
     chunkSizeWarningLimit: 1500,

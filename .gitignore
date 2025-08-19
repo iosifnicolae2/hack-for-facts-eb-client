@@ -50,3 +50,7 @@ Thumbs.db
 #i18n
 src/locales/ro/messages.js
 src/locales/en/messages.js
+
+#SSL
+localhost-key.pem
+localhost-cert.pem
