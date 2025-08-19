@@ -67,7 +67,7 @@ export function initSentry(router: unknown): void {
   const analyticsConsent = hasAnalyticsConsent();
   const sentryConsent = hasSentryConsent();
 
-  const integrations: unknown[] = [];
+  const integrations: NonNullable<Parameters<typeof Sentry.init>[0]>["integrations"] = [];
 
   if (analyticsConsent) {
     integrations.push(replayIntegration());
@@ -82,17 +82,16 @@ export function initSentry(router: unknown): void {
     const anySentry = Sentry as unknown as Record<string, unknown>;
     const tanstack = anySentry["tanstackRouterBrowserTracingIntegration"];
     if (typeof tanstack === "function") {
-      integrations.push((tanstack as (r: unknown) => unknown)(router));
+      integrations.push((tanstack as (r: unknown) => unknown));
     } else if (typeof Sentry.browserTracingIntegration === "function") {
       integrations.push(Sentry.browserTracingIntegration());
     }
   }
 
   // Configure the Feedback widget (only if consent granted)
-  let feedbackIntegration: ReturnType<typeof Sentry.feedbackIntegration> | null = null;
   const feedbackEnabled = env.VITE_SENTRY_FEEDBACK_ENABLED !== false;
   if (feedbackEnabled && sentryConsent) {
-    feedbackIntegration = Sentry.feedbackIntegration({
+    integrations.push(Sentry.feedbackIntegration({
       colorScheme: "system",
       enableScreenshot: true,
       autoInject: false,
@@ -104,8 +103,7 @@ export function initSentry(router: unknown): void {
         "Describe the bug or request. Steps to reproduce, expected vs. actual…",
       submitButtonLabel: "Send Feedback",
       cancelButtonLabel: "Close",
-    });
-    integrations.push(feedbackIntegration);
+    }));
   }
 
   // If you ever use your own button instead of autoInject, you can also override per - button
@@ -153,7 +151,7 @@ export function initSentry(router: unknown): void {
     dsn: env.VITE_SENTRY_DSN!,
     environment: env.VITE_APP_ENVIRONMENT,
     release: env.VITE_APP_VERSION,
-    integrations: integrations as NonNullable<Parameters<typeof Sentry.init>[0]>["integrations"],
+    integrations,
     // Performance
     tracesSampleRate,
     replaysOnErrorSampleRate: 1.0,
@@ -174,67 +172,39 @@ export function initSentry(router: unknown): void {
     Sentry.setUser(null);
   }
 
-  // Expose a programmatic opener for feedback if available
-  if (feedbackIntegration) {
-    try {
-      const formPromise = feedbackIntegration.createForm();
-      // Prefer the global feedback API if available to allow per-open overrides
-      const feedbackApi: any = (Sentry as unknown as Record<string, unknown>)[
-        "getFeedback"
-      ];
-      if (typeof feedbackApi === "function") {
-        const api = feedbackApi();
-        openSentryFeedback = () => {
-          try {
-            api.open?.({
-              formTitle: "Send Feedback",
-              messageLabel: "What happened?",
-              messagePlaceholder:
-                "Describe your feedback or idea. Steps, expectations, or suggestions…",
-              submitButtonLabel: "Send Feedback",
-            });
-          } catch {
-            void formPromise.then((form) => {
-              form.appendToDom();
-              form.open();
-            });
-          }
-        };
-        openSentryBugReport = () => {
-          try {
-            api.open?.({
-              formTitle: "Report a Bug",
-              messageLabel: "What is the bug?",
-              messagePlaceholder:
-                "Describe the bug. Include steps to reproduce, expected vs actual, and any screenshots.",
-              submitButtonLabel: "Report Bug",
-            });
-          } catch {
-            void formPromise.then((form) => {
-              form.appendToDom();
-              form.open();
-            });
-          }
-        };
-      } else {
-        // Fallback: open the same generic form
-        openSentryFeedback = () => {
-          void formPromise.then((form) => {
-            form.appendToDom();
-            form.open();
-          });
-        };
-        openSentryBugReport = () => {
-          void formPromise.then((form) => {
-            form.appendToDom();
-            form.open();
-          });
-        };
-      }
-    } catch {
-      openSentryFeedback = null;
-      openSentryBugReport = null;
-    }
+  // Expose a programmatic opener for feedback if available.
+  // This is only possible on the client after Sentry.init() has been called.
+  const feedback = typeof window !== "undefined" ? Sentry.getFeedback?.() : undefined;
+
+  if (feedback) {
+    const createOpener = (options: Parameters<typeof feedback.attachTo>[1]) => () => {
+      const btn = document.createElement("button");
+      btn.style.display = "none";
+      document.body.appendChild(btn);
+      feedback.attachTo(btn, options);
+      btn.click(); // opens with overrides
+      // optional: clean up later
+      setTimeout(() => btn.remove(), 0);
+    };
+
+    openSentryFeedback = createOpener({
+      formTitle: "Send Feedback",
+      messageLabel: "What happened?",
+      messagePlaceholder:
+        "Describe your feedback or idea. Steps, expectations, or suggestions…",
+      submitButtonLabel: "Send Feedback",
+    });
+
+    openSentryBugReport = createOpener({
+      formTitle: "Report a Bug",
+      messageLabel: "What is the bug?",
+      messagePlaceholder:
+        "Describe the bug. Include steps to reproduce, expected vs actual, and any screenshots.",
+      submitButtonLabel: "Report Bug",
+    });
+  } else {
+    openSentryFeedback = null;
+    openSentryBugReport = null;
   }
 }
 

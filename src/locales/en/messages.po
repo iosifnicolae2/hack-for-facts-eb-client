@@ -507,7 +507,7 @@ msgstr "Constant Value"
 msgid "Contact"
 msgstr "Contact"
 
-#: src/components/footer/ChatFab.tsx:156
+#: src/components/footer/ChatFab.tsx:146
 msgid "Contact Support"
 msgstr "Contact Support"
 
@@ -523,8 +523,8 @@ msgstr "Controller: Claudiu Constantin Bogdan, persoana fizica. Contact: contact
 #~ msgid "Cookie consent"
 #~ msgstr "Cookie consent"
 
-#: src/components/sentry/SendErrorAction.tsx:17
-#: src/components/sentry/SendFeedbackAction.tsx:16
+#: src/hooks/useSendBugReport.ts:14
+#: src/hooks/useSendFeedback.ts:13
 msgid "Cookie consent required"
 msgstr "Cookie consent required"
 
@@ -558,7 +558,7 @@ msgstr "Copy Annotation"
 msgid "Copy Data"
 msgstr "Copy Data"
 
-#: src/components/footer/ChatFab.tsx:167
+#: src/components/footer/ChatFab.tsx:157
 msgid "Copy Email Address"
 msgstr "Copy Email Address"
 
@@ -592,7 +592,7 @@ msgstr "Could Not Load Funding Sources"
 msgid "Could Not Load UATs"
 msgstr "Could Not Load UATs"
 
-#: src/components/sentry/SendErrorAction.tsx:41
+#: src/hooks/useSendBugReport.ts:40
 msgid "Could not send error report."
 msgstr "Could not send error report."
 
@@ -942,7 +942,7 @@ msgstr "Error loading data:"
 msgid "Error reporting (Sentry)"
 msgstr "Error reporting (Sentry)"
 
-#: src/components/sentry/SendErrorAction.tsx:38
+#: src/hooks/useSendBugReport.ts:36
 msgid "Error signal sent"
 msgstr "Error signal sent"
 
@@ -1059,7 +1059,7 @@ msgstr "Favorites first"
 msgid "Feedback / Report an issue"
 msgstr "Feedback / Report an issue"
 
-#: src/components/sentry/SendFeedbackAction.tsx:33
+#: src/hooks/useSendFeedback.ts:32
 msgid "Feedback is currently unavailable."
 msgstr "Feedback is currently unavailable."
 
@@ -1653,8 +1653,8 @@ msgstr "Oldest"
 msgid "Open Config Panel"
 msgstr "Open Config Panel"
 
-#: src/components/sentry/SendErrorAction.tsx:20
-#: src/components/sentry/SendFeedbackAction.tsx:19
+#: src/hooks/useSendBugReport.ts:17
+#: src/hooks/useSendFeedback.ts:16
 msgid "Open cookies"
 msgstr "Open cookies"
 
@@ -1662,7 +1662,7 @@ msgstr "Open cookies"
 msgid "Open data follows the source license."
 msgstr "Open data follows the source license."
 
-#: src/components/footer/ChatFab.tsx:163
+#: src/components/footer/ChatFab.tsx:153
 msgid "Open Email App"
 msgstr "Open Email App"
 
@@ -1844,6 +1844,10 @@ msgstr "Replace value"
 #: src/components/footer/AppFooter.tsx:194
 #~ msgid "Report a bug"
 #~ msgstr "Report a bug"
+
+#: src/components/sentry/SendErrorAction.tsx:17
+msgid "Report bug"
+msgstr "Report bug"
 
 #: src/lib/chart-filter-utils.ts:19
 msgid "Report type"
@@ -2027,11 +2031,11 @@ msgid "Selected"
 msgstr "Selected"
 
 #: src/components/sentry/SendErrorAction.tsx:48
-msgid "Send error"
-msgstr "Send error"
+#~ msgid "Send error"
+#~ msgstr "Send error"
 
 #: src/components/footer/AppFooter.tsx:165
-#: src/components/sentry/SendFeedbackAction.tsx:39
+#: src/components/sentry/SendFeedbackAction.tsx:18
 msgid "Send feedback"
 msgstr "Send feedback"
 
@@ -2497,11 +2501,11 @@ msgstr "You can search by: name (ex: Agriculture) • code (ex: 43.00, 43.00.10)
 msgid "You can search by: name (ex: Social assistance) • code (ex: 7.06, 7.06.02) • explicit prefix: fn:7.06"
 msgstr "You can search by: name (ex: Social assistance) • code (ex: 7.06, 7.06.02) • explicit prefix: fn:7.06"
 
-#: src/components/sentry/SendErrorAction.tsx:18
+#: src/hooks/useSendBugReport.ts:15
 msgid "You need to accept cookies to send an error report."
 msgstr "You need to accept cookies to send an error report."
 
-#: src/components/sentry/SendFeedbackAction.tsx:17
+#: src/hooks/useSendFeedback.ts:14
 msgid "You need to accept cookies to send feedback."
 msgstr "You need to accept cookies to send feedback."
 

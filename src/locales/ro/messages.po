@@ -503,7 +503,7 @@ msgstr "Valoare constantă"
 msgid "Contact"
 msgstr "Contact"
 
-#: src/components/footer/ChatFab.tsx:156
+#: src/components/footer/ChatFab.tsx:146
 msgid "Contact Support"
 msgstr "Contactează Suportul"
 
@@ -519,8 +519,8 @@ msgstr "Operator: Claudiu Constantin Bogdan, persoană fizică. Contact: contact
 #~ msgid "Cookie consent"
 #~ msgstr "Consimțământ cookie-uri"
 
-#: src/components/sentry/SendErrorAction.tsx:17
-#: src/components/sentry/SendFeedbackAction.tsx:16
+#: src/hooks/useSendBugReport.ts:14
+#: src/hooks/useSendFeedback.ts:13
 msgid "Cookie consent required"
 msgstr "Este necesar consimțământul pentru cookie-uri"
 
@@ -554,7 +554,7 @@ msgstr "Copiază adnotarea"
 msgid "Copy Data"
 msgstr "Copiază datele"
 
-#: src/components/footer/ChatFab.tsx:167
+#: src/components/footer/ChatFab.tsx:157
 msgid "Copy Email Address"
 msgstr "Copiază Adresa de Email"
 
@@ -588,7 +588,7 @@ msgstr "Sursele de finanțare nu au putut fi încărcate"
 msgid "Could Not Load UATs"
 msgstr "UAT-urile nu au putut fi încărcate"
 
-#: src/components/sentry/SendErrorAction.tsx:41
+#: src/hooks/useSendBugReport.ts:40
 msgid "Could not send error report."
 msgstr "Nu s-a putut trimite raportul de eroare."
 
@@ -938,7 +938,7 @@ msgstr "Eroare la încărcarea datelor:"
 msgid "Error reporting (Sentry)"
 msgstr "Raportarea erorilor (Sentry)"
 
-#: src/components/sentry/SendErrorAction.tsx:38
+#: src/hooks/useSendBugReport.ts:36
 msgid "Error signal sent"
 msgstr "Semnal de eroare trimis"
 
@@ -1055,7 +1055,7 @@ msgstr "Favoritele primele"
 msgid "Feedback / Report an issue"
 msgstr "Feedback / Raportați o problemă"
 
-#: src/components/sentry/SendFeedbackAction.tsx:33
+#: src/hooks/useSendFeedback.ts:32
 msgid "Feedback is currently unavailable."
 msgstr "Feedback-ul este indisponibil momentan."
 
@@ -1644,8 +1644,8 @@ msgstr "Cele mai vechi"
 msgid "Open Config Panel"
 msgstr "Deschide panoul de configurare"
 
-#: src/components/sentry/SendErrorAction.tsx:20
-#: src/components/sentry/SendFeedbackAction.tsx:19
+#: src/hooks/useSendBugReport.ts:17
+#: src/hooks/useSendFeedback.ts:16
 msgid "Open cookies"
 msgstr "Deschide setările cookie"
 
@@ -1653,7 +1653,7 @@ msgstr "Deschide setările cookie"
 msgid "Open data follows the source license."
 msgstr "Datele deschise respectă licența sursei."
 
-#: src/components/footer/ChatFab.tsx:163
+#: src/components/footer/ChatFab.tsx:153
 msgid "Open Email App"
 msgstr "Deschide Aplicația de Email"
 
@@ -1835,6 +1835,10 @@ msgstr "Înlocuiește valoarea"
 #: src/components/footer/AppFooter.tsx:194
 #~ msgid "Report a bug"
 #~ msgstr "Raportați o eroare"
+
+#: src/components/sentry/SendErrorAction.tsx:17
+msgid "Report bug"
+msgstr "Raportați eroarea"
 
 #: src/lib/chart-filter-utils.ts:19
 msgid "Report type"
@@ -2018,11 +2022,11 @@ msgid "Selected"
 msgstr "Selectat"
 
 #: src/components/sentry/SendErrorAction.tsx:48
-msgid "Send error"
-msgstr "Trimite eroare"
+#~ msgid "Send error"
+#~ msgstr "Trimite eroare"
 
 #: src/components/footer/AppFooter.tsx:165
-#: src/components/sentry/SendFeedbackAction.tsx:39
+#: src/components/sentry/SendFeedbackAction.tsx:18
 msgid "Send feedback"
 msgstr "Trimite feedback"
 
@@ -2488,11 +2492,11 @@ msgstr "Poți căuta după: nume (ex: Agricultură) • cod (ex: 43.00, 43.00.10
 msgid "You can search by: name (ex: Social assistance) • code (ex: 7.06, 7.06.02) • explicit prefix: fn:7.06"
 msgstr "Poți căuta după: nume (ex: Asistență socială) • cod (ex: 7.06, 7.06.02) • prefix explicit: fn:7.06"
 
-#: src/components/sentry/SendErrorAction.tsx:18
+#: src/hooks/useSendBugReport.ts:15
 msgid "You need to accept cookies to send an error report."
 msgstr "Trebuie să accepți cookie-urile pentru a trimite un raport de eroare."
 
-#: src/components/sentry/SendFeedbackAction.tsx:17
+#: src/hooks/useSendFeedback.ts:14
 msgid "You need to accept cookies to send feedback."
 msgstr "Trebuie să accepți cookie-urile pentru a trimite feedback."
 

@@ -29,19 +29,16 @@ import type { ReactElement, ReactNode } from "react";
 import { toast } from "sonner";
 import { clsx } from "clsx";
 
-const SUPPORT_EMAIL = 'contact@devostack.com';
+const SUPPORT_EMAIL = 'contact@transparenta.eu';
 
-const openInNewTab = (url: string, fallbackMessage: string) => {
+const toastConfig = { duration: 1000 }
+
+const openInNewTab = (url: string) => {
     try {
-        // A popup blocker might prevent the window from opening without throwing an error
-        const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
-        if (!newWindow) {
-            console.error("Popup blocker likely prevented opening new tab.");
-            toast.info(fallbackMessage);
-        }
+        window.open(url, '_blank', 'noopener,noreferrer');
     } catch (error) {
         console.error("Failed to open new tab:", error);
-        toast.info(fallbackMessage);
+        toast.info(t`Failed to open new tab.`, toastConfig);
     }
 };
 
@@ -56,10 +53,10 @@ const openMailClient = () => {
 const copyEmailAddress = async () => {
     try {
         await navigator.clipboard.writeText(SUPPORT_EMAIL);
-        toast.success(t`Email address copied to clipboard!`);
+        toast.success(t`Email address copied to clipboard!`, toastConfig);
     } catch (err) {
         console.error('Failed to copy email: ', err);
-        toast.error(t`Failed to copy email address.`);
+        toast.error(t`Failed to copy email address.`, toastConfig);
     }
 }
 
@@ -79,13 +76,13 @@ export function ChatFab(): ReactElement {
         {
             label: t`Read Documentation`,
             icon: <BookOpen className="h-4 w-4" />,
-            action: () => openInNewTab('/docs', t`Opening docs...`),
+            action: () => openInNewTab('/docs'),
             isExternal: true,
         },
         {
             label: t`Ask AI Assistant`,
             icon: <Bot className="h-4 w-4" />,
-            action: () => openInNewTab('https://chatgpt.com/g/g-688a4179389c8191955464fd497b7c5b-transparenta-eu', t`Opening AI Assistant...`),
+            action: () => openInNewTab('https://chatgpt.com/g/g-688a4179389c8191955464fd497b7c5b-transparenta-eu'),
             isExternal: true,
         },
         { type: 'separator' },
