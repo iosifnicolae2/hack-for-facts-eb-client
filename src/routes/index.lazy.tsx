@@ -53,7 +53,7 @@ function Index() {
 
           <div className="w-full max-w-2xl lg:max-w-3xl mt-8 space-y-6">
             <EntitySearchInput
-              placeholder={"Enter entity name or CUI..."}
+              placeholder={t`Enter entity name or CUI...`}
               autoFocus={!isMobile}
             />
             <QuickEntityAccess />
