@@ -66,7 +66,7 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
     <Link
       to="/entities/$cui"
       params={{ cui: entity.cui }}
-      className="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 text-sm transition-colors block py-0.5"
+      className="text-blue-900 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 text-sm transition-colors block py-0.5 truncate"
     >
       {entity.name}
     </Link>
