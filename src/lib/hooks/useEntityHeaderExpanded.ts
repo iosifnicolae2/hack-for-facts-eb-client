@@ -35,23 +35,18 @@ export const useEntityHeaderExpanded = ({
 
                 // Use a functional update to get the latest state without adding it to dependencies
                 setIsHeaderExpanded(prevExpanded => {
-                    // 1. Always show the header when near the top of the page
+                    // Always show the header when near the top of the page
                     if (currentScrollY < hideThreshold) {
                         return true;
                     }
 
                     const isScrollingDown = currentScrollY > lastScrollY.current;
-                    // 2. Add a small buffer to prevent toggling on minor scrolls
+                    // Add a small buffer to prevent toggling on minor scrolls
                     const hasScrolledEnough = Math.abs(currentScrollY - lastScrollY.current) > 5;
 
-                    if (hasScrolledEnough) {
-                        // 3. Hide header when scrolling down
-                        if (isScrollingDown && prevExpanded) {
-                            return false;
-                            // 4. Show header when scrolling up
-                        } else if (!isScrollingDown && !prevExpanded) {
-                            return true;
-                        }
+                    if (hasScrolledEnough && isScrollingDown && prevExpanded) {
+                        // Hide header when scrolling down
+                        return false;
                     }
 
                     return prevExpanded;

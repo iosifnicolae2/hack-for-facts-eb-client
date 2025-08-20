@@ -38,8 +38,8 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
 
   if (!isExpanded) {
     return (
-      <header className={cn("bg-background p-3 shadow-md flex justify-between items-center rounded-lg", className)}>
-        <h1 className="text-3xl lg:text-5xl font-extrabold underline text-slate-900 dark:text-slate-100 ">
+      <header className={cn("bg-background p-6 shadow-md flex justify-between items-center rounded-lg", className)}>
+        <h1 className="text-3xl lg:text-5xl font-extrabold underline text-slate-900 dark:text-slate-100">
           {entity.name}
         </h1>
         {yearSelector && (
