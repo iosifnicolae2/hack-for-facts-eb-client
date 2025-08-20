@@ -80,7 +80,6 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
       <EntityViewSwitcher
         views={views}
         activeView={activeView}
-        className="mt-2 pt-[1px]"
       />
 
       {/* Related entities (funding and funded) */}

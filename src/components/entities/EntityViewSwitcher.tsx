@@ -15,7 +15,7 @@ export const EntityViewSwitcher: React.FC<EntityViewSwitcherProps> = ({ views, a
 
   return (
     <div className={cn("relative", className)}>
-      <div className="overflow-x-auto whitespace-nowrap pb-2 scrollbar-hide">
+      <div className="overflow-x-auto whitespace-nowrap py-2 scrollbar-hide">
         {views.map((view) => (
           <Link
             key={view.id}
