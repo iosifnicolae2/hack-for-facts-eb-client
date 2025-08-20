@@ -57,6 +57,8 @@ export function NavMain() {
     if (isMobile) {
       setOpenMobile(false);
     }
+    // Scroll to top of page
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (

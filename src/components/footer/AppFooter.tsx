@@ -17,6 +17,11 @@ export function AppFooter(): ReactElement {
     const currentYear = new Date().getFullYear();
     const showSentryFeedback = useSentryConsent();
 
+    const handleLinkClick = () => {
+        // Scroll to top of page when navigating
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
     return (
         <footer className="w-full border-t bg-muted/30 text-muted-foreground">
             <div className="mx-auto w-full max-w-7xl px-6 py-10">
@@ -75,22 +80,22 @@ export function AppFooter(): ReactElement {
                         <h2 id="footer-product-heading" className="font-medium text-foreground text-base"><Trans>Product</Trans></h2>
                         <ul className="space-y-2 text-sm">
                             <li>
-                                <Link to="/" className="hover:text-foreground">
+                                <Link to="/" className="hover:text-foreground" onClick={handleLinkClick}>
                                     <Trans>Home</Trans>
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/entity-analytics" className="hover:text-foreground">
+                                <Link to="/entity-analytics" className="hover:text-foreground" onClick={handleLinkClick}>
                                     <Trans>Entity Analytics</Trans>
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/map" className="hover:text-foreground">
+                                <Link to="/map" className="hover:text-foreground" onClick={handleLinkClick}>
                                     <Trans>Maps</Trans>
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/charts" className="hover:text-foreground">
+                                <Link to="/charts" className="hover:text-foreground" onClick={handleLinkClick}>
                                     <Trans>Charts</Trans>
                                 </Link>
                             </li>
@@ -102,13 +107,13 @@ export function AppFooter(): ReactElement {
                         <h2 id="footer-legal-heading" className="font-medium text-foreground text-base"><Trans>Legal</Trans></h2>
                         <ul className="space-y-2 text-sm">
                             <li>
-                                <Link to="/privacy" className="hover:text-foreground"><Trans>Privacy Policy</Trans></Link>
+                                <Link to="/privacy" className="hover:text-foreground" onClick={handleLinkClick}><Trans>Privacy Policy</Trans></Link>
                             </li>
                             <li>
-                                <Link to="/terms" className="hover:text-foreground"><Trans>Terms of Service</Trans></Link>
+                                <Link to="/terms" className="hover:text-foreground" onClick={handleLinkClick}><Trans>Terms of Service</Trans></Link>
                             </li>
                             <li>
-                                <Link to="/cookies" className="hover:text-foreground"><Trans>Cookie Settings</Trans></Link>
+                                <Link to="/cookies" className="hover:text-foreground" onClick={handleLinkClick}><Trans>Cookie Settings</Trans></Link>
                             </li>
                         </ul>
                     </nav>
