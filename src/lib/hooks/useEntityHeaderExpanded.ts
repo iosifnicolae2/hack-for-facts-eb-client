@@ -22,6 +22,7 @@ export const useEntityHeaderExpanded = ({
     const lastScrollY = useRef(0);
     const ticking = useRef(false);
     const hiddenContentRef = useRef<HTMLDivElement>(null);
+    const isHeaderExpandedRef = useRef(isHeaderExpanded);
 
     useEffect(() => {
         lastScrollY.current = window.scrollY;
@@ -34,26 +35,19 @@ export const useEntityHeaderExpanded = ({
             window.requestAnimationFrame(() => {
                 const currentScrollY = window.scrollY;
 
-                // Use a functional update to get the latest state without adding it to dependencies
-                setIsHeaderExpanded(prevExpanded => {
-                    // Always show the header when near the top of the page
+                // Always show the header when near the top of the page
 
-                    const hiddenContentHeight = hiddenContentRef.current?.clientHeight || 0;
-                    if (currentScrollY - hiddenContentHeight < hideThreshold) {
-                        return true;
-                    }
+                const hiddenContentHeight = hiddenContentRef.current?.clientHeight || 0;
+                if (currentScrollY - hiddenContentHeight < hideThreshold && !isHeaderExpandedRef.current) {
+                    isHeaderExpandedRef.current = true;
+                    setIsHeaderExpanded(true);
+                }
 
-                    const isScrollingDown = currentScrollY > lastScrollY.current;
-                    // Add a small buffer to prevent toggling on minor scrolls
-                    const hasScrolledEnough = Math.abs(currentScrollY - lastScrollY.current) > 5;
-
-                    if (hasScrolledEnough && isScrollingDown && prevExpanded) {
-                        // Hide header when scrolling down
-                        return false;
-                    }
-
-                    return prevExpanded;
-                });
+                if (currentScrollY - hiddenContentHeight > hideThreshold && isHeaderExpandedRef.current) {
+                    // Hide header when scrolling down
+                    isHeaderExpandedRef.current = false;
+                    setIsHeaderExpanded(false);
+                }
 
                 lastScrollY.current = currentScrollY;
                 ticking.current = false;
@@ -66,7 +60,7 @@ export const useEntityHeaderExpanded = ({
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, [hideThreshold]); // Only re-run the effect if the threshold prop changes
+    }, []); // Only re-run the effect if the threshold prop changes
 
     return { isHeaderExpanded, hiddenContentRef };
 };

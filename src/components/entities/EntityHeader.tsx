@@ -14,6 +14,7 @@ import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
 import { UatDisplay } from './UatDisplay';
 import { useEntityHeaderExpanded } from '@/lib/hooks/useEntityHeaderExpanded';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 type HeaderEntity = Pick<EntityDetailsData, 'name' | 'cui' | 'entity_type' | 'address' | 'uat' | 'children' | 'parents' | 'executionLineItems' | 'is_main_creditor'> & {
   is_uat?: boolean;
@@ -41,7 +42,8 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
     return <EntityHeaderSkeleton className={className} />;
   }
   const entityTypeLabel = useEntityTypeLabel();
-  const hideThreshold = 200
+  const isMobile = useIsMobile();
+  const hideThreshold = isMobile ? 500 : 200;
   const { isHeaderExpanded, hiddenContentRef } = useEntityHeaderExpanded({ hideThreshold })
 
   const entityCategory = entity.entity_type ? entityTypeLabel.map(entity.entity_type) : null;
