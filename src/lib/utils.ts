@@ -69,14 +69,14 @@ export function slugify(input: string): string {
     .replace(/(^-|-$)+/g, '');
 }
 
-export function getUserLocale(): string {
-  const savedLocale = typeof window !== 'undefined' ? window.localStorage.getItem('user-locale') : null;
-  const browserLocale = typeof navigator !== 'undefined' ? navigator.language : 'en';
-  const initialLocale = savedLocale || (browserLocale?.toLowerCase().startsWith('ro') ? 'ro' : 'en');
-  return initialLocale;
+type Locale = 'en' | 'ro';
+
+export function getUserLocale(): Locale {
+  const savedLocale: Locale | null = typeof window !== 'undefined' ? window.localStorage.getItem('user-locale') as Locale | null : null;
+  return savedLocale || 'ro';
 }
 
-export function setUserLocale(locale: string): void {
+export function setUserLocale(locale: Locale): void {
   if (typeof window !== 'undefined') {
     window.localStorage.setItem('user-locale', locale);
   }
