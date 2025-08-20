@@ -43,7 +43,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
   }
   const entityTypeLabel = useEntityTypeLabel();
   const isMobile = useIsMobile();
-  const hideThreshold = isMobile ? 500 : 200;
+  const hideThreshold = isMobile ? 250 : 100;
   const { isHeaderExpanded, hiddenContentRef } = useEntityHeaderExpanded({ hideThreshold })
 
   const entityCategory = entity.entity_type ? entityTypeLabel.map(entity.entity_type) : null;
