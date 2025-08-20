@@ -21,6 +21,7 @@ export const useEntityHeaderExpanded = ({
     // Refs to store values between renders without causing re-renders
     const lastScrollY = useRef(0);
     const ticking = useRef(false);
+    const hiddenContentRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         lastScrollY.current = window.scrollY;
@@ -36,7 +37,9 @@ export const useEntityHeaderExpanded = ({
                 // Use a functional update to get the latest state without adding it to dependencies
                 setIsHeaderExpanded(prevExpanded => {
                     // Always show the header when near the top of the page
-                    if (currentScrollY < hideThreshold) {
+
+                    const hiddenContentHeight = hiddenContentRef.current?.clientHeight || 0;
+                    if (currentScrollY - hiddenContentHeight < hideThreshold) {
                         return true;
                     }
 
@@ -65,5 +68,5 @@ export const useEntityHeaderExpanded = ({
         };
     }, [hideThreshold]); // Only re-run the effect if the threshold prop changes
 
-    return isHeaderExpanded;
+    return { isHeaderExpanded, hiddenContentRef };
 };
