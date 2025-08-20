@@ -20,6 +20,7 @@ interface EntityHeaderProps {
   yearSelector?: React.ReactNode;
   className?: string;
   isLoading?: boolean;
+  isExpanded?: boolean;
 }
 
 export const EntityHeader: React.FC<EntityHeaderProps> = ({
@@ -29,9 +30,32 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
   yearSelector,
   className,
   isLoading,
+  isExpanded = true,
 }) => {
   if (isLoading || !entity) {
     return <EntityHeaderSkeleton className={className} />;
+  }
+
+  if (!isExpanded) {
+    return (
+      <header className={cn("bg-background p-3 shadow-md flex justify-between items-center rounded-lg", className)}>
+        <h1 className="text-3xl lg:text-5xl font-extrabold underline text-slate-900 dark:text-slate-100 ">
+          {entity.name}
+        </h1>
+        {yearSelector && (
+          <div
+            className={cn(
+              "w-[40%] sm:w-auto",
+              "rounded-xl border border-slate-200/80 dark:border-slate-700/70",
+              "bg-white/70 dark:bg-slate-900/40 backdrop-blur supports-[backdrop-filter]:bg-white/30",
+              "px-2 py-1 shadow-sm",
+            )}
+          >
+            {yearSelector}
+          </div>
+        )}
+      </header>
+    );
   }
 
   return (
@@ -42,7 +66,6 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
         {yearSelector && (
           <div
             className={cn(
-              "w-[40%] sm:w-auto",
               "rounded-xl border border-slate-200/80 dark:border-slate-700/70",
               "bg-white/70 dark:bg-slate-900/40 backdrop-blur supports-[backdrop-filter]:bg-white/30",
               "px-2 py-1 shadow-sm",

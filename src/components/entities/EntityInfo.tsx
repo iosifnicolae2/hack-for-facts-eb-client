@@ -54,7 +54,7 @@ export const EntityInfo: React.FC<EntityInfoProps> = ({ entity }) => {
                 </p>
                 {entity.address && (
                     <p className="flex items-center gap-1 font-semibold">
-                        <Trans>Address</Trans>: <span className="font-normal">{entity.address}</span>
+                        <Trans>Address</Trans>: <span className="font-normal truncate">{entity.address}</span>
                     </p>
                 )}
                 {entity.uat && (

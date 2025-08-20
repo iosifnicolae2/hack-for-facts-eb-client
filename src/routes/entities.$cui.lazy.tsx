@@ -23,6 +23,8 @@ import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
 import { Normalization } from '@/schemas/charts'
 import { EntitySearchSchema } from '@/components/entities/validation'
+import { useEntityHeaderExpanded } from '@/lib/hooks/useEntityHeaderExpanded'
+import { useIsMobile } from '@/hooks/use-mobile'
 
 export const Route = createLazyFileRoute('/entities/$cui')({
   component: EntityDetailsPage,
@@ -32,7 +34,11 @@ function EntityDetailsPage() {
   const { cui } = useParams({ from: '/entities/$cui' })
   const search = useSearch({ from: '/entities/$cui' }) as EntitySearchSchema
   const navigate = useNavigate({ from: '/entities/$cui' })
+  const isMobile = useIsMobile()
   const yearSelectorRef = useRef<HTMLButtonElement>(null)
+
+  const hideThreshold = isMobile ? 500 : 200
+  const isHeaderExpanded = useEntityHeaderExpanded({ hideThreshold })
 
   useHotkeys('mod+;', () => {
     yearSelectorRef.current?.click()
@@ -201,11 +207,12 @@ function EntityDetailsPage() {
       <Seo title={metaTitle} description={metaDescription} type="article" />
       <div className="container mx-auto max-w-7xl space-y-8">
         <EntityHeader
-          className="md:sticky top-0 z-30"
+          className="sticky top-0 z-30 max-w-xl sm:max-w-none"
           entity={entity ? { ...entity, is_uat: !!entity.is_uat } : undefined}
           isLoading={isLoading}
           views={views}
           activeView={search.view ?? 'overview'}
+          isExpanded={isHeaderExpanded}
           yearSelector={
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-slate-700 dark:text-slate-300 sm:inline"><Trans>Reporting Year:</Trans></span>
