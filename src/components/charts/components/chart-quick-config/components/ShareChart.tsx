@@ -13,6 +13,9 @@ import { toPng, toSvg } from 'html-to-image';
 import { saveAs } from 'file-saver';
 import { toast } from 'sonner';
 import { Trans } from '@lingui/react/macro';
+import { useAuth } from '@/lib/auth';
+import { ensureShortRedirectUrl } from '@/lib/api/shortLinks';
+import { getSiteUrl } from '@/config/env';
 
 export interface ShareChartProps {
     /** Chart ID for generating the share link */
@@ -35,6 +38,7 @@ export function ShareChart({
 }: ShareChartProps) {
     const [loadingAction, setLoadingAction] = useState<ShareAction>(null);
     const [copiedLink, setCopiedLink] = useState(false);
+    const { isSignedIn } = useAuth();
 
     // Generate the chart share URL with path and query params
     const shareUrl = window.location.href;
@@ -138,7 +142,17 @@ export function ShareChart({
     const handleCopyLink = useCallback(async () => {
         setLoadingAction('link');
         try {
-            await navigator.clipboard.writeText(shareUrl);
+            let linkToCopy = shareUrl;
+            if (isSignedIn) {
+                try {
+                    linkToCopy = await ensureShortRedirectUrl(shareUrl, getSiteUrl());
+                } catch (e) {
+                    // Fall back to original link if short link creation fails
+                    console.error('Short link creation failed, falling back to full URL:', e);
+                }
+            }
+
+            await navigator.clipboard.writeText(linkToCopy);
             setCopiedLink(true);
             toast.success('Chart link copied to clipboard!');
 
@@ -148,8 +162,17 @@ export function ShareChart({
             console.error('Error copying link:', error);
             // Fallback for browsers that don't support clipboard API
             try {
+                // Recompute the link to copy in the fallback path
+                let fallbackLink = shareUrl;
+                if (isSignedIn) {
+                    try {
+                        fallbackLink = await ensureShortRedirectUrl(shareUrl, getSiteUrl());
+                    } catch (e) {
+                        console.error('Short link creation failed in fallback, using full URL:', e);
+                    }
+                }
                 const textArea = document.createElement('textarea');
-                textArea.value = shareUrl;
+                textArea.value = fallbackLink;
                 document.body.appendChild(textArea);
                 textArea.select();
                 document.execCommand('copy');
@@ -164,7 +187,7 @@ export function ShareChart({
         } finally {
             setLoadingAction(null);
         }
-    }, [shareUrl]);
+    }, [shareUrl, isSignedIn]);
 
     return (
         <Card>

@@ -1,6 +1,6 @@
 import { cn, generateHash, getNormalizationUnit } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Map, BarChart2, Table } from 'lucide-react';
+import { Map, BarChart2, Table, Link2, Check } from 'lucide-react';
 import { AnalyticsFilterType, Chart, ChartSchema, ReportType } from '@/schemas/charts';
 import { useNavigate } from '@tanstack/react-router';
 import { ChartUrlState } from '@/components/charts/page-schema';
@@ -10,11 +10,16 @@ import { getSeriesColor } from '../charts/components/chart-renderer/utils';
 import { useEntityLabel, useUatLabel } from '@/hooks/filters/useFilterLabels';
 import { LabelStore } from '@/hooks/filters/interfaces';
 import { t } from '@lingui/core/macro';
+import { toast } from 'sonner';
+import { ensureShortRedirectUrl } from '@/lib/api/shortLinks';
+import { getSiteUrl } from '@/config/env';
+import { useAuth } from '@/lib/auth';
+import { useState } from 'react';
 
-type View = 'map' | 'table' | 'chart';
+type ActionKey = 'map' | 'table' | 'chart' | 'share';
 
 type Action = {
-    key: View;
+    key: ActionKey;
     label: string;
     onClick: () => void;
     icon: React.ReactNode;
@@ -35,6 +40,8 @@ export function FloatingQuickNav({ className, mapViewType, mapActive, tableActiv
     const uatLabelMap = useUatLabel((filterInput.uat_ids ?? []).map(String));
     const entityLabelMap = useEntityLabel((filterInput.entity_cuis ?? []) as string[]);
     const navigate = useNavigate();
+    const { isSignedIn } = useAuth();
+    const [shareCopied, setShareCopied] = useState(false);
 
     const handleMapNavigate = () => {
         const next = convertFilterInputToMapState(filterInput, mapViewType)
@@ -51,10 +58,32 @@ export function FloatingQuickNav({ className, mapViewType, mapActive, tableActiv
         navigate({ to: '/charts/$chartId', params: { chartId: next.chart.id }, search: next });
     }
 
+    const handleShare = async () => {
+        try {
+            const url = window.location.href;
+            let linkToCopy = url;
+            if (isSignedIn) {
+                try {
+                    linkToCopy = await ensureShortRedirectUrl(url, getSiteUrl());
+                } catch (e) {
+                    console.error('Failed to generate short link, falling back to full URL', e);
+                }
+            }
+            await navigator.clipboard.writeText(linkToCopy);
+            toast.success(t`Link copied to clipboard`);
+            setShareCopied(true);
+            setTimeout(() => setShareCopied(false), 2000);
+        } catch (err) {
+            console.error('Copy failed', err);
+            toast.error(t`Failed to copy link`);
+        }
+    }
+
     const actions: Action[] = [
         { key: 'map', label: t`Go to Map`, onClick: handleMapNavigate, icon: <Map className="h-5 w-5" />, active: mapActive },
         { key: 'table', label: t`Go to Entity Table`, onClick: handleTableNavigate, icon: <Table className="h-5 w-5" />, active: tableActive },
         { key: 'chart', label: t`Go to Chart View`, onClick: handleChartNavigate, icon: <BarChart2 className="h-5 w-5" />, active: chartActive },
+        { key: 'share', label: t`Copy Share Link`, onClick: handleShare, icon: shareCopied ? <Check className="h-5 w-5 text-green-600" /> : <Link2 className="h-5 w-5" />, active: true },
     ]
 
     const visibleActions = actions.filter(a => a.active);

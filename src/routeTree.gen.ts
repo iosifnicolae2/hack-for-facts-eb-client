@@ -17,6 +17,7 @@ import { Route as MapRouteImport } from './routes/map'
 import { Route as EntityAnalyticsRouteImport } from './routes/entity-analytics'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
+import { Route as ShareCodeRouteImport } from './routes/share.$code'
 import { Route as SettingsProfileRouteImport } from './routes/settings/profile'
 import { Route as EntitiesCuiRouteImport } from './routes/entities.$cui'
 import { Route as ChartsChartIdRouteRouteImport } from './routes/charts/$chartId/route'
@@ -79,6 +80,11 @@ const ChartsNewLazyRoute = ChartsNewLazyRouteImport.update({
   path: '/charts/new',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/charts/new.lazy').then((d) => d.Route))
+const ShareCodeRoute = ShareCodeRouteImport.update({
+  id: '/share/$code',
+  path: '/share/$code',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsProfileRoute = SettingsProfileRouteImport.update({
   id: '/settings/profile',
   path: '/settings/profile',
@@ -114,6 +120,7 @@ export interface FileRoutesByFullPath {
   '/charts/$chartId': typeof ChartsChartIdRouteRouteWithChildren
   '/entities/$cui': typeof EntitiesCuiRoute
   '/settings/profile': typeof SettingsProfileRoute
+  '/share/$code': typeof ShareCodeRoute
   '/charts/new': typeof ChartsNewLazyRoute
   '/charts': typeof ChartsIndexLazyRoute
   '/charts/$chartId/': typeof ChartsChartIdIndexLazyRoute
@@ -129,6 +136,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsLazyRoute
   '/entities/$cui': typeof EntitiesCuiRoute
   '/settings/profile': typeof SettingsProfileRoute
+  '/share/$code': typeof ShareCodeRoute
   '/charts/new': typeof ChartsNewLazyRoute
   '/charts': typeof ChartsIndexLazyRoute
   '/charts/$chartId': typeof ChartsChartIdIndexLazyRoute
@@ -146,6 +154,7 @@ export interface FileRoutesById {
   '/charts/$chartId': typeof ChartsChartIdRouteRouteWithChildren
   '/entities/$cui': typeof EntitiesCuiRoute
   '/settings/profile': typeof SettingsProfileRoute
+  '/share/$code': typeof ShareCodeRoute
   '/charts/new': typeof ChartsNewLazyRoute
   '/charts/': typeof ChartsIndexLazyRoute
   '/charts/$chartId/': typeof ChartsChartIdIndexLazyRoute
@@ -164,6 +173,7 @@ export interface FileRouteTypes {
     | '/charts/$chartId'
     | '/entities/$cui'
     | '/settings/profile'
+    | '/share/$code'
     | '/charts/new'
     | '/charts'
     | '/charts/$chartId/'
@@ -179,6 +189,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/entities/$cui'
     | '/settings/profile'
+    | '/share/$code'
     | '/charts/new'
     | '/charts'
     | '/charts/$chartId'
@@ -195,6 +206,7 @@ export interface FileRouteTypes {
     | '/charts/$chartId'
     | '/entities/$cui'
     | '/settings/profile'
+    | '/share/$code'
     | '/charts/new'
     | '/charts/'
     | '/charts/$chartId/'
@@ -212,6 +224,7 @@ export interface RootRouteChildren {
   ChartsChartIdRouteRoute: typeof ChartsChartIdRouteRouteWithChildren
   EntitiesCuiRoute: typeof EntitiesCuiRoute
   SettingsProfileRoute: typeof SettingsProfileRoute
+  ShareCodeRoute: typeof ShareCodeRoute
   ChartsNewLazyRoute: typeof ChartsNewLazyRoute
   ChartsIndexLazyRoute: typeof ChartsIndexLazyRoute
 }
@@ -288,6 +301,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChartsNewLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/share/$code': {
+      id: '/share/$code'
+      path: '/share/$code'
+      fullPath: '/share/$code'
+      preLoaderRoute: typeof ShareCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings/profile': {
       id: '/settings/profile'
       path: '/settings/profile'
@@ -342,6 +362,7 @@ const rootRouteChildren: RootRouteChildren = {
   ChartsChartIdRouteRoute: ChartsChartIdRouteRouteWithChildren,
   EntitiesCuiRoute: EntitiesCuiRoute,
   SettingsProfileRoute: SettingsProfileRoute,
+  ShareCodeRoute: ShareCodeRoute,
   ChartsNewLazyRoute: ChartsNewLazyRoute,
   ChartsIndexLazyRoute: ChartsIndexLazyRoute,
 }

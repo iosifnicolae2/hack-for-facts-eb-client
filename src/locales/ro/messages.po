@@ -26,7 +26,7 @@ msgstr "{0} serii configurate"
 msgid "*Check filters panel for more details."
 msgstr "*Verificați panoul de filtre pentru mai multe detalii."
 
-#: src/components/footer/AppFooter.tsx:144
+#: src/components/footer/AppFooter.tsx:149
 msgid "© {currentYear} Transparenta.eu. All rights reserved."
 msgstr "© {currentYear} Transparenta.eu. Toate drepturile rezervate."
 
@@ -67,15 +67,15 @@ msgid "<0>No Government Affiliation:</0> Transparenta.eu is an independent proje
 msgstr "<0>Nicio afiliere guvernamentală:</0> Transparenta.eu este un proiect independent și nu este afiliat, autorizat, întreținut, sponsorizat sau susținut de nicio entitate guvernamentală din România."
 
 #: src/routes/terms.lazy.tsx:59
-msgid "<0>Recommended:</0> Chart: „Titlul Graficului” | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
-msgstr "<0>Recomandat:</0> Grafic: „Titlul graficului” | Sursa: Ministerul Finanțelor (Date Deschise), via Transparenta.eu."
+msgid "<0>Recommended:</0> Chart: „Titlul Graficului" | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
+msgstr "<0>Recomandat:</0> Grafic: „Titlul graficului" | Sursa: Ministerul Finanțelor (Date Deschise), via Transparenta.eu."
 
 #. js-lingui-explicit-id
 #: src/lib/errors-utils.ts:9
 msgid "error.updateAvailable"
 msgstr "O nouă versiune a aplicației este disponibilă. Vă rugăm să reîncărcați pagina pentru a obține cele mai recente actualizări."
 
-#: src/components/footer/AppFooter.tsx:29
+#: src/components/footer/AppFooter.tsx:34
 msgid "A platform for exploring public financial data for citizens, journalists, public figures, and other interested parties."
 msgstr "Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice și alte persoane interesate."
 
@@ -132,6 +132,7 @@ msgstr "Adaugă număr"
 msgid "Add Series"
 msgstr "Adaugă serie"
 
+#: src/components/entities/EntityHeader.tsx:113
 #: src/components/entities/EntityInfo.tsx:57
 msgid "Address"
 msgstr "Adresă"
@@ -182,7 +183,7 @@ msgstr "Sumă pe cap de locuitor"
 msgid "Amount Range"
 msgstr "Interval sumă"
 
-#: src/components/ui/FloatingQuickNav.tsx:212
+#: src/components/ui/FloatingQuickNav.tsx:241
 msgid "Analytics"
 msgstr "Analiză"
 
@@ -206,7 +207,7 @@ msgstr "Analizați valorile cumulate pe entitate și explorați entitățile de 
 msgid "Analyze aggregated values per entity and explore top entities."
 msgstr "Analizați valorile cumulate pe entitate și explorați entitățile de top."
 
-#: src/components/footer/AppFooter.tsx:133
+#: src/components/footer/AppFooter.tsx:138
 msgid "and"
 msgstr "și"
 
@@ -266,8 +267,8 @@ msgstr "Medie pe cap de locuitor"
 msgid "Back to Configuration"
 msgstr "Înapoi la configurare"
 
-#: src/components/footer/AppFooter.tsx:173
-#: src/components/footer/AppFooter.tsx:175
+#: src/components/footer/AppFooter.tsx:178
+#: src/components/footer/AppFooter.tsx:180
 msgid "Back to top"
 msgstr "Înapoi sus"
 
@@ -381,7 +382,7 @@ msgstr "Titlu grafic"
 msgid "Chart Type"
 msgstr "Tip grafic"
 
-#: src/components/footer/AppFooter.tsx:94
+#: src/components/footer/AppFooter.tsx:99
 #: src/components/sidebar/nav-main.tsx:31
 #: src/hooks/useEntityViews.tsx:38
 #: src/routes/charts/index.lazy.tsx:157
@@ -536,7 +537,7 @@ msgstr "Politica privind cookie-urile – Transparenta.eu"
 #~ msgid "Cookie settings"
 #~ msgstr "Setări cookie-uri"
 
-#: src/components/footer/AppFooter.tsx:111
+#: src/components/footer/AppFooter.tsx:116
 #: src/routes/cookies.lazy.tsx:32
 msgid "Cookie Settings"
 msgstr "Setări cookie-uri"
@@ -561,6 +562,10 @@ msgstr "Copiază datele"
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:61
 msgid "Copy Series"
 msgstr "Copiază seria"
+
+#: src/components/ui/FloatingQuickNav.tsx:86
+msgid "Copy Share Link"
+msgstr "Copiază linkul de partajare"
 
 #: src/components/footer/ChatFab.tsx:93
 msgid "Copy Support Email"
@@ -679,7 +684,7 @@ msgstr "Etichete de date"
 msgid "Data Series"
 msgstr "Serie de date"
 
-#: src/components/footer/AppFooter.tsx:123
+#: src/components/footer/AppFooter.tsx:128
 msgid "Data source: \"Budget Transparency\" portal administered by ANAF/Ministry of Finance, available as open data. See official resources:"
 msgstr "Sursa datelor: portalul „Transparența Bugetară\" administrat de ANAF/Ministerul Finanțelor, disponibil ca date deschise (Open Data). Vedeți resursele oficiale:"
 
@@ -742,7 +747,7 @@ msgstr "Executie bugetara detaliata"
 msgid "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
 msgstr "Detalii despre cookie-urile și stocarea locală (localStorage) utilizate de Transparenta.eu, cu opțiuni de consimțământ."
 
-#: src/routes/entities.$cui.lazy.tsx:123
+#: src/routes/entities.$cui.lazy.tsx:124
 msgid "Details:"
 msgstr "Detalii:"
 
@@ -897,13 +902,13 @@ msgstr "Entități"
 msgid "Entity"
 msgstr "Entitate"
 
-#: src/routes/entities.$cui.lazy.tsx:117
-#: src/routes/entities.$cui.lazy.tsx:133
+#: src/routes/entities.$cui.lazy.tsx:118
+#: src/routes/entities.$cui.lazy.tsx:134
 msgid "Entity {cui} – Not found"
 msgstr "Entitatea {cui} – Nu a fost găsită"
 
 #: src/components/entity-analytics/EntityAnalyticsLayout.tsx:15
-#: src/components/footer/AppFooter.tsx:84
+#: src/components/footer/AppFooter.tsx:89
 #: src/components/sidebar/nav-main.tsx:36
 msgid "Entity Analytics"
 msgstr "Analiza entităților"
@@ -922,7 +927,7 @@ msgstr "Tip entitate"
 msgid "Entity Type"
 msgstr "Tip entitate"
 
-#: src/routes/entities.$cui.lazy.tsx:120
+#: src/routes/entities.$cui.lazy.tsx:121
 msgid "Error Fetching Entity Details"
 msgstr "Eroare la preluarea detaliilor entității"
 
@@ -1019,11 +1024,11 @@ msgstr "Explorați entitățile după valorile cumulate."
 msgid "Explore Full Map"
 msgstr "Explorează harta completă"
 
-#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:184
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:207
 msgid "Export as Image"
 msgstr "Exportă ca Imagine"
 
-#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:177
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:200
 msgid "Export as image or share with a link"
 msgstr "Exportă ca imagine sau partajează printr-un link"
 
@@ -1047,6 +1052,10 @@ msgstr "Exporturile trebuie să includă atribuirea sursei datelor și a Transpa
 msgid "Failed to copy email address."
 msgstr "Copierea adresei de email a eșuat."
 
+#: src/components/ui/FloatingQuickNav.tsx:78
+msgid "Failed to copy link"
+msgstr "Eroare la copierea linkului"
+
 #: src/components/footer/ChatFab.tsx:36
 msgid "Failed to open new tab."
 msgstr "Nu s-a putut deschide un tab nou."
@@ -1063,7 +1072,7 @@ msgstr "Favorite"
 msgid "Favorites first"
 msgstr "Favoritele primele"
 
-#: src/components/footer/AppFooter.tsx:156
+#: src/components/footer/AppFooter.tsx:161
 msgid "Feedback / Report an issue"
 msgstr "Feedback / Raportați o problemă"
 
@@ -1176,11 +1185,15 @@ msgstr "Vizualizare geografică"
 msgid "Global Chart Settings"
 msgstr "Setări globale pentru grafic"
 
-#: src/components/ui/FloatingQuickNav.tsx:57
+#: src/routes/share.$code.tsx:79
+msgid "Go back home"
+msgstr "Înapoi la pagina principală"
+
+#: src/components/ui/FloatingQuickNav.tsx:85
 msgid "Go to Chart View"
 msgstr "Vezi Grafic"
 
-#: src/components/ui/FloatingQuickNav.tsx:56
+#: src/components/ui/FloatingQuickNav.tsx:84
 msgid "Go to Entity Table"
 msgstr "Vezi Tabel"
 
@@ -1188,13 +1201,17 @@ msgstr "Vezi Tabel"
 msgid "Go to Homepage"
 msgstr "Mergi la pagina principală"
 
-#: src/components/ui/FloatingQuickNav.tsx:55
+#: src/components/ui/FloatingQuickNav.tsx:83
 msgid "Go to Map"
 msgstr "Vezi harta"
 
 #: src/routes/terms.lazy.tsx:68
 msgid "Governing law"
 msgstr "Legea aplicabilă"
+
+#: src/routes/share.$code.tsx:56
+msgid "Hang tight while we resolve and redirect you to the destination."
+msgstr "Te rugăm să aștepți cât timp te redirecționăm către destinație."
 
 #. placeholder {0}: typeof window !== 'undefined' ? window.location.href : 'N/A'
 #: src/components/footer/ChatFab.tsx:43
@@ -1228,7 +1245,7 @@ msgstr "Ascunde"
 msgid "Hide advanced settings"
 msgstr "Ascunde setările avansate"
 
-#: src/components/footer/AppFooter.tsx:79
+#: src/components/footer/AppFooter.tsx:84
 msgid "Home"
 msgstr "Acasă"
 
@@ -1297,6 +1314,10 @@ msgstr "Proprietate intelectuală"
 msgid "Invalid chart schema"
 msgstr "Schemă grafic invalidă"
 
+#: src/routes/share.$code.tsx:72
+msgid "Invalid or expired link"
+msgstr "Link invalid sau expirat"
+
 #: src/components/charts/components/series-config/SeriesFilter.tsx:330
 #: src/components/filters/EntityAnalyticsFilter.tsx:323
 #: src/components/filters/MapFilter.tsx:255
@@ -1312,7 +1333,7 @@ msgstr "Județ"
 msgid "Label"
 msgstr "Etichetă"
 
-#: src/components/footer/AppFooter.tsx:102
+#: src/components/footer/AppFooter.tsx:107
 msgid "Legal"
 msgstr "Legal"
 
@@ -1340,6 +1361,10 @@ msgstr "Linii bugetare"
 #: src/components/charts/components/views/SeriesConfigView.tsx:147
 msgid "Line Items Aggregated Yearly"
 msgstr "Linii bugetare agregate anual"
+
+#: src/components/ui/FloatingQuickNav.tsx:73
+msgid "Link copied to clipboard"
+msgstr "Link copiat în clipboard"
 
 #: src/components/charts/components/views/ChartView.tsx:34
 msgid "Loading chart configuration..."
@@ -1429,7 +1454,7 @@ msgstr "Filtre hartă"
 msgid "Map View"
 msgstr "Vizualizare hartă"
 
-#: src/components/footer/AppFooter.tsx:89
+#: src/components/footer/AppFooter.tsx:94
 msgid "Maps"
 msgstr "Hărți"
 
@@ -1534,8 +1559,8 @@ msgstr "Încă nu există adnotări."
 
 #. placeholder {0}: cat.name
 #: src/routes/charts/index.lazy.tsx:287
-msgid "No charts in “{0}”"
-msgstr "Nu există grafice în „{0}”"
+msgid "No charts in "{0}"
+msgstr "Nu există grafice în "{0}"
 
 #: src/routes/charts/index.lazy.tsx:214
 msgid "No charts yet"
@@ -1557,12 +1582,12 @@ msgstr "Nu sunt date disponibile pentru tabel."
 msgid "No data available to display financial evolution."
 msgstr "Nu sunt date disponibile pentru afișarea evoluției financiare."
 
-#: src/routes/entities.$cui.lazy.tsx:136
+#: src/routes/entities.$cui.lazy.tsx:137
 msgid "No Data Found"
 msgstr "Nu s-au găsit date"
 
-#: src/routes/entities.$cui.lazy.tsx:117
-#: src/routes/entities.$cui.lazy.tsx:133
+#: src/routes/entities.$cui.lazy.tsx:118
+#: src/routes/entities.$cui.lazy.tsx:134
 msgid "No data found for CUI {cui}."
 msgstr "Nu s-au găsit date pentru CUI {cui}."
 
@@ -1578,7 +1603,7 @@ msgstr "Nicio serie de date încă."
 msgid "No enabled series data available to display."
 msgstr "Nu există date disponibile în seriile activate pentru a fi afișate."
 
-#: src/routes/entities.$cui.lazy.tsx:138
+#: src/routes/entities.$cui.lazy.tsx:139
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "Nu s-au găsit detalii despre entitate pentru CUI: <0>{cui}</0>. Este posibil ca această entitate să nu existe sau să nu aibă date asociate."
 
@@ -1669,7 +1694,7 @@ msgstr "Datele deschise respectă licența sursei."
 #~ msgid "Open Email App"
 #~ msgstr "Deschide Aplicația de Email"
 
-#: src/components/footer/AppFooter.tsx:163
+#: src/components/footer/AppFooter.tsx:168
 msgid "Open feedback dialog"
 msgstr "Deschide fereastra de feedback"
 
@@ -1677,6 +1702,7 @@ msgstr "Deschide fereastra de feedback"
 msgid "Open in Chart Editor"
 msgstr "Deschide în Editorul de Grafice"
 
+#: src/components/entities/EntityHeader.tsx:98
 #: src/components/entities/EntityInfo.tsx:42
 msgid "Open on Wikipedia"
 msgstr "Deschide pe Wikipedia"
@@ -1767,7 +1793,11 @@ msgstr "PostHog (analiză), Sentry (raportare erori), furnizori de găzduire. Pr
 msgid "PostHog: <0>ph_*</0> identifiers when analytics is enabled."
 msgstr "PostHog: identificatori <0>ph_*</0> când analiza este activată."
 
-#: src/components/footer/AppFooter.tsx:105
+#: src/routes/share.$code.tsx:51
+msgid "Preparing your share link..."
+msgstr "Se pregătește linkul de partajare..."
+
+#: src/components/footer/AppFooter.tsx:110
 #: src/routes/privacy.lazy.tsx:17
 msgid "Privacy Policy"
 msgstr "Politica de confidențialitate"
@@ -1776,7 +1806,7 @@ msgstr "Politica de confidențialitate"
 msgid "Privacy Policy – Transparenta.eu"
 msgstr "Politica de confidențialitate – Transparenta.eu"
 
-#: src/components/footer/AppFooter.tsx:75
+#: src/components/footer/AppFooter.tsx:80
 msgid "Product"
 msgstr "Produs"
 
@@ -1862,11 +1892,11 @@ msgstr "Tip Raportare"
 msgid "Report Type"
 msgstr "Tip Raportare"
 
-#: src/routes/entities.$cui.lazy.tsx:215
+#: src/routes/entities.$cui.lazy.tsx:216
 msgid "Reporting year"
 msgstr "Anul raportării"
 
-#: src/routes/entities.$cui.lazy.tsx:211
+#: src/routes/entities.$cui.lazy.tsx:212
 msgid "Reporting Year:"
 msgstr "Anul raportării:"
 
@@ -2037,7 +2067,7 @@ msgstr "Selectat"
 #~ msgid "Send error"
 #~ msgstr "Trimite eroare"
 
-#: src/components/footer/AppFooter.tsx:165
+#: src/components/footer/AppFooter.tsx:170
 #: src/components/sentry/SendFeedbackAction.tsx:17
 msgid "Send feedback"
 msgstr "Trimite feedback"
@@ -2078,11 +2108,11 @@ msgstr "Serviciul și sursele de date"
 msgid "Set the basic properties for your chart"
 msgstr "Setați proprietățile de bază pentru graficul dumneavoastră"
 
-#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:174
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:197
 msgid "Share Chart"
 msgstr "Partajează graficul"
 
-#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:221
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:244
 msgid "Share Link"
 msgstr "Partajează link-ul"
 
@@ -2187,7 +2217,7 @@ msgstr "Tehnologiile pe care le folosim"
 msgid "Terms for using the Transparenta.eu service and visualizations."
 msgstr "Termeni și condiții pentru utilizarea serviciului și a vizualizărilor Transparenta.eu."
 
-#: src/components/footer/AppFooter.tsx:108
+#: src/components/footer/AppFooter.tsx:113
 msgid "Terms of Service"
 msgstr "Termeni și condiții"
 
@@ -2211,7 +2241,11 @@ msgstr "Eroare de test"
 msgid "The Service provides tools to explore, analyze, and visualize public budget execution data from Romania."
 msgstr "Serviciul oferă instrumente pentru explorarea, analizarea și vizualizarea datelor privind execuția bugetară publică din România."
 
-#: src/routes/entities.$cui.lazy.tsx:122
+#: src/routes/share.$code.tsx:76
+msgid "The share link you are trying to access is invalid or no longer available."
+msgstr "Linkul de partajare pe care încerci să-l accesezi este invalid sau nu mai este disponibil."
+
+#: src/routes/entities.$cui.lazy.tsx:123
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "A apărut o problemă la preluarea detaliilor pentru CUI: <0>{cui}</0>."
 

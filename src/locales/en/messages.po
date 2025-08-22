@@ -26,7 +26,7 @@ msgstr "{0} series configured"
 msgid "*Check filters panel for more details."
 msgstr "*Check filters panel for more details."
 
-#: src/components/footer/AppFooter.tsx:144
+#: src/components/footer/AppFooter.tsx:149
 msgid "© {currentYear} Transparenta.eu. All rights reserved."
 msgstr "© {currentYear} Transparenta.eu. All rights reserved."
 
@@ -79,7 +79,7 @@ msgstr "<0>Recommended:</0> Chart: „Titlul Graficului” | Source: Ministerul 
 msgid "error.updateAvailable"
 msgstr "A new version of the app is available. Please reload the page to get the latest updates."
 
-#: src/components/footer/AppFooter.tsx:29
+#: src/components/footer/AppFooter.tsx:34
 msgid "A platform for exploring public financial data for citizens, journalists, public figures, and other interested parties."
 msgstr "Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice, și alte persoane interesate."
 
@@ -136,6 +136,7 @@ msgstr "Add Number"
 msgid "Add Series"
 msgstr "Add Series"
 
+#: src/components/entities/EntityHeader.tsx:113
 #: src/components/entities/EntityInfo.tsx:57
 msgid "Address"
 msgstr "Address"
@@ -186,7 +187,7 @@ msgstr "Amount Per Capita"
 msgid "Amount Range"
 msgstr "Amount Range"
 
-#: src/components/ui/FloatingQuickNav.tsx:212
+#: src/components/ui/FloatingQuickNav.tsx:241
 msgid "Analytics"
 msgstr "Analytics"
 
@@ -210,7 +211,7 @@ msgstr "Analyze aggregated values per entity and explore top entities by amount 
 msgid "Analyze aggregated values per entity and explore top entities."
 msgstr "Analyze aggregated values per entity and explore top entities."
 
-#: src/components/footer/AppFooter.tsx:133
+#: src/components/footer/AppFooter.tsx:138
 msgid "and"
 msgstr "and"
 
@@ -270,8 +271,8 @@ msgstr "Avg per-capita"
 msgid "Back to Configuration"
 msgstr "Back to Configuration"
 
-#: src/components/footer/AppFooter.tsx:173
-#: src/components/footer/AppFooter.tsx:175
+#: src/components/footer/AppFooter.tsx:178
+#: src/components/footer/AppFooter.tsx:180
 msgid "Back to top"
 msgstr "Back to top"
 
@@ -385,7 +386,7 @@ msgstr "Chart Title"
 msgid "Chart Type"
 msgstr "Chart Type"
 
-#: src/components/footer/AppFooter.tsx:94
+#: src/components/footer/AppFooter.tsx:99
 #: src/components/sidebar/nav-main.tsx:31
 #: src/hooks/useEntityViews.tsx:38
 #: src/routes/charts/index.lazy.tsx:157
@@ -540,7 +541,7 @@ msgstr "Cookie Policy – Transparenta.eu"
 #~ msgid "Cookie settings"
 #~ msgstr "Cookie settings"
 
-#: src/components/footer/AppFooter.tsx:111
+#: src/components/footer/AppFooter.tsx:116
 #: src/routes/cookies.lazy.tsx:32
 msgid "Cookie Settings"
 msgstr "Cookie Settings"
@@ -565,6 +566,10 @@ msgstr "Copy Data"
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:61
 msgid "Copy Series"
 msgstr "Copy Series"
+
+#: src/components/ui/FloatingQuickNav.tsx:86
+msgid "Copy Share Link"
+msgstr "Copy Share Link"
 
 #: src/components/footer/ChatFab.tsx:93
 msgid "Copy Support Email"
@@ -683,7 +688,7 @@ msgstr "Data Labels"
 msgid "Data Series"
 msgstr "Data Series"
 
-#: src/components/footer/AppFooter.tsx:123
+#: src/components/footer/AppFooter.tsx:128
 msgid "Data source: \"Budget Transparency\" portal administered by ANAF/Ministry of Finance, available as open data. See official resources:"
 msgstr "Data source: \"Budget Transparency\" portal administered by ANAF/Ministry of Finance, available as open data. See official resources:"
 
@@ -746,7 +751,7 @@ msgstr "Detailed Budget Execution"
 msgid "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
 msgstr "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
 
-#: src/routes/entities.$cui.lazy.tsx:123
+#: src/routes/entities.$cui.lazy.tsx:124
 msgid "Details:"
 msgstr "Details:"
 
@@ -901,13 +906,13 @@ msgstr "Entities"
 msgid "Entity"
 msgstr "Entity"
 
-#: src/routes/entities.$cui.lazy.tsx:117
-#: src/routes/entities.$cui.lazy.tsx:133
+#: src/routes/entities.$cui.lazy.tsx:118
+#: src/routes/entities.$cui.lazy.tsx:134
 msgid "Entity {cui} – Not found"
 msgstr "Entity {cui} – Not found"
 
 #: src/components/entity-analytics/EntityAnalyticsLayout.tsx:15
-#: src/components/footer/AppFooter.tsx:84
+#: src/components/footer/AppFooter.tsx:89
 #: src/components/sidebar/nav-main.tsx:36
 msgid "Entity Analytics"
 msgstr "Entity Analytics"
@@ -926,7 +931,7 @@ msgstr "Entity type"
 msgid "Entity Type"
 msgstr "Entity Type"
 
-#: src/routes/entities.$cui.lazy.tsx:120
+#: src/routes/entities.$cui.lazy.tsx:121
 msgid "Error Fetching Entity Details"
 msgstr "Error Fetching Entity Details"
 
@@ -1023,11 +1028,11 @@ msgstr "Explore entities by aggregated values."
 msgid "Explore Full Map"
 msgstr "Explore Full Map"
 
-#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:184
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:207
 msgid "Export as Image"
 msgstr "Export as Image"
 
-#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:177
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:200
 msgid "Export as image or share with a link"
 msgstr "Export as image or share with a link"
 
@@ -1051,6 +1056,10 @@ msgstr "Exports must include attribution to data source and Transparenta.eu."
 msgid "Failed to copy email address."
 msgstr "Failed to copy email address."
 
+#: src/components/ui/FloatingQuickNav.tsx:78
+msgid "Failed to copy link"
+msgstr "Failed to copy link"
+
 #: src/components/footer/ChatFab.tsx:36
 msgid "Failed to open new tab."
 msgstr "Failed to open new tab."
@@ -1067,7 +1076,7 @@ msgstr "Favorites"
 msgid "Favorites first"
 msgstr "Favorites first"
 
-#: src/components/footer/AppFooter.tsx:156
+#: src/components/footer/AppFooter.tsx:161
 msgid "Feedback / Report an issue"
 msgstr "Feedback / Report an issue"
 
@@ -1180,11 +1189,15 @@ msgstr "Geographical View"
 msgid "Global Chart Settings"
 msgstr "Global Chart Settings"
 
-#: src/components/ui/FloatingQuickNav.tsx:57
+#: src/routes/share.$code.tsx:79
+msgid "Go back home"
+msgstr "Go back home"
+
+#: src/components/ui/FloatingQuickNav.tsx:85
 msgid "Go to Chart View"
 msgstr "Go to Chart View"
 
-#: src/components/ui/FloatingQuickNav.tsx:56
+#: src/components/ui/FloatingQuickNav.tsx:84
 msgid "Go to Entity Table"
 msgstr "Go to Entity Table"
 
@@ -1192,13 +1205,17 @@ msgstr "Go to Entity Table"
 msgid "Go to Homepage"
 msgstr "Go to Homepage"
 
-#: src/components/ui/FloatingQuickNav.tsx:55
+#: src/components/ui/FloatingQuickNav.tsx:83
 msgid "Go to Map"
 msgstr "Go to Map"
 
 #: src/routes/terms.lazy.tsx:68
 msgid "Governing law"
 msgstr "Governing law"
+
+#: src/routes/share.$code.tsx:56
+msgid "Hang tight while we resolve and redirect you to the destination."
+msgstr "Hang tight while we resolve and redirect you to the destination."
 
 #. placeholder {0}: typeof window !== 'undefined' ? window.location.href : 'N/A'
 #: src/components/footer/ChatFab.tsx:43
@@ -1237,7 +1254,7 @@ msgstr "Hide"
 msgid "Hide advanced settings"
 msgstr "Hide advanced settings"
 
-#: src/components/footer/AppFooter.tsx:79
+#: src/components/footer/AppFooter.tsx:84
 msgid "Home"
 msgstr "Home"
 
@@ -1306,6 +1323,10 @@ msgstr "Intellectual property"
 msgid "Invalid chart schema"
 msgstr "Invalid chart schema"
 
+#: src/routes/share.$code.tsx:72
+msgid "Invalid or expired link"
+msgstr "Invalid or expired link"
+
 #: src/components/charts/components/series-config/SeriesFilter.tsx:330
 #: src/components/filters/EntityAnalyticsFilter.tsx:323
 #: src/components/filters/MapFilter.tsx:255
@@ -1321,7 +1342,7 @@ msgstr "Județ"
 msgid "Label"
 msgstr "Label"
 
-#: src/components/footer/AppFooter.tsx:102
+#: src/components/footer/AppFooter.tsx:107
 msgid "Legal"
 msgstr "Legal"
 
@@ -1349,6 +1370,10 @@ msgstr "Line Items"
 #: src/components/charts/components/views/SeriesConfigView.tsx:147
 msgid "Line Items Aggregated Yearly"
 msgstr "Line Items Aggregated Yearly"
+
+#: src/components/ui/FloatingQuickNav.tsx:73
+msgid "Link copied to clipboard"
+msgstr "Link copied to clipboard"
 
 #: src/components/charts/components/views/ChartView.tsx:34
 msgid "Loading chart configuration..."
@@ -1438,7 +1463,7 @@ msgstr "Map Filters"
 msgid "Map View"
 msgstr "Map View"
 
-#: src/components/footer/AppFooter.tsx:89
+#: src/components/footer/AppFooter.tsx:94
 msgid "Maps"
 msgstr "Maps"
 
@@ -1566,12 +1591,12 @@ msgstr "No data available for the table."
 msgid "No data available to display financial evolution."
 msgstr "No data available to display financial evolution."
 
-#: src/routes/entities.$cui.lazy.tsx:136
+#: src/routes/entities.$cui.lazy.tsx:137
 msgid "No Data Found"
 msgstr "No Data Found"
 
-#: src/routes/entities.$cui.lazy.tsx:117
-#: src/routes/entities.$cui.lazy.tsx:133
+#: src/routes/entities.$cui.lazy.tsx:118
+#: src/routes/entities.$cui.lazy.tsx:134
 msgid "No data found for CUI {cui}."
 msgstr "No data found for CUI {cui}."
 
@@ -1587,7 +1612,7 @@ msgstr "No data series yet."
 msgid "No enabled series data available to display."
 msgstr "No enabled series data available to display."
 
-#: src/routes/entities.$cui.lazy.tsx:138
+#: src/routes/entities.$cui.lazy.tsx:139
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 
@@ -1678,7 +1703,7 @@ msgstr "Open data follows the source license."
 #~ msgid "Open Email App"
 #~ msgstr "Open Email App"
 
-#: src/components/footer/AppFooter.tsx:163
+#: src/components/footer/AppFooter.tsx:168
 msgid "Open feedback dialog"
 msgstr "Open feedback dialog"
 
@@ -1686,6 +1711,7 @@ msgstr "Open feedback dialog"
 msgid "Open in Chart Editor"
 msgstr "Open in Chart Editor"
 
+#: src/components/entities/EntityHeader.tsx:98
 #: src/components/entities/EntityInfo.tsx:42
 msgid "Open on Wikipedia"
 msgstr "Open on Wikipedia"
@@ -1776,7 +1802,11 @@ msgstr "PostHog (analytics), Sentry (error reporting), hosting providers. EU-fir
 msgid "PostHog: <0>ph_*</0> identifiers when analytics is enabled."
 msgstr "PostHog: <0>ph_*</0> identifiers when analytics is enabled."
 
-#: src/components/footer/AppFooter.tsx:105
+#: src/routes/share.$code.tsx:51
+msgid "Preparing your share link..."
+msgstr "Preparing your share link..."
+
+#: src/components/footer/AppFooter.tsx:110
 #: src/routes/privacy.lazy.tsx:17
 msgid "Privacy Policy"
 msgstr "Privacy Policy"
@@ -1785,7 +1815,7 @@ msgstr "Privacy Policy"
 msgid "Privacy Policy – Transparenta.eu"
 msgstr "Privacy Policy – Transparenta.eu"
 
-#: src/components/footer/AppFooter.tsx:75
+#: src/components/footer/AppFooter.tsx:80
 msgid "Product"
 msgstr "Product"
 
@@ -1871,11 +1901,11 @@ msgstr "Report type"
 msgid "Report Type"
 msgstr "Report Type"
 
-#: src/routes/entities.$cui.lazy.tsx:215
+#: src/routes/entities.$cui.lazy.tsx:216
 msgid "Reporting year"
 msgstr "Reporting year"
 
-#: src/routes/entities.$cui.lazy.tsx:211
+#: src/routes/entities.$cui.lazy.tsx:212
 msgid "Reporting Year:"
 msgstr "Reporting Year:"
 
@@ -2046,7 +2076,7 @@ msgstr "Selected"
 #~ msgid "Send error"
 #~ msgstr "Send error"
 
-#: src/components/footer/AppFooter.tsx:165
+#: src/components/footer/AppFooter.tsx:170
 #: src/components/sentry/SendFeedbackAction.tsx:17
 msgid "Send feedback"
 msgstr "Send feedback"
@@ -2087,11 +2117,11 @@ msgstr "Service and data sources"
 msgid "Set the basic properties for your chart"
 msgstr "Set the basic properties for your chart"
 
-#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:174
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:197
 msgid "Share Chart"
 msgstr "Share Chart"
 
-#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:221
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:244
 msgid "Share Link"
 msgstr "Share Link"
 
@@ -2196,7 +2226,7 @@ msgstr "Technologies we use"
 msgid "Terms for using the Transparenta.eu service and visualizations."
 msgstr "Terms for using the Transparenta.eu service and visualizations."
 
-#: src/components/footer/AppFooter.tsx:108
+#: src/components/footer/AppFooter.tsx:113
 msgid "Terms of Service"
 msgstr "Terms of Service"
 
@@ -2220,7 +2250,11 @@ msgstr "Test error"
 msgid "The Service provides tools to explore, analyze, and visualize public budget execution data from Romania."
 msgstr "The Service provides tools to explore, analyze, and visualize public budget execution data from Romania."
 
-#: src/routes/entities.$cui.lazy.tsx:122
+#: src/routes/share.$code.tsx:76
+msgid "The share link you are trying to access is invalid or no longer available."
+msgstr "The share link you are trying to access is invalid or no longer available."
+
+#: src/routes/entities.$cui.lazy.tsx:123
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "There was a problem fetching the details for CUI: <0>{cui}</0>."
 
