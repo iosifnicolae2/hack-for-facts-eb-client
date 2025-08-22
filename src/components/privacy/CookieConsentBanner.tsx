@@ -46,13 +46,13 @@ export function CookieConsentBanner(): ReactElement | null {
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-50 p-3 md:p-6 transition-transform duration-500 ease-in-out ${isExiting ? "translate-y-full" : "translate-y-0"
+      className={`fixed bottom-0 left-1/2 -translate-x-1/2 z-50 p-3 md:p-6 max-w-5xl w-full transition-transform duration-500 ease-in-out ${isExiting ? "translate-y-full" : "translate-y-0"
         }`}
       role="dialog"
       aria-live="polite"
       aria-label="Cookie consent"
     >
-      <div className="mx-auto max-w-5xl rounded-2xl border border-slate-200/30 bg-white/80 shadow-2xl backdrop-blur-lg supports-[backdrop-filter]:bg-white/80">
+      <div className="rounded-2xl border border-slate-200/30 bg-white/80 shadow-2xl backdrop-blur-lg supports-[backdrop-filter]:bg-white/80">
         <div className="p-6">
           <div className="flex items-center gap-3">
             <CookieIcon className="h-6 w-6 text-blue-600" />
