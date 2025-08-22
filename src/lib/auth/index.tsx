@@ -138,6 +138,9 @@ export function AuthSignOutButton({ children = 'Sign out' }: PropsWithChildren) 
 export const authKey = env.VITE_CLERK_PUBLISHABLE_KEY
 
 // Safe function for non-React modules to fetch a fresh auth token
+// TODO: fix this. The window.Clerk is undefined until provider is mounted. Due to prefetch, the token is not sent when loading the page. 
+// Find a better strategy, like waiting for the provider to be mounted or using the session cookie when using same api/client domain.
+// For protected routes, we should prevent page load or prefetching until the user is authenticated.
 export async function getAuthToken(): Promise<string | null> {
   try {
     const token = await window.Clerk?.session?.getToken()

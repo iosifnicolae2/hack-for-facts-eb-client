@@ -9,6 +9,9 @@ import { lingui } from "@lingui/vite-plugin";
 import fs from "fs";
 
 const getHttpsConfig = () => {
+  if (String(process.env.HTTPS_ENABLED) !== "true") {
+    return
+  }
   try {
     return {
       // Generate ssl certs using ./ssl.sh
