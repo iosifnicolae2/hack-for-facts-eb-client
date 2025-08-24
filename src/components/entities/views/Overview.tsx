@@ -58,9 +58,9 @@ export const Overview = ({
             />
 
             <EntityFinancialTrends
-                incomeTrend={entity?.incomeTrend ?? []}
-                expenseTrend={entity?.expenseTrend ?? []}
-                balanceTrend={entity?.balanceTrend ?? []}
+                incomeTrend={entity?.incomeTrend ?? null}
+                expenseTrend={entity?.expenseTrend ?? null}
+                balanceTrend={entity?.balanceTrend ?? null}
                 currentYear={selectedYear}
                 entityName={entity?.name ?? ''}
                 normalization={normalization}

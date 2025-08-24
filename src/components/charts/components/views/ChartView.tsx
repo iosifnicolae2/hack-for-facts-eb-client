@@ -10,10 +10,12 @@ import { AnnotationsList } from '../chart-annotations/AnnotationsList';
 import { AnnotationPositionChange } from '../chart-renderer/components/interfaces';
 import { useMemo } from 'react';
 import { t } from '@lingui/core/macro';
+import { ChartDataError } from '../ChartDataError';
+import { combineValidationResults, validateAggregatedData, validateSeriesCompleteness } from '@/lib/chart-data-validation';
 
 export function ChartView() {
   const { chart, goToConfig, goToSeriesConfig, addSeries, updateAnnotation } = useChartStore();
-  const { dataSeriesMap, isLoadingData, dataError } = useChartData({ chart });
+  const { dataSeriesMap, isLoadingData, dataError, validationResult } = useChartData({ chart });
 
   const data = useMemo(() => {
     if (!dataSeriesMap) {
@@ -25,10 +27,25 @@ export function ChartView() {
       const { data: timeSeriesData, unitMap } = convertToTimeSeriesData(dataSeriesMap, chart);
       return { timeSeriesData, aggregatedData: [], unitMap };
     } else {
-      const { data: aggregatedData, unitMap } = convertToAggregatedData(dataSeriesMap, chart);
-      return { timeSeriesData: [], aggregatedData, unitMap };
+      const { data: aggregatedData, unitMap, warnings: aggregatedConversionWarnings } = convertToAggregatedData(dataSeriesMap, chart);
+      return { timeSeriesData: [], aggregatedData, unitMap, aggregatedConversionWarnings };
     }
   }, [chart, dataSeriesMap]);
+
+  const combinedValidation = useMemo(() => {
+    const isAggregated = chart.config.chartType.endsWith('-aggr');
+    const aggregatedValidation = isAggregated
+      ? validateAggregatedData(data.aggregatedData.map((d: { id: string; value: number }) => ({ id: d.id, value: d.value })), { treatMissingAsZero: true })
+      : null;
+    const conversionWarnings = data.aggregatedConversionWarnings as ReturnType<typeof validateAggregatedData>['warnings'] | undefined;
+    const conversionWarningsResult = conversionWarnings && conversionWarnings.length > 0 ? { isValid: true, errors: [], warnings: conversionWarnings } : null;
+    const rangeStart = chart.config.yearRange?.start ?? undefined;
+    const rangeEnd = chart.config.yearRange?.end ?? undefined;
+    const completeness = dataSeriesMap && rangeStart !== undefined && rangeEnd !== undefined
+      ? validateSeriesCompleteness(dataSeriesMap, { start: rangeStart, end: rangeEnd })
+      : null;
+    return combineValidationResults(validationResult ?? null, aggregatedValidation, completeness, conversionWarningsResult ?? null);
+  }, [chart, data, dataSeriesMap, validationResult]);
 
   if (!chart) {
     return <LoadingSpinner text={t`Loading chart configuration...`} />;
@@ -43,6 +60,10 @@ export function ChartView() {
   return (
     <div className="container mx-auto py-8 px-4 md:px-6 space-y-6">
       <ChartViewHeader chart={chart} onConfigure={goToConfig} />
+
+      {combinedValidation && (!combinedValidation.isValid || combinedValidation.warnings.length > 0) && (
+        <ChartDataError validationResult={combinedValidation} />
+      )}
 
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="flex flex-col flex-grow space-y-6">

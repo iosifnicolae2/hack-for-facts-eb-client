@@ -1,20 +1,10 @@
 import { graphqlRequest } from "./graphql";
 import { createLogger } from "../logger";
 import { EntitySearchResult, EntitySearchNode } from "@/schemas/entities";
-import { Normalization } from '@/schemas/charts';
+import { Normalization, AnalyticsSeries } from '@/schemas/charts';
 
 const logger = createLogger("entities-api");
 
-export interface YearlyAmount {
-  year: number;
-  value: number;
-}
-
-export interface AnalyticsResult {
-  seriesId: string;
-  unit: string;
-  yearlyTrend: YearlyAmount[];
-}
 
 export interface ExecutionLineItem {
   account_category: string
@@ -58,9 +48,9 @@ export interface EntityDetailsData {
   totalIncome?: number | null;
   totalExpenses?: number | null;
   budgetBalance?: number | null;
-  incomeTrend?: YearlyAmount[] | null;
-  expenseTrend?: YearlyAmount[] | null;
-  balanceTrend?: YearlyAmount[] | null;
+  incomeTrend?: AnalyticsSeries | null;
+  expenseTrend?: AnalyticsSeries | null;
+  balanceTrend?: AnalyticsSeries | null;
   executionLineItems?: {
     nodes: ExecutionLineItem[];
   } | null;
@@ -113,22 +103,22 @@ const GET_ENTITY_DETAILS_QUERY = `
       totalExpenses(year: $year)
       budgetBalance(year: $year)
       incomeTrend(startYear: $startYear, endYear: $endYear, normalization: $normalization) {
-        yearlyTrend {
-          year
-          value
-        }
+        seriesId
+        xAxis { name type unit }
+        yAxis { name type unit }
+        data { x y }
       }
       expenseTrend(startYear: $startYear, endYear: $endYear, normalization: $normalization) {
-        yearlyTrend {
-          year
-          value
-        }
+        seriesId
+        xAxis { name type unit }
+        yAxis { name type unit }
+        data { x y }
       }
       balanceTrend(startYear: $startYear, endYear: $endYear, normalization: $normalization) {
-        yearlyTrend {
-          year
-          value
-        }
+        seriesId
+        xAxis { name type unit }
+        yAxis { name type unit }
+        data { x y }
       }
       reports(limit: 100) {
         nodes {
@@ -199,9 +189,9 @@ export async function getEntityDetails(
   try {
     const response = await graphqlRequest<{
       entity: (Omit<EntityDetailsData, 'incomeTrend' | 'expenseTrend' | 'balanceTrend'> & {
-        incomeTrend?: AnalyticsResult | null;
-        expenseTrend?: AnalyticsResult | null;
-        balanceTrend?: AnalyticsResult | null;
+        incomeTrend?: AnalyticsSeries | null;
+        expenseTrend?: AnalyticsSeries | null;
+        balanceTrend?: AnalyticsSeries | null;
         executionLineItemsCh?: { nodes: ExecutionLineItem[] } | null;
         executionLineItemsVn?: { nodes: ExecutionLineItem[] } | null;
       }) | null;
@@ -219,15 +209,11 @@ export async function getEntityDetails(
     }
 
     // Merge aliased execution line items back into a single field for consumers
-    const incomeTrendData = response.entity.incomeTrend?.yearlyTrend ?? [];
-    const expenseTrendData = response.entity.expenseTrend?.yearlyTrend ?? [];
-    const balanceTrendData = response.entity.balanceTrend?.yearlyTrend ?? [];
-
     const merged: EntityDetailsData = {
       ...response.entity,
-      incomeTrend: incomeTrendData,
-      expenseTrend: expenseTrendData,
-      balanceTrend: balanceTrendData,
+      incomeTrend: response.entity.incomeTrend ?? null,
+      expenseTrend: response.entity.expenseTrend ?? null,
+      balanceTrend: response.entity.balanceTrend ?? null,
       executionLineItems: {
         nodes: [
           ...(response.entity.executionLineItemsCh?.nodes ?? []),

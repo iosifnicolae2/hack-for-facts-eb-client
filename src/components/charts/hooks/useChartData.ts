@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { getChartAnalytics, getStaticChartAnalytics, StaticAnalyticsDataPoint } from "@/lib/api/charts";
-import { AnalyticsFilterType, AnalyticsInput, Chart, AnalyticsDataPoint, Series, defaultYearRange, SeriesConfig, StaticSeriesConfiguration } from "@/schemas/charts";
+import { getChartAnalytics, getStaticChartAnalytics } from "@/lib/api/charts";
+import { AnalyticsFilterType, AnalyticsInput, Chart, AnalyticsSeries, Series, defaultYearRange, SeriesConfig, StaticSeriesConfiguration } from "@/schemas/charts";
 import { useMemo } from "react";
 import { generateHash, convertDaysToMs } from "@/lib/utils";
 import { calculateAllSeriesData } from "@/lib/chart-calculation-utils";
+import { combineValidationResults } from "@/lib/chart-data-validation";
+import { validateAnalyticsSeries, sanitizeAnalyticsSeries, formatValidationErrors, ValidationResult } from "@/lib/chart-data-validation";
 
 interface UseChartDataProps {
     chart?: Chart;
@@ -27,7 +29,7 @@ export type TimeSeriesDataPoint = Record<SeriesId, DataPointPayload> & {
     year: number;
 }
 
-export type DataSeriesMap = Map<SeriesId, AnalyticsDataPoint>;
+export type DataSeriesMap = Map<SeriesId, AnalyticsSeries>;
 export type UnitMap = Map<SeriesId, Unit>;
 
 export function useChartData({ chart, enabled = true }: UseChartDataProps) {
@@ -82,13 +84,13 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
 
 
     // Transform server data to our custom data format.
-    const dataSeriesMap = useMemo(() => {
-        if (!chart) return undefined;
+    const computedSeries = useMemo(() => {
+        if (!chart) return undefined as undefined | { map: Map<SeriesId, AnalyticsSeries>; calcWarnings: ValidationResult['warnings'] };
 
-        const dataSeriesMap = new Map<SeriesId, AnalyticsDataPoint>();
+        const map = new Map<SeriesId, AnalyticsSeries>();
         if (serverChartData) {
             serverChartData.forEach(data => {
-                dataSeriesMap.set(data.seriesId, data);
+                map.set(data.seriesId, data);
             });
         }
 
@@ -96,28 +98,52 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
             const staticServerChartDataMap = staticServerChartData.reduce((acc, data) => {
                 acc.set(data.seriesId, data);
                 return acc;
-            }, new Map<string, StaticAnalyticsDataPoint>());
+            }, new Map<string, AnalyticsSeries>());
 
             staticSeries.forEach(series => {
                 if (series.seriesId) {
                     const data = staticServerChartDataMap.get(series.seriesId);
                     if (data) {
-                        dataSeriesMap.set(series.id, { ...data, seriesId: series.id, unit: series.unit || data.unit });
+                        map.set(series.id, { ...data, seriesId: series.id, yAxis: { ...data.yAxis, unit: series.unit || data.yAxis.unit } });
                     }
                 }
             });
         }
 
-        // Updates the dataSeriesMap with the calculated data, custom series, etc.
-        calculateAllSeriesData(chart.series, dataSeriesMap);
-        return dataSeriesMap;
+        // Updates the map with the calculated data, custom series, etc.
+        const calc = calculateAllSeriesData(chart.series, map);
+        return { map: calc.dataSeriesMap, calcWarnings: calc.warnings };
 
     }, [chart, serverChartData, staticServerChartData, staticSeries]);
 
+    const dataSeriesMap = computedSeries?.map;
+    const calculationWarnings = computedSeries?.calcWarnings ?? [];
+
+    // Validate the data
+    const validationResult = useMemo(() => {
+        if (!dataSeriesMap) return null;
+        const base = validateAnalyticsSeries(dataSeriesMap);
+        const calcWarningsResult = calculationWarnings.length > 0 ? { isValid: true, errors: [], warnings: calculationWarnings } as ValidationResult : null;
+        return combineValidationResults(base, calcWarningsResult);
+    }, [dataSeriesMap, calculationWarnings]);
+
+    // Create sanitized data map if needed
+    const sanitizedDataSeriesMap = useMemo(() => {
+        if (!dataSeriesMap || !validationResult) return dataSeriesMap;
+        
+        if (!validationResult.isValid || validationResult.warnings.length > 0) {
+            console.warn('Chart data validation adjustments applied:', formatValidationErrors(validationResult));
+            return sanitizeAnalyticsSeries(dataSeriesMap, validationResult);
+        }
+        
+        return dataSeriesMap;
+    }, [dataSeriesMap, validationResult]);
+
     return {
-        dataSeriesMap,
+        dataSeriesMap: sanitizedDataSeriesMap,
         isLoadingData: isLoadingData || isLoadingStaticData,
         dataError: dataError || staticDataError,
+        validationResult,
     };
 }
 
@@ -144,12 +170,12 @@ function getStaticSeriesInputHash(seriesIds: string[]) {
 }
 
 
-export function convertToTimeSeriesData(dataSeriesMap: Map<SeriesId, AnalyticsDataPoint>, chart: Chart): { data: TimeSeriesDataPoint[], unitMap: UnitMap } {
+export function convertToTimeSeriesData(dataSeriesMap: Map<SeriesId, AnalyticsSeries>, chart: Chart): { data: TimeSeriesDataPoint[], unitMap: UnitMap } {
     if (dataSeriesMap.size === 0) return { data: [], unitMap: new Map<SeriesId, Unit>() };
 
     const allYears = new Set<number>();
     dataSeriesMap.forEach(dataPoint => {
-        dataPoint.yearlyTrend.forEach(point => allYears.add(point.year));
+        dataPoint.data.forEach(point => allYears.add(Number(point.x)));
     });
 
     const unitMap = new Map<SeriesId, Unit>();
@@ -168,9 +194,9 @@ export function convertToTimeSeriesData(dataSeriesMap: Map<SeriesId, AnalyticsDa
     const data = filteredYears.map(year => {
         const dataPoint: TimeSeriesDataPoint = {} as TimeSeriesDataPoint;
         dataSeriesMap.forEach((data, seriesId) => {
-            const yearData = data.yearlyTrend.find(p => p.year === year);
-            const initialValue = yearData?.value || 0;
-            const initialUnit = data.unit || '';
+            const yearData = data.data.find(p => Number(p.x) === year);
+            const initialValue = yearData?.y || 0;
+            const initialUnit = data.yAxis.unit || '';
 
             const series = seriesMap[seriesId];
 
@@ -193,10 +219,10 @@ export function convertToTimeSeriesData(dataSeriesMap: Map<SeriesId, AnalyticsDa
             const firstSeriesMap = new Map<Unit, { unit: Unit, value: number }>();
             chart.series.forEach(series => {
                 const data = dataSeriesMap.get(series.id);
-                const unit = data?.unit || '';
+                const unit = data?.yAxis.unit || '';
                 const firstSeries = firstSeriesMap.get(unit);
                 if (!firstSeries) {
-                    const value = data?.yearlyTrend.find(p => p.year === year)?.value || 0;
+                    const value = data?.data.find(p => Number(p.x) === year)?.y || 0;
                     firstSeriesMap.set(unit, { unit, value });
                 }
             })
@@ -223,7 +249,7 @@ export function convertToTimeSeriesData(dataSeriesMap: Map<SeriesId, AnalyticsDa
     return { data, unitMap };
 }
 
-export function convertToAggregatedData(dataSeriesMap: DataSeriesMap, chart: Chart): { data: DataPointPayload[], unitMap: UnitMap } {
+export function convertToAggregatedData(dataSeriesMap: DataSeriesMap, chart: Chart): { data: DataPointPayload[], unitMap: UnitMap, warnings?: ValidationResult['warnings'] } {
 
     if (!chart || !dataSeriesMap) return { data: [], unitMap: new Map<SeriesId, Unit>() };
 
@@ -239,14 +265,18 @@ export function convertToAggregatedData(dataSeriesMap: DataSeriesMap, chart: Cha
 
     let firstSeriesValue = 1;
 
+    const warnings: ValidationResult['warnings'] = [];
+
     const data = enabledSeries.map((series: Series, index: number) => {
         const dataSeries = dataSeriesMap.get(series.id);
-        const totalValue = dataSeries?.yearlyTrend
-            .filter(trend => trend.year >= startYear && trend.year <= endYear)
-            .reduce((acc, trend) => acc + trend.value, 0) ?? 0;
+        const totalValueRaw = dataSeries?.data
+            .filter(trend => Number(trend.x) >= startYear && Number(trend.x) <= endYear)
+            .reduce((acc, trend) => acc + trend.y, 0);
+
+        const totalValue = Number.isFinite(totalValueRaw ?? 0) ? (totalValueRaw as number) : 0;
 
         const initialValue = totalValue;
-        const initialUnit = dataSeries?.unit || '';
+        const initialUnit = dataSeries?.yAxis.unit || '';
         let value = initialValue;
         let unit = initialUnit;
 
@@ -254,7 +284,27 @@ export function convertToAggregatedData(dataSeriesMap: DataSeriesMap, chart: Cha
             firstSeriesValue = totalValue ?? 0;
         }
         if (isRelative) {
-            value = (totalValue / firstSeriesValue) * 100;
+            // Guard division by zero or invalid values
+            if (!firstSeriesValue || !Number.isFinite(firstSeriesValue)) {
+                warnings.push({
+                    type: 'auto_adjusted_value',
+                    seriesId: series.id,
+                    message: `Relative base is ${firstSeriesValue}. Auto-set value to 0 for aggregated period ${startYear}-${endYear}.`,
+                    value: { base: firstSeriesValue, total: totalValue },
+                  });
+                value = 0;
+            } else {
+                const computed = (totalValue / firstSeriesValue) * 100;
+                if (!Number.isFinite(computed)) {
+                    warnings.push({
+                        type: 'auto_adjusted_value',
+                        seriesId: series.id,
+                        message: `Computed relative value not finite. Auto-set to 0 for ${startYear}-${endYear}.`,
+                        value: { base: firstSeriesValue, total: totalValue },
+                      });
+                }
+                value = Number.isFinite(computed) ? computed : 0;
+            }
             unit = "%";
         }
 
@@ -273,5 +323,5 @@ export function convertToAggregatedData(dataSeriesMap: DataSeriesMap, chart: Cha
         return aggregatedDataPoint;
     });
 
-    return { data, unitMap };
+    return { data, unitMap, warnings };
 }

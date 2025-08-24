@@ -238,18 +238,31 @@ export type Chart = z.infer<typeof ChartSchema>;
 // CHART STATE (Runtime data)
 // ============================================================================
 
-export const YearlyTrendPointSchema = z.object({
-  year: z.number(),
-  value: z.number(),
-});
-export type YearlyTrendPoint = z.infer<typeof YearlyTrendPointSchema>;
+// New server data model types
+export const AxisDataTypeEnum = z.enum(['STRING', 'INTEGER', 'FLOAT', 'DATE']);
+export type AxisDataType = z.infer<typeof AxisDataTypeEnum>;
 
-export const AnalyticsDataPointSchema = z.object({
-  seriesId: z.string(),
-  unit: z.string().optional(),
-  yearlyTrend: z.array(YearlyTrendPointSchema),
+export const AxisSchema = z.object({
+  name: z.string(),
+  type: AxisDataTypeEnum,
+  unit: z.string(),
 });
-export type AnalyticsDataPoint = z.infer<typeof AnalyticsDataPointSchema>;
+export type Axis = z.infer<typeof AxisSchema>;
+
+export const AnalyticsSeriesPointSchema = z.object({
+  x: z.string(),
+  y: z.number(),
+});
+export type AnalyticsSeriesPoint = z.infer<typeof AnalyticsSeriesPointSchema>;
+
+export const AnalyticsSeriesSchema = z.object({
+  seriesId: z.string(),
+  xAxis: AxisSchema,
+  yAxis: AxisSchema,
+  data: z.array(AnalyticsSeriesPointSchema),
+});
+export type AnalyticsSeries = z.infer<typeof AnalyticsSeriesSchema>;
+
 
 
 export const AnalyticsInputSchema = z.object({

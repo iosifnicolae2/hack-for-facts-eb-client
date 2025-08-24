@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { EntityDetailsData, YearlyAmount } from '@/lib/api/entities';
+import { EntityDetailsData } from '@/lib/api/entities';
 import { Chart, SeriesConfiguration, Normalization } from '@/schemas/charts';
 import { useParams } from '@tanstack/react-router';
 import { getChapterMap, getTopFunctionalGroupCodes } from '@/lib/analytics-utils';
@@ -110,7 +110,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
   const years = useMemo(() => {
     if (!entity) return [];
     const trend = type === 'income' ? entity.incomeTrend : entity.expenseTrend;
-    const allYears = new Set(trend?.map((item: YearlyAmount) => item.year));
+    const allYears = new Set(trend?.data.map((item) => Number(item.x)));
     return Array.from(allYears).sort((a: number, b: number) => b - a);
   }, [entity, type]);
 

@@ -1,4 +1,5 @@
-import { Series, Calculation, Operation, AnalyticsDataPoint, YearlyTrendPoint, Chart, defaultYearRange } from '@/schemas/charts';
+import { Series, Calculation, Operation, AnalyticsSeries, Chart, defaultYearRange } from '@/schemas/charts';
+import type { DataValidationError } from '@/lib/chart-data-validation';
 
 // ============================================================================
 // CYCLE DETECTION
@@ -89,28 +90,31 @@ function addCalculationDependencies(calculation: Calculation, dependencies: Set<
  */
 export function evaluateCalculation(
   calculation: Calculation,
-  seriesData: Map<string, AnalyticsDataPoint>,
-  allSeries: Series[]
-): YearlyTrendPoint[] {
-  const operandResults: YearlyTrendPoint[][] = [];
+  seriesData: Map<string, AnalyticsSeries>,
+  allSeries: Series[],
+  seriesIdForWarnings: string
+): { points: { x: string; y: number }[]; warnings: DataValidationError[] } {
+  const operandResults: { x: string; y: number }[][] = [];
+  const warnings: DataValidationError[] = [];
 
   // Evaluate each operand
   for (const operand of calculation.args) {
     if (typeof operand === 'number') {
       // Number operand
       const years = Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, i) => i + defaultYearRange.start);
-      operandResults.push(years.map(year => ({ year, value: operand })));
+      operandResults.push(years.map(year => ({ x: String(year), y: operand })));
     } else if (typeof operand === 'string') {
       // Direct series reference
       const data = seriesData.get(operand);
       if (data) {
-        operandResults.push(data.yearlyTrend);
+        operandResults.push(data.data);
       } else {
         // Check if it's a calculation series that needs evaluation
         const series = allSeries.find(s => s.id === operand);
         if (series && series.type === 'aggregated-series-calculation') {
-          const result = evaluateCalculation(series.calculation, seriesData, allSeries);
-          operandResults.push(result);
+          const result = evaluateCalculation(series.calculation, seriesData, allSeries, series.id);
+          operandResults.push(result.points);
+          warnings.push(...result.warnings);
         } else {
           // Series not found or no data - use empty array
           operandResults.push([]);
@@ -118,13 +122,15 @@ export function evaluateCalculation(
       }
     } else {
       // Nested calculation
-      const result = evaluateCalculation(operand, seriesData, allSeries);
-      operandResults.push(result);
+      const result = evaluateCalculation(operand, seriesData, allSeries, seriesIdForWarnings);
+      operandResults.push(result.points);
+      warnings.push(...result.warnings);
     }
   }
 
   // Perform the operation
-  return performOperation(calculation.op, operandResults);
+  const opResult = performOperation(calculation.op, operandResults, seriesIdForWarnings);
+  return { points: opResult.points, warnings: warnings.concat(opResult.warnings) };
 }
 
 /**
@@ -132,34 +138,36 @@ export function evaluateCalculation(
  */
 function performOperation(
   operation: Operation,
-  operands: YearlyTrendPoint[][]
-): YearlyTrendPoint[] {
+  operands: { x: string; y: number }[][],
+  seriesIdForWarnings: string
+): { points: { x: string; y: number }[]; warnings: DataValidationError[] } {
   if (operands.length === 0) {
-    return [];
+    return { points: [], warnings: [] };
   }
 
   // Get all unique years across all operands
-  const allYears = new Set<number>();
+  const allYears = new Set<string>();
   for (const operand of operands) {
     for (const point of operand) {
-      allYears.add(point.year);
+      allYears.add(point.x);
     }
   }
 
   // Sort years
-  const sortedYears = Array.from(allYears).sort((a, b) => a - b);
+  const sortedYears = Array.from(allYears).sort((a, b) => Number(a) - Number(b));
 
   // Create maps for quick lookup
   const operandMaps = operands.map(operand => {
-    const map = new Map<number, number>();
+    const map = new Map<string, number>();
     for (const point of operand) {
-      map.set(point.year, point.value);
+      map.set(point.x, point.y);
     }
     return map;
   });
 
   // Calculate result for each year
-  const result: YearlyTrendPoint[] = [];
+  const result: { x: string; y: number }[] = [];
+  const warnings: DataValidationError[] = [];
 
   for (const year of sortedYears) {
     let value: number | null = null;
@@ -214,20 +222,34 @@ function performOperation(
                 value /= divisor;
               } else if (divisor === 0) {
                 value = null; // Division by zero
+                warnings.push({
+                  type: 'auto_adjusted_value',
+                  seriesId: seriesIdForWarnings,
+                  message: `Division by zero at year ${year} (auto-removed)`,
+                  value: { numerator, denominator: divisor },
+                });
                 break;
               }
             }
+          } else if (denominator === 0) {
+            value = null;
+            warnings.push({
+              type: 'auto_adjusted_value',
+              seriesId: seriesIdForWarnings,
+              message: `Division by zero at year ${year} (auto-removed)`,
+              value: { numerator, denominator },
+            });
           }
         }
         break;
     }
 
     if (value !== null) {
-      result.push({ year, value });
+      result.push({ x: year, y: value });
     }
   }
 
-  return result;
+  return { points: result, warnings };
 }
 
 // ============================================================================
@@ -274,27 +296,31 @@ export function validateNewCalculationSeries(
  */
 export function calculateAllSeriesData(
   series: Series[],
-  dataSeriesMap: Map<string, AnalyticsDataPoint>
-): Map<string, AnalyticsDataPoint> {
+  dataSeriesMap: Map<string, AnalyticsSeries>
+): { dataSeriesMap: Map<string, AnalyticsSeries>; warnings: DataValidationError[] } {
   // Sort series by dependency order (topological sort)
   const sortedSeries = topologicalSortSeries(series);
 
   const defaultYears = Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, index) => index + defaultYearRange.start);
+
+  const warnings: DataValidationError[] = [];
 
   // Set custom series and custom value series data. Used by calculation series.
   for (const s of series) {
     if (s.type === 'custom-series') {
       dataSeriesMap.set(s.id, {
         seriesId: s.id,
-        unit: s.unit,
-        yearlyTrend: s.data.map(d => ({ year: d.year, value: d.value })),
+        xAxis: { name: 'Year', type: 'INTEGER', unit: '' },
+        yAxis: { name: 'Amount', type: 'FLOAT', unit: s.unit || '' },
+        data: s.data.map(d => ({ x: String(d.year), y: d.value })),
       });
     }
     if (s.type === 'custom-series-value') {
       dataSeriesMap.set(s.id, {
         seriesId: s.id,
-        unit: s.unit,
-        yearlyTrend: defaultYears.map(year => ({ year, value: s.value })),
+        xAxis: { name: 'Year', type: 'INTEGER', unit: '' },
+        yAxis: { name: 'Amount', type: 'FLOAT', unit: s.unit || '' },
+        data: defaultYears.map(year => ({ x: String(year), y: s.value })),
       });
     }
   }
@@ -302,16 +328,18 @@ export function calculateAllSeriesData(
   // Calculate each calculation series in order
   for (const s of sortedSeries) {
     if (s.type === 'aggregated-series-calculation') {
-      const yearlyTrend = evaluateCalculation(s.calculation, dataSeriesMap, series);
+      const { points, warnings: calcWarnings } = evaluateCalculation(s.calculation, dataSeriesMap, series, s.id);
+      warnings.push(...calcWarnings);
       dataSeriesMap.set(s.id, {
         seriesId: s.id,
-        unit: s.unit,
-        yearlyTrend,
+        xAxis: { name: 'Year', type: 'INTEGER', unit: '' },
+        yAxis: { name: 'Amount', type: 'FLOAT', unit: s.unit || '' },
+        data: points,
       });
     }
   }
 
-  return dataSeriesMap;
+  return { dataSeriesMap, warnings };
 }
 
 /**

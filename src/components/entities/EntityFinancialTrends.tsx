@@ -11,15 +11,15 @@ import { useParams } from '@tanstack/react-router';
 import { buildEntityIncomeExpenseChartLink } from '@/lib/chart-links';
 import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
-import { YearlyAmount } from '@/lib/api/entities';
+import { AnalyticsSeries } from '@/schemas/charts';
 import { Normalization } from '@/schemas/charts';
 import { NormalizationSelector } from '@/components/common/NormalizationSelector';
 import { getNormalizationUnit } from '@/lib/utils';
 
 interface EntityFinancialTrendsProps {
-  incomeTrend?: YearlyAmount[] | null;
-  expenseTrend?: YearlyAmount[] | null;
-  balanceTrend?: YearlyAmount[] | null;
+  incomeTrend?: AnalyticsSeries | null;
+  expenseTrend?: AnalyticsSeries | null;
+  balanceTrend?: AnalyticsSeries | null;
   currentYear: number;
   entityName: string;
   normalization: Normalization;
@@ -32,20 +32,20 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
 
   const { cui } = useParams({ from: '/entities/$cui' });
 
-  const trendsAvailable = incomeTrend?.length || expenseTrend?.length || balanceTrend?.length;
+  const trendsAvailable = incomeTrend?.data.length || expenseTrend?.data.length || balanceTrend?.data.length;
 
   const mergedData = useMemo(() => {
     const years = new Set([
-      ...(expenseTrend || []).map(p => p.year),
-      ...(incomeTrend || []).map(p => p.year),
-      ...(balanceTrend || []).map(p => p.year)
-    ],);
+      ...(expenseTrend?.data || []).map(p => Number(p.x)),
+      ...(incomeTrend?.data || []).map(p => Number(p.x)),
+      ...(balanceTrend?.data || []).map(p => Number(p.x))
+    ]);
 
     return Array.from(years).sort().map(year => ({
       year,
-      expense: expenseTrend?.find(p => p.year === year)?.value ?? 0,
-      income: incomeTrend?.find(p => p.year === year)?.value ?? 0,
-      balance: balanceTrend?.find(p => p.year === year)?.value ?? 0,
+      expense: expenseTrend?.data.find(p => Number(p.x) === year)?.y ?? 0,
+      income: incomeTrend?.data.find(p => Number(p.x) === year)?.y ?? 0,
+      balance: balanceTrend?.data.find(p => Number(p.x) === year)?.y ?? 0,
     }));
   }, [incomeTrend, expenseTrend, balanceTrend]);
 
