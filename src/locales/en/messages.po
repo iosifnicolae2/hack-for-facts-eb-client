@@ -369,9 +369,17 @@ msgstr "Chart – Transparenta.eu"
 msgid "Chart Configuration"
 msgstr "Chart Configuration"
 
+#: src/components/charts/components/ChartDataError.tsx:227
+msgid "Chart Data Error"
+msgstr "Chart Data Error"
+
 #: src/routes/map.lazy.tsx:237
 msgid "Chart data is loading or not available."
 msgstr "Chart data is loading or not available."
+
+#: src/components/charts/components/ChartDataError.tsx:227
+msgid "Chart Data Warning"
+msgstr "Chart Data Warning"
 
 #: src/components/charts/components/chart-config/ChartInfoCard.tsx:27
 msgid "Chart Information"
@@ -546,6 +554,15 @@ msgstr "Cookie Policy – Transparenta.eu"
 msgid "Cookie Settings"
 msgstr "Cookie Settings"
 
+#: src/components/charts/components/ChartDataError.tsx:278
+msgid "Copied to clipboard"
+msgstr "Copied to clipboard"
+
+#: src/components/charts/components/ChartDataError.tsx:286
+msgid "Copied!"
+msgstr "Copied!"
+
+#: src/components/charts/components/ChartDataError.tsx:286
 #: src/components/charts/components/views/AnnotationConfigView.tsx:217
 #: src/components/charts/components/views/SeriesConfigView.tsx:190
 msgid "Copy"
@@ -562,6 +579,10 @@ msgstr "Copy Data"
 #: src/components/footer/ChatFab.tsx:157
 #~ msgid "Copy Email Address"
 #~ msgstr "Copy Email Address"
+
+#: src/components/charts/components/ChartDataError.tsx:278
+msgid "Copy error report to clipboard"
+msgstr "Copy error report to clipboard"
 
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:61
 msgid "Copy Series"
@@ -933,6 +954,10 @@ msgstr "Entity type"
 msgid "Entity Type"
 msgstr "Entity Type"
 
+#: src/components/charts/components/ChartDataError.tsx:286
+msgid "Error"
+msgstr "Error"
+
 #: src/routes/entities.$cui.lazy.tsx:121
 msgid "Error Fetching Entity Details"
 msgstr "Error Fetching Entity Details"
@@ -968,6 +993,10 @@ msgstr "Error: Invalid data point type."
 #: src/components/charts/components/series-config/CalculationConfig.tsx:248
 msgid "Error: Series not found"
 msgstr "Error: Series not found"
+
+#: src/components/charts/components/ChartDataError.tsx:303
+msgid "Errors"
+msgstr "Errors"
 
 #: src/routes/cookies.lazy.tsx:39
 msgid "Essential cookies"
@@ -1256,6 +1285,10 @@ msgstr "Hide"
 msgid "Hide advanced settings"
 msgstr "Hide advanced settings"
 
+#: src/components/charts/components/ChartDataError.tsx:263
+msgid "Hide details"
+msgstr "Hide details"
+
 #: src/components/footer/AppFooter.tsx:84
 msgid "Home"
 msgstr "Home"
@@ -1324,6 +1357,10 @@ msgstr "Intellectual property"
 msgid "Invalid chart schema"
 msgstr "Invalid chart schema"
 
+#: src/components/charts/components/ChartDataError.tsx:231
+msgid "Invalid data detected in chart series"
+msgstr "Invalid data detected in chart series"
+
 #: src/routes/share.$code.tsx:72
 msgid "Invalid or expired link"
 msgstr "Invalid or expired link"
@@ -1376,7 +1413,7 @@ msgstr "Line Items Aggregated Yearly"
 msgid "Link copied to clipboard"
 msgstr "Link copied to clipboard"
 
-#: src/components/charts/components/views/ChartView.tsx:34
+#: src/components/charts/components/views/ChartView.tsx:65
 msgid "Loading chart configuration..."
 msgstr "Loading chart configuration..."
 
@@ -2154,6 +2191,10 @@ msgstr "Show Annotations"
 msgid "Show Data Labels"
 msgstr "Show Data Labels"
 
+#: src/components/charts/components/ChartDataError.tsx:268
+msgid "Show details"
+msgstr "Show details"
+
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:222
 msgid "Show Diff"
 msgstr "Show Diff"
@@ -2185,6 +2226,10 @@ msgstr "Show Technical Details"
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:65
 msgid "Show Tooltip"
 msgstr "Show Tooltip"
+
+#: src/components/charts/components/ChartDataError.tsx:232
+msgid "Some data issues were automatically resolved"
+msgstr "Some data issues were automatically resolved"
 
 #. js-lingui-explicit-id
 #: src/lib/errors-utils.ts:21
@@ -2264,6 +2309,10 @@ msgstr "The share link you are trying to access is invalid or no longer availabl
 #: src/routes/entities.$cui.lazy.tsx:123
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "There was a problem fetching the details for CUI: <0>{cui}</0>."
+
+#: src/components/charts/components/ChartDataError.tsx:175
+msgid "These issues were auto-resolved (invalid points removed or values set to 0) so the chart could render."
+msgstr "These issues were auto-resolved (invalid points removed or values set to 0) so the chart could render."
 
 #: src/components/charts/components/views/ChartConfigView.tsx:73
 msgid "This action cannot be undone. It will permanently remove the chart and its configuration."
@@ -2498,6 +2547,10 @@ msgstr "View and share your chart."
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:122
 msgid "View Chart"
 msgstr "View Chart"
+
+#: src/components/charts/components/ChartDataError.tsx:311
+msgid "Warnings"
+msgstr "Warnings"
 
 #. js-lingui-explicit-id
 #: src/lib/errors-utils.ts:13

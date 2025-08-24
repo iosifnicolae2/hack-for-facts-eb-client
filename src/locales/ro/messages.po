@@ -369,9 +369,17 @@ msgstr "Grafic – Transparenta.eu"
 msgid "Chart Configuration"
 msgstr "Configurare grafic"
 
+#: src/components/charts/components/ChartDataError.tsx:227
+msgid "Chart Data Error"
+msgstr "Eroare în datele graficului"
+
 #: src/routes/map.lazy.tsx:237
 msgid "Chart data is loading or not available."
 msgstr "Datele graficului se încarcă sau nu sunt disponibile."
+
+#: src/components/charts/components/ChartDataError.tsx:227
+msgid "Chart Data Warning"
+msgstr "Avertisment pentru datele graficului"
 
 #: src/components/charts/components/chart-config/ChartInfoCard.tsx:27
 msgid "Chart Information"
@@ -546,6 +554,15 @@ msgstr "Politica privind cookie-urile – Transparenta.eu"
 msgid "Cookie Settings"
 msgstr "Setări cookie-uri"
 
+#: src/components/charts/components/ChartDataError.tsx:278
+msgid "Copied to clipboard"
+msgstr "Copiat în clipboard"
+
+#: src/components/charts/components/ChartDataError.tsx:286
+msgid "Copied!"
+msgstr "Copiat!"
+
+#: src/components/charts/components/ChartDataError.tsx:286
 #: src/components/charts/components/views/AnnotationConfigView.tsx:217
 #: src/components/charts/components/views/SeriesConfigView.tsx:190
 msgid "Copy"
@@ -562,6 +579,10 @@ msgstr "Copiază datele"
 #: src/components/footer/ChatFab.tsx:157
 #~ msgid "Copy Email Address"
 #~ msgstr "Copiază Adresa de Email"
+
+#: src/components/charts/components/ChartDataError.tsx:278
+msgid "Copy error report to clipboard"
+msgstr "Copiază raportul de erori în clipboard"
 
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:61
 msgid "Copy Series"
@@ -933,6 +954,10 @@ msgstr "Tip entitate"
 msgid "Entity Type"
 msgstr "Tip entitate"
 
+#: src/components/charts/components/ChartDataError.tsx:286
+msgid "Error"
+msgstr "Eroare"
+
 #: src/routes/entities.$cui.lazy.tsx:121
 msgid "Error Fetching Entity Details"
 msgstr "Eroare la preluarea detaliilor entității"
@@ -968,6 +993,10 @@ msgstr "Eroare: Tip de dată invalid."
 #: src/components/charts/components/series-config/CalculationConfig.tsx:248
 msgid "Error: Series not found"
 msgstr "Eroare: Seria nu a fost găsită"
+
+#: src/components/charts/components/ChartDataError.tsx:303
+msgid "Errors"
+msgstr "Erori"
 
 #: src/routes/cookies.lazy.tsx:39
 msgid "Essential cookies"
@@ -1251,6 +1280,10 @@ msgstr "Ascunde"
 msgid "Hide advanced settings"
 msgstr "Ascunde setările avansate"
 
+#: src/components/charts/components/ChartDataError.tsx:263
+msgid "Hide details"
+msgstr "Ascunde detaliile"
+
 #: src/components/footer/AppFooter.tsx:84
 msgid "Home"
 msgstr "Acasă"
@@ -1319,6 +1352,10 @@ msgstr "Proprietate intelectuală"
 msgid "Invalid chart schema"
 msgstr "Schemă grafic invalidă"
 
+#: src/components/charts/components/ChartDataError.tsx:231
+msgid "Invalid data detected in chart series"
+msgstr "Date invalide detectate în seriile graficului"
+
 #: src/routes/share.$code.tsx:72
 msgid "Invalid or expired link"
 msgstr "Link invalid sau expirat"
@@ -1371,7 +1408,7 @@ msgstr "Linii bugetare agregate anual"
 msgid "Link copied to clipboard"
 msgstr "Link copiat în clipboard"
 
-#: src/components/charts/components/views/ChartView.tsx:34
+#: src/components/charts/components/views/ChartView.tsx:65
 msgid "Loading chart configuration..."
 msgstr "Se încarcă configurația graficului..."
 
@@ -2149,6 +2186,10 @@ msgstr "Afișează adnotări"
 msgid "Show Data Labels"
 msgstr "Afișează etichetele de date"
 
+#: src/components/charts/components/ChartDataError.tsx:268
+msgid "Show details"
+msgstr "Afișează detaliile"
+
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:222
 msgid "Show Diff"
 msgstr "Afișează diferența"
@@ -2180,6 +2221,10 @@ msgstr "Arată detaliile tehnice"
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:65
 msgid "Show Tooltip"
 msgstr "Afișează indiciu"
+
+#: src/components/charts/components/ChartDataError.tsx:232
+msgid "Some data issues were automatically resolved"
+msgstr "Unele probleme cu datele au fost rezolvate automat"
 
 #. js-lingui-explicit-id
 #: src/lib/errors-utils.ts:21
@@ -2259,6 +2304,10 @@ msgstr "Linkul de partajare pe care încerci să-l accesezi este invalid sau nu 
 #: src/routes/entities.$cui.lazy.tsx:123
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "A apărut o problemă la preluarea detaliilor pentru CUI: <0>{cui}</0>."
+
+#: src/components/charts/components/ChartDataError.tsx:175
+msgid "These issues were auto-resolved (invalid points removed or values set to 0) so the chart could render."
+msgstr "Aceste probleme au fost rezolvate automat (punctele invalide au fost eliminate sau valorile setate la 0) astfel încât graficul să poată fi afișat."
 
 #: src/components/charts/components/views/ChartConfigView.tsx:73
 msgid "This action cannot be undone. It will permanently remove the chart and its configuration."
@@ -2493,6 +2542,10 @@ msgstr "Vizualizați și partajați graficul."
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:122
 msgid "View Chart"
 msgstr "Vezi graficul"
+
+#: src/components/charts/components/ChartDataError.tsx:311
+msgid "Warnings"
+msgstr "Avertismente"
 
 #. js-lingui-explicit-id
 #: src/lib/errors-utils.ts:13

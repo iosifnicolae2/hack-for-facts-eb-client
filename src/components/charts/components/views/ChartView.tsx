@@ -11,41 +11,55 @@ import { AnnotationPositionChange } from '../chart-renderer/components/interface
 import { useMemo } from 'react';
 import { t } from '@lingui/core/macro';
 import { ChartDataError } from '../ChartDataError';
-import { combineValidationResults, validateAggregatedData, validateSeriesCompleteness } from '@/lib/chart-data-validation';
+import { combineValidationResults, validateSeriesCompleteness } from '@/lib/chart-data-validation';
 
 export function ChartView() {
   const { chart, goToConfig, goToSeriesConfig, addSeries, updateAnnotation } = useChartStore();
   const { dataSeriesMap, isLoadingData, dataError, validationResult } = useChartData({ chart });
 
-  const data = useMemo(() => {
+  const processedData = useMemo(() => {
     if (!dataSeriesMap) {
-      return { timeSeriesData: [], aggregatedData: [], unitMap: new Map<SeriesId, Unit>() };
+      return {
+        timeSeriesData: [],
+        aggregatedData: [],
+        unitMap: new Map<SeriesId, Unit>(),
+        processingValidation: { isValid: true, errors: [], warnings: [] }
+      };
     }
 
     const isAggregated = chart.config.chartType.endsWith('-aggr');
     if (!isAggregated) {
-      const { data: timeSeriesData, unitMap } = convertToTimeSeriesData(dataSeriesMap, chart);
-      return { timeSeriesData, aggregatedData: [], unitMap };
+      const result = convertToTimeSeriesData(dataSeriesMap, chart);
+      return {
+        timeSeriesData: result.data,
+        aggregatedData: [],
+        unitMap: result.unitMap,
+        processingValidation: result.validation
+      };
     } else {
-      const { data: aggregatedData, unitMap, warnings: aggregatedConversionWarnings } = convertToAggregatedData(dataSeriesMap, chart);
-      return { timeSeriesData: [], aggregatedData, unitMap, aggregatedConversionWarnings };
+      const result = convertToAggregatedData(dataSeriesMap, chart);
+      return {
+        timeSeriesData: [],
+        aggregatedData: result.data,
+        unitMap: result.unitMap,
+        processingValidation: result.validation
+      };
     }
   }, [chart, dataSeriesMap]);
 
   const combinedValidation = useMemo(() => {
-    const isAggregated = chart.config.chartType.endsWith('-aggr');
-    const aggregatedValidation = isAggregated
-      ? validateAggregatedData(data.aggregatedData.map((d: { id: string; value: number }) => ({ id: d.id, value: d.value })), { treatMissingAsZero: true })
-      : null;
-    const conversionWarnings = data.aggregatedConversionWarnings as ReturnType<typeof validateAggregatedData>['warnings'] | undefined;
-    const conversionWarningsResult = conversionWarnings && conversionWarnings.length > 0 ? { isValid: true, errors: [], warnings: conversionWarnings } : null;
-    const rangeStart = chart.config.yearRange?.start ?? undefined;
-    const rangeEnd = chart.config.yearRange?.end ?? undefined;
-    const completeness = dataSeriesMap && rangeStart !== undefined && rangeEnd !== undefined
+    const rangeStart = chart.config.yearRange?.start;
+    const rangeEnd = chart.config.yearRange?.end;
+    const completenessValidation = dataSeriesMap && rangeStart !== undefined && rangeEnd !== undefined
       ? validateSeriesCompleteness(dataSeriesMap, { start: rangeStart, end: rangeEnd })
       : null;
-    return combineValidationResults(validationResult ?? null, aggregatedValidation, completeness, conversionWarningsResult ?? null);
-  }, [chart, data, dataSeriesMap, validationResult]);
+    
+    return combineValidationResults(
+      validationResult ?? null,
+      processedData.processingValidation,
+      completenessValidation
+    );
+  }, [chart.config.yearRange, dataSeriesMap, validationResult, processedData.processingValidation]);
 
   if (!chart) {
     return <LoadingSpinner text={t`Loading chart configuration...`} />;
@@ -61,7 +75,7 @@ export function ChartView() {
     <div className="container mx-auto py-8 px-4 md:px-6 space-y-6">
       <ChartViewHeader chart={chart} onConfigure={goToConfig} />
 
-      {combinedValidation && (!combinedValidation.isValid || combinedValidation.warnings.length > 0) && (
+      {!isLoadingData && combinedValidation && (!combinedValidation.isValid || combinedValidation.warnings.length > 0) && (
         <ChartDataError validationResult={combinedValidation} />
       )}
 
@@ -69,7 +83,9 @@ export function ChartView() {
         <div className="flex flex-col flex-grow space-y-6">
           <div>
             <ChartDisplayArea
-              {...data}
+              timeSeriesData={processedData.timeSeriesData}
+              aggregatedData={processedData.aggregatedData}
+              unitMap={processedData.unitMap}
               chart={chart}
               dataMap={dataSeriesMap}
               isLoading={isLoadingData}
