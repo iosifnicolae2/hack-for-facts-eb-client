@@ -67,8 +67,12 @@ msgid "<0>No Government Affiliation:</0> Transparenta.eu is an independent proje
 msgstr "<0>Nicio afiliere guvernamentală:</0> Transparenta.eu este un proiect independent și nu este afiliat, autorizat, întreținut, sponsorizat sau susținut de nicio entitate guvernamentală din România."
 
 #: src/routes/terms.lazy.tsx:59
-msgid "<0>Recommended:</0> Chart: „Titlul Graficului" | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
-msgstr "<0>Recomandat:</0> Grafic: „Titlul graficului" | Sursa: Ministerul Finanțelor (Date Deschise), via Transparenta.eu."
+#~ msgid "<0>Recommended:</0> Chart: „Titlul Graficului\" | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
+#~ msgstr "<0>Recomandat:</0> Grafic: „Titlul graficului\" | Sursa: Ministerul Finanțelor (Date Deschise), via Transparenta.eu."
+
+#: src/routes/terms.lazy.tsx:59
+msgid "<0>Recommended:</0> Chart: „Titlul Graficului” | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
+msgstr "<0>Recomandat:</0> Grafic: „Titlul Graficului” | Sursă: Ministerul Finanțelor (Open Data), via Transparenta.eu."
 
 #. js-lingui-explicit-id
 #: src/lib/errors-utils.ts:9
@@ -177,7 +181,7 @@ msgstr "Sumă"
 msgid "Amount Per Capita"
 msgstr "Sumă pe cap de locuitor"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:283
+#: src/components/charts/components/series-config/SeriesFilter.tsx:363
 #: src/components/filters/EntityAnalyticsFilter.tsx:333
 #: src/components/filters/MapFilter.tsx:265
 msgid "Amount Range"
@@ -297,7 +301,7 @@ msgstr "Ambele"
 msgid "Budget sector"
 msgstr "Sector bugetar"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:316
+#: src/components/charts/components/series-config/SeriesFilter.tsx:326
 #: src/components/filters/EntityAnalyticsFilter.tsx:298
 #: src/components/filters/MapFilter.tsx:227
 msgid "Budget Sector"
@@ -402,7 +406,7 @@ msgstr "Copii"
 msgid "Clear"
 msgstr "Șterge"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:216
+#: src/components/charts/components/series-config/SeriesFilter.tsx:233
 #: src/components/ui/multi-select.tsx:118
 msgid "Clear all"
 msgstr "Șterge tot"
@@ -605,6 +609,7 @@ msgstr "Nu s-a putut trimite raportul de eroare."
 msgid "Counties"
 msgstr "Județe"
 
+#: src/components/charts/components/series-config/SeriesFilter.tsx:283
 #: src/components/entities/UatDisplay.tsx:60
 #: src/components/entity-analytics/EntityAnalyticsTable.tsx:78
 #: src/components/filters/EntityAnalyticsFilter.tsx:250
@@ -794,13 +799,12 @@ msgstr "Ec"
 msgid "Economic classification"
 msgstr "Clasificație economică"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:255
+#: src/components/charts/components/series-config/SeriesFilter.tsx:311
 #: src/components/filters/EntityAnalyticsFilter.tsx:282
 #: src/components/filters/MapFilter.tsx:204
 msgid "Economic Classification"
 msgstr "Clasificație economică"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:276
 #: src/components/filters/MapFilter.tsx:211
 msgid "Economic Classification Prefix"
 msgstr "Prefix clasificație economică"
@@ -813,6 +817,7 @@ msgstr "coduri economice"
 msgid "Economic prefix"
 msgstr "Prefix economic"
 
+#: src/components/charts/components/series-config/SeriesFilter.tsx:319
 #: src/components/filters/EntityAnalyticsFilter.tsx:290
 msgid "Economic Prefixes"
 msgstr "Prefix economic"
@@ -889,6 +894,7 @@ msgstr "Introduceți valoarea nouă"
 msgid "Enter series label..."
 msgstr "Introduceți eticheta seriei..."
 
+#: src/components/charts/components/series-config/SeriesFilter.tsx:269
 #: src/components/entity-analytics/EntityAnalyticsKPIs.tsx:23
 #: src/components/filters/EntityAnalyticsFilter.tsx:234
 #: src/components/filters/MapFilter.tsx:166
@@ -921,7 +927,7 @@ msgstr "Analiza entităților – Transparenta.eu"
 msgid "Entity type"
 msgstr "Tip entitate"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:241
+#: src/components/charts/components/series-config/SeriesFilter.tsx:290
 #: src/components/filters/EntityAnalyticsFilter.tsx:258
 #: src/components/filters/MapFilter.tsx:219
 msgid "Entity Type"
@@ -1084,7 +1090,7 @@ msgstr "Feedback-ul este indisponibil momentan."
 msgid "Filter field"
 msgstr "Câmp de filtrare"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:211
+#: src/components/charts/components/series-config/SeriesFilter.tsx:228
 #: src/components/entity-analytics/EntityAnalyticsLayout.tsx:46
 #: src/components/filters/EntityAnalyticsFilter.tsx:174
 #: src/routes/map.lazy.tsx:262
@@ -1132,13 +1138,12 @@ msgstr "S-au găsit {replacementCount} apariții"
 msgid "Functional classification"
 msgstr "Clasificație funcțională"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:262
+#: src/components/charts/components/series-config/SeriesFilter.tsx:297
 #: src/components/filters/EntityAnalyticsFilter.tsx:266
 #: src/components/filters/MapFilter.tsx:190
 msgid "Functional Classification"
 msgstr "Clasificație funcțională"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:269
 #: src/components/filters/MapFilter.tsx:197
 msgid "Functional Classification Prefix"
 msgstr "Prefix clasificație funcțională"
@@ -1151,6 +1156,7 @@ msgstr "coduri funcționale"
 msgid "Functional prefix"
 msgstr "Prefix Funcțional"
 
+#: src/components/charts/components/series-config/SeriesFilter.tsx:304
 #: src/components/filters/EntityAnalyticsFilter.tsx:274
 msgid "Functional Prefixes"
 msgstr "Prefix Funcțional"
@@ -1167,7 +1173,7 @@ msgstr "Entități Finanțatoare"
 msgid "Funding source"
 msgstr "Sursă de finanțare"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:323
+#: src/components/charts/components/series-config/SeriesFilter.tsx:333
 #: src/components/filters/EntityAnalyticsFilter.tsx:306
 #: src/components/filters/MapFilter.tsx:235
 msgid "Funding Source"
@@ -1284,7 +1290,6 @@ msgstr "Venituri - Cheltuieli"
 msgid "Income Trends"
 msgstr "Evoluția veniturilor"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:223
 #: src/components/filters/MapFilter.tsx:131
 msgid "Income/Expenses"
 msgstr "Venituri/Cheltuieli"
@@ -1318,7 +1323,7 @@ msgstr "Schemă grafic invalidă"
 msgid "Invalid or expired link"
 msgstr "Link invalid sau expirat"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:330
+#: src/components/charts/components/series-config/SeriesFilter.tsx:351
 #: src/components/filters/EntityAnalyticsFilter.tsx:323
 #: src/components/filters/MapFilter.tsx:255
 #: src/lib/chart-filter-utils.ts:20
@@ -1555,12 +1560,12 @@ msgstr "Încă nu există adnotări."
 
 #: src/routes/charts/index.lazy.tsx:287
 #~ msgid "No charts in \"{0}"
-#~ msgstr "Niciun grafic în \"{0}"
+#~ msgstr "Nu există grafice în \"{0}"
 
 #. placeholder {0}: cat.name
 #: src/routes/charts/index.lazy.tsx:287
-msgid "No charts in "{0}"
-msgstr "Nu există grafice în "{0}"
+msgid "No charts in “{0}”"
+msgstr "Niciun grafic în „{0}”"
 
 #: src/routes/charts/index.lazy.tsx:214
 msgid "No charts yet"
@@ -1659,7 +1664,7 @@ msgstr "Nu s-a găsit nicio serie."
 msgid "No values to replace"
 msgstr "Nicio valoare de înlocuit"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:305
+#: src/components/charts/components/series-config/SeriesFilter.tsx:251
 #: src/components/filters/EntityAnalyticsFilter.tsx:213
 #: src/lib/chart-filter-utils.ts:24
 msgid "Normalization"
@@ -1740,6 +1745,10 @@ msgstr "Lipește"
 msgid "Paste data from a spreadsheet. Each line should contain a year and a value, separated by a space or tab."
 msgstr "Lipiți date dintr-o foaie de calcul. Fiecare linie trebuie să conțină un an și o valoare, separate prin spațiu sau tab."
 
+#: src/components/charts/components/series-config/SeriesFilter.tsx:375
+msgid "people"
+msgstr "persoane"
+
 #: src/components/entities/views/MapView.tsx:142
 #: src/components/entity-analytics/EntityAnalyticsTable.tsx:102
 #: src/components/filters/EntityAnalyticsFilter.tsx:220
@@ -1772,6 +1781,7 @@ msgstr "Grafic circular (agregat)"
 msgid "Population"
 msgstr "Populație"
 
+#: src/components/charts/components/series-config/SeriesFilter.tsx:374
 #: src/components/filters/EntityAnalyticsFilter.tsx:344
 #: src/components/filters/MapFilter.tsx:275
 msgid "Population Range"
@@ -1811,8 +1821,8 @@ msgid "Product"
 msgstr "Produs"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:234
-msgid "Public Entities"
-msgstr "Entități publice"
+#~ msgid "Public Entities"
+#~ msgstr "Entități publice"
 
 #: src/routes/privacy.lazy.tsx:51
 msgid "Public sector information from Ministerul Finanțelor, made available as open data. No government affiliation."
@@ -1886,7 +1896,7 @@ msgstr "Raportați eroarea"
 msgid "Report type"
 msgstr "Tip Raportare"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:294
+#: src/components/charts/components/series-config/SeriesFilter.tsx:340
 #: src/components/filters/EntityAnalyticsFilter.tsx:314
 #: src/components/filters/MapFilter.tsx:243
 msgid "Report Type"
@@ -1916,6 +1926,7 @@ msgstr "Restaurează"
 msgid "Retention"
 msgstr "Păstrarea datelor"
 
+#: src/components/charts/components/series-config/SeriesFilter.tsx:240
 #: src/components/filters/EntityAnalyticsFilter.tsx:198
 msgid "Revenues/Expenses"
 msgstr "Venituri/Cheltuieli"
@@ -2230,8 +2241,8 @@ msgid "Terms of Use – Transparenta.eu"
 msgstr "Termeni de utilizare – Transparenta.eu"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:248
-msgid "Territorial Administrative Units (UAT)"
-msgstr "Unități Administrativ-Teritoriale (UAT)"
+#~ msgid "Territorial Administrative Units (UAT)"
+#~ msgstr "Unități Administrativ-Teritoriale (UAT)"
 
 #: src/routes/test-error.tsx:9
 msgid "Test error"
@@ -2370,6 +2381,7 @@ msgstr "Încercați un alt termen de căutare sau o altă sortare."
 msgid "Type"
 msgstr "Tip"
 
+#: src/components/charts/components/series-config/SeriesFilter.tsx:276
 #: src/components/filters/EntityAnalyticsFilter.tsx:242
 #: src/components/filters/MapFilter.tsx:123
 #: src/components/maps/charts/UatDataCharts.tsx:29
@@ -2377,13 +2389,13 @@ msgstr "Tip"
 msgid "UAT"
 msgstr "UAT"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:154
+#: src/components/charts/components/series-config/SeriesFilter.tsx:167
 #: src/components/filters/EntityAnalyticsFilter.tsx:325
 #: src/components/filters/MapFilter.tsx:257
 msgid "UAT: No"
 msgstr "UAT: Nu"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:153
+#: src/components/charts/components/series-config/SeriesFilter.tsx:166
 #: src/components/filters/EntityAnalyticsFilter.tsx:325
 #: src/components/filters/MapFilter.tsx:257
 msgid "UAT: Yes"
@@ -2520,6 +2532,7 @@ msgid "Who we are"
 msgstr "Cine suntem"
 
 #: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:91
+#: src/components/charts/components/series-config/SeriesFilter.tsx:262
 #: src/components/filters/EntityAnalyticsFilter.tsx:226
 #: src/components/filters/MapFilter.tsx:159
 #: src/components/maps/utils.ts:18
