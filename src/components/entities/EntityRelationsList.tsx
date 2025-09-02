@@ -19,6 +19,7 @@ interface EntityRelationsListProps {
   maxVisibleItems?: number;
   maxHeight?: string;
   showSearchThreshold?: number;
+  defaultOpen?: boolean;
 }
 
 export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
@@ -27,8 +28,9 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
   maxVisibleItems = 3,
   maxHeight = '16rem',
   showSearchThreshold = 7,
+  defaultOpen = false,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(defaultOpen);
   const [searchTerm, setSearchTerm] = useState('');
   const parentRef = useRef<HTMLDivElement>(null);
 
@@ -54,8 +56,8 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
   const virtualizer = useVirtualizer({
     count: filteredEntities.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 28, // Estimated height of each item (24px line height + 4px margin)
-    overscan: 10, // Render 10 extra items outside the visible area
+    estimateSize: () => 56, // Estimated item height (updated for richer layout)
+    overscan: 10,
   });
 
   if (entities.length === 0) {
@@ -66,9 +68,21 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
     <Link
       to="/entities/$cui"
       params={{ cui: entity.cui }}
-      className="text-blue-900 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 text-sm transition-colors block py-0.5 truncate"
+      aria-label={`${title}: ${entity.name}`}
+      className="block"
     >
-      {entity.name}
+      <div className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/40 px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors shadow-sm group">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="shrink-0 rounded-md bg-slate-100 dark:bg-slate-800 p-1.5">
+            <Landmark className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+          </div>
+          <div className="min-w-0">
+            <div className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">{entity.name}</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 truncate">CUI: <code className="font-mono">{entity.cui}</code></div>
+          </div>
+        </div>
+        <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200" />
+      </div>
     </Link>
   );
 
@@ -77,7 +91,7 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
 
     if (!shouldUseVirtualization || !showAll) {
       return (
-        <ul className="space-y-1">
+        <ul className="space-y-2">
           {itemsToRender.map(entity => (
             <li key={entity.cui}>
               {renderEntityItem(entity)}
@@ -113,6 +127,7 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
                   width: '100%',
                   height: `${virtualItem.size}px`,
                   transform: `translateY(${virtualItem.start}px)`,
+                  paddingBottom: '0.5rem', // match space-y-2 for visual consistency
                 }}
               >
                 {renderEntityItem(entity)}
@@ -133,7 +148,7 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
 
   if (!shouldShowAccordion) {
     return (
-      <div className="mt-4">
+      <div className="mt-4 w-full">
         <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2 flex items-center gap-2">
           {titleChildren}
         </h3>
@@ -143,7 +158,7 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
   }
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 w-full">
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <CollapsibleTrigger className="flex items-center gap-2 w-full text-left">
           <div className="flex items-center gap-2 text-lg font-semibold text-slate-900 dark:text-slate-100 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">
@@ -169,7 +184,7 @@ export const EntityRelationsList: React.FC<EntityRelationsListProps> = ({
             </div>
           )}
 
-          <div className={`pr-2 overflow-y-auto`} style={{ maxHeight: maxHeight }}>
+          <div className={`pr-2 overflow-y-auto w-full`} style={{ maxHeight: maxHeight }}>
             {filteredEntities.length > 0 ? (
               renderEntityList(filteredEntities, true)
             ) : (

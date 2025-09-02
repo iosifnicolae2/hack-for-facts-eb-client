@@ -1,5 +1,5 @@
 import { EntityDetailsData } from '@/lib/api/entities';
-import { FileText, HomeIcon, MapIcon, TrendingDownIcon, TrendingUpIcon, BarChart3 } from 'lucide-react';
+import { FileText, HomeIcon, MapIcon, TrendingDownIcon, TrendingUpIcon, BarChart3, UsersIcon } from 'lucide-react';
 import { t } from '@lingui/core/macro';
 
 export type EntityView = {
@@ -37,6 +37,13 @@ export const useEntityViews = (entity: EntityDetailsData | null | undefined): En
 
   views.push({ id: 'related-charts', label: t`Charts`, icon: <BarChart3 className="w-4 h-4" /> });
 
+
+  const hasParents = entity.parents && entity.parents.length > 0;
+  const hasChildren = entity.children && entity.children.length > 0;
+
+  if (hasParents || hasChildren) {
+    views.push({ id: 'relationships', label: t`Relationships`, icon: <UsersIcon className="w-4 h-4" /> });
+  }
 
   if (entity.reports && entity.reports.nodes.length > 0) {
     views.push({ id: 'reports', label: t`Reports`, icon: <FileText className="w-4 h-4" /> });

@@ -136,7 +136,7 @@ msgstr "Add Number"
 msgid "Add Series"
 msgstr "Add Series"
 
-#: src/components/entities/EntityHeader.tsx:113
+#: src/components/entities/EntityHeader.tsx:107
 #: src/components/entities/EntityInfo.tsx:57
 msgid "Address"
 msgstr "Address"
@@ -773,7 +773,7 @@ msgstr "Detailed Budget Execution"
 msgid "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
 msgstr "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
 
-#: src/routes/entities.$cui.lazy.tsx:124
+#: src/routes/entities.$cui.lazy.tsx:125
 msgid "Details:"
 msgstr "Details:"
 
@@ -929,8 +929,8 @@ msgstr "Entities"
 msgid "Entity"
 msgstr "Entity"
 
-#: src/routes/entities.$cui.lazy.tsx:118
-#: src/routes/entities.$cui.lazy.tsx:134
+#: src/routes/entities.$cui.lazy.tsx:119
+#: src/routes/entities.$cui.lazy.tsx:135
 msgid "Entity {cui} – Not found"
 msgstr "Entity {cui} – Not found"
 
@@ -958,7 +958,7 @@ msgstr "Entity Type"
 msgid "Error"
 msgstr "Error"
 
-#: src/routes/entities.$cui.lazy.tsx:121
+#: src/routes/entities.$cui.lazy.tsx:122
 msgid "Error Fetching Entity Details"
 msgstr "Error Fetching Entity Details"
 
@@ -1190,11 +1190,11 @@ msgstr "Functional prefix"
 msgid "Functional Prefixes"
 msgstr "Functional Prefixes"
 
-#: src/components/entities/EntityRelationships.tsx:24
+#: src/components/entities/EntityRelationships.tsx:43
 msgid "Funded Entities"
 msgstr "Funded Entities"
 
-#: src/components/entities/EntityRelationships.tsx:31
+#: src/components/entities/EntityRelationships.tsx:33
 msgid "Funding Entities"
 msgstr "Funding Entities"
 
@@ -1584,7 +1584,7 @@ msgid "No"
 msgstr "No"
 
 #. placeholder {0}: title.toLowerCase()
-#: src/components/entities/EntityRelationsList.tsx:177
+#: src/components/entities/EntityRelationsList.tsx:192
 msgid "No {0} found matching \"{searchTerm}\""
 msgstr "No {0} found matching \"{searchTerm}\""
 
@@ -1629,12 +1629,12 @@ msgstr "No data available for the table."
 msgid "No data available to display financial evolution."
 msgstr "No data available to display financial evolution."
 
-#: src/routes/entities.$cui.lazy.tsx:137
+#: src/routes/entities.$cui.lazy.tsx:138
 msgid "No Data Found"
 msgstr "No Data Found"
 
-#: src/routes/entities.$cui.lazy.tsx:118
-#: src/routes/entities.$cui.lazy.tsx:134
+#: src/routes/entities.$cui.lazy.tsx:119
+#: src/routes/entities.$cui.lazy.tsx:135
 msgid "No data found for CUI {cui}."
 msgstr "No data found for CUI {cui}."
 
@@ -1650,7 +1650,7 @@ msgstr "No data series yet."
 msgid "No enabled series data available to display."
 msgstr "No enabled series data available to display."
 
-#: src/routes/entities.$cui.lazy.tsx:139
+#: src/routes/entities.$cui.lazy.tsx:140
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 
@@ -1749,7 +1749,7 @@ msgstr "Open feedback dialog"
 msgid "Open in Chart Editor"
 msgstr "Open in Chart Editor"
 
-#: src/components/entities/EntityHeader.tsx:98
+#: src/components/entities/EntityHeader.tsx:92
 #: src/components/entities/EntityInfo.tsx:42
 msgid "Open on Wikipedia"
 msgstr "Open on Wikipedia"
@@ -1906,6 +1906,10 @@ msgstr "Reject All"
 #~ msgid "Related charts"
 #~ msgstr "Related charts"
 
+#: src/hooks/useEntityViews.tsx:45
+msgid "Relationships"
+msgstr "Relationships"
+
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:243
 msgid "Relative Mode"
 msgstr "Relative Mode"
@@ -1944,15 +1948,15 @@ msgstr "Report type"
 msgid "Report Type"
 msgstr "Report Type"
 
-#: src/routes/entities.$cui.lazy.tsx:216
+#: src/routes/entities.$cui.lazy.tsx:219
 msgid "Reporting year"
 msgstr "Reporting year"
 
-#: src/routes/entities.$cui.lazy.tsx:212
+#: src/routes/entities.$cui.lazy.tsx:215
 msgid "Reporting Year:"
 msgstr "Reporting Year:"
 
-#: src/hooks/useEntityViews.tsx:42
+#: src/hooks/useEntityViews.tsx:49
 msgid "Reports"
 msgstr "Reports"
 
@@ -2007,7 +2011,7 @@ msgid "Saved charts – Transparenta.eu"
 msgstr "Saved charts – Transparenta.eu"
 
 #. placeholder {0}: title.toLowerCase()
-#: src/components/entities/EntityRelationsList.tsx:164
+#: src/components/entities/EntityRelationsList.tsx:179
 msgid "Search {0}..."
 msgstr "Search {0}..."
 
@@ -2306,7 +2310,7 @@ msgstr "The Service provides tools to explore, analyze, and visualize public bud
 msgid "The share link you are trying to access is invalid or no longer available."
 msgstr "The share link you are trying to access is invalid or no longer available."
 
-#: src/routes/entities.$cui.lazy.tsx:123
+#: src/routes/entities.$cui.lazy.tsx:124
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "There was a problem fetching the details for CUI: <0>{cui}</0>."
 
@@ -2317,6 +2321,10 @@ msgstr "These issues were auto-resolved (invalid points removed or values set to
 #: src/components/charts/components/views/ChartConfigView.tsx:73
 msgid "This action cannot be undone. It will permanently remove the chart and its configuration."
 msgstr "This action cannot be undone. It will permanently remove the chart and its configuration."
+
+#: src/components/entities/EntityRelationships.tsx:20
+msgid "This entity has no funding or funded relationships."
+msgstr "This entity has no funding or funded relationships."
 
 #: src/components/charts/components/series-config/CustomSeriesValueEditor.tsx:47
 msgid "This value will be used for every year in the chart's range."

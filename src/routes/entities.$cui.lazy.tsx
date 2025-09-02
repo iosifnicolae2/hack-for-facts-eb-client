@@ -23,6 +23,7 @@ import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
 import { Normalization } from '@/schemas/charts'
 import { EntitySearchSchema } from '@/components/entities/validation'
+import { EntityRelationships } from '@/components/entities/EntityRelationships'
 
 export const Route = createLazyFileRoute('/entities/$cui')({
   component: EntityDetailsPage,
@@ -179,6 +180,8 @@ function EntityDetailsPage() {
         return <RankingView />
       case 'related-charts':
         return <RelatedChartsView entity={entity ?? undefined} normalization={normalization} />
+      case 'relationships':
+        return <EntityRelationships parents={entity?.parents ?? []} children={entity?.children ?? []} />
       default:
         return <Overview
           entity={entity ?? undefined}
@@ -202,7 +205,7 @@ function EntityDetailsPage() {
       <Seo title={metaTitle} description={metaDescription} type="article" />
       <div className="container mx-auto max-w-7xl space-y-8">
         <EntityHeader
-          className="sticky top-0 z-30 max-w-xl sm:max-w-none"
+          className="max-w-xl sm:max-w-none"
           entity={entity ? { ...entity, is_uat: !!entity.is_uat } : undefined}
           isLoading={isLoading}
           views={views}

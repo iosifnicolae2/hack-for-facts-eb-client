@@ -136,7 +136,7 @@ msgstr "Adaugă număr"
 msgid "Add Series"
 msgstr "Adaugă serie"
 
-#: src/components/entities/EntityHeader.tsx:113
+#: src/components/entities/EntityHeader.tsx:107
 #: src/components/entities/EntityInfo.tsx:57
 msgid "Address"
 msgstr "Adresă"
@@ -773,7 +773,7 @@ msgstr "Executie bugetara detaliata"
 msgid "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
 msgstr "Detalii despre cookie-urile și stocarea locală (localStorage) utilizate de Transparenta.eu, cu opțiuni de consimțământ."
 
-#: src/routes/entities.$cui.lazy.tsx:124
+#: src/routes/entities.$cui.lazy.tsx:125
 msgid "Details:"
 msgstr "Detalii:"
 
@@ -929,8 +929,8 @@ msgstr "Entități"
 msgid "Entity"
 msgstr "Entitate"
 
-#: src/routes/entities.$cui.lazy.tsx:118
-#: src/routes/entities.$cui.lazy.tsx:134
+#: src/routes/entities.$cui.lazy.tsx:119
+#: src/routes/entities.$cui.lazy.tsx:135
 msgid "Entity {cui} – Not found"
 msgstr "Entitatea {cui} – Nu a fost găsită"
 
@@ -958,7 +958,7 @@ msgstr "Tip entitate"
 msgid "Error"
 msgstr "Eroare"
 
-#: src/routes/entities.$cui.lazy.tsx:121
+#: src/routes/entities.$cui.lazy.tsx:122
 msgid "Error Fetching Entity Details"
 msgstr "Eroare la preluarea detaliilor entității"
 
@@ -1190,11 +1190,11 @@ msgstr "Prefix Funcțional"
 msgid "Functional Prefixes"
 msgstr "Prefix Funcțional"
 
-#: src/components/entities/EntityRelationships.tsx:24
+#: src/components/entities/EntityRelationships.tsx:43
 msgid "Funded Entities"
 msgstr "Entități Finanțate"
 
-#: src/components/entities/EntityRelationships.tsx:31
+#: src/components/entities/EntityRelationships.tsx:33
 msgid "Funding Entities"
 msgstr "Entități Finanțatoare"
 
@@ -1579,7 +1579,7 @@ msgid "No"
 msgstr "Nu"
 
 #. placeholder {0}: title.toLowerCase()
-#: src/components/entities/EntityRelationsList.tsx:177
+#: src/components/entities/EntityRelationsList.tsx:192
 msgid "No {0} found matching \"{searchTerm}\""
 msgstr "Nu s-au găsit {0} care să corespundă cu \"{searchTerm}\""
 
@@ -1624,12 +1624,12 @@ msgstr "Nu sunt date disponibile pentru tabel."
 msgid "No data available to display financial evolution."
 msgstr "Nu sunt date disponibile pentru afișarea evoluției financiare."
 
-#: src/routes/entities.$cui.lazy.tsx:137
+#: src/routes/entities.$cui.lazy.tsx:138
 msgid "No Data Found"
 msgstr "Nu s-au găsit date"
 
-#: src/routes/entities.$cui.lazy.tsx:118
-#: src/routes/entities.$cui.lazy.tsx:134
+#: src/routes/entities.$cui.lazy.tsx:119
+#: src/routes/entities.$cui.lazy.tsx:135
 msgid "No data found for CUI {cui}."
 msgstr "Nu s-au găsit date pentru CUI {cui}."
 
@@ -1645,7 +1645,7 @@ msgstr "Nicio serie de date încă."
 msgid "No enabled series data available to display."
 msgstr "Nu există date disponibile în seriile activate pentru a fi afișate."
 
-#: src/routes/entities.$cui.lazy.tsx:139
+#: src/routes/entities.$cui.lazy.tsx:140
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "Nu s-au găsit detalii despre entitate pentru CUI: <0>{cui}</0>. Este posibil ca această entitate să nu existe sau să nu aibă date asociate."
 
@@ -1744,7 +1744,7 @@ msgstr "Deschide fereastra de feedback"
 msgid "Open in Chart Editor"
 msgstr "Deschide în Editorul de Grafice"
 
-#: src/components/entities/EntityHeader.tsx:98
+#: src/components/entities/EntityHeader.tsx:92
 #: src/components/entities/EntityInfo.tsx:42
 msgid "Open on Wikipedia"
 msgstr "Deschide pe Wikipedia"
@@ -1901,6 +1901,10 @@ msgstr "Refuză tot"
 #~ msgid "Related charts"
 #~ msgstr "Grafice asociate"
 
+#: src/hooks/useEntityViews.tsx:45
+msgid "Relationships"
+msgstr "Relații"
+
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:243
 msgid "Relative Mode"
 msgstr "Mod relativ"
@@ -1939,15 +1943,15 @@ msgstr "Tip Raportare"
 msgid "Report Type"
 msgstr "Tip Raportare"
 
-#: src/routes/entities.$cui.lazy.tsx:216
+#: src/routes/entities.$cui.lazy.tsx:219
 msgid "Reporting year"
 msgstr "Anul raportării"
 
-#: src/routes/entities.$cui.lazy.tsx:212
+#: src/routes/entities.$cui.lazy.tsx:215
 msgid "Reporting Year:"
 msgstr "Anul raportării:"
 
-#: src/hooks/useEntityViews.tsx:42
+#: src/hooks/useEntityViews.tsx:49
 msgid "Reports"
 msgstr "Rapoarte"
 
@@ -2002,7 +2006,7 @@ msgid "Saved charts – Transparenta.eu"
 msgstr "Grafice salvate – Transparenta.eu"
 
 #. placeholder {0}: title.toLowerCase()
-#: src/components/entities/EntityRelationsList.tsx:164
+#: src/components/entities/EntityRelationsList.tsx:179
 msgid "Search {0}..."
 msgstr "Caută {0}..."
 
@@ -2301,7 +2305,7 @@ msgstr "Serviciul oferă instrumente pentru explorarea, analizarea și vizualiza
 msgid "The share link you are trying to access is invalid or no longer available."
 msgstr "Linkul de partajare pe care încerci să-l accesezi este invalid sau nu mai este disponibil."
 
-#: src/routes/entities.$cui.lazy.tsx:123
+#: src/routes/entities.$cui.lazy.tsx:124
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "A apărut o problemă la preluarea detaliilor pentru CUI: <0>{cui}</0>."
 
@@ -2312,6 +2316,10 @@ msgstr "Aceste probleme au fost rezolvate automat (punctele invalide au fost eli
 #: src/components/charts/components/views/ChartConfigView.tsx:73
 msgid "This action cannot be undone. It will permanently remove the chart and its configuration."
 msgstr "Această acțiune nu poate fi anulată. Va elimina permanent graficul și configurația acestuia."
+
+#: src/components/entities/EntityRelationships.tsx:20
+msgid "This entity has no funding or funded relationships."
+msgstr "Această entitate nu are relații de finanțare sau finanțate."
 
 #: src/components/charts/components/series-config/CustomSeriesValueEditor.tsx:47
 msgid "This value will be used for every year in the chart's range."

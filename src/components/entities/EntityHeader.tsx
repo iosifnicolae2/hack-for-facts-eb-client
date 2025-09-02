@@ -3,7 +3,6 @@ import { cn } from '@/lib/utils';
 import { EntityDetailsData } from '@/lib/api/entities';
 import { EntityView } from '@/hooks/useEntityViews';
 import { EntityHeaderSkeleton } from './EntityHeaderSkeleton';
-import { EntityRelationships } from './EntityRelationships';
 import { EntityViewSwitcher } from './EntityViewSwitcher';
 import { Link } from '@tanstack/react-router';
 import { Badge } from '../ui/badge';
@@ -13,8 +12,6 @@ import { Building2, ExternalLink } from 'lucide-react';
 import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
 import { UatDisplay } from './UatDisplay';
-import { useEntityHeaderExpanded } from '@/lib/hooks/useEntityHeaderExpanded';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 type HeaderEntity = Pick<EntityDetailsData, 'name' | 'cui' | 'entity_type' | 'address' | 'uat' | 'children' | 'parents' | 'executionLineItems' | 'is_main_creditor'> & {
   is_uat?: boolean;
@@ -42,20 +39,18 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
     return <EntityHeaderSkeleton className={className} />;
   }
   const entityTypeLabel = useEntityTypeLabel();
-  const isMobile = useIsMobile();
-  const hideThreshold = isMobile ? 250 : 100;
-  const { isHeaderExpanded, hiddenContentRef } = useEntityHeaderExpanded({ hideThreshold })
 
   const entityCategory = entity.entity_type ? entityTypeLabel.map(entity.entity_type) : null;
   const { url: wikipediaUrl } = useExternalSearchLink(entity);
 
+  // The top is the parent header and is calculated with trial and error. We can use the title container to compute the height and use that as reference.
   return (
-    <header className={cn("bg-background p-6 rounded-lg shadow-lg relative z-30", className)}>
+    <header className={cn("bg-background px-6 pb-2 rounded-lg shadow-lg sticky top-[-8.1rem] z-30", className)}>
       {/* Main content: Info and Year Selector */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
         <div className="flex-grow">
           {/* Title and Category Badge */}
-          <div className="flex justify-between mb-2">
+          <div className="flex justify-between mb-2 pt-2 sticky top-0 z-30 bg-background">
             <div className="flex items-center gap-4">
               <h1 className="text-3xl lg:text-5xl font-extrabold underline text-slate-900 dark:text-slate-100 flex items-center gap-2">
                 <Link to={`/entities/$cui`} params={{ cui: entity.cui }}>
@@ -78,9 +73,9 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
           </div>
 
           {/* Expanded content with transitions */}
-          <div ref={hiddenContentRef} className={cn(
+          <div className={cn(
             "overflow-hidden transition-all duration-300",
-            isHeaderExpanded ? "h-auto opacity-100 ease-in" : "h-0 opacity-0 ease-out"
+            // isHeaderExpanded ? "h-auto opacity-100 ease-in" : "h-0 opacity-0 ease-out"
           )}>
             {/* Badge and Wikipedia link */}
             <div className="flex items-center gap-2 mb-4">
@@ -104,7 +99,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
             </div>
 
             {/* Detailed Information */}
-            <div className="text-sm text-slate-600 dark:text-slate-400 space-y-1 mb-4">
+            <div className="text-sm text-slate-600 dark:text-slate-400 space-y-1">
               <p>
                 <span className="font-semibold text-slate-700 dark:text-slate-300">CUI</span>: <code className="font-mono font-bold">{entity.cui}</code>
               </p>
@@ -122,10 +117,6 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
             <EntityViewSwitcher
               views={views}
               activeView={activeView}
-            />
-            <EntityRelationships
-              parents={entity.parents}
-              children={entity.children}
             />
           </div>
         </div>
