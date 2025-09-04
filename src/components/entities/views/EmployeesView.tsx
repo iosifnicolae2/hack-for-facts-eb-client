@@ -59,34 +59,45 @@ export function EmployeesView({ entity }: { entity: EntityDetailsData | null | u
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card>
+      <div className="grid grid-cols-3 gap-4">
+        <Card className="flex flex-col">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Populație</CardTitle><MapPin className="h-4 w-4 text-muted-foreground" /></CardHeader>
-          <CardContent><div className="text-2xl font-bold">{row.uatPopulation > 0 ? row.uatPopulation.toLocaleString('ro-RO') : <span className="text-sm text-muted-foreground font-normal">Nu există date suficiente pentru acest indicator.</span>}</div><p className="text-xs text-muted-foreground">Conform datelor din Sept. 2025</p></CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Posturi Ocupate</CardTitle><Users className="h-4 w-4 text-muted-foreground" /></CardHeader>
-          <CardContent>
-            <TooltipProvider><Tooltip delayDuration={150}>
-              <TooltipTrigger asChild><div className="text-2xl font-bold cursor-help">{row.occupiedPosts.toLocaleString('ro-RO')}</div></TooltipTrigger>
-              <TooltipContent><p>Numărul efectiv de angajați care lucrează în prezent.</p></TooltipContent>
-            </Tooltip></TooltipProvider>
-            <p className="text-xs text-muted-foreground">Total personal curent</p>
+          <CardContent className="flex flex-col flex-grow">
+            <div className="flex-grow flex items-center justify-center">
+              <div className="text-2xl font-bold text-center">{row.uatPopulation > 0 ? row.uatPopulation.toLocaleString('ro-RO') : <span className="text-sm text-muted-foreground font-normal">Nu există date suficiente pentru acest indicator.</span>}</div>
+            </div>
+            <p className="text-xs text-muted-foreground text-center">Conform datelor din Sept. 2025</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="flex flex-col">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Posturi Ocupate</CardTitle><Users className="h-4 w-4 text-muted-foreground" /></CardHeader>
+          <CardContent className="flex flex-col flex-grow">
+            <div className="flex-grow flex items-center justify-center">
+              <TooltipProvider><Tooltip delayDuration={150}>
+                <TooltipTrigger asChild><div className="text-2xl font-bold cursor-help">{row.occupiedPosts.toLocaleString('ro-RO')}</div></TooltipTrigger>
+                <TooltipContent><p>Numărul efectiv de angajați care lucrează în prezent.</p></TooltipContent>
+              </Tooltip></TooltipProvider>
+            </div>
+            <p className="text-xs text-muted-foreground text-center">Total personal curent</p>
+          </CardContent>
+        </Card>
+        <Card className="flex flex-col">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Angajați / 1.000 Locuitori</CardTitle><BarChart3 className="h-4 w-4 text-muted-foreground" /></CardHeader>
-          <CardContent>
+          <CardContent className="flex flex-col flex-grow">
             {hasPopulation ? (
               <>
-                <TooltipProvider><Tooltip delayDuration={150}>
-                  <TooltipTrigger asChild><div className="text-2xl font-bold cursor-help">{(Math.round(row.employeesPer1000Capita * 100) / 100).toLocaleString('ro-RO')}</div></TooltipTrigger>
-                  <TooltipContent><p>Măsoară eficiența administrativă. O valoare mai mică sugerează o administrație mai suplă.</p></TooltipContent>
-                </Tooltip></TooltipProvider>
-                <p className="text-xs text-muted-foreground">Indicator de eficiență</p>
+                <div className="flex-grow flex items-center justify-center">
+                  <TooltipProvider><Tooltip delayDuration={150}>
+                    <TooltipTrigger asChild><div className="text-2xl font-bold cursor-help">{(Math.round(row.employeesPer1000Capita * 100) / 100).toLocaleString('ro-RO')}</div></TooltipTrigger>
+                    <TooltipContent><p>Măsoară eficiența administrativă. O valoare mai mică sugerează o administrație mai suplă.</p></TooltipContent>
+                  </Tooltip></TooltipProvider>
+                </div>
+                <p className="text-xs text-muted-foreground text-center">Indicator de eficiență</p>
               </>
             ) : (
-              <p className="text-sm text-muted-foreground">Nu există date suficiente pentru acest indicator.</p>
+              <div className="flex-grow flex items-center justify-center">
+                <p className="text-sm text-muted-foreground text-center">Nu există date suficiente pentru acest indicator.</p>
+              </div>
             )}
           </CardContent>
         </Card>
