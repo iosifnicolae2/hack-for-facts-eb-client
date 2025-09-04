@@ -1,5 +1,5 @@
 import { EntityDetailsData } from '@/lib/api/entities';
-import { FileText, HomeIcon, MapIcon, TrendingDownIcon, TrendingUpIcon, BarChart3, Building2Icon } from 'lucide-react';
+import { FileText, HomeIcon, MapIcon, TrendingDownIcon, TrendingUpIcon, BarChart3, Building2Icon, UsersIcon } from 'lucide-react';
 import { t } from '@lingui/core/macro';
 
 export type EntityView = {
@@ -33,6 +33,11 @@ export const useEntityViews = (entity: EntityDetailsData | null | undefined): En
 
   if (entity.is_uat) {
     views.push({ id: 'map', label: t`Map`, icon: <MapIcon className="w-4 h-4" /> });
+  }
+
+  // Experimental employees data view
+  if (entity.is_uat && entity.entity_type !== "admin_county_council" && entity.uat?.siruta_code != null) {
+    views.push({ id: 'employees', label: t`Employees`, icon: <UsersIcon className="w-4 h-4" /> });
   }
 
   views.push({ id: 'related-charts', label: t`Charts`, icon: <BarChart3 className="w-4 h-4" /> });

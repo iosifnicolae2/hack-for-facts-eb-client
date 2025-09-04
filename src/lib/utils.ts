@@ -98,3 +98,14 @@ export function getNormalizationUnit(normalization: 'total' | 'total_euro' | 'pe
   }
   throw new Error(`Unknown normalization mode: ${normalization}`);
 }
+
+/**
+ * Returns a Tailwind color class based on the sign of a numeric value.
+ * Negative → red, Positive → green, Zero/undefined → muted.
+ */
+export function getSignClass(value: number | null | undefined): string {
+  if (value == null || isNaN(value)) return 'text-muted-foreground';
+  if (value < 0) return 'text-red-600';
+  if (value > 0) return 'text-green-600';
+  return 'text-muted-foreground';
+}

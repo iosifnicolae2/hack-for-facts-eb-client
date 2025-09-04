@@ -25,6 +25,9 @@ import { Route as ChartsChartIdRouteRouteImport } from './routes/charts/$chartId
 const TermsLazyRouteImport = createFileRoute('/terms')()
 const IndexLazyRouteImport = createFileRoute('/')()
 const ChartsIndexLazyRouteImport = createFileRoute('/charts/')()
+const ResearchEmployeesDataLazyRouteImport = createFileRoute(
+  '/research/employees-data',
+)()
 const ChartsNewLazyRouteImport = createFileRoute('/charts/new')()
 const ChartsChartIdIndexLazyRouteImport = createFileRoute('/charts/$chartId/')()
 
@@ -75,6 +78,14 @@ const ChartsIndexLazyRoute = ChartsIndexLazyRouteImport.update({
   path: '/charts/',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/charts/index.lazy').then((d) => d.Route))
+const ResearchEmployeesDataLazyRoute =
+  ResearchEmployeesDataLazyRouteImport.update({
+    id: '/research/employees-data',
+    path: '/research/employees-data',
+    getParentRoute: () => rootRouteImport,
+  } as any).lazy(() =>
+    import('./routes/research/employees-data.lazy').then((d) => d.Route),
+  )
 const ChartsNewLazyRoute = ChartsNewLazyRouteImport.update({
   id: '/charts/new',
   path: '/charts/new',
@@ -122,6 +133,7 @@ export interface FileRoutesByFullPath {
   '/settings/profile': typeof SettingsProfileRoute
   '/share/$code': typeof ShareCodeRoute
   '/charts/new': typeof ChartsNewLazyRoute
+  '/research/employees-data': typeof ResearchEmployeesDataLazyRoute
   '/charts': typeof ChartsIndexLazyRoute
   '/charts/$chartId/': typeof ChartsChartIdIndexLazyRoute
 }
@@ -138,6 +150,7 @@ export interface FileRoutesByTo {
   '/settings/profile': typeof SettingsProfileRoute
   '/share/$code': typeof ShareCodeRoute
   '/charts/new': typeof ChartsNewLazyRoute
+  '/research/employees-data': typeof ResearchEmployeesDataLazyRoute
   '/charts': typeof ChartsIndexLazyRoute
   '/charts/$chartId': typeof ChartsChartIdIndexLazyRoute
 }
@@ -156,6 +169,7 @@ export interface FileRoutesById {
   '/settings/profile': typeof SettingsProfileRoute
   '/share/$code': typeof ShareCodeRoute
   '/charts/new': typeof ChartsNewLazyRoute
+  '/research/employees-data': typeof ResearchEmployeesDataLazyRoute
   '/charts/': typeof ChartsIndexLazyRoute
   '/charts/$chartId/': typeof ChartsChartIdIndexLazyRoute
 }
@@ -175,6 +189,7 @@ export interface FileRouteTypes {
     | '/settings/profile'
     | '/share/$code'
     | '/charts/new'
+    | '/research/employees-data'
     | '/charts'
     | '/charts/$chartId/'
   fileRoutesByTo: FileRoutesByTo
@@ -191,6 +206,7 @@ export interface FileRouteTypes {
     | '/settings/profile'
     | '/share/$code'
     | '/charts/new'
+    | '/research/employees-data'
     | '/charts'
     | '/charts/$chartId'
   id:
@@ -208,6 +224,7 @@ export interface FileRouteTypes {
     | '/settings/profile'
     | '/share/$code'
     | '/charts/new'
+    | '/research/employees-data'
     | '/charts/'
     | '/charts/$chartId/'
   fileRoutesById: FileRoutesById
@@ -226,6 +243,7 @@ export interface RootRouteChildren {
   SettingsProfileRoute: typeof SettingsProfileRoute
   ShareCodeRoute: typeof ShareCodeRoute
   ChartsNewLazyRoute: typeof ChartsNewLazyRoute
+  ResearchEmployeesDataLazyRoute: typeof ResearchEmployeesDataLazyRoute
   ChartsIndexLazyRoute: typeof ChartsIndexLazyRoute
 }
 
@@ -292,6 +310,13 @@ declare module '@tanstack/react-router' {
       path: '/charts'
       fullPath: '/charts'
       preLoaderRoute: typeof ChartsIndexLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/research/employees-data': {
+      id: '/research/employees-data'
+      path: '/research/employees-data'
+      fullPath: '/research/employees-data'
+      preLoaderRoute: typeof ResearchEmployeesDataLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/charts/new': {
@@ -364,6 +389,7 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsProfileRoute: SettingsProfileRoute,
   ShareCodeRoute: ShareCodeRoute,
   ChartsNewLazyRoute: ChartsNewLazyRoute,
+  ResearchEmployeesDataLazyRoute: ResearchEmployeesDataLazyRoute,
   ChartsIndexLazyRoute: ChartsIndexLazyRoute,
 }
 export const routeTree = rootRouteImport

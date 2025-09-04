@@ -9,6 +9,8 @@ import { useHotkeys } from 'react-hotkeys-hook'
 import { useEntityViews } from '@/hooks/useEntityViews'
 import { useRecentEntities } from '@/hooks/useRecentEntities'
 import { TrendsView } from '@/components/entities/views/TrendsView'
+import { lazy, Suspense } from 'react'
+const EmployeesView = lazy(() => import('@/components/entities/views/EmployeesView').then(m => ({ default: m.EmployeesView })))
 import { MapView } from '@/components/entities/views/MapView'
 import { Overview } from '@/components/entities/views/Overview'
 import { defaultYearRange } from '@/schemas/charts'
@@ -176,6 +178,12 @@ function EntityDetailsPage() {
           years={years}
           onYearChange={handleYearChange}
         />
+      case 'employees':
+        return (
+          <Suspense fallback={<></>}>
+            <EmployeesView entity={entity ?? null} />
+          </Suspense>
+        )
       case 'ranking':
         return <RankingView />
       case 'related-charts':

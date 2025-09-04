@@ -136,7 +136,7 @@ msgstr "Adaugă număr"
 msgid "Add Series"
 msgstr "Adaugă serie"
 
-#: src/components/entities/EntityHeader.tsx:107
+#: src/components/entities/EntityHeader.tsx:108
 #: src/components/entities/EntityInfo.tsx:57
 msgid "Address"
 msgstr "Adresă"
@@ -396,7 +396,7 @@ msgstr "Tip grafic"
 
 #: src/components/footer/AppFooter.tsx:99
 #: src/components/sidebar/nav-main.tsx:31
-#: src/hooks/useEntityViews.tsx:38
+#: src/hooks/useEntityViews.tsx:43
 #: src/routes/charts/index.lazy.tsx:157
 #: src/routes/index.lazy.tsx:65
 msgid "Charts"
@@ -773,7 +773,7 @@ msgstr "Executie bugetara detaliata"
 msgid "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
 msgstr "Detalii despre cookie-urile și stocarea locală (localStorage) utilizate de Transparenta.eu, cu opțiuni de consimțământ."
 
-#: src/routes/entities.$cui.lazy.tsx:125
+#: src/routes/entities.$cui.lazy.tsx:127
 msgid "Details:"
 msgstr "Detalii:"
 
@@ -862,6 +862,10 @@ msgstr "Data intrării în vigoare: {effectiveDate} • Versiunea: {version}"
 msgid "Email address copied to clipboard!"
 msgstr "Adresa de email a fost copiată în clipboard!"
 
+#: src/hooks/useEntityViews.tsx:40
+msgid "Employees"
+msgstr "Angajați"
+
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:38
 msgid "Enable annotation"
 msgstr "Activează adnotarea"
@@ -919,6 +923,7 @@ msgstr "Introduceți eticheta seriei..."
 #: src/components/entity-analytics/EntityAnalyticsKPIs.tsx:23
 #: src/components/filters/EntityAnalyticsFilter.tsx:234
 #: src/components/filters/MapFilter.tsx:166
+#: src/hooks/useEntityViews.tsx:50
 #: src/routes/index.lazy.tsx:79
 msgid "Entities"
 msgstr "Entități"
@@ -929,8 +934,8 @@ msgstr "Entități"
 msgid "Entity"
 msgstr "Entitate"
 
-#: src/routes/entities.$cui.lazy.tsx:119
-#: src/routes/entities.$cui.lazy.tsx:135
+#: src/routes/entities.$cui.lazy.tsx:121
+#: src/routes/entities.$cui.lazy.tsx:137
 msgid "Entity {cui} – Not found"
 msgstr "Entitatea {cui} – Nu a fost găsită"
 
@@ -958,7 +963,7 @@ msgstr "Tip entitate"
 msgid "Error"
 msgstr "Eroare"
 
-#: src/routes/entities.$cui.lazy.tsx:122
+#: src/routes/entities.$cui.lazy.tsx:124
 msgid "Error Fetching Entity Details"
 msgstr "Eroare la preluarea detaliilor entității"
 
@@ -1624,12 +1629,12 @@ msgstr "Nu sunt date disponibile pentru tabel."
 msgid "No data available to display financial evolution."
 msgstr "Nu sunt date disponibile pentru afișarea evoluției financiare."
 
-#: src/routes/entities.$cui.lazy.tsx:138
+#: src/routes/entities.$cui.lazy.tsx:140
 msgid "No Data Found"
 msgstr "Nu s-au găsit date"
 
-#: src/routes/entities.$cui.lazy.tsx:119
-#: src/routes/entities.$cui.lazy.tsx:135
+#: src/routes/entities.$cui.lazy.tsx:121
+#: src/routes/entities.$cui.lazy.tsx:137
 msgid "No data found for CUI {cui}."
 msgstr "Nu s-au găsit date pentru CUI {cui}."
 
@@ -1645,7 +1650,7 @@ msgstr "Nicio serie de date încă."
 msgid "No enabled series data available to display."
 msgstr "Nu există date disponibile în seriile activate pentru a fi afișate."
 
-#: src/routes/entities.$cui.lazy.tsx:140
+#: src/routes/entities.$cui.lazy.tsx:142
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "Nu s-au găsit detalii despre entitate pentru CUI: <0>{cui}</0>. Este posibil ca această entitate să nu existe sau să nu aibă date asociate."
 
@@ -1744,7 +1749,7 @@ msgstr "Deschide fereastra de feedback"
 msgid "Open in Chart Editor"
 msgstr "Deschide în Editorul de Grafice"
 
-#: src/components/entities/EntityHeader.tsx:92
+#: src/components/entities/EntityHeader.tsx:93
 #: src/components/entities/EntityInfo.tsx:42
 msgid "Open on Wikipedia"
 msgstr "Deschide pe Wikipedia"
@@ -1902,8 +1907,8 @@ msgstr "Refuză tot"
 #~ msgstr "Grafice asociate"
 
 #: src/hooks/useEntityViews.tsx:45
-msgid "Relationships"
-msgstr "Relații"
+#~ msgid "Relationships"
+#~ msgstr "Relații"
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:243
 msgid "Relative Mode"
@@ -1943,15 +1948,15 @@ msgstr "Tip Raportare"
 msgid "Report Type"
 msgstr "Tip Raportare"
 
-#: src/routes/entities.$cui.lazy.tsx:219
+#: src/routes/entities.$cui.lazy.tsx:227
 msgid "Reporting year"
 msgstr "Anul raportării"
 
-#: src/routes/entities.$cui.lazy.tsx:215
+#: src/routes/entities.$cui.lazy.tsx:223
 msgid "Reporting Year:"
 msgstr "Anul raportării:"
 
-#: src/hooks/useEntityViews.tsx:49
+#: src/hooks/useEntityViews.tsx:54
 msgid "Reports"
 msgstr "Rapoarte"
 
@@ -2305,7 +2310,7 @@ msgstr "Serviciul oferă instrumente pentru explorarea, analizarea și vizualiza
 msgid "The share link you are trying to access is invalid or no longer available."
 msgstr "Linkul de partajare pe care încerci să-l accesezi este invalid sau nu mai este disponibil."
 
-#: src/routes/entities.$cui.lazy.tsx:124
+#: src/routes/entities.$cui.lazy.tsx:126
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "A apărut o problemă la preluarea detaliilor pentru CUI: <0>{cui}</0>."
 

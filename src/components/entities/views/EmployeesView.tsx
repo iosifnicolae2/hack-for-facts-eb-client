@@ -1,0 +1,278 @@
+import { EntityDetailsData } from '@/lib/api/entities'
+import { useCsvData } from '@/hooks/useCsvData'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
+import { Button } from '@/components/ui/button'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { Link } from '@tanstack/react-router'
+import { Users, BarChart3, MapPin, ExternalLink, Info } from 'lucide-react'
+
+export function EmployeesView({ entity }: { entity: EntityDetailsData | null | undefined }) {
+  const { data, isLoading, error } = useCsvData()
+  const siruta = entity?.uat?.siruta_code
+  const row = data?.find(r => r.sirutaCode === (Number(siruta) ?? -1))
+
+  if (error) return <div className="p-4 text-red-600 dark:text-red-500">{error.message}</div>
+  if (isLoading) return <div className="p-4 text-muted-foreground">Se încarcă datele analitice...</div>
+  if (!row || !data) return <div className="p-4 text-muted-foreground">Nu au fost găsite date specifice pentru această entitate.</div>
+
+  const legalLimit45 = Math.max(0, row.totalPostsReduction45)
+  const legalLimit40 = Math.max(0, row.totalPostsReduction40)
+  const occupancyVsLimit = legalLimit45 > 0 ? (row.occupiedPosts / legalLimit45) : 0
+  const occupancyVsLimit40 = legalLimit40 > 0 ? (row.occupiedPosts / legalLimit40) : 0
+  const surplus = Math.max(0, row.occupiedPosts - legalLimit45)
+  const deficit = Math.max(0, legalLimit45 - row.occupiedPosts)
+  const reductionPercent = surplus > 0 && row.occupiedPosts > 0 ? (surplus / row.occupiedPosts) * 100 : 0
+
+  // Additional derived stats from raw fields
+  const euProjectsTotal = (row.euProjectsImplementationPosts ?? 0) + (row.euProjectsPostImplementationPosts ?? 0)
+  const vacantPosts = Math.max(0, (row.totalPostsActual ?? 0) - (row.occupiedPosts ?? 0))
+  const vacancyRate = (row.totalPostsActual ?? 0) > 0 ? (vacantPosts / (row.totalPostsActual ?? 0)) * 100 : 0
+  const headroomToMax = Math.max(0, (row.maxPostsFromOUG63 ?? 0) - (row.totalPostsActual ?? 0))
+  const overMax = Math.max(0, (row.totalPostsActual ?? 0) - (row.maxPostsFromOUG63 ?? 0))
+  const hasPopulation = (row.uatPopulation ?? 0) > 0
+
+  const calculatePercentile = (arr: number[], value: number) => {
+    let pos = 0
+    while (pos < arr.length && arr[pos] <= value) pos++
+    return Math.round((pos / arr.length) * 100)
+  }
+  const employeesPer1kPercentile = hasPopulation ? calculatePercentile(data.map(r => r.employeesPer1000Capita).sort((a, b) => a - b), row.employeesPer1000Capita) : null
+  const occupancyPercentile = calculatePercentile(data.map(r => { const limit = Math.max(0, r.totalPostsReduction45); return limit > 0 ? r.occupiedPosts / limit : 0; }).sort((a, b) => a - b), occupancyVsLimit)
+
+  // Rank (1..N) for extra clarity next to percentiles
+  const dataWithoutCounty = data.filter(r => !r.uatName.toLowerCase().startsWith("cj") && r.uatPopulation > 0)
+  const totalEntities = dataWithoutCounty.length
+  const computeRank = (sortedArr: number[], value: number) => {
+    let pos = 0
+    while (pos < sortedArr.length && sortedArr[pos] <= value) pos++
+    return Math.max(1, pos)
+  }
+  const employeesPer1kRank = hasPopulation ? computeRank(dataWithoutCounty.map(r => r.employeesPer1000Capita).sort((a, b) => a - b), row.employeesPer1000Capita) : null
+  const occupancyRank = computeRank(dataWithoutCounty.map(r => { const limit = Math.max(0, r.totalPostsReduction45); return limit > 0 ? r.occupiedPosts / limit : 0 }).sort((a, b) => a - b), occupancyVsLimit)
+
+  const barWidthPct = Math.min(100, Math.round(occupancyVsLimit * 100))
+  const scenarioBarGradient = (ratio: number) => ratio <= 1
+    ? 'linear-gradient(90deg, hsl(140, 60%, 82%), hsl(115, 80%, 70%))'
+    : 'linear-gradient(90deg, hsl(35, 100%, 78%), hsl(0, 90%, 66%))'
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Populație</CardTitle><MapPin className="h-4 w-4 text-muted-foreground" /></CardHeader>
+          <CardContent><div className="text-2xl font-bold">{row.uatPopulation > 0 ? row.uatPopulation.toLocaleString('ro-RO') : <span className="text-sm text-muted-foreground font-normal">Nu există date suficiente pentru acest indicator.</span>}</div><p className="text-xs text-muted-foreground">Conform datelor din Sept. 2025</p></CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Posturi Ocupate</CardTitle><Users className="h-4 w-4 text-muted-foreground" /></CardHeader>
+          <CardContent>
+            <TooltipProvider><Tooltip delayDuration={150}>
+              <TooltipTrigger asChild><div className="text-2xl font-bold cursor-help">{row.occupiedPosts.toLocaleString('ro-RO')}</div></TooltipTrigger>
+              <TooltipContent><p>Numărul efectiv de angajați care lucrează în prezent.</p></TooltipContent>
+            </Tooltip></TooltipProvider>
+            <p className="text-xs text-muted-foreground">Total personal curent</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Angajați / 1.000 Locuitori</CardTitle><BarChart3 className="h-4 w-4 text-muted-foreground" /></CardHeader>
+          <CardContent>
+            {hasPopulation ? (
+              <>
+                <TooltipProvider><Tooltip delayDuration={150}>
+                  <TooltipTrigger asChild><div className="text-2xl font-bold cursor-help">{(Math.round(row.employeesPer1000Capita * 100) / 100).toLocaleString('ro-RO')}</div></TooltipTrigger>
+                  <TooltipContent><p>Măsoară eficiența administrativă. O valoare mai mică sugerează o administrație mai suplă.</p></TooltipContent>
+                </Tooltip></TooltipProvider>
+                <p className="text-xs text-muted-foreground">Indicator de eficiență</p>
+              </>
+            ) : (
+              <p className="text-sm text-muted-foreground">Nu există date suficiente pentru acest indicator.</p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <Card>
+          <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Scenarii Alternative de Limită</CardTitle></CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div>
+                <div className="flex items-center justify-between text-xs mb-1">
+                  <span>Scenariu -10%</span>
+                  <span className={`font-medium ${occupancyVsLimit40 > 1 ? 'text-red-500' : 'text-green-600'}`}>{Math.round(occupancyVsLimit40 * 100)}%</span>
+                </div>
+                <div className="h-4 rounded-md bg-muted overflow-hidden"><div className="h-full" style={{ width: `${Math.min(100, Math.round(occupancyVsLimit40 * 100))}%`, background: scenarioBarGradient(occupancyVsLimit40) }} /></div>
+                <div className="flex items-center justify-between text-[10px] text-muted-foreground mt-1"><span>Ocupate: {row.occupiedPosts.toLocaleString('ro-RO')}</span><span>Limită: {legalLimit40.toLocaleString('ro-RO')}</span></div>
+              </div>
+              <div>
+                <div className="flex items-center justify-between text-xs mb-1">
+                  <span>Scenariu -15%</span>
+                  <span className={`font-medium ${occupancyVsLimit > 1 ? 'text-red-500' : 'text-green-600'}`}>{Math.round(occupancyVsLimit * 100)}%</span>
+                </div>
+                <div className="h-4 rounded-md bg-muted overflow-hidden"><div className="h-full" style={{ width: `${barWidthPct}%`, background: scenarioBarGradient(occupancyVsLimit) }} /></div>
+                <div className="flex items-center justify-between text-[10px] text-muted-foreground mt-1"><span>Ocupate: {row.occupiedPosts.toLocaleString('ro-RO')}</span><span>Limită: {legalLimit45.toLocaleString('ro-RO')}</span></div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="md:col-span-2 lg:col-span-1 lg:col-start-2">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base font-semibold">{surplus > 0 ? 'Atenție: Excedent de Personal' : 'Status: În Limitele Legale'}</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col justify-center text-center">
+            {surplus > 0 ? (
+              <div>
+                <p className="text-sm text-muted-foreground">Posturi de Redus</p>
+                <TooltipProvider><Tooltip delayDuration={150}>
+                  <TooltipTrigger asChild><p className="text-5xl font-bold text-red-500 my-1 cursor-help">{surplus.toLocaleString('ro-RO')}</p></TooltipTrigger>
+                  <TooltipContent><p>Numărul exact de posturi ocupate care depășește limita legală simulată pentru această entitate.</p></TooltipContent>
+                </Tooltip></TooltipProvider>
+                <p className="text-base font-medium text-red-500">({Math.round(reductionPercent)}% din personalul actual)</p>
+              </div>
+            ) : (
+              <div>
+                <p className="text-sm text-muted-foreground">Capacitate Disponibilă</p>
+                <TooltipProvider><Tooltip delayDuration={150}>
+                  <TooltipTrigger asChild><p className="text-5xl font-bold text-green-600 my-1 cursor-help">{deficit.toLocaleString('ro-RO')}</p></TooltipTrigger>
+                  <TooltipContent><p>Numărul de posturi suplimentare ce pot fi ocupate până la atingerea limitei legale simulate.</p></TooltipContent>
+                </Tooltip></TooltipProvider>
+                <p className="text-base text-muted-foreground">posturi sub limita simulată</p>
+              </div>
+            )}
+            <Separator className="my-4" />
+            <div className="text-xs text-muted-foreground space-y-1 text-left">
+              <p className="font-semibold text-foreground mb-1">Limite Simulate:</p>
+              <div className="flex items-center justify-between"><span>Limită (Scenariu -10%):</span><span>{legalLimit40.toLocaleString('ro-RO')}</span></div>
+              <div className="flex items-center justify-between"><span>Limită (Scenariu -15%):</span><span className="font-bold">{legalLimit45.toLocaleString('ro-RO')}</span></div>
+            </div>
+          </CardContent>
+        </Card>
+
+
+        <Card>
+          <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Comparație cu Alte Entități</CardTitle></CardHeader>
+          <CardContent className="space-y-6">
+            {hasPopulation && employeesPer1kPercentile !== null && employeesPer1kRank !== null ? (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span>Personal per Capita</span>
+                </div>
+                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                  <span>Peste <span className="font-semibold text-primary">{employeesPer1kPercentile}%</span></span>
+                  <span>Locul <span className="font-semibold">{employeesPer1kRank}</span> din {totalEntities}</span>
+                </div>
+                <div className="mt-1"><PercentileBar value={employeesPer1kPercentile} tooltipLabel={'dintre entități'} /></div>
+              </div>
+            ) : (
+              <div className="text-sm text-muted-foreground">Nu există date suficiente pentru „Personal per Capita”.</div>
+            )}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-sm">
+                <span>Ocupare vs. Limită</span>
+              </div>
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                <span>Peste <span className="font-semibold text-primary">{occupancyPercentile}%</span></span>
+                <span>Locul <span className="font-semibold">{occupancyRank}</span> din {totalEntities}</span>
+              </div>
+              <div className="mt-1"><PercentileBar value={occupancyPercentile} tooltipLabel={'dintre entități'} /></div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Normative components and other relevant info */}
+        <Card className="md:col-span-2 lg:col-span-1">
+          <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Componente Normative Relevante</CardTitle></CardHeader>
+          <CardContent className="text-sm space-y-2">
+            <div className="flex items-center justify-between"><TooltipProvider><Tooltip delayDuration={150}><TooltipTrigger asChild><span className="cursor-help">Evidența populației</span></TooltipTrigger><TooltipContent><p>Posturi stabilite prin legislație pentru evidența persoanelor.</p></TooltipContent></Tooltip></TooltipProvider><span className="font-medium">{row.popRegistryPosts.toLocaleString('ro-RO')}</span></div>
+            <div className="flex items-center justify-between"><TooltipProvider><Tooltip delayDuration={150}><TooltipTrigger asChild><span className="cursor-help">Poliția locală (norma actuală)</span></TooltipTrigger><TooltipContent><p>Calcul curent: 1 post la 1.000 locuitori.</p></TooltipContent></Tooltip></TooltipProvider><span className="font-medium">{row.localPolicePosts.toLocaleString('ro-RO')}</span></div>
+            <div className="flex items-center justify-between"><TooltipProvider><Tooltip delayDuration={150}><TooltipTrigger asChild><span className="cursor-help">Poliția locală (simulare 1/1200)</span></TooltipTrigger><TooltipContent><p>Propunere alternativă folosită în simulări.</p></TooltipContent></Tooltip></TooltipProvider><span className="font-medium">{row.onePolicePer1200Pop.toLocaleString('ro-RO')}</span></div>
+            <Separator className="my-2" />
+            <div className="flex items-center justify-between"><span>Proiecte UE (implementare)</span><span className="font-medium">{row.euProjectsImplementationPosts.toLocaleString('ro-RO')}</span></div>
+            <div className="flex items-center justify-between"><span>Proiecte UE (post-implementare)</span><span className="font-medium">{row.euProjectsPostImplementationPosts.toLocaleString('ro-RO')}</span></div>
+            <div className="flex items-center justify-between"><span>Total Proiecte UE</span><span className="font-semibold">{euProjectsTotal.toLocaleString('ro-RO')}</span></div>
+            <div className="flex items-center justify-between"><span>Șoferi microbuze școlare</span><span className="font-medium">{row.schoolBusDriversPosts.toLocaleString('ro-RO')}</span></div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Organigramă și Diferențe</CardTitle></CardHeader>
+          <CardContent className="text-sm space-y-2">
+            <div className="flex items-center justify-between"><TooltipProvider><Tooltip delayDuration={150}><TooltipTrigger asChild><span className="cursor-help">Total posturi în organigramă</span></TooltipTrigger><TooltipContent><p>Include atât posturile ocupate, cât și cele vacante.</p></TooltipContent></Tooltip></TooltipProvider><span className="font-medium">{row.totalPostsActual.toLocaleString('ro-RO')}</span></div>
+            <div className="flex items-center justify-between"><span>Posturi vacante</span><span className="font-medium">{vacantPosts.toLocaleString('ro-RO')} <span className="text-xs text-muted-foreground">({Math.round(vacancyRate)}%)</span></span></div>
+            <div className="flex items-center justify-between"><TooltipProvider><Tooltip delayDuration={150}><TooltipTrigger asChild><span className="cursor-help">Maxim legal (OUG 63/2010)</span></TooltipTrigger><TooltipContent><p>Limită superioară calculată în funcție de populație.</p></TooltipContent></Tooltip></TooltipProvider><span className="font-medium">{row.maxPostsFromOUG63.toLocaleString('ro-RO')}</span></div>
+            <div className="flex items-center justify-between">
+              <span>{headroomToMax > 0 ? 'Diferență până la maxim' : overMax > 0 ? 'Peste maxim' : 'Diferență până la maxim'}</span>
+              <span className={`font-medium ${overMax > 0 ? 'text-red-600' : ''}`}>{(headroomToMax > 0 ? headroomToMax : overMax).toLocaleString('ro-RO')}</span>
+            </div>
+            <Separator className="my-2" />
+            <div className="flex items-center justify-between"><span>Total cu reducere -10%</span><span className="font-medium">{legalLimit40.toLocaleString('ro-RO')}</span></div>
+            <div className="flex items-center justify-between"><span>Total cu reducere -15%</span><span className="font-semibold">{legalLimit45.toLocaleString('ro-RO')}</span></div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <DataMethodology />
+
+      <Separator />
+
+      <div className="flex items-center justify-between pt-2">
+        <p className="text-xs text-muted-foreground max-w-md">Sursa: Gov.ro/aal (Raport Sept. 2025). Datele reflectă o simulare cu o marjă de eroare națională de ±2%.</p>
+        <Button asChild variant="outline" size="sm"><Link to="/research/employees-data">Vezi Toate Datele</Link></Button>
+      </div>
+    </div>
+  )
+}
+
+function PercentileBar({ value, tooltipLabel }: { value: number; tooltipLabel: string }) {
+  return (
+    <TooltipProvider delayDuration={150}>
+      <Tooltip>
+        <TooltipTrigger asChild><div className="relative h-2 w-full rounded-full bg-muted cursor-help"><div className="h-full rounded-full bg-gradient-to-r from-sky-200 to-sky-500" style={{ width: `${value}%` }} /><div className="absolute top-1/2 h-3 w-1 -translate-y-1/2 -translate-x-1/2 rounded-full bg-slate-700" style={{ left: `${value}%` }} /></div></TooltipTrigger>
+        <TooltipContent><p>Indicatorul acestei entități este mai mare decât {value}% {tooltipLabel}.</p></TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  )
+}
+
+function DataMethodology() {
+  return (
+    <Card className="bg-muted/30">
+      <CardHeader><CardTitle className="flex items-center gap-2"><Info className="h-5 w-5" /><span>Despre Date și Metodologie</span></CardTitle></CardHeader>
+      <CardContent>
+        <p className="text-sm text-muted-foreground mb-6">Informațiile prezentate au caracter informativ și reprezintă o imagine a personalului din aparatele proprii ale primăriilor și consiliilor județene din România, la nivelul lunii Septembrie 2025. Sursa datelor este Guvernul României, pe baza raportărilor prefecturilor.</p>
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="item-1">
+            <AccordionTrigger>Ce înseamnă 'Limită Legală Simulată'?</AccordionTrigger>
+            <AccordionContent>Reprezintă un prag calculat pe baza unei propuneri de reducere cu <strong>15%</strong> a posturilor ocupate (ceea ce corespunde unei reduceri cu 45% a numărului maxim teoretic permis de O.U.G. 63/2010). Este o simulare pentru a evalua impactul unor posibile reforme, nu o limită legală în vigoare.</AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="item-2">
+            <AccordionTrigger>Sunt datele 100% exacte?</AccordionTrigger>
+            <AccordionContent>Datele se bazează pe raportări multiple și, conform notei oficiale, s-ar putea înregistra un grad de eroare de aproximativ <strong>±2%</strong> la nivelul întregii țări din cauza unor posibile diferențe de raportare.</AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="item-3">
+            <AccordionTrigger>Care e diferența dintre 'Posturi Ocupate' și 'Numărul Maxim de Posturi'?</AccordionTrigger>
+            <AccordionContent>
+              <ul className="list-disc pl-5 space-y-2">
+                <li><strong>Posturi Ocupate:</strong> Numărul efectiv de angajați.</li>
+                <li><strong>Posturi în Organigramă:</strong> Totalul posturilor aprobate de consiliul local, inclusiv cele vacante.</li>
+                <li><strong>Număr Maxim Legal:</strong> Limita superioară de posturi pe care o entitate ar putea să o aibă, conform populației. Majoritatea organigramelor sunt sub acest maxim.</li>
+              </ul>
+              <p className="mt-2 text-xs text-muted-foreground">La nivel național, aproximativ 32% din totalul posturilor prevăzute de lege sunt fie neînființate, fie vacante.</p>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="item-4">
+            <AccordionTrigger>Ce entități sunt incluse în analiză?</AccordionTrigger>
+            <AccordionContent>Analiza include toate UAT-urile (comune, orașe, municipii), Sectoarele Municipiului București, Consiliile Județene și Primăria Generală a Municipiului București.</AccordionContent>
+          </AccordionItem>
+        </Accordion>
+        <div className="mt-6">
+          <Button asChild variant="link" className="px-0 h-auto">
+            <a href="https://gov.ro/aal/" target="_blank" rel="noopener noreferrer" className="text-sm">Vezi Sursa Oficială pe gov.ro/aal<ExternalLink className="h-4 w-4 ml-1" /></a>
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
