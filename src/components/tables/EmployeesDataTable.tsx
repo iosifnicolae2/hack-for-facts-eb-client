@@ -1,119 +1,78 @@
-import React from 'react'
-import { useReactTable, getCoreRowModel, getSortedRowModel, flexRender, SortingState, ColumnDef, getPaginationRowModel, PaginationState } from '@tanstack/react-table'
-import { EnrichedEmployeeData } from '@/schemas/employeeData'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Pagination } from '@/components/ui/pagination'
-import { Link } from '@tanstack/react-router'
-import { formatCurrency, formatNumber, getSignClass } from '@/lib/utils'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import React, { useMemo } from 'react';
+import {
+  useReactTable,
+  getCoreRowModel,
+  getSortedRowModel,
+  getPaginationRowModel,
+  flexRender,
+  SortingState,
+  PaginationState,
+  ColumnDef,
+} from '@tanstack/react-table';
+import { Link } from '@tanstack/react-router';
+import { EnrichedEmployeeData } from '@/schemas/employeeData';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Pagination } from '@/components/ui/pagination';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { cn, formatCurrency, formatNumber, getSignClass } from '@/lib/utils'; // Assuming you have a `cn` utility
 
+type EmployeeRowData = EnrichedEmployeeData & {
+  __entityCui?: string;
+  __uatNameAccurate?: string;
+  __spendingTotal2024?: number;
+  __spendingPerCapita2024?: number;
+};
 
 type EmployeesDataTableProps = {
-  data: readonly (EnrichedEmployeeData & {
-    __entityCui?: string | undefined
-    __uatCode?: string | undefined
-    __uatNameAccurate?: string | undefined
-    __countyName?: string | undefined
-    __spendingTotal2024?: number | undefined
-    __spendingPerCapita2024?: number | undefined
-  })[] | null
-  sorting: SortingState
-  setSorting: (updater: SortingState | ((old: SortingState) => SortingState)) => void
-  pagination: PaginationState
-  setPagination: (updater: PaginationState | ((old: PaginationState) => PaginationState)) => void
-}
+  data: readonly EmployeeRowData[] | null;
+  sorting: SortingState;
+  setSorting: (updater: SortingState | ((old: SortingState) => SortingState)) => void;
+  pagination: PaginationState;
+  setPagination: (updater: PaginationState | ((old: PaginationState) => PaginationState)) => void;
+};
 
 export function EmployeesDataTable({ data, sorting, setSorting, pagination, setPagination }: EmployeesDataTableProps) {
-  const withTooltip = (content: React.ReactNode, text: string) => (
-    <TooltipProvider delayDuration={150}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <span className="cursor-help">{content}</span>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>{text}</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  )
-  const columns = React.useMemo<ColumnDef<EmployeesDataTableProps['data'] extends readonly (infer R)[] | null ? R : never>[]>(() => [
+  const columns = useMemo<ColumnDef<EmployeeRowData>[]>(() => [
     {
       accessorKey: 'uatName',
       header: 'UAT',
-      cell: (info) => {
-        const name = String((info.row.original as any).__uatNameAccurate ?? info.getValue() ?? '')
-        const cui = (info.row.original as any).__entityCui
+      cell: ({ row }) => {
+        const name = row.original.__uatNameAccurate ?? row.original.uatName ?? '';
+        const cui = row.original.__entityCui;
+
         if (cui) {
           return (
-            <Link to="/entities/$cui" params={{ cui: String(cui) }} search={{ view: 'employees' }} className="underline-offset-2 hover:underline">
+            <Link to="/entities/$cui" params={{ cui }} search={{ view: 'employees' }} className="underline-offset-2 hover:underline">
               {name}
             </Link>
-          )
+          );
         }
-        return <span>{name}</span>
+        return <span>{name}</span>;
       },
     },
+    createNumericColumn('employeesPer1000Capita', 'Angajați / 1.000 loc.', 'Personal raportat la 1.000 locuitori. Mai mic = mai eficient.'),
+    createNumericColumn('occupiedPosts', 'Posturi ocupate', 'Total angajați actuali.'),
+    createNumericColumn('totalPostsActual', 'Total posturi', 'Posturile din organigramă (ocupate + vacante).'),
+    createNumericColumn('uatPopulation', 'Populație', 'Populația estimată a UAT-ului.', false),
     {
-      accessorKey: 'employeesPer1000Capita', header: 'Angajați / 1.000 loc.', cell: info => withTooltip(getNumberValue(info.getValue<number>()), 'Personal raportat la 1.000 locuitori. Mai mic = mai eficient.')
+      accessorKey: '__spendingTotal2024',
+      header: 'Cheltuieli totale 2024',
+      cell: ({ getValue }) => withTooltip(formatOptionalCurrency(getValue<number>()), 'Total cheltuieli în anul 2024.'),
     },
     {
-      accessorKey: 'occupiedPosts', header: 'Posturi ocupate', cell: info => withTooltip(getNumberValue(info.getValue<number>()), 'Total angajați actuali.')
+      accessorKey: '__spendingPerCapita2024',
+      header: 'Cheltuieli per capita 2024',
+      cell: ({ getValue }) => withTooltip(formatOptionalCurrency(getValue<number>()), 'Cheltuieli pe locuitor în 2024.'),
     },
-    {
-      accessorKey: 'totalPostsActual', header: 'Total posturi', cell: info => withTooltip(getNumberValue(info.getValue<number>()), 'Posturile din organigramă (ocupate + vacante).')
-    },
-    {
-      accessorKey: '__spendingTotal2024', header: 'Cheltuieli totale 2024', cell: info => withTooltip(info.getValue<number>() ? formatCurrency(info.getValue<number>()!, 'compact') : 'N/A', 'Total cheltuieli în anul 2024.')
-    },
-    {
-      accessorKey: '__spendingPerCapita2024', header: 'Cheltuieli per capita 2024', cell: info => withTooltip(info.getValue<number>() ? formatCurrency(info.getValue<number>()!, 'compact') : 'N/A', 'Cheltuieli pe locuitor în 2024.')
-    },
-    {
-      accessorKey: 'totalPostsReduction45', header: 'Total -15%', cell: info => withTooltip(getNumberValue(info.getValue<number>()), 'Total posturi după o reducere simulată de 15%.')
-    },
-    {
-      accessorKey: 'diff45VsOccupied', header: 'Dif. -15% vs ocupate', cell: info => {
-        const val = info.getValue<number>() ?? 0
-        return withTooltip(<span className={getSignClass(val)}>{val.toLocaleString('ro-RO')}</span>, 'Negativ = deficit; Pozitiv = excedent față de limita simulată.')
-      }
-    },
-    {
-      accessorKey: 'totalPostsReduction40', header: 'Total -10%', cell: info => withTooltip(getNumberValue(info.getValue<number>()), 'Total posturi după o reducere simulată de 10%.')
-    },
-    {
-      accessorKey: 'diff40VsOccupied', header: 'Dif. -10% vs ocupate', cell: info => {
-        const val = info.getValue<number>() ?? 0
-        return withTooltip(<span className={getSignClass(val)}>{val.toLocaleString('ro-RO')}</span>, 'Negativ = deficit; Pozitiv = excedent față de limita simulată.')
-      }
-    },
-    {
-      accessorKey: 'maxPostsFromOUG63', header: 'Maxim legal (OUG 63)', cell: info => withTooltip((info.getValue<number>() ?? 0).toLocaleString('ro-RO'), 'Limită superioară în funcție de populație.')
-    },
-    {
-      accessorKey: 'uatPopulation', header: 'Populație', cell: info => withTooltip((info.getValue<number>() ?? 0).toLocaleString('ro-RO'), 'Populația estimată a UAT-ului.')
-    },
-    {
-      accessorKey: 'popRegistryPosts', header: 'Evidența populației', cell: info => withTooltip((info.getValue<number>() ?? 0).toLocaleString('ro-RO'), 'Posturi stabilite prin legislație.')
-    },
-    {
-      accessorKey: 'localPolicePosts', header: 'Poliția locală', cell: info => withTooltip((info.getValue<number>() ?? 0).toLocaleString('ro-RO'), 'Norma actuală.')
-    },
-    {
-      accessorKey: 'onePolicePer1200Pop', header: 'Poliție (1/1200)', cell: info => withTooltip((info.getValue<number>() ?? 0).toLocaleString('ro-RO'), 'Simulare alternativă.')
-    },
-    {
-      accessorKey: 'euProjectsImplementationPosts', header: 'Proiecte UE (impl.)', cell: info => withTooltip((info.getValue<number>() ?? 0).toLocaleString('ro-RO'), 'Posturi pentru implementare.')
-    },
-    {
-      accessorKey: 'euProjectsPostImplementationPosts', header: 'Proiecte UE (post-impl.)', cell: info => withTooltip((info.getValue<number>() ?? 0).toLocaleString('ro-RO'), 'Posturi post-implementare.')
-    },
-    {
-      accessorKey: 'schoolBusDriversPosts', header: 'Șoferi microbuze', cell: info => withTooltip((info.getValue<number>() ?? 0).toLocaleString('ro-RO'), 'Posturi pentru transport școlar.')
-    },
-  ], [])
+    createNumericColumn('totalPostsReduction45', 'Total -15%', 'Total posturi după o reducere simulată de 15%.'),
+    createDiffColumn('diff45VsOccupied', 'Dif. -15% vs ocupate', 'Negativ = deficit; Pozitiv = excedent față de limita simulată.'),
+    createNumericColumn('totalPostsReduction40', 'Total -10%', 'Total posturi după o reducere simulată de 10%.'),
+    createDiffColumn('diff40VsOccupied', 'Dif. -10% vs ocupate', 'Negativ = deficit; Pozitiv = excedent față de limita simulată.'),
+    createNumericColumn('maxPostsFromOUG63', 'Maxim legal (OUG 63/2010)', 'Limită superioară în funcție de populație.', false),
+  ], []);
 
-  const table = useReactTable({
-    data: (data ?? []) as any[],
+  const table = useReactTable<EmployeeRowData>({
+    data: data ?? [] as any,
     columns,
     state: { sorting, pagination },
     onSortingChange: setSorting,
@@ -121,73 +80,138 @@ export function EmployeesDataTable({ data, sorting, setSorting, pagination, setP
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-  })
+  });
 
   return (
     <div className="rounded-md border bg-card overflow-auto max-w-full relative">
       <Table className="min-w-[900px] md:min-w-full text-sm">
         <TableHeader className="sticky top-0 z-10 bg-card border-b">
-          {table.getHeaderGroups().map(hg => (
-            <TableRow key={hg.id}>
-              {hg.headers.map(header => {
-                const isTextCol = header.column.id === 'uatName'
+          {table.getHeaderGroups().map(headerGroup => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map(header => {
+                const isFirstColumn = header.column.id === 'uatName';
                 return (
-                  <TableHead key={header.id} className={`whitespace-nowrap ${isTextCol ? 'text-left sticky left-0 z-20 bg-card border-r' : 'text-right'}`}>
+                  <TableHead
+                    key={header.id}
+                    className={cn(
+                      "whitespace-nowrap",
+                      isFirstColumn ? "text-left sticky left-0 z-20 bg-card border-r" : "text-right"
+                    )}
+                  >
                     {header.isPlaceholder ? null : (
                       <div
-                        className={`${header.column.getCanSort() ? 'cursor-pointer select-none' : ''} ${isTextCol ? '' : 'justify-end'} flex items-center gap-1`}
                         onClick={header.column.getToggleSortingHandler()}
+                        className={cn(
+                          "flex items-center gap-1",
+                          header.column.getCanSort() && "cursor-pointer select-none",
+                          !isFirstColumn && "justify-end"
+                        )}
                       >
                         {flexRender(header.column.columnDef.header, header.getContext())}
-                        {{ asc: '▲', desc: '▼' }[header.column.getIsSorted() as string] ?? null}
+                        {{ asc: '▲', desc: '▼' }[header.column.getIsSorted() as string]}
                       </div>
                     )}
                   </TableHead>
-                )
+                );
               })}
             </TableRow>
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows.map((row, rowIdx) => {
-            const getRowBg = () => {
-              if (row.getIsSelected()) return 'bg-muted'
-              if (rowIdx % 2 === 0) return 'bg-background'
-              return 'bg-muted'
-            }
-            const rowBg = getRowBg()
-            return (
-              <TableRow key={row.id} className={`transition-colors hover:bg-primary/5`}>
-                {row.getVisibleCells().map(cell => {
-                  const isTextCol = cell.column.id === 'uatName'
-                  return (
-                    <TableCell key={cell.id} className={`whitespace-nowrap align-middle ${rowBg} ${isTextCol ? `text-left sticky left-0 z-10 border-r` : 'text-right'}`} title={String(cell.getValue() ?? '')}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  )
-                })}
-              </TableRow>
-            )
-          })}
+          {table.getRowModel().rows.map((row, rowIndex) => (
+            <TableRow key={row.id}>
+              {row.getVisibleCells().map(cell => {
+                const isFirstColumn = cell.column.id === 'uatName';
+                return (
+                  <TableCell
+                    key={cell.id}
+                    // Simplified background logic using `cn` and modulo operator.
+                    className={cn(
+                      "whitespace-nowrap align-middle",
+                      rowIndex % 2 === 0 ? "bg-background" : "bg-muted",
+                      isFirstColumn ? "text-left sticky left-0 z-10 border-r" : "text-right",
+                    )}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                );
+              })}
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
-      <div className="p-2 md:p-3 border-t bg-card">
+      <div className="p-2 md:p-3 border-t bg-card sticky bottom-0">
         <Pagination
           currentPage={table.getState().pagination.pageIndex + 1}
           pageSize={table.getState().pagination.pageSize}
           totalCount={table.getPrePaginationRowModel().rows.length}
-          onPageChange={(p) => table.setPageIndex(Math.max(0, p - 1))}
-          onPageSizeChange={(s) => table.setPageSize(s)}
+          onPageChange={(page) => table.setPageIndex(page - 1)}
+          onPageSizeChange={table.setPageSize}
         />
       </div>
     </div>
-  )
+  );
 }
 
+/** Wraps content in a tooltip. */
+const withTooltip = (content: React.ReactNode, text: string) => (
+  <TooltipProvider delayDuration={150}>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span className="cursor-help">{content}</span>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>{text}</p>
+      </TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
+);
 
-function getNumberValue(value: number | undefined | null) {
-  if (!value) {
-    return 'N/A'
+/** Formats a numeric value, returning 'N/A' if nullish. */
+const formatOptionalNumber = (value: number | null | undefined, options: 'compact' | 'standard' = 'standard') => {
+  if (value == null) {
+    return 'N/A';
   }
-  return formatNumber(value, 'compact')
+  return options === 'compact' ? formatNumber(value, 'compact') : value.toLocaleString('ro-RO');
+};
+
+/** Formats a currency value, returning 'N/A' if nullish. */
+const formatOptionalCurrency = (value: number | null | undefined) => {
+  if (value == null) {
+    return 'N/A';
+  }
+  return formatCurrency(value, 'compact');
 }
+
+// --- 4. Reusable Column Definition Factories ---
+// These functions reduce boilerplate and make the columns array more declarative.
+
+/** Creates a standard numeric column definition with a tooltip. */
+const createNumericColumn = (
+  id: keyof EmployeeRowData,
+  header: string,
+  tooltipText: string,
+  useCompactFormatting = true,
+): ColumnDef<EmployeeRowData> => ({
+  accessorKey: id,
+  header,
+  cell: ({ getValue }) => withTooltip(
+    formatOptionalNumber(getValue<number>(), useCompactFormatting ? 'compact' : 'standard'),
+    tooltipText
+  ),
+});
+
+/** Creates a column for showing the difference, with color-coded values. */
+const createDiffColumn = (
+  id: keyof EmployeeRowData,
+  header: string,
+  tooltipText: string,
+): ColumnDef<EmployeeRowData> => ({
+  accessorKey: id,
+  header,
+  cell: ({ getValue }) => {
+    const value = getValue<number>() ?? 0;
+    const content = <span className={getSignClass(value)}>{value.toLocaleString('ro-RO')}</span>;
+    return withTooltip(content, tooltipText);
+  },
+});
