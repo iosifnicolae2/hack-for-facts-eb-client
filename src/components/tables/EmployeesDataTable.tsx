@@ -15,6 +15,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Pagination } from '@/components/ui/pagination';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn, formatCurrency, formatNumber, getSignClass } from '@/lib/utils'; // Assuming you have a `cn` utility
+import { CalculationLegend } from '@/components/entities/views/CalculationLegend';
 
 type EmployeeRowData = EnrichedEmployeeData & {
   __entityCui?: string;
@@ -51,7 +52,7 @@ export function EmployeesDataTable({ data, sorting, setSorting, pagination, setP
       },
     },
     createNumericColumn('employeesPer1000Capita', 'Angajați / 1.000 loc.', 'Personal raportat la 1.000 locuitori. Mai mic = mai eficient.'),
-    createNumericColumn('occupiedPosts', 'Posturi ocupate', 'Total angajați actuali.'),
+    createNumericColumn('occupiedPosts', 'Posturi ocupate (S)', 'Total angajați actuali (S).'),
     createNumericColumn('totalPostsActual', 'Total posturi', 'Posturile din organigramă (ocupate + vacante).'),
     createNumericColumn('uatPopulation', 'Populație', 'Populația estimată a UAT-ului.', false),
     {
@@ -64,11 +65,27 @@ export function EmployeesDataTable({ data, sorting, setSorting, pagination, setP
       header: 'Cheltuieli per capita 2024',
       cell: ({ getValue }) => withTooltip(formatOptionalCurrency(getValue<number>()), 'Cheltuieli pe locuitor în 2024.'),
     },
-    createNumericColumn('totalPostsReduction45', 'Total -15%', 'Total posturi după o reducere simulată de 15%.'),
-    createDiffColumn('diff45VsOccupied', 'Dif. -15% vs ocupate', 'Negativ = deficit; Pozitiv = excedent față de limita simulată.'),
-    createNumericColumn('totalPostsReduction40', 'Total -10%', 'Total posturi după o reducere simulată de 10%.'),
-    createDiffColumn('diff40VsOccupied', 'Dif. -10% vs ocupate', 'Negativ = deficit; Pozitiv = excedent față de limita simulată.'),
-    createNumericColumn('maxPostsFromOUG63', 'Maxim legal (OUG 63/2010)', 'Limită superioară în funcție de populație.', false),
+    createNumericColumn(
+      'totalPostsReduction45',
+      'Total cu reducere -45% (R)',
+      'R = I + J + L + M + N + O, unde I = G × 55%. Literele corespund coloanelor din fișierul sursă XLS.'
+    ),
+    createDiffColumn(
+      'diff45VsOccupied',
+      'Dif. -45% vs. ocupate (U)',
+      'U = R − S. Negativ = deficit; Pozitiv = excedent față de limita simulată. Literele corespund coloanelor din fișierul sursă XLS.'
+    ),
+    createNumericColumn(
+      'totalPostsReduction40',
+      'Total cu reducere -40% (Q)',
+      'Q = H + J + L + M + N + O, unde H = G × 60%. Literele corespund coloanelor din fișierul sursă XLS.'
+    ),
+    createDiffColumn(
+      'diff40VsOccupied',
+      'Dif. -40% vs. ocupate (T)',
+      'T = Q − S. Negativ = deficit; Pozitiv = excedent față de limita simulată. Literele corespund coloanelor din fișierul sursă XLS.'
+    ),
+    createNumericColumn('maxPostsFromOUG63', 'Maxim legal (OUG 63/2010) (G)', 'Limită superioară în funcție de populație (G).', false),
   ], []);
 
   const table = useReactTable<EmployeeRowData>({
@@ -83,73 +100,78 @@ export function EmployeesDataTable({ data, sorting, setSorting, pagination, setP
   });
 
   return (
-    <div className="rounded-md border bg-card overflow-auto max-w-full relative">
-      <Table className="min-w-[900px] md:min-w-full text-sm">
-        <TableHeader className="sticky top-0 z-10 bg-card border-b">
-          {table.getHeaderGroups().map(headerGroup => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map(header => {
-                const isFirstColumn = header.column.id === 'uatName';
-                return (
-                  <TableHead
-                    key={header.id}
-                    className={cn(
-                      "whitespace-nowrap",
-                      isFirstColumn ? "text-left sticky left-0 z-20 bg-card border-r" : "text-right"
-                    )}
-                  >
-                    {header.isPlaceholder ? null : (
-                      <div
-                        onClick={header.column.getToggleSortingHandler()}
-                        className={cn(
-                          "flex items-center gap-1",
-                          header.column.getCanSort() && "cursor-pointer select-none",
-                          !isFirstColumn && "justify-end"
-                        )}
-                      >
-                        {flexRender(header.column.columnDef.header, header.getContext())}
-                        {{ asc: '▲', desc: '▼' }[header.column.getIsSorted() as string]}
-                      </div>
-                    )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows.map((row, rowIndex) => (
-            <TableRow key={row.id}>
-              {row.getVisibleCells().map(cell => {
-                const isFirstColumn = cell.column.id === 'uatName';
-                return (
-                  <TableCell
-                    key={cell.id}
-                    // Simplified background logic using `cn` and modulo operator.
-                    className={cn(
-                      "whitespace-nowrap align-middle",
-                      rowIndex % 2 === 0 ? "bg-background" : "bg-muted",
-                      isFirstColumn ? "text-left sticky left-0 z-10 border-r" : "text-right",
-                    )}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <div className="p-2 md:p-3 border-t bg-card sticky bottom-0">
-        <Pagination
-          currentPage={table.getState().pagination.pageIndex + 1}
-          pageSize={table.getState().pagination.pageSize}
-          totalCount={table.getPrePaginationRowModel().rows.length}
-          onPageChange={(page) => table.setPageIndex(page - 1)}
-          onPageSizeChange={table.setPageSize}
-        />
+    <>
+      <div className="rounded-md border bg-card overflow-auto max-w-full relative">
+        <Table className="min-w-[900px] md:min-w-full text-sm">
+          <TableHeader className="sticky top-0 z-10 bg-card border-b">
+            {table.getHeaderGroups().map(headerGroup => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map(header => {
+                  const isFirstColumn = header.column.id === 'uatName';
+                  return (
+                    <TableHead
+                      key={header.id}
+                      className={cn(
+                        "whitespace-nowrap",
+                        isFirstColumn ? "text-left sticky left-0 z-20 bg-card border-r" : "text-right"
+                      )}
+                    >
+                      {header.isPlaceholder ? null : (
+                        <div
+                          onClick={header.column.getToggleSortingHandler()}
+                          className={cn(
+                            "flex items-center gap-1",
+                            header.column.getCanSort() && "cursor-pointer select-none",
+                            !isFirstColumn && "justify-end"
+                          )}
+                        >
+                          {flexRender(header.column.columnDef.header, header.getContext())}
+                          {{ asc: '▲', desc: '▼' }[header.column.getIsSorted() as string]}
+                        </div>
+                      )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row, rowIndex) => (
+              <TableRow key={row.id}>
+                {row.getVisibleCells().map(cell => {
+                  const isFirstColumn = cell.column.id === 'uatName';
+                  return (
+                    <TableCell
+                      key={cell.id}
+                      // Simplified background logic using `cn` and modulo operator.
+                      className={cn(
+                        "whitespace-nowrap align-middle",
+                        rowIndex % 2 === 0 ? "bg-background" : "bg-muted",
+                        isFirstColumn ? "text-left sticky left-0 z-10 border-r" : "text-right",
+                      )}
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <div className="p-2 md:p-3 border-t bg-card sticky bottom-0">
+          <Pagination
+            currentPage={table.getState().pagination.pageIndex + 1}
+            pageSize={table.getState().pagination.pageSize}
+            totalCount={table.getPrePaginationRowModel().rows.length}
+            onPageChange={(page) => table.setPageIndex(page - 1)}
+            onPageSizeChange={table.setPageSize}
+          />
+        </div>
       </div>
-    </div>
+      <div className="mt-4">
+        <CalculationLegend />
+      </div>
+    </>
   );
 }
 

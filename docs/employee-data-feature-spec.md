@@ -129,7 +129,7 @@ Pentru fiecare unitate administrativ-teritorială este o oportunitate să își 
 Analizarea acestor date permite corectarea unor eventuale erori de raportare. Datele au fost colectate prin Ministerul Afacerilor Interne și Ministerul Dezvoltării, Lucrărilor Publice și Administrației și se bazează pe raportări ale prefecturilor. Având în vedere ușoare diferențe de raportare, s-ar putea înregistra un grad de eroare de aproximativ ±2% la nivelul întregii țări.
 
 ---
-https://aiparte.ro/research/administratia_locala.htm
+<https://aiparte.ro/research/administratia_locala.htm>
 
 Sursa Datelor și Întrebări Frecvente
 
@@ -200,3 +200,25 @@ Datele se bazează pe raportări multiple și, conform notei oficiale, s-ar pute
 Acesta arată ce procent din posturile ocupate ar trebui redus pentru a atinge limita legală propusă (scădere cu 45% din total posturi conform anexa la O.U.G nr. 63/2010). Se calculează doar pentru entitățile cu surplus, ca (Surplus / Posturi Ocupate) * 100.
 
 </context>
+
+## Calculations
+
+```
+Nr. max. posturi cf. pct. 1 din anexa la O.U.G nr. 63/2010 (G)
+Reducere cu 40% nr. max posturi (H) = G * 0.6
+Reducere cu 45% nr. max posturi (I) = G * 0.55
+
+Posturi pt. evidența populației (J)
+Posturi pt. poliţia locală (K)
+Posturi pt. poliţia locală 1 post poliție la 1200 locuitori (L)
+Posturi pt. implementare proiecte europene (M)
+Posturi pt. șoferi microbuze şcolare (N)
+Posturi pt. postimplementare proiecte europene (O)
+
+Total Actual (P) = G + J + K + M + N + O
+TOTAL CU REDUCERE 40% (Q) = H + J + L + M + N + O
+TOTAL CU REDUCERE 45% (R) = I + J + L + M + N + O
+POSTURI OCUPATE (S)
+Diferență reducere 40% vs. posturi ocupate (T) = Q - S
+Diferență reducere 45% vs. posturi ocupate (U) = R - S
+```
