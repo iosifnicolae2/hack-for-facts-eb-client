@@ -182,7 +182,7 @@ export function EmployeesView({ entity }: { entity: EntityDetailsData | null | u
                   <span>Personal per Capita</span>
                 </div>
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
-                  <span>Peste <span className="font-semibold text-primary">{employeesPer1kPercentile}%</span></span>
+                  <span>Top <span className="font-semibold text-primary">{employeesPer1kPercentile}%</span></span>
                   <span>Locul <span className="font-semibold">{employeesPer1kRank}</span> din {totalEntities}</span>
                 </div>
                 <div className="mt-1"><PercentileBar value={employeesPer1kPercentile} tooltipLabel={'dintre entități'} /></div>
@@ -195,7 +195,7 @@ export function EmployeesView({ entity }: { entity: EntityDetailsData | null | u
                 <span>Ocupare vs. Limită</span>
               </div>
               <div className="flex items-center justify-between text-xs text-muted-foreground">
-                <span>Peste <span className="font-semibold text-primary">{occupancyPercentile}%</span></span>
+                <span>Top <span className="font-semibold text-primary">{occupancyPercentile}%</span></span>
                 <span>Locul <span className="font-semibold">{occupancyRank}</span> din {totalEntities}</span>
               </div>
               <div className="mt-1"><PercentileBar value={occupancyPercentile} tooltipLabel={'dintre entități'} /></div>
@@ -252,7 +252,7 @@ function PercentileBar({ value, tooltipLabel }: { value: number; tooltipLabel: s
     <TooltipProvider delayDuration={150}>
       <Tooltip>
         <TooltipTrigger asChild><div className="relative h-2 w-full rounded-full bg-muted cursor-help"><div className="h-full rounded-full bg-gradient-to-r from-sky-200 to-sky-500" style={{ width: `${value}%` }} /><div className="absolute top-1/2 h-3 w-1 -translate-y-1/2 -translate-x-1/2 rounded-full bg-slate-700" style={{ left: `${value}%` }} /></div></TooltipTrigger>
-        <TooltipContent><p>Indicatorul acestei entități este mai mare decât {value}% {tooltipLabel}.</p></TooltipContent>
+        <TooltipContent><p>Doar {value}% {tooltipLabel} au o valoare mai mică sau egală pentru acest indicator.</p></TooltipContent>
       </Tooltip>
     </TooltipProvider>
   )
