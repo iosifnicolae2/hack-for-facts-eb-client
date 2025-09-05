@@ -7,6 +7,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Link } from '@tanstack/react-router'
 import { Users, BarChart3, MapPin } from 'lucide-react'
 import { EntityEmployeesDataInfo } from '../EntityEmployeesDataInfo'
+import { CalculationLegend } from './CalculationLegend'
 
 export function EmployeesView({ entity }: { entity: EntityDetailsData | null | undefined }) {
   const { data, isLoading, error } = useCsvData()
@@ -17,8 +18,18 @@ export function EmployeesView({ entity }: { entity: EntityDetailsData | null | u
   if (isLoading) return <div className="p-4 text-muted-foreground">Se încarcă datele analitice...</div>
   if (!row || !data) return <div className="p-4 text-muted-foreground">Nu au fost găsite date specifice pentru această entitate.</div>
 
-  const legalLimit45 = Math.max(0, row.totalPostsReduction45)
-  const legalLimit40 = Math.max(0, row.totalPostsReduction40)
+  // Corrected calculations based on provided formulas
+  const G = row.maxPostsFromOUG63 ?? 0
+  const J = row.popRegistryPosts ?? 0
+  const L = row.onePolicePer1200Pop ?? 0
+  const M = row.euProjectsImplementationPosts ?? 0
+  const N = row.schoolBusDriversPosts ?? 0
+  const O = row.euProjectsPostImplementationPosts ?? 0
+
+  const commonPart = J + L + M + N + O
+  const legalLimit40 = Math.round((G * 0.6) + commonPart)
+  const legalLimit45 = Math.round((G * 0.55) + commonPart)
+
   const occupancyVsLimit = legalLimit45 > 0 ? (row.occupiedPosts / legalLimit45) : 0
   const occupancyVsLimit40 = legalLimit40 > 0 ? (row.occupiedPosts / legalLimit40) : 0
   const surplus = Math.max(0, row.occupiedPosts - legalLimit45)
@@ -111,7 +122,7 @@ export function EmployeesView({ entity }: { entity: EntityDetailsData | null | u
             <div className="space-y-4">
               <div>
                 <div className="flex items-center justify-between text-xs mb-1">
-                  <span>Scenariu -10%</span>
+                  <span>Scenariu -40%</span>
                   <span className={`font-medium ${occupancyVsLimit40 > 1 ? 'text-red-500' : 'text-green-600'}`}>{Math.round(occupancyVsLimit40 * 100)}%</span>
                 </div>
                 <div className="h-4 rounded-md bg-muted overflow-hidden"><div className="h-full" style={{ width: `${Math.min(100, Math.round(occupancyVsLimit40 * 100))}%`, background: scenarioBarGradient(occupancyVsLimit40) }} /></div>
@@ -119,7 +130,7 @@ export function EmployeesView({ entity }: { entity: EntityDetailsData | null | u
               </div>
               <div>
                 <div className="flex items-center justify-between text-xs mb-1">
-                  <span>Scenariu -15%</span>
+                  <span>Scenariu -45%</span>
                   <span className={`font-medium ${occupancyVsLimit > 1 ? 'text-red-500' : 'text-green-600'}`}>{Math.round(occupancyVsLimit * 100)}%</span>
                 </div>
                 <div className="h-4 rounded-md bg-muted overflow-hidden"><div className="h-full" style={{ width: `${barWidthPct}%`, background: scenarioBarGradient(occupancyVsLimit) }} /></div>
@@ -136,7 +147,7 @@ export function EmployeesView({ entity }: { entity: EntityDetailsData | null | u
           <CardContent className="flex flex-col justify-center text-center">
             {surplus > 0 ? (
               <div>
-                <p className="text-sm text-muted-foreground">Posturi de Redus <span className="font-semibold">(Scenariu -15%)</span></p>
+                <p className="text-sm text-muted-foreground">Posturi de Redus <span className="font-semibold">(Scenariu -45%)</span></p>
                 <TooltipProvider><Tooltip delayDuration={150}>
                   <TooltipTrigger asChild><p className="text-5xl font-bold text-red-500 my-1 cursor-help">{surplus.toLocaleString('ro-RO')}</p></TooltipTrigger>
                   <TooltipContent><p>Numărul exact de posturi ocupate care depășește limita legală simulată pentru această entitate.</p></TooltipContent>
@@ -156,13 +167,13 @@ export function EmployeesView({ entity }: { entity: EntityDetailsData | null | u
             <Separator className="my-4" />
             <div className="text-xs text-muted-foreground space-y-1 text-left">
               <p className="font-semibold text-foreground mb-1">Limite Simulate:</p>
-              <div className="flex items-center justify-between"><span>Limită (Scenariu -10%):</span><span>{legalLimit40.toLocaleString('ro-RO')}</span></div>
+              <div className="flex items-center justify-between"><span>Limită (Scenariu -40%):</span><span>{legalLimit40.toLocaleString('ro-RO')}</span></div>
               {surplus40 > 0 && (
                 <div className="text-right text-muted-foreground text-[10px] pl-4">
                   <span>{row.occupiedPosts.toLocaleString('ro-RO')}</span> - <span className="text-red-500 font-medium">{surplus40.toLocaleString('ro-RO')}</span> = <span className="font-bold text-foreground">{legalLimit40.toLocaleString('ro-RO')}</span>
                 </div>
               )}
-              <div className="flex items-center justify-between mt-2"><span>Limită (Scenariu -15%):</span><span className="font-bold">{legalLimit45.toLocaleString('ro-RO')}</span></div>
+              <div className="flex items-center justify-between mt-2"><span>Limită (Scenariu -45%):</span><span className="font-bold">{legalLimit45.toLocaleString('ro-RO')}</span></div>
               {surplus > 0 && (
                 <div className="text-right text-muted-foreground text-[10px] pl-4">
                   <span>{row.occupiedPosts.toLocaleString('ro-RO')}</span> - <span className="text-red-500 font-medium">{surplus.toLocaleString('ro-RO')}</span> = <span className="font-bold text-foreground">{legalLimit45.toLocaleString('ro-RO')}</span>
@@ -229,11 +240,110 @@ export function EmployeesView({ entity }: { entity: EntityDetailsData | null | u
               <span className={`font-medium ${overMax > 0 ? 'text-red-600' : ''}`}>{(headroomToMax > 0 ? headroomToMax : overMax).toLocaleString('ro-RO')}</span>
             </div>
             <Separator className="my-2" />
-            <div className="flex items-center justify-between"><span>Total cu reducere -10%</span><span className="font-medium">{legalLimit40.toLocaleString('ro-RO')}</span></div>
-            <div className="flex items-center justify-between"><span>Total cu reducere -15%</span><span className="font-semibold">{legalLimit45.toLocaleString('ro-RO')}</span></div>
+            <div className="flex items-center justify-between"><span>Total cu reducere -40%</span><span className="font-medium">{legalLimit40.toLocaleString('ro-RO')}</span></div>
+            <div className="flex items-center justify-between"><span>Total cu reducere -45%</span><span className="font-semibold">{legalLimit45.toLocaleString('ro-RO')}</span></div>
+          </CardContent>
+        </Card>
+
+        <Card className="md:col-span-2 lg:col-span-3">
+          <CardHeader>
+            <CardTitle className="text-base font-semibold">Detalii Calcul Limită Normativă</CardTitle>
+          </CardHeader>
+          <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+            <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-muted/50">
+              <TooltipProvider delayDuration={150}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="text-center cursor-help">
+                      <p className="text-xs text-muted-foreground">Limită Legală OUG 63/2010 (G)</p>
+                      <p className="text-3xl font-extrabold text-primary my-1">{G.toLocaleString('ro-RO')}</p>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="top">
+                    <p>Acesta este nr. max. de posturi cf. pct. 1 din anexa la O.U.G nr. 63/2010 și<br />reprezintă baza de calcul pentru reducerile normative.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+            <div className="space-y-3">
+              <p className="font-semibold text-foreground">Scenariu Reducere -40%</p>
+              <div className="flex items-center justify-between text-xs">
+                <span>Reducere (G * 40%):</span>
+                <span className="font-mono p-1 bg-muted rounded-md">{Math.round(G * 0.4).toLocaleString('ro-RO')}</span>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span>Bază redusă (H = G * 60%):</span>
+                <span className="font-mono p-1 bg-muted rounded-md">{Math.round(G * 0.6).toLocaleString('ro-RO')}</span>
+              </div>
+              <Separator />
+              <TooltipProvider delayDuration={150}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex items-center justify-between text-xs cursor-help">
+                      <span>Total Excepții (J+L+M+N+O):</span>
+                      <span className="font-mono p-1 bg-muted rounded-md">{commonPart.toLocaleString('ro-RO')}</span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">
+                    <div className="space-y-1 text-xs">
+                      <p className="font-bold">Componenta excepțiilor:</p>
+                      <p><span className="font-semibold">(J)</span> Evidența populației: {J.toLocaleString('ro-RO')}</p>
+                      <p><span className="font-semibold">(L)</span> Poliția locală (1/1200): {L.toLocaleString('ro-RO')}</p>
+                      <p><span className="font-semibold">(M)</span> Proiecte UE (implementare): {M.toLocaleString('ro-RO')}</p>
+                      <p><span className="font-semibold">(N)</span> Șoferi microbuze: {N.toLocaleString('ro-RO')}</p>
+                      <p><span className="font-semibold">(O)</span> Proiecte UE (post-impl.): {O.toLocaleString('ro-RO')}</p>
+                      <p className="pt-1 text-muted-foreground text-[10px] italic">*Literele corespund coloanelor din fișierul sursă XLS.</p>
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <div className="flex items-center justify-between font-bold">
+                <span>Limită Finală (Q):</span>
+                <span>{legalLimit40.toLocaleString('ro-RO')}</span>
+              </div>
+            </div>
+            <div className="space-y-3">
+              <p className="font-semibold text-foreground">Scenariu Reducere -45%</p>
+              <div className="flex items-center justify-between text-xs">
+                <span>Reducere (G * 45%):</span>
+                <span className="font-mono p-1 bg-muted rounded-md">{Math.round(G * 0.45).toLocaleString('ro-RO')}</span>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span>Bază redusă (I = G * 55%):</span>
+                <span className="font-mono p-1 bg-muted rounded-md">{Math.round(G * 0.55).toLocaleString('ro-RO')}</span>
+              </div>
+              <Separator />
+              <TooltipProvider delayDuration={150}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex items-center justify-between text-xs cursor-help">
+                      <span>Total Excepții (J+L+M+N+O):</span>
+                      <span className="font-mono p-1 bg-muted rounded-md">{commonPart.toLocaleString('ro-RO')}</span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">
+                    <div className="space-y-1 text-xs">
+                      <p className="font-bold">Componenta excepțiilor:</p>
+                      <p><span className="font-semibold">(J)</span> Evidența populației: {J.toLocaleString('ro-RO')}</p>
+                      <p><span className="font-semibold">(L)</span> Poliția locală (1/1200): {L.toLocaleString('ro-RO')}</p>
+                      <p><span className="font-semibold">(M)</span> Proiecte UE (implementare): {M.toLocaleString('ro-RO')}</p>
+                      <p><span className="font-semibold">(N)</span> Șoferi microbuze: {N.toLocaleString('ro-RO')}</p>
+                      <p><span className="font-semibold">(O)</span> Proiecte UE (post-impl.): {O.toLocaleString('ro-RO')}</p>
+                      <p className="pt-1 text-muted-foreground text-[10px] italic">*Literele corespund coloanelor din fișierul sursă XLS.</p>
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <div className="flex items-center justify-between font-bold">
+                <span>Limită Finală (R):</span>
+                <span>{legalLimit45.toLocaleString('ro-RO')}</span>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
+
+      <CalculationLegend />
 
       <EntityEmployeesDataInfo />
 

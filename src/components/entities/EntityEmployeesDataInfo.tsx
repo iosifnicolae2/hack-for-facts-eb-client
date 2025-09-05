@@ -12,9 +12,31 @@ export function EntityEmployeesDataInfo() {
             <CardContent>
                 <p className="text-sm text-muted-foreground mb-6">Informațiile prezentate au caracter informativ și reprezintă o imagine a personalului din aparatele proprii ale primăriilor și consiliilor județene din România, la nivelul lunii Septembrie 2025. Sursa datelor este Guvernul României, pe baza raportărilor prefecturilor.</p>
                 <Accordion type="single" collapsible className="w-full">
+                    <AccordionItem value="item-5">
+                        <AccordionTrigger>Cum se calculează limitele simulate?</AccordionTrigger>
+                        <AccordionContent className="pb-4 space-y-4">
+                            <p>Formula utilizată pentru a determina numărul maxim de posturi în cele două scenarii de reducere este următoarea (literele corespund coloanelor din fișierul sursă XLS):</p>
+                            <div className="p-3 bg-background/50 rounded-md text-xs font-mono border">
+                                <p><span className="font-semibold">TOTAL CU REDUCERE (Q sau R)</span> = BAZĂ REDUSĂ (H sau I) + EXCEPȚII (J+L+M+N+O)</p>
+                            </div>
+                            <ul className="list-disc pl-5 space-y-2 text-sm">
+                                <li><strong>BAZĂ REDUSĂ (H sau I):</strong> Reprezintă <span className="font-semibold">Nr. max. posturi cf. O.U.G nr. 63/2010 (G)</span>, diminuat cu 40% (H) sau 45% (I).</li>
+                                <li><strong>EXCEPȚII:</strong> Posturi care nu intră sub incidența reducerii:
+                                    <ul className="list-['-_'] pl-5 mt-1 space-y-1 text-muted-foreground">
+                                        <li><span className="font-semibold">(J)</span> Evidența populației</li>
+                                        <li><span className="font-semibold">(L)</span> Poliția locală (calculată la 1/1200 locuitori)</li>
+                                        <li><span className="font-semibold">(M)</span> Implementare proiecte europene</li>
+                                        <li><span className="font-semibold">(N)</span> Șoferi microbuze şcolare</li>
+                                        <li><span className="font-semibold">(O)</span> Post-implementare proiecte europene</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <p className="text-xs text-muted-foreground pt-2">Această metodologie asigură că reducerile se aplică doar bazei administrative generale, protejând posturile esențiale și pe cele finanțate din fonduri externe.</p>
+                        </AccordionContent>
+                    </AccordionItem>
                     <AccordionItem value="item-1">
                         <AccordionTrigger>Ce înseamnă 'Limită Legală Simulată'?</AccordionTrigger>
-                        <AccordionContent className="pb-4">Reprezintă un prag calculat pe baza unei propuneri de reducere cu <strong>15%</strong> a posturilor ocupate (ceea ce corespunde unei reduceri cu 45% a numărului maxim teoretic permis de O.U.G. 63/2010). Este o simulare pentru a evalua impactul unor posibile reforme, nu o limită legală în vigoare.</AccordionContent>
+                        <AccordionContent className="pb-4">Reprezintă un prag calculat pe baza unei propuneri de reducere cu <strong>40% sau 45%</strong> a numărului maxim teoretic de posturi permis de O.U.G. 63/2010, la care se adaugă posturile exceptate. Este o simulare pentru a evalua impactul unor posibile reforme, nu o limită legală în vigoare.</AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="item-2">
                         <AccordionTrigger>Sunt datele 100% exacte?</AccordionTrigger>
