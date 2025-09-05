@@ -66,10 +66,10 @@ function EmployeesDataPage() {
   return (
     <div className="container mx-auto py-4 space-y-4 px-2 md:px-6 max-w-full">
       <Seo title="Analiza personal UAT" description="Tabel cu indicatori despre personalul UAT și cheltuieli pe 2024." />
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+      <div className="flex flex-col gap-3">
         <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">Analiza personal UAT</h1>
-        <div className="w-full md:w-auto md:min-w-[320px]">
-          <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Caută UAT" className="h-9" />
+        <div className="w-full md:w-auto md:min-w-[320px] md:max-w-md">
+          <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Caută UAT" className="h-9 bg-white" />
         </div>
       </div>
 
