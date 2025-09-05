@@ -22,6 +22,7 @@ export function EmployeesView({ entity }: { entity: EntityDetailsData | null | u
   const occupancyVsLimit = legalLimit45 > 0 ? (row.occupiedPosts / legalLimit45) : 0
   const occupancyVsLimit40 = legalLimit40 > 0 ? (row.occupiedPosts / legalLimit40) : 0
   const surplus = Math.max(0, row.occupiedPosts - legalLimit45)
+  const surplus40 = Math.max(0, row.occupiedPosts - legalLimit40)
   const deficit = Math.max(0, legalLimit45 - row.occupiedPosts)
   const reductionPercent = surplus > 0 && row.occupiedPosts > 0 ? (surplus / row.occupiedPosts) * 100 : 0
 
@@ -135,7 +136,7 @@ export function EmployeesView({ entity }: { entity: EntityDetailsData | null | u
           <CardContent className="flex flex-col justify-center text-center">
             {surplus > 0 ? (
               <div>
-                <p className="text-sm text-muted-foreground">Posturi de Redus</p>
+                <p className="text-sm text-muted-foreground">Posturi de Redus <span className="font-semibold">(Scenariu -15%)</span></p>
                 <TooltipProvider><Tooltip delayDuration={150}>
                   <TooltipTrigger asChild><p className="text-5xl font-bold text-red-500 my-1 cursor-help">{surplus.toLocaleString('ro-RO')}</p></TooltipTrigger>
                   <TooltipContent><p>Numărul exact de posturi ocupate care depășește limita legală simulată pentru această entitate.</p></TooltipContent>
@@ -156,7 +157,17 @@ export function EmployeesView({ entity }: { entity: EntityDetailsData | null | u
             <div className="text-xs text-muted-foreground space-y-1 text-left">
               <p className="font-semibold text-foreground mb-1">Limite Simulate:</p>
               <div className="flex items-center justify-between"><span>Limită (Scenariu -10%):</span><span>{legalLimit40.toLocaleString('ro-RO')}</span></div>
-              <div className="flex items-center justify-between"><span>Limită (Scenariu -15%):</span><span className="font-bold">{legalLimit45.toLocaleString('ro-RO')}</span></div>
+              {surplus40 > 0 && (
+                <div className="text-right text-muted-foreground text-[10px] pl-4">
+                  <span>{row.occupiedPosts.toLocaleString('ro-RO')}</span> - <span className="text-red-500 font-medium">{surplus40.toLocaleString('ro-RO')}</span> = <span className="font-bold text-foreground">{legalLimit40.toLocaleString('ro-RO')}</span>
+                </div>
+              )}
+              <div className="flex items-center justify-between mt-2"><span>Limită (Scenariu -15%):</span><span className="font-bold">{legalLimit45.toLocaleString('ro-RO')}</span></div>
+              {surplus > 0 && (
+                <div className="text-right text-muted-foreground text-[10px] pl-4">
+                  <span>{row.occupiedPosts.toLocaleString('ro-RO')}</span> - <span className="text-red-500 font-medium">{surplus.toLocaleString('ro-RO')}</span> = <span className="font-bold text-foreground">{legalLimit45.toLocaleString('ro-RO')}</span>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -214,7 +225,7 @@ export function EmployeesView({ entity }: { entity: EntityDetailsData | null | u
             <div className="flex items-center justify-between"><span>Posturi vacante</span><span className="font-medium">{vacantPosts.toLocaleString('ro-RO')} <span className="text-xs text-muted-foreground">({Math.round(vacancyRate)}%)</span></span></div>
             <div className="flex items-center justify-between"><TooltipProvider><Tooltip delayDuration={150}><TooltipTrigger asChild><span className="cursor-help">Maxim legal (OUG 63/2010)</span></TooltipTrigger><TooltipContent><p>Limită superioară calculată în funcție de populație.</p></TooltipContent></Tooltip></TooltipProvider><span className="font-medium">{row.maxPostsFromOUG63.toLocaleString('ro-RO')}</span></div>
             <div className="flex items-center justify-between">
-              <span>{headroomToMax > 0 ? 'Diferență până la maxim' : overMax > 0 ? 'Peste maxim' : 'Diferență până la maxim'}</span>
+              <span>Organigrama - Max. Legal</span>
               <span className={`font-medium ${overMax > 0 ? 'text-red-600' : ''}`}>{(headroomToMax > 0 ? headroomToMax : overMax).toLocaleString('ro-RO')}</span>
             </div>
             <Separator className="my-2" />

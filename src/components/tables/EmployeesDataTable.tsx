@@ -169,7 +169,7 @@ const withTooltip = (content: React.ReactNode, text: string) => (
 
 /** Formats a numeric value, returning 'N/A' if nullish. */
 const formatOptionalNumber = (value: number | null | undefined, options: 'compact' | 'standard' = 'standard') => {
-  if (value == null) {
+  if (!value) {
     return 'N/A';
   }
   return options === 'compact' ? formatNumber(value, 'compact') : value.toLocaleString('ro-RO');
@@ -177,7 +177,7 @@ const formatOptionalNumber = (value: number | null | undefined, options: 'compac
 
 /** Formats a currency value, returning 'N/A' if nullish. */
 const formatOptionalCurrency = (value: number | null | undefined) => {
-  if (value == null) {
+  if (!value) {
     return 'N/A';
   }
   return formatCurrency(value, 'compact');

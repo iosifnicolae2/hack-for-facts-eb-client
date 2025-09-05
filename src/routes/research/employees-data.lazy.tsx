@@ -36,18 +36,21 @@ function EmployeesDataPage() {
     }
     const enriched = (data ?? []).map((row) => {
       const hm = bySiruta.get(row.sirutaCode)
+      const baseName = hm?.uat_name ?? row.uatName
+      const countyName = hm?.county_name ? `- Jud. ${hm.county_name}` : ''
+      const uatNameAccurate = `${baseName} ${countyName}`.trim()
       return {
         ...row,
         __entityCui: hm?.uat_code,
         __uatCode: hm?.uat_code,
-        __uatNameAccurate: hm?.uat_name ?? row.uatName,
+        __uatNameAccurate: uatNameAccurate,
         __countyName: hm?.county_name,
         __spendingTotal2024: hm?.total_amount ?? 0,
         __spendingPerCapita2024: hm?.per_capita_amount ?? 0,
       }
     })
     if (!debouncedQuery) return enriched
-    const fuse = new Fuse(enriched, { keys: ['__uatNameAccurate', 'uatName'], threshold: 0.3, ignoreLocation: true, includeScore: false })
+    const fuse = new Fuse(enriched, { keys: ['__uatNameAccurate'], threshold: 0.3, ignoreLocation: false, includeScore: false, shouldSort: true })
     return fuse.search(debouncedQuery).map(r => r.item)
   }, [data, heatmapRaw, debouncedQuery])
 
