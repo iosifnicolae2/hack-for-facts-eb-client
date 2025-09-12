@@ -12,8 +12,9 @@ import { Building2, ExternalLink } from 'lucide-react';
 import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
 import { UatDisplay } from './UatDisplay';
+import { useHeaderSize } from './hooks/useHeaderSize';
 
-type HeaderEntity = Pick<EntityDetailsData, 'name' | 'cui' | 'entity_type' | 'address' | 'uat' | 'children' | 'parents' | 'executionLineItems' | 'is_main_creditor'> & {
+type HeaderEntity = Pick<EntityDetailsData, 'name' | 'cui' | 'entity_type' | 'address' | 'uat' | 'children' | 'parents' | 'executionLineItems'> & {
   is_uat?: boolean;
   population?: number | null;
 };
@@ -35,22 +36,24 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
   className,
   isLoading,
 }) => {
+  const entityTypeLabel = useEntityTypeLabel();
+  const entityCategory = entity?.entity_type ? entityTypeLabel.map(entity.entity_type) : null;
+  const { headerRef, headerTitleRef, headerBottomRef, stickyTop } = useHeaderSize(isLoading);
+  const { url: wikipediaUrl } = useExternalSearchLink(entity);
+
   if (isLoading || !entity) {
     return <EntityHeaderSkeleton className={className} />;
   }
-  const entityTypeLabel = useEntityTypeLabel();
 
-  const entityCategory = entity.entity_type ? entityTypeLabel.map(entity.entity_type) : null;
-  const { url: wikipediaUrl } = useExternalSearchLink(entity);
 
   // The top is the parent header and is calculated with trial and error. We can use the title container to compute the height and use that as reference.
   return (
-    <header className={cn("bg-background px-6 pb-2 rounded-lg shadow-lg sticky top-[-8.1rem] z-30", className)}>
+    <header ref={headerRef} className={cn("bg-background px-6 pb-2 rounded-lg shadow-lg sticky z-30", className)} style={{ top: stickyTop }}>
       {/* Main content: Info and Year Selector */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
         <div className="flex-grow">
-          {/* Title and Category Badge */}
-          <div className="flex justify-between mb-2 pt-2 sticky top-0 z-30 bg-background">
+          {/* Title and Reporting (responsive) */}
+          <div ref={headerTitleRef} className="flex flex-col md:flex-row md:justify-between mb-2 pt-2 sticky top-0 z-30 bg-background">
             <div className="flex items-center gap-4">
               <h1 className="text-3xl lg:text-5xl font-extrabold underline text-slate-900 dark:text-slate-100 flex items-center gap-2">
                 <Link to={`/entities/$cui`} params={{ cui: entity.cui }}>
@@ -58,15 +61,8 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
                 </Link>
               </h1>
             </div>
-
             {yearSelector && (
-              <div
-                className={cn(
-                  "rounded-xl border border-slate-200/80 dark:border-slate-700/70 mt-0 mb-auto",
-                  "bg-white/70 dark:bg-slate-900/40 backdrop-blur supports-[backdrop-filter]:bg-white/30",
-                  "px-2 py-1 shadow-sm",
-                )}
-              >
+              <div className="mt-1 w-fit">
                 {yearSelector}
               </div>
             )}
@@ -114,10 +110,12 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
             </div>
 
             {/* View switcher and relationships */}
-            <EntityViewSwitcher
-              views={views}
-              activeView={activeView}
-            />
+            <div ref={headerBottomRef} className={"relative"}>
+              <EntityViewSwitcher
+                views={views}
+                activeView={activeView}
+              />
+            </div>
           </div>
         </div>
       </div>

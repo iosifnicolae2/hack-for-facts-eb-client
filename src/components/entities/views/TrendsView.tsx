@@ -10,6 +10,7 @@ import { ChartCard } from './ChartCard';
 import { TrendsViewSkeleton } from './TrendsViewSkeleton';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { t } from '@lingui/core/macro';
+import { toReportTypeValue } from '@/schemas/reporting';
 
 interface BaseTrendsViewProps {
   entity?: EntityDetailsData;
@@ -42,7 +43,6 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
   }, [lineItems]);
 
   const entityNameRaw = entity?.name ?? '';
-  const isMainCreditor = !!entity?.is_main_creditor;
 
   const trendChart = useMemo<Chart | null>(() => {
     if (!entity) return null;
@@ -58,7 +58,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
         entity_cuis: [cui],
         functional_prefixes: [prefix],
         account_category: accountCategory,
-        report_type: isMainCreditor ? 'Executie bugetara agregata la nivel de ordonator principal' : 'Executie bugetara detaliata',
+        report_type: toReportTypeValue(entity.default_report_type),
         normalization,
       },
       enabled: true,
@@ -81,7 +81,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
       },
       series,
     } as Chart;
-  }, [topFunctionalGroups, cui, type, chapterMap, entity, entityNameRaw, isMainCreditor, normalization]);
+  }, [topFunctionalGroups, cui, type, chapterMap, entity, entityNameRaw, normalization]);
 
   const {
     expenseSearchTerm,

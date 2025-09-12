@@ -2,6 +2,7 @@ import { graphqlRequest } from "./graphql";
 import { createLogger } from "../logger";
 import { EntitySearchResult, EntitySearchNode } from "@/schemas/entities";
 import { Normalization, AnalyticsSeries } from '@/schemas/charts';
+import { GqlReportType, ReportPeriodInput } from "@/schemas/reporting";
 
 const logger = createLogger("entities-api");
 
@@ -23,9 +24,9 @@ export interface EntityDetailsData {
   cui: string;
   name: string;
   address?: string | null;
+  default_report_type: GqlReportType;
   entity_type?: string | null;
   is_uat?: boolean | null;
-  is_main_creditor?: boolean | null;
   uat?: {
     county_name?: string | null;
     county_code?: string | null;
@@ -72,14 +73,14 @@ export interface EntityDetailsData {
 // removed old EntityDetailsResponse; response shape is declared inline below
 
 const GET_ENTITY_DETAILS_QUERY = `
-  query GetEntityDetails($cui: ID!, $year: Int!, $startYear: Int!, $endYear: Int!, $normalization: Normalization) {
+  query GetEntityDetails($cui: ID!, $year: Int!, $startYear: Int!, $endYear: Int!, $normalization: Normalization, $reportPeriod: ReportPeriodInput!) {
     entity(cui: $cui) {
       cui
       name
       address
+      default_report_type
       entity_type
       is_uat
-      is_main_creditor
       uat {
         county_name
         county_code
@@ -138,7 +139,10 @@ const GET_ENTITY_DETAILS_QUERY = `
         }
       }
       executionLineItemsCh: executionLineItems(
-        filter: { years: [$year], account_category: ch }
+        filter: { 
+          account_category: ch,
+          report_period: $reportPeriod
+        }
         sort: { by: "amount", order: "DESC" }
         limit: 1000
       ) {
@@ -156,7 +160,10 @@ const GET_ENTITY_DETAILS_QUERY = `
         }
       }
       executionLineItemsVn: executionLineItems(
-        filter: { years: [$year], account_category: vn }
+        filter: { 
+          account_category: vn,
+          report_period: $reportPeriod
+        }
         sort: { by: "amount", order: "DESC" }
         limit: 1000
       ) {
@@ -182,7 +189,8 @@ export async function getEntityDetails(
   year: number = 2024, // Defaulting to 2024 as in the query
   startYear: number = 2016, // Defaulting as in the query
   endYear: number = 2025, // Defaulting as in the query
-  normalization: Normalization = 'total' // Defaulting to total
+  normalization: Normalization = 'total', // Defaulting to total
+  reportPeriod: ReportPeriodInput
 ): Promise<EntityDetailsData | null> {
   logger.info(`Fetching entity details for CUI: ${cui}`, { cui, year, startYear, endYear, normalization });
 
@@ -197,7 +205,7 @@ export async function getEntityDetails(
       }) | null;
     }>(
       GET_ENTITY_DETAILS_QUERY,
-      { cui, year, startYear, endYear, normalization }
+      { cui, year, startYear, endYear, normalization, reportPeriod }
     );
 
     if (!response || !response.entity) {

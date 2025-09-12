@@ -3,8 +3,13 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertTriangle, Info } from 'lucide-react'
 import { EntityHeader } from '@/components/entities/EntityHeader'
 import { EntityReports } from '@/components/entities/EntityReports'
-import { useState, useMemo, useRef } from 'react'
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
+import { useMemo, useRef } from 'react'
+import { ResponsivePopover } from '@/components/ui/ResponsivePopover'
+import { Button } from '@/components/ui/button'
+import { EntityReportControls } from '@/components/entities/EntityReportControls'
+import { EntityReportLabel } from '@/components/entities/EntityReportLabel'
+import type { ReportPeriodInput, TMonth, TQuarter } from '@/schemas/reporting'
+import { getInitialFilterState } from '@/schemas/reporting'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { useEntityViews } from '@/hooks/useEntityViews'
 import { useRecentEntities } from '@/hooks/useRecentEntities'
@@ -24,7 +29,6 @@ import { buildEntitySeo } from '@/lib/seo-entity'
 import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
 import { Normalization } from '@/schemas/charts'
-import { EntitySearchSchema } from '@/components/entities/validation'
 import { EntityRelationships } from '@/components/entities/EntityRelationships'
 
 export const Route = createLazyFileRoute('/entities/$cui')({
@@ -33,7 +37,7 @@ export const Route = createLazyFileRoute('/entities/$cui')({
 
 function EntityDetailsPage() {
   const { cui } = useParams({ from: '/entities/$cui' })
-  const search = useSearch({ from: '/entities/$cui' }) as EntitySearchSchema
+  const search = useSearch({ from: '/entities/$cui' })
   const navigate = useNavigate({ from: '/entities/$cui' })
   const yearSelectorRef = useRef<HTMLButtonElement>(null)
 
@@ -47,8 +51,14 @@ function EntityDetailsPage() {
   const START_YEAR = defaultYearRange.start
   const END_YEAR = defaultYearRange.end
 
-  const [selectedYear, setSelectedYear] = useState<number>(search.year ?? END_YEAR)
-  const [normalization, setNormalization] = useState<Normalization>(search.normalization ?? 'total')
+  // Derive all state from URL search params for a single source of truth.
+  const selectedYear = search.year ?? END_YEAR
+  const normalization = search.normalization ?? 'total'
+  const reportTypeState = search.report_type
+  const mainCreditorState = (search.main_creditor_cui as 'ALL' | string | undefined) ?? 'ALL'
+
+  // Build current report period input from URL state
+  const reportPeriod = getInitialFilterState(search.period ?? 'YEAR', selectedYear, search.month ?? '12', search.quarter ?? 'Q4')
 
   const years = useMemo(() =>
     Array.from({ length: END_YEAR - START_YEAR + 1 }, (_, idx) => END_YEAR - idx),
@@ -60,7 +70,8 @@ function EntityDetailsPage() {
     selectedYear,
     START_YEAR,
     END_YEAR,
-    normalization
+    normalization,
+    reportPeriod
   )
 
   useRecentEntities(entity)
@@ -92,15 +103,74 @@ function EntityDetailsPage() {
   }
 
   const handleYearChange = (year: number) => {
-    setSelectedYear(year)
     navigate({
       search: (prev) => ({ ...prev, year }),
       replace: true,
     })
   }
 
+  // Update URL search for report/period controls with partial options
+  const updateReportPeriodInSearch = (patch: {
+    period?: ReportPeriodInput['type']
+    year?: number
+    month?: string
+    quarter?: string
+    report_type?: 'PRINCIPAL_AGGREGATED' | 'SECONDARY_AGGREGATED' | 'DETAILED'
+    main_creditor_cui?: 'ALL' | string
+  }) => {
+    navigate({
+      search: (prev) => {
+        const nextPeriod = patch.period ?? (prev.period ?? 'YEAR')
+        const nextYear = patch.year ?? (prev.year ?? END_YEAR)
+        const nextMonth = patch.month ?? (prev.month ?? '12')
+        const nextQuarter = patch.quarter ?? (prev.quarter ?? 'Q4')
+
+        const nextReportType = Object.prototype.hasOwnProperty.call(patch, 'report_type') ? patch.report_type : prev.report_type
+        const nextMainCreditor = Object.prototype.hasOwnProperty.call(patch, 'main_creditor_cui') ? patch.main_creditor_cui : prev.main_creditor_cui
+
+        return {
+          ...prev,
+          period: nextPeriod,
+          year: nextYear,
+          month: nextPeriod === 'MONTH' ? nextMonth : undefined,
+          quarter: nextPeriod === 'QUARTER' ? nextQuarter : undefined,
+          report_type: nextReportType ?? undefined,
+          main_creditor_cui: nextMainCreditor ?? undefined,
+        }
+      },
+      replace: true,
+    })
+  }
+
+  const handleReportControlsChange = (payload: { report_period: ReportPeriodInput; report_type?: 'PRINCIPAL_AGGREGATED' | 'SECONDARY_AGGREGATED' | 'DETAILED'; main_creditor_cui?: 'ALL' | string }) => {
+    const ym = payload.report_period.selection.interval?.start
+    const type = payload.report_period.type
+
+    const patch: {
+      period?: ReportPeriodInput['type']
+      year?: number
+      month?: string
+      quarter?: string
+      report_type?: 'PRINCIPAL_AGGREGATED' | 'SECONDARY_AGGREGATED' | 'DETAILED'
+      main_creditor_cui?: 'ALL' | string
+    } = {
+      period: type,
+    }
+
+    if (ym) {
+      const y = Number(ym.slice(0, 4))
+      if (!Number.isNaN(y)) patch.year = y
+      if (type === 'MONTH') patch.month = ym.split('-')[1]
+      if (type === 'QUARTER') patch.quarter = ym.split('-')[1]
+    }
+
+    if (payload.report_type) patch.report_type = payload.report_type
+    if (payload.main_creditor_cui) patch.main_creditor_cui = payload.main_creditor_cui
+
+    updateReportPeriodInSearch(patch)
+  }
+
   const handleNormalizationChange = (norm: Normalization) => {
-    setNormalization(norm)
     navigate({
       search: (prev) => ({
         ...prev,
@@ -150,19 +220,6 @@ function EntityDetailsPage() {
     const activeView = search.view ?? 'overview'
 
     switch (activeView) {
-      case 'overview':
-        return <Overview
-          entity={entity ?? undefined}
-          isLoading={isLoading}
-          selectedYear={selectedYear}
-          normalization={normalization}
-          years={years}
-          search={search}
-          onChartNormalizationChange={handleNormalizationChange}
-          onYearChange={handleYearChange}
-          onSearchChange={handleSearchChange}
-          onAnalyticsChange={handleAnalyticsChange}
-        />
       case 'reports':
         return <EntityReports reports={entity?.reports ?? null} isLoading={isLoading} />
       case 'expense-trends':
@@ -190,6 +247,7 @@ function EntityDetailsPage() {
         return <RelatedChartsView entity={entity ?? undefined} normalization={normalization} />
       case 'relationships':
         return <EntityRelationships parents={entity?.parents ?? []} children={entity?.children ?? []} />
+      case 'overview':
       default:
         return <Overview
           entity={entity ?? undefined}
@@ -219,23 +277,37 @@ function EntityDetailsPage() {
           views={views}
           activeView={search.view ?? 'overview'}
           yearSelector={
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-slate-700 dark:text-slate-300 sm:inline"><Trans>Reporting Year:</Trans></span>
-              <Select value={selectedYear.toString()} onValueChange={(val) => handleYearChange(parseInt(val, 10))}>
-                <SelectTrigger
+            <ResponsivePopover
+              trigger={
+                <Button
+                  variant="outline"
                   ref={yearSelectorRef}
-                  aria-label={t`Reporting year`}
-                  className="h-7 sm:h-9 w-[4.5rem] sm:w-[5rem] px-2 border-none shadow-none font-bold text-sm sm:text-base"
+                  aria-label={t`Reporting`}
+                  className="rounded-xl border border-slate-300/80 dark:border-slate-800/70 mt-0 mb-auto bg-white/70 dark:bg-slate-900/40 backdrop-blur supports-[backdrop-filter]:bg-white/30 px-4 py-2 shadow-sm h-auto min-h-[28px] sm:min-h-[36px] max-w-[85vw] md:max-w-[36rem] text-left"
                 >
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {years.map((year) => (
-                    <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+                  <EntityReportLabel
+                    period={reportPeriod}
+                    reportType={reportTypeState ?? entity?.default_report_type}
+                    mainCreditorLabel={mainCreditorState} />
+                </Button>
+              }
+              content={
+                <EntityReportControls
+                  entity={entity ?? undefined}
+                  periodType={search.period ?? 'YEAR'}
+                  year={selectedYear}
+                  month={(search.month ?? '12') as TMonth}
+                  quarter={(search.quarter ?? 'Q4') as TQuarter}
+                  reportType={reportTypeState ?? entity?.default_report_type}
+                  mainCreditor={mainCreditorState ?? 'ALL'}
+                  onChange={handleReportControlsChange}
+                />
+              }
+              className="p-4"
+              align="end"
+              mobileSide="bottom"
+              breakpoint={640}
+            />
           }
         />
 
@@ -244,4 +316,3 @@ function EntityDetailsPage() {
     </div>
   )
 }
-

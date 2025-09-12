@@ -4,7 +4,7 @@ import { generateRandomColor } from '@/components/charts/components/chart-render
 
 export const defaultYearRange = {
   start: 2016,
-  end: 2024,
+  end: 2025,
 };
 
 /**
@@ -50,7 +50,7 @@ export type SeriesConfig = z.infer<typeof SeriesConfigSchema>;
 // ANALYTICS FILTER SCHEMA (reusable from existing system)
 // ============================================================================
 
-export const ReportTypeEnum = z.enum(['Executie bugetara agregata la nivel de ordonator principal', 'Executie bugetara detaliata']);
+export const ReportTypeEnum = z.enum(['Executie bugetara agregata la nivel de ordonator principal', 'Executie bugetara agregata la nivel de ordonator secundar', 'Executie bugetara detaliata']);
 export type ReportType = z.infer<typeof ReportTypeEnum>;
 
 export const Normalization = z.enum(['total', 'total_euro', 'per_capita', 'per_capita_euro']);

@@ -1,0 +1,45 @@
+import { ReactNode, useMemo } from 'react'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { useWindowSize } from '@/hooks/useWindowSize'
+
+type ResponsivePopoverProps = {
+    trigger: ReactNode
+    content: ReactNode
+    className?: string
+    align?: 'start' | 'center' | 'end'
+    mobileSide?: 'bottom' | 'top' | 'left' | 'right'
+    breakpoint?: number
+}
+
+export function ResponsivePopover({ trigger, content, className, align = 'end', mobileSide = 'bottom', breakpoint = 640 }: ResponsivePopoverProps) {
+    const { width } = useWindowSize()
+    const isMobile = useMemo(() => width <= breakpoint, [width, breakpoint])
+
+    if (isMobile) {
+        return (
+            <Sheet>
+                <SheetTrigger asChild>
+                    {trigger}
+                </SheetTrigger>
+                <SheetTitle className="sr-only">Responsive Popover</SheetTitle>
+                <SheetContent side={mobileSide} className="p-4">
+                    {content}
+                </SheetContent>
+            </Sheet>
+        )
+    }
+
+    return (
+        <Popover>
+            <PopoverTrigger asChild>
+                {trigger}
+            </PopoverTrigger>
+            <PopoverContent className={className} align={align}>
+                {content}
+            </PopoverContent>
+        </Popover>
+    )
+}
+
+

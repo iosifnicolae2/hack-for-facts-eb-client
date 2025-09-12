@@ -9,6 +9,8 @@ import { heatmapJudetQueryOptions, heatmapUATQueryOptions } from '@/hooks/useHea
 import { getTopFunctionalGroupCodes } from '@/lib/analytics-utils';
 import { getChartAnalytics } from '@/lib/api/charts';
 import { generateHash } from '@/lib/utils';
+import { GqlReportType, toReportTypeValue } from '@/schemas/reporting';
+import { getInitialFilterState } from '@/schemas/reporting';
 
 export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
 
@@ -19,16 +21,17 @@ export const Route = createFileRoute('/entities/$cui')({
         const END_YEAR = defaultYearRange.end;
         const year = (search?.year as number | undefined) ?? END_YEAR;
         const normalization = (search?.normalization as Normalization | undefined) ?? 'total';
+        const reportPeriod = getInitialFilterState(search.period ?? 'YEAR', year, search.month ?? '12', search.quarter ?? 'Q4');
         queryClient.prefetchQuery(
-            entityDetailsQueryOptions(params.cui, year, START_YEAR, END_YEAR, normalization)
+            entityDetailsQueryOptions(params.cui, year, START_YEAR, END_YEAR, normalization, reportPeriod)
         );
 
         const desiredView = (search?.view as string | undefined) ?? 'overview';
         const entity = queryClient.getQueryData<{
+            default_report_type?: GqlReportType;
             is_uat?: boolean | null;
             entity_type?: string | null;
             cui: string;
-            is_main_creditor?: boolean | null;
             executionLineItems?: { nodes?: { account_category: 'vn' | 'ch' }[] } | null;
         }>(['entityDetails', params.cui, year, START_YEAR, END_YEAR]);
 
@@ -56,7 +59,7 @@ export const Route = createFileRoute('/entities/$cui')({
                         entity_cuis: [params.cui],
                         functional_prefixes: [prefix],
                         account_category: accountCategory,
-                        report_type: (entity?.is_main_creditor ? 'Executie bugetara agregata la nivel de ordonator principal' : 'Executie bugetara detaliata') as 'Executie bugetara agregata la nivel de ordonator principal' | 'Executie bugetara detaliata',
+                        report_type: entity?.default_report_type ? toReportTypeValue(entity.default_report_type) : 'Executie bugetara agregata la nivel de ordonator principal',
                     },
                 }));
                 const payloadHash = inputs
