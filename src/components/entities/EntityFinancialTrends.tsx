@@ -1,7 +1,18 @@
 import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine, LabelList } from 'recharts';
-// Removed direct Select usage; using NormalizationSelector
+import {
+  ComposedChart,
+  Bar,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+  ReferenceLine,
+  LabelList
+} from 'recharts';
 import { TrendingUp, BarChart2 } from 'lucide-react';
 import { yValueFormatter } from '../charts/components/chart-renderer/utils';
 import { EntityFinancialTrendsSkeleton } from './EntityFinancialTrendsSkeleton';
@@ -33,7 +44,21 @@ interface EntityFinancialTrendsProps {
   selectedMonth?: string;
 }
 
-export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ incomeTrend, expenseTrend, balanceTrend, currentYear, entityName, normalization, onNormalizationChange, onYearChange, isLoading, periodType = 'YEAR', onSelectPeriod, selectedQuarter, selectedMonth }) => {
+export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({
+  incomeTrend,
+  expenseTrend,
+  balanceTrend,
+  currentYear,
+  entityName,
+  normalization,
+  onNormalizationChange,
+  onYearChange,
+  isLoading,
+  periodType = 'YEAR',
+  onSelectPeriod,
+  selectedQuarter,
+  selectedMonth
+}) => {
 
   const { cui } = useParams({ from: '/entities/$cui' });
 
@@ -75,19 +100,16 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
     {
       const toMonthNumber = (x: string): number | null => {
         const value = String(x).trim();
-        // YYYY-MM
         const isoMatch = value.match(/^\d{4}-(\d{2})$/);
         if (isoMatch) {
           const m = Number(isoMatch[1]);
           return m >= 1 && m <= 12 ? m : null;
         }
-        // MM or M
         const mMatch = value.match(/^(\d{1,2})$/);
         if (mMatch) {
           const m = Number(mMatch[1]);
           return m >= 1 && m <= 12 ? m : null;
         }
-        // Month names (en)
         const monthNames = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
         const upper = value.toUpperCase();
         const idx = monthNames.findIndex(n => n === upper || n.slice(0, 3) === upper.slice(0, 3));
@@ -111,26 +133,20 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
     }
   }, [incomeTrend, expenseTrend, balanceTrend, periodType]);
 
-  const displayData = mergedData;
-
-  const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: { name: string; value: number; color: string; dataKey: string; }[]; label?: string }) => {
+  const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: { name: string; value: number; color: string; stroke?: string; dataKey: string; }[]; label?: string }) => {
     if (active && payload && payload.length) {
       const monthNames: Record<string, string> = {
         '01': t`January`, '02': t`February`, '03': t`March`, '04': t`April`, '05': t`May`, '06': t`June`,
         '07': t`July`, '08': t`August`, '09': t`September`, '10': t`October`, '11': t`November`, '12': t`December`,
       }
-      const heading = periodType === 'YEAR'
-        ? t`Year`
-        : periodType === 'QUARTER'
-          ? t`Quarter`
-          : t`Month`
+      const heading = periodType === 'YEAR' ? t`Year` : periodType === 'QUARTER' ? t`Quarter` : t`Month`
       const prettyLabel = periodType === 'MONTH' ? (monthNames[label ?? ''] ?? String(label)) : String(label)
       return (
-        <div className="bg-white/50 dark:bg-slate-800/90 backdrop-blur-xs p-3 border border-slate-300 dark:border-slate-700 rounded shadow-lg">
+        <div className="bg-white/80 dark:bg-slate-800/90 backdrop-blur-sm p-3 border border-slate-300 dark:border-slate-700 rounded-lg shadow-lg">
           <p className="label font-bold mb-2">{heading}: {prettyLabel}</p>
           <div className="flex flex-col gap-2">
             {payload.map((pld) => (
-              <div key={pld.dataKey} style={{ color: pld.color }} className="flex flex-row gap-4 justify-between items-center text-sm">
+              <div key={pld.dataKey} style={{ color: pld.stroke || pld.color }} className="flex flex-row gap-4 justify-between items-center text-sm">
                 <p>{pld.name}</p>
                 <p className="font-mono text-md font-bold text-slate-800 dark:text-slate-400">{yValueFormatter(pld.value, getNormalizationUnit(normalization))}</p>
               </div>
@@ -166,7 +182,7 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
           <CardTitle className="flex items-center gap-2">
             <TrendingUp className="h-6 w-6" />
             <span><Trans>Financial Trends</Trans></span>
-            <Button asChild variant="ghost" size="icon" className="h-7 w-7 ml-1" aria-label={t`Deschide în editorul de grafice`}>
+            <Button asChild variant="ghost" size="icon" className="h-7 w-7 ml-1" aria-label={t`Open in chart editor`}>
               <Link to={incomeExpenseChartLink?.to ?? '/charts/$chartId'} params={incomeExpenseChartLink?.params as any} search={incomeExpenseChartLink?.search as any} preload="intent">
                 <BarChart2 className="h-4 w-4" />
               </Link>
@@ -180,9 +196,9 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
           <p className="text-center text-slate-500 dark:text-slate-400 py-4"><Trans>No data available to display financial evolution.</Trans></p>
         ) : (
           <ResponsiveContainer width="100%" height={400}>
-            <BarChart
-              data={displayData}
-              margin={{ top: 5, right: 40, left: getNormalizationUnit(normalization).length * 5 + 30, bottom: 5 }}
+            <ComposedChart
+              data={mergedData}
+              margin={{ top: 30, right: 40, left: getNormalizationUnit(normalization).length * 5 + 30, bottom: 5 }}
               onClick={handleChartClick}
               className="cursor-pointer"
             >
@@ -205,6 +221,8 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
               />
               <Tooltip content={<CustomTooltip />} />
               <Legend wrapperStyle={{ fontSize: '14px' }} />
+              <ReferenceLine y={0} stroke="#64748b" strokeWidth={1} strokeDasharray="2 4" />
+
               {periodType === 'YEAR' && (
                 <ReferenceLine x={String(currentYear)} stroke="gray" strokeDasharray="6 3" strokeWidth={1} />
               )}
@@ -215,19 +233,28 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
                 <ReferenceLine x={selectedMonth} stroke="gray" strokeDasharray="6 3" strokeWidth={1} />
               )}
 
-              <Bar dataKey="income" name={t`Income`} fill="#10B981" radius={[3, 3, 0, 0]}>
-                <LabelList dataKey="income" position="top" fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />
+              <Bar dataKey="income" name={t`Income`} fill="#10b981" fillOpacity={0.2} stroke="#0f766e" strokeWidth={2} radius={[3, 3, 0, 0]}>
+                <LabelList dataKey="income" position="top" angle={periodType === 'QUARTER' ? 0 : -45} offset={24} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />
               </Bar>
-              <Bar dataKey="expense" name={t`Expenses`} fill="#EF4444" radius={[3, 3, 0, 0]}>
-                <LabelList dataKey="expense" position="top" fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />
+              <Bar dataKey="expense" name={t`Expenses`} fill="#f43f5e" fillOpacity={0.2} stroke="#be123c" strokeWidth={2} radius={[3, 3, 0, 0]}>
+                <LabelList dataKey="expense" position="top" angle={periodType === 'QUARTER' ? 0 : -45} offset={24} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />
               </Bar>
-              <Bar dataKey="balance" name={t`Balance`} fill="#3B82F6" radius={[3, 3, 0, 0]}>
-                <LabelList dataKey="balance" position="top" fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />
-              </Bar>
-            </BarChart>
+
+              <Line
+                type="monotone"
+                dataKey="balance"
+                name={t`Balance`}
+                stroke="#6366f1"
+                strokeWidth={2.5}
+                dot={{ r: 4, fill: '#6366f1', strokeWidth: 2, stroke: '#f8fafc' }}
+                activeDot={{ r: 6 }}
+              >
+                <LabelList dataKey="balance" position="top" offset={8} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />
+              </Line>
+            </ComposedChart>
           </ResponsiveContainer>
         )}
       </CardContent>
     </Card>
   );
-}; 
+};

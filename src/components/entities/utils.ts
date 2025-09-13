@@ -3,6 +3,7 @@ import { LatLngExpression } from 'leaflet';
 import { GeoJsonObject, Feature, FeatureCollection } from 'geojson';
 import bbox from '@turf/bbox';
 import center from '@turf/center';
+import { TMonth, TQuarter } from '@/schemas/reporting';
 
 interface FeatureInfo {
     center: LatLngExpression;
@@ -53,3 +54,10 @@ export const getEntityFeatureInfo = (entity: EntityDetailsData, geoJsonData: Geo
         featureId: featureId || entity.cui,
     };
 };
+
+
+export function getYearLabel(year: number, month?: TMonth, quarter?: TQuarter) {
+    if (month) return `${year}-${month}`;
+    if (quarter) return `${year}-${quarter}`;
+    return `${year}`;
+}

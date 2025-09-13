@@ -5,7 +5,8 @@ import { EntityLineItems } from "../EntityLineItems"
 import { LineItemsAnalytics } from "../LineItemsAnalytics"
 import { EntityReports } from "../EntityReports";
 import { Normalization } from "@/schemas/charts";
-import type { ReportPeriodType } from "@/schemas/reporting";
+import type { ReportPeriodType, TMonth, TQuarter } from "@/schemas/reporting";
+import { getYearLabel } from "../utils";
 
 interface OverviewProps {
     entity?: EntityDetailsData;
@@ -61,7 +62,7 @@ export const Overview = ({
                 totalIncome={entity?.totalIncome}
                 totalExpenses={entity?.totalExpenses}
                 budgetBalance={entity?.budgetBalance}
-                currentYear={selectedYear}
+                periodLabel={getYearLabel(selectedYear, search.month as TMonth, search.quarter as TQuarter)}
                 isLoading={isLoading}
             />
 
@@ -86,6 +87,8 @@ export const Overview = ({
             <EntityLineItems
                 lineItems={entity?.executionLineItems}
                 currentYear={selectedYear}
+                month={search.month as TMonth}
+                quarter={search.quarter as TQuarter}
                 totalIncome={entity?.totalIncome}
                 totalExpenses={entity?.totalExpenses}
                 years={years}
@@ -99,6 +102,8 @@ export const Overview = ({
             <LineItemsAnalytics
                 lineItems={entity?.executionLineItems}
                 analyticsYear={selectedYear}
+                month={search.month as TMonth}
+                quarter={search.quarter as TQuarter}
                 years={years}
                 onYearChange={handleYearChange}
                 chartType={search.analyticsChartType ?? 'bar'}

@@ -13,6 +13,8 @@ import GroupedChapterAccordion from "./GroupedChapterAccordion";
 import { GroupedChapter, GroupedFunctional, GroupedEconomic } from '@/schemas/financial';
 import { formatCurrency, formatNumber } from '@/lib/utils';
 import { Trans } from '@lingui/react/macro';
+import { TMonth, TQuarter } from '@/schemas/reporting';
+import { getYearLabel } from './utils';
 
 interface GroupedItemsDisplayProps {
   groups: GroupedChapter[];
@@ -21,10 +23,14 @@ interface GroupedItemsDisplayProps {
   searchTerm: string;
   currentYear: number;
   showTotalValueHeader?: boolean;
+  month?: TMonth;
+  quarter?: TQuarter;
 }
 
 export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.memo(
-  ({ groups, title, baseTotal, searchTerm, currentYear, showTotalValueHeader = false }) => {
+  ({ groups, title, baseTotal, searchTerm, currentYear, showTotalValueHeader = false, month, quarter }) => {
+
+    const dateLabel = getYearLabel(currentYear, month, quarter);
 
     const { totalValueFiltered, totalPercentageFiltered } = React.useMemo(() => {
       const sumFunctionalList = (funcs: GroupedFunctional[]): number =>
@@ -54,7 +60,7 @@ export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.mem
           <p className="text-sm text-center text-slate-500 dark:text-slate-400">
             {searchTerm
               ? <span>No results for "{searchTerm}"</span>
-              : <span>No data available for {title} in {currentYear}.</span>
+              : <span>No data available for {title} in {dateLabel}.</span>
             }
           </p>
         </div>
@@ -107,6 +113,8 @@ interface FinancialDataCardProps {
   title: string;
   iconType: 'income' | 'expense';
   currentYear: number;
+  month?: TMonth;
+  quarter?: TQuarter;
   years: number[];
   onYearChange: (year: number) => void;
   searchTerm: string;
@@ -122,6 +130,8 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
   title,
   iconType,
   currentYear,
+  month,
+  quarter,
   years,
   onYearChange,
   searchTerm,
@@ -134,7 +144,7 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
 }) => {
   const Icon = iconType === 'income' ? ArrowUpCircle : ArrowDownCircle;
   const iconColor = iconType === 'income' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400';
-
+  const dateLabel = getYearLabel(currentYear, month, quarter);
   return (
     <Card className="shadow-lg dark:bg-slate-800 h-full flex flex-col">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -146,13 +156,13 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
           >
             <SelectTrigger className="w-auto border-0 shadow-none bg-transparent focus:ring-0">
               <h3 className="text-lg font-semibold">
-                {title} ({currentYear})
+                {title} ({dateLabel})
               </h3>
             </SelectTrigger>
             <SelectContent>
               {years.map((year) => (
                 <SelectItem key={year} value={year.toString()}>
-                  {year}
+                  {getYearLabel(year, month, quarter)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -179,4 +189,4 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
       </CardContent>
     </Card>
   );
-}; 
+};

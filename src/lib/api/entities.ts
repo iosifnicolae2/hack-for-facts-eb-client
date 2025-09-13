@@ -79,7 +79,7 @@ export interface EntityDetailsData {
 // removed old EntityDetailsResponse; response shape is declared inline below
 
 const GET_ENTITY_DETAILS_QUERY = `
-  query GetEntityDetails($cui: ID!, $year: Int!, $normalization: Normalization, $reportPeriod: ReportPeriodInput!, $reportType: ReportType, $trendPeriod: ReportPeriodInput!) {
+  query GetEntityDetails($cui: ID!, $normalization: Normalization, $reportPeriod: ReportPeriodInput!, $reportType: ReportType, $trendPeriod: ReportPeriodInput!) {
     entity(cui: $cui) {
       cui
       name
@@ -106,9 +106,9 @@ const GET_ENTITY_DETAILS_QUERY = `
         cui
         name
       }
-      totalIncome(year: $year)
-      totalExpenses(year: $year)
-      budgetBalance(year: $year)
+      totalIncome(period: $reportPeriod)
+      totalExpenses(period: $reportPeriod)
+      budgetBalance(period: $reportPeriod)
       incomeTrend(period: $trendPeriod, reportType: $reportType, normalization: $normalization) {
         seriesId
         xAxis { name type unit }
@@ -198,7 +198,6 @@ const GET_ENTITY_DETAILS_QUERY = `
 
 export async function getEntityDetails(
   cui: string,
-  year: number = 2024,
   normalization: Normalization = 'total',
   reportPeriod: ReportPeriodInput,
   reportType?: GqlReportType,
@@ -217,7 +216,7 @@ export async function getEntityDetails(
       }) | null;
     }>(
       GET_ENTITY_DETAILS_QUERY,
-      { cui, year, normalization, reportPeriod, reportType, trendPeriod: trendPeriod ?? reportPeriod }
+      { cui, normalization, reportPeriod, reportType, trendPeriod: trendPeriod ?? reportPeriod }
     );
 
     if (!response || !response.entity) {

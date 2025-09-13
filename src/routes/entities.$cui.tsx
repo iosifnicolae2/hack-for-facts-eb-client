@@ -26,7 +26,6 @@ export const Route = createFileRoute('/entities/$cui')({
         queryClient.prefetchQuery(
             entityDetailsQueryOptions(
               params.cui,
-              year,
               normalization,
               reportPeriod,
               (search?.report_type as import('@/schemas/reporting').GqlReportType | undefined),

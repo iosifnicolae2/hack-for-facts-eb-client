@@ -15,10 +15,14 @@ import { processDataForAnalyticsChart } from '@/lib/analytics-utils';
 import { LineItemsAnalyticsSkeleton } from './LineItemsAnalyticsSkeleton';
 import { applyAlpha } from '../charts/components/chart-renderer/utils';
 import { Trans } from '@lingui/react/macro';
+import { TMonth, TQuarter } from '@/schemas/reporting';
+import { getYearLabel } from './utils';
 
 interface AnalyticsProps {
     lineItems?: EntityDetailsData['executionLineItems'];
     analyticsYear: number;
+    month?: TMonth;
+    quarter?: TQuarter;
     years: number[];
     onYearChange: (year: number) => void;
     chartType: ChartType;
@@ -36,6 +40,8 @@ const COLORS = ['#16a34a', '#3b82f6', '#f97316', '#fde047', '#a855f7', '#ec4899'
 export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
     lineItems,
     analyticsYear,
+    month,
+    quarter,
     years,
     onYearChange,
     chartType,
@@ -92,12 +98,12 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
                             onValueChange={(val) => onYearChange(parseInt(val, 10))}
                         >
                             <SelectTrigger className="w-auto border-0 shadow-none bg-transparent focus:ring-0">
-                                <CardTitle><Trans>Main Categories</Trans> {analyticsYear}</CardTitle>
+                                <CardTitle><Trans>Main Categories</Trans> {getYearLabel(analyticsYear, month, quarter)}</CardTitle>
                             </SelectTrigger>
                             <SelectContent>
                                 {years.map((year) => (
                                     <SelectItem key={year} value={year.toString()}>
-                                        {year}
+                                        {getYearLabel(year, month, quarter)}
                                     </SelectItem>
                                 ))}
                             </SelectContent>

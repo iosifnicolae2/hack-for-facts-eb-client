@@ -9,11 +9,11 @@ interface EntityFinancialSummaryCardProps {
   title: string;
   value: number | null | undefined;
   icon?: React.ElementType;
-  currentYear: number;
+  periodLabel: string;
   color: string;
 }
 
-export const EntityFinancialSummaryCard: React.FC<EntityFinancialSummaryCardProps> = ({ title, value, icon: Icon, color, currentYear }) => {
+export const EntityFinancialSummaryCard: React.FC<EntityFinancialSummaryCardProps> = ({ title, value, icon: Icon, color, periodLabel }) => {
   const displayValueCompact = value !== null && value !== undefined ? formatCurrency(value, "compact") : 'N/A';
   const displayValueStandard = value !== null && value !== undefined ? formatCurrency(value, "standard") : 'N/A';
   let iconColor = "text-slate-500 dark:text-slate-400";
@@ -24,7 +24,7 @@ export const EntityFinancialSummaryCard: React.FC<EntityFinancialSummaryCardProp
   return (
     <Card className="flex flex-col items-center justify-center shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-slate-800">
       <CardHeader className="flex flex-row items-center space-y-0 space-x-4 pb-2 ">
-        <CardTitle className="text-sm font-medium text-slate-700 dark:text-slate-300">{title} ({currentYear})</CardTitle>
+        <CardTitle className="text-sm font-medium text-slate-700 dark:text-slate-300">{title} ({periodLabel})</CardTitle>
         {Icon && <Icon className={`h-5 w-5 ${iconColor}`} />}
       </CardHeader>
       <CardContent className="flex flex-col items-center justify-center">
@@ -46,12 +46,12 @@ interface EntityFinancialSummaryProps {
   totalIncome: number | null | undefined;
   totalExpenses: number | null | undefined;
   budgetBalance: number | null | undefined;
-  currentYear: number;
+  periodLabel: string;
   isLoading?: boolean;
 }
 
 export const EntityFinancialSummary: React.FC<EntityFinancialSummaryProps> = (
-  { totalIncome, totalExpenses, budgetBalance, currentYear, isLoading }
+  { totalIncome, totalExpenses, budgetBalance, periodLabel, isLoading }
 ) => {
   if (isLoading) {
     return <EntityFinancialSummarySkeleton />;
@@ -59,9 +59,9 @@ export const EntityFinancialSummary: React.FC<EntityFinancialSummaryProps> = (
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-      <EntityFinancialSummaryCard title={t`Total Expenses`} value={totalExpenses} icon={TrendingDown} color="red" currentYear={currentYear} />
-      <EntityFinancialSummaryCard title={t`Total Income`} value={totalIncome} icon={TrendingUp} color="green" currentYear={currentYear} />
-      <EntityFinancialSummaryCard title={t`Income - Expenses`} value={budgetBalance} icon={Scale} color="blue" currentYear={currentYear} />
+      <EntityFinancialSummaryCard title={t`Total Expenses`} value={totalExpenses} icon={TrendingDown} color="red" periodLabel={periodLabel} />
+      <EntityFinancialSummaryCard title={t`Total Income`} value={totalIncome} icon={TrendingUp} color="green" periodLabel={periodLabel} />
+      <EntityFinancialSummaryCard title={t`Income - Expenses`} value={budgetBalance} icon={Scale} color="blue" periodLabel={periodLabel} />
     </section>
   );
 }; 

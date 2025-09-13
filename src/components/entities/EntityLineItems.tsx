@@ -4,10 +4,13 @@ import { useFinancialData } from '@/hooks/useFinancialData';
 import { FinancialDataCard } from './FinancialDataCard';
 import { EntityLineItemsSkeleton } from './EntityLineItemsSkeleton';
 import { t } from '@lingui/core/macro';
+import { TMonth, TQuarter } from '@/schemas/reporting';
 
 export interface EntityTopItemsProps {
   lineItems?: EntityDetailsData["executionLineItems"];
   currentYear: number;
+  month?: TMonth;
+  quarter?: TQuarter;
   totalIncome?: number | null;
   totalExpenses?: number | null;
   years: number[];
@@ -21,6 +24,8 @@ export interface EntityTopItemsProps {
 export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
   lineItems,
   currentYear,
+  month,
+  quarter,
   totalIncome,
   totalExpenses,
   years,
@@ -67,6 +72,8 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
         title={t`Expenses`}
         iconType="expense"
         currentYear={currentYear}
+        month={month}
+        quarter={quarter}
         years={years}
         onYearChange={onYearChange}
         searchTerm={expenseSearchTerm}
@@ -81,6 +88,8 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
         title={t`Incomes`}
         iconType="income"
         currentYear={currentYear}
+        month={month}
+        quarter={quarter}
         years={years}
         onYearChange={onYearChange}
         searchTerm={incomeSearchTerm}

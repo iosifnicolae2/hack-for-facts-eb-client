@@ -69,7 +69,6 @@ function EntityDetailsPage() {
 
   const { data: entity, isLoading, isError, error } = useEntityDetails(
     cui,
-    selectedYear,
     normalization,
     reportPeriod,
     reportTypeState ?? undefined,
