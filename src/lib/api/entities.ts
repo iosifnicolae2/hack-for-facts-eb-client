@@ -8,15 +8,21 @@ const logger = createLogger("entities-api");
 
 
 export interface ExecutionLineItem {
-  account_category: string
-  economicClassification?: {
-    economic_name: string;
-    economic_code: string;
-  };
+  line_item_id: string;
+  account_category: 'vn' | 'ch';
   functionalClassification?: {
     functional_name: string;
     functional_code: string;
   };
+  economicClassification?: {
+    economic_name: string;
+    economic_code: string;
+  } | null;
+  ytd_amount: number;
+  quarterly_amount: number;
+  monthly_amount: number;
+  // Client-computed unified amount for UI, based on the period type
+  // Ex: yearly: amount <= ytd_amount, quarterly: amount <= quarterly_amount, monthly: amount <= monthly_amount
   amount: number;
 }
 
@@ -73,7 +79,7 @@ export interface EntityDetailsData {
 // removed old EntityDetailsResponse; response shape is declared inline below
 
 const GET_ENTITY_DETAILS_QUERY = `
-  query GetEntityDetails($cui: ID!, $year: Int!, $startYear: Int!, $endYear: Int!, $normalization: Normalization, $reportPeriod: ReportPeriodInput!) {
+  query GetEntityDetails($cui: ID!, $year: Int!, $normalization: Normalization, $reportPeriod: ReportPeriodInput!, $reportType: ReportType, $trendPeriod: ReportPeriodInput!) {
     entity(cui: $cui) {
       cui
       name
@@ -103,19 +109,19 @@ const GET_ENTITY_DETAILS_QUERY = `
       totalIncome(year: $year)
       totalExpenses(year: $year)
       budgetBalance(year: $year)
-      incomeTrend(startYear: $startYear, endYear: $endYear, normalization: $normalization) {
+      incomeTrend(period: $trendPeriod, reportType: $reportType, normalization: $normalization) {
         seriesId
         xAxis { name type unit }
         yAxis { name type unit }
         data { x y }
       }
-      expenseTrend(startYear: $startYear, endYear: $endYear, normalization: $normalization) {
+      expenseTrend: expensesTrend(period: $trendPeriod, reportType: $reportType, normalization: $normalization) {
         seriesId
         xAxis { name type unit }
         yAxis { name type unit }
         data { x y }
       }
-      balanceTrend(startYear: $startYear, endYear: $endYear, normalization: $normalization) {
+      balanceTrend(period: $trendPeriod, reportType: $reportType, normalization: $normalization) {
         seriesId
         xAxis { name type unit }
         yAxis { name type unit }
@@ -147,6 +153,7 @@ const GET_ENTITY_DETAILS_QUERY = `
         limit: 1000
       ) {
         nodes {
+          line_item_id
           account_category
           functionalClassification {
             functional_name
@@ -156,7 +163,9 @@ const GET_ENTITY_DETAILS_QUERY = `
             economic_name
             economic_code
           }
-          amount
+          ytd_amount
+          quarterly_amount
+          monthly_amount
         }
       }
       executionLineItemsVn: executionLineItems(
@@ -168,6 +177,7 @@ const GET_ENTITY_DETAILS_QUERY = `
         limit: 1000
       ) {
         nodes {
+          line_item_id
           account_category
           functionalClassification {
             functional_name
@@ -177,7 +187,9 @@ const GET_ENTITY_DETAILS_QUERY = `
             economic_name
             economic_code
           }
-          amount
+          ytd_amount
+          quarterly_amount
+          monthly_amount
         }
       }
     }
@@ -186,13 +198,13 @@ const GET_ENTITY_DETAILS_QUERY = `
 
 export async function getEntityDetails(
   cui: string,
-  year: number = 2024, // Defaulting to 2024 as in the query
-  startYear: number = 2016, // Defaulting as in the query
-  endYear: number = 2025, // Defaulting as in the query
-  normalization: Normalization = 'total', // Defaulting to total
-  reportPeriod: ReportPeriodInput
+  year: number = 2024,
+  normalization: Normalization = 'total',
+  reportPeriod: ReportPeriodInput,
+  reportType?: GqlReportType,
+  trendPeriod?: ReportPeriodInput
 ): Promise<EntityDetailsData | null> {
-  logger.info(`Fetching entity details for CUI: ${cui}`, { cui, year, startYear, endYear, normalization });
+  logger.info(`Fetching entity details for CUI: ${cui}`);
 
   try {
     const response = await graphqlRequest<{
@@ -205,7 +217,7 @@ export async function getEntityDetails(
       }) | null;
     }>(
       GET_ENTITY_DETAILS_QUERY,
-      { cui, year, startYear, endYear, normalization, reportPeriod }
+      { cui, year, normalization, reportPeriod, reportType, trendPeriod: trendPeriod ?? reportPeriod }
     );
 
     if (!response || !response.entity) {
@@ -216,17 +228,28 @@ export async function getEntityDetails(
       return null;
     }
 
-    // Merge aliased execution line items back into a single field for consumers
+    // Merge aliased execution line items, and compute unified `amount` field per current report period
+    const periodType = reportPeriod.type
+    const mapWithAmount = (n: any): ExecutionLineItem => {
+      const amount = periodType === 'YEAR'
+        ? Number(n?.ytd_amount ?? 0)
+        : periodType === 'QUARTER'
+          ? Number(n?.quarterly_amount ?? 0)
+          : Number(n?.monthly_amount ?? 0)
+      return { ...n, amount } as ExecutionLineItem
+    }
+    const mergedNodes: ExecutionLineItem[] = [
+      ...(response.entity.executionLineItemsCh?.nodes ?? []),
+      ...(response.entity.executionLineItemsVn?.nodes ?? []),
+    ].map(mapWithAmount)
+
     const merged: EntityDetailsData = {
       ...response.entity,
       incomeTrend: response.entity.incomeTrend ?? null,
       expenseTrend: response.entity.expenseTrend ?? null,
       balanceTrend: response.entity.balanceTrend ?? null,
       executionLineItems: {
-        nodes: [
-          ...(response.entity.executionLineItemsCh?.nodes ?? []),
-          ...(response.entity.executionLineItemsVn?.nodes ?? []),
-        ],
+        nodes: mergedNodes,
       },
     } as EntityDetailsData;
 

@@ -69,6 +69,19 @@ export function makeSingleTimePeriod(type: ReportPeriodType, ym: DateInput): Rep
   return { type, selection: { interval: { start: ym, end: ym } } }
 }
 
+export function makeTrendPeriod(period: ReportPeriodType, year: number, startYear: number, endYear: number): ReportPeriodInput {
+  if (period === 'YEAR') {
+    return { type: 'YEAR', selection: { interval: { start: `${startYear}`, end: `${endYear}` } } }
+  }
+  if (period === 'QUARTER') {
+    return { type: 'QUARTER', selection: { interval: { start: `${year}-Q1`, end: `${year}-Q4` } } }
+  }
+  if (period === 'MONTH') {
+    return { type: 'MONTH', selection: { interval: { start: `${year}-01`, end: `${year}-12` } } }
+  }
+  throw new Error('Invalid period')
+}
+
 export function getInitialFilterState(period: ReportPeriodInput['type'], year: number, month: string, quarter: string): ReportPeriodInput {
   if (period === 'YEAR') return makeSingleTimePeriod('YEAR', `${year}` as DateInput)
   if (period === 'QUARTER') return makeSingleTimePeriod('QUARTER', `${year}-${quarter}` as DateInput)

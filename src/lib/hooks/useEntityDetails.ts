@@ -1,19 +1,19 @@
 import { useQuery, queryOptions } from '@tanstack/react-query';
 import { getEntityDetails } from '@/lib/api/entities';
 import { Normalization } from '@/schemas/charts';
-import { ReportPeriodInput } from '@/schemas/reporting';
+import { ReportPeriodInput, GqlReportType } from '@/schemas/reporting';
 
 export const entityDetailsQueryOptions = (
   cui: string,
   year: number,
-  startYear: number,
-  endYear: number,
   normalization: Normalization,
-  reportPeriod: ReportPeriodInput
+  reportPeriod: ReportPeriodInput,
+  reportType?: GqlReportType,
+  trendPeriod?: ReportPeriodInput
 ) =>
   queryOptions({
-    queryKey: ['entityDetails', cui, year, startYear, endYear, normalization, reportPeriod],
-    queryFn: () => getEntityDetails(cui, year, startYear, endYear, normalization, reportPeriod),
+    queryKey: ['entityDetails', cui, year, normalization, reportPeriod, reportType, trendPeriod],
+    queryFn: () => getEntityDetails(cui, year, normalization, reportPeriod, reportType, trendPeriod),
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled: !!cui,
   });
@@ -21,10 +21,10 @@ export const entityDetailsQueryOptions = (
 export function useEntityDetails(
   cui: string,
   year: number,
-  startYear: number,
-  endYear: number,
   normalization: Normalization,
-  reportPeriod: ReportPeriodInput
+  reportPeriod: ReportPeriodInput,
+  reportType?: GqlReportType,
+  trendPeriod?: ReportPeriodInput
 ) {
-  return useQuery(entityDetailsQueryOptions(cui, year, startYear, endYear, normalization, reportPeriod));
+  return useQuery(entityDetailsQueryOptions(cui, year, normalization, reportPeriod, reportType, trendPeriod));
 }

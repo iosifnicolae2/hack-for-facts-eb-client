@@ -5,8 +5,7 @@ import type { AnalyticsFilterType } from "@/schemas/charts";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { SearchToggleInput } from "../entities/SearchToggleInput";
 import { GroupedItemsDisplay } from "../entities/FinancialDataCard";
-import { useFinancialData } from "@/hooks/useFinancialData";
-import type { ExecutionLineItem } from "@/lib/api/entities";
+import { useFinancialData, MinimalExecutionLineItem } from "@/hooks/useFinancialData";
 import { EntityAnalyticsLineItemsSkeleton } from "./EntityAnalyticsLineItemsSkeleton";
 import { convertDaysToMs, generateHash } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -40,7 +39,7 @@ export const EntityAnalyticsLineItems: React.FC<
     refetchOnMount: false,
   });
 
-  const executionLineItems: ExecutionLineItem[] = useMemo(() => {
+  const executionLineItems: MinimalExecutionLineItem[] = useMemo(() => {
     if (!data?.nodes) return [];
     return data.nodes.map((item) => ({
       account_category: filter.account_category, // Assuming filter.account_category is 'ch' or 'vn'

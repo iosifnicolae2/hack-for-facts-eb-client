@@ -10,7 +10,7 @@ import { getTopFunctionalGroupCodes } from '@/lib/analytics-utils';
 import { getChartAnalytics } from '@/lib/api/charts';
 import { generateHash } from '@/lib/utils';
 import { GqlReportType, toReportTypeValue } from '@/schemas/reporting';
-import { getInitialFilterState } from '@/schemas/reporting';
+import { getInitialFilterState, makeTrendPeriod } from '@/schemas/reporting';
 
 export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
 
@@ -22,8 +22,16 @@ export const Route = createFileRoute('/entities/$cui')({
         const year = (search?.year as number | undefined) ?? END_YEAR;
         const normalization = (search?.normalization as Normalization | undefined) ?? 'total';
         const reportPeriod = getInitialFilterState(search.period ?? 'YEAR', year, search.month ?? '12', search.quarter ?? 'Q4');
+        const trendPeriod = makeTrendPeriod(search.period ?? 'YEAR', year, START_YEAR, END_YEAR);
         queryClient.prefetchQuery(
-            entityDetailsQueryOptions(params.cui, year, START_YEAR, END_YEAR, normalization, reportPeriod)
+            entityDetailsQueryOptions(
+              params.cui,
+              year,
+              normalization,
+              reportPeriod,
+              (search?.report_type as import('@/schemas/reporting').GqlReportType | undefined),
+              trendPeriod
+            )
         );
 
         const desiredView = (search?.view as string | undefined) ?? 'overview';

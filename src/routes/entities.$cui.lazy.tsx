@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { EntityReportControls } from '@/components/entities/EntityReportControls'
 import { EntityReportLabel } from '@/components/entities/EntityReportLabel'
 import type { ReportPeriodInput, TMonth, TQuarter } from '@/schemas/reporting'
-import { getInitialFilterState } from '@/schemas/reporting'
+import { getInitialFilterState, makeTrendPeriod } from '@/schemas/reporting'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { useEntityViews } from '@/hooks/useEntityViews'
 import { useRecentEntities } from '@/hooks/useRecentEntities'
@@ -65,13 +65,15 @@ function EntityDetailsPage() {
     [START_YEAR, END_YEAR]
   )
 
+  const trendPeriod = makeTrendPeriod(search.period ?? 'YEAR', selectedYear, START_YEAR, END_YEAR)
+
   const { data: entity, isLoading, isError, error } = useEntityDetails(
     cui,
     selectedYear,
-    START_YEAR,
-    END_YEAR,
     normalization,
-    reportPeriod
+    reportPeriod,
+    reportTypeState ?? undefined,
+    trendPeriod
   )
 
   useRecentEntities(entity)
@@ -216,6 +218,15 @@ function EntityDetailsPage() {
     )
   }
 
+  const handlePeriodItemSelect = (label: string) => {
+    const period = (search.period ?? 'YEAR') as 'YEAR' | 'QUARTER' | 'MONTH'
+    if (period === 'QUARTER') {
+      updateReportPeriodInSearch({ quarter: label })
+    } else if (period === 'MONTH') {
+      updateReportPeriodInSearch({ month: label })
+    }
+  }
+
   const renderContent = () => {
     const activeView = search.view ?? 'overview'
 
@@ -255,9 +266,11 @@ function EntityDetailsPage() {
           selectedYear={selectedYear}
           normalization={normalization}
           years={years}
+          periodType={search.period ?? 'YEAR'}
           search={search}
           onChartNormalizationChange={handleNormalizationChange}
           onYearChange={handleYearChange}
+          onPeriodItemSelect={handlePeriodItemSelect}
           onSearchChange={handleSearchChange}
           onAnalyticsChange={handleAnalyticsChange}
         />

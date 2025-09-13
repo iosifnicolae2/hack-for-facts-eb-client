@@ -30,8 +30,10 @@ const twoGroupFromAnyCode = (codeLike: string | number | null | undefined): stri
 
 // Chapter map and income subchapter map are now loaded lazily via React Query hooks
 
+export type MinimalExecutionLineItem = Pick<ExecutionLineItem, 'account_category' | 'amount' | 'functionalClassification' | 'economicClassification'>
+
 const groupByFunctional = (
-  items: ExecutionLineItem[],
+  items: MinimalExecutionLineItem[],
   chapterMap: Map<string, string>
 ): GroupedChapter[] => {
   type EconAgg = { name: string; amount: number };
@@ -118,7 +120,7 @@ const groupByFunctional = (
 
 /** Group incomes by subchapter (NN.MM) inside each chapter. Expenses remain chapter → functional. */
 const groupIncomeBySubchapter = (
-  items: ExecutionLineItem[],
+  items: MinimalExecutionLineItem[],
   incomeSubchapterMap: Map<string, string>,
   chapterMap: Map<string, string>
 ): GroupedChapter[] => {
@@ -344,7 +346,7 @@ const filterGroups = (groups: GroupedChapter[], term: string): GroupedChapter[] 
 
 /** ---------- hook ---------- **/
 export const useFinancialData = (
-  lineItems: ExecutionLineItem[],
+  lineItems: MinimalExecutionLineItem[],
   totalIncome: number | null,
   totalExpenses: number | null,
   initialExpenseSearchTerm?: string,

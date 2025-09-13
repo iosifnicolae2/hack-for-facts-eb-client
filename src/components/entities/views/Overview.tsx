@@ -5,6 +5,7 @@ import { EntityLineItems } from "../EntityLineItems"
 import { LineItemsAnalytics } from "../LineItemsAnalytics"
 import { EntityReports } from "../EntityReports";
 import { Normalization } from "@/schemas/charts";
+import type { ReportPeriodType } from "@/schemas/reporting";
 
 interface OverviewProps {
     entity?: EntityDetailsData;
@@ -12,6 +13,7 @@ interface OverviewProps {
     selectedYear: number;
     normalization: Normalization;
     years: number[];
+    periodType?: ReportPeriodType;
     search: {
         expenseSearch?: string;
         incomeSearch?: string;
@@ -20,6 +22,7 @@ interface OverviewProps {
     };
     onChartNormalizationChange: (mode: Normalization) => void;
     onYearChange: (year: number) => void;
+    onPeriodItemSelect?: (label: string) => void;
     onSearchChange: (type: 'expense' | 'income', term: string) => void;
     onAnalyticsChange: (type: 'analyticsChartType' | 'analyticsDataType', value: 'bar' | 'pie' | 'income' | 'expense') => void;
 }
@@ -30,9 +33,11 @@ export const Overview = ({
     selectedYear,
     normalization,
     years,
+    periodType,
     search,
     onChartNormalizationChange,
     onYearChange,
+    onPeriodItemSelect,
     onSearchChange,
     onAnalyticsChange
 }: OverviewProps) => {
@@ -66,6 +71,8 @@ export const Overview = ({
                 normalization={normalization}
                 onNormalizationChange={onChartNormalizationChange}
                 onYearChange={onYearChange}
+                periodType={periodType ?? 'YEAR'}
+                onSelectPeriod={onPeriodItemSelect}
                 isLoading={isLoading}
             />
 
