@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine, LabelList } from 'recharts';
 // Removed direct Select usage; using NormalizationSelector
 import { TrendingUp, BarChart2 } from 'lucide-react';
 import { yValueFormatter } from '../charts/components/chart-renderer/utils';
@@ -29,9 +29,11 @@ interface EntityFinancialTrendsProps {
   isLoading?: boolean;
   periodType?: ReportPeriodType;
   onSelectPeriod?: (label: string) => void;
+  selectedQuarter?: string;
+  selectedMonth?: string;
 }
 
-export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ incomeTrend, expenseTrend, balanceTrend, currentYear, entityName, normalization, onNormalizationChange, onYearChange, isLoading, periodType = 'YEAR', onSelectPeriod }) => {
+export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ incomeTrend, expenseTrend, balanceTrend, currentYear, entityName, normalization, onNormalizationChange, onYearChange, isLoading, periodType = 'YEAR', onSelectPeriod, selectedQuarter, selectedMonth }) => {
 
   const { cui } = useParams({ from: '/entities/$cui' });
 
@@ -86,9 +88,9 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
           return m >= 1 && m <= 12 ? m : null;
         }
         // Month names (en)
-        const monthNames = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+        const monthNames = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
         const upper = value.toUpperCase();
-        const idx = monthNames.findIndex(n => n === upper || n.slice(0,3) === upper.slice(0,3));
+        const idx = monthNames.findIndex(n => n === upper || n.slice(0, 3) === upper.slice(0, 3));
         if (idx >= 0) return idx + 1;
         return null;
       };
@@ -190,6 +192,10 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
                 tick={{ fontSize: 12 }}
                 tickLine={false}
                 axisLine={false}
+                tickFormatter={(val: string | number) => {
+                  if (periodType === 'YEAR') return String(val)
+                  return `${currentYear}-${String(val)}`
+                }}
               />
               <YAxis
                 tickFormatter={(val) => yValueFormatter(val, getNormalizationUnit(normalization))}
@@ -202,9 +208,22 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({ in
               {periodType === 'YEAR' && (
                 <ReferenceLine x={String(currentYear)} stroke="gray" strokeDasharray="6 3" strokeWidth={1} />
               )}
-              <Bar dataKey="income" name={t`Income`} fill="#10B981" radius={[3,3,0,0]} />
-              <Bar dataKey="expense" name={t`Expenses`} fill="#EF4444" radius={[3,3,0,0]} />
-              <Bar dataKey="balance" name={t`Balance`} fill="#3B82F6" radius={[3,3,0,0]} />
+              {periodType === 'QUARTER' && selectedQuarter && (
+                <ReferenceLine x={selectedQuarter} stroke="gray" strokeDasharray="6 3" strokeWidth={1} />
+              )}
+              {periodType === 'MONTH' && selectedMonth && (
+                <ReferenceLine x={selectedMonth} stroke="gray" strokeDasharray="6 3" strokeWidth={1} />
+              )}
+
+              <Bar dataKey="income" name={t`Income`} fill="#10B981" radius={[3, 3, 0, 0]}>
+                <LabelList dataKey="income" position="top" fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />
+              </Bar>
+              <Bar dataKey="expense" name={t`Expenses`} fill="#EF4444" radius={[3, 3, 0, 0]}>
+                <LabelList dataKey="expense" position="top" fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />
+              </Bar>
+              <Bar dataKey="balance" name={t`Balance`} fill="#3B82F6" radius={[3, 3, 0, 0]}>
+                <LabelList dataKey="balance" position="top" fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         )}

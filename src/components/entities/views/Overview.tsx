@@ -19,6 +19,9 @@ interface OverviewProps {
         incomeSearch?: string;
         analyticsChartType?: 'bar' | 'pie';
         analyticsDataType?: 'expense' | 'income';
+        period?: ReportPeriodType;
+        quarter?: string;
+        month?: string;
     };
     onChartNormalizationChange: (mode: Normalization) => void;
     onYearChange: (year: number) => void;
@@ -73,6 +76,8 @@ export const Overview = ({
                 onYearChange={onYearChange}
                 periodType={periodType ?? 'YEAR'}
                 onSelectPeriod={onPeriodItemSelect}
+                selectedQuarter={search?.quarter as string | undefined}
+                selectedMonth={search?.month as string | undefined}
                 isLoading={isLoading}
             />
 
