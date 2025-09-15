@@ -315,7 +315,7 @@ function EntityDetailsPage() {
                   onChange={handleReportControlsChange}
                 />
               }
-              className="p-4"
+              className="p-4 w-md"
               align="end"
               mobileSide="bottom"
               breakpoint={640}

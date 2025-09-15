@@ -1,5 +1,4 @@
-import { useMemo, type ReactNode } from 'react'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { useMemo, useState, type ReactNode } from 'react'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { EntityDetailsData } from '@/lib/api/entities'
@@ -7,8 +6,11 @@ import { defaultYearRange } from '@/schemas/charts'
 import type { GqlReportType, ReportPeriodInput, ReportPeriodType, TMonth, TQuarter, DateInput } from '@/schemas/reporting'
 import { makeSingleTimePeriod, getQuarterEndMonth, getQuarterForMonth } from '@/schemas/reporting'
 import { FilterIcon } from 'lucide-react'
+import { i18n } from '@lingui/core'
 import { t } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { Button } from '@/components/ui/button'
 
 type Props = {
   entity?: EntityDetailsData
@@ -22,20 +24,15 @@ type Props = {
 }
 
 export function EntityReportControls({ entity, periodType, year, quarter, month, reportType, mainCreditor = 'ALL', onChange }: Props) {
-  const MONTHS: { id: string; label: string }[] = [
-    { id: '01', label: t`January` },
-    { id: '02', label: t`February` },
-    { id: '03', label: t`March` },
-    { id: '04', label: t`April` },
-    { id: '05', label: t`May` },
-    { id: '06', label: t`June` },
-    { id: '07', label: t`July` },
-    { id: '08', label: t`August` },
-    { id: '09', label: t`September` },
-    { id: '10', label: t`October` },
-    { id: '11', label: t`November` },
-    { id: '12', label: t`December` },
-  ]
+  const monthFormatter = useMemo(() => new Intl.DateTimeFormat(i18n.locale || 'en', { month: 'short' }), [i18n.locale])
+  const MONTHS: { id: TMonth; label: string }[] = useMemo(() => {
+    return Array.from({ length: 12 }, (_, idx) => {
+      const id = String(idx + 1).padStart(2, '0') as TMonth
+      let short = monthFormatter.format(new Date(2000, idx, 1))
+      if (!short.endsWith('.')) short = `${short}.`
+      return { id, label: `${id} ${short}` }
+    })
+  }, [monthFormatter])
 
   const REPORT_TYPE_OPTIONS: { id: GqlReportType; label: ReactNode }[] = [
     { id: 'PRINCIPAL_AGGREGATED', label: t`Main creditor aggregated` },
@@ -81,6 +78,7 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
   }
 
   const handleTypeChange = (value: string | number | boolean | undefined) => {
+    if (!value) return
     const nextType = String(value) as ReportPeriodType
 
     // Prepare derived values based on transitions
@@ -114,14 +112,17 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
   }
 
   const handleYearChange = (value: string) => {
+    if (!value) return
     const y = Number(value)
     emitChange(periodType, y, quarter, month, reportType, mainCreditor)
   }
   const handleQuarterChange = (value: string | number | boolean | undefined) => {
+    if (!value) return
     const q = String(value) as TQuarter
     emitChange(periodType, year, q, month, reportType, mainCreditor)
   }
   const handleMonthChange = (value: string | number | boolean | undefined) => {
+    if (!value) return
     const monthValue = String(value) as TMonth
     emitChange(periodType, year, quarter, monthValue, reportType, mainCreditor)
   }
@@ -135,8 +136,8 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
   }
 
   return (
-    <div className="flex flex-col gap-4 max-w-md">
-      <div className="space-y-2">
+    <div className="flex flex-col gap-4 w-full">
+      <div className="space-y-4">
         <div className="inline-flex items-center gap-2 text-sm font-medium text-foreground/80">
           <FilterIcon className="h-4 w-4 text-muted-foreground" />
           <span><Trans>Reporting filters</Trans></span>
@@ -144,84 +145,102 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
             <Label className="text-xs text-muted-foreground"><Trans>Period</Trans></Label>
-            <Select value={periodType} onValueChange={handleTypeChange}>
-              <SelectTrigger className="hover:bg-muted/50 transition-colors"><SelectValue placeholder={t`Choose type`} /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="YEAR"><Trans>Yearly</Trans></SelectItem>
-                <SelectItem value="QUARTER"><Trans>Quarterly</Trans></SelectItem>
-                <SelectItem value="MONTH"><Trans>Monthly</Trans></SelectItem>
-              </SelectContent>
-            </Select>
+            <ToggleGroup type="single" value={periodType} onValueChange={handleTypeChange} variant="outline" size="sm" className="w-full justify-between gap-2">
+              {[
+                { id: 'YEAR', label: <Trans>Yearly</Trans> },
+                { id: 'QUARTER', label: <Trans>Quarterly</Trans> },
+                { id: 'MONTH', label: <Trans>Monthly</Trans> }
+              ].map((o) => (
+                <ToggleGroupItem
+                  key={o.id}
+                  value={o.id}
+                  className="flex-1 inline-flex items-center gap-2 data-[state=on]:bg-foreground data-[state=on]:text-background">
+                  {o.label}
+                </ToggleGroupItem>
+              ))}
+            </ToggleGroup>
           </div>
           <div className="flex flex-col gap-1">
             <Label className="text-xs text-muted-foreground"><Trans>Year</Trans></Label>
-            <Select value={String(year)} onValueChange={handleYearChange}>
-              <SelectTrigger className="hover:bg-muted/50 transition-colors"><SelectValue placeholder={t`Year`} /></SelectTrigger>
-              <SelectContent>
-                {availableYears.map((y) => (
-                  <SelectItem key={y} value={String(y)}>{y}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="flex items-start gap-2">
+              <div className="flex-1">
+                <ToggleGroup
+                  type="single"
+                  value={String(year)}
+                  onValueChange={handleYearChange}
+                  variant="outline"
+                  size="sm"
+                  className="grid grid-cols-3 sm:grid-cols-5 gap-2"
+                >
+                  {availableYears.map((year) => (
+                    <ToggleGroupItem
+                      key={year}
+                      value={String(year)}
+                      className="justify-center data-[state=on]:bg-foreground data-[state=on]:text-background"
+                    >
+                      {year}
+                    </ToggleGroupItem>
+                  ))}
+                </ToggleGroup>
+              </div>
+            </div>
           </div>
           {periodType === 'QUARTER' && (
             <div className="flex flex-col gap-1">
               <Label className="text-xs text-muted-foreground"><Trans>Quarter</Trans></Label>
-              <Select value={quarter} onValueChange={handleQuarterChange}>
-                <SelectTrigger className="hover:bg-muted/50 transition-colors"><SelectValue placeholder={t`Quarter`} /></SelectTrigger>
-                <SelectContent>
-                  {quarterOptions.map((q) => (
-                    <SelectItem key={q.id} value={q.id}>{q.label}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <ToggleGroup type="single" value={quarter} onValueChange={handleQuarterChange} variant="outline" size="sm" className="grid grid-cols-4 gap-2">
+                {quarterOptions.map((q) => (
+                  <ToggleGroupItem key={q.id} value={q.id} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{q.label}</ToggleGroupItem>
+                ))}
+              </ToggleGroup>
             </div>
           )}
           {periodType === 'MONTH' && (
             <div className="flex flex-col gap-1">
               <Label className="text-xs text-muted-foreground"><Trans>Month</Trans></Label>
-              <Select value={month} onValueChange={handleMonthChange}>
-                <SelectTrigger className="hover:bg-muted/50 transition-colors"><SelectValue placeholder={t`Month`} /></SelectTrigger>
-                <SelectContent>
-                  {MONTHS.map((m) => (
-                    <SelectItem key={m.id} value={m.id}>{m.label}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <ToggleGroup type="single" value={month} onValueChange={handleMonthChange} variant="outline" size="sm" className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {MONTHS.map((m) => (
+                  <ToggleGroupItem key={m.id} value={m.id} className="justify-center data-[state=on]:bg-foreground data-[state=on]:text-background">{m.label}</ToggleGroupItem>
+                ))}
+              </ToggleGroup>
             </div>
           )}
         </div>
       </div>
 
-      <Separator />
-
       {/* Report type */}
       <div className="flex flex-col gap-1">
         <Label className="text-xs text-muted-foreground"><Trans>Report type</Trans></Label>
-        <Select value={reportType ?? entity?.default_report_type} onValueChange={handleReportTypeChange}>
-          <SelectTrigger className="hover:bg-muted/50 transition-colors">
-            <SelectValue defaultValue={reportType} />
-          </SelectTrigger>
-          <SelectContent>
-            {REPORT_TYPE_OPTIONS.map((o) => (
-              <SelectItem key={o.id} value={o.id}>{o.label}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <ToggleGroup
+          type="single"
+          value={reportType ?? entity?.default_report_type}
+          onValueChange={handleReportTypeChange}
+          variant="outline"
+          size="sm"
+          className="grid grid-cols-1 gap-2"
+        >
+          {REPORT_TYPE_OPTIONS.map((o) => (
+            <ToggleGroupItem key={o.id} value={o.id} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{o.label}</ToggleGroupItem>
+          ))}
+        </ToggleGroup>
       </div>
 
       {/* Main creditor */}
       {creditorOptions.length > 0 && (
         <div className="flex flex-col gap-1">
           <Label className="text-xs text-muted-foreground"><Trans>Main creditor</Trans></Label>
-          <Select value={mainCreditor} onValueChange={handleCreditorChange}>
-            <SelectTrigger className="hover:bg-muted/50 transition-colors"><SelectValue placeholder={t`All`} /></SelectTrigger>
-            <SelectContent>
-              {creditorOptions.map((c) => (
-                <SelectItem key={c.id} value={c.id}>{c.label}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <ToggleGroup
+            type="single"
+            value={mainCreditor}
+            onValueChange={(v) => v && handleCreditorChange(String(v))}
+            variant="outline"
+            size="sm"
+            className="grid grid-cols-1 gap-2"
+          >
+            {creditorOptions.map((c) => (
+              <ToggleGroupItem key={c.id} value={c.id} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{c.label}</ToggleGroupItem>
+            ))}
+          </ToggleGroup>
         </div>
       )}
     </div>
