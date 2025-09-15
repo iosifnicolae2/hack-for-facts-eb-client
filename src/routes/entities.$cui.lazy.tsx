@@ -19,6 +19,7 @@ const EmployeesView = lazy(() => import('@/components/entities/views/EmployeesVi
 import { MapView } from '@/components/entities/views/MapView'
 import { Overview } from '@/components/entities/views/Overview'
 import { defaultYearRange } from '@/schemas/charts'
+import { usePersistedState } from '@/lib/hooks/usePersistedState'
 import { RankingView } from '@/components/entities/views/RankingView'
 import { RelatedChartsView } from '@/components/entities/views/RelatedChartsView'
 import { useEntityMapFilter } from '@/components/entities/hooks/useEntityMapFilter'
@@ -40,6 +41,7 @@ function EntityDetailsPage() {
   const search = useSearch({ from: '/entities/$cui' })
   const navigate = useNavigate({ from: '/entities/$cui' })
   const yearSelectorRef = useRef<HTMLButtonElement>(null)
+  const [userCurrency] = usePersistedState<'RON' | 'EUR'>('user-currency', 'RON')
 
 
   useHotkeys('mod+;', () => {
@@ -53,7 +55,9 @@ function EntityDetailsPage() {
 
   // Derive all state from URL search params for a single source of truth.
   const selectedYear = search.year ?? END_YEAR
-  const normalization = search.normalization ?? 'total'
+  // If normalization not present in URL, use user currency preference for default
+  const defaultUserNormalization = userCurrency === 'EUR' ? 'total_euro' : 'total'
+  const normalization = search.normalization ?? defaultUserNormalization
   const reportTypeState = search.report_type
   const mainCreditorState = (search.main_creditor_cui as 'ALL' | string | undefined) ?? 'ALL'
 

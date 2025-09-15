@@ -4,6 +4,7 @@ import Logo from "./logo";
 import { NavMain } from "./nav-main";
 import { useLocation } from "@tanstack/react-router";
 import { LanguageToggle } from "@/components/theme/language-toggle";
+import { CurrencyToggle } from "@/components/theme/currency-toggle";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const location = useLocation();
@@ -24,9 +25,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </div>
       </SidebarContent>
       <SidebarFooter>
-        <div className="flex items-center gap-2">
-          <LanguageToggle />
-        </div>
+        <CurrencyToggle />
+        <LanguageToggle />
       </SidebarFooter>
     </Sidebar>
   );
