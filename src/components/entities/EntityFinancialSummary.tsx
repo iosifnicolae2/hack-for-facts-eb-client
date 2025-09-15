@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
-import { TrendingUp, TrendingDown, Scale, BadgeEuro } from 'lucide-react';
+import { TrendingUp, TrendingDown, Scale } from 'lucide-react';
 import { EntityFinancialSummarySkeleton } from './EntityFinancialSummarySkeleton';
 import { t } from '@lingui/core/macro';
 
@@ -11,11 +11,12 @@ interface EntityFinancialSummaryCardProps {
   icon?: React.ElementType;
   periodLabel: string;
   color: string;
+  currency: 'RON' | 'EUR';
 }
 
-export const EntityFinancialSummaryCard: React.FC<EntityFinancialSummaryCardProps> = ({ title, value, icon: Icon, color, periodLabel }) => {
-  const displayValueCompact = value !== null && value !== undefined ? formatCurrency(value, "compact") : 'N/A';
-  const displayValueStandard = value !== null && value !== undefined ? formatCurrency(value, "standard") : 'N/A';
+export const EntityFinancialSummaryCard: React.FC<EntityFinancialSummaryCardProps> = ({ title, value, icon: Icon, color, periodLabel, currency }) => {
+  const displayValueCompact = value !== null && value !== undefined ? formatCurrency(value, "compact", currency) : 'N/A';
+  const displayValueStandard = value !== null && value !== undefined ? formatCurrency(value, "standard", currency) : 'N/A';
   let iconColor = "text-slate-500 dark:text-slate-400";
   if (color === "green") iconColor = "text-green-500 dark:text-green-400";
   if (color === "red") iconColor = "text-red-500 dark:text-red-400";
@@ -31,9 +32,6 @@ export const EntityFinancialSummaryCard: React.FC<EntityFinancialSummaryCardProp
         <p className="text-4xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">{displayValueCompact}</p>
         <p className="flex items-center gap-1">
           <span className="text-sm text-muted-foreground">{displayValueStandard}</span>
-          <a href={`https://www.google.com/search?q=${value?.toFixed(0)} RON to EUR`} target="_blank" rel="noopener noreferrer" className="text-muted-foreground">
-            <BadgeEuro className="h-4 w-4" />
-          </a>
         </p>
         {/* You could add a small percentage change here if data is available */}
         {/* <p className="text-xs text-muted-foreground">+20.1% from last month</p> */}
@@ -48,10 +46,11 @@ interface EntityFinancialSummaryProps {
   budgetBalance: number | null | undefined;
   periodLabel: string;
   isLoading?: boolean;
+  currency?: 'RON' | 'EUR';
 }
 
 export const EntityFinancialSummary: React.FC<EntityFinancialSummaryProps> = (
-  { totalIncome, totalExpenses, budgetBalance, periodLabel, isLoading }
+  { totalIncome, totalExpenses, budgetBalance, periodLabel, isLoading, currency = 'RON' }
 ) => {
   if (isLoading) {
     return <EntityFinancialSummarySkeleton />;
@@ -59,9 +58,9 @@ export const EntityFinancialSummary: React.FC<EntityFinancialSummaryProps> = (
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-      <EntityFinancialSummaryCard title={t`Total Expenses`} value={totalExpenses} icon={TrendingDown} color="red" periodLabel={periodLabel} />
-      <EntityFinancialSummaryCard title={t`Total Income`} value={totalIncome} icon={TrendingUp} color="green" periodLabel={periodLabel} />
-      <EntityFinancialSummaryCard title={t`Income - Expenses`} value={budgetBalance} icon={Scale} color="blue" periodLabel={periodLabel} />
+      <EntityFinancialSummaryCard title={t`Total Expenses`} value={totalExpenses} icon={TrendingDown} color="red" periodLabel={periodLabel} currency={currency} />
+      <EntityFinancialSummaryCard title={t`Total Income`} value={totalIncome} icon={TrendingUp} color="green" periodLabel={periodLabel} currency={currency} />
+      <EntityFinancialSummaryCard title={t`Income - Expenses`} value={budgetBalance} icon={Scale} color="blue" periodLabel={periodLabel} currency={currency} />
     </section>
   );
 }; 

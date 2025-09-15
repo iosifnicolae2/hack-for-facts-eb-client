@@ -1,6 +1,5 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { useMemo, type ReactNode } from 'react'
 import { Label } from '@/components/ui/label'
-import { Separator } from '@/components/ui/separator'
 import { EntityDetailsData } from '@/lib/api/entities'
 import { defaultYearRange } from '@/schemas/charts'
 import type { GqlReportType, ReportPeriodInput, ReportPeriodType, TMonth, TQuarter, DateInput } from '@/schemas/reporting'
@@ -10,7 +9,6 @@ import { i18n } from '@lingui/core'
 import { t } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { Button } from '@/components/ui/button'
 
 type Props = {
   entity?: EntityDetailsData

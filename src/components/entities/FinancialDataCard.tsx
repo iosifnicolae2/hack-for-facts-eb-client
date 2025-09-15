@@ -11,7 +11,7 @@ import {
 import { SearchToggleInput } from './SearchToggleInput';
 import GroupedChapterAccordion from "./GroupedChapterAccordion";
 import { GroupedChapter, GroupedFunctional, GroupedEconomic } from '@/schemas/financial';
-import { formatCurrency, formatNumber } from '@/lib/utils';
+import { formatCurrency, formatNumber, getNormalizationUnit } from '@/lib/utils';
 import { Trans } from '@lingui/react/macro';
 import { TMonth, TQuarter } from '@/schemas/reporting';
 import { getYearLabel } from './utils';
@@ -25,10 +25,11 @@ interface GroupedItemsDisplayProps {
   showTotalValueHeader?: boolean;
   month?: TMonth;
   quarter?: TQuarter;
+  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
 }
 
 export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.memo(
-  ({ groups, title, baseTotal, searchTerm, currentYear, showTotalValueHeader = false, month, quarter }) => {
+  ({ groups, title, baseTotal, searchTerm, currentYear, showTotalValueHeader = false, month, quarter, normalization }) => {
 
     const dateLabel = getYearLabel(currentYear, month, quarter);
 
@@ -69,11 +70,14 @@ export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.mem
 
     const openChapters = searchTerm ? groups.map((ch) => ch.prefix) : [];
 
+    const unit = getNormalizationUnit(normalization ?? 'total');
+    const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON'; // Unit can also be 'RON/capita' or 'EUR/capita', for currency we only need 'RON' or 'EUR'
+
     const TotalValueComponent = () => (
       <div className="flex flex-col">
         <p className='flex justify-end items-center m-4 mb-0 font-semibold'>
           <Trans>Total:</Trans>{" "}
-          {formatCurrency(totalValueFiltered, "standard")}
+          {formatCurrency(totalValueFiltered, "standard", currencyCode)}
           {totalPercentageFiltered > 0 && totalPercentageFiltered <= 99.99 && (
             <span className="pl-2 text-sm text-muted-foreground">
               ({formatNumber(totalPercentageFiltered)}%)
@@ -81,7 +85,7 @@ export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.mem
           )}
         </p>
         <p className="text-sm text-muted-foreground text-right m-4 mt-0">
-          {formatCurrency(totalValueFiltered, "compact")}
+          {formatCurrency(totalValueFiltered, "compact", currencyCode)}
         </p>
       </div>
     )
@@ -99,6 +103,7 @@ export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.mem
             ch={ch}
             baseTotal={baseTotal}
             searchTerm={searchTerm}
+            normalization={normalization}
           />
         ))}
         <TotalValueComponent />
@@ -124,6 +129,7 @@ interface FinancialDataCardProps {
   groups: GroupedChapter[];
   baseTotal: number;
   searchFocusKey?: string;
+  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
 }
 
 export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
@@ -141,6 +147,7 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
   groups,
   baseTotal,
   searchFocusKey,
+  normalization,
 }) => {
   const Icon = iconType === 'income' ? ArrowUpCircle : ArrowDownCircle;
   const iconColor = iconType === 'income' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400';
@@ -185,6 +192,9 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
           searchTerm={searchTerm}
           currentYear={currentYear}
           showTotalValueHeader={!!searchActive}
+          month={month}
+          quarter={quarter}
+          normalization={normalization}
         />
       </CardContent>
     </Card>

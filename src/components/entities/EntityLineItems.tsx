@@ -19,6 +19,7 @@ export interface EntityTopItemsProps {
   initialIncomeSearchTerm: string;
   onSearchChange: (type: 'expense' | 'income', term: string) => void;
   isLoading?: boolean;
+  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
 }
 
 export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
@@ -34,6 +35,7 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
   initialIncomeSearchTerm,
   onSearchChange,
   isLoading,
+  normalization,
 }) => {
   const initialTotalIncome = totalIncome ?? 0;
   const initialTotalExpenses = totalExpenses ?? 0;
@@ -83,6 +85,7 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
         groups={filteredExpenseGroups}
         baseTotal={expenseBase}
         searchFocusKey="mod+j"
+        normalization={normalization}
       />
       <FinancialDataCard
         title={t`Incomes`}
@@ -99,6 +102,7 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
         groups={filteredIncomeGroups}
         baseTotal={incomeBase}
         searchFocusKey="mod+l"
+        normalization={normalization}
       />
     </section>
   );

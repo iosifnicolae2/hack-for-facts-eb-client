@@ -64,6 +64,7 @@ export const Overview = ({
                 budgetBalance={entity?.budgetBalance}
                 periodLabel={getYearLabel(selectedYear, search.month as TMonth, search.quarter as TQuarter)}
                 isLoading={isLoading}
+                currency={normalization === 'total_euro' || normalization === 'per_capita_euro' ? 'EUR' : 'RON'}
             />
 
             <EntityFinancialTrends
@@ -97,6 +98,7 @@ export const Overview = ({
                 initialIncomeSearchTerm={search.incomeSearch ?? ''}
                 onSearchChange={(type: 'expense' | 'income', term: string) => handleSearchChange(type, term)}
                 isLoading={isLoading}
+                normalization={normalization}
             />
 
             <LineItemsAnalytics
@@ -111,6 +113,7 @@ export const Overview = ({
                 dataType={search.analyticsDataType ?? 'expense'}
                 onDataTypeChange={(type: 'income' | 'expense') => handleAnalyticsChange('analyticsDataType', type)}
                 isLoading={isLoading}
+                normalization={normalization}
             />
 
             <EntityReports

@@ -67,13 +67,13 @@ function EntityDetailsPage() {
 
   const trendPeriod = makeTrendPeriod(search.period ?? 'YEAR', selectedYear, START_YEAR, END_YEAR)
 
-  const { data: entity, isLoading, isError, error } = useEntityDetails(
+  const { data: entity, isLoading, isError, error } = useEntityDetails({
     cui,
     normalization,
     reportPeriod,
-    reportTypeState ?? undefined,
+    reportType: reportTypeState ?? undefined,
     trendPeriod
-  )
+  })
 
   useRecentEntities(entity)
   const { mapFilters, updateMapFilters } = useEntityMapFilter({ year: selectedYear })

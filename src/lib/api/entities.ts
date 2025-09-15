@@ -106,9 +106,9 @@ const GET_ENTITY_DETAILS_QUERY = `
         cui
         name
       }
-      totalIncome(period: $reportPeriod)
-      totalExpenses(period: $reportPeriod)
-      budgetBalance(period: $reportPeriod)
+      totalIncome(period: $reportPeriod, reportType: $reportType, normalization: $normalization)
+      totalExpenses(period: $reportPeriod, reportType: $reportType, normalization: $normalization)
+      budgetBalance(period: $reportPeriod, reportType: $reportType, normalization: $normalization)
       incomeTrend(period: $trendPeriod, reportType: $reportType, normalization: $normalization) {
         seriesId
         xAxis { name type unit }
@@ -148,9 +148,11 @@ const GET_ENTITY_DETAILS_QUERY = `
         filter: { 
           account_category: ch,
           report_period: $reportPeriod
+          report_type: $reportType
+          normalization: $normalization
         }
         sort: { by: "amount", order: "DESC" }
-        limit: 1000
+        limit: 15000
       ) {
         nodes {
           line_item_id
@@ -172,9 +174,11 @@ const GET_ENTITY_DETAILS_QUERY = `
         filter: { 
           account_category: vn,
           report_period: $reportPeriod
+          report_type: $reportType
+          normalization: $normalization
         }
         sort: { by: "amount", order: "DESC" }
-        limit: 1000
+        limit: 15000
       ) {
         nodes {
           line_item_id

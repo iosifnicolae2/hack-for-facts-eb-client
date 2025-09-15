@@ -17,12 +17,16 @@ export const entityDetailsQueryOptions = (
     enabled: !!cui,
   });
 
+interface UseEntityDetailsProps {
+  cui: string;
+  normalization: Normalization;
+  reportPeriod: ReportPeriodInput;
+  reportType?: GqlReportType;
+  trendPeriod?: ReportPeriodInput;
+}
+
 export function useEntityDetails(
-  cui: string,
-  normalization: Normalization,
-  reportPeriod: ReportPeriodInput,
-  reportType?: GqlReportType,
-  trendPeriod?: ReportPeriodInput
+  { cui, normalization, reportPeriod, reportType, trendPeriod }: UseEntityDetailsProps
 ) {
   return useQuery(entityDetailsQueryOptions(cui, normalization, reportPeriod, reportType, trendPeriod));
 }

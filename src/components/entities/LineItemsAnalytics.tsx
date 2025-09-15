@@ -3,7 +3,7 @@ import { BarChart, Bar, PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContaine
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { EntityDetailsData } from '@/lib/api/entities';
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency, getNormalizationUnit } from '@/lib/utils';
 import { PieChartIcon, BarChartIcon } from 'lucide-react';
 import {
     Select,
@@ -30,6 +30,7 @@ interface AnalyticsProps {
     dataType: DataType;
     onDataTypeChange: (type: DataType) => void;
     isLoading?: boolean;
+    normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
 }
 
 type ChartType = 'bar' | 'pie';
@@ -49,6 +50,7 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
     dataType,
     onDataTypeChange,
     isLoading,
+    normalization,
 }) => {
     const expenses = useMemo(() => lineItems?.nodes.filter(li => li.account_category === 'ch') || [], [lineItems]);
     const incomes = useMemo(() => lineItems?.nodes.filter(li => li.account_category === 'vn') || [], [lineItems]);
@@ -87,6 +89,8 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
     if (isLoading) {
         return <LineItemsAnalyticsSkeleton />;
     }
+
+    const unit = getNormalizationUnit(normalization ?? 'total');
 
     return (
         <Card className="shadow-lg dark:bg-slate-800">
@@ -132,7 +136,7 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
                             <BarChart data={activeData} margin={{ top: 40, right: 30, left: 100, bottom: 80 }}>
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                                 <XAxis dataKey="name" tick={{ fontSize: 12 }} angle={-45} textAnchor="end" interval={0} height={100} />
-                                <YAxis tickFormatter={(value) => formatCurrency(value, "compact")} />
+                                <YAxis tickFormatter={(value) => formatCurrency(value, "compact", unit === 'EUR' || unit === 'EUR/capita' ? 'EUR' : 'RON')} />
                                 <Tooltip formatter={(value: number) => formatCurrency(value)} />
                                 <Bar dataKey="value" fill={dataType === 'income' ? applyAlpha('#4ade80', 0.8) : applyAlpha('#f87171', 0.8)}>
                                     <LabelList content={renderBarLabel} />

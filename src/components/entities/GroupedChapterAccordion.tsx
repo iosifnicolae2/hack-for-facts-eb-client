@@ -4,15 +4,18 @@ import { GroupedChapter, GroupedFunctional, GroupedSubchapter } from '@/schemas/
 import GroupedFunctionalAccordion from './GroupedFunctionalAccordion';
 import GroupedSubchapterAccordion from './GroupedSubchapterAccordion';
 import { highlightText } from './highlight-utils.tsx';
-import { formatCurrency, formatNumber } from '@/lib/utils';
+import { formatCurrency, formatNumber, getNormalizationUnit } from '@/lib/utils';
 
 interface GroupedChapterAccordionProps {
   ch: GroupedChapter;
   baseTotal: number;
   searchTerm: string;
+  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
 }
 
-const GroupedChapterAccordion: React.FC<GroupedChapterAccordionProps> = ({ ch, baseTotal, searchTerm }) => {
+const GroupedChapterAccordion: React.FC<GroupedChapterAccordionProps> = ({ ch, baseTotal, searchTerm, normalization }) => {
+  const unit = getNormalizationUnit(normalization ?? 'total');
+  const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON'; // Unit can also be 'RON/capita' or 'EUR/capita', for currency we only need 'RON' or 'EUR'
   return (
     <AccordionItem key={ch.prefix} value={ch.prefix}>
       <AccordionTrigger className="flex justify-between items-center py-2 px-4 hover:bg-slate-100 dark:hover:bg-slate-700 [&[data-state=open]]:bg-slate-100 dark:[&[data-state=open]]:bg-slate-700 transition-colors">
@@ -22,10 +25,10 @@ const GroupedChapterAccordion: React.FC<GroupedChapterAccordionProps> = ({ ch, b
           </div>
           <div className="text-sm font-semibold text-slate-900 dark:text-slate-100 text-right mr-4">
             <p className="flex justify-end items-center gap-1.5">
-              {formatCurrency(ch.totalAmount, "compact")}
+              {formatCurrency(ch.totalAmount, "compact", currencyCode)}
               <span className="text-xs text-muted-foreground w-12 text-left">{`(${formatNumber(ch.totalAmount / baseTotal * 100)}%)`}</span>
             </p>
-            <p className="text-xs text-muted-foreground font-normal">{formatCurrency(ch.totalAmount, "standard")}</p>
+            <p className="text-xs text-muted-foreground font-normal">{formatCurrency(ch.totalAmount, "standard", currencyCode)}</p>
           </div>
         </div>
       </AccordionTrigger>
