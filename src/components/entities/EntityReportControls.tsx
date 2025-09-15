@@ -1,7 +1,7 @@
 import { useMemo, type ReactNode } from 'react'
 import { Label } from '@/components/ui/label'
 import { EntityDetailsData } from '@/lib/api/entities'
-import { defaultYearRange } from '@/schemas/charts'
+import { defaultYearRange, type Normalization } from '@/schemas/charts'
 import type { GqlReportType, ReportPeriodInput, ReportPeriodType, TMonth, TQuarter, DateInput } from '@/schemas/reporting'
 import { makeSingleTimePeriod, getQuarterEndMonth, getQuarterForMonth } from '@/schemas/reporting'
 import { FilterIcon } from 'lucide-react'
@@ -18,10 +18,11 @@ type Props = {
   month: TMonth
   reportType?: GqlReportType
   mainCreditor?: 'ALL' | string
-  onChange?: (payload: { report_period: ReportPeriodInput; report_type?: GqlReportType; main_creditor_cui?: 'ALL' | string }) => void
+  normalization?: Normalization
+  onChange?: (payload: { report_period: ReportPeriodInput; report_type?: GqlReportType; main_creditor_cui?: 'ALL' | string; normalization?: Normalization }) => void
 }
 
-export function EntityReportControls({ entity, periodType, year, quarter, month, reportType, mainCreditor = 'ALL', onChange }: Props) {
+export function EntityReportControls({ entity, periodType, year, quarter, month, reportType, mainCreditor = 'ALL', normalization, onChange }: Props) {
   const monthFormatter = useMemo(() => new Intl.DateTimeFormat(i18n.locale || 'en', { month: 'short' }), [i18n.locale])
   const MONTHS: { id: TMonth; label: string }[] = useMemo(() => {
     return Array.from({ length: 12 }, (_, idx) => {
@@ -36,6 +37,13 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
     { id: 'PRINCIPAL_AGGREGATED', label: t`Main creditor aggregated` },
     { id: 'SECONDARY_AGGREGATED', label: t`Secondary creditor aggregated` },
     { id: 'DETAILED', label: t`Detailed` },
+  ]
+
+  const NORMALIZATION_OPTIONS: { id: Normalization; label: ReactNode }[] = [
+    { id: 'total', label: t`Total (RON)` },
+    { id: 'total_euro', label: t`Total (EUR)` },
+    { id: 'per_capita', label: t`Per Capita (RON)` },
+    { id: 'per_capita_euro', label: t`Per Capita (EUR)` },
   ]
 
   const availableYears = useMemo(() => {
@@ -65,14 +73,14 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
     { id: 'Q4', label: 'Q4' },
   ]
 
-  const emitChange = (type: ReportPeriodType, year: number, quarter: TQuarter, month: TMonth, reportType?: GqlReportType, creditor?: 'ALL' | string) => {
+  const emitChange = (type: ReportPeriodType, year: number, quarter: TQuarter, month: TMonth, reportType?: GqlReportType, creditor?: 'ALL' | string, norm?: Normalization) => {
     let dateFilter: DateInput
     if (type === 'YEAR') dateFilter = `${year}`
     else if (type === 'QUARTER') dateFilter = `${year}-${quarter}`
     else if (type === 'MONTH') dateFilter = `${year}-${month}`
     else throw new Error('Invalid period type')
     const report_period = makeSingleTimePeriod(type, dateFilter)
-    onChange?.({ report_period, report_type: reportType, main_creditor_cui: creditor })
+    onChange?.({ report_period, report_type: reportType, main_creditor_cui: creditor, normalization: norm })
   }
 
   const handleTypeChange = (value: string | number | boolean | undefined) => {
@@ -106,31 +114,34 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
       }
     }
 
-    emitChange(nextType, nextYear, nextQuarter, nextMonth, reportType, mainCreditor)
+    emitChange(nextType, nextYear, nextQuarter, nextMonth, reportType, mainCreditor, normalization)
   }
 
   const handleYearChange = (value: string) => {
     if (!value) return
     const y = Number(value)
-    emitChange(periodType, y, quarter, month, reportType, mainCreditor)
+    emitChange(periodType, y, quarter, month, reportType, mainCreditor, normalization)
   }
   const handleQuarterChange = (value: string | number | boolean | undefined) => {
     if (!value) return
     const q = String(value) as TQuarter
-    emitChange(periodType, year, q, month, reportType, mainCreditor)
+    emitChange(periodType, year, q, month, reportType, mainCreditor, normalization)
   }
   const handleMonthChange = (value: string | number | boolean | undefined) => {
     if (!value) return
     const monthValue = String(value) as TMonth
-    emitChange(periodType, year, quarter, monthValue, reportType, mainCreditor)
+    emitChange(periodType, year, quarter, monthValue, reportType, mainCreditor, normalization)
   }
   const handleReportTypeChange = (value: string | number | boolean | undefined) => {
     const nextReportType = String(value) as GqlReportType
-    emitChange(periodType, year, quarter, month, nextReportType, mainCreditor)
+    emitChange(periodType, year, quarter, month, nextReportType, mainCreditor, normalization)
   }
   const handleCreditorChange = (value: string) => {
     const creditor = value as 'ALL' | string
-    emitChange(periodType, year, quarter, month, reportType, creditor)
+    emitChange(periodType, year, quarter, month, reportType, creditor, normalization)
+  }
+  const handleNormalizationChange = (value: Normalization) => {
+    emitChange(periodType, year, quarter, month, reportType, mainCreditor, value)
   }
 
   return (
@@ -203,6 +214,21 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
               </ToggleGroup>
             </div>
           )}
+          <div className="flex flex-col gap-1">
+            <Label className="text-xs text-muted-foreground"><Trans>Normalization</Trans></Label>
+            <ToggleGroup
+              type="single"
+              value={normalization ?? 'total'}
+              onValueChange={(v) => v && handleNormalizationChange(v as Normalization)}
+              variant="outline"
+              size="sm"
+              className="grid grid-cols-1 gap-2"
+            >
+              {NORMALIZATION_OPTIONS.map((o) => (
+                <ToggleGroupItem key={o.id} value={o.id} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{o.label}</ToggleGroupItem>
+              ))}
+            </ToggleGroup>
+          </div>
         </div>
       </div>
 

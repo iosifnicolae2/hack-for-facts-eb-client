@@ -122,6 +122,7 @@ function EntityDetailsPage() {
     quarter?: string
     report_type?: 'PRINCIPAL_AGGREGATED' | 'SECONDARY_AGGREGATED' | 'DETAILED'
     main_creditor_cui?: 'ALL' | string
+    normalization?: Normalization
   }) => {
     navigate({
       search: (prev) => {
@@ -132,6 +133,7 @@ function EntityDetailsPage() {
 
         const nextReportType = Object.prototype.hasOwnProperty.call(patch, 'report_type') ? patch.report_type : prev.report_type
         const nextMainCreditor = Object.prototype.hasOwnProperty.call(patch, 'main_creditor_cui') ? patch.main_creditor_cui : prev.main_creditor_cui
+        const nextNormalization = Object.prototype.hasOwnProperty.call(patch, 'normalization') ? patch.normalization : prev.normalization
 
         return {
           ...prev,
@@ -141,14 +143,15 @@ function EntityDetailsPage() {
           quarter: nextPeriod === 'QUARTER' ? nextQuarter : undefined,
           report_type: nextReportType ?? undefined,
           main_creditor_cui: nextMainCreditor ?? undefined,
+          normalization: nextNormalization ?? undefined,
         }
       },
       replace: true,
     })
   }
 
-  const handleReportControlsChange = (payload: { report_period: ReportPeriodInput; report_type?: 'PRINCIPAL_AGGREGATED' | 'SECONDARY_AGGREGATED' | 'DETAILED'; main_creditor_cui?: 'ALL' | string }) => {
-    const ym = payload.report_period.selection.interval?.start
+  const handleReportControlsChange = (payload: { report_period: ReportPeriodInput; report_type?: 'PRINCIPAL_AGGREGATED' | 'SECONDARY_AGGREGATED' | 'DETAILED'; main_creditor_cui?: 'ALL' | string; normalization?: Normalization }) => {
+    const intervalDate = payload.report_period.selection.interval?.start
     const type = payload.report_period.type
 
     const patch: {
@@ -158,19 +161,22 @@ function EntityDetailsPage() {
       quarter?: string
       report_type?: 'PRINCIPAL_AGGREGATED' | 'SECONDARY_AGGREGATED' | 'DETAILED'
       main_creditor_cui?: 'ALL' | string
+      normalization?: Normalization
     } = {
       period: type,
+      normalization: payload.normalization,
     }
 
-    if (ym) {
-      const y = Number(ym.slice(0, 4))
-      if (!Number.isNaN(y)) patch.year = y
-      if (type === 'MONTH') patch.month = ym.split('-')[1]
-      if (type === 'QUARTER') patch.quarter = ym.split('-')[1]
+    if (intervalDate) {
+      const year = Number(intervalDate.slice(0, 4))
+      if (!Number.isNaN(year)) patch.year = year
+      if (type === 'MONTH') patch.month = intervalDate.split('-')[1]
+      if (type === 'QUARTER') patch.quarter = intervalDate.split('-')[1]
     }
 
     if (payload.report_type) patch.report_type = payload.report_type
     if (payload.main_creditor_cui) patch.main_creditor_cui = payload.main_creditor_cui
+    if (payload.normalization) patch.normalization = payload.normalization
 
     updateReportPeriodInSearch(patch)
   }
@@ -316,6 +322,7 @@ function EntityDetailsPage() {
                   quarter={(search.quarter ?? 'Q4') as TQuarter}
                   reportType={reportTypeState ?? entity?.default_report_type}
                   mainCreditor={mainCreditorState ?? 'ALL'}
+                  normalization={normalization}
                   onChange={handleReportControlsChange}
                 />
               }
