@@ -3,7 +3,7 @@ import { BarChart, Bar, PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContaine
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { EntityDetailsData } from '@/lib/api/entities';
-import { formatCurrency, getNormalizationUnit } from '@/lib/utils';
+import { getNormalizationUnit } from '@/lib/utils';
 import { PieChartIcon, BarChartIcon } from 'lucide-react';
 import {
     Select,
@@ -13,8 +13,9 @@ import {
 } from "@/components/ui/select";
 import { processDataForAnalyticsChart } from '@/lib/analytics-utils';
 import { LineItemsAnalyticsSkeleton } from './LineItemsAnalyticsSkeleton';
-import { applyAlpha } from '../charts/components/chart-renderer/utils';
+import { applyAlpha, yValueFormatter } from '../charts/components/chart-renderer/utils';
 import { Trans } from '@lingui/react/macro';
+import { t } from '@lingui/core/macro';
 import { TMonth, TQuarter } from '@/schemas/reporting';
 import { getYearLabel } from './utils';
 
@@ -81,7 +82,7 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
                 textAnchor="middle"
                 fontSize="12px"
             >
-                {`${percent.toFixed(0)}%`}
+                {`${Number(percent) > 10 ? percent.toFixed(0) : percent.toFixed(2)}%`}
             </text>
         );
     };
@@ -91,6 +92,22 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
     }
 
     const unit = getNormalizationUnit(normalization ?? 'total');
+
+    const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: { name: string; value: number; color: string; stroke?: string; dataKey: string; }[]; label?: string }) => {
+        if (!active || !payload || !payload.length) return null;
+        const title = dataType === 'income' ? t`Income` : t`Expenses`;
+        return (
+            <div className="bg-white/80 dark:bg-slate-800/90 backdrop-blur-sm p-3 border border-slate-300 dark:border-slate-700 rounded-lg shadow-lg">
+                <p className="label font-bold mb-2">{label}</p>
+                <div className="flex flex-col gap-2">
+                    <div style={{ color: payload[0].stroke || payload[0].color }} className="flex flex-row gap-4 justify-between items-center text-sm">
+                        <p>{title}</p>
+                        <p className="font-mono text-md font-bold text-slate-800 dark:text-slate-400">{yValueFormatter(Number(payload[0].value), unit)}</p>
+                    </div>
+                </div>
+            </div>
+        );
+    };
 
     return (
         <Card className="shadow-lg dark:bg-slate-800">
@@ -133,12 +150,18 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
                 <div style={{ width: '100%', height: 480 }}>
                     <ResponsiveContainer>
                         {chartType === 'bar' ? (
-                            <BarChart data={activeData} margin={{ top: 40, right: 30, left: 100, bottom: 80 }}>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                                <XAxis dataKey="name" tick={{ fontSize: 12 }} angle={-45} textAnchor="end" interval={0} height={100} />
-                                <YAxis tickFormatter={(value) => formatCurrency(value, "compact", unit === 'EUR' || unit === 'EUR/capita' ? 'EUR' : 'RON')} />
-                                <Tooltip formatter={(value: number) => formatCurrency(value)} />
-                                <Bar dataKey="value" fill={dataType === 'income' ? applyAlpha('#4ade80', 0.8) : applyAlpha('#f87171', 0.8)}>
+                            <BarChart data={activeData} margin={{ top: 30, right: 30, left: unit.length * 6 + 30, bottom: 80 }}>
+                                <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
+                                <XAxis dataKey="name" tick={{ fontSize: 12 }} angle={-45} textAnchor="end" interval={0} height={100} tickLine={false} axisLine={false} />
+                                <YAxis tickFormatter={(value) => yValueFormatter(Number(value), unit)} tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
+                                <Tooltip content={<CustomTooltip />} />
+                                <Bar
+                                    dataKey="value"
+                                    fill={dataType === 'income' ? applyAlpha('#10b981', 0.2) : applyAlpha('#f43f5e', 0.2)}
+                                    stroke={dataType === 'income' ? '#0f766e' : '#be123c'}
+                                    strokeWidth={2}
+                                    radius={[3, 3, 0, 0]}
+                                >
                                     <LabelList content={renderBarLabel} />
                                 </Bar>
                             </BarChart>
@@ -160,7 +183,7 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
                                 </Pie>
-                                <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                                <Tooltip content={<CustomTooltip />} />
                                 <Legend verticalAlign="bottom" height={50} wrapperStyle={{ fontSize: '12px' }} />
                             </PieChart>
                         )}
