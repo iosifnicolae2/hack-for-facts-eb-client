@@ -71,23 +71,6 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
   return (
     <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
       <FinancialDataCard
-        title={t`Expenses`}
-        iconType="expense"
-        currentYear={currentYear}
-        month={month}
-        quarter={quarter}
-        years={years}
-        onYearChange={onYearChange}
-        searchTerm={expenseSearchTerm}
-        onSearchChange={handleExpenseSearchChange}
-        searchActive={expenseSearchActive}
-        onSearchToggle={onExpenseSearchToggle}
-        groups={filteredExpenseGroups}
-        baseTotal={expenseBase}
-        searchFocusKey="mod+j"
-        normalization={normalization}
-      />
-      <FinancialDataCard
         title={t`Incomes`}
         iconType="income"
         currentYear={currentYear}
@@ -102,6 +85,24 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
         groups={filteredIncomeGroups}
         baseTotal={incomeBase}
         searchFocusKey="mod+l"
+        normalization={normalization}
+      />
+
+      <FinancialDataCard
+        title={t`Expenses`}
+        iconType="expense"
+        currentYear={currentYear}
+        month={month}
+        quarter={quarter}
+        years={years}
+        onYearChange={onYearChange}
+        searchTerm={expenseSearchTerm}
+        onSearchChange={handleExpenseSearchChange}
+        searchActive={expenseSearchActive}
+        onSearchToggle={onExpenseSearchToggle}
+        groups={filteredExpenseGroups}
+        baseTotal={expenseBase}
+        searchFocusKey="mod+j"
         normalization={normalization}
       />
     </section>

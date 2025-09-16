@@ -100,8 +100,6 @@ export const Overview = ({
                 isLoading={isLoading}
             />
 
-
-
             <EntityLineItems
                 lineItems={lineItems}
                 currentYear={selectedYear}
