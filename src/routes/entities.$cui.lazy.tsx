@@ -1,4 +1,4 @@
-import { lazy, Suspense, useMemo, useRef, useCallback, memo } from 'react'
+import { lazy, Suspense, useMemo, useRef, useCallback, memo, useState } from 'react'
 import { createLazyFileRoute, useNavigate, useParams, useSearch } from '@tanstack/react-router'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { t } from '@lingui/core/macro'
@@ -57,6 +57,7 @@ function EntityDetailsPage() {
   const navigate = useNavigate({ from: '/entities/$cui' })
   const yearSelectorRef = useRef<HTMLButtonElement>(null)
   const [userCurrency] = usePersistedState<'RON' | 'EUR'>('user-currency', 'RON')
+  const [filtersOpen, setFiltersOpen] = useState(false)
 
   useHotkeys('mod+;', () => yearSelectorRef.current?.click(), {
     enableOnFormTags: ['INPUT', 'TEXTAREA', 'SELECT'],
@@ -207,6 +208,8 @@ function EntityDetailsPage() {
           activeView={activeView}
           yearSelector={
             <ResponsivePopover
+              open={filtersOpen}
+              onOpenChange={setFiltersOpen}
               trigger={
                 <Button variant="outline" ref={yearSelectorRef} aria-label={t`Reporting period`} className="rounded-xl px-4 py-2 shadow-sm h-auto text-left">
                   <EntityReportLabel period={reportPeriod} reportType={reportTypeState ?? entity?.default_report_type} mainCreditorLabel={mainCreditorState} />

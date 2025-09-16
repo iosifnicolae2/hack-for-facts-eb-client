@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   ComposedChart,
@@ -45,7 +45,7 @@ interface EntityFinancialTrendsProps {
   onPrefetchPeriod?: (label: string) => void;
 }
 
-export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = React.memo(({
+const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
   incomeTrend,
   expenseTrend,
   balanceTrend,
@@ -186,6 +186,17 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = React
 
   const incomeExpenseChartLink = useMemo(() => cui ? buildEntityIncomeExpenseChartLink(cui, entityName, normalization) : null, [cui, entityName, normalization]);
 
+  // Avoid restarting animations when data hasn't changed
+  const dataSignature = useMemo(() => {
+    const parts = (mergedData || []).map(d => `${d.label}|${d.income}|${d.expense}|${d.balance}`)
+    return parts.join(';')
+  }, [mergedData])
+  const prevSignatureRef = useRef<string | null>(null)
+  const shouldAnimate = prevSignatureRef.current !== dataSignature
+  useEffect(() => {
+    prevSignatureRef.current = dataSignature
+  }, [dataSignature])
+
   if (isLoading) {
     return <EntityFinancialTrendsSkeleton />;
   }
@@ -257,8 +268,9 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = React
                 stroke="#0f766e"
                 strokeWidth={2}
                 radius={[3, 3, 0, 0]}
+                isAnimationActive={shouldAnimate}
                 animationEasing='ease-in-out'
-                animationBegin={300}
+                animationBegin={shouldAnimate ? 300 : 0}
               >
                 <LabelList dataKey="income" position="top" angle={periodType === 'QUARTER' ? 0 : -45} offset={24} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />
               </Bar>
@@ -270,8 +282,9 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = React
                 stroke="#be123c"
                 strokeWidth={2}
                 radius={[3, 3, 0, 0]}
+                isAnimationActive={shouldAnimate}
                 animationEasing='ease-in-out'
-                animationBegin={300}
+                animationBegin={shouldAnimate ? 300 : 0}
               >
                 <LabelList dataKey="expense" position="top" angle={periodType === 'QUARTER' ? 0 : -45} offset={24} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />
               </Bar>
@@ -281,7 +294,8 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = React
                 dataKey="balance"
                 name={t`Balance`}
                 stroke="#6366f1"
-                animationBegin={600}
+                isAnimationActive={shouldAnimate}
+                animationBegin={shouldAnimate ? 600 : 0}
                 strokeWidth={2.5}
                 dot={{ r: 4, fill: '#6366f1', strokeWidth: 2, stroke: '#f8fafc' }}
                 activeDot={{ r: 6 }}
@@ -294,4 +308,35 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = React
       </CardContent>
     </Card>
   );
-});
+};
+
+function areSeriesEqual(a?: AnalyticsSeries | null, b?: AnalyticsSeries | null): boolean {
+  if (!a && !b) return true
+  if (!a || !b) return false
+  const ad = a.data || []
+  const bd = b.data || []
+  if (ad.length !== bd.length) return false
+  for (let i = 0; i < ad.length; i++) {
+    const ap = ad[i] as any
+    const bp = bd[i] as any
+    if (String(ap.x) !== String(bp.x) || Number(ap.y) !== Number(bp.y)) return false
+  }
+  return true
+}
+
+function arePropsEqual(prev: EntityFinancialTrendsProps, next: EntityFinancialTrendsProps): boolean {
+  return (
+    areSeriesEqual(prev.incomeTrend, next.incomeTrend) &&
+    areSeriesEqual(prev.expenseTrend, next.expenseTrend) &&
+    areSeriesEqual(prev.balanceTrend, next.balanceTrend) &&
+    prev.currentYear === next.currentYear &&
+    prev.entityName === next.entityName &&
+    prev.normalization === next.normalization &&
+    (prev.periodType ?? 'YEAR') === (next.periodType ?? 'YEAR') &&
+    prev.selectedQuarter === next.selectedQuarter &&
+    prev.selectedMonth === next.selectedMonth &&
+    !!prev.isLoading === !!next.isLoading
+  )
+}
+
+export const EntityFinancialTrends = React.memo(EntityFinancialTrendsComponent, arePropsEqual);

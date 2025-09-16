@@ -10,15 +10,17 @@ type ResponsivePopoverProps = {
     align?: 'start' | 'center' | 'end'
     mobileSide?: 'bottom' | 'top' | 'left' | 'right'
     breakpoint?: number
+    open?: boolean
+    onOpenChange?: (open: boolean) => void
 }
 
-export function ResponsivePopover({ trigger, content, className, align = 'end', mobileSide = 'bottom', breakpoint = 640 }: ResponsivePopoverProps) {
+export function ResponsivePopover({ trigger, content, className, align = 'end', mobileSide = 'bottom', breakpoint = 640, open, onOpenChange }: ResponsivePopoverProps) {
     const { width } = useWindowSize()
     const isMobile = useMemo(() => width <= breakpoint, [width, breakpoint])
 
     if (isMobile) {
         return (
-            <Sheet>
+            <Sheet open={open} onOpenChange={onOpenChange}>
                 <SheetTrigger asChild>
                     {trigger}
                 </SheetTrigger>
@@ -31,7 +33,7 @@ export function ResponsivePopover({ trigger, content, className, align = 'end', 
     }
 
     return (
-        <Popover>
+        <Popover open={open} onOpenChange={onOpenChange}>
             <PopoverTrigger asChild>
                 {trigger}
             </PopoverTrigger>

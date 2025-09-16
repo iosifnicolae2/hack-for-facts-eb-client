@@ -12,6 +12,7 @@ import { queryClient } from '@/lib/queryClient';
 import { entityDetailsQueryOptions } from '@/lib/hooks/useEntityDetails';
 import { getInitialFilterState, makeTrendPeriod } from '@/schemas/reporting';
 import { useDebouncedCallback } from "@/lib/hooks/useDebouncedCallback";
+import { useCallback } from "react";
 
 interface OverviewProps {
     cui: string;
@@ -89,6 +90,19 @@ export const Overview = ({
         onAnalyticsChange(type, value);
     }
 
+    const handlePrefetchPeriod = useCallback((label: string) => {
+        if ((periodType ?? 'YEAR') === 'YEAR') {
+            const y = Number(label)
+            if (!Number.isNaN(y)) handlePrefetchYear(y)
+        } else {
+            const year = selectedYear
+            const currentPeriod = periodType ?? 'YEAR'
+            const nextReport = getInitialFilterState(currentPeriod, year, currentPeriod === 'MONTH' ? label as TMonth : search.month as TMonth ?? '12', currentPeriod === 'QUARTER' ? label as TQuarter : search.quarter as TQuarter ?? 'Q4')
+            const nextTrend = makeTrendPeriod(currentPeriod, year, years[years.length - 1], years[0])
+            debouncedPrefetch({ reportPeriod: nextReport, trendPeriod: nextTrend, reportType })
+        }
+    }, [periodType, selectedYear, search.month, search.quarter, years, years.length, years[years.length - 1], years[0], debouncedPrefetch, reportType, handlePrefetchYear])
+
     return (
         <>
             <EntityFinancialSummary
@@ -114,18 +128,7 @@ export const Overview = ({
                 selectedQuarter={search?.quarter as string | undefined}
                 selectedMonth={search?.month as string | undefined}
                 isLoading={isLoading}
-                onPrefetchPeriod={(label: string) => {
-                    if ((periodType ?? 'YEAR') === 'YEAR') {
-                        const y = Number(label)
-                        if (!Number.isNaN(y)) handlePrefetchYear(y)
-                    } else {
-                        const year = selectedYear
-                        const currentPeriod = periodType ?? 'YEAR'
-                        const nextReport = getInitialFilterState(currentPeriod, year, currentPeriod === 'MONTH' ? label as TMonth : search.month as TMonth ?? '12', currentPeriod === 'QUARTER' ? label as TQuarter : search.quarter as TQuarter ?? 'Q4')
-                        const nextTrend = makeTrendPeriod(currentPeriod, year, years[years.length - 1], years[0])
-                        debouncedPrefetch({ reportPeriod: nextReport, trendPeriod: nextTrend, reportType })
-                    }
-                }}
+                onPrefetchPeriod={handlePrefetchPeriod}
             />
 
             <EntityLineItems
@@ -155,10 +158,8 @@ export const Overview = ({
                 onPrefetchYear={handlePrefetchYear}
                 chartType={search.analyticsChartType ?? 'bar'}
                 onChartTypeChange={(type: 'bar' | 'pie') => handleAnalyticsChange('analyticsChartType', type)}
-                onPrefetchChartType={() => {}}
                 dataType={search.analyticsDataType ?? 'expense'}
                 onDataTypeChange={(type: 'income' | 'expense') => handleAnalyticsChange('analyticsDataType', type)}
-                onPrefetchDataType={() => {}}
                 isLoading={isLoading || isLoadingLineItems}
                 normalization={normalization}
             />
