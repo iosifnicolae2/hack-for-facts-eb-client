@@ -19,7 +19,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/u
 import { Trans } from '@lingui/react/macro';
 
 interface MapViewProps {
-  entity: EntityDetailsData | null;
+  entity: EntityDetailsData | null | undefined;
   mapFilters: AnalyticsFilterType;
   updateMapFilters: (filters: Partial<AnalyticsFilterType>) => void;
   selectedYear: number;

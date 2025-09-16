@@ -15,12 +15,12 @@ import { UatDisplay } from './UatDisplay';
 import { useHeaderSize } from './hooks/useHeaderSize';
 
 type HeaderEntity = Pick<EntityDetailsData, 'name' | 'cui' | 'entity_type' | 'address' | 'uat' | 'children' | 'parents' | 'executionLineItems'> & {
-  is_uat?: boolean;
-  population?: number | null;
+  is_uat?: boolean | null;
+  population?: number | null | undefined;
 };
 
 interface EntityHeaderProps {
-  entity?: HeaderEntity;
+  entity?: HeaderEntity | null | undefined;
   views: EntityView[];
   activeView: string;
   yearSelector?: React.ReactNode;

@@ -3,18 +3,23 @@ import { EntityFinancialSummary } from "../EntityFinancialSummary"
 import { EntityFinancialTrends } from "../EntityFinancialTrends"
 import { EntityLineItems } from "../EntityLineItems"
 import { LineItemsAnalytics } from "../LineItemsAnalytics"
-import { EntityReports } from "../EntityReports";
 import { Normalization } from "@/schemas/charts";
-import type { ReportPeriodType, TMonth, TQuarter } from "@/schemas/reporting";
+import type { GqlReportType, ReportPeriodInput, ReportPeriodType, TMonth, TQuarter } from "@/schemas/reporting";
 import { getYearLabel } from "../utils";
+import { useEntityExecutionLineItems } from "@/lib/hooks/useEntityDetails";
+import { EntityReportsSummary } from "../EntityReportsSummary";
 
 interface OverviewProps {
-    entity?: EntityDetailsData;
+    cui: string;
+    entity?: EntityDetailsData | null | undefined;
     isLoading: boolean;
     selectedYear: number;
     normalization: Normalization;
     years: number[];
     periodType?: ReportPeriodType;
+    reportPeriod: ReportPeriodInput;
+    trendPeriod: ReportPeriodInput;
+    reportType?: GqlReportType;
     search: {
         expenseSearch?: string;
         incomeSearch?: string;
@@ -32,12 +37,16 @@ interface OverviewProps {
 }
 
 export const Overview = ({
+    cui,
     entity,
     isLoading,
     selectedYear,
     normalization,
     years,
     periodType,
+    reportPeriod,
+    trendPeriod,
+    reportType,
     search,
     onChartNormalizationChange,
     onYearChange,
@@ -45,6 +54,14 @@ export const Overview = ({
     onSearchChange,
     onAnalyticsChange
 }: OverviewProps) => {
+
+    const { data: lineItems, isLoading: isLoadingLineItems } = useEntityExecutionLineItems({
+        cui,
+        normalization,
+        reportPeriod,
+        reportType,
+        enabled: true,
+    });
 
     const handleYearChange = (year: number) => {
         onYearChange(year);
@@ -86,7 +103,7 @@ export const Overview = ({
 
 
             <EntityLineItems
-                lineItems={entity?.executionLineItems}
+                lineItems={lineItems}
                 currentYear={selectedYear}
                 month={search.month as TMonth}
                 quarter={search.quarter as TQuarter}
@@ -97,12 +114,12 @@ export const Overview = ({
                 initialExpenseSearchTerm={search.expenseSearch ?? ''}
                 initialIncomeSearchTerm={search.incomeSearch ?? ''}
                 onSearchChange={(type: 'expense' | 'income', term: string) => handleSearchChange(type, term)}
-                isLoading={isLoading}
+                isLoading={isLoading || isLoadingLineItems}
                 normalization={normalization}
             />
 
             <LineItemsAnalytics
-                lineItems={entity?.executionLineItems}
+                lineItems={lineItems}
                 analyticsYear={selectedYear}
                 month={search.month as TMonth}
                 quarter={search.quarter as TQuarter}
@@ -112,14 +129,21 @@ export const Overview = ({
                 onChartTypeChange={(type: 'bar' | 'pie') => handleAnalyticsChange('analyticsChartType', type)}
                 dataType={search.analyticsDataType ?? 'expense'}
                 onDataTypeChange={(type: 'income' | 'expense') => handleAnalyticsChange('analyticsDataType', type)}
-                isLoading={isLoading}
+                isLoading={isLoading || isLoadingLineItems}
                 normalization={normalization}
             />
 
-            <EntityReports
-                reports={entity?.reports ?? null}
-                isLoading={isLoading}
-            />
+            {entity ? (
+                <div className="mt-6">
+                    <EntityReportsSummary
+                        cui={cui}
+                        trendPeriod={trendPeriod}
+                        reportType={reportType ?? entity.default_report_type}
+                        limit={12}
+                    />
+                </div>
+            ) : null}
+
         </>
     )
 }

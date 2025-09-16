@@ -11,9 +11,10 @@ import { TrendsViewSkeleton } from './TrendsViewSkeleton';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { t } from '@lingui/core/macro';
 import { toReportTypeValue } from '@/schemas/reporting';
+import { useEntityExecutionLineItems } from '@/lib/hooks/useEntityDetails';
 
 interface BaseTrendsViewProps {
-  entity?: EntityDetailsData;
+  entity?: EntityDetailsData | null | undefined;
   type: 'income' | 'expense';
   currentYear: number;
   onYearClick: (year: number) => void;
@@ -32,11 +33,22 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
   const isMobile = useIsMobile();
   const chapterMap = useMemo(() => getChapterMap(), []);
 
+  // Lazy load full line items, then filter locally
+  const { data: fullLineItems } = useEntityExecutionLineItems({
+    cui,
+    normalization,
+    // trends use yearly historical aggregates; we just need current filters already in URL via route; using entity.default_report_type
+    // For safety, we infer report type from entity if available
+    reportPeriod: { type: 'YEAR', selection: { interval: { start: `${currentYear}`, end: `${currentYear}` } } } as any,
+    reportType: entity?.default_report_type,
+    enabled: !!cui,
+  });
+
   const lineItems = useMemo(() => {
-    if (!entity) return [];
+    const nodes = fullLineItems?.nodes ?? [];
     const accountCategory = type === 'income' ? 'vn' : 'ch';
-    return entity.executionLineItems?.nodes.filter(item => item.account_category === accountCategory) || [];
-  }, [entity, type]);
+    return nodes.filter(item => item.account_category === accountCategory);
+  }, [fullLineItems, type]);
 
   const topFunctionalGroups = useMemo(() => {
     return getTopFunctionalGroupCodes(lineItems, TOP_CATEGORIES_COUNT);

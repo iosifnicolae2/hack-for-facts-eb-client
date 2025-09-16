@@ -11,7 +11,7 @@ export type EntitySeo = {
  * Optimized for share previews and search snippets.
  */
 export function buildEntitySeo(
-  entity: EntityDetailsData | null,
+  entity: EntityDetailsData | null | undefined,
   cui: string,
   selectedYear: number,
 ): EntitySeo {
@@ -24,7 +24,7 @@ export function buildEntitySeo(
 }
 
 function buildEntitySummary(
-  entity: EntityDetailsData | null,
+  entity: EntityDetailsData | null | undefined,
   cui: string,
   selectedYear: number,
 ): string {

@@ -44,11 +44,11 @@ export interface EntityDetailsData {
       name: string;
     } | null;
   } | null;
-  children: {
+  children?: {
     cui: string;
     name: string;
   }[];
-  parents: {
+  parents?: {
     cui: string;
     name: string;
   }[];
@@ -61,7 +61,7 @@ export interface EntityDetailsData {
   executionLineItems?: {
     nodes: ExecutionLineItem[];
   } | null;
-  reports: {
+  reports?: {
     nodes: {
       report_id: string;
       reporting_year: number;
@@ -76,7 +76,26 @@ export interface EntityDetailsData {
   } | null;
 }
 
-// removed old EntityDetailsResponse; response shape is declared inline below
+// --- Reports types (connection for pagination) ---
+export interface ReportNode {
+  report_id: string;
+  reporting_year: number;
+  report_type: string;
+  report_date: string;
+  download_links: string[];
+  main_creditor: { cui: string; name: string };
+}
+
+interface PageInfo {
+  totalCount: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
+export interface ReportConnection {
+  nodes: ReportNode[];
+  pageInfo: PageInfo
+}
 
 const GET_ENTITY_DETAILS_QUERY = `
   query GetEntityDetails($cui: ID!, $normalization: Normalization, $reportPeriod: ReportPeriodInput!, $reportType: ReportType, $trendPeriod: ReportPeriodInput!) {
@@ -97,14 +116,6 @@ const GET_ENTITY_DETAILS_QUERY = `
           cui
           name
         }
-      }
-      children {
-        cui
-        name
-      }
-      parents {
-        cui
-        name
       }
       totalIncome(period: $reportPeriod, reportType: $reportType, normalization: $normalization)
       totalExpenses(period: $reportPeriod, reportType: $reportType, normalization: $normalization)
@@ -127,75 +138,6 @@ const GET_ENTITY_DETAILS_QUERY = `
         yAxis { name type unit }
         data { x y }
       }
-      reports(limit: 100) {
-        nodes {
-          report_id
-          reporting_year
-          report_type
-          report_date
-          download_links
-          main_creditor {
-            cui
-            name
-          }
-        }
-        pageInfo {
-          totalCount
-          hasNextPage
-        }
-      }
-      executionLineItemsCh: executionLineItems(
-        filter: { 
-          account_category: ch,
-          report_period: $reportPeriod
-          report_type: $reportType
-          normalization: $normalization
-        }
-        sort: { by: "amount", order: "DESC" }
-        limit: 15000
-      ) {
-        nodes {
-          line_item_id
-          account_category
-          functionalClassification {
-            functional_name
-            functional_code
-          }
-          economicClassification {
-            economic_name
-            economic_code
-          }
-          ytd_amount
-          quarterly_amount
-          monthly_amount
-        }
-      }
-      executionLineItemsVn: executionLineItems(
-        filter: { 
-          account_category: vn,
-          report_period: $reportPeriod
-          report_type: $reportType
-          normalization: $normalization
-        }
-        sort: { by: "amount", order: "DESC" }
-        limit: 15000
-      ) {
-        nodes {
-          line_item_id
-          account_category
-          functionalClassification {
-            functional_name
-            functional_code
-          }
-          economicClassification {
-            economic_name
-            economic_code
-          }
-          ytd_amount
-          quarterly_amount
-          monthly_amount
-        }
-      }
     }
   }
 `;
@@ -215,8 +157,6 @@ export async function getEntityDetails(
         incomeTrend?: AnalyticsSeries | null;
         expenseTrend?: AnalyticsSeries | null;
         balanceTrend?: AnalyticsSeries | null;
-        executionLineItemsCh?: { nodes: ExecutionLineItem[] } | null;
-        executionLineItemsVn?: { nodes: ExecutionLineItem[] } | null;
       }) | null;
     }>(
       GET_ENTITY_DETAILS_QUERY,
@@ -231,29 +171,11 @@ export async function getEntityDetails(
       return null;
     }
 
-    // Merge aliased execution line items, and compute unified `amount` field per current report period
-    const periodType = reportPeriod.type
-    const mapWithAmount = (n: any): ExecutionLineItem => {
-      const amount = periodType === 'YEAR'
-        ? Number(n?.ytd_amount ?? 0)
-        : periodType === 'QUARTER'
-          ? Number(n?.quarterly_amount ?? 0)
-          : Number(n?.monthly_amount ?? 0)
-      return { ...n, amount } as ExecutionLineItem
-    }
-    const mergedNodes: ExecutionLineItem[] = [
-      ...(response.entity.executionLineItemsCh?.nodes ?? []),
-      ...(response.entity.executionLineItemsVn?.nodes ?? []),
-    ].map(mapWithAmount)
-
     const merged: EntityDetailsData = {
       ...response.entity,
       incomeTrend: response.entity.incomeTrend ?? null,
       expenseTrend: response.entity.expenseTrend ?? null,
       balanceTrend: response.entity.balanceTrend ?? null,
-      executionLineItems: {
-        nodes: mergedNodes,
-      },
     } as EntityDetailsData;
 
     return merged;
@@ -262,8 +184,185 @@ export async function getEntityDetails(
       error,
       cui,
     });
-    throw error; // Re-throw the error to be handled by React Query
+    throw error;
   }
+}
+
+const GET_ENTITY_RELATIONSHIPS_QUERY = `
+  query GetEntityRelationships($cui: ID!) {
+    entity(cui: $cui) {
+      children { cui name }
+      parents { cui name }
+    }
+  }
+`;
+
+export async function getEntityRelationships(cui: string): Promise<Pick<EntityDetailsData, 'children' | 'parents'>> {
+  const data = await graphqlRequest<{ entity: { children?: { cui: string; name: string }[]; parents?: { cui: string; name: string }[] } | null }>(
+    GET_ENTITY_RELATIONSHIPS_QUERY,
+    { cui }
+  );
+  const children = data?.entity?.children ?? [];
+  const parents = data?.entity?.parents ?? [];
+  return { children, parents };
+}
+
+const GET_ENTITY_REPORTS_QUERY = `
+  query GetEntityReports(
+    $cui: ID!
+    $limit: Int
+    $offset: Int
+    $year: Int
+    $period: String
+    $type: ReportType
+    $sort: SortOrder
+  ) {
+    entity(cui: $cui) {
+      reports(limit: $limit, offset: $offset, year: $year, period: $period, type: $type, sort: $sort) {
+        nodes {
+          report_id
+          reporting_year
+          report_type
+          report_date
+          download_links
+          main_creditor { cui name }
+        }
+        pageInfo {
+          totalCount
+          hasNextPage
+          hasPreviousPage
+        }
+      }
+    }
+  }
+`;
+
+export async function getEntityReports(
+  cui: string,
+  params?: {
+    limit?: number;
+    offset?: number;
+    year?: number;
+    period?: string;
+    type?: GqlReportType;
+    sort?: { by: string; order: 'ASC' | 'DESC' };
+  }
+): Promise<ReportConnection | null> {
+  const variables = { cui, ...(params ?? {}) } as const;
+  const data = await graphqlRequest<{ entity: { reports: { nodes: ReportNode[]; pageInfo: PageInfo } } | null }>(
+    GET_ENTITY_REPORTS_QUERY,
+    variables
+  );
+  const conn = data?.entity?.reports;
+  if (!conn) return null;
+  return { nodes: conn.nodes, pageInfo: conn.pageInfo };
+}
+
+const GET_REPORTS_QUERY = `
+  query GetReports($filter: ReportFilter, $limit: Int, $offset: Int) {
+    reports(filter: $filter, limit: $limit, offset: $offset) {
+      nodes {
+        report_id
+        reporting_year
+        report_type
+        report_date
+        download_links
+        main_creditor { cui name }
+      }
+      pageInfo {
+        totalCount
+        hasNextPage
+        hasPreviousPage
+      }
+    }
+  }
+`;
+
+export interface ReportsFilterInput {
+  entity_cui?: string;
+  reporting_year?: number;
+  reporting_period?: string;
+  report_type?: GqlReportType;
+  report_date_start?: string;
+  report_date_end?: string;
+  search?: string;
+}
+
+export async function getReportsConnection(
+  filter: ReportsFilterInput,
+  limit: number = 10,
+  offset: number = 0
+): Promise<ReportConnection> {
+  const data = await graphqlRequest<{ reports: { nodes: ReportNode[]; totalCount: number } }>(
+    GET_REPORTS_QUERY,
+    { filter, limit, offset }
+  );
+  const conn = (data as any)?.reports;
+  return { nodes: conn?.nodes ?? [], pageInfo: conn?.pageInfo ?? { totalCount: 0, hasNextPage: false, hasPreviousPage: false } };
+}
+
+const GET_ENTITY_LINE_ITEMS_QUERY = `
+  query GetEntityLineItems($cui: ID!, $reportPeriod: ReportPeriodInput!, $reportType: ReportType, $normalization: Normalization) {
+    entity(cui: $cui) {
+      executionLineItemsCh: executionLineItems(
+        filter: { account_category: ch, report_period: $reportPeriod, report_type: $reportType, normalization: $normalization }
+        sort: { by: "amount", order: "DESC" }
+        limit: 15000
+      ) {
+        nodes {
+          line_item_id
+          account_category
+          functionalClassification { functional_name functional_code }
+          economicClassification { economic_name economic_code }
+          ytd_amount
+          quarterly_amount
+          monthly_amount
+        }
+      }
+      executionLineItemsVn: executionLineItems(
+        filter: { account_category: vn, report_period: $reportPeriod, report_type: $reportType, normalization: $normalization }
+        sort: { by: "amount", order: "DESC" }
+        limit: 15000
+      ) {
+        nodes {
+          line_item_id
+          account_category
+          functionalClassification { functional_name functional_code }
+          economicClassification { economic_name economic_code }
+          ytd_amount
+          quarterly_amount
+          monthly_amount
+        }
+      }
+    }
+  }
+`;
+
+export async function getEntityExecutionLineItems(
+  cui: string,
+  normalization: Normalization = 'total',
+  reportPeriod: ReportPeriodInput,
+  reportType?: GqlReportType,
+): Promise<{ nodes: ExecutionLineItem[] }> {
+  const data = await graphqlRequest<{
+    entity: {
+      executionLineItemsCh?: { nodes: ExecutionLineItem[] } | null;
+      executionLineItemsVn?: { nodes: ExecutionLineItem[] } | null;
+    } | null;
+  }>(GET_ENTITY_LINE_ITEMS_QUERY, { cui, reportPeriod, reportType, normalization });
+
+  const periodType = reportPeriod.type;
+  const mapWithAmount = (n: any): ExecutionLineItem => {
+    const amount = periodType === 'YEAR' ? Number(n?.ytd_amount ?? 0) : periodType === 'QUARTER' ? Number(n?.quarterly_amount ?? 0) : Number(n?.monthly_amount ?? 0);
+    return { ...n, amount } as ExecutionLineItem;
+  };
+
+  const mergedNodes: ExecutionLineItem[] = [
+    ...(data?.entity?.executionLineItemsCh?.nodes ?? []),
+    ...(data?.entity?.executionLineItemsVn?.nodes ?? []),
+  ].map(mapWithAmount);
+
+  return { nodes: mergedNodes };
 }
 
 const ENTITY_SEARCH_QUERY = `

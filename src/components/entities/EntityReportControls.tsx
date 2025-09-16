@@ -11,7 +11,7 @@ import { Trans } from '@lingui/react/macro'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 
 type Props = {
-  entity?: EntityDetailsData
+  entity?: EntityDetailsData | null | undefined;
   periodType: ReportPeriodType
   year: number
   quarter: TQuarter

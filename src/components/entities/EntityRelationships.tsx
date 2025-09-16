@@ -1,15 +1,17 @@
 import React from 'react';
-import { EntityDetailsData } from '@/lib/api/entities';
+import { useEntityRelationships } from '@/lib/hooks/useEntityDetails';
 import { t } from '@lingui/core/macro';
 import { Card, CardContent } from '@/components/ui/card';
 import { EntityRelationsList } from './EntityRelationsList';
 
 interface EntityRelationshipsProps {
-    parents: EntityDetailsData['parents'];
-    children: EntityDetailsData['children'];
+    cui?: string;
 }
 
-export const EntityRelationships: React.FC<EntityRelationshipsProps> = ({ parents, children }) => {
+export const EntityRelationships: React.FC<EntityRelationshipsProps> = ({ cui }) => {
+    const { data: lazy } = useEntityRelationships({ cui: cui ?? '', enabled: !!cui });
+    const parents = lazy?.parents ?? [];
+    const children = lazy?.children ?? [];
     const hasParents = parents && parents.length > 0;
     const hasChildren = children && children.length > 0;
 

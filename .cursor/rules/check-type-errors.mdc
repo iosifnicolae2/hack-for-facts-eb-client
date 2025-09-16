@@ -2,4 +2,4 @@
 alwaysApply: true
 ---
 
-Always run ```npx tsc -b``` to check for type errors at the end of the task. If there are type errors, fix them.
+Always run ```yarn typecheck``` to check for type errors at the end of the task. If there are type errors, fix them.

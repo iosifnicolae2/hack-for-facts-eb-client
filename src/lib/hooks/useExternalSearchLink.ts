@@ -5,8 +5,13 @@ import { useMemo } from 'react';
  * Returns a Google search URL 
  */
 export function useExternalSearchLink(
-    entity: Pick<EntityDetailsData, 'name' | 'uat'> = { name: '', uat: null },
+    entity: Pick<EntityDetailsData, 'name' | 'uat'> | null | undefined,
 ) {
+    if (!entity) {
+        return {
+            url: null
+        } as const;
+    }
     const searchQuery = useMemo(() => formatSearchQuery(entity), [entity]);
 
     const searchUrl = entity.name

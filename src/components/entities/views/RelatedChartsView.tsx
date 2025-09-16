@@ -11,7 +11,7 @@ import { Normalization } from '@/schemas/charts';
 import { Trans } from '@lingui/react/macro';
 
 type Props = {
-    entity?: EntityDetailsData;
+    entity?: EntityDetailsData | null | undefined;
     normalization: Normalization;
 };
 
