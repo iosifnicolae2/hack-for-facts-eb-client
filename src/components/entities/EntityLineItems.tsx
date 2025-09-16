@@ -20,6 +20,7 @@ export interface EntityTopItemsProps {
   onSearchChange: (type: 'expense' | 'income', term: string) => void;
   isLoading?: boolean;
   normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
+  onPrefetchYear?: (year: number) => void;
 }
 
 export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
@@ -36,6 +37,7 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
   onSearchChange,
   isLoading,
   normalization,
+  onPrefetchYear,
 }) => {
   const initialTotalIncome = totalIncome ?? 0;
   const initialTotalExpenses = totalExpenses ?? 0;
@@ -78,6 +80,7 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
         quarter={quarter}
         years={years}
         onYearChange={onYearChange}
+        onPrefetchYear={onPrefetchYear}
         searchTerm={incomeSearchTerm}
         onSearchChange={handleIncomeSearchChange}
         searchActive={incomeSearchActive}
@@ -96,6 +99,7 @@ export const EntityLineItems: React.FC<EntityTopItemsProps> = ({
         quarter={quarter}
         years={years}
         onYearChange={onYearChange}
+        onPrefetchYear={onPrefetchYear}
         searchTerm={expenseSearchTerm}
         onSearchChange={handleExpenseSearchChange}
         searchActive={expenseSearchActive}

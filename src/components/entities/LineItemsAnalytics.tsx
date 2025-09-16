@@ -32,6 +32,9 @@ interface AnalyticsProps {
     onDataTypeChange: (type: DataType) => void;
     isLoading?: boolean;
     normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
+    onPrefetchYear?: (year: number) => void;
+    onPrefetchDataType?: (type: DataType) => void;
+    onPrefetchChartType?: (type: ChartType) => void;
 }
 
 type ChartType = 'bar' | 'pie';
@@ -52,6 +55,9 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
     onDataTypeChange,
     isLoading,
     normalization,
+    onPrefetchYear,
+    onPrefetchDataType,
+    onPrefetchChartType,
 }) => {
     const expenses = useMemo(() => lineItems?.nodes.filter(li => li.account_category === 'ch') || [], [lineItems]);
     const incomes = useMemo(() => lineItems?.nodes.filter(li => li.account_category === 'vn') || [], [lineItems]);
@@ -123,7 +129,7 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
                             </SelectTrigger>
                             <SelectContent>
                                 {years.map((year) => (
-                                    <SelectItem key={year} value={year.toString()}>
+                                    <SelectItem key={year} value={year.toString()} onMouseEnter={() => onPrefetchYear?.(year)}>
                                         {getYearLabel(year, month, quarter)}
                                     </SelectItem>
                                 ))}
@@ -132,14 +138,14 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
                     </div>
                     <div className="flex items-center space-x-2">
                         <ToggleGroup type="single" variant="outline" size="sm" value={dataType} onValueChange={(value: DataType) => value && onDataTypeChange(value)}>
-                            <ToggleGroupItem value="income" aria-label="Income">Income</ToggleGroupItem>
-                            <ToggleGroupItem value="expense" aria-label="Expenses">Expenses</ToggleGroupItem>
+                            <ToggleGroupItem value="income" aria-label="Income" onMouseEnter={() => onPrefetchDataType?.('income')}>Income</ToggleGroupItem>
+                            <ToggleGroupItem value="expense" aria-label="Expenses" onMouseEnter={() => onPrefetchDataType?.('expense')}>Expenses</ToggleGroupItem>
                         </ToggleGroup>
                         <ToggleGroup type="single" variant="outline" size="sm" value={chartType} onValueChange={(value: ChartType) => value && onChartTypeChange(value)}>
-                            <ToggleGroupItem value="bar" aria-label="Bar chart">
+                            <ToggleGroupItem value="bar" aria-label="Bar chart" onMouseEnter={() => onPrefetchChartType?.('bar')}>
                                 <BarChartIcon className="h-4 w-4" />
                             </ToggleGroupItem>
-                            <ToggleGroupItem value="pie" aria-label="Pie chart">
+                            <ToggleGroupItem value="pie" aria-label="Pie chart" onMouseEnter={() => onPrefetchChartType?.('pie')}>
                                 <PieChartIcon className="h-4 w-4" />
                             </ToggleGroupItem>
                         </ToggleGroup>

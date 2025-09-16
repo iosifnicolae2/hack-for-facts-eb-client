@@ -28,6 +28,9 @@ import { buildEntitySeo } from '@/lib/seo-entity'
 import { Overview } from '@/components/entities/views/Overview'
 import { EntityDetailsData } from '@/lib/api/entities'
 import { usePersistedState } from '@/lib/hooks/usePersistedState'
+import { useDebouncedCallback } from '@/lib/hooks/useDebouncedCallback'
+import { queryClient } from '@/lib/queryClient'
+import { entityDetailsQueryOptions } from '@/lib/hooks/useEntityDetails'
 
 const TrendsView = lazy(() => import('@/components/entities/views/TrendsView').then(m => ({ default: m.TrendsView })))
 const EmployeesView = lazy(() => import('@/components/entities/views/EmployeesView').then(m => ({ default: m.EmployeesView })))
@@ -84,6 +87,25 @@ function EntityDetailsPage() {
   useRecentEntities(entity)
   const { mapFilters, updateMapFilters } = useEntityMapFilter({ year: selectedYear })
   const views = useEntityViews(entity)
+
+  const debouncedPrefetch = useDebouncedCallback(
+    (payload: { report_period: ReportPeriodInput; report_type?: GqlReportType; main_creditor_cui?: 'ALL' | string; normalization?: Normalization }) => {
+      const { report_period, report_type, normalization: norm } = payload;
+      const startAnchor = report_period.selection.interval?.start || '' as string;
+      const hoveredYear = Number(String(startAnchor).slice(0, 4)) || selectedYear;
+      const nextTrend = makeTrendPeriod(report_period.type, hoveredYear, START_YEAR, END_YEAR);
+      queryClient.prefetchQuery(
+        entityDetailsQueryOptions(
+          cui,
+          norm ?? normalization,
+          report_period,
+          report_type,
+          nextTrend
+        )
+      );
+    },
+    100
+  );
 
   const updateSearch = useCallback((newSearch: Record<string, any>) => {
     navigate({ search: (prev) => ({ ...prev, ...newSearch }), replace: true })
@@ -201,6 +223,7 @@ function EntityDetailsPage() {
                   mainCreditor={mainCreditorState}
                   normalization={normalization}
                   onChange={handleReportControlsChange}
+                  onPrefetch={debouncedPrefetch}
                 />
               }
               className="p-4 w-md"

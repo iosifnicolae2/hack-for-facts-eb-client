@@ -20,9 +20,10 @@ type Props = {
   mainCreditor?: 'ALL' | string
   normalization?: Normalization
   onChange?: (payload: { report_period: ReportPeriodInput; report_type?: GqlReportType; main_creditor_cui?: 'ALL' | string; normalization?: Normalization }) => void
+  onPrefetch?: (payload: { report_period: ReportPeriodInput; report_type?: GqlReportType; main_creditor_cui?: 'ALL' | string; normalization?: Normalization }) => void
 }
 
-export function EntityReportControls({ entity, periodType, year, quarter, month, reportType, mainCreditor = 'ALL', normalization, onChange }: Props) {
+export function EntityReportControls({ entity, periodType, year, quarter, month, reportType, mainCreditor = 'ALL', normalization, onChange, onPrefetch }: Props) {
   const monthFormatter = useMemo(() => new Intl.DateTimeFormat(i18n.locale || 'en', { month: 'short' }), [i18n.locale])
   const MONTHS: { id: TMonth; label: string }[] = useMemo(() => {
     return Array.from({ length: 12 }, (_, idx) => {
@@ -81,6 +82,17 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
     else throw new Error('Invalid period type')
     const report_period = makeSingleTimePeriod(type, dateFilter)
     onChange?.({ report_period, report_type: reportType, main_creditor_cui: creditor, normalization: norm })
+  }
+
+  const emitPrefetch = (type: ReportPeriodType, year: number, quarter: TQuarter, month: TMonth, reportType?: GqlReportType, creditor?: 'ALL' | string, norm?: Normalization) => {
+    if (!onPrefetch) return
+    let dateFilter: DateInput
+    if (type === 'YEAR') dateFilter = `${year}`
+    else if (type === 'QUARTER') dateFilter = `${year}-${quarter}`
+    else if (type === 'MONTH') dateFilter = `${year}-${month}`
+    else throw new Error('Invalid period type')
+    const report_period = makeSingleTimePeriod(type, dateFilter)
+    onPrefetch({ report_period, report_type: reportType, main_creditor_cui: creditor, normalization: norm })
   }
 
   const handleTypeChange = (value: string | number | boolean | undefined) => {
@@ -163,6 +175,25 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
                 <ToggleGroupItem
                   key={o.id}
                   value={o.id}
+                  onMouseEnter={() => {
+                    const nextType = o.id as ReportPeriodType
+                    let nextYear = year
+                    let nextQuarter = quarter
+                    let nextMonth = month
+                    if (nextType === 'YEAR') {
+                      nextMonth = '01'
+                    } else if (nextType === 'QUARTER') {
+                      if (periodType === 'YEAR') nextQuarter = 'Q4'
+                      else if (periodType === 'MONTH') {
+                        const monthNum = Number(nextMonth)
+                        nextQuarter = getQuarterForMonth(monthNum)
+                      }
+                    } else if (nextType === 'MONTH') {
+                      if (periodType === 'YEAR') nextMonth = '12'
+                      else if (periodType === 'QUARTER') nextMonth = getQuarterEndMonth(nextQuarter)
+                    }
+                    emitPrefetch(nextType, nextYear, nextQuarter, nextMonth, reportType, mainCreditor, normalization)
+                  }}
                   className="flex-1 inline-flex items-center gap-2 data-[state=on]:bg-foreground data-[state=on]:text-background">
                   {o.label}
                 </ToggleGroupItem>
@@ -185,6 +216,7 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
                     <ToggleGroupItem
                       key={year}
                       value={String(year)}
+                      onMouseEnter={() => emitPrefetch(periodType, year, quarter, month, reportType, mainCreditor, normalization)}
                       className="justify-center data-[state=on]:bg-foreground data-[state=on]:text-background"
                     >
                       {year}
@@ -199,7 +231,7 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
               <Label className="text-xs text-muted-foreground"><Trans>Quarter</Trans></Label>
               <ToggleGroup type="single" value={quarter} onValueChange={handleQuarterChange} variant="outline" size="sm" className="grid grid-cols-4 gap-2">
                 {quarterOptions.map((q) => (
-                  <ToggleGroupItem key={q.id} value={q.id} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{q.label}</ToggleGroupItem>
+                  <ToggleGroupItem key={q.id} value={q.id} onMouseEnter={() => emitPrefetch(periodType, year, q.id as TQuarter, month, reportType, mainCreditor, normalization)} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{q.label}</ToggleGroupItem>
                 ))}
               </ToggleGroup>
             </div>
@@ -209,7 +241,7 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
               <Label className="text-xs text-muted-foreground"><Trans>Month</Trans></Label>
               <ToggleGroup type="single" value={month} onValueChange={handleMonthChange} variant="outline" size="sm" className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {MONTHS.map((m) => (
-                  <ToggleGroupItem key={m.id} value={m.id} className="justify-center data-[state=on]:bg-foreground data-[state=on]:text-background">{m.label}</ToggleGroupItem>
+                  <ToggleGroupItem key={m.id} value={m.id} onMouseEnter={() => emitPrefetch(periodType, year, quarter, m.id, reportType, mainCreditor, normalization)} className="justify-center data-[state=on]:bg-foreground data-[state=on]:text-background">{m.label}</ToggleGroupItem>
                 ))}
               </ToggleGroup>
             </div>
@@ -225,7 +257,7 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
               className="grid grid-cols-1 gap-2"
             >
               {NORMALIZATION_OPTIONS.map((o) => (
-                <ToggleGroupItem key={o.id} value={o.id} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{o.label}</ToggleGroupItem>
+                <ToggleGroupItem key={o.id} value={o.id} onMouseEnter={() => emitPrefetch(periodType, year, quarter, month, reportType, mainCreditor, o.id)} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{o.label}</ToggleGroupItem>
               ))}
             </ToggleGroup>
           </div>
@@ -244,7 +276,7 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
           className="grid grid-cols-1 gap-2"
         >
           {REPORT_TYPE_OPTIONS.map((o) => (
-            <ToggleGroupItem key={o.id} value={o.id} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{o.label}</ToggleGroupItem>
+            <ToggleGroupItem key={o.id} value={o.id} onMouseEnter={() => emitPrefetch(periodType, year, quarter, month, o.id, mainCreditor, normalization)} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{o.label}</ToggleGroupItem>
           ))}
         </ToggleGroup>
       </div>
@@ -262,7 +294,7 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
             className="grid grid-cols-1 gap-2"
           >
             {creditorOptions.map((c) => (
-              <ToggleGroupItem key={c.id} value={c.id} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{c.label}</ToggleGroupItem>
+              <ToggleGroupItem key={c.id} value={c.id} onMouseEnter={() => emitPrefetch(periodType, year, quarter, month, reportType, c.id as 'ALL' | string, normalization)} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{c.label}</ToggleGroupItem>
             ))}
           </ToggleGroup>
         </div>

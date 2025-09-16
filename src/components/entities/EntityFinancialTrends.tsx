@@ -42,6 +42,7 @@ interface EntityFinancialTrendsProps {
   onSelectPeriod?: (label: string) => void;
   selectedQuarter?: string;
   selectedMonth?: string;
+  onPrefetchPeriod?: (label: string) => void;
 }
 
 export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = React.memo(({
@@ -57,7 +58,8 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = React
   periodType = 'YEAR',
   onSelectPeriod,
   selectedQuarter,
-  selectedMonth
+  selectedMonth,
+  onPrefetchPeriod
 }) => {
 
   const { cui } = useParams({ from: '/entities/$cui' });
@@ -169,6 +171,19 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = React
     }
   };
 
+  const lastPrefetchLabelRef = React.useRef<string | null>(null);
+  const lastPrefetchTsRef = React.useRef<number>(0);
+  const handleChartHover = (e: any) => {
+    if (!onPrefetchPeriod) return;
+    if (!e || !e.activeLabel) return;
+    const label = String(e.activeLabel);
+    const now = Date.now();
+    if (label === lastPrefetchLabelRef.current && now - lastPrefetchTsRef.current < 400) return;
+    lastPrefetchLabelRef.current = label;
+    lastPrefetchTsRef.current = now;
+    onPrefetchPeriod(label);
+  };
+
   const incomeExpenseChartLink = useMemo(() => cui ? buildEntityIncomeExpenseChartLink(cui, entityName, normalization) : null, [cui, entityName, normalization]);
 
   if (isLoading) {
@@ -200,6 +215,7 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = React
               data={mergedData}
               margin={{ top: 30, right: 40, left: getNormalizationUnit(normalization).length * 5 + 30, bottom: 5 }}
               onClick={handleChartClick}
+              onMouseMove={handleChartHover}
               className="cursor-pointer"
             >
               <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />

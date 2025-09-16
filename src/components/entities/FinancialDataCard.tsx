@@ -130,6 +130,7 @@ interface FinancialDataCardProps {
   baseTotal: number;
   searchFocusKey?: string;
   normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
+  onPrefetchYear?: (year: number) => void;
 }
 
 export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
@@ -148,6 +149,7 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
   baseTotal,
   searchFocusKey,
   normalization,
+  onPrefetchYear,
 }) => {
   const Icon = iconType === 'income' ? ArrowUpCircle : ArrowDownCircle;
   const iconColor = iconType === 'income' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400';
@@ -168,7 +170,7 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
             </SelectTrigger>
             <SelectContent>
               {years.map((year) => (
-                <SelectItem key={year} value={year.toString()}>
+                <SelectItem key={year} value={year.toString()} onMouseEnter={() => onPrefetchYear?.(year)}>
                   {getYearLabel(year, month, quarter)}
                 </SelectItem>
               ))}

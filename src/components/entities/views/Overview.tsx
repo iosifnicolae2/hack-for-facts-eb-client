@@ -8,6 +8,10 @@ import type { GqlReportType, ReportPeriodInput, ReportPeriodType, TMonth, TQuart
 import { getYearLabel } from "../utils";
 import { useEntityExecutionLineItems } from "@/lib/hooks/useEntityDetails";
 import { EntityReportsSummary } from "../EntityReportsSummary";
+import { queryClient } from '@/lib/queryClient';
+import { entityDetailsQueryOptions } from '@/lib/hooks/useEntityDetails';
+import { getInitialFilterState, makeTrendPeriod } from '@/schemas/reporting';
+import { useDebouncedCallback } from "@/lib/hooks/useDebouncedCallback";
 
 interface OverviewProps {
     cui: string;
@@ -63,8 +67,20 @@ export const Overview = ({
         enabled: true,
     });
 
+    const debouncedPrefetch = useDebouncedCallback(
+        (options: { reportPeriod: ReportPeriodInput, trendPeriod: ReportPeriodInput, reportType?: GqlReportType }) => {
+            queryClient.prefetchQuery(entityDetailsQueryOptions(cui, normalization, options.reportPeriod, options.reportType, options.trendPeriod));
+        },
+        100
+    );
+
     const handleYearChange = (year: number) => {
         onYearChange(year);
+    }
+    const handlePrefetchYear = (year: number) => {
+        const nextReport = getInitialFilterState(periodType ?? 'YEAR', year, search.month as TMonth ?? '12', search.quarter as TQuarter ?? 'Q4');
+        const nextTrend = makeTrendPeriod(periodType ?? 'YEAR', year, years[years.length - 1], years[0]);
+        debouncedPrefetch({ reportPeriod: nextReport, trendPeriod: nextTrend, reportType });
     }
     const handleSearchChange = (type: 'expense' | 'income', term: string) => {
         onSearchChange(type, term);
@@ -98,6 +114,18 @@ export const Overview = ({
                 selectedQuarter={search?.quarter as string | undefined}
                 selectedMonth={search?.month as string | undefined}
                 isLoading={isLoading}
+                onPrefetchPeriod={(label: string) => {
+                    if ((periodType ?? 'YEAR') === 'YEAR') {
+                        const y = Number(label)
+                        if (!Number.isNaN(y)) handlePrefetchYear(y)
+                    } else {
+                        const year = selectedYear
+                        const currentPeriod = periodType ?? 'YEAR'
+                        const nextReport = getInitialFilterState(currentPeriod, year, currentPeriod === 'MONTH' ? label as TMonth : search.month as TMonth ?? '12', currentPeriod === 'QUARTER' ? label as TQuarter : search.quarter as TQuarter ?? 'Q4')
+                        const nextTrend = makeTrendPeriod(currentPeriod, year, years[years.length - 1], years[0])
+                        debouncedPrefetch({ reportPeriod: nextReport, trendPeriod: nextTrend, reportType })
+                    }
+                }}
             />
 
             <EntityLineItems
@@ -109,6 +137,7 @@ export const Overview = ({
                 totalExpenses={entity?.totalExpenses}
                 years={years}
                 onYearChange={handleYearChange}
+                onPrefetchYear={handlePrefetchYear}
                 initialExpenseSearchTerm={search.expenseSearch ?? ''}
                 initialIncomeSearchTerm={search.incomeSearch ?? ''}
                 onSearchChange={(type: 'expense' | 'income', term: string) => handleSearchChange(type, term)}
@@ -123,10 +152,13 @@ export const Overview = ({
                 quarter={search.quarter as TQuarter}
                 years={years}
                 onYearChange={handleYearChange}
+                onPrefetchYear={handlePrefetchYear}
                 chartType={search.analyticsChartType ?? 'bar'}
                 onChartTypeChange={(type: 'bar' | 'pie') => handleAnalyticsChange('analyticsChartType', type)}
+                onPrefetchChartType={() => {}}
                 dataType={search.analyticsDataType ?? 'expense'}
                 onDataTypeChange={(type: 'income' | 'expense') => handleAnalyticsChange('analyticsDataType', type)}
+                onPrefetchDataType={() => {}}
                 isLoading={isLoading || isLoadingLineItems}
                 normalization={normalization}
             />
