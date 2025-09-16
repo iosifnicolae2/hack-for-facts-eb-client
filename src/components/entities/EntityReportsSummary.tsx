@@ -119,7 +119,7 @@ export function EntityReportsSummary({ cui, trendPeriod, reportType, limit = 12 
               </div>
               <div className="col-span-12 lg:col-span-2 flex justify-start lg:justify-end gap-0">
                 <TooltipProvider>
-                  {report.download_links.map((link, i) => {
+                  {report.download_links.map((link) => {
                     const fileType = link.split('.').pop()?.toUpperCase() ?? 'File';
                     return (
                       <Tooltip key={link}>

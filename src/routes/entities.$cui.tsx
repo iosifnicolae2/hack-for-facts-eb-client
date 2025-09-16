@@ -11,6 +11,7 @@ import { getChartAnalytics } from '@/lib/api/charts';
 import { generateHash } from '@/lib/utils';
 import { GqlReportType, toReportTypeValue } from '@/schemas/reporting';
 import { getInitialFilterState, makeTrendPeriod } from '@/schemas/reporting';
+import { getPersistedState } from '@/lib/hooks/usePersistedState';
 
 export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
 
@@ -20,16 +21,18 @@ export const Route = createFileRoute('/entities/$cui')({
         const START_YEAR = defaultYearRange.start;
         const END_YEAR = defaultYearRange.end;
         const year = (search?.year as number | undefined) ?? END_YEAR;
-        const normalization = (search?.normalization as Normalization | undefined) ?? 'total';
+        const userCurrency = getPersistedState<'RON' | 'EUR'>('user-currency', 'RON');
+        const defaultNormalization: Normalization = userCurrency === 'EUR' ? 'total_euro' : 'total';
+        const normalization = (search?.normalization as Normalization | undefined) ?? defaultNormalization;
         const reportPeriod = getInitialFilterState(search.period ?? 'YEAR', year, search.month ?? '12', search.quarter ?? 'Q4');
         const trendPeriod = makeTrendPeriod(search.period ?? 'YEAR', year, START_YEAR, END_YEAR);
-        queryClient.prefetchQuery(
+        queryClient.ensureQueryData(
             entityDetailsQueryOptions(
-              params.cui,
-              normalization,
-              reportPeriod,
-              (search?.report_type as import('@/schemas/reporting').GqlReportType | undefined),
-              trendPeriod
+                params.cui,
+                normalization,
+                reportPeriod,
+                (search?.report_type as import('@/schemas/reporting').GqlReportType | undefined),
+                trendPeriod
             )
         );
 
@@ -40,7 +43,7 @@ export const Route = createFileRoute('/entities/$cui')({
             entity_type?: string | null;
             cui: string;
             executionLineItems?: { nodes?: { account_category: 'vn' | 'ch' }[] } | null;
-        }>(['entityDetails', params.cui, year, START_YEAR, END_YEAR]);
+        }>(['entityDetails', params.cui, normalization, reportPeriod, (search?.report_type as import('@/schemas/reporting').GqlReportType | undefined), trendPeriod]);
 
         if (desiredView === 'map' && entity?.is_uat) {
             const mapViewType = entity.entity_type === 'admin_county_council' || entity.cui === '4267117' ? 'County' : 'UAT';

@@ -1,8 +1,8 @@
 import React from 'react';
-import { cn } from '@/lib/utils';
 import { EntityDetailsData } from '@/lib/api/entities';
 import { EntityView } from '@/hooks/useEntityViews';
 import { EntityHeaderSkeleton } from './EntityHeaderSkeleton';
+import { cn } from '@/lib/utils';
 import { EntityViewSwitcher } from './EntityViewSwitcher';
 import { Link } from '@tanstack/react-router';
 import { Badge } from '../ui/badge';
@@ -18,6 +18,15 @@ type HeaderEntity = Pick<EntityDetailsData, 'name' | 'cui' | 'entity_type' | 'ad
   is_uat?: boolean | null;
   population?: number | null | undefined;
 };
+
+interface EntityHeaderContentProps {
+  entity: HeaderEntity;
+  views: EntityView[];
+  activeView: string;
+  yearSelector?: React.ReactNode;
+  className?: string;
+  isLoading?: boolean;
+}
 
 interface EntityHeaderProps {
   entity?: HeaderEntity | null | undefined;
@@ -36,23 +45,39 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
   className,
   isLoading,
 }) => {
-  const entityTypeLabel = useEntityTypeLabel();
-  const entityCategory = entity?.entity_type ? entityTypeLabel.map(entity.entity_type) : null;
-  const { headerRef, headerTitleRef, headerBottomRef, stickyTop } = useHeaderSize(isLoading);
-  const { url: wikipediaUrl } = useExternalSearchLink(entity);
 
   if (isLoading || !entity) {
     return <EntityHeaderSkeleton className={className} />;
   }
 
+  return (
+    <EntityHeaderContent
+      entity={entity}
+      views={views}
+      activeView={activeView}
+      yearSelector={yearSelector}
+      className={className}
+      isLoading={isLoading}
+    />
+  )
+};
 
-  // The top is the parent header and is calculated with trial and error. We can use the title container to compute the height and use that as reference.
+const EntityHeaderContent: React.FC<EntityHeaderContentProps> = ({
+  entity,
+  views,
+  activeView,
+  yearSelector,
+  className,
+  isLoading,
+}) => {
+  const entityTypeLabel = useEntityTypeLabel();
+  const entityCategory = entity?.entity_type ? entityTypeLabel.map(entity.entity_type) : null;
+  const { headerRef, headerTitleRef, headerBottomRef, stickyTop } = useHeaderSize(isLoading);
+  const { url: wikipediaUrl } = useExternalSearchLink(entity);
   return (
     <header ref={headerRef} className={cn("bg-background px-6 pb-2 rounded-lg shadow-lg sticky z-30", className)} style={{ top: stickyTop }}>
-      {/* Main content: Info and Year Selector */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
         <div className="flex-grow">
-          {/* Title and Reporting (responsive) */}
           <div ref={headerTitleRef} className="flex flex-col md:flex-row md:justify-between mb-2 pt-2 sticky top-0 z-30 bg-background">
             <div className="flex items-center gap-4">
               <h1 className="text-3xl lg:text-5xl font-extrabold underline text-slate-900 dark:text-slate-100 flex items-center gap-2">
@@ -67,13 +92,9 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
               </div>
             )}
           </div>
-
-          {/* Expanded content with transitions */}
           <div className={cn(
             "overflow-hidden transition-all duration-300",
-            // isHeaderExpanded ? "h-auto opacity-100 ease-in" : "h-0 opacity-0 ease-out"
           )}>
-            {/* Badge and Wikipedia link */}
             <div className="flex items-center gap-2 mb-4">
               {entityCategory && (
                 <Badge variant="secondary" className="px-2 py-1 text-sm whitespace-nowrap">
@@ -93,8 +114,6 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
                 </a>
               )}
             </div>
-
-            {/* Detailed Information */}
             <div className="text-sm text-slate-600 dark:text-slate-400 space-y-1">
               <p>
                 <span className="font-semibold text-slate-700 dark:text-slate-300">CUI</span>: <code className="font-mono font-bold">{entity.cui}</code>
@@ -108,8 +127,6 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
                 <UatDisplay uat={entity.uat} />
               )}
             </div>
-
-            {/* View switcher and relationships */}
             <div ref={headerBottomRef} className={"relative"}>
               <EntityViewSwitcher
                 views={views}
@@ -121,4 +138,4 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
       </div>
     </header>
   );
-}; 
+};

@@ -19,7 +19,6 @@ import { AnalyticsFilterType, defaultYearRange, type Normalization } from '@/sch
 
 import { useEntityViews } from '@/hooks/useEntityViews'
 import { useRecentEntities } from '@/hooks/useRecentEntities'
-import { usePersistedState } from '@/lib/hooks/usePersistedState'
 import { useEntityMapFilter } from '@/components/entities/hooks/useEntityMapFilter'
 import { useEntityDetails } from '@/lib/hooks/useEntityDetails'
 
@@ -28,6 +27,7 @@ import { Seo } from '@/lib/seo'
 import { buildEntitySeo } from '@/lib/seo-entity'
 import { Overview } from '@/components/entities/views/Overview'
 import { EntityDetailsData } from '@/lib/api/entities'
+import { usePersistedState } from '@/lib/hooks/usePersistedState'
 
 const TrendsView = lazy(() => import('@/components/entities/views/TrendsView').then(m => ({ default: m.TrendsView })))
 const EmployeesView = lazy(() => import('@/components/entities/views/EmployeesView').then(m => ({ default: m.EmployeesView })))
@@ -157,17 +157,7 @@ function EntityDetailsPage() {
     )
   }
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen p-4 md:p-8">
-        <div className="container mx-auto max-w-7xl">
-          <ViewLoading title={t`Loading entity details…`} />
-        </div>
-      </div>
-    );
-  }
-
-  if (!entity) {
+  if (!entity && !isLoading) {
     return (
       <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex justify-center items-center p-4">
         <Seo title={t`Entity ${cui} – Not found`} description={t`No data found for CUI ${cui}.`} noindex />
@@ -222,6 +212,7 @@ function EntityDetailsPage() {
         <MemoizedViewsContent
           cui={cui}
           entity={entity}
+          isLoading={isLoading}
           activeView={activeView}
           selectedYear={selectedYear}
           normalization={normalization}
@@ -247,7 +238,8 @@ function EntityDetailsPage() {
 
 interface ViewsContentProps {
   cui: string;
-  entity: EntityDetailsData;
+  entity: EntityDetailsData | null | undefined;
+  isLoading: boolean;
   activeView: string;
   selectedYear: number;
   normalization: Normalization;
@@ -255,7 +247,7 @@ interface ViewsContentProps {
   period: ReportPeriodType;
   reportPeriod: ReportPeriodInput;
   trendPeriod: ReportPeriodInput;
-  reportTypeState: GqlReportType;
+  reportTypeState?: GqlReportType;
   search: { expenseSearch?: string, incomeSearch?: string, [key: string]: any };
   mapFilters: AnalyticsFilterType;
   updateMapFilters: (update: Partial<AnalyticsFilterType>) => void;
@@ -270,12 +262,13 @@ function ViewsContent(props: ViewsContentProps) {
   const {
     cui, entity, activeView, selectedYear, normalization, years, period, reportPeriod, trendPeriod,
     reportTypeState, search, mapFilters, updateMapFilters, handleYearChange,
-    handleSearchChange, handleNormalizationChange, handlePeriodItemSelect, handleAnalyticsChange
+    handleSearchChange, handleNormalizationChange, handlePeriodItemSelect, handleAnalyticsChange,
+    isLoading,
   } = props;
 
   const trendsViewProps = {
     entity,
-    isLoading: false,
+    isLoading: isLoading,
     currentYear: selectedYear,
     onYearClick: handleYearChange,
     initialExpenseSearch: search.expenseSearch,
@@ -297,7 +290,7 @@ function ViewsContent(props: ViewsContentProps) {
           case 'ranking': return <RankingView />
           case 'related-charts': return <RelatedChartsView entity={entity} normalization={normalization} />
           case 'relationships': return <EntityRelationships cui={cui} />
-          default: return <Overview cui={cui} entity={entity} isLoading={false} selectedYear={selectedYear} normalization={normalization} years={years} periodType={period} reportPeriod={reportPeriod} trendPeriod={trendPeriod} reportType={reportTypeState ?? entity?.default_report_type} search={search} onChartNormalizationChange={handleNormalizationChange} onYearChange={handleYearChange} onPeriodItemSelect={handlePeriodItemSelect} onSearchChange={handleSearchChange} onAnalyticsChange={handleAnalyticsChange} />
+          default: return <Overview cui={cui} entity={entity} isLoading={isLoading} selectedYear={selectedYear} normalization={normalization} years={years} periodType={period} reportPeriod={reportPeriod} trendPeriod={trendPeriod} reportType={reportTypeState ?? entity?.default_report_type} search={search} onChartNormalizationChange={handleNormalizationChange} onYearChange={handleYearChange} onPeriodItemSelect={handlePeriodItemSelect} onSearchChange={handleSearchChange} onAnalyticsChange={handleAnalyticsChange} />
         }
       })()}
     </Suspense>

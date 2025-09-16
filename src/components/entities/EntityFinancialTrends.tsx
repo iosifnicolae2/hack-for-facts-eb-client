@@ -44,7 +44,7 @@ interface EntityFinancialTrendsProps {
   selectedMonth?: string;
 }
 
-export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({
+export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = React.memo(({
   incomeTrend,
   expenseTrend,
   balanceTrend,
@@ -233,10 +233,30 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({
                 <ReferenceLine x={selectedMonth} stroke="gray" strokeDasharray="6 3" strokeWidth={1} />
               )}
 
-              <Bar dataKey="income" name={t`Income`} fill="#10b981" fillOpacity={0.2} stroke="#0f766e" strokeWidth={2} radius={[3, 3, 0, 0]}>
+              <Bar
+                dataKey="income"
+                name={t`Income`}
+                fill="#10b981"
+                fillOpacity={0.2}
+                stroke="#0f766e"
+                strokeWidth={2}
+                radius={[3, 3, 0, 0]}
+                animationEasing='ease-in-out'
+                animationBegin={300}
+              >
                 <LabelList dataKey="income" position="top" angle={periodType === 'QUARTER' ? 0 : -45} offset={24} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />
               </Bar>
-              <Bar dataKey="expense" name={t`Expenses`} fill="#f43f5e" fillOpacity={0.2} stroke="#be123c" strokeWidth={2} radius={[3, 3, 0, 0]}>
+              <Bar
+                dataKey="expense"
+                name={t`Expenses`}
+                fill="#f43f5e"
+                fillOpacity={0.2}
+                stroke="#be123c"
+                strokeWidth={2}
+                radius={[3, 3, 0, 0]}
+                animationEasing='ease-in-out'
+                animationBegin={300}
+              >
                 <LabelList dataKey="expense" position="top" angle={periodType === 'QUARTER' ? 0 : -45} offset={24} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />
               </Bar>
 
@@ -245,6 +265,7 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({
                 dataKey="balance"
                 name={t`Balance`}
                 stroke="#6366f1"
+                animationBegin={600}
                 strokeWidth={2.5}
                 dot={{ r: 4, fill: '#6366f1', strokeWidth: 2, stroke: '#f8fafc' }}
                 activeDot={{ r: 6 }}
@@ -257,4 +278,4 @@ export const EntityFinancialTrends: React.FC<EntityFinancialTrendsProps> = ({
       </CardContent>
     </Card>
   );
-};
+});
