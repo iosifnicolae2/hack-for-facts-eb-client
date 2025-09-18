@@ -67,73 +67,19 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
   const trendsAvailable = incomeTrend?.data.length || expenseTrend?.data.length || balanceTrend?.data.length;
 
   const mergedData = useMemo(() => {
-    if (periodType === 'YEAR') {
-      const years = new Set([
-        ...(expenseTrend?.data || []).map(p => Number(p.x)),
-        ...(incomeTrend?.data || []).map(p => Number(p.x)),
-        ...(balanceTrend?.data || []).map(p => Number(p.x))
-      ]);
-      return Array.from(years).sort().map(year => ({
-        label: String(year),
-        expense: expenseTrend?.data.find(p => Number(p.x) === year)?.y ?? 0,
-        income: incomeTrend?.data.find(p => Number(p.x) === year)?.y ?? 0,
-        balance: balanceTrend?.data.find(p => Number(p.x) === year)?.y ?? 0,
-      }));
-    }
-    if (periodType === 'QUARTER') {
-      const toQuarterNumber = (x: string): number | null => {
-        const match = String(x).trim().toUpperCase().match(/^Q?(\d)$/);
-        if (!match) return null;
-        const q = Number(match[1]);
-        return q >= 1 && q <= 4 ? q : null;
-      };
-      const getValueForQuarter = (series: AnalyticsSeries | null | undefined, q: number): number => {
-        const point = series?.data.find(p => toQuarterNumber(p.x) === q);
-        return point?.y ?? 0;
-      };
-      return [1, 2, 3, 4].map((q) => ({
-        label: `Q${q}`,
-        expense: getValueForQuarter(expenseTrend, q),
-        income: getValueForQuarter(incomeTrend, q),
-        balance: getValueForQuarter(balanceTrend, q),
-      }));
-    }
-    // MONTH
-    {
-      const toMonthNumber = (x: string): number | null => {
-        const value = String(x).trim();
-        const isoMatch = value.match(/^\d{4}-(\d{2})$/);
-        if (isoMatch) {
-          const m = Number(isoMatch[1]);
-          return m >= 1 && m <= 12 ? m : null;
-        }
-        const mMatch = value.match(/^(\d{1,2})$/);
-        if (mMatch) {
-          const m = Number(mMatch[1]);
-          return m >= 1 && m <= 12 ? m : null;
-        }
-        const monthNames = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
-        const upper = value.toUpperCase();
-        const idx = monthNames.findIndex(n => n === upper || n.slice(0, 3) === upper.slice(0, 3));
-        if (idx >= 0) return idx + 1;
-        return null;
-      };
-      const getValueForMonth = (series: AnalyticsSeries | null | undefined, m: number): number => {
-        const point = series?.data.find(p => toMonthNumber(p.x) === m);
-        return point?.y ?? 0;
-      };
-      return Array.from({ length: 12 }, (_, i) => {
-        const m = i + 1;
-        const label = String(m).padStart(2, '0');
-        return {
-          label,
-          expense: getValueForMonth(expenseTrend, m),
-          income: getValueForMonth(incomeTrend, m),
-          balance: getValueForMonth(balanceTrend, m),
-        };
-      });
-    }
-  }, [incomeTrend, expenseTrend, balanceTrend, periodType]);
+    const baseSeries = (incomeTrend?.data?.length ? incomeTrend : (expenseTrend?.data?.length ? expenseTrend : balanceTrend))?.data ?? [];
+    const labels = baseSeries.map(p => String(p.x));
+    const getValue = (series: AnalyticsSeries | null | undefined, label: string): number => {
+      const point = series?.data.find(p => String(p.x) === label);
+      return point?.y ?? 0;
+    };
+    return labels.map(label => ({
+      label,
+      expense: getValue(expenseTrend, label),
+      income: getValue(incomeTrend, label),
+      balance: getValue(balanceTrend, label),
+    }));
+  }, [incomeTrend, expenseTrend, balanceTrend]);
 
   const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: { name: string; value: number; color: string; stroke?: string; dataKey: string; }[]; label?: string }) => {
     if (active && payload && payload.length) {
@@ -162,12 +108,22 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
 
   const handleChartClick = (e: any) => {
     if (!e || !e.activeLabel) return;
-    const label = String(e.activeLabel);
+    const raw = String(e.activeLabel);
     if (periodType === 'YEAR') {
-      const year = Number(label);
-      if (onYearChange && !Number.isNaN(year)) onYearChange(year);
-    } else {
-      onSelectPeriod?.(label);
+      const match = raw.match(/^(\d{4})/);
+      const year = match ? Number(match[1]) : Number(raw);
+      if (onYearChange && Number.isFinite(year)) onYearChange(year);
+      return;
+    }
+    if (periodType === 'MONTH') {
+      const m = raw.match(/^\d{4}-(0[1-9]|1[0-2])$/) || raw.match(/^(0[1-9]|1[0-2])$/);
+      if (m) onSelectPeriod?.(m[1]);
+      return;
+    }
+    if (periodType === 'QUARTER') {
+      const m = raw.match(/^\d{4}-(Q[1-4])$/) || raw.match(/^(Q[1-4])$/);
+      if (m) onSelectPeriod?.(m[1]);
+      return;
     }
   };
 
@@ -176,7 +132,18 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
   const handleChartHover = (e: any) => {
     if (!onPrefetchPeriod) return;
     if (!e || !e.activeLabel) return;
-    const label = String(e.activeLabel);
+    const raw = String(e.activeLabel);
+    let label = raw;
+    if (periodType === 'MONTH') {
+      const m = raw.match(/^\d{4}-(0[1-9]|1[0-2])$/) || raw.match(/^(0[1-9]|1[0-2])$/);
+      if (m) label = m[1];
+    } else if (periodType === 'QUARTER') {
+      const m = raw.match(/^\d{4}-(Q[1-4])$/) || raw.match(/^(Q[1-4])$/);
+      if (m) label = m[1];
+    } else if (periodType === 'YEAR') {
+      const match = raw.match(/^(\d{4})/);
+      if (match) label = match[1];
+    }
     const now = Date.now();
     if (label === lastPrefetchLabelRef.current && now - lastPrefetchTsRef.current < 400) return;
     lastPrefetchLabelRef.current = label;
@@ -235,10 +202,6 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
                 tick={{ fontSize: 12 }}
                 tickLine={false}
                 axisLine={false}
-                tickFormatter={(val: string | number) => {
-                  if (periodType === 'YEAR') return String(val)
-                  return `${currentYear}-${String(val)}`
-                }}
               />
               <YAxis
                 tickFormatter={(val) => yValueFormatter(val, getNormalizationUnit(normalization))}
@@ -254,10 +217,10 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
                 <ReferenceLine x={String(currentYear)} stroke="gray" strokeDasharray="6 3" strokeWidth={1} />
               )}
               {periodType === 'QUARTER' && selectedQuarter && (
-                <ReferenceLine x={selectedQuarter} stroke="gray" strokeDasharray="6 3" strokeWidth={1} />
+                <ReferenceLine x={`${currentYear}-${selectedQuarter}`} stroke="gray" strokeDasharray="6 3" strokeWidth={1} />
               )}
               {periodType === 'MONTH' && selectedMonth && (
-                <ReferenceLine x={selectedMonth} stroke="gray" strokeDasharray="6 3" strokeWidth={1} />
+                <ReferenceLine x={`${currentYear}-${selectedMonth}`} stroke="gray" strokeDasharray="6 3" strokeWidth={1} />
               )}
 
               <Bar

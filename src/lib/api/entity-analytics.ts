@@ -5,6 +5,7 @@ import type {
   AggregatedLineItemConnection,
 } from "@/schemas/entity-analytics";
 import { AnalyticsFilterType } from "@/schemas/charts";
+import { prepareFilterForServer } from "@/lib/filterUtils";
 
 const ENTITY_ANALYTICS_QUERY = /* GraphQL */ `
   query EntityAnalytics($filter: AnalyticsFilterInput!, $sort: SortOrder, $limit: Int, $offset: Int) {
@@ -63,7 +64,7 @@ export async function fetchEntityAnalytics(params: {
   const data = await graphqlRequest<{ entityAnalytics: EntityAnalyticsConnection }>(
     ENTITY_ANALYTICS_QUERY,
     {
-      filter: params.filter,
+      filter: prepareFilterForServer(params.filter),
       sort: params.sort,
       limit: params.limit,
       offset: params.offset,
@@ -80,7 +81,7 @@ export async function fetchAggregatedLineItems(params: {
   const data = await graphqlRequest<{
     aggregatedLineItems: AggregatedLineItemConnection;
   }>(AGGREGATED_LINE_ITEMS_QUERY, {
-    filter: params.filter,
+    filter: prepareFilterForServer(params.filter),
     limit: params.limit,
     offset: params.offset,
   });

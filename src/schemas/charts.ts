@@ -50,16 +50,43 @@ export type SeriesConfig = z.infer<typeof SeriesConfigSchema>;
 // ANALYTICS FILTER SCHEMA (reusable from existing system)
 // ============================================================================
 
+// TODO: change to the new report types
 export const ReportTypeEnum = z.enum(['Executie bugetara agregata la nivel de ordonator principal', 'Executie bugetara agregata la nivel de ordonator secundar', 'Executie bugetara detaliata']);
 export type ReportType = z.infer<typeof ReportTypeEnum>;
 
 export const Normalization = z.enum(['total', 'total_euro', 'per_capita', 'per_capita_euro']);
 export type Normalization = z.infer<typeof Normalization>;
 
+// ----------------------------------------------------------------------------
+// Reporting period (client-side Zod schema to mirror GraphQL ReportPeriodInput)
+// ----------------------------------------------------------------------------
+export const ReportPeriodTypeZ = z.enum(['YEAR', 'MONTH', 'QUARTER']);
+export type ReportPeriodTypeZ = z.infer<typeof ReportPeriodTypeZ>;
+
+const DateInputZ = z.string();
+
+const PeriodSelectionZ = z.union([
+  z.object({
+    interval: z.object({ start: DateInputZ, end: DateInputZ }),
+    dates: z.undefined().optional(),
+  }),
+  z.object({
+    dates: z.array(DateInputZ),
+    interval: z.undefined().optional(),
+  }),
+]);
+
+export const ReportPeriodInputZ = z.object({
+  type: ReportPeriodTypeZ,
+  selection: PeriodSelectionZ,
+});
+export type ReportPeriodInputZ = z.infer<typeof ReportPeriodInputZ>;
+
 export const AnalyticsFilterSchema = z.object({
   // Required
   years: z.array(z.number()).optional().describe('Years to filter the data by. If not set, the chart will show all years.'),
   account_category: z.enum(['ch', 'vn']).default('ch').describe('Spending (ch) or Revenue (vn).'),
+  report_period: ReportPeriodInputZ.optional().describe('Preferred period selector (month/quarter/year via month anchors).'),
 
   // Dimensional filters
   report_ids: z.array(z.string()).optional(),
@@ -141,6 +168,10 @@ export const SeriesConfigurationSchema = BaseSeriesConfigurationSchema.extend({
   unit: z.string().optional().default('').describe('The unit of the series. The unit should come from the api.'),
   filter: AnalyticsFilterSchema.describe('The filter to apply to the series.').default({
     years: [defaultYearRange.end],
+    report_period: {
+      type: 'YEAR',
+      selection: { interval: { start: String(defaultYearRange.end), end: String(defaultYearRange.end) } },
+    },
     account_category: 'ch',
     report_type: 'Executie bugetara agregata la nivel de ordonator principal',
   }),

@@ -13,11 +13,13 @@ interface ChartCardProps {
     chart: Chart;
     currentYear?: number;
     onYearClick?: (year: number) => void;
+    onXAxisItemClick?: (value: number | string) => void;
+    xAxisMarker?: number | string;
     normalization: Normalization;
     onNormalizationChange: (normalization: Normalization) => void;
 }
 
-export const ChartCard = React.memo(({ chart, onYearClick, currentYear, normalization, onNormalizationChange }: ChartCardProps) => {
+export const ChartCard = React.memo(({ chart, onYearClick, onXAxisItemClick, currentYear, xAxisMarker, normalization, onNormalizationChange }: ChartCardProps) => {
     const { dataSeriesMap, isLoadingData, dataError } = useChartData({ chart });
     const { data: timeSeriesData, unitMap: timeSeriesUnitMap } = useMemo(() => convertToTimeSeriesData(dataSeriesMap!, chart), [dataSeriesMap, chart]);
     const { data: aggregatedData, unitMap: aggregatedUnitMap } = useMemo(() => convertToAggregatedData(dataSeriesMap!, chart), [dataSeriesMap, chart]);
@@ -32,12 +34,14 @@ export const ChartCard = React.memo(({ chart, onYearClick, currentYear, normaliz
     }), [chart]);
 
     const handleXAxisClick = useCallback((value: number | string) => {
+        if (onXAxisItemClick) {
+            onXAxisItemClick(value);
+            return;
+        }
         const year = Number(value);
         const isValidYear = !isNaN(year) && year > 1900 && year < 2100;
-        if (isValidYear) {
-            onYearClick?.(year);
-        }
-    }, [onYearClick]);
+        if (isValidYear) onYearClick?.(year);
+    }, [onXAxisItemClick, onYearClick]);
 
     const noop = useCallback(() => { }, []);
 
@@ -66,7 +70,7 @@ export const ChartCard = React.memo(({ chart, onYearClick, currentYear, normaliz
                         onAddSeries={noop}
                         onAnnotationPositionChange={noop}
                         onXAxisClick={handleXAxisClick}
-                        xAxisMarker={currentYear}
+                        xAxisMarker={xAxisMarker ?? currentYear}
                     />
                 </div>
             </CardContent>

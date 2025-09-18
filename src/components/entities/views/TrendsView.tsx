@@ -10,7 +10,7 @@ import { ChartCard } from './ChartCard';
 import { TrendsViewSkeleton } from './TrendsViewSkeleton';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { t } from '@lingui/core/macro';
-import { toReportTypeValue } from '@/schemas/reporting';
+import { toReportTypeValue, type ReportPeriodInput, type GqlReportType, type TMonth, type TQuarter } from '@/schemas/reporting';
 import { useEntityExecutionLineItems } from '@/lib/hooks/useEntityDetails';
 
 interface BaseTrendsViewProps {
@@ -18,29 +18,40 @@ interface BaseTrendsViewProps {
   type: 'income' | 'expense';
   currentYear: number;
   onYearClick: (year: number) => void;
+  onSelectPeriod?: (label: string) => void;
+  selectedQuarter?: TQuarter;
+  selectedMonth?: TMonth;
+  years?: number[];
   initialIncomeSearch?: string;
   initialExpenseSearch?: string;
   onSearchChange: (type: 'income' | 'expense', search: string) => void;
   isLoading?: boolean;
   normalization: Normalization;
   onNormalizationChange: (mode: Normalization) => void;
+  reportPeriod: ReportPeriodInput;
+  trendPeriod: ReportPeriodInput;
+  reportType?: GqlReportType;
 }
 
 const TOP_CATEGORIES_COUNT = 10;
 
-export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, currentYear, onYearClick, initialIncomeSearch, initialExpenseSearch, onSearchChange, isLoading, normalization, onNormalizationChange }) => {
+export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, currentYear, onYearClick, onSelectPeriod, initialIncomeSearch, initialExpenseSearch, onSearchChange, isLoading, normalization, onNormalizationChange, reportPeriod, trendPeriod, reportType, years = [] }) => {
   const { cui } = useParams({ from: '/entities/$cui' });
   const isMobile = useIsMobile();
   const chapterMap = useMemo(() => getChapterMap(), []);
+
+  // Compute selected month/quarter from the report period anchor
+  const anchor = (reportPeriod.selection as any)?.interval?.start as string | undefined;
+  const selectedMonth: TMonth | undefined = reportPeriod.type === 'MONTH' && anchor ? (anchor.split('-')[1] as TMonth) : undefined;
+  const selectedQuarter: TQuarter | undefined = reportPeriod.type === 'QUARTER' && anchor ? (anchor.split('-')[1] as TQuarter) : undefined;
 
   // Lazy load full line items, then filter locally
   const { data: fullLineItems } = useEntityExecutionLineItems({
     cui,
     normalization,
-    // trends use yearly historical aggregates; we just need current filters already in URL via route; using entity.default_report_type
-    // For safety, we infer report type from entity if available
-    reportPeriod: { type: 'YEAR', selection: { interval: { start: `${currentYear}`, end: `${currentYear}` } } } as any,
-    reportType: entity?.default_report_type,
+    // Use report period and report type from controls
+    reportPeriod,
+    reportType: reportType ?? entity?.default_report_type,
     enabled: !!cui,
   });
 
@@ -70,8 +81,9 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
         entity_cuis: [cui],
         functional_prefixes: [prefix],
         account_category: accountCategory,
-        report_type: toReportTypeValue(entity.default_report_type),
+        report_type: toReportTypeValue(reportType ?? entity.default_report_type),
         normalization,
+        report_period: trendPeriod,
       },
       enabled: true,
       config: { color: getSeriesColor(index), visible: true, showDataLabels: false },
@@ -93,7 +105,25 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
       },
       series,
     } as Chart;
-  }, [topFunctionalGroups, cui, type, chapterMap, entity, entityNameRaw, normalization]);
+  }, [topFunctionalGroups, cui, type, chapterMap, entity, entityNameRaw, normalization, trendPeriod, reportType]);
+
+  const handleXAxisClick = (value: number | string) => {
+    const raw = String(value);
+    if (reportPeriod.type === 'YEAR') {
+      const y = Number(raw.slice(0, 4));
+      if (Number.isFinite(y)) onYearClick(y);
+      return;
+    }
+    if (reportPeriod.type === 'MONTH') {
+      const m = raw.match(/^\d{4}-(0[1-9]|1[0-2])$/) || raw.match(/^(0[1-9]|1[0-2])$/);
+      if (m) onSelectPeriod?.(m[1]);
+      return;
+    }
+    if (reportPeriod.type === 'QUARTER') {
+      const q = raw.match(/^\d{4}-(Q[1-4])$/) || raw.match(/^(Q[1-4])$/);
+      if (q) onSelectPeriod?.(q[1]);
+    }
+  };
 
   const {
     expenseSearchTerm,
@@ -119,22 +149,20 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
     }
   };
 
-  const years = useMemo(() => {
-    if (!entity) return [];
-    const trend = type === 'income' ? entity.incomeTrend : entity.expenseTrend;
-    const allYears = new Set(trend?.data.map((item) => Number(item.x)));
-    return Array.from(allYears).sort((a: number, b: number) => b - a);
-  }, [entity, type]);
-
   if (isLoading || !entity || !trendChart) {
     return <TrendsViewSkeleton />;
   }
+
+  // Build xAxis marker value to reflect current selection
+  const xAxisMarker = reportPeriod.type === 'YEAR' ? currentYear : anchor;
 
   if (type === 'income') {
     return (
       <div className="space-y-8">
         <ChartCard
           chart={trendChart}
+          xAxisMarker={xAxisMarker as any}
+          onXAxisItemClick={handleXAxisClick}
           onYearClick={onYearClick}
           currentYear={currentYear}
           normalization={normalization}
@@ -153,6 +181,8 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
           baseTotal={incomeBase}
           years={years}
           onYearChange={onYearClick}
+          month={selectedMonth}
+          quarter={selectedQuarter}
         />
       </div>
     );
@@ -162,6 +192,8 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
     <div className="space-y-8">
       <ChartCard
         chart={trendChart}
+        xAxisMarker={xAxisMarker as any}
+        onXAxisItemClick={handleXAxisClick}
         onYearClick={onYearClick}
         currentYear={currentYear}
         normalization={normalization}
@@ -180,6 +212,8 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
         groups={filteredExpenseGroups}
         baseTotal={expenseBase}
         years={years}
+        month={selectedMonth}
+        quarter={selectedQuarter}
       />
     </div>
   );

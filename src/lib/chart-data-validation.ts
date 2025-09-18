@@ -1,5 +1,6 @@
 import { AnalyticsSeries } from "@/schemas/charts";
 import { createLogger } from "./logger";
+import { getXAxisUnit } from "./chart-data-utils";
 
 const logger = createLogger("chart-data-validation");
 
@@ -30,6 +31,7 @@ export interface ValidationResult {
 export function validateAnalyticsSeries(seriesMap: Map<string, AnalyticsSeries>): ValidationResult {
   const errors: DataValidationError[] = [];
   const warnings: DataValidationError[] = [];
+  const xUnit = getXAxisUnit(seriesMap);
 
   for (const [seriesId, series] of seriesMap.entries()) {
     // Check if series has data
@@ -45,18 +47,20 @@ export function validateAnalyticsSeries(seriesMap: Map<string, AnalyticsSeries>)
     // Validate each data point
     series.data.forEach((point, index) => {
       // Validate x value (should be convertible to finite number for time series)
-      const xValue = Number(point.x);
-      if (!Number.isFinite(xValue)) {
-        const valueType = typeof point.x;
-        const expectedFormat = valueType === 'string' ? 'numeric year (e.g., "2023")' : 'finite number';
-        warnings.push({
-          type: "invalid_x_value",
-          seriesId,
-          message: `Invalid x-axis value: expected ${expectedFormat}, got ${valueType} '${point.x}' (point removed from chart)`,
-          pointIndex: index,
-          value: point.x,
-        });
-      }
+      if (xUnit === 'year') {
+        const xValue = Number(point.x);
+        if (!Number.isFinite(xValue)) {
+            const valueType = typeof point.x;
+            const expectedFormat = valueType === 'string' ? 'numeric year (e.g., "2023")' : 'finite number';
+            warnings.push({
+                type: "invalid_x_value",
+                seriesId,
+                message: `Invalid x-axis value: expected ${expectedFormat}, got ${valueType} '${point.x}' (point removed from chart)`,
+                pointIndex: index,
+                value: point.x,
+            });
+        }
+    }
 
       // Validate y value (should be a finite number)
       if (typeof point.y !== "number" || !Number.isFinite(point.y)) {
@@ -93,10 +97,11 @@ export function sanitizeAnalyticsSeries(
   _validationResult: ValidationResult
 ): Map<string, AnalyticsSeries> {
   const sanitizedMap = new Map<string, AnalyticsSeries>();
+  const xUnit = getXAxisUnit(seriesMap);
 
   for (const [seriesId, series] of seriesMap.entries()) {
     const validPoints = (series.data ?? []).filter((point, index) => {
-      const xValid = Number.isFinite(Number(point.x));
+      const xValid = xUnit === 'year' ? Number.isFinite(Number(point.x)) : (typeof point.x === 'string' && point.x.length > 0);
       const yValid = typeof point.y === "number" && Number.isFinite(point.y);
 
       if (!xValid || !yValid) {

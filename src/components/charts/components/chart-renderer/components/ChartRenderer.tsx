@@ -20,7 +20,7 @@ export interface ChartRendererProps {
   height?: number;
   margins?: Partial<ChartMargins>;
   isPreview?: boolean;
-  xAxisMarker?: number;
+  xAxisMarker?: number | string;
   onXAxisClick?: (value: number | string) => void;
   onAnnotationPositionChange: (pos: AnnotationPositionChange) => void;
 }

@@ -1,5 +1,6 @@
 import { graphqlRequest } from './graphql';
-import { AnalyticsInput, AnalyticsSeries } from '@/schemas/charts';
+import { AnalyticsInput, AnalyticsSeries, AnalyticsFilterType } from '@/schemas/charts';
+import { prepareFilterForServer } from '@/lib/filterUtils';
 
 // Using types from schemas/charts.ts
 
@@ -18,9 +19,14 @@ export async function getChartAnalytics(inputs: AnalyticsInput[]): Promise<Analy
     }
   `;
 
+  const serverInputs = inputs.map((i) => ({
+    ...i,
+    filter: prepareFilterForServer(i.filter as unknown as AnalyticsFilterType),
+  }))
+
   const response = await graphqlRequest<{
     executionAnalytics: AnalyticsSeries[];
-  }>(query, { inputs });
+  }>(query, { inputs: serverInputs });
 
   return response.executionAnalytics;
 }

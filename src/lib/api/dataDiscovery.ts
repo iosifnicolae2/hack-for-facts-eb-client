@@ -3,6 +3,7 @@ import { graphqlRequest } from "./graphql";
 import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
 import { BudgetLineItem, PaginatedResult, EntityData, AggregatedBudgetData, GetDataParams } from "@/schemas/dataDiscovery";
 import { AnalyticsFilterType } from "@/schemas/charts";
+import { prepareFilterForServer } from "@/lib/filterUtils";
 
 const logger = createLogger("data-discovery-api");
 
@@ -400,7 +401,7 @@ export async function getHeatmapUATData(
   try {
     const response = await graphqlRequest<HeatmapUATDataApiResponse>(
       GET_HEATMAP_UAT_DATA_QUERY,
-      { filter }
+      { filter: prepareFilterForServer(filter) }
     );
 
     if (!response || !response.heatmapUATData) {
@@ -430,7 +431,7 @@ export async function getHeatmapCountyData(
   try {
     const response = await graphqlRequest<HeatmapCountyDataApiResponse>(
       GET_HEATMAP_JUDET_DATA_QUERY,
-      { filter }
+      { filter: prepareFilterForServer(filter) }
     );
 
     if (!response || !response.heatmapCountyData) {

@@ -4,6 +4,7 @@ import { defaultMapFilters, MapStateSchema, MapUrlState } from '@/schemas/map-fi
 import { useEconomicClassificationLabel, useFunctionalClassificationLabel, useAccountCategoryLabel, useUatLabel, useEntityLabel } from '@/hooks/filters/useFilterLabels';
 import { OptionItem } from '@/components/filters/base-filter/interfaces';
 import { AnalyticsFilterType, defaultYearRange } from '@/schemas/charts';
+import { makeSingleTimePeriod, type DateInput } from '@/schemas/reporting';
 import { LabelStore } from '@/hooks/filters/interfaces';
 import { Analytics } from '@/lib/analytics';
 
@@ -29,6 +30,10 @@ export function useMapFilter() {
                 }
                 if (!newFilters.filters.account_category) {
                     newFilters.filters.account_category = "ch";
+                }
+                if (!newFilters.filters.report_period) {
+                    const y = newFilters.filters.years?.[0] ?? defaultYearRange.end;
+                    newFilters.filters.report_period = makeSingleTimePeriod('YEAR', `${y}` as DateInput);
                 }
                 // Emit a summarized change to avoid sending sensitive data
                 const filterHash = JSON.stringify(newFilters.filters);

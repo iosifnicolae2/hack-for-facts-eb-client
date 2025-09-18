@@ -11,6 +11,7 @@ import { getChartAnalytics } from '@/lib/api/charts';
 import { generateHash } from '@/lib/utils';
 import { GqlReportType, toReportTypeValue } from '@/schemas/reporting';
 import { getInitialFilterState, makeTrendPeriod } from '@/schemas/reporting';
+import { prepareFilterForServer } from '@/lib/filterUtils';
 import { getPersistedState } from '@/lib/hooks/usePersistedState';
 
 export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
@@ -26,12 +27,13 @@ export const Route = createFileRoute('/entities/$cui')({
         const normalization = (search?.normalization as Normalization | undefined) ?? defaultNormalization;
         const reportPeriod = getInitialFilterState(search.period ?? 'YEAR', year, search.month ?? '12', search.quarter ?? 'Q4');
         const trendPeriod = makeTrendPeriod(search.period ?? 'YEAR', year, START_YEAR, END_YEAR);
+        const reportType = (search?.report_type as GqlReportType | undefined);
         queryClient.ensureQueryData(
             entityDetailsQueryOptions(
                 params.cui,
                 normalization,
                 reportPeriod,
-                (search?.report_type as import('@/schemas/reporting').GqlReportType | undefined),
+                reportType,
                 trendPeriod
             )
         );
@@ -43,12 +45,12 @@ export const Route = createFileRoute('/entities/$cui')({
             entity_type?: string | null;
             cui: string;
             executionLineItems?: { nodes?: { account_category: 'vn' | 'ch' }[] } | null;
-        }>(['entityDetails', params.cui, normalization, reportPeriod, (search?.report_type as import('@/schemas/reporting').GqlReportType | undefined), trendPeriod]);
+        }>(['entityDetails', params.cui, normalization, reportPeriod, reportType, trendPeriod]);
 
         if (desiredView === 'map' && entity?.is_uat) {
             const mapViewType = entity.entity_type === 'admin_county_council' || entity.cui === '4267117' ? 'County' : 'UAT';
             queryClient.prefetchQuery(geoJsonQueryOptions(mapViewType));
-            const filters = (search?.mapFilters as AnalyticsFilterType) || { years: [year], account_category: 'ch', normalization: 'per_capita' };
+            const filters = (search?.mapFilters as AnalyticsFilterType) || { years: [year], account_category: 'ch', normalization: 'per_capita', report_period: getInitialFilterState('YEAR', year, '12', 'Q4') };
             if (mapViewType === 'UAT') {
                 queryClient.prefetchQuery(heatmapUATQueryOptions(filters));
             } else {
@@ -63,7 +65,7 @@ export const Route = createFileRoute('/entities/$cui')({
             const filtered = (lineItems as MinimalLineItem[]).filter((li) => li.account_category === accountCategory);
             const topGroups: string[] = getTopFunctionalGroupCodes(filtered as unknown as import('@/lib/api/entities').ExecutionLineItem[], 10);
             if (topGroups.length > 0) {
-                const inputs: AnalyticsInput[] = topGroups.map((prefix: string) => ({
+                const baseInputs: AnalyticsInput[] = topGroups.map((prefix: string) => ({
                     seriesId: `${prefix}${params.cui}-${desiredView === 'income-trends' ? 'income' : 'expense'}`,
                     filter: {
                         entity_cuis: [params.cui],
@@ -71,6 +73,11 @@ export const Route = createFileRoute('/entities/$cui')({
                         account_category: accountCategory,
                         report_type: entity?.default_report_type ? toReportTypeValue(entity.default_report_type) : 'Executie bugetara agregata la nivel de ordonator principal',
                     },
+                }));
+                const fallbackPeriod = makeTrendPeriod('YEAR', year, START_YEAR, END_YEAR);
+                const inputs: AnalyticsInput[] = baseInputs.map((i) => ({
+                    ...i,
+                    filter: prepareFilterForServer(i.filter as unknown as AnalyticsFilterType, { period: fallbackPeriod }),
                 }));
                 const payloadHash = inputs
                     .slice()

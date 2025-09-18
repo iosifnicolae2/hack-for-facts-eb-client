@@ -27,7 +27,7 @@ interface ChartDisplayAreaProps {
   onAnnotationPositionChange: (pos: AnnotationPositionChange) => void;
   onXAxisClick?: (value: number | string) => void;
   isPreview?: boolean;
-  xAxisMarker?: number;
+  xAxisMarker?: number | string;
   height?: number;
 }
 

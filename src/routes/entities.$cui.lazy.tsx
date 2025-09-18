@@ -246,7 +246,7 @@ function EntityDetailsPage() {
           period={period}
           reportPeriod={reportPeriod}
           trendPeriod={trendPeriod}
-          reportTypeState={reportTypeState ?? entity?.default_report_type}
+          reportTypeState={reportTypeState}
           search={search}
           mapFilters={mapFilters}
           updateMapFilters={updateMapFilters}
@@ -302,6 +302,11 @@ function ViewsContent(props: ViewsContentProps) {
     onSearchChange: handleSearchChange,
     normalization,
     onNormalizationChange: handleNormalizationChange,
+    reportPeriod,
+    trendPeriod,
+    reportType: reportTypeState ?? entity?.default_report_type,
+    onSelectPeriod: handlePeriodItemSelect,
+    years,
   }
 
   return (
@@ -316,7 +321,7 @@ function ViewsContent(props: ViewsContentProps) {
           case 'ranking': return <RankingView />
           case 'related-charts': return <RelatedChartsView entity={entity} normalization={normalization} />
           case 'relationships': return <EntityRelationships cui={cui} />
-          default: return <Overview cui={cui} entity={entity} isLoading={isLoading} selectedYear={selectedYear} normalization={normalization} years={years} periodType={period} reportPeriod={reportPeriod} trendPeriod={trendPeriod} reportType={reportTypeState ?? entity?.default_report_type} search={search} onChartNormalizationChange={handleNormalizationChange} onYearChange={handleYearChange} onPeriodItemSelect={handlePeriodItemSelect} onSearchChange={handleSearchChange} onAnalyticsChange={handleAnalyticsChange} />
+          default: return <Overview cui={cui} entity={entity} isLoading={isLoading} selectedYear={selectedYear} normalization={normalization} years={years} periodType={period} reportPeriod={reportPeriod} trendPeriod={trendPeriod} reportType={reportTypeState} search={search} onChartNormalizationChange={handleNormalizationChange} onYearChange={handleYearChange} onPeriodItemSelect={handlePeriodItemSelect} onSearchChange={handleSearchChange} onAnalyticsChange={handleAnalyticsChange} />
         }
       })()}
     </Suspense>
