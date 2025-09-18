@@ -84,9 +84,8 @@ export type ReportPeriodInputZ = z.infer<typeof ReportPeriodInputZ>;
 
 export const AnalyticsFilterSchema = z.object({
   // Required
-  years: z.array(z.number()).optional().describe('Years to filter the data by. If not set, the chart will show all years.'),
+  report_period: ReportPeriodInputZ.optional().describe('Period selector (month/quarter/year via month anchors).'),
   account_category: z.enum(['ch', 'vn']).default('ch').describe('Spending (ch) or Revenue (vn).'),
-  report_period: ReportPeriodInputZ.optional().describe('Preferred period selector (month/quarter/year via month anchors).'),
 
   // Dimensional filters
   report_ids: z.array(z.string()).optional(),
@@ -167,10 +166,9 @@ export const SeriesConfigurationSchema = BaseSeriesConfigurationSchema.extend({
   type: z.literal('line-items-aggregated-yearly'),
   unit: z.string().optional().default('').describe('The unit of the series. The unit should come from the api.'),
   filter: AnalyticsFilterSchema.describe('The filter to apply to the series.').default({
-    years: [defaultYearRange.end],
     report_period: {
       type: 'YEAR',
-      selection: { interval: { start: String(defaultYearRange.end), end: String(defaultYearRange.end) } },
+      selection: { dates: [String(defaultYearRange.end)] },
     },
     account_category: 'ch',
     report_type: 'Executie bugetara agregata la nivel de ordonator principal',

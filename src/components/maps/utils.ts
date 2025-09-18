@@ -14,8 +14,12 @@ import { t } from "@lingui/core/macro";
 const createFilterSummary = (filters: AnalyticsFilterType): string => {
   const summaryItems: string[] = [];
 
-  if (filters.years && filters.years.length > 0) {
-    summaryItems.push(`<strong>${t`Year`}:</strong> ${filters.years.join(', ')}`);
+  if (filters.report_period) {
+    if (filters.report_period.selection.dates) {
+      summaryItems.push(`<strong>${t`Period`}:</strong> ${filters.report_period.selection.dates.length} ${filters.report_period.type.toLowerCase()}(s)`);
+    } else if (filters.report_period.selection.interval) {
+        summaryItems.push(`<strong>${t`Period`}:</strong> ${filters.report_period.selection.interval.start} - ${filters.report_period.selection.interval.end}`);
+    }
   }
 
   if (filters.account_category) {

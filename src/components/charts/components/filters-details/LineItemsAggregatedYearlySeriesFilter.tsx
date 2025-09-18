@@ -10,6 +10,9 @@ import {
   useFilterKeyLabel,
   useMapFilterValue,
 } from "@/lib/chart-filter-utils";
+import { getPeriodTags } from "@/lib/period-utils";
+import { useChartStore } from "../../hooks/useChartStore";
+import { ReportPeriodInput } from "@/schemas/reporting";
 
 
 interface LineItemsAggregatedYearlySeriesFilterProps {
@@ -17,6 +20,7 @@ interface LineItemsAggregatedYearlySeriesFilterProps {
 }
 
 export function LineItemsAggregatedYearlySeriesFilter({ series }: LineItemsAggregatedYearlySeriesFilterProps) {
+  const { updateSeries } = useChartStore();
   const filters: FiltersWithLabels = {
     entity_cuis: series.filter.entity_cuis ?? [],
     economic_codes: series.filter.economic_codes ?? [],
@@ -28,8 +32,42 @@ export function LineItemsAggregatedYearlySeriesFilter({ series }: LineItemsAggre
   const { mapValueToLabel } = useMapFilterValue(filters);
   const filterKeyMap = useFilterKeyLabel();
 
+  const handleRemovePeriodTag = (tagToRemove: string) => {
+    if (!series.filter.report_period) return;
+
+    if (series.filter.report_period.selection.dates) {
+        const newDates = series.filter.report_period.selection.dates.filter(d => d !== tagToRemove);
+        updateSeries(series.id, (prev) => {
+            if (prev.type === 'line-items-aggregated-yearly' && prev.filter.report_period) {
+                prev.filter.report_period = {
+                    ...prev.filter.report_period,
+                    selection: { dates: newDates }
+                };
+            }
+            return prev;
+        });
+    } else if (series.filter.report_period.selection.interval) {
+        updateSeries(series.id, (prev) => {
+            if (prev.type === 'line-items-aggregated-yearly') {
+                prev.filter.report_period = undefined;
+            }
+            return prev;
+        });
+    }
+  }
+
+  const periodTags = getPeriodTags(series.filter.report_period as ReportPeriodInput);
+
   return (
     <div className="flex flex-wrap gap-2">
+      {periodTags.map(tag => (
+        <FilterPill
+            key={tag.key}
+            label={filterKeyMap('report_period')}
+            value={String(tag.value)}
+            onRemove={() => handleRemovePeriodTag(String(tag.value))}
+        />
+      ))}
       {Object.entries(series.filter)
         .sort(([keyA], [keyB]) => getSortOrder(keyA as keyof AnalyticsFilterType, keyB as keyof AnalyticsFilterType))
         .filter(
@@ -41,6 +79,7 @@ export function LineItemsAggregatedYearlySeriesFilter({ series }: LineItemsAggre
               : String(value) !== "")
         )
         .map(([key, value]) => {
+          if (key === 'report_period') return null;
           if (key === 'report_type') {
             return (
               <FilterPill

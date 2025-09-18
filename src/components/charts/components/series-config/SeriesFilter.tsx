@@ -10,7 +10,6 @@ import { FilterContainer } from "../../../filters/base-filter/FilterContainer";
 import { IsUatFilter } from "../../../filters/flags-filter";
 import { EconomicClassificationList } from "../../../filters/economic-classification-filter";
 import { UatList } from "../../../filters/uat-filter";
-import { YearFilter } from "../../../filters/year-filter/YearFilter";
 import { CountyList } from "../../../filters/county-filter/CountyList";
 import { EntityTypeList } from "../../../filters/entity-type-filter/EntityTypeList";
 import { AmountRangeFilter } from "../../../filters/amount-range-filter";
@@ -28,6 +27,9 @@ import { ReportType, SeriesConfiguration } from "@/schemas/charts";
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
 import { NormalizationFilter } from "@/components/filters/normalization-filter/NormalizationFilter";
+import { PeriodFilter } from "@/components/filters/period-filter/PeriodFilter";
+import { ReportPeriodInput } from "@/schemas/reporting";
+import { getPeriodTags } from "@/lib/period-utils";
 
 interface SeriesFilterProps {
     seriesId?: string;
@@ -118,11 +120,18 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
     const selectedEntityTypeOptions: OptionItem[] = filter.entity_types?.map(id => ({ id, label: entityTypeLabelsStore.map(id) })) || [];
     const setSelectedEntityTypeOptions = createListUpdater('entity_types');
 
-    const selectedYearOptions: OptionItem<number>[] = filter.years?.map(y => ({ id: y, label: String(y) })) || [];
-    const setSelectedYearOptions = createListUpdater('years');
-
     const selectedCountyOptions: OptionItem<string>[] = filter.county_codes?.map(c => ({ id: c, label: String(c) })) || [];
     const setSelectedCountyOptions = createListUpdater('county_codes');
+
+    const setPeriod = (period?: ReportPeriodInput) => {
+        if (!seriesId) return;
+        updateSeries(seriesId, (prevSeries) => {
+            if (prevSeries.type === 'line-items-aggregated-yearly') {
+                prevSeries.filter.report_period = period as any;
+            }
+            return prevSeries;
+        });
+    }
 
     const minAmount = String(filter.aggregate_min_amount ?? '');
     const maxAmount = String(filter.aggregate_max_amount ?? '');
@@ -167,6 +176,33 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
     if (filter.is_uat === false) flagsOptions.push({ id: 'isUat', label: t`UAT: No` });
     const setIsUat = createValueUpdater('is_uat', (v) => v !== undefined ? v : undefined);
 
+    const handleRemovePeriodTag = (tagToRemove: OptionItem) => {
+        updateSeries(series.id, (prev) => {
+            if (prev.type !== 'line-items-aggregated-yearly' || !prev.filter.report_period) {
+                return prev;
+            }
+
+            const { selection, ...rest } = prev.filter.report_period;
+
+            if (selection.dates) {
+                const newDates = selection.dates.filter(d => d !== tagToRemove.id);
+                if (newDates.length > 0) {
+                    prev.filter.report_period = { ...rest, selection: { dates: newDates } };
+                } else {
+                    prev.filter.report_period = undefined;
+                }
+            } else if (selection.interval) {
+                prev.filter.report_period = undefined;
+            }
+            return prev;
+        });
+    };
+
+    const periodTags = getPeriodTags(series.filter.report_period as ReportPeriodInput).map(tag => ({
+        id: String(tag.value),
+        label: String(tag.value),
+    }));
+
     const clearAllFilters = () => {
         if (!seriesId) return;
         updateSeries(seriesId, (prevSeries) => {
@@ -178,7 +214,7 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
     };
 
     const totalSelectedFilters =
-        (filter.years?.length ?? 0) +
+        (filter.report_period ? 1 : 0) +
         (filter.entity_cuis?.length ?? 0) +
         (filter.uat_ids?.length ?? 0) +
         (filter.county_codes?.length ?? 0) +
@@ -193,6 +229,7 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
         (filter.min_population != null ? 1 : 0) +
         (filter.max_population != null ? 1 : 0) +
         (filter.report_type ? 1 : 0) +
+        (filter.report_period ? 1 : 0) +
         (filter.normalization ? 1 : 0) +
         (filter.is_uat !== undefined ? 1 : 0) +
         (filter.functional_prefixes?.length ?? 0) +
@@ -258,13 +295,15 @@ export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
                         setNormalization={setNormalization}
                     />
                 </FilterRadioContainer>
-                <FilterListContainer
-                    title={t`Year`}
+                <FilterContainer
+                    title={t`Period`}
                     icon={<Calendar className="w-4 h-4" />}
-                    listComponent={YearFilter}
-                    selected={selectedYearOptions}
-                    setSelected={setSelectedYearOptions}
-                />
+                    selectedOptions={periodTags}
+                    onClearOption={handleRemovePeriodTag}
+                    onClearAll={() => setPeriod(undefined)}
+                >
+                    <PeriodFilter value={filter.report_period as any} onChange={setPeriod} />
+                </FilterContainer>
                 <FilterListContainer
                     title={t`Entities`}
                     icon={<Building2 className="w-4 h-4" />}

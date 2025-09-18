@@ -116,12 +116,6 @@ function coerceReportType(filter: AnalyticsFilterType): ReportType | undefined {
     return (filter as any).report_types?.[0] ?? filter.report_type ?? undefined
 }
 
-function ensureYears(filter: AnalyticsFilterType): number[] {
-    if (Array.isArray(filter.years) && filter.years.length > 0) return filter.years
-    const currentYear = new Date().getFullYear()
-    return [currentYear]
-}
-
 function convertFilterInputToChartState(
     filterInput: AnalyticsFilterType,
     labelMaps: { uatLabelMap: LabelStore; entityLabelMap: LabelStore }
@@ -146,7 +140,6 @@ function convertFilterInputToChartState(
                 unit: getNormalizationUnit(filterInput.normalization),
                 filter: {
                     ...filterInput,
-                    years: undefined,
                     account_category: accountCategory,
                     report_type: reportType,
                     entity_cuis: [cui],
@@ -171,7 +164,6 @@ function convertFilterInputToChartState(
                 unit: getNormalizationUnit(filterInput.normalization),
                 filter: {
                     ...filterInput,
-                    years: undefined,
                     account_category: accountCategory,
                     report_type: reportType,
                     uat_ids: [uatId],
@@ -195,7 +187,6 @@ function convertFilterInputToChartState(
                 unit: getNormalizationUnit(filterInput.normalization),
                 filter: {
                     ...filterInput,
-                    years: undefined,
                     account_category: accountCategory,
                     report_type: reportType,
                     county_codes: [cc],
@@ -253,14 +244,13 @@ function convertFilterInputToChartState(
 }
 
 function convertFilterInputToEntityTableState(filterInput: AnalyticsFilterType, mapViewType: 'UAT' | 'County'): EntityAnalyticsUrlState {
-    const years = ensureYears(filterInput)
     const accountCategory = (filterInput.account_category ?? 'ch') as 'ch' | 'vn'
     const base: EntityAnalyticsUrlState = {
         view: 'table',
         sortOrder: 'desc',
         page: 1,
         pageSize: 25,
-        filter: { ...filterInput, years, account_category: accountCategory },
+        filter: { ...filterInput, account_category: accountCategory },
     }
 
     // Edge cases for uat table:
@@ -285,11 +275,10 @@ function convertFilterInputToEntityTableState(filterInput: AnalyticsFilterType, 
 }
 
 function convertFilterInputToMapState(filterInput: AnalyticsFilterType, mapViewType: 'UAT' | 'County'): MapUrlState {
-    const years = ensureYears(filterInput)
     const accountCategory = (filterInput.account_category ?? 'ch') as 'ch' | 'vn'
 
     return {
-        filters: { ...filterInput, years, account_category: accountCategory },
+        filters: { ...filterInput, account_category: accountCategory },
         mapViewType: mapViewType,
         activeView: 'map',
     }

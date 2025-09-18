@@ -15,21 +15,28 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { UatProperties } from '@/components/maps/interfaces';
 import { useHeatmapData } from '@/hooks/useHeatmapData';
 import { AnalyticsFilterType } from '@/schemas/charts';
-import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select';
 import { Trans } from '@lingui/react/macro';
+import { ReportPeriodInput } from '@/schemas/reporting';
 
 interface MapViewProps {
   entity: EntityDetailsData | null | undefined;
   mapFilters: AnalyticsFilterType;
   updateMapFilters: (filters: Partial<AnalyticsFilterType>) => void;
-  selectedYear: number;
-  years: number[];
-  onYearChange: (year: number) => void;
+  period: ReportPeriodInput;
 }
 
-export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapFilters, selectedYear, years, onYearChange }) => {
+export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapFilters, period }) => {
   const mapViewType: "UAT" | "County" = entity?.entity_type === 'admin_county_council' || entity?.cui === '4267117' ? 'County' : 'UAT';
   const navigate = useNavigate();
+  const selectedYear = useMemo(() => {
+    if (period.selection.dates && period.selection.dates.length > 0) {
+      return Number(period.selection.dates[0].substring(0, 4));
+    }
+    if (period.selection.interval) {
+        return Number(period.selection.interval.start.substring(0, 4));
+    }
+    return new Date().getFullYear();
+  }, [period]);
 
   const {
     data: geoJsonData,
@@ -56,7 +63,7 @@ export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapF
     data: heatmapData,
     isLoading: isLoadingHeatmap,
     error: heatmapError,
-  } = useHeatmapData({ ...mapFilters, years: [selectedYear] }, mapViewType);
+  } = useHeatmapData({ ...mapFilters, report_period: period }, mapViewType);
 
   const { min: minAggregatedValue, max: maxAggregatedValue } = useMemo(() => {
     if (!heatmapData || !Array.isArray(heatmapData)) return { min: 0, max: 0 };
@@ -117,21 +124,9 @@ export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapF
       <CardHeader>
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="flex items-center">
-            <Select
-              value={selectedYear.toString()}
-              onValueChange={(val) => onYearChange(parseInt(val, 10))}
-            >
-              <SelectTrigger className="w-auto border-0 shadow-none bg-transparent focus:ring-0">
-                <h3 className="text-lg font-semibold">
-                  <Trans>Geographical View</Trans> ({selectedYear})
-                </h3>
-              </SelectTrigger>
-              <SelectContent>
-                {years.map((year) => (
-                  <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <h3 className="text-lg font-semibold">
+              <Trans>Geographical View</Trans> ({selectedYear})
+            </h3>
           </div>
           <div className="flex flex-wrap items-center gap-4">
             <ToggleGroup type="single" size="sm" value={mapFilters.account_category} onValueChange={(value: 'vn' | 'ch') => { if (value) updateMapFilters({ account_category: value }) }}>

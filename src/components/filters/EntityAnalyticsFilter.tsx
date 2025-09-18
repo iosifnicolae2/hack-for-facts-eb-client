@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { FilterListContainer } from './base-filter/FilterListContainer'
-import { YearFilter } from './year-filter/YearFilter'
 import { FunctionalClassificationList } from './functional-classification-filter'
 import { EconomicClassificationList } from './economic-classification-filter'
 import { FilterRangeContainer } from './base-filter/FilterRangeContainer'
@@ -26,6 +25,9 @@ import { ViewTypeRadioGroup } from './ViewTypeRadioGroup'
 import { TableIcon, BarChart2Icon } from 'lucide-react'
 import { t } from '@lingui/core/macro'
 import { Trans } from "@lingui/react/macro";
+import { PeriodFilter } from './period-filter/PeriodFilter'
+import { ReportPeriodInput } from '@/schemas/reporting'
+import { getPeriodTags } from '@/lib/period-utils';
 
 export function EntityAnalyticsFilter() {
   const { filter, setFilter, resetFilter, view, setView } = useEntityAnalyticsFilter()
@@ -40,7 +42,6 @@ export function EntityAnalyticsFilter() {
   const entityTypeLabelsStore = useEntityTypeLabel()
 
   // Selected options builders
-  const selectedYearOptions = useMemo<OptionItem<number>[]>(() => (filter.years ?? []).map((y) => ({ id: y, label: String(y) })), [filter.years])
   const selectedUatOptions = useMemo<OptionItem<string | number>[]>(
     () => (filter.uat_ids ?? []).map((id) => ({ id, label: uatLabelsStore.map(String(id)) })),
     [filter.uat_ids, uatLabelsStore],
@@ -75,12 +76,33 @@ export function EntityAnalyticsFilter() {
   )
 
   // Updaters following LineItemsFilter behavior
-  const updateYearOptions = (years: OptionItem<string | number>[] | ((prev: OptionItem<string | number>[]) => OptionItem<string | number>[])) => {
-    const next = typeof years === 'function' ? years(selectedYearOptions) : years
-    setFilter({ years: next.map((y) => Number(y.id)) })
+  const updatePeriod = (period?: ReportPeriodInput) => {
+    setFilter({ report_period: period as any })
   }
+
+  const handleRemovePeriodTag = (tagToRemove: OptionItem) => {
+    const { report_period } = filter;
+    if (!report_period) return;
+
+    if (report_period.selection.dates) {
+        const newDates = report_period.selection.dates.filter(d => d !== tagToRemove.id);
+        if (newDates.length > 0) {
+            updatePeriod({ ...report_period, selection: { dates: newDates as any } });
+        } else {
+            updatePeriod(undefined);
+        }
+    } else if (report_period.selection.interval) {
+        updatePeriod(undefined);
+    }
+  };
+
+  const periodTags = getPeriodTags(filter.report_period as ReportPeriodInput).map(tag => ({
+      id: String(tag.value),
+      label: String(tag.value),
+  }));
+
   const updateUatOptions = (
-    updater: OptionItem<string | number>[] | ((prev: OptionItem<string | number>[]) => OptionItem<string | number>[]),
+    updater: OptionItem<string | number>[] | ((prev: OptionItem<string | number>[]) => OptionItem<string | number>[])
   ) => {
     const next = typeof updater === 'function' ? updater(selectedUatOptions) : updater
     uatLabelsStore.add(next.map(({ id, label }) => ({ id, label })))
@@ -147,7 +169,7 @@ export function EntityAnalyticsFilter() {
 
   // Count selected filters similar to LineItemsFilter
   const totalSelectedFilters =
-    (filter.years?.length ?? 0) +
+    (filter.report_period ? 1 : 0) +
     [
       selectedEntityOptions,
       selectedUatOptions,
@@ -222,13 +244,15 @@ export function EntityAnalyticsFilter() {
           />
         </div>
 
-        <FilterListContainer
-          title={t`Year`}
+        <FilterContainer
+          title={t`Period`}
           icon={<Calendar className="w-4 h-4" />}
-          listComponent={YearFilter}
-          selected={selectedYearOptions}
-          setSelected={updateYearOptions}
-        />
+          selectedOptions={periodTags}
+          onClearOption={handleRemovePeriodTag}
+          onClearAll={() => updatePeriod(undefined)}
+        >
+          <PeriodFilter value={filter.report_period as any} onChange={updatePeriod} />
+        </FilterContainer>
 
         <FilterListContainer
           title={t`Entities`}

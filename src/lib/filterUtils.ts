@@ -1,5 +1,5 @@
 import { defaultYearRange, type AnalyticsFilterType } from '@/schemas/charts'
-import type { ReportPeriodInput, DateInput } from '@/schemas/reporting'
+import type { ReportPeriodInput, PeriodDate } from '@/schemas/reporting'
 import { toReportGqlType } from '@/schemas/reporting'
 
 function buildReportPeriodFromYears(years?: readonly number[] | number[]): ReportPeriodInput {
@@ -7,18 +7,17 @@ function buildReportPeriodFromYears(years?: readonly number[] | number[]): Repor
   const end = Array.isArray(years) && years.length > 0 ? Math.max(...years) : defaultYearRange.end
   return {
     type: 'YEAR',
-    selection: { interval: { start: `${start}` as DateInput, end: `${end}` as DateInput } },
+    selection: { interval: { start: `${start}` as PeriodDate, end: `${end}` as PeriodDate } },
   }
 }
 
-export function ensureReportPeriod(filter: AnalyticsFilterType, fallback?: { years?: number[]; period?: ReportPeriodInput }): ReportPeriodInput {
+export function ensureReportPeriod(filter: AnalyticsFilterType, fallback?: { period?: ReportPeriodInput }): ReportPeriodInput {
   if (filter.report_period) return filter.report_period as ReportPeriodInput
   if (fallback?.period) return fallback.period
-  const years = filter.years ?? fallback?.years
-  return buildReportPeriodFromYears(years)
+  return buildReportPeriodFromYears()
 }
 
-export function normalizeAnalyticsFilter(filter: AnalyticsFilterType, fallback?: { years?: number[]; period?: ReportPeriodInput }): AnalyticsFilterType {
+export function normalizeAnalyticsFilter(filter: AnalyticsFilterType, fallback?: { period?: ReportPeriodInput }): AnalyticsFilterType {
   const accountCategory = (filter.account_category ?? 'ch') as 'ch' | 'vn'
   const normalized: AnalyticsFilterType = {
     ...filter,
@@ -29,7 +28,7 @@ export function normalizeAnalyticsFilter(filter: AnalyticsFilterType, fallback?:
 }
 
 // Prepare a filter object for GraphQL server variables
-export function prepareFilterForServer(filter: AnalyticsFilterType, fallback?: { years?: number[]; period?: ReportPeriodInput }): AnalyticsFilterType {
+export function prepareFilterForServer(filter: AnalyticsFilterType, fallback?: { period?: ReportPeriodInput }): AnalyticsFilterType {
   const normalized = normalizeAnalyticsFilter(filter, fallback)
   // Allowlist of fields accepted by AnalyticsFilterInput on the server
   const allowedKeys = new Set<keyof AnalyticsFilterType | string>([
@@ -62,6 +61,7 @@ export function prepareFilterForServer(filter: AnalyticsFilterType, fallback?: {
   ])
 
   const serverFilter: any = {}
+
   for (const [k, v] of Object.entries(normalized)) {
     if (allowedKeys.has(k)) (serverFilter as any)[k] = v
   }

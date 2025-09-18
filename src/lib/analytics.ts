@@ -110,8 +110,9 @@ export function summarizeFilter(
   filter: AnalyticsFilterType
 ): Record<string, unknown> {
   return {
-    years_len: filter.years?.length ?? 0,
-    years: (filter.years ?? []).slice(0, 5),
+    period_type: filter.report_period?.type,
+    period_selection: filter.report_period?.selection.dates ? 'dates' : 'interval',
+    period_len: filter.report_period?.selection.dates?.length ?? 1,
     account_category: filter.account_category,
     normalization: filter.normalization,
     fn_codes_len: filter.functional_codes?.length ?? 0,

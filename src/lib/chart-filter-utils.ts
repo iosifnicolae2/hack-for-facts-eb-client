@@ -2,6 +2,7 @@
 
 import { useAccountCategoryLabel, useBudgetSectorLabel, useEconomicClassificationLabel, useEntityLabel, useEntityTypeLabel, useFunctionalClassificationLabel, useFundingSourceLabel, useUatLabel } from "@/hooks/filters/useFilterLabels";
 import { AnalyticsFilterType, Chart } from "@/schemas/charts";
+import { ReportPeriodInput } from "@/schemas/reporting";
 import { t } from "@lingui/core/macro";
 
 export type FiltersWithLabels = Pick<AnalyticsFilterType, "entity_cuis" | "economic_codes" | "functional_codes" | "budget_sector_ids" | "funding_source_ids" | "uat_ids">;
@@ -22,6 +23,7 @@ export const useFilterKeyLabel = () => {
     economic_prefixes: t`Economic prefix`,
     entity_types: t`Entity type`,
     normalization: t`Normalization`,
+    report_period: t`Period`,
   };
 
   return (key: string) => FILTER_DISPLAY_NAME[key] ?? key;
@@ -55,6 +57,11 @@ export const useMapFilterValue = (filter: FiltersWithLabels) => {
           return uatLabelsStore.map(value as string);
         case "entity_types":
           return entityTypesStore.map(value as string);
+        case "report_period":
+            const period = value as ReportPeriodInput;
+            if (period.selection.dates) return `${period.selection.dates.length} dates`;
+            if (period.selection.interval) return `${period.selection.interval.start} - ${period.selection.interval.end}`;
+            return ''
         default:
           return String(value);
       }
@@ -89,6 +96,7 @@ export const isInteractiveFilter = (key: string): boolean => {
 export function getSortOrder(keyA: keyof AnalyticsFilterType, keyB: keyof AnalyticsFilterType) {
   const ORDER: ReadonlyArray<keyof AnalyticsFilterType> = [
     "account_category",
+    "report_period",
     "entity_cuis",
     "entity_types",
     "uat_ids",
@@ -102,7 +110,7 @@ export function getSortOrder(keyA: keyof AnalyticsFilterType, keyB: keyof Analyt
     "aggregate_min_amount",
     "aggregate_max_amount",
     "report_type",
-    "years",
+    "report_period",
   ];
   const indexA = ORDER.indexOf(keyA);
   const indexB = ORDER.indexOf(keyB);
@@ -128,7 +136,8 @@ export type ReplaceableFilterKey =
   | "report_type"
   | "functional_prefixes"
   | "economic_prefixes"
-  | "is_uat";
+  | "is_uat"
+  | "report_period";
 
 // Convenience: list of replaceable keys for UIs
 export const REPLACEABLE_FILTER_KEYS: ReadonlyArray<ReplaceableFilterKey> = [
@@ -144,6 +153,7 @@ export const REPLACEABLE_FILTER_KEYS: ReadonlyArray<ReplaceableFilterKey> = [
   "account_category",
   "report_type",
   "is_uat",
+  "report_period",
 ];
 
 const isAggregatedYearlySeries = (s: { type?: unknown }) => s?.type === "line-items-aggregated-yearly";

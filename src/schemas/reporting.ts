@@ -7,11 +7,18 @@ export type YearPeriod = `${number}`
 export type YearMonthPeriod = `${number}-${TMonth}`
 export type YearQuarterPeriod = `${number}-${TQuarter}`
 export type ReportPeriodType = 'YEAR' | 'MONTH' | 'QUARTER'
-export type DateInput = YearPeriod | YearMonthPeriod | YearQuarterPeriod
+
+export type PeriodDate = YearPeriod | YearMonthPeriod | YearQuarterPeriod
+export type DateInput = PeriodDate
+
+export type PeriodIntervalInput = {
+  start: PeriodDate
+  end: PeriodDate
+}
 
 export type PeriodSelection =
-  | { interval: { start: DateInput; end: DateInput }; dates?: undefined }
-  | { dates: DateInput[]; interval?: undefined }
+  | { interval: PeriodIntervalInput; dates?: undefined }
+  | { dates: PeriodDate[]; interval?: undefined }
 
 export interface ReportPeriodInput {
   readonly type: ReportPeriodType

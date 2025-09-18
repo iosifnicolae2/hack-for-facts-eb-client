@@ -53,24 +53,13 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
     const analyticsInputs = useMemo(() => {
         if (!chart) return [];
 
-        const buildDefaultYears = () =>
-            Array.from(
-                { length: defaultYearRange.end - defaultYearRange.start + 1 },
-                (_, i) => defaultYearRange.start + i
-            );
-
         return chart.series
             .filter((series) => series.type === "line-items-aggregated-yearly")
             .map((series) => {
                 const filter = series.filter as AnalyticsFilterType;
-                const years =
-                    Array.isArray(filter.years) && filter.years.length > 0
-                        ? filter.years
-                        : buildDefaultYears();
                 const account_category = (filter.account_category ?? "ch") as "ch" | "vn";
                 const normalizedFilter = normalizeAnalyticsFilter(
-                    { ...filter, years, account_category } as AnalyticsFilterType,
-                    { years }
+                    { ...filter, account_category } as AnalyticsFilterType
                 );
                 return {
                     seriesId: series.id,

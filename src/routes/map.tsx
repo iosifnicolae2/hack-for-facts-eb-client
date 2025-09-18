@@ -3,7 +3,7 @@ import { queryClient } from '@/lib/queryClient'
 import { geoJsonQueryOptions } from '@/hooks/useGeoJson'
 import { heatmapJudetQueryOptions, heatmapUATQueryOptions } from '@/hooks/useHeatmapData'
 import { MapStateSchema } from '@/schemas/map-filters'
-import { AnalyticsFilterType, defaultYearRange } from '@/schemas/charts'
+import { AnalyticsFilterType } from '@/schemas/charts'
 
 type MapViewType = 'UAT' | 'County'
 
@@ -17,7 +17,6 @@ export const Route = createFileRoute('/map')({
     // Ensure required filter fields are populated for prefetch
     const normalizedFilters: AnalyticsFilterType = {
       ...filters,
-      years: filters.years && filters.years.length > 0 ? filters.years : [defaultYearRange.end],
       account_category: filters.account_category ?? 'ch',
       normalization: filters.normalization ?? 'per_capita',
     }

@@ -1,7 +1,6 @@
 import { FilterListContainer } from "./base-filter/FilterListContainer";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { ArrowUpDown, Calendar, ChartBar, Divide, Globe, Map, SlidersHorizontal, Tags, XCircle, Building2, HandCoins, Building, MapPin, MapPinned, TableIcon, BarChart2Icon, MapIcon } from "lucide-react";
-import { YearFilter } from "./year-filter";
 import { Button } from "../ui/button";
 import { EconomicClassificationList } from "./economic-classification-filter";
 import { FunctionalClassificationList } from "./functional-classification-filter";
@@ -23,6 +22,10 @@ import { FilterRadioContainer } from "./base-filter/FilterRadioContainer";
 import { ReportTypeFilter } from "./report-type-filter";
 import { IsUatFilter } from './flags-filter';
 import { FilterContainer } from './base-filter/FilterContainer';
+import { PeriodFilter } from './period-filter/PeriodFilter';
+import { getPeriodTags } from '@/lib/period-utils';
+import { ReportPeriodInput } from '@/schemas/reporting';
+import { OptionItem } from './base-filter/interfaces';
 
 export function MapFilter() {
     const {
@@ -36,7 +39,7 @@ export function MapFilter() {
         setSelectedEconomicClassificationOptions,
         setAccountCategory,
         setNormalization,
-        setYears,
+        setReportPeriod,
         selectedUatOptions,
         selectedEntityOptions,
         setSelectedUatOptions,
@@ -55,8 +58,29 @@ export function MapFilter() {
         setIsUat,
     } = useMapFilter();
 
+    const handleRemovePeriodTag = (tagToRemove: OptionItem) => {
+        const report_period = mapState.filters.report_period as ReportPeriodInput | undefined;
+        if (!report_period) return;
+
+        if (report_period.selection.dates) {
+            const newDates = report_period.selection.dates.filter(d => d !== tagToRemove.id);
+            if (newDates.length > 0) {
+                setReportPeriod({ ...report_period, selection: { dates: newDates } } as any);
+            } else {
+                setReportPeriod(undefined);
+            }
+        } else if (report_period.selection.interval) {
+            setReportPeriod(undefined);
+        }
+    };
+
+    const periodTags = getPeriodTags(mapState.filters.report_period as ReportPeriodInput).map(tag => ({
+        id: String(tag.value),
+        label: String(tag.value),
+    }));
+
     const totalOptionalFilters =
-        (mapState.filters.years?.length ?? 0) +
+        (mapState.filters.report_period ? 1 : 0) +
         (mapState.filters.functional_codes?.length ?? 0) +
         (mapState.filters.economic_codes?.length ?? 0) +
         (mapState.filters.functional_prefixes?.length ?? 0) +
@@ -78,9 +102,6 @@ export function MapFilter() {
 
     const selectedAccountCategoryOption = useMemo(() => mapState.filters.account_category, [mapState.filters.account_category]);
     const selectedNormalizationOption = useMemo(() => mapState.filters.normalization ?? 'total', [mapState.filters.normalization]);
-    const selectedYearOptions = useMemo(() => {
-        return mapState.filters.years?.map(y => ({ id: y, label: String(y) })) ?? [];
-    }, [mapState.filters.years]);
 
     return (
         <Card className="flex flex-col w-full min-h-full overflow-y-auto shadow-lg">
@@ -155,13 +176,15 @@ export function MapFilter() {
                     />
                 </div>
 
-                <FilterListContainer
-                    title={t`Year`}
+                <FilterContainer
+                    title={t`Period`}
                     icon={<Calendar className="w-4 h-4" />}
-                    listComponent={YearFilter}
-                    selected={selectedYearOptions}
-                    setSelected={setYears}
-                />
+                    selectedOptions={periodTags}
+                    onClearOption={handleRemovePeriodTag}
+                    onClearAll={() => setReportPeriod(undefined)}
+                >
+                    <PeriodFilter value={mapState.filters.report_period as any} onChange={(p) => setReportPeriod(p as any)} />
+                </FilterContainer>
                 <FilterListContainer
                     title={t`Entities`}
                     icon={<Building2 className="w-4 h-4" />}

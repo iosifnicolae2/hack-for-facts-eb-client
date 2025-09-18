@@ -3,8 +3,7 @@ import { useNavigate, useSearch } from '@tanstack/react-router';
 import { defaultMapFilters, MapStateSchema, MapUrlState } from '@/schemas/map-filters';
 import { useEconomicClassificationLabel, useFunctionalClassificationLabel, useAccountCategoryLabel, useUatLabel, useEntityLabel } from '@/hooks/filters/useFilterLabels';
 import { OptionItem } from '@/components/filters/base-filter/interfaces';
-import { AnalyticsFilterType, defaultYearRange } from '@/schemas/charts';
-import { makeSingleTimePeriod, type DateInput } from '@/schemas/reporting';
+import { AnalyticsFilterType } from '@/schemas/charts';
 import { LabelStore } from '@/hooks/filters/interfaces';
 import { Analytics } from '@/lib/analytics';
 
@@ -25,15 +24,8 @@ export function useMapFilter() {
                 const prevState = (prev as MapUrlState);
                 const prevFilter = prevState?.filters || defaultMapFilters;
                 const newFilters = { ...prevState, filters: { ...prevFilter, ...filters } };
-                if (newFilters.filters.years?.length === 0) {
-                    newFilters.filters.years = [defaultYearRange.end];
-                }
                 if (!newFilters.filters.account_category) {
                     newFilters.filters.account_category = "ch";
-                }
-                if (!newFilters.filters.report_period) {
-                    const y = newFilters.filters.years?.[0] ?? defaultYearRange.end;
-                    newFilters.filters.report_period = makeSingleTimePeriod('YEAR', `${y}` as DateInput);
                 }
                 // Emit a summarized change to avoid sending sensitive data
                 const filterHash = JSON.stringify(newFilters.filters);
@@ -80,11 +72,7 @@ export function useMapFilter() {
     const setAggregateMaxAmount = createValueUpdater('aggregate_max_amount');
     const setReportType = createValueUpdater('report_type');
     const setIsUat = createValueUpdater('is_uat');
-    const setYears = (years: OptionItem<string | number>[] | ((prevState: OptionItem<string | number>[]) => OptionItem<string | number>[])) => {
-        const selectedYearOptions = mapState.filters.years?.map(y => ({ id: y, label: String(y) })) ?? [];
-        const newYears = typeof years === 'function' ? years(selectedYearOptions) : years;
-        setFilters({ years: newYears.map(y => Number(y.id)) });
-    };
+    const setReportPeriod = createValueUpdater('report_period');
 
     const selectedEconomicClassificationOptions: OptionItem[] = useMemo(() =>
         mapState.filters.economic_codes?.map(id => ({ id, label: economicClassificationLabelsStore.map(id) })) ?? [],
@@ -140,7 +128,7 @@ export function useMapFilter() {
         selectedAccountCategoryOption,
         setAccountCategory,
         setNormalization,
-        setYears,
+        setReportPeriod,
         selectedUatOptions,
         setSelectedUatOptions,
         selectedEntityOptions,

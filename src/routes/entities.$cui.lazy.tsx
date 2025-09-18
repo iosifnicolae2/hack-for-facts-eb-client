@@ -316,7 +316,7 @@ function ViewsContent(props: ViewsContentProps) {
           case 'reports': return <EntityReports cui={cui} initialType={reportTypeState ?? entity?.default_report_type} />
           case 'expense-trends': return <TrendsView {...trendsViewProps} type="expense" />
           case 'income-trends': return <TrendsView {...trendsViewProps} type="income" />
-          case 'map': return <MapView entity={entity} mapFilters={mapFilters} updateMapFilters={updateMapFilters} selectedYear={selectedYear} years={years} onYearChange={handleYearChange} />
+          case 'map': return <MapView entity={entity} mapFilters={mapFilters} updateMapFilters={updateMapFilters} period={reportPeriod} />
           case 'employees': return <EmployeesView entity={entity} />
           case 'ranking': return <RankingView />
           case 'related-charts': return <RelatedChartsView entity={entity} normalization={normalization} />

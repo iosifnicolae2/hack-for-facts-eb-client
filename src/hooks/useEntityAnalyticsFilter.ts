@@ -1,15 +1,16 @@
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { z } from 'zod'
 import { AnalyticsFilterSchema, AnalyticsFilterType, defaultYearRange } from '@/schemas/charts'
-import { makeSingleTimePeriod, type DateInput } from '@/schemas/reporting'
 import { Analytics } from '@/lib/analytics'
 
 const viewEnum = z.enum(['table', 'chart', 'line-items'])
 
 export const defaultEntityAnalyticsFilter: AnalyticsFilterType = {
   account_category: 'ch',
-  years: [defaultYearRange.end],
-  report_period: makeSingleTimePeriod('YEAR', `${defaultYearRange.end}` as DateInput),
+  report_period: {
+    type: 'YEAR',
+    selection: { dates: [String(defaultYearRange.end)] },
+  },
   normalization: 'total',
   report_type: 'Executie bugetara agregata la nivel de ordonator principal',
 }
@@ -35,15 +36,8 @@ export function useEntityAnalyticsFilter() {
       search: (prev) => {
         const prevFilter = (prev as EntityAnalyticsSearch).filter ?? defaultEntityAnalyticsFilter
         const merged = { ...prevFilter, ...partial }
-        if (!merged.years || merged.years.length === 0) {
-          merged.years = [defaultYearRange.end]
-        }
         if (!merged.account_category) {
           merged.account_category = 'ch'
-        }
-        if (!merged.report_period) {
-          const y = merged.years?.[0] ?? defaultYearRange.end
-          merged.report_period = makeSingleTimePeriod('YEAR', `${y}` as DateInput)
         }
     const filterHash = JSON.stringify(merged)
     Analytics.capture(Analytics.EVENTS.EntityAnalyticsFilterChanged, {

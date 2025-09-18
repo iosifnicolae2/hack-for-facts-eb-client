@@ -60,14 +60,12 @@ function MapPage() {
   const handleFeatureClick = (properties: UatProperties) => {
     // The entity map support only a limited set of filters, so we need to pass them as a search param.
     // If we set all the filters, the data doesn't make sense for the entity page, as the filters are not visible.
-    const { years, account_category, normalization } = mapState.filters;
-    const activeYear = years?.[0];
+    const { report_period: period, account_category, normalization } = mapState.filters;
     const searchParams = {
-      year: activeYear,
       mapFilters: {
         account_category,
         normalization,
-        years: [activeYear],
+        period,
       },
     };
 
