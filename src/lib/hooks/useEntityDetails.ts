@@ -9,15 +9,16 @@ export const entityDetailsQueryOptions = (
   normalization: Normalization,
   reportPeriod: ReportPeriodInput,
   reportType?: GqlReportType,
-  trendPeriod?: ReportPeriodInput
+  trendPeriod?: ReportPeriodInput,
+  mainCreditorCui?: string,
 ) => {
 
-  const payloadString = JSON.stringify({ cui, normalization, reportPeriod, reportType, trendPeriod });
+  const payloadString = JSON.stringify({ cui, normalization, reportPeriod, reportType, trendPeriod, mainCreditorCui });
   const hash = generateHash(payloadString);
 
   return queryOptions({
     queryKey: ['entityDetails', hash],
-    queryFn: () => getEntityDetails(cui, normalization, reportPeriod, reportType, trendPeriod),
+    queryFn: () => getEntityDetails(cui, normalization, reportPeriod, reportType, trendPeriod, mainCreditorCui),
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled: !!cui,
   });
@@ -29,12 +30,13 @@ interface UseEntityDetailsProps {
   reportPeriod: ReportPeriodInput;
   reportType?: GqlReportType;
   trendPeriod?: ReportPeriodInput;
+  mainCreditorCui?: string;
 }
 
 export function useEntityDetails(
-  { cui, normalization, reportPeriod, reportType, trendPeriod }: UseEntityDetailsProps
+  { cui, normalization, reportPeriod, reportType, trendPeriod, mainCreditorCui }: UseEntityDetailsProps
 ) {
-  return useQuery(entityDetailsQueryOptions(cui, normalization, reportPeriod, reportType, trendPeriod));
+  return useQuery(entityDetailsQueryOptions(cui, normalization, reportPeriod, reportType, trendPeriod, mainCreditorCui));
 }
 
 // Lazy hooks for heavy data
@@ -45,11 +47,12 @@ export function useEntityExecutionLineItems(params: {
   reportPeriod: ReportPeriodInput;
   reportType?: GqlReportType;
   enabled?: boolean;
+  mainCreditorCui?: string;
 }) {
-  const { cui, normalization, reportPeriod, reportType, enabled = true } = params;
+  const { cui, normalization, reportPeriod, reportType, enabled = true, mainCreditorCui } = params;
   return useQuery({
-    queryKey: ['entityLineItems', cui, normalization, reportPeriod, reportType],
-    queryFn: () => getEntityExecutionLineItems(cui, normalization, reportPeriod, reportType),
+    queryKey: ['entityLineItems', cui, normalization, reportPeriod, reportType, mainCreditorCui],
+    queryFn: () => getEntityExecutionLineItems(cui, normalization, reportPeriod, reportType, mainCreditorCui),
     enabled: !!cui && enabled,
     staleTime: 1000 * 60 * 5,
   });

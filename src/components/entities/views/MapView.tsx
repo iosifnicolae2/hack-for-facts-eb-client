@@ -28,14 +28,15 @@ interface MapViewProps {
 export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapFilters, period }) => {
   const mapViewType: "UAT" | "County" = entity?.entity_type === 'admin_county_council' || entity?.cui === '4267117' ? 'County' : 'UAT';
   const navigate = useNavigate();
-  const selectedYear = useMemo(() => {
+  
+  const selectedPeriod = useMemo(() => {
     if (period.selection.dates && period.selection.dates.length > 0) {
-      return Number(period.selection.dates[0].substring(0, 4));
+      return period.selection.dates[0];
     }
     if (period.selection.interval) {
-        return Number(period.selection.interval.start.substring(0, 4));
+      return period.selection.interval.start;
     }
-    return new Date().getFullYear();
+    return period.type;
   }, [period]);
 
   const {
@@ -125,7 +126,7 @@ export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapF
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="flex items-center">
             <h3 className="text-lg font-semibold">
-              <Trans>Geographical View</Trans> ({selectedYear})
+              <Trans>Geographical View</Trans> ({selectedPeriod})
             </h3>
           </div>
           <div className="flex flex-wrap items-center gap-4">

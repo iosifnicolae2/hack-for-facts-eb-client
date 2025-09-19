@@ -12,9 +12,10 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 
 type Props = {
   readonly cui: string;
-  readonly trendPeriod: ReportPeriodInput;
+  readonly reportPeriod: ReportPeriodInput;
   readonly reportType: GqlReportType;
   readonly limit?: number;
+  readonly mainCreditorCui?: string;
 };
 
 function toDateRange(period: ReportPeriodInput): { start: string; end: string } {
@@ -33,10 +34,17 @@ function toDateRange(period: ReportPeriodInput): { start: string; end: string } 
 function anchorToDate(anchor: string, isStart = true): string {
   // Accepts 'YYYY', 'YYYY-MM', 'YYYY-Qx'
   if (!anchor) return '';
-  if (/^\d{4}$/.test(anchor)) return `${anchor}-01-01`;
+  if (/^\d{4}$/.test(anchor)) {
+    if (isStart) {
+      return `${anchor}-01-01`;
+    } else {
+      return `${anchor}-12-31`;
+    }
+  }
   if (/^\d{4}-(0[1-9]|1[0-2])$/.test(anchor)) {
     const [y, m] = anchor.split('-');
-    return isStart ? `${y}-${m}-01` : `${y}-${m}-${daysInMonth(Number(m), Number(y))}`;
+    const lastMonthDay = daysInMonth(Number(m), Number(y));
+    return isStart ? `${y}-${m}-01` : `${y}-${m}-${lastMonthDay}`;
   }
   if (/^\d{4}-Q[1-4]$/.test(anchor)) {
     const y = Number(anchor.slice(0, 4));
@@ -59,10 +67,10 @@ function formatDate(dateString: string) {
   return date.toLocaleDateString('ro-RO', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
-export function EntityReportsSummary({ cui, trendPeriod, reportType, limit = 12 }: Props) {
-  const { start, end } = useMemo(() => toDateRange(trendPeriod), [trendPeriod]);
+export function EntityReportsSummary({ cui, reportPeriod, reportType, limit = 12, mainCreditorCui }: Props) {
+  const { start, end } = useMemo(() => toDateRange(reportPeriod), [reportPeriod]);
   const { data, isLoading } = useReportsConnection({
-    filter: { entity_cui: cui, report_type: reportType, report_date_start: start, report_date_end: end },
+    filter: { entity_cui: cui, report_type: reportType, report_date_start: start, report_date_end: end, main_creditor_cui: mainCreditorCui },
     limit,
     offset: 0,
   });

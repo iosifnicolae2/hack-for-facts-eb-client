@@ -28,13 +28,15 @@ export const Route = createFileRoute('/entities/$cui')({
         const reportPeriod = getInitialFilterState(search.period ?? 'YEAR', year, search.month ?? '12', search.quarter ?? 'Q4');
         const trendPeriod = makeTrendPeriod(search.period ?? 'YEAR', year, START_YEAR, END_YEAR);
         const reportType = (search?.report_type as GqlReportType | undefined);
+        const mainCreditorCui = (search?.main_creditor_cui as string | undefined);
         queryClient.ensureQueryData(
             entityDetailsQueryOptions(
                 params.cui,
                 normalization,
                 reportPeriod,
                 reportType,
-                trendPeriod
+                trendPeriod,
+                mainCreditorCui
             )
         );
 

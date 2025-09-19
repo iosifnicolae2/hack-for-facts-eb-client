@@ -68,7 +68,7 @@ function EntityDetailsPage() {
   const month = search.month ?? DEFAULT_MONTH
   const quarter = search.quarter ?? DEFAULT_QUARTER
   const reportTypeState = search.report_type
-  const mainCreditorState = (search.main_creditor_cui as 'ALL' | string | undefined) ?? 'ALL'
+  const mainCreditorState = search.main_creditor_cui
   const activeView = search.view ?? 'overview'
   const defaultUserNormalization = userCurrency === 'EUR' ? 'total_euro' : 'total'
   const normalization = search.normalization ?? defaultUserNormalization
@@ -83,6 +83,7 @@ function EntityDetailsPage() {
     reportPeriod,
     reportType: reportTypeState,
     trendPeriod,
+    mainCreditorCui: mainCreditorState,
   })
 
   useRecentEntities(entity)
@@ -90,7 +91,7 @@ function EntityDetailsPage() {
   const views = useEntityViews(entity)
 
   const debouncedPrefetch = useDebouncedCallback(
-    (payload: { report_period: ReportPeriodInput; report_type?: GqlReportType; main_creditor_cui?: 'ALL' | string; normalization?: Normalization }) => {
+    (payload: { report_period: ReportPeriodInput; report_type?: GqlReportType; main_creditor_cui?: string; normalization?: Normalization }) => {
       const { report_period, report_type, normalization: norm } = payload;
       const startAnchor = report_period.selection.interval?.start || '' as string;
       const hoveredYear = Number(String(startAnchor).slice(0, 4)) || selectedYear;
@@ -101,7 +102,8 @@ function EntityDetailsPage() {
           norm ?? normalization,
           report_period,
           report_type,
-          nextTrend
+          nextTrend,
+          payload.main_creditor_cui ?? mainCreditorState,
         )
       );
     },
@@ -223,7 +225,7 @@ function EntityDetailsPage() {
                   month={month as TMonth}
                   quarter={quarter as TQuarter}
                   reportType={reportTypeState ?? entity?.default_report_type}
-                  mainCreditor={mainCreditorState}
+                  mainCreditor={String(mainCreditorState)}
                   normalization={normalization}
                   onChange={handleReportControlsChange}
                   onPrefetch={debouncedPrefetch}
@@ -247,6 +249,7 @@ function EntityDetailsPage() {
           reportPeriod={reportPeriod}
           trendPeriod={trendPeriod}
           reportTypeState={reportTypeState}
+          mainCreditorCui={mainCreditorState}
           search={search}
           mapFilters={mapFilters}
           updateMapFilters={updateMapFilters}
@@ -274,6 +277,7 @@ interface ViewsContentProps {
   reportPeriod: ReportPeriodInput;
   trendPeriod: ReportPeriodInput;
   reportTypeState?: GqlReportType;
+  mainCreditorCui?: string;
   search: { expenseSearch?: string, incomeSearch?: string, [key: string]: any };
   mapFilters: AnalyticsFilterType;
   updateMapFilters: (update: Partial<AnalyticsFilterType>) => void;
@@ -287,7 +291,7 @@ interface ViewsContentProps {
 function ViewsContent(props: ViewsContentProps) {
   const {
     cui, entity, activeView, selectedYear, normalization, years, period, reportPeriod, trendPeriod,
-    reportTypeState, search, mapFilters, updateMapFilters, handleYearChange,
+    reportTypeState, search, mapFilters, updateMapFilters, handleYearChange, mainCreditorCui,
     handleSearchChange, handleNormalizationChange, handlePeriodItemSelect, handleAnalyticsChange,
     isLoading,
   } = props;
@@ -321,7 +325,7 @@ function ViewsContent(props: ViewsContentProps) {
           case 'ranking': return <RankingView />
           case 'related-charts': return <RelatedChartsView entity={entity} normalization={normalization} />
           case 'relationships': return <EntityRelationships cui={cui} />
-          default: return <Overview cui={cui} entity={entity} isLoading={isLoading} selectedYear={selectedYear} normalization={normalization} years={years} periodType={period} reportPeriod={reportPeriod} trendPeriod={trendPeriod} reportType={reportTypeState} search={search} onChartNormalizationChange={handleNormalizationChange} onYearChange={handleYearChange} onPeriodItemSelect={handlePeriodItemSelect} onSearchChange={handleSearchChange} onAnalyticsChange={handleAnalyticsChange} />
+          default: return <Overview cui={cui} entity={entity} isLoading={isLoading} selectedYear={selectedYear} normalization={normalization} years={years} periodType={period} reportPeriod={reportPeriod} trendPeriod={trendPeriod} reportType={reportTypeState} mainCreditorCui={mainCreditorCui} search={search} onChartNormalizationChange={handleNormalizationChange} onYearChange={handleYearChange} onPeriodItemSelect={handlePeriodItemSelect} onSearchChange={handleSearchChange} onAnalyticsChange={handleAnalyticsChange} />
         }
       })()}
     </Suspense>

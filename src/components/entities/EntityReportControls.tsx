@@ -17,13 +17,13 @@ type Props = {
   quarter: TQuarter
   month: TMonth
   reportType?: GqlReportType
-  mainCreditor?: 'ALL' | string
+  mainCreditor?: string
   normalization?: Normalization
-  onChange?: (payload: { report_period: ReportPeriodInput; report_type?: GqlReportType; main_creditor_cui?: 'ALL' | string; normalization?: Normalization }) => void
-  onPrefetch?: (payload: { report_period: ReportPeriodInput; report_type?: GqlReportType; main_creditor_cui?: 'ALL' | string; normalization?: Normalization }) => void
+  onChange?: (payload: { report_period: ReportPeriodInput; report_type?: GqlReportType; main_creditor_cui?: string; normalization?: Normalization }) => void
+  onPrefetch?: (payload: { report_period: ReportPeriodInput; report_type?: GqlReportType; main_creditor_cui?: string; normalization?: Normalization }) => void
 }
 
-export function EntityReportControls({ entity, periodType, year, quarter, month, reportType, mainCreditor = 'ALL', normalization, onChange, onPrefetch }: Props) {
+export function EntityReportControls({ entity, periodType, year, quarter, month, reportType, mainCreditor, normalization, onChange, onPrefetch }: Props) {
   const monthFormatter = useMemo(() => new Intl.DateTimeFormat(i18n.locale || 'en', { month: 'short' }), [i18n.locale])
   const MONTHS: { id: TMonth; label: string }[] = useMemo(() => {
     return Array.from({ length: 12 }, (_, idx) => {
@@ -51,21 +51,13 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
     return Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, idx) => defaultYearRange.end - idx)
   }, [])
 
-  const creditorEntries = useMemo(() => {
-    const set = new Map<string, string>()
-    if (entity?.reports?.nodes) {
-      for (const r of entity.reports.nodes) {
-        if (r.main_creditor?.cui && r.main_creditor?.name) {
-          set.set(r.main_creditor.cui, r.main_creditor.name)
-        }
-      }
-    }
-    return Array.from(set.entries()).map(([id, label]) => ({ id, label }))
-  }, [entity?.reports?.nodes])
-
   const creditorOptions = useMemo(() => {
-    return creditorEntries.length ? [{ id: 'ALL', label: t`All` }, ...creditorEntries] : []
-  }, [creditorEntries])
+    const parents = entity?.parents?.filter((p) => p.cui !== entity?.cui).map((p) => ({ id: p.cui, label: p.name })) ?? []
+    if (parents.length === 0) {
+      return []
+    }
+    return [{ id: 'undefined', label: t`All` }, ...parents]
+  }, [entity])
 
   const quarterOptions = [
     { id: 'Q1', label: 'Q1' },
@@ -74,17 +66,18 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
     { id: 'Q4', label: 'Q4' },
   ]
 
-  const emitChange = (type: ReportPeriodType, year: number, quarter: TQuarter, month: TMonth, reportType?: GqlReportType, creditor?: 'ALL' | string, norm?: Normalization) => {
+  const emitChange = (type: ReportPeriodType, year: number, quarter: TQuarter, month: TMonth, reportType?: GqlReportType, creditor?: string, norm?: Normalization) => {
     let dateFilter: DateInput
     if (type === 'YEAR') dateFilter = `${year}`
     else if (type === 'QUARTER') dateFilter = `${year}-${quarter}`
     else if (type === 'MONTH') dateFilter = `${year}-${month}`
     else throw new Error('Invalid period type')
     const report_period = makeSingleTimePeriod(type, dateFilter)
-    onChange?.({ report_period, report_type: reportType, main_creditor_cui: creditor, normalization: norm })
+    const main_creditor_cui = creditor === 'undefined' ? undefined : creditor
+    onChange?.({ report_period, report_type: reportType, main_creditor_cui, normalization: norm })
   }
 
-  const emitPrefetch = (type: ReportPeriodType, year: number, quarter: TQuarter, month: TMonth, reportType?: GqlReportType, creditor?: 'ALL' | string, norm?: Normalization) => {
+  const emitPrefetch = (type: ReportPeriodType, year: number, quarter: TQuarter, month: TMonth, reportType?: GqlReportType, creditor?: string, norm?: Normalization) => {
     if (!onPrefetch) return
     let dateFilter: DateInput
     if (type === 'YEAR') dateFilter = `${year}`
@@ -92,7 +85,8 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
     else if (type === 'MONTH') dateFilter = `${year}-${month}`
     else throw new Error('Invalid period type')
     const report_period = makeSingleTimePeriod(type, dateFilter)
-    onPrefetch({ report_period, report_type: reportType, main_creditor_cui: creditor, normalization: norm })
+    const main_creditor_cui = creditor === 'undefined' ? undefined : creditor
+    onPrefetch({ report_period, report_type: reportType, main_creditor_cui, normalization: norm })
   }
 
   const handleTypeChange = (value: string | number | boolean | undefined) => {
@@ -149,7 +143,7 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
     emitChange(periodType, year, quarter, month, nextReportType, mainCreditor, normalization)
   }
   const handleCreditorChange = (value: string) => {
-    const creditor = value as 'ALL' | string
+    const creditor = value as string
     emitChange(periodType, year, quarter, month, reportType, creditor, normalization)
   }
   const handleNormalizationChange = (value: Normalization) => {
@@ -294,7 +288,7 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
             className="grid grid-cols-1 gap-2"
           >
             {creditorOptions.map((c) => (
-              <ToggleGroupItem key={c.id} value={c.id} onMouseEnter={() => emitPrefetch(periodType, year, quarter, month, reportType, c.id as 'ALL' | string, normalization)} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{c.label}</ToggleGroupItem>
+              <ToggleGroupItem key={c.id} value={c.id} onMouseEnter={() => emitPrefetch(periodType, year, quarter, month, reportType, c.id, normalization)} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{c.label}</ToggleGroupItem>
             ))}
           </ToggleGroup>
         </div>

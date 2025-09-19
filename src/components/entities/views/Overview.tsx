@@ -25,6 +25,7 @@ interface OverviewProps {
     reportPeriod: ReportPeriodInput;
     trendPeriod: ReportPeriodInput;
     reportType?: GqlReportType;
+    mainCreditorCui?: string;
     search: {
         expenseSearch?: string;
         incomeSearch?: string;
@@ -53,6 +54,7 @@ export const Overview = ({
     trendPeriod,
     reportType,
     search,
+    mainCreditorCui,
     onChartNormalizationChange,
     onYearChange,
     onPeriodItemSelect,
@@ -66,11 +68,12 @@ export const Overview = ({
         reportPeriod,
         reportType,
         enabled: true,
+        mainCreditorCui: mainCreditorCui
     });
 
     const debouncedPrefetch = useDebouncedCallback(
         (options: { reportPeriod: ReportPeriodInput, trendPeriod: ReportPeriodInput, reportType?: GqlReportType }) => {
-            queryClient.prefetchQuery(entityDetailsQueryOptions(cui, normalization, options.reportPeriod, options.reportType, options.trendPeriod));
+            queryClient.prefetchQuery(entityDetailsQueryOptions(cui, normalization, options.reportPeriod, options.reportType, options.trendPeriod, mainCreditorCui));
         },
         100
     );
@@ -168,8 +171,9 @@ export const Overview = ({
                 <div className="mt-6">
                     <EntityReportsSummary
                         cui={cui}
-                        trendPeriod={trendPeriod}
+                        reportPeriod={reportPeriod}
                         reportType={reportType ?? entity.default_report_type}
+                        mainCreditorCui={(search as any).main_creditor_cui}
                         limit={12}
                     />
                 </div>

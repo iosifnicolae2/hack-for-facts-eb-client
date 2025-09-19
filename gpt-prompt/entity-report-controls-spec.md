@@ -7,7 +7,7 @@ Interactive controls for the Entity page to select reporting period, report type
 {
   report_period: ReportPeriodInput;
   report_type?: 'PRINCIPAL_AGGREGATED' | 'SECONDARY_AGGREGATED' | 'DETAILED';
-  main_creditor_cui?: 'ALL' | string;
+  main_creditor_cui?: string;
 }
 ```
 
@@ -56,7 +56,7 @@ type Props = {
   onChange?: (payload: {
     report_period: ReportPeriodInput;
     report_type?: GqlReportType;
-    main_creditor_cui?: 'ALL' | string;
+    main_creditor_cui?: string;
   }) => void;
 }
 ```
