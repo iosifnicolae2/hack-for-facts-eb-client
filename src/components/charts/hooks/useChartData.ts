@@ -410,6 +410,56 @@ export function convertToTimeSeriesData(
     return { data, unitMap, validation };
 }
 
+
+/**
+ * Converts a period string (YYYY, YYYY-MM, YYYY-Qx) to a Date object.
+ * This is useful for comparing periods of different granularities.
+ * @param period The period string.
+ * @param boundary Whether to return the start or end of the period.
+ * @returns A Date object, or null if the format is invalid.
+ */
+function periodToDate(period: string, boundary: "start" | "end"): Date | null {
+    if (typeof period !== 'string') return null;
+    const trimmedPeriod = period.trim();
+
+    // YYYY
+    const yearMatch = trimmedPeriod.match(/^(\d{4})$/);
+    if (yearMatch) {
+        const year = parseInt(yearMatch[1], 10);
+        if (boundary === "start") return new Date(Date.UTC(year, 0, 1));
+        return new Date(Date.UTC(year, 11, 31, 23, 59, 59, 999));
+    }
+
+    // YYYY-MM
+    const monthMatch = trimmedPeriod.match(/^(\d{4})-(\d{2})$/);
+    if (monthMatch) {
+        const year = parseInt(monthMatch[1], 10);
+        const month = parseInt(monthMatch[2], 10);
+        if (month < 1 || month > 12) return null;
+        if (boundary === "start") return new Date(Date.UTC(year, month - 1, 1));
+        const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
+        return new Date(Date.UTC(year, month - 1, lastDay, 23, 59, 59, 999));
+    }
+
+    // YYYY-Q[1-4]
+    const quarterMatch = trimmedPeriod.match(/^(\d{4})-Q([1-4])$/);
+    if (quarterMatch) {
+        const year = parseInt(quarterMatch[1], 10);
+        const quarter = parseInt(quarterMatch[2], 10);
+        const startMonthIndex = (quarter - 1) * 3;
+        if (boundary === "start") {
+            return new Date(Date.UTC(year, startMonthIndex, 1));
+        } else {
+            const endMonthIndex = startMonthIndex + 2;
+            const lastDay = new Date(Date.UTC(year, endMonthIndex + 1, 0)).getUTCDate();
+            return new Date(Date.UTC(year, endMonthIndex, lastDay, 23, 59, 59, 999));
+        }
+    }
+
+    return null;
+}
+
+
 /**
  * Processes and validates aggregated data in a single pass.
  * Returns data, unit map, and complete validation results.
@@ -427,10 +477,6 @@ export function convertToAggregatedData(
     }
 
     const enabledSeries = chart.series.filter((s) => s.enabled);
-
-    const yearRange = chart.config.yearRange;
-    const startYear = yearRange?.start ?? -Infinity;
-    const endYear = yearRange?.end ?? Infinity;
 
     const unitMap = new Map<SeriesId, Unit>();
     const isRelative = chart.config.showRelativeValues ?? false;
@@ -450,20 +496,47 @@ export function convertToAggregatedData(
 
     const data = enabledSeries.map((series: Series, index: number) => {
         const dataSeries = dataSeriesMap.get(series.id);
-
         const points = dataSeries?.data ?? [];
-        const totalValueRaw = points
-            .filter((trend) => {
-                const x = Number(trend.x);
-                return Number.isFinite(x) && x >= startYear && x <= endYear;
-            })
+
+        let filteredPoints = points;
+        let periodString: string | undefined;
+
+        // Use `any` for series to access the `period` property which may not be in the base Series type
+        const seriesConfig = series as any;
+
+        if (seriesConfig.period?.selection?.interval) {
+            const { start, end } = seriesConfig.period.selection.interval;
+            periodString = start === end ? start : `${start}-${end}`;
+
+            const startDate = periodToDate(start, "start");
+            const endDate = periodToDate(end, "end");
+
+            if (startDate && endDate) {
+                filteredPoints = points.filter((trend) => {
+                    const pointDate = periodToDate(String(trend.x), "start");
+                    return pointDate && pointDate >= startDate && pointDate <= endDate;
+                });
+            } else {
+                warnings.push({
+                    type: "invalid_aggregated_value",
+                    seriesId: series.id,
+                    message: `Invalid period interval format for aggregation: '${start}-${end}'. Aggregating all points for this series.`,
+                });
+            }
+        } else if (seriesConfig.period?.selection?.dates) {
+            const dates = new Set(seriesConfig.period.selection.dates.map((d: any) => String(d).trim()));
+            periodString = seriesConfig.period.selection.dates.join(', ');
+            filteredPoints = points.filter((trend) => dates.has(String(trend.x).trim()));
+        }
+
+        const totalValueRaw = filteredPoints
             .reduce((acc, trend) => acc + (Number.isFinite(trend.y) ? trend.y : 0), 0);
 
         if (!Number.isFinite(totalValueRaw)) {
             warnings.push({
                 type: "invalid_aggregated_value",
                 seriesId: series.id,
-                message: `Invalid aggregated value auto-set to 0 for ${startYear}-${endYear}.`,
+                message: `Invalid aggregated value auto-set to 0 for period: ${periodString ?? 'all time'}.`,
                 value: totalValueRaw,
             });
         }
@@ -483,7 +556,7 @@ export function convertToAggregatedData(
                 warnings.push({
                     type: "auto_adjusted_value",
                     seriesId: series.id,
-                    message: `Relative base is ${firstSeriesValue}. Auto-set value to 0 for aggregated period ${startYear}-${endYear}.`,
+                    message: `Relative base is ${firstSeriesValue}. Auto-set value to 0 for aggregated period ${periodString ?? 'all time'}.`,
                     value: { base: firstSeriesValue, total: totalValue },
                 });
                 value = 0;
@@ -493,7 +566,7 @@ export function convertToAggregatedData(
                     warnings.push({
                         type: "auto_adjusted_value",
                         seriesId: series.id,
-                        message: `Computed relative value not finite. Auto-set to 0 for ${startYear}-${endYear}.`,
+                        message: `Computed relative value not finite. Auto-set to 0 for ${periodString ?? 'all time'}.`,
                         value: { base: firstSeriesValue, total: totalValue },
                     });
                 }
@@ -506,7 +579,7 @@ export function convertToAggregatedData(
 
         const aggregatedDataPoint: DataPointPayload = {
             id: series.id,
-            year: `${startYear}-${endYear}`,
+            year: periodString ?? "Aggregated",
             series,
             value,
             unit,
