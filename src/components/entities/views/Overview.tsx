@@ -1,7 +1,7 @@
 import { EntityDetailsData } from "@/lib/api/entities";
 import { EntityFinancialSummary } from "../EntityFinancialSummary"
 import { EntityFinancialTrends } from "../EntityFinancialTrends"
-import { EntityLineItems } from "../EntityLineItems"
+import { EntityLineItemsTabs } from "../EntityLineItemsTabs"
 import { LineItemsAnalytics } from "../LineItemsAnalytics"
 import { Normalization } from "@/schemas/charts";
 import type { GqlReportType, ReportPeriodInput, ReportPeriodType, TMonth, TQuarter } from "@/schemas/reporting";
@@ -23,7 +23,6 @@ interface OverviewProps {
     years: number[];
     periodType?: ReportPeriodType;
     reportPeriod: ReportPeriodInput;
-    trendPeriod: ReportPeriodInput;
     reportType?: GqlReportType;
     mainCreditorCui?: string;
     search: {
@@ -34,12 +33,17 @@ interface OverviewProps {
         period?: ReportPeriodType;
         quarter?: string;
         month?: string;
+        [key: string]: any; // Allow additional URL state
     };
     onChartNormalizationChange: (mode: Normalization) => void;
     onYearChange: (year: number) => void;
     onPeriodItemSelect?: (label: string) => void;
     onSearchChange: (type: 'expense' | 'income', term: string) => void;
     onAnalyticsChange: (type: 'analyticsChartType' | 'analyticsDataType', value: 'bar' | 'pie' | 'income' | 'expense') => void;
+    // Line items tab state
+    onLineItemsTabChange?: (tab: 'functional' | 'funding' | 'expenseType') => void;
+    onSelectedFundingKeyChange?: (key: string) => void;
+    onSelectedExpenseTypeKeyChange?: (key: string) => void;
 }
 
 export const Overview = ({
@@ -51,7 +55,6 @@ export const Overview = ({
     years,
     periodType,
     reportPeriod,
-    trendPeriod,
     reportType,
     search,
     mainCreditorCui,
@@ -59,7 +62,10 @@ export const Overview = ({
     onYearChange,
     onPeriodItemSelect,
     onSearchChange,
-    onAnalyticsChange
+    onAnalyticsChange,
+    onLineItemsTabChange,
+    onSelectedFundingKeyChange,
+    onSelectedExpenseTypeKeyChange,
 }: OverviewProps) => {
 
     const { data: lineItems, isLoading: isLoadingLineItems } = useEntityExecutionLineItems({
@@ -134,13 +140,12 @@ export const Overview = ({
                 onPrefetchPeriod={handlePrefetchPeriod}
             />
 
-            <EntityLineItems
-                lineItems={lineItems}
+            <EntityLineItemsTabs
+                lineItems={lineItems?.nodes ?? []}
+                fundingSources={lineItems?.fundingSources ?? []}
                 currentYear={selectedYear}
                 month={search.month as TMonth}
                 quarter={search.quarter as TQuarter}
-                totalIncome={entity?.totalIncome}
-                totalExpenses={entity?.totalExpenses}
                 years={years}
                 onYearChange={handleYearChange}
                 onPrefetchYear={handlePrefetchYear}
@@ -149,6 +154,12 @@ export const Overview = ({
                 onSearchChange={(type: 'expense' | 'income', term: string) => handleSearchChange(type, term)}
                 isLoading={isLoading || isLoadingLineItems}
                 normalization={normalization}
+                lineItemsTab={search.lineItemsTab as 'functional' | 'funding' | 'expenseType' | undefined}
+                onLineItemsTabChange={onLineItemsTabChange}
+                selectedFundingKey={search.selectedFundingKey as string | undefined}
+                selectedExpenseTypeKey={search.selectedExpenseTypeKey as string | undefined}
+                onSelectedFundingKeyChange={onSelectedFundingKeyChange}
+                onSelectedExpenseTypeKeyChange={onSelectedExpenseTypeKeyChange}
             />
 
             <LineItemsAnalytics

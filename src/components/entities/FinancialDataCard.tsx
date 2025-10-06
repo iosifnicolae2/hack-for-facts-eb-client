@@ -116,6 +116,7 @@ GroupedItemsDisplay.displayName = "GroupedItemsDisplay";
 
 interface FinancialDataCardProps {
   title: string;
+  subtitle?: string;
   iconType: 'income' | 'expense';
   currentYear: number;
   month?: TMonth;
@@ -135,6 +136,7 @@ interface FinancialDataCardProps {
 
 export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
   title,
+  subtitle = '',
   iconType,
   currentYear,
   month,
@@ -156,35 +158,40 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
   const dateLabel = getYearLabel(currentYear, month, quarter);
   return (
     <Card className="shadow-lg dark:bg-slate-800 h-full flex flex-col">
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div className="flex items-center">
-          <Icon className={`h-6 w-6 mr-2 ${iconColor}`} />
-          <Select
-            value={currentYear.toString()}
-            onValueChange={(val) => onYearChange(parseInt(val, 10))}
-          >
-            <SelectTrigger className="w-auto border-0 shadow-none bg-transparent focus:ring-0">
-              <h3 className="text-lg font-semibold">
-                {title} ({dateLabel})
-              </h3>
-            </SelectTrigger>
-            <SelectContent>
-              {years.map((year) => (
-                <SelectItem key={year} value={year.toString()} onMouseEnter={() => onPrefetchYear?.(year)}>
-                  {getYearLabel(year, month, quarter)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+      <CardHeader className="flex flex-col space-y-0">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <Icon className={`h-6 w-6 mr-2 ${iconColor}`} />
+            <Select
+              value={currentYear.toString()}
+              onValueChange={(val) => onYearChange(parseInt(val, 10))}
+            >
+              <SelectTrigger className="w-auto border-0 shadow-none bg-transparent focus:ring-0">
+                <h3 className="text-lg font-semibold">
+                  {title} ({dateLabel})
+                </h3>
+              </SelectTrigger>
+
+              <SelectContent>
+                {years.map((year) => (
+                  <SelectItem key={year} value={year.toString()} onMouseEnter={() => onPrefetchYear?.(year)}>
+                    {getYearLabel(year, month, quarter)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <SearchToggleInput
+            key={iconType}
+            active={searchActive}
+            initialSearchTerm={searchTerm}
+            onToggle={onSearchToggle}
+            onChange={onSearchChange}
+            focusKey={searchFocusKey}
+          />
         </div>
-        <SearchToggleInput
-          key={iconType}
-          active={searchActive}
-          initialSearchTerm={searchTerm}
-          onToggle={onSearchToggle}
-          onChange={onSearchChange}
-          focusKey={searchFocusKey}
-        />
+        {subtitle && <span className="text-sm text-muted-foreground">{subtitle}</span>}
       </CardHeader>
       <CardContent className="flex-grow">
         <GroupedItemsDisplay

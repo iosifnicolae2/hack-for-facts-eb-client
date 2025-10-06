@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { GroupedChapter, GroupedFunctional, GroupedEconomic, GroupedSubchapter } from '@/schemas/financial';
 import { ExecutionLineItem } from '@/lib/api/entities';
 import { useDebouncedValue } from '@/lib/hooks/useDebouncedValue';
@@ -146,13 +146,13 @@ const groupIncomeBySubchapter = (
     const prefix = twoDigitFromAnyCode(funcCode);
     if (!prefix) continue;
 
-      let chapter = chapters.get(prefix);
+    let chapter = chapters.get(prefix);
     if (!chapter) {
       chapter = {
         functionals: new Map(),
         subchapters: new Map(),
         total: 0,
-          description: chapterMap.get(prefix) ?? 'Neclasificat',
+        description: chapterMap.get(prefix) ?? 'Neclasificat',
       };
       chapters.set(prefix, chapter);
     }
@@ -356,35 +356,49 @@ export const useFinancialData = (
   const { data: chapterMap = new Map<string, string>() } = useChapterMap();
   const { data: incomeSubchapterMap = new Map<string, string>() } = useIncomeSubchapterMap();
 
-  const [expenseSearchTerm, setExpenseSearchTerm] = React.useState(initialExpenseSearchTerm ?? '');
-  const [incomeSearchTerm, setIncomeSearchTerm] = React.useState(initialIncomeSearchTerm ?? '');
-  const [expenseSearchActive, setExpenseSearchActive] = React.useState(!!initialExpenseSearchTerm);
-  const [incomeSearchActive, setIncomeSearchActive] = React.useState(!!initialIncomeSearchTerm);
+  const [expenseSearchTerm, setExpenseSearchTerm] = useState(initialExpenseSearchTerm ?? '');
+  const [incomeSearchTerm, setIncomeSearchTerm] = useState(initialIncomeSearchTerm ?? '');
+  const [expenseSearchActive, setExpenseSearchActive] = useState(!!initialExpenseSearchTerm);
+  const [incomeSearchActive, setIncomeSearchActive] = useState(!!initialIncomeSearchTerm);
+
+  useEffect(() => {
+    const nextTerm = initialExpenseSearchTerm ?? '';
+    if (expenseSearchTerm !== nextTerm) {
+      setExpenseSearchTerm(nextTerm);
+    }
+  }, [initialExpenseSearchTerm, expenseSearchTerm]);
+
+  useEffect(() => {
+    const nextTerm = initialIncomeSearchTerm ?? '';
+    if (incomeSearchTerm !== nextTerm) {
+      setIncomeSearchTerm(nextTerm);
+    }
+  }, [initialIncomeSearchTerm, incomeSearchTerm]);
 
   const debouncedExpenseSearchTerm = useDebouncedValue(expenseSearchTerm, 300);
   const debouncedIncomeSearchTerm = useDebouncedValue(incomeSearchTerm, 300);
 
-  const expenses = React.useMemo(() => lineItems.filter((li) => li.account_category === 'ch'), [lineItems]);
-  const incomes = React.useMemo(() => lineItems.filter((li) => li.account_category === 'vn'), [lineItems]);
+  const expenses = useMemo(() => lineItems.filter((li) => li.account_category === 'ch'), [lineItems]);
+  const incomes = useMemo(() => lineItems.filter((li) => li.account_category === 'vn'), [lineItems]);
 
   // Group using lazily loaded maps
-  const expenseGroups = React.useMemo(() => groupByFunctional(expenses, chapterMap), [expenses, chapterMap]);
-  const incomeGroups = React.useMemo(() => groupIncomeBySubchapter(incomes, incomeSubchapterMap, chapterMap), [incomes, incomeSubchapterMap, chapterMap]);
+  const expenseGroups = useMemo(() => groupByFunctional(expenses, chapterMap), [expenses, chapterMap]);
+  const incomeGroups = useMemo(() => groupIncomeBySubchapter(incomes, incomeSubchapterMap, chapterMap), [incomes, incomeSubchapterMap, chapterMap]);
 
-  const filteredExpenseGroups = React.useMemo(
+  const filteredExpenseGroups = useMemo(
     () => filterGroups(expenseGroups, debouncedExpenseSearchTerm),
     [expenseGroups, debouncedExpenseSearchTerm]
   );
-  const filteredIncomeGroups = React.useMemo(
+  const filteredIncomeGroups = useMemo(
     () => filterGroups(incomeGroups, debouncedIncomeSearchTerm),
     [incomeGroups, debouncedIncomeSearchTerm]
   );
 
-  const expenseBase = React.useMemo(
+  const expenseBase = useMemo(
     () => totalExpenses ?? expenseGroups.reduce((sum, ch) => sum + ch.totalAmount, 0),
     [totalExpenses, expenseGroups]
   );
-  const incomeBase = React.useMemo(
+  const incomeBase = useMemo(
     () => totalIncome ?? incomeGroups.reduce((sum, ch) => sum + ch.totalAmount, 0),
     [totalIncome, incomeGroups]
   );

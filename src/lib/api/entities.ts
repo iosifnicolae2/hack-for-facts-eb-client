@@ -6,10 +6,17 @@ import { GqlReportType, ReportPeriodInput } from "@/schemas/reporting";
 
 const logger = createLogger("entities-api");
 
+export interface FundingSourceOption {
+  source_id: string;
+  source_description: string;
+}
 
 export interface ExecutionLineItem {
   line_item_id: string;
   account_category: 'vn' | 'ch';
+  funding_source_id: number;
+  expense_type?: 'dezvoltare' | 'functionare';
+  anomaly?: 'YTD_ANOMALY' | 'MISSING_LINE_ITEM';
   functionalClassification?: {
     functional_name: string;
     functional_code: string;
@@ -318,12 +325,14 @@ const GET_ENTITY_LINE_ITEMS_QUERY = `
         nodes {
           line_item_id
           account_category
+          funding_source_id
+          expense_type
+          anomaly
           functionalClassification { functional_name functional_code }
           economicClassification { economic_name economic_code }
           ytd_amount
           quarterly_amount
           monthly_amount
-          report { report_id main_creditor { cui name } }
         }
       }
       executionLineItemsVn: executionLineItems(
@@ -334,13 +343,21 @@ const GET_ENTITY_LINE_ITEMS_QUERY = `
         nodes {
           line_item_id
           account_category
+          funding_source_id
+          expense_type
+          anomaly
           functionalClassification { functional_name functional_code }
           economicClassification { economic_name economic_code }
           ytd_amount
           quarterly_amount
           monthly_amount
-          report { report_id main_creditor { cui name } }
         }
+      }
+    }
+    fundingSources {
+      nodes {
+        source_id
+        source_description
       }
     }
   }
@@ -352,12 +369,13 @@ export async function getEntityExecutionLineItems(
   reportPeriod: ReportPeriodInput,
   reportType?: GqlReportType,
   mainCreditorCui?: string,
-): Promise<{ nodes: ExecutionLineItem[] }> {
+): Promise<{ nodes: ExecutionLineItem[], fundingSources: FundingSourceOption[] }> {
   const data = await graphqlRequest<{
     entity: {
       executionLineItemsCh?: { nodes: ExecutionLineItem[] } | null;
       executionLineItemsVn?: { nodes: ExecutionLineItem[] } | null;
     } | null;
+    fundingSources?: { nodes: FundingSourceOption[] } | null;
   }>(GET_ENTITY_LINE_ITEMS_QUERY, { cui, reportPeriod, reportType, normalization, mainCreditorCui });
 
   const periodType = reportPeriod.type;
@@ -371,7 +389,7 @@ export async function getEntityExecutionLineItems(
     ...(data?.entity?.executionLineItemsVn?.nodes ?? []),
   ].map(mapWithAmount);
 
-  return { nodes: mergedNodes };
+  return { nodes: mergedNodes, fundingSources: data?.fundingSources?.nodes ?? [] };
 }
 
 const ENTITY_SEARCH_QUERY = `

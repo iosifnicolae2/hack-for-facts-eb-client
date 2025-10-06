@@ -70,6 +70,9 @@ function EntityDetailsPage() {
   const reportTypeState = search.report_type
   const mainCreditorState = search.main_creditor_cui
   const activeView = search.view ?? 'overview'
+  const lineItemsTab = search.lineItemsTab as 'functional' | 'funding' | 'expenseType' | undefined
+  const selectedFundingKey = search.selectedFundingKey as string | undefined
+  const selectedExpenseTypeKey = search.selectedExpenseTypeKey as string | undefined
   const defaultUserNormalization = userCurrency === 'EUR' ? 'total_euro' : 'total'
   const normalization = search.normalization ?? defaultUserNormalization
 
@@ -118,6 +121,18 @@ function EntityDetailsPage() {
 
   const handleSearchChange = useCallback((type: 'expense' | 'income', value: string) => {
     updateSearch({ [`${type}Search`]: value || undefined })
+  }, [updateSearch])
+
+  const handleLineItemsTabChange = useCallback((tab: 'functional' | 'funding' | 'expenseType') => {
+    updateSearch({ lineItemsTab: tab })
+  }, [updateSearch])
+
+  const handleSelectedFundingKeyChange = useCallback((key: string) => {
+    updateSearch({ selectedFundingKey: key || undefined })
+  }, [updateSearch])
+
+  const handleSelectedExpenseTypeKeyChange = useCallback((key: string) => {
+    updateSearch({ selectedExpenseTypeKey: key || undefined })
   }, [updateSearch])
 
   const handleAnalyticsChange = useCallback((key: 'analyticsChartType' | 'analyticsDataType', value: string) => {
@@ -258,6 +273,12 @@ function EntityDetailsPage() {
           handleNormalizationChange={handleNormalizationChange}
           handlePeriodItemSelect={handlePeriodItemSelect}
           handleAnalyticsChange={handleAnalyticsChange}
+          lineItemsTab={lineItemsTab ?? 'functional'}
+          handleLineItemsTabChange={handleLineItemsTabChange}
+          selectedFundingKey={selectedFundingKey ?? ''}
+          selectedExpenseTypeKey={selectedExpenseTypeKey ?? ''}
+          handleSelectedFundingKeyChange={handleSelectedFundingKeyChange}
+          handleSelectedExpenseTypeKeyChange={handleSelectedExpenseTypeKeyChange}
         />
       </div>
     </div>
@@ -286,6 +307,12 @@ interface ViewsContentProps {
   handleNormalizationChange: (norm: Normalization) => void;
   handlePeriodItemSelect: (label: string) => void;
   handleAnalyticsChange: (key: 'analyticsChartType' | 'analyticsDataType', value: string) => void;
+  lineItemsTab: 'functional' | 'funding' | 'expenseType';
+  handleLineItemsTabChange: (tab: 'functional' | 'funding' | 'expenseType') => void;
+  selectedFundingKey?: string;
+  selectedExpenseTypeKey?: string;
+  handleSelectedFundingKeyChange: (key: string) => void;
+  handleSelectedExpenseTypeKeyChange: (key: string) => void;
 }
 
 function ViewsContent(props: ViewsContentProps) {
@@ -293,6 +320,8 @@ function ViewsContent(props: ViewsContentProps) {
     cui, entity, activeView, selectedYear, normalization, years, period, reportPeriod, trendPeriod,
     reportTypeState, search, mapFilters, updateMapFilters, handleYearChange, mainCreditorCui,
     handleSearchChange, handleNormalizationChange, handlePeriodItemSelect, handleAnalyticsChange,
+    lineItemsTab, handleLineItemsTabChange,
+    selectedFundingKey, selectedExpenseTypeKey, handleSelectedFundingKeyChange, handleSelectedExpenseTypeKeyChange,
     isLoading,
   } = props;
 
@@ -311,6 +340,12 @@ function ViewsContent(props: ViewsContentProps) {
     reportType: reportTypeState ?? entity?.default_report_type,
     onSelectPeriod: handlePeriodItemSelect,
     years,
+    lineItemsTab: lineItemsTab ?? 'functional',
+    onLineItemsTabChange: handleLineItemsTabChange,
+    selectedFundingKey: selectedFundingKey ?? '',
+    selectedExpenseTypeKey: selectedExpenseTypeKey ?? '',
+    onSelectedFundingKeyChange: handleSelectedFundingKeyChange,
+    onSelectedExpenseTypeKeyChange: handleSelectedExpenseTypeKeyChange,
   }
 
   return (
@@ -325,7 +360,7 @@ function ViewsContent(props: ViewsContentProps) {
           case 'ranking': return <RankingView />
           case 'related-charts': return <RelatedChartsView entity={entity} normalization={normalization} />
           case 'relationships': return <EntityRelationships cui={cui} />
-          default: return <Overview cui={cui} entity={entity} isLoading={isLoading} selectedYear={selectedYear} normalization={normalization} years={years} periodType={period} reportPeriod={reportPeriod} trendPeriod={trendPeriod} reportType={reportTypeState} mainCreditorCui={mainCreditorCui} search={search} onChartNormalizationChange={handleNormalizationChange} onYearChange={handleYearChange} onPeriodItemSelect={handlePeriodItemSelect} onSearchChange={handleSearchChange} onAnalyticsChange={handleAnalyticsChange} />
+          default: return <Overview cui={cui} entity={entity} isLoading={isLoading} selectedYear={selectedYear} normalization={normalization} years={years} periodType={period} reportPeriod={reportPeriod} reportType={reportTypeState} mainCreditorCui={mainCreditorCui} search={search} onChartNormalizationChange={handleNormalizationChange} onYearChange={handleYearChange} onPeriodItemSelect={handlePeriodItemSelect} onSearchChange={handleSearchChange} onAnalyticsChange={handleAnalyticsChange} onLineItemsTabChange={handleLineItemsTabChange} onSelectedFundingKeyChange={handleSelectedFundingKeyChange} onSelectedExpenseTypeKeyChange={handleSelectedExpenseTypeKeyChange} />
         }
       })()}
     </Suspense>

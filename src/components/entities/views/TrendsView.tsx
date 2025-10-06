@@ -4,14 +4,13 @@ import { Chart, SeriesConfiguration, Normalization } from '@/schemas/charts';
 import { useParams } from '@tanstack/react-router';
 import { getChapterMap, getTopFunctionalGroupCodes } from '@/lib/analytics-utils';
 import { getSeriesColor } from '@/components/charts/components/chart-renderer/utils';
-import { useFinancialData } from '@/hooks/useFinancialData';
-import { FinancialDataCard } from '../FinancialDataCard';
 import { ChartCard } from './ChartCard';
 import { TrendsViewSkeleton } from './TrendsViewSkeleton';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { t } from '@lingui/core/macro';
 import { toReportTypeValue, type ReportPeriodInput, type GqlReportType, type TMonth, type TQuarter } from '@/schemas/reporting';
 import { useEntityExecutionLineItems } from '@/lib/hooks/useEntityDetails';
+import { EntityLineItemsTabs } from '../EntityLineItemsTabs';
 
 interface BaseTrendsViewProps {
   entity?: EntityDetailsData | null | undefined;
@@ -31,11 +30,17 @@ interface BaseTrendsViewProps {
   reportPeriod: ReportPeriodInput;
   trendPeriod: ReportPeriodInput;
   reportType?: GqlReportType;
+  lineItemsTab?: 'functional' | 'funding' | 'expenseType';
+  onLineItemsTabChange?: (tab: 'functional' | 'funding' | 'expenseType') => void;
+  selectedFundingKey?: string;
+  selectedExpenseTypeKey?: string;
+  onSelectedFundingKeyChange?: (key: string) => void;
+  onSelectedExpenseTypeKeyChange?: (key: string) => void;
 }
 
 const TOP_CATEGORIES_COUNT = 10;
 
-export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, currentYear, onYearClick, onSelectPeriod, initialIncomeSearch, initialExpenseSearch, onSearchChange, isLoading, normalization, onNormalizationChange, reportPeriod, trendPeriod, reportType, years = [] }) => {
+export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, currentYear, onYearClick, onSelectPeriod, initialIncomeSearch, initialExpenseSearch, onSearchChange, isLoading, normalization, onNormalizationChange, reportPeriod, trendPeriod, reportType, years = [], lineItemsTab = 'functional', onLineItemsTabChange, selectedFundingKey = '', selectedExpenseTypeKey = '', onSelectedFundingKeyChange, onSelectedExpenseTypeKeyChange }) => {
   const { cui } = useParams({ from: '/entities/$cui' });
   const isMobile = useIsMobile();
   const chapterMap = useMemo(() => getChapterMap(), []);
@@ -60,6 +65,8 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
     const accountCategory = type === 'income' ? 'vn' : 'ch';
     return nodes.filter(item => item.account_category === accountCategory);
   }, [fullLineItems, type]);
+
+  const fundingSources = (fullLineItems as any)?.fundingSources ?? [];
 
   const topFunctionalGroups = useMemo(() => {
     return getTopFunctionalGroupCodes(lineItems, TOP_CATEGORIES_COUNT);
@@ -125,68 +132,12 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
     }
   };
 
-  const {
-    expenseSearchTerm,
-    onExpenseSearchChange,
-    expenseSearchActive,
-    onExpenseSearchToggle,
-    filteredExpenseGroups,
-    incomeSearchTerm,
-    onIncomeSearchChange,
-    incomeSearchActive,
-    onIncomeSearchToggle,
-    filteredIncomeGroups,
-    incomeBase,
-    expenseBase,
-  } = useFinancialData(lineItems, null, null, initialExpenseSearch, initialIncomeSearch);
-
-  const handleSearchChange = (term: string) => {
-    onSearchChange(type, term);
-    if (type === 'income') {
-      onIncomeSearchChange(term);
-    } else {
-      onExpenseSearchChange(term);
-    }
-  };
-
   if (isLoading || !entity || !trendChart) {
     return <TrendsViewSkeleton />;
   }
 
   // Build xAxis marker value to reflect current selection
   const xAxisMarker = reportPeriod.type === 'YEAR' ? currentYear : anchor;
-
-  if (type === 'income') {
-    return (
-      <div className="space-y-8">
-        <ChartCard
-          chart={trendChart}
-          xAxisMarker={xAxisMarker as any}
-          onXAxisItemClick={handleXAxisClick}
-          onYearClick={onYearClick}
-          currentYear={currentYear}
-          normalization={normalization}
-          onNormalizationChange={onNormalizationChange}
-        />
-        <FinancialDataCard
-          title={t`Incomes`}
-          iconType={'income'}
-          currentYear={currentYear}
-          searchTerm={incomeSearchTerm}
-          searchFocusKey="mod+l"
-          onSearchChange={handleSearchChange}
-          searchActive={incomeSearchActive}
-          onSearchToggle={onIncomeSearchToggle}
-          groups={filteredIncomeGroups}
-          baseTotal={incomeBase}
-          years={years}
-          onYearChange={onYearClick}
-          month={selectedMonth}
-          quarter={selectedQuarter}
-        />
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-8">
@@ -199,21 +150,26 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
         normalization={normalization}
         onNormalizationChange={onNormalizationChange}
       />
-      <FinancialDataCard
-        title={t`Expenses`}
-        iconType="expense"
+      <EntityLineItemsTabs
+        lineItems={lineItems}
+        fundingSources={fundingSources}
         currentYear={currentYear}
-        searchTerm={expenseSearchTerm}
-        searchFocusKey="mod+j"
-        onSearchChange={handleSearchChange}
-        searchActive={expenseSearchActive}
-        onSearchToggle={onExpenseSearchToggle}
-        onYearChange={onYearClick}
-        groups={filteredExpenseGroups}
-        baseTotal={expenseBase}
-        years={years}
         month={selectedMonth}
         quarter={selectedQuarter}
+        years={years}
+        onYearChange={onYearClick}
+        initialExpenseSearchTerm={initialExpenseSearch ?? ''}
+        initialIncomeSearchTerm={initialIncomeSearch ?? ''}
+        onSearchChange={onSearchChange}
+        isLoading={isLoading || !fullLineItems}
+        normalization={normalization}
+        lineItemsTab={lineItemsTab}
+        onLineItemsTabChange={onLineItemsTabChange}
+        selectedFundingKey={selectedFundingKey}
+        selectedExpenseTypeKey={selectedExpenseTypeKey}
+        onSelectedFundingKeyChange={onSelectedFundingKeyChange}
+        onSelectedExpenseTypeKeyChange={onSelectedExpenseTypeKeyChange}
+        types={[type]}
       />
     </div>
   );

@@ -17,6 +17,10 @@ export const entitySearchSchema = z.object({
     analyticsDataType: z.enum(['income', 'expense']).optional(),
     mapFilters: AnalyticsFilterSchema.optional(),
     normalization: Normalization.optional(),
+    // Line items filter state (shared across all views)
+    lineItemsTab: z.enum(['functional', 'funding', 'expenseType']).optional(),
+    selectedFundingKey: z.string().optional(),
+    selectedExpenseTypeKey: z.string().optional(),
 });
 
 export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
