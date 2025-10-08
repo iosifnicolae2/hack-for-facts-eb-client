@@ -82,7 +82,7 @@ const EntityHeaderContent: React.FC<EntityHeaderContentProps> = ({
           <div ref={headerTitleRef} className="flex flex-col gap-2 mb-2 pt-2 sticky top-0 z-30 bg-background">
             <div className="flex flex-col lg:flex-row md:justify-between lg:items-center gap-2">
               <h1 className="text-4xl lg:text-5xl xl:text-5xl font-extrabold text-slate-900 dark:text-slate-100 flex items-center gap-2 min-w-0">
-                <Link to={`/entities/$cui`} params={{ cui: entity.cui }} className="hover:underline">
+                <Link to={`/entities/$cui`} params={{ cui: entity.cui }} className="hover:underline break-words">
                   {entity.name}
                 </Link>
               </h1>

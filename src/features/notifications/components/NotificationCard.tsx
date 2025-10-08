@@ -45,7 +45,7 @@ export function NotificationCard({ notifications, onRemove }: Props) {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="flex-1 min-w-0">
             {entityCui ? (
               <Link
@@ -55,17 +55,17 @@ export function NotificationCard({ notifications, onRemove }: Props) {
               >
                 <CardTitle className="text-lg flex items-center gap-2 hover:text-primary transition-colors">
                   <Building2 className="h-4 w-4 shrink-0" />
-                  <span className="truncate">{entityName}</span>
+                  <span className="break-words">{entityName}</span>
                   <ExternalLink className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
                 </CardTitle>
               </Link>
             ) : (
               <CardTitle className="text-lg flex items-center gap-2">
                 <Building2 className="h-4 w-4 shrink-0" />
-                <span className="truncate">{entityName}</span>
+                <span className="break-words">{entityName}</span>
               </CardTitle>
             )}
-            <CardDescription className="mt-1">
+            <CardDescription className="mt-1 ml-6">
               <code className="text-xs">{entityCui}</code>
             </CardDescription>
           </div>
