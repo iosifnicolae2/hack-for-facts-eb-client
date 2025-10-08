@@ -13,6 +13,7 @@ import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
 import { UatDisplay } from './UatDisplay';
 import { useHeaderSize } from './hooks/useHeaderSize';
+import { EntityNotificationBell } from '@/features/notifications/components/EntityNotificationBell';
 
 type HeaderEntity = Pick<EntityDetailsData, 'name' | 'cui' | 'entity_type' | 'address' | 'uat' | 'children' | 'parents' | 'executionLineItems'> & {
   is_uat?: boolean | null;
@@ -86,11 +87,10 @@ const EntityHeaderContent: React.FC<EntityHeaderContentProps> = ({
                 </Link>
               </h1>
             </div>
-            {yearSelector && (
-              <div className="mt-1 w-fit">
-                {yearSelector}
-              </div>
-            )}
+            <div className="mt-1 flex items-center gap-2">
+              {yearSelector}
+              <EntityNotificationBell cui={entity.cui} entityName={entity.name} />
+            </div>
           </div>
           <div className={cn(
             "overflow-hidden transition-all duration-300",

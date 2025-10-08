@@ -1,0 +1,128 @@
+import { useState } from 'react';
+import { Bell, BellOff, Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ResponsivePopover } from '@/components/ui/ResponsivePopover';
+import { Separator } from '@/components/ui/separator';
+import { useAuth, AuthSignInButton } from '@/lib/auth';
+import { useEntityNotifications } from '../hooks/useEntityNotifications';
+import { NotificationQuickMenu } from './NotificationQuickMenu';
+import { t } from '@lingui/core/macro';
+import { Trans } from '@lingui/react/macro';
+
+interface Props {
+  cui: string;
+  entityName: string;
+}
+
+export function EntityNotificationBell({ cui, entityName }: Props) {
+  const { isSignedIn, isLoaded } = useAuth();
+  const { data: notifications, isLoading } = useEntityNotifications(cui);
+  const [open, setOpen] = useState(false);
+
+  const hasActive = notifications?.some(n => n.isActive) ?? false;
+
+  if (!isLoaded) {
+    return null;
+  }
+
+  if (!isSignedIn) {
+    return (
+      <ResponsivePopover
+        open={open}
+        onOpenChange={setOpen}
+        trigger={
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={t`Sign in to get notifications`}
+            className="relative"
+          >
+            <Bell className="h-5 w-5" />
+          </Button>
+        }
+        content={
+          <div className="w-full max-w-md space-y-4 p-1">
+            <div>
+              <h3 className="font-semibold text-sm mb-1">
+                <Trans>Sign in required</Trans>
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                <Trans>You need to be signed in to subscribe to notifications</Trans>
+              </p>
+            </div>
+
+            <Separator />
+
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground">
+                <Trans>
+                  Sign in to receive updates about <strong>{entityName}</strong>:
+                </Trans>
+              </p>
+              <ul className="text-sm text-muted-foreground space-y-2 ml-4 list-disc">
+                <li>
+                  <Trans>Monthly, quarterly, and annual reports</Trans>
+                </li>
+                <li>
+                  <Trans>Alerts when important changes occur</Trans>
+                </li>
+                <li>
+                  <Trans>Easily manage your subscriptions</Trans>
+                </li>
+              </ul>
+            </div>
+
+            <Separator />
+
+            <AuthSignInButton>
+              <Button className="w-full">
+                <Trans>Sign In</Trans>
+              </Button>
+            </AuthSignInButton>
+          </div>
+        }
+        align="end"
+        className="w-md"
+      />
+    );
+  }
+
+  return (
+    <ResponsivePopover
+      open={open}
+      onOpenChange={setOpen}
+      trigger={
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label={t`Manage notifications`}
+          className={`relative transition-all duration-300 ${hasActive
+            ? 'bg-gradient-to-br from-slate-900 to-slate-800 hover:from-slate-800 hover:to-slate-700 shadow-lg border border-amber-500/20'
+            : ''
+            }`}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <div className="w-5 h-5">
+              <Loader2 className="h-5 w-5 animate-spin" />
+            </div>
+          ) : hasActive ? (
+            <Bell className="h-5 w-5 fill-amber-400 text-amber-400 stroke-amber-200" />
+          ) : (
+            <BellOff className="h-5 w-5" />
+          )}
+        </Button>
+      }
+      content={
+        <NotificationQuickMenu
+          cui={cui}
+          entityName={entityName}
+          notifications={notifications ?? []}
+          onClose={() => setOpen(false)}
+        />
+      }
+      align="end"
+      className="w-md"
+    />
+  );
+}

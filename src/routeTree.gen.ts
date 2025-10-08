@@ -17,8 +17,10 @@ import { Route as MapRouteImport } from './routes/map'
 import { Route as EntityAnalyticsRouteImport } from './routes/entity-analytics'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
+import { Route as UnsubscribeTokenRouteImport } from './routes/unsubscribe.$token'
 import { Route as ShareCodeRouteImport } from './routes/share.$code'
 import { Route as SettingsProfileRouteImport } from './routes/settings/profile'
+import { Route as SettingsNotificationsRouteImport } from './routes/settings/notifications'
 import { Route as EntitiesCuiRouteImport } from './routes/entities.$cui'
 import { Route as ChartsChartIdRouteRouteImport } from './routes/charts/$chartId/route'
 
@@ -91,6 +93,11 @@ const ChartsNewLazyRoute = ChartsNewLazyRouteImport.update({
   path: '/charts/new',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/charts/new.lazy').then((d) => d.Route))
+const UnsubscribeTokenRoute = UnsubscribeTokenRouteImport.update({
+  id: '/unsubscribe/$token',
+  path: '/unsubscribe/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShareCodeRoute = ShareCodeRouteImport.update({
   id: '/share/$code',
   path: '/share/$code',
@@ -99,6 +106,11 @@ const ShareCodeRoute = ShareCodeRouteImport.update({
 const SettingsProfileRoute = SettingsProfileRouteImport.update({
   id: '/settings/profile',
   path: '/settings/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsNotificationsRoute = SettingsNotificationsRouteImport.update({
+  id: '/settings/notifications',
+  path: '/settings/notifications',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EntitiesCuiRoute = EntitiesCuiRouteImport.update({
@@ -130,8 +142,10 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsLazyRoute
   '/charts/$chartId': typeof ChartsChartIdRouteRouteWithChildren
   '/entities/$cui': typeof EntitiesCuiRoute
+  '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/profile': typeof SettingsProfileRoute
   '/share/$code': typeof ShareCodeRoute
+  '/unsubscribe/$token': typeof UnsubscribeTokenRoute
   '/charts/new': typeof ChartsNewLazyRoute
   '/research/employees-data': typeof ResearchEmployeesDataLazyRoute
   '/charts': typeof ChartsIndexLazyRoute
@@ -147,8 +161,10 @@ export interface FileRoutesByTo {
   '/test-error': typeof TestErrorRoute
   '/terms': typeof TermsLazyRoute
   '/entities/$cui': typeof EntitiesCuiRoute
+  '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/profile': typeof SettingsProfileRoute
   '/share/$code': typeof ShareCodeRoute
+  '/unsubscribe/$token': typeof UnsubscribeTokenRoute
   '/charts/new': typeof ChartsNewLazyRoute
   '/research/employees-data': typeof ResearchEmployeesDataLazyRoute
   '/charts': typeof ChartsIndexLazyRoute
@@ -166,8 +182,10 @@ export interface FileRoutesById {
   '/terms': typeof TermsLazyRoute
   '/charts/$chartId': typeof ChartsChartIdRouteRouteWithChildren
   '/entities/$cui': typeof EntitiesCuiRoute
+  '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/profile': typeof SettingsProfileRoute
   '/share/$code': typeof ShareCodeRoute
+  '/unsubscribe/$token': typeof UnsubscribeTokenRoute
   '/charts/new': typeof ChartsNewLazyRoute
   '/research/employees-data': typeof ResearchEmployeesDataLazyRoute
   '/charts/': typeof ChartsIndexLazyRoute
@@ -186,8 +204,10 @@ export interface FileRouteTypes {
     | '/terms'
     | '/charts/$chartId'
     | '/entities/$cui'
+    | '/settings/notifications'
     | '/settings/profile'
     | '/share/$code'
+    | '/unsubscribe/$token'
     | '/charts/new'
     | '/research/employees-data'
     | '/charts'
@@ -203,8 +223,10 @@ export interface FileRouteTypes {
     | '/test-error'
     | '/terms'
     | '/entities/$cui'
+    | '/settings/notifications'
     | '/settings/profile'
     | '/share/$code'
+    | '/unsubscribe/$token'
     | '/charts/new'
     | '/research/employees-data'
     | '/charts'
@@ -221,8 +243,10 @@ export interface FileRouteTypes {
     | '/terms'
     | '/charts/$chartId'
     | '/entities/$cui'
+    | '/settings/notifications'
     | '/settings/profile'
     | '/share/$code'
+    | '/unsubscribe/$token'
     | '/charts/new'
     | '/research/employees-data'
     | '/charts/'
@@ -240,8 +264,10 @@ export interface RootRouteChildren {
   TermsLazyRoute: typeof TermsLazyRoute
   ChartsChartIdRouteRoute: typeof ChartsChartIdRouteRouteWithChildren
   EntitiesCuiRoute: typeof EntitiesCuiRoute
+  SettingsNotificationsRoute: typeof SettingsNotificationsRoute
   SettingsProfileRoute: typeof SettingsProfileRoute
   ShareCodeRoute: typeof ShareCodeRoute
+  UnsubscribeTokenRoute: typeof UnsubscribeTokenRoute
   ChartsNewLazyRoute: typeof ChartsNewLazyRoute
   ResearchEmployeesDataLazyRoute: typeof ResearchEmployeesDataLazyRoute
   ChartsIndexLazyRoute: typeof ChartsIndexLazyRoute
@@ -326,6 +352,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChartsNewLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/unsubscribe/$token': {
+      id: '/unsubscribe/$token'
+      path: '/unsubscribe/$token'
+      fullPath: '/unsubscribe/$token'
+      preLoaderRoute: typeof UnsubscribeTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/share/$code': {
       id: '/share/$code'
       path: '/share/$code'
@@ -338,6 +371,13 @@ declare module '@tanstack/react-router' {
       path: '/settings/profile'
       fullPath: '/settings/profile'
       preLoaderRoute: typeof SettingsProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/notifications': {
+      id: '/settings/notifications'
+      path: '/settings/notifications'
+      fullPath: '/settings/notifications'
+      preLoaderRoute: typeof SettingsNotificationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/entities/$cui': {
@@ -386,8 +426,10 @@ const rootRouteChildren: RootRouteChildren = {
   TermsLazyRoute: TermsLazyRoute,
   ChartsChartIdRouteRoute: ChartsChartIdRouteRouteWithChildren,
   EntitiesCuiRoute: EntitiesCuiRoute,
+  SettingsNotificationsRoute: SettingsNotificationsRoute,
   SettingsProfileRoute: SettingsProfileRoute,
   ShareCodeRoute: ShareCodeRoute,
+  UnsubscribeTokenRoute: UnsubscribeTokenRoute,
   ChartsNewLazyRoute: ChartsNewLazyRoute,
   ResearchEmployeesDataLazyRoute: ResearchEmployeesDataLazyRoute,
   ChartsIndexLazyRoute: ChartsIndexLazyRoute,
