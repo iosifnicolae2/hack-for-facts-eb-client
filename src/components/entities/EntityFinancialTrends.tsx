@@ -27,6 +27,7 @@ import type { ReportPeriodType } from '@/schemas/reporting';
 import { Normalization } from '@/schemas/charts';
 import { NormalizationSelector } from '@/components/common/NormalizationSelector';
 import { getNormalizationUnit } from '@/lib/utils';
+import { useMediaQuery } from '@/hooks/use-media-query';
 
 interface EntityFinancialTrendsProps {
   incomeTrend?: AnalyticsSeries | null;
@@ -63,6 +64,7 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
 }) => {
 
   const { cui } = useParams({ from: '/entities/$cui' });
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const trendsAvailable = incomeTrend?.data.length || expenseTrend?.data.length || balanceTrend?.data.length;
 
@@ -235,7 +237,7 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
                 animationEasing='ease-in-out'
                 animationBegin={shouldAnimate ? 300 : 0}
               >
-                <LabelList dataKey="income" position="top" angle={periodType === 'QUARTER' ? 0 : -45} offset={24} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />
+                {!isMobile && <LabelList dataKey="income" position="top" angle={periodType === 'QUARTER' ? 0 : -45} offset={24} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />}
               </Bar>
               <Bar
                 dataKey="expense"
@@ -249,7 +251,7 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
                 animationEasing='ease-in-out'
                 animationBegin={shouldAnimate ? 300 : 0}
               >
-                <LabelList dataKey="expense" position="top" angle={periodType === 'QUARTER' ? 0 : -45} offset={24} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />
+                {!isMobile && <LabelList dataKey="expense" position="top" angle={periodType === 'QUARTER' ? 0 : -45} offset={24} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />}
               </Bar>
 
               <Line
@@ -263,7 +265,7 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
                 dot={{ r: 4, fill: '#6366f1', strokeWidth: 2, stroke: '#f8fafc' }}
                 activeDot={{ r: 6 }}
               >
-                <LabelList dataKey="balance" position="top" offset={8} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />
+                {!isMobile && <LabelList dataKey="balance" position="top" offset={8} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />}
               </Line>
             </ComposedChart>
           </ResponsiveContainer>

@@ -113,7 +113,7 @@ export const Overview = ({
     }, [periodType, selectedYear, search.month, search.quarter, years, years.length, years[years.length - 1], years[0], debouncedPrefetch, reportType, handlePrefetchYear])
 
     return (
-        <>
+        <div className="space-y-6 sm:space-y-8">
             <EntityFinancialSummary
                 totalIncome={entity?.totalIncome}
                 totalExpenses={entity?.totalExpenses}
@@ -140,43 +140,45 @@ export const Overview = ({
                 onPrefetchPeriod={handlePrefetchPeriod}
             />
 
-            <EntityLineItemsTabs
-                lineItems={lineItems?.nodes ?? []}
-                fundingSources={lineItems?.fundingSources ?? []}
-                currentYear={selectedYear}
-                month={search.month as TMonth}
-                quarter={search.quarter as TQuarter}
-                years={years}
-                onYearChange={handleYearChange}
-                onPrefetchYear={handlePrefetchYear}
-                initialExpenseSearchTerm={search.expenseSearch ?? ''}
-                initialIncomeSearchTerm={search.incomeSearch ?? ''}
-                onSearchChange={(type: 'expense' | 'income', term: string) => handleSearchChange(type, term)}
-                isLoading={isLoading || isLoadingLineItems}
-                normalization={normalization}
-                lineItemsTab={search.lineItemsTab as 'functional' | 'funding' | 'expenseType' | undefined}
-                onLineItemsTabChange={onLineItemsTabChange}
-                selectedFundingKey={search.selectedFundingKey as string | undefined}
-                selectedExpenseTypeKey={search.selectedExpenseTypeKey as string | undefined}
-                onSelectedFundingKeyChange={onSelectedFundingKeyChange}
-                onSelectedExpenseTypeKeyChange={onSelectedExpenseTypeKeyChange}
-            />
+            <div className="space-y-6">
+                <EntityLineItemsTabs
+                    lineItems={lineItems?.nodes ?? []}
+                    fundingSources={lineItems?.fundingSources ?? []}
+                    currentYear={selectedYear}
+                    month={search.month as TMonth}
+                    quarter={search.quarter as TQuarter}
+                    years={years}
+                    onYearChange={handleYearChange}
+                    onPrefetchYear={handlePrefetchYear}
+                    initialExpenseSearchTerm={search.expenseSearch ?? ''}
+                    initialIncomeSearchTerm={search.incomeSearch ?? ''}
+                    onSearchChange={(type: 'expense' | 'income', term: string) => handleSearchChange(type, term)}
+                    isLoading={isLoading || isLoadingLineItems}
+                    normalization={normalization}
+                    lineItemsTab={search.lineItemsTab as 'functional' | 'funding' | 'expenseType' | undefined}
+                    onLineItemsTabChange={onLineItemsTabChange}
+                    selectedFundingKey={search.selectedFundingKey as string | undefined}
+                    selectedExpenseTypeKey={search.selectedExpenseTypeKey as string | undefined}
+                    onSelectedFundingKeyChange={onSelectedFundingKeyChange}
+                    onSelectedExpenseTypeKeyChange={onSelectedExpenseTypeKeyChange}
+                />
 
-            <LineItemsAnalytics
-                lineItems={lineItems}
-                analyticsYear={selectedYear}
-                month={search.month as TMonth}
-                quarter={search.quarter as TQuarter}
-                years={years}
-                onYearChange={handleYearChange}
-                onPrefetchYear={handlePrefetchYear}
-                chartType={search.analyticsChartType ?? 'bar'}
-                onChartTypeChange={(type: 'bar' | 'pie') => handleAnalyticsChange('analyticsChartType', type)}
-                dataType={search.analyticsDataType ?? 'expense'}
-                onDataTypeChange={(type: 'income' | 'expense') => handleAnalyticsChange('analyticsDataType', type)}
-                isLoading={isLoading || isLoadingLineItems}
-                normalization={normalization}
-            />
+                <LineItemsAnalytics
+                    lineItems={lineItems}
+                    analyticsYear={selectedYear}
+                    month={search.month as TMonth}
+                    quarter={search.quarter as TQuarter}
+                    years={years}
+                    onYearChange={handleYearChange}
+                    onPrefetchYear={handlePrefetchYear}
+                    chartType={search.analyticsChartType ?? 'bar'}
+                    onChartTypeChange={(type: 'bar' | 'pie') => handleAnalyticsChange('analyticsChartType', type)}
+                    dataType={search.analyticsDataType ?? 'expense'}
+                    onDataTypeChange={(type: 'income' | 'expense') => handleAnalyticsChange('analyticsDataType', type)}
+                    isLoading={isLoading || isLoadingLineItems}
+                    normalization={normalization}
+                />
+            </div>
 
             {entity ? (
                 <div className="mt-6">
@@ -190,6 +192,6 @@ export const Overview = ({
                 </div>
             ) : null}
 
-        </>
+        </div>
     )
 }

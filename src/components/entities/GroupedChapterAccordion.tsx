@@ -18,22 +18,28 @@ const GroupedChapterAccordion: React.FC<GroupedChapterAccordionProps> = ({ ch, b
   const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON'; // Unit can also be 'RON/capita' or 'EUR/capita', for currency we only need 'RON' or 'EUR'
   return (
     <AccordionItem key={ch.prefix} value={ch.prefix}>
-      <AccordionTrigger className="flex justify-between items-center py-2 px-4 hover:bg-slate-100 dark:hover:bg-slate-700 [&[data-state=open]]:bg-slate-100 dark:[&[data-state=open]]:bg-slate-700 transition-colors">
-        <div className='grid grid-cols-[1fr_auto] w-full items-center gap-4'>
-          <div className="flex items-center overflow-hidden">
-            <span className="text-base font-medium text-slate-800 dark:text-slate-200">{highlightText(ch.description, searchTerm)}</span>
+      <AccordionTrigger className="flex justify-between items-center py-2 px-3 sm:px-4 hover:bg-slate-100 dark:hover:bg-slate-700 [&[data-state=open]]:bg-slate-100 dark:[&[data-state=open]]:bg-slate-700 transition-colors">
+        <div className="grid w-full items-center gap-1.5 sm:gap-2 lg:gap-4 grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto]">
+          <div className="flex min-w-0 flex-col sm:flex-row sm:items-center sm:gap-2">
+            <span className="text-sm sm:text-base font-medium text-slate-800 dark:text-slate-200 break-words sm:truncate">
+              {highlightText(ch.description, searchTerm)}
+            </span>
           </div>
-          <div className="text-sm font-semibold text-slate-900 dark:text-slate-100 text-right mr-4">
-            <p className="flex justify-end items-center gap-1.5">
+          <div className="text-right text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
+            <p className="flex justify-end items-center gap-1 sm:gap-1.5">
               {formatCurrency(ch.totalAmount, "compact", currencyCode)}
-              <span className="text-xs text-muted-foreground w-12 text-left">{`(${formatNumber(ch.totalAmount / baseTotal * 100)}%)`}</span>
+              {baseTotal > 0 && (
+                <span className="hidden sm:inline text-xs text-muted-foreground">{`(${formatNumber(ch.totalAmount / baseTotal * 100)}%)`}</span>
+              )}
             </p>
-            <p className="text-xs text-muted-foreground font-normal">{formatCurrency(ch.totalAmount, "standard", currencyCode)}</p>
+            <p className="text-xs text-muted-foreground font-normal">
+              {formatCurrency(ch.totalAmount, "standard", currencyCode)}
+            </p>
           </div>
         </div>
       </AccordionTrigger>
-      <AccordionContent className='border-x-2 border-b-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800/50'>
-        <div className="space-y-2 px-4 py-2">
+      <AccordionContent className="border-x-2 border-b-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800/50">
+        <div className="space-y-2 px-3 sm:px-4 py-2">
           {ch.subchapters && ch.subchapters.length > 0 && (
             <div className="space-y-2">
               {ch.subchapters.map((sub: GroupedSubchapter) => (

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { BarChart, Bar, PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, XAxis, YAxis, CartesianGrid, LabelList } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
@@ -59,6 +59,20 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
     onPrefetchDataType,
     onPrefetchChartType,
 }) => {
+    const [isMobile, setIsMobile] = useState(false);
+    const [isTablet, setIsTablet] = useState(false);
+
+    useEffect(() => {
+        const checkScreenSize = () => {
+            setIsMobile(window.innerWidth < 640);
+            setIsTablet(window.innerWidth >= 640 && window.innerWidth < 768);
+        };
+
+        checkScreenSize();
+        window.addEventListener('resize', checkScreenSize);
+        return () => window.removeEventListener('resize', checkScreenSize);
+    }, []);
+
     const expenses = useMemo(() => lineItems?.nodes.filter(li => li.account_category === 'ch') || [], [lineItems]);
     const incomes = useMemo(() => lineItems?.nodes.filter(li => li.account_category === 'vn') || [], [lineItems]);
 
@@ -118,14 +132,16 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
     return (
         <Card className="shadow-lg dark:bg-slate-800">
             <CardHeader>
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                     <div className="flex items-center">
                         <Select
                             value={analyticsYear.toString()}
                             onValueChange={(val) => onYearChange(parseInt(val, 10))}
                         >
                             <SelectTrigger className="w-auto border-0 shadow-none bg-transparent focus:ring-0">
-                                <CardTitle><Trans>Main Categories</Trans> {getYearLabel(analyticsYear, month, quarter)}</CardTitle>
+                                <CardTitle className="text-base sm:text-lg">
+                                    <Trans>Main Categories</Trans> {getYearLabel(analyticsYear, month, quarter)}
+                                </CardTitle>
                             </SelectTrigger>
                             <SelectContent>
                                 {years.map((year) => (
@@ -138,8 +154,12 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
                     </div>
                     <div className="flex items-center space-x-2">
                         <ToggleGroup type="single" variant="outline" size="sm" value={dataType} onValueChange={(value: DataType) => value && onDataTypeChange(value)}>
-                            <ToggleGroupItem value="income" aria-label="Income" onMouseEnter={() => onPrefetchDataType?.('income')}>Income</ToggleGroupItem>
-                            <ToggleGroupItem value="expense" aria-label="Expenses" onMouseEnter={() => onPrefetchDataType?.('expense')}>Expenses</ToggleGroupItem>
+                            <ToggleGroupItem value="income" aria-label="Income" onMouseEnter={() => onPrefetchDataType?.('income')}>
+                                {isMobile ? 'Inc' : 'Income'}
+                            </ToggleGroupItem>
+                            <ToggleGroupItem value="expense" aria-label="Expenses" onMouseEnter={() => onPrefetchDataType?.('expense')}>
+                                {isMobile ? 'Exp' : 'Expenses'}
+                            </ToggleGroupItem>
                         </ToggleGroup>
                         <ToggleGroup type="single" variant="outline" size="sm" value={chartType} onValueChange={(value: ChartType) => value && onChartTypeChange(value)}>
                             <ToggleGroupItem value="bar" aria-label="Bar chart" onMouseEnter={() => onPrefetchChartType?.('bar')}>
@@ -153,20 +173,35 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
                 </div>
             </CardHeader>
             <CardContent>
-                <div style={{ width: '100%', height: 480 }}>
-                    <ResponsiveContainer>
+                <div className="w-full h-64 sm:h-80 md:h-96 lg:h-[480px]">
+                    <ResponsiveContainer width="100%" height="100%">
                         {chartType === 'bar' ? (
-                            <BarChart data={activeData} margin={{ top: 30, right: 30, left: unit.length * 6 + 30, bottom: 80 }}>
+                            <BarChart data={activeData} margin={{ top: 20, right: 20, left: Math.max(unit.length * 4 + 20, 60), bottom: 60 }}>
                                 <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
-                                <XAxis dataKey="name" tick={{ fontSize: 12 }} angle={-45} textAnchor="end" interval={0} height={100} tickLine={false} axisLine={false} />
-                                <YAxis tickFormatter={(value) => yValueFormatter(Number(value), unit)} tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
+                                <XAxis
+                                    dataKey="name"
+                                    tick={{ fontSize: 10 }}
+                                    angle={-45}
+                                    textAnchor="end"
+                                    interval={0}
+                                    height={80}
+                                    tickLine={false}
+                                    axisLine={false}
+                                />
+                                <YAxis
+                                    tickFormatter={(value) => yValueFormatter(Number(value), unit)}
+                                    tick={{ fontSize: 10 }}
+                                    tickLine={false}
+                                    axisLine={false}
+                                    width={Math.max(unit.length * 4 + 20, 50)}
+                                />
                                 <Tooltip content={<CustomTooltip />} />
                                 <Bar
                                     dataKey="value"
                                     fill={dataType === 'income' ? applyAlpha('#10b981', 0.2) : applyAlpha('#f43f5e', 0.2)}
                                     stroke={dataType === 'income' ? '#0f766e' : '#be123c'}
                                     strokeWidth={2}
-                                    radius={[3, 3, 0, 0]}
+                                    radius={[2, 2, 0, 0]}
                                 >
                                     <LabelList content={renderBarLabel} />
                                 </Bar>
@@ -178,19 +213,23 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
                                     dataKey="value"
                                     nameKey="name"
                                     cx="50%"
-                                    cy="50%"
+                                    cy="45%"
                                     animationBegin={0}
                                     animationDuration={300}
-                                    outerRadius={160}
+                                    outerRadius={isMobile ? 80 : isTablet ? 100 : 140}
                                     labelLine={true}
-                                    label={({ name, percent }) => `${name.slice(0, 30)} (${((percent || 0) * 100).toFixed(0)}%)`}
+                                    label={({ name, percent }) => `${name.slice(0, isMobile ? 15 : 25)} (${((percent || 0) * 100).toFixed(0)}%)`}
                                 >
                                     {activeData.map((_, index) => (
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
                                 </Pie>
                                 <Tooltip content={<CustomTooltip />} />
-                                <Legend verticalAlign="bottom" height={50} wrapperStyle={{ fontSize: '12px' }} />
+                                <Legend
+                                    verticalAlign="bottom"
+                                    height={isMobile ? 36 : 50}
+                                    wrapperStyle={{ fontSize: isMobile ? '10px' : '12px' }}
+                                />
                             </PieChart>
                         )}
                     </ResponsiveContainer>

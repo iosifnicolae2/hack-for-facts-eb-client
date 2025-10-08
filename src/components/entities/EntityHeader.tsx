@@ -76,28 +76,28 @@ const EntityHeaderContent: React.FC<EntityHeaderContentProps> = ({
   const { headerRef, headerTitleRef, headerBottomRef, stickyTop } = useHeaderSize(isLoading);
   const { url: wikipediaUrl } = useExternalSearchLink(entity);
   return (
-    <header ref={headerRef} className={cn("bg-background px-6 pb-2 rounded-lg shadow-lg sticky z-30", className)} style={{ top: stickyTop }}>
-      <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+    <header ref={headerRef} className={cn("bg-background px-3 sm:px-6 pb-2 rounded-lg shadow-lg sticky z-30", className)} style={{ top: stickyTop }}>
+      <div className="flex flex-col gap-4">
         <div className="flex-grow">
-          <div ref={headerTitleRef} className="flex flex-col md:flex-row md:justify-between mb-2 pt-2 sticky top-0 z-30 bg-background">
-            <div className="flex items-center gap-4">
-              <h1 className="text-3xl lg:text-5xl font-extrabold underline text-slate-900 dark:text-slate-100 flex items-center gap-2">
-                <Link to={`/entities/$cui`} params={{ cui: entity.cui }}>
+          <div ref={headerTitleRef} className="flex flex-col gap-2 mb-2 pt-2 sticky top-0 z-30 bg-background">
+            <div className="flex flex-col lg:flex-row md:justify-between lg:items-center gap-2">
+              <h1 className="text-4xl lg:text-5xl xl:text-5xl font-extrabold text-slate-900 dark:text-slate-100 flex items-center gap-2 min-w-0">
+                <Link to={`/entities/$cui`} params={{ cui: entity.cui }} className="hover:underline">
                   {entity.name}
                 </Link>
               </h1>
-            </div>
-            <div className="mt-1 flex items-center gap-2">
-              {yearSelector}
-              <EntityNotificationBell cui={entity.cui} entityName={entity.name} />
+              <div className="flex items-center gap-2 flex-shrink-0">
+                {yearSelector}
+                <EntityNotificationBell cui={entity.cui} entityName={entity.name} />
+              </div>
             </div>
           </div>
           <div className={cn(
             "overflow-hidden transition-all duration-300",
           )}>
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-3 sm:mb-4 flex-wrap">
               {entityCategory && (
-                <Badge variant="secondary" className="px-2 py-1 text-sm whitespace-nowrap">
+                <Badge variant="secondary" className="px-2 py-1 text-sm">
                   <Building2 className="h-4 w-4 mr-1.5" />
                   <span className="font-semibold">{entityCategory}</span>
                 </Badge>
@@ -108,26 +108,28 @@ const EntityHeaderContent: React.FC<EntityHeaderContentProps> = ({
                   target="_blank"
                   rel="noreferrer noopener"
                   aria-label={t`Open on Wikipedia`}
-                  className="inline-flex items-center text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 gap-1"
+                  className="inline-flex items-center text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 gap-1 p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
                 >
                   <ExternalLink className="h-4 w-4" />
                 </a>
               )}
             </div>
             <div className="text-sm text-slate-600 dark:text-slate-400 space-y-1">
-              <p>
-                <span className="font-semibold text-slate-700 dark:text-slate-300">CUI</span>: <code className="font-mono font-bold">{entity.cui}</code>
+              <p className="flex flex-col sm:flex-row sm:items-center gap-1">
+                <span className="font-semibold text-slate-700 dark:text-slate-300">CUI:</span>
+                <code className="font-mono font-bold bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-xs">{entity.cui}</code>
               </p>
               {entity.address && (
-                <p className="flex items-center gap-1 font-semibold">
-                  <Trans>Address</Trans>: <span className="font-normal truncate">{entity.address}</span>
+                <p className="flex flex-col sm:flex-row sm:items-center gap-1">
+                  <span className="font-semibold text-slate-700 dark:text-slate-300"><Trans>Address</Trans>:</span>
+                  <span className="font-normal break-words">{entity.address}</span>
                 </p>
               )}
               {entity.uat && (
                 <UatDisplay uat={entity.uat} />
               )}
             </div>
-            <div ref={headerBottomRef} className={"relative"}>
+            <div ref={headerBottomRef} className={"relative max-w-[calc(100vw-2rem)] md:max-w-[calc(100vw-4rem)]"}>
               <EntityViewSwitcher
                 views={views}
                 activeView={activeView}

@@ -77,12 +77,16 @@ export function EntityReportsSummary({ cui, reportPeriod, reportType, limit = 12
 
   if (isLoading) {
     return (
-      <Card className="p-6">
-        <CardTitle className="flex items-center gap-2">
-          <FileText className="h-6 w-6" />
-          <Trans>Financial Reports</Trans>
-        </CardTitle>
-        <div className="mt-4 text-sm text-muted-foreground"><Trans>Loading reports…</Trans></div>
+      <Card>
+        <CardHeader className="pb-4">
+          <CardTitle className="flex items-center gap-2">
+            <FileText className="h-6 w-6" />
+            <Trans>Financial Reports</Trans>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <div className="text-sm text-muted-foreground"><Trans>Loading reports…</Trans></div>
+        </CardContent>
       </Card>
     );
   }
@@ -92,13 +96,13 @@ export function EntityReportsSummary({ cui, reportPeriod, reportType, limit = 12
 
   return (
     <Card>
-      <CardHeader>
-        <div className="flex justify-between items-center">
+      <CardHeader className="pb-4">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
           <CardTitle className="flex items-center gap-2">
             <FileText className="h-6 w-6" />
             <Trans>Financial Reports</Trans>
           </CardTitle>
-          <Button asChild variant="secondary" size="sm">
+          <Button asChild variant="secondary" size="sm" className="w-full sm:w-auto">
             <Link to="/entities/$cui" params={{ cui }} search={{ view: 'reports', report_type: reportType }}>
               <Trans>View all reports</Trans>
             </Link>
@@ -106,45 +110,55 @@ export function EntityReportsSummary({ cui, reportPeriod, reportType, limit = 12
         </div>
       </CardHeader>
       <CardContent className="pt-0">
-        <div className="border-t">
+        <div className="divide-y">
           {nodes.map((report) => (
-            <div key={report.report_id} className="grid grid-cols-12 gap-4 items-center py-3 border-b last:border-b-0">
-              <div className="col-span-3 lg:col-span-2 flex items-center gap-3">
+            <div
+              key={report.report_id}
+              className="grid grid-cols-1 gap-3 py-3 sm:grid-cols-[minmax(0,1fr)] sm:gap-4 md:grid-cols-[120px_1fr] md:items-center"
+            >
+              <div className="flex items-center gap-3 order-1 sm:order-none">
                 <Calendar className="h-5 w-5 text-muted-foreground flex-shrink-0" />
-                <div>
-                  <p className="font-semibold">{report.reporting_year}</p>
-                  <p className="text-sm text-muted-foreground whitespace-nowrap">{formatDate(report.report_date)}</p>
+                <div className="min-w-0">
+                  <p className="font-semibold truncate">{report.reporting_year}</p>
+                  <p className="text-sm text-muted-foreground">{formatDate(report.report_date)}</p>
                 </div>
               </div>
-              <div className="col-span-9 lg:col-span-4">
-                <Badge variant="outline" className="truncate leading-tight text-xs">{toReportTypeValue(report.report_type as GqlReportType)}</Badge>
-              </div>
-              <div className="col-span-12 lg:col-span-4 flex items-center gap-2 truncate">
-                <Landmark className="h-5 w-5 text-muted-foreground flex-shrink-0" />
-                <Link to="/entities/$cui" params={{ cui: report.main_creditor.cui }} className="text-sm font-medium underline-offset-2 hover:underline truncate" title={report.main_creditor.name}>
-                  {report.main_creditor.name}
-                </Link>
-              </div>
-              <div className="col-span-12 lg:col-span-2 flex justify-start lg:justify-end gap-0">
-                <TooltipProvider>
-                  {report.download_links.map((link) => {
-                    const fileType = link.split('.').pop()?.toUpperCase() ?? 'File';
-                    return (
-                      <Tooltip key={link}>
-                        <TooltipTrigger asChild>
-                          <Button variant="ghost" size="sm" asChild>
-                            <a href={link} target="_blank" rel="noopener noreferrer">
-                              <Download className="h-4 w-4" />
-                              <span className="text-xs whitespace-nowrap">{fileType}</span>
-                              <span className="sr-only">Download {fileType}</span>
-                            </a>
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>Download {fileType}</TooltipContent>
-                      </Tooltip>
-                    );
-                  })}
-                </TooltipProvider>
+              <div className="grid gap-2 order-2 sm:order-none sm:grid-cols-1 md:grid-cols-[1fr_auto_auto] md:items-center md:gap-4">
+                <Badge variant="outline" className="text-xs w-fit md:justify-self-start">
+                  {toReportTypeValue(report.report_type as GqlReportType)}
+                </Badge>
+                <div className="flex items-center gap-2 truncate">
+                  <Landmark className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                  <Link
+                    to="/entities/$cui"
+                    params={{ cui: report.main_creditor.cui }}
+                    className="text-sm font-medium underline-offset-2 hover:underline truncate"
+                    title={report.main_creditor.name}
+                  >
+                    {report.main_creditor.name}
+                  </Link>
+                </div>
+                <div className="flex justify-start gap-1 md:justify-end">
+                  <TooltipProvider>
+                    {report.download_links.map((link) => {
+                      const fileType = link.split('.').pop()?.toUpperCase() ?? 'File';
+                      return (
+                        <Tooltip key={link}>
+                          <TooltipTrigger asChild>
+                            <Button variant="ghost" size="sm" asChild className="h-8 px-2">
+                              <a href={link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1">
+                                <Download className="h-3 w-3 sm:h-4 sm:w-4" />
+                                <span className="text-xs">{fileType}</span>
+                                <span className="sr-only">Download {fileType}</span>
+                              </a>
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>Download {fileType}</TooltipContent>
+                        </Tooltip>
+                      );
+                    })}
+                  </TooltipProvider>
+                </div>
               </div>
             </div>
           ))}

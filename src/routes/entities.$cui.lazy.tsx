@@ -215,9 +215,9 @@ function EntityDetailsPage() {
   const { title: metaTitle, description: metaDescription } = buildEntitySeo(entity, cui, selectedYear)
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
+    <div className="min-h-screen p-3 sm:p-4 md:p-6 lg:p-8">
       <Seo title={metaTitle} description={metaDescription} type="article" />
-      <div className="container mx-auto max-w-7xl space-y-8">
+      <div className="container mx-auto max-w-7xl space-y-4 sm:space-y-6 lg:space-y-8">
         <EntityHeader
           entity={entity}
           isLoading={isLoading}

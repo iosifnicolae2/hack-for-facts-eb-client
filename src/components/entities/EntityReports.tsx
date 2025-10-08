@@ -50,25 +50,27 @@ export default function EntityReports({ cui, initialType }: EntityReportsProps) 
 
   const activeFilterBadges = (
     <div className="flex flex-wrap gap-2">
-      {type ? <Badge variant="secondary">{toReportTypeValue(type)}</Badge> : null}
-      {year ? <Badge variant="secondary">{year}</Badge> : null}
-      <Badge variant="outline">{sortOrder === 'DESC' ? 'Newest first' : 'Oldest first'}</Badge>
+      {type ? <Badge variant="secondary" className="text-xs">{toReportTypeValue(type)}</Badge> : null}
+      {year ? <Badge variant="secondary" className="text-xs">{year}</Badge> : null}
+      <Badge variant="outline" className="text-xs">{sortOrder === 'DESC' ? 'Newest first' : 'Oldest first'}</Badge>
     </div>
   );
 
   return (
     <Card className="w-full">
-      <CardHeader className="space-y-2">
-        <div className="flex items-center justify-between">
+      <CardHeader className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <CardTitle className="flex items-center gap-2"><FileText className="h-6 w-6" /><Trans>Financial Reports</Trans></CardTitle>
           <Link to="/entities/$cui" params={{ cui }} search={{ view: 'overview' }} className="text-sm underline-offset-2 hover:underline"><Trans>Back to Overview</Trans></Link>
         </div>
-        <div className="flex items-center justify-between gap-2">
-          {activeFilterBadges}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="min-w-0 flex-1">
+            {activeFilterBadges}
+          </div>
           <ResponsivePopover
-            trigger={<Button variant="outline" size="sm" className="gap-2"><Filter className="h-4 w-4" /> Filters</Button>}
+            trigger={<Button variant="outline" size="sm" className="gap-2 w-full sm:w-auto"><Filter className="h-4 w-4" /> <span className="hidden sm:inline">Filters</span></Button>}
             content={
-              <div className="flex flex-col gap-3 w-[260px]">
+              <div className="flex flex-col gap-3 w-full sm:w-[260px]">
                 <div className="space-y-1">
                   <div className="text-xs text-muted-foreground">Report type</div>
                   <Select value={type ?? ''} onValueChange={(v) => setType(v === 'ALL' || !v ? undefined : (v as GqlReportType))}>
@@ -121,22 +123,22 @@ export default function EntityReports({ cui, initialType }: EntityReportsProps) 
         </div>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="overflow-auto">
+        <div className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[180px]"><Trans>Date</Trans></TableHead>
-                <TableHead><Trans>Type</Trans></TableHead>
-                <TableHead><Trans>Main Creditor</Trans></TableHead>
-                <TableHead className="text-right"><Trans>Downloads</Trans></TableHead>
+                <TableHead className="min-w-[140px] sm:w-[180px]"><Trans>Date</Trans></TableHead>
+                <TableHead className="min-w-[120px] hidden sm:table-cell"><Trans>Type</Trans></TableHead>
+                <TableHead className="min-w-[180px] hidden md:table-cell"><Trans>Main Creditor</Trans></TableHead>
+                <TableHead className="text-right min-w-[140px]"><Trans>Downloads</Trans></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {isLoading && Array.from({ length: pageSize }).map((_, i) => (
                 <TableRow key={i} className="animate-pulse">
                   <TableCell><div className="h-4 bg-muted rounded w-3/4" /></TableCell>
-                  <TableCell><div className="h-4 bg-muted rounded w-full" /></TableCell>
-                  <TableCell><div className="h-4 bg-muted rounded w-2/3" /></TableCell>
+                  <TableCell className="hidden sm:table-cell"><div className="h-4 bg-muted rounded w-full" /></TableCell>
+                  <TableCell className="hidden md:table-cell"><div className="h-4 bg-muted rounded w-2/3" /></TableCell>
                   <TableCell><div className="h-4 bg-muted rounded w-1/2 ml-auto" /></TableCell>
                 </TableRow>
               ))}
@@ -144,29 +146,30 @@ export default function EntityReports({ cui, initialType }: EntityReportsProps) 
                 <TableRow key={r.report_id} className={i % 2 === 0 ? 'bg-muted/50' : ''}>
                   <TableCell className="whitespace-nowrap font-medium">
                     <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                      <div>
-                        <div>{formatDate(r.report_date)}</div>
+                      <Calendar className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                      <div className="min-w-0">
+                        <div className="truncate">{formatDate(r.report_date)}</div>
                         <div className="text-xs text-muted-foreground">{r.reporting_year}</div>
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="hidden sm:table-cell">
                     <Badge variant="outline" className="text-xs">{toReportTypeValue(r.report_type as GqlReportType)}</Badge>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="hidden md:table-cell">
                     <div className="flex items-center gap-2">
-                      <Landmark className="h-4 w-4 text-muted-foreground" />
-                      <Link to="/entities/$cui" params={{ cui: r.main_creditor.cui }} className="underline-offset-2 hover:underline">{r.main_creditor.name}</Link>
+                      <Landmark className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                      <Link to="/entities/$cui" params={{ cui: r.main_creditor.cui }} className="underline-offset-2 hover:underline truncate" title={r.main_creditor.name}>{r.main_creditor.name}</Link>
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-1">
                       {r.download_links.map((link) => (
-                        <Button key={link} size="sm" variant="ghost" asChild>
-                          <a href={link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                            <Download className="h-4 w-4" />
-                            {link.split('.').pop()?.toUpperCase()}
+                        <Button key={link} size="sm" variant="ghost" asChild className="h-8 px-2">
+                          <a href={link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1">
+                            <Download className="h-3 w-3 sm:h-4 sm:w-4" />
+                            <span className="text-xs">{link.split('.').pop()?.toUpperCase()}</span>
+                            <span className="sr-only">Download {link.split('.').pop()?.toUpperCase()}</span>
                           </a>
                         </Button>
                       ))}
@@ -177,7 +180,7 @@ export default function EntityReports({ cui, initialType }: EntityReportsProps) 
             </TableBody>
           </Table>
         </div>
-        <div className="p-4 border-t">
+        <div className="p-3 sm:p-4 border-t">
           <Pagination
             currentPage={page}
             pageSize={pageSize}

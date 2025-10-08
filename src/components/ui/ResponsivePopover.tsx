@@ -25,7 +25,7 @@ export function ResponsivePopover({ trigger, content, className, align = 'end', 
                     {trigger}
                 </SheetTrigger>
                 <SheetTitle className="sr-only">Responsive Popover</SheetTitle>
-                <SheetContent side={mobileSide} className="p-4">
+                <SheetContent side={mobileSide} className="p-4 max-h-[90vh] overflow-y-auto">
                     {content}
                 </SheetContent>
             </Sheet>

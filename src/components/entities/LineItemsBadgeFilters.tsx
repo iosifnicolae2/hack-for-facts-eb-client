@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import type { ExecutionLineItem, FundingSourceOption } from '@/lib/api/entities';
 import { t } from '@lingui/core/macro';
 import { Badge } from '@/components/ui/badge';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { formatCurrency, formatNumber, cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TrendingUp, TrendingDown } from 'lucide-react';
@@ -151,27 +150,28 @@ export const LineItemsBadgeFilters: React.FC<LineItemsBadgeFiltersProps> = ({
   }
 
   return (
-    <ScrollArea className="w-full mb-4">
-      <div className="flex gap-2 pb-2">
+    <div className="w-full mb-4">
+      <div className="flex flex-wrap gap-2">
         <Badge
           key="all"
           variant={selectedKey === '' ? 'default' : 'outline'}
           className={cn(
-            'cursor-pointer py-1.5 px-3 text-xs',
+            'cursor-pointer py-1.5 px-3 text-xs flex-shrink-0',
             selectedKey === '' && 'shadow-sm'
           )}
           onClick={() => onSelectedKeyChange('')}
         >
           <span className="font-semibold">{t`All`}</span>
-          <span className="mx-1.5">·</span>
+          <span className="mx-1.5 hidden sm:inline">·</span>
           <p className="font-normal">
             {isCombinedView
               ? (
-                <span className="inline-flex items-center gap-2 whitespace-nowrap">
-                  <TrendingUp className="w-3 h-3 text-green-500" />
-                  {formatCurrency(totalIncome, 'compact', currencyCode)} /
-                  <TrendingDown className="w-3 h-3 text-red-500" />
-                  {formatCurrency(totalExpense, 'compact', currencyCode)}
+                <span className="flex items-center gap-1 sm:gap-2">
+                  <TrendingUp className="w-3 h-3 text-green-500 flex-shrink-0" />
+                  <span className="truncate">{formatCurrency(totalIncome, 'compact', currencyCode)}</span>
+                  <span className="hidden sm:inline">/</span>
+                  <TrendingDown className="w-3 h-3 text-red-500 flex-shrink-0" />
+                  <span className="truncate">{formatCurrency(totalExpense, 'compact', currencyCode)}</span>
                 </span>
               )
               : formatCurrency(singleViewCategory === 'vn' ? totalIncome : totalExpense, 'compact', currencyCode)
@@ -181,11 +181,12 @@ export const LineItemsBadgeFilters: React.FC<LineItemsBadgeFiltersProps> = ({
         {bucketSummaries.map((bucket) => {
           const displayPercentage = isCombinedView
             ? (
-              <p className="inline-flex items-center gap-2 whitespace-nowrap">
-                <TrendingUp className="w-3 h-3 text-green-500" />
-                {formatNumber(bucket.incomePercentage)}% /
-                <TrendingDown className="w-3 h-3 text-red-500" />
-                {formatNumber(bucket.expensePercentage)}%
+              <p className="flex items-center gap-1 sm:gap-2">
+                <TrendingUp className="w-3 h-3 text-green-500 flex-shrink-0" />
+                <span className="truncate">{formatNumber(bucket.incomePercentage)}%</span>
+                <span className="hidden sm:inline">/</span>
+                <TrendingDown className="w-3 h-3 text-red-500 flex-shrink-0" />
+                <span className="truncate">{formatNumber(bucket.expensePercentage)}%</span>
               </p>
             )
             : `${formatNumber(singleViewCategory === 'vn' ? bucket.incomePercentage : bucket.expensePercentage)}%`;
@@ -199,22 +200,21 @@ export const LineItemsBadgeFilters: React.FC<LineItemsBadgeFiltersProps> = ({
               key={bucket.key}
               variant={selectedKey === bucket.key ? 'default' : 'secondary'}
               className={cn(
-                'cursor-pointer py-1.5 px-3 text-xs whitespace-nowrap',
+                'cursor-pointer py-1.5 px-3 text-xs flex-shrink-0',
                 selectedKey === bucket.key && 'shadow-sm'
               )}
               onClick={() => onSelectedKeyChange(bucket.key)}
               title={tooltipText}
             >
-              <span className="font-semibold max-w-[200px] truncate" title={bucket.title}>
+              <span className="font-semibold max-w-[120px] sm:max-w-[200px] truncate" title={bucket.title}>
                 {bucket.title}
               </span>
-              <span className="mx-1.5">·</span>
+              <span className="mx-1.5 hidden sm:inline">·</span>
               <span className="font-normal">{displayPercentage}</span>
             </Badge>
           );
         })}
       </div>
-      <ScrollBar orientation="horizontal" />
-    </ScrollArea>
+    </div>
   );
 };
