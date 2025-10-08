@@ -21,7 +21,7 @@ const GroupedChapterAccordion: React.FC<GroupedChapterAccordionProps> = ({ ch, b
       <AccordionTrigger className="flex justify-between items-center py-2 px-3 sm:px-4 hover:bg-slate-100 dark:hover:bg-slate-700 [&[data-state=open]]:bg-slate-100 dark:[&[data-state=open]]:bg-slate-700 transition-colors">
         <div className="grid w-full items-center gap-1.5 sm:gap-2 lg:gap-4 grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto]">
           <div className="flex min-w-0 flex-col sm:flex-row sm:items-center sm:gap-2">
-            <span className="text-sm sm:text-base font-medium text-slate-800 dark:text-slate-200 break-words sm:truncate">
+            <span className="text-sm sm:text-base font-medium text-slate-800 dark:text-slate-200 break-words">
               {highlightText(ch.description, searchTerm)}
             </span>
           </div>
