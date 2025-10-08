@@ -33,6 +33,12 @@ const EVENTS = {
   ChartAnnotationUpdated: "chart_annotation_updated",
   ChartAnnotationDuplicated: "chart_annotation_duplicated",
 
+  AlertCreated: "alert_created",
+  AlertUpdated: "alert_updated",
+  AlertDeleted: "alert_deleted",
+  AlertOpened: "alert_opened",
+  AlertViewChanged: "alert_view_changed",
+
   MapFeatureClicked: "map_feature_clicked",
   MapFilterChanged: "map_filter_changed",
   MapActiveViewChanged: "map_active_view_changed",
@@ -160,5 +166,4 @@ export const Analytics = {
 };
 
 export default Analytics;
-
 

@@ -12,9 +12,10 @@ interface ChartPreviewProps {
     className?: string;
     height?: number;
     onClick?: () => void;
+    customizeChart?: (draft: Chart) => void;
 }
 
-export function ChartPreview({ chart, className, height, onClick }: ChartPreviewProps) {
+export function ChartPreview({ chart, className, height, onClick, customizeChart }: ChartPreviewProps) {
     const { ref, inView } = useInView({
         triggerOnce: true,
         threshold: 0.1,
@@ -33,8 +34,9 @@ export function ChartPreview({ chart, className, height, onClick }: ChartPreview
             draft.series.forEach(series => {
                 series.config.showDataLabels = false;
             });
+            customizeChart?.(draft);
         });
-    }, [chart]);
+    }, [chart, customizeChart]);
 
     const { dataSeriesMap, isLoadingData, dataError } = useChartData({
         chart: previewChart,

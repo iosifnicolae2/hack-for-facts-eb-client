@@ -23,15 +23,19 @@ import { Route as SettingsProfileRouteImport } from './routes/settings/profile'
 import { Route as SettingsNotificationsRouteImport } from './routes/settings/notifications'
 import { Route as EntitiesCuiRouteImport } from './routes/entities.$cui'
 import { Route as ChartsChartIdRouteRouteImport } from './routes/charts/$chartId/route'
+import { Route as AlertsAlertIdRouteRouteImport } from './routes/alerts/$alertId/route'
 
 const TermsLazyRouteImport = createFileRoute('/terms')()
 const IndexLazyRouteImport = createFileRoute('/')()
 const ChartsIndexLazyRouteImport = createFileRoute('/charts/')()
+const AlertsIndexLazyRouteImport = createFileRoute('/alerts/')()
 const ResearchEmployeesDataLazyRouteImport = createFileRoute(
   '/research/employees-data',
 )()
 const ChartsNewLazyRouteImport = createFileRoute('/charts/new')()
+const AlertsNewLazyRouteImport = createFileRoute('/alerts/new')()
 const ChartsChartIdIndexLazyRouteImport = createFileRoute('/charts/$chartId/')()
+const AlertsAlertIdIndexLazyRouteImport = createFileRoute('/alerts/$alertId/')()
 
 const TermsLazyRoute = TermsLazyRouteImport.update({
   id: '/terms',
@@ -80,6 +84,11 @@ const ChartsIndexLazyRoute = ChartsIndexLazyRouteImport.update({
   path: '/charts/',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/charts/index.lazy').then((d) => d.Route))
+const AlertsIndexLazyRoute = AlertsIndexLazyRouteImport.update({
+  id: '/alerts/',
+  path: '/alerts/',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/alerts/index.lazy').then((d) => d.Route))
 const ResearchEmployeesDataLazyRoute =
   ResearchEmployeesDataLazyRouteImport.update({
     id: '/research/employees-data',
@@ -93,6 +102,11 @@ const ChartsNewLazyRoute = ChartsNewLazyRouteImport.update({
   path: '/charts/new',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/charts/new.lazy').then((d) => d.Route))
+const AlertsNewLazyRoute = AlertsNewLazyRouteImport.update({
+  id: '/alerts/new',
+  path: '/alerts/new',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/alerts/new.lazy').then((d) => d.Route))
 const UnsubscribeTokenRoute = UnsubscribeTokenRouteImport.update({
   id: '/unsubscribe/$token',
   path: '/unsubscribe/$token',
@@ -123,12 +137,24 @@ const ChartsChartIdRouteRoute = ChartsChartIdRouteRouteImport.update({
   path: '/charts/$chartId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AlertsAlertIdRouteRoute = AlertsAlertIdRouteRouteImport.update({
+  id: '/alerts/$alertId',
+  path: '/alerts/$alertId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ChartsChartIdIndexLazyRoute = ChartsChartIdIndexLazyRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => ChartsChartIdRouteRoute,
 } as any).lazy(() =>
   import('./routes/charts/$chartId/index.lazy').then((d) => d.Route),
+)
+const AlertsAlertIdIndexLazyRoute = AlertsAlertIdIndexLazyRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AlertsAlertIdRouteRoute,
+} as any).lazy(() =>
+  import('./routes/alerts/$alertId/index.lazy').then((d) => d.Route),
 )
 
 export interface FileRoutesByFullPath {
@@ -140,15 +166,19 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/test-error': typeof TestErrorRoute
   '/terms': typeof TermsLazyRoute
+  '/alerts/$alertId': typeof AlertsAlertIdRouteRouteWithChildren
   '/charts/$chartId': typeof ChartsChartIdRouteRouteWithChildren
   '/entities/$cui': typeof EntitiesCuiRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/profile': typeof SettingsProfileRoute
   '/share/$code': typeof ShareCodeRoute
   '/unsubscribe/$token': typeof UnsubscribeTokenRoute
+  '/alerts/new': typeof AlertsNewLazyRoute
   '/charts/new': typeof ChartsNewLazyRoute
   '/research/employees-data': typeof ResearchEmployeesDataLazyRoute
+  '/alerts': typeof AlertsIndexLazyRoute
   '/charts': typeof ChartsIndexLazyRoute
+  '/alerts/$alertId/': typeof AlertsAlertIdIndexLazyRoute
   '/charts/$chartId/': typeof ChartsChartIdIndexLazyRoute
 }
 export interface FileRoutesByTo {
@@ -165,9 +195,12 @@ export interface FileRoutesByTo {
   '/settings/profile': typeof SettingsProfileRoute
   '/share/$code': typeof ShareCodeRoute
   '/unsubscribe/$token': typeof UnsubscribeTokenRoute
+  '/alerts/new': typeof AlertsNewLazyRoute
   '/charts/new': typeof ChartsNewLazyRoute
   '/research/employees-data': typeof ResearchEmployeesDataLazyRoute
+  '/alerts': typeof AlertsIndexLazyRoute
   '/charts': typeof ChartsIndexLazyRoute
+  '/alerts/$alertId': typeof AlertsAlertIdIndexLazyRoute
   '/charts/$chartId': typeof ChartsChartIdIndexLazyRoute
 }
 export interface FileRoutesById {
@@ -180,15 +213,19 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/test-error': typeof TestErrorRoute
   '/terms': typeof TermsLazyRoute
+  '/alerts/$alertId': typeof AlertsAlertIdRouteRouteWithChildren
   '/charts/$chartId': typeof ChartsChartIdRouteRouteWithChildren
   '/entities/$cui': typeof EntitiesCuiRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/profile': typeof SettingsProfileRoute
   '/share/$code': typeof ShareCodeRoute
   '/unsubscribe/$token': typeof UnsubscribeTokenRoute
+  '/alerts/new': typeof AlertsNewLazyRoute
   '/charts/new': typeof ChartsNewLazyRoute
   '/research/employees-data': typeof ResearchEmployeesDataLazyRoute
+  '/alerts/': typeof AlertsIndexLazyRoute
   '/charts/': typeof ChartsIndexLazyRoute
+  '/alerts/$alertId/': typeof AlertsAlertIdIndexLazyRoute
   '/charts/$chartId/': typeof ChartsChartIdIndexLazyRoute
 }
 export interface FileRouteTypes {
@@ -202,15 +239,19 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/test-error'
     | '/terms'
+    | '/alerts/$alertId'
     | '/charts/$chartId'
     | '/entities/$cui'
     | '/settings/notifications'
     | '/settings/profile'
     | '/share/$code'
     | '/unsubscribe/$token'
+    | '/alerts/new'
     | '/charts/new'
     | '/research/employees-data'
+    | '/alerts'
     | '/charts'
+    | '/alerts/$alertId/'
     | '/charts/$chartId/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -227,9 +268,12 @@ export interface FileRouteTypes {
     | '/settings/profile'
     | '/share/$code'
     | '/unsubscribe/$token'
+    | '/alerts/new'
     | '/charts/new'
     | '/research/employees-data'
+    | '/alerts'
     | '/charts'
+    | '/alerts/$alertId'
     | '/charts/$chartId'
   id:
     | '__root__'
@@ -241,15 +285,19 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/test-error'
     | '/terms'
+    | '/alerts/$alertId'
     | '/charts/$chartId'
     | '/entities/$cui'
     | '/settings/notifications'
     | '/settings/profile'
     | '/share/$code'
     | '/unsubscribe/$token'
+    | '/alerts/new'
     | '/charts/new'
     | '/research/employees-data'
+    | '/alerts/'
     | '/charts/'
+    | '/alerts/$alertId/'
     | '/charts/$chartId/'
   fileRoutesById: FileRoutesById
 }
@@ -262,14 +310,17 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   TestErrorRoute: typeof TestErrorRoute
   TermsLazyRoute: typeof TermsLazyRoute
+  AlertsAlertIdRouteRoute: typeof AlertsAlertIdRouteRouteWithChildren
   ChartsChartIdRouteRoute: typeof ChartsChartIdRouteRouteWithChildren
   EntitiesCuiRoute: typeof EntitiesCuiRoute
   SettingsNotificationsRoute: typeof SettingsNotificationsRoute
   SettingsProfileRoute: typeof SettingsProfileRoute
   ShareCodeRoute: typeof ShareCodeRoute
   UnsubscribeTokenRoute: typeof UnsubscribeTokenRoute
+  AlertsNewLazyRoute: typeof AlertsNewLazyRoute
   ChartsNewLazyRoute: typeof ChartsNewLazyRoute
   ResearchEmployeesDataLazyRoute: typeof ResearchEmployeesDataLazyRoute
+  AlertsIndexLazyRoute: typeof AlertsIndexLazyRoute
   ChartsIndexLazyRoute: typeof ChartsIndexLazyRoute
 }
 
@@ -338,6 +389,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChartsIndexLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/alerts/': {
+      id: '/alerts/'
+      path: '/alerts'
+      fullPath: '/alerts'
+      preLoaderRoute: typeof AlertsIndexLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/research/employees-data': {
       id: '/research/employees-data'
       path: '/research/employees-data'
@@ -350,6 +408,13 @@ declare module '@tanstack/react-router' {
       path: '/charts/new'
       fullPath: '/charts/new'
       preLoaderRoute: typeof ChartsNewLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/alerts/new': {
+      id: '/alerts/new'
+      path: '/alerts/new'
+      fullPath: '/alerts/new'
+      preLoaderRoute: typeof AlertsNewLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/unsubscribe/$token': {
@@ -394,6 +459,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChartsChartIdRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/alerts/$alertId': {
+      id: '/alerts/$alertId'
+      path: '/alerts/$alertId'
+      fullPath: '/alerts/$alertId'
+      preLoaderRoute: typeof AlertsAlertIdRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/charts/$chartId/': {
       id: '/charts/$chartId/'
       path: '/'
@@ -401,8 +473,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChartsChartIdIndexLazyRouteImport
       parentRoute: typeof ChartsChartIdRouteRoute
     }
+    '/alerts/$alertId/': {
+      id: '/alerts/$alertId/'
+      path: '/'
+      fullPath: '/alerts/$alertId/'
+      preLoaderRoute: typeof AlertsAlertIdIndexLazyRouteImport
+      parentRoute: typeof AlertsAlertIdRouteRoute
+    }
   }
 }
+
+interface AlertsAlertIdRouteRouteChildren {
+  AlertsAlertIdIndexLazyRoute: typeof AlertsAlertIdIndexLazyRoute
+}
+
+const AlertsAlertIdRouteRouteChildren: AlertsAlertIdRouteRouteChildren = {
+  AlertsAlertIdIndexLazyRoute: AlertsAlertIdIndexLazyRoute,
+}
+
+const AlertsAlertIdRouteRouteWithChildren =
+  AlertsAlertIdRouteRoute._addFileChildren(AlertsAlertIdRouteRouteChildren)
 
 interface ChartsChartIdRouteRouteChildren {
   ChartsChartIdIndexLazyRoute: typeof ChartsChartIdIndexLazyRoute
@@ -424,14 +514,17 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   TestErrorRoute: TestErrorRoute,
   TermsLazyRoute: TermsLazyRoute,
+  AlertsAlertIdRouteRoute: AlertsAlertIdRouteRouteWithChildren,
   ChartsChartIdRouteRoute: ChartsChartIdRouteRouteWithChildren,
   EntitiesCuiRoute: EntitiesCuiRoute,
   SettingsNotificationsRoute: SettingsNotificationsRoute,
   SettingsProfileRoute: SettingsProfileRoute,
   ShareCodeRoute: ShareCodeRoute,
   UnsubscribeTokenRoute: UnsubscribeTokenRoute,
+  AlertsNewLazyRoute: AlertsNewLazyRoute,
   ChartsNewLazyRoute: ChartsNewLazyRoute,
   ResearchEmployeesDataLazyRoute: ResearchEmployeesDataLazyRoute,
+  AlertsIndexLazyRoute: AlertsIndexLazyRoute,
   ChartsIndexLazyRoute: ChartsIndexLazyRoute,
 }
 export const routeTree = rootRouteImport

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { Trash2, Settings, Eye, RotateCcw } from 'lucide-react';
+import { Trash2, Settings, Eye, RotateCcw, BellPlus } from 'lucide-react';
 import { CustomSeriesValueConfigurationSchema, Series, SeriesConfiguration, SeriesGroupConfiguration, StaticSeriesConfigurationSchema } from '@/schemas/charts';
 import {
   DropdownMenu,
@@ -31,6 +31,9 @@ import { StaticSeriesEditor } from '../series-config/StaticSeriesEditor';
 import { useCopyPasteChart } from '../../hooks/useCopyPaste';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
+import { useNavigate } from '@tanstack/react-router';
+import { buildAlertFromSeries } from '@/lib/alert-links';
+import { Analytics } from '@/lib/analytics';
 
 export function SeriesConfigView() {
   const [showAdvancedSettings, setShowAdvancedSettings] = useState(false);
@@ -40,6 +43,7 @@ export function SeriesConfigView() {
   const [localLabel, setLocalLabel] = useState(seriesLabel);
   const inputRef = useRef<HTMLInputElement>(null);
   const { duplicateSeries, copySeries } = useCopyPasteChart();
+  const navigate = useNavigate({ from: '/charts/$chartId' });
 
 
   useEffect(() => {
@@ -82,6 +86,27 @@ export function SeriesConfigView() {
     deleteSeries(series?.id || '');
   };
 
+  const handleCreateAlertFromSeries = () => {
+    if (!series || series.type !== 'line-items-aggregated-yearly') {
+      return;
+    }
+    const alert = buildAlertFromSeries(series as SeriesConfiguration, { chartId: chart.id, chartTitle: chart.title });
+    Analytics.capture(Analytics.EVENTS.AlertCreated, {
+      alert_id: alert.id,
+      source: 'chart_series',
+      chart_id: chart.id,
+      series_id: series.id,
+    });
+    navigate({
+      to: '/alerts/$alertId',
+      params: { alertId: alert.id },
+      search: { alert, view: 'overview', mode: 'create' },
+      replace: false,
+    });
+  };
+
+  const isLineItemsSeries = series.type === 'line-items-aggregated-yearly';
+
   return (
     <div className="container mx-auto space-y-6 p-4 md:p-6 w-full overflow-x-hidden">
       {/* Normal page header with breadcrumbs */}
@@ -106,7 +131,7 @@ export function SeriesConfigView() {
           </BreadcrumbList>
         </Breadcrumb>
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold tracking-tight"><Trans>Series Configuration</Trans></h1>
+          <h2 className="text-2xl font-bold tracking-tight"><Trans>Configure Series</Trans></h2>
           <div className="flex items-center gap-2">
             <Button onClick={goToOverview} className="gap-2">
               <Eye className="h-4 w-4" />
@@ -119,8 +144,8 @@ export function SeriesConfigView() {
       {/* Single-column flow with quick settings under type */}
       <div className="space-y-6">
         <Card>
-          <CardContent className="space-y-4">
-            <div className="space-y-2 pt-4">
+          <CardContent className="space-y-6 pt-6">
+            <div className="space-y-2">
               <Label htmlFor="series-label"><Trans>Series Label</Trans> *</Label>
               <Input
                 ref={inputRef}
@@ -153,40 +178,58 @@ export function SeriesConfigView() {
               </Select>
             </div>
 
-            {/* Quick settings placed directly under type */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="series-enabled"><Trans>Enabled</Trans></Label>
-                <div className="h-10 flex items-center">
-                  <Switch
-                    id="series-enabled"
-                    checked={!!series?.enabled}
-                    onCheckedChange={(checked) => series && updateSeries(series.id, (prev) => ({ ...prev, enabled: checked, updatedAt: new Date().toISOString() }))}
-                  />
+            {/* Quick settings section with improved layout */}
+            <div className="flex flex-col gap-4 pt-2 border-t">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-4">
+                {/* Left side: Active toggle and Color picker */}
+                <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-3">
+                    <Label htmlFor="series-enabled" className="text-sm font-medium cursor-pointer">
+                      <Trans>Active</Trans>
+                    </Label>
+                    <Switch
+                      id="series-enabled"
+                      checked={!!series?.enabled}
+                      onCheckedChange={(checked) => series && updateSeries(series.id, (prev) => ({ ...prev, enabled: checked, updatedAt: new Date().toISOString() }))}
+                    />
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Label htmlFor="series-color" className="text-sm font-medium">
+                      <Trans>Series Color</Trans>
+                    </Label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        id="series-color"
+                        type="color"
+                        value={series?.config.color || chart.config.color}
+                        onChange={(e) => updateSeriesConfig({ color: e.target.value })}
+                        className="w-10 h-10 rounded-md border-2 cursor-pointer"
+                      />
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-10 w-10"
+                        onClick={() => updateSeriesConfig({ color: generateRandomColor() })}
+                        title={t`Generate random color`}
+                      >
+                        <RotateCcw className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="series-color"><Trans>Series Color</Trans></Label>
-                <div className="flex items-center gap-2">
-                  <input
-                    id="series-color"
-                    type="color"
-                    value={series?.config.color || chart.config.color}
-                    onChange={(e) => updateSeriesConfig({ color: e.target.value })}
-                    className="w-12 h-8 rounded border cursor-pointer"
-                  />
-                  <Button variant="outline" size="sm" onClick={() => updateSeriesConfig({ color: generateRandomColor() })}>
-                    <RotateCcw className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label><Trans>Quick Actions</Trans></Label>
-                <div className="flex items-center gap-2">
-                  <Button variant="outline" size="sm" onClick={() => duplicateSeries(series!.id)} title="Duplicate series">
+
+                {/* Right side: Quick Actions */}
+                <div className="flex flex-wrap items-center gap-2">
+                  {isLineItemsSeries && (
+                    <Button variant="outline" size="sm" onClick={handleCreateAlertFromSeries} title={t`Create alert from this series`}>
+                      <BellPlus className="h-4 w-4 mr-2" />
+                      <Trans>Create Alert</Trans>
+                    </Button>
+                  )}
+                  <Button variant="outline" size="sm" onClick={() => duplicateSeries(series!.id)} title={t`Duplicate series`}>
                     <Trans>Duplicate</Trans>
                   </Button>
-                  <Button variant="outline" size="sm" onClick={() => copySeries(series!.id)} title="Copy series">
+                  <Button variant="outline" size="sm" onClick={() => copySeries(series!.id)} title={t`Copy series`}>
                     <Trans>Copy</Trans>
                   </Button>
                 </div>
@@ -202,17 +245,19 @@ export function SeriesConfigView() {
               />
             )}
 
-            <Button
-              variant="link"
-              className="p-0 h-auto text-sm font-normal text-muted-foreground"
-              onClick={() => setShowAdvancedSettings(!showAdvancedSettings)}
-            >
-              {showAdvancedSettings ? <Trans>Hide advanced settings</Trans> : <Trans>Show advanced settings</Trans>}
-            </Button>
+            <div className="pt-2">
+              <Button
+                variant="link"
+                className="p-0 h-auto text-sm font-normal text-muted-foreground hover:text-foreground"
+                onClick={() => setShowAdvancedSettings(!showAdvancedSettings)}
+              >
+                {showAdvancedSettings ? <Trans>Hide advanced settings</Trans> : <Trans>Show advanced settings</Trans>}
+              </Button>
+            </div>
 
             {showAdvancedSettings && (
               <>
-                <div className="flex items-center justify-between pt-4">
+                <div className="flex items-center justify-between">
                   <Label htmlFor="series-show-data-labels" className="flex flex-col space-y-1">
                     <span><Trans>Show Data Labels</Trans></span>
                     <span className="font-normal leading-snug text-muted-foreground">
@@ -229,7 +274,7 @@ export function SeriesConfigView() {
                   selectedLabels={series.config.dataLabels || []}
                   onChange={(labels) => updateSeriesConfig({ dataLabels: labels })}
                 />
-                <div className="space-y-3 pt-4">
+                <div className="space-y-3">
                   <Label htmlFor="data-label-offset"><Trans>Data Label Offset</Trans></Label>
                   <div className="flex items-center gap-4">
                     <Slider
@@ -269,7 +314,7 @@ export function SeriesConfigView() {
         )}
 
         {/* ================= Series Delete ================= */}
-        <footer className="flex justify-between pt-4">
+        <footer className="flex flex-col sm:flex-row justify-between gap-4 pt-2">
           <Button onClick={goToConfig} variant="outline" className="gap-2">
             <Settings className="h-4 w-4" />
             <Trans>Chart Configuration</Trans>

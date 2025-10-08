@@ -1,0 +1,104 @@
+import { Alert, AlertSchema } from '@/schemas/alerts';
+import { z } from 'zod';
+
+const alertsKey = 'saved-alerts';
+
+const storedAlertSchema = AlertSchema.extend({
+  deleted: z.boolean().optional().default(false),
+});
+
+export type StoredAlert = z.infer<typeof storedAlertSchema>;
+
+export const getAlertsStore = () => {
+  const loadSavedAlerts = ({ filterDeleted = false, sort = true }: { filterDeleted?: boolean; sort?: boolean } = {}): StoredAlert[] => {
+    const raw = localStorage.getItem(alertsKey);
+    if (!raw) {
+      return [];
+    }
+
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(raw);
+    } catch (error) {
+      console.error('Failed to parse alerts from localStorage', error);
+      return [];
+    }
+
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+
+    const validAlerts = parsed
+      .map((entry) => {
+        const result = storedAlertSchema.safeParse(entry);
+        if (result.success) {
+          return result.data;
+        }
+        console.warn('Discarding invalid alert from localStorage', result.error.flatten());
+        return null;
+      })
+      .filter((alert): alert is StoredAlert => alert !== null);
+
+    const filtered = filterDeleted ? validAlerts.filter((alert) => !alert.deleted) : validAlerts;
+
+    if (!sort) {
+      return filtered;
+    }
+
+    return [...filtered].sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
+  };
+
+  const persistAlerts = (alerts: readonly StoredAlert[]) => {
+    localStorage.setItem(alertsKey, JSON.stringify(alerts));
+  };
+
+  const upsertAlert = (alert: Alert) => {
+    const current = loadSavedAlerts({ sort: false });
+    const result = AlertSchema.safeParse(alert);
+    if (!result.success) {
+      console.error('Attempted to save invalid alert', result.error.flatten());
+      return;
+    }
+
+    const existingIndex = current.findIndex((entry) => entry.id === result.data.id);
+    const stored: StoredAlert = {
+      ...result.data,
+      deleted: existingIndex === -1 ? false : current[existingIndex].deleted ?? false,
+    };
+
+    if (existingIndex === -1) {
+      persistAlerts([stored, ...current]);
+      return;
+    }
+
+    const next = [...current];
+    next[existingIndex] = stored;
+    persistAlerts(next);
+  };
+
+  const deleteAlert = (alertId: string) => {
+    const current = loadSavedAlerts({ sort: false });
+    const next = current.map((entry) =>
+      entry.id === alertId
+        ? {
+            ...entry,
+            deleted: true,
+            updatedAt: new Date().toISOString(),
+          }
+        : entry
+    );
+    persistAlerts(next);
+  };
+
+  const removeAlert = (alertId: string) => {
+    const current = loadSavedAlerts({ sort: false });
+    persistAlerts(current.filter((entry) => entry.id !== alertId));
+  };
+
+  return {
+    loadSavedAlerts,
+    upsertAlert,
+    deleteAlert,
+    removeAlert,
+  };
+};

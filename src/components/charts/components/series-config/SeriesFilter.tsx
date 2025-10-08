@@ -1,4 +1,17 @@
-import { Building2, XCircle, MapPin, EuroIcon, ChartBar, SlidersHorizontal, ArrowUpDown, Calendar, MapPinned, Globe, Tags } from "lucide-react";
+import { useMemo } from "react";
+import {
+  Building2,
+  XCircle,
+  MapPin,
+  EuroIcon,
+  ChartBar,
+  SlidersHorizontal,
+  ArrowUpDown,
+  Calendar,
+  MapPinned,
+  Globe,
+  Tags,
+} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../ui/card";
 import { Button } from "../../../ui/button";
 import { FilterListContainer } from "../../../filters/base-filter/FilterListContainer";
@@ -21,406 +34,459 @@ import { AccountCategoryRadio } from "../../../filters/account-type-filter/Accou
 import { cn } from "@/lib/utils";
 import { BudgetSectorList } from "@/components/filters/budget-sector-filter";
 import { FundingSourceList } from "@/components/filters/funding-source-filter";
-import { useBudgetSectorLabel, useEconomicClassificationLabel, useEntityLabel, useFundingSourceLabel, useFunctionalClassificationLabel, useUatLabel, useEntityTypeLabel, useAccountCategoryLabel } from "@/hooks/filters/useFilterLabels";
+import {
+  useBudgetSectorLabel,
+  useEconomicClassificationLabel,
+  useEntityLabel,
+  useFundingSourceLabel,
+  useFunctionalClassificationLabel,
+  useUatLabel,
+  useEntityTypeLabel,
+  useAccountCategoryLabel,
+} from "@/hooks/filters/useFilterLabels";
 import { LabelStore } from "@/hooks/filters/interfaces";
-import { ReportType, SeriesConfiguration } from "@/schemas/charts";
+import type { ReportType, SeriesConfiguration } from "@/schemas/charts";
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
 import { NormalizationFilter } from "@/components/filters/normalization-filter/NormalizationFilter";
 import { PeriodFilter } from "@/components/filters/period-filter/PeriodFilter";
-import { ReportPeriodInput } from "@/schemas/reporting";
+import type { ReportPeriodInput } from "@/schemas/reporting";
 import { getPeriodTags } from "@/lib/period-utils";
+import { produce } from "immer";
+
+export type SeriesFilterMutator = (draft: SeriesConfiguration) => void;
+
+export interface SeriesFilterAdapter {
+  series: SeriesConfiguration | undefined;
+  applyChanges: (mutator: SeriesFilterMutator) => void;
+}
 
 interface SeriesFilterProps {
-    seriesId?: string;
-    className?: string;
+  seriesId?: string;
+  className?: string;
+  adapter?: SeriesFilterAdapter;
+}
+
+interface SeriesFilterInternalProps {
+  adapter: SeriesFilterAdapter;
+  className?: string;
 }
 
 type FilterValue = string | number | boolean | undefined;
 
-export function SeriesFilter({ seriesId, className }: SeriesFilterProps) {
-    const { chart, updateSeries } = useChartStore();
-    const series = chart.series.find(s => s.id === seriesId && s.type === 'line-items-aggregated-yearly') as SeriesConfiguration;
-    const entityLabelsStore = useEntityLabel(series?.filter.entity_cuis ?? []);
-    const uatLabelsStore = useUatLabel(series?.filter.uat_ids ?? []);
-    const economicClassificationLabelsStore = useEconomicClassificationLabel(series?.filter.economic_codes ?? []);
-    const functionalClassificationLabelsStore = useFunctionalClassificationLabel(series?.filter.functional_codes ?? []);
-    const budgetSectorLabelsStore = useBudgetSectorLabel(series?.filter.budget_sector_ids ?? []);
-    const fundingSourceLabelsStore = useFundingSourceLabel(series?.filter.funding_source_ids ?? []);
-    const entityTypeLabelsStore = useEntityTypeLabel();
-    const accountCategoryLabelsStore = useAccountCategoryLabel();
+export function SeriesFilter({ seriesId, className, adapter }: SeriesFilterProps) {
+  if (adapter) {
+    return <SeriesFilterInternal adapter={adapter} className={className} />;
+  }
 
-    if (!series) {
-        return null;
+  if (!seriesId) {
+    return null;
+  }
+
+  return <SeriesFilterWithChart seriesId={seriesId} className={className} />;
+}
+
+function SeriesFilterWithChart({ seriesId, className }: { seriesId: string; className?: string }) {
+  const { chart, updateSeries } = useChartStore();
+
+  const chartSeries = chart.series.find(
+    (candidate) => candidate.id === seriesId && candidate.type === "line-items-aggregated-yearly"
+  ) as SeriesConfiguration | undefined;
+
+  const adapter = useMemo<SeriesFilterAdapter>(
+    () => ({
+      series: chartSeries,
+      applyChanges: (mutator: SeriesFilterMutator) => {
+        updateSeries(seriesId, (prevSeries) => {
+          if (prevSeries.type !== "line-items-aggregated-yearly") {
+            return prevSeries;
+          }
+          return produce(prevSeries, (draft) => {
+            mutator(draft as SeriesConfiguration);
+          });
+        });
+      },
+    }),
+    [chartSeries, seriesId, updateSeries]
+  );
+
+  if (!adapter.series) {
+    return null;
+  }
+
+  return <SeriesFilterInternal adapter={adapter} className={className} />;
+}
+
+function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps) {
+  const series = adapter.series;
+  if (!series) {
+    return null;
+  }
+
+  const { filter } = series;
+  const applyChanges = adapter.applyChanges;
+
+  const entityLabelsStore = useEntityLabel(filter.entity_cuis ?? []);
+  const uatLabelsStore = useUatLabel(filter.uat_ids ?? []);
+  const economicClassificationLabelsStore = useEconomicClassificationLabel(filter.economic_codes ?? []);
+  const functionalClassificationLabelsStore = useFunctionalClassificationLabel(filter.functional_codes ?? []);
+  const budgetSectorLabelsStore = useBudgetSectorLabel(filter.budget_sector_ids ?? []);
+  const fundingSourceLabelsStore = useFundingSourceLabel(filter.funding_source_ids ?? []);
+  const entityTypeLabelsStore = useEntityTypeLabel();
+  const accountCategoryLabelsStore = useAccountCategoryLabel();
+
+  const createListUpdater =
+    (filterKey: keyof typeof filter, labelStore?: LabelStore) =>
+      (action: React.SetStateAction<OptionItem<string | number>[]>) => {
+        const currentOptions =
+          (filter[filterKey] as (string | number)[] | undefined)?.map((id) => ({
+            id,
+            label: labelStore?.map(id) ?? String(id),
+          })) || [];
+
+        const newState = typeof action === "function" ? action(currentOptions) : action;
+        if (labelStore) {
+          labelStore.add(newState);
+        }
+
+        applyChanges((draft) => {
+          (draft.filter[filterKey] as (string | number)[]) = newState.map((option) => option.id);
+        });
+
+        return newState;
+      };
+
+  const createValueUpdater =
+    (filterKey: keyof typeof filter, transform?: (value: FilterValue) => FilterValue) =>
+      (value: FilterValue) => {
+        const newValue = typeof transform === "function" ? transform(value) : value;
+        applyChanges((draft) => {
+          draft.filter[filterKey] = newValue as never;
+        });
+      };
+
+  const createPrefixListUpdater = (filterKey: "functional_prefixes" | "economic_prefixes") => (value: string[] | undefined) => {
+    applyChanges((draft) => {
+      draft.filter[filterKey] = value && value.length > 0 ? value : undefined;
+    });
+  };
+
+  const selectedEntityOptions: OptionItem[] =
+    filter.entity_cuis?.map((cui) => ({ id: cui, label: entityLabelsStore.map(cui) })) ?? [];
+  const setSelectedEntityOptions = createListUpdater("entity_cuis", entityLabelsStore);
+
+  const selectedUatOptions: OptionItem<string>[] =
+    filter.uat_ids?.map((id) => ({ id, label: uatLabelsStore.map(id) })) ?? [];
+  const setSelectedUatOptions = createListUpdater("uat_ids", uatLabelsStore);
+
+  const selectedEconomicClassificationOptions: OptionItem[] =
+    filter.economic_codes?.map((id) => ({ id, label: economicClassificationLabelsStore.map(id) })) ?? [];
+  const setSelectedEconomicClassificationOptions = createListUpdater("economic_codes", economicClassificationLabelsStore);
+
+  const selectedFunctionalClassificationOptions: OptionItem[] =
+    filter.functional_codes?.map((id) => ({ id, label: functionalClassificationLabelsStore.map(id) })) ?? [];
+  const setSelectedFunctionalClassificationOptions = createListUpdater("functional_codes", functionalClassificationLabelsStore);
+
+  const selectedAccountTypeOption: OptionItem = filter.account_category
+    ? { id: filter.account_category, label: accountCategoryLabelsStore.map(filter.account_category) }
+    : { id: "ch", label: accountCategoryLabelsStore.map("ch") };
+  const setSelectedAccountTypeOption = createValueUpdater("account_category", (value) => (value ? value : undefined));
+
+  const selectedEntityTypeOptions: OptionItem[] =
+    filter.entity_types?.map((id) => ({ id, label: entityTypeLabelsStore.map(id) })) ?? [];
+  const setSelectedEntityTypeOptions = createListUpdater("entity_types", entityTypeLabelsStore);
+
+  const selectedCountyOptions: OptionItem<string>[] =
+    filter.county_codes?.map((code) => ({ id: code, label: String(code) })) ?? [];
+  const setSelectedCountyOptions = createListUpdater("county_codes");
+
+  const selectedBudgetSectorOptions: OptionItem[] =
+    filter.budget_sector_ids?.map((id) => ({ id, label: budgetSectorLabelsStore.map(id) })) ?? [];
+  const setSelectedBudgetSectorOptions = createListUpdater("budget_sector_ids", budgetSectorLabelsStore);
+
+  const selectedFundingSourceOptions: OptionItem[] =
+    filter.funding_source_ids?.map((id) => ({ id, label: fundingSourceLabelsStore.map(id) })) ?? [];
+  const setSelectedFundingSourceOptions = createListUpdater("funding_source_ids", fundingSourceLabelsStore);
+
+  const selectedEconomicPrefixesOptions = filter.economic_prefixes ?? [];
+  const setSelectedEconomicPrefixesOptions = createPrefixListUpdater("economic_prefixes");
+
+  const selectedFunctionalPrefixesOptions = filter.functional_prefixes ?? [];
+  const setSelectedFunctionalPrefixesOptions = createPrefixListUpdater("functional_prefixes");
+
+  const minAmount = String(filter.aggregate_min_amount ?? "");
+  const maxAmount = String(filter.aggregate_max_amount ?? "");
+  const setMinAmount = createValueUpdater("aggregate_min_amount", (value) => (value ? Number(value) : undefined));
+  const setMaxAmount = createValueUpdater("aggregate_max_amount", (value) => (value ? Number(value) : undefined));
+
+  const minItemAmount = String(filter.item_min_amount ?? "");
+  const maxItemAmount = String(filter.item_max_amount ?? "");
+  const setMinItemAmount = createValueUpdater("item_min_amount", (value) => (value ? Number(value) : undefined));
+  const setMaxItemAmount = createValueUpdater("item_max_amount", (value) => (value ? Number(value) : undefined));
+
+  const setPeriod = (period: ReportPeriodInput | undefined) => {
+    applyChanges((draft) => {
+      draft.filter.report_period = period as any;
+    });
+  };
+
+  const reportType = filter.report_type;
+  const setReportType = (value: FilterValue) => {
+    applyChanges((draft) => {
+      draft.filter.report_type = value ? (String(value) as ReportType) : undefined;
+    });
+  };
+
+  const normalization = filter.normalization;
+  const setNormalization = createValueUpdater("normalization", (value) => (value ? value : undefined));
+  const normalizationOption: OptionItem | null = normalization ? { id: normalization, label: normalization } : null;
+
+  const reportTypeOption: OptionItem | null = reportType ? { id: reportType, label: reportType } : null;
+
+  const minPopulation = filter.min_population;
+  const maxPopulation = filter.max_population;
+  const setMinPopulation = createValueUpdater("min_population", (value) => (value ? Number(value) : undefined));
+  const setMaxPopulation = createValueUpdater("max_population", (value) => (value ? Number(value) : undefined));
+
+  const flagsOptions: OptionItem[] = [];
+  if (filter.is_uat === true) flagsOptions.push({ id: "isUat", label: t`UAT: Yes` });
+  if (filter.is_uat === false) flagsOptions.push({ id: "isUat", label: t`UAT: No` });
+  const setIsUat = createValueUpdater("is_uat", (value) => (value !== undefined ? value : undefined));
+
+  const periodTags = getPeriodTags(filter.report_period as ReportPeriodInput).map((tag) => ({
+    id: String(tag.value),
+    label: String(tag.value),
+  }));
+
+  const clearAllFilters = () => {
+    applyChanges((draft) => {
+      draft.filter = {
+        account_category: "ch",
+        report_type: "Executie bugetara agregata la nivel de ordonator principal",
+      } as SeriesConfiguration["filter"];
+    });
+  };
+
+  const totalSelectedFilters =
+    (filter.report_period ? 1 : 0) +
+    (filter.entity_cuis?.length ?? 0) +
+    (filter.uat_ids?.length ?? 0) +
+    (filter.county_codes?.length ?? 0) +
+    (filter.economic_codes?.length ?? 0) +
+    (filter.functional_codes?.length ?? 0) +
+    (filter.budget_sector_ids?.length ?? 0) +
+    (filter.funding_source_ids?.length ?? 0) +
+    (filter.account_category ? 1 : 0) +
+    (filter.entity_types?.length ?? 0) +
+    (filter.aggregate_min_amount != null ? 1 : 0) +
+    (filter.aggregate_max_amount != null ? 1 : 0) +
+    (filter.item_min_amount != null ? 1 : 0) +
+    (filter.item_max_amount != null ? 1 : 0) +
+    (filter.min_population != null ? 1 : 0) +
+    (filter.max_population != null ? 1 : 0) +
+    (filter.report_type ? 1 : 0) +
+    (filter.normalization ? 1 : 0) +
+    (filter.is_uat !== undefined ? 1 : 0) +
+    (filter.functional_prefixes?.length ?? 0) +
+    (filter.economic_prefixes?.length ?? 0);
+
+  const handleClearReportType = () => setReportType(undefined);
+  const handleClearNormalization = () => setNormalization(undefined);
+
+  const handleClearFlag = (option: OptionItem) => {
+    if (option.id === "isUat") {
+      setIsUat(undefined);
     }
+  };
 
-    const { filter } = series;
+  const handleClearAllFlags = () => {
+    setIsUat(undefined);
+  };
 
-    // Generic updater for list-based filters
-    const createListUpdater = (filterKey: keyof typeof filter, labelStore?: LabelStore) =>
-        (action: React.SetStateAction<OptionItem<string | number>[]>) => {
-            if (!seriesId) return;
+  const handleRemovePeriodTag = (tagToRemove: OptionItem) => {
+    applyChanges((draft) => {
+      const currentPeriod = draft.filter.report_period;
+      if (!currentPeriod) {
+        return;
+      }
 
-            const currentOptions = (filter[filterKey] as (string | number)[])?.map(id => ({ id, label: labelStore?.map(id) ?? String(id) })) || [];
-            const newState = typeof action === 'function' ? action(currentOptions) : action;
-            if (labelStore) {
-                labelStore.add(newState);
-            }
+      const { selection, ...rest } = currentPeriod;
 
-            updateSeries(seriesId, (prevSeries) => {
-                if (prevSeries.type === 'line-items-aggregated-yearly') {
-                    (prevSeries.filter[filterKey] as (string | number)[]) = newState.map(o => o.id);
-                }
-                return prevSeries;
-            });
-            return newState;
-        };
+      if (selection.dates) {
+        const newDates = selection.dates.filter((date) => date !== tagToRemove.id);
+        draft.filter.report_period =
+          newDates.length > 0 ? { ...rest, selection: { dates: newDates } } : undefined;
+      } else if (selection.interval) {
+        draft.filter.report_period = undefined;
+      }
+    });
+  };
 
-    const createValueUpdater = (filterKey: keyof typeof filter, transform?: (value: FilterValue) => FilterValue) =>
-        (value: FilterValue) => {
-            if (!seriesId) return;
-            updateSeries(seriesId, (prevSeries) => {
-                const newValue = typeof transform === 'function' ? transform(value) : value;
-                if (prevSeries.type === 'line-items-aggregated-yearly') {
-                    prevSeries.filter[filterKey] = newValue as never;
-                }
-                return prevSeries;
-            });
-        };
-
-    const createPrefixListUpdater = (filterKey: 'functional_prefixes' | 'economic_prefixes') =>
-        (value: string[] | undefined) => {
-            if (!seriesId) return;
-            updateSeries(seriesId, (prevSeries) => {
-                if (prevSeries.type === 'line-items-aggregated-yearly') {
-                    prevSeries.filter[filterKey] = value && value.length > 0 ? value : undefined;
-                }
-                return prevSeries;
-            });
-        };
-
-
-    // State and Handlers
-
-    const selectedEntityOptions: OptionItem[] = filter.entity_cuis?.map(cui => ({ id: cui, label: entityLabelsStore.map(cui) })) || [];
-    const setSelectedEntityOptions = createListUpdater('entity_cuis', entityLabelsStore);
-
-    const selectedUatOptions: OptionItem<string>[] = filter.uat_ids?.map(id => ({ id: id, label: uatLabelsStore.map(id) })) || [];
-    const setSelectedUatOptions = createListUpdater('uat_ids', uatLabelsStore);
-
-    const selectedEconomicClassificationOptions: OptionItem[] = filter.economic_codes?.map(id => ({ id, label: economicClassificationLabelsStore.map(id) })) || [];
-    const setSelectedEconomicClassificationOptions = createListUpdater('economic_codes', economicClassificationLabelsStore);
-
-    const selectedFunctionalClassificationOptions: OptionItem[] = filter.functional_codes?.map(id => ({ id, label: functionalClassificationLabelsStore.map(id) })) || [];
-    const setSelectedFunctionalClassificationOptions = createListUpdater('functional_codes', functionalClassificationLabelsStore);
-
-    const selectedAccountTypeOption: OptionItem = filter.account_category ? { id: filter.account_category, label: accountCategoryLabelsStore.map(filter.account_category) } : { id: 'ch', label: accountCategoryLabelsStore.map('ch') };
-    const setSelectedAccountTypeOption = createValueUpdater('account_category', (v) => v ? v : undefined);
-
-    const selectedEntityTypeOptions: OptionItem[] = filter.entity_types?.map(id => ({ id, label: entityTypeLabelsStore.map(id) })) || [];
-    const setSelectedEntityTypeOptions = createListUpdater('entity_types');
-
-    const selectedCountyOptions: OptionItem<string>[] = filter.county_codes?.map(c => ({ id: c, label: String(c) })) || [];
-    const setSelectedCountyOptions = createListUpdater('county_codes');
-
-    const setPeriod = (period?: ReportPeriodInput) => {
-        if (!seriesId) return;
-        updateSeries(seriesId, (prevSeries) => {
-            if (prevSeries.type === 'line-items-aggregated-yearly') {
-                prevSeries.filter.report_period = period as any;
-            }
-            return prevSeries;
-        });
-    }
-
-    const minAmount = String(filter.aggregate_min_amount ?? '');
-    const maxAmount = String(filter.aggregate_max_amount ?? '');
-    const setMinAmount = createValueUpdater('aggregate_min_amount', (v) => v ? Number(v) : undefined);
-    const setMaxAmount = createValueUpdater('aggregate_max_amount', (v) => v ? Number(v) : undefined);
-
-    const reportType = filter.report_type;
-    const setReportType = (v: FilterValue) => {
-        if (!seriesId) return;
-        updateSeries(seriesId, (prevSeries) => {
-            if (prevSeries.type === 'line-items-aggregated-yearly') {
-                prevSeries.filter.report_type = v ? String(v) as ReportType : undefined;
-            }
-            return prevSeries;
-        });
-    };
-    const normalization = filter.normalization;
-    const setNormalization = createValueUpdater('normalization', (v) => v ? v : undefined);
-    const normalizationOption: OptionItem | null = normalization ? { id: normalization, label: normalization } : null;
-
-    const reportTypeOption: OptionItem | null = reportType ? { id: reportType, label: reportType } : null;
-
-    const functionalPrefixes = filter.functional_prefixes ?? [];
-    const setFunctionalPrefixes = createPrefixListUpdater('functional_prefixes');
-
-    const economicPrefixes = filter.economic_prefixes ?? [];
-    const setEconomicPrefixes = createPrefixListUpdater('economic_prefixes');
-
-    const selectedBudgetSectorOptions: OptionItem[] = filter.budget_sector_ids?.map(id => ({ id, label: budgetSectorLabelsStore.map(id) })) || [];
-    const setSelectedBudgetSectorOptions = createListUpdater('budget_sector_ids', budgetSectorLabelsStore);
-
-    const selectedFundingSourceOptions: OptionItem[] = filter.funding_source_ids?.map(id => ({ id, label: fundingSourceLabelsStore.map(id) })) || [];
-    const setSelectedFundingSourceOptions = createListUpdater('funding_source_ids', fundingSourceLabelsStore);
-
-    const minPopulation = filter.min_population;
-    const maxPopulation = filter.max_population;
-    const setMinPopulation = createValueUpdater('min_population', (v) => v ? Number(v) : undefined);
-    const setMaxPopulation = createValueUpdater('max_population', (v) => v ? Number(v) : undefined);
-
-    const flagsOptions: OptionItem[] = [];
-    if (filter.is_uat === true) flagsOptions.push({ id: 'isUat', label: t`UAT: Yes` });
-    if (filter.is_uat === false) flagsOptions.push({ id: 'isUat', label: t`UAT: No` });
-    const setIsUat = createValueUpdater('is_uat', (v) => v !== undefined ? v : undefined);
-
-    const handleRemovePeriodTag = (tagToRemove: OptionItem) => {
-        updateSeries(series.id, (prev) => {
-            if (prev.type !== 'line-items-aggregated-yearly' || !prev.filter.report_period) {
-                return prev;
-            }
-
-            const { selection, ...rest } = prev.filter.report_period;
-
-            if (selection.dates) {
-                const newDates = selection.dates.filter(d => d !== tagToRemove.id);
-                if (newDates.length > 0) {
-                    prev.filter.report_period = { ...rest, selection: { dates: newDates } };
-                } else {
-                    prev.filter.report_period = undefined;
-                }
-            } else if (selection.interval) {
-                prev.filter.report_period = undefined;
-            }
-            return prev;
-        });
-    };
-
-    const periodTags = getPeriodTags(series.filter.report_period as ReportPeriodInput).map(tag => ({
-        id: String(tag.value),
-        label: String(tag.value),
-    }));
-
-    const clearAllFilters = () => {
-        if (!seriesId) return;
-        updateSeries(seriesId, (prevSeries) => {
-            if (prevSeries.type === 'line-items-aggregated-yearly') {
-                prevSeries.filter = { account_category: 'ch', report_type: 'Executie bugetara agregata la nivel de ordonator principal' };
-            }
-            return prevSeries;
-        });
-    };
-
-    const totalSelectedFilters =
-        (filter.report_period ? 1 : 0) +
-        (filter.entity_cuis?.length ?? 0) +
-        (filter.uat_ids?.length ?? 0) +
-        (filter.county_codes?.length ?? 0) +
-        (filter.economic_codes?.length ?? 0) +
-        (filter.functional_codes?.length ?? 0) +
-        (filter.budget_sector_ids?.length ?? 0) +
-        (filter.funding_source_ids?.length ?? 0) +
-        (filter.account_category ? 1 : 0) +
-        (filter.entity_types?.length ?? 0) +
-        (filter.aggregate_min_amount != null ? 1 : 0) +
-        (filter.aggregate_max_amount != null ? 1 : 0) +
-        (filter.min_population != null ? 1 : 0) +
-        (filter.max_population != null ? 1 : 0) +
-        (filter.report_type ? 1 : 0) +
-        (filter.report_period ? 1 : 0) +
-        (filter.normalization ? 1 : 0) +
-        (filter.is_uat !== undefined ? 1 : 0) +
-        (filter.functional_prefixes?.length ?? 0) +
-        (filter.economic_prefixes?.length ?? 0);
-
-    const handleClearReportType = () => setReportType(undefined);
-    const handleClearNormalization = () => setNormalization(undefined);
-    const handleClearFlag = (option: OptionItem) => {
-        if (!seriesId) return;
-        updateSeries(seriesId, (prevSeries) => {
-            if (prevSeries.type === 'line-items-aggregated-yearly') {
-                if (option.id === 'isUat') prevSeries.filter.is_uat = undefined;
-            }
-            return prevSeries;
-        });
-    };
-
-    const handleClearAllFlags = () => {
-        if (!seriesId) return;
-        updateSeries(seriesId, (prevSeries) => {
-            if (prevSeries.type === 'line-items-aggregated-yearly') {
-                prevSeries.filter.is_uat = undefined;
-            }
-            return prevSeries;
-        });
-    };
-
-    return (
-        <Card className={cn("flex flex-col", className)}>
-            <CardHeader className="py-4 px-6 border-b">
-                <div className="flex justify-between items-center">
-                    <CardTitle className="text-lg font-semibold">
-                        <Trans>Filters</Trans>
-                    </CardTitle>
-                    {totalSelectedFilters > 0 && (
-                        <Button variant="ghost" size="sm" onClick={clearAllFilters} className="text-sm">
-                            <XCircle className="w-4 h-4 mr-1" />
-                            <Trans>Clear all</Trans> ({totalSelectedFilters})
-                        </Button>
-                    )}
-                </div>
-            </CardHeader>
-            <CardContent className={`flex flex-col p-0 overflow-y-auto`}>
-                <FilterRadioContainer
-                    title={t`Revenues/Expenses`}
-                    icon={<ArrowUpDown className="w-4 h-4" />}
-                    selectedOption={selectedAccountTypeOption}
-                    onClear={() => setSelectedAccountTypeOption('ch')}
-                >
-                    <AccountCategoryRadio
-                        accountCategory={filter.account_category}
-                        setAccountCategory={setSelectedAccountTypeOption}
-                    />
-                </FilterRadioContainer>
-                <FilterRadioContainer
-                    title={t`Normalization`}
-                    icon={<ArrowUpDown className="w-4 h-4" />}
-                    selectedOption={normalizationOption}
-                    onClear={handleClearNormalization}
-                >
-                    <NormalizationFilter
-                        normalization={normalization}
-                        setNormalization={setNormalization}
-                    />
-                </FilterRadioContainer>
-                <FilterContainer
-                    title={t`Period`}
-                    icon={<Calendar className="w-4 h-4" />}
-                    selectedOptions={periodTags}
-                    onClearOption={handleRemovePeriodTag}
-                    onClearAll={() => setPeriod(undefined)}
-                >
-                    <PeriodFilter value={filter.report_period as any} onChange={setPeriod} />
-                </FilterContainer>
-                <FilterListContainer
-                    title={t`Entities`}
-                    icon={<Building2 className="w-4 h-4" />}
-                    listComponent={EntityList}
-                    selected={selectedEntityOptions}
-                    setSelected={setSelectedEntityOptions}
-                />
-                <FilterListContainer
-                    title={t`UAT`}
-                    icon={<MapPin className="w-4 h-4" />}
-                    listComponent={UatList}
-                    selected={selectedUatOptions}
-                    setSelected={setSelectedUatOptions}
-                />
-                <FilterListContainer
-                    title={t`County`}
-                    icon={<MapPinned className="w-4 h-4" />}
-                    listComponent={CountyList}
-                    selected={selectedCountyOptions}
-                    setSelected={setSelectedCountyOptions}
-                />
-                <FilterListContainer
-                    title={t`Entity Type`}
-                    icon={<Building2 className="w-4 h-4" />}
-                    listComponent={EntityTypeList}
-                    selected={selectedEntityTypeOptions}
-                    setSelected={setSelectedEntityTypeOptions}
-                />
-                <FilterListContainer
-                    title={t`Functional Classification`}
-                    icon={<ChartBar className="w-4 h-4" />}
-                    listComponent={FunctionalClassificationList}
-                    selected={selectedFunctionalClassificationOptions}
-                    setSelected={setSelectedFunctionalClassificationOptions}
-                />
-                <FilterPrefixContainer
-                    title={t`Functional Prefixes`}
-                    icon={<ChartBar className="w-4 h-4" />}
-                    prefixComponent={PrefixFilter}
-                    value={functionalPrefixes}
-                    onValueChange={setFunctionalPrefixes}
-                />
-                <FilterListContainer
-                    title={t`Economic Classification`}
-                    icon={<Tags className="w-4 h-4" />}
-                    listComponent={EconomicClassificationList}
-                    selected={selectedEconomicClassificationOptions}
-                    setSelected={setSelectedEconomicClassificationOptions}
-                />
-
-                <FilterPrefixContainer
-                    title={t`Economic Prefixes`}
-                    icon={<Tags className="w-4 h-4" />}
-                    prefixComponent={PrefixFilter}
-                    value={economicPrefixes}
-                    onValueChange={setEconomicPrefixes}
-                />
-                <FilterListContainer
-                    title={t`Budget Sector`}
-                    icon={<Building2 className="w-4 h-4" />}
-                    listComponent={BudgetSectorList}
-                    selected={selectedBudgetSectorOptions}
-                    setSelected={setSelectedBudgetSectorOptions}
-                />
-                <FilterListContainer
-                    title={t`Funding Source`}
-                    icon={<EuroIcon className="w-4 h-4" />}
-                    listComponent={FundingSourceList}
-                    selected={selectedFundingSourceOptions}
-                    setSelected={setSelectedFundingSourceOptions}
-                />
-                <FilterRadioContainer
-                    title={t`Report Type`}
-                    icon={<ArrowUpDown className="w-4 h-4" />}
-                    selectedOption={reportTypeOption}
-                    onClear={handleClearReportType}
-                >
-                    <ReportTypeFilter
-                        reportType={reportType}
-                        setReportType={setReportType}
-                    />
-                </FilterRadioContainer>
-                <FilterContainer
-                    title={t`Is UAT`}
-                    icon={<ArrowUpDown className="w-4 h-4" />}
-                    selectedOptions={flagsOptions}
-                    onClearOption={handleClearFlag}
-                    onClearAll={handleClearAllFlags}
-                >
-                    <IsUatFilter
-                        isUat={filter.is_uat}
-                        setIsUat={setIsUat}
-                    />
-                </FilterContainer>
-                <FilterRangeContainer
-                    title={t`Amount Range`}
-                    unit="RON"
-                    icon={<SlidersHorizontal className="w-4 h-4" />}
-                    rangeComponent={AmountRangeFilter}
-                    minValue={minAmount}
-                    onMinValueChange={setMinAmount}
-                    maxValue={maxAmount}
-                    onMaxValueChange={setMaxAmount}
-                    debounceMs={0}
-                />
-                <FilterRangeContainer
-                    title={t`Population Range`}
-                    unit={t`people`}
-                    icon={<Globe className="w-4 h-4" />}
-                    rangeComponent={AmountRangeFilter}
-                    minValue={minPopulation}
-                    onMinValueChange={setMinPopulation}
-                    maxValue={maxPopulation}
-                    onMaxValueChange={setMaxPopulation}
-                    maxValueAllowed={100_000_000}
-                />
-            </CardContent>
-        </Card>
-    );
+  return (
+    <Card className={cn("flex flex-col", className)}>
+      <CardHeader className="py-4 px-6 border-b">
+        <div className="flex justify-between items-center">
+          <CardTitle className="text-lg font-semibold">
+            <Trans>Filters</Trans>
+          </CardTitle>
+          {totalSelectedFilters > 0 && (
+            <Button variant="ghost" size="sm" onClick={clearAllFilters} className="text-sm">
+              <XCircle className="w-4 h-4 mr-1" />
+              <Trans>Clear all</Trans> ({totalSelectedFilters})
+            </Button>
+          )}
+        </div>
+      </CardHeader>
+      <CardContent className="flex flex-col p-0 overflow-y-auto">
+        <FilterRadioContainer
+          title={t`Revenues/Expenses`}
+          icon={<ArrowUpDown className="w-4 h-4" />}
+          selectedOption={selectedAccountTypeOption}
+          onClear={() => setSelectedAccountTypeOption("ch")}
+        >
+          <AccountCategoryRadio
+            accountCategory={filter.account_category}
+            setAccountCategory={setSelectedAccountTypeOption}
+          />
+        </FilterRadioContainer>
+        <FilterRadioContainer
+          title={t`Normalization`}
+          icon={<ArrowUpDown className="w-4 h-4" />}
+          selectedOption={normalizationOption}
+          onClear={handleClearNormalization}
+        >
+          <NormalizationFilter normalization={normalization} setNormalization={setNormalization} />
+        </FilterRadioContainer>
+        <FilterContainer
+          title={t`Period`}
+          icon={<Calendar className="w-4 h-4" />}
+          selectedOptions={periodTags}
+          onClearOption={handleRemovePeriodTag}
+          onClearAll={() => setPeriod(undefined)}
+        >
+          <PeriodFilter value={filter.report_period as any} onChange={setPeriod} />
+        </FilterContainer>
+        <FilterListContainer
+          title={t`Entities`}
+          icon={<Building2 className="w-4 h-4" />}
+          listComponent={EntityList}
+          selected={selectedEntityOptions}
+          setSelected={setSelectedEntityOptions}
+        />
+        <FilterListContainer
+          title={t`UAT`}
+          icon={<MapPin className="w-4 h-4" />}
+          listComponent={UatList}
+          selected={selectedUatOptions}
+          setSelected={setSelectedUatOptions}
+        />
+        <FilterListContainer
+          title={t`County`}
+          icon={<MapPinned className="w-4 h-4" />}
+          listComponent={CountyList}
+          selected={selectedCountyOptions}
+          setSelected={setSelectedCountyOptions}
+        />
+        <FilterListContainer
+          title={t`Entity Type`}
+          icon={<Building2 className="w-4 h-4" />}
+          listComponent={EntityTypeList}
+          selected={selectedEntityTypeOptions}
+          setSelected={setSelectedEntityTypeOptions}
+        />
+        <FilterListContainer
+          title={t`Functional Classification`}
+          icon={<ChartBar className="w-4 h-4" />}
+          listComponent={FunctionalClassificationList}
+          selected={selectedFunctionalClassificationOptions}
+          setSelected={setSelectedFunctionalClassificationOptions}
+        />
+        <FilterPrefixContainer
+          title={t`Functional Prefixes`}
+          icon={<ChartBar className="w-4 h-4" />}
+          prefixComponent={PrefixFilter}
+          value={selectedFunctionalPrefixesOptions}
+          onValueChange={setSelectedFunctionalPrefixesOptions}
+        />
+        <FilterListContainer
+          title={t`Economic Classification`}
+          icon={<Tags className="w-4 h-4" />}
+          listComponent={EconomicClassificationList}
+          selected={selectedEconomicClassificationOptions}
+          setSelected={setSelectedEconomicClassificationOptions}
+        />
+        <FilterPrefixContainer
+          title={t`Economic Prefixes`}
+          icon={<Tags className="w-4 h-4" />}
+          prefixComponent={PrefixFilter}
+          value={selectedEconomicPrefixesOptions}
+          onValueChange={setSelectedEconomicPrefixesOptions}
+        />
+        <FilterListContainer
+          title={t`Budget Sector`}
+          icon={<Building2 className="w-4 h-4" />}
+          listComponent={BudgetSectorList}
+          selected={selectedBudgetSectorOptions}
+          setSelected={setSelectedBudgetSectorOptions}
+        />
+        <FilterListContainer
+          title={t`Funding Source`}
+          icon={<EuroIcon className="w-4 h-4" />}
+          listComponent={FundingSourceList}
+          selected={selectedFundingSourceOptions}
+          setSelected={setSelectedFundingSourceOptions}
+        />
+        <FilterRadioContainer
+          title={t`Report Type`}
+          icon={<ArrowUpDown className="w-4 h-4" />}
+          selectedOption={reportTypeOption}
+          onClear={handleClearReportType}
+        >
+          <ReportTypeFilter reportType={reportType} setReportType={setReportType} />
+        </FilterRadioContainer>
+        <FilterContainer
+          title={t`Is UAT`}
+          icon={<ArrowUpDown className="w-4 h-4" />}
+          selectedOptions={flagsOptions}
+          onClearOption={handleClearFlag}
+          onClearAll={handleClearAllFlags}
+        >
+          <IsUatFilter isUat={filter.is_uat} setIsUat={setIsUat} />
+        </FilterContainer>
+        <FilterRangeContainer
+          title={t`Amount Range`}
+          unit="RON"
+          icon={<SlidersHorizontal className="w-4 h-4" />}
+          rangeComponent={AmountRangeFilter}
+          minValue={minAmount}
+          onMinValueChange={setMinAmount}
+          maxValue={maxAmount}
+          onMaxValueChange={setMaxAmount}
+          debounceMs={0}
+        />
+        <FilterRangeContainer
+          title={t`Item Amount`}
+          unit="RON"
+          icon={<SlidersHorizontal className="w-4 h-4" />}
+          rangeComponent={AmountRangeFilter}
+          minValue={minItemAmount}
+          onMinValueChange={setMinItemAmount}
+          maxValue={maxItemAmount}
+          onMaxValueChange={setMaxItemAmount}
+          debounceMs={0}
+        />
+        <FilterRangeContainer
+          title={t`Population Range`}
+          unit={t`people`}
+          icon={<Globe className="w-4 h-4" />}
+          rangeComponent={AmountRangeFilter}
+          minValue={minPopulation}
+          onMinValueChange={setMinPopulation}
+          maxValue={maxPopulation}
+          onMaxValueChange={setMaxPopulation}
+          maxValueAllowed={100_000_000}
+        />
+      </CardContent>
+    </Card>
+  );
 }
