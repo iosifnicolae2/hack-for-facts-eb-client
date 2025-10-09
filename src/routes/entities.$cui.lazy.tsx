@@ -48,8 +48,8 @@ export const Route = createLazyFileRoute('/entities/$cui')({
 
 const { start: START_YEAR, end: END_YEAR } = defaultYearRange
 const DEFAULT_PERIOD = 'YEAR'
-const DEFAULT_MONTH = '12'
-const DEFAULT_QUARTER = 'Q4'
+const DEFAULT_MONTH = '01'
+const DEFAULT_QUARTER = 'Q1'
 
 function EntityDetailsPage() {
   const { cui } = useParams({ from: '/entities/$cui' })

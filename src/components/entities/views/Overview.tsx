@@ -88,7 +88,7 @@ export const Overview = ({
         onYearChange(year);
     }
     const handlePrefetchYear = (year: number) => {
-        const nextReport = getInitialFilterState(periodType ?? 'YEAR', year, search.month as TMonth ?? '12', search.quarter as TQuarter ?? 'Q4');
+        const nextReport = getInitialFilterState(periodType ?? 'YEAR', year, search.month as TMonth ?? '01', search.quarter as TQuarter ?? 'Q1');
         const nextTrend = makeTrendPeriod(periodType ?? 'YEAR', year, years[years.length - 1], years[0]);
         debouncedPrefetch({ reportPeriod: nextReport, trendPeriod: nextTrend, reportType });
     }
@@ -106,7 +106,7 @@ export const Overview = ({
         } else {
             const year = selectedYear
             const currentPeriod = periodType ?? 'YEAR'
-            const nextReport = getInitialFilterState(currentPeriod, year, currentPeriod === 'MONTH' ? label as TMonth : search.month as TMonth ?? '12', currentPeriod === 'QUARTER' ? label as TQuarter : search.quarter as TQuarter ?? 'Q4')
+            const nextReport = getInitialFilterState(currentPeriod, year, currentPeriod === 'MONTH' ? label as TMonth : search.month as TMonth ?? '01', currentPeriod === 'QUARTER' ? label as TQuarter : search.quarter as TQuarter ?? 'Q1')
             const nextTrend = makeTrendPeriod(currentPeriod, year, years[years.length - 1], years[0])
             debouncedPrefetch({ reportPeriod: nextReport, trendPeriod: nextTrend, reportType })
         }

@@ -103,8 +103,8 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
       nextMonth = '01'
     } else if (nextType === 'QUARTER') {
       if (periodType === 'YEAR') {
-        // YEAR → QUARTER: choose last quarter of the selected year
-        nextQuarter = 'Q4'
+        // YEAR → QUARTER: choose first quarter of the selected year
+        nextQuarter = 'Q1'
       } else if (periodType === 'MONTH') {
         // MONTH → QUARTER: compute quarter from current month
         const monthNum = Number(nextMonth)
@@ -112,8 +112,8 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
       }
     } else if (nextType === 'MONTH') {
       if (periodType === 'YEAR') {
-        // YEAR → MONTH: choose last month of the selected year
-        nextMonth = '12'
+        // YEAR → MONTH: choose first month of the selected year
+        nextMonth = '01'
       } else if (periodType === 'QUARTER') {
         // QUARTER → MONTH: choose the end month of the selected quarter
         nextMonth = getQuarterEndMonth(nextQuarter)
@@ -177,13 +177,13 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
                     if (nextType === 'YEAR') {
                       nextMonth = '01'
                     } else if (nextType === 'QUARTER') {
-                      if (periodType === 'YEAR') nextQuarter = 'Q4'
+                      if (periodType === 'YEAR') nextQuarter = 'Q1'
                       else if (periodType === 'MONTH') {
                         const monthNum = Number(nextMonth)
                         nextQuarter = getQuarterForMonth(monthNum)
                       }
                     } else if (nextType === 'MONTH') {
-                      if (periodType === 'YEAR') nextMonth = '12'
+                      if (periodType === 'YEAR') nextMonth = '01'
                       else if (periodType === 'QUARTER') nextMonth = getQuarterEndMonth(nextQuarter)
                     }
                     emitPrefetch(nextType, nextYear, nextQuarter, nextMonth, reportType, mainCreditor, normalization)
