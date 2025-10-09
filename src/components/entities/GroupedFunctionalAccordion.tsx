@@ -2,15 +2,18 @@ import React from 'react';
 import { Accordion, AccordionItem, AccordionContent, AccordionTrigger } from '@/components/ui/accordion';
 import { GroupedFunctional, GroupedEconomic } from '@/schemas/financial';
 import { highlightText } from './highlight-utils';
-import { formatCurrency, formatNumber } from '@/lib/utils';
+import { formatCurrency, formatNumber, getNormalizationUnit } from '@/lib/utils';
 
 interface GroupedFunctionalAccordionProps {
   func: GroupedFunctional;
   baseTotal: number;
   searchTerm: string;
+  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
 }
 
-const GroupedFunctionalAccordion: React.FC<GroupedFunctionalAccordionProps> = ({ func, baseTotal, searchTerm }) => {
+const GroupedFunctionalAccordion: React.FC<GroupedFunctionalAccordionProps> = ({ func, baseTotal, searchTerm, normalization }) => {
+  const unit = getNormalizationUnit(normalization ?? 'total');
+  const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON';
   if (func.economics.length === 0) {
     return (
       <div key={func.code} className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto] items-center gap-1.5 sm:gap-4 py-2 px-3 sm:px-4 border-b">
@@ -20,13 +23,13 @@ const GroupedFunctionalAccordion: React.FC<GroupedFunctionalAccordionProps> = ({
         </div>
         <div className="text-right text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
           <p className="flex justify-end items-center gap-1 sm:gap-1.5">
-            {formatCurrency(func.totalAmount, "compact")}
+            {formatCurrency(func.totalAmount, "compact", currencyCode)}
             {baseTotal > 0 && (
               <span className="hidden sm:inline text-xs text-muted-foreground">{`(${formatNumber(func.totalAmount / baseTotal * 100)}%)`}</span>
             )}
           </p>
           <p className="text-xs text-muted-foreground font-normal">
-            {formatCurrency(func.totalAmount, "standard")}
+            {formatCurrency(func.totalAmount, "standard", currencyCode)}
           </p>
         </div>
       </div>
@@ -45,20 +48,23 @@ const GroupedFunctionalAccordion: React.FC<GroupedFunctionalAccordionProps> = ({
             </div>
             <div className="text-right text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
               <p className="flex justify-end items-center gap-1 sm:gap-1.5">
-                {formatCurrency(func.totalAmount, "compact")}
+                {formatCurrency(func.totalAmount, "compact", currencyCode)}
                 {baseTotal > 0 && (
                   <span className="hidden sm:inline text-xs text-muted-foreground">{`(${formatNumber(func.totalAmount / baseTotal * 100)}%)`}</span>
                 )}
               </p>
               <p className="text-xs text-muted-foreground font-normal">
-                {formatCurrency(func.totalAmount, "standard")}
+                {formatCurrency(func.totalAmount, "standard", currencyCode)}
               </p>
             </div>
           </div>
         </AccordionTrigger>
         <AccordionContent className="border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
           <ul className="divide-y divide-slate-100 dark:divide-slate-800 py-1 px-3 sm:px-4">
-            {func.economics.map((eco: GroupedEconomic) => (
+            {func.economics
+              .slice()
+              .sort((a: GroupedEconomic, b: GroupedEconomic) => b.amount - a.amount)
+              .map((eco: GroupedEconomic) => (
               <li key={eco.code} className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto] items-center gap-1.5 sm:gap-4 py-1.5">
                 <div className="flex min-w-0 items-start sm:items-center gap-1.5 pl-2">
                   <span className="font-mono text-xs text-muted-foreground flex-shrink-0">{highlightText(`ec:${eco.code}`, searchTerm)}</span>
@@ -66,13 +72,13 @@ const GroupedFunctionalAccordion: React.FC<GroupedFunctionalAccordionProps> = ({
                 </div>
                 <div className="text-right text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
                   <p className="flex justify-end items-center gap-1 sm:gap-1.5">
-                    {formatCurrency(eco.amount, "compact")}
+                    {formatCurrency(eco.amount, "compact", currencyCode)}
                     {baseTotal > 0 && (
                       <span className="hidden sm:inline text-xs text-muted-foreground">{`(${formatNumber(eco.amount / baseTotal * 100)}%)`}</span>
                     )}
                   </p>
                   <p className="text-xs text-muted-foreground font-normal">
-                    {formatCurrency(eco.amount, "standard")}
+                    {formatCurrency(eco.amount, "standard", currencyCode)}
                   </p>
                 </div>
               </li>

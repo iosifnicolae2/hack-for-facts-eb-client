@@ -2,15 +2,18 @@ import React from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { GroupedSubchapter, GroupedFunctional } from '@/schemas/financial';
 import { highlightText } from './highlight-utils';
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency, getNormalizationUnit } from '@/lib/utils';
 
 interface GroupedSubchapterAccordionProps {
     sub: GroupedSubchapter;
     baseTotal: number;
     searchTerm: string;
+    normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
 }
 
-const GroupedSubchapterAccordion: React.FC<GroupedSubchapterAccordionProps> = ({ sub, baseTotal, searchTerm }) => {
+const GroupedSubchapterAccordion: React.FC<GroupedSubchapterAccordionProps> = ({ sub, baseTotal, searchTerm, normalization }) => {
+    const unit = getNormalizationUnit(normalization ?? 'total');
+    const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON';
     // Example:
     // fn:36.01 - Venituri din aplicarea prescriptiei extinctive -> subchapter
     // fn:36.01.00 - Venituri din aplicarea prescriptiei extinctive -> .00 child from the line items list
@@ -32,10 +35,10 @@ const GroupedSubchapterAccordion: React.FC<GroupedSubchapterAccordionProps> = ({
                 </div>
                 <div className="text-right text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
                     <p className="flex justify-end items-center gap-1.5">
-                        {formatCurrency(sub.totalAmount, 'compact')}
-                        { baseTotal > 0 && <span className="hidden sm:inline text-xs text-muted-foreground">{`(${(sub.totalAmount / baseTotal * 100).toFixed(1)}%)`}</span> }
+                        {formatCurrency(sub.totalAmount, 'compact', currencyCode)}
+                        { baseTotal > 0 && <span className="hidden sm:inline text-xs text-muted-foreground">{`(${(Math.round((sub.totalAmount / baseTotal) * 1000) / 10).toFixed(1)}%)`}</span> }
                     </p>
-                    <p className="text-xs text-muted-foreground font-normal">{formatCurrency(sub.totalAmount, 'standard')}</p>
+                    <p className="text-xs text-muted-foreground font-normal">{formatCurrency(sub.totalAmount, 'standard', currencyCode)}</p>
                 </div>
             </div>
         );
@@ -52,16 +55,19 @@ const GroupedSubchapterAccordion: React.FC<GroupedSubchapterAccordionProps> = ({
                         </div>
                         <div className="text-right text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
                             <p className="flex justify-end items-center gap-1.5">
-                                {formatCurrency(sub.totalAmount, 'compact')}
-                                { baseTotal > 0 && <span className="hidden sm:inline text-xs text-muted-foreground">{`(${(sub.totalAmount / baseTotal * 100).toFixed(1)}%)`}</span> }
+                                {formatCurrency(sub.totalAmount, 'compact', currencyCode)}
+                                { baseTotal > 0 && <span className="hidden sm:inline text-xs text-muted-foreground">{`(${(Math.round((sub.totalAmount / baseTotal) * 1000) / 10).toFixed(1)}%)`}</span> }
                             </p>
-                            <p className="text-xs text-muted-foreground font-normal">{formatCurrency(sub.totalAmount, 'standard')}</p>
+                            <p className="text-xs text-muted-foreground font-normal">{formatCurrency(sub.totalAmount, 'standard', currencyCode)}</p>
                         </div>
                     </div>
                 </AccordionTrigger>
                 <AccordionContent className='border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50'>
                     <ul className="divide-y divide-slate-100 dark:divide-slate-800 py-1">
-                        {sub.functionals.map((func: GroupedFunctional) => (
+                        {sub.functionals
+                            .slice()
+                            .sort((a: GroupedFunctional, b: GroupedFunctional) => b.totalAmount - a.totalAmount)
+                            .map((func: GroupedFunctional) => (
                             <li key={func.code} className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto] items-center gap-1.5 sm:gap-4 py-2 px-3 sm:px-4">
                                 <div className="flex min-w-0 items-start sm:items-center gap-1.5">
                                     <span className="font-mono text-xs text-muted-foreground flex-shrink-0">{highlightText(`fn:${func.code}`, searchTerm)}</span>
@@ -69,10 +75,10 @@ const GroupedSubchapterAccordion: React.FC<GroupedSubchapterAccordionProps> = ({
                                 </div>
                                 <div className="text-right text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
                                     <p className="flex justify-end items-center gap-1.5">
-                                        {formatCurrency(func.totalAmount, 'compact')}
-                                        { baseTotal > 0 && <span className="hidden sm:inline text-xs text-muted-foreground">{`(${(func.totalAmount / baseTotal * 100).toFixed(1)}%)`}</span> }
+                                        {formatCurrency(func.totalAmount, 'compact', currencyCode)}
+                                        { baseTotal > 0 && <span className="hidden sm:inline text-xs text-muted-foreground">{`(${(Math.round((func.totalAmount / baseTotal) * 1000) / 10).toFixed(1)}%)`}</span> }
                                     </p>
-                                    <p className="text-xs text-muted-foreground font-normal">{formatCurrency(func.totalAmount, 'standard')}</p>
+                                    <p className="text-xs text-muted-foreground font-normal">{formatCurrency(func.totalAmount, 'standard', currencyCode)}</p>
                                 </div>
                             </li>
                         ))}

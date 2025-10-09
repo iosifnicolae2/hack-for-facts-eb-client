@@ -3,7 +3,7 @@ import { AccordionItem, AccordionContent, AccordionTrigger } from '@/components/
 import { GroupedChapter, GroupedFunctional, GroupedSubchapter } from '@/schemas/financial';
 import GroupedFunctionalAccordion from './GroupedFunctionalAccordion';
 import GroupedSubchapterAccordion from './GroupedSubchapterAccordion';
-import { highlightText } from './highlight-utils.tsx';
+import { highlightText } from './highlight-utils';
 import { formatCurrency, formatNumber, getNormalizationUnit } from '@/lib/utils';
 
 interface GroupedChapterAccordionProps {
@@ -16,6 +16,13 @@ interface GroupedChapterAccordionProps {
 const GroupedChapterAccordion: React.FC<GroupedChapterAccordionProps> = ({ ch, baseTotal, searchTerm, normalization }) => {
   const unit = getNormalizationUnit(normalization ?? 'total');
   const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON'; // Unit can also be 'RON/capita' or 'EUR/capita', for currency we only need 'RON' or 'EUR'
+  // Merge subchapters and functionals and sort by total amount descending
+  const mergedSortedItems = React.useMemo(() => {
+    const subs = (ch.subchapters ?? []).map((s) => ({ kind: 'sub' as const, amount: s.totalAmount, data: s }));
+    const funcs = ch.functionals.map((f) => ({ kind: 'func' as const, amount: f.totalAmount, data: f }));
+    return [...subs, ...funcs].sort((a, b) => b.amount - a.amount);
+  }, [ch.subchapters, ch.functionals]);
+
   return (
     <AccordionItem key={ch.prefix} value={ch.prefix}>
       <AccordionTrigger className="flex justify-between items-center py-2 px-3 sm:px-4 hover:bg-slate-100 dark:hover:bg-slate-700 [&[data-state=open]]:bg-slate-100 dark:[&[data-state=open]]:bg-slate-700 transition-colors">
@@ -40,26 +47,27 @@ const GroupedChapterAccordion: React.FC<GroupedChapterAccordionProps> = ({ ch, b
       </AccordionTrigger>
       <AccordionContent className="border-x-2 border-b-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800/50">
         <div className="space-y-2 px-3 sm:px-4 py-2">
-          {ch.subchapters && ch.subchapters.length > 0 && (
-            <div className="space-y-2">
-              {ch.subchapters.map((sub: GroupedSubchapter) => (
+          <div className="space-y-2">
+            {mergedSortedItems.map((entry) => (
+              entry.kind === 'sub' ? (
                 <GroupedSubchapterAccordion
-                  key={sub.code}
-                  sub={sub}
+                  key={(entry.data as GroupedSubchapter).code}
+                  sub={entry.data as GroupedSubchapter}
                   baseTotal={baseTotal}
                   searchTerm={searchTerm}
+                  normalization={normalization}
                 />
-              ))}
-            </div>
-          )}
-          {ch.functionals.map((func: GroupedFunctional) => (
-            <GroupedFunctionalAccordion
-              key={func.code}
-              func={func}
-              baseTotal={baseTotal}
-              searchTerm={searchTerm}
-            />
-          ))}
+              ) : (
+                <GroupedFunctionalAccordion
+                  key={(entry.data as GroupedFunctional).code}
+                  func={entry.data as GroupedFunctional}
+                  baseTotal={baseTotal}
+                  searchTerm={searchTerm}
+                  normalization={normalization}
+                />
+              )
+            ))}
+          </div>
         </div>
       </AccordionContent>
     </AccordionItem>
