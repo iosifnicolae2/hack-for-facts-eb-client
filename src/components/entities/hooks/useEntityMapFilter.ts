@@ -24,6 +24,7 @@ export const useEntityMapFilter = ({ year }: UseEntityMapFilterProps) => {
         type: 'YEAR',
         selection: { dates: [String(year)] },
     };
+    mapFilters.report_type = 'Executie bugetara agregata la nivel de ordonator principal';
     const updateMapFilters = (filters: Partial<AnalyticsFilterType>) => {
         navigate({
             search: (prev) => {

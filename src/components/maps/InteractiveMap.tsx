@@ -20,6 +20,7 @@ import { ScrollWheelZoomControl } from './ScrollWheelZoomControl';
 import { AnalyticsFilterType } from '@/schemas/charts';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Analytics } from '@/lib/analytics';
+import { MapLabels } from './MapLabels';
 
 
 interface InteractiveMapProps {
@@ -37,6 +38,7 @@ interface InteractiveMapProps {
   mapHeight?: string;
   mapViewType: 'UAT' | 'County';
   filters: AnalyticsFilterType;
+  showLabels?: boolean;
 }
 
 export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
@@ -54,6 +56,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
   highlightedFeatureId,
   scrollWheelZoom = true,
   filters,
+  showLabels = true,
 }) => {
   const geoJsonLayerRef = useRef<L.GeoJSON | null>(null);
   const latestStyleFnRef = useRef<(feature?: Feature<Geometry, unknown>) => PathOptions>(() => DEFAULT_FEATURE_STYLE);
@@ -148,13 +151,22 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
           {scrollWheelZoom !== false && <ScrollWheelZoomControl />}
           <MapUpdater center={center} zoom={zoom} />
           {geoJsonData.type === 'FeatureCollection' && (
-            <GeoJSON
-              key={`geojson-layer-${mapViewType}-${heatmapDataContentHash}-${highlightedFeatureId}`}
-              ref={geoJsonLayerRef}
-              data={geoJsonData}
-              style={styleFunction}
-              onEachFeature={onEachFeature}
-            />
+            <>
+              <GeoJSON
+                key={`geojson-layer-${mapViewType}-${heatmapDataContentHash}-${highlightedFeatureId}`}
+                ref={geoJsonLayerRef}
+                data={geoJsonData}
+                style={styleFunction}
+                onEachFeature={onEachFeature}
+              />
+              <MapLabels
+                geoJsonData={geoJsonData}
+                showLabels={showLabels}
+                mapViewType={mapViewType}
+                heatmapDataMap={heatmapDataMap}
+                normalization={(filters.normalization === 'per_capita' || filters.normalization === 'per_capita_euro') ? 'per_capita' : 'total'}
+              />
+            </>
           )}
         </MapContainer>
       </motion.div>

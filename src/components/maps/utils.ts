@@ -354,8 +354,17 @@ export function buildHeatmapDataMap(
 ): Map<string | number, HeatmapUATDataPoint | HeatmapCountyDataPoint> {
   const map = new Map<string | number, HeatmapUATDataPoint | HeatmapCountyDataPoint>();
   for (const item of heatmapData) {
-    const key = 'uat_code' in item ? item.uat_code : item.county_code;
-    map.set(key, item);
+    if ('uat_code' in item) {
+      // Index UAT by both uat_code and siruta_code to match GeoJSON natcode
+      const uatKey = item.uat_code;
+      const sirutaKey = item.siruta_code;
+      if (uatKey) map.set(uatKey, item);
+      if (sirutaKey) map.set(sirutaKey, item);
+    } else {
+      // County
+      const countyKey = item.county_code;
+      if (countyKey) map.set(countyKey, item);
+    }
   }
   return map;
 }
