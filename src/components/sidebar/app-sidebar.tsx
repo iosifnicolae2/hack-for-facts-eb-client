@@ -5,6 +5,7 @@ import { NavMain } from "./nav-main";
 import { useLocation } from "@tanstack/react-router";
 import { LanguageToggle } from "@/components/theme/language-toggle";
 import { CurrencyToggle } from "@/components/theme/currency-toggle";
+import { NavUser } from "./nav-user";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const location = useLocation();
@@ -27,6 +28,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter>
         <CurrencyToggle />
         <LanguageToggle />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );

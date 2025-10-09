@@ -30,6 +30,9 @@ type SidebarContext = {
   setOpenMobile: (open: boolean) => void;
   isMobile: boolean;
   toggleSidebar: () => void;
+  // Prevent auto-collapse when interactive popovers/menus are open
+  isOverlayLockedOpen: boolean;
+  setIsOverlayLockedOpen: (locked: boolean) => void;
 };
 
 const SidebarContext = React.createContext<SidebarContext | null>(null);
@@ -54,6 +57,7 @@ const SidebarProvider = React.forwardRef<
   const isMobile = useIsMobile();
   const [open, setOpen] = React.useState(openProp ?? false);
   const [openMobile, setOpenMobile] = React.useState(false);
+  const [isOverlayLockedOpen, setIsOverlayLockedOpen] = React.useState(false);
 
   // Helper to toggle the sidebar
   const toggleSidebar = React.useCallback(() => {
@@ -89,8 +93,10 @@ const SidebarProvider = React.forwardRef<
       openMobile,
       setOpenMobile,
       toggleSidebar,
+      isOverlayLockedOpen,
+      setIsOverlayLockedOpen,
     }),
-    [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar]
+    [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar, isOverlayLockedOpen]
   );
 
   return (
@@ -138,7 +144,7 @@ const Sidebar = React.forwardRef<
     },
     ref
   ) => {
-    const { isMobile, state, open, setOpen, openMobile, setOpenMobile } =
+    const { isMobile, state, open, setOpen, openMobile, setOpenMobile, isOverlayLockedOpen } =
       useSidebar();
 
     const [hoverOverlay, setHoverOverlay] = React.useState(false);
@@ -153,10 +159,10 @@ const Sidebar = React.forwardRef<
 
     const handleMouseLeave = React.useCallback(() => {
       setHoverOverlay(false);
-      if (open) {
+      if (open && !isOverlayLockedOpen) {
         setOpen(false);
       }
-    }, [open, setOpen]);
+    }, [open, setOpen, isOverlayLockedOpen]);
 
     if (collapsible === "none") {
       return (
