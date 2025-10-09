@@ -129,7 +129,7 @@ export function NotificationList({ notifications, isLoading }: Props) {
           <Button
             variant="outline"
             size="icon"
-            className="self-start sm:self-center rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+            className="self-start sm:self-center rounded-full border-primary bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
             onClick={() => navigate({ to: '/alerts/new', replace: false })}
             title={t`Create alert`}
           >
