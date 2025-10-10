@@ -216,14 +216,9 @@ function AlertEditorPage() {
 
       <div className="sticky top-0 z-20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b">
         <div className="container mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-3 py-4 px-2 md:px-0">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight">
-              <Trans>Edit Alert</Trans>
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              <Trans>Configure the data series and threshold that will trigger this alert.</Trans>
-            </p>
-          </div>
+          <h1 className="text-2xl font-semibold tracking-tight">
+            <Trans>Edit Alert</Trans>
+          </h1>
           <div className="flex flex-col md:flex-row md:items-center gap-3 w-full md:w-auto">
             <span className="text-sm text-muted-foreground md:text-right md:min-w-[140px] order-2 md:order-1">
               {headerStatus}

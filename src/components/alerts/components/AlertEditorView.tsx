@@ -36,21 +36,29 @@ export function AlertEditorView({ alert, serverAlert: _serverAlert, onChange }: 
     setLocalDescription(alert.description ?? '');
   }, [alert.id, alert.title, alert.description]);
 
-  // Debounced update handlers
-  const debouncedUpdateTitle = useDebouncedCallback((value: string) => {
-    onChange({ title: value });
-  }, 300);
+  // Debounced update handlers - memoize onChange to prevent recreation
+  const debouncedUpdateTitle = useDebouncedCallback(
+    useCallback((value: string) => {
+      onChange({ title: value });
+    }, [onChange]),
+    300
+  );
 
-  const debouncedUpdateDescription = useDebouncedCallback((value: string) => {
-    onChange({ description: value || undefined });
-  }, 300);
+  const debouncedUpdateDescription = useDebouncedCallback(
+    useCallback((value: string) => {
+      onChange({ description: value || undefined });
+    }, [onChange]),
+    300
+  );
 
-  const handleTitleChange = useCallback((value: string) => {
+  const handleTitleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
     setLocalTitle(value);
     debouncedUpdateTitle(value);
   }, [debouncedUpdateTitle]);
 
-  const handleDescriptionChange = useCallback((value: string) => {
+  const handleDescriptionChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = event.target.value;
     setLocalDescription(value);
     debouncedUpdateDescription(value);
   }, [debouncedUpdateDescription]);
@@ -121,7 +129,7 @@ export function AlertEditorView({ alert, serverAlert: _serverAlert, onChange }: 
                 <Input
                   id="alert-title"
                   value={localTitle}
-                  onChange={(event) => handleTitleChange(event.target.value)}
+                  onChange={handleTitleChange}
                   placeholder={t`e.g. Expense growth alert`}
                 />
               </div>
@@ -133,7 +141,7 @@ export function AlertEditorView({ alert, serverAlert: _serverAlert, onChange }: 
                 <Textarea
                   id="alert-description"
                   value={localDescription}
-                  onChange={(event) => handleDescriptionChange(event.target.value)}
+                  onChange={handleDescriptionChange}
                   placeholder={t`Optional context for the monthly newsletter`}
                 />
               </div>
