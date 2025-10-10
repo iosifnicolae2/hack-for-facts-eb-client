@@ -46,7 +46,9 @@ export function AlertCard({
     eq: t`equals`,
   };
 
-  const conditionCopy = `${alert.series.label || t`Series`} · ${operatorLabels[alert.condition.operator] ?? alert.condition.operator} ${alert.condition.threshold} ${alert.condition.unit}`;
+  const conditionCopy = alert.condition
+    ? `${alert.title || t`Alert`} · ${operatorLabels[alert.condition.operator] ?? alert.condition.operator} ${alert.condition.threshold} ${alert.condition.unit}`
+    : `${alert.title || t`Alert`} · ${t`No condition set`}`;
   const previewChart = buildAlertPreviewChartState(alert).chart;
 
   return (

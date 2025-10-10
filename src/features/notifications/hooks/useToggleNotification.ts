@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { upsertNotification } from '../api/notifications';
+import { createNotification, getEntityNotifications, getUserNotifications, unsubscribeNotification } from '../api/notifications';
 import { toast } from 'sonner';
 import type { NotificationType, Notification } from '../types';
 
@@ -7,11 +7,26 @@ export function useToggleNotification() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (params: {
+    mutationFn: async (params: {
       entityCui: string | null;
       notificationType: NotificationType;
       isActive: boolean;
-    }) => upsertNotification(params),
+    }) => {
+      const { entityCui, notificationType, isActive } = params;
+
+      if (isActive) {
+        // Activate (create/subscribe)
+        return createNotification({ entityCui, notificationType });
+      }
+
+      // Deactivate (unsubscribe)
+      const list = entityCui ? await getEntityNotifications(entityCui) : await getUserNotifications();
+      const existing = list.find((n) => n.notificationType === notificationType && n.entityCui === entityCui);
+      if (!existing) {
+        throw new Error('No notification found to deactivate');
+      }
+      return unsubscribeNotification(existing.id);
+    },
 
     onMutate: async (variables) => {
       // Cancel outgoing refetches

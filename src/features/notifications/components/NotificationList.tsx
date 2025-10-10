@@ -23,10 +23,10 @@ export function NotificationList({ notifications, isLoading }: Props) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  // Extract unique entity CUIs from notifications
+  // Extract unique entity CUIs from notifications (excluding alert_data_series)
   const entityCuis = useMemo(() => {
     return notifications
-      .filter(n => n.entityCui)
+      .filter(n => n.entityCui && n.notificationType !== 'alert_data_series')
       .map(n => n.entityCui!)
       .filter((cui, index, self) => self.indexOf(cui) === index);
   }, [notifications]);
@@ -45,27 +45,29 @@ export function NotificationList({ notifications, isLoading }: Props) {
     },
   });
 
-  // Enrich notifications with entity names from the label hook
+  // Enrich notifications with entity names from the label hook (excluding alert_data_series)
   const enrichedNotifications = useMemo(() => {
-    return notifications.map(notification => {
-      if (notification.entity?.name) {
-        return notification;
-      }
-      if (notification.entityCui) {
-        const entityName = entityLabel.map(notification.entityCui);
-        // Only add entity if we got a real name (not the fallback id:: format)
-        if (!entityName.startsWith('id::')) {
-          return {
-            ...notification,
-            entity: {
-              cui: notification.entityCui,
-              name: entityName,
-            },
-          };
+    return notifications
+      .filter(notification => notification.notificationType !== 'alert_data_series')
+      .map(notification => {
+        if (notification.entity?.name) {
+          return notification;
         }
-      }
-      return notification;
-    });
+        if (notification.entityCui) {
+          const entityName = entityLabel.map(notification.entityCui);
+          // Only add entity if we got a real name (not the fallback id:: format)
+          if (!entityName.startsWith('id::')) {
+            return {
+              ...notification,
+              entity: {
+                cui: notification.entityCui,
+                name: entityName,
+              },
+            };
+          }
+        }
+        return notification;
+      });
   }, [notifications, entityLabel]);
 
 

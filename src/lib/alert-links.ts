@@ -3,6 +3,8 @@ import type { Chart, ChartConfig, SeriesConfiguration } from '@/schemas/charts';
 import type { ChartUrlState } from '@/components/charts/page-schema';
 import { createEmptyAlert, type Alert } from '@/schemas/alerts';
 import { t } from '@lingui/core/macro';
+import { ensureShortRedirectUrl } from '@/lib/api/shortLinks';
+import { getSiteUrl } from '@/config/env';
 
 const DEFAULT_CHART_CONFIG: ChartConfig = {
   chartType: 'line',
@@ -18,13 +20,13 @@ const DEFAULT_CHART_CONFIG: ChartConfig = {
 };
 
 export function buildAlertPreviewChartState(alert: Alert): ChartUrlState {
-  const thresholdLabel = t`Threshold (${alert.condition.unit})`;
+  const thresholdLabel = t`Threshold (${alert.condition?.unit ?? 'RON'})`;
   const thresholdSeries = CustomSeriesValueConfigurationSchema.parse({
     id: `${alert.id}-threshold`,
     label: thresholdLabel,
     type: 'custom-series-value',
-    value: alert.condition.threshold,
-    unit: alert.condition.unit || alert.series.unit || 'RON',
+    value: alert.condition?.threshold ?? 0,
+    unit: alert.condition?.unit ?? 'RON',
     config: {
       visible: true,
       showDataLabels: false,
@@ -32,12 +34,24 @@ export function buildAlertPreviewChartState(alert: Alert): ChartUrlState {
     },
   });
 
-  const primarySeries = {
-    ...alert.series,
-    id: alert.series.id || `${alert.id}-series`,
-    label: alert.series.label || alert.title || t`Alert series`,
+  // Create a basic series configuration for preview
+  const seriesConfig: any = {
+    id: `${alert.id}-series`,
+    type: 'line-items-aggregated-yearly',
+    label: alert.title || t`Alert series`,
     enabled: true,
-  } as SeriesConfiguration;
+    config: {
+      visible: true,
+      showDataLabels: false,
+      color: '#0062ff',
+    },
+  };
+
+  if (alert.filter) {
+    seriesConfig.filter = alert.filter;
+  }
+
+  const primarySeries: SeriesConfiguration = seriesConfig;
 
   const chart: Chart = ChartSchema.parse({
     id: `${alert.id}-preview`,
@@ -45,7 +59,7 @@ export function buildAlertPreviewChartState(alert: Alert): ChartUrlState {
     description: alert.description,
     config: {
       ...DEFAULT_CHART_CONFIG,
-      color: alert.series.config.color,
+      color: '#0062ff',
     },
     series: [
       primarySeries,
@@ -72,26 +86,43 @@ export function buildAlertPreviewChartLink(alert: Alert) {
   };
 }
 
-export function buildAlertFromSeries(series: SeriesConfiguration, options?: { chartId?: string; chartTitle?: string }): Alert {
+export function buildAlertFromFilter(filter: any, options?: { chartId?: string; chartTitle?: string; label?: string }): Alert {
   const alertId = crypto.randomUUID();
   const base = createEmptyAlert({
     id: alertId,
-    title: options?.chartTitle ? `${series.label || 'Series'} alert` : series.label || 'New alert',
+    title: options?.chartTitle ? `${options.label || 'Filter'} alert` : options?.label || 'New alert',
     description: options?.chartTitle ? `Alert created from chart "${options.chartTitle}"` : undefined,
   });
 
   return {
     ...base,
-    series: {
-      ...series,
-      id: crypto.randomUUID(),
-      label: series.label || base.title || 'Alert series',
-      enabled: true,
-      unit: series.unit,
-    },
-    condition: {
-      ...base.condition,
-      unit: series.unit || base.condition.unit,
-    },
+    filter: filter,
+    condition: base.condition, // Keep default condition
   };
+}
+
+/** Build a sanitized payload for sharing/cloning an alert */
+export function serializeAlertForShare(alert: Alert): Partial<Alert> {
+  return {
+    title: alert.title,
+    description: alert.description,
+    isActive: alert.isActive,
+    filter: alert.filter,
+    condition: alert.condition,
+  } as Partial<Alert>;
+}
+
+export function buildAlertShareDestination(alert: Alert) {
+  return {
+    to: '/alerts/new' as const,
+    search: { preset: serializeAlertForShare(alert) },
+  };
+}
+
+export async function ensureAlertShareUrl(alert: Alert): Promise<string> {
+  const dest = buildAlertShareDestination(alert);
+  const params = new URLSearchParams();
+  params.set('preset', encodeURIComponent(JSON.stringify(dest.search.preset)));
+  const url = `${getSiteUrl()}${dest.to}?${params.toString()}`;
+  return ensureShortRedirectUrl(url, getSiteUrl());
 }

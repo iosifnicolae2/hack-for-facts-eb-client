@@ -10,7 +10,7 @@ const storedAlertSchema = AlertSchema.extend({
 export type StoredAlert = z.infer<typeof storedAlertSchema>;
 
 export const getAlertsStore = () => {
-  const loadSavedAlerts = ({ filterDeleted = false, sort = true }: { filterDeleted?: boolean; sort?: boolean } = {}): StoredAlert[] => {
+  const loadSavedAlerts = ({ filterDeleted = false }: { filterDeleted?: boolean } = {}): StoredAlert[] => {
     const raw = localStorage.getItem(alertsKey);
     if (!raw) {
       return [];
@@ -41,11 +41,7 @@ export const getAlertsStore = () => {
 
     const filtered = filterDeleted ? validAlerts.filter((alert) => !alert.deleted) : validAlerts;
 
-    if (!sort) {
-      return filtered;
-    }
-
-    return [...filtered].sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
+    return filtered;
   };
 
   const persistAlerts = (alerts: readonly StoredAlert[]) => {
@@ -53,7 +49,7 @@ export const getAlertsStore = () => {
   };
 
   const upsertAlert = (alert: Alert) => {
-    const current = loadSavedAlerts({ sort: false });
+    const current = loadSavedAlerts();
     const result = AlertSchema.safeParse(alert);
     if (!result.success) {
       console.error('Attempted to save invalid alert', result.error.flatten());
@@ -77,7 +73,7 @@ export const getAlertsStore = () => {
   };
 
   const deleteAlert = (alertId: string) => {
-    const current = loadSavedAlerts({ sort: false });
+    const current = loadSavedAlerts();
     const next = current.map((entry) =>
       entry.id === alertId
         ? {
@@ -91,7 +87,7 @@ export const getAlertsStore = () => {
   };
 
   const removeAlert = (alertId: string) => {
-    const current = loadSavedAlerts({ sort: false });
+    const current = loadSavedAlerts();
     persistAlerts(current.filter((entry) => entry.id !== alertId));
   };
 

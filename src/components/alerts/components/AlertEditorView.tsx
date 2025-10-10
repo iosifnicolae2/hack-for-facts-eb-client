@@ -1,86 +1,69 @@
-import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
-import { Button } from '@/components/ui/button';
+import { useMemo, useState, useCallback, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { AlertTriangle, RotateCcw, Save, Trash2 } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
+import { produce } from 'immer';
+import type { SeriesConfiguration } from '@/schemas/charts';
+import { SeriesConfigSchema } from '@/schemas/charts';
 import { SeriesFilter } from '@/components/charts/components/series-config/SeriesFilter';
 import type { SeriesFilterAdapter } from '@/components/charts/components/series-config/SeriesFilter';
 import { AlertConditionSchema, type Alert } from '@/schemas/alerts';
 import { Alert as UiAlert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { useDeleteAlertMutation, useSaveAlertMutation } from '@/features/alerts/hooks/useAlertsApi';
-import { useNavigate, useBlocker } from '@tanstack/react-router';
-import { UnsavedChangesDialog } from './UnsavedChangesDialog';
-import { areAlertsEqual, useAlertStore } from '../hooks/useAlertStore';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { ChartPreview } from '@/components/charts/components/chart-preview/ChartPreview';
-import { buildAlertPreviewChartState } from '@/lib/alert-links';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
 import { useDebouncedCallback } from '@/lib/hooks/useDebouncedCallback';
 
+type AlertUpdater = Partial<Alert> | ((draft: Alert) => void);
+
 interface AlertEditorViewProps {
+  alert: Alert;
   serverAlert?: Alert;
-  isFetching?: boolean;
-  mode: 'create' | 'edit';
-  view: 'overview' | 'preview' | 'filters' | 'history';
-  onChangeView: (next: 'overview' | 'preview' | 'filters' | 'history') => void;
+  onChange: (updater: AlertUpdater) => void;
 }
 
-export function AlertEditorView({ serverAlert, isFetching, mode, view, onChangeView }: AlertEditorViewProps) {
-  const navigate = useNavigate({ from: '/alerts/$alertId' });
-  const {
-    alert,
-    updateAlert,
-    updateSeries,
-    setCondition,
-    toggleActive,
-    setView,
-    setAlert,
-  } = useAlertStore();
-
-  const initialDraftRef = useRef(alert);
-
+export function AlertEditorView({ alert, serverAlert: _serverAlert, onChange }: AlertEditorViewProps) {
   // Local state for input fields to avoid lag
-  const [localTitle, setLocalTitle] = useState(alert.title);
+  const [localTitle, setLocalTitle] = useState(alert.title ?? '');
   const [localDescription, setLocalDescription] = useState(alert.description ?? '');
-  const [localThreshold, setLocalThreshold] = useState(alert.condition.threshold);
-  const [localUnit, setLocalUnit] = useState(alert.condition.unit);
+  const [localThreshold, setLocalThreshold] = useState(alert.condition?.threshold ?? 0);
+  const [localUnit, setLocalUnit] = useState(alert.condition?.unit ?? 'RON');
 
-  // Sync local state when alert changes from external sources
+  // Sync local state when alert prop changes (e.g., when reverting)
   useEffect(() => {
-    setLocalTitle(alert.title);
+    setLocalTitle(alert.title ?? '');
     setLocalDescription(alert.description ?? '');
-    setLocalThreshold(alert.condition.threshold);
-    setLocalUnit(alert.condition.unit);
-  }, [alert.id]); // Only sync when switching to a different alert
+    setLocalThreshold(alert.condition?.threshold ?? 0);
+    setLocalUnit(alert.condition?.unit ?? 'RON');
+  }, [alert.id, alert.title, alert.description, alert.condition?.threshold, alert.condition?.unit]);
 
-  // Debounced update handlers using useDebouncedCallback
+  // Debounced update handlers
   const debouncedUpdateTitle = useDebouncedCallback((value: string) => {
-    updateAlert({ title: value });
+    onChange({ title: value });
   }, 300);
 
   const debouncedUpdateDescription = useDebouncedCallback((value: string) => {
-    updateAlert({ description: value || undefined });
+    onChange({ description: value || undefined });
   }, 300);
 
   const debouncedUpdateUnit = useDebouncedCallback((value: string) => {
-    setCondition((draft) => {
-      draft.unit = value;
+    onChange((draft) => {
+      if (!draft.condition) {
+        draft.condition = AlertConditionSchema.parse({});
+      }
+      draft.condition.unit = value;
+    });
+  }, 300);
+
+  const debouncedUpdateThreshold = useDebouncedCallback((value: number) => {
+    onChange((draft) => {
+      if (!draft.condition) {
+        draft.condition = AlertConditionSchema.parse({});
+      }
+      draft.condition.threshold = value;
     });
   }, 300);
 
@@ -99,45 +82,6 @@ export function AlertEditorView({ serverAlert, isFetching, mode, view, onChangeV
     debouncedUpdateUnit(value);
   }, [debouncedUpdateUnit]);
 
-  useEffect(() => {
-    if (serverAlert) {
-      initialDraftRef.current = serverAlert;
-    }
-  }, [serverAlert]);
-
-  const saveMutation = useSaveAlertMutation();
-  const deleteMutation = useDeleteAlertMutation();
-
-  const baselineAlert = serverAlert ?? initialDraftRef.current;
-  const isDirty = useMemo(() => !areAlertsEqual(alert, baselineAlert), [alert, baselineAlert]);
-  const canBlock = mode !== 'create';
-
-  const blocker = useBlocker({
-    shouldBlockFn: ({ current, next }) => canBlock && isDirty && next.pathname !== current.pathname,
-    withResolver: true,
-    enableBeforeUnload: false,
-  });
-
-  const showUnsavedDialog = canBlock && blocker.status === 'blocked' && isDirty;
-
-  const adapter = useMemo<SeriesFilterAdapter>(
-    () => ({
-      series: alert.series,
-      applyChanges: (mutator) => {
-        updateSeries((draft) => {
-          mutator(draft);
-        });
-      },
-    }),
-    [alert.series, updateSeries],
-  );
-
-  const debouncedUpdateThreshold = useDebouncedCallback((value: number) => {
-    setCondition((draft) => {
-      draft.threshold = value;
-    });
-  }, 300);
-
   const handleThresholdChange = useCallback((value: number) => {
     setLocalThreshold(value);
     debouncedUpdateThreshold(value);
@@ -148,110 +92,55 @@ export function AlertEditorView({ serverAlert, isFetching, mode, view, onChangeV
     if (!parsed.success) {
       return;
     }
-    setCondition((draft) => {
-      draft.operator = parsed.data;
+    onChange((draft) => {
+      if (!draft.condition) {
+        draft.condition = AlertConditionSchema.parse({});
+      }
+      draft.condition.operator = parsed.data;
     });
   };
 
-  const handleSave = () => {
-    saveMutation.mutate(
-      { alert },
-      {
-        onSuccess: (savedAlert) => {
-          setAlert(savedAlert, { mode: 'edit' });
-        },
-      },
-    );
-  };
+  const toggleActive = useCallback((isActive: boolean) => {
+    onChange({ isActive });
+  }, [onChange]);
 
-  const handleDeleteAlert = () => {
-    if (!serverAlert) return;
-    deleteMutation.mutate(serverAlert.id, {
-      onSuccess: () => navigate({ to: '/alerts', replace: false }),
-    });
-  };
+  const adapter = useMemo<SeriesFilterAdapter>(() => {
+    // Create a dummy series object to pass to the SeriesFilter component
+    const series: SeriesConfiguration = {
+      id: alert.id ?? 'new-alert',
+      type: 'line-items-aggregated-yearly',
+      label: alert.title ?? '',
+      filter: alert.filter,
+      enabled: alert.isActive ?? true,
+      unit: alert.condition.unit,
+      config: SeriesConfigSchema.parse({}), // Use default config
+      createdAt: alert.createdAt,
+      updatedAt: alert.updatedAt,
+    };
 
-  const headerStatus = (() => {
-    if (saveMutation.isPending) return t`Saving…`;
-    if (saveMutation.isError) return saveMutation.error instanceof Error ? saveMutation.error.message : t`Failed to save`;
-    if (isFetching) return t`Syncing…`;
-    if (isDirty) return t`Unsaved changes`;
-    return t`All changes saved`;
-  })();
+    const applyChanges = (mutator: (draft: SeriesConfiguration) => void) => {
+      onChange((alertDraft) => {
+        const currentSeries: SeriesConfiguration = {
+          id: alertDraft.id ?? 'new-alert',
+          type: 'line-items-aggregated-yearly',
+          label: alertDraft.title ?? '',
+          filter: alertDraft.filter,
+          enabled: alertDraft.isActive ?? true,
+          unit: alertDraft.condition.unit,
+          config: SeriesConfigSchema.parse({}),
+          createdAt: alertDraft.createdAt,
+          updatedAt: alertDraft.updatedAt,
+        };
+        const nextSeries = produce(currentSeries, mutator);
+        alertDraft.filter = nextSeries.filter;
+      });
+    };
 
-  const isPreviewOpen = view === 'preview';
-  const previewChart = useMemo(() => buildAlertPreviewChartState(alert).chart, [alert]);
+    return { series, applyChanges };
+  }, [alert, onChange]);
 
   return (
     <div className="space-y-6 py-8">
-      <UnsavedChangesDialog
-        open={showUnsavedDialog}
-        isSaving={saveMutation.isPending}
-        onStay={() => blocker.reset?.()}
-        onLeave={() => blocker.proceed?.()}
-      />
-
-      <Dialog open={isPreviewOpen} onOpenChange={(open) => onChangeView(open ? 'preview' : 'overview')}>
-        <DialogContent className="max-w-5xl">
-          <DialogHeader>
-            <DialogTitle>{alert.title || t`Alert preview`}</DialogTitle>
-          </DialogHeader>
-          <ChartPreview
-            chart={previewChart}
-            height={420}
-            className="pl-6 pr-4"
-            customizeChart={(draft) => {
-              draft.config.showLegend = true;
-              draft.config.showTooltip = true;
-              draft.config.showGridLines = true;
-            }}
-          />
-        </DialogContent>
-      </Dialog>
-
-      <div className="sticky top-0 z-20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b">
-        <div className="container mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-3 py-4 px-2 md:px-0">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight">
-              <Trans>Alert Editor</Trans>
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              <Trans>Configure the data series and threshold that will trigger this alert.</Trans>
-            </p>
-          </div>
-          <div className="flex flex-col md:flex-row md:items-center gap-2 w-full md:w-auto">
-            <span className="text-sm text-muted-foreground md:text-right md:min-w-[140px]">
-              {headerStatus}
-            </span>
-            <div className="flex items-center gap-2">
-              {serverAlert && isDirty ? (
-                <Button variant="ghost" size="sm" onClick={() => serverAlert && setAlert(serverAlert)}>
-                  <RotateCcw className="h-4 w-4 mr-1" />
-                  <Trans>Revert</Trans>
-                </Button>
-              ) : null}
-              <Button
-                size="sm"
-                onClick={handleSave}
-                disabled={(!isDirty && !!serverAlert) || saveMutation.isPending}
-                className="gap-2"
-              >
-                <Save className="h-4 w-4" />
-                {serverAlert ? <Trans>Save</Trans> : <Trans>Create alert</Trans>}
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="gap-2"
-                onClick={() => onChangeView('preview')}
-                disabled={saveMutation.isPending}
-              >
-                <Trans>Preview</Trans>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr),minmax(0,1fr)]">
         <div className="space-y-6">
@@ -328,7 +217,7 @@ export function AlertEditorView({ serverAlert, isFetching, mode, view, onChangeV
                   <Label htmlFor="alert-operator">
                     <Trans>Operator</Trans>
                   </Label>
-                  <Select value={alert.condition.operator} onValueChange={handleOperatorChange}>
+                  <Select value={alert.condition?.operator ?? 'gt'} onValueChange={handleOperatorChange}>
                     <SelectTrigger id="alert-operator">
                       <SelectValue placeholder={t`Choose operator`} />
                     </SelectTrigger>
@@ -369,11 +258,6 @@ export function AlertEditorView({ serverAlert, isFetching, mode, view, onChangeV
                 />
               </div>
 
-              <div>
-                <Button variant="outline" onClick={() => setView('preview')}>
-                  <Trans>Preview chart</Trans>
-                </Button>
-              </div>
             </CardContent>
           </Card>
 
@@ -401,7 +285,8 @@ export function AlertEditorView({ serverAlert, isFetching, mode, view, onChangeV
                 <span><Trans>Alert ID</Trans></span>
                 <span className="font-mono text-xs">{alert.id}</span>
               </div>
-              <div className="flex justify-between">
+              {/* TODO: Add back timestamps if needed */}
+              {/* <div className="flex justify-between">
                 <span><Trans>Created</Trans></span>
                 <span>{new Date(alert.createdAt).toLocaleString()}</span>
               </div>
@@ -410,7 +295,7 @@ export function AlertEditorView({ serverAlert, isFetching, mode, view, onChangeV
                   <span><Trans>Last saved</Trans></span>
                   <span>{new Date(serverAlert.updatedAt).toLocaleString()}</span>
                 </div>
-              ) : null}
+              ) : null} */}
               <div className="flex justify-between">
                 <span><Trans>Status</Trans></span>
                 <span>{alert.isActive ? t`Active` : t`Paused`}</span>
@@ -421,51 +306,6 @@ export function AlertEditorView({ serverAlert, isFetching, mode, view, onChangeV
                   <span>{new Date(alert.lastEvaluatedAt).toLocaleString()}</span>
                 </div>
               )}
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>
-                <Trans>Danger Zone</Trans>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button
-                    variant="destructive"
-                    className="w-full gap-2"
-                    disabled={!serverAlert || deleteMutation.isPending}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                    <Trans>Delete alert</Trans>
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      <Trans>Delete alert</Trans>
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      <Trans>
-                        Are you sure you want to delete this alert? This action cannot be undone.
-                      </Trans>
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>
-                      <Trans>Cancel</Trans>
-                    </AlertDialogCancel>
-                    <AlertDialogAction
-                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                      onClick={handleDeleteAlert}
-                    >
-                      <Trans>Delete</Trans>
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
             </CardContent>
           </Card>
         </div>

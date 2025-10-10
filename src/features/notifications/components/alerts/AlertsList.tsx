@@ -54,35 +54,39 @@ export function AlertsList() {
     <>
       <div className="space-y-3">
         {alerts.map((alert) => {
-          const togglingId = toggleAlertMutation.variables?.alert.id;
+          const togglingId = toggleAlertMutation.variables?.id;
           const deletingId = deleteAlertMutation.variables;
           const isToggling = toggleAlertMutation.isPending && togglingId === alert.id;
           const isDeleting = deleteAlertMutation.isPending && deletingId === alert.id;
 
           const handleToggle = (nextValue: boolean) => {
-            toggleAlertMutation.mutate({ alert: { ...alert, isActive: nextValue } });
+            toggleAlertMutation.mutate({ ...alert, isActive: nextValue });
           };
 
           const handleDelete = () => {
-            deleteAlertMutation.mutate(alert.id);
+            if (alert.id) {
+              deleteAlertMutation.mutate(alert.id);
+            }
           };
 
           const handleEdit = () => {
-            navigate({
-              to: '/alerts/$alertId',
-              params: { alertId: alert.id },
-              search: { alert, view: 'overview', mode: 'edit' },
-              replace: false,
-            });
+            if (alert.id) {
+              navigate({
+                to: '/alerts/$alertId',
+                params: { alertId: alert.id },
+                search: { alert, view: 'overview', mode: 'edit' },
+                replace: false,
+              });
+            }
           };
 
           const handlePreview = () => {
-            setPreviewAlertId(alert.id);
+            setPreviewAlertId(alert.id ?? null);
           };
 
           return (
             <AlertCard
-              key={alert.id}
+              key={alert.id ?? 'unknown'}
               alert={alert}
               isToggling={isToggling}
               isDeleting={isDeleting}

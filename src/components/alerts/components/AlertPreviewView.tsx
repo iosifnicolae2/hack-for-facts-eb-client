@@ -17,7 +17,7 @@ export function AlertPreviewView() {
   const thresholdValue =
     thresholdSeries && 'value' in thresholdSeries
       ? (thresholdSeries as { value: number }).value
-      : alert.condition.threshold;
+      : alert.condition?.threshold ?? 0;
 
   return (
     <div className="py-8 space-y-6">
@@ -55,12 +55,12 @@ export function AlertPreviewView() {
           <div className="mt-4 flex items-center gap-3 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <span className="h-3 w-3 rounded-full" style={{ backgroundColor: primarySeries?.config.color || '#0062ff' }} />
-              <span>{primarySeries?.label || alert.series.label}</span>
+              <span>{primarySeries?.label || alert.title || 'Alert series'}</span>
             </div>
             <div className="flex items-center gap-1">
               <span className="h-3 w-3 rounded-full" style={{ backgroundColor: thresholdColor }} />
               <span>
-                <Trans>Threshold</Trans>: {thresholdValue} {alert.condition.unit}
+                <Trans>Threshold</Trans>: {thresholdValue} {alert.condition?.unit ?? 'RON'}
               </span>
             </div>
           </div>

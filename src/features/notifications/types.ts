@@ -21,18 +21,6 @@ export interface Notification {
   };
 }
 
-export interface NotificationConfig {
-  // Newsletter config
-  includeComparisons?: boolean;
-  includeTrends?: boolean;
-  topCategoriesLimit?: number;
-
-  // Alert config
-  operator?: 'gt' | 'lt' | 'gte' | 'lte' | 'eq';
-  threshold?: number;
-  period?: 'monthly' | 'quarterly' | 'annual';
-  filters?: Record<string, any>;
-}
 
 export interface NotificationTypeConfig {
   type: NotificationType;

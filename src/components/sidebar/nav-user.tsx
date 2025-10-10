@@ -79,7 +79,7 @@ export function NavUser(_props: NavUserProps) {
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={undefined} alt={displayName} />
-                <AvatarFallback className="rounded-lg font-medium group-data-[collapsible=icon]:pl-3">
+                <AvatarFallback className="rounded-lg font-medium group-data-[collapsible=icon]:ml-3">
                   {initials}
                 </AvatarFallback>
               </Avatar>

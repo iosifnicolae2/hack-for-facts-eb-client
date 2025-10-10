@@ -6,56 +6,15 @@ import type { Alert, AlertEditorMode, AlertView } from '@/schemas/alerts';
 
 type AlertUpdater = Partial<Alert> | ((draft: Alert) => void);
 
-const META_FIELDS = new Set(['id', 'lastEvaluatedAt']);
-
-const stripMetaFields = (value: unknown): unknown => {
-  if (Array.isArray(value)) {
-    return value.map(stripMetaFields);
-  }
-
-  if (value && typeof value === 'object') {
-    const entries = Object.entries(value as Record<string, unknown>)
-      .filter(([key]) => !META_FIELDS.has(key));
-
-    return entries.reduce<Record<string, unknown>>((acc, [key, val]) => {
-      const sanitized = stripMetaFields(val);
-      if (sanitized !== undefined) {
-        acc[key] = sanitized;
-      }
-      return acc;
-    }, {});
-  }
-
-  return value === undefined ? undefined : value;
-};
-
-const comparableAlert = (alert?: Alert): unknown => {
-  if (!alert) return undefined;
-  return stripMetaFields({
-    title: alert.title,
-    description: alert.description ?? '',
-    isActive: alert.isActive,
-    notificationType: alert.notificationType,
-    filter: alert.filter,
-    condition: alert.condition,
-  });
-};
-
-const alertsEqual = (left?: Alert, right?: Alert): boolean => {
-  if (!left && !right) return true;
-  if (!left || !right) return false;
-  return JSON.stringify(comparableAlert(left)) === JSON.stringify(comparableAlert(right));
-};
-
-export function useAlertStore() {
-  const navigate = useNavigate({ from: '/alerts/$alertId' });
-  const { alert, view, mode } = useSearch({ from: '/alerts/$alertId' });
+export function useAlertDraftStore() {
+  const navigate = useNavigate({ from: '/alerts/new' });
+  const { alert, view, mode } = useSearch({ from: '/alerts/new' }) as unknown as { alert: Alert; view: AlertView; mode: AlertEditorMode };
 
   const updateAlert = useCallback((updater: AlertUpdater) => {
     navigate({
-      search: (prev) => {
+      search: (prev: any) => {
         const nextAlert = typeof updater === 'function'
-          ? produce(prev.alert, (draft) => {
+          ? produce(prev.alert, (draft: Alert) => {
               updater(draft);
             })
           : {
@@ -106,7 +65,7 @@ export function useAlertStore() {
   const setView = useCallback(
     (nextView: AlertView) => {
       navigate({
-        search: (prev) => ({
+        search: (prev: any) => ({
           ...prev,
           view: nextView,
         }),
@@ -119,7 +78,7 @@ export function useAlertStore() {
   const setMode = useCallback(
     (nextMode: AlertEditorMode) => {
       navigate({
-        search: (prev) => ({
+        search: (prev: any) => ({
           ...prev,
           mode: nextMode,
         }),
@@ -139,7 +98,7 @@ export function useAlertStore() {
   const setAlert = useCallback((next: Alert, options?: { mode?: AlertEditorMode }) => {
     const parsed = AlertSchema.parse(next);
     navigate({
-      search: (prev) => ({
+      search: (prev: any) => ({
         ...prev,
         alert: parsed,
         mode: options?.mode ?? prev.mode,
@@ -162,4 +121,4 @@ export function useAlertStore() {
   };
 }
 
-export const areAlertsEqual = alertsEqual;
+

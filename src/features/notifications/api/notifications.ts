@@ -1,5 +1,5 @@
 import { getAuthToken } from '@/lib/auth';
-import type { Notification, NotificationConfig, NotificationType } from '../types';
+import type { Notification, NotificationType } from '../types';
 
 const getApiUrl = () => import.meta.env.VITE_API_URL;
 
@@ -50,36 +50,14 @@ export async function getEntityNotifications(cui: string): Promise<Notification[
   return result.data || [];
 }
 
-// Subscribe to a notification (or update if already exists)
-export async function upsertNotification(data: {
+// Create a notification (subscribe)
+export async function createNotification(data: {
   entityCui: string | null;
   notificationType: NotificationType;
-  isActive: boolean;
-  config?: NotificationConfig;
+  config?: Record<string, any>;
 }): Promise<Notification> {
   const token = await getAuthToken();
-
-  // If deactivating, call unsubscribe endpoint
-  if (!data.isActive) {
-    // We need to find the notification ID first
-    const notifications = data.entityCui
-      ? await getEntityNotifications(data.entityCui)
-      : await getUserNotifications();
-
-    const existingNotification = notifications.find(
-      n => n.notificationType === data.notificationType && n.entityCui === data.entityCui
-    );
-
-    if (existingNotification) {
-      return deactivateNotification(existingNotification.id);
-    }
-
-    // If no existing notification to deactivate, throw error
-    throw new Error('No notification found to deactivate');
-  }
-
-  // Subscribe to notification
-  const endpoint = `${getApiUrl()}/api/v1/notifications/subscribe`;
+  const endpoint = `${getApiUrl()}/api/v1/notifications`;
 
   const response = await fetch(endpoint, {
     method: 'POST',
@@ -90,50 +68,26 @@ export async function upsertNotification(data: {
     body: JSON.stringify({
       notificationType: data.notificationType,
       entityCui: data.entityCui,
-      config: data.config || null,
+      config: data.config ?? undefined,
     }),
   });
 
   if (!response.ok) {
     const error: ApiResponse<never> = await response.json().catch(() => ({ ok: false, error: response.statusText }));
-    throw new Error(error.error || `Failed to subscribe: ${response.statusText}`);
+    throw new Error(error.error || `Failed to create notification: ${response.statusText}`);
   }
 
   const result: ApiResponse<Notification> = await response.json();
   if (!result.data) {
-    throw new Error('No data returned from subscribe');
+    throw new Error('No data returned from create');
   }
 
   return result.data;
 }
 
-// Deactivate notification (unsubscribe)
-export async function deactivateNotification(id: number): Promise<Notification> {
-  const endpoint = `${getApiUrl()}/api/v1/notifications/${id}/unsubscribe`;
-  const token = await getAuthToken();
-
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      id,
-    }),
-  });
-
-  if (!response.ok) {
-    const error: ApiResponse<never> = await response.json().catch(() => ({ ok: false, error: response.statusText }));
-    throw new Error(error.error || `Failed to unsubscribe: ${response.statusText}`);
-  }
-
-  const result: ApiResponse<Notification> = await response.json();
-  if (!result.data) {
-    throw new Error('No data returned from unsubscribe');
-  }
-
-  return result.data;
+// Deactivate a notification (isActive: false)
+export async function unsubscribeNotification(id: number): Promise<Notification> {
+  return updateNotification(id, { isActive: false });
 }
 
 // Unsubscribe via token (public, no auth) - used from email links
@@ -154,8 +108,6 @@ export async function unsubscribeViaToken(token: string): Promise<{
 
   const result: ApiResponse<never> & { message?: string } = await response.json();
 
-  // Server returns { ok: true, message: "..." } but doesn't return notification data
-  // Return success with empty notification - component will show success message
   return {
     success: result.ok,
     notification: {} as Notification,
@@ -183,4 +135,31 @@ export async function deleteNotification(id: number): Promise<void> {
   if (!result.ok) {
     throw new Error('Failed to delete notification');
   }
+}
+
+// Update notification (isActive and/or config)
+export async function updateNotification(id: number, updates: { isActive?: boolean; config?: Record<string, any> }): Promise<Notification> {
+  const endpoint = `${getApiUrl()}/api/v1/notifications/${id}`;
+  const token = await getAuthToken();
+
+  const response = await fetch(endpoint, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(updates),
+  });
+
+  if (!response.ok) {
+    const error: ApiResponse<never> = await response.json().catch(() => ({ ok: false, error: response.statusText }));
+    throw new Error(error.error || `Failed to update notification: ${response.statusText}`);
+  }
+
+  const result: ApiResponse<Notification> = await response.json();
+  if (!result.data) {
+    throw new Error('No data returned from update');
+  }
+
+  return result.data;
 }

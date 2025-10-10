@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { SeriesConfigurationSchema } from './charts';
+import { AnalyticsFilterSchema } from './charts';
 
 export const AlertOperatorEnum = z.enum(['gt', 'gte', 'lt', 'lte', 'eq']);
 export type AlertOperator = z.infer<typeof AlertOperatorEnum>;
@@ -13,17 +13,15 @@ export const AlertConditionSchema = z.object({
 export type AlertCondition = z.infer<typeof AlertConditionSchema>;
 
 export const AlertSchema = z.object({
-  id: z.string().default(() => crypto.randomUUID()),
-  title: z.string().default(''),
-  description: z.string().optional(),
-  isActive: z.boolean().default(true),
-  notificationType: z.literal('alert_data_series').default('alert_data_series'),
-  series: SeriesConfigurationSchema.default(() =>
-    SeriesConfigurationSchema.parse({
-      type: 'line-items-aggregated-yearly',
-      label: 'Alert Series',
-    })
-  ),
+  id: z.string().uuid().optional(),
+  title: z.string().max(200, { message: 'Title must be 200 characters or fewer' }).optional(),
+  description: z.string().max(1000, { message: 'Description must be 1000 characters or fewer' }).optional(),
+  isActive: z.boolean().optional().default(true),
+  notificationType: z.literal('alert_data_series').optional(),
+  filter: AnalyticsFilterSchema.default({
+    account_category: 'ch',
+    report_type: 'Executie bugetara agregata la nivel de ordonator principal',
+  }),
   condition: AlertConditionSchema.default(() => AlertConditionSchema.parse({})),
   createdAt: z.string().default(() => new Date().toISOString()),
   updatedAt: z.string().default(() => new Date().toISOString()),
@@ -52,16 +50,8 @@ export function createEmptyAlert(partial?: Partial<Alert>): Alert {
     return base;
   }
 
-  const mergedSeries = partial.series
-    ? SeriesConfigurationSchema.parse(partial.series)
-    : base.series;
-
-  return {
+  return AlertSchema.parse({
     ...base,
     ...partial,
-    series: mergedSeries,
-    condition: partial.condition
-      ? AlertConditionSchema.parse(partial.condition)
-      : base.condition,
-  };
+  });
 }

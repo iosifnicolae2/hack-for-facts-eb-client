@@ -1,6 +1,36 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { deleteAlert, fetchAlert, fetchAlerts, saveAlert } from '../api/alerts';
+import {
+  deleteNotification,
+  getUserNotifications,
+  createNotification,
+  updateNotification,
+  unsubscribeNotification,
+} from '@/features/notifications/api/notifications';
+import type { Notification } from '@/features/notifications/types';
+import { Alert, AlertSchema } from '@/schemas/alerts';
+
+function mapNotificationToAlert(entry: Notification): Alert {
+  const config = (entry.config ?? {}) as Alert;
+
+  const alert: Alert = AlertSchema.parse({
+    ...config,
+    id: config.id ?? String(entry.id),
+    isActive: entry.isActive,
+  });
+
+  return alert;
+}
+
+function buildAlertConfigPayload(alert: Alert): Record<string, unknown> {
+  return {
+    id: alert.id,
+    title: alert.title,
+    description: alert.description,
+    filter: alert.filter,
+    condition: alert.condition,
+  };
+}
 
 export const alertsKeys = {
   all: ['alerts'] as const,
@@ -10,7 +40,13 @@ export const alertsKeys = {
 export function useAlertsList() {
   return useQuery({
     queryKey: alertsKeys.all,
-    queryFn: fetchAlerts,
+    queryFn: async () => {
+      const notifications = await getUserNotifications();
+      const alerts = notifications
+        .filter((n) => n.notificationType === 'alert_data_series')
+        .map(mapNotificationToAlert);
+      return alerts;
+    },
     staleTime: 60_000,
   });
 }
@@ -18,7 +54,18 @@ export function useAlertsList() {
 export function useAlertDetail(alertId: string, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: alertsKeys.detail(alertId),
-    queryFn: () => fetchAlert(alertId),
+    queryFn: async () => {
+      const notifications = await getUserNotifications();
+      const target = notifications.find((n) => {
+        if (n.notificationType !== 'alert_data_series') return false;
+        const cfg = (n.config ?? {}) as Alert;
+        return cfg.id === alertId || String(n.id) === alertId;
+      });
+      if (!target) {
+        throw new Error('Alert not found');
+      }
+      return mapNotificationToAlert(target);
+    },
     enabled: options?.enabled ?? true,
   });
 }
@@ -26,9 +73,39 @@ export function useAlertDetail(alertId: string, options?: { enabled?: boolean })
 export function useSaveAlertMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: saveAlert,
-    onSuccess: (savedAlert) => {
-      queryClient.setQueryData(alertsKeys.detail(savedAlert.id), savedAlert);
+    mutationFn: async (alert: Alert) => {
+      const configPayload = buildAlertConfigPayload(alert);
+
+      // Find existing notification to get its server id
+      const notifications = await getUserNotifications();
+      const existing = notifications.find((n) => {
+        if (n.notificationType !== 'alert_data_series') return false;
+        const cfg = (n.config ?? {}) as Alert;
+        return (cfg.id && cfg.id === alert.id) || String(n.id) === alert.id;
+      });
+
+      // Deactivate
+      if (!alert.isActive) {
+        if (existing && existing.isActive) {
+          return unsubscribeNotification(existing.id);
+        }
+        // If not existing or already inactive, ensure it exists to keep consistent behavior
+        return existing ?? (await createNotification({ entityCui: null, notificationType: 'alert_data_series', config: { ...configPayload, id: undefined } }));
+      }
+
+      // Activate or update
+      if (existing) {
+        return updateNotification(existing.id, { isActive: true, config: configPayload });
+      }
+
+      // Create active alert
+      return createNotification({ entityCui: null, notificationType: 'alert_data_series', config: { ...configPayload, id: undefined } });
+    },
+    onSuccess: (savedNotification) => {
+      const savedAlert = mapNotificationToAlert(savedNotification);
+      if (savedAlert.id) {
+        queryClient.setQueryData(alertsKeys.detail(savedAlert.id), savedAlert);
+      }
       queryClient.invalidateQueries({ queryKey: alertsKeys.all });
       toast.success('Alert saved successfully');
     },
@@ -41,7 +118,19 @@ export function useSaveAlertMutation() {
 export function useDeleteAlertMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: deleteAlert,
+    mutationFn: async (alertId: string) => {
+      const notifications = await getUserNotifications();
+      const target = notifications.find((n) => {
+        if (n.notificationType !== 'alert_data_series') return false;
+        const cfg = (n.config ?? {}) as Alert;
+        return cfg.id === alertId || String(n.id) === alertId;
+      });
+      if (!target) {
+        throw new Error('Alert not found');
+      }
+      await deleteNotification(target.id);
+      return alertId;
+    },
     onSuccess: (_, alertId) => {
       queryClient.invalidateQueries({ queryKey: alertsKeys.all });
       queryClient.removeQueries({ queryKey: alertsKeys.detail(alertId) });

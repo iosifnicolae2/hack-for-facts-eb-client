@@ -32,7 +32,7 @@ import { useCopyPasteChart } from '../../hooks/useCopyPaste';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useNavigate } from '@tanstack/react-router';
-import { buildAlertFromSeries } from '@/lib/alert-links';
+import { buildAlertFromFilter } from '@/lib/alert-links';
 import { Analytics } from '@/lib/analytics';
 
 export function SeriesConfigView() {
@@ -90,16 +90,16 @@ export function SeriesConfigView() {
     if (!series || series.type !== 'line-items-aggregated-yearly') {
       return;
     }
-    const alert = buildAlertFromSeries(series as SeriesConfiguration, { chartId: chart.id, chartTitle: chart.title });
+    const alert = buildAlertFromFilter((series as SeriesConfiguration).filter, { chartId: chart.id, chartTitle: chart.title, label: series.label });
     Analytics.capture(Analytics.EVENTS.AlertCreated, {
-      alert_id: alert.id,
+      alert_id: alert.id!,
       source: 'chart_series',
       chart_id: chart.id,
       series_id: series.id,
     });
     navigate({
       to: '/alerts/$alertId',
-      params: { alertId: alert.id },
+      params: { alertId: alert.id! },
       search: { alert, view: 'overview', mode: 'create' },
       replace: false,
     });
