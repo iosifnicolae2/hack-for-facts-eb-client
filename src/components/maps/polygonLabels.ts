@@ -217,40 +217,39 @@ export function processFeatureForLabel(
 
   const screenArea = calculatePolygonScreenArea(bounds, map);
 
-  // Early return for very small polygons
-  const minArea = isCounty ? 0 : 500;
-  if (screenArea < minArea) {
-    return null;
-  }
-
-  let fontSize = calculateFontSize(screenArea, zoom);
-  if (isCounty) {
-    fontSize = Math.max(8, fontSize * 0.85);
-  }
-
-  // Get heatmap data for amount
+  // Get heatmap data for amount - early return if no amount data
   const heatmapData = getFeatureHeatmapData(feature, heatmapDataMap);
   const amountValue = heatmapData
     ? (normalization === 'per_capita' ? heatmapData.per_capita_amount : heatmapData.total_amount)
     : null;
+
+  // Don't show labels without amount data
+  if (amountValue === null || amountValue === undefined) {
+    return null;
+  }
+
+  // Calculate font size based on area, with smaller minimum for small polygons
+  let fontSize = calculateFontSize(screenArea, zoom);
+  if (isCounty) {
+    fontSize = Math.max(7, fontSize * 0.85);
+  } else {
+    // For small UAT areas, use smaller font instead of hiding (minimum 6px)
+    fontSize = Math.max(6, fontSize);
+  }
 
   // Determine if we should show amount based on zoom
   const showAmount = isCounty
     ? zoom >= ZOOM_THRESHOLDS.COUNTY_AMOUNT_MIN
     : zoom >= ZOOM_THRESHOLDS.UAT_NAME_MIN;
 
-  // Try full name first, then abbreviated
+  // Use full name without truncation - just adjust font size to fit
   let displayText = name;
   let fits = doesLabelFit(displayText, fontSize, bounds, map, showAmount);
 
-  if (!fits && name.length > 10) {
-    displayText = abbreviateName(name);
-    fits = doesLabelFit(displayText, fontSize, bounds, map, showAmount);
-  }
-
-  if (isCounty && !fits) {
+  // If doesn't fit, reduce font size progressively
+  if (!fits) {
     let trialFontSize = fontSize;
-    const minFontSize = 7;
+    const minFontSize = isCounty ? 6 : 5;
     while (trialFontSize > minFontSize && !doesLabelFit(displayText, trialFontSize, bounds, map, showAmount)) {
       trialFontSize -= 0.5;
     }
@@ -258,8 +257,8 @@ export function processFeatureForLabel(
     fits = doesLabelFit(displayText, fontSize, bounds, map, showAmount);
   }
 
-  // For counties, be more lenient with fitting
-  const visible = fits && (isCounty || screenArea > minArea);
+  // Show all labels that have amount data, regardless of fit
+  const visible = true;
 
   return {
     text: displayText,

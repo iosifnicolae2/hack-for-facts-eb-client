@@ -22,6 +22,7 @@ export class CanvasLabelLayer extends L.Layer {
   private layerOptions: CanvasLabelLayerOptions;
   private animationFrameId: number | null = null;
   private isZooming = false;
+  private isPanning = false;
   private origin: L.Point = L.point(0, 0);
 
   constructor(options: CanvasLabelLayerOptions) {
@@ -58,6 +59,7 @@ export class CanvasLabelLayer extends L.Layer {
     map.on('zoom', this.handleZoom, this);
     map.on('zoomstart', this.handleZoomStart, this);
     map.on('zoomend', this.handleZoomEnd, this);
+    map.on('movestart', this.handleMoveStart, this);
     map.on('move', this.handleMove, this);
     map.on('moveend', this.handleMoveEnd, this);
     map.on('resize', this.handleResize, this);
@@ -76,6 +78,7 @@ export class CanvasLabelLayer extends L.Layer {
     map.off('zoom', this.handleZoom, this);
     map.off('zoomstart', this.handleZoomStart, this);
     map.off('zoomend', this.handleZoomEnd, this);
+    map.off('movestart', this.handleMoveStart, this);
     map.off('move', this.handleMove, this);
     map.off('moveend', this.handleMoveEnd, this);
     map.off('resize', this.handleResize, this);
@@ -109,6 +112,7 @@ export class CanvasLabelLayer extends L.Layer {
 
   /**
    * Process GeoJSON features to extract label data
+   * Only processes features that intersect with the current viewport
    */
   private processLabels(): void {
     const { geoJsonData, mapViewType, heatmapDataMap, normalization, showLabels } = this.layerOptions;
@@ -119,10 +123,16 @@ export class CanvasLabelLayer extends L.Layer {
     }
 
     const currentZoom = this._map.getZoom();
+    const viewportBounds = this._map.getBounds();
     const labelData: PolygonLabelData[] = [];
 
     const features = 'features' in geoJsonData ? geoJsonData.features : [];
     for (const feature of features as Feature<Geometry, any>[]) {
+      // Quick viewport check before processing
+      if (!this.featureIntersectsViewport(feature, viewportBounds)) {
+        continue;
+      }
+
       const labelInfo = processFeatureForLabel(
         feature,
         this._map,
@@ -137,6 +147,57 @@ export class CanvasLabelLayer extends L.Layer {
     }
 
     this.labels = labelData;
+  }
+
+  /**
+   * Quick check if a feature might intersect with viewport
+   * Uses a bounding box check for performance
+   */
+  private featureIntersectsViewport(feature: Feature<Geometry, any>, viewportBounds: L.LatLngBounds): boolean {
+    const geometry = feature.geometry;
+    if (!geometry) return false;
+
+    // Get all coordinates from the geometry
+    let coords: number[][] = [];
+    if (geometry.type === 'Polygon') {
+      coords = geometry.coordinates[0];
+    } else if (geometry.type === 'MultiPolygon') {
+      // Flatten all polygons
+      geometry.coordinates.forEach(polygon => {
+        coords.push(...polygon[0]);
+      });
+    } else {
+      return false;
+    }
+
+    // Check if any coordinate is within viewport
+    for (const coord of coords) {
+      const latLng = L.latLng(coord[1], coord[0]);
+      if (viewportBounds.contains(latLng)) {
+        return true;
+      }
+    }
+
+    // Check if viewport is completely inside the polygon (rare but possible)
+    // For performance, we'll just check the center
+    const center = viewportBounds.getCenter();
+    return this.pointInPolygon(center, coords);
+  }
+
+  /**
+   * Simple point-in-polygon check
+   */
+  private pointInPolygon(point: L.LatLng, polygon: number[][]): boolean {
+    let inside = false;
+    for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+      const xi = polygon[i][0], yi = polygon[i][1];
+      const xj = polygon[j][0], yj = polygon[j][1];
+
+      const intersect = ((yi > point.lat) !== (yj > point.lat))
+        && (point.lng < (xj - xi) * (point.lat - yi) / (yj - yi) + xi);
+      if (intersect) inside = !inside;
+    }
+    return inside;
   }
 
   /**
@@ -209,19 +270,25 @@ export class CanvasLabelLayer extends L.Layer {
   }
 
   /**
+   * Handle movement start (pan/drag start)
+   */
+  private handleMoveStart(): void {
+    this.isPanning = true;
+    this.clearCanvas();
+  }
+
+  /**
    * Handle map movement (pan/drag)
    */
   private handleMove(): void {
-    if (!this.isZooming) {
-      this.updatePosition();
-      this.scheduleRedraw();
-    }
+    // Keep canvas hidden during pan
   }
 
   /**
    * Handle movement end (recalculate labels)
    */
   private handleMoveEnd(): void {
+    this.isPanning = false;
     this.updatePosition();
     this.processLabels();
     this.scheduleRedraw();
@@ -231,7 +298,7 @@ export class CanvasLabelLayer extends L.Layer {
    * Schedule a redraw using requestAnimationFrame for smooth performance
    */
   private scheduleRedraw(): void {
-    if (this.animationFrameId !== null || this.isZooming) {
+    if (this.animationFrameId !== null || this.isZooming || this.isPanning) {
       return;
     }
 
@@ -250,10 +317,22 @@ export class CanvasLabelLayer extends L.Layer {
   }
 
   /**
+   * Check if a label is in the current viewport
+   */
+  private isInViewport(label: PolygonLabelData): boolean {
+    if (!this._map) return false;
+
+    const bounds = this._map.getBounds();
+    const labelLatLng = L.latLng(label.position[0], label.position[1]);
+
+    return bounds.contains(labelLatLng);
+  }
+
+  /**
    * Main draw method - renders all labels to canvas
    */
   private draw(): void {
-    if (!this.canvas || !this.ctx || !this._map || this.isZooming) {
+    if (!this.canvas || !this.ctx || !this._map || this.isZooming || this.isPanning) {
       return;
     }
 
@@ -270,12 +349,19 @@ export class CanvasLabelLayer extends L.Layer {
     this.ctx.textAlign = 'center';
     this.ctx.textBaseline = 'middle';
 
-    // Draw each label
+    // Get viewport bounds for filtering
+    const viewportBounds = this._map.getBounds();
+
+    // Draw each label (only those in viewport)
     for (const label of this.labels) {
       if (!label.visible) continue;
 
+      // Check if label is in viewport
+      const labelLatLng = L.latLng(label.position[0], label.position[1]);
+      if (!viewportBounds.contains(labelLatLng)) continue;
+
       // Convert lat/lng to layer coordinates (relative to canvas origin)
-      const point = this._map.latLngToLayerPoint(L.latLng(label.position[0], label.position[1]));
+      const point = this._map.latLngToLayerPoint(labelLatLng);
       const local = point.subtract(this.origin);
 
       // Draw label name
