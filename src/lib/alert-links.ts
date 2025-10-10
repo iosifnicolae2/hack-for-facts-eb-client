@@ -20,18 +20,22 @@ const DEFAULT_CHART_CONFIG: ChartConfig = {
 };
 
 export function buildAlertPreviewChartState(alert: Alert): ChartUrlState {
-  const thresholdLabel = t`Threshold (${alert.condition?.unit ?? 'RON'})`;
-  const thresholdSeries = CustomSeriesValueConfigurationSchema.parse({
-    id: `${alert.id}-threshold`,
-    label: thresholdLabel,
-    type: 'custom-series-value',
-    value: alert.condition?.threshold ?? 0,
-    unit: alert.condition?.unit ?? 'RON',
-    config: {
-      visible: true,
-      showDataLabels: false,
-      color: '#f97316',
-    },
+  // Create threshold series for each condition
+  const thresholdColors = ['#f97316', '#ef4444', '#eab308', '#8b5cf6', '#ec4899'];
+  const thresholdSeries = (alert.conditions ?? []).map((condition, index) => {
+    const thresholdLabel = t`Threshold ${index + 1} (${condition.unit})`;
+    return CustomSeriesValueConfigurationSchema.parse({
+      id: `${alert.id}-threshold-${index}`,
+      label: thresholdLabel,
+      type: 'custom-series-value',
+      value: condition.threshold,
+      unit: condition.unit,
+      config: {
+        visible: true,
+        showDataLabels: false,
+        color: thresholdColors[index % thresholdColors.length],
+      },
+    });
   });
 
   // Create a basic series configuration for preview
@@ -63,7 +67,7 @@ export function buildAlertPreviewChartState(alert: Alert): ChartUrlState {
     },
     series: [
       primarySeries,
-      thresholdSeries,
+      ...thresholdSeries,
     ],
     annotations: [],
     createdAt: alert.createdAt,
@@ -97,7 +101,7 @@ export function buildAlertFromFilter(filter: any, options?: { chartId?: string; 
   return {
     ...base,
     filter: filter,
-    condition: base.condition, // Keep default condition
+    conditions: base.conditions, // Keep default conditions (empty array)
   };
 }
 
@@ -108,7 +112,7 @@ export function serializeAlertForShare(alert: Alert): Partial<Alert> {
     description: alert.description,
     isActive: alert.isActive,
     filter: alert.filter,
-    condition: alert.condition,
+    conditions: alert.conditions,
   } as Partial<Alert>;
 }
 

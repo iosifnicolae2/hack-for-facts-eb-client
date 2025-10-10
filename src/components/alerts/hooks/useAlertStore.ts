@@ -37,7 +37,7 @@ const comparableAlert = (alert?: Alert): unknown => {
     isActive: alert.isActive,
     notificationType: alert.notificationType,
     filter: alert.filter,
-    condition: alert.condition,
+    conditions: alert.conditions,
   });
 };
 
@@ -85,18 +85,18 @@ export function useAlertStore() {
   //   [updateAlert],
   // );
 
-  const setCondition = useCallback(
-    (recipe: Alert['condition'] | ((draft: Alert['condition']) => void)) => {
+  const setConditions = useCallback(
+    (recipe: Alert['conditions'] | ((draft: Alert['conditions']) => void)) => {
       updateAlert((draft) => {
         if (typeof recipe === 'function') {
-          if (!draft.condition) {
-            draft.condition = { operator: 'gt', threshold: 0, unit: 'RON' };
+          if (!draft.conditions) {
+            draft.conditions = [];
           }
-          draft.condition = produce(draft.condition, (conditionDraft) => {
-            recipe(conditionDraft);
+          draft.conditions = produce(draft.conditions, (conditionsDraft) => {
+            recipe(conditionsDraft);
           });
         } else {
-          draft.condition = recipe;
+          draft.conditions = recipe;
         }
       });
     },
@@ -154,7 +154,7 @@ export function useAlertStore() {
     mode,
     updateAlert,
     // updateSeries, // TODO: Update for filter instead of series
-    setCondition,
+    setConditions,
     setView,
     setMode,
     toggleActive,

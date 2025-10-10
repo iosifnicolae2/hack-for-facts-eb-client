@@ -46,9 +46,13 @@ export function AlertCard({
     eq: t`equals`,
   };
 
-  const conditionCopy = alert.condition
-    ? `${alert.title || t`Alert`} · ${operatorLabels[alert.condition.operator] ?? alert.condition.operator} ${alert.condition.threshold} ${alert.condition.unit}`
-    : `${alert.title || t`Alert`} · ${t`No condition set`}`;
+  const conditionsCopy = alert.conditions && alert.conditions.length > 0
+    ? alert.conditions.map((condition) =>
+        `${operatorLabels[condition.operator] ?? condition.operator} ${condition.threshold} ${condition.unit}`
+      ).join(', ')
+    : t`No conditions set`;
+
+  const titleCopy = `${alert.title || t`Alert`} · ${conditionsCopy}`;
   const previewChart = buildAlertPreviewChartState(alert).chart;
 
   return (
@@ -68,7 +72,7 @@ export function AlertCard({
               </Badge>
             </div>
             <p className="text-xs text-muted-foreground">
-              {conditionCopy}
+              {titleCopy}
             </p>
             {alert.description ? (
               <p className="text-xs text-muted-foreground">

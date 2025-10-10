@@ -12,12 +12,7 @@ export function AlertPreviewView() {
   const chartState = buildAlertPreviewChartState(alert);
   const chartLink = buildAlertPreviewChartLink(alert);
   const primarySeries = chartState.chart.series.find((series) => series.type !== 'custom-series-value');
-  const thresholdSeries = chartState.chart.series.find((series) => series.type === 'custom-series-value') as (typeof chartState.chart.series)[number] | undefined;
-  const thresholdColor = thresholdSeries?.config.color ?? '#f97316';
-  const thresholdValue =
-    thresholdSeries && 'value' in thresholdSeries
-      ? (thresholdSeries as { value: number }).value
-      : alert.condition?.threshold ?? 0;
+  const thresholdSeriesList = chartState.chart.series.filter((series) => series.type === 'custom-series-value');
 
   return (
     <div className="py-8 space-y-6">
@@ -52,17 +47,25 @@ export function AlertPreviewView() {
               draft.config.showGridLines = true;
             }}
           />
-          <div className="mt-4 flex items-center gap-3 text-sm text-muted-foreground">
+          <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <span className="h-3 w-3 rounded-full" style={{ backgroundColor: primarySeries?.config.color || '#0062ff' }} />
               <span>{primarySeries?.label || alert.title || 'Alert series'}</span>
             </div>
-            <div className="flex items-center gap-1">
-              <span className="h-3 w-3 rounded-full" style={{ backgroundColor: thresholdColor }} />
-              <span>
-                <Trans>Threshold</Trans>: {thresholdValue} {alert.condition?.unit ?? 'RON'}
-              </span>
-            </div>
+            {thresholdSeriesList.map((thresholdSeries, index) => {
+              const thresholdValue = 'value' in thresholdSeries
+                ? (thresholdSeries as { value: number }).value
+                : 0;
+              const condition = alert.conditions?.[index];
+              return (
+                <div key={thresholdSeries.id} className="flex items-center gap-1">
+                  <span className="h-3 w-3 rounded-full" style={{ backgroundColor: thresholdSeries.config.color }} />
+                  <span>
+                    <Trans>Threshold {index + 1}</Trans>: {thresholdValue} {condition?.unit ?? 'RON'}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </CardContent>
       </Card>

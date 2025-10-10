@@ -28,7 +28,7 @@ function buildAlertConfigPayload(alert: Alert): Record<string, unknown> {
     title: alert.title,
     description: alert.description,
     filter: alert.filter,
-    condition: alert.condition,
+    conditions: alert.conditions,
   };
 }
 

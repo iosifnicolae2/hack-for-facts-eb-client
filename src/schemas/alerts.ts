@@ -22,7 +22,7 @@ export const AlertSchema = z.object({
     account_category: 'ch',
     report_type: 'Executie bugetara agregata la nivel de ordonator principal',
   }),
-  condition: AlertConditionSchema.default(() => AlertConditionSchema.parse({})),
+  conditions: z.array(AlertConditionSchema).default([]),
   createdAt: z.string().default(() => new Date().toISOString()),
   updatedAt: z.string().default(() => new Date().toISOString()),
   lastEvaluatedAt: z.string().optional(),
