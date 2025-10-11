@@ -317,18 +317,6 @@ export class CanvasLabelLayer extends L.Layer {
   }
 
   /**
-   * Check if a label is in the current viewport
-   */
-  private isInViewport(label: PolygonLabelData): boolean {
-    if (!this._map) return false;
-
-    const bounds = this._map.getBounds();
-    const labelLatLng = L.latLng(label.position[0], label.position[1]);
-
-    return bounds.contains(labelLatLng);
-  }
-
-  /**
    * Main draw method - renders all labels to canvas
    */
   private draw(): void {

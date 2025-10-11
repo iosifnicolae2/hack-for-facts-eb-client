@@ -61,7 +61,7 @@ function RouteComponent() {
         description: source.description,
         isActive: source.isActive,
         filter: source.filter,
-        condition: source.condition,
+        conditions: source.conditions,
       });
       Analytics.capture('alert_cloned' as any, { source_id: copyFrom });
     } else if (!copyFrom) {

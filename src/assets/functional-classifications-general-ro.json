@@ -1708,6 +1708,10 @@
                 "code": "63"
             },
             {
+                "description": "Cheltuielile fondului de garantare pentru plata creanțelor salariale",
+                "code": "64"
+            },
+            {
                 "description": "Învățământ",
                 "code": "65",
                 "children": [
@@ -1890,6 +1894,10 @@
                         "code": "68.50"
                     }
                 ]
+            },
+            {
+                "description": "Asigurări și asistență socială pentru accidente de muncă și boli profesionale",
+                "code": "69"
             },
             {
                 "description": "Partea a IV-a  SERVICII ȘI DEZVOLTARE PUBLICĂ, LOCUINȚE, MEDIU ȘI APE",

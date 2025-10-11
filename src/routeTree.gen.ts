@@ -27,6 +27,7 @@ import { Route as ChartsChartIdRouteRouteImport } from './routes/charts/$chartId
 import { Route as AlertsAlertIdRouteRouteImport } from './routes/alerts/$alertId/route'
 
 const TermsLazyRouteImport = createFileRoute('/terms')()
+const BudgetExplorerLazyRouteImport = createFileRoute('/budget-explorer')()
 const IndexLazyRouteImport = createFileRoute('/')()
 const ChartsIndexLazyRouteImport = createFileRoute('/charts/')()
 const ResearchEmployeesDataLazyRouteImport = createFileRoute(
@@ -41,6 +42,13 @@ const TermsLazyRoute = TermsLazyRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/terms.lazy').then((d) => d.Route))
+const BudgetExplorerLazyRoute = BudgetExplorerLazyRouteImport.update({
+  id: '/budget-explorer',
+  path: '/budget-explorer',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() =>
+  import('./routes/budget-explorer.lazy').then((d) => d.Route),
+)
 const TestErrorRoute = TestErrorRouteImport.update({
   id: '/test-error',
   path: '/test-error',
@@ -159,6 +167,7 @@ export interface FileRoutesByFullPath {
   '/map': typeof MapRoute
   '/privacy': typeof PrivacyRoute
   '/test-error': typeof TestErrorRoute
+  '/budget-explorer': typeof BudgetExplorerLazyRoute
   '/terms': typeof TermsLazyRoute
   '/alerts/$alertId': typeof AlertsAlertIdRouteRouteWithChildren
   '/charts/$chartId': typeof ChartsChartIdRouteRouteWithChildren
@@ -182,6 +191,7 @@ export interface FileRoutesByTo {
   '/map': typeof MapRoute
   '/privacy': typeof PrivacyRoute
   '/test-error': typeof TestErrorRoute
+  '/budget-explorer': typeof BudgetExplorerLazyRoute
   '/terms': typeof TermsLazyRoute
   '/alerts/new': typeof AlertsNewRoute
   '/entities/$cui': typeof EntitiesCuiRoute
@@ -204,6 +214,7 @@ export interface FileRoutesById {
   '/map': typeof MapRoute
   '/privacy': typeof PrivacyRoute
   '/test-error': typeof TestErrorRoute
+  '/budget-explorer': typeof BudgetExplorerLazyRoute
   '/terms': typeof TermsLazyRoute
   '/alerts/$alertId': typeof AlertsAlertIdRouteRouteWithChildren
   '/charts/$chartId': typeof ChartsChartIdRouteRouteWithChildren
@@ -229,6 +240,7 @@ export interface FileRouteTypes {
     | '/map'
     | '/privacy'
     | '/test-error'
+    | '/budget-explorer'
     | '/terms'
     | '/alerts/$alertId'
     | '/charts/$chartId'
@@ -252,6 +264,7 @@ export interface FileRouteTypes {
     | '/map'
     | '/privacy'
     | '/test-error'
+    | '/budget-explorer'
     | '/terms'
     | '/alerts/new'
     | '/entities/$cui'
@@ -273,6 +286,7 @@ export interface FileRouteTypes {
     | '/map'
     | '/privacy'
     | '/test-error'
+    | '/budget-explorer'
     | '/terms'
     | '/alerts/$alertId'
     | '/charts/$chartId'
@@ -297,6 +311,7 @@ export interface RootRouteChildren {
   MapRoute: typeof MapRoute
   PrivacyRoute: typeof PrivacyRoute
   TestErrorRoute: typeof TestErrorRoute
+  BudgetExplorerLazyRoute: typeof BudgetExplorerLazyRoute
   TermsLazyRoute: typeof TermsLazyRoute
   AlertsAlertIdRouteRoute: typeof AlertsAlertIdRouteRouteWithChildren
   ChartsChartIdRouteRoute: typeof ChartsChartIdRouteRouteWithChildren
@@ -318,6 +333,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/budget-explorer': {
+      id: '/budget-explorer'
+      path: '/budget-explorer'
+      fullPath: '/budget-explorer'
+      preLoaderRoute: typeof BudgetExplorerLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/test-error': {
@@ -493,6 +515,7 @@ const rootRouteChildren: RootRouteChildren = {
   MapRoute: MapRoute,
   PrivacyRoute: PrivacyRoute,
   TestErrorRoute: TestErrorRoute,
+  BudgetExplorerLazyRoute: BudgetExplorerLazyRoute,
   TermsLazyRoute: TermsLazyRoute,
   AlertsAlertIdRouteRoute: AlertsAlertIdRouteRouteWithChildren,
   ChartsChartIdRouteRoute: ChartsChartIdRouteRouteWithChildren,

@@ -6,9 +6,12 @@ import { useMemo } from 'react';
 import { yValueFormatter } from '../../utils';
 import { DataPointPayload } from '@/components/charts/hooks/useChartData';
 
-const MIN_WIDTH_FOR_LABEL = 80;
-const MIN_HEIGHT_FOR_LABEL = 25;
-const MIN_HEIGHT_FOR_VALUE = 45;
+const MIN_WIDTH_FOR_NAME = 50;
+const MIN_HEIGHT_FOR_NAME = 20;
+const MIN_HEIGHT_FOR_VALUE = 35;
+
+const NAME_FONT_SIZE = 12;
+const VALUE_FONT_SIZE = 10;
 
 interface CustomizedContentProps {
     depth: number;
@@ -28,7 +31,16 @@ const CustomizedContent: React.FC<CustomizedContentProps> = (props) => {
     }
 
     const displayValue = yValueFormatter(payload.value, payload.unit, 'compact');
-    const textColor = '#000000';
+    const textColor = '#FFFFFF';
+
+    const canShowName = width > MIN_WIDTH_FOR_NAME && height > MIN_HEIGHT_FOR_NAME;
+    const canShowValue = canShowName && height > MIN_HEIGHT_FOR_VALUE;
+
+    // Calculate truncation based on available width
+    const maxChars = Math.floor(width / (NAME_FONT_SIZE * 0.55));
+    const truncatedName = payload.series.label.length > maxChars
+        ? payload.series.label.slice(0, maxChars - 1) + '…'
+        : payload.series.label;
 
     return (
         <g>
@@ -41,23 +53,33 @@ const CustomizedContent: React.FC<CustomizedContentProps> = (props) => {
                     fill: payload.series.config.color,
                     stroke: '#fff',
                     strokeWidth: 2 / (depth + 1e-10),
-                    strokeOpacity: 1 / (depth + 1e-10),
+                    strokeOpacity: 0.5,
                 }}
             />
-            {width > MIN_WIDTH_FOR_LABEL && height > MIN_HEIGHT_FOR_LABEL && (
+            {canShowName && (
                 <text
                     x={x + width / 2}
-                    y={y + height / 2 + 7}
+                    y={canShowValue ? y + height / 2 - VALUE_FONT_SIZE / 2 : y + height / 2}
                     textAnchor="middle"
+                    dominantBaseline="middle"
                     fill={textColor}
-                    fontSize={14}
+                    fontSize={NAME_FONT_SIZE}
+                    fontWeight={500}
                     style={{ pointerEvents: 'none' }}
                 >
-                    {payload.series.label}
+                    {truncatedName}
                 </text>
             )}
-            {width > MIN_WIDTH_FOR_LABEL && height > MIN_HEIGHT_FOR_VALUE && (
-                <text x={x + 4} y={y + 18} fill={textColor} fontSize={12} fillOpacity={0.9}>
+            {canShowValue && (
+                <text
+                    x={x + width / 2}
+                    y={y + height / 2 + NAME_FONT_SIZE / 2 + 3}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fill={textColor}
+                    fontSize={VALUE_FONT_SIZE}
+                    fillOpacity={0.9}
+                >
                     {displayValue}
                 </text>
             )}

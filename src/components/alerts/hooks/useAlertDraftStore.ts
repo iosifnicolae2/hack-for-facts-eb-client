@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { produce } from 'immer';
 import { AlertSchema } from '@/schemas/alerts';
-import type { Alert, AlertEditorMode, AlertView } from '@/schemas/alerts';
+import type { Alert, AlertEditorMode, AlertView, AlertCondition } from '@/schemas/alerts';
 
 type AlertUpdater = Partial<Alert> | ((draft: Alert) => void);
 
@@ -45,22 +45,27 @@ export function useAlertDraftStore() {
   // );
 
   const setCondition = useCallback(
-    (recipe: Alert['condition'] | ((draft: Alert['condition']) => void)) => {
+    (recipe: AlertCondition | ((draft: AlertCondition) => void)) => {
       updateAlert((draft) => {
-        if (typeof recipe === 'function') {
-          if (!draft.condition) {
-            draft.condition = { operator: 'gt', threshold: 0, unit: 'RON' };
-          }
-          draft.condition = produce(draft.condition, (conditionDraft) => {
-            recipe(conditionDraft);
-          });
-        } else {
-          draft.condition = recipe;
+        if (!Array.isArray(draft.conditions)) {
+          draft.conditions = []
         }
-      });
+        if (typeof recipe === 'function') {
+          const base: AlertCondition = { operator: 'gt', threshold: 0, unit: 'RON' }
+          const current = draft.conditions[0] ?? base
+          const next = produce(current, (conditionDraft) => {
+            recipe(conditionDraft)
+          })
+          if (draft.conditions.length === 0) draft.conditions.push(next)
+          else draft.conditions[0] = next
+        } else {
+          if (draft.conditions.length === 0) draft.conditions.push(recipe)
+          else draft.conditions[0] = recipe
+        }
+      })
     },
     [updateAlert],
-  );
+  )
 
   const setView = useCallback(
     (nextView: AlertView) => {

@@ -1708,6 +1708,10 @@
                 "code": "63"
             },
             {
+                "description": "Expenditures of the Guarantee Fund for the Payment of Wage Claims",
+                "code": "64"
+            },
+            {
                 "description": "Education",
                 "code": "65",
                 "children": [
@@ -1890,6 +1894,10 @@
                         "code": "68.50"
                     }
                 ]
+            },
+            {
+                "description": "Insurance and Social Assistance for Work Accidents and Occupational Diseases",
+                "code": "69"
             },
             {
                 "description": "Part IV - PUBLIC SERVICES AND DEVELOPMENT, HOUSING, ENVIRONMENT, AND WATER",

@@ -13,9 +13,10 @@ type PeriodSelectionMode = 'dates' | 'interval'
 type Props = {
   value?: ReportPeriodInput
   onChange: (value?: ReportPeriodInput) => void
+  allowDeselect?: boolean
 }
 
-export function PeriodFilter({ value, onChange }: Props) {
+export function PeriodFilter({ value, onChange, allowDeselect = true }: Props) {
   const periodType = value?.type ?? 'YEAR'
   const selectionMode: PeriodSelectionMode = value?.selection.interval ? 'interval' : 'dates'
 
@@ -77,7 +78,10 @@ export function PeriodFilter({ value, onChange }: Props) {
   const renderDateSelectionGrid = () => {
     if (periodType === 'YEAR') {
       return (
-        <ToggleGroup type="multiple" value={value?.selection.dates} onValueChange={(dates) => onChange?.({ type: 'YEAR', selection: { dates: dates as PeriodDate[] } })} className="grid grid-cols-3 sm:grid-cols-5 gap-2">
+        <ToggleGroup type="single" value={value?.selection.dates?.[0]} onValueChange={(date) => {
+          if (!date && !allowDeselect) return;
+          onChange?.({ type: 'YEAR', selection: { dates: date ? [date as PeriodDate] : [] } })
+        }} className="grid grid-cols-3 sm:grid-cols-5 gap-2">
           {availableYears.map((year) => (
             <ToggleGroupItem key={year} value={year} className="data-[state=on]:bg-foreground data-[state=on]:text-background">
               {year}
