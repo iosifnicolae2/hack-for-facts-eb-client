@@ -5,7 +5,7 @@ import { EconomicClassificationList } from './economic-classification-filter'
 import { FilterRangeContainer } from './base-filter/FilterRangeContainer'
 import { AmountRangeFilter } from './amount-range-filter'
 import { Calendar, ChartBar, Tags, SlidersHorizontal, MapPinned, Building2, EuroIcon, MapPin, XCircle, ArrowUpDown, Divide, Globe } from 'lucide-react'
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 import { useEntityAnalyticsFilter } from '@/hooks/useEntityAnalyticsFilter'
 import type { OptionItem } from './base-filter/interfaces'
 import { CountyList } from './county-filter/CountyList'
@@ -28,9 +28,22 @@ import { Trans } from "@lingui/react/macro";
 import { PeriodFilter } from './period-filter/PeriodFilter'
 import { ReportPeriodInput } from '@/schemas/reporting'
 import { getPeriodTags } from '@/lib/period-utils';
+import { usePersistedState } from '@/lib/hooks/usePersistedState';
+
+type CurrencyCode = 'RON' | 'EUR';
 
 export function EntityAnalyticsFilter() {
   const { filter, setFilter, resetFilter, view, setView } = useEntityAnalyticsFilter()
+  const [currency] = usePersistedState<CurrencyCode>('user-currency', 'RON')
+
+  useEffect(() => {
+    const { normalization } = filter;
+    if (currency === 'EUR' && normalization !== 'total_euro' && normalization !== 'per_capita_euro') {
+        updateNormalization('total_euro');
+    } else if (currency === 'RON' && normalization !== 'total' && normalization !== 'per_capita') {
+        updateNormalization('total');
+    }
+  }, [currency, filter.normalization]);
 
   // Label stores (cache + API-backed)
   const entityLabelsStore = useEntityLabel((filter.entity_cuis ?? []) as string[])
@@ -237,9 +250,12 @@ export function EntityAnalyticsFilter() {
           <ViewTypeRadioGroup
             value={filter.normalization ?? 'per_capita'}
             onChange={(normalization) => updateNormalization(normalization)}
-            viewOptions={[
-              { id: 'total', label: t`Total` },
-              { id: 'per_capita', label: t`Per Capita` },
+            viewOptions={currency === 'EUR' ? [
+                { id: 'total_euro', label: t`Total` },
+                { id: 'per_capita_euro', label: t`Per Capita` },
+            ] : [
+                { id: 'total', label: t`Total` },
+                { id: 'per_capita', label: t`Per Capita` },
             ]}
           />
         </div>

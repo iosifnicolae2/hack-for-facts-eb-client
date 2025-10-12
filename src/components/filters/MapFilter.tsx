@@ -7,7 +7,7 @@ import { FunctionalClassificationList } from "./functional-classification-filter
 import { FilterRangeContainer } from "./base-filter/FilterRangeContainer";
 import { AmountRangeFilter } from "./amount-range-filter";
 import { useMapFilter } from "@/hooks/useMapFilter";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { ViewTypeRadioGroup } from "./ViewTypeRadioGroup";
 import { EntityTypeList } from './entity-type-filter/EntityTypeList';
 import { BudgetSectorList } from './budget-sector-filter/BudgetSectorFilter';
@@ -26,6 +26,9 @@ import { PeriodFilter } from './period-filter/PeriodFilter';
 import { getPeriodTags } from '@/lib/period-utils';
 import { ReportPeriodInput } from '@/schemas/reporting';
 import { OptionItem } from './base-filter/interfaces';
+import { usePersistedState } from '@/lib/hooks/usePersistedState';
+
+type CurrencyCode = 'RON' | 'EUR';
 
 export function MapFilter() {
     const {
@@ -57,6 +60,16 @@ export function MapFilter() {
         setReportType,
         setIsUat,
     } = useMapFilter();
+    const [currency] = usePersistedState<CurrencyCode>('user-currency', 'RON');
+
+    useEffect(() => {
+        const { normalization } = mapState.filters;
+        if (currency === 'EUR' && normalization !== 'total_euro' && normalization !== 'per_capita_euro') {
+            setNormalization('total_euro');
+        } else if (currency === 'RON' && normalization !== 'total' && normalization !== 'per_capita') {
+            setNormalization('total');
+        }
+    }, [currency, mapState.filters.normalization, setNormalization]);
 
     const handleRemovePeriodTag = (tagToRemove: OptionItem) => {
         const report_period = mapState.filters.report_period as ReportPeriodInput | undefined;
@@ -169,7 +182,10 @@ export function MapFilter() {
                     <ViewTypeRadioGroup
                         value={selectedNormalizationOption}
                         onChange={(normalization) => setNormalization(normalization)}
-                        viewOptions={[
+                        viewOptions={currency === 'EUR' ? [
+                            { id: 'total_euro', label: t`Total` },
+                            { id: 'per_capita_euro', label: t`Per Capita` },
+                        ] : [
                             { id: 'total', label: t`Total` },
                             { id: 'per_capita', label: t`Per Capita` },
                         ]}
