@@ -4,6 +4,9 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { Label } from '@/components/ui/label'
 import { PeriodFilter } from '@/components/filters/period-filter/PeriodFilter'
 import type { ReportPeriodInput } from '@/schemas/reporting'
+import { usePersistedState } from '@/lib/hooks/usePersistedState'
+
+type CurrencyCode = 'RON' | 'EUR'
 
 type Props = {
   state: BudgetExplorerState
@@ -12,6 +15,7 @@ type Props = {
 
 export function BudgetExplorerHeader({ state, onChange }: Props) {
   const { filter, primary, depth } = state
+  const [currency] = usePersistedState<CurrencyCode>('user-currency', 'RON')
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -39,8 +43,8 @@ export function BudgetExplorerHeader({ state, onChange }: Props) {
             size="sm"
             className="w-full justify-between gap-2"
           >
-            <ToggleGroupItem value="total" className="flex-1 data-[state=on]:bg-foreground data-[state=on]:text-background"><Trans>Total</Trans></ToggleGroupItem>
-            <ToggleGroupItem value="per_capita" className="flex-1 data-[state=on]:bg-foreground data-[state=on]:text-background"><Trans>Per capita</Trans></ToggleGroupItem>
+            <ToggleGroupItem value={currency === 'EUR' ? 'total_euro' : 'total'} className="flex-1 data-[state=on]:bg-foreground data-[state=on]:text-background"><Trans>Total</Trans></ToggleGroupItem>
+            <ToggleGroupItem value={currency === 'EUR' ? 'per_capita_euro' : 'per_capita'} className="flex-1 data-[state=on]:bg-foreground data-[state=on]:text-background"><Trans>Per capita</Trans></ToggleGroupItem>
           </ToggleGroup>
           <Label className="text-xs text-muted-foreground"><Trans>Grouping</Trans></Label>
           <ToggleGroup

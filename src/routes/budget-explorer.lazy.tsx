@@ -24,6 +24,7 @@ import { getSeriesColor } from '@/components/charts/components/chart-renderer/ut
 import { getClassificationName } from '@/lib/classifications'
 import { getEconomicChapterName, getEconomicClassificationName, getEconomicSubchapterName } from '@/lib/economic-classifications'
 import { useIsMobile } from '@/hooks/use-mobile'
+import { usePersistedState } from '@/lib/hooks/usePersistedState'
 
 const CategoryListSkeleton = () => (
   <div className="space-y-5">
@@ -39,6 +40,8 @@ const CategoryListSkeleton = () => (
   </div>
 );
 
+type CurrencyCode = 'RON' | 'EUR'
+
 export const Route = createLazyFileRoute('/budget-explorer')({
   component: BudgetExplorerPage,
 })
@@ -53,7 +56,7 @@ const defaultFilter: AnalyticsFilterType = {
     selection: { dates: [String(new Date().getFullYear())] },
   },
   account_category: 'ch',
-  report_type: 'Executie bugetara agregata la nivel de ordonator principal'
+  report_type: 'Executie bugetara agregata la nivel de ordonator principal',
 }
 
 const SearchSchema = z.object({
@@ -133,6 +136,7 @@ function BudgetExplorerPage() {
   const navigate = useNavigate({ from: '/budget-explorer' })
   const search = SearchSchema.parse(raw)
   const isMobile = useIsMobile()
+  const [currency] = usePersistedState<CurrencyCode>('user-currency', 'RON')
 
   const { filter, primary, depth } = search
   const filterHash = generateHash(JSON.stringify(filter))
@@ -156,6 +160,14 @@ function BudgetExplorerPage() {
   const [drillPrimary, setDrillPrimary] = useState<'fn' | 'ec'>(primary)
   const [crossConstraint, setCrossConstraint] = useState<{ type: 'fn' | 'ec'; code: string } | null>(null)
   const [breadcrumbPath, setBreadcrumbPath] = useState<{ code: string; label: string }[]>([])
+
+  useEffect(() => {
+    if (currency === 'EUR' && filter.normalization !== 'total_euro' && filter.normalization !== 'per_capita_euro') {
+      handleFilterChange({ filter: { ...filter, normalization: 'total_euro' } })
+    } else if (currency === 'RON' && filter.normalization !== 'total' && filter.normalization !== 'per_capita') {
+      handleFilterChange({ filter: { ...filter, normalization: 'total' } })
+    }
+  }, [currency, filter.normalization])
 
   useEffect(() => {
     setDrillPrimary(primary)
