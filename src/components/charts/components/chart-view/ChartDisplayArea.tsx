@@ -6,7 +6,7 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Chart } from "@/schemas/charts";
 import { getChartTypeIcon } from "../../utils";
 import { ChartRenderer } from "../chart-renderer/components/ChartRenderer";
-import { AnnotationPositionChange } from "../chart-renderer/components/interfaces";
+import { AnnotationPositionChange, ChartMargins } from "../chart-renderer/components/interfaces";
 import { ChartTitle } from "../chart-renderer/components/ChartTitle";
 import { getYearRangeText } from "../chart-renderer/utils";
 import { DataPointPayload, DataSeriesMap, TimeSeriesDataPoint, UnitMap } from "../../hooks/useChartData";
@@ -27,6 +27,7 @@ interface ChartDisplayAreaProps {
   onAnnotationPositionChange: (pos: AnnotationPositionChange) => void;
   onXAxisClick?: (value: number | string) => void;
   isPreview?: boolean;
+  margins?: Partial<ChartMargins>;
   xAxisMarker?: number | string;
   height?: number;
 }
@@ -149,6 +150,7 @@ const ChartContent = React.memo(
     dataMap,
     unitMap,
     isPreview,
+    margins,
     onAnnotationPositionChange,
     onXAxisClick,
     xAxisMarker,
@@ -170,6 +172,7 @@ const ChartContent = React.memo(
         <ChartTitle title={chart.title} subtitle={aggregatedSubtitle} />
         <ChartRenderer
           isPreview={isPreview}
+          margins={margins}
           chart={chart}
           timeSeriesData={timeSeriesData}
           aggregatedData={aggregatedData}

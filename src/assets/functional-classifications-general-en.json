@@ -1774,6 +1774,10 @@
                         "code": "66.02"
                     },
                     {
+                        "description": "Pharmaceutical products, specific medical supplies and medical devices",
+                        "code": "66.03"
+                    },
+                    {
                         "description": "Outpatient medical services",
                         "code": "66.04"
                     },

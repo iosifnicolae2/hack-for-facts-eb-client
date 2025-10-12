@@ -17,7 +17,7 @@ type Props = {
   depth: 2 | 4 | 6
 }
 
-const CategoryColumn = ({ title, items, baseTotal }: { title: React.ReactNode, items: GroupedItem[], baseTotal: number }) => {
+const CategoryColumn = ({ title, items, baseTotal, codePrefix }: { title: React.ReactNode, items: GroupedItem[], baseTotal: number, codePrefix: 'fn' | 'ec' }) => {
     return (
         <div>
             <h4 className="text-lg font-semibold mb-4">{title}</h4>
@@ -27,7 +27,10 @@ const CategoryColumn = ({ title, items, baseTotal }: { title: React.ReactNode, i
                 return (
                     <li key={g.code}>
                     <div className="flex justify-between items-center mb-1">
-                        <span className="text-sm font-medium text-gray-900 dark:text-white truncate pr-4">{g.name}</span>
+                        <div className="flex items-baseline gap-2 truncate pr-4">
+                            <code className="text-xs font-mono text-muted-foreground">{codePrefix}:{g.code}</code>
+                            <span className="text-sm font-medium text-gray-900 dark:text-white truncate">{g.name}</span>
+                        </div>
                         <span className="text-sm font-medium text-gray-900 dark:text-white">{formatCurrency(g.total, 'compact', 'RON')} ({formatNumber(pct)}%)</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
@@ -51,8 +54,8 @@ export function BudgetCategoryList({ aggregated, depth }: Props) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-      <CategoryColumn title={<Trans>Top Functional Categories</Trans>} items={functional.items} baseTotal={functional.baseTotal} />
-      <CategoryColumn title={<Trans>Top Economic Categories</Trans>} items={economic.items} baseTotal={economic.baseTotal} />
+      <CategoryColumn title={<Trans>Top Functional Categories</Trans>} items={functional.items} baseTotal={functional.baseTotal} codePrefix="fn" />
+      <CategoryColumn title={<Trans>Top Economic Categories</Trans>} items={economic.items} baseTotal={economic.baseTotal} codePrefix="ec" />
     </div>
   )
 }

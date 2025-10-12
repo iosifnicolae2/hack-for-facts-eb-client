@@ -3,7 +3,7 @@
         "description": "TOTAL EXPENDITURES",
         "children": [
             {
-                "description": "TITLE I PERSONNEL EXPENSES",
+                "description": "Personnel expenses",
                 "code": "10",
                 "children": [
                     {
@@ -21,7 +21,7 @@
                 ]
             },
             {
-                "description": "TITLE II GOODS AND SERVICES",
+                "description": "Goods and services",
                 "code": "20",
                 "children": [
                     {
@@ -159,7 +159,7 @@
                 ]
             },
             {
-                "description": "TITLE III INTEREST",
+                "description": "Interest",
                 "code": "30",
                 "children": [
                     {
@@ -181,7 +181,7 @@
                 ]
             },
             {
-                "description": "TITLE IV SUBSIDIES",
+                "description": "Subsidies",
                 "code": "40",
                 "children": [
                     {
@@ -275,7 +275,7 @@
                 ]
             },
             {
-                "description": "TITLE V RESERVE FUNDS",
+                "description": "Reserve funds",
                 "code": "50",
                 "children": [
                     {
@@ -293,7 +293,7 @@
                 ]
             },
             {
-                "description": "TITLE VI TRANSFERS BETWEEN PUBLIC ADMINISTRATION UNITS",
+                "description": "Transfers between public administration units",
                 "code": "51",
                 "children": [
                     {
@@ -307,7 +307,7 @@
                 ]
             },
             {
-                "description": "TITLE VII OTHER TRANSFERS",
+                "description": "Other transfers",
                 "code": "55",
                 "children": [
                     {
@@ -329,7 +329,7 @@
                 ]
             },
             {
-                "description": "Title VIII PROJECTS WITH FINANCING FROM NON-REIMBURSABLE EXTERNAL FUNDS (FEN) POST-ACCESSION",
+                "description": "Projects with financing from non-reimbursable external funds (fen) post-accession",
                 "code": "56",
                 "children": [
                     {
@@ -651,7 +651,7 @@
                 ]
             },
             {
-                "description": "TITLE IX SOCIAL ASSISTANCE",
+                "description": "Social assistance",
                 "code": "57",
                 "children": [
                     {
@@ -689,7 +689,7 @@
                 ]
             },
             {
-                "description": "TITLE X PROJECTS WITH FINANCING FROM NON-REIMBURSABLE EXTERNAL FUNDS RELATED TO THE 2014-2020 FINANCIAL FRAMEWORK AND FROM THE MODERNIZATION FUND",
+                "description": "Projects with financing from non-reimbursable external funds related to the 2014-2020 financial framework and from the modernization fund",
                 "code": "58",
                 "children": [
                     {
@@ -859,7 +859,7 @@
                 ]
             },
             {
-                "description": "TITLE XI OTHER EXPENSES",
+                "description": "Other expenses",
                 "code": "59",
                 "children": [
                     {
@@ -1037,7 +1037,7 @@
                 ]
             },
             {
-                "description": "Title XII “Projects financed from the amounts representing the non-reimbursable financial assistance related to the NRRP”",
+                "description": "Projects financed from the amounts representing the non-reimbursable financial assistance related to the PNRR",
                 "code": "60",
                 "children": [
                     {
@@ -1053,35 +1053,35 @@
                         "code": "60.03"
                     },
                     {
-                        "description": "Transfers from the state budget to beneficiaries of public institutions financed partially or entirely from own revenues for the implementation of NRRP projects",
+                        "description": "Transfers from the state budget to beneficiaries of public institutions financed partially or entirely from own revenues for the implementation of PNRR projects",
                         "code": "60.04"
                     },
                     {
-                        "description": "Transfers from the state budget to local budgets to support projects related to the NRRP",
+                        "description": "Transfers from the state budget to local budgets to support projects related to the PNRR",
                         "code": "60.05"
                     },
                     {
-                        "description": "Transfers from the state budget to public enterprises and national research-development institutes to support projects related to the NRRP",
+                        "description": "Transfers from the state budget to public enterprises and national research-development institutes to support projects related to the PNRR",
                         "code": "60.06"
                     },
                     {
-                        "description": "Transfers from the state budget to the National Authority for Administration and Regulation in Communications to support projects related to the NRRP",
+                        "description": "Transfers from the state budget to the National Authority for Administration and Regulation in Communications to support projects related to the PNRR",
                         "code": "60.07"
                     },
                     {
-                        "description": "Transfers from the state budget to private law entities and to beneficiaries other than public institutions to support projects related to the NRRP",
+                        "description": "Transfers from the state budget to private law entities and to beneficiaries other than public institutions to support projects related to the PNRR",
                         "code": "60.08"
                     },
                     {
-                        "description": "Other expenses incurred by the implementation of the NRRP",
+                        "description": "Other expenses incurred by the implementation of the PNRR",
                         "code": "60.09"
                     },
                     {
-                        "description": "Transfers from the state budget to those responsible for implementing specific local investments for the implementation of NRRP projects",
+                        "description": "Transfers from the state budget to those responsible for implementing specific local investments for the implementation of PNRR projects",
                         "code": "60.10"
                     },
                     {
-                        "description": "Transfers from the budget of public institutions and activities financed entirely or partially from own revenues to private entities to support projects related to the NRRP",
+                        "description": "Transfers from the budget of public institutions and activities financed entirely or partially from own revenues to private entities to support projects related to the PNRR",
                         "code": "60.11"
                     },
                     {
@@ -1089,25 +1089,25 @@
                         "code": "60.12"
                     },
                     {
-                        "description": "Transfers from the implementing agencies to the beneficiaries of public institutions financed partially or entirely from own revenues for the implementation of NRRP projects",
+                        "description": "Transfers from the implementing agencies to the beneficiaries of public institutions financed partially or entirely from own revenues for the implementation of PNRR projects",
                         "code": "60.13"
                     },
                     {
-                        "description": "Transfers from the implementing agencies to local budgets to support NRRP projects",
+                        "description": "Transfers from the implementing agencies to local budgets to support PNRR projects",
                         "code": "60.14"
                     },
                     {
-                        "description": "Allocations from the state budget to entities that have the quality of investment implementation structures within the NRRP",
+                        "description": "Allocations from the state budget to entities that have the quality of investment implementation structures within the PNRR",
                         "code": "60.15"
                     },
                     {
-                        "description": "Decommitted amounts associated with milestones and targets in the NRRP",
+                        "description": "Decommitted amounts associated with milestones and targets in the PNRR",
                         "code": "60.16"
                     }
                 ]
             },
             {
-                "description": "Title XIII “Projects financed from the amounts related to the loan component of the NRRP”",
+                "description": "Projects financed from the amounts related to the loan component of the PNRR",
                 "code": "61",
                 "children": [
                     {
@@ -1123,31 +1123,31 @@
                         "code": "61.03"
                     },
                     {
-                        "description": "Transfers from the state budget to beneficiaries of public institutions financed partially or entirely from own revenues for the implementation of NRRP projects",
+                        "description": "Transfers from the state budget to beneficiaries of public institutions financed partially or entirely from own revenues for the implementation of PNRR projects",
                         "code": "61.04"
                     },
                     {
-                        "description": "Transfers from the state budget to local budgets to support projects related to the NRRP",
+                        "description": "Transfers from the state budget to local budgets to support projects related to the PNRR",
                         "code": "61.05"
                     },
                     {
-                        "description": "Transfers from the state budget to public enterprises and national research-development institutes to support projects related to the NRRP",
+                        "description": "Transfers from the state budget to public enterprises and national research-development institutes to support projects related to the PNRR",
                         "code": "61.06"
                     },
                     {
-                        "description": "Transfers from the state budget to the National Authority for Administration and Regulation in Communications to support projects related to the NRRP",
+                        "description": "Transfers from the state budget to the National Authority for Administration and Regulation in Communications to support projects related to the PNRR",
                         "code": "61.07"
                     },
                     {
-                        "description": "Transfers from the state budget to private law entities to support projects related to the NRRP",
+                        "description": "Transfers from the state budget to private law entities to support projects related to the PNRR",
                         "code": "61.08"
                     },
                     {
-                        "description": "Other expenses incurred by the implementation of the NRRP",
+                        "description": "Other expenses incurred by the implementation of the PNRR",
                         "code": "61.09"
                     },
                     {
-                        "description": "Transfers from the state budget to those responsible for implementing specific local investments for the implementation of NRRP projects",
+                        "description": "Transfers from the state budget to those responsible for implementing specific local investments for the implementation of PNRR projects",
                         "code": "61.10"
                     },
                     {
@@ -1159,21 +1159,21 @@
                         "code": "61.12"
                     },
                     {
-                        "description": "Transfers from the implementing agencies to the beneficiaries of public institutions financed partially or entirely from own revenues for the implementation of NRRP projects",
+                        "description": "Transfers from the implementing agencies to the beneficiaries of public institutions financed partially or entirely from own revenues for the implementation of PNRR projects",
                         "code": "61.13"
                     },
                     {
-                        "description": "Transfers from the implementing agencies to the beneficiaries of economic operators for the implementation of NRRP projects",
+                        "description": "Transfers from the implementing agencies to the beneficiaries of economic operators for the implementation of PNRR projects",
                         "code": "61.14"
                     },
                     {
-                        "description": "Transfers from the implementing agencies to local budgets to support NRRP projects",
+                        "description": "Transfers from the implementing agencies to local budgets to support PNRR projects",
                         "code": "61.15"
                     }
                 ]
             },
             {
-                "description": "TITLE XIV EXPENDITURES RELATED TO PROGRAMS WITH REIMBURSABLE FINANCING",
+                "description": "Expenditures related to programs with reimbursable financing",
                 "code": "65",
                 "children": [
                     {
@@ -1187,11 +1187,11 @@
                 ]
             },
             {
-                "description": "70. CAPITAL EXPENDITURES (70=71+72+75)",
+                "description": "70. capital expenditures (70=71+72+75)",
                 "code": "70"
             },
             {
-                "description": "TITLE XV NON-FINANCIAL ASSETS (71.01+71.02)",
+                "description": "Non-financial assets (71.01+71.02)",
                 "code": "71",
                 "children": [
                     {
@@ -1209,7 +1209,7 @@
                 ]
             },
             {
-                "description": "TITLE XVI FINANCIAL ASSETS",
+                "description": "Financial assets",
                 "code": "72",
                 "children": [
                     {
@@ -1219,15 +1219,15 @@
                 ]
             },
             {
-                "description": "TITLE XVII NATIONAL DEVELOPMENT FUND",
+                "description": "National development fund",
                 "code": "75"
             },
             {
-                "description": "79. FINANCIAL OPERATIONS (79=80+81)",
+                "description": "79. financial operations (79=80+81)",
                 "code": "79"
             },
             {
-                "description": "TITLE XVIII LOANS",
+                "description": "Loans",
                 "code": "80",
                 "children": [
                     {
@@ -1289,7 +1289,7 @@
                 ]
             },
             {
-                "description": "TITLE XIX LOAN REPAYMENTS",
+                "description": "Loan repayments",
                 "code": "81",
                 "children": [
                     {
@@ -1315,7 +1315,7 @@
                 ]
             },
             {
-                "description": "TITLE XX Operations pending clarification",
+                "description": "Operations pending clarification",
                 "code": "82",
                 "children": [
                     {
@@ -1325,7 +1325,7 @@
                 ]
             },
             {
-                "description": "Title XXI Payments made in previous years and recovered in the current year",
+                "description": "Payments made in previous years and recovered in the current year",
                 "code": "85",
                 "children": [
                     {
@@ -1335,7 +1335,7 @@
                 ]
             },
             {
-                "description": "TITLE XXII RESERVES, SURPLUS/DEFICIT",
+                "description": "Reserves, surplus/deficit",
                 "code": "90",
                 "children": [
                     {

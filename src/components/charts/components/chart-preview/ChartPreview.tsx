@@ -6,6 +6,7 @@ import { convertToTimeSeriesData, convertToAggregatedData, useChartData, SeriesI
 import { ChartDisplayArea } from "../chart-view/ChartDisplayArea";
 import { ChartPreviewSkeleton } from "@/components/charts/components/chart-list/ChartPreviewSkeleton";
 import { cn } from "@/lib/utils";
+import { ChartMargins } from "../chart-renderer/components/interfaces";
 
 interface ChartPreviewProps {
     chart: Chart;
@@ -13,11 +14,12 @@ interface ChartPreviewProps {
     height?: number;
     onClick?: () => void;
     customizeChart?: (draft: Chart) => void;
+    margins?: Partial<ChartMargins>;
 }
 
-export function ChartPreview({ chart, className, height, onClick, customizeChart }: ChartPreviewProps) {
+export function ChartPreview({ chart, className, height, onClick, customizeChart, margins }: ChartPreviewProps) {
     const { ref, inView } = useInView({
-        triggerOnce: true,
+        triggerOnce: false,
         threshold: 0.1,
         rootMargin: '50px 0px',
     });
@@ -29,9 +31,6 @@ export function ChartPreview({ chart, className, height, onClick, customizeChart
             draft.config.showGridLines = false;
             draft.config.showAnnotations = false;
             draft.config.showDiffControl = false;
-            draft.series.forEach(series => {
-                series.config.showDataLabels = false;
-            });
             customizeChart?.(draft);
         });
     }, [chart, customizeChart]);
@@ -43,7 +42,7 @@ export function ChartPreview({ chart, className, height, onClick, customizeChart
 
 
     const data = useMemo(() => {
-        if (!dataSeriesMap) {
+        if (!inView || !dataSeriesMap) {
             return { timeSeriesData: [], aggregatedData: [], unitMap: new Map<SeriesId, Unit>(), dataMap: null };
         }
 
@@ -55,13 +54,13 @@ export function ChartPreview({ chart, className, height, onClick, customizeChart
             const { data: aggregatedData, unitMap } = convertToAggregatedData(dataSeriesMap, chart);
             return { timeSeriesData: [], aggregatedData, unitMap, dataMap: dataSeriesMap };
         }
-    }, [chart, dataSeriesMap]);
-
-    const showSkeleton = !inView || isLoadingData || !data.dataMap;
+    }, [inView, chart, dataSeriesMap]);
 
     return (
         <div ref={ref} className={cn("w-full", className)} onClick={onClick}>
-            {showSkeleton ? (
+            {!inView ? (
+                <div style={height ? { height } : undefined} />
+            ) : isLoadingData || !data.dataMap ? (
                 <ChartPreviewSkeleton />
             ) : (
                 <ChartDisplayArea
@@ -73,6 +72,13 @@ export function ChartPreview({ chart, className, height, onClick, customizeChart
                     onAddSeries={() => { }}
                     onAnnotationPositionChange={() => { }}
                     height={height}
+                    margins={{
+                        top: 10,
+                        right: 0,
+                        bottom: 0,
+                        left: 0,
+                        ...margins,
+                    }}
                 />
             )}
         </div>

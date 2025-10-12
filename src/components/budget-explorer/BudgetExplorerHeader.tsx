@@ -2,18 +2,15 @@ import { Trans } from '@lingui/react/macro'
 import type { BudgetExplorerState } from '@/routes/budget-explorer.lazy'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
 import { PeriodFilter } from '@/components/filters/period-filter/PeriodFilter'
 import type { ReportPeriodInput } from '@/schemas/reporting'
 
 type Props = {
   state: BudgetExplorerState
   onChange: (partial: Partial<BudgetExplorerState>) => void
-  onClearDrill?: () => void
-  hasDrill?: boolean
 }
 
-export function BudgetExplorerHeader({ state, onChange, onClearDrill, hasDrill }: Props) {
+export function BudgetExplorerHeader({ state, onChange }: Props) {
   const { filter, primary, depth } = state
 
   return (
@@ -70,12 +67,6 @@ export function BudgetExplorerHeader({ state, onChange, onClearDrill, hasDrill }
             <ToggleGroupItem value="main" className="flex-1 data-[state=on]:bg-foreground data-[state=on]:text-background"><Trans>Main chapters</Trans></ToggleGroupItem>
             <ToggleGroupItem value="detail" className="flex-1 data-[state=on]:bg-foreground data-[state=on]:text-background"><Trans>Detailed categories</Trans></ToggleGroupItem>
           </ToggleGroup>
-
-          {hasDrill && (
-            <Button variant="ghost" size="sm" onClick={onClearDrill} className="self-start">
-              <Trans>Go back</Trans>
-            </Button>
-          )}
         </div>
       </div>
 

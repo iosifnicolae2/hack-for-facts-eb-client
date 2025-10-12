@@ -1,15 +1,11 @@
-import { ResponsiveContainer, Tooltip, Treemap } from 'recharts'
-import { yValueFormatter } from '@/components/charts/components/chart-renderer/utils'
-import { TreemapInput } from './budget-transform'
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
-import { Fragment } from 'react'
+import { Fragment, type FC, useMemo } from 'react'
+import { ResponsiveContainer, Treemap, Tooltip } from 'recharts'
 import { Trans } from '@lingui/react/macro'
 
-type Props = {
-  data: TreemapInput[]
-  onNodeClick?: (code: string | null) => void
-  path?: { code: string; label: string }[]
-}
+import { yValueFormatter } from '@/components/charts/components/chart-renderer/utils'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
+import { Button } from '@/components/ui/button'
+import type { TreemapInput } from './budget-transform'
 
 const COLORS = [
   '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d',
@@ -17,43 +13,65 @@ const COLORS = [
   '#8E24AA', '#5E35B1', '#3949AB', '#1E88E5', '#039BE5', '#00ACC1',
   '#00897B', '#43A047', '#7CB342', '#C0CA33', '#FDD835', '#FFB300',
   '#FB8C00', '#F4511E',
-];
+]
 
-const getColor = (code: string) => {
-  let hash = 0;
-  if (code.length === 0) return COLORS[0];
-  for (let i = 0; i < code.length; i++) {
-    const char = code.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32bit integer
+const getColor = (key: string) => {
+  let hash = 0
+  if (key.length === 0) return COLORS[0]
+  for (let index = 0; index < key.length; index += 1) {
+    const char = key.charCodeAt(index)
+    hash = ((hash << 5) - hash) + char
+    hash &= hash
   }
-  return COLORS[Math.abs(hash) % COLORS.length];
-};
+  return COLORS[Math.abs(hash) % COLORS.length]
+}
 
+type BreadcrumbEntry = { code: string; label: string }
 
-const CustomizedContent: React.FC<any> = (props) => {
-  const { depth, x, y, width, height, name, value, root } = props;
+type Props = {
+  data: TreemapInput[]
+  primary: 'fn' | 'ec'
+  onNodeClick?: (code: string | null) => void
+  onBreadcrumbClick?: (code: string | null, index?: number) => void
+  path?: BreadcrumbEntry[]
+  onViewDetails?: () => void
+  onBackToMain?: () => void
+  showViewDetails?: boolean
+  showBackToMain?: boolean
+}
 
-  if (isNaN(value)) {
-    return null;
+const CustomizedContent: FC<{
+  name: string
+  value: number
+  depth: number
+  x: number
+  y: number
+  width: number
+  height: number
+  fill: string
+  root: { value: number }
+}> = (props) => {
+  const { name, value, depth, x, y, width, height, fill, root } = props
+
+  if (!Number.isFinite(value)) {
+    return null
   }
 
-  const displayValue = yValueFormatter(value, 'RON', 'compact');
-  const total = root?.value || 0;
-  const pct = total > 0 ? (value / total) * 100 : 0;
-  const textColor = '#FFFFFF';
+  const total = root?.value ?? 0
+  const percentage = total > 0 ? (value / total) * 100 : 0
+  const displayValue = yValueFormatter(value, 'RON', 'compact')
 
-  const nameFontSize = 12;
-  const valueFontSize = 10;
-  const pctFontSize = 10;
+  const baseColor = '#FFFFFF'
+  const nameFontSize = 12
+  const valueFontSize = 10
+  const percentageFontSize = 10
 
-  const canShowName = width > 50 && height > 20;
-  const canShowValue = canShowName && height > 35;
-  const canShowPct = canShowName && height > 50;
+  const canShowName = width > 50 && height > 24
+  const canShowValue = canShowName && height > 40
+  const canShowPercentage = canShowName && height > 56
 
-  const maxChars = Math.floor(width / (nameFontSize * 0.55));
-  const truncatedName = name.length > maxChars ? name.slice(0, maxChars - 1) + '…' : name;
-
+  const maxChars = Math.max(Math.floor(width / (nameFontSize * 0.55)), 0)
+  const truncatedName = maxChars > 0 && name.length > maxChars ? `${name.slice(0, maxChars - 1)}…` : name
 
   return (
     <g>
@@ -63,9 +81,9 @@ const CustomizedContent: React.FC<any> = (props) => {
         width={width}
         height={height}
         style={{
-          fill: props.fill,
+          fill,
           stroke: '#fff',
-          strokeWidth: 2 / (depth + 1e-10),
+          strokeWidth: 2 / (depth + 1e-5),
           strokeOpacity: 0.5,
         }}
       />
@@ -75,7 +93,7 @@ const CustomizedContent: React.FC<any> = (props) => {
           y={canShowValue ? y + height / 2 - valueFontSize / 2 : y + height / 2}
           textAnchor="middle"
           dominantBaseline="middle"
-          fill={textColor}
+          fill={baseColor}
           fontSize={nameFontSize}
           fontWeight={500}
           style={{ pointerEvents: 'none' }}
@@ -86,83 +104,164 @@ const CustomizedContent: React.FC<any> = (props) => {
       {canShowValue && (
         <text
           x={x + width / 2}
-          y={y + height / 2 + nameFontSize / 2 + 3}
+          y={y + height / 2 + nameFontSize / 2 + 4}
           textAnchor="middle"
           dominantBaseline="middle"
-          fill={textColor}
+          fill={baseColor}
           fontSize={valueFontSize}
           fillOpacity={0.9}
         >
           {displayValue}
         </text>
       )}
-      {canShowPct && (
+      {canShowPercentage && (
         <text
           x={x + width / 2}
-          y={y + height / 2 + nameFontSize / 2 + valueFontSize + 5}
+          y={y + height / 2 + nameFontSize / 2 + valueFontSize + 8}
           textAnchor="middle"
           dominantBaseline="middle"
-          fill={textColor}
-          fontSize={pctFontSize}
-          fillOpacity={0.9}
+          fill={baseColor}
+          fontSize={percentageFontSize}
+          fillOpacity={0.85}
         >
-          {`${pct.toFixed(1)}%`}
+          {`${percentage.toFixed(1)}%`}
         </text>
       )}
     </g>
-  );
-};
+  )
+}
 
-export function BudgetTreemap({ data, onNodeClick, path }: Props) {
-  const payloadData = data.map((n) => ({
-    name: n.name,
-    value: n.value,
-    code: n.code,
-    fill: getColor(n.code),
-  }))
+export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, path = [], onViewDetails, onBackToMain, showViewDetails = false, showBackToMain = false }: Props) {
+  const payloadData = useMemo(() => {
+    return data.map((node) => ({
+      name: node.name,
+      value: node.value,
+      code: node.code,
+      fill: getColor(`${primary}-${node.code}`),
+    }))
+  }, [data, primary])
+
+  const handleNodeClick = (event: unknown) => {
+    const target = event as { code?: string; payload?: { code?: string } }
+    const code = target?.code ?? target?.payload?.code ?? null
+    onNodeClick?.(code ?? null)
+  }
 
   return (
-    <div className="w-full h-[420px] space-y-4">
-      {path && path.length > 0 && (
+    <div className="w-full h-[420px] space-y-1">
+      <div className="flex items-center justify-between gap-2">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink onClick={() => onNodeClick?.(null)} className="cursor-pointer">
+              <BreadcrumbLink onClick={() => onBreadcrumbClick?.(null)} className="cursor-pointer">
                 <Trans>Main Categories</Trans>
               </BreadcrumbLink>
             </BreadcrumbItem>
-            {path.map((item) => (
-              <Fragment key={item.code}>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbLink
-                    onClick={() => onNodeClick?.(item.code)}
-                    className="cursor-pointer"
-                  >
-                    {item.label ?? item.code}
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-              </Fragment>
-            ))}
+            {path.map((item, index) => {
+              const key = `${item.code}-${item.label}`
+              const isClickable = !!item.code && /^[0-9.]+$/.test(item.code)
+
+              return (
+                <Fragment key={key}>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbLink
+                      onClick={() => {
+                        if (!isClickable) return
+                        onBreadcrumbClick?.(item.code, index)
+                      }}
+                      className={isClickable ? 'cursor-pointer' : 'cursor-default'}
+                    >
+                      {item.label ?? item.code}
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                </Fragment>
+              )
+            })}
           </BreadcrumbList>
         </Breadcrumb>
+
+        <div className="flex gap-2 flex-shrink-0">
+          {showViewDetails && (
+            <Button variant="outline" size="sm" onClick={onViewDetails}>
+              <Trans>View Details</Trans>
+            </Button>
+          )}
+          {showBackToMain && (
+            <Button variant="outline" size="sm" onClick={onBackToMain}>
+              <Trans>Back to main view</Trans>
+            </Button>
+          )}
+        </div>
+      </div>
+
+      {payloadData.length === 0 ? (
+        <div className="flex h-full items-center justify-center rounded-md border border-dashed border-muted-foreground/40 p-6">
+          <p className="text-sm text-muted-foreground text-center">
+            <Trans>No data available for the current selection.</Trans>
+          </p>
+        </div>
+      ) : (
+        <ResponsiveContainer width="100%" height="100%">
+          <Treemap
+            data={payloadData}
+            dataKey="value"
+            nameKey="name"
+            animationDuration={300}
+            onClick={handleNodeClick}
+            content={(props) => <CustomizedContent
+              fill={props.fill}
+              root={{
+                value: 0
+              }}
+              {...props}
+            />}
+          >
+            <Tooltip
+              content={<CustomTooltip total={payloadData.reduce((acc, curr) => acc + curr.value, 0)} primary={primary} />}
+            />
+          </Treemap>
+        </ResponsiveContainer>
       )}
-      <ResponsiveContainer width="100%" height="100%">
-        <Treemap
-          data={payloadData}
-          dataKey="value"
-          nameKey="name"
-          animationDuration={300}
-          onClick={(e) => onNodeClick?.((e as any)?.code)}
-          content={(props) => <CustomizedContent {...props} />}
-        >
-          <Tooltip
-            formatter={(value: number) => yValueFormatter(value, 'RON', 'compact')}
-          />
-        </Treemap>
-      </ResponsiveContainer>
     </div>
   )
 }
 
+const CustomTooltip = ({ active, payload, total, primary }: { active?: boolean, payload?: any[], total: number, primary: 'fn' | 'ec' }) => {
+  if (active && payload && payload.length) {
+    const data = payload[0].payload;
+    const value = payload[0].value;
+    const percentage = total > 0 ? (value / total) * 100 : 0;
 
+    return (
+      <div className="bg-background/80 backdrop-blur-sm border border-border/50 rounded-lg shadow-lg p-3 text-sm min-w-[250px] select-none">
+        <div className="flex items-center gap-3 mb-2">
+          <span
+            className="inline-block w-3 h-3 rounded-full flex-shrink-0"
+            style={{ backgroundColor: data.fill }}
+          />
+          <div>
+            <p className="font-semibold text-foreground truncate">{data.name}</p>
+            <p className="text-muted-foreground text-xs">{primary}:{data.code}</p>
+          </div>
+        </div>
+        <hr className="my-2 border-border/30" />
+        <div className="space-y-1.5">
+          <div className="flex justify-between items-center gap-4">
+            <span className="text-muted-foreground text-xs">Amount:</span>
+            <div className="flex flex-col items-end">
+              <span className="font-mono font-semibold text-sm">{yValueFormatter(value, 'RON', 'compact')}</span>
+              <span className="font-mono text-xs text-muted-foreground">{yValueFormatter(value, 'RON', 'standard')}</span>
+            </div>
+          </div>
+          <div className="flex justify-between items-center gap-4">
+            <span className="text-muted-foreground text-xs">Share:</span>
+            <span className="font-mono font-semibold text-sm">{percentage.toFixed(2)}%</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
+};

@@ -1774,6 +1774,10 @@
                         "code": "66.02"
                     },
                     {
+                        "description": "Produse farmaceutice, materiale sanitare specifice și dispozitive medicale",
+                        "code": "66.03"
+                    },
+                    {
                         "description": "Servicii medicale în ambulator",
                         "code": "66.04"
                     },

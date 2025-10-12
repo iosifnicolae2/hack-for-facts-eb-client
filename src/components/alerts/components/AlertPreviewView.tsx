@@ -41,6 +41,12 @@ export function AlertPreviewView() {
             chart={chartState.chart}
             height={420}
             className="pl-8 pr-4"
+            margins={{
+              top: 20,
+              right: 0,
+              bottom: 0,
+              left: 50,
+            }}
             customizeChart={(draft) => {
               draft.config.showTooltip = true;
               draft.config.showLegend = true;

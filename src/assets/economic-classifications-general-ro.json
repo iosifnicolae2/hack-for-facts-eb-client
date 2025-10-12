@@ -3,7 +3,7 @@
         "description": "TOTAL CHELTUIELI",
         "children": [
             {
-                "description": "TITLUL I  CHELTUIELI DE PERSONAL",
+                "description": "Cheltuieli de personal",
                 "code": "10",
                 "children": [
                     {
@@ -21,7 +21,7 @@
                 ]
             },
             {
-                "description": "TITLUL II  BUNURI SI SERVICII",
+                "description": "Bunuri si servicii",
                 "code": "20",
                 "children": [
                     {
@@ -159,7 +159,7 @@
                 ]
             },
             {
-                "description": "TITLUL III DOBANZI",
+                "description": "Dobanzi",
                 "code": "30",
                 "children": [
                     {
@@ -181,7 +181,7 @@
                 ]
             },
             {
-                "description": "TITLUL IV SUBVENTII",
+                "description": "Subventii",
                 "code": "40",
                 "children": [
                     {
@@ -275,7 +275,7 @@
                 ]
             },
             {
-                "description": "TITLUL V FONDURI DE REZERVA",
+                "description": "Fonduri de rezerva",
                 "code": "50",
                 "children": [
                     {
@@ -293,7 +293,7 @@
                 ]
             },
             {
-                "description": "TITLUL VI TRANSFERURI INTRE UNITATI ALE ADMINISTRATIEI PUBLICE",
+                "description": "Transferuri intre unitati ale administratiei publice",
                 "code": "51",
                 "children": [
                     {
@@ -307,7 +307,7 @@
                 ]
             },
             {
-                "description": "TITLUL VII ALTE TRANSFERURI",
+                "description": "Alte transferuri",
                 "code": "55",
                 "children": [
                     {
@@ -329,7 +329,7 @@
                 ]
             },
             {
-                "description": "Titlul VIII PROIECTE CU FINANTARE DIN FONDURI EXTERNE NERAMBURSABILE (FEN) POSTADERARE",
+                "description": "Proiecte cu finantare din fonduri externe nerambursabile (fen) postaderare",
                 "code": "56",
                 "children": [
                     {
@@ -651,7 +651,7 @@
                 ]
             },
             {
-                "description": "TITLUL IX  ASISTENTA SOCIALA",
+                "description": "Asistenta sociala",
                 "code": "57",
                 "children": [
                     {
@@ -689,7 +689,7 @@
                 ]
             },
             {
-                "description": "TITLUL X PROIECTE CU FINANTARE DIN FONDURI EXTERNE NERAMBURSABILE AFERENTE CADRULUI FINANCIAR 2014-2020 ȘI DIN FONDUL DE MODERNIZARE",
+                "description": "Proiecte cu finantare din fonduri externe nerambursabile aferente cadrului financiar 2014-2020 și din fondul de modernizare",
                 "code": "58",
                 "children": [
                     {
@@ -859,7 +859,7 @@
                 ]
             },
             {
-                "description": "TITLUL XI ALTE CHELTUIELI",
+                "description": "Alte cheltuieli",
                 "code": "59",
                 "children": [
                     {
@@ -1037,7 +1037,7 @@
                 ]
             },
             {
-                "description": "Titlul XII „Proiecte cu finanțare din sumele reprezentând asistența financiară nerambursabilă aferentă PNRR”",
+                "description": "Proiecte cu finanțare din sumele reprezentând asistența financiară nerambursabilă aferentă PNRR",
                 "code": "60",
                 "children": [
                     {
@@ -1107,7 +1107,7 @@
                 ]
             },
             {
-                "description": "Titlul XIII „Proiecte cu finanțare din sumele aferente componentei de împrumut a PNRR”",
+                "description": "Proiecte cu finanțare din sumele aferente componentei de împrumut a PNRR",
                 "code": "61",
                 "children": [
                     {
@@ -1173,7 +1173,7 @@
                 ]
             },
             {
-                "description": "TITLUL XIV CHELTUIELI AFERENTE PROGRAMELOR CU FINANTARE RAMBURSABILA",
+                "description": "Cheltuieli aferente programelor cu finantare rambursabila",
                 "code": "65",
                 "children": [
                     {
@@ -1187,11 +1187,11 @@
                 ]
             },
             {
-                "description": "70.  CHELTUIELI DE CAPITAL (70=71+72+75)",
+                "description": "70.  cheltuieli de capital (70=71+72+75)",
                 "code": "70"
             },
             {
-                "description": "TITLUL XV ACTIVE NEFINANCIARE (71.01+71.02)",
+                "description": "Active nefinanciare (71.01+71.02)",
                 "code": "71",
                 "children": [
                     {
@@ -1209,7 +1209,7 @@
                 ]
             },
             {
-                "description": "TITLUL XVI ACTIVE FINANCIARE",
+                "description": "Active financiare",
                 "code": "72",
                 "children": [
                     {
@@ -1219,15 +1219,15 @@
                 ]
             },
             {
-                "description": "TITLUL XVII FONDUL NATIONAL DE DEZVOLTARE",
+                "description": "Fondul national de dezvoltare",
                 "code": "75"
             },
             {
-                "description": "79.  OPERATIUNI FINANCIARE (79=80+81)",
+                "description": "79.  operatiuni financiare (79=80+81)",
                 "code": "79"
             },
             {
-                "description": "TITLUL XVIII ÎMPRUMUTURI",
+                "description": "Împrumuturi",
                 "code": "80",
                 "children": [
                     {
@@ -1289,7 +1289,7 @@
                 ]
             },
             {
-                "description": "TITLUL XIX RAMBURSARI DE CREDITE",
+                "description": "Rambursari de credite",
                 "code": "81",
                 "children": [
                     {
@@ -1315,7 +1315,7 @@
                 ]
             },
             {
-                "description": "TITLUL XX Operaţiuni în curs de clarificare",
+                "description": "Operaţiuni în curs de clarificare",
                 "code": "82",
                 "children": [
                     {
@@ -1325,7 +1325,7 @@
                 ]
             },
             {
-                "description": "Titlul XXI Plăţi efectuate în anii precedenţi şi recuperate în anul curent",
+                "description": "Plăţi efectuate în anii precedenţi şi recuperate în anul curent",
                 "code": "85",
                 "children": [
                     {
@@ -1335,7 +1335,7 @@
                 ]
             },
             {
-                "description": "TITLUL XXII REZERVE, EXCEDENT/DEFICIT",
+                "description": "Rezerve, excedent/deficit",
                 "code": "90",
                 "children": [
                     {

@@ -146,6 +146,12 @@ export function AlertCard({
               draft.config.showTooltip = true;
               draft.config.showGridLines = true;
             }}
+            margins={{
+              top: 10,
+              right: 0,
+              bottom: 0,
+              left: 50,
+            }}
           />
         </button>
       </div>

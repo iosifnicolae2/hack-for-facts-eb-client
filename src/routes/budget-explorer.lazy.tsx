@@ -16,7 +16,7 @@ import { BudgetTreemap } from '@/components/budget-explorer/BudgetTreemap'
 import { BudgetCategoryList } from '@/components/budget-explorer/BudgetCategoryList'
 import { BudgetDetailsDrawer } from '@/components/budget-explorer/BudgetDetailsDrawer'
 import { BudgetLineItemsPreview } from '@/components/budget-explorer/BudgetLineItemsPreview'
-import { buildTreemapData, AggregatedNode } from '@/components/budget-explorer/budget-transform'
+import { buildTreemapDataV2 } from '@/components/budget-explorer/budget-transform'
 import { ChartPreview } from '@/components/charts/components/chart-preview/ChartPreview'
 import { Chart, ChartSchema, SeriesConfigurationSchema } from '@/schemas/charts'
 import { BarChart2 } from 'lucide-react'
@@ -65,10 +65,6 @@ const SearchSchema = z.object({
 
 export type BudgetExplorerState = z.infer<typeof SearchSchema>
 
-type DepthKey = BudgetExplorerState['depth']
-
-type DrillPath = { code: string; label: string }[]
-
 const ministries = [
   { name: 'MINISTERUL MUNCII SI SOLIDARITATII SOCIALE', cui: '4266669' },
   { name: 'MINISTERUL EDUCATIEI', cui: '13729380' },
@@ -92,15 +88,7 @@ const ministries = [
 ]
 
 const functionalMainChapters = ['68', '66', '65', '84', '51', '61', '70', '83', '60', '74', '55', '67'] as const
-const economicMainChapters = [
-  { code: '10', name: 'Taxa pe valoarea adaugata' },
-  { code: '20', name: 'Contributii de asigurari' },
-  { code: '30', name: 'Venituri din proprietate' },
-  { code: '55', name: 'Tranzactii privind datoria publica si imprumuturi' },
-  { code: '56', name: 'Transferuri cu caracter general intre diferite nivele ale administratiei' },
-  { code: '57', name: 'Cheltuieli de personal' },
-  { code: '61', name: 'Ordine publica si siguranta nationala' },
-] as const
+const economicMainChapters = [57, 10, 20, 51, 30, 55, 56, 61] as const
 
 const normalizeCode = (code?: string | null) => code?.replace(/[^0-9.]/g, '') ?? ''
 
@@ -161,80 +149,103 @@ function BudgetExplorerPage() {
     refetchOnWindowFocus: false,
   })
 
-  const [path, setPath] = useState<DrillPath>([])
+  const [path, setPath] = useState<string[]>([])
   const [drawerCode, setDrawerCode] = useState<string | null>(null)
   const [drillPrimary, setDrillPrimary] = useState<'fn' | 'ec'>(primary)
   const [crossConstraint, setCrossConstraint] = useState<{ type: 'fn' | 'ec'; code: string } | null>(null)
+  const [breadcrumbPath, setBreadcrumbPath] = useState<{ code: string; label: string }[]>([])
 
-  // Reset drill state when primary changes from URL
   useEffect(() => {
     setDrillPrimary(primary)
     setPath([])
     setCrossConstraint(null)
+    setBreadcrumbPath([])
   }, [primary])
 
-  const nodes = (data?.nodes ?? []) as AggregatedNode[]
-
-  const depthMap: Record<DepthKey, 2 | 4 | 6> = { main: 2, detail: 4 }
-
-  const baseDepth = depthMap[depth]
-  const currentDrillCode = path.length > 0 ? path[path.length - 1].code : null
-  const drillDepth = (currentDrillCode ? Math.min(baseDepth + 2, 6) : baseDepth) as 2 | 4 | 6
-
-  // When showing economic breakdown of a functional category, filter nodes
-  const displayNodes = useMemo(() => {
-    if (!crossConstraint) return nodes
-    const normalizedFilter = normalizeCode(crossConstraint.code)
-    if (!normalizedFilter) return nodes
-    if (crossConstraint.type === 'fn') {
-      return nodes.filter((n) => normalizeCode(n.fn_c).startsWith(normalizedFilter))
+  const appendBreadcrumb = (type: 'fn' | 'ec', code: string) => {
+    const normalized = normalizeCode(code)
+    const depth = normalized.split('.').length
+    // Prefer API-provided names for 6-digit (depth=3) codes
+    let label: string | undefined
+    if (depth >= 3) {
+      const match = nodes.find((n) => normalizeCode(type === 'fn' ? n.fn_c : n.ec_c) === normalized)
+      const apiName = type === 'fn' ? match?.fn_n : match?.ec_n
+      if (apiName && apiName.trim()) {
+        label = apiName
+      }
     }
-    return nodes.filter((n) => normalizeCode(n.ec_c).startsWith(normalizedFilter))
-  }, [nodes, crossConstraint])
+    if (!label) {
+      label = buildPathLabel(type, code)
+    }
+    const last = breadcrumbPath[breadcrumbPath.length - 1]
+    if (last && last.code === code && last.label === label) return
+    setBreadcrumbPath((prev) => [...prev, { code, label }])
+  }
+
+  const nodes = data?.nodes ?? []
 
   const treemap = useMemo(() => {
-    const isCrossPivot = !!crossConstraint
-    return buildTreemapData(displayNodes, {
+    const rootDepth: 2 | 4 | 6 = depth === 'detail' ? 4 : 2
+    return buildTreemapDataV2({
+      data: nodes,
       primary: drillPrimary,
-      depth: drillDepth,
-      drillPrefix: isCrossPivot ? undefined : currentDrillCode ?? undefined,
+      path,
       constraint: crossConstraint ?? undefined,
+      rootDepth,
     })
-  }, [displayNodes, drillPrimary, drillDepth, currentDrillCode, crossConstraint])
+  }, [nodes, drillPrimary, path, crossConstraint, depth])
 
   const ministryChart: Chart = useMemo(() => {
-    const series = ministries.map((ministry, index) => SeriesConfigurationSchema.parse({
-      type: 'line-items-aggregated-yearly',
-      label: ministry.name,
-      filter: {
+    const series = ministries.map((ministry, index) => {
+      const seriesFilter = {
         ...filter,
         entity_cuis: [ministry.cui],
         report_type: 'Executie bugetara agregata la nivel de ordonator principal',
-      },
-      config: {
-        color: getSeriesColor(index),
       }
-    }));
+      const seriesId = generateHash(JSON.stringify(seriesFilter))
 
+      return SeriesConfigurationSchema.parse({
+        id: seriesId,
+        type: 'line-items-aggregated-yearly',
+        label: ministry.name,
+        filter: seriesFilter,
+        config: {
+          color: getSeriesColor(index),
+        },
+      })
+    })
+
+    const chartId = generateHash(JSON.stringify({ title: 'Ministry Spending Comparison', filter }))
     return ChartSchema.parse({
+      id: chartId,
       title: 'Ministry Spending Comparison',
       config: {
         chartType: 'treemap-aggr',
         showTooltip: true,
       },
       series,
-    });
-  }, [filter]);
+    })
+  }, [filter])
 
   const functionalChart: Chart = useMemo(() => {
-    const series = functionalMainChapters.map((code, index) => SeriesConfigurationSchema.parse({
-      type: 'line-items-aggregated-yearly',
-      label: getClassificationName(code) ?? `FN ${code}`,
-      filter: buildSeriesFilter(filter, { functional_prefixes: [code] }),
-      config: { color: getSeriesColor(index) },
-    }))
+    const series = functionalMainChapters.map((code, index) => {
+      const seriesFilter = buildSeriesFilter(filter, { functional_prefixes: [code] })
+      const seriesId = generateHash(JSON.stringify(seriesFilter))
+      return SeriesConfigurationSchema.parse({
+        id: seriesId,
+        type: 'line-items-aggregated-yearly',
+        label: getClassificationName(code) ?? `fn:${code}`,
+        filter: seriesFilter,
+        config: {
+          color: getSeriesColor(index),
+          showDataLabels: index === 0,
+        },
+      })
+    })
 
+    const chartId = generateHash(JSON.stringify({ title: 'Functional Categories Comparison', filter }))
     return ChartSchema.parse({
+      id: chartId,
       title: 'Functional Categories Comparison',
       config: {
         chartType: 'area',
@@ -246,14 +257,24 @@ function BudgetExplorerPage() {
   }, [filter])
 
   const economicChart: Chart = useMemo(() => {
-    const series = economicMainChapters.map((item, index) => SeriesConfigurationSchema.parse({
-      type: 'line-items-aggregated-yearly',
-      label: item.name,
-      filter: buildSeriesFilter(filter, { economic_prefixes: [item.code] }),
-      config: { color: getSeriesColor(index) },
-    }))
+    const series = economicMainChapters.map((ecCode, index) => {
+      const seriesFilter = buildSeriesFilter(filter, { economic_prefixes: [ecCode.toString()] })
+      const seriesId = generateHash(JSON.stringify(seriesFilter))
+      return SeriesConfigurationSchema.parse({
+        id: seriesId,
+        type: 'line-items-aggregated-yearly',
+        label: getEconomicChapterName(ecCode.toString()) ?? ecCode.toString(),
+        filter: seriesFilter,
+        config: {
+          color: getSeriesColor(index),
+          showDataLabels: index === 0,
+        },
+      })
+    })
 
+    const chartId = generateHash(JSON.stringify({ title: 'Economic Categories Comparison', filter }))
     return ChartSchema.parse({
+      id: chartId,
       title: 'Economic Categories Comparison',
       config: {
         chartType: 'area',
@@ -277,80 +298,85 @@ function BudgetExplorerPage() {
     setDrawerCode(null)
     setDrillPrimary(partial.primary ?? primary)
     setCrossConstraint(null)
+    setBreadcrumbPath([])
   }
 
-  // kept for potential future checks; current flow relies on code depth instead
-
   const handleNodeClick = (code: string | null) => {
-    // Reset to root
-    if (!code) {
-      clearDrill()
+    // If we've already completed both primary flows up to 6-digit, ignore further clicks
+    const totalSixDigitSteps = breadcrumbPath.reduce((acc, item) => acc + (item.code && item.code.split('.').length === 3 ? 1 : 0), 0)
+    if (totalSixDigitSteps >= 2) {
       return
     }
 
-    const normalized = normalizeCode(code)
-    const segments = normalized ? normalized.split('.').length : 0
-    const selectedDepth = (segments * 2) as 2 | 4 | 6
-
-    const isPivotStage = !!crossConstraint
-
-    // Pivot rules
-    if (!isPivotStage) {
-      if (drillPrimary === 'fn') {
-        if (selectedDepth === 2) {
-          // Drill within functional to subchapter
-          setDrawerCode(null)
-          setPath((prev) => {
-            const existingIndex = prev.findIndex((item) => normalizeCode(item.code) === normalized)
-            if (existingIndex >= 0) return prev.slice(0, existingIndex + 1)
-            return [...prev, { code, label: buildPathLabel('fn', code) }]
-          })
-          return
-        }
-        if (selectedDepth === 4) {
-          // Pivot to economic breakdown constrained by this functional code
-          setCrossConstraint({ type: 'fn', code })
-          setDrillPrimary('ec')
-          setPath((prev) => [...prev, { code: 'economic', label: 'Economic breakdown' }])
-          setDrawerCode(null)
-          return
-        }
-      } else {
-        // drillPrimary === 'ec'
-        if (selectedDepth === 2) {
-          // Drill within economic to subchapter
-          setDrawerCode(null)
-          setPath((prev) => {
-            const existingIndex = prev.findIndex((item) => normalizeCode(item.code) === normalized)
-            if (existingIndex >= 0) return prev.slice(0, existingIndex + 1)
-            return [...prev, { code, label: buildPathLabel('ec', code) }]
-          })
-          return
-        }
-        if (selectedDepth === 4) {
-          // Pivot to functional breakdown constrained by this economic code
-          setCrossConstraint({ type: 'ec', code })
-          setDrillPrimary('fn')
-          setPath((prev) => [...prev, { code: 'functional', label: 'Functional breakdown' }])
-          setDrawerCode(null)
-          return
-        }
-      }
-    } else {
-      // In pivot stage: allow a single deeper drill within current primary; then open details
-      if (selectedDepth === 2) {
-        setDrawerCode(null)
-        setPath((prev) => {
-          const existingIndex = prev.findIndex((item) => normalizeCode(item.code) === normalized)
-          if (existingIndex >= 0) return prev.slice(0, existingIndex + 1)
-          return [...prev, { code, label: buildPathLabel(drillPrimary, code) }]
-        })
-        return
-      }
+    // Reset to root
+    if (!code) {
+      setPath([])
+      setCrossConstraint(null)
+      setDrillPrimary(primary)
+      setBreadcrumbPath([])
+      return
     }
 
-    // Leaf node - open details drawer
-    setDrawerCode(code)
+    const normalizedCode = normalizeCode(code)
+
+    // Ignore clicks that would not advance (duplicate of last step)
+    const lastPathCode = path[path.length - 1]
+    if (lastPathCode && lastPathCode === normalizedCode) return
+
+    const selectedDepth = normalizedCode ? normalizedCode.split('.').length : 0 // 1->2d, 2->4d, 3->6d
+
+    const hasNextInCurrent = (nextPath: string[]) => {
+      const next = buildTreemapDataV2({
+        data: nodes,
+        primary: drillPrimary,
+        path: nextPath,
+        constraint: crossConstraint ?? undefined,
+      })
+      return next.length > 0
+    }
+
+    // If we are already pivoting, keep drilling within current primary
+    if (crossConstraint) {
+      // In pivot stage: allow drill down within current primary up to 6-digits
+      if (selectedDepth < 3) {
+        const nextPath = [...path, normalizedCode]
+        if (!hasNextInCurrent(nextPath)) return
+        appendBreadcrumb(drillPrimary, normalizedCode)
+        setPath(nextPath)
+        return
+      }
+      // At 6-digit on second primary: append breadcrumb once and stop advancing drill path
+      appendBreadcrumb(drillPrimary, normalizedCode)
+      return
+    }
+
+    // Not in pivot stage yet: drill 2->4->6 within the same primary; pivot only at 6
+    if (selectedDepth < 3) {
+      setDrawerCode(null)
+      const nextPath = [...path, normalizedCode]
+      if (!hasNextInCurrent(nextPath)) return
+      appendBreadcrumb(drillPrimary, normalizedCode)
+      setPath(nextPath)
+      return
+    }
+
+    // Pivot at 6-digit to the opposite primary constrained by this code
+    // First, record the final step in the first primary
+    appendBreadcrumb(drillPrimary, normalizedCode)
+    const opposite = drillPrimary === 'fn' ? 'ec' : 'fn'
+    const oppositeRoot = buildTreemapDataV2({
+      data: nodes,
+      primary: opposite,
+      path: [],
+      constraint: { type: drillPrimary, code: normalizedCode },
+      rootDepth: 2,
+    })
+    if (oppositeRoot.length > 0) {
+      setCrossConstraint({ type: drillPrimary, code: normalizedCode })
+      setDrillPrimary(opposite)
+      setPath([]) // start fresh for the opposite primary levels (2 -> 4 -> 6)
+      setDrawerCode(null)
+    }
   }
 
   const clearDrill = () => {
@@ -358,43 +384,95 @@ function BudgetExplorerPage() {
     setDrawerCode(null)
     setDrillPrimary(primary)
     setCrossConstraint(null)
+    setBreadcrumbPath([])
   }
 
-  const currentDepthNumeric = depthMap[depth]
+  const currentDrillCode = path.length > 0 ? path[path.length - 1] : null
+
+  const currentDepthNumeric = useMemo(() => (depth === 'detail' ? 4 : 2) as 2 | 4 | 6, [depth])
 
   return (
     <div className="flex flex-col gap-4 p-4">
       <BudgetExplorerHeader
         state={search}
         onChange={handleFilterChange}
-        onClearDrill={clearDrill}
-        hasDrill={path.length > 0}
       />
 
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-4">
         <Card className="xl:col-span-12 shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between">
+          <CardHeader className="pb-0">
             <h3 className="text-lg font-semibold"><Trans>How is the money distributed?</Trans></h3>
-            <div className="flex gap-2">
-              {currentDrillCode && !crossConstraint && (
-                <Button variant="outline" size="sm" onClick={() => setDrawerCode(currentDrillCode)}>
-                  <Trans>View Details</Trans>
-                </Button>
-              )}
-              {path.length > 0 && (
-                <Button variant="outline" size="sm" onClick={clearDrill}>
-                  <Trans>Back to main view</Trans>
-                </Button>
-              )}
-            </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-0 pb-12">
             {isLoading ? (
               <Skeleton className="w-full h-[420px]" />
             ) : error ? (
               <p className="text-sm text-red-500"><Trans>Failed to load data.</Trans></p>
             ) : (
-              <BudgetTreemap data={treemap} onNodeClick={handleNodeClick} path={path} />
+              <BudgetTreemap
+                data={treemap}
+                onNodeClick={handleNodeClick}
+                onBreadcrumbClick={(code, index) => {
+                  // Back to root when clicking main
+                  if (!code) {
+                    clearDrill()
+                    return
+                  }
+
+                  const normalized = normalizeCode(code)
+                  const clickedIndex = typeof index === 'number' ? index : breadcrumbPath.findIndex((c) => c.code === normalized)
+                  const clickedDepth = normalized.split('.').length
+
+                  if (!crossConstraint) {
+                    // Pre-pivot: trim current path and breadcrumbs
+                    const idxInPath = path.indexOf(normalized)
+                    let newPath = idxInPath !== -1 ? path.slice(0, idxInPath + 1) : [normalized]
+                    // Avoid ending at 6-digit (would show no data); go to parent
+                    if (clickedDepth >= 3) {
+                      newPath = idxInPath > 0 ? path.slice(0, idxInPath) : [normalized.split('.').slice(0, 2).join('.')]
+                    }
+                    setPath(newPath)
+                    if (clickedIndex !== -1) setBreadcrumbPath(breadcrumbPath.slice(0, clickedDepth >= 3 ? clickedIndex : clickedIndex + 1))
+                    setDrillPrimary(primary)
+                    return
+                  }
+
+                  // With pivot: split by the 6-digit code used for pivot
+                  const pivotCode = normalizeCode(crossConstraint.code)
+                  const pivotIndex = breadcrumbPath.findIndex((c) => c.code === pivotCode)
+
+                  if (pivotIndex === -1 || clickedIndex <= pivotIndex) {
+                    // Move back into first primary (pre-pivot)
+                    let newPathCodes = breadcrumbPath.slice(0, clickedIndex + 1).map((c) => normalizeCode(c.code))
+                    // If clicked the 6-digit pivot itself, step to its parent instead
+                    if (clickedIndex === pivotIndex || clickedDepth >= 3) {
+                      newPathCodes = breadcrumbPath.slice(0, Math.max(pivotIndex, clickedIndex)).map((c) => normalizeCode(c.code))
+                    }
+                    setPath(newPathCodes)
+                    setDrillPrimary(crossConstraint.type)
+                    setCrossConstraint(null)
+                    setBreadcrumbPath(breadcrumbPath.slice(0, clickedIndex === pivotIndex || clickedDepth >= 3 ? Math.max(pivotIndex, clickedIndex) : clickedIndex + 1))
+                    return
+                  }
+
+                  // Move within second primary (post-pivot)
+                  let secondPath = breadcrumbPath.slice(pivotIndex + 1, clickedIndex + 1).map((c) => normalizeCode(c.code))
+                  // Avoid ending at 6-digit; go one level up within second primary
+                  if (clickedDepth >= 3) {
+                    secondPath = breadcrumbPath.slice(pivotIndex + 1, clickedIndex).map((c) => normalizeCode(c.code))
+                  }
+                  setPath(secondPath)
+                  setBreadcrumbPath(breadcrumbPath.slice(0, clickedDepth >= 3 ? clickedIndex : clickedIndex + 1))
+                }}
+                path={breadcrumbPath}
+                primary={drillPrimary}
+                onViewDetails={() => setDrawerCode(currentDrillCode)}
+                onBackToMain={() => {
+                  clearDrill()
+                }}
+                showViewDetails={!!currentDrillCode && !crossConstraint}
+                showBackToMain={true}
+              />
             )}
           </CardContent>
         </Card>
@@ -416,7 +494,9 @@ function BudgetExplorerPage() {
                 <CategoryListSkeleton />
                 <CategoryListSkeleton />
               </div>
-            ) : <BudgetCategoryList aggregated={nodes} depth={currentDepthNumeric} />}
+            ) : (
+              <BudgetCategoryList aggregated={nodes as any} depth={currentDepthNumeric} />
+            )}
           </CardContent>
         </Card>
 
@@ -433,7 +513,7 @@ function BudgetExplorerPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <ChartPreview chart={functionalChart} height={400} />
+            <ChartPreview chart={functionalChart} height={400} margins={{ left: 50 }} />
           </CardContent>
         </Card>
 
@@ -450,7 +530,7 @@ function BudgetExplorerPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <ChartPreview chart={economicChart} height={400} />
+            <ChartPreview chart={economicChart} height={400} margins={{ left: 50 }} />
           </CardContent>
         </Card>
 

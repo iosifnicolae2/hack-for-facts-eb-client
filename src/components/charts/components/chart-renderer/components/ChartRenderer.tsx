@@ -25,7 +25,7 @@ export interface ChartRendererProps {
   onAnnotationPositionChange: (pos: AnnotationPositionChange) => void;
 }
 
-export function ChartRenderer({ chart, dataMap, unitMap, aggregatedData, timeSeriesData, className, height = 400, isPreview, onAnnotationPositionChange, xAxisMarker, onXAxisClick }: ChartRendererProps) {
+export function ChartRenderer({ chart, dataMap, unitMap, aggregatedData, timeSeriesData, className, height = 400, isPreview, margins, onAnnotationPositionChange, xAxisMarker, onXAxisClick }: ChartRendererProps) {
 
   if (chart.series.filter(s => s.enabled).length === 0) {
     return (
@@ -45,7 +45,6 @@ export function ChartRenderer({ chart, dataMap, unitMap, aggregatedData, timeSer
   }
 
   const isAggregated = chart.config.chartType.endsWith('-aggr');
-  const chartMargins = isPreview ? { top: 10, right: 0, bottom: 0, left: 0 } : undefined;
   const sankeyMargins = isPreview ? { left: 120, bottom: 50, right: 10 } : { left: 240, bottom: 30, right: 50 };
 
   const data = {
@@ -56,7 +55,7 @@ export function ChartRenderer({ chart, dataMap, unitMap, aggregatedData, timeSer
     timeSeriesData,
     xAxisMarker,
     onXAxisClick,
-    margins: chartMargins,
+    margins,
   }
 
 

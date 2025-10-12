@@ -8,6 +8,7 @@ import type { GroupedChapter } from '@/schemas/financial'
 import { Trans } from '@lingui/react/macro'
 import type { AnalyticsFilterType } from '@/schemas/charts'
 import { useFinancialData, MinimalExecutionLineItem } from '@/hooks/useFinancialData'
+import { getClassificationName } from '@/lib/classifications'
 
 export type DrillGroup = GroupedChapter
 
@@ -61,7 +62,32 @@ export function BudgetDetailsDrawer({ open, onOpenChange, code, primary, nodes, 
 
   const grouped = filter.account_category === 'vn' ? filteredIncomeGroups : filteredExpenseGroups
   const totalAmount = filter.account_category === 'vn' ? incomeBase : expenseBase
-  const title = code ? `${primary === 'fn' ? 'Functional' : 'Economic'} ${code}` : ''
+  const title = useMemo(() => {
+    if (!code) return ''
+    const cleaned = normalize(code)
+    const parts = cleaned.split('.')
+    const isSixDigit = parts.length >= 3
+    const isFourDigit = parts.length === 2
+    // Prefer API names for 6-digit codes from filtered items
+    if (isSixDigit) {
+      const anyItem = filteredItems.find((li) => {
+        const fn = normalize(li.functionalClassification?.functional_code)
+        const ec = normalize(li.economicClassification?.economic_code)
+        return primary === 'fn' ? fn === cleaned : ec === cleaned
+      })
+      const apiName = primary === 'fn' ? anyItem?.functionalClassification?.functional_name : anyItem?.economicClassification?.economic_name
+      if (apiName && apiName.trim()) {
+        return apiName
+      }
+    }
+    // For 4-digit, ensure we show functional subchapter name (not chapter)
+    if (isFourDigit && primary === 'fn') {
+      const subchapterName = getClassificationName(cleaned)
+      if (subchapterName && subchapterName.trim()) return subchapterName
+    }
+    // Fallback
+    return `${primary === 'fn' ? 'Functional' : 'Economic'} ${code}`
+  }, [code, filteredItems, primary])
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -75,7 +101,7 @@ export function BudgetDetailsDrawer({ open, onOpenChange, code, primary, nodes, 
               <Trans>No detailed data available for this selection.</Trans>
             </p>
           ) : (
-            <Accordion type="multiple" className="w-full">
+            <Accordion type="multiple" defaultValue={grouped.map((g) => g.prefix)} className="w-full">
               {grouped.map((chapter) => (
                 <GroupedChapterAccordion
                   key={chapter.prefix}
