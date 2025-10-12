@@ -2,7 +2,7 @@ import { createLazyFileRoute, useNavigate, useSearch, Link } from '@tanstack/rea
 import { useQuery } from '@tanstack/react-query'
 import { z } from 'zod'
 import { Trans } from '@lingui/react/macro'
-import { useMemo, useState, useCallback, useEffect } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 
 import { AnalyticsFilterSchema, AnalyticsFilterType } from '@/schemas/charts'
 import { convertDaysToMs, generateHash } from '@/lib/utils'
@@ -22,6 +22,7 @@ import { Chart, ChartSchema, SeriesConfigurationSchema } from '@/schemas/charts'
 import { BarChart2 } from 'lucide-react'
 import { getSeriesColor } from '@/components/charts/components/chart-renderer/utils';
 import { getClassificationName } from '@/lib/classifications'
+import { getEconomicChapterName, getEconomicClassificationName, getEconomicSubchapterName } from '@/lib/economic-classifications'
 
 const CategoryListSkeleton = () => (
   <div className="space-y-5">
@@ -118,9 +119,24 @@ function buildSeriesFilter(base: AnalyticsFilterType, overrides: Partial<Analyti
 
 function buildPathLabel(primary: 'fn' | 'ec', code: string) {
   const normalized = normalizeCode(code)
-  const name = getClassificationName(normalized)
-  if (name) return name
-  return `${primary === 'fn' ? 'FN' : 'EC'} ${normalized}`
+  if (primary === 'fn') {
+    const fnName = getClassificationName(normalized)
+    if (fnName) return fnName
+    return `FN ${normalized}`
+  }
+  // economic label resolution by depth
+  const parts = normalized.split('.')
+  if (parts.length === 1) {
+    const ecName = getEconomicChapterName(normalized)
+    if (ecName) return ecName
+  } else if (parts.length === 2) {
+    const ecName = getEconomicSubchapterName(normalized)
+    if (ecName) return ecName
+  } else {
+    const ecName = getEconomicClassificationName(normalized)
+    if (ecName) return ecName
+  }
+  return `EC ${normalized}`
 }
 
 function BudgetExplorerPage() {
@@ -148,13 +164,13 @@ function BudgetExplorerPage() {
   const [path, setPath] = useState<DrillPath>([])
   const [drawerCode, setDrawerCode] = useState<string | null>(null)
   const [drillPrimary, setDrillPrimary] = useState<'fn' | 'ec'>(primary)
-  const [functionalFilterCode, setFunctionalFilterCode] = useState<string | null>(null)
+  const [crossConstraint, setCrossConstraint] = useState<{ type: 'fn' | 'ec'; code: string } | null>(null)
 
   // Reset drill state when primary changes from URL
   useEffect(() => {
     setDrillPrimary(primary)
     setPath([])
-    setFunctionalFilterCode(null)
+    setCrossConstraint(null)
   }, [primary])
 
   const nodes = (data?.nodes ?? []) as AggregatedNode[]
@@ -167,24 +183,24 @@ function BudgetExplorerPage() {
 
   // When showing economic breakdown of a functional category, filter nodes
   const displayNodes = useMemo(() => {
-    const isEconomicBreakdown = drillPrimary === 'ec' && functionalFilterCode
-    if (!isEconomicBreakdown) return nodes
-
-    const normalizedFnFilter = normalizeCode(functionalFilterCode)
-    return nodes.filter(node =>
-      normalizeCode(node.fn_c).startsWith(normalizedFnFilter)
-    )
-  }, [nodes, drillPrimary, functionalFilterCode])
+    if (!crossConstraint) return nodes
+    const normalizedFilter = normalizeCode(crossConstraint.code)
+    if (!normalizedFilter) return nodes
+    if (crossConstraint.type === 'fn') {
+      return nodes.filter((n) => normalizeCode(n.fn_c).startsWith(normalizedFilter))
+    }
+    return nodes.filter((n) => normalizeCode(n.ec_c).startsWith(normalizedFilter))
+  }, [nodes, crossConstraint])
 
   const treemap = useMemo(() => {
-    const isEconomicBreakdown = drillPrimary === 'ec' && functionalFilterCode
+    const isCrossPivot = !!crossConstraint
     return buildTreemapData(displayNodes, {
       primary: drillPrimary,
       depth: drillDepth,
-      // Don't apply drill prefix in economic breakdown mode
-      drillPrefix: isEconomicBreakdown ? undefined : currentDrillCode ?? undefined,
+      drillPrefix: isCrossPivot ? undefined : currentDrillCode ?? undefined,
+      constraint: crossConstraint ?? undefined,
     })
-  }, [displayNodes, drillPrimary, drillDepth, currentDrillCode, functionalFilterCode])
+  }, [displayNodes, drillPrimary, drillDepth, currentDrillCode, crossConstraint])
 
   const ministryChart: Chart = useMemo(() => {
     const series = ministries.map((ministry, index) => SeriesConfigurationSchema.parse({
@@ -260,18 +276,10 @@ function BudgetExplorerPage() {
     setPath([])
     setDrawerCode(null)
     setDrillPrimary(partial.primary ?? primary)
-    setFunctionalFilterCode(null)
+    setCrossConstraint(null)
   }
 
-  const hasChildren = useCallback((code: string, checkPrimary: 'fn' | 'ec') => {
-    const normalizedSelected = normalizeCode(code)
-    if (!normalizedSelected) return false
-    return nodes.some((node) => {
-      const candidate = normalizeCode(checkPrimary === 'fn' ? node.fn_c : node.ec_c)
-      if (!candidate || !candidate.startsWith(normalizedSelected)) return false
-      return candidate.length > normalizedSelected.length
-    })
-  }, [nodes])
+  // kept for potential future checks; current flow relies on code depth instead
 
   const handleNodeClick = (code: string | null) => {
     // Reset to root
@@ -280,39 +288,76 @@ function BudgetExplorerPage() {
       return
     }
 
-    const canDrillDown = hasChildren(code, drillPrimary)
-    const isInFunctionalView = drillPrimary === 'fn' && primary === 'fn'
-    const notYetInEconomicBreakdown = !functionalFilterCode
+    const normalized = normalizeCode(code)
+    const segments = normalized ? normalized.split('.').length : 0
+    const selectedDepth = (segments * 2) as 2 | 4 | 6
 
-    if (canDrillDown) {
-      // Drill down into children
-      setDrawerCode(null)
-      setPath((prev) => {
-        const normalized = normalizeCode(code)
-        const existingIndex = prev.findIndex((item) => normalizeCode(item.code) === normalized)
-        // If clicking an item in path, go back to that level
-        if (existingIndex >= 0) {
-          return prev.slice(0, existingIndex + 1)
+    const isPivotStage = !!crossConstraint
+
+    // Pivot rules
+    if (!isPivotStage) {
+      if (drillPrimary === 'fn') {
+        if (selectedDepth === 2) {
+          // Drill within functional to subchapter
+          setDrawerCode(null)
+          setPath((prev) => {
+            const existingIndex = prev.findIndex((item) => normalizeCode(item.code) === normalized)
+            if (existingIndex >= 0) return prev.slice(0, existingIndex + 1)
+            return [...prev, { code, label: buildPathLabel('fn', code) }]
+          })
+          return
         }
-        // Otherwise add to path
-        return [...prev, { code, label: buildPathLabel(drillPrimary, code) }]
-      })
-    } else if (isInFunctionalView && notYetInEconomicBreakdown) {
-      // Switch to economic breakdown for this functional category
-      setFunctionalFilterCode(code)
-      setDrillPrimary('ec')
-      setPath((prev) => [...prev, { code: 'economic', label: 'Economic breakdown' }])
+        if (selectedDepth === 4) {
+          // Pivot to economic breakdown constrained by this functional code
+          setCrossConstraint({ type: 'fn', code })
+          setDrillPrimary('ec')
+          setPath((prev) => [...prev, { code: 'economic', label: 'Economic breakdown' }])
+          setDrawerCode(null)
+          return
+        }
+      } else {
+        // drillPrimary === 'ec'
+        if (selectedDepth === 2) {
+          // Drill within economic to subchapter
+          setDrawerCode(null)
+          setPath((prev) => {
+            const existingIndex = prev.findIndex((item) => normalizeCode(item.code) === normalized)
+            if (existingIndex >= 0) return prev.slice(0, existingIndex + 1)
+            return [...prev, { code, label: buildPathLabel('ec', code) }]
+          })
+          return
+        }
+        if (selectedDepth === 4) {
+          // Pivot to functional breakdown constrained by this economic code
+          setCrossConstraint({ type: 'ec', code })
+          setDrillPrimary('fn')
+          setPath((prev) => [...prev, { code: 'functional', label: 'Functional breakdown' }])
+          setDrawerCode(null)
+          return
+        }
+      }
     } else {
-      // Leaf node - open details drawer
-      setDrawerCode(code)
+      // In pivot stage: allow a single deeper drill within current primary; then open details
+      if (selectedDepth === 2) {
+        setDrawerCode(null)
+        setPath((prev) => {
+          const existingIndex = prev.findIndex((item) => normalizeCode(item.code) === normalized)
+          if (existingIndex >= 0) return prev.slice(0, existingIndex + 1)
+          return [...prev, { code, label: buildPathLabel(drillPrimary, code) }]
+        })
+        return
+      }
     }
+
+    // Leaf node - open details drawer
+    setDrawerCode(code)
   }
 
   const clearDrill = () => {
     setPath([])
     setDrawerCode(null)
     setDrillPrimary(primary)
-    setFunctionalFilterCode(null)
+    setCrossConstraint(null)
   }
 
   const currentDepthNumeric = depthMap[depth]
@@ -331,7 +376,7 @@ function BudgetExplorerPage() {
           <CardHeader className="flex flex-row items-center justify-between">
             <h3 className="text-lg font-semibold"><Trans>How is the money distributed?</Trans></h3>
             <div className="flex gap-2">
-              {currentDrillCode && !functionalFilterCode && (
+              {currentDrillCode && !crossConstraint && (
                 <Button variant="outline" size="sm" onClick={() => setDrawerCode(currentDrillCode)}>
                   <Trans>View Details</Trans>
                 </Button>
@@ -430,6 +475,7 @@ function BudgetExplorerPage() {
           <CardContent className="pt-6">
             <BudgetLineItemsPreview
               data={data}
+              groupBy={drillPrimary}
               isLoading={isLoading}
               filter={filter}
             />
@@ -441,8 +487,9 @@ function BudgetExplorerPage() {
         open={!!drawerCode}
         onOpenChange={(open) => { if (!open) setDrawerCode(null) }}
         code={drawerCode}
-        primary={primary}
+        primary={drillPrimary}
         nodes={nodes}
+        filter={filter}
       />
     </div>
   )

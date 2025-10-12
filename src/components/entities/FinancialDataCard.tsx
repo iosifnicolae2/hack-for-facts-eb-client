@@ -26,10 +26,11 @@ interface GroupedItemsDisplayProps {
   month?: TMonth;
   quarter?: TQuarter;
   normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
+  subchapterCodePrefix?: 'fn' | 'ec';
 }
 
 export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.memo(
-  ({ groups, title, baseTotal, searchTerm, currentYear, showTotalValueHeader = false, month, quarter, normalization }) => {
+  ({ groups, title, baseTotal, searchTerm, currentYear, showTotalValueHeader = false, month, quarter, normalization, subchapterCodePrefix = 'fn' }) => {
 
     const dateLabel = getYearLabel(currentYear, month, quarter);
 
@@ -104,6 +105,7 @@ export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.mem
             baseTotal={baseTotal}
             searchTerm={searchTerm}
             normalization={normalization}
+            codePrefixForSubchapters={subchapterCodePrefix}
           />
         ))}
         <TotalValueComponent />

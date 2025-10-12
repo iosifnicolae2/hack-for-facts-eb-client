@@ -25,11 +25,9 @@ export function ChartPreview({ chart, className, height, onClick, customizeChart
     const previewChart: Chart = useMemo(() => {
         // Using produce is great here for an immutable update.
         return produce(chart, (draft: Chart) => {
-            draft.config.showLegend = false;
             draft.config.showDataLabels = false;
             draft.config.showGridLines = false;
             draft.config.showAnnotations = false;
-            draft.config.showTooltip = false;
             draft.config.showDiffControl = false;
             draft.series.forEach(series => {
                 series.config.showDataLabels = false;

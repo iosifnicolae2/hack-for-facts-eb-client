@@ -4,7 +4,10 @@ import { Accordion } from '@/components/ui/accordion'
 import type { AggregatedNode } from './budget-transform'
 import GroupedChapterAccordion from '@/components/entities/GroupedChapterAccordion'
 import type { GroupedChapter } from '@/schemas/financial'
+// Labels are handled by the grouping hook; keep imports minimal
 import { Trans } from '@lingui/react/macro'
+import type { AnalyticsFilterType } from '@/schemas/charts'
+import { useFinancialData, MinimalExecutionLineItem } from '@/hooks/useFinancialData'
 
 export type DrillGroup = GroupedChapter
 
@@ -14,108 +17,50 @@ type Props = {
   code: string | null
   primary: 'fn' | 'ec'
   nodes: AggregatedNode[]
+  filter: AnalyticsFilterType
 }
 
 const normalize = (value?: string | null) => value?.replace(/[^0-9.]/g, '') ?? ''
 
-const buildGroupedChapters = (items: AggregatedNode[], primary: 'fn' | 'ec', selectedCode: string): GroupedChapter[] => {
-  const normalizedSelected = normalize(selectedCode)
-  if (!normalizedSelected) return []
-  const chapterMap = new Map<string, GroupedChapter>()
+// helper removed; no longer needed
 
-  for (const item of items) {
-    const fnCode = normalize(item.fn_c)
-    const ecCode = normalize(item.ec_c)
-    const fnName = item.fn_n ?? fnCode
-    const ecName = item.ec_n ?? ecCode
+// We reuse the consolidated grouping logic from useFinancialData by filtering
+// the line items to the selected group and then delegating to the hook.
 
-    if (primary === 'fn') {
-      if (!fnCode.startsWith(normalizedSelected)) continue
-      const chapterKey = fnCode.split('.')[0] ?? fnCode
-      if (!chapterMap.has(chapterKey)) {
-        chapterMap.set(chapterKey, {
-          prefix: chapterKey,
-          description: fnName,
-          totalAmount: 0,
-          functionals: [],
-          subchapters: [],
-        })
-      }
-      const chapter = chapterMap.get(chapterKey)!
-      chapter.totalAmount += item.amount ?? 0
+export function BudgetDetailsDrawer({ open, onOpenChange, code, primary, nodes, filter }: Props) {
+  const items: MinimalExecutionLineItem[] = useMemo(() => {
+    return nodes.map((n) => ({
+      account_category: filter.account_category,
+      amount: n.amount ?? 0,
+      economicClassification: { economic_code: n.ec_c ?? '', economic_name: n.ec_n ?? '' },
+      functionalClassification: { functional_code: n.fn_c ?? '', functional_name: n.fn_n ?? '' },
+    }))
+  }, [nodes, filter.account_category])
 
-      const functionalEntry = chapter.functionals.find((f) => f.code === fnCode)
-      if (functionalEntry) {
-        functionalEntry.totalAmount += item.amount ?? 0
-        functionalEntry.economics.push({
-          code: ecCode,
-          name: ecName,
-          amount: item.amount ?? 0,
-        })
-      } else {
-        chapter.functionals.push({
-          code: fnCode,
-          name: fnName,
-          totalAmount: item.amount ?? 0,
-          economics: [
-            {
-              code: ecCode,
-              name: ecName,
-              amount: item.amount ?? 0,
-            },
-          ],
-        })
-      }
-    } else {
-      if (!ecCode.startsWith(normalizedSelected)) continue
-      const chapterKey = ecCode.split('.')[0] ?? ecCode
-      if (!chapterMap.has(chapterKey)) {
-        chapterMap.set(chapterKey, {
-          prefix: chapterKey,
-          description: ecName,
-          totalAmount: 0,
-          functionals: [],
-          subchapters: [],
-        })
-      }
-      const chapter = chapterMap.get(chapterKey)!
-      chapter.totalAmount += item.amount ?? 0
+  const filteredItems = useMemo(() => {
+    if (!code) return [] as MinimalExecutionLineItem[]
+    const selected = normalize(code)
+    if (!selected) return [] as MinimalExecutionLineItem[]
+    return items.filter((li) => {
+      const fn = normalize(li.functionalClassification?.functional_code)
+      const ec = normalize(li.economicClassification?.economic_code)
+      return primary === 'fn' ? fn.startsWith(selected) : ec.startsWith(selected)
+    })
+  }, [items, code, primary])
 
-      const economicEntry = chapter.functionals.find((f) => f.code === ecCode)
-      if (economicEntry) {
-        economicEntry.totalAmount += item.amount ?? 0
-        economicEntry.economics.push({
-          code: fnCode,
-          name: fnName,
-          amount: item.amount ?? 0,
-        })
-      } else {
-        chapter.functionals.push({
-          code: ecCode,
-          name: ecName,
-          totalAmount: item.amount ?? 0,
-          economics: [
-            {
-              code: fnCode,
-              name: fnName,
-              amount: item.amount ?? 0,
-            },
-          ],
-        })
-      }
-    }
-  }
+  const total = useMemo(() => filteredItems.reduce((s, it) => s + (it.amount || 0), 0), [filteredItems])
 
-  return Array.from(chapterMap.values()).sort((a, b) => b.totalAmount - a.totalAmount)
-}
+  const { filteredExpenseGroups, expenseBase, filteredIncomeGroups, incomeBase } = useFinancialData(
+    filteredItems,
+    filter.account_category === 'vn' ? total : null,
+    filter.account_category === 'ch' ? total : null,
+    '',
+    '',
+    { computeEconomic: false },
+  )
 
-export function BudgetDetailsDrawer({ open, onOpenChange, code, primary, nodes }: Props) {
-  const grouped = useMemo(() => {
-    if (!code) return []
-    return buildGroupedChapters(nodes, primary, code)
-  }, [code, nodes, primary])
-
-  const totalAmount = grouped.reduce((sum, chapter) => sum + chapter.totalAmount, 0)
+  const grouped = filter.account_category === 'vn' ? filteredIncomeGroups : filteredExpenseGroups
+  const totalAmount = filter.account_category === 'vn' ? incomeBase : expenseBase
   const title = code ? `${primary === 'fn' ? 'Functional' : 'Economic'} ${code}` : ''
 
   return (
@@ -138,6 +83,7 @@ export function BudgetDetailsDrawer({ open, onOpenChange, code, primary, nodes }
                   baseTotal={totalAmount}
                   searchTerm={''}
                   normalization={undefined}
+                  codePrefixForSubchapters={primary}
                 />
               ))}
             </Accordion>

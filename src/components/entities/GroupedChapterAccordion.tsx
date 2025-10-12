@@ -11,9 +11,10 @@ interface GroupedChapterAccordionProps {
   baseTotal: number;
   searchTerm: string;
   normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
+  codePrefixForSubchapters?: 'fn' | 'ec';
 }
 
-const GroupedChapterAccordion: React.FC<GroupedChapterAccordionProps> = ({ ch, baseTotal, searchTerm, normalization }) => {
+const GroupedChapterAccordion: React.FC<GroupedChapterAccordionProps> = ({ ch, baseTotal, searchTerm, normalization, codePrefixForSubchapters = 'fn' }) => {
   const unit = getNormalizationUnit(normalization ?? 'total');
   const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON'; // Unit can also be 'RON/capita' or 'EUR/capita', for currency we only need 'RON' or 'EUR'
   // Merge subchapters and functionals and sort by total amount descending
@@ -56,6 +57,7 @@ const GroupedChapterAccordion: React.FC<GroupedChapterAccordionProps> = ({ ch, b
                   baseTotal={baseTotal}
                   searchTerm={searchTerm}
                   normalization={normalization}
+                  codePrefix={codePrefixForSubchapters}
                 />
               ) : (
                 <GroupedFunctionalAccordion

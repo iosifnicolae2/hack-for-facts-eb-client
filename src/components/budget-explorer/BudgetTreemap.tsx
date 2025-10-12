@@ -3,6 +3,7 @@ import { yValueFormatter } from '@/components/charts/components/chart-renderer/u
 import { TreemapInput } from './budget-transform'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import { Fragment } from 'react'
+import { Trans } from '@lingui/react/macro'
 
 type Props = {
   data: TreemapInput[]
@@ -31,68 +32,85 @@ const getColor = (code: string) => {
 
 
 const CustomizedContent: React.FC<any> = (props) => {
-    const { depth, x, y, width, height, name, value } = props;
+  const { depth, x, y, width, height, name, value, root } = props;
 
-    if (isNaN(value)) {
-        return null;
-    }
+  if (isNaN(value)) {
+    return null;
+  }
 
-    const displayValue = yValueFormatter(value, 'RON', 'compact');
-    const textColor = '#FFFFFF';
+  const displayValue = yValueFormatter(value, 'RON', 'compact');
+  const total = root?.value || 0;
+  const pct = total > 0 ? (value / total) * 100 : 0;
+  const textColor = '#FFFFFF';
 
-    const nameFontSize = 12;
-    const valueFontSize = 10;
+  const nameFontSize = 12;
+  const valueFontSize = 10;
+  const pctFontSize = 10;
 
-    const canShowName = width > 50 && height > 20;
-    const canShowValue = canShowName && height > 35;
+  const canShowName = width > 50 && height > 20;
+  const canShowValue = canShowName && height > 35;
+  const canShowPct = canShowName && height > 50;
 
-    const maxChars = Math.floor(width / (nameFontSize * 0.55));
-    const truncatedName = name.length > maxChars ? name.slice(0, maxChars - 1) + '…' : name;
+  const maxChars = Math.floor(width / (nameFontSize * 0.55));
+  const truncatedName = name.length > maxChars ? name.slice(0, maxChars - 1) + '…' : name;
 
 
-    return (
-        <g>
-            <rect
-                x={x}
-                y={y}
-                width={width}
-                height={height}
-                style={{
-                    fill: props.fill,
-                    stroke: '#fff',
-                    strokeWidth: 2 / (depth + 1e-10),
-                    strokeOpacity: 0.5,
-                }}
-            />
-            {canShowName && (
-                <text
-                    x={x + width / 2}
-                    y={canShowValue ? y + height / 2 - valueFontSize / 2 : y + height / 2}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    fill={textColor}
-                    fontSize={nameFontSize}
-                    fontWeight={500}
-                    style={{ pointerEvents: 'none' }}
-                >
-                    {truncatedName}
-                </text>
-            )}
-            {canShowValue && (
-                <text
-                    x={x + width / 2}
-                    y={y + height / 2 + nameFontSize / 2 + 3}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    fill={textColor}
-                    fontSize={valueFontSize}
-                    fillOpacity={0.9}
-                >
-                    {displayValue}
-                </text>
-            )}
-        </g>
-    );
+  return (
+    <g>
+      <rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        style={{
+          fill: props.fill,
+          stroke: '#fff',
+          strokeWidth: 2 / (depth + 1e-10),
+          strokeOpacity: 0.5,
+        }}
+      />
+      {canShowName && (
+        <text
+          x={x + width / 2}
+          y={canShowValue ? y + height / 2 - valueFontSize / 2 : y + height / 2}
+          textAnchor="middle"
+          dominantBaseline="middle"
+          fill={textColor}
+          fontSize={nameFontSize}
+          fontWeight={500}
+          style={{ pointerEvents: 'none' }}
+        >
+          {truncatedName}
+        </text>
+      )}
+      {canShowValue && (
+        <text
+          x={x + width / 2}
+          y={y + height / 2 + nameFontSize / 2 + 3}
+          textAnchor="middle"
+          dominantBaseline="middle"
+          fill={textColor}
+          fontSize={valueFontSize}
+          fillOpacity={0.9}
+        >
+          {displayValue}
+        </text>
+      )}
+      {canShowPct && (
+        <text
+          x={x + width / 2}
+          y={y + height / 2 + nameFontSize / 2 + valueFontSize + 5}
+          textAnchor="middle"
+          dominantBaseline="middle"
+          fill={textColor}
+          fontSize={pctFontSize}
+          fillOpacity={0.9}
+        >
+          {`${pct.toFixed(1)}%`}
+        </text>
+      )}
+    </g>
+  );
 };
 
 export function BudgetTreemap({ data, onNodeClick, path }: Props) {
@@ -110,7 +128,7 @@ export function BudgetTreemap({ data, onNodeClick, path }: Props) {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink onClick={() => onNodeClick?.(null)} className="cursor-pointer">
-                Root
+                <Trans>Main Categories</Trans>
               </BreadcrumbLink>
             </BreadcrumbItem>
             {path.map((item) => (
