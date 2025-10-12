@@ -3,6 +3,7 @@ import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { UatTopNBarChart } from './UatTopNBarChart';
 import { UatPopulationSpendingScatterPlot } from './UatPopulationSpendingScatterPlot';
 import { t } from '@lingui/core/macro';
+import { useMapFilter } from '@/hooks/useMapFilter';
 
 interface UatDataChartsProps {
     data: (HeatmapUATDataPoint | HeatmapCountyDataPoint)[];
@@ -15,6 +16,8 @@ export const UatDataCharts: React.FC<UatDataChartsProps> = ({ data, mapViewType 
     }
 
     const isUatView = mapViewType === 'UAT';
+    const { mapState } = useMapFilter();
+    const normalization = mapState.filters.normalization;
 
     return (
         <div className="space-y-8 p-4 md:p-6">
@@ -28,6 +31,7 @@ export const UatDataCharts: React.FC<UatDataChartsProps> = ({ data, mapViewType 
                     xAxisLabel={t`Amount`}
                     yAxisLabel={isUatView ? t`UAT` : t`County`}
                     isCurrency={true}
+                    normalization={normalization}
                 />
             </div>
 
@@ -37,6 +41,7 @@ export const UatDataCharts: React.FC<UatDataChartsProps> = ({ data, mapViewType 
                     chartTitle={t`Population vs. Total Amount`}
                     xAxisLabel={t`Population`}
                     yAxisLabel={t`Amount`}
+                    normalization={normalization}
                 />
             </div>
 

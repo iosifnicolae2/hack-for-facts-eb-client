@@ -167,7 +167,6 @@ function EntityAnalyticsPage() {
                   <DropdownMenuCheckboxItem checked={currencyFormat === 'standard'} onCheckedChange={() => setCurrencyFormat('standard')}><Trans>Standard</Trans></DropdownMenuCheckboxItem>
                   <DropdownMenuCheckboxItem checked={currencyFormat === 'compact'} onCheckedChange={() => setCurrencyFormat('compact')}><Trans>Compact</Trans></DropdownMenuCheckboxItem>
                   <DropdownMenuCheckboxItem checked={currencyFormat === 'both'} onCheckedChange={() => setCurrencyFormat('both')}><Trans>Both</Trans></DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem checked={currencyFormat === 'euro'} onCheckedChange={() => setCurrencyFormat('euro')}>EUR (1 EUR = 5 RON)</DropdownMenuCheckboxItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuLabel><Trans>Columns</Trans></DropdownMenuLabel>
                   <DropdownMenuCheckboxItem checked={columnVisibility.entity_name !== false} onCheckedChange={(v) => setColumnVisibility((p: Record<string, boolean>) => ({ ...p, entity_name: Boolean(v) }))}><Trans>Entity</Trans></DropdownMenuCheckboxItem>
@@ -196,6 +195,7 @@ function EntityAnalyticsPage() {
               onColumnOrderChange={setColumnOrder}
               currencyFormat={currencyFormat}
               rowNumberStart={offset}
+              normalization={filter.normalization}
             />
             {data?.pageInfo?.totalCount ? (
               <Pagination

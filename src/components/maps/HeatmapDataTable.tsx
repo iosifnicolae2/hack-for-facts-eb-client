@@ -28,7 +28,7 @@ import {
     MoreHorizontal,
 } from "lucide-react";
 import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
-import { formatCurrency, formatNumber } from "@/lib/utils";
+import { formatCurrency, formatNumber, getNormalizationUnit } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
 import { getMergedColumnOrder, moveColumnOrder } from "@/lib/table-utils";
@@ -36,6 +36,7 @@ import { useTablePreferences } from "@/hooks/useTablePreferences";
 import { Pagination } from "@/components/ui/pagination";
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
+import { useMapFilter } from "@/hooks/useMapFilter";
 
 interface HeatmapDataTableProps {
     data: (HeatmapUATDataPoint | HeatmapCountyDataPoint)[];
@@ -57,6 +58,10 @@ export function HeatmapDataTable({
     mapViewType,
 }: HeatmapDataTableProps) {
     const isUatView = mapViewType === 'UAT';
+    const { mapState } = useMapFilter();
+    const normalization = mapState.filters.normalization;
+    const unit = getNormalizationUnit(normalization as any);
+    const currencyCode: 'RON' | 'EUR' = unit.includes('EUR') ? 'EUR' : 'RON';
 
     const { density, setDensity, columnVisibility, setColumnVisibility, currencyFormat, setCurrencyFormat } = useTablePreferences('heatmap-data-table', {
         columnVisibility: {
@@ -308,17 +313,13 @@ export function HeatmapDataTable({
                     if (currencyFormat === 'both') {
                         return (
                             <div className="text-right">
-                                <span className="block text-xs" title={formatCurrency(value, 'standard')}>{formatCurrency(value, 'standard')}</span>
-                                <span className="block text-xs text-muted-foreground">{formatCurrency(value, 'compact')}</span>
+                                <span className="block text-xs" title={formatCurrency(value, 'standard', currencyCode)}>{formatCurrency(value, 'standard', currencyCode)}</span>
+                                <span className="block text-xs text-muted-foreground">{formatCurrency(value, 'compact', currencyCode)}</span>
                             </div>
                         );
                     }
-                    if (currencyFormat === 'euro') {
-                        const euroRonRate = 1 / 5; // 1 EUR = 5 RON
-                        const totalAmountInEur = value * euroRonRate;
-                        return <span className="block text-right text-xs" title={formatCurrency(totalAmountInEur, 'standard', 'EUR')}>{formatCurrency(totalAmountInEur, 'compact', 'EUR')}</span>
-                    }
-                    return <span className="block text-right text-xs" title={formatCurrency(value, 'standard')}>{formatCurrency(value, currencyFormat)}</span>
+                    const effectiveCurrency: 'RON' | 'EUR' = currencyFormat === 'euro' ? 'EUR' : currencyCode;
+                    return <span className="block text-right text-xs" title={formatCurrency(value, 'standard', effectiveCurrency)}>{formatCurrency(value, 'compact', effectiveCurrency)}</span>
                 },
             },
             {
@@ -374,21 +375,17 @@ export function HeatmapDataTable({
                     if (currencyFormat === 'both') {
                         return (
                             <div className="text-right">
-                                <span className="block text-xs" title={formatCurrency(value, 'standard')}>{formatCurrency(value, 'standard')}</span>
-                                <span className="block text-xs text-muted-foreground">{formatCurrency(value, 'compact')}</span>
+                                <span className="block text-xs" title={`${formatCurrency(value, 'standard', currencyCode)} / capita`}>{formatCurrency(value, 'standard', currencyCode)} / capita</span>
+                                <span className="block text-xs text-muted-foreground">{formatCurrency(value, 'compact', currencyCode)} / capita</span>
                             </div>
                         );
                     }
-                    if (currencyFormat === 'euro') {
-                        const euroRonRate = 1 / 5; // 1 EUR = 5 RON
-                        const perCapitaAmountInEur = value * euroRonRate;
-                        return <span className="block text-right text-xs" title={formatCurrency(perCapitaAmountInEur, 'standard', 'EUR')}>{formatCurrency(perCapitaAmountInEur, 'compact', 'EUR')}</span>
-                    }
-                    return <span className="block text-right text-xs" title={formatCurrency(value, 'standard')}>{formatCurrency(value, currencyFormat)}</span>
+                    const effectiveCurrency: 'RON' | 'EUR' = currencyFormat === 'euro' ? 'EUR' : currencyCode;
+                    return <span className="block text-right text-xs" title={`${formatCurrency(value, 'standard', effectiveCurrency)} / capita`}>{formatCurrency(value, 'compact', effectiveCurrency)} / capita</span>
                 },
             },
         ],
-        [currencyFormat]
+        [currencyFormat, currencyCode]
     );
 
     const table = useReactTable({

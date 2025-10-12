@@ -6,6 +6,7 @@ import L, { PathOptions } from 'leaflet';
 import { Feature, Geometry } from 'geojson';
 import { AnalyticsFilterType } from "@/schemas/charts";
 import { t } from "@lingui/core/macro";
+import { getNormalizationUnit } from '@/lib/utils';
 
 
 /**
@@ -65,6 +66,10 @@ export const createTooltipContent = (
   const featureIdentifier = isUAT ? properties.natcode : properties.mnemonic;
   const filterSummaryHtml = createFilterSummary(filters);
 
+  const unit = getNormalizationUnit(filters.normalization as any);
+  const currencyCode: 'RON' | 'EUR' = unit.includes('EUR') ? 'EUR' : 'RON';
+  const isPerCapitaNorm = (filters.normalization === 'per_capita' || filters.normalization === 'per_capita_euro');
+
   // Common styles for the tooltip
   const styles = {
     container: `font-family: 'Inter', sans-serif; font-size: 14px; max-width: 350px; padding: 10px; color: #333;`,
@@ -86,7 +91,6 @@ export const createTooltipContent = (
 
   // --- Tooltip for features WITH data ---
   if (dataPoint) {
-    const isPerCapitaNorm = filters.normalization === 'per_capita';
     let name, subtext, population, perCapitaAmount, totalAmount;
 
     if (isUAT && 'siruta_code' in dataPoint) {
@@ -118,12 +122,12 @@ export const createTooltipContent = (
 
           <div style="${styles.dataLabel}">${t`Total Amount`}</div>
           <div style="${styles.dataValue} ${!isPerCapitaNorm ? styles.highlight : ''}">
-            ${formatCurrency(totalAmount, 'compact')}
+            ${formatCurrency(totalAmount, 'compact', currencyCode)}
           </div>
 
           <div style="${styles.dataLabel}">${t`Amount Per Capita`}</div>
           <div style="${styles.dataValue} ${isPerCapitaNorm ? styles.highlight : ''}">
-            ${formatCurrency(perCapitaAmount, 'compact')}
+            ${formatCurrency(perCapitaAmount, 'compact', currencyCode)} ${unit.includes('capita') ? '/ capita' : ''}
           </div>
         </div>
         ${filterSummaryHtml}

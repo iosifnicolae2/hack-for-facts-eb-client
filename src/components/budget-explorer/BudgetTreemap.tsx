@@ -7,6 +7,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbS
 import { Button } from '@/components/ui/button'
 import type { TreemapInput } from './budget-transform'
 import { useIsMobile } from '@/hooks/use-mobile'
+import { getNormalizationUnit } from '@/lib/utils'
 
 const COLORS = [
   '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d',
@@ -39,6 +40,7 @@ type Props = {
   onBackToMain?: () => void
   showViewDetails?: boolean
   showBackToMain?: boolean
+  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro'
 }
 
 const CustomizedContent: FC<{
@@ -51,8 +53,9 @@ const CustomizedContent: FC<{
   height: number
   fill: string
   root: { value: number }
+  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro'
 }> = (props) => {
-  const { name, value, depth, x, y, width, height, fill, root } = props
+  const { name, value, depth, x, y, width, height, fill, root, normalization } = props
 
   if (!Number.isFinite(value)) {
     return null
@@ -60,7 +63,9 @@ const CustomizedContent: FC<{
 
   const total = root?.value ?? 0
   const percentage = total > 0 ? (value / total) * 100 : 0
-  const displayValue = yValueFormatter(value, 'RON', 'compact')
+  const unit = getNormalizationUnit(normalization ?? 'total')
+  const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON'
+  const displayValue = yValueFormatter(value, currencyCode, 'compact')
 
   const baseColor = '#FFFFFF'
   const nameFontSize = 12
@@ -112,7 +117,7 @@ const CustomizedContent: FC<{
           fontSize={valueFontSize}
           fillOpacity={0.9}
         >
-          {displayValue}
+          {displayValue} {unit.includes('capita') && '/ capita'}
         </text>
       )}
       {canShowPercentage && (
@@ -132,7 +137,7 @@ const CustomizedContent: FC<{
   )
 }
 
-export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, path = [], onViewDetails, onBackToMain, showViewDetails = false, showBackToMain = false }: Props) {
+export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, path = [], onViewDetails, onBackToMain, showViewDetails = false, showBackToMain = false, normalization }: Props) {
   const isMobile = useIsMobile()
 
   const payloadData = useMemo(() => {
@@ -233,11 +238,12 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
                   value: 0
                 }}
                 {...props}
+                normalization={normalization}
               />}
             >
               {!isMobile && (
                 <Tooltip
-                  content={<CustomTooltip total={payloadData.reduce((acc, curr) => acc + curr.value, 0)} primary={primary} />}
+                  content={<CustomTooltip total={payloadData.reduce((acc, curr) => acc + curr.value, 0)} primary={primary} normalization={normalization} />}
                 />
               )}
             </Treemap>
@@ -248,11 +254,13 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
   )
 }
 
-const CustomTooltip = ({ active, payload, total, primary }: { active?: boolean, payload?: any[], total: number, primary: 'fn' | 'ec' }) => {
+const CustomTooltip = ({ active, payload, total, primary, normalization }: { active?: boolean, payload?: any[], total: number, primary: 'fn' | 'ec', normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro' }) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     const value = payload[0].value;
     const percentage = total > 0 ? (value / total) * 100 : 0;
+    const unit = getNormalizationUnit(normalization ?? 'total')
+    const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON'
 
     return (
       <div className="bg-background/80 backdrop-blur-sm border border-border/50 rounded-lg shadow-lg p-3 text-sm min-w-[250px] select-none">
@@ -271,8 +279,8 @@ const CustomTooltip = ({ active, payload, total, primary }: { active?: boolean, 
           <div className="flex justify-between items-center gap-4">
             <span className="text-muted-foreground text-xs">Amount:</span>
             <div className="flex flex-col items-end">
-              <span className="font-mono font-semibold text-sm">{yValueFormatter(value, 'RON', 'compact')}</span>
-              <span className="font-mono text-xs text-muted-foreground">{yValueFormatter(value, 'RON', 'standard')}</span>
+              <span className="font-mono font-semibold text-sm">{yValueFormatter(value, currencyCode, 'compact')} {unit.includes('capita') && '/ capita'}</span>
+              <span className="font-mono text-xs text-muted-foreground">{yValueFormatter(value, currencyCode, 'standard')}</span>
             </div>
           </div>
           <div className="flex justify-between items-center gap-4">

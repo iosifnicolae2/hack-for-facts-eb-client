@@ -10,7 +10,7 @@ import {
   ColumnSizingState,
 } from '@tanstack/react-table'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { formatCurrency, formatNumber } from '@/lib/utils'
+import { formatCurrency, formatNumber, getNormalizationUnit } from '@/lib/utils'
 import type { EntityAnalyticsDataPoint } from '@/schemas/entity-analytics'
 import { ArrowUpDown, ChevronDown, ChevronUp, MoreHorizontal, ChevronLeft, ChevronRight } from 'lucide-react'
 import { getMergedColumnOrder, moveColumnOrder } from '@/lib/table-utils'
@@ -25,7 +25,7 @@ interface Props {
   sortBy?: string
   sortOrder?: 'asc' | 'desc'
   onSortChange: (by: string, order: 'asc' | 'desc') => void
-  normalization?: 'total' | 'per_capita'
+  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro'
   density?: 'comfortable' | 'compact'
   columnVisibility?: VisibilityState
   onColumnVisibilityChange?: OnChangeFn<VisibilityState>
@@ -39,7 +39,9 @@ interface Props {
   rowNumberStart?: number
 }
 
-export function EntityAnalyticsTable({ data, isLoading, sortBy, sortOrder, onSortChange, density = 'comfortable', columnVisibility, onColumnVisibilityChange, columnPinning, onColumnPinningChange, columnSizing, onColumnSizingChange, columnOrder, onColumnOrderChange, currencyFormat = 'compact', rowNumberStart = 0 }: Props) {
+export function EntityAnalyticsTable({ data, isLoading, sortBy, sortOrder, onSortChange, density = 'comfortable', columnVisibility, onColumnVisibilityChange, columnPinning, onColumnPinningChange, columnSizing, onColumnSizingChange, columnOrder, onColumnOrderChange, currencyFormat = 'compact', rowNumberStart = 0, normalization = 'total' }: Props) {
+  const unit = getNormalizationUnit(normalization as any)
+  const currencyCode: 'RON' | 'EUR' = unit.includes('EUR') ? 'EUR' : 'RON'
   const columns: ColumnDef<EntityAnalyticsDataPoint>[] = [
     {
       id: 'row_number',
@@ -110,29 +112,19 @@ export function EntityAnalyticsTable({ data, isLoading, sortBy, sortOrder, onSor
         if (currencyFormat === 'both') {
           return (
             <div className="text-right">
-              <span className="block text-xs" title={formatCurrency(row.original.per_capita_amount, 'standard')}>
-                {formatCurrency(row.original.per_capita_amount, 'standard')}
+              <span className="block text-xs" title={`${formatCurrency(row.original.per_capita_amount, 'standard', currencyCode)} / capita`}>
+                {formatCurrency(row.original.per_capita_amount, 'standard', currencyCode)} / capita
               </span>
               <span className="block text-xs text-muted-foreground">
-                {formatCurrency(row.original.per_capita_amount, 'compact')}
+                {formatCurrency(row.original.per_capita_amount, 'compact', currencyCode)} / capita
               </span>
             </div>
           )
         }
-
-        if (currencyFormat === 'euro') {
-          const euroRonRate = 1 / 5; // 1 EUR = 5 RON
-          const perCapitaAmountInRon = row.original.per_capita_amount * euroRonRate;
-          return (
-            <span className="block text-right text-xs" title={formatCurrency(perCapitaAmountInRon, 'standard', 'EUR')}>
-              {formatCurrency(perCapitaAmountInRon, 'compact', 'EUR')}
-            </span>
-          )
-        }
-
+        const view = currencyFormat === 'standard' ? 'standard' : 'compact'
         return (
-          <span className="block text-right text-xs" title={formatCurrency(row.original.per_capita_amount, 'standard')}>
-            {formatCurrency(row.original.per_capita_amount, currencyFormat)}
+          <span className="block text-right text-xs" title={`${formatCurrency(row.original.per_capita_amount, 'standard', currencyCode)} / capita`}>
+            {formatCurrency(row.original.per_capita_amount, view as 'standard' | 'compact', currencyCode)} / capita
           </span>
         )
       }
@@ -149,29 +141,19 @@ export function EntityAnalyticsTable({ data, isLoading, sortBy, sortOrder, onSor
         if (currencyFormat === 'both') {
           return (
             <div className="text-right">
-              <span className="block text-xs" title={formatCurrency(row.original.total_amount, 'standard')}>
-                {formatCurrency(row.original.total_amount, 'standard')}
+              <span className="block text-xs" title={formatCurrency(row.original.total_amount, 'standard', currencyCode)}>
+                {formatCurrency(row.original.total_amount, 'standard', currencyCode)}
               </span>
               <span className="block text-xs text-muted-foreground">
-                {formatCurrency(row.original.total_amount, 'compact')}
+                {formatCurrency(row.original.total_amount, 'compact', currencyCode)}
               </span>
             </div>
           )
         }
-
-        if (currencyFormat === 'euro') {
-          const euroRonRate = 1 / 5; // 1 EUR = 5 RON
-          const totalAmountInEur = row.original.total_amount * euroRonRate;
-          return (
-            <span className="block text-right text-xs" title={formatCurrency(totalAmountInEur, 'standard', 'EUR')}>
-              {formatCurrency(totalAmountInEur, 'compact', 'EUR')}
-            </span>
-          )
-        }
-
+        const view = currencyFormat === 'standard' ? 'standard' : 'compact'
         return (
-          <span className="block text-right text-xs" title={formatCurrency(row.original.total_amount, 'standard')}>
-            {formatCurrency(row.original.total_amount, currencyFormat)}
+          <span className="block text-right text-xs" title={formatCurrency(row.original.total_amount, 'standard', currencyCode)}>
+            {formatCurrency(row.original.total_amount, view as 'standard' | 'compact', currencyCode)}
           </span>
         )
       },

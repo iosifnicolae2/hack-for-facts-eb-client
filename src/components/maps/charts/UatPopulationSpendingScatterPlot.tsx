@@ -12,6 +12,7 @@ import {
 } from 'recharts';
 import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { formatCurrency, formatNumber } from '@/lib/utils';
+import { getNormalizationUnit } from '@/lib/utils';
 
 interface UatPopulationSpendingScatterPlotProps {
   data: (HeatmapUATDataPoint | HeatmapCountyDataPoint)[];
@@ -19,6 +20,7 @@ interface UatPopulationSpendingScatterPlotProps {
   xAxisLabel?: string;
   yAxisLabel?: string;
   dotColor?: string;
+  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
 }
 
 // Define a proper interface for tooltip props with payload
@@ -30,9 +32,11 @@ interface CustomTooltipProps {
     name?: string;
   }>;
   label?: string | number;
+  currencyCode: 'RON' | 'EUR';
+  isPerCapita: boolean;
 }
 
-const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
+const CustomTooltip = ({ active, payload, currencyCode, isPerCapita }: CustomTooltipProps) => {
   // Check if payload exists and has at least one item with the expected structure
   if (active && payload && payload.length && payload[0].payload) {
     const dataPoint = payload[0].payload;
@@ -42,7 +46,7 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
       <div className="bg-background p-2 border border-border rounded shadow-lg text-sm">
         <p className="font-semibold text-foreground">{name}</p>
         <p>Population: {formatNumber(population ?? 0)}</p>
-        <p>Amount: {formatCurrency(dataPoint.amount)}</p>
+        <p>Amount: {formatCurrency(dataPoint.amount, 'standard', currencyCode)}{isPerCapita ? ' / capita' : ''}</p>
       </div>
     );
   }
@@ -55,7 +59,12 @@ export const UatPopulationSpendingScatterPlot: React.FC<UatPopulationSpendingSca
   xAxisLabel = 'Population',
   yAxisLabel = 'Amount',
   dotColor = '#8884d8',
+  normalization,
 }) => {
+  const unit = getNormalizationUnit(normalization as any);
+  const currencyCode: 'RON' | 'EUR' = unit.includes('EUR') ? 'EUR' : 'RON';
+  const isPerCapita = unit.includes('capita');
+
   const saneData = React.useMemo(() =>
     data.filter(d =>
       (typeof ("population" in d ? d.population : d.county_population) === 'number') &&
@@ -152,12 +161,12 @@ export const UatPopulationSpendingScatterPlot: React.FC<UatPopulationSpendingSca
             type="number"
             dataKey="amount"
             name="Amount"
-            tickFormatter={(value) => formatCurrency(value, 'compact')}
+            tickFormatter={(value) => `${formatCurrency(value, 'compact', currencyCode)}${isPerCapita ? ' / capita' : ''}`}
             label={{ value: yAxisLabel, angle: -90, position: 'insideLeft', dx: -75, fontSize: 12 }}
             domain={['auto', 'auto']}
           />
           <ZAxis dataKey="uat_name" name="UAT Name" />
-          <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: '3 3' }} />
+          <Tooltip content={<CustomTooltip currencyCode={currencyCode} isPerCapita={isPerCapita} />} cursor={{ strokeDasharray: '3 3' }} />
           <Legend verticalAlign="top" height={36} />
           <Scatter name="UAT Outliers" data={processedForScatter} fill={dotColor} />
         </ScatterChart>

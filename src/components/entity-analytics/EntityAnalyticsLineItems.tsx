@@ -141,6 +141,7 @@ export const EntityAnalyticsLineItems: React.FC<
             searchTerm={currentSearchTerm}
             currentYear={0} // Year is not applicable here
             showTotalValueHeader={!!currentSearchActive}
+            normalization={filter.normalization}
           />
         )}
       </CardContent>

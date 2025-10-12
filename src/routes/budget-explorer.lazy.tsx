@@ -486,6 +486,7 @@ function BudgetExplorerPage() {
                 }}
                 showViewDetails={!!currentDrillCode && !crossConstraint}
                 showBackToMain={true}
+                normalization={filter.normalization}
               />
             )}
           </CardContent>
@@ -510,7 +511,7 @@ function BudgetExplorerPage() {
                   <CategoryListSkeleton />
                 </div>
               ) : (
-                <BudgetCategoryList aggregated={nodes as any} depth={currentDepthNumeric} />
+                <BudgetCategoryList aggregated={nodes as any} depth={currentDepthNumeric} normalization={filter.normalization} />
               )}
             </CardContent>
           </Card>

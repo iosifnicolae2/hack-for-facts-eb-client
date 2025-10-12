@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Trans } from '@lingui/react/macro'
 import { groupData } from './budget-transform'
-import { formatCurrency, formatNumber } from '@/lib/utils'
+import { formatCurrency, formatNumber, getNormalizationUnit } from '@/lib/utils'
 import type { GroupedItem } from './budget-transform'
 import { useIsMobile } from '@/hooks/use-mobile'
 
@@ -16,9 +16,12 @@ type AggregatedItem = {
 type Props = {
   aggregated: AggregatedItem[]
   depth: 2 | 4 | 6
+  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro'
 }
 
-const CategoryColumn = ({ title, items, baseTotal, codePrefix, isMobile }: { title: React.ReactNode, items: GroupedItem[], baseTotal: number, codePrefix: 'fn' | 'ec', isMobile: boolean }) => {
+const CategoryColumn = ({ title, items, baseTotal, codePrefix, isMobile, normalization }: { title: React.ReactNode, items: GroupedItem[], baseTotal: number, codePrefix: 'fn' | 'ec', isMobile: boolean, normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro' }) => {
+    const unit = getNormalizationUnit(normalization ?? 'total');
+    const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON';
     return (
         <div>
             <h4 className="text-lg font-semibold mb-4">{title}</h4>
@@ -35,7 +38,7 @@ const CategoryColumn = ({ title, items, baseTotal, codePrefix, isMobile }: { tit
                                 <span className="text-sm font-medium flex-1">{g.name}</span>
                             </div>
                             <div className="flex justify-between items-center text-sm">
-                                <span className="font-semibold">{formatCurrency(g.total, 'compact', 'RON')}</span>
+                                <span className="font-semibold">{formatCurrency(g.total, 'compact', currencyCode)} {unit.includes('capita') && '/ capita'}</span>
                                 <span className="text-muted-foreground">({formatNumber(pct)}%)</span>
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
@@ -50,7 +53,7 @@ const CategoryColumn = ({ title, items, baseTotal, codePrefix, isMobile }: { tit
                                     <code className="text-xs font-mono text-muted-foreground">{codePrefix}:{g.code}</code>
                                     <span className="text-sm font-medium truncate">{g.name}</span>
                                 </div>
-                                <span className="text-sm font-medium whitespace-nowrap">{formatCurrency(g.total, 'compact', 'RON')} ({formatNumber(pct)}%)</span>
+                                <span className="text-sm font-medium whitespace-nowrap">{formatCurrency(g.total, 'compact', currencyCode)} ({formatNumber(pct)}%) {unit.includes('capita') && '/ capita'}</span>
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
                                 <div className="bg-gradient-to-r from-primary to-blue-400 h-2 rounded-full" style={{width: `${pct}%`}}></div>
@@ -65,7 +68,7 @@ const CategoryColumn = ({ title, items, baseTotal, codePrefix, isMobile }: { tit
     )
 }
 
-export function BudgetCategoryList({ aggregated, depth }: Props) {
+export function BudgetCategoryList({ aggregated, depth, normalization }: Props) {
   const isMobile = useIsMobile()
   const functional = useMemo(() => groupData(aggregated as any, 'fn', depth), [aggregated, depth]);
   const economic = useMemo(() => groupData(aggregated as any, 'ec', depth), [aggregated, depth]);
@@ -76,8 +79,8 @@ export function BudgetCategoryList({ aggregated, depth }: Props) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-      <CategoryColumn title={<Trans>Top Functional Categories</Trans>} items={functional.items} baseTotal={functional.baseTotal} codePrefix="fn" isMobile={isMobile} />
-      <CategoryColumn title={<Trans>Top Economic Categories</Trans>} items={economic.items} baseTotal={economic.baseTotal} codePrefix="ec" isMobile={isMobile} />
+      <CategoryColumn title={<Trans>Top Functional Categories</Trans>} items={functional.items} baseTotal={functional.baseTotal} codePrefix="fn" isMobile={isMobile} normalization={normalization} />
+      <CategoryColumn title={<Trans>Top Economic Categories</Trans>} items={economic.items} baseTotal={economic.baseTotal} codePrefix="ec" isMobile={isMobile} normalization={normalization} />
     </div>
   )
 }

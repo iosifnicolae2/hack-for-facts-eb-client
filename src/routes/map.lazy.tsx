@@ -166,6 +166,7 @@ function MapPage() {
                     max={maxAggregatedValue}
                     className="absolute bottom-[-6rem] right-[4rem] z-10 hidden md:block"
                     title={t`Aggregated Value Legend`}
+                    normalization={mapState.filters.normalization}
                   />
                   <Dialog open={isLegendModalOpen} onOpenChange={setIsLegendModalOpen}>
                     <DialogTrigger asChild>
@@ -191,6 +192,7 @@ function MapPage() {
                           min={minAggregatedValue}
                           max={maxAggregatedValue}
                           title={t`Aggregated Value Legend`}
+                          normalization={mapState.filters.normalization}
                           isInModal={true}
                         />
                       </div>

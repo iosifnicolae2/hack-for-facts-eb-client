@@ -108,7 +108,7 @@ export function BudgetDetailsDrawer({ open, onOpenChange, code, primary, nodes, 
                   ch={chapter}
                   baseTotal={totalAmount}
                   searchTerm={''}
-                  normalization={undefined}
+                  normalization={filter.normalization}
                   codePrefixForSubchapters={primary}
                 />
               ))}

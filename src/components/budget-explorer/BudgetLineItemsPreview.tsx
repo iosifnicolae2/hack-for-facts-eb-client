@@ -82,6 +82,7 @@ export function BudgetLineItemsPreview({ data, isLoading, filter, groupBy }: Bud
                 searchTerm=""
                 currentYear={0}
                 showTotalValueHeader={false}
+                normalization={filter.normalization}
                 subchapterCodePrefix={groupBy}
             />
         </div>
