@@ -23,6 +23,7 @@ import { BarChart2 } from 'lucide-react'
 import { getSeriesColor } from '@/components/charts/components/chart-renderer/utils';
 import { getClassificationName } from '@/lib/classifications'
 import { getEconomicChapterName, getEconomicClassificationName, getEconomicSubchapterName } from '@/lib/economic-classifications'
+import { useIsMobile } from '@/hooks/use-mobile'
 
 const CategoryListSkeleton = () => (
   <div className="space-y-5">
@@ -131,6 +132,7 @@ function BudgetExplorerPage() {
   const raw = useSearch({ from: '/budget-explorer' })
   const navigate = useNavigate({ from: '/budget-explorer' })
   const search = SearchSchema.parse(raw)
+  const isMobile = useIsMobile()
 
   const { filter, primary, depth } = search
   const filterHash = generateHash(JSON.stringify(filter))
@@ -221,11 +223,11 @@ function BudgetExplorerPage() {
       title: 'Ministry Spending Comparison',
       config: {
         chartType: 'treemap-aggr',
-        showTooltip: true,
+        showTooltip: !isMobile,
       },
       series,
     })
-  }, [filter])
+  }, [filter, isMobile])
 
   const functionalChart: Chart = useMemo(() => {
     const series = functionalMainChapters.map((code, index) => {
@@ -249,12 +251,12 @@ function BudgetExplorerPage() {
       title: 'Functional Categories Comparison',
       config: {
         chartType: 'area',
-        showLegend: true,
-        showTooltip: true,
+        showLegend: !isMobile,
+        showTooltip: !isMobile,
       },
       series,
     })
-  }, [filter])
+  }, [filter, isMobile])
 
   const economicChart: Chart = useMemo(() => {
     const series = economicMainChapters.map((ecCode, index) => {
@@ -278,12 +280,12 @@ function BudgetExplorerPage() {
       title: 'Economic Categories Comparison',
       config: {
         chartType: 'area',
-        showLegend: true,
-        showTooltip: true,
+        showLegend: !isMobile,
+        showTooltip: !isMobile,
       },
       series,
     })
-  }, [filter])
+  }, [filter, isMobile])
 
   const handleFilterChange = (partial: Partial<BudgetExplorerState>) => {
     navigate({
@@ -392,20 +394,20 @@ function BudgetExplorerPage() {
   const currentDepthNumeric = useMemo(() => (depth === 'detail' ? 4 : 2) as 2 | 4 | 6, [depth])
 
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div className="flex flex-col gap-4 p-4 lg:p-6">
       <BudgetExplorerHeader
         state={search}
         onChange={handleFilterChange}
       />
 
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-4">
-        <Card className="xl:col-span-12 shadow-sm">
+      <div className="flex flex-col gap-4">
+        <Card className="shadow-sm">
           <CardHeader className="pb-0">
             <h3 className="text-lg font-semibold"><Trans>How is the money distributed?</Trans></h3>
           </CardHeader>
           <CardContent className="pt-0 pb-12">
             {isLoading ? (
-              <Skeleton className="w-full h-[420px]" />
+              <Skeleton className="w-full h-[600px]" />
             ) : error ? (
               <p className="text-sm text-red-500"><Trans>Failed to load data.</Trans></p>
             ) : (
@@ -477,67 +479,70 @@ function BudgetExplorerPage() {
           </CardContent>
         </Card>
 
-        <Card className="xl:col-span-12 shadow-sm">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold"><Trans>Top categories</Trans></h3>
-              <Button asChild variant="outline" size="sm">
-                <Link to="/entity-analytics" search={{ view: 'line-items', filter }}>
-                  <Trans>See advanced view</Trans>
-                </Link>
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-                <CategoryListSkeleton />
-                <CategoryListSkeleton />
+        <div className="w-full max-w-[1200px] mx-auto">
+          <Card className="shadow-sm">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold"><Trans>Top categories</Trans></h3>
+                <Button asChild variant="outline" size="sm">
+                  <Link to="/entity-analytics" search={{ view: 'line-items', filter }}>
+                    <Trans>See advanced view</Trans>
+                  </Link>
+                </Button>
               </div>
-            ) : (
-              <BudgetCategoryList aggregated={nodes as any} depth={currentDepthNumeric} />
-            )}
-          </CardContent>
-        </Card>
+            </CardHeader>
+            <CardContent>
+              {isLoading ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+                  <CategoryListSkeleton />
+                  <CategoryListSkeleton />
+                </div>
+              ) : (
+                <BudgetCategoryList aggregated={nodes as any} depth={currentDepthNumeric} />
+              )}
+            </CardContent>
+          </Card>
+        </div>
 
-        <Card className="xl:col-span-12 shadow-sm">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold"><Trans>Functional categories comparison</Trans></h3>
-              <Button asChild variant="outline" size="sm">
-                <Link to={'/charts/$chartId'} params={{ chartId: functionalChart.id }} search={{ chart: functionalChart, view: 'overview' }}>
-                  <BarChart2 className="w-4 h-4 mr-2" />
-                  <Trans>Open in Chart Builder</Trans>
-                </Link>
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <ChartPreview chart={functionalChart} height={400} margins={{ left: 50 }} />
-          </CardContent>
-        </Card>
+        <div className="w-full max-w-[1200px] mx-auto">
+          <Card className="shadow-sm">
+            <CardHeader>
+              <div className="flex items-center justify-end">
+                <Button asChild variant="outline" size="sm">
+                  <Link to={'/charts/$chartId'} params={{ chartId: functionalChart.id }} search={{ chart: functionalChart, view: 'overview' }}>
+                    <BarChart2 className="w-4 h-4 mr-2" />
+                    <Trans>Open in Chart Builder</Trans>
+                  </Link>
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <ChartPreview chart={functionalChart} height={400} margins={{ left: 50 }} />
+            </CardContent>
+          </Card>
+        </div>
 
-        <Card className="xl:col-span-12 shadow-sm">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold"><Trans>Economic categories comparison</Trans></h3>
-              <Button asChild variant="outline" size="sm">
-                <Link to={'/charts/$chartId'} params={{ chartId: economicChart.id }} search={{ chart: economicChart, view: 'overview' }}>
-                  <BarChart2 className="w-4 h-4 mr-2" />
-                  <Trans>Open in Chart Builder</Trans>
-                </Link>
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <ChartPreview chart={economicChart} height={400} margins={{ left: 50 }} />
-          </CardContent>
-        </Card>
+        <div className="w-full max-w-[1200px] mx-auto">
+          <Card className="shadow-sm">
+            <CardHeader>
+              <div className="flex items-center justify-end">
+                <Button asChild variant="outline" size="sm">
+                  <Link to={'/charts/$chartId'} params={{ chartId: economicChart.id }} search={{ chart: economicChart, view: 'overview' }}>
+                    <BarChart2 className="w-4 h-4 mr-2" />
+                    <Trans>Open in Chart Builder</Trans>
+                  </Link>
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <ChartPreview chart={economicChart} height={400} margins={{ left: 50 }} />
+            </CardContent>
+          </Card>
+        </div>
 
-        <Card className="xl:col-span-12 shadow-sm">
+        <Card className="shadow-sm">
           <CardHeader>
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold"><Trans>Ministries Comparison</Trans></h3>
+            <div className="flex items-center justify-end">
               <Button asChild variant="outline" size="sm">
                 <Link to={'/charts/$chartId'} params={{ chartId: ministryChart.id }} search={{ chart: ministryChart, view: 'overview' }}>
                   <BarChart2 className="w-4 h-4 mr-2" />
@@ -547,20 +552,22 @@ function BudgetExplorerPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <ChartPreview chart={ministryChart} height={400} />
+            <ChartPreview chart={ministryChart} height={600} />
           </CardContent>
         </Card>
 
-        <Card className="xl:col-span-12 shadow-sm">
-          <CardContent className="pt-6">
-            <BudgetLineItemsPreview
-              data={data}
-              groupBy={drillPrimary}
-              isLoading={isLoading}
-              filter={filter}
-            />
-          </CardContent>
-        </Card>
+        <div className="w-full max-w-[1200px] mx-auto">
+          <Card className="shadow-sm">
+            <CardContent className="pt-6">
+              <BudgetLineItemsPreview
+                data={data}
+                groupBy={drillPrimary}
+                isLoading={isLoading}
+                filter={filter}
+              />
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       <BudgetDetailsDrawer

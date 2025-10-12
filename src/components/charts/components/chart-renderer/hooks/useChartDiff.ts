@@ -47,22 +47,22 @@ export const useChartDiff = (timeSeriesData: TimeSeriesDataPoint[], enabledSerie
     setDiffs(calculatedDiffs);
   }, [timeSeriesData, enabledSeries]);
 
-  const handleMouseDown = (e: { activeLabel: string | undefined } | undefined) => {
+  const handleMouseDown = useCallback((e: { activeLabel: string | undefined } | undefined) => {
     if (e && e.activeLabel) {
       setDragStart(e.activeLabel);
       setRefAreaRight('');
     }
-  };
+  }, []);
 
-  const handleMouseMove = (e: { activeLabel: string | undefined } | undefined) => {
+  const handleMouseMove = useCallback((e: { activeLabel: string | undefined } | undefined) => {
     if (dragStart && e && e.activeLabel) {
       setRefAreaLeft(dragStart);
       setRefAreaRight(e.activeLabel);
       setDiffs([]);
     }
-  };
+  }, [dragStart]);
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     if (dragStart) {
       if (refAreaRight && refAreaLeft !== refAreaRight) {
         calculateAndSetDiffs(refAreaLeft, refAreaRight);
@@ -71,7 +71,7 @@ export const useChartDiff = (timeSeriesData: TimeSeriesDataPoint[], enabledSerie
       }
     }
     setDragStart('');
-  };
+  }, [dragStart, refAreaLeft, refAreaRight, calculateAndSetDiffs, clearSelection]);
 
   return {
     refAreaLeft,

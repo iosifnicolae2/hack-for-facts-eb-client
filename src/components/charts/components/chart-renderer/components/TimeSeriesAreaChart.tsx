@@ -6,10 +6,14 @@ import { DataPointPayload } from '@/components/charts/hooks/useChartData';
 import { yValueFormatter } from '../utils';
 import { useChartDiff } from '../hooks/useChartDiff';
 import { DiffArea } from './diff-select/DiffArea';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 export function TimeSeriesAreaChart({ chart, unitMap, timeSeriesData, onAnnotationPositionChange, margins }: ChartRendererProps) {
   const enabledSeries = useMemo(() => chart.series.filter(s => s.enabled), [chart.series]);
+  const isFirstRenderRef = useRef(true);
+  useEffect(() => {
+    isFirstRenderRef.current = false;
+  }, []);
   const {
     handleMouseDown,
     handleMouseMove,
@@ -45,7 +49,7 @@ export function TimeSeriesAreaChart({ chart, unitMap, timeSeriesData, onAnnotati
                   type="monotone"
                   strokeWidth={2}
                   fillOpacity={0.6}
-                  isAnimationActive={true}
+                  isAnimationActive={isFirstRenderRef.current}
                   animationDuration={300}
                   animationEasing="ease-in-out"
                 >
@@ -68,7 +72,6 @@ export function TimeSeriesAreaChart({ chart, unitMap, timeSeriesData, onAnnotati
                         />
                       );
                     }}
-                    formatter={(label: unknown) => yValueFormatter(Number(label as number), '')}
                   />
                 </Area>
               ))}

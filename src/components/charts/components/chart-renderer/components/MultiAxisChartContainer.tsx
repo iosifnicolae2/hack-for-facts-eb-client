@@ -3,7 +3,7 @@ import {
 } from 'recharts';
 import { Chart } from '@/schemas/charts';
 import { CustomSeriesTooltip } from './Tooltips';
-import { ReactNode, useMemo } from 'react';
+import { ReactNode, useCallback, useMemo } from 'react';
 import { ChartAnnotation } from './ChartAnnotation';
 import { AnnotationPositionChange } from './interfaces';
 import { yValueFormatter } from '../utils';
@@ -37,10 +37,13 @@ export function MultiAxisChartContainer({ unitMap, chart, children, onAnnotation
     return Array.from(groups.values());
   }, [chart.series, unitMap]);
 
-  const getYAxisId = (seriesId: string) => {
+  const getYAxisId = useCallback((seriesId: string) => {
     const group = unitGroups.find(g => g.series.includes(seriesId));
     return group ? `yaxis-${group.index}` : 'yaxis-0';
-  };
+  }, [unitGroups]);
+
+  // Stable legend sorter; must be declared unconditionally to respect hooks rules
+  const legendItemSorter = useCallback(() => 0, []);
 
 
   return (
@@ -73,7 +76,7 @@ export function MultiAxisChartContainer({ unitMap, chart, children, onAnnotation
         verticalAlign="bottom"
         height={36}
         wrapperStyle={{ zIndex: 1 }}
-        itemSorter={() => 0} // Sort by default series order
+        itemSorter={legendItemSorter}
       />}
 
       {/* Pass the getYAxisId function to children */}

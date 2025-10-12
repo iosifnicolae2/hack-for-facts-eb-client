@@ -6,9 +6,15 @@ import { ChartLabel } from './ChartLabel';
 import { yValueFormatter } from '../utils';
 import { useChartDiff } from '../hooks/useChartDiff';
 import { DiffArea } from './diff-select/DiffArea';
+import { useEffect, useMemo, useRef } from 'react';
 
 export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotationPositionChange, onXAxisClick, xAxisMarker, margins }: ChartRendererProps) {
-  const enabledSeries = chart.series.filter(s => s.enabled);
+  const enabledSeries = useMemo(() => chart.series.filter(s => s.enabled), [chart.series]);
+  const isFirstRenderRef = useRef(true);
+  useEffect(() => {
+    // After initial mount, disable animations to prevent re-animating on tooltip re-renders
+    isFirstRenderRef.current = false;
+  }, []);
   const {
     handleMouseDown,
     handleMouseMove,
@@ -48,7 +54,7 @@ export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotati
                   dot={{ r: 4 }}
                   activeDot={{ r: 6 }}
                   connectNulls={false}
-                  isAnimationActive={true}
+                  isAnimationActive={isFirstRenderRef.current}
                   animationDuration={300}
                   animationEasing="ease-in-out"
                 >
@@ -73,7 +79,6 @@ export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotati
                         />
                       );
                     }}
-                    formatter={(label: unknown) => yValueFormatter(Number(label as number), '')}
                   />
                 </Line>
               ))}

@@ -1,6 +1,7 @@
 import { Props as LabelProps } from "recharts/types/component/Label";
 import { Series } from "@/schemas/charts";
 import { applyAlpha } from "../utils";
+import { memo } from "react";
 
 interface ChartLabelProps extends LabelProps {
     series: Series;
@@ -8,7 +9,7 @@ interface ChartLabelProps extends LabelProps {
     color: string;
 }
 
-export function ChartLabel(props: ChartLabelProps) {
+function ChartLabelImpl(props: ChartLabelProps) {
     const { x, y, value, offset, width, series, dataLabelFormatter, color } = props;
     const xValue = isNaN(Number(x)) ? 0 : Number(x);
     const yValue = isNaN(Number(y)) ? 0 : Number(y);
@@ -46,3 +47,5 @@ export function ChartLabel(props: ChartLabelProps) {
         </g>
     );
 }
+
+export const ChartLabel = memo(ChartLabelImpl);

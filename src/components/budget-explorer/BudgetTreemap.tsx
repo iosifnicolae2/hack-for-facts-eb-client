@@ -6,6 +6,7 @@ import { yValueFormatter } from '@/components/charts/components/chart-renderer/u
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
 import type { TreemapInput } from './budget-transform'
+import { useIsMobile } from '@/hooks/use-mobile'
 
 const COLORS = [
   '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d',
@@ -132,6 +133,8 @@ const CustomizedContent: FC<{
 }
 
 export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, path = [], onViewDetails, onBackToMain, showViewDetails = false, showBackToMain = false }: Props) {
+  const isMobile = useIsMobile()
+
   const payloadData = useMemo(() => {
     return data.map((node) => ({
       name: node.name,
@@ -147,19 +150,31 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
     onNodeClick?.(code ?? null)
   }
 
+  // On mobile, show only last 2 breadcrumb items
+  const displayPath = isMobile && path.length > 2 ? path.slice(-2) : path
+
   return (
-    <div className="w-full h-[420px] space-y-1">
-      <div className="flex items-center justify-between gap-2">
-        <Breadcrumb>
-          <BreadcrumbList>
+    <div className="w-full space-y-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <Breadcrumb className="overflow-x-auto">
+          <BreadcrumbList className="flex-nowrap">
             <BreadcrumbItem>
-              <BreadcrumbLink onClick={() => onBreadcrumbClick?.(null)} className="cursor-pointer">
+              <BreadcrumbLink onClick={() => onBreadcrumbClick?.(null)} className="cursor-pointer whitespace-nowrap">
                 <Trans>Main Categories</Trans>
               </BreadcrumbLink>
             </BreadcrumbItem>
-            {path.map((item, index) => {
+            {isMobile && path.length > 2 && (
+              <>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <span className="text-muted-foreground">...</span>
+                </BreadcrumbItem>
+              </>
+            )}
+            {displayPath.map((item, index) => {
               const key = `${item.code}-${item.label}`
               const isClickable = !!item.code && /^[0-9.]+$/.test(item.code)
+              const actualIndex = isMobile && path.length > 2 ? path.length - 2 + index : index
 
               return (
                 <Fragment key={key}>
@@ -168,11 +183,13 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
                     <BreadcrumbLink
                       onClick={() => {
                         if (!isClickable) return
-                        onBreadcrumbClick?.(item.code, index)
+                        onBreadcrumbClick?.(item.code, actualIndex)
                       }}
-                      className={isClickable ? 'cursor-pointer' : 'cursor-default'}
+                      className={`${isClickable ? 'cursor-pointer' : 'cursor-default'} whitespace-nowrap ${isMobile ? 'text-sm' : ''}`}
                     >
-                      {item.label ?? item.code}
+                      {isMobile && item.label && item.label.length > 20
+                        ? `${item.label.slice(0, 20)}...`
+                        : item.label ?? item.code}
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                 </Fragment>
@@ -196,32 +213,36 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
       </div>
 
       {payloadData.length === 0 ? (
-        <div className="flex h-full items-center justify-center rounded-md border border-dashed border-muted-foreground/40 p-6">
+        <div className="flex h-[600px] items-center justify-center rounded-md border border-dashed border-muted-foreground/40 p-6">
           <p className="text-sm text-muted-foreground text-center">
             <Trans>No data available for the current selection.</Trans>
           </p>
         </div>
       ) : (
-        <ResponsiveContainer width="100%" height="100%">
-          <Treemap
-            data={payloadData}
-            dataKey="value"
-            nameKey="name"
-            animationDuration={300}
-            onClick={handleNodeClick}
-            content={(props) => <CustomizedContent
-              fill={props.fill}
-              root={{
-                value: 0
-              }}
-              {...props}
-            />}
-          >
-            <Tooltip
-              content={<CustomTooltip total={payloadData.reduce((acc, curr) => acc + curr.value, 0)} primary={primary} />}
-            />
-          </Treemap>
-        </ResponsiveContainer>
+        <div className="h-[600px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <Treemap
+              data={payloadData}
+              dataKey="value"
+              nameKey="name"
+              animationDuration={300}
+              onClick={handleNodeClick}
+              content={(props) => <CustomizedContent
+                fill={props.fill}
+                root={{
+                  value: 0
+                }}
+                {...props}
+              />}
+            >
+              {!isMobile && (
+                <Tooltip
+                  content={<CustomTooltip total={payloadData.reduce((acc, curr) => acc + curr.value, 0)} primary={primary} />}
+                />
+              )}
+            </Treemap>
+          </ResponsiveContainer>
+        </div>
       )}
     </div>
   )
