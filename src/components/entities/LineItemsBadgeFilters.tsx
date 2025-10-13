@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import type { ExecutionLineItem, FundingSourceOption } from '@/lib/api/entities';
 import { t } from '@lingui/core/macro';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { formatCurrency, formatNumber, cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TrendingUp, TrendingDown } from 'lucide-react';
@@ -152,12 +152,12 @@ export const LineItemsBadgeFilters: React.FC<LineItemsBadgeFiltersProps> = ({
   return (
     <div className="w-full mb-4">
       <div className="flex flex-wrap gap-2">
-        <Badge
+        <Button
           key="all"
           variant={selectedKey === '' ? 'default' : 'outline'}
           className={cn(
-            'cursor-pointer py-1.5 px-3 text-xs flex-shrink-0',
-            selectedKey === '' && 'shadow-sm'
+            'py-1.5 px-3 text-xs flex-shrink-0 h-auto',
+            selectedKey === '' && 'shadow-sm bg-black text-white hover:bg-black/90'
           )}
           onClick={() => onSelectedKeyChange('')}
         >
@@ -177,7 +177,7 @@ export const LineItemsBadgeFilters: React.FC<LineItemsBadgeFiltersProps> = ({
               : formatCurrency(singleViewCategory === 'vn' ? totalIncome : totalExpense, 'compact', currencyCode)
             }
           </p>
-        </Badge>
+        </Button>
         {bucketSummaries.map((bucket) => {
           const displayPercentage = isCombinedView
             ? (
@@ -196,12 +196,12 @@ export const LineItemsBadgeFilters: React.FC<LineItemsBadgeFiltersProps> = ({
             : `${bucket.title}: ${formatCurrency(singleViewCategory === 'vn' ? bucket.incomeTotal : bucket.expenseTotal, 'standard', currencyCode)} (${formatNumber(singleViewCategory === 'vn' ? bucket.incomePercentage : bucket.expensePercentage)}%)`;
 
           return (
-            <Badge
+            <Button
               key={bucket.key}
               variant={selectedKey === bucket.key ? 'default' : 'secondary'}
               className={cn(
-                'cursor-pointer py-1.5 px-3 text-xs flex-shrink-0',
-                selectedKey === bucket.key && 'shadow-sm'
+                'py-1.5 px-3 text-xs flex-shrink-0 h-auto',
+                selectedKey === bucket.key && 'shadow-sm bg-black text-white hover:bg-black/90'
               )}
               onClick={() => onSelectedKeyChange(bucket.key)}
               title={tooltipText}
@@ -211,7 +211,7 @@ export const LineItemsBadgeFilters: React.FC<LineItemsBadgeFiltersProps> = ({
               </span>
               <span className="mx-1.5 hidden sm:inline">·</span>
               <span className="font-normal">{displayPercentage}</span>
-            </Badge>
+            </Button>
           );
         })}
       </div>

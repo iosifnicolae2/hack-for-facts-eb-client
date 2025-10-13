@@ -18,6 +18,8 @@ import { BudgetTreemap } from '@/components/budget-explorer/BudgetTreemap'
 import { BudgetCategoryList } from '@/components/budget-explorer/BudgetCategoryList'
 import { useTreemapDrilldown } from '@/components/budget-explorer/useTreemapDrilldown'
 import type { AggregatedNode } from '@/components/budget-explorer/budget-transform'
+import { SpendingBreakdown } from '@/components/budget-explorer/SpendingBreakdown'
+import { RevenueBreakdown } from '@/components/budget-explorer/RevenueBreakdown'
 
 interface BaseTrendsViewProps {
   entity?: EntityDetailsData | null | undefined;
@@ -200,6 +202,13 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
           )}
         </CardContent>
       </Card>
+
+      {type === 'expense' && (
+        <SpendingBreakdown nodes={aggregatedNodes} normalization={normalization} />
+      )}
+      {type === 'income' && (
+        <RevenueBreakdown nodes={aggregatedNodes} normalization={normalization} />
+      )}
 
       <Card className="shadow-sm">
         <CardHeader>

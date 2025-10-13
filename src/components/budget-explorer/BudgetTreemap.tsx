@@ -1,6 +1,7 @@
-import { Fragment, type FC, useMemo } from 'react'
+import { Fragment, type FC, useEffect, useMemo, useRef, useState } from 'react'
 import { ResponsiveContainer, Treemap, Tooltip } from 'recharts'
 import { Trans } from '@lingui/react/macro'
+import { motion, useAnimationControls } from 'motion/react'
 
 import { yValueFormatter } from '@/components/charts/components/chart-renderer/utils'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
@@ -26,6 +27,40 @@ const getColor = (key: string) => {
     hash &= hash
   }
   return COLORS[Math.abs(hash) % COLORS.length]
+}
+
+const adjustColorBrightness = (hexColor: string | undefined, percentage: number) => {
+  if (!hexColor || typeof hexColor !== 'string') {
+    return COLORS[0]
+  }
+
+  const hexPattern = /^#?[0-9a-fA-F]{3,6}$/
+  if (!hexPattern.test(hexColor)) {
+    return hexColor
+  }
+
+  const normalizedHex = hexColor.replace('#', '')
+  const isShort = normalizedHex.length === 3
+  const expandedHex = isShort
+    ? normalizedHex.split('').map((char) => char + char).join('')
+    : normalizedHex
+
+  const numericValue = parseInt(expandedHex, 16)
+  const red = (numericValue >> 16) & 0xff
+  const green = (numericValue >> 8) & 0xff
+  const blue = numericValue & 0xff
+
+  const adjustChannel = (channel: number) => {
+    const delta = (percentage / 100) * 255
+    return Math.max(0, Math.min(255, channel + delta))
+  }
+
+  const adjustedRed = Math.round(adjustChannel(red))
+  const adjustedGreen = Math.round(adjustChannel(green))
+  const adjustedBlue = Math.round(adjustChannel(blue))
+
+  const toHex = (value: number) => value.toString(16).padStart(2, '0')
+  return `#${toHex(adjustedRed)}${toHex(adjustedGreen)}${toHex(adjustedBlue)}`
 }
 
 type BreadcrumbEntry = { code: string; label: string }
@@ -56,6 +91,13 @@ const CustomizedContent: FC<{
   normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro'
 }> = (props) => {
   const { name, value, depth, x, y, width, height, fill, root, normalization } = props
+  const hasAnimatedInRef = useRef(false)
+  const [isHovered, setIsHovered] = useState(false)
+  const bounceControls = useAnimationControls()
+
+  useEffect(() => {
+    hasAnimatedInRef.current = true
+  }, [])
 
   if (!Number.isFinite(value)) {
     return null
@@ -79,24 +121,85 @@ const CustomizedContent: FC<{
   const maxChars = Math.max(Math.floor(width / (nameFontSize * 0.55)), 0)
   const truncatedName = maxChars > 0 && name.length > maxChars ? `${name.slice(0, maxChars - 1)}…` : name
 
+  const rectTransition = {
+    type: 'spring',
+    damping: 28,
+    stiffness: 260,
+    mass: 0.8,
+  } as const
+
+  const textTransition = {
+    type: 'spring',
+    damping: 24,
+    stiffness: 320,
+    mass: 0.9,
+  } as const
+
+  const initialRectState = hasAnimatedInRef.current
+    ? undefined
+    : {
+        opacity: 0,
+        x: x + (width / 2),
+        y: y + (height / 2),
+        width: 0,
+        height: 0,
+      }
+
+  const defaultFill = typeof fill === 'string' && fill.length > 0 ? fill : COLORS[0]
+
+  useEffect(() => {
+    void bounceControls.start({
+      opacity: 1,
+      scale: 1,
+      transition: { type: 'spring', damping: 30, stiffness: 220, mass: 0.9 },
+    })
+  }, [bounceControls])
+
+  const triggerBounce = () => {
+    void bounceControls.start({
+      scale: [1, 0.94, 1.04, 1],
+      transition: {
+        duration: 0.42,
+        times: [0, 0.45, 0.75, 1],
+        ease: 'easeInOut',
+      },
+    })
+  }
+
   return (
-    <g>
-      <rect
-        x={x}
-        y={y}
-        width={width}
-        height={height}
-        style={{
-          fill,
-          stroke: '#fff',
-          strokeWidth: 2 / (depth + 1e-5),
-          strokeOpacity: 0.5,
+    <motion.g
+      initial={hasAnimatedInRef.current ? undefined : { opacity: 0, scale: 0.94 }}
+      animate={bounceControls}
+      onPointerEnter={() => setIsHovered(true)}
+      onPointerLeave={() => setIsHovered(false)}
+      onClick={triggerBounce}
+    >
+      <motion.rect
+        animate={{
+          x,
+          y,
+          width,
+          height,
+          opacity: 1,
+          fill: isHovered ? adjustColorBrightness(defaultFill, 12) : defaultFill,
         }}
+        initial={initialRectState}
+        transition={rectTransition}
+        fill={defaultFill}
+        stroke="#fff"
+        strokeWidth={2 / (depth + 1e-5)}
+        strokeOpacity={0.5}
       />
       {canShowName && (
-        <text
-          x={x + width / 2}
-          y={canShowValue ? y + height / 2 - valueFontSize / 2 : y + height / 2}
+        <motion.text
+          animate={{
+            x: x + width / 2,
+            y: canShowValue ? y + height / 2 - valueFontSize / 2 : y + height / 2,
+            opacity: 1,
+            fontSize: isHovered ? nameFontSize * 1.1 : nameFontSize,
+          }}
+          initial={hasAnimatedInRef.current ? { opacity: 0.2 } : { opacity: 0 }}
+          transition={textTransition}
           textAnchor="middle"
           dominantBaseline="middle"
           fill={baseColor}
@@ -105,35 +208,49 @@ const CustomizedContent: FC<{
           style={{ pointerEvents: 'none' }}
         >
           {truncatedName}
-        </text>
+        </motion.text>
       )}
       {canShowValue && (
-        <text
-          x={x + width / 2}
-          y={y + height / 2 + nameFontSize / 2 + 4}
+        <motion.text
+          animate={{
+            x: x + width / 2,
+            y: y + height / 2 + nameFontSize / 2 + 4,
+            opacity: 1,
+            fontSize: isHovered ? valueFontSize * 1.08 : valueFontSize,
+          }}
+          initial={hasAnimatedInRef.current ? { opacity: 0.2 } : { opacity: 0 }}
+          transition={textTransition}
           textAnchor="middle"
           dominantBaseline="middle"
           fill={baseColor}
           fontSize={valueFontSize}
           fillOpacity={0.9}
+          style={{ pointerEvents: 'none' }}
         >
           {displayValue} {unit.includes('capita') && '/ capita'}
-        </text>
+        </motion.text>
       )}
       {canShowPercentage && (
-        <text
-          x={x + width / 2}
-          y={y + height / 2 + nameFontSize / 2 + valueFontSize + 8}
+        <motion.text
+          animate={{
+            x: x + width / 2,
+            y: y + height / 2 + nameFontSize / 2 + valueFontSize + 8,
+            opacity: 1,
+            fontSize: isHovered ? percentageFontSize * 1.08 : percentageFontSize,
+          }}
+          initial={hasAnimatedInRef.current ? { opacity: 0.2 } : { opacity: 0 }}
+          transition={textTransition}
           textAnchor="middle"
           dominantBaseline="middle"
           fill={baseColor}
           fontSize={percentageFontSize}
           fillOpacity={0.85}
+          style={{ pointerEvents: 'none' }}
         >
           {`${percentage.toFixed(1)}%`}
-        </text>
+        </motion.text>
       )}
-    </g>
+    </motion.g>
   )
 }
 
@@ -165,7 +282,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
   return (
     <div className="w-full space-y-2">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <Breadcrumb className="overflow-x-auto">
+        <Breadcrumb className="overflow-x-auto max-w-[calc(100vw-4rem)] sm:max-w-[calc(100vw-8rem)] md:max-w-[calc(100vw-12rem)]">
           <BreadcrumbList className="flex-nowrap">
             <BreadcrumbItem>
               <BreadcrumbLink onClick={() => onBreadcrumbClick?.(null)} className="cursor-pointer whitespace-nowrap">
@@ -237,7 +354,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
                 data={payloadData}
                 dataKey="value"
                 nameKey="name"
-                animationDuration={300}
+                isAnimationActive={false}
                 onClick={handleNodeClick}
                 content={(props) => <CustomizedContent
                   fill={props.fill}

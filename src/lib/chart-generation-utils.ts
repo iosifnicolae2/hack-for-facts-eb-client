@@ -2,13 +2,14 @@ import { Chart, SeriesConfiguration } from "@/schemas/charts";
 import { getSeriesColor } from "@/components/charts/components/chart-renderer/utils";
 import type { GroupedChapter } from "@/schemas/financial";
 import type { AnalyticsFilterType } from "@/schemas/charts";
+import { generateHash } from "./utils";
 
 export const generateChartFromTopGroups = (
     groups: GroupedChapter[],
     baseTotal: number,
     filter: AnalyticsFilterType,
     title: string,
-    filterHash: string
+    filterHash?: string
 ): Chart => {
     const topGroups = groups
         .sort((a, b) => b.totalAmount - a.totalAmount)
@@ -23,8 +24,10 @@ export const generateChartFromTopGroups = (
             { groups: [] as typeof groups, total: 0 }
         ).groups;
 
+    const chartId = filterHash ?? generateHash(Math.random().toString());
+
     const series: SeriesConfiguration[] = topGroups.map((group, index) => ({
-        id: `${group.prefix}-${filterHash}`,
+        id: `${group.prefix}-${chartId}`,
         type: 'line-items-aggregated-yearly',
         label: group.description,
         filter: {
@@ -41,7 +44,7 @@ export const generateChartFromTopGroups = (
 
 
     const newChart: Chart = {
-        id: filterHash,
+        id: chartId,
         title: `Trend for ${title}`,
         config: {
             chartType: 'line',

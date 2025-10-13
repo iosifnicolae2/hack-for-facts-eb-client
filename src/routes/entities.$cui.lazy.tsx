@@ -1,4 +1,4 @@
-import { lazy, Suspense, useMemo, useRef, useCallback, memo, useState } from 'react'
+import { lazy, Suspense, useMemo, useRef, useCallback, memo, useState, useEffect } from 'react'
 import { createLazyFileRoute, useNavigate, useParams, useSearch } from '@tanstack/react-router'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { t } from '@lingui/core/macro'
@@ -118,6 +118,14 @@ function EntityDetailsPage() {
   const updateSearch = useCallback((newSearch: Record<string, any>) => {
     navigate({ search: (prev) => ({ ...prev, ...newSearch }), replace: true })
   }, [navigate])
+
+  useEffect(() => {
+    if (userCurrency === 'EUR' && normalization !== 'total_euro' && normalization !== 'per_capita_euro') {
+      updateSearch({ normalization: 'total_euro' })
+    } else if (userCurrency === 'RON' && normalization !== 'total' && normalization !== 'per_capita') {
+      updateSearch({ normalization: 'total' })
+    }
+  }, [userCurrency, normalization, updateSearch])
 
   const handleYearChange = useCallback((year: number) => updateSearch({ year }), [updateSearch])
 

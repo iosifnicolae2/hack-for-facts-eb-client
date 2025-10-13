@@ -17,9 +17,10 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { BudgetTreemap } from '@/components/budget-explorer/BudgetTreemap'
-import { BudgetCategoryList } from '@/components/budget-explorer/BudgetCategoryList'
 import { useTreemapDrilldown } from '@/components/budget-explorer/useTreemapDrilldown'
 import type { AggregatedNode } from '@/components/budget-explorer/budget-transform'
+import { SpendingBreakdown } from '@/components/budget-explorer/SpendingBreakdown'
+import { RevenueBreakdown } from '@/components/budget-explorer/RevenueBreakdown'
 
 interface OverviewProps {
     cui: string;
@@ -179,15 +180,15 @@ export const Overview = ({
             <Card className="shadow-sm">
                 <CardHeader>
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-                        <h3 className="text-base sm:text-lg font-semibold">Budget Distribution</h3>
-                        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                            <ToggleGroup type="single" value={accountCategory} onValueChange={(v) => v && setAccountCategory(v as 'ch' | 'vn')} variant="outline" size="sm">
-                                <ToggleGroupItem value="vn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4">Income</ToggleGroupItem>
-                                <ToggleGroupItem value="ch" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4">Expenses</ToggleGroupItem>
+                        <h3 className="text-base sm:text-lg font-semibold">Budget Distribution - {getYearLabel(selectedYear, search.month as TMonth, search.quarter as TQuarter)}</h3>
+                        <div className="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-2 sm:gap-3">
+                            <ToggleGroup type="single" value={accountCategory} onValueChange={(v) => v && setAccountCategory(v as 'ch' | 'vn')} variant="outline" size="sm" className="w-full sm:w-auto justify-between">
+                                <ToggleGroupItem value="vn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 flex-1 sm:flex-none">Income</ToggleGroupItem>
+                                <ToggleGroupItem value="ch" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 flex-1 sm:flex-none">Expenses</ToggleGroupItem>
                             </ToggleGroup>
-                            <ToggleGroup type="single" value={primary} onValueChange={(v) => v && setPrimary(v as 'fn' | 'ec')} variant="outline" size="sm">
-                                <ToggleGroupItem value="fn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4">Functional</ToggleGroupItem>
-                                <ToggleGroupItem value="ec" disabled={accountCategory === 'vn'} className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4">Economic</ToggleGroupItem>
+                            <ToggleGroup type="single" value={primary} onValueChange={(v) => v && setPrimary(v as 'fn' | 'ec')} variant="outline" size="sm" className="w-full sm:w-auto justify-between">
+                                <ToggleGroupItem value="fn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 flex-1 sm:flex-none">Functional</ToggleGroupItem>
+                                <ToggleGroupItem value="ec" disabled={accountCategory === 'vn'} className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 flex-1 sm:flex-none">Economic</ToggleGroupItem>
                             </ToggleGroup>
                         </div>
                     </div>
@@ -208,28 +209,13 @@ export const Overview = ({
                 </CardContent>
             </Card>
 
-            <Card className="shadow-sm">
-                <CardHeader>
-                    <h3>Top Categories</h3>
-                </CardHeader>
-                <CardContent>
-                    {isLoading || isLoadingLineItems ? (
-                        <Skeleton className="w-full h-[260px]" />
-                    ) : (
-                        <BudgetCategoryList 
-                            aggregated={aggregatedNodes} 
-                            depth={2} 
-                            normalization={normalization}
-                            showEconomic={accountCategory !== 'vn'}
-                            economicInfoText={
-                                <span>
-                                    Economic breakdown is not available for income. Switch to <span className="font-semibold">Expenses</span> to view economic categories.
-                                </span>
-                            }
-                        />
-                    )}
-                </CardContent>
-            </Card>
+            {/* Breakdown cards to explain totals, aligned with Budget Explorer */}
+            {accountCategory === 'ch' && (
+                <SpendingBreakdown nodes={aggregatedNodes as unknown as readonly AggregatedNode[]} normalization={normalization} />
+            )}
+            {accountCategory === 'vn' && (
+                <RevenueBreakdown nodes={aggregatedNodes as unknown as readonly AggregatedNode[]} normalization={normalization} />
+            )}
 
             <div className="space-y-6">
                 <EntityLineItemsTabs

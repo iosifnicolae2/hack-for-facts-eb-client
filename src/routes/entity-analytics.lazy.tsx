@@ -3,7 +3,7 @@ import { createLazyFileRoute } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { EntityAnalyticsFilter as EntityAnalyticsFilterPanel } from '@/components/filters/EntityAnalyticsFilter'
 import { useEntityAnalyticsFilter } from '@/hooks/useEntityAnalyticsFilter'
-import { fetchEntityAnalytics } from '@/lib/api/entity-analytics'
+import { fetchEntityAnalytics, fetchAggregatedLineItems } from '@/lib/api/entity-analytics'
 import { EntityAnalyticsTable } from '@/components/entity-analytics/EntityAnalyticsTable'
 import type { EntityAnalyticsDataPoint } from '@/schemas/entity-analytics'
 import { Button } from '@/components/ui/button'
@@ -14,6 +14,10 @@ import { useTablePreferences } from '@/hooks/useTablePreferences'
 import { EntityAnalyticsLayout } from '@/components/entity-analytics/EntityAnalyticsLayout'
 import { AnalyticsFilterType } from '@/schemas/charts'
 import { EntityAnalyticsLineItems } from '@/components/entity-analytics/EntityAnalyticsLineItems'
+import { EntityAnalyticsTreemap } from '@/components/entity-analytics/EntityAnalyticsTreemap'
+import { SpendingBreakdown } from '@/components/budget-explorer/SpendingBreakdown'
+import { RevenueBreakdown } from '@/components/budget-explorer/RevenueBreakdown'
+import { AggregatedNode } from '@/components/budget-explorer/budget-transform'
 import { generateHash } from '@/lib/utils'
 import { Analytics } from '@/lib/analytics'
 import { Seo } from '@/lib/seo'
@@ -53,6 +57,25 @@ function EntityAnalyticsPage() {
       }),
     enabled: view === 'table',
   })
+
+  const { data: aggregatedData, isLoading: isLoadingAggregated, error: errorAggregated } = useQuery({
+    queryKey: ['aggregatedLineItems', filterHash],
+    queryFn: () => fetchAggregatedLineItems({ filter, limit: 15000 }),
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    enabled: view === 'line-items',
+  });
+
+  const aggregatedNodes = useMemo<AggregatedNode[]>(() => {
+    if (!aggregatedData?.nodes) return []
+    return aggregatedData.nodes.map((n) => ({
+      fn_c: n.fn_c,
+      fn_n: n.fn_n,
+      ec_c: n.ec_c,
+      ec_n: n.ec_n,
+      amount: n.amount,
+      count: n.count,
+    }))
+  }, [aggregatedData])
 
   const nodes: readonly EntityAnalyticsDataPoint[] = data?.nodes ?? []
   const { density, setDensity, columnVisibility, setColumnVisibility, columnPinning, setColumnPinning, columnSizing, setColumnSizing, columnOrder, setColumnOrder, currencyFormat, setCurrencyFormat } = useTablePreferences('entity-analytics', {
@@ -210,10 +233,19 @@ function EntityAnalyticsPage() {
             ) : null}
           </div>
         ) : (
-          <div className="mt-4">
+          <div className="mt-4 space-y-4">
+            <EntityAnalyticsTreemap filter={filter} data={aggregatedData} isLoading={isLoadingAggregated} />
+            {filter.account_category === 'ch' ? (
+                <SpendingBreakdown nodes={aggregatedNodes} normalization={filter.normalization} />
+            ) : (
+                <RevenueBreakdown nodes={aggregatedNodes} normalization={filter.normalization} />
+            )}
             <EntityAnalyticsLineItems
               filter={filter}
               title={filter.account_category === 'vn' ? t`Income` : t`Expenses`}
+              data={aggregatedData}
+              isLoading={isLoadingAggregated}
+              error={errorAggregated as Error | null}
             />
           </div>
         )}

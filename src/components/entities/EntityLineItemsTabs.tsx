@@ -2,9 +2,9 @@ import React from 'react';
 import type { ExecutionLineItem, FundingSourceOption } from '@/lib/api/entities';
 import { t } from '@lingui/core/macro';
 import type { TMonth, TQuarter } from '@/schemas/reporting';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LineItemsGroupedSection } from './LineItemsGroupedSection';
 import { LineItemsBadgeFilters } from './LineItemsBadgeFilters';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
 export interface EntityLineItemsTabsProps {
   lineItems: readonly ExecutionLineItem[];
@@ -71,21 +71,37 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
 
   return (
     <section className="space-y-6 mb-8">
-      {/* Shared Tab Controls */}
-      <Tabs value={lineItemsTab} onValueChange={(val) => onLineItemsTabChange?.(val as 'functional' | 'funding' | 'expenseType')}>
-        <TabsList className="inline-flex bg-muted/50">
-          <TabsTrigger value="functional" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            {t`By Category`}
-          </TabsTrigger>
-          <TabsTrigger value="funding" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            {t`By Funding Source`}
-          </TabsTrigger>
-          <TabsTrigger value="expenseType" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            {t`By Expense Type`}
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="functional" className="mt-0">
+      <ToggleGroup
+        type="single"
+        value={lineItemsTab}
+        onValueChange={(value) => {
+          if (value) {
+            onLineItemsTabChange?.(value as 'functional' | 'funding' | 'expenseType');
+          }
+        }}
+        className="flex flex-wrap gap-2 justify-start"
+      >
+        <ToggleGroupItem
+          value="functional"
+          className="data-[state=on]:bg-black data-[state=on]:text-white"
+        >
+          {t`By Category`}
+        </ToggleGroupItem>
+        <ToggleGroupItem
+          value="funding"
+          className="data-[state=on]:bg-black data-[state=on]:text-white"
+        >
+          {t`By Funding Source`}
+        </ToggleGroupItem>
+        <ToggleGroupItem
+          value="expenseType"
+          className="data-[state=on]:bg-black data-[state=on]:text-white"
+        >
+          {t`By Expense Type`}
+        </ToggleGroupItem>
+      </ToggleGroup>
+      {lineItemsTab === 'functional' && (
+        <div className="mt-4">
           <div className={gridClassName}>
             {typeConfigs.map(({ type, title, searchTerm, onSearchTermChange, iconType, searchFocusKey }) => (
               <LineItemsGroupedSection
@@ -110,15 +126,16 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
               />
             ))}
           </div>
-        </TabsContent>
-
-        <TabsContent value="funding" className="mt-0">
+        </div>
+      )}
+      {lineItemsTab === 'funding' && (
+        <div className="mt-4">
           <LineItemsBadgeFilters
             items={lineItems}
             fundingSources={fundingSources}
             mode="funding"
             selectedKey={selectedFundingKey}
-            onSelectedKeyChange={onSelectedFundingKeyChange || (() => {})}
+            onSelectedKeyChange={onSelectedFundingKeyChange || (() => { })}
             normalization={normalization}
             isLoading={isLoading}
             displayMode={badgeDisplayMode}
@@ -151,15 +168,16 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
               />
             ))}
           </div>
-        </TabsContent>
-
-        <TabsContent value="expenseType" className="mt-0">
+        </div>
+      )}
+      {lineItemsTab === 'expenseType' && (
+        <div className="mt-4">
           <LineItemsBadgeFilters
             items={lineItems}
             fundingSources={fundingSources}
             mode="expenseType"
             selectedKey={selectedExpenseTypeKey}
-            onSelectedKeyChange={onSelectedExpenseTypeKeyChange || (() => {})}
+            onSelectedKeyChange={onSelectedExpenseTypeKeyChange || (() => { })}
             normalization={normalization}
             isLoading={isLoading}
             displayMode={badgeDisplayMode}
@@ -192,8 +210,8 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
               />
             ))}
           </div>
-        </TabsContent>
-      </Tabs>
+        </div>
+      )}
     </section>
   );
 };

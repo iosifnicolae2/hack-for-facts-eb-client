@@ -39,7 +39,7 @@ export function RevenueBreakdown({ nodes, normalization }: Props) {
     const interBudgetTransfers = sharesFromIncomeTax + sharesFromVAT + subsidies42 + subsidiesFromOtherAdm43 + pendingDistribution47 + institutionalRemittances3605
     const financialOps = financialOps40 + financialOps41
 
-    const effectiveRevenue = totalRevenue - interBudgetTransfers - financialOps
+    // effectiveRevenue computed below after applying additional deductions
 
     type Row = { key: string; label: React.ReactNode; subtitle: React.ReactNode; badge: string; amount: number }
 
@@ -56,13 +56,31 @@ export function RevenueBreakdown({ nodes, normalization }: Props) {
         .filter(r => Math.abs(r.amount) > 0)
         .sort((a, b) => Math.abs(b.amount) - Math.abs(a.amount))
 
-    // Additional 'se scad' adjustments that should remain included (do not subtract)
-    const includedAdjustmentsCodes = ['01.03', '02.49', '03.19', '10.02', '10.04'] as const
-    const sumByFnExact = (exact: string) => list.reduce((sum, n) => normalizeFn(n.fn_c) === exact ? sum + (n.amount ?? 0) : sum, 0)
-    const includedAdjustments = includedAdjustmentsCodes
-        .map((code) => ({ code, label: getClassificationName(code) ?? code, amount: sumByFnExact(code) }))
-        .filter(a => Math.abs(a.amount) !== 0)
+    const interBudgetPrefixes = ['04', '11'] as const
+    const providedSeScadCodesPrefix = [
+        '01.03',
+        '02.49',
+        '03.19',
+        '10.02',
+        '10.04',
+    ] as const
+    const seScadCodes = providedSeScadCodesPrefix
+        .map(code => normalizeFn(code))
+        .filter(code => code.length > 0)
+        .filter(code => !interBudgetPrefixes.some(prefix => matchPrefix(code, prefix)))
+
+    const seScadAdjustments = Array.from(new Set(seScadCodes))
+        .map((code) => ({
+            code,
+            label: getClassificationName(code) ?? code,
+            amount: sumByFnPrefix(code),
+        }))
         .sort((a, b) => Math.abs(b.amount) - Math.abs(a.amount))
+
+    const seScadDeduction = Math.abs(seScadAdjustments.reduce((sum, item) => sum + item.amount, 0))
+    const seScadBadge = seScadAdjustments.length > 0 ? `fn:${seScadAdjustments.map(item => item.code).join(' + ')}` : ''
+
+    const effectiveRevenue = totalRevenue - interBudgetTransfers - financialOps - seScadDeduction
 
     return (
         <Card className="shadow-sm border-l-4 border-l-primary/20">
@@ -136,6 +154,66 @@ export function RevenueBreakdown({ nodes, normalization }: Props) {
                         <div className="w-full border-t border-dashed border-border" />
                     </div>
 
+                    {/* Other "se scad" adjustments (non-inter-budget) */}
+                    {seScadDeduction > 0 && (
+                        <>
+                            <div className="flex items-center justify-between gap-6">
+                                <div className="flex-1">
+                                    <div className="text-sm font-medium text-foreground">
+                                        <Trans>Adjustments marked as "se scad"</Trans>
+                                    </div>
+                                    <div className="text-xs text-muted-foreground">
+                                        <Trans>Tax deductions outside inter-budget transfers</Trans>
+                                        {seScadBadge && (
+                                            <>
+                                                {' '}
+                                                <span className="font-mono text-[10px] bg-muted px-1 py-0.5 rounded">{seScadBadge}</span>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="text-right min-w-[180px]">
+                                    <div className="font-mono text-lg font-semibold text-foreground">
+                                        {yValueFormatter(seScadDeduction, currencyCode, 'compact')}
+                                    </div>
+                                    <div className="font-mono text-xs text-muted-foreground">
+                                        {yValueFormatter(seScadDeduction, currencyCode, 'standard')}
+                                        {unit.includes('capita') && <span className="ml-1 font-sans">/ capita</span>}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Breakdown */}
+                            {seScadAdjustments.length > 0 && (
+                                <div className="mt-1 pl-3 border-l border-dashed border-border">
+                                    <p className="text-[11px] text-muted-foreground leading-snug mb-1">
+                                        <Trans>Lines marked as "se scad" inside other tax chapters are deducted here to adjust the tax bases. They are shown separately from inter-budget transfers (04.* and 11.*).</Trans>
+                                    </p>
+                                    <div className="grid gap-1">
+                                        {seScadAdjustments.map((it) => (
+                                            <div key={it.code} className="flex items-center justify-between">
+                                                <div className="text-xs text-muted-foreground">
+                                                    <span className="font-mono text-[10px] bg-muted px-1 py-0.5 rounded mr-2">fn:{it.code}</span>
+                                                    {it.label}
+                                                </div>
+                                                <div className="font-mono text-xs text-muted-foreground">
+                                                    {yValueFormatter(it.amount, currencyCode, 'standard')}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Minus sign */}
+                            <div className="flex items-center justify-center py-1">
+                                <div className="w-full border-t border-dashed border-border" />
+                                <span className="px-3 text-lg font-bold text-muted-foreground">−</span>
+                                <div className="w-full border-t border-dashed border-border" />
+                            </div>
+                        </>
+                    )}
+
                     {/* Financial operations */}
                     <div className="flex items-center justify-between gap-6">
                         <div className="flex-1">
@@ -186,38 +264,7 @@ export function RevenueBreakdown({ nodes, normalization }: Props) {
                     </div>
                 </div>
 
-                {/* Additional 'se scad' adjustments (included in totals) */}
-                {includedAdjustments.length > 0 && (
-                    <div className="bg-muted/20 rounded-md p-3">
-                        <div className="text-xs font-medium text-muted-foreground mb-2">
-                            <Trans>Other "se scad" lines (already included in totals)</Trans>
-                        </div>
-                        <div className="grid gap-1">
-                            {includedAdjustments.map((it) => (
-                                <div key={it.code} className="flex items-center justify-between">
-                                    <div className="text-xs text-muted-foreground">
-                                        <span className="font-mono text-[10px] bg-muted px-1 py-0.5 rounded mr-2">fn:{it.code}</span>
-                                        {it.label}
-                                    </div>
-                                    <div className="font-mono text-xs text-muted-foreground">
-                                        {yValueFormatter(it.amount, currencyCode, 'standard')}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
-
-                {/* Notes */}
-                <div className="flex gap-2 text-xs text-muted-foreground bg-muted/20 rounded-md p-3">
-                    <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                    <p>
-                        <Trans>Lines marked as "se scad" inside other tax chapters (e.g., 10.02, 10.04, 14.50) remain included with their own sign. They correct tax bases, they are not inter-budget transfers.</Trans>
-                    </p>
-                </div>
             </CardContent>
         </Card>
     )
 }
-
-

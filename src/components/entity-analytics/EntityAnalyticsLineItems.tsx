@@ -1,43 +1,30 @@
 import React, { useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { fetchAggregatedLineItems } from "@/lib/api/entity-analytics";
 import type { AnalyticsFilterType } from "@/schemas/charts";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { SearchToggleInput } from "../entities/SearchToggleInput";
 import { GroupedItemsDisplay } from "../entities/FinancialDataCard";
 import { useFinancialData, MinimalExecutionLineItem } from "@/hooks/useFinancialData";
 import { EntityAnalyticsLineItemsSkeleton } from "./EntityAnalyticsLineItemsSkeleton";
-import { convertDaysToMs, generateHash } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { BarChart2Icon } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
 import { generateChartFromTopGroups } from "@/lib/chart-generation-utils";
 import { Trans } from "@lingui/react/macro";
+import type { AggregatedLineItemConnection } from "@/schemas/entity-analytics";
+import { generateHash } from "@/lib/utils";
 
 interface EntityAnalyticsLineItemsProps {
   filter: AnalyticsFilterType;
   title: string;
+  data?: AggregatedLineItemConnection;
+  isLoading?: boolean;
+  error?: Error | null;
 }
 
 export const EntityAnalyticsLineItems: React.FC<
   EntityAnalyticsLineItemsProps
-> = ({ filter, title }) => {
+> = ({ filter, title, data, isLoading, error }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const filterHash = useMemo(() => generateHash(JSON.stringify(filter)), [filter]);
-
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["aggregatedLineItems", filterHash],
-    queryFn: () =>
-      fetchAggregatedLineItems({
-        filter,
-        limit: 15000, // Fetch all items
-      }),
-    staleTime: convertDaysToMs(3),
-    gcTime: convertDaysToMs(3),
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchOnMount: false,
-  });
 
   const executionLineItems: MinimalExecutionLineItem[] = useMemo(() => {
     if (!data?.nodes) return [];
@@ -96,6 +83,7 @@ export const EntityAnalyticsLineItems: React.FC<
   const navigate = useNavigate();
 
   const handleViewChart = () => {
+    const filterHash = generateHash(JSON.stringify(filter));
     const newChart = generateChartFromTopGroups(
       groupsToDisplay,
       baseTotalToDisplay,
