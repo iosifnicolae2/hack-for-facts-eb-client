@@ -17,6 +17,8 @@ import { BudgetCategoryList } from '@/components/budget-explorer/BudgetCategoryL
 import { BudgetDetailsDrawer } from '@/components/budget-explorer/BudgetDetailsDrawer'
 import { BudgetLineItemsPreview } from '@/components/budget-explorer/BudgetLineItemsPreview'
 import { buildTreemapDataV2 } from '@/components/budget-explorer/budget-transform'
+import { SpendingBreakdown } from '@/components/budget-explorer/SpendingBreakdown'
+import { RevenueBreakdown } from '@/components/budget-explorer/RevenueBreakdown'
 import { ChartPreview } from '@/components/charts/components/chart-preview/ChartPreview'
 import { Chart, ChartSchema, SeriesConfigurationSchema } from '@/schemas/charts'
 import { BarChart2 } from 'lucide-react'
@@ -93,6 +95,8 @@ const ministries = [
 
 const functionalMainChapters = ['68', '66', '65', '84', '51', '61', '70', '83', '60', '74', '55', '67'] as const
 const economicMainChapters = [57, 10, 20, 51, 30, 55, 56, 61] as const
+// Revenue-focused top functional categories (codes provided by product spec)
+const revenueTopFunctionalChapters = ['21', '10', '42', '03', '14', '01', '33'] as const
 
 const normalizeCode = (code?: string | null) => code?.replace(/[^0-9.]/g, '') ?? ''
 
@@ -299,6 +303,36 @@ function BudgetExplorerPage() {
     })
   }, [filter, isMobile])
 
+  // Revenue: Top Functional Categories comparison
+  const revenueChart: Chart = useMemo(() => {
+    const series = revenueTopFunctionalChapters.map((code, index) => {
+      const seriesFilter = buildSeriesFilter(filter, { functional_prefixes: [code] })
+      const seriesId = generateHash(JSON.stringify(seriesFilter))
+      return SeriesConfigurationSchema.parse({
+        id: seriesId,
+        type: 'line-items-aggregated-yearly',
+        label: getClassificationName(code) ?? `fn:${code}`,
+        filter: seriesFilter,
+        config: {
+          color: getSeriesColor(index),
+          showDataLabels: index === 0,
+        },
+      })
+    })
+
+    const chartId = generateHash(JSON.stringify({ title: 'Top Functional Categories (Revenue)', filter }))
+    return ChartSchema.parse({
+      id: chartId,
+      title: 'Top Functional Categories',
+      config: {
+        chartType: 'area',
+        showLegend: !isMobile,
+        showTooltip: !isMobile,
+      },
+      series,
+    })
+  }, [filter, isMobile])
+
   const handleFilterChange = (partial: Partial<BudgetExplorerState>) => {
     navigate({
       search: (prev) => ({
@@ -492,6 +526,18 @@ function BudgetExplorerPage() {
           </CardContent>
         </Card>
 
+      {/* Breakdowns: show spending or revenue based on active filter */}
+      {filter.account_category === 'ch' && (
+          <div className="w-full max-w-[1200px] mx-auto">
+            <SpendingBreakdown nodes={nodes as any} normalization={filter.normalization} />
+          </div>
+        )}
+      {filter.account_category === 'vn' && (
+        <div className="w-full max-w-[1200px] mx-auto">
+          <RevenueBreakdown nodes={nodes as any} normalization={filter.normalization} />
+        </div>
+      )}
+
         <div className="w-full max-w-[1200px] mx-auto">
           <Card className="shadow-sm">
             <CardHeader>
@@ -517,41 +563,66 @@ function BudgetExplorerPage() {
           </Card>
         </div>
 
-        <div className="w-full max-w-[1200px] mx-auto">
-          <Card className="shadow-sm">
-            <CardHeader>
-              <div className="flex items-center justify-end">
-                <Button asChild variant="outline" size="sm">
-                  <Link to={'/charts/$chartId'} params={{ chartId: functionalChart.id }} search={{ chart: functionalChart, view: 'overview' }}>
-                    <BarChart2 className="w-4 h-4 mr-2" />
-                    <Trans>Open in Chart Builder</Trans>
-                  </Link>
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <ChartPreview chart={functionalChart} height={400} margins={{ left: 50 }} />
-            </CardContent>
-          </Card>
-        </div>
+        {filter.account_category === 'ch' && (
+          <>
+            <div className="w-full max-w-[1200px] mx-auto">
+              <Card className="shadow-sm">
+                <CardHeader>
+                  <div className="flex items-center justify-end">
+                    <Button asChild variant="outline" size="sm">
+                      <Link to={'/charts/$chartId'} params={{ chartId: functionalChart.id }} search={{ chart: functionalChart, view: 'overview' }}>
+                        <BarChart2 className="w-4 h-4 mr-2" />
+                        <Trans>Open in Chart Builder</Trans>
+                      </Link>
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <ChartPreview chart={functionalChart} height={400} margins={{ left: 50 }} />
+                </CardContent>
+              </Card>
+            </div>
 
-        <div className="w-full max-w-[1200px] mx-auto">
-          <Card className="shadow-sm">
-            <CardHeader>
-              <div className="flex items-center justify-end">
-                <Button asChild variant="outline" size="sm">
-                  <Link to={'/charts/$chartId'} params={{ chartId: economicChart.id }} search={{ chart: economicChart, view: 'overview' }}>
-                    <BarChart2 className="w-4 h-4 mr-2" />
-                    <Trans>Open in Chart Builder</Trans>
-                  </Link>
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <ChartPreview chart={economicChart} height={400} margins={{ left: 50 }} />
-            </CardContent>
-          </Card>
-        </div>
+            <div className="w-full max-w-[1200px] mx-auto">
+              <Card className="shadow-sm">
+                <CardHeader>
+                  <div className="flex items-center justify-end">
+                    <Button asChild variant="outline" size="sm">
+                      <Link to={'/charts/$chartId'} params={{ chartId: economicChart.id }} search={{ chart: economicChart, view: 'overview' }}>
+                        <BarChart2 className="w-4 h-4 mr-2" />
+                        <Trans>Open in Chart Builder</Trans>
+                      </Link>
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <ChartPreview chart={economicChart} height={400} margins={{ left: 50 }} />
+                </CardContent>
+              </Card>
+            </div>
+          </>
+        )}
+
+        {filter.account_category === 'vn' && (
+          <div className="w-full max-w-[1200px] mx-auto">
+            <Card className="shadow-sm">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold"><Trans>Top Functional Categories</Trans></h3>
+                  <Button asChild variant="outline" size="sm">
+                    <Link to={'/charts/$chartId'} params={{ chartId: revenueChart.id }} search={{ chart: revenueChart, view: 'overview' }}>
+                      <BarChart2 className="w-4 h-4 mr-2" />
+                      <Trans>Open in Chart Builder</Trans>
+                    </Link>
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <ChartPreview chart={revenueChart} height={400} margins={{ left: 50 }} />
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
         <Card className="shadow-sm">
           <CardHeader>

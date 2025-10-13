@@ -149,6 +149,10 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
     }))
   }, [data, primary])
 
+  const totalValue = useMemo(() => payloadData.reduce((acc, curr) => acc + (Number.isFinite(curr.value) ? curr.value : 0), 0), [payloadData])
+  const unit = getNormalizationUnit(normalization ?? 'total')
+  const currencyCode: 'RON' | 'EUR' = unit.includes('EUR') ? 'EUR' : 'RON'
+
   const handleNodeClick = (event: unknown) => {
     const target = event as { code?: string; payload?: { code?: string } }
     const code = target?.code ?? target?.payload?.code ?? null
@@ -224,31 +228,41 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
           </p>
         </div>
       ) : (
-        <div className="h-[600px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <Treemap
-              data={payloadData}
-              dataKey="value"
-              nameKey="name"
-              animationDuration={300}
-              onClick={handleNodeClick}
-              content={(props) => <CustomizedContent
-                fill={props.fill}
-                root={{
-                  value: 0
-                }}
-                {...props}
-                normalization={normalization}
-              />}
-            >
-              {!isMobile && (
-                <Tooltip
-                  content={<CustomTooltip total={payloadData.reduce((acc, curr) => acc + curr.value, 0)} primary={primary} normalization={normalization} />}
-                />
-              )}
-            </Treemap>
-          </ResponsiveContainer>
-        </div>
+        <>
+          <div className="h-[600px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <Treemap
+                data={payloadData}
+                dataKey="value"
+                nameKey="name"
+                animationDuration={300}
+                onClick={handleNodeClick}
+                content={(props) => <CustomizedContent
+                  fill={props.fill}
+                  root={{
+                    value: totalValue
+                  }}
+                  {...props}
+                  normalization={normalization}
+                />}
+              >
+                {!isMobile && (
+                  <Tooltip
+                    content={<CustomTooltip total={totalValue} primary={primary} normalization={normalization} />}
+                  />
+                )}
+              </Treemap>
+            </ResponsiveContainer>
+          </div>
+          <div className="flex flex-col items-center gap-0.5 text-center mt-4">
+            <div className="text-sm sm:text-xl font-semibold">
+              <Trans>Total</Trans>: <span className="font-bold">{yValueFormatter(totalValue, currencyCode, 'compact')}</span> {unit.includes('capita') && '/ capita'}
+            </div>
+            <div className="text-sm text-muted-foreground">
+              <span className="font-mono">{yValueFormatter(totalValue, currencyCode, 'standard')}</span> {unit.includes('capita') && '/ capita'}
+            </div>
+          </div>
+        </>
       )}
     </div>
   )
