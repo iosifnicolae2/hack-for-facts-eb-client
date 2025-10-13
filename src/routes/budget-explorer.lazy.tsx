@@ -334,17 +334,29 @@ function BudgetExplorerPage() {
   }, [filter, isMobile])
 
   const handleFilterChange = (partial: Partial<BudgetExplorerState>) => {
+    const { filter: partialFilter, primary: partialPrimary, ...restPartial } = partial
+    const nextFilter = {
+      ...defaultFilter,
+      ...filter,
+      ...(partialFilter ?? {}),
+    }
+    let nextPrimary: BudgetExplorerState['primary'] = partialPrimary ?? primary
+    if (nextFilter.account_category === 'vn') {
+      nextPrimary = 'fn'
+    }
+
     navigate({
       search: (prev) => ({
         ...(prev as BudgetExplorerState),
-        ...partial,
-        filter: { ...defaultFilter, ...(prev as BudgetExplorerState).filter, ...(partial as BudgetExplorerState).filter },
+        ...restPartial,
+        primary: nextPrimary,
+        filter: nextFilter,
       }),
       replace: true,
     })
     setPath([])
     setDrawerCode(null)
-    setDrillPrimary(partial.primary ?? primary)
+    setDrillPrimary(nextPrimary)
     setCrossConstraint(null)
     setBreadcrumbPath([])
   }
@@ -665,5 +677,4 @@ function BudgetExplorerPage() {
     </div>
   )
 }
-
 

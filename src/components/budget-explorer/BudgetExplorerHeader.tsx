@@ -14,6 +14,8 @@ type Props = {
 export function BudgetExplorerHeader({ state, onChange }: Props) {
   const { filter, primary, depth } = state
   const isEuroMode = filter.normalization === 'total_euro' || filter.normalization === 'per_capita_euro'
+  const isRevenueView = filter.account_category === 'vn'
+  const groupingValue = isRevenueView ? 'fn' : primary
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -23,7 +25,15 @@ export function BudgetExplorerHeader({ state, onChange }: Props) {
           <ToggleGroup
             type="single"
             value={filter.account_category}
-            onValueChange={(v: 'ch' | 'vn') => { if(v) onChange({ filter: { ...filter, account_category: v } as any })}}
+            onValueChange={(value: 'ch' | 'vn') => {
+              if (!value) return
+              const nextFilter = { ...filter, account_category: value } as BudgetExplorerState['filter']
+              const partialState: Partial<BudgetExplorerState> = { filter: nextFilter }
+              if (value === 'vn') {
+                partialState.primary = 'fn'
+              }
+              onChange(partialState)
+            }}
             variant="outline"
             size="sm"
             className="w-full justify-between gap-2"
@@ -47,14 +57,24 @@ export function BudgetExplorerHeader({ state, onChange }: Props) {
           <Label className="text-xs text-muted-foreground"><Trans>Grouping</Trans></Label>
           <ToggleGroup
             type="single"
-            value={primary}
-            onValueChange={(v: 'fn' | 'ec') => {if(v) onChange({ primary: v })}}
+            value={groupingValue}
+            onValueChange={(value: 'fn' | 'ec') => {
+              if (!value) return
+              if (isRevenueView && value === 'ec') return
+              onChange({ primary: value })
+            }}
             variant="outline"
             size="sm"
             className="w-full justify-between gap-2"
           >
             <ToggleGroupItem value="fn" className="flex-1 data-[state=on]:bg-foreground data-[state=on]:text-background"><Trans>Functional</Trans></ToggleGroupItem>
-            <ToggleGroupItem value="ec" className="flex-1 data-[state=on]:bg-foreground data-[state=on]:text-background"><Trans>Economic</Trans></ToggleGroupItem>
+            <ToggleGroupItem
+              value="ec"
+              disabled={isRevenueView}
+              className="flex-1 data-[state=on]:bg-foreground data-[state=on]:text-background"
+            >
+              <Trans>Economic</Trans>
+            </ToggleGroupItem>
           </ToggleGroup>
 
           <Label className="text-xs text-muted-foreground"><Trans>Detail level</Trans></Label>
@@ -82,5 +102,4 @@ export function BudgetExplorerHeader({ state, onChange }: Props) {
     </div>
   )
 }
-
 
