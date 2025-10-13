@@ -148,8 +148,10 @@ const Sidebar = React.forwardRef<
       useSidebar();
 
     const [hoverOverlay, setHoverOverlay] = React.useState(false);
+    const isHoveringRef = React.useRef(false);
 
     const handleMouseEnter = React.useCallback(() => {
+      isHoveringRef.current = true;
       if (isMobile) return;
       if (collapsible !== "icon") return;
       if (state !== "collapsed") return;
@@ -158,11 +160,18 @@ const Sidebar = React.forwardRef<
     }, [isMobile, collapsible, state, setOpen]);
 
     const handleMouseLeave = React.useCallback(() => {
+      isHoveringRef.current = false;
       setHoverOverlay(false);
       if (open && !isOverlayLockedOpen) {
         setOpen(false);
       }
     }, [open, setOpen, isOverlayLockedOpen]);
+
+    React.useEffect(() => {
+      if (open && !isOverlayLockedOpen && !isHoveringRef.current) {
+        setOpen(false);
+      }
+    }, [isOverlayLockedOpen, open, setOpen]);
 
     if (collapsible === "none") {
       return (
