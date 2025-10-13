@@ -62,18 +62,18 @@ function Index() {
           {/* Quick navigation cards */}
           <div className="mt-20 grid w-full max-w-5xl grid-cols-1 gap-8 md:grid-cols-2">
             <PageCard
-              title={t`Charts`}
-              description={t`Explore data through charts.`}
-              to="/charts"
-              image={chartPreview}
-              imageAlt="Charts preview"
-            />
-            <PageCard
               title={t`Map`}
               description={t`Explore data through a map.`}
               to="/map"
               image={mapPreview}
               imageAlt="Map preview"
+            />
+            <PageCard
+              title={t`Budget Explorer`}
+              description={t`Explore budget data and spending breakdown.`}
+              to="/budget-explorer"
+              image={morePreview}
+              imageAlt="Budget explorer preview"
             />
             <PageCard
               title={t`Entities`}
@@ -82,13 +82,12 @@ function Index() {
               image={entityAnalyticsPreview}
               imageAlt="Entity analytics preview"
             />
-
             <PageCard
-              title={t`More`}
-              description={t`More to come.`}
-              to="/"
-              image={morePreview}
-              imageAlt="More preview"
+              title={t`Charts`}
+              description={t`Explore data through charts.`}
+              to="/charts"
+              image={chartPreview}
+              imageAlt="Charts preview"
             />
           </div>
 
