@@ -16,6 +16,8 @@ type Props = {
   aggregated: AggregatedItem[]
   depth: 2 | 4 | 6
   normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro'
+  showEconomic?: boolean
+  economicInfoText?: React.ReactNode
 }
 
 const CategoryColumn = ({ title, items, baseTotal, codePrefix, normalization }: { title: React.ReactNode, items: GroupedItem[], baseTotal: number, codePrefix: 'fn' | 'ec', normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro' }) => {
@@ -56,7 +58,7 @@ const CategoryColumn = ({ title, items, baseTotal, codePrefix, normalization }: 
     )
 }
 
-export function BudgetCategoryList({ aggregated, depth, normalization }: Props) {
+export function BudgetCategoryList({ aggregated, depth, normalization, showEconomic = true, economicInfoText }: Props) {
   const functional = useMemo(() => groupData(aggregated as any, 'fn', depth), [aggregated, depth]);
   const economic = useMemo(() => groupData(aggregated as any, 'ec', depth), [aggregated, depth]);
 
@@ -67,7 +69,16 @@ export function BudgetCategoryList({ aggregated, depth, normalization }: Props) 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
       <CategoryColumn title={<Trans>Top Functional Categories</Trans>} items={functional.items} baseTotal={functional.baseTotal} codePrefix="fn" normalization={normalization} />
-      <CategoryColumn title={<Trans>Top Economic Categories</Trans>} items={economic.items} baseTotal={economic.baseTotal} codePrefix="ec" normalization={normalization} />
+      {showEconomic ? (
+        <CategoryColumn title={<Trans>Top Economic Categories</Trans>} items={economic.items} baseTotal={economic.baseTotal} codePrefix="ec" normalization={normalization} />
+      ) : (
+        <div>
+          <h4 className="text-base font-semibold mb-4"><Trans>Top Economic Categories</Trans></h4>
+          <div className="rounded-md border p-4 text-sm text-muted-foreground">
+            {economicInfoText ?? <Trans>No economic breakdown is available for income.</Trans>}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

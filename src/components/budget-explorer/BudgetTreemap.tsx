@@ -182,8 +182,9 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
             )}
             {displayPath.map((item, index) => {
               const key = `${item.code}-${item.label}`
-              const isClickable = !!item.code && /^[0-9.]+$/.test(item.code)
               const actualIndex = isMobile && path.length > 2 ? path.length - 2 + index : index
+              const isLastCrumb = actualIndex === (path.length - 1)
+              const isClickable = !!item.code && /^[0-9.]+$/.test(item.code) && !isLastCrumb
 
               return (
                 <Fragment key={key}>
@@ -194,7 +195,8 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
                         if (!isClickable) return
                         onBreadcrumbClick?.(item.code, actualIndex)
                       }}
-                      className={`${isClickable ? 'cursor-pointer' : 'cursor-default'} whitespace-nowrap ${isMobile ? 'text-sm' : ''}`}
+                      className={`${isClickable ? 'cursor-pointer' : 'cursor-default pointer-events-none text-foreground'} whitespace-nowrap ${isMobile ? 'text-sm' : ''}`}
+                      aria-disabled={!isClickable}
                     >
                       {isMobile && item.label && item.label.length > 20
                         ? `${item.label.slice(0, 20)}...`

@@ -138,15 +138,15 @@ export const Overview = ({
         }))
     }, [filteredItems])
 
-    const { primary, setPrimary, treemapData, breadcrumbs, onNodeClick, onBreadcrumbClick } = useTreemapDrilldown({ nodes: aggregatedNodes, initialPrimary: 'fn', rootDepth: 2 })
+    const { primary, activePrimary, setPrimary, treemapData, breadcrumbs, onNodeClick, onBreadcrumbClick, reset } = useTreemapDrilldown({ nodes: aggregatedNodes, initialPrimary: 'fn', rootDepth: 2 })
 
     // Reset drilldown when switching between income/expenses and auto-switch to functional for income
     useEffect(() => {
-        onBreadcrumbClick(null)
-        if (accountCategory === 'vn' && primary !== 'fn') {
+        reset()
+        if (accountCategory === 'vn') {
             setPrimary('fn')
         }
-    }, [accountCategory, onBreadcrumbClick, primary, setPrimary])
+    }, [accountCategory])
 
     return (
         <div className="space-y-6 sm:space-y-8">
@@ -198,7 +198,7 @@ export const Overview = ({
                     ) : (
                         <BudgetTreemap
                             data={treemapData}
-                            primary={primary}
+                            primary={activePrimary}
                             onNodeClick={onNodeClick}
                             onBreadcrumbClick={onBreadcrumbClick}
                             path={breadcrumbs}
@@ -216,7 +216,17 @@ export const Overview = ({
                     {isLoading || isLoadingLineItems ? (
                         <Skeleton className="w-full h-[260px]" />
                     ) : (
-                        <BudgetCategoryList aggregated={aggregatedNodes} depth={2} normalization={normalization} />
+                        <BudgetCategoryList 
+                            aggregated={aggregatedNodes} 
+                            depth={2} 
+                            normalization={normalization}
+                            showEconomic={accountCategory !== 'vn'}
+                            economicInfoText={
+                                <span>
+                                    Economic breakdown is not available for income. Switch to <span className="font-semibold">Expenses</span> to view economic categories.
+                                </span>
+                            }
+                        />
                     )}
                 </CardContent>
             </Card>

@@ -159,17 +159,19 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
 
   const {
     primary,
+    activePrimary,
     setPrimary,
     treemapData,
     breadcrumbs,
     onNodeClick,
     onBreadcrumbClick,
+    reset,
   } = useTreemapDrilldown({ nodes: aggregatedNodes, initialPrimary: 'fn', rootDepth: 2 })
 
   // Reset drilldown when switching between income/expense tabs
   useEffect(() => {
-    onBreadcrumbClick(null)
-  }, [type, onBreadcrumbClick])
+    reset()
+  }, [type, reset])
 
   return (
     <div className="space-y-8">
@@ -189,7 +191,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
           ) : (
             <BudgetTreemap
               data={treemapData}
-              primary={primary}
+              primary={activePrimary}
               onNodeClick={onNodeClick}
               onBreadcrumbClick={onBreadcrumbClick}
               path={breadcrumbs}
@@ -204,10 +206,20 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
           <h3>Top Categories</h3>
         </CardHeader>
         <CardContent>
-          {isLoading || !fullLineItems ? (
+        {isLoading || !fullLineItems ? (
             <Skeleton className="w-full h-[260px]" />
           ) : (
-            <BudgetCategoryList aggregated={aggregatedNodes} depth={2} normalization={normalization} />
+          <BudgetCategoryList 
+            aggregated={aggregatedNodes} 
+            depth={2} 
+            normalization={normalization}
+            showEconomic={type !== 'income'}
+            economicInfoText={
+              <span>
+                Economic breakdown is not available for income. Switch to <span className="font-semibold">Expenses</span> to view economic categories.
+              </span>
+            }
+          />
           )}
         </CardContent>
       </Card>
