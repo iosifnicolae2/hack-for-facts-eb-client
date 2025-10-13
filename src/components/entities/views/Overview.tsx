@@ -12,7 +12,14 @@ import { queryClient } from '@/lib/queryClient';
 import { entityDetailsQueryOptions } from '@/lib/hooks/useEntityDetails';
 import { getInitialFilterState, makeTrendPeriod } from '@/schemas/reporting';
 import { useDebouncedCallback } from "@/lib/hooks/useDebouncedCallback";
-import { useCallback } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { BudgetTreemap } from '@/components/budget-explorer/BudgetTreemap'
+import { BudgetCategoryList } from '@/components/budget-explorer/BudgetCategoryList'
+import { useTreemapDrilldown } from '@/components/budget-explorer/useTreemapDrilldown'
+import type { AggregatedNode } from '@/components/budget-explorer/budget-transform'
 
 interface OverviewProps {
     cui: string;
@@ -112,6 +119,35 @@ export const Overview = ({
         }
     }, [periodType, selectedYear, search.month, search.quarter, years, years.length, years[years.length - 1], years[0], debouncedPrefetch, reportType, handlePrefetchYear])
 
+    const [accountCategory, setAccountCategory] = useState<'ch' | 'vn'>('ch')
+
+    const filteredItems = useMemo(() => {
+        const nodes = lineItems?.nodes ?? []
+        return nodes.filter((n: any) => n?.account_category === accountCategory)
+    }, [lineItems, accountCategory])
+
+    const aggregatedNodes = useMemo<AggregatedNode[]>(() => {
+        return filteredItems.map((n: any) => ({
+            fn_c: n?.functionalClassification?.functional_code ?? null,
+            fn_n: n?.functionalClassification?.functional_name ?? null,
+            ec_c: n?.economicClassification?.economic_code ?? null,
+            ec_n: n?.economicClassification?.economic_name ?? null,
+            amount: Number(n?.amount ?? 0),
+            // count is used by some grouping; default to 1 if missing
+            count: Number.isFinite((n as any)?.count) ? (n as any).count : 1,
+        }))
+    }, [filteredItems])
+
+    const { primary, setPrimary, treemapData, breadcrumbs, onNodeClick, onBreadcrumbClick } = useTreemapDrilldown({ nodes: aggregatedNodes, initialPrimary: 'fn', rootDepth: 2 })
+
+    // Reset drilldown when switching between income/expenses and auto-switch to functional for income
+    useEffect(() => {
+        onBreadcrumbClick(null)
+        if (accountCategory === 'vn' && primary !== 'fn') {
+            setPrimary('fn')
+        }
+    }, [accountCategory, onBreadcrumbClick, primary, setPrimary])
+
     return (
         <div className="space-y-6 sm:space-y-8">
             <EntityFinancialSummary
@@ -139,6 +175,51 @@ export const Overview = ({
                 isLoading={isLoading}
                 onPrefetchPeriod={handlePrefetchPeriod}
             />
+
+            <Card className="shadow-sm">
+                <CardHeader>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+                        <h3 className="text-base sm:text-lg font-semibold">Budget Distribution</h3>
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                            <ToggleGroup type="single" value={accountCategory} onValueChange={(v) => v && setAccountCategory(v as 'ch' | 'vn')} variant="outline" size="sm">
+                                <ToggleGroupItem value="vn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4">Income</ToggleGroupItem>
+                                <ToggleGroupItem value="ch" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4">Expenses</ToggleGroupItem>
+                            </ToggleGroup>
+                            <ToggleGroup type="single" value={primary} onValueChange={(v) => v && setPrimary(v as 'fn' | 'ec')} variant="outline" size="sm">
+                                <ToggleGroupItem value="fn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4">Functional</ToggleGroupItem>
+                                <ToggleGroupItem value="ec" disabled={accountCategory === 'vn'} className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4">Economic</ToggleGroupItem>
+                            </ToggleGroup>
+                        </div>
+                    </div>
+                </CardHeader>
+                <CardContent>
+                    {isLoading || isLoadingLineItems ? (
+                        <Skeleton className="w-full h-[600px]" />
+                    ) : (
+                        <BudgetTreemap
+                            data={treemapData}
+                            primary={primary}
+                            onNodeClick={onNodeClick}
+                            onBreadcrumbClick={onBreadcrumbClick}
+                            path={breadcrumbs}
+                            normalization={normalization}
+                        />
+                    )}
+                </CardContent>
+            </Card>
+
+            <Card className="shadow-sm">
+                <CardHeader>
+                    <h3>Top Categories</h3>
+                </CardHeader>
+                <CardContent>
+                    {isLoading || isLoadingLineItems ? (
+                        <Skeleton className="w-full h-[260px]" />
+                    ) : (
+                        <BudgetCategoryList aggregated={aggregatedNodes} depth={2} normalization={normalization} />
+                    )}
+                </CardContent>
+            </Card>
 
             <div className="space-y-6">
                 <EntityLineItemsTabs

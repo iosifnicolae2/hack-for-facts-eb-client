@@ -27,6 +27,7 @@ interface EntityHeaderContentProps {
   yearSelector?: React.ReactNode;
   className?: string;
   isLoading?: boolean;
+  onNotificationBellClick?: () => void;
 }
 
 interface EntityHeaderProps {
@@ -36,6 +37,7 @@ interface EntityHeaderProps {
   yearSelector?: React.ReactNode;
   className?: string;
   isLoading?: boolean;
+  onNotificationBellClick?: () => void;
 }
 
 export const EntityHeader: React.FC<EntityHeaderProps> = ({
@@ -45,6 +47,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
   yearSelector,
   className,
   isLoading,
+  onNotificationBellClick,
 }) => {
 
   if (isLoading || !entity) {
@@ -59,6 +62,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
       yearSelector={yearSelector}
       className={className}
       isLoading={isLoading}
+      onNotificationBellClick={onNotificationBellClick}
     />
   )
 };
@@ -70,11 +74,23 @@ const EntityHeaderContent: React.FC<EntityHeaderContentProps> = ({
   yearSelector,
   className,
   isLoading,
+  onNotificationBellClick,
 }) => {
   const entityTypeLabel = useEntityTypeLabel();
   const entityCategory = entity?.entity_type ? entityTypeLabel.map(entity.entity_type) : null;
   const { headerRef, headerTitleRef, headerBottomRef, stickyTop } = useHeaderSize(isLoading);
   const { url: wikipediaUrl } = useExternalSearchLink(entity);
+  const notificationBellRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (onNotificationBellClick) {
+      const button = notificationBellRef.current?.querySelector('button');
+      if (button) {
+        button.click();
+      }
+    }
+  }, [onNotificationBellClick]);
+
   return (
     <header ref={headerRef} className={cn("bg-background px-3 sm:px-6 pb-2 rounded-lg shadow-lg sticky z-30", className)} style={{ top: stickyTop }}>
       <div className="flex flex-col gap-4">
@@ -88,7 +104,9 @@ const EntityHeaderContent: React.FC<EntityHeaderContentProps> = ({
               </h1>
               <div className="flex items-center gap-2 flex-shrink-0">
                 {yearSelector}
-                <EntityNotificationBell cui={entity.cui} entityName={entity.name} />
+                <div ref={notificationBellRef}>
+                  <EntityNotificationBell cui={entity.cui} entityName={entity.name} />
+                </div>
               </div>
             </div>
           </div>

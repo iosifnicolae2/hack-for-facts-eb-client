@@ -37,9 +37,15 @@ type BuildTreemapV2Options = {
 
 export function buildTreemapDataV2({ data, primary, path, constraint, rootDepth }: BuildTreemapV2Options): TreemapInput[] {
   const currentCode = path.length > 0 ? path[path.length - 1] : null
-  const depth = (currentCode
+  let depth = (currentCode
     ? (String(currentCode).split('.').length + 1) * 2
     : (rootDepth ?? 2)) as 2 | 4 | 6
+  
+  // Economic codes only go 2 levels deep (chapter and subchapter), cap at depth 4
+  if (primary === 'ec' && depth > 6) {
+    depth = 6
+  }
+  
   if (depth > 6) return []
 
   const getGroupCode = (code: string | null | undefined) => {

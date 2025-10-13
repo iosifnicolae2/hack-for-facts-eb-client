@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { EntityDetailsData } from '@/lib/api/entities';
 import { Chart, SeriesConfiguration, Normalization } from '@/schemas/charts';
 import { useParams } from '@tanstack/react-router';
@@ -11,6 +11,13 @@ import { t } from '@lingui/core/macro';
 import { toReportTypeValue, type ReportPeriodInput, type GqlReportType, type TMonth, type TQuarter } from '@/schemas/reporting';
 import { useEntityExecutionLineItems } from '@/lib/hooks/useEntityDetails';
 import { EntityLineItemsTabs } from '../EntityLineItemsTabs';
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { BudgetTreemap } from '@/components/budget-explorer/BudgetTreemap'
+import { BudgetCategoryList } from '@/components/budget-explorer/BudgetCategoryList'
+import { useTreemapDrilldown } from '@/components/budget-explorer/useTreemapDrilldown'
+import type { AggregatedNode } from '@/components/budget-explorer/budget-transform'
 
 interface BaseTrendsViewProps {
   entity?: EntityDetailsData | null | undefined;
@@ -139,8 +146,72 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
   // Build xAxis marker value to reflect current selection
   const xAxisMarker = reportPeriod.type === 'YEAR' ? currentYear : anchor;
 
+  const aggregatedNodes = useMemo<AggregatedNode[]>(() => {
+    return (lineItems ?? []).map((n: any) => ({
+      fn_c: n?.functionalClassification?.functional_code ?? null,
+      fn_n: n?.functionalClassification?.functional_name ?? null,
+      ec_c: n?.economicClassification?.economic_code ?? null,
+      ec_n: n?.economicClassification?.economic_name ?? null,
+      amount: Number(n?.amount ?? 0),
+      count: Number.isFinite((n as any)?.count) ? (n as any).count : 1,
+    }))
+  }, [lineItems])
+
+  const {
+    primary,
+    setPrimary,
+    treemapData,
+    breadcrumbs,
+    onNodeClick,
+    onBreadcrumbClick,
+  } = useTreemapDrilldown({ nodes: aggregatedNodes, initialPrimary: 'fn', rootDepth: 2 })
+
+  // Reset drilldown when switching between income/expense tabs
+  useEffect(() => {
+    onBreadcrumbClick(null)
+  }, [type, onBreadcrumbClick])
+
   return (
     <div className="space-y-8">
+      <Card className="shadow-sm">
+        <CardHeader>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+            <h3 className="text-base sm:text-lg font-semibold">Budget Distribution</h3>
+            <ToggleGroup type="single" value={primary} onValueChange={(v) => v && setPrimary(v as 'fn' | 'ec')} variant="outline" size="sm">
+              <ToggleGroupItem value="fn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4">Functional</ToggleGroupItem>
+              <ToggleGroupItem value="ec" disabled={type === 'income'} className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4">Economic</ToggleGroupItem>
+            </ToggleGroup>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {isLoading || !fullLineItems ? (
+            <Skeleton className="w-full h-[600px]" />
+          ) : (
+            <BudgetTreemap
+              data={treemapData}
+              primary={primary}
+              onNodeClick={onNodeClick}
+              onBreadcrumbClick={onBreadcrumbClick}
+              path={breadcrumbs}
+              normalization={normalization}
+            />
+          )}
+        </CardContent>
+      </Card>
+
+      <Card className="shadow-sm">
+        <CardHeader>
+          <h3>Top Categories</h3>
+        </CardHeader>
+        <CardContent>
+          {isLoading || !fullLineItems ? (
+            <Skeleton className="w-full h-[260px]" />
+          ) : (
+            <BudgetCategoryList aggregated={aggregatedNodes} depth={2} normalization={normalization} />
+          )}
+        </CardContent>
+      </Card>
+
       <ChartCard
         chart={trendChart}
         xAxisMarker={xAxisMarker as any}
