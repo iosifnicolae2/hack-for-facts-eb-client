@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, type ReactElement } from "react";
 import { CookieIcon } from "lucide-react";
-import { acceptAll, declineAll } from "@/lib/consent";
+import { acceptAll } from "@/lib/consent";
 import { onConsentChange } from "@/lib/consent";
 import { Analytics } from "@/lib/analytics";
 import { Trans } from "@lingui/react/macro";
@@ -14,6 +14,7 @@ import { Link, useLocation } from "@tanstack/react-router";
  */
 export function CookieConsentBanner(): ReactElement | null {
   const [isBannerVisible, setBannerVisible] = useState(false);
+  const [isEntering, setIsEntering] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
   const { pathname } = useLocation();
 
@@ -28,14 +29,28 @@ export function CookieConsentBanner(): ReactElement | null {
 
     // Show the banner only if the user hasn't made a choice yet.
     const storedConsent = window.localStorage.getItem("cookie-consent");
-    setBannerVisible(!storedConsent);
+    const shouldShow = !storedConsent;
+
+    if (shouldShow) {
+      setBannerVisible(true);
+      // Trigger entrance animation after a brief delay
+      setTimeout(() => setIsEntering(true), 50);
+    } else {
+      setBannerVisible(false);
+    }
   }, [pathname]);
 
   useEffect(() => {
-    showBanner()
-  }, [pathname]);
+    // Delay showing the banner to avoid disrupting initial page load
+    const timer = setTimeout(() => {
+      showBanner()
+    }, 2000); // 2 second delay
+
+    return () => clearTimeout(timer);
+  }, [pathname, showBanner]);
 
   const handleDecision = (consentFunction: () => void) => {
+    setIsEntering(false);
     setIsExiting(true);
     consentFunction();
     // Hide banner after the exit animation completes
@@ -46,8 +61,9 @@ export function CookieConsentBanner(): ReactElement | null {
 
   return (
     <div
-      className={`fixed bottom-0 left-1/2 -translate-x-1/2 z-50 p-3 md:p-6 max-w-5xl w-full transition-transform duration-500 ease-in-out ${isExiting ? "translate-y-full" : "translate-y-0"
-        }`}
+      className={`fixed bottom-0 left-1/2 -translate-x-1/2 z-50 p-3 md:p-6 max-w-5xl w-full transition-transform duration-500 ease-in-out ${
+        isExiting ? "translate-y-full" : isEntering ? "translate-y-0" : "translate-y-full"
+      }`}
       role="dialog"
       aria-live="polite"
       aria-label="Cookie consent"
@@ -70,27 +86,18 @@ export function CookieConsentBanner(): ReactElement | null {
           </p>
 
           <div className="mt-5 flex flex-col sm:flex-row sm:items-center gap-3">
-            {/* The order is intentional: Customize, then Reject, then Accept */}
             <Link
               to="/cookies"
               className="w-full sm:w-auto rounded-lg py-2 px-5 text-center text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors"
             >
               <Trans>Customize</Trans>
             </Link>
-            <div className="flex w-full sm:w-auto sm:ml-auto gap-3">
-              <button
-                onClick={() => handleDecision(declineAll)}
-                className="w-full sm:w-auto rounded-lg py-2 px-5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors"
-              >
-                <Trans>Reject All</Trans>
-              </button>
-              <button
-                onClick={() => handleDecision(acceptAll)}
-                className="w-full sm:w-auto rounded-lg bg-blue-600 py-2 px-5 text-sm font-medium text-white hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-              >
-                <Trans>Accept All</Trans>
-              </button>
-            </div>
+            <button
+              onClick={() => handleDecision(acceptAll)}
+              className="w-full sm:w-auto sm:ml-auto rounded-lg bg-blue-600 py-2 px-5 text-sm font-medium text-white hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              <Trans>Accept All</Trans>
+            </button>
           </div>
         </div>
       </div>

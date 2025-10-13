@@ -12,6 +12,7 @@ import { EntityReportControls } from '@/components/entities/EntityReportControls
 import { EntityReportLabel } from '@/components/entities/EntityReportLabel'
 import { ViewLoading } from '@/components/ui/ViewLoading'
 import { AlertTriangle, Info } from 'lucide-react'
+import { EntityNotificationAnnouncement } from '@/features/notifications/components/EntityNotificationAnnouncement'
 
 import type { GqlReportType, ReportPeriodInput, ReportPeriodType, TMonth, TQuarter } from '@/schemas/reporting'
 import { getInitialFilterState, makeTrendPeriod } from '@/schemas/reporting'
@@ -58,6 +59,7 @@ function EntityDetailsPage() {
   const yearSelectorRef = useRef<HTMLButtonElement>(null)
   const [userCurrency] = usePersistedState<'RON' | 'EUR'>('user-currency', 'RON')
   const [filtersOpen, setFiltersOpen] = useState(false)
+  const [shouldOpenNotifications, setShouldOpenNotifications] = useState(false)
 
   useHotkeys('mod+;', () => yearSelectorRef.current?.click(), {
     enableOnFormTags: ['INPUT', 'TEXTAREA', 'SELECT'],
@@ -217,12 +219,16 @@ function EntityDetailsPage() {
   return (
     <div className="min-h-screen p-3 sm:p-4 md:p-6 lg:p-8">
       <Seo title={metaTitle} description={metaDescription} type="article" />
+      <EntityNotificationAnnouncement
+        onOpenNotifications={() => setShouldOpenNotifications(true)}
+      />
       <div className="container mx-auto max-w-7xl space-y-4 sm:space-y-6 lg:space-y-8">
         <EntityHeader
           entity={entity}
           isLoading={isLoading}
           views={views}
           activeView={activeView}
+          onNotificationBellClick={shouldOpenNotifications ? () => setShouldOpenNotifications(false) : undefined}
           yearSelector={
             <ResponsivePopover
               open={filtersOpen}
