@@ -73,9 +73,7 @@ type Props = {
   onBreadcrumbClick?: (code: string | null, index?: number) => void
   path?: BreadcrumbEntry[]
   onViewDetails?: () => void
-  onBackToMain?: () => void
   showViewDetails?: boolean
-  showBackToMain?: boolean
   normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro'
 }
 
@@ -289,7 +287,7 @@ const CustomizedContent: FC<{
   )
 }
 
-export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, path = [], onViewDetails, onBackToMain, showViewDetails = false, showBackToMain = false, normalization }: Props) {
+export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, path = [], onViewDetails, showViewDetails = false, normalization }: Props) {
   const isMobile = useIsMobile()
 
   const payloadData = useMemo(() => {
@@ -379,11 +377,6 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
               <Trans>View Details</Trans>
             </Button>
           )}
-          {showBackToMain && (
-            <Button variant="outline" size="sm" onClick={onBackToMain}>
-              <Trans>Back to main view</Trans>
-            </Button>
-          )}
         </div>
       </div>
 
@@ -400,7 +393,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute right-2 top-2 z-10 h-8 w-8 rounded-md bg-black text-white transition-colors"
+                className="absolute right-2 top-2 z-10 h-8 w-8 rounded-md bg-black text-white transition-colors hover:bg-black/80 hover:text-white"
                 onClick={handleBackClick}
                 aria-label="Go back"
               >

@@ -3,6 +3,16 @@
         "description": "TOTAL CHELTUIELI",
         "children": [
             {
+                "description": "No economic classification",
+                "code": "00",
+                "children": [
+                    {
+                        "description": "No economic classification",
+                        "code": "00.00"
+                    }
+                ]
+            },
+            {
                 "description": "Cheltuieli de personal",
                 "code": "10",
                 "children": [

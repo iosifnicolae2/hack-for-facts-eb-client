@@ -369,6 +369,7 @@ function BudgetExplorerPage() {
     // Ignore clicks that would not advance (duplicate of last step)
     const lastPathCode = path[path.length - 1]
     if (lastPathCode && lastPathCode === normalizedCode) return
+    if (normalizedCode.startsWith('00')) return
 
     const selectedDepth = normalizedCode ? normalizedCode.split('.').length : 0 // 1->2d, 2->4d, 3->6d
 
@@ -392,8 +393,7 @@ function BudgetExplorerPage() {
         setPath(nextPath)
         return
       }
-      // At 6-digit on second primary: append breadcrumb once and stop advancing drill path
-      appendBreadcrumb(drillPrimary, normalizedCode)
+      // End of path
       return
     }
 
@@ -515,11 +515,7 @@ function BudgetExplorerPage() {
                 path={breadcrumbPath}
                 primary={drillPrimary}
                 onViewDetails={() => setDrawerCode(currentDrillCode)}
-                onBackToMain={() => {
-                  clearDrill()
-                }}
                 showViewDetails={!!currentDrillCode && !crossConstraint}
-                showBackToMain={true}
                 normalization={filter.normalization}
               />
             )}
