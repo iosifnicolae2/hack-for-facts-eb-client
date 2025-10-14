@@ -2,6 +2,7 @@ import { Fragment, type FC, useEffect, useMemo, useRef, useState } from 'react'
 import { ResponsiveContainer, Treemap, Tooltip } from 'recharts'
 import { Trans } from '@lingui/react/macro'
 import { motion, useAnimationControls } from 'motion/react'
+import { ArrowLeft } from 'lucide-react'
 
 import { yValueFormatter } from '@/components/charts/components/chart-renderer/utils'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
@@ -148,12 +149,12 @@ const CustomizedContent: FC<{
   const initialRectState = hasAnimatedInRef.current
     ? undefined
     : {
-        opacity: 0,
-        x: x + (width / 2),
-        y: y + (height / 2),
-        width: 0,
-        height: 0,
-      }
+      opacity: 0,
+      x: x + (width / 2),
+      y: y + (height / 2),
+      width: 0,
+      height: 0,
+    }
 
   const defaultFill = typeof fill === 'string' && fill.length > 0 ? fill : COLORS[0]
 
@@ -300,6 +301,18 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
     }))
   }, [data, primary])
 
+  const handleBackClick = () => {
+    if (!onBreadcrumbClick) return
+
+    if (path.length > 1) {
+      const parentIndex = path.length - 2
+      const parent = path[parentIndex]
+      onBreadcrumbClick(parent.code, parentIndex)
+    } else if (path.length === 1) {
+      onBreadcrumbClick(null)
+    }
+  }
+
   const totalValue = useMemo(() => payloadData.reduce((acc, curr) => acc + (Number.isFinite(curr.value) ? curr.value : 0), 0), [payloadData])
   const unit = getNormalizationUnit(normalization ?? 'total')
   const currencyCode: 'RON' | 'EUR' = unit.includes('EUR') ? 'EUR' : 'RON'
@@ -382,7 +395,18 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
         </div>
       ) : (
         <>
-          <div className="h-[600px] w-full">
+          <div className="relative h-[600px] w-full">
+            {path.length > 0 && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute right-2 top-2 z-10 h-8 w-8 rounded-md bg-black text-white transition-colors"
+                onClick={handleBackClick}
+                aria-label="Go back"
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+            )}
             <ResponsiveContainer width="100%" height="100%">
               <Treemap
                 data={payloadData}
@@ -401,6 +425,10 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
               >
                 {!isMobile && (
                   <Tooltip
+                    animationEasing='ease-in-out'
+                    animationDuration={500}
+                    offset={50}
+                    allowEscapeViewBox={{ x: true, y: false }}
                     content={<CustomTooltip total={totalValue} primary={primary} normalization={normalization} />}
                   />
                 )}
@@ -430,29 +458,31 @@ const CustomTooltip = ({ active, payload, total, primary, normalization }: { act
     const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON'
 
     return (
-      <div className="bg-background/80 backdrop-blur-sm border border-border/50 rounded-lg shadow-lg p-3 text-sm min-w-[250px] select-none">
-        <div className="flex items-center gap-3 mb-2">
-          <span
-            className="inline-block w-3 h-3 rounded-full flex-shrink-0"
-            style={{ backgroundColor: data.fill }}
-          />
-          <div>
-            <p className="font-semibold text-foreground truncate">{data.name}</p>
-            <p className="text-muted-foreground text-xs">{primary}:{data.code}</p>
-          </div>
-        </div>
-        <hr className="my-2 border-border/30" />
-        <div className="space-y-1.5">
-          <div className="flex justify-between items-center gap-4">
-            <span className="text-muted-foreground text-xs">Amount:</span>
-            <div className="flex flex-col items-end">
-              <span className="font-mono font-semibold text-sm">{yValueFormatter(value, currencyCode, 'compact')} {unit.includes('capita') && '/ capita'}</span>
-              <span className="font-mono text-xs text-muted-foreground">{yValueFormatter(value, currencyCode, 'standard')}</span>
+      <div className='relative'>
+        <div className="bg-background/80 backdrop-blur-sm border border-border/50 rounded-lg shadow-lg p-3 text-sm min-w-[250px] select-none translate-x-[calc(-50%-50px)]">
+          <div className="flex items-center gap-3 mb-2 w-full">
+            <span
+              className="inline-block w-3 h-3 rounded-full flex-shrink-0"
+              style={{ backgroundColor: data.fill }}
+            />
+            <div className="max-w-[400px]">
+              <p className="font-semibold text-foreground break-words whitespace-pre-wrap">{data.name}</p>
+              <p className="text-muted-foreground text-xs truncate">{primary}:{data.code}</p>
             </div>
           </div>
-          <div className="flex justify-between items-center gap-4">
-            <span className="text-muted-foreground text-xs">Share:</span>
-            <span className="font-mono font-semibold text-sm">{percentage.toFixed(2)}%</span>
+          <hr className="my-2 border-border/30" />
+          <div className="space-y-1.5">
+            <div className="flex justify-between items-center gap-4">
+              <span className="text-muted-foreground text-xs">Amount:</span>
+              <div className="flex flex-col items-end">
+                <span className="font-mono font-semibold text-sm">{yValueFormatter(value, currencyCode, 'compact')} {unit.includes('capita') && '/ capita'}</span>
+                <span className="font-mono text-xs text-muted-foreground">{yValueFormatter(value, currencyCode, 'standard')}</span>
+              </div>
+            </div>
+            <div className="flex justify-between items-center gap-4">
+              <span className="text-muted-foreground text-xs">Share:</span>
+              <span className="font-mono font-semibold text-sm">{percentage.toFixed(2)}%</span>
+            </div>
           </div>
         </div>
       </div>
