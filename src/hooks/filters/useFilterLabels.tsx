@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { GetLabels, LabelStore } from "./interfaces";
 import { OptionItem } from "@/components/filters/base-filter/interfaces";
 import { getBudgetSectorLabels, getEconomicClassificationLabels, getEntityLabels, getFundingSourceLabels, getFunctionalClassificationLabels, getUatLabels } from "@/lib/api/labels";
@@ -32,6 +32,7 @@ const saveLocalData = (key: string, data: Record<string, string>) => {
 
 export const useDataLabelBuilder = (key: string, getLabels: GetLabels, initialIds: (string | number)[]): LabelStore => {
     const queryClient = useQueryClient();
+    const previousIdsRef = useRef<string>('');
 
     const { data: dataMap } = useQuery<Record<string, string>>({
         queryKey: [key],
@@ -89,11 +90,15 @@ export const useDataLabelBuilder = (key: string, getLabels: GetLabels, initialId
     };
 
     useEffect(() => {
-        if (initialIds) {
+        // Create a stable string representation of the IDs to compare
+        const currentIdsString = initialIds.sort().join(',');
+
+        // Only fetch if the IDs have actually changed
+        if (currentIdsString !== previousIdsRef.current && initialIds.length > 0) {
+            previousIdsRef.current = currentIdsString;
             fetchMissingLabels(initialIds, getLabels);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps -- only run on mount to get not loaded entities
-    }, []);
+    }, [initialIds]);
 
     const mapIdToLabel = (id: string | number) => dataMap?.[String(id)] ?? `id::${id}`;
 
