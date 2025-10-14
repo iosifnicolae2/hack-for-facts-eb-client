@@ -72,6 +72,37 @@ export function calculateFontSize(screenArea: number, zoom: number, baseSize: nu
 }
 
 /**
+ * Calculate font size based on population value to create visual hierarchy
+ * Higher population areas get larger, more prominent labels
+ */
+export function calculateFontSizeByValue(
+  value: number,
+  maxValue: number,
+  zoom: number,
+  mapViewType: 'UAT' | 'County'
+): number {
+  // Base font sizes - smaller for counties, good size for UATs
+  const minFontSize = mapViewType === 'County' ? 11 : 12;
+  const maxFontSize = mapViewType === 'County' ? 20 : 28;
+
+  // Zoom factor to scale fonts at different zoom levels
+  const zoomFactor = Math.pow(1.15, zoom - (mapViewType === 'County' ? 6 : 9));
+
+  // Normalize the value to 0-1 range
+  const normalizedValue = maxValue > 0 ? value / maxValue : 0;
+
+  // Use square root for better distribution (prevents extreme size differences)
+  const scaleFactor = Math.sqrt(normalizedValue);
+
+  // Calculate font size
+  const baseSize = minFontSize + (maxFontSize - minFontSize) * scaleFactor;
+  const calculatedSize = baseSize * zoomFactor;
+
+  // Clamp to reasonable bounds
+  return Math.max(minFontSize, Math.min(maxFontSize * 1.3, calculatedSize));
+}
+
+/**
  * Abbreviate long names to fit in smaller polygons
  */
 export function abbreviateName(name: string, maxLength: number = 15): string {
@@ -167,7 +198,8 @@ export function processFeatureForLabel(
   zoom: number,
   mapViewType: 'UAT' | 'County',
   heatmapDataMap: Map<string | number, HeatmapUATDataPoint | HeatmapCountyDataPoint>,
-  normalization: 'per_capita' | 'total'
+  normalization: 'per_capita' | 'total',
+  maxValue?: number
 ): PolygonLabelData | null {
   const properties = feature.properties;
   if (!properties) return null;
@@ -217,7 +249,7 @@ export function processFeatureForLabel(
 
   const screenArea = calculatePolygonScreenArea(bounds, map);
 
-  // Get heatmap data for amount - early return if no amount data
+  // Get heatmap data for both population and amount
   const heatmapData = getFeatureHeatmapData(feature, heatmapDataMap);
   const amountValue = heatmapData
     ? (normalization === 'per_capita' ? heatmapData.per_capita_amount : heatmapData.total_amount)
@@ -228,13 +260,26 @@ export function processFeatureForLabel(
     return null;
   }
 
-  // Calculate font size based on area, with smaller minimum for small polygons
-  let fontSize = calculateFontSize(screenArea, zoom);
-  if (isCounty) {
-    fontSize = Math.max(7, fontSize * 0.85);
+  // Get population for font size calculation
+  const population = heatmapData
+    ? (isCounty
+      ? (heatmapData as any).county_population
+      : (heatmapData as any).population)
+    : null;
+
+  // Calculate font size based on population for better visual hierarchy
+  // If maxValue (max population) is not provided, fall back to area-based calculation
+  let fontSize: number;
+  if (maxValue !== undefined && maxValue > 0 && population) {
+    fontSize = calculateFontSizeByValue(population, maxValue, zoom, mapViewType);
   } else {
-    // For small UAT areas, use smaller font instead of hiding (minimum 6px)
-    fontSize = Math.max(6, fontSize);
+    // Fallback to area-based calculation with minimum sizes
+    fontSize = calculateFontSize(screenArea, zoom);
+    if (isCounty) {
+      fontSize = Math.max(11, fontSize * 0.85);
+    } else {
+      fontSize = Math.max(12, fontSize);
+    }
   }
 
   // Determine if we should show amount based on zoom
@@ -249,7 +294,7 @@ export function processFeatureForLabel(
   // If doesn't fit, reduce font size progressively
   if (!fits) {
     let trialFontSize = fontSize;
-    const minFontSize = isCounty ? 6 : 5;
+    const minFontSize = isCounty ? 9 : 8;
     while (trialFontSize > minFontSize && !doesLabelFit(displayText, trialFontSize, bounds, map, showAmount)) {
       trialFontSize -= 0.5;
     }

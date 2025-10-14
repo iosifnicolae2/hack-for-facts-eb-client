@@ -35,8 +35,7 @@ export class CanvasLabelLayer extends L.Layer {
     this.canvas = L.DomUtil.create('canvas', 'leaflet-zoom-hide leaflet-label-layer');
     this.ctx = this.canvas.getContext('2d', {
       alpha: true,
-      // Hint to browser that we want performance over quality
-      desynchronized: true,
+      willReadFrequently: false,
     });
 
     if (!this.ctx) {
@@ -44,10 +43,14 @@ export class CanvasLabelLayer extends L.Layer {
       return this;
     }
 
-    // Configure canvas for crisp rendering
+    // Configure canvas for crisp rendering and transparency
     this.canvas.style.position = 'absolute';
     this.canvas.style.pointerEvents = 'none';
     this.canvas.style.zIndex = '450';
+    // Ensure canvas is transparent - critical for mobile browsers
+    this.canvas.style.opacity = '1';
+    // Use GPU compositing for better performance
+    this.canvas.style.willChange = 'contents';
 
     // Add to map pane
     const pane = map.getPane('overlayPane');
@@ -126,6 +129,18 @@ export class CanvasLabelLayer extends L.Layer {
     const viewportBounds = this._map.getBounds();
     const labelData: PolygonLabelData[] = [];
 
+    // Calculate max population for font size scaling
+    let maxValue = 0;
+    for (const dataPoint of heatmapDataMap.values()) {
+      // Use population for font sizing
+      const value = mapViewType === 'County'
+        ? (dataPoint as any).county_population
+        : (dataPoint as any).population;
+      if (value !== null && value !== undefined && value > maxValue) {
+        maxValue = value;
+      }
+    }
+
     const features = 'features' in geoJsonData ? geoJsonData.features : [];
     for (const feature of features as Feature<Geometry, any>[]) {
       // Quick viewport check before processing
@@ -139,7 +154,8 @@ export class CanvasLabelLayer extends L.Layer {
         currentZoom,
         mapViewType,
         heatmapDataMap,
-        normalization
+        normalization,
+        maxValue
       );
       if (labelInfo) {
         labelData.push(labelInfo);
@@ -204,13 +220,14 @@ export class CanvasLabelLayer extends L.Layer {
    * Reset canvas size and position
    */
   private reset(): void {
-    if (!this.canvas || !this._map) return;
+    if (!this.canvas || !this._map || !this.ctx) return;
 
     const size = this._map.getSize();
     const topLeft = this._map.containerPointToLayerPoint([0, 0]);
 
     // Update canvas dimensions (accounting for device pixel ratio for crisp rendering)
-    const devicePixelRatio = window.devicePixelRatio || 1;
+    // Clamp device pixel ratio to prevent excessive memory usage on high-DPI mobile devices
+    const devicePixelRatio = Math.min(window.devicePixelRatio || 1, 2);
     this.canvas.width = size.x * devicePixelRatio;
     this.canvas.height = size.y * devicePixelRatio;
     this.canvas.style.width = `${size.x}px`;
@@ -221,9 +238,12 @@ export class CanvasLabelLayer extends L.Layer {
     this.origin = topLeft.clone();
 
     // Scale context for device pixel ratio
-    if (this.ctx) {
-      this.ctx.scale(devicePixelRatio, devicePixelRatio);
-    }
+    // Note: This needs to be reapplied after every canvas resize
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transform first
+    this.ctx.scale(devicePixelRatio, devicePixelRatio);
+
+    // Clear the canvas to ensure transparency (critical for mobile browsers)
+    this.ctx.clearRect(0, 0, size.x, size.y);
   }
 
   /**
@@ -312,8 +332,10 @@ export class CanvasLabelLayer extends L.Layer {
    * Clear the canvas
    */
   private clearCanvas(): void {
-    if (!this.canvas || !this.ctx) return;
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    if (!this.canvas || !this.ctx || !this._map) return;
+    const size = this._map.getSize();
+    // Use CSS dimensions, not physical canvas dimensions (which are scaled by devicePixelRatio)
+    this.ctx.clearRect(0, 0, size.x, size.y);
   }
 
   /**
@@ -340,8 +362,11 @@ export class CanvasLabelLayer extends L.Layer {
     // Get viewport bounds for filtering
     const viewportBounds = this._map.getBounds();
 
+    // Sort labels by font size (ascending) so larger labels are drawn on top
+    const sortedLabels = [...this.labels].sort((a, b) => a.fontSize - b.fontSize);
+
     // Draw each label (only those in viewport)
-    for (const label of this.labels) {
+    for (const label of sortedLabels) {
       if (!label.visible) continue;
 
       // Check if label is in viewport
@@ -373,8 +398,8 @@ export class CanvasLabelLayer extends L.Layer {
           label.fontSize * 0.75,
           '#4b5563',
           '#ffffff',
-          2.5,
-          500
+          1,
+          600
         );
       }
     }

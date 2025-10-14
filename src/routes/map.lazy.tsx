@@ -31,6 +31,7 @@ import { FloatingQuickNav } from "@/components/ui/FloatingQuickNav";
 import { Seo } from "@/lib/seo";
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
+import { AnimatePresence, motion } from "motion/react";
 
 export const Route = createLazyFileRoute("/map")({
   component: MapPage,
@@ -54,6 +55,7 @@ function MapPage() {
   const {
     data: heatmapData,
     isLoading: isLoadingHeatmap,
+    isFetching: isFetchingHeatmap,
     error: heatmapError,
   } = useHeatmapData(mapState.filters, mapState.mapViewType);
 
@@ -92,7 +94,9 @@ function MapPage() {
     error: geoJsonError
   } = useGeoJsonData(mapState.mapViewType);
 
-  const valueKey = mapState.filters.normalization === 'total' ? 'total_amount' : 'per_capita_amount';
+  const valueKey = (mapState.filters.normalization === 'total' || mapState.filters.normalization === 'total_euro')
+    ? 'total_amount'
+    : 'per_capita_amount';
 
   const { min: minAggregatedValue, max: maxAggregatedValue } = React.useMemo(() => {
     if (!heatmapData) return { min: 0, max: 0 };
@@ -104,13 +108,13 @@ function MapPage() {
     return createHeatmapStyleFunction(heatmapData, minAggregatedValue, maxAggregatedValue, mapState.mapViewType, valueKey);
   }, [heatmapData, minAggregatedValue, maxAggregatedValue, mapState.mapViewType, valueKey]);
 
-  const isLoading = isLoadingHeatmap || isLoadingGeoJson;
+  const isLoading = isLoadingHeatmap || isLoadingGeoJson || isFetchingHeatmap;
   const error = heatmapError || geoJsonError;
 
   let loadingText = t`Loading data...`;
   if (isLoadingHeatmap && isLoadingGeoJson) {
     loadingText = t`Loading map and heatmap data...`;
-  } else if (isLoadingHeatmap) {
+  } else if (isLoadingHeatmap || isFetchingHeatmap) {
     loadingText = t`Loading heatmap data...`;
   } else if (isLoadingGeoJson) {
     loadingText = t`Loading map data...`;
@@ -147,15 +151,37 @@ function MapPage() {
               {mapState.activeView === "map" && (
                 <div className="sm:h-screen md:h-[calc(100vh-10rem)] w-full m-0 relative">
                   {heatmapData ? (
-                    <InteractiveMap
-                      onFeatureClick={handleFeatureClick}
-                      getFeatureStyle={aDynamicGetFeatureStyle}
-                      heatmapData={heatmapData}
-                      geoJsonData={geoJsonData}
-                      zoom={mapZoom}
-                      mapViewType={mapState.mapViewType}
-                      filters={mapState.filters}
-                    />
+                    <>
+                      <InteractiveMap
+                        onFeatureClick={handleFeatureClick}
+                        getFeatureStyle={aDynamicGetFeatureStyle}
+                        heatmapData={heatmapData}
+                        geoJsonData={geoJsonData}
+                        zoom={mapZoom}
+                        mapViewType={mapState.mapViewType}
+                        filters={mapState.filters}
+                      />
+                      <AnimatePresence>
+                        {isLoading && (
+                          <motion.div
+                            className="absolute inset-0 bg-background/20 backdrop-blur-sm flex items-center justify-center z-[1000] h-screen"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.2, ease: "easeInOut" }}
+                          >
+                            <motion.div
+                              initial={{ scale: 0.9, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              exit={{ scale: 0.9, opacity: 0 }}
+                              transition={{ duration: 0.2, ease: "easeOut" }}
+                            >
+                              <LoadingSpinner size="md" text={loadingText} />
+                            </motion.div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </>
                   ) : (
                     <div className="flex items-center justify-center h-full w-full">
                       <Trans>No data available for the map.</Trans>
