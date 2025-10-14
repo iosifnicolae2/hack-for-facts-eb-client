@@ -92,7 +92,7 @@ export function RevenueBreakdown({ nodes, normalization, periodLabel, isLoading 
                     <Info className="w-5 h-5 text-primary" />
                     <h3 className="text-lg font-semibold">
                         <Trans>Consolidated Revenue Calculation</Trans>
-                        {periodLabel && <span className="text-base text-muted-foreground font-normal ml-2">{periodLabel}</span>}
+                        {periodLabel && <span className="font-bold ml-2">{periodLabel}</span>}
                     </h3>
                 </div>
                 <p className="text-sm text-muted-foreground mt-1">
