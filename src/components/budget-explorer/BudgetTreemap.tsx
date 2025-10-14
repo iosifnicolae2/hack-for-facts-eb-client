@@ -94,6 +94,8 @@ const CustomizedContent: FC<{
   const hasAnimatedInRef = useRef(false)
   const [isHovered, setIsHovered] = useState(false)
   const bounceControls = useAnimationControls()
+  const randomDelayRef = useRef(Math.random() * 0.15)
+  const textScale = isHovered ? 1.1 : 1
 
   useEffect(() => {
     hasAnimatedInRef.current = true
@@ -130,9 +132,17 @@ const CustomizedContent: FC<{
 
   const textTransition = {
     type: 'spring',
-    damping: 24,
-    stiffness: 320,
-    mass: 0.9,
+    damping: 15,
+    stiffness: 150,
+    mass: 1,
+    restDelta: 0.001,
+  } as const
+
+  const hoverTransition = {
+    type: 'spring',
+    damping: 18,
+    stiffness: 280,
+    mass: 0.7,
   } as const
 
   const initialRectState = hasAnimatedInRef.current
@@ -196,10 +206,18 @@ const CustomizedContent: FC<{
             x: x + width / 2,
             y: canShowValue ? y + height / 2 - valueFontSize / 2 : y + height / 2,
             opacity: 1,
-            fontSize: isHovered ? nameFontSize * 1.1 : nameFontSize,
+            scale: textScale,
           }}
-          initial={hasAnimatedInRef.current ? { opacity: 0.2 } : { opacity: 0 }}
-          transition={textTransition}
+          initial={hasAnimatedInRef.current ? { opacity: 0.2 } : {
+            opacity: 0,
+            x: x + width / 2 + 20,
+            y: (canShowValue ? y + height / 2 - valueFontSize / 2 : y + height / 2) - 6,
+            scale: 0.3,
+          }}
+          transition={hasAnimatedInRef.current ? hoverTransition : {
+            ...textTransition,
+            delay: randomDelayRef.current,
+          }}
           textAnchor="middle"
           dominantBaseline="middle"
           fill={baseColor}
@@ -216,10 +234,18 @@ const CustomizedContent: FC<{
             x: x + width / 2,
             y: y + height / 2 + nameFontSize / 2 + 4,
             opacity: 1,
-            fontSize: isHovered ? valueFontSize * 1.08 : valueFontSize,
+            scale: textScale,
           }}
-          initial={hasAnimatedInRef.current ? { opacity: 0.2 } : { opacity: 0 }}
-          transition={textTransition}
+          initial={hasAnimatedInRef.current ? { opacity: 0.2 } : {
+            opacity: 0,
+            x: x + width / 2 + 15,
+            y: y + height / 2 + nameFontSize / 2 + 4 - 5,
+            scale: 0.25,
+          }}
+          transition={hasAnimatedInRef.current ? hoverTransition : {
+            ...textTransition,
+            delay: randomDelayRef.current + 0.03,
+          }}
           textAnchor="middle"
           dominantBaseline="middle"
           fill={baseColor}
@@ -236,10 +262,18 @@ const CustomizedContent: FC<{
             x: x + width / 2,
             y: y + height / 2 + nameFontSize / 2 + valueFontSize + 8,
             opacity: 1,
-            fontSize: isHovered ? percentageFontSize * 1.08 : percentageFontSize,
+            scale: textScale,
           }}
-          initial={hasAnimatedInRef.current ? { opacity: 0.2 } : { opacity: 0 }}
-          transition={textTransition}
+          initial={hasAnimatedInRef.current ? { opacity: 0.2 } : {
+            opacity: 0,
+            x: x + width / 2 + 12,
+            y: y + height / 2 + nameFontSize / 2 + valueFontSize + 8 - 4,
+            scale: 0.2,
+          }}
+          transition={hasAnimatedInRef.current ? hoverTransition : {
+            ...textTransition,
+            delay: randomDelayRef.current + 0.06,
+          }}
           textAnchor="middle"
           dominantBaseline="middle"
           fill={baseColor}
