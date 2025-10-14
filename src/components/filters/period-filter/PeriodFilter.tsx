@@ -23,14 +23,40 @@ export function PeriodFilter({ value, onChange, allowDeselect = true }: Props) {
   const handlePeriodTypeChange = (type: ReportPeriodType) => {
     if (!type) return
     // Reset selection when changing period type
-    onChange?.({ type, selection: { dates: [] } })
+    const currentYear = String(new Date().getFullYear())
+    let defaultDate: PeriodDate
+    switch (type) {
+      case 'YEAR':
+        defaultDate = currentYear as PeriodDate
+        break
+      case 'QUARTER':
+        defaultDate = `${currentYear}-Q1` as PeriodDate
+        break
+      case 'MONTH':
+        defaultDate = `${currentYear}-01` as PeriodDate
+        break
+    }
+    onChange?.({ type, selection: { dates: [defaultDate] } })
   }
 
   const handleSelectionModeChange = (mode: PeriodSelectionMode) => {
     if (!mode) return
     // Reset selection when changing mode
     if (mode === 'dates') {
-      onChange?.({ type: periodType, selection: { dates: [] } })
+        const currentYear = String(new Date().getFullYear())
+        let defaultDate: PeriodDate
+        switch (periodType) {
+            case 'YEAR':
+                defaultDate = currentYear as PeriodDate
+                break
+            case 'QUARTER':
+                defaultDate = `${currentYear}-Q1` as PeriodDate
+                break
+            case 'MONTH':
+                defaultDate = `${currentYear}-01` as PeriodDate
+                break
+        }
+        onChange?.({ type: periodType, selection: { dates: [defaultDate] } })
     } else {
         const currentYear = String(new Date().getFullYear())
         let start: PeriodDate
