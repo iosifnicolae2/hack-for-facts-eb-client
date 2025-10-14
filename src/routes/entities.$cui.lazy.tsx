@@ -92,7 +92,7 @@ function EntityDetailsPage() {
   })
 
   useRecentEntities(entity)
-  const { mapFilters, updateMapFilters } = useEntityMapFilter({ year: selectedYear })
+  const { mapFilters, updateMapFilters } = useEntityMapFilter({ year: selectedYear, userCurrency })
   const views = useEntityViews(entity)
 
   const debouncedPrefetch = useDebouncedCallback(

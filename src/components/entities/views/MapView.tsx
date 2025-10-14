@@ -14,9 +14,10 @@ import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { UatProperties } from '@/components/maps/interfaces';
 import { useHeatmapData } from '@/hooks/useHeatmapData';
-import { AnalyticsFilterType } from '@/schemas/charts';
+import { AnalyticsFilterType, Normalization } from '@/schemas/charts';
 import { Trans } from '@lingui/react/macro';
 import { ReportPeriodInput } from '@/schemas/reporting';
+import { usePersistedState } from '@/lib/hooks/usePersistedState';
 
 interface MapViewProps {
   entity: EntityDetailsData | null | undefined;
@@ -28,6 +29,7 @@ interface MapViewProps {
 export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapFilters, period }) => {
   const mapViewType: "UAT" | "County" = entity?.entity_type === 'admin_county_council' || entity?.cui === '4267117' ? 'County' : 'UAT';
   const navigate = useNavigate();
+  const [userCurrency] = usePersistedState<'RON' | 'EUR'>('user-currency', 'RON');
   
   const selectedPeriod = useMemo(() => {
     if (period.selection.dates && period.selection.dates.length > 0) {
@@ -68,14 +70,14 @@ export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapF
 
   const { min: minAggregatedValue, max: maxAggregatedValue } = useMemo(() => {
     if (!heatmapData || !Array.isArray(heatmapData)) return { min: 0, max: 0 };
-    return getPercentileValues(heatmapData, 5, 95, mapFilters.normalization === 'per_capita' ? 'per_capita_amount' : 'total_amount');
+    return getPercentileValues(heatmapData, 5, 95, mapFilters.normalization === 'per_capita' || mapFilters.normalization === 'per_capita_euro' ? 'per_capita_amount' : 'total_amount');
   }, [heatmapData, mapFilters.normalization]);
 
   const getFeatureStyle = useMemo(() => {
     if (!heatmapData || !Array.isArray(heatmapData)) {
       return () => ({});
     }
-    const valueKey = mapFilters.normalization === 'per_capita' ? 'per_capita_amount' : 'total_amount';
+    const valueKey = mapFilters.normalization === 'per_capita' || mapFilters.normalization === 'per_capita_euro' ? 'per_capita_amount' : 'total_amount';
     return createHeatmapStyleFunction(heatmapData, minAggregatedValue, maxAggregatedValue, mapViewType, valueKey);
   }, [heatmapData, minAggregatedValue, maxAggregatedValue, mapViewType, mapFilters.normalization]);
 
@@ -134,7 +136,19 @@ export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapF
               <ToggleGroupItem value="ch" className='px-4' ><Trans>Expenses</Trans></ToggleGroupItem>
               <ToggleGroupItem value="vn" className='px-4'><Trans>Income</Trans></ToggleGroupItem>
             </ToggleGroup>
-            <ToggleGroup type="single" size="sm" value={mapFilters.normalization} onValueChange={(value: 'per_capita' | 'total') => { if (value) updateMapFilters({ normalization: value }) }}>
+            <ToggleGroup
+              type="single"
+              size="sm"
+              value={mapFilters.normalization === 'per_capita' || mapFilters.normalization === 'per_capita_euro' ? 'per_capita' : 'total'}
+              onValueChange={(value: 'per_capita' | 'total') => {
+                if (value) {
+                  const newNormalization: Normalization = value === 'per_capita'
+                    ? (userCurrency === 'EUR' ? 'per_capita_euro' : 'per_capita')
+                    : (userCurrency === 'EUR' ? 'total_euro' : 'total');
+                  updateMapFilters({ normalization: newNormalization });
+                }
+              }}
+            >
               <ToggleGroupItem value="per_capita" className='px-4'><Trans>Per Capita</Trans></ToggleGroupItem>
               <ToggleGroupItem value="total" className='px-4'><Trans>Total</Trans></ToggleGroupItem>
             </ToggleGroup>
