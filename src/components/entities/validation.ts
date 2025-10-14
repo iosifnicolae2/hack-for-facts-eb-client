@@ -21,6 +21,8 @@ export const entitySearchSchema = z.object({
     lineItemsTab: z.enum(['functional', 'funding', 'expenseType']).optional(),
     selectedFundingKey: z.string().optional(),
     selectedExpenseTypeKey: z.string().optional(),
+    // Notification modal state
+    notificationModal: z.enum(['open']).optional(),
 });
 
 export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;

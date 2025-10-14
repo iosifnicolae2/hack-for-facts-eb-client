@@ -2,10 +2,7 @@ import { useCallback, useEffect, useState, type ReactElement } from "react";
 import { Bell } from "lucide-react";
 import { Trans } from "@lingui/react/macro";
 import { usePersistedState } from "@/lib/hooks/usePersistedState";
-
-interface Props {
-  onOpenNotifications: () => void;
-}
+import { useNotificationModal } from "../hooks/useNotificationModal";
 
 /**
  * EntityNotificationAnnouncement
@@ -13,7 +10,7 @@ interface Props {
  * A one-time announcement banner that informs users about the new notification feature.
  * Displays once per user and provides a quick way to enable notifications.
  */
-export function EntityNotificationAnnouncement({ onOpenNotifications }: Props): ReactElement | null {
+export function EntityNotificationAnnouncement(): ReactElement | null {
   const [hasSeenAnnouncement, setHasSeenAnnouncement] = usePersistedState<boolean>(
     'entity-notification-announcement-seen',
     false
@@ -21,6 +18,7 @@ export function EntityNotificationAnnouncement({ onOpenNotifications }: Props): 
   const [isBannerVisible, setBannerVisible] = useState(false);
   const [isEntering, setIsEntering] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+  const { openModal } = useNotificationModal();
 
   useEffect(() => {
     // Only show if user hasn't seen it before
@@ -46,29 +44,45 @@ export function EntityNotificationAnnouncement({ onOpenNotifications }: Props): 
 
   const handleEnableNotifications = useCallback(() => {
     handleDismiss();
-    // Small delay to let the banner start exiting before opening the dialog
-    setTimeout(() => onOpenNotifications(), 300);
-  }, [handleDismiss, onOpenNotifications]);
+    openModal();
+  }, [handleDismiss, openModal]);
 
   if (!isBannerVisible) return null;
 
   return (
-    <div
-      className={`fixed bottom-0 left-1/2 -translate-x-1/2 z-40 p-3 md:p-6 max-w-4xl w-full transition-transform duration-500 ease-in-out ${
-        isExiting ? "translate-y-full" : isEntering ? "translate-y-0" : "translate-y-full"
-      }`}
-      role="dialog"
-      aria-live="polite"
-      aria-label="New feature announcement"
-    >
-      <div className="rounded-2xl border border-slate-200/30 bg-white/80 shadow-2xl backdrop-blur-lg supports-[backdrop-filter]:bg-white/80">
-        <div className="p-6">
-          <div className="flex items-center gap-3">
-            <Bell className="h-6 w-6 text-blue-600" />
-            <h2 className="text-lg font-semibold md:text-xl text-gray-900">
-              <Trans>Monitor this institution</Trans>
-            </h2>
-          </div>
+    <>
+      <style>{`
+        @keyframes gentle-ring {
+          0% { transform: rotate(0); }
+          10% { transform: rotate(10deg); }
+          20% { transform: rotate(-10deg); }
+          30% { transform: rotate(10deg); }
+          40% { transform: rotate(-10deg); }
+          50% { transform: rotate(0); }
+          100% { transform: rotate(0); }
+        }
+        .animate-gentle-ring {
+          animation: gentle-ring 2.5s ease-in-out;
+          transform-origin: top center;
+          animation-delay: 0.5s;
+        }
+      `}</style>
+      <div
+        className={`fixed bottom-0 left-1/2 -translate-x-1/2 z-40 p-3 md:p-6 max-w-4xl w-full transition-transform duration-500 ease-in-out ${
+          isExiting ? "translate-y-full" : isEntering ? "translate-y-0" : "translate-y-full"
+        }`}
+        role="dialog"
+        aria-live="polite"
+        aria-label="New feature announcement"
+      >
+        <div className="rounded-2xl border border-slate-200/30 bg-white/80 shadow-2xl backdrop-blur-lg supports-[backdrop-filter]:bg-white/80">
+          <div className="p-6">
+            <div className="flex items-center gap-3">
+              <Bell className="h-6 w-6 text-blue-600 animate-gentle-ring" />
+              <h2 className="text-lg font-semibold md:text-xl text-gray-900">
+                <Trans>Monitor this institution</Trans>
+              </h2>
+            </div>
           <p className="mt-3 text-sm text-gray-600">
             <Trans>
               Get monthly email updates about this institution. Receive alerts when new reports are published, budget changes occur, or important financial data is updated.
@@ -92,5 +106,6 @@ export function EntityNotificationAnnouncement({ onOpenNotifications }: Props): 
         </div>
       </div>
     </div>
+    </>
   );
 }

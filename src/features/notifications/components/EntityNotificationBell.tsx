@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Bell, BellOff, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ResponsivePopover } from '@/components/ui/ResponsivePopover';
@@ -8,6 +7,7 @@ import { useEntityNotifications } from '../hooks/useEntityNotifications';
 import { NotificationQuickMenu } from './NotificationQuickMenu';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
+import { useNotificationModal } from '../hooks/useNotificationModal';
 
 interface Props {
   cui: string;
@@ -17,7 +17,7 @@ interface Props {
 export function EntityNotificationBell({ cui, entityName }: Props) {
   const { isSignedIn, isLoaded } = useAuth();
   const { data: notifications, isLoading } = useEntityNotifications(cui);
-  const [open, setOpen] = useState(false);
+  const { isOpen, setOpen } = useNotificationModal();
 
   const hasActive = notifications?.some(n => n.isActive) ?? false;
 
@@ -28,7 +28,7 @@ export function EntityNotificationBell({ cui, entityName }: Props) {
   if (!isSignedIn) {
     return (
       <ResponsivePopover
-        open={open}
+        open={isOpen}
         onOpenChange={setOpen}
         trigger={
           <Button
@@ -89,7 +89,7 @@ export function EntityNotificationBell({ cui, entityName }: Props) {
 
   return (
     <ResponsivePopover
-      open={open}
+      open={isOpen}
       onOpenChange={setOpen}
       trigger={
         <Button
@@ -107,7 +107,24 @@ export function EntityNotificationBell({ cui, entityName }: Props) {
               <Loader2 className="h-5 w-5 animate-spin" />
             </div>
           ) : hasActive ? (
-            <Bell className="h-5 w-5 fill-amber-400 text-amber-400 stroke-amber-200" />
+            <>
+              <style>{`
+                @keyframes ring {
+                  0% { transform: rotate(0); }
+                  10% { transform: rotate(10deg); }
+                  20% { transform: rotate(-10deg); }
+                  30% { transform: rotate(10deg); }
+                  40% { transform: rotate(-10deg); }
+                  50% { transform: rotate(0); }
+                  100% { transform: rotate(0); }
+                }
+                .animate-ring {
+                  animation: ring 2.5s ease-in-out;
+                  transform-origin: top center;
+                }
+              `}</style>
+              <Bell className="animate-ring h-5 w-5 fill-amber-400 stroke-amber-200 text-amber-400" />
+            </>
           ) : (
             <BellOff className="h-5 w-5" />
           )}
