@@ -24,6 +24,7 @@ import { Seo } from '@/lib/seo'
 import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
 import { FloatingQuickNav } from '@/components/ui/FloatingQuickNav'
+import { usePeriodLabel } from '@/hooks/use-period-label'
 
 export const Route = createLazyFileRoute('/entity-analytics')({
   component: EntityAnalyticsPage,
@@ -35,6 +36,7 @@ function EntityAnalyticsPage() {
 
   const offset = useMemo(() => (page - 1) * pageSize, [page, pageSize])
   const filterHash = useMemo(() => generateHash(JSON.stringify(filter)), [filter])
+  const periodLabel = usePeriodLabel(filter.report_period)
 
   const mapViewType = useMemo<'UAT' | 'County'>(() => {
     if ((filter.county_codes?.length ?? 0) > 0) return 'County'
@@ -236,9 +238,9 @@ function EntityAnalyticsPage() {
           <div className="mt-4 space-y-4">
             <EntityAnalyticsTreemap filter={filter} data={aggregatedData} isLoading={isLoadingAggregated} />
             {filter.account_category === 'ch' ? (
-                <SpendingBreakdown nodes={aggregatedNodes} normalization={filter.normalization} />
+                <SpendingBreakdown nodes={aggregatedNodes} normalization={filter.normalization} isLoading={isLoadingAggregated} periodLabel={periodLabel} />
             ) : (
-                <RevenueBreakdown nodes={aggregatedNodes} normalization={filter.normalization} />
+                <RevenueBreakdown nodes={aggregatedNodes} normalization={filter.normalization} isLoading={isLoadingAggregated} periodLabel={periodLabel} />
             )}
             <EntityAnalyticsLineItems
               filter={filter}

@@ -1,5 +1,6 @@
 import { useMemo, useState, useEffect } from 'react'
 import { Trans } from '@lingui/react/macro'
+import { usePeriodLabel } from '@/hooks/use-period-label'
 import type { AnalyticsFilterType } from '@/schemas/charts'
 import { useTreemapDrilldown } from '@/components/budget-explorer/useTreemapDrilldown'
 import type { AggregatedNode } from '@/components/budget-explorer/budget-transform'
@@ -54,13 +55,14 @@ export function EntityAnalyticsTreemap({ filter, data, isLoading }: EntityAnalyt
   }, [filter.account_category, depth, reset, setPrimary])
 
   const isRevenueView = filter.account_category === 'vn'
+  const periodLabel = usePeriodLabel(filter.report_period)
 
   return (
     <Card>
       <CardHeader>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
           <h3 className="text-base sm:text-lg font-semibold">
-            <Trans>Budget Distribution</Trans>
+            <Trans>Budget Distribution</Trans> - {periodLabel}
           </h3>
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             <div className="flex flex-col gap-2">

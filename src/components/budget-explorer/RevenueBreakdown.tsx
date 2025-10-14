@@ -5,16 +5,19 @@ import { getNormalizationUnit } from '@/lib/utils'
 import { Info } from 'lucide-react'
 import type { AggregatedNode } from './budget-transform'
 import { getClassificationName } from '@/lib/classifications'
+import { Skeleton } from '@/components/ui/skeleton'
 
 type Props = {
     readonly nodes: readonly AggregatedNode[] | undefined
     readonly normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro'
+    readonly periodLabel?: string
+    readonly isLoading?: boolean
 }
 
 const normalizeFn = (code?: string | null) => (code ?? '').replace(/[^0-9.]/g, '')
 const matchPrefix = (code: string, prefix: string) => code === prefix || code.startsWith(prefix + '.') || code.startsWith(prefix)
 
-export function RevenueBreakdown({ nodes, normalization }: Props) {
+export function RevenueBreakdown({ nodes, normalization, periodLabel, isLoading }: Props) {
     const unit = getNormalizationUnit(normalization ?? 'total')
     const currencyCode: 'RON' | 'EUR' = unit.includes('EUR') ? 'EUR' : 'RON'
 
@@ -87,123 +90,79 @@ export function RevenueBreakdown({ nodes, normalization }: Props) {
             <CardHeader className="pb-3">
                 <div className="flex items-center gap-2">
                     <Info className="w-5 h-5 text-primary" />
-                    <h3 className="text-lg font-semibold"><Trans>Consolidated Revenue Calculation</Trans></h3>
+                    <h3 className="text-lg font-semibold">
+                        <Trans>Consolidated Revenue Calculation</Trans>
+                        {periodLabel && <span className="text-base text-muted-foreground font-normal ml-2">{periodLabel}</span>}
+                    </h3>
                 </div>
                 <p className="text-sm text-muted-foreground mt-1">
                     <Trans>How we compute true consolidated revenues (excluding inter-budget flows and financial operations)</Trans>
                 </p>
             </CardHeader>
             <CardContent className="space-y-4">
-                {/* Calculation breakdown */}
-                <div className="bg-muted/30 rounded-lg p-5 space-y-1 lg:px-[8rem] ">
-                    {/* Total revenue */}
-                    <div className="flex items-center justify-between gap-6">
-                        <div className="flex-1">
-                            <div className="text-sm font-medium text-foreground">
-                                <Trans>Total Revenues</Trans>
+                {isLoading ? (
+                    <div className="bg-muted/30 rounded-lg p-5 space-y-4 lg:px-[8rem]">
+                        <div className="flex items-center justify-between gap-6">
+                            <div className="flex-1 space-y-1.5">
+                                <Skeleton className="h-4 w-1/2" />
+                                <Skeleton className="h-3 w-1/3" />
                             </div>
-                            <div className="text-xs text-muted-foreground">
-                                <Trans>All recorded revenue inflows</Trans>
+                            <div className="min-w-[180px] space-y-1.5">
+                                <Skeleton className="h-5 w-3/4 ml-auto" />
+                                <Skeleton className="h-3 w-full ml-auto" />
                             </div>
                         </div>
-                        <div className="text-right min-w-[180px]">
-                            <div className="font-mono text-lg font-semibold text-foreground">
-                                {yValueFormatter(totalRevenue, currencyCode, 'compact')}
+                        <div className="flex items-center justify-center py-1">
+                            <div className="w-full border-t border-dashed border-border" />
+                        </div>
+                        <div className="flex items-center justify-between gap-6">
+                            <div className="flex-1 space-y-1.5">
+                                <Skeleton className="h-4 w-3/5" />
+                                <Skeleton className="h-3 w-2/5" />
                             </div>
-                            <div className="font-mono text-xs text-muted-foreground">
-                                {yValueFormatter(totalRevenue, currencyCode, 'standard')}
-                                {unit.includes('capita') && <span className="ml-1 font-sans">/ capita</span>}
+                            <div className="min-w-[180px] space-y-1.5">
+                                <Skeleton className="h-5 w-3/4 ml-auto" />
+                                <Skeleton className="h-3 w-full ml-auto" />
+                            </div>
+                        </div>
+                        <div className="flex items-center justify-center py-1">
+                            <div className="w-full border-t border-dashed border-border" />
+                        </div>
+                        <div className="flex items-center justify-between gap-6">
+                            <div className="flex-1 space-y-1.5">
+                                <Skeleton className="h-4 w-2/5" />
+                                <Skeleton className="h-3 w-1/3" />
+                            </div>
+                            <div className="min-w-[180px] space-y-1.5">
+                                <Skeleton className="h-5 w-3/4 ml-auto" />
+                                <Skeleton className="h-3 w-full ml-auto" />
                             </div>
                         </div>
                     </div>
-
-                    {/* Minus sign */}
-                    <div className="flex items-center justify-center py-1">
-                        <div className="w-full border-t border-dashed border-border" />
-                        <span className="px-3 text-lg font-bold text-muted-foreground">−</span>
-                        <div className="w-full border-t border-dashed border-border" />
-                    </div>
-
-                    {/* Inter-budget transfers (sorted) */}
-                    {sortedInterBudget.map((d) => (
-                        <div className="flex items-center justify-between gap-6" key={d.key}>
-                            <div className="flex-1">
-                                <div className="text-sm font-medium text-foreground">
-                                    {d.label}
-                                </div>
-                                <div className="text-xs text-muted-foreground">
-                                    {d.subtitle} <span className="font-mono text-[10px] bg-muted px-1 py-0.5 rounded">{d.badge}</span>
-                                </div>
-                            </div>
-                            <div className="text-right min-w-[180px]">
-                                <div className="font-mono text-lg font-semibold text-foreground">
-                                    {yValueFormatter(d.amount, currencyCode, 'compact')}
-                                </div>
-                                <div className="font-mono text-xs text-muted-foreground">
-                                    {yValueFormatter(d.amount, currencyCode, 'standard')}
-                                    {unit.includes('capita') && <span className="ml-1 font-sans">/ capita</span>}
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-
-                    {/* Minus sign */}
-                    <div className="flex items-center justify-center py-1">
-                        <div className="w-full border-t border-dashed border-border" />
-                        <span className="px-3 text-lg font-bold text-muted-foreground">−</span>
-                        <div className="w-full border-t border-dashed border-border" />
-                    </div>
-
-                    {/* Other "se scad" adjustments (non-inter-budget) */}
-                    {seScadDeduction > 0 && (
-                        <>
+                ) : (
+                    <>
+                        {/* Calculation breakdown */}
+                        <div className="bg-muted/30 rounded-lg p-5 space-y-1 lg:px-[8rem] ">
+                            {/* Total revenue */}
                             <div className="flex items-center justify-between gap-6">
                                 <div className="flex-1">
                                     <div className="text-sm font-medium text-foreground">
-                                        <Trans>Adjustments marked as "se scad"</Trans>
+                                        <Trans>Total Revenues</Trans>
                                     </div>
                                     <div className="text-xs text-muted-foreground">
-                                        <Trans>Tax deductions outside inter-budget transfers</Trans>
-                                        {seScadBadge && (
-                                            <>
-                                                {' '}
-                                                <span className="font-mono text-[10px] bg-muted px-1 py-0.5 rounded">{seScadBadge}</span>
-                                            </>
-                                        )}
+                                        <Trans>All recorded revenue inflows</Trans>
                                     </div>
                                 </div>
                                 <div className="text-right min-w-[180px]">
                                     <div className="font-mono text-lg font-semibold text-foreground">
-                                        {yValueFormatter(seScadDeduction, currencyCode, 'compact')}
+                                        {yValueFormatter(totalRevenue, currencyCode, 'compact')}
                                     </div>
                                     <div className="font-mono text-xs text-muted-foreground">
-                                        {yValueFormatter(seScadDeduction, currencyCode, 'standard')}
+                                        {yValueFormatter(totalRevenue, currencyCode, 'standard')}
                                         {unit.includes('capita') && <span className="ml-1 font-sans">/ capita</span>}
                                     </div>
                                 </div>
                             </div>
-
-                            {/* Breakdown */}
-                            {seScadAdjustments.length > 0 && (
-                                <div className="mt-1 pl-3 border-l border-dashed border-border">
-                                    <p className="text-[11px] text-muted-foreground leading-snug mb-1">
-                                        <Trans>Lines marked as "se scad" inside other tax chapters are deducted here to adjust the tax bases. They are shown separately from inter-budget transfers (04.* and 11.*).</Trans>
-                                    </p>
-                                    <div className="grid gap-1">
-                                        {seScadAdjustments.map((it) => (
-                                            <div key={it.code} className="flex items-center justify-between">
-                                                <div className="text-xs text-muted-foreground">
-                                                    <span className="font-mono text-[10px] bg-muted px-1 py-0.5 rounded mr-2">fn:{it.code}</span>
-                                                    {it.label}
-                                                </div>
-                                                <div className="font-mono text-xs text-muted-foreground">
-                                                    {yValueFormatter(it.amount, currencyCode, 'standard')}
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
 
                             {/* Minus sign */}
                             <div className="flex items-center justify-center py-1">
@@ -211,59 +170,148 @@ export function RevenueBreakdown({ nodes, normalization }: Props) {
                                 <span className="px-3 text-lg font-bold text-muted-foreground">−</span>
                                 <div className="w-full border-t border-dashed border-border" />
                             </div>
-                        </>
-                    )}
 
-                    {/* Financial operations */}
-                    <div className="flex items-center justify-between gap-6">
-                        <div className="flex-1">
-                            <div className="text-sm font-medium text-foreground">
-                                <Trans>Financial operations</Trans>
+                            {/* Inter-budget transfers (sorted) */}
+                            {sortedInterBudget.map((d) => (
+                                <div className="flex items-center justify-between gap-6" key={d.key}>
+                                    <div className="flex-1">
+                                        <div className="text-sm font-medium text-foreground">
+                                            {d.label}
+                                        </div>
+                                        <div className="text-xs text-muted-foreground">
+                                            {d.subtitle} <span className="font-mono text-[10px] bg-muted px-1 py-0.5 rounded">{d.badge}</span>
+                                        </div>
+                                    </div>
+                                    <div className="text-right min-w-[180px]">
+                                        <div className="font-mono text-lg font-semibold text-foreground">
+                                            {yValueFormatter(d.amount, currencyCode, 'compact')}
+                                        </div>
+                                        <div className="font-mono text-xs text-muted-foreground">
+                                            {yValueFormatter(d.amount, currencyCode, 'standard')}
+                                            {unit.includes('capita') && <span className="ml-1 font-sans">/ capita</span>}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+
+                            {/* Minus sign */}
+                            <div className="flex items-center justify-center py-1">
+                                <div className="w-full border-t border-dashed border-border" />
+                                <span className="px-3 text-lg font-bold text-muted-foreground">−</span>
+                                <div className="w-full border-t border-dashed border-border" />
                             </div>
-                            <div className="text-xs text-muted-foreground">
-                                <Trans>Loan repayments and other operations</Trans> <span className="font-mono text-[10px] bg-muted px-1 py-0.5 rounded">fn:40.* + 41.*</span>
+
+                            {/* Other "se scad" adjustments (non-inter-budget) */}
+                            {seScadDeduction > 0 && (
+                                <>
+                                    <div className="flex items-center justify-between gap-6">
+                                        <div className="flex-1">
+                                            <div className="text-sm font-medium text-foreground">
+                                                <Trans>Adjustments marked as "se scad"</Trans>
+                                            </div>
+                                            <div className="text-xs text-muted-foreground">
+                                                <Trans>Tax deductions outside inter-budget transfers</Trans>
+                                                {seScadBadge && (
+                                                    <>
+                                                        {' '}
+                                                        <span className="font-mono text-[10px] bg-muted px-1 py-0.5 rounded">{seScadBadge}</span>
+                                                    </>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="text-right min-w-[180px]">
+                                            <div className="font-mono text-lg font-semibold text-foreground">
+                                                {yValueFormatter(seScadDeduction, currencyCode, 'compact')}
+                                            </div>
+                                            <div className="font-mono text-xs text-muted-foreground">
+                                                {yValueFormatter(seScadDeduction, currencyCode, 'standard')}
+                                                {unit.includes('capita') && <span className="ml-1 font-sans">/ capita</span>}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Breakdown */}
+                                    {seScadAdjustments.length > 0 && (
+                                        <div className="mt-1 pl-3 border-l border-dashed border-border">
+                                            <p className="text-[11px] text-muted-foreground leading-snug mb-1">
+                                                <Trans>Lines marked as "se scad" inside other tax chapters are deducted here to adjust the tax bases. They are shown separately from inter-budget transfers (04.* and 11.*).</Trans>
+                                            </p>
+                                            <div className="grid gap-1">
+                                                {seScadAdjustments.map((it) => (
+                                                    <div key={it.code} className="flex items-center justify-between">
+                                                        <div className="text-xs text-muted-foreground">
+                                                            <span className="font-mono text-[10px] bg-muted px-1 py-0.5 rounded mr-2">fn:{it.code}</span>
+                                                            {it.label}
+                                                        </div>
+                                                        <div className="font-mono text-xs text-muted-foreground">
+                                                            {yValueFormatter(it.amount, currencyCode, 'standard')}
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Minus sign */}
+                                    <div className="flex items-center justify-center py-1">
+                                        <div className="w-full border-t border-dashed border-border" />
+                                        <span className="px-3 text-lg font-bold text-muted-foreground">−</span>
+                                        <div className="w-full border-t border-dashed border-border" />
+                                    </div>
+                                </>
+                            )}
+
+                            {/* Financial operations */}
+                            <div className="flex items-center justify-between gap-6">
+                                <div className="flex-1">
+                                    <div className="text-sm font-medium text-foreground">
+                                        <Trans>Financial operations</Trans>
+                                    </div>
+                                    <div className="text-xs text-muted-foreground">
+                                        <Trans>Loan repayments and other operations</Trans> <span className="font-mono text-[10px] bg-muted px-1 py-0.5 rounded">fn:40.* + 41.*</span>
+                                    </div>
+                                </div>
+                                <div className="text-right min-w-[180px]">
+                                    <div className="font-mono text-lg font-semibold text-foreground">
+                                        {yValueFormatter(financialOps, currencyCode, 'compact')}
+                                    </div>
+                                    <div className="font-mono text-xs text-muted-foreground">
+                                        {yValueFormatter(financialOps, currencyCode, 'standard')}
+                                        {unit.includes('capita') && <span className="ml-1 font-sans">/ capita</span>}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Equals sign */}
+                            <div className="flex items-center justify-center py-1">
+                                <div className="w-full border-t-2 border-primary/30" />
+                                <span className="px-3 text-lg font-bold text-primary">=</span>
+                                <div className="w-full border-t-2 border-primary/30" />
+                            </div>
+
+                            {/* Effective revenue */}
+                            <div className="flex items-center justify-between gap-6 bg-primary/5 rounded-md p-3 -mx-1">
+                                <div className="flex-1">
+                                    <div className="text-base font-semibold text-foreground">
+                                        <Trans>True Consolidated Revenues</Trans>
+                                    </div>
+                                    <div className="text-xs text-muted-foreground">
+                                        <Trans>Excluding inter-budget flows and financial operations</Trans>
+                                    </div>
+                                </div>
+                                <div className="text-right min-w-[180px]">
+                                    <div className="font-mono text-xl font-bold text-primary">
+                                        {yValueFormatter(effectiveRevenue, currencyCode, 'compact')}
+                                    </div>
+                                    <div className="font-mono text-xs text-muted-foreground">
+                                        {yValueFormatter(effectiveRevenue, currencyCode, 'standard')}
+                                        {unit.includes('capita') && <span className="ml-1 font-sans">/ capita</span>}
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div className="text-right min-w-[180px]">
-                            <div className="font-mono text-lg font-semibold text-foreground">
-                                {yValueFormatter(financialOps, currencyCode, 'compact')}
-                            </div>
-                            <div className="font-mono text-xs text-muted-foreground">
-                                {yValueFormatter(financialOps, currencyCode, 'standard')}
-                                {unit.includes('capita') && <span className="ml-1 font-sans">/ capita</span>}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Equals sign */}
-                    <div className="flex items-center justify-center py-1">
-                        <div className="w-full border-t-2 border-primary/30" />
-                        <span className="px-3 text-lg font-bold text-primary">=</span>
-                        <div className="w-full border-t-2 border-primary/30" />
-                    </div>
-
-                    {/* Effective revenue */}
-                    <div className="flex items-center justify-between gap-6 bg-primary/5 rounded-md p-3 -mx-1">
-                        <div className="flex-1">
-                            <div className="text-base font-semibold text-foreground">
-                                <Trans>True Consolidated Revenues</Trans>
-                            </div>
-                            <div className="text-xs text-muted-foreground">
-                                <Trans>Excluding inter-budget flows and financial operations</Trans>
-                            </div>
-                        </div>
-                        <div className="text-right min-w-[180px]">
-                            <div className="font-mono text-xl font-bold text-primary">
-                                {yValueFormatter(effectiveRevenue, currencyCode, 'compact')}
-                            </div>
-                            <div className="font-mono text-xs text-muted-foreground">
-                                {yValueFormatter(effectiveRevenue, currencyCode, 'standard')}
-                                {unit.includes('capita') && <span className="ml-1 font-sans">/ capita</span>}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                    </>
+                )}
             </CardContent>
         </Card>
     )

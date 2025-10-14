@@ -3,6 +3,7 @@ import { Trans } from '@lingui/react/macro'
 import { groupData } from './budget-transform'
 import { formatCurrency, formatNumber, getNormalizationUnit } from '@/lib/utils'
 import type { GroupedItem } from './budget-transform'
+import { Skeleton } from '@/components/ui/skeleton'
 
 type AggregatedItem = {
   fn_c: string | null
@@ -18,17 +19,46 @@ type Props = {
   normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro'
   showEconomic?: boolean
   economicInfoText?: React.ReactNode
+  isLoading?: boolean
 }
+
+const CategoryItemSkeleton = () => (
+    <div className="space-y-2.5">
+      <div className="flex justify-between items-start gap-4">
+        <div className="flex-1 space-y-2">
+          <Skeleton className="h-4 w-3/4" />
+        </div>
+        <div className="flex-shrink-0 text-right space-y-2">
+          <Skeleton className="h-4 w-20 ml-auto" />
+          <Skeleton className="h-3 w-24 ml-auto" />
+        </div>
+      </div>
+      <Skeleton className="h-1.5 w-full" />
+    </div>
+  )
+  
+  const CategoryListSkeleton = () => (
+    <div className="space-y-6">
+      {[...Array(5)].map((_, i) => (
+        <CategoryItemSkeleton key={i} />
+      ))}
+    </div>
+  )
 
 const CategoryColumn = ({ title, items, baseTotal, codePrefix, normalization }: { title: React.ReactNode, items: GroupedItem[], baseTotal: number, codePrefix: 'fn' | 'ec', normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro' }) => {
     const unit = getNormalizationUnit(normalization ?? 'total');
     const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON';
+    // Denominator for progress bars uses the sum of absolute item totals
+    const absTotal = useMemo(() => items.reduce((sum, it) => sum + Math.abs(it.total), 0), [items])
+
     return (
         <div>
             <h4 className="text-base font-semibold mb-4">{title}</h4>
             <ul className="space-y-6">
                 {items.map((g) => {
-                const pct = baseTotal > 0 ? (g.total / baseTotal) * 100 : 0
+                const isNegative = g.total < 0
+                const pctBar = absTotal > 0 ? Math.min(100, Math.max(0, (Math.abs(g.total) / absTotal) * 100)) : 0
+                const pctText = baseTotal !== 0 ? (g.total / baseTotal) * 100 : 0
                 return (
                     <li key={g.code}>
                         <div className="flex justify-between items-start mb-2 gap-4">
@@ -40,15 +70,18 @@ const CategoryColumn = ({ title, items, baseTotal, codePrefix, normalization }: 
                             </div>
                             <div className="flex-shrink-0 text-right">
                                 <div className="font-semibold text-sm">
-                                    {formatCurrency(g.total, 'compact', currencyCode)} ({formatNumber(pct)}%)
+                                    {formatCurrency(g.total, 'compact', currencyCode)} ({formatNumber(pctText)}%)
                                 </div>
                                 <div className="text-xs text-muted-foreground font-mono">
                                     {formatCurrency(g.total, 'standard', currencyCode)} {unit.includes('capita') && '/ capita'}
                                 </div>
                             </div>
                         </div>
-                        <div className="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
-                            <div className="bg-gradient-to-r from-primary to-blue-400 h-1.5 rounded-full" style={{width: `${pct}%`}}></div>
+                        <div className="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700" aria-label={isNegative ? 'negative value' : 'positive value'}>
+                            <div
+                              className={`${isNegative ? 'bg-red-500' : 'bg-gradient-to-r from-primary to-blue-400'} h-1.5 rounded-full`}
+                              style={{width: `${pctBar}%`}}
+                            />
                         </div>
                     </li>
                 )
@@ -58,9 +91,24 @@ const CategoryColumn = ({ title, items, baseTotal, codePrefix, normalization }: 
     )
 }
 
-export function BudgetCategoryList({ aggregated, depth, normalization, showEconomic = true, economicInfoText }: Props) {
+export function BudgetCategoryList({ aggregated, depth, normalization, showEconomic = true, economicInfoText, isLoading }: Props) {
   const functional = useMemo(() => groupData(aggregated as any, 'fn', depth), [aggregated, depth]);
   const economic = useMemo(() => groupData(aggregated as any, 'ec', depth), [aggregated, depth]);
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+        <div className="space-y-4">
+          <Skeleton className="h-5 w-48 mb-4" />
+          <CategoryListSkeleton />
+        </div>
+        <div className="space-y-4">
+          <Skeleton className="h-5 w-48 mb-4" />
+          <CategoryListSkeleton />
+        </div>
+      </div>
+    )
+  }
 
   if (functional.items.length === 0 && economic.items.length === 0) {
       return <div className="text-center text-muted-foreground py-8"><Trans>No categories to display.</Trans></div>
@@ -82,5 +130,3 @@ export function BudgetCategoryList({ aggregated, depth, normalization, showEcono
     </div>
   )
 }
-
-

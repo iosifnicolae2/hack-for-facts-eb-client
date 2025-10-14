@@ -26,21 +26,8 @@ import { getSeriesColor } from '@/components/charts/components/chart-renderer/ut
 import { getClassificationName } from '@/lib/classifications'
 import { getEconomicChapterName, getEconomicClassificationName, getEconomicSubchapterName } from '@/lib/economic-classifications'
 import { useIsMobile } from '@/hooks/use-mobile'
+import { usePeriodLabel } from '@/hooks/use-period-label'
 import { usePersistedState } from '@/lib/hooks/usePersistedState'
-
-const CategoryListSkeleton = () => (
-  <div className="space-y-5">
-    {[...Array(5)].map((_, i) => (
-      <div key={i}>
-        <div className="flex justify-between items-center mb-1">
-          <Skeleton className="h-4 w-3/4" />
-          <Skeleton className="h-4 w-1/4" />
-        </div>
-        <Skeleton className="h-2 w-full" />
-      </div>
-    ))}
-  </div>
-);
 
 type CurrencyCode = 'RON' | 'EUR'
 
@@ -450,6 +437,7 @@ function BudgetExplorerPage() {
   const currentDrillCode = path.length > 0 ? path[path.length - 1] : null
 
   const currentDepthNumeric = useMemo(() => (depth === 'detail' ? 4 : 2) as 2 | 4 | 6, [depth])
+  const periodLabel = usePeriodLabel(filter.report_period)
 
   return (
     <div className="px-4 lg:px-6 py-4">
@@ -461,7 +449,7 @@ function BudgetExplorerPage() {
 
         <Card className="shadow-sm">
           <CardHeader>
-            <h3 className="text-base sm:text-lg font-semibold"><Trans>Budget Distribution</Trans></h3>
+            <h3 className="text-base sm:text-lg font-semibold"><Trans>Budget Distribution</Trans> - {periodLabel}</h3>
           </CardHeader>
           <CardContent>
             {isLoading ? (
@@ -540,10 +528,10 @@ function BudgetExplorerPage() {
 
         {/* Breakdowns: show spending or revenue based on active filter */}
         {filter.account_category === 'ch' && (
-          <SpendingBreakdown nodes={nodes as any} normalization={filter.normalization} />
+          <SpendingBreakdown nodes={nodes as any} normalization={filter.normalization} periodLabel={periodLabel} isLoading={isLoading} />
         )}
         {filter.account_category === 'vn' && (
-          <RevenueBreakdown nodes={nodes as any} normalization={filter.normalization} />
+          <RevenueBreakdown nodes={nodes as any} normalization={filter.normalization} periodLabel={periodLabel} isLoading={isLoading} />
         )}
 
         <Card className="shadow-sm">
@@ -558,14 +546,12 @@ function BudgetExplorerPage() {
             </div>
           </CardHeader>
           <CardContent>
-            {isLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-                <CategoryListSkeleton />
-                <CategoryListSkeleton />
-              </div>
-            ) : (
-              <BudgetCategoryList aggregated={nodes as any} depth={currentDepthNumeric} normalization={filter.normalization} />
-            )}
+            <BudgetCategoryList
+              aggregated={nodes as any}
+              depth={currentDepthNumeric}
+              normalization={filter.normalization}
+              isLoading={isLoading}
+            />
           </CardContent>
         </Card>
 
@@ -663,4 +649,3 @@ function BudgetExplorerPage() {
     </div>
   )
 }
-

@@ -21,6 +21,7 @@ import { useTreemapDrilldown } from '@/components/budget-explorer/useTreemapDril
 import type { AggregatedNode } from '@/components/budget-explorer/budget-transform'
 import { SpendingBreakdown } from '@/components/budget-explorer/SpendingBreakdown'
 import { RevenueBreakdown } from '@/components/budget-explorer/RevenueBreakdown'
+import { usePeriodLabel } from '@/hooks/use-period-label'
 
 interface OverviewProps {
     cui: string;
@@ -147,7 +148,9 @@ export const Overview = ({
         if (accountCategory === 'vn') {
             setPrimary('fn')
         }
-    }, [accountCategory])
+    }, [accountCategory, reset])
+
+    const periodLabel = usePeriodLabel(reportPeriod)
 
     return (
         <div className="space-y-6 sm:space-y-8">
@@ -180,7 +183,7 @@ export const Overview = ({
             <Card className="shadow-sm">
                 <CardHeader>
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-                        <h3 className="text-base sm:text-lg font-semibold">Budget Distribution - {getYearLabel(selectedYear, search.month as TMonth, search.quarter as TQuarter)}</h3>
+                        <h3 className="text-base sm:text-lg font-semibold">Budget Distribution - {usePeriodLabel(reportPeriod)}</h3>
                         <div className="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-2 sm:gap-3">
                             <ToggleGroup type="single" value={accountCategory} onValueChange={(v) => v && setAccountCategory(v as 'ch' | 'vn')} variant="outline" size="sm" className="w-full sm:w-auto justify-between">
                                 <ToggleGroupItem value="vn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 flex-1 sm:flex-none">Income</ToggleGroupItem>
@@ -211,10 +214,20 @@ export const Overview = ({
 
             {/* Breakdown cards to explain totals, aligned with Budget Explorer */}
             {accountCategory === 'ch' && (
-                <SpendingBreakdown nodes={aggregatedNodes as unknown as readonly AggregatedNode[]} normalization={normalization} />
+                <SpendingBreakdown
+                    nodes={aggregatedNodes as unknown as readonly AggregatedNode[]}
+                    normalization={normalization}
+                    periodLabel={periodLabel}
+                    isLoading={isLoading || isLoadingLineItems}
+                />
             )}
             {accountCategory === 'vn' && (
-                <RevenueBreakdown nodes={aggregatedNodes as unknown as readonly AggregatedNode[]} normalization={normalization} />
+                <RevenueBreakdown
+                    nodes={aggregatedNodes as unknown as readonly AggregatedNode[]}
+                    normalization={normalization}
+                    periodLabel={periodLabel}
+                    isLoading={isLoading || isLoadingLineItems}
+                />
             )}
 
             <div className="space-y-6">

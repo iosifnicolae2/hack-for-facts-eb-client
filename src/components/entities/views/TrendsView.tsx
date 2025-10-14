@@ -9,6 +9,7 @@ import { TrendsViewSkeleton } from './TrendsViewSkeleton';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { t } from '@lingui/core/macro';
 import { toReportTypeValue, type ReportPeriodInput, type GqlReportType, type TMonth, type TQuarter } from '@/schemas/reporting';
+import { usePeriodLabel } from '@/hooks/use-period-label'
 import { useEntityExecutionLineItems } from '@/lib/hooks/useEntityDetails';
 import { EntityLineItemsTabs } from '../EntityLineItemsTabs';
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -141,12 +142,10 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
     }
   };
 
-  if (isLoading || !entity || !trendChart) {
-    return <TrendsViewSkeleton />;
-  }
-
   // Build xAxis marker value to reflect current selection
   const xAxisMarker = reportPeriod.type === 'YEAR' ? currentYear : anchor;
+
+  const periodLabel = usePeriodLabel(reportPeriod)
 
   const aggregatedNodes = useMemo<AggregatedNode[]>(() => {
     return (lineItems ?? []).map((n: any) => ({
@@ -175,12 +174,16 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
     reset()
   }, [type, reset])
 
+  if (isLoading || !entity || !trendChart) {
+    return <TrendsViewSkeleton />;
+  }
+
   return (
     <div className="space-y-8">
       <Card className="shadow-sm">
         <CardHeader>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-            <h3 className="text-base sm:text-lg font-semibold">Budget Distribution</h3>
+            <h3 className="text-base sm:text-lg font-semibold">Budget Distribution - {periodLabel}</h3>
             <ToggleGroup type="single" value={primary} onValueChange={(v) => v && setPrimary(v as 'fn' | 'ec')} variant="outline" size="sm">
               <ToggleGroupItem value="fn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4">Functional</ToggleGroupItem>
               <ToggleGroupItem value="ec" disabled={type === 'income'} className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4">Economic</ToggleGroupItem>
@@ -204,15 +207,25 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
       </Card>
 
       {type === 'expense' && (
-        <SpendingBreakdown nodes={aggregatedNodes} normalization={normalization} />
+        <SpendingBreakdown
+          nodes={aggregatedNodes}
+          normalization={normalization}
+          periodLabel={periodLabel}
+          isLoading={isLoading || !fullLineItems}
+        />
       )}
       {type === 'income' && (
-        <RevenueBreakdown nodes={aggregatedNodes} normalization={normalization} />
+        <RevenueBreakdown
+          nodes={aggregatedNodes}
+          normalization={normalization}
+          periodLabel={periodLabel}
+          isLoading={isLoading || !fullLineItems}
+        />
       )}
 
       <Card className="shadow-sm">
         <CardHeader>
-          <h3>Top Categories</h3>
+          <h3 className='sr-only'>Top Categories</h3>
         </CardHeader>
         <CardContent>
         {isLoading || !fullLineItems ? (
