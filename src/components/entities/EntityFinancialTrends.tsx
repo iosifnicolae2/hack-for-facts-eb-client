@@ -235,7 +235,7 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
                 radius={[3, 3, 0, 0]}
                 isAnimationActive={shouldAnimate}
                 animationEasing='ease-in-out'
-                animationBegin={shouldAnimate ? 50 : 0}
+                animationBegin={shouldAnimate ? 300 : 0}
               >
                 {!isMobile && <LabelList dataKey="income" position="top" angle={periodType === 'QUARTER' ? 0 : -45} offset={24} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />}
               </Bar>
@@ -249,7 +249,7 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
                 radius={[3, 3, 0, 0]}
                 isAnimationActive={shouldAnimate}
                 animationEasing='ease-in-out'
-                animationBegin={shouldAnimate ? 50 : 0}
+                animationBegin={shouldAnimate ? 300 : 0}
               >
                 {!isMobile && <LabelList dataKey="expense" position="top" angle={periodType === 'QUARTER' ? 0 : -45} offset={24} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />}
               </Bar>
@@ -260,7 +260,7 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
                 name={t`Balance`}
                 stroke="#6366f1"
                 isAnimationActive={shouldAnimate}
-                animationBegin={shouldAnimate ? 500 : 0}
+                animationBegin={shouldAnimate ? 900 : 0}
                 strokeWidth={2.5}
                 dot={{ r: 4, fill: '#6366f1', strokeWidth: 2, stroke: '#f8fafc' }}
                 activeDot={{ r: 6 }}
