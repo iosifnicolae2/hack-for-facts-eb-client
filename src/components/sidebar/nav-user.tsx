@@ -16,6 +16,7 @@ import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/c
 import { createLogger } from "@/lib/logger";
 import { useAuth, AuthSignInButton } from "@/lib/auth";
 import { ThemeSwitcher } from "./theme-switcher";
+import { getUserLocale } from "@/lib/utils";
 
 const logger = createLogger({ context: "NavUser" });
 
@@ -30,17 +31,18 @@ type NavUserProps = {
 export function NavUser(_props: NavUserProps) {
   const { isMobile, setIsOverlayLockedOpen } = useSidebar();
   const { user, isSignedIn, isLoaded, signOut } = useAuth();
+  const locale = getUserLocale();
 
   const displayName = React.useMemo(() => {
-    if (!user) return "Guest";
+    if (!user) return locale === "ro" ? "Invitat" : "Guest";
     const first = user.firstName ?? "";
     const last = user.lastName ?? "";
     const full = `${first} ${last}`.trim();
-    return full || "User";
+    return full || (locale === "ro" ? "Utilizator" : "User");
   }, [user]);
 
   const initials = React.useMemo(() => {
-    if (!user) return "GU";
+    if (!user) return locale === "ro" ? "IN" : "GU";
     const first = (user.firstName?.[0] ?? "U").toUpperCase();
     const last = (user.lastName?.[0] ?? "").toUpperCase();
     return `${first}${last}`.slice(0, 2);
