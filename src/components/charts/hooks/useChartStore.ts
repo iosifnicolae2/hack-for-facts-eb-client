@@ -13,6 +13,7 @@ import { toast } from 'sonner';
 import { getChartsStore } from '../chartsStore';
 import { generateRandomColor } from '../components/chart-renderer/utils';
 import { Analytics } from '@/lib/analytics';
+import { useUserCurrency } from '@/lib/hooks/useUserCurrency';
 
 interface ValidationResult {
   isValid: boolean;
@@ -25,6 +26,8 @@ const chartsStore = getChartsStore();
 export function useChartStore() {
   const navigate = useNavigate({ from: '/charts/$chartId' });
   const { chart, view, seriesId, annotationId } = useSearch({ from: "/charts/$chartId" });
+  const [currency] = useUserCurrency();
+  const defaultNormalization = currency === "EUR" ? "total_euro" : "total";
 
   const goToConfig = useCallback(() => {
     Analytics.capture(Analytics.EVENTS.ChartViewChanged, { chart_id: chart.id, view: 'config' });
@@ -92,6 +95,7 @@ export function useChartStore() {
       filter: {
         account_category: 'ch',
         report_type: 'Executie bugetara agregata la nivel de ordonator principal',
+        normalization: defaultNormalization,
       },
       config: {
         visible: true,

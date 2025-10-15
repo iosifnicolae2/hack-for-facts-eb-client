@@ -9,6 +9,7 @@ import { i18n } from '@lingui/core'
 import { t } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { useNormalizationSelection } from '@/hooks/useNormalizationSelection'
 
 type Props = {
   entity?: EntityDetailsData | null | undefined;
@@ -40,12 +41,12 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
     { id: 'DETAILED', label: t`Detailed` },
   ]
 
-  const NORMALIZATION_OPTIONS: { id: Normalization; label: ReactNode }[] = [
-    { id: 'total', label: t`Total (RON)` },
-    { id: 'total_euro', label: t`Total (EUR)` },
-    { id: 'per_capita', label: t`Per Capita (RON)` },
-    { id: 'per_capita_euro', label: t`Per Capita (EUR)` },
+  // Display only two options without currency suffix; map to actual normalization
+  const DISPLAY_NORMALIZATION_OPTIONS: { id: 'total' | 'per_capita'; label: ReactNode }[] = [
+    { id: 'total', label: t`Total` },
+    { id: 'per_capita', label: t`Per Capita` },
   ]
+  const { toDisplayNormalization, toEffectiveNormalization } = useNormalizationSelection(normalization)
 
   const availableYears = useMemo(() => {
     return Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, idx) => defaultYearRange.end - idx)
@@ -146,8 +147,9 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
     const creditor = value as string
     emitChange(periodType, year, quarter, month, reportType, creditor, normalization)
   }
-  const handleNormalizationChange = (value: Normalization) => {
-    emitChange(periodType, year, quarter, month, reportType, mainCreditor, value)
+  const handleNormalizationChange = (display: 'total' | 'per_capita') => {
+    const effective = toEffectiveNormalization(display)
+    emitChange(periodType, year, quarter, month, reportType, mainCreditor, effective)
   }
 
   return (
@@ -244,14 +246,29 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
             <Label className="text-xs text-muted-foreground"><Trans>Normalization</Trans></Label>
             <ToggleGroup
               type="single"
-              value={normalization ?? 'total'}
-              onValueChange={(v) => v && handleNormalizationChange(v as Normalization)}
+              value={toDisplayNormalization(normalization)}
+              onValueChange={(v) => v && handleNormalizationChange(v as 'total' | 'per_capita')}
               variant="outline"
               size="sm"
               className="grid grid-cols-1 gap-2"
             >
-              {NORMALIZATION_OPTIONS.map((o) => (
-                <ToggleGroupItem key={o.id} value={o.id} onMouseEnter={() => emitPrefetch(periodType, year, quarter, month, reportType, mainCreditor, o.id)} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{o.label}</ToggleGroupItem>
+              {DISPLAY_NORMALIZATION_OPTIONS.map((o) => (
+                <ToggleGroupItem
+                  key={o.id}
+                  value={o.id}
+                  onMouseEnter={() => emitPrefetch(
+                    periodType,
+                    year,
+                    quarter,
+                    month,
+                    reportType,
+                    mainCreditor,
+                    toEffectiveNormalization(o.id)
+                  )}
+                  className="data-[state=on]:bg-foreground data-[state=on]:text-background"
+                >
+                  {o.label}
+                </ToggleGroupItem>
               ))}
             </ToggleGroup>
           </div>

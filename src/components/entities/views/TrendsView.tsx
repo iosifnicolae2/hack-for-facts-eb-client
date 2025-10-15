@@ -104,7 +104,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
       },
       enabled: true,
       config: { color: getSeriesColor(index), visible: true, showDataLabels: false },
-      unit: 'RON',
+      unit: String(normalization).includes('euro') ? 'EUR' : 'RON',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     }));
@@ -158,16 +158,25 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
     }))
   }, [lineItems])
 
+  // Exclude non-direct spending items for expense view
+  const excludeEcCodes = type === 'expense' ? ['51', '80', '81'] : []
+
   const {
     primary,
     activePrimary,
     setPrimary,
     treemapData,
     breadcrumbs,
+    excludedItemsSummary,
     onNodeClick,
     onBreadcrumbClick,
     reset,
-  } = useTreemapDrilldown({ nodes: aggregatedNodes, initialPrimary: 'fn', rootDepth: 2 })
+  } = useTreemapDrilldown({
+    nodes: aggregatedNodes,
+    initialPrimary: 'fn',
+    rootDepth: 2,
+    excludeEcCodes,
+  })
 
   // Reset drilldown when switching between income/expense tabs
   useEffect(() => {
@@ -201,6 +210,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
               onBreadcrumbClick={onBreadcrumbClick}
               path={breadcrumbs}
               normalization={normalization}
+              excludedItemsSummary={excludedItemsSummary}
             />
           )}
         </CardContent>
