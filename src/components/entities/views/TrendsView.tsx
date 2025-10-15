@@ -22,6 +22,7 @@ import type { AggregatedNode } from '@/components/budget-explorer/budget-transfo
 import { SpendingBreakdown } from '@/components/budget-explorer/SpendingBreakdown'
 import { RevenueBreakdown } from '@/components/budget-explorer/RevenueBreakdown'
 import { getNormalizationUnit } from '@/lib/utils';
+import { Trans } from '@lingui/react/macro'
 
 interface BaseTrendsViewProps {
   entity?: EntityDetailsData | null | undefined;
@@ -193,10 +194,10 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
       <Card className="shadow-sm">
         <CardHeader>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-            <h3 className="text-base sm:text-lg font-semibold">Budget Distribution - {periodLabel}</h3>
+            <h3 className="text-base sm:text-lg font-semibold"><Trans>Budget Distribution</Trans> - {periodLabel}</h3>
             <ToggleGroup type="single" value={primary} onValueChange={(v) => v && setPrimary(v as 'fn' | 'ec')} variant="outline" size="sm">
-              <ToggleGroupItem value="fn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4">Functional</ToggleGroupItem>
-              <ToggleGroupItem value="ec" disabled={type === 'income'} className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4">Economic</ToggleGroupItem>
+              <ToggleGroupItem value="fn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4"><Trans>Functional</Trans></ToggleGroupItem>
+              <ToggleGroupItem value="ec" disabled={type === 'income'} className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4"><Trans>Economic</Trans></ToggleGroupItem>
             </ToggleGroup>
           </div>
         </CardHeader>

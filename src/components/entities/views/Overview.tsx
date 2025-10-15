@@ -22,6 +22,7 @@ import type { AggregatedNode } from '@/components/budget-explorer/budget-transfo
 import { SpendingBreakdown } from '@/components/budget-explorer/SpendingBreakdown'
 import { RevenueBreakdown } from '@/components/budget-explorer/RevenueBreakdown'
 import { usePeriodLabel } from '@/hooks/use-period-label'
+import { Trans } from '@lingui/react/macro'
 
 interface OverviewProps {
     cui: string;
@@ -194,12 +195,12 @@ export const Overview = ({
                         <h3 className="text-base sm:text-lg font-semibold">Budget Distribution - {usePeriodLabel(reportPeriod)}</h3>
                         <div className="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-2 sm:gap-3">
                             <ToggleGroup type="single" value={accountCategory} onValueChange={(v) => v && setAccountCategory(v as 'ch' | 'vn')} variant="outline" size="sm" className="w-full sm:w-auto justify-between">
-                                <ToggleGroupItem value="vn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 flex-1 sm:flex-none">Income</ToggleGroupItem>
-                                <ToggleGroupItem value="ch" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 flex-1 sm:flex-none">Expenses</ToggleGroupItem>
+                                <ToggleGroupItem value="vn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 flex-1 sm:flex-none"><Trans>Income</Trans></ToggleGroupItem>
+                                <ToggleGroupItem value="ch" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 flex-1 sm:flex-none"><Trans>Expenses</Trans></ToggleGroupItem>
                             </ToggleGroup>
                             <ToggleGroup type="single" value={primary} onValueChange={(v) => v && setPrimary(v as 'fn' | 'ec')} variant="outline" size="sm" className="w-full sm:w-auto justify-between">
-                                <ToggleGroupItem value="fn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 flex-1 sm:flex-none">Functional</ToggleGroupItem>
-                                <ToggleGroupItem value="ec" disabled={accountCategory === 'vn'} className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 flex-1 sm:flex-none">Economic</ToggleGroupItem>
+                                <ToggleGroupItem value="fn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 flex-1 sm:flex-none"><Trans>Functional</Trans></ToggleGroupItem>
+                                <ToggleGroupItem value="ec" disabled={accountCategory === 'vn'} className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 flex-1 sm:flex-none"><Trans>Economic</Trans></ToggleGroupItem>
                             </ToggleGroup>
                         </div>
                     </div>
