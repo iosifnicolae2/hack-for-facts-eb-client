@@ -7,7 +7,8 @@ import { ArrowLeft } from 'lucide-react'
 import { yValueFormatter } from '@/components/charts/components/chart-renderer/utils'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
-import type { TreemapInput } from './budget-transform'
+import type { TreemapInput, ExcludedItemsSummary } from './budget-transform'
+import { FilteredSpendingInfo } from './FilteredSpendingInfo'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { getNormalizationUnit } from '@/lib/utils'
 
@@ -75,6 +76,7 @@ type Props = {
   onViewDetails?: () => void
   showViewDetails?: boolean
   normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro'
+  excludedItemsSummary?: ExcludedItemsSummary
 }
 
 const CustomizedContent: FC<{
@@ -287,7 +289,7 @@ const CustomizedContent: FC<{
   )
 }
 
-export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, path = [], onViewDetails, showViewDetails = false, normalization }: Props) {
+export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, path = [], onViewDetails, showViewDetails = false, normalization, excludedItemsSummary }: Props) {
   const isMobile = useIsMobile()
 
   const payloadData = useMemo(() => {
@@ -428,13 +430,20 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
               </Treemap>
             </ResponsiveContainer>
           </div>
-          <div className="flex flex-col items-center gap-0.5 text-center mt-4">
+          <div className="flex flex-col items-center gap-2 text-center mt-4">
             <div className="text-sm sm:text-xl font-semibold">
               <Trans>Total</Trans>: <span className="font-bold">{yValueFormatter(totalValue, currencyCode, 'compact')}</span> {unit.includes('capita') && '/ capita'}
             </div>
             <div className="text-sm text-muted-foreground">
               <span className="font-mono">{yValueFormatter(totalValue, currencyCode, 'standard')}</span> {unit.includes('capita') && '/ capita'}
             </div>
+            {excludedItemsSummary && excludedItemsSummary.totalExcluded > 0 && (
+              <FilteredSpendingInfo
+                excludedItemsSummary={excludedItemsSummary}
+                currencyCode={currencyCode}
+                perCapita={unit.includes('capita')}
+              />
+            )}
           </div>
         </>
       )}

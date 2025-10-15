@@ -21,6 +21,7 @@ import { useTreemapDrilldown } from '@/components/budget-explorer/useTreemapDril
 import type { AggregatedNode } from '@/components/budget-explorer/budget-transform'
 import { SpendingBreakdown } from '@/components/budget-explorer/SpendingBreakdown'
 import { RevenueBreakdown } from '@/components/budget-explorer/RevenueBreakdown'
+import { getNormalizationUnit } from '@/lib/utils';
 
 interface BaseTrendsViewProps {
   entity?: EntityDetailsData | null | undefined;
@@ -104,7 +105,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
       },
       enabled: true,
       config: { color: getSeriesColor(index), visible: true, showDataLabels: false },
-      unit: String(normalization).includes('euro') ? 'EUR' : 'RON',
+      unit: getNormalizationUnit(normalization),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     }));
@@ -238,20 +239,20 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
           <h3 className='sr-only'>Top Categories</h3>
         </CardHeader>
         <CardContent>
-        {isLoading || !fullLineItems ? (
+          {isLoading || !fullLineItems ? (
             <Skeleton className="w-full h-[260px]" />
           ) : (
-          <BudgetCategoryList 
-            aggregated={aggregatedNodes} 
-            depth={2} 
-            normalization={normalization}
-            showEconomic={type !== 'income'}
-            economicInfoText={
-              <span>
-                Economic breakdown is not available for income. Switch to <span className="font-semibold">Expenses</span> to view economic categories.
-              </span>
-            }
-          />
+            <BudgetCategoryList
+              aggregated={aggregatedNodes}
+              depth={2}
+              normalization={normalization}
+              showEconomic={type !== 'income'}
+              economicInfoText={
+                <span>
+                  Economic breakdown is not available for income. Switch to <span className="font-semibold">Expenses</span> to view economic categories.
+                </span>
+              }
+            />
           )}
         </CardContent>
       </Card>

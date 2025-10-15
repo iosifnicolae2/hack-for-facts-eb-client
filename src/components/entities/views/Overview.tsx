@@ -140,7 +140,15 @@ export const Overview = ({
         }))
     }, [filteredItems])
 
-    const { primary, activePrimary, setPrimary, treemapData, breadcrumbs, onNodeClick, onBreadcrumbClick, reset } = useTreemapDrilldown({ nodes: aggregatedNodes, initialPrimary: 'fn', rootDepth: 2 })
+    // Exclude non-direct spending items for expense view
+    const excludeEcCodes = accountCategory === 'ch' ? ['51', '80', '81'] : []
+
+    const { primary, activePrimary, setPrimary, treemapData, breadcrumbs, excludedItemsSummary, onNodeClick, onBreadcrumbClick, reset } = useTreemapDrilldown({
+        nodes: aggregatedNodes,
+        initialPrimary: 'fn',
+        rootDepth: 2,
+        excludeEcCodes,
+    })
 
     // Reset drilldown when switching between income/expenses and auto-switch to functional for income
     useEffect(() => {
@@ -148,7 +156,7 @@ export const Overview = ({
         if (accountCategory === 'vn') {
             setPrimary('fn')
         }
-    }, [accountCategory, reset])
+    }, [accountCategory, reset, setPrimary])
 
     const periodLabel = usePeriodLabel(reportPeriod)
 
@@ -207,6 +215,7 @@ export const Overview = ({
                             onBreadcrumbClick={onBreadcrumbClick}
                             path={breadcrumbs}
                             normalization={normalization}
+                            excludedItemsSummary={excludedItemsSummary}
                         />
                     )}
                 </CardContent>

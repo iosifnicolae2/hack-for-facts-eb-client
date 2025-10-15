@@ -41,6 +41,8 @@ yarn preview              # Preview production build locally
 yarn i18n:extract         # Scan code for Lingui message IDs and update .po files
 yarn i18n:compile         # Compile translated catalogs into runtime assets
 yarn i18n:clean           # Remove obsolete/unused message IDs from catalogs
+
+Don't modify the .po files manually. 
 ```
 
 **i18n Workflow**:

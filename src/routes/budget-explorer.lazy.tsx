@@ -16,7 +16,7 @@ import { BudgetTreemap } from '@/components/budget-explorer/BudgetTreemap'
 import { BudgetCategoryList } from '@/components/budget-explorer/BudgetCategoryList'
 import { BudgetDetailsDrawer } from '@/components/budget-explorer/BudgetDetailsDrawer'
 import { BudgetLineItemsPreview } from '@/components/budget-explorer/BudgetLineItemsPreview'
-import { buildTreemapDataV2 } from '@/components/budget-explorer/budget-transform'
+import { buildTreemapDataV2, calculateExcludedItems } from '@/components/budget-explorer/budget-transform'
 import { SpendingBreakdown } from '@/components/budget-explorer/SpendingBreakdown'
 import { RevenueBreakdown } from '@/components/budget-explorer/RevenueBreakdown'
 import { ChartPreview } from '@/components/charts/components/chart-preview/ChartPreview'
@@ -27,9 +27,7 @@ import { getClassificationName } from '@/lib/classifications'
 import { getEconomicChapterName, getEconomicClassificationName, getEconomicSubchapterName } from '@/lib/economic-classifications'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { usePeriodLabel } from '@/hooks/use-period-label'
-import { usePersistedState } from '@/lib/hooks/usePersistedState'
-
-type CurrencyCode = 'RON' | 'EUR'
+import { useUserCurrency } from '@/lib/hooks/useUserCurrency'
 
 export const Route = createLazyFileRoute('/budget-explorer')({
   component: BudgetExplorerPage,
@@ -127,7 +125,7 @@ function BudgetExplorerPage() {
   const navigate = useNavigate({ from: '/budget-explorer' })
   const search = SearchSchema.parse(raw)
   const isMobile = useIsMobile()
-  const [currency] = usePersistedState<CurrencyCode>('user-currency', 'RON')
+  const [currency] = useUserCurrency()
 
   const { filter, primary, depth } = search
   const filterHash = generateHash(JSON.stringify(filter))
@@ -189,6 +187,9 @@ function BudgetExplorerPage() {
 
   const nodes = data?.nodes ?? []
 
+  // Exclude non-direct spending items for spending view (account_category='ch')
+  const excludeEcCodes = filter.account_category === 'ch' ? ['51', '80', '81'] : []
+
   const treemap = useMemo(() => {
     const rootDepth: 2 | 4 | 6 = depth === 'detail' ? 4 : 2
     return buildTreemapDataV2({
@@ -197,8 +198,19 @@ function BudgetExplorerPage() {
       path,
       constraint: crossConstraint ?? undefined,
       rootDepth,
+      excludeEcCodes,
     })
-  }, [nodes, drillPrimary, path, crossConstraint, depth])
+  }, [nodes, drillPrimary, path, crossConstraint, depth, excludeEcCodes])
+
+  // Calculate excluded items for the current layer dynamically
+  const excludedItemsSummary = useMemo(() => {
+    if (excludeEcCodes.length === 0) return undefined
+    return calculateExcludedItems(nodes, excludeEcCodes, {
+      path,
+      constraint: crossConstraint ?? undefined,
+      primary: drillPrimary,
+    })
+  }, [nodes, excludeEcCodes, path, crossConstraint, drillPrimary])
 
   const ministryChart: Chart = useMemo(() => {
     const series = ministries.map((ministry, index) => {
@@ -517,6 +529,7 @@ function BudgetExplorerPage() {
                 onViewDetails={() => setDrawerCode(currentDrillCode)}
                 showViewDetails={!!currentDrillCode && !crossConstraint}
                 normalization={filter.normalization}
+                excludedItemsSummary={excludedItemsSummary}
               />
             )}
           </CardContent>
