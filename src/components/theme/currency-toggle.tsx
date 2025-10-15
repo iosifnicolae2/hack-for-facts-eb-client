@@ -25,7 +25,7 @@ export function CurrencyToggle() {
                 <SidebarMenuItem>
                     <SidebarMenuButton asChild onClick={() => applyCurrency("RON")}>
                         <Button variant={currency === 'RON' ? "secondary" : "ghost"} size="icon" className="w-full justify-start gap-2">
-                            <span className="text-md">🦁</span>
+                            <span className="text-md">🇷🇴</span>
                             {!collapsed && <span className="flex-1 text-left"><Trans>RON</Trans></span>}
                         </Button>
                     </SidebarMenuButton>
