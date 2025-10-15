@@ -1,4 +1,4 @@
-import { useQuery, queryOptions } from '@tanstack/react-query';
+import { useQuery, queryOptions, keepPreviousData } from '@tanstack/react-query';
 import { getEntityDetails, getEntityExecutionLineItems, getEntityRelationships, getEntityReports, getReportsConnection, ReportsFilterInput, ReportConnection } from '@/lib/api/entities';
 import { Normalization } from '@/schemas/charts';
 import { ReportPeriodInput, GqlReportType } from '@/schemas/reporting';
@@ -21,6 +21,7 @@ export const entityDetailsQueryOptions = (
     queryFn: () => getEntityDetails(cui, normalization, reportPeriod, reportType, trendPeriod, mainCreditorCui),
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled: !!cui,
+    placeholderData: keepPreviousData,
   });
 
 }

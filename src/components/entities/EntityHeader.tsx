@@ -47,7 +47,9 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
   isLoading,
 }) => {
 
-  if (isLoading || !entity) {
+  // Keep rendering the header while loading if we already have entity data.
+  // This avoids unmounting controls (e.g., filters popover) during refetches.
+  if (!entity) {
     return <EntityHeaderSkeleton className={className} />;
   }
 
