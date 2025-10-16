@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
-import { buildTreemapDataV2, type AggregatedNode } from './budget-transform'
+import { buildTreemapDataV2, calculateExcludedItems, type AggregatedNode } from './budget-transform'
 import { getClassificationName } from '@/lib/classifications'
 import { getEconomicChapterName, getEconomicClassificationName, getEconomicSubchapterName } from '@/lib/economic-classifications'
 
@@ -61,15 +61,18 @@ function resolveBreadcrumbLabel(primary: 'fn' | 'ec', code: string, nodes: Aggre
  * @param nodes - Budget line items to visualize
  * @param initialPrimary - Starting primary dimension ('fn' or 'ec')
  * @param rootDepth - Depth to use at root level (2, 4, or 6 digits)
+ * @param excludeEcCodes - Economic codes to exclude from visualization (e.g., ['51', '80', '81'])
  */
 export function useTreemapDrilldown({
   nodes,
   initialPrimary = 'fn',
   rootDepth = 2,
+  excludeEcCodes = [],
 }: {
   nodes: AggregatedNode[]
   initialPrimary?: 'fn' | 'ec'
   rootDepth?: 2 | 4 | 6
+  excludeEcCodes?: string[]
 }) {
   // UI-selected primary (from toggle)
   const [primary, setPrimary] = useState<'fn' | 'ec'>(initialPrimary)
@@ -80,8 +83,25 @@ export function useTreemapDrilldown({
   const [crossConstraint, setCrossConstraint] = useState<{ type: 'fn' | 'ec'; code: string } | null>(null)
 
   const treemapData = useMemo(() => {
-    return buildTreemapDataV2({ data: nodes ?? [], primary: drillPrimary, path, constraint: crossConstraint ?? undefined, rootDepth })
-  }, [nodes, drillPrimary, path, crossConstraint, rootDepth])
+    return buildTreemapDataV2({
+      data: nodes ?? [],
+      primary: drillPrimary,
+      path,
+      constraint: crossConstraint ?? undefined,
+      rootDepth,
+      excludeEcCodes,
+    })
+  }, [nodes, drillPrimary, path, crossConstraint, rootDepth, excludeEcCodes])
+
+  // Calculate excluded items for current layer
+  const excludedItemsSummary = useMemo(() => {
+    if (!excludeEcCodes || excludeEcCodes.length === 0) return undefined
+    return calculateExcludedItems(nodes ?? [], excludeEcCodes, {
+      path,
+      constraint: crossConstraint ?? undefined,
+      primary: drillPrimary,
+    })
+  }, [nodes, excludeEcCodes, path, crossConstraint, drillPrimary])
 
   const appendBreadcrumb = useCallback(
     (type: 'fn' | 'ec', code: string) => {
@@ -126,7 +146,14 @@ export function useTreemapDrilldown({
       const selectedDepth = normalized ? normalized.split('.').length : 0 // 1->2d, 2->4d, 3->6d
 
       const hasNextInCurrent = (nextPath: string[]) => {
-        const next = buildTreemapDataV2({ data: nodes ?? [], primary: drillPrimary, path: nextPath, constraint: crossConstraint ?? undefined, rootDepth })
+        const next = buildTreemapDataV2({
+          data: nodes ?? [],
+          primary: drillPrimary,
+          path: nextPath,
+          constraint: crossConstraint ?? undefined,
+          rootDepth,
+          excludeEcCodes,
+        })
         return next.length > 0
       }
 
@@ -167,6 +194,7 @@ export function useTreemapDrilldown({
         path: [],
         constraint: { type: drillPrimary, code: normalized },
         rootDepth: 2,
+        excludeEcCodes,
       })
       if (oppositeRoot.length > 0) {
         setCrossConstraint({ type: drillPrimary, code: normalized })
@@ -262,6 +290,7 @@ export function useTreemapDrilldown({
     path,
     breadcrumbs,
     treemapData,
+    excludedItemsSummary,
     onNodeClick,
     onBreadcrumbClick,
     reset,

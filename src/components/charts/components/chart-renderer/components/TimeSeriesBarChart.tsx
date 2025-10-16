@@ -6,14 +6,13 @@ import { DataPointPayload } from '@/components/charts/hooks/useChartData';
 import { yValueFormatter } from '../utils';
 import { useChartDiff } from '../hooks/useChartDiff';
 import { DiffArea } from './diff-select/DiffArea';
-import { useEffect, useMemo, useRef } from 'react';
+import { useChartAnimation } from '../hooks/useChartAnimation';
+import { useMemo } from 'react';
 
 export function TimeSeriesBarChart({ chart, unitMap, timeSeriesData, onAnnotationPositionChange, margins }: ChartRendererProps) {
   const enabledSeries = useMemo(() => chart.series.filter(s => s.enabled), [chart.series]);
-  const isFirstRenderRef = useRef(true);
-  useEffect(() => {
-    isFirstRenderRef.current = false;
-  }, []);
+  const { isAnimationActive, animationDuration } = useChartAnimation({ duration: 300 });
+
   const {
     handleMouseDown,
     handleMouseMove,
@@ -45,8 +44,8 @@ export function TimeSeriesBarChart({ chart, unitMap, timeSeriesData, onAnnotatio
                   dataKey={`${series.id}.value`}
                   name={series.label || 'Untitled'}
                   fill={series.config.color}
-                  isAnimationActive={isFirstRenderRef.current}
-                  animationDuration={300}
+                  isAnimationActive={isAnimationActive}
+                  animationDuration={animationDuration}
                   animationEasing="ease-in-out"
                 >
                   <LabelList

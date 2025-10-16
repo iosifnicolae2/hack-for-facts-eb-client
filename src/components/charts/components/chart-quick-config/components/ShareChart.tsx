@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import {
     Link2,
     Image as ImageIcon,
@@ -213,11 +212,7 @@ export function ShareChart({
                                 disabled={loadingAction !== null}
                                 className="gap-2 flex-1 sm:flex-none"
                             >
-                                {loadingAction === 'png' ? (
-                                    <LoadingSpinner size="sm" />
-                                ) : (
-                                    <ImageIcon className="h-3 w-3" />
-                                )}
+                                <ImageIcon className="h-3 w-3" />
                                 PNG
                             </Button>
                             <Button
@@ -227,11 +222,7 @@ export function ShareChart({
                                 disabled={loadingAction !== null}
                                 className="gap-2 flex-1 sm:flex-none"
                             >
-                                {loadingAction === 'svg' ? (
-                                    <LoadingSpinner size="sm" />
-                                ) : (
-                                    <FileImage className="h-3 w-3" />
-                                )}
+                                <FileImage className="h-3 w-3" />
                                 SVG
                             </Button>
                         </div>

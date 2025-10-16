@@ -149,7 +149,7 @@ function ChartsListPage() {
         title={t`Saved charts – Transparenta.eu`}
         description={t`Manage and search your locally saved charts. Create, favorite, categorize, and share your visualizations.`}
       />
-      <div className="rounded-xl border bg-gradient-to-br from-primary/5 via-white to-secondary/5 p-6 md:p-8 shadow-md">
+      <div className="rounded-xl border bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-6 md:p-8 shadow-md">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="space-y-2">
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight flex items-center gap-3">
@@ -228,8 +228,8 @@ function ChartsListPage() {
         >
           <div className="max-w-full overflow-x-auto hide-scrollbar">
             <TabsList className="inline-flex items-center gap-1 whitespace-nowrap h-8 bg-muted/30 p-1 rounded-md min-w-max">
-              <TabsTrigger className={cn("h-7 px-2 text-xs", activeTab === "all" && "bg-white border-slate-200 shadow-md data-[state=active]:bg-white data-[state=active]:border-slate-200 data-[state=active]:shadow-md")} value="all"><Trans>All</Trans></TabsTrigger>
-              <TabsTrigger className={cn("h-7 px-2 text-xs", activeTab === "favorites" && "bg-white border-slate-200 shadow-md data-[state=active]:bg-white data-[state=active]:border-slate-200 data-[state=active]:shadow-md")} value="favorites" disabled={favoritesCount === 0}>
+              <TabsTrigger className={cn("h-7 px-2 text-xs", activeTab === "all" && "bg-background border shadow-md data-[state=active]:bg-background data-[state=active]:border data-[state=active]:shadow-md")} value="all"><Trans>All</Trans></TabsTrigger>
+              <TabsTrigger className={cn("h-7 px-2 text-xs", activeTab === "favorites" && "bg-background border shadow-md data-[state=active]:bg-background data-[state=active]:border data-[state=active]:shadow-md")} value="favorites" disabled={favoritesCount === 0}>
                 <Trans>Favorites</Trans>
               </TabsTrigger>
               <ChartCategories

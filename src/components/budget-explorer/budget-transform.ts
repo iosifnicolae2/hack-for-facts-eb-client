@@ -33,19 +33,28 @@ type BuildTreemapV2Options = {
   constraint?: { type: 'fn' | 'ec'; code: string }
   /** When there is no path (root), use this depth for grouping. */
   rootDepth?: 2 | 4 | 6
+  /** Filter out specific economic codes (e.g., ec:51, 80, 81 for spending) */
+  excludeEcCodes?: string[]
 }
 
-export function buildTreemapDataV2({ data, primary, path, constraint, rootDepth }: BuildTreemapV2Options): TreemapInput[] {
+export type ExcludedItemsSummary = {
+  totalExcluded: number
+  totalBeforeExclusion: number
+  totalAfterExclusion: number
+  items: Array<{ code: string; label: string; amount: number }>
+}
+
+export function buildTreemapDataV2({ data, primary, path, constraint, rootDepth, excludeEcCodes }: BuildTreemapV2Options): TreemapInput[] {
   const currentCode = path.length > 0 ? path[path.length - 1] : null
   let depth = (currentCode
     ? (String(currentCode).split('.').length + 1) * 2
     : (rootDepth ?? 2)) as 2 | 4 | 6
-  
+
   // Economic codes only go 2 levels deep (chapter and subchapter), cap at depth 4
   if (primary === 'ec' && depth > 6) {
     depth = 6
   }
-  
+
   if (depth > 6) return []
 
   const getGroupCode = (code: string | null | undefined) => {
@@ -88,9 +97,19 @@ export function buildTreemapDataV2({ data, primary, path, constraint, rootDepth 
     return code
   }
 
+  const shouldExclude = (ecCode: string): boolean => {
+    if (!excludeEcCodes || excludeEcCodes.length === 0) return false
+    return excludeEcCodes.some((excludeCode) => ecCode.startsWith(excludeCode))
+  }
+
   const grouped = data.reduce<Record<string, TreemapInput>>((acc, item) => {
     const fnCode = clean(item.fn_c)
     const ecCode = clean(item.ec_c)
+
+    // Exclude specific economic codes if filtering is enabled
+    if (excludeEcCodes && shouldExclude(ecCode)) {
+      return acc
+    }
 
     // Apply cross-constraint
     if (constraint) {
@@ -127,6 +146,94 @@ export function buildTreemapDataV2({ data, primary, path, constraint, rootDepth 
   }, {})
 
   return Object.values(grouped).sort((a, b) => b.value - a.value)
+}
+
+/**
+ * Calculate excluded items summary for a specific layer in the treemap hierarchy.
+ * This considers the current path/constraint to show layer-specific exclusions.
+ *
+ * @param data - All aggregated line items
+ * @param excludeEcCodes - Economic codes to exclude (e.g., ['51', '80', '81'])
+ * @param options - Optional filtering context (path, constraint, primary)
+ */
+export function calculateExcludedItems(
+  data: AggregatedNode[],
+  excludeEcCodes: string[],
+  options?: {
+    path?: string[]
+    constraint?: { type: 'fn' | 'ec'; code: string }
+    primary?: 'fn' | 'ec'
+  }
+): ExcludedItemsSummary {
+  if (!excludeEcCodes || excludeEcCodes.length === 0) {
+    const total = data.reduce((sum, item) => sum + (item.amount ?? 0), 0)
+    return {
+      totalExcluded: 0,
+      totalBeforeExclusion: total,
+      totalAfterExclusion: total,
+      items: [],
+    }
+  }
+
+  const { path = [], constraint, primary } = options ?? {}
+  const currentCode = path.length > 0 ? path[path.length - 1] : null
+
+  // Filter data to match current layer (same logic as buildTreemapDataV2)
+  const layerData = data.filter((item) => {
+    const fnCode = clean(item.fn_c)
+    const ecCode = clean(item.ec_c)
+
+    // Apply cross-constraint
+    if (constraint) {
+      const constraintCode = clean(constraint.code)
+      if (constraint.type === 'fn' && !fnCode.startsWith(constraintCode)) return false
+      if (constraint.type === 'ec' && !ecCode.startsWith(constraintCode)) return false
+    }
+
+    // Filter by path if drilling down
+    if (currentCode && primary) {
+      const code = primary === 'fn' ? fnCode : ecCode
+      if (!code.startsWith(clean(currentCode))) return false
+    }
+
+    return true
+  })
+
+  // Calculate total before exclusion
+  const totalBeforeExclusion = layerData.reduce((sum, item) => sum + (item.amount ?? 0), 0)
+
+  // Track excluded amounts by code
+  const excludedByCode = excludeEcCodes.reduce<Record<string, { label: string; amount: number }>>((acc, code) => {
+    acc[code] = {
+      label: getEconomicChapterName(code) ?? `EC ${code}`,
+      amount: 0,
+    }
+    return acc
+  }, {})
+
+  let totalExcluded = 0
+  for (const item of layerData) {
+    const ecCode = clean(item.ec_c)
+    for (const excludeCode of excludeEcCodes) {
+      if (ecCode.startsWith(excludeCode)) {
+        const amount = item.amount ?? 0
+        excludedByCode[excludeCode]!.amount += amount
+        totalExcluded += amount
+        break
+      }
+    }
+  }
+
+  const items = Object.entries(excludedByCode)
+    .map(([code, data]) => ({ code, label: data.label, amount: data.amount }))
+    .filter((item) => item.amount > 0)
+
+  return {
+    totalExcluded,
+    totalBeforeExclusion,
+    totalAfterExclusion: totalBeforeExclusion - totalExcluded,
+    items,
+  }
 }
 
 export const getParentCode = (primary: 'fn' | 'ec', code: string | null): string | null => {

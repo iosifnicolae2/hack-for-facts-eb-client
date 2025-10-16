@@ -182,12 +182,12 @@ function CategoryTab({ category, selected, onRename, onDelete, onSelect }: Categ
       className={cn(
         "inline-flex items-center border-1 rounded-md",
         selected &&
-          "bg-white border-slate-200 shadow-md data-[state=active]:bg-white data-[state=active]:border-slate-200 data-[state=active]:shadow-md"
+          "bg-background border shadow-md data-[state=active]:bg-background data-[state=active]:border data-[state=active]:shadow-md"
       )}
     >
       <TabsTrigger
         value={`category:${category.id}`}
-        className="flex items-center gap-1 h-7 px-2 text-xs data-[state=active]:bg-white data-[state=active]:border-none data-[state=active]:shadow-none"
+        className="flex items-center gap-1 h-7 px-2 text-xs data-[state=active]:bg-background data-[state=active]:border-none data-[state=active]:shadow-none"
         onClick={onSelect}
       >
         <Tag className="h-3.5 w-3.5" />

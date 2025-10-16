@@ -21,6 +21,8 @@ import { useTreemapDrilldown } from '@/components/budget-explorer/useTreemapDril
 import type { AggregatedNode } from '@/components/budget-explorer/budget-transform'
 import { SpendingBreakdown } from '@/components/budget-explorer/SpendingBreakdown'
 import { RevenueBreakdown } from '@/components/budget-explorer/RevenueBreakdown'
+import { getNormalizationUnit } from '@/lib/utils';
+import { Trans } from '@lingui/react/macro'
 
 interface BaseTrendsViewProps {
   entity?: EntityDetailsData | null | undefined;
@@ -104,7 +106,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
       },
       enabled: true,
       config: { color: getSeriesColor(index), visible: true, showDataLabels: false },
-      unit: 'RON',
+      unit: getNormalizationUnit(normalization),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     }));
@@ -158,16 +160,25 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
     }))
   }, [lineItems])
 
+  // Exclude non-direct spending items for expense view
+  const excludeEcCodes = type === 'expense' ? ['51', '80', '81'] : []
+
   const {
     primary,
     activePrimary,
     setPrimary,
     treemapData,
     breadcrumbs,
+    excludedItemsSummary,
     onNodeClick,
     onBreadcrumbClick,
     reset,
-  } = useTreemapDrilldown({ nodes: aggregatedNodes, initialPrimary: 'fn', rootDepth: 2 })
+  } = useTreemapDrilldown({
+    nodes: aggregatedNodes,
+    initialPrimary: 'fn',
+    rootDepth: 2,
+    excludeEcCodes,
+  })
 
   // Reset drilldown when switching between income/expense tabs
   useEffect(() => {
@@ -183,10 +194,10 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
       <Card className="shadow-sm">
         <CardHeader>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-            <h3 className="text-base sm:text-lg font-semibold">Budget Distribution - {periodLabel}</h3>
+            <h3 className="text-base sm:text-lg font-semibold"><Trans>Budget Distribution</Trans> - {periodLabel}</h3>
             <ToggleGroup type="single" value={primary} onValueChange={(v) => v && setPrimary(v as 'fn' | 'ec')} variant="outline" size="sm">
-              <ToggleGroupItem value="fn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4">Functional</ToggleGroupItem>
-              <ToggleGroupItem value="ec" disabled={type === 'income'} className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4">Economic</ToggleGroupItem>
+              <ToggleGroupItem value="fn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4"><Trans>Functional</Trans></ToggleGroupItem>
+              <ToggleGroupItem value="ec" disabled={type === 'income'} className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4"><Trans>Economic</Trans></ToggleGroupItem>
             </ToggleGroup>
           </div>
         </CardHeader>
@@ -201,6 +212,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
               onBreadcrumbClick={onBreadcrumbClick}
               path={breadcrumbs}
               normalization={normalization}
+              excludedItemsSummary={excludedItemsSummary}
             />
           )}
         </CardContent>
@@ -228,20 +240,20 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
           <h3 className='sr-only'>Top Categories</h3>
         </CardHeader>
         <CardContent>
-        {isLoading || !fullLineItems ? (
+          {isLoading || !fullLineItems ? (
             <Skeleton className="w-full h-[260px]" />
           ) : (
-          <BudgetCategoryList 
-            aggregated={aggregatedNodes} 
-            depth={2} 
-            normalization={normalization}
-            showEconomic={type !== 'income'}
-            economicInfoText={
-              <span>
-                Economic breakdown is not available for income. Switch to <span className="font-semibold">Expenses</span> to view economic categories.
-              </span>
-            }
-          />
+            <BudgetCategoryList
+              aggregated={aggregatedNodes}
+              depth={2}
+              normalization={normalization}
+              showEconomic={type !== 'income'}
+              economicInfoText={
+                <span>
+                  Economic breakdown is not available for income. Switch to <span className="font-semibold">Expenses</span> to view economic categories.
+                </span>
+              }
+            />
           )}
         </CardContent>
       </Card>

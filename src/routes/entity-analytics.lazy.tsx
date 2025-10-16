@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect, useRef } from 'react'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { EntityAnalyticsFilter as EntityAnalyticsFilterPanel } from '@/components/filters/EntityAnalyticsFilter'
@@ -37,6 +37,7 @@ function EntityAnalyticsPage() {
   const offset = useMemo(() => (page - 1) * pageSize, [page, pageSize])
   const filterHash = useMemo(() => generateHash(JSON.stringify(filter)), [filter])
   const periodLabel = usePeriodLabel(filter.report_period)
+  const previousFilterHashRef = useRef<string>(filterHash)
 
   const mapViewType = useMemo<'UAT' | 'County'>(() => {
     if ((filter.county_codes?.length ?? 0) > 0) return 'County'
@@ -80,6 +81,15 @@ function EntityAnalyticsPage() {
   }, [aggregatedData])
 
   const nodes: readonly EntityAnalyticsDataPoint[] = data?.nodes ?? []
+
+  // Reset page to 1 when filter changes
+  useEffect(() => {
+    if (previousFilterHashRef.current !== filterHash && page !== 1) {
+      setPagination(1, pageSize)
+    }
+    previousFilterHashRef.current = filterHash
+  }, [filterHash, page, pageSize, setPagination])
+
   const { density, setDensity, columnVisibility, setColumnVisibility, columnPinning, setColumnPinning, columnSizing, setColumnSizing, columnOrder, setColumnOrder, currencyFormat, setCurrencyFormat } = useTablePreferences('entity-analytics', {
     columnVisibility: {
       entity_name: true,

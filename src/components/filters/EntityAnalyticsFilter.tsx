@@ -6,6 +6,7 @@ import { FilterRangeContainer } from './base-filter/FilterRangeContainer'
 import { AmountRangeFilter } from './amount-range-filter'
 import { Calendar, ChartBar, Tags, SlidersHorizontal, MapPinned, Building2, EuroIcon, MapPin, XCircle, ArrowUpDown, Divide, Globe } from 'lucide-react'
 import { useMemo, useEffect } from 'react'
+import { useNormalizationSelection } from '@/hooks/useNormalizationSelection'
 import { useEntityAnalyticsFilter } from '@/hooks/useEntityAnalyticsFilter'
 import type { OptionItem } from './base-filter/interfaces'
 import { CountyList } from './county-filter/CountyList'
@@ -28,20 +29,19 @@ import { Trans } from "@lingui/react/macro";
 import { PeriodFilter } from './period-filter/PeriodFilter'
 import { ReportPeriodInput } from '@/schemas/reporting'
 import { getPeriodTags } from '@/lib/period-utils';
-import { usePersistedState } from '@/lib/hooks/usePersistedState';
-
-type CurrencyCode = 'RON' | 'EUR';
+import { useUserCurrency } from '@/lib/hooks/useUserCurrency'
 
 export function EntityAnalyticsFilter() {
   const { filter, setFilter, resetFilter, view, setView } = useEntityAnalyticsFilter()
-  const [currency] = usePersistedState<CurrencyCode>('user-currency', 'RON')
+  const { toDisplayNormalization, toEffectiveNormalization } = useNormalizationSelection(filter.normalization as any)
+  const [currency] = useUserCurrency()
 
   useEffect(() => {
     const { normalization } = filter;
     if (currency === 'EUR' && normalization !== 'total_euro' && normalization !== 'per_capita_euro') {
-        updateNormalization('total_euro');
+      updateNormalization('total_euro');
     } else if (currency === 'RON' && normalization !== 'total' && normalization !== 'per_capita') {
-        updateNormalization('total');
+      updateNormalization('total');
     }
   }, [currency, filter.normalization]);
 
@@ -98,20 +98,20 @@ export function EntityAnalyticsFilter() {
     if (!report_period) return;
 
     if (report_period.selection.dates) {
-        const newDates = report_period.selection.dates.filter(d => d !== tagToRemove.id);
-        if (newDates.length > 0) {
-            updatePeriod({ ...report_period, selection: { dates: newDates as any } });
-        } else {
-            updatePeriod(undefined);
-        }
-    } else if (report_period.selection.interval) {
+      const newDates = report_period.selection.dates.filter(d => d !== tagToRemove.id);
+      if (newDates.length > 0) {
+        updatePeriod({ ...report_period, selection: { dates: newDates as any } });
+      } else {
         updatePeriod(undefined);
+      }
+    } else if (report_period.selection.interval) {
+      updatePeriod(undefined);
     }
   };
 
   const periodTags = getPeriodTags(filter.report_period as ReportPeriodInput).map(tag => ({
-      id: String(tag.value),
-      label: String(tag.value),
+    id: String(tag.value),
+    label: String(tag.value),
   }));
 
   const updateUatOptions = (
@@ -248,14 +248,11 @@ export function EntityAnalyticsFilter() {
             <Trans>Normalization</Trans>
           </h4>
           <ViewTypeRadioGroup
-            value={filter.normalization ?? 'per_capita'}
-            onChange={(normalization) => updateNormalization(normalization)}
-            viewOptions={currency === 'EUR' ? [
-                { id: 'total_euro', label: t`Total` },
-                { id: 'per_capita_euro', label: t`Per Capita` },
-            ] : [
-                { id: 'total', label: t`Total` },
-                { id: 'per_capita', label: t`Per Capita` },
+            value={toDisplayNormalization(filter.normalization as any)}
+            onChange={(display) => updateNormalization(toEffectiveNormalization(display as 'total' | 'per_capita'))}
+            viewOptions={[
+              { id: 'total', label: t`Total` },
+              { id: 'per_capita', label: t`Per Capita` },
             ]}
           />
         </div>

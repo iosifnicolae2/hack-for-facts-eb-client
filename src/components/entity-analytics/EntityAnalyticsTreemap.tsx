@@ -32,12 +32,16 @@ export function EntityAnalyticsTreemap({ filter, data, isLoading }: EntityAnalyt
     }))
   }, [data])
 
+  // Exclude non-direct spending items for spending view (account_category='ch')
+  const excludeEcCodes = filter.account_category === 'ch' ? ['51', '80', '81'] : []
+
   const {
     primary,
     activePrimary,
     setPrimary,
     treemapData,
     breadcrumbs,
+    excludedItemsSummary,
     onNodeClick,
     onBreadcrumbClick,
     reset,
@@ -45,6 +49,7 @@ export function EntityAnalyticsTreemap({ filter, data, isLoading }: EntityAnalyt
     nodes: aggregatedNodes,
     initialPrimary: 'fn',
     rootDepth: depth === 'main' ? 2 : 4,
+    excludeEcCodes,
   })
 
   useEffect(() => {
@@ -121,6 +126,7 @@ export function EntityAnalyticsTreemap({ filter, data, isLoading }: EntityAnalyt
             onBreadcrumbClick={onBreadcrumbClick}
             path={breadcrumbs}
             normalization={filter.normalization}
+            excludedItemsSummary={excludedItemsSummary}
           />
         )}
       </CardContent>

@@ -1,5 +1,6 @@
 import { Normalization } from '@/schemas/charts';
 import { Trans } from '@lingui/react/macro';
+import { useNormalizationSelection } from '@/hooks/useNormalizationSelection';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 type Props = {
@@ -8,17 +9,17 @@ type Props = {
 };
 
 export function NormalizationSelector({ value, onChange }: Props) {
+    const { toDisplayNormalization: toDisplay, toEffectiveNormalization: toEffective } = useNormalizationSelection(value);
+
     return (
         <div className="flex items-center gap-2 font-bold">
-            <Select value={value} onValueChange={(val) => onChange(val as Normalization)}>
+            <Select value={toDisplay(value)} onValueChange={(val) => onChange(toEffective(val as 'total' | 'per_capita'))}>
                 <SelectTrigger className="h-8 text-xs">
                     <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                    <SelectItem value="total"><Trans>Total (RON)</Trans></SelectItem>
-                    <SelectItem value="total_euro"><Trans>Total (EUR)</Trans></SelectItem>
-                    <SelectItem value="per_capita"><Trans>Per Capita (RON)</Trans></SelectItem>
-                    <SelectItem value="per_capita_euro"><Trans>Per Capita (EUR)</Trans></SelectItem>
+                    <SelectItem value="total"><Trans>Total</Trans></SelectItem>
+                    <SelectItem value="per_capita"><Trans>Per Capita</Trans></SelectItem>
                 </SelectContent>
             </Select>
         </div>
