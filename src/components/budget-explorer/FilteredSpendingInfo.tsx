@@ -36,7 +36,7 @@ export function FilteredSpendingInfo({ excludedItemsSummary, currencyCode, perCa
       </div>
 
       {/* Calculation breakdown */}
-      <div className="bg-muted/30 rounded-lg p-4 space-y-2.5">
+      <div className="bg-muted/30 rounded-lg p-2 md:p-4 space-y-2.5">
         <div className="flex justify-between items-center gap-6">
           <div className="flex-1">
             <div className="text-xs font-medium text-foreground">
@@ -159,15 +159,13 @@ export function FilteredSpendingInfo({ excludedItemsSummary, currencyCode, perCa
     )
   }
 
-  // Desktop: Use Popover with instant hover and info icon
+  // Desktop: Use Popover with click trigger
   return (
     <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
       <PopoverTrigger asChild>
         <button
-          onMouseEnter={() => setPopoverOpen(true)}
-          onMouseLeave={() => setPopoverOpen(false)}
           onClick={() => setPopoverOpen(!popoverOpen)}
-          className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-help"
+          className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
         >
           <span className="font-medium">
             <Trans>Filtered</Trans>
@@ -176,12 +174,10 @@ export function FilteredSpendingInfo({ excludedItemsSummary, currencyCode, perCa
         </button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-[420px] p-5"
+        className="w-[420px] p-5 z-10"
         align="center"
         side="bottom"
         sideOffset={8}
-        onMouseEnter={() => setPopoverOpen(true)}
-        onMouseLeave={() => setPopoverOpen(false)}
       >
         {content}
       </PopoverContent>
