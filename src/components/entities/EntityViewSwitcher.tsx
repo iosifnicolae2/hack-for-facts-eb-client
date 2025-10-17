@@ -36,8 +36,8 @@ export const EntityViewSwitcher: React.FC<EntityViewSwitcherProps> = ({ views, a
           className={cn(
             'inline-block border-1 px-3 py-1.5 mr-2 rounded-lg text-sm font-medium transition-colors duration-200 cursor-pointer',
             {
-              'bg-black sm:hover:bg-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-100': activeView === view.id,
-              'bg-slate-50/20 sm:hover:bg-slate-200/50 dark:bg-slate-800 dark:hover:bg-slate-700 text-black dark:text-white': activeView !== view.id,
+              'bg-slate-900 text-white sm:hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200': activeView === view.id,
+              'bg-slate-50/20 text-black sm:hover:bg-slate-200/50 dark:bg-slate-800/50 dark:text-white dark:hover:bg-slate-700/70': activeView !== view.id,
             }
           )}
         >
