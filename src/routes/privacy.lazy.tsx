@@ -32,7 +32,7 @@ function PrivacyPage() {
       <div className="prose prose-slate dark:prose-invert max-w-none">
         <h3><Trans>Who we are</Trans></h3>
         <p>
-          <Trans>Controller: Claudiu Constantin Bogdan, persoana fizica. Contact: contact@devostack.com.</Trans>
+          <Trans>Controller: Claudiu Constantin Bogdan, persoana fizica. Contact: contact@transparenta.eu</Trans>
         </p>
 
         <h3><Trans>What personal data we collect</Trans></h3>
@@ -78,7 +78,7 @@ function PrivacyPage() {
         <ul>
           <li><Trans><strong>Opt-In Consent:</strong> Newsletter subscriptions are strictly opt-in. We only send you newsletters if you explicitly subscribe via the notification settings or entity pages.</Trans></li>
           <li><Trans><strong>What We Send:</strong> Budget execution updates (monthly, quarterly, or annual reports) for entities you follow, and alerts about significant budget changes if you've enabled them.</Trans></li>
-          <li><Trans><strong>Unsubscribe:</strong> You can unsubscribe from any newsletter at any time by clicking the unsubscribe link in any email, managing your preferences in your account settings, or contacting us at contact@devostack.com.</Trans></li>
+          <li><Trans><strong>Unsubscribe:</strong> You can unsubscribe from any newsletter at any time by clicking the unsubscribe link in any email, managing your preferences in your account settings, or contacting us at contact@transparenta.eu</Trans></li>
           <li><Trans><strong>No Marketing:</strong> We do not send promotional or marketing emails. All communications are informational updates you have requested.</Trans></li>
           <li><Trans><strong>No Sharing:</strong> We never sell, rent, or share your email address with third parties for their marketing purposes.</Trans></li>
         </ul>
@@ -120,7 +120,7 @@ function PrivacyPage() {
           <li><Trans><strong>Right to Withdraw Consent (Art. 7(3)):</strong> Withdraw consent for newsletters, analytics, or error reporting at any time without affecting the lawfulness of processing before withdrawal.</Trans></li>
           <li><Trans><strong>Right to Lodge a Complaint:</strong> File a complaint with the Romanian supervisory authority (ANSPDCP) at anspdcp.ro.</Trans></li>
         </ul>
-        <p><Trans>To exercise any of these rights, contact us at contact@devostack.com. We will respond within 30 days.</Trans></p>
+        <p><Trans>To exercise any of these rights, contact us at contact@transparenta.eu We will respond within 30 days.</Trans></p>
 
         <h3><Trans>Data security</Trans></h3>
         <ul>
@@ -148,7 +148,7 @@ function PrivacyPage() {
         <p><Trans>We may update this Privacy Policy from time to time to reflect changes in our practices or legal requirements. We will post the updated policy with a new effective date. For material changes, we may provide additional notice such as an email notification to account holders.</Trans></p>
 
         <h3><Trans>Contact and data protection officer</Trans></h3>
-        <p><Trans>For questions about this Privacy Policy, to exercise your rights, or to contact our data protection officer, email us at contact@devostack.com.</Trans></p>
+        <p><Trans>For questions about this Privacy Policy, to exercise your rights, or to contact our data protection officer, email us at contact@transparenta.eu</Trans></p>
 
         <h3><Trans>Supervisory authority</Trans></h3>
         <p><Trans>Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal (ANSPDCP), B-dul G-ral. Gheorghe Magheru 28-30, Sector 1, București, Romania. Website: anspdcp.ro</Trans></p>

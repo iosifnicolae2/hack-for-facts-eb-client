@@ -355,8 +355,8 @@ msgid "<0>Types of Communications:</0> We may send monthly, quarterly, or annual
 msgstr "<0>Tipuri de Comunicări:</0> Putem trimite rapoarte bugetare lunare, trimestriale sau anuale, precum și alerte despre modificări specifice ale datelor, în funcție de preferințele dumneavoastră de notificare."
 
 #: src/routes/privacy.lazy.tsx:81
-msgid "<0>Unsubscribe:</0> You can unsubscribe from any newsletter at any time by clicking the unsubscribe link in any email, managing your preferences in your account settings, or contacting us at contact@devostack.com."
-msgstr "<0>Dezabonare:</0> Vă puteți dezabona de la orice buletin informativ în orice moment, dând clic pe linkul de dezabonare din orice e-mail, gestionându-vă preferințele în setările contului sau contactându-ne la contact@devostack.com."
+msgid "<0>Unsubscribe:</0> You can unsubscribe from any newsletter at any time by clicking the unsubscribe link in any email, managing your preferences in your account settings, or contacting us at contact@transparenta.eu"
+msgstr "<0>Dezabonare:</0> Vă puteți dezabona de la orice buletin informativ în orice moment, dând clic pe linkul de dezabonare din orice e-mail, gestionându-vă preferințele în setările contului sau contactându-ne la contact@transparenta.eu"
 
 #: src/routes/terms.lazy.tsx:57
 msgid "<0>Unsubscribe:</0> You may unsubscribe from newsletters and notifications at any time via the unsubscribe link in any email, through your account settings, or by contacting us."
@@ -1052,12 +1052,12 @@ msgid "Contact Support"
 msgstr "Contactează Suportul"
 
 #: src/routes/terms.lazy.tsx:106
-msgid "Contact us at contact@devostack.com. See also our <0>Privacy Policy</0> and <1>Cookie Policy</1>."
-msgstr "Contactați-ne la adresa contact@devostack.com. Consultați și <0>Politica de confidențialitate</0> și <1>Politica privind cookie-urile</1>."
+msgid "Contact us at contact@transparenta.eu See also our <0>Privacy Policy</0> and <1>Cookie Policy</1>."
+msgstr "Contactați-ne la adresa contact@transparenta.eu Consultați și <0>Politica de confidențialitate</0> și <1>Politica privind cookie-urile</1>."
 
 #: src/routes/privacy.lazy.tsx:35
-msgid "Controller: Claudiu Constantin Bogdan, persoana fizica. Contact: contact@devostack.com."
-msgstr "Operator: Claudiu Constantin Bogdan, persoană fizică. Contact: contact@devostack.com."
+msgid "Controller: Claudiu Constantin Bogdan, persoana fizica. Contact: contact@transparenta.eu"
+msgstr "Operator: Claudiu Constantin Bogdan, persoană fizică. Contact: contact@transparenta.eu"
 
 #: src/hooks/useSendBugReport.ts:14
 #: src/hooks/useSendFeedback.ts:13
@@ -1950,8 +1950,8 @@ msgid "Fn"
 msgstr "Fn"
 
 #: src/routes/privacy.lazy.tsx:151
-msgid "For questions about this Privacy Policy, to exercise your rights, or to contact our data protection officer, email us at contact@devostack.com."
-msgstr "Pentru întrebări despre această Politică de Confidențialitate, pentru a vă exercita drepturile sau pentru a contacta responsabilul nostru cu protecția datelor, trimiteți-ne un e-mail la contact@devostack.com."
+msgid "For questions about this Privacy Policy, to exercise your rights, or to contact our data protection officer, email us at contact@transparenta.eu"
+msgstr "Pentru întrebări despre această Politică de Confidențialitate, pentru a vă exercita drepturile sau pentru a contacta responsabilul nostru cu protecția datelor, trimiteți-ne un e-mail la contact@transparenta.eu"
 
 #: src/components/maps/utils.ts:151
 msgid "for the selected filters."
@@ -3648,8 +3648,8 @@ msgid "Title Z–A"
 msgstr "Titlu Z–A"
 
 #: src/routes/privacy.lazy.tsx:123
-msgid "To exercise any of these rights, contact us at contact@devostack.com. We will respond within 30 days."
-msgstr "Pentru a exercita oricare dintre aceste drepturi, contactați-ne la contact@devostack.com. Vă vom răspunde în termen de 30 de zile."
+msgid "To exercise any of these rights, contact us at contact@transparenta.eu We will respond within 30 days."
+msgstr "Pentru a exercita oricare dintre aceste drepturi, contactați-ne la contact@transparenta.eu Vă vom răspunde în termen de 30 de zile."
 
 #: src/routes/terms.lazy.tsx:97
 msgid "To the maximum extent permitted by applicable law, Claudiu Constantin Bogdan and any owners, contributors, and affiliates shall not be liable for any direct, indirect, incidental, special, consequential, or exemplary damages, including but not limited to, damages for loss of profits, revenue, data, goodwill, or other intangible losses, resulting from: (i) your access to, use of, or inability to use the Service; (ii) any reliance on the data, content, or visualizations presented by the Service, regardless of any errors, omissions, or inaccuracies therein; (iii) any financial, professional, personal, or other loss or damage incurred as a result of using the information from the Service; or (iv) any unauthorized access to or use of our servers and any personal information stored therein. This limitation applies whether the alleged liability is based on contract, tort, negligence, strict liability, or any other basis, even if we have been advised of the possibility of such damage. Your sole and exclusive remedy for any dispute with us is to stop using the Service."

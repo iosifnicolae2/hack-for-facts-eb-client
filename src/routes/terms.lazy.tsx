@@ -103,7 +103,7 @@ function TermsPage() {
         <p><Trans>Romanian law and applicable EU law, including GDPR. Venue: Sibiu, Romania.</Trans></p>
 
         <h3><Trans>Contact</Trans></h3>
-        <p><Trans>Contact us at contact@devostack.com. See also our <Link to="/privacy" className="underline">Privacy Policy</Link> and <Link to="/cookie-policy" className="underline">Cookie Policy</Link>.</Trans></p>
+        <p><Trans>Contact us at contact@transparenta.eu See also our <Link to="/privacy" className="underline">Privacy Policy</Link> and <Link to="/cookie-policy" className="underline">Cookie Policy</Link>.</Trans></p>
       </div>
     </div>
   )
