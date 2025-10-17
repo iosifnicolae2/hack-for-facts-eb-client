@@ -18,7 +18,7 @@ export function QuickEntityAccess() {
 
   return (
     <div className="w-full">
-      <div className="flex flex-wrap justify-center gap-2">
+      <div className="flex flex-wrap justify-center gap-3 sm:gap-2">
         {suggestions.map((entity, index) => (
           <motion.div
             key={entity.cui}
@@ -29,11 +29,11 @@ export function QuickEntityAccess() {
             <Link to="/entities/$cui" params={{ cui: entity.cui }} preload="intent">
               <Badge
                 variant="outline"
-                className="bg-white dark:bg-slate-800 px-4 py-2 border-1 border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition duration-200 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer group"
+                className="bg-white dark:bg-slate-800 px-3 py-2 sm:px-4 sm:py-2 border-1 border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition duration-200 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer group"
               >
                 <div className="flex flex-row gap-2 items-center justify-between">
-                  <span className="text-[0.6rem] md:text-sm whitespace-nowrap text-slate-500 dark:text-slate-300 group-hover:text-black dark:group-hover:text-slate-200 transition-colors">{formatEntityName(entity.name)}</span>
-                  <span className="text-[0.4rem] md:text-[0.7rem] text-slate-500 dark:text-slate-300 font-mono font-normal group-hover:text-slate-500 dark:group-hover:text-slate-200 transition-colors">
+                  <span className="text-sm md:text-base whitespace-nowrap text-slate-500 dark:text-slate-300 group-hover:text-black dark:group-hover:text-slate-200 transition-colors">{formatEntityName(entity.name)}</span>
+                  <span className="text-xs md:text-sm text-slate-500 dark:text-slate-300 font-mono font-normal group-hover:text-slate-500 dark:group-hover:text-slate-200 transition-colors">
                     [{entity.cui}]
                   </span>
                 </div>

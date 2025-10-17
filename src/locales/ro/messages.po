@@ -1412,8 +1412,8 @@ msgid "Expenses"
 msgstr "Cheltuieli"
 
 #: src/routes/index.lazy.tsx:73
-msgid "Explore budget data and spending breakdown."
-msgstr "Explorați datele bugetare și structura cheltuielilor."
+msgid "Explore national budget."
+msgstr "Explorați bugetul național."
 
 #: src/routes/map.lazy.tsx:127
 msgid "Explore choropleth maps of public spending by UAT/County with per-capita or total normalization."

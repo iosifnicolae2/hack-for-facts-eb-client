@@ -13,6 +13,7 @@ import entityAnalyticsPreview from "@/assets/images/entity-analytics.png";
 import morePreview from "@/assets/images/more-to-come.png";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Seo } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
@@ -34,10 +35,12 @@ function Index() {
           />
           {/* Title Container - applies gradient styles to its children */}
           <div
-            className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight
-           bg-gradient-to-b from-slate-50 via-white to-slate-50
-           bg-clip-text text-transparent
-           drop-shadow-[0_10px_22px_rgba(18,65,161,0.8),0_10px_22px_rgba(18,65,161,0.8),0_10px_22px_rgba(200,65,161,0.8),0_1px_1px_rgba(250,65,250,0.8)]"
+            className={cn("text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight",
+              "bg-gradient-to-b from-slate-50 via-white to-slate-50",
+              "bg-clip-text text-transparent",
+              isMobile ?
+                "drop-shadow-[0_20px_10px_rgba(18,65,161,0.8),0_10px_22px_rgba(18,65,161,0.8),0_10px_22px_rgba(200,65,161,0.8),0_1px_1px_rgba(250,65,250,0.8)]" :
+                "drop-shadow-[0_10px_22px_rgba(18,65,161,0.8),0_10px_22px_rgba(18,65,161,0.8),0_10px_22px_rgba(200,65,161,0.8),0_1px_1px_rgba(250,65,250,0.8)]")}
           >
             {animationActive ? (
               <AnimatedTitle />
@@ -51,16 +54,17 @@ function Index() {
             <span><Trans>See-through, clear</Trans></span>
           </p>
 
-          <div className="w-full max-w-2xl lg:max-w-3xl mt-8 space-y-6">
+          <div className="w-full max-w-2xl -mt-10 lg:max-w-3xl space-y-6">
             <EntitySearchInput
               placeholder={t`Enter entity name or CUI...`}
               autoFocus={!isMobile}
+              scrollToTopOnFocus={isMobile}
             />
             <QuickEntityAccess />
           </div>
 
           {/* Quick navigation cards */}
-          <div className="mt-20 grid w-full max-w-5xl grid-cols-1 gap-8 md:grid-cols-2">
+          <div className="lg:mt-20 grid w-full max-w-5xl grid-cols-1 gap-8 md:grid-cols-2">
             <PageCard
               title={t`Map`}
               description={t`Explore data through a map.`}
@@ -70,7 +74,7 @@ function Index() {
             />
             <PageCard
               title={t`Budget Explorer`}
-              description={t`Explore budget data and spending breakdown.`}
+              description={t`Explore national budget.`}
               to="/budget-explorer"
               image={morePreview}
               imageAlt="Budget explorer preview"

@@ -14,6 +14,8 @@ interface EntitySearchInputProps {
     placeholder?: string;
     onSelect?: (entity: EntitySearchNode) => void;
     autoFocus?: boolean;
+    /** When true, scroll the input into view (top) on focus. Useful for mobile UX. */
+    scrollToTopOnFocus?: boolean;
 }
 
 export function EntitySearchInput({
@@ -21,6 +23,7 @@ export function EntitySearchInput({
     placeholder = t`Search entities by name or CUI...`,
     onSelect,
     autoFocus,
+    scrollToTopOnFocus,
 }: EntitySearchInputProps) {
     const {
         searchTerm,
@@ -53,18 +56,24 @@ export function EntitySearchInput({
     return (
         <div
             ref={containerRef}
-            className={cn("relative w-full max-w-3xl mx-auto", className)}
+            className={cn("relative w-full max-w-3xl pt-8 mx-auto", className)}
             // When focus leaves the component, close the dropdown (guarded for iOS tap ordering)
+            onFocus={() => {
+                if (scrollToTopOnFocus) {
+                    // Ensure the input is visible and near the top of the viewport on mobile
+                    containerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+                openDropdown();
+            }}
             onBlur={onBlur}
         >
             <div className="relative">
-                <Search className="absolute left-7 top-1/2 h-8 w-8 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                <Search className="absolute left-5 sm:left-7 top-1/2 h-6 w-6 sm:h-8 sm:w-8 -translate-y-1/2 text-slate-400 pointer-events-none" />
                 <Input
                     ref={inputRef}
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    onFocus={openDropdown}
                     onKeyDown={handleKeyDown}
                     placeholder={placeholder}
                     autoFocus={autoFocus}
@@ -75,7 +84,7 @@ export function EntitySearchInput({
                     aria-expanded={showDropdown}
                     aria-controls={`${searchId}-listbox`}
                     aria-activedescendant={activeDescendantId}
-                    className="w-full pl-20 pr-20 py-7 text-xl md:text-xl bg-white dark:bg-slate-800 rounded-3xl placeholder:text-slate-400 shadow-sm hover:shadow-md focus:shadow-lg transition-all duration-300 border-slate-300 dark:border-slate-700 focus:border-slate-400 dark:focus:border-slate-600 focus-visible:ring-slate-400 dark:focus-visible:ring-slate-600"
+                    className="w-full px-15 sm:px-20 py-7 text-base md:text-xl bg-white dark:bg-slate-800 rounded-3xl placeholder:text-slate-400 shadow-sm hover:shadow-md focus:shadow-lg transition-all duration-300 border-slate-300 dark:border-slate-700 focus:border-slate-400 dark:focus:border-slate-600 focus-visible:ring-slate-400 dark:focus-visible:ring-slate-600"
                 />
                 {searchTerm && (
                     <button

@@ -1412,8 +1412,8 @@ msgid "Expenses"
 msgstr "Expenses"
 
 #: src/routes/index.lazy.tsx:73
-msgid "Explore budget data and spending breakdown."
-msgstr "Explore budget data and spending breakdown."
+msgid "Explore national budget."
+msgstr "Explore national budget."
 
 #: src/routes/map.lazy.tsx:127
 msgid "Explore choropleth maps of public spending by UAT/County with per-capita or total normalization."
