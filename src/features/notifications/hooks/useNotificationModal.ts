@@ -18,6 +18,7 @@ export function useNotificationModal() {
           return rest
         },
         replace: true,
+        resetScroll: false,
       })
     },
     [navigate]

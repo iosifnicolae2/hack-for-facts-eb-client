@@ -49,17 +49,18 @@ export function useEntityAnalyticsFilter() {
         return { ...prev, filter: merged }
       },
       replace: true,
+      resetScroll: false,
     })
   }
 
   const setView = (view: 'table' | 'chart' | 'line-items') => {
     Analytics.capture(Analytics.EVENTS.EntityAnalyticsViewChanged, { view })
-    navigate({ search: (prev) => ({ ...prev, view }), replace: true })
+    navigate({ search: (prev) => ({ ...prev, view }), replace: true, resetScroll: false })
   }
 
   const setSorting = (by: string, order: 'asc' | 'desc') => {
     Analytics.capture(Analytics.EVENTS.EntityAnalyticsSortChanged, { by, order })
-    navigate({ search: (prev) => ({ ...prev, sortBy: by, sortOrder: order }), replace: true })
+    navigate({ search: (prev) => ({ ...prev, sortBy: by, sortOrder: order }), replace: true, resetScroll: false })
   }
 
   const setPagination = (page: number, pageSize?: number) => {
@@ -67,6 +68,7 @@ export function useEntityAnalyticsFilter() {
     navigate({
       search: (prev) => ({ ...prev, page, pageSize: pageSize ?? (prev as EntityAnalyticsSearch).pageSize }),
       replace: true,
+      resetScroll: false,
     })
   }
 
@@ -75,15 +77,16 @@ export function useEntityAnalyticsFilter() {
     navigate({
       search: (prev) => ({ ...prev, filter: defaultEntityAnalyticsFilter }),
       replace: true,
+      resetScroll: false,
     })
   }
 
   const setTreemapPrimary = (primary: 'fn' | 'ec') => {
-    navigate({ search: (prev) => ({ ...prev, treemapPrimary: primary }), replace: true })
+    navigate({ search: (prev) => ({ ...prev, treemapPrimary: primary }), replace: true, resetScroll: false })
   }
 
   const setTreemapDepth = (depth: 'main' | 'detail') => {
-    navigate({ search: (prev) => ({ ...prev, treemapDepth: depth }), replace: true })
+    navigate({ search: (prev) => ({ ...prev, treemapDepth: depth }), replace: true, resetScroll: false })
   }
 
   return {

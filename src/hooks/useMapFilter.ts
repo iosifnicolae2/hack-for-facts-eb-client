@@ -36,6 +36,7 @@ export function useMapFilter() {
                 return newFilters;
             },
             replace: true,
+            resetScroll: false,
         });
     };
 
@@ -107,12 +108,12 @@ export function useMapFilter() {
 
     const setActiveView = (view: "map" | "table" | "chart") => {
         Analytics.capture(Analytics.EVENTS.MapActiveViewChanged, { view });
-        navigate({ search: (prev) => ({ ...prev, activeView: view }), replace: true });
+        navigate({ search: (prev) => ({ ...prev, activeView: view }), replace: true, resetScroll: false });
     };
 
     const setMapViewType = (viewType: "UAT" | "County") => {
         Analytics.capture(Analytics.EVENTS.MapViewTypeChanged, { view_type: viewType });
-        navigate({ search: (prev) => ({ ...prev, mapViewType: viewType }), replace: true });
+        navigate({ search: (prev) => ({ ...prev, mapViewType: viewType }), replace: true, resetScroll: false });
     };
 
     return {

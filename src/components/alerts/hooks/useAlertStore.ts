@@ -70,6 +70,7 @@ export function useAlertStore() {
         };
       },
       replace: true,
+      resetScroll: false,
     });
   }, [navigate]);
 
@@ -111,6 +112,7 @@ export function useAlertStore() {
           view: nextView,
         }),
         replace: true,
+        resetScroll: false,
       });
     },
     [navigate],
@@ -124,6 +126,7 @@ export function useAlertStore() {
           mode: nextMode,
         }),
         replace: true,
+        resetScroll: false,
       });
     },
     [navigate],
@@ -145,6 +148,7 @@ export function useAlertStore() {
         mode: options?.mode ?? prev.mode,
       }),
       replace: true,
+      resetScroll: false,
     });
   }, [navigate]);
 

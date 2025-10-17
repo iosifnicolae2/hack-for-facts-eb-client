@@ -37,6 +37,7 @@ export const useEntityMapFilter = ({ year, userCurrency = 'RON' }: UseEntityMapF
                 return newFilters;
             },
             replace: true,
+            resetScroll: false,
         });
     };
 

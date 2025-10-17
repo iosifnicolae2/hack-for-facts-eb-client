@@ -360,6 +360,7 @@ function BudgetExplorerPage() {
         treemapPrimary: nextTreemapPrimary,
       }),
       replace: true,
+      resetScroll: false,
     })
     setPath([])
     setDrawerCode(null)

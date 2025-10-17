@@ -31,22 +31,22 @@ export function useChartStore() {
 
   const goToConfig = useCallback(() => {
     Analytics.capture(Analytics.EVENTS.ChartViewChanged, { chart_id: chart.id, view: 'config' });
-    navigate({ to: "/charts/$chartId", search: (prev) => ({ ...prev, view: "config" }), params: { chartId: chart.id }, replace: true });
+    navigate({ to: "/charts/$chartId", search: (prev) => ({ ...prev, view: "config" }), params: { chartId: chart.id }, replace: true, resetScroll: false });
   }, [chart.id, navigate]);
 
   const goToOverview = useCallback(() => {
     Analytics.capture(Analytics.EVENTS.ChartViewChanged, { chart_id: chart.id, view: 'overview' });
-    navigate({ to: "/charts/$chartId", search: (prev) => ({ ...prev, view: "overview" }), params: { chartId: chart.id }, replace: true });
+    navigate({ to: "/charts/$chartId", search: (prev) => ({ ...prev, view: "overview" }), params: { chartId: chart.id }, replace: true, resetScroll: false });
   }, [chart.id, navigate]);
 
   const goToSeriesConfig = useCallback((seriesId: string) => {
     Analytics.capture(Analytics.EVENTS.ChartViewChanged, { chart_id: chart.id, view: 'series-config', series_id: seriesId });
-    navigate({ to: "/charts/$chartId", search: (prev) => ({ ...prev, view: "series-config", seriesId }), params: { chartId: chart.id }, replace: true });
+    navigate({ to: "/charts/$chartId", search: (prev) => ({ ...prev, view: "series-config", seriesId }), params: { chartId: chart.id }, replace: true, resetScroll: false });
   }, [chart.id, navigate]);
 
   const goToAnnotationConfig = useCallback((annotationId: string) => {
     Analytics.capture(Analytics.EVENTS.ChartViewChanged, { chart_id: chart.id, view: 'annotation-config', annotation_id: annotationId });
-    navigate({ to: "/charts/$chartId", search: (prev) => ({ ...prev, view: "annotation-config", annotationId }), params: { chartId: chart.id }, replace: true });
+    navigate({ to: "/charts/$chartId", search: (prev) => ({ ...prev, view: "annotation-config", annotationId }), params: { chartId: chart.id }, replace: true, resetScroll: false });
   }, [chart.id, navigate]);
 
   const updateChart = useCallback((updates: Partial<Chart> | ((prevChart?: Chart) => Partial<Chart>)) => {
@@ -63,6 +63,7 @@ export function useChartStore() {
         return { ...prev, chart: newChart };
       },
       replace: true,
+      resetScroll: false,
     });
   }, [navigate]);
 

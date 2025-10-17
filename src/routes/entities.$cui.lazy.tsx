@@ -118,7 +118,7 @@ function EntityDetailsPage() {
   );
 
   const updateSearch = useCallback((newSearch: Record<string, any>) => {
-    navigate({ search: (prev) => ({ ...prev, ...newSearch }), replace: true })
+    navigate({ search: (prev) => ({ ...prev, ...newSearch }), replace: true, resetScroll: false })
   }, [navigate])
 
   useEffect(() => {
@@ -184,6 +184,7 @@ function EntityDetailsPage() {
         }
       },
       replace: true,
+      resetScroll: false,
     })
   }, [navigate])
 
