@@ -49,50 +49,50 @@ export function SpendingBreakdown({ nodes, normalization, periodLabel, isLoading
       </CardHeader>
       <CardContent className="space-y-4">
         {isLoading ? (
-          <div className="bg-muted/30 rounded-lg p-5 space-y-4 lg:px-[8rem]">
-            <div className="flex items-center justify-between gap-6">
+          <div className="bg-muted/30 rounded-lg p-3 md:p-5 space-y-4 md:px-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                 <div className="flex-1 space-y-1.5">
                     <Skeleton className="h-4 w-1/2" />
                     <Skeleton className="h-3 w-1/3" />
                 </div>
-                <div className="min-w-[180px] space-y-1.5">
-                    <Skeleton className="h-5 w-3/4 ml-auto" />
-                    <Skeleton className="h-3 w-full ml-auto" />
+                <div className="w-full sm:w-auto space-y-1.5">
+                    <Skeleton className="h-5 w-full sm:w-32" />
+                    <Skeleton className="h-3 w-full sm:w-40" />
                 </div>
             </div>
             <div className="flex items-center justify-center py-1">
                 <div className="w-full border-t border-dashed border-border" />
             </div>
-            <div className="flex items-center justify-between gap-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                 <div className="flex-1 space-y-1.5">
                     <Skeleton className="h-4 w-3/5" />
                     <Skeleton className="h-3 w-2/5" />
                 </div>
-                <div className="min-w-[180px] space-y-1.5">
-                    <Skeleton className="h-5 w-3/4 ml-auto" />
-                    <Skeleton className="h-3 w-full ml-auto" />
+                <div className="w-full sm:w-auto space-y-1.5">
+                    <Skeleton className="h-5 w-full sm:w-32" />
+                    <Skeleton className="h-3 w-full sm:w-40" />
                 </div>
             </div>
             <div className="flex items-center justify-center py-1">
                 <div className="w-full border-t border-dashed border-border" />
             </div>
-            <div className="flex items-center justify-between gap-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                 <div className="flex-1 space-y-1.5">
                     <Skeleton className="h-4 w-2/5" />
                     <Skeleton className="h-3 w-1/3" />
                 </div>
-                <div className="min-w-[180px] space-y-1.5">
-                    <Skeleton className="h-5 w-3/4 ml-auto" />
-                    <Skeleton className="h-3 w-full ml-auto" />
+                <div className="w-full sm:w-auto space-y-1.5">
+                    <Skeleton className="h-5 w-full sm:w-32" />
+                    <Skeleton className="h-3 w-full sm:w-40" />
                 </div>
             </div>
         </div>
         ) : (
           <>
             {/* Calculation breakdown */}
-            <div className="bg-muted/30 rounded-lg p-5 space-y-1 lg:px-[8rem] ">
+            <div className="bg-muted/30 rounded-lg p-3 md:p-5 space-y-1 md:px-8">
               {/* Total spending */}
-              <div className="flex items-center justify-between gap-6">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                 <div className="flex-1">
                   <div className="text-sm font-medium text-foreground">
                     <Trans>Total Spending</Trans>
@@ -101,8 +101,8 @@ export function SpendingBreakdown({ nodes, normalization, periodLabel, isLoading
                     <Trans>All budget expenditures</Trans>
                   </div>
                 </div>
-                <div className="text-right min-w-[180px]">
-                  <div className="font-mono text-lg font-semibold text-foreground">
+                <div className="text-right w-full sm:w-auto">
+                  <div className="font-mono text-base md:text-lg font-semibold text-foreground">
                     {yValueFormatter(totalSpending, currencyCode, 'compact')}
                   </div>
                   <div className="font-mono text-xs text-muted-foreground">
@@ -120,7 +120,7 @@ export function SpendingBreakdown({ nodes, normalization, periodLabel, isLoading
               </div>
 
               {/* Transfers */}
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                 <div className="flex-1">
                   <div className="text-sm font-medium text-foreground">
                     <Trans>Transfers Between Institutions</Trans>
@@ -129,8 +129,8 @@ export function SpendingBreakdown({ nodes, normalization, periodLabel, isLoading
                     <Trans>Internal budget movements</Trans> <span className="font-mono text-[10px] bg-muted px-1 py-0.5 rounded">ec:51</span>
                   </div>
                 </div>
-                <div className="text-right min-w-[180px]">
-                  <div className="font-mono text-lg font-semibold text-foreground">
+                <div className="text-right w-full sm:w-auto">
+                  <div className="font-mono text-base md:text-lg font-semibold text-foreground">
                     {yValueFormatter(transfersEc51, currencyCode, 'compact')}
                   </div>
                   <div className="font-mono text-xs text-muted-foreground">
@@ -148,7 +148,7 @@ export function SpendingBreakdown({ nodes, normalization, periodLabel, isLoading
               </div>
 
               {/* Financial operations */}
-              <div className="flex items-center justify-between gap-6">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                 <div className="flex-1">
                   <div className="text-sm font-medium text-foreground">
                     <Trans>Financial Operations</Trans>
@@ -157,8 +157,8 @@ export function SpendingBreakdown({ nodes, normalization, periodLabel, isLoading
                     <Trans>Loans and credit repayments</Trans> <span className="font-mono text-[10px] bg-muted px-1 py-0.5 rounded">ec:80+81</span>
                   </div>
                 </div>
-                <div className="text-right min-w-[180px]">
-                  <div className="font-mono text-lg font-semibold text-foreground">
+                <div className="text-right w-full sm:w-auto">
+                  <div className="font-mono text-base md:text-lg font-semibold text-foreground">
                     {yValueFormatter(financialOps, currencyCode, 'compact')}
                   </div>
                   <div className="font-mono text-xs text-muted-foreground">
@@ -176,7 +176,7 @@ export function SpendingBreakdown({ nodes, normalization, periodLabel, isLoading
               </div>
 
               {/* Effective spending */}
-              <div className="flex items-center justify-between gap-6 bg-primary/5 rounded-md p-3 -mx-1">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 bg-primary/5 rounded-md p-3 -mx-1">
                 <div className="flex-1">
                   <div className="text-base font-semibold text-foreground">
                     <Trans>Effective Spending</Trans>
@@ -185,8 +185,8 @@ export function SpendingBreakdown({ nodes, normalization, periodLabel, isLoading
                     <Trans>Actual impact on budget</Trans>
                   </div>
                 </div>
-                <div className="text-right min-w-[180px]">
-                  <div className="font-mono text-xl font-bold text-primary">
+                <div className="text-right w-full sm:w-auto">
+                  <div className="font-mono text-lg md:text-xl font-bold text-primary">
                     {yValueFormatter(effectiveSpending, currencyCode, 'compact')}
                   </div>
                   <div className="font-mono text-xs text-muted-foreground">

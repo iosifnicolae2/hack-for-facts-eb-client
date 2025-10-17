@@ -28,7 +28,7 @@ export function EntityAnalyticsLayout({ filters, children, title = t`Entity Anal
         </aside>
 
         <section className="w-full">
-          <div className="rounded-lg border border-border bg-card p-2 md:p-4 shadow-sm min-h-[300px]">
+          <div className="rounded-lg border border-border bg-card p-0 md:p-4 shadow-sm min-h-[300px]">
             {children}
           </div>
         </section>

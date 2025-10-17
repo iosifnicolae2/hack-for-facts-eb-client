@@ -265,7 +265,7 @@ export const Overview = ({
                         </div>
                     </div>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="-mx-4 sm:mx-0 px-4 sm:px-0">
                     {isLoading || isLoadingLineItems ? (
                         <Skeleton className="w-full h-[600px]" />
                     ) : (

@@ -83,12 +83,12 @@ export function EntityAnalyticsTreemap({
   return (
     <Card>
       <CardHeader>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+        <div className="space-y-3">
           <h3 className="text-base sm:text-lg font-semibold">
             <Trans>Budget Distribution</Trans> - {periodLabel}
           </h3>
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-            <div className="flex flex-col gap-2">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+            <div className="flex flex-col gap-2 flex-1 sm:flex-none">
               <Label className="text-xs text-muted-foreground"><Trans>Grouping</Trans></Label>
               <ToggleGroup
                 type="single"
@@ -98,20 +98,21 @@ export function EntityAnalyticsTreemap({
                 }}
                 variant="outline"
                 size="sm"
+                className="w-full sm:w-auto justify-start"
               >
-                <ToggleGroupItem value="fn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4">
+                <ToggleGroupItem value="fn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 flex-1 sm:flex-none">
                   <Trans>Functional</Trans>
                 </ToggleGroupItem>
                 <ToggleGroupItem
                   value="ec"
                   disabled={isRevenueView}
-                  className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4"
+                  className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 flex-1 sm:flex-none"
                 >
                   <Trans>Economic</Trans>
                 </ToggleGroupItem>
               </ToggleGroup>
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 flex-1 sm:flex-none">
               <Label className="text-xs text-muted-foreground"><Trans>Detail level</Trans></Label>
               <ToggleGroup
                 type="single"
@@ -121,11 +122,12 @@ export function EntityAnalyticsTreemap({
                 }}
                 variant="outline"
                 size="sm"
+                className="w-full sm:w-auto justify-start"
               >
-                <ToggleGroupItem value="main" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4">
+                <ToggleGroupItem value="main" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-3 whitespace-nowrap flex-1 sm:flex-none">
                   <Trans>Main chapters</Trans>
                 </ToggleGroupItem>
-                <ToggleGroupItem value="detail" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4">
+                <ToggleGroupItem value="detail" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-3 whitespace-nowrap flex-1 sm:flex-none">
                   <Trans>Detailed categories</Trans>
                 </ToggleGroupItem>
               </ToggleGroup>
@@ -133,9 +135,13 @@ export function EntityAnalyticsTreemap({
           </div>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="-mx-4 sm:mx-0 px-4 sm:px-0">
         {isLoading ? (
-          <Skeleton className="w-full h-[600px]" />
+          <div className="w-full space-y-2">
+            <div className="relative h-[600px] w-full -mx-4 sm:mx-0 px-4 sm:px-0">
+              <Skeleton className="w-full h-full" />
+            </div>
+          </div>
         ) : (
           <BudgetTreemap
             data={treemapData}

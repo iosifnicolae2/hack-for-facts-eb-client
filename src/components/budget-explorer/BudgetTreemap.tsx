@@ -329,7 +329,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
   return (
     <div className="w-full space-y-2">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <Breadcrumb className="overflow-x-auto max-w-[calc(100vw-4rem)] sm:max-w-[calc(100vw-8rem)] md:max-w-[calc(100vw-12rem)]">
+        <Breadcrumb className="overflow-x-auto max-w-[calc(100vw-4rem)] sm:max-w-[calc(100vw-8rem)] md:max-w-[calc(100vw-12rem)] mx-2 sm:mx-0">
           <BreadcrumbList className="flex-nowrap">
             <BreadcrumbItem>
               <BreadcrumbLink onClick={() => onBreadcrumbClick?.(null)} className="cursor-pointer whitespace-nowrap">
@@ -383,7 +383,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
       </div>
 
       {payloadData.length === 0 ? (
-        <div className="flex h-[600px] items-center justify-center rounded-md border border-dashed border-muted-foreground/40 p-6">
+        <div className="relative h-[600px] w-full flex items-center justify-center rounded-md border border-dashed border-muted-foreground/40 p-6">
           <p className="text-sm text-muted-foreground text-center">
             <Trans>No data available for the current selection.</Trans>
           </p>
@@ -395,7 +395,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute right-2 top-2 z-10 h-8 w-8 rounded-md bg-black text-white transition-colors hover:bg-black/80 hover:text-white"
+                className="absolute right-6 sm:right-2 top-2 z-10 h-8 w-8 rounded-md bg-black text-white transition-colors hover:bg-black/80 hover:text-white"
                 onClick={handleBackClick}
                 aria-label="Go back"
               >

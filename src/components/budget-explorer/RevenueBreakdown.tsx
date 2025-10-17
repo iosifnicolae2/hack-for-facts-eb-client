@@ -101,50 +101,50 @@ export function RevenueBreakdown({ nodes, normalization, periodLabel, isLoading 
             </CardHeader>
             <CardContent className="space-y-4">
                 {isLoading ? (
-                    <div className="bg-muted/30 rounded-lg p-5 space-y-4 lg:px-[8rem]">
-                        <div className="flex items-center justify-between gap-6">
+                    <div className="bg-muted/30 rounded-lg p-3 md:p-5 space-y-4 md:px-8">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                             <div className="flex-1 space-y-1.5">
                                 <Skeleton className="h-4 w-1/2" />
                                 <Skeleton className="h-3 w-1/3" />
                             </div>
-                            <div className="min-w-[180px] space-y-1.5">
-                                <Skeleton className="h-5 w-3/4 ml-auto" />
-                                <Skeleton className="h-3 w-full ml-auto" />
+                            <div className="w-full sm:w-auto space-y-1.5">
+                                <Skeleton className="h-5 w-full sm:w-32" />
+                                <Skeleton className="h-3 w-full sm:w-40" />
                             </div>
                         </div>
                         <div className="flex items-center justify-center py-1">
                             <div className="w-full border-t border-dashed border-border" />
                         </div>
-                        <div className="flex items-center justify-between gap-6">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                             <div className="flex-1 space-y-1.5">
                                 <Skeleton className="h-4 w-3/5" />
                                 <Skeleton className="h-3 w-2/5" />
                             </div>
-                            <div className="min-w-[180px] space-y-1.5">
-                                <Skeleton className="h-5 w-3/4 ml-auto" />
-                                <Skeleton className="h-3 w-full ml-auto" />
+                            <div className="w-full sm:w-auto space-y-1.5">
+                                <Skeleton className="h-5 w-full sm:w-32" />
+                                <Skeleton className="h-3 w-full sm:w-40" />
                             </div>
                         </div>
                         <div className="flex items-center justify-center py-1">
                             <div className="w-full border-t border-dashed border-border" />
                         </div>
-                        <div className="flex items-center justify-between gap-6">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                             <div className="flex-1 space-y-1.5">
                                 <Skeleton className="h-4 w-2/5" />
                                 <Skeleton className="h-3 w-1/3" />
                             </div>
-                            <div className="min-w-[180px] space-y-1.5">
-                                <Skeleton className="h-5 w-3/4 ml-auto" />
-                                <Skeleton className="h-3 w-full ml-auto" />
+                            <div className="w-full sm:w-auto space-y-1.5">
+                                <Skeleton className="h-5 w-full sm:w-32" />
+                                <Skeleton className="h-3 w-full sm:w-40" />
                             </div>
                         </div>
                     </div>
                 ) : (
                     <>
                         {/* Calculation breakdown */}
-                        <div className="bg-muted/30 rounded-lg p-5 space-y-1 lg:px-[8rem] ">
+                        <div className="bg-muted/30 rounded-lg p-3 md:p-5 space-y-1 md:px-8">
                             {/* Total revenue */}
-                            <div className="flex items-center justify-between gap-6">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                                 <div className="flex-1">
                                     <div className="text-sm font-medium text-foreground">
                                         <Trans>Total Revenues</Trans>
@@ -153,8 +153,8 @@ export function RevenueBreakdown({ nodes, normalization, periodLabel, isLoading 
                                         <Trans>All recorded revenue inflows</Trans>
                                     </div>
                                 </div>
-                                <div className="text-right min-w-[180px]">
-                                    <div className="font-mono text-lg font-semibold text-foreground">
+                                <div className="text-right w-full sm:w-auto">
+                                    <div className="font-mono text-base md:text-lg font-semibold text-foreground">
                                         {yValueFormatter(totalRevenue, currencyCode, 'compact')}
                                     </div>
                                     <div className="font-mono text-xs text-muted-foreground">
@@ -173,7 +173,7 @@ export function RevenueBreakdown({ nodes, normalization, periodLabel, isLoading 
 
                             {/* Inter-budget transfers (sorted) */}
                             {sortedInterBudget.map((d) => (
-                                <div className="flex items-center justify-between gap-6" key={d.key}>
+                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4" key={d.key}>
                                     <div className="flex-1">
                                         <div className="text-sm font-medium text-foreground">
                                             {d.label}
@@ -182,8 +182,8 @@ export function RevenueBreakdown({ nodes, normalization, periodLabel, isLoading 
                                             {d.subtitle} <span className="font-mono text-[10px] bg-muted px-1 py-0.5 rounded">{d.badge}</span>
                                         </div>
                                     </div>
-                                    <div className="text-right min-w-[180px]">
-                                        <div className="font-mono text-lg font-semibold text-foreground">
+                                    <div className="text-right w-full sm:w-auto">
+                                        <div className="font-mono text-base md:text-lg font-semibold text-foreground">
                                             {yValueFormatter(d.amount, currencyCode, 'compact')}
                                         </div>
                                         <div className="font-mono text-xs text-muted-foreground">
@@ -204,7 +204,7 @@ export function RevenueBreakdown({ nodes, normalization, periodLabel, isLoading 
                             {/* Other "se scad" adjustments (non-inter-budget) */}
                             {seScadDeduction > 0 && (
                                 <>
-                                    <div className="flex items-center justify-between gap-6">
+                                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                                         <div className="flex-1">
                                             <div className="text-sm font-medium text-foreground">
                                                 <Trans>Adjustments marked as "se scad"</Trans>
@@ -219,8 +219,8 @@ export function RevenueBreakdown({ nodes, normalization, periodLabel, isLoading 
                                                 )}
                                             </div>
                                         </div>
-                                        <div className="text-right min-w-[180px]">
-                                            <div className="font-mono text-lg font-semibold text-foreground">
+                                        <div className="text-right w-full sm:w-auto">
+                                            <div className="font-mono text-base md:text-lg font-semibold text-foreground">
                                                 {yValueFormatter(seScadDeduction, currencyCode, 'compact')}
                                             </div>
                                             <div className="font-mono text-xs text-muted-foreground">
@@ -238,7 +238,7 @@ export function RevenueBreakdown({ nodes, normalization, periodLabel, isLoading 
                                             </p>
                                             <div className="grid gap-1">
                                                 {seScadAdjustments.map((it) => (
-                                                    <div key={it.code} className="flex items-center justify-between">
+                                                    <div key={it.code} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                                                         <div className="text-xs text-muted-foreground">
                                                             <span className="font-mono text-[10px] bg-muted px-1 py-0.5 rounded mr-2">fn:{it.code}</span>
                                                             {it.label}
@@ -262,7 +262,7 @@ export function RevenueBreakdown({ nodes, normalization, periodLabel, isLoading 
                             )}
 
                             {/* Financial operations */}
-                            <div className="flex items-center justify-between gap-6">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                                 <div className="flex-1">
                                     <div className="text-sm font-medium text-foreground">
                                         <Trans>Financial operations</Trans>
@@ -271,8 +271,8 @@ export function RevenueBreakdown({ nodes, normalization, periodLabel, isLoading 
                                         <Trans>Loan repayments and other operations</Trans> <span className="font-mono text-[10px] bg-muted px-1 py-0.5 rounded">fn:40.* + 41.*</span>
                                     </div>
                                 </div>
-                                <div className="text-right min-w-[180px]">
-                                    <div className="font-mono text-lg font-semibold text-foreground">
+                                <div className="text-right w-full sm:w-auto">
+                                    <div className="font-mono text-base md:text-lg font-semibold text-foreground">
                                         {yValueFormatter(financialOps, currencyCode, 'compact')}
                                     </div>
                                     <div className="font-mono text-xs text-muted-foreground">
@@ -290,7 +290,7 @@ export function RevenueBreakdown({ nodes, normalization, periodLabel, isLoading 
                             </div>
 
                             {/* Effective revenue */}
-                            <div className="flex items-center justify-between gap-6 bg-primary/5 rounded-md p-3 -mx-1">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 bg-primary/5 rounded-md p-3 -mx-1">
                                 <div className="flex-1">
                                     <div className="text-base font-semibold text-foreground">
                                         <Trans>True Consolidated Revenues</Trans>
@@ -299,8 +299,8 @@ export function RevenueBreakdown({ nodes, normalization, periodLabel, isLoading 
                                         <Trans>Excluding inter-budget flows and financial operations</Trans>
                                     </div>
                                 </div>
-                                <div className="text-right min-w-[180px]">
-                                    <div className="font-mono text-xl font-bold text-primary">
+                                <div className="text-right w-full sm:w-auto">
+                                    <div className="font-mono text-lg md:text-xl font-bold text-primary">
                                         {yValueFormatter(effectiveRevenue, currencyCode, 'compact')}
                                     </div>
                                     <div className="font-mono text-xs text-muted-foreground">
