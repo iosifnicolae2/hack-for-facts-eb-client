@@ -32,6 +32,7 @@ import { usePersistedState } from '@/lib/hooks/usePersistedState'
 import { useDebouncedCallback } from '@/lib/hooks/useDebouncedCallback'
 import { queryClient } from '@/lib/queryClient'
 import { entityDetailsQueryOptions } from '@/lib/hooks/useEntityDetails'
+import { FloatingQuickNav } from '@/components/ui/FloatingQuickNav'
 
 const TrendsView = lazy(() => import('@/components/entities/views/TrendsView').then(m => ({ default: m.TrendsView })))
 const EmployeesView = lazy(() => import('@/components/entities/views/EmployeesView').then(m => ({ default: m.EmployeesView })))
@@ -233,10 +234,32 @@ function EntityDetailsPage() {
 
   const { title: metaTitle, description: metaDescription } = buildEntitySeo(entity, cui, selectedYear)
 
+  // Prepare filter input for FloatingQuickNav
+  const filterInput: AnalyticsFilterType = useMemo(() => ({
+    entity_cuis: [cui],
+    report_period: reportPeriod,
+    account_category: accountCategory ?? 'ch',
+    normalization: normalization,
+  }), [cui, reportPeriod, accountCategory, normalization])
+
+  // Determine mapViewType based on entity type
+  const mapViewType = useMemo<'UAT' | 'County'>(() => {
+    if (entity?.entity_type === 'admin_county_council') return 'County'
+    if (entity?.is_uat) return 'UAT'
+    return 'UAT' // default to UAT
+  }, [entity?.entity_type, entity?.is_uat])
+
   return (
     <div className="min-h-screen p-3 sm:p-4 md:p-6 lg:p-8">
       <Seo title={metaTitle} description={metaDescription} type="article" />
       <EntityNotificationAnnouncement />
+      <FloatingQuickNav
+        mapViewType={mapViewType}
+        mapActive
+        chartActive
+        tableActive
+        filterInput={filterInput}
+      />
       <div className="container mx-auto max-w-7xl space-y-4 sm:space-y-6 lg:space-y-8">
         <EntityHeader
           entity={entity}
