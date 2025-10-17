@@ -76,6 +76,8 @@ function EntityDetailsPage() {
   const selectedExpenseTypeKey = search.selectedExpenseTypeKey as string | undefined
   const defaultUserNormalization = userCurrency === 'EUR' ? 'total_euro' : 'total'
   const normalization = search.normalization ?? defaultUserNormalization
+  const treemapPrimary = search.treemapPrimary as 'fn' | 'ec' | undefined
+  const accountCategory = search.accountCategory as 'ch' | 'vn' | undefined
 
   const reportPeriod = useMemo(() => getInitialFilterState(period, selectedYear, month, quarter), [period, selectedYear, month, quarter])
   const trendPeriod = useMemo(() => makeTrendPeriod(period, selectedYear, START_YEAR, END_YEAR), [period, selectedYear])
@@ -152,6 +154,14 @@ function EntityDetailsPage() {
     if (period === 'QUARTER') updateSearch({ quarter: label })
     else if (period === 'MONTH') updateSearch({ month: label })
   }, [period, updateSearch])
+
+  const handleTreemapPrimaryChange = useCallback((primary: 'fn' | 'ec') => {
+    updateSearch({ treemapPrimary: primary })
+  }, [updateSearch])
+
+  const handleAccountCategoryChange = useCallback((category: 'ch' | 'vn') => {
+    updateSearch({ accountCategory: category })
+  }, [updateSearch])
 
   const handleNormalizationChange = useCallback((norm: Normalization) => {
     updateSearch({ normalization: norm })
@@ -289,6 +299,10 @@ function EntityDetailsPage() {
           selectedExpenseTypeKey={selectedExpenseTypeKey ?? ''}
           handleSelectedFundingKeyChange={handleSelectedFundingKeyChange}
           handleSelectedExpenseTypeKeyChange={handleSelectedExpenseTypeKeyChange}
+          treemapPrimary={treemapPrimary}
+          accountCategory={accountCategory}
+          handleTreemapPrimaryChange={handleTreemapPrimaryChange}
+          handleAccountCategoryChange={handleAccountCategoryChange}
         />
       </div>
     </div>
@@ -323,6 +337,10 @@ interface ViewsContentProps {
   selectedExpenseTypeKey?: string;
   handleSelectedFundingKeyChange: (key: string) => void;
   handleSelectedExpenseTypeKeyChange: (key: string) => void;
+  treemapPrimary?: 'fn' | 'ec';
+  accountCategory?: 'ch' | 'vn';
+  handleTreemapPrimaryChange: (primary: 'fn' | 'ec') => void;
+  handleAccountCategoryChange: (category: 'ch' | 'vn') => void;
 }
 
 function ViewsContent(props: ViewsContentProps) {
@@ -332,7 +350,7 @@ function ViewsContent(props: ViewsContentProps) {
     handleSearchChange, handleNormalizationChange, handlePeriodItemSelect, handleAnalyticsChange,
     lineItemsTab, handleLineItemsTabChange,
     selectedFundingKey, selectedExpenseTypeKey, handleSelectedFundingKeyChange, handleSelectedExpenseTypeKeyChange,
-    isLoading,
+    isLoading, treemapPrimary, accountCategory, handleTreemapPrimaryChange, handleAccountCategoryChange,
   } = props;
 
   const trendsViewProps = {
@@ -363,14 +381,14 @@ function ViewsContent(props: ViewsContentProps) {
       {(() => {
         switch (activeView) {
           case 'reports': return <EntityReports cui={cui} initialType={reportTypeState ?? entity?.default_report_type} />
-          case 'expense-trends': return <TrendsView {...trendsViewProps} type="expense" />
-          case 'income-trends': return <TrendsView {...trendsViewProps} type="income" />
+          case 'expense-trends': return <TrendsView {...trendsViewProps} type="expense" treemapPrimary={treemapPrimary} onTreemapPrimaryChange={handleTreemapPrimaryChange} />
+          case 'income-trends': return <TrendsView {...trendsViewProps} type="income" treemapPrimary={treemapPrimary} onTreemapPrimaryChange={handleTreemapPrimaryChange} />
           case 'map': return <MapView entity={entity} mapFilters={mapFilters} updateMapFilters={updateMapFilters} period={reportPeriod} />
           case 'employees': return <EmployeesView entity={entity} />
           case 'ranking': return <RankingView />
           case 'related-charts': return <RelatedChartsView entity={entity} normalization={normalization} />
           case 'relationships': return <EntityRelationships cui={cui} />
-          default: return <Overview cui={cui} entity={entity} isLoading={isLoading} selectedYear={selectedYear} normalization={normalization} years={years} periodType={period} reportPeriod={reportPeriod} reportType={reportTypeState} mainCreditorCui={mainCreditorCui} search={search} onChartNormalizationChange={handleNormalizationChange} onYearChange={handleYearChange} onPeriodItemSelect={handlePeriodItemSelect} onSearchChange={handleSearchChange} onAnalyticsChange={handleAnalyticsChange} onLineItemsTabChange={handleLineItemsTabChange} onSelectedFundingKeyChange={handleSelectedFundingKeyChange} onSelectedExpenseTypeKeyChange={handleSelectedExpenseTypeKeyChange} />
+          default: return <Overview cui={cui} entity={entity} isLoading={isLoading} selectedYear={selectedYear} normalization={normalization} years={years} periodType={period} reportPeriod={reportPeriod} reportType={reportTypeState} mainCreditorCui={mainCreditorCui} search={search} onChartNormalizationChange={handleNormalizationChange} onYearChange={handleYearChange} onPeriodItemSelect={handlePeriodItemSelect} onSearchChange={handleSearchChange} onAnalyticsChange={handleAnalyticsChange} onLineItemsTabChange={handleLineItemsTabChange} onSelectedFundingKeyChange={handleSelectedFundingKeyChange} onSelectedExpenseTypeKeyChange={handleSelectedExpenseTypeKeyChange} treemapPrimary={treemapPrimary} accountCategory={accountCategory} onTreemapPrimaryChange={handleTreemapPrimaryChange} onAccountCategoryChange={handleAccountCategoryChange} />
         }
       })()}
     </Suspense>

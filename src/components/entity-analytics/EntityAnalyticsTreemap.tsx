@@ -15,10 +15,27 @@ interface EntityAnalyticsTreemapProps {
   filter: AnalyticsFilterType
   data?: AggregatedLineItemConnection
   isLoading?: boolean
+  initialPrimary?: 'fn' | 'ec'
+  initialDepth?: 'main' | 'detail'
+  onPrimaryChange?: (primary: 'fn' | 'ec') => void
+  onDepthChange?: (depth: 'main' | 'detail') => void
 }
 
-export function EntityAnalyticsTreemap({ filter, data, isLoading }: EntityAnalyticsTreemapProps) {
-  const [depth, setDepth] = useState<'main' | 'detail'>('main')
+export function EntityAnalyticsTreemap({
+  filter,
+  data,
+  isLoading,
+  initialPrimary = 'fn',
+  initialDepth = 'main',
+  onPrimaryChange,
+  onDepthChange,
+}: EntityAnalyticsTreemapProps) {
+  const [depth, setDepth] = useState<'main' | 'detail'>(initialDepth)
+
+  const handleDepthChange = (newDepth: 'main' | 'detail') => {
+    setDepth(newDepth)
+    onDepthChange?.(newDepth)
+  }
 
   const aggregatedNodes = useMemo<AggregatedNode[]>(() => {
     if (!data?.nodes) return []
@@ -47,9 +64,10 @@ export function EntityAnalyticsTreemap({ filter, data, isLoading }: EntityAnalyt
     reset,
   } = useTreemapDrilldown({
     nodes: aggregatedNodes,
-    initialPrimary: 'fn',
+    initialPrimary,
     rootDepth: depth === 'main' ? 2 : 4,
     excludeEcCodes,
+    onPrimaryChange,
   })
 
   useEffect(() => {
@@ -99,7 +117,7 @@ export function EntityAnalyticsTreemap({ filter, data, isLoading }: EntityAnalyt
                 type="single"
                 value={depth}
                 onValueChange={(v: 'main' | 'detail') => {
-                  if (v) setDepth(v)
+                  if (v) handleDepthChange(v)
                 }}
                 variant="outline"
                 size="sm"

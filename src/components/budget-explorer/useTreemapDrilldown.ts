@@ -62,17 +62,20 @@ function resolveBreadcrumbLabel(primary: 'fn' | 'ec', code: string, nodes: Aggre
  * @param initialPrimary - Starting primary dimension ('fn' or 'ec')
  * @param rootDepth - Depth to use at root level (2, 4, or 6 digits)
  * @param excludeEcCodes - Economic codes to exclude from visualization (e.g., ['51', '80', '81'])
+ * @param onPrimaryChange - Optional callback when primary changes (for URL persistence)
  */
 export function useTreemapDrilldown({
   nodes,
   initialPrimary = 'fn',
   rootDepth = 2,
   excludeEcCodes = [],
+  onPrimaryChange,
 }: {
   nodes: AggregatedNode[]
   initialPrimary?: 'fn' | 'ec'
   rootDepth?: 2 | 4 | 6
   excludeEcCodes?: string[]
+  onPrimaryChange?: (primary: 'fn' | 'ec') => void
 }) {
   // UI-selected primary (from toggle)
   const [primary, setPrimary] = useState<'fn' | 'ec'>(initialPrimary)
@@ -274,7 +277,8 @@ export function useTreemapDrilldown({
     setPath([])
     setCrossConstraint(null)
     setBreadcrumbs([])
-  }, [])
+    onPrimaryChange?.(value)
+  }, [onPrimaryChange])
 
   const reset = useCallback(() => {
     setPath([])

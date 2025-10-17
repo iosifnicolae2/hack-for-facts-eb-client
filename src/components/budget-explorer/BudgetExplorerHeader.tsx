@@ -12,10 +12,10 @@ type Props = {
 }
 
 export function BudgetExplorerHeader({ state, onChange }: Props) {
-  const { filter, primary, depth } = state
+  const { filter, primary, depth, treemapPrimary } = state
   const isEuroMode = filter.normalization === 'total_euro' || filter.normalization === 'per_capita_euro'
   const isRevenueView = filter.account_category === 'vn'
-  const groupingValue = isRevenueView ? 'fn' : primary
+  const groupingValue = isRevenueView ? 'fn' : (treemapPrimary ?? primary)
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -61,7 +61,7 @@ export function BudgetExplorerHeader({ state, onChange }: Props) {
             onValueChange={(value: 'fn' | 'ec') => {
               if (!value) return
               if (isRevenueView && value === 'ec') return
-              onChange({ primary: value })
+              onChange({ treemapPrimary: value })
             }}
             variant="outline"
             size="sm"

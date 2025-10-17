@@ -31,7 +31,7 @@ export const Route = createLazyFileRoute('/entity-analytics')({
 })
 
 function EntityAnalyticsPage() {
-  const { filter, sortBy, sortOrder, setSorting, page, pageSize, setPagination, resetFilter, view } = useEntityAnalyticsFilter()
+  const { filter, sortBy, sortOrder, setSorting, page, pageSize, setPagination, resetFilter, view, treemapPrimary, treemapDepth, setTreemapPrimary, setTreemapDepth } = useEntityAnalyticsFilter()
   const [exporting, setExporting] = useState(false)
 
   const offset = useMemo(() => (page - 1) * pageSize, [page, pageSize])
@@ -246,7 +246,15 @@ function EntityAnalyticsPage() {
           </div>
         ) : (
           <div className="mt-4 space-y-4">
-            <EntityAnalyticsTreemap filter={filter} data={aggregatedData} isLoading={isLoadingAggregated} />
+            <EntityAnalyticsTreemap
+              filter={filter}
+              data={aggregatedData}
+              isLoading={isLoadingAggregated}
+              initialPrimary={treemapPrimary ?? 'fn'}
+              initialDepth={treemapDepth ?? 'main'}
+              onPrimaryChange={setTreemapPrimary}
+              onDepthChange={setTreemapDepth}
+            />
             {filter.account_category === 'ch' ? (
                 <SpendingBreakdown nodes={aggregatedNodes} normalization={filter.normalization} isLoading={isLoadingAggregated} periodLabel={periodLabel} />
             ) : (

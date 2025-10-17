@@ -48,11 +48,13 @@ interface BaseTrendsViewProps {
   selectedExpenseTypeKey?: string;
   onSelectedFundingKeyChange?: (key: string) => void;
   onSelectedExpenseTypeKeyChange?: (key: string) => void;
+  treemapPrimary?: 'fn' | 'ec';
+  onTreemapPrimaryChange?: (primary: 'fn' | 'ec') => void;
 }
 
 const TOP_CATEGORIES_COUNT = 10;
 
-export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, currentYear, onYearClick, onSelectPeriod, initialIncomeSearch, initialExpenseSearch, onSearchChange, isLoading, normalization, onNormalizationChange, reportPeriod, trendPeriod, reportType, years = [], lineItemsTab = 'functional', onLineItemsTabChange, selectedFundingKey = '', selectedExpenseTypeKey = '', onSelectedFundingKeyChange, onSelectedExpenseTypeKeyChange }) => {
+export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, currentYear, onYearClick, onSelectPeriod, initialIncomeSearch, initialExpenseSearch, onSearchChange, isLoading, normalization, onNormalizationChange, reportPeriod, trendPeriod, reportType, years = [], lineItemsTab = 'functional', onLineItemsTabChange, selectedFundingKey = '', selectedExpenseTypeKey = '', onSelectedFundingKeyChange, onSelectedExpenseTypeKeyChange, treemapPrimary, onTreemapPrimaryChange }) => {
   const { cui } = useParams({ from: '/entities/$cui' });
   const isMobile = useIsMobile();
   const chapterMap = useMemo(() => getChapterMap(), []);
@@ -175,9 +177,10 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
     reset,
   } = useTreemapDrilldown({
     nodes: aggregatedNodes,
-    initialPrimary: 'fn',
+    initialPrimary: treemapPrimary ?? 'fn',
     rootDepth: 2,
     excludeEcCodes,
+    onPrimaryChange: onTreemapPrimaryChange,
   })
 
   // Reset drilldown when switching between income/expense tabs

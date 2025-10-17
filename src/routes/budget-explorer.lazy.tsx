@@ -52,6 +52,7 @@ const SearchSchema = z.object({
   depth: DepthEnum.default('main'),
   search: z.string().optional(),
   filter: AnalyticsFilterSchema.default(defaultFilter),
+  treemapPrimary: PrimaryLevelEnum.optional(),
 })
 
 export type BudgetExplorerState = z.infer<typeof SearchSchema>
@@ -127,8 +128,11 @@ function BudgetExplorerPage() {
   const isMobile = useIsMobile()
   const [currency] = useUserCurrency()
 
-  const { filter, primary, depth } = search
+  const { filter, primary, depth, treemapPrimary } = search
   const filterHash = generateHash(JSON.stringify(filter))
+
+  // Use treemapPrimary from URL if available, otherwise fall back to primary
+  const initialTreemapPrimary = treemapPrimary ?? primary
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['budget-explorer', 'aggregatedLineItems', filterHash],
@@ -146,7 +150,7 @@ function BudgetExplorerPage() {
 
   const [path, setPath] = useState<string[]>([])
   const [drawerCode, setDrawerCode] = useState<string | null>(null)
-  const [drillPrimary, setDrillPrimary] = useState<'fn' | 'ec'>(primary)
+  const [drillPrimary, setDrillPrimary] = useState<'fn' | 'ec'>(initialTreemapPrimary)
   const [crossConstraint, setCrossConstraint] = useState<{ type: 'fn' | 'ec'; code: string } | null>(null)
   const [breadcrumbPath, setBreadcrumbPath] = useState<{ code: string; label: string }[]>([])
 
@@ -159,11 +163,12 @@ function BudgetExplorerPage() {
   }, [currency, filter.normalization])
 
   useEffect(() => {
-    setDrillPrimary(primary)
+    const effectivePrimary = treemapPrimary ?? primary
+    setDrillPrimary(effectivePrimary)
     setPath([])
     setCrossConstraint(null)
     setBreadcrumbPath([])
-  }, [primary])
+  }, [primary, treemapPrimary])
 
   const appendBreadcrumb = (type: 'fn' | 'ec', code: string) => {
     const normalized = normalizeCode(code)
@@ -333,15 +338,17 @@ function BudgetExplorerPage() {
   }, [filter, isMobile])
 
   const handleFilterChange = (partial: Partial<BudgetExplorerState>) => {
-    const { filter: partialFilter, primary: partialPrimary, ...restPartial } = partial
+    const { filter: partialFilter, primary: partialPrimary, treemapPrimary: partialTreemapPrimary, ...restPartial } = partial
     const nextFilter = {
       ...defaultFilter,
       ...filter,
       ...(partialFilter ?? {}),
     }
     let nextPrimary: BudgetExplorerState['primary'] = partialPrimary ?? primary
+    let nextTreemapPrimary: BudgetExplorerState['primary'] | undefined = partialTreemapPrimary ?? treemapPrimary
     if (nextFilter.account_category === 'vn') {
       nextPrimary = 'fn'
+      nextTreemapPrimary = 'fn'
     }
 
     navigate({
@@ -350,12 +357,13 @@ function BudgetExplorerPage() {
         ...restPartial,
         primary: nextPrimary,
         filter: nextFilter,
+        treemapPrimary: nextTreemapPrimary,
       }),
       replace: true,
     })
     setPath([])
     setDrawerCode(null)
-    setDrillPrimary(nextPrimary)
+    setDrillPrimary(nextTreemapPrimary ?? nextPrimary)
     setCrossConstraint(null)
     setBreadcrumbPath([])
   }

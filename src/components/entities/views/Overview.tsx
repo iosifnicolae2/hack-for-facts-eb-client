@@ -54,6 +54,11 @@ interface OverviewProps {
     onLineItemsTabChange?: (tab: 'functional' | 'funding' | 'expenseType') => void;
     onSelectedFundingKeyChange?: (key: string) => void;
     onSelectedExpenseTypeKeyChange?: (key: string) => void;
+    // Treemap state
+    treemapPrimary?: 'fn' | 'ec';
+    accountCategory?: 'ch' | 'vn';
+    onTreemapPrimaryChange?: (primary: 'fn' | 'ec') => void;
+    onAccountCategoryChange?: (category: 'ch' | 'vn') => void;
 }
 
 export const Overview = ({
@@ -76,6 +81,10 @@ export const Overview = ({
     onLineItemsTabChange,
     onSelectedFundingKeyChange,
     onSelectedExpenseTypeKeyChange,
+    treemapPrimary,
+    accountCategory: accountCategoryProp,
+    onTreemapPrimaryChange,
+    onAccountCategoryChange,
 }: OverviewProps) => {
 
     const { data: lineItems, isLoading: isLoadingLineItems } = useEntityExecutionLineItems({
@@ -122,12 +131,24 @@ export const Overview = ({
         }
     }, [periodType, selectedYear, search.month, search.quarter, years, years.length, years[years.length - 1], years[0], debouncedPrefetch, reportType, handlePrefetchYear])
 
-    const [accountCategory, setAccountCategory] = useState<'ch' | 'vn'>('ch')
+    const [accountCategory, setAccountCategory] = useState<'ch' | 'vn'>(accountCategoryProp ?? 'ch')
+
+    const handleAccountCategoryChange = (category: 'ch' | 'vn') => {
+        setAccountCategory(category)
+        onAccountCategoryChange?.(category)
+    }
 
     const filteredItems = useMemo(() => {
         const nodes = lineItems?.nodes ?? []
         return nodes.filter((n: any) => n?.account_category === accountCategory)
     }, [lineItems, accountCategory])
+
+    // Sync local state with prop when it changes
+    useEffect(() => {
+        if (accountCategoryProp !== undefined) {
+            setAccountCategory(accountCategoryProp)
+        }
+    }, [accountCategoryProp])
 
     const aggregatedNodes = useMemo<AggregatedNode[]>(() => {
         return filteredItems.map((n: any) => ({
@@ -146,9 +167,10 @@ export const Overview = ({
 
     const { primary, activePrimary, setPrimary, treemapData, breadcrumbs, excludedItemsSummary, onNodeClick, onBreadcrumbClick, reset } = useTreemapDrilldown({
         nodes: aggregatedNodes,
-        initialPrimary: 'fn',
+        initialPrimary: treemapPrimary ?? 'fn',
         rootDepth: 2,
         excludeEcCodes,
+        onPrimaryChange: onTreemapPrimaryChange,
     })
 
     // Reset drilldown when switching between income/expenses and auto-switch to functional for income
@@ -194,7 +216,7 @@ export const Overview = ({
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                         <h3 className="text-base sm:text-lg font-semibold">Budget Distribution - {usePeriodLabel(reportPeriod)}</h3>
                         <div className="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-2 sm:gap-3">
-                            <ToggleGroup type="single" value={accountCategory} onValueChange={(v) => v && setAccountCategory(v as 'ch' | 'vn')} variant="outline" size="sm" className="w-full sm:w-auto justify-between">
+                            <ToggleGroup type="single" value={accountCategory} onValueChange={(v) => v && handleAccountCategoryChange(v as 'ch' | 'vn')} variant="outline" size="sm" className="w-full sm:w-auto justify-between">
                                 <ToggleGroupItem value="vn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 flex-1 sm:flex-none"><Trans>Income</Trans></ToggleGroupItem>
                                 <ToggleGroupItem value="ch" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 flex-1 sm:flex-none"><Trans>Expenses</Trans></ToggleGroupItem>
                             </ToggleGroup>
