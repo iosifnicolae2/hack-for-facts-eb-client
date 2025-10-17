@@ -1,11 +1,10 @@
-import { Fragment, type FC, useEffect, useMemo, useRef, useState } from 'react'
+import { type FC, useEffect, useMemo, useRef, useState } from 'react'
 import { ResponsiveContainer, Treemap, Tooltip } from 'recharts'
 import { Trans } from '@lingui/react/macro'
 import { motion, useAnimationControls } from 'motion/react'
 import { ArrowLeft } from 'lucide-react'
 
 import { yValueFormatter } from '@/components/charts/components/chart-renderer/utils'
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
 import type { TreemapInput, ExcludedItemsSummary } from './budget-transform'
 import { FilteredSpendingInfo } from './FilteredSpendingInfo'
@@ -328,50 +327,75 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
 
   return (
     <div className="w-full space-y-2">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <Breadcrumb className="overflow-x-auto bg-muted shadow-md text-foreground rounded-md max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-8rem)] md:max-w-[calc(100vw-12rem)] px-2 py-1 ml-2">
-          <BreadcrumbList className="flex-nowrap">
-            <BreadcrumbItem>
-              <BreadcrumbLink onClick={() => onBreadcrumbClick?.(null)} className="cursor-pointer whitespace-nowrap">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="overflow-x-auto max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-8rem)] md:max-w-[calc(100vw-12rem)]">
+          <div className="flex items-center w-fit">
+            <div
+              onClick={() => onBreadcrumbClick?.(null)}
+              className="group relative h-6 pl-4 pr-6 mr-2 flex items-center cursor-pointer transition-all duration-200"
+            >
+              <div
+                className="absolute inset-0 bg-foreground group-hover:bg-foreground/80 group-active:bg-foreground/70 transition-colors duration-200 border-y-2 border-background/20"
+                style={{
+                  clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 0 0)'
+                }}
+              />
+              <span className="relative z-10 whitespace-nowrap text-sm font-medium text-background">
                 <Trans>Main Categories</Trans>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
+              </span>
+            </div>
             {isMobile && path.length > 2 && (
-              <>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <span className="text-muted-foreground">...</span>
-                </BreadcrumbItem>
-              </>
+              <div className="relative h-6 pl-5 pr-6 mr-2 flex items-center -ml-[12px]">
+                <div
+                  className="absolute inset-0 bg-foreground/70 border-y-2 border-background/20"
+                  style={{
+                    clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%)'
+                  }}
+                />
+                <span className="relative z-10 text-sm font-medium text-background/80">...</span>
+              </div>
             )}
             {displayPath.map((item, index) => {
               const key = `${item.code}-${item.label}`
               const actualIndex = isMobile && path.length > 2 ? path.length - 2 + index : index
               const isLastCrumb = actualIndex === (path.length - 1)
               const isClickable = !!item.code && /^[0-9.]+$/.test(item.code) && !isLastCrumb
+              const isLast = index === displayPath.length - 1
 
               return (
-                <Fragment key={key}>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbLink
-                      onClick={() => {
-                        if (!isClickable) return
-                        onBreadcrumbClick?.(item.code, actualIndex)
-                      }}
-                      className={`${isClickable ? 'cursor-pointer' : 'cursor-default pointer-events-none text-foreground'} whitespace-nowrap ${isMobile ? 'text-sm' : ''}`}
-                      aria-disabled={!isClickable}
-                    >
-                      {isMobile && item.label && item.label.length > 20
-                        ? `${item.label.slice(0, 20)}...`
-                        : item.label ?? item.code}
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                </Fragment>
+                <div
+                  key={key}
+                  onClick={() => {
+                    if (!isClickable) return
+                    onBreadcrumbClick?.(item.code, actualIndex)
+                  }}
+                  className={`group relative h-6 pl-5 pr-6 mr-2 flex items-center -ml-[12px] transition-all duration-200 ${isClickable ? 'cursor-pointer' : 'cursor-default'
+                    }`}
+                >
+                  <div
+                    className={`absolute inset-0 transition-all duration-200 ${isLast && !isClickable
+                      ? 'bg-primary shadow-md border-y-2 border-primary'
+                      : isClickable
+                        ? 'bg-foreground group-hover:bg-foreground/80 group-hover:shadow-md group-active:bg-foreground/70 border-y-2 border-background/20'
+                        : 'bg-foreground shadow-md border-y-2 border-background/20'
+                      }`}
+                    style={{
+                      clipPath: isLast
+                        ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%, 12px 50%)'
+                        : 'polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%)'
+                    }}
+                  />
+                  <span className={`relative z-10 whitespace-nowrap text-sm font-medium transition-colors duration-200 ${isLast && !isClickable ? 'text-primary-foreground' : 'text-background'
+                    }`}>
+                    {isMobile && item.label && item.label.length > 20
+                      ? `${item.label.slice(0, 20)}...`
+                      : item.label ?? item.code}
+                  </span>
+                </div>
               )
             })}
-          </BreadcrumbList>
-        </Breadcrumb>
+          </div>
+        </div>
 
         <div className="flex gap-2 flex-shrink-0">
           {showViewDetails && (
