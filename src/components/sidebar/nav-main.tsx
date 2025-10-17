@@ -62,8 +62,7 @@ export function NavMain() {
     if (isMobile) {
       setOpenMobile(false);
     }
-    // Scroll to top of page
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // Note: Scroll-to-top is now handled automatically by router scroll restoration
   };
 
   return (

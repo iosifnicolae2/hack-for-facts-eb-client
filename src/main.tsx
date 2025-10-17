@@ -21,6 +21,12 @@ const router = createRouter({
   routeTree,
   context: { queryClient },
   defaultErrorComponent: ({ error }) => <GlobalErrorPage error={error} />,
+  // Enable automatic scroll-to-top on navigation
+  scrollRestoration: true,
+  // Use smooth scrolling for better UX
+  scrollRestorationBehavior: 'smooth',
+  // Scroll both window and main content area
+  scrollToTopSelectors: ['window', '[role="main"]'],
 });
 
 // Register the router instance for type safety
