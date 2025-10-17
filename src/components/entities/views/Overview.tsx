@@ -6,6 +6,7 @@ import { LineItemsAnalytics } from "../LineItemsAnalytics"
 import { Normalization } from "@/schemas/charts";
 import type { GqlReportType, ReportPeriodInput, ReportPeriodType, TMonth, TQuarter } from "@/schemas/reporting";
 import { getYearLabel } from "../utils";
+import { toReportTypeValue } from "@/schemas/reporting";
 import { useEntityExecutionLineItems } from "@/lib/hooks/useEntityDetails";
 import { EntityReportsSummary } from "../EntityReportsSummary";
 import { queryClient } from '@/lib/queryClient';
@@ -23,6 +24,11 @@ import { SpendingBreakdown } from '@/components/budget-explorer/SpendingBreakdow
 import { RevenueBreakdown } from '@/components/budget-explorer/RevenueBreakdown'
 import { usePeriodLabel } from '@/hooks/use-period-label'
 import { Trans } from '@lingui/react/macro'
+import { t } from '@lingui/core/macro'
+import { Link } from '@tanstack/react-router'
+import type { EntityAnalyticsUrlState } from '@/routes/entity-analytics'
+import { ExternalLink } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 interface OverviewProps {
     cui: string;
@@ -86,7 +92,6 @@ export const Overview = ({
     onTreemapPrimaryChange,
     onAccountCategoryChange,
 }: OverviewProps) => {
-
     const { data: lineItems, isLoading: isLoadingLineItems } = useEntityExecutionLineItems({
         cui,
         normalization,
@@ -181,6 +186,22 @@ export const Overview = ({
         }
     }, [accountCategory, reset, setPrimary])
 
+    const entityAnalyticsLink = useMemo<EntityAnalyticsUrlState>(() => ({
+        view: 'line-items',
+        sortOrder: 'desc',
+        page: 1,
+        pageSize: 25,
+        filter: {
+            entity_cuis: [cui],
+            report_period: reportPeriod,
+            account_category: accountCategory,
+            normalization: normalization,
+            report_type: reportType ? toReportTypeValue(reportType) : 'Executie bugetara agregata la nivel de ordonator principal',
+        },
+        treemapPrimary: primary,
+        treemapDepth: 'main',
+    }), [cui, reportPeriod, accountCategory, normalization, reportType, primary])
+
     const periodLabel = usePeriodLabel(reportPeriod)
 
     return (
@@ -214,7 +235,24 @@ export const Overview = ({
             <Card className="shadow-sm">
                 <CardHeader>
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-                        <h3 className="text-base sm:text-lg font-semibold">Budget Distribution - {usePeriodLabel(reportPeriod)}</h3>
+                        <h3 className="text-base sm:text-lg font-semibold flex items-center gap-2">
+                            <Trans>Budget Distribution</Trans> - {periodLabel}
+                            <Button
+                                asChild
+                                variant="ghost"
+                                size="icon"
+                                className="h-7 w-7"
+                                aria-label={t`Open in entity analytics`}
+                            >
+                                <Link
+                                    to="/entity-analytics"
+                                    search={entityAnalyticsLink}
+                                    preload="intent"
+                                >
+                                    <ExternalLink className="h-4 w-4" />
+                                </Link>
+                            </Button>
+                        </h3>
                         <div className="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-2 sm:gap-3">
                             <ToggleGroup type="single" value={accountCategory} onValueChange={(v) => v && handleAccountCategoryChange(v as 'ch' | 'vn')} variant="outline" size="sm" className="w-full sm:w-auto justify-between">
                                 <ToggleGroupItem value="vn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 flex-1 sm:flex-none"><Trans>Income</Trans></ToggleGroupItem>

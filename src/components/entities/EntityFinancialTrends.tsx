@@ -13,7 +13,7 @@ import {
   ReferenceLine,
   LabelList
 } from 'recharts';
-import { TrendingUp, BarChart2 } from 'lucide-react';
+import { TrendingUp, ExternalLink } from 'lucide-react';
 import { yValueFormatter } from '../charts/components/chart-renderer/utils';
 import { EntityFinancialTrendsSkeleton } from './EntityFinancialTrendsSkeleton';
 import { Link } from '@tanstack/react-router';
@@ -179,7 +179,7 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
             <span><Trans>Financial Trends</Trans></span>
             <Button asChild variant="ghost" size="icon" className="h-7 w-7 ml-1" aria-label={t`Open in chart editor`}>
               <Link to={incomeExpenseChartLink?.to ?? '/charts/$chartId'} params={incomeExpenseChartLink?.params as any} search={incomeExpenseChartLink?.search as any} preload="intent">
-                <BarChart2 className="h-4 w-4" />
+                <ExternalLink className="h-4 w-4" />
               </Link>
             </Button>
           </CardTitle>
