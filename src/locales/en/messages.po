@@ -379,10 +379,6 @@ msgstr "A new version of the app is available. Please reload the page to get the
 msgid "A platform for exploring public financial data for citizens, journalists, public figures, and other interested parties."
 msgstr "Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice, și alte persoane interesate."
 
-#: src/routes/cookies.lazy.tsx:106
-#~ msgid "Accept all"
-#~ msgstr "Accept all"
-
 #: src/components/privacy/CookieConsentBanner.tsx:99
 msgid "Accept All"
 msgstr "Accept All"
@@ -619,10 +615,6 @@ msgstr "Analytics and enhanced error reporting only with your consent."
 #: src/routes/cookie-policy.lazy.tsx:57
 msgid "Analytics Cookies (opt-in only)"
 msgstr "Analytics Cookies (opt-in only)"
-
-#: src/routes/cookies.lazy.tsx:52
-#~ msgid "Analytics cookies (PostHog)"
-#~ msgstr "Analytics cookies (PostHog)"
 
 #: src/routes/entity-analytics.lazy.tsx:162
 msgid "Analyze aggregated values per entity and explore top entities by amount and per capita."
@@ -1252,10 +1244,6 @@ msgstr "Custom Series"
 msgid "Custom Series Value"
 msgstr "Custom Series Value"
 
-#: src/components/privacy/CookieConsentBanner.tsx:92
-#~ msgid "Customize"
-#~ msgstr "Customize"
-
 #: src/routes/alerts/$alertId/index.lazy.tsx:287
 msgid "Danger Zone"
 msgstr "Danger Zone"
@@ -1748,10 +1736,6 @@ msgstr "Essential cookies"
 #: src/routes/cookie-policy.lazy.tsx:42
 msgid "Essential Cookies and Storage (always active)"
 msgstr "Essential Cookies and Storage (always active)"
-
-#: src/routes/cookies.lazy.tsx:105
-#~ msgid "Essential only"
-#~ msgstr "Essential only"
 
 #: src/routes/cookie-policy.lazy.tsx:24
 msgid "Essential storage is required for the app to work."
@@ -2480,10 +2464,6 @@ msgstr "Manage preferences anytime in <0>Cookie Settings</0>."
 msgid "Manage your newsletter and alert subscriptions"
 msgstr "Manage your newsletter and alert subscriptions"
 
-#: src/routes/cookies.lazy.tsx:33
-#~ msgid "Manage your preferences for Transparenta.eu."
-#~ msgstr "Manage your preferences for Transparenta.eu."
-
 #: src/routes/cookie-policy.lazy.tsx:77
 msgid "Managing preferences"
 msgstr "Managing preferences"
@@ -3172,10 +3152,6 @@ msgstr "Sankey Chart (Aggregated)"
 #: src/routes/alerts/$alertId/index.lazy.tsx:270
 msgid "Save"
 msgstr "Save"
-
-#: src/routes/cookies.lazy.tsx:107
-#~ msgid "Save preferences"
-#~ msgstr "Save preferences"
 
 #: src/routes/charts/index.lazy.tsx:166
 msgid "Saved charts – Transparenta.eu"

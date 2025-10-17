@@ -379,10 +379,6 @@ msgstr "O nouă versiune a aplicației este disponibilă. Vă rugăm să reînc�
 msgid "A platform for exploring public financial data for citizens, journalists, public figures, and other interested parties."
 msgstr "Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice și alte persoane interesate."
 
-#: src/routes/cookies.lazy.tsx:106
-#~ msgid "Accept all"
-#~ msgstr "Acceptă toate"
-
 #: src/components/privacy/CookieConsentBanner.tsx:99
 msgid "Accept All"
 msgstr "Acceptă tot"
@@ -619,10 +615,6 @@ msgstr "Analiză și raportare avansată a erorilor doar cu consimțământul du
 #: src/routes/cookie-policy.lazy.tsx:57
 msgid "Analytics Cookies (opt-in only)"
 msgstr "Cookie-uri de Analiză (doar opționale)"
-
-#: src/routes/cookies.lazy.tsx:52
-#~ msgid "Analytics cookies (PostHog)"
-#~ msgstr "Cookie-uri de analiză (PostHog)"
 
 #: src/routes/entity-analytics.lazy.tsx:162
 msgid "Analyze aggregated values per entity and explore top entities by amount and per capita."
@@ -1252,10 +1244,6 @@ msgstr "Serie personalizată"
 msgid "Custom Series Value"
 msgstr "Valoare serie personalizată"
 
-#: src/components/privacy/CookieConsentBanner.tsx:92
-#~ msgid "Customize"
-#~ msgstr "Personalizează"
-
 #: src/routes/alerts/$alertId/index.lazy.tsx:287
 msgid "Danger Zone"
 msgstr "Zonă de pericol"
@@ -1748,10 +1736,6 @@ msgstr "Cookie-uri esențiale"
 #: src/routes/cookie-policy.lazy.tsx:42
 msgid "Essential Cookies and Storage (always active)"
 msgstr "Cookie-uri și Stocare Esențiale (întotdeauna active)"
-
-#: src/routes/cookies.lazy.tsx:105
-#~ msgid "Essential only"
-#~ msgstr "Doar esențiale"
 
 #: src/routes/cookie-policy.lazy.tsx:24
 msgid "Essential storage is required for the app to work."
@@ -2475,10 +2459,6 @@ msgstr "Gestionați preferințele oricând din <0>Setări cookie-uri</0>."
 msgid "Manage your newsletter and alert subscriptions"
 msgstr "Gestionați-vă abonamentele la newsletter și alerte"
 
-#: src/routes/cookies.lazy.tsx:33
-#~ msgid "Manage your preferences for Transparenta.eu."
-#~ msgstr "Gestionați-vă preferințele pentru Transparenta.eu."
-
 #: src/routes/cookie-policy.lazy.tsx:77
 msgid "Managing preferences"
 msgstr "Gestionarea preferințelor"
@@ -3167,10 +3147,6 @@ msgstr "Diagramă Sankey (agregată)"
 #: src/routes/alerts/$alertId/index.lazy.tsx:270
 msgid "Save"
 msgstr "Salvează"
-
-#: src/routes/cookies.lazy.tsx:107
-#~ msgid "Save preferences"
-#~ msgstr "Salvează preferințele"
 
 #: src/routes/charts/index.lazy.tsx:166
 msgid "Saved charts – Transparenta.eu"
