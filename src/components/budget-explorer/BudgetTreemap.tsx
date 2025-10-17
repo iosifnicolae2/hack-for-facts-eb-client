@@ -291,6 +291,7 @@ const CustomizedContent: FC<{
 
 export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, path = [], onViewDetails, showViewDetails = false, normalization, excludedItemsSummary }: Props) {
   const isMobile = useIsMobile()
+  
 
   const payloadData = useMemo(() => {
     return data.map((node) => ({
@@ -423,7 +424,14 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
                     animationEasing='ease-in-out'
                     animationDuration={500}
                     offset={50}
-                    allowEscapeViewBox={{ x: true, y: false }}
+                    allowEscapeViewBox={{ x: false, y: false }}
+                    wrapperStyle={{
+                      // Keep wrapper visible to allow CSS fade on content
+                      visibility: 'visible',
+                      pointerEvents: 'none',
+                      transition: 'transform 180ms ease-in-out',
+                      willChange: 'transform',
+                    }}
                     content={<CustomTooltip total={totalValue} primary={primary} normalization={normalization} />}
                   />
                 )}
@@ -451,25 +459,38 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
   )
 }
 
-const CustomTooltip = ({ active, payload, total, primary, normalization }: { active?: boolean, payload?: any[], total: number, primary: 'fn' | 'ec', normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro' }) => {
-  if (active && payload && payload.length) {
-    const data = payload[0].payload;
-    const value = payload[0].value;
-    const percentage = total > 0 ? (value / total) * 100 : 0;
-    const unit = getNormalizationUnit(normalization ?? 'total')
-    const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON'
+const CustomTooltip = ({ active, payload, total, primary, normalization }: {
+  active?: boolean,
+  payload?: any[],
+  total: number,
+  primary: 'fn' | 'ec',
+  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro',
+}) => {
+  const isVisible = !!active && !!payload && payload.length > 0
+  const data = isVisible ? payload![0].payload : undefined
+  const value = isVisible ? payload![0].value : 0
+  const percentage = isVisible && total > 0 ? (value / total) * 100 : 0
+  const unit = getNormalizationUnit(normalization ?? 'total')
+  const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON'
 
-    return (
-      <div className='relative'>
-        <div className="bg-background/80 backdrop-blur-sm border border-border/50 rounded-lg shadow-lg p-3 text-sm min-w-[250px] select-none translate-x-[calc(-50%-50px)]">
+  return (
+    <div className="relative">
+      <div
+        className={
+          `origin-center` +
+          `transition-transform duration-300 ease-in-out ` +
+          `${isVisible ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-1'}`
+        }
+      >
+        <div className="bg-background/80 backdrop-blur-sm border border-border/50 rounded-lg shadow-lg p-3 text-sm min-w-[250px] select-none">
           <div className="flex items-center gap-3 mb-2 w-full">
             <span
               className="inline-block w-3 h-3 rounded-full flex-shrink-0"
-              style={{ backgroundColor: data.fill }}
+              style={{ backgroundColor: data?.fill }}
             />
             <div className="max-w-[400px]">
-              <p className="font-semibold text-foreground break-words whitespace-pre-wrap">{data.name}</p>
-              <p className="text-muted-foreground text-xs truncate">{primary}:{data.code}</p>
+              <p className="font-semibold text-foreground break-words whitespace-pre-wrap">{data?.name}</p>
+              <p className="text-muted-foreground text-xs truncate">{primary}:{data?.code}</p>
             </div>
           </div>
           <hr className="my-2 border-border/30" />
@@ -488,8 +509,6 @@ const CustomTooltip = ({ active, payload, total, primary, normalization }: { act
           </div>
         </div>
       </div>
-    );
-  }
-
-  return null;
-};
+    </div>
+  )
+}
