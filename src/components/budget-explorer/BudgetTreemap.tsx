@@ -102,7 +102,7 @@ const CustomizedContent: FC<{
     hasAnimatedInRef.current = true
   }, [])
 
-  if (!Number.isFinite(value)) {
+  if (!Number.isFinite(value) || depth === 0) {
     return null
   }
 
