@@ -29,7 +29,7 @@ type NavUserProps = {
 };
 
 export function NavUser(_props: NavUserProps) {
-  const { isMobile, setIsOverlayLockedOpen } = useSidebar();
+  const { isMobile, setIsOverlayLockedOpen, setOpenMobile } = useSidebar();
   const { user, isSignedIn, isLoaded, signOut } = useAuth();
   const locale = getUserLocale();
 
@@ -49,6 +49,15 @@ export function NavUser(_props: NavUserProps) {
   }, [user]);
 
   const email = user?.email ?? "";
+
+  const handleUserMenuNavigate = React.useCallback(() => {
+    // On mobile, close the sidebar sheet when navigating from user menu
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+    // Also release any overlay lock held by the dropdown
+    setIsOverlayLockedOpen(false);
+  }, [isMobile, setOpenMobile, setIsOverlayLockedOpen]);
 
   const handleLogout = async () => {
     try {
@@ -114,13 +123,13 @@ export function NavUser(_props: NavUserProps) {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <Link to="/settings/profile">
+                <Link to="/settings/profile" onClick={handleUserMenuNavigate}>
                   <Settings className="mr-2 h-4 w-4" />
                   <span>Settings</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/settings/notifications">
+                <Link to="/settings/notifications" onClick={handleUserMenuNavigate}>
                   <Bell className="mr-2 h-4 w-4" />
                   <span>Notifications</span>
                 </Link>
@@ -148,5 +157,4 @@ export function NavUser(_props: NavUserProps) {
     </SidebarMenu>
   );
 }
-
 
