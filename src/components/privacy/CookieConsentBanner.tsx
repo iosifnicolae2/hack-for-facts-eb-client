@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, type ReactElement } from "react";
 import { CookieIcon } from "lucide-react";
-import { acceptAll } from "@/lib/consent";
+import { acceptAll, declineAll } from "@/lib/consent";
 import { onConsentChange } from "@/lib/consent";
 import { Analytics } from "@/lib/analytics";
 import { Trans } from "@lingui/react/macro";
@@ -87,9 +87,10 @@ export function CookieConsentBanner(): ReactElement | null {
           <div className="mt-5 flex flex-col sm:flex-row sm:items-center gap-3">
             <Link
               to="/cookies"
+              onClick={() => handleDecision(declineAll)}
               className="w-full sm:w-auto rounded-lg py-2 px-5 text-center text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors"
             >
-              <Trans>Customize</Trans>
+              <Trans>Advanced</Trans>
             </Link>
             <button
               onClick={() => handleDecision(acceptAll)}

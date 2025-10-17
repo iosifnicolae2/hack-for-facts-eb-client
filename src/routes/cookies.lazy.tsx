@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
+import { useAuth } from '@/lib/auth'
 
 export const Route = createLazyFileRoute('/cookies')({
   component: CookieSettingsPage,
@@ -13,6 +14,7 @@ export const Route = createLazyFileRoute('/cookies')({
 
 function CookieSettingsPage() {
   const [prefs, setPrefs] = useState<ConsentPreferences>(getConsent())
+  const { isEnabled: isAuthEnabled, isSignedIn } = useAuth()
 
   useEffect(() => {
     setPrefs(getConsent())
@@ -20,17 +22,29 @@ function CookieSettingsPage() {
     return () => off()
   }, [])
 
-  const onSave = () => {
-    // Persist current state (may already be persisted when toggling)
-    setConsent(prefs)
-    setPrefs(getConsent())
-  }
-
   return (
     <div className="mx-auto w-full max-w-4xl p-6">
-      <div className="mb-6">
+      <div className="mb-6 space-y-2">
         <h1 className="text-2xl font-semibold"><Trans>Cookie Settings</Trans></h1>
-        <p className="text-muted-foreground"><Trans>Manage your preferences for Transparenta.eu.</Trans></p>
+        <p className="text-muted-foreground"><Trans>Choose between essential-only or all cookies, then fine-tune options below.</Trans></p>
+        <div className="flex flex-wrap gap-3">
+          <Button
+            variant="secondary"
+            onClick={() => { declineAll(); setPrefs(getConsent()) }}
+            aria-label={t`Allow essential cookies only`}
+          >
+            <Trans>Allow essential only</Trans>
+          </Button>
+          <Button
+            onClick={() => { acceptAll(); setPrefs(getConsent()) }}
+            aria-label={t`Allow all cookies`}
+          >
+            <Trans>Allow all</Trans>
+          </Button>
+          <span className="text-sm text-muted-foreground self-center">
+            <Trans>Updated:</Trans> {new Date(prefs.updatedAt).toLocaleString()}
+          </span>
+        </div>
       </div>
 
       <div className="grid gap-6">
@@ -42,14 +56,29 @@ function CookieSettingsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Switch checked disabled aria-readonly className="mr-2" />
-            <span className="text-sm text-muted-foreground"><Trans>Always enabled</Trans></span>
+            <div className="flex items-center gap-3">
+              <Switch checked disabled aria-readonly className="mr-2" />
+              <span className="text-sm text-muted-foreground"><Trans>Always enabled</Trans></span>
+            </div>
+            {isAuthEnabled && (
+              <p className="mt-3 text-sm text-muted-foreground">
+                {isSignedIn ? (
+                  <Trans>
+                    You are signed in. Authentication cookies (Clerk) are essential and required to keep you signed in. Deleting them will sign you out.
+                  </Trans>
+                ) : (
+                  <Trans>
+                    If you sign in, authentication cookies (Clerk) are essential to manage your session. Deleting them will sign you out.
+                  </Trans>
+                )}
+              </p>
+            )}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle><Trans>Analytics cookies (PostHog)</Trans></CardTitle>
+            <CardTitle><Trans>Analytics (PostHog)</Trans></CardTitle>
             <CardDescription>
               <Trans>Help us understand usage to improve the product. No analytics is sent unless you opt in.</Trans>
             </CardDescription>
@@ -101,12 +130,7 @@ function CookieSettingsPage() {
           </CardContent>
         </Card>
 
-        <div className="flex flex-wrap items-center gap-3">
-          <Button variant="secondary" onClick={() => { declineAll(); setPrefs(getConsent()) }}><Trans>Essential only</Trans></Button>
-          <Button onClick={() => { acceptAll(); setPrefs(getConsent()) }}><Trans>Accept all</Trans></Button>
-          <Button variant="ghost" onClick={onSave}><Trans>Save preferences</Trans></Button>
-          <span className="text-sm text-muted-foreground"><Trans>Updated:</Trans> {new Date(prefs.updatedAt).toLocaleString()}</span>
-        </div>
+        {/* Quick actions are now at the top; no explicit Save button needed */}
 
         <div className="text-sm text-muted-foreground">
           <Trans>
@@ -117,5 +141,4 @@ function CookieSettingsPage() {
     </div>
   )
 }
-
 

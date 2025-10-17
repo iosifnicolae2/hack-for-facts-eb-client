@@ -31,7 +31,7 @@ function Index() {
           <Seo
             title="Transparenta.eu – Explore public finance data with charts and maps"
             description="Search entities, explore budgets on the map, and build custom charts. Local-first, consent-based analytics."
-            image="/assets/logo/logo.png"
+            image="/assets/images/share-image.png"
           />
           {/* Title Container - applies gradient styles to its children */}
           <div
