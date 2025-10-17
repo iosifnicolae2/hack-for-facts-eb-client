@@ -18,6 +18,7 @@ import { AnalyticsFilterType, Normalization } from '@/schemas/charts';
 import { Trans } from '@lingui/react/macro';
 import { ReportPeriodInput } from '@/schemas/reporting';
 import { usePersistedState } from '@/lib/hooks/usePersistedState';
+import { cn } from '@/lib/utils';
 
 interface MapViewProps {
   entity: EntityDetailsData | null | undefined;
@@ -133,8 +134,14 @@ export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapF
           </div>
           <div className="flex flex-wrap items-center gap-4">
             <ToggleGroup type="single" size="sm" value={mapFilters.account_category} onValueChange={(value: 'vn' | 'ch') => { if (value) updateMapFilters({ account_category: value }) }}>
-              <ToggleGroupItem value="ch" className='px-4' ><Trans>Expenses</Trans></ToggleGroupItem>
-              <ToggleGroupItem value="vn" className='px-4'><Trans>Income</Trans></ToggleGroupItem>
+              <ToggleGroupItem value="ch" className={cn(
+                'px-4 transition-colors duration-200 data-[state=on]:bg-black data-[state=on]:text-slate-100 data-[state=on]:hover:bg-slate-700',
+                mapFilters.account_category !== 'ch' && 'bg-slate-50 hover:bg-slate-200 text-black dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-white'
+              )}><Trans>Expenses</Trans></ToggleGroupItem>
+              <ToggleGroupItem value="vn" className={cn(
+                'px-4 transition-colors duration-200 data-[state=on]:bg-black data-[state=on]:text-slate-100 data-[state=on]:hover:bg-slate-700',
+                mapFilters.account_category !== 'vn' && 'bg-slate-50 hover:bg-slate-200 text-black dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-white'
+              )}><Trans>Income</Trans></ToggleGroupItem>
             </ToggleGroup>
             <ToggleGroup
               type="single"
@@ -149,8 +156,14 @@ export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapF
                 }
               }}
             >
-              <ToggleGroupItem value="per_capita" className='px-4'><Trans>Per Capita</Trans></ToggleGroupItem>
-              <ToggleGroupItem value="total" className='px-4'><Trans>Total</Trans></ToggleGroupItem>
+              <ToggleGroupItem value="per_capita" className={cn(
+                'px-4 transition-colors duration-200 data-[state=on]:bg-black data-[state=on]:text-slate-100 data-[state=on]:hover:bg-slate-700',
+                !(mapFilters.normalization === 'per_capita' || mapFilters.normalization === 'per_capita_euro') && 'bg-slate-50 hover:bg-slate-200 text-black dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-white'
+              )}><Trans>Per Capita</Trans></ToggleGroupItem>
+              <ToggleGroupItem value="total" className={cn(
+                'px-4 transition-colors duration-200 data-[state=on]:bg-black data-[state=on]:text-slate-100 data-[state=on]:hover:bg-slate-700',
+                (mapFilters.normalization === 'per_capita' || mapFilters.normalization === 'per_capita_euro') && 'bg-slate-50 hover:bg-slate-200 text-black dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-white'
+              )}><Trans>Total</Trans></ToggleGroupItem>
             </ToggleGroup>
             <Button onClick={handleOpenMap} variant="outline" size="sm">
               <Maximize className="mr-2 h-4 w-4" />
