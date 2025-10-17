@@ -8,7 +8,7 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useGeoJsonData } from "@/hooks/useGeoJson";
 import { MapFilter } from "@/components/filters/MapFilter";
 import { MapLegend } from "@/components/maps/MapLegend";
-import { Filter as FilterIcon, X, HelpCircleIcon } from "lucide-react";
+import { Filter as FilterIcon, X, HelpCircleIcon, Check } from "lucide-react";
 import { UatDataCharts } from "@/components/maps/charts/UatDataCharts";
 import {
   SortingState,
@@ -294,6 +294,14 @@ function MapPage() {
             </DialogHeader>
             <div className="flex-grow overflow-y-auto">
               <MapFilter />
+            </div>
+            {/* Floating submit button for mobile */}
+            <div className="md:hidden fixed bottom-6 right-6 z-50">
+              <DialogClose asChild>
+                <Button size="lg" className="rounded-full shadow-lg w-14 h-14">
+                  <Check className="w-6 h-6" />
+                </Button>
+              </DialogClose>
             </div>
           </DialogContent>
         </Dialog>

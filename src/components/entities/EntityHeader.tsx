@@ -132,7 +132,7 @@ const EntityHeaderContent: React.FC<EntityHeaderContentProps> = ({
                 <UatDisplay uat={entity.uat} />
               )}
             </div>
-            <div ref={headerBottomRef} className={"relative max-w-[calc(100vw-4rem)] sm:max-w-[calc(100vw-8rem)] md:max-w-[calc(100vw-12rem)]"}>
+            <div ref={headerBottomRef} className={"relative max-w-[calc(100vw-1rem)] sm:max-w-[calc(100vw-6rem)] md:max-w-[calc(100vw-12rem)]"}>
               <EntityViewSwitcher
                 views={views}
                 activeView={activeView}

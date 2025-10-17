@@ -1,7 +1,7 @@
 import { ReactNode, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { Filter as FilterIcon, X } from 'lucide-react'
+import { Filter as FilterIcon, X, Check } from 'lucide-react'
 import { t } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 
@@ -51,6 +51,14 @@ export function EntityAnalyticsLayout({ filters, children, title = t`Entity Anal
               </DialogClose>
             </DialogHeader>
             <div className="flex-grow overflow-y-auto p-3">{filters}</div>
+            {/* Floating submit button for mobile */}
+            <div className="md:hidden fixed bottom-6 right-6 z-50">
+              <DialogClose asChild>
+                <Button size="lg" className="rounded-full shadow-lg w-14 h-14">
+                  <Check className="w-6 h-6" />
+                </Button>
+              </DialogClose>
+            </div>
           </DialogContent>
         </Dialog>
       </div>
