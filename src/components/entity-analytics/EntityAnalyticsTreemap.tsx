@@ -82,13 +82,13 @@ export function EntityAnalyticsTreemap({
 
   return (
     <Card>
-      <CardHeader>
-        <div className="space-y-3">
+      <CardHeader className="p-2">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <h3 className="text-base sm:text-lg font-semibold">
             <Trans>Budget Distribution</Trans> - {periodLabel}
           </h3>
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
-            <div className="flex flex-col gap-2 flex-1 sm:flex-none">
+          <div className="flex flex-col gap-3 lg:flex-row items-start lg:gap-4 lg:flex-wrap">
+            <div className="flex flex-col gap-1.5">
               <Label className="text-xs text-muted-foreground"><Trans>Grouping</Trans></Label>
               <ToggleGroup
                 type="single"
@@ -98,21 +98,21 @@ export function EntityAnalyticsTreemap({
                 }}
                 variant="outline"
                 size="sm"
-                className="w-full sm:w-auto justify-start"
+                className="w-full sm:w-auto justify-start sm:justify-end"
               >
-                <ToggleGroupItem value="fn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 flex-1 sm:flex-none">
+                <ToggleGroupItem value="fn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 whitespace-nowrap">
                   <Trans>Functional</Trans>
                 </ToggleGroupItem>
                 <ToggleGroupItem
                   value="ec"
                   disabled={isRevenueView}
-                  className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 flex-1 sm:flex-none"
+                  className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 whitespace-nowrap"
                 >
                   <Trans>Economic</Trans>
                 </ToggleGroupItem>
               </ToggleGroup>
             </div>
-            <div className="flex flex-col gap-2 flex-1 sm:flex-none">
+            <div className="flex flex-col gap-1.5">
               <Label className="text-xs text-muted-foreground"><Trans>Detail level</Trans></Label>
               <ToggleGroup
                 type="single"
@@ -122,12 +122,12 @@ export function EntityAnalyticsTreemap({
                 }}
                 variant="outline"
                 size="sm"
-                className="w-full sm:w-auto justify-start"
+                className="w-full sm:w-auto justify-start sm:justify-end"
               >
-                <ToggleGroupItem value="main" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-3 whitespace-nowrap flex-1 sm:flex-none">
+                <ToggleGroupItem value="main" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-3 whitespace-nowrap">
                   <Trans>Main chapters</Trans>
                 </ToggleGroupItem>
-                <ToggleGroupItem value="detail" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-3 whitespace-nowrap flex-1 sm:flex-none">
+                <ToggleGroupItem value="detail" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-3 whitespace-nowrap">
                   <Trans>Detailed categories</Trans>
                 </ToggleGroupItem>
               </ToggleGroup>

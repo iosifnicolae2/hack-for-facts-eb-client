@@ -329,7 +329,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
   return (
     <div className="w-full space-y-2">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <Breadcrumb className="overflow-x-auto max-w-[calc(100vw-4rem)] sm:max-w-[calc(100vw-8rem)] md:max-w-[calc(100vw-12rem)] mx-2 sm:mx-0">
+        <Breadcrumb className="overflow-x-auto bg-muted shadow-md text-foreground rounded-md max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-8rem)] md:max-w-[calc(100vw-12rem)] px-2 py-1 ml-2">
           <BreadcrumbList className="flex-nowrap">
             <BreadcrumbItem>
               <BreadcrumbLink onClick={() => onBreadcrumbClick?.(null)} className="cursor-pointer whitespace-nowrap">

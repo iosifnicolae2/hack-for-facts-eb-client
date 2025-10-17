@@ -164,7 +164,7 @@ function MapPage() {
                       <AnimatePresence>
                         {isLoading && (
                           <motion.div
-                            className="absolute inset-0 bg-background/20 backdrop-blur-sm flex items-center justify-center z-[1000] h-screen"
+                            className="absolute inset-0 bg-background/20 backdrop-blur-sm flex items-center justify-center z-30 h-screen"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
