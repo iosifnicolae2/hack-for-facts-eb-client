@@ -9,9 +9,11 @@ interface ViewTypeRadioGroupProps<T extends string> {
     value: T;
     onChange: (value: T) => void;
     viewOptions: ViewOption<T>[];
+    ariaLabel?: string;
+    ariaLabelledby?: string;
 }
 
-export function ViewTypeRadioGroup<T extends string>({ value, onChange, viewOptions }: ViewTypeRadioGroupProps<T>) {
+export function ViewTypeRadioGroup<T extends string>({ value, onChange, viewOptions, ariaLabel, ariaLabelledby }: ViewTypeRadioGroupProps<T>) {
 
     const handleValueChange = (value: T) => {
         onChange(value);
@@ -22,6 +24,8 @@ export function ViewTypeRadioGroup<T extends string>({ value, onChange, viewOpti
             defaultValue={value}
             className="flex space-x-2"
             onValueChange={handleValueChange}
+            aria-label={ariaLabel}
+            aria-labelledby={ariaLabelledby}
         >
             {viewOptions.map(option => {
                 const isSelected = value === option.id;
@@ -31,7 +35,7 @@ export function ViewTypeRadioGroup<T extends string>({ value, onChange, viewOpti
                         key={option.id}
                         htmlFor={`view-type-${option.id}`}
                         className={cn(
-                            "flex-1 text-center px-3 py-2 border rounded-md cursor-pointer text-sm font-medium transition-colors flex items-center justify-center",
+                            "flex-1 text-center px-3 py-2 border rounded-md cursor-pointer text-sm font-medium transition-colors flex items-center justify-center focus-within:outline-hidden focus-within:ring-1 focus-within:ring-ring",
                             isSelected
                                 ? "bg-primary text-primary-foreground hover:bg-primary/90"
                                 : "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground"
@@ -42,7 +46,7 @@ export function ViewTypeRadioGroup<T extends string>({ value, onChange, viewOpti
                             id={`view-type-${option.id}`}
                             className="sr-only"
                         />
-                        {Icon && <Icon className="h-4 w-4 mr-2" />}
+                        {Icon && <Icon className="h-4 w-4 mr-2" aria-hidden="true" />}
                         {option.label}
                     </Label>
                 );

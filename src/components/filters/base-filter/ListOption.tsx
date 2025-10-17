@@ -28,14 +28,14 @@ export function ListOption({
         <div
             className={cn(
                 "flex items-center absolute top-0 left-0 w-full transition-colors duration-150 ease-in-out",
-                "border-b border-border",
                 "hover:bg-accent hover:text-accent-foreground",
+                "data-[active=true]:bg-zinc-200 data-[active=true]:text-accent-foreground",
+                "data-[active=true]:ring-1 data-[active=true]:ring-ring data-[active=true]:ring-offset-1",
                 selected && "bg-muted",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                 className
             )}
             style={{
-                height: `${optionHeight}px`,
+                height: `${optionHeight - 2}px`,
                 transform: `translateY(${optionStart}px)`,
             }}
             id={optionRowId}

@@ -36,7 +36,7 @@ export function SearchInput({
 
     return (
         <div className={cn("relative w-full p-0.5", className)}>
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Search aria-hidden="true" className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
                 ref={inputRef}
                 type="text"
@@ -44,6 +44,7 @@ export function SearchInput({
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 placeholder={placeholder}
+                aria-label={placeholder}
                 className="w-full pl-10 pr-16 py-2 text-sm" // Extra space for clear + info icons
             />
             <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
@@ -54,7 +55,7 @@ export function SearchInput({
                         className="p-1 text-muted-foreground hover:text-foreground"
                         aria-label={t`Clear search`}
                     >
-                        <X className="h-4 w-4" />
+                        <X aria-hidden="true" className="h-4 w-4" />
                     </button>
                 )}
                 {helpText && (
@@ -66,7 +67,7 @@ export function SearchInput({
                                     className="p-1 text-muted-foreground hover:text-foreground"
                                     aria-label={t`Search help`}
                                 >
-                                    <Info className="h-4 w-4" />
+                                    <Info aria-hidden="true" className="h-4 w-4" />
                                 </button>
                             </TooltipTrigger>
                             <TooltipContent side="top" align="end">

@@ -20,7 +20,7 @@ export function EmptyList({
             )}
             role="status"
         >
-            <List className={`h-${iconSize} w-${iconSize} text-gray-400 dark:text-gray-500`} />
+            <List aria-hidden="true" className={`h-${iconSize} w-${iconSize} text-gray-400 dark:text-gray-500`} />
             <p className="text-sm">{message}</p>
         </div>
     );

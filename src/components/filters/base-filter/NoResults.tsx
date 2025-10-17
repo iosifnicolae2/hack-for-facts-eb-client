@@ -20,7 +20,7 @@ export function NoResults({
             )}
             role="status"
         >
-            <SearchX className={`h-${iconSize} w-${iconSize} text-gray-400 dark:text-gray-500`} />
+            <SearchX aria-hidden="true" className={`h-${iconSize} w-${iconSize} text-gray-400 dark:text-gray-500`} />
             <p className="text-sm">{message}</p>
         </div>
     );

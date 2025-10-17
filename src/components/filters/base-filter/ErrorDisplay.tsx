@@ -24,7 +24,7 @@ export function ErrorDisplay({
 
     return (
         <Alert variant="destructive" className={cn("my-4", className)} role="alert">
-            <AlertTriangle className="h-5 w-5" />
+            <AlertTriangle aria-hidden="true" className="h-5 w-5" />
             <AlertTitle className="ml-2 font-semibold">{title}</AlertTitle>
             <AlertDescription className="ml-2 mt-1">
                 {errorMessage}
@@ -35,7 +35,7 @@ export function ErrorDisplay({
                         onClick={refetch}
                         className="mt-3 w-full sm:w-auto"
                     >
-                        <RefreshCcw className="mr-2 h-4 w-4" />
+                        <RefreshCcw aria-hidden="true" className="mr-2 h-4 w-4" />
                         {actionText}
                     </Button>
                 )}

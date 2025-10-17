@@ -27,8 +27,8 @@ export function LoadingSpinner({
     );
 
     return (
-        <div className={containerClasses} role="status" aria-live="polite">
-            <Loader2 className={cn(sizeMap[size], "animate-spin text-primary")} />
+        <div className={containerClasses} role="status" aria-live="polite" aria-label={text ?? 'Loading...'}>
+            <Loader2 aria-hidden="true" className={cn(sizeMap[size], "animate-spin text-primary")} />
             {text && <p className="text-sm text-muted-foreground">{text}</p>}
         </div>
     );

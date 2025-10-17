@@ -323,15 +323,15 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
   };
 
   return (
-    <Card className={cn("flex flex-col", className)}>
+    <Card className={cn("flex flex-col", className)} role="region" aria-labelledby="series-filters-title">
       <CardHeader className="py-4 px-6 border-b">
         <div className="flex justify-between items-center">
-          <CardTitle className="text-lg font-semibold">
+          <CardTitle className="text-lg font-semibold" id="series-filters-title">
             <Trans>Filters</Trans>
           </CardTitle>
           {totalSelectedFilters > 0 && (
             <Button variant="ghost" size="sm" onClick={clearAllFilters} className="text-sm">
-              <XCircle className="w-4 h-4 mr-1" />
+              <XCircle className="w-4 h-4 mr-1" aria-hidden="true" />
               <Trans>Clear all</Trans> ({totalSelectedFilters})
             </Button>
           )}
@@ -340,7 +340,7 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
       <CardContent className="flex flex-col p-0 overflow-y-auto">
         <FilterRadioContainer
           title={t`Revenues/Expenses`}
-          icon={<ArrowUpDown className="w-4 h-4" />}
+          icon={<ArrowUpDown className="w-4 h-4" aria-hidden="true" />}
           selectedOption={selectedAccountTypeOption}
           onClear={() => setSelectedAccountTypeOption("ch")}
         >
@@ -351,7 +351,7 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
         </FilterRadioContainer>
         <FilterRadioContainer
           title={t`Normalization`}
-          icon={<ArrowUpDown className="w-4 h-4" />}
+          icon={<ArrowUpDown className="w-4 h-4" aria-hidden="true" />}
           selectedOption={normalizationOption}
           onClear={handleClearNormalization}
         >
@@ -359,7 +359,7 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
         </FilterRadioContainer>
         <FilterContainer
           title={t`Period`}
-          icon={<Calendar className="w-4 h-4" />}
+          icon={<Calendar className="w-4 h-4" aria-hidden="true" />}
           selectedOptions={periodTags}
           onClearOption={handleRemovePeriodTag}
           onClearAll={() => setPeriod(undefined)}
@@ -368,77 +368,77 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
         </FilterContainer>
         <FilterListContainer
           title={t`Entities`}
-          icon={<Building2 className="w-4 h-4" />}
+          icon={<Building2 className="w-4 h-4" aria-hidden="true" />}
           listComponent={EntityList}
           selected={selectedEntityOptions}
           setSelected={setSelectedEntityOptions}
         />
         <FilterListContainer
           title={t`UAT`}
-          icon={<MapPin className="w-4 h-4" />}
+          icon={<MapPin className="w-4 h-4" aria-hidden="true" />}
           listComponent={UatList}
           selected={selectedUatOptions}
           setSelected={setSelectedUatOptions}
         />
         <FilterListContainer
           title={t`County`}
-          icon={<MapPinned className="w-4 h-4" />}
+          icon={<MapPinned className="w-4 h-4" aria-hidden="true" />}
           listComponent={CountyList}
           selected={selectedCountyOptions}
           setSelected={setSelectedCountyOptions}
         />
         <FilterListContainer
           title={t`Entity Type`}
-          icon={<Building2 className="w-4 h-4" />}
+          icon={<Building2 className="w-4 h-4" aria-hidden="true" />}
           listComponent={EntityTypeList}
           selected={selectedEntityTypeOptions}
           setSelected={setSelectedEntityTypeOptions}
         />
         <FilterListContainer
           title={t`Functional Classification`}
-          icon={<ChartBar className="w-4 h-4" />}
+          icon={<ChartBar className="w-4 h-4" aria-hidden="true" />}
           listComponent={FunctionalClassificationList}
           selected={selectedFunctionalClassificationOptions}
           setSelected={setSelectedFunctionalClassificationOptions}
         />
         <FilterPrefixContainer
           title={t`Functional Prefixes`}
-          icon={<ChartBar className="w-4 h-4" />}
+          icon={<ChartBar className="w-4 h-4" aria-hidden="true" />}
           prefixComponent={PrefixFilter}
           value={selectedFunctionalPrefixesOptions}
           onValueChange={setSelectedFunctionalPrefixesOptions}
         />
         <FilterListContainer
           title={t`Economic Classification`}
-          icon={<Tags className="w-4 h-4" />}
+          icon={<Tags className="w-4 h-4" aria-hidden="true" />}
           listComponent={EconomicClassificationList}
           selected={selectedEconomicClassificationOptions}
           setSelected={setSelectedEconomicClassificationOptions}
         />
         <FilterPrefixContainer
           title={t`Economic Prefixes`}
-          icon={<Tags className="w-4 h-4" />}
+          icon={<Tags className="w-4 h-4" aria-hidden="true" />}
           prefixComponent={PrefixFilter}
           value={selectedEconomicPrefixesOptions}
           onValueChange={setSelectedEconomicPrefixesOptions}
         />
         <FilterListContainer
           title={t`Budget Sector`}
-          icon={<Building2 className="w-4 h-4" />}
+          icon={<Building2 className="w-4 h-4" aria-hidden="true" />}
           listComponent={BudgetSectorList}
           selected={selectedBudgetSectorOptions}
           setSelected={setSelectedBudgetSectorOptions}
         />
         <FilterListContainer
           title={t`Funding Source`}
-          icon={<EuroIcon className="w-4 h-4" />}
+          icon={<EuroIcon className="w-4 h-4" aria-hidden="true" />}
           listComponent={FundingSourceList}
           selected={selectedFundingSourceOptions}
           setSelected={setSelectedFundingSourceOptions}
         />
         <FilterRadioContainer
           title={t`Report Type`}
-          icon={<ArrowUpDown className="w-4 h-4" />}
+          icon={<ArrowUpDown className="w-4 h-4" aria-hidden="true" />}
           selectedOption={reportTypeOption}
           onClear={handleClearReportType}
         >
@@ -446,7 +446,7 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
         </FilterRadioContainer>
         <FilterContainer
           title={t`Is UAT`}
-          icon={<ArrowUpDown className="w-4 h-4" />}
+          icon={<ArrowUpDown className="w-4 h-4" aria-hidden="true" />}
           selectedOptions={flagsOptions}
           onClearOption={handleClearFlag}
           onClearAll={handleClearAllFlags}
@@ -456,7 +456,7 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
         <FilterRangeContainer
           title={t`Amount Range`}
           unit="RON"
-          icon={<SlidersHorizontal className="w-4 h-4" />}
+          icon={<SlidersHorizontal className="w-4 h-4" aria-hidden="true" />}
           rangeComponent={AmountRangeFilter}
           minValue={minAmount}
           onMinValueChange={setMinAmount}
@@ -467,7 +467,7 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
         <FilterRangeContainer
           title={t`Item Amount`}
           unit="RON"
-          icon={<SlidersHorizontal className="w-4 h-4" />}
+          icon={<SlidersHorizontal className="w-4 h-4" aria-hidden="true" />}
           rangeComponent={AmountRangeFilter}
           minValue={minItemAmount}
           onMinValueChange={setMinItemAmount}
@@ -478,7 +478,7 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
         <FilterRangeContainer
           title={t`Population Range`}
           unit={t`people`}
-          icon={<Globe className="w-4 h-4" />}
+          icon={<Globe className="w-4 h-4" aria-hidden="true" />}
           rangeComponent={AmountRangeFilter}
           minValue={minPopulation}
           onMinValueChange={setMinPopulation}

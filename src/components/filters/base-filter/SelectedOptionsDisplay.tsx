@@ -56,9 +56,9 @@ export function SelectedOptionsDisplay({
                             aria-live="polite"
                         >
                             {showAllSelected ? (
-                                <ChevronUp className="w-3 h-3 mr-1" />
+                                <ChevronUp aria-hidden="true" className="w-3 h-3 mr-1" />
                             ) : (
-                                <ChevronDown className="w-3 h-3 mr-1" />
+                                <ChevronDown aria-hidden="true" className="w-3 h-3 mr-1" />
                             )}
                             {showAllSelected ? "Show less" : "Show all"}
                         </Button>
@@ -94,7 +94,7 @@ export function SelectedOptionsDisplay({
                                 )}
                                 aria-label={`Remove ${option.label}`}
                             >
-                                <XIcon className="w-3.5 h-3.5" />
+                        <XIcon aria-hidden="true" className="w-3.5 h-3.5" />
                             </button>
                         </Badge>
                     ))}
@@ -134,7 +134,7 @@ export function SelectedOptionsDisplay({
                                     )}
                                     aria-label={`Remove ${option.label}`}
                                 >
-                                    <XIcon className="w-3.5 h-3.5" />
+                                    <XIcon aria-hidden="true" className="w-3.5 h-3.5" />
                                 </button>
                             </Badge>
                         ))}
