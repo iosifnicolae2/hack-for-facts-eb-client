@@ -68,7 +68,7 @@ export function EntityNotificationAnnouncement(): ReactElement | null {
         }
       `}</style>
       <div
-        className={`fixed bottom-0 left-1/2 -translate-x-1/2 z-40 p-3 md:p-6 max-w-4xl w-full transition-transform duration-500 ease-in-out ${
+        className={`fixed bottom-0 left-1/2 -translate-x-1/2 p-3 md:p-6 max-w-4xl w-full transition-transform duration-500 ease-in-out z-100 ${
           isExiting ? "translate-y-full" : isEntering ? "translate-y-0" : "translate-y-full"
         }`}
         role="dialog"

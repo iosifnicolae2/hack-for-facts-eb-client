@@ -44,7 +44,7 @@ export function CookieConsentBanner(): ReactElement | null {
     // Delay showing the banner to avoid disrupting initial page load
     const timer = setTimeout(() => {
       showBanner()
-    }, 2000); // 2 second delay
+    }, 2500);
 
     return () => clearTimeout(timer);
   }, [pathname, showBanner]);
@@ -61,9 +61,8 @@ export function CookieConsentBanner(): ReactElement | null {
 
   return (
     <div
-      className={`fixed bottom-0 left-1/2 -translate-x-1/2 z-50 p-3 md:p-6 max-w-5xl w-full transition-transform duration-500 ease-in-out ${
-        isExiting ? "translate-y-full" : isEntering ? "translate-y-0" : "translate-y-full"
-      }`}
+      className={`fixed bottom-0 left-1/2 -translate-x-1/2 z-110 p-3 md:p-6 max-w-5xl w-full transition-transform duration-500 ease-in-out ${isExiting ? "translate-y-full" : isEntering ? "translate-y-0" : "translate-y-full"
+        }`}
       role="dialog"
       aria-live="polite"
       aria-label="Cookie consent"
