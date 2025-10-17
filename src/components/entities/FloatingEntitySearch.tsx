@@ -10,15 +10,29 @@ import { t } from '@lingui/core/macro';
 
 interface FloatingEntitySearchProps {
     className?: string;
+    externalOpen?: boolean;
+    showButton?: boolean;
+    onOpenChange?: (open: boolean) => void;
 }
 
-export function FloatingEntitySearch({ className }: FloatingEntitySearchProps) {
-    const [isOpen, setIsOpen] = useState(false);
+export function FloatingEntitySearch({ className, externalOpen, showButton, onOpenChange }: FloatingEntitySearchProps) {
+    const [internalOpen, setInternalOpen] = useState(false);
     const isMobile = useIsMobile();
+
+    // Use external state if provided, otherwise use internal state
+    const isOpen = externalOpen !== undefined ? externalOpen : internalOpen;
+    const setIsOpen = (open: boolean) => {
+        if (onOpenChange) {
+            onOpenChange(open);
+        } else {
+            setInternalOpen(open);
+        }
+    };
 
     const toggleSearchOpen = () => {
         setIsOpen(!isOpen);
     };
+
     // Use keyboard shortcuts to open and close the dialog react-hotkeys-hook
     useHotkeys('mod+k', (e) => {
         e.preventDefault();
@@ -34,7 +48,7 @@ export function FloatingEntitySearch({ className }: FloatingEntitySearchProps) {
 
     return (
         <>
-            <div className={cn(className)}>
+            {showButton && <div className={cn(className)}>
                 <Button
                     onClick={() => setIsOpen(true)}
                     className={cn(isMobile ? "fixed bottom-24 right-6 h-14 w-14 rounded-full shadow-lg z-40" : "fixed top-8 right-8 h-8 w-8 rounded-full shadow-lg z-40 border-1 border-slate-200 dark:border-slate-700")}
@@ -44,12 +58,14 @@ export function FloatingEntitySearch({ className }: FloatingEntitySearchProps) {
                 >
                     <Search className="h-8 w-8" />
                 </Button>
-            </div>
-
+            </div>}
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <DialogOverlay className="bg-slate-500/80" />
                 <DialogTitle className="sr-only">{t`Search for another entity`}</DialogTitle>
-                <DialogContent hideCloseButton={true} className="fixed top-1/3 max-w-3xl w-full p-0 bg-transparent border-0 shadow-none outline-none focus:outline-none">
+                <DialogContent hideCloseButton={true} className={cn(
+                    "fixed max-w-3xl w-full p-0 bg-transparent border-0 shadow-none outline-none focus:outline-none",
+                    isMobile ? "top-16 max-h-[60vh]" : "top-1/3"
+                )}>
                     <EntitySearchInput
                         onSelect={handleSelect}
                     />

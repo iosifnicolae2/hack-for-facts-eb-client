@@ -19,6 +19,7 @@ import { BudgetLineItemsPreview } from '@/components/budget-explorer/BudgetLineI
 import { buildTreemapDataV2, calculateExcludedItems } from '@/components/budget-explorer/budget-transform'
 import { SpendingBreakdown } from '@/components/budget-explorer/SpendingBreakdown'
 import { RevenueBreakdown } from '@/components/budget-explorer/RevenueBreakdown'
+import { FloatingQuickNav } from '@/components/ui/FloatingQuickNav'
 import { ChartPreview } from '@/components/charts/components/chart-preview/ChartPreview'
 import { Chart, ChartSchema, SeriesConfigurationSchema } from '@/schemas/charts'
 import { BarChart2 } from 'lucide-react'
@@ -462,6 +463,13 @@ function BudgetExplorerPage() {
 
   return (
     <div className="px-4 lg:px-6 py-4">
+      <FloatingQuickNav
+        mapViewType="UAT"
+        mapActive
+        tableActive
+        chartActive
+        filterInput={filter}
+      />
       <div className="w-full max-w-[1200px] mx-auto space-y-6 lg:space-y-8">
         <BudgetExplorerHeader
           state={search}

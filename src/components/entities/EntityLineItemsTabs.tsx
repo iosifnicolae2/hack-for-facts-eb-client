@@ -70,7 +70,7 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
   const gridClassName = `grid grid-cols-1 gap-6${isDualColumn ? ' lg:grid-cols-2' : ''}`;
 
   return (
-    <section className="space-y-6 mb-8">
+    <section className="space-y-2 mb-2">
       <ToggleGroup
         type="single"
         value={lineItemsTab}
@@ -79,23 +79,23 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
             onLineItemsTabChange?.(value as 'functional' | 'funding' | 'expenseType');
           }
         }}
-        className="flex flex-wrap gap-2 justify-start"
+        className="flex gap-2 justify-start"
       >
         <ToggleGroupItem
           value="functional"
-          className="data-[state=on]:bg-black data-[state=on]:text-white"
+          className="data-[state=on]:bg-black data-[state=on]:text-white py-6 sm:py-0"
         >
           {t`By Category`}
         </ToggleGroupItem>
         <ToggleGroupItem
           value="funding"
-          className="data-[state=on]:bg-black data-[state=on]:text-white"
+          className="data-[state=on]:bg-black data-[state=on]:text-white py-6 sm:py-0"
         >
           {t`By Funding Source`}
         </ToggleGroupItem>
         <ToggleGroupItem
           value="expenseType"
-          className="data-[state=on]:bg-black data-[state=on]:text-white"
+          className="data-[state=on]:bg-black data-[state=on]:text-white py-6 sm:py-0"
         >
           {t`By Expense Type`}
         </ToggleGroupItem>

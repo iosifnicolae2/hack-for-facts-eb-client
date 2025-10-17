@@ -140,36 +140,38 @@ export const LineItemsBadgeFilters: React.FC<LineItemsBadgeFiltersProps> = ({
 
   if (isLoading) {
     return (
-      <div className="flex gap-2 flex-wrap mb-4">
-        <Skeleton className="h-7 w-32" />
-        <Skeleton className="h-7 w-40" />
-        <Skeleton className="h-7 w-36" />
-        <Skeleton className="h-7 w-44" />
+      <div className="w-full mb-4">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2">
+          <Skeleton className="h-7 w-full sm:w-auto sm:flex-shrink-0" />
+          <Skeleton className="h-7 w-full sm:w-auto sm:flex-shrink-0" />
+          <Skeleton className="h-7 w-full sm:w-auto sm:flex-shrink-0" />
+          <Skeleton className="h-7 w-full sm:w-auto sm:flex-shrink-0" />
+        </div>
       </div>
     );
   }
 
   return (
     <div className="w-full mb-4">
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2">
         <Button
           key="all"
           variant={selectedKey === '' ? 'default' : 'outline'}
           className={cn(
-            'py-1.5 px-3 text-xs flex-shrink-0 h-auto',
+            'py-1.5 px-3 text-xs h-auto justify-start w-full sm:w-auto sm:flex-shrink-0',
             selectedKey === '' && 'shadow-sm bg-black text-white hover:bg-black/90'
           )}
           onClick={() => onSelectedKeyChange('')}
         >
           <span className="font-semibold">{t`All`}</span>
-          <span className="mx-1.5 hidden sm:inline">·</span>
+          <span className="mx-1.5">·</span>
           <p className="font-normal">
             {isCombinedView
               ? (
-                <span className="flex items-center gap-1 sm:gap-2">
+                <span className="flex items-center gap-1">
                   <TrendingUp className="w-3 h-3 text-green-500 flex-shrink-0" />
                   <span className="truncate">{formatCurrency(totalIncome, 'compact', currencyCode)}</span>
-                  <span className="hidden sm:inline">/</span>
+                  <span className="">/</span>
                   <TrendingDown className="w-3 h-3 text-red-500 flex-shrink-0" />
                   <span className="truncate">{formatCurrency(totalExpense, 'compact', currencyCode)}</span>
                 </span>
@@ -181,10 +183,10 @@ export const LineItemsBadgeFilters: React.FC<LineItemsBadgeFiltersProps> = ({
         {bucketSummaries.map((bucket) => {
           const displayPercentage = isCombinedView
             ? (
-              <p className="flex items-center gap-1 sm:gap-2">
+              <p className="flex items-center gap-1">
                 <TrendingUp className="w-3 h-3 text-green-500 flex-shrink-0" />
                 <span className="truncate">{formatNumber(bucket.incomePercentage)}%</span>
-                <span className="hidden sm:inline">/</span>
+                <span className="">/</span>
                 <TrendingDown className="w-3 h-3 text-red-500 flex-shrink-0" />
                 <span className="truncate">{formatNumber(bucket.expensePercentage)}%</span>
               </p>
@@ -200,16 +202,16 @@ export const LineItemsBadgeFilters: React.FC<LineItemsBadgeFiltersProps> = ({
               key={bucket.key}
               variant={selectedKey === bucket.key ? 'default' : 'secondary'}
               className={cn(
-                'py-1.5 px-3 text-xs flex-shrink-0 h-auto',
+                'py-1.5 px-3 text-xs h-auto justify-start w-full sm:w-auto sm:flex-shrink-0',
                 selectedKey === bucket.key && 'shadow-sm bg-black text-white hover:bg-black/90'
               )}
               onClick={() => onSelectedKeyChange(bucket.key)}
               title={tooltipText}
             >
-              <span className="font-semibold max-w-[120px] sm:max-w-[200px] truncate" title={bucket.title}>
+              <span className="font-semibold max-w-[200px] truncate" title={bucket.title}>
                 {bucket.title}
               </span>
-              <span className="mx-1.5 hidden sm:inline">·</span>
+              <span className="mx-1.5">·</span>
               <span className="font-normal">{displayPercentage}</span>
             </Button>
           );

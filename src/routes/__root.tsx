@@ -20,6 +20,7 @@ import { useEffect } from "react";
 import { I18nProvider } from "@lingui/react";
 import { getUserLocale } from "@/lib/utils";
 import GlobalErrorPage from "@/components/errors/GlobalErrorPage";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const Route = createRootRoute({
   errorComponent: ({ error }) => <GlobalErrorPage error={error} />,
@@ -32,6 +33,8 @@ export const Route = createRootRoute({
         document.documentElement.setAttribute('lang', userLocale);
       } catch { }
     }, []);
+
+    const isMobile = useIsMobile();
 
     return (
       <ErrorProvider>
@@ -70,7 +73,7 @@ export const Route = createRootRoute({
                           <AnalyticsPageviewBridge />
                           <Outlet />
                           <Toaster />
-                          <FloatingEntitySearch />
+                          {isMobile && <FloatingEntitySearch showButton />}
                         </div>
                       </main>
                       <AppFooter />

@@ -1,6 +1,6 @@
 import { cn, generateHash, getNormalizationUnit } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Map, BarChart2, Table, Link2, Check } from 'lucide-react';
+import { Map, BarChart2, Table, Link2, Check, Search } from 'lucide-react';
 import { AnalyticsFilterType, Chart, ChartSchema, ReportType } from '@/schemas/charts';
 import { useNavigate } from '@tanstack/react-router';
 import { ChartUrlState } from '@/components/charts/page-schema';
@@ -15,8 +15,9 @@ import { ensureShortRedirectUrl } from '@/lib/api/shortLinks';
 import { getSiteUrl } from '@/config/env';
 import { useAuth } from '@/lib/auth';
 import { useState } from 'react';
+import { FloatingEntitySearch } from '@/components/entities/FloatingEntitySearch';
 
-type ActionKey = 'map' | 'table' | 'chart' | 'share';
+type ActionKey = 'map' | 'table' | 'chart' | 'share' | 'search';
 
 type Action = {
     key: ActionKey;
@@ -42,6 +43,7 @@ export function FloatingQuickNav({ className, mapViewType, mapActive, tableActiv
     const navigate = useNavigate();
     const { isSignedIn } = useAuth();
     const [shareCopied, setShareCopied] = useState(false);
+    const [showEntitySearch, setShowEntitySearch] = useState(false);
 
     const handleMapNavigate = () => {
         const next = convertFilterInputToMapState(filterInput, mapViewType)
@@ -80,6 +82,7 @@ export function FloatingQuickNav({ className, mapViewType, mapActive, tableActiv
     }
 
     const actions: Action[] = [
+        { key: 'search', label: t`Search Entities`, onClick: () => setShowEntitySearch(true), icon: <Search className="h-5 w-5" />, active: true },
         { key: 'map', label: t`Go to Map`, onClick: handleMapNavigate, icon: <Map className="h-5 w-5" />, active: mapActive },
         { key: 'table', label: t`Go to Entity Table`, onClick: handleTableNavigate, icon: <Table className="h-5 w-5" />, active: tableActive },
         { key: 'chart', label: t`Go to Chart View`, onClick: handleChartNavigate, icon: <BarChart2 className="h-5 w-5" />, active: chartActive },
@@ -89,26 +92,34 @@ export function FloatingQuickNav({ className, mapViewType, mapActive, tableActiv
     const visibleActions = actions.filter(a => a.active);
 
     return (
-        <div
-            className={cn(
-                'hidden md:flex fixed top-8 right-18 z-40 flex-row gap-2',
-                className,
+        <>
+            <div
+                className={cn(
+                    'hidden sm:flex fixed top-10 right-4 z-40 flex-col gap-2',
+                    className,
+                )}
+            >
+                {visibleActions.map(action => (
+                    <Button
+                        key={action.key}
+                        aria-label={action.label}
+                        title={action.label}
+                        variant="ghost"
+                        size="icon"
+                        className="h-10 w-10 rounded-full shadow-lg border border-border hover:bg-accent/50 transition-colors"
+                        onClick={action.onClick}
+                    >
+                        {action.icon}
+                    </Button>
+                ))}
+            </div>
+            {showEntitySearch && (
+                <FloatingEntitySearch
+                    externalOpen={showEntitySearch}
+                    onOpenChange={setShowEntitySearch}
+                />
             )}
-        >
-            {visibleActions.map(action => (
-                <Button
-                    key={action.key}
-                    aria-label={action.label}
-                    title={action.label}
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 rounded-full shadow-lg border border-border"
-                    onClick={action.onClick}
-                >
-                    {action.icon}
-                </Button>
-            ))}
-        </div>
+        </>
     );
 }
 

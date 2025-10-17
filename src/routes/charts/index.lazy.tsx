@@ -22,6 +22,7 @@ import ChartsBackupRestore from "@/components/charts/components/backup-restore/C
 import { Seo } from "@/lib/seo";
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
+import { FloatingQuickNav } from "@/components/ui/FloatingQuickNav";
 
 export const Route = createLazyFileRoute("/charts/")({
   component: ChartsListPage,
@@ -145,6 +146,22 @@ function ChartsListPage() {
 
   return (
     <div className="container mx-auto py-8 space-y-6">
+      <FloatingQuickNav
+        mapViewType="UAT"
+        mapActive
+        tableActive
+        filterInput={{
+          entity_cuis: [],
+          uat_ids: [],
+          county_codes: [],
+          report_period: {
+            type: 'YEAR',
+            selection: { dates: [String(new Date().getFullYear())] },
+          },
+          account_category: 'ch',
+          normalization: 'total',
+        }}
+      />
       <Seo
         title={t`Saved charts – Transparenta.eu`}
         description={t`Manage and search your locally saved charts. Create, favorite, categorize, and share your visualizations.`}

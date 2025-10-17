@@ -118,7 +118,7 @@ const EntityHeaderContent: React.FC<EntityHeaderContentProps> = ({
               )}
             </div>
             <div className="text-sm text-slate-600 dark:text-slate-400 space-y-1">
-              <p className="flex flex-col sm:flex-row sm:items-center gap-1">
+              <p className="flex sm:flex-row sm:items-center gap-1">
                 <span className="font-semibold text-slate-700 dark:text-slate-300">CUI:</span>
                 <code className="font-mono font-bold bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-xs">{entity.cui}</code>
               </p>
@@ -128,7 +128,7 @@ const EntityHeaderContent: React.FC<EntityHeaderContentProps> = ({
                   <span className="font-normal break-words">{entity.address}</span>
                 </p>
               )}
-              {entity.uat && (
+              {entity.uat && entity.is_uat && (
                 <UatDisplay uat={entity.uat} />
               )}
             </div>

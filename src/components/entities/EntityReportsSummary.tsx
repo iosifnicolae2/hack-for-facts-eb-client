@@ -112,13 +112,10 @@ export function EntityReportsSummary({ cui, reportPeriod, reportType, limit = 12
       <CardContent className="pt-0">
         <div className="flex flex-col gap-4">
           {nodes.map((report) => {
-            const pdfLink = report.download_links.find(link => link.toLowerCase().endsWith('.pdf')) ?? report.download_links[0];
-
             return (
               <div
                 key={report.report_id}
-                className="rounded-xl border bg-muted/40 p-4 sm:p-5 cursor-pointer transition-colors hover:bg-muted/90"
-                onClick={() => window.open(pdfLink, '_blank', 'noopener,noreferrer')}
+                className="rounded-xl border bg-muted/40 p-4 sm:p-5"
               >
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-wrap items-start justify-between gap-3">
@@ -133,7 +130,7 @@ export function EntityReportsSummary({ cui, reportPeriod, reportType, limit = 12
                     </div>
                     <Badge
                       variant="secondary"
-                      className="rounded-full border border-border/60 bg-background px-3 py-1 text-xs font-semibold tracking-wide text-foreground shadow-sm"
+                      className="rounded-full border border-border/60 bg-background px-3 py-1 text-xs font-semibold tracking-wide text-foreground shadow-sm hover:bg-transparent"
                     >
                       {toReportTypeValue(report.report_type as GqlReportType)}
                     </Badge>
