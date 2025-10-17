@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { NotificationList } from '@/features/notifications/components/NotificationList';
+import { FloatingEntitySearch } from '@/components/entities/FloatingEntitySearch';
 import { useAllNotifications } from '@/features/notifications/hooks/useAllNotifications';
 import { useAuth, AuthSignInButton } from '@/lib/auth';
 import { Button } from '@/components/ui/button';
@@ -9,7 +11,7 @@ import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
 import { Seo } from '@/lib/seo';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, Plus } from 'lucide-react';
 
 export const Route = createFileRoute('/settings/notifications')({
   component: NotificationsSettingsPage,
@@ -18,6 +20,7 @@ export const Route = createFileRoute('/settings/notifications')({
 function NotificationsSettingsPage() {
   const { isSignedIn, isLoaded } = useAuth();
   const { data: notifications, isLoading, isError, error, refetch } = useAllNotifications();
+  const [isEntitySearchOpen, setIsEntitySearchOpen] = useState(false);
 
   if (!isLoaded) {
     return (
@@ -33,7 +36,7 @@ function NotificationsSettingsPage() {
   if (!isSignedIn) {
     return (
       <div className="container max-w-4xl mx-auto py-8 px-4">
-        <Seo title={t`Notifications - Sign In Required`} noindex />
+        <Seo title={t`Entity Notifications - Sign In Required`} noindex />
         <Card>
           <CardHeader>
             <CardTitle>
@@ -62,15 +65,10 @@ function NotificationsSettingsPage() {
 
   return (
     <div className="container max-w-4xl mx-auto py-8 px-4 space-y-6">
-      <Seo title={t`Notification Settings`} />
-      <div>
+      <Seo title={t`Entity Notification Settings`} />
         <h1 className="text-3xl font-bold mb-2">
-          <Trans>Notifications</Trans>
+          <Trans>Notifications Settings</Trans>
         </h1>
-        <p className="text-muted-foreground">
-          <Trans>Manage your newsletter and alert subscriptions</Trans>
-        </p>
-      </div>
 
       {isError && (
         <Alert variant="destructive">
@@ -100,8 +98,40 @@ function NotificationsSettingsPage() {
       )}
 
       {!isError && (
-        <NotificationList notifications={notifications ?? []} isLoading={isLoading} />
+        <div className="space-y-8">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-lg font-semibold"><Trans>Entity Notifications</Trans></h2>
+              <p className="text-sm text-muted-foreground">
+                <Trans>Manage your newsletter and alert subscriptions</Trans>
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="icon"
+                className="self-start sm:self-center rounded-full border-primary bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                onClick={() => setIsEntitySearchOpen(true)}
+                title={t`Add entity notification`}
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+          <NotificationList
+            notifications={notifications ?? []}
+            isLoading={isLoading}
+            onAddNotification={() => setIsEntitySearchOpen(true)}
+          />
+        </div>
       )}
+
+      {/* Floating Entity Search Modal */}
+      <FloatingEntitySearch
+        externalOpen={isEntitySearchOpen}
+        onOpenChange={setIsEntitySearchOpen}
+        openNotificationModal={true}
+      />
     </div>
   );
 }

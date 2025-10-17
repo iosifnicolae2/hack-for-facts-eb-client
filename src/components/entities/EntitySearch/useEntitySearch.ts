@@ -9,9 +9,10 @@ import { Analytics } from "@/lib/analytics";
 interface UseEntitySearchProps {
     debounceMs?: number;
     onSelect?: (entity: EntitySearchNode) => void;
+    openNotificationModal?: boolean;
 }
 
-export function useEntitySearch({ debounceMs = 500, onSelect }: UseEntitySearchProps = {}) {
+export function useEntitySearch({ debounceMs = 500, onSelect, openNotificationModal = false }: UseEntitySearchProps = {}) {
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState("");
     const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -66,12 +67,19 @@ export function useEntitySearch({ debounceMs = 500, onSelect }: UseEntitySearchP
             });
             // Navigate programmatically unless explicitly skipped (e.g., Cmd/Ctrl+Click opens new tab)
             if (!options?.skipNavigate) {
-                navigate({ to: "/entities/$cui", params: { cui: selectedEntity.cui }, search: (prev) => ({ ...prev }) });
+                navigate({
+                    to: "/entities/$cui",
+                    params: { cui: selectedEntity.cui },
+                    search: (prev) => ({
+                        ...prev,
+                        ...(openNotificationModal && { notificationModal: 'open' as const })
+                    })
+                });
             }
             handleClearSearch();
             onSelect?.(selectedEntity);
         }
-    }, [results, navigate, handleClearSearch, onSelect]);
+    }, [results, navigate, handleClearSearch, onSelect, openNotificationModal]);
 
     const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
         if (!isDropdownOpen || results.length === 0) return;

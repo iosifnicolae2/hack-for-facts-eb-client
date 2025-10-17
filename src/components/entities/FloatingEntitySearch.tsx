@@ -7,20 +7,24 @@ import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { t } from '@lingui/core/macro';
+import { useNavigate } from '@tanstack/react-router';
+import { EntitySearchNode } from '@/schemas/entities';
 
 interface FloatingEntitySearchProps {
     className?: string;
     externalOpen?: boolean;
     showButton?: boolean;
     onOpenChange?: (open: boolean) => void;
+    openNotificationModal?: boolean;
 }
 
-export function FloatingEntitySearch({ className, externalOpen, showButton, onOpenChange }: FloatingEntitySearchProps) {
+export function FloatingEntitySearch({ className, externalOpen, showButton, onOpenChange, openNotificationModal = false }: FloatingEntitySearchProps) {
     const [internalOpen, setInternalOpen] = useState(false);
     const isMobile = useIsMobile();
+    const navigate = useNavigate();
 
     // Use external state if provided, otherwise use internal state
-    const isOpen = externalOpen !== undefined ? externalOpen : internalOpen;
+    const isOpen = externalOpen ?? internalOpen;
     const setIsOpen = (open: boolean) => {
         if (onOpenChange) {
             onOpenChange(open);
@@ -42,7 +46,18 @@ export function FloatingEntitySearch({ className, externalOpen, showButton, onOp
     });
     useHotkeys('esc', () => setIsOpen(false));
 
-    const handleSelect = () => {
+    const handleSelect = (entity: EntitySearchNode) => {
+        if (openNotificationModal) {
+            // Navigate to entity page with notification modal open
+            navigate({
+                to: "/entities/$cui",
+                params: { cui: entity.cui },
+                search: (prev) => ({
+                    ...prev,
+                    notificationModal: 'open' as const
+                })
+            });
+        }
         setIsOpen(false);
     };
 
@@ -68,6 +83,8 @@ export function FloatingEntitySearch({ className, externalOpen, showButton, onOp
                 )}>
                     <EntitySearchInput
                         onSelect={handleSelect}
+                        autoFocus={true}
+                        scrollToTopOnFocus={true}
                     />
                 </DialogContent>
             </Dialog>

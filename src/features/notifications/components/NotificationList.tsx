@@ -3,8 +3,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteNotification } from '../api/notifications';
 import { NotificationCard } from './NotificationCard';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Info, Plus } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Plus, Search, Bell } from 'lucide-react';
 import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
 import { toast } from 'sonner';
@@ -17,9 +17,10 @@ import { AlertsList } from './alerts';
 interface Props {
   notifications: Notification[];
   isLoading?: boolean;
+  onAddNotification?: () => void;
 }
 
-export function NotificationList({ notifications, isLoading }: Props) {
+export function NotificationList({ notifications, isLoading, onAddNotification }: Props) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -84,14 +85,28 @@ export function NotificationList({ notifications, isLoading }: Props) {
 
     if (!notifications || notifications.length === 0) {
       return (
-        <Alert>
-          <Info className="h-4 w-4" />
-          <AlertDescription>
-            <Trans>
-              You have no active notifications. Navigate to an entity page and click the bell icon to subscribe to updates.
-            </Trans>
-          </AlertDescription>
-        </Alert>
+        <Card className="border-dashed border-2 border-slate-300 dark:border-slate-600">
+          <CardContent className="flex flex-col items-center justify-center py-12 px-6 text-center">
+            <div className="rounded-full bg-slate-100 dark:bg-slate-800 p-4 mb-4">
+              <Bell className="h-8 w-8 text-slate-500 dark:text-slate-400" />
+            </div>
+            <h3 className="text-lg font-semibold mb-2 text-slate-900 dark:text-slate-100">
+              <Trans>No active notifications</Trans>
+            </h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-6 max-w-md">
+              <Trans>
+                You have no active notifications. Navigate to an entity page and click the bell icon to subscribe to updates.
+              </Trans>
+            </p>
+            <Button
+              onClick={onAddNotification}
+              className="flex items-center gap-2"
+            >
+              <Search className="h-4 w-4" />
+              <Trans>Find Entity to Monitor</Trans>
+            </Button>
+          </CardContent>
+        </Card>
       );
     }
 

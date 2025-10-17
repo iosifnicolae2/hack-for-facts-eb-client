@@ -87,7 +87,7 @@ msgstr "Platformă de explorare a datelor financiare publice pentru cetățeni, 
 msgid "Accept all"
 msgstr "Accept all"
 
-#: src/components/privacy/CookieConsentBanner.tsx:99
+#: src/components/privacy/CookieConsentBanner.tsx:98
 msgid "Accept All"
 msgstr "Accept All"
 
@@ -145,6 +145,10 @@ msgstr "Add Condition"
 #: src/components/charts/components/chart-view/ChartDisplayArea.tsx:110
 msgid "Add Data Series"
 msgstr "Add Data Series"
+
+#: src/routes/settings/notifications.tsx:115
+msgid "Add entity notification"
+msgstr "Add entity notification"
 
 #: src/components/charts/components/series-config/CalculationConfig.tsx:162
 msgid "Add Number"
@@ -235,10 +239,10 @@ msgid "Alerts when important changes occur"
 msgstr "Alerts when important changes occur"
 
 #: src/components/entities/EntityReportControls.tsx:60
-#: src/components/entities/LineItemsBadgeFilters.tsx:164
+#: src/components/entities/LineItemsBadgeFilters.tsx:166
 #: src/components/entities/LineItemsGroupedSection.tsx:168
 #: src/components/entities/LineItemsGroupedSection.tsx:170
-#: src/routes/charts/index.lazy.tsx:231
+#: src/routes/charts/index.lazy.tsx:248
 msgid "All"
 msgstr "All"
 
@@ -276,7 +280,7 @@ msgstr "Amount Per Capita"
 msgid "Amount Range"
 msgstr "Amount Range"
 
-#: src/components/ui/FloatingQuickNav.tsx:232
+#: src/components/ui/FloatingQuickNav.tsx:243
 msgid "Analytics"
 msgstr "Analytics"
 
@@ -292,11 +296,11 @@ msgstr "Analytics and enhanced error reporting only with your consent."
 msgid "Analytics cookies (PostHog)"
 msgstr "Analytics cookies (PostHog)"
 
-#: src/routes/entity-analytics.lazy.tsx:152
+#: src/routes/entity-analytics.lazy.tsx:162
 msgid "Analyze aggregated values per entity and explore top entities by amount and per capita."
 msgstr "Analyze aggregated values per entity and explore top entities by amount and per capita."
 
-#: src/routes/entity-analytics.lazy.tsx:156
+#: src/routes/entity-analytics.lazy.tsx:166
 msgid "Analyze aggregated values per entity and explore top entities."
 msgstr "Analyze aggregated values per entity and explore top entities."
 
@@ -419,17 +423,19 @@ msgid "Bar Chart (Aggregated)"
 msgstr "Bar Chart (Aggregated)"
 
 #: src/components/maps/HeatmapDataTable.tsx:443
-#: src/routes/entity-analytics.lazy.tsx:194
+#: src/routes/entity-analytics.lazy.tsx:204
 msgid "Both"
 msgstr "Both"
 
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:70
-#: src/routes/budget-explorer.lazy.tsx:464
+#: src/components/entities/views/Overview.tsx:239
+#: src/components/entities/views/TrendsView.tsx:200
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:88
+#: src/routes/budget-explorer.lazy.tsx:481
 msgid "Budget Distribution"
 msgstr "Budget Distribution"
 
 #: src/components/sidebar/nav-main.tsx:36
-#: src/routes/index.lazy.tsx:72
+#: src/routes/index.lazy.tsx:76
 msgid "Budget Explorer"
 msgstr "Budget Explorer"
 
@@ -443,7 +449,7 @@ msgstr "Budget sector"
 msgid "Budget Sector"
 msgstr "Budget Sector"
 
-#: src/routes/charts/index.lazy.tsx:160
+#: src/routes/charts/index.lazy.tsx:177
 msgid "Build and manage custom visualizations of public spending data."
 msgstr "Build and manage custom visualizations of public spending data."
 
@@ -511,7 +517,7 @@ msgstr "Changes"
 msgid "Chart"
 msgstr "Chart"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:29
+#: src/routes/charts/$chartId/index.lazy.tsx:46
 msgid "Chart – Transparenta.eu"
 msgstr "Chart – Transparenta.eu"
 
@@ -549,8 +555,8 @@ msgstr "Chart Type"
 #: src/components/footer/AppFooter.tsx:99
 #: src/components/sidebar/nav-main.tsx:31
 #: src/hooks/useEntityViews.tsx:36
-#: src/routes/charts/index.lazy.tsx:157
-#: src/routes/index.lazy.tsx:86
+#: src/routes/charts/index.lazy.tsx:174
+#: src/routes/index.lazy.tsx:90
 msgid "Charts"
 msgstr "Charts"
 
@@ -576,7 +582,7 @@ msgid "Clear all"
 msgstr "Clear all"
 
 #: src/components/filters/EntityAnalyticsFilter.tsx:213
-#: src/routes/entity-analytics.lazy.tsx:178
+#: src/routes/entity-analytics.lazy.tsx:188
 msgid "Clear filters"
 msgstr "Clear filters"
 
@@ -615,19 +621,19 @@ msgid "Column"
 msgstr "Column"
 
 #: src/components/maps/HeatmapDataTable.tsx:445
-#: src/routes/entity-analytics.lazy.tsx:196
+#: src/routes/entity-analytics.lazy.tsx:206
 msgid "Columns"
 msgstr "Columns"
 
 #: src/components/maps/HeatmapDataTable.tsx:437
-#: src/routes/entity-analytics.lazy.tsx:188
+#: src/routes/entity-analytics.lazy.tsx:198
 msgid "Comfortable"
 msgstr "Comfortable"
 
 #: src/components/maps/HeatmapDataTable.tsx:438
 #: src/components/maps/HeatmapDataTable.tsx:442
-#: src/routes/entity-analytics.lazy.tsx:189
-#: src/routes/entity-analytics.lazy.tsx:193
+#: src/routes/entity-analytics.lazy.tsx:199
+#: src/routes/entity-analytics.lazy.tsx:203
 msgid "Compact"
 msgstr "Compact"
 
@@ -641,16 +647,16 @@ msgstr "Condition {0}"
 msgid "Configure"
 msgstr "Configure"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:35
-#: src/routes/charts/$chartId/index.lazy.tsx:37
+#: src/routes/charts/$chartId/index.lazy.tsx:52
+#: src/routes/charts/$chartId/index.lazy.tsx:54
 msgid "Configure Chart"
 msgstr "Configure Chart"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:29
+#: src/routes/charts/$chartId/index.lazy.tsx:46
 msgid "Configure chart – Transparenta.eu"
 msgstr "Configure chart – Transparenta.eu"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:30
+#: src/routes/charts/$chartId/index.lazy.tsx:47
 msgid "Configure chart options, series, and annotations."
 msgstr "Configure chart options, series, and annotations."
 
@@ -769,7 +775,7 @@ msgstr "Copy series"
 msgid "Copy Series"
 msgstr "Copy Series"
 
-#: src/components/ui/FloatingQuickNav.tsx:86
+#: src/components/ui/FloatingQuickNav.tsx:89
 msgid "Copy Share Link"
 msgstr "Copy Share Link"
 
@@ -818,7 +824,7 @@ msgstr "Counties"
 #: src/components/filters/MapFilter.tsx:158
 #: src/components/maps/charts/UatDataCharts.tsx:32
 #: src/components/maps/HeatmapDataTable.tsx:447
-#: src/routes/entity-analytics.lazy.tsx:198
+#: src/routes/entity-analytics.lazy.tsx:208
 msgid "County"
 msgstr "County"
 
@@ -831,12 +837,13 @@ msgstr "County:"
 msgid "Create a chart for this entity to start tracking its financial evolution."
 msgstr "Create a chart for this entity to start tracking its financial evolution."
 
-#: src/features/notifications/components/NotificationList.tsx:136
+#: src/features/notifications/components/NotificationList.tsx:151
 #: src/routes/alerts/new.lazy.tsx:224
 msgid "Create alert"
 msgstr "Create alert"
 
 #: src/components/charts/components/views/SeriesConfigView.tsx:226
+#: src/features/notifications/components/alerts/AlertsList.tsx:60
 #: src/routes/alerts/new.lazy.tsx:125
 #: src/routes/alerts/new.lazy.tsx:183
 #: src/routes/alerts/new.lazy.tsx:187
@@ -855,7 +862,7 @@ msgstr "Create Alert - Sign In Required"
 msgid "Create alert from this series"
 msgstr "Create alert from this series"
 
-#: src/routes/charts/index.lazy.tsx:177
+#: src/routes/charts/index.lazy.tsx:194
 msgid "Create chart"
 msgstr "Create chart"
 
@@ -867,11 +874,11 @@ msgstr "Create chart for this entity"
 msgid "Create new alert"
 msgstr "Create new alert"
 
-#: src/routes/charts/index.lazy.tsx:219
+#: src/routes/charts/index.lazy.tsx:236
 msgid "Create your first chart"
 msgstr "Create your first chart"
 
-#: src/routes/charts/index.lazy.tsx:215
+#: src/routes/charts/index.lazy.tsx:232
 msgid "Create your first chart to start visualizing public spending data."
 msgstr "Create your first chart to start visualizing public spending data."
 
@@ -881,7 +888,7 @@ msgstr "Creating…"
 
 #: src/components/maps/HeatmapDataTable.tsx:440
 #: src/components/theme/currency-toggle.tsx:22
-#: src/routes/entity-analytics.lazy.tsx:191
+#: src/routes/entity-analytics.lazy.tsx:201
 msgid "Currency"
 msgstr "Currency"
 
@@ -897,7 +904,7 @@ msgstr "Custom Series"
 msgid "Custom Series Value"
 msgstr "Custom Series Value"
 
-#: src/components/privacy/CookieConsentBanner.tsx:93
+#: src/components/privacy/CookieConsentBanner.tsx:92
 msgid "Customize"
 msgstr "Customize"
 
@@ -928,7 +935,7 @@ msgstr "Data Labels"
 msgid "Data Series"
 msgstr "Data Series"
 
-#: src/features/notifications/components/NotificationList.tsx:126
+#: src/features/notifications/components/NotificationList.tsx:141
 msgid "Data series alerts"
 msgstr "Data series alerts"
 
@@ -1008,7 +1015,7 @@ msgid "Delete this chart?"
 msgstr "Delete this chart?"
 
 #: src/components/maps/HeatmapDataTable.tsx:436
-#: src/routes/entity-analytics.lazy.tsx:187
+#: src/routes/entity-analytics.lazy.tsx:197
 msgid "Density"
 msgstr "Density"
 
@@ -1021,7 +1028,7 @@ msgid "Description"
 msgstr "Description"
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:80
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:97
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:116
 msgid "Detail level"
 msgstr "Detail level"
 
@@ -1034,7 +1041,7 @@ msgid "Detailed Budget Execution"
 msgstr "Detailed Budget Execution"
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:90
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:111
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:131
 msgid "Detailed categories"
 msgstr "Detailed categories"
 
@@ -1046,7 +1053,7 @@ msgstr "Detailed Line Items Breakdown"
 msgid "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
 msgstr "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
 
-#: src/routes/entities.$cui.lazy.tsx:202
+#: src/routes/entities.$cui.lazy.tsx:214
 msgid "Details:"
 msgstr "Details:"
 
@@ -1071,7 +1078,7 @@ msgstr "Display data labels on the chart"
 msgid "Display Options"
 msgstr "Display Options"
 
-#: src/components/entities/EntityReportsSummary.tsx:161
+#: src/components/entities/EntityReportsSummary.tsx:158
 msgid "Download"
 msgstr "Download"
 
@@ -1115,7 +1122,9 @@ msgid "Ec"
 msgstr "Ec"
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:76
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:92
+#: src/components/entities/views/Overview.tsx:263
+#: src/components/entities/views/TrendsView.tsx:203
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:111
 msgid "Economic"
 msgstr "Economic"
 
@@ -1236,7 +1245,7 @@ msgstr "Enter annotation title..."
 msgid "Enter chart title..."
 msgstr "Enter chart title..."
 
-#: src/routes/index.lazy.tsx:56
+#: src/routes/index.lazy.tsx:59
 msgid "Enter entity name or CUI..."
 msgstr "Enter entity name or CUI..."
 
@@ -1253,18 +1262,18 @@ msgstr "Enter series label..."
 #: src/components/filters/EntityAnalyticsFilter.tsx:271
 #: src/components/filters/MapFilter.tsx:202
 #: src/hooks/useEntityViews.tsx:39
-#: src/routes/index.lazy.tsx:79
+#: src/routes/index.lazy.tsx:83
 msgid "Entities"
 msgstr "Entities"
 
 #: src/components/entity-analytics/EntityAnalyticsTable.tsx:65
 #: src/lib/chart-filter-utils.ts:13
-#: src/routes/entity-analytics.lazy.tsx:197
+#: src/routes/entity-analytics.lazy.tsx:207
 msgid "Entity"
 msgstr "Entity"
 
-#: src/routes/entities.$cui.lazy.tsx:196
-#: src/routes/entities.$cui.lazy.tsx:212
+#: src/routes/entities.$cui.lazy.tsx:208
+#: src/routes/entities.$cui.lazy.tsx:224
 msgid "Entity {cui} – Not found"
 msgstr "Entity {cui} – Not found"
 
@@ -1274,9 +1283,21 @@ msgstr "Entity {cui} – Not found"
 msgid "Entity Analytics"
 msgstr "Entity Analytics"
 
-#: src/routes/entity-analytics.lazy.tsx:151
+#: src/routes/entity-analytics.lazy.tsx:161
 msgid "Entity analytics – Transparenta.eu"
 msgstr "Entity analytics – Transparenta.eu"
+
+#: src/routes/settings/notifications.tsx:68
+msgid "Entity Notification Settings"
+msgstr "Entity Notification Settings"
+
+#: src/routes/settings/notifications.tsx:104
+msgid "Entity Notifications"
+msgstr "Entity Notifications"
+
+#: src/routes/settings/notifications.tsx:39
+msgid "Entity Notifications - Sign In Required"
+msgstr "Entity Notifications - Sign In Required"
 
 #: src/lib/chart-filter-utils.ts:24
 msgid "Entity type"
@@ -1300,11 +1321,11 @@ msgstr "equals"
 msgid "Error"
 msgstr "Error"
 
-#: src/routes/entities.$cui.lazy.tsx:199
+#: src/routes/entities.$cui.lazy.tsx:211
 msgid "Error Fetching Entity Details"
 msgstr "Error Fetching Entity Details"
 
-#: src/routes/entity-analytics.lazy.tsx:171
+#: src/routes/entity-analytics.lazy.tsx:181
 msgid "Error loading analytics"
 msgstr "Error loading analytics"
 
@@ -1316,7 +1337,7 @@ msgstr "Error Loading Chart Data"
 msgid "Error loading data"
 msgstr "Error loading data"
 
-#: src/routes/entities.$cui.lazy.tsx:196
+#: src/routes/entities.$cui.lazy.tsx:208
 msgid "Error loading data for CUI {cui}."
 msgstr "Error loading data for CUI {cui}."
 
@@ -1324,7 +1345,7 @@ msgstr "Error loading data for CUI {cui}."
 msgid "Error loading data:"
 msgstr "Error loading data:"
 
-#: src/routes/settings/notifications.tsx:79
+#: src/routes/settings/notifications.tsx:77
 msgid "Error loading notifications"
 msgstr "Error loading notifications"
 
@@ -1402,32 +1423,29 @@ msgstr "Expense Type"
 #: src/components/entities/EntityLineItemsTabs.tsx:63
 #: src/components/entities/LineItemsAnalytics.tsx:118
 #: src/components/entities/views/MapView.tsx:136
+#: src/components/entities/views/Overview.tsx:259
 #: src/components/filters/account-type-filter/AccountCategoryRadio.tsx:12
 #: src/components/filters/EntityAnalyticsFilter.tsx:239
 #: src/components/filters/MapFilter.tsx:171
 #: src/components/maps/utils.ts:27
 #: src/hooks/filters/useFilterLabels.tsx:181
-#: src/routes/entity-analytics.lazy.tsx:247
+#: src/routes/entity-analytics.lazy.tsx:265
 msgid "Expenses"
 msgstr "Expenses"
-
-#: src/routes/index.lazy.tsx:73
-msgid "Explore national budget."
-msgstr "Explore national budget."
 
 #: src/routes/map.lazy.tsx:127
 msgid "Explore choropleth maps of public spending by UAT/County with per-capita or total normalization."
 msgstr "Explore choropleth maps of public spending by UAT/County with per-capita or total normalization."
 
-#: src/routes/index.lazy.tsx:66
+#: src/routes/index.lazy.tsx:70
 msgid "Explore data through a map."
 msgstr "Explore data through a map."
 
-#: src/routes/index.lazy.tsx:87
+#: src/routes/index.lazy.tsx:91
 msgid "Explore data through charts."
 msgstr "Explore data through charts."
 
-#: src/routes/index.lazy.tsx:80
+#: src/routes/index.lazy.tsx:84
 msgid "Explore entities by aggregated values."
 msgstr "Explore entities by aggregated values."
 
@@ -1435,19 +1453,23 @@ msgstr "Explore entities by aggregated values."
 msgid "Explore Full Map"
 msgstr "Explore Full Map"
 
-#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:207
+#: src/routes/index.lazy.tsx:77
+msgid "Explore national budget."
+msgstr "Explore national budget."
+
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:206
 msgid "Export as Image"
 msgstr "Export as Image"
 
-#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:200
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:199
 msgid "Export as image or share with a link"
 msgstr "Export as image or share with a link"
 
-#: src/routes/entity-analytics.lazy.tsx:204
+#: src/routes/entity-analytics.lazy.tsx:214
 msgid "Export CSV"
 msgstr "Export CSV"
 
-#: src/routes/entity-analytics.lazy.tsx:204
+#: src/routes/entity-analytics.lazy.tsx:214
 msgid "Exporting…"
 msgstr "Exporting…"
 
@@ -1463,7 +1485,7 @@ msgstr "Exports must include attribution to data source and Transparenta.eu."
 msgid "Failed to copy email address."
 msgstr "Failed to copy email address."
 
-#: src/components/ui/FloatingQuickNav.tsx:78
+#: src/components/ui/FloatingQuickNav.tsx:80
 msgid "Failed to copy link"
 msgstr "Failed to copy link"
 
@@ -1481,11 +1503,11 @@ msgstr "Failed to create"
 msgid "Failed to load alert"
 msgstr "Failed to load alert"
 
-#: src/features/notifications/components/alerts/AlertsList.tsx:32
+#: src/features/notifications/components/alerts/AlertsList.tsx:34
 msgid "Failed to load alerts. Please try again."
 msgstr "Failed to load alerts. Please try again."
 
-#: src/routes/budget-explorer.lazy.tsx:470
+#: src/routes/budget-explorer.lazy.tsx:487
 msgid "Failed to load data."
 msgstr "Failed to load data."
 
@@ -1497,15 +1519,15 @@ msgstr "Failed to open new tab."
 msgid "Failed to save"
 msgstr "Failed to save"
 
-#: src/routes/charts/index.lazy.tsx:165
+#: src/routes/charts/index.lazy.tsx:182
 msgid "favorites"
 msgstr "favorites"
 
-#: src/routes/charts/index.lazy.tsx:233
+#: src/routes/charts/index.lazy.tsx:250
 msgid "Favorites"
 msgstr "Favorites"
 
-#: src/routes/charts/index.lazy.tsx:205
+#: src/routes/charts/index.lazy.tsx:222
 msgid "Favorites first"
 msgstr "Favorites first"
 
@@ -1526,7 +1548,7 @@ msgid "Filter field"
 msgstr "Filter field"
 
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:147
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:173
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:171
 msgid "Filtered"
 msgstr "Filtered"
 
@@ -1567,6 +1589,10 @@ msgstr "Financial Reports"
 msgid "Financial Trends"
 msgstr "Financial Trends"
 
+#: src/features/notifications/components/NotificationList.tsx:106
+msgid "Find Entity to Monitor"
+msgstr "Find Entity to Monitor"
+
 #: src/components/footer/ChatFab.tsx:123
 msgid "Find resources, report issues, or get in touch."
 msgstr "Find resources, report issues, or get in touch."
@@ -1585,7 +1611,9 @@ msgid "Found {replacementCount} occurrence{0}"
 msgstr "Found {replacementCount} occurrence{0}"
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:70
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:85
+#: src/components/entities/views/Overview.tsx:262
+#: src/components/entities/views/TrendsView.tsx:202
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:104
 msgid "Functional"
 msgstr "Functional"
 
@@ -1666,11 +1694,11 @@ msgstr "Global Chart Settings"
 msgid "Go back home"
 msgstr "Go back home"
 
-#: src/components/ui/FloatingQuickNav.tsx:85
+#: src/components/ui/FloatingQuickNav.tsx:88
 msgid "Go to Chart View"
 msgstr "Go to Chart View"
 
-#: src/components/ui/FloatingQuickNav.tsx:84
+#: src/components/ui/FloatingQuickNav.tsx:87
 msgid "Go to Entity Table"
 msgstr "Go to Entity Table"
 
@@ -1683,7 +1711,7 @@ msgstr "Go to homepage"
 msgid "Go to Homepage"
 msgstr "Go to Homepage"
 
-#: src/components/ui/FloatingQuickNav.tsx:83
+#: src/components/ui/FloatingQuickNav.tsx:86
 msgid "Go to Map"
 msgstr "Go to Map"
 
@@ -1708,7 +1736,7 @@ msgid "Greater than"
 msgstr "Greater than"
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:57
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:74
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:92
 msgid "Grouping"
 msgstr "Grouping"
 
@@ -1789,12 +1817,13 @@ msgstr "Includes additional error context. No user identity is attached."
 #: src/components/entities/EntityFinancialTrends.tsx:230
 #: src/components/entities/LineItemsAnalytics.tsx:118
 #: src/components/entities/views/MapView.tsx:137
+#: src/components/entities/views/Overview.tsx:258
 #: src/components/filters/account-type-filter/AccountCategoryRadio.tsx:13
 #: src/components/filters/EntityAnalyticsFilter.tsx:240
 #: src/components/filters/MapFilter.tsx:172
 #: src/components/maps/utils.ts:27
 #: src/hooks/filters/useFilterLabels.tsx:182
-#: src/routes/entity-analytics.lazy.tsx:247
+#: src/routes/entity-analytics.lazy.tsx:265
 msgid "Income"
 msgstr "Income"
 
@@ -1961,7 +1990,7 @@ msgstr "Line Items Aggregated Yearly"
 msgid "Lines marked as \"se scad\" inside other tax chapters are deducted here to adjust the tax bases. They are shown separately from inter-budget transfers (04.* and 11.*)."
 msgstr "Lines marked as \"se scad\" inside other tax chapters are deducted here to adjust the tax bases. They are shown separately from inter-budget transfers (04.* and 11.*)."
 
-#: src/components/ui/FloatingQuickNav.tsx:73
+#: src/components/ui/FloatingQuickNav.tsx:75
 msgid "Link copied to clipboard"
 msgstr "Link copied to clipboard"
 
@@ -2004,7 +2033,7 @@ msgstr "Loading table data..."
 
 #: src/routes/alerts/$alertId/index.lazy.tsx:130
 #: src/routes/alerts/new.lazy.tsx:122
-#: src/routes/settings/notifications.tsx:27
+#: src/routes/settings/notifications.tsx:30
 msgid "Loading..."
 msgstr "Loading..."
 
@@ -2042,7 +2071,7 @@ msgid "Main Categories"
 msgstr "Main Categories"
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:89
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:108
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:128
 msgid "Main chapters"
 msgstr "Main chapters"
 
@@ -2062,7 +2091,7 @@ msgstr "Main creditor aggregated"
 msgid "Manage all notifications"
 msgstr "Manage all notifications"
 
-#: src/routes/charts/index.lazy.tsx:150
+#: src/routes/charts/index.lazy.tsx:167
 msgid "Manage and search your locally saved charts. Create, favorite, categorize, and share your visualizations."
 msgstr "Manage and search your locally saved charts. Create, favorite, categorize, and share your visualizations."
 
@@ -2075,7 +2104,7 @@ msgstr "Manage notifications"
 msgid "Manage preferences anytime in <0>Cookie Settings</0>."
 msgstr "Manage preferences anytime in <0>Cookie Settings</0>."
 
-#: src/routes/settings/notifications.tsx:71
+#: src/routes/settings/notifications.tsx:106
 msgid "Manage your newsletter and alert subscriptions"
 msgstr "Manage your newsletter and alert subscriptions"
 
@@ -2090,7 +2119,7 @@ msgstr "Managing preferences"
 #: src/components/filters/MapFilter.tsx:142
 #: src/components/sidebar/nav-main.tsx:26
 #: src/hooks/useEntityViews.tsx:28
-#: src/routes/index.lazy.tsx:65
+#: src/routes/index.lazy.tsx:69
 msgid "Map"
 msgstr "Map"
 
@@ -2114,7 +2143,7 @@ msgstr "Maps"
 msgid "March"
 msgstr "March"
 
-#: src/routes/charts/index.lazy.tsx:267
+#: src/routes/charts/index.lazy.tsx:284
 msgid "Mark charts as favorites to quickly find them here."
 msgstr "Mark charts as favorites to quickly find them here."
 
@@ -2218,7 +2247,7 @@ msgstr "Need help?"
 msgid "New value"
 msgstr "New value"
 
-#: src/routes/charts/index.lazy.tsx:201
+#: src/routes/charts/index.lazy.tsx:218
 msgid "Newest"
 msgstr "Newest"
 
@@ -2240,6 +2269,10 @@ msgstr "No {0} found matching \"{searchTerm}\""
 msgid "No accounts required; no selling of personal data."
 msgstr "No accounts required; no selling of personal data."
 
+#: src/features/notifications/components/NotificationList.tsx:94
+msgid "No active notifications"
+msgstr "No active notifications"
+
 #: src/components/maps/utils.ts:148
 msgid "No aggregated data"
 msgstr "No aggregated data"
@@ -2257,11 +2290,11 @@ msgstr "No categories to display."
 #~ msgstr "No charts in \"{0}"
 
 #. placeholder {0}: cat.name
-#: src/routes/charts/index.lazy.tsx:287
+#: src/routes/charts/index.lazy.tsx:304
 msgid "No charts in “{0}”"
 msgstr "No charts in “{0}”"
 
-#: src/routes/charts/index.lazy.tsx:214
+#: src/routes/charts/index.lazy.tsx:231
 msgid "No charts yet"
 msgstr "No charts yet"
 
@@ -2293,17 +2326,21 @@ msgstr "No data available for the table."
 msgid "No data available to display financial evolution."
 msgstr "No data available to display financial evolution."
 
-#: src/routes/entities.$cui.lazy.tsx:215
+#: src/routes/entities.$cui.lazy.tsx:227
 msgid "No Data Found"
 msgstr "No Data Found"
 
-#: src/routes/entities.$cui.lazy.tsx:212
+#: src/routes/entities.$cui.lazy.tsx:224
 msgid "No data found for CUI {cui}."
 msgstr "No data found for CUI {cui}."
 
 #: src/components/charts/components/chart-view/ChartDisplayArea.tsx:108
 msgid "No Data Series"
 msgstr "No Data Series"
+
+#: src/features/notifications/components/alerts/AlertsList.tsx:50
+msgid "No data series alerts"
+msgstr "No data series alerts"
 
 #: src/components/charts/components/chart-view/SeriesList.tsx:96
 msgid "No data series yet."
@@ -2321,11 +2358,11 @@ msgstr "No economic breakdown is available for income."
 msgid "No enabled series data available to display."
 msgstr "No enabled series data available to display."
 
-#: src/routes/entities.$cui.lazy.tsx:217
+#: src/routes/entities.$cui.lazy.tsx:229
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 
-#: src/routes/charts/index.lazy.tsx:266
+#: src/routes/charts/index.lazy.tsx:283
 msgid "No favorites yet"
 msgstr "No favorites yet"
 
@@ -2365,7 +2402,7 @@ msgstr "No options found."
 msgid "No related charts yet"
 msgstr "No related charts yet"
 
-#: src/routes/charts/index.lazy.tsx:248
+#: src/routes/charts/index.lazy.tsx:265
 msgid "No results"
 msgstr "No results"
 
@@ -2407,16 +2444,20 @@ msgid "Nothing to paste"
 msgstr "Nothing to paste"
 
 #: src/routes/settings/notifications.tsx:65
-msgid "Notification Settings"
-msgstr "Notification Settings"
+#~ msgid "Notification Settings"
+#~ msgstr "Notification Settings"
 
 #: src/routes/settings/notifications.tsx:68
-msgid "Notifications"
-msgstr "Notifications"
+#~ msgid "Notifications"
+#~ msgstr "Notifications"
 
 #: src/routes/settings/notifications.tsx:36
-msgid "Notifications - Sign In Required"
-msgstr "Notifications - Sign In Required"
+#~ msgid "Notifications - Sign In Required"
+#~ msgstr "Notifications - Sign In Required"
+
+#: src/routes/settings/notifications.tsx:70
+msgid "Notifications Settings"
+msgstr "Notifications Settings"
 
 #: src/components/entities/EntityFinancialTrends.tsx:90
 msgid "November"
@@ -2426,7 +2467,7 @@ msgstr "November"
 msgid "October"
 msgstr "October"
 
-#: src/routes/charts/index.lazy.tsx:202
+#: src/routes/charts/index.lazy.tsx:219
 msgid "Oldest"
 msgstr "Oldest"
 
@@ -2451,10 +2492,10 @@ msgstr "Open data follows the source license."
 msgid "Open feedback dialog"
 msgstr "Open feedback dialog"
 
-#: src/routes/budget-explorer.lazy.tsx:575
-#: src/routes/budget-explorer.lazy.tsx:591
-#: src/routes/budget-explorer.lazy.tsx:611
+#: src/routes/budget-explorer.lazy.tsx:592
+#: src/routes/budget-explorer.lazy.tsx:608
 #: src/routes/budget-explorer.lazy.tsx:628
+#: src/routes/budget-explorer.lazy.tsx:645
 msgid "Open in Chart Builder"
 msgstr "Open in Chart Builder"
 
@@ -2469,6 +2510,10 @@ msgstr "Open in Chart Editor"
 #: src/components/alerts/components/AlertPreviewView.tsx:27
 msgid "Open in charts"
 msgstr "Open in charts"
+
+#: src/components/entities/views/Overview.tsx:245
+msgid "Open in entity analytics"
+msgstr "Open in entity analytics"
 
 #: src/components/entities/EntityHeader.tsx:113
 #: src/components/entities/EntityInfo.tsx:42
@@ -2541,7 +2586,7 @@ msgstr "Per capita"
 #: src/components/filters/EntityAnalyticsFilter.tsx:255
 #: src/components/filters/MapFilter.tsx:187
 #: src/components/filters/normalization-filter/NormalizationFilter.tsx:14
-#: src/routes/entity-analytics.lazy.tsx:200
+#: src/routes/entity-analytics.lazy.tsx:210
 msgid "Per Capita"
 msgstr "Per Capita"
 
@@ -2578,7 +2623,7 @@ msgstr "Pie Chart (Aggregated)"
 #: src/components/maps/HeatmapDataTable.tsx:227
 #: src/components/maps/HeatmapDataTable.tsx:448
 #: src/components/maps/utils.ts:118
-#: src/routes/entity-analytics.lazy.tsx:199
+#: src/routes/entity-analytics.lazy.tsx:209
 msgid "Population"
 msgstr "Population"
 
@@ -2739,7 +2784,7 @@ msgstr "Report type"
 msgid "Report Type"
 msgstr "Report Type"
 
-#: src/components/entities/EntityReportsSummary.tsx:146
+#: src/components/entities/EntityReportsSummary.tsx:143
 msgid "Reporting entity"
 msgstr "Reporting entity"
 
@@ -2747,7 +2792,7 @@ msgstr "Reporting entity"
 msgid "Reporting filters"
 msgstr "Reporting filters"
 
-#: src/routes/entities.$cui.lazy.tsx:241
+#: src/routes/entities.$cui.lazy.tsx:275
 msgid "Reporting period"
 msgstr "Reporting period"
 
@@ -2788,7 +2833,7 @@ msgstr "Revenues/Expenses"
 msgid "Revert"
 msgstr "Revert"
 
-#: src/features/notifications/components/NotificationList.tsx:128
+#: src/features/notifications/components/NotificationList.tsx:143
 msgid "Review and manage alerts created from your custom data series."
 msgstr "Review and manage alerts created from your custom data series."
 
@@ -2829,7 +2874,7 @@ msgstr "Save"
 msgid "Save preferences"
 msgstr "Save preferences"
 
-#: src/routes/charts/index.lazy.tsx:149
+#: src/routes/charts/index.lazy.tsx:166
 msgid "Saved charts – Transparenta.eu"
 msgstr "Saved charts – Transparenta.eu"
 
@@ -2854,11 +2899,11 @@ msgstr "Search by name or code (ex: Agriculture, 43.00, ec:43.00)"
 msgid "Search by name or code (ex: Social assistance, 7.06, fn:7.06)"
 msgstr "Search by name or code (ex: Social assistance, 7.06, fn:7.06)"
 
-#: src/routes/charts/index.lazy.tsx:192
+#: src/routes/charts/index.lazy.tsx:209
 msgid "Search charts"
 msgstr "Search charts"
 
-#: src/routes/charts/index.lazy.tsx:190
+#: src/routes/charts/index.lazy.tsx:207
 msgid "Search charts…"
 msgstr "Search charts…"
 
@@ -2870,11 +2915,15 @@ msgstr "Search counties..."
 msgid "Search datasets (ex: PIB)"
 msgstr "Search datasets (ex: PIB)"
 
+#: src/components/ui/FloatingQuickNav.tsx:85
+msgid "Search Entities"
+msgstr "Search Entities"
+
 #: src/components/filters/entity-filter/EntityList.tsx:75
 msgid "Search entities (ex: Municipiul Arad)"
 msgstr "Search entities (ex: Municipiul Arad)"
 
-#: src/components/entities/EntitySearch/index.tsx:21
+#: src/components/entities/EntitySearch/index.tsx:23
 msgid "Search entities by name or CUI..."
 msgstr "Search entities by name or CUI..."
 
@@ -2882,8 +2931,8 @@ msgstr "Search entities by name or CUI..."
 msgid "Search entity types (ex: Hospital)"
 msgstr "Search entity types (ex: Hospital)"
 
-#: src/components/entities/FloatingEntitySearch.tsx:41
-#: src/components/entities/FloatingEntitySearch.tsx:51
+#: src/components/entities/FloatingEntitySearch.tsx:70
+#: src/components/entities/FloatingEntitySearch.tsx:79
 msgid "Search for another entity"
 msgstr "Search for another entity"
 
@@ -2907,7 +2956,7 @@ msgstr "Search..."
 msgid "Secondary creditor aggregated"
 msgstr "Secondary creditor aggregated"
 
-#: src/routes/budget-explorer.lazy.tsx:552
+#: src/routes/budget-explorer.lazy.tsx:569
 msgid "See advanced view"
 msgstr "See advanced view"
 
@@ -2915,7 +2964,7 @@ msgstr "See advanced view"
 msgid "See also our <0>Privacy Policy</0>."
 msgstr "See also our <0>Privacy Policy</0>."
 
-#: src/routes/index.lazy.tsx:51
+#: src/routes/index.lazy.tsx:54
 msgid "See-through, clear"
 msgstr "See-through, clear"
 
@@ -3013,11 +3062,11 @@ msgstr "Set the basic properties for your chart"
 msgid "Share"
 msgstr "Share"
 
-#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:197
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:196
 msgid "Share Chart"
 msgstr "Share Chart"
 
-#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:244
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:235
 msgid "Share Link"
 msgstr "Share Link"
 
@@ -3095,14 +3144,14 @@ msgstr "Show Tooltip"
 #: src/features/notifications/components/EntityNotificationBell.tsx:79
 #: src/routes/alerts/$alertId/index.lazy.tsx:162
 #: src/routes/alerts/new.lazy.tsx:154
-#: src/routes/settings/notifications.tsx:54
+#: src/routes/settings/notifications.tsx:57
 msgid "Sign In"
 msgstr "Sign In"
 
 #: src/features/notifications/components/EntityNotificationBell.tsx:47
 #: src/routes/alerts/$alertId/index.lazy.tsx:148
 #: src/routes/alerts/new.lazy.tsx:140
-#: src/routes/settings/notifications.tsx:40
+#: src/routes/settings/notifications.tsx:43
 msgid "Sign in required"
 msgstr "Sign in required"
 
@@ -3119,7 +3168,7 @@ msgstr "Sign in to get notifications"
 msgid "Sign in to receive updates about <0>{entityName}</0>:"
 msgstr "Sign in to receive updates about <0>{entityName}</0>:"
 
-#: src/routes/settings/notifications.tsx:48
+#: src/routes/settings/notifications.tsx:51
 msgid "Sign in to receive updates about the entities you care about."
 msgstr "Sign in to receive updates about the entities you care about."
 
@@ -3132,7 +3181,7 @@ msgstr "Some data issues were automatically resolved"
 msgid "error.genericError"
 msgstr "Something went wrong while trying to render this page."
 
-#: src/routes/charts/index.lazy.tsx:198
+#: src/routes/charts/index.lazy.tsx:215
 msgid "Sort by"
 msgstr "Sort by"
 
@@ -3146,7 +3195,7 @@ msgid "Spending Calculation"
 msgstr "Spending Calculation"
 
 #: src/components/maps/HeatmapDataTable.tsx:441
-#: src/routes/entity-analytics.lazy.tsx:192
+#: src/routes/entity-analytics.lazy.tsx:202
 msgid "Standard"
 msgstr "Standard"
 
@@ -3244,11 +3293,11 @@ msgstr "The Service provides tools to explore, analyze, and visualize public bud
 msgid "The share link you are trying to access is invalid or no longer available."
 msgstr "The share link you are trying to access is invalid or no longer available."
 
-#: src/routes/entities.$cui.lazy.tsx:201
+#: src/routes/entities.$cui.lazy.tsx:213
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "There was a problem fetching the details for CUI: <0>{cui}</0>."
 
-#: src/routes/settings/notifications.tsx:83
+#: src/routes/settings/notifications.tsx:81
 msgid "There was a problem loading your notifications. Please try again."
 msgstr "There was a problem loading your notifications. Please try again."
 
@@ -3304,11 +3353,11 @@ msgstr "Tip: Copy/Cut/Paste with ⌘/Ctrl+C, X, V. Duplicate with ⌘/Ctrl+D."
 msgid "Title"
 msgstr "Title"
 
-#: src/routes/charts/index.lazy.tsx:203
+#: src/routes/charts/index.lazy.tsx:220
 msgid "Title A–Z"
 msgstr "Title A–Z"
 
-#: src/routes/charts/index.lazy.tsx:204
+#: src/routes/charts/index.lazy.tsx:221
 msgid "Title Z–A"
 msgstr "Title Z–A"
 
@@ -3332,11 +3381,11 @@ msgstr "Toggle theme"
 msgid "Tooltip"
 msgstr "Tooltip"
 
-#: src/components/entities/views/TrendsView.tsx:92
+#: src/components/entities/views/TrendsView.tsx:95
 msgid "Top {TOP_CATEGORIES_COUNT} Income Categories for {entityName}"
 msgstr "Top {TOP_CATEGORIES_COUNT} Income Categories for {entityName}"
 
-#: src/components/entities/views/TrendsView.tsx:92
+#: src/components/entities/views/TrendsView.tsx:95
 msgid "Top {TOP_CATEGORIES_COUNT} Spending Categories for {entityName}"
 msgstr "Top {TOP_CATEGORIES_COUNT} Spending Categories for {entityName}"
 
@@ -3348,7 +3397,7 @@ msgstr "Top 15 Counties by Total Amount"
 msgid "Top 15 UATs by Total Amount"
 msgstr "Top 15 UATs by Total Amount"
 
-#: src/routes/budget-explorer.lazy.tsx:549
+#: src/routes/budget-explorer.lazy.tsx:566
 msgid "Top Categories"
 msgstr "Top Categories"
 
@@ -3358,11 +3407,11 @@ msgid "Top Economic Categories"
 msgstr "Top Economic Categories"
 
 #: src/components/budget-explorer/BudgetCategoryList.tsx:119
-#: src/routes/budget-explorer.lazy.tsx:607
+#: src/routes/budget-explorer.lazy.tsx:624
 msgid "Top Functional Categories"
 msgstr "Top Functional Categories"
 
-#: src/routes/charts/index.lazy.tsx:163
+#: src/routes/charts/index.lazy.tsx:180
 msgid "total"
 msgstr "total"
 
@@ -3395,7 +3444,7 @@ msgstr "Total amount"
 #: src/components/maps/HeatmapDataTable.tsx:281
 #: src/components/maps/HeatmapDataTable.tsx:449
 #: src/components/maps/utils.ts:123
-#: src/routes/entity-analytics.lazy.tsx:201
+#: src/routes/entity-analytics.lazy.tsx:211
 msgid "Total Amount"
 msgstr "Total Amount"
 
@@ -3440,7 +3489,7 @@ msgstr "Treemap Chart (Aggregated)"
 msgid "True Consolidated Revenues"
 msgstr "True Consolidated Revenues"
 
-#: src/routes/charts/index.lazy.tsx:249
+#: src/routes/charts/index.lazy.tsx:266
 msgid "Try a different search term or sorting."
 msgstr "Try a different search term or sorting."
 
@@ -3449,7 +3498,7 @@ msgstr "Try a different search term or sorting."
 msgid "Try again"
 msgstr "Try again"
 
-#: src/routes/settings/notifications.tsx:96
+#: src/routes/settings/notifications.tsx:94
 msgid "Try Again"
 msgstr "Try Again"
 
@@ -3492,7 +3541,7 @@ msgstr "Understanding the consolidated general budget spending"
 msgid "Unit"
 msgstr "Unit"
 
-#: src/routes/entity-analytics.lazy.tsx:172
+#: src/routes/entity-analytics.lazy.tsx:182
 msgid "Unknown error"
 msgstr "Unknown error"
 
@@ -3568,7 +3617,7 @@ msgstr "Usage analytics via PostHog (consent-only, custom events, no autocapture
 msgid "Use <0>Cookie Settings</0> or your browser controls to clear site data."
 msgstr "Use <0>Cookie Settings</0> or your browser controls to clear site data."
 
-#: src/routes/charts/index.lazy.tsx:288
+#: src/routes/charts/index.lazy.tsx:305
 msgid "Use the tag menu on a chart card to add it to this category."
 msgstr "Use the tag menu on a chart card to add it to this category."
 
@@ -3591,7 +3640,7 @@ msgstr "Value"
 
 #: src/components/filters/EntityAnalyticsFilter.tsx:223
 #: src/components/maps/HeatmapDataTable.tsx:433
-#: src/routes/entity-analytics.lazy.tsx:183
+#: src/routes/entity-analytics.lazy.tsx:193
 msgid "View"
 msgstr "View"
 
@@ -3603,7 +3652,7 @@ msgstr "View all alerts"
 msgid "View all reports"
 msgstr "View all reports"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:30
+#: src/routes/charts/$chartId/index.lazy.tsx:47
 msgid "View and share your chart."
 msgstr "View and share your chart."
 
@@ -3643,11 +3692,11 @@ msgstr "We may update this policy; we’ll post changes with a new effective dat
 msgid "We use cookies and localStorage to operate the app and, with consent, to measure usage and improve reliability."
 msgstr "We use cookies and localStorage to operate the app and, with consent, to measure usage and improve reliability."
 
-#: src/components/privacy/CookieConsentBanner.tsx:80
+#: src/components/privacy/CookieConsentBanner.tsx:79
 msgid "We use cookies and similar technologies to enhance your experience, analyze our traffic, and report errors. With your permission, we use PostHog for analytics and Sentry for error reporting to improve our service. You can change your preferences at any time. For more information, please see our <0>Privacy Policy</0>."
 msgstr "We use cookies and similar technologies to enhance your experience, analyze our traffic, and report errors. With your permission, we use PostHog for analytics and Sentry for error reporting to improve our service. You can change your preferences at any time. For more information, please see our <0>Privacy Policy</0>."
 
-#: src/components/privacy/CookieConsentBanner.tsx:76
+#: src/components/privacy/CookieConsentBanner.tsx:75
 msgid "We value your privacy"
 msgstr "We value your privacy"
 
@@ -3682,11 +3731,11 @@ msgstr "You can search by: name (ex: Agriculture) • code (ex: 43.00, 43.00.10)
 msgid "You can search by: name (ex: Social assistance) • code (ex: 7.06, 7.06.02) • explicit prefix: fn:7.06"
 msgstr "You can search by: name (ex: Social assistance) • code (ex: 7.06, 7.06.02) • explicit prefix: fn:7.06"
 
-#: src/features/notifications/components/NotificationList.tsx:90
+#: src/features/notifications/components/NotificationList.tsx:97
 msgid "You have no active notifications. Navigate to an entity page and click the bell icon to subscribe to updates."
 msgstr "You have no active notifications. Navigate to an entity page and click the bell icon to subscribe to updates."
 
-#: src/features/notifications/components/alerts/AlertsList.tsx:45
+#: src/features/notifications/components/alerts/AlertsList.tsx:53
 msgid "You have no data series alerts yet. Create one from a chart series or use the alerts dashboard."
 msgstr "You have no data series alerts yet. Create one from a chart series or use the alerts dashboard."
 
@@ -3710,7 +3759,7 @@ msgstr "You need to be signed in to create alerts"
 msgid "You need to be signed in to edit alerts"
 msgstr "You need to be signed in to edit alerts"
 
-#: src/routes/settings/notifications.tsx:43
+#: src/routes/settings/notifications.tsx:46
 msgid "You need to be signed in to manage notifications"
 msgstr "You need to be signed in to manage notifications"
 
