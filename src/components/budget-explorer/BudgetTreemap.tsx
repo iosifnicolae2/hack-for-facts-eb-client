@@ -291,7 +291,6 @@ const CustomizedContent: FC<{
 
 export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, path = [], onViewDetails, showViewDetails = false, normalization, excludedItemsSummary }: Props) {
   const isMobile = useIsMobile()
-  
 
   const payloadData = useMemo(() => {
     return data.map((node) => ({
@@ -432,7 +431,11 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
                       transition: 'transform 180ms ease-in-out',
                       willChange: 'transform',
                     }}
-                    content={<CustomTooltip total={totalValue} primary={primary} normalization={normalization} />}
+                    content={<CustomTooltip
+                      total={totalValue}
+                      primary={primary}
+                      normalization={normalization}
+                    />}
                   />
                 )}
               </Treemap>
@@ -466,12 +469,32 @@ const CustomTooltip = ({ active, payload, total, primary, normalization }: {
   primary: 'fn' | 'ec',
   normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro',
 }) => {
+  const lastTooltipDataRef = useRef<{
+    name: string
+    code: string
+    fill: string
+    value: number
+  } | null>(null)
+
   const isVisible = !!active && !!payload && payload.length > 0
-  const data = isVisible ? payload![0].payload : undefined
-  const value = isVisible ? payload![0].value : 0
-  const percentage = isVisible && total > 0 ? (value / total) * 100 : 0
+
+  // Update ref when new valid data is available
+  if (isVisible && payload![0].payload) {
+    lastTooltipDataRef.current = {
+      name: payload![0].payload.name,
+      code: payload![0].payload.code,
+      fill: payload![0].payload.fill,
+      value: payload![0].value,
+    }
+  }
+
+  // Use current data if visible, otherwise fall back to cached data
+  const data = isVisible ? payload![0].payload : lastTooltipDataRef.current
+  const value = isVisible ? payload![0].value : (lastTooltipDataRef.current?.value ?? 0)
+  const percentage = total > 0 ? (value / total) * 100 : 0
   const unit = getNormalizationUnit(normalization ?? 'total')
   const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON'
+
 
   return (
     <div className="relative">
