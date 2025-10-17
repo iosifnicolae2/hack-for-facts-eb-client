@@ -19,7 +19,7 @@ const DEFAULTS = {
   title: 'Transparenta.eu',
   description:
     'Explore Romania public finance data with charts, maps, and analytics. Local-first, consent-based analytics and error reporting.',
-  image: '/logo.png',
+  image: '/assets/images/share-image.png',
   type: 'website' as const,
   siteName: 'Transparenta.eu',
   locale: 'en',
@@ -144,5 +144,4 @@ export function JsonLd({ data }: { readonly data: Record<string, unknown> }) {
     />
   )
 }
-
 
