@@ -12,7 +12,7 @@ interface PrefixFilterProps {
     placeholder?: string;
 }
 
-export function PrefixFilter({ value = [], onValueChange, placeholder = "Add prefix..." }: PrefixFilterProps) {
+export function PrefixFilter({ value = [], onValueChange, placeholder = "Add prefix. Example: 65.04" }: PrefixFilterProps) {
     const [inputValue, setInputValue] = useState('');
 
     const addPrefix = () => {
