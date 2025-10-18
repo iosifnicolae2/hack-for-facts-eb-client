@@ -13,6 +13,7 @@ import { GqlReportType, toReportTypeValue } from '@/schemas/reporting';
 import { getInitialFilterState, makeTrendPeriod } from '@/schemas/reporting';
 import { prepareFilterForServer } from '@/lib/filterUtils';
 import { getPersistedState } from '@/lib/hooks/usePersistedState';
+import type { EntityDetailsData } from '@/lib/api/entities';
 
 export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
 
@@ -29,25 +30,19 @@ export const Route = createFileRoute('/entities/$cui')({
         const trendPeriod = makeTrendPeriod(search.period ?? 'YEAR', year, START_YEAR, END_YEAR);
         const reportType = (search?.report_type as GqlReportType | undefined);
         const mainCreditorCui = (search?.main_creditor_cui as string | undefined);
-        queryClient.ensureQueryData(
-            entityDetailsQueryOptions(
-                params.cui,
-                normalization,
-                reportPeriod,
-                reportType,
-                trendPeriod,
-                mainCreditorCui
-            )
+        // Warm entity details in cache
+        const detailsOptions = entityDetailsQueryOptions(
+            params.cui,
+            normalization,
+            reportPeriod,
+            reportType,
+            trendPeriod,
+            mainCreditorCui
         );
+        queryClient.ensureQueryData(detailsOptions);
 
         const desiredView = (search?.view as string | undefined) ?? 'overview';
-        const entity = queryClient.getQueryData<{
-            default_report_type?: GqlReportType;
-            is_uat?: boolean | null;
-            entity_type?: string | null;
-            cui: string;
-            executionLineItems?: { nodes?: { account_category: 'vn' | 'ch' }[] } | null;
-        }>(['entityDetails', params.cui, normalization, reportPeriod, reportType, trendPeriod]);
+        const entity = queryClient.getQueryData<EntityDetailsData>(detailsOptions.queryKey);
 
         if (desiredView === 'map' && entity?.is_uat) {
             const mapViewType = entity.entity_type === 'admin_county_council' || entity.cui === '4267117' ? 'County' : 'UAT';

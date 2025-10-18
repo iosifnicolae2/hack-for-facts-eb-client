@@ -16,11 +16,12 @@ import { ChatFab } from "@/components/footer/ChatFab";
 import { CookieConsentBanner } from "@/components/privacy/CookieConsentBanner";
 import { Analytics } from "@/lib/analytics";
 import { Seo, JsonLd } from "@/lib/seo";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { I18nProvider } from "@lingui/react";
 import { getUserLocale } from "@/lib/utils";
 import GlobalErrorPage from "@/components/errors/GlobalErrorPage";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { ViewLoading } from "@/components/ui/ViewLoading";
 
 export const Route = createRootRoute({
   errorComponent: ({ error }) => <GlobalErrorPage error={error} />,
@@ -71,7 +72,10 @@ export const Route = createRootRoute({
                           }} />
                           {/* Global pageview tracking tied to router location */}
                           <AnalyticsPageviewBridge />
-                          <Outlet />
+                          {/* Wrap route outlet in Suspense to avoid blank screen when lazy chunks reload after tab resume */}
+                          <Suspense fallback={<ViewLoading />}> 
+                            <Outlet />
+                          </Suspense>
                           <Toaster />
                           {isMobile && <FloatingEntitySearch showButton />}
                         </div>
