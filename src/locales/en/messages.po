@@ -3740,7 +3740,7 @@ msgstr "Total Amount"
 
 #: src/components/entities/EntityFinancialSummary.tsx:62
 msgid "Total Expenses"
-msgstr "Cheltuieli totale"
+msgstr "Total Expenses"
 
 #: src/components/entities/EntityFinancialSummary.tsx:61
 msgid "Total Income"
