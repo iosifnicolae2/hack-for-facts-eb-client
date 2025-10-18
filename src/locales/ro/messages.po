@@ -559,23 +559,23 @@ msgstr "Toți operatorii împuterniciți sunt obligați prin acorduri de protec�
 msgid "All recorded revenue inflows"
 msgstr "Toate încasările de venituri înregistrate"
 
-#: src/routes/cookies.lazy.tsx:42
+#: src/routes/cookies.lazy.tsx:160
 msgid "Allow all"
 msgstr "Permite tot"
 
-#: src/routes/cookies.lazy.tsx:40
+#: src/routes/cookies.lazy.tsx:158
 msgid "Allow all cookies"
 msgstr "Permite toate cookie-urile"
 
-#: src/routes/cookies.lazy.tsx:34
+#: src/routes/cookies.lazy.tsx:144
 msgid "Allow essential cookies only"
 msgstr "Permite doar cookie-urile esențiale"
 
-#: src/routes/cookies.lazy.tsx:36
+#: src/routes/cookies.lazy.tsx:146
 msgid "Allow essential only"
 msgstr "Permite doar esențiale"
 
-#: src/routes/cookies.lazy.tsx:61
+#: src/routes/cookies.lazy.tsx:74
 msgid "Always enabled"
 msgstr "Activat permanent"
 
@@ -600,7 +600,7 @@ msgstr "Interval sumă"
 msgid "Analytics"
 msgstr "Analiză"
 
-#: src/routes/cookies.lazy.tsx:81
+#: src/routes/cookies.lazy.tsx:94
 msgid "Analytics (PostHog)"
 msgstr "Analiză (PostHog)"
 
@@ -645,7 +645,7 @@ msgstr "Adnotarea nu a fost găsită"
 msgid "Annotations"
 msgstr "Adnotări"
 
-#: src/routes/cookies.lazy.tsx:90
+#: src/routes/cookies.lazy.tsx:103
 msgid "Anonymous usage patterns, page views, interactions."
 msgstr "Modele de utilizare anonime, vizualizări de pagină, interacțiuni."
 
@@ -768,9 +768,9 @@ msgid "Both"
 msgstr "Ambele"
 
 #: src/components/entities/views/Overview.tsx:239
-#: src/components/entities/views/TrendsView.tsx:200
+#: src/components/entities/views/TrendsView.tsx:207
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:88
-#: src/routes/budget-explorer.lazy.tsx:481
+#: src/routes/budget-explorer.lazy.tsx:290
 msgid "Budget Distribution"
 msgstr "Distribuția bugetului"
 
@@ -908,7 +908,7 @@ msgstr "Verificați filtrele seriei și încercați din nou."
 msgid "Children's privacy"
 msgstr "Confidențialitatea minorilor"
 
-#: src/routes/cookies.lazy.tsx:29
+#: src/routes/cookies.lazy.tsx:60
 msgid "Choose between essential-only or all cookies, then fine-tune options below."
 msgstr "Alegeți între cookie-uri doar esențiale sau toate cookie-urile, apoi ajustați opțiunile de mai jos."
 
@@ -1012,6 +1012,10 @@ msgstr "Configurare serie de date"
 msgid "Confirm"
 msgstr "Confirmă"
 
+#: src/routes/cookies.lazy.tsx:153
+msgid "Confirm choices"
+msgstr "Confirmă alegerile"
+
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:62
 #: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:57
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:77
@@ -1077,7 +1081,7 @@ msgid "Cookie Policy – Transparenta.eu"
 msgstr "Politica privind cookie-urile – Transparenta.eu"
 
 #: src/components/footer/AppFooter.tsx:116
-#: src/routes/cookies.lazy.tsx:28
+#: src/routes/cookies.lazy.tsx:59
 msgid "Cookie Settings"
 msgstr "Setări cookie-uri"
 
@@ -1383,8 +1387,8 @@ msgstr "Densitate"
 msgid "Description"
 msgstr "Descriere"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:80
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:116
+#: src/routes/budget-explorer.lazy.tsx:311
 msgid "Detail level"
 msgstr "Nivel de detaliu"
 
@@ -1400,8 +1404,8 @@ msgstr "Defalcare detaliată"
 msgid "Detailed Budget Execution"
 msgstr "Executie bugetara detaliata"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:90
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:131
+#: src/routes/budget-explorer.lazy.tsx:324
 msgid "Detailed categories"
 msgstr "Categorii detaliate"
 
@@ -1413,7 +1417,7 @@ msgstr "Detalierea liniilor bugetare"
 msgid "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
 msgstr "Detalii despre cookie-urile și stocarea locală (localStorage) utilizate de Transparenta.eu, cu opțiuni de consimțământ."
 
-#: src/routes/entities.$cui.lazy.tsx:214
+#: src/routes/entities.$cui.lazy.tsx:230
 msgid "Details:"
 msgstr "Detalii:"
 
@@ -1481,10 +1485,10 @@ msgstr "Gestionați-vă cu ușurință abonamentele"
 msgid "Ec"
 msgstr "Ec"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:76
 #: src/components/entities/views/Overview.tsx:263
-#: src/components/entities/views/TrendsView.tsx:203
+#: src/components/entities/views/TrendsView.tsx:210
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:111
+#: src/routes/budget-explorer.lazy.tsx:306
 msgid "Economic"
 msgstr "Economic"
 
@@ -1581,7 +1585,7 @@ msgstr "Alertele activate sunt evaluate lunar și incluse în newsletter-ul dvs.
 msgid "English"
 msgstr "Engleză"
 
-#: src/routes/cookies.lazy.tsx:117
+#: src/routes/cookies.lazy.tsx:126
 msgid "Enhanced error reporting"
 msgstr "Raportare avansată a erorilor"
 
@@ -1628,8 +1632,8 @@ msgstr "Entități"
 msgid "Entity"
 msgstr "Entitate"
 
-#: src/routes/entities.$cui.lazy.tsx:208
 #: src/routes/entities.$cui.lazy.tsx:224
+#: src/routes/entities.$cui.lazy.tsx:240
 msgid "Entity {cui} – Not found"
 msgstr "Entitatea {cui} – Nu a fost găsită"
 
@@ -1677,7 +1681,7 @@ msgstr "este egal cu"
 msgid "Error"
 msgstr "Eroare"
 
-#: src/routes/entities.$cui.lazy.tsx:211
+#: src/routes/entities.$cui.lazy.tsx:227
 msgid "Error Fetching Entity Details"
 msgstr "Eroare la preluarea detaliilor entității"
 
@@ -1693,7 +1697,7 @@ msgstr "Eroare la încărcarea datelor graficului"
 msgid "Error loading data"
 msgstr "Eroare la încărcarea datelor"
 
-#: src/routes/entities.$cui.lazy.tsx:208
+#: src/routes/entities.$cui.lazy.tsx:224
 msgid "Error loading data for CUI {cui}."
 msgstr "Eroare la încărcarea datelor pentru CUI {cui}."
 
@@ -1709,7 +1713,7 @@ msgstr "Eroare la încărcarea notificărilor"
 msgid "Error Reporting (opt-in only)"
 msgstr "Raportarea Erorilor (doar opțională)"
 
-#: src/routes/cookies.lazy.tsx:107
+#: src/routes/cookies.lazy.tsx:116
 msgid "Error reporting (Sentry)"
 msgstr "Raportarea erorilor (Sentry)"
 
@@ -1729,7 +1733,7 @@ msgstr "Eroare: Seria nu a fost găsită"
 msgid "Errors"
 msgstr "Erori"
 
-#: src/routes/cookies.lazy.tsx:53
+#: src/routes/cookies.lazy.tsx:66
 msgid "Essential cookies"
 msgstr "Cookie-uri esențiale"
 
@@ -1765,7 +1769,7 @@ msgstr "Evoluția cheltuielilor"
 msgid "Expense Type"
 msgstr "Tip cheltuială"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:42
+#: src/components/budget-explorer/BudgetExplorerHeader.tsx:63
 #: src/components/entities/EntityFinancialTrends.tsx:244
 #: src/components/entities/EntityLineItems.tsx:95
 #: src/components/entities/EntityLineItemsTabs.tsx:63
@@ -1855,7 +1859,7 @@ msgstr "Eroare la încărcarea alertei"
 msgid "Failed to load alerts. Please try again."
 msgstr "Eroare la încărcarea alertelor. Vă rugăm să încercați din nou."
 
-#: src/routes/budget-explorer.lazy.tsx:487
+#: src/routes/budget-explorer.lazy.tsx:335
 msgid "Failed to load data."
 msgstr "Eroare la încărcarea datelor."
 
@@ -1962,10 +1966,10 @@ msgstr "pentru filtrele selectate."
 msgid "Found {replacementCount} occurrence{0}"
 msgstr "S-au găsit {replacementCount} apariții"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:70
 #: src/components/entities/views/Overview.tsx:262
-#: src/components/entities/views/TrendsView.tsx:202
+#: src/components/entities/views/TrendsView.tsx:209
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:104
+#: src/routes/budget-explorer.lazy.tsx:303
 msgid "Functional"
 msgstr "Funcțional"
 
@@ -2083,8 +2087,8 @@ msgstr "mai mare decât"
 msgid "Greater than"
 msgstr "Mai mare decât"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:57
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:92
+#: src/routes/budget-explorer.lazy.tsx:293
 msgid "Grouping"
 msgstr "Grupare"
 
@@ -2102,11 +2106,11 @@ msgid ""
 "Page: {0}"
 msgstr "Pagina: {0}"
 
-#: src/routes/cookies.lazy.tsx:109
+#: src/routes/cookies.lazy.tsx:118
 msgid "Help us fix problems by sending error reports. When disabled, we only send anonymous, minimal error telemetry necessary to keep the service reliable."
 msgstr "Ajutați-ne să remediem problemele trimițând rapoarte de erori. Când opțiunea este dezactivată, trimitem doar date de telemetrie minime și anonime, necesare pentru a menține fiabilitatea serviciului."
 
-#: src/routes/cookies.lazy.tsx:83
+#: src/routes/cookies.lazy.tsx:96
 msgid "Help us understand usage to improve the product. No analytics is sent unless you opt in."
 msgstr "Ajutați-ne să înțelegem modul de utilizare pentru a îmbunătăți produsul. Nu se trimit date de analiză decât dacă optați explicit pentru aceasta."
 
@@ -2148,7 +2152,7 @@ msgstr "Cum folosim datele dumneavoastră"
 msgid "If you create an account, Clerk sets the following cookies for authentication and session management:"
 msgstr "Dacă vă creați un cont, Clerk setează următoarele cookie-uri pentru autentificare și gestionarea sesiunii:"
 
-#: src/routes/cookies.lazy.tsx:70
+#: src/routes/cookies.lazy.tsx:83
 msgid "If you sign in, authentication cookies (Clerk) are essential to manage your session. Deleting them will sign you out."
 msgstr "Dacă vă autentificați, cookie-urile de autentificare (Clerk) sunt esențiale pentru a vă gestiona sesiunea. Ștergerea lor vă va deconecta."
 
@@ -2160,11 +2164,11 @@ msgstr "Dacă vă dezabonați, nu veți mai primi e-mailuri pentru această noti
 msgid "Include visible attribution to the data source and Transparenta.eu when sharing charts/maps."
 msgstr "Includeți o atribuire vizibilă a sursei datelor și a Transparenta.eu la partajarea graficelor/hărților."
 
-#: src/routes/cookies.lazy.tsx:118
+#: src/routes/cookies.lazy.tsx:127
 msgid "Includes additional error context. No user identity is attached."
 msgstr "Include context suplimentar pentru erori. Nu se atașează nicio identitate a utilizatorului."
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:41
+#: src/components/budget-explorer/BudgetExplorerHeader.tsx:57
 #: src/components/entities/EntityFinancialTrends.tsx:230
 #: src/components/entities/LineItemsAnalytics.tsx:118
 #: src/components/entities/views/MapView.tsx:144
@@ -2186,7 +2190,7 @@ msgstr "Venituri - Cheltuieli"
 msgid "Income Trends"
 msgstr "Evoluția veniturilor"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:24
+#: src/components/budget-explorer/BudgetExplorerHeader.tsx:30
 msgid "Income vs Expenses"
 msgstr "Venituri vs. Cheltuieli"
 
@@ -2416,13 +2420,13 @@ msgstr "Blochează adnotarea"
 msgid "Locked"
 msgstr "Blocat"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:337
+#: src/components/budget-explorer/BudgetTreemap.tsx:350
 #: src/components/entities/LineItemsAnalytics.tsx:143
 msgid "Main Categories"
 msgstr "Categorii Principale"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:89
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:128
+#: src/routes/budget-explorer.lazy.tsx:321
 msgid "Main chapters"
 msgstr "Capitole principale"
 
@@ -2649,7 +2653,7 @@ msgstr "Nicio condiție setată"
 msgid "No Data Available"
 msgstr "Nu există date disponibile"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:389
+#: src/components/budget-explorer/BudgetTreemap.tsx:417
 msgid "No data available for the current selection."
 msgstr "Nu sunt disponibile date pentru selecția curentă."
 
@@ -2665,11 +2669,11 @@ msgstr "Nu sunt date disponibile pentru tabel."
 msgid "No data available to display financial evolution."
 msgstr "Nu sunt date disponibile pentru afișarea evoluției financiare."
 
-#: src/routes/entities.$cui.lazy.tsx:227
+#: src/routes/entities.$cui.lazy.tsx:243
 msgid "No Data Found"
 msgstr "Nu s-au găsit date"
 
-#: src/routes/entities.$cui.lazy.tsx:224
+#: src/routes/entities.$cui.lazy.tsx:240
 msgid "No data found for CUI {cui}."
 msgstr "Nu s-au găsit date pentru CUI {cui}."
 
@@ -2697,7 +2701,7 @@ msgstr "Nu este disponibilă o detaliere economică pentru venituri."
 msgid "No enabled series data available to display."
 msgstr "Nu există date disponibile în seriile activate pentru a fi afișate."
 
-#: src/routes/entities.$cui.lazy.tsx:229
+#: src/routes/entities.$cui.lazy.tsx:245
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "Nu s-au găsit detalii despre entitate pentru CUI: <0>{cui}</0>. Este posibil ca această entitate să nu existe sau să nu aibă date asociate."
 
@@ -2765,7 +2769,7 @@ msgstr "Nicio valoare de înlocuit"
 msgid "Non-direct spending"
 msgstr "Cheltuieli indirecte"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:45
+#: src/components/budget-explorer/BudgetExplorerHeader.tsx:70
 #: src/components/charts/components/series-config/SeriesFilter.tsx:353
 #: src/components/entities/EntityReportControls.tsx:246
 #: src/components/filters/EntityAnalyticsFilter.tsx:248
@@ -2827,10 +2831,9 @@ msgstr "Datele deschise respectă licența sursei."
 msgid "Open feedback dialog"
 msgstr "Deschide fereastra de feedback"
 
-#: src/routes/budget-explorer.lazy.tsx:592
-#: src/routes/budget-explorer.lazy.tsx:608
-#: src/routes/budget-explorer.lazy.tsx:628
-#: src/routes/budget-explorer.lazy.tsx:645
+#: src/routes/budget-explorer.lazy.tsx:390
+#: src/routes/budget-explorer.lazy.tsx:406
+#: src/routes/budget-explorer.lazy.tsx:426
 msgid "Open in Chart Builder"
 msgstr "Deschide în Generatorul de Grafice"
 
@@ -2906,7 +2909,7 @@ msgstr "Pauză"
 msgid "people"
 msgstr "persoane"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:55
+#: src/components/budget-explorer/BudgetExplorerHeader.tsx:94
 msgid "Per capita"
 msgstr "Per capita"
 
@@ -2925,6 +2928,7 @@ msgstr "Pe cap de locuitor"
 msgid "Per Capita (EUR)"
 msgstr "Pe cap de locuitor (EUR)"
 
+#: src/components/budget-explorer/BudgetExplorerHeader.tsx:100
 #: src/components/charts/components/series-config/SeriesFilter.tsx:361
 #: src/components/entities/EntityReportControls.tsx:164
 #: src/components/filters/EntityAnalyticsFilter.tsx:261
@@ -3027,7 +3031,7 @@ msgstr "Ajustați rapid setările graficului"
 msgid "Read Documentation"
 msgstr "Citește Documentația"
 
-#: src/routes/cookies.lazy.tsx:136
+#: src/routes/cookies.lazy.tsx:168
 msgid "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 msgstr "Citiți <0>Politica privind cookie-urile</0> și <1>Politica de confidențialitate</1>."
 
@@ -3082,11 +3086,11 @@ msgstr "Entitate raportoare"
 msgid "Reporting filters"
 msgstr "Filtre de raportare"
 
-#: src/routes/entities.$cui.lazy.tsx:275
+#: src/routes/entities.$cui.lazy.tsx:276
 msgid "Reporting period"
 msgstr "Perioada de raportare"
 
-#: src/components/entities/EntityReportLabel.tsx:23
+#: src/components/entities/EntityReportLabel.tsx:33
 msgid "Reporting:"
 msgstr "Raportare:"
 
@@ -3094,7 +3098,7 @@ msgstr "Raportare:"
 msgid "Reports"
 msgstr "Rapoarte"
 
-#: src/routes/cookies.lazy.tsx:55
+#: src/routes/cookies.lazy.tsx:68
 msgid "Required for core functionality like security and preferences. Always on."
 msgstr "Necesar pentru funcționalități de bază, precum securitatea și preferințele. Activat permanent."
 
@@ -3147,6 +3151,10 @@ msgstr "Diagramă Sankey (agregată)"
 #: src/routes/alerts/$alertId/index.lazy.tsx:270
 msgid "Save"
 msgstr "Salvează"
+
+#: src/routes/cookies.lazy.tsx:151
+msgid "Save cookie preferences"
+msgstr "Salvează preferințele cookie"
 
 #: src/routes/charts/index.lazy.tsx:166
 msgid "Saved charts – Transparenta.eu"
@@ -3234,7 +3242,7 @@ msgstr "Creditor secundar agregat"
 msgid "Security monitoring and logs"
 msgstr "Monitorizare și jurnale de securitate"
 
-#: src/routes/budget-explorer.lazy.tsx:569
+#: src/routes/budget-explorer.lazy.tsx:366
 msgid "See advanced view"
 msgstr "Vezi vizualizarea avansată"
 
@@ -3571,7 +3579,7 @@ msgstr "Software-ul, designul și conținutul original al Serviciului sunt prote
 msgid "The share link you are trying to access is invalid or no longer available."
 msgstr "Linkul de partajare pe care încerci să-l accesezi este invalid sau nu mai este disponibil."
 
-#: src/routes/entities.$cui.lazy.tsx:213
+#: src/routes/entities.$cui.lazy.tsx:229
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "A apărut o problemă la preluarea detaliilor pentru CUI: <0>{cui}</0>."
 
@@ -3655,11 +3663,11 @@ msgstr "Pentru a exercita oricare dintre aceste drepturi, contactați-ne la cont
 msgid "To the maximum extent permitted by applicable law, Claudiu Constantin Bogdan and any owners, contributors, and affiliates shall not be liable for any direct, indirect, incidental, special, consequential, or exemplary damages, including but not limited to, damages for loss of profits, revenue, data, goodwill, or other intangible losses, resulting from: (i) your access to, use of, or inability to use the Service; (ii) any reliance on the data, content, or visualizations presented by the Service, regardless of any errors, omissions, or inaccuracies therein; (iii) any financial, professional, personal, or other loss or damage incurred as a result of using the information from the Service; or (iv) any unauthorized access to or use of our servers and any personal information stored therein. This limitation applies whether the alleged liability is based on contract, tort, negligence, strict liability, or any other basis, even if we have been advised of the possibility of such damage. Your sole and exclusive remedy for any dispute with us is to stop using the Service."
 msgstr "În măsura maximă permisă de legea aplicabilă, Claudiu Constantin Bogdan și orice proprietari, colaboratori și afiliați nu vor fi răspunzători pentru niciun fel de daune directe, indirecte, incidentale, speciale, consecutive sau exemplare, incluzând, dar fără a se limita la, daune pentru pierderi de profit, venituri, date, fond comercial sau alte pierderi intangibile, rezultate din: (i) accesul dumneavoastră la, utilizarea sau incapacitatea de a utiliza Serviciul; (ii) orice încredere în datele, conținutul sau vizualizările prezentate de Serviciu, indiferent de orice erori, omisiuni sau inexactități ale acestora; (iii) orice pierdere sau daună financiară, profesională, personală sau de altă natură suferită ca urmare a utilizării informațiilor din Serviciu; sau (iv) orice acces neautorizat la sau utilizare a serverelor noastre și a oricăror informații personale stocate în acestea. Această limitare se aplică indiferent dacă presupusa răspundere se bazează pe contract, delict, neglijență, răspundere strictă sau orice altă bază, chiar dacă am fost informați cu privire la posibilitatea unor astfel de daune. Singurul dumneavoastră remediu exclusiv pentru orice dispută cu noi este să încetați să utilizați Serviciul."
 
-#: src/routes/cookies.lazy.tsx:99
+#: src/routes/cookies.lazy.tsx:108
 msgid "Toggle analytics cookies"
 msgstr "Comutare cookie-uri de analiză"
 
-#: src/routes/cookies.lazy.tsx:127
+#: src/routes/cookies.lazy.tsx:132
 msgid "Toggle enhanced error reporting"
 msgstr "Comutare raportare avansată a erorilor"
 
@@ -3687,7 +3695,7 @@ msgstr "Top 15 județe după suma totală"
 msgid "Top 15 UATs by Total Amount"
 msgstr "Top 15 UAT-uri după suma totală"
 
-#: src/routes/budget-explorer.lazy.tsx:566
+#: src/routes/budget-explorer.lazy.tsx:363
 msgid "Top Categories"
 msgstr "Categorii principale"
 
@@ -3697,7 +3705,7 @@ msgid "Top Economic Categories"
 msgstr "Categorii economice principale"
 
 #: src/components/budget-explorer/BudgetCategoryList.tsx:119
-#: src/routes/budget-explorer.lazy.tsx:624
+#: src/routes/budget-explorer.lazy.tsx:422
 msgid "Top Functional Categories"
 msgstr "Categorii funcționale principale"
 
@@ -3705,8 +3713,8 @@ msgstr "Categorii funcționale principale"
 msgid "total"
 msgstr "total"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:54
-#: src/components/budget-explorer/BudgetTreemap.tsx:443
+#: src/components/budget-explorer/BudgetExplorerHeader.tsx:88
+#: src/components/budget-explorer/BudgetTreemap.tsx:475
 #: src/components/common/NormalizationSelector.tsx:21
 #: src/components/entities/EntityReportControls.tsx:46
 #: src/components/entities/views/MapView.tsx:166
@@ -3886,11 +3894,11 @@ msgstr "Actualizare disponibilă"
 msgid "Update Data"
 msgstr "Actualizează datele"
 
-#: src/routes/cookies.lazy.tsx:45
+#: src/routes/cookies.lazy.tsx:163
 msgid "Updated:"
 msgstr "Actualizat:"
 
-#: src/routes/cookies.lazy.tsx:89
+#: src/routes/cookies.lazy.tsx:102
 msgid "Usage analytics"
 msgstr "Analiza utilizării"
 
@@ -3944,7 +3952,7 @@ msgstr "Vizualizați și partajați graficul."
 msgid "View Chart"
 msgstr "Vezi graficul"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:380
+#: src/components/budget-explorer/BudgetTreemap.tsx:408
 msgid "View Details"
 msgstr "Vezi detalii"
 
@@ -4012,7 +4020,7 @@ msgstr "Anual"
 msgid "Yes"
 msgstr "Da"
 
-#: src/routes/cookies.lazy.tsx:66
+#: src/routes/cookies.lazy.tsx:79
 msgid "You are signed in. Authentication cookies (Clerk) are essential and required to keep you signed in. Deleting them will sign you out."
 msgstr "Sunteți autentificat. Cookie-urile de autentificare (Clerk) sunt esențiale și necesare pentru a vă menține autentificat. Ștergerea lor vă va deconecta."
 

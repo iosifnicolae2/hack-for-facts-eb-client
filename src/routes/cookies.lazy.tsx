@@ -1,5 +1,5 @@
-import { createLazyFileRoute, Link } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
+import { createLazyFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { useEffect, useState, useCallback } from 'react'
 import { getConsent, setConsent, type ConsentPreferences, onConsentChange, acceptAll, declineAll } from '@/lib/consent'
 import { Switch } from '@/components/ui/switch'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -15,6 +15,7 @@ export const Route = createLazyFileRoute('/cookies')({
 function CookieSettingsPage() {
   const [prefs, setPrefs] = useState<ConsentPreferences>(getConsent())
   const { isEnabled: isAuthEnabled, isSignedIn } = useAuth()
+  const navigate = useNavigate({ from: '/cookies' })
 
   useEffect(() => {
     setPrefs(getConsent())
@@ -22,29 +23,41 @@ function CookieSettingsPage() {
     return () => off()
   }, [])
 
+  const updateConsent = useCallback((patch: Partial<ConsentPreferences>) => {
+    const current = getConsent()
+    setConsent({ ...current, ...patch })
+    setPrefs(getConsent())
+  }, [])
+
+  const handleAnalyticsToggle = useCallback((checked: boolean) => {
+    updateConsent({ analytics: Boolean(checked) })
+  }, [updateConsent])
+
+  const handleSentryToggle = useCallback((checked: boolean) => {
+    updateConsent({ sentry: Boolean(checked) })
+  }, [updateConsent])
+
+  const handleAllowEssentialOnly = useCallback(() => {
+    declineAll()
+    setPrefs(getConsent())
+    navigate({ to: '/' })
+  }, [navigate])
+
+  const handleAllowAll = useCallback(() => {
+    acceptAll()
+    setPrefs(getConsent())
+    navigate({ to: '/' })
+  }, [navigate])
+
+  const handleAcceptSelected = useCallback(() => {
+    navigate({ to: '/' })
+  }, [navigate])
+
   return (
     <div className="mx-auto w-full max-w-4xl p-6">
       <div className="mb-6 space-y-2">
         <h1 className="text-2xl font-semibold"><Trans>Cookie Settings</Trans></h1>
         <p className="text-muted-foreground"><Trans>Choose between essential-only or all cookies, then fine-tune options below.</Trans></p>
-        <div className="flex flex-wrap gap-3">
-          <Button
-            variant="secondary"
-            onClick={() => { declineAll(); setPrefs(getConsent()) }}
-            aria-label={t`Allow essential cookies only`}
-          >
-            <Trans>Allow essential only</Trans>
-          </Button>
-          <Button
-            onClick={() => { acceptAll(); setPrefs(getConsent()) }}
-            aria-label={t`Allow all cookies`}
-          >
-            <Trans>Allow all</Trans>
-          </Button>
-          <span className="text-sm text-muted-foreground self-center">
-            <Trans>Updated:</Trans> {new Date(prefs.updatedAt).toLocaleString()}
-          </span>
-        </div>
       </div>
 
       <div className="grid gap-6">
@@ -91,11 +104,7 @@ function CookieSettingsPage() {
               </div>
               <Switch
                 checked={prefs.analytics}
-                onCheckedChange={(v) => {
-                  const next = { ...prefs, analytics: Boolean(v) }
-                  setConsent(next)
-                  setPrefs(getConsent())
-                }}
+                onCheckedChange={handleAnalyticsToggle}
                 aria-label={t`Toggle analytics cookies`}
               />
             </div>
@@ -119,18 +128,41 @@ function CookieSettingsPage() {
               </div>
               <Switch
                 checked={prefs.sentry}
-                onCheckedChange={(v) => {
-                  const next = { ...prefs, sentry: Boolean(v) }
-                  setConsent(next)
-                  setPrefs(getConsent())
-                }}
+                onCheckedChange={handleSentryToggle}
                 aria-label={t`Toggle enhanced error reporting`}
               />
             </div>
           </CardContent>
         </Card>
 
-        {/* Quick actions are now at the top; no explicit Save button needed */}
+        {/* Quick actions moved to the bottom */}
+        <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+          <Button
+            variant="secondary"
+            onClick={handleAllowEssentialOnly}
+            className="w-full sm:w-auto min-w-[200px]"
+            aria-label={t`Allow essential cookies only`}
+          >
+            <Trans>Allow essential only</Trans>
+          </Button>
+          <Button
+            onClick={handleAcceptSelected}
+            className="w-full sm:w-auto min-w-[200px]"
+            aria-label={t`Save cookie preferences`}
+          >
+            <Trans>Confirm choices</Trans>
+          </Button>
+          <Button
+            onClick={handleAllowAll}
+            className="w-full sm:w-auto min-w-[200px]"
+            aria-label={t`Allow all cookies`}
+          >
+            <Trans>Allow all</Trans>
+          </Button>
+          <span className="text-sm text-muted-foreground self-center">
+            <Trans>Updated:</Trans> {new Date(prefs.updatedAt).toLocaleString()}
+          </span>
+        </div>
 
         <div className="text-sm text-muted-foreground">
           <Trans>
@@ -141,4 +173,3 @@ function CookieSettingsPage() {
     </div>
   )
 }
-

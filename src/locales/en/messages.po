@@ -559,23 +559,23 @@ msgstr "All processors are bound by data protection agreements and GDPR-complian
 msgid "All recorded revenue inflows"
 msgstr "All recorded revenue inflows"
 
-#: src/routes/cookies.lazy.tsx:42
+#: src/routes/cookies.lazy.tsx:160
 msgid "Allow all"
 msgstr "Allow all"
 
-#: src/routes/cookies.lazy.tsx:40
+#: src/routes/cookies.lazy.tsx:158
 msgid "Allow all cookies"
 msgstr "Allow all cookies"
 
-#: src/routes/cookies.lazy.tsx:34
+#: src/routes/cookies.lazy.tsx:144
 msgid "Allow essential cookies only"
 msgstr "Allow essential cookies only"
 
-#: src/routes/cookies.lazy.tsx:36
+#: src/routes/cookies.lazy.tsx:146
 msgid "Allow essential only"
 msgstr "Allow essential only"
 
-#: src/routes/cookies.lazy.tsx:61
+#: src/routes/cookies.lazy.tsx:74
 msgid "Always enabled"
 msgstr "Always enabled"
 
@@ -600,7 +600,7 @@ msgstr "Amount Range"
 msgid "Analytics"
 msgstr "Analytics"
 
-#: src/routes/cookies.lazy.tsx:81
+#: src/routes/cookies.lazy.tsx:94
 msgid "Analytics (PostHog)"
 msgstr "Analytics (PostHog)"
 
@@ -645,7 +645,7 @@ msgstr "Annotation not found"
 msgid "Annotations"
 msgstr "Annotations"
 
-#: src/routes/cookies.lazy.tsx:90
+#: src/routes/cookies.lazy.tsx:103
 msgid "Anonymous usage patterns, page views, interactions."
 msgstr "Anonymous usage patterns, page views, interactions."
 
@@ -768,9 +768,9 @@ msgid "Both"
 msgstr "Both"
 
 #: src/components/entities/views/Overview.tsx:239
-#: src/components/entities/views/TrendsView.tsx:200
+#: src/components/entities/views/TrendsView.tsx:207
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:88
-#: src/routes/budget-explorer.lazy.tsx:481
+#: src/routes/budget-explorer.lazy.tsx:290
 msgid "Budget Distribution"
 msgstr "Budget Distribution"
 
@@ -908,7 +908,7 @@ msgstr "Check your series filters and try again."
 msgid "Children's privacy"
 msgstr "Children's privacy"
 
-#: src/routes/cookies.lazy.tsx:29
+#: src/routes/cookies.lazy.tsx:60
 msgid "Choose between essential-only or all cookies, then fine-tune options below."
 msgstr "Choose between essential-only or all cookies, then fine-tune options below."
 
@@ -1012,6 +1012,10 @@ msgstr "Configure Series"
 msgid "Confirm"
 msgstr "Confirm"
 
+#: src/routes/cookies.lazy.tsx:153
+msgid "Confirm choices"
+msgstr "Confirm choices"
+
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:62
 #: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:57
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:77
@@ -1077,7 +1081,7 @@ msgid "Cookie Policy – Transparenta.eu"
 msgstr "Cookie Policy – Transparenta.eu"
 
 #: src/components/footer/AppFooter.tsx:116
-#: src/routes/cookies.lazy.tsx:28
+#: src/routes/cookies.lazy.tsx:59
 msgid "Cookie Settings"
 msgstr "Cookie Settings"
 
@@ -1383,8 +1387,8 @@ msgstr "Density"
 msgid "Description"
 msgstr "Description"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:80
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:116
+#: src/routes/budget-explorer.lazy.tsx:311
 msgid "Detail level"
 msgstr "Detail level"
 
@@ -1400,8 +1404,8 @@ msgstr "Detailed breakdown"
 msgid "Detailed Budget Execution"
 msgstr "Detailed Budget Execution"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:90
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:131
+#: src/routes/budget-explorer.lazy.tsx:324
 msgid "Detailed categories"
 msgstr "Detailed categories"
 
@@ -1413,7 +1417,7 @@ msgstr "Detailed Line Items Breakdown"
 msgid "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
 msgstr "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
 
-#: src/routes/entities.$cui.lazy.tsx:214
+#: src/routes/entities.$cui.lazy.tsx:230
 msgid "Details:"
 msgstr "Details:"
 
@@ -1481,10 +1485,10 @@ msgstr "Easily manage your subscriptions"
 msgid "Ec"
 msgstr "Ec"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:76
 #: src/components/entities/views/Overview.tsx:263
-#: src/components/entities/views/TrendsView.tsx:203
+#: src/components/entities/views/TrendsView.tsx:210
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:111
+#: src/routes/budget-explorer.lazy.tsx:306
 msgid "Economic"
 msgstr "Economic"
 
@@ -1581,7 +1585,7 @@ msgstr "Enabled alerts are evaluated monthly and included in your newsletter."
 msgid "English"
 msgstr "English"
 
-#: src/routes/cookies.lazy.tsx:117
+#: src/routes/cookies.lazy.tsx:126
 msgid "Enhanced error reporting"
 msgstr "Enhanced error reporting"
 
@@ -1628,8 +1632,8 @@ msgstr "Entities"
 msgid "Entity"
 msgstr "Entity"
 
-#: src/routes/entities.$cui.lazy.tsx:208
 #: src/routes/entities.$cui.lazy.tsx:224
+#: src/routes/entities.$cui.lazy.tsx:240
 msgid "Entity {cui} – Not found"
 msgstr "Entity {cui} – Not found"
 
@@ -1677,7 +1681,7 @@ msgstr "equals"
 msgid "Error"
 msgstr "Error"
 
-#: src/routes/entities.$cui.lazy.tsx:211
+#: src/routes/entities.$cui.lazy.tsx:227
 msgid "Error Fetching Entity Details"
 msgstr "Error Fetching Entity Details"
 
@@ -1693,7 +1697,7 @@ msgstr "Error Loading Chart Data"
 msgid "Error loading data"
 msgstr "Error loading data"
 
-#: src/routes/entities.$cui.lazy.tsx:208
+#: src/routes/entities.$cui.lazy.tsx:224
 msgid "Error loading data for CUI {cui}."
 msgstr "Error loading data for CUI {cui}."
 
@@ -1709,7 +1713,7 @@ msgstr "Error loading notifications"
 msgid "Error Reporting (opt-in only)"
 msgstr "Error Reporting (opt-in only)"
 
-#: src/routes/cookies.lazy.tsx:107
+#: src/routes/cookies.lazy.tsx:116
 msgid "Error reporting (Sentry)"
 msgstr "Error reporting (Sentry)"
 
@@ -1729,7 +1733,7 @@ msgstr "Error: Series not found"
 msgid "Errors"
 msgstr "Errors"
 
-#: src/routes/cookies.lazy.tsx:53
+#: src/routes/cookies.lazy.tsx:66
 msgid "Essential cookies"
 msgstr "Essential cookies"
 
@@ -1765,7 +1769,7 @@ msgstr "Expense Trends"
 msgid "Expense Type"
 msgstr "Expense Type"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:42
+#: src/components/budget-explorer/BudgetExplorerHeader.tsx:63
 #: src/components/entities/EntityFinancialTrends.tsx:244
 #: src/components/entities/EntityLineItems.tsx:95
 #: src/components/entities/EntityLineItemsTabs.tsx:63
@@ -1855,7 +1859,7 @@ msgstr "Failed to load alert"
 msgid "Failed to load alerts. Please try again."
 msgstr "Failed to load alerts. Please try again."
 
-#: src/routes/budget-explorer.lazy.tsx:487
+#: src/routes/budget-explorer.lazy.tsx:335
 msgid "Failed to load data."
 msgstr "Failed to load data."
 
@@ -1962,10 +1966,10 @@ msgstr "for the selected filters."
 msgid "Found {replacementCount} occurrence{0}"
 msgstr "Found {replacementCount} occurrence{0}"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:70
 #: src/components/entities/views/Overview.tsx:262
-#: src/components/entities/views/TrendsView.tsx:202
+#: src/components/entities/views/TrendsView.tsx:209
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:104
+#: src/routes/budget-explorer.lazy.tsx:303
 msgid "Functional"
 msgstr "Functional"
 
@@ -2083,8 +2087,8 @@ msgstr "greater than"
 msgid "Greater than"
 msgstr "Greater than"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:57
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:92
+#: src/routes/budget-explorer.lazy.tsx:293
 msgid "Grouping"
 msgstr "Grouping"
 
@@ -2107,11 +2111,11 @@ msgstr ""
 "\n"
 "Page: {0}"
 
-#: src/routes/cookies.lazy.tsx:109
+#: src/routes/cookies.lazy.tsx:118
 msgid "Help us fix problems by sending error reports. When disabled, we only send anonymous, minimal error telemetry necessary to keep the service reliable."
 msgstr "Help us fix problems by sending error reports. When disabled, we only send anonymous, minimal error telemetry necessary to keep the service reliable."
 
-#: src/routes/cookies.lazy.tsx:83
+#: src/routes/cookies.lazy.tsx:96
 msgid "Help us understand usage to improve the product. No analytics is sent unless you opt in."
 msgstr "Help us understand usage to improve the product. No analytics is sent unless you opt in."
 
@@ -2153,7 +2157,7 @@ msgstr "How we use your data"
 msgid "If you create an account, Clerk sets the following cookies for authentication and session management:"
 msgstr "If you create an account, Clerk sets the following cookies for authentication and session management:"
 
-#: src/routes/cookies.lazy.tsx:70
+#: src/routes/cookies.lazy.tsx:83
 msgid "If you sign in, authentication cookies (Clerk) are essential to manage your session. Deleting them will sign you out."
 msgstr "If you sign in, authentication cookies (Clerk) are essential to manage your session. Deleting them will sign you out."
 
@@ -2165,11 +2169,11 @@ msgstr "If you unsubscribe, you will no longer receive emails for this notificat
 msgid "Include visible attribution to the data source and Transparenta.eu when sharing charts/maps."
 msgstr "Include visible attribution to the data source and Transparenta.eu when sharing charts/maps."
 
-#: src/routes/cookies.lazy.tsx:118
+#: src/routes/cookies.lazy.tsx:127
 msgid "Includes additional error context. No user identity is attached."
 msgstr "Includes additional error context. No user identity is attached."
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:41
+#: src/components/budget-explorer/BudgetExplorerHeader.tsx:57
 #: src/components/entities/EntityFinancialTrends.tsx:230
 #: src/components/entities/LineItemsAnalytics.tsx:118
 #: src/components/entities/views/MapView.tsx:144
@@ -2191,7 +2195,7 @@ msgstr "Income - Expenses"
 msgid "Income Trends"
 msgstr "Income Trends"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:24
+#: src/components/budget-explorer/BudgetExplorerHeader.tsx:30
 msgid "Income vs Expenses"
 msgstr "Income vs Expenses"
 
@@ -2421,13 +2425,13 @@ msgstr "Lock annotation"
 msgid "Locked"
 msgstr "Locked"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:337
+#: src/components/budget-explorer/BudgetTreemap.tsx:350
 #: src/components/entities/LineItemsAnalytics.tsx:143
 msgid "Main Categories"
 msgstr "Main Categories"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:89
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:128
+#: src/routes/budget-explorer.lazy.tsx:321
 msgid "Main chapters"
 msgstr "Main chapters"
 
@@ -2654,7 +2658,7 @@ msgstr "No conditions set"
 msgid "No Data Available"
 msgstr "No Data Available"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:389
+#: src/components/budget-explorer/BudgetTreemap.tsx:417
 msgid "No data available for the current selection."
 msgstr "No data available for the current selection."
 
@@ -2670,11 +2674,11 @@ msgstr "No data available for the table."
 msgid "No data available to display financial evolution."
 msgstr "No data available to display financial evolution."
 
-#: src/routes/entities.$cui.lazy.tsx:227
+#: src/routes/entities.$cui.lazy.tsx:243
 msgid "No Data Found"
 msgstr "No Data Found"
 
-#: src/routes/entities.$cui.lazy.tsx:224
+#: src/routes/entities.$cui.lazy.tsx:240
 msgid "No data found for CUI {cui}."
 msgstr "No data found for CUI {cui}."
 
@@ -2702,7 +2706,7 @@ msgstr "No economic breakdown is available for income."
 msgid "No enabled series data available to display."
 msgstr "No enabled series data available to display."
 
-#: src/routes/entities.$cui.lazy.tsx:229
+#: src/routes/entities.$cui.lazy.tsx:245
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 
@@ -2770,7 +2774,7 @@ msgstr "No values to replace"
 msgid "Non-direct spending"
 msgstr "Non-direct spending"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:45
+#: src/components/budget-explorer/BudgetExplorerHeader.tsx:70
 #: src/components/charts/components/series-config/SeriesFilter.tsx:353
 #: src/components/entities/EntityReportControls.tsx:246
 #: src/components/filters/EntityAnalyticsFilter.tsx:248
@@ -2832,10 +2836,9 @@ msgstr "Open data follows the source license."
 msgid "Open feedback dialog"
 msgstr "Open feedback dialog"
 
-#: src/routes/budget-explorer.lazy.tsx:592
-#: src/routes/budget-explorer.lazy.tsx:608
-#: src/routes/budget-explorer.lazy.tsx:628
-#: src/routes/budget-explorer.lazy.tsx:645
+#: src/routes/budget-explorer.lazy.tsx:390
+#: src/routes/budget-explorer.lazy.tsx:406
+#: src/routes/budget-explorer.lazy.tsx:426
 msgid "Open in Chart Builder"
 msgstr "Open in Chart Builder"
 
@@ -2911,7 +2914,7 @@ msgstr "Paused"
 msgid "people"
 msgstr "people"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:55
+#: src/components/budget-explorer/BudgetExplorerHeader.tsx:94
 msgid "Per capita"
 msgstr "Per capita"
 
@@ -2930,6 +2933,7 @@ msgstr "Per Capita"
 msgid "Per Capita (EUR)"
 msgstr "Per Capita (EUR)"
 
+#: src/components/budget-explorer/BudgetExplorerHeader.tsx:100
 #: src/components/charts/components/series-config/SeriesFilter.tsx:361
 #: src/components/entities/EntityReportControls.tsx:164
 #: src/components/filters/EntityAnalyticsFilter.tsx:261
@@ -3032,7 +3036,7 @@ msgstr "Quickly adjust chart settings"
 msgid "Read Documentation"
 msgstr "Read Documentation"
 
-#: src/routes/cookies.lazy.tsx:136
+#: src/routes/cookies.lazy.tsx:168
 msgid "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 msgstr "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 
@@ -3087,11 +3091,11 @@ msgstr "Reporting entity"
 msgid "Reporting filters"
 msgstr "Reporting filters"
 
-#: src/routes/entities.$cui.lazy.tsx:275
+#: src/routes/entities.$cui.lazy.tsx:276
 msgid "Reporting period"
 msgstr "Reporting period"
 
-#: src/components/entities/EntityReportLabel.tsx:23
+#: src/components/entities/EntityReportLabel.tsx:33
 msgid "Reporting:"
 msgstr "Reporting:"
 
@@ -3099,7 +3103,7 @@ msgstr "Reporting:"
 msgid "Reports"
 msgstr "Reports"
 
-#: src/routes/cookies.lazy.tsx:55
+#: src/routes/cookies.lazy.tsx:68
 msgid "Required for core functionality like security and preferences. Always on."
 msgstr "Required for core functionality like security and preferences. Always on."
 
@@ -3152,6 +3156,10 @@ msgstr "Sankey Chart (Aggregated)"
 #: src/routes/alerts/$alertId/index.lazy.tsx:270
 msgid "Save"
 msgstr "Save"
+
+#: src/routes/cookies.lazy.tsx:151
+msgid "Save cookie preferences"
+msgstr "Save cookie preferences"
 
 #: src/routes/charts/index.lazy.tsx:166
 msgid "Saved charts – Transparenta.eu"
@@ -3239,7 +3247,7 @@ msgstr "Secondary creditor aggregated"
 msgid "Security monitoring and logs"
 msgstr "Security monitoring and logs"
 
-#: src/routes/budget-explorer.lazy.tsx:569
+#: src/routes/budget-explorer.lazy.tsx:366
 msgid "See advanced view"
 msgstr "See advanced view"
 
@@ -3576,7 +3584,7 @@ msgstr "The Service's software, design, and original content are protected by co
 msgid "The share link you are trying to access is invalid or no longer available."
 msgstr "The share link you are trying to access is invalid or no longer available."
 
-#: src/routes/entities.$cui.lazy.tsx:213
+#: src/routes/entities.$cui.lazy.tsx:229
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "There was a problem fetching the details for CUI: <0>{cui}</0>."
 
@@ -3660,11 +3668,11 @@ msgstr "To exercise any of these rights, contact us at contact@transparenta.eu W
 msgid "To the maximum extent permitted by applicable law, Claudiu Constantin Bogdan and any owners, contributors, and affiliates shall not be liable for any direct, indirect, incidental, special, consequential, or exemplary damages, including but not limited to, damages for loss of profits, revenue, data, goodwill, or other intangible losses, resulting from: (i) your access to, use of, or inability to use the Service; (ii) any reliance on the data, content, or visualizations presented by the Service, regardless of any errors, omissions, or inaccuracies therein; (iii) any financial, professional, personal, or other loss or damage incurred as a result of using the information from the Service; or (iv) any unauthorized access to or use of our servers and any personal information stored therein. This limitation applies whether the alleged liability is based on contract, tort, negligence, strict liability, or any other basis, even if we have been advised of the possibility of such damage. Your sole and exclusive remedy for any dispute with us is to stop using the Service."
 msgstr "To the maximum extent permitted by applicable law, Claudiu Constantin Bogdan and any owners, contributors, and affiliates shall not be liable for any direct, indirect, incidental, special, consequential, or exemplary damages, including but not limited to, damages for loss of profits, revenue, data, goodwill, or other intangible losses, resulting from: (i) your access to, use of, or inability to use the Service; (ii) any reliance on the data, content, or visualizations presented by the Service, regardless of any errors, omissions, or inaccuracies therein; (iii) any financial, professional, personal, or other loss or damage incurred as a result of using the information from the Service; or (iv) any unauthorized access to or use of our servers and any personal information stored therein. This limitation applies whether the alleged liability is based on contract, tort, negligence, strict liability, or any other basis, even if we have been advised of the possibility of such damage. Your sole and exclusive remedy for any dispute with us is to stop using the Service."
 
-#: src/routes/cookies.lazy.tsx:99
+#: src/routes/cookies.lazy.tsx:108
 msgid "Toggle analytics cookies"
 msgstr "Toggle analytics cookies"
 
-#: src/routes/cookies.lazy.tsx:127
+#: src/routes/cookies.lazy.tsx:132
 msgid "Toggle enhanced error reporting"
 msgstr "Toggle enhanced error reporting"
 
@@ -3692,7 +3700,7 @@ msgstr "Top 15 Counties by Total Amount"
 msgid "Top 15 UATs by Total Amount"
 msgstr "Top 15 UATs by Total Amount"
 
-#: src/routes/budget-explorer.lazy.tsx:566
+#: src/routes/budget-explorer.lazy.tsx:363
 msgid "Top Categories"
 msgstr "Top Categories"
 
@@ -3702,7 +3710,7 @@ msgid "Top Economic Categories"
 msgstr "Top Economic Categories"
 
 #: src/components/budget-explorer/BudgetCategoryList.tsx:119
-#: src/routes/budget-explorer.lazy.tsx:624
+#: src/routes/budget-explorer.lazy.tsx:422
 msgid "Top Functional Categories"
 msgstr "Top Functional Categories"
 
@@ -3710,8 +3718,8 @@ msgstr "Top Functional Categories"
 msgid "total"
 msgstr "total"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:54
-#: src/components/budget-explorer/BudgetTreemap.tsx:443
+#: src/components/budget-explorer/BudgetExplorerHeader.tsx:88
+#: src/components/budget-explorer/BudgetTreemap.tsx:475
 #: src/components/common/NormalizationSelector.tsx:21
 #: src/components/entities/EntityReportControls.tsx:46
 #: src/components/entities/views/MapView.tsx:166
@@ -3891,11 +3899,11 @@ msgstr "Update Available"
 msgid "Update Data"
 msgstr "Update Data"
 
-#: src/routes/cookies.lazy.tsx:45
+#: src/routes/cookies.lazy.tsx:163
 msgid "Updated:"
 msgstr "Updated:"
 
-#: src/routes/cookies.lazy.tsx:89
+#: src/routes/cookies.lazy.tsx:102
 msgid "Usage analytics"
 msgstr "Usage analytics"
 
@@ -3949,7 +3957,7 @@ msgstr "View and share your chart."
 msgid "View Chart"
 msgstr "View Chart"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:380
+#: src/components/budget-explorer/BudgetTreemap.tsx:408
 msgid "View Details"
 msgstr "View Details"
 
@@ -4017,7 +4025,7 @@ msgstr "Yearly"
 msgid "Yes"
 msgstr "Yes"
 
-#: src/routes/cookies.lazy.tsx:66
+#: src/routes/cookies.lazy.tsx:79
 msgid "You are signed in. Authentication cookies (Clerk) are essential and required to keep you signed in. Deleting them will sign you out."
 msgstr "You are signed in. Authentication cookies (Clerk) are essential and required to keep you signed in. Deleting them will sign you out."
 
