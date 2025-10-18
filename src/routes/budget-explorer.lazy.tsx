@@ -2,7 +2,7 @@ import { createLazyFileRoute, useNavigate, useSearch, Link } from '@tanstack/rea
 import { useQuery } from '@tanstack/react-query'
 import { z } from 'zod'
 import { Trans } from '@lingui/react/macro'
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useEffect } from 'react'
 
 import { AnalyticsFilterSchema, AnalyticsFilterType } from '@/schemas/charts'
 import { convertDaysToMs, generateHash } from '@/lib/utils'
@@ -14,9 +14,8 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { BudgetExplorerHeader } from '@/components/budget-explorer/BudgetExplorerHeader'
 import { BudgetTreemap } from '@/components/budget-explorer/BudgetTreemap'
 import { BudgetCategoryList } from '@/components/budget-explorer/BudgetCategoryList'
-import { BudgetDetailsDrawer } from '@/components/budget-explorer/BudgetDetailsDrawer'
 import { BudgetLineItemsPreview } from '@/components/budget-explorer/BudgetLineItemsPreview'
-import { buildTreemapDataV2, calculateExcludedItems } from '@/components/budget-explorer/budget-transform'
+import { useTreemapDrilldown } from '@/components/budget-explorer/useTreemapDrilldown'
 import { SpendingBreakdown } from '@/components/budget-explorer/SpendingBreakdown'
 import { RevenueBreakdown } from '@/components/budget-explorer/RevenueBreakdown'
 import { FloatingQuickNav } from '@/components/ui/FloatingQuickNav'
@@ -25,7 +24,7 @@ import { Chart, ChartSchema, SeriesConfigurationSchema } from '@/schemas/charts'
 import { BarChart2 } from 'lucide-react'
 import { getSeriesColor } from '@/components/charts/components/chart-renderer/utils';
 import { getClassificationName } from '@/lib/classifications'
-import { getEconomicChapterName, getEconomicClassificationName, getEconomicSubchapterName } from '@/lib/economic-classifications'
+import { getEconomicChapterName } from '@/lib/economic-classifications'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { usePeriodLabel } from '@/hooks/use-period-label'
 import { useUserCurrency } from '@/lib/hooks/useUserCurrency'
@@ -85,7 +84,6 @@ const economicMainChapters = [57, 10, 20, 51, 30, 55, 56, 61] as const
 // Revenue-focused top functional categories (codes provided by product spec)
 const revenueTopFunctionalChapters = ['21', '10', '42', '03', '14', '01', '33'] as const
 
-const normalizeCode = (code?: string | null) => code?.replace(/[^0-9.]/g, '') ?? ''
 
 function buildSeriesFilter(base: AnalyticsFilterType, overrides: Partial<AnalyticsFilterType>) {
   return {
@@ -98,28 +96,6 @@ function buildSeriesFilter(base: AnalyticsFilterType, overrides: Partial<Analyti
     ...overrides,
     report_period: undefined,
   } as AnalyticsFilterType
-}
-
-function buildPathLabel(primary: 'fn' | 'ec', code: string) {
-  const normalized = normalizeCode(code)
-  if (primary === 'fn') {
-    const fnName = getClassificationName(normalized)
-    if (fnName) return fnName
-    return `FN ${normalized}`
-  }
-  // economic label resolution by depth
-  const parts = normalized.split('.')
-  if (parts.length === 1) {
-    const ecName = getEconomicChapterName(normalized)
-    if (ecName) return ecName
-  } else if (parts.length === 2) {
-    const ecName = getEconomicSubchapterName(normalized)
-    if (ecName) return ecName
-  } else {
-    const ecName = getEconomicClassificationName(normalized)
-    if (ecName) return ecName
-  }
-  return `EC ${normalized}`
 }
 
 function BudgetExplorerPage() {
@@ -149,11 +125,7 @@ function BudgetExplorerPage() {
     refetchOnWindowFocus: false,
   })
 
-  const [path, setPath] = useState<string[]>([])
-  const [drawerCode, setDrawerCode] = useState<string | null>(null)
-  const [drillPrimary, setDrillPrimary] = useState<'fn' | 'ec'>(initialTreemapPrimary)
-  const [crossConstraint, setCrossConstraint] = useState<{ type: 'fn' | 'ec'; code: string } | null>(null)
-  const [breadcrumbPath, setBreadcrumbPath] = useState<{ code: string; label: string }[]>([])
+  // Drawer/side panel removed to match unified behavior
 
   useEffect(() => {
     if (currency === 'EUR' && filter.normalization !== 'total_euro' && filter.normalization !== 'per_capita_euro') {
@@ -163,60 +135,28 @@ function BudgetExplorerPage() {
     }
   }, [currency, filter.normalization])
 
-  useEffect(() => {
-    const effectivePrimary = treemapPrimary ?? primary
-    setDrillPrimary(effectivePrimary)
-    setPath([])
-    setCrossConstraint(null)
-    setBreadcrumbPath([])
-  }, [primary, treemapPrimary])
-
-  const appendBreadcrumb = (type: 'fn' | 'ec', code: string) => {
-    const normalized = normalizeCode(code)
-    const depth = normalized.split('.').length
-    // Prefer API-provided names for 6-digit (depth=3) codes
-    let label: string | undefined
-    if (depth >= 3) {
-      const match = nodes.find((n) => normalizeCode(type === 'fn' ? n.fn_c : n.ec_c) === normalized)
-      const apiName = type === 'fn' ? match?.fn_n : match?.ec_n
-      if (apiName && apiName.trim()) {
-        label = apiName
-      }
-    }
-    if (!label) {
-      label = buildPathLabel(type, code)
-    }
-    const last = breadcrumbPath[breadcrumbPath.length - 1]
-    if (last && last.code === code && last.label === label) return
-    setBreadcrumbPath((prev) => [...prev, { code, label }])
-  }
-
-  const nodes = data?.nodes ?? []
-
   // Exclude non-direct spending items for spending view (account_category='ch')
   const excludeEcCodes = filter.account_category === 'ch' ? ['51', '80', '81'] : []
 
-  const treemap = useMemo(() => {
-    const rootDepth: 2 | 4 | 6 = depth === 'detail' ? 4 : 2
-    return buildTreemapDataV2({
-      data: nodes,
-      primary: drillPrimary,
-      path,
-      constraint: crossConstraint ?? undefined,
-      rootDepth,
-      excludeEcCodes,
-    })
-  }, [nodes, drillPrimary, path, crossConstraint, depth, excludeEcCodes])
+  // Unified drilldown state using shared hook
+  const {
+    activePrimary,
+    breadcrumbs,
+    treemapData,
+    excludedItemsSummary,
+    onNodeClick,
+    onBreadcrumbClick,
+    reset,
+  } = useTreemapDrilldown({
+    nodes: data?.nodes ?? [],
+    initialPrimary: initialTreemapPrimary,
+    rootDepth: depth === 'detail' ? 4 : 2,
+    excludeEcCodes,
+    onPrimaryChange: (p) => handleFilterChange({ treemapPrimary: p }),
+  })
 
-  // Calculate excluded items for the current layer dynamically
-  const excludedItemsSummary = useMemo(() => {
-    if (excludeEcCodes.length === 0) return undefined
-    return calculateExcludedItems(nodes, excludeEcCodes, {
-      path,
-      constraint: crossConstraint ?? undefined,
-      primary: drillPrimary,
-    })
-  }, [nodes, excludeEcCodes, path, crossConstraint, drillPrimary])
+  // Keep label helpers for other components if needed
+  const nodes = data?.nodes ?? []
 
   const ministryChart: Chart = useMemo(() => {
     const series = ministries.map((ministry, index) => {
@@ -363,100 +303,13 @@ function BudgetExplorerPage() {
       replace: true,
       resetScroll: false,
     })
-    setPath([])
-    setDrawerCode(null)
-    setDrillPrimary(nextTreemapPrimary ?? nextPrimary)
-    setCrossConstraint(null)
-    setBreadcrumbPath([])
+    reset()
   }
 
   const handleNodeClick = (code: string | null) => {
-    // If we've already completed both primary flows up to 6-digit, ignore further clicks
-    const totalSixDigitSteps = breadcrumbPath.reduce((acc, item) => acc + (item.code && item.code.split('.').length === 3 ? 1 : 0), 0)
-    if (totalSixDigitSteps >= 2) {
-      return
-    }
-
-    // Reset to root
-    if (!code) {
-      setPath([])
-      setCrossConstraint(null)
-      setDrillPrimary(primary)
-      setBreadcrumbPath([])
-      return
-    }
-
-    const normalizedCode = normalizeCode(code)
-
-    // Ignore clicks that would not advance (duplicate of last step)
-    const lastPathCode = path[path.length - 1]
-    if (lastPathCode && lastPathCode === normalizedCode) return
-    if (normalizedCode.startsWith('00')) return
-
-    const selectedDepth = normalizedCode ? normalizedCode.split('.').length : 0 // 1->2d, 2->4d, 3->6d
-
-    const hasNextInCurrent = (nextPath: string[]) => {
-      const next = buildTreemapDataV2({
-        data: nodes,
-        primary: drillPrimary,
-        path: nextPath,
-        constraint: crossConstraint ?? undefined,
-      })
-      return next.length > 0
-    }
-
-    // If we are already pivoting, keep drilling within current primary
-    if (crossConstraint) {
-      // In pivot stage: allow drill down within current primary up to 6-digits
-      if (selectedDepth < 3) {
-        const nextPath = [...path, normalizedCode]
-        if (!hasNextInCurrent(nextPath)) return
-        appendBreadcrumb(drillPrimary, normalizedCode)
-        setPath(nextPath)
-        return
-      }
-      // End of path
-      return
-    }
-
-    // Not in pivot stage yet: drill 2->4->6 within the same primary; pivot only at 6
-    if (selectedDepth < 3) {
-      setDrawerCode(null)
-      const nextPath = [...path, normalizedCode]
-      if (!hasNextInCurrent(nextPath)) return
-      appendBreadcrumb(drillPrimary, normalizedCode)
-      setPath(nextPath)
-      return
-    }
-
-    // Pivot at 6-digit to the opposite primary constrained by this code
-    // First, record the final step in the first primary
-    appendBreadcrumb(drillPrimary, normalizedCode)
-    const opposite = drillPrimary === 'fn' ? 'ec' : 'fn'
-    const oppositeRoot = buildTreemapDataV2({
-      data: nodes,
-      primary: opposite,
-      path: [],
-      constraint: { type: drillPrimary, code: normalizedCode },
-      rootDepth: 2,
-    })
-    if (oppositeRoot.length > 0) {
-      setCrossConstraint({ type: drillPrimary, code: normalizedCode })
-      setDrillPrimary(opposite)
-      setPath([]) // start fresh for the opposite primary levels (2 -> 4 -> 6)
-      setDrawerCode(null)
-    }
+    onNodeClick(code)
   }
 
-  const clearDrill = () => {
-    setPath([])
-    setDrawerCode(null)
-    setDrillPrimary(primary)
-    setCrossConstraint(null)
-    setBreadcrumbPath([])
-  }
-
-  const currentDrillCode = path.length > 0 ? path[path.length - 1] : null
 
   const currentDepthNumeric = useMemo(() => (depth === 'detail' ? 4 : 2) as 2 | 4 | 6, [depth])
   const periodLabel = usePeriodLabel(filter.report_period)
@@ -487,64 +340,13 @@ function BudgetExplorerPage() {
               <p className="text-sm text-red-500"><Trans>Failed to load data.</Trans></p>
             ) : (
               <BudgetTreemap
-                data={treemap}
+                data={treemapData}
                 onNodeClick={handleNodeClick}
-                onBreadcrumbClick={(code, index) => {
-                  // Back to root when clicking main
-                  if (!code) {
-                    clearDrill()
-                    return
-                  }
-
-                  const normalized = normalizeCode(code)
-                  const clickedIndex = typeof index === 'number' ? index : breadcrumbPath.findIndex((c) => c.code === normalized)
-                  const clickedDepth = normalized.split('.').length
-
-                  if (!crossConstraint) {
-                    // Pre-pivot: trim current path and breadcrumbs
-                    const idxInPath = path.indexOf(normalized)
-                    let newPath = idxInPath !== -1 ? path.slice(0, idxInPath + 1) : [normalized]
-                    // Avoid ending at 6-digit (would show no data); go to parent
-                    if (clickedDepth >= 3) {
-                      newPath = idxInPath > 0 ? path.slice(0, idxInPath) : [normalized.split('.').slice(0, 2).join('.')]
-                    }
-                    setPath(newPath)
-                    if (clickedIndex !== -1) setBreadcrumbPath(breadcrumbPath.slice(0, clickedDepth >= 3 ? clickedIndex : clickedIndex + 1))
-                    setDrillPrimary(primary)
-                    return
-                  }
-
-                  // With pivot: split by the 6-digit code used for pivot
-                  const pivotCode = normalizeCode(crossConstraint.code)
-                  const pivotIndex = breadcrumbPath.findIndex((c) => c.code === pivotCode)
-
-                  if (pivotIndex === -1 || clickedIndex <= pivotIndex) {
-                    // Move back into first primary (pre-pivot)
-                    let newPathCodes = breadcrumbPath.slice(0, clickedIndex + 1).map((c) => normalizeCode(c.code))
-                    // If clicked the 6-digit pivot itself, step to its parent instead
-                    if (clickedIndex === pivotIndex || clickedDepth >= 3) {
-                      newPathCodes = breadcrumbPath.slice(0, Math.max(pivotIndex, clickedIndex)).map((c) => normalizeCode(c.code))
-                    }
-                    setPath(newPathCodes)
-                    setDrillPrimary(crossConstraint.type)
-                    setCrossConstraint(null)
-                    setBreadcrumbPath(breadcrumbPath.slice(0, clickedIndex === pivotIndex || clickedDepth >= 3 ? Math.max(pivotIndex, clickedIndex) : clickedIndex + 1))
-                    return
-                  }
-
-                  // Move within second primary (post-pivot)
-                  let secondPath = breadcrumbPath.slice(pivotIndex + 1, clickedIndex + 1).map((c) => normalizeCode(c.code))
-                  // Avoid ending at 6-digit; go one level up within second primary
-                  if (clickedDepth >= 3) {
-                    secondPath = breadcrumbPath.slice(pivotIndex + 1, clickedIndex).map((c) => normalizeCode(c.code))
-                  }
-                  setPath(secondPath)
-                  setBreadcrumbPath(breadcrumbPath.slice(0, clickedDepth >= 3 ? clickedIndex : clickedIndex + 1))
-                }}
-                path={breadcrumbPath}
-                primary={drillPrimary}
-                onViewDetails={() => setDrawerCode(currentDrillCode)}
-                showViewDetails={!!currentDrillCode && !crossConstraint}
+                onBreadcrumbClick={onBreadcrumbClick}
+                path={breadcrumbs}
+                primary={activePrimary}
+                onViewDetails={undefined}
+                showViewDetails={false}
                 normalization={filter.normalization}
                 excludedItemsSummary={excludedItemsSummary}
               />
@@ -657,7 +459,7 @@ function BudgetExplorerPage() {
           <CardContent className="pt-6">
             <BudgetLineItemsPreview
               data={data}
-              groupBy={drillPrimary}
+              groupBy={activePrimary}
               isLoading={isLoading}
               filter={filter}
             />
@@ -665,14 +467,7 @@ function BudgetExplorerPage() {
         </Card>
       </div>
 
-      <BudgetDetailsDrawer
-        open={!!drawerCode}
-        onOpenChange={(open) => { if (!open) setDrawerCode(null) }}
-        code={drawerCode}
-        primary={drillPrimary}
-        nodes={nodes}
-        filter={filter}
-      />
+      {/* Side panel removed for unified behavior */}
     </div>
   )
 }

@@ -64,7 +64,7 @@ const adjustColorBrightness = (hexColor: string | undefined, percentage: number)
   return `#${toHex(adjustedRed)}${toHex(adjustedGreen)}${toHex(adjustedBlue)}`
 }
 
-type BreadcrumbEntry = { code: string; label: string }
+type BreadcrumbEntry = { code: string; label: string; type?: 'fn' | 'ec' }
 
 type Props = {
   data: TreemapInput[]
@@ -89,6 +89,8 @@ const CustomizedContent: FC<{
   fill: string
   root: { value: number }
   normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro'
+  // Recharts passes the original datum under `payload`. We use its fill for stable coloring.
+  payload?: { fill?: string; code?: string; name?: string; value?: number }
 }> = (props) => {
   const { name, value, depth, x, y, width, height, fill, root, normalization } = props
   const hasAnimatedInRef = useRef(false)
@@ -155,7 +157,11 @@ const CustomizedContent: FC<{
       height: 0,
     }
 
-  const defaultFill = typeof fill === 'string' && fill.length > 0 ? fill : COLORS[0]
+  // Keep original color logic; rely on Recharts-provided `fill`, but if payload carries a fill use it.
+  const payloadFill = (props as { payload?: { fill?: string } }).payload?.fill
+  const defaultFill = typeof fill === 'string' && fill.length > 0
+    ? fill
+    : (typeof payloadFill === 'string' && payloadFill.length > 0 ? payloadFill : COLORS[0])
 
   useEffect(() => {
     void bounceControls.start({
@@ -362,6 +368,10 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
               const isClickable = !!item.code && /^[0-9.]+$/.test(item.code) && !isLastCrumb
               const isLast = index === displayPath.length - 1
 
+              // Use the breadcrumb's originating type (pre/post pivot) to derive color.
+              const crumbType = item.type ?? primary
+              const itemColor = getColor(`${crumbType}-${item.code}`)
+
               return (
                 <div
                   key={key}
@@ -373,20 +383,15 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
                     }`}
                 >
                   <div
-                    className={`absolute inset-0 transition-all duration-200 ${isLast && !isClickable
-                      ? 'bg-primary shadow-md border-y-2 border-primary'
-                      : isClickable
-                        ? 'bg-foreground group-hover:shadow-md border-y-2 border-background/20'
-                        : 'bg-foreground shadow-md border-y-2 border-background/20'
-                      }`}
+                    className={`absolute inset-0 transition-all duration-200 shadow-md border-y-2 border-background/20`}
                     style={{
+                      backgroundColor: itemColor,
                       clipPath: isLast
                         ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%, 12px 50%)'
                         : 'polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%)'
                     }}
                   />
-                  <span className={`relative z-10 whitespace-nowrap text-sm font-medium transition-colors duration-200 ${isLast && !isClickable ? 'text-primary-foreground' : 'text-background'
-                    }`}>
+                  <span className="relative z-10 whitespace-nowrap text-sm font-medium text-background">
                     {isMobile && item.label && item.label.length > 20
                       ? `${item.label.slice(0, 20)}...`
                       : item.label ?? item.code}
@@ -433,14 +438,14 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
                 nameKey="name"
                 isAnimationActive={false}
                 onClick={handleNodeClick}
-                content={(props) => <CustomizedContent
-                  fill={props.fill}
-                  root={{
-                    value: totalValue
-                  }}
-                  {...props}
-                  normalization={normalization}
-                />}
+                content={(props) => (
+                  <CustomizedContent
+                    {...props}
+                    fill={(props as any)?.payload?.fill ?? props.fill}
+                    root={{ value: totalValue }}
+                    normalization={normalization}
+                  />
+                )}
               >
                 {!isMobile && (
                   <Tooltip
