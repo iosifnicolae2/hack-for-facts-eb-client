@@ -28,6 +28,8 @@ import { getEconomicChapterName } from '@/lib/economic-classifications'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { usePeriodLabel } from '@/hooks/use-period-label'
 import { useUserCurrency } from '@/lib/hooks/useUserCurrency'
+import { Label } from '@/components/ui/label'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 
 export const Route = createLazyFileRoute('/budget-explorer')({
   component: BudgetExplorerPage,
@@ -57,27 +59,7 @@ const SearchSchema = z.object({
 
 export type BudgetExplorerState = z.infer<typeof SearchSchema>
 
-const ministries = [
-  { name: 'MINISTERUL MUNCII SI SOLIDARITATII SOCIALE', cui: '4266669' },
-  { name: 'MINISTERUL EDUCATIEI', cui: '13729380' },
-  { name: 'MINISTERUL FINANTELOR - ACTIUNI GENERALE', cui: '8609468' },
-  { name: 'MINISTERUL AGRICULTURII SI DEZVOLTARII RURALE', cui: '4221187' },
-  { name: 'MINISTERUL APARARII NATIONALE', cui: '11424532' },
-  { name: 'MINISTERUL TRANSPORTURILOR SI INFRASTRUCTURII', cui: '13633330' },
-  { name: 'MINISTERUL SANATATII', cui: '4266456' },
-  { name: 'MINISTERUL AFACERILOR INTERNE', cui: '4267095' },
-  { name: 'MINISTERUL DEZVOLTARII LUCRARILOR PUBLICE SI ADMINISTRATIEI', cui: '26369185' },
-  { name: 'MINISTERUL INVESTITIILOR SI PROIECTELOR EUROPENE', cui: '38918422' },
-  { name: 'MINISTERUL MEDIULUI APELOR SI PADURILOR', cui: '16335444' },
-  { name: 'MINISTERUL FINANTELOR', cui: '4221306' },
-  { name: 'MINISTERUL JUSTITIEI', cui: '4265841' },
-  { name: 'MINISTERUL ENERGIEI', cui: '43507695' },
-  { name: 'MINISTERUL CERCETARII INOVARII SI DIGITALIZARII', cui: '43516588' },
-  { name: 'MINISTERUL CULTURII', cui: '4192812' },
-  { name: 'MINISTERUL AFACERILOR EXTERNE', cui: '4266863' },
-  { name: 'MINISTERUL ECONOMIEI ANTREPRENORIATULUI SI TURISMULUI', cui: '24931499' },
-  { name: 'MINISTERUL FAMILIEI TINERETULUI SI EGALITATII DE SANSE', cui: '45340622' },
-]
+// Removed ministries list (unused after simplifying charts)
 
 const functionalMainChapters = ['68', '66', '65', '84', '51', '61', '70', '83', '60', '74', '55', '67'] as const
 const economicMainChapters = [57, 10, 20, 51, 30, 55, 56, 61] as const
@@ -140,6 +122,8 @@ function BudgetExplorerPage() {
 
   // Unified drilldown state using shared hook
   const {
+    primary: treemapUiPrimary,
+    setPrimary: setTreemapUiPrimary,
     activePrimary,
     breadcrumbs,
     treemapData,
@@ -158,37 +142,7 @@ function BudgetExplorerPage() {
   // Keep label helpers for other components if needed
   const nodes = data?.nodes ?? []
 
-  const ministryChart: Chart = useMemo(() => {
-    const series = ministries.map((ministry, index) => {
-      const seriesFilter = {
-        ...filter,
-        entity_cuis: [ministry.cui],
-        report_type: 'Executie bugetara agregata la nivel de ordonator principal',
-      }
-      const seriesId = generateHash(JSON.stringify(seriesFilter))
-
-      return SeriesConfigurationSchema.parse({
-        id: seriesId,
-        type: 'line-items-aggregated-yearly',
-        label: ministry.name,
-        filter: seriesFilter,
-        config: {
-          color: getSeriesColor(index),
-        },
-      })
-    })
-
-    const chartId = generateHash(JSON.stringify({ title: 'Ministry Spending Comparison', filter }))
-    return ChartSchema.parse({
-      id: chartId,
-      title: 'Ministry Spending Comparison',
-      config: {
-        chartType: 'treemap-aggr',
-        showTooltip: !isMobile,
-      },
-      series,
-    })
-  }, [filter, isMobile])
+  // Removed unused `ministryChart` (hidden card not used currently) to satisfy typecheck
 
   const functionalChart: Chart = useMemo(() => {
     const series = functionalMainChapters.map((code, index) => {
@@ -313,6 +267,7 @@ function BudgetExplorerPage() {
 
   const currentDepthNumeric = useMemo(() => (depth === 'detail' ? 4 : 2) as 2 | 4 | 6, [depth])
   const periodLabel = usePeriodLabel(filter.report_period)
+  const isRevenueView = filter.account_category === 'vn'
 
   return (
     <div className="px-4 lg:px-6 py-4">
@@ -331,9 +286,49 @@ function BudgetExplorerPage() {
 
         <Card className="shadow-sm">
           <CardHeader>
-            <h3 className="text-base sm:text-lg font-semibold"><Trans>Budget Distribution</Trans> - {periodLabel}</h3>
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 lg:gap-4">
+              <h3 className="text-xl sm:text-3xl font-bold"><Trans>Budget Distribution</Trans> - {periodLabel}</h3>
+              <div className="flex flex-col gap-3 lg:flex-row items-start lg:gap-4 lg:flex-wrap">
+                <div className="flex flex-col gap-1.5">
+                  <Label className="text-xs text-muted-foreground"><Trans>Grouping</Trans></Label>
+                  <ToggleGroup
+                    type="single"
+                    value={treemapUiPrimary}
+                    onValueChange={(v: 'fn' | 'ec') => { if (v) setTreemapUiPrimary(v) }}
+                    variant="outline"
+                    size="sm"
+                    className="w-full sm:w-auto justify-start sm:justify-end"
+                  >
+                    <ToggleGroupItem value="fn" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 whitespace-nowrap">
+                      <Trans>Functional</Trans>
+                    </ToggleGroupItem>
+                    <ToggleGroupItem value="ec" disabled={isRevenueView} className="data-[state=on]:bg-foreground data-[state=on]:text-background px-4 whitespace-nowrap">
+                      <Trans>Economic</Trans>
+                    </ToggleGroupItem>
+                  </ToggleGroup>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <Label className="text-xs text-muted-foreground"><Trans>Detail level</Trans></Label>
+                  <ToggleGroup
+                    type="single"
+                    value={depth}
+                    onValueChange={(v: 'main' | 'detail') => { if (v) handleFilterChange({ depth: v }) }}
+                    variant="outline"
+                    size="sm"
+                    className="w-full sm:w-auto justify-start sm:justify-end"
+                  >
+                    <ToggleGroupItem value="main" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-3 whitespace-nowrap">
+                      <Trans>Main chapters</Trans>
+                    </ToggleGroupItem>
+                    <ToggleGroupItem value="detail" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-3 whitespace-nowrap">
+                      <Trans>Detailed categories</Trans>
+                    </ToggleGroupItem>
+                  </ToggleGroup>
+                </div>
+              </div>
+            </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-0 sm:px-6">
             {isLoading ? (
               <Skeleton className="w-full h-[600px]" />
             ) : error ? (
@@ -438,22 +433,6 @@ function BudgetExplorerPage() {
             </CardContent>
           </Card>
         )}
-
-        <Card className="shadow-sm hidden">
-          <CardHeader>
-            <div className="flex items-center justify-end">
-              <Button asChild variant="outline" size="sm">
-                <Link to={'/charts/$chartId'} params={{ chartId: ministryChart.id }} search={{ chart: ministryChart, view: 'overview' }}>
-                  <BarChart2 className="w-4 h-4 mr-2" />
-                  <Trans>Open in Chart Builder</Trans>
-                </Link>
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <ChartPreview chart={ministryChart} height={600} />
-          </CardContent>
-        </Card>
 
         <Card className="shadow-sm">
           <CardContent className="pt-6">

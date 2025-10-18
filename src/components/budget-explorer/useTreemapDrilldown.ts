@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState, useEffect } from 'react'
 import { buildTreemapDataV2, calculateExcludedItems, type AggregatedNode } from './budget-transform'
 import { getClassificationName } from '@/lib/classifications'
 import { getEconomicChapterName, getEconomicClassificationName, getEconomicSubchapterName } from '@/lib/economic-classifications'
@@ -84,6 +84,16 @@ export function useTreemapDrilldown({
   const [path, setPath] = useState<string[]>([])
   const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([])
   const [crossConstraint, setCrossConstraint] = useState<{ type: 'fn' | 'ec'; code: string } | null>(null)
+
+  useEffect(() => {
+    if (primary !== initialPrimary) {
+      setPrimary(initialPrimary)
+      setDrillPrimary(initialPrimary)
+      setPath([])
+      setCrossConstraint(null)
+      setBreadcrumbs([])
+    }
+  }, [initialPrimary, primary])
 
   const treemapData = useMemo(() => {
     return buildTreemapDataV2({
@@ -209,7 +219,7 @@ export function useTreemapDrilldown({
       // If opposite has no data, do not append breadcrumb; remain at current state.
       return
     },
-    [nodes, primary, drillPrimary, crossConstraint, path, breadcrumbs, appendBreadcrumb, rootDepth],
+    [nodes, primary, drillPrimary, crossConstraint, path, breadcrumbs, appendBreadcrumb, rootDepth, excludeEcCodes],
   )
 
   const onBreadcrumbClick = useCallback(
@@ -301,7 +311,7 @@ export function useTreemapDrilldown({
       setPath(secondPath)
       setBreadcrumbs(breadcrumbs.slice(0, clickedIndex + 1))
     },
-    [breadcrumbs, crossConstraint, path, primary],
+    [breadcrumbs, crossConstraint, path, primary, nodes, excludeEcCodes],
   )
 
   const handleSetPrimary = useCallback((value: 'fn' | 'ec') => {

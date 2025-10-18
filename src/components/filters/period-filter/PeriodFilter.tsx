@@ -43,40 +43,40 @@ export function PeriodFilter({ value, onChange, allowDeselect = true }: Props) {
     if (!mode) return
     // Reset selection when changing mode
     if (mode === 'dates') {
-        const currentYear = String(new Date().getFullYear())
-        let defaultDate: PeriodDate
-        switch (periodType) {
-            case 'YEAR':
-                defaultDate = currentYear as PeriodDate
-                break
-            case 'QUARTER':
-                defaultDate = `${currentYear}-Q1` as PeriodDate
-                break
-            case 'MONTH':
-                defaultDate = `${currentYear}-01` as PeriodDate
-                break
-        }
-        onChange?.({ type: periodType, selection: { dates: [defaultDate] } })
+      const currentYear = String(new Date().getFullYear())
+      let defaultDate: PeriodDate
+      switch (periodType) {
+        case 'YEAR':
+          defaultDate = currentYear as PeriodDate
+          break
+        case 'QUARTER':
+          defaultDate = `${currentYear}-Q1` as PeriodDate
+          break
+        case 'MONTH':
+          defaultDate = `${currentYear}-01` as PeriodDate
+          break
+      }
+      onChange?.({ type: periodType, selection: { dates: [defaultDate] } })
     } else {
-        const currentYear = String(new Date().getFullYear())
-        let start: PeriodDate
-        let end: PeriodDate
+      const currentYear = String(new Date().getFullYear())
+      let start: PeriodDate
+      let end: PeriodDate
 
-        switch (periodType) {
-            case 'YEAR':
-                start = sortedPeriodOptions[0] as PeriodDate
-                end = sortedPeriodOptions[sortedPeriodOptions.length - 1] as PeriodDate
-                break;
-            case 'QUARTER':
-                start = `${currentYear}-Q1` as PeriodDate
-                end = `${currentYear}-Q4` as PeriodDate
-                break;
-            case 'MONTH':
-                start = `${currentYear}-01` as PeriodDate
-                end = `${currentYear}-12` as PeriodDate
-                break;
-        }
-        onChange?.({ type: periodType, selection: { interval: { start , end } } })
+      switch (periodType) {
+        case 'YEAR':
+          start = sortedPeriodOptions[0] as PeriodDate
+          end = sortedPeriodOptions[sortedPeriodOptions.length - 1] as PeriodDate
+          break;
+        case 'QUARTER':
+          start = `${currentYear}-Q1` as PeriodDate
+          end = `${currentYear}-Q4` as PeriodDate
+          break;
+        case 'MONTH':
+          start = `${currentYear}-01` as PeriodDate
+          end = `${currentYear}-12` as PeriodDate
+          break;
+      }
+      onChange?.({ type: periodType, selection: { interval: { start, end } } })
     }
   }
 
@@ -178,12 +178,12 @@ export function PeriodFilter({ value, onChange, allowDeselect = true }: Props) {
 
 
   const handleIntervalStartChange = (start: PeriodDate) => {
-      const end = value?.selection.interval?.end ?? sortedPeriodOptions[sortedPeriodOptions.length - 1] as PeriodDate
-      onChange?.({ type: periodType, selection: { interval: { start, end } } })
+    const end = value?.selection.interval?.end ?? sortedPeriodOptions[sortedPeriodOptions.length - 1] as PeriodDate
+    onChange?.({ type: periodType, selection: { interval: { start, end } } })
   }
   const handleIntervalEndChange = (end: PeriodDate) => {
-      const start = value?.selection.interval?.start ?? sortedPeriodOptions[0] as PeriodDate
-      onChange?.({ type: periodType, selection: { interval: { start, end } } })
+    const start = value?.selection.interval?.start ?? sortedPeriodOptions[0] as PeriodDate
+    onChange?.({ type: periodType, selection: { interval: { start, end } } })
   }
 
   const renderIntervalSelection = () => {
