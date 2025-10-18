@@ -332,10 +332,10 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
           <div className="flex items-center w-fit">
             <div
               onClick={() => onBreadcrumbClick?.(null)}
-              className="group relative h-6 pl-4 pr-6 mr-2 flex items-center cursor-pointer transition-all duration-200"
+              className="group relative h-6 pl-4 pr-6 mr-1 flex items-center cursor-pointer transition-all duration-200"
             >
               <div
-                className="absolute inset-0 bg-foreground group-hover:bg-foreground/80 group-active:bg-foreground/70 transition-colors duration-200 border-y-2 border-background/20"
+                className="absolute inset-0 bg-foreground transition-colors duration-200 border-y-2 border-background/20"
                 style={{
                   clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 0 0)'
                 }}
@@ -345,7 +345,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
               </span>
             </div>
             {isMobile && path.length > 2 && (
-              <div className="relative h-6 pl-5 pr-6 mr-2 flex items-center -ml-[12px]">
+              <div className="relative h-6 pl-5 pr-6 mr-1 flex items-center -ml-[12px]">
                 <div
                   className="absolute inset-0 bg-foreground/70 border-y-2 border-background/20"
                   style={{
@@ -369,14 +369,14 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
                     if (!isClickable) return
                     onBreadcrumbClick?.(item.code, actualIndex)
                   }}
-                  className={`group relative h-6 pl-5 pr-6 mr-2 flex items-center -ml-[12px] transition-all duration-200 ${isClickable ? 'cursor-pointer' : 'cursor-default'
+                  className={`group relative h-6 pl-5 pr-6 mr-1 flex items-center -ml-[12px] transition-all duration-200 ${isClickable ? 'cursor-pointer' : 'cursor-default'
                     }`}
                 >
                   <div
                     className={`absolute inset-0 transition-all duration-200 ${isLast && !isClickable
                       ? 'bg-primary shadow-md border-y-2 border-primary'
                       : isClickable
-                        ? 'bg-foreground group-hover:bg-foreground/80 group-hover:shadow-md group-active:bg-foreground/70 border-y-2 border-background/20'
+                        ? 'bg-foreground group-hover:shadow-md border-y-2 border-background/20'
                         : 'bg-foreground shadow-md border-y-2 border-background/20'
                       }`}
                     style={{
@@ -419,7 +419,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute right-6 sm:right-2 top-2 z-10 h-8 w-8 rounded-md bg-black text-white transition-colors hover:bg-black/80 hover:text-white"
+                className="absolute right-6 sm:right-2 top-2 z-10 h-8 w-8 rounded-md bg-black text-white transition-colors"
                 onClick={handleBackClick}
                 aria-label="Go back"
               >
