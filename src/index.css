@@ -39,7 +39,7 @@
 
   html,
   :root {
-    overscroll-behavior: none;
+    overscroll-behavior: auto;
     /* Base colors */
     --background: 0 0% 99%;
     --foreground: 0 0% 12%;
