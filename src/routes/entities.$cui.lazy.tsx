@@ -202,6 +202,22 @@ function EntityDetailsPage() {
   }, [updateReportPeriodInSearch])
 
 
+  // Prepare filter input for FloatingQuickNav
+  const filterInput: AnalyticsFilterType = useMemo(() => ({
+    entity_cuis: [cui],
+    report_period: reportPeriod,
+    account_category: accountCategory ?? 'ch',
+    normalization: normalization,
+  }), [cui, reportPeriod, accountCategory, normalization])
+
+  // Determine mapViewType based on entity type
+  const mapViewType = useMemo<'UAT' | 'County'>(() => {
+    if (entity?.entity_type === 'admin_county_council') return 'County'
+    if (entity?.is_uat) return 'UAT'
+    return 'UAT'
+  }, [entity?.entity_type, entity?.is_uat])
+
+
   if (isError) {
     return (
       <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex justify-center items-center p-4">
@@ -234,21 +250,6 @@ function EntityDetailsPage() {
   }
 
   const { title: metaTitle, description: metaDescription } = buildEntitySeo(entity, cui, selectedYear)
-
-  // Prepare filter input for FloatingQuickNav
-  const filterInput: AnalyticsFilterType = useMemo(() => ({
-    entity_cuis: [cui],
-    report_period: reportPeriod,
-    account_category: accountCategory ?? 'ch',
-    normalization: normalization,
-  }), [cui, reportPeriod, accountCategory, normalization])
-
-  // Determine mapViewType based on entity type
-  const mapViewType = useMemo<'UAT' | 'County'>(() => {
-    if (entity?.entity_type === 'admin_county_council') return 'County'
-    if (entity?.is_uat) return 'UAT'
-    return 'UAT' // default to UAT
-  }, [entity?.entity_type, entity?.is_uat])
 
   return (
     <div className="min-h-screen p-3 sm:p-4 md:p-6 lg:p-8">
