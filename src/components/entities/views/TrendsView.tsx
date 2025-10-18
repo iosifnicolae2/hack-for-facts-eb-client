@@ -188,6 +188,13 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
     reset()
   }, [type, reset])
 
+  // Force functional grouping for income view since economic data is not available
+  useEffect(() => {
+    if (type === 'income' && primary !== 'fn') {
+      setPrimary('fn')
+    }
+  }, [type, primary, setPrimary])
+
   if (isLoading || !entity || !trendChart) {
     return <TrendsViewSkeleton />;
   }
