@@ -22,7 +22,7 @@ export function BudgetExplorerHeader({ state, onChange }: Props) {
   const [advancedOpen, setAdvancedOpen] = useState(false)
 
   return (
-    <div className="md:sticky top-0 z-30 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border rounded-md">
+    <div className="md:sticky top-0 z-30 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border rounded-xl shadow-md">
       <div className="flex flex-col gap-4 p-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="flex flex-col gap-2">
