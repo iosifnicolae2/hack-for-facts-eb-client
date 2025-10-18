@@ -353,7 +353,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
             {isMobile && path.length > 2 && (
               <div className="relative h-6 pl-5 pr-6 mr-1 flex items-center -ml-[12px]">
                 <div
-                  className="absolute inset-0 bg-foreground/70 border-y-2 border-background/20"
+                  className="absolute inset-0 bg-foreground/70 border-y-2 rounded-md border-background/20"
                   style={{
                     clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%)'
                   }}
@@ -383,7 +383,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
                     }`}
                 >
                   <div
-                    className={`absolute inset-0 transition-all duration-200 shadow-md border-y-2 border-background/20`}
+                    className={`absolute inset-0 transition-all duration-200 shadow-md rounded-md border-y-2 border-background/20`}
                     style={{
                       backgroundColor: itemColor,
                       clipPath: isLast
