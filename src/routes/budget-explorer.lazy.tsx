@@ -581,9 +581,10 @@ function BudgetExplorerPage() {
           </CardContent>
         </Card>
 
+        {/* TODO: fix chart glitch on scroll and improve ux with useful info */}
         {filter.account_category === 'ch' && (
           <>
-            <Card className="shadow-sm">
+            <Card className="shadow-sm hidden">
               <CardHeader>
                 <div className="flex items-center justify-end">
                   <Button asChild variant="outline" size="sm">
@@ -599,7 +600,7 @@ function BudgetExplorerPage() {
               </CardContent>
             </Card>
 
-            <Card className="shadow-sm">
+            <Card className="shadow-sm hidden">
               <CardHeader>
                 <div className="flex items-center justify-end">
                   <Button asChild variant="outline" size="sm">
@@ -618,7 +619,7 @@ function BudgetExplorerPage() {
         )}
 
         {filter.account_category === 'vn' && (
-          <Card className="shadow-sm">
+          <Card className="shadow-sm hidden">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <h3 className="text-base sm:text-lg font-semibold"><Trans>Top Functional Categories</Trans></h3>
@@ -636,7 +637,7 @@ function BudgetExplorerPage() {
           </Card>
         )}
 
-        <Card className="shadow-sm">
+        <Card className="shadow-sm hidden">
           <CardHeader>
             <div className="flex items-center justify-end">
               <Button asChild variant="outline" size="sm">
