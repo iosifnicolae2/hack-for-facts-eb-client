@@ -26,6 +26,8 @@ export function LineItemsAggregatedYearlySeriesFilter({ series }: LineItemsAggre
     main_creditor_cui: series.filter.main_creditor_cui,
     economic_codes: series.filter.economic_codes ?? [],
     functional_codes: series.filter.functional_codes ?? [],
+    functional_prefixes: (series.filter as any).functional_prefixes ?? [],
+    economic_prefixes: (series.filter as any).economic_prefixes ?? [],
     budget_sector_ids: series.filter.budget_sector_ids ?? [],
     funding_source_ids: series.filter.funding_source_ids ?? [],
     uat_ids: series.filter.uat_ids ?? [],
