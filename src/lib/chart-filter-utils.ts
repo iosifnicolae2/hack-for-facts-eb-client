@@ -5,12 +5,15 @@ import { AnalyticsFilterType, Chart } from "@/schemas/charts";
 import { ReportPeriodInput } from "@/schemas/reporting";
 import { t } from "@lingui/core/macro";
 
-export type FiltersWithLabels = Pick<AnalyticsFilterType, "entity_cuis" | "economic_codes" | "functional_codes" | "budget_sector_ids" | "funding_source_ids" | "uat_ids">;
+export type FiltersWithLabels = Pick<AnalyticsFilterType, "entity_cuis" | "economic_codes" | "functional_codes" | "budget_sector_ids" | "funding_source_ids" | "uat_ids"> & {
+  main_creditor_cui?: string;
+};
 
 export const useFilterKeyLabel = () => {
   // Display names for filter keys
   const FILTER_DISPLAY_NAME: Record<string, string> = {
     entity_cuis: t`Entity`,
+    main_creditor_cui: t`Main creditor`,
     uat_ids: t`UAT`,
     economic_codes: t`Economic classification`,
     functional_codes: t`Functional classification`,
@@ -31,6 +34,7 @@ export const useFilterKeyLabel = () => {
 
 export const useMapFilterValue = (filter: FiltersWithLabels) => {
   const entityLabelsStore = useEntityLabel(filter.entity_cuis ?? []);
+  const mainCreditorLabelsStore = useEntityLabel(filter.main_creditor_cui ? [filter.main_creditor_cui] : []);
   const economicCodesStore = useEconomicClassificationLabel(filter.economic_codes ?? []);
   const budgetSectorLabelsStore = useBudgetSectorLabel(filter.budget_sector_ids ?? []);
   const fundingSourceLabelsStore = useFundingSourceLabel(filter.funding_source_ids ?? []);
@@ -43,6 +47,8 @@ export const useMapFilterValue = (filter: FiltersWithLabels) => {
       switch (key) {
         case "account_category":
           return accountCategoryLabelsStore.map(value as string);
+        case "main_creditor_cui":
+          return mainCreditorLabelsStore.map(value as string);
         case "economic_codes":
           return economicCodesStore.map(value as string);
         case "entity_cuis":
@@ -98,6 +104,7 @@ export function getSortOrder(keyA: keyof AnalyticsFilterType, keyB: keyof Analyt
     "account_category",
     "report_period",
     "entity_cuis",
+    "main_creditor_cui",
     "entity_types",
     "uat_ids",
     "functional_prefixes",

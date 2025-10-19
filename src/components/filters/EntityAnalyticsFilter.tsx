@@ -63,6 +63,11 @@ export function EntityAnalyticsFilter() {
     () => (filter.entity_cuis ?? []).map((cui) => ({ id: cui, label: entityLabelsStore.map(cui) })),
     [filter.entity_cuis, entityLabelsStore],
   )
+  const mainCreditorLabelStore = useEntityLabel(filter.main_creditor_cui ? [filter.main_creditor_cui] as string[] : [])
+  const selectedMainCreditorOption = useMemo<OptionItem<string>[]>(
+    () => (filter.main_creditor_cui ? [{ id: filter.main_creditor_cui, label: mainCreditorLabelStore.map(filter.main_creditor_cui) }] : []),
+    [filter.main_creditor_cui, mainCreditorLabelStore],
+  )
   const selectedCountyOptions = useMemo<OptionItem<string>[]>(
     () => (filter.county_codes ?? []).map((c) => ({ id: c, label: String(c) })),
     [filter.county_codes],
@@ -128,6 +133,9 @@ export function EntityAnalyticsFilter() {
     entityLabelsStore.add(next.map(({ id, label }) => ({ id, label })))
     setFilter({ entity_cuis: next.map((o) => String(o.id)) })
   }
+  const setMainCreditor = (cui: string | undefined) => {
+    setFilter({ main_creditor_cui: cui })
+  }
   const updateCountyOptions = (
     updater: OptionItem<string | number>[] | ((prev: OptionItem<string | number>[]) => OptionItem<string | number>[]),
   ) => {
@@ -185,6 +193,7 @@ export function EntityAnalyticsFilter() {
     (filter.report_period ? 1 : 0) +
     [
       selectedEntityOptions,
+      selectedMainCreditorOption,
       selectedUatOptions,
       selectedCountyOptions,
       selectedEntityTypeOptions,
@@ -274,6 +283,20 @@ export function EntityAnalyticsFilter() {
           selected={selectedEntityOptions}
           setSelected={updateEntityOptions}
         />
+
+        <FilterContainer
+          title={t`Main Creditor`}
+          icon={<Building2 className="w-4 h-4" />}
+          selectedOptions={selectedMainCreditorOption}
+          onClearOption={() => setMainCreditor(undefined)}
+          onClearAll={() => setMainCreditor(undefined)}
+        >
+          <EntityList
+            selectedOptions={selectedMainCreditorOption}
+            toggleSelect={(option) => setMainCreditor(String(option.id))}
+            pageSize={100}
+          />
+        </FilterContainer>
 
         <FilterListContainer
           title={t`UAT`}
@@ -392,5 +415,3 @@ export function EntityAnalyticsFilter() {
     </Card>
   )
 }
-
-

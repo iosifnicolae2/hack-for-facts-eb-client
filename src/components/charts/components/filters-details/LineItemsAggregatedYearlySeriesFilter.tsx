@@ -23,6 +23,7 @@ export function LineItemsAggregatedYearlySeriesFilter({ series }: LineItemsAggre
   const { updateSeries } = useChartStore();
   const filters: FiltersWithLabels = {
     entity_cuis: series.filter.entity_cuis ?? [],
+    main_creditor_cui: series.filter.main_creditor_cui,
     economic_codes: series.filter.economic_codes ?? [],
     functional_codes: series.filter.functional_codes ?? [],
     budget_sector_ids: series.filter.budget_sector_ids ?? [],
@@ -88,6 +89,16 @@ export function LineItemsAggregatedYearlySeriesFilter({ series }: LineItemsAggre
                 value={String(value)}
               />
             )
+          }
+          if (key === 'main_creditor_cui' && typeof value === 'string') {
+            return (
+              <FilterPill
+                key={key}
+                label={filterKeyMap(key)}
+                value={mapValueToLabel(key, value)}
+                href={createEntityUrl(String(value))}
+              />
+            );
           }
           if (key === "entity_cuis" && Array.isArray(value)) {
             return value.map((cui) => (

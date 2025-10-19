@@ -27,6 +27,7 @@ import { getPeriodTags } from '@/lib/period-utils';
 import { ReportPeriodInput } from '@/schemas/reporting';
 import { OptionItem } from './base-filter/interfaces';
 import { useNormalizationSelection } from '@/hooks/useNormalizationSelection';
+import { useEntityLabel } from '@/hooks/filters/useFilterLabels';
 import { useUserCurrency } from "@/lib/hooks/useUserCurrency";
 
 export function MapFilter() {
@@ -58,6 +59,7 @@ export function MapFilter() {
         setAggregateMaxAmount,
         setReportType,
         setIsUat,
+        setMainCreditorCui,
     } = useMapFilter();
     const [currency] = useUserCurrency();
     const { toDisplayNormalization, toEffectiveNormalization } = useNormalizationSelection(mapState.filters.normalization as any);
@@ -92,6 +94,13 @@ export function MapFilter() {
         label: String(tag.value),
     }));
 
+    const mainCreditorLabelStore = useEntityLabel(
+        mapState.filters.main_creditor_cui ? [mapState.filters.main_creditor_cui] : []
+    );
+    const selectedMainCreditorOption = mapState.filters.main_creditor_cui
+        ? [{ id: mapState.filters.main_creditor_cui, label: mainCreditorLabelStore.map(mapState.filters.main_creditor_cui) }]
+        : [];
+
     const totalOptionalFilters =
         (mapState.filters.report_period ? 1 : 0) +
         (mapState.filters.functional_codes?.length ?? 0) +
@@ -99,6 +108,7 @@ export function MapFilter() {
         (mapState.filters.functional_prefixes?.length ?? 0) +
         (mapState.filters.economic_prefixes?.length ?? 0) +
         (mapState.filters.entity_cuis?.length ?? 0) +
+        (mapState.filters.main_creditor_cui ? 1 : 0) +
         (mapState.filters.entity_types?.length ?? 0) +
         (mapState.filters.budget_sector_ids?.length ?? 0) +
         (mapState.filters.funding_source_ids?.length ?? 0) +
@@ -213,6 +223,20 @@ export function MapFilter() {
                     selected={selectedEntityOptions}
                     setSelected={setSelectedEntityOptions}
                 />
+
+                <FilterContainer
+                    title={t`Main Creditor`}
+                    icon={<Building2 className="w-4 h-4" aria-hidden="true" />}
+                    selectedOptions={selectedMainCreditorOption}
+                    onClearOption={() => setMainCreditorCui(undefined)}
+                    onClearAll={() => setMainCreditorCui(undefined)}
+                >
+                    <EntityList
+                        selectedOptions={selectedMainCreditorOption}
+                        toggleSelect={(option) => setMainCreditorCui(String(option.id))}
+                        pageSize={100}
+                    />
+                </FilterContainer>
 
                 <FilterListContainer
                     title={t`UATs`}

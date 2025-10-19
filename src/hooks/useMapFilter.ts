@@ -73,6 +73,7 @@ export function useMapFilter() {
     const setAggregateMaxAmount = createValueUpdater('aggregate_max_amount');
     const setReportType = createValueUpdater('report_type');
     const setIsUat = createValueUpdater('is_uat');
+    const setMainCreditorCui = createValueUpdater('main_creditor_cui');
     const setReportPeriod = createValueUpdater('report_period');
 
     const selectedEconomicClassificationOptions: OptionItem[] = useMemo(() =>
@@ -146,5 +147,6 @@ export function useMapFilter() {
         setAggregateMaxAmount,
         setReportType,
         setIsUat,
+        setMainCreditorCui,
     };
 }

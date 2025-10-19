@@ -175,6 +175,10 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
     filter.entity_cuis?.map((cui) => ({ id: cui, label: entityLabelsStore.map(cui) })) ?? [];
   const setSelectedEntityOptions = createListUpdater("entity_cuis", entityLabelsStore);
 
+  const selectedMainCreditorOption: OptionItem[] =
+    filter.main_creditor_cui ? [{ id: filter.main_creditor_cui, label: entityLabelsStore.map(filter.main_creditor_cui) }] : [];
+  const setMainCreditorCui = createValueUpdater("main_creditor_cui", (value) => (value ? String(value) : undefined));
+
   const selectedUatOptions: OptionItem<string>[] =
     filter.uat_ids?.map((id) => ({ id, label: uatLabelsStore.map(id) })) ?? [];
   const setSelectedUatOptions = createListUpdater("uat_ids", uatLabelsStore);
@@ -270,6 +274,7 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
   const totalSelectedFilters =
     (filter.report_period ? 1 : 0) +
     (filter.entity_cuis?.length ?? 0) +
+    (filter.main_creditor_cui ? 1 : 0) +
     (filter.uat_ids?.length ?? 0) +
     (filter.county_codes?.length ?? 0) +
     (filter.economic_codes?.length ?? 0) +
@@ -373,6 +378,19 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
           selected={selectedEntityOptions}
           setSelected={setSelectedEntityOptions}
         />
+        <FilterContainer
+          title={t`Main Creditor`}
+          icon={<Building2 className="w-4 h-4" aria-hidden="true" />}
+          selectedOptions={selectedMainCreditorOption}
+          onClearOption={() => setMainCreditorCui(undefined)}
+          onClearAll={() => setMainCreditorCui(undefined)}
+        >
+          <EntityList
+            selectedOptions={selectedMainCreditorOption}
+            toggleSelect={(option) => setMainCreditorCui(String(option.id))}
+            pageSize={100}
+          />
+        </FilterContainer>
         <FilterListContainer
           title={t`UAT`}
           icon={<MapPin className="w-4 h-4" aria-hidden="true" />}

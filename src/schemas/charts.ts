@@ -90,6 +90,7 @@ export const AnalyticsFilterSchema = z.object({
   // Dimensional filters
   report_ids: z.array(z.string()).optional(),
   report_type: ReportTypeEnum.optional(),
+  main_creditor_cui: z.string().optional().describe('The main creditor cui of the entity.'),
   reporting_years: z.array(z.number()).optional(),
   entity_cuis: z.array(z.string()).optional().describe('The public entities cui of cif.'),
   functional_codes: z.array(z.string()).optional().describe('The functional codes using Romanian COFOG3 codes.'),

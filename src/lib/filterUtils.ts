@@ -36,6 +36,7 @@ export function prepareFilterForServer(filter: AnalyticsFilterType, fallback?: {
     'report_period',
     'report_type',
     'report_ids',
+    'main_creditor_cui',
     'entity_cuis',
     'functional_codes',
     'functional_prefixes',
@@ -75,5 +76,4 @@ export function prepareFilterForServer(filter: AnalyticsFilterType, fallback?: {
   }
   return serverFilter as AnalyticsFilterType
 }
-
 
