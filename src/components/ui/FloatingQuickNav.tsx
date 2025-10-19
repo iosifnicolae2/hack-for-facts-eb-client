@@ -16,6 +16,7 @@ import { getSiteUrl } from '@/config/env';
 import { useAuth } from '@/lib/auth';
 import { useState } from 'react';
 import { FloatingEntitySearch } from '@/components/entities/FloatingEntitySearch';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 type ActionKey = 'map' | 'table' | 'chart' | 'share' | 'search';
 
@@ -80,6 +81,13 @@ export function FloatingQuickNav({ className, mapViewType, mapActive, tableActiv
             toast.error(t`Failed to copy link`);
         }
     }
+
+    // Hotkeys for quick navigation
+    useHotkeys('ctrl+k, cmd+k', () => setShowEntitySearch(true), { preventDefault: true });
+    useHotkeys('ctrl+m, cmd+m', handleMapNavigate, { preventDefault: true });
+    useHotkeys('ctrl+t, cmd+t', handleTableNavigate, { preventDefault: true });
+    useHotkeys('ctrl+h, cmd+h', handleChartNavigate, { preventDefault: true });
+    useHotkeys('ctrl+s, cmd+s, mod+s', handleShare, { preventDefault: true });
 
     const actions: Action[] = [
         { key: 'search', label: t`Search Entities`, onClick: () => setShowEntitySearch(true), icon: <Search className="h-5 w-5" />, active: true },

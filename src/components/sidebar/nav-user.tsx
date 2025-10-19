@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
-import { Bell, ChevronsUpDown, LogIn, LogOut, Settings } from "lucide-react";
+import { Bell, ChevronsUpDown, Keyboard, LogIn, LogOut, Settings } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -17,6 +17,7 @@ import { createLogger } from "@/lib/logger";
 import { useAuth, AuthSignInButton } from "@/lib/auth";
 import { ThemeSwitcher } from "./theme-switcher";
 import { getUserLocale } from "@/lib/utils";
+import { ShortcutsModal } from "@/components/ui/shortcuts-modal";
 
 const logger = createLogger({ context: "NavUser" });
 
@@ -32,6 +33,7 @@ export function NavUser(_props: NavUserProps) {
   const { isMobile, setIsOverlayLockedOpen, setOpenMobile } = useSidebar();
   const { user, isSignedIn, isLoaded, signOut } = useAuth();
   const locale = getUserLocale();
+  const [shortcutsModalOpen, setShortcutsModalOpen] = React.useState(false);
 
   const displayName = React.useMemo(() => {
     if (!user) return locale === "ro" ? "Invitat" : "Guest";
@@ -134,6 +136,12 @@ export function NavUser(_props: NavUserProps) {
                   <span>Notifications</span>
                 </Link>
               </DropdownMenuItem>
+              {!isMobile && (
+                <DropdownMenuItem onClick={() => setShortcutsModalOpen(true)}>
+                  <Keyboard className="mr-2 h-4 w-4" />
+                  <span>Keyboard Shortcuts</span>
+                </DropdownMenuItem>
+              )}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <ThemeSwitcher />
@@ -154,6 +162,7 @@ export function NavUser(_props: NavUserProps) {
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
+      <ShortcutsModal open={shortcutsModalOpen} onOpenChange={setShortcutsModalOpen} />
     </SidebarMenu>
   );
 }
