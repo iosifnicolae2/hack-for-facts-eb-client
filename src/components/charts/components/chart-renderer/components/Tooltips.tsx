@@ -1,6 +1,6 @@
 import { Chart } from '@/schemas/charts';
 import { useMemo, type ReactNode } from 'react';
-import { getYearRangeText, yValueFormatter } from '../utils';
+import { yValueFormatter } from '../utils';
 import { SeriesId, DataPointPayload } from '../../../hooks/useChartData';
 import { Trans } from '@lingui/react/macro';
 
