@@ -401,7 +401,7 @@ msgstr "Active"
 msgid "Active filters"
 msgstr "Active filters"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:240
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:242
 msgid "Active Series"
 msgstr "Active Series"
 
@@ -596,7 +596,7 @@ msgstr "Amount Per Capita"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:478
 #: src/components/filters/EntityAnalyticsFilter.tsx:396
-#: src/components/filters/MapFilter.tsx:336
+#: src/components/filters/MapFilter.tsx:338
 msgid "Amount Range"
 msgstr "Amount Range"
 
@@ -789,7 +789,7 @@ msgstr "Budget sector"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:447
 #: src/components/filters/EntityAnalyticsFilter.tsx:361
-#: src/components/filters/MapFilter.tsx:298
+#: src/components/filters/MapFilter.tsx:300
 msgid "Budget Sector"
 msgstr "Budget Sector"
 
@@ -805,8 +805,8 @@ msgstr "Bulk Edit"
 msgid "Bulk Edit Data"
 msgstr "Bulk Edit Data"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:91
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:46
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:93
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:48
 msgid "Bulk edit filters"
 msgstr "Bulk edit filters"
 
@@ -832,7 +832,7 @@ msgstr "Calculation"
 
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:65
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:135
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:60
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:71
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:80
 #: src/components/charts/components/views/AnnotationConfigView.tsx:243
 #: src/components/charts/components/views/ChartConfigView.tsx:92
@@ -857,7 +857,7 @@ msgstr "Category name"
 msgid "Changes to this policy"
 msgstr "Changes to this policy"
 
-#: src/components/filters/MapFilter.tsx:156
+#: src/components/filters/MapFilter.tsx:158
 msgid "Chart"
 msgstr "Chart"
 
@@ -892,7 +892,7 @@ msgid "Chart Title"
 msgstr "Chart Title"
 
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:40
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:98
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:100
 msgid "Chart Type"
 msgstr "Chart Type"
 
@@ -935,7 +935,7 @@ msgstr "Clear all"
 msgid "Clear filters"
 msgstr "Clear filters"
 
-#: src/components/filters/MapFilter.tsx:138
+#: src/components/filters/MapFilter.tsx:140
 msgid "Clear filters ({totalOptionalFilters})"
 msgstr "Clear filters ({totalOptionalFilters})"
 
@@ -1030,7 +1030,7 @@ msgid "Confirm choices"
 msgstr "Confirm choices"
 
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:62
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:57
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:68
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:77
 #: src/components/charts/components/views/ChartConfigView.tsx:89
 msgid "Confirm Delete"
@@ -1120,7 +1120,7 @@ msgstr "Copy Annotation"
 msgid "Copy current page URL to clipboard"
 msgstr "Copy current page URL to clipboard"
 
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:42
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:44
 msgid "Copy Data"
 msgstr "Copy Data"
 
@@ -1175,7 +1175,7 @@ msgstr "Could Not Load UATs"
 msgid "Could not send error report."
 msgstr "Could not send error report."
 
-#: src/components/filters/MapFilter.tsx:251
+#: src/components/filters/MapFilter.tsx:253
 msgid "Counties"
 msgstr "Counties"
 
@@ -1183,7 +1183,7 @@ msgstr "Counties"
 #: src/components/entities/UatDisplay.tsx:60
 #: src/components/entity-analytics/EntityAnalyticsTable.tsx:79
 #: src/components/filters/EntityAnalyticsFilter.tsx:311
-#: src/components/filters/MapFilter.tsx:172
+#: src/components/filters/MapFilter.tsx:174
 #: src/components/maps/charts/UatDataCharts.tsx:32
 #: src/components/maps/HeatmapDataTable.tsx:447
 #: src/routes/entity-analytics.lazy.tsx:208
@@ -1290,7 +1290,7 @@ msgstr "Data collected without an account:"
 msgid "Data Label Offset"
 msgstr "Data Label Offset"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:144
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:146
 #: src/components/charts/components/series-config/DataLabelSelector.tsx:20
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:43
 msgid "Data Labels"
@@ -1337,7 +1337,7 @@ msgstr "Data storage and retention"
 msgid "Data Table View"
 msgstr "Data Table View"
 
-#: src/components/filters/MapFilter.tsx:147
+#: src/components/filters/MapFilter.tsx:149
 msgid "Data View"
 msgstr "Data View"
 
@@ -1362,7 +1362,7 @@ msgid "Default settings that apply to all series (can be overridden per series)"
 msgstr "Default settings that apply to all series (can be overridden per series)"
 
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:57
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:52
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:63
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:72
 #: src/components/charts/components/views/AnnotationConfigView.tsx:230
 #: src/components/charts/components/views/AnnotationConfigView.tsx:240
@@ -1444,6 +1444,10 @@ msgstr "Details:"
 msgid "Development"
 msgstr "Development"
 
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:57
+msgid "Disable All Series"
+msgstr "Disable All Series"
+
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:38
 msgid "Disable annotation"
 msgstr "Disable annotation"
@@ -1456,7 +1460,7 @@ msgstr "Disable Series"
 msgid "Display data labels on the chart"
 msgstr "Display data labels on the chart"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:130
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:132
 msgid "Display Options"
 msgstr "Display Options"
 
@@ -1468,7 +1472,7 @@ msgstr "Download"
 msgid "Downloads"
 msgstr "Downloads"
 
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:38
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:40
 #: src/components/charts/components/views/AnnotationConfigView.tsx:221
 #: src/components/charts/components/views/SeriesConfigView.tsx:230
 msgid "Duplicate"
@@ -1521,11 +1525,11 @@ msgstr "Economic classification"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:432
 #: src/components/filters/EntityAnalyticsFilter.tsx:344
-#: src/components/filters/MapFilter.tsx:274
+#: src/components/filters/MapFilter.tsx:276
 msgid "Economic Classification"
 msgstr "Economic Classification"
 
-#: src/components/filters/MapFilter.tsx:281
+#: src/components/filters/MapFilter.tsx:283
 msgid "Economic Classification Prefix"
 msgstr "Economic Classification Prefix"
 
@@ -1561,7 +1565,7 @@ msgid "Edit Annotation"
 msgstr "Edit Annotation"
 
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:67
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:209
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:211
 msgid "Edit Annotations"
 msgstr "Edit Annotations"
 
@@ -1587,6 +1591,10 @@ msgstr "Email address copied to clipboard!"
 #: src/hooks/useEntityViews.tsx:33
 msgid "Employees"
 msgstr "Employees"
+
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:53
+msgid "Enable All Series"
+msgstr "Enable All Series"
 
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:38
 msgid "Enable annotation"
@@ -1647,7 +1655,7 @@ msgstr "Enter series label..."
 #: src/components/charts/components/series-config/SeriesFilter.tsx:376
 #: src/components/entity-analytics/EntityAnalyticsKPIs.tsx:23
 #: src/components/filters/EntityAnalyticsFilter.tsx:281
-#: src/components/filters/MapFilter.tsx:221
+#: src/components/filters/MapFilter.tsx:223
 #: src/hooks/useEntityViews.tsx:39
 #: src/routes/index.lazy.tsx:83
 msgid "Entities"
@@ -1700,7 +1708,7 @@ msgstr "Entity type"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:410
 #: src/components/filters/EntityAnalyticsFilter.tsx:319
-#: src/components/filters/MapFilter.tsx:290
+#: src/components/filters/MapFilter.tsx:292
 msgid "Entity Type"
 msgstr "Entity Type"
 
@@ -1813,7 +1821,7 @@ msgstr "Expense Type"
 #: src/components/entities/views/Overview.tsx:259
 #: src/components/filters/account-type-filter/AccountCategoryRadio.tsx:12
 #: src/components/filters/EntityAnalyticsFilter.tsx:249
-#: src/components/filters/MapFilter.tsx:187
+#: src/components/filters/MapFilter.tsx:189
 #: src/components/maps/utils.ts:27
 #: src/hooks/filters/useFilterLabels.tsx:181
 #: src/routes/entity-analytics.lazy.tsx:265
@@ -2038,11 +2046,11 @@ msgstr "Functional classification"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:417
 #: src/components/filters/EntityAnalyticsFilter.tsx:327
-#: src/components/filters/MapFilter.tsx:259
+#: src/components/filters/MapFilter.tsx:261
 msgid "Functional Classification"
 msgstr "Functional Classification"
 
-#: src/components/filters/MapFilter.tsx:266
+#: src/components/filters/MapFilter.tsx:268
 msgid "Functional Classification Prefix"
 msgstr "Functional Classification Prefix"
 
@@ -2077,7 +2085,7 @@ msgstr "Funding source"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:454
 #: src/components/filters/EntityAnalyticsFilter.tsx:369
-#: src/components/filters/MapFilter.tsx:306
+#: src/components/filters/MapFilter.tsx:308
 msgid "Funding Source"
 msgstr "Funding Source"
 
@@ -2242,7 +2250,7 @@ msgstr "Includes additional error context. No user identity is attached."
 #: src/components/entities/views/Overview.tsx:258
 #: src/components/filters/account-type-filter/AccountCategoryRadio.tsx:13
 #: src/components/filters/EntityAnalyticsFilter.tsx:250
-#: src/components/filters/MapFilter.tsx:188
+#: src/components/filters/MapFilter.tsx:190
 #: src/components/maps/utils.ts:27
 #: src/hooks/filters/useFilterLabels.tsx:182
 #: src/routes/entity-analytics.lazy.tsx:265
@@ -2261,7 +2269,7 @@ msgstr "Income Trends"
 msgid "Income vs Expenses"
 msgstr "Income vs Expenses"
 
-#: src/components/filters/MapFilter.tsx:180
+#: src/components/filters/MapFilter.tsx:182
 msgid "Income/Expenses"
 msgstr "Income/Expenses"
 
@@ -2278,7 +2286,7 @@ msgstr "Independent project; no government affiliation."
 msgid "Informational purposes only; no warranties."
 msgstr "Informational purposes only; no warranties."
 
-#: src/components/filters/MapFilter.tsx:347
+#: src/components/filters/MapFilter.tsx:349
 msgid "inhabitants"
 msgstr "inhabitants"
 
@@ -2326,7 +2334,7 @@ msgstr "Invalid or expired link"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:469
 #: src/components/filters/EntityAnalyticsFilter.tsx:386
-#: src/components/filters/MapFilter.tsx:326
+#: src/components/filters/MapFilter.tsx:328
 #: src/lib/chart-filter-utils.ts:46
 msgid "Is UAT"
 msgstr "Is UAT"
@@ -2384,7 +2392,7 @@ msgstr "Legal"
 msgid "Legal bases for processing"
 msgstr "Legal bases for processing"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:158
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:160
 #: src/routes/map.lazy.tsx:240
 msgid "Legend"
 msgstr "Legend"
@@ -2514,7 +2522,7 @@ msgstr "Main creditor"
 #: src/components/charts/components/series-config/SeriesFilter.tsx:383
 #: src/components/entities/EntityReports.tsx:132
 #: src/components/filters/EntityAnalyticsFilter.tsx:289
-#: src/components/filters/MapFilter.tsx:229
+#: src/components/filters/MapFilter.tsx:231
 msgid "Main Creditor"
 msgstr "Main Creditor"
 
@@ -2547,7 +2555,7 @@ msgstr "Manage your newsletter and alert subscriptions"
 msgid "Managing preferences"
 msgstr "Managing preferences"
 
-#: src/components/filters/MapFilter.tsx:154
+#: src/components/filters/MapFilter.tsx:156
 #: src/components/sidebar/nav-main.tsx:26
 #: src/components/ui/shortcuts.tsx:44
 #: src/hooks/useEntityViews.tsx:28
@@ -2559,11 +2567,11 @@ msgstr "Map"
 msgid "Map data not available."
 msgstr "Map data not available."
 
-#: src/components/filters/MapFilter.tsx:134
+#: src/components/filters/MapFilter.tsx:136
 msgid "Map Filters"
 msgstr "Map Filters"
 
-#: src/components/filters/MapFilter.tsx:164
+#: src/components/filters/MapFilter.tsx:166
 msgid "Map View"
 msgstr "Map View"
 
@@ -2919,7 +2927,7 @@ msgstr "Only set if you consent to analytics:"
 msgid "Only set if you consent to enhanced error reporting:"
 msgstr "Only set if you consent to enhanced error reporting:"
 
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:34
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:36
 msgid "Open Config Panel"
 msgstr "Open Config Panel"
 
@@ -3040,7 +3048,7 @@ msgstr "Per capita"
 #: src/components/entities/views/MapView.tsx:163
 #: src/components/entity-analytics/EntityAnalyticsTable.tsx:103
 #: src/components/filters/EntityAnalyticsFilter.tsx:265
-#: src/components/filters/MapFilter.tsx:205
+#: src/components/filters/MapFilter.tsx:207
 #: src/components/filters/normalization-filter/NormalizationFilter.tsx:14
 #: src/routes/entity-analytics.lazy.tsx:210
 msgid "Per Capita"
@@ -3054,7 +3062,7 @@ msgstr "Per Capita (EUR)"
 #: src/components/charts/components/series-config/SeriesFilter.tsx:367
 #: src/components/entities/EntityReportControls.tsx:164
 #: src/components/filters/EntityAnalyticsFilter.tsx:271
-#: src/components/filters/MapFilter.tsx:212
+#: src/components/filters/MapFilter.tsx:214
 #: src/components/maps/utils.ts:20
 #: src/components/maps/utils.ts:22
 #: src/lib/chart-filter-utils.ts:51
@@ -3081,7 +3089,7 @@ msgstr "Population"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:500
 #: src/components/filters/EntityAnalyticsFilter.tsx:407
-#: src/components/filters/MapFilter.tsx:346
+#: src/components/filters/MapFilter.tsx:348
 msgid "Population Range"
 msgstr "Population Range"
 
@@ -3165,11 +3173,11 @@ msgstr "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 msgid "Ready to create"
 msgstr "Ready to create"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:243
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:245
 msgid "Relative Mode"
 msgstr "Relative Mode"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:173
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:175
 msgid "Relative Values"
 msgstr "Relative Values"
 
@@ -3200,7 +3208,7 @@ msgstr "Report type"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:461
 #: src/components/filters/EntityAnalyticsFilter.tsx:377
-#: src/components/filters/MapFilter.tsx:314
+#: src/components/filters/MapFilter.tsx:316
 msgid "Report Type"
 msgstr "Report Type"
 
@@ -3493,7 +3501,7 @@ msgid "Show advanced settings"
 msgstr "Show advanced settings"
 
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:66
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:197
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:199
 msgid "Show Annotations"
 msgstr "Show Annotations"
 
@@ -3506,7 +3514,7 @@ msgstr "Show Data Labels"
 msgid "Show details"
 msgstr "Show details"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:222
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:224
 msgid "Show Diff"
 msgstr "Show Diff"
 
@@ -3518,11 +3526,11 @@ msgstr "Show Grid Lines"
 msgid "Show Legend"
 msgstr "Show Legend"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:229
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:231
 msgid "Show Less"
 msgstr "Show Less"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:229
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:231
 msgid "Show More"
 msgstr "Show More"
 
@@ -3586,7 +3594,7 @@ msgstr "Something went wrong while trying to render this page."
 msgid "Sort by"
 msgstr "Sort by"
 
-#: src/components/charts/components/chart-view/ChartDisplayArea.tsx:196
+#: src/components/charts/components/chart-view/ChartDisplayArea.tsx:200
 msgid "Source: "
 msgstr "Source: "
 
@@ -3658,7 +3666,7 @@ msgid "System"
 msgstr "System"
 
 #: src/components/filters/EntityAnalyticsFilter.tsx:236
-#: src/components/filters/MapFilter.tsx:155
+#: src/components/filters/MapFilter.tsx:157
 msgid "Table"
 msgstr "Table"
 
@@ -3806,7 +3814,7 @@ msgstr "Toggle enhanced error reporting"
 msgid "Toggle theme"
 msgstr "Toggle theme"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:185
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:187
 msgid "Tooltip"
 msgstr "Tooltip"
 
@@ -3850,7 +3858,7 @@ msgstr "total"
 #: src/components/entities/EntityReportControls.tsx:46
 #: src/components/entities/views/MapView.tsx:167
 #: src/components/filters/EntityAnalyticsFilter.tsx:264
-#: src/components/filters/MapFilter.tsx:204
+#: src/components/filters/MapFilter.tsx:206
 #: src/components/filters/normalization-filter/NormalizationFilter.tsx:13
 msgid "Total"
 msgstr "Total"
@@ -3864,7 +3872,7 @@ msgid "Total amount"
 msgstr "Total amount"
 
 #: src/components/entity-analytics/EntityAnalyticsTable.tsx:136
-#: src/components/filters/MapFilter.tsx:197
+#: src/components/filters/MapFilter.tsx:199
 #: src/components/maps/HeatmapDataTable.tsx:281
 #: src/components/maps/HeatmapDataTable.tsx:449
 #: src/components/maps/utils.ts:123
@@ -3933,7 +3941,7 @@ msgstr "Type"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:396
 #: src/components/filters/EntityAnalyticsFilter.tsx:303
-#: src/components/filters/MapFilter.tsx:171
+#: src/components/filters/MapFilter.tsx:173
 #: src/components/maps/charts/UatDataCharts.tsx:32
 #: src/lib/chart-filter-utils.ts:39
 msgid "UAT"
@@ -3941,17 +3949,17 @@ msgstr "UAT"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:258
 #: src/components/filters/EntityAnalyticsFilter.tsx:388
-#: src/components/filters/MapFilter.tsx:328
+#: src/components/filters/MapFilter.tsx:330
 msgid "UAT: No"
 msgstr "UAT: No"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:257
 #: src/components/filters/EntityAnalyticsFilter.tsx:388
-#: src/components/filters/MapFilter.tsx:328
+#: src/components/filters/MapFilter.tsx:330
 msgid "UAT: Yes"
 msgstr "UAT: Yes"
 
-#: src/components/filters/MapFilter.tsx:243
+#: src/components/filters/MapFilter.tsx:245
 msgid "UATs"
 msgstr "UATs"
 

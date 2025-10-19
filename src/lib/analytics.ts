@@ -27,6 +27,8 @@ const EVENTS = {
   ChartSeriesDeleted: "chart_series_deleted",
   ChartSeriesDuplicated: "chart_series_duplicated",
   ChartSeriesReordered: "chart_series_reordered",
+  ChartSeriesEnabledAll: "chart_series_enabled_all",
+  ChartSeriesDisabledAll: "chart_series_disabled_all",
 
   ChartAnnotationAdded: "chart_annotation_added",
   ChartAnnotationDeleted: "chart_annotation_deleted",

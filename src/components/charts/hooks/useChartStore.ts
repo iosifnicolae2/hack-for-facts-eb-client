@@ -227,6 +227,20 @@ export function useChartStore() {
     updateChart({ series });
   }, [updateChart]);
 
+  const enableAllSeries = useCallback(() => {
+    updateChart({
+      series: chart.series.map(s => ({ ...s, enabled: true })),
+    });
+    Analytics.capture(Analytics.EVENTS.ChartSeriesEnabledAll, { chart_id: chart.id });
+  }, [chart, updateChart]);
+
+  const disableAllSeries = useCallback(() => {
+    updateChart({
+      series: chart.series.map(s => ({ ...s, enabled: false })),
+    });
+    Analytics.capture(Analytics.EVENTS.ChartSeriesDisabledAll, { chart_id: chart.id });
+  }, [chart, updateChart]);
+
   const validateChart = useCallback((): ValidationResult => {
     const errors: Record<string, string[]> = {};
 
@@ -283,6 +297,8 @@ export function useChartStore() {
     updateSeries,
     deleteSeries,
     setSeries,
+    enableAllSeries,
+    disableAllSeries,
     duplicateSeries,
     moveSeriesUp,
     moveSeriesDown,

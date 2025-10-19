@@ -1,5 +1,5 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ArrowLeftRight, Copy, MoreVertical, Settings, Trash2 } from "lucide-react";
+import { ArrowLeftRight, CheckSquare, Copy, MoreVertical, Settings, Square, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Trans } from "@lingui/react/macro";
 
@@ -9,9 +9,11 @@ interface ChartQuickConfigMenuProps {
     onDuplicate: () => void;
     onCopyData: () => void;
     onOpenBulkEdit: () => void;
+    onEnableAll: () => void;
+    onDisableAll: () => void;
 }
 
-export function ChartQuickConfigMenu({ onOpenConfigPanel, onDelete, onDuplicate, onCopyData, onOpenBulkEdit }: ChartQuickConfigMenuProps) {
+export function ChartQuickConfigMenu({ onOpenConfigPanel, onDelete, onDuplicate, onCopyData, onOpenBulkEdit, onEnableAll, onDisableAll }: ChartQuickConfigMenuProps) {
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
         // Not sure why, but the click was propagating without this.
@@ -44,6 +46,15 @@ export function ChartQuickConfigMenu({ onOpenConfigPanel, onDelete, onDuplicate,
                 <DropdownMenuItem onSelect={onOpenBulkEdit} onClick={handleClick}>
                     <ArrowLeftRight className="mr-2 h-4 w-4" />
                     <Trans>Bulk edit filters</Trans>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onSelect={onEnableAll} onClick={handleClick}>
+                    <CheckSquare className="mr-2 h-4 w-4" />
+                    <Trans>Enable All Series</Trans>
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={onDisableAll} onClick={handleClick}>
+                    <Square className="mr-2 h-4 w-4" />
+                    <Trans>Disable All Series</Trans>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuSub>
