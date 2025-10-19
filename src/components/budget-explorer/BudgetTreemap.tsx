@@ -515,7 +515,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
               />
             )}
             {hasChartLink && (
-              <Button variant="outline" size="sm" onClick={handleViewAsChart} className="gap-2 ml-auto mr-6 shadow-md">
+              <Button variant="outline" size="sm" onClick={handleViewAsChart} className="gap-2 ml-auto mr-2 -mb-4">
                 <LineChart className="w-4 h-4" />
                 <Trans>View as Chart</Trans>
               </Button>

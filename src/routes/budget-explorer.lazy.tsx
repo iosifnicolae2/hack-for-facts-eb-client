@@ -21,7 +21,7 @@ import { RevenueBreakdown } from '@/components/budget-explorer/RevenueBreakdown'
 import { FloatingQuickNav } from '@/components/ui/FloatingQuickNav'
 import { ChartPreview } from '@/components/charts/components/chart-preview/ChartPreview'
 import { Chart, ChartSchema, SeriesConfigurationSchema } from '@/schemas/charts'
-import { BarChart2 } from 'lucide-react'
+import { BarChart2, ExternalLink } from 'lucide-react'
 import { getSeriesColor } from '@/components/charts/components/chart-renderer/utils';
 import { getClassificationName } from '@/lib/classifications'
 import { getEconomicChapterName } from '@/lib/economic-classifications'
@@ -30,6 +30,7 @@ import { usePeriodLabel } from '@/hooks/use-period-label'
 import { useUserCurrency } from '@/lib/hooks/useUserCurrency'
 import { Label } from '@/components/ui/label'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { t } from '@lingui/core/macro'
 
 export const Route = createLazyFileRoute('/budget-explorer')({
   component: BudgetExplorerPage,
@@ -142,7 +143,6 @@ function BudgetExplorerPage() {
   // Keep label helpers for other components if needed
   const nodes = data?.nodes ?? []
 
-  // Removed unused `ministryChart` (hidden card not used currently) to satisfy typecheck
 
   const functionalChart: Chart = useMemo(() => {
     const series = functionalMainChapters.map((code, index) => {
@@ -287,7 +287,37 @@ function BudgetExplorerPage() {
         <Card className="shadow-sm">
           <CardHeader>
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 lg:gap-4">
-              <h3 className="text-xl sm:text-3xl font-bold"><Trans>Budget Distribution</Trans> - {periodLabel}</h3>
+              <h3 className="text-xl sm:text-3xl font-bold flex items-center gap-2">
+                <Trans>Budget Distribution</Trans> - {periodLabel}
+                <Button
+                  asChild
+                  variant="ghost"
+                  size="icon"
+                  className="h-7 w-7"
+                  aria-label={t`Open in entity analytics`}
+                >
+                  <Link
+                    to="/entity-analytics"
+                    search={{
+                      view: 'line-items',
+                      sortOrder: 'desc',
+                      page: 1,
+                      pageSize: 25,
+                      filter: {
+                        report_period: filter.report_period,
+                        account_category: filter.account_category,
+                        normalization: filter.normalization,
+                        report_type: filter.report_type,
+                      },
+                      treemapPrimary: activePrimary,
+                      treemapDepth: depth === 'detail' ? 'detail' : 'main',
+                    }}
+                    preload="intent"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </h3>
               <div className="flex flex-col gap-3 lg:flex-row items-start lg:gap-4 lg:flex-wrap">
                 <div className="flex flex-col gap-1.5">
                   <Label className="text-xs text-muted-foreground"><Trans>Grouping</Trans></Label>
