@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import {
   Chart,
   ChartSchema,
@@ -14,6 +14,7 @@ import { getChartsStore } from '../chartsStore';
 import { generateRandomColor } from '../components/chart-renderer/utils';
 import { Analytics } from '@/lib/analytics';
 import { useUserCurrency } from '@/lib/hooks/useUserCurrency';
+import { useChartHistory } from './useChartHistory';
 
 interface ValidationResult {
   isValid: boolean;
@@ -28,6 +29,9 @@ export function useChartStore() {
   const { chart, view, seriesId, annotationId } = useSearch({ from: "/charts/$chartId" });
   const [currency] = useUserCurrency();
   const defaultNormalization = currency === "EUR" ? "total_euro" : "total";
+
+  const history = useChartHistory(chart.id, chart);
+  const isUndoRedoOperationRef = useRef(false);
 
   const goToConfig = useCallback(() => {
     Analytics.capture(Analytics.EVENTS.ChartViewChanged, { chart_id: chart.id, view: 'config' });
@@ -65,7 +69,7 @@ export function useChartStore() {
       replace: true,
       resetScroll: false,
     });
-  }, [navigate]);
+  }, [navigate, history]);
 
   const deleteChart = useCallback(async () => {
     await chartsStore.deleteChart(chart.id);
@@ -285,6 +289,46 @@ export function useChartStore() {
     return { isValid, errors };
   }, [chart]);
 
+  const undo = useCallback(() => {
+    const previousChart = history.undo();
+    if (previousChart) {
+      isUndoRedoOperationRef.current = true;
+      navigate({
+        search: (prev) => {
+          chartsStore.updateChartInLocalStorage(previousChart);
+          return { ...prev, chart: previousChart };
+        },
+        replace: true,
+        resetScroll: false,
+      });
+      // Reset flag after navigation
+      setTimeout(() => {
+        isUndoRedoOperationRef.current = false;
+      }, 0);
+      Analytics.capture(Analytics.EVENTS.ChartUndoPerformed, { chart_id: chart.id });
+    }
+  }, [history, navigate, chart.id]);
+
+  const redo = useCallback(() => {
+    const nextChart = history.redo();
+    if (nextChart) {
+      isUndoRedoOperationRef.current = true;
+      navigate({
+        search: (prev) => {
+          chartsStore.updateChartInLocalStorage(nextChart);
+          return { ...prev, chart: nextChart };
+        },
+        replace: true,
+        resetScroll: false,
+      });
+      // Reset flag after navigation
+      setTimeout(() => {
+        isUndoRedoOperationRef.current = false;
+      }, 0);
+      Analytics.capture(Analytics.EVENTS.ChartRedoPerformed, { chart_id: chart.id });
+    }
+  }, [history, navigate, chart.id]);
+
   return {
     chart,
     view,
@@ -312,5 +356,9 @@ export function useChartStore() {
     deleteAnnotation,
     duplicateAnnotation,
     setAnnotations,
+    undo,
+    redo,
+    canUndo: history.canUndo,
+    canRedo: history.canRedo,
   };
 } 

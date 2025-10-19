@@ -401,7 +401,7 @@ msgstr "Activ"
 msgid "Active filters"
 msgstr "Filtre active"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:242
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:246
 msgid "Active Series"
 msgstr "Serie Activată"
 
@@ -805,8 +805,8 @@ msgstr "Editare în masă"
 msgid "Bulk Edit Data"
 msgstr "Editare date în masă"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:93
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:48
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:97
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:67
 msgid "Bulk edit filters"
 msgstr "Editare în masă a filtrelor"
 
@@ -832,7 +832,7 @@ msgstr "Calcul"
 
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:65
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:135
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:71
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:90
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:80
 #: src/components/charts/components/views/AnnotationConfigView.tsx:243
 #: src/components/charts/components/views/ChartConfigView.tsx:92
@@ -861,7 +861,7 @@ msgstr "Modificări ale acestei politici"
 msgid "Chart"
 msgstr "Grafic"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:46
+#: src/routes/charts/$chartId/index.lazy.tsx:66
 msgid "Chart – Transparenta.eu"
 msgstr "Grafic – Transparenta.eu"
 
@@ -892,7 +892,7 @@ msgid "Chart Title"
 msgstr "Titlu grafic"
 
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:40
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:100
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:104
 msgid "Chart Type"
 msgstr "Tip grafic"
 
@@ -1004,16 +1004,16 @@ msgstr "Condiția {0}"
 msgid "Configure"
 msgstr "Configurează"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:52
-#: src/routes/charts/$chartId/index.lazy.tsx:54
+#: src/routes/charts/$chartId/index.lazy.tsx:72
+#: src/routes/charts/$chartId/index.lazy.tsx:74
 msgid "Configure Chart"
 msgstr "Configurează graficul"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:46
+#: src/routes/charts/$chartId/index.lazy.tsx:66
 msgid "Configure chart – Transparenta.eu"
 msgstr "Configurează graficul – Transparenta.eu"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:47
+#: src/routes/charts/$chartId/index.lazy.tsx:67
 msgid "Configure chart options, series, and annotations."
 msgstr "Configurați opțiunile graficului, seriile și adnotările."
 
@@ -1030,7 +1030,7 @@ msgid "Confirm choices"
 msgstr "Confirmă alegerile"
 
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:62
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:68
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:87
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:77
 #: src/components/charts/components/views/ChartConfigView.tsx:89
 msgid "Confirm Delete"
@@ -1120,7 +1120,7 @@ msgstr "Copiază adnotarea"
 msgid "Copy current page URL to clipboard"
 msgstr "Copiază URL-ul paginii curente în clipboard"
 
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:44
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:63
 msgid "Copy Data"
 msgstr "Copiază datele"
 
@@ -1290,7 +1290,7 @@ msgstr "Date colectate fără cont:"
 msgid "Data Label Offset"
 msgstr "Decalaj etichetă de date"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:146
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:150
 #: src/components/charts/components/series-config/DataLabelSelector.tsx:20
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:43
 msgid "Data Labels"
@@ -1362,7 +1362,7 @@ msgid "Default settings that apply to all series (can be overridden per series)"
 msgstr "Setări implicite care se aplică tuturor seriilor (pot fi suprascrise pentru fiecare serie în parte)"
 
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:57
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:63
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:82
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:72
 #: src/components/charts/components/views/AnnotationConfigView.tsx:230
 #: src/components/charts/components/views/AnnotationConfigView.tsx:240
@@ -1444,7 +1444,7 @@ msgstr "Detalii:"
 msgid "Development"
 msgstr "Dezvoltare"
 
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:57
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:76
 msgid "Disable All Series"
 msgstr "Dezactivează Toate Seriile"
 
@@ -1460,7 +1460,7 @@ msgstr "Dezactivează seria"
 msgid "Display data labels on the chart"
 msgstr "Afișează etichetele de date pe grafic"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:132
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:136
 msgid "Display Options"
 msgstr "Opțiuni de afișare"
 
@@ -1472,7 +1472,7 @@ msgstr "Descarcă"
 msgid "Downloads"
 msgstr "Descărcări"
 
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:40
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:59
 #: src/components/charts/components/views/AnnotationConfigView.tsx:221
 #: src/components/charts/components/views/SeriesConfigView.tsx:230
 msgid "Duplicate"
@@ -1565,7 +1565,7 @@ msgid "Edit Annotation"
 msgstr "Editează adnotarea"
 
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:67
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:211
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:215
 msgid "Edit Annotations"
 msgstr "Editează adnotări"
 
@@ -1592,7 +1592,7 @@ msgstr "Adresa de email a fost copiată în clipboard!"
 msgid "Employees"
 msgstr "Angajați"
 
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:53
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:72
 msgid "Enable All Series"
 msgstr "Activează Toate Seriile"
 
@@ -2387,7 +2387,7 @@ msgstr "Legal"
 msgid "Legal bases for processing"
 msgstr "Temeiuri legale pentru prelucrare"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:160
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:164
 #: src/routes/map.lazy.tsx:240
 msgid "Legend"
 msgstr "Legendă"
@@ -2922,7 +2922,7 @@ msgstr "Setate doar dacă sunteți de acord cu analiza:"
 msgid "Only set if you consent to enhanced error reporting:"
 msgstr "Setate doar dacă sunteți de acord cu raportarea îmbunătățită a erorilor:"
 
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:36
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:55
 msgid "Open Config Panel"
 msgstr "Deschide panoul de configurare"
 
@@ -3168,11 +3168,19 @@ msgstr "Citiți <0>Politica privind cookie-urile</0> și <1>Politica de confiden
 msgid "Ready to create"
 msgstr "Gata de creare"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:245
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:48
+msgid "Redo"
+msgstr "Refacere"
+
+#: src/routes/charts/$chartId/index.lazy.tsx:40
+msgid "Redo successful"
+msgstr "Refacere reușită"
+
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:249
 msgid "Relative Mode"
 msgstr "Mod relativ"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:175
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:179
 msgid "Relative Values"
 msgstr "Valori relative"
 
@@ -3496,7 +3504,7 @@ msgid "Show advanced settings"
 msgstr "Afișează setările avansate"
 
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:66
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:199
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:203
 msgid "Show Annotations"
 msgstr "Afișează adnotări"
 
@@ -3509,7 +3517,7 @@ msgstr "Afișează etichetele de date"
 msgid "Show details"
 msgstr "Afișează detaliile"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:224
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:228
 msgid "Show Diff"
 msgstr "Afișează diferența"
 
@@ -3521,11 +3529,11 @@ msgstr "Afișează liniile de grilă"
 msgid "Show Legend"
 msgstr "Afișează legenda"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:231
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:235
 msgid "Show Less"
 msgstr "Afișează mai puțin"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:231
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:235
 msgid "Show More"
 msgstr "Afișează mai mult"
 
@@ -3809,7 +3817,7 @@ msgstr "Comutare raportare avansată a erorilor"
 msgid "Toggle theme"
 msgstr "Comută tema"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:187
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:191
 msgid "Tooltip"
 msgstr "Indiciu"
 
@@ -3963,6 +3971,14 @@ msgstr "UAT-uri"
 msgid "Understanding the consolidated general budget spending"
 msgstr "Înțelegerea cheltuielilor bugetului general consolidat"
 
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:41
+msgid "Undo"
+msgstr "Anulare"
+
+#: src/routes/charts/$chartId/index.lazy.tsx:33
+msgid "Undo successful"
+msgstr "Anulare reușită"
+
 #: src/components/alerts/components/ConditionsList.tsx:116
 #: src/components/charts/components/series-config/UnitInput.tsx:28
 msgid "Unit"
@@ -4075,7 +4091,7 @@ msgstr "Vezi toate alertele"
 msgid "View all reports"
 msgstr "Vezi toate rapoartele"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:47
+#: src/routes/charts/$chartId/index.lazy.tsx:67
 msgid "View and share your chart."
 msgstr "Vizualizați și partajați graficul."
 

@@ -10,19 +10,39 @@ import { Seo } from "@/lib/seo";
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
 import { FloatingQuickNav } from "@/components/ui/FloatingQuickNav";
+import { useHotkeys } from "react-hotkeys-hook";
+import { toast } from "sonner";
 
 export const Route = createLazyFileRoute("/charts/$chartId/")({
   component: ChartDetailPage,
 });
 
 function ChartDetailPage() {
-  const { view, goToOverview, } = useChartStore();
+  const { view, goToOverview, undo, redo, canUndo, canRedo } = useChartStore();
 
   const handleCloseDialog = useCallback((open: boolean) => {
     if (!open) {
       goToOverview()
     }
   }, [goToOverview]);
+
+  // Wire up keyboard shortcuts for undo/redo
+  const handleUndo = useCallback(() => {
+    if (canUndo) {
+      undo();
+      toast.success(t`Undo successful`);
+    }
+  }, [undo, canUndo]);
+
+  const handleRedo = useCallback(() => {
+    if (canRedo) {
+      redo();
+      toast.success(t`Redo successful`);
+    }
+  }, [redo, canRedo]);
+
+  useHotkeys('mod+z', handleUndo, { enabled: canUndo, enableOnFormTags: false });
+  useHotkeys('mod+shift+z', handleRedo, { enabled: canRedo, enableOnFormTags: false });
 
   return (
     <>

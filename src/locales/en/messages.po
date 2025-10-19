@@ -401,7 +401,7 @@ msgstr "Active"
 msgid "Active filters"
 msgstr "Active filters"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:242
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:246
 msgid "Active Series"
 msgstr "Active Series"
 
@@ -805,8 +805,8 @@ msgstr "Bulk Edit"
 msgid "Bulk Edit Data"
 msgstr "Bulk Edit Data"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:93
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:48
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:97
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:67
 msgid "Bulk edit filters"
 msgstr "Bulk edit filters"
 
@@ -832,7 +832,7 @@ msgstr "Calculation"
 
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:65
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:135
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:71
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:90
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:80
 #: src/components/charts/components/views/AnnotationConfigView.tsx:243
 #: src/components/charts/components/views/ChartConfigView.tsx:92
@@ -861,7 +861,7 @@ msgstr "Changes to this policy"
 msgid "Chart"
 msgstr "Chart"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:46
+#: src/routes/charts/$chartId/index.lazy.tsx:66
 msgid "Chart – Transparenta.eu"
 msgstr "Chart – Transparenta.eu"
 
@@ -892,7 +892,7 @@ msgid "Chart Title"
 msgstr "Chart Title"
 
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:40
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:100
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:104
 msgid "Chart Type"
 msgstr "Chart Type"
 
@@ -1004,16 +1004,16 @@ msgstr "Condition {0}"
 msgid "Configure"
 msgstr "Configure"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:52
-#: src/routes/charts/$chartId/index.lazy.tsx:54
+#: src/routes/charts/$chartId/index.lazy.tsx:72
+#: src/routes/charts/$chartId/index.lazy.tsx:74
 msgid "Configure Chart"
 msgstr "Configure Chart"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:46
+#: src/routes/charts/$chartId/index.lazy.tsx:66
 msgid "Configure chart – Transparenta.eu"
 msgstr "Configure chart – Transparenta.eu"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:47
+#: src/routes/charts/$chartId/index.lazy.tsx:67
 msgid "Configure chart options, series, and annotations."
 msgstr "Configure chart options, series, and annotations."
 
@@ -1030,7 +1030,7 @@ msgid "Confirm choices"
 msgstr "Confirm choices"
 
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:62
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:68
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:87
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:77
 #: src/components/charts/components/views/ChartConfigView.tsx:89
 msgid "Confirm Delete"
@@ -1120,7 +1120,7 @@ msgstr "Copy Annotation"
 msgid "Copy current page URL to clipboard"
 msgstr "Copy current page URL to clipboard"
 
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:44
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:63
 msgid "Copy Data"
 msgstr "Copy Data"
 
@@ -1290,7 +1290,7 @@ msgstr "Data collected without an account:"
 msgid "Data Label Offset"
 msgstr "Data Label Offset"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:146
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:150
 #: src/components/charts/components/series-config/DataLabelSelector.tsx:20
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:43
 msgid "Data Labels"
@@ -1362,7 +1362,7 @@ msgid "Default settings that apply to all series (can be overridden per series)"
 msgstr "Default settings that apply to all series (can be overridden per series)"
 
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:57
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:63
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:82
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:72
 #: src/components/charts/components/views/AnnotationConfigView.tsx:230
 #: src/components/charts/components/views/AnnotationConfigView.tsx:240
@@ -1444,7 +1444,7 @@ msgstr "Details:"
 msgid "Development"
 msgstr "Development"
 
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:57
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:76
 msgid "Disable All Series"
 msgstr "Disable All Series"
 
@@ -1460,7 +1460,7 @@ msgstr "Disable Series"
 msgid "Display data labels on the chart"
 msgstr "Display data labels on the chart"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:132
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:136
 msgid "Display Options"
 msgstr "Display Options"
 
@@ -1472,7 +1472,7 @@ msgstr "Download"
 msgid "Downloads"
 msgstr "Downloads"
 
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:40
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:59
 #: src/components/charts/components/views/AnnotationConfigView.tsx:221
 #: src/components/charts/components/views/SeriesConfigView.tsx:230
 msgid "Duplicate"
@@ -1565,7 +1565,7 @@ msgid "Edit Annotation"
 msgstr "Edit Annotation"
 
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:67
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:211
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:215
 msgid "Edit Annotations"
 msgstr "Edit Annotations"
 
@@ -1592,7 +1592,7 @@ msgstr "Email address copied to clipboard!"
 msgid "Employees"
 msgstr "Employees"
 
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:53
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:72
 msgid "Enable All Series"
 msgstr "Enable All Series"
 
@@ -2392,7 +2392,7 @@ msgstr "Legal"
 msgid "Legal bases for processing"
 msgstr "Legal bases for processing"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:160
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:164
 #: src/routes/map.lazy.tsx:240
 msgid "Legend"
 msgstr "Legend"
@@ -2927,7 +2927,7 @@ msgstr "Only set if you consent to analytics:"
 msgid "Only set if you consent to enhanced error reporting:"
 msgstr "Only set if you consent to enhanced error reporting:"
 
-#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:36
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:55
 msgid "Open Config Panel"
 msgstr "Open Config Panel"
 
@@ -3173,11 +3173,19 @@ msgstr "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 msgid "Ready to create"
 msgstr "Ready to create"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:245
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:48
+msgid "Redo"
+msgstr "Redo"
+
+#: src/routes/charts/$chartId/index.lazy.tsx:40
+msgid "Redo successful"
+msgstr "Redo successful"
+
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:249
 msgid "Relative Mode"
 msgstr "Relative Mode"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:175
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:179
 msgid "Relative Values"
 msgstr "Relative Values"
 
@@ -3501,7 +3509,7 @@ msgid "Show advanced settings"
 msgstr "Show advanced settings"
 
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:66
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:199
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:203
 msgid "Show Annotations"
 msgstr "Show Annotations"
 
@@ -3514,7 +3522,7 @@ msgstr "Show Data Labels"
 msgid "Show details"
 msgstr "Show details"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:224
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:228
 msgid "Show Diff"
 msgstr "Show Diff"
 
@@ -3526,11 +3534,11 @@ msgstr "Show Grid Lines"
 msgid "Show Legend"
 msgstr "Show Legend"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:231
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:235
 msgid "Show Less"
 msgstr "Show Less"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:231
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:235
 msgid "Show More"
 msgstr "Show More"
 
@@ -3814,7 +3822,7 @@ msgstr "Toggle enhanced error reporting"
 msgid "Toggle theme"
 msgstr "Toggle theme"
 
-#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:187
+#: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:191
 msgid "Tooltip"
 msgstr "Tooltip"
 
@@ -3968,6 +3976,14 @@ msgstr "UATs"
 msgid "Understanding the consolidated general budget spending"
 msgstr "Understanding the consolidated general budget spending"
 
+#: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:41
+msgid "Undo"
+msgstr "Undo"
+
+#: src/routes/charts/$chartId/index.lazy.tsx:33
+msgid "Undo successful"
+msgstr "Undo successful"
+
 #: src/components/alerts/components/ConditionsList.tsx:116
 #: src/components/charts/components/series-config/UnitInput.tsx:28
 msgid "Unit"
@@ -4080,7 +4096,7 @@ msgstr "View all alerts"
 msgid "View all reports"
 msgstr "View all reports"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:47
+#: src/routes/charts/$chartId/index.lazy.tsx:67
 msgid "View and share your chart."
 msgstr "View and share your chart."
 

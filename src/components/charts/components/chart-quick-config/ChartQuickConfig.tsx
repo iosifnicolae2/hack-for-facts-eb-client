@@ -40,7 +40,7 @@ const getChartTypeIcon = (chartType: ChartType) => {
 export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
   const [showMoreOptions, setShowMoreOptions] = usePersistedState('chart-quick-config-show-more-options', false);
   const [bulkEditOpen, setBulkEditOpen] = usePersistedState('chart-quick-config-bulk-edit-open', false);
-  const { chart, updateChart, deleteChart, duplicateChart, goToConfig, enableAllSeries, disableAllSeries } = useChartStore();
+  const { chart, updateChart, deleteChart, duplicateChart, goToConfig, enableAllSeries, disableAllSeries, undo, redo, canUndo, canRedo } = useChartStore();
   const { copyChart } = useCopyPasteChart(dataMap);
 
 
@@ -83,6 +83,10 @@ export function ChartQuickConfig({ dataMap }: ChartQuickConfigProps) {
               onOpenBulkEdit={() => setBulkEditOpen(true)}
               onEnableAll={enableAllSeries}
               onDisableAll={disableAllSeries}
+              onUndo={undo}
+              onRedo={redo}
+              canUndo={canUndo}
+              canRedo={canRedo}
             />
           </div>
         </CardHeader>

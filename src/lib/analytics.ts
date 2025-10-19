@@ -30,6 +30,9 @@ const EVENTS = {
   ChartSeriesEnabledAll: "chart_series_enabled_all",
   ChartSeriesDisabledAll: "chart_series_disabled_all",
 
+  ChartUndoPerformed: "chart_undo_performed",
+  ChartRedoPerformed: "chart_redo_performed",
+
   ChartAnnotationAdded: "chart_annotation_added",
   ChartAnnotationDeleted: "chart_annotation_deleted",
   ChartAnnotationUpdated: "chart_annotation_updated",
