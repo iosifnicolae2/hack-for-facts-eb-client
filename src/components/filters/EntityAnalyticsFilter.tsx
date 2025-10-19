@@ -30,6 +30,7 @@ import { PeriodFilter } from './period-filter/PeriodFilter'
 import { ReportPeriodInput } from '@/schemas/reporting'
 import { getPeriodTags } from '@/lib/period-utils';
 import { useUserCurrency } from '@/lib/hooks/useUserCurrency'
+import { getEconomicPrefixLabel, getFunctionalPrefixLabel } from '@/lib/chart-filter-utils'
 
 export function EntityAnalyticsFilter() {
   const { filter, setFilter, resetFilter, view, setView } = useEntityAnalyticsFilter()
@@ -336,6 +337,7 @@ export function EntityAnalyticsFilter() {
           prefixComponent={PrefixFilter}
           value={filter.functional_prefixes}
           onValueChange={updateFunctionalPrefixes}
+          mapPrefixToLabel={getFunctionalPrefixLabel}
         />
 
         <FilterListContainer
@@ -352,6 +354,7 @@ export function EntityAnalyticsFilter() {
           prefixComponent={PrefixFilter}
           value={filter.economic_prefixes}
           onValueChange={updateEconomicPrefixes}
+          mapPrefixToLabel={getEconomicPrefixLabel}
         />
 
         <FilterListContainer

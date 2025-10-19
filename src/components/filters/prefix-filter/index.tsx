@@ -71,10 +71,11 @@ interface FilterContainerProps {
     value?: string[];
     onValueChange: (value: string[] | undefined) => void;
     icon: React.ReactNode;
+    mapPrefixToLabel?: (prefix: string) => string;
 }
 
 
-export function FilterPrefixContainer({ prefixComponent: PrefixComponent, title, icon, value, onValueChange }: FilterContainerProps) {
+export function FilterPrefixContainer({ prefixComponent: PrefixComponent, title, icon, value, onValueChange, mapPrefixToLabel }: FilterContainerProps) {
     const [showAllSelected, setShowAllSelected] = useState(false);
 
     const activeOptions = useMemo(() => {
@@ -82,12 +83,12 @@ export function FilterPrefixContainer({ prefixComponent: PrefixComponent, title,
 
         if (value) {
             value.forEach(v => {
-                options.push({ id: v, label: v });
+                options.push({ id: v, label: mapPrefixToLabel ? mapPrefixToLabel(v) : v });
             });
         }
 
         return options;
-    }, [value]);
+    }, [value, mapPrefixToLabel]);
 
     const handleClear = (option: OptionItem) => {
         onValueChange(value?.filter(v => v !== option.id));

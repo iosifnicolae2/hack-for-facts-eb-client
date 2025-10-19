@@ -53,6 +53,7 @@ import { PeriodFilter } from "@/components/filters/period-filter/PeriodFilter";
 import type { ReportPeriodInput } from "@/schemas/reporting";
 import { getPeriodTags } from "@/lib/period-utils";
 import { produce } from "immer";
+import { getEconomicPrefixLabel, getFunctionalPrefixLabel } from "@/lib/chart-filter-utils";
 
 export type SeriesFilterMutator = (draft: SeriesConfiguration) => void;
 
@@ -425,6 +426,7 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
           prefixComponent={PrefixFilter}
           value={selectedFunctionalPrefixesOptions}
           onValueChange={setSelectedFunctionalPrefixesOptions}
+          mapPrefixToLabel={getFunctionalPrefixLabel}
         />
         <FilterListContainer
           title={t`Economic Classification`}
@@ -439,6 +441,7 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
           prefixComponent={PrefixFilter}
           value={selectedEconomicPrefixesOptions}
           onValueChange={setSelectedEconomicPrefixesOptions}
+          mapPrefixToLabel={getEconomicPrefixLabel}
         />
         <FilterListContainer
           title={t`Budget Sector`}

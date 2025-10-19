@@ -29,6 +29,7 @@ import { OptionItem } from './base-filter/interfaces';
 import { useNormalizationSelection } from '@/hooks/useNormalizationSelection';
 import { useEntityLabel } from '@/hooks/filters/useFilterLabels';
 import { useUserCurrency } from "@/lib/hooks/useUserCurrency";
+import { getEconomicPrefixLabel, getFunctionalPrefixLabel } from "@/lib/chart-filter-utils";
 
 export function MapFilter() {
     const {
@@ -267,6 +268,7 @@ export function MapFilter() {
                     prefixComponent={PrefixFilter}
                     value={mapState.filters.functional_prefixes}
                     onValueChange={setFunctionalPrefixes}
+                    mapPrefixToLabel={getFunctionalPrefixLabel}
                 />
                 <FilterListContainer
                     title={t`Economic Classification`}
@@ -281,6 +283,7 @@ export function MapFilter() {
                     prefixComponent={PrefixFilter}
                     value={mapState.filters.economic_prefixes}
                     onValueChange={setEconomicPrefixes}
+                    mapPrefixToLabel={getEconomicPrefixLabel}
                 />
 
                 <FilterListContainer

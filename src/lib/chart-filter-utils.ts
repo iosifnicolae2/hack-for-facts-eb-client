@@ -7,6 +7,26 @@ import { t } from "@lingui/core/macro";
 import { getClassificationName } from "@/lib/classifications";
 import { getEconomicChapterName, getEconomicSubchapterName } from "@/lib/economic-classifications";
 
+// Public helpers to map functional/economic prefix codes to human-readable labels
+export const getFunctionalPrefixLabel = (prefix: string): string => {
+  const normalized = prefix.trim().replace(/\.$/, "");
+  const name = getClassificationName(normalized);
+  return name ? `${normalized} - ${name}` : prefix;
+};
+
+export const getEconomicPrefixLabel = (prefix: string): string => {
+  const normalized = prefix.trim().replace(/\.$/, "");
+  const parts = normalized.split(".");
+  let name: string | undefined;
+  if (parts.length === 1) {
+    name = getEconomicChapterName(normalized);
+  } else if (parts.length === 2) {
+    name = getEconomicSubchapterName(`${parts[0]}.${parts[1]}`);
+  }
+  // TODO: add cofog3 when mapping is available
+  return name ? `${normalized} - ${name}` : prefix;
+};
+
 export type FiltersWithLabels = Pick<AnalyticsFilterType, "entity_cuis" | "economic_codes" | "functional_codes" | "budget_sector_ids" | "funding_source_ids" | "uat_ids" | "functional_prefixes" | "economic_prefixes"> & {
   main_creditor_cui?: string;
 };
@@ -45,24 +65,8 @@ export const useMapFilterValue = (filter: FiltersWithLabels) => {
   const entityTypesStore = useEntityTypeLabel();
   const accountCategoryLabelsStore = useAccountCategoryLabel();
 
-  const mapFunctionalPrefix = (prefix: string): string => {
-    const normalized = prefix.trim().replace(/\.$/, "");
-    const name = getClassificationName(normalized);
-    return name ? `${normalized} - ${name}` : prefix;
-  };
-
-  const mapEconomicPrefix = (prefix: string): string => {
-    const normalized = prefix.trim().replace(/\.$/, "");
-    const parts = normalized.split(".");
-    let name: string | undefined;
-    if (parts.length === 1) {
-      name = getEconomicChapterName(normalized);
-    } else if (parts.length == 2) {
-      name = getEconomicSubchapterName(`${parts[0]}.${parts[1]}`);
-    }
-    // TODO: add cofog3 when mapping is available
-    return name ? `${normalized} - ${name}` : prefix;
-  };
+  
+  
   return {
     mapValueToLabel: (key: string, value: unknown) => {
       switch (key) {
@@ -81,12 +85,12 @@ export const useMapFilterValue = (filter: FiltersWithLabels) => {
         case "functional_codes":
           return functionalCodesStore.map(value as string);
         case "functional_prefixes": {
-          if (Array.isArray(value)) return value.map(v => mapFunctionalPrefix(String(v))).join(", ");
-          return mapFunctionalPrefix(String(value));
+          if (Array.isArray(value)) return value.map(v => getFunctionalPrefixLabel(String(v))).join(", ");
+          return getFunctionalPrefixLabel(String(value));
         }
         case "economic_prefixes": {
-          if (Array.isArray(value)) return value.map(v => mapEconomicPrefix(String(v))).join(", ");
-          return mapEconomicPrefix(String(value));
+          if (Array.isArray(value)) return value.map(v => getEconomicPrefixLabel(String(v))).join(", ");
+          return getEconomicPrefixLabel(String(value));
         }
         case "uat_ids":
           return uatLabelsStore.map(value as string);
