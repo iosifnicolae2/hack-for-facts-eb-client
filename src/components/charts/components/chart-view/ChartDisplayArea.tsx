@@ -184,16 +184,21 @@ const ChartContent = React.memo(
 );
 
 /**
- * A static footer component. Memoized as it never changes.
- * Note: `window.location.href` is dynamic but acceptable here as it's for generating a link.
+ * Footer component displaying chart attribution and source.
+ * Uses current URL to ensure exported images contain the latest chart configuration.
  */
-const ChartFooter = React.memo(() => (
-  <p className="flex items-center justify-between text-sm text-muted-foreground bg-muted/20 w-full p-4">
-    <a href={window.location.href} target="_blank" rel="noopener noreferrer">
-      <span className="font-bold">Transparenta.eu</span>
-    </a>
-    <a href="https://mfinante.gov.ro/transparenta-bugetara" target="_blank" rel="noopener noreferrer">
-      <Trans>Source: </Trans><span className="font-bold">Ministerul Finanțelor</span>
-    </a>
-  </p>
-));
+const ChartFooter = () => {
+  // Get current URL on every render to ensure it's always up-to-date
+  const currentUrl = window.location.href;
+
+  return (
+    <p className="flex items-center justify-between text-sm text-muted-foreground bg-muted/20 w-full p-4">
+      <a href={currentUrl} target="_blank" rel="noopener noreferrer" id="chart-footer-link">
+        <span className="font-bold">Transparenta.eu</span>
+      </a>
+      <a href="https://mfinante.gov.ro/transparenta-bugetara" target="_blank" rel="noopener noreferrer">
+        <Trans>Source: </Trans><span className="font-bold">Ministerul Finanțelor</span>
+      </a>
+    </p>
+  );
+};

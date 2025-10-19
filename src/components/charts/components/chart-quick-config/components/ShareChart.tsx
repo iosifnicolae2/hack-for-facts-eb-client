@@ -119,7 +119,19 @@ export function ShareChart({
         if (!element) return;
 
         setLoadingAction('svg');
+
         try {
+            // Generate short link for authenticated users and update footer
+            const footerLink = element.querySelector('#chart-footer-link') as HTMLAnchorElement | null;
+            if (isSignedIn && footerLink) {
+                try {
+                    const shortLink = await ensureShortRedirectUrl(shareUrl, getSiteUrl());
+                    footerLink.href = shortLink;
+                } catch (e) {
+                    console.error('Short link creation failed for SVG export, using full URL:', e);
+                }
+            }
+
             const dataUrl = await toSvg(element, getImageOptions());
             const filename = `${sanitizeFilename(chartTitle)}.svg`;
 
@@ -135,7 +147,7 @@ export function ShareChart({
         } finally {
             setLoadingAction(null);
         }
-    }, [getTargetElement, getImageOptions, chartTitle, sanitizeFilename]);
+    }, [getTargetElement, getImageOptions, chartTitle, sanitizeFilename, shareUrl, isSignedIn]);
 
     // Copy chart link to clipboard
     const handleCopyLink = useCallback(async () => {
