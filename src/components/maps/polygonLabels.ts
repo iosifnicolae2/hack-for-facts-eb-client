@@ -1,11 +1,12 @@
 import L from 'leaflet';
 import { Feature, Geometry, Polygon, MultiPolygon } from 'geojson';
 import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
-import { formatNumber } from '@/lib/utils';
+import { formatNumber, getNormalizationUnit } from '@/lib/utils';
 
 export interface PolygonLabelData {
   text: string;
   amount?: string;
+  unit?: string;
   position: [number, number]; // [lat, lng]
   bounds: L.LatLngBounds;
   area: number;
@@ -198,7 +199,7 @@ export function processFeatureForLabel(
   zoom: number,
   mapViewType: 'UAT' | 'County',
   heatmapDataMap: Map<string | number, HeatmapUATDataPoint | HeatmapCountyDataPoint>,
-  normalization: 'per_capita' | 'total',
+  normalization: 'total' | 'per_capita' | 'total_euro' | 'per_capita_euro',
   maxValue?: number
 ): PolygonLabelData | null {
   const properties = feature.properties;
@@ -252,7 +253,9 @@ export function processFeatureForLabel(
   // Get heatmap data for both population and amount
   const heatmapData = getFeatureHeatmapData(feature, heatmapDataMap);
   const amountValue = heatmapData
-    ? (normalization === 'per_capita' ? heatmapData.per_capita_amount : heatmapData.total_amount)
+    ? (normalization === 'per_capita' || normalization === 'per_capita_euro'
+        ? heatmapData.per_capita_amount
+        : heatmapData.total_amount)
     : null;
 
   // Don't show labels without amount data
@@ -308,6 +311,7 @@ export function processFeatureForLabel(
   return {
     text: displayText,
     amount: showAmount && amountValue !== null && amountValue !== undefined ? formatAmount(amountValue) : undefined,
+    unit: getNormalizationUnit(normalization),
     position: centroid,
     bounds,
     area: screenArea,

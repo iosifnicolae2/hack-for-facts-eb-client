@@ -67,10 +67,12 @@ export function MapFilter() {
 
     useEffect(() => {
         const { normalization } = mapState.filters;
+        const isPerCapita = normalization === 'per_capita' || normalization === 'per_capita_euro';
+
         if (currency === 'EUR' && normalization !== 'total_euro' && normalization !== 'per_capita_euro') {
-            setNormalization('total_euro');
+            setNormalization(isPerCapita ? 'per_capita_euro' : 'total_euro');
         } else if (currency === 'RON' && normalization !== 'total' && normalization !== 'per_capita') {
-            setNormalization('total');
+            setNormalization(isPerCapita ? 'per_capita' : 'total');
         }
     }, [currency, mapState.filters.normalization, setNormalization]);
 
@@ -335,7 +337,7 @@ export function MapFilter() {
                 <FilterRangeContainer
                     title={t`Amount Range`}
                     icon={<SlidersHorizontal className="w-4 h-4" aria-hidden="true" />}
-                    unit="RON"
+                    unit={currency}
                     rangeComponent={AmountRangeFilter}
                     minValue={mapState.filters.aggregate_min_amount}
                     onMinValueChange={(v) => setAggregateMinAmount(v ? Number(v) : undefined)}

@@ -7,7 +7,7 @@ interface CanvasLabelLayerOptions extends L.LayerOptions {
   geoJsonData: GeoJsonObject | null;
   mapViewType: 'UAT' | 'County';
   heatmapDataMap: Map<string | number, HeatmapUATDataPoint | HeatmapCountyDataPoint>;
-  normalization: 'per_capita' | 'total';
+  normalization: 'total' | 'per_capita' | 'total_euro' | 'per_capita_euro';
   showLabels?: boolean;
 }
 
@@ -48,7 +48,7 @@ export class CanvasLabelLayer extends L.Layer {
     this.canvas.style.pointerEvents = 'none';
     this.canvas.style.zIndex = '450';
     // Ensure canvas is transparent - critical for mobile browsers
-    this.canvas.style.opacity = '1';
+    this.canvas.style.opacity = '1'
     // Use GPU compositing for better performance
     this.canvas.style.willChange = 'contents';
 
@@ -384,21 +384,23 @@ export class CanvasLabelLayer extends L.Layer {
         label.showAmount ? local.y - 6 : local.y,
         label.fontSize,
         '#1f2937',
-        '#ffffff',
-        3,
+        '#ccc',
+        1,
         600
       );
 
       // Draw amount if visible
       if (label.showAmount && label.amount) {
+        const unit = label.unit || '';
+        const amountWithUnit = `${label.amount} ${unit}`.trim();
         this.drawText(
-          label.amount,
+          amountWithUnit,
           local.x,
           local.y + label.fontSize * 0.7,
           label.fontSize * 0.75,
-          '#4b5563',
-          '#ffffff',
-          1,
+          '#fff',
+          '#000',
+          Math.min(4, Math.max(0, this._map.getZoom() - 9)),
           600
         );
       }

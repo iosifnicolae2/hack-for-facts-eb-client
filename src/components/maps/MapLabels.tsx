@@ -9,7 +9,7 @@ interface MapLabelsProps {
   showLabels?: boolean;
   mapViewType: 'UAT' | 'County';
   heatmapDataMap: Map<string | number, HeatmapUATDataPoint | HeatmapCountyDataPoint>;
-  normalization: 'per_capita' | 'total';
+  normalization: 'total' | 'per_capita' | 'total_euro' | 'per_capita_euro';
 }
 
 /**

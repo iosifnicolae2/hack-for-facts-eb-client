@@ -167,7 +167,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
                 showLabels={showLabels}
                 mapViewType={mapViewType}
                 heatmapDataMap={heatmapDataMap}
-                normalization={(filters.normalization === 'per_capita' || filters.normalization === 'per_capita_euro') ? 'per_capita' : 'total'}
+                normalization={filters.normalization || 'total'}
               />
             </>
           )}
