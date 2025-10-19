@@ -94,7 +94,7 @@ export function useTreemapChartLink({
       }
 
       seriesConfigs.push({
-        id: `treemap-parent-${parentType}-${parentCode}`,
+        id: crypto.randomUUID(),
         type: 'line-items-aggregated-yearly',
         enabled: true,
         label: `Total: ${parentLabel}`,
@@ -164,7 +164,7 @@ export function useTreemapChartLink({
       }
 
       seriesConfigs.push({
-        id: `treemap-${primary}-${item.code}-${index}`,
+        id: crypto.randomUUID(),
         type: 'line-items-aggregated-yearly',
         enabled: true,
         label,
