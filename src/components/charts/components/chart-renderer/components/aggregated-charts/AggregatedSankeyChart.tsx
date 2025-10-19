@@ -1,24 +1,22 @@
-import { ResponsiveContainer, Sankey, Tooltip, Layer } from 'recharts';
 import { ChartRendererProps } from '../ChartRenderer';
-import { CustomSeriesTooltip } from '../Tooltips';
-import { useMemo, memo, SVGProps, ReactElement } from 'react';
+import { useMemo, memo, useState, useRef, useEffect } from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { yValueFormatter } from '../../utils';
 import { DataPointPayload } from '@/components/charts/hooks/useChartData';
 import { ChartMargins } from '../interfaces';
+import { sankey, sankeyLinkHorizontal, SankeyNode } from 'd3-sankey';
 
 // Constants
 const CHART_MARGINS: ChartMargins = {
-    top: 50,
-    right: 30,
-    bottom: 30,
-    left: 120,
+    top: 20,
+    right: 300,
+    bottom: 20,
+    left: 300,
 } as const;
 
 const NODE_CONFIG = {
     width: 10,
-    padding: 50,
-    labelOffset: 6,
+    minHeight: 60,
     fontSize: {
         label: 14,
         value: 12,
@@ -40,91 +38,40 @@ const THEME = {
     total: {
         color: '#A9A9A9',
     },
+    other: {
+        color: '#D3D3D3',
+    },
 } as const;
 
-export interface NodeProps extends Omit<SVGProps<SVGRectElement>, 'height' | 'width'> {
-    height: number;
-    width: number;
+const DATA_CONFIG = {
+    maxNodes: 8,
+    minPercentage: 2,
+} as const;
+
+interface SankeyNodeData {
+    id: string;
+    label: string;
+    value: number;
+    unit?: string;
+    color: string;
     payload: DataPointPayload;
-    index: number;
-    x: number;
-    y: number;
 }
 
-export type SankeyNodeOptions = (props: NodeProps) => ReactElement<SVGProps<SVGRectElement>>;
-
-interface SankeyLink {
-    source: number;
-    target: number;
+interface SankeyLinkData {
+    source: string;
+    target: string;
     value: number;
 }
 
 interface SankeyData {
-    nodes: DataPointPayload[];
-    links: SankeyLink[];
+    nodes: SankeyNodeData[];
+    links: SankeyLinkData[];
 }
-
-interface SankeyNodeProps {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    index: number;
-    payload: DataPointPayload;
-    containerWidth: number;
-}
-
-// Memoized node component for better performance
-const SankeyNodeComponent = memo<SankeyNodeProps>(
-    ({ x, y, width, height, index, payload, containerWidth }) => {
-        const isOut = x + width + NODE_CONFIG.labelOffset > containerWidth;
-        const textX = isOut ? x - NODE_CONFIG.labelOffset : x + width + NODE_CONFIG.labelOffset;
-        const textAnchor = isOut ? 'end' : 'start';
-        const centerY = y + height / 2;
-
-        return (
-            <Layer key={`CustomNode${index}`}>
-                <rect
-                    x={x}
-                    y={y}
-                    width={width}
-                    height={height}
-                    fill={payload.series.config.color}
-                    fillOpacity="1"
-                    role="img"
-                    aria-label={`${payload.series.label}: ${yValueFormatter(payload.value, payload.unit)}`}
-                />
-                <text
-                    textAnchor={textAnchor}
-                    x={textX}
-                    y={centerY}
-                    fontSize={NODE_CONFIG.fontSize.label}
-                    fill={THEME.node.text}
-                    opacity={THEME.node.textOpacity.primary}
-                >
-                    {payload.series.label}
-                </text>
-                <text
-                    textAnchor={textAnchor}
-                    x={textX}
-                    y={centerY + 15}
-                    fontSize={NODE_CONFIG.fontSize.value}
-                    fill={THEME.node.text}
-                    opacity={THEME.node.textOpacity.secondary}
-                >
-                    {yValueFormatter(payload.value, payload.unit)}
-                </text>
-            </Layer>
-        );
-    }
-);
-
-SankeyNodeComponent.displayName = 'SankeyNodeComponent';
 
 // Error display component
 const MultiUnitError: React.FC<{ units: string[]; height: number }> = memo(({ units, height }) => (
     <div
-        className="h-full p-4 "
+        className="h-full p-4"
         role="alert"
         aria-live="polite"
         style={{ height }}
@@ -152,48 +99,188 @@ const prepareSankeyData = (aggregatedData: DataPointPayload[]): SankeyData => {
     const unit = aggregatedData[0]?.unit;
     const year = aggregatedData[0]?.year;
 
-    // Filter smaller values
-    const aggregatedDataDisplayed = aggregatedData.filter(d => d.value > 1);
+    // Sort data by value in descending order
+    const sortedData = [...aggregatedData].sort((a, b) => b.value - a.value);
 
-    // Node for the total value
-    const totalNode: DataPointPayload = {
-        value: totalValue,
-        unit: unit,
-        initialValue: totalValue,
-        initialUnit: unit,
-        year: year,
-        id: 'total',
-        series: {
-            id: 'total',
-            label: 'Total',
-            config: {
-                color: THEME.total.color,
-            },
-        },
+    // Filter and group smaller values
+    const minValue = (totalValue * DATA_CONFIG.minPercentage) / 100;
+    const displayedNodes: DataPointPayload[] = [];
+    const otherNodes: DataPointPayload[] = [];
+
+    for (const node of sortedData) {
+        // Skip very small values
+        if (node.value <= 1) continue;
+
+        // Add to displayed if under max nodes and above percentage threshold
+        if (displayedNodes.length < DATA_CONFIG.maxNodes && node.value >= minValue) {
+            displayedNodes.push(node);
+        } else {
+            otherNodes.push(node);
+        }
     }
 
-    const nodes: DataPointPayload[] = [
-        ...aggregatedDataDisplayed,
-        totalNode,
-    ];
+    // Create nodes array
+    const nodes: SankeyNodeData[] = displayedNodes.map((d) => ({
+        id: d.id || d.series.id,
+        label: d.series.label,
+        value: d.value,
+        unit: d.unit,
+        color: d.series.config.color || '#666',
+        payload: d,
+    }));
 
-    const links: SankeyLink[] = aggregatedDataDisplayed.map((_, index) => ({
-        source: index,
-        target: aggregatedDataDisplayed.length, // Total node index
-        value: aggregatedDataDisplayed[index].value,
+    // Create "Other" node if there are grouped items
+    if (otherNodes.length > 0) {
+        const otherValue = otherNodes.reduce((acc, d) => acc + d.value, 0);
+        nodes.push({
+            id: 'other',
+            label: `Other (${otherNodes.length})`,
+            value: otherValue,
+            unit: unit,
+            color: THEME.other.color,
+            payload: {
+                value: otherValue,
+                unit: unit,
+                initialValue: otherValue,
+                initialUnit: unit,
+                year: year,
+                id: 'other',
+                series: {
+                    id: 'other',
+                    label: `Other (${otherNodes.length})`,
+                    config: {
+                        color: THEME.other.color,
+                    },
+                },
+            },
+        });
+    }
+
+    // Add total node
+    nodes.push({
+        id: 'total',
+        label: 'Total',
+        value: totalValue,
+        unit: unit,
+        color: THEME.total.color,
+        payload: {
+            value: totalValue,
+            unit: unit,
+            initialValue: totalValue,
+            initialUnit: unit,
+            year: year,
+            id: 'total',
+            series: {
+                id: 'total',
+                label: 'Total',
+                config: {
+                    color: THEME.total.color,
+                },
+            },
+        },
+    });
+
+    // Create links from all source nodes to total
+    const links: SankeyLinkData[] = nodes.slice(0, -1).map((node) => ({
+        source: node.id,
+        target: 'total',
+        value: node.value,
     }));
 
     return { nodes, links };
 };
 
+interface TooltipProps {
+    node?: SankeyNodeData;
+    x: number;
+    y: number;
+}
 
-export function AggregatedSankeyChart({ chart, aggregatedData, unitMap, height, margins }: ChartRendererProps) {
+const SankeyTooltip = memo<TooltipProps>(({ node, x, y }) => {
+    if (!node) return null;
+
+    return (
+        <div
+            className="absolute z-50 bg-popover text-popover-foreground rounded-md border shadow-md p-3 text-sm pointer-events-none"
+            style={{
+                left: x,
+                top: y,
+                transform: 'translate(-50%, -100%) translateY(-8px)',
+            }}
+        >
+            <div className="font-medium mb-1">{node.label}</div>
+            <div className="text-muted-foreground">
+                {yValueFormatter(node.value, node.unit)}
+            </div>
+        </div>
+    );
+});
+
+SankeyTooltip.displayName = 'SankeyTooltip';
+
+export function AggregatedSankeyChart({ chart, aggregatedData, unitMap, height }: ChartRendererProps) {
     const units = new Set(unitMap.values());
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [tooltip, setTooltip] = useState<TooltipProps>({ x: 0, y: 0 });
+    const [containerWidth, setContainerWidth] = useState(0);
+
+    // Handle responsive width
+    useEffect(() => {
+        if (!containerRef.current) return;
+
+        const resizeObserver = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+                setContainerWidth(entry.contentRect.width);
+            }
+        });
+
+        resizeObserver.observe(containerRef.current);
+        return () => resizeObserver.disconnect();
+    }, []);
+
     // Memoize Sankey data preparation
     const sankeyData = useMemo(
         () => prepareSankeyData(aggregatedData),
         [aggregatedData]
     );
+
+    // Calculate dynamic height based on number of nodes
+    const calculatedHeight = useMemo(() => {
+        const nodeCount = sankeyData.nodes.length;
+        const minHeight = height || 400;
+        const dynamicHeight = Math.max(
+            minHeight,
+            nodeCount * NODE_CONFIG.minHeight + CHART_MARGINS.top + CHART_MARGINS.bottom
+        );
+        return Math.min(dynamicHeight, 400); // too much height overflows the container. 400 is a sweet magic number.
+    }, [sankeyData.nodes.length, height]);
+
+    // Generate Sankey layout
+    const { nodes, links } = useMemo(() => {
+        if (sankeyData.nodes.length === 0 || containerWidth === 0) {
+            return { nodes: [], links: [] };
+        }
+
+        const chartWidth = containerWidth - CHART_MARGINS.left - CHART_MARGINS.right;
+        const chartHeight = calculatedHeight - CHART_MARGINS.top - CHART_MARGINS.bottom;
+
+        const sankeyGenerator = sankey<SankeyNodeData, SankeyLinkData>()
+            .nodeId((d: SankeyNodeData) => d.id)
+            .nodeWidth(NODE_CONFIG.width)
+            .nodePadding(30)
+            .extent([
+                [0, 0],
+                [chartWidth, chartHeight],
+            ])
+            .iterations(32);
+
+        const { nodes, links } = sankeyGenerator({
+            nodes: sankeyData.nodes.map((d: SankeyNodeData) => ({ ...d })),
+            links: sankeyData.links.map((d: SankeyLinkData) => ({ ...d })),
+        });
+
+        return { nodes, links };
+    }, [sankeyData, containerWidth, calculatedHeight]);
 
     // Handle multiple units error case
     if (units.size > 1) {
@@ -213,36 +300,106 @@ export function AggregatedSankeyChart({ chart, aggregatedData, unitMap, height, 
     }
 
     return (
-        <ResponsiveContainer width="100%" height={height}>
-            <Sankey
-                data={sankeyData}
-                nodePadding={NODE_CONFIG.padding}
-                nodeWidth={NODE_CONFIG.width}
-                linkCurvature={0.5}
-                iterations={32}
-                node={(props) => <SankeyNodeComponent {...props} payload={props.payload as unknown as DataPointPayload} containerWidth={props.width} />}
-                margin={{ ...CHART_MARGINS, ...margins }}
-                link={{
-                    stroke: THEME.link.color,
-                    strokeOpacity: THEME.link.opacity
-                }}
-            >
-                {chart.config.showTooltip && (
-                    <Tooltip
-                        content={(props) => (
-                            <CustomSeriesTooltip
-                                {...props}
-                                payload={props.payload?.map(p => ({
-                                    ...p.payload,
-                                    dataKey: 'source.value',
-                                }))}
-                                chartConfig={chart.config}
-                                chart={chart}
-                            />
-                        )}
-                    />
-                )}
-            </Sankey>
-        </ResponsiveContainer>
+        <div ref={containerRef} className="w-full relative" style={{ height: calculatedHeight }}>
+            {containerWidth > 0 && (
+                <svg
+                    width={containerWidth}
+                    height={calculatedHeight}
+                    className="w-full"
+                    role="img"
+                    aria-label="Sankey diagram showing budget distribution"
+                >
+                    <g transform={`translate(${CHART_MARGINS.left},${CHART_MARGINS.top})`}>
+                        {/* Render links */}
+                        {links.map((link: any, i: number) => {
+                            const path = sankeyLinkHorizontal()(link);
+                            return path ? (
+                                <path
+                                    key={`link-${i}`}
+                                    d={path}
+                                    fill="none"
+                                    stroke={THEME.link.color}
+                                    strokeOpacity={THEME.link.opacity}
+                                    strokeWidth={Math.max(1, link.width || 0)}
+                                />
+                            ) : null;
+                        })}
+
+                        {/* Render nodes */}
+                        {nodes.map((node: any) => {
+                            const nodeData = node as unknown as SankeyNode<SankeyNodeData, SankeyLinkData>;
+                            if (nodeData.x0 === undefined || nodeData.y0 === undefined) return null;
+
+                            const x = nodeData.x0;
+                            const y = nodeData.y0;
+                            const width = (nodeData.x1 || 0) - (nodeData.x0 || 0);
+                            const height = (nodeData.y1 || 0) - (nodeData.y0 || 0);
+                            const isRightSide = nodeData.id === 'total';
+                            const labelX = isRightSide ? x - 6 : x + width + 6;
+                            const textAnchor = isRightSide ? 'end' : 'start';
+                            const centerY = y + height / 2;
+
+                            return (
+                                <g
+                                    key={nodeData.id}
+                                    onMouseEnter={(e) => {
+                                        if (!chart.config.showTooltip) return;
+                                        const rect = e.currentTarget.getBoundingClientRect();
+                                        const containerRect = containerRef.current?.getBoundingClientRect();
+                                        if (!containerRect) return;
+
+                                        setTooltip({
+                                            node: nodeData as unknown as SankeyNodeData,
+                                            x: rect.left + rect.width / 2 - containerRect.left,
+                                            y: rect.top - containerRect.top,
+                                        });
+                                    }}
+                                    onMouseLeave={() => setTooltip({ x: 0, y: 0 })}
+                                    className="cursor-pointer"
+                                >
+                                    <rect
+                                        x={x}
+                                        y={y}
+                                        width={width}
+                                        height={height}
+                                        fill={(nodeData as unknown as SankeyNodeData).color}
+                                        fillOpacity={1}
+                                    />
+                                    <text
+                                        x={labelX}
+                                        y={centerY - 2}
+                                        textAnchor={textAnchor}
+                                        fontSize={NODE_CONFIG.fontSize.label}
+                                        fill={THEME.node.text}
+                                        opacity={THEME.node.textOpacity.primary}
+                                        dominantBaseline="middle"
+                                    >
+                                        {(nodeData as unknown as SankeyNodeData).label}
+                                    </text>
+                                    <text
+                                        x={labelX}
+                                        y={centerY + 13}
+                                        textAnchor={textAnchor}
+                                        fontSize={NODE_CONFIG.fontSize.value}
+                                        fill={THEME.node.text}
+                                        opacity={THEME.node.textOpacity.secondary}
+                                        dominantBaseline="middle"
+                                    >
+                                        {yValueFormatter(
+                                            (nodeData as unknown as SankeyNodeData).value,
+                                            (nodeData as unknown as SankeyNodeData).unit
+                                        )}
+                                    </text>
+                                </g>
+                            );
+                        })}
+                    </g>
+                </svg>
+            )}
+
+            {chart.config.showTooltip && tooltip.node && (
+                <SankeyTooltip {...tooltip} />
+            )}
+        </div>
     );
 }
