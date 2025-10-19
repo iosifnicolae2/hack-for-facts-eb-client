@@ -1,4 +1,5 @@
-import { createLazyFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { createLazyFileRoute, Link, useNavigate, useSearch } from '@tanstack/react-router'
+import { z } from 'zod'
 import { useEffect, useState, useCallback } from 'react'
 import { getConsent, setConsent, type ConsentPreferences, onConsentChange, acceptAll, declineAll } from '@/lib/consent'
 import { Switch } from '@/components/ui/switch'
@@ -12,10 +13,16 @@ export const Route = createLazyFileRoute('/cookies')({
   component: CookieSettingsPage,
 })
 
+const SearchSchema = z.object({
+  redirect: z.string().optional(),
+})
+
 function CookieSettingsPage() {
   const [prefs, setPrefs] = useState<ConsentPreferences>(getConsent())
   const { isEnabled: isAuthEnabled, isSignedIn } = useAuth()
   const navigate = useNavigate({ from: '/cookies' })
+  const rawSearch = useSearch({ from: '/cookies' })
+  const { redirect } = SearchSchema.parse(rawSearch)
 
   useEffect(() => {
     setPrefs(getConsent())
@@ -37,21 +44,26 @@ function CookieSettingsPage() {
     updateConsent({ sentry: Boolean(checked) })
   }, [updateConsent])
 
+  const navigateBack = useCallback(() => {
+    const target = redirect && redirect.startsWith('/') ? redirect : '/'
+    navigate({ to: target as any })
+  }, [navigate, redirect])
+
   const handleAllowEssentialOnly = useCallback(() => {
     declineAll()
     setPrefs(getConsent())
-    navigate({ to: '/' })
-  }, [navigate])
+    navigateBack()
+  }, [navigateBack])
 
   const handleAllowAll = useCallback(() => {
     acceptAll()
     setPrefs(getConsent())
-    navigate({ to: '/' })
-  }, [navigate])
+    navigateBack()
+  }, [navigateBack])
 
   const handleAcceptSelected = useCallback(() => {
-    navigate({ to: '/' })
-  }, [navigate])
+    navigateBack()
+  }, [navigateBack])
 
   return (
     <div className="mx-auto w-full max-w-4xl p-6">

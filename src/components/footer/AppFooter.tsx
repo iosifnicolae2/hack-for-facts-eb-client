@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 import { openSentryFeedback } from "@/lib/sentry";
 import { useSentryConsent } from "@/hooks/useSentryConsent";
 import { Trans } from "@lingui/react/macro";
@@ -16,6 +16,7 @@ import { t } from "@lingui/core/macro";
 export function AppFooter(): ReactElement {
     const currentYear = new Date().getFullYear();
     const showSentryFeedback = useSentryConsent();
+    const location = useLocation();
 
     const handleLinkClick = () => {
         // Scroll to top of page when navigating
@@ -113,7 +114,14 @@ export function AppFooter(): ReactElement {
                                 <Link to="/terms" className="hover:text-foreground" onClick={handleLinkClick}><Trans>Terms of Service</Trans></Link>
                             </li>
                             <li>
-                                <Link to="/cookies" className="hover:text-foreground" onClick={handleLinkClick}><Trans>Cookie Settings</Trans></Link>
+                                <Link
+                                    to="/cookies"
+                                    search={{ redirect: `${location.pathname}${location.searchStr ?? ""}` }}
+                                    className="hover:text-foreground"
+                                    onClick={handleLinkClick}
+                                >
+                                    <Trans>Cookie Settings</Trans>
+                                </Link>
                             </li>
                         </ul>
                     </nav>
@@ -184,5 +192,4 @@ export function AppFooter(): ReactElement {
         </footer>
     );
 }
-
 

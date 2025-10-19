@@ -16,13 +16,13 @@ export function CookieConsentBanner(): ReactElement | null {
   const [isBannerVisible, setBannerVisible] = useState(false);
   const [isEntering, setIsEntering] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
-  const { pathname } = useLocation();
+  const location = useLocation();
 
   const showBanner = useCallback(() => {
     // We only want to run this logic on the client
     if (typeof window === "undefined") return;
 
-    if (pathname.includes("/cookies")) {
+    if (location.pathname.includes("/cookies")) {
       setBannerVisible(false);
       return
     }
@@ -38,7 +38,7 @@ export function CookieConsentBanner(): ReactElement | null {
     } else {
       setBannerVisible(false);
     }
-  }, [pathname]);
+  }, [location.pathname]);
 
   useEffect(() => {
     // Delay showing the banner to avoid disrupting initial page load
@@ -47,7 +47,7 @@ export function CookieConsentBanner(): ReactElement | null {
     }, 2500);
 
     return () => clearTimeout(timer);
-  }, [pathname, showBanner]);
+  }, [location.pathname, showBanner]);
 
   const handleDecision = (consentFunction: () => void) => {
     setIsEntering(false);
@@ -87,6 +87,8 @@ export function CookieConsentBanner(): ReactElement | null {
           <div className="mt-5 flex flex-col sm:flex-row sm:items-center gap-3">
             <Link
               to="/cookies"
+              // After managing preferences, return to the current page
+              search={{ redirect: `${location.pathname}${location.searchStr ?? ""}` }}
               onClick={() => handleDecision(declineAll)}
               className="w-full sm:w-auto rounded-lg py-2 px-5 text-center text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors"
             >
