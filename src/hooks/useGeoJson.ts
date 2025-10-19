@@ -38,7 +38,6 @@ export const useGeoJsonData = (mapViewType: MapViewType) => {
         ...geoJsonQueryOptions(mapViewType),
         staleTime: convertDaysToMs(1),
         gcTime: convertDaysToMs(7),
-        placeholderData: (prev: GeoJsonObject | undefined) => prev,
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchOnMount: false,
