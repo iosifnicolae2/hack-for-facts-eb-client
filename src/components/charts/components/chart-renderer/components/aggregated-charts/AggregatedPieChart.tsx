@@ -2,69 +2,109 @@ import { PieChart, Pie, Tooltip, ResponsiveContainer, Cell, Legend } from 'recha
 import { ChartRendererProps } from '../ChartRenderer';
 import { AlertTriangle } from 'lucide-react';
 import { CustomSeriesTooltip } from '../Tooltips';
-import { yValueFormatter } from '../../utils';
+
+// Modern color palette for better visual appeal
+const PIE_COLORS = [
+  '#3B82F6', // Blue
+  '#EF4444', // Red
+  '#10B981', // Green
+  '#F59E0B', // Yellow
+  '#8B5CF6', // Purple
+  '#F97316', // Orange
+  '#06B6D4', // Cyan
+  '#84CC16', // Lime
+  '#EC4899', // Pink
+  '#6B7280', // Gray
+];
 
 export function AggregatedPieChart({ chart, aggregatedData, unitMap, height }: ChartRendererProps) {
-
     const units = new Set(unitMap.values());
+
     if (units.size > 1) {
         return (
             <div className="flex flex-col items-center justify-center h-full text-muted-foreground" style={{ height }}>
-                <AlertTriangle className="w-12 h-12 text-amber-500" />
-                <p className="mt-4 text-center text-lg">Multiple units selected</p>
-                <p className="text-sm text-center">Pie charts cannot effectively display series with different units ({Array.from(units).join(', ')}).</p>
+                <AlertTriangle className="w-16 h-16 text-amber-500 mb-4" />
+                <p className="text-center text-lg font-medium text-gray-700 mb-2">Multiple units selected</p>
+                <p className="text-sm text-center text-gray-500 max-w-md">
+                    Pie charts cannot effectively display series with different units ({Array.from(units).join(', ')}).
+                    Please select series with the same unit for better visualization.
+                </p>
             </div>
         );
     }
 
+    // Use modern color palette if no custom colors are defined
+    const getColor = (index: number, customColor?: string) => {
+        return customColor || PIE_COLORS[index % PIE_COLORS.length];
+    };
+
     return (
         <ResponsiveContainer width="100%" height={height}>
-            <PieChart margin={{ top: 60, right: 20, bottom: 60, left: 20 }}>
+            <PieChart margin={{ top: 40, right: 5, bottom: 70, left: 5 }}>
                 <Pie
                     data={aggregatedData}
                     dataKey="value"
                     nameKey="series.label"
                     cx="50%"
                     cy="50%"
-                    outerRadius="80%"
-                    labelLine={false}
-                    animationEasing="ease-in-out"
-                    animationDuration={300}
+                    outerRadius="110%"
+                    paddingAngle={2}
+                    animationEasing="ease-out"
+                    animationDuration={800}
                     animationBegin={0}
-                    label={({ cx, cy, midAngle, innerRadius, outerRadius, percent, payload }) => {
-                        if (percent === undefined || midAngle === undefined || cx === undefined || cy === undefined || innerRadius === undefined || outerRadius === undefined) return null;
-                        const radius = innerRadius + (outerRadius - innerRadius) * 1.2;
-                        const x = cx + radius * Math.cos(-midAngle * Math.PI / 180);
-                        const y = cy + radius * Math.sin(-midAngle * Math.PI / 180);
-                        const align = x > cx ? 'start' : 'end';
-                        const xLabel = x + (align === 'start' ? 40 : -40);
+                    label={({ cx, cy, midAngle, outerRadius, percent }) => {
+                        if (percent === undefined || midAngle === undefined || cx === undefined || cy === undefined) return null;
+
+                        // Only show labels for slices > 5%
+                        if (percent < 0.05) return null;
+
+                        const RADIAN = Math.PI / 180;
+                        const radius = outerRadius * 0.7;
+                        const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                        const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
                         return (
-                            <g>
-                                <text x={x} y={y} textAnchor={align} dominantBaseline="central">
-                                    {`${(percent * 100).toFixed(0)}%`}
-                                </text>
-                                {chart.config.showDataLabels && payload && (
-                                    <text x={xLabel} y={y} fill={payload.series.config.color} textAnchor={align} dominantBaseline="central">
-                                        {align === 'start' ? ' - ' : ''} {`${payload.series.label} (${yValueFormatter(payload.initialValue, payload.initialUnit, 'compact')})`} {align === 'start' ? '' : ' - '}
-                                    </text>
-                                )}
-                            </g>
+                            <text
+                                x={x}
+                                y={y}
+                                fill="white"
+                                textAnchor="middle"
+                                dominantBaseline="central"
+                                className="font-semibold text-xl drop-shadow-sm"
+                                style={{ fontSize: '20px', fontWeight: 600 }}
+                            >
+                                {`${(percent * 100).toFixed(0)}%`}
+                            </text>
                         );
                     }}
+                    labelLine={false}
                 >
-                    {aggregatedData.map((entry) => (
-                        <Cell key={entry.id} fill={entry.series.config.color} />
+                    {aggregatedData.map((entry, index) => (
+                        <Cell
+                            key={entry.id}
+                            fill={getColor(index, entry.series.config.color)}
+                            stroke="white"
+                            strokeWidth={2}
+                            style={{
+                                filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
+                                cursor: 'pointer'
+                            }}
+                        />
                     ))}
                 </Pie>
+
                 {chart.config.showTooltip && (
-                    <Tooltip content={(props) => (
-                        <CustomSeriesTooltip
-                            {...props}
-                            payload={props.payload?.map(p => p.payload)}
-                            chartConfig={chart.config}
-                            chart={chart}
-                        />
-                    )} />
+                    <Tooltip
+                        content={(props) => (
+                            <CustomSeriesTooltip
+                                {...props}
+                                payload={props.payload?.map(p => p.payload)}
+                                chartConfig={chart.config}
+                                chart={chart}
+                            />
+                        )}
+                        cursor={{ fill: 'rgba(0,0,0,0.05)' }}
+                    />
                 )}
 
                 {chart.config.showLegend && (
@@ -72,9 +112,22 @@ export function AggregatedPieChart({ chart, aggregatedData, unitMap, height }: C
                         verticalAlign="bottom"
                         layout="horizontal"
                         align="center"
-                        wrapperStyle={{ bottom: 20, left: 20, right: 20 }}
+                        wrapperStyle={{
+                            bottom: 15,
+                            left: 15,
+                            right: 15,
+                            fontSize: '14px',
+                            fontWeight: 500
+                        }}
+                        iconType="circle"
+                        formatter={(value, entry) => (
+                            <span style={{ color: entry.color, fontWeight: 500 }}>
+                                {value}
+                            </span>
+                        )}
                     />
                 )}
+
             </PieChart>
         </ResponsiveContainer>
     );
