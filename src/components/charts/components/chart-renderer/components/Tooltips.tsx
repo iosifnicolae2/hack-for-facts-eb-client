@@ -22,11 +22,9 @@ export function CustomSeriesTooltip({
     payload,
     label,
     chartConfig,
-    chart,
 }: CustomSeriesTooltipProps): ReactNode {
 
     const isAggregated = chartConfig.chartType.endsWith('-aggr');
-    const yearRangeText = isAggregated && chart ? getYearRangeText(chart as Chart) : undefined;
 
     const mappedPayload = useMemo(() => {
         if (!payload) {
