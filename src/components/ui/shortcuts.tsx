@@ -11,47 +11,49 @@ interface ShortcutItem {
   }[];
 }
 
-const shortcutsData: ShortcutItem[] = [
-  {
-    category: t`Navigation`,
-    shortcuts: [
-      { action: t`Search Entities`, keys: ["Ctrl+K", "⌘K"], description: t`Open entity search dialog` },
-      { action: t`Go to Map`, keys: ["Ctrl+M", "⌘M"], description: t`Navigate to map view` },
-      { action: t`Go to Entity Table`, keys: ["Ctrl+T", "⌘T"], description: t`Navigate to entity analytics table` },
-      { action: t`Go to Chart View`, keys: ["Ctrl+H", "⌘H"], description: t`Navigate to chart view` },
-      { action: t`Copy Share Link`, keys: ["Ctrl+S", "⌘S"], description: t`Copy current page URL to clipboard` },
-    ],
-  },
-  {
-    category: t`Entity Search`,
-    shortcuts: [
-      { action: t`Open Search`, keys: ["Ctrl+K", "⌘K"], description: t`Open floating entity search` },
-      { action: t`Close Search`, keys: ["Esc"], description: t`Close entity search dialog` },
-      { action: t`Focus Income Search`, keys: ["Ctrl+L", "⌘L"], description: t`Focus income search in entity details` },
-      { action: t`Focus Expense Search`, keys: ["Ctrl+J", "⌘J"], description: t`Focus expense search in entity details` },
-    ],
-  },
-  {
-    category: t`Charts`,
-    shortcuts: [
-      { action: t`Duplicate Series`, keys: ["Ctrl+D", "⌘D"], description: t`Duplicate selected chart series` },
-    ],
-  },
-  {
-    category: t`Map`,
-    shortcuts: [
-      { action: t`Enable Scroll Zoom`, keys: ["Ctrl", "⌘"], description: t`Temporarily enable scroll wheel zoom` },
-    ],
-  },
-  {
-    category: t`Entity Details`,
-    shortcuts: [
-      { action: t`Focus Year Selector`, keys: ["Ctrl+;"], description: t`Focus year selector in entity details` },
-    ],
-  },
-];
 
 export function KeyboardShortcuts() {
+
+  const shortcutsData: ShortcutItem[] = [
+    {
+      category: t`Navigation`,
+      shortcuts: [
+        { action: t`Search Entities`, keys: ["Ctrl+K", "⌘K"], description: t`Open entity search dialog` },
+        { action: t`Go to Map`, keys: ["Ctrl+M", "⌘M"], description: t`Navigate to map view` },
+        { action: t`Go to Entity Table`, keys: ["Ctrl+T", "⌘T"], description: t`Navigate to entity analytics table` },
+        { action: t`Go to Chart View`, keys: ["Ctrl+H", "⌘H"], description: t`Navigate to chart view` },
+        { action: t`Copy Share Link`, keys: ["Ctrl+S", "⌘S"], description: t`Copy current page URL to clipboard` },
+      ],
+    },
+    {
+      category: t`Entity Search`,
+      shortcuts: [
+        { action: t`Open Search`, keys: ["Ctrl+K", "⌘K"], description: t`Open floating entity search` },
+        { action: t`Close Search`, keys: ["Esc"], description: t`Close entity search dialog` },
+        { action: t`Focus Income Search`, keys: ["Ctrl+L", "⌘L"], description: t`Focus income search in entity details` },
+        { action: t`Focus Expense Search`, keys: ["Ctrl+J", "⌘J"], description: t`Focus expense search in entity details` },
+      ],
+    },
+    {
+      category: t`Charts`,
+      shortcuts: [
+        { action: t`Duplicate Series`, keys: ["Ctrl+D", "⌘D"], description: t`Duplicate selected chart series` },
+      ],
+    },
+    {
+      category: t`Map`,
+      shortcuts: [
+        { action: t`Enable Scroll Zoom`, keys: ["Ctrl", "⌘"], description: t`Temporarily enable scroll wheel zoom` },
+      ],
+    },
+    {
+      category: t`Entity Details`,
+      shortcuts: [
+        { action: t`Focus Year Selector`, keys: ["Ctrl+;"], description: t`Focus year selector in entity details` },
+      ],
+    },
+  ];
+
   return (
     <div className="space-y-8">
       {/* Header */}
