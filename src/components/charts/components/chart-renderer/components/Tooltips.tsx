@@ -2,6 +2,7 @@ import { Chart } from '@/schemas/charts';
 import { useMemo, type ReactNode } from 'react';
 import { getYearRangeText, yValueFormatter } from '../utils';
 import { SeriesId, DataPointPayload } from '../../../hooks/useChartData';
+import { Trans } from '@lingui/react/macro';
 
 // ---------------------------------------------------------------------------
 // Time-Series Tooltip
@@ -50,7 +51,7 @@ export function CustomSeriesTooltip({
     return (
         <div className="bg-background/50 backdrop-blur-sm border border-border rounded-lg shadow-lg p-4 important:z-50 select-none">
             <div className="font-semibold text-foreground mb-2 text-center border-b pb-1">
-                {isAggregated ? `Date consolidate ${yearRangeText}` : `Anul ${label}`}
+                {isAggregated ? <Trans>Aggregated data</Trans> : <Trans>Year {label}</Trans>}
             </div>
 
             <div className="flex flex-col p-4 gap-6">
