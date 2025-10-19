@@ -69,7 +69,7 @@ export function SelectedOptionsDisplay({
                         onClick={clearSelection}
                         className={cn("h-auto py-1 px-2 text-xs")}
                     >
-                        <XIcon className="w-3 h-3 mr-1" /> 
+                        <XIcon className="w-3 h-3 mr-1" />
                         <Trans>Clear</Trans>
                     </Button>
                 </div>
@@ -80,8 +80,8 @@ export function SelectedOptionsDisplay({
                     {itemsToShowInCompactSummary.map((option) => (
                         <Badge
                             key={option.id}
-                            variant="secondary"
-                            className={cn("flex items-center gap-1.5 py-1 pl-2.5 pr-1 text-sm")}
+                            variant="accent"
+                            className={cn("flex items-center gap-1.5 py-1 pl-2.5 pr-1 text-sm shadow-slate-500 shadow-sm")}
                         >
                             <span className="truncate text-xs max-w-[100px] block" title={option.label}>
                                 {option.label}
@@ -94,7 +94,7 @@ export function SelectedOptionsDisplay({
                                 )}
                                 aria-label={`Remove ${option.label}`}
                             >
-                        <XIcon aria-hidden="true" className="w-3.5 h-3.5" />
+                                <XIcon aria-hidden="true" className="w-3.5 h-3.5 text-white dark:text-black" />
                             </button>
                         </Badge>
                     ))}
@@ -118,9 +118,9 @@ export function SelectedOptionsDisplay({
                         {selected.map((option) => (
                             <Badge
                                 key={option.id}
-                                variant="secondary"
+                                variant="accent"
                                 className={cn(
-                                    "flex items-center gap-1.5 py-1 pl-2.5 pr-1 text-sm relative group"
+                                    "flex items-center gap-1.5 py-1 pl-2.5 pr-1 text-sm relative group shadow-slate-500 shadow-sm"
                                 )}
                             >
                                 <span className="truncate text-xs max-w-[150px] block" title={option.label}>
@@ -134,7 +134,8 @@ export function SelectedOptionsDisplay({
                                     )}
                                     aria-label={`Remove ${option.label}`}
                                 >
-                                    <XIcon aria-hidden="true" className="w-3.5 h-3.5" />
+                                    {/* TODO: use theme colors for text and background */}
+                                    <XIcon aria-hidden="true" className="w-3.5 h-3.5 text-white dark:text-black" />
                                 </button>
                             </Badge>
                         ))}
