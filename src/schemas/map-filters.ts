@@ -19,7 +19,9 @@ export const MapStateSchema = z.object({
   filters: AnalyticsFilterSchema.default(defaultMapFilters),
   activeView: MapViewEnum.default("map"),
   mapViewType: MapViewTypeEnum.default("UAT"),
+  // Persist and restore map view state via URL
+  mapCenter: z.tuple([z.number(), z.number()]).optional(),
+  mapZoom: z.number().optional(),
 });
 
 export type MapUrlState = z.infer<typeof MapStateSchema>;
-

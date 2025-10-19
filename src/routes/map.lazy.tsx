@@ -3,6 +3,7 @@ import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 import React, { useState } from "react";
 import { getPercentileValues, createHeatmapStyleFunction } from "@/components/maps/utils";
 import { InteractiveMap } from "@/components/maps/InteractiveMap";
+import type { LeafletMouseEvent } from "leaflet";
 import { UatProperties } from "@/components/maps/interfaces";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useGeoJsonData } from "@/hooks/useGeoJson";
@@ -50,7 +51,7 @@ function MapPage() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [isLegendModalOpen, setIsLegendModalOpen] = useState(false);
 
-  const mapZoom = isMobile ? 6 : 7.7;
+  const mapZoom = mapState.mapZoom ?? (isMobile ? 6 : 7.7);
 
   const {
     data: heatmapData,
@@ -59,7 +60,7 @@ function MapPage() {
     error: heatmapError,
   } = useHeatmapData(mapState.filters, mapState.mapViewType);
 
-  const handleFeatureClick = (properties: UatProperties) => {
+  const handleFeatureClick = (properties: UatProperties, _event?: LeafletMouseEvent) => {
     // The entity map support only a limited set of filters, so we need to pass them as a search param.
     // If we set all the filters, the data doesn't make sense for the entity page, as the filters are not visible.
     const { report_period: period, account_category, normalization } = mapState.filters;
@@ -86,6 +87,34 @@ function MapPage() {
         navigate({ to: `/entities/${countyCui}`, search: { ...searchParams } });
       }
     }
+  };
+
+  const handleMapViewChange = (center: [number, number], zoom: number) => {
+    const roundTo = (value: number, decimals: number) => {
+      const factor = Math.pow(10, decimals);
+      return Math.round(value * factor) / factor;
+    };
+    const newCenter: [number, number] = [roundTo(center[0], 5), roundTo(center[1], 5)];
+    const newZoom = roundTo(zoom, 1);
+    // Avoid redundant URL updates if nothing changed after rounding
+    if (
+      mapState.mapCenter &&
+      Math.abs(mapState.mapCenter[0] - newCenter[0]) < 1e-6 &&
+      Math.abs(mapState.mapCenter[1] - newCenter[1]) < 1e-6 &&
+      typeof mapState.mapZoom === 'number' && Math.abs(mapState.mapZoom - newZoom) < 1e-6
+    ) {
+      return;
+    }
+
+    navigate({
+      search: (prev) => ({
+        ...(prev as Record<string, unknown>),
+        mapCenter: newCenter,
+        mapZoom: newZoom,
+      }),
+      replace: true,
+      resetScroll: false,
+    });
   };
 
   const {
@@ -158,8 +187,10 @@ function MapPage() {
                         heatmapData={heatmapData}
                         geoJsonData={geoJsonData}
                         zoom={mapZoom}
+                        center={mapState.mapCenter}
                         mapViewType={mapState.mapViewType}
                         filters={mapState.filters}
+                        onViewChange={handleMapViewChange}
                       />
                       <AnimatePresence>
                         {isLoading && (

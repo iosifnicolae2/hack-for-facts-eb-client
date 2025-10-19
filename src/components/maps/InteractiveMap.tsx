@@ -1,6 +1,6 @@
 import 'leaflet/dist/leaflet.css';
 import React, { useCallback, useMemo, useRef, useEffect } from 'react';
-import { MapContainer, GeoJSON, useMap } from 'react-leaflet';
+import { MapContainer, GeoJSON, useMap, useMapEvents } from 'react-leaflet';
 import L, { LeafletMouseEvent, PathOptions, Layer, LatLngExpression, LatLngBoundsExpression } from 'leaflet';
 import { Feature, Geometry, GeoJsonObject } from 'geojson';
 import { createTooltipContent, buildHeatmapDataMap, restyleAllFeatures, getStyleForFeature } from './utils';
@@ -39,6 +39,7 @@ interface InteractiveMapProps {
   mapViewType: 'UAT' | 'County';
   filters: AnalyticsFilterType;
   showLabels?: boolean;
+  onViewChange?: (center: [number, number], zoom: number) => void;
 }
 
 export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
@@ -57,6 +58,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
   scrollWheelZoom = true,
   filters,
   showLabels = true,
+  onViewChange,
 }) => {
   const geoJsonLayerRef = useRef<L.GeoJSON | null>(null);
   const latestStyleFnRef = useRef<(feature?: Feature<Geometry, unknown>) => PathOptions>(() => DEFAULT_FEATURE_STYLE);
@@ -150,6 +152,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
         >
           {scrollWheelZoom !== false && <ScrollWheelZoomControl />}
           <MapUpdater center={center} zoom={zoom} />
+          <MapViewChangeListener onViewChange={onViewChange} />
           {geoJsonData.type === 'FeatureCollection' && (
             <>
               <GeoJSON
@@ -187,5 +190,29 @@ const MapUpdater: React.FC<{ center: LatLngExpression, zoom: number }> = ({ cent
       map.setView(center, zoom);
     }
   }, [center, zoom, map]);
+  return null;
+};
+
+/**
+ * Listens for user-initiated map view changes and reports them upstream.
+ * Uses 'moveend' and 'zoomend' to avoid noisy updates while panning/zooming.
+ */
+const MapViewChangeListener: React.FC<{ onViewChange?: (center: [number, number], zoom: number) => void }> = ({ onViewChange }) => {
+  useMapEvents({
+    moveend: (e) => {
+      if (!onViewChange) return;
+      const map = e.target as L.Map;
+      const c = map.getCenter();
+      const z = map.getZoom();
+      onViewChange([Number(c.lat), Number(c.lng)], Number(z));
+    },
+    zoomend: (e) => {
+      if (!onViewChange) return;
+      const map = e.target as L.Map;
+      const c = map.getCenter();
+      const z = map.getZoom();
+      onViewChange([Number(c.lat), Number(c.lng)], Number(z));
+    },
+  });
   return null;
 };

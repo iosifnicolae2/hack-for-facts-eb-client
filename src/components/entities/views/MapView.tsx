@@ -13,6 +13,7 @@ import { getEntityFeatureInfo } from '@/components/entities/utils';
 import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { UatProperties } from '@/components/maps/interfaces';
+import type { LeafletMouseEvent } from 'leaflet';
 import { useHeatmapData } from '@/hooks/useHeatmapData';
 import { AnalyticsFilterType, Normalization } from '@/schemas/charts';
 import { Trans } from '@lingui/react/macro';
@@ -94,7 +95,7 @@ export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapF
     });
   };
 
-  const handleFeatureClick = (properties: UatProperties) => {
+  const handleFeatureClick = (properties: UatProperties, _event?: LeafletMouseEvent) => {
     const clickedFeatureId = properties.natcode || properties.mnemonic;
     if (clickedFeatureId === featureId) return;
 
