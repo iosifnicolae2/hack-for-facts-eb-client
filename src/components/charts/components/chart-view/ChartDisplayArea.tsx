@@ -8,7 +8,6 @@ import { getChartTypeIcon } from "../../utils";
 import { ChartRenderer } from "../chart-renderer/components/ChartRenderer";
 import { AnnotationPositionChange, ChartMargins } from "../chart-renderer/components/interfaces";
 import { ChartTitle } from "../chart-renderer/components/ChartTitle";
-import { getYearRangeText } from "../chart-renderer/utils";
 import { DataPointPayload, DataSeriesMap, TimeSeriesDataPoint, UnitMap } from "../../hooks/useChartData";
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
@@ -156,20 +155,13 @@ const ChartContent = React.memo(
     xAxisMarker,
     height
   }: Omit<ChartDisplayAreaProps, "isLoading" | "error" | "onAddSeries">) => {
-    // useMemo ensures this string is only re-calculated when the chart object changes.
-    const aggregatedSubtitle = React.useMemo(
-      () =>
-        chart.config.chartType.endsWith("-aggr")
-          ? `Date consolidate ${getYearRangeText(chart)}`
-          : undefined,
-      [chart]
-    );
 
     if (!dataMap) return <LoadingSpinner text={t`Loading chart data...`} />;
 
     return (
       <div className="w-full">
-        <ChartTitle title={chart.title} subtitle={aggregatedSubtitle} />
+        <ChartTitle
+          title={chart.title} />
         <ChartRenderer
           isPreview={isPreview}
           margins={margins}
