@@ -2,7 +2,8 @@ import { type FC, useEffect, useMemo, useRef, useState } from 'react'
 import { ResponsiveContainer, Treemap, Tooltip } from 'recharts'
 import { Trans } from '@lingui/react/macro'
 import { motion, useAnimationControls } from 'motion/react'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, LineChart } from 'lucide-react'
+import { useNavigate } from '@tanstack/react-router'
 
 import { yValueFormatter } from '@/components/charts/components/chart-renderer/utils'
 import { Button } from '@/components/ui/button'
@@ -10,6 +11,9 @@ import type { TreemapInput, ExcludedItemsSummary } from './budget-transform'
 import { FilteredSpendingInfo } from './FilteredSpendingInfo'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { getNormalizationUnit } from '@/lib/utils'
+import type { AnalyticsFilterType } from '@/schemas/charts'
+import { useTreemapChartLink } from './useTreemapChartLink'
+import { buildTreemapChartLink } from '@/lib/chart-links'
 
 const COLORS = [
   '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d',
@@ -76,6 +80,7 @@ type Props = {
   showViewDetails?: boolean
   normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro'
   excludedItemsSummary?: ExcludedItemsSummary
+  chartFilterInput?: AnalyticsFilterType // Optional filter input for the chart link
 }
 
 const CustomizedContent: FC<{
@@ -294,8 +299,9 @@ const CustomizedContent: FC<{
   )
 }
 
-export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, path = [], onViewDetails, showViewDetails = false, normalization, excludedItemsSummary }: Props) {
+export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, path = [], onViewDetails, showViewDetails = false, normalization, excludedItemsSummary, chartFilterInput: filterInput }: Props) {
   const isMobile = useIsMobile()
+  const navigate = useNavigate()
 
   const payloadData = useMemo(() => {
     return data.map((node) => ({
@@ -305,6 +311,14 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
       fill: getColor(`${primary}-${node.code}`),
     }))
   }, [data, primary])
+
+  // Generate chart link configuration
+  const { hasChartLink, seriesConfigs, chartTitle } = useTreemapChartLink({
+    data,
+    path,
+    primary,
+    filterInput,
+  })
 
   const handleBackClick = () => {
     if (!onBreadcrumbClick) return
@@ -316,6 +330,22 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
     } else if (path.length === 1) {
       onBreadcrumbClick(null)
     }
+  }
+
+  const handleViewAsChart = () => {
+    if (!hasChartLink || seriesConfigs.length === 0) return
+
+    const chartLink = buildTreemapChartLink({
+      title: chartTitle,
+      seriesConfigs,
+      normalization,
+    })
+
+    navigate({
+      to: chartLink.to,
+      params: chartLink.params,
+      search: chartLink.search,
+    })
   }
 
   const totalValue = useMemo(() => payloadData.reduce((acc, curr) => acc + (Number.isFinite(curr.value) ? curr.value : 0), 0), [payloadData])
@@ -483,6 +513,12 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
                 currencyCode={currencyCode}
                 perCapita={unit.includes('capita')}
               />
+            )}
+            {hasChartLink && (
+              <Button variant="outline" size="sm" onClick={handleViewAsChart} className="gap-2 ml-auto mr-6 shadow-md">
+                <LineChart className="w-4 h-4" />
+                <Trans>View as Chart</Trans>
+              </Button>
             )}
           </div>
         </>

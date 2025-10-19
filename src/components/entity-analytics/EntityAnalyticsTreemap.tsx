@@ -151,6 +151,7 @@ export function EntityAnalyticsTreemap({
             path={breadcrumbs}
             normalization={filter.normalization}
             excludedItemsSummary={excludedItemsSummary}
+            chartFilterInput={filter}
           />
         )}
       </CardContent>

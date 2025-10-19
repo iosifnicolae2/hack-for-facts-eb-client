@@ -1,5 +1,5 @@
 import { ChartSchema, defaultYearRange, ReportType } from '@/schemas/charts';
-import type { Chart, Normalization } from '@/schemas/charts';
+import type { Chart, Normalization, SeriesConfiguration } from '@/schemas/charts';
 import type { ChartUrlState } from '@/components/charts/page-schema';
 import { generateHash, getNormalizationUnit } from '@/lib/utils';
 import { t } from '@lingui/core/macro';
@@ -113,6 +113,56 @@ export function buildEntityIncomeExpenseChartLink(
     const search = buildEntityIncomeExpenseChartState(cui, entityName, normalization, options);
     const params = { chartId: search.chart.id } as const;
     return { to: '/charts/$chartId' as const, params, search };
+}
+
+interface BuildTreemapChartStateOptions {
+    title: string
+    seriesConfigs: SeriesConfiguration[]
+    normalization?: Normalization
+}
+
+/**
+ * Build a ChartUrlState from treemap series configurations.
+ * Creates a multi-series chart based on treemap drill-down state.
+ */
+export function buildTreemapChartState(
+    options: BuildTreemapChartStateOptions
+): ChartUrlState {
+    const { title, seriesConfigs } = options
+    const years = Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, i) => defaultYearRange.start + i)
+    const chartId = generateHash(JSON.stringify({ title, series: seriesConfigs.map(s => s.id) }))
+
+    const chart: Chart = ChartSchema.parse({
+        id: chartId,
+        title,
+        config: {
+            chartType: 'bar',
+            showGridLines: true,
+            showLegend: true,
+            showTooltip: true,
+            editAnnotations: false,
+            showAnnotations: true,
+            showDiffControl: false,
+            yearRange: { start: years[0], end: years[years.length - 1] },
+        },
+        series: seriesConfigs,
+        annotations: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+    })
+
+    return { chart, view: 'overview' }
+}
+
+/**
+ * Convenience helper to produce params and search for the charts route from treemap.
+ */
+export function buildTreemapChartLink(
+    options: BuildTreemapChartStateOptions
+) {
+    const search = buildTreemapChartState(options)
+    const params = { chartId: search.chart.id } as const
+    return { to: '/charts/$chartId' as const, params, search }
 }
 
 
