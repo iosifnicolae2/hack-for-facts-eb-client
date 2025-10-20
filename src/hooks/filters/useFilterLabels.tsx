@@ -91,14 +91,24 @@ export const useDataLabelBuilder = (key: string, getLabels: GetLabels, initialId
 
     useEffect(() => {
         // Create a stable string representation of the IDs to compare
-        const currentIdsString = initialIds.sort().join(',');
+        // Sort numerically to handle both string and number IDs correctly
+        const currentIdsString = [...initialIds]
+            .sort((a, b) => {
+                const numA = Number(a);
+                const numB = Number(b);
+                if (!isNaN(numA) && !isNaN(numB)) {
+                    return numA - numB;
+                }
+                return String(a).localeCompare(String(b));
+            })
+            .join(',');
 
         // Only fetch if the IDs have actually changed
         if (currentIdsString !== previousIdsRef.current && initialIds.length > 0) {
             previousIdsRef.current = currentIdsString;
-            fetchMissingLabels(initialIds, getLabels);
+            void fetchMissingLabels(initialIds, getLabels);
         }
-    }, [initialIds]);
+    }, [initialIds, getLabels]);
 
     const mapIdToLabel = (id: string | number) => dataMap?.[String(id)] ?? `id::${id}`;
 
@@ -137,7 +147,7 @@ type EntityCategoriesJson = { readonly categories: Record<string, string> };
 
 const fetchEntityCategories = async (): Promise<Record<string, string>> => {
     const lang = getUserLocale();
-    const mod = lang == 'ro' ?
+    const mod = lang === 'ro' ?
         await import('@/assets/entity-categories-ro.json') :
         await import('@/assets/entity-categories-en.json');
     const json = (mod as { default: EntityCategoriesJson }).default;
