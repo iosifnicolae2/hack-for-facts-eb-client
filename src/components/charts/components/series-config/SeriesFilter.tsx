@@ -11,9 +11,12 @@ import {
   MapPinned,
   Globe,
   Tags,
+  MinusCircle,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../ui/card";
 import { Button } from "../../../ui/button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../../../ui/collapsible";
+import { Badge } from "../../../ui/badge";
 import { FilterListContainer } from "../../../filters/base-filter/FilterListContainer";
 import { FilterPrefixContainer, PrefixFilter } from "../../../filters/prefix-filter";
 import { FilterRangeContainer } from "../../../filters/base-filter/FilterRangeContainer";
@@ -263,12 +266,121 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
     label: String(tag.value),
   }));
 
+  // ============================================================================
+  // EXCLUDE FILTERS STATE MANAGEMENT
+  // ============================================================================
+
+  const exclude = filter.exclude ?? {};
+
+  // Label stores for exclude filters
+  const excludeEntityLabelsStore = useEntityLabel(exclude.entity_cuis ?? []);
+  const excludeUatLabelsStore = useUatLabel(exclude.uat_ids ?? []);
+  const excludeEconomicClassificationLabelsStore = useEconomicClassificationLabel(exclude.economic_codes ?? []);
+  const excludeFunctionalClassificationLabelsStore = useFunctionalClassificationLabel(exclude.functional_codes ?? []);
+  const excludeBudgetSectorLabelsStore = useBudgetSectorLabel(exclude.budget_sector_ids ?? []);
+  const excludeFundingSourceLabelsStore = useFundingSourceLabel(exclude.funding_source_ids ?? []);
+
+  // Helper to create exclude list updaters
+  const createExcludeListUpdater =
+    (filterKey: keyof typeof exclude, labelStore?: LabelStore) =>
+      (action: React.SetStateAction<OptionItem<string | number>[]>) => {
+        const currentOptions =
+          (exclude[filterKey] as (string | number)[] | undefined)?.map((id) => ({
+            id,
+            label: labelStore?.map(id) ?? String(id),
+          })) || [];
+
+        const newState = typeof action === "function" ? action(currentOptions) : action;
+        if (labelStore) {
+          labelStore.add(newState);
+        }
+
+        applyChanges((draft) => {
+          if (!draft.filter.exclude) {
+            draft.filter.exclude = {};
+          }
+          (draft.filter.exclude[filterKey] as (string | number)[]) = newState.map((option) => option.id);
+        });
+
+        return newState;
+      };
+
+  const createExcludeValueUpdater =
+    (filterKey: keyof typeof exclude) =>
+      (value: FilterValue) => {
+        applyChanges((draft) => {
+          if (!draft.filter.exclude) {
+            draft.filter.exclude = {};
+          }
+          draft.filter.exclude[filterKey] = value as never;
+        });
+      };
+
+  const createExcludePrefixListUpdater = (filterKey: "functional_prefixes" | "economic_prefixes") => (value: string[] | undefined) => {
+    applyChanges((draft) => {
+      if (!draft.filter.exclude) {
+        draft.filter.exclude = {};
+      }
+      draft.filter.exclude[filterKey] = value && value.length > 0 ? value : undefined;
+    });
+  };
+
+  // Exclude filter state variables
+  const excludeSelectedEntityOptions: OptionItem[] =
+    exclude.entity_cuis?.map((cui) => ({ id: cui, label: excludeEntityLabelsStore.map(cui) })) ?? [];
+  const setExcludeSelectedEntityOptions = createExcludeListUpdater("entity_cuis", excludeEntityLabelsStore);
+
+  const excludeSelectedMainCreditorOption: OptionItem[] =
+    exclude.main_creditor_cui ? [{ id: exclude.main_creditor_cui, label: excludeEntityLabelsStore.map(exclude.main_creditor_cui) }] : [];
+  const setExcludeMainCreditorCui = createExcludeValueUpdater("main_creditor_cui");
+
+  const excludeSelectedUatOptions: OptionItem<string>[] =
+    exclude.uat_ids?.map((id) => ({ id: String(id), label: excludeUatLabelsStore.map(String(id)) })) ?? [];
+  const setExcludeSelectedUatOptions = createExcludeListUpdater("uat_ids", excludeUatLabelsStore);
+
+  const excludeSelectedEconomicClassificationOptions: OptionItem[] =
+    exclude.economic_codes?.map((id) => ({ id, label: excludeEconomicClassificationLabelsStore.map(id) })) ?? [];
+  const setExcludeSelectedEconomicClassificationOptions = createExcludeListUpdater("economic_codes", excludeEconomicClassificationLabelsStore);
+
+  const excludeSelectedFunctionalClassificationOptions: OptionItem[] =
+    exclude.functional_codes?.map((id) => ({ id, label: excludeFunctionalClassificationLabelsStore.map(id) })) ?? [];
+  const setExcludeSelectedFunctionalClassificationOptions = createExcludeListUpdater("functional_codes", excludeFunctionalClassificationLabelsStore);
+
+  const excludeSelectedEntityTypeOptions: OptionItem[] =
+    exclude.entity_types?.map((id) => ({ id, label: entityTypeLabelsStore.map(id) })) ?? [];
+  const setExcludeSelectedEntityTypeOptions = createExcludeListUpdater("entity_types", entityTypeLabelsStore);
+
+  const excludeSelectedCountyOptions: OptionItem<string>[] =
+    exclude.county_codes?.map((code) => ({ id: code, label: String(code) })) ?? [];
+  const setExcludeSelectedCountyOptions = createExcludeListUpdater("county_codes");
+
+  const excludeSelectedBudgetSectorOptions: OptionItem[] =
+    exclude.budget_sector_ids?.map((id) => ({ id, label: excludeBudgetSectorLabelsStore.map(id) })) ?? [];
+  const setExcludeSelectedBudgetSectorOptions = createExcludeListUpdater("budget_sector_ids", excludeBudgetSectorLabelsStore);
+
+  const excludeSelectedFundingSourceOptions: OptionItem[] =
+    exclude.funding_source_ids?.map((id) => ({ id, label: excludeFundingSourceLabelsStore.map(id) })) ?? [];
+  const setExcludeSelectedFundingSourceOptions = createExcludeListUpdater("funding_source_ids", excludeFundingSourceLabelsStore);
+
+  const excludeSelectedEconomicPrefixesOptions = exclude.economic_prefixes ?? [];
+  const setExcludeSelectedEconomicPrefixesOptions = createExcludePrefixListUpdater("economic_prefixes");
+
+  const excludeSelectedFunctionalPrefixesOptions = exclude.functional_prefixes ?? [];
+  const setExcludeSelectedFunctionalPrefixesOptions = createExcludePrefixListUpdater("functional_prefixes");
+
   const clearAllFilters = () => {
     applyChanges((draft) => {
       draft.filter = {
         account_category: "ch",
         report_type: "Executie bugetara agregata la nivel de ordonator principal",
+        exclude: undefined,
       } as SeriesConfiguration["filter"];
+    });
+  };
+
+  const clearAllExcludeFilters = () => {
+    applyChanges((draft) => {
+      draft.filter.exclude = undefined;
     });
   };
 
@@ -295,6 +407,19 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
     (filter.is_uat !== undefined ? 1 : 0) +
     (filter.functional_prefixes?.length ?? 0) +
     (filter.economic_prefixes?.length ?? 0);
+
+  const totalExcludeFilters =
+    (exclude.entity_cuis?.length ?? 0) +
+    (exclude.main_creditor_cui ? 1 : 0) +
+    (exclude.uat_ids?.length ?? 0) +
+    (exclude.county_codes?.length ?? 0) +
+    (exclude.economic_codes?.length ?? 0) +
+    (exclude.functional_codes?.length ?? 0) +
+    (exclude.budget_sector_ids?.length ?? 0) +
+    (exclude.funding_source_ids?.length ?? 0) +
+    (exclude.entity_types?.length ?? 0) +
+    (exclude.functional_prefixes?.length ?? 0) +
+    (exclude.economic_prefixes?.length ?? 0);
 
   const handleClearReportType = () => setReportType(undefined);
   const handleClearNormalization = () => setNormalization(undefined);
@@ -335,10 +460,10 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
           <CardTitle className="text-lg font-semibold" id="series-filters-title">
             <Trans>Filters</Trans>
           </CardTitle>
-          {totalSelectedFilters > 0 && (
+          {(totalSelectedFilters > 0 || totalExcludeFilters > 0) && (
             <Button variant="ghost" size="sm" onClick={clearAllFilters} className="text-sm">
               <XCircle className="w-4 h-4 mr-1" aria-hidden="true" />
-              <Trans>Clear all</Trans> ({totalSelectedFilters})
+              <Trans>Clear all</Trans> ({totalSelectedFilters + totalExcludeFilters})
             </Button>
           )}
         </div>
@@ -507,6 +632,153 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
           onMaxValueChange={setMaxPopulation}
           maxValueAllowed={100_000_000}
         />
+
+        {/* Exclude Filters Section (Advanced) */}
+        <div className="border-t mt-2">
+          <Collapsible>
+            <CollapsibleTrigger className="w-full px-4 py-3 text-sm font-medium hover:bg-muted/50 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <MinusCircle className="w-4 h-4 text-destructive" aria-hidden="true" />
+                <span>
+                  <Trans>Exclude Filters</Trans>
+                  <span className="text-xs text-muted-foreground ml-2">
+                    (<Trans>Advanced</Trans>)
+                  </span>
+                </span>
+                {totalExcludeFilters > 0 && (
+                  <Badge variant="destructive" className="rounded-full px-2 text-xs">
+                    {totalExcludeFilters}
+                  </Badge>
+                )}
+              </div>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <div className="px-4 py-2 text-xs text-muted-foreground bg-muted/30 border-b">
+                <Trans>Exclude filters remove data matching these criteria from the results.</Trans>
+              </div>
+
+              {/* Clear all exclude filters button */}
+              {totalExcludeFilters > 0 && (
+                <div className="px-4 py-2 border-b flex justify-end">
+                  <Button variant="ghost" size="sm" onClick={clearAllExcludeFilters} className="text-sm text-destructive hover:text-destructive">
+                    <XCircle className="w-4 h-4 mr-1" aria-hidden="true" />
+                    <Trans>Clear all exclude filters</Trans> ({totalExcludeFilters})
+                  </Button>
+                </div>
+              )}
+
+              {/* Exclude filter components - mirror the include filters */}
+              <div className="bg-muted/10">
+                {/* Entities Exclude */}
+                <FilterListContainer
+                  title={t`Exclude Entities`}
+                  icon={<Building2 className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                  listComponent={EntityList}
+                  selected={excludeSelectedEntityOptions}
+                  setSelected={setExcludeSelectedEntityOptions}
+                />
+
+                {/* Main Creditor Exclude */}
+                <FilterContainer
+                  title={t`Exclude Main Creditor`}
+                  icon={<Building2 className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                  selectedOptions={excludeSelectedMainCreditorOption}
+                  onClearOption={() => setExcludeMainCreditorCui(undefined)}
+                  onClearAll={() => setExcludeMainCreditorCui(undefined)}
+                >
+                  <EntityList
+                    selectedOptions={excludeSelectedMainCreditorOption}
+                    toggleSelect={(option) => setExcludeMainCreditorCui(String(option.id))}
+                    pageSize={100}
+                  />
+                </FilterContainer>
+
+                {/* UAT Exclude */}
+                <FilterListContainer
+                  title={t`Exclude UAT`}
+                  icon={<MapPin className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                  listComponent={UatList}
+                  selected={excludeSelectedUatOptions}
+                  setSelected={setExcludeSelectedUatOptions}
+                />
+
+                {/* County Exclude */}
+                <FilterListContainer
+                  title={t`Exclude County`}
+                  icon={<MapPinned className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                  listComponent={CountyList}
+                  selected={excludeSelectedCountyOptions}
+                  setSelected={setExcludeSelectedCountyOptions}
+                />
+
+                {/* Entity Type Exclude */}
+                <FilterListContainer
+                  title={t`Exclude Entity Type`}
+                  icon={<Building2 className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                  listComponent={EntityTypeList}
+                  selected={excludeSelectedEntityTypeOptions}
+                  setSelected={setExcludeSelectedEntityTypeOptions}
+                />
+
+                {/* Functional Classification Exclude */}
+                <FilterListContainer
+                  title={t`Exclude Functional Classification`}
+                  icon={<ChartBar className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                  listComponent={FunctionalClassificationList}
+                  selected={excludeSelectedFunctionalClassificationOptions}
+                  setSelected={setExcludeSelectedFunctionalClassificationOptions}
+                />
+
+                {/* Functional Prefixes Exclude */}
+                <FilterPrefixContainer
+                  title={t`Exclude Functional Prefixes`}
+                  icon={<ChartBar className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                  prefixComponent={PrefixFilter}
+                  value={excludeSelectedFunctionalPrefixesOptions}
+                  onValueChange={setExcludeSelectedFunctionalPrefixesOptions}
+                  mapPrefixToLabel={getFunctionalPrefixLabel}
+                />
+
+                {/* Economic Classification Exclude */}
+                <FilterListContainer
+                  title={t`Exclude Economic Classification`}
+                  icon={<Tags className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                  listComponent={EconomicClassificationList}
+                  selected={excludeSelectedEconomicClassificationOptions}
+                  setSelected={setExcludeSelectedEconomicClassificationOptions}
+                />
+
+                {/* Economic Prefixes Exclude */}
+                <FilterPrefixContainer
+                  title={t`Exclude Economic Prefixes`}
+                  icon={<Tags className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                  prefixComponent={PrefixFilter}
+                  value={excludeSelectedEconomicPrefixesOptions}
+                  onValueChange={setExcludeSelectedEconomicPrefixesOptions}
+                  mapPrefixToLabel={getEconomicPrefixLabel}
+                />
+
+                {/* Budget Sector Exclude */}
+                <FilterListContainer
+                  title={t`Exclude Budget Sector`}
+                  icon={<Building2 className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                  listComponent={BudgetSectorList}
+                  selected={excludeSelectedBudgetSectorOptions}
+                  setSelected={setExcludeSelectedBudgetSectorOptions}
+                />
+
+                {/* Funding Source Exclude */}
+                <FilterListContainer
+                  title={t`Exclude Funding Source`}
+                  icon={<EuroIcon className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                  listComponent={FundingSourceList}
+                  selected={excludeSelectedFundingSourceOptions}
+                  setSelected={setExcludeSelectedFundingSourceOptions}
+                />
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
       </CardContent>
     </Card>
   );
