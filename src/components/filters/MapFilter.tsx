@@ -1,13 +1,15 @@
 import { FilterListContainer } from "./base-filter/FilterListContainer";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { ArrowUpDown, Calendar, ChartBar, Divide, Globe, Map, SlidersHorizontal, Tags, XCircle, Building2, HandCoins, Building, MapPin, MapPinned, TableIcon, BarChart2Icon, MapIcon } from "lucide-react";
+import { ArrowUpDown, Calendar, ChartBar, Divide, Globe, Map, SlidersHorizontal, Tags, XCircle, Building2, HandCoins, Building, MapPin, MapPinned, TableIcon, BarChart2Icon, MapIcon, MinusCircle } from "lucide-react";
 import { Button } from "../ui/button";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
+import { Badge } from "../ui/badge";
 import { EconomicClassificationList } from "./economic-classification-filter";
 import { FunctionalClassificationList } from "./functional-classification-filter";
 import { FilterRangeContainer } from "./base-filter/FilterRangeContainer";
 import { AmountRangeFilter } from "./amount-range-filter";
 import { useMapFilter } from "@/hooks/useMapFilter";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ViewTypeRadioGroup } from "./ViewTypeRadioGroup";
 import { EntityTypeList } from './entity-type-filter/EntityTypeList';
 import { BudgetSectorList } from './budget-sector-filter/BudgetSectorFilter';
@@ -61,6 +63,28 @@ export function MapFilter() {
         setReportType,
         setIsUat,
         setMainCreditorCui,
+        // Exclude filters
+        excludeSelectedEntityOptions,
+        setExcludeSelectedEntityOptions,
+        excludeSelectedMainCreditorOption,
+        setExcludeMainCreditorCui,
+        excludeSelectedUatOptions,
+        setExcludeSelectedUatOptions,
+        excludeSelectedCountyOptions,
+        setExcludeSelectedCountyOptions,
+        excludeSelectedEntityTypeOptions,
+        setExcludeSelectedEntityTypeOptions,
+        excludeSelectedFunctionalClassificationOptions,
+        setExcludeSelectedFunctionalClassificationOptions,
+        excludeSelectedEconomicClassificationOptions,
+        setExcludeSelectedEconomicClassificationOptions,
+        excludeSelectedBudgetSectorOptions,
+        setExcludeSelectedBudgetSectorOptions,
+        excludeSelectedFundingSourceOptions,
+        setExcludeSelectedFundingSourceOptions,
+        setExcludeFunctionalPrefixes,
+        setExcludeEconomicPrefixes,
+        clearAllExcludeFilters,
     } = useMapFilter();
     const [currency] = useUserCurrency();
     const { toDisplayNormalization, toEffectiveNormalization } = useNormalizationSelection(mapState.filters.normalization as any);
@@ -104,6 +128,21 @@ export function MapFilter() {
         ? [{ id: mapState.filters.main_creditor_cui, label: mainCreditorLabelStore.map(mapState.filters.main_creditor_cui) }]
         : [];
 
+    const exclude = mapState.filters.exclude ?? {};
+
+    const totalExcludeFilters =
+        (exclude.entity_cuis?.length ?? 0) +
+        (exclude.main_creditor_cui ? 1 : 0) +
+        (exclude.uat_ids?.length ?? 0) +
+        (exclude.county_codes?.length ?? 0) +
+        (exclude.economic_codes?.length ?? 0) +
+        (exclude.functional_codes?.length ?? 0) +
+        (exclude.budget_sector_ids?.length ?? 0) +
+        (exclude.funding_source_ids?.length ?? 0) +
+        (exclude.entity_types?.length ?? 0) +
+        (exclude.functional_prefixes?.length ?? 0) +
+        (exclude.economic_prefixes?.length ?? 0);
+
     const totalOptionalFilters =
         (mapState.filters.report_period ? 1 : 0) +
         (mapState.filters.functional_codes?.length ?? 0) +
@@ -126,23 +165,27 @@ export function MapFilter() {
         (mapState.filters.min_population ? 1 : 0) +
         (mapState.filters.max_population ? 1 : 0);
 
+    // Accordion open state - auto-open when there are active exclude filters
+    const [excludeValue, setExcludeValue] = useState<string | undefined>(undefined);
+    const accordionValue = totalExcludeFilters > 0 ? (excludeValue ?? 'exclude') : excludeValue;
+
     const selectedAccountCategoryOption = useMemo(() => mapState.filters.account_category, [mapState.filters.account_category]);
     const selectedNormalizationOption = useMemo(() => mapState.filters.normalization ?? 'total', [mapState.filters.normalization]);
 
     return (
-        <Card className="flex flex-col w-full min-h-full overflow-y-auto shadow-lg" role="region" aria-labelledby="map-filters-title">
-            <CardHeader className="py-4 px-6 border-b">
+        <Card className="flex flex-col w-full h-full shadow-lg" role="region" aria-labelledby="map-filters-title">
+            <CardHeader className="py-4 px-6 border-b flex-shrink-0">
                 <div className="flex justify-between items-center">
                     <CardTitle className="text-lg font-semibold" id="map-filters-title"><Trans>Map Filters</Trans></CardTitle>
-                    {totalOptionalFilters > 0 && (
+                    {(totalOptionalFilters > 0 || totalExcludeFilters > 0) && (
                         <Button variant="ghost" size="sm" onClick={clearAllFilters} className="text-sm">
                             <XCircle className="w-4 h-4 mr-1" aria-hidden="true" />
-                            <Trans>Clear filters ({totalOptionalFilters})</Trans>
+                            <Trans>Clear filters ({totalOptionalFilters + totalExcludeFilters})</Trans>
                         </Button>
                     )}
                 </div>
             </CardHeader>
-            <CardContent className="flex flex-col flex-grow p-0 space-y-1">
+            <CardContent className="flex flex-col flex-1 min-h-0 p-0 space-y-1 overflow-y-auto">
                 <div className="p-3 border-b">
                     <h4 className="mb-2 text-sm font-medium flex items-center" id="data-view-label">
                         <ChartBar className="w-4 h-4 mr-2" aria-hidden="true" />
@@ -355,6 +398,147 @@ export function MapFilter() {
                     maxValueAllowed={100_000_000}
                     onMaxValueChange={(v) => setMaxPopulation(v ? Number(v) : undefined)}
                 />
+
+                {/* Exclude Filters Section (Advanced) */}
+                <div className="border-t mt-2">
+                    <Accordion type="single" collapsible value={accordionValue} onValueChange={setExcludeValue}>
+                        <AccordionItem value="exclude" className="border-none">
+                            <AccordionTrigger className="px-4 py-3 text-sm font-medium hover:bg-muted/50 hover:no-underline">
+                                <div className="flex items-center justify-between w-full gap-2">
+                                    <div className="flex items-center gap-2">
+                                        <MinusCircle className="w-4 h-4 text-destructive" aria-hidden="true" />
+                                        <span>
+                                            <Trans>Exclude Filters</Trans>
+                                        </span>
+                                        {totalExcludeFilters > 0 && (
+                                            <Badge variant="destructive" className="rounded-full px-2 text-xs">
+                                                {totalExcludeFilters}
+                                            </Badge>
+                                        )}
+                                    </div>
+                                    {totalExcludeFilters > 0 && (
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                clearAllExcludeFilters();
+                                            }}
+                                            className="text-xs text-destructive hover:text-destructive h-auto py-1 px-2"
+                                        >
+                                            <XCircle className="w-3 h-3 mr-1" aria-hidden="true" />
+                                            <Trans>Clear all</Trans>
+                                        </Button>
+                                    )}
+                                </div>
+                            </AccordionTrigger>
+                            <AccordionContent>
+                                <div className="px-4 py-2 text-xs text-muted-foreground bg-muted/30 border-b">
+                                    <Trans>Filters marked as exclude will remove data matching these criteria from the results.</Trans>
+                                </div>
+
+                                {/* Exclude filter components - mirror the include filters */}
+                                <div className="bg-muted/10">
+                                    <FilterListContainer
+                                        title={`${t`Exclude`} ${t`Entities`}`}
+                                        icon={<Building2 className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                                        listComponent={EntityList}
+                                        selected={excludeSelectedEntityOptions}
+                                        setSelected={setExcludeSelectedEntityOptions}
+                                    />
+
+                                    <FilterContainer
+                                        title={`${t`Exclude`} ${t`Main Creditor`}`}
+                                        icon={<Building2 className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                                        selectedOptions={excludeSelectedMainCreditorOption}
+                                        onClearOption={() => setExcludeMainCreditorCui(undefined)}
+                                        onClearAll={() => setExcludeMainCreditorCui(undefined)}
+                                    >
+                                        <EntityList
+                                            selectedOptions={excludeSelectedMainCreditorOption}
+                                            toggleSelect={(option) => setExcludeMainCreditorCui(String(option.id))}
+                                            pageSize={100}
+                                        />
+                                    </FilterContainer>
+
+                                    <FilterListContainer
+                                        title={`${t`Exclude`} ${t`UATs`}`}
+                                        icon={<MapPin className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                                        listComponent={UatList}
+                                        selected={excludeSelectedUatOptions}
+                                        setSelected={setExcludeSelectedUatOptions}
+                                    />
+
+                                    <FilterListContainer
+                                        title={`${t`Exclude`} ${t`Counties`}`}
+                                        icon={<MapPinned className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                                        listComponent={CountyList}
+                                        selected={excludeSelectedCountyOptions}
+                                        setSelected={setExcludeSelectedCountyOptions}
+                                    />
+
+                                    <FilterListContainer
+                                        title={`${t`Exclude`} ${t`Functional Classification`}`}
+                                        icon={<ChartBar className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                                        listComponent={FunctionalClassificationList}
+                                        selected={excludeSelectedFunctionalClassificationOptions}
+                                        setSelected={setExcludeSelectedFunctionalClassificationOptions}
+                                    />
+
+                                    <FilterPrefixContainer
+                                        title={`${t`Exclude`} ${t`Functional Classification Prefix`}`}
+                                        icon={<ChartBar className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                                        prefixComponent={PrefixFilter}
+                                        value={exclude.functional_prefixes}
+                                        onValueChange={setExcludeFunctionalPrefixes}
+                                        mapPrefixToLabel={getFunctionalPrefixLabel}
+                                    />
+
+                                    <FilterListContainer
+                                        title={`${t`Exclude`} ${t`Economic Classification`}`}
+                                        icon={<Tags className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                                        listComponent={EconomicClassificationList}
+                                        selected={excludeSelectedEconomicClassificationOptions}
+                                        setSelected={setExcludeSelectedEconomicClassificationOptions}
+                                    />
+
+                                    <FilterPrefixContainer
+                                        title={`${t`Exclude`} ${t`Economic Classification Prefix`}`}
+                                        icon={<Tags className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                                        prefixComponent={PrefixFilter}
+                                        value={exclude.economic_prefixes}
+                                        onValueChange={setExcludeEconomicPrefixes}
+                                        mapPrefixToLabel={getEconomicPrefixLabel}
+                                    />
+
+                                    <FilterListContainer
+                                        title={`${t`Exclude`} ${t`Entity Type`}`}
+                                        icon={<Building className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                                        listComponent={EntityTypeList}
+                                        selected={excludeSelectedEntityTypeOptions}
+                                        setSelected={setExcludeSelectedEntityTypeOptions}
+                                    />
+
+                                    <FilterListContainer
+                                        title={`${t`Exclude`} ${t`Budget Sector`}`}
+                                        icon={<Building2 className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                                        listComponent={BudgetSectorList}
+                                        selected={excludeSelectedBudgetSectorOptions}
+                                        setSelected={setExcludeSelectedBudgetSectorOptions}
+                                    />
+
+                                    <FilterListContainer
+                                        title={`${t`Exclude`} ${t`Funding Source`}`}
+                                        icon={<HandCoins className="w-4 h-4 text-destructive" aria-hidden="true" />}
+                                        listComponent={FundingSourceList}
+                                        selected={excludeSelectedFundingSourceOptions}
+                                        setSelected={setExcludeSelectedFundingSourceOptions}
+                                    />
+                                </div>
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
+                </div>
             </CardContent>
         </Card>
     );

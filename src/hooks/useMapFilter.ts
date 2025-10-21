@@ -101,9 +101,103 @@ export function useMapFilter() {
         [mapState.filters.entity_cuis, entityLabelsStore],
     );
 
+    // ============================================================================
+    // EXCLUDE FILTERS STATE MANAGEMENT
+    // ============================================================================
+
+    const exclude = mapState.filters.exclude ?? {};
+
+    // Label stores for exclude filters
+    const excludeEntityLabelsStore = useEntityLabel((exclude.entity_cuis ?? []) as string[]);
+    const excludeUatLabelsStore = useUatLabel((exclude.uat_ids ?? []).map(String));
+    const excludeEconomicClassificationLabelsStore = useEconomicClassificationLabel(exclude.economic_codes ?? []);
+    const excludeFunctionalClassificationLabelsStore = useFunctionalClassificationLabel(exclude.functional_codes ?? []);
+
+    // Helper to create exclude list updaters
+    const createExcludeListUpdater = <K extends keyof typeof exclude>(filterKey: K, labelStore?: LabelStore) =>
+        (action: React.SetStateAction<OptionItem<string | number>[]>) => {
+            const currentOptions = (exclude[filterKey] as (string | number)[])?.map(id => ({ id, label: labelStore?.map(id) ?? String(id) })) ?? [];
+            const newState = typeof action === 'function' ? action(currentOptions) : action;
+            if (labelStore) {
+                labelStore.add(newState);
+            }
+            const newExclude = { ...exclude, [filterKey]: newState.map(o => o.id) };
+            setFilters({ exclude: newExclude } as Partial<AnalyticsFilterType>);
+        };
+
+    const createExcludeValueUpdater = <K extends keyof typeof exclude>(filterKey: K) =>
+        (value: any) => {
+            const newExclude = { ...exclude, [filterKey]: value };
+            setFilters({ exclude: newExclude } as Partial<AnalyticsFilterType>);
+        };
+
+    // Exclude filter setters
+    const setExcludeSelectedEntityOptions = createExcludeListUpdater('entity_cuis', excludeEntityLabelsStore);
+    const setExcludeMainCreditorCui = createExcludeValueUpdater('main_creditor_cui');
+    const setExcludeSelectedUatOptions = createExcludeListUpdater('uat_ids', excludeUatLabelsStore);
+    const setExcludeSelectedCountyOptions = createExcludeListUpdater('county_codes');
+    const setExcludeSelectedEntityTypeOptions = createExcludeListUpdater('entity_types');
+    const setExcludeSelectedFunctionalClassificationOptions = createExcludeListUpdater('functional_codes', excludeFunctionalClassificationLabelsStore);
+    const setExcludeSelectedEconomicClassificationOptions = createExcludeListUpdater('economic_codes', excludeEconomicClassificationLabelsStore);
+    const setExcludeSelectedBudgetSectorOptions = createExcludeListUpdater('budget_sector_ids');
+    const setExcludeSelectedFundingSourceOptions = createExcludeListUpdater('funding_source_ids');
+    const setExcludeFunctionalPrefixes = createExcludeValueUpdater('functional_prefixes');
+    const setExcludeEconomicPrefixes = createExcludeValueUpdater('economic_prefixes');
+
+    // Exclude filter selected options
+    const excludeSelectedEntityOptions: OptionItem<string | number>[] = useMemo(() =>
+        (exclude.entity_cuis ?? []).map((cui) => ({ id: cui, label: excludeEntityLabelsStore.map(String(cui)) })),
+        [exclude.entity_cuis, excludeEntityLabelsStore],
+    );
+
+    const excludeSelectedMainCreditorOption: OptionItem[] = useMemo(() =>
+        exclude.main_creditor_cui ? [{ id: exclude.main_creditor_cui, label: excludeEntityLabelsStore.map(exclude.main_creditor_cui) }] : [],
+        [exclude.main_creditor_cui, excludeEntityLabelsStore],
+    );
+
+    const excludeSelectedUatOptions: OptionItem<string | number>[] = useMemo(() =>
+        (exclude.uat_ids ?? []).map((id) => ({ id, label: excludeUatLabelsStore.map(String(id)) })),
+        [exclude.uat_ids, excludeUatLabelsStore],
+    );
+
+    const excludeSelectedCountyOptions: OptionItem<string>[] = useMemo(() =>
+        (exclude.county_codes ?? []).map((code) => ({ id: code, label: String(code) })),
+        [exclude.county_codes],
+    );
+
+    const excludeSelectedEntityTypeOptions: OptionItem<string>[] = useMemo(() =>
+        (exclude.entity_types ?? []).map((id) => ({ id, label: String(id) })),
+        [exclude.entity_types],
+    );
+
+    const excludeSelectedFunctionalClassificationOptions: OptionItem[] = useMemo(() =>
+        (exclude.functional_codes ?? []).map(id => ({ id, label: excludeFunctionalClassificationLabelsStore.map(id) })),
+        [exclude.functional_codes, excludeFunctionalClassificationLabelsStore],
+    );
+
+    const excludeSelectedEconomicClassificationOptions: OptionItem[] = useMemo(() =>
+        (exclude.economic_codes ?? []).map(id => ({ id, label: excludeEconomicClassificationLabelsStore.map(id) })),
+        [exclude.economic_codes, excludeEconomicClassificationLabelsStore],
+    );
+
+    const excludeSelectedBudgetSectorOptions: OptionItem<string | number>[] = useMemo(() =>
+        (exclude.budget_sector_ids ?? []).map((id) => ({ id, label: String(id) })),
+        [exclude.budget_sector_ids],
+    );
+
+    const excludeSelectedFundingSourceOptions: OptionItem<string | number>[] = useMemo(() =>
+        (exclude.funding_source_ids ?? []).map((id) => ({ id, label: String(id) })),
+        [exclude.funding_source_ids],
+    );
+
+    const clearAllExcludeFilters = () => {
+        setFilters({ exclude: undefined } as Partial<AnalyticsFilterType>);
+    };
+
     const clearAllFilters = () => {
         setFilters({
             ...defaultMapFilters,
+            exclude: undefined,
         });
     };
 
@@ -148,5 +242,27 @@ export function useMapFilter() {
         setReportType,
         setIsUat,
         setMainCreditorCui,
+        // Exclude filters
+        excludeSelectedEntityOptions,
+        setExcludeSelectedEntityOptions,
+        excludeSelectedMainCreditorOption,
+        setExcludeMainCreditorCui,
+        excludeSelectedUatOptions,
+        setExcludeSelectedUatOptions,
+        excludeSelectedCountyOptions,
+        setExcludeSelectedCountyOptions,
+        excludeSelectedEntityTypeOptions,
+        setExcludeSelectedEntityTypeOptions,
+        excludeSelectedFunctionalClassificationOptions,
+        setExcludeSelectedFunctionalClassificationOptions,
+        excludeSelectedEconomicClassificationOptions,
+        setExcludeSelectedEconomicClassificationOptions,
+        excludeSelectedBudgetSectorOptions,
+        setExcludeSelectedBudgetSectorOptions,
+        excludeSelectedFundingSourceOptions,
+        setExcludeSelectedFundingSourceOptions,
+        setExcludeFunctionalPrefixes,
+        setExcludeEconomicPrefixes,
+        clearAllExcludeFilters,
     };
 }

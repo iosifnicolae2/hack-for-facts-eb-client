@@ -24,7 +24,7 @@ export function EntityAnalyticsLayout({ filters, children, title = t`Entity Anal
 
       <div className="grid grid-cols-1 md:grid-cols-[360px_minmax(0,1fr)] lg:grid-cols-[400px_minmax(0,1fr)] gap-4 w-full items-start">
         <aside className="hidden md:block">
-          <div className="sticky top-4 space-y-3">{filters}</div>
+          <div className="sticky top-4 overflow-y-auto space-y-3 md:max-h-[calc(100vh-6rem)]">{filters}</div>
         </aside>
 
         <section className="w-full">
@@ -43,14 +43,14 @@ export function EntityAnalyticsLayout({ filters, children, title = t`Entity Anal
           </DialogTrigger>
           <DialogContent hideCloseButton={true} className="p-0 m-0 w-full max-w-full h-full max-h-full sm:h-[calc(100%-2rem)] sm:max-h-[calc(100%-2rem)] sm:w-[calc(100%-2rem)] sm:max-w-md sm:rounded-lg flex flex-col">
             <DialogHeader className="p-4 border-b flex flex-row justify-between items-center shrink-0">
-              <DialogTitle className="text-lg font-semibold"><Trans>Filters</Trans></DialogTitle>
+              <DialogTitle className="text-2xl font-semibold"><Trans>Entity Analytics</Trans></DialogTitle>
               <DialogClose asChild>
                 <Button variant="ghost" size="icon" className="rounded-full">
                   <X className="h-5 w-5" />
                 </Button>
               </DialogClose>
             </DialogHeader>
-            <div className="flex-grow overflow-y-auto p-3">{filters}</div>
+            <div className="flex-grow overflow-y-auto">{filters}</div>
             {/* Floating submit button for mobile */}
             <div className="md:hidden fixed bottom-6 right-6 z-50">
               <DialogClose asChild>

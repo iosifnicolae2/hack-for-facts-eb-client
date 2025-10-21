@@ -4,8 +4,10 @@ import { FunctionalClassificationList } from './functional-classification-filter
 import { EconomicClassificationList } from './economic-classification-filter'
 import { FilterRangeContainer } from './base-filter/FilterRangeContainer'
 import { AmountRangeFilter } from './amount-range-filter'
-import { Calendar, ChartBar, Tags, SlidersHorizontal, MapPinned, Building2, EuroIcon, MapPin, XCircle, ArrowUpDown, Divide, Globe } from 'lucide-react'
-import { useMemo, useEffect } from 'react'
+import { Calendar, ChartBar, Tags, SlidersHorizontal, MapPinned, Building2, EuroIcon, MapPin, XCircle, ArrowUpDown, Divide, Globe, MinusCircle } from 'lucide-react'
+import { useMemo, useEffect, useState } from 'react'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { Badge } from '@/components/ui/badge'
 import { useNormalizationSelection } from '@/hooks/useNormalizationSelection'
 import { useEntityAnalyticsFilter } from '@/hooks/useEntityAnalyticsFilter'
 import type { OptionItem } from './base-filter/interfaces'
@@ -189,6 +191,140 @@ export function EntityAnalyticsFilter() {
   const setReportType = (value: string | undefined) => setFilter({ report_type: value as 'Executie bugetara agregata la nivel de ordonator principal' | 'Executie bugetara detaliata' })
   const setIsUat = (value: boolean | undefined) => setFilter({ is_uat: value })
 
+  // ============================================================================
+  // EXCLUDE FILTERS STATE MANAGEMENT
+  // ============================================================================
+
+  const exclude = filter.exclude ?? {}
+
+  // Label stores for exclude filters
+  const excludeEntityLabelsStore = useEntityLabel((exclude.entity_cuis ?? []) as string[])
+  const excludeUatLabelsStore = useUatLabel((exclude.uat_ids ?? []).map(String))
+  const excludeEconomicLabelsStore = useEconomicClassificationLabel(exclude.economic_codes ?? [])
+  const excludeFunctionalLabelsStore = useFunctionalClassificationLabel(exclude.functional_codes ?? [])
+  const excludeBudgetSectorLabelsStore = useBudgetSectorLabel(exclude.budget_sector_ids ?? [])
+  const excludeFundingSourceLabelsStore = useFundingSourceLabel(exclude.funding_source_ids ?? [])
+
+  // Exclude filter selected options
+  const excludeSelectedEntityOptions = useMemo<OptionItem<string>[]>(
+    () => (exclude.entity_cuis ?? []).map((cui) => ({ id: cui, label: excludeEntityLabelsStore.map(cui) })),
+    [exclude.entity_cuis, excludeEntityLabelsStore],
+  )
+
+  const excludeSelectedMainCreditorOption = useMemo<OptionItem<string>[]>(
+    () => (exclude.main_creditor_cui ? [{ id: exclude.main_creditor_cui, label: excludeEntityLabelsStore.map(exclude.main_creditor_cui) }] : []),
+    [exclude.main_creditor_cui, excludeEntityLabelsStore],
+  )
+
+  const excludeSelectedUatOptions = useMemo<OptionItem<string | number>[]>(
+    () => (exclude.uat_ids ?? []).map((id) => ({ id, label: excludeUatLabelsStore.map(String(id)) })),
+    [exclude.uat_ids, excludeUatLabelsStore],
+  )
+
+  const excludeSelectedCountyOptions = useMemo<OptionItem<string>[]>(
+    () => (exclude.county_codes ?? []).map((c) => ({ id: c, label: String(c) })),
+    [exclude.county_codes],
+  )
+
+  const excludeSelectedEntityTypeOptions = useMemo<OptionItem<string>[]>(
+    () => (exclude.entity_types ?? []).map((id) => ({ id, label: entityTypeLabelsStore.map(id) })),
+    [exclude.entity_types, entityTypeLabelsStore],
+  )
+
+  const excludeSelectedFunctionalOptions = useMemo<OptionItem<string>[]>(
+    () => (exclude.functional_codes ?? []).map((code) => ({ id: code, label: excludeFunctionalLabelsStore.map(code) })),
+    [exclude.functional_codes, excludeFunctionalLabelsStore],
+  )
+
+  const excludeSelectedEconomicOptions = useMemo<OptionItem<string>[]>(
+    () => (exclude.economic_codes ?? []).map((code) => ({ id: code, label: excludeEconomicLabelsStore.map(code) })),
+    [exclude.economic_codes, excludeEconomicLabelsStore],
+  )
+
+  const excludeSelectedBudgetSectorOptions = useMemo<OptionItem<string | number>[]>(
+    () => (exclude.budget_sector_ids ?? []).map((id) => ({ id, label: excludeBudgetSectorLabelsStore.map(id) })),
+    [exclude.budget_sector_ids, excludeBudgetSectorLabelsStore],
+  )
+
+  const excludeSelectedFundingSourceOptions = useMemo<OptionItem<string | number>[]>(
+    () => (exclude.funding_source_ids ?? []).map((id) => ({ id, label: excludeFundingSourceLabelsStore.map(id) })),
+    [exclude.funding_source_ids, excludeFundingSourceLabelsStore],
+  )
+
+  // Exclude filter updaters
+  const updateExcludeEntityOptions = (updater: OptionItem<string | number>[] | ((prev: OptionItem<string | number>[]) => OptionItem<string | number>[])) => {
+    const next = typeof updater === 'function' ? updater(excludeSelectedEntityOptions) : updater
+    excludeEntityLabelsStore.add(next.map(({ id, label }) => ({ id, label })))
+    const newExclude = { ...exclude, entity_cuis: next.map((o) => String(o.id)) }
+    setFilter({ exclude: newExclude })
+  }
+
+  const setExcludeMainCreditor = (cui: string | undefined) => {
+    const newExclude = { ...exclude, main_creditor_cui: cui }
+    setFilter({ exclude: newExclude })
+  }
+
+  const updateExcludeUatOptions = (updater: OptionItem<string | number>[] | ((prev: OptionItem<string | number>[]) => OptionItem<string | number>[])) => {
+    const next = typeof updater === 'function' ? updater(excludeSelectedUatOptions) : updater
+    excludeUatLabelsStore.add(next.map(({ id, label }) => ({ id, label })))
+    const newExclude = { ...exclude, uat_ids: next.map((o) => String(o.id)) }
+    setFilter({ exclude: newExclude })
+  }
+
+  const updateExcludeCountyOptions = (updater: OptionItem<string | number>[] | ((prev: OptionItem<string | number>[]) => OptionItem<string | number>[])) => {
+    const next = typeof updater === 'function' ? updater(excludeSelectedCountyOptions) : updater
+    const newExclude = { ...exclude, county_codes: next.map((o) => String(o.id)) }
+    setFilter({ exclude: newExclude })
+  }
+
+  const updateExcludeEntityTypeOptions = (updater: OptionItem<string | number>[] | ((prev: OptionItem<string | number>[]) => OptionItem<string | number>[])) => {
+    const next = typeof updater === 'function' ? updater(excludeSelectedEntityTypeOptions) : updater
+    const newExclude = { ...exclude, entity_types: next.map((o) => String(o.id)) }
+    setFilter({ exclude: newExclude })
+  }
+
+  const updateExcludeFunctionalOptions = (updater: OptionItem<string | number>[] | ((prev: OptionItem<string | number>[]) => OptionItem<string | number>[])) => {
+    const next = typeof updater === 'function' ? updater(excludeSelectedFunctionalOptions) : updater
+    excludeFunctionalLabelsStore.add(next.map(({ id, label }) => ({ id, label })))
+    const newExclude = { ...exclude, functional_codes: next.map((o) => String(o.id)) }
+    setFilter({ exclude: newExclude })
+  }
+
+  const updateExcludeEconomicOptions = (updater: OptionItem<string | number>[] | ((prev: OptionItem<string | number>[]) => OptionItem<string | number>[])) => {
+    const next = typeof updater === 'function' ? updater(excludeSelectedEconomicOptions) : updater
+    excludeEconomicLabelsStore.add(next.map(({ id, label }) => ({ id, label })))
+    const newExclude = { ...exclude, economic_codes: next.map((o) => String(o.id)) }
+    setFilter({ exclude: newExclude })
+  }
+
+  const updateExcludeBudgetSectorOptions = (updater: OptionItem<string | number>[] | ((prev: OptionItem<string | number>[]) => OptionItem<string | number>[])) => {
+    const next = typeof updater === 'function' ? updater(excludeSelectedBudgetSectorOptions) : updater
+    excludeBudgetSectorLabelsStore.add(next.map(({ id, label }) => ({ id, label })))
+    const newExclude = { ...exclude, budget_sector_ids: next.map((o) => String(o.id)) }
+    setFilter({ exclude: newExclude })
+  }
+
+  const updateExcludeFundingSourceOptions = (updater: OptionItem<string | number>[] | ((prev: OptionItem<string | number>[]) => OptionItem<string | number>[])) => {
+    const next = typeof updater === 'function' ? updater(excludeSelectedFundingSourceOptions) : updater
+    excludeFundingSourceLabelsStore.add(next.map(({ id, label }) => ({ id, label })))
+    const newExclude = { ...exclude, funding_source_ids: next.map((o) => String(o.id)) }
+    setFilter({ exclude: newExclude })
+  }
+
+  const updateExcludeFunctionalPrefixes = (value: string[] | undefined) => {
+    const newExclude = { ...exclude, functional_prefixes: value && value.length > 0 ? value : undefined }
+    setFilter({ exclude: newExclude })
+  }
+
+  const updateExcludeEconomicPrefixes = (value: string[] | undefined) => {
+    const newExclude = { ...exclude, economic_prefixes: value && value.length > 0 ? value : undefined }
+    setFilter({ exclude: newExclude })
+  }
+
+  const clearAllExcludeFilters = () => {
+    setFilter({ exclude: undefined })
+  }
+
   // Count selected filters similar to LineItemsFilter
   const totalSelectedFilters =
     (filter.report_period ? 1 : 0) +
@@ -212,20 +348,39 @@ export function EntityAnalyticsFilter() {
     (filter.functional_prefixes?.length ?? 0) +
     (filter.economic_prefixes?.length ?? 0)
 
+  const totalExcludeFilters =
+    [
+      excludeSelectedEntityOptions,
+      excludeSelectedMainCreditorOption,
+      excludeSelectedUatOptions,
+      excludeSelectedCountyOptions,
+      excludeSelectedEntityTypeOptions,
+      excludeSelectedFunctionalOptions,
+      excludeSelectedEconomicOptions,
+      excludeSelectedBudgetSectorOptions,
+      excludeSelectedFundingSourceOptions,
+    ].reduce((count, options) => count + options.length, 0) +
+    (exclude.functional_prefixes?.length ?? 0) +
+    (exclude.economic_prefixes?.length ?? 0)
+
+  // Accordion open state - auto-open when there are active exclude filters
+  const [excludeValue, setExcludeValue] = useState<string | undefined>(undefined)
+  const accordionValue = totalExcludeFilters > 0 ? (excludeValue ?? 'exclude') : excludeValue
+
   return (
-    <Card className="flex flex-col w-full min-h-full overflow-y-auto shadow-lg">
-      <CardHeader className="py-4 px-6 border-b">
+    <Card className="flex flex-col w-full h-full">
+      <CardHeader className="sticky top-0 z-10 bg-background py-4 px-6 border-b flex-shrink-0">
         <div className="flex justify-between items-center">
           <CardTitle className="text-lg font-semibold"><Trans>Filters</Trans></CardTitle>
-          {totalSelectedFilters > 0 && (
+          {(totalSelectedFilters > 0 || totalExcludeFilters > 0) && (
             <Button variant="ghost" size="sm" onClick={resetFilter} className="text-sm">
               <XCircle className="w-4 h-4 mr-1" />
-              <Trans>Clear filters</Trans> ({totalSelectedFilters})
+              <Trans>Clear filters</Trans> ({totalSelectedFilters + totalExcludeFilters})
             </Button>
           )}
         </div>
       </CardHeader>
-      <CardContent className="flex flex-col flex-grow p-0 space-y-1">
+      <CardContent className="flex flex-col flex-1 min-h-0 p-0 space-y-1 overflow-y-auto">
 
         <div className="p-3 border-b">
           <h4 className="mb-2 text-sm font-medium flex items-center">
@@ -414,6 +569,147 @@ export function EntityAnalyticsFilter() {
           onMaxValueChange={updateMaxPopulation}
           maxValueAllowed={100_000_000}
         />
+
+        {/* Exclude Filters Section (Advanced) */}
+        <div className="border-t mt-2">
+          <Accordion type="single" collapsible value={accordionValue} onValueChange={setExcludeValue}>
+            <AccordionItem value="exclude" className="border-none">
+              <AccordionTrigger className="px-4 py-3 text-sm font-medium hover:bg-muted/50 hover:no-underline">
+                <div className="flex items-center justify-between w-full gap-2">
+                  <div className="flex items-center gap-2">
+                    <MinusCircle className="w-4 h-4 text-destructive" />
+                    <span>
+                      <Trans>Exclude Filters</Trans>
+                    </span>
+                    {totalExcludeFilters > 0 && (
+                      <Badge variant="destructive" className="rounded-full px-2 text-xs">
+                        {totalExcludeFilters}
+                      </Badge>
+                    )}
+                  </div>
+                  {totalExcludeFilters > 0 && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        clearAllExcludeFilters();
+                      }}
+                      className="text-xs text-destructive hover:text-destructive h-auto py-1 px-2"
+                    >
+                      <XCircle className="w-3 h-3 mr-1" />
+                      <Trans>Clear all</Trans>
+                    </Button>
+                  )}
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+              <div className="px-4 py-2 text-xs text-muted-foreground bg-muted/30 border-b">
+                <Trans>Filters marked as exclude will remove data matching these criteria from the results.</Trans>
+              </div>
+
+              {/* Exclude filter components - mirror the include filters */}
+              <div className="bg-muted/10">
+                <FilterListContainer
+                  title={`${t`Exclude`} ${t`Entities`}`}
+                  icon={<Building2 className="w-4 h-4 text-destructive" />}
+                  listComponent={EntityList}
+                  selected={excludeSelectedEntityOptions}
+                  setSelected={updateExcludeEntityOptions}
+                />
+
+                <FilterContainer
+                  title={`${t`Exclude`} ${t`Main Creditor`}`}
+                  icon={<Building2 className="w-4 h-4 text-destructive" />}
+                  selectedOptions={excludeSelectedMainCreditorOption}
+                  onClearOption={() => setExcludeMainCreditor(undefined)}
+                  onClearAll={() => setExcludeMainCreditor(undefined)}
+                >
+                  <EntityList
+                    selectedOptions={excludeSelectedMainCreditorOption}
+                    toggleSelect={(option) => setExcludeMainCreditor(String(option.id))}
+                    pageSize={100}
+                  />
+                </FilterContainer>
+
+                <FilterListContainer
+                  title={`${t`Exclude`} ${t`UAT`}`}
+                  icon={<MapPin className="w-4 h-4 text-destructive" />}
+                  listComponent={UatList}
+                  selected={excludeSelectedUatOptions}
+                  setSelected={updateExcludeUatOptions}
+                />
+
+                <FilterListContainer
+                  title={`${t`Exclude`} ${t`County`}`}
+                  icon={<MapPinned className="w-4 h-4 text-destructive" />}
+                  listComponent={CountyList}
+                  selected={excludeSelectedCountyOptions}
+                  setSelected={updateExcludeCountyOptions}
+                />
+
+                <FilterListContainer
+                  title={`${t`Exclude`} ${t`Entity Type`}`}
+                  icon={<ChartBar className="w-4 h-4 text-destructive" />}
+                  listComponent={EntityTypeList}
+                  selected={excludeSelectedEntityTypeOptions}
+                  setSelected={updateExcludeEntityTypeOptions}
+                />
+
+                <FilterListContainer
+                  title={`${t`Exclude`} ${t`Functional Classification`}`}
+                  icon={<ChartBar className="w-4 h-4 text-destructive" />}
+                  listComponent={FunctionalClassificationList}
+                  selected={excludeSelectedFunctionalOptions}
+                  setSelected={updateExcludeFunctionalOptions}
+                />
+
+                <FilterPrefixContainer
+                  title={`${t`Exclude`} ${t`Functional Prefixes`}`}
+                  icon={<ChartBar className="w-4 h-4 text-destructive" />}
+                  prefixComponent={PrefixFilter}
+                  value={exclude.functional_prefixes}
+                  onValueChange={updateExcludeFunctionalPrefixes}
+                  mapPrefixToLabel={getFunctionalPrefixLabel}
+                />
+
+                <FilterListContainer
+                  title={`${t`Exclude`} ${t`Economic Classification`}`}
+                  icon={<Tags className="w-4 h-4 text-destructive" />}
+                  listComponent={EconomicClassificationList}
+                  selected={excludeSelectedEconomicOptions}
+                  setSelected={updateExcludeEconomicOptions}
+                />
+
+                <FilterPrefixContainer
+                  title={`${t`Exclude`} ${t`Economic Prefixes`}`}
+                  icon={<Tags className="w-4 h-4 text-destructive" />}
+                  prefixComponent={PrefixFilter}
+                  value={exclude.economic_prefixes}
+                  onValueChange={updateExcludeEconomicPrefixes}
+                  mapPrefixToLabel={getEconomicPrefixLabel}
+                />
+
+                <FilterListContainer
+                  title={`${t`Exclude`} ${t`Budget Sector`}`}
+                  icon={<Building2 className="w-4 h-4 text-destructive" />}
+                  listComponent={BudgetSectorList}
+                  selected={excludeSelectedBudgetSectorOptions}
+                  setSelected={updateExcludeBudgetSectorOptions}
+                />
+
+                <FilterListContainer
+                  title={`${t`Exclude`} ${t`Funding Source`}`}
+                  icon={<EuroIcon className="w-4 h-4 text-destructive" />}
+                  listComponent={FundingSourceList}
+                  selected={excludeSelectedFundingSourceOptions}
+                  setSelected={updateExcludeFundingSourceOptions}
+                />
+              </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
       </CardContent>
     </Card>
   )
