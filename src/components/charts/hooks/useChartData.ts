@@ -36,6 +36,7 @@ export type DataPointPayload = {
     id: SeriesId;
     series: Pick<Series, "id" | "label"> & { config: Pick<SeriesConfig, "color"> };
     year: number | string;
+    originalLabel?: string | number;
     value: number;
     unit: string;
     initialValue: number;
@@ -252,11 +253,31 @@ export function convertToTimeSeriesData(
     const isQuarter = xUnit === 'quarter';
     const isYear = xUnit === 'year';
 
-    // Collect x-buckets (preserve display labels)
+    // Build a quick lookup from series id -> series configuration (for per-series x-label transforms)
+    const seriesMap = chart.series.reduce(
+        (acc, series) => {
+            acc[series.id] = series;
+            return acc;
+        },
+        {} as Record<SeriesId, Series>
+    );
+
+    // Per-series x-axis label transformation (strip configured prefix if present)
+    const transformXLabel = (seriesId: SeriesId, raw: string): string => {
+        const input = String(raw).trim();
+        const series = seriesMap[seriesId] as Series | undefined;
+        const prefix = series?.config?.xAxisPrefixToRemove;
+        if (prefix && input.startsWith(prefix)) {
+            return input.slice(prefix.length);
+        }
+        return input;
+    };
+
+    // Collect x-buckets (preserve display labels after per-series transforms)
     const buckets = new Set<string>();
-    dataSeriesMap.forEach((series) => {
+    dataSeriesMap.forEach((series, seriesId) => {
         series.data.forEach((point) => {
-            const label = String(point.x).trim();
+            const label = transformXLabel(seriesId, String(point.x));
             if (label !== '' && label !== 'NaN') buckets.add(label);
         });
     });
@@ -291,13 +312,6 @@ export function convertToTimeSeriesData(
         : sortedBuckets;
 
     const unitMap = new Map<SeriesId, Unit>();
-    const seriesMap = chart.series.reduce(
-        (acc, series) => {
-            acc[series.id] = series;
-            return acc;
-        },
-        {} as Record<SeriesId, Series>
-    );
 
     const warnings: DataValidationError[] = [];
     const errors: DataValidationError[] = [];
@@ -317,7 +331,7 @@ export function convertToTimeSeriesData(
         const row: Record<SeriesId, DataPointPayload> = Object.create(null);
 
         dataSeriesMap.forEach((seriesData, seriesId) => {
-            const match = seriesData.data.find((p) => String(p.x).trim() === bucketLabel);
+            const match = seriesData.data.find((p) => transformXLabel(seriesId, String(p.x)) === bucketLabel);
             const initialValue = match?.y ?? 0;
             const initialUnit = seriesData.yAxis.unit || "";
 
@@ -328,6 +342,7 @@ export function convertToTimeSeriesData(
                 id: seriesId,
                 series,
                 year: isYear ? Number(bucketLabel) : bucketLabel,
+                originalLabel: match?.x ?? bucketLabel,
                 value: initialValue,
                 unit: initialUnit,
                 initialValue,
@@ -342,7 +357,7 @@ export function convertToTimeSeriesData(
                 const d = dataSeriesMap.get(series.id);
                 const unit = d?.yAxis.unit || "";
                 if (!firstSeriesMap.has(unit)) {
-                    const v = d?.data.find((p) => String(p.x).trim() === bucketLabel)?.y ?? 0;
+                    const v = d?.data.find((p) => transformXLabel(series.id, String(p.x)) === bucketLabel)?.y ?? 0;
                     firstSeriesMap.set(unit, v);
                 }
             });
@@ -580,6 +595,7 @@ export function convertToAggregatedData(
         const aggregatedDataPoint: DataPointPayload = {
             id: series.id,
             year: periodString ?? "Aggregated",
+            originalLabel: periodString ?? "Aggregated",
             series,
             value,
             unit,

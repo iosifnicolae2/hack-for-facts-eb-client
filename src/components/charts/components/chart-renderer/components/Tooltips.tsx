@@ -46,10 +46,13 @@ export function CustomSeriesTooltip({
 
     if (!active || !mappedPayload || mappedPayload.length === 0) return null;
 
+    // Prefer the original per-series label (first payload entry) if present
+    const headerLabel = (mappedPayload[0] as DataPointPayload | undefined)?.originalLabel ?? label;
+
     return (
         <div className="bg-background/50 backdrop-blur-sm border border-border rounded-lg shadow-lg p-4 important:z-50 select-none">
             <div className="font-semibold text-foreground mb-2 text-center border-b pb-1">
-                {isAggregated ? <Trans>Aggregated data</Trans> : <Trans>Year {label}</Trans>}
+                {isAggregated ? <Trans>Aggregated data</Trans> : <Trans>Year {headerLabel}</Trans>}
             </div>
 
             <div className="flex flex-col p-4 gap-6">

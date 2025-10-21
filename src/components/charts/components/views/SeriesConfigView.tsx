@@ -291,6 +291,20 @@ export function SeriesConfigView() {
                     </span>
                   </div>
                 </div>
+                <div className="space-y-2">
+                  <Label htmlFor="x-axis-prefix-to-remove" className="flex flex-col space-y-1">
+                    <span><Trans>X-Axis Prefix To Remove</Trans></span>
+                    <span className="font-normal leading-snug text-muted-foreground">
+                      <Trans>Strip this prefix from x-axis labels for this series (e.g., 2024-). Helps align yearly and monthly data on a common axis.</Trans>
+                    </span>
+                  </Label>
+                  <Input
+                    id="x-axis-prefix-to-remove"
+                    value={series.config.xAxisPrefixToRemove || ''}
+                    onChange={(e) => updateSeriesConfig({ xAxisPrefixToRemove: e.target.value || undefined })}
+                    placeholder={t`Example: 2024-`}
+                  />
+                </div>
               </>
             )}
           </CardContent>

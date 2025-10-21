@@ -38,6 +38,12 @@ export const SeriesConfigSchema = z.object({
   dataLabels: z.array(z.string()).optional().describe('Data labels to show on the chart for the x axis. If not set, the chart will show all years.'),
   dataLabelOffset: z.number().optional().describe('Offset of the data labels from the x axis. If not set, the chart will show the data labels at the default position.'),
   color: z.string().default('#0000ff'),
+  xAxisPrefixToRemove: z
+    .string()
+    .optional()
+    .describe(
+      'Optional prefix to strip from x-axis labels for this series. Useful when aligning yearly and monthly series (e.g., remove the "YYYY-" prefix from month labels).'
+    ),
 }).default({
   visible: true,
   showDataLabels: false,
