@@ -2728,6 +2728,15 @@ msgstr "Monthly monitoring"
 msgid "Monthly, quarterly, and annual reports"
 msgstr "Monthly, quarterly, and annual reports"
 
+#: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:111
+msgid "more"
+msgstr "more"
+
+#: src/components/sidebar/nav-projects.tsx:82
+#: src/components/ui/breadcrumb.tsx:103
+msgid "More"
+msgstr "More"
+
 #: src/components/ui/shortcuts.tsx:129
 msgid "Most shortcuts work on both Windows/Linux (Ctrl) and macOS (⌘). Some shortcuts may conflict with browser defaults."
 msgstr "Most shortcuts work on both Windows/Linux (Ctrl) and macOS (⌘). Some shortcuts may conflict with browser defaults."
@@ -3594,6 +3603,10 @@ msgstr "Show"
 msgid "Show advanced settings"
 msgstr "Show advanced settings"
 
+#: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:63
+msgid "Show all"
+msgstr "Show all"
+
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:66
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:199
 msgid "Show Annotations"
@@ -3619,6 +3632,10 @@ msgstr "Show Grid Lines"
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:62
 msgid "Show Legend"
 msgstr "Show Legend"
+
+#: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:63
+msgid "Show less"
+msgstr "Show less"
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:231
 msgid "Show Less"

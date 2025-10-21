@@ -2723,6 +2723,15 @@ msgstr "Monitorizare lunară"
 msgid "Monthly, quarterly, and annual reports"
 msgstr "Rapoarte lunare, trimestriale și anuale"
 
+#: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:111
+msgid "more"
+msgstr "mai mult"
+
+#: src/components/sidebar/nav-projects.tsx:82
+#: src/components/ui/breadcrumb.tsx:103
+msgid "More"
+msgstr "Mai mult"
+
 #: src/components/ui/shortcuts.tsx:129
 msgid "Most shortcuts work on both Windows/Linux (Ctrl) and macOS (⌘). Some shortcuts may conflict with browser defaults."
 msgstr "Majoritatea comenzilor rapide funcționează atât pe Windows/Linux (Ctrl), cât și pe macOS (⌘). Unele comenzi rapide pot intra în conflict cu setările implicite ale browserului."
@@ -3589,6 +3598,10 @@ msgstr "Afișează"
 msgid "Show advanced settings"
 msgstr "Afișează setările avansate"
 
+#: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:63
+msgid "Show all"
+msgstr ""
+
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:66
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:199
 msgid "Show Annotations"
@@ -3614,6 +3627,10 @@ msgstr "Afișează liniile de grilă"
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:62
 msgid "Show Legend"
 msgstr "Afișează legenda"
+
+#: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:63
+msgid "Show less"
+msgstr "Afișează mai puțin"
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:231
 msgid "Show Less"

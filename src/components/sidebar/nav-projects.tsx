@@ -22,6 +22,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { Trans } from "@lingui/react/macro";
 
 export function NavProjects({
   projects,
@@ -78,7 +79,7 @@ export function NavProjects({
         <SidebarMenuItem>
           <SidebarMenuButton className="text-sidebar-foreground/70">
             <MoreHorizontal className="text-sidebar-foreground/70" />
-            <span>More</span>
+            <span><Trans>More</Trans></span>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>

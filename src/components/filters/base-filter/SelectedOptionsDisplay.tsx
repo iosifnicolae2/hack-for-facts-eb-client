@@ -60,7 +60,7 @@ export function SelectedOptionsDisplay({
                             ) : (
                                 <ChevronDown aria-hidden="true" className="w-3 h-3 mr-1" />
                             )}
-                            {showAllSelected ? "Show less" : "Show all"}
+                            {showAllSelected ? <Trans>Show less</Trans> : <Trans>Show all</Trans>}
                         </Button>
                     )}
                     <Button
@@ -108,7 +108,7 @@ export function SelectedOptionsDisplay({
                             tabIndex={0}
                             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setShowAllSelected(true); }}
                         >
-                            +{remainingCountForCompactBadge} more
+                            +{remainingCountForCompactBadge} <Trans>more</Trans>
                         </Badge>
                     )}
                 </div>
