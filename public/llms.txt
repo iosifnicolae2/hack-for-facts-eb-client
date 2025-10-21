@@ -1,11 +1,14 @@
-# Transparenta.eu — Entity Page (AI Usage Guide)
+# Transparenta.eu — AI Usage Guide
 
 Base URL:
 - https://transparenta.eu
 
-Entity Page:
-- /entities/{cui}
+## Routes Overview
+- /entities/{cui}: Single entity details and analytics
+- /entity-analytics: Cross-entity analytics (table, treemap, line-items)
+- /budget-explorer: Budget exploration by categories (functional/economic)
 
+## Entities Page (/entities/{cui})
 How to query:
 1) Put the entity CUI in the path: /entities/4267117
 2) Add filters as query params. Common examples:
@@ -18,9 +21,39 @@ Parameters (full docs):
 - https://transparenta.eu/ai/entities-parameters.json
 
 Examples:
+- https://transparenta.eu/entities/4267117?view=overview&year=2024
 - https://transparenta.eu/entities/4267117?year=2025&view=map&normalization=per_capita
 - https://transparenta.eu/entities/4267117?period=QUARTER&quarter=Q4
 
+## Entity Analytics (/entity-analytics)
+Purpose: Compare entities with filters and switch views (table/line-items/treemap)
+Common params:
+- filter.report_period.type=YEAR|QUARTER|MONTH
+- filter.account_category=ch|vn
+- filter.normalization=total|per_capita|total_euro|per_capita_euro
+- view=table|line-items
+- treemapPrimary=fn|ec, treemapDepth=main|detail
+
+Parameters JSON: (coming from schema)
+- https://transparenta.eu/ai/entities-analytics-parameters.json
+
+Example:
+- https://transparenta.eu/entity-analytics?view=line-items
+
+## Budget Explorer (/budget-explorer)
+Purpose: Explore budget composition across categories and years
+Common params:
+- view=overview|treemap|sankey|list
+- primary=fn|ec, depth=main|detail
+- filter.{report_period, account_category, normalization, report_type}
+
+Parameters JSON:
+- https://transparenta.eu/ai/budget-explorer-parameters.json
+
+Examples:
+- https://transparenta.eu/budget-explorer?view=treemap&primary=fn
+- https://transparenta.eu/budget-explorer?view=list&filter.account_category=vn
+
 Notes:
-- Year range supported: dynamic; see entities-parameters.json for min/max.
+- Year range supported: dynamic; see parameter JSON files for min/max.
 - All parameters are optional unless stated; defaults are inferred from the UI.

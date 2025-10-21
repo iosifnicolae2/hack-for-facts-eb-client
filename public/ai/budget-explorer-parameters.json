@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Budget Explorer Parameters (Derived from Zod)",
+  "description": "Machine-readable description of supported query parameters for /budget-explorer",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "view": { "type": "string", "enum": ["overview","treemap","sankey","list"], "description": "View type." },
+    "primary": { "type": "string", "enum": ["fn","ec"], "description": "Primary grouping: functional or economic." },
+    "depth": { "type": "string", "enum": ["main","detail"], "description": "Level of detail." },
+    "search": { "type": "string", "description": "Text search within categories." },
+    "filter": {
+      "type": "object",
+      "description": "Analytics filter including report_period, account_category, normalization, report_type.",
+      "additionalProperties": true
+    },
+    "treemapPrimary": { "type": "string", "enum": ["fn","ec"], "description": "Explicit treemap grouping override." }
+  }
+}

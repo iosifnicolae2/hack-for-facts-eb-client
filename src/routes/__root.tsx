@@ -15,7 +15,7 @@ import { AppFooter } from "@/components/footer/AppFooter";
 import { ChatFab } from "@/components/footer/ChatFab";
 import { CookieConsentBanner } from "@/components/privacy/CookieConsentBanner";
 import { Analytics } from "@/lib/analytics";
-import { Seo, JsonLd } from "@/lib/seo";
+import { Seo } from "@/lib/seo";
 import { useEffect, Suspense } from "react";
 import { I18nProvider } from "@lingui/react";
 import { getUserLocale } from "@/lib/utils";
@@ -24,6 +24,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { ViewLoading } from "@/components/ui/ViewLoading";
 
 export const Route = createRootRoute({
+  head: getGlobalHead,
   errorComponent: ({ error }) => <GlobalErrorPage error={error} />,
   component: () => {
     useEffect(() => {
@@ -50,7 +51,6 @@ export const Route = createRootRoute({
                     <SidebarInset>
                       <main className="flex-1">
                         <div>
-                          {/* Global SEO defaults. Child routes can render their own <Seo /> to override. */}
                           <Seo
                             additionalMeta={[
                               {
@@ -60,21 +60,8 @@ export const Route = createRootRoute({
                               },
                             ]}
                           />
-                          <JsonLd data={{
-                            '@context': 'https://schema.org',
-                            '@type': 'WebSite',
-                            name: 'Transparenta.eu',
-                            url: 'https://transparenta.eu',
-                            potentialAction: {
-                              '@type': 'SearchAction',
-                              target: 'https://transparenta.eu/?q={search_term_string}',
-                              'query-input': 'required name=search_term_string'
-                            }
-                          }} />
-                          {/* Global pageview tracking tied to router location */}
                           <AnalyticsPageviewBridge />
-                          {/* Wrap route outlet in Suspense to avoid blank screen when lazy chunks reload after tab resume */}
-                          <Suspense fallback={<ViewLoading />}> 
+                          <Suspense fallback={<ViewLoading />}>
                             <Outlet />
                           </Suspense>
                           <Toaster />
@@ -102,4 +89,75 @@ export const Route = createRootRoute({
 function AnalyticsPageviewBridge() {
   Analytics.pageviewHook();
   return null;
+}
+
+function getGlobalHead() {
+  return {
+    meta: [
+      {
+        name: 'ai:site:instructions',
+        content:
+          'Use /entities/{cui} for single-entity analytics; /entity-analytics for cross-entity analytics; /budget-explorer for multi-filter budget exploration.',
+      },
+      {
+        name: 'ai:routes',
+        content: JSON.stringify({
+          '/entities/{cui}': 'Entity details and analytics (views, period, normalization).',
+          '/entity-analytics': 'Cross-entity analytics (filter by years, categories, geography).',
+          '/budget-explorer': 'Explore and slice budget across years and categories.',
+        }),
+      },
+      { name: 'ai:parameters:index', content: 'https://transparenta.eu/ai/index.json' },
+    ],
+    scripts: [
+      // Global WebSite & FAQ JSON-LD for AI agents
+      {
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: 'Transparenta.eu',
+          url: 'https://transparenta.eu',
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: 'https://transparenta.eu/?q={search_term_string}',
+            'query-input': 'required name=search_term_string',
+          },
+        }),
+      },
+      {
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: [
+            {
+              '@type': 'Question',
+              name: 'Which path for a specific entity?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Use /entities/{cui}. Add ?year, ?period=YEAR|QUARTER|MONTH, ?view, and normalization parameters as needed.',
+              },
+            },
+            {
+              '@type': 'Question',
+              name: 'Which path for overall budget exploration?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Use /budget-explorer. Combine year range, categories, and view options (overview, treemap, sankey, list).',
+              },
+            },
+            {
+              '@type': 'Question',
+              name: 'Which path for analytics across entities?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Use /entity-analytics to compare entities. Filter by time, categories, and geography; switch between table, charts, and line-items views.',
+              },
+            },
+          ],
+        }),
+      },
+    ],
+  }
 }

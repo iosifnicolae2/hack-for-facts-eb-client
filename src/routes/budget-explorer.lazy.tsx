@@ -50,12 +50,12 @@ const defaultFilter: AnalyticsFilterType = {
 }
 
 const SearchSchema = z.object({
-  view: ViewEnum.default('overview'),
-  primary: PrimaryLevelEnum.default('fn'),
-  depth: DepthEnum.default('main'),
-  search: z.string().optional(),
-  filter: AnalyticsFilterSchema.default(defaultFilter),
-  treemapPrimary: PrimaryLevelEnum.optional(),
+  view: ViewEnum.default('overview').describe('View type: overview | treemap | sankey | list.'),
+  primary: PrimaryLevelEnum.default('fn').describe('Primary grouping: fn (functional) or ec (economic).'),
+  depth: DepthEnum.default('main').describe('Detail level: main (chapters) or detail (subcategories).'),
+  search: z.string().optional().describe('Text search within categories.'),
+  filter: AnalyticsFilterSchema.default(defaultFilter).describe('Budget filter including report_period, account_category, normalization, report_type.'),
+  treemapPrimary: PrimaryLevelEnum.optional().describe('Explicit treemap grouping override: fn | ec.'),
 })
 
 export type BudgetExplorerState = z.infer<typeof SearchSchema>

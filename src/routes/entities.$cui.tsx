@@ -14,13 +14,11 @@ import { getInitialFilterState, makeTrendPeriod } from '@/schemas/reporting';
 import { prepareFilterForServer } from '@/lib/filterUtils';
 import { getPersistedState } from '@/lib/hooks/usePersistedState';
 import type { EntityDetailsData } from '@/lib/api/entities';
-import { buildAiHeadFromSchema } from '@/lib/ai-meta';
 
 export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
 
 export const Route = createFileRoute('/entities/$cui')({
     validateSearch: entitySearchSchema,
-    head: (ctx) => buildAiHeadFromSchema({ schema: entitySearchSchema, routePathTemplate: '/entities/{cui}', params: (ctx as any).params, search: (ctx as any).search ?? {} }),
     beforeLoad: ({ params, search }) => {
         const START_YEAR = defaultYearRange.start;
         const END_YEAR = defaultYearRange.end;

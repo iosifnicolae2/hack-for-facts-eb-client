@@ -73,15 +73,28 @@ function interpolate(template: string, params: Record<string, string>): string {
 
 function urlTemplateWithPlaceholders(schema: z.ZodTypeAny, base: string): string {
   const params: string[] = []
-  const shape: any = (schema as any)._def?.shape?.() ?? {}
+  const s = unwrapSchema(schema as any)
+  const typeName = s?._def?.typeName
+  if (typeName !== 'ZodObject') return base
+  const defShape = s._def?.shape
+  const shape: Record<string, any> = typeof defShape === 'function' ? defShape() : defShape || {}
   for (const [key, field] of Object.entries<any>(shape)) {
-    // Only include primitives/enum for template clarity
-    const t = field?._def?.typeName
+    const inner = unwrapSchema(field)
+    const t = inner?._def?.typeName
     if (t === 'ZodString' || t === 'ZodNumber' || t === 'ZodEnum') {
       params.push(`${encodeURIComponent(key)}={${key}}`)
     }
   }
   return params.length ? `${base}?${params.join('&')}` : base
+}
+
+function unwrapSchema(s: any): any {
+  let cur = s
+  while (cur?._def?.typeName === 'ZodEffects' || cur?._def?.typeName === 'ZodOptional' || cur?._def?.typeName === 'ZodDefault') {
+    if (cur._def?.typeName === 'ZodEffects') cur = cur._def.schema
+    else cur = cur._def.innerType
+  }
+  return cur
 }
 
 function buildFaqFromParamDoc(paramDoc: Record<string, any>) {

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Entity Analytics Parameters (Derived from Zod)",
+  "description": "Machine-readable description of supported query parameters for /entity-analytics",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "view": { "type": "string", "enum": ["table","chart","line-items"], "description": "View type." },
+    "sortBy": { "type": "string", "description": "Sorting column id." },
+    "sortOrder": { "type": "string", "enum": ["asc","desc"], "description": "Sorting order." },
+    "page": { "type": "number", "minimum": 1, "description": "Pagination page number (1-based)." },
+    "pageSize": { "type": "number", "enum": [25,50,100], "description": "Rows per page." },
+    "filter": { "type": "object", "description": "AnalyticsFilter: report_period, account_category, normalization, geography, etc.", "additionalProperties": true },
+    "treemapPrimary": { "type": "string", "enum": ["fn","ec"], "description": "Treemap grouping." },
+    "treemapDepth": { "type": "string", "enum": ["main","detail"], "description": "Treemap depth." }
+  }
+}
