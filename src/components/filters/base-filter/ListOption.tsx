@@ -28,7 +28,7 @@ export function ListOption({
         <div
             className={cn(
                 "flex items-center absolute top-0 left-0 w-full transition-colors duration-150 ease-in-out",
-                "hover:bg-accent hover:text-accent-foreground",
+                "hover:bg-accent hover:text-accent-foreground cursor-pointer",
                 "data-[active=true]:bg-zinc-200 data-[active=true]:text-accent-foreground",
                 "data-[active=true]:ring-1 data-[active=true]:ring-ring data-[active=true]:ring-offset-1",
                 selected && "bg-muted",
@@ -49,7 +49,9 @@ export function ListOption({
                 <Checkbox
                     id={checkboxId}
                     checked={selected}
-                    onCheckedChange={() => onClick()}
+                    onCheckedChange={() => {
+                        onClick();
+                    }}
                     onClick={(e) => {
                         e.stopPropagation();
                     }}
@@ -62,8 +64,6 @@ export function ListOption({
                     id={`${checkboxId}-label`}
                     title={label}
                     onClick={(e) => {
-                        // Ensure clicking the text toggles only once
-                        e.preventDefault();
                         e.stopPropagation();
                         onClick();
                     }}
