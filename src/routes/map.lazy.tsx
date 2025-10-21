@@ -29,7 +29,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useHeatmapData } from "@/hooks/useHeatmapData";
 import { useMapFilter } from "@/hooks/useMapFilter";
 import { FloatingQuickNav } from "@/components/ui/FloatingQuickNav";
-import { Seo } from "@/lib/seo";
+import { getSiteUrl } from "@/config/env";
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
 import { AnimatePresence, motion } from "motion/react";
@@ -151,10 +151,7 @@ function MapPage() {
 
   return (
     <div className="flex flex-col md:flex-row md:h-screen bg-background">
-      <Seo
-        title={t`Romania spending heatmap – Transparenta.eu`}
-        description={t`Explore choropleth maps of public spending by UAT/County with per-capita or total normalization.`}
-      />
+      {/* Head handled by Route.head */}
       <div className="hidden md:flex md:flex-col w-[320px] lg:w-[360px] flex-shrink-0 border-r border-border bg-card text-card-foreground overflow-y-auto">
         <MapFilter />
       </div>
@@ -339,4 +336,25 @@ function MapPage() {
       </div>
     </div>
   );
+}
+
+function buildMapHead() {
+  const site = getSiteUrl()
+  const canonical = `${site}/map`
+  const title = 'Romania spending heatmap – Transparenta.eu'
+  const description = 'Explore choropleth maps of public spending by UAT/County with per-capita or total normalization.'
+  return {
+    meta: [
+      { title },
+      { name: 'description', content: description },
+      { name: 'og:title', content: title },
+      { name: 'og:description', content: description },
+      { name: 'og:url', content: canonical },
+      { name: 'canonical', content: canonical },
+    ],
+  }
+}
+
+export function head() {
+  return buildMapHead()
 }

@@ -6,7 +6,7 @@ import { SeriesConfigView } from "@/components/charts/components/views/SeriesCon
 import { useChartStore } from "@/components/charts/hooks/useChartStore";
 import { useCallback } from "react";
 import { AnnotationConfigView } from "@/components/charts/components/views/AnnotationConfigView";
-import { Seo } from "@/lib/seo";
+import { getSiteUrl } from "@/config/env";
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
 import { FloatingQuickNav } from "@/components/ui/FloatingQuickNav";
@@ -62,11 +62,7 @@ function ChartDetailPage() {
           normalization: 'total',
         }}
       />
-      <Seo
-        title={view === 'overview' ? t`Chart – Transparenta.eu` : t`Configure chart – Transparenta.eu`}
-        description={view === 'overview' ? t`View and share your chart.` : t`Configure chart options, series, and annotations.`}
-        type={view === 'overview' ? 'article' : 'website'}
-      />
+      {/* Head handled by Route.head */}
       {view === "overview" && <ChartView />}
       <Dialog open={view === 'config' || view === 'series-config' || view === 'annotation-config'} onOpenChange={handleCloseDialog}>
         <DialogTitle className="sr-only"><Trans>Configure Chart</Trans></DialogTitle>
@@ -79,4 +75,25 @@ function ChartDetailPage() {
       </Dialog>
     </>
   );
+}
+
+function buildChartDetailHead() {
+  const site = getSiteUrl()
+  const canonical = `${site}/charts/`
+  const title = 'Chart – Transparenta.eu'
+  const description = 'View and share your chart.'
+  return {
+    meta: [
+      { title },
+      { name: 'description', content: description },
+      { name: 'og:title', content: title },
+      { name: 'og:description', content: description },
+      { name: 'og:url', content: canonical },
+      { name: 'canonical', content: canonical },
+    ],
+  }
+}
+
+export function head() {
+  return buildChartDetailHead()
 }

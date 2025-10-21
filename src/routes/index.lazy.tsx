@@ -9,7 +9,7 @@ import chartPreview from "@/assets/images/chart.png";
 import entityAnalyticsPreview from "@/assets/images/entity-analytics.png";
 import morePreview from "@/assets/images/more-to-come.png";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Seo } from "@/lib/seo";
+import { getSiteUrl } from "@/config/env";
 import { cn } from "@/lib/utils";
 
 export const Route = createLazyFileRoute("/")({
@@ -24,12 +24,6 @@ function Index() {
     <div className="flex flex-col min-h-screen">
       <main className="flex-grow flex items-start justify-center p-4">
         <div className="container mx-auto flex flex-col items-center text-center space-y-10 py-16 md:py-24 relative">
-          <Seo
-            title="Transparenta.eu – Explore public finance data with charts and maps"
-            description="Search entities, explore budgets on the map, and build custom charts. Local-first, consent-based analytics."
-            image="/assets/images/share-image.png"
-          />
-          {/* Title Container - applies gradient styles to its children */}
           <div
             className={cn("text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight",
               "bg-gradient-to-b from-slate-50 via-white to-slate-50",
@@ -92,4 +86,29 @@ function Index() {
     </div>
   );
 }
-// (Title animation removed)
+
+function buildHomeHead() {
+  const site = getSiteUrl()
+  const title = 'Transparenta.eu – Explore public finance data with charts and maps'
+  const description = 'Search entities, explore budgets on the map, and build custom charts. Local-first, consent-based analytics.'
+  const canonical = site
+  const image = `${site}/assets/images/share-image.png`
+
+  return {
+    meta: [
+      { title },
+      { name: 'description', content: description },
+      { name: 'og:title', content: title },
+      { name: 'og:description', content: description },
+      { name: 'og:url', content: canonical },
+      { name: 'og:image', content: image },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'canonical', content: canonical },
+      { name: 'robots', content: 'index,follow' },
+    ],
+  }
+}
+
+export function head() {
+  return buildHomeHead()
+}

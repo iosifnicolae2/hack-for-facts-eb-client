@@ -3,7 +3,7 @@ import { createLazyFileRoute } from '@tanstack/react-router'
 import { EmployeesDataTable } from '@/components/tables/EmployeesDataTable'
 import { useCsvData } from '@/hooks/useCsvData'
 import { SortingState } from '@tanstack/react-table'
-import { Seo } from '@/lib/seo'
+import { getSiteUrl } from '@/config/env'
 import { useHeatmapData } from '@/hooks/useHeatmapData'
 import type { AnalyticsFilterType } from '@/schemas/charts'
 import type { HeatmapUATDataPoint } from '@/schemas/heatmap'
@@ -65,7 +65,7 @@ function EmployeesDataPage() {
 
   return (
     <div className="container mx-auto py-4 space-y-4 px-2 md:px-6 max-w-full">
-      <Seo title="Analiza personal UAT" description="Tabel cu indicatori despre personalul UAT și cheltuieli pe 2024." />
+      {/* Head handled by Route.head */}
       <div className="flex flex-col gap-3">
         <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">Analiza personal UAT</h1>
         <div className="w-full md:w-auto md:min-w-[320px] md:max-w-md">
@@ -95,4 +95,25 @@ function EmployeesDataPage() {
       <EntityEmployeesDataInfo />
     </div>
   )
+}
+
+function buildEmployeesDataHead() {
+  const site = getSiteUrl()
+  const canonical = `${site}/research/employees-data`
+  const title = 'Analiza personal UAT'
+  const description = 'Tabel cu indicatori despre personalul UAT și cheltuieli pe 2024.'
+  return {
+    meta: [
+      { title },
+      { name: 'description', content: description },
+      { name: 'og:title', content: title },
+      { name: 'og:description', content: description },
+      { name: 'og:url', content: canonical },
+      { name: 'canonical', content: canonical },
+    ],
+  }
+}
+
+export function head() {
+  return buildEmployeesDataHead()
 }

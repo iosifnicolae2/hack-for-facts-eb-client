@@ -27,7 +27,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { AlertPreviewModal } from '@/features/notifications/components/alerts/AlertPreviewModal';
 import { useAuth, AuthSignInButton } from '@/lib/auth';
-import { Seo } from '@/lib/seo';
+import { getSiteUrl } from '@/config/env';
 import { Alert } from '@/schemas/alerts';
 import type { Notification } from '@/features/notifications/types';
 
@@ -130,7 +130,6 @@ function AlertEditorPage() {
     const loadingText = !isLoaded ? t`Loading...` : t`Loading alert…`;
     return (
       <div className="container max-w-4xl mx-auto py-8 px-4 flex flex-col items-center justify-center min-h-[400px]">
-        <Seo title={t`Edit Alert`} noindex />
         <LoadingSpinner />
         <p className="text-muted-foreground mt-4">{loadingText}</p>
       </div>
@@ -141,7 +140,6 @@ function AlertEditorPage() {
   if (!isSignedIn) {
     return (
       <div className="container max-w-4xl mx-auto py-8 px-4">
-        <Seo title={t`Edit Alert - Sign In Required`} noindex />
         <Card>
           <CardHeader>
             <CardTitle>
@@ -206,7 +204,6 @@ function AlertEditorPage() {
 
   return (
     <div className="container mx-auto max-w-4xl px-4">
-      <Seo title={alert.title ? `${alert.title} - Edit Alert` : t`Edit Alert`} />
       <UnsavedChangesDialog
         open={showUnsavedDialog}
         isSaving={saveMutation.isPending}
@@ -334,6 +331,23 @@ function AlertEditorPage() {
       />
     </div>
   );
+}
+
+function buildEditAlertHead() {
+  const site = getSiteUrl()
+  const canonical = `${site}/alerts/`
+  const title = 'Edit Alert'
+  return {
+    meta: [
+      { title },
+      { name: 'canonical', content: canonical },
+      { name: 'robots', content: 'noindex,follow' },
+    ],
+  }
+}
+
+export function head() {
+  return buildEditAlertHead()
 }
 
 function mapNotificationToAlert(entry: Notification): Alert {

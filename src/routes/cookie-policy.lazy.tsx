@@ -1,8 +1,7 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Link } from '@tanstack/react-router'
-import { Seo } from '@/lib/seo'
+import { getSiteUrl } from '@/config/env'
 import { Trans } from '@lingui/react/macro'
-import { t } from '@lingui/core/macro'
 
 export const Route = createLazyFileRoute('/cookie-policy')({
   component: CookiePolicyPage,
@@ -13,7 +12,7 @@ function CookiePolicyPage() {
   const version = '2.0'
   return (
     <div className="mx-auto w-full max-w-4xl p-6 space-y-6">
-      <Seo title={t`Cookie Policy – Transparenta.eu`} description={t`Details on cookies and localStorage used by Transparenta.eu, with consent choices.`} />
+      {/* Head handled by Route.head */}
       <div>
         <h1 className="text-3xl font-semibold"><Trans>Cookie Policy</Trans></h1>
         <p className="text-sm text-muted-foreground"><Trans>Effective Date: {effectiveDate} • Version: {version}</Trans></p>
@@ -81,6 +80,27 @@ function CookiePolicyPage() {
       </div>
     </div>
   )
+}
+
+function buildCookiePolicyHead() {
+  const site = getSiteUrl()
+  const canonical = `${site}/cookie-policy`
+  const title = 'Cookie Policy – Transparenta.eu'
+  const description = 'Details on cookies and localStorage used by Transparenta.eu, with consent choices.'
+  return {
+    meta: [
+      { title },
+      { name: 'description', content: description },
+      { name: 'og:title', content: title },
+      { name: 'og:description', content: description },
+      { name: 'og:url', content: canonical },
+      { name: 'canonical', content: canonical },
+    ],
+  }
+}
+
+export function head() {
+  return buildCookiePolicyHead()
 }
 
 

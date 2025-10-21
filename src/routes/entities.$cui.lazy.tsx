@@ -24,8 +24,8 @@ import { useEntityMapFilter } from '@/components/entities/hooks/useEntityMapFilt
 import { useEntityDetails } from '@/lib/hooks/useEntityDetails'
 
 import { Analytics } from '@/lib/analytics'
-import { Seo } from '@/lib/seo'
 import { buildEntitySeo } from '@/lib/seo-entity'
+import { getSiteUrl } from '@/config/env'
 import { Overview } from '@/components/entities/views/Overview'
 import { EntityDetailsData } from '@/lib/api/entities'
 import { usePersistedState } from '@/lib/hooks/usePersistedState'
@@ -52,6 +52,41 @@ const { start: START_YEAR, end: END_YEAR } = defaultYearRange
 const DEFAULT_PERIOD = 'YEAR'
 const DEFAULT_MONTH = '01'
 const DEFAULT_QUARTER = 'Q1'
+
+function buildEntityHead(cui: string, yearRaw?: unknown) {
+  const site = getSiteUrl()
+  const yearCandidate = typeof yearRaw === 'number' ? yearRaw : Number(yearRaw)
+  const selectedYear = Number.isFinite(yearCandidate) ? Number(yearCandidate) : defaultYearRange.end
+  const { title, description } = buildEntitySeo(null, cui, selectedYear)
+  const canonical = `${site}/entities/${encodeURIComponent(cui)}`
+
+  const thing = {
+    '@context': 'https://schema.org',
+    '@type': 'Thing',
+    identifier: cui,
+    url: canonical,
+    name: `Entity ${cui}`,
+  }
+
+  return {
+    meta: [
+      { title },
+      { name: 'description', content: description },
+      { name: 'og:title', content: title },
+      { name: 'og:description', content: description },
+      { name: 'og:url', content: canonical },
+      { name: 'canonical', content: canonical },
+      { name: 'robots', content: 'index,follow' },
+    ],
+    scripts: [
+      { type: 'application/ld+json', children: JSON.stringify(thing) },
+    ],
+  }
+}
+
+export function head({ params, search }: any) {
+  return buildEntityHead(params.cui as string, (search as any)?.year)
+}
 
 function EntityDetailsPage() {
   const { cui } = useParams({ from: '/entities/$cui' })
@@ -221,7 +256,6 @@ function EntityDetailsPage() {
   if (isError) {
     return (
       <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex justify-center items-center p-4">
-        <Seo title={t`Entity ${cui} – Not found`} description={t`Error loading data for CUI ${cui}.`} noindex />
         <Alert variant="destructive" className="max-w-lg w-full">
           <AlertTriangle className="h-5 w-5" />
           <AlertTitle><Trans>Error Fetching Entity Details</Trans></AlertTitle>
@@ -237,7 +271,6 @@ function EntityDetailsPage() {
   if (!entity && !isLoading) {
     return (
       <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex justify-center items-center p-4">
-        <Seo title={t`Entity ${cui} – Not found`} description={t`No data found for CUI ${cui}.`} noindex />
         <Alert className="max-w-lg w-full">
           <Info className="h-5 w-5" />
           <AlertTitle><Trans>No Data Found</Trans></AlertTitle>
@@ -249,11 +282,11 @@ function EntityDetailsPage() {
     )
   }
 
-  const { title: metaTitle, description: metaDescription } = buildEntitySeo(entity, cui, selectedYear)
+  const { title: _metaTitle, description: _metaDescription } = buildEntitySeo(entity, cui, selectedYear)
 
   return (
     <div className="min-h-screen p-3 sm:p-4 md:p-6 lg:p-8">
-      <Seo title={metaTitle} description={metaDescription} type="article" />
+      {/* head handled via Route.head */}
       <EntityNotificationAnnouncement />
       <FloatingQuickNav
         mapViewType={mapViewType}

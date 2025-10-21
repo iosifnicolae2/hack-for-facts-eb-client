@@ -16,7 +16,7 @@ import { Link2, Save, Eye } from 'lucide-react';
 import { AlertPreviewModal } from '@/features/notifications/components/alerts/AlertPreviewModal';
 import { useAuth, AuthSignInButton } from '@/lib/auth';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Seo } from '@/lib/seo';
+import { getSiteUrl } from '@/config/env';
 
 export const Route = createLazyFileRoute('/alerts/new')({
   component: RouteComponent,
@@ -122,7 +122,6 @@ function RouteComponent() {
     const loadingText = !isLoaded ? t`Loading...` : t`Preparing new alert…`;
     return (
       <div className="container max-w-4xl mx-auto py-8 px-4 flex flex-col items-center justify-center min-h-[400px]">
-        <Seo title={t`Create Alert`} noindex />
         <LoadingSpinner />
         <p className="text-muted-foreground mt-4">{loadingText}</p>
       </div>
@@ -133,7 +132,6 @@ function RouteComponent() {
   if (!isSignedIn) {
     return (
       <div className="container max-w-4xl mx-auto py-8 px-4">
-        <Seo title={t`Create Alert - Sign In Required`} noindex />
         <Card>
           <CardHeader>
             <CardTitle>
@@ -164,7 +162,6 @@ function RouteComponent() {
   if (copyFrom && copyQuery.isError) {
     return (
       <div className="container mx-auto px-4 py-12">
-        <Seo title={t`Create Alert - Error`} noindex />
         <UiAlert variant="destructive">
           <AlertTitle>{t`Failed to load alert`}</AlertTitle>
           <AlertDescription className="space-y-2">
@@ -180,7 +177,6 @@ function RouteComponent() {
 
   return (
     <div className="container mx-auto max-w-4xl px-4">
-      <Seo title={t`Create Alert`} />
       <div className="sticky top-0 z-20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b">
         <div className="container mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-3 py-4 px-2 md:px-0">
           <h1 className="text-2xl font-semibold tracking-tight">
@@ -241,4 +237,21 @@ function RouteComponent() {
       />
     </div>
   );
+}
+
+function buildNewAlertHead() {
+  const site = getSiteUrl()
+  const canonical = `${site}/alerts/new`
+  const title = 'Create Alert'
+  return {
+    meta: [
+      { title },
+      { name: 'canonical', content: canonical },
+      { name: 'robots', content: 'noindex,follow' },
+    ],
+  }
+}
+
+export function head() {
+  return buildNewAlertHead()
 }

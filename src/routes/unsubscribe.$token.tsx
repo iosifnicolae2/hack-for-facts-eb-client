@@ -3,9 +3,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useUnsubscribe } from '@/features/notifications/hooks/useUnsubscribe';
 import { Trans } from '@lingui/react/macro';
-import { t } from '@lingui/core/macro';
+// import { t } from '@lingui/core/macro';
 import { CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
-import { Seo } from '@/lib/seo';
+import { getSiteUrl } from '@/config/env';
 
 export const Route = createFileRoute('/unsubscribe/$token')({
   component: UnsubscribePage,
@@ -22,7 +22,7 @@ function UnsubscribePage() {
   if (unsubscribeMutation.isSuccess) {
     return (
       <div className="container max-w-2xl mx-auto py-16 px-4">
-        <Seo title={t`Successfully unsubscribed`} noindex />
+        {/* Head handled by Route.head */}
         <Card className="border-green-200 dark:border-green-800">
           <CardHeader className="text-center space-y-4">
             <div className="mx-auto bg-green-100 dark:bg-green-900 w-16 h-16 rounded-full flex items-center justify-center">
@@ -57,7 +57,7 @@ function UnsubscribePage() {
   if (unsubscribeMutation.isError) {
     return (
       <div className="container max-w-2xl mx-auto py-16 px-4">
-        <Seo title={t`Unsubscribe error`} noindex />
+        {/* Head handled by Route.head */}
         <Card className="border-destructive">
           <CardHeader className="text-center space-y-4">
             <div className="mx-auto bg-destructive/10 w-16 h-16 rounded-full flex items-center justify-center">
@@ -89,7 +89,7 @@ function UnsubscribePage() {
 
   return (
     <div className="container max-w-2xl mx-auto py-16 px-4">
-      <Seo title={t`Unsubscribe from notifications`} noindex />
+      {/* Head handled by Route.head */}
       <Card>
         <CardHeader className="text-center space-y-2">
           <CardTitle className="text-2xl">
@@ -133,4 +133,21 @@ function UnsubscribePage() {
       </Card>
     </div>
   );
+}
+
+function buildUnsubscribeHead() {
+  const site = getSiteUrl()
+  const canonical = `${site}/unsubscribe`
+  const title = 'Unsubscribe from notifications'
+  return {
+    meta: [
+      { title },
+      { name: 'robots', content: 'noindex,follow' },
+      { name: 'canonical', content: canonical },
+    ],
+  }
+}
+
+export function head() {
+  return buildUnsubscribeHead()
 }

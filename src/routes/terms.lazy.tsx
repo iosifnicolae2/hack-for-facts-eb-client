@@ -1,8 +1,7 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Link } from '@tanstack/react-router'
-import { Seo } from '@/lib/seo'
+import { getSiteUrl } from '@/config/env'
 import { Trans } from '@lingui/react/macro'
-import { t } from '@lingui/core/macro'
 
 export const Route = createLazyFileRoute('/terms')({
   component: TermsPage,
@@ -13,7 +12,6 @@ function TermsPage() {
   const version = '2.0'
   return (
     <div className="mx-auto w-full max-w-4xl p-6 space-y-6">
-      <Seo title={t`Terms of Use – Transparenta.eu`} description={t`Terms for using the Transparenta.eu service and visualizations.`} />
       <div>
         <h1 className="text-3xl font-semibold"><Trans>Terms of Use</Trans></h1>
         <p className="text-sm text-muted-foreground"><Trans>Effective Date: {effectiveDate} • Version: {version}</Trans></p>
@@ -107,5 +105,26 @@ function TermsPage() {
       </div>
     </div>
   )
+}
+
+function buildTermsHead() {
+  const site = getSiteUrl()
+  const canonical = `${site}/terms`
+  const title = 'Terms of Use – Transparenta.eu'
+  const description = 'Terms for using the Transparenta.eu service and visualizations.'
+  return {
+    meta: [
+      { title },
+      { name: 'description', content: description },
+      { name: 'og:title', content: title },
+      { name: 'og:description', content: description },
+      { name: 'og:url', content: canonical },
+      { name: 'canonical', content: canonical },
+    ],
+  }
+}
+
+export function head() {
+  return buildTermsHead()
 }
 

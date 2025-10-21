@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
-import { Seo } from '@/lib/seo';
+import { getSiteUrl } from '@/config/env';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { AlertTriangle, Plus } from 'lucide-react';
 
@@ -36,7 +36,7 @@ function NotificationsSettingsPage() {
   if (!isSignedIn) {
     return (
       <div className="container max-w-4xl mx-auto py-8 px-4">
-        <Seo title={t`Entity Notifications - Sign In Required`} noindex />
+        {/* Head handled by Route.head */}
         <Card>
           <CardHeader>
             <CardTitle>
@@ -65,7 +65,7 @@ function NotificationsSettingsPage() {
 
   return (
     <div className="container max-w-4xl mx-auto py-8 px-4 space-y-6">
-      <Seo title={t`Entity Notification Settings`} />
+      {/* Head handled by Route.head */}
         <h1 className="text-3xl font-bold mb-2">
           <Trans>Notifications Settings</Trans>
         </h1>
@@ -134,4 +134,20 @@ function NotificationsSettingsPage() {
       />
     </div>
   );
+}
+
+function buildNotificationsHead() {
+  const site = getSiteUrl()
+  const canonical = `${site}/settings/notifications`
+  const title = 'Entity Notification Settings'
+  return {
+    meta: [
+      { title },
+      { name: 'canonical', content: canonical },
+    ],
+  }
+}
+
+export function head() {
+  return buildNotificationsHead()
 }

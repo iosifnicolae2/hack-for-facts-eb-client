@@ -31,6 +31,8 @@ import { useUserCurrency } from '@/lib/hooks/useUserCurrency'
 import { Label } from '@/components/ui/label'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { t } from '@lingui/core/macro'
+import { getSiteUrl } from '@/config/env'
+// JSON-LD injected via Route.head
 
 export const Route = createLazyFileRoute('/budget-explorer')({
   component: BudgetExplorerPage,
@@ -66,6 +68,62 @@ const functionalMainChapters = ['68', '66', '65', '84', '51', '61', '70', '83', 
 const economicMainChapters = [57, 10, 20, 51, 30, 55, 56, 61] as const
 // Revenue-focused top functional categories (codes provided by product spec)
 const revenueTopFunctionalChapters = ['21', '10', '42', '03', '14', '01', '33'] as const
+
+
+// JSON-LD is injected within the component render (accepted by crawlers)
+
+function computeTemporalCoverage(period: BudgetExplorerState['filter']['report_period'] | undefined): string | undefined {
+  if (!period || !period.selection) return undefined
+  const type = period.type
+  const sel: any = period.selection
+  if (type === 'YEAR' && Array.isArray(sel.dates) && sel.dates.length) {
+    const years = sel.dates.map((d: string) => d.slice(0, 4)).sort()
+    if (years.length === 1) return years[0]
+    return `${years[0]}/${years[years.length - 1]}`
+  }
+  if (sel.interval?.start && sel.interval?.end) {
+    // ISO 8601 interval
+    return `${sel.interval.start}/${sel.interval.end}`
+  }
+  return undefined
+}
+
+export function head({ search }: any) {
+  const site = getSiteUrl()
+  const canonical = `${site}/budget-explorer`
+  const period = (search as BudgetExplorerState).filter?.report_period
+  const temporalCoverage = computeTemporalCoverage(period)
+  const title = 'Budget Explorer – Transparenta.eu'
+  const description = 'Explore Romania public finance by category and year. Switch between overview, treemap, sankey and list; filter by spending or revenue.'
+
+  const dataset = {
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    name: 'Romanian Public Budget – Explorer',
+    description,
+    url: canonical,
+    temporalCoverage: temporalCoverage ?? undefined,
+    spatialCoverage: { '@type': 'Place', name: 'Romania' },
+    publisher: { '@type': 'Organization', '@id': `${site}#organization`, name: 'Transparenta.eu', url: site },
+    keywords: ['budget', 'Romania', 'public finance', 'transparency', 'spending', 'revenue'],
+    isBasedOn: 'https://mfinante.gov.ro',
+  }
+
+  return {
+    meta: [
+      { title },
+      { name: 'description', content: description },
+      { name: 'og:title', content: title },
+      { name: 'og:description', content: description },
+      { name: 'og:url', content: canonical },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'canonical', content: canonical },
+    ],
+    scripts: [
+      { type: 'application/ld+json', children: JSON.stringify(dataset) },
+    ],
+  }
+}
 
 
 function buildSeriesFilter(base: AnalyticsFilterType, overrides: Partial<AnalyticsFilterType>) {
@@ -271,6 +329,7 @@ function BudgetExplorerPage() {
 
   return (
     <div className="px-4 lg:px-6 py-4">
+      {/* Head and JSON-LD handled by Route.head */}
       <FloatingQuickNav
         mapViewType="UAT"
         mapActive

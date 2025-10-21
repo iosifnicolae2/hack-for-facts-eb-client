@@ -20,7 +20,7 @@ import { RevenueBreakdown } from '@/components/budget-explorer/RevenueBreakdown'
 import { AggregatedNode } from '@/components/budget-explorer/budget-transform'
 import { generateHash } from '@/lib/utils'
 import { Analytics } from '@/lib/analytics'
-import { Seo } from '@/lib/seo'
+import { getSiteUrl } from '@/config/env'
 import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
 import { FloatingQuickNav } from '@/components/ui/FloatingQuickNav'
@@ -157,10 +157,7 @@ function EntityAnalyticsPage() {
 
   return (
     <div className="container mx-auto py-4 px-2 md:px-6 max-w-full">
-      <Seo
-        title={t`Entity analytics – Transparenta.eu`}
-        description={t`Analyze aggregated values per entity and explore top entities by amount and per capita.`}
-      />
+      {/* Head handled by Route.head */}
       <EntityAnalyticsLayout
         filters={<EntityAnalyticsFilterPanel />}
         subtitle={t`Analyze aggregated values per entity and explore top entities.`}
@@ -272,6 +269,27 @@ function EntityAnalyticsPage() {
       </EntityAnalyticsLayout>
     </div>
   )
+}
+
+function buildEntityAnalyticsHead() {
+  const site = getSiteUrl()
+  const canonical = `${site}/entity-analytics`
+  const title = 'Entity analytics – Transparenta.eu'
+  const description = 'Analyze aggregated values per entity and explore top entities by amount and per capita.'
+  return {
+    meta: [
+      { title },
+      { name: 'description', content: description },
+      { name: 'og:title', content: title },
+      { name: 'og:description', content: description },
+      { name: 'og:url', content: canonical },
+      { name: 'canonical', content: canonical },
+    ],
+  }
+}
+
+export function head() {
+  return buildEntityAnalyticsHead()
 }
 
 function mapColumnIdToSortBy(columnId: string): string {
