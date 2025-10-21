@@ -3,6 +3,11 @@
 Base URL:
 - https://transparenta.eu
 
+## Documentation
+- Parameters index (JSON): https://transparenta.eu/ai/index.json
+- URL/API guide (Markdown): https://transparenta.eu/api-guide.md
+- Sitemap: https://transparenta.eu/sitemap.xml
+
 ## Routes Overview
 - /entities/{cui}: Single entity details and analytics
 - /entity-analytics: Cross-entity analytics (table, treemap, line-items)
@@ -57,3 +62,4 @@ Examples:
 Notes:
 - Year range supported: dynamic; see parameter JSON files for min/max.
 - All parameters are optional unless stated; defaults are inferred from the UI.
+ - For API integration, prefer `/ai/*.json` schemas and `api-guide.md` patterns.

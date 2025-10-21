@@ -15,7 +15,7 @@ import { AppFooter } from "@/components/footer/AppFooter";
 import { ChatFab } from "@/components/footer/ChatFab";
 import { CookieConsentBanner } from "@/components/privacy/CookieConsentBanner";
 import { Analytics } from "@/lib/analytics";
-import { Seo } from "@/lib/seo";
+import { getSiteUrl } from "@/config/env";
 import { useEffect, Suspense } from "react";
 import { I18nProvider } from "@lingui/react";
 import { getUserLocale } from "@/lib/utils";
@@ -51,15 +51,6 @@ export const Route = createRootRoute({
                     <SidebarInset>
                       <main className="flex-1">
                         <div>
-                          <Seo
-                            additionalMeta={[
-                              {
-                                name: 'keywords',
-                                content:
-                                  'execuții bugetare, executii bugetare, bugetul statului, transparență bugetară, transparenta bugetara, analiză bugetară, analiza bugetara, cheltuieli publice, venituri publice, buget local, buget județean, UAT, hartă cheltuieli, harta cheltuieli, vizualizare buget, vizualizare date, finanțe publice, finante publice, România, Romania',
-                              },
-                            ]}
-                          />
                           <AnalyticsPageviewBridge />
                           <Suspense fallback={<ViewLoading />}>
                             <Outlet />
@@ -92,8 +83,14 @@ function AnalyticsPageviewBridge() {
 }
 
 function getGlobalHead() {
+  const site = getSiteUrl()
   return {
     meta: [
+      {
+        name: 'keywords',
+        content:
+          'execuții bugetare, executii bugetare, bugetul statului, transparență bugetară, transparenta bugetara, analiză bugetară, analiza bugetara, cheltuieli publice, venituri publice, buget local, buget județean, UAT, hartă cheltuieli, harta cheltuieli, vizualizare buget, vizualizare date, finanțe publice, finante publice, România, Romania',
+      },
       {
         name: 'ai:site:instructions',
         content:
@@ -117,11 +114,29 @@ function getGlobalHead() {
           '@context': 'https://schema.org',
           '@type': 'WebSite',
           name: 'Transparenta.eu',
-          url: 'https://transparenta.eu',
+          url: site,
           potentialAction: {
             '@type': 'SearchAction',
-            target: 'https://transparenta.eu/?q={search_term_string}',
+            target: `${site}/?q={search_term_string}`,
             'query-input': 'required name=search_term_string',
+          },
+        }),
+      },
+      // Organization entity to improve entity recognition and citations
+      {
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          '@id': `${site}#organization`,
+          name: 'Transparenta.eu',
+          alternateName: 'Romanian Budget Transparency Platform',
+          url: site,
+          logo: `${site}/logo.png`,
+          contactPoint: {
+            '@type': 'ContactPoint',
+            contactType: 'Data Support',
+            email: 'contact@transparenta.eu',
           },
         }),
       },
