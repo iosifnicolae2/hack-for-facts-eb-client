@@ -66,6 +66,10 @@ export function prepareFilterForServer(filter: AnalyticsFilterType, fallback?: {
   for (const [k, v] of Object.entries(normalized)) {
     if (allowedKeys.has(k)) (serverFilter as any)[k] = v
   }
+  // Pass through nested exclude filters if present
+  if (normalized.exclude) {
+    serverFilter.exclude = normalized.exclude
+  }
   if (serverFilter.report_type) {
     // Map human-readable report type to GraphQL enum variant
     try {
@@ -76,4 +80,3 @@ export function prepareFilterForServer(filter: AnalyticsFilterType, fallback?: {
   }
   return serverFilter as AnalyticsFilterType
 }
-

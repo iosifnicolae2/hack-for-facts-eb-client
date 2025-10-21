@@ -1869,6 +1869,10 @@ msgstr "Excluded categories"
 msgid "Excluded Items"
 msgstr "Excluded Items"
 
+#: src/components/charts/components/filters-details/LineItemsAggregatedYearlySeriesFilter.tsx:157
+msgid "Excluding"
+msgstr "Excluding"
+
 #: src/components/budget-explorer/RevenueBreakdown.tsx:299
 msgid "Excluding inter-budget flows and financial operations"
 msgstr "Excluding inter-budget flows and financial operations"

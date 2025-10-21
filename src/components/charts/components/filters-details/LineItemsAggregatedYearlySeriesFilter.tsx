@@ -13,6 +13,7 @@ import {
 import { getPeriodTags } from "@/lib/period-utils";
 import { useChartStore } from "../../hooks/useChartStore";
 import { ReportPeriodInput } from "@/schemas/reporting";
+import { Trans } from "@lingui/react/macro";
 
 
 interface LineItemsAggregatedYearlySeriesFilterProps {
@@ -53,23 +54,23 @@ export function LineItemsAggregatedYearlySeriesFilter({ series }: LineItemsAggre
     if (!series.filter.report_period) return;
 
     if (series.filter.report_period.selection.dates) {
-        const newDates = series.filter.report_period.selection.dates.filter(d => d !== tagToRemove);
-        updateSeries(series.id, (prev) => {
-            if (prev.type === 'line-items-aggregated-yearly' && prev.filter.report_period) {
-                prev.filter.report_period = {
-                    ...prev.filter.report_period,
-                    selection: { dates: newDates }
-                };
-            }
-            return prev;
-        });
+      const newDates = series.filter.report_period.selection.dates.filter(d => d !== tagToRemove);
+      updateSeries(series.id, (prev) => {
+        if (prev.type === 'line-items-aggregated-yearly' && prev.filter.report_period) {
+          prev.filter.report_period = {
+            ...prev.filter.report_period,
+            selection: { dates: newDates }
+          };
+        }
+        return prev;
+      });
     } else if (series.filter.report_period.selection.interval) {
-        updateSeries(series.id, (prev) => {
-            if (prev.type === 'line-items-aggregated-yearly') {
-                prev.filter.report_period = undefined;
-            }
-            return prev;
-        });
+      updateSeries(series.id, (prev) => {
+        if (prev.type === 'line-items-aggregated-yearly') {
+          prev.filter.report_period = undefined;
+        }
+        return prev;
+      });
     }
   }
 
@@ -86,10 +87,10 @@ export function LineItemsAggregatedYearlySeriesFilter({ series }: LineItemsAggre
       <div className="flex flex-wrap gap-2">
         {periodTags.map(tag => (
           <FilterPill
-              key={tag.key}
-              label={filterKeyMap('report_period')}
-              value={String(tag.value)}
-              onRemove={() => handleRemovePeriodTag(String(tag.value))}
+            key={tag.key}
+            label={filterKeyMap('report_period')}
+            value={String(tag.value)}
+            onRemove={() => handleRemovePeriodTag(String(tag.value))}
           />
         ))}
         {Object.entries(series.filter)
@@ -153,7 +154,7 @@ export function LineItemsAggregatedYearlySeriesFilter({ series }: LineItemsAggre
       {hasExcludeFilters && (
         <div className="flex flex-col gap-2">
           <div className="text-xs font-medium text-destructive flex items-center gap-1">
-            <span>Excluding:</span>
+            <span><Trans>Excluding</Trans>:</span>
           </div>
           <div className="flex flex-wrap gap-2">
             {Object.entries(series.filter.exclude!)
