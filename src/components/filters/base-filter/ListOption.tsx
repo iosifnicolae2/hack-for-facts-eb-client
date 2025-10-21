@@ -64,6 +64,7 @@ export function ListOption({
                     id={`${checkboxId}-label`}
                     title={label}
                     onClick={(e) => {
+                        e.preventDefault();
                         e.stopPropagation();
                         onClick();
                     }}
