@@ -1,7 +1,7 @@
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { i18n } from "@lingui/core";
 import { dynamicActivate } from "@/lib/i18n";
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { createRootRoute, Outlet, HeadContent, Scripts } from "@tanstack/react-router";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
@@ -45,6 +45,7 @@ export const Route = createRootRoute({
               <HotkeysProvider>
                 <SidebarProvider>
                   <div className="flex min-h-screen min-w-full">
+                    <HeadContent />
                     <AppSidebar />
                     <SidebarInset>
                       <main className="flex-1">
@@ -84,6 +85,7 @@ export const Route = createRootRoute({
                       <ChatFab />
                       <MobileSidebarFab />
                       <CookieConsentBanner />
+                      <Scripts />
                     </SidebarInset>
                   </div>
                 </SidebarProvider>

@@ -1,0 +1,26 @@
+# Transparenta.eu — Entity Page (AI Usage Guide)
+
+Base URL:
+- https://transparenta.eu
+
+Entity Page:
+- /entities/{cui}
+
+How to query:
+1) Put the entity CUI in the path: /entities/4267117
+2) Add filters as query params. Common examples:
+   - ?year=2025
+   - ?period=YEAR | QUARTER | MONTH
+   - ?view=overview | map | income-trends | expense-trends
+   - ?normalization=total | total_euro | per_capita | per_capita_euro
+
+Parameters (full docs):
+- https://transparenta.eu/ai/entities-parameters.json
+
+Examples:
+- https://transparenta.eu/entities/4267117?year=2025&view=map&normalization=per_capita
+- https://transparenta.eu/entities/4267117?period=QUARTER&quarter=Q4
+
+Notes:
+- Year range supported: dynamic; see entities-parameters.json for min/max.
+- All parameters are optional unless stated; defaults are inferred from the UI.

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Entities Page Parameters (Derived from Zod)",
+  "description": "Machine-readable description of supported query parameters for /entities/{cui}",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "view": { "type": "string", "description": "Which view to render for the entity page. Examples: overview, map, income-trends, expense-trends." },
+    "period": { "type": "string", "enum": ["YEAR","MONTH","QUARTER"], "description": "Reporting aggregation period. YEAR, QUARTER, or MONTH." },
+    "year": { "type": "number", "minimum": 2016, "maximum": 2025, "description": "Year filter within [2016, 2025]. Example: ?year=2025" },
+    "month": { "type": "string", "pattern": "^\\d{2}$", "description": "Month as two digits (01-12). Requires period=MONTH. Example: ?month=03" },
+    "quarter": { "type": "string", "pattern": "^Q\\d{1}$", "description": "Quarter as Q1..Q4. Requires period=QUARTER. Example: ?quarter=Q4" },
+    "report_type": { "type": "string", "enum": ["PRINCIPAL_AGGREGATED","SECONDARY_AGGREGATED","DETAILED"], "description": "Report type (GraphQL)." },
+    "main_creditor_cui": { "type": "string", "description": "CUI of the main creditor to filter by." },
+    "expenseSearch": { "type": "string", "description": "Full-text search term for expenses table." },
+    "incomeSearch": { "type": "string", "description": "Full-text search term for income table." },
+    "analyticsChartType": { "type": "string", "enum": ["bar","pie"], "description": "Quick analytics chart type." },
+    "analyticsDataType": { "type": "string", "enum": ["income","expense"], "description": "Quick analytics data type." },
+    "normalization": { "type": "string", "enum": ["total","total_euro","per_capita","per_capita_euro"], "description": "Value normalization." },
+    "lineItemsTab": { "type": "string", "enum": ["functional","funding","expenseType"], "description": "Active tab for line items." },
+    "selectedFundingKey": { "type": "string", "description": "Selected funding key for line items." },
+    "selectedExpenseTypeKey": { "type": "string", "description": "Selected expense type key for line items." },
+    "treemapPrimary": { "type": "string", "enum": ["fn","ec"], "description": "Treemap primary classification: fn (functional) or ec (economic)." },
+    "accountCategory": { "type": "string", "enum": ["ch","vn"], "description": "Account category: 'ch' (cheltuieli/spending) or 'vn' (venituri/revenue)." },
+    "notificationModal": { "type": "string", "enum": ["open"], "description": "UI state for the notification modal." }
+  }
+}
