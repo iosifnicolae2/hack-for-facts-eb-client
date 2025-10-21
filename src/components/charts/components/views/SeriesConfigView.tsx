@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { Trash2, Settings, Eye, RotateCcw, BellPlus } from 'lucide-react';
@@ -34,6 +33,7 @@ import { Trans } from '@lingui/react/macro';
 import { useNavigate } from '@tanstack/react-router';
 import { buildAlertFromFilter } from '@/lib/alert-links';
 import { Analytics } from '@/lib/analytics';
+import { DebouncedStatusInput } from '@/components/ui/debounced-status-input';
 
 export function SeriesConfigView() {
   const [showAdvancedSettings, setShowAdvancedSettings] = useState(false);
@@ -41,6 +41,8 @@ export function SeriesConfigView() {
   const series = chart.series.find(s => s.id === seriesId);
   const seriesLabel = series?.label || '';
   const [localLabel, setLocalLabel] = useState(seriesLabel);
+  const [localXAxisPrefix, setLocalXAxisPrefix] = useState(series?.config?.xAxisPrefixToRemove || '');
+  // Status indicators handled in DebouncedStatusInput
   const inputRef = useRef<HTMLInputElement>(null);
   const { duplicateSeries, copySeries } = useCopyPasteChart();
   const navigate = useNavigate({ from: '/charts/$chartId' });
@@ -53,6 +55,11 @@ export function SeriesConfigView() {
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
+
+  // Keep local x-axis prefix in sync when the series changes elsewhere
+  useEffect(() => {
+    setLocalXAxisPrefix(series?.config?.xAxisPrefixToRemove || '');
+  }, [series?.id, series?.config?.xAxisPrefixToRemove]);
 
   const updateSeriesField = (field: keyof Series, value: string | object) => {
     if (!series) return;
@@ -147,14 +154,13 @@ export function SeriesConfigView() {
           <CardContent className="space-y-6 pt-6">
             <div className="space-y-2">
               <Label htmlFor="series-label"><Trans>Series Label</Trans> *</Label>
-              <Input
+              <DebouncedStatusInput
                 ref={inputRef}
                 id="series-label"
                 value={localLabel}
-                onChange={(e) => {
-                  setLocalLabel(e.target.value);
-                  updateSeriesField('label', e.target.value);
-                }}
+                onImmediateChange={(v) => setLocalLabel(v)}
+                onDebouncedChange={(v) => updateSeriesField('label', v)}
+                debounceMs={600}
                 placeholder={t`Enter series label...`}
               />
             </div>
@@ -298,10 +304,12 @@ export function SeriesConfigView() {
                       <Trans>Strip this prefix from x-axis labels for this series (e.g., 2024-). Helps align yearly and monthly data on a common axis.</Trans>
                     </span>
                   </Label>
-                  <Input
+                  <DebouncedStatusInput
                     id="x-axis-prefix-to-remove"
-                    value={series.config.xAxisPrefixToRemove || ''}
-                    onChange={(e) => updateSeriesConfig({ xAxisPrefixToRemove: e.target.value || undefined })}
+                    value={localXAxisPrefix}
+                    onImmediateChange={(v) => setLocalXAxisPrefix(v)}
+                    onDebouncedChange={(v) => updateSeriesConfig({ xAxisPrefixToRemove: v || undefined })}
+                    debounceMs={700}
                     placeholder={t`Example: 2024-`}
                   />
                 </div>

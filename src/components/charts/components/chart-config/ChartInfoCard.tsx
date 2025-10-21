@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Settings } from 'lucide-react';
-import { Input } from '@/components/ui/input';
+import { DebouncedStatusInput } from '@/components/ui/debounced-status-input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Chart } from '@/schemas/charts';
@@ -30,13 +30,12 @@ export const ChartInfoCard = React.memo(({ chart, onUpdateChart }: ChartInfoCard
             <div className="space-y-4">
                 <div className="space-y-2">
                     <Label htmlFor="chart-title">{t`Chart Title`} *</Label>
-                    <Input
+                    <DebouncedStatusInput
                         id="chart-title"
                         value={localTitle}
-                        onChange={(e) => {
-                            setLocalTitle(e.target.value);
-                            onUpdateChart({ title: e.target.value });
-                        }}
+                        onImmediateChange={(v) => setLocalTitle(v)}
+                        onDebouncedChange={(v) => onUpdateChart({ title: v })}
+                        debounceMs={600}
                         placeholder={t`Enter chart title...`}
                     />
                 </div>
