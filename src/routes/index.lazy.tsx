@@ -1,8 +1,5 @@
-import { useEffect } from "react";
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
-import { motion, useMotionValue, useTransform, animate } from "framer-motion";
-import { usePersistedState } from "@/lib/hooks/usePersistedState";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { EntitySearchInput } from "@/components/entities/EntitySearch";
 import { PageCard } from "@/components/landing/PageCard";
@@ -22,7 +19,6 @@ export const Route = createLazyFileRoute("/")({
 const title = "Transparenta.eu";
 
 function Index() {
-  const { animationActive } = useTitleAnimation()
   const isMobile = useIsMobile();
   return (
     <div className="flex flex-col min-h-screen">
@@ -39,14 +35,10 @@ function Index() {
               "bg-gradient-to-b from-slate-50 via-white to-slate-50",
               "bg-clip-text text-transparent",
               isMobile ?
-                "drop-shadow-[0_20px_10px_rgba(18,65,161,0.8),0_10px_22px_rgba(18,65,161,0.8),0_10px_22px_rgba(200,65,161,0.8),0_1px_1px_rgba(250,65,250,0.8)]" :
+                "drop-shadow-[0_10px_10px_rgba(18,65,161,1),0_14px_20px_rgba(18,65,161,1),0_10px_20px_rgba(200,65,161,0.95),0_2px_2px_rgba(250,65,250,1)]" :
                 "drop-shadow-[0_10px_22px_rgba(18,65,161,0.8),0_10px_22px_rgba(18,65,161,0.8),0_10px_22px_rgba(200,65,161,0.8),0_1px_1px_rgba(250,65,250,0.8)]")}
           >
-            {animationActive ? (
-              <AnimatedTitle />
-            ) : (
-              <h1>{title}</h1>
-            )}
+            <h1>{title}</h1>
           </div>
 
           <p className="max-w-2xl text-lg sm:text-xl text-slate-400 dark:text-slate-300">
@@ -100,54 +92,4 @@ function Index() {
     </div>
   );
 }
-
-
-/**
- * A component that displays the title with a typewriter animation.
- */
-function AnimatedTitle() {
-  const count = useMotionValue(0);
-  const rounded = useTransform(count, (latest) => Math.round(latest));
-  const displayText = useTransform(rounded, (latest) => title.slice(0, latest));
-
-  useEffect(() => {
-    const controls = animate(count, title.length, {
-      type: "tween",
-      duration: 2, // Animation duration in seconds
-      ease: "easeInOut",
-    });
-    // Return cleanup function
-    return controls.stop;
-  }, [count]);
-
-  return (
-    // Flex container to align text and cursor
-    <div className="flex items-center justify-center">
-      <motion.span>{displayText}</motion.span>
-      {/* Blinking Cursor */}
-      <motion.div
-        className="ml-2 inline-block h-[45px] w-1.5 rounded-sm bg-slate-200/90 sm:h-[55px] md:h-[65px]"
-        animate={{ opacity: [0, 1, 0] }}
-        transition={{ duration: 0.8, repeat: Infinity, repeatType: "mirror" }}
-      />
-    </div>
-  );
-}
-
-function useTitleAnimation() {
-  // State to track animation completion
-  const [animationActive, setAnimationActive] = usePersistedState("landing-title-animation-complete", true);
-
-  // Set a timer to switch to the static title after the animation finishes.
-  // Animation (2.5s) + pause with cursor (1s) = 3.5s total.
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimationActive(false);
-    }, 2500);
-
-    // Cleanup the timer if the component unmounts
-    return () => clearTimeout(timer);
-  }, [setAnimationActive]);
-
-  return { animationActive }
-}
+// (Title animation removed)
