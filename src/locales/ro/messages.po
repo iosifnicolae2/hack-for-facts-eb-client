@@ -3600,7 +3600,7 @@ msgstr "Afișează setările avansate"
 
 #: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:63
 msgid "Show all"
-msgstr ""
+msgstr "Afișează tot"
 
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:66
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:199
@@ -3630,15 +3630,15 @@ msgstr "Afișează legenda"
 
 #: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:63
 msgid "Show less"
-msgstr "Afișează mai puțin"
+msgstr "Afișează puțin"
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:231
 msgid "Show Less"
-msgstr "Afișează mai puțin"
+msgstr "Afișează puțin"
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:231
 msgid "Show More"
-msgstr "Afișează mai mult"
+msgstr "Afișează mai multe"
 
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:64
 msgid "Show Relative Values (%)"
