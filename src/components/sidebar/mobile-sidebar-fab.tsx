@@ -5,7 +5,7 @@ import { useSidebar } from "@/components/ui/sidebar";
 export function MobileSidebarFab() {
     const { setOpenMobile } = useSidebar();
     return (
-        <div className="md:hidden fixed right-6 bottom-6 z-50">
+        <div className="md:hidden fixed right-6 bottom-6 z-40">
             <Button
                 onClick={() => setOpenMobile(true)}
                 variant="default"

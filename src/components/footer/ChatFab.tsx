@@ -103,7 +103,7 @@ export function ChatFab(): ReactElement {
                     type="button"
                     aria-label={t`Quick actions`}
                     className={clsx(
-                        "fixed z-50 bottom-6 left-6 md:right-6 md:left-auto",
+                        "fixed z-40 bottom-6 left-6 md:right-6 md:left-auto",
                         "inline-flex items-center justify-center",
                         "h-14 w-14 rounded-full",
                         "bg-primary text-primary-foreground",
