@@ -46,7 +46,7 @@ export function CookieConsentBanner(): ReactElement | null {
   useEffect(() => {
     const timer = setTimeout(() => {
       showBanner();
-    }, 2500);
+    }, 500);
     return () => clearTimeout(timer);
   }, [location.pathname, showBanner]);
 
