@@ -34,10 +34,15 @@ export function EntityNotificationAnnouncement(): ReactElement | null {
 
     // Delay showing the banner to avoid disrupting initial page load
     const timer = setTimeout(() => {
-      setBannerVisible(true);
-      // Trigger entrance animation after a brief delay
-      setTimeout(() => setIsEntering(true), 50);
-    }, 3000); // 3 second delay (after cookie banner if present)
+      // Check if cookie consent has been set (banner closed)
+      const hasCookieConsent = typeof window !== 'undefined' && !!window.localStorage.getItem('cookie-consent');
+
+      if (hasCookieConsent) {
+        setBannerVisible(true);
+        // Trigger entrance animation after a brief delay
+        setTimeout(() => setIsEntering(true), 50);
+      }
+    }, 3000); // 3 second delay
 
     return () => clearTimeout(timer);
   }, [hasSeenAnnouncement, isOpen, setHasSeenAnnouncement]);
@@ -76,9 +81,8 @@ export function EntityNotificationAnnouncement(): ReactElement | null {
         }
       `}</style>
       <div
-        className={`fixed bottom-0 left-1/2 -translate-x-1/2 p-3 md:p-6 max-w-4xl w-full transition-transform duration-500 ease-in-out z-50 ${
-          isExiting ? "translate-y-full" : isEntering ? "translate-y-0" : "translate-y-full"
-        }`}
+        className={`fixed bottom-0 left-1/2 -translate-x-1/2 p-3 md:p-6 max-w-4xl w-full transition-transform duration-500 ease-in-out z-50 ${isExiting ? "translate-y-full" : isEntering ? "translate-y-0" : "translate-y-full"
+          }`}
         role="dialog"
         aria-live="polite"
         aria-label="New feature announcement"
@@ -91,29 +95,29 @@ export function EntityNotificationAnnouncement(): ReactElement | null {
                 <Trans>Monitor this institution</Trans>
               </h2>
             </div>
-          <p className="mt-3 text-sm text-gray-600">
-            <Trans>
-              Get monthly email updates about this institution. Receive alerts when new reports are published, budget changes occur, or important financial data is updated.
-            </Trans>
-          </p>
+            <p className="mt-3 text-sm text-gray-600">
+              <Trans>
+                Get monthly email updates about this institution. Receive alerts when new reports are published, budget changes occur, or important financial data is updated.
+              </Trans>
+            </p>
 
-          <div className="mt-5 flex flex-col sm:flex-row sm:justify-end gap-3">
-            <button
-              onClick={handleDismiss}
-              className="w-full sm:w-auto rounded-lg py-2 px-5 text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors"
-            >
-              <Trans>Maybe Later</Trans>
-            </button>
-            <button
-              onClick={handleEnableNotifications}
-              className="w-full sm:w-auto rounded-lg bg-blue-600 py-2 px-5 text-sm font-medium text-white hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            >
-              <Trans>Subscribe to Updates</Trans>
-            </button>
+            <div className="mt-5 flex flex-col sm:flex-row sm:justify-end gap-3">
+              <button
+                onClick={handleDismiss}
+                className="w-full sm:w-auto rounded-lg py-2 px-5 text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors"
+              >
+                <Trans>Maybe Later</Trans>
+              </button>
+              <button
+                onClick={handleEnableNotifications}
+                className="w-full sm:w-auto rounded-lg bg-blue-600 py-2 px-5 text-sm font-medium text-white hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                <Trans>Subscribe to Updates</Trans>
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </>
   );
 }
