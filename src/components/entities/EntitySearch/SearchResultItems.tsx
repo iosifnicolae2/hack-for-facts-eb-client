@@ -18,6 +18,7 @@ export const SearchResultItem = forwardRef<HTMLAnchorElement, SearchResultItemPr
                 ref={ref}
                 to="/entities/$cui"
                 params={{ cui: entity.cui }}
+                preload="intent"
                 search={(prev) => ({ ...prev })}
                 onClick={onClick}
                 className={cn(

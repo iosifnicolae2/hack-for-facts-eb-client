@@ -26,56 +26,57 @@ import { ViewLoading } from "@/components/ui/ViewLoading";
 export const Route = createRootRoute({
   head: getGlobalHead,
   errorComponent: ({ error }) => <GlobalErrorPage error={error} />,
-  component: () => {
-    useEffect(() => {
-      const userLocale = getUserLocale();
-      dynamicActivate(userLocale);
-      Analytics.capture(Analytics.EVENTS.DefaultLanguage, { locale: userLocale });
-      try {
-        document.documentElement.setAttribute('lang', userLocale);
-      } catch { }
-    }, []);
-
-    const isMobile = useIsMobile();
-
-    return (
-      <ErrorProvider>
-        <QueryClientProvider client={queryClient}>
-          <I18nProvider i18n={i18n}>
-            <ThemeProvider defaultTheme="light" storageKey="ui-theme">
-              <HotkeysProvider>
-                <SidebarProvider>
-                  <div className="flex min-h-screen min-w-full">
-                    <HeadContent />
-                    <AppSidebar />
-                    <SidebarInset>
-                      <main className="flex-1">
-                        <div>
-                          <AnalyticsPageviewBridge />
-                          <Suspense fallback={<ViewLoading />}>
-                            <Outlet />
-                          </Suspense>
-                          <Toaster />
-                          {isMobile && <FloatingEntitySearch showButton />}
-                        </div>
-                      </main>
-                      <AppFooter />
-                      <ChatFab />
-                      <MobileSidebarFab />
-                      <CookieConsentBanner />
-                      <Scripts />
-                    </SidebarInset>
-                  </div>
-                </SidebarProvider>
-              </HotkeysProvider>
-            </ThemeProvider>
-          </I18nProvider>
-        </QueryClientProvider>
-      </ErrorProvider>
-    );
-  },
-  beforeLoad: async () => { },
+  component: RootComponent,
 });
+
+function RootComponent() {
+  useEffect(() => {
+    const userLocale = getUserLocale();
+    dynamicActivate(userLocale);
+    Analytics.capture(Analytics.EVENTS.DefaultLanguage, { locale: userLocale });
+    try {
+      document.documentElement.setAttribute('lang', userLocale);
+    } catch { }
+  }, []);
+
+  const isMobile = useIsMobile();
+
+  return (
+    <ErrorProvider>
+      <QueryClientProvider client={queryClient}>
+        <I18nProvider i18n={i18n}>
+          <ThemeProvider defaultTheme="light" storageKey="ui-theme">
+            <HotkeysProvider>
+              <SidebarProvider>
+                <div className="flex min-h-screen min-w-full">
+                  <HeadContent />
+                  <AppSidebar />
+                  <SidebarInset>
+                    <main className="flex-1">
+                      <div>
+                        <AnalyticsPageviewBridge />
+                        <Suspense fallback={<ViewLoading />}>
+                          <Outlet />
+                        </Suspense>
+                        <Toaster />
+                        {isMobile && <FloatingEntitySearch showButton />}
+                      </div>
+                    </main>
+                    <AppFooter />
+                    <ChatFab />
+                    <MobileSidebarFab />
+                    <CookieConsentBanner />
+                    <Scripts />
+                  </SidebarInset>
+                </div>
+              </SidebarProvider>
+            </HotkeysProvider>
+          </ThemeProvider>
+        </I18nProvider>
+      </QueryClientProvider>
+    </ErrorProvider>
+  );
+}
 
 function AnalyticsPageviewBridge() {
   Analytics.pageviewHook();

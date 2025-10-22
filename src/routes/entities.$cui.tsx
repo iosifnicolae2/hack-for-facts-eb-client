@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { ViewLoading } from '@/components/ui/ViewLoading';
 import { z } from 'zod';
 import { entityDetailsQueryOptions } from '@/lib/hooks/useEntityDetails';
 import { queryClient } from '@/lib/queryClient';
@@ -90,5 +91,6 @@ export const Route = createFileRoute('/entities/$cui')({
             }
         }
     },
+    pendingComponent: ViewLoading,
     component: () => null,
 });
