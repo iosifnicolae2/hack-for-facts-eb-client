@@ -324,7 +324,7 @@ function EntityDetailsPage() {
                   onPrefetch={debouncedPrefetch}
                 />
               }
-              className="p-4 w-md"
+              className="p-4 sm:w-md"
               align="end"
               mobileSide="bottom"
             />
