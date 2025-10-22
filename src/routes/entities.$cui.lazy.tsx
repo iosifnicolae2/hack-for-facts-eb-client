@@ -214,8 +214,8 @@ function EntityDetailsPage() {
           ...nextState,
           month: nextPeriod === 'MONTH' ? nextState.month : undefined,
           quarter: nextPeriod === 'QUARTER' ? nextState.quarter : undefined,
-          report_type: 'report_type' in patch ? patch.report_type : prev.report_type,
-          main_creditor_cui: 'main_creditor_cui' in patch ? patch.main_creditor_cui : prev.main_creditor_cui,
+          report_type: ('report_type' in patch && patch.report_type) ? patch.report_type : prev.report_type,
+          main_creditor_cui: ('main_creditor_cui' in patch && patch.main_creditor_cui) ? patch.main_creditor_cui : prev.main_creditor_cui,
         }
       },
       replace: true,

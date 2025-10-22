@@ -140,6 +140,7 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
     emitChange(periodType, year, quarter, monthValue, reportType, mainCreditor, normalization)
   }
   const handleReportTypeChange = (value: string | number | boolean | undefined) => {
+    if (!value) return
     const nextReportType = String(value) as GqlReportType
     emitChange(periodType, year, quarter, month, nextReportType, mainCreditor, normalization)
   }
