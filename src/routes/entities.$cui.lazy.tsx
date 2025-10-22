@@ -255,7 +255,7 @@ function EntityDetailsPage() {
 
   if (isError) {
     return (
-      <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex justify-center items-center p-4">
+      <div key={cui} className="min-h-screen bg-slate-100 dark:bg-slate-900 flex justify-center items-center p-4 motion-safe:animate-in motion-safe:fade-in-0 motion-safe:duration-300">
         <Alert variant="destructive" className="max-w-lg w-full">
           <AlertTriangle className="h-5 w-5" />
           <AlertTitle><Trans>Error Fetching Entity Details</Trans></AlertTitle>
@@ -270,7 +270,7 @@ function EntityDetailsPage() {
 
   if (!entity && !isLoading) {
     return (
-      <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex justify-center items-center p-4">
+      <div key={cui} className="min-h-screen bg-slate-100 dark:bg-slate-900 flex justify-center items-center p-4 motion-safe:animate-in motion-safe:fade-in-0 motion-safe:duration-300">
         <Alert className="max-w-lg w-full">
           <Info className="h-5 w-5" />
           <AlertTitle><Trans>No Data Found</Trans></AlertTitle>
@@ -285,7 +285,7 @@ function EntityDetailsPage() {
   const { title: _metaTitle, description: _metaDescription } = buildEntitySeo(entity, cui, selectedYear)
 
   return (
-    <div className="min-h-screen p-3 sm:p-4 md:p-6 lg:p-8">
+    <div key={cui} className="min-h-screen p-3 sm:p-4 md:p-6 lg:p-8 motion-safe:animate-in motion-safe:fade-in-0 motion-safe:duration-600">
       {/* head handled via Route.head */}
       <EntityNotificationAnnouncement />
       <FloatingQuickNav
