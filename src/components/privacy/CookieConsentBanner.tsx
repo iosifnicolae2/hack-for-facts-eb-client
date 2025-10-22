@@ -5,6 +5,9 @@ import { onConsentChange } from "@/lib/consent";
 import { Analytics } from "@/lib/analytics";
 import { Trans } from "@lingui/react/macro";
 import { Link, useLocation } from "@tanstack/react-router";
+import { ToastProvider } from "@/components/ui/toast";
+import * as ToastPrimitives from "@radix-ui/react-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 /**
  * CookieConsentBanner
@@ -13,97 +16,106 @@ import { Link, useLocation } from "@tanstack/react-router";
  * provides balanced choices, and respects user privacy.
  */
 export function CookieConsentBanner(): ReactElement | null {
+  const [isMounted, setMounted] = useState(false);
   const [isBannerVisible, setBannerVisible] = useState(false);
-  const [isEntering, setIsEntering] = useState(false);
-  const [isExiting, setIsExiting] = useState(false);
   const location = useLocation();
+  const isMobile = useIsMobile();
 
   const showBanner = useCallback(() => {
-    // We only want to run this logic on the client
     if (typeof window === "undefined") return;
-
-    if (location.pathname.includes("/cookies")) {
-      setBannerVisible(false);
-      return
-    }
-
-    // Show the banner only if the user hasn't made a choice yet.
+    const isCookiesPage = location.pathname.includes("/cookies");
+    const isNotificationModalOpen = location.search.notificationModal === "open";
     const storedConsent = window.localStorage.getItem("cookie-consent");
-    const shouldShow = !storedConsent;
 
-    if (shouldShow) {
-      setBannerVisible(true);
-      // Trigger entrance animation after a brief delay
-      setTimeout(() => setIsEntering(true), 50);
-    } else {
-      setBannerVisible(false);
-    }
-  }, [location.pathname]);
+    const shouldHideBanner =
+      isCookiesPage || (isMobile && isNotificationModalOpen) || !!storedConsent;
+
+    if (shouldHideBanner) return;
+
+    setMounted(true);
+  }, [location.pathname, location.search, isMobile]);
 
   useEffect(() => {
-    // Delay showing the banner to avoid disrupting initial page load
-    const timer = setTimeout(() => {
-      showBanner()
-    }, 2500);
+    if (isMounted) {
+      // Delay opening to allow for mounting and transition
+      const timer = setTimeout(() => setBannerVisible(true), 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isMounted]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      showBanner();
+    }, 2500);
     return () => clearTimeout(timer);
   }, [location.pathname, showBanner]);
 
   const handleDecision = (consentFunction: () => void) => {
-    setIsEntering(false);
-    setIsExiting(true);
     consentFunction();
-    // Hide banner after the exit animation completes
-    setTimeout(() => setBannerVisible(false), 500);
+    setBannerVisible(false);
   };
 
-  if (!isBannerVisible) return null;
+  useEffect(() => {
+    if (!isBannerVisible && isMounted) {
+      // Allow time for exit animation before unmounting
+      const timer = setTimeout(() => {
+        setMounted(false);
+      }, 300); // Corresponds to animation duration
+      return () => clearTimeout(timer);
+    }
+  }, [isBannerVisible, isMounted]);
+
+  if (!isMounted) return null;
 
   return (
-    <div
-      className={`fixed bottom-0 left-1/2 -translate-x-1/2 z-110 p-3 md:p-6 max-w-5xl w-full transition-transform duration-500 ease-in-out ${isExiting ? "translate-y-full" : isEntering ? "translate-y-0" : "translate-y-full"
-        }`}
-      role="dialog"
-      aria-live="polite"
-      aria-label="Cookie consent"
-    >
-      <div className="rounded-2xl border border-slate-200/30 bg-white/80 shadow-2xl backdrop-blur-lg supports-[backdrop-filter]:bg-white/80">
-        <div className="p-6">
-          <div className="flex items-center gap-3">
-            <CookieIcon className="h-6 w-6 text-blue-600" />
-            <h2 className="text-lg font-semibold md:text-xl text-gray-900">
-              <Trans>We value your privacy</Trans>
-            </h2>
-          </div>
-          <p className="mt-3 text-sm text-gray-600">
-            <Trans>
-              We use cookies and similar technologies to enhance your experience, analyze our traffic, and report errors. With your permission, we use PostHog for analytics and Sentry for error reporting to improve our service. You can change your preferences at any time. For more information, please see our{" "}
-              <Link to="/privacy" className="font-medium text-blue-600 hover:underline">
-                Privacy Policy
-              </Link>.
-            </Trans>
-          </p>
+    <ToastProvider duration={20000}>
+      {/* Bottom-center, above everything, allow clicks only on the toast */}
+      <ToastPrimitives.Viewport className="fixed inset-x-0 bottom-0 z-[10000] flex justify-center p-3 md:p-6 pointer-events-none" />
 
-          <div className="mt-5 flex flex-col sm:flex-row sm:items-center gap-3">
-            <Link
-              to="/cookies"
-              // After managing preferences, return to the current page
-              search={{ redirect: `${location.pathname}${location.searchStr ?? ""}` }}
-              onClick={() => handleDecision(declineAll)}
-              className="w-full sm:w-auto rounded-lg py-2 px-5 text-center text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors"
-            >
-              <Trans>Advanced</Trans>
-            </Link>
-            <button
-              onClick={() => handleDecision(acceptAll)}
-              className="w-full sm:w-auto sm:ml-auto rounded-lg bg-blue-600 py-2 px-5 text-sm font-medium text-white hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            >
-              <Trans>Accept All</Trans>
-            </button>
+      <ToastPrimitives.Root
+        open={isBannerVisible}
+        onOpenChange={setBannerVisible}
+        aria-live="polite"
+        className="group pointer-events-auto relative w-full max-w-5xl rounded-md border-0 bg-transparent p-0 shadow-none transition-all data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:slide-in-from-bottom-full data-[state=closed]:slide-out-to-bottom-full"
+      >
+        <div className="rounded-2xl border border-slate-200/30 bg-white/80 shadow-2xl backdrop-blur-lg supports-[backdrop-filter]:bg-white/80">
+          <div className="p-6">
+            <div className="flex items-center gap-3">
+              <CookieIcon className="h-6 w-6 text-blue-600" />
+              <h2 className="text-lg font-semibold md:text-xl text-gray-900">
+                <Trans>We value your privacy</Trans>
+              </h2>
+            </div>
+            <p className="mt-3 text-sm text-gray-600">
+              <Trans>
+                We use cookies and similar technologies to enhance your experience, analyze our traffic, and report errors. With your permission, we use PostHog for analytics and Sentry for error reporting to improve our service. You can change your preferences at any time. For more information, please see our{" "}
+                <Link to="/privacy" className="font-medium text-blue-600 hover:underline">
+                  Privacy Policy
+                </Link>.
+              </Trans>
+            </p>
+
+            <div className="mt-5 flex flex-col sm:flex-row sm:items-center gap-3">
+              <Link
+                to="/cookies"
+                // After managing preferences, return to the current page
+                search={{ redirect: `${location.pathname}${location.searchStr ?? ""}` }}
+                onClick={() => handleDecision(declineAll)}
+                className="w-full sm:w-auto rounded-lg py-2 px-5 text-center text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors"
+              >
+                <Trans>Advanced</Trans>
+              </Link>
+              <button
+                onClick={() => handleDecision(acceptAll)}
+                className="w-full sm:w-auto sm:ml-auto rounded-lg bg-blue-600 py-2 px-5 text-sm font-medium text-white hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                <Trans>Accept All</Trans>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </ToastPrimitives.Root>
+    </ToastProvider>
   );
 }
 

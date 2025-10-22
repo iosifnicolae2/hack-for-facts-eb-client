@@ -2,6 +2,7 @@ import { ReactNode, useMemo } from 'react'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { useWindowSize } from '@/hooks/useWindowSize'
+import { cn } from '@/lib/utils'
 
 type ResponsivePopoverProps = {
     trigger: ReactNode
@@ -25,7 +26,20 @@ export function ResponsivePopover({ trigger, content, className, align = 'end', 
                     {trigger}
                 </SheetTrigger>
                 <SheetTitle className="sr-only">Responsive Popover</SheetTitle>
-                <SheetContent side={mobileSide} className="p-4 min-h-[65vh] max-h-[90vh] overflow-y-auto">
+                <SheetContent
+                    side={mobileSide}
+                    className={cn(
+                        'p-4 min-h-[65vh] max-h-[90vh] overflow-y-auto',
+                        mobileSide === 'bottom'
+                            ? 'rounded-t-3xl'
+                            : mobileSide === 'top'
+                            ? 'rounded-b-3xl'
+                            : mobileSide === 'left'
+                            ? 'rounded-r-3xl'
+                            : 'rounded-l-3xl',
+                        className,
+                    )}
+                >
                     {content}
                 </SheetContent>
             </Sheet>

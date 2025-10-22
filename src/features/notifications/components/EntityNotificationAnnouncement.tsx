@@ -18,9 +18,17 @@ export function EntityNotificationAnnouncement(): ReactElement | null {
   const [isBannerVisible, setBannerVisible] = useState(false);
   const [isEntering, setIsEntering] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
-  const { openModal } = useNotificationModal();
+  const { openModal, isOpen } = useNotificationModal();
 
   useEffect(() => {
+    // If the notifications modal is already open via query (?notificationModal=open),
+    // mark the announcement as seen and do not show the banner.
+    if (!hasSeenAnnouncement && isOpen) {
+      setHasSeenAnnouncement(true);
+      setBannerVisible(false);
+      return;
+    }
+
     // Only show if user hasn't seen it before
     if (hasSeenAnnouncement) return;
 
@@ -32,7 +40,7 @@ export function EntityNotificationAnnouncement(): ReactElement | null {
     }, 3000); // 3 second delay (after cookie banner if present)
 
     return () => clearTimeout(timer);
-  }, [hasSeenAnnouncement]);
+  }, [hasSeenAnnouncement, isOpen, setHasSeenAnnouncement]);
 
   const handleDismiss = useCallback(() => {
     setIsEntering(false);

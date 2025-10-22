@@ -42,10 +42,10 @@ export function NotificationQuickMenu({ cui, entityName, notifications, onClose 
   return (
     <div className="w-full space-y-5 p-2">
       <div className="space-y-1">
-        <h3 className="font-semibold text-base">
+        <h3 className="font-semibold text-xl">
           <Trans>Get updates about</Trans>
         </h3>
-        <p className="text-sm text-muted-foreground truncate">{entityName}</p>
+        <p className="text-base text-muted-foreground truncate">{entityName}</p>
       </div>
 
       <Separator />
@@ -62,10 +62,10 @@ export function NotificationQuickMenu({ cui, entityName, notifications, onClose 
               onClick={() => handleToggle(type, !isActive)}
             >
               <div className="flex-1 min-w-0">
-                <div className="text-sm font-medium group-hover:text-foreground transition-colors">
+                <div className="text-base font-medium group-hover:text-foreground transition-colors">
                   {config.label}
                 </div>
-                <p className="text-xs text-muted-foreground mt-0.5 break-words">
+                <p className="text-sm text-muted-foreground mt-0.5 break-words">
                   {config.description}
                 </p>
               </div>
@@ -81,13 +81,11 @@ export function NotificationQuickMenu({ cui, entityName, notifications, onClose 
         })}
       </div>
 
-      <Separator />
-
       <Link to="/settings/notifications" onClick={onClose} className="block">
         <Button
-          variant="outline"
-          size="sm"
-          className="w-full justify-between group hover:bg-primary hover:text-primary-foreground transition-all"
+          variant="default"
+          size="lg"
+          className="w-full mt-16 sm:mt-auto justify-between group hover:bg-primary hover:text-primary-foreground transition-all"
         >
           <Trans>Manage all notifications</Trans>
           <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />

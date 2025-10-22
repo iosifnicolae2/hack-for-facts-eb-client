@@ -41,48 +41,53 @@ export function EntityNotificationBell({ cui, entityName }: Props) {
           </Button>
         }
         content={
-          <div className="w-full max-w-md space-y-4 p-1">
-            <div>
-              <h3 className="font-semibold text-sm mb-1">
-                <Trans>Sign in required</Trans>
-              </h3>
-              <p className="text-xs text-muted-foreground">
-                <Trans>You need to be signed in to subscribe to notifications</Trans>
-              </p>
+          <div className="w-full p-1">
+            <div className="flex flex-col">
+              <div>
+                <h3 className="text-xl font-semibold tracking-tight mb-1">
+                  <Trans>Sign in required</Trans>
+                </h3>
+                <p className="text-base text-muted-foreground">
+                  <Trans>You need to be signed in to subscribe to notifications</Trans>
+                </p>
+              </div>
+
+              <Separator className="my-3" />
+
+              <div className="space-y-3">
+                <p className="text-base text-muted-foreground">
+                  <Trans>
+                    Sign in to receive updates about <strong>{entityName}</strong>:
+                  </Trans>
+                </p>
+                <ul className="text-base text-muted-foreground space-y-2 ml-4 list-disc">
+                  <li>
+                    <Trans>Monthly, quarterly, and annual reports</Trans>
+                  </li>
+                  <li>
+                    <Trans>Alerts when important changes occur</Trans>
+                  </li>
+                  <li>
+                    <Trans>Easily manage your subscriptions</Trans>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="mt-64 sm:mt-6">
+                <AuthSignInButton>
+                  <Button
+                    variant="default"
+                    size="lg"
+                    className="w-full rounded-xl py-3.5 text-base font-semibold">
+                    <Trans>Sign In</Trans>
+                  </Button>
+                </AuthSignInButton>
+              </div>
             </div>
-
-            <Separator />
-
-            <div className="space-y-3">
-              <p className="text-sm text-muted-foreground">
-                <Trans>
-                  Sign in to receive updates about <strong>{entityName}</strong>:
-                </Trans>
-              </p>
-              <ul className="text-sm text-muted-foreground space-y-2 ml-4 list-disc">
-                <li>
-                  <Trans>Monthly, quarterly, and annual reports</Trans>
-                </li>
-                <li>
-                  <Trans>Alerts when important changes occur</Trans>
-                </li>
-                <li>
-                  <Trans>Easily manage your subscriptions</Trans>
-                </li>
-              </ul>
-            </div>
-
-            <Separator />
-
-            <AuthSignInButton>
-              <Button className="w-full">
-                <Trans>Sign In</Trans>
-              </Button>
-            </AuthSignInButton>
           </div>
         }
         align="end"
-        className="w-md"
+        className="sm:w-md"
       />
     );
   }
@@ -139,7 +144,7 @@ export function EntityNotificationBell({ cui, entityName }: Props) {
         />
       }
       align="end"
-      className="w-md"
+      className="sm:w-md"
     />
   );
 }
