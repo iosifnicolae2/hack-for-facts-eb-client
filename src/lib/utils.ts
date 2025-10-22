@@ -71,7 +71,23 @@ export function slugify(input: string): string {
 
 type Locale = 'en' | 'ro';
 
+/**
+ * Gets the user's locale with the following priority:
+ * 1. URL query parameter `lang` (for shareable links)
+ * 2. localStorage value
+ * 3. Default to 'ro'
+ */
 export function getUserLocale(): Locale {
+  // Check URL query parameter first
+  if (typeof window !== 'undefined') {
+    const urlParams = new URLSearchParams(window.location.search);
+    const langParam = urlParams.get('lang');
+    if (langParam === 'en' || langParam === 'ro') {
+      return langParam;
+    }
+  }
+
+  // Fall back to localStorage
   const savedLocale: Locale | null = typeof window !== 'undefined' ? window.localStorage.getItem('user-locale') as Locale | null : null;
   return savedLocale || 'ro';
 }
