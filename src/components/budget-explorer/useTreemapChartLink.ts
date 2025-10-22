@@ -4,6 +4,21 @@ import type { TreemapInput } from './budget-transform'
 import { getClassificationName } from '@/lib/classifications'
 import { getEconomicChapterName, getEconomicSubchapterName } from '@/lib/economic-classifications'
 
+/**
+ * Generate a stable ID based on filter content instead of random UUID.
+ * This prevents unnecessary re-renders when the actual data hasn't changed.
+ */
+function generateStableId(prefix: string, filter: AnalyticsFilterType): string {
+  const parts = [
+    prefix,
+    filter.entity_cuis?.join(',') ?? '',
+    filter.functional_prefixes?.join(',') ?? '',
+    filter.economic_prefixes?.join(',') ?? '',
+    filter.account_category ?? '',
+  ]
+  return parts.filter(Boolean).join('-')
+}
+
 const COLORS = [
   '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d',
   '#A4DE6C', '#D0ED57', '#FF7300', '#FFB300', '#E53935', '#D81B60',
@@ -72,6 +87,8 @@ export function useTreemapChartLink({
       }
     }
 
+    // Use stable timestamp for all series in this render
+    const timestamp = new Date().toISOString()
     const seriesConfigs: SeriesConfiguration[] = []
     const currentLevel = path.length
     const parentCode = currentLevel > 0 ? path[currentLevel - 1]?.code : null
@@ -94,7 +111,7 @@ export function useTreemapChartLink({
       }
 
       seriesConfigs.push({
-        id: crypto.randomUUID(),
+        id: generateStableId(`parent-${parentType}-${parentCode}`, parentFilter),
         type: 'line-items-aggregated-yearly',
         enabled: true,
         label: `Total: ${parentLabel}`,
@@ -105,8 +122,8 @@ export function useTreemapChartLink({
           showDataLabels: false,
           color: getColor(`${parentType}-parent-${parentCode}`),
         },
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        createdAt: timestamp,
+        updatedAt: timestamp,
       })
     }
 
@@ -164,7 +181,7 @@ export function useTreemapChartLink({
       }
 
       seriesConfigs.push({
-        id: crypto.randomUUID(),
+        id: generateStableId(`child-${primary}-${item.code}`, childFilter),
         type: 'line-items-aggregated-yearly',
         enabled: true,
         label,
@@ -175,8 +192,8 @@ export function useTreemapChartLink({
           showDataLabels: false,
           color: getColor(`${primary}-${item.code}`),
         },
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        createdAt: timestamp,
+        updatedAt: timestamp,
       })
     }
 

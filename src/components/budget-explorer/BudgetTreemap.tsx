@@ -1,4 +1,4 @@
-import { type FC, useEffect, useMemo, useRef, useState } from 'react'
+import { type FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ResponsiveContainer, Treemap, Tooltip } from 'recharts'
 import { Trans } from '@lingui/react/macro'
 import { motion, useAnimationControls } from 'motion/react'
@@ -352,11 +352,32 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
   const unit = getNormalizationUnit(normalization ?? 'total')
   const currencyCode: 'RON' | 'EUR' = unit.includes('EUR') ? 'EUR' : 'RON'
 
+  // Memoize root object to prevent unnecessary re-renders
+  const rootValue = useMemo(() => ({ value: totalValue }), [totalValue])
+
   const handleNodeClick = (event: unknown) => {
     const target = event as { code?: string; payload?: { code?: string } }
     const code = target?.code ?? target?.payload?.code ?? null
     onNodeClick?.(code ?? null)
   }
+
+  // Memoize content renderer to prevent unnecessary re-renders in Recharts
+  const renderContent = useCallback((props: any) => (
+    <CustomizedContent
+      {...props}
+      fill={props?.payload?.fill ?? props.fill}
+      root={rootValue}
+      normalization={normalization}
+    />
+  ), [rootValue, normalization])
+
+  const memoizedTooltip = useMemo(() => (
+    <CustomTooltip
+      total={totalValue}
+      primary={primary}
+      normalization={normalization}
+    />
+  ), [totalValue, primary, normalization])
 
   // On mobile, show only last 2 breadcrumb items
   const displayPath = isMobile && path.length > 2 ? path.slice(-2) : path
@@ -468,14 +489,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
                 nameKey="name"
                 isAnimationActive={false}
                 onClick={handleNodeClick}
-                content={(props) => (
-                  <CustomizedContent
-                    {...props}
-                    fill={(props as any)?.payload?.fill ?? props.fill}
-                    root={{ value: totalValue }}
-                    normalization={normalization}
-                  />
-                )}
+                content={renderContent}
               >
                 {!isMobile && (
                   <Tooltip
@@ -490,11 +504,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
                       transition: 'transform 180ms ease-in-out',
                       willChange: 'transform',
                     }}
-                    content={<CustomTooltip
-                      total={totalValue}
-                      primary={primary}
-                      normalization={normalization}
-                    />}
+                    content={memoizedTooltip}
                   />
                 )}
               </Treemap>
