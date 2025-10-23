@@ -6,7 +6,7 @@ import { BaseListProps, PageData, OptionItem } from '@/components/filters/base-f
 import { ErrorDisplay } from '@/components/filters/base-filter/ErrorDisplay';
 import { ListContainer } from '@/components/filters/base-filter/ListContainer';
 import { ListOption } from '@/components/filters/base-filter/ListOption';
-import { cn } from '@/lib/utils';
+import { cn, getUserLocale } from '@/lib/utils';
 import { VirtualItem } from '@tanstack/react-virtual';
 import { Dataset } from '@/lib/api/datasets';
 import { t } from '@lingui/core/macro';
@@ -37,23 +37,25 @@ export function DatasetList({
         itemSize: 48,
         queryKey: ['datasets', searchFilter],
         queryFn: async ({ pageParam = 0 }): Promise<PageData<Dataset>> => {
+            const locale = getUserLocale();
             const query = `
-              query Datasets($search: String!, $limit: Int!, $offset: Int!) {
-                datasets(filter: { search: $search }, limit: $limit, offset: $offset) {
-                    nodes { 
+              query Datasets($search: String!, $limit: Int!, $offset: Int!, $lang: Language) {
+                datasets(filter: { search: $search }, limit: $limit, offset: $offset, lang: $lang) {
+                    nodes {
                         id
                         name
                         description
                         sourceName
                         sourceUrl
-                        unit
+                        xAxis { name type unit }
+                        yAxis { name type unit }
                     }
                   pageInfo { totalCount hasNextPage }
                 }
               }
             `;
             const limit = pageSize;
-            const variables = { search: searchFilter, limit, offset: pageParam };
+            const variables = { search: searchFilter, limit, offset: pageParam, lang: locale === 'en' ? 'en' : undefined };
             const response = await graphqlRequest<{
                 datasets: { nodes: Dataset[]; pageInfo: { totalCount: number; hasNextPage: boolean; hasPreviousPage: boolean } };
             }>(query, variables);

@@ -94,13 +94,27 @@ Seturi de date și agregate
 
 ```graphql
 query Datasets($filter:DatasetFilter){
-  datasets(filter:$filter, limit:50){ nodes{ id name unit } pageInfo{ totalCount } }
+  datasets(filter:$filter, limit:50){
+    nodes{
+      id
+      name
+      xAxis { name type unit }
+      yAxis { name type unit }
+      data { x y }
+    }
+    pageInfo{ totalCount }
+  }
 }
 ```
 
 ```graphql
 query StaticAnalytics($ids:[ID!]!){
-  staticChartAnalytics(datasetIds:$ids){ datasetId unit yearlyTrend{ year totalAmount } }
+  staticChartAnalytics(seriesIds:$ids){
+    seriesId
+    xAxis { name type unit }
+    yAxis { name type unit }
+    data { x y }
+  }
 }
 ```
 

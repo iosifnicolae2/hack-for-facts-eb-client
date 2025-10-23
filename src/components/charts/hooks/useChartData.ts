@@ -13,7 +13,7 @@ import {
     StaticSeriesConfiguration,
 } from "@/schemas/charts";
 import { normalizeAnalyticsFilter } from "@/lib/filterUtils";
-import { generateHash, convertDaysToMs } from "@/lib/utils";
+import { generateHash, convertDaysToMs, getUserLocale } from "@/lib/utils";
 import { calculateAllSeriesData } from "@/lib/chart-calculation-utils";
 import {
     validateAnalyticsSeries,
@@ -51,6 +51,8 @@ export type DataSeriesMap = Map<SeriesId, AnalyticsSeries>;
 export type UnitMap = Map<SeriesId, Unit>;
 
 export function useChartData({ chart, enabled = true }: UseChartDataProps) {
+    const locale = getUserLocale();
+
     const analyticsInputs = useMemo(() => {
         if (!chart) return [];
 
@@ -117,8 +119,8 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
         isLoading: isLoadingStaticData,
         error: staticDataError,
     } = useQuery({
-        queryKey: ["chart-data", staticSeriesIdsHash],
-        queryFn: () => getStaticChartAnalytics(staticSeriesIds),
+        queryKey: ["chart-data", staticSeriesIdsHash, locale],
+        queryFn: () => getStaticChartAnalytics(staticSeriesIds, locale),
         enabled: enabled && hasChart && hasStaticSeries,
         staleTime: convertDaysToMs(1),
         gcTime: convertDaysToMs(3),

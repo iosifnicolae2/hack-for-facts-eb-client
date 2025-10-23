@@ -1,21 +1,22 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { Dataset, getDatasets } from "@/lib/api/datasets";
+import { getUserLocale } from "@/lib/utils";
 
-const DatasetStorageKey = 'datasets';
+const getDatasetStorageKey = () => `datasets_${getUserLocale()}`;
 
 const loadLocalData = (): Record<string, Dataset> => {
     try {
-        const storage = localStorage.getItem(DatasetStorageKey);
+        const storage = localStorage.getItem(getDatasetStorageKey());
         return storage ? JSON.parse(storage) : {};
     } catch (error) {
-        console.error("Failed to parse data from localStorage for key", DatasetStorageKey, error);
+        console.error("Failed to parse data from localStorage for key", getDatasetStorageKey(), error);
         return {};
     }
 };
 
 const saveLocalData = (data: Record<string, Dataset>) => {
-    localStorage.setItem(DatasetStorageKey, JSON.stringify(data));
+    localStorage.setItem(getDatasetStorageKey(), JSON.stringify(data));
 };
 
 const updateLocalData = (data: Record<string, Dataset>): Record<string, Dataset> => {
@@ -32,9 +33,10 @@ const pendingDatasetRequests = new Set<string>();
 
 export const useDatasetStore = (initialIds: (string | number)[]) => {
     const queryClient = useQueryClient();
+    const locale = getUserLocale();
 
     const { data: dataMap } = useQuery<Record<string, Dataset>>({
-        queryKey: [DatasetStorageKey],
+        queryKey: [getDatasetStorageKey()],
         queryFn: () => loadLocalData(),
         staleTime: Infinity,
         initialData: loadLocalData(),
@@ -50,7 +52,7 @@ export const useDatasetStore = (initialIds: (string | number)[]) => {
 
         try {
             missingIds.forEach(id => pendingDatasetRequests.add(String(id)));
-            const newDatasets = await getDatasets(missingIds);
+            const newDatasets = await getDatasets(missingIds, locale);
 
             newDatasets.forEach((dataset) => {
                 dataMap[String(dataset.id)] = dataset;
@@ -58,7 +60,7 @@ export const useDatasetStore = (initialIds: (string | number)[]) => {
 
             updateLocalData(dataMap);
 
-            await queryClient.invalidateQueries({ queryKey: [DatasetStorageKey] });
+            await queryClient.invalidateQueries({ queryKey: [getDatasetStorageKey()] });
         } catch (error) {
             console.error("Failed to fetch datasets:", error);
         } finally {
@@ -74,7 +76,7 @@ export const useDatasetStore = (initialIds: (string | number)[]) => {
 
         const updatedData = updateLocalData(currentMap);
 
-        queryClient.setQueryData([DatasetStorageKey], updatedData);
+        queryClient.setQueryData([getDatasetStorageKey()], updatedData);
     };
 
     useEffect(() => {

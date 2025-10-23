@@ -1,6 +1,7 @@
 import { graphqlRequest } from './graphql';
 import { AnalyticsInput, AnalyticsSeries, AnalyticsFilterType } from '@/schemas/charts';
 import { prepareFilterForServer } from '@/lib/filterUtils';
+import { getUserLocale } from '@/lib/utils';
 
 // Using types from schemas/charts.ts
 
@@ -31,10 +32,11 @@ export async function getChartAnalytics(inputs: AnalyticsInput[]): Promise<Analy
   return response.executionAnalytics;
 }
 
-export async function getStaticChartAnalytics(seriesIds: string[]): Promise<AnalyticsSeries[]> {
+export async function getStaticChartAnalytics(seriesIds: string[], lang?: string): Promise<AnalyticsSeries[]> {
+  const locale = lang || getUserLocale();
   const query = `
-    query GetStaticChartAnalytics($seriesIds: [ID!]!) {
-      staticChartAnalytics(seriesIds: $seriesIds) {
+    query GetStaticChartAnalytics($seriesIds: [ID!]!, $lang: Language) {
+      staticChartAnalytics(seriesIds: $seriesIds, lang: $lang) {
         seriesId
         xAxis { name type unit }
         yAxis { name type unit }
@@ -45,7 +47,7 @@ export async function getStaticChartAnalytics(seriesIds: string[]): Promise<Anal
 
   const response = await graphqlRequest<{
     staticChartAnalytics: AnalyticsSeries[];
-  }>(query, { seriesIds });
+  }>(query, { seriesIds, lang: locale === 'en' ? 'en' : undefined });
 
   return response.staticChartAnalytics;
 }

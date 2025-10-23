@@ -30,343 +30,343 @@ msgstr "*Check filters panel for more details."
 msgid "© {currentYear} Transparenta.eu. All rights reserved."
 msgstr "© {currentYear} Transparenta.eu. All rights reserved."
 
-#: src/routes/cookie-policy.lazy.tsx:53
+#: src/routes/cookie-policy.lazy.tsx:52
 msgid "<0>__clerk_*</0>: Various Clerk cookies for account management and security."
 msgstr "<0>__clerk_*</0>: Various Clerk cookies for account management and security."
 
-#: src/routes/cookie-policy.lazy.tsx:51
+#: src/routes/cookie-policy.lazy.tsx:50
 msgid "<0>__clerk_db_jwt</0>: Session token for authentication (httpOnly, secure)."
 msgstr "<0>__clerk_db_jwt</0>: Session token for authentication (httpOnly, secure)."
 
-#: src/routes/cookie-policy.lazy.tsx:52
+#: src/routes/cookie-policy.lazy.tsx:51
 msgid "<0>__session</0>: Session identifier (httpOnly, secure)."
 msgstr "<0>__session</0>: Session identifier (httpOnly, secure)."
 
-#: src/routes/privacy.lazy.tsx:128
+#: src/routes/privacy.lazy.tsx:127
 msgid "<0>Access Controls:</0> Strict access controls limit who can access personal data to authorized personnel only."
 msgstr "<0>Access Controls:</0> Strict access controls limit who can access personal data to authorized personnel only."
 
-#: src/routes/terms.lazy.tsx:48
+#: src/routes/terms.lazy.tsx:46
 msgid "<0>Account Creation:</0> When you create an account, you may be asked to provide certain information such as your email address and name. You are responsible for maintaining the confidentiality of your account credentials."
 msgstr "<0>Account Creation:</0> When you create an account, you may be asked to provide certain information such as your email address and name. You are responsible for maintaining the confidentiality of your account credentials."
 
-#: src/routes/privacy.lazy.tsx:103
+#: src/routes/privacy.lazy.tsx:102
 msgid "<0>Account Data:</0> Retained for as long as your account is active or as needed to provide services. Deleted within 90 days of account deletion request."
 msgstr "<0>Account Data:</0> Retained for as long as your account is active or as needed to provide services. Deleted within 90 days of account deletion request."
 
-#: src/routes/terms.lazy.tsx:91
+#: src/routes/terms.lazy.tsx:89
 msgid "<0>Account Data:</0> When you create an account, we store your user ID, name, email address, and notification preferences for as long as your account is active."
 msgstr "<0>Account Data:</0> When you create an account, we store your user ID, name, email address, and notification preferences for as long as your account is active."
 
-#: src/routes/privacy.lazy.tsx:53
+#: src/routes/privacy.lazy.tsx:52
 msgid "<0>Account Information:</0> User ID (assigned by Clerk), email address, first name, last name. This is the legal basis for processing under GDPR Art. 6(1)(b) (performance of contract) and Art. 6(1)(a) (consent for newsletters)."
 msgstr "<0>Account Information:</0> User ID (assigned by Clerk), email address, first name, last name. This is the legal basis for processing under GDPR Art. 6(1)(b) (performance of contract) and Art. 6(1)(a) (consent for newsletters)."
 
-#: src/routes/privacy.lazy.tsx:62
+#: src/routes/privacy.lazy.tsx:61
 msgid "<0>Account Management:</0> To create and maintain your account, authenticate access, and provide account-related support (contract performance - GDPR Art. 6(1)(b))."
 msgstr "<0>Account Management:</0> To create and maintain your account, authenticate access, and provide account-related support (contract performance - GDPR Art. 6(1)(b))."
 
-#: src/routes/terms.lazy.tsx:50
+#: src/routes/terms.lazy.tsx:48
 msgid "<0>Account Termination:</0> You may delete your account at any time. We may suspend or terminate accounts that violate these Terms or applicable law."
 msgstr "<0>Account Termination:</0> You may delete your account at any time. We may suspend or terminate accounts that violate these Terms or applicable law."
 
-#: src/routes/terms.lazy.tsx:73
+#: src/routes/terms.lazy.tsx:71
 msgid "<0>Accurate Information:</0> If you create an account, you agree to provide accurate and current information and to keep your account information updated."
 msgstr "<0>Accurate Information:</0> If you create an account, you agree to provide accurate and current information and to keep your account information updated."
 
-#: src/routes/cookie-policy.lazy.tsx:37
+#: src/routes/cookie-policy.lazy.tsx:36
 msgid "<0>Analytics (opt-in)</0>: PostHog custom events only (no autocapture)."
 msgstr "<0>Analytics (opt-in)</0>: PostHog custom events only (no autocapture)."
 
-#: src/routes/privacy.lazy.tsx:65
+#: src/routes/privacy.lazy.tsx:64
 msgid "<0>Analytics and Improvement:</0> With your consent, to understand usage patterns and improve the Service (consent - GDPR Art. 6(1)(a))."
 msgstr "<0>Analytics and Improvement:</0> With your consent, to understand usage patterns and improve the Service (consent - GDPR Art. 6(1)(a))."
 
-#: src/routes/privacy.lazy.tsx:106
+#: src/routes/privacy.lazy.tsx:105
 msgid "<0>Analytics Data:</0> Retained for 12 months, then automatically deleted or anonymized."
 msgstr "<0>Analytics Data:</0> Retained for 12 months, then automatically deleted or anonymized."
 
-#: src/routes/cookie-policy.lazy.tsx:36
+#: src/routes/cookie-policy.lazy.tsx:35
 msgid "<0>Authentication (essential, if you have an account)</0>: Clerk session cookies for secure login and account management."
 msgstr "<0>Authentication (essential, if you have an account)</0>: Clerk session cookies for secure login and account management."
 
-#: src/routes/privacy.lazy.tsx:54
+#: src/routes/privacy.lazy.tsx:53
 msgid "<0>Authentication Data:</0> Login timestamps, login IP address, device details (e.g., user agent), authentication tokens (managed by Clerk), and session information for account security."
 msgstr "<0>Authentication Data:</0> Login timestamps, login IP address, device details (e.g., user agent), authentication tokens (managed by Clerk), and session information for account security."
 
-#: src/routes/privacy.lazy.tsx:129
+#: src/routes/privacy.lazy.tsx:128
 msgid "<0>Authentication:</0> Account access secured via Clerk with industry-standard security practices."
 msgstr "<0>Authentication:</0> Account access secured via Clerk with industry-standard security practices."
 
-#: src/routes/privacy.lazy.tsx:92
+#: src/routes/privacy.lazy.tsx:91
 msgid "<0>Clerk (Authentication):</0> Manages user authentication and account data. EU/US with standard contractual clauses."
 msgstr "<0>Clerk (Authentication):</0> Manages user authentication and account data. EU/US with standard contractual clauses."
 
-#: src/routes/cookie-policy.lazy.tsx:72
+#: src/routes/cookie-policy.lazy.tsx:71
 msgid "<0>Clerk authentication cookies</0>: Session cookies (expire when you close browser) and persistent cookies (up to 30 days for \"remember me\")."
 msgstr "<0>Clerk authentication cookies</0>: Session cookies (expire when you close browser) and persistent cookies (up to 30 days for \"remember me\")."
 
-#: src/routes/privacy.lazy.tsx:64
+#: src/routes/privacy.lazy.tsx:63
 msgid "<0>Communication:</0> To send essential account-related communications (e.g., security alerts, terms updates) as necessary for contract performance and legitimate interests."
 msgstr "<0>Communication:</0> To send essential account-related communications (e.g., security alerts, terms updates) as necessary for contract performance and legitimate interests."
 
-#: src/routes/privacy.lazy.tsx:73
+#: src/routes/privacy.lazy.tsx:72
 msgid "<0>Consent (Art. 6(1)(a)):</0> Newsletter subscriptions, analytics, and enhanced error reporting. You may withdraw consent at any time."
 msgstr "<0>Consent (Art. 6(1)(a)):</0> Newsletter subscriptions, analytics, and enhanced error reporting. You may withdraw consent at any time."
 
-#: src/routes/privacy.lazy.tsx:44
+#: src/routes/privacy.lazy.tsx:43
 msgid "<0>Consent Preferences:</0> Your cookie and analytics consent choices stored in browser localStorage."
 msgstr "<0>Consent Preferences:</0> Your cookie and analytics consent choices stored in browser localStorage."
 
-#: src/routes/terms.lazy.tsx:59
+#: src/routes/terms.lazy.tsx:57
 msgid "<0>Consent:</0> Newsletters and non-essential notifications are sent only with your explicit consent. You can withdraw consent at any time without affecting your account access."
 msgstr "<0>Consent:</0> Newsletters and non-essential notifications are sent only with your explicit consent. You can withdraw consent at any time without affecting your account access."
 
-#: src/routes/privacy.lazy.tsx:72
+#: src/routes/privacy.lazy.tsx:71
 msgid "<0>Contract Performance (Art. 6(1)(b)):</0> Providing account features and services you have requested."
 msgstr "<0>Contract Performance (Art. 6(1)(b)):</0> Providing account features and services you have requested."
 
-#: src/routes/terms.lazy.tsx:42
+#: src/routes/terms.lazy.tsx:40
 msgid "<0>Data Accuracy Is Not Guaranteed:</0> The financial data is sourced from third-party government portals. We do not create, verify, or audit this data and are not responsible for any errors, omissions, or inaccuracies it may contain. You acknowledge that the data may be incomplete, out of date, or incorrect."
 msgstr "<0>Data Accuracy Is Not Guaranteed:</0> The financial data is sourced from third-party government portals. We do not create, verify, or audit this data and are not responsible for any errors, omissions, or inaccuracies it may contain. You acknowledge that the data may be incomplete, out of date, or incorrect."
 
-#: src/routes/terms.lazy.tsx:93
+#: src/routes/terms.lazy.tsx:91
 msgid "<0>Deletion:</0> You may request deletion of your account and all associated data at any time by contacting us or using account deletion features when available."
 msgstr "<0>Deletion:</0> You may request deletion of your account and all associated data at any time by contacting us or using account deletion features when available."
 
-#: src/routes/terms.lazy.tsx:41
+#: src/routes/terms.lazy.tsx:39
 msgid "<0>Disclaimer of Warranties and Guarantees:</0> The Service and all data, content, and visualizations are provided on an \"as is\" and \"as available\" basis, without any warranties or guarantees of any kind, express or implied. We explicitly disclaim all warranties, including but not limited to warranties of merchantability, fitness for a particular purpose, accuracy, completeness, timeliness, reliability, or non-infringement. We do not guarantee that the Service will be uninterrupted, error-free, or secure."
 msgstr "<0>Disclaimer of Warranties and Guarantees:</0> The Service and all data, content, and visualizations are provided on an \"as is\" and \"as available\" basis, without any warranties or guarantees of any kind, express or implied. We explicitly disclaim all warranties, including but not limited to warranties of merchantability, fitness for a particular purpose, accuracy, completeness, timeliness, reliability, or non-infringement. We do not guarantee that the Service will be uninterrupted, error-free, or secure."
 
-#: src/routes/terms.lazy.tsx:71
+#: src/routes/terms.lazy.tsx:69
 msgid "<0>Duty to Verify:</0> You are solely responsible for independently verifying all information against original, official sources before using it for any purpose, including but not limited to journalistic, academic, financial, or legal matters. The content on this site is for general informational purposes only and is not professional, financial, or legal advice."
 msgstr "<0>Duty to Verify:</0> You are solely responsible for independently verifying all information against original, official sources before using it for any purpose, including but not limited to journalistic, academic, financial, or legal matters. The content on this site is for general informational purposes only and is not professional, financial, or legal advice."
 
-#: src/routes/terms.lazy.tsx:58
+#: src/routes/terms.lazy.tsx:56
 msgid "<0>Email Delivery:</0> We use your email address solely for delivering the notifications you have subscribed to and for essential account-related communications. We do not sell, rent, or share your email address with third parties for marketing purposes."
 msgstr "<0>Email Delivery:</0> We use your email address solely for delivering the notifications you have subscribed to and for essential account-related communications. We do not sell, rent, or share your email address with third parties for marketing purposes."
 
-#: src/routes/privacy.lazy.tsx:95
+#: src/routes/privacy.lazy.tsx:94
 msgid "<0>Email Service Provider:</0> Delivers newsletters and notifications you've subscribed to."
 msgstr "<0>Email Service Provider:</0> Delivers newsletters and notifications you've subscribed to."
 
-#: src/routes/privacy.lazy.tsx:127
+#: src/routes/privacy.lazy.tsx:126
 msgid "<0>Encryption:</0> Data in transit is encrypted using TLS/SSL. Data at rest is encrypted in our databases."
 msgstr "<0>Encryption:</0> Data in transit is encrypted using TLS/SSL. Data at rest is encrypted in our databases."
 
-#: src/routes/cookie-policy.lazy.tsx:38
+#: src/routes/cookie-policy.lazy.tsx:37
 msgid "<0>Enhanced error reporting (opt-in)</0>: Sentry optional context."
 msgstr "<0>Enhanced error reporting (opt-in)</0>: Sentry optional context."
 
-#: src/routes/privacy.lazy.tsx:66
+#: src/routes/privacy.lazy.tsx:65
 msgid "<0>Error Detection and Resolution:</0> With your consent, to identify and fix technical issues (consent - GDPR Art. 6(1)(a))."
 msgstr "<0>Error Detection and Resolution:</0> With your consent, to identify and fix technical issues (consent - GDPR Art. 6(1)(a))."
 
-#: src/routes/privacy.lazy.tsx:107
+#: src/routes/privacy.lazy.tsx:106
 msgid "<0>Error Logs:</0> Retained for 90 days for debugging, then automatically deleted."
 msgstr "<0>Error Logs:</0> Retained for 90 days for debugging, then automatically deleted."
 
-#: src/routes/privacy.lazy.tsx:47
+#: src/routes/privacy.lazy.tsx:46
 msgid "<0>Error Reports (opt-in):</0> If you consent, enhanced error context via Sentry to help us fix bugs. Without consent, only minimal error telemetry is collected."
 msgstr "<0>Error Reports (opt-in):</0> If you consent, enhanced error context via Sentry to help us fix bugs. Without consent, only minimal error telemetry is collected."
 
-#: src/routes/cookie-policy.lazy.tsx:71
+#: src/routes/cookie-policy.lazy.tsx:70
 msgid "<0>Essential localStorage</0>: Persists until manually cleared by you."
 msgstr "<0>Essential localStorage</0>: Persists until manually cleared by you."
 
-#: src/routes/privacy.lazy.tsx:43
+#: src/routes/privacy.lazy.tsx:42
 msgid "<0>Essential Technical Data:</0> Browser type, device type, IP address (anonymized), and general location (country level) for security and service provision (legitimate interests under GDPR Art. 6(1)(f))."
 msgstr "<0>Essential Technical Data:</0> Browser type, device type, IP address (anonymized), and general location (country level) for security and service provision (legitimate interests under GDPR Art. 6(1)(f))."
 
-#: src/routes/cookie-policy.lazy.tsx:35
+#: src/routes/cookie-policy.lazy.tsx:34
 msgid "<0>Essential</0>: Consent preferences and core UI state (always active)."
 msgstr "<0>Essential</0>: Consent preferences and core UI state (always active)."
 
-#: src/routes/terms.lazy.tsx:70
+#: src/routes/terms.lazy.tsx:68
 msgid "<0>Full Assumption of Risk:</0> Your use of the Service and reliance on any information or visualization provided is done entirely at your own risk. You are solely responsible for any decisions made or actions taken based on this information."
 msgstr "<0>Full Assumption of Risk:</0> Your use of the Service and reliance on any information or visualization provided is done entirely at your own risk. You are solely responsible for any decisions made or actions taken based on this information."
 
-#: src/routes/privacy.lazy.tsx:96
+#: src/routes/privacy.lazy.tsx:95
 msgid "<0>Hosting Providers:</0> Store and serve application data and databases."
 msgstr "<0>Hosting Providers:</0> Store and serve application data and databases."
 
-#: src/routes/terms.lazy.tsx:72
+#: src/routes/terms.lazy.tsx:70
 msgid "<0>Lawful Use:</0> You agree to use the Service only for lawful purposes and in a manner that does not harm the Service or its users. You must not remove or obscure any attribution notices on exported content."
 msgstr "<0>Lawful Use:</0> You agree to use the Service only for lawful purposes and in a manner that does not harm the Service or its users. You must not remove or obscure any attribution notices on exported content."
 
-#: src/routes/privacy.lazy.tsx:74
+#: src/routes/privacy.lazy.tsx:73
 msgid "<0>Legal Obligations (Art. 6(1)(c)):</0> Compliance with applicable laws and regulations."
 msgstr "<0>Legal Obligations (Art. 6(1)(c)):</0> Compliance with applicable laws and regulations."
 
-#: src/routes/privacy.lazy.tsx:71
+#: src/routes/privacy.lazy.tsx:70
 msgid "<0>Legitimate Interests (Art. 6(1)(f)):</0> Operating and securing the Service, preventing fraud and abuse."
 msgstr "<0>Legitimate Interests (Art. 6(1)(f)):</0> Operating and securing the Service, preventing fraud and abuse."
 
-#: src/routes/terms.lazy.tsx:65
+#: src/routes/terms.lazy.tsx:63
 msgid "<0>Limited Retention:</0> Security logs are retained only for a limited period to detect and prevent abuse, troubleshoot issues, and ensure reliability."
 msgstr "<0>Limited Retention:</0> Security logs are retained only for a limited period to detect and prevent abuse, troubleshoot issues, and ensure reliability."
 
-#: src/routes/privacy.lazy.tsx:45
+#: src/routes/privacy.lazy.tsx:44
 msgid "<0>Local Storage Data:</0> Charts, annotations, filters, and preferences stored locally in your browser. This data never leaves your device unless you explicitly export it."
 msgstr "<0>Local Storage Data:</0> Charts, annotations, filters, and preferences stored locally in your browser. This data never leaves your device unless you explicitly export it."
 
-#: src/routes/privacy.lazy.tsx:102
+#: src/routes/privacy.lazy.tsx:101
 msgid "<0>LocalStorage:</0> Stored in your browser until you clear it manually."
 msgstr "<0>LocalStorage:</0> Stored in your browser until you clear it manually."
 
-#: src/routes/cookie-policy.lazy.tsx:45
+#: src/routes/cookie-policy.lazy.tsx:44
 msgid "<0>localStorage</0>: <1>cookie-consent</1> (stores your consent preferences), <2>saved-charts</2> (your saved visualizations), <3>chart-categories</3> (chart organization), <4>theme-preference</4> (dark/light mode)."
 msgstr "<0>localStorage</0>: <1>cookie-consent</1> (stores your consent preferences), <2>saved-charts</2> (your saved visualizations), <3>chart-categories</3> (chart organization), <4>theme-preference</4> (dark/light mode)."
 
-#: src/routes/privacy.lazy.tsx:130
+#: src/routes/privacy.lazy.tsx:129
 msgid "<0>Monitoring:</0> Security monitoring and logging to detect and respond to potential breaches."
 msgstr "<0>Monitoring:</0> Security monitoring and logging to detect and respond to potential breaches."
 
-#: src/routes/privacy.lazy.tsx:105
+#: src/routes/privacy.lazy.tsx:104
 msgid "<0>Newsletter Delivery Records:</0> Retained for 2 years for delivery troubleshooting and compliance."
 msgstr "<0>Newsletter Delivery Records:</0> Retained for 2 years for delivery troubleshooting and compliance."
 
-#: src/routes/privacy.lazy.tsx:63
+#: src/routes/privacy.lazy.tsx:62
 msgid "<0>Newsletter Delivery:</0> To send you budget execution updates and notifications that you have explicitly subscribed to (consent - GDPR Art. 6(1)(a)). You can withdraw consent and unsubscribe at any time."
 msgstr "<0>Newsletter Delivery:</0> To send you budget execution updates and notifications that you have explicitly subscribed to (consent - GDPR Art. 6(1)(a)). You can withdraw consent and unsubscribe at any time."
 
-#: src/routes/terms.lazy.tsx:40
+#: src/routes/terms.lazy.tsx:38
 msgid "<0>No Government Affiliation:</0> Transparenta.eu is an independent project and is not affiliated with, authorized, maintained, sponsored, or endorsed by any Romanian government entity."
 msgstr "<0>No Government Affiliation:</0> Transparenta.eu is an independent project and is not affiliated with, authorized, maintained, sponsored, or endorsed by any Romanian government entity."
 
-#: src/routes/privacy.lazy.tsx:82
+#: src/routes/privacy.lazy.tsx:81
 msgid "<0>No Marketing:</0> We do not send promotional or marketing emails. All communications are informational updates you have requested."
 msgstr "<0>No Marketing:</0> We do not send promotional or marketing emails. All communications are informational updates you have requested."
 
-#: src/routes/privacy.lazy.tsx:83
+#: src/routes/privacy.lazy.tsx:82
 msgid "<0>No Sharing:</0> We never sell, rent, or share your email address with third parties for their marketing purposes."
 msgstr "<0>No Sharing:</0> We never sell, rent, or share your email address with third parties for their marketing purposes."
 
-#: src/routes/privacy.lazy.tsx:56
+#: src/routes/privacy.lazy.tsx:55
 msgid "<0>Notification History:</0> Records of notifications sent to you, including delivery status and unsubscribe actions, for compliance and delivery optimization."
 msgstr "<0>Notification History:</0> Records of notifications sent to you, including delivery status and unsubscribe actions, for compliance and delivery optimization."
 
-#: src/routes/privacy.lazy.tsx:55
+#: src/routes/privacy.lazy.tsx:54
 msgid "<0>Notification Preferences:</0> Your subscription choices for newsletters (monthly, quarterly, annual) and entity notifications, including which entities you follow and notification types you've enabled."
 msgstr "<0>Notification Preferences:</0> Your subscription choices for newsletters (monthly, quarterly, annual) and entity notifications, including which entities you follow and notification types you've enabled."
 
-#: src/routes/privacy.lazy.tsx:104
+#: src/routes/privacy.lazy.tsx:103
 msgid "<0>Notification Subscriptions:</0> Retained while active. Soft-deleted (marked inactive) when you unsubscribe, with full deletion after 1 year for compliance and anti-spam purposes."
 msgstr "<0>Notification Subscriptions:</0> Retained while active. Soft-deleted (marked inactive) when you unsubscribe, with full deletion after 1 year for compliance and anti-spam purposes."
 
-#: src/routes/terms.lazy.tsx:92
+#: src/routes/terms.lazy.tsx:90
 msgid "<0>Notification Subscriptions:</0> We store your notification subscription preferences, including the entities you follow and the types of updates you wish to receive."
 msgstr "<0>Notification Subscriptions:</0> We store your notification subscription preferences, including the entities you follow and the types of updates you wish to receive."
 
-#: src/routes/privacy.lazy.tsx:79
+#: src/routes/privacy.lazy.tsx:78
 msgid "<0>Opt-In Consent:</0> Newsletter subscriptions are strictly opt-in. We only send you newsletters if you explicitly subscribe via the notification settings or entity pages."
 msgstr "<0>Opt-In Consent:</0> Newsletter subscriptions are strictly opt-in. We only send you newsletters if you explicitly subscribe via the notification settings or entity pages."
 
-#: src/routes/terms.lazy.tsx:47
+#: src/routes/terms.lazy.tsx:45
 msgid "<0>Optional Accounts:</0> User accounts are optional. You can use core features without creating an account. Creating an account enables additional features such as newsletters, notifications, and saved preferences."
 msgstr "<0>Optional Accounts:</0> User accounts are optional. You can use core features without creating an account. Creating an account enables additional features such as newsletters, notifications, and saved preferences."
 
-#: src/routes/privacy.lazy.tsx:93
+#: src/routes/privacy.lazy.tsx:92
 msgid "<0>PostHog (Analytics):</0> Processes usage analytics if you consent. EU-hosted option available."
 msgstr "<0>PostHog (Analytics):</0> Processes usage analytics if you consent. EU-hosted option available."
 
-#: src/routes/cookie-policy.lazy.tsx:73
+#: src/routes/cookie-policy.lazy.tsx:72
 msgid "<0>PostHog analytics</0>: Up to 1 year."
 msgstr "<0>PostHog analytics</0>: Up to 1 year."
 
-#: src/routes/cookie-policy.lazy.tsx:60
+#: src/routes/cookie-policy.lazy.tsx:59
 msgid "<0>PostHog</0>: <1>ph_*</1> identifiers for usage analytics. Custom events only, no autocapture or session recordings."
 msgstr "<0>PostHog</0>: <1>ph_*</1> identifiers for usage analytics. Custom events only, no autocapture or session recordings."
 
-#: src/routes/terms.lazy.tsx:86
+#: src/routes/terms.lazy.tsx:84
 msgid "<0>Recommended:</0> Chart: „Titlul Graficului\" | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
 msgstr "<0>Recommended:</0> Chart: „Titlul Graficului\" | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
 
-#: src/routes/privacy.lazy.tsx:114
+#: src/routes/privacy.lazy.tsx:113
 msgid "<0>Right of Access (Art. 15):</0> Request a copy of the personal data we hold about you."
 msgstr "<0>Right of Access (Art. 15):</0> Request a copy of the personal data we hold about you."
 
-#: src/routes/privacy.lazy.tsx:118
+#: src/routes/privacy.lazy.tsx:117
 msgid "<0>Right to Data Portability (Art. 20):</0> Receive your data in a structured, machine-readable format."
 msgstr "<0>Right to Data Portability (Art. 20):</0> Receive your data in a structured, machine-readable format."
 
-#: src/routes/privacy.lazy.tsx:116
+#: src/routes/privacy.lazy.tsx:115
 msgid "<0>Right to Erasure (Art. 17):</0> Request deletion of your personal data (\"right to be forgotten\")."
 msgstr "<0>Right to Erasure (Art. 17):</0> Request deletion of your personal data (\"right to be forgotten\")."
 
-#: src/routes/privacy.lazy.tsx:121
+#: src/routes/privacy.lazy.tsx:120
 msgid "<0>Right to Lodge a Complaint:</0> File a complaint with the Romanian supervisory authority (ANSPDCP) at anspdcp.ro."
 msgstr "<0>Right to Lodge a Complaint:</0> File a complaint with the Romanian supervisory authority (ANSPDCP) at anspdcp.ro."
 
-#: src/routes/privacy.lazy.tsx:119
+#: src/routes/privacy.lazy.tsx:118
 msgid "<0>Right to Object (Art. 21):</0> Object to processing based on legitimate interests."
 msgstr "<0>Right to Object (Art. 21):</0> Object to processing based on legitimate interests."
 
-#: src/routes/privacy.lazy.tsx:115
+#: src/routes/privacy.lazy.tsx:114
 msgid "<0>Right to Rectification (Art. 16):</0> Request correction of inaccurate personal data."
 msgstr "<0>Right to Rectification (Art. 16):</0> Request correction of inaccurate personal data."
 
-#: src/routes/privacy.lazy.tsx:117
+#: src/routes/privacy.lazy.tsx:116
 msgid "<0>Right to Restriction (Art. 18):</0> Request limitation of processing in certain circumstances."
 msgstr "<0>Right to Restriction (Art. 18):</0> Request limitation of processing in certain circumstances."
 
-#: src/routes/privacy.lazy.tsx:120
+#: src/routes/privacy.lazy.tsx:119
 msgid "<0>Right to Withdraw Consent (Art. 7(3)):</0> Withdraw consent for newsletters, analytics, or error reporting at any time without affecting the lawfulness of processing before withdrawal."
 msgstr "<0>Right to Withdraw Consent (Art. 7(3)):</0> Withdraw consent for newsletters, analytics, or error reporting at any time without affecting the lawfulness of processing before withdrawal."
 
-#: src/routes/terms.lazy.tsx:64
+#: src/routes/terms.lazy.tsx:62
 msgid "<0>Security Logs:</0> For safeguarding accounts and the Service, we maintain basic security logs such as IP address, user agent, timestamps, and actions (e.g., sign-in, unsubscribe) in accordance with our Privacy Policy."
 msgstr "<0>Security Logs:</0> For safeguarding accounts and the Service, we maintain basic security logs such as IP address, user agent, timestamps, and actions (e.g., sign-in, unsubscribe) in accordance with our Privacy Policy."
 
-#: src/routes/privacy.lazy.tsx:94
+#: src/routes/privacy.lazy.tsx:93
 msgid "<0>Sentry (Error Reporting):</0> Processes error logs if you consent. EU-first with data residency controls."
 msgstr "<0>Sentry (Error Reporting):</0> Processes error logs if you consent. EU-first with data residency controls."
 
-#: src/routes/cookie-policy.lazy.tsx:74
+#: src/routes/cookie-policy.lazy.tsx:73
 msgid "<0>Sentry</0>: Session duration only."
 msgstr "<0>Sentry</0>: Session duration only."
 
-#: src/routes/cookie-policy.lazy.tsx:66
+#: src/routes/cookie-policy.lazy.tsx:65
 msgid "<0>Sentry</0>: Session keys for error context and replay if enabled."
 msgstr "<0>Sentry</0>: Session keys for error context and replay if enabled."
 
-#: src/routes/privacy.lazy.tsx:48
+#: src/routes/privacy.lazy.tsx:47
 msgid "<0>Server Access Logs:</0> IP address, user agent, requested URL, referrer, and timestamp to detect abuse, ensure reliability, and secure the Service (legitimate interests under GDPR Art. 6(1)(f))."
 msgstr "<0>Server Access Logs:</0> IP address, user agent, requested URL, referrer, and timestamp to detect abuse, ensure reliability, and secure the Service (legitimate interests under GDPR Art. 6(1)(f))."
 
-#: src/routes/privacy.lazy.tsx:108
+#: src/routes/privacy.lazy.tsx:107
 msgid "<0>Server Access Logs:</0> Retained for up to 90 days for security and reliability, then automatically deleted."
 msgstr "<0>Server Access Logs:</0> Retained for up to 90 days for security and reliability, then automatically deleted."
 
-#: src/routes/privacy.lazy.tsx:61
+#: src/routes/privacy.lazy.tsx:60
 msgid "<0>Service Provision:</0> To operate the Service, provide visualizations, and ensure platform security (legitimate interests - GDPR Art. 6(1)(f))."
 msgstr "<0>Service Provision:</0> To operate the Service, provide visualizations, and ensure platform security (legitimate interests - GDPR Art. 6(1)(f))."
 
-#: src/routes/terms.lazy.tsx:55
+#: src/routes/terms.lazy.tsx:53
 msgid "<0>Subscription:</0> If you have an account, you may subscribe to receive newsletters and notifications about budget execution updates for entities you follow. Subscriptions are opt-in and you must explicitly choose to receive these communications."
 msgstr "<0>Subscription:</0> If you have an account, you may subscribe to receive newsletters and notifications about budget execution updates for entities you follow. Subscriptions are opt-in and you must explicitly choose to receive these communications."
 
-#: src/routes/terms.lazy.tsx:49
+#: src/routes/terms.lazy.tsx:47
 msgid "<0>Third-Party Authentication:</0> We use Clerk for authentication services. By creating an account, you also agree to Clerk's terms of service."
 msgstr "<0>Third-Party Authentication:</0> We use Clerk for authentication services. By creating an account, you also agree to Clerk's terms of service."
 
-#: src/routes/terms.lazy.tsx:56
+#: src/routes/terms.lazy.tsx:54
 msgid "<0>Types of Communications:</0> We may send monthly, quarterly, or annual budget reports, as well as alerts about specific data changes, based on your notification preferences."
 msgstr "<0>Types of Communications:</0> We may send monthly, quarterly, or annual budget reports, as well as alerts about specific data changes, based on your notification preferences."
 
-#: src/routes/privacy.lazy.tsx:81
+#: src/routes/privacy.lazy.tsx:80
 msgid "<0>Unsubscribe:</0> You can unsubscribe from any newsletter at any time by clicking the unsubscribe link in any email, managing your preferences in your account settings, or contacting us at contact@transparenta.eu"
 msgstr "<0>Unsubscribe:</0> You can unsubscribe from any newsletter at any time by clicking the unsubscribe link in any email, managing your preferences in your account settings, or contacting us at contact@transparenta.eu"
 
-#: src/routes/terms.lazy.tsx:57
+#: src/routes/terms.lazy.tsx:55
 msgid "<0>Unsubscribe:</0> You may unsubscribe from newsletters and notifications at any time via the unsubscribe link in any email, through your account settings, or by contacting us."
 msgstr "<0>Unsubscribe:</0> You may unsubscribe from newsletters and notifications at any time via the unsubscribe link in any email, through your account settings, or by contacting us."
 
-#: src/routes/privacy.lazy.tsx:46
+#: src/routes/privacy.lazy.tsx:45
 msgid "<0>Usage Analytics (opt-in):</0> If you consent, we collect custom usage events via PostHog to understand how features are used. No autocapture or session recordings."
 msgstr "<0>Usage Analytics (opt-in):</0> If you consent, we collect custom usage events via PostHog to understand how features are used. No autocapture or session recordings."
 
-#: src/routes/privacy.lazy.tsx:80
+#: src/routes/privacy.lazy.tsx:79
 msgid "<0>What We Send:</0> Budget execution updates (monthly, quarterly, or annual reports) for entities you follow, and alerts about significant budget changes if you've enabled them."
 msgstr "<0>What We Send:</0> Budget execution updates (monthly, quarterly, or annual reports) for entities you follow, and alerts about significant budget changes if you've enabled them."
 
@@ -379,11 +379,11 @@ msgstr "A new version of the app is available. Please reload the page to get the
 msgid "A platform for exploring public financial data for citizens, journalists, public figures, and other interested parties."
 msgstr "Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice, și alte persoane interesate."
 
-#: src/components/privacy/CookieConsentBanner.tsx:101
+#: src/components/privacy/CookieConsentBanner.tsx:112
 msgid "Accept All"
 msgstr "Accept All"
 
-#: src/routes/terms.lazy.tsx:33
+#: src/routes/terms.lazy.tsx:31
 msgid "Acceptance"
 msgstr "Acceptance"
 
@@ -451,7 +451,7 @@ msgstr "Add Number"
 msgid "Add Series"
 msgstr "Add Series"
 
-#: src/routes/privacy.lazy.tsx:138
+#: src/routes/privacy.lazy.tsx:137
 msgid "Additional technical and organizational measures"
 msgstr "Additional technical and organizational measures"
 
@@ -460,7 +460,7 @@ msgstr "Additional technical and organizational measures"
 msgid "Address"
 msgstr "Address"
 
-#: src/routes/privacy.lazy.tsx:137
+#: src/routes/privacy.lazy.tsx:136
 msgid "Adequacy decisions where applicable"
 msgstr "Adequacy decisions where applicable"
 
@@ -468,7 +468,7 @@ msgstr "Adequacy decisions where applicable"
 msgid "Adjustments marked as \"se scad\""
 msgstr "Adjustments marked as \"se scad\""
 
-#: src/components/privacy/CookieConsentBanner.tsx:95
+#: src/components/privacy/CookieConsentBanner.tsx:106
 msgid "Advanced"
 msgstr "Advanced"
 
@@ -496,8 +496,8 @@ msgstr "Aggregated Value ({currencyCode})"
 msgid "Aggregated Value ({currencyCode}/capita)"
 msgstr "Aggregated Value ({currencyCode}/capita)"
 
-#: src/routes/map.lazy.tsx:225
-#: src/routes/map.lazy.tsx:251
+#: src/routes/map.lazy.tsx:222
+#: src/routes/map.lazy.tsx:248
 msgid "Aggregated Value Legend"
 msgstr "Aggregated Value Legend"
 
@@ -521,7 +521,7 @@ msgstr "Alert enabled"
 msgid "Alert ID"
 msgstr "Alert ID"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:179
+#: src/routes/alerts/$alertId/index.lazy.tsx:177
 msgid "Alert not found"
 msgstr "Alert not found"
 
@@ -534,7 +534,7 @@ msgstr "Alert preview"
 msgid "Alert series"
 msgstr "Alert series"
 
-#: src/features/notifications/components/EntityNotificationBell.tsx:67
+#: src/features/notifications/components/EntityNotificationBell.tsx:68
 msgid "Alerts when important changes occur"
 msgstr "Alerts when important changes occur"
 
@@ -542,7 +542,7 @@ msgstr "Alerts when important changes occur"
 #: src/components/entities/LineItemsBadgeFilters.tsx:166
 #: src/components/entities/LineItemsGroupedSection.tsx:168
 #: src/components/entities/LineItemsGroupedSection.tsx:170
-#: src/routes/charts/index.lazy.tsx:248
+#: src/routes/charts/index.lazy.tsx:245
 msgid "All"
 msgstr "All"
 
@@ -555,7 +555,7 @@ msgstr "All budget expenditures"
 msgid "All changes saved"
 msgstr "All changes saved"
 
-#: src/routes/privacy.lazy.tsx:98
+#: src/routes/privacy.lazy.tsx:97
 msgid "All processors are bound by data protection agreements and GDPR-compliant safeguards, including standard contractual clauses for international transfers."
 msgstr "All processors are bound by data protection agreements and GDPR-compliant safeguards, including standard contractual clauses for international transfers."
 
@@ -608,23 +608,23 @@ msgstr "Analytics"
 msgid "Analytics (PostHog)"
 msgstr "Analytics (PostHog)"
 
-#: src/routes/cookie-policy.lazy.tsx:26
+#: src/routes/cookie-policy.lazy.tsx:25
 msgid "Analytics and enhanced error reporting are opt-in."
 msgstr "Analytics and enhanced error reporting are opt-in."
 
-#: src/routes/privacy.lazy.tsx:26
+#: src/routes/privacy.lazy.tsx:25
 msgid "Analytics and enhanced error reporting only with your consent."
 msgstr "Analytics and enhanced error reporting only with your consent."
 
-#: src/routes/cookie-policy.lazy.tsx:57
+#: src/routes/cookie-policy.lazy.tsx:56
 msgid "Analytics Cookies (opt-in only)"
 msgstr "Analytics Cookies (opt-in only)"
 
 #: src/routes/entity-analytics.lazy.tsx:162
-msgid "Analyze aggregated values per entity and explore top entities by amount and per capita."
-msgstr "Analyze aggregated values per entity and explore top entities by amount and per capita."
+#~ msgid "Analyze aggregated values per entity and explore top entities by amount and per capita."
+#~ msgstr "Analyze aggregated values per entity and explore top entities by amount and per capita."
 
-#: src/routes/entity-analytics.lazy.tsx:166
+#: src/routes/entity-analytics.lazy.tsx:163
 msgid "Analyze aggregated values per entity and explore top entities."
 msgstr "Analyze aggregated values per entity and explore top entities."
 
@@ -658,7 +658,7 @@ msgid "April"
 msgstr "April"
 
 #: src/features/notifications/components/alerts/AlertCard.tsx:115
-#: src/routes/alerts/$alertId/index.lazy.tsx:308
+#: src/routes/alerts/$alertId/index.lazy.tsx:305
 msgid "Are you sure you want to delete this alert? This action cannot be undone."
 msgstr "Are you sure you want to delete this alert? This action cannot be undone."
 
@@ -682,7 +682,7 @@ msgstr "Are you sure?"
 msgid "Area Chart"
 msgstr "Area Chart"
 
-#: src/routes/privacy.lazy.tsx:112
+#: src/routes/privacy.lazy.tsx:111
 msgid "As a data subject under GDPR, you have the following rights:"
 msgstr "As a data subject under GDPR, you have the following rights:"
 
@@ -690,9 +690,9 @@ msgstr "As a data subject under GDPR, you have the following rights:"
 msgid "Ask AI Assistant"
 msgstr "Ask AI Assistant"
 
-#: src/routes/cookie-policy.lazy.tsx:22
-#: src/routes/privacy.lazy.tsx:22
-#: src/routes/terms.lazy.tsx:23
+#: src/routes/cookie-policy.lazy.tsx:21
+#: src/routes/privacy.lazy.tsx:21
+#: src/routes/terms.lazy.tsx:21
 msgid "At a Glance"
 msgstr "At a Glance"
 
@@ -700,23 +700,23 @@ msgstr "At a Glance"
 msgid "August"
 msgstr "August"
 
-#: src/routes/cookie-policy.lazy.tsx:48
+#: src/routes/cookie-policy.lazy.tsx:47
 msgid "Authentication Cookies (essential if you have an account)"
 msgstr "Authentication Cookies (essential if you have an account)"
 
-#: src/routes/cookie-policy.lazy.tsx:25
+#: src/routes/cookie-policy.lazy.tsx:24
 msgid "Authentication cookies are used if you create an account."
 msgstr "Authentication cookies are used if you create an account."
 
-#: src/routes/privacy.lazy.tsx:141
+#: src/routes/privacy.lazy.tsx:140
 msgid "Automated decision-making"
 msgstr "Automated decision-making"
 
-#: src/routes/privacy.lazy.tsx:154
+#: src/routes/privacy.lazy.tsx:153
 msgid "Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal (ANSPDCP), B-dul G-ral. Gheorghe Magheru 28-30, Sector 1, București, Romania. Website: anspdcp.ro"
 msgstr "Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal (ANSPDCP), B-dul G-ral. Gheorghe Magheru 28-30, Sector 1, București, Romania. Website: anspdcp.ro"
 
-#: src/routes/terms.lazy.tsx:99
+#: src/routes/terms.lazy.tsx:97
 msgid "Availability and changes"
 msgstr "Availability and changes"
 
@@ -724,7 +724,11 @@ msgstr "Availability and changes"
 msgid "Avg per-capita"
 msgstr "Avg per-capita"
 
-#: src/routes/alerts/new.lazy.tsx:173
+#: src/components/charts/components/filters-details/StaticSeriesFilter.tsx:45
+#~ msgid "Axes"
+#~ msgstr "Axes"
+
+#: src/routes/alerts/new.lazy.tsx:170
 msgid "Back"
 msgstr "Back"
 
@@ -762,24 +766,24 @@ msgstr "Bar Chart"
 msgid "Bar Chart (Aggregated)"
 msgstr "Bar Chart (Aggregated)"
 
-#: src/routes/privacy.lazy.tsx:28
+#: src/routes/privacy.lazy.tsx:27
 msgid "Basic security logs are kept for a short period to protect accounts."
 msgstr "Basic security logs are kept for a short period to protect accounts."
 
 #: src/components/maps/HeatmapDataTable.tsx:443
-#: src/routes/entity-analytics.lazy.tsx:204
+#: src/routes/entity-analytics.lazy.tsx:201
 msgid "Both"
 msgstr "Both"
 
 #: src/components/entities/views/Overview.tsx:239
 #: src/components/entities/views/TrendsView.tsx:207
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:88
-#: src/routes/budget-explorer.lazy.tsx:291
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:89
+#: src/routes/budget-explorer.lazy.tsx:351
 msgid "Budget Distribution"
 msgstr "Budget Distribution"
 
 #: src/components/sidebar/nav-main.tsx:36
-#: src/routes/index.lazy.tsx:76
+#: src/routes/index.lazy.tsx:62
 msgid "Budget Explorer"
 msgstr "Budget Explorer"
 
@@ -796,7 +800,7 @@ msgstr "Budget sector"
 msgid "Budget Sector"
 msgstr "Budget Sector"
 
-#: src/routes/charts/index.lazy.tsx:177
+#: src/routes/charts/index.lazy.tsx:174
 msgid "Build and manage custom visualizations of public spending data."
 msgstr "Build and manage custom visualizations of public spending data."
 
@@ -825,7 +829,7 @@ msgstr "By Expense Type"
 msgid "By Funding Source"
 msgstr "By Funding Source"
 
-#: src/routes/terms.lazy.tsx:34
+#: src/routes/terms.lazy.tsx:32
 msgid "By using the Service, you agree to these Terms. If you disagree, please do not use the Service."
 msgstr "By using the Service, you agree to these Terms. If you disagree, please do not use the Service."
 
@@ -842,12 +846,12 @@ msgstr "Calculation"
 #: src/components/charts/components/views/SeriesConfigView.tsx:365
 #: src/features/notifications/components/alerts/AlertCard.tsx:122
 #: src/features/notifications/components/NotificationCard.tsx:122
-#: src/routes/alerts/$alertId/index.lazy.tsx:315
+#: src/routes/alerts/$alertId/index.lazy.tsx:312
 #: src/routes/unsubscribe.$token.tsx:113
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/routes/cookie-policy.lazy.tsx:33
+#: src/routes/cookie-policy.lazy.tsx:32
 msgid "Categories"
 msgstr "Categories"
 
@@ -856,7 +860,7 @@ msgstr "Categories"
 msgid "Category name"
 msgstr "Category name"
 
-#: src/routes/privacy.lazy.tsx:147
+#: src/routes/privacy.lazy.tsx:146
 msgid "Changes to this policy"
 msgstr "Changes to this policy"
 
@@ -865,8 +869,8 @@ msgid "Chart"
 msgstr "Chart"
 
 #: src/routes/charts/$chartId/index.lazy.tsx:66
-msgid "Chart – Transparenta.eu"
-msgstr "Chart – Transparenta.eu"
+#~ msgid "Chart – Transparenta.eu"
+#~ msgstr "Chart – Transparenta.eu"
 
 #: src/components/charts/components/views/AnnotationConfigView.tsx:211
 #: src/components/charts/components/views/ChartConfigView.tsx:37
@@ -878,7 +882,7 @@ msgstr "Chart Configuration"
 msgid "Chart Data Error"
 msgstr "Chart Data Error"
 
-#: src/routes/map.lazy.tsx:294
+#: src/routes/map.lazy.tsx:291
 msgid "Chart data is loading or not available."
 msgstr "Chart data is loading or not available."
 
@@ -903,8 +907,8 @@ msgstr "Chart Type"
 #: src/components/sidebar/nav-main.tsx:31
 #: src/components/ui/shortcuts.tsx:38
 #: src/hooks/useEntityViews.tsx:36
-#: src/routes/charts/index.lazy.tsx:174
-#: src/routes/index.lazy.tsx:90
+#: src/routes/charts/index.lazy.tsx:171
+#: src/routes/index.lazy.tsx:76
 msgid "Charts"
 msgstr "Charts"
 
@@ -912,7 +916,7 @@ msgstr "Charts"
 msgid "Check your series filters and try again."
 msgstr "Check your series filters and try again."
 
-#: src/routes/privacy.lazy.tsx:144
+#: src/routes/privacy.lazy.tsx:143
 msgid "Children's privacy"
 msgstr "Children's privacy"
 
@@ -937,7 +941,7 @@ msgid "Clear all"
 msgstr "Clear all"
 
 #: src/components/filters/EntityAnalyticsFilter.tsx:378
-#: src/routes/entity-analytics.lazy.tsx:188
+#: src/routes/entity-analytics.lazy.tsx:185
 msgid "Clear filters"
 msgstr "Clear filters"
 
@@ -985,19 +989,19 @@ msgid "Column"
 msgstr "Column"
 
 #: src/components/maps/HeatmapDataTable.tsx:445
-#: src/routes/entity-analytics.lazy.tsx:206
+#: src/routes/entity-analytics.lazy.tsx:203
 msgid "Columns"
 msgstr "Columns"
 
 #: src/components/maps/HeatmapDataTable.tsx:437
-#: src/routes/entity-analytics.lazy.tsx:198
+#: src/routes/entity-analytics.lazy.tsx:195
 msgid "Comfortable"
 msgstr "Comfortable"
 
 #: src/components/maps/HeatmapDataTable.tsx:438
 #: src/components/maps/HeatmapDataTable.tsx:442
-#: src/routes/entity-analytics.lazy.tsx:199
-#: src/routes/entity-analytics.lazy.tsx:203
+#: src/routes/entity-analytics.lazy.tsx:196
+#: src/routes/entity-analytics.lazy.tsx:200
 msgid "Compact"
 msgstr "Compact"
 
@@ -1011,18 +1015,18 @@ msgstr "Condition {0}"
 msgid "Configure"
 msgstr "Configure"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:72
-#: src/routes/charts/$chartId/index.lazy.tsx:74
+#: src/routes/charts/$chartId/index.lazy.tsx:68
+#: src/routes/charts/$chartId/index.lazy.tsx:70
 msgid "Configure Chart"
 msgstr "Configure Chart"
 
 #: src/routes/charts/$chartId/index.lazy.tsx:66
-msgid "Configure chart – Transparenta.eu"
-msgstr "Configure chart – Transparenta.eu"
+#~ msgid "Configure chart – Transparenta.eu"
+#~ msgstr "Configure chart – Transparenta.eu"
 
 #: src/routes/charts/$chartId/index.lazy.tsx:67
-msgid "Configure chart options, series, and annotations."
-msgstr "Configure chart options, series, and annotations."
+#~ msgid "Configure chart options, series, and annotations."
+#~ msgstr "Configure chart options, series, and annotations."
 
 #: src/components/charts/components/views/SeriesConfigView.tsx:141
 msgid "Configure Series"
@@ -1063,11 +1067,11 @@ msgstr "Consolidated Revenue Calculation"
 msgid "Constant Value"
 msgstr "Constant Value"
 
-#: src/routes/terms.lazy.tsx:105
+#: src/routes/terms.lazy.tsx:103
 msgid "Contact"
 msgstr "Contact"
 
-#: src/routes/privacy.lazy.tsx:150
+#: src/routes/privacy.lazy.tsx:149
 msgid "Contact and data protection officer"
 msgstr "Contact and data protection officer"
 
@@ -1075,11 +1079,11 @@ msgstr "Contact and data protection officer"
 msgid "Contact Support"
 msgstr "Contact Support"
 
-#: src/routes/terms.lazy.tsx:106
+#: src/routes/terms.lazy.tsx:104
 msgid "Contact us at contact@transparenta.eu See also our <0>Privacy Policy</0> and <1>Cookie Policy</1>."
 msgstr "Contact us at contact@transparenta.eu See also our <0>Privacy Policy</0> and <1>Cookie Policy</1>."
 
-#: src/routes/privacy.lazy.tsx:35
+#: src/routes/privacy.lazy.tsx:34
 msgid "Controller: Claudiu Constantin Bogdan, persoana fizica. Contact: contact@transparenta.eu"
 msgstr "Controller: Claudiu Constantin Bogdan, persoana fizica. Contact: contact@transparenta.eu"
 
@@ -1088,17 +1092,17 @@ msgstr "Controller: Claudiu Constantin Bogdan, persoana fizica. Contact: contact
 msgid "Cookie consent required"
 msgstr "Cookie consent required"
 
-#: src/routes/cookie-policy.lazy.tsx:69
+#: src/routes/cookie-policy.lazy.tsx:68
 msgid "Cookie duration"
 msgstr "Cookie duration"
 
-#: src/routes/cookie-policy.lazy.tsx:18
+#: src/routes/cookie-policy.lazy.tsx:17
 msgid "Cookie Policy"
 msgstr "Cookie Policy"
 
 #: src/routes/cookie-policy.lazy.tsx:16
-msgid "Cookie Policy – Transparenta.eu"
-msgstr "Cookie Policy – Transparenta.eu"
+#~ msgid "Cookie Policy – Transparenta.eu"
+#~ msgstr "Cookie Policy – Transparenta.eu"
 
 #: src/components/footer/AppFooter.tsx:123
 #: src/routes/cookies.lazy.tsx:71
@@ -1160,7 +1164,7 @@ msgstr "Could Not Load Budget Sectors"
 msgid "Could Not Load Counties"
 msgstr "Could Not Load Counties"
 
-#: src/components/charts/components/series-config/DatasetList.tsx:83
+#: src/components/charts/components/series-config/DatasetList.tsx:85
 msgid "Could Not Load Datasets"
 msgstr "Could Not Load Datasets"
 
@@ -1196,7 +1200,7 @@ msgstr "Counties"
 #: src/components/filters/MapFilter.tsx:217
 #: src/components/maps/charts/UatDataCharts.tsx:32
 #: src/components/maps/HeatmapDataTable.tsx:447
-#: src/routes/entity-analytics.lazy.tsx:208
+#: src/routes/entity-analytics.lazy.tsx:205
 msgid "County"
 msgstr "County"
 
@@ -1210,31 +1214,29 @@ msgid "Create a chart for this entity to start tracking its financial evolution.
 msgstr "Create a chart for this entity to start tracking its financial evolution."
 
 #: src/features/notifications/components/NotificationList.tsx:151
-#: src/routes/alerts/new.lazy.tsx:224
+#: src/routes/alerts/new.lazy.tsx:220
 msgid "Create alert"
 msgstr "Create alert"
 
 #: src/components/charts/components/views/SeriesConfigView.tsx:232
 #: src/features/notifications/components/alerts/AlertsList.tsx:60
-#: src/routes/alerts/new.lazy.tsx:125
 #: src/routes/alerts/new.lazy.tsx:183
-#: src/routes/alerts/new.lazy.tsx:187
 msgid "Create Alert"
 msgstr "Create Alert"
 
 #: src/routes/alerts/new.lazy.tsx:167
-msgid "Create Alert - Error"
-msgstr "Create Alert - Error"
+#~ msgid "Create Alert - Error"
+#~ msgstr "Create Alert - Error"
 
 #: src/routes/alerts/new.lazy.tsx:136
-msgid "Create Alert - Sign In Required"
-msgstr "Create Alert - Sign In Required"
+#~ msgid "Create Alert - Sign In Required"
+#~ msgstr "Create Alert - Sign In Required"
 
 #: src/components/charts/components/views/SeriesConfigView.tsx:230
 msgid "Create alert from this series"
 msgstr "Create alert from this series"
 
-#: src/routes/charts/index.lazy.tsx:194
+#: src/routes/charts/index.lazy.tsx:191
 msgid "Create chart"
 msgstr "Create chart"
 
@@ -1242,15 +1244,15 @@ msgstr "Create chart"
 msgid "Create chart for this entity"
 msgstr "Create chart for this entity"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:198
+#: src/routes/alerts/$alertId/index.lazy.tsx:196
 msgid "Create new alert"
 msgstr "Create new alert"
 
-#: src/routes/charts/index.lazy.tsx:236
+#: src/routes/charts/index.lazy.tsx:233
 msgid "Create your first chart"
 msgstr "Create your first chart"
 
-#: src/routes/charts/index.lazy.tsx:232
+#: src/routes/charts/index.lazy.tsx:229
 msgid "Create your first chart to start visualizing public spending data."
 msgstr "Create your first chart to start visualizing public spending data."
 
@@ -1260,7 +1262,7 @@ msgstr "Creating…"
 
 #: src/components/maps/HeatmapDataTable.tsx:440
 #: src/components/theme/currency-toggle.tsx:22
-#: src/routes/entity-analytics.lazy.tsx:201
+#: src/routes/entity-analytics.lazy.tsx:198
 msgid "Currency"
 msgstr "Currency"
 
@@ -1276,7 +1278,7 @@ msgstr "Custom Series"
 msgid "Custom Series Value"
 msgstr "Custom Series Value"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:287
+#: src/routes/alerts/$alertId/index.lazy.tsx:284
 msgid "Danger Zone"
 msgstr "Danger Zone"
 
@@ -1288,11 +1290,11 @@ msgstr "Dark"
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: src/routes/privacy.lazy.tsx:51
+#: src/routes/privacy.lazy.tsx:50
 msgid "Data collected with an account:"
 msgstr "Data collected with an account:"
 
-#: src/routes/privacy.lazy.tsx:41
+#: src/routes/privacy.lazy.tsx:40
 msgid "Data collected without an account:"
 msgstr "Data collected without an account:"
 
@@ -1306,11 +1308,15 @@ msgstr "Data Label Offset"
 msgid "Data Labels"
 msgstr "Data Labels"
 
-#: src/routes/privacy.lazy.tsx:100
+#: src/components/charts/components/series-config/AxisInfo.tsx:73
+msgid "Data points"
+msgstr "Data points"
+
+#: src/routes/privacy.lazy.tsx:99
 msgid "Data retention"
 msgstr "Data retention"
 
-#: src/routes/privacy.lazy.tsx:125
+#: src/routes/privacy.lazy.tsx:124
 msgid "Data security"
 msgstr "Data security"
 
@@ -1327,7 +1333,7 @@ msgstr "Data series alerts"
 msgid "Data Series Filter"
 msgstr "Data Series Filter"
 
-#: src/routes/privacy.lazy.tsx:89
+#: src/routes/privacy.lazy.tsx:88
 msgid "Data sharing and processors"
 msgstr "Data sharing and processors"
 
@@ -1335,15 +1341,19 @@ msgstr "Data sharing and processors"
 msgid "Data source: \"Budget Transparency\" portal administered by ANAF/Ministry of Finance, available as open data. See official resources:"
 msgstr "Data source: \"Budget Transparency\" portal administered by ANAF/Ministry of Finance, available as open data. See official resources:"
 
-#: src/routes/privacy.lazy.tsx:86
+#: src/routes/privacy.lazy.tsx:85
 msgid "Data sources and licensing"
 msgstr "Data sources and licensing"
 
-#: src/routes/terms.lazy.tsx:89
+#: src/routes/terms.lazy.tsx:87
 msgid "Data storage and retention"
 msgstr "Data storage and retention"
 
-#: src/routes/map.lazy.tsx:263
+#: src/components/charts/components/series-config/StaticSeriesEditor.tsx:66
+#~ msgid "Data Structure"
+#~ msgstr "Data Structure"
+
+#: src/routes/map.lazy.tsx:260
 msgid "Data Table View"
 msgstr "Data Table View"
 
@@ -1379,13 +1389,13 @@ msgstr "Default settings that apply to all series (can be overridden per series)
 #: src/components/charts/components/views/SeriesConfigView.tsx:362
 #: src/features/notifications/components/alerts/AlertCard.tsx:128
 #: src/features/notifications/components/NotificationCard.tsx:125
-#: src/routes/alerts/$alertId/index.lazy.tsx:321
+#: src/routes/alerts/$alertId/index.lazy.tsx:318
 msgid "Delete"
 msgstr "Delete"
 
 #: src/features/notifications/components/alerts/AlertCard.tsx:112
-#: src/routes/alerts/$alertId/index.lazy.tsx:299
-#: src/routes/alerts/$alertId/index.lazy.tsx:305
+#: src/routes/alerts/$alertId/index.lazy.tsx:296
+#: src/routes/alerts/$alertId/index.lazy.tsx:302
 msgid "Delete alert"
 msgstr "Delete alert"
 
@@ -1407,7 +1417,7 @@ msgid "Delete this chart?"
 msgstr "Delete this chart?"
 
 #: src/components/maps/HeatmapDataTable.tsx:436
-#: src/routes/entity-analytics.lazy.tsx:197
+#: src/routes/entity-analytics.lazy.tsx:194
 msgid "Density"
 msgstr "Density"
 
@@ -1415,8 +1425,8 @@ msgstr "Density"
 msgid "Description"
 msgstr "Description"
 
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:116
-#: src/routes/budget-explorer.lazy.tsx:341
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:118
+#: src/routes/budget-explorer.lazy.tsx:402
 msgid "Detail level"
 msgstr "Detail level"
 
@@ -1424,7 +1434,7 @@ msgstr "Detail level"
 msgid "Detailed"
 msgstr "Detailed"
 
-#: src/routes/cookie-policy.lazy.tsx:40
+#: src/routes/cookie-policy.lazy.tsx:39
 msgid "Detailed breakdown"
 msgstr "Detailed breakdown"
 
@@ -1432,8 +1442,8 @@ msgstr "Detailed breakdown"
 msgid "Detailed Budget Execution"
 msgstr "Detailed Budget Execution"
 
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:131
-#: src/routes/budget-explorer.lazy.tsx:354
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:133
+#: src/routes/budget-explorer.lazy.tsx:415
 msgid "Detailed categories"
 msgstr "Detailed categories"
 
@@ -1442,10 +1452,10 @@ msgid "Detailed Line Items Breakdown"
 msgstr "Detailed Line Items Breakdown"
 
 #: src/routes/cookie-policy.lazy.tsx:16
-msgid "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
-msgstr "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
+#~ msgid "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
+#~ msgstr "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
 
-#: src/routes/entities.$cui.lazy.tsx:230
+#: src/routes/entities.$cui.lazy.tsx:264
 msgid "Details:"
 msgstr "Details:"
 
@@ -1514,7 +1524,7 @@ msgstr "e.g. Expense growth alert"
 msgid "e.g., RON, %, Units..."
 msgstr "e.g., RON, %, Units..."
 
-#: src/features/notifications/components/EntityNotificationBell.tsx:70
+#: src/features/notifications/components/EntityNotificationBell.tsx:71
 msgid "Easily manage your subscriptions"
 msgstr "Easily manage your subscriptions"
 
@@ -1524,8 +1534,8 @@ msgstr "Ec"
 
 #: src/components/entities/views/Overview.tsx:263
 #: src/components/entities/views/TrendsView.tsx:210
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:111
-#: src/routes/budget-explorer.lazy.tsx:336
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:113
+#: src/routes/budget-explorer.lazy.tsx:397
 msgid "Economic"
 msgstr "Economic"
 
@@ -1566,15 +1576,13 @@ msgstr "Economic Prefixes"
 msgid "Edit alert"
 msgstr "Edit alert"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:133
-#: src/routes/alerts/$alertId/index.lazy.tsx:209
-#: src/routes/alerts/$alertId/index.lazy.tsx:220
+#: src/routes/alerts/$alertId/index.lazy.tsx:217
 msgid "Edit Alert"
 msgstr "Edit Alert"
 
 #: src/routes/alerts/$alertId/index.lazy.tsx:144
-msgid "Edit Alert - Sign In Required"
-msgstr "Edit Alert - Sign In Required"
+#~ msgid "Edit Alert - Sign In Required"
+#~ msgstr "Edit Alert - Sign In Required"
 
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:34
 msgid "Edit Annotation"
@@ -1585,9 +1593,9 @@ msgstr "Edit Annotation"
 msgid "Edit Annotations"
 msgstr "Edit Annotations"
 
-#: src/routes/cookie-policy.lazy.tsx:19
-#: src/routes/privacy.lazy.tsx:18
-#: src/routes/terms.lazy.tsx:19
+#: src/routes/cookie-policy.lazy.tsx:18
+#: src/routes/privacy.lazy.tsx:17
+#: src/routes/terms.lazy.tsx:17
 msgid "Effective Date: {effectiveDate} • Version: {version}"
 msgstr "Effective Date: {effectiveDate} • Version: {version}"
 
@@ -1632,7 +1640,7 @@ msgstr "Enabled"
 msgid "Enabled alerts are evaluated monthly and included in your newsletter."
 msgstr "Enabled alerts are evaluated monthly and included in your newsletter."
 
-#: src/components/theme/language-toggle.tsx:31
+#: src/components/theme/language-toggle.tsx:34
 msgid "English"
 msgstr "English"
 
@@ -1656,7 +1664,7 @@ msgstr "Enter annotation title..."
 msgid "Enter chart title..."
 msgstr "Enter chart title..."
 
-#: src/routes/index.lazy.tsx:59
+#: src/routes/index.lazy.tsx:45
 msgid "Enter entity name or CUI..."
 msgstr "Enter entity name or CUI..."
 
@@ -1676,20 +1684,20 @@ msgstr "Enter series label..."
 #: src/components/filters/MapFilter.tsx:266
 #: src/components/filters/MapFilter.tsx:443
 #: src/hooks/useEntityViews.tsx:39
-#: src/routes/index.lazy.tsx:83
+#: src/routes/index.lazy.tsx:69
 msgid "Entities"
 msgstr "Entities"
 
 #: src/components/entity-analytics/EntityAnalyticsTable.tsx:65
 #: src/lib/chart-filter-utils.ts:37
-#: src/routes/entity-analytics.lazy.tsx:207
+#: src/routes/entity-analytics.lazy.tsx:204
 msgid "Entity"
 msgstr "Entity"
 
 #: src/routes/entities.$cui.lazy.tsx:224
 #: src/routes/entities.$cui.lazy.tsx:240
-msgid "Entity {cui} – Not found"
-msgstr "Entity {cui} – Not found"
+#~ msgid "Entity {cui} – Not found"
+#~ msgstr "Entity {cui} – Not found"
 
 #: src/components/entity-analytics/EntityAnalyticsLayout.tsx:15
 #: src/components/entity-analytics/EntityAnalyticsLayout.tsx:46
@@ -1699,24 +1707,24 @@ msgid "Entity Analytics"
 msgstr "Entity Analytics"
 
 #: src/routes/entity-analytics.lazy.tsx:161
-msgid "Entity analytics – Transparenta.eu"
-msgstr "Entity analytics – Transparenta.eu"
+#~ msgid "Entity analytics – Transparenta.eu"
+#~ msgstr "Entity analytics – Transparenta.eu"
 
 #: src/components/ui/shortcuts.tsx:50
 msgid "Entity Details"
 msgstr "Entity Details"
 
 #: src/routes/settings/notifications.tsx:68
-msgid "Entity Notification Settings"
-msgstr "Entity Notification Settings"
+#~ msgid "Entity Notification Settings"
+#~ msgstr "Entity Notification Settings"
 
 #: src/routes/settings/notifications.tsx:104
 msgid "Entity Notifications"
 msgstr "Entity Notifications"
 
 #: src/routes/settings/notifications.tsx:39
-msgid "Entity Notifications - Sign In Required"
-msgstr "Entity Notifications - Sign In Required"
+#~ msgid "Entity Notifications - Sign In Required"
+#~ msgstr "Entity Notifications - Sign In Required"
 
 #: src/components/ui/shortcuts.tsx:29
 msgid "Entity Search"
@@ -1747,11 +1755,11 @@ msgstr "equals"
 msgid "Error"
 msgstr "Error"
 
-#: src/routes/entities.$cui.lazy.tsx:227
+#: src/routes/entities.$cui.lazy.tsx:261
 msgid "Error Fetching Entity Details"
 msgstr "Error Fetching Entity Details"
 
-#: src/routes/entity-analytics.lazy.tsx:181
+#: src/routes/entity-analytics.lazy.tsx:178
 msgid "Error loading analytics"
 msgstr "Error loading analytics"
 
@@ -1764,10 +1772,10 @@ msgid "Error loading data"
 msgstr "Error loading data"
 
 #: src/routes/entities.$cui.lazy.tsx:224
-msgid "Error loading data for CUI {cui}."
-msgstr "Error loading data for CUI {cui}."
+#~ msgid "Error loading data for CUI {cui}."
+#~ msgstr "Error loading data for CUI {cui}."
 
-#: src/routes/map.lazy.tsx:175
+#: src/routes/map.lazy.tsx:172
 msgid "Error loading data:"
 msgstr "Error loading data:"
 
@@ -1775,7 +1783,7 @@ msgstr "Error loading data:"
 msgid "Error loading notifications"
 msgstr "Error loading notifications"
 
-#: src/routes/cookie-policy.lazy.tsx:63
+#: src/routes/cookie-policy.lazy.tsx:62
 msgid "Error Reporting (opt-in only)"
 msgstr "Error Reporting (opt-in only)"
 
@@ -1803,11 +1811,11 @@ msgstr "Errors"
 msgid "Essential cookies"
 msgstr "Essential cookies"
 
-#: src/routes/cookie-policy.lazy.tsx:42
+#: src/routes/cookie-policy.lazy.tsx:41
 msgid "Essential Cookies and Storage (always active)"
 msgstr "Essential Cookies and Storage (always active)"
 
-#: src/routes/cookie-policy.lazy.tsx:24
+#: src/routes/cookie-policy.lazy.tsx:23
 msgid "Essential storage is required for the app to work."
 msgstr "Essential storage is required for the app to work."
 
@@ -1897,23 +1905,23 @@ msgstr "Expense Type"
 #: src/components/filters/MapFilter.tsx:232
 #: src/components/maps/utils.ts:27
 #: src/hooks/filters/useFilterLabels.tsx:191
-#: src/routes/entity-analytics.lazy.tsx:265
+#: src/routes/entity-analytics.lazy.tsx:262
 msgid "Expenses"
 msgstr "Expenses"
 
 #: src/routes/map.lazy.tsx:156
-msgid "Explore choropleth maps of public spending by UAT/County with per-capita or total normalization."
-msgstr "Explore choropleth maps of public spending by UAT/County with per-capita or total normalization."
+#~ msgid "Explore choropleth maps of public spending by UAT/County with per-capita or total normalization."
+#~ msgstr "Explore choropleth maps of public spending by UAT/County with per-capita or total normalization."
 
-#: src/routes/index.lazy.tsx:70
+#: src/routes/index.lazy.tsx:56
 msgid "Explore data through a map."
 msgstr "Explore data through a map."
 
-#: src/routes/index.lazy.tsx:91
+#: src/routes/index.lazy.tsx:77
 msgid "Explore data through charts."
 msgstr "Explore data through charts."
 
-#: src/routes/index.lazy.tsx:84
+#: src/routes/index.lazy.tsx:70
 msgid "Explore entities by aggregated values."
 msgstr "Explore entities by aggregated values."
 
@@ -1921,7 +1929,7 @@ msgstr "Explore entities by aggregated values."
 msgid "Explore Full Map"
 msgstr "Explore Full Map"
 
-#: src/routes/index.lazy.tsx:77
+#: src/routes/index.lazy.tsx:63
 msgid "Explore national budget."
 msgstr "Explore national budget."
 
@@ -1933,19 +1941,19 @@ msgstr "Export as Image"
 msgid "Export as image or share with a link"
 msgstr "Export as image or share with a link"
 
-#: src/routes/entity-analytics.lazy.tsx:214
+#: src/routes/entity-analytics.lazy.tsx:211
 msgid "Export CSV"
 msgstr "Export CSV"
 
-#: src/routes/entity-analytics.lazy.tsx:214
+#: src/routes/entity-analytics.lazy.tsx:211
 msgid "Exporting…"
 msgstr "Exporting…"
 
-#: src/routes/terms.lazy.tsx:83
+#: src/routes/terms.lazy.tsx:81
 msgid "Exports and attribution"
 msgstr "Exports and attribution"
 
-#: src/routes/terms.lazy.tsx:27
+#: src/routes/terms.lazy.tsx:25
 msgid "Exports must include attribution to data source and Transparenta.eu."
 msgstr "Exports must include attribution to data source and Transparenta.eu."
 
@@ -1966,8 +1974,8 @@ msgstr "Failed to copy share link"
 msgid "Failed to create"
 msgstr "Failed to create"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:179
-#: src/routes/alerts/new.lazy.tsx:169
+#: src/routes/alerts/$alertId/index.lazy.tsx:177
+#: src/routes/alerts/new.lazy.tsx:166
 msgid "Failed to load alert"
 msgstr "Failed to load alert"
 
@@ -1975,7 +1983,7 @@ msgstr "Failed to load alert"
 msgid "Failed to load alerts. Please try again."
 msgstr "Failed to load alerts. Please try again."
 
-#: src/routes/budget-explorer.lazy.tsx:365
+#: src/routes/budget-explorer.lazy.tsx:426
 msgid "Failed to load data."
 msgstr "Failed to load data."
 
@@ -1987,15 +1995,15 @@ msgstr "Failed to open new tab."
 msgid "Failed to save"
 msgstr "Failed to save"
 
-#: src/routes/charts/index.lazy.tsx:182
+#: src/routes/charts/index.lazy.tsx:179
 msgid "favorites"
 msgstr "favorites"
 
-#: src/routes/charts/index.lazy.tsx:250
+#: src/routes/charts/index.lazy.tsx:247
 msgid "Favorites"
 msgstr "Favorites"
 
-#: src/routes/charts/index.lazy.tsx:222
+#: src/routes/charts/index.lazy.tsx:219
 msgid "Favorites first"
 msgstr "Favorites first"
 
@@ -2022,7 +2030,7 @@ msgstr "Filtered"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:466
 #: src/components/filters/EntityAnalyticsFilter.tsx:374
-#: src/routes/map.lazy.tsx:319
+#: src/routes/map.lazy.tsx:316
 msgid "Filters"
 msgstr "Filters"
 
@@ -2098,7 +2106,7 @@ msgstr "Focus Year Selector"
 msgid "Focus year selector in entity details"
 msgstr "Focus year selector in entity details"
 
-#: src/routes/privacy.lazy.tsx:151
+#: src/routes/privacy.lazy.tsx:150
 msgid "For questions about this Privacy Policy, to exercise your rights, or to contact our data protection officer, email us at contact@transparenta.eu"
 msgstr "For questions about this Privacy Policy, to exercise your rights, or to contact our data protection officer, email us at contact@transparenta.eu"
 
@@ -2113,8 +2121,8 @@ msgstr "Found {replacementCount} occurrence{0}"
 
 #: src/components/entities/views/Overview.tsx:262
 #: src/components/entities/views/TrendsView.tsx:209
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:104
-#: src/routes/budget-explorer.lazy.tsx:333
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:106
+#: src/routes/budget-explorer.lazy.tsx:394
 msgid "Functional"
 msgstr "Functional"
 
@@ -2184,7 +2192,7 @@ msgstr "Generate random color"
 msgid "Geographical View"
 msgstr "Geographical View"
 
-#: src/features/notifications/components/EntityNotificationAnnouncement.tsx:87
+#: src/features/notifications/components/EntityNotificationAnnouncement.tsx:99
 msgid "Get monthly email updates about this institution. Receive alerts when new reports are published, budget changes occur, or important financial data is updated."
 msgstr "Get monthly email updates about this institution. Receive alerts when new reports are published, budget changes occur, or important financial data is updated."
 
@@ -2224,7 +2232,7 @@ msgstr "Go to Homepage"
 msgid "Go to Map"
 msgstr "Go to Map"
 
-#: src/routes/terms.lazy.tsx:102
+#: src/routes/terms.lazy.tsx:100
 msgid "Governing law"
 msgstr "Governing law"
 
@@ -2244,8 +2252,8 @@ msgstr "greater than"
 msgid "Greater than"
 msgstr "Greater than"
 
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:92
-#: src/routes/budget-explorer.lazy.tsx:323
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:94
+#: src/routes/budget-explorer.lazy.tsx:384
 msgid "Grouping"
 msgstr "Grouping"
 
@@ -2299,18 +2307,18 @@ msgid "Home"
 msgstr "Home"
 
 #: src/routes/privacy.lazy.tsx:15
-msgid "How Transparenta.eu handles data, analytics, and error reporting with consent."
-msgstr "How Transparenta.eu handles data, analytics, and error reporting with consent."
+#~ msgid "How Transparenta.eu handles data, analytics, and error reporting with consent."
+#~ msgstr "How Transparenta.eu handles data, analytics, and error reporting with consent."
 
 #: src/components/budget-explorer/RevenueBreakdown.tsx:99
 msgid "How we compute true consolidated revenues (excluding inter-budget flows and financial operations)"
 msgstr "How we compute true consolidated revenues (excluding inter-budget flows and financial operations)"
 
-#: src/routes/privacy.lazy.tsx:59
+#: src/routes/privacy.lazy.tsx:58
 msgid "How we use your data"
 msgstr "How we use your data"
 
-#: src/routes/cookie-policy.lazy.tsx:49
+#: src/routes/cookie-policy.lazy.tsx:48
 msgid "If you create an account, Clerk sets the following cookies for authentication and session management:"
 msgstr "If you create an account, Clerk sets the following cookies for authentication and session management:"
 
@@ -2322,7 +2330,7 @@ msgstr "If you sign in, authentication cookies (Clerk) are essential to manage y
 msgid "If you unsubscribe, you will no longer receive emails for this notification. You can always resubscribe later from your account settings."
 msgstr "If you unsubscribe, you will no longer receive emails for this notification. You can always resubscribe later from your account settings."
 
-#: src/routes/terms.lazy.tsx:84
+#: src/routes/terms.lazy.tsx:82
 msgid "Include visible attribution to the data source and Transparenta.eu when sharing charts/maps."
 msgstr "Include visible attribution to the data source and Transparenta.eu when sharing charts/maps."
 
@@ -2340,7 +2348,7 @@ msgstr "Includes additional error context. No user identity is attached."
 #: src/components/filters/MapFilter.tsx:233
 #: src/components/maps/utils.ts:27
 #: src/hooks/filters/useFilterLabels.tsx:192
-#: src/routes/entity-analytics.lazy.tsx:265
+#: src/routes/entity-analytics.lazy.tsx:262
 msgid "Income"
 msgstr "Income"
 
@@ -2365,11 +2373,11 @@ msgstr "Income/Expenses"
 msgid "Incomes"
 msgstr "Incomes"
 
-#: src/routes/terms.lazy.tsx:26
+#: src/routes/terms.lazy.tsx:24
 msgid "Independent project; no government affiliation."
 msgstr "Independent project; no government affiliation."
 
-#: src/routes/terms.lazy.tsx:25
+#: src/routes/terms.lazy.tsx:23
 msgid "Informational purposes only; no warranties."
 msgstr "Informational purposes only; no warranties."
 
@@ -2381,7 +2389,7 @@ msgstr "inhabitants"
 msgid "Institutional remittances"
 msgstr "Institutional remittances"
 
-#: src/routes/terms.lazy.tsx:76
+#: src/routes/terms.lazy.tsx:74
 msgid "Intellectual property"
 msgstr "Intellectual property"
 
@@ -2399,7 +2407,7 @@ msgstr "Internal budget movements"
 msgid "Internal flow, inter-budget"
 msgstr "Internal flow, inter-budget"
 
-#: src/routes/privacy.lazy.tsx:133
+#: src/routes/privacy.lazy.tsx:132
 msgid "International data transfers"
 msgstr "International data transfers"
 
@@ -2455,7 +2463,7 @@ msgstr "Keyboard Shortcuts"
 msgid "Label"
 msgstr "Label"
 
-#: src/components/theme/language-toggle.tsx:24
+#: src/components/theme/language-toggle.tsx:27
 msgid "Language"
 msgstr "Language"
 
@@ -2475,12 +2483,12 @@ msgstr "Leave without saving"
 msgid "Legal"
 msgstr "Legal"
 
-#: src/routes/privacy.lazy.tsx:69
+#: src/routes/privacy.lazy.tsx:68
 msgid "Legal bases for processing"
 msgstr "Legal bases for processing"
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:160
-#: src/routes/map.lazy.tsx:240
+#: src/routes/map.lazy.tsx:237
 msgid "Legend"
 msgstr "Legend"
 
@@ -2504,7 +2512,7 @@ msgstr "Less than"
 msgid "Light"
 msgstr "Light"
 
-#: src/routes/terms.lazy.tsx:96
+#: src/routes/terms.lazy.tsx:94
 msgid "Limitation of liability"
 msgstr "Limitation of liability"
 
@@ -2561,7 +2569,7 @@ msgstr "Loading map data..."
 msgid "Loading reports…"
 msgstr "Loading reports…"
 
-#: src/routes/map.lazy.tsx:277
+#: src/routes/map.lazy.tsx:274
 msgid "Loading table data..."
 msgstr "Loading table data..."
 
@@ -2579,7 +2587,7 @@ msgstr "Loan repayments and other operations"
 msgid "Loans and credit repayments"
 msgstr "Loans and credit repayments"
 
-#: src/routes/privacy.lazy.tsx:24
+#: src/routes/privacy.lazy.tsx:23
 msgid "Local-first: charts and preferences are stored in your browser."
 msgstr "Local-first: charts and preferences are stored in your browser."
 
@@ -2591,17 +2599,17 @@ msgstr "Lock annotation"
 msgid "Locked"
 msgstr "Locked"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:380
+#: src/components/budget-explorer/BudgetTreemap.tsx:401
 #: src/components/entities/LineItemsAnalytics.tsx:143
 msgid "Main Categories"
 msgstr "Main Categories"
 
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:128
-#: src/routes/budget-explorer.lazy.tsx:351
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:130
+#: src/routes/budget-explorer.lazy.tsx:412
 msgid "Main chapters"
 msgstr "Main chapters"
 
-#: src/components/entities/EntityReportControls.tsx:298
+#: src/components/entities/EntityReportControls.tsx:299
 #: src/lib/chart-filter-utils.ts:38
 msgid "Main creditor"
 msgstr "Main creditor"
@@ -2620,20 +2628,20 @@ msgstr "Main Creditor"
 msgid "Main creditor aggregated"
 msgstr "Main creditor aggregated"
 
-#: src/features/notifications/components/NotificationQuickMenu.tsx:92
+#: src/features/notifications/components/NotificationQuickMenu.tsx:90
 msgid "Manage all notifications"
 msgstr "Manage all notifications"
 
 #: src/routes/charts/index.lazy.tsx:167
-msgid "Manage and search your locally saved charts. Create, favorite, categorize, and share your visualizations."
-msgstr "Manage and search your locally saved charts. Create, favorite, categorize, and share your visualizations."
+#~ msgid "Manage and search your locally saved charts. Create, favorite, categorize, and share your visualizations."
+#~ msgstr "Manage and search your locally saved charts. Create, favorite, categorize, and share your visualizations."
 
-#: src/features/notifications/components/EntityNotificationBell.tsx:98
+#: src/features/notifications/components/EntityNotificationBell.tsx:103
 #: src/routes/unsubscribe.$token.tsx:43
 msgid "Manage notifications"
 msgstr "Manage notifications"
 
-#: src/routes/cookie-policy.lazy.tsx:27
+#: src/routes/cookie-policy.lazy.tsx:26
 msgid "Manage preferences anytime in <0>Cookie Settings</0>."
 msgstr "Manage preferences anytime in <0>Cookie Settings</0>."
 
@@ -2641,7 +2649,7 @@ msgstr "Manage preferences anytime in <0>Cookie Settings</0>."
 msgid "Manage your newsletter and alert subscriptions"
 msgstr "Manage your newsletter and alert subscriptions"
 
-#: src/routes/cookie-policy.lazy.tsx:77
+#: src/routes/cookie-policy.lazy.tsx:76
 msgid "Managing preferences"
 msgstr "Managing preferences"
 
@@ -2649,11 +2657,11 @@ msgstr "Managing preferences"
 #: src/components/sidebar/nav-main.tsx:26
 #: src/components/ui/shortcuts.tsx:44
 #: src/hooks/useEntityViews.tsx:28
-#: src/routes/index.lazy.tsx:69
+#: src/routes/index.lazy.tsx:55
 msgid "Map"
 msgstr "Map"
 
-#: src/routes/map.lazy.tsx:177
+#: src/routes/map.lazy.tsx:174
 msgid "Map data not available."
 msgstr "Map data not available."
 
@@ -2673,7 +2681,7 @@ msgstr "Maps"
 msgid "March"
 msgstr "March"
 
-#: src/routes/charts/index.lazy.tsx:284
+#: src/routes/charts/index.lazy.tsx:281
 msgid "Mark charts as favorites to quickly find them here."
 msgstr "Mark charts as favorites to quickly find them here."
 
@@ -2689,7 +2697,7 @@ msgstr "Maximum"
 msgid "May"
 msgstr "May"
 
-#: src/features/notifications/components/EntityNotificationAnnouncement.tsx:97
+#: src/features/notifications/components/EntityNotificationAnnouncement.tsx:109
 msgid "Maybe Later"
 msgstr "Maybe Later"
 
@@ -2706,16 +2714,16 @@ msgstr "Minimum"
 msgid "Mnemonic:"
 msgstr "Mnemonic:"
 
-#: src/features/notifications/components/EntityNotificationAnnouncement.tsx:83
+#: src/features/notifications/components/EntityNotificationAnnouncement.tsx:95
 msgid "Monitor this institution"
 msgstr "Monitor this institution"
 
 #: src/components/entities/EntityFinancialTrends.tsx:92
-#: src/components/entities/EntityReportControls.tsx:237
+#: src/components/entities/EntityReportControls.tsx:238
 msgid "Month"
 msgstr "Month"
 
-#: src/components/entities/EntityReportControls.tsx:169
+#: src/components/entities/EntityReportControls.tsx:170
 #: src/components/filters/period-filter/PeriodFilter.tsx:243
 msgid "Monthly"
 msgstr "Monthly"
@@ -2724,7 +2732,7 @@ msgstr "Monthly"
 msgid "Monthly monitoring"
 msgstr "Monthly monitoring"
 
-#: src/features/notifications/components/EntityNotificationBell.tsx:64
+#: src/features/notifications/components/EntityNotificationBell.tsx:65
 msgid "Monthly, quarterly, and annual reports"
 msgstr "Monthly, quarterly, and annual reports"
 
@@ -2802,15 +2810,15 @@ msgstr "Need help?"
 msgid "New value"
 msgstr "New value"
 
-#: src/routes/charts/index.lazy.tsx:218
+#: src/routes/charts/index.lazy.tsx:215
 msgid "Newest"
 msgstr "Newest"
 
-#: src/routes/privacy.lazy.tsx:77
+#: src/routes/privacy.lazy.tsx:76
 msgid "Newsletter consent and management"
 msgstr "Newsletter consent and management"
 
-#: src/routes/terms.lazy.tsx:53
+#: src/routes/terms.lazy.tsx:51
 msgid "Newsletters and notifications"
 msgstr "Newsletters and notifications"
 
@@ -2845,11 +2853,11 @@ msgid "No categories to display."
 msgstr "No categories to display."
 
 #. placeholder {0}: cat.name
-#: src/routes/charts/index.lazy.tsx:304
+#: src/routes/charts/index.lazy.tsx:301
 msgid "No charts in “{0}”"
 msgstr "No charts in “{0}”"
 
-#: src/routes/charts/index.lazy.tsx:231
+#: src/routes/charts/index.lazy.tsx:228
 msgid "No charts yet"
 msgstr "No charts yet"
 
@@ -2865,15 +2873,15 @@ msgstr "No conditions set"
 msgid "No Data Available"
 msgstr "No Data Available"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:447
+#: src/components/budget-explorer/BudgetTreemap.tsx:468
 msgid "No data available for the current selection."
 msgstr "No data available for the current selection."
 
-#: src/routes/map.lazy.tsx:218
+#: src/routes/map.lazy.tsx:215
 msgid "No data available for the map."
 msgstr "No data available for the map."
 
-#: src/routes/map.lazy.tsx:281
+#: src/routes/map.lazy.tsx:278
 msgid "No data available for the table."
 msgstr "No data available for the table."
 
@@ -2881,13 +2889,13 @@ msgstr "No data available for the table."
 msgid "No data available to display financial evolution."
 msgstr "No data available to display financial evolution."
 
-#: src/routes/entities.$cui.lazy.tsx:243
+#: src/routes/entities.$cui.lazy.tsx:276
 msgid "No Data Found"
 msgstr "No Data Found"
 
 #: src/routes/entities.$cui.lazy.tsx:240
-msgid "No data found for CUI {cui}."
-msgstr "No data found for CUI {cui}."
+#~ msgid "No data found for CUI {cui}."
+#~ msgstr "No data found for CUI {cui}."
 
 #: src/components/charts/components/chart-view/ChartDisplayArea.tsx:107
 msgid "No Data Series"
@@ -2913,11 +2921,11 @@ msgstr "No economic breakdown is available for income."
 msgid "No enabled series data available to display."
 msgstr "No enabled series data available to display."
 
-#: src/routes/entities.$cui.lazy.tsx:245
+#: src/routes/entities.$cui.lazy.tsx:278
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 
-#: src/routes/charts/index.lazy.tsx:283
+#: src/routes/charts/index.lazy.tsx:280
 msgid "No favorites yet"
 msgstr "No favorites yet"
 
@@ -2957,7 +2965,7 @@ msgstr "No options found."
 msgid "No related charts yet"
 msgstr "No related charts yet"
 
-#: src/routes/charts/index.lazy.tsx:265
+#: src/routes/charts/index.lazy.tsx:262
 msgid "No results"
 msgstr "No results"
 
@@ -2965,7 +2973,7 @@ msgstr "No results"
 msgid "No results found."
 msgstr "No results found."
 
-#: src/routes/privacy.lazy.tsx:27
+#: src/routes/privacy.lazy.tsx:26
 msgid "No selling of personal data."
 msgstr "No selling of personal data."
 
@@ -2983,13 +2991,13 @@ msgstr "Non-direct spending"
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:70
 #: src/components/charts/components/series-config/SeriesFilter.tsx:489
-#: src/components/entities/EntityReportControls.tsx:246
+#: src/components/entities/EntityReportControls.tsx:247
 #: src/components/filters/EntityAnalyticsFilter.tsx:413
 #: src/lib/chart-filter-utils.ts:50
 msgid "Normalization"
 msgstr "Normalization"
 
-#: src/routes/cookie-policy.lazy.tsx:79
+#: src/routes/cookie-policy.lazy.tsx:78
 msgid "Note: Deleting authentication cookies will sign you out of your account. Deleting essential localStorage will reset your saved charts and preferences."
 msgstr "Note: Deleting authentication cookies will sign you out of your account. Deleting essential localStorage will reset your saved charts and preferences."
 
@@ -3014,15 +3022,15 @@ msgstr "November"
 msgid "October"
 msgstr "October"
 
-#: src/routes/charts/index.lazy.tsx:219
+#: src/routes/charts/index.lazy.tsx:216
 msgid "Oldest"
 msgstr "Oldest"
 
-#: src/routes/cookie-policy.lazy.tsx:58
+#: src/routes/cookie-policy.lazy.tsx:57
 msgid "Only set if you consent to analytics:"
 msgstr "Only set if you consent to analytics:"
 
-#: src/routes/cookie-policy.lazy.tsx:64
+#: src/routes/cookie-policy.lazy.tsx:63
 msgid "Only set if you consent to enhanced error reporting:"
 msgstr "Only set if you consent to enhanced error reporting:"
 
@@ -3035,7 +3043,7 @@ msgstr "Open Config Panel"
 msgid "Open cookies"
 msgstr "Open cookies"
 
-#: src/routes/terms.lazy.tsx:78
+#: src/routes/terms.lazy.tsx:76
 msgid "Open data follows the source license."
 msgstr "Open data follows the source license."
 
@@ -3051,9 +3059,9 @@ msgstr "Open feedback dialog"
 msgid "Open floating entity search"
 msgstr "Open floating entity search"
 
-#: src/routes/budget-explorer.lazy.tsx:420
-#: src/routes/budget-explorer.lazy.tsx:436
-#: src/routes/budget-explorer.lazy.tsx:456
+#: src/routes/budget-explorer.lazy.tsx:481
+#: src/routes/budget-explorer.lazy.tsx:497
+#: src/routes/budget-explorer.lazy.tsx:517
 msgid "Open in Chart Builder"
 msgstr "Open in Chart Builder"
 
@@ -3070,7 +3078,7 @@ msgid "Open in charts"
 msgstr "Open in charts"
 
 #: src/components/entities/views/Overview.tsx:245
-#: src/routes/budget-explorer.lazy.tsx:297
+#: src/routes/budget-explorer.lazy.tsx:358
 msgid "Open in entity analytics"
 msgstr "Open in entity analytics"
 
@@ -3100,11 +3108,11 @@ msgstr "Optional context for the monthly newsletter"
 msgid "Optional description for your chart..."
 msgstr "Optional description for your chart..."
 
-#: src/routes/terms.lazy.tsx:28
+#: src/routes/terms.lazy.tsx:26
 msgid "Optional user accounts for enhanced features like newsletters and notifications."
 msgstr "Optional user accounts for enhanced features like newsletters and notifications."
 
-#: src/routes/privacy.lazy.tsx:25
+#: src/routes/privacy.lazy.tsx:24
 msgid "Optional user accounts for newsletters and notifications."
 msgstr "Optional user accounts for newsletters and notifications."
 
@@ -3149,7 +3157,7 @@ msgstr "Per capita"
 #: src/components/filters/EntityAnalyticsFilter.tsx:420
 #: src/components/filters/MapFilter.tsx:250
 #: src/components/filters/normalization-filter/NormalizationFilter.tsx:14
-#: src/routes/entity-analytics.lazy.tsx:210
+#: src/routes/entity-analytics.lazy.tsx:207
 msgid "Per Capita"
 msgstr "Per Capita"
 
@@ -3159,7 +3167,7 @@ msgstr "Per Capita (EUR)"
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:100
 #: src/components/charts/components/series-config/SeriesFilter.tsx:497
-#: src/components/entities/EntityReportControls.tsx:164
+#: src/components/entities/EntityReportControls.tsx:165
 #: src/components/filters/EntityAnalyticsFilter.tsx:426
 #: src/components/filters/MapFilter.tsx:257
 #: src/components/maps/utils.ts:20
@@ -3176,13 +3184,17 @@ msgstr "Period Type"
 msgid "Pie Chart (Aggregated)"
 msgstr "Pie Chart (Aggregated)"
 
+#: src/components/charts/components/series-config/AxisInfo.tsx:33
+msgid "points"
+msgstr "points"
+
 #: src/components/entities/UatDisplay.tsx:39
 #: src/components/entity-analytics/EntityAnalyticsTable.tsx:89
 #: src/components/maps/charts/UatDataCharts.tsx:42
 #: src/components/maps/HeatmapDataTable.tsx:227
 #: src/components/maps/HeatmapDataTable.tsx:448
 #: src/components/maps/utils.ts:118
-#: src/routes/entity-analytics.lazy.tsx:209
+#: src/routes/entity-analytics.lazy.tsx:206
 msgid "Population"
 msgstr "Population"
 
@@ -3208,19 +3220,19 @@ msgstr "Preparing new alert…"
 msgid "Preparing your share link..."
 msgstr "Preparing your share link..."
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:235
-#: src/routes/alerts/new.lazy.tsx:202
+#: src/routes/alerts/$alertId/index.lazy.tsx:232
+#: src/routes/alerts/new.lazy.tsx:198
 msgid "Preview"
 msgstr "Preview"
 
 #: src/components/footer/AppFooter.tsx:111
-#: src/routes/privacy.lazy.tsx:17
+#: src/routes/privacy.lazy.tsx:16
 msgid "Privacy Policy"
 msgstr "Privacy Policy"
 
 #: src/routes/privacy.lazy.tsx:15
-msgid "Privacy Policy – Transparenta.eu"
-msgstr "Privacy Policy – Transparenta.eu"
+#~ msgid "Privacy Policy – Transparenta.eu"
+#~ msgstr "Privacy Policy – Transparenta.eu"
 
 #: src/components/ui/shortcuts.tsx:126
 msgid "Pro Tip"
@@ -3234,16 +3246,16 @@ msgstr "Processing..."
 msgid "Product"
 msgstr "Product"
 
-#: src/routes/privacy.lazy.tsx:87
+#: src/routes/privacy.lazy.tsx:86
 msgid "Public sector information from Ministerul Finanțelor, made available as open data. No government affiliation."
 msgstr "Public sector information from Ministerul Finanțelor, made available as open data. No government affiliation."
 
 #: src/components/entities/EntityFinancialTrends.tsx:92
-#: src/components/entities/EntityReportControls.tsx:227
+#: src/components/entities/EntityReportControls.tsx:228
 msgid "Quarter"
 msgstr "Quarter"
 
-#: src/components/entities/EntityReportControls.tsx:168
+#: src/components/entities/EntityReportControls.tsx:169
 #: src/components/filters/period-filter/PeriodFilter.tsx:240
 msgid "Quarterly"
 msgstr "Quarterly"
@@ -3304,7 +3316,7 @@ msgstr "Replace value"
 msgid "Report bug"
 msgstr "Report bug"
 
-#: src/components/entities/EntityReportControls.tsx:280
+#: src/components/entities/EntityReportControls.tsx:281
 #: src/lib/chart-filter-utils.ts:45
 msgid "Report type"
 msgstr "Report type"
@@ -3319,15 +3331,15 @@ msgstr "Report Type"
 msgid "Reporting entity"
 msgstr "Reporting entity"
 
-#: src/components/entities/EntityReportControls.tsx:160
+#: src/components/entities/EntityReportControls.tsx:161
 msgid "Reporting filters"
 msgstr "Reporting filters"
 
-#: src/routes/entities.$cui.lazy.tsx:276
+#: src/routes/entities.$cui.lazy.tsx:309
 msgid "Reporting period"
 msgstr "Reporting period"
 
-#: src/components/entities/EntityReportLabel.tsx:33
+#: src/components/entities/EntityReportLabel.tsx:37
 msgid "Reporting:"
 msgstr "Reporting:"
 
@@ -3348,7 +3360,7 @@ msgstr "Restore"
 msgid "Revenues/Expenses"
 msgstr "Revenues/Expenses"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:261
+#: src/routes/alerts/$alertId/index.lazy.tsx:258
 msgid "Revert"
 msgstr "Revert"
 
@@ -3357,14 +3369,14 @@ msgid "Review and manage alerts created from your custom data series."
 msgstr "Review and manage alerts created from your custom data series."
 
 #: src/routes/map.lazy.tsx:155
-msgid "Romania spending heatmap – Transparenta.eu"
-msgstr "Romania spending heatmap – Transparenta.eu"
+#~ msgid "Romania spending heatmap – Transparenta.eu"
+#~ msgstr "Romania spending heatmap – Transparenta.eu"
 
-#: src/components/theme/language-toggle.tsx:39
+#: src/components/theme/language-toggle.tsx:42
 msgid "Romanian"
 msgstr "Romanian"
 
-#: src/routes/terms.lazy.tsx:103
+#: src/routes/terms.lazy.tsx:101
 msgid "Romanian law and applicable EU law, including GDPR. Venue: Sibiu, Romania."
 msgstr "Romanian law and applicable EU law, including GDPR. Venue: Sibiu, Romania."
 
@@ -3385,7 +3397,7 @@ msgstr "rows updated successfully."
 msgid "Sankey Chart (Aggregated)"
 msgstr "Sankey Chart (Aggregated)"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:270
+#: src/routes/alerts/$alertId/index.lazy.tsx:267
 msgid "Save"
 msgstr "Save"
 
@@ -3394,8 +3406,8 @@ msgid "Save cookie preferences"
 msgstr "Save cookie preferences"
 
 #: src/routes/charts/index.lazy.tsx:166
-msgid "Saved charts – Transparenta.eu"
-msgstr "Saved charts – Transparenta.eu"
+#~ msgid "Saved charts – Transparenta.eu"
+#~ msgstr "Saved charts – Transparenta.eu"
 
 #: src/routes/alerts/$alertId/index.lazy.tsx:121
 msgid "Saving…"
@@ -3418,11 +3430,11 @@ msgstr "Search by name or code (ex: Agriculture, 43.00, ec:43.00)"
 msgid "Search by name or code (ex: Social assistance, 7.06, fn:7.06)"
 msgstr "Search by name or code (ex: Social assistance, 7.06, fn:7.06)"
 
-#: src/routes/charts/index.lazy.tsx:209
+#: src/routes/charts/index.lazy.tsx:206
 msgid "Search charts"
 msgstr "Search charts"
 
-#: src/routes/charts/index.lazy.tsx:207
+#: src/routes/charts/index.lazy.tsx:204
 msgid "Search charts…"
 msgstr "Search charts…"
 
@@ -3430,7 +3442,7 @@ msgstr "Search charts…"
 msgid "Search counties..."
 msgstr "Search counties..."
 
-#: src/components/charts/components/series-config/DatasetList.tsx:75
+#: src/components/charts/components/series-config/DatasetList.tsx:77
 msgid "Search datasets (ex: PIB)"
 msgstr "Search datasets (ex: PIB)"
 
@@ -3476,19 +3488,19 @@ msgstr "Search..."
 msgid "Secondary creditor aggregated"
 msgstr "Secondary creditor aggregated"
 
-#: src/routes/terms.lazy.tsx:62
+#: src/routes/terms.lazy.tsx:60
 msgid "Security monitoring and logs"
 msgstr "Security monitoring and logs"
 
-#: src/routes/budget-explorer.lazy.tsx:396
+#: src/routes/budget-explorer.lazy.tsx:457
 msgid "See advanced view"
 msgstr "See advanced view"
 
-#: src/routes/cookie-policy.lazy.tsx:80
+#: src/routes/cookie-policy.lazy.tsx:79
 msgid "See also our <0>Privacy Policy</0>."
 msgstr "See also our <0>Privacy Policy</0>."
 
-#: src/routes/index.lazy.tsx:54
+#: src/routes/index.lazy.tsx:40
 msgid "See-through, clear"
 msgstr "See-through, clear"
 
@@ -3561,7 +3573,7 @@ msgstr "Series Type"
 msgid "Series with different units will be displayed on separate Y-axes"
 msgstr "Series with different units will be displayed on separate Y-axes"
 
-#: src/routes/terms.lazy.tsx:37
+#: src/routes/terms.lazy.tsx:35
 msgid "Service and data sources"
 msgstr "Service and data sources"
 
@@ -3569,8 +3581,8 @@ msgstr "Service and data sources"
 msgid "Set the basic properties for your chart"
 msgstr "Set the basic properties for your chart"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:244
-#: src/routes/alerts/new.lazy.tsx:211
+#: src/routes/alerts/$alertId/index.lazy.tsx:241
+#: src/routes/alerts/new.lazy.tsx:207
 msgid "Share"
 msgstr "Share"
 
@@ -3657,22 +3669,22 @@ msgstr "Show Technical Details"
 msgid "Show Tooltip"
 msgstr "Show Tooltip"
 
-#: src/features/notifications/components/EntityNotificationBell.tsx:79
-#: src/routes/alerts/$alertId/index.lazy.tsx:162
-#: src/routes/alerts/new.lazy.tsx:154
+#: src/features/notifications/components/EntityNotificationBell.tsx:82
+#: src/routes/alerts/$alertId/index.lazy.tsx:160
+#: src/routes/alerts/new.lazy.tsx:152
 #: src/routes/settings/notifications.tsx:57
 msgid "Sign In"
 msgstr "Sign In"
 
-#: src/features/notifications/components/EntityNotificationBell.tsx:47
-#: src/routes/alerts/$alertId/index.lazy.tsx:148
-#: src/routes/alerts/new.lazy.tsx:140
+#: src/features/notifications/components/EntityNotificationBell.tsx:48
+#: src/routes/alerts/$alertId/index.lazy.tsx:146
+#: src/routes/alerts/new.lazy.tsx:138
 #: src/routes/settings/notifications.tsx:43
 msgid "Sign in required"
 msgstr "Sign in required"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:156
-#: src/routes/alerts/new.lazy.tsx:148
+#: src/routes/alerts/$alertId/index.lazy.tsx:154
+#: src/routes/alerts/new.lazy.tsx:146
 msgid "Sign in to create and manage alerts for your entities."
 msgstr "Sign in to create and manage alerts for your entities."
 
@@ -3680,7 +3692,7 @@ msgstr "Sign in to create and manage alerts for your entities."
 msgid "Sign in to get notifications"
 msgstr "Sign in to get notifications"
 
-#: src/features/notifications/components/EntityNotificationBell.tsx:58
+#: src/features/notifications/components/EntityNotificationBell.tsx:59
 msgid "Sign in to receive updates about <0>{entityName}</0>:"
 msgstr "Sign in to receive updates about <0>{entityName}</0>:"
 
@@ -3692,7 +3704,7 @@ msgstr "Sign in to receive updates about the entities you care about."
 msgid "Some data issues were automatically resolved"
 msgstr "Some data issues were automatically resolved"
 
-#: src/routes/privacy.lazy.tsx:134
+#: src/routes/privacy.lazy.tsx:133
 msgid "Some service providers may process data outside the EU/EEA. All transfers are protected by appropriate safeguards including:"
 msgstr "Some service providers may process data outside the EU/EEA. All transfers are protected by appropriate safeguards including:"
 
@@ -3701,9 +3713,14 @@ msgstr "Some service providers may process data outside the EU/EEA. All transfer
 msgid "error.genericError"
 msgstr "Something went wrong while trying to render this page."
 
-#: src/routes/charts/index.lazy.tsx:215
+#: src/routes/charts/index.lazy.tsx:212
 msgid "Sort by"
 msgstr "Sort by"
+
+#: src/components/charts/components/filters-details/StaticSeriesFilter.tsx:31
+#: src/components/charts/components/series-config/StaticSeriesEditor.tsx:50
+msgid "Source"
+msgstr "Source"
 
 #: src/components/charts/components/chart-view/ChartDisplayArea.tsx:200
 msgid "Source: "
@@ -3715,11 +3732,11 @@ msgid "Spending Calculation"
 msgstr "Spending Calculation"
 
 #: src/components/maps/HeatmapDataTable.tsx:441
-#: src/routes/entity-analytics.lazy.tsx:202
+#: src/routes/entity-analytics.lazy.tsx:199
 msgid "Standard"
 msgstr "Standard"
 
-#: src/routes/privacy.lazy.tsx:136
+#: src/routes/privacy.lazy.tsx:135
 msgid "Standard Contractual Clauses (SCCs) approved by the European Commission"
 msgstr "Standard Contractual Clauses (SCCs) approved by the European Commission"
 
@@ -3743,7 +3760,7 @@ msgstr "Strip this prefix from x-axis labels for this series (e.g., 2024-). Help
 msgid "Subject"
 msgstr "Subject"
 
-#: src/features/notifications/components/EntityNotificationAnnouncement.tsx:103
+#: src/features/notifications/components/EntityNotificationAnnouncement.tsx:115
 msgid "Subscribe to Updates"
 msgstr "Subscribe to Updates"
 
@@ -3759,7 +3776,6 @@ msgstr "Subsidies from other administrations"
 msgid "Subtitle"
 msgstr "Subtitle"
 
-#: src/routes/unsubscribe.$token.tsx:25
 #: src/routes/unsubscribe.$token.tsx:32
 msgid "Successfully unsubscribed"
 msgstr "Successfully unsubscribed"
@@ -3768,7 +3784,7 @@ msgstr "Successfully unsubscribed"
 msgid "Sums pending distribution"
 msgstr "Sums pending distribution"
 
-#: src/routes/privacy.lazy.tsx:153
+#: src/routes/privacy.lazy.tsx:152
 msgid "Supervisory authority"
 msgstr "Supervisory authority"
 
@@ -3789,7 +3805,7 @@ msgstr "Table"
 msgid "Tax deductions outside inter-budget transfers"
 msgstr "Tax deductions outside inter-budget transfers"
 
-#: src/routes/cookie-policy.lazy.tsx:31
+#: src/routes/cookie-policy.lazy.tsx:30
 msgid "Technologies we use"
 msgstr "Technologies we use"
 
@@ -3798,34 +3814,34 @@ msgid "Temporarily enable scroll wheel zoom"
 msgstr "Temporarily enable scroll wheel zoom"
 
 #: src/routes/terms.lazy.tsx:16
-msgid "Terms for using the Transparenta.eu service and visualizations."
-msgstr "Terms for using the Transparenta.eu service and visualizations."
+#~ msgid "Terms for using the Transparenta.eu service and visualizations."
+#~ msgstr "Terms for using the Transparenta.eu service and visualizations."
 
 #: src/components/footer/AppFooter.tsx:114
 msgid "Terms of Service"
 msgstr "Terms of Service"
 
-#: src/routes/terms.lazy.tsx:18
+#: src/routes/terms.lazy.tsx:16
 msgid "Terms of Use"
 msgstr "Terms of Use"
 
 #: src/routes/terms.lazy.tsx:16
-msgid "Terms of Use – Transparenta.eu"
-msgstr "Terms of Use – Transparenta.eu"
+#~ msgid "Terms of Use – Transparenta.eu"
+#~ msgstr "Terms of Use – Transparenta.eu"
 
 #: src/routes/test-error.tsx:9
 msgid "Test error"
 msgstr "Test error"
 
-#: src/routes/privacy.lazy.tsx:145
+#: src/routes/privacy.lazy.tsx:144
 msgid "The Service is not directed to children under 16. We do not knowingly collect personal data from children under 16. If you believe we have collected data from a child under 16, please contact us immediately."
 msgstr "The Service is not directed to children under 16. We do not knowingly collect personal data from children under 16. If you believe we have collected data from a child under 16, please contact us immediately."
 
-#: src/routes/terms.lazy.tsx:38
+#: src/routes/terms.lazy.tsx:36
 msgid "The Service provides tools to explore, analyze, and visualize public budget execution data from Romania."
 msgstr "The Service provides tools to explore, analyze, and visualize public budget execution data from Romania."
 
-#: src/routes/terms.lazy.tsx:80
+#: src/routes/terms.lazy.tsx:78
 msgid "The Service's software, design, and original content are protected by copyright and other intellectual property laws."
 msgstr "The Service's software, design, and original content are protected by copyright and other intellectual property laws."
 
@@ -3833,7 +3849,7 @@ msgstr "The Service's software, design, and original content are protected by co
 msgid "The share link you are trying to access is invalid or no longer available."
 msgstr "The share link you are trying to access is invalid or no longer available."
 
-#: src/routes/entities.$cui.lazy.tsx:229
+#: src/routes/entities.$cui.lazy.tsx:263
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "There was a problem fetching the details for CUI: <0>{cui}</0>."
 
@@ -3845,11 +3861,11 @@ msgstr "There was a problem loading your notifications. Please try again."
 msgid "There was an error processing your request. The link may be expired or invalid."
 msgstr "There was an error processing your request. The link may be expired or invalid."
 
-#: src/routes/cookie-policy.lazy.tsx:43
+#: src/routes/cookie-policy.lazy.tsx:42
 msgid "These are necessary for the Service to function and cannot be disabled:"
 msgstr "These are necessary for the Service to function and cannot be disabled:"
 
-#: src/routes/cookie-policy.lazy.tsx:55
+#: src/routes/cookie-policy.lazy.tsx:54
 msgid "These cookies are essential for account functionality. If you delete them, you will be signed out."
 msgstr "These cookies are essential for account functionality. If you delete them, you will be signed out."
 
@@ -3861,7 +3877,7 @@ msgstr "These issues were auto-resolved (invalid points removed or values set to
 msgid "This action cannot be undone. It will permanently remove the chart and its configuration."
 msgstr "This action cannot be undone. It will permanently remove the chart and its configuration."
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:184
+#: src/routes/alerts/$alertId/index.lazy.tsx:182
 msgid "This alert doesn't exist or you don't have permission to view it."
 msgstr "This alert doesn't exist or you don't have permission to view it."
 
@@ -3892,6 +3908,10 @@ msgstr "Threshold {0}"
 msgid "Threshold {0} ({1})"
 msgstr "Threshold {0} ({1})"
 
+#: src/components/charts/components/series-config/AxisInfo.tsx:44
+msgid "Timeline"
+msgstr "Timeline"
+
 #: src/components/charts/components/chart-config/SeriesToolbar.tsx:39
 msgid "Tip: Copy/Cut/Paste with ⌘/Ctrl+C, X, V. Duplicate with ⌘/Ctrl+D."
 msgstr "Tip: Copy/Cut/Paste with ⌘/Ctrl+C, X, V. Duplicate with ⌘/Ctrl+D."
@@ -3901,19 +3921,19 @@ msgstr "Tip: Copy/Cut/Paste with ⌘/Ctrl+C, X, V. Duplicate with ⌘/Ctrl+D."
 msgid "Title"
 msgstr "Title"
 
-#: src/routes/charts/index.lazy.tsx:220
+#: src/routes/charts/index.lazy.tsx:217
 msgid "Title A–Z"
 msgstr "Title A–Z"
 
-#: src/routes/charts/index.lazy.tsx:221
+#: src/routes/charts/index.lazy.tsx:218
 msgid "Title Z–A"
 msgstr "Title Z–A"
 
-#: src/routes/privacy.lazy.tsx:123
+#: src/routes/privacy.lazy.tsx:122
 msgid "To exercise any of these rights, contact us at contact@transparenta.eu We will respond within 30 days."
 msgstr "To exercise any of these rights, contact us at contact@transparenta.eu We will respond within 30 days."
 
-#: src/routes/terms.lazy.tsx:97
+#: src/routes/terms.lazy.tsx:95
 msgid "To the maximum extent permitted by applicable law, Claudiu Constantin Bogdan and any owners, contributors, and affiliates shall not be liable for any direct, indirect, incidental, special, consequential, or exemplary damages, including but not limited to, damages for loss of profits, revenue, data, goodwill, or other intangible losses, resulting from: (i) your access to, use of, or inability to use the Service; (ii) any reliance on the data, content, or visualizations presented by the Service, regardless of any errors, omissions, or inaccuracies therein; (iii) any financial, professional, personal, or other loss or damage incurred as a result of using the information from the Service; or (iv) any unauthorized access to or use of our servers and any personal information stored therein. This limitation applies whether the alleged liability is based on contract, tort, negligence, strict liability, or any other basis, even if we have been advised of the possibility of such damage. Your sole and exclusive remedy for any dispute with us is to stop using the Service."
 msgstr "To the maximum extent permitted by applicable law, Claudiu Constantin Bogdan and any owners, contributors, and affiliates shall not be liable for any direct, indirect, incidental, special, consequential, or exemplary damages, including but not limited to, damages for loss of profits, revenue, data, goodwill, or other intangible losses, resulting from: (i) your access to, use of, or inability to use the Service; (ii) any reliance on the data, content, or visualizations presented by the Service, regardless of any errors, omissions, or inaccuracies therein; (iii) any financial, professional, personal, or other loss or damage incurred as a result of using the information from the Service; or (iv) any unauthorized access to or use of our servers and any personal information stored therein. This limitation applies whether the alleged liability is based on contract, tort, negligence, strict liability, or any other basis, even if we have been advised of the possibility of such damage. Your sole and exclusive remedy for any dispute with us is to stop using the Service."
 
@@ -3949,7 +3969,7 @@ msgstr "Top 15 Counties by Total Amount"
 msgid "Top 15 UATs by Total Amount"
 msgstr "Top 15 UATs by Total Amount"
 
-#: src/routes/budget-explorer.lazy.tsx:393
+#: src/routes/budget-explorer.lazy.tsx:454
 msgid "Top Categories"
 msgstr "Top Categories"
 
@@ -3959,16 +3979,16 @@ msgid "Top Economic Categories"
 msgstr "Top Economic Categories"
 
 #: src/components/budget-explorer/BudgetCategoryList.tsx:119
-#: src/routes/budget-explorer.lazy.tsx:452
+#: src/routes/budget-explorer.lazy.tsx:513
 msgid "Top Functional Categories"
 msgstr "Top Functional Categories"
 
-#: src/routes/charts/index.lazy.tsx:180
+#: src/routes/charts/index.lazy.tsx:177
 msgid "total"
 msgstr "total"
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:88
-#: src/components/budget-explorer/BudgetTreemap.tsx:505
+#: src/components/budget-explorer/BudgetTreemap.tsx:515
 #: src/components/common/NormalizationSelector.tsx:21
 #: src/components/entities/EntityReportControls.tsx:46
 #: src/components/entities/views/MapView.tsx:167
@@ -3991,7 +4011,7 @@ msgstr "Total amount"
 #: src/components/maps/HeatmapDataTable.tsx:281
 #: src/components/maps/HeatmapDataTable.tsx:449
 #: src/components/maps/utils.ts:123
-#: src/routes/entity-analytics.lazy.tsx:211
+#: src/routes/entity-analytics.lazy.tsx:208
 msgid "Total Amount"
 msgstr "Total Amount"
 
@@ -4036,11 +4056,11 @@ msgstr "Treemap Chart (Aggregated)"
 msgid "True Consolidated Revenues"
 msgstr "True Consolidated Revenues"
 
-#: src/routes/charts/index.lazy.tsx:266
+#: src/routes/charts/index.lazy.tsx:263
 msgid "Try a different search term or sorting."
 msgstr "Try a different search term or sorting."
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:191
+#: src/routes/alerts/$alertId/index.lazy.tsx:189
 #: src/routes/unsubscribe.$token.tsx:77
 msgid "Try again"
 msgstr "Try again"
@@ -4095,7 +4115,7 @@ msgstr "Undo successful"
 msgid "Unit"
 msgstr "Unit"
 
-#: src/routes/entity-analytics.lazy.tsx:182
+#: src/routes/entity-analytics.lazy.tsx:179
 msgid "Unknown error"
 msgstr "Unknown error"
 
@@ -4118,12 +4138,10 @@ msgstr "Unlock annotation"
 msgid "Unsaved changes"
 msgstr "Unsaved changes"
 
-#: src/routes/unsubscribe.$token.tsx:60
 #: src/routes/unsubscribe.$token.tsx:67
 msgid "Unsubscribe error"
 msgstr "Unsubscribe error"
 
-#: src/routes/unsubscribe.$token.tsx:92
 #: src/routes/unsubscribe.$token.tsx:96
 msgid "Unsubscribe from notifications"
 msgstr "Unsubscribe from notifications"
@@ -4163,23 +4181,23 @@ msgstr "Updated:"
 msgid "Usage analytics"
 msgstr "Usage analytics"
 
-#: src/routes/cookie-policy.lazy.tsx:78
+#: src/routes/cookie-policy.lazy.tsx:77
 msgid "Use <0>Cookie Settings</0> to manage analytics and error reporting consent, or use your browser controls to clear site data."
 msgstr "Use <0>Cookie Settings</0> to manage analytics and error reporting consent, or use your browser controls to clear site data."
 
-#: src/routes/charts/index.lazy.tsx:305
+#: src/routes/charts/index.lazy.tsx:302
 msgid "Use the tag menu on a chart card to add it to this category."
 msgstr "Use the tag menu on a chart card to add it to this category."
 
-#: src/routes/terms.lazy.tsx:45
+#: src/routes/terms.lazy.tsx:43
 msgid "User accounts and authentication"
 msgstr "User accounts and authentication"
 
-#: src/routes/terms.lazy.tsx:79
+#: src/routes/terms.lazy.tsx:77
 msgid "User annotations created locally remain yours."
 msgstr "User annotations created locally remain yours."
 
-#: src/routes/terms.lazy.tsx:68
+#: src/routes/terms.lazy.tsx:66
 msgid "User responsibilities and assumption of risk"
 msgstr "User responsibilities and assumption of risk"
 
@@ -4188,13 +4206,17 @@ msgstr "User responsibilities and assumption of risk"
 msgid "Value"
 msgstr "Value"
 
+#: src/components/charts/components/series-config/AxisInfo.tsx:58
+msgid "Values"
+msgstr "Values"
+
 #: src/components/filters/EntityAnalyticsFilter.tsx:388
 #: src/components/maps/HeatmapDataTable.tsx:433
-#: src/routes/entity-analytics.lazy.tsx:193
+#: src/routes/entity-analytics.lazy.tsx:190
 msgid "View"
 msgstr "View"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:195
+#: src/routes/alerts/$alertId/index.lazy.tsx:193
 msgid "View all alerts"
 msgstr "View all alerts"
 
@@ -4203,10 +4225,10 @@ msgid "View all reports"
 msgstr "View all reports"
 
 #: src/routes/charts/$chartId/index.lazy.tsx:67
-msgid "View and share your chart."
-msgstr "View and share your chart."
+#~ msgid "View and share your chart."
+#~ msgstr "View and share your chart."
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:520
+#: src/components/budget-explorer/BudgetTreemap.tsx:530
 msgid "View as Chart"
 msgstr "View as Chart"
 
@@ -4217,7 +4239,7 @@ msgstr "View as Chart"
 msgid "View Chart"
 msgstr "View Chart"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:438
+#: src/components/budget-explorer/BudgetTreemap.tsx:459
 msgid "View Details"
 msgstr "View Details"
 
@@ -4225,7 +4247,7 @@ msgstr "View Details"
 msgid "Warnings"
 msgstr "Warnings"
 
-#: src/routes/privacy.lazy.tsx:39
+#: src/routes/privacy.lazy.tsx:38
 msgid "We collect different types of information depending on how you use our Service:"
 msgstr "We collect different types of information depending on how you use our Service:"
 
@@ -4234,49 +4256,57 @@ msgstr "We collect different types of information depending on how you use our S
 msgid "error.validationIssue"
 msgstr "We couldn't display this page due to a data validation issue."
 
-#: src/routes/privacy.lazy.tsx:142
+#: src/routes/privacy.lazy.tsx:141
 msgid "We do not use automated decision-making or profiling that produces legal effects or similarly significantly affects you."
 msgstr "We do not use automated decision-making or profiling that produces legal effects or similarly significantly affects you."
 
-#: src/routes/terms.lazy.tsx:100
+#: src/routes/terms.lazy.tsx:98
 msgid "We may change or discontinue the Service at any time. We may update these Terms from time to time and will post the updated version with a new effective date."
 msgstr "We may change or discontinue the Service at any time. We may update these Terms from time to time and will post the updated version with a new effective date."
 
-#: src/routes/privacy.lazy.tsx:148
+#: src/routes/privacy.lazy.tsx:147
 msgid "We may update this Privacy Policy from time to time to reflect changes in our practices or legal requirements. We will post the updated policy with a new effective date. For material changes, we may provide additional notice such as an email notification to account holders."
 msgstr "We may update this Privacy Policy from time to time to reflect changes in our practices or legal requirements. We will post the updated policy with a new effective date. For material changes, we may provide additional notice such as an email notification to account holders."
 
-#: src/routes/privacy.lazy.tsx:90
+#: src/routes/privacy.lazy.tsx:89
 msgid "We share data with the following trusted service providers who process data on our behalf:"
 msgstr "We share data with the following trusted service providers who process data on our behalf:"
 
-#: src/routes/cookie-policy.lazy.tsx:32
+#: src/routes/cookie-policy.lazy.tsx:31
 msgid "We use cookies and localStorage to operate the app and, with consent, to measure usage and improve reliability."
 msgstr "We use cookies and localStorage to operate the app and, with consent, to measure usage and improve reliability."
 
-#: src/components/privacy/CookieConsentBanner.tsx:79
+#: src/components/privacy/CookieConsentBanner.tsx:90
 msgid "We use cookies and similar technologies to enhance your experience, analyze our traffic, and report errors. With your permission, we use PostHog for analytics and Sentry for error reporting to improve our service. You can change your preferences at any time. For more information, please see our <0>Privacy Policy</0>."
 msgstr "We use cookies and similar technologies to enhance your experience, analyze our traffic, and report errors. With your permission, we use PostHog for analytics and Sentry for error reporting to improve our service. You can change your preferences at any time. For more information, please see our <0>Privacy Policy</0>."
 
-#: src/components/privacy/CookieConsentBanner.tsx:75
+#: src/components/privacy/CookieConsentBanner.tsx:86
 msgid "We value your privacy"
 msgstr "We value your privacy"
 
-#: src/routes/privacy.lazy.tsx:38
+#: src/routes/privacy.lazy.tsx:37
 msgid "What personal data we collect"
 msgstr "What personal data we collect"
 
-#: src/routes/privacy.lazy.tsx:33
+#: src/routes/privacy.lazy.tsx:32
 msgid "Who we are"
 msgstr "Who we are"
+
+#: src/components/charts/components/series-config/StaticSeriesEditor.tsx:71
+#~ msgid "X-Axis"
+#~ msgstr "X-Axis"
 
 #: src/components/charts/components/views/SeriesConfigView.tsx:302
 msgid "X-Axis Prefix To Remove"
 msgstr "X-Axis Prefix To Remove"
 
+#: src/components/charts/components/series-config/StaticSeriesEditor.tsx:105
+#~ msgid "Y-Axis"
+#~ msgstr "Y-Axis"
+
 #: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:91
 #: src/components/entities/EntityFinancialTrends.tsx:92
-#: src/components/entities/EntityReportControls.tsx:200
+#: src/components/entities/EntityReportControls.tsx:201
 msgid "Year"
 msgstr "Year"
 
@@ -4284,7 +4314,7 @@ msgstr "Year"
 msgid "Year {headerLabel}"
 msgstr "Year {headerLabel}"
 
-#: src/components/entities/EntityReportControls.tsx:167
+#: src/components/entities/EntityReportControls.tsx:168
 #: src/components/filters/period-filter/PeriodFilter.tsx:237
 msgid "Yearly"
 msgstr "Yearly"
@@ -4325,11 +4355,11 @@ msgstr "You need to accept cookies to send an error report."
 msgid "You need to accept cookies to send feedback."
 msgstr "You need to accept cookies to send feedback."
 
-#: src/routes/alerts/new.lazy.tsx:143
+#: src/routes/alerts/new.lazy.tsx:141
 msgid "You need to be signed in to create alerts"
 msgstr "You need to be signed in to create alerts"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:151
+#: src/routes/alerts/$alertId/index.lazy.tsx:149
 msgid "You need to be signed in to edit alerts"
 msgstr "You need to be signed in to edit alerts"
 
@@ -4337,7 +4367,7 @@ msgstr "You need to be signed in to edit alerts"
 msgid "You need to be signed in to manage notifications"
 msgstr "You need to be signed in to manage notifications"
 
-#: src/features/notifications/components/EntityNotificationBell.tsx:50
+#: src/features/notifications/components/EntityNotificationBell.tsx:51
 msgid "You need to be signed in to subscribe to notifications"
 msgstr "You need to be signed in to subscribe to notifications"
 
@@ -4345,10 +4375,10 @@ msgstr "You need to be signed in to subscribe to notifications"
 msgid "You will no longer receive notifications via email."
 msgstr "You will no longer receive notifications via email."
 
-#: src/routes/privacy.lazy.tsx:111
+#: src/routes/privacy.lazy.tsx:110
 msgid "Your rights under GDPR"
 msgstr "Your rights under GDPR"
 
-#: src/routes/terms.lazy.tsx:35
+#: src/routes/terms.lazy.tsx:33
 msgid "Your use of the Service is also governed by our <0>Privacy Policy</0> and <1>Cookie Policy</1>, which describe how we process personal data, including security logs, authentication data, and your communication preferences."
 msgstr "Your use of the Service is also governed by our <0>Privacy Policy</0> and <1>Cookie Policy</1>, which describe how we process personal data, including security logs, authentication data, and your communication preferences."

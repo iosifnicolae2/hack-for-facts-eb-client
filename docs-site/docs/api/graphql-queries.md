@@ -93,7 +93,12 @@ query EntityAnalytics($f:AnalyticsFilterInput!){
 
 ```graphql
 query ExecutionAnalytics($inputs:[AnalyticsInput!]!){
-  executionAnalytics(inputs:$inputs){ seriesId unit totalAmount yearlyTrend{ year totalAmount } }
+  executionAnalytics(inputs:$inputs){
+    seriesId
+    xAxis { name type unit }
+    yAxis { name type unit }
+    data { x y }
+  }
 }
 ```
 
@@ -101,13 +106,27 @@ Datasets and aggregates
 
 ```graphql
 query Datasets($filter:DatasetFilter){
-  datasets(filter:$filter, limit:50){ nodes{ id name unit } pageInfo{ totalCount } }
+  datasets(filter:$filter, limit:50){
+    nodes{
+      id
+      name
+      xAxis { name type unit }
+      yAxis { name type unit }
+      data { x y }
+    }
+    pageInfo{ totalCount }
+  }
 }
 ```
 
 ```graphql
 query StaticAnalytics($ids:[ID!]!){
-  staticChartAnalytics(datasetIds:$ids){ datasetId unit yearlyTrend{ year totalAmount } }
+  staticChartAnalytics(seriesIds:$ids){
+    seriesId
+    xAxis { name type unit }
+    yAxis { name type unit }
+    data { x y }
+  }
 }
 ```
 
