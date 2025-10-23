@@ -118,7 +118,7 @@ export function BudgetExplorerHeader({ state, onChange }: Props) {
                   />
                 }
                 align="end"
-                className="p-0 w-md"
+                className="p-0 md:w-md"
                 mobileSide="bottom"
               />
             </div>

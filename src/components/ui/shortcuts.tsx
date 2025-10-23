@@ -84,7 +84,7 @@ export function KeyboardShortcuts() {
               {category.shortcuts.map((shortcut, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-4 rounded-lg border border-border bg-card hover:bg-accent/50 transition-colors"
+                  className="flex items-center justify-between p-4 rounded-lg border border-border bg-card hover:bg-secondary/50 transition-colors"
                 >
                   <div className="flex-1 space-y-1">
                     <div className="font-medium text-sm text-card-foreground">

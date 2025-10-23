@@ -85,7 +85,9 @@ export function EntityAnalyticsTreemap({
       <CardHeader className="p-2">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <h3 className="text-base sm:text-lg font-semibold">
-            <Trans>Budget Distribution</Trans> - {periodLabel}
+            <span className="text-wrap">
+              <Trans>Budget Distribution</Trans> {periodLabel}
+            </span>
           </h3>
           <div className="flex flex-col gap-3 lg:flex-row items-start lg:gap-4 lg:flex-wrap">
             <div className="flex flex-col gap-1.5">

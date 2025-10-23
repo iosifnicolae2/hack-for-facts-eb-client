@@ -101,7 +101,7 @@ export function SelectedOptionsDisplay({
                     {remainingCountForCompactBadge > 0 && (
                         <Badge
                             variant="outline"
-                            className={cn("py-1 px-2.5 text-sm cursor-pointer hover:bg-accent")}
+                            className={cn("py-1 px-2.5 text-sm cursor-pointer hover:bg-secondary")}
                             onClick={() => setShowAllSelected(true)}
                             title={`Show ${remainingCountForCompactBadge} more selected items`}
                             role="button"

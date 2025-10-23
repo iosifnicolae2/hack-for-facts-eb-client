@@ -31,7 +31,7 @@ const RadioGroupButtons = React.forwardRef<
             {options.map((option) => (
                 <Button
                     key={option.value.toString()}
-                    variant={value === option.value ? "secondary" : "outline"}
+                    variant={value === option.value ? "accent" : "outline"}
                     size="sm"
                     className="w-full h-auto px-3 py-2 text-left"
                     onClick={() => handleChange(option.value)}

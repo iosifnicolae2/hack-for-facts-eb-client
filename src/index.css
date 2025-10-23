@@ -64,9 +64,9 @@
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 45%;
 
-    /* Accent - Subtle navy-tinted surfaces */
-    --accent: 220 20% 96%;
-    --accent-foreground: 220 25% 22%;
+    /* Accent - Black background with white foreground for strong contrast */
+    --accent: 0 0% 0%;
+    --accent-foreground: 0 0% 100%;
 
     /* Destructive - For warnings and errors */
     --destructive: 0 84.2% 60.2%;

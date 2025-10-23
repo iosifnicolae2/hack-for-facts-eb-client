@@ -109,7 +109,7 @@ export function PeriodFilter({ value, onChange, allowDeselect = true }: Props) {
           onChange?.({ type: 'YEAR', selection: { dates: date ? [date as PeriodDate] : [] } })
         }} className="grid grid-cols-3 sm:grid-cols-5 gap-2">
           {availableYears.map((year) => (
-            <ToggleGroupItem key={year} value={year} className="data-[state=on]:bg-foreground data-[state=on]:text-background">
+            <ToggleGroupItem key={year} value={year} variant="default">
               {year}
             </ToggleGroupItem>
           ))}
@@ -126,7 +126,7 @@ export function PeriodFilter({ value, onChange, allowDeselect = true }: Props) {
                 {availableQuarters.map((q) => {
                   const date = `${year}-${q.id}` as PeriodDate
                   return (
-                    <ToggleGroupItem key={date} value={date} className="data-[state=on]:bg-foreground data-[state=on]:text-background">
+                    <ToggleGroupItem key={date} value={date} variant="default">
                       {q.label}
                     </ToggleGroupItem>
                   )
@@ -147,7 +147,7 @@ export function PeriodFilter({ value, onChange, allowDeselect = true }: Props) {
                 {availableMonths.map((m) => {
                   const date = `${year}-${m.id}` as PeriodDate
                   return (
-                    <ToggleGroupItem key={date} value={date} className="data-[state=on]:bg-foreground data-[state=on]:text-background">
+                    <ToggleGroupItem key={date} value={date} variant="default">
                       {m.label}
                     </ToggleGroupItem>
                   )
@@ -232,14 +232,14 @@ export function PeriodFilter({ value, onChange, allowDeselect = true }: Props) {
         <Label className="text-xs text-muted-foreground">
           <Trans>Period Type</Trans>
         </Label>
-        <ToggleGroup type="single" value={periodType} onValueChange={(v: ReportPeriodType) => handlePeriodTypeChange(v)} variant="outline" size="sm" className="w-full justify-between gap-2">
-          <ToggleGroupItem value="YEAR" className="flex-1">
+        <ToggleGroup type="single" value={periodType} onValueChange={(v: ReportPeriodType) => handlePeriodTypeChange(v)} variant="default" size="sm" className="w-full justify-between gap-2">
+          <ToggleGroupItem value="YEAR" variant="default" className="flex-1">
             <Trans>Yearly</Trans>
           </ToggleGroupItem>
-          <ToggleGroupItem value="QUARTER" className="flex-1">
+          <ToggleGroupItem value="QUARTER" variant="default" className="flex-1">
             <Trans>Quarterly</Trans>
           </ToggleGroupItem>
-          <ToggleGroupItem value="MONTH" className="flex-1">
+          <ToggleGroupItem value="MONTH" variant="default" className="flex-1">
             <Trans>Monthly</Trans>
           </ToggleGroupItem>
         </ToggleGroup>
@@ -248,11 +248,11 @@ export function PeriodFilter({ value, onChange, allowDeselect = true }: Props) {
         <Label className="text-xs text-muted-foreground">
           <Trans>Selection Mode</Trans>
         </Label>
-        <ToggleGroup type="single" value={selectionMode} onValueChange={(v: PeriodSelectionMode) => handleSelectionModeChange(v)} variant="outline" size="sm" className="w-full justify-between gap-2">
-          <ToggleGroupItem value="dates" className="flex-1">
+        <ToggleGroup type="single" value={selectionMode} onValueChange={(v: PeriodSelectionMode) => handleSelectionModeChange(v)} variant="default" size="sm" className="w-full justify-between gap-2">
+          <ToggleGroupItem value="dates" variant="default" className="flex-1">
             <Trans>Dates</Trans>
           </ToggleGroupItem>
-          <ToggleGroupItem value="interval" className="flex-1">
+          <ToggleGroupItem value="interval" variant="default" className="flex-1">
             <Trans>Interval</Trans>
           </ToggleGroupItem>
         </ToggleGroup>

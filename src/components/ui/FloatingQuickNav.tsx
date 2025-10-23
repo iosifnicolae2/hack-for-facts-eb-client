@@ -114,7 +114,7 @@ export function FloatingQuickNav({ className, mapViewType, mapActive, tableActiv
                         title={action.label}
                         variant="ghost"
                         size="icon"
-                        className="h-10 w-10 rounded-full shadow-lg border border-border hover:bg-accent/50 transition-colors"
+                        className="h-10 w-10 rounded-full shadow-lg border border-border hover:bg-secondary/50 transition-colors"
                         onClick={action.onClick}
                     >
                         {action.icon}

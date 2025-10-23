@@ -107,6 +107,7 @@ export function UatList({
                                     selected={isSelected}
                                     optionHeight={virtualRow.size}
                                     optionStart={virtualRow.start}
+                                    className="data-[active=true]:bg-accent data-[active=true]:text-accent-foreground"
                                 />
                             );
                         })

@@ -11,7 +11,11 @@ type Props = {
 
 function toCompactPeriodLabel(period: ReportPeriodInput): string {
   if (period.selection.interval) {
-    return period.selection.interval.start ?? ''
+    const start = period.selection.interval.start
+    const end = period.selection.interval.end
+    if (!start && !end) return ''
+    if (start && end && start !== end) return `${start} - ${end}`
+    return String(start ?? end ?? '')
   }
   if (period.selection.dates && period.selection.dates.length > 0) {
     const dates = period.selection.dates
@@ -31,7 +35,7 @@ export function EntityReportLabel({ className, period: period, reportType, mainC
   return (
     <span className={cn('inline-flex items-center gap-1', className)}>
       <span className="font-bold"><Trans>Reporting:</Trans></span>
-      <span className="capitalize font-bold">{parts.join(' • ')}</span>
+      <span className="capitalize font-bold max-w-42 sm:max-w-none truncate">{parts.join(' • ')}</span>
     </span>
   )
 }

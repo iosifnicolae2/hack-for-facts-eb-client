@@ -58,7 +58,7 @@ export function AlertCard({
   return (
     <div className="rounded-3xl border border-muted-foreground/10 bg-gradient-to-br from-background via-background to-muted/30 shadow-sm transition-all hover:shadow-lg">
       <div className="flex flex-col gap-4 p-5">
-        <div className="flex items-center justify-between gap-4 py-2 px-3 rounded-lg hover:bg-accent/30 transition-colors">
+        <div className="flex items-center justify-between gap-4 py-2 px-3 rounded-lg hover:bg-secondary/30 transition-colors">
           <div className="flex-1 min-w-0 space-y-1">
             <div className="flex items-center gap-3">
               <button

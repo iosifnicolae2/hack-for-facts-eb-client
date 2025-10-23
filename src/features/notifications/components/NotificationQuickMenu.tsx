@@ -58,7 +58,7 @@ export function NotificationQuickMenu({ cui, entityName, notifications, onClose 
           return (
             <div
               key={type}
-              className="flex items-center justify-between gap-4 px-3 py-3 rounded-lg hover:bg-accent/50 transition-colors cursor-pointer group"
+              className="flex items-center justify-between gap-4 px-3 py-3 rounded-lg hover:bg-secondary/50 transition-colors cursor-pointer group"
               onClick={() => handleToggle(type, !isActive)}
             >
               <div className="flex-1 min-w-0">

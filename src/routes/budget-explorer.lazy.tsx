@@ -347,7 +347,9 @@ function BudgetExplorerPage() {
           <CardHeader>
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 lg:gap-4">
               <h3 className="text-xl sm:text-3xl font-bold flex items-center gap-2">
-                <Trans>Budget Distribution</Trans> - {periodLabel}
+                <span className="text-wrap">
+                  <Trans>Budget Distribution</Trans> {periodLabel}
+                </span>
                 <Button
                   asChild
                   variant="ghost"

@@ -38,7 +38,7 @@ export function ViewTypeRadioGroup<T extends string>({ value, onChange, viewOpti
                             "flex-1 text-center px-3 py-2 border rounded-md cursor-pointer text-sm font-medium transition-colors flex items-center justify-center focus-within:outline-hidden focus-within:ring-1 focus-within:ring-ring",
                             isSelected
                                 ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                                : "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                                : "bg-muted text-muted-foreground hover:bg-secondary hover:text-secondary-foreground"
                         )}
                     >
                         <RadioGroupItem

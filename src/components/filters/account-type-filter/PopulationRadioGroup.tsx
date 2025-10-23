@@ -42,7 +42,7 @@ export function PopulationRadioGroup({ value, onChange }: PopulationRadioGroupPr
                             "flex-1 text-center px-3 py-2 border rounded-md cursor-pointer text-sm font-medium transition-colors",
                             isSelected
                                 ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                                : "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                                : "bg-muted text-muted-foreground hover:bg-secondary hover:text-secondary-foreground"
                         )}
                     >
                         <RadioGroupItem

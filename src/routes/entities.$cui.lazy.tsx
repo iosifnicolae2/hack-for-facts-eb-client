@@ -324,7 +324,7 @@ function EntityDetailsPage() {
                   onPrefetch={debouncedPrefetch}
                 />
               }
-              className="p-4 sm:w-md"
+              className="p-4 max-h-[80vh] sm:max-h-none sm:w-md overflow-auto"
               align="end"
               mobileSide="bottom"
             />

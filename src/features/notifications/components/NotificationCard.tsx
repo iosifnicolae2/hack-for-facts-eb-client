@@ -79,7 +79,7 @@ export function NotificationCard({ notifications, onRemove }: Props) {
             return (
               <div key={notification.id}>
                 {index > 0 && <Separator className="my-3" />}
-                <div className="flex items-center justify-between gap-4 py-2 px-3 rounded-lg hover:bg-accent/30 transition-colors group">
+                <div className="flex items-center justify-between gap-4 py-2 px-3 rounded-lg hover:bg-secondary/30 transition-colors group">
                   <div className="flex-1 min-w-0">
                     <div className="text-sm font-medium mb-0.5">
                       {config.label}
