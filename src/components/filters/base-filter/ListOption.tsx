@@ -28,8 +28,8 @@ export function ListOption({
         <div
             className={cn(
                 "flex items-center absolute top-0 left-0 w-full transition-colors duration-150 ease-in-out",
-                "hover:bg-secondary hover:text-secondary-foreground cursor-pointer",
-                "data-[active=true]:bg-zinc-200 data-[active=true]:text-accent-foreground",
+                "hover:bg-secondary/80 hover:text-secondary-foreground cursor-pointer",
+                "data-[active=true]:bg-secondary data-[active=true]:text-secondary-foreground",
                 "data-[active=true]:ring-1 data-[active=true]:ring-ring data-[active=true]:ring-offset-1",
                 selected && "bg-muted",
                 className
