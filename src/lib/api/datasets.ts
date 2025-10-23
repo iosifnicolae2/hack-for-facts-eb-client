@@ -17,7 +17,7 @@ export interface Dataset {
 export async function getDatasets(ids: (string | number)[], lang?: string): Promise<Dataset[]> {
   const locale = lang || getUserLocale();
   const query = `
-    query GetDatasets($ids: [ID!]!, $lang: Language) {
+    query GetDatasets($ids: [ID!]!, $lang: String) {
       datasets(filter: { ids: $ids }, lang: $lang) {
         nodes {
           id

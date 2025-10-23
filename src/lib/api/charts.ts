@@ -35,7 +35,7 @@ export async function getChartAnalytics(inputs: AnalyticsInput[]): Promise<Analy
 export async function getStaticChartAnalytics(seriesIds: string[], lang?: string): Promise<AnalyticsSeries[]> {
   const locale = lang || getUserLocale();
   const query = `
-    query GetStaticChartAnalytics($seriesIds: [ID!]!, $lang: Language) {
+    query GetStaticChartAnalytics($seriesIds: [ID!]!, $lang: String) {
       staticChartAnalytics(seriesIds: $seriesIds, lang: $lang) {
         seriesId
         xAxis { name type unit }

@@ -39,7 +39,7 @@ export function DatasetList({
         queryFn: async ({ pageParam = 0 }): Promise<PageData<Dataset>> => {
             const locale = getUserLocale();
             const query = `
-              query Datasets($search: String!, $limit: Int!, $offset: Int!, $lang: Language) {
+              query Datasets($search: String!, $limit: Int!, $offset: Int!, $lang: String) {
                 datasets(filter: { search: $search }, limit: $limit, offset: $offset, lang: $lang) {
                     nodes {
                         id
