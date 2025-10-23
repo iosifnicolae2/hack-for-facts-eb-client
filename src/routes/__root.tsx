@@ -141,39 +141,6 @@ function getGlobalHead() {
           },
         }),
       },
-      {
-        type: 'application/ld+json',
-        children: JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'FAQPage',
-          mainEntity: [
-            {
-              '@type': 'Question',
-              name: 'Which path for a specific entity?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Use /entities/{cui}. Add ?year, ?period=YEAR|QUARTER|MONTH, ?view, and normalization parameters as needed.',
-              },
-            },
-            {
-              '@type': 'Question',
-              name: 'Which path for overall budget exploration?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Use /budget-explorer. Combine year range, categories, and view options (overview, treemap, sankey, list).',
-              },
-            },
-            {
-              '@type': 'Question',
-              name: 'Which path for analytics across entities?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Use /entity-analytics to compare entities. Filter by time, categories, and geography; switch between table, charts, and line-items views.',
-              },
-            },
-          ],
-        }),
-      },
     ],
   }
 }
