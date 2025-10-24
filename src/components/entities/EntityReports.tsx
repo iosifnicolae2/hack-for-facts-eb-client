@@ -238,7 +238,7 @@ export default function EntityReports({ cui, initialType }: EntityReportsProps) 
                 </div>
               </div>
             }
-            className="p-4"
+            className="p-4 sm:w-xs"
             align="end"
             mobileSide="bottom"
           />
