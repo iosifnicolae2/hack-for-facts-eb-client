@@ -563,6 +563,16 @@ msgstr "All processors are bound by data protection agreements and GDPR-complian
 msgid "All recorded revenue inflows"
 msgstr "All recorded revenue inflows"
 
+#: src/components/entities/EntityReports.tsx:166
+#: src/components/entities/EntityReports.tsx:169
+msgid "All types"
+msgstr "All types"
+
+#: src/components/entities/EntityReports.tsx:183
+#: src/components/entities/EntityReports.tsx:186
+msgid "All years"
+msgstr "All years"
+
 #: src/routes/cookies.lazy.tsx:172
 msgid "Allow all"
 msgstr "Allow all"
@@ -620,10 +630,6 @@ msgstr "Analytics and enhanced error reporting only with your consent."
 msgid "Analytics Cookies (opt-in only)"
 msgstr "Analytics Cookies (opt-in only)"
 
-#: src/routes/entity-analytics.lazy.tsx:162
-#~ msgid "Analyze aggregated values per entity and explore top entities by amount and per capita."
-#~ msgstr "Analyze aggregated values per entity and explore top entities by amount and per capita."
-
 #: src/routes/entity-analytics.lazy.tsx:163
 msgid "Analyze aggregated values per entity and explore top entities."
 msgstr "Analyze aggregated values per entity and explore top entities."
@@ -652,6 +658,10 @@ msgstr "Annotations"
 #: src/routes/cookies.lazy.tsx:115
 msgid "Anonymous usage patterns, page views, interactions."
 msgstr "Anonymous usage patterns, page views, interactions."
+
+#: src/components/entities/EntityReports.tsx:236
+msgid "Apply Filters"
+msgstr "Apply Filters"
 
 #: src/components/entities/EntityFinancialTrends.tsx:89
 msgid "April"
@@ -724,10 +734,6 @@ msgstr "Availability and changes"
 msgid "Avg per-capita"
 msgstr "Avg per-capita"
 
-#: src/components/charts/components/filters-details/StaticSeriesFilter.tsx:45
-#~ msgid "Axes"
-#~ msgstr "Axes"
-
 #: src/routes/alerts/new.lazy.tsx:170
 msgid "Back"
 msgstr "Back"
@@ -741,7 +747,7 @@ msgstr "Back to alert"
 msgid "Back to Configuration"
 msgstr "Back to Configuration"
 
-#: src/components/entities/EntityReports.tsx:64
+#: src/components/entities/EntityReports.tsx:79
 msgid "Back to Overview"
 msgstr "Back to Overview"
 
@@ -775,6 +781,10 @@ msgstr "Basic security logs are kept for a short period to protect accounts."
 msgid "Both"
 msgstr "Both"
 
+#: src/components/entities/EntityReports.tsx:72
+msgid "Browse and download all financial reports submitted by this entity"
+msgstr "Browse and download all financial reports submitted by this entity"
+
 #: src/components/entities/views/Overview.tsx:239
 #: src/components/entities/views/TrendsView.tsx:207
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:89
@@ -793,7 +803,7 @@ msgstr "Budget sector"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:577
 #: src/components/charts/components/series-config/SeriesFilter.tsx:772
-#: src/components/entities/EntityReportsSummary.tsx:211
+#: src/components/entities/EntityReportCard.tsx:139
 #: src/components/filters/EntityAnalyticsFilter.tsx:516
 #: src/components/filters/EntityAnalyticsFilter.tsx:694
 #: src/components/filters/MapFilter.tsx:343
@@ -869,10 +879,6 @@ msgstr "Changes to this policy"
 msgid "Chart"
 msgstr "Chart"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:66
-#~ msgid "Chart – Transparenta.eu"
-#~ msgstr "Chart – Transparenta.eu"
-
 #: src/components/charts/components/views/AnnotationConfigView.tsx:211
 #: src/components/charts/components/views/ChartConfigView.tsx:37
 #: src/components/charts/components/views/SeriesConfigView.tsx:342
@@ -929,12 +935,14 @@ msgstr "Choose between essential-only or all cookies, then fine-tune options bel
 msgid "Choose operator"
 msgstr "Choose operator"
 
+#: src/components/entities/EntityReports.tsx:224
 #: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:73
 msgid "Clear"
 msgstr "Clear"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:471
 #: src/components/charts/components/series-config/SeriesFilter.tsx:669
+#: src/components/entities/EntityReports.tsx:130
 #: src/components/filters/EntityAnalyticsFilter.tsx:601
 #: src/components/filters/MapFilter.tsx:430
 #: src/components/ui/multi-select.tsx:118
@@ -1021,14 +1029,6 @@ msgstr "Configure"
 msgid "Configure Chart"
 msgstr "Configure Chart"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:66
-#~ msgid "Configure chart – Transparenta.eu"
-#~ msgstr "Configure chart – Transparenta.eu"
-
-#: src/routes/charts/$chartId/index.lazy.tsx:67
-#~ msgid "Configure chart options, series, and annotations."
-#~ msgstr "Configure chart options, series, and annotations."
-
 #: src/components/charts/components/views/SeriesConfigView.tsx:141
 msgid "Configure Series"
 msgstr "Configure Series"
@@ -1100,10 +1100,6 @@ msgstr "Cookie duration"
 #: src/routes/cookie-policy.lazy.tsx:17
 msgid "Cookie Policy"
 msgstr "Cookie Policy"
-
-#: src/routes/cookie-policy.lazy.tsx:16
-#~ msgid "Cookie Policy – Transparenta.eu"
-#~ msgstr "Cookie Policy – Transparenta.eu"
 
 #: src/components/footer/AppFooter.tsx:123
 #: src/routes/cookies.lazy.tsx:71
@@ -1225,14 +1221,6 @@ msgstr "Create alert"
 msgid "Create Alert"
 msgstr "Create Alert"
 
-#: src/routes/alerts/new.lazy.tsx:167
-#~ msgid "Create Alert - Error"
-#~ msgstr "Create Alert - Error"
-
-#: src/routes/alerts/new.lazy.tsx:136
-#~ msgid "Create Alert - Sign In Required"
-#~ msgstr "Create Alert - Sign In Required"
-
 #: src/components/charts/components/views/SeriesConfigView.tsx:230
 msgid "Create alert from this series"
 msgstr "Create alert from this series"
@@ -1309,10 +1297,6 @@ msgstr "Data Label Offset"
 msgid "Data Labels"
 msgstr "Data Labels"
 
-#: src/components/charts/components/series-config/AxisInfo.tsx:73
-#~ msgid "Data points"
-#~ msgstr "Data points"
-
 #: src/routes/privacy.lazy.tsx:99
 msgid "Data retention"
 msgstr "Data retention"
@@ -1350,10 +1334,6 @@ msgstr "Data sources and licensing"
 msgid "Data storage and retention"
 msgstr "Data storage and retention"
 
-#: src/components/charts/components/series-config/StaticSeriesEditor.tsx:66
-#~ msgid "Data Structure"
-#~ msgstr "Data Structure"
-
 #: src/routes/map.lazy.tsx:260
 msgid "Data Table View"
 msgstr "Data Table View"
@@ -1361,10 +1341,6 @@ msgstr "Data Table View"
 #: src/components/filters/MapFilter.tsx:192
 msgid "Data View"
 msgstr "Data View"
-
-#: src/components/entities/EntityReports.tsx:130
-msgid "Date"
-msgstr "Date"
 
 #: src/components/filters/period-filter/PeriodFilter.tsx:253
 msgid "Dates"
@@ -1432,6 +1408,7 @@ msgid "Detail level"
 msgstr "Detail level"
 
 #: src/components/entities/EntityReportControls.tsx:41
+#: src/components/entities/EntityReports.tsx:172
 msgid "Detailed"
 msgstr "Detailed"
 
@@ -1451,10 +1428,6 @@ msgstr "Detailed categories"
 #: src/components/budget-explorer/BudgetLineItemsPreview.tsx:68
 msgid "Detailed Line Items Breakdown"
 msgstr "Detailed Line Items Breakdown"
-
-#: src/routes/cookie-policy.lazy.tsx:16
-#~ msgid "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
-#~ msgstr "Details on cookies and localStorage used by Transparenta.eu, with consent choices."
 
 #: src/routes/entities.$cui.lazy.tsx:264
 msgid "Details:"
@@ -1485,13 +1458,9 @@ msgstr "Display data labels on the chart"
 msgid "Display Options"
 msgstr "Display Options"
 
-#: src/components/entities/EntityReportsSummary.tsx:146
+#: src/components/entities/EntityReportCard.tsx:64
 msgid "Download"
 msgstr "Download"
-
-#: src/components/entities/EntityReports.tsx:133
-msgid "Downloads"
-msgstr "Downloads"
 
 #: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:40
 #: src/components/charts/components/views/AnnotationConfigView.tsx:221
@@ -1580,10 +1549,6 @@ msgstr "Edit alert"
 #: src/routes/alerts/$alertId/index.lazy.tsx:217
 msgid "Edit Alert"
 msgstr "Edit Alert"
-
-#: src/routes/alerts/$alertId/index.lazy.tsx:144
-#~ msgid "Edit Alert - Sign In Required"
-#~ msgstr "Edit Alert - Sign In Required"
 
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:34
 msgid "Edit Annotation"
@@ -1695,11 +1660,6 @@ msgstr "Entities"
 msgid "Entity"
 msgstr "Entity"
 
-#: src/routes/entities.$cui.lazy.tsx:224
-#: src/routes/entities.$cui.lazy.tsx:240
-#~ msgid "Entity {cui} – Not found"
-#~ msgstr "Entity {cui} – Not found"
-
 #: src/components/entity-analytics/EntityAnalyticsLayout.tsx:15
 #: src/components/entity-analytics/EntityAnalyticsLayout.tsx:46
 #: src/components/footer/AppFooter.tsx:90
@@ -1707,25 +1667,13 @@ msgstr "Entity"
 msgid "Entity Analytics"
 msgstr "Entity Analytics"
 
-#: src/routes/entity-analytics.lazy.tsx:161
-#~ msgid "Entity analytics – Transparenta.eu"
-#~ msgstr "Entity analytics – Transparenta.eu"
-
 #: src/components/ui/shortcuts.tsx:50
 msgid "Entity Details"
 msgstr "Entity Details"
 
-#: src/routes/settings/notifications.tsx:68
-#~ msgid "Entity Notification Settings"
-#~ msgstr "Entity Notification Settings"
-
 #: src/routes/settings/notifications.tsx:104
 msgid "Entity Notifications"
 msgstr "Entity Notifications"
-
-#: src/routes/settings/notifications.tsx:39
-#~ msgid "Entity Notifications - Sign In Required"
-#~ msgstr "Entity Notifications - Sign In Required"
 
 #: src/components/ui/shortcuts.tsx:29
 msgid "Entity Search"
@@ -1771,10 +1719,6 @@ msgstr "Error Loading Chart Data"
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:123
 msgid "Error loading data"
 msgstr "Error loading data"
-
-#: src/routes/entities.$cui.lazy.tsx:224
-#~ msgid "Error loading data for CUI {cui}."
-#~ msgstr "Error loading data for CUI {cui}."
 
 #: src/routes/map.lazy.tsx:172
 msgid "Error loading data:"
@@ -1910,10 +1854,6 @@ msgstr "Expense Type"
 msgid "Expenses"
 msgstr "Expenses"
 
-#: src/routes/map.lazy.tsx:156
-#~ msgid "Explore choropleth maps of public spending by UAT/County with per-capita or total normalization."
-#~ msgstr "Explore choropleth maps of public spending by UAT/County with per-capita or total normalization."
-
 #: src/routes/index.lazy.tsx:56
 msgid "Explore data through a map."
 msgstr "Explore data through a map."
@@ -2024,12 +1964,17 @@ msgstr "Feedback is currently unavailable."
 msgid "Filter field"
 msgstr "Filter field"
 
+#: src/components/entities/EntityReports.tsx:151
+msgid "Filter Reports"
+msgstr "Filter Reports"
+
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:147
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:171
 msgid "Filtered"
 msgstr "Filtered"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:466
+#: src/components/entities/EntityReports.tsx:140
 #: src/components/filters/EntityAnalyticsFilter.tsx:374
 #: src/routes/map.lazy.tsx:316
 msgid "Filters"
@@ -2062,8 +2007,8 @@ msgid "Financial Operations"
 msgstr "Financial Operations"
 
 #: src/components/entities/EntityReports.tsx:63
-#: src/components/entities/EntityReportsSummary.tsx:97
-#: src/components/entities/EntityReportsSummary.tsx:116
+#: src/components/entities/EntityReportsSummary.tsx:77
+#: src/components/entities/EntityReportsSummary.tsx:96
 msgid "Financial Reports"
 msgstr "Financial Reports"
 
@@ -2306,10 +2251,6 @@ msgstr "Hide details"
 #: src/components/footer/AppFooter.tsx:85
 msgid "Home"
 msgstr "Home"
-
-#: src/routes/privacy.lazy.tsx:15
-#~ msgid "How Transparenta.eu handles data, analytics, and error reporting with consent."
-#~ msgstr "How Transparenta.eu handles data, analytics, and error reporting with consent."
 
 #: src/components/budget-explorer/RevenueBreakdown.tsx:99
 msgid "How we compute true consolidated revenues (excluding inter-budget flows and financial operations)"
@@ -2566,7 +2507,7 @@ msgstr "Loading map and heatmap data..."
 msgid "Loading map data..."
 msgstr "Loading map data..."
 
-#: src/components/entities/EntityReportsSummary.tsx:101
+#: src/components/entities/EntityReportsSummary.tsx:81
 msgid "Loading reports…"
 msgstr "Loading reports…"
 
@@ -2617,7 +2558,6 @@ msgstr "Main creditor"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:513
 #: src/components/charts/components/series-config/SeriesFilter.tsx:692
-#: src/components/entities/EntityReports.tsx:132
 #: src/components/filters/EntityAnalyticsFilter.tsx:444
 #: src/components/filters/EntityAnalyticsFilter.tsx:622
 #: src/components/filters/MapFilter.tsx:274
@@ -2632,10 +2572,6 @@ msgstr "Main creditor aggregated"
 #: src/features/notifications/components/NotificationQuickMenu.tsx:90
 msgid "Manage all notifications"
 msgstr "Manage all notifications"
-
-#: src/routes/charts/index.lazy.tsx:167
-#~ msgid "Manage and search your locally saved charts. Create, favorite, categorize, and share your visualizations."
-#~ msgstr "Manage and search your locally saved charts. Create, favorite, categorize, and share your visualizations."
 
 #: src/features/notifications/components/EntityNotificationBell.tsx:103
 #: src/routes/unsubscribe.$token.tsx:43
@@ -2815,6 +2751,11 @@ msgstr "New value"
 msgid "Newest"
 msgstr "Newest"
 
+#: src/components/entities/EntityReports.tsx:120
+#: src/components/entities/EntityReports.tsx:203
+msgid "Newest first"
+msgstr "Newest first"
+
 #: src/routes/privacy.lazy.tsx:76
 msgid "Newsletter consent and management"
 msgstr "Newsletter consent and management"
@@ -2894,10 +2835,6 @@ msgstr "No data available to display financial evolution."
 msgid "No Data Found"
 msgstr "No Data Found"
 
-#: src/routes/entities.$cui.lazy.tsx:240
-#~ msgid "No data found for CUI {cui}."
-#~ msgstr "No data found for CUI {cui}."
-
 #: src/components/charts/components/chart-view/ChartDisplayArea.tsx:107
 msgid "No Data Series"
 msgstr "No Data Series"
@@ -2966,6 +2903,10 @@ msgstr "No options found."
 msgid "No related charts yet"
 msgstr "No related charts yet"
 
+#: src/components/entities/EntityReports.tsx:293
+msgid "No reports found"
+msgstr "No reports found"
+
 #: src/routes/charts/index.lazy.tsx:262
 msgid "No results"
 msgstr "No results"
@@ -3026,6 +2967,11 @@ msgstr "October"
 #: src/routes/charts/index.lazy.tsx:216
 msgid "Oldest"
 msgstr "Oldest"
+
+#: src/components/entities/EntityReports.tsx:120
+#: src/components/entities/EntityReports.tsx:204
+msgid "Oldest first"
+msgstr "Oldest first"
 
 #: src/routes/cookie-policy.lazy.tsx:57
 msgid "Only set if you consent to analytics:"
@@ -3185,10 +3131,6 @@ msgstr "Period Type"
 msgid "Pie Chart (Aggregated)"
 msgstr "Pie Chart (Aggregated)"
 
-#: src/components/charts/components/series-config/AxisInfo.tsx:33
-#~ msgid "points"
-#~ msgstr "points"
-
 #: src/components/entities/UatDisplay.tsx:39
 #: src/components/entity-analytics/EntityAnalyticsTable.tsx:89
 #: src/components/maps/charts/UatDataCharts.tsx:42
@@ -3226,14 +3168,14 @@ msgstr "Preparing your share link..."
 msgid "Preview"
 msgstr "Preview"
 
+#: src/components/entities/EntityReports.tsx:170
+msgid "Principal Aggregated"
+msgstr "Principal Aggregated"
+
 #: src/components/footer/AppFooter.tsx:111
 #: src/routes/privacy.lazy.tsx:16
 msgid "Privacy Policy"
 msgstr "Privacy Policy"
-
-#: src/routes/privacy.lazy.tsx:15
-#~ msgid "Privacy Policy – Transparenta.eu"
-#~ msgstr "Privacy Policy – Transparenta.eu"
 
 #: src/components/ui/shortcuts.tsx:126
 msgid "Pro Tip"
@@ -3289,6 +3231,10 @@ msgstr "Ready to create"
 msgid "Redo successful"
 msgstr "Redo successful"
 
+#: src/components/entities/EntityReports.tsx:153
+msgid "Refine your search using the options below"
+msgstr "Refine your search using the options below"
+
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:245
 msgid "Relative Mode"
 msgstr "Relative Mode"
@@ -3323,13 +3269,14 @@ msgid "Report type"
 msgstr "Report type"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:591
-#: src/components/entities/EntityReportsSummary.tsx:202
+#: src/components/entities/EntityReportCard.tsx:124
+#: src/components/entities/EntityReports.tsx:162
 #: src/components/filters/EntityAnalyticsFilter.tsx:532
 #: src/components/filters/MapFilter.tsx:359
 msgid "Report Type"
 msgstr "Report Type"
 
-#: src/components/entities/EntityReportsSummary.tsx:186
+#: src/components/entities/EntityReportCard.tsx:104
 msgid "Reporting entity"
 msgstr "Reporting entity"
 
@@ -3370,10 +3317,6 @@ msgstr "Revert"
 msgid "Review and manage alerts created from your custom data series."
 msgstr "Review and manage alerts created from your custom data series."
 
-#: src/routes/map.lazy.tsx:155
-#~ msgid "Romania spending heatmap – Transparenta.eu"
-#~ msgstr "Romania spending heatmap – Transparenta.eu"
-
 #: src/components/theme/language-toggle.tsx:42
 msgid "Romanian"
 msgstr "Romanian"
@@ -3406,10 +3349,6 @@ msgstr "Save"
 #: src/routes/cookies.lazy.tsx:163
 msgid "Save cookie preferences"
 msgstr "Save cookie preferences"
-
-#: src/routes/charts/index.lazy.tsx:166
-#~ msgid "Saved charts – Transparenta.eu"
-#~ msgstr "Saved charts – Transparenta.eu"
 
 #: src/routes/alerts/$alertId/index.lazy.tsx:121
 msgid "Saving…"
@@ -3485,6 +3424,10 @@ msgstr "Search UATs (ex: Municipiul Arad)"
 #: src/components/entities/SearchToggleInput.tsx:24
 msgid "Search..."
 msgstr "Search..."
+
+#: src/components/entities/EntityReports.tsx:171
+msgid "Secondary Aggregated"
+msgstr "Secondary Aggregated"
 
 #: src/components/entities/EntityReportControls.tsx:40
 msgid "Secondary creditor aggregated"
@@ -3719,6 +3662,10 @@ msgstr "Something went wrong while trying to render this page."
 msgid "Sort by"
 msgstr "Sort by"
 
+#: src/components/entities/EntityReports.tsx:196
+msgid "Sort Order"
+msgstr "Sort Order"
+
 #: src/components/charts/components/filters-details/StaticSeriesFilter.tsx:31
 #: src/components/charts/components/series-config/StaticSeriesEditor.tsx:50
 msgid "Source"
@@ -3815,10 +3762,6 @@ msgstr "Technologies we use"
 msgid "Temporarily enable scroll wheel zoom"
 msgstr "Temporarily enable scroll wheel zoom"
 
-#: src/routes/terms.lazy.tsx:16
-#~ msgid "Terms for using the Transparenta.eu service and visualizations."
-#~ msgstr "Terms for using the Transparenta.eu service and visualizations."
-
 #: src/components/footer/AppFooter.tsx:114
 msgid "Terms of Service"
 msgstr "Terms of Service"
@@ -3826,10 +3769,6 @@ msgstr "Terms of Service"
 #: src/routes/terms.lazy.tsx:16
 msgid "Terms of Use"
 msgstr "Terms of Use"
-
-#: src/routes/terms.lazy.tsx:16
-#~ msgid "Terms of Use – Transparenta.eu"
-#~ msgstr "Terms of Use – Transparenta.eu"
 
 #: src/routes/test-error.tsx:9
 msgid "Test error"
@@ -3909,10 +3848,6 @@ msgstr "Threshold {0}"
 #: src/lib/alert-links.ts:26
 msgid "Threshold {0} ({1})"
 msgstr "Threshold {0} ({1})"
-
-#: src/components/charts/components/series-config/AxisInfo.tsx:44
-#~ msgid "Timeline"
-#~ msgstr "Timeline"
 
 #: src/components/charts/components/chart-config/SeriesToolbar.tsx:39
 msgid "Tip: Copy/Cut/Paste with ⌘/Ctrl+C, X, V. Duplicate with ⌘/Ctrl+D."
@@ -4071,7 +4006,6 @@ msgstr "Try again"
 msgid "Try Again"
 msgstr "Try Again"
 
-#: src/components/entities/EntityReports.tsx:131
 #: src/components/maps/utils.ts:27
 msgid "Type"
 msgstr "Type"
@@ -4208,10 +4142,6 @@ msgstr "User responsibilities and assumption of risk"
 msgid "Value"
 msgstr "Value"
 
-#: src/components/charts/components/series-config/AxisInfo.tsx:58
-#~ msgid "Values"
-#~ msgstr "Values"
-
 #: src/components/filters/EntityAnalyticsFilter.tsx:388
 #: src/components/maps/HeatmapDataTable.tsx:433
 #: src/routes/entity-analytics.lazy.tsx:190
@@ -4222,13 +4152,9 @@ msgstr "View"
 msgid "View all alerts"
 msgstr "View all alerts"
 
-#: src/components/entities/EntityReportsSummary.tsx:120
+#: src/components/entities/EntityReportsSummary.tsx:100
 msgid "View all reports"
 msgstr "View all reports"
-
-#: src/routes/charts/$chartId/index.lazy.tsx:67
-#~ msgid "View and share your chart."
-#~ msgstr "View and share your chart."
 
 #: src/components/budget-explorer/BudgetTreemap.tsx:530
 msgid "View as Chart"
@@ -4294,21 +4220,14 @@ msgstr "What personal data we collect"
 msgid "Who we are"
 msgstr "Who we are"
 
-#: src/components/charts/components/series-config/StaticSeriesEditor.tsx:71
-#~ msgid "X-Axis"
-#~ msgstr "X-Axis"
-
 #: src/components/charts/components/views/SeriesConfigView.tsx:302
 msgid "X-Axis Prefix To Remove"
 msgstr "X-Axis Prefix To Remove"
 
-#: src/components/charts/components/series-config/StaticSeriesEditor.tsx:105
-#~ msgid "Y-Axis"
-#~ msgstr "Y-Axis"
-
 #: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:91
 #: src/components/entities/EntityFinancialTrends.tsx:92
 #: src/components/entities/EntityReportControls.tsx:201
+#: src/components/entities/EntityReports.tsx:179
 msgid "Year"
 msgstr "Year"
 
