@@ -1,14 +1,14 @@
 import { useMemo } from 'react';
 import { Link } from '@tanstack/react-router';
 import { Trans } from '@lingui/react/macro';
-import { Calendar, Download, FileText, Landmark } from 'lucide-react';
+import { CalendarCheck, Download, FileText, Landmark, Wallet } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useReportsConnection } from '@/lib/hooks/useEntityDetails';
 import { toReportTypeValue, type ReportPeriodInput, type GqlReportType } from '@/schemas/reporting';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Badge } from '../ui/badge';
+import { getUserLocale } from '@/lib/utils';
 
 type Props = {
   readonly cui: string;
@@ -61,14 +61,27 @@ function daysInMonth(month: number | string, year: number): string {
   return String(new Date(year, m, 0).getDate()).padStart(2, '0');
 }
 
-function formatDate(dateString: string) {
+function formatDate(dateString: string, locale?: string) {
   const n = Number(dateString);
   const date = Number.isFinite(n) ? new Date(n) : new Date(dateString);
-  return date.toLocaleDateString('ro-RO', { year: 'numeric', month: 'long', day: 'numeric' });
+  return date.toLocaleDateString(locale || 'ro-RO', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+function formatMonthYear(dateString: string, locale?: string) {
+  const n = Number(dateString);
+  const date = Number.isFinite(n) ? new Date(n) : new Date(dateString);
+  if (isNaN(date.getTime())) {
+    return dateString;
+  }
+  const month = date.toLocaleDateString(locale || 'ro-RO', { month: 'long' });
+  const year = date.getFullYear();
+  const capitalizedMonth = month.charAt(0).toUpperCase() + month.slice(1);
+  return `${capitalizedMonth} ${year}`;
 }
 
 export function EntityReportsSummary({ cui, reportPeriod, reportType, limit = 12, mainCreditorCui }: Props) {
   const { start, end } = useMemo(() => toDateRange(reportPeriod), [reportPeriod]);
+  const locale = getUserLocale();
   const { data, isLoading } = useReportsConnection({
     filter: { entity_cui: cui, report_type: reportType, report_date_start: start, report_date_end: end, main_creditor_cui: mainCreditorCui },
     limit,
@@ -115,75 +128,100 @@ export function EntityReportsSummary({ cui, reportPeriod, reportType, limit = 12
             return (
               <div
                 key={report.report_id}
-                className="rounded-xl border bg-muted/40 p-4 sm:p-5"
+                className="group overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm transition-all duration-200 hover:border-border hover:shadow-md"
               >
-                <div className="flex flex-col gap-4">
-                  <div className="flex flex-wrap items-start justify-between gap-3">
-                    <div className="flex items-center gap-3">
-                      <div className="rounded-full bg-background p-2 text-muted-foreground shadow-sm">
-                        <Calendar className="h-4 w-4 sm:h-5 sm:w-5" />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-base font-semibold leading-tight sm:text-lg">{report.reporting_year}</p>
-                        <p className="text-sm text-muted-foreground leading-tight">{formatDate(report.report_date)}</p>
-                      </div>
+                {/* Header: Date and Downloads */}
+                <div className="flex flex-col gap-4 border-b border-border/40 bg-muted/30 px-5 py-4 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                      <CalendarCheck className="h-5 w-5" />
                     </div>
-                    <Badge
-                      variant="secondary"
-                      className="rounded-full border border-border/60 bg-background px-3 py-1 text-xs font-semibold tracking-wide text-foreground shadow-sm hover:bg-transparent"
-                    >
-                      {toReportTypeValue(report.report_type as GqlReportType)}
-                    </Badge>
+                    <div>
+                      <p className="text-base font-semibold leading-tight">{formatMonthYear(report.report_date, locale)}</p>
+                      <p className="mt-0.5 text-xs text-muted-foreground">{formatDate(report.report_date, locale)}</p>
+                    </div>
                   </div>
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-                    <div className="flex items-start gap-2 text-sm">
-                      <Landmark className="mt-0.5 h-4 w-4 text-muted-foreground sm:h-5 sm:w-5" />
-                      <div className="flex flex-col">
-                        <span className="text-xs uppercase text-muted-foreground">
-                          <Trans>Reporting entity</Trans>
-                        </span>
-                        <Link
-                          to="/entities/$cui"
-                          params={{ cui: report.main_creditor.cui }}
-                          className="text-sm font-medium underline-offset-2 hover:underline leading-tight"
-                          title={report.main_creditor.name}
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          {report.main_creditor.name}
-                        </Link>
-                      </div>
+                  <div>
+                    <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground sm:mb-0 sm:sr-only">
+                      <Trans>Download</Trans>
+                    </p>
+                    <div className="flex flex-wrap gap-1.5 sm:justify-end">
+                      <TooltipProvider>
+                        {report.download_links.map((link) => {
+                          const fileType = link.split('.').pop()?.toUpperCase() ?? 'File';
+                          return (
+                            <Tooltip key={link}>
+                              <TooltipTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  asChild
+                                  className="h-8 w-20 gap-1.5 rounded-full border-border/60 px-3 text-xs font-medium transition-colors hover:border-border hover:bg-secondary sm:w-auto"
+                                  onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                                >
+                                  <a href={link} target="_blank" rel="noopener noreferrer">
+                                    <Download className="h-3.5 w-3.5" />
+                                    {fileType}
+                                    <span className="sr-only">Download {fileType}</span>
+                                  </a>
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent className="rounded-lg">Download {fileType}</TooltipContent>
+                            </Tooltip>
+                          );
+                        })}
+                      </TooltipProvider>
                     </div>
-                    <div className="sm:text-right">
-                      <span className="text-xs font-medium uppercase text-muted-foreground">
-                        <Trans>Download</Trans>
-                      </span>
-                      <div className="mt-2 flex flex-wrap gap-2 sm:justify-end">
-                        <TooltipProvider>
-                          {report.download_links.map((link) => {
-                            const fileType = link.split('.').pop()?.toUpperCase() ?? 'File';
-                            return (
-                              <Tooltip key={link}>
-                                <TooltipTrigger asChild>
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    asChild
-                                    className="flex items-center gap-1 rounded-full px-3 py-1 text-xs"
-                                    onClick={(e: React.MouseEvent) => e.stopPropagation()}
-                                  >
-                                    <a href={link} target="_blank" rel="noopener noreferrer">
-                                      <Download className="h-3 w-3" />
-                                      {fileType}
-                                      <span className="sr-only">Download {fileType}</span>
-                                    </a>
-                                  </Button>
-                                </TooltipTrigger>
-                                <TooltipContent>Download {fileType}</TooltipContent>
-                              </Tooltip>
-                            );
-                          })}
-                        </TooltipProvider>
-                      </div>
+                  </div>
+                </div>
+
+                {/* Content Grid */}
+                <div className="grid grid-cols-1 gap-4 p-5 md:grid-cols-2 lg:grid-cols-3">
+                  <div className="flex gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+                      <Landmark className="h-4 w-4" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        <Trans>Reporting entity</Trans>
+                      </p>
+                      <Link
+                        to="/entities/$cui"
+                        params={{ cui: report.main_creditor.cui }}
+                        className="text-sm font-semibold leading-snug text-foreground transition-colors hover:text-primary hover:underline"
+                        title={report.main_creditor.name}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {report.main_creditor.name}
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+                      <FileText className="h-4 w-4" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        <Trans>Report Type</Trans>
+                      </p>
+                      <p className="text-sm font-semibold leading-snug text-foreground">
+                        {toReportTypeValue(report.report_type as GqlReportType)}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+                      <Wallet className="h-4 w-4" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        <Trans>Budget Sector</Trans>
+                      </p>
+                      <p className="text-sm font-semibold leading-snug text-foreground">
+                        {report.budgetSector.sector_description}
+                      </p>
                     </div>
                   </div>
                 </div>

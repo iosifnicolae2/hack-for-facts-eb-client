@@ -79,6 +79,10 @@ export interface EntityDetailsData {
         cui: string;
         name: string;
       };
+      budgetSector: {
+        sector_id: string;
+        sector_description: string;
+      };
     }[];
   } | null;
 }
@@ -91,6 +95,7 @@ export interface ReportNode {
   report_date: string;
   download_links: string[];
   main_creditor: { cui: string; name: string };
+  budgetSector: { sector_id: string; sector_description: string };
 }
 
 interface PageInfo {
@@ -238,6 +243,7 @@ const GET_ENTITY_REPORTS_QUERY = `
           report_date
           download_links
           main_creditor { cui name }
+          budgetSector { sector_id sector_description }
         }
         pageInfo {
           totalCount
@@ -280,6 +286,7 @@ const GET_REPORTS_QUERY = `
         report_date
         download_links
         main_creditor { cui name }
+        budgetSector { sector_id sector_description }
       }
       pageInfo {
         totalCount

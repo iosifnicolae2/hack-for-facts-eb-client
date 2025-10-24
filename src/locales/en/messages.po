@@ -793,6 +793,7 @@ msgstr "Budget sector"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:577
 #: src/components/charts/components/series-config/SeriesFilter.tsx:772
+#: src/components/entities/EntityReportsSummary.tsx:211
 #: src/components/filters/EntityAnalyticsFilter.tsx:516
 #: src/components/filters/EntityAnalyticsFilter.tsx:694
 #: src/components/filters/MapFilter.tsx:343
@@ -1309,8 +1310,8 @@ msgid "Data Labels"
 msgstr "Data Labels"
 
 #: src/components/charts/components/series-config/AxisInfo.tsx:73
-msgid "Data points"
-msgstr "Data points"
+#~ msgid "Data points"
+#~ msgstr "Data points"
 
 #: src/routes/privacy.lazy.tsx:99
 msgid "Data retention"
@@ -1484,7 +1485,7 @@ msgstr "Display data labels on the chart"
 msgid "Display Options"
 msgstr "Display Options"
 
-#: src/components/entities/EntityReportsSummary.tsx:158
+#: src/components/entities/EntityReportsSummary.tsx:146
 msgid "Download"
 msgstr "Download"
 
@@ -2061,8 +2062,8 @@ msgid "Financial Operations"
 msgstr "Financial Operations"
 
 #: src/components/entities/EntityReports.tsx:63
-#: src/components/entities/EntityReportsSummary.tsx:84
-#: src/components/entities/EntityReportsSummary.tsx:103
+#: src/components/entities/EntityReportsSummary.tsx:97
+#: src/components/entities/EntityReportsSummary.tsx:116
 msgid "Financial Reports"
 msgstr "Financial Reports"
 
@@ -2565,7 +2566,7 @@ msgstr "Loading map and heatmap data..."
 msgid "Loading map data..."
 msgstr "Loading map data..."
 
-#: src/components/entities/EntityReportsSummary.tsx:88
+#: src/components/entities/EntityReportsSummary.tsx:101
 msgid "Loading reports…"
 msgstr "Loading reports…"
 
@@ -3185,8 +3186,8 @@ msgid "Pie Chart (Aggregated)"
 msgstr "Pie Chart (Aggregated)"
 
 #: src/components/charts/components/series-config/AxisInfo.tsx:33
-msgid "points"
-msgstr "points"
+#~ msgid "points"
+#~ msgstr "points"
 
 #: src/components/entities/UatDisplay.tsx:39
 #: src/components/entity-analytics/EntityAnalyticsTable.tsx:89
@@ -3322,12 +3323,13 @@ msgid "Report type"
 msgstr "Report type"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:591
+#: src/components/entities/EntityReportsSummary.tsx:202
 #: src/components/filters/EntityAnalyticsFilter.tsx:532
 #: src/components/filters/MapFilter.tsx:359
 msgid "Report Type"
 msgstr "Report Type"
 
-#: src/components/entities/EntityReportsSummary.tsx:143
+#: src/components/entities/EntityReportsSummary.tsx:186
 msgid "Reporting entity"
 msgstr "Reporting entity"
 
@@ -3909,8 +3911,8 @@ msgid "Threshold {0} ({1})"
 msgstr "Threshold {0} ({1})"
 
 #: src/components/charts/components/series-config/AxisInfo.tsx:44
-msgid "Timeline"
-msgstr "Timeline"
+#~ msgid "Timeline"
+#~ msgstr "Timeline"
 
 #: src/components/charts/components/chart-config/SeriesToolbar.tsx:39
 msgid "Tip: Copy/Cut/Paste with ⌘/Ctrl+C, X, V. Duplicate with ⌘/Ctrl+D."
@@ -4207,8 +4209,8 @@ msgid "Value"
 msgstr "Value"
 
 #: src/components/charts/components/series-config/AxisInfo.tsx:58
-msgid "Values"
-msgstr "Values"
+#~ msgid "Values"
+#~ msgstr "Values"
 
 #: src/components/filters/EntityAnalyticsFilter.tsx:388
 #: src/components/maps/HeatmapDataTable.tsx:433
@@ -4220,7 +4222,7 @@ msgstr "View"
 msgid "View all alerts"
 msgstr "View all alerts"
 
-#: src/components/entities/EntityReportsSummary.tsx:107
+#: src/components/entities/EntityReportsSummary.tsx:120
 msgid "View all reports"
 msgstr "View all reports"
 
