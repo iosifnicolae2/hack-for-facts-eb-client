@@ -2816,7 +2816,7 @@ msgstr "Nu există date disponibile"
 
 #: src/components/budget-explorer/BudgetTreemap.tsx:481
 msgid "No data available for the current selection."
-msgstr "Nu sunt disponibile date pentru selecția curentă."
+msgstr "Nu există date disponibile pentru selecția curentă."
 
 #: src/routes/map.lazy.tsx:215
 msgid "No data available for the map."
