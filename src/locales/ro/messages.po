@@ -785,10 +785,10 @@ msgstr "Ambele"
 msgid "Browse and download all financial reports submitted by this entity"
 msgstr "Răsfoiți și descărcați toate rapoartele financiare depuse de această entitate"
 
-#: src/components/entities/views/Overview.tsx:239
-#: src/components/entities/views/TrendsView.tsx:207
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:89
-#: src/routes/budget-explorer.lazy.tsx:351
+#: src/components/entities/views/Overview.tsx:244
+#: src/components/entities/views/TrendsView.tsx:210
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:90
+#: src/routes/budget-explorer.lazy.tsx:373
 msgid "Budget Distribution"
 msgstr "Distribuția bugetului"
 
@@ -1402,8 +1402,8 @@ msgstr "Densitate"
 msgid "Description"
 msgstr "Descriere"
 
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:118
-#: src/routes/budget-explorer.lazy.tsx:402
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:119
+#: src/routes/budget-explorer.lazy.tsx:424
 msgid "Detail level"
 msgstr "Nivel de detaliu"
 
@@ -1420,8 +1420,8 @@ msgstr "Defalcare detaliată"
 msgid "Detailed Budget Execution"
 msgstr "Executie bugetara detaliata"
 
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:133
-#: src/routes/budget-explorer.lazy.tsx:415
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:134
+#: src/routes/budget-explorer.lazy.tsx:437
 msgid "Detailed categories"
 msgstr "Categorii detaliate"
 
@@ -1429,7 +1429,7 @@ msgstr "Categorii detaliate"
 msgid "Detailed Line Items Breakdown"
 msgstr "Detalierea liniilor bugetare"
 
-#: src/routes/entities.$cui.lazy.tsx:264
+#: src/routes/entities.$cui.lazy.tsx:268
 msgid "Details:"
 msgstr "Detalii:"
 
@@ -1502,10 +1502,10 @@ msgstr "Gestionați-vă cu ușurință abonamentele"
 msgid "Ec"
 msgstr "Ec"
 
-#: src/components/entities/views/Overview.tsx:263
-#: src/components/entities/views/TrendsView.tsx:210
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:113
-#: src/routes/budget-explorer.lazy.tsx:397
+#: src/components/entities/views/Overview.tsx:268
+#: src/components/entities/views/TrendsView.tsx:213
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:114
+#: src/routes/budget-explorer.lazy.tsx:419
 msgid "Economic"
 msgstr "Economic"
 
@@ -1704,7 +1704,7 @@ msgstr "este egal cu"
 msgid "Error"
 msgstr "Eroare"
 
-#: src/routes/entities.$cui.lazy.tsx:261
+#: src/routes/entities.$cui.lazy.tsx:265
 msgid "Error Fetching Entity Details"
 msgstr "Eroare la preluarea detaliilor entității"
 
@@ -1844,13 +1844,13 @@ msgstr "Tip cheltuială"
 #: src/components/entities/EntityLineItemsTabs.tsx:63
 #: src/components/entities/LineItemsAnalytics.tsx:118
 #: src/components/entities/views/MapView.tsx:141
-#: src/components/entities/views/Overview.tsx:259
+#: src/components/entities/views/Overview.tsx:264
 #: src/components/filters/account-type-filter/AccountCategoryRadio.tsx:12
 #: src/components/filters/EntityAnalyticsFilter.tsx:404
 #: src/components/filters/MapFilter.tsx:232
 #: src/components/maps/utils.ts:27
 #: src/hooks/filters/useFilterLabels.tsx:191
-#: src/routes/entity-analytics.lazy.tsx:262
+#: src/routes/entity-analytics.lazy.tsx:264
 msgid "Expenses"
 msgstr "Cheltuieli"
 
@@ -1924,7 +1924,7 @@ msgstr "Eroare la încărcarea alertei"
 msgid "Failed to load alerts. Please try again."
 msgstr "Eroare la încărcarea alertelor. Vă rugăm să încercați din nou."
 
-#: src/routes/budget-explorer.lazy.tsx:426
+#: src/routes/budget-explorer.lazy.tsx:448
 msgid "Failed to load data."
 msgstr "Eroare la încărcarea datelor."
 
@@ -2065,10 +2065,10 @@ msgstr "pentru filtrele selectate."
 msgid "Found {replacementCount} occurrence{0}"
 msgstr "S-au găsit {replacementCount} apariții"
 
-#: src/components/entities/views/Overview.tsx:262
-#: src/components/entities/views/TrendsView.tsx:209
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:106
-#: src/routes/budget-explorer.lazy.tsx:394
+#: src/components/entities/views/Overview.tsx:267
+#: src/components/entities/views/TrendsView.tsx:212
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:107
+#: src/routes/budget-explorer.lazy.tsx:416
 msgid "Functional"
 msgstr "Funcțional"
 
@@ -2173,6 +2173,10 @@ msgstr "Mergi la pagina principală"
 msgid "Go to Homepage"
 msgstr "Mergi la pagina principală"
 
+#: src/components/budget-explorer/BudgetTreemap.tsx:491
+msgid "Go to Main Categories"
+msgstr "Mergi la categoria principală"
+
 #: src/components/ui/FloatingQuickNav.tsx:94
 #: src/components/ui/shortcuts.tsx:22
 msgid "Go to Map"
@@ -2198,8 +2202,8 @@ msgstr "mai mare decât"
 msgid "Greater than"
 msgstr "Mai mare decât"
 
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:94
-#: src/routes/budget-explorer.lazy.tsx:384
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:95
+#: src/routes/budget-explorer.lazy.tsx:406
 msgid "Grouping"
 msgstr "Grupare"
 
@@ -2279,13 +2283,13 @@ msgstr "Include context suplimentar pentru erori. Nu se atașează nicio identit
 #: src/components/entities/EntityFinancialTrends.tsx:230
 #: src/components/entities/LineItemsAnalytics.tsx:118
 #: src/components/entities/views/MapView.tsx:145
-#: src/components/entities/views/Overview.tsx:258
+#: src/components/entities/views/Overview.tsx:263
 #: src/components/filters/account-type-filter/AccountCategoryRadio.tsx:13
 #: src/components/filters/EntityAnalyticsFilter.tsx:405
 #: src/components/filters/MapFilter.tsx:233
 #: src/components/maps/utils.ts:27
 #: src/hooks/filters/useFilterLabels.tsx:192
-#: src/routes/entity-analytics.lazy.tsx:262
+#: src/routes/entity-analytics.lazy.tsx:264
 msgid "Income"
 msgstr "Venituri"
 
@@ -2541,8 +2545,8 @@ msgstr "Blocat"
 msgid "Main Categories"
 msgstr "Categorii Principale"
 
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:130
-#: src/routes/budget-explorer.lazy.tsx:412
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:131
+#: src/routes/budget-explorer.lazy.tsx:434
 msgid "Main chapters"
 msgstr "Capitole principale"
 
@@ -2810,7 +2814,7 @@ msgstr "Nicio condiție setată"
 msgid "No Data Available"
 msgstr "Nu există date disponibile"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:468
+#: src/components/budget-explorer/BudgetTreemap.tsx:481
 msgid "No data available for the current selection."
 msgstr "Nu sunt disponibile date pentru selecția curentă."
 
@@ -2826,7 +2830,7 @@ msgstr "Nu sunt date disponibile pentru tabel."
 msgid "No data available to display financial evolution."
 msgstr "Nu sunt date disponibile pentru afișarea evoluției financiare."
 
-#: src/routes/entities.$cui.lazy.tsx:276
+#: src/routes/entities.$cui.lazy.tsx:280
 msgid "No Data Found"
 msgstr "Nu s-au găsit date"
 
@@ -2854,7 +2858,7 @@ msgstr "Nu este disponibilă o detaliere economică pentru venituri."
 msgid "No enabled series data available to display."
 msgstr "Nu există date disponibile în seriile activate pentru a fi afișate."
 
-#: src/routes/entities.$cui.lazy.tsx:278
+#: src/routes/entities.$cui.lazy.tsx:282
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "Nu s-au găsit detalii despre entitate pentru CUI: <0>{cui}</0>. Este posibil ca această entitate să nu existe sau să nu aibă date asociate."
 
@@ -3001,9 +3005,9 @@ msgstr "Deschide fereastra de feedback"
 msgid "Open floating entity search"
 msgstr "Deschide căutarea flotantă de entități"
 
-#: src/routes/budget-explorer.lazy.tsx:481
-#: src/routes/budget-explorer.lazy.tsx:497
-#: src/routes/budget-explorer.lazy.tsx:517
+#: src/routes/budget-explorer.lazy.tsx:503
+#: src/routes/budget-explorer.lazy.tsx:519
+#: src/routes/budget-explorer.lazy.tsx:539
 msgid "Open in Chart Builder"
 msgstr "Deschide în Generatorul de Grafice"
 
@@ -3019,8 +3023,8 @@ msgstr "Deschide în Editorul de Grafice"
 msgid "Open in charts"
 msgstr "Deschide în grafice"
 
-#: src/components/entities/views/Overview.tsx:245
-#: src/routes/budget-explorer.lazy.tsx:358
+#: src/components/entities/views/Overview.tsx:250
+#: src/routes/budget-explorer.lazy.tsx:380
 msgid "Open in entity analytics"
 msgstr "Deschide în analitice entitate"
 
@@ -3279,7 +3283,7 @@ msgstr "Entitate raportoare"
 msgid "Reporting filters"
 msgstr "Filtre de raportare"
 
-#: src/routes/entities.$cui.lazy.tsx:309
+#: src/routes/entities.$cui.lazy.tsx:313
 msgid "Reporting period"
 msgstr "Perioada de raportare"
 
@@ -3294,6 +3298,10 @@ msgstr "Rapoarte"
 #: src/routes/cookies.lazy.tsx:80
 msgid "Required for core functionality like security and preferences. Always on."
 msgstr "Necesar pentru funcționalități de bază, precum securitatea și preferințele. Activat permanent."
+
+#: src/components/budget-explorer/BudgetTreemap.tsx:478
+#~ msgid "Reset to Main Categories"
+#~ msgstr ""
 
 #: src/components/charts/components/backup-restore/ChartsBackupRestore.tsx:185
 msgid "Restore"
@@ -3432,7 +3440,7 @@ msgstr "Creditor secundar agregat"
 msgid "Security monitoring and logs"
 msgstr "Monitorizare și jurnale de securitate"
 
-#: src/routes/budget-explorer.lazy.tsx:457
+#: src/routes/budget-explorer.lazy.tsx:479
 msgid "See advanced view"
 msgstr "Vezi vizualizarea avansată"
 
@@ -3785,7 +3793,7 @@ msgstr "Software-ul, designul și conținutul original al Serviciului sunt prote
 msgid "The share link you are trying to access is invalid or no longer available."
 msgstr "Linkul de partajare pe care încerci să-l accesezi este invalid sau nu mai este disponibil."
 
-#: src/routes/entities.$cui.lazy.tsx:263
+#: src/routes/entities.$cui.lazy.tsx:267
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "A apărut o problemă la preluarea detaliilor pentru CUI: <0>{cui}</0>."
 
@@ -3885,11 +3893,11 @@ msgstr "Comută tema"
 msgid "Tooltip"
 msgstr "Indiciu"
 
-#: src/components/entities/views/TrendsView.tsx:95
+#: src/components/entities/views/TrendsView.tsx:97
 msgid "Top {TOP_CATEGORIES_COUNT} Income Categories for {entityName}"
 msgstr "Top {TOP_CATEGORIES_COUNT} categorii de venituri pentru {entityName}"
 
-#: src/components/entities/views/TrendsView.tsx:95
+#: src/components/entities/views/TrendsView.tsx:97
 msgid "Top {TOP_CATEGORIES_COUNT} Spending Categories for {entityName}"
 msgstr "Top {TOP_CATEGORIES_COUNT} categorii de cheltuieli pentru {entityName}"
 
@@ -3901,7 +3909,7 @@ msgstr "Top 15 județe după suma totală"
 msgid "Top 15 UATs by Total Amount"
 msgstr "Top 15 UAT-uri după suma totală"
 
-#: src/routes/budget-explorer.lazy.tsx:454
+#: src/routes/budget-explorer.lazy.tsx:476
 msgid "Top Categories"
 msgstr "Categorii principale"
 
@@ -3911,7 +3919,7 @@ msgid "Top Economic Categories"
 msgstr "Categorii economice principale"
 
 #: src/components/budget-explorer/BudgetCategoryList.tsx:119
-#: src/routes/budget-explorer.lazy.tsx:513
+#: src/routes/budget-explorer.lazy.tsx:535
 msgid "Top Functional Categories"
 msgstr "Categorii funcționale principale"
 
@@ -3920,7 +3928,7 @@ msgid "total"
 msgstr "total"
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:88
-#: src/components/budget-explorer/BudgetTreemap.tsx:515
+#: src/components/budget-explorer/BudgetTreemap.tsx:539
 #: src/components/common/NormalizationSelector.tsx:21
 #: src/components/entities/EntityReportControls.tsx:46
 #: src/components/entities/views/MapView.tsx:167
@@ -4151,7 +4159,7 @@ msgstr "Vezi toate alertele"
 msgid "View all reports"
 msgstr "Vezi toate rapoartele"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:530
+#: src/components/budget-explorer/BudgetTreemap.tsx:554
 msgid "View as Chart"
 msgstr "Vezi Graficul"
 
@@ -4162,7 +4170,7 @@ msgstr "Vezi Graficul"
 msgid "View Chart"
 msgstr "Vezi graficul"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:459
+#: src/components/budget-explorer/BudgetTreemap.tsx:472
 msgid "View Details"
 msgstr "Vezi detalii"
 

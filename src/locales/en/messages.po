@@ -785,10 +785,10 @@ msgstr "Both"
 msgid "Browse and download all financial reports submitted by this entity"
 msgstr "Browse and download all financial reports submitted by this entity"
 
-#: src/components/entities/views/Overview.tsx:239
-#: src/components/entities/views/TrendsView.tsx:207
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:89
-#: src/routes/budget-explorer.lazy.tsx:351
+#: src/components/entities/views/Overview.tsx:244
+#: src/components/entities/views/TrendsView.tsx:210
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:90
+#: src/routes/budget-explorer.lazy.tsx:373
 msgid "Budget Distribution"
 msgstr "Budget Distribution"
 
@@ -1402,8 +1402,8 @@ msgstr "Density"
 msgid "Description"
 msgstr "Description"
 
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:118
-#: src/routes/budget-explorer.lazy.tsx:402
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:119
+#: src/routes/budget-explorer.lazy.tsx:424
 msgid "Detail level"
 msgstr "Detail level"
 
@@ -1420,8 +1420,8 @@ msgstr "Detailed breakdown"
 msgid "Detailed Budget Execution"
 msgstr "Detailed Budget Execution"
 
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:133
-#: src/routes/budget-explorer.lazy.tsx:415
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:134
+#: src/routes/budget-explorer.lazy.tsx:437
 msgid "Detailed categories"
 msgstr "Detailed categories"
 
@@ -1429,7 +1429,7 @@ msgstr "Detailed categories"
 msgid "Detailed Line Items Breakdown"
 msgstr "Detailed Line Items Breakdown"
 
-#: src/routes/entities.$cui.lazy.tsx:264
+#: src/routes/entities.$cui.lazy.tsx:268
 msgid "Details:"
 msgstr "Details:"
 
@@ -1502,10 +1502,10 @@ msgstr "Easily manage your subscriptions"
 msgid "Ec"
 msgstr "Ec"
 
-#: src/components/entities/views/Overview.tsx:263
-#: src/components/entities/views/TrendsView.tsx:210
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:113
-#: src/routes/budget-explorer.lazy.tsx:397
+#: src/components/entities/views/Overview.tsx:268
+#: src/components/entities/views/TrendsView.tsx:213
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:114
+#: src/routes/budget-explorer.lazy.tsx:419
 msgid "Economic"
 msgstr "Economic"
 
@@ -1704,7 +1704,7 @@ msgstr "equals"
 msgid "Error"
 msgstr "Error"
 
-#: src/routes/entities.$cui.lazy.tsx:261
+#: src/routes/entities.$cui.lazy.tsx:265
 msgid "Error Fetching Entity Details"
 msgstr "Error Fetching Entity Details"
 
@@ -1844,13 +1844,13 @@ msgstr "Expense Type"
 #: src/components/entities/EntityLineItemsTabs.tsx:63
 #: src/components/entities/LineItemsAnalytics.tsx:118
 #: src/components/entities/views/MapView.tsx:141
-#: src/components/entities/views/Overview.tsx:259
+#: src/components/entities/views/Overview.tsx:264
 #: src/components/filters/account-type-filter/AccountCategoryRadio.tsx:12
 #: src/components/filters/EntityAnalyticsFilter.tsx:404
 #: src/components/filters/MapFilter.tsx:232
 #: src/components/maps/utils.ts:27
 #: src/hooks/filters/useFilterLabels.tsx:191
-#: src/routes/entity-analytics.lazy.tsx:262
+#: src/routes/entity-analytics.lazy.tsx:264
 msgid "Expenses"
 msgstr "Expenses"
 
@@ -1924,7 +1924,7 @@ msgstr "Failed to load alert"
 msgid "Failed to load alerts. Please try again."
 msgstr "Failed to load alerts. Please try again."
 
-#: src/routes/budget-explorer.lazy.tsx:426
+#: src/routes/budget-explorer.lazy.tsx:448
 msgid "Failed to load data."
 msgstr "Failed to load data."
 
@@ -2065,10 +2065,10 @@ msgstr "for the selected filters."
 msgid "Found {replacementCount} occurrence{0}"
 msgstr "Found {replacementCount} occurrence{0}"
 
-#: src/components/entities/views/Overview.tsx:262
-#: src/components/entities/views/TrendsView.tsx:209
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:106
-#: src/routes/budget-explorer.lazy.tsx:394
+#: src/components/entities/views/Overview.tsx:267
+#: src/components/entities/views/TrendsView.tsx:212
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:107
+#: src/routes/budget-explorer.lazy.tsx:416
 msgid "Functional"
 msgstr "Functional"
 
@@ -2173,6 +2173,10 @@ msgstr "Go to homepage"
 msgid "Go to Homepage"
 msgstr "Go to Homepage"
 
+#: src/components/budget-explorer/BudgetTreemap.tsx:491
+msgid "Go to Main Categories"
+msgstr "Go to Main Categories"
+
 #: src/components/ui/FloatingQuickNav.tsx:94
 #: src/components/ui/shortcuts.tsx:22
 msgid "Go to Map"
@@ -2198,8 +2202,8 @@ msgstr "greater than"
 msgid "Greater than"
 msgstr "Greater than"
 
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:94
-#: src/routes/budget-explorer.lazy.tsx:384
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:95
+#: src/routes/budget-explorer.lazy.tsx:406
 msgid "Grouping"
 msgstr "Grouping"
 
@@ -2284,13 +2288,13 @@ msgstr "Includes additional error context. No user identity is attached."
 #: src/components/entities/EntityFinancialTrends.tsx:230
 #: src/components/entities/LineItemsAnalytics.tsx:118
 #: src/components/entities/views/MapView.tsx:145
-#: src/components/entities/views/Overview.tsx:258
+#: src/components/entities/views/Overview.tsx:263
 #: src/components/filters/account-type-filter/AccountCategoryRadio.tsx:13
 #: src/components/filters/EntityAnalyticsFilter.tsx:405
 #: src/components/filters/MapFilter.tsx:233
 #: src/components/maps/utils.ts:27
 #: src/hooks/filters/useFilterLabels.tsx:192
-#: src/routes/entity-analytics.lazy.tsx:262
+#: src/routes/entity-analytics.lazy.tsx:264
 msgid "Income"
 msgstr "Income"
 
@@ -2546,8 +2550,8 @@ msgstr "Locked"
 msgid "Main Categories"
 msgstr "Main Categories"
 
-#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:130
-#: src/routes/budget-explorer.lazy.tsx:412
+#: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:131
+#: src/routes/budget-explorer.lazy.tsx:434
 msgid "Main chapters"
 msgstr "Main chapters"
 
@@ -2815,7 +2819,7 @@ msgstr "No conditions set"
 msgid "No Data Available"
 msgstr "No Data Available"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:468
+#: src/components/budget-explorer/BudgetTreemap.tsx:481
 msgid "No data available for the current selection."
 msgstr "No data available for the current selection."
 
@@ -2831,7 +2835,7 @@ msgstr "No data available for the table."
 msgid "No data available to display financial evolution."
 msgstr "No data available to display financial evolution."
 
-#: src/routes/entities.$cui.lazy.tsx:276
+#: src/routes/entities.$cui.lazy.tsx:280
 msgid "No Data Found"
 msgstr "No Data Found"
 
@@ -2859,7 +2863,7 @@ msgstr "No economic breakdown is available for income."
 msgid "No enabled series data available to display."
 msgstr "No enabled series data available to display."
 
-#: src/routes/entities.$cui.lazy.tsx:278
+#: src/routes/entities.$cui.lazy.tsx:282
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 
@@ -3006,9 +3010,9 @@ msgstr "Open feedback dialog"
 msgid "Open floating entity search"
 msgstr "Open floating entity search"
 
-#: src/routes/budget-explorer.lazy.tsx:481
-#: src/routes/budget-explorer.lazy.tsx:497
-#: src/routes/budget-explorer.lazy.tsx:517
+#: src/routes/budget-explorer.lazy.tsx:503
+#: src/routes/budget-explorer.lazy.tsx:519
+#: src/routes/budget-explorer.lazy.tsx:539
 msgid "Open in Chart Builder"
 msgstr "Open in Chart Builder"
 
@@ -3024,8 +3028,8 @@ msgstr "Open in Chart Editor"
 msgid "Open in charts"
 msgstr "Open in charts"
 
-#: src/components/entities/views/Overview.tsx:245
-#: src/routes/budget-explorer.lazy.tsx:358
+#: src/components/entities/views/Overview.tsx:250
+#: src/routes/budget-explorer.lazy.tsx:380
 msgid "Open in entity analytics"
 msgstr "Open in entity analytics"
 
@@ -3284,7 +3288,7 @@ msgstr "Reporting entity"
 msgid "Reporting filters"
 msgstr "Reporting filters"
 
-#: src/routes/entities.$cui.lazy.tsx:309
+#: src/routes/entities.$cui.lazy.tsx:313
 msgid "Reporting period"
 msgstr "Reporting period"
 
@@ -3299,6 +3303,10 @@ msgstr "Reports"
 #: src/routes/cookies.lazy.tsx:80
 msgid "Required for core functionality like security and preferences. Always on."
 msgstr "Required for core functionality like security and preferences. Always on."
+
+#: src/components/budget-explorer/BudgetTreemap.tsx:478
+#~ msgid "Reset to Main Categories"
+#~ msgstr "Reset to Main Categories"
 
 #: src/components/charts/components/backup-restore/ChartsBackupRestore.tsx:185
 msgid "Restore"
@@ -3437,7 +3445,7 @@ msgstr "Secondary creditor aggregated"
 msgid "Security monitoring and logs"
 msgstr "Security monitoring and logs"
 
-#: src/routes/budget-explorer.lazy.tsx:457
+#: src/routes/budget-explorer.lazy.tsx:479
 msgid "See advanced view"
 msgstr "See advanced view"
 
@@ -3790,7 +3798,7 @@ msgstr "The Service's software, design, and original content are protected by co
 msgid "The share link you are trying to access is invalid or no longer available."
 msgstr "The share link you are trying to access is invalid or no longer available."
 
-#: src/routes/entities.$cui.lazy.tsx:263
+#: src/routes/entities.$cui.lazy.tsx:267
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "There was a problem fetching the details for CUI: <0>{cui}</0>."
 
@@ -3890,11 +3898,11 @@ msgstr "Toggle theme"
 msgid "Tooltip"
 msgstr "Tooltip"
 
-#: src/components/entities/views/TrendsView.tsx:95
+#: src/components/entities/views/TrendsView.tsx:97
 msgid "Top {TOP_CATEGORIES_COUNT} Income Categories for {entityName}"
 msgstr "Top {TOP_CATEGORIES_COUNT} Income Categories for {entityName}"
 
-#: src/components/entities/views/TrendsView.tsx:95
+#: src/components/entities/views/TrendsView.tsx:97
 msgid "Top {TOP_CATEGORIES_COUNT} Spending Categories for {entityName}"
 msgstr "Top {TOP_CATEGORIES_COUNT} Spending Categories for {entityName}"
 
@@ -3906,7 +3914,7 @@ msgstr "Top 15 Counties by Total Amount"
 msgid "Top 15 UATs by Total Amount"
 msgstr "Top 15 UATs by Total Amount"
 
-#: src/routes/budget-explorer.lazy.tsx:454
+#: src/routes/budget-explorer.lazy.tsx:476
 msgid "Top Categories"
 msgstr "Top Categories"
 
@@ -3916,7 +3924,7 @@ msgid "Top Economic Categories"
 msgstr "Top Economic Categories"
 
 #: src/components/budget-explorer/BudgetCategoryList.tsx:119
-#: src/routes/budget-explorer.lazy.tsx:513
+#: src/routes/budget-explorer.lazy.tsx:535
 msgid "Top Functional Categories"
 msgstr "Top Functional Categories"
 
@@ -3925,7 +3933,7 @@ msgid "total"
 msgstr "total"
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:88
-#: src/components/budget-explorer/BudgetTreemap.tsx:515
+#: src/components/budget-explorer/BudgetTreemap.tsx:539
 #: src/components/common/NormalizationSelector.tsx:21
 #: src/components/entities/EntityReportControls.tsx:46
 #: src/components/entities/views/MapView.tsx:167
@@ -4156,7 +4164,7 @@ msgstr "View all alerts"
 msgid "View all reports"
 msgstr "View all reports"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:530
+#: src/components/budget-explorer/BudgetTreemap.tsx:554
 msgid "View as Chart"
 msgstr "View as Chart"
 
@@ -4167,7 +4175,7 @@ msgstr "View as Chart"
 msgid "View Chart"
 msgstr "View Chart"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:459
+#: src/components/budget-explorer/BudgetTreemap.tsx:472
 msgid "View Details"
 msgstr "View Details"
 
