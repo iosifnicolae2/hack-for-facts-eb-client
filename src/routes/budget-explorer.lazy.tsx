@@ -58,6 +58,7 @@ const SearchSchema = z.object({
   search: z.string().optional().describe('Text search within categories.'),
   filter: AnalyticsFilterSchema.default(defaultFilter).describe('Budget filter including report_period, account_category, normalization, report_type.'),
   treemapPrimary: PrimaryLevelEnum.optional().describe('Explicit treemap grouping override: fn | ec.'),
+  treemapPath: z.string().optional().describe('Treemap drilldown breadcrumb codes, comma-separated.'),
 })
 
 export type BudgetExplorerState = z.infer<typeof SearchSchema>
@@ -74,24 +75,22 @@ const revenueTopFunctionalChapters = ['21', '10', '42', '03', '14', '01', '33'] 
 
 function computeTemporalCoverage(period: BudgetExplorerState['filter']['report_period'] | undefined): string | undefined {
   if (!period || !period.selection) return undefined
-  const type = period.type
-  const sel: any = period.selection
-  if (type === 'YEAR' && Array.isArray(sel.dates) && sel.dates.length) {
-    const years = sel.dates.map((d: string) => d.slice(0, 4)).sort()
+  const { type, selection } = period
+  if (type === 'YEAR' && 'dates' in selection && Array.isArray(selection.dates) && selection.dates.length) {
+    const years = selection.dates.map((d) => d.slice(0, 4)).sort()
     if (years.length === 1) return years[0]
     return `${years[0]}/${years[years.length - 1]}`
   }
-  if (sel.interval?.start && sel.interval?.end) {
-    // ISO 8601 interval
-    return `${sel.interval.start}/${sel.interval.end}`
+  if ('interval' in selection && selection.interval?.start && selection.interval?.end) {
+    return `${selection.interval.start}/${selection.interval.end}`
   }
   return undefined
 }
 
-export function head({ search }: any) {
+export function head({ search }: { search: BudgetExplorerState }) {
   const site = getSiteUrl()
   const canonical = `${site}/budget-explorer`
-  const period = (search as BudgetExplorerState).filter?.report_period
+  const period = search.filter?.report_period
   const temporalCoverage = computeTemporalCoverage(period)
   const title = 'Budget Explorer – Transparenta.eu'
   const description = 'Explore Romania public finance by category and year. Switch between overview, treemap, sankey and list; filter by spending or revenue.'
@@ -146,7 +145,7 @@ function BudgetExplorerPage() {
   const isMobile = useIsMobile()
   const [currency] = useUserCurrency()
 
-  const { filter, primary, depth, treemapPrimary } = search
+  const { filter, primary, depth, treemapPrimary, treemapPath } = search
   const filterHash = generateHash(JSON.stringify(filter))
 
   // Use treemapPrimary from URL if available, otherwise fall back to primary
@@ -195,7 +194,22 @@ function BudgetExplorerPage() {
     initialPrimary: initialTreemapPrimary,
     rootDepth: depth === 'detail' ? 4 : 2,
     excludeEcCodes,
+    initialPath: (treemapPath ?? '')
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean),
     onPrimaryChange: (p) => handleFilterChange({ treemapPrimary: p }),
+    onPathChange: (codes) => {
+      const next = codes.join(',') || undefined
+      navigate({
+        replace: true,
+        resetScroll: false,
+        search: (prev) => ({
+          ...(prev as BudgetExplorerState),
+          treemapPath: next,
+        }),
+      })
+    },
   })
 
   // Keep label helpers for other components if needed
@@ -304,6 +318,13 @@ function BudgetExplorerPage() {
       nextTreemapPrimary = 'fn'
     }
 
+    // Decide whether the treemap path should be cleared
+    let shouldClearPath = false
+    if (partialPrimary !== undefined && partialPrimary !== primary) shouldClearPath = true
+    if (partialTreemapPrimary !== undefined && partialTreemapPrimary !== treemapPrimary) shouldClearPath = true
+    if (partialFilter?.account_category !== undefined && partialFilter.account_category !== filter.account_category) shouldClearPath = true
+    if (partial.depth !== undefined && partial.depth !== depth) shouldClearPath = true
+
     navigate({
       search: (prev) => ({
         ...(prev as BudgetExplorerState),
@@ -311,11 +332,12 @@ function BudgetExplorerPage() {
         primary: nextPrimary,
         filter: nextFilter,
         treemapPrimary: nextTreemapPrimary,
+        treemapPath: shouldClearPath ? undefined : (prev as BudgetExplorerState).treemapPath,
       }),
       replace: true,
       resetScroll: false,
     })
-    reset()
+    if (shouldClearPath) reset()
   }
 
   const handleNodeClick = (code: string | null) => {
@@ -442,10 +464,10 @@ function BudgetExplorerPage() {
 
         {/* Breakdowns: show spending or revenue based on active filter */}
         {filter.account_category === 'ch' && (
-          <SpendingBreakdown nodes={nodes as any} normalization={filter.normalization} periodLabel={periodLabel} isLoading={isLoading} />
+          <SpendingBreakdown nodes={nodes} normalization={filter.normalization} periodLabel={periodLabel} isLoading={isLoading} />
         )}
         {filter.account_category === 'vn' && (
-          <RevenueBreakdown nodes={nodes as any} normalization={filter.normalization} periodLabel={periodLabel} isLoading={isLoading} />
+          <RevenueBreakdown nodes={nodes} normalization={filter.normalization} periodLabel={periodLabel} isLoading={isLoading} />
         )}
 
         <Card className="shadow-sm">
@@ -461,7 +483,7 @@ function BudgetExplorerPage() {
           </CardHeader>
           <CardContent>
             <BudgetCategoryList
-              aggregated={nodes as any}
+              aggregated={nodes}
               depth={currentDepthNumeric}
               normalization={filter.normalization}
               isLoading={isLoading}

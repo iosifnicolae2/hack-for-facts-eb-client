@@ -67,274 +67,154 @@ function resolveBreadcrumbLabel(primary: 'fn' | 'ec', code: string, nodes: Aggre
 export function useTreemapDrilldown({
   nodes,
   initialPrimary = 'fn',
+  initialPath = [],
   rootDepth = 2,
   excludeEcCodes = [],
   onPrimaryChange,
+  onPathChange,
 }: {
   nodes: AggregatedNode[]
   initialPrimary?: 'fn' | 'ec'
+  initialPath?: string[]
   rootDepth?: 2 | 4 | 6
   excludeEcCodes?: string[]
   onPrimaryChange?: (primary: 'fn' | 'ec') => void
+  onPathChange?: (path: string[]) => void
 }) {
   // UI-selected primary (from toggle)
   const [primary, setPrimary] = useState<'fn' | 'ec'>(initialPrimary)
-  // Internally active primary while drilling (may pivot to opposite)
-  const [drillPrimary, setDrillPrimary] = useState<'fn' | 'ec'>(initialPrimary)
-  const [path, setPath] = useState<string[]>([])
-  const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([])
-  const [crossConstraint, setCrossConstraint] = useState<{ type: 'fn' | 'ec'; code: string } | null>(null)
+  // Full breadcrumb path as source-of-truth (codes in click order)
+  const [fullPath, setFullPath] = useState<string[]>(() => initialPath.map((c) => normalizeCode(c)))
 
+  // Reset when initialPrimary changes from above
   useEffect(() => {
     if (primary !== initialPrimary) {
       setPrimary(initialPrimary)
-      setDrillPrimary(initialPrimary)
-      setPath([])
-      setCrossConstraint(null)
-      setBreadcrumbs([])
+      setFullPath([])
     }
   }, [initialPrimary, primary])
+
+  // Compute pivot index: first 6-digit code in the path
+  const pivotIndex = useMemo(() => fullPath.findIndex((c) => c.split('.').length >= 3), [fullPath])
+
+  const activePrimary = useMemo<'fn' | 'ec'>(
+    () => (pivotIndex >= 0 ? (primary === 'fn' ? 'ec' : 'fn') : primary),
+    [primary, pivotIndex]
+  )
+
+  const currentPath = useMemo(() => (pivotIndex >= 0 ? fullPath.slice(pivotIndex + 1) : fullPath), [fullPath, pivotIndex])
+
+  const constraint = useMemo(() => (pivotIndex >= 0 ? ({ type: primary, code: fullPath[pivotIndex] }) as const : undefined), [pivotIndex, primary, fullPath])
+
+  const effectiveRootDepth = useMemo(() => (pivotIndex >= 0 ? 2 : rootDepth), [pivotIndex, rootDepth])
 
   const treemapData = useMemo(() => {
     return buildTreemapDataV2({
       data: nodes ?? [],
-      primary: drillPrimary,
-      path,
-      constraint: crossConstraint ?? undefined,
-      rootDepth,
+      primary: activePrimary,
+      path: currentPath,
+      constraint,
+      rootDepth: effectiveRootDepth,
       excludeEcCodes,
     })
-  }, [nodes, drillPrimary, path, crossConstraint, rootDepth, excludeEcCodes])
+  }, [nodes, activePrimary, currentPath, constraint, effectiveRootDepth, excludeEcCodes])
 
-  // Calculate excluded items for current layer
   const excludedItemsSummary = useMemo(() => {
     if (!excludeEcCodes || excludeEcCodes.length === 0) return undefined
     return calculateExcludedItems(nodes ?? [], excludeEcCodes, {
-      path,
-      constraint: crossConstraint ?? undefined,
-      primary: drillPrimary,
+      path: currentPath,
+      constraint,
+      primary: activePrimary,
     })
-  }, [nodes, excludeEcCodes, path, crossConstraint, drillPrimary])
+  }, [nodes, excludeEcCodes, currentPath, constraint, activePrimary])
 
-  const appendBreadcrumb = useCallback(
-    (type: 'fn' | 'ec', code: string) => {
+  const breadcrumbs: Breadcrumb[] = useMemo(() => {
+    const items: Breadcrumb[] = []
+    const opposite = primary === 'fn' ? 'ec' : 'fn'
+    fullPath.forEach((code, index) => {
+      const type = pivotIndex >= 0 && index > pivotIndex ? opposite : primary
       const label = resolveBreadcrumbLabel(type, code, nodes ?? [])
-      setBreadcrumbs((prev) => {
-        const last = prev[prev.length - 1]
-        if (last && last.code === code && last.label === label) return prev
-        return [...prev, { code, label, type }]
-      })
-    },
-    [nodes],
-  )
+      items.push({ code, label, type })
+    })
+    return items
+  }, [fullPath, primary, pivotIndex, nodes])
+
+  // Helper: evaluate rendering context for an arbitrary full path
+  const evaluateForPath = useCallback((fp: string[]) => {
+    const idx = fp.findIndex((c) => c.split('.').length >= 3)
+    const nextActive: 'fn' | 'ec' = idx >= 0 ? (primary === 'fn' ? 'ec' : 'fn') : primary
+    const nextConstraint = idx >= 0 ? ({ type: primary, code: fp[idx]! }) as const : undefined
+    const nextPath = idx >= 0 ? fp.slice(idx + 1) : fp
+    const nextRootDepth: 2 | 4 | 6 = (idx >= 0 ? 2 : rootDepth)
+    return { nextActive, nextConstraint, nextPath, nextRootDepth }
+  }, [primary, rootDepth])
+
+  // Helper: check if advancing to a given full path yields any data
+  const canAdvanceToPath = useCallback((fp: string[]): boolean => {
+    const { nextActive, nextConstraint, nextPath, nextRootDepth } = evaluateForPath(fp)
+    const next = buildTreemapDataV2({
+      data: nodes ?? [],
+      primary: nextActive,
+      path: nextPath,
+      constraint: nextConstraint,
+      rootDepth: nextRootDepth,
+      excludeEcCodes,
+    })
+    return Array.isArray(next) && next.length > 0
+  }, [nodes, excludeEcCodes, evaluateForPath])
 
   const onNodeClick = useCallback(
     (code: string | null) => {
-      // Check if we've already completed both primary flows up to 6-digit
-      // This prevents drilling beyond 2 six-digit selections (one per primary)
-      const totalSixDigitSteps = breadcrumbs.reduce(
-        (acc, item) => acc + (item.code && item.code.split('.').length === 3 ? 1 : 0),
-        0
-      )
-      if (totalSixDigitSteps >= 2) {
-        return
-      }
-
-      // Reset to root
       if (!code) {
-        setPath([])
-        setCrossConstraint(null)
-        setDrillPrimary(primary)
-        setBreadcrumbs([])
+        setFullPath([])
+        onPathChange?.([])
         return
       }
-
       const normalized = normalizeCode(code)
       if (!normalized) return
-
-      // Ignore clicks that would not advance (duplicate of last step)
-      const lastPathCode = path[path.length - 1]
-      if (lastPathCode && lastPathCode === normalized) return
-
-      const selectedDepth = normalized ? normalized.split('.').length : 0 // 1->2d, 2->4d, 3->6d
-
-      const hasNextInCurrent = (nextPath: string[]) => {
-        const next = buildTreemapDataV2({
-          data: nodes ?? [],
-          primary: drillPrimary,
-          path: nextPath,
-          constraint: crossConstraint ?? undefined,
-          rootDepth,
-          excludeEcCodes,
-        })
-        return next.length > 0
-      }
-
-      // If we are already pivoting, keep drilling within current primary
-      if (crossConstraint) {
-        // In pivot stage: allow drill down within current primary up to 6-digits
-        if (selectedDepth < 3) {
-          const nextPath = [...path, normalized]
-          if (!hasNextInCurrent(nextPath)) return
-          appendBreadcrumb(drillPrimary, normalized)
-          setPath(nextPath)
-          return
-        }
-        // At 6-digit on second primary: if this is a duplicate of last breadcrumb, ignore.
-        const lastCrumb = breadcrumbs[breadcrumbs.length - 1]
-        if (lastCrumb && normalizeCode(lastCrumb.code) === normalized && lastCrumb.type === drillPrimary) {
-          return
-        }
-        // Otherwise, do not mutate path and do not append; just ignore the click as it's terminal.
-        return
-      }
-
-      // Not in pivot stage yet: drill 2->4->6 within the same primary; pivot only at 6
-      if (selectedDepth < 3) {
-        const nextPath = [...path, normalized]
-        if (!hasNextInCurrent(nextPath)) return
-        appendBreadcrumb(drillPrimary, normalized)
-        setPath(nextPath)
-        return
-      }
-
-      // Pivot at 6-digit to the opposite primary constrained by this code
-      const opposite = drillPrimary === 'fn' ? 'ec' : 'fn'
-      const oppositeRoot = buildTreemapDataV2({
-        data: nodes ?? [],
-        primary: opposite,
-        path: [],
-        constraint: { type: drillPrimary, code: normalized },
-        rootDepth: 2,
-        excludeEcCodes,
-      })
-      if (oppositeRoot.length > 0) {
-        // Record the final step in the first primary only when a pivot will occur
-        appendBreadcrumb(drillPrimary, normalized)
-        setCrossConstraint({ type: drillPrimary, code: normalized })
-        setDrillPrimary(opposite)
-        setPath([]) // start fresh for the opposite primary levels (2 -> 4 -> 6)
-        return
-      }
-      // If opposite has no data, do not append breadcrumb; remain at current state.
-      return
+      if (fullPath[fullPath.length - 1] === normalized) return
+      const nextFullPath = [...fullPath, normalized]
+      if (!canAdvanceToPath(nextFullPath)) return
+      setFullPath(nextFullPath)
+      onPathChange?.(nextFullPath)
     },
-    [nodes, primary, drillPrimary, crossConstraint, path, breadcrumbs, appendBreadcrumb, rootDepth, excludeEcCodes],
+    [fullPath, onPathChange, canAdvanceToPath]
   )
 
   const onBreadcrumbClick = useCallback(
     (code: string | null, index?: number) => {
-      // Back to root when clicking "Main Categories"
       if (!code) {
-        setPath([])
-        setDrillPrimary(primary)
-        setCrossConstraint(null)
-        setBreadcrumbs([])
+        setFullPath([])
+        onPathChange?.([])
         return
       }
-
       const normalized = normalizeCode(code)
-      const clickedIndex = typeof index === 'number' ? index : breadcrumbs.findIndex((c) => c.code === normalized)
-      const clickedDepth = normalized.split('.').length
-
-      // PRE-PIVOT NAVIGATION: When we haven't pivoted to opposite primary yet
-      if (!crossConstraint) {
-        // If clicking a 6-digit item, pivot like a node click at 6-digit, but only if opposite has data
-        if (clickedDepth >= 3) {
-          const opposite = primary === 'fn' ? 'ec' : 'fn'
-          const oppositeRoot = buildTreemapDataV2({
-            data: nodes ?? [],
-            primary: opposite,
-            path: [],
-            constraint: { type: primary, code: normalized },
-            rootDepth: 2,
-            excludeEcCodes,
-          })
-          if (oppositeRoot.length > 0) {
-            setCrossConstraint({ type: primary, code: normalized })
-            setDrillPrimary(opposite)
-            setPath([])
-            if (clickedIndex !== -1) setBreadcrumbs(breadcrumbs.slice(0, clickedIndex + 1))
-            return
-          }
-          // If opposite has no data, fall back to parent level within current primary
-          const parent = normalized.split('.').slice(0, 2).join('.')
-          const idxInPath = path.indexOf(parent)
-          const newPath = idxInPath !== -1 ? path.slice(0, idxInPath + 1) : (parent ? [parent] : [])
-          setPath(newPath)
-          if (clickedIndex !== -1) setBreadcrumbs(breadcrumbs.slice(0, Math.max(0, clickedIndex)))
-          setDrillPrimary(primary)
-          return
-        }
-        // Otherwise, trim current path and breadcrumbs to the clicked level
-        const idxInPath = path.indexOf(normalized)
-        const newPath = idxInPath !== -1 ? path.slice(0, idxInPath + 1) : [normalized]
-        setPath(newPath)
-        if (clickedIndex !== -1) setBreadcrumbs(breadcrumbs.slice(0, clickedIndex + 1))
-        setDrillPrimary(primary)
-        return
-      }
-
-      // POST-PIVOT NAVIGATION: When we've pivoted and have cross-constraint active
-      // The breadcrumb trail is split: [first primary path] -> [pivot point] -> [second primary path]
-      const pivotCode = normalizeCode(crossConstraint.code)
-      const pivotIndex = breadcrumbs.findIndex((c) => c.code === pivotCode)
-
-      // CASE 1: Clicked on the first primary's breadcrumbs (before or at pivot point)
-      if (pivotIndex === -1 || clickedIndex <= pivotIndex) {
-        const firstPrimary = crossConstraint.type
-        const opposite = firstPrimary === 'fn' ? 'ec' : 'fn'
-        // If clicked exactly the 6-digit pivot crumb, pivot back to opposite root (like node click)
-        if (clickedIndex === pivotIndex && clickedDepth >= 3) {
-          setPath([])
-          setDrillPrimary(opposite)
-          // keep the constraint on the pivot code
-          setCrossConstraint({ type: firstPrimary, code: normalized })
-          setBreadcrumbs(breadcrumbs.slice(0, clickedIndex + 1))
-          return
-        }
-        // Otherwise, move within first primary; avoid ending on 6-digit leaf that has no children
-        const newPathCodesRaw = breadcrumbs.slice(0, clickedIndex + 1).map((c) => normalizeCode(c.code))
-        const last = newPathCodesRaw[newPathCodesRaw.length - 1]
-        const lastDepth = (last ?? '').split('.').length
-        const newPathCodes = lastDepth >= 3 ? newPathCodesRaw.slice(0, -1) : newPathCodesRaw
-        setPath(newPathCodes)
-        setDrillPrimary(firstPrimary)
-        setCrossConstraint(null)
-        setBreadcrumbs(breadcrumbs.slice(0, clickedIndex + 1 - (lastDepth >= 3 ? 1 : 0)))
-        return
-      }
-
-      // CASE 2: Clicked on the second primary's breadcrumbs (after pivot point)
-      // Move within second primary (post-pivot), keeping the constraint active
-      const secondPath = breadcrumbs.slice(pivotIndex + 1, clickedIndex + 1).map((c) => normalizeCode(c.code))
-      setPath(secondPath)
-      setBreadcrumbs(breadcrumbs.slice(0, clickedIndex + 1))
+      const clickedIndex = typeof index === 'number' ? index : fullPath.findIndex((c) => c === normalized)
+      if (clickedIndex < 0) return
+      const nextFullPath = fullPath.slice(0, clickedIndex + 1)
+      if (!canAdvanceToPath(nextFullPath)) return
+      setFullPath(nextFullPath)
+      onPathChange?.(nextFullPath)
     },
-    [breadcrumbs, crossConstraint, path, primary, nodes, excludeEcCodes],
+    [fullPath, onPathChange, canAdvanceToPath]
   )
 
   const handleSetPrimary = useCallback((value: 'fn' | 'ec') => {
     setPrimary(value)
-    setDrillPrimary(value)
-    setPath([])
-    setCrossConstraint(null)
-    setBreadcrumbs([])
+    setFullPath([])
     onPrimaryChange?.(value)
-  }, [onPrimaryChange])
+    onPathChange?.([])
+  }, [onPrimaryChange, onPathChange])
 
   const reset = useCallback(() => {
-    setPath([])
-    setDrillPrimary(primary)
-    setCrossConstraint(null)
-    setBreadcrumbs([])
-  }, [primary])
+    setFullPath([])
+    onPathChange?.([])
+  }, [onPathChange])
 
   return {
-    primary, // UI-selected
-    activePrimary: drillPrimary, // treemap active
+    primary,
+    activePrimary,
     setPrimary: handleSetPrimary,
-    path,
     breadcrumbs,
     treemapData,
     excludedItemsSummary,
@@ -343,5 +223,3 @@ export function useTreemapDrilldown({
     reset,
   }
 }
-
-
