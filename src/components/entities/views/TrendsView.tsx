@@ -50,11 +50,13 @@ interface BaseTrendsViewProps {
   onSelectedExpenseTypeKeyChange?: (key: string) => void;
   treemapPrimary?: 'fn' | 'ec';
   onTreemapPrimaryChange?: (primary: 'fn' | 'ec') => void;
+  treemapPath?: string;
+  onTreemapPathChange?: (path: string | undefined) => void;
 }
 
 const TOP_CATEGORIES_COUNT = 10;
 
-export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, currentYear, onYearClick, onSelectPeriod, initialIncomeSearch, initialExpenseSearch, onSearchChange, isLoading, normalization, onNormalizationChange, reportPeriod, trendPeriod, reportType, years = [], lineItemsTab = 'functional', onLineItemsTabChange, selectedFundingKey = '', selectedExpenseTypeKey = '', onSelectedFundingKeyChange, onSelectedExpenseTypeKeyChange, treemapPrimary, onTreemapPrimaryChange }) => {
+export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, currentYear, onYearClick, onSelectPeriod, initialIncomeSearch, initialExpenseSearch, onSearchChange, isLoading, normalization, onNormalizationChange, reportPeriod, trendPeriod, reportType, years = [], lineItemsTab = 'functional', onLineItemsTabChange, selectedFundingKey = '', selectedExpenseTypeKey = '', onSelectedFundingKeyChange, onSelectedExpenseTypeKeyChange, treemapPrimary, onTreemapPrimaryChange, treemapPath, onTreemapPathChange }) => {
   const { cui } = useParams({ from: '/entities/$cui' });
   const isMobile = useIsMobile();
   const chapterMap = useMemo(() => getChapterMap(), []);
@@ -174,26 +176,27 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
     excludedItemsSummary,
     onNodeClick,
     onBreadcrumbClick,
-    reset,
   } = useTreemapDrilldown({
     nodes: aggregatedNodes,
     initialPrimary: treemapPrimary ?? 'fn',
     rootDepth: 2,
     excludeEcCodes,
     onPrimaryChange: onTreemapPrimaryChange,
+    initialPath: (treemapPath ?? '')
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean),
+    onPathChange: (codes) => onTreemapPathChange?.(codes.join(',') || undefined),
   })
-
-  // Reset drilldown when switching between income/expense tabs
-  useEffect(() => {
-    reset()
-  }, [type, reset])
 
   // Force functional grouping for income view since economic data is not available
   useEffect(() => {
     if (type === 'income' && primary !== 'fn') {
       setPrimary('fn')
     }
-  }, [type, primary, setPrimary])
+    // Exclude setPrimary from deps to avoid loops when parent re-renders
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [type, primary])
 
   if (isLoading || !entity || !trendChart) {
     return <TrendsViewSkeleton />;

@@ -1,4 +1,5 @@
 import { useNavigate, useSearch } from '@tanstack/react-router'
+import { useCallback } from 'react'
 import { z } from 'zod'
 import { AnalyticsFilterSchema, AnalyticsFilterType, defaultYearRange } from '@/schemas/charts'
 import { Analytics } from '@/lib/analytics'
@@ -24,6 +25,7 @@ const searchSchema = z.object({
   filter: AnalyticsFilterSchema.default(defaultEntityAnalyticsFilter as AnalyticsFilterType),
   treemapPrimary: z.enum(['fn', 'ec']).optional(),
   treemapDepth: z.enum(['main', 'detail']).optional(),
+  treemapPath: z.string().optional(),
 })
 
 export type EntityAnalyticsSearch = z.infer<typeof searchSchema>
@@ -81,13 +83,17 @@ export function useEntityAnalyticsFilter() {
     })
   }
 
-  const setTreemapPrimary = (primary: 'fn' | 'ec') => {
+  const setTreemapPrimary = useCallback((primary: 'fn' | 'ec') => {
     navigate({ search: (prev) => ({ ...prev, treemapPrimary: primary }), replace: true, resetScroll: false })
-  }
+  }, [navigate])
 
-  const setTreemapDepth = (depth: 'main' | 'detail') => {
+  const setTreemapDepth = useCallback((depth: 'main' | 'detail') => {
     navigate({ search: (prev) => ({ ...prev, treemapDepth: depth }), replace: true, resetScroll: false })
-  }
+  }, [navigate])
+
+  const setTreemapPath = useCallback((path?: string) => {
+    navigate({ search: (prev) => ({ ...prev, treemapPath: path }), replace: true, resetScroll: false })
+  }, [navigate])
 
   return {
     search,
@@ -106,7 +112,7 @@ export function useEntityAnalyticsFilter() {
     treemapDepth: search.treemapDepth,
     setTreemapPrimary,
     setTreemapDepth,
+    treemapPath: search.treemapPath,
+    setTreemapPath,
   }
 }
-
-

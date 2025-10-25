@@ -65,6 +65,8 @@ interface OverviewProps {
     accountCategory?: 'ch' | 'vn';
     onTreemapPrimaryChange?: (primary: 'fn' | 'ec') => void;
     onAccountCategoryChange?: (category: 'ch' | 'vn') => void;
+    treemapPath?: string;
+    onTreemapPathChange?: (path: string | undefined) => void;
 }
 
 export const Overview = ({
@@ -91,6 +93,8 @@ export const Overview = ({
     accountCategory: accountCategoryProp,
     onTreemapPrimaryChange,
     onAccountCategoryChange,
+    treemapPath,
+    onTreemapPathChange,
 }: OverviewProps) => {
     const { data: lineItems, isLoading: isLoadingLineItems } = useEntityExecutionLineItems({
         cui,
@@ -141,6 +145,10 @@ export const Overview = ({
     const handleAccountCategoryChange = (category: 'ch' | 'vn') => {
         setAccountCategory(category)
         onAccountCategoryChange?.(category)
+        if(category === 'vn') {
+            setPrimary('fn')
+        }
+        reset()
     }
 
     const filteredItems = useMemo(() => {
@@ -176,15 +184,12 @@ export const Overview = ({
         rootDepth: 2,
         excludeEcCodes,
         onPrimaryChange: onTreemapPrimaryChange,
+        initialPath: (treemapPath ?? '')
+            .split(',')
+            .map((s) => s.trim())
+            .filter(Boolean),
+        onPathChange: (codes) => onTreemapPathChange?.(codes.join(',') || undefined),
     })
-
-    // Reset drilldown when switching between income/expenses and auto-switch to functional for income
-    useEffect(() => {
-        reset()
-        if (accountCategory === 'vn') {
-            setPrimary('fn')
-        }
-    }, [accountCategory, reset, setPrimary])
 
     const entityAnalyticsLink = useMemo<EntityAnalyticsUrlState>(() => ({
         view: 'line-items',
