@@ -189,15 +189,6 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
     onPathChange: (codes) => onTreemapPathChange?.(codes.join(',') || undefined),
   })
 
-  // Force functional grouping for income view since economic data is not available
-  useEffect(() => {
-    if (type === 'income' && primary !== 'fn') {
-      setPrimary('fn')
-    }
-    // Exclude setPrimary from deps to avoid loops when parent re-renders
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [type, primary])
-
   if (isLoading || !entity || !trendChart) {
     return <TrendsViewSkeleton />;
   }

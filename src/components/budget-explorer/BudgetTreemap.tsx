@@ -119,9 +119,9 @@ const CustomizedContent: FC<{
   const displayValue = yValueFormatter(value, currencyCode, 'compact')
 
   const baseColor = '#FFFFFF'
-  const nameFontSize = 12
-  const valueFontSize = 10
-  const percentageFontSize = 10
+  const nameFontSize = 16
+  const valueFontSize = 14
+  const percentageFontSize = 12
 
   const canShowName = width > 50 && height > 24
   const canShowValue = canShowName && height > 40
