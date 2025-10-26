@@ -138,10 +138,10 @@ const CustomizedContent: FC<{
 
   const textTransition = {
     type: 'spring',
-    damping: 30,
-    stiffness: 450,
-    mass: 1,
-    restDelta: 0.01,
+    damping: 10,
+    stiffness: 150,
+    mass: 0.8,
+    restDelta: 0.001,
   } as const
 
   const hoverTransition = {
@@ -231,6 +231,17 @@ const CustomizedContent: FC<{
           }}
           initial={hasAnimatedInRef.current ? { opacity: 0.2 } : {
             opacity: 0,
+            x: x + 4 + 20,
+            y: (() => {
+              const textHeight = canShowTwoLines ? nameLineHeight * 2 : nameFontSize * 1.3
+              if (canShowValue) {
+                const valueHeight = valueFontSize + 8
+                const percentHeight = canShowPercentage ? percentageFontSize + 8 : 0
+                const totalHeight = textHeight + valueHeight + percentHeight
+                return y + (height - totalHeight) / 2 - 6
+              }
+              return y + (height - textHeight) / 2 - 6
+            })(),
             scale: 0.3,
           }}
           transition={hasAnimatedInRef.current ? hoverTransition : {
@@ -275,6 +286,14 @@ const CustomizedContent: FC<{
           initial={hasAnimatedInRef.current ? { opacity: 0.2 } : {
             opacity: 0,
             x: x + width / 2 + 15,
+            y: (() => {
+              const textHeight = canShowTwoLines ? nameLineHeight * 2 : nameFontSize * 1.3
+              const valueHeight = valueFontSize + 8
+              const percentHeight = canShowPercentage ? percentageFontSize + 8 : 0
+              const totalHeight = textHeight + valueHeight + percentHeight
+              const nameY = y + (height - totalHeight) / 2
+              return nameY + textHeight + 8 - 5
+            })(),
             scale: 0.25,
           }}
           transition={hasAnimatedInRef.current ? hoverTransition : {
@@ -309,6 +328,14 @@ const CustomizedContent: FC<{
           initial={hasAnimatedInRef.current ? { opacity: 0.2 } : {
             opacity: 0,
             x: x + width / 2 + 12,
+            y: (() => {
+              const textHeight = canShowTwoLines ? nameLineHeight * 2 : nameFontSize * 1.3
+              const valueHeight = valueFontSize + 8
+              const percentHeight = percentageFontSize + 8
+              const totalHeight = textHeight + valueHeight + percentHeight
+              const nameY = y + (height - totalHeight) / 2
+              return nameY + textHeight + valueHeight + 8 - 4
+            })(),
             scale: 0.2,
           }}
           transition={hasAnimatedInRef.current ? hoverTransition : {
