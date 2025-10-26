@@ -122,13 +122,12 @@ const CustomizedContent: FC<{
   const nameFontSize = 16
   const valueFontSize = 14
   const percentageFontSize = 12
+  const nameLineHeight = nameFontSize * 1.2
 
-  const canShowName = width > 50 && height > 24
-  const canShowValue = canShowName && height > 40
-  const canShowPercentage = canShowName && height > 56
-
-  const maxChars = Math.max(Math.floor(width / (nameFontSize * 0.55)), 0)
-  const truncatedName = maxChars > 0 && name.length > maxChars ? `${name.slice(0, maxChars - 1)}…` : name
+  const canShowName = width > 60 && height > 30
+  const canShowTwoLines = canShowName && height > 60
+  const canShowValue = canShowName && height > (canShowTwoLines ? 80 : 50)
+  const canShowPercentage = canShowName && height > (canShowTwoLines ? 100 : 70)
 
   const rectTransition = {
     type: 'spring',
@@ -139,10 +138,10 @@ const CustomizedContent: FC<{
 
   const textTransition = {
     type: 'spring',
-    damping: 15,
-    stiffness: 150,
+    damping: 30,
+    stiffness: 450,
     mass: 1,
-    restDelta: 0.001,
+    restDelta: 0.01,
   } as const
 
   const hoverTransition = {
@@ -212,45 +211,70 @@ const CustomizedContent: FC<{
         strokeOpacity={0.5}
       />
       {canShowName && (
-        <motion.text
+        <motion.foreignObject
           animate={{
-            x: x + width / 2,
-            y: canShowValue ? y + height / 2 - valueFontSize / 2 : y + height / 2,
+            x: x + 4,
+            y: (() => {
+              const textHeight = canShowTwoLines ? nameLineHeight * 2 : nameFontSize * 1.3
+              if (canShowValue) {
+                const valueHeight = valueFontSize + 8
+                const percentHeight = canShowPercentage ? percentageFontSize + 8 : 0
+                const totalHeight = textHeight + valueHeight + percentHeight
+                return y + (height - totalHeight) / 2
+              }
+              return y + (height - textHeight) / 2
+            })(),
+            width: width - 8,
+            height: canShowTwoLines ? nameLineHeight * 2 : nameFontSize * 1.3,
             opacity: 1,
             scale: textScale,
           }}
           initial={hasAnimatedInRef.current ? { opacity: 0.2 } : {
             opacity: 0,
-            x: x + width / 2 + 20,
-            y: (canShowValue ? y + height / 2 - valueFontSize / 2 : y + height / 2) - 6,
             scale: 0.3,
           }}
           transition={hasAnimatedInRef.current ? hoverTransition : {
             ...textTransition,
             delay: randomDelayRef.current,
           }}
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fill={baseColor}
-          fontSize={nameFontSize}
-          fontWeight={500}
-          style={{ pointerEvents: 'none' }}
+          style={{ overflow: 'visible', pointerEvents: 'none' }}
         >
-          {truncatedName}
-        </motion.text>
+          <div
+            style={{
+              color: baseColor,
+              fontSize: `${nameFontSize}px`,
+              fontWeight: 500,
+              lineHeight: `${nameLineHeight}px`,
+              textAlign: 'center',
+              overflow: 'hidden',
+              display: '-webkit-box',
+              WebkitLineClamp: canShowTwoLines ? 2 : 1,
+              WebkitBoxOrient: 'vertical',
+              wordBreak: 'break-word',
+            }}
+          >
+            {name}
+          </div>
+        </motion.foreignObject>
       )}
       {canShowValue && (
         <motion.text
           animate={{
             x: x + width / 2,
-            y: y + height / 2 + nameFontSize / 2 + 4,
+            y: (() => {
+              const textHeight = canShowTwoLines ? nameLineHeight * 2 : nameFontSize * 1.3
+              const valueHeight = valueFontSize + 8
+              const percentHeight = canShowPercentage ? percentageFontSize + 8 : 0
+              const totalHeight = textHeight + valueHeight + percentHeight
+              const nameY = y + (height - totalHeight) / 2
+              return nameY + textHeight + 8
+            })(),
             opacity: 1,
             scale: textScale,
           }}
           initial={hasAnimatedInRef.current ? { opacity: 0.2 } : {
             opacity: 0,
             x: x + width / 2 + 15,
-            y: y + height / 2 + nameFontSize / 2 + 4 - 5,
             scale: 0.25,
           }}
           transition={hasAnimatedInRef.current ? hoverTransition : {
@@ -271,14 +295,20 @@ const CustomizedContent: FC<{
         <motion.text
           animate={{
             x: x + width / 2,
-            y: y + height / 2 + nameFontSize / 2 + valueFontSize + 8,
+            y: (() => {
+              const textHeight = canShowTwoLines ? nameLineHeight * 2 : nameFontSize * 1.3
+              const valueHeight = valueFontSize + 8
+              const percentHeight = percentageFontSize + 8
+              const totalHeight = textHeight + valueHeight + percentHeight
+              const nameY = y + (height - totalHeight) / 2
+              return nameY + textHeight + valueHeight + 8
+            })(),
             opacity: 1,
             scale: textScale,
           }}
           initial={hasAnimatedInRef.current ? { opacity: 0.2 } : {
             opacity: 0,
             x: x + width / 2 + 12,
-            y: y + height / 2 + nameFontSize / 2 + valueFontSize + 8 - 4,
             scale: 0.2,
           }}
           transition={hasAnimatedInRef.current ? hoverTransition : {
