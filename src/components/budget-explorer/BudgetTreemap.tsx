@@ -1,7 +1,7 @@
 import { type FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ResponsiveContainer, Treemap, Tooltip } from 'recharts'
 import { Trans } from '@lingui/react/macro'
-import { motion, useAnimationControls, AnimatePresence } from 'motion/react'
+import { motion, useAnimationControls } from 'motion/react'
 import { ArrowLeft, LineChart } from 'lucide-react'
 import { useNavigate } from '@tanstack/react-router'
 
@@ -397,72 +397,67 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
                   clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 0 0)'
                 }}
               />
-              <span className="relative z-10 whitespace-nowrap text-sm font-medium text-background">
+              <span className="relative whitespace-nowrap text-sm font-medium text-background">
                 <Trans>Main Categories</Trans>
               </span>
             </div>
-            <AnimatePresence mode="popLayout">
-              {isMobile && path.length > 2 && (
+            {isMobile && path.length > 2 && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.1 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3 }}
+                className="relative h-6 pl-5 pr-6 mr-1 flex items-center -ml-[12px]"
+              >
+                <div
+                  className="absolute inset-0 bg-foreground/70 border-y-2 rounded-md border-background/20"
+                  style={{
+                    clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%)'
+                  }}
+                />
+                <span className="relative z-10 text-sm font-medium text-background/80">...</span>
+              </motion.div>
+            )}
+            {displayPath.map((item, index) => {
+              const key = `${item.code}-${item.label}`
+              const actualIndex = isMobile && path.length > 2 ? path.length - 2 + index : index
+              const isLastCrumb = actualIndex === (path.length - 1)
+              const isClickable = !!item.code && /^[0-9.]+$/.test(item.code) && !isLastCrumb
+              const isLast = index === displayPath.length - 1
+
+              // Use the breadcrumb's originating type (pre/post pivot) to derive color.
+              const crumbType = item.type ?? primary
+              const itemColor = getColor(`${crumbType}-${item.code}`)
+
+              return (
                 <motion.div
-                  key="ellipsis"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="relative h-6 pl-5 pr-6 mr-1 flex items-center -ml-[12px]"
+                  key={key}
+                  initial={{ opacity: 0, scale: 0.1 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3, ease: 'easeOut', delay: 0.2 }}
+                  onClick={() => {
+                    if (!isClickable) return
+                    onBreadcrumbClick?.(item.code, actualIndex)
+                  }}
+                  className={`group relative h-6 pl-5 pr-6 mr-1 flex items-center -ml-[12px] ${isClickable ? 'cursor-pointer' : 'cursor-default'
+                    }`}
                 >
                   <div
-                    className="absolute inset-0 bg-foreground/70 border-y-2 rounded-md border-background/20"
+                    className={`absolute inset-0 transition-all duration-200 shadow-md rounded-md border-y-2 border-background/20`}
                     style={{
-                      clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%)'
+                      backgroundColor: itemColor,
+                      clipPath: isLast
+                        ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%, 12px 50%)'
+                        : 'polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%)'
                     }}
                   />
-                  <span className="relative z-10 text-sm font-medium text-background/80">...</span>
+                  <span className="relative z-10 whitespace-nowrap text-sm font-medium text-background">
+                    {isMobile && item.label && item.label.length > 20
+                      ? `${item.label.slice(0, 20)}...`
+                      : item.label ?? item.code}
+                  </span>
                 </motion.div>
-              )}
-              {displayPath.map((item, index) => {
-                const key = `${item.code}-${item.label}`
-                const actualIndex = isMobile && path.length > 2 ? path.length - 2 + index : index
-                const isLastCrumb = actualIndex === (path.length - 1)
-                const isClickable = !!item.code && /^[0-9.]+$/.test(item.code) && !isLastCrumb
-                const isLast = index === displayPath.length - 1
-
-                // Use the breadcrumb's originating type (pre/post pivot) to derive color.
-                const crumbType = item.type ?? primary
-                const itemColor = getColor(`${crumbType}-${item.code}`)
-
-                return (
-                  <motion.div
-                    key={key}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3, ease: 'easeInOut' }}
-                    onClick={() => {
-                      if (!isClickable) return
-                      onBreadcrumbClick?.(item.code, actualIndex)
-                    }}
-                    className={`group relative h-6 pl-5 pr-6 mr-1 flex items-center -ml-[12px] transition-all duration-200 ${isClickable ? 'cursor-pointer' : 'cursor-default'
-                      }`}
-                  >
-                    <div
-                      className={`absolute inset-0 transition-all duration-200 shadow-md rounded-md border-y-2 border-background/20`}
-                      style={{
-                        backgroundColor: itemColor,
-                        clipPath: isLast
-                          ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%, 12px 50%)'
-                          : 'polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%)'
-                      }}
-                    />
-                    <span className="relative z-10 whitespace-nowrap text-sm font-medium text-background">
-                      {isMobile && item.label && item.label.length > 20
-                        ? `${item.label.slice(0, 20)}...`
-                        : item.label ?? item.code}
-                    </span>
-                  </motion.div>
-                )
-              })}
-            </AnimatePresence>
+              )
+            })}
           </div>
         </div>
 

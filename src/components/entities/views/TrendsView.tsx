@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { EntityDetailsData } from '@/lib/api/entities';
 import { Chart, SeriesConfiguration, Normalization } from '@/schemas/charts';
 import { useParams } from '@tanstack/react-router';
