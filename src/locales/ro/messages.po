@@ -405,7 +405,7 @@ msgstr "Filtre active"
 msgid "Active Series"
 msgstr "Serie Activată"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:92
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:115
 #: src/components/budget-explorer/SpendingBreakdown.tsx:185
 msgid "Actual impact on budget"
 msgstr "Impact real asupra bugetului"
@@ -546,7 +546,7 @@ msgstr "Alerte când apar modificări importante"
 msgid "All"
 msgstr "Toate"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:46
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:69
 #: src/components/budget-explorer/SpendingBreakdown.tsx:101
 msgid "All budget expenditures"
 msgstr "Toate cheltuielile bugetare"
@@ -597,6 +597,10 @@ msgstr "Activat permanent"
 #: src/components/maps/charts/UatDataCharts.tsx:43
 msgid "Amount"
 msgstr "Sumă"
+
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:154
+msgid "Amount filter (this layer)"
+msgstr "Filtru sumă (acest nivel)"
 
 #: src/components/maps/HeatmapDataTable.tsx:343
 #: src/components/maps/HeatmapDataTable.tsx:450
@@ -786,7 +790,7 @@ msgid "Browse and download all financial reports submitted by this entity"
 msgstr "Răsfoiți și descărcați toate rapoartele financiare depuse de această entitate"
 
 #: src/components/entities/views/Overview.tsx:244
-#: src/components/entities/views/TrendsView.tsx:210
+#: src/components/entities/views/TrendsView.tsx:201
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:90
 #: src/routes/budget-explorer.lazy.tsx:373
 msgid "Budget Distribution"
@@ -1503,7 +1507,7 @@ msgid "Ec"
 msgstr "Ec"
 
 #: src/components/entities/views/Overview.tsx:268
-#: src/components/entities/views/TrendsView.tsx:213
+#: src/components/entities/views/TrendsView.tsx:204
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:114
 #: src/routes/budget-explorer.lazy.tsx:419
 msgid "Economic"
@@ -1565,7 +1569,7 @@ msgstr "Editează adnotări"
 msgid "Effective Date: {effectiveDate} • Version: {version}"
 msgstr "Data intrării în vigoare: {effectiveDate} • Versiunea: {version}"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:89
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:112
 #: src/components/budget-explorer/SpendingBreakdown.tsx:182
 msgid "Effective Spending"
 msgstr "Cheltuieli efective"
@@ -1814,11 +1818,11 @@ msgstr "Exclude"
 msgid "Exclude Filters"
 msgstr "Filtre de excludere"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:107
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:130
 msgid "Excluded categories"
 msgstr "Categorii excluse"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:66
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:89
 msgid "Excluded Items"
 msgstr "Elemente excluse"
 
@@ -1968,8 +1972,8 @@ msgstr "Câmp de filtrare"
 msgid "Filter Reports"
 msgstr "Filtrare rapoarte"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:147
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:171
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:218
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:242
 msgid "Filtered"
 msgstr "Filtrat"
 
@@ -2066,7 +2070,7 @@ msgid "Found {replacementCount} occurrence{0}"
 msgstr "S-au găsit {replacementCount} apariții"
 
 #: src/components/entities/views/Overview.tsx:267
-#: src/components/entities/views/TrendsView.tsx:212
+#: src/components/entities/views/TrendsView.tsx:203
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:107
 #: src/routes/budget-explorer.lazy.tsx:416
 msgid "Functional"
@@ -2173,7 +2177,7 @@ msgstr "Mergi la pagina principală"
 msgid "Go to Homepage"
 msgstr "Mergi la pagina principală"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:491
+#: src/components/budget-explorer/BudgetTreemap.tsx:580
 msgid "Go to Main Categories"
 msgstr "Mergi la categoria principală"
 
@@ -2540,7 +2544,7 @@ msgstr "Blochează adnotarea"
 msgid "Locked"
 msgstr "Blocat"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:401
+#: src/components/budget-explorer/BudgetTreemap.tsx:495
 #: src/components/entities/LineItemsAnalytics.tsx:143
 msgid "Main Categories"
 msgstr "Categorii Principale"
@@ -2815,8 +2819,8 @@ msgid "No Data Available"
 msgstr "Nu există date disponibile"
 
 #: src/components/budget-explorer/BudgetTreemap.tsx:481
-msgid "No data available for the current selection."
-msgstr "Nu există date disponibile pentru selecția curentă."
+#~ msgid "No data available for the current selection."
+#~ msgstr "Nu există date disponibile pentru selecția curentă."
 
 #: src/routes/map.lazy.tsx:215
 msgid "No data available for the map."
@@ -2845,6 +2849,10 @@ msgstr "Nicio alertă pentru serii de date"
 #: src/components/charts/components/chart-view/SeriesList.tsx:96
 msgid "No data series yet."
 msgstr "Nicio serie de date încă."
+
+#: src/components/budget-explorer/BudgetTreemap.tsx:570
+msgid "No data within the selected range."
+msgstr "Nu există date în intervalul selectat."
 
 #: src/components/budget-explorer/BudgetDetailsDrawer.tsx:101
 msgid "No detailed data available for this selection."
@@ -2926,7 +2934,7 @@ msgstr "Nu s-a găsit nicio serie."
 msgid "No values to replace"
 msgstr "Nicio valoare de înlocuit"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:69
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:92
 msgid "Non-direct spending"
 msgstr "Cheltuieli indirecte"
 
@@ -2942,7 +2950,7 @@ msgstr "Normalizare"
 msgid "Note: Deleting authentication cookies will sign you out of your account. Deleting essential localStorage will reset your saved charts and preferences."
 msgstr "Notă: Ștergerea cookie-urilor de autentificare vă va deconecta din cont. Ștergerea localStorage-ului esențial va reseta graficele și preferințele dumneavoastră salvate."
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:130
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:200
 #: src/components/budget-explorer/SpendingBreakdown.tsx:204
 msgid "Note: Financial operations (Titles 80+81) represent loans and credit repayments. These are financing flows, not regular budget expenses, and are excluded from effective spending."
 msgstr "Notă: Operațiunile financiare (Titlurile 80+81) reprezintă împrumuturi și rambursări de credite. Acestea sunt fluxuri de finanțare, nu cheltuieli bugetare obișnuite, și sunt excluse din cheltuielile efective."
@@ -3214,6 +3222,10 @@ msgstr "Configurare rapidă"
 msgid "Quickly adjust chart settings"
 msgstr "Ajustați rapid setările graficului"
 
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:157
+msgid "Range"
+msgstr "Interval"
+
 #: src/components/footer/ChatFab.tsx:72
 msgid "Read Documentation"
 msgstr "Citește Documentația"
@@ -3298,6 +3310,11 @@ msgstr "Rapoarte"
 #: src/routes/cookies.lazy.tsx:80
 msgid "Required for core functionality like security and preferences. Always on."
 msgstr "Necesar pentru funcționalități de bază, precum securitatea și preferințele. Activat permanent."
+
+#: src/components/budget-explorer/BudgetTreemap.tsx:585
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:189
+msgid "Reset amount filter"
+msgstr "Resetează filtrul de sumă"
 
 #: src/components/budget-explorer/BudgetTreemap.tsx:478
 #~ msgid "Reset to Main Categories"
@@ -3678,8 +3695,8 @@ msgstr "Sursă"
 msgid "Source: "
 msgstr "Sursă: "
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:31
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:153
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:54
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:224
 msgid "Spending Calculation"
 msgstr "Calculul cheltuielilor"
 
@@ -3928,7 +3945,7 @@ msgid "total"
 msgstr "total"
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:88
-#: src/components/budget-explorer/BudgetTreemap.tsx:539
+#: src/components/budget-explorer/BudgetTreemap.tsx:633
 #: src/components/common/NormalizationSelector.tsx:21
 #: src/components/entities/EntityReportControls.tsx:46
 #: src/components/entities/views/MapView.tsx:167
@@ -3967,7 +3984,7 @@ msgstr "Total Venituri"
 msgid "Total Revenues"
 msgstr "Venituri totale"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:43
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:66
 #: src/components/budget-explorer/SpendingBreakdown.tsx:98
 msgid "Total Spending"
 msgstr "Cheltuieli totale"
@@ -4040,7 +4057,7 @@ msgstr "UAT: Da"
 msgid "UATs"
 msgstr "UAT-uri"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:34
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:57
 #: src/components/budget-explorer/SpendingBreakdown.tsx:47
 msgid "Understanding the consolidated general budget spending"
 msgstr "Înțelegerea cheltuielilor bugetului general consolidat"
@@ -4159,7 +4176,7 @@ msgstr "Vezi toate alertele"
 msgid "View all reports"
 msgstr "Vezi toate rapoartele"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:554
+#: src/components/budget-explorer/BudgetTreemap.tsx:652
 msgid "View as Chart"
 msgstr "Vezi Graficul"
 
@@ -4170,7 +4187,7 @@ msgstr "Vezi Graficul"
 msgid "View Chart"
 msgstr "Vezi graficul"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:472
+#: src/components/budget-explorer/BudgetTreemap.tsx:561
 msgid "View Details"
 msgstr "Vezi detalii"
 
