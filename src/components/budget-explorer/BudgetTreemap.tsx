@@ -405,7 +405,44 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
     })
   }
 
-  const totalValue = useMemo(() => payloadData.reduce((acc, curr) => acc + (Number.isFinite(curr.value) ? curr.value : 0), 0), [payloadData])
+  // Calculate min/max among current nodes for the amount slider
+  const { minValue, maxValue } = useMemo(() => {
+    if (!payloadData.length) return { minValue: 0, maxValue: 0 }
+    let min = Number.POSITIVE_INFINITY
+    let max = 0
+    for (const item of payloadData) {
+      const v = Number.isFinite(item.value) ? item.value : 0
+      if (v < min) min = v
+      if (v > max) max = v
+    }
+    if (!Number.isFinite(min)) min = 0
+    return { minValue: min, maxValue: max }
+  }, [payloadData])
+
+  // Amount range for this layer. Always resets to [min,max] when those change.
+  const [amountRange, setAmountRange] = useState<[number, number]>([minValue, maxValue])
+  const handleAmountRangeChange = useCallback((val: [number, number]) => {
+    setAmountRange(val)
+  }, [])
+
+  useEffect(() => {
+    const next = [minValue, maxValue] as [number, number]
+    setAmountRange(next)
+  }, [minValue, maxValue])
+
+  // Apply range-based filtering to nodes
+  const filteredData = useMemo(() => {
+    const [low, high] = amountRange
+    // Avoid filtering when using the full span
+    const isFullSpan = low <= minValue && high >= maxValue
+    if (isFullSpan) return payloadData
+    return payloadData.filter((n) => {
+      const v = Number.isFinite(n.value) ? n.value : 0
+      return v >= low && v <= high
+    })
+  }, [amountRange, payloadData, minValue, maxValue])
+
+  const totalValue = useMemo(() => filteredData.reduce((acc, curr) => acc + (Number.isFinite(curr.value) ? curr.value : 0), 0), [filteredData])
   const unit = getNormalizationUnit(normalization ?? 'total')
   const currencyCode: 'RON' | 'EUR' = unit.includes('EUR') ? 'EUR' : 'RON'
 
@@ -527,10 +564,10 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
         </div>
       </div>
 
-      {payloadData.length === 0 ? (
+      {(filteredData.length === 0) ? (
         <div className="relative h-[600px] w-full flex flex-col items-center justify-center gap-4 rounded-md border border-dashed border-muted-foreground/40 p-6">
           <p className="text-lg text-muted-foreground text-center">
-            <Trans>No data available for the current selection.</Trans>
+            <Trans>No data within the selected range.</Trans>
           </p>
           {path.length > 0 && (
             <Button
@@ -541,6 +578,11 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
             >
               <ArrowLeft className="h-4 w-4" />
               <Trans>Go to Main Categories</Trans>
+            </Button>
+          )}
+          {((amountRange[0] > minValue || amountRange[1] < maxValue)) && (
+            <Button variant="ghost" size="sm" onClick={() => handleAmountRangeChange([minValue, maxValue])}>
+              <Trans>Reset amount filter</Trans>
             </Button>
           )}
         </div>
@@ -560,7 +602,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
             )}
             <ResponsiveContainer width="100%" height="100%">
               <Treemap
-                data={payloadData}
+                data={filteredData}
                 dataKey="value"
                 nameKey="name"
                 isAnimationActive={false}
@@ -593,13 +635,17 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
             <div className="text-sm text-muted-foreground">
               <span className="font-mono">{yValueFormatter(totalValue, currencyCode, 'standard')}</span> {unit.includes('capita') && '/ capita'}
             </div>
-            {excludedItemsSummary && excludedItemsSummary.totalExcluded > 0 && (
-              <FilteredSpendingInfo
-                excludedItemsSummary={excludedItemsSummary}
-                currencyCode={currencyCode}
-                perCapita={unit.includes('capita')}
-              />
-            )}
+            <FilteredSpendingInfo
+              excludedItemsSummary={excludedItemsSummary}
+              currencyCode={currencyCode}
+              perCapita={unit.includes('capita')}
+              amountFilter={{
+                minValue,
+                maxValue,
+                range: amountRange as [number, number],
+                onChange: handleAmountRangeChange,
+              }}
+            />
             {hasChartLink && (
               <Button variant="outline" size="sm" onClick={handleViewAsChart} className="gap-2 ml-auto mr-2 -mb-4">
                 <LineChart className="w-4 h-4" />
