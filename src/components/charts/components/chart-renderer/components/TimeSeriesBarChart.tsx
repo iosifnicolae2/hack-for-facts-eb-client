@@ -41,7 +41,7 @@ export function TimeSeriesBarChart({ chart, unitMap, timeSeriesData, onAnnotatio
                 <Bar
                   key={series.id}
                   yAxisId={getYAxisId(series.id)}
-                  dataKey={`${series.id}.value`}
+                  dataKey={(row: any) => row?.[series.id]?.value}
                   name={series.label || 'Untitled'}
                   fill={series.config.color}
                   isAnimationActive={isAnimationActive}
@@ -49,7 +49,7 @@ export function TimeSeriesBarChart({ chart, unitMap, timeSeriesData, onAnnotatio
                   animationEasing="ease-in-out"
                 >
                   <LabelList
-                    dataKey={`${series.id}`}
+                    dataKey={(row: any) => row?.[series.id]}
                     offset={30}
                     content={(props) => {
                       const isShowLabels = series.config.showDataLabels || chart.config.showDataLabels;

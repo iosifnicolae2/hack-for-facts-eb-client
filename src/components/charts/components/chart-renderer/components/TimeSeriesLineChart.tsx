@@ -43,7 +43,7 @@ export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotati
                 <Line
                   key={series.id}
                   yAxisId={getYAxisId(series.id)}
-                  dataKey={`${series.id}.value`}
+                  dataKey={(row: any) => row?.[series.id]?.value}
                   name={series.label || 'Untitled'}
                   stroke={series.config.color}
                   type="natural"
@@ -56,7 +56,7 @@ export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotati
                   animationEasing="ease-in-out"
                 >
                   <LabelList
-                    dataKey={`${series.id}`}
+                    dataKey={(row: any) => row?.[series.id]}
                     offset={30}
                     content={(props) => {
                       const isShowLabels = series.config.showDataLabels || chart.config.showDataLabels;

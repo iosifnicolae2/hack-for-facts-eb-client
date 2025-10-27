@@ -11,7 +11,7 @@ import { Trans } from '@lingui/react/macro';
 
 interface CustomSeriesTooltipProps {
     active?: boolean;
-    payload?: Array<{ dataKey: string, payload: Record<SeriesId, DataPointPayload> }> | DataPointPayload[];
+    payload?: Array<{ dataKey: any; payload: Record<SeriesId, DataPointPayload> | any; name?: string; color?: string } | DataPointPayload>;
     label?: string | number;
     chartConfig: Chart['config'];
     chart?: Chart;
@@ -27,21 +27,46 @@ export function CustomSeriesTooltip({
     const isAggregated = chartConfig.chartType.endsWith('-aggr');
 
     const mappedPayload = useMemo(() => {
-        if (!payload) {
-            return [];
-        }
-        return payload.map((entry) => {
-            if ('dataKey' in entry) {
-                const seriesId = entry.dataKey.split('.')[0]; // the dataKey has the format: ${seriesId}.value
-                const customPayload = entry.payload[seriesId];
-                if (customPayload) {
-                    return customPayload as DataPointPayload;
-                }
-            } else if ('payload' in entry) {
-                return entry.payload as DataPointPayload;
+        if (!payload) return [];
+
+        const resolved = payload.map((entry) => {
+            // Aggregated charts pass DataPointPayload directly
+            if (!('payload' in entry)) {
+                return entry as DataPointPayload;
             }
-            return entry as DataPointPayload;
-        }).filter(p => p.id).sort((a, b) => b.value - a.value);
+
+            const row = entry.payload as Record<SeriesId, DataPointPayload> | undefined;
+            if (!row) return undefined;
+
+            // When dataKey is a string like `${seriesId}.value`, preserve legacy behavior
+            if (typeof (entry as any).dataKey === 'string') {
+                const dk = String((entry as any).dataKey);
+                const seriesId = dk.split('.')[0];
+                const customPayload = (row as any)[seriesId];
+                if (customPayload) return customPayload as DataPointPayload;
+            }
+
+            // For function dataKeys, match by series label first, then by color as fallback
+            const name = (entry as any).name as string | undefined;
+            const color = (entry as any).color as string | undefined;
+            const candidates = Object.values(row).filter((v: any) => v && typeof v === 'object' && 'series' in v && 'value' in v) as DataPointPayload[];
+
+            if (name) {
+                const byLabel = candidates.find((v) => v.series?.label === name);
+                if (byLabel) return byLabel;
+            }
+            if (color) {
+                const byColor = candidates.find((v) => v.series?.config?.color === color);
+                if (byColor) return byColor;
+            }
+
+            // Fallback: return the first candidate for this entry
+            return candidates[0];
+        })
+            .filter((p): p is DataPointPayload => !!p && !!(p as any).id)
+            .sort((a, b) => b.value - a.value);
+
+        return resolved;
     }, [payload]);
 
     if (!active || !mappedPayload || mappedPayload.length === 0) return null;
