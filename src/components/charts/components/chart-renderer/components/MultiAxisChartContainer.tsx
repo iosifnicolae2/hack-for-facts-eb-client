@@ -25,7 +25,7 @@ export function MultiAxisChartContainer({ unitMap, chart, children, onAnnotation
     let index = 0;
 
     chart.series
-      .filter(s => s.enabled)
+      .filter(s => s.enabled && s.config.visible !== false)
       .forEach(series => {
         const unit = unitMap.get(series.id) || '';
         if (!groups.has(unit)) {

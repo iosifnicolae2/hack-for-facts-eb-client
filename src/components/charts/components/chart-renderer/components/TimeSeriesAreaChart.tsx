@@ -10,7 +10,7 @@ import { useChartAnimation } from '../hooks/useChartAnimation';
 import { useMemo } from 'react';
 
 export function TimeSeriesAreaChart({ chart, unitMap, timeSeriesData, onAnnotationPositionChange, margins }: ChartRendererProps) {
-  const enabledSeries = useMemo(() => chart.series.filter(s => s.enabled), [chart.series]);
+  const enabledSeries = useMemo(() => chart.series.filter(s => s.enabled && s.config.visible !== false), [chart.series]);
   const { isAnimationActive, animationDuration } = useChartAnimation({ duration: 300 });
   const {
     handleMouseDown,
@@ -22,6 +22,7 @@ export function TimeSeriesAreaChart({ chart, unitMap, timeSeriesData, onAnnotati
     diffs,
   } = useChartDiff(timeSeriesData, enabledSeries);
   const diffEnabled = chart.config.showDiffControl && !!refAreaLeft && !!refAreaRight && enabledSeries.length > 0;
+  const shouldRenderLabels = (chart.config.showDataLabels ?? false) || enabledSeries.some(s => s.config.showDataLabels);
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -51,26 +52,28 @@ export function TimeSeriesAreaChart({ chart, unitMap, timeSeriesData, onAnnotati
                   animationDuration={animationDuration}
                   animationEasing="ease-in-out"
                 >
-                  <LabelList
-                    dataKey={(row: any) => row?.[series.id]}
-                    offset={30}
-                    content={(props) => {
-                      const isShowLabels = series.config.showDataLabels || chart.config.showDataLabels;
-                      if (!isShowLabels) return null;
-                      const payload = props.value as unknown as DataPointPayload;
-                      const dataLabels = series.config.dataLabels || [];
-                      if (dataLabels.length > 0 && !dataLabels.includes(String(payload.year))) return null;
-                      return (
-                        <ChartLabel
-                          {...props}
-                          value={payload.value}
-                          series={series}
-                          dataLabelFormatter={(value) => yValueFormatter(value, payload.unit)}
-                          color={series.config.color}
-                        />
-                      );
-                    }}
-                  />
+                  {shouldRenderLabels && (
+                    <LabelList
+                      dataKey={(row: any) => row?.[series.id]}
+                      offset={30}
+                      content={(props) => {
+                        const isShowLabels = series.config.showDataLabels || chart.config.showDataLabels;
+                        if (!isShowLabels) return null;
+                        const payload = props.value as unknown as DataPointPayload;
+                        const dataLabels = series.config.dataLabels || [];
+                        if (dataLabels.length > 0 && !dataLabels.includes(String(payload.year))) return null;
+                        return (
+                          <ChartLabel
+                            {...props}
+                            value={payload.value}
+                            series={series}
+                            dataLabelFormatter={(value) => yValueFormatter(value, payload.unit)}
+                            color={series.config.color}
+                          />
+                        );
+                      }}
+                    />
+                  )}
                 </Area>
               ))}
               {diffEnabled && (
