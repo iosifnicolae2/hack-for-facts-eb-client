@@ -164,7 +164,6 @@ function convertFilterInputToChartState(
                     entity_cuis: [cui],
                 },
                 config: {
-                    visible: true,
                     showDataLabels: false,
                     color: getSeriesColor(index),
                 },
@@ -188,7 +187,6 @@ function convertFilterInputToChartState(
                     uat_ids: [uatId],
                 },
                 config: {
-                    visible: true,
                     showDataLabels: false,
                     color: getSeriesColor(index),
                 },
@@ -211,7 +209,6 @@ function convertFilterInputToChartState(
                     county_codes: [cc],
                 },
                 config: {
-                    visible: true,
                     showDataLabels: false,
                     color: getSeriesColor(index),
                 },
@@ -235,7 +232,6 @@ function convertFilterInputToChartState(
                 report_type: reportType,
             },
             config: {
-                visible: true,
                 showDataLabels: false,
                 color: getSeriesColor(0),
             },

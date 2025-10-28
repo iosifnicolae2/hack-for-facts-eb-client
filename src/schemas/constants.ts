@@ -19,7 +19,6 @@ export const DEFAULT_CHART_CONFIG = {
 };
 
 export const DEFAULT_SERIES_CONFIG = {
-    visible: true,
     yAxisId: 'left' as const,
 };
 

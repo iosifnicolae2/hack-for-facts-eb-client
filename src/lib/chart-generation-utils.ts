@@ -36,7 +36,7 @@ export const generateChartFromTopGroups = (
             years: undefined, // Clear years from series filter
         },
         enabled: true,
-        config: { color: getSeriesColor(index), visible: true, showDataLabels: false },
+        config: { color: getSeriesColor(index), showDataLabels: false },
         unit: 'RON',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),

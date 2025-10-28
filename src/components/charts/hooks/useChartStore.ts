@@ -103,7 +103,6 @@ export function useChartStore() {
         normalization: defaultNormalization,
       },
       config: {
-        visible: true,
         showDataLabels: false,
         color: generateRandomColor(),
       },

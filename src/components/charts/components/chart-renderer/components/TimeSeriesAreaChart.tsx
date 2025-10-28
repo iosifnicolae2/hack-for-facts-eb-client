@@ -10,7 +10,7 @@ import { useChartAnimation } from '../hooks/useChartAnimation';
 import { useMemo } from 'react';
 
 export function TimeSeriesAreaChart({ chart, unitMap, timeSeriesData, onAnnotationPositionChange, margins }: ChartRendererProps) {
-  const enabledSeries = useMemo(() => chart.series.filter(s => s.enabled && s.config.visible !== false), [chart.series]);
+  const enabledSeries = useMemo(() => chart.series.filter(s => s.enabled), [chart.series]);
   const { isAnimationActive, animationDuration } = useChartAnimation({ duration: 600 });
   const {
     handleMouseDown,

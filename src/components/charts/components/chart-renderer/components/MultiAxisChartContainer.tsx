@@ -41,7 +41,7 @@ export const MultiAxisChartContainer = memo(function MultiAxisChartContainer({ u
     const groups = new Map<string, { unit: string; series: string[] }>();
 
     chart.series
-      .filter(s => s.enabled && s.config.visible !== false)
+      .filter(s => s.enabled)
       .forEach(series => {
         const unit = unitMap.get(series.id) || '';
         if (!groups.has(unit)) {

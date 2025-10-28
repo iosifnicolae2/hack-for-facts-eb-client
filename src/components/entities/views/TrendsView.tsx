@@ -109,7 +109,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
         report_period: trendPeriod,
       },
       enabled: true,
-      config: { color: getSeriesColor(index), visible: true, showDataLabels: false },
+      config: { color: getSeriesColor(index), showDataLabels: false },
       unit: getNormalizationUnit(normalization),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),

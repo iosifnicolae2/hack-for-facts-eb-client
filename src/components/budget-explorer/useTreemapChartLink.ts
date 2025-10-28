@@ -118,7 +118,6 @@ export function useTreemapChartLink({
         unit: '',
         filter: parentFilter,
         config: {
-          visible: true,
           showDataLabels: false,
           color: getColor(`${parentType}-parent-${parentCode}`),
         },
@@ -133,7 +132,7 @@ export function useTreemapChartLink({
 
     for (let index = 0; index < limitedData.length; index += 1) {
       const item = limitedData[index]!
-      const isVisible = index < maxActiveSeries
+      const isEnabled = index < maxActiveSeries
 
       const childFilter = { ...filterInput }
 
@@ -183,12 +182,11 @@ export function useTreemapChartLink({
       seriesConfigs.push({
         id: generateStableId(`child-${primary}-${item.code}`, childFilter),
         type: 'line-items-aggregated-yearly',
-        enabled: true,
+        enabled: isEnabled,
         label,
         unit: '',
         filter: childFilter,
         config: {
-          visible: isVisible,
           showDataLabels: false,
           color: getColor(`${primary}-${item.code}`),
         },

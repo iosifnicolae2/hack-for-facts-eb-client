@@ -31,7 +31,6 @@ export function buildAlertPreviewChartState(alert: Alert): ChartUrlState {
       value: condition.threshold,
       unit: condition.unit,
       config: {
-        visible: true,
         showDataLabels: false,
         color: thresholdColors[index % thresholdColors.length],
       },
@@ -45,7 +44,6 @@ export function buildAlertPreviewChartState(alert: Alert): ChartUrlState {
     label: alert.title || t`Alert series`,
     enabled: true,
     config: {
-      visible: true,
       showDataLabels: false,
       color: '#0062ff',
     },

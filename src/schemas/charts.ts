@@ -33,7 +33,6 @@ export type ChartConfig = z.infer<typeof ChartConfigSchema>;
  * Series-specific configuration that can override global settings
  */
 export const SeriesConfigSchema = z.object({
-  visible: z.boolean().default(true).describe('Whether this series is visible on the chart. When false, the series data is still loaded but not rendered. Useful for temporarily hiding series without removing them. Users can toggle visibility via the legend or series controls.'),
   showDataLabels: z.boolean().default(false).describe('Whether to display numeric data values directly on the chart for this series (y-axis values). Overrides the global chart showDataLabels setting. Useful when one series needs emphasis while others remain uncluttered. Example: show labels only on the "Total Budget" series.'),
   dataLabels: z.array(z.string()).optional().describe('Specific x-axis data points where labels should be shown. When set, only these points display labels instead of all points. Useful for highlighting key dates. Example: ["2020", "2024"] to label only start and end years. If not set, labels appear on all data points (when showDataLabels is true).'),
   dataLabelOffset: z.number().optional().describe('Vertical offset in pixels for positioning data labels relative to their default position on the y-axis. Positive values move labels up, negative values move them down. Useful for preventing label overlap on dense charts. Example: 10 moves labels 10px higher. Default position is directly above/on the data point.'),
@@ -45,7 +44,6 @@ export const SeriesConfigSchema = z.object({
       'Optional prefix to strip from x-axis labels for this series only. Useful when mixing different time granularities (e.g., yearly series "2023" with monthly series "2023-01"). Set to "2023-" to display "01" instead of "2023-01", aligning monthly labels with yearly ones. Example: For monthly data "2023-01", "2023-02", set xAxisPrefixToRemove: "2023-" to show "01", "02".'
     ),
 }).default({
-  visible: true,
   showDataLabels: false,
   color: '#0000ff',
 });
@@ -189,7 +187,7 @@ const OperandSchema: z.ZodType<Operand> = z.lazy(() =>
 
 export const BaseSeriesConfigurationSchema = z.object({
   id: z.string().default(() => crypto.randomUUID()).describe('Unique identifier for this series. Auto-generated UUID. Must be unique within the chart and immutable once created. Referenced by calculations and other series. Used as key in data structures. Format: UUID v4 (e.g., "550e8400-e29b-41d4-a716-446655440000").'),
-  enabled: z.boolean().default(true).describe('Whether this series is active and should be processed. When false, the series is ignored completely (not queried, not calculated, not rendered). Different from config.visible which hides rendered data. Use enabled=false to temporarily disable a series without deleting it. Default: true.'),
+  enabled: z.boolean().default(true).describe('Whether this series is active and should be processed. When false, the series is ignored completely (not queried, not calculated, not rendered). Use enabled=false to temporarily disable a series without deleting it. Default: true.'),
   label: z.string().default('').describe('Human-readable name for this series. Displayed in legends, tooltips, and data tables. Should be descriptive and concise. Examples: "Total Education Spending", "Cluj - Healthcare", "Budget Deficit". Supports internationalization - use descriptive English/Romanian. Avoid abbreviations unless well-known.'),
   unit: z.string().optional().default('RON').describe('Unit of measurement for the series values. Displayed alongside values in tooltips and labels. Common values: "RON" (Romanian lei), "EUR" (euros), "RON/capita" (per capita), "%" (percentage), "" (dimensionless). For API-fetched series, the unit may come from the backend. For custom series, set explicitly.'),
   config: SeriesConfigSchema.describe('Series-specific visual configuration. Overrides global chart config for this series only. Controls visibility, colors, labels, and display options. See SeriesConfigSchema for all available options.'),
