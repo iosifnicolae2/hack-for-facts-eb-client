@@ -26,10 +26,13 @@ export function NotificationList({ notifications, isLoading, onAddNotification }
 
   // Extract unique entity CUIs from notifications (excluding alert_data_series)
   const entityCuis = useMemo(() => {
-    return notifications
-      .filter(n => n.entityCui && n.notificationType !== 'alert_data_series')
-      .map(n => n.entityCui!)
-      .filter((cui, index, self) => self.indexOf(cui) === index);
+    const unique = new Set<string>();
+    for (const n of notifications) {
+      if (n.notificationType === 'alert_data_series') continue;
+      const cui = typeof n.entityCui === 'string' ? n.entityCui.trim() : '';
+      if (cui) unique.add(cui);
+    }
+    return Array.from(unique);
   }, [notifications]);
 
   // Use the entity label hook to fetch and cache entity names
@@ -41,8 +44,8 @@ export function NotificationList({ notifications, isLoading, onAddNotification }
       queryClient.invalidateQueries({ queryKey: ['notifications'] });
       toast.success('Notification deleted successfully');
     },
-    onError: (error: Error) => {
-      toast.error(error.message || 'Failed to delete notification');
+    onError: (error: unknown) => {
+      toast.error(getErrorMessage(error));
     },
   });
 
@@ -57,7 +60,7 @@ export function NotificationList({ notifications, isLoading, onAddNotification }
         if (notification.entityCui) {
           const entityName = entityLabel.map(notification.entityCui);
           // Only add entity if we got a real name (not the fallback id:: format)
-          if (!entityName.startsWith('id::')) {
+          if (typeof entityName === 'string' && !entityName.startsWith('id::')) {
             return {
               ...notification,
               entity: {
@@ -71,11 +74,22 @@ export function NotificationList({ notifications, isLoading, onAddNotification }
       });
   }, [notifications, entityLabel]);
 
+  const grouped = useMemo(() => {
+    return enrichedNotifications.reduce((acc, notification) => {
+      const key = notification.entityCui || 'global';
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(notification);
+      return acc;
+    }, {} as Record<string, Notification[]>);
+  }, [enrichedNotifications]);
+
 
   const renderNotifications = () => {
     if (isLoading) {
       return (
-        <div className="space-y-4">
+        <div className="space-y-4" aria-busy>
           {[1, 2, 3].map((i) => (
             <Skeleton key={i} className="h-40 w-full" />
           ))}
@@ -83,7 +97,7 @@ export function NotificationList({ notifications, isLoading, onAddNotification }
       );
     }
 
-    if (!notifications || notifications.length === 0) {
+    if (!enrichedNotifications || enrichedNotifications.length === 0) {
       return (
         <Card className="border-dashed border-2 border-slate-300 dark:border-slate-600">
           <CardContent className="flex flex-col items-center justify-center py-12 px-6 text-center">
@@ -99,8 +113,10 @@ export function NotificationList({ notifications, isLoading, onAddNotification }
               </Trans>
             </p>
             <Button
-              onClick={onAddNotification}
+              onClick={() => onAddNotification?.()}
               className="flex items-center gap-2"
+              aria-label={t`Find Entity to Monitor`}
+              disabled={!onAddNotification}
             >
               <Search className="h-4 w-4" />
               <Trans>Find Entity to Monitor</Trans>
@@ -109,15 +125,6 @@ export function NotificationList({ notifications, isLoading, onAddNotification }
         </Card>
       );
     }
-
-    const grouped = enrichedNotifications.reduce((acc, notification) => {
-      const key = notification.entityCui || 'global';
-      if (!acc[key]) {
-        acc[key] = [];
-      }
-      acc[key].push(notification);
-      return acc;
-    }, {} as Record<string, Notification[]>);
 
     return (
       <div className="space-y-4">
@@ -149,6 +156,7 @@ export function NotificationList({ notifications, isLoading, onAddNotification }
             className="self-start sm:self-center rounded-full border-primary bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
             onClick={() => navigate({ to: '/alerts/new', replace: false })}
             title={t`Create alert`}
+            aria-label={t`Create alert`}
           >
             <Plus className="h-4 w-4" />
           </Button>
@@ -157,4 +165,13 @@ export function NotificationList({ notifications, isLoading, onAddNotification }
       </section>
     </div>
   );
+}
+
+function getErrorMessage(error: unknown): string {
+  if (typeof error === 'string') return error;
+  if (error && typeof error === 'object' && 'message' in error) {
+    const maybeMessage = (error as { message?: unknown }).message;
+    if (typeof maybeMessage === 'string') return maybeMessage;
+  }
+  return 'Failed to delete notification';
 }

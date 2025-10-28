@@ -11,13 +11,35 @@ import type { Notification } from '@/features/notifications/types';
 import { Alert, AlertSchema } from '@/schemas/alerts';
 
 function mapNotificationToAlert(entry: Notification): Alert {
-  const config = (entry.config ?? {}) as Alert;
+  const raw = (entry.config ?? {}) as Record<string, unknown>;
+  // Remove fields that commonly cause schema mismatches or are managed client-side
+  const { id: rawId, createdAt: _c1, updatedAt: _c2, lastEvaluatedAt: _c3, ...rest } = raw as Record<string, unknown>;
 
-  const alert: Alert = AlertSchema.parse({
-    ...config,
-    id: config.id ?? String(entry.id),
+  // Build a base input without id to avoid uuid validation failures
+  const baseInput = {
+    ...rest,
     isActive: entry.isActive,
-  });
+    notificationType: 'alert_data_series' as const,
+  };
+
+  const parsed = AlertSchema.safeParse(baseInput);
+  const baseAlert = parsed.success
+    ? parsed.data
+    : AlertSchema.parse({
+        isActive: entry.isActive,
+        notificationType: 'alert_data_series',
+      });
+
+  // Assign an id post-parse to avoid runtime validation rejecting non-uuid ids
+  const idCandidate = typeof rawId === 'string' && rawId.trim().length > 0
+    ? rawId
+    : String(entry.id);
+
+  const alert: Alert = {
+    ...baseAlert,
+    id: idCandidate,
+    notificationType: 'alert_data_series',
+  };
 
   return alert;
 }
