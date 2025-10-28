@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { createLazyFileRoute, useParams, useNavigate, useBlocker } from '@tanstack/react-router';
 import { AlertEditorView } from '@/components/alerts/components/AlertEditorView';
 import { useAlertStore, areAlertsEqual } from '@/components/alerts/hooks/useAlertStore';
-import { useAlertDetail, useSaveAlertMutation, useDeleteAlertMutation } from '@/features/alerts/hooks/useAlertsApi';
+import { useAlertDetail, useSaveAlertMutation, useDeleteAlertMutation, mapNotificationToAlert } from '@/features/alerts/hooks/useAlertsApi';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { Alert as UiAlert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -28,8 +28,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { AlertPreviewModal } from '@/features/notifications/components/alerts/AlertPreviewModal';
 import { useAuth, AuthSignInButton } from '@/lib/auth';
 import { getSiteUrl } from '@/config/env';
-import { Alert } from '@/schemas/alerts';
-import type { Notification } from '@/features/notifications/types';
+//
 
 export const Route = createLazyFileRoute('/alerts/$alertId/')({
   component: AlertEditorPage,
@@ -45,7 +44,7 @@ function AlertEditorPage() {
   const deleteMutation = useDeleteAlertMutation();
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
-  const isCreateMode = mode === 'create';
+  const isCreateMode = mode === 'create' || params.alertId === 'new';
   const detailQuery = useAlertDetail(params.alertId, { enabled: !isCreateMode && isSignedIn });
   const serverAlert = detailQuery.data;
 
@@ -89,10 +88,14 @@ function AlertEditorPage() {
   const showUnsavedDialog = blocker.status === 'blocked' && isDirty;
 
   const handleSave = () => {
+    const wasCreate = isCreateMode;
     saveMutation.mutate(alert, {
       onSuccess: (savedNotification) => {
         const savedAlert = mapNotificationToAlert(savedNotification);
         setAlert(savedAlert, { mode: 'edit' });
+        if (wasCreate) {
+          navigate({ to: '/settings/notifications', replace: false });
+        }
       },
     });
   };
@@ -214,12 +217,14 @@ function AlertEditorPage() {
       <div className="sticky top-0 z-20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b">
         <div className="container mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-3 py-4 px-2 md:px-0">
           <h1 className="text-2xl font-semibold tracking-tight">
-            <Trans>Edit Alert</Trans>
+            {isCreateMode ? <Trans>Create Alert</Trans> : <Trans>Edit Alert</Trans>}
           </h1>
           <div className="flex flex-col md:flex-row md:items-center gap-3 w-full md:w-auto">
-            <span className="text-sm text-muted-foreground md:text-right md:min-w-[140px] order-2 md:order-1">
-              {headerStatus}
-            </span>
+            {!isCreateMode && (
+              <span className="text-sm text-muted-foreground md:text-right md:min-w-[140px] order-2 md:order-1">
+                {headerStatus}
+              </span>
+            )}
             <div className="flex items-center gap-2 order-1 md:order-2">
               {/* Secondary actions */}
               <Button
@@ -350,14 +355,4 @@ export function head() {
   return buildEditAlertHead()
 }
 
-function mapNotificationToAlert(entry: Notification): Alert {
-  const config = (entry.config ?? {}) as Alert;
-
-  const alert: Alert = {
-    ...(config as Alert),
-    id: config.id ?? String(entry.id),
-    isActive: entry.isActive,
-  };
-
-  return alert;
-}
+// mapNotificationToAlert is imported from useAlertsApi to avoid duplication

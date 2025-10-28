@@ -10,7 +10,7 @@ import {
 import type { Notification } from '@/features/notifications/types';
 import { Alert, AlertSchema } from '@/schemas/alerts';
 
-function mapNotificationToAlert(entry: Notification): Alert {
+export function mapNotificationToAlert(entry: Notification): Alert {
   const raw = (entry.config ?? {}) as Record<string, unknown>;
   // Remove fields that commonly cause schema mismatches or are managed client-side
   const { id: rawId, createdAt: _c1, updatedAt: _c2, lastEvaluatedAt: _c3, ...rest } = raw as Record<string, unknown>;
