@@ -11,7 +11,7 @@ import { useMemo } from 'react';
 
 export function TimeSeriesBarChart({ chart, unitMap, timeSeriesData, onAnnotationPositionChange, margins }: ChartRendererProps) {
   const enabledSeries = useMemo(() => chart.series.filter(s => s.enabled && s.config.visible !== false), [chart.series]);
-  const { isAnimationActive, animationDuration } = useChartAnimation({ duration: 300 });
+  const { isAnimationActive, animationDuration } = useChartAnimation({ duration: 600 });
 
   const {
     handleMouseDown,
