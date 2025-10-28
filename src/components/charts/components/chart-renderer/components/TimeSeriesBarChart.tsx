@@ -25,6 +25,12 @@ export function TimeSeriesBarChart({ chart, unitMap, timeSeriesData, onAnnotatio
   const diffEnabled = chart.config.showDiffControl && !!refAreaLeft && !!refAreaRight && enabledSeries.length > 0;
   const shouldRenderLabels = (chart.config.showDataLabels ?? false) || enabledSeries.some(s => s.config.showDataLabels);
 
+  // Create a key that changes when diff state changes to trigger MultiAxisChartContainer re-render
+  const diffStateKey = useMemo(
+    () => `${refAreaLeft}-${refAreaRight}-${diffs.length}`,
+    [refAreaLeft, refAreaRight, diffs.length]
+  );
+
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart
@@ -35,7 +41,7 @@ export function TimeSeriesBarChart({ chart, unitMap, timeSeriesData, onAnnotatio
         onMouseUp={handleMouseUp}
         onMouseLeave={clearSelection}
       >
-        <MultiAxisChartContainer disableTooltip={diffEnabled} chart={chart} unitMap={unitMap} onAnnotationPositionChange={onAnnotationPositionChange}>
+        <MultiAxisChartContainer disableTooltip={diffEnabled} chart={chart} unitMap={unitMap} onAnnotationPositionChange={onAnnotationPositionChange} diffStateKey={diffStateKey}>
           {(getYAxisId: (seriesId: string) => string) => (
             <>
               {enabledSeries.map((series) => (

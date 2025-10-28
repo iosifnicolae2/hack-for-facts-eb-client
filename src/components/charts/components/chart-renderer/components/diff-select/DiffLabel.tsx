@@ -70,7 +70,7 @@ export const DiffLabel = ({ viewBox, data, start, end }: DiffLabelProps) => {
                 </div>
                 <div className="flex flex-col items-end justify-end font-mono text-muted-foreground shrink-0">
                   <span className="text-foreground whitespace-nowrap">
-                    {yValueFormatter(item.diff, item.unit)}
+                    {item.diff > 0 ? '+' : ''}{yValueFormatter(item.diff, item.unit)}
                   </span>
                   <span className={cn("text-xs font-bold text-foreground whitespace-nowrap")}>
                     ({item.percentage > 0 ? '+' : ''}

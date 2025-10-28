@@ -19,7 +19,7 @@ interface ChartPreviewProps {
 
 export function ChartPreview({ chart, className, height, onClick, customizeChart, margins }: ChartPreviewProps) {
     const { ref, inView } = useInView({
-        triggerOnce: false,
+        triggerOnce: true,
         threshold: 0.1,
         rootMargin: '50px 0px',
     });
