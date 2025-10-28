@@ -48,20 +48,21 @@ export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotati
         <MultiAxisChartContainer disableTooltip={diffEnabled} chart={chart} unitMap={unitMap} onAnnotationPositionChange={onAnnotationPositionChange} diffStateKey={diffStateKey}>
           {(getYAxisId: (seriesId: string) => string) => (
             <>
-              {enabledSeries.map((series) => (
+              {enabledSeries.map((series, index) => (
                 <Line
                   key={series.id}
                   yAxisId={getYAxisId(series.id)}
                   dataKey={(row: any) => row?.[series.id]?.value}
                   name={series.label || 'Untitled'}
                   stroke={series.config.color}
-                  type="natural"
+                  type="monotone"
                   strokeWidth={2}
-                  dot={{ r: 4 }}
-                  activeDot={{ r: 6 }}
+                  dot={{ r: 1 }}
+                  activeDot={{ r: 2 }}
                   connectNulls={false}
                   isAnimationActive={isAnimationActive}
                   animationDuration={animationDuration}
+                  animationBegin={index * 100}
                   animationEasing="ease-in-out"
                 >
                   {shouldRenderLabels && (
