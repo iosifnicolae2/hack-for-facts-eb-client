@@ -27,6 +27,7 @@ This feature allows users to subscribe to budget execution updates for entities 
 ### Flow 1: Quick Subscribe from Entity Page
 
 **Anonymous User:**
+
 1. User clicks bell icon on entity page
 2. Modal appears: "Sign in to get notifications about [Entity Name]"
 3. User clicks "Sign in" → Clerk sign-in modal
@@ -35,6 +36,7 @@ This feature allows users to subscribe to budget execution updates for entities 
 6. Bell icon changes to "active" state
 
 **Authenticated User:**
+
 1. User clicks bell icon
 2. Popover opens with quick options:
    - "Monthly newsletter" (checkbox, checked by default)
@@ -80,8 +82,8 @@ This feature allows users to subscribe to budget execution updates for entities 
 type NotificationType =
   | 'newsletter_entity_monthly'
   | 'newsletter_entity_quarterly'
-  | 'newsletter_entity_annual'
-  | 'alert_data_series';        // Phase 2
+  | 'newsletter_entity_yearly'
+  | 'alert_data_series';
 ```
 
 ### Subscription Rules
@@ -224,21 +226,25 @@ src/
 ### Component Architecture
 
 **EntityNotificationBell** - Bell icon button on entity pages
+
 - Location: [EntityHeader.tsx:92](src/components/entities/EntityHeader.tsx#L92)
 - States: Anonymous (outline), Subscribed (filled + badge), Unsubscribed (outline)
 - Behavior: Opens popover (auth) or sign-in dialog (anonymous)
 
 **NotificationQuickMenu** - Popover/Sheet with checkboxes
+
 - Desktop: Popover (floating)
 - Mobile: Sheet (bottom drawer)
 - Auto-saves changes with optimistic updates
 
 **NotificationList** - Settings page list view
+
 - Groups notifications by entity
 - Toggle switches for active/inactive
 - Delete with confirmation dialog
 
 **Unsubscribe Page** - Public route for email unsubscribe
+
 - No auth required
 - Confirmation step
 - Success/error states
@@ -283,12 +289,14 @@ mutationFn (API Call)
 ### Entity Page - Bell Button
 
 **States:**
+
 - Anonymous: 🔔 (outline, no badge)
 - Authenticated + Not subscribed: 🔕 (bell off, no badge)
 - Authenticated + Subscribed: 🔔³ (filled, badge with count)
 - Loading: 🔄 (spinner)
 
 **Quick Menu (Desktop - Popover):**
+
 ```
 ┌───────────────────────────────────────────────┐
 │  Primește actualizări despre                  │
@@ -315,6 +323,7 @@ mutationFn (API Call)
 ```
 
 **Quick Menu (Mobile - Sheet):**
+
 - Bottom drawer
 - Full width
 - Close button [×]
@@ -323,6 +332,7 @@ mutationFn (API Call)
 ### Settings Page
 
 **List View:**
+
 - Cards grouped by entity
 - Each card shows:
   - Entity name + CUI (link to entity page)
@@ -331,6 +341,7 @@ mutationFn (API Call)
   - Delete button [🗑]
 
 **Empty State:**
+
 ```
 ┌─────────────────────────────────────────────────┐
 │                     ℹ️                           │
@@ -344,6 +355,7 @@ mutationFn (API Call)
 ### Unsubscribe Page
 
 **Confirmation:**
+
 ```
 ┌─────────────────────────────────────────────────┐
 │              🔔                                 │
@@ -357,6 +369,7 @@ mutationFn (API Call)
 ```
 
 **Success:**
+
 ```
 ┌─────────────────────────────────────────────────┐
 │              ✅                                 │
@@ -387,6 +400,7 @@ mutationFn (API Call)
 - ✅ WCAG AA color contrast
 
 **Screen Reader Announcements:**
+
 - "Sign in to get notifications"
 - "Manage notifications, button"
 - "Monthly newsletter, checkbox, checked"
@@ -484,6 +498,7 @@ aria-label={t`Manage notifications`}
 ```
 
 **Workflow:**
+
 ```bash
 # Extract new strings
 yarn i18n:extract
@@ -526,7 +541,9 @@ function handleNotificationError(error: Error, action: string) {
 ## Common Issues & Solutions
 
 ### Issue: Bell icon doesn't show
+
 **Solution:** Check that `EntityHeader.tsx` has been modified:
+
 ```typescript
 import { EntityNotificationBell } from '@/features/notifications/components/EntityNotificationBell';
 
@@ -535,19 +552,25 @@ import { EntityNotificationBell } from '@/features/notifications/components/Enti
 ```
 
 ### Issue: "Failed to fetch notifications"
+
 **Solution:**
+
 1. Check API endpoint is running
 2. Verify `VITE_API_URL` in `.env.local`
 3. Check browser console for CORS errors
 
 ### Issue: Toggle doesn't work
+
 **Solution:**
+
 1. Verify API endpoint returns correct response
 2. Check React Query DevTools for errors
 3. Look at browser console for error messages
 
 ### Issue: Translations not showing
+
 **Solution:**
+
 ```bash
 yarn i18n:extract
 yarn i18n:compile
@@ -611,6 +634,7 @@ Analytics.capture('notification_unsubscribed', {
 ## Future Enhancements (Phase 2)
 
 ### Advanced Features
+
 - [ ] Data series alerts (custom queries)
 - [ ] Multi-entity subscriptions
 - [ ] In-app notifications
@@ -620,6 +644,7 @@ Analytics.capture('notification_unsubscribed', {
 - [ ] Custom alert thresholds
 
 ### UI Improvements
+
 - [ ] Notification center
 - [ ] Read/unread status
 - [ ] Notification history

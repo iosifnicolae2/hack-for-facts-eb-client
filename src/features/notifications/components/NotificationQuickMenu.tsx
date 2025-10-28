@@ -11,7 +11,7 @@ import { NOTIFICATION_TYPE_CONFIGS } from '../types';
 const NEWSLETTER_TYPES: NotificationType[] = [
   'newsletter_entity_monthly',
   'newsletter_entity_quarterly',
-  'newsletter_entity_annual',
+  'newsletter_entity_yearly',
 ];
 
 interface Props {
@@ -25,6 +25,7 @@ export function NotificationQuickMenu({ cui, entityName, notifications, onClose 
   const toggleMutation = useToggleNotification();
 
   const handleToggle = (type: NotificationType, isChecked: boolean) => {
+    if (toggleMutation.isPending) return;
     toggleMutation.mutate({
       entityCui: cui,
       notificationType: type,
@@ -70,11 +71,11 @@ export function NotificationQuickMenu({ cui, entityName, notifications, onClose 
                 </p>
               </div>
               <Switch
+                className="cursor-pointer disabled:cursor-pointer transition-all duration-300"
                 checked={isActive}
                 onCheckedChange={(checked) => handleToggle(type, checked)}
                 disabled={toggleMutation.isPending}
                 onClick={(e) => e.stopPropagation()}
-                className="cursor-pointer disabled:cursor-pointer"
               />
             </div>
           );

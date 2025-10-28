@@ -91,6 +91,7 @@ export function NotificationCard({ notifications, onRemove }: Props) {
 
                   <div className="flex items-center gap-2 shrink-0">
                     <Switch
+                      className="cursor-pointer disabled:cursor-pointer transition-all duration-300"
                       checked={notification.isActive}
                       onCheckedChange={(isActive) => handleToggle(notification, isActive)}
                       disabled={toggleMutation.isPending}

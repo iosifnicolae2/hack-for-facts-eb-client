@@ -1,7 +1,7 @@
 export type NotificationType =
   | 'newsletter_entity_monthly'
   | 'newsletter_entity_quarterly'
-  | 'newsletter_entity_annual'
+  | 'newsletter_entity_yearly'
   | 'alert_data_series';
 
 export interface Notification {
@@ -39,8 +39,8 @@ export const NOTIFICATION_TYPE_CONFIGS: Record<NotificationType, NotificationTyp
     label: 'Quarterly Report',
     description: 'Receive a quarterly report with budget execution',
   },
-  newsletter_entity_annual: {
-    type: 'newsletter_entity_annual',
+  newsletter_entity_yearly: {
+    type: 'newsletter_entity_yearly',
     label: 'Annual Report',
     description: 'Receive an annual report with budget execution',
   },
