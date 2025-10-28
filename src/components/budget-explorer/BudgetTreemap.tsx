@@ -209,6 +209,7 @@ const CustomizedContent: FC<{
         stroke="#fff"
         strokeWidth={2 / (depth + 1e-5)}
         strokeOpacity={0.5}
+        cursor="pointer"
       />
       {canShowName && (
         <motion.foreignObject
@@ -262,6 +263,8 @@ const CustomizedContent: FC<{
               WebkitLineClamp: canShowTwoLines ? 2 : 1,
               WebkitBoxOrient: 'vertical',
               wordBreak: 'break-word',
+              userSelect: 'none',
+              pointerEvents: 'none',
             }}
           >
             {name}
@@ -305,7 +308,7 @@ const CustomizedContent: FC<{
           fill={baseColor}
           fontSize={valueFontSize}
           fillOpacity={0.9}
-          style={{ pointerEvents: 'none' }}
+          style={{ pointerEvents: 'none', userSelect: 'none' }}
         >
           {displayValue} {unit.includes('capita') && '/ capita'}
         </motion.text>
@@ -347,7 +350,7 @@ const CustomizedContent: FC<{
           fill={baseColor}
           fontSize={percentageFontSize}
           fillOpacity={0.85}
-          style={{ pointerEvents: 'none' }}
+          style={{ pointerEvents: 'none', userSelect: 'none' }}
         >
           {`${percentage.toFixed(1)}%`}
         </motion.text>
