@@ -232,6 +232,7 @@ export const CustomSeriesValueConfigurationSchema = BaseSeriesConfigurationSchem
 export const StaticSeriesConfigurationSchema = BaseSeriesConfigurationSchema.extend({
   type: z.literal('static-series').describe('Series type: "static-series" - pre-defined dataset from server. References a dataset stored on the backend by ID. Use for: curated datasets, complex pre-computed metrics, frequently reused data, official statistics. Data is fetched from staticChartAnalytics API instead of executionAnalytics. Useful when data preparation is complex or when reusing across multiple charts. Backend maintains the dataset definition.'),
   seriesId: z.string().optional().describe('The unique identifier of the static dataset on the server. References a pre-defined dataset in the backend. Query the static datasets API to get available IDs and their descriptions. When set, the system fetches this dataset instead of building a query. The dataset includes its own time range, values, and metadata. Used for standardized metrics like "National Education Average", "EU Comparison Data", etc.'),
+  unit: z.string().optional().default('').describe('Unit of measurement for the static dataset. Displayed in tooltips and labels. Should match other series for meaningful comparison. Examples: "RON", "RON/capita", "%", "thousands". Required for clarity when mixing with other series.'),
 }).passthrough();
 
 
