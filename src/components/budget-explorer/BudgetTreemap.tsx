@@ -462,7 +462,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
   const renderContent = useCallback((props: any) => (
     <CustomizedContent
       {...props}
-      key={props.payload?.code + '-' + props?.payload?.name + '-' + props?.payload?.value}
+      key={props.payload?.code + '-' + props?.payload?.name}
       fill={props?.payload?.fill ?? props.fill}
       root={rootValue}
       normalization={normalization}
