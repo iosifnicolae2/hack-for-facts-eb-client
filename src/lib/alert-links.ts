@@ -1,5 +1,5 @@
 import { ChartSchema, CustomSeriesValueConfigurationSchema } from '@/schemas/charts';
-import type { Chart, ChartConfig, SeriesConfiguration } from '@/schemas/charts';
+import type { Chart, ChartConfig } from '@/schemas/charts';
 import type { ChartUrlState } from '@/components/charts/page-schema';
 import { createEmptyAlert, type Alert } from '@/schemas/alerts';
 import { t } from '@lingui/core/macro';
@@ -38,22 +38,32 @@ export function buildAlertPreviewChartState(alert: Alert): ChartUrlState {
   });
 
   // Create a basic series configuration for preview
-  const seriesConfig: any = {
-    id: `${alert.id}-series`,
-    type: 'line-items-aggregated-yearly',
-    label: alert.title || t`Alert series`,
-    enabled: true,
-    config: {
-      showDataLabels: false,
-      color: '#0062ff',
-    },
-  };
-
-  if (alert.filter) {
-    seriesConfig.filter = alert.filter;
+  let primarySeries: any;
+  if (alert.seriesType === 'static' && alert.datasetId) {
+    primarySeries = {
+      id: `${alert.id}-series`,
+      type: 'static-series',
+      seriesId: alert.datasetId,
+      label: alert.title || t`Alert series`,
+      enabled: true,
+      config: {
+        showDataLabels: false,
+        color: '#0062ff',
+      },
+    };
+  } else {
+    primarySeries = {
+      id: `${alert.id}-series`,
+      type: 'line-items-aggregated-yearly',
+      label: alert.title || t`Alert series`,
+      enabled: true,
+      filter: alert.filter,
+      config: {
+        showDataLabels: false,
+        color: '#0062ff',
+      },
+    };
   }
-
-  const primarySeries: SeriesConfiguration = seriesConfig;
 
   const chart: Chart = ChartSchema.parse({
     id: `${alert.id}-preview`,

@@ -17,11 +17,15 @@ export const AlertSchema = z.object({
   title: z.string().max(200, { message: 'Title must be 200 characters or fewer' }).optional(),
   description: z.string().max(1000, { message: 'Description must be 1000 characters or fewer' }).optional(),
   isActive: z.boolean().optional().default(true),
-  notificationType: z.literal('alert_data_series').optional(),
+  notificationType: z.enum(['alert_series_analytics', 'alert_series_static']).optional(),
+  // Which kind of alert source: analytics-backed filter vs static dataset
+  seriesType: z.enum(['analytics', 'static']).default('analytics'),
   filter: AnalyticsFilterSchema.default({
     account_category: 'ch',
     report_type: 'Executie bugetara agregata la nivel de ordonator principal',
   }),
+  // When seriesType is 'static', use datasetId to reference backend dataset
+  datasetId: z.string().optional(),
   conditions: z.array(AlertConditionSchema).default([]),
   createdAt: z.string().default(() => new Date().toISOString()),
   updatedAt: z.string().default(() => new Date().toISOString()),

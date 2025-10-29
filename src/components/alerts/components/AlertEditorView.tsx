@@ -16,6 +16,11 @@ import type { Alert, AlertCondition } from '@/schemas/alerts';
 import { Alert as UiAlert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useDebouncedCallback } from '@/lib/hooks/useDebouncedCallback';
 import { ConditionsList } from './ConditionsList';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { DatasetList } from '@/components/charts/components/series-config/DatasetList';
+import { useDatasetStore } from '@/hooks/filters/useDatasetStore';
+import { CardDescription } from '@/components/ui/card';
+import { AxisInfo } from '@/components/charts/components/series-config/AxisInfo';
 
 type AlertUpdater = Partial<Alert> | ((draft: Alert) => void);
 
@@ -110,6 +115,10 @@ export function AlertEditorView({ alert, serverAlert: _serverAlert, onChange }: 
     return { series, applyChanges };
   }, [alert, onChange]);
 
+  // Static dataset selector helpers
+  const { get: getDataset, add: addDatasets } = useDatasetStore(alert.datasetId ? [alert.datasetId] : []);
+  const selectedDataset = alert.datasetId ? getDataset(alert.datasetId) : null;
+
   return (
     <div className="space-y-6 py-8">
 
@@ -161,6 +170,24 @@ export function AlertEditorView({ alert, serverAlert: _serverAlert, onChange }: 
                   onCheckedChange={toggleActive}
                 />
               </div>
+
+              <div className="space-y-2">
+                <Label>
+                  <Trans>Alert type</Trans>
+                </Label>
+                <Select
+                  value={alert.seriesType}
+                  onValueChange={(v) => onChange({ seriesType: v as 'analytics' | 'static' })}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="analytics"><Trans>Data series (analytics)</Trans></SelectItem>
+                    <SelectItem value="static"><Trans>Static dataset</Trans></SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </CardContent>
           </Card>
 
@@ -190,16 +217,45 @@ export function AlertEditorView({ alert, serverAlert: _serverAlert, onChange }: 
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>
-                <Trans>Data Series Filter</Trans>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <SeriesFilter adapter={adapter} />
-            </CardContent>
-          </Card>
+          {alert.seriesType === 'analytics' && (
+            <Card>
+              <CardHeader>
+                <CardTitle>
+                  <Trans>Data Series Filter</Trans>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <SeriesFilter adapter={adapter} />
+              </CardContent>
+            </Card>
+          )}
+
+          {alert.seriesType === 'static' && (
+            <Card>
+              <CardHeader>
+                <CardTitle>
+                  <Trans>Static Dataset</Trans>
+                </CardTitle>
+                <CardDescription>
+                  <Trans>Select a predefined dataset to track</Trans>
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <DatasetList
+                  selectedOptions={alert.datasetId && selectedDataset ? [{ id: selectedDataset.id, label: selectedDataset.name }] : []}
+                  toggleSelect={(dataset) => onChange({ datasetId: dataset.id })}
+                  addDatasets={addDatasets}
+                />
+                {selectedDataset && (
+                  <div className="rounded-md border p-3 space-y-2">
+                    <div className="text-sm font-medium">{selectedDataset.name}</div>
+                    <div className="text-sm text-muted-foreground">{selectedDataset.description}</div>
+                    <AxisInfo xAxis={selectedDataset.xAxis} yAxis={selectedDataset.yAxis} variant="compact" />
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
         </div>
 
         <div className="space-y-6">

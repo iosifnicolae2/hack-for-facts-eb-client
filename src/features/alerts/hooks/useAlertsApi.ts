@@ -19,7 +19,7 @@ export function mapNotificationToAlert(entry: Notification): Alert {
   const baseInput = {
     ...rest,
     isActive: entry.isActive,
-    notificationType: 'alert_data_series' as const,
+    notificationType: (entry.notificationType === 'alert_series_static' ? 'alert_series_static' : 'alert_series_analytics'),
   };
 
   const parsed = AlertSchema.safeParse(baseInput);
@@ -27,7 +27,7 @@ export function mapNotificationToAlert(entry: Notification): Alert {
     ? parsed.data
     : AlertSchema.parse({
         isActive: entry.isActive,
-        notificationType: 'alert_data_series',
+        notificationType: (entry.notificationType === 'alert_series_static' ? 'alert_series_static' : 'alert_series_analytics'),
       });
 
   // Assign an id post-parse to avoid runtime validation rejecting non-uuid ids
@@ -38,20 +38,28 @@ export function mapNotificationToAlert(entry: Notification): Alert {
   const alert: Alert = {
     ...baseAlert,
     id: idCandidate,
-    notificationType: 'alert_data_series',
+    notificationType: (entry.notificationType === 'alert_series_static' ? 'alert_series_static' : 'alert_series_analytics'),
+    // If config contains datasetId, consider it a static alert; otherwise analytics
+    seriesType: typeof (rest as any).datasetId === 'string' && (rest as any).datasetId.trim().length > 0 ? 'static' : 'analytics',
   };
 
   return alert;
 }
 
 function buildAlertConfigPayload(alert: Alert): Record<string, unknown> {
-  return {
+  const base = {
     id: alert.id,
     title: alert.title,
     description: alert.description,
-    filter: alert.filter,
     conditions: alert.conditions,
-  };
+  } as Record<string, unknown>;
+
+  if (alert.seriesType === 'static') {
+    return { ...base, datasetId: alert.datasetId };
+  }
+
+  // Default to analytics
+  return { ...base, filter: alert.filter };
 }
 
 export const alertsKeys = {
@@ -65,7 +73,7 @@ export function useAlertsList() {
     queryFn: async () => {
       const notifications = await getUserNotifications();
       const alerts = notifications
-        .filter((n) => n.notificationType === 'alert_data_series')
+        .filter((n) => n.notificationType === 'alert_series_analytics' || n.notificationType === 'alert_series_static')
         .map(mapNotificationToAlert);
       return alerts;
     },
@@ -79,7 +87,7 @@ export function useAlertDetail(alertId: string, options?: { enabled?: boolean })
     queryFn: async () => {
       const notifications = await getUserNotifications();
       const target = notifications.find((n) => {
-        if (n.notificationType !== 'alert_data_series') return false;
+        if (n.notificationType !== 'alert_series_analytics' && n.notificationType !== 'alert_series_static') return false;
         const cfg = (n.config ?? {}) as Alert;
         return cfg.id === alertId || String(n.id) === alertId;
       });
@@ -101,7 +109,7 @@ export function useSaveAlertMutation() {
       // Find existing notification to get its server id
       const notifications = await getUserNotifications();
       const existing = notifications.find((n) => {
-        if (n.notificationType !== 'alert_data_series') return false;
+        if (n.notificationType !== 'alert_series_analytics' && n.notificationType !== 'alert_series_static') return false;
         const cfg = (n.config ?? {}) as Alert;
         return (cfg.id && cfg.id === alert.id) || String(n.id) === alert.id;
       });
@@ -112,7 +120,7 @@ export function useSaveAlertMutation() {
           return unsubscribeNotification(existing.id);
         }
         // If not existing or already inactive, ensure it exists to keep consistent behavior
-        return existing ?? (await createNotification({ entityCui: null, notificationType: 'alert_data_series', config: { ...configPayload, id: undefined } }));
+        return existing ?? (await createNotification({ entityCui: null, notificationType: alert.seriesType === 'static' ? 'alert_series_static' : 'alert_series_analytics', config: { ...configPayload, id: undefined } }));
       }
 
       // Activate or update
@@ -121,7 +129,7 @@ export function useSaveAlertMutation() {
       }
 
       // Create active alert
-      return createNotification({ entityCui: null, notificationType: 'alert_data_series', config: { ...configPayload, id: undefined } });
+      return createNotification({ entityCui: null, notificationType: alert.seriesType === 'static' ? 'alert_series_static' : 'alert_series_analytics', config: { ...configPayload, id: undefined } });
     },
     onSuccess: (savedNotification) => {
       const savedAlert = mapNotificationToAlert(savedNotification);
@@ -143,7 +151,7 @@ export function useDeleteAlertMutation() {
     mutationFn: async (alertId: string) => {
       const notifications = await getUserNotifications();
       const target = notifications.find((n) => {
-        if (n.notificationType !== 'alert_data_series') return false;
+        if (n.notificationType !== 'alert_series_analytics' && n.notificationType !== 'alert_series_static') return false;
         const cfg = (n.config ?? {}) as Alert;
         return cfg.id === alertId || String(n.id) === alertId;
       });

@@ -83,7 +83,7 @@ type NotificationType =
   | 'newsletter_entity_monthly'
   | 'newsletter_entity_quarterly'
   | 'newsletter_entity_yearly'
-  | 'alert_data_series';
+  | 'alert_series_analytics' | 'alert_series_static';
 ```
 
 ### Subscription Rules

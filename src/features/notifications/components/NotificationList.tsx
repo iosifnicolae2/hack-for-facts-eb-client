@@ -24,11 +24,11 @@ export function NotificationList({ notifications, isLoading, onAddNotification }
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  // Extract unique entity CUIs from notifications (excluding alert_data_series)
+  // Extract unique entity CUIs from notifications (excluding series alerts)
   const entityCuis = useMemo(() => {
     const unique = new Set<string>();
     for (const n of notifications) {
-      if (n.notificationType === 'alert_data_series') continue;
+      if (n.notificationType === 'alert_series_analytics' || n.notificationType === 'alert_series_static') continue;
       const cui = typeof n.entityCui === 'string' ? n.entityCui.trim() : '';
       if (cui) unique.add(cui);
     }
@@ -49,10 +49,10 @@ export function NotificationList({ notifications, isLoading, onAddNotification }
     },
   });
 
-  // Enrich notifications with entity names from the label hook (excluding alert_data_series)
+  // Enrich notifications with entity names from the label hook (excluding series alerts)
   const enrichedNotifications = useMemo(() => {
     return notifications
-      .filter(notification => notification.notificationType !== 'alert_data_series')
+      .filter(notification => notification.notificationType !== 'alert_series_analytics' && notification.notificationType !== 'alert_series_static')
       .map(notification => {
         if (notification.entity?.name) {
           return notification;

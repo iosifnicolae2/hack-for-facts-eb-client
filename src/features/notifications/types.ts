@@ -2,7 +2,8 @@ export type NotificationType =
   | 'newsletter_entity_monthly'
   | 'newsletter_entity_quarterly'
   | 'newsletter_entity_yearly'
-  | 'alert_data_series';
+  | 'alert_series_analytics'
+  | 'alert_series_static';
 
 export interface Notification {
   id: number;
@@ -44,9 +45,14 @@ export const NOTIFICATION_TYPE_CONFIGS: Record<NotificationType, NotificationTyp
     label: 'Annual Report',
     description: 'Receive an annual report with budget execution',
   },
-  alert_data_series: {
-    type: 'alert_data_series',
-    label: 'Data Series Alert',
-    description: 'Receive an alert when a data series exceeds a set value',
+  alert_series_analytics: {
+    type: 'alert_series_analytics',
+    label: 'Analytics Series Alert',
+    description: 'Receive an alert when an analytics data series meets conditions',
+  },
+  alert_series_static: {
+    type: 'alert_series_static',
+    label: 'Static Dataset Alert',
+    description: 'Receive an alert for a static dataset when conditions are met',
   },
 };

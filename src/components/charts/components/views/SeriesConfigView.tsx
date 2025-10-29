@@ -32,6 +32,7 @@ import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useNavigate } from '@tanstack/react-router';
 import { buildAlertFromFilter } from '@/lib/alert-links';
+import { createEmptyAlert } from '@/schemas/alerts';
 import { Analytics } from '@/lib/analytics';
 import { DebouncedStatusInput } from '@/components/ui/debounced-status-input';
 
@@ -94,10 +95,21 @@ export function SeriesConfigView() {
   };
 
   const handleCreateAlertFromSeries = () => {
-    if (!series || series.type !== 'line-items-aggregated-yearly') {
+    if (!series) return;
+    let alert;
+    if (series.type === 'line-items-aggregated-yearly') {
+      alert = buildAlertFromFilter((series as SeriesConfiguration).filter, { chartId: chart.id, chartTitle: chart.title, label: series.label });
+    } else if (series.type === 'static-series') {
+      // Build a static-series alert with selected datasetId
+      alert = createEmptyAlert({
+        title: series.label || undefined,
+        description: undefined,
+        seriesType: 'static',
+        datasetId: (series as any).seriesId,
+      });
+    } else {
       return;
     }
-    const alert = buildAlertFromFilter((series as SeriesConfiguration).filter, { chartId: chart.id, chartTitle: chart.title, label: series.label });
     Analytics.capture(Analytics.EVENTS.AlertCreated, {
       alert_id: alert.id!,
       source: 'chart_series',
@@ -112,7 +124,7 @@ export function SeriesConfigView() {
     });
   };
 
-  const isLineItemsSeries = series.type === 'line-items-aggregated-yearly';
+  const isLineItemsSeries = series.type === 'line-items-aggregated-yearly' || series.type === 'static-series';
 
   return (
     <div className="container mx-auto space-y-6 p-4 md:p-6 w-full overflow-x-hidden">
