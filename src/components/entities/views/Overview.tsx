@@ -20,8 +20,6 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { BudgetTreemap } from '@/components/budget-explorer/BudgetTreemap'
 import { useTreemapDrilldown } from '@/components/budget-explorer/useTreemapDrilldown'
 import type { AggregatedNode } from '@/components/budget-explorer/budget-transform'
-import { SpendingBreakdown } from '@/components/budget-explorer/SpendingBreakdown'
-import { RevenueBreakdown } from '@/components/budget-explorer/RevenueBreakdown'
 import { usePeriodLabel } from '@/hooks/use-period-label'
 import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
@@ -286,24 +284,6 @@ export const Overview = ({
                     )}
                 </CardContent>
             </Card>
-
-            {/* Breakdown cards to explain totals, aligned with Budget Explorer */}
-            {accountCategory === 'ch' && (
-                <SpendingBreakdown
-                    nodes={aggregatedNodes as unknown as readonly AggregatedNode[]}
-                    normalization={normalization}
-                    periodLabel={periodLabel}
-                    isLoading={isLoading || isLoadingLineItems}
-                />
-            )}
-            {accountCategory === 'vn' && (
-                <RevenueBreakdown
-                    nodes={aggregatedNodes as unknown as readonly AggregatedNode[]}
-                    normalization={normalization}
-                    periodLabel={periodLabel}
-                    isLoading={isLoading || isLoadingLineItems}
-                />
-            )}
 
             <div className="space-y-6">
                 <EntityLineItemsTabs
