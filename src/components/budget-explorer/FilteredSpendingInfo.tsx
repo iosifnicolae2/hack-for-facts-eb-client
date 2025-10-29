@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Trans } from '@lingui/react/macro'
-import { Info } from 'lucide-react'
+import { Info, X } from 'lucide-react'
 import { yValueFormatter } from '@/components/charts/components/chart-renderer/utils'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import type { ExcludedItemsSummary } from './budget-transform'
 import { useIsMobile } from '@/hooks/use-mobile'
@@ -218,13 +218,20 @@ export function FilteredSpendingInfo({ excludedItemsSummary, currencyCode, perCa
             <Trans>Filtered</Trans>
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-[calc(100vw-2rem)] rounded-lg">
-          <DialogHeader>
+        <DialogContent className="max-w-[calc(100vw-2rem)] w-[calc(100vw-2rem)] p-0 rounded-lg overflow-hidden">
+          <DialogHeader className="sticky top-0 z-10 bg-background/95 supports-[backdrop-filter]:bg-background/80 backdrop-blur border-b px-5 py-3">
             <DialogTitle className="text-base">
               <Trans>Spending Calculation</Trans>
             </DialogTitle>
+            <DialogClose asChild>
+              <Button variant="ghost" size="icon" className="absolute right-4 top-1/2 -translate-y-1/2">
+                <X className="w-4 h-4" />
+              </Button>
+            </DialogClose>
           </DialogHeader>
-          {content}
+          <div className="px-5 py-4 max-h-[calc(100dvh-10rem)] overflow-y-auto">
+            {content}
+          </div>
         </DialogContent>
       </Dialog>
     )
