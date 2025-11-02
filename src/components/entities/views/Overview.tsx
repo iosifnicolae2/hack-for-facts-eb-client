@@ -202,7 +202,7 @@ export const Overview = ({
             report_type: reportType ? toReportTypeValue(reportType) : 'Executie bugetara agregata la nivel de ordonator principal',
         },
         treemapPrimary: primary,
-        treemapDepth: 'main',
+        treemapDepth: 'chapter',
     }), [cui, reportPeriod, accountCategory, normalization, reportType, primary])
 
     const periodLabel = usePeriodLabel(reportPeriod)

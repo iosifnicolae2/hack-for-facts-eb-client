@@ -248,7 +248,7 @@ function EntityAnalyticsPage() {
               data={aggregatedData}
               isLoading={isLoadingAggregated}
               initialPrimary={treemapPrimary ?? 'fn'}
-              initialDepth={treemapDepth ?? 'main'}
+              initialDepth={treemapDepth ?? 'chapter'}
               onPrimaryChange={setTreemapPrimary}
               onDepthChange={setTreemapDepth}
               treemapPath={treemapPath}

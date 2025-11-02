@@ -16,9 +16,9 @@ interface EntityAnalyticsTreemapProps {
   data?: AggregatedLineItemConnection
   isLoading?: boolean
   initialPrimary?: 'fn' | 'ec'
-  initialDepth?: 'main' | 'detail'
+  initialDepth?: 'chapter' | 'subchapter' | 'paragraph'
   onPrimaryChange?: (primary: 'fn' | 'ec') => void
-  onDepthChange?: (depth: 'main' | 'detail') => void
+  onDepthChange?: (depth: 'chapter' | 'subchapter' | 'paragraph') => void
   treemapPath?: string
   onTreemapPathChange?: (path: string | undefined) => void
 }
@@ -28,15 +28,15 @@ export function EntityAnalyticsTreemap({
   data,
   isLoading,
   initialPrimary = 'fn',
-  initialDepth = 'main',
+  initialDepth = 'chapter',
   onPrimaryChange,
   onDepthChange,
   treemapPath,
   onTreemapPathChange,
 }: EntityAnalyticsTreemapProps) {
-  const [depth, setDepth] = useState<'main' | 'detail'>(initialDepth)
+  const [depth, setDepth] = useState<'chapter' | 'subchapter' | 'paragraph'>(initialDepth)
 
-  const handleDepthChange = (newDepth: 'main' | 'detail') => {
+  const handleDepthChange = (newDepth: 'chapter' | 'subchapter' | 'paragraph') => {
     setDepth(newDepth)
     onDepthChange?.(newDepth)
   }
@@ -68,7 +68,7 @@ export function EntityAnalyticsTreemap({
   } = useTreemapDrilldown({
     nodes: aggregatedNodes,
     initialPrimary,
-    rootDepth: depth === 'main' ? 2 : 4,
+    rootDepth: depth === 'chapter' ? 2 : depth === 'subchapter' ? 4 : 6,
     excludeEcCodes,
     onPrimaryChange,
     initialPath: (treemapPath ?? '')
@@ -120,17 +120,17 @@ export function EntityAnalyticsTreemap({
               <ToggleGroup
                 type="single"
                 value={depth}
-                onValueChange={(v: 'main' | 'detail') => {
+                onValueChange={(v: 'chapter' | 'subchapter' | 'paragraph') => {
                   if (v) handleDepthChange(v)
                 }}
                 variant="outline"
                 size="sm"
                 className="w-full sm:w-auto justify-start sm:justify-end"
               >
-                <ToggleGroupItem value="main" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-3 whitespace-nowrap">
+                <ToggleGroupItem value="chapter" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-3 whitespace-nowrap">
                   <Trans>Main chapters</Trans>
                 </ToggleGroupItem>
-                <ToggleGroupItem value="detail" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-3 whitespace-nowrap">
+                <ToggleGroupItem value="subchapter" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-3 whitespace-nowrap">
                   <Trans>Detailed categories</Trans>
                 </ToggleGroupItem>
               </ToggleGroup>

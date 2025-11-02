@@ -39,7 +39,7 @@ export const Route = createLazyFileRoute('/budget-explorer')({
 })
 
 const PrimaryLevelEnum = z.enum(['fn', 'ec'])
-const DepthEnum = z.enum(['main', 'detail'])
+const DepthEnum = z.enum(['chapter', 'subchapter', 'paragraph'])
 const ViewEnum = z.enum(['overview', 'treemap', 'sankey', 'list'])
 
 const defaultFilter: AnalyticsFilterType = {
@@ -54,7 +54,7 @@ const defaultFilter: AnalyticsFilterType = {
 const SearchSchema = z.object({
   view: ViewEnum.default('overview').describe('View type: overview | treemap | sankey | list.'),
   primary: PrimaryLevelEnum.default('fn').describe('Primary grouping: fn (functional) or ec (economic).'),
-  depth: DepthEnum.default('main').describe('Detail level: main (chapters) or detail (subcategories).'),
+  depth: DepthEnum.default('chapter').describe('Detail level: chapter (chapters) or subchapter (subcategories).'),
   search: z.string().optional().describe('Text search within categories.'),
   filter: AnalyticsFilterSchema.default(defaultFilter).describe('Budget filter including report_period, account_category, normalization, report_type.'),
   treemapPrimary: PrimaryLevelEnum.optional().describe('Explicit treemap grouping override: fn | ec.'),
@@ -192,7 +192,7 @@ function BudgetExplorerPage() {
   } = useTreemapDrilldown({
     nodes: data?.nodes ?? [],
     initialPrimary: initialTreemapPrimary,
-    rootDepth: depth === 'detail' ? 4 : 2,
+    rootDepth: depth === 'paragraph' ? 6 : depth === 'subchapter' ? 4 : 2,
     excludeEcCodes,
     initialPath: (treemapPath ?? '')
       .split(',')
@@ -345,7 +345,7 @@ function BudgetExplorerPage() {
   }
 
 
-  const currentDepthNumeric = useMemo(() => (depth === 'detail' ? 4 : 2) as 2 | 4 | 6, [depth])
+  const currentDepthNumeric = useMemo(() => (depth === 'paragraph' ? 6 : depth === 'subchapter' ? 4 : 2) as 2 | 4 | 6, [depth])
   const periodLabel = usePeriodLabel(filter.report_period)
   const isRevenueView = filter.account_category === 'vn'
 
@@ -393,7 +393,7 @@ function BudgetExplorerPage() {
                         report_type: filter.report_type,
                       },
                       treemapPrimary: activePrimary,
-                      treemapDepth: depth === 'detail' ? 'detail' : 'main',
+                      treemapDepth: depth === 'chapter' ? 'chapter' : 'subchapter',
                     }}
                     preload="intent"
                   >
@@ -425,15 +425,15 @@ function BudgetExplorerPage() {
                   <ToggleGroup
                     type="single"
                     value={depth}
-                    onValueChange={(v: 'main' | 'detail') => { if (v) handleFilterChange({ depth: v }) }}
+                    onValueChange={(v: 'chapter' | 'subchapter' | 'paragraph') => { if (v) handleFilterChange({ depth: v }) }}
                     variant="outline"
                     size="sm"
                     className="w-full sm:w-auto justify-start sm:justify-end"
                   >
-                    <ToggleGroupItem value="main" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-3 whitespace-nowrap">
+                    <ToggleGroupItem value="chapter" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-3 whitespace-nowrap">
                       <Trans>Main chapters</Trans>
                     </ToggleGroupItem>
-                    <ToggleGroupItem value="detail" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-3 whitespace-nowrap">
+                    <ToggleGroupItem value="subchapter" className="data-[state=on]:bg-foreground data-[state=on]:text-background px-3 whitespace-nowrap">
                       <Trans>Detailed categories</Trans>
                     </ToggleGroupItem>
                   </ToggleGroup>

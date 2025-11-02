@@ -24,7 +24,7 @@ const searchSchema = z.object({
   pageSize: z.number().default(25),
   filter: AnalyticsFilterSchema.default(defaultEntityAnalyticsFilter as AnalyticsFilterType),
   treemapPrimary: z.enum(['fn', 'ec']).optional(),
-  treemapDepth: z.enum(['main', 'detail']).optional(),
+  treemapDepth: z.enum(['chapter', 'subchapter', 'paragraph']).optional(),
   treemapPath: z.string().optional(),
 })
 
@@ -87,7 +87,7 @@ export function useEntityAnalyticsFilter() {
     navigate({ search: (prev) => ({ ...prev, treemapPrimary: primary }), replace: true, resetScroll: false })
   }, [navigate])
 
-  const setTreemapDepth = useCallback((depth: 'main' | 'detail') => {
+  const setTreemapDepth = useCallback((depth: 'chapter' | 'subchapter' | 'paragraph') => {
     navigate({ search: (prev) => ({ ...prev, treemapDepth: depth }), replace: true, resetScroll: false })
   }, [navigate])
 

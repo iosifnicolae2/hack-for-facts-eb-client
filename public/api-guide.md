@@ -22,7 +22,7 @@ This guide documents how to access major resources and parameters programmatical
   - `filter.report_period` (object: `type`, `selection`) — ISO 8601 dates or yearly anchors
   - `filter.account_category` (`ch` | `vn`)
   - `filter.normalization` (`total` | `per_capita` | `total_euro` | `per_capita_euro`)
-  - `treemapPrimary` (`fn` | `ec`), `treemapDepth` (`main` | `detail`)
+  - `treemapPrimary` (`fn` | `ec`), `treemapDepth` (`chapter` | `subchapter` | `paragraph`)
 - Parameter schema: https://transparenta.eu/ai/entities-analytics-parameters.json
 - Example: `/entity-analytics?view=line-items`
 

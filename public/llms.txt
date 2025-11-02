@@ -37,7 +37,7 @@ Common params:
 - filter.account_category=ch|vn
 - filter.normalization=total|per_capita|total_euro|per_capita_euro
 - view=table|line-items
-- treemapPrimary=fn|ec, treemapDepth=main|detail
+- treemapPrimary=fn|ec, treemapDepth=chapter|subchapter|paragraph
 
 Parameters JSON: (coming from schema)
 - https://transparenta.eu/ai/entities-analytics-parameters.json
