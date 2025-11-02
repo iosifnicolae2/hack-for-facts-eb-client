@@ -359,7 +359,7 @@ export function MapFilter() {
                     title={t`Report Type`}
                     icon={<ArrowUpDown className="w-4 h-4" aria-hidden="true" />}
                     selectedOption={(mapState.filters.report_type) ? { id: mapState.filters.report_type, label: mapState.filters.report_type } : null}
-                    onClear={() => setReportType(undefined)}
+                    onClear={() => setReportType('Executie bugetara agregata la nivel de ordonator principal')}
                 >
                     <ReportTypeFilter
                         reportType={mapState.filters.report_type}

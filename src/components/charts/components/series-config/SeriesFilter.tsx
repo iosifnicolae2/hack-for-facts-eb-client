@@ -426,7 +426,7 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
   const [excludeValue, setExcludeValue] = useState<string | undefined>(undefined);
   const accordionValue = totalExcludeFilters > 0 ? (excludeValue ?? 'exclude') : excludeValue;
 
-  const handleClearReportType = () => setReportType(undefined);
+  const handleClearReportType = () => setReportType('Executie bugetara agregata la nivel de ordonator principal');
   const handleClearNormalization = () => setNormalization(undefined);
 
   const handleClearFlag = (option: OptionItem) => {

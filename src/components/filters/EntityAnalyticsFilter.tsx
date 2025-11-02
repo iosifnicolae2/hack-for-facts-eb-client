@@ -532,7 +532,7 @@ export function EntityAnalyticsFilter() {
           title={t`Report Type`}
           icon={<ArrowUpDown className="w-4 h-4" />}
           selectedOption={(filter.report_type) ? { id: filter.report_type, label: filter.report_type } : null}
-          onClear={() => setReportType(undefined)}
+          onClear={() => setReportType('Executie bugetara agregata la nivel de ordonator principal')}
         >
           <ReportTypeFilter reportType={filter.report_type} setReportType={setReportType} />
         </FilterRadioContainer>
