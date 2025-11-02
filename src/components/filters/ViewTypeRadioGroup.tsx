@@ -14,16 +14,11 @@ interface ViewTypeRadioGroupProps<T extends string> {
 }
 
 export function ViewTypeRadioGroup<T extends string>({ value, onChange, viewOptions, ariaLabel, ariaLabelledby }: ViewTypeRadioGroupProps<T>) {
-
-    const handleValueChange = (value: T) => {
-        onChange(value);
-    };
-
     return (
         <RadioGroup
-            defaultValue={value}
+            value={value}
+            onValueChange={(val) => onChange(val as T)}
             className="flex space-x-2"
-            onValueChange={handleValueChange}
             aria-label={ariaLabel}
             aria-labelledby={ariaLabelledby}
         >
