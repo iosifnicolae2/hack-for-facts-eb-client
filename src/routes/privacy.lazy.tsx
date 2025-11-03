@@ -83,7 +83,7 @@ function PrivacyPage() {
         </ul>
 
         <h3><Trans>Data sources and licensing</Trans></h3>
-        <p><Trans>Public sector information from Ministerul Finanțelor, made available as open data. No government affiliation.</Trans></p>
+        <p><Trans>Public sector information from Ministerul Finanțelor. No government affiliation.</Trans></p>
 
         <h3><Trans>Data sharing and processors</Trans></h3>
         <p><Trans>We share data with the following trusted service providers who process data on our behalf:</Trans></p>

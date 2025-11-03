@@ -279,8 +279,8 @@ msgid "<0>PostHog</0>: <1>ph_*</1> identifiers for usage analytics. Custom event
 msgstr "<0>PostHog</0>: Identificatori <1>ph_*</1> pentru analiza utilizării. Doar evenimente personalizate, fără autocaptură sau înregistrări ale sesiunilor."
 
 #: src/routes/terms.lazy.tsx:84
-msgid "<0>Recommended:</0> Chart: „Titlul Graficului\" | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu."
-msgstr "<0>Recomandat:</0> Grafic: „Titlul graficului\" | Sursa: Ministerul Finanțelor (Date Deschise), via Transparenta.eu."
+msgid "<0>Recommended:</0> Chart: „Titlul Graficului\" | Source: Ministerul Finanțelor, via Transparenta.eu."
+msgstr "<0>Recomandat:</0> Grafic: „Titlul graficului\" | Sursa: Ministerul Finanțelor, via Transparenta.eu."
 
 #: src/routes/privacy.lazy.tsx:113
 msgid "<0>Right of Access (Art. 15):</0> Request a copy of the personal data we hold about you."
@@ -391,8 +391,8 @@ msgstr "Acceptarea"
 msgid "Account category"
 msgstr "Categorie cont"
 
-#: src/components/alerts/components/AlertEditorView.tsx:230
-#: src/components/charts/components/views/SeriesConfigView.tsx:194
+#: src/components/alerts/components/AlertEditorView.tsx:286
+#: src/components/charts/components/views/SeriesConfigView.tsx:206
 #: src/features/notifications/components/alerts/AlertCard.tsx:71
 msgid "Active"
 msgstr "Activ"
@@ -438,7 +438,8 @@ msgstr "Adaugă condiție"
 msgid "Add Data Series"
 msgstr "Adaugă serie de date"
 
-#: src/routes/settings/notifications.tsx:115
+#: src/routes/settings/notifications.tsx:59
+#: src/routes/settings/notifications.tsx:60
 msgid "Add entity notification"
 msgstr "Adaugă notificare entitate"
 
@@ -480,11 +481,11 @@ msgstr "Filtrare avansată"
 msgid "Aggregated Budget Execution at Main Ordering Level"
 msgstr "Executie bugetara agregata la nivel de ordonator principal"
 
-#: src/components/charts/components/chart-renderer/components/Tooltips.tsx:55
+#: src/components/charts/components/chart-renderer/components/Tooltips.tsx:80
 msgid "Aggregated data"
 msgstr "Date agregate"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:179
+#: src/components/charts/components/views/SeriesConfigView.tsx:191
 msgid "Aggregated Series Calculation"
 msgstr "Calcul serie agregată"
 
@@ -505,23 +506,23 @@ msgstr "Legendă valoare cumulată"
 msgid "Alert"
 msgstr "Alertă"
 
-#: src/components/alerts/components/AlertEditorView.tsx:170
+#: src/components/alerts/components/AlertEditorView.tsx:197
 msgid "Alert Conditions"
 msgstr "Condițiile alertei"
 
-#: src/components/alerts/components/AlertEditorView.tsx:121
+#: src/components/alerts/components/AlertEditorView.tsx:130
 msgid "Alert Details"
 msgstr "Detaliile alertei"
 
-#: src/components/alerts/components/AlertEditorView.tsx:152
+#: src/components/alerts/components/AlertEditorView.tsx:161
 msgid "Alert enabled"
 msgstr "Alertă activată"
 
-#: src/components/alerts/components/AlertEditorView.tsx:214
+#: src/components/alerts/components/AlertEditorView.tsx:270
 msgid "Alert ID"
 msgstr "ID alertă"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:177
+#: src/routes/alerts/$alertId/index.lazy.tsx:180
 msgid "Alert not found"
 msgstr "Alerta nu a fost găsită"
 
@@ -530,9 +531,14 @@ msgstr "Alerta nu a fost găsită"
 msgid "Alert preview"
 msgstr "Previzualizare alertă"
 
-#: src/lib/alert-links.ts:45
+#: src/lib/alert-links.ts:47
+#: src/lib/alert-links.ts:58
 msgid "Alert series"
 msgstr "Serie de date alertă"
+
+#: src/components/alerts/components/AlertEditorView.tsx:176
+msgid "Alert type"
+msgstr "Tip alertă"
 
 #: src/features/notifications/components/EntityNotificationBell.tsx:68
 msgid "Alerts when important changes occur"
@@ -551,7 +557,7 @@ msgstr "Toate"
 msgid "All budget expenditures"
 msgstr "Toate cheltuielile bugetare"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:125
+#: src/routes/alerts/$alertId/index.lazy.tsx:128
 msgid "All changes saved"
 msgstr "Toate modificările au fost salvate"
 
@@ -614,7 +620,7 @@ msgstr "Sumă pe cap de locuitor"
 msgid "Amount Range"
 msgstr "Interval sumă"
 
-#: src/components/ui/FloatingQuickNav.tsx:251
+#: src/components/ui/FloatingQuickNav.tsx:247
 msgid "Analytics"
 msgstr "Analiză"
 
@@ -672,15 +678,15 @@ msgid "April"
 msgstr "Aprilie"
 
 #: src/features/notifications/components/alerts/AlertCard.tsx:115
-#: src/routes/alerts/$alertId/index.lazy.tsx:305
+#: src/routes/alerts/$alertId/index.lazy.tsx:310
 msgid "Are you sure you want to delete this alert? This action cannot be undone."
 msgstr "Sunteți sigur că doriți să ștergeți această alertă? Această acțiune este ireversibilă."
 
-#: src/features/notifications/components/NotificationCard.tsx:114
+#: src/features/notifications/components/NotificationCard.tsx:116
 msgid "Are you sure you want to delete this notification? This action cannot be undone."
 msgstr "Sunteți sigur că doriți să ștergeți această notificare? Această acțiune este ireversibilă."
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:356
+#: src/components/charts/components/views/SeriesConfigView.tsx:368
 msgid "Are you sure you want to delete this series?"
 msgstr "Sunteți sigur că doriți să ștergeți această serie?"
 
@@ -747,7 +753,7 @@ msgid "Back to alert"
 msgstr "Înapoi la alertă"
 
 #: src/components/charts/components/views/AnnotationConfigView.tsx:52
-#: src/components/charts/components/views/SeriesConfigView.tsx:84
+#: src/components/charts/components/views/SeriesConfigView.tsx:85
 msgid "Back to Configuration"
 msgstr "Înapoi la configurare"
 
@@ -789,8 +795,8 @@ msgstr "Ambele"
 msgid "Browse and download all financial reports submitted by this entity"
 msgstr "Răsfoiți și descărcați toate rapoartele financiare depuse de această entitate"
 
-#: src/components/entities/views/Overview.tsx:244
-#: src/components/entities/views/TrendsView.tsx:201
+#: src/components/entities/views/Overview.tsx:242
+#: src/components/entities/views/TrendsView.tsx:199
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:90
 #: src/routes/budget-explorer.lazy.tsx:373
 msgid "Budget Distribution"
@@ -858,10 +864,10 @@ msgstr "Calcul"
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:80
 #: src/components/charts/components/views/AnnotationConfigView.tsx:243
 #: src/components/charts/components/views/ChartConfigView.tsx:92
-#: src/components/charts/components/views/SeriesConfigView.tsx:365
+#: src/components/charts/components/views/SeriesConfigView.tsx:377
 #: src/features/notifications/components/alerts/AlertCard.tsx:122
-#: src/features/notifications/components/NotificationCard.tsx:122
-#: src/routes/alerts/$alertId/index.lazy.tsx:312
+#: src/features/notifications/components/NotificationCard.tsx:124
+#: src/routes/alerts/$alertId/index.lazy.tsx:317
 #: src/routes/unsubscribe.$token.tsx:113
 msgid "Cancel"
 msgstr "Anulează"
@@ -885,7 +891,7 @@ msgstr "Grafic"
 
 #: src/components/charts/components/views/AnnotationConfigView.tsx:211
 #: src/components/charts/components/views/ChartConfigView.tsx:37
-#: src/components/charts/components/views/SeriesConfigView.tsx:342
+#: src/components/charts/components/views/SeriesConfigView.tsx:354
 msgid "Chart Configuration"
 msgstr "Configurare grafic"
 
@@ -1033,7 +1039,7 @@ msgstr "Configurează"
 msgid "Configure Chart"
 msgstr "Configurează graficul"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:141
+#: src/components/charts/components/views/SeriesConfigView.tsx:153
 msgid "Configure Series"
 msgstr "Configurare serie de date"
 
@@ -1120,7 +1126,7 @@ msgstr "Copiat!"
 
 #: src/components/charts/components/ChartDataError.tsx:286
 #: src/components/charts/components/views/AnnotationConfigView.tsx:217
-#: src/components/charts/components/views/SeriesConfigView.tsx:239
+#: src/components/charts/components/views/SeriesConfigView.tsx:251
 msgid "Copy"
 msgstr "Copiază"
 
@@ -1140,7 +1146,7 @@ msgstr "Copiază datele"
 msgid "Copy error report to clipboard"
 msgstr "Copiază raportul de erori în clipboard"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:238
+#: src/components/charts/components/views/SeriesConfigView.tsx:250
 msgid "Copy series"
 msgstr "Copiază seria de date"
 
@@ -1214,18 +1220,20 @@ msgstr "Județ:"
 msgid "Create a chart for this entity to start tracking its financial evolution."
 msgstr "Creează un grafic pentru această entitate pentru a începe să-i urmărești evoluția financiară."
 
-#: src/features/notifications/components/NotificationList.tsx:151
+#: src/features/notifications/components/NotificationList.tsx:158
+#: src/features/notifications/components/NotificationList.tsx:159
 #: src/routes/alerts/new.lazy.tsx:220
 msgid "Create alert"
 msgstr "Creează alertă"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:232
+#: src/components/charts/components/views/SeriesConfigView.tsx:244
 #: src/features/notifications/components/alerts/AlertsList.tsx:60
+#: src/routes/alerts/$alertId/index.lazy.tsx:220
 #: src/routes/alerts/new.lazy.tsx:183
 msgid "Create Alert"
 msgstr "Creare alertă"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:230
+#: src/components/charts/components/views/SeriesConfigView.tsx:242
 msgid "Create alert from this series"
 msgstr "Creează alertă din această serie de date"
 
@@ -1237,7 +1245,7 @@ msgstr "Creează grafic"
 msgid "Create chart for this entity"
 msgstr "Creează grafic pentru această entitate"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:196
+#: src/routes/alerts/$alertId/index.lazy.tsx:199
 msgid "Create new alert"
 msgstr "Creează o alertă nouă"
 
@@ -1263,15 +1271,15 @@ msgstr "Monedă"
 msgid "Custom Data"
 msgstr "Date personalizate"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:180
+#: src/components/charts/components/views/SeriesConfigView.tsx:192
 msgid "Custom Series"
 msgstr "Serie personalizată"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:181
+#: src/components/charts/components/views/SeriesConfigView.tsx:193
 msgid "Custom Series Value"
 msgstr "Valoare serie personalizată"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:284
+#: src/routes/alerts/$alertId/index.lazy.tsx:289
 msgid "Danger Zone"
 msgstr "Zonă de pericol"
 
@@ -1291,7 +1299,7 @@ msgstr "Date colectate cu un cont:"
 msgid "Data collected without an account:"
 msgstr "Date colectate fără cont:"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:284
+#: src/components/charts/components/views/SeriesConfigView.tsx:296
 msgid "Data Label Offset"
 msgstr "Decalaj etichetă de date"
 
@@ -1314,11 +1322,15 @@ msgstr "Securitatea datelor"
 msgid "Data Series"
 msgstr "Serie de date"
 
-#: src/features/notifications/components/NotificationList.tsx:141
+#: src/components/alerts/components/AlertEditorView.tsx:186
+msgid "Data series (analytics)"
+msgstr "Serie de date (analiză)"
+
+#: src/features/notifications/components/NotificationList.tsx:148
 msgid "Data series alerts"
 msgstr "Alerte pentru serii de date"
 
-#: src/components/alerts/components/AlertEditorView.tsx:196
+#: src/components/alerts/components/AlertEditorView.tsx:224
 msgid "Data Series Filter"
 msgstr "Filtru serie de date"
 
@@ -1327,8 +1339,8 @@ msgid "Data sharing and processors"
 msgstr "Partajarea datelor și operatorii împuterniciți"
 
 #: src/components/footer/AppFooter.tsx:136
-msgid "Data source: \"Budget Transparency\" portal administered by ANAF/Ministry of Finance, available as open data. See official resources:"
-msgstr "Sursa datelor: portalul „Transparența Bugetară\" administrat de ANAF/Ministerul Finanțelor, disponibil ca date deschise (Open Data). Vedeți resursele oficiale:"
+msgid "Data source: \"Budget Transparency\" portal administered by ANAF/Ministry of Finance. See official resources:"
+msgstr "Sursa datelor: portalul „Transparența Bugetară\" administrat de ANAF/Ministerul Finanțelor. Vedeți resursele oficiale:"
 
 #: src/routes/privacy.lazy.tsx:85
 msgid "Data sources and licensing"
@@ -1367,16 +1379,16 @@ msgstr "Setări implicite care se aplică tuturor seriilor (pot fi suprascrise p
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:72
 #: src/components/charts/components/views/AnnotationConfigView.tsx:230
 #: src/components/charts/components/views/AnnotationConfigView.tsx:240
-#: src/components/charts/components/views/SeriesConfigView.tsx:362
+#: src/components/charts/components/views/SeriesConfigView.tsx:374
 #: src/features/notifications/components/alerts/AlertCard.tsx:128
-#: src/features/notifications/components/NotificationCard.tsx:125
-#: src/routes/alerts/$alertId/index.lazy.tsx:318
+#: src/features/notifications/components/NotificationCard.tsx:127
+#: src/routes/alerts/$alertId/index.lazy.tsx:323
 msgid "Delete"
 msgstr "Șterge"
 
 #: src/features/notifications/components/alerts/AlertCard.tsx:112
-#: src/routes/alerts/$alertId/index.lazy.tsx:296
-#: src/routes/alerts/$alertId/index.lazy.tsx:302
+#: src/routes/alerts/$alertId/index.lazy.tsx:301
+#: src/routes/alerts/$alertId/index.lazy.tsx:307
 msgid "Delete alert"
 msgstr "Șterge alerta"
 
@@ -1385,11 +1397,11 @@ msgstr "Șterge alerta"
 msgid "Delete Chart"
 msgstr "Șterge graficul"
 
-#: src/features/notifications/components/NotificationCard.tsx:111
+#: src/features/notifications/components/NotificationCard.tsx:113
 msgid "Delete notification"
 msgstr "Șterge notificarea"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:352
+#: src/components/charts/components/views/SeriesConfigView.tsx:364
 msgid "Delete Series"
 msgstr "Șterge seria"
 
@@ -1402,7 +1414,7 @@ msgstr "Ștergeți acest grafic?"
 msgid "Density"
 msgstr "Densitate"
 
-#: src/components/alerts/components/AlertEditorView.tsx:139
+#: src/components/alerts/components/AlertEditorView.tsx:148
 msgid "Description"
 msgstr "Descriere"
 
@@ -1454,7 +1466,7 @@ msgstr "Dezactivează adnotarea"
 msgid "Disable Series"
 msgstr "Dezactivează seria"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:270
+#: src/components/charts/components/views/SeriesConfigView.tsx:282
 msgid "Display data labels on the chart"
 msgstr "Afișează etichetele de date pe grafic"
 
@@ -1468,7 +1480,7 @@ msgstr "Descarcă"
 
 #: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:40
 #: src/components/charts/components/views/AnnotationConfigView.tsx:221
-#: src/components/charts/components/views/SeriesConfigView.tsx:236
+#: src/components/charts/components/views/SeriesConfigView.tsx:248
 msgid "Duplicate"
 msgstr "Duplică"
 
@@ -1480,7 +1492,7 @@ msgstr "Duplică adnotarea"
 msgid "Duplicate selected chart series"
 msgstr "Duplică seria selectată din grafic"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:235
+#: src/components/charts/components/views/SeriesConfigView.tsx:247
 msgid "Duplicate series"
 msgstr "Duplică seria de date"
 
@@ -1489,12 +1501,12 @@ msgstr "Duplică seria de date"
 msgid "Duplicate Series"
 msgstr "Duplică seria"
 
-#: src/components/alerts/components/AlertEditorView.tsx:133
+#: src/components/alerts/components/AlertEditorView.tsx:142
 msgid "e.g. Expense growth alert"
 msgstr "ex. Alertă creștere cheltuieli"
 
 #: src/components/charts/components/series-config/UnitInput.tsx:14
-#: src/components/charts/components/views/SeriesConfigView.tsx:250
+#: src/components/charts/components/views/SeriesConfigView.tsx:262
 msgid "e.g., RON, %, Units..."
 msgstr "ex: RON, %, Unități..."
 
@@ -1506,8 +1518,8 @@ msgstr "Gestionați-vă cu ușurință abonamentele"
 msgid "Ec"
 msgstr "Ec"
 
-#: src/components/entities/views/Overview.tsx:268
-#: src/components/entities/views/TrendsView.tsx:204
+#: src/components/entities/views/Overview.tsx:266
+#: src/components/entities/views/TrendsView.tsx:202
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:114
 #: src/routes/budget-explorer.lazy.tsx:419
 msgid "Economic"
@@ -1550,7 +1562,7 @@ msgstr "Prefix economic"
 msgid "Edit alert"
 msgstr "Editează alerta"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:217
+#: src/routes/alerts/$alertId/index.lazy.tsx:220
 msgid "Edit Alert"
 msgstr "Editare alertă"
 
@@ -1606,7 +1618,7 @@ msgstr "Activează seria"
 msgid "Enabled"
 msgstr "Activat"
 
-#: src/components/alerts/components/AlertEditorView.tsx:155
+#: src/components/alerts/components/AlertEditorView.tsx:164
 msgid "Enabled alerts are evaluated monthly and included in your newsletter."
 msgstr "Alertele activate sunt evaluate lunar și incluse în newsletter-ul dvs."
 
@@ -1642,7 +1654,7 @@ msgstr "Introduceți denumirea entității sau CUI..."
 msgid "Enter new value"
 msgstr "Introduceți valoarea nouă"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:164
+#: src/components/charts/components/views/SeriesConfigView.tsx:176
 msgid "Enter series label..."
 msgstr "Introduceți eticheta seriei..."
 
@@ -1675,7 +1687,7 @@ msgstr "Analiza entităților"
 msgid "Entity Details"
 msgstr "Detalii Entitate"
 
-#: src/routes/settings/notifications.tsx:104
+#: src/routes/settings/notifications.tsx:48
 msgid "Entity Notifications"
 msgstr "Notificări entitate"
 
@@ -1728,7 +1740,7 @@ msgstr "Eroare la încărcarea datelor"
 msgid "Error loading data:"
 msgstr "Eroare la încărcarea datelor:"
 
-#: src/routes/settings/notifications.tsx:77
+#: src/routes/settings/notifications.tsx:143
 msgid "Error loading notifications"
 msgstr "Eroare la încărcarea notificărilor"
 
@@ -1772,7 +1784,7 @@ msgstr "Stocarea esențială este necesară pentru funcționarea aplicației."
 msgid "EUR"
 msgstr "EUR"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:313
+#: src/components/charts/components/views/SeriesConfigView.tsx:325
 msgid "Example: 2024-"
 msgstr "Exemplu: 2024-"
 
@@ -1848,7 +1860,7 @@ msgstr "Tip cheltuială"
 #: src/components/entities/EntityLineItemsTabs.tsx:63
 #: src/components/entities/LineItemsAnalytics.tsx:118
 #: src/components/entities/views/MapView.tsx:141
-#: src/components/entities/views/Overview.tsx:264
+#: src/components/entities/views/Overview.tsx:262
 #: src/components/filters/account-type-filter/AccountCategoryRadio.tsx:12
 #: src/components/filters/EntityAnalyticsFilter.tsx:404
 #: src/components/filters/MapFilter.tsx:232
@@ -1910,7 +1922,7 @@ msgstr "Copierea adresei de email a eșuat."
 msgid "Failed to copy link"
 msgstr "Eroare la copierea linkului"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:109
+#: src/routes/alerts/$alertId/index.lazy.tsx:112
 #: src/routes/alerts/new.lazy.tsx:108
 msgid "Failed to copy share link"
 msgstr "Eroare la copierea linkului de partajare"
@@ -1919,7 +1931,7 @@ msgstr "Eroare la copierea linkului de partajare"
 msgid "Failed to create"
 msgstr "Crearea a eșuat"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:177
+#: src/routes/alerts/$alertId/index.lazy.tsx:180
 #: src/routes/alerts/new.lazy.tsx:166
 msgid "Failed to load alert"
 msgstr "Eroare la încărcarea alertei"
@@ -1936,7 +1948,7 @@ msgstr "Eroare la încărcarea datelor."
 msgid "Failed to open new tab."
 msgstr "Nu s-a putut deschide un tab nou."
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:122
+#: src/routes/alerts/$alertId/index.lazy.tsx:125
 msgid "Failed to save"
 msgstr "Salvare eșuată"
 
@@ -1973,7 +1985,7 @@ msgid "Filter Reports"
 msgstr "Filtrare rapoarte"
 
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:218
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:242
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:249
 msgid "Filtered"
 msgstr "Filtrat"
 
@@ -2020,7 +2032,8 @@ msgstr "Rapoarte Financiare"
 msgid "Financial Trends"
 msgstr "Evoluție Financiară"
 
-#: src/features/notifications/components/NotificationList.tsx:106
+#: src/features/notifications/components/NotificationList.tsx:118
+#: src/features/notifications/components/NotificationList.tsx:122
 msgid "Find Entity to Monitor"
 msgstr "Găsește entitate de monitorizat"
 
@@ -2069,8 +2082,8 @@ msgstr "pentru filtrele selectate."
 msgid "Found {replacementCount} occurrence{0}"
 msgstr "S-au găsit {replacementCount} apariții"
 
-#: src/components/entities/views/Overview.tsx:267
-#: src/components/entities/views/TrendsView.tsx:203
+#: src/components/entities/views/Overview.tsx:265
+#: src/components/entities/views/TrendsView.tsx:201
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:107
 #: src/routes/budget-explorer.lazy.tsx:416
 msgid "Functional"
@@ -2134,7 +2147,7 @@ msgstr "Sursă de finanțare"
 msgid "Funding Source"
 msgstr "Sursă de Finanțare"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:219
+#: src/components/charts/components/views/SeriesConfigView.tsx:231
 msgid "Generate random color"
 msgstr "Generează o culoare aleatorie"
 
@@ -2146,7 +2159,7 @@ msgstr "Vizualizare geografică"
 msgid "Get monthly email updates about this institution. Receive alerts when new reports are published, budget changes occur, or important financial data is updated."
 msgstr "Primiți actualizări lunare prin e-mail despre această instituție. Primiți alerte când sunt publicate rapoarte noi, apar modificări bugetare sau sunt actualizate date financiare importante."
 
-#: src/features/notifications/components/NotificationQuickMenu.tsx:46
+#: src/features/notifications/components/NotificationQuickMenu.tsx:47
 msgid "Get updates about"
 msgstr "Primiți actualizări despre"
 
@@ -2177,7 +2190,7 @@ msgstr "Mergi la pagina principală"
 msgid "Go to Homepage"
 msgstr "Mergi la pagina principală"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:580
+#: src/components/budget-explorer/BudgetTreemap.tsx:584
 msgid "Go to Main Categories"
 msgstr "Mergi la categoria principală"
 
@@ -2243,7 +2256,7 @@ msgstr "Ajutați-ne să înțelegem modul de utilizare pentru a îmbunătăți p
 msgid "Hide"
 msgstr "Ascunde"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:260
+#: src/components/charts/components/views/SeriesConfigView.tsx:272
 msgid "Hide advanced settings"
 msgstr "Ascunde setările avansate"
 
@@ -2287,7 +2300,7 @@ msgstr "Include context suplimentar pentru erori. Nu se atașează nicio identit
 #: src/components/entities/EntityFinancialTrends.tsx:230
 #: src/components/entities/LineItemsAnalytics.tsx:118
 #: src/components/entities/views/MapView.tsx:145
-#: src/components/entities/views/Overview.tsx:263
+#: src/components/entities/views/Overview.tsx:261
 #: src/components/filters/account-type-filter/AccountCategoryRadio.tsx:13
 #: src/components/filters/EntityAnalyticsFilter.tsx:405
 #: src/components/filters/MapFilter.tsx:233
@@ -2412,7 +2425,7 @@ msgstr "Etichetă"
 msgid "Language"
 msgstr "Limbă"
 
-#: src/components/alerts/components/AlertEditorView.tsx:234
+#: src/components/alerts/components/AlertEditorView.tsx:290
 msgid "Last evaluated"
 msgstr "Ultima evaluare"
 
@@ -2469,7 +2482,7 @@ msgstr "Grafic linie"
 msgid "Line Items"
 msgstr "Linii bugetare"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:178
+#: src/components/charts/components/views/SeriesConfigView.tsx:190
 msgid "Line Items Aggregated Yearly"
 msgstr "Linii bugetare agregate anual"
 
@@ -2481,7 +2494,7 @@ msgstr "Liniile marcate cu \"se scad\" din cadrul altor capitole fiscale sunt de
 msgid "Link copied to clipboard"
 msgstr "Link copiat în clipboard"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:130
+#: src/routes/alerts/$alertId/index.lazy.tsx:133
 msgid "Loading alert…"
 msgstr "Se încarcă alerta..."
 
@@ -2518,9 +2531,9 @@ msgstr "Se încarcă rapoartele..."
 msgid "Loading table data..."
 msgstr "Se încarcă datele tabelului..."
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:130
+#: src/routes/alerts/$alertId/index.lazy.tsx:133
 #: src/routes/alerts/new.lazy.tsx:122
-#: src/routes/settings/notifications.tsx:30
+#: src/routes/settings/notifications.tsx:103
 msgid "Loading..."
 msgstr "Se încarcă..."
 
@@ -2544,7 +2557,7 @@ msgstr "Blochează adnotarea"
 msgid "Locked"
 msgstr "Blocat"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:495
+#: src/components/budget-explorer/BudgetTreemap.tsx:499
 #: src/components/entities/LineItemsAnalytics.tsx:143
 msgid "Main Categories"
 msgstr "Categorii Principale"
@@ -2572,7 +2585,7 @@ msgstr "Creditor Principal"
 msgid "Main creditor aggregated"
 msgstr "Creditor principal agregat"
 
-#: src/features/notifications/components/NotificationQuickMenu.tsx:90
+#: src/features/notifications/components/NotificationQuickMenu.tsx:91
 msgid "Manage all notifications"
 msgstr "Gestionează toate notificările"
 
@@ -2585,7 +2598,7 @@ msgstr "Gestionare notificări"
 msgid "Manage preferences anytime in <0>Cookie Settings</0>."
 msgstr "Gestionați preferințele oricând din <0>Setări cookie-uri</0>."
 
-#: src/routes/settings/notifications.tsx:106
+#: src/routes/settings/notifications.tsx:50
 msgid "Manage your newsletter and alert subscriptions"
 msgstr "Gestionați-vă abonamentele la newsletter și alerte"
 
@@ -2641,7 +2654,7 @@ msgstr "Mai"
 msgid "Maybe Later"
 msgstr "Poate mai târziu"
 
-#: src/components/alerts/components/AlertEditorView.tsx:209
+#: src/components/alerts/components/AlertEditorView.tsx:265
 msgid "Metadata"
 msgstr "Metadate"
 
@@ -2668,7 +2681,7 @@ msgstr "Luna"
 msgid "Monthly"
 msgstr "Lunar"
 
-#: src/components/alerts/components/AlertEditorView.tsx:177
+#: src/components/alerts/components/AlertEditorView.tsx:204
 msgid "Monthly monitoring"
 msgstr "Monitorizare lunară"
 
@@ -2781,7 +2794,7 @@ msgstr "Nu sunt disponibile date {0} pentru această perioadă."
 msgid "No {0} found matching \"{searchTerm}\""
 msgstr "Nu s-au găsit {0} care să corespundă cu \"{searchTerm}\""
 
-#: src/features/notifications/components/NotificationList.tsx:94
+#: src/features/notifications/components/NotificationList.tsx:108
 msgid "No active notifications"
 msgstr "Nicio notificare activă"
 
@@ -2850,7 +2863,7 @@ msgstr "Nicio alertă pentru serii de date"
 msgid "No data series yet."
 msgstr "Nicio serie de date încă."
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:570
+#: src/components/budget-explorer/BudgetTreemap.tsx:574
 msgid "No data within the selected range."
 msgstr "Nu există date în intervalul selectat."
 
@@ -2959,7 +2972,7 @@ msgstr "Notă: Operațiunile financiare (Titlurile 80+81) reprezintă împrumutu
 msgid "Nothing to paste"
 msgstr "Nimic de lipit"
 
-#: src/routes/settings/notifications.tsx:70
+#: src/routes/settings/notifications.tsx:38
 msgid "Notifications Settings"
 msgstr "Setări notificări"
 
@@ -3031,7 +3044,7 @@ msgstr "Deschide în Editorul de Grafice"
 msgid "Open in charts"
 msgstr "Deschide în grafice"
 
-#: src/components/entities/views/Overview.tsx:250
+#: src/components/entities/views/Overview.tsx:248
 #: src/routes/budget-explorer.lazy.tsx:380
 msgid "Open in entity analytics"
 msgstr "Deschide în analitice entitate"
@@ -3054,7 +3067,7 @@ msgstr "Operațiuni"
 msgid "Operator"
 msgstr "Operator"
 
-#: src/components/alerts/components/AlertEditorView.tsx:145
+#: src/components/alerts/components/AlertEditorView.tsx:154
 msgid "Optional context for the monthly newsletter"
 msgstr "Context opțional pentru newsletter-ul lunar"
 
@@ -3091,7 +3104,7 @@ msgstr "Lipește"
 msgid "Paste data from a spreadsheet. Each line should contain a year and a value, separated by a space or tab."
 msgstr "Lipiți date dintr-o foaie de calcul. Fiecare linie trebuie să conțină un an și o valoare, separate prin spațiu sau tab."
 
-#: src/components/alerts/components/AlertEditorView.tsx:230
+#: src/components/alerts/components/AlertEditorView.tsx:286
 #: src/features/notifications/components/alerts/AlertCard.tsx:71
 msgid "Paused"
 msgstr "Pauză"
@@ -3170,7 +3183,7 @@ msgstr "Se pregătește o nouă alertă..."
 msgid "Preparing your share link..."
 msgstr "Se pregătește linkul de partajare..."
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:232
+#: src/routes/alerts/$alertId/index.lazy.tsx:237
 #: src/routes/alerts/new.lazy.tsx:198
 msgid "Preview"
 msgstr "Previzualizare"
@@ -3197,8 +3210,8 @@ msgid "Product"
 msgstr "Produs"
 
 #: src/routes/privacy.lazy.tsx:86
-msgid "Public sector information from Ministerul Finanțelor, made available as open data. No government affiliation."
-msgstr "Informații din sectorul public de la Ministerul Finanțelor, disponibile ca date deschise. Nicio afiliere guvernamentală."
+msgid "Public sector information from Ministerul Finanțelor. No government affiliation."
+msgstr "Informații din sectorul public de la Ministerul Finanțelor. Nicio afiliere guvernamentală."
 
 #: src/components/entities/EntityFinancialTrends.tsx:92
 #: src/components/entities/EntityReportControls.tsx:228
@@ -3311,7 +3324,7 @@ msgstr "Rapoarte"
 msgid "Required for core functionality like security and preferences. Always on."
 msgstr "Necesar pentru funcționalități de bază, precum securitatea și preferințele. Activat permanent."
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:585
+#: src/components/budget-explorer/BudgetTreemap.tsx:589
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:189
 msgid "Reset amount filter"
 msgstr "Resetează filtrul de sumă"
@@ -3329,11 +3342,11 @@ msgstr "Restaurează"
 msgid "Revenues/Expenses"
 msgstr "Venituri/Cheltuieli"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:258
+#: src/routes/alerts/$alertId/index.lazy.tsx:263
 msgid "Revert"
 msgstr "Anulează modificările"
 
-#: src/features/notifications/components/NotificationList.tsx:143
+#: src/features/notifications/components/NotificationList.tsx:150
 msgid "Review and manage alerts created from your custom data series."
 msgstr "Examinați și gestionați alertele create din seriile de date personalizate."
 
@@ -3362,7 +3375,7 @@ msgstr "rânduri actualizate cu succes."
 msgid "Sankey Chart (Aggregated)"
 msgstr "Diagramă Sankey (agregată)"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:267
+#: src/routes/alerts/$alertId/index.lazy.tsx:272
 msgid "Save"
 msgstr "Salvează"
 
@@ -3370,7 +3383,7 @@ msgstr "Salvează"
 msgid "Save cookie preferences"
 msgstr "Salvează preferințele cookie"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:121
+#: src/routes/alerts/$alertId/index.lazy.tsx:124
 msgid "Saving…"
 msgstr "Se salvează..."
 
@@ -3469,6 +3482,10 @@ msgstr "Consultați și <0>Politica de confidențialitate</0>."
 msgid "See-through, clear"
 msgstr "Ușor de înțeles, clar"
 
+#: src/components/alerts/components/AlertEditorView.tsx:240
+msgid "Select a predefined dataset to track"
+msgstr "Selectați un set de date predefinit de urmărit"
+
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:96
 msgid "Select current value"
 msgstr "Selectează valoarea curentă"
@@ -3489,7 +3506,7 @@ msgstr "Selectează operația"
 msgid "Select options"
 msgstr "Selectează opțiuni"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:175
+#: src/components/charts/components/views/SeriesConfigView.tsx:187
 msgid "Select Series Type"
 msgstr "Selectați tipul de serie"
 
@@ -3518,19 +3535,19 @@ msgstr "Trimite feedback"
 msgid "September"
 msgstr "Septembrie"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:204
+#: src/components/charts/components/views/SeriesConfigView.tsx:216
 msgid "Series Color"
 msgstr "Culoare serie"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:156
+#: src/components/charts/components/views/SeriesConfigView.tsx:168
 msgid "Series Label"
 msgstr "Etichetă serie"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:82
+#: src/components/charts/components/views/SeriesConfigView.tsx:83
 msgid "Series not found"
 msgstr "Seria nu a fost găsită"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:169
+#: src/components/charts/components/views/SeriesConfigView.tsx:181
 msgid "Series Type"
 msgstr "Tip serie"
 
@@ -3546,7 +3563,7 @@ msgstr "Serviciul și sursele de date"
 msgid "Set the basic properties for your chart"
 msgstr "Setați proprietățile de bază pentru graficul dumneavoastră"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:241
+#: src/routes/alerts/$alertId/index.lazy.tsx:246
 #: src/routes/alerts/new.lazy.tsx:207
 msgid "Share"
 msgstr "Partajează"
@@ -3559,7 +3576,7 @@ msgstr "Partajează graficul"
 msgid "Share Link"
 msgstr "Partajează link-ul"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:107
+#: src/routes/alerts/$alertId/index.lazy.tsx:110
 #: src/routes/alerts/new.lazy.tsx:106
 msgid "Share link copied"
 msgstr "Link de partajare copiat"
@@ -3576,7 +3593,7 @@ msgstr "Cote din TVA"
 msgid "Show"
 msgstr "Afișează"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:260
+#: src/components/charts/components/views/SeriesConfigView.tsx:272
 msgid "Show advanced settings"
 msgstr "Afișează setările avansate"
 
@@ -3590,7 +3607,7 @@ msgid "Show Annotations"
 msgstr "Afișează adnotări"
 
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:63
-#: src/components/charts/components/views/SeriesConfigView.tsx:268
+#: src/components/charts/components/views/SeriesConfigView.tsx:280
 msgid "Show Data Labels"
 msgstr "Afișează etichetele de date"
 
@@ -3635,20 +3652,20 @@ msgid "Show Tooltip"
 msgstr "Afișează indiciu"
 
 #: src/features/notifications/components/EntityNotificationBell.tsx:82
-#: src/routes/alerts/$alertId/index.lazy.tsx:160
+#: src/routes/alerts/$alertId/index.lazy.tsx:163
 #: src/routes/alerts/new.lazy.tsx:152
-#: src/routes/settings/notifications.tsx:57
+#: src/routes/settings/notifications.tsx:129
 msgid "Sign In"
 msgstr "Autentificare"
 
 #: src/features/notifications/components/EntityNotificationBell.tsx:48
-#: src/routes/alerts/$alertId/index.lazy.tsx:146
+#: src/routes/alerts/$alertId/index.lazy.tsx:149
 #: src/routes/alerts/new.lazy.tsx:138
-#: src/routes/settings/notifications.tsx:43
+#: src/routes/settings/notifications.tsx:115
 msgid "Sign in required"
 msgstr "Autentificare necesară"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:154
+#: src/routes/alerts/$alertId/index.lazy.tsx:157
 #: src/routes/alerts/new.lazy.tsx:146
 msgid "Sign in to create and manage alerts for your entities."
 msgstr "Autentificați-vă pentru a crea și gestiona alerte pentru entitățile dvs."
@@ -3661,7 +3678,7 @@ msgstr "Autentificați-vă pentru a primi notificări"
 msgid "Sign in to receive updates about <0>{entityName}</0>:"
 msgstr "Autentificați-vă pentru a primi actualizări despre <0>{entityName}</0>:"
 
-#: src/routes/settings/notifications.tsx:51
+#: src/routes/settings/notifications.tsx:123
 msgid "Sign in to receive updates about the entities you care about."
 msgstr "Autentificați-vă pentru a primi actualizări despre entitățile care vă interesează."
 
@@ -3709,11 +3726,19 @@ msgstr "Standard"
 msgid "Standard Contractual Clauses (SCCs) approved by the European Commission"
 msgstr "Clauze Contractuale Standard (CCS) aprobate de Comisia Europeană"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:182
+#: src/components/alerts/components/AlertEditorView.tsx:187
+msgid "Static dataset"
+msgstr "Set de date static"
+
+#: src/components/alerts/components/AlertEditorView.tsx:237
+msgid "Static Dataset"
+msgstr "Set de date static"
+
+#: src/components/charts/components/views/SeriesConfigView.tsx:194
 msgid "Static Series"
 msgstr "Serie statică"
 
-#: src/components/alerts/components/AlertEditorView.tsx:229
+#: src/components/alerts/components/AlertEditorView.tsx:285
 msgid "Status"
 msgstr "Stare"
 
@@ -3721,7 +3746,7 @@ msgstr "Stare"
 msgid "Stay here"
 msgstr "Rămâi aici"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:304
+#: src/components/charts/components/views/SeriesConfigView.tsx:316
 msgid "Strip this prefix from x-axis labels for this series (e.g., 2024-). Helps align yearly and monthly data on a common axis."
 msgstr "Eliminați acest prefix din etichetele axei X pentru această serie (de exemplu, 2024-). Ajută la alinierea datelor anuale și lunare pe o axă comună."
 
@@ -3757,7 +3782,7 @@ msgstr "Sume în așteptarea repartizării"
 msgid "Supervisory authority"
 msgstr "Autoritatea de supraveghere"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:123
+#: src/routes/alerts/$alertId/index.lazy.tsx:126
 msgid "Syncing…"
 msgstr "Se sincronizează..."
 
@@ -3814,7 +3839,7 @@ msgstr "Linkul de partajare pe care încerci să-l accesezi este invalid sau nu 
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "A apărut o problemă la preluarea detaliilor pentru CUI: <0>{cui}</0>."
 
-#: src/routes/settings/notifications.tsx:81
+#: src/routes/settings/notifications.tsx:147
 msgid "There was a problem loading your notifications. Please try again."
 msgstr "A apărut o problemă la încărcarea notificărilor. Vă rugăm să încercați din nou."
 
@@ -3838,11 +3863,11 @@ msgstr "Aceste probleme au fost rezolvate automat (punctele invalide au fost eli
 msgid "This action cannot be undone. It will permanently remove the chart and its configuration."
 msgstr "Această acțiune nu poate fi anulată. Va elimina permanent graficul și configurația acestuia."
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:182
+#: src/routes/alerts/$alertId/index.lazy.tsx:185
 msgid "This alert doesn't exist or you don't have permission to view it."
 msgstr "Această alertă nu există sau nu aveți permisiunea de a o vizualiza."
 
-#: src/components/alerts/components/AlertEditorView.tsx:180
+#: src/components/alerts/components/AlertEditorView.tsx:207
 msgid "This alert is included in every monthly newsletter with its current status. When all threshold conditions are met, the alert will be emphasized with a customized message to draw your attention."
 msgstr "Această alertă este inclusă în fiecare newsletter lunar cu starea sa curentă. Când toate condițiile de prag sunt îndeplinite, alerta va fi evidențiată cu un mesaj personalizat pentru a vă atrage atenția."
 
@@ -3873,7 +3898,7 @@ msgstr "Pragul {0} ({1})"
 msgid "Tip: Copy/Cut/Paste with ⌘/Ctrl+C, X, V. Duplicate with ⌘/Ctrl+D."
 msgstr "Sfat: Copiere/Tăiere/Lipire cu ⌘/Ctrl+C, X, V. Duplicare cu ⌘/Ctrl+D."
 
-#: src/components/alerts/components/AlertEditorView.tsx:127
+#: src/components/alerts/components/AlertEditorView.tsx:136
 #: src/components/charts/components/views/AnnotationConfigView.tsx:79
 msgid "Title"
 msgstr "Titlu"
@@ -3910,11 +3935,11 @@ msgstr "Comută tema"
 msgid "Tooltip"
 msgstr "Indiciu"
 
-#: src/components/entities/views/TrendsView.tsx:97
+#: src/components/entities/views/TrendsView.tsx:95
 msgid "Top {TOP_CATEGORIES_COUNT} Income Categories for {entityName}"
 msgstr "Top {TOP_CATEGORIES_COUNT} categorii de venituri pentru {entityName}"
 
-#: src/components/entities/views/TrendsView.tsx:97
+#: src/components/entities/views/TrendsView.tsx:95
 msgid "Top {TOP_CATEGORIES_COUNT} Spending Categories for {entityName}"
 msgstr "Top {TOP_CATEGORIES_COUNT} categorii de cheltuieli pentru {entityName}"
 
@@ -3945,7 +3970,7 @@ msgid "total"
 msgstr "total"
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:88
-#: src/components/budget-explorer/BudgetTreemap.tsx:633
+#: src/components/budget-explorer/BudgetTreemap.tsx:637
 #: src/components/common/NormalizationSelector.tsx:21
 #: src/components/entities/EntityReportControls.tsx:46
 #: src/components/entities/views/MapView.tsx:167
@@ -4017,12 +4042,12 @@ msgstr "Venituri consolidate reale"
 msgid "Try a different search term or sorting."
 msgstr "Încercați un alt termen de căutare sau o altă sortare."
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:189
+#: src/routes/alerts/$alertId/index.lazy.tsx:192
 #: src/routes/unsubscribe.$token.tsx:77
 msgid "Try again"
 msgstr "Încearcă din nou"
 
-#: src/routes/settings/notifications.tsx:94
+#: src/routes/settings/notifications.tsx:160
 msgid "Try Again"
 msgstr "Încercați din nou"
 
@@ -4090,7 +4115,7 @@ msgid "Unlock annotation"
 msgstr "Deblochează adnotarea"
 
 #: src/components/alerts/components/UnsavedChangesDialog.tsx:30
-#: src/routes/alerts/$alertId/index.lazy.tsx:124
+#: src/routes/alerts/$alertId/index.lazy.tsx:127
 msgid "Unsaved changes"
 msgstr "Modificări nesalvate"
 
@@ -4168,7 +4193,7 @@ msgstr "Valoare"
 msgid "View"
 msgstr "Vizualizare"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:193
+#: src/routes/alerts/$alertId/index.lazy.tsx:196
 msgid "View all alerts"
 msgstr "Vezi toate alertele"
 
@@ -4176,18 +4201,18 @@ msgstr "Vezi toate alertele"
 msgid "View all reports"
 msgstr "Vezi toate rapoartele"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:652
+#: src/components/budget-explorer/BudgetTreemap.tsx:656
 msgid "View as Chart"
 msgstr "Vezi Graficul"
 
 #: src/components/charts/components/views/AnnotationConfigView.tsx:73
 #: src/components/charts/components/views/ChartConfigView.tsx:45
-#: src/components/charts/components/views/SeriesConfigView.tsx:145
+#: src/components/charts/components/views/SeriesConfigView.tsx:157
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:109
 msgid "View Chart"
 msgstr "Vezi graficul"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:561
+#: src/components/budget-explorer/BudgetTreemap.tsx:565
 msgid "View Details"
 msgstr "Vezi detalii"
 
@@ -4240,7 +4265,7 @@ msgstr "Ce date personale colectăm"
 msgid "Who we are"
 msgstr "Cine suntem"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:302
+#: src/components/charts/components/views/SeriesConfigView.tsx:314
 msgid "X-Axis Prefix To Remove"
 msgstr "Prefix de eliminat pe axa X"
 
@@ -4251,7 +4276,7 @@ msgstr "Prefix de eliminat pe axa X"
 msgid "Year"
 msgstr "An"
 
-#: src/components/charts/components/chart-renderer/components/Tooltips.tsx:55
+#: src/components/charts/components/chart-renderer/components/Tooltips.tsx:80
 msgid "Year {headerLabel}"
 msgstr "Anul {headerLabel}"
 
@@ -4276,7 +4301,7 @@ msgstr "Poți căuta după: nume (ex: Agricultură) • cod (ex: 43.00, 43.00.10
 msgid "You can search by: name (ex: Social assistance) • code (ex: 7.06, 7.06.02) • explicit prefix: fn:7.06"
 msgstr "Poți căuta după: nume (ex: Asistență socială) • cod (ex: 7.06, 7.06.02) • prefix explicit: fn:7.06"
 
-#: src/features/notifications/components/NotificationList.tsx:97
+#: src/features/notifications/components/NotificationList.tsx:111
 msgid "You have no active notifications. Navigate to an entity page and click the bell icon to subscribe to updates."
 msgstr "Nu aveți notificări active. Navigați la pagina unei entități și faceți clic pe pictograma clopoțel pentru a vă abona la actualizări."
 
@@ -4300,11 +4325,11 @@ msgstr "Trebuie să accepți cookie-urile pentru a trimite feedback."
 msgid "You need to be signed in to create alerts"
 msgstr "Trebuie să fiți autentificat pentru a crea alerte"
 
-#: src/routes/alerts/$alertId/index.lazy.tsx:149
+#: src/routes/alerts/$alertId/index.lazy.tsx:152
 msgid "You need to be signed in to edit alerts"
 msgstr "Trebuie să fiți autentificat pentru a edita alerte"
 
-#: src/routes/settings/notifications.tsx:46
+#: src/routes/settings/notifications.tsx:118
 msgid "You need to be signed in to manage notifications"
 msgstr "Trebuie să fiți autentificat pentru a gestiona notificările"
 

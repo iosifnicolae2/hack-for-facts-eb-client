@@ -81,7 +81,7 @@ function TermsPage() {
         <h3><Trans>Exports and attribution</Trans></h3>
         <p><Trans>Include visible attribution to the data source and Transparenta.eu when sharing charts/maps.</Trans></p>
         <blockquote>
-          <p><Trans><strong>Recommended:</strong> Chart: „Titlul Graficului" | Source: Ministerul Finanțelor (Open Data), via Transparenta.eu.</Trans></p>
+          <p><Trans><strong>Recommended:</strong> Chart: „Titlul Graficului" | Source: Ministerul Finanțelor, via Transparenta.eu.</Trans></p>
         </blockquote>
 
         <h3><Trans>Data storage and retention</Trans></h3>

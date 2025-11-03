@@ -133,7 +133,7 @@ export function AppFooter(): ReactElement {
                 {/* Data source and copyright */}
                 <div className="flex flex-col items-start justify-between gap-4 text-xs text-muted-foreground md:flex-row">
                     <p>
-                        <Trans>Data source: &quot;Budget Transparency&quot; portal administered by ANAF/Ministry of Finance, available as open data. See official resources:</Trans>
+                        <Trans>Data source: &quot;Budget Transparency&quot; portal administered by ANAF/Ministry of Finance. See official resources:</Trans>
                         {" "}
                         <a
                             href="https://mfinante.gov.ro/transparenta-bugetara"
