@@ -5,6 +5,8 @@ import { yValueFormatter } from '../../utils';
 import { DataPointPayload } from '@/components/charts/hooks/useChartData';
 import { ChartMargins } from '../interfaces';
 import { sankey, sankeyLinkHorizontal, SankeyNode } from 'd3-sankey';
+import { Annotation, CircleSubject, Connector, EditableAnnotation, Label } from '@visx/annotation';
+import { applyAlpha } from '../../utils';
 
 // Constants
 const CHART_MARGINS: ChartMargins = {
@@ -218,7 +220,7 @@ const SankeyTooltip = memo<TooltipProps>(({ node, x, y }) => {
 
 SankeyTooltip.displayName = 'SankeyTooltip';
 
-export function AggregatedSankeyChart({ chart, aggregatedData, unitMap, height }: ChartRendererProps) {
+export function AggregatedSankeyChart({ chart, aggregatedData, unitMap, height, onAnnotationPositionChange }: ChartRendererProps) {
     const units = new Set(unitMap.values());
     const containerRef = useRef<HTMLDivElement>(null);
     const [tooltip, setTooltip] = useState<TooltipProps>({ x: 0, y: 0 });
@@ -391,6 +393,62 @@ export function AggregatedSankeyChart({ chart, aggregatedData, unitMap, height }
                                         )}
                                     </text>
                                 </g>
+                            );
+                        })}
+
+                        {/* Render annotations inside the SVG context */}
+                        {chart.config.showAnnotations && chart.annotations.filter(a => a.enabled).map((annotation) => {
+                            const plotWidth = containerWidth - CHART_MARGINS.left - CHART_MARGINS.right;
+                            const plotHeight = calculatedHeight - CHART_MARGINS.top - CHART_MARGINS.bottom;
+                            const xPos = annotation.pX * plotWidth;
+                            const yPos = annotation.pY * plotHeight;
+                            const xDelta = annotation.pXDelta * plotWidth;
+                            const yDelta = annotation.pYDelta * plotHeight;
+
+                            const content = (
+                                <>
+                                    {annotation.connector && <Connector stroke={annotation.color} type={annotation.subject ? 'line' : 'elbow'} />}
+                                    {annotation.subject && <CircleSubject stroke={annotation.color} />}
+                                    {annotation.label && (
+                                        <Label
+                                            anchorLineStroke={annotation.color}
+                                            titleFontSize={14}
+                                            subtitleFontSize={12}
+                                            title={annotation.title}
+                                            subtitle={annotation.subtitle}
+                                            backgroundFill={applyAlpha(annotation.color, 0.1)}
+                                        />
+                                    )}
+                                </>
+                            );
+
+                            if (!chart.config.editAnnotations && annotation.locked) {
+                                return (
+                                    <Annotation key={annotation.id} x={xPos} y={yPos} dx={xDelta} dy={yDelta}>
+                                        {content}
+                                    </Annotation>
+                                );
+                            }
+
+                            return (
+                                <EditableAnnotation
+                                    key={annotation.id}
+                                    x={xPos}
+                                    y={yPos}
+                                    dx={xDelta}
+                                    dy={yDelta}
+                                    width={plotWidth}
+                                    height={plotHeight}
+                                    onDragEnd={({ x, y, dx, dy }) => {
+                                        const pX = x / plotWidth;
+                                        const pY = y / plotHeight;
+                                        const pXDelta = dx / plotWidth;
+                                        const pYDelta = dy / plotHeight;
+                                        onAnnotationPositionChange({ annotationId: annotation.id, position: { pX, pY, pXDelta, pYDelta } });
+                                    }}
+                                >
+                                    {content}
+                                </EditableAnnotation>
                             );
                         })}
                     </g>

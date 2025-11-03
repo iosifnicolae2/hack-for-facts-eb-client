@@ -5,6 +5,7 @@ import { AlertTriangle, Info } from 'lucide-react';
 import { useMemo } from 'react';
 import { yValueFormatter } from '../../utils';
 import { DataPointPayload } from '@/components/charts/hooks/useChartData';
+import { ChartAnnotation } from '../ChartAnnotation';
 
 const MIN_WIDTH_FOR_NAME = 50;
 const MIN_HEIGHT_FOR_NAME = 20;
@@ -94,7 +95,7 @@ export type TreemapData = {
     payload?: DataPointPayload;
 }
 
-export function AggregatedTreemapChart({ chart, aggregatedData, unitMap, height }: ChartRendererProps) {
+export function AggregatedTreemapChart({ chart, aggregatedData, unitMap, height, onAnnotationPositionChange }: ChartRendererProps) {
     const units = new Set(unitMap.values());
 
     const treemapData: TreemapData[] = useMemo(() => {
@@ -150,6 +151,14 @@ export function AggregatedTreemapChart({ chart, aggregatedData, unitMap, height 
                 <Tooltip
                     content={({ active, payload }) => <CustomSeriesTooltip active={active} payload={payload.map(p => p.payload)} chartConfig={chart.config} chart={chart} />}
                 />
+                {chart.config.showAnnotations && chart.annotations.filter(a => a.enabled).map((annotation) => (
+                    <ChartAnnotation
+                        key={annotation.id}
+                        annotation={annotation}
+                        globalEditable={!!chart.config.editAnnotations}
+                        onPositionChange={onAnnotationPositionChange}
+                    />
+                ))}
             </Treemap>
         </ResponsiveContainer>
     );

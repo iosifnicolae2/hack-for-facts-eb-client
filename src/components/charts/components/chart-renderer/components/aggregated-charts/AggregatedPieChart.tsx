@@ -2,6 +2,7 @@ import { PieChart, Pie, Tooltip, ResponsiveContainer, Cell, Legend } from 'recha
 import { ChartRendererProps } from '../ChartRenderer';
 import { AlertTriangle } from 'lucide-react';
 import { CustomSeriesTooltip } from '../Tooltips';
+import { ChartAnnotation } from '../ChartAnnotation';
 
 // Modern color palette for better visual appeal
 const PIE_COLORS = [
@@ -17,7 +18,7 @@ const PIE_COLORS = [
   '#6B7280', // Gray
 ];
 
-export function AggregatedPieChart({ chart, aggregatedData, unitMap, height }: ChartRendererProps) {
+export function AggregatedPieChart({ chart, aggregatedData, unitMap, height, onAnnotationPositionChange }: ChartRendererProps) {
     const units = new Set(unitMap.values());
 
     if (units.size > 1) {
@@ -127,7 +128,14 @@ export function AggregatedPieChart({ chart, aggregatedData, unitMap, height }: C
                         )}
                     />
                 )}
-
+                {chart.config.showAnnotations && chart.annotations.filter(a => a.enabled).map((annotation) => (
+                    <ChartAnnotation
+                        key={annotation.id}
+                        annotation={annotation}
+                        globalEditable={!!chart.config.editAnnotations}
+                        onPositionChange={onAnnotationPositionChange}
+                    />
+                ))}
             </PieChart>
         </ResponsiveContainer>
     );

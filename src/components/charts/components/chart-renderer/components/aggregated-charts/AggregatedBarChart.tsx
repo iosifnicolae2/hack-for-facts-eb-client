@@ -4,9 +4,10 @@ import { yValueFormatter } from '../../utils';
 import { ReactNode } from 'react';
 import { CustomSeriesTooltip } from '../Tooltips';
 import { AlertTriangle } from 'lucide-react';
+import { ChartAnnotation } from '../ChartAnnotation';
 
 
-export function AggregatedBarChart({ chart, aggregatedData, unitMap, height }: ChartRendererProps) {
+export function AggregatedBarChart({ chart, aggregatedData, unitMap, height, onAnnotationPositionChange }: ChartRendererProps) {
 
     const displayUnit = unitMap.get(aggregatedData[0]?.id) || '';
 
@@ -73,6 +74,14 @@ export function AggregatedBarChart({ chart, aggregatedData, unitMap, height }: C
                         style={{ fill: 'black', fontSize: 12 }}
                     />
                 </Bar>
+                {chart.config.showAnnotations && chart.annotations.filter(a => a.enabled).map((annotation) => (
+                    <ChartAnnotation
+                        key={annotation.id}
+                        annotation={annotation}
+                        globalEditable={!!chart.config.editAnnotations}
+                        onPositionChange={onAnnotationPositionChange}
+                    />
+                ))}
             </BarChart>
         </ResponsiveContainer>
     );
