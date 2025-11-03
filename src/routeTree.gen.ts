@@ -25,6 +25,10 @@ import { Route as EntitiesCuiRouteImport } from './routes/entities.$cui'
 import { Route as AlertsNewRouteImport } from './routes/alerts/new'
 import { Route as ChartsChartIdRouteRouteImport } from './routes/charts/$chartId/route'
 import { Route as AlertsAlertIdRouteRouteImport } from './routes/alerts/$alertId/route'
+import { Route as ClassificationsFunctionalIndexRouteImport } from './routes/classifications/functional/index'
+import { Route as ClassificationsEconomicIndexRouteImport } from './routes/classifications/economic/index'
+import { Route as ClassificationsFunctionalCodeRouteImport } from './routes/classifications/functional/$code'
+import { Route as ClassificationsEconomicCodeRouteImport } from './routes/classifications/economic/$code'
 
 const TermsLazyRouteImport = createFileRoute('/terms')()
 const BudgetExplorerLazyRouteImport = createFileRoute('/budget-explorer')()
@@ -158,6 +162,42 @@ const AlertsAlertIdIndexLazyRoute = AlertsAlertIdIndexLazyRouteImport.update({
 } as any).lazy(() =>
   import('./routes/alerts/$alertId/index.lazy').then((d) => d.Route),
 )
+const ClassificationsFunctionalIndexRoute =
+  ClassificationsFunctionalIndexRouteImport.update({
+    id: '/classifications/functional/',
+    path: '/classifications/functional/',
+    getParentRoute: () => rootRouteImport,
+  } as any).lazy(() =>
+    import('./routes/classifications/functional/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+const ClassificationsEconomicIndexRoute =
+  ClassificationsEconomicIndexRouteImport.update({
+    id: '/classifications/economic/',
+    path: '/classifications/economic/',
+    getParentRoute: () => rootRouteImport,
+  } as any).lazy(() =>
+    import('./routes/classifications/economic/index.lazy').then((d) => d.Route),
+  )
+const ClassificationsFunctionalCodeRoute =
+  ClassificationsFunctionalCodeRouteImport.update({
+    id: '/classifications/functional/$code',
+    path: '/classifications/functional/$code',
+    getParentRoute: () => rootRouteImport,
+  } as any).lazy(() =>
+    import('./routes/classifications/functional/$code.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+const ClassificationsEconomicCodeRoute =
+  ClassificationsEconomicCodeRouteImport.update({
+    id: '/classifications/economic/$code',
+    path: '/classifications/economic/$code',
+    getParentRoute: () => rootRouteImport,
+  } as any).lazy(() =>
+    import('./routes/classifications/economic/$code.lazy').then((d) => d.Route),
+  )
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
@@ -180,6 +220,10 @@ export interface FileRoutesByFullPath {
   '/charts/new': typeof ChartsNewLazyRoute
   '/research/employees-data': typeof ResearchEmployeesDataLazyRoute
   '/charts': typeof ChartsIndexLazyRoute
+  '/classifications/economic/$code': typeof ClassificationsEconomicCodeRoute
+  '/classifications/functional/$code': typeof ClassificationsFunctionalCodeRoute
+  '/classifications/economic': typeof ClassificationsEconomicIndexRoute
+  '/classifications/functional': typeof ClassificationsFunctionalIndexRoute
   '/alerts/$alertId/': typeof AlertsAlertIdIndexLazyRoute
   '/charts/$chartId/': typeof ChartsChartIdIndexLazyRoute
 }
@@ -202,6 +246,10 @@ export interface FileRoutesByTo {
   '/charts/new': typeof ChartsNewLazyRoute
   '/research/employees-data': typeof ResearchEmployeesDataLazyRoute
   '/charts': typeof ChartsIndexLazyRoute
+  '/classifications/economic/$code': typeof ClassificationsEconomicCodeRoute
+  '/classifications/functional/$code': typeof ClassificationsFunctionalCodeRoute
+  '/classifications/economic': typeof ClassificationsEconomicIndexRoute
+  '/classifications/functional': typeof ClassificationsFunctionalIndexRoute
   '/alerts/$alertId': typeof AlertsAlertIdIndexLazyRoute
   '/charts/$chartId': typeof ChartsChartIdIndexLazyRoute
 }
@@ -227,6 +275,10 @@ export interface FileRoutesById {
   '/charts/new': typeof ChartsNewLazyRoute
   '/research/employees-data': typeof ResearchEmployeesDataLazyRoute
   '/charts/': typeof ChartsIndexLazyRoute
+  '/classifications/economic/$code': typeof ClassificationsEconomicCodeRoute
+  '/classifications/functional/$code': typeof ClassificationsFunctionalCodeRoute
+  '/classifications/economic/': typeof ClassificationsEconomicIndexRoute
+  '/classifications/functional/': typeof ClassificationsFunctionalIndexRoute
   '/alerts/$alertId/': typeof AlertsAlertIdIndexLazyRoute
   '/charts/$chartId/': typeof ChartsChartIdIndexLazyRoute
 }
@@ -253,6 +305,10 @@ export interface FileRouteTypes {
     | '/charts/new'
     | '/research/employees-data'
     | '/charts'
+    | '/classifications/economic/$code'
+    | '/classifications/functional/$code'
+    | '/classifications/economic'
+    | '/classifications/functional'
     | '/alerts/$alertId/'
     | '/charts/$chartId/'
   fileRoutesByTo: FileRoutesByTo
@@ -275,6 +331,10 @@ export interface FileRouteTypes {
     | '/charts/new'
     | '/research/employees-data'
     | '/charts'
+    | '/classifications/economic/$code'
+    | '/classifications/functional/$code'
+    | '/classifications/economic'
+    | '/classifications/functional'
     | '/alerts/$alertId'
     | '/charts/$chartId'
   id:
@@ -299,6 +359,10 @@ export interface FileRouteTypes {
     | '/charts/new'
     | '/research/employees-data'
     | '/charts/'
+    | '/classifications/economic/$code'
+    | '/classifications/functional/$code'
+    | '/classifications/economic/'
+    | '/classifications/functional/'
     | '/alerts/$alertId/'
     | '/charts/$chartId/'
   fileRoutesById: FileRoutesById
@@ -324,6 +388,10 @@ export interface RootRouteChildren {
   ChartsNewLazyRoute: typeof ChartsNewLazyRoute
   ResearchEmployeesDataLazyRoute: typeof ResearchEmployeesDataLazyRoute
   ChartsIndexLazyRoute: typeof ChartsIndexLazyRoute
+  ClassificationsEconomicCodeRoute: typeof ClassificationsEconomicCodeRoute
+  ClassificationsFunctionalCodeRoute: typeof ClassificationsFunctionalCodeRoute
+  ClassificationsEconomicIndexRoute: typeof ClassificationsEconomicIndexRoute
+  ClassificationsFunctionalIndexRoute: typeof ClassificationsFunctionalIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -482,6 +550,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AlertsAlertIdIndexLazyRouteImport
       parentRoute: typeof AlertsAlertIdRouteRoute
     }
+    '/classifications/functional/': {
+      id: '/classifications/functional/'
+      path: '/classifications/functional'
+      fullPath: '/classifications/functional'
+      preLoaderRoute: typeof ClassificationsFunctionalIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/classifications/economic/': {
+      id: '/classifications/economic/'
+      path: '/classifications/economic'
+      fullPath: '/classifications/economic'
+      preLoaderRoute: typeof ClassificationsEconomicIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/classifications/functional/$code': {
+      id: '/classifications/functional/$code'
+      path: '/classifications/functional/$code'
+      fullPath: '/classifications/functional/$code'
+      preLoaderRoute: typeof ClassificationsFunctionalCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/classifications/economic/$code': {
+      id: '/classifications/economic/$code'
+      path: '/classifications/economic/$code'
+      fullPath: '/classifications/economic/$code'
+      preLoaderRoute: typeof ClassificationsEconomicCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -528,6 +624,10 @@ const rootRouteChildren: RootRouteChildren = {
   ChartsNewLazyRoute: ChartsNewLazyRoute,
   ResearchEmployeesDataLazyRoute: ResearchEmployeesDataLazyRoute,
   ChartsIndexLazyRoute: ChartsIndexLazyRoute,
+  ClassificationsEconomicCodeRoute: ClassificationsEconomicCodeRoute,
+  ClassificationsFunctionalCodeRoute: ClassificationsFunctionalCodeRoute,
+  ClassificationsEconomicIndexRoute: ClassificationsEconomicIndexRoute,
+  ClassificationsFunctionalIndexRoute: ClassificationsFunctionalIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

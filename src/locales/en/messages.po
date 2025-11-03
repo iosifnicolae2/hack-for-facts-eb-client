@@ -22,6 +22,10 @@ msgstr "{0} annotations"
 msgid "{0} series configured"
 msgstr "{0} series configured"
 
+#: src/components/classification-explorer/ClassificationSearch.tsx:46
+msgid "{resultsCount} results found"
+msgstr "{resultsCount} results found"
+
 #: src/components/maps/utils.ts:47
 msgid "*Check filters panel for more details."
 msgstr "*Check filters panel for more details."
@@ -561,6 +565,11 @@ msgstr "All budget expenditures"
 msgid "All changes saved"
 msgstr "All changes saved"
 
+#: src/components/classification-explorer/ClassificationBreadcrumb.tsx:32
+#: src/components/classification-explorer/ClassificationInfo.tsx:42
+msgid "All Classifications"
+msgstr "All Classifications"
+
 #: src/routes/privacy.lazy.tsx:97
 msgid "All processors are bound by data protection agreements and GDPR-compliant safeguards, including standard contractual clauses for international transfers."
 msgstr "All processors are bound by data protection agreements and GDPR-compliant safeguards, including standard contractual clauses for international transfers."
@@ -744,6 +753,7 @@ msgstr "Availability and changes"
 msgid "Avg per-capita"
 msgstr "Avg per-capita"
 
+#: src/components/classification-explorer/ClassificationDetail.tsx:37
 #: src/routes/alerts/new.lazy.tsx:170
 msgid "Back"
 msgstr "Back"
@@ -945,6 +955,14 @@ msgstr "Choose between essential-only or all cookies, then fine-tune options bel
 msgid "Choose operator"
 msgstr "Choose operator"
 
+#: src/components/classification-explorer/ClassificationGrid.tsx:49
+msgid "classifications"
+msgstr "classifications"
+
+#: src/components/classification-explorer/ClassificationExplorer.tsx:125
+msgid "Classifications"
+msgstr "Classifications"
+
 #: src/components/entities/EntityReports.tsx:224
 #: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:73
 msgid "Clear"
@@ -969,6 +987,7 @@ msgstr "Clear filters"
 msgid "Clear filters ({0})"
 msgstr "Clear filters ({0})"
 
+#: src/components/classification-explorer/ClassificationSearch.tsx:39
 #: src/components/filters/base-filter/SearchInput.tsx:56
 msgid "Clear search"
 msgstr "Clear search"
@@ -1441,11 +1460,15 @@ msgstr "Detailed Budget Execution"
 msgid "Detailed categories"
 msgstr "Detailed categories"
 
+#: src/components/classification-explorer/ClassificationDescription.tsx:26
+msgid "Detailed description for {type} classification {code} will be available soon. This area will display comprehensive information, examples, and usage guidelines for this classification code."
+msgstr "Detailed description for {type} classification {code} will be available soon. This area will display comprehensive information, examples, and usage guidelines for this classification code."
+
 #: src/components/budget-explorer/BudgetLineItemsPreview.tsx:68
 msgid "Detailed Line Items Breakdown"
 msgstr "Detailed Line Items Breakdown"
 
-#: src/routes/entities.$cui.lazy.tsx:268
+#: src/routes/entities.$cui.lazy.tsx:280
 msgid "Details:"
 msgstr "Details:"
 
@@ -1518,6 +1541,8 @@ msgstr "Easily manage your subscriptions"
 msgid "Ec"
 msgstr "Ec"
 
+#: src/components/classification-explorer/ClassificationExplorer.tsx:144
+#: src/components/classification-explorer/ClassificationExplorer.tsx:145
 #: src/components/entities/views/Overview.tsx:266
 #: src/components/entities/views/TrendsView.tsx:202
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:114
@@ -1720,7 +1745,7 @@ msgstr "equals"
 msgid "Error"
 msgstr "Error"
 
-#: src/routes/entities.$cui.lazy.tsx:265
+#: src/routes/entities.$cui.lazy.tsx:277
 msgid "Error Fetching Entity Details"
 msgstr "Error Fetching Entity Details"
 
@@ -1869,6 +1894,10 @@ msgstr "Expense Type"
 #: src/routes/entity-analytics.lazy.tsx:264
 msgid "Expenses"
 msgstr "Expenses"
+
+#: src/components/classification-explorer/ClassificationExplorer.tsx:128
+msgid "Explore budget classifications to understand how public spending is organized and categorized"
+msgstr "Explore budget classifications to understand how public spending is organized and categorized"
 
 #: src/routes/index.lazy.tsx:56
 msgid "Explore data through a map."
@@ -2082,6 +2111,8 @@ msgstr "for the selected filters."
 msgid "Found {replacementCount} occurrence{0}"
 msgstr "Found {replacementCount} occurrence{0}"
 
+#: src/components/classification-explorer/ClassificationExplorer.tsx:141
+#: src/components/classification-explorer/ClassificationExplorer.tsx:142
 #: src/components/entities/views/Overview.tsx:265
 #: src/components/entities/views/TrendsView.tsx:201
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:107
@@ -2186,11 +2217,7 @@ msgstr "Go to Entity Table"
 msgid "Go to homepage"
 msgstr "Go to homepage"
 
-#: src/components/errors/GlobalErrorPage.tsx:66
-msgid "Go to Homepage"
-msgstr "Go to Homepage"
-
-#: src/components/budget-explorer/BudgetTreemap.tsx:584
+#: src/components/budget-explorer/BudgetTreemap.tsx:595
 msgid "Go to Main Categories"
 msgstr "Go to Main Categories"
 
@@ -2562,7 +2589,7 @@ msgstr "Lock annotation"
 msgid "Locked"
 msgstr "Locked"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:499
+#: src/components/budget-explorer/BudgetTreemap.tsx:508
 #: src/components/entities/LineItemsAnalytics.tsx:143
 msgid "Main Categories"
 msgstr "Main Categories"
@@ -2666,6 +2693,13 @@ msgstr "Metadata"
 #: src/components/ui/amount-range-picker.tsx:110
 msgid "Minimum"
 msgstr "Minimum"
+
+#: src/components/classification-explorer/ClassificationChildren.tsx:46
+#: src/components/classification-explorer/ClassificationGrid.tsx:99
+#: src/components/classification-explorer/ClassificationInfo.tsx:54
+#: src/components/classification-explorer/ClassificationSiblings.tsx:51
+msgid "Missing title"
+msgstr "Missing title"
 
 #: src/components/maps/utils.ts:104
 #: src/components/maps/utils.ts:140
@@ -2824,6 +2858,10 @@ msgstr "No charts in “{0}”"
 msgid "No charts yet"
 msgstr "No charts yet"
 
+#: src/components/classification-explorer/ClassificationGrid.tsx:34
+msgid "No classifications found"
+msgstr "No classifications found"
+
 #: src/components/alerts/components/ConditionsList.tsx:48
 msgid "No conditions added yet. Click the button below to add your first condition."
 msgstr "No conditions added yet. Click the button below to add your first condition."
@@ -2835,10 +2873,6 @@ msgstr "No conditions set"
 #: src/components/charts/components/chart-view/ChartDisplayArea.tsx:135
 msgid "No Data Available"
 msgstr "No Data Available"
-
-#: src/components/budget-explorer/BudgetTreemap.tsx:481
-#~ msgid "No data available for the current selection."
-#~ msgstr "No data available for the current selection."
 
 #: src/routes/map.lazy.tsx:215
 msgid "No data available for the map."
@@ -2852,7 +2886,7 @@ msgstr "No data available for the table."
 msgid "No data available to display financial evolution."
 msgstr "No data available to display financial evolution."
 
-#: src/routes/entities.$cui.lazy.tsx:280
+#: src/routes/entities.$cui.lazy.tsx:292
 msgid "No Data Found"
 msgstr "No Data Found"
 
@@ -2868,7 +2902,7 @@ msgstr "No data series alerts"
 msgid "No data series yet."
 msgstr "No data series yet."
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:574
+#: src/components/budget-explorer/BudgetTreemap.tsx:585
 msgid "No data within the selected range."
 msgstr "No data within the selected range."
 
@@ -2884,7 +2918,7 @@ msgstr "No economic breakdown is available for income."
 msgid "No enabled series data available to display."
 msgstr "No enabled series data available to display."
 
-#: src/routes/entities.$cui.lazy.tsx:282
+#: src/routes/entities.$cui.lazy.tsx:294
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 
@@ -3101,6 +3135,14 @@ msgstr "Overview"
 msgid "error.pageRenderErrorTitle"
 msgstr "Page Failed to Load"
 
+#: src/components/classification-explorer/ClassificationInfo.tsx:28
+msgid "Parent"
+msgstr "Parent"
+
+#: src/components/classification-explorer/ClassificationParents.tsx:26
+msgid "Parent Categories"
+msgstr "Parent Categories"
+
 #: src/components/charts/components/chart-config/SeriesToolbar.tsx:37
 msgid "Paste"
 msgstr "Paste"
@@ -3264,6 +3306,10 @@ msgstr "Redo successful"
 msgid "Refine your search using the options below"
 msgstr "Refine your search using the options below"
 
+#: src/components/classification-explorer/ClassificationSiblings.tsx:32
+msgid "Related Categories"
+msgstr "Related Categories"
+
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:245
 msgid "Relative Mode"
 msgstr "Relative Mode"
@@ -3271,10 +3317,6 @@ msgstr "Relative Mode"
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:175
 msgid "Relative Values"
 msgstr "Relative Values"
-
-#: src/components/errors/GlobalErrorPage.tsx:57
-msgid "Reload Page"
-msgstr "Reload Page"
 
 #: src/components/alerts/components/ConditionsList.tsx:73
 msgid "Remove condition"
@@ -3313,7 +3355,7 @@ msgstr "Reporting entity"
 msgid "Reporting filters"
 msgstr "Reporting filters"
 
-#: src/routes/entities.$cui.lazy.tsx:313
+#: src/routes/entities.$cui.lazy.tsx:325
 msgid "Reporting period"
 msgstr "Reporting period"
 
@@ -3329,14 +3371,10 @@ msgstr "Reports"
 msgid "Required for core functionality like security and preferences. Always on."
 msgstr "Required for core functionality like security and preferences. Always on."
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:589
+#: src/components/budget-explorer/BudgetTreemap.tsx:600
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:189
 msgid "Reset amount filter"
 msgstr "Reset amount filter"
-
-#: src/components/budget-explorer/BudgetTreemap.tsx:478
-#~ msgid "Reset to Main Categories"
-#~ msgstr "Reset to Main Categories"
 
 #: src/components/charts/components/backup-restore/ChartsBackupRestore.tsx:185
 msgid "Restore"
@@ -3400,6 +3438,10 @@ msgstr "Search {0}..."
 #: src/components/filters/budget-sector-filter/BudgetSectorFilter.tsx:67
 msgid "Search budget sectors"
 msgstr "Search budget sectors"
+
+#: src/components/classification-explorer/ClassificationSearch.tsx:25
+msgid "Search by code or name..."
+msgstr "Search by code or name..."
 
 #: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:67
 msgid "Search by name or code (ex: Agriculture, 43.00, ec:43.00)"
@@ -3598,6 +3640,11 @@ msgstr "Shares from VAT"
 msgid "Show"
 msgstr "Show"
 
+#. placeholder {0}: siblings.length - INITIAL_DISPLAY_COUNT
+#: src/components/classification-explorer/ClassificationSiblings.tsx:77
+msgid "Show {0} more"
+msgstr "Show {0} more"
+
 #: src/components/charts/components/views/SeriesConfigView.tsx:272
 msgid "Show advanced settings"
 msgstr "Show advanced settings"
@@ -3632,6 +3679,7 @@ msgstr "Show Grid Lines"
 msgid "Show Legend"
 msgstr "Show Legend"
 
+#: src/components/classification-explorer/ClassificationSiblings.tsx:72
 #: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:63
 msgid "Show less"
 msgstr "Show less"
@@ -3647,10 +3695,6 @@ msgstr "Show More"
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:64
 msgid "Show Relative Values (%)"
 msgstr "Show Relative Values (%)"
-
-#: src/components/errors/GlobalErrorPage.tsx:73
-msgid "Show Technical Details"
-msgstr "Show Technical Details"
 
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:65
 msgid "Show Tooltip"
@@ -3755,6 +3799,10 @@ msgstr "Stay here"
 msgid "Strip this prefix from x-axis labels for this series (e.g., 2024-). Helps align yearly and monthly data on a common axis."
 msgstr "Strip this prefix from x-axis labels for this series (e.g., 2024-). Helps align yearly and monthly data on a common axis."
 
+#: src/components/classification-explorer/ClassificationChildren.tsx:20
+msgid "Subcategories"
+msgstr "Subcategories"
+
 #: src/components/charts/components/views/AnnotationConfigView.tsx:139
 msgid "Subject"
 msgstr "Subject"
@@ -3840,7 +3888,7 @@ msgstr "The Service's software, design, and original content are protected by co
 msgid "The share link you are trying to access is invalid or no longer available."
 msgstr "The share link you are trying to access is invalid or no longer available."
 
-#: src/routes/entities.$cui.lazy.tsx:267
+#: src/routes/entities.$cui.lazy.tsx:279
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "There was a problem fetching the details for CUI: <0>{cui}</0>."
 
@@ -3875,6 +3923,10 @@ msgstr "This alert doesn't exist or you don't have permission to view it."
 #: src/components/alerts/components/AlertEditorView.tsx:207
 msgid "This alert is included in every monthly newsletter with its current status. When all threshold conditions are met, the alert will be emphasized with a customized message to draw your attention."
 msgstr "This alert is included in every monthly newsletter with its current status. When all threshold conditions are met, the alert will be emphasized with a customized message to draw your attention."
+
+#: src/components/classification-explorer/ClassificationChildren.tsx:27
+msgid "This classification has no subcategories"
+msgstr "This classification has no subcategories"
 
 #: src/components/entities/EntityRelationships.tsx:22
 msgid "This entity has no funding or funded relationships."
@@ -3975,7 +4027,7 @@ msgid "total"
 msgstr "total"
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:88
-#: src/components/budget-explorer/BudgetTreemap.tsx:637
+#: src/components/budget-explorer/BudgetTreemap.tsx:648
 #: src/components/common/NormalizationSelector.tsx:21
 #: src/components/entities/EntityReportControls.tsx:46
 #: src/components/entities/views/MapView.tsx:167
@@ -4206,7 +4258,7 @@ msgstr "View all alerts"
 msgid "View all reports"
 msgstr "View all reports"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:656
+#: src/components/budget-explorer/BudgetTreemap.tsx:667
 msgid "View as Chart"
 msgstr "View as Chart"
 
@@ -4217,9 +4269,13 @@ msgstr "View as Chart"
 msgid "View Chart"
 msgstr "View Chart"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:565
+#: src/components/budget-explorer/BudgetTreemap.tsx:576
 msgid "View Details"
 msgstr "View Details"
+
+#: src/components/classification-explorer/ClassificationActions.tsx:55
+msgid "View in Entity Analytics"
+msgstr "View in Entity Analytics"
 
 #: src/components/charts/components/ChartDataError.tsx:311
 msgid "Warnings"

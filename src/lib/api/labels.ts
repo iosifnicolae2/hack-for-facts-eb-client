@@ -112,6 +112,28 @@ const FUNDING_SOURCE_NAMES_QUERY = `
     }
 `;
 
+const ALL_FUNCTIONAL_CLASSIFICATIONS_QUERY = `
+    query AllFunctionalClassifications {
+        functionalClassifications(limit: 10000) {
+            nodes {
+                code: functional_code
+                name: functional_name
+            }
+        }
+    }
+`;
+
+const ALL_ECONOMIC_CLASSIFICATIONS_QUERY = `
+    query AllEconomicClassifications {
+        economicClassifications(limit: 10000) {
+            nodes {
+                code: economic_code
+                name: economic_name
+            }
+        }
+    }
+`;
+
 
 export async function getFunctionalClassificationLabels(ids: (string | number)[]): Promise<{ id: string; label: string }[]> {
     const stringIds = ids.map(String);
@@ -188,6 +210,61 @@ export async function getUatLabels(ids: (string | number)[]): Promise<{ id: stri
     }
     catch (error) {
         logger.error("Error fetching uat labels", { error, ids });
+        return [];
+    }
+}
+
+/**
+ * Helper function to remove trailing .00 from classification codes
+ * E.g., "01.00" -> "01", "01.02.00" -> "01.02"
+ */
+function removeTailingZeroCodes(code: string): string {
+    const parts = code.split('.');
+    // Remove trailing .00 parts
+    while (parts.length > 1 && parts[parts.length - 1] === '00') {
+        parts.pop();
+    }
+    return parts.join('.');
+}
+
+export async function getAllFunctionalClassifications(): Promise<{ code: string; name: string }[]> {
+    try {
+        const response = await graphqlRequest<{ functionalClassifications: ClassificationResponse }>(ALL_FUNCTIONAL_CLASSIFICATIONS_QUERY);
+
+        // Remove duplicates and process codes
+        const uniqueCodes = new Map<string, string>();
+        for (const classification of response.functionalClassifications.nodes) {
+            const cleanCode = removeTailingZeroCodes(classification.code);
+            // Keep the first occurrence (or update if we prefer the cleaned version)
+            if (!uniqueCodes.has(cleanCode)) {
+                uniqueCodes.set(cleanCode, classification.name);
+            }
+        }
+
+        return Array.from(uniqueCodes.entries()).map(([code, name]) => ({ code, name }));
+    } catch (error) {
+        logger.error("Error fetching all functional classifications", { error });
+        return [];
+    }
+}
+
+export async function getAllEconomicClassifications(): Promise<{ code: string; name: string }[]> {
+    try {
+        const response = await graphqlRequest<{ economicClassifications: ClassificationResponse }>(ALL_ECONOMIC_CLASSIFICATIONS_QUERY);
+
+        // Remove duplicates and process codes
+        const uniqueCodes = new Map<string, string>();
+        for (const classification of response.economicClassifications.nodes) {
+            const cleanCode = removeTailingZeroCodes(classification.code);
+            // Keep the first occurrence (or update if we prefer the cleaned version)
+            if (!uniqueCodes.has(cleanCode)) {
+                uniqueCodes.set(cleanCode, classification.name);
+            }
+        }
+
+        return Array.from(uniqueCodes.entries()).map(([code, name]) => ({ code, name }));
+    } catch (error) {
+        logger.error("Error fetching all economic classifications", { error });
         return [];
     }
 }
