@@ -1,4 +1,4 @@
-import { lazy, Suspense, useMemo, useRef, useCallback, memo, useState, useEffect } from 'react'
+import { lazy, Suspense, useMemo, useRef, useCallback, memo, useState, useEffect, startTransition } from 'react'
 import { createLazyFileRoute, useNavigate, useParams, useSearch } from '@tanstack/react-router'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { t } from '@lingui/core/macro'
@@ -152,9 +152,19 @@ function EntityDetailsPage() {
     100
   );
 
-  const updateSearch = useCallback((newSearch: Record<string, any>) => {
-    navigate({ search: (prev) => ({ ...prev, ...newSearch }), replace: true, resetScroll: false })
-  }, [navigate])
+  const updateSearch = useCallback((patch: Record<string, any>) => {
+    // Skip navigation if nothing actually changes
+    const isNoOp = Object.keys(patch).every((key) => {
+      const nextVal = (patch as any)[key]
+      const prevVal = (search as any)[key]
+      return nextVal === undefined ? prevVal === undefined : prevVal === nextVal
+    })
+    if (isNoOp) return
+
+    startTransition(() => {
+      navigate({ search: (prev) => ({ ...prev, ...patch }), replace: true, resetScroll: false })
+    })
+  }, [navigate, search])
 
   useEffect(() => {
     if (userCurrency === 'EUR' && normalization !== 'total_euro' && normalization !== 'per_capita_euro') {
@@ -209,21 +219,23 @@ function EntityDetailsPage() {
   }, [updateSearch, cui, activeView])
 
   const updateReportPeriodInSearch = useCallback((patch: Record<string, any>) => {
-    navigate({
-      search: (prev) => {
-        const nextState = { ...prev, ...patch }
-        const nextPeriod = nextState.period
+    startTransition(() => {
+      navigate({
+        search: (prev) => {
+          const nextState = { ...prev, ...patch }
+          const nextPeriod = nextState.period
 
-        return {
-          ...nextState,
-          month: nextPeriod === 'MONTH' ? nextState.month : undefined,
-          quarter: nextPeriod === 'QUARTER' ? nextState.quarter : undefined,
-          report_type: ('report_type' in patch && patch.report_type) ? patch.report_type : prev.report_type,
-          main_creditor_cui: ('main_creditor_cui' in patch && patch.main_creditor_cui) ? patch.main_creditor_cui : prev.main_creditor_cui,
-        }
-      },
-      replace: true,
-      resetScroll: false,
+          return {
+            ...nextState,
+            month: nextPeriod === 'MONTH' ? nextState.month : undefined,
+            quarter: nextPeriod === 'QUARTER' ? nextState.quarter : undefined,
+            report_type: ('report_type' in patch && patch.report_type) ? patch.report_type : prev.report_type,
+            main_creditor_cui: ('main_creditor_cui' in patch && patch.main_creditor_cui) ? patch.main_creditor_cui : prev.main_creditor_cui,
+          }
+        },
+        replace: true,
+        resetScroll: false,
+      })
     })
   }, [navigate])
 

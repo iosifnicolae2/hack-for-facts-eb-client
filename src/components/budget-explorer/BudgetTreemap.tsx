@@ -1,4 +1,4 @@
-import { type FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { type FC, useCallback, useEffect, useMemo, useRef, useState, useDeferredValue, startTransition } from 'react'
 import { ResponsiveContainer, Treemap, Tooltip } from 'recharts'
 import { Trans } from '@lingui/react/macro'
 import { motion, useAnimationControls } from 'motion/react'
@@ -363,14 +363,18 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
   const isMobile = useIsMobile()
   const navigate = useNavigate()
 
+  // Defer heavy-changing inputs to keep UI responsive while treemap layout catches up
+  const deferredData = useDeferredValue(data)
+  const deferredPath = useDeferredValue(path)
+
   const payloadData = useMemo(() => {
-    return data.map((node) => ({
+    return deferredData.map((node) => ({
       name: node.name,
       value: node.value,
       code: node.code,
       fill: getColor(`${primary}-${node.code}`),
     }))
-  }, [data, primary])
+  }, [deferredData, primary])
 
   // Generate chart link configuration
   const { hasChartLink, seriesConfigs, chartTitle } = useTreemapChartLink({
@@ -401,10 +405,12 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
       normalization,
     })
 
-    navigate({
-      to: chartLink.to,
-      params: chartLink.params,
-      search: chartLink.search,
+    startTransition(() => {
+      navigate({
+        to: chartLink.to,
+        params: chartLink.params,
+        search: chartLink.search,
+      })
     })
   }
 
@@ -424,6 +430,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
 
   // Amount range for this layer. Always resets to [min,max] when those change.
   const [amountRange, setAmountRange] = useState<[number, number]>([minValue, maxValue])
+  const deferredAmountRange = useDeferredValue(amountRange)
   const handleAmountRangeChange = useCallback((val: [number, number]) => {
     setAmountRange(val)
   }, [])
@@ -435,7 +442,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
 
   // Apply range-based filtering to nodes
   const filteredData = useMemo(() => {
-    const [low, high] = amountRange
+    const [low, high] = deferredAmountRange
     // Avoid filtering when using the full span
     const isFullSpan = low <= minValue && high >= maxValue
     if (isFullSpan) return payloadData
@@ -443,7 +450,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
       const v = Number.isFinite(n.value) ? n.value : 0
       return v >= low && v <= high
     })
-  }, [amountRange, payloadData, minValue, maxValue])
+  }, [deferredAmountRange, payloadData, minValue, maxValue])
 
   const totalValue = useMemo(() => filteredData.reduce((acc, curr) => acc + (Number.isFinite(curr.value) ? curr.value : 0), 0), [filteredData])
   const unit = getNormalizationUnit(normalization ?? 'total')
@@ -455,7 +462,9 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
   const handleNodeClick = (event: unknown) => {
     const target = event as { code?: string; payload?: { code?: string } }
     const code = target?.code ?? target?.payload?.code ?? null
-    onNodeClick?.(code ?? null)
+    startTransition(() => {
+      onNodeClick?.(code ?? null)
+    })
   }
 
   // Memoize content renderer to prevent unnecessary re-renders in Recharts
@@ -478,7 +487,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
   ), [totalValue, primary, normalization])
 
   // On mobile, show only last 2 breadcrumb items
-  const displayPath = isMobile && path.length > 2 ? path.slice(-2) : path
+  const displayPath = isMobile && deferredPath.length > 2 ? deferredPath.slice(-2) : deferredPath
 
   return (
     <div className="w-full space-y-2">
@@ -534,7 +543,9 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
                   transition={{ duration: 0.3, ease: 'easeOut', delay: 0.2 }}
                   onClick={() => {
                     if (!isClickable) return
-                    onBreadcrumbClick?.(item.code, actualIndex)
+                    startTransition(() => {
+                      onBreadcrumbClick?.(item.code, actualIndex)
+                    })
                   }}
                   className={`group relative h-6 pl-5 pr-6 mr-1 flex items-center -ml-[12px] ${isClickable ? 'cursor-pointer' : 'cursor-default'
                     }`}

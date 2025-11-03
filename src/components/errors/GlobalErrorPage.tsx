@@ -1,6 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
 import { AlertTriangle, Home, RefreshCcw } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { classifyError, getTechnicalMessage } from "@/lib/errors-utils";
@@ -44,17 +42,17 @@ export function GlobalErrorPage({ error }: GlobalErrorPageProps) {
                 </div>
 
                 <h1 id="error-title" className="text-3xl font-bold tracking-tight">
-                    {t(classifiedError.title)}
+                    {classifiedError.title.message}
                 </h1>
 
                 <p className="mt-4 text-lg text-muted-foreground">
-                    {t(classifiedError.friendlyMessage)}
+                    {classifiedError.friendlyMessage.message}
                 </p>
 
                 <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
                     <Button onClick={hardReloadPage} size="lg" className="w-full sm:w-auto">
                         <RefreshCcw className="mr-2 h-5 w-5" />
-                        <Trans>Reload Page</Trans>
+                        Reload Page
                     </Button>
                     <Button
                         variant="secondary"
@@ -63,14 +61,14 @@ export function GlobalErrorPage({ error }: GlobalErrorPageProps) {
                         className="w-full sm:w-auto"
                     >
                         <Home className="mr-2 h-5 w-5" />
-                        <Trans>Go to Homepage</Trans>
+                        Go to Homepage
                     </Button>
                 </div>
 
                 {technicalMessage && (
                     <details className="mt-8 text-left">
                         <summary className="cursor-pointer text-sm text-muted-foreground hover:text-foreground">
-                            <Trans>Show Technical Details</Trans>
+                            Show Technical Details
                         </summary>
                         <pre className="mt-2 overflow-auto rounded-md bg-muted p-4 text-xs text-muted-foreground">
                             <code>{technicalMessage}</code>
