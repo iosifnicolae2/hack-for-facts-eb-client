@@ -15,6 +15,7 @@ import { formatCurrency, formatNumber, getNormalizationUnit } from '@/lib/utils'
 import { Trans } from '@lingui/react/macro';
 import { TMonth, TQuarter } from '@/schemas/reporting';
 import { getYearLabel } from './utils';
+import { ClassificationInfoLink } from '@/components/common/classification-info-link';
 
 interface GroupedItemsDisplayProps {
   groups: GroupedChapter[];
@@ -160,7 +161,7 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
   const dateLabel = getYearLabel(currentYear, month, quarter);
   return (
     <Card className="shadow-lg dark:bg-slate-800 h-full flex flex-col">
-      <CardHeader className="flex flex-col space-y-0">
+      <CardHeader className="group flex flex-col space-y-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <Icon className={`h-6 w-6 mr-2 ${iconColor}`} />
@@ -182,6 +183,7 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
                 ))}
               </SelectContent>
             </Select>
+            <ClassificationInfoLink type="functional" />
           </div>
 
           <SearchToggleInput

@@ -94,12 +94,16 @@ const CustomizedContent: FC<{
   fill: string
   root: { value: number }
   normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro'
+  primary?: 'fn' | 'ec'
+  code?: string
   // Recharts passes the original datum under `payload`. We use its fill for stable coloring.
   payload?: { fill?: string; code?: string; name?: string; value?: number }
 }> = (props) => {
-  const { name, value, depth, x, y, width, height, fill, root, normalization } = props
+  const { name, value, depth, x, y, width, height, fill, root, normalization, primary } = props
+  const navigate = useNavigate()
   const hasAnimatedInRef = useRef(false)
   const [isHovered, setIsHovered] = useState(false)
+  const code = props.code ?? props.payload?.code
   const bounceControls = useAnimationControls()
   const randomDelayRef = useRef(Math.random() * 0.15)
   const textScale = isHovered ? 1.1 : 1
@@ -185,6 +189,8 @@ const CustomizedContent: FC<{
       },
     })
   }
+
+  // Determine classification type for navigation
 
   return (
     <motion.g
@@ -355,6 +361,58 @@ const CustomizedContent: FC<{
           {`${percentage.toFixed(1)}%`}
         </motion.text>
       )}
+      {/* Classification info icon - shown on hover in top-right corner */}
+      {isHovered && code && width > 40 && height > 40 && (
+        <motion.g
+          initial={{ opacity: 0, translateY: 25, scale: 0.5 }}
+          animate={{ opacity: 0.5, translateY: 0, scale: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <motion.circle
+            cx={x + 16}
+            cy={y + 16}
+            r={12}
+            fill="rgba(0, 0, 0, 0.6)"
+            style={{ cursor: 'pointer' }}
+            whileHover={{ scale: 1.1 }}
+            onClick={(e) => {
+              e.stopPropagation()
+              if (!code) return
+              const isFunctional = primary === 'fn'
+              if (isFunctional) {
+                navigate({ to: '/classifications/functional/$code', params: { code } as any })
+              } else {
+                navigate({ to: '/classifications/economic/$code', params: { code } as any })
+              }
+            }}
+          />
+          <motion.g
+            transform={`translate(${x + 16}, ${y + 16})`}
+            style={{ pointerEvents: 'none' }}
+          >
+            <circle
+              cx={0}
+              cy={0}
+              r={6}
+              fill="none"
+              stroke={baseColor}
+              strokeWidth={1.5}
+            />
+            <text
+              x={0}
+              y={0}
+              textAnchor="middle"
+              dominantBaseline="central"
+              fill={baseColor}
+              fontSize={9}
+              fontWeight="bold"
+              style={{ userSelect: 'none' }}
+            >
+              i
+            </text>
+          </motion.g>
+        </motion.g>
+      )}
     </motion.g>
   )
 }
@@ -468,15 +526,20 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
   }
 
   // Memoize content renderer to prevent unnecessary re-renders in Recharts
-  const renderContent = useCallback((props: any) => (
-    <CustomizedContent
-      {...props}
-      key={props.payload?.code + '-' + props?.payload?.name}
-      fill={props?.payload?.fill ?? props.fill}
-      root={rootValue}
-      normalization={normalization}
-    />
-  ), [rootValue, normalization])
+  const renderContent = useCallback((props: any) => {
+    const codeFromPayload = props?.code ?? props?.payload?.code
+    return (
+      <CustomizedContent
+        {...props}
+        key={(codeFromPayload) + '-' + (props?.payload?.name ?? props?.name ?? 'node')}
+        fill={props?.payload?.fill ?? props.fill}
+        root={rootValue}
+        code={codeFromPayload}
+        normalization={normalization}
+        primary={primary}
+      />
+    )
+  }, [rootValue, normalization, primary])
 
   const memoizedTooltip = useMemo(() => (
     <CustomTooltip
