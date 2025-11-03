@@ -490,7 +490,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
   const displayPath = isMobile && deferredPath.length > 2 ? deferredPath.slice(-2) : deferredPath
 
   return (
-    <div className="w-full space-y-2">
+    <div className="w-full space-y-0.75">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="overflow-x-auto max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-8rem)] md:max-w-[calc(100vw-12rem)]">
           <div className="flex items-center w-fit">
@@ -499,7 +499,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
               className="group relative h-6 pl-4 pr-6 mr-1 flex items-center cursor-pointer transition-all duration-200"
             >
               <div
-                className="absolute inset-0 bg-foreground transition-colors duration-200 border-y-2 border-background/20"
+                className="absolute inset-0 bg-foreground transition-colors duration-200"
                 style={{
                   clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 0 0)'
                 }}
@@ -516,7 +516,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
                 className="relative h-6 pl-5 pr-6 mr-1 flex items-center -ml-[12px]"
               >
                 <div
-                  className="absolute inset-0 bg-foreground/70 border-y-2 rounded-md border-background/20"
+                  className="absolute inset-0 bg-foreground/70 border-y-2 rounded-md"
                   style={{
                     clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%)'
                   }}
@@ -551,7 +551,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
                     }`}
                 >
                   <div
-                    className={`absolute inset-0 transition-all duration-200 shadow-md rounded-md border-y-2 border-background/20`}
+                    className={`absolute inset-0 transition-all duration-200 rounded-r-md`}
                     style={{
                       backgroundColor: itemColor,
                       clipPath: isLast
