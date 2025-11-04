@@ -26,7 +26,7 @@ export function ClassificationInfoLink({
   // Normalize codes like NN.MM.00 or NN.00 by removing a trailing .00 segment(s)
   const normalizedCode = code ? code.replace(/(\.00)+$/, '') : undefined
   const baseClasses = 'inline-flex items-center justify-center rounded-full p-1 hover:bg-slate-200 dark:hover:bg-slate-700 transition-opacity'
-  const hoverClasses = showOnHoverOnly ? 'opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto' : ''
+  const hoverClasses = showOnHoverOnly ? 'hidden group-hover:inline-flex md:inline-flex md:opacity-0 md:group-hover:opacity-100' : ''
   const mergedClassName = ['ml-2', baseClasses, hoverClasses, className].filter(Boolean).join(' ')
 
   const commonProps = {
