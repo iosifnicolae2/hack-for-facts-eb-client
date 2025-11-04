@@ -7,6 +7,6 @@ export const Route = createLazyFileRoute('/classifications/functional/$code')({
 
 function FunctionalClassificationPage() {
   const { code } = Route.useParams()
-
-  return <ClassificationExplorer type="functional" selectedCode={code} />
+  const normalizedCode = code ? code.replace(/(\.00)+$/, '') : undefined
+  return <ClassificationExplorer type="functional" selectedCode={normalizedCode} />
 }
