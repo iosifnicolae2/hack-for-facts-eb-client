@@ -26,6 +26,31 @@ const getHttpsConfig = () => {
 
 export default defineConfig(({ mode }) => ({
   plugins: [
+    {
+      name: 'md-404-dev-middleware',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          const url = req.url || '/';
+          try {
+            const parsed = new URL(url, 'http://localhost');
+            const pathname = decodeURIComponent(parsed.pathname);
+            if (pathname.endsWith('.md')) {
+              const rel = pathname.startsWith('/') ? pathname.slice(1) : pathname;
+              const filePath = path.resolve(__dirname, 'public', rel);
+              if (!fs.existsSync(filePath)) {
+                res.statusCode = 404;
+                res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+                res.end('Not Found');
+                return;
+              }
+            }
+          } catch {
+            // If URL parsing fails, let Vite handle it
+          }
+          next();
+        });
+      },
+    },
     lingui(),
     tanstackRouter(),
     react({

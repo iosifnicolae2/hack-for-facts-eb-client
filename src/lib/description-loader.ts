@@ -1,11 +1,13 @@
 import type { ClassificationType } from '@/types/classification-explorer'
 
-function looksLikeHtml(text: string): boolean {
+function isInvalidFileResponse(text: string): boolean {
   return (
     /^\s*<!doctype\s+html/i.test(text) ||
     /<html[\s>]/i.test(text) ||
     /^\s*<head[\s>]/i.test(text) ||
-    /^\s*Cannot GET /i.test(text)
+    /^\s*Cannot GET /i.test(text) ||
+    /^\s*Not Found\b/i.test(text) ||
+    /404 Not Found/i.test(text)
   )
 }
 
@@ -14,7 +16,7 @@ async function tryFetchPlain(url: string): Promise<string | null> {
     const res = await fetch(url)
     if (!res.ok) return null
     const text = await res.text()
-    if (looksLikeHtml(text)) return null
+    if (isInvalidFileResponse(text)) return null
     return text
   } catch {
     return null
@@ -30,7 +32,7 @@ async function tryFetchGzip(url: string): Promise<string | null> {
     const contentEncoding = res.headers.get('content-encoding') || ''
     if (contentEncoding.includes('gzip')) {
       const text = await res.text()
-      return looksLikeHtml(text) ? null : text
+      return isInvalidFileResponse(text) ? null : text
     }
 
     // Otherwise, decompress manually
@@ -40,7 +42,7 @@ async function tryFetchGzip(url: string): Promise<string | null> {
       const stream = body.pipeThrough(new DecompressionStream('gzip'))
       const buffer = await new Response(stream).arrayBuffer()
       const text = new TextDecoder().decode(buffer)
-      return looksLikeHtml(text) ? null : text
+      return isInvalidFileResponse(text) ? null : text
     }
 
     // Fallback to fflate
@@ -49,7 +51,7 @@ async function tryFetchGzip(url: string): Promise<string | null> {
     const u8 = new Uint8Array(ab)
     const out = gunzipSync(u8)
     const text = strFromU8(out)
-    return looksLikeHtml(text) ? null : text
+    return isInvalidFileResponse(text) ? null : text
   } catch {
     return null
   }
