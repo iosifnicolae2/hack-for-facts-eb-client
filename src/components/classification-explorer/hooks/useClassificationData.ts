@@ -16,7 +16,7 @@ import { getAllFunctionalClassifications, getAllEconomicClassifications } from '
  */
 export function useClassificationData(type: ClassificationType) {
   // Fetch classifications from API
-  const { data: apiClassifications = [] } = useQuery({
+  const { data: apiClassifications = [], isLoading } = useQuery({
     queryKey: ['classifications', type],
     queryFn: () => type === 'functional' ? getAllFunctionalClassifications() : getAllEconomicClassifications(),
     staleTime: 1000 * 60 * 60, // 1 hour
@@ -73,5 +73,6 @@ export function useClassificationData(type: ClassificationType) {
     treeData,
     classificationMap,
     getByCode,
+    isLoading,
   }
 }

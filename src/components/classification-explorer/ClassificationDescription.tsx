@@ -1,41 +1,47 @@
 import { Trans } from '@lingui/react/macro'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Info } from 'lucide-react'
 import type { ClassificationType } from '@/types/classification-explorer'
+import { getUserLocale } from '@/lib/utils'
+import { useQuery } from '@tanstack/react-query'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import { loadClassificationDescription } from '@/lib/description-loader'
 
 type ClassificationDescriptionProps = {
   readonly type: ClassificationType
   readonly code: string
 }
 
-/**
- * Mock component for classification description
- * TODO: Implement MDX loading system for classification descriptions
- */
-export function ClassificationDescription({
-  type,
-  code,
-}: ClassificationDescriptionProps) {
-  // In the future, this will load MDX content based on type and code
-  // For now, return a placeholder
+export function ClassificationDescription({ type, code }: ClassificationDescriptionProps) {
+  const locale = getUserLocale()
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['classification-description', locale, type, code],
+    queryFn: () => loadClassificationDescription(locale, type, code),
+    staleTime: 1000 * 60 * 60, // 1 hour
+    gcTime: 1000 * 60 * 60 * 24, // 24 hours
+  })
+
+  if (isLoading) return null
+
+  if (isError) {
+    return (
+      <p className="text-sm text-muted-foreground italic">
+        <Trans>Missing description</Trans>
+      </p>
+    )
+  }
+
+  const text = data || ''
+  if (text.trim().length === 0) {
+    return (
+      <p className="text-sm text-muted-foreground italic">
+        <Trans>Missing description</Trans>
+      </p>
+    )
+  }
 
   return (
-    <Alert>
-      <Info className="h-4 w-4" />
-      <AlertDescription>
-        <Trans>
-          Detailed description for {type} classification {code} will be available soon.
-          This area will display comprehensive information, examples, and usage guidelines
-          for this classification code.
-        </Trans>
-      </AlertDescription>
-    </Alert>
+    <div className="prose prose-sm max-w-none dark:prose-invert">
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>{text}</ReactMarkdown>
+    </div>
   )
 }
-
-/**
- * Future implementation:
- * TODO: Implement MDX loading system for classification descriptions
- * Example path: `/descriptions/${type}/${code}.mdx`
- * Use dynamic import or fetch to load and parse the MDX content
- */

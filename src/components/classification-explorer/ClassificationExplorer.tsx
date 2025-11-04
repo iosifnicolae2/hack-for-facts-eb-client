@@ -3,10 +3,13 @@ import { useMemo } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
+import { FileQuestion, ArrowLeft } from 'lucide-react'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { Button } from '@/components/ui/button'
 import { ClassificationSearch } from './ClassificationSearch'
 import { ClassificationGrid } from './ClassificationGrid'
 import { ClassificationDetail } from './ClassificationDetail'
+import { ClassificationDetailSkeleton, ClassificationPageSkeleton } from './ClassificationSkeleton'
 import { useClassificationData } from './hooks/useClassificationData'
 import { useClassificationHierarchy } from './hooks/useClassificationHierarchy'
 import { useClassificationSearch } from './hooks/useClassificationSearch'
@@ -24,7 +27,7 @@ export function ClassificationExplorer({
   const navigate = useNavigate()
 
   // Load classification data
-  const { treeData, flatClassifications } = useClassificationData(type)
+  const { treeData, flatClassifications, isLoading } = useClassificationData(type)
 
   // Get hierarchy for selected code
   const hierarchy = useClassificationHierarchy(type, selectedCode)
@@ -111,6 +114,54 @@ export function ClassificationExplorer({
 
   // Show detail view if we have a selected code
   const showDetailView = selectedCode && hierarchy
+
+  // Check if classification not found
+  const isNotFound = selectedCode && !hierarchy && !isLoading
+
+  // Show loading state
+  if (isLoading) {
+    // If loading a specific classification, show detail skeleton
+    if (selectedCode) {
+      return (
+        <div className="min-h-screen bg-background">
+          <div className="mx-auto w-full max-w-6xl px-4 py-8">
+            <ClassificationDetailSkeleton />
+          </div>
+        </div>
+      )
+    }
+    // Otherwise, show the page skeleton with grid
+    return <ClassificationPageSkeleton />
+  }
+
+  // Show not found state
+  if (isNotFound) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="mx-auto w-full max-w-6xl px-4 py-8">
+          <div className="flex min-h-[60vh] items-center justify-center">
+            <div className="text-center space-y-6">
+              <FileQuestion className="mx-auto h-24 w-24 text-muted-foreground/50" />
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold">
+                  <Trans>Classification Not Found</Trans>
+                </h2>
+                <p className="text-muted-foreground max-w-md">
+                  <Trans>
+                    The classification code "{selectedCode}" could not be found.
+                  </Trans>
+                </p>
+              </div>
+              <Button onClick={handleBack} className="gap-2">
+                <ArrowLeft className="h-4 w-4" />
+                <Trans>Go to Main List</Trans>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-background">
