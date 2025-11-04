@@ -8,6 +8,7 @@ import { ListContainer } from '../base-filter/ListContainer';
 import { ListOption } from '../base-filter/ListOption';
 import { cn } from '@/lib/utils';
 import { t } from '@lingui/core/macro';
+import { ClassificationInfoLink } from '@/components/common/classification-info-link';
 
 export interface FunctionalClassificationOption {
     functional_code: string;
@@ -105,7 +106,13 @@ export function FunctionalClassificationList({
                                     selected={isSelected}
                                     optionHeight={virtualRow.size}
                                     optionStart={virtualRow.start}
-                                />
+                                >
+                                    <ClassificationInfoLink
+                                        type="functional"
+                                        code={option.functional_code}
+                                        showOnHoverOnly={true}
+                                    />
+                                </ListOption>
                             );
                         })
                     ) : null}

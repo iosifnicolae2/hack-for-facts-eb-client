@@ -10,6 +10,7 @@ interface ListOptionProps {
     optionHeight: number;
     optionStart: number;
     className?: string;
+    children?: React.ReactNode;
 }
 
 export function ListOption({
@@ -19,7 +20,8 @@ export function ListOption({
     selected,
     optionHeight,
     optionStart,
-    className
+    className,
+    children
 }: ListOptionProps) {
     const checkboxId = `filter-option-${uniqueIdPart}`;
     const optionRowId = `${checkboxId}-row`;
@@ -27,7 +29,7 @@ export function ListOption({
     return (
         <div
             className={cn(
-                "flex items-center absolute top-0 left-0 w-full transition-colors duration-150 ease-in-out",
+                "group flex items-center absolute top-0 left-0 w-full transition-colors duration-150 ease-in-out",
                 "hover:bg-secondary/80 hover:text-secondary-foreground cursor-pointer",
                 "data-[active=true]:bg-secondary data-[active=true]:text-secondary-foreground",
                 "data-[active=true]:ring-1 data-[active=true]:ring-ring data-[active=true]:ring-offset-1",
@@ -68,10 +70,11 @@ export function ListOption({
                         e.stopPropagation();
                         onClick();
                     }}
-                    className="text-xs leading-snug cursor-pointer select-none line-clamp-3"
+                    className="text-xs leading-snug cursor-pointer select-none line-clamp-3 flex-1"
                 >
                     {label}
                 </Label>
+                {children}
             </div>
         </div>
     );

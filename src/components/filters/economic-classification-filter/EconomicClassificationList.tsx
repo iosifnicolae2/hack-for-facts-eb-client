@@ -8,6 +8,7 @@ import { ListContainer } from '../base-filter/ListContainer';
 import { ListOption } from '../base-filter/ListOption';
 import { cn } from '@/lib/utils';
 import { t } from '@lingui/core/macro';
+import { ClassificationInfoLink } from '@/components/common/classification-info-link';
 
 export interface EconomicClassificationOption {
     economic_code: string;
@@ -105,7 +106,13 @@ export function EconomicClassificationList({
                                     selected={isSelected}
                                     optionHeight={virtualRow.size}
                                     optionStart={virtualRow.start}
-                                />
+                                >
+                                    <ClassificationInfoLink
+                                        type="economic"
+                                        code={option.economic_code}
+                                        showOnHoverOnly={true}
+                                    />
+                                </ListOption>
                             );
                         })
                     ) : null}
