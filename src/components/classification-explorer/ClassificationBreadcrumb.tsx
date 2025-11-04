@@ -44,7 +44,7 @@ export function ClassificationBreadcrumb({
                   {parent.name && (
                     <>
                       <span className="text-muted-foreground">-</span>
-                      <span className="max-w-[150px] truncate">{parent.name}</span>
+                      <span className="max-w-[150px] md:max-w-full truncate">{parent.name}</span>
                     </>
                   )}
                 </Link>
@@ -60,7 +60,7 @@ export function ClassificationBreadcrumb({
             {current.name && (
               <>
                 <span className="text-muted-foreground shrink-0">-</span>
-                <span className="max-w-[150px] truncate">{current.name}</span>
+                <span className="max-w-[150px] md:max-w-full truncate">{current.name}</span>
               </>
             )}
           </BreadcrumbPage>

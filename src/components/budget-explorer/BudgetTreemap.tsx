@@ -500,15 +500,16 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
 
   // Apply range-based filtering to nodes
   const filteredData = useMemo(() => {
+    // Check if range has been reset to full span (not user-modified)
+    const isResetToFullSpan = amountRange[0] === minValue && amountRange[1] === maxValue
+    if (isResetToFullSpan) return payloadData
+
     const [low, high] = deferredAmountRange
-    // Avoid filtering when using the full span
-    const isFullSpan = low <= minValue && high >= maxValue
-    if (isFullSpan) return payloadData
     return payloadData.filter((n) => {
       const v = Number.isFinite(n.value) ? n.value : 0
       return v >= low && v <= high
     })
-  }, [deferredAmountRange, payloadData, minValue, maxValue])
+  }, [deferredAmountRange, payloadData, minValue, maxValue, amountRange])
 
   const totalValue = useMemo(() => filteredData.reduce((acc, curr) => acc + (Number.isFinite(curr.value) ? curr.value : 0), 0), [filteredData])
   const unit = getNormalizationUnit(normalization ?? 'total')
