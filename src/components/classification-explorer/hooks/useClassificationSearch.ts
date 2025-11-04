@@ -16,13 +16,14 @@ import { useClassificationData } from './useClassificationData'
  */
 export function useClassificationSearch(
   type: ClassificationType,
+  initialSearchTerm = '',
   delay = 300
 ): ClassificationSearchState & {
   readonly filteredClassifications: readonly FlatClassification[]
   readonly matchedCodesWithAncestors: Set<string>
 } {
   const { flatClassifications } = useClassificationData(type)
-  const [searchTerm, setSearchTerm] = useState('')
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm)
   const debouncedSearchTerm = useDebouncedValue(searchTerm, delay)
 
   // Filter classifications based on search term

@@ -1,19 +1,21 @@
-import { useNavigate } from '@tanstack/react-router'
-import { useMemo } from 'react'
+import { useNavigate, useSearch } from '@tanstack/react-router'
+import { useMemo, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
-import { FileQuestion, ArrowLeft } from 'lucide-react'
+import { FileQuestion, ArrowLeft, LayoutGrid, Network } from 'lucide-react'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { Button } from '@/components/ui/button'
 import { ClassificationSearch } from './ClassificationSearch'
 import { ClassificationGrid } from './ClassificationGrid'
+import { ClassificationTree } from './ClassificationTree'
 import { ClassificationDetail } from './ClassificationDetail'
 import { ClassificationDetailSkeleton, ClassificationPageSkeleton } from './ClassificationSkeleton'
 import { useClassificationData } from './hooks/useClassificationData'
 import { useClassificationHierarchy } from './hooks/useClassificationHierarchy'
 import { useClassificationSearch } from './hooks/useClassificationSearch'
-import type { ClassificationNode, ClassificationType } from '@/types/classification-explorer'
+import { useClassificationTree, useSearchExpansion } from './hooks/useClassificationTree'
+import type { ClassificationNode, ClassificationType, FlatClassification } from '@/types/classification-explorer'
 
 type ClassificationExplorerProps = {
   readonly type: ClassificationType
@@ -26,91 +28,89 @@ export function ClassificationExplorer({
 }: ClassificationExplorerProps) {
   const navigate = useNavigate()
 
+  // Get search params from URL
+  const searchParams = useSearch({ strict: false }) as { q?: string; view?: 'grid' | 'tree' }
+  const viewMode = searchParams.view || 'grid'
+  const initialSearchTerm = searchParams.q || ''
+
   // Load classification data
   const { treeData, flatClassifications, isLoading } = useClassificationData(type)
 
   // Get hierarchy for selected code
   const hierarchy = useClassificationHierarchy(type, selectedCode)
 
-  // Search state
-  const searchState = useClassificationSearch(type)
+  // Search state with URL integration
+  const searchState = useClassificationSearch(type, initialSearchTerm)
   const { matchedCodesWithAncestors, debouncedSearchTerm } = searchState
+
+  // Tree expansion state
+  const expansionState = useClassificationTree()
+
+  // Auto-expand tree for search results
+  useSearchExpansion(matchedCodesWithAncestors, expansionState)
+
+  // Update URL when search term changes (debounced)
+  const updateSearchParam = useCallback((q: string) => {
+    navigate({
+      to: getClassificationRoute(type),
+      search: (prev: any) => ({ ...prev, q: q || undefined, view: viewMode }),
+      replace: true,
+    } as any)
+  }, [navigate, type, viewMode])
+
+  // Sync URL with debounced search term
+  useMemo(() => {
+    if (debouncedSearchTerm !== initialSearchTerm) {
+      updateSearchParam(debouncedSearchTerm)
+    }
+  }, [debouncedSearchTerm, initialSearchTerm, updateSearchParam])
+
+  // Handle view mode change
+  const handleViewModeChange = useCallback((newView: 'grid' | 'tree') => {
+    navigate({
+      to: getClassificationRoute(type),
+      search: (prev: any) => ({ ...prev, view: newView }),
+      replace: true,
+    } as any)
+  }, [navigate, type])
 
   // Handle type toggle
   const handleTypeChange = (newType: ClassificationType) => {
     if (newType === type) return
-    const route = newType === 'functional'
-      ? '/classifications/functional'
-      : '/classifications/economic'
     navigate({
-      to: route as any,
+      to: getClassificationRoute(newType) as any,
     })
   }
 
   // Handle classification selection
   const handleSelect = (code: string) => {
-    if (type === 'functional') {
-      navigate({
-        to: '/classifications/functional/$code',
-        params: { code },
-      } as any)
-    } else {
-      navigate({
-        to: '/classifications/economic/$code',
-        params: { code },
-      } as any)
-    }
+    navigate({
+      to: getClassificationDetailRoute(type, code) as any,
+      params: { code },
+    } as any)
   }
 
   // Handle back to list
   const handleBack = () => {
-    const route = type === 'functional'
-      ? '/classifications/functional'
-      : '/classifications/economic'
     navigate({
-      to: route as any,
+      to: getClassificationRoute(type) as any,
     })
   }
 
-  // Get items to display
+  // Get items to display (for grid view)
   const displayItems = useMemo(() => {
-    // If there's a search, show all matching items
     if (debouncedSearchTerm) {
-      const matchedItems: ClassificationNode[] = []
-
-      // Get all matched codes
-      flatClassifications.forEach(classification => {
-        if (matchedCodesWithAncestors.has(classification.code)) {
-          const item: ClassificationNode = {
-            code: classification.code,
-            name: classification.name,
-            description: classification.description,
-            level: treeData
-              .concat(...treeData.flatMap(n => n.children))
-              .concat(...treeData.flatMap(n => n.children).flatMap(n => n.children))
-              .find(n => n.code === classification.code)?.level || 'chapter',
-            parent: treeData
-              .concat(...treeData.flatMap(n => n.children))
-              .concat(...treeData.flatMap(n => n.children).flatMap(n => n.children))
-              .find(n => n.code === classification.code)?.parent,
-            children: [],
-            hasChildren: false,
-          }
-          matchedItems.push(item)
-        }
-      })
-
-      return matchedItems
+      return buildMatchedItemsList(flatClassifications, matchedCodesWithAncestors, treeData)
     }
-
     // No search and no selection: show only chapter-level items
-    if (!selectedCode) {
-      return treeData
-    }
-
-    // If selected, detail view is shown (no grid)
-    return []
+    return selectedCode ? [] : treeData
   }, [debouncedSearchTerm, selectedCode, treeData, flatClassifications, matchedCodesWithAncestors])
+
+  // Filter tree nodes to only show hierarchy with matches when searching
+  const filteredTreeData = useMemo(() => {
+    if (!debouncedSearchTerm) return treeData
+    return filterTreeByMatches(treeData, matchedCodesWithAncestors)
+  }, [treeData, debouncedSearchTerm, matchedCodesWithAncestors])
 
   // Show detail view if we have a selected code
   const showDetailView = selectedCode && hierarchy
@@ -198,15 +198,34 @@ export function ClassificationExplorer({
               </ToggleGroup>
             </div>
 
-            {/* Search */}
-            <ClassificationSearch
-              searchState={searchState}
-              resultsCount={displayItems.length}
-            />
+            {/* Search and View Toggle */}
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div className="flex-1">
+                <ClassificationSearch
+                  searchState={searchState}
+                  resultsCount={viewMode === 'tree' ? filteredTreeData.length : displayItems.length}
+                />
+              </div>
+              <ToggleGroup
+                type="single"
+                value={viewMode}
+                onValueChange={(value) => {
+                  if (value) handleViewModeChange(value as 'grid' | 'tree')
+                }}
+                className="shrink-0"
+              >
+                <ToggleGroupItem value="grid" aria-label={t`Grid view`} className="px-4">
+                  <LayoutGrid className="h-4 w-4" />
+                </ToggleGroupItem>
+                <ToggleGroupItem value="tree" aria-label={t`Tree view`} className="px-4">
+                  <Network className="h-4 w-4" />
+                </ToggleGroupItem>
+              </ToggleGroup>
+            </div>
           </div>
         )}
 
-        {/* Content - either grid or detail */}
+        {/* Content - either grid/tree or detail */}
         <AnimatePresence mode="wait">
           {showDetailView ? (
             <motion.div
@@ -221,6 +240,25 @@ export function ClassificationExplorer({
                 hierarchy={hierarchy}
                 onBack={handleBack}
               />
+            </motion.div>
+          ) : viewMode === 'tree' ? (
+            <motion.div
+              key="tree"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="rounded-lg border bg-card overflow-hidden">
+                <ClassificationTree
+                  nodes={filteredTreeData}
+                  selectedCode={selectedCode}
+                  expansionState={expansionState}
+                  highlightedCodes={matchedCodesWithAncestors}
+                  searchTerm={debouncedSearchTerm}
+                  onSelect={handleSelect}
+                />
+              </div>
             </motion.div>
           ) : (
             <motion.div
@@ -241,4 +279,100 @@ export function ClassificationExplorer({
       </div>
     </div>
   )
+}
+
+// ============================================================================
+// Utility Functions
+// ============================================================================
+
+/**
+ * Get the route path for a classification type
+ */
+function getClassificationRoute(type: ClassificationType): string {
+  return type === 'functional'
+    ? '/classifications/functional'
+    : '/classifications/economic'
+}
+
+/**
+ * Get the detail route path for a classification
+ */
+function getClassificationDetailRoute(type: ClassificationType, code: string): string {
+  return type === 'functional'
+    ? `/classifications/functional/${code}`
+    : `/classifications/economic/${code}`
+}
+
+/**
+ * Build a flat list of matched items from search results
+ */
+function buildMatchedItemsList(
+  flatClassifications: readonly FlatClassification[],
+  matchedCodes: Set<string>,
+  treeData: readonly ClassificationNode[]
+): ClassificationNode[] {
+  const matchedItems: ClassificationNode[] = []
+  const allNodes = flattenTree(treeData)
+
+  flatClassifications.forEach(classification => {
+    if (matchedCodes.has(classification.code)) {
+      const nodeInfo = allNodes.find(n => n.code === classification.code)
+      matchedItems.push({
+        code: classification.code,
+        name: classification.name,
+        description: classification.description,
+        level: nodeInfo?.level || 'chapter',
+        parent: nodeInfo?.parent,
+        children: [],
+        hasChildren: false,
+      })
+    }
+  })
+
+  return matchedItems
+}
+
+/**
+ * Flatten tree structure into a single array
+ */
+function flattenTree(nodes: readonly ClassificationNode[]): ClassificationNode[] {
+  const result: ClassificationNode[] = []
+
+  function traverse(node: ClassificationNode) {
+    result.push(node)
+    node.children.forEach(child => traverse(child))
+  }
+
+  nodes.forEach(node => traverse(node))
+  return result
+}
+
+/**
+ * Recursively filter tree to keep only nodes with matches and their ancestors
+ */
+function filterTreeByMatches(
+  treeData: readonly ClassificationNode[],
+  matchedCodes: Set<string>
+): ClassificationNode[] {
+  const filterNode = (node: ClassificationNode): ClassificationNode | null => {
+    const nodeMatches = matchedCodes.has(node.code)
+
+    const filteredChildren = node.children
+      .map(child => filterNode(child))
+      .filter((child): child is ClassificationNode => child !== null)
+
+    if (nodeMatches || filteredChildren.length > 0) {
+      return {
+        ...node,
+        children: filteredChildren,
+        hasChildren: filteredChildren.length > 0,
+      }
+    }
+
+    return null
+  }
+
+  return treeData
+    .map(chapter => filterNode(chapter))
+    .filter((chapter): chapter is ClassificationNode => chapter !== null)
 }

@@ -24,7 +24,7 @@ export function ClassificationBreadcrumb({
   const basePath = `/classifications/${type}`
 
   return (
-    <Breadcrumb className="max-w-full overflow-hidden">
+    <Breadcrumb className="max-w-[60vw] overflow-hidden">
       <BreadcrumbList className="flex-wrap">
         <BreadcrumbItem className="shrink-0">
           <BreadcrumbLink asChild>
@@ -55,12 +55,12 @@ export function ClassificationBreadcrumb({
 
         <BreadcrumbSeparator className="shrink-0" />
         <BreadcrumbItem className="shrink-0 max-w-full">
-          <BreadcrumbPage className="text-xs font-medium whitespace-nowrap inline-flex items-center gap-1 overflow-hidden">
+          <BreadcrumbPage className="text-xs font-medium inline-flex items-center gap-1">
             <span className="font-mono font-bold shrink-0">{current.code}</span>
             {current.name && (
               <>
                 <span className="text-muted-foreground shrink-0">-</span>
-                <span className="truncate">{current.name}</span>
+                <span className="max-w-[150px] truncate">{current.name}</span>
               </>
             )}
           </BreadcrumbPage>

@@ -1,6 +1,7 @@
+import { memo } from 'react'
 import { ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Badge } from '@/components/ui/badge'
+import { TextHighlight } from './TextHighlight'
 import type { ClassificationNode } from '@/types/classification-explorer'
 
 type ClassificationTreeItemProps = {
@@ -9,16 +10,17 @@ type ClassificationTreeItemProps = {
   readonly isExpanded: boolean
   readonly isHighlighted: boolean
   readonly level: number
+  readonly searchTerm?: string
   readonly onSelect: (code: string) => void
   readonly onToggleExpand: (code: string) => void
 }
 
-export function ClassificationTreeItem({
+export const ClassificationTreeItem = memo(function ClassificationTreeItem({
   node,
   isSelected,
   isExpanded,
-  isHighlighted,
   level,
+  searchTerm = '',
   onSelect,
   onToggleExpand,
 }: ClassificationTreeItemProps) {
@@ -27,56 +29,68 @@ export function ClassificationTreeItem({
   return (
     <div
       className={cn(
-        'group flex items-center gap-2 rounded-lg border border-transparent px-3 py-2 transition-colors',
-        isSelected && 'border-primary bg-primary/5',
-        isHighlighted && !isSelected && 'bg-accent/50',
-        !isSelected && !isHighlighted && 'hover:bg-accent/30'
+        'group flex items-center transition-colors border-b last:border-b-0 hover:bg-muted/50',
       )}
-      style={{ paddingLeft: `${level * 1.5 + 0.75}rem` }}
     >
       {/* Expand/Collapse button */}
-      {hasChildren ? (
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation()
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation()
+          if (hasChildren) {
             onToggleExpand(node.code)
-          }}
-          className="flex h-5 w-5 shrink-0 items-center justify-center rounded hover:bg-accent"
-        >
+          }
+        }}
+        className={cn(
+          "flex h-full items-center justify-center shrink-0 px-2 py-3 transition-colors",
+          hasChildren ? "hover:bg-accent/10 cursor-pointer" : "cursor-default"
+        )}
+        style={{ marginLeft: `${level * 1.5}rem` }}
+        disabled={!hasChildren}
+      >
+        {hasChildren ? (
           <ChevronRight
             className={cn(
-              'h-4 w-4 transition-transform',
+              'h-4 w-4 text-muted-foreground transition-transform',
               isExpanded && 'rotate-90'
             )}
           />
-        </button>
-      ) : (
-        <div className="h-5 w-5 shrink-0" />
-      )}
+        ) : (
+          <div className="h-4 w-4" />
+        )}
+      </button>
 
-      {/* Node content */}
+      {/* Node content - clickable area */}
       <button
         type="button"
         onClick={() => onSelect(node.code)}
-        className="flex min-w-0 flex-1 items-center gap-2 text-left"
+        className="flex min-w-0 flex-1 items-center gap-4 px-4 py-3 text-left cursor-pointer"
       >
-        <Badge
-          variant={isSelected ? 'default' : 'secondary'}
-          className="shrink-0 font-mono text-xs"
-        >
-          {node.code}
-        </Badge>
-        <span
-          className={cn(
-            'min-w-0 flex-1 truncate text-sm',
-            isSelected ? 'font-medium text-foreground' : 'text-muted-foreground'
-          )}
-          title={node.name}
-        >
-          {node.name}
-        </span>
+        {/* Code */}
+        <div className="shrink-0">
+          <span className={cn(
+            "font-mono text-sm font-bold",
+            isSelected ? 'text-foreground' : 'text-muted-foreground'
+          )}>
+            <TextHighlight text={node.code} search={searchTerm} />
+          </span>
+        </div>
+
+        {/* Name */}
+        <div className="min-w-0 flex-1">
+          <p className={cn(
+            "text-sm leading-snug break-words",
+            isSelected ? 'font-medium text-foreground' : 'font-medium'
+          )}>
+            <TextHighlight text={node.name} search={searchTerm} />
+          </p>
+        </div>
+
+        {/* Navigation arrow */}
+        <div className="shrink-0">
+          <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1" />
+        </div>
       </button>
     </div>
   )
-}
+})

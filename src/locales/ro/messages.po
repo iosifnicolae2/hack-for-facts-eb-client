@@ -955,7 +955,7 @@ msgstr "Alegeți între cookie-uri doar esențiale sau toate cookie-urile, apoi 
 msgid "Choose operator"
 msgstr "Alegeți operatorul"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:147
+#: src/components/classification-explorer/ClassificationExplorer.tsx:191
 msgid "Classification Not Found"
 msgstr "Clasificarea nu a fost găsită"
 
@@ -963,7 +963,7 @@ msgstr "Clasificarea nu a fost găsită"
 msgid "classifications"
 msgstr "clasificări"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:176
+#: src/components/classification-explorer/ClassificationExplorer.tsx:220
 msgid "Classifications"
 msgstr "Clasificări"
 
@@ -1541,8 +1541,8 @@ msgstr "Gestionați-vă cu ușurință abonamentele"
 msgid "Ec"
 msgstr "Ec"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:195
-#: src/components/classification-explorer/ClassificationExplorer.tsx:196
+#: src/components/classification-explorer/ClassificationExplorer.tsx:239
+#: src/components/classification-explorer/ClassificationExplorer.tsx:240
 #: src/components/entities/views/Overview.tsx:266
 #: src/components/entities/views/TrendsView.tsx:202
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:114
@@ -1895,7 +1895,7 @@ msgstr "Tip cheltuială"
 msgid "Expenses"
 msgstr "Cheltuieli"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:179
+#: src/components/classification-explorer/ClassificationExplorer.tsx:223
 msgid "Explore budget classifications to understand how public spending is organized and categorized"
 msgstr "Explorați clasificările bugetare pentru a înțelege cum sunt organizate și clasificate cheltuielile publice"
 
@@ -2111,8 +2111,8 @@ msgstr "pentru filtrele selectate."
 msgid "Found {replacementCount} occurrence{0}"
 msgstr "S-au găsit {replacementCount} apariții"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:192
-#: src/components/classification-explorer/ClassificationExplorer.tsx:193
+#: src/components/classification-explorer/ClassificationExplorer.tsx:236
+#: src/components/classification-explorer/ClassificationExplorer.tsx:237
 #: src/components/entities/views/Overview.tsx:265
 #: src/components/entities/views/TrendsView.tsx:201
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:107
@@ -2221,7 +2221,7 @@ msgstr "Mergi la pagina principală"
 msgid "Go to Main Categories"
 msgstr "Mergi la categoria principală"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:157
+#: src/components/classification-explorer/ClassificationExplorer.tsx:201
 msgid "Go to Main List"
 msgstr "Mergi la lista principală"
 
@@ -2249,6 +2249,10 @@ msgstr "mai mare decât"
 #: src/components/alerts/components/ConditionsList.tsx:90
 msgid "Greater than"
 msgstr "Mai mare decât"
+
+#: src/components/classification-explorer/ClassificationExplorer.tsx:261
+msgid "Grid view"
+msgstr ""
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:95
 #: src/routes/budget-explorer.lazy.tsx:406
@@ -2562,6 +2566,7 @@ msgstr "Se încarcă rapoartele..."
 msgid "Loading table data..."
 msgstr "Se încarcă datele tabelului..."
 
+#: src/components/classification-explorer/ClassificationDescription.tsx:25
 #: src/routes/alerts/$alertId/index.lazy.tsx:133
 #: src/routes/alerts/new.lazy.tsx:122
 #: src/routes/settings/notifications.tsx:103
@@ -2693,8 +2698,8 @@ msgstr "Metadate"
 msgid "Minimum"
 msgstr "Minim"
 
-#: src/components/classification-explorer/ClassificationDescription.tsx:28
-#: src/components/classification-explorer/ClassificationDescription.tsx:37
+#: src/components/classification-explorer/ClassificationDescription.tsx:32
+#: src/components/classification-explorer/ClassificationDescription.tsx:41
 msgid "Missing description"
 msgstr "Descriere lipsă"
 
@@ -2863,6 +2868,7 @@ msgid "No charts yet"
 msgstr "Niciun grafic încă"
 
 #: src/components/classification-explorer/ClassificationGrid.tsx:34
+#: src/components/classification-explorer/ClassificationTree.tsx:87
 msgid "No classifications found"
 msgstr "Nu au fost găsite clasificări"
 
@@ -3876,7 +3882,7 @@ msgstr "Termeni de utilizare"
 msgid "Test error"
 msgstr "Eroare de test"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:150
+#: src/components/classification-explorer/ClassificationExplorer.tsx:194
 msgid "The classification code \"{selectedCode}\" could not be found."
 msgstr "Codul de clasificare „{selectedCode}” nu a putut fi găsit."
 
@@ -4094,6 +4100,10 @@ msgstr "Transparenta.eu – Suport"
 #: src/components/budget-explorer/RevenueBreakdown.tsx:52
 msgid "Treated as inter-budget flows"
 msgstr "Tratate ca fluxuri inter-bugetare"
+
+#: src/components/classification-explorer/ClassificationExplorer.tsx:264
+msgid "Tree view"
+msgstr ""
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:53
 msgid "Treemap Chart (Aggregated)"
