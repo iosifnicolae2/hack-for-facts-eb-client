@@ -23,40 +23,6 @@ async function tryFetchPlain(url: string): Promise<string | null> {
   }
 }
 
-async function tryFetchGzip(url: string): Promise<string | null> {
-  try {
-    const res = await fetch(url + '.gz')
-    if (!res.ok) return null
-
-    // If server already set Content-Encoding, browser will give decompressed text
-    const contentEncoding = res.headers.get('content-encoding') || ''
-    if (contentEncoding.includes('gzip')) {
-      const text = await res.text()
-      return isInvalidFileResponse(text) ? null : text
-    }
-
-    // Otherwise, decompress manually
-    const body = res.body
-    // Prefer native DecompressionStream when available
-    if (body && 'DecompressionStream' in globalThis) {
-      const stream = body.pipeThrough(new DecompressionStream('gzip'))
-      const buffer = await new Response(stream).arrayBuffer()
-      const text = new TextDecoder().decode(buffer)
-      return isInvalidFileResponse(text) ? null : text
-    }
-
-    // Fallback to fflate
-    const ab = await res.arrayBuffer()
-    const { gunzipSync, strFromU8 } = await import('fflate')
-    const u8 = new Uint8Array(ab)
-    const out = gunzipSync(u8)
-    const text = strFromU8(out)
-    return isInvalidFileResponse(text) ? null : text
-  } catch {
-    return null
-  }
-}
-
 export async function loadClassificationDescription(
   locale: 'en' | 'ro',
   type: ClassificationType,
@@ -67,10 +33,6 @@ export async function loadClassificationDescription(
   // Try plain markdown (best with server Brotli/Gzip)
   const plain = await tryFetchPlain(base)
   if (plain) return plain
-
-  // Try precompressed gzip sidecar
-  const gz = await tryFetchGzip(base)
-  if (gz) return gz
 
   return null
 }
