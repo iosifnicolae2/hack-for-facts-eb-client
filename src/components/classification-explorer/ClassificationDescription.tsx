@@ -20,7 +20,11 @@ export function ClassificationDescription({ type, code }: ClassificationDescript
     gcTime: 1000 * 60 * 60 * 24, // 24 hours
   })
 
-  if (isLoading) return null
+  if (isLoading) return (
+    <p className="text-sm text-muted-foreground italic">
+      <Trans>Loading...</Trans>
+    </p>
+  )
 
   if (isError) {
     return (
