@@ -19,9 +19,14 @@ type ClassificationActionsProps = {
 }
 
 export function ClassificationActions({ type, code }: ClassificationActionsProps) {
-  const handleCopy = () => {
-    navigator.clipboard.writeText(code)
-    toast.success('Code copied to clipboard')
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(code)
+      toast.success(t`Code copied to clipboard`)
+    } catch (err) {
+      console.error('Copy failed', err)
+      toast.error(t`Failed to copy code`)
+    }
   }
 
   // Use parent code as prefix to show current item in treemap
