@@ -578,13 +578,13 @@ msgstr "All processors are bound by data protection agreements and GDPR-complian
 msgid "All recorded revenue inflows"
 msgstr "All recorded revenue inflows"
 
-#: src/components/entities/EntityReports.tsx:166
-#: src/components/entities/EntityReports.tsx:169
+#: src/components/entities/EntityReports.tsx:167
+#: src/components/entities/EntityReports.tsx:170
 msgid "All types"
 msgstr "All types"
 
-#: src/components/entities/EntityReports.tsx:183
-#: src/components/entities/EntityReports.tsx:186
+#: src/components/entities/EntityReports.tsx:184
+#: src/components/entities/EntityReports.tsx:187
 msgid "All years"
 msgstr "All years"
 
@@ -678,7 +678,7 @@ msgstr "Annotations"
 msgid "Anonymous usage patterns, page views, interactions."
 msgstr "Anonymous usage patterns, page views, interactions."
 
-#: src/components/entities/EntityReports.tsx:236
+#: src/components/entities/EntityReports.tsx:237
 msgid "Apply Filters"
 msgstr "Apply Filters"
 
@@ -767,7 +767,7 @@ msgstr "Back to alert"
 msgid "Back to Configuration"
 msgstr "Back to Configuration"
 
-#: src/components/entities/EntityReports.tsx:79
+#: src/components/entities/EntityReports.tsx:80
 msgid "Back to Overview"
 msgstr "Back to Overview"
 
@@ -801,7 +801,7 @@ msgstr "Basic security logs are kept for a short period to protect accounts."
 msgid "Both"
 msgstr "Both"
 
-#: src/components/entities/EntityReports.tsx:72
+#: src/components/entities/EntityReports.tsx:73
 msgid "Browse and download all financial reports submitted by this entity"
 msgstr "Browse and download all financial reports submitted by this entity"
 
@@ -967,14 +967,14 @@ msgstr "classifications"
 msgid "Classifications"
 msgstr "Classifications"
 
-#: src/components/entities/EntityReports.tsx:224
+#: src/components/entities/EntityReports.tsx:225
 #: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:73
 msgid "Clear"
 msgstr "Clear"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:471
 #: src/components/charts/components/series-config/SeriesFilter.tsx:669
-#: src/components/entities/EntityReports.tsx:130
+#: src/components/entities/EntityReports.tsx:131
 #: src/components/filters/EntityAnalyticsFilter.tsx:601
 #: src/components/filters/MapFilter.tsx:430
 #: src/components/ui/multi-select.tsx:118
@@ -1011,6 +1011,10 @@ msgstr "Close entity search dialog"
 #: src/components/ui/shortcuts.tsx:32
 msgid "Close Search"
 msgstr "Close Search"
+
+#: src/components/classification-explorer/ClassificationActions.tsx:25
+msgid "Code copied to clipboard"
+msgstr "Code copied to clipboard"
 
 #: src/components/charts/components/views/AnnotationConfigView.tsx:109
 msgid "Color"
@@ -1062,7 +1066,7 @@ msgstr "Configure"
 msgid "Configure Chart"
 msgstr "Configure Chart"
 
-#: src/routes/map.lazy.tsx:322
+#: src/routes/map.lazy.tsx:321
 msgid "Configure filters for the map view including period, account category, and normalization settings"
 msgstr "Configure filters for the map view including period, account category, and normalization settings"
 
@@ -1451,7 +1455,7 @@ msgid "Detail level"
 msgstr "Detail level"
 
 #: src/components/entities/EntityReportControls.tsx:41
-#: src/components/entities/EntityReports.tsx:172
+#: src/components/entities/EntityReports.tsx:173
 msgid "Detailed"
 msgstr "Detailed"
 
@@ -1923,11 +1927,11 @@ msgstr "Explore Full Map"
 msgid "Explore national budget."
 msgstr "Explore national budget."
 
-#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:206
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:207
 msgid "Export as Image"
 msgstr "Export as Image"
 
-#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:199
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:200
 msgid "Export as image or share with a link"
 msgstr "Export as image or share with a link"
 
@@ -1946,6 +1950,10 @@ msgstr "Exports and attribution"
 #: src/routes/terms.lazy.tsx:25
 msgid "Exports must include attribution to data source and Transparenta.eu."
 msgstr "Exports must include attribution to data source and Transparenta.eu."
+
+#: src/components/classification-explorer/ClassificationActions.tsx:28
+msgid "Failed to copy code"
+msgstr "Failed to copy code"
 
 #: src/components/footer/ChatFab.tsx:54
 msgid "Failed to copy email address."
@@ -2013,7 +2021,7 @@ msgstr "Feedback is currently unavailable."
 msgid "Filter field"
 msgstr "Filter field"
 
-#: src/components/entities/EntityReports.tsx:151
+#: src/components/entities/EntityReports.tsx:152
 msgid "Filter Reports"
 msgstr "Filter Reports"
 
@@ -2023,9 +2031,9 @@ msgid "Filtered"
 msgstr "Filtered"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:466
-#: src/components/entities/EntityReports.tsx:140
+#: src/components/entities/EntityReports.tsx:141
 #: src/components/filters/EntityAnalyticsFilter.tsx:374
-#: src/routes/map.lazy.tsx:320
+#: src/routes/map.lazy.tsx:319
 msgid "Filters"
 msgstr "Filters"
 
@@ -2055,7 +2063,7 @@ msgstr "Financial operations"
 msgid "Financial Operations"
 msgstr "Financial Operations"
 
-#: src/components/entities/EntityReports.tsx:63
+#: src/components/entities/EntityReports.tsx:64
 #: src/components/entities/EntityReportsSummary.tsx:77
 #: src/components/entities/EntityReportsSummary.tsx:96
 msgid "Financial Reports"
@@ -2824,8 +2832,8 @@ msgstr "New value"
 msgid "Newest"
 msgstr "Newest"
 
-#: src/components/entities/EntityReports.tsx:120
-#: src/components/entities/EntityReports.tsx:203
+#: src/components/entities/EntityReports.tsx:121
+#: src/components/entities/EntityReports.tsx:204
 msgid "Newest first"
 msgstr "Newest first"
 
@@ -2981,7 +2989,7 @@ msgstr "No options found."
 msgid "No related charts yet"
 msgstr "No related charts yet"
 
-#: src/components/entities/EntityReports.tsx:293
+#: src/components/entities/EntityReports.tsx:294
 msgid "No reports found"
 msgstr "No reports found"
 
@@ -3046,8 +3054,8 @@ msgstr "October"
 msgid "Oldest"
 msgstr "Oldest"
 
-#: src/components/entities/EntityReports.tsx:120
-#: src/components/entities/EntityReports.tsx:204
+#: src/components/entities/EntityReports.tsx:121
+#: src/components/entities/EntityReports.tsx:205
 msgid "Oldest first"
 msgstr "Oldest first"
 
@@ -3254,7 +3262,7 @@ msgstr "Preparing your share link..."
 msgid "Preview"
 msgstr "Preview"
 
-#: src/components/entities/EntityReports.tsx:170
+#: src/components/entities/EntityReports.tsx:171
 msgid "Principal Aggregated"
 msgstr "Principal Aggregated"
 
@@ -3321,7 +3329,7 @@ msgstr "Ready to create"
 msgid "Redo successful"
 msgstr "Redo successful"
 
-#: src/components/entities/EntityReports.tsx:153
+#: src/components/entities/EntityReports.tsx:154
 msgid "Refine your search using the options below"
 msgstr "Refine your search using the options below"
 
@@ -3360,7 +3368,7 @@ msgstr "Report type"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:591
 #: src/components/entities/EntityReportCard.tsx:124
-#: src/components/entities/EntityReports.tsx:162
+#: src/components/entities/EntityReports.tsx:163
 #: src/components/filters/EntityAnalyticsFilter.tsx:532
 #: src/components/filters/MapFilter.tsx:359
 msgid "Report Type"
@@ -3524,7 +3532,7 @@ msgstr "Search UATs (ex: Municipiul Arad)"
 msgid "Search..."
 msgstr "Search..."
 
-#: src/components/entities/EntityReports.tsx:171
+#: src/components/entities/EntityReports.tsx:172
 msgid "Secondary Aggregated"
 msgstr "Secondary Aggregated"
 
@@ -3634,11 +3642,11 @@ msgstr "Set the basic properties for your chart"
 msgid "Share"
 msgstr "Share"
 
-#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:196
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:197
 msgid "Share Chart"
 msgstr "Share Chart"
 
-#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:235
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:236
 msgid "Share Link"
 msgstr "Share Link"
 
@@ -3767,7 +3775,7 @@ msgstr "Something went wrong while trying to render this page."
 msgid "Sort by"
 msgstr "Sort by"
 
-#: src/components/entities/EntityReports.tsx:196
+#: src/components/entities/EntityReports.tsx:197
 msgid "Sort Order"
 msgstr "Sort Order"
 
@@ -4300,7 +4308,7 @@ msgstr "View Chart"
 msgid "View Details"
 msgstr "View Details"
 
-#: src/components/classification-explorer/ClassificationActions.tsx:60
+#: src/components/classification-explorer/ClassificationActions.tsx:65
 msgid "View in Entity Analytics"
 msgstr "View in Entity Analytics"
 
@@ -4364,7 +4372,7 @@ msgstr "X-Axis Prefix To Remove"
 #: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:91
 #: src/components/entities/EntityFinancialTrends.tsx:92
 #: src/components/entities/EntityReportControls.tsx:201
-#: src/components/entities/EntityReports.tsx:179
+#: src/components/entities/EntityReports.tsx:180
 msgid "Year"
 msgstr "Year"
 

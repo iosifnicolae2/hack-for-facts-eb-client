@@ -212,11 +212,11 @@ function ChartsListPage() {
               <SelectValue placeholder={t`Sort by`} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="newest"><Trans>Newest</Trans></SelectItem>
-              <SelectItem value="oldest"><Trans>Oldest</Trans></SelectItem>
-              <SelectItem value="a-z"><Trans>Title A–Z</Trans></SelectItem>
-              <SelectItem value="z-a"><Trans>Title Z–A</Trans></SelectItem>
-              <SelectItem value="favorites-first"><Trans>Favorites first</Trans></SelectItem>
+              <SelectItem value="newest">{t`Newest`}</SelectItem>
+              <SelectItem value="oldest">{t`Oldest`}</SelectItem>
+              <SelectItem value="a-z">{t`Title A–Z`}</SelectItem>
+              <SelectItem value="z-a">{t`Title Z–A`}</SelectItem>
+              <SelectItem value="favorites-first">{t`Favorites first`}</SelectItem>
             </SelectContent>
           </Select>
         </div>

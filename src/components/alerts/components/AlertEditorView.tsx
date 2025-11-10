@@ -183,8 +183,8 @@ export function AlertEditorView({ alert, serverAlert: _serverAlert, onChange }: 
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="analytics"><Trans>Data series (analytics)</Trans></SelectItem>
-                    <SelectItem value="static"><Trans>Static dataset</Trans></SelectItem>
+                    <SelectItem value="analytics">{t`Data series (analytics)`}</SelectItem>
+                    <SelectItem value="static">{t`Static dataset`}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

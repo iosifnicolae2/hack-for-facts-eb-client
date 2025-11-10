@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Trans } from '@lingui/react/macro';
+import { t } from '@lingui/core/macro';
 import { Link } from '@tanstack/react-router';
 import { Filter, ArrowLeft, X } from 'lucide-react';
 import { useEntityReports } from '@/lib/hooks/useEntityDetails';
@@ -166,10 +167,10 @@ export default function EntityReports({ cui, initialType }: EntityReportsProps) 
                         <SelectValue placeholder={<Trans>All types</Trans>} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="ALL"><Trans>All types</Trans></SelectItem>
-                        <SelectItem value="PRINCIPAL_AGGREGATED"><Trans>Principal Aggregated</Trans></SelectItem>
-                        <SelectItem value="SECONDARY_AGGREGATED"><Trans>Secondary Aggregated</Trans></SelectItem>
-                        <SelectItem value="DETAILED"><Trans>Detailed</Trans></SelectItem>
+                        <SelectItem value="ALL">{t`All types`}</SelectItem>
+                        <SelectItem value="PRINCIPAL_AGGREGATED">{t`Principal Aggregated`}</SelectItem>
+                        <SelectItem value="SECONDARY_AGGREGATED">{t`Secondary Aggregated`}</SelectItem>
+                        <SelectItem value="DETAILED">{t`Detailed`}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -183,7 +184,7 @@ export default function EntityReports({ cui, initialType }: EntityReportsProps) 
                         <SelectValue placeholder={<Trans>All years</Trans>} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="ALL"><Trans>All years</Trans></SelectItem>
+                        <SelectItem value="ALL">{t`All years`}</SelectItem>
                         {Array.from({ length: 20 }, (_, i) => new Date().getFullYear() - i).map(y => (
                           <SelectItem key={y} value={String(y)}>{y}</SelectItem>
                         ))}
@@ -200,8 +201,8 @@ export default function EntityReports({ cui, initialType }: EntityReportsProps) 
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="DESC"><Trans>Newest first</Trans></SelectItem>
-                        <SelectItem value="ASC"><Trans>Oldest first</Trans></SelectItem>
+                        <SelectItem value="DESC">{t`Newest first`}</SelectItem>
+                        <SelectItem value="ASC">{t`Oldest first`}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

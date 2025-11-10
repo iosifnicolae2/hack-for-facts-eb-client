@@ -187,11 +187,11 @@ export function SeriesConfigView() {
                   <SelectValue placeholder={t`Select Series Type`} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="line-items-aggregated-yearly"><Trans>Line Items Aggregated Yearly</Trans></SelectItem>
-                  <SelectItem value="aggregated-series-calculation"><Trans>Aggregated Series Calculation</Trans></SelectItem>
-                  <SelectItem value="custom-series"><Trans>Custom Series</Trans></SelectItem>
-                  <SelectItem value="custom-series-value"><Trans>Custom Series Value</Trans></SelectItem>
-                  <SelectItem value="static-series"><Trans>Static Series</Trans></SelectItem>
+                  <SelectItem value="line-items-aggregated-yearly">{t`Line Items Aggregated Yearly`}</SelectItem>
+                  <SelectItem value="aggregated-series-calculation">{t`Aggregated Series Calculation`}</SelectItem>
+                  <SelectItem value="custom-series">{t`Custom Series`}</SelectItem>
+                  <SelectItem value="custom-series-value">{t`Custom Series Value`}</SelectItem>
+                  <SelectItem value="static-series">{t`Static Series`}</SelectItem>
                 </SelectContent>
               </Select>
             </div>

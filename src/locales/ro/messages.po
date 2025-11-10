@@ -578,13 +578,13 @@ msgstr "Toți operatorii împuterniciți sunt obligați prin acorduri de protec�
 msgid "All recorded revenue inflows"
 msgstr "Toate încasările de venituri înregistrate"
 
-#: src/components/entities/EntityReports.tsx:166
-#: src/components/entities/EntityReports.tsx:169
+#: src/components/entities/EntityReports.tsx:167
+#: src/components/entities/EntityReports.tsx:170
 msgid "All types"
 msgstr "Toate tipurile"
 
-#: src/components/entities/EntityReports.tsx:183
-#: src/components/entities/EntityReports.tsx:186
+#: src/components/entities/EntityReports.tsx:184
+#: src/components/entities/EntityReports.tsx:187
 msgid "All years"
 msgstr "Toți anii"
 
@@ -678,7 +678,7 @@ msgstr "Adnotări"
 msgid "Anonymous usage patterns, page views, interactions."
 msgstr "Modele de utilizare anonime, vizualizări de pagină, interacțiuni."
 
-#: src/components/entities/EntityReports.tsx:236
+#: src/components/entities/EntityReports.tsx:237
 msgid "Apply Filters"
 msgstr "Aplică filtrele"
 
@@ -767,7 +767,7 @@ msgstr "Înapoi la alertă"
 msgid "Back to Configuration"
 msgstr "Înapoi la configurare"
 
-#: src/components/entities/EntityReports.tsx:79
+#: src/components/entities/EntityReports.tsx:80
 msgid "Back to Overview"
 msgstr "Înapoi la sinteză"
 
@@ -801,7 +801,7 @@ msgstr "Jurnalele de securitate de bază sunt păstrate pentru o perioadă scurt
 msgid "Both"
 msgstr "Ambele"
 
-#: src/components/entities/EntityReports.tsx:72
+#: src/components/entities/EntityReports.tsx:73
 msgid "Browse and download all financial reports submitted by this entity"
 msgstr "Răsfoiți și descărcați toate rapoartele financiare depuse de această entitate"
 
@@ -967,14 +967,14 @@ msgstr "clasificări"
 msgid "Classifications"
 msgstr "Clasificări"
 
-#: src/components/entities/EntityReports.tsx:224
+#: src/components/entities/EntityReports.tsx:225
 #: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:73
 msgid "Clear"
 msgstr "Șterge"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:471
 #: src/components/charts/components/series-config/SeriesFilter.tsx:669
-#: src/components/entities/EntityReports.tsx:130
+#: src/components/entities/EntityReports.tsx:131
 #: src/components/filters/EntityAnalyticsFilter.tsx:601
 #: src/components/filters/MapFilter.tsx:430
 #: src/components/ui/multi-select.tsx:118
@@ -1011,6 +1011,10 @@ msgstr "Închide dialogul de căutare entitate"
 #: src/components/ui/shortcuts.tsx:32
 msgid "Close Search"
 msgstr "Închide Căutarea"
+
+#: src/components/classification-explorer/ClassificationActions.tsx:25
+msgid "Code copied to clipboard"
+msgstr "Codul a fost copiat"
 
 #: src/components/charts/components/views/AnnotationConfigView.tsx:109
 msgid "Color"
@@ -1062,7 +1066,7 @@ msgstr "Configurează"
 msgid "Configure Chart"
 msgstr "Configurează graficul"
 
-#: src/routes/map.lazy.tsx:322
+#: src/routes/map.lazy.tsx:321
 msgid "Configure filters for the map view including period, account category, and normalization settings"
 msgstr "Configurați filtrele pentru hartă, inclusiv perioada, categoria contului și setările de normalizare"
 
@@ -1451,7 +1455,7 @@ msgid "Detail level"
 msgstr "Nivel de detaliu"
 
 #: src/components/entities/EntityReportControls.tsx:41
-#: src/components/entities/EntityReports.tsx:172
+#: src/components/entities/EntityReports.tsx:173
 msgid "Detailed"
 msgstr "Detaliat"
 
@@ -1923,11 +1927,11 @@ msgstr "Explorează harta completă"
 msgid "Explore national budget."
 msgstr "Explorați bugetul național."
 
-#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:206
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:207
 msgid "Export as Image"
 msgstr "Exportă ca Imagine"
 
-#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:199
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:200
 msgid "Export as image or share with a link"
 msgstr "Exportă ca imagine sau partajează printr-un link"
 
@@ -1946,6 +1950,10 @@ msgstr "Exporturi și atribuire"
 #: src/routes/terms.lazy.tsx:25
 msgid "Exports must include attribution to data source and Transparenta.eu."
 msgstr "Exporturile trebuie să includă atribuirea sursei datelor și a Transparenta.eu."
+
+#: src/components/classification-explorer/ClassificationActions.tsx:28
+msgid "Failed to copy code"
+msgstr "Eroare la copierea codului"
 
 #: src/components/footer/ChatFab.tsx:54
 msgid "Failed to copy email address."
@@ -2013,7 +2021,7 @@ msgstr "Feedback-ul este indisponibil momentan."
 msgid "Filter field"
 msgstr "Câmp de filtrare"
 
-#: src/components/entities/EntityReports.tsx:151
+#: src/components/entities/EntityReports.tsx:152
 msgid "Filter Reports"
 msgstr "Filtrare rapoarte"
 
@@ -2023,9 +2031,9 @@ msgid "Filtered"
 msgstr "Filtrat"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:466
-#: src/components/entities/EntityReports.tsx:140
+#: src/components/entities/EntityReports.tsx:141
 #: src/components/filters/EntityAnalyticsFilter.tsx:374
-#: src/routes/map.lazy.tsx:320
+#: src/routes/map.lazy.tsx:319
 msgid "Filters"
 msgstr "Filtre"
 
@@ -2055,7 +2063,7 @@ msgstr "Operațiuni financiare"
 msgid "Financial Operations"
 msgstr "Operațiuni financiare"
 
-#: src/components/entities/EntityReports.tsx:63
+#: src/components/entities/EntityReports.tsx:64
 #: src/components/entities/EntityReportsSummary.tsx:77
 #: src/components/entities/EntityReportsSummary.tsx:96
 msgid "Financial Reports"
@@ -2819,8 +2827,8 @@ msgstr "Valoare nouă"
 msgid "Newest"
 msgstr "Cele mai noi"
 
-#: src/components/entities/EntityReports.tsx:120
-#: src/components/entities/EntityReports.tsx:203
+#: src/components/entities/EntityReports.tsx:121
+#: src/components/entities/EntityReports.tsx:204
 msgid "Newest first"
 msgstr "Cele mai noi primele"
 
@@ -2976,7 +2984,7 @@ msgstr "Nu s-au găsit opțiuni."
 msgid "No related charts yet"
 msgstr "Încă nu există grafice asociate"
 
-#: src/components/entities/EntityReports.tsx:293
+#: src/components/entities/EntityReports.tsx:294
 msgid "No reports found"
 msgstr "Nu s-au găsit rapoarte"
 
@@ -3041,8 +3049,8 @@ msgstr "Octombrie"
 msgid "Oldest"
 msgstr "Cele mai vechi"
 
-#: src/components/entities/EntityReports.tsx:120
-#: src/components/entities/EntityReports.tsx:204
+#: src/components/entities/EntityReports.tsx:121
+#: src/components/entities/EntityReports.tsx:205
 msgid "Oldest first"
 msgstr "Cele mai vechi primele"
 
@@ -3249,7 +3257,7 @@ msgstr "Se pregătește linkul de partajare..."
 msgid "Preview"
 msgstr "Previzualizare"
 
-#: src/components/entities/EntityReports.tsx:170
+#: src/components/entities/EntityReports.tsx:171
 msgid "Principal Aggregated"
 msgstr "Agregat principal"
 
@@ -3316,7 +3324,7 @@ msgstr "Gata de creare"
 msgid "Redo successful"
 msgstr "Refacere reușită"
 
-#: src/components/entities/EntityReports.tsx:153
+#: src/components/entities/EntityReports.tsx:154
 msgid "Refine your search using the options below"
 msgstr "Rafinați căutarea folosind opțiunile de mai jos"
 
@@ -3355,7 +3363,7 @@ msgstr "Tip Raportare"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:591
 #: src/components/entities/EntityReportCard.tsx:124
-#: src/components/entities/EntityReports.tsx:162
+#: src/components/entities/EntityReports.tsx:163
 #: src/components/filters/EntityAnalyticsFilter.tsx:532
 #: src/components/filters/MapFilter.tsx:359
 msgid "Report Type"
@@ -3519,7 +3527,7 @@ msgstr "Caută UAT-uri (ex: Municipiul Arad)"
 msgid "Search..."
 msgstr "Caută..."
 
-#: src/components/entities/EntityReports.tsx:171
+#: src/components/entities/EntityReports.tsx:172
 msgid "Secondary Aggregated"
 msgstr "Agregat secundar"
 
@@ -3629,11 +3637,11 @@ msgstr "Setați proprietățile de bază pentru graficul dumneavoastră"
 msgid "Share"
 msgstr "Partajează"
 
-#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:196
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:197
 msgid "Share Chart"
 msgstr "Partajează graficul"
 
-#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:235
+#: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:236
 msgid "Share Link"
 msgstr "Partajează link-ul"
 
@@ -3762,7 +3770,7 @@ msgstr "Ceva nu a funcționat corect la redarea acestei pagini."
 msgid "Sort by"
 msgstr "Sortează după"
 
-#: src/components/entities/EntityReports.tsx:196
+#: src/components/entities/EntityReports.tsx:197
 msgid "Sort Order"
 msgstr "Ordine de sortare"
 
@@ -4295,7 +4303,7 @@ msgstr "Vezi graficul"
 msgid "View Details"
 msgstr "Vezi detalii"
 
-#: src/components/classification-explorer/ClassificationActions.tsx:60
+#: src/components/classification-explorer/ClassificationActions.tsx:65
 msgid "View in Entity Analytics"
 msgstr "Vizualizați în Analiza Entităților"
 
@@ -4359,7 +4367,7 @@ msgstr "Prefix de eliminat pe axa X"
 #: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:91
 #: src/components/entities/EntityFinancialTrends.tsx:92
 #: src/components/entities/EntityReportControls.tsx:201
-#: src/components/entities/EntityReports.tsx:179
+#: src/components/entities/EntityReports.tsx:180
 msgid "Year"
 msgstr "An"
 

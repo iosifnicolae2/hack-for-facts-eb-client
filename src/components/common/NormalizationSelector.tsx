@@ -1,5 +1,5 @@
 import { Normalization } from '@/schemas/charts';
-import { Trans } from '@lingui/react/macro';
+import { t } from '@lingui/core/macro';
 import { useNormalizationSelection } from '@/hooks/useNormalizationSelection';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
@@ -18,8 +18,8 @@ export function NormalizationSelector({ value, onChange }: Props) {
                     <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                    <SelectItem value="total"><Trans>Total</Trans></SelectItem>
-                    <SelectItem value="per_capita"><Trans>Per Capita</Trans></SelectItem>
+                    <SelectItem value="total">{t`Total`}</SelectItem>
+                    <SelectItem value="per_capita">{t`Per Capita`}</SelectItem>
                 </SelectContent>
             </Select>
         </div>
