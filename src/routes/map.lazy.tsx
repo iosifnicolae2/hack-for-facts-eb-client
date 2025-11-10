@@ -175,128 +175,127 @@ function MapPage() {
             <div className="p-4 text-center"><Trans>Map data not available.</Trans></div>
           ) : (
             <>
-              {mapState.activeView === "map" && (
-                <div className="sm:h-screen md:h-[calc(100vh-10rem)] w-full m-0 relative">
-                  {heatmapData ? (
-                    <>
-                      <InteractiveMap
-                        onFeatureClick={handleFeatureClick}
-                        getFeatureStyle={aDynamicGetFeatureStyle}
-                        heatmapData={heatmapData}
-                        geoJsonData={geoJsonData}
-                        zoom={mapZoom}
-                        center={mapState.mapCenter}
-                        mapViewType={mapState.mapViewType}
-                        filters={mapState.filters}
-                        onViewChange={handleMapViewChange}
-                      />
-                      <AnimatePresence>
-                        {isLoading && (
+              {/* Map view - kept mounted but hidden when inactive to preserve Leaflet state */}
+              <div className={mapState.activeView === "map" ? "sm:h-screen md:h-[calc(100vh-10rem)] w-full m-0 relative" : "hidden"}>
+                {heatmapData ? (
+                  <>
+                    <InteractiveMap
+                      onFeatureClick={handleFeatureClick}
+                      getFeatureStyle={aDynamicGetFeatureStyle}
+                      heatmapData={heatmapData}
+                      geoJsonData={geoJsonData}
+                      zoom={mapZoom}
+                      center={mapState.mapCenter}
+                      mapViewType={mapState.mapViewType}
+                      filters={mapState.filters}
+                      onViewChange={handleMapViewChange}
+                    />
+                    <AnimatePresence>
+                      {isLoading && (
+                        <motion.div
+                          className="absolute inset-0 bg-background/20 backdrop-blur-sm flex items-center justify-center z-30 h-screen"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.2, ease: "easeInOut" }}
+                        >
                           <motion.div
-                            className="absolute inset-0 bg-background/20 backdrop-blur-sm flex items-center justify-center z-30 h-screen"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.2, ease: "easeInOut" }}
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            transition={{ duration: 0.2, ease: "easeOut" }}
                           >
-                            <motion.div
-                              initial={{ scale: 0.9, opacity: 0 }}
-                              animate={{ scale: 1, opacity: 1 }}
-                              exit={{ scale: 0.9, opacity: 0 }}
-                              transition={{ duration: 0.2, ease: "easeOut" }}
-                            >
-                              <LoadingSpinner size="md" text={loadingText} />
-                            </motion.div>
+                            <LoadingSpinner size="md" text={loadingText} />
                           </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </>
-                  ) : (
-                    <div className="flex items-center justify-center h-full w-full">
-                      <Trans>No data available for the map.</Trans>
-                    </div>
-                  )}
-                  <MapLegend
-                    min={minAggregatedValue}
-                    max={maxAggregatedValue}
-                    className="absolute bottom-[-6rem] right-[4rem] z-10 hidden md:block"
-                    title={t`Aggregated Value Legend`}
-                    normalization={mapState.filters.normalization}
-                  />
-                  <Dialog open={isLegendModalOpen} onOpenChange={setIsLegendModalOpen}>
-                    <DialogTrigger asChild>
-                      <Button
-                        variant="secondary"
-                        size="icon"
-                        className="absolute top-4 right-4 md:hidden rounded-full shadow-lg w-14 h-14 z-50"
-                      >
-                        <HelpCircleIcon className="w-6 h-6" />
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent hideCloseButton={true} className="p-0 m-0 w-full max-w-full h-full max-h-full sm:h-[calc(100%-2rem)] sm:max-h-[calc(100%-2rem)] sm:w-[calc(100%-2rem)] sm:max-w-md sm:rounded-lg flex flex-col">
-                      <DialogHeader className="p-4 border-b flex flex-row justify-between items-center shrink-0">
-                        <DialogTitle className="text-lg font-semibold"><Trans>Legend</Trans></DialogTitle>
-                        <DialogDescription className="sr-only">
-                          <Trans>View the color scale and values for the heatmap visualization</Trans>
-                        </DialogDescription>
-                        <DialogClose asChild>
-                          <Button variant="ghost" size="icon" className="rounded-full">
-                            <X className="h-5 w-5" />
-                          </Button>
-                        </DialogClose>
-                      </DialogHeader>
-                      <div className="p-4 overflow-y-auto">
-                        <MapLegend
-                          min={minAggregatedValue}
-                          max={maxAggregatedValue}
-                          title={t`Aggregated Value Legend`}
-                          normalization={mapState.filters.normalization}
-                          isInModal={true}
-                        />
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-                </div>
-              )}
-              {mapState.activeView === "table" && (
-                <div className="h-full m-0">
-                  <div className="p-4 h-full flex flex-col overflow-auto">
-                    <h2 className="text-xl font-semibold mb-4"><Trans>Data Table View</Trans></h2>
-                    <div className="flex-grow overflow-x-auto">
-                      {heatmapData ? (
-                        <HeatmapDataTable
-                          data={heatmapData}
-                          isLoading={isLoadingHeatmap}
-                          sorting={sorting}
-                          setSorting={setSorting}
-                          pagination={pagination}
-                          setPagination={setPagination}
-                          mapViewType={mapState.mapViewType}
-                        />
-                      ) : isLoadingHeatmap ? (
-                        <div className="flex items-center justify-center h-full">
-                          <LoadingSpinner size="md" text={t`Loading table data...`} />
-                        </div>
-                      ) : (
-                        <div className="flex items-center justify-center h-full">
-                          <p className="text-muted-foreground"><Trans>No data available for the table.</Trans></p>
-                        </div>
+                        </motion.div>
                       )}
-                    </div>
+                    </AnimatePresence>
+                  </>
+                ) : (
+                  <div className="flex items-center justify-center h-full w-full">
+                    <Trans>No data available for the map.</Trans>
                   </div>
-                </div>
-              )}
-              {mapState.activeView === "chart" && (
-                <div className="h-full w-full m-0">
-                  <div className="h-full w-full p-4 overflow-y-auto">
-                    {heatmapData && geoJsonData ? (
-                      <UatDataCharts data={heatmapData} mapViewType={mapState.mapViewType} />
+                )}
+                <MapLegend
+                  min={minAggregatedValue}
+                  max={maxAggregatedValue}
+                  className="absolute bottom-[-6rem] right-[4rem] z-10 hidden md:block"
+                  title={t`Aggregated Value Legend`}
+                  normalization={mapState.filters.normalization}
+                />
+                <Dialog open={isLegendModalOpen} onOpenChange={setIsLegendModalOpen}>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="secondary"
+                      size="icon"
+                      className="absolute top-4 right-4 md:hidden rounded-full shadow-lg w-14 h-14 z-50"
+                    >
+                      <HelpCircleIcon className="w-6 h-6" />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent hideCloseButton={true} className="p-0 m-0 w-full max-w-full h-full max-h-full sm:h-[calc(100%-2rem)] sm:max-h-[calc(100%-2rem)] sm:w-[calc(100%-2rem)] sm:max-w-md sm:rounded-lg flex flex-col">
+                    <DialogHeader className="p-4 border-b flex flex-row justify-between items-center shrink-0">
+                      <DialogTitle className="text-lg font-semibold"><Trans>Legend</Trans></DialogTitle>
+                      <DialogDescription className="sr-only">
+                        <Trans>View the color scale and values for the heatmap visualization</Trans>
+                      </DialogDescription>
+                      <DialogClose asChild>
+                        <Button variant="ghost" size="icon" className="rounded-full">
+                          <X className="h-5 w-5" />
+                        </Button>
+                      </DialogClose>
+                    </DialogHeader>
+                    <div className="p-4 overflow-y-auto">
+                      <MapLegend
+                        min={minAggregatedValue}
+                        max={maxAggregatedValue}
+                        title={t`Aggregated Value Legend`}
+                        normalization={mapState.filters.normalization}
+                        isInModal={true}
+                      />
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+
+              {/* Table view */}
+              <div className={mapState.activeView === "table" ? "h-full m-0" : "hidden"}>
+                <div className="p-4 h-full flex flex-col overflow-auto">
+                  <h2 className="text-xl font-semibold mb-4"><Trans>Data Table View</Trans></h2>
+                  <div className="flex-grow overflow-x-auto">
+                    {heatmapData ? (
+                      <HeatmapDataTable
+                        data={heatmapData}
+                        isLoading={isLoadingHeatmap}
+                        sorting={sorting}
+                        setSorting={setSorting}
+                        pagination={pagination}
+                        setPagination={setPagination}
+                        mapViewType={mapState.mapViewType}
+                      />
+                    ) : isLoadingHeatmap ? (
+                      <div className="flex items-center justify-center h-full">
+                        <LoadingSpinner size="md" text={t`Loading table data...`} />
+                      </div>
                     ) : (
-                      <p className="text-center text-muted-foreground"><Trans>Chart data is loading or not available.</Trans></p>
+                      <div className="flex items-center justify-center h-full">
+                        <p className="text-muted-foreground"><Trans>No data available for the table.</Trans></p>
+                      </div>
                     )}
                   </div>
                 </div>
-              )}
+              </div>
+
+              {/* Chart view */}
+              <div className={mapState.activeView === "chart" ? "h-full w-full m-0" : "hidden"}>
+                <div className="h-full w-full p-4 overflow-y-auto">
+                  {heatmapData && geoJsonData ? (
+                    <UatDataCharts data={heatmapData} mapViewType={mapState.mapViewType} />
+                  ) : (
+                    <p className="text-center text-muted-foreground"><Trans>Chart data is loading or not available.</Trans></p>
+                  )}
+                </div>
+              </div>
             </>
           )}
         </div>

@@ -125,6 +125,19 @@ export class CanvasLabelLayer extends L.Layer {
       return;
     }
 
+    // Defensive check: ensure map is in valid state
+    try {
+      const pane = this._map.getPane('overlayPane');
+      if (!pane) {
+        this.labels = [];
+        return;
+      }
+    } catch (e) {
+      // Map is being destroyed, bail out
+      this.labels = [];
+      return;
+    }
+
     const currentZoom = this._map.getZoom();
     const viewportBounds = this._map.getBounds();
     const labelData: PolygonLabelData[] = [];
@@ -222,6 +235,15 @@ export class CanvasLabelLayer extends L.Layer {
   private reset(): void {
     if (!this.canvas || !this._map || !this.ctx) return;
 
+    // Defensive check: ensure map panes are still valid (not destroyed/unmounting)
+    try {
+      const pane = this._map.getPane('overlayPane');
+      if (!pane) return;
+    } catch (e) {
+      // Map is being destroyed, bail out
+      return;
+    }
+
     const size = this._map.getSize();
     const topLeft = this._map.containerPointToLayerPoint([0, 0]);
 
@@ -251,6 +273,16 @@ export class CanvasLabelLayer extends L.Layer {
    */
   private updatePosition(): void {
     if (!this.canvas || !this._map) return;
+
+    // Defensive check: ensure map is in valid state
+    try {
+      const pane = this._map.getPane('overlayPane');
+      if (!pane) return;
+    } catch (e) {
+      // Map is being destroyed, bail out
+      return;
+    }
+
     const topLeft = this._map.containerPointToLayerPoint([0, 0]);
     L.DomUtil.setPosition(this.canvas, topLeft);
     this.origin = topLeft.clone();
@@ -349,6 +381,15 @@ export class CanvasLabelLayer extends L.Layer {
     const { showLabels } = this.layerOptions;
     if (!showLabels || this.labels.length === 0) {
       this.clearCanvas();
+      return;
+    }
+
+    // Defensive check: ensure map is in valid state before drawing
+    try {
+      const pane = this._map.getPane('overlayPane');
+      if (!pane) return;
+    } catch (e) {
+      // Map is being destroyed, bail out
       return;
     }
 

@@ -18,7 +18,6 @@ import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { generateHash } from '@/lib/utils';
 import { ScrollWheelZoomControl } from './ScrollWheelZoomControl';
 import { AnalyticsFilterType } from '@/schemas/charts';
-import { AnimatePresence, motion } from 'framer-motion';
 import { Analytics } from '@/lib/analytics';
 import { MapLabels } from './MapLabels';
 
@@ -129,65 +128,63 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
   }
 
   return (
-    <AnimatePresence>
-      <motion.div
-        key="map-container"
-        initial={{ opacity: 0.5, scale: 0.99 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0.5, scale: 0.99 }}
-        transition={{ duration: 0.2, ease: "easeInOut" }}
-      >
-        <MapContainer
-          center={center}
-          zoom={zoom}
-          zoomSnap={0.1}
-          wheelPxPerZoomLevel={3}
-          minZoom={minZoom}
-          maxZoom={maxZoom}
-          maxBounds={maxBounds}
-          scrollWheelZoom={false}
-          style={{ height: mapHeight, width: '100%', backgroundColor: 'transparent' }}
-          className="z-0 isolate"
-          preferCanvas={true}
-        >
-          {scrollWheelZoom !== false && <ScrollWheelZoomControl />}
-          <MapUpdater center={center} zoom={zoom} />
-          <MapViewChangeListener onViewChange={onViewChange} />
-          {geoJsonData.type === 'FeatureCollection' && (
-            <>
-              <GeoJSON
-                key={`geojson-layer-${mapViewType}-${heatmapDataContentHash}-${highlightedFeatureId}`}
-                ref={geoJsonLayerRef}
-                data={geoJsonData}
-                style={styleFunction}
-                onEachFeature={onEachFeature}
-              />
-              <MapLabels
-                geoJsonData={geoJsonData}
-                showLabels={showLabels}
-                mapViewType={mapViewType}
-                heatmapDataMap={heatmapDataMap}
-                normalization={filters.normalization || 'total'}
-              />
-            </>
-          )}
-        </MapContainer>
-      </motion.div>
-    </AnimatePresence>
+    <MapContainer
+      center={center}
+      zoom={zoom}
+      zoomSnap={0.1}
+      wheelPxPerZoomLevel={3}
+      minZoom={minZoom}
+      maxZoom={maxZoom}
+      maxBounds={maxBounds}
+      scrollWheelZoom={false}
+      style={{ height: mapHeight, width: '100%', backgroundColor: 'transparent' }}
+      className="z-0 isolate"
+      preferCanvas={true}
+    >
+      {scrollWheelZoom !== false && <ScrollWheelZoomControl />}
+      <MapUpdater center={center} zoom={zoom} />
+      <MapViewChangeListener onViewChange={onViewChange} />
+      {geoJsonData.type === 'FeatureCollection' && (
+        <>
+          <GeoJSON
+            key={`geojson-layer-${mapViewType}-${heatmapDataContentHash}-${highlightedFeatureId}`}
+            ref={geoJsonLayerRef}
+            data={geoJsonData}
+            style={styleFunction}
+            onEachFeature={onEachFeature}
+          />
+          <MapLabels
+            geoJsonData={geoJsonData}
+            showLabels={showLabels}
+            mapViewType={mapViewType}
+            heatmapDataMap={heatmapDataMap}
+            normalization={filters.normalization || 'total'}
+          />
+        </>
+      )}
+    </MapContainer>
   );
 });
 
 
 /**
  * This component is used to update the map center and zoom when the center or zoom changes.
- * It is used to ensure that the map is updated when the center or zoom changes.
- * It is used to ensure that the map is updated when the center or zoom changes.
+ * Includes defensive checks to prevent errors during map lifecycle transitions.
  */
 const MapUpdater: React.FC<{ center: LatLngExpression, zoom: number }> = ({ center, zoom }) => {
   const map = useMap();
   useEffect(() => {
     if (center && zoom) {
-      map.setView(center, zoom);
+      try {
+        // Defensive check: ensure map panes are still valid before calling setView
+        const pane = map.getPane('overlayPane');
+        if (pane) {
+          map.setView(center, zoom);
+        }
+      } catch (e) {
+        // Map is being destroyed or in invalid state, ignore
+        console.debug('MapUpdater: Could not update view, map may be unmounting');
+      }
     }
   }, [center, zoom, map]);
   return null;
