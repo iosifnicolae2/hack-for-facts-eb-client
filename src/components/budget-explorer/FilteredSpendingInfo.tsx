@@ -28,13 +28,8 @@ export function FilteredSpendingInfo({ excludedItemsSummary, currencyCode, perCa
   const [dialogOpen, setDialogOpen] = useState(false)
   const [popoverOpen, setPopoverOpen] = useState(false)
   const [uiRange, setUiRange] = useState<[number, number]>(amountFilter?.range ?? [0, 0])
-  const hasExcluded = !!excludedItemsSummary && excludedItemsSummary.totalExcluded > 0
-  const showDialog = hasExcluded || (!!amountFilter && amountFilter.maxValue > 0)
-  if (!showDialog) return null
 
-  const step = amountFilter ? Math.max(1, Math.round((amountFilter.maxValue - amountFilter.minValue) / 100)) : 1
-
-
+  // All hooks must be called before any early returns
   useEffect(() => {
     if (!amountFilter) return
     setUiRange([amountFilter.range[0], amountFilter.range[1]])
@@ -43,6 +38,12 @@ export function FilteredSpendingInfo({ excludedItemsSummary, currencyCode, perCa
   const debouncedOnChange = useDebouncedCallback<[[number, number]]>((val) => {
     amountFilter?.onChange(val)
   }, 500)
+
+  const hasExcluded = !!excludedItemsSummary && excludedItemsSummary.totalExcluded > 0
+  const showDialog = hasExcluded || (!!amountFilter && amountFilter.maxValue > 0)
+  if (!showDialog) return null
+
+  const step = amountFilter ? Math.max(1, Math.round((amountFilter.maxValue - amountFilter.minValue) / 100)) : 1
 
   const content = (
     <div className="space-y-4">
