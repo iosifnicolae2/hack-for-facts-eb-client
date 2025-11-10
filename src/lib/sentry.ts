@@ -157,6 +157,15 @@ export function initSentry(router: unknown): void {
       replaysSessionSampleRate: analyticsConsent ? 0.1 : 0,
       // Respect privacy consent
       beforeSend(event) {
+        // Filter out Facebook in-app browser telemetry noise
+        const message = event.message || event.exception?.values?.[0]?.value;
+        if (message && typeof message === "string") {
+          // Facebook browser events: FBNavLoadEventEnd, FBNavLoadEventStart, etc.
+          if (message.match(/^FB[A-Z][a-zA-Z]+Event(Start|End):/)) {
+            return null;
+          }
+        }
+
         if (!hasSentryConsent()) {
           // Send a minimal, anonymous error payload (no breadcrumbs/contexts/user/request)
           const sanitized = sanitizeEventForNoConsent(event as unknown as SentryEventLike);
