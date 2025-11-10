@@ -72,6 +72,7 @@ export function ShareChart({
         cacheBust: true,
         pixelRatio: Math.min(2, window.devicePixelRatio || 1), // Adaptive DPI based on device
         backgroundColor: '#ffffff',
+        skipFonts: true, // Prevent CORS errors when accessing external stylesheet rules
         filter: (node: HTMLElement) => {
             // Exclude elements that shouldn't be in the export
             const excludeClasses = ['no-export', 'share-button', 'share-chart'];
