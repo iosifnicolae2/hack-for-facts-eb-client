@@ -24,6 +24,7 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogClose,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useHeatmapData } from "@/hooks/useHeatmapData";
@@ -235,6 +236,9 @@ function MapPage() {
                     <DialogContent hideCloseButton={true} className="p-0 m-0 w-full max-w-full h-full max-h-full sm:h-[calc(100%-2rem)] sm:max-h-[calc(100%-2rem)] sm:w-[calc(100%-2rem)] sm:max-w-md sm:rounded-lg flex flex-col">
                       <DialogHeader className="p-4 border-b flex flex-row justify-between items-center shrink-0">
                         <DialogTitle className="text-lg font-semibold"><Trans>Legend</Trans></DialogTitle>
+                        <DialogDescription className="sr-only">
+                          <Trans>View the color scale and values for the heatmap visualization</Trans>
+                        </DialogDescription>
                         <DialogClose asChild>
                           <Button variant="ghost" size="icon" className="rounded-full">
                             <X className="h-5 w-5" />
@@ -314,6 +318,9 @@ function MapPage() {
           <DialogContent hideCloseButton={true} className="p-0 m-0 w-full max-w-full h-full max-h-full sm:h-[calc(100%-2rem)] sm:max-h-[calc(100%-2rem)] sm:w-[calc(100%-2rem)] sm:max-w-md sm:rounded-lg flex flex-col">
             <DialogHeader className="p-4 border-b flex flex-row justify-between items-center shrink-0">
               <DialogTitle className="text-lg font-semibold"><Trans>Filters</Trans></DialogTitle>
+              <DialogDescription className="sr-only">
+                <Trans>Configure filters for the map view including period, account category, and normalization settings</Trans>
+              </DialogDescription>
               <DialogClose asChild>
                 <Button variant="ghost" size="icon" className="rounded-full">
                   <X className="h-5 w-5" />

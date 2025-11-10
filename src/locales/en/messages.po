@@ -409,7 +409,7 @@ msgstr "Active filters"
 msgid "Active Series"
 msgstr "Active Series"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:115
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:116
 #: src/components/budget-explorer/SpendingBreakdown.tsx:185
 msgid "Actual impact on budget"
 msgstr "Actual impact on budget"
@@ -501,8 +501,8 @@ msgstr "Aggregated Value ({currencyCode})"
 msgid "Aggregated Value ({currencyCode}/capita)"
 msgstr "Aggregated Value ({currencyCode}/capita)"
 
-#: src/routes/map.lazy.tsx:222
-#: src/routes/map.lazy.tsx:248
+#: src/routes/map.lazy.tsx:223
+#: src/routes/map.lazy.tsx:252
 msgid "Aggregated Value Legend"
 msgstr "Aggregated Value Legend"
 
@@ -556,7 +556,7 @@ msgstr "Alerts when important changes occur"
 msgid "All"
 msgstr "All"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:69
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:70
 #: src/components/budget-explorer/SpendingBreakdown.tsx:101
 msgid "All budget expenditures"
 msgstr "All budget expenditures"
@@ -613,7 +613,7 @@ msgstr "Always enabled"
 msgid "Amount"
 msgstr "Amount"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:154
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:155
 msgid "Amount filter (this layer)"
 msgstr "Amount filter (this layer)"
 
@@ -909,7 +909,7 @@ msgstr "Chart Configuration"
 msgid "Chart Data Error"
 msgstr "Chart Data Error"
 
-#: src/routes/map.lazy.tsx:291
+#: src/routes/map.lazy.tsx:295
 msgid "Chart data is loading or not available."
 msgstr "Chart data is loading or not available."
 
@@ -955,7 +955,7 @@ msgstr "Choose between essential-only or all cookies, then fine-tune options bel
 msgid "Choose operator"
 msgstr "Choose operator"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:191
+#: src/components/classification-explorer/ClassificationExplorer.tsx:147
 msgid "Classification Not Found"
 msgstr "Classification Not Found"
 
@@ -963,7 +963,7 @@ msgstr "Classification Not Found"
 msgid "classifications"
 msgstr "classifications"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:220
+#: src/components/classification-explorer/ClassificationExplorer.tsx:176
 msgid "Classifications"
 msgstr "Classifications"
 
@@ -1061,6 +1061,10 @@ msgstr "Configure"
 #: src/routes/charts/$chartId/index.lazy.tsx:70
 msgid "Configure Chart"
 msgstr "Configure Chart"
+
+#: src/routes/map.lazy.tsx:322
+msgid "Configure filters for the map view including period, account category, and normalization settings"
+msgstr "Configure filters for the map view including period, account category, and normalization settings"
 
 #: src/components/charts/components/views/SeriesConfigView.tsx:153
 msgid "Configure Series"
@@ -1198,9 +1202,9 @@ msgstr "Could Not Load Counties"
 msgid "Could Not Load Datasets"
 msgstr "Could Not Load Datasets"
 
-#: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:78
+#: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:79
 #: src/components/filters/entity-filter/EntityList.tsx:83
-#: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:78
+#: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:79
 msgid "Could Not Load Entities"
 msgstr "Could Not Load Entities"
 
@@ -1373,7 +1377,7 @@ msgstr "Data sources and licensing"
 msgid "Data storage and retention"
 msgstr "Data storage and retention"
 
-#: src/routes/map.lazy.tsx:260
+#: src/routes/map.lazy.tsx:264
 msgid "Data Table View"
 msgstr "Data Table View"
 
@@ -1541,8 +1545,8 @@ msgstr "Easily manage your subscriptions"
 msgid "Ec"
 msgstr "Ec"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:239
-#: src/components/classification-explorer/ClassificationExplorer.tsx:240
+#: src/components/classification-explorer/ClassificationExplorer.tsx:195
+#: src/components/classification-explorer/ClassificationExplorer.tsx:196
 #: src/components/entities/views/Overview.tsx:266
 #: src/components/entities/views/TrendsView.tsx:202
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:114
@@ -1606,7 +1610,7 @@ msgstr "Edit Annotations"
 msgid "Effective Date: {effectiveDate} • Version: {version}"
 msgstr "Effective Date: {effectiveDate} • Version: {version}"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:112
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:113
 #: src/components/budget-explorer/SpendingBreakdown.tsx:182
 msgid "Effective Spending"
 msgstr "Effective Spending"
@@ -1761,7 +1765,7 @@ msgstr "Error Loading Chart Data"
 msgid "Error loading data"
 msgstr "Error loading data"
 
-#: src/routes/map.lazy.tsx:172
+#: src/routes/map.lazy.tsx:173
 msgid "Error loading data:"
 msgstr "Error loading data:"
 
@@ -1855,11 +1859,11 @@ msgstr "Exclude"
 msgid "Exclude Filters"
 msgstr "Exclude Filters"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:130
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:131
 msgid "Excluded categories"
 msgstr "Excluded categories"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:89
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:90
 msgid "Excluded Items"
 msgstr "Excluded Items"
 
@@ -1895,7 +1899,7 @@ msgstr "Expense Type"
 msgid "Expenses"
 msgstr "Expenses"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:223
+#: src/components/classification-explorer/ClassificationExplorer.tsx:179
 msgid "Explore budget classifications to understand how public spending is organized and categorized"
 msgstr "Explore budget classifications to understand how public spending is organized and categorized"
 
@@ -2013,15 +2017,15 @@ msgstr "Filter field"
 msgid "Filter Reports"
 msgstr "Filter Reports"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:218
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:249
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:219
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:250
 msgid "Filtered"
 msgstr "Filtered"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:466
 #: src/components/entities/EntityReports.tsx:140
 #: src/components/filters/EntityAnalyticsFilter.tsx:374
-#: src/routes/map.lazy.tsx:316
+#: src/routes/map.lazy.tsx:320
 msgid "Filters"
 msgstr "Filters"
 
@@ -2111,8 +2115,8 @@ msgstr "for the selected filters."
 msgid "Found {replacementCount} occurrence{0}"
 msgstr "Found {replacementCount} occurrence{0}"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:236
-#: src/components/classification-explorer/ClassificationExplorer.tsx:237
+#: src/components/classification-explorer/ClassificationExplorer.tsx:192
+#: src/components/classification-explorer/ClassificationExplorer.tsx:193
 #: src/components/entities/views/Overview.tsx:265
 #: src/components/entities/views/TrendsView.tsx:201
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:107
@@ -2217,11 +2221,11 @@ msgstr "Go to Entity Table"
 msgid "Go to homepage"
 msgstr "Go to homepage"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:658
+#: src/components/budget-explorer/BudgetTreemap.tsx:659
 msgid "Go to Main Categories"
 msgstr "Go to Main Categories"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:201
+#: src/components/classification-explorer/ClassificationExplorer.tsx:157
 msgid "Go to Main List"
 msgstr "Go to Main List"
 
@@ -2250,7 +2254,7 @@ msgstr "greater than"
 msgid "Greater than"
 msgstr "Greater than"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:261
+#: src/components/classification-explorer/ClassificationExplorer.tsx:217
 msgid "Grid view"
 msgstr "Grid view"
 
@@ -2486,7 +2490,7 @@ msgid "Legal bases for processing"
 msgstr "Legal bases for processing"
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:160
-#: src/routes/map.lazy.tsx:237
+#: src/routes/map.lazy.tsx:238
 msgid "Legend"
 msgstr "Legend"
 
@@ -2547,19 +2551,19 @@ msgstr "Loading chart configuration..."
 msgid "Loading chart data..."
 msgstr "Loading chart data..."
 
-#: src/routes/map.lazy.tsx:143
+#: src/routes/map.lazy.tsx:144
 msgid "Loading data..."
 msgstr "Loading data..."
 
-#: src/routes/map.lazy.tsx:147
+#: src/routes/map.lazy.tsx:148
 msgid "Loading heatmap data..."
 msgstr "Loading heatmap data..."
 
-#: src/routes/map.lazy.tsx:145
+#: src/routes/map.lazy.tsx:146
 msgid "Loading map and heatmap data..."
 msgstr "Loading map and heatmap data..."
 
-#: src/routes/map.lazy.tsx:149
+#: src/routes/map.lazy.tsx:150
 msgid "Loading map data..."
 msgstr "Loading map data..."
 
@@ -2567,7 +2571,7 @@ msgstr "Loading map data..."
 msgid "Loading reports…"
 msgstr "Loading reports…"
 
-#: src/routes/map.lazy.tsx:274
+#: src/routes/map.lazy.tsx:278
 msgid "Loading table data..."
 msgstr "Loading table data..."
 
@@ -2598,7 +2602,7 @@ msgstr "Lock annotation"
 msgid "Locked"
 msgstr "Locked"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:571
+#: src/components/budget-explorer/BudgetTreemap.tsx:572
 #: src/components/entities/LineItemsAnalytics.tsx:143
 msgid "Main Categories"
 msgstr "Main Categories"
@@ -2655,7 +2659,7 @@ msgstr "Managing preferences"
 msgid "Map"
 msgstr "Map"
 
-#: src/routes/map.lazy.tsx:174
+#: src/routes/map.lazy.tsx:175
 msgid "Map data not available."
 msgstr "Map data not available."
 
@@ -2889,11 +2893,11 @@ msgstr "No conditions set"
 msgid "No Data Available"
 msgstr "No Data Available"
 
-#: src/routes/map.lazy.tsx:215
+#: src/routes/map.lazy.tsx:216
 msgid "No data available for the map."
 msgstr "No data available for the map."
 
-#: src/routes/map.lazy.tsx:278
+#: src/routes/map.lazy.tsx:282
 msgid "No data available for the table."
 msgstr "No data available for the table."
 
@@ -2917,7 +2921,7 @@ msgstr "No data series alerts"
 msgid "No data series yet."
 msgstr "No data series yet."
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:648
+#: src/components/budget-explorer/BudgetTreemap.tsx:649
 msgid "No data within the selected range."
 msgstr "No data within the selected range."
 
@@ -3001,7 +3005,7 @@ msgstr "No series found."
 msgid "No values to replace"
 msgstr "No values to replace"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:92
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:93
 msgid "Non-direct spending"
 msgstr "Non-direct spending"
 
@@ -3017,7 +3021,7 @@ msgstr "Normalization"
 msgid "Note: Deleting authentication cookies will sign you out of your account. Deleting essential localStorage will reset your saved charts and preferences."
 msgstr "Note: Deleting authentication cookies will sign you out of your account. Deleting essential localStorage will reset your saved charts and preferences."
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:200
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:201
 #: src/components/budget-explorer/SpendingBreakdown.tsx:204
 msgid "Note: Financial operations (Titles 80+81) represent loans and credit repayments. These are financing flows, not regular budget expenses, and are excluded from effective spending."
 msgstr "Note: Financial operations (Titles 80+81) represent loans and credit repayments. These are financing flows, not regular budget expenses, and are excluded from effective spending."
@@ -3297,7 +3301,7 @@ msgstr "Quick Configuration"
 msgid "Quickly adjust chart settings"
 msgstr "Quickly adjust chart settings"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:157
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:158
 msgid "Range"
 msgstr "Range"
 
@@ -3386,8 +3390,8 @@ msgstr "Reports"
 msgid "Required for core functionality like security and preferences. Always on."
 msgstr "Required for core functionality like security and preferences. Always on."
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:663
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:189
+#: src/components/budget-explorer/BudgetTreemap.tsx:664
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:190
 msgid "Reset amount filter"
 msgstr "Reset amount filter"
 
@@ -3458,11 +3462,11 @@ msgstr "Search budget sectors"
 msgid "Search by code or name..."
 msgstr "Search by code or name..."
 
-#: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:67
+#: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:68
 msgid "Search by name or code (ex: Agriculture, 43.00, ec:43.00)"
 msgstr "Search by name or code (ex: Agriculture, 43.00, ec:43.00)"
 
-#: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:67
+#: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:68
 msgid "Search by name or code (ex: Social assistance, 7.06, fn:7.06)"
 msgstr "Search by name or code (ex: Social assistance, 7.06, fn:7.06)"
 
@@ -3776,8 +3780,8 @@ msgstr "Source"
 msgid "Source: "
 msgstr "Source: "
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:54
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:224
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:55
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:225
 msgid "Spending Calculation"
 msgstr "Spending Calculation"
 
@@ -3887,7 +3891,7 @@ msgstr "Terms of Use"
 msgid "Test error"
 msgstr "Test error"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:194
+#: src/components/classification-explorer/ClassificationExplorer.tsx:150
 msgid "The classification code \"{selectedCode}\" could not be found."
 msgstr "The classification code \"{selectedCode}\" could not be found."
 
@@ -4046,7 +4050,7 @@ msgid "total"
 msgstr "total"
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:88
-#: src/components/budget-explorer/BudgetTreemap.tsx:711
+#: src/components/budget-explorer/BudgetTreemap.tsx:712
 #: src/components/common/NormalizationSelector.tsx:21
 #: src/components/entities/EntityReportControls.tsx:46
 #: src/components/entities/views/MapView.tsx:167
@@ -4085,7 +4089,7 @@ msgstr "Total Income"
 msgid "Total Revenues"
 msgstr "Total Revenues"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:66
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:67
 #: src/components/budget-explorer/SpendingBreakdown.tsx:98
 msgid "Total Spending"
 msgstr "Total Spending"
@@ -4106,7 +4110,7 @@ msgstr "Transparenta.eu – Support"
 msgid "Treated as inter-budget flows"
 msgstr "Treated as inter-budget flows"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:264
+#: src/components/classification-explorer/ClassificationExplorer.tsx:220
 msgid "Tree view"
 msgstr "Tree view"
 
@@ -4162,7 +4166,7 @@ msgstr "UAT: Yes"
 msgid "UATs"
 msgstr "UATs"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:57
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:58
 #: src/components/budget-explorer/SpendingBreakdown.tsx:47
 msgid "Understanding the consolidated general budget spending"
 msgstr "Understanding the consolidated general budget spending"
@@ -4281,7 +4285,7 @@ msgstr "View all alerts"
 msgid "View all reports"
 msgstr "View all reports"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:730
+#: src/components/budget-explorer/BudgetTreemap.tsx:731
 msgid "View as Chart"
 msgstr "View as Chart"
 
@@ -4292,13 +4296,17 @@ msgstr "View as Chart"
 msgid "View Chart"
 msgstr "View Chart"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:639
+#: src/components/budget-explorer/BudgetTreemap.tsx:640
 msgid "View Details"
 msgstr "View Details"
 
-#: src/components/classification-explorer/ClassificationActions.tsx:55
+#: src/components/classification-explorer/ClassificationActions.tsx:60
 msgid "View in Entity Analytics"
 msgstr "View in Entity Analytics"
+
+#: src/routes/map.lazy.tsx:240
+msgid "View the color scale and values for the heatmap visualization"
+msgstr "View the color scale and values for the heatmap visualization"
 
 #: src/components/charts/components/ChartDataError.tsx:311
 msgid "Warnings"
@@ -4377,11 +4385,11 @@ msgstr "Yes"
 msgid "You are signed in. Authentication cookies (Clerk) are essential and required to keep you signed in. Deleting them will sign you out."
 msgstr "You are signed in. Authentication cookies (Clerk) are essential and required to keep you signed in. Deleting them will sign you out."
 
-#: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:69
+#: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:70
 msgid "You can search by: name (ex: Agriculture) • code (ex: 43.00, 43.00.10) • explicit prefix: ec:43.00"
 msgstr "You can search by: name (ex: Agriculture) • code (ex: 43.00, 43.00.10) • explicit prefix: ec:43.00"
 
-#: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:69
+#: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:70
 msgid "You can search by: name (ex: Social assistance) • code (ex: 7.06, 7.06.02) • explicit prefix: fn:7.06"
 msgstr "You can search by: name (ex: Social assistance) • code (ex: 7.06, 7.06.02) • explicit prefix: fn:7.06"
 

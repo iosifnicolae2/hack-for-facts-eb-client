@@ -409,7 +409,7 @@ msgstr "Filtre active"
 msgid "Active Series"
 msgstr "Serie Activată"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:115
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:116
 #: src/components/budget-explorer/SpendingBreakdown.tsx:185
 msgid "Actual impact on budget"
 msgstr "Impact real asupra bugetului"
@@ -501,8 +501,8 @@ msgstr "Valoare agregată ({currencyCode})"
 msgid "Aggregated Value ({currencyCode}/capita)"
 msgstr "Valoare agregată ({currencyCode}/capita)"
 
-#: src/routes/map.lazy.tsx:222
-#: src/routes/map.lazy.tsx:248
+#: src/routes/map.lazy.tsx:223
+#: src/routes/map.lazy.tsx:252
 msgid "Aggregated Value Legend"
 msgstr "Legendă valoare cumulată"
 
@@ -556,7 +556,7 @@ msgstr "Alerte când apar modificări importante"
 msgid "All"
 msgstr "Toate"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:69
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:70
 #: src/components/budget-explorer/SpendingBreakdown.tsx:101
 msgid "All budget expenditures"
 msgstr "Toate cheltuielile bugetare"
@@ -613,7 +613,7 @@ msgstr "Activat permanent"
 msgid "Amount"
 msgstr "Sumă"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:154
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:155
 msgid "Amount filter (this layer)"
 msgstr "Filtru sumă (acest nivel)"
 
@@ -909,7 +909,7 @@ msgstr "Configurare grafic"
 msgid "Chart Data Error"
 msgstr "Eroare în datele graficului"
 
-#: src/routes/map.lazy.tsx:291
+#: src/routes/map.lazy.tsx:295
 msgid "Chart data is loading or not available."
 msgstr "Datele graficului se încarcă sau nu sunt disponibile."
 
@@ -955,7 +955,7 @@ msgstr "Alegeți între cookie-uri doar esențiale sau toate cookie-urile, apoi 
 msgid "Choose operator"
 msgstr "Alegeți operatorul"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:191
+#: src/components/classification-explorer/ClassificationExplorer.tsx:147
 msgid "Classification Not Found"
 msgstr "Clasificarea nu a fost găsită"
 
@@ -963,7 +963,7 @@ msgstr "Clasificarea nu a fost găsită"
 msgid "classifications"
 msgstr "clasificări"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:220
+#: src/components/classification-explorer/ClassificationExplorer.tsx:176
 msgid "Classifications"
 msgstr "Clasificări"
 
@@ -1061,6 +1061,10 @@ msgstr "Configurează"
 #: src/routes/charts/$chartId/index.lazy.tsx:70
 msgid "Configure Chart"
 msgstr "Configurează graficul"
+
+#: src/routes/map.lazy.tsx:322
+msgid "Configure filters for the map view including period, account category, and normalization settings"
+msgstr "Configurați filtrele pentru hartă, inclusiv perioada, categoria contului și setările de normalizare"
 
 #: src/components/charts/components/views/SeriesConfigView.tsx:153
 msgid "Configure Series"
@@ -1198,9 +1202,9 @@ msgstr "Județele nu au putut fi încărcate"
 msgid "Could Not Load Datasets"
 msgstr "Seturile de date nu au putut fi încărcate"
 
-#: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:78
+#: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:79
 #: src/components/filters/entity-filter/EntityList.tsx:83
-#: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:78
+#: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:79
 msgid "Could Not Load Entities"
 msgstr "Entitățile nu au putut fi încărcate"
 
@@ -1373,7 +1377,7 @@ msgstr "Surse de date și licențiere"
 msgid "Data storage and retention"
 msgstr "Stocarea și păstrarea datelor"
 
-#: src/routes/map.lazy.tsx:260
+#: src/routes/map.lazy.tsx:264
 msgid "Data Table View"
 msgstr "Vizualizare tabelară"
 
@@ -1541,8 +1545,8 @@ msgstr "Gestionați-vă cu ușurință abonamentele"
 msgid "Ec"
 msgstr "Ec"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:239
-#: src/components/classification-explorer/ClassificationExplorer.tsx:240
+#: src/components/classification-explorer/ClassificationExplorer.tsx:195
+#: src/components/classification-explorer/ClassificationExplorer.tsx:196
 #: src/components/entities/views/Overview.tsx:266
 #: src/components/entities/views/TrendsView.tsx:202
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:114
@@ -1606,7 +1610,7 @@ msgstr "Editează adnotări"
 msgid "Effective Date: {effectiveDate} • Version: {version}"
 msgstr "Data intrării în vigoare: {effectiveDate} • Versiunea: {version}"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:112
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:113
 #: src/components/budget-explorer/SpendingBreakdown.tsx:182
 msgid "Effective Spending"
 msgstr "Cheltuieli efective"
@@ -1761,7 +1765,7 @@ msgstr "Eroare la încărcarea datelor graficului"
 msgid "Error loading data"
 msgstr "Eroare la încărcarea datelor"
 
-#: src/routes/map.lazy.tsx:172
+#: src/routes/map.lazy.tsx:173
 msgid "Error loading data:"
 msgstr "Eroare la încărcarea datelor:"
 
@@ -1855,11 +1859,11 @@ msgstr "Exclude"
 msgid "Exclude Filters"
 msgstr "Filtre de excludere"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:130
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:131
 msgid "Excluded categories"
 msgstr "Categorii excluse"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:89
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:90
 msgid "Excluded Items"
 msgstr "Elemente excluse"
 
@@ -1895,7 +1899,7 @@ msgstr "Tip cheltuială"
 msgid "Expenses"
 msgstr "Cheltuieli"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:223
+#: src/components/classification-explorer/ClassificationExplorer.tsx:179
 msgid "Explore budget classifications to understand how public spending is organized and categorized"
 msgstr "Explorați clasificările bugetare pentru a înțelege cum sunt organizate și clasificate cheltuielile publice"
 
@@ -2013,15 +2017,15 @@ msgstr "Câmp de filtrare"
 msgid "Filter Reports"
 msgstr "Filtrare rapoarte"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:218
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:249
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:219
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:250
 msgid "Filtered"
 msgstr "Filtrat"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:466
 #: src/components/entities/EntityReports.tsx:140
 #: src/components/filters/EntityAnalyticsFilter.tsx:374
-#: src/routes/map.lazy.tsx:316
+#: src/routes/map.lazy.tsx:320
 msgid "Filters"
 msgstr "Filtre"
 
@@ -2111,8 +2115,8 @@ msgstr "pentru filtrele selectate."
 msgid "Found {replacementCount} occurrence{0}"
 msgstr "S-au găsit {replacementCount} apariții"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:236
-#: src/components/classification-explorer/ClassificationExplorer.tsx:237
+#: src/components/classification-explorer/ClassificationExplorer.tsx:192
+#: src/components/classification-explorer/ClassificationExplorer.tsx:193
 #: src/components/entities/views/Overview.tsx:265
 #: src/components/entities/views/TrendsView.tsx:201
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:107
@@ -2217,11 +2221,11 @@ msgstr "Vezi Tabel"
 msgid "Go to homepage"
 msgstr "Mergi la pagina principală"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:658
+#: src/components/budget-explorer/BudgetTreemap.tsx:659
 msgid "Go to Main Categories"
 msgstr "Mergi la categoria principală"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:201
+#: src/components/classification-explorer/ClassificationExplorer.tsx:157
 msgid "Go to Main List"
 msgstr "Mergi la lista principală"
 
@@ -2250,9 +2254,9 @@ msgstr "mai mare decât"
 msgid "Greater than"
 msgstr "Mai mare decât"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:261
+#: src/components/classification-explorer/ClassificationExplorer.tsx:217
 msgid "Grid view"
-msgstr ""
+msgstr "Vizualizare grilă"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:95
 #: src/routes/budget-explorer.lazy.tsx:406
@@ -2481,7 +2485,7 @@ msgid "Legal bases for processing"
 msgstr "Temeiuri legale pentru prelucrare"
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:160
-#: src/routes/map.lazy.tsx:237
+#: src/routes/map.lazy.tsx:238
 msgid "Legend"
 msgstr "Legendă"
 
@@ -2542,19 +2546,19 @@ msgstr "Se încarcă configurația graficului..."
 msgid "Loading chart data..."
 msgstr "Se încarcă datele graficului..."
 
-#: src/routes/map.lazy.tsx:143
+#: src/routes/map.lazy.tsx:144
 msgid "Loading data..."
 msgstr "Se încarcă datele..."
 
-#: src/routes/map.lazy.tsx:147
+#: src/routes/map.lazy.tsx:148
 msgid "Loading heatmap data..."
 msgstr "Se încarcă datele pentru harta termică..."
 
-#: src/routes/map.lazy.tsx:145
+#: src/routes/map.lazy.tsx:146
 msgid "Loading map and heatmap data..."
 msgstr "Se încarcă harta și datele pentru harta termică..."
 
-#: src/routes/map.lazy.tsx:149
+#: src/routes/map.lazy.tsx:150
 msgid "Loading map data..."
 msgstr "Se încarcă datele hărții..."
 
@@ -2562,7 +2566,7 @@ msgstr "Se încarcă datele hărții..."
 msgid "Loading reports…"
 msgstr "Se încarcă rapoartele..."
 
-#: src/routes/map.lazy.tsx:274
+#: src/routes/map.lazy.tsx:278
 msgid "Loading table data..."
 msgstr "Se încarcă datele tabelului..."
 
@@ -2593,7 +2597,7 @@ msgstr "Blochează adnotarea"
 msgid "Locked"
 msgstr "Blocat"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:571
+#: src/components/budget-explorer/BudgetTreemap.tsx:572
 #: src/components/entities/LineItemsAnalytics.tsx:143
 msgid "Main Categories"
 msgstr "Categorii Principale"
@@ -2650,7 +2654,7 @@ msgstr "Gestionarea preferințelor"
 msgid "Map"
 msgstr "Hartă"
 
-#: src/routes/map.lazy.tsx:174
+#: src/routes/map.lazy.tsx:175
 msgid "Map data not available."
 msgstr "Datele hărții nu sunt disponibile."
 
@@ -2884,11 +2888,11 @@ msgstr "Nicio condiție setată"
 msgid "No Data Available"
 msgstr "Nu există date disponibile"
 
-#: src/routes/map.lazy.tsx:215
+#: src/routes/map.lazy.tsx:216
 msgid "No data available for the map."
 msgstr "Nu sunt date disponibile pentru hartă."
 
-#: src/routes/map.lazy.tsx:278
+#: src/routes/map.lazy.tsx:282
 msgid "No data available for the table."
 msgstr "Nu sunt date disponibile pentru tabel."
 
@@ -2912,7 +2916,7 @@ msgstr "Nicio alertă pentru serii de date"
 msgid "No data series yet."
 msgstr "Nicio serie de date încă."
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:648
+#: src/components/budget-explorer/BudgetTreemap.tsx:649
 msgid "No data within the selected range."
 msgstr "Nu există date în intervalul selectat."
 
@@ -2996,7 +3000,7 @@ msgstr "Nu s-a găsit nicio serie."
 msgid "No values to replace"
 msgstr "Nicio valoare de înlocuit"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:92
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:93
 msgid "Non-direct spending"
 msgstr "Cheltuieli indirecte"
 
@@ -3012,7 +3016,7 @@ msgstr "Normalizare"
 msgid "Note: Deleting authentication cookies will sign you out of your account. Deleting essential localStorage will reset your saved charts and preferences."
 msgstr "Notă: Ștergerea cookie-urilor de autentificare vă va deconecta din cont. Ștergerea localStorage-ului esențial va reseta graficele și preferințele dumneavoastră salvate."
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:200
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:201
 #: src/components/budget-explorer/SpendingBreakdown.tsx:204
 msgid "Note: Financial operations (Titles 80+81) represent loans and credit repayments. These are financing flows, not regular budget expenses, and are excluded from effective spending."
 msgstr "Notă: Operațiunile financiare (Titlurile 80+81) reprezintă împrumuturi și rambursări de credite. Acestea sunt fluxuri de finanțare, nu cheltuieli bugetare obișnuite, și sunt excluse din cheltuielile efective."
@@ -3292,7 +3296,7 @@ msgstr "Configurare rapidă"
 msgid "Quickly adjust chart settings"
 msgstr "Ajustați rapid setările graficului"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:157
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:158
 msgid "Range"
 msgstr "Interval"
 
@@ -3381,8 +3385,8 @@ msgstr "Rapoarte"
 msgid "Required for core functionality like security and preferences. Always on."
 msgstr "Necesar pentru funcționalități de bază, precum securitatea și preferințele. Activat permanent."
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:663
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:189
+#: src/components/budget-explorer/BudgetTreemap.tsx:664
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:190
 msgid "Reset amount filter"
 msgstr "Resetează filtrul de sumă"
 
@@ -3453,11 +3457,11 @@ msgstr "Caută sectoare bugetare"
 msgid "Search by code or name..."
 msgstr "Căutați după cod sau nume..."
 
-#: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:67
+#: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:68
 msgid "Search by name or code (ex: Agriculture, 43.00, ec:43.00)"
 msgstr "Caută după nume sau cod (ex: Agricultură, 43.00, ec:43.00)"
 
-#: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:67
+#: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:68
 msgid "Search by name or code (ex: Social assistance, 7.06, fn:7.06)"
 msgstr "Caută după nume sau cod (ex: Asistență socială, 7.06, fn:7.06)"
 
@@ -3771,8 +3775,8 @@ msgstr "Sursă"
 msgid "Source: "
 msgstr "Sursă: "
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:54
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:224
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:55
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:225
 msgid "Spending Calculation"
 msgstr "Calculul cheltuielilor"
 
@@ -3882,7 +3886,7 @@ msgstr "Termeni de utilizare"
 msgid "Test error"
 msgstr "Eroare de test"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:194
+#: src/components/classification-explorer/ClassificationExplorer.tsx:150
 msgid "The classification code \"{selectedCode}\" could not be found."
 msgstr "Codul de clasificare „{selectedCode}” nu a putut fi găsit."
 
@@ -4041,7 +4045,7 @@ msgid "total"
 msgstr "total"
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:88
-#: src/components/budget-explorer/BudgetTreemap.tsx:711
+#: src/components/budget-explorer/BudgetTreemap.tsx:712
 #: src/components/common/NormalizationSelector.tsx:21
 #: src/components/entities/EntityReportControls.tsx:46
 #: src/components/entities/views/MapView.tsx:167
@@ -4080,7 +4084,7 @@ msgstr "Total Venituri"
 msgid "Total Revenues"
 msgstr "Venituri totale"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:66
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:67
 #: src/components/budget-explorer/SpendingBreakdown.tsx:98
 msgid "Total Spending"
 msgstr "Cheltuieli totale"
@@ -4101,9 +4105,9 @@ msgstr "Transparenta.eu – Suport"
 msgid "Treated as inter-budget flows"
 msgstr "Tratate ca fluxuri inter-bugetare"
 
-#: src/components/classification-explorer/ClassificationExplorer.tsx:264
+#: src/components/classification-explorer/ClassificationExplorer.tsx:220
 msgid "Tree view"
-msgstr ""
+msgstr "Vizualizare arbore"
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:53
 msgid "Treemap Chart (Aggregated)"
@@ -4157,7 +4161,7 @@ msgstr "UAT: Da"
 msgid "UATs"
 msgstr "UAT-uri"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:57
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:58
 #: src/components/budget-explorer/SpendingBreakdown.tsx:47
 msgid "Understanding the consolidated general budget spending"
 msgstr "Înțelegerea cheltuielilor bugetului general consolidat"
@@ -4276,7 +4280,7 @@ msgstr "Vezi toate alertele"
 msgid "View all reports"
 msgstr "Vezi toate rapoartele"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:730
+#: src/components/budget-explorer/BudgetTreemap.tsx:731
 msgid "View as Chart"
 msgstr "Vezi Graficul"
 
@@ -4287,13 +4291,17 @@ msgstr "Vezi Graficul"
 msgid "View Chart"
 msgstr "Vezi graficul"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:639
+#: src/components/budget-explorer/BudgetTreemap.tsx:640
 msgid "View Details"
 msgstr "Vezi detalii"
 
-#: src/components/classification-explorer/ClassificationActions.tsx:55
+#: src/components/classification-explorer/ClassificationActions.tsx:60
 msgid "View in Entity Analytics"
 msgstr "Vizualizați în Analiza Entităților"
+
+#: src/routes/map.lazy.tsx:240
+msgid "View the color scale and values for the heatmap visualization"
+msgstr "Vizualizați scala de culori și valorile pentru vizualizarea hărții de căldură"
 
 #: src/components/charts/components/ChartDataError.tsx:311
 msgid "Warnings"
@@ -4372,11 +4380,11 @@ msgstr "Da"
 msgid "You are signed in. Authentication cookies (Clerk) are essential and required to keep you signed in. Deleting them will sign you out."
 msgstr "Sunteți autentificat. Cookie-urile de autentificare (Clerk) sunt esențiale și necesare pentru a vă menține autentificat. Ștergerea lor vă va deconecta."
 
-#: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:69
+#: src/components/filters/economic-classification-filter/EconomicClassificationList.tsx:70
 msgid "You can search by: name (ex: Agriculture) • code (ex: 43.00, 43.00.10) • explicit prefix: ec:43.00"
 msgstr "Poți căuta după: nume (ex: Agricultură) • cod (ex: 43.00, 43.00.10) • prefix explicit: ec:43.00"
 
-#: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:69
+#: src/components/filters/functional-classification-filter/FunctionalClassificationList.tsx:70
 msgid "You can search by: name (ex: Social assistance) • code (ex: 7.06, 7.06.02) • explicit prefix: fn:7.06"
 msgstr "Poți căuta după: nume (ex: Asistență socială) • cod (ex: 7.06, 7.06.02) • prefix explicit: fn:7.06"
 
