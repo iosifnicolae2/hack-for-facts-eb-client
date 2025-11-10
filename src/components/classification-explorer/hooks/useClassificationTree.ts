@@ -44,6 +44,10 @@ export function useClassificationTree(
 
   const expandPath = useCallback((codes: readonly string[]) => {
     setExpandedNodes((prev) => {
+      // Check if any codes are actually new
+      const hasNewCodes = codes.some(code => !prev.has(code))
+      if (!hasNewCodes) return prev
+
       const next = new Set(prev)
       for (const code of codes) {
         next.add(code)
