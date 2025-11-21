@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Accordion } from '@/components/ui/accordion';
-import { ArrowDownCircle, ArrowUpCircle } from 'lucide-react';
+import { ArrowDownCircle, ArrowUpCircle, Info } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -127,7 +127,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Info } from 'lucide-react';
 
 interface FinancialDataCardProps {
   title: string;
@@ -175,57 +174,72 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
   const Icon = iconType === 'income' ? ArrowUpCircle : ArrowDownCircle;
   const iconColor = iconType === 'income' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400';
   const dateLabel = getYearLabel(currentYear, month, quarter);
+  const shouldFilterTransfers = iconType === 'expense' && transferFilter !== 'all';
 
-  const filteredGroups = useMemo(() => {
-    if (transferFilter === 'all') return groups;
+  const { filteredGroups, filteredBaseTotal } = useMemo(() => {
+    if (!shouldFilterTransfers) {
+      return { filteredGroups: groups, filteredBaseTotal: baseTotal };
+    }
 
     const isTransfer = (code: string) => code.startsWith('51') || code.startsWith('55');
 
-    const filterEconomics = (economics: GroupedEconomic[]) => {
-      return economics.filter(eco => {
-        const isTrans = isTransfer(eco.code);
-        return transferFilter === 'transfers-only' ? isTrans : !isTrans;
-      });
-    };
+    const filterEconomics = (economics: GroupedEconomic[]) => economics.filter((eco) => {
+      const isTrans = isTransfer(eco.code);
+      return transferFilter === 'transfers-only' ? isTrans : !isTrans;
+    });
 
     const filterFunctionals = (functionals: GroupedFunctional[]): GroupedFunctional[] => {
-      return functionals.map(func => {
-        const hasEconomics = func.economics.length > 0;
-        const filteredEco = filterEconomics(func.economics);
-        const newTotal = filteredEco.reduce((sum, eco) => sum + eco.amount, 0);
+      return functionals
+        .map((func) => {
+          if (func.economics.length === 0) {
+            return transferFilter === 'transfers-only' ? { ...func, totalAmount: 0 } : func;
+          }
 
-        return {
-          ...func,
-          economics: filteredEco,
-          // If we had economics originally, we must use the new total (which might be 0 if all filtered out).
-          // If we didn't have economics, we keep the original total (as we can't filter what we don't see).
-          totalAmount: hasEconomics ? newTotal : func.totalAmount
-        };
-      }).filter(func => func.totalAmount > 0 || (func.economics.length > 0 && func.economics.some(e => e.amount > 0)));
+          const originalEconomicTotal = func.economics.reduce((sum, eco) => sum + eco.amount, 0);
+          const unclassifiedAmount = Math.max(func.totalAmount - originalEconomicTotal, 0);
+          const filteredEco = filterEconomics(func.economics);
+          const filteredEcoTotal = filteredEco.reduce((sum, eco) => sum + eco.amount, 0);
+
+          return {
+            ...func,
+            economics: filteredEco,
+            totalAmount: filteredEcoTotal + (transferFilter === 'transfers-only' ? 0 : unclassifiedAmount),
+          };
+        })
+        .filter((func) => func.totalAmount !== 0 || func.economics.some((e) => e.amount !== 0));
     };
 
-    return groups.map(chapter => {
-      const filteredFunctionals = filterFunctionals(chapter.functionals);
-      const filteredSubchapters = (chapter.subchapters ?? []).map(sub => ({
-        ...sub,
-        functionals: filterFunctionals(sub.functionals),
-      })).map(sub => ({
-        ...sub,
-        totalAmount: sub.functionals.reduce((sum, f) => sum + f.totalAmount, 0)
-      })).filter(sub => sub.totalAmount > 0);
+    const filtered = groups
+      .map((chapter) => {
+        const filteredFunctionals = filterFunctionals(chapter.functionals);
+        const filteredSubchapters = (chapter.subchapters ?? [])
+          .map((sub) => ({
+            ...sub,
+            functionals: filterFunctionals(sub.functionals),
+          }))
+          .map((sub) => ({
+            ...sub,
+            totalAmount: sub.functionals.reduce((sum, f) => sum + f.totalAmount, 0),
+          }))
+          .filter((sub) => sub.totalAmount !== 0);
 
-      const newTotal = filteredFunctionals.reduce((sum, f) => sum + f.totalAmount, 0) +
-        filteredSubchapters.reduce((sum, s) => sum + s.totalAmount, 0);
+        const newTotal =
+          filteredFunctionals.reduce((sum, f) => sum + f.totalAmount, 0) +
+          filteredSubchapters.reduce((sum, s) => sum + s.totalAmount, 0);
 
-      return {
-        ...chapter,
-        functionals: filteredFunctionals,
-        subchapters: filteredSubchapters,
-        totalAmount: newTotal
-      };
-    }).filter(chapter => chapter.totalAmount > 0);
+        return {
+          ...chapter,
+          functionals: filteredFunctionals,
+          subchapters: filteredSubchapters,
+          totalAmount: newTotal,
+        };
+      })
+      .filter((chapter) => chapter.totalAmount !== 0);
 
-  }, [groups, transferFilter]);
+    const filteredTotal = filtered.reduce((sum, chapter) => sum + chapter.totalAmount, 0);
+
+    return { filteredGroups: filtered, filteredBaseTotal: filteredTotal };
+  }, [baseTotal, groups, shouldFilterTransfers, transferFilter]);
 
   return (
     <Card className="shadow-lg dark:bg-slate-800 h-full flex flex-col">
@@ -304,13 +318,13 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
         <GroupedItemsDisplay
           groups={filteredGroups}
           title={title}
-          baseTotal={baseTotal}
           searchTerm={searchTerm}
           currentYear={currentYear}
           showTotalValueHeader={!!searchActive}
           month={month}
           quarter={quarter}
           normalization={normalization}
+          baseTotal={filteredBaseTotal}
         />
       </CardContent>
     </Card>
