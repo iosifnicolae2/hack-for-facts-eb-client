@@ -65,6 +65,9 @@ interface OverviewProps {
     onAccountCategoryChange?: (category: 'ch' | 'vn') => void;
     treemapPath?: string;
     onTreemapPathChange?: (path: string | undefined) => void;
+    // Transfer filter
+    transferFilter?: 'all' | 'no-transfers' | 'transfers-only';
+    onTransferFilterChange?: (filter: 'all' | 'no-transfers' | 'transfers-only') => void;
 }
 
 export const Overview = ({
@@ -93,6 +96,8 @@ export const Overview = ({
     onAccountCategoryChange,
     treemapPath,
     onTreemapPathChange,
+    transferFilter,
+    onTransferFilterChange,
 }: OverviewProps) => {
     const { data: lineItems, isLoading: isLoadingLineItems } = useEntityExecutionLineItems({
         cui,
@@ -306,6 +311,8 @@ export const Overview = ({
                     selectedExpenseTypeKey={search.selectedExpenseTypeKey as string | undefined}
                     onSelectedFundingKeyChange={onSelectedFundingKeyChange}
                     onSelectedExpenseTypeKeyChange={onSelectedExpenseTypeKeyChange}
+                    transferFilter={transferFilter}
+                    onTransferFilterChange={onTransferFilterChange}
                 />
 
                 <LineItemsAnalytics

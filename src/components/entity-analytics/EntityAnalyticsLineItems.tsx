@@ -13,22 +13,44 @@ import { Trans } from "@lingui/react/macro";
 import type { AggregatedLineItemConnection } from "@/schemas/entity-analytics";
 import { generateHash } from "@/lib/utils";
 
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Info } from 'lucide-react';
+
 interface EntityAnalyticsLineItemsProps {
   filter: AnalyticsFilterType;
   title: string;
   data?: AggregatedLineItemConnection;
   isLoading?: boolean;
   error?: Error | null;
+  transferFilter?: 'all' | 'no-transfers' | 'transfers-only';
+  onTransferFilterChange?: (filter: 'all' | 'no-transfers' | 'transfers-only') => void;
 }
 
 export const EntityAnalyticsLineItems: React.FC<
   EntityAnalyticsLineItemsProps
-> = ({ filter, title, data, isLoading, error }) => {
+  > = ({ filter, title, data, isLoading, error, transferFilter = 'no-transfers', onTransferFilterChange }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const executionLineItems: MinimalExecutionLineItem[] = useMemo(() => {
     if (!data?.nodes) return [];
-    return data.nodes.map((item) => ({
+
+    let nodes = data.nodes;
+
+    if (filter.account_category === 'ch' && transferFilter !== 'all') {
+      const isTransfer = (code: string) => code.startsWith('51') || code.startsWith('55');
+      nodes = nodes.filter(item => {
+        const code = item.ec_c || '';
+        const isTrans = isTransfer(code);
+        return transferFilter === 'transfers-only' ? isTrans : !isTrans;
+      });
+    }
+
+    return nodes.map((item) => ({
       account_category: filter.account_category, // Assuming filter.account_category is 'ch' or 'vn'
       amount: item.amount,
       economicClassification: {
@@ -40,7 +62,7 @@ export const EntityAnalyticsLineItems: React.FC<
         functional_name: item.fn_n,
       },
     }));
-  }, [data, filter.account_category]);
+  }, [data, filter.account_category, transferFilter]);
 
   const {
     expenseSearchTerm,
@@ -116,6 +138,37 @@ export const EntityAnalyticsLineItems: React.FC<
           onChange={handleSearchChange}
         />
       </CardHeader>
+      {filter.account_category === 'ch' && onTransferFilterChange && (
+        <div className="px-6 pb-4 flex items-center gap-2 w-full sm:w-auto">
+          <Tabs value={transferFilter} onValueChange={(v) => onTransferFilterChange(v as any)} className="w-full sm:w-auto">
+            <TabsList className="flex w-full justify-start overflow-x-auto sm:w-auto sm:overflow-visible no-scrollbar">
+              <TabsTrigger value="no-transfers" className="flex-shrink-0"><Trans>Without Transfers</Trans></TabsTrigger>
+              <TabsTrigger value="all" className="flex-shrink-0"><Trans>All</Trans></TabsTrigger>
+              <TabsTrigger value="transfers-only" className="flex-shrink-0"><Trans>Transfers Only</Trans></TabsTrigger>
+            </TabsList>
+          </Tabs>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Info className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground" />
+            </PopoverTrigger>
+            <PopoverContent className="w-96">
+              <div className="space-y-3">
+                <h4 className="font-medium leading-none"><Trans>Filter Transfers</Trans></h4>
+                <p className="text-sm text-muted-foreground">
+                  <Trans>
+                    Public institutions often transfer funds between each other (e.g., from the state budget to local budgets). These transfers can double-count spending if not filtered.
+                  </Trans>
+                </p>
+                <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
+                  <li><strong><Trans>Without Transfers</Trans>:</strong> <Trans>Shows only direct spending by this entity. Excludes funds moved to other institutions (codes 51 and 55).</Trans></li>
+                  <li><strong><Trans>All</Trans>:</strong> <Trans>Shows all spending, including both direct payments and transfers to other institutions.</Trans></li>
+                  <li><strong><Trans>Transfers Only</Trans>:</strong> <Trans>Shows only the funds transferred to other public administration units.</Trans></li>
+                </ul>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
+      )}
       <CardContent className="flex-grow">
         {isLoading ? (
           <EntityAnalyticsLineItemsSkeleton itemCount={10} />

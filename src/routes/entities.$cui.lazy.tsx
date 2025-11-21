@@ -115,6 +115,8 @@ function EntityDetailsPage() {
   const treemapPrimary = search.treemapPrimary as 'fn' | 'ec' | undefined
   const accountCategory = search.accountCategory as 'ch' | 'vn' | undefined
 
+  const transferFilter = search.transferFilter as 'all' | 'no-transfers' | 'transfers-only' | undefined
+
   const reportPeriod = useMemo(() => getInitialFilterState(period, selectedYear, month, quarter), [period, selectedYear, month, quarter])
   const trendPeriod = useMemo(() => makeTrendPeriod(period, selectedYear, START_YEAR, END_YEAR), [period, selectedYear])
   const years = useMemo(() => Array.from({ length: END_YEAR - START_YEAR + 1 }, (_, idx) => END_YEAR - idx), [])
@@ -211,6 +213,10 @@ function EntityDetailsPage() {
 
   const handleAccountCategoryChange = useCallback((category: 'ch' | 'vn') => {
     updateSearch({ accountCategory: category })
+  }, [updateSearch])
+
+  const handleTransferFilterChange = useCallback((filter: 'all' | 'no-transfers' | 'transfers-only') => {
+    updateSearch({ transferFilter: filter })
   }, [updateSearch])
 
   const handleNormalizationChange = useCallback((norm: Normalization) => {
@@ -379,12 +385,13 @@ function EntityDetailsPage() {
         handleAccountCategoryChange={handleAccountCategoryChange}
         treemapPath={(search as any).treemapPath}
         handleTreemapPathChange={handleTreemapPathChange}
+          transferFilter={transferFilter}
+          handleTransferFilterChange={handleTransferFilterChange}
       />
       </div>
     </div>
   )
 }
-
 
 interface ViewsContentProps {
   cui: string;
@@ -419,6 +426,8 @@ interface ViewsContentProps {
   handleAccountCategoryChange: (category: 'ch' | 'vn') => void;
   treemapPath?: string;
   handleTreemapPathChange: (path?: string) => void;
+  transferFilter?: 'all' | 'no-transfers' | 'transfers-only';
+  handleTransferFilterChange: (filter: 'all' | 'no-transfers' | 'transfers-only') => void;
 }
 
 function ViewsContent(props: ViewsContentProps) {
@@ -430,6 +439,7 @@ function ViewsContent(props: ViewsContentProps) {
     selectedFundingKey, selectedExpenseTypeKey, handleSelectedFundingKeyChange, handleSelectedExpenseTypeKeyChange,
     isLoading, treemapPrimary, accountCategory, handleTreemapPrimaryChange, handleAccountCategoryChange,
     treemapPath, handleTreemapPathChange,
+    transferFilter, handleTransferFilterChange,
   } = props;
 
   const trendsViewProps = {
@@ -453,6 +463,8 @@ function ViewsContent(props: ViewsContentProps) {
     selectedExpenseTypeKey: selectedExpenseTypeKey ?? '',
     onSelectedFundingKeyChange: handleSelectedFundingKeyChange,
     onSelectedExpenseTypeKeyChange: handleSelectedExpenseTypeKeyChange,
+    transferFilter,
+    onTransferFilterChange: handleTransferFilterChange,
   }
 
   return (
@@ -467,7 +479,7 @@ function ViewsContent(props: ViewsContentProps) {
           case 'ranking': return <RankingView />
           case 'related-charts': return <RelatedChartsView entity={entity} normalization={normalization} />
           case 'relationships': return <EntityRelationships cui={cui} />
-          default: return <Overview cui={cui} entity={entity} isLoading={isLoading} selectedYear={selectedYear} normalization={normalization} years={years} periodType={period} reportPeriod={reportPeriod} reportType={reportTypeState} mainCreditorCui={mainCreditorCui} search={search} onChartNormalizationChange={handleNormalizationChange} onYearChange={handleYearChange} onPeriodItemSelect={handlePeriodItemSelect} onSearchChange={handleSearchChange} onAnalyticsChange={handleAnalyticsChange} onLineItemsTabChange={handleLineItemsTabChange} onSelectedFundingKeyChange={handleSelectedFundingKeyChange} onSelectedExpenseTypeKeyChange={handleSelectedExpenseTypeKeyChange} treemapPrimary={treemapPrimary} accountCategory={accountCategory} onTreemapPrimaryChange={handleTreemapPrimaryChange} onAccountCategoryChange={handleAccountCategoryChange} treemapPath={treemapPath} onTreemapPathChange={handleTreemapPathChange} />
+          default: return <Overview cui={cui} entity={entity} isLoading={isLoading} selectedYear={selectedYear} normalization={normalization} years={years} periodType={period} reportPeriod={reportPeriod} reportType={reportTypeState} mainCreditorCui={mainCreditorCui} search={search} onChartNormalizationChange={handleNormalizationChange} onYearChange={handleYearChange} onPeriodItemSelect={handlePeriodItemSelect} onSearchChange={handleSearchChange} onAnalyticsChange={handleAnalyticsChange} onLineItemsTabChange={handleLineItemsTabChange} onSelectedFundingKeyChange={handleSelectedFundingKeyChange} onSelectedExpenseTypeKeyChange={handleSelectedExpenseTypeKeyChange} treemapPrimary={treemapPrimary} accountCategory={accountCategory} onTreemapPrimaryChange={handleTreemapPrimaryChange} onAccountCategoryChange={handleAccountCategoryChange} treemapPath={treemapPath} onTreemapPathChange={handleTreemapPathChange} transferFilter={transferFilter} onTransferFilterChange={handleTransferFilterChange} />
         }
       })()}
     </Suspense>

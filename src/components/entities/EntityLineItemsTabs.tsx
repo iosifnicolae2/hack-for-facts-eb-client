@@ -29,6 +29,8 @@ export interface EntityLineItemsTabsProps {
   onSelectedFundingKeyChange?: (key: string) => void;
   onSelectedExpenseTypeKeyChange?: (key: string) => void;
   types?: readonly ('income' | 'expense')[];
+  transferFilter?: 'all' | 'no-transfers' | 'transfers-only';
+  onTransferFilterChange?: (filter: 'all' | 'no-transfers' | 'transfers-only') => void;
 }
 
 export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
@@ -52,6 +54,8 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
   onSelectedFundingKeyChange,
   onSelectedExpenseTypeKeyChange,
   types,
+  transferFilter,
+  onTransferFilterChange,
 }) => {
   const renderedTypes = (types && types.length > 0 ? [...types] : ['income', 'expense']) as ('income' | 'expense')[];
   const isDualColumn = renderedTypes.length > 1;
@@ -123,6 +127,8 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
                 onInitialSearchChange={onSearchTermChange}
                 iconType={iconType}
                 searchFocusKey={searchFocusKey}
+                transferFilter={transferFilter}
+                onTransferFilterChange={onTransferFilterChange}
               />
             ))}
           </div>
@@ -165,6 +171,8 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
                 onInitialSearchChange={onSearchTermChange}
                 iconType={iconType}
                 searchFocusKey={searchFocusKey}
+                transferFilter={transferFilter}
+                onTransferFilterChange={onTransferFilterChange}
               />
             ))}
           </div>
@@ -207,6 +215,8 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
                 onInitialSearchChange={onSearchTermChange}
                 iconType={iconType}
                 searchFocusKey={searchFocusKey}
+                transferFilter={transferFilter}
+                onTransferFilterChange={onTransferFilterChange}
               />
             ))}
           </div>

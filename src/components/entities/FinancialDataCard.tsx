@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Accordion } from '@/components/ui/accordion';
 import { ArrowDownCircle, ArrowUpCircle } from 'lucide-react';
@@ -8,6 +8,11 @@ import {
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
 import { SearchToggleInput } from './SearchToggleInput';
 import GroupedChapterAccordion from "./GroupedChapterAccordion";
 import { GroupedChapter, GroupedFunctional, GroupedEconomic } from '@/schemas/financial';
@@ -117,6 +122,13 @@ export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.mem
 
 GroupedItemsDisplay.displayName = "GroupedItemsDisplay";
 
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Info } from 'lucide-react';
+
 interface FinancialDataCardProps {
   title: string;
   subtitle?: string;
@@ -135,6 +147,8 @@ interface FinancialDataCardProps {
   searchFocusKey?: string;
   normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
   onPrefetchYear?: (year: number) => void;
+  transferFilter?: 'all' | 'no-transfers' | 'transfers-only';
+  onTransferFilterChange?: (filter: 'all' | 'no-transfers' | 'transfers-only') => void;
 }
 
 export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
@@ -155,13 +169,67 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
   searchFocusKey,
   normalization,
   onPrefetchYear,
+  transferFilter = 'no-transfers',
+  onTransferFilterChange,
 }) => {
   const Icon = iconType === 'income' ? ArrowUpCircle : ArrowDownCircle;
   const iconColor = iconType === 'income' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400';
   const dateLabel = getYearLabel(currentYear, month, quarter);
+
+  const filteredGroups = useMemo(() => {
+    if (transferFilter === 'all') return groups;
+
+    const isTransfer = (code: string) => code.startsWith('51') || code.startsWith('55');
+
+    const filterEconomics = (economics: GroupedEconomic[]) => {
+      return economics.filter(eco => {
+        const isTrans = isTransfer(eco.code);
+        return transferFilter === 'transfers-only' ? isTrans : !isTrans;
+      });
+    };
+
+    const filterFunctionals = (functionals: GroupedFunctional[]): GroupedFunctional[] => {
+      return functionals.map(func => {
+        const hasEconomics = func.economics.length > 0;
+        const filteredEco = filterEconomics(func.economics);
+        const newTotal = filteredEco.reduce((sum, eco) => sum + eco.amount, 0);
+
+        return {
+          ...func,
+          economics: filteredEco,
+          // If we had economics originally, we must use the new total (which might be 0 if all filtered out).
+          // If we didn't have economics, we keep the original total (as we can't filter what we don't see).
+          totalAmount: hasEconomics ? newTotal : func.totalAmount
+        };
+      }).filter(func => func.totalAmount > 0 || (func.economics.length > 0 && func.economics.some(e => e.amount > 0)));
+    };
+
+    return groups.map(chapter => {
+      const filteredFunctionals = filterFunctionals(chapter.functionals);
+      const filteredSubchapters = (chapter.subchapters ?? []).map(sub => ({
+        ...sub,
+        functionals: filterFunctionals(sub.functionals),
+      })).map(sub => ({
+        ...sub,
+        totalAmount: sub.functionals.reduce((sum, f) => sum + f.totalAmount, 0)
+      })).filter(sub => sub.totalAmount > 0);
+
+      const newTotal = filteredFunctionals.reduce((sum, f) => sum + f.totalAmount, 0) +
+        filteredSubchapters.reduce((sum, s) => sum + s.totalAmount, 0);
+
+      return {
+        ...chapter,
+        functionals: filteredFunctionals,
+        subchapters: filteredSubchapters,
+        totalAmount: newTotal
+      };
+    }).filter(chapter => chapter.totalAmount > 0);
+
+  }, [groups, transferFilter]);
+
   return (
     <Card className="shadow-lg dark:bg-slate-800 h-full flex flex-col">
-      <CardHeader className="group flex flex-col space-y-0">
+      <CardHeader className="group flex flex-col space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <Icon className={`h-6 w-6 mr-2 ${iconColor}`} />
@@ -195,11 +263,46 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
             focusKey={searchFocusKey}
           />
         </div>
-        {subtitle && <span className="text-sm text-muted-foreground">{subtitle}</span>}
+
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          {subtitle && <span className="text-sm text-muted-foreground">{subtitle}</span>}
+        </div>
+
+        {iconType === 'expense' && onTransferFilterChange && (
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <Tabs value={transferFilter} onValueChange={(v) => onTransferFilterChange(v as any)} className="w-full sm:w-auto">
+              <TabsList className="flex w-full justify-start overflow-x-auto sm:w-auto sm:overflow-visible no-scrollbar">
+                <TabsTrigger value="no-transfers" className="flex-shrink-0"><Trans>Without Transfers</Trans></TabsTrigger>
+                <TabsTrigger value="all" className="flex-shrink-0"><Trans>All</Trans></TabsTrigger>
+                <TabsTrigger value="transfers-only" className="flex-shrink-0"><Trans>Transfers Only</Trans></TabsTrigger>
+              </TabsList>
+            </Tabs>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Info className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground" />
+              </PopoverTrigger>
+              <PopoverContent className="w-96">
+                <div className="space-y-3">
+                  <h4 className="font-medium leading-none"><Trans>Filter Transfers</Trans></h4>
+                  <p className="text-sm text-muted-foreground">
+                    <Trans>
+                      Public institutions often transfer funds between each other (e.g., from the state budget to local budgets). These transfers can double-count spending if not filtered.
+                    </Trans>
+                  </p>
+                  <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
+                    <li><strong><Trans>Without Transfers</Trans>:</strong> <Trans>Shows only direct spending by this entity. Excludes funds moved to other institutions (codes 51 and 55).</Trans></li>
+                    <li><strong><Trans>All</Trans>:</strong> <Trans>Shows all spending, including both direct payments and transfers to other institutions.</Trans></li>
+                    <li><strong><Trans>Transfers Only</Trans>:</strong> <Trans>Shows only the funds transferred to other public administration units.</Trans></li>
+                  </ul>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
+        )}
       </CardHeader>
       <CardContent className="flex-grow">
         <GroupedItemsDisplay
-          groups={groups}
+          groups={filteredGroups}
           title={title}
           baseTotal={baseTotal}
           searchTerm={searchTerm}

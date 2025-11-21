@@ -50,11 +50,13 @@ interface BaseTrendsViewProps {
   onTreemapPrimaryChange?: (primary: 'fn' | 'ec') => void;
   treemapPath?: string;
   onTreemapPathChange?: (path: string | undefined) => void;
+  transferFilter?: 'all' | 'no-transfers' | 'transfers-only';
+  onTransferFilterChange?: (filter: 'all' | 'no-transfers' | 'transfers-only') => void;
 }
 
 const TOP_CATEGORIES_COUNT = 10;
 
-export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, currentYear, onYearClick, onSelectPeriod, initialIncomeSearch, initialExpenseSearch, onSearchChange, isLoading, normalization, onNormalizationChange, reportPeriod, trendPeriod, reportType, years = [], lineItemsTab = 'functional', onLineItemsTabChange, selectedFundingKey = '', selectedExpenseTypeKey = '', onSelectedFundingKeyChange, onSelectedExpenseTypeKeyChange, treemapPrimary, onTreemapPrimaryChange, treemapPath, onTreemapPathChange }) => {
+export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, currentYear, onYearClick, onSelectPeriod, initialIncomeSearch, initialExpenseSearch, onSearchChange, isLoading, normalization, onNormalizationChange, reportPeriod, trendPeriod, reportType, years = [], lineItemsTab = 'functional', onLineItemsTabChange, selectedFundingKey = '', selectedExpenseTypeKey = '', onSelectedFundingKeyChange, onSelectedExpenseTypeKeyChange, treemapPrimary, onTreemapPrimaryChange, treemapPath, onTreemapPathChange, transferFilter = 'no-transfers', onTransferFilterChange }) => {
   const { cui } = useParams({ from: '/entities/$cui' });
   const isMobile = useIsMobile();
   const chapterMap = useMemo(() => getChapterMap(), []);
@@ -271,6 +273,8 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
         selectedExpenseTypeKey={selectedExpenseTypeKey}
         onSelectedFundingKeyChange={onSelectedFundingKeyChange}
         onSelectedExpenseTypeKeyChange={onSelectedExpenseTypeKeyChange}
+        transferFilter={transferFilter}
+        onTransferFilterChange={onTransferFilterChange}
         types={[type]}
       />
     </div>

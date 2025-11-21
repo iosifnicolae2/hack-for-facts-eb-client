@@ -86,6 +86,11 @@ export const entitySearchSchema = z.object({
         .enum(['open'])
         .optional()
         .describe('UI state for the notification modal.'),
+    transferFilter: z
+        .enum(['all', 'no-transfers', 'transfers-only'])
+        .optional()
+        .default('no-transfers')
+        .describe('Filter for transfers between institutions.'),
 });
 
 export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;

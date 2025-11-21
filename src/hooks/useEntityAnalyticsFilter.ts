@@ -26,6 +26,7 @@ const searchSchema = z.object({
   treemapPrimary: z.enum(['fn', 'ec']).optional(),
   treemapDepth: z.enum(['chapter', 'subchapter', 'paragraph']).optional(),
   treemapPath: z.string().optional(),
+  transferFilter: z.enum(['all', 'no-transfers', 'transfers-only']).optional().default('no-transfers'),
 })
 
 export type EntityAnalyticsSearch = z.infer<typeof searchSchema>
@@ -95,6 +96,10 @@ export function useEntityAnalyticsFilter() {
     navigate({ search: (prev) => ({ ...prev, treemapPath: path }), replace: true, resetScroll: false })
   }, [navigate])
 
+  const setTransferFilter = useCallback((filter: 'all' | 'no-transfers' | 'transfers-only') => {
+    navigate({ search: (prev) => ({ ...prev, transferFilter: filter }), replace: true, resetScroll: false })
+  }, [navigate])
+
   return {
     search,
     filter: search.filter,
@@ -114,5 +119,7 @@ export function useEntityAnalyticsFilter() {
     setTreemapDepth,
     treemapPath: search.treemapPath,
     setTreemapPath,
+    transferFilter: search.transferFilter,
+    setTransferFilter,
   }
 }
