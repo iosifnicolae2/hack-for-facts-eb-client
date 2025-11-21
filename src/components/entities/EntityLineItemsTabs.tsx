@@ -1,10 +1,14 @@
 import React from 'react';
-import type { ExecutionLineItem, FundingSourceOption } from '@/lib/api/entities';
+import { type ExecutionLineItem, type FundingSourceOption, filterLineItems } from '@/lib/api/entities';
 import { t } from '@lingui/core/macro';
 import type { TMonth, TQuarter } from '@/schemas/reporting';
 import { LineItemsGroupedSection } from './LineItemsGroupedSection';
 import { LineItemsBadgeFilters } from './LineItemsBadgeFilters';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { AdvancedFilterDropdown } from './AdvancedFilterDropdown';
+import { X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Trans } from '@lingui/react/macro';
 
 export interface EntityLineItemsTabsProps {
   lineItems: readonly ExecutionLineItem[];
@@ -31,6 +35,8 @@ export interface EntityLineItemsTabsProps {
   types?: readonly ('income' | 'expense')[];
   transferFilter?: 'all' | 'no-transfers' | 'transfers-only';
   onTransferFilterChange?: (filter: 'all' | 'no-transfers' | 'transfers-only') => void;
+  advancedFilter?: string;
+  onAdvancedFilterChange?: (filter: string | undefined) => void;
 }
 
 export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
@@ -56,11 +62,18 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
   types,
   transferFilter,
   onTransferFilterChange,
+  advancedFilter,
+  onAdvancedFilterChange,
 }) => {
   const renderedTypes = (types && types.length > 0 ? [...types] : ['income', 'expense']) as ('income' | 'expense')[];
   const isDualColumn = renderedTypes.length > 1;
   const badgeDisplayMode = isDualColumn ? 'combined' : 'single';
   const badgeAccountCategory = !isDualColumn ? (renderedTypes[0] === 'income' ? 'vn' : 'ch') : undefined;
+
+  // Filter items based on advanced filter
+  const filteredLineItems = React.useMemo(() => {
+    return filterLineItems(lineItems, advancedFilter);
+  }, [lineItems, advancedFilter]);
 
   const typeConfigs = renderedTypes.map((type) => ({
     type,
@@ -73,44 +86,78 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
 
   const gridClassName = `grid grid-cols-1 gap-6${isDualColumn ? ' lg:grid-cols-2' : ''}`;
 
+  const getAdvancedFilterLabel = (filter: string) => {
+    switch (filter) {
+      case 'economic:all': return t`All Economic`;
+      case 'economic:personal': return t`Personal Spending`;
+      case 'economic:goods': return t`Goods & Services`;
+      case 'economic:others': return t`Other Economic`;
+      case 'anomaly:missing': return t`Missing Items`;
+      case 'anomaly:value_changed': return t`Value Changed`;
+      default: return filter;
+    }
+  };
+
   return (
     <section className="space-y-2 mb-2">
-      <ToggleGroup
-        type="single"
-        value={lineItemsTab}
-        onValueChange={(value) => {
-          if (value) {
-            onLineItemsTabChange?.(value as 'functional' | 'funding' | 'expenseType');
-          }
-        }}
-        className="flex gap-2 justify-start"
-      >
-        <ToggleGroupItem
-          value="functional"
-          className="data-[state=on]:bg-black data-[state=on]:text-white py-6 sm:py-0"
+      <div className="flex flex-wrap items-center gap-2">
+        <ToggleGroup
+          type="single"
+          value={lineItemsTab}
+          onValueChange={(value) => {
+            if (value) {
+              onLineItemsTabChange?.(value as 'functional' | 'funding' | 'expenseType');
+            }
+          }}
+          className="flex gap-2 justify-start"
         >
-          {t`By Category`}
-        </ToggleGroupItem>
-        <ToggleGroupItem
-          value="funding"
-          className="data-[state=on]:bg-black data-[state=on]:text-white py-6 sm:py-0"
-        >
-          {t`By Funding Source`}
-        </ToggleGroupItem>
-        <ToggleGroupItem
-          value="expenseType"
-          className="data-[state=on]:bg-black data-[state=on]:text-white py-6 sm:py-0"
-        >
-          {t`By Expense Type`}
-        </ToggleGroupItem>
-      </ToggleGroup>
+          <ToggleGroupItem
+            value="functional"
+            className="data-[state=on]:bg-black data-[state=on]:text-white py-6 sm:py-0"
+          >
+            {t`By Category`}
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="funding"
+            className="data-[state=on]:bg-black data-[state=on]:text-white py-6 sm:py-0"
+          >
+            {t`By Funding Source`}
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="expenseType"
+            className="data-[state=on]:bg-black data-[state=on]:text-white py-6 sm:py-0"
+          >
+            {t`By Expense Type`}
+          </ToggleGroupItem>
+        </ToggleGroup>
+
+        {onAdvancedFilterChange && (
+          <>
+            <AdvancedFilterDropdown onSelect={onAdvancedFilterChange} currentFilter={advancedFilter} />
+            {advancedFilter && (
+              <div className="flex items-center gap-1 bg-muted px-3 py-1 rounded-full text-sm font-medium">
+                {getAdvancedFilterLabel(advancedFilter)}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-4 w-4 hover:bg-transparent"
+                  onClick={() => onAdvancedFilterChange(undefined)}
+                >
+                  <X className="h-3 w-3" />
+                  <span className="sr-only"><Trans>Remove filter</Trans></span>
+                </Button>
+              </div>
+            )}
+          </>
+        )}
+      </div>
       {lineItemsTab === 'functional' && (
         <div className="mt-4">
           <div className={gridClassName}>
             {typeConfigs.map(({ type, title, searchTerm, onSearchTermChange, iconType, searchFocusKey }) => (
               <LineItemsGroupedSection
                 key={type}
-                items={lineItems}
+                items={filteredLineItems}
                 fundingSources={fundingSources}
                 type={type}
                 title={title}
@@ -137,7 +184,7 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
       {lineItemsTab === 'funding' && (
         <div className="mt-4">
           <LineItemsBadgeFilters
-            items={lineItems}
+            items={filteredLineItems}
             fundingSources={fundingSources}
             mode="funding"
             selectedKey={selectedFundingKey}
@@ -152,7 +199,7 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
             {typeConfigs.map(({ type, title, searchTerm, onSearchTermChange, iconType, searchFocusKey }) => (
               <LineItemsGroupedSection
                 key={type}
-                items={lineItems}
+                items={filteredLineItems}
                 fundingSources={fundingSources}
                 type={type}
                 title={title}
@@ -181,7 +228,7 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
       {lineItemsTab === 'expenseType' && (
         <div className="mt-4">
           <LineItemsBadgeFilters
-            items={lineItems}
+            items={filteredLineItems}
             fundingSources={fundingSources}
             mode="expenseType"
             selectedKey={selectedExpenseTypeKey}
@@ -196,7 +243,7 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
             {typeConfigs.map(({ type, title, searchTerm, onSearchTermChange, iconType, searchFocusKey }) => (
               <LineItemsGroupedSection
                 key={type}
-                items={lineItems}
+                items={filteredLineItems}
                 fundingSources={fundingSources}
                 type={type}
                 title={title}

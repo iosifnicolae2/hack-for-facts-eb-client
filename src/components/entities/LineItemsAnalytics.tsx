@@ -2,7 +2,6 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { BarChart, Bar, PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, XAxis, YAxis, CartesianGrid, LabelList } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { EntityDetailsData } from '@/lib/api/entities';
 import { getNormalizationUnit } from '@/lib/utils';
 import { PieChartIcon, BarChartIcon } from 'lucide-react';
 import {
@@ -20,7 +19,7 @@ import { TMonth, TQuarter } from '@/schemas/reporting';
 import { getYearLabel } from './utils';
 
 interface AnalyticsProps {
-    lineItems?: EntityDetailsData['executionLineItems'];
+    lineItems?: { nodes: readonly import('@/lib/api/entities').ExecutionLineItem[] } | null;
     analyticsYear: number;
     month?: TMonth;
     quarter?: TQuarter;

@@ -219,6 +219,12 @@ function EntityDetailsPage() {
     updateSearch({ transferFilter: filter })
   }, [updateSearch])
 
+  const advancedFilter = search.advancedFilter as string | undefined
+
+  const handleAdvancedFilterChange = useCallback((filter: string | undefined) => {
+    updateSearch({ advancedFilter: filter })
+  }, [updateSearch])
+
   const handleNormalizationChange = useCallback((norm: Normalization) => {
     updateSearch({ normalization: norm })
     Analytics.capture(Analytics.EVENTS.EntityViewOpened, { cui, view: activeView, normalization: norm })
@@ -387,7 +393,9 @@ function EntityDetailsPage() {
         handleTreemapPathChange={handleTreemapPathChange}
           transferFilter={transferFilter}
           handleTransferFilterChange={handleTransferFilterChange}
-      />
+          advancedFilter={advancedFilter}
+          handleAdvancedFilterChange={handleAdvancedFilterChange}
+        />
       </div>
     </div>
   )
@@ -428,6 +436,8 @@ interface ViewsContentProps {
   handleTreemapPathChange: (path?: string) => void;
   transferFilter?: 'all' | 'no-transfers' | 'transfers-only';
   handleTransferFilterChange: (filter: 'all' | 'no-transfers' | 'transfers-only') => void;
+  advancedFilter?: string;
+  handleAdvancedFilterChange: (filter: string | undefined) => void;
 }
 
 function ViewsContent(props: ViewsContentProps) {
@@ -440,6 +450,7 @@ function ViewsContent(props: ViewsContentProps) {
     isLoading, treemapPrimary, accountCategory, handleTreemapPrimaryChange, handleAccountCategoryChange,
     treemapPath, handleTreemapPathChange,
     transferFilter, handleTransferFilterChange,
+    advancedFilter, handleAdvancedFilterChange,
   } = props;
 
   const trendsViewProps = {
@@ -465,6 +476,8 @@ function ViewsContent(props: ViewsContentProps) {
     onSelectedExpenseTypeKeyChange: handleSelectedExpenseTypeKeyChange,
     transferFilter,
     onTransferFilterChange: handleTransferFilterChange,
+    advancedFilter,
+    onAdvancedFilterChange: handleAdvancedFilterChange,
   }
 
   return (
@@ -479,7 +492,7 @@ function ViewsContent(props: ViewsContentProps) {
           case 'ranking': return <RankingView />
           case 'related-charts': return <RelatedChartsView entity={entity} normalization={normalization} />
           case 'relationships': return <EntityRelationships cui={cui} />
-          default: return <Overview cui={cui} entity={entity} isLoading={isLoading} selectedYear={selectedYear} normalization={normalization} years={years} periodType={period} reportPeriod={reportPeriod} reportType={reportTypeState} mainCreditorCui={mainCreditorCui} search={search} onChartNormalizationChange={handleNormalizationChange} onYearChange={handleYearChange} onPeriodItemSelect={handlePeriodItemSelect} onSearchChange={handleSearchChange} onAnalyticsChange={handleAnalyticsChange} onLineItemsTabChange={handleLineItemsTabChange} onSelectedFundingKeyChange={handleSelectedFundingKeyChange} onSelectedExpenseTypeKeyChange={handleSelectedExpenseTypeKeyChange} treemapPrimary={treemapPrimary} accountCategory={accountCategory} onTreemapPrimaryChange={handleTreemapPrimaryChange} onAccountCategoryChange={handleAccountCategoryChange} treemapPath={treemapPath} onTreemapPathChange={handleTreemapPathChange} transferFilter={transferFilter} onTransferFilterChange={handleTransferFilterChange} />
+          default: return <Overview cui={cui} entity={entity} isLoading={isLoading} selectedYear={selectedYear} normalization={normalization} years={years} periodType={period} reportPeriod={reportPeriod} reportType={reportTypeState} mainCreditorCui={mainCreditorCui} search={search} onChartNormalizationChange={handleNormalizationChange} onYearChange={handleYearChange} onPeriodItemSelect={handlePeriodItemSelect} onSearchChange={handleSearchChange} onAnalyticsChange={handleAnalyticsChange} onLineItemsTabChange={handleLineItemsTabChange} onSelectedFundingKeyChange={handleSelectedFundingKeyChange} onSelectedExpenseTypeKeyChange={handleSelectedExpenseTypeKeyChange} treemapPrimary={treemapPrimary} accountCategory={accountCategory} onTreemapPrimaryChange={handleTreemapPrimaryChange} onAccountCategoryChange={handleAccountCategoryChange} treemapPath={treemapPath} onTreemapPathChange={handleTreemapPathChange} transferFilter={transferFilter} onTransferFilterChange={handleTransferFilterChange} advancedFilter={advancedFilter} onAdvancedFilterChange={handleAdvancedFilterChange} />
         }
       })()}
     </Suspense>

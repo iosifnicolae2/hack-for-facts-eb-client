@@ -91,6 +91,10 @@ export const entitySearchSchema = z.object({
         .optional()
         .default('no-transfers')
         .describe('Filter for transfers between institutions.'),
+    advancedFilter: z
+        .string()
+        .optional()
+        .describe('Advanced filter for line items (e.g., economic:personal, anomaly:missing).'),
 });
 
 export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;

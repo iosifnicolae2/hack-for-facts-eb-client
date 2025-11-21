@@ -447,6 +447,10 @@ msgstr "Adaugă serie de date"
 msgid "Add entity notification"
 msgstr "Adaugă notificare entitate"
 
+#: src/components/entities/AdvancedFilterDropdown.tsx:41
+msgid "Add Filter"
+msgstr "Adaugă filtru"
+
 #: src/components/charts/components/series-config/CalculationConfig.tsx:162
 msgid "Add Number"
 msgstr "Adaugă număr"
@@ -549,9 +553,13 @@ msgid "Alerts when important changes occur"
 msgstr "Alerte când apar modificări importante"
 
 #: src/components/entities/EntityReportControls.tsx:60
+#: src/components/entities/FinancialDataCard.tsx:276
+#: src/components/entities/FinancialDataCard.tsx:294
 #: src/components/entities/LineItemsBadgeFilters.tsx:166
-#: src/components/entities/LineItemsGroupedSection.tsx:168
-#: src/components/entities/LineItemsGroupedSection.tsx:170
+#: src/components/entities/LineItemsGroupedSection.tsx:172
+#: src/components/entities/LineItemsGroupedSection.tsx:174
+#: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:146
+#: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:164
 #: src/routes/charts/index.lazy.tsx:245
 msgid "All"
 msgstr "Toate"
@@ -569,6 +577,10 @@ msgstr "Toate modificările au fost salvate"
 #: src/components/classification-explorer/ClassificationInfo.tsx:42
 msgid "All Classifications"
 msgstr "Toate clasificările"
+
+#: src/components/entities/EntityLineItemsTabs.tsx:91
+msgid "All Economic"
+msgstr "Toate categoriile economice"
 
 #: src/routes/privacy.lazy.tsx:97
 msgid "All processors are bound by data protection agreements and GDPR-compliant safeguards, including standard contractual clauses for international transfers."
@@ -805,8 +817,8 @@ msgstr "Ambele"
 msgid "Browse and download all financial reports submitted by this entity"
 msgstr "Răsfoiți și descărcați toate rapoartele financiare depuse de această entitate"
 
-#: src/components/entities/views/Overview.tsx:242
-#: src/components/entities/views/TrendsView.tsx:199
+#: src/components/entities/views/Overview.tsx:259
+#: src/components/entities/views/TrendsView.tsx:204
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:90
 #: src/routes/budget-explorer.lazy.tsx:373
 msgid "Budget Distribution"
@@ -848,15 +860,23 @@ msgstr "Editare date în masă"
 msgid "Bulk edit filters"
 msgstr "Editare în masă a filtrelor"
 
-#: src/components/entities/EntityLineItemsTabs.tsx:88
+#: src/components/entities/AdvancedFilterDropdown.tsx:58
+msgid "By Anomaly"
+msgstr "După anomalie"
+
+#: src/components/entities/EntityLineItemsTabs.tsx:118
 msgid "By Category"
 msgstr "Pe categorii"
 
-#: src/components/entities/EntityLineItemsTabs.tsx:100
+#: src/components/entities/AdvancedFilterDropdown.tsx:46
+msgid "By Economic Category"
+msgstr "După categoria economică"
+
+#: src/components/entities/EntityLineItemsTabs.tsx:130
 msgid "By Expense Type"
 msgstr "După tipul cheltuielii"
 
-#: src/components/entities/EntityLineItemsTabs.tsx:94
+#: src/components/entities/EntityLineItemsTabs.tsx:124
 msgid "By Funding Source"
 msgstr "După sursa de finanțare"
 
@@ -1476,12 +1496,12 @@ msgstr "Categorii detaliate"
 msgid "Detailed Line Items Breakdown"
 msgstr "Detalierea liniilor bugetare"
 
-#: src/routes/entities.$cui.lazy.tsx:280
+#: src/routes/entities.$cui.lazy.tsx:292
 msgid "Details:"
 msgstr "Detalii:"
 
 #: src/components/entities/LineItemsBadgeFilters.tsx:81
-#: src/components/entities/LineItemsGroupedSection.tsx:111
+#: src/components/entities/LineItemsGroupedSection.tsx:115
 msgid "Development"
 msgstr "Dezvoltare"
 
@@ -1551,8 +1571,8 @@ msgstr "Ec"
 
 #: src/components/classification-explorer/ClassificationExplorer.tsx:195
 #: src/components/classification-explorer/ClassificationExplorer.tsx:196
-#: src/components/entities/views/Overview.tsx:266
-#: src/components/entities/views/TrendsView.tsx:202
+#: src/components/entities/views/Overview.tsx:283
+#: src/components/entities/views/TrendsView.tsx:207
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:114
 #: src/routes/budget-explorer.lazy.tsx:419
 msgid "Economic"
@@ -1753,7 +1773,7 @@ msgstr "este egal cu"
 msgid "Error"
 msgstr "Eroare"
 
-#: src/routes/entities.$cui.lazy.tsx:277
+#: src/routes/entities.$cui.lazy.tsx:289
 msgid "Error Fetching Entity Details"
 msgstr "Eroare la preluarea detaliilor entității"
 
@@ -1765,7 +1785,7 @@ msgstr "Eroare la încărcarea analizei"
 msgid "Error Loading Chart Data"
 msgstr "Eroare la încărcarea datelor graficului"
 
-#: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:123
+#: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:176
 msgid "Error loading data"
 msgstr "Eroare la încărcarea datelor"
 
@@ -1883,17 +1903,17 @@ msgstr "Excluzând fluxurile inter-bugetare și operațiunile financiare"
 msgid "Expense Trends"
 msgstr "Evoluția cheltuielilor"
 
-#: src/components/entities/LineItemsGroupedSection.tsx:175
+#: src/components/entities/LineItemsGroupedSection.tsx:179
 msgid "Expense Type"
 msgstr "Tip cheltuială"
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:63
 #: src/components/entities/EntityFinancialTrends.tsx:244
 #: src/components/entities/EntityLineItems.tsx:95
-#: src/components/entities/EntityLineItemsTabs.tsx:63
-#: src/components/entities/LineItemsAnalytics.tsx:118
+#: src/components/entities/EntityLineItemsTabs.tsx:80
+#: src/components/entities/LineItemsAnalytics.tsx:117
 #: src/components/entities/views/MapView.tsx:141
-#: src/components/entities/views/Overview.tsx:262
+#: src/components/entities/views/Overview.tsx:279
 #: src/components/filters/account-type-filter/AccountCategoryRadio.tsx:12
 #: src/components/filters/EntityAnalyticsFilter.tsx:404
 #: src/components/filters/MapFilter.tsx:232
@@ -2025,6 +2045,11 @@ msgstr "Câmp de filtrare"
 msgid "Filter Reports"
 msgstr "Filtrare rapoarte"
 
+#: src/components/entities/FinancialDataCard.tsx:286
+#: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:156
+msgid "Filter Transfers"
+msgstr "Filtrare transferuri"
+
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:219
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:250
 msgid "Filtered"
@@ -2125,8 +2150,8 @@ msgstr "S-au găsit {replacementCount} apariții"
 
 #: src/components/classification-explorer/ClassificationExplorer.tsx:192
 #: src/components/classification-explorer/ClassificationExplorer.tsx:193
-#: src/components/entities/views/Overview.tsx:265
-#: src/components/entities/views/TrendsView.tsx:201
+#: src/components/entities/views/Overview.tsx:282
+#: src/components/entities/views/TrendsView.tsx:206
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:107
 #: src/routes/budget-explorer.lazy.tsx:416
 msgid "Functional"
@@ -2169,7 +2194,7 @@ msgstr "Prefix Funcțional"
 msgid "Funded Entities"
 msgstr "Entități Finanțate"
 
-#: src/components/entities/LineItemsGroupedSection.tsx:175
+#: src/components/entities/LineItemsGroupedSection.tsx:179
 msgid "Funding"
 msgstr "Finanțare"
 
@@ -2241,6 +2266,14 @@ msgstr "Mergi la lista principală"
 #: src/components/ui/shortcuts.tsx:22
 msgid "Go to Map"
 msgstr "Vezi harta"
+
+#: src/components/entities/EntityLineItemsTabs.tsx:93
+msgid "Goods & Services"
+msgstr "Bunuri și servicii"
+
+#: src/components/entities/AdvancedFilterDropdown.tsx:52
+msgid "Goods and Services"
+msgstr "Bunuri și servicii"
 
 #: src/routes/terms.lazy.tsx:100
 msgid "Governing law"
@@ -2345,9 +2378,9 @@ msgstr "Include context suplimentar pentru erori. Nu se atașează nicio identit
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:57
 #: src/components/entities/EntityFinancialTrends.tsx:230
-#: src/components/entities/LineItemsAnalytics.tsx:118
+#: src/components/entities/LineItemsAnalytics.tsx:117
 #: src/components/entities/views/MapView.tsx:145
-#: src/components/entities/views/Overview.tsx:261
+#: src/components/entities/views/Overview.tsx:278
 #: src/components/filters/account-type-filter/AccountCategoryRadio.tsx:13
 #: src/components/filters/EntityAnalyticsFilter.tsx:405
 #: src/components/filters/MapFilter.tsx:233
@@ -2374,7 +2407,7 @@ msgid "Income/Expenses"
 msgstr "Venituri/Cheltuieli"
 
 #: src/components/entities/EntityLineItems.tsx:76
-#: src/components/entities/EntityLineItemsTabs.tsx:63
+#: src/components/entities/EntityLineItemsTabs.tsx:80
 msgid "Incomes"
 msgstr "Venituri"
 
@@ -2606,7 +2639,7 @@ msgid "Locked"
 msgstr "Blocat"
 
 #: src/components/budget-explorer/BudgetTreemap.tsx:572
-#: src/components/entities/LineItemsAnalytics.tsx:143
+#: src/components/entities/LineItemsAnalytics.tsx:142
 msgid "Main Categories"
 msgstr "Categorii Principale"
 
@@ -2714,6 +2747,11 @@ msgstr "Minim"
 #: src/components/classification-explorer/ClassificationDescription.tsx:41
 msgid "Missing description"
 msgstr "Descriere lipsă"
+
+#: src/components/entities/AdvancedFilterDropdown.tsx:60
+#: src/components/entities/EntityLineItemsTabs.tsx:95
+msgid "Missing Items"
+msgstr "Elemente lipsă"
 
 #: src/components/classification-explorer/ClassificationChildren.tsx:46
 #: src/components/classification-explorer/ClassificationGrid.tsx:99
@@ -2845,7 +2883,7 @@ msgid "No"
 msgstr "Nu"
 
 #. placeholder {0}: type === 'income' ? 'income' : 'expense'
-#: src/components/entities/LineItemsGroupedSection.tsx:184
+#: src/components/entities/LineItemsGroupedSection.tsx:188
 msgid "No {0} data available for this period."
 msgstr "Nu sunt disponibile date {0} pentru această perioadă."
 
@@ -2908,7 +2946,7 @@ msgstr "Nu sunt date disponibile pentru tabel."
 msgid "No data available to display financial evolution."
 msgstr "Nu sunt date disponibile pentru afișarea evoluției financiare."
 
-#: src/routes/entities.$cui.lazy.tsx:292
+#: src/routes/entities.$cui.lazy.tsx:304
 msgid "No Data Found"
 msgstr "Nu s-au găsit date"
 
@@ -2940,7 +2978,7 @@ msgstr "Nu este disponibilă o detaliere economică pentru venituri."
 msgid "No enabled series data available to display."
 msgstr "Nu există date disponibile în seriile activate pentru a fi afișate."
 
-#: src/routes/entities.$cui.lazy.tsx:294
+#: src/routes/entities.$cui.lazy.tsx:306
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "Nu s-au găsit detalii despre entitate pentru CUI: <0>{cui}</0>. Este posibil ca această entitate să nu existe sau să nu aibă date asociate."
 
@@ -2952,7 +2990,7 @@ msgstr "Niciun favorit încă"
 msgid "No Filters Applied"
 msgstr "Niciun filtru aplicat"
 
-#: src/components/entities/LineItemsGroupedSection.tsx:195
+#: src/components/entities/LineItemsGroupedSection.tsx:199
 msgid "No grouping available for the selected filter."
 msgstr "Nicio grupare disponibilă pentru filtrul selectat."
 
@@ -3105,7 +3143,7 @@ msgstr "Deschide în Editorul de Grafice"
 msgid "Open in charts"
 msgstr "Deschide în grafice"
 
-#: src/components/entities/views/Overview.tsx:248
+#: src/components/entities/views/Overview.tsx:265
 #: src/routes/budget-explorer.lazy.tsx:380
 msgid "Open in entity analytics"
 msgstr "Deschide în analitice entitate"
@@ -3120,7 +3158,7 @@ msgid "Open Search"
 msgstr "Deschide Căutarea"
 
 #: src/components/entities/LineItemsBadgeFilters.tsx:84
-#: src/components/entities/LineItemsGroupedSection.tsx:111
+#: src/components/entities/LineItemsGroupedSection.tsx:115
 msgid "Operations"
 msgstr "Operațiuni"
 
@@ -3147,6 +3185,10 @@ msgstr "Conturi de utilizator opționale pentru buletine informative și notific
 #: src/components/ui/shortcuts.tsx:105
 msgid "or"
 msgstr "sau"
+
+#: src/components/entities/EntityLineItemsTabs.tsx:94
+msgid "Other Economic"
+msgstr "Alte categorii economice"
 
 #: src/hooks/useEntityViews.tsx:14
 msgid "Overview"
@@ -3216,6 +3258,11 @@ msgstr "Perioadă"
 msgid "Period Type"
 msgstr "Tip perioadă"
 
+#: src/components/entities/AdvancedFilterDropdown.tsx:48
+#: src/components/entities/EntityLineItemsTabs.tsx:92
+msgid "Personal Spending"
+msgstr "Cheltuieli de personal"
+
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:52
 msgid "Pie Chart (Aggregated)"
 msgstr "Grafic circular (agregat)"
@@ -3277,6 +3324,11 @@ msgstr "Se procesează..."
 #: src/components/footer/AppFooter.tsx:81
 msgid "Product"
 msgstr "Produs"
+
+#: src/components/entities/FinancialDataCard.tsx:288
+#: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:158
+msgid "Public institutions often transfer funds between each other (e.g., from the state budget to local budgets). These transfers can double-count spending if not filtered."
+msgstr "Instituțiile publice transferă adesea fonduri între ele (de exemplu, de la bugetul de stat la bugetele locale). Aceste transferuri pot duce la dublarea cheltuielilor dacă nu sunt filtrate."
 
 #: src/routes/privacy.lazy.tsx:86
 msgid "Public sector information from Ministerul Finanțelor. No government affiliation."
@@ -3344,6 +3396,10 @@ msgstr "Valori relative"
 msgid "Remove condition"
 msgstr "Elimină condiția"
 
+#: src/components/entities/EntityLineItemsTabs.tsx:147
+msgid "Remove filter"
+msgstr "Elimină filtrul"
+
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:124
 msgid "Replace"
 msgstr "Înlocuiește"
@@ -3377,7 +3433,7 @@ msgstr "Entitate raportoare"
 msgid "Reporting filters"
 msgstr "Filtre de raportare"
 
-#: src/routes/entities.$cui.lazy.tsx:325
+#: src/routes/entities.$cui.lazy.tsx:337
 msgid "Reporting period"
 msgstr "Perioada de raportare"
 
@@ -3722,6 +3778,21 @@ msgstr "Afișează valori relative (%)"
 msgid "Show Tooltip"
 msgstr "Afișează indiciu"
 
+#: src/components/entities/FinancialDataCard.tsx:294
+#: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:164
+msgid "Shows all spending, including both direct payments and transfers to other institutions."
+msgstr "Afișează toate cheltuielile, incluzând atât plățile directe, cât și transferurile către alte instituții."
+
+#: src/components/entities/FinancialDataCard.tsx:293
+#: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:163
+msgid "Shows only direct spending by this entity. Excludes funds moved to other institutions (codes 51 and 55)."
+msgstr "Afișează doar cheltuielile directe ale acestei entități. Exclude fondurile transferate către alte instituții (codurile 51 și 55)."
+
+#: src/components/entities/FinancialDataCard.tsx:295
+#: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:165
+msgid "Shows only the funds transferred to other public administration units."
+msgstr "Afișează doar fondurile transferate către alte unități ale administrației publice."
+
 #: src/features/notifications/components/EntityNotificationBell.tsx:82
 #: src/routes/alerts/$alertId/index.lazy.tsx:163
 #: src/routes/alerts/new.lazy.tsx:152
@@ -3914,7 +3985,7 @@ msgstr "Software-ul, designul și conținutul original al Serviciului sunt prote
 msgid "The share link you are trying to access is invalid or no longer available."
 msgstr "Linkul de partajare pe care încerci să-l accesezi este invalid sau nu mai este disponibil."
 
-#: src/routes/entities.$cui.lazy.tsx:279
+#: src/routes/entities.$cui.lazy.tsx:291
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "A apărut o problemă la preluarea detaliilor pentru CUI: <0>{cui}</0>."
 
@@ -4018,11 +4089,11 @@ msgstr "Comută tema"
 msgid "Tooltip"
 msgstr "Indiciu"
 
-#: src/components/entities/views/TrendsView.tsx:95
+#: src/components/entities/views/TrendsView.tsx:100
 msgid "Top {TOP_CATEGORIES_COUNT} Income Categories for {entityName}"
 msgstr "Top {TOP_CATEGORIES_COUNT} categorii de venituri pentru {entityName}"
 
-#: src/components/entities/views/TrendsView.tsx:95
+#: src/components/entities/views/TrendsView.tsx:100
 msgid "Top {TOP_CATEGORIES_COUNT} Spending Categories for {entityName}"
 msgstr "Top {TOP_CATEGORIES_COUNT} categorii de cheltuieli pentru {entityName}"
 
@@ -4097,13 +4168,20 @@ msgstr "Venituri totale"
 msgid "Total Spending"
 msgstr "Cheltuieli totale"
 
-#: src/components/entities/FinancialDataCard.tsx:81
+#: src/components/entities/FinancialDataCard.tsx:86
 msgid "Total:"
 msgstr "Total:"
 
 #: src/components/budget-explorer/SpendingBreakdown.tsx:126
 msgid "Transfers Between Institutions"
 msgstr "Transferuri între instituții"
+
+#: src/components/entities/FinancialDataCard.tsx:277
+#: src/components/entities/FinancialDataCard.tsx:295
+#: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:147
+#: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:165
+msgid "Transfers Only"
+msgstr "Doar transferuri"
 
 #: src/components/footer/ChatFab.tsx:41
 msgid "Transparenta.eu – Support"
@@ -4188,12 +4266,12 @@ msgid "Unknown error"
 msgstr "Eroare necunoscută"
 
 #: src/components/entities/LineItemsBadgeFilters.tsx:71
-#: src/components/entities/LineItemsGroupedSection.tsx:106
+#: src/components/entities/LineItemsGroupedSection.tsx:110
 msgid "Unknown source"
 msgstr "Sursă necunoscută"
 
 #: src/components/entities/LineItemsBadgeFilters.tsx:87
-#: src/components/entities/LineItemsGroupedSection.tsx:111
+#: src/components/entities/LineItemsGroupedSection.tsx:115
 msgid "Unknown type"
 msgstr "Tip necunoscut"
 
@@ -4274,6 +4352,11 @@ msgstr "Responsabilitățile utilizatorului și asumarea riscului"
 msgid "Value"
 msgstr "Valoare"
 
+#: src/components/entities/AdvancedFilterDropdown.tsx:64
+#: src/components/entities/EntityLineItemsTabs.tsx:96
+msgid "Value Changed"
+msgstr "Valoare modificată"
+
 #: src/components/filters/EntityAnalyticsFilter.tsx:388
 #: src/components/maps/HeatmapDataTable.tsx:433
 #: src/routes/entity-analytics.lazy.tsx:190
@@ -4295,7 +4378,7 @@ msgstr "Vezi Graficul"
 #: src/components/charts/components/views/AnnotationConfigView.tsx:73
 #: src/components/charts/components/views/ChartConfigView.tsx:45
 #: src/components/charts/components/views/SeriesConfigView.tsx:157
-#: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:109
+#: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:131
 msgid "View Chart"
 msgstr "Vezi graficul"
 
@@ -4359,6 +4442,13 @@ msgstr "Ce date personale colectăm"
 #: src/routes/privacy.lazy.tsx:32
 msgid "Who we are"
 msgstr "Cine suntem"
+
+#: src/components/entities/FinancialDataCard.tsx:275
+#: src/components/entities/FinancialDataCard.tsx:293
+#: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:145
+#: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:163
+msgid "Without Transfers"
+msgstr "Fără transferuri"
 
 #: src/components/charts/components/views/SeriesConfigView.tsx:314
 msgid "X-Axis Prefix To Remove"

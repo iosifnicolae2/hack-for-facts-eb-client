@@ -1,4 +1,4 @@
-import { EntityDetailsData } from "@/lib/api/entities";
+import { EntityDetailsData, filterLineItems } from "@/lib/api/entities";
 import { EntityFinancialSummary } from "../EntityFinancialSummary"
 import { EntityFinancialTrends } from "../EntityFinancialTrends"
 import { EntityLineItemsTabs } from "../EntityLineItemsTabs"
@@ -68,6 +68,8 @@ interface OverviewProps {
     // Transfer filter
     transferFilter?: 'all' | 'no-transfers' | 'transfers-only';
     onTransferFilterChange?: (filter: 'all' | 'no-transfers' | 'transfers-only') => void;
+    advancedFilter?: string;
+    onAdvancedFilterChange?: (filter: string | undefined) => void;
 }
 
 export const Overview = ({
@@ -98,6 +100,8 @@ export const Overview = ({
     onTreemapPathChange,
     transferFilter,
     onTransferFilterChange,
+    advancedFilter,
+    onAdvancedFilterChange,
 }: OverviewProps) => {
     const { data: lineItems, isLoading: isLoadingLineItems } = useEntityExecutionLineItems({
         cui,
@@ -107,6 +111,14 @@ export const Overview = ({
         enabled: true,
         mainCreditorCui: mainCreditorCui
     });
+
+    const filteredLineItemsData = useMemo(() => {
+        if (!lineItems) return undefined;
+        return {
+            ...lineItems,
+            nodes: filterLineItems(lineItems.nodes, advancedFilter)
+        };
+    }, [lineItems, advancedFilter]);
 
     const debouncedPrefetch = useDebouncedCallback(
         (options: { reportPeriod: ReportPeriodInput, trendPeriod: ReportPeriodInput, reportType?: GqlReportType }) => {
@@ -155,9 +167,9 @@ export const Overview = ({
     }
 
     const filteredItems = useMemo(() => {
-        const nodes = lineItems?.nodes ?? []
+        const nodes = filteredLineItemsData?.nodes ?? []
         return nodes.filter((n: any) => n?.account_category === accountCategory)
-    }, [lineItems, accountCategory])
+    }, [filteredLineItemsData, accountCategory])
 
     // Sync local state with prop when it changes
     useEffect(() => {
@@ -292,7 +304,7 @@ export const Overview = ({
 
             <div className="space-y-6">
                 <EntityLineItemsTabs
-                    lineItems={lineItems?.nodes ?? []}
+                    lineItems={filteredLineItemsData?.nodes ?? []}
                     fundingSources={lineItems?.fundingSources ?? []}
                     currentYear={selectedYear}
                     month={search.month as TMonth}
@@ -313,10 +325,12 @@ export const Overview = ({
                     onSelectedExpenseTypeKeyChange={onSelectedExpenseTypeKeyChange}
                     transferFilter={transferFilter}
                     onTransferFilterChange={onTransferFilterChange}
+                    advancedFilter={advancedFilter}
+                    onAdvancedFilterChange={onAdvancedFilterChange}
                 />
 
                 <LineItemsAnalytics
-                    lineItems={lineItems}
+                    lineItems={filteredLineItemsData}
                     analyticsYear={selectedYear}
                     month={search.month as TMonth}
                     quarter={search.quarter as TQuarter}

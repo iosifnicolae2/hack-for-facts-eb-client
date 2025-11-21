@@ -459,3 +459,28 @@ export async function searchEntities(
     throw error; // Or return [];
   }
 }
+
+export const filterLineItems = (items: readonly ExecutionLineItem[], filter: string | undefined): readonly ExecutionLineItem[] => {
+  if (!filter) return items;
+
+  return items.filter(item => {
+    const ecCode = item.economicClassification?.economic_code || '';
+
+    switch (filter) {
+      case 'economic:all':
+        return true;
+      case 'economic:personal':
+        return ecCode.startsWith('10');
+      case 'economic:goods':
+        return ecCode.startsWith('20');
+      case 'economic:others':
+        return !ecCode.startsWith('10') && !ecCode.startsWith('20');
+      case 'anomaly:missing':
+        return item.anomaly === 'MISSING_LINE_ITEM';
+      case 'anomaly:value_changed':
+        return item.anomaly === 'YTD_ANOMALY';
+      default:
+        return true;
+    }
+  });
+};

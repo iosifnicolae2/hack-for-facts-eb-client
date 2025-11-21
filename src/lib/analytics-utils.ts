@@ -211,7 +211,7 @@ export const useIncomeSubchapterMap = () => {
   });
 };
 
-const aggregateByFunctionalCode = (items: ExecutionLineItem[]): Map<string, number> => {
+const aggregateByFunctionalCode = (items: readonly ExecutionLineItem[]): Map<string, number> => {
   const functionalGroups = new Map<string, number>();
   for (const item of items ?? []) {
     const fc = item.functionalClassification?.functional_code;
@@ -223,7 +223,7 @@ const aggregateByFunctionalCode = (items: ExecutionLineItem[]): Map<string, numb
   return functionalGroups;
 };
 
-export const getTopFunctionalGroupCodes = (items: ExecutionLineItem[], topN: number = 5): string[] => {
+export const getTopFunctionalGroupCodes = (items: readonly ExecutionLineItem[], topN: number = 5): string[] => {
   if (!items?.length) return [];
   const functionalGroups = aggregateByFunctionalCode(items);
   return [...functionalGroups.entries()]
@@ -233,7 +233,7 @@ export const getTopFunctionalGroupCodes = (items: ExecutionLineItem[], topN: num
 };
 
 export const processDataForAnalyticsChart = (
-  items: ExecutionLineItem[],
+  items: readonly ExecutionLineItem[],
   topN: number = 6
 ): { name: string; value: number }[] => {
   const chapterMap = getChapterMap();
