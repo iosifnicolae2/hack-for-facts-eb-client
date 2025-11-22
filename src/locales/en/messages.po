@@ -975,13 +975,13 @@ msgstr "Choose between essential-only or all cookies, then fine-tune options bel
 msgid "Choose operator"
 msgstr "Choose operator"
 
-#: src/components/common/classification-info-link.tsx:100
-#: src/components/common/classification-info-link.tsx:177
+#: src/components/common/classification-info-link.tsx:105
+#: src/components/common/classification-info-link.tsx:150
 msgid "classification"
 msgstr "classification"
 
-#: src/components/common/classification-info-link.tsx:91
-#: src/components/common/classification-info-link.tsx:168
+#: src/components/common/classification-info-link.tsx:96
+#: src/components/common/classification-info-link.tsx:141
 msgid "Classification Details"
 msgstr "Classification Details"
 
@@ -1030,8 +1030,8 @@ msgstr "Clear search"
 msgid "Clearing accounts"
 msgstr "Clearing accounts"
 
-#: src/components/common/classification-info-link.tsx:108
-#: src/components/common/classification-info-link.tsx:185
+#: src/components/common/classification-info-link.tsx:113
+#: src/components/common/classification-info-link.tsx:158
 msgid "Click the link below to explore all {type} classifications."
 msgstr "Click the link below to explore all {type} classifications."
 
@@ -1333,6 +1333,10 @@ msgstr "Creating…"
 msgid "Currency"
 msgstr "Currency"
 
+#: src/routes/$lang/learning/index.tsx:88
+msgid "Curriculum"
+msgstr "Curriculum"
+
 #: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:62
 msgid "Custom Data"
 msgstr "Custom Data"
@@ -1586,8 +1590,8 @@ msgstr "Ec"
 
 #: src/components/classification-explorer/ClassificationExplorer.tsx:195
 #: src/components/classification-explorer/ClassificationExplorer.tsx:196
-#: src/components/common/classification-info-link.tsx:52
-#: src/components/common/classification-info-link.tsx:129
+#: src/components/common/classification-info-link.tsx:89
+#: src/components/common/classification-info-link.tsx:134
 #: src/components/entities/views/Overview.tsx:283
 #: src/components/entities/views/TrendsView.tsx:207
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:114
@@ -1692,7 +1696,7 @@ msgstr "Enabled"
 msgid "Enabled alerts are evaluated monthly and included in your newsletter."
 msgstr "Enabled alerts are evaluated monthly and included in your newsletter."
 
-#: src/components/theme/language-toggle.tsx:34
+#: src/components/theme/language-toggle.tsx:38
 msgid "English"
 msgstr "English"
 
@@ -2124,6 +2128,10 @@ msgstr "Find Entity to Monitor"
 msgid "Find resources, report issues, or get in touch."
 msgstr "Find resources, report issues, or get in touch."
 
+#: src/components/learning/ModulePage.tsx:55
+msgid "Finish Course"
+msgstr "Finish Course"
+
 #: src/components/maps/utils.ts:31
 msgid "Fn"
 msgstr "Fn"
@@ -2167,8 +2175,8 @@ msgstr "Found {replacementCount} occurrence{0}"
 
 #: src/components/classification-explorer/ClassificationExplorer.tsx:192
 #: src/components/classification-explorer/ClassificationExplorer.tsx:193
-#: src/components/common/classification-info-link.tsx:52
-#: src/components/common/classification-info-link.tsx:129
+#: src/components/common/classification-info-link.tsx:89
+#: src/components/common/classification-info-link.tsx:134
 #: src/components/entities/views/Overview.tsx:282
 #: src/components/entities/views/TrendsView.tsx:206
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:107
@@ -2525,7 +2533,7 @@ msgstr "Keyboard Shortcuts"
 msgid "Label"
 msgstr "Label"
 
-#: src/components/theme/language-toggle.tsx:27
+#: src/components/theme/language-toggle.tsx:31
 msgid "Language"
 msgstr "Language"
 
@@ -2902,6 +2910,10 @@ msgstr "Newsletter consent and management"
 msgid "Newsletters and notifications"
 msgstr "Newsletters and notifications"
 
+#: src/components/learning/ModulePage.tsx:49
+msgid "Next"
+msgstr "Next"
+
 #: src/components/filters/flags-filter/index.tsx:24
 msgid "No"
 msgstr "No"
@@ -3214,6 +3226,7 @@ msgstr "or"
 msgid "Other Economic"
 msgstr "Other Economic"
 
+#: src/components/learning/LearningLayout.tsx:127
 #: src/hooks/useEntityViews.tsx:14
 msgid "Overview"
 msgstr "Overview"
@@ -3327,6 +3340,10 @@ msgstr "Preparing your share link..."
 #: src/routes/alerts/new.lazy.tsx:198
 msgid "Preview"
 msgstr "Preview"
+
+#: src/components/learning/ModulePage.tsx:36
+msgid "Previous"
+msgstr "Previous"
 
 #: src/components/entities/EntityReports.tsx:171
 msgid "Principal Aggregated"
@@ -3495,7 +3512,7 @@ msgstr "Revert"
 msgid "Review and manage alerts created from your custom data series."
 msgstr "Review and manage alerts created from your custom data series."
 
-#: src/components/theme/language-toggle.tsx:42
+#: src/components/theme/language-toggle.tsx:46
 msgid "Romanian"
 msgstr "Romanian"
 
@@ -3891,6 +3908,10 @@ msgstr "Standard"
 #: src/routes/privacy.lazy.tsx:135
 msgid "Standard Contractual Clauses (SCCs) approved by the European Commission"
 msgstr "Standard Contractual Clauses (SCCs) approved by the European Commission"
+
+#: src/routes/$lang/learning/index.tsx:34
+msgid "Start Learning"
+msgstr "Start Learning"
 
 #: src/components/alerts/components/AlertEditorView.tsx:187
 msgid "Static dataset"
@@ -4396,10 +4417,7 @@ msgstr "View"
 msgid "View all alerts"
 msgstr "View all alerts"
 
-#: src/components/common/classification-info-link.tsx:73
-#: src/components/common/classification-info-link.tsx:80
-#: src/components/common/classification-info-link.tsx:150
-#: src/components/common/classification-info-link.tsx:157
+#: src/components/common/classification-info-link.tsx:72
 msgid "View all classifications"
 msgstr "View all classifications"
 
@@ -4422,10 +4440,7 @@ msgstr "View Chart"
 msgid "View Details"
 msgstr "View Details"
 
-#: src/components/common/classification-info-link.tsx:58
-#: src/components/common/classification-info-link.tsx:65
-#: src/components/common/classification-info-link.tsx:135
-#: src/components/common/classification-info-link.tsx:142
+#: src/components/common/classification-info-link.tsx:59
 msgid "View full details"
 msgstr "View full details"
 

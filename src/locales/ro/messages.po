@@ -975,13 +975,13 @@ msgstr "Alegeți între cookie-uri doar esențiale sau toate cookie-urile, apoi 
 msgid "Choose operator"
 msgstr "Alegeți operatorul"
 
-#: src/components/common/classification-info-link.tsx:100
-#: src/components/common/classification-info-link.tsx:177
+#: src/components/common/classification-info-link.tsx:105
+#: src/components/common/classification-info-link.tsx:150
 msgid "classification"
 msgstr "clasificare"
 
-#: src/components/common/classification-info-link.tsx:91
-#: src/components/common/classification-info-link.tsx:168
+#: src/components/common/classification-info-link.tsx:96
+#: src/components/common/classification-info-link.tsx:141
 msgid "Classification Details"
 msgstr "Detalii clasificare"
 
@@ -1030,8 +1030,8 @@ msgstr "Șterge căutarea"
 msgid "Clearing accounts"
 msgstr "Conturi de decontare"
 
-#: src/components/common/classification-info-link.tsx:108
-#: src/components/common/classification-info-link.tsx:185
+#: src/components/common/classification-info-link.tsx:113
+#: src/components/common/classification-info-link.tsx:158
 msgid "Click the link below to explore all {type} classifications."
 msgstr "Faceți clic pe linkul de mai jos pentru a explora toate clasificările {type}."
 
@@ -1333,6 +1333,10 @@ msgstr "Se creează..."
 msgid "Currency"
 msgstr "Monedă"
 
+#: src/routes/$lang/learning/index.tsx:88
+msgid "Curriculum"
+msgstr ""
+
 #: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:62
 msgid "Custom Data"
 msgstr "Date personalizate"
@@ -1586,8 +1590,8 @@ msgstr "Ec"
 
 #: src/components/classification-explorer/ClassificationExplorer.tsx:195
 #: src/components/classification-explorer/ClassificationExplorer.tsx:196
-#: src/components/common/classification-info-link.tsx:52
-#: src/components/common/classification-info-link.tsx:129
+#: src/components/common/classification-info-link.tsx:89
+#: src/components/common/classification-info-link.tsx:134
 #: src/components/entities/views/Overview.tsx:283
 #: src/components/entities/views/TrendsView.tsx:207
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:114
@@ -1692,7 +1696,7 @@ msgstr "Activat"
 msgid "Enabled alerts are evaluated monthly and included in your newsletter."
 msgstr "Alertele activate sunt evaluate lunar și incluse în newsletter-ul dvs."
 
-#: src/components/theme/language-toggle.tsx:34
+#: src/components/theme/language-toggle.tsx:38
 msgid "English"
 msgstr "Engleză"
 
@@ -2124,6 +2128,10 @@ msgstr "Găsește entitate de monitorizat"
 msgid "Find resources, report issues, or get in touch."
 msgstr "Găsește resurse, raportează probleme sau ia legătura cu noi."
 
+#: src/components/learning/ModulePage.tsx:55
+msgid "Finish Course"
+msgstr ""
+
 #: src/components/maps/utils.ts:31
 msgid "Fn"
 msgstr "Fn"
@@ -2167,8 +2175,8 @@ msgstr "S-au găsit {replacementCount} apariții"
 
 #: src/components/classification-explorer/ClassificationExplorer.tsx:192
 #: src/components/classification-explorer/ClassificationExplorer.tsx:193
-#: src/components/common/classification-info-link.tsx:52
-#: src/components/common/classification-info-link.tsx:129
+#: src/components/common/classification-info-link.tsx:89
+#: src/components/common/classification-info-link.tsx:134
 #: src/components/entities/views/Overview.tsx:282
 #: src/components/entities/views/TrendsView.tsx:206
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:107
@@ -2520,7 +2528,7 @@ msgstr "Comenzi Rapide de la Tastatură"
 msgid "Label"
 msgstr "Etichetă"
 
-#: src/components/theme/language-toggle.tsx:27
+#: src/components/theme/language-toggle.tsx:31
 msgid "Language"
 msgstr "Limbă"
 
@@ -2897,6 +2905,10 @@ msgstr "Consimțământul și gestionarea buletinului informativ"
 msgid "Newsletters and notifications"
 msgstr "Buletine informative și notificări"
 
+#: src/components/learning/ModulePage.tsx:49
+msgid "Next"
+msgstr ""
+
 #: src/components/filters/flags-filter/index.tsx:24
 msgid "No"
 msgstr "Nu"
@@ -3209,6 +3221,7 @@ msgstr "sau"
 msgid "Other Economic"
 msgstr "Alte categorii economice"
 
+#: src/components/learning/LearningLayout.tsx:127
 #: src/hooks/useEntityViews.tsx:14
 msgid "Overview"
 msgstr "Prezentare generală"
@@ -3322,6 +3335,10 @@ msgstr "Se pregătește linkul de partajare..."
 #: src/routes/alerts/new.lazy.tsx:198
 msgid "Preview"
 msgstr "Previzualizare"
+
+#: src/components/learning/ModulePage.tsx:36
+msgid "Previous"
+msgstr ""
 
 #: src/components/entities/EntityReports.tsx:171
 msgid "Principal Aggregated"
@@ -3490,7 +3507,7 @@ msgstr "Anulează modificările"
 msgid "Review and manage alerts created from your custom data series."
 msgstr "Examinați și gestionați alertele create din seriile de date personalizate."
 
-#: src/components/theme/language-toggle.tsx:42
+#: src/components/theme/language-toggle.tsx:46
 msgid "Romanian"
 msgstr "Română"
 
@@ -3886,6 +3903,10 @@ msgstr "Standard"
 #: src/routes/privacy.lazy.tsx:135
 msgid "Standard Contractual Clauses (SCCs) approved by the European Commission"
 msgstr "Clauze Contractuale Standard (CCS) aprobate de Comisia Europeană"
+
+#: src/routes/$lang/learning/index.tsx:34
+msgid "Start Learning"
+msgstr ""
 
 #: src/components/alerts/components/AlertEditorView.tsx:187
 msgid "Static dataset"
@@ -4391,10 +4412,7 @@ msgstr "Vizualizare"
 msgid "View all alerts"
 msgstr "Vezi toate alertele"
 
-#: src/components/common/classification-info-link.tsx:73
-#: src/components/common/classification-info-link.tsx:80
-#: src/components/common/classification-info-link.tsx:150
-#: src/components/common/classification-info-link.tsx:157
+#: src/components/common/classification-info-link.tsx:72
 msgid "View all classifications"
 msgstr "Vizualizați toate clasificările"
 
@@ -4417,10 +4435,7 @@ msgstr "Vezi graficul"
 msgid "View Details"
 msgstr "Vezi detalii"
 
-#: src/components/common/classification-info-link.tsx:58
-#: src/components/common/classification-info-link.tsx:65
-#: src/components/common/classification-info-link.tsx:135
-#: src/components/common/classification-info-link.tsx:142
+#: src/components/common/classification-info-link.tsx:59
 msgid "View full details"
 msgstr "Vizualizați detaliile complete"
 

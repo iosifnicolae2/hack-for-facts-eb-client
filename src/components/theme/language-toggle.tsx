@@ -4,21 +4,25 @@ import { Trans } from "@lingui/react/macro";
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "../ui/sidebar";
 import { Analytics } from "@/lib/analytics";
 import { getUserLocale, setUserLocale } from "@/lib/utils";
-import { NavigateOptions, useNavigate } from "@tanstack/react-router";
+import { NavigateOptions, useNavigate, useLocation } from "@tanstack/react-router";
 
 export function LanguageToggle() {
     const { state } = useSidebar();
     const collapsed = state === "collapsed";
     const userLocale = getUserLocale();
     const navigate = useNavigate();
-
+    const location = useLocation();
+    
     async function setLocale(locale: "en" | "ro"): Promise<void> {
         await dynamicActivate(locale);
         document.documentElement.setAttribute("lang", locale);
         setUserLocale(locale);
         Analytics.capture(Analytics.EVENTS.LanguageChanged, { locale });
+        const currentPath = typeof window !== "undefined" ? window.location.pathname : location.pathname;
+        const hasLocalePrefix = /^\/(en|ro)(\/|$)/.test(currentPath);
+        const nextPath = hasLocalePrefix ? currentPath.replace(/^\/(en|ro)/, `/${locale}`) : currentPath;
         // Hard reload required, as some components don't update the translation immediately
-        navigate({ search: (prev: any) => ({ ...prev, lang: locale }), replace: true, reloadDocument: true } as NavigateOptions<any>);
+        navigate({ to: nextPath as any, search: (prev: any) => ({ ...prev, lang: locale }), replace: true, reloadDocument: true } as NavigateOptions<any>);
     }
 
     return (

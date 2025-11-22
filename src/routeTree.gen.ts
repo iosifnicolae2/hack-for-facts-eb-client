@@ -23,12 +23,26 @@ import { Route as SettingsProfileRouteImport } from './routes/settings/profile'
 import { Route as SettingsNotificationsRouteImport } from './routes/settings/notifications'
 import { Route as EntitiesCuiRouteImport } from './routes/entities.$cui'
 import { Route as AlertsNewRouteImport } from './routes/alerts/new'
+import { Route as RoLearningRouteRouteImport } from './routes/ro/learning/route'
+import { Route as EnLearningRouteRouteImport } from './routes/en/learning/route'
 import { Route as ChartsChartIdRouteRouteImport } from './routes/charts/$chartId/route'
 import { Route as AlertsAlertIdRouteRouteImport } from './routes/alerts/$alertId/route'
+import { Route as RoLearningIndexRouteImport } from './routes/ro/learning/index'
+import { Route as EnLearningIndexRouteImport } from './routes/en/learning/index'
 import { Route as ClassificationsFunctionalIndexRouteImport } from './routes/classifications/functional/index'
 import { Route as ClassificationsEconomicIndexRouteImport } from './routes/classifications/economic/index'
 import { Route as ClassificationsFunctionalCodeRouteImport } from './routes/classifications/functional/$code'
 import { Route as ClassificationsEconomicCodeRouteImport } from './routes/classifications/economic/$code'
+import { Route as RoLearningOrganizationHierarchyRouteImport } from './routes/ro/learning/organization/hierarchy'
+import { Route as RoLearningOrganizationFlowRouteImport } from './routes/ro/learning/organization/flow'
+import { Route as RoLearningFundamentalsStructureRouteImport } from './routes/ro/learning/fundamentals/structure'
+import { Route as RoLearningFundamentalsBasicsRouteImport } from './routes/ro/learning/fundamentals/basics'
+import { Route as RoLearningAdvancedConceptsRouteImport } from './routes/ro/learning/advanced/concepts'
+import { Route as EnLearningOrganizationHierarchyRouteImport } from './routes/en/learning/organization/hierarchy'
+import { Route as EnLearningOrganizationFlowRouteImport } from './routes/en/learning/organization/flow'
+import { Route as EnLearningFundamentalsStructureRouteImport } from './routes/en/learning/fundamentals/structure'
+import { Route as EnLearningFundamentalsBasicsRouteImport } from './routes/en/learning/fundamentals/basics'
+import { Route as EnLearningAdvancedConceptsRouteImport } from './routes/en/learning/advanced/concepts'
 
 const TermsLazyRouteImport = createFileRoute('/terms')()
 const BudgetExplorerLazyRouteImport = createFileRoute('/budget-explorer')()
@@ -138,6 +152,16 @@ const AlertsNewRoute = AlertsNewRouteImport.update({
   path: '/alerts/new',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/alerts/new.lazy').then((d) => d.Route))
+const RoLearningRouteRoute = RoLearningRouteRouteImport.update({
+  id: '/ro/learning',
+  path: '/ro/learning',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnLearningRouteRoute = EnLearningRouteRouteImport.update({
+  id: '/en/learning',
+  path: '/en/learning',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ChartsChartIdRouteRoute = ChartsChartIdRouteRouteImport.update({
   id: '/charts/$chartId',
   path: '/charts/$chartId',
@@ -162,6 +186,16 @@ const AlertsAlertIdIndexLazyRoute = AlertsAlertIdIndexLazyRouteImport.update({
 } as any).lazy(() =>
   import('./routes/alerts/$alertId/index.lazy').then((d) => d.Route),
 )
+const RoLearningIndexRoute = RoLearningIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => RoLearningRouteRoute,
+} as any)
+const EnLearningIndexRoute = EnLearningIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EnLearningRouteRoute,
+} as any)
 const ClassificationsFunctionalIndexRoute =
   ClassificationsFunctionalIndexRouteImport.update({
     id: '/classifications/functional/',
@@ -198,6 +232,66 @@ const ClassificationsEconomicCodeRoute =
   } as any).lazy(() =>
     import('./routes/classifications/economic/$code.lazy').then((d) => d.Route),
   )
+const RoLearningOrganizationHierarchyRoute =
+  RoLearningOrganizationHierarchyRouteImport.update({
+    id: '/organization/hierarchy',
+    path: '/organization/hierarchy',
+    getParentRoute: () => RoLearningRouteRoute,
+  } as any)
+const RoLearningOrganizationFlowRoute =
+  RoLearningOrganizationFlowRouteImport.update({
+    id: '/organization/flow',
+    path: '/organization/flow',
+    getParentRoute: () => RoLearningRouteRoute,
+  } as any)
+const RoLearningFundamentalsStructureRoute =
+  RoLearningFundamentalsStructureRouteImport.update({
+    id: '/fundamentals/structure',
+    path: '/fundamentals/structure',
+    getParentRoute: () => RoLearningRouteRoute,
+  } as any)
+const RoLearningFundamentalsBasicsRoute =
+  RoLearningFundamentalsBasicsRouteImport.update({
+    id: '/fundamentals/basics',
+    path: '/fundamentals/basics',
+    getParentRoute: () => RoLearningRouteRoute,
+  } as any)
+const RoLearningAdvancedConceptsRoute =
+  RoLearningAdvancedConceptsRouteImport.update({
+    id: '/advanced/concepts',
+    path: '/advanced/concepts',
+    getParentRoute: () => RoLearningRouteRoute,
+  } as any)
+const EnLearningOrganizationHierarchyRoute =
+  EnLearningOrganizationHierarchyRouteImport.update({
+    id: '/organization/hierarchy',
+    path: '/organization/hierarchy',
+    getParentRoute: () => EnLearningRouteRoute,
+  } as any)
+const EnLearningOrganizationFlowRoute =
+  EnLearningOrganizationFlowRouteImport.update({
+    id: '/organization/flow',
+    path: '/organization/flow',
+    getParentRoute: () => EnLearningRouteRoute,
+  } as any)
+const EnLearningFundamentalsStructureRoute =
+  EnLearningFundamentalsStructureRouteImport.update({
+    id: '/fundamentals/structure',
+    path: '/fundamentals/structure',
+    getParentRoute: () => EnLearningRouteRoute,
+  } as any)
+const EnLearningFundamentalsBasicsRoute =
+  EnLearningFundamentalsBasicsRouteImport.update({
+    id: '/fundamentals/basics',
+    path: '/fundamentals/basics',
+    getParentRoute: () => EnLearningRouteRoute,
+  } as any)
+const EnLearningAdvancedConceptsRoute =
+  EnLearningAdvancedConceptsRouteImport.update({
+    id: '/advanced/concepts',
+    path: '/advanced/concepts',
+    getParentRoute: () => EnLearningRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
@@ -211,6 +305,8 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsLazyRoute
   '/alerts/$alertId': typeof AlertsAlertIdRouteRouteWithChildren
   '/charts/$chartId': typeof ChartsChartIdRouteRouteWithChildren
+  '/en/learning': typeof EnLearningRouteRouteWithChildren
+  '/ro/learning': typeof RoLearningRouteRouteWithChildren
   '/alerts/new': typeof AlertsNewRoute
   '/entities/$cui': typeof EntitiesCuiRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
@@ -224,8 +320,20 @@ export interface FileRoutesByFullPath {
   '/classifications/functional/$code': typeof ClassificationsFunctionalCodeRoute
   '/classifications/economic': typeof ClassificationsEconomicIndexRoute
   '/classifications/functional': typeof ClassificationsFunctionalIndexRoute
+  '/en/learning/': typeof EnLearningIndexRoute
+  '/ro/learning/': typeof RoLearningIndexRoute
   '/alerts/$alertId/': typeof AlertsAlertIdIndexLazyRoute
   '/charts/$chartId/': typeof ChartsChartIdIndexLazyRoute
+  '/en/learning/advanced/concepts': typeof EnLearningAdvancedConceptsRoute
+  '/en/learning/fundamentals/basics': typeof EnLearningFundamentalsBasicsRoute
+  '/en/learning/fundamentals/structure': typeof EnLearningFundamentalsStructureRoute
+  '/en/learning/organization/flow': typeof EnLearningOrganizationFlowRoute
+  '/en/learning/organization/hierarchy': typeof EnLearningOrganizationHierarchyRoute
+  '/ro/learning/advanced/concepts': typeof RoLearningAdvancedConceptsRoute
+  '/ro/learning/fundamentals/basics': typeof RoLearningFundamentalsBasicsRoute
+  '/ro/learning/fundamentals/structure': typeof RoLearningFundamentalsStructureRoute
+  '/ro/learning/organization/flow': typeof RoLearningOrganizationFlowRoute
+  '/ro/learning/organization/hierarchy': typeof RoLearningOrganizationHierarchyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
@@ -250,8 +358,20 @@ export interface FileRoutesByTo {
   '/classifications/functional/$code': typeof ClassificationsFunctionalCodeRoute
   '/classifications/economic': typeof ClassificationsEconomicIndexRoute
   '/classifications/functional': typeof ClassificationsFunctionalIndexRoute
+  '/en/learning': typeof EnLearningIndexRoute
+  '/ro/learning': typeof RoLearningIndexRoute
   '/alerts/$alertId': typeof AlertsAlertIdIndexLazyRoute
   '/charts/$chartId': typeof ChartsChartIdIndexLazyRoute
+  '/en/learning/advanced/concepts': typeof EnLearningAdvancedConceptsRoute
+  '/en/learning/fundamentals/basics': typeof EnLearningFundamentalsBasicsRoute
+  '/en/learning/fundamentals/structure': typeof EnLearningFundamentalsStructureRoute
+  '/en/learning/organization/flow': typeof EnLearningOrganizationFlowRoute
+  '/en/learning/organization/hierarchy': typeof EnLearningOrganizationHierarchyRoute
+  '/ro/learning/advanced/concepts': typeof RoLearningAdvancedConceptsRoute
+  '/ro/learning/fundamentals/basics': typeof RoLearningFundamentalsBasicsRoute
+  '/ro/learning/fundamentals/structure': typeof RoLearningFundamentalsStructureRoute
+  '/ro/learning/organization/flow': typeof RoLearningOrganizationFlowRoute
+  '/ro/learning/organization/hierarchy': typeof RoLearningOrganizationHierarchyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -266,6 +386,8 @@ export interface FileRoutesById {
   '/terms': typeof TermsLazyRoute
   '/alerts/$alertId': typeof AlertsAlertIdRouteRouteWithChildren
   '/charts/$chartId': typeof ChartsChartIdRouteRouteWithChildren
+  '/en/learning': typeof EnLearningRouteRouteWithChildren
+  '/ro/learning': typeof RoLearningRouteRouteWithChildren
   '/alerts/new': typeof AlertsNewRoute
   '/entities/$cui': typeof EntitiesCuiRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
@@ -279,8 +401,20 @@ export interface FileRoutesById {
   '/classifications/functional/$code': typeof ClassificationsFunctionalCodeRoute
   '/classifications/economic/': typeof ClassificationsEconomicIndexRoute
   '/classifications/functional/': typeof ClassificationsFunctionalIndexRoute
+  '/en/learning/': typeof EnLearningIndexRoute
+  '/ro/learning/': typeof RoLearningIndexRoute
   '/alerts/$alertId/': typeof AlertsAlertIdIndexLazyRoute
   '/charts/$chartId/': typeof ChartsChartIdIndexLazyRoute
+  '/en/learning/advanced/concepts': typeof EnLearningAdvancedConceptsRoute
+  '/en/learning/fundamentals/basics': typeof EnLearningFundamentalsBasicsRoute
+  '/en/learning/fundamentals/structure': typeof EnLearningFundamentalsStructureRoute
+  '/en/learning/organization/flow': typeof EnLearningOrganizationFlowRoute
+  '/en/learning/organization/hierarchy': typeof EnLearningOrganizationHierarchyRoute
+  '/ro/learning/advanced/concepts': typeof RoLearningAdvancedConceptsRoute
+  '/ro/learning/fundamentals/basics': typeof RoLearningFundamentalsBasicsRoute
+  '/ro/learning/fundamentals/structure': typeof RoLearningFundamentalsStructureRoute
+  '/ro/learning/organization/flow': typeof RoLearningOrganizationFlowRoute
+  '/ro/learning/organization/hierarchy': typeof RoLearningOrganizationHierarchyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -296,6 +430,8 @@ export interface FileRouteTypes {
     | '/terms'
     | '/alerts/$alertId'
     | '/charts/$chartId'
+    | '/en/learning'
+    | '/ro/learning'
     | '/alerts/new'
     | '/entities/$cui'
     | '/settings/notifications'
@@ -309,8 +445,20 @@ export interface FileRouteTypes {
     | '/classifications/functional/$code'
     | '/classifications/economic'
     | '/classifications/functional'
+    | '/en/learning/'
+    | '/ro/learning/'
     | '/alerts/$alertId/'
     | '/charts/$chartId/'
+    | '/en/learning/advanced/concepts'
+    | '/en/learning/fundamentals/basics'
+    | '/en/learning/fundamentals/structure'
+    | '/en/learning/organization/flow'
+    | '/en/learning/organization/hierarchy'
+    | '/ro/learning/advanced/concepts'
+    | '/ro/learning/fundamentals/basics'
+    | '/ro/learning/fundamentals/structure'
+    | '/ro/learning/organization/flow'
+    | '/ro/learning/organization/hierarchy'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -335,8 +483,20 @@ export interface FileRouteTypes {
     | '/classifications/functional/$code'
     | '/classifications/economic'
     | '/classifications/functional'
+    | '/en/learning'
+    | '/ro/learning'
     | '/alerts/$alertId'
     | '/charts/$chartId'
+    | '/en/learning/advanced/concepts'
+    | '/en/learning/fundamentals/basics'
+    | '/en/learning/fundamentals/structure'
+    | '/en/learning/organization/flow'
+    | '/en/learning/organization/hierarchy'
+    | '/ro/learning/advanced/concepts'
+    | '/ro/learning/fundamentals/basics'
+    | '/ro/learning/fundamentals/structure'
+    | '/ro/learning/organization/flow'
+    | '/ro/learning/organization/hierarchy'
   id:
     | '__root__'
     | '/'
@@ -350,6 +510,8 @@ export interface FileRouteTypes {
     | '/terms'
     | '/alerts/$alertId'
     | '/charts/$chartId'
+    | '/en/learning'
+    | '/ro/learning'
     | '/alerts/new'
     | '/entities/$cui'
     | '/settings/notifications'
@@ -363,8 +525,20 @@ export interface FileRouteTypes {
     | '/classifications/functional/$code'
     | '/classifications/economic/'
     | '/classifications/functional/'
+    | '/en/learning/'
+    | '/ro/learning/'
     | '/alerts/$alertId/'
     | '/charts/$chartId/'
+    | '/en/learning/advanced/concepts'
+    | '/en/learning/fundamentals/basics'
+    | '/en/learning/fundamentals/structure'
+    | '/en/learning/organization/flow'
+    | '/en/learning/organization/hierarchy'
+    | '/ro/learning/advanced/concepts'
+    | '/ro/learning/fundamentals/basics'
+    | '/ro/learning/fundamentals/structure'
+    | '/ro/learning/organization/flow'
+    | '/ro/learning/organization/hierarchy'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -379,6 +553,8 @@ export interface RootRouteChildren {
   TermsLazyRoute: typeof TermsLazyRoute
   AlertsAlertIdRouteRoute: typeof AlertsAlertIdRouteRouteWithChildren
   ChartsChartIdRouteRoute: typeof ChartsChartIdRouteRouteWithChildren
+  EnLearningRouteRoute: typeof EnLearningRouteRouteWithChildren
+  RoLearningRouteRoute: typeof RoLearningRouteRouteWithChildren
   AlertsNewRoute: typeof AlertsNewRoute
   EntitiesCuiRoute: typeof EntitiesCuiRoute
   SettingsNotificationsRoute: typeof SettingsNotificationsRoute
@@ -522,6 +698,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AlertsNewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ro/learning': {
+      id: '/ro/learning'
+      path: '/ro/learning'
+      fullPath: '/ro/learning'
+      preLoaderRoute: typeof RoLearningRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/en/learning': {
+      id: '/en/learning'
+      path: '/en/learning'
+      fullPath: '/en/learning'
+      preLoaderRoute: typeof EnLearningRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/charts/$chartId': {
       id: '/charts/$chartId'
       path: '/charts/$chartId'
@@ -549,6 +739,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/alerts/$alertId/'
       preLoaderRoute: typeof AlertsAlertIdIndexLazyRouteImport
       parentRoute: typeof AlertsAlertIdRouteRoute
+    }
+    '/ro/learning/': {
+      id: '/ro/learning/'
+      path: '/'
+      fullPath: '/ro/learning/'
+      preLoaderRoute: typeof RoLearningIndexRouteImport
+      parentRoute: typeof RoLearningRouteRoute
+    }
+    '/en/learning/': {
+      id: '/en/learning/'
+      path: '/'
+      fullPath: '/en/learning/'
+      preLoaderRoute: typeof EnLearningIndexRouteImport
+      parentRoute: typeof EnLearningRouteRoute
     }
     '/classifications/functional/': {
       id: '/classifications/functional/'
@@ -578,6 +782,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClassificationsEconomicCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ro/learning/organization/hierarchy': {
+      id: '/ro/learning/organization/hierarchy'
+      path: '/organization/hierarchy'
+      fullPath: '/ro/learning/organization/hierarchy'
+      preLoaderRoute: typeof RoLearningOrganizationHierarchyRouteImport
+      parentRoute: typeof RoLearningRouteRoute
+    }
+    '/ro/learning/organization/flow': {
+      id: '/ro/learning/organization/flow'
+      path: '/organization/flow'
+      fullPath: '/ro/learning/organization/flow'
+      preLoaderRoute: typeof RoLearningOrganizationFlowRouteImport
+      parentRoute: typeof RoLearningRouteRoute
+    }
+    '/ro/learning/fundamentals/structure': {
+      id: '/ro/learning/fundamentals/structure'
+      path: '/fundamentals/structure'
+      fullPath: '/ro/learning/fundamentals/structure'
+      preLoaderRoute: typeof RoLearningFundamentalsStructureRouteImport
+      parentRoute: typeof RoLearningRouteRoute
+    }
+    '/ro/learning/fundamentals/basics': {
+      id: '/ro/learning/fundamentals/basics'
+      path: '/fundamentals/basics'
+      fullPath: '/ro/learning/fundamentals/basics'
+      preLoaderRoute: typeof RoLearningFundamentalsBasicsRouteImport
+      parentRoute: typeof RoLearningRouteRoute
+    }
+    '/ro/learning/advanced/concepts': {
+      id: '/ro/learning/advanced/concepts'
+      path: '/advanced/concepts'
+      fullPath: '/ro/learning/advanced/concepts'
+      preLoaderRoute: typeof RoLearningAdvancedConceptsRouteImport
+      parentRoute: typeof RoLearningRouteRoute
+    }
+    '/en/learning/organization/hierarchy': {
+      id: '/en/learning/organization/hierarchy'
+      path: '/organization/hierarchy'
+      fullPath: '/en/learning/organization/hierarchy'
+      preLoaderRoute: typeof EnLearningOrganizationHierarchyRouteImport
+      parentRoute: typeof EnLearningRouteRoute
+    }
+    '/en/learning/organization/flow': {
+      id: '/en/learning/organization/flow'
+      path: '/organization/flow'
+      fullPath: '/en/learning/organization/flow'
+      preLoaderRoute: typeof EnLearningOrganizationFlowRouteImport
+      parentRoute: typeof EnLearningRouteRoute
+    }
+    '/en/learning/fundamentals/structure': {
+      id: '/en/learning/fundamentals/structure'
+      path: '/fundamentals/structure'
+      fullPath: '/en/learning/fundamentals/structure'
+      preLoaderRoute: typeof EnLearningFundamentalsStructureRouteImport
+      parentRoute: typeof EnLearningRouteRoute
+    }
+    '/en/learning/fundamentals/basics': {
+      id: '/en/learning/fundamentals/basics'
+      path: '/fundamentals/basics'
+      fullPath: '/en/learning/fundamentals/basics'
+      preLoaderRoute: typeof EnLearningFundamentalsBasicsRouteImport
+      parentRoute: typeof EnLearningRouteRoute
+    }
+    '/en/learning/advanced/concepts': {
+      id: '/en/learning/advanced/concepts'
+      path: '/advanced/concepts'
+      fullPath: '/en/learning/advanced/concepts'
+      preLoaderRoute: typeof EnLearningAdvancedConceptsRouteImport
+      parentRoute: typeof EnLearningRouteRoute
+    }
   }
 }
 
@@ -603,6 +877,50 @@ const ChartsChartIdRouteRouteChildren: ChartsChartIdRouteRouteChildren = {
 const ChartsChartIdRouteRouteWithChildren =
   ChartsChartIdRouteRoute._addFileChildren(ChartsChartIdRouteRouteChildren)
 
+interface EnLearningRouteRouteChildren {
+  EnLearningIndexRoute: typeof EnLearningIndexRoute
+  EnLearningAdvancedConceptsRoute: typeof EnLearningAdvancedConceptsRoute
+  EnLearningFundamentalsBasicsRoute: typeof EnLearningFundamentalsBasicsRoute
+  EnLearningFundamentalsStructureRoute: typeof EnLearningFundamentalsStructureRoute
+  EnLearningOrganizationFlowRoute: typeof EnLearningOrganizationFlowRoute
+  EnLearningOrganizationHierarchyRoute: typeof EnLearningOrganizationHierarchyRoute
+}
+
+const EnLearningRouteRouteChildren: EnLearningRouteRouteChildren = {
+  EnLearningIndexRoute: EnLearningIndexRoute,
+  EnLearningAdvancedConceptsRoute: EnLearningAdvancedConceptsRoute,
+  EnLearningFundamentalsBasicsRoute: EnLearningFundamentalsBasicsRoute,
+  EnLearningFundamentalsStructureRoute: EnLearningFundamentalsStructureRoute,
+  EnLearningOrganizationFlowRoute: EnLearningOrganizationFlowRoute,
+  EnLearningOrganizationHierarchyRoute: EnLearningOrganizationHierarchyRoute,
+}
+
+const EnLearningRouteRouteWithChildren = EnLearningRouteRoute._addFileChildren(
+  EnLearningRouteRouteChildren,
+)
+
+interface RoLearningRouteRouteChildren {
+  RoLearningIndexRoute: typeof RoLearningIndexRoute
+  RoLearningAdvancedConceptsRoute: typeof RoLearningAdvancedConceptsRoute
+  RoLearningFundamentalsBasicsRoute: typeof RoLearningFundamentalsBasicsRoute
+  RoLearningFundamentalsStructureRoute: typeof RoLearningFundamentalsStructureRoute
+  RoLearningOrganizationFlowRoute: typeof RoLearningOrganizationFlowRoute
+  RoLearningOrganizationHierarchyRoute: typeof RoLearningOrganizationHierarchyRoute
+}
+
+const RoLearningRouteRouteChildren: RoLearningRouteRouteChildren = {
+  RoLearningIndexRoute: RoLearningIndexRoute,
+  RoLearningAdvancedConceptsRoute: RoLearningAdvancedConceptsRoute,
+  RoLearningFundamentalsBasicsRoute: RoLearningFundamentalsBasicsRoute,
+  RoLearningFundamentalsStructureRoute: RoLearningFundamentalsStructureRoute,
+  RoLearningOrganizationFlowRoute: RoLearningOrganizationFlowRoute,
+  RoLearningOrganizationHierarchyRoute: RoLearningOrganizationHierarchyRoute,
+}
+
+const RoLearningRouteRouteWithChildren = RoLearningRouteRoute._addFileChildren(
+  RoLearningRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   CookiePolicyRoute: CookiePolicyRoute,
@@ -615,6 +933,8 @@ const rootRouteChildren: RootRouteChildren = {
   TermsLazyRoute: TermsLazyRoute,
   AlertsAlertIdRouteRoute: AlertsAlertIdRouteRouteWithChildren,
   ChartsChartIdRouteRoute: ChartsChartIdRouteRouteWithChildren,
+  EnLearningRouteRoute: EnLearningRouteRouteWithChildren,
+  RoLearningRouteRoute: RoLearningRouteRouteWithChildren,
   AlertsNewRoute: AlertsNewRoute,
   EntitiesCuiRoute: EntitiesCuiRoute,
   SettingsNotificationsRoute: SettingsNotificationsRoute,
