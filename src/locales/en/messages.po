@@ -553,8 +553,8 @@ msgid "Alerts when important changes occur"
 msgstr "Alerts when important changes occur"
 
 #: src/components/entities/EntityReportControls.tsx:60
-#: src/components/entities/FinancialDataCard.tsx:276
-#: src/components/entities/FinancialDataCard.tsx:294
+#: src/components/entities/FinancialDataCard.tsx:290
+#: src/components/entities/FinancialDataCard.tsx:308
 #: src/components/entities/LineItemsBadgeFilters.tsx:166
 #: src/components/entities/LineItemsGroupedSection.tsx:172
 #: src/components/entities/LineItemsGroupedSection.tsx:174
@@ -975,6 +975,16 @@ msgstr "Choose between essential-only or all cookies, then fine-tune options bel
 msgid "Choose operator"
 msgstr "Choose operator"
 
+#: src/components/common/classification-info-link.tsx:100
+#: src/components/common/classification-info-link.tsx:177
+msgid "classification"
+msgstr "classification"
+
+#: src/components/common/classification-info-link.tsx:91
+#: src/components/common/classification-info-link.tsx:168
+msgid "Classification Details"
+msgstr "Classification Details"
+
 #: src/components/classification-explorer/ClassificationExplorer.tsx:147
 msgid "Classification Not Found"
 msgstr "Classification Not Found"
@@ -1019,6 +1029,11 @@ msgstr "Clear search"
 #: src/components/budget-explorer/RevenueBreakdown.tsx:54
 msgid "Clearing accounts"
 msgstr "Clearing accounts"
+
+#: src/components/common/classification-info-link.tsx:108
+#: src/components/common/classification-info-link.tsx:185
+msgid "Click the link below to explore all {type} classifications."
+msgstr "Click the link below to explore all {type} classifications."
 
 #: src/components/charts/components/chart-config/SeriesToolbar.tsx:18
 msgid "Clipboard does not contain copied chart series."
@@ -1571,6 +1586,8 @@ msgstr "Ec"
 
 #: src/components/classification-explorer/ClassificationExplorer.tsx:195
 #: src/components/classification-explorer/ClassificationExplorer.tsx:196
+#: src/components/common/classification-info-link.tsx:52
+#: src/components/common/classification-info-link.tsx:129
 #: src/components/entities/views/Overview.tsx:283
 #: src/components/entities/views/TrendsView.tsx:207
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:114
@@ -2045,7 +2062,7 @@ msgstr "Filter field"
 msgid "Filter Reports"
 msgstr "Filter Reports"
 
-#: src/components/entities/FinancialDataCard.tsx:286
+#: src/components/entities/FinancialDataCard.tsx:300
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:156
 msgid "Filter Transfers"
 msgstr "Filter Transfers"
@@ -2150,6 +2167,8 @@ msgstr "Found {replacementCount} occurrence{0}"
 
 #: src/components/classification-explorer/ClassificationExplorer.tsx:192
 #: src/components/classification-explorer/ClassificationExplorer.tsx:193
+#: src/components/common/classification-info-link.tsx:52
+#: src/components/common/classification-info-link.tsx:129
 #: src/components/entities/views/Overview.tsx:282
 #: src/components/entities/views/TrendsView.tsx:206
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:107
@@ -2254,7 +2273,7 @@ msgstr "Go to Entity Table"
 msgid "Go to homepage"
 msgstr "Go to homepage"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:659
+#: src/components/budget-explorer/BudgetTreemap.tsx:628
 msgid "Go to Main Categories"
 msgstr "Go to Main Categories"
 
@@ -2643,7 +2662,7 @@ msgstr "Lock annotation"
 msgid "Locked"
 msgstr "Locked"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:572
+#: src/components/budget-explorer/BudgetTreemap.tsx:541
 #: src/components/entities/LineItemsAnalytics.tsx:142
 msgid "Main Categories"
 msgstr "Main Categories"
@@ -2967,7 +2986,7 @@ msgstr "No data series alerts"
 msgid "No data series yet."
 msgstr "No data series yet."
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:649
+#: src/components/budget-explorer/BudgetTreemap.tsx:618
 msgid "No data within the selected range."
 msgstr "No data within the selected range."
 
@@ -3330,7 +3349,7 @@ msgstr "Processing..."
 msgid "Product"
 msgstr "Product"
 
-#: src/components/entities/FinancialDataCard.tsx:288
+#: src/components/entities/FinancialDataCard.tsx:302
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:158
 msgid "Public institutions often transfer funds between each other (e.g., from the state budget to local budgets). These transfers can double-count spending if not filtered."
 msgstr "Public institutions often transfer funds between each other (e.g., from the state budget to local budgets). These transfers can double-count spending if not filtered."
@@ -3454,7 +3473,7 @@ msgstr "Reports"
 msgid "Required for core functionality like security and preferences. Always on."
 msgstr "Required for core functionality like security and preferences. Always on."
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:664
+#: src/components/budget-explorer/BudgetTreemap.tsx:633
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:190
 msgid "Reset amount filter"
 msgstr "Reset amount filter"
@@ -3783,17 +3802,17 @@ msgstr "Show Relative Values (%)"
 msgid "Show Tooltip"
 msgstr "Show Tooltip"
 
-#: src/components/entities/FinancialDataCard.tsx:294
+#: src/components/entities/FinancialDataCard.tsx:308
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:164
 msgid "Shows all spending, including both direct payments and transfers to other institutions."
 msgstr "Shows all spending, including both direct payments and transfers to other institutions."
 
-#: src/components/entities/FinancialDataCard.tsx:293
+#: src/components/entities/FinancialDataCard.tsx:307
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:163
 msgid "Shows only direct spending by this entity. Excludes funds moved to other institutions (codes 51 and 55)."
 msgstr "Shows only direct spending by this entity. Excludes funds moved to other institutions (codes 51 and 55)."
 
-#: src/components/entities/FinancialDataCard.tsx:295
+#: src/components/entities/FinancialDataCard.tsx:309
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:165
 msgid "Shows only the funds transferred to other public administration units."
 msgstr "Shows only the funds transferred to other public administration units."
@@ -4129,7 +4148,7 @@ msgid "total"
 msgstr "total"
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:88
-#: src/components/budget-explorer/BudgetTreemap.tsx:712
+#: src/components/budget-explorer/BudgetTreemap.tsx:681
 #: src/components/common/NormalizationSelector.tsx:21
 #: src/components/entities/EntityReportControls.tsx:46
 #: src/components/entities/views/MapView.tsx:167
@@ -4181,8 +4200,8 @@ msgstr "Total:"
 msgid "Transfers Between Institutions"
 msgstr "Transfers Between Institutions"
 
-#: src/components/entities/FinancialDataCard.tsx:277
-#: src/components/entities/FinancialDataCard.tsx:295
+#: src/components/entities/FinancialDataCard.tsx:291
+#: src/components/entities/FinancialDataCard.tsx:309
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:147
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:165
 msgid "Transfers Only"
@@ -4368,15 +4387,27 @@ msgstr "Value Changed"
 msgid "View"
 msgstr "View"
 
+#: src/components/common/classification-info-link.tsx:75
+#: src/components/common/classification-info-link.tsx:79
+#~ msgid "View all {type} classifications"
+#~ msgstr "View all {type} classifications"
+
 #: src/routes/alerts/$alertId/index.lazy.tsx:196
 msgid "View all alerts"
 msgstr "View all alerts"
+
+#: src/components/common/classification-info-link.tsx:73
+#: src/components/common/classification-info-link.tsx:80
+#: src/components/common/classification-info-link.tsx:150
+#: src/components/common/classification-info-link.tsx:157
+msgid "View all classifications"
+msgstr "View all classifications"
 
 #: src/components/entities/EntityReportsSummary.tsx:100
 msgid "View all reports"
 msgstr "View all reports"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:731
+#: src/components/budget-explorer/BudgetTreemap.tsx:700
 msgid "View as Chart"
 msgstr "View as Chart"
 
@@ -4387,9 +4418,16 @@ msgstr "View as Chart"
 msgid "View Chart"
 msgstr "View Chart"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:640
+#: src/components/budget-explorer/BudgetTreemap.tsx:609
 msgid "View Details"
 msgstr "View Details"
+
+#: src/components/common/classification-info-link.tsx:58
+#: src/components/common/classification-info-link.tsx:65
+#: src/components/common/classification-info-link.tsx:135
+#: src/components/common/classification-info-link.tsx:142
+msgid "View full details"
+msgstr "View full details"
 
 #: src/components/classification-explorer/ClassificationActions.tsx:65
 msgid "View in Entity Analytics"
@@ -4448,8 +4486,8 @@ msgstr "What personal data we collect"
 msgid "Who we are"
 msgstr "Who we are"
 
-#: src/components/entities/FinancialDataCard.tsx:275
-#: src/components/entities/FinancialDataCard.tsx:293
+#: src/components/entities/FinancialDataCard.tsx:289
+#: src/components/entities/FinancialDataCard.tsx:307
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:145
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:163
 msgid "Without Transfers"

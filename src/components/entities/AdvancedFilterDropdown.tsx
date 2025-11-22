@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Plus, Check } from "lucide-react";
+import { Check, FilterIcon } from "lucide-react";
 import { Trans } from "@lingui/react/macro";
 
 
@@ -36,8 +36,8 @@ export const AdvancedFilterDropdown: React.FC<AdvancedFilterDropdownProps> = ({ 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="h-10 w-10 shrink-0 rounded-full">
-          <Plus className="h-4 w-4" />
+        <Button variant="outline" size="icon" className="shrink-0">
+          <FilterIcon className="h-4 w-4" />
           <span className="sr-only"><Trans>Add Filter</Trans></span>
         </Button>
       </DropdownMenuTrigger>

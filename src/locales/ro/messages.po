@@ -553,8 +553,8 @@ msgid "Alerts when important changes occur"
 msgstr "Alerte când apar modificări importante"
 
 #: src/components/entities/EntityReportControls.tsx:60
-#: src/components/entities/FinancialDataCard.tsx:276
-#: src/components/entities/FinancialDataCard.tsx:294
+#: src/components/entities/FinancialDataCard.tsx:290
+#: src/components/entities/FinancialDataCard.tsx:308
 #: src/components/entities/LineItemsBadgeFilters.tsx:166
 #: src/components/entities/LineItemsGroupedSection.tsx:172
 #: src/components/entities/LineItemsGroupedSection.tsx:174
@@ -975,6 +975,16 @@ msgstr "Alegeți între cookie-uri doar esențiale sau toate cookie-urile, apoi 
 msgid "Choose operator"
 msgstr "Alegeți operatorul"
 
+#: src/components/common/classification-info-link.tsx:100
+#: src/components/common/classification-info-link.tsx:177
+msgid "classification"
+msgstr "clasificare"
+
+#: src/components/common/classification-info-link.tsx:91
+#: src/components/common/classification-info-link.tsx:168
+msgid "Classification Details"
+msgstr "Detalii clasificare"
+
 #: src/components/classification-explorer/ClassificationExplorer.tsx:147
 msgid "Classification Not Found"
 msgstr "Clasificarea nu a fost găsită"
@@ -1019,6 +1029,11 @@ msgstr "Șterge căutarea"
 #: src/components/budget-explorer/RevenueBreakdown.tsx:54
 msgid "Clearing accounts"
 msgstr "Conturi de decontare"
+
+#: src/components/common/classification-info-link.tsx:108
+#: src/components/common/classification-info-link.tsx:185
+msgid "Click the link below to explore all {type} classifications."
+msgstr "Faceți clic pe linkul de mai jos pentru a explora toate clasificările {type}."
 
 #: src/components/charts/components/chart-config/SeriesToolbar.tsx:18
 msgid "Clipboard does not contain copied chart series."
@@ -1571,6 +1586,8 @@ msgstr "Ec"
 
 #: src/components/classification-explorer/ClassificationExplorer.tsx:195
 #: src/components/classification-explorer/ClassificationExplorer.tsx:196
+#: src/components/common/classification-info-link.tsx:52
+#: src/components/common/classification-info-link.tsx:129
 #: src/components/entities/views/Overview.tsx:283
 #: src/components/entities/views/TrendsView.tsx:207
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:114
@@ -2045,7 +2062,7 @@ msgstr "Câmp de filtrare"
 msgid "Filter Reports"
 msgstr "Filtrare rapoarte"
 
-#: src/components/entities/FinancialDataCard.tsx:286
+#: src/components/entities/FinancialDataCard.tsx:300
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:156
 msgid "Filter Transfers"
 msgstr "Filtrare transferuri"
@@ -2150,6 +2167,8 @@ msgstr "S-au găsit {replacementCount} apariții"
 
 #: src/components/classification-explorer/ClassificationExplorer.tsx:192
 #: src/components/classification-explorer/ClassificationExplorer.tsx:193
+#: src/components/common/classification-info-link.tsx:52
+#: src/components/common/classification-info-link.tsx:129
 #: src/components/entities/views/Overview.tsx:282
 #: src/components/entities/views/TrendsView.tsx:206
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:107
@@ -2254,7 +2273,7 @@ msgstr "Vezi Tabel"
 msgid "Go to homepage"
 msgstr "Mergi la pagina principală"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:659
+#: src/components/budget-explorer/BudgetTreemap.tsx:628
 msgid "Go to Main Categories"
 msgstr "Mergi la categoria principală"
 
@@ -2638,7 +2657,7 @@ msgstr "Blochează adnotarea"
 msgid "Locked"
 msgstr "Blocat"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:572
+#: src/components/budget-explorer/BudgetTreemap.tsx:541
 #: src/components/entities/LineItemsAnalytics.tsx:142
 msgid "Main Categories"
 msgstr "Categorii Principale"
@@ -2962,7 +2981,7 @@ msgstr "Nicio alertă pentru serii de date"
 msgid "No data series yet."
 msgstr "Nicio serie de date încă."
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:649
+#: src/components/budget-explorer/BudgetTreemap.tsx:618
 msgid "No data within the selected range."
 msgstr "Nu există date în intervalul selectat."
 
@@ -3325,7 +3344,7 @@ msgstr "Se procesează..."
 msgid "Product"
 msgstr "Produs"
 
-#: src/components/entities/FinancialDataCard.tsx:288
+#: src/components/entities/FinancialDataCard.tsx:302
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:158
 msgid "Public institutions often transfer funds between each other (e.g., from the state budget to local budgets). These transfers can double-count spending if not filtered."
 msgstr "Instituțiile publice transferă adesea fonduri între ele (de exemplu, de la bugetul de stat la bugetele locale). Aceste transferuri pot duce la dublarea cheltuielilor dacă nu sunt filtrate."
@@ -3449,7 +3468,7 @@ msgstr "Rapoarte"
 msgid "Required for core functionality like security and preferences. Always on."
 msgstr "Necesar pentru funcționalități de bază, precum securitatea și preferințele. Activat permanent."
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:664
+#: src/components/budget-explorer/BudgetTreemap.tsx:633
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:190
 msgid "Reset amount filter"
 msgstr "Resetează filtrul de sumă"
@@ -3778,17 +3797,17 @@ msgstr "Afișează valori relative (%)"
 msgid "Show Tooltip"
 msgstr "Afișează indiciu"
 
-#: src/components/entities/FinancialDataCard.tsx:294
+#: src/components/entities/FinancialDataCard.tsx:308
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:164
 msgid "Shows all spending, including both direct payments and transfers to other institutions."
 msgstr "Afișează toate cheltuielile, incluzând atât plățile directe, cât și transferurile către alte instituții."
 
-#: src/components/entities/FinancialDataCard.tsx:293
+#: src/components/entities/FinancialDataCard.tsx:307
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:163
 msgid "Shows only direct spending by this entity. Excludes funds moved to other institutions (codes 51 and 55)."
 msgstr "Afișează doar cheltuielile directe ale acestei entități. Exclude fondurile transferate către alte instituții (codurile 51 și 55)."
 
-#: src/components/entities/FinancialDataCard.tsx:295
+#: src/components/entities/FinancialDataCard.tsx:309
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:165
 msgid "Shows only the funds transferred to other public administration units."
 msgstr "Afișează doar fondurile transferate către alte unități ale administrației publice."
@@ -4124,7 +4143,7 @@ msgid "total"
 msgstr "total"
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:88
-#: src/components/budget-explorer/BudgetTreemap.tsx:712
+#: src/components/budget-explorer/BudgetTreemap.tsx:681
 #: src/components/common/NormalizationSelector.tsx:21
 #: src/components/entities/EntityReportControls.tsx:46
 #: src/components/entities/views/MapView.tsx:167
@@ -4176,8 +4195,8 @@ msgstr "Total:"
 msgid "Transfers Between Institutions"
 msgstr "Transferuri între instituții"
 
-#: src/components/entities/FinancialDataCard.tsx:277
-#: src/components/entities/FinancialDataCard.tsx:295
+#: src/components/entities/FinancialDataCard.tsx:291
+#: src/components/entities/FinancialDataCard.tsx:309
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:147
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:165
 msgid "Transfers Only"
@@ -4363,15 +4382,27 @@ msgstr "Valoare modificată"
 msgid "View"
 msgstr "Vizualizare"
 
+#: src/components/common/classification-info-link.tsx:75
+#: src/components/common/classification-info-link.tsx:79
+#~ msgid "View all {type} classifications"
+#~ msgstr ""
+
 #: src/routes/alerts/$alertId/index.lazy.tsx:196
 msgid "View all alerts"
 msgstr "Vezi toate alertele"
+
+#: src/components/common/classification-info-link.tsx:73
+#: src/components/common/classification-info-link.tsx:80
+#: src/components/common/classification-info-link.tsx:150
+#: src/components/common/classification-info-link.tsx:157
+msgid "View all classifications"
+msgstr "Vizualizați toate clasificările"
 
 #: src/components/entities/EntityReportsSummary.tsx:100
 msgid "View all reports"
 msgstr "Vezi toate rapoartele"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:731
+#: src/components/budget-explorer/BudgetTreemap.tsx:700
 msgid "View as Chart"
 msgstr "Vezi Graficul"
 
@@ -4382,9 +4413,16 @@ msgstr "Vezi Graficul"
 msgid "View Chart"
 msgstr "Vezi graficul"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:640
+#: src/components/budget-explorer/BudgetTreemap.tsx:609
 msgid "View Details"
 msgstr "Vezi detalii"
+
+#: src/components/common/classification-info-link.tsx:58
+#: src/components/common/classification-info-link.tsx:65
+#: src/components/common/classification-info-link.tsx:135
+#: src/components/common/classification-info-link.tsx:142
+msgid "View full details"
+msgstr "Vizualizați detaliile complete"
 
 #: src/components/classification-explorer/ClassificationActions.tsx:65
 msgid "View in Entity Analytics"
@@ -4443,8 +4481,8 @@ msgstr "Ce date personale colectăm"
 msgid "Who we are"
 msgstr "Cine suntem"
 
-#: src/components/entities/FinancialDataCard.tsx:275
-#: src/components/entities/FinancialDataCard.tsx:293
+#: src/components/entities/FinancialDataCard.tsx:289
+#: src/components/entities/FinancialDataCard.tsx:307
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:145
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:163
 msgid "Without Transfers"

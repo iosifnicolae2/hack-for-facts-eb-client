@@ -14,6 +14,7 @@ import { getNormalizationUnit } from '@/lib/utils'
 import type { AnalyticsFilterType } from '@/schemas/charts'
 import { useTreemapChartLink } from './useTreemapChartLink'
 import { buildTreemapChartLink } from '@/lib/chart-links'
+import { ClassificationInfoLink } from '@/components/common/classification-info-link'
 
 const COLORS = [
   '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d',
@@ -100,7 +101,6 @@ const CustomizedContent: FC<{
   payload?: { fill?: string; code?: string; name?: string; value?: number }
 }> = (props) => {
   const { name, value, depth, x, y, width, height, fill, root, normalization, primary } = props
-  const navigate = useNavigate()
   const hasAnimatedInRef = useRef(false)
   const [isHovered, setIsHovered] = useState(false)
   const code = props.code ?? props.payload?.code
@@ -361,57 +361,26 @@ const CustomizedContent: FC<{
           {`${percentage.toFixed(1)}%`}
         </motion.text>
       )}
-      {/* Classification info icon - shown on hover in top-right corner */}
+      {/* Classification info icon - shown on hover in top-left corner */}
       {isHovered && code && width > 40 && height > 40 && (
-        <motion.g
-          initial={{ opacity: 0, translateY: 25, scale: 0.5 }}
-          animate={{ opacity: 0.5, translateY: 0, scale: 1 }}
+        <motion.foreignObject
+          x={x + 4}
+          y={y + 4}
+          width={32}
+          height={32}
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.3 }}
+          style={{ overflow: 'visible' }}
         >
-          <motion.circle
-            cx={x + 16}
-            cy={y + 16}
-            r={12}
-            fill="rgba(0, 0, 0, 0.6)"
-            style={{ cursor: 'pointer' }}
-            whileHover={{ scale: 1.1 }}
-            onClick={(e) => {
-              e.stopPropagation()
-              if (!code) return
-              const isFunctional = primary === 'fn'
-              if (isFunctional) {
-                navigate({ to: '/classifications/functional/$code', params: { code } as any })
-              } else {
-                navigate({ to: '/classifications/economic/$code', params: { code } as any })
-              }
-            }}
+          <ClassificationInfoLink
+            type={primary === 'fn' ? 'functional' : 'economic'}
+            code={code}
+            className="ml-0 w-6 h-6 bg-black/60 hover:bg-black/80"
+            iconClassName="h-4 w-4 text-white"
+            showOnHoverOnly={false}
           />
-          <motion.g
-            transform={`translate(${x + 16}, ${y + 16})`}
-            style={{ pointerEvents: 'none' }}
-          >
-            <circle
-              cx={0}
-              cy={0}
-              r={6}
-              fill="none"
-              stroke={baseColor}
-              strokeWidth={1.5}
-            />
-            <text
-              x={0}
-              y={0}
-              textAnchor="middle"
-              dominantBaseline="central"
-              fill={baseColor}
-              fontSize={9}
-              fontWeight="bold"
-              style={{ userSelect: 'none' }}
-            >
-              i
-            </text>
-          </motion.g>
-        </motion.g>
+        </motion.foreignObject>
       )}
     </motion.g>
   )
