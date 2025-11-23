@@ -17,7 +17,6 @@ import { useAuth } from '@/lib/auth';
 import { useState } from 'react';
 import { FloatingEntitySearch } from '@/components/entities/FloatingEntitySearch';
 import { useHotkeys } from 'react-hotkeys-hook';
-import { withDefaultExcludes } from '@/lib/filterUtils';
 
 type ActionKey = 'map' | 'table' | 'chart' | 'share' | 'search';
 
@@ -140,9 +139,8 @@ function convertFilterInputToChartState(
     filterInput: AnalyticsFilterType,
     labelMaps: { uatLabelMap: LabelStore; entityLabelMap: LabelStore }
 ): ChartUrlState {
-    const normalizedFilter = withDefaultExcludes(filterInput)
-    const accountCategory = (normalizedFilter.account_category ?? 'ch') as 'ch' | 'vn'
-    const reportType = coerceReportType(normalizedFilter) ?? 'Executie bugetara agregata la nivel de ordonator principal'
+    const accountCategory = (filterInput.account_category ?? 'ch') as 'ch' | 'vn'
+    const reportType = coerceReportType(filterInput) ?? 'Executie bugetara agregata la nivel de ordonator principal'
     const series: Chart['series'] = []
 
     // Edge cases:
@@ -150,17 +148,17 @@ function convertFilterInputToChartState(
     // - If County view and no entities selected but county_codes present, create one series per county
     // - If UAT view and entity_cuis provided, create one series per entity
 
-    if (normalizedFilter.entity_cuis && normalizedFilter.entity_cuis.length > 0) {
+    if (filterInput.entity_cuis && filterInput.entity_cuis.length > 0) {
         // One series per selected entity CUI
-        normalizedFilter.entity_cuis.forEach((cui, index) => {
+        filterInput.entity_cuis.forEach((cui, index) => {
             series.push({
                 id: crypto.randomUUID(),
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
                 label: labelMaps.entityLabelMap.map(cui),
-                unit: getNormalizationUnit(normalizedFilter.normalization),
+                unit: getNormalizationUnit(filterInput.normalization),
                 filter: {
-                    ...normalizedFilter,
+                    ...filterInput,
                     account_category: accountCategory,
                     report_type: reportType,
                     entity_cuis: [cui],
@@ -173,17 +171,17 @@ function convertFilterInputToChartState(
                 updatedAt: new Date().toISOString(),
             })
         })
-    } else if (normalizedFilter.uat_ids && normalizedFilter.uat_ids.length > 0) {
+    } else if (filterInput.uat_ids && filterInput.uat_ids.length > 0) {
         // One series per selected entity (assumed county councils)
-        normalizedFilter.uat_ids.forEach((uatId, index) => {
+        filterInput.uat_ids.forEach((uatId, index) => {
             series.push({
                 id: crypto.randomUUID(),
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
                 label: labelMaps.uatLabelMap.map(uatId),
-                unit: getNormalizationUnit(normalizedFilter.normalization),
+                unit: getNormalizationUnit(filterInput.normalization),
                 filter: {
-                    ...normalizedFilter,
+                    ...filterInput,
                     account_category: accountCategory,
                     report_type: reportType,
                     uat_ids: [uatId],
@@ -196,16 +194,16 @@ function convertFilterInputToChartState(
                 updatedAt: new Date().toISOString(),
             })
         })
-    } else if (normalizedFilter.county_codes && normalizedFilter.county_codes.length > 0) {
-        normalizedFilter.county_codes.forEach((cc, index) => {
+    } else if (filterInput.county_codes && filterInput.county_codes.length > 0) {
+        filterInput.county_codes.forEach((cc, index) => {
             series.push({
                 id: crypto.randomUUID(),
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
                 label: `County ${cc}`,
-                unit: getNormalizationUnit(normalizedFilter.normalization),
+                unit: getNormalizationUnit(filterInput.normalization),
                 filter: {
-                    ...normalizedFilter,
+                    ...filterInput,
                     account_category: accountCategory,
                     report_type: reportType,
                     county_codes: [cc],
@@ -227,9 +225,9 @@ function convertFilterInputToChartState(
             type: 'line-items-aggregated-yearly',
             enabled: true,
             label: "Series",
-            unit: getNormalizationUnit(normalizedFilter.normalization),
+            unit: getNormalizationUnit(filterInput.normalization),
             filter: {
-                ...normalizedFilter,
+                ...filterInput,
                 account_category: accountCategory,
                 report_type: reportType,
             },
@@ -242,7 +240,7 @@ function convertFilterInputToChartState(
         })
     }
 
-    const chartId = generateHash(JSON.stringify(normalizedFilter))
+    const chartId = generateHash(JSON.stringify(filterInput))
     const chartState: ChartUrlState = {
         chart: ChartSchema.parse({
             id: chartId,
@@ -261,14 +259,13 @@ function convertFilterInputToChartState(
 }
 
 function convertFilterInputToEntityTableState(filterInput: AnalyticsFilterType, mapViewType: 'UAT' | 'County'): EntityAnalyticsUrlState {
-    const normalizedFilter = withDefaultExcludes(filterInput)
-    const accountCategory = (normalizedFilter.account_category ?? 'ch') as 'ch' | 'vn'
+    const accountCategory = (filterInput.account_category ?? 'ch') as 'ch' | 'vn'
     const base: EntityAnalyticsUrlState = {
         view: 'table',
         sortOrder: 'desc',
         page: 1,
         pageSize: 25,
-        filter: { ...normalizedFilter, account_category: accountCategory },
+        filter: { ...filterInput, account_category: accountCategory },
     }
 
     // Edge cases for uat table:
@@ -276,13 +273,13 @@ function convertFilterInputToEntityTableState(filterInput: AnalyticsFilterType, 
     // - If County and uat_ids selected -> prefer uat_ids
     // - If UAT view and uat_ids selected, keep is_uat true
     if (mapViewType === 'County') {
-        if (normalizedFilter.uat_ids && normalizedFilter.uat_ids.length > 0) {
-            base.filter = { ...base.filter, uat_ids: normalizedFilter.uat_ids, entity_types: undefined, is_uat: undefined }
+        if (filterInput.uat_ids && filterInput.uat_ids.length > 0) {
+            base.filter = { ...base.filter, uat_ids: filterInput.uat_ids, entity_types: undefined, is_uat: undefined }
         } else {
             base.filter = { ...base.filter, entity_types: ['admin_county_council'], is_uat: undefined }
         }
     } else {
-        if (normalizedFilter.county_codes && normalizedFilter.county_codes.length > 0) {
+        if (filterInput.county_codes && filterInput.county_codes.length > 0) {
             base.filter = { ...base.filter, is_uat: undefined }
         } else {
             base.filter = { ...base.filter, is_uat: true }
@@ -293,11 +290,10 @@ function convertFilterInputToEntityTableState(filterInput: AnalyticsFilterType, 
 }
 
 function convertFilterInputToMapState(filterInput: AnalyticsFilterType, mapViewType: 'UAT' | 'County'): MapUrlState {
-    const normalizedFilter = withDefaultExcludes(filterInput)
-    const accountCategory = (normalizedFilter.account_category ?? 'ch') as 'ch' | 'vn'
+    const accountCategory = (filterInput.account_category ?? 'ch') as 'ch' | 'vn'
 
     return {
-        filters: { ...normalizedFilter, account_category: accountCategory },
+        filters: { ...filterInput, account_category: accountCategory },
         mapViewType: mapViewType,
         activeView: 'map',
     }

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { AnalyticsFilterSchema, AnalyticsFilterType, defaultYearRange } from '@/schemas/charts';
+import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults';
 import { withDefaultExcludes } from '@/lib/filterUtils';
 
 const MapViewEnum = z.enum(["map", "table", "chart"]);
@@ -14,6 +15,10 @@ export const defaultMapFilters: AnalyticsFilterType = withDefaultExcludes({
   normalization: 'total',
   is_uat: true,
   report_type: 'Executie bugetara agregata la nivel de ordonator principal',
+  exclude: {
+    economic_prefixes: [...DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES],
+    functional_prefixes: [...DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES],
+  },
 })
 
 export const MapStateSchema = z.object({

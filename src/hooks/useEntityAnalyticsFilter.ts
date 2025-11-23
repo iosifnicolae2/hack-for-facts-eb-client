@@ -2,6 +2,7 @@ import { useNavigate, useSearch } from '@tanstack/react-router'
 import { useCallback } from 'react'
 import { z } from 'zod'
 import { AnalyticsFilterSchema, AnalyticsFilterType, defaultYearRange } from '@/schemas/charts'
+import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults'
 import { withDefaultExcludes } from '@/lib/filterUtils'
 import { Analytics } from '@/lib/analytics'
 
@@ -15,6 +16,10 @@ export const defaultEntityAnalyticsFilter: AnalyticsFilterType = withDefaultExcl
   },
   normalization: 'total',
   report_type: 'Executie bugetara agregata la nivel de ordonator principal',
+  exclude: {
+    economic_prefixes: [...DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES],
+    functional_prefixes: [...DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES],
+  },
 })
 
 const searchSchema = z.object({
@@ -41,7 +46,7 @@ export function useEntityAnalyticsFilter() {
     navigate({
       search: (prev) => {
         const prevFilter = (prev as EntityAnalyticsSearch).filter ?? defaultEntityAnalyticsFilter
-        const merged = withDefaultExcludes({ ...prevFilter, ...partial })
+        const merged = { ...prevFilter, ...partial }
         const filterHash = JSON.stringify(merged)
         Analytics.capture(Analytics.EVENTS.EntityAnalyticsFilterChanged, {
           filter_hash: filterHash,

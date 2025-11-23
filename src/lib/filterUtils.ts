@@ -49,12 +49,11 @@ export function withDefaultExcludes(filter: AnalyticsFilterType): AnalyticsFilte
 }
 
 export function normalizeAnalyticsFilter(filter: AnalyticsFilterType, fallback?: { period?: ReportPeriodInput }): AnalyticsFilterType {
-  const filterWithExcludes = withDefaultExcludes(filter)
-  const accountCategory = (filterWithExcludes.account_category ?? 'ch') as 'ch' | 'vn'
+  const accountCategory = (filter.account_category ?? 'ch') as 'ch' | 'vn'
   const normalized: AnalyticsFilterType = {
-    ...filterWithExcludes,
+    ...filter,
     account_category: accountCategory,
-    report_period: ensureReportPeriod(filterWithExcludes, fallback),
+    report_period: ensureReportPeriod(filter, fallback),
   }
   return normalized
 }

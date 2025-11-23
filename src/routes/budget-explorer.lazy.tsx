@@ -128,7 +128,7 @@ export function head({ search }: { search: BudgetExplorerState }) {
 
 
 function buildSeriesFilter(base: AnalyticsFilterType, overrides: Partial<AnalyticsFilterType>) {
-  const merged = {
+  return {
     ...base,
     functional_codes: undefined,
     functional_prefixes: undefined,
@@ -138,14 +138,12 @@ function buildSeriesFilter(base: AnalyticsFilterType, overrides: Partial<Analyti
     ...overrides,
     report_period: undefined,
   } as AnalyticsFilterType
-  return withDefaultExcludes(merged)
 }
 
 function BudgetExplorerPage() {
   const raw = useSearch({ from: '/budget-explorer' })
   const navigate = useNavigate({ from: '/budget-explorer' })
-  const parsedSearch = SearchSchema.parse(raw)
-  const search = { ...parsedSearch, filter: withDefaultExcludes(parsedSearch.filter) }
+  const search = SearchSchema.parse(raw)
   const isMobile = useIsMobile()
   const [currency] = useUserCurrency()
 
@@ -313,11 +311,11 @@ function BudgetExplorerPage() {
 
   const handleFilterChange = (partial: Partial<BudgetExplorerState>) => {
     const { filter: partialFilter, primary: partialPrimary, treemapPrimary: partialTreemapPrimary, ...restPartial } = partial
-    const nextFilter = withDefaultExcludes({
+    const nextFilter = {
       ...defaultFilter,
       ...filter,
       ...(partialFilter ?? {}),
-    })
+    }
     let nextPrimary: BudgetExplorerState['primary'] = partialPrimary ?? primary
     let nextTreemapPrimary: BudgetExplorerState['primary'] | undefined = partialTreemapPrimary ?? treemapPrimary
     if (nextFilter.account_category === 'vn') {

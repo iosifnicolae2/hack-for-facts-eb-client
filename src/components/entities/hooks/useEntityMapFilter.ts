@@ -1,4 +1,5 @@
 import { AnalyticsFilterType, defaultYearRange } from "@/schemas/charts";
+import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from "@/lib/analytics-defaults";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { withDefaultExcludes } from "@/lib/filterUtils";
@@ -10,6 +11,10 @@ const getDefaultMapFilters = (userCurrency: 'RON' | 'EUR'): AnalyticsFilterType 
   },
   account_category: 'ch',
   normalization: userCurrency === 'EUR' ? 'per_capita_euro' : 'per_capita',
+  exclude: {
+    economic_prefixes: [...DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES],
+    functional_prefixes: [...DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES], 
+  },
 });
 
 interface UseEntityMapFilterProps {
@@ -20,7 +25,7 @@ interface UseEntityMapFilterProps {
 export const useEntityMapFilter = ({ year, userCurrency = 'RON' }: UseEntityMapFilterProps) => {
     const navigate = useNavigate({ from: '/entities/$cui' });
     const search = useSearch({ from: '/entities/$cui' });
-    const mapFilters = withDefaultExcludes(search.mapFilters ?? getDefaultMapFilters(userCurrency));
+    const mapFilters = search.mapFilters ?? getDefaultMapFilters(userCurrency);
 
     // We want the year from the entity page to override the year from the map filters.
     mapFilters.report_period = {
@@ -31,8 +36,7 @@ export const useEntityMapFilter = ({ year, userCurrency = 'RON' }: UseEntityMapF
     const updateMapFilters = (filters: Partial<AnalyticsFilterType>) => {
       navigate({
         search: (prev) => {
-          const merged = withDefaultExcludes({ ...(prev as any)?.mapFilters, ...filters })
-          return { ...prev, mapFilters: merged }
+          return { ...prev, mapFilters: { ...(prev as any)?.mapFilters, ...filters } }
         },
         replace: true,
         resetScroll: false,

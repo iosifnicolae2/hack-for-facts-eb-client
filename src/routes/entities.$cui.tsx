@@ -49,7 +49,11 @@ export const Route = createFileRoute('/entities/$cui')({
         if (desiredView === 'map' && entity?.is_uat) {
             const mapViewType = entity.entity_type === 'admin_county_council' || entity.cui === '4267117' ? 'County' : 'UAT';
             queryClient.prefetchQuery(geoJsonQueryOptions(mapViewType));
-            const filters = withDefaultExcludes((search?.mapFilters as AnalyticsFilterType) || { years: [year], account_category: 'ch', normalization: 'per_capita', report_period: getInitialFilterState('YEAR', year, '12', 'Q4') });
+            const filters = (search?.mapFilters as AnalyticsFilterType) || withDefaultExcludes({
+                account_category: 'ch',
+                normalization: 'per_capita',
+                report_period: getInitialFilterState('YEAR', year, '12', 'Q4'),
+            });
             if (mapViewType === 'UAT') {
                 queryClient.prefetchQuery(heatmapUATQueryOptions(filters));
             } else {
