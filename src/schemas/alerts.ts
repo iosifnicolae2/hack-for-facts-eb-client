@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { AnalyticsFilterSchema } from './charts';
+import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES } from '@/lib/analytics-defaults';
 
 export const AlertOperatorEnum = z.enum(['gt', 'gte', 'lt', 'lte', 'eq']);
 export type AlertOperator = z.infer<typeof AlertOperatorEnum>;
@@ -23,6 +24,9 @@ export const AlertSchema = z.object({
   filter: AnalyticsFilterSchema.default({
     account_category: 'ch',
     report_type: 'Executie bugetara agregata la nivel de ordonator principal',
+    exclude: {
+      economic_prefixes: [...DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES],
+    },
   }),
   // When seriesType is 'static', use datasetId to reference backend dataset
   datasetId: z.string().optional(),

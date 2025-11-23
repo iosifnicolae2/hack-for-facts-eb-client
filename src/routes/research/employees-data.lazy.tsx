@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input'
 import Fuse from 'fuse.js'
 import { useDebouncedValue } from '@/lib/hooks'
 import { EntityEmployeesDataInfo } from '@/components/entities/EntityEmployeesDataInfo'
+import { withDefaultExcludes } from '@/lib/filterUtils'
 
 export const Route = createLazyFileRoute('/research/employees-data')({
   component: EmployeesDataPage,
@@ -24,7 +25,10 @@ function EmployeesDataPage() {
 
   const { data, isLoading, error } = useCsvData()
   // Heatmap data for financial metrics and UAT code (cui-like id)
-  const heatmapFilter: AnalyticsFilterType = useMemo(() => ({ years: [2024], account_category: 'ch' }), [])
+  const heatmapFilter: AnalyticsFilterType = useMemo(
+    () => withDefaultExcludes({ years: [2024], account_category: 'ch' } as AnalyticsFilterType),
+    []
+  )
   const { data: heatmapRaw } = useHeatmapData(heatmapFilter, 'UAT')
 
   const tableData = useMemo(() => {

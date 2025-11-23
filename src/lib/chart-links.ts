@@ -3,6 +3,7 @@ import type { Chart, Normalization, Calculation, Series } from '@/schemas/charts
 import type { ChartUrlState } from '@/components/charts/page-schema';
 import { generateHash, getNormalizationUnit } from '@/lib/utils';
 import { t } from '@lingui/core/macro';
+import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults';
 
 interface BuildEntityIncomeExpenseChartOptions {
     title?: string;
@@ -37,6 +38,9 @@ export function buildEntityIncomeExpenseChartState(
             account_category: 'vn' as const,
             report_type: reportType,
             normalization,
+            exclude: {
+                functional_prefixes: [...DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES],
+            },
         },
         config: { showDataLabels: false, color: incomeColor },
     };
@@ -50,6 +54,9 @@ export function buildEntityIncomeExpenseChartState(
             account_category: 'ch' as const,
             report_type: reportType,
             normalization,
+            exclude: {
+                economic_prefixes: [...DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES],
+            },
         },
         config: { showDataLabels: false, color: expenseColor },
     };

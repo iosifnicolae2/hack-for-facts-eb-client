@@ -15,6 +15,7 @@ import { generateRandomColor } from '../components/chart-renderer/utils';
 import { Analytics } from '@/lib/analytics';
 import { useUserCurrency } from '@/lib/hooks/useUserCurrency';
 import { useChartHistory } from './useChartHistory';
+import { withDefaultExcludes } from '@/lib/filterUtils';
 
 interface ValidationResult {
   isValid: boolean;
@@ -97,11 +98,11 @@ export function useChartStore() {
       type: 'line-items-aggregated-yearly',
       enabled: true,
       label: `New Series ${chart.series.length + 1}`,
-      filter: {
+      filter: withDefaultExcludes({
         account_category: 'ch',
         report_type: 'Executie bugetara agregata la nivel de ordonator principal',
         normalization: defaultNormalization,
-      },
+      }),
       config: {
         showDataLabels: false,
         color: generateRandomColor(),

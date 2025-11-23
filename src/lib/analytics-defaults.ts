@@ -1,0 +1,2 @@
+export const DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES = ['51', '55.01'] as const;
+export const DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES = ['42', '43', '47', '36.05'] as const;

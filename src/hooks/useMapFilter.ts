@@ -6,11 +6,13 @@ import { OptionItem } from '@/components/filters/base-filter/interfaces';
 import { AnalyticsFilterType } from '@/schemas/charts';
 import { LabelStore } from '@/hooks/filters/interfaces';
 import { Analytics } from '@/lib/analytics';
+import { withDefaultExcludes } from '@/lib/filterUtils';
 
 export function useMapFilter() {
     const navigate = useNavigate({ from: '/map' });
     const search = useSearch({ from: '/map' });
-    const mapState = MapStateSchema.parse(search);
+    const parsedState = MapStateSchema.parse(search);
+    const mapState: MapUrlState = { ...parsedState, filters: withDefaultExcludes(parsedState.filters) };
 
     const economicClassificationLabelsStore = useEconomicClassificationLabel(mapState.filters.economic_codes ?? []);
     const functionalClassificationLabelsStore = useFunctionalClassificationLabel(mapState.filters.functional_codes ?? []);
@@ -23,10 +25,8 @@ export function useMapFilter() {
             search: (prev) => {
                 const prevState = (prev as MapUrlState);
                 const prevFilter = prevState?.filters || defaultMapFilters;
-                const newFilters = { ...prevState, filters: { ...prevFilter, ...filters } };
-                if (!newFilters.filters.account_category) {
-                    newFilters.filters.account_category = "ch";
-                }
+                const mergedFilters = withDefaultExcludes({ ...prevFilter, ...filters });
+                const newFilters = { ...prevState, filters: mergedFilters };
                 // Emit a summarized change to avoid sending sensitive data
                 const filterHash = JSON.stringify(newFilters.filters);
                 Analytics.capture(Analytics.EVENTS.MapFilterChanged, {
@@ -195,10 +195,7 @@ export function useMapFilter() {
     };
 
     const clearAllFilters = () => {
-        setFilters({
-            ...defaultMapFilters,
-            exclude: undefined,
-        });
+        setFilters(defaultMapFilters);
     };
 
     const setActiveView = (view: "map" | "table" | "chart") => {

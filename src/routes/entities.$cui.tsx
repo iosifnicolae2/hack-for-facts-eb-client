@@ -12,9 +12,10 @@ import { getChartAnalytics } from '@/lib/api/charts';
 import { generateHash } from '@/lib/utils';
 import { GqlReportType, toReportTypeValue } from '@/schemas/reporting';
 import { getInitialFilterState, makeTrendPeriod } from '@/schemas/reporting';
-import { prepareFilterForServer } from '@/lib/filterUtils';
+import { prepareFilterForServer, withDefaultExcludes } from '@/lib/filterUtils';
 import { getPersistedState } from '@/lib/hooks/usePersistedState';
 import type { EntityDetailsData } from '@/lib/api/entities';
+import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults';
 
 export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
 
@@ -48,7 +49,7 @@ export const Route = createFileRoute('/entities/$cui')({
         if (desiredView === 'map' && entity?.is_uat) {
             const mapViewType = entity.entity_type === 'admin_county_council' || entity.cui === '4267117' ? 'County' : 'UAT';
             queryClient.prefetchQuery(geoJsonQueryOptions(mapViewType));
-            const filters = (search?.mapFilters as AnalyticsFilterType) || { years: [year], account_category: 'ch', normalization: 'per_capita', report_period: getInitialFilterState('YEAR', year, '12', 'Q4') };
+            const filters = withDefaultExcludes((search?.mapFilters as AnalyticsFilterType) || { years: [year], account_category: 'ch', normalization: 'per_capita', report_period: getInitialFilterState('YEAR', year, '12', 'Q4') });
             if (mapViewType === 'UAT') {
                 queryClient.prefetchQuery(heatmapUATQueryOptions(filters));
             } else {
@@ -63,6 +64,9 @@ export const Route = createFileRoute('/entities/$cui')({
             const filtered = (lineItems as MinimalLineItem[]).filter((li) => li.account_category === accountCategory);
             const topGroups: string[] = getTopFunctionalGroupCodes(filtered as unknown as import('@/lib/api/entities').ExecutionLineItem[], 10);
             if (topGroups.length > 0) {
+                const defaultExclude = accountCategory === 'ch'
+                    ? { economic_prefixes: [...DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES] }
+                    : { functional_prefixes: [...DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES] };
                 const baseInputs: AnalyticsInput[] = topGroups.map((prefix: string) => ({
                     seriesId: `${prefix}${params.cui}-${desiredView === 'income-trends' ? 'income' : 'expense'}`,
                     filter: {
@@ -70,6 +74,7 @@ export const Route = createFileRoute('/entities/$cui')({
                         functional_prefixes: [prefix],
                         account_category: accountCategory,
                         report_type: entity?.default_report_type ? toReportTypeValue(entity.default_report_type) : 'Executie bugetara agregata la nivel de ordonator principal',
+                        exclude: defaultExclude,
                     },
                 }));
                 const fallbackPeriod = makeTrendPeriod('YEAR', year, START_YEAR, END_YEAR);

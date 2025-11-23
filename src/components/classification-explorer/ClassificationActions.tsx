@@ -12,6 +12,7 @@ import { CopyButton } from '@/components/ui/copy-button'
 import { toast } from 'sonner'
 import type { ClassificationType } from '@/types/classification-explorer'
 import { AnalyticsFilterType, defaultYearRange } from '@/schemas/charts'
+import { withDefaultExcludes } from '@/lib/filterUtils'
 
 type ClassificationActionsProps = {
   readonly type: ClassificationType
@@ -35,7 +36,7 @@ export function ClassificationActions({ type, code }: ClassificationActionsProps
 
   // Build the filter with the prefix
   const filterKey = type === 'functional' ? 'functional_prefixes' : 'economic_prefixes'
-  const filter: AnalyticsFilterType = {
+  const filter: AnalyticsFilterType = withDefaultExcludes({
     [filterKey]: [prefixCode],
     report_period: {
       type: 'YEAR',
@@ -43,7 +44,7 @@ export function ClassificationActions({ type, code }: ClassificationActionsProps
     },
     account_category: 'ch' as const,
     report_type: 'Executie bugetara agregata la nivel de ordonator principal' as const,
-  }
+  })
 
   // Create a link to entity analytics with line items view
   const entityAnalyticsLink = `/entity-analytics?view=line-items&filter=${encodeURIComponent(JSON.stringify(filter))}`

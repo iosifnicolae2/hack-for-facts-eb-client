@@ -32,6 +32,7 @@ import { Label } from '@/components/ui/label'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { t } from '@lingui/core/macro'
 import { getSiteUrl } from '@/config/env'
+import { withDefaultExcludes } from '@/lib/filterUtils'
 // JSON-LD injected via Route.head
 
 export const Route = createLazyFileRoute('/budget-explorer')({
@@ -42,7 +43,7 @@ const PrimaryLevelEnum = z.enum(['fn', 'ec'])
 const DepthEnum = z.enum(['chapter', 'subchapter', 'paragraph'])
 const ViewEnum = z.enum(['overview', 'treemap', 'sankey', 'list'])
 
-const defaultFilter: AnalyticsFilterType = {
+const baseDefaultFilter: AnalyticsFilterType = {
   report_period: {
     type: 'YEAR',
     selection: { dates: [String(new Date().getFullYear())] },
@@ -50,6 +51,7 @@ const defaultFilter: AnalyticsFilterType = {
   account_category: 'ch',
   report_type: 'Executie bugetara agregata la nivel de ordonator principal',
 }
+const defaultFilter: AnalyticsFilterType = withDefaultExcludes(baseDefaultFilter)
 
 const SearchSchema = z.object({
   view: ViewEnum.default('overview').describe('View type: overview | treemap | sankey | list.'),
@@ -126,7 +128,7 @@ export function head({ search }: { search: BudgetExplorerState }) {
 
 
 function buildSeriesFilter(base: AnalyticsFilterType, overrides: Partial<AnalyticsFilterType>) {
-  return {
+  const merged = {
     ...base,
     functional_codes: undefined,
     functional_prefixes: undefined,
@@ -136,12 +138,14 @@ function buildSeriesFilter(base: AnalyticsFilterType, overrides: Partial<Analyti
     ...overrides,
     report_period: undefined,
   } as AnalyticsFilterType
+  return withDefaultExcludes(merged)
 }
 
 function BudgetExplorerPage() {
   const raw = useSearch({ from: '/budget-explorer' })
   const navigate = useNavigate({ from: '/budget-explorer' })
-  const search = SearchSchema.parse(raw)
+  const parsedSearch = SearchSchema.parse(raw)
+  const search = { ...parsedSearch, filter: withDefaultExcludes(parsedSearch.filter) }
   const isMobile = useIsMobile()
   const [currency] = useUserCurrency()
 
@@ -309,11 +313,11 @@ function BudgetExplorerPage() {
 
   const handleFilterChange = (partial: Partial<BudgetExplorerState>) => {
     const { filter: partialFilter, primary: partialPrimary, treemapPrimary: partialTreemapPrimary, ...restPartial } = partial
-    const nextFilter = {
+    const nextFilter = withDefaultExcludes({
       ...defaultFilter,
       ...filter,
       ...(partialFilter ?? {}),
-    }
+    })
     let nextPrimary: BudgetExplorerState['primary'] = partialPrimary ?? primary
     let nextTreemapPrimary: BudgetExplorerState['primary'] | undefined = partialTreemapPrimary ?? treemapPrimary
     if (nextFilter.account_category === 'vn') {

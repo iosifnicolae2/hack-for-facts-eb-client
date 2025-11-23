@@ -2,11 +2,12 @@ import { useNavigate, useSearch } from '@tanstack/react-router'
 import { useCallback } from 'react'
 import { z } from 'zod'
 import { AnalyticsFilterSchema, AnalyticsFilterType, defaultYearRange } from '@/schemas/charts'
+import { withDefaultExcludes } from '@/lib/filterUtils'
 import { Analytics } from '@/lib/analytics'
 
 const viewEnum = z.enum(['table', 'chart', 'line-items'])
 
-export const defaultEntityAnalyticsFilter: AnalyticsFilterType = {
+export const defaultEntityAnalyticsFilter: AnalyticsFilterType = withDefaultExcludes({
   account_category: 'ch',
   report_period: {
     type: 'YEAR',
@@ -14,7 +15,7 @@ export const defaultEntityAnalyticsFilter: AnalyticsFilterType = {
   },
   normalization: 'total',
   report_type: 'Executie bugetara agregata la nivel de ordonator principal',
-}
+})
 
 const searchSchema = z.object({
   view: viewEnum.default('table'),
@@ -40,15 +41,12 @@ export function useEntityAnalyticsFilter() {
     navigate({
       search: (prev) => {
         const prevFilter = (prev as EntityAnalyticsSearch).filter ?? defaultEntityAnalyticsFilter
-        const merged = { ...prevFilter, ...partial }
-        if (!merged.account_category) {
-          merged.account_category = 'ch'
-        }
-    const filterHash = JSON.stringify(merged)
-    Analytics.capture(Analytics.EVENTS.EntityAnalyticsFilterChanged, {
-      filter_hash: filterHash,
-      ...Analytics.summarizeFilter(merged),
-    })
+        const merged = withDefaultExcludes({ ...prevFilter, ...partial })
+        const filterHash = JSON.stringify(merged)
+        Analytics.capture(Analytics.EVENTS.EntityAnalyticsFilterChanged, {
+          filter_hash: filterHash,
+          ...Analytics.summarizeFilter(merged),
+        })
         return { ...prev, filter: merged }
       },
       replace: true,

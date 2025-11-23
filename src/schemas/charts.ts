@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { ChartTypeEnum, DEFAULT_CHART } from './constants';
 import { generateRandomColor } from '@/components/charts/components/chart-renderer/utils';
+import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES } from '@/lib/analytics-defaults';
 
 export const defaultYearRange = {
   start: 2016,
@@ -205,6 +206,9 @@ export const SeriesConfigurationSchema = BaseSeriesConfigurationSchema.extend({
     },
     account_category: 'ch',
     report_type: 'Executie bugetara agregata la nivel de ordonator principal',
+    exclude: {
+      economic_prefixes: [...DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES],
+    },
   }),
 }).loose();
 

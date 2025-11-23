@@ -1,4 +1,5 @@
 import { defaultYearRange, type AnalyticsFilterType } from '@/schemas/charts'
+import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from './analytics-defaults'
 import type { ReportPeriodInput, PeriodDate } from '@/schemas/reporting'
 import { toReportGqlType } from '@/schemas/reporting'
 
@@ -17,12 +18,43 @@ export function ensureReportPeriod(filter: AnalyticsFilterType, fallback?: { per
   return buildReportPeriodFromYears()
 }
 
-export function normalizeAnalyticsFilter(filter: AnalyticsFilterType, fallback?: { period?: ReportPeriodInput }): AnalyticsFilterType {
+export function withDefaultExcludes(filter: AnalyticsFilterType): AnalyticsFilterType {
   const accountCategory = (filter.account_category ?? 'ch') as 'ch' | 'vn'
-  const normalized: AnalyticsFilterType = {
+  const exclude = { ...(filter.exclude ?? {}) }
+
+  if (accountCategory === 'ch') {
+    const economicPrefixes = new Set<string>([
+      ...DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES,
+      ...(exclude.economic_prefixes ?? []),
+    ])
+    exclude.economic_prefixes = Array.from(economicPrefixes)
+  } else if (accountCategory === 'vn') {
+    const functionalPrefixes = new Set<string>([
+      ...DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES,
+      ...(exclude.functional_prefixes ?? []),
+    ])
+    exclude.functional_prefixes = Array.from(functionalPrefixes)
+  }
+
+  const hasExcludeValues = Object.values(exclude).some((value) => {
+    if (Array.isArray(value)) return value.length > 0
+    return value !== undefined
+  })
+
+  return {
     ...filter,
     account_category: accountCategory,
-    report_period: ensureReportPeriod(filter, fallback),
+    exclude: hasExcludeValues ? exclude : undefined,
+  }
+}
+
+export function normalizeAnalyticsFilter(filter: AnalyticsFilterType, fallback?: { period?: ReportPeriodInput }): AnalyticsFilterType {
+  const filterWithExcludes = withDefaultExcludes(filter)
+  const accountCategory = (filterWithExcludes.account_category ?? 'ch') as 'ch' | 'vn'
+  const normalized: AnalyticsFilterType = {
+    ...filterWithExcludes,
+    account_category: accountCategory,
+    report_period: ensureReportPeriod(filterWithExcludes, fallback),
   }
   return normalized
 }

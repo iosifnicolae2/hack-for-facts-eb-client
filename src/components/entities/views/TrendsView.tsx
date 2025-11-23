@@ -21,6 +21,7 @@ import { useTreemapDrilldown } from '@/components/budget-explorer/useTreemapDril
 import type { AggregatedNode } from '@/components/budget-explorer/budget-transform'
 import { getNormalizationUnit } from '@/lib/utils';
 import { Trans } from '@lingui/react/macro'
+import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults'
 
 interface BaseTrendsViewProps {
   entity?: EntityDetailsData | null | undefined;
@@ -98,6 +99,9 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
     const accountCategory = type === 'income' ? 'vn' : 'ch';
     const entityName = entityNameRaw.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     const title = type === 'income' ? t`Top ${TOP_CATEGORIES_COUNT} Income Categories for ${entityName}` : t`Top ${TOP_CATEGORIES_COUNT} Spending Categories for ${entityName}`;
+    const defaultExclude = accountCategory === 'ch'
+      ? { economic_prefixes: [...DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES] }
+      : { functional_prefixes: [...DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES] };
 
     const series: SeriesConfiguration[] = topFunctionalGroups.map((prefix, index) => ({
       id: `${prefix}${cui}-${type}`,
@@ -110,6 +114,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
         report_type: toReportTypeValue(reportType ?? entity.default_report_type),
         normalization,
         report_period: trendPeriod,
+        exclude: defaultExclude,
       },
       enabled: true,
       config: { color: getSeriesColor(index), showDataLabels: false },
