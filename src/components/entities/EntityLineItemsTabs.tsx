@@ -6,9 +6,10 @@ import { LineItemsGroupedSection } from './LineItemsGroupedSection';
 import { LineItemsBadgeFilters } from './LineItemsBadgeFilters';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { AdvancedFilterDropdown } from './AdvancedFilterDropdown';
-import { X } from 'lucide-react';
+import { Info, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Trans } from '@lingui/react/macro';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 export interface EntityLineItemsTabsProps {
   lineItems: readonly ExecutionLineItem[];
@@ -100,6 +101,61 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
 
   return (
     <section className="space-y-2 mb-2">
+
+      {onTransferFilterChange && (
+        <div className="flex items-center gap-2">
+          <ToggleGroup
+            type="single"
+            value={transferFilter ?? 'no-transfers'}
+            onValueChange={(value) => {
+              if (value) {
+                onTransferFilterChange(value as 'all' | 'no-transfers' | 'transfers-only');
+              }
+            }}
+            className="flex gap-2 justify-start"
+          >
+            <ToggleGroupItem
+              value="no-transfers"
+              className="data-[state=on]:bg-black data-[state=on]:text-white py-6 sm:py-0"
+            >
+              <Trans>Without Transfers</Trans>
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="transfers-only"
+              className="data-[state=on]:bg-black data-[state=on]:text-white py-6 sm:py-0"
+            >
+              <Trans>Transfers Only</Trans>
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="all"
+              className="data-[state=on]:bg-black data-[state=on]:text-white py-6 sm:py-0"
+            >
+              <Trans>All</Trans>
+            </ToggleGroupItem>
+          </ToggleGroup>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Info className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground" />
+            </PopoverTrigger>
+            <PopoverContent className="w-96">
+              <div className="space-y-3">
+                <h4 className="font-medium leading-none"><Trans>Filter Transfers</Trans></h4>
+                <p className="text-sm text-muted-foreground">
+                  <Trans>
+                    Public institutions often transfer funds between each other. These transfers can double-count spending or revenue if not filtered.
+                  </Trans>
+                </p>
+                <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
+                  <li><strong><Trans>Without Transfers</Trans>:</strong> <Trans>Shows only direct spending/revenue. Excludes internal transfers.</Trans></li>
+                  <li><strong><Trans>All</Trans>:</strong> <Trans>Shows all items, including transfers between institutions.</Trans></li>
+                  <li><strong><Trans>Transfers Only</Trans>:</strong> <Trans>Shows only the funds transferred between public administration units.</Trans></li>
+                </ul>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
+      )}
+
       <div className="flex flex-wrap items-center gap-2">
         <ToggleGroup
           type="single"
@@ -151,6 +207,7 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
           </>
         )}
       </div>
+
       {lineItemsTab === 'functional' && (
         <div className="mt-4">
           <div className={gridClassName}>
@@ -175,7 +232,6 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
                 iconType={iconType}
                 searchFocusKey={searchFocusKey}
                 transferFilter={transferFilter}
-                onTransferFilterChange={onTransferFilterChange}
               />
             ))}
           </div>
@@ -219,7 +275,6 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
                 iconType={iconType}
                 searchFocusKey={searchFocusKey}
                 transferFilter={transferFilter}
-                onTransferFilterChange={onTransferFilterChange}
               />
             ))}
           </div>
@@ -263,7 +318,6 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
                 iconType={iconType}
                 searchFocusKey={searchFocusKey}
                 transferFilter={transferFilter}
-                onTransferFilterChange={onTransferFilterChange}
               />
             ))}
           </div>

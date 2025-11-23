@@ -54,7 +54,9 @@ export function EntityAnalyticsTreemap({
   }, [data])
 
   // Exclude non-direct spending items for spending view (account_category='ch')
-  const excludeEcCodes = filter.account_category === 'ch' ? ['51', '80', '81'] : []
+  const excludeEcCodes = filter.account_category === 'ch' ? ['51', '55.01'] : []
+  // Exclude transfer codes for income view (account_category='vn')
+  const excludeFnCodes = filter.account_category === 'vn' ? ['42', '43', '47', '36.05'] : []
 
   const {
     primary,
@@ -70,6 +72,7 @@ export function EntityAnalyticsTreemap({
     initialPrimary,
     rootDepth: depth === 'chapter' ? 2 : depth === 'subchapter' ? 4 : 6,
     excludeEcCodes,
+    excludeFnCodes,
     onPrimaryChange,
     initialPath: (treemapPath ?? '')
       .split(',')

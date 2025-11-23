@@ -136,7 +136,7 @@ export function FilteredSpendingInfo({ excludedItemsSummary, currencyCode, perCa
                   <div className="flex-1">
                     <div className="text-foreground font-medium">{item.label}</div>
                     <div className="text-[10px] text-muted-foreground mt-0.5">
-                      <span className="font-mono bg-muted/70 px-1.5 py-0.5 rounded">ec:{item.code}</span>
+                      <span className="font-mono bg-muted/70 px-1.5 py-0.5 rounded">{item.code}</span>
                     </div>
                   </div>
                   <div className="font-mono font-semibold text-foreground whitespace-nowrap">
@@ -198,7 +198,7 @@ export function FilteredSpendingInfo({ excludedItemsSummary, currencyCode, perCa
         <div className="flex gap-2 text-xs text-muted-foreground bg-muted/20 rounded-md p-3">
           <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />
           <p className="leading-relaxed">
-            <Trans>Note: Financial operations (Titles 80+81) represent loans and credit repayments. These are financing flows, not regular budget expenses, and are excluded from effective spending.</Trans>
+            <Trans>Note: Transfer items are excluded as they represent internal movements within the public administration rather than actual expenditures or revenues.</Trans>
           </p>
         </div>
       )}

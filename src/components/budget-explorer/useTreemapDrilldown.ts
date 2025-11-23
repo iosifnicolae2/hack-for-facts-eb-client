@@ -61,7 +61,7 @@ function resolveBreadcrumbLabel(primary: 'fn' | 'ec', code: string, nodes: Aggre
  * @param nodes - Budget line items to visualize
  * @param initialPrimary - Starting primary dimension ('fn' or 'ec')
  * @param rootDepth - Depth to use at root level (2, 4, or 6 digits)
- * @param excludeEcCodes - Economic codes to exclude from visualization (e.g., ['51', '80', '81'])
+ * @param excludeEcCodes - Economic codes to exclude from visualization (e.g., ['51', '55.01'])
  * @param onPrimaryChange - Optional callback when primary changes (for URL persistence)
  */
 export function useTreemapDrilldown({
@@ -70,6 +70,7 @@ export function useTreemapDrilldown({
   initialPath = [],
   rootDepth = 2,
   excludeEcCodes = [],
+  excludeFnCodes = [],
   onPrimaryChange,
   onPathChange,
 }: {
@@ -78,6 +79,7 @@ export function useTreemapDrilldown({
   initialPath?: string[]
   rootDepth?: 2 | 4 | 6
   excludeEcCodes?: string[]
+  excludeFnCodes?: string[]
   onPrimaryChange?: (primary: 'fn' | 'ec') => void
   onPathChange?: (path: string[]) => void
 }) {
@@ -116,17 +118,21 @@ export function useTreemapDrilldown({
       constraint,
       rootDepth: effectiveRootDepth,
       excludeEcCodes,
+      excludeFnCodes,
     })
-  }, [nodes, activePrimary, currentPath, constraint, effectiveRootDepth, excludeEcCodes])
+  }, [nodes, activePrimary, currentPath, constraint, effectiveRootDepth, excludeEcCodes, excludeFnCodes])
 
   const excludedItemsSummary = useMemo(() => {
-    if (!excludeEcCodes || excludeEcCodes.length === 0) return undefined
+    const hasEcExclusions = excludeEcCodes && excludeEcCodes.length > 0
+    const hasFnExclusions = excludeFnCodes && excludeFnCodes.length > 0
+    if (!hasEcExclusions && !hasFnExclusions) return undefined
     return calculateExcludedItems(nodes ?? [], excludeEcCodes, {
       path: currentPath,
       constraint,
       primary: activePrimary,
+      excludeFnCodes,
     })
-  }, [nodes, excludeEcCodes, currentPath, constraint, activePrimary])
+  }, [nodes, excludeEcCodes, excludeFnCodes, currentPath, constraint, activePrimary])
 
   const breadcrumbs: Breadcrumb[] = useMemo(() => {
     const items: Breadcrumb[] = []
@@ -159,9 +165,10 @@ export function useTreemapDrilldown({
       constraint: nextConstraint,
       rootDepth: nextRootDepth,
       excludeEcCodes,
+      excludeFnCodes,
     })
     return Array.isArray(next) && next.length > 0
-  }, [nodes, excludeEcCodes, evaluateForPath])
+  }, [nodes, excludeEcCodes, excludeFnCodes, evaluateForPath])
 
   const onNodeClick = useCallback(
     (code: string | null) => {

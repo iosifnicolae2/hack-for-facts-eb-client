@@ -34,7 +34,6 @@ export interface LineItemsGroupedSectionProps {
   iconType?: 'income' | 'expense';
   searchFocusKey?: string;
   transferFilter?: 'all' | 'no-transfers' | 'transfers-only';
-  onTransferFilterChange?: (filter: 'all' | 'no-transfers' | 'transfers-only') => void;
 }
 
 interface GroupBucketMeta {
@@ -68,7 +67,6 @@ export const LineItemsGroupedSection: React.FC<LineItemsGroupedSectionProps> = (
   iconType,
   searchFocusKey,
   transferFilter,
-  onTransferFilterChange,
 }) => {
   const accountCategory = type === 'income' ? 'vn' : 'ch';
 
@@ -224,7 +222,6 @@ export const LineItemsGroupedSection: React.FC<LineItemsGroupedSectionProps> = (
         normalization={normalization}
         searchFocusKey={searchFocusKey}
         transferFilter={transferFilter}
-        onTransferFilterChange={onTransferFilterChange}
       />
     </div>
   );

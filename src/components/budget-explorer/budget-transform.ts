@@ -33,8 +33,10 @@ type BuildTreemapV2Options = {
   constraint?: { type: 'fn' | 'ec'; code: string }
   /** When there is no path (root), use this depth for grouping. */
   rootDepth?: 2 | 4 | 6
-  /** Filter out specific economic codes (e.g., ec:51, 80, 81 for spending) */
+  /** Filter out specific economic codes (e.g., ec:51, 55.01 for spending) */
   excludeEcCodes?: string[]
+  /** Filter out specific functional codes (e.g., fn:42, 43, 47, 36.05 for income) */
+  excludeFnCodes?: string[]
 }
 
 export type ExcludedItemsSummary = {
@@ -44,7 +46,7 @@ export type ExcludedItemsSummary = {
   items: Array<{ code: string; label: string; amount: number }>
 }
 
-export function buildTreemapDataV2({ data, primary, path, constraint, rootDepth, excludeEcCodes }: BuildTreemapV2Options): TreemapInput[] {
+export function buildTreemapDataV2({ data, primary, path, constraint, rootDepth, excludeEcCodes, excludeFnCodes }: BuildTreemapV2Options): TreemapInput[] {
   const currentCode = path.length > 0 ? path[path.length - 1] : null
   let depth = (currentCode
     ? (String(currentCode).split('.').length + 1) * 2
@@ -97,9 +99,14 @@ export function buildTreemapDataV2({ data, primary, path, constraint, rootDepth,
     return code
   }
 
-  const shouldExclude = (ecCode: string): boolean => {
+  const shouldExcludeEc = (ecCode: string): boolean => {
     if (!excludeEcCodes || excludeEcCodes.length === 0) return false
     return excludeEcCodes.some((excludeCode) => ecCode.startsWith(excludeCode))
+  }
+
+  const shouldExcludeFn = (fnCode: string): boolean => {
+    if (!excludeFnCodes || excludeFnCodes.length === 0) return false
+    return excludeFnCodes.some((excludeCode) => fnCode.startsWith(excludeCode))
   }
 
   const grouped = data.reduce<Record<string, TreemapInput>>((acc, item) => {
@@ -107,7 +114,12 @@ export function buildTreemapDataV2({ data, primary, path, constraint, rootDepth,
     const ecCode = clean(item.ec_c)
 
     // Exclude specific economic codes if filtering is enabled
-    if (excludeEcCodes && shouldExclude(ecCode)) {
+    if (excludeEcCodes && shouldExcludeEc(ecCode)) {
+      return acc
+    }
+
+    // Exclude specific functional codes if filtering is enabled
+    if (excludeFnCodes && shouldExcludeFn(fnCode)) {
       return acc
     }
 
@@ -153,8 +165,8 @@ export function buildTreemapDataV2({ data, primary, path, constraint, rootDepth,
  * This considers the current path/constraint to show layer-specific exclusions.
  *
  * @param data - All aggregated line items
- * @param excludeEcCodes - Economic codes to exclude (e.g., ['51', '80', '81'])
- * @param options - Optional filtering context (path, constraint, primary)
+ * @param excludeEcCodes - Economic codes to exclude (e.g., ['51', '55.01'])
+ * @param options - Optional filtering context (path, constraint, primary, excludeFnCodes)
  */
 export function calculateExcludedItems(
   data: AggregatedNode[],
@@ -163,9 +175,14 @@ export function calculateExcludedItems(
     path?: string[]
     constraint?: { type: 'fn' | 'ec'; code: string }
     primary?: 'fn' | 'ec'
+    excludeFnCodes?: string[]
   }
 ): ExcludedItemsSummary {
-  if (!excludeEcCodes || excludeEcCodes.length === 0) {
+  const { path = [], constraint, primary, excludeFnCodes = [] } = options ?? {}
+  const hasEcExclusions = excludeEcCodes && excludeEcCodes.length > 0
+  const hasFnExclusions = excludeFnCodes && excludeFnCodes.length > 0
+
+  if (!hasEcExclusions && !hasFnExclusions) {
     const total = data.reduce((sum, item) => sum + (item.amount ?? 0), 0)
     return {
       totalExcluded: 0,
@@ -175,7 +192,6 @@ export function calculateExcludedItems(
     }
   }
 
-  const { path = [], constraint, primary } = options ?? {}
   const currentCode = path.length > 0 ? path[path.length - 1] : null
 
   // Filter data to match current layer (same logic as buildTreemapDataV2)
@@ -202,30 +218,58 @@ export function calculateExcludedItems(
   // Calculate total before exclusion
   const totalBeforeExclusion = layerData.reduce((sum, item) => sum + (item.amount ?? 0), 0)
 
-  // Track excluded amounts by code
-  const excludedByCode = excludeEcCodes.reduce<Record<string, { label: string; amount: number }>>((acc, code) => {
-    acc[code] = {
-      label: getEconomicChapterName(code) ?? `EC ${code}`,
-      amount: 0,
+  // Track excluded amounts by code (economic codes)
+  const excludedByCode: Record<string, { label: string; amount: number }> = {}
+
+  if (hasEcExclusions) {
+    for (const code of excludeEcCodes) {
+      excludedByCode[`ec:${code}`] = {
+        label: getEconomicChapterName(code) ?? `EC ${code}`,
+        amount: 0,
+      }
     }
-    return acc
-  }, {})
+  }
+
+  if (hasFnExclusions) {
+    for (const code of excludeFnCodes) {
+      excludedByCode[`fn:${code}`] = {
+        label: getClassificationName(code) ?? `FN ${code}`,
+        amount: 0,
+      }
+    }
+  }
 
   let totalExcluded = 0
   for (const item of layerData) {
     const ecCode = clean(item.ec_c)
-    for (const excludeCode of excludeEcCodes) {
-      if (ecCode.startsWith(excludeCode)) {
-        const amount = item.amount ?? 0
-        excludedByCode[excludeCode]!.amount += amount
-        totalExcluded += amount
-        break
+    const fnCode = clean(item.fn_c)
+    const amount = item.amount ?? 0
+
+    // Check economic code exclusions
+    if (hasEcExclusions) {
+      for (const excludeCode of excludeEcCodes) {
+        if (ecCode.startsWith(excludeCode)) {
+          excludedByCode[`ec:${excludeCode}`]!.amount += amount
+          totalExcluded += amount
+          break
+        }
+      }
+    }
+
+    // Check functional code exclusions
+    if (hasFnExclusions) {
+      for (const excludeCode of excludeFnCodes) {
+        if (fnCode.startsWith(excludeCode)) {
+          excludedByCode[`fn:${excludeCode}`]!.amount += amount
+          totalExcluded += amount
+          break
+        }
       }
     }
   }
 
   const items = Object.entries(excludedByCode)
-    .map(([code, data]) => ({ code, label: data.label, amount: data.amount }))
+    .map(([code, itemData]) => ({ code, label: itemData.label, amount: itemData.amount }))
     .filter((item) => item.amount > 0)
 
   return {

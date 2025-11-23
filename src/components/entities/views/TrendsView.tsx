@@ -168,7 +168,9 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
   }, [lineItems])
 
   // Exclude non-direct spending items for expense view
-  const excludeEcCodes = type === 'expense' ? ['51', '80', '81'] : []
+  const excludeEcCodes = type === 'expense' ? ['51', '55.01'] : []
+  // Exclude transfer codes for income view
+  const excludeFnCodes = type === 'income' ? ['42', '43', '47', '36.05'] : []
 
   const {
     primary,
@@ -184,6 +186,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
     initialPrimary: treemapPrimary ?? 'fn',
     rootDepth: 2,
     excludeEcCodes,
+    excludeFnCodes,
     onPrimaryChange: onTreemapPrimaryChange,
     initialPath: (treemapPath ?? '')
       .split(',')

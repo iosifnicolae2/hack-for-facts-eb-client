@@ -191,13 +191,16 @@ export const Overview = ({
     }, [filteredItems])
 
     // Exclude non-direct spending items for expense view
-    const excludeEcCodes = accountCategory === 'ch' ? ['51', '80', '81'] : []
+    const excludeEcCodes = accountCategory === 'ch' ? ['51', '55.01'] : []
+    // Exclude transfer codes for income view
+    const excludeFnCodes = accountCategory === 'vn' ? ['42', '43', '47', '36.05'] : []
 
     const { primary, activePrimary, setPrimary, treemapData, breadcrumbs, excludedItemsSummary, onNodeClick, onBreadcrumbClick, reset } = useTreemapDrilldown({
         nodes: aggregatedNodes,
         initialPrimary: treemapPrimary ?? 'fn',
         rootDepth: 2,
         excludeEcCodes,
+        excludeFnCodes,
         onPrimaryChange: onTreemapPrimaryChange,
         initialPath: (treemapPath ?? '')
             .split(',')
