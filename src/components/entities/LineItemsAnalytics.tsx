@@ -17,6 +17,7 @@ import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
 import { TMonth, TQuarter } from '@/schemas/reporting';
 import { getYearLabel } from './utils';
+import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults';
 
 interface AnalyticsProps {
     lineItems?: { nodes: readonly import('@/lib/api/entities').ExecutionLineItem[] } | null;
@@ -72,8 +73,21 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
         return () => window.removeEventListener('resize', checkScreenSize);
     }, []);
 
-    const expenses = useMemo(() => lineItems?.nodes.filter(li => li.account_category === 'ch') || [], [lineItems]);
-    const incomes = useMemo(() => lineItems?.nodes.filter(li => li.account_category === 'vn') || [], [lineItems]);
+    const expenses = useMemo(() => {
+        const items = lineItems?.nodes.filter(li => li.account_category === 'ch') || [];
+        return items.filter((item) => {
+            const code = item.economicClassification?.economic_code || '';
+            return !DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES.some((prefix) => code.startsWith(prefix));
+        });
+    }, [lineItems]);
+
+    const incomes = useMemo(() => {
+        const items = lineItems?.nodes.filter(li => li.account_category === 'vn') || [];
+        return items.filter((item) => {
+            const code = item.functionalClassification?.functional_code || '';
+            return !DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES.some((prefix) => code.startsWith(prefix));
+        });
+    }, [lineItems]);
 
     const incomeData = useMemo(() => processDataForAnalyticsChart(incomes), [incomes]);
     const expenseData = useMemo(() => processDataForAnalyticsChart(expenses), [expenses]);

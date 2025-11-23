@@ -492,6 +492,7 @@ function BudgetExplorerPage() {
             <BudgetCategoryList
               aggregated={nodes}
               depth={currentDepthNumeric}
+              accountCategory={filter.account_category}
               normalization={filter.normalization}
               isLoading={isLoading}
             />

@@ -4,6 +4,7 @@ import { groupData } from './budget-transform'
 import { formatCurrency, formatNumber, getNormalizationUnit } from '@/lib/utils'
 import type { GroupedItem } from './budget-transform'
 import { Skeleton } from '@/components/ui/skeleton'
+import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults'
 
 type AggregatedItem = {
   fn_c: string | null
@@ -16,6 +17,7 @@ type AggregatedItem = {
 type Props = {
   aggregated: AggregatedItem[]
   depth: 2 | 4 | 6
+  accountCategory?: 'ch' | 'vn'
   normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro'
   showEconomic?: boolean
   economicInfoText?: React.ReactNode
@@ -91,9 +93,25 @@ const CategoryColumn = ({ title, items, baseTotal, codePrefix, normalization }: 
     )
 }
 
-export function BudgetCategoryList({ aggregated, depth, normalization, showEconomic = true, economicInfoText, isLoading }: Props) {
-  const functional = useMemo(() => groupData(aggregated as any, 'fn', depth), [aggregated, depth]);
-  const economic = useMemo(() => groupData(aggregated as any, 'ec', depth), [aggregated, depth]);
+export function BudgetCategoryList({ aggregated, depth, accountCategory, normalization, showEconomic = true, economicInfoText, isLoading }: Props) {
+  const filteredAggregated = useMemo(() => {
+    if (accountCategory === 'ch') {
+      return aggregated.filter((item) => {
+        const code = item.ec_c ?? ''
+        return !DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES.some((prefix) => code.startsWith(prefix))
+      })
+    }
+    if (accountCategory === 'vn') {
+      return aggregated.filter((item) => {
+        const code = item.fn_c ?? ''
+        return !DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES.some((prefix) => code.startsWith(prefix))
+      })
+    }
+    return aggregated
+  }, [aggregated, accountCategory])
+
+  const functional = useMemo(() => groupData(filteredAggregated as any, 'fn', depth), [filteredAggregated, depth]);
+  const economic = useMemo(() => groupData(filteredAggregated as any, 'ec', depth), [filteredAggregated, depth]);
 
   if (isLoading) {
     return (

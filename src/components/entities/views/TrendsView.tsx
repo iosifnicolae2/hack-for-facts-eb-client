@@ -63,6 +63,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
   const { cui } = useParams({ from: '/entities/$cui' });
   const isMobile = useIsMobile();
   const chapterMap = useMemo(() => getChapterMap(), []);
+  const accountCategory = type === 'income' ? 'vn' : 'ch';
 
   // Compute selected month/quarter from the report period anchor
   const anchor = (reportPeriod.selection as any)?.interval?.start as string | undefined;
@@ -96,7 +97,6 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
 
   const trendChart = useMemo<Chart | null>(() => {
     if (!entity) return null;
-    const accountCategory = type === 'income' ? 'vn' : 'ch';
     const entityName = entityNameRaw.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     const title = type === 'income' ? t`Top ${TOP_CATEGORIES_COUNT} Income Categories for ${entityName}` : t`Top ${TOP_CATEGORIES_COUNT} Spending Categories for ${entityName}`;
     const defaultExclude = accountCategory === 'ch'
@@ -244,6 +244,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
             <BudgetCategoryList
               aggregated={aggregatedNodes}
               depth={2}
+              accountCategory={accountCategory}
               normalization={normalization}
               showEconomic={type !== 'income'}
               economicInfoText={
