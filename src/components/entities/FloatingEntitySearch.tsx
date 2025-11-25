@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogOverlay, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { EntitySearchInput } from './EntitySearch';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -75,7 +75,6 @@ export function FloatingEntitySearch({ className, externalOpen, showButton, onOp
                 </Button>
             </div>}
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
-                <DialogOverlay className="bg-slate-500/80" />
                 <DialogTitle className="sr-only">{t`Search for another entity`}</DialogTitle>
                 <DialogContent hideCloseButton={true} className={cn(
                     "fixed max-w-3xl w-full p-0 bg-transparent border-0 shadow-none outline-none focus:outline-none",
