@@ -259,13 +259,14 @@ function convertFilterInputToChartState(
 }
 
 function convertFilterInputToEntityTableState(filterInput: AnalyticsFilterType, mapViewType: 'UAT' | 'County'): EntityAnalyticsUrlState {
-    const accountCategory = (filterInput.account_category ?? 'ch') as 'ch' | 'vn'
+    const accountCategory = filterInput.account_category ?? 'ch'
+    const reportType = coerceReportType(filterInput) ?? 'Executie bugetara agregata la nivel de ordonator principal'
     const base: EntityAnalyticsUrlState = {
         view: 'table',
         sortOrder: 'desc',
         page: 1,
         pageSize: 25,
-        filter: { ...filterInput, account_category: accountCategory },
+        filter: { ...filterInput, account_category: accountCategory, report_type: reportType },
     }
 
     // Edge cases for uat table:
@@ -290,10 +291,10 @@ function convertFilterInputToEntityTableState(filterInput: AnalyticsFilterType, 
 }
 
 function convertFilterInputToMapState(filterInput: AnalyticsFilterType, mapViewType: 'UAT' | 'County'): MapUrlState {
-    const accountCategory = (filterInput.account_category ?? 'ch') as 'ch' | 'vn'
-
+    const accountCategory = filterInput.account_category ?? 'ch'
+    const reportType = coerceReportType(filterInput) ?? 'Executie bugetara agregata la nivel de ordonator principal'
     return {
-        filters: { ...filterInput, account_category: accountCategory },
+        filters: { ...filterInput, account_category: accountCategory, report_type: reportType },
         mapViewType: mapViewType,
         activeView: 'map',
     }
