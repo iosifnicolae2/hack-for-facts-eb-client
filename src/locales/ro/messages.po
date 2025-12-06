@@ -818,9 +818,9 @@ msgid "Browse and download all financial reports submitted by this entity"
 msgstr "Răsfoiți și descărcați toate rapoartele financiare depuse de această entitate"
 
 #: src/components/entities/views/Overview.tsx:262
-#: src/components/entities/views/TrendsView.tsx:207
+#: src/components/entities/views/TrendsView.tsx:212
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:93
-#: src/routes/budget-explorer.lazy.tsx:376
+#: src/routes/budget-explorer.lazy.tsx:378
 msgid "Budget Distribution"
 msgstr "Distribuția bugetului"
 
@@ -1047,7 +1047,7 @@ msgstr "Închide dialogul de căutare entitate"
 msgid "Close Search"
 msgstr "Închide Căutarea"
 
-#: src/components/classification-explorer/ClassificationActions.tsx:25
+#: src/components/classification-explorer/ClassificationActions.tsx:26
 msgid "Code copied to clipboard"
 msgstr "Codul a fost copiat"
 
@@ -1490,7 +1490,7 @@ msgid "Description"
 msgstr "Descriere"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:122
-#: src/routes/budget-explorer.lazy.tsx:427
+#: src/routes/budget-explorer.lazy.tsx:429
 msgid "Detail level"
 msgstr "Nivel de detaliu"
 
@@ -1508,7 +1508,7 @@ msgid "Detailed Budget Execution"
 msgstr "Executie bugetara detaliata"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:137
-#: src/routes/budget-explorer.lazy.tsx:440
+#: src/routes/budget-explorer.lazy.tsx:442
 msgid "Detailed categories"
 msgstr "Categorii detaliate"
 
@@ -1594,9 +1594,9 @@ msgstr "Ec"
 #: src/components/common/classification-info-link.tsx:89
 #: src/components/common/classification-info-link.tsx:134
 #: src/components/entities/views/Overview.tsx:286
-#: src/components/entities/views/TrendsView.tsx:210
+#: src/components/entities/views/TrendsView.tsx:215
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:117
-#: src/routes/budget-explorer.lazy.tsx:422
+#: src/routes/budget-explorer.lazy.tsx:424
 msgid "Economic"
 msgstr "Economic"
 
@@ -1933,7 +1933,7 @@ msgstr "Tip cheltuială"
 #: src/components/entities/EntityFinancialTrends.tsx:244
 #: src/components/entities/EntityLineItems.tsx:95
 #: src/components/entities/EntityLineItemsTabs.tsx:81
-#: src/components/entities/LineItemsAnalytics.tsx:117
+#: src/components/entities/LineItemsAnalytics.tsx:131
 #: src/components/entities/views/MapView.tsx:141
 #: src/components/entities/views/Overview.tsx:282
 #: src/components/filters/account-type-filter/AccountCategoryRadio.tsx:12
@@ -1993,7 +1993,7 @@ msgstr "Exporturi și atribuire"
 msgid "Exports must include attribution to data source and Transparenta.eu."
 msgstr "Exporturile trebuie să includă atribuirea sursei datelor și a Transparenta.eu."
 
-#: src/components/classification-explorer/ClassificationActions.tsx:28
+#: src/components/classification-explorer/ClassificationActions.tsx:29
 msgid "Failed to copy code"
 msgstr "Eroare la copierea codului"
 
@@ -2023,7 +2023,7 @@ msgstr "Eroare la încărcarea alertei"
 msgid "Failed to load alerts. Please try again."
 msgstr "Eroare la încărcarea alertelor. Vă rugăm să încercați din nou."
 
-#: src/routes/budget-explorer.lazy.tsx:451
+#: src/routes/budget-explorer.lazy.tsx:453
 msgid "Failed to load data."
 msgstr "Eroare la încărcarea datelor."
 
@@ -2098,7 +2098,7 @@ msgstr "Informații filtre"
 msgid "Filters marked as exclude will remove data matching these criteria from the results."
 msgstr "Filtrele marcate ca excludere vor elimina din rezultate datele care corespund acestor criterii."
 
-#: src/lib/chart-links.ts:26
+#: src/lib/chart-links.ts:27
 msgid "Financial Evolution - {entityName}"
 msgstr "Evoluție financiară - {entityName}"
 
@@ -2175,9 +2175,9 @@ msgstr "S-au găsit {replacementCount} apariții"
 #: src/components/common/classification-info-link.tsx:89
 #: src/components/common/classification-info-link.tsx:134
 #: src/components/entities/views/Overview.tsx:285
-#: src/components/entities/views/TrendsView.tsx:209
+#: src/components/entities/views/TrendsView.tsx:214
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:110
-#: src/routes/budget-explorer.lazy.tsx:419
+#: src/routes/budget-explorer.lazy.tsx:421
 msgid "Functional"
 msgstr "Funcțional"
 
@@ -2273,6 +2273,7 @@ msgstr "Vezi Grafic"
 msgid "Go to Entity Table"
 msgstr "Vezi Tabel"
 
+#: src/routes/__root.tsx:104
 #: src/routes/unsubscribe.$token.tsx:48
 #: src/routes/unsubscribe.$token.tsx:81
 msgid "Go to homepage"
@@ -2324,7 +2325,7 @@ msgid "Grid view"
 msgstr "Vizualizare grilă"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:98
-#: src/routes/budget-explorer.lazy.tsx:409
+#: src/routes/budget-explorer.lazy.tsx:411
 msgid "Grouping"
 msgstr "Grupare"
 
@@ -2402,7 +2403,7 @@ msgstr "Include context suplimentar pentru erori. Nu se atașează nicio identit
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:57
 #: src/components/entities/EntityFinancialTrends.tsx:230
-#: src/components/entities/LineItemsAnalytics.tsx:117
+#: src/components/entities/LineItemsAnalytics.tsx:131
 #: src/components/entities/views/MapView.tsx:145
 #: src/components/entities/views/Overview.tsx:281
 #: src/components/filters/account-type-filter/AccountCategoryRadio.tsx:13
@@ -2663,12 +2664,12 @@ msgid "Locked"
 msgstr "Blocat"
 
 #: src/components/budget-explorer/BudgetTreemap.tsx:541
-#: src/components/entities/LineItemsAnalytics.tsx:142
+#: src/components/entities/LineItemsAnalytics.tsx:156
 msgid "Main Categories"
 msgstr "Categorii Principale"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:134
-#: src/routes/budget-explorer.lazy.tsx:437
+#: src/routes/budget-explorer.lazy.tsx:439
 msgid "Main chapters"
 msgstr "Capitole principale"
 
@@ -2932,7 +2933,7 @@ msgstr "Nu există date agregate"
 msgid "No annotations yet."
 msgstr "Încă nu există adnotări."
 
-#: src/components/budget-explorer/BudgetCategoryList.tsx:114
+#: src/components/budget-explorer/BudgetCategoryList.tsx:132
 msgid "No categories to display."
 msgstr "Nicio categorie de afișat."
 
@@ -2998,7 +2999,7 @@ msgstr "Nu există date în intervalul selectat."
 msgid "No detailed data available for this selection."
 msgstr "Nu sunt disponibile date detaliate pentru această selecție."
 
-#: src/components/budget-explorer/BudgetCategoryList.tsx:126
+#: src/components/budget-explorer/BudgetCategoryList.tsx:144
 msgid "No economic breakdown is available for income."
 msgstr "Nu este disponibilă o detaliere economică pentru venituri."
 
@@ -3156,9 +3157,9 @@ msgstr "Deschide fereastra de feedback"
 msgid "Open floating entity search"
 msgstr "Deschide căutarea flotantă de entități"
 
-#: src/routes/budget-explorer.lazy.tsx:506
-#: src/routes/budget-explorer.lazy.tsx:522
-#: src/routes/budget-explorer.lazy.tsx:542
+#: src/routes/budget-explorer.lazy.tsx:509
+#: src/routes/budget-explorer.lazy.tsx:525
+#: src/routes/budget-explorer.lazy.tsx:545
 msgid "Open in Chart Builder"
 msgstr "Deschide în Generatorul de Grafice"
 
@@ -3175,7 +3176,7 @@ msgid "Open in charts"
 msgstr "Deschide în grafice"
 
 #: src/components/entities/views/Overview.tsx:268
-#: src/routes/budget-explorer.lazy.tsx:383
+#: src/routes/budget-explorer.lazy.tsx:385
 msgid "Open in entity analytics"
 msgstr "Deschide în analitice entitate"
 
@@ -3230,6 +3231,10 @@ msgstr "Prezentare generală"
 #: src/lib/errors-utils.ts:17
 msgid "error.pageRenderErrorTitle"
 msgstr "Eroare la încărcarea paginii"
+
+#: src/routes/__root.tsx:95
+msgid "Page not found"
+msgstr ""
 
 #: src/components/classification-explorer/ClassificationInfo.tsx:28
 msgid "Parent"
@@ -3602,7 +3607,7 @@ msgid "Search entity types (ex: Hospital)"
 msgstr "Caută tipuri de entități (ex: Spital)"
 
 #: src/components/entities/FloatingEntitySearch.tsx:70
-#: src/components/entities/FloatingEntitySearch.tsx:79
+#: src/components/entities/FloatingEntitySearch.tsx:78
 msgid "Search for another entity"
 msgstr "Caută o altă entitate"
 
@@ -3634,7 +3639,7 @@ msgstr "Creditor secundar agregat"
 msgid "Security monitoring and logs"
 msgstr "Monitorizare și jurnale de securitate"
 
-#: src/routes/budget-explorer.lazy.tsx:482
+#: src/routes/budget-explorer.lazy.tsx:484
 msgid "See advanced view"
 msgstr "Vezi vizualizarea avansată"
 
@@ -4022,6 +4027,10 @@ msgstr "Eroare de test"
 msgid "The classification code \"{selectedCode}\" could not be found."
 msgstr "Codul de clasificare „{selectedCode}” nu a putut fi găsit."
 
+#: src/routes/__root.tsx:98
+msgid "The page you are looking for doesn't exist or has been moved."
+msgstr ""
+
 #: src/routes/privacy.lazy.tsx:144
 msgid "The Service is not directed to children under 16. We do not knowingly collect personal data from children under 16. If you believe we have collected data from a child under 16, please contact us immediately."
 msgstr "Serviciul nu se adresează copiilor sub 16 ani. Nu colectăm cu bună știință date personale de la copii sub 16 ani. Dacă credeți că am colectat date de la un copil sub 16 ani, vă rugăm să ne contactați imediat."
@@ -4142,11 +4151,11 @@ msgstr "Comută tema"
 msgid "Tooltip"
 msgstr "Indiciu"
 
-#: src/components/entities/views/TrendsView.tsx:100
+#: src/components/entities/views/TrendsView.tsx:101
 msgid "Top {TOP_CATEGORIES_COUNT} Income Categories for {entityName}"
 msgstr "Top {TOP_CATEGORIES_COUNT} categorii de venituri pentru {entityName}"
 
-#: src/components/entities/views/TrendsView.tsx:100
+#: src/components/entities/views/TrendsView.tsx:101
 msgid "Top {TOP_CATEGORIES_COUNT} Spending Categories for {entityName}"
 msgstr "Top {TOP_CATEGORIES_COUNT} categorii de cheltuieli pentru {entityName}"
 
@@ -4158,17 +4167,17 @@ msgstr "Top 15 județe după suma totală"
 msgid "Top 15 UATs by Total Amount"
 msgstr "Top 15 UAT-uri după suma totală"
 
-#: src/routes/budget-explorer.lazy.tsx:479
+#: src/routes/budget-explorer.lazy.tsx:481
 msgid "Top Categories"
 msgstr "Categorii principale"
 
-#: src/components/budget-explorer/BudgetCategoryList.tsx:121
-#: src/components/budget-explorer/BudgetCategoryList.tsx:124
+#: src/components/budget-explorer/BudgetCategoryList.tsx:139
+#: src/components/budget-explorer/BudgetCategoryList.tsx:142
 msgid "Top Economic Categories"
 msgstr "Categorii economice principale"
 
-#: src/components/budget-explorer/BudgetCategoryList.tsx:119
-#: src/routes/budget-explorer.lazy.tsx:538
+#: src/components/budget-explorer/BudgetCategoryList.tsx:137
+#: src/routes/budget-explorer.lazy.tsx:541
 msgid "Top Functional Categories"
 msgstr "Categorii funcționale principale"
 
@@ -4451,7 +4460,7 @@ msgstr "Vezi detalii"
 msgid "View full details"
 msgstr "Vizualizați detaliile complete"
 
-#: src/components/classification-explorer/ClassificationActions.tsx:65
+#: src/components/classification-explorer/ClassificationActions.tsx:66
 msgid "View in Entity Analytics"
 msgstr "Vizualizați în Analiza Entităților"
 

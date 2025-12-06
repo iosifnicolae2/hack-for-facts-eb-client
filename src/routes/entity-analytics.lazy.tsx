@@ -63,7 +63,7 @@ function EntityAnalyticsPage() {
 
   const { data: aggregatedData, isLoading: isLoadingAggregated, error: errorAggregated } = useQuery({
     queryKey: ['aggregatedLineItems', filterHash],
-    queryFn: () => fetchAggregatedLineItems({ filter, limit: 15000 }),
+    queryFn: () => fetchAggregatedLineItems({ filter, limit: 150000 }),
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled: view === 'line-items',
   });

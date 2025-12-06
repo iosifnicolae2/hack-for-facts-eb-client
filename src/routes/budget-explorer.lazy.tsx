@@ -158,7 +158,7 @@ function BudgetExplorerPage() {
     queryFn: () =>
       fetchAggregatedLineItems({
         filter,
-        limit: 20000,
+        limit: 150000,
       }),
     staleTime: convertDaysToMs(3),
     gcTime: convertDaysToMs(3),

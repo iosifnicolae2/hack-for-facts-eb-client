@@ -574,8 +574,8 @@ export function EntityAnalyticsFilter() {
         <div className="border-t mt-2">
           <Accordion type="single" collapsible value={accordionValue} onValueChange={setExcludeValue}>
             <AccordionItem value="exclude" className="border-none">
-              <AccordionTrigger className="px-4 py-3 text-sm font-medium hover:bg-muted/50 hover:no-underline">
-                <div className="flex items-center justify-between w-full gap-2">
+              <div className="flex items-center justify-between gap-2 px-4 py-3">
+                <AccordionTrigger className="flex-1 text-sm font-medium hover:bg-muted/50 hover:no-underline px-0">
                   <div className="flex items-center gap-2">
                     <MinusCircle className="w-4 h-4 text-destructive" />
                     <span>
@@ -587,125 +587,125 @@ export function EntityAnalyticsFilter() {
                       </Badge>
                     )}
                   </div>
-                  {totalExcludeFilters > 0 && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        clearAllExcludeFilters();
-                      }}
-                      className="text-xs text-destructive hover:text-destructive h-auto py-1 px-2"
-                    >
-                      <XCircle className="w-3 h-3 mr-1" />
-                      <Trans>Clear all</Trans>
-                    </Button>
-                  )}
-                </div>
-              </AccordionTrigger>
+                </AccordionTrigger>
+                {totalExcludeFilters > 0 && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-xs text-destructive hover:text-destructive h-auto py-1 px-2"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      clearAllExcludeFilters();
+                    }}
+                  >
+                    <XCircle className="w-3 h-3 mr-1" />
+                    <Trans>Clear all</Trans>
+                  </Button>
+                )}
+              </div>
               <AccordionContent>
-              <div className="px-4 py-2 text-xs text-muted-foreground bg-muted/30 border-b">
-                <Trans>Filters marked as exclude will remove data matching these criteria from the results.</Trans>
-              </div>
+                <div className="px-4 py-2 text-xs text-muted-foreground bg-muted/30 border-b">
+                  <Trans>Filters marked as exclude will remove data matching these criteria from the results.</Trans>
+                </div>
 
-              {/* Exclude filter components - mirror the include filters */}
-              <div className="bg-muted/10">
-                <FilterListContainer
-                  title={`${t`Exclude`} ${t`Entities`}`}
-                  icon={<Building2 className="w-4 h-4 text-destructive" />}
-                  listComponent={EntityList}
-                  selected={excludeSelectedEntityOptions}
-                  setSelected={updateExcludeEntityOptions}
-                />
-
-                <FilterContainer
-                  title={`${t`Exclude`} ${t`Main Creditor`}`}
-                  icon={<Building2 className="w-4 h-4 text-destructive" />}
-                  selectedOptions={excludeSelectedMainCreditorOption}
-                  onClearOption={() => setExcludeMainCreditor(undefined)}
-                  onClearAll={() => setExcludeMainCreditor(undefined)}
-                >
-                  <EntityList
-                    selectedOptions={excludeSelectedMainCreditorOption}
-                    toggleSelect={(option) => setExcludeMainCreditor(String(option.id))}
-                    pageSize={100}
+                {/* Exclude filter components - mirror the include filters */}
+                <div className="bg-muted/10">
+                  <FilterListContainer
+                    title={`${t`Exclude`} ${t`Entities`}`}
+                    icon={<Building2 className="w-4 h-4 text-destructive" />}
+                    listComponent={EntityList}
+                    selected={excludeSelectedEntityOptions}
+                    setSelected={updateExcludeEntityOptions}
                   />
-                </FilterContainer>
 
-                <FilterListContainer
-                  title={`${t`Exclude`} ${t`UAT`}`}
-                  icon={<MapPin className="w-4 h-4 text-destructive" />}
-                  listComponent={UatList}
-                  selected={excludeSelectedUatOptions}
-                  setSelected={updateExcludeUatOptions}
-                />
+                  <FilterContainer
+                    title={`${t`Exclude`} ${t`Main Creditor`}`}
+                    icon={<Building2 className="w-4 h-4 text-destructive" />}
+                    selectedOptions={excludeSelectedMainCreditorOption}
+                    onClearOption={() => setExcludeMainCreditor(undefined)}
+                    onClearAll={() => setExcludeMainCreditor(undefined)}
+                  >
+                    <EntityList
+                      selectedOptions={excludeSelectedMainCreditorOption}
+                      toggleSelect={(option) => setExcludeMainCreditor(String(option.id))}
+                      pageSize={100}
+                    />
+                  </FilterContainer>
 
-                <FilterListContainer
-                  title={`${t`Exclude`} ${t`County`}`}
-                  icon={<MapPinned className="w-4 h-4 text-destructive" />}
-                  listComponent={CountyList}
-                  selected={excludeSelectedCountyOptions}
-                  setSelected={updateExcludeCountyOptions}
-                />
+                  <FilterListContainer
+                    title={`${t`Exclude`} ${t`UAT`}`}
+                    icon={<MapPin className="w-4 h-4 text-destructive" />}
+                    listComponent={UatList}
+                    selected={excludeSelectedUatOptions}
+                    setSelected={updateExcludeUatOptions}
+                  />
 
-                <FilterListContainer
-                  title={`${t`Exclude`} ${t`Entity Type`}`}
-                  icon={<ChartBar className="w-4 h-4 text-destructive" />}
-                  listComponent={EntityTypeList}
-                  selected={excludeSelectedEntityTypeOptions}
-                  setSelected={updateExcludeEntityTypeOptions}
-                />
+                  <FilterListContainer
+                    title={`${t`Exclude`} ${t`County`}`}
+                    icon={<MapPinned className="w-4 h-4 text-destructive" />}
+                    listComponent={CountyList}
+                    selected={excludeSelectedCountyOptions}
+                    setSelected={updateExcludeCountyOptions}
+                  />
 
-                <FilterListContainer
-                  title={`${t`Exclude`} ${t`Functional Classification`}`}
-                  icon={<ChartBar className="w-4 h-4 text-destructive" />}
-                  listComponent={FunctionalClassificationList}
-                  selected={excludeSelectedFunctionalOptions}
-                  setSelected={updateExcludeFunctionalOptions}
-                />
+                  <FilterListContainer
+                    title={`${t`Exclude`} ${t`Entity Type`}`}
+                    icon={<ChartBar className="w-4 h-4 text-destructive" />}
+                    listComponent={EntityTypeList}
+                    selected={excludeSelectedEntityTypeOptions}
+                    setSelected={updateExcludeEntityTypeOptions}
+                  />
 
-                <FilterPrefixContainer
-                  title={`${t`Exclude`} ${t`Functional Prefixes`}`}
-                  icon={<ChartBar className="w-4 h-4 text-destructive" />}
-                  prefixComponent={PrefixFilter}
-                  value={exclude.functional_prefixes}
-                  onValueChange={updateExcludeFunctionalPrefixes}
-                  mapPrefixToLabel={getFunctionalPrefixLabel}
-                />
+                  <FilterListContainer
+                    title={`${t`Exclude`} ${t`Functional Classification`}`}
+                    icon={<ChartBar className="w-4 h-4 text-destructive" />}
+                    listComponent={FunctionalClassificationList}
+                    selected={excludeSelectedFunctionalOptions}
+                    setSelected={updateExcludeFunctionalOptions}
+                  />
 
-                <FilterListContainer
-                  title={`${t`Exclude`} ${t`Economic Classification`}`}
-                  icon={<Tags className="w-4 h-4 text-destructive" />}
-                  listComponent={EconomicClassificationList}
-                  selected={excludeSelectedEconomicOptions}
-                  setSelected={updateExcludeEconomicOptions}
-                />
+                  <FilterPrefixContainer
+                    title={`${t`Exclude`} ${t`Functional Prefixes`}`}
+                    icon={<ChartBar className="w-4 h-4 text-destructive" />}
+                    prefixComponent={PrefixFilter}
+                    value={exclude.functional_prefixes}
+                    onValueChange={updateExcludeFunctionalPrefixes}
+                    mapPrefixToLabel={getFunctionalPrefixLabel}
+                  />
 
-                <FilterPrefixContainer
-                  title={`${t`Exclude`} ${t`Economic Prefixes`}`}
-                  icon={<Tags className="w-4 h-4 text-destructive" />}
-                  prefixComponent={PrefixFilter}
-                  value={exclude.economic_prefixes}
-                  onValueChange={updateExcludeEconomicPrefixes}
-                  mapPrefixToLabel={getEconomicPrefixLabel}
-                />
+                  <FilterListContainer
+                    title={`${t`Exclude`} ${t`Economic Classification`}`}
+                    icon={<Tags className="w-4 h-4 text-destructive" />}
+                    listComponent={EconomicClassificationList}
+                    selected={excludeSelectedEconomicOptions}
+                    setSelected={updateExcludeEconomicOptions}
+                  />
 
-                <FilterListContainer
-                  title={`${t`Exclude`} ${t`Budget Sector`}`}
-                  icon={<Building2 className="w-4 h-4 text-destructive" />}
-                  listComponent={BudgetSectorList}
-                  selected={excludeSelectedBudgetSectorOptions}
-                  setSelected={updateExcludeBudgetSectorOptions}
-                />
+                  <FilterPrefixContainer
+                    title={`${t`Exclude`} ${t`Economic Prefixes`}`}
+                    icon={<Tags className="w-4 h-4 text-destructive" />}
+                    prefixComponent={PrefixFilter}
+                    value={exclude.economic_prefixes}
+                    onValueChange={updateExcludeEconomicPrefixes}
+                    mapPrefixToLabel={getEconomicPrefixLabel}
+                  />
 
-                <FilterListContainer
-                  title={`${t`Exclude`} ${t`Funding Source`}`}
-                  icon={<EuroIcon className="w-4 h-4 text-destructive" />}
-                  listComponent={FundingSourceList}
-                  selected={excludeSelectedFundingSourceOptions}
-                  setSelected={updateExcludeFundingSourceOptions}
-                />
-              </div>
+                  <FilterListContainer
+                    title={`${t`Exclude`} ${t`Budget Sector`}`}
+                    icon={<Building2 className="w-4 h-4 text-destructive" />}
+                    listComponent={BudgetSectorList}
+                    selected={excludeSelectedBudgetSectorOptions}
+                    setSelected={updateExcludeBudgetSectorOptions}
+                  />
+
+                  <FilterListContainer
+                    title={`${t`Exclude`} ${t`Funding Source`}`}
+                    icon={<EuroIcon className="w-4 h-4 text-destructive" />}
+                    listComponent={FundingSourceList}
+                    selected={excludeSelectedFundingSourceOptions}
+                    setSelected={updateExcludeFundingSourceOptions}
+                  />
+                </div>
               </AccordionContent>
             </AccordionItem>
           </Accordion>

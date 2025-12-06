@@ -1,7 +1,7 @@
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { i18n } from "@lingui/core";
 import { dynamicActivate } from "@/lib/i18n";
-import { createRootRoute, Outlet, HeadContent, Scripts } from "@tanstack/react-router";
+import { createRootRoute, Outlet, HeadContent, Scripts, Link } from "@tanstack/react-router";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
@@ -16,16 +16,19 @@ import { ChatFab } from "@/components/footer/ChatFab";
 import { CookieConsentBanner } from "@/components/privacy/CookieConsentBanner";
 import { Analytics } from "@/lib/analytics";
 import { getSiteUrl } from "@/config/env";
-import { useEffect, Suspense } from "react";
+import { useEffect } from "react";
 import { I18nProvider } from "@lingui/react";
 import { getUserLocale } from "@/lib/utils";
 import GlobalErrorPage from "@/components/errors/GlobalErrorPage";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { ViewLoading } from "@/components/ui/ViewLoading";
+import { Button } from "@/components/ui/button";
+import { Home, FileQuestion } from "lucide-react";
+import { t } from "@lingui/core/macro";
 
 export const Route = createRootRoute({
   head: getGlobalHead,
   errorComponent: ({ error }) => <GlobalErrorPage error={error} />,
+  notFoundComponent: NotFoundPage,
   component: RootComponent,
 });
 
@@ -52,12 +55,10 @@ function RootComponent() {
                   <HeadContent />
                   <AppSidebar />
                   <SidebarInset>
-                    <main className="flex-1">
+                    <main role="main" className="flex-1">
                       <div>
                         <AnalyticsPageviewBridge />
-                        <Suspense fallback={<ViewLoading />}>
-                          <Outlet />
-                        </Suspense>
+                        <Outlet />
                         <Toaster />
                         {isMobile && <FloatingEntitySearch showButton />}
                       </div>
@@ -81,6 +82,32 @@ function RootComponent() {
 function AnalyticsPageviewBridge() {
   Analytics.pageviewHook();
   return null;
+}
+
+function NotFoundPage() {
+  return (
+    <div className="min-h-[60vh] flex items-center justify-center p-6">
+      <div className="w-full max-w-md text-center">
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+          <FileQuestion className="h-8 w-8 text-muted-foreground" />
+        </div>
+        <h1 className="text-2xl font-bold tracking-tight">
+          {t`Page not found`}
+        </h1>
+        <p className="mt-2 text-muted-foreground">
+          {t`The page you are looking for doesn't exist or has been moved.`}
+        </p>
+        <div className="mt-6">
+          <Link to="/">
+            <Button>
+              <Home className="mr-2 h-4 w-4" />
+              {t`Go to homepage`}
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function getGlobalHead() {
