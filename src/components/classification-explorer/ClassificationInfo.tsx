@@ -2,7 +2,7 @@ import { Trans } from '@lingui/react/macro'
 import { Link } from '@tanstack/react-router'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { ClassificationActions } from './ClassificationActions'
-import { ClassificationDescription } from './ClassificationDescription'
+import { ClassificationDescription, useClassificationDescription } from './ClassificationDescription'
 import type { ClassificationNode, ClassificationType } from '@/types/classification-explorer'
 import { useClassificationData } from './hooks/useClassificationData'
 
@@ -15,6 +15,11 @@ export function ClassificationInfo({ type, node }: ClassificationInfoProps) {
   const { getByCode } = useClassificationData(type)
   const parentInfo = node.parent ? getByCode(node.parent) : undefined
   const basePath = `/classifications/${type}`
+  
+  // Check if description exists to determine whether to show the title
+  const { data: descriptionData, isLoading: isDescriptionLoading } = useClassificationDescription(type, node.code)
+  const hasDescription = !isDescriptionLoading && descriptionData && descriptionData.trim().length > 0
+  
   return (
     <Card>
       <CardHeader>
@@ -47,14 +52,15 @@ export function ClassificationInfo({ type, node }: ClassificationInfoProps) {
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div>
-          <div className="flex items-baseline gap-3 mb-2">
+        {/* Show title only when there's no description */}
+        {!hasDescription && (
+          <div className="flex items-baseline gap-3">
             <span className="font-mono text-2xl font-bold text-foreground">{node.code}</span>
             <CardTitle className="text-2xl leading-tight">
               {node.name || <span className="italic text-muted-foreground/60"><Trans>Missing title</Trans></span>}
             </CardTitle>
           </div>
-        </div>
+        )}
         <ClassificationDescription type={type} code={node.code} />
       </CardContent>
     </Card>

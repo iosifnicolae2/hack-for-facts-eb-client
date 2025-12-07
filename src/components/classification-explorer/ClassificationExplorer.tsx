@@ -238,7 +238,6 @@ export function ClassificationExplorer({
               <ClassificationDetail
                 type={type}
                 hierarchy={hierarchy}
-                onBack={handleBack}
               />
             </motion.div>
           ) : viewMode === 'tree' ? (

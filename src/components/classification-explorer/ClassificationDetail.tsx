@@ -1,7 +1,4 @@
 import { motion } from 'framer-motion'
-import { ArrowLeft } from 'lucide-react'
-import { Trans } from '@lingui/react/macro'
-import { Button } from '@/components/ui/button'
 import { ClassificationBreadcrumb } from './ClassificationBreadcrumb'
 import { ClassificationInfo } from './ClassificationInfo'
 import { ClassificationChildren } from './ClassificationChildren'
@@ -11,10 +8,9 @@ import type { ClassificationHierarchy, ClassificationType } from '@/types/classi
 type ClassificationDetailProps = {
   readonly type: ClassificationType
   readonly hierarchy: ClassificationHierarchy
-  readonly onBack: () => void
 }
 
-export function ClassificationDetail({ type, hierarchy, onBack }: ClassificationDetailProps) {
+export function ClassificationDetail({ type, hierarchy }: ClassificationDetailProps) {
   const { node, parents, children, siblings } = hierarchy
 
   return (
@@ -25,21 +21,8 @@ export function ClassificationDetail({ type, hierarchy, onBack }: Classification
       transition={{ duration: 0.3 }}
       className="space-y-6"
     >
-      {/* Back button */}
-      <div className="flex items-center gap-4">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onBack}
-          className="gap-2"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          <Trans>Back</Trans>
-        </Button>
-        <div className="flex-1">
-          <ClassificationBreadcrumb type={type} parents={parents} current={node} />
-        </div>
-      </div>
+      {/* Breadcrumb navigation */}
+      <ClassificationBreadcrumb type={type} parents={parents} current={node} />
 
       {/* One-column flow: primary (item) → secondary (lists) */}
       <div className="space-y-6">

@@ -11,14 +11,21 @@ type ClassificationDescriptionProps = {
   readonly code: string
 }
 
-export function ClassificationDescription({ type, code }: ClassificationDescriptionProps) {
+/**
+ * Hook to fetch classification description data
+ */
+export function useClassificationDescription(type: ClassificationType, code: string) {
   const locale = getUserLocale()
-  const { data, isLoading, isError } = useQuery({
+  return useQuery({
     queryKey: ['classification-description', locale, type, code],
     queryFn: () => loadClassificationDescription(locale, type, code),
     staleTime: 1000 * 60 * 60, // 1 hour
     gcTime: 1000 * 60 * 60 * 24, // 24 hours
   })
+}
+
+export function ClassificationDescription({ type, code }: ClassificationDescriptionProps) {
+  const { data, isLoading, isError } = useClassificationDescription(type, code)
 
   if (isLoading) return (
     <p className="text-sm text-muted-foreground italic">
