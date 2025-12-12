@@ -45,7 +45,7 @@ interface EntityNamesResponse {
 }
 
 const ENTITY_NAMES_QUERY = `
-    query EntityNames($entityCuis: [String!]) {
+    query EntityNames($entityCuis: [ID!]) {
       entities(filter: { cuis: $entityCuis }, limit: 1000) {
         nodes {
           cui
