@@ -28,7 +28,7 @@ import {
     MoreHorizontal,
 } from "lucide-react";
 import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
-import { formatCurrency, formatNumber, getNormalizationUnit } from "@/lib/utils";
+import { formatCurrency, formatNumber } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
 import { getMergedColumnOrder, moveColumnOrder } from "@/lib/table-utils";
@@ -37,6 +37,8 @@ import { Pagination } from "@/components/ui/pagination";
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
 import { useMapFilter } from "@/hooks/useMapFilter";
+import type { Currency } from "@/schemas/charts";
+import { useUserCurrency } from "@/lib/hooks/useUserCurrency";
 
 interface HeatmapDataTableProps {
     data: (HeatmapUATDataPoint | HeatmapCountyDataPoint)[];
@@ -59,9 +61,12 @@ export function HeatmapDataTable({
 }: HeatmapDataTableProps) {
     const isUatView = mapViewType === 'UAT';
     const { mapState } = useMapFilter();
-    const normalization = mapState.filters.normalization;
-    const unit = getNormalizationUnit(normalization as any);
-    const currencyCode: 'RON' | 'EUR' = unit.includes('EUR') ? 'EUR' : 'RON';
+    const [userCurrency] = useUserCurrency();
+    const normalizationRaw = mapState.filters.normalization ?? 'total';
+    const currencyCode: Currency =
+        normalizationRaw === 'total_euro' || normalizationRaw === 'per_capita_euro'
+            ? 'EUR'
+            : ((mapState.filters.currency ?? userCurrency) as Currency);
 
     const { density, setDensity, columnVisibility, setColumnVisibility, currencyFormat, setCurrencyFormat } = useTablePreferences('heatmap-data-table', {
         columnVisibility: {
@@ -318,7 +323,7 @@ export function HeatmapDataTable({
                             </div>
                         );
                     }
-                    const effectiveCurrency: 'RON' | 'EUR' = currencyFormat === 'euro' ? 'EUR' : currencyCode;
+                    const effectiveCurrency: 'RON' | 'EUR' | 'USD' = currencyFormat === 'euro' ? 'EUR' : currencyCode;
                     return <span className="block text-right text-xs" title={formatCurrency(value, 'standard', effectiveCurrency)}>{formatCurrency(value, 'compact', effectiveCurrency)}</span>
                 },
             },
@@ -380,7 +385,7 @@ export function HeatmapDataTable({
                             </div>
                         );
                     }
-                    const effectiveCurrency: 'RON' | 'EUR' = currencyFormat === 'euro' ? 'EUR' : currencyCode;
+                    const effectiveCurrency: 'RON' | 'EUR' | 'USD' = currencyFormat === 'euro' ? 'EUR' : currencyCode;
                     return <span className="block text-right text-xs" title={`${formatCurrency(value, 'standard', effectiveCurrency)} / capita`}>{formatCurrency(value, 'compact', effectiveCurrency)} / capita</span>
                 },
             },

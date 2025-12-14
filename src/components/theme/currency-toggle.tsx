@@ -3,7 +3,7 @@ import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, Sideba
 import { Trans } from "@lingui/react/macro";
 import { usePersistedState } from "@/lib/hooks/usePersistedState";
 
-type CurrencyCode = 'RON' | 'EUR'
+type CurrencyCode = 'RON' | 'EUR' | 'USD'
 
 export function CurrencyToggle() {
     const { state } = useSidebar();
@@ -38,9 +38,16 @@ export function CurrencyToggle() {
                         </Button>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
+                <SidebarMenuItem>
+                    <SidebarMenuButton asChild onClick={() => applyCurrency("USD")}>
+                        <Button variant={currency === 'USD' ? "secondary" : "ghost"} size="icon" className="w-full justify-start gap-2">
+                            <span className="text-md">🇺🇸</span>
+                            {!collapsed && <span className="flex-1 text-left"><Trans>USD</Trans></span>}
+                        </Button>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
             </SidebarMenu>
         </SidebarGroup>
     );
 }
-
 

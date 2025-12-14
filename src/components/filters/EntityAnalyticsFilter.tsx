@@ -8,7 +8,6 @@ import { Calendar, ChartBar, Tags, SlidersHorizontal, MapPinned, Building2, Euro
 import { useMemo, useEffect, useState } from 'react'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Badge } from '@/components/ui/badge'
-import { useNormalizationSelection } from '@/hooks/useNormalizationSelection'
 import { useEntityAnalyticsFilter } from '@/hooks/useEntityAnalyticsFilter'
 import type { OptionItem } from './base-filter/interfaces'
 import { CountyList } from './county-filter/CountyList'
@@ -32,21 +31,56 @@ import { PeriodFilter } from './period-filter/PeriodFilter'
 import { ReportPeriodInput } from '@/schemas/reporting'
 import { getPeriodTags } from '@/lib/period-utils';
 import { useUserCurrency } from '@/lib/hooks/useUserCurrency'
+import { useUserInflationAdjusted } from '@/lib/hooks/useUserInflationAdjusted'
 import { getEconomicPrefixLabel, getFunctionalPrefixLabel } from '@/lib/chart-filter-utils'
+import { NormalizationModeSelect } from '@/components/normalization/normalization-mode-select'
+import { getNormalizationUnit } from '@/lib/utils'
+import type { AnalyticsFilterType } from '@/schemas/charts'
 
 export function EntityAnalyticsFilter() {
   const { filter, setFilter, resetFilter, view, setView } = useEntityAnalyticsFilter()
-  const { toDisplayNormalization, toEffectiveNormalization } = useNormalizationSelection(filter.normalization as any)
-  const [currency] = useUserCurrency()
+  const [userCurrency, setUserCurrency] = useUserCurrency()
+  const [userInflationAdjusted, setUserInflationAdjusted] = useUserInflationAdjusted()
 
   useEffect(() => {
-    const { normalization } = filter;
-    if (currency === 'EUR' && normalization !== 'total_euro' && normalization !== 'per_capita_euro') {
-      updateNormalization('total_euro');
-    } else if (currency === 'RON' && normalization !== 'total' && normalization !== 'per_capita') {
-      updateNormalization('total');
+    const urlCurrency = filter.currency
+    const urlInflationAdjusted = filter.inflation_adjusted
+    const normalizationRaw = filter.normalization
+
+    const nextFilterPatch: Partial<AnalyticsFilterType> = {}
+    let shouldPatchFilter = false
+
+    if (urlCurrency !== undefined) {
+      if (urlCurrency !== userCurrency) setUserCurrency(urlCurrency)
+      nextFilterPatch.currency = undefined
+      shouldPatchFilter = true
     }
-  }, [currency, filter.normalization]);
+
+    if (urlInflationAdjusted !== undefined) {
+      if (Boolean(urlInflationAdjusted) !== Boolean(userInflationAdjusted)) {
+        setUserInflationAdjusted(Boolean(urlInflationAdjusted))
+      }
+      nextFilterPatch.inflation_adjusted = undefined
+      shouldPatchFilter = true
+    }
+
+    if (normalizationRaw === 'total_euro' || normalizationRaw === 'per_capita_euro') {
+      if (userCurrency !== 'EUR') setUserCurrency('EUR')
+      nextFilterPatch.normalization = normalizationRaw === 'total_euro' ? 'total' : 'per_capita'
+      shouldPatchFilter = true
+    }
+
+    if (shouldPatchFilter) setFilter(nextFilterPatch)
+  }, [
+    filter.currency,
+    filter.inflation_adjusted,
+    filter.normalization,
+    setFilter,
+    setUserCurrency,
+    setUserInflationAdjusted,
+    userCurrency,
+    userInflationAdjusted,
+  ]);
 
   // Label stores (cache + API-backed)
   const entityLabelsStore = useEntityLabel((filter.entity_cuis ?? []) as string[])
@@ -183,13 +217,18 @@ export function EntityAnalyticsFilter() {
   }
 
   const updateAccountCategory = (accountCategory: 'ch' | 'vn') => setFilter({ account_category: accountCategory })
-  const updateNormalization = (normalization: 'total' | 'per_capita' | 'total_euro' | 'per_capita_euro') => setFilter({ normalization })
+  const updateNormalization = (normalization: AnalyticsFilterType['normalization']) => setFilter({ normalization })
   const updateMinAmount = (minAmount: string | undefined) => setFilter({ aggregate_min_amount: minAmount ? Number(minAmount) : undefined })
   const updateMaxAmount = (maxAmount: string | undefined) => setFilter({ aggregate_max_amount: maxAmount ? Number(maxAmount) : undefined })
   const updateMinPopulation = (min: string | undefined) => setFilter({ min_population: min ? Number(min) : undefined })
   const updateMaxPopulation = (max: string | undefined) => setFilter({ max_population: max ? Number(max) : undefined })
   const setReportType = (value: string | undefined) => setFilter({ report_type: value as 'Executie bugetara agregata la nivel de ordonator principal' | 'Executie bugetara detaliata' })
   const setIsUat = (value: boolean | undefined) => setFilter({ is_uat: value })
+
+  const amountUnit = useMemo(
+    () => getNormalizationUnit({ normalization: filter.normalization as any, currency: userCurrency as any }),
+    [filter.normalization, userCurrency],
+  )
 
   // ============================================================================
   // EXCLUDE FILTERS STATE MANAGEMENT
@@ -412,14 +451,7 @@ export function EntityAnalyticsFilter() {
             <Divide className="w-4 h-4 mr-2" />
             <Trans>Normalization</Trans>
           </h4>
-          <ViewTypeRadioGroup
-            value={toDisplayNormalization(filter.normalization as any)}
-            onChange={(display) => updateNormalization(toEffectiveNormalization(display as 'total' | 'per_capita'))}
-            viewOptions={[
-              { id: 'total', label: t`Total` },
-              { id: 'per_capita', label: t`Per Capita` },
-            ]}
-          />
+          <NormalizationModeSelect value={filter.normalization} allowPerCapita onChange={updateNormalization} triggerClassName="w-full" />
         </div>
 
         <FilterContainer
@@ -550,7 +582,7 @@ export function EntityAnalyticsFilter() {
         <FilterRangeContainer
           title={t`Amount Range`}
           icon={<SlidersHorizontal className="w-4 h-4" />}
-          unit="RON"
+          unit={amountUnit}
           rangeComponent={AmountRangeFilter}
           minValue={filter.aggregate_min_amount}
           onMinValueChange={updateMinAmount}

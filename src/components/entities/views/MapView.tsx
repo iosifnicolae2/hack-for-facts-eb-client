@@ -15,10 +15,9 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { UatProperties } from '@/components/maps/interfaces';
 import type { LeafletMouseEvent } from 'leaflet';
 import { useHeatmapData } from '@/hooks/useHeatmapData';
-import { AnalyticsFilterType, Normalization } from '@/schemas/charts';
+import { AnalyticsFilterType } from '@/schemas/charts';
 import { Trans } from '@lingui/react/macro';
 import { ReportPeriodInput } from '@/schemas/reporting';
-import { usePersistedState } from '@/lib/hooks/usePersistedState';
 import { cn } from '@/lib/utils';
 
 interface MapViewProps {
@@ -31,7 +30,6 @@ interface MapViewProps {
 export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapFilters, period }) => {
   const mapViewType: "UAT" | "County" = entity?.entity_type === 'admin_county_council' || entity?.cui === '4267117' ? 'County' : 'UAT';
   const navigate = useNavigate();
-  const [userCurrency] = usePersistedState<'RON' | 'EUR'>('user-currency', 'RON');
   
   const selectedPeriod = useMemo(() => {
     if (period.selection.dates && period.selection.dates.length > 0) {
@@ -150,10 +148,7 @@ export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapF
               value={mapFilters.normalization === 'per_capita' || mapFilters.normalization === 'per_capita_euro' ? 'per_capita' : 'total'}
               onValueChange={(value: 'per_capita' | 'total') => {
                 if (value) {
-                  const newNormalization: Normalization = value === 'per_capita'
-                    ? (userCurrency === 'EUR' ? 'per_capita_euro' : 'per_capita')
-                    : (userCurrency === 'EUR' ? 'total_euro' : 'total');
-                  updateMapFilters({ normalization: newNormalization });
+                  updateMapFilters({ normalization: value });
                 }
               }}
             >

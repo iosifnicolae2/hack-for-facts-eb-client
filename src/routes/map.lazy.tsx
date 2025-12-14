@@ -34,6 +34,9 @@ import { getSiteUrl } from "@/config/env";
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
 import { AnimatePresence, motion } from "motion/react";
+import { useUserCurrency } from "@/lib/hooks/useUserCurrency";
+import { useUserInflationAdjusted } from "@/lib/hooks/useUserInflationAdjusted";
+import type { AnalyticsFilterType, Currency, Normalization } from "@/schemas/charts";
 
 export const Route = createLazyFileRoute("/map")({
   component: MapPage,
@@ -41,7 +44,9 @@ export const Route = createLazyFileRoute("/map")({
 
 function MapPage() {
   const navigate = useNavigate({ from: '/map' });
-  const { mapState } = useMapFilter();
+  const { mapState, setFilters } = useMapFilter();
+  const [userCurrency, setUserCurrency] = useUserCurrency();
+  const [userInflationAdjusted, setUserInflationAdjusted] = useUserInflationAdjusted();
 
   const isMobile = useIsMobile();
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -54,17 +59,83 @@ function MapPage() {
 
   const mapZoom = mapState.mapZoom ?? (isMobile ? 6 : 7.7);
 
+  const effectiveNormalization: Normalization = React.useMemo(() => {
+    const raw = mapState.filters.normalization ?? 'total';
+    if (raw === 'total_euro') return 'total';
+    if (raw === 'per_capita_euro') return 'per_capita';
+    return raw;
+  }, [mapState.filters.normalization]);
+
+  const effectiveCurrency: Currency = React.useMemo(() => {
+    const rawNormalization = mapState.filters.normalization;
+    if (rawNormalization === 'total_euro' || rawNormalization === 'per_capita_euro') return 'EUR';
+    return (mapState.filters.currency ?? userCurrency) as Currency;
+  }, [mapState.filters.currency, mapState.filters.normalization, userCurrency]);
+
+  const effectiveInflationAdjusted = React.useMemo(() => {
+    if (effectiveNormalization === 'percent_gdp') return false;
+    return Boolean(mapState.filters.inflation_adjusted ?? userInflationAdjusted);
+  }, [effectiveNormalization, mapState.filters.inflation_adjusted, userInflationAdjusted]);
+
+  const effectiveFilters: AnalyticsFilterType = React.useMemo(() => ({
+    ...mapState.filters,
+    normalization: effectiveNormalization,
+    currency: effectiveCurrency,
+    inflation_adjusted: effectiveInflationAdjusted,
+  }), [effectiveCurrency, effectiveInflationAdjusted, effectiveNormalization, mapState.filters]);
+
+  // Migrate legacy URL params (currency/inflation/legacy normalization) into global settings.
+  React.useEffect(() => {
+    const urlCurrency = mapState.filters.currency;
+    const urlInflationAdjusted = mapState.filters.inflation_adjusted;
+    const normalizationRaw = mapState.filters.normalization;
+
+    const nextFilterPatch: Partial<AnalyticsFilterType> = {};
+    let shouldPatchFilters = false;
+
+    if (urlCurrency !== undefined) {
+      if (urlCurrency !== userCurrency) setUserCurrency(urlCurrency);
+      nextFilterPatch.currency = undefined;
+      shouldPatchFilters = true;
+    }
+
+    if (urlInflationAdjusted !== undefined) {
+      if (Boolean(urlInflationAdjusted) !== Boolean(userInflationAdjusted)) {
+        setUserInflationAdjusted(Boolean(urlInflationAdjusted));
+      }
+      nextFilterPatch.inflation_adjusted = undefined;
+      shouldPatchFilters = true;
+    }
+
+    if (normalizationRaw === 'total_euro' || normalizationRaw === 'per_capita_euro') {
+      if (userCurrency !== 'EUR') setUserCurrency('EUR');
+      nextFilterPatch.normalization = normalizationRaw === 'total_euro' ? 'total' : 'per_capita';
+      shouldPatchFilters = true;
+    }
+
+    if (shouldPatchFilters) setFilters(nextFilterPatch);
+  }, [
+    mapState.filters.currency,
+    mapState.filters.inflation_adjusted,
+    mapState.filters.normalization,
+    setFilters,
+    setUserCurrency,
+    setUserInflationAdjusted,
+    userCurrency,
+    userInflationAdjusted,
+  ]);
+
   const {
     data: heatmapData,
     isLoading: isLoadingHeatmap,
     isFetching: isFetchingHeatmap,
     error: heatmapError,
-  } = useHeatmapData(mapState.filters, mapState.mapViewType);
+  } = useHeatmapData(effectiveFilters, mapState.mapViewType);
 
   const handleFeatureClick = (properties: UatProperties, _event?: LeafletMouseEvent) => {
     // The entity map support only a limited set of filters, so we need to pass them as a search param.
     // If we set all the filters, the data doesn't make sense for the entity page, as the filters are not visible.
-    const { report_period: period, account_category, normalization } = mapState.filters;
+    const { report_period: period, account_category, normalization } = effectiveFilters;
     const searchParams = {
       mapFilters: {
         account_category,
@@ -124,9 +195,9 @@ function MapPage() {
     error: geoJsonError
   } = useGeoJsonData(mapState.mapViewType);
 
-  const valueKey = (mapState.filters.normalization === 'total' || mapState.filters.normalization === 'total_euro')
-    ? 'total_amount'
-    : 'per_capita_amount';
+  const valueKey = effectiveFilters.normalization === 'percent_gdp'
+    ? 'amount'
+    : (effectiveFilters.normalization === 'total' ? 'total_amount' : 'per_capita_amount');
 
   const { min: minAggregatedValue, max: maxAggregatedValue } = React.useMemo(() => {
     if (!heatmapData) return { min: 0, max: 0 };
@@ -160,7 +231,7 @@ function MapPage() {
         <FloatingQuickNav
           tableActive
           chartActive
-          filterInput={mapState.filters}
+          filterInput={effectiveFilters}
           mapViewType={mapState.mapViewType}
         />
 
@@ -187,7 +258,7 @@ function MapPage() {
                       zoom={mapZoom}
                       center={mapState.mapCenter}
                       mapViewType={mapState.mapViewType}
-                      filters={mapState.filters}
+                      filters={effectiveFilters}
                       onViewChange={handleMapViewChange}
                     />
                     <AnimatePresence>
@@ -221,7 +292,8 @@ function MapPage() {
                   max={maxAggregatedValue}
                   className="absolute bottom-[-6rem] right-[4rem] z-10 hidden md:block"
                   title={t`Aggregated Value Legend`}
-                  normalization={mapState.filters.normalization}
+                  normalization={effectiveFilters.normalization}
+                  currency={effectiveFilters.currency}
                 />
                 <Dialog open={isLegendModalOpen} onOpenChange={setIsLegendModalOpen}>
                   <DialogTrigger asChild>
@@ -250,7 +322,8 @@ function MapPage() {
                         min={minAggregatedValue}
                         max={maxAggregatedValue}
                         title={t`Aggregated Value Legend`}
-                        normalization={mapState.filters.normalization}
+                        normalization={effectiveFilters.normalization}
+                        currency={effectiveFilters.currency}
                         isInModal={true}
                       />
                     </div>

@@ -9,7 +9,7 @@ import { FunctionalClassificationList } from "./functional-classification-filter
 import { FilterRangeContainer } from "./base-filter/FilterRangeContainer";
 import { AmountRangeFilter } from "./amount-range-filter";
 import { useMapFilter } from "@/hooks/useMapFilter";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { ViewTypeRadioGroup } from "./ViewTypeRadioGroup";
 import { EntityTypeList } from './entity-type-filter/EntityTypeList';
 import { BudgetSectorList } from './budget-sector-filter/BudgetSectorFilter';
@@ -28,10 +28,11 @@ import { PeriodFilter } from './period-filter/PeriodFilter';
 import { getPeriodTags } from '@/lib/period-utils';
 import { ReportPeriodInput } from '@/schemas/reporting';
 import { OptionItem } from './base-filter/interfaces';
-import { useNormalizationSelection } from '@/hooks/useNormalizationSelection';
 import { useEntityLabel } from '@/hooks/filters/useFilterLabels';
 import { useUserCurrency } from "@/lib/hooks/useUserCurrency";
 import { getEconomicPrefixLabel, getFunctionalPrefixLabel } from "@/lib/chart-filter-utils";
+import { getNormalizationUnit } from "@/lib/utils";
+import { NormalizationModeSelect } from "@/components/normalization/normalization-mode-select";
 
 export function MapFilter() {
     const {
@@ -86,19 +87,7 @@ export function MapFilter() {
         setExcludeEconomicPrefixes,
         clearAllExcludeFilters,
     } = useMapFilter();
-    const [currency] = useUserCurrency();
-    const { toDisplayNormalization, toEffectiveNormalization } = useNormalizationSelection(mapState.filters.normalization as any);
-
-    useEffect(() => {
-        const { normalization } = mapState.filters;
-        const isPerCapita = normalization === 'per_capita' || normalization === 'per_capita_euro';
-
-        if (currency === 'EUR' && normalization !== 'total_euro' && normalization !== 'per_capita_euro') {
-            setNormalization(isPerCapita ? 'per_capita_euro' : 'total_euro');
-        } else if (currency === 'RON' && normalization !== 'total' && normalization !== 'per_capita') {
-            setNormalization(isPerCapita ? 'per_capita' : 'total');
-        }
-    }, [currency, mapState.filters.normalization, setNormalization]);
+    const [userCurrency] = useUserCurrency();
 
     const handleRemovePeriodTag = (tagToRemove: OptionItem) => {
         const report_period = mapState.filters.report_period as ReportPeriodInput | undefined;
@@ -165,12 +154,15 @@ export function MapFilter() {
         (mapState.filters.min_population ? 1 : 0) +
         (mapState.filters.max_population ? 1 : 0);
 
-    // Accordion open state - auto-open when there are active exclude filters
-    const [excludeValue, setExcludeValue] = useState<string | undefined>(undefined);
-    const accordionValue = totalExcludeFilters > 0 ? (excludeValue ?? 'exclude') : excludeValue;
+	    // Accordion open state - auto-open when there are active exclude filters
+	    const [excludeValue, setExcludeValue] = useState<string | undefined>(undefined);
+	    const accordionValue = totalExcludeFilters > 0 ? (excludeValue ?? 'exclude') : excludeValue;
 
-    const selectedAccountCategoryOption = useMemo(() => mapState.filters.account_category, [mapState.filters.account_category]);
-    const selectedNormalizationOption = useMemo(() => mapState.filters.normalization ?? 'total', [mapState.filters.normalization]);
+	    const selectedAccountCategoryOption = useMemo(() => mapState.filters.account_category, [mapState.filters.account_category]);
+	    const amountUnit = useMemo(
+	        () => getNormalizationUnit({ normalization: mapState.filters.normalization, currency: userCurrency }),
+	        [mapState.filters.normalization, userCurrency]
+	    );
 
     return (
         <Card className="flex flex-col w-full h-full shadow-lg" role="region" aria-labelledby="map-filters-title">
@@ -239,16 +231,14 @@ export function MapFilter() {
                 <div className="p-3 border-b">
                     <h4 className="mb-2 text-sm font-medium flex items-center" id="normalization-label">
                         <Divide className="w-4 h-4 mr-2" aria-hidden="true" />
-                        <Trans>Total Amount</Trans>
+                        <Trans>Normalization</Trans>
                     </h4>
                     <div role="group" aria-labelledby="normalization-label">
-                        <ViewTypeRadioGroup
-                            value={toDisplayNormalization(selectedNormalizationOption as any)}
-                            onChange={(display) => setNormalization(toEffectiveNormalization(display as 'total' | 'per_capita'))}
-                            viewOptions={[
-                                { id: 'total', label: t`Total` },
-                                { id: 'per_capita', label: t`Per Capita` },
-                            ]}
+                        <NormalizationModeSelect
+                            value={mapState.filters.normalization}
+                            allowPerCapita
+                            onChange={(normalization) => setNormalization(normalization)}
+                            triggerClassName="w-full"
                         />
                     </div>
                 </div>
@@ -377,14 +367,14 @@ export function MapFilter() {
                     <IsUatFilter isUat={mapState.filters.is_uat} setIsUat={setIsUat} />
                 </FilterContainer>
 
-                <FilterRangeContainer
-                    title={t`Amount Range`}
-                    icon={<SlidersHorizontal className="w-4 h-4" aria-hidden="true" />}
-                    unit={currency}
-                    rangeComponent={AmountRangeFilter}
-                    minValue={mapState.filters.aggregate_min_amount}
-                    onMinValueChange={(v) => setAggregateMinAmount(v ? Number(v) : undefined)}
-                    maxValue={mapState.filters.aggregate_max_amount}
+	                <FilterRangeContainer
+	                    title={t`Amount Range`}
+	                    icon={<SlidersHorizontal className="w-4 h-4" aria-hidden="true" />}
+	                    unit={amountUnit}
+	                    rangeComponent={AmountRangeFilter}
+	                    minValue={mapState.filters.aggregate_min_amount}
+	                    onMinValueChange={(v) => setAggregateMinAmount(v ? Number(v) : undefined)}
+	                    maxValue={mapState.filters.aggregate_max_amount}
                     onMaxValueChange={(v) => setAggregateMaxAmount(v ? Number(v) : undefined)}
                 />
                 <FilterRangeContainer

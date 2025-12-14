@@ -11,6 +11,7 @@ import {
 } from '@tanstack/react-table'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { formatCurrency, formatNumber, getNormalizationUnit } from '@/lib/utils'
+import { yValueFormatter } from '@/components/charts/components/chart-renderer/utils'
 import type { EntityAnalyticsDataPoint } from '@/schemas/entity-analytics'
 import { ArrowUpDown, ChevronDown, ChevronUp, MoreHorizontal, ChevronLeft, ChevronRight } from 'lucide-react'
 import { getMergedColumnOrder, moveColumnOrder } from '@/lib/table-utils'
@@ -18,6 +19,7 @@ import { Link } from '@tanstack/react-router'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 import { Trans } from '@lingui/react/macro'
+import type { Currency, Normalization } from '@/schemas/charts'
 
 interface Props {
   data: readonly EntityAnalyticsDataPoint[]
@@ -25,7 +27,8 @@ interface Props {
   sortBy?: string
   sortOrder?: 'asc' | 'desc'
   onSortChange: (by: string, order: 'asc' | 'desc') => void
-  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro'
+  normalization?: Normalization
+  currency?: Currency
   density?: 'comfortable' | 'compact'
   columnVisibility?: VisibilityState
   onColumnVisibilityChange?: OnChangeFn<VisibilityState>
@@ -39,9 +42,10 @@ interface Props {
   rowNumberStart?: number
 }
 
-export function EntityAnalyticsTable({ data, isLoading, sortBy, sortOrder, onSortChange, density = 'comfortable', columnVisibility, onColumnVisibilityChange, columnPinning, onColumnPinningChange, columnSizing, onColumnSizingChange, columnOrder, onColumnOrderChange, currencyFormat = 'compact', rowNumberStart = 0, normalization = 'total' }: Props) {
-  const unit = getNormalizationUnit(normalization as any)
-  const currencyCode: 'RON' | 'EUR' = unit.includes('EUR') ? 'EUR' : 'RON'
+export function EntityAnalyticsTable({ data, isLoading, sortBy, sortOrder, onSortChange, density = 'comfortable', columnVisibility, onColumnVisibilityChange, columnPinning, onColumnPinningChange, columnSizing, onColumnSizingChange, columnOrder, onColumnOrderChange, currencyFormat = 'compact', rowNumberStart = 0, normalization = 'total', currency }: Props) {
+  const unit = getNormalizationUnit({ normalization: normalization as any, currency: currency as any })
+  const currencyCode: Currency = currency ?? (unit.includes('EUR') ? 'EUR' : 'RON')
+  const isPercentGdp = normalization === 'percent_gdp' || unit.startsWith('%')
   const columns: ColumnDef<EntityAnalyticsDataPoint>[] = [
     {
       id: 'row_number',
@@ -105,6 +109,9 @@ export function EntityAnalyticsTable({ data, isLoading, sortBy, sortOrder, onSor
         </div>
       ),
       cell: ({ row }) => {
+        if (isPercentGdp) {
+          return <span className="block text-right text-xs text-muted-foreground">-</span>
+        }
         if (row.original.population == null) {
           return <span className="block text-right text-xs text-muted-foreground">-</span>
         }
@@ -138,6 +145,27 @@ export function EntityAnalyticsTable({ data, isLoading, sortBy, sortOrder, onSor
         </div>
       ),
       cell: ({ row }) => {
+        if (isPercentGdp) {
+          if (currencyFormat === 'both') {
+            return (
+              <div className="text-right">
+                <span className="block text-xs" title={yValueFormatter(row.original.total_amount, unit, 'standard')}>
+                  {yValueFormatter(row.original.total_amount, unit, 'standard')}
+                </span>
+                <span className="block text-xs text-muted-foreground">
+                  {yValueFormatter(row.original.total_amount, unit, 'compact')}
+                </span>
+              </div>
+            )
+          }
+          const view = currencyFormat === 'standard' ? 'standard' : 'compact'
+          return (
+            <span className="block text-right text-xs" title={yValueFormatter(row.original.total_amount, unit, 'standard')}>
+              {yValueFormatter(row.original.total_amount, unit, view)}
+            </span>
+          )
+        }
+
         if (currencyFormat === 'both') {
           return (
             <div className="text-right">
@@ -308,5 +336,3 @@ export function EntityAnalyticsTable({ data, isLoading, sortBy, sortOrder, onSor
     </div>
   )
 }
-
-

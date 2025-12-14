@@ -6,10 +6,12 @@ import { Info } from 'lucide-react'
 import type { AggregatedNode } from './budget-transform'
 import { getClassificationName } from '@/lib/classifications'
 import { Skeleton } from '@/components/ui/skeleton'
+import type { Currency, Normalization } from '@/schemas/charts'
 
 type Props = {
     readonly nodes: readonly AggregatedNode[] | undefined
-    readonly normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro'
+    readonly normalization?: Normalization
+    readonly currency?: Currency
     readonly periodLabel?: string
     readonly isLoading?: boolean
 }
@@ -17,9 +19,8 @@ type Props = {
 const normalizeFn = (code?: string | null) => (code ?? '').replace(/[^0-9.]/g, '')
 const matchPrefix = (code: string, prefix: string) => code === prefix || code.startsWith(prefix + '.') || code.startsWith(prefix)
 
-export function RevenueBreakdown({ nodes, normalization, periodLabel, isLoading }: Props) {
-    const unit = getNormalizationUnit(normalization ?? 'total')
-    const currencyCode: 'RON' | 'EUR' = unit.includes('EUR') ? 'EUR' : 'RON'
+export function RevenueBreakdown({ nodes, normalization, currency, periodLabel, isLoading }: Props) {
+    const unit = getNormalizationUnit({ normalization: (normalization ?? 'total') as any, currency: currency as any })
 
     const list = nodes ?? []
 
@@ -153,16 +154,15 @@ export function RevenueBreakdown({ nodes, normalization, periodLabel, isLoading 
                                         <Trans>All recorded revenue inflows</Trans>
                                     </div>
                                 </div>
-                                <div className="text-right w-full sm:w-auto">
-                                    <div className="font-mono text-base md:text-lg font-semibold text-foreground">
-                                        {yValueFormatter(totalRevenue, currencyCode, 'compact')}
-                                    </div>
-                                    <div className="font-mono text-xs text-muted-foreground">
-                                        {yValueFormatter(totalRevenue, currencyCode, 'standard')}
-                                        {unit.includes('capita') && <span className="ml-1 font-sans">/ capita</span>}
+                                    <div className="text-right w-full sm:w-auto">
+                                        <div className="font-mono text-base md:text-lg font-semibold text-foreground">
+                                        {yValueFormatter(totalRevenue, unit, 'compact')}
+                                        </div>
+                                        <div className="font-mono text-xs text-muted-foreground">
+                                        {yValueFormatter(totalRevenue, unit, 'standard')}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
                             {/* Minus sign */}
                             <div className="flex items-center justify-center py-1">
@@ -184,11 +184,10 @@ export function RevenueBreakdown({ nodes, normalization, periodLabel, isLoading 
                                     </div>
                                     <div className="text-right w-full sm:w-auto">
                                         <div className="font-mono text-base md:text-lg font-semibold text-foreground">
-                                            {yValueFormatter(d.amount, currencyCode, 'compact')}
+                                            {yValueFormatter(d.amount, unit, 'compact')}
                                         </div>
                                         <div className="font-mono text-xs text-muted-foreground">
-                                            {yValueFormatter(d.amount, currencyCode, 'standard')}
-                                            {unit.includes('capita') && <span className="ml-1 font-sans">/ capita</span>}
+                                            {yValueFormatter(d.amount, unit, 'standard')}
                                         </div>
                                     </div>
                                 </div>
@@ -221,11 +220,10 @@ export function RevenueBreakdown({ nodes, normalization, periodLabel, isLoading 
                                         </div>
                                         <div className="text-right w-full sm:w-auto">
                                             <div className="font-mono text-base md:text-lg font-semibold text-foreground">
-                                                {yValueFormatter(seScadDeduction, currencyCode, 'compact')}
+                                                {yValueFormatter(seScadDeduction, unit, 'compact')}
                                             </div>
                                             <div className="font-mono text-xs text-muted-foreground">
-                                                {yValueFormatter(seScadDeduction, currencyCode, 'standard')}
-                                                {unit.includes('capita') && <span className="ml-1 font-sans">/ capita</span>}
+                                                {yValueFormatter(seScadDeduction, unit, 'standard')}
                                             </div>
                                         </div>
                                     </div>
@@ -244,7 +242,7 @@ export function RevenueBreakdown({ nodes, normalization, periodLabel, isLoading 
                                                             {it.label}
                                                         </div>
                                                         <div className="font-mono text-xs text-muted-foreground">
-                                                            {yValueFormatter(it.amount, currencyCode, 'standard')}
+                                                            {yValueFormatter(it.amount, unit, 'standard')}
                                                         </div>
                                                     </div>
                                                 ))}
@@ -271,16 +269,15 @@ export function RevenueBreakdown({ nodes, normalization, periodLabel, isLoading 
                                         <Trans>Loan repayments and other operations</Trans> <span className="font-mono text-[10px] bg-muted px-1 py-0.5 rounded">fn:40.* + 41.*</span>
                                     </div>
                                 </div>
-                                <div className="text-right w-full sm:w-auto">
-                                    <div className="font-mono text-base md:text-lg font-semibold text-foreground">
-                                        {yValueFormatter(financialOps, currencyCode, 'compact')}
-                                    </div>
-                                    <div className="font-mono text-xs text-muted-foreground">
-                                        {yValueFormatter(financialOps, currencyCode, 'standard')}
-                                        {unit.includes('capita') && <span className="ml-1 font-sans">/ capita</span>}
+                                    <div className="text-right w-full sm:w-auto">
+                                        <div className="font-mono text-base md:text-lg font-semibold text-foreground">
+                                        {yValueFormatter(financialOps, unit, 'compact')}
+                                        </div>
+                                        <div className="font-mono text-xs text-muted-foreground">
+                                        {yValueFormatter(financialOps, unit, 'standard')}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
                             {/* Equals sign */}
                             <div className="flex items-center justify-center py-1">
@@ -299,16 +296,15 @@ export function RevenueBreakdown({ nodes, normalization, periodLabel, isLoading 
                                         <Trans>Excluding inter-budget flows and financial operations</Trans>
                                     </div>
                                 </div>
-                                <div className="text-right w-full sm:w-auto">
-                                    <div className="font-mono text-lg md:text-xl font-bold text-primary">
-                                        {yValueFormatter(effectiveRevenue, currencyCode, 'compact')}
-                                    </div>
-                                    <div className="font-mono text-xs text-muted-foreground">
-                                        {yValueFormatter(effectiveRevenue, currencyCode, 'standard')}
-                                        {unit.includes('capita') && <span className="ml-1 font-sans">/ capita</span>}
+                                    <div className="text-right w-full sm:w-auto">
+                                        <div className="font-mono text-lg md:text-xl font-bold text-primary">
+                                        {yValueFormatter(effectiveRevenue, unit, 'compact')}
+                                        </div>
+                                        <div className="font-mono text-xs text-muted-foreground">
+                                        {yValueFormatter(effectiveRevenue, unit, 'standard')}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                         </div>
                     </>
                 )}

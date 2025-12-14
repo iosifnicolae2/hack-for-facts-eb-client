@@ -3,18 +3,19 @@ import { ClassificationInfoLink } from '@/components/common/classification-info-
 import { Accordion, AccordionItem, AccordionContent, AccordionTrigger } from '@/components/ui/accordion';
 import { GroupedFunctional, GroupedEconomic } from '@/schemas/financial';
 import { highlightText } from './highlight-utils';
-import { formatCurrency, formatNumber, getNormalizationUnit } from '@/lib/utils';
+import { formatNormalizedValue, formatNumber } from '@/lib/utils';
+import type { Currency, Normalization } from '@/schemas/charts';
 
 interface GroupedFunctionalAccordionProps {
   func: GroupedFunctional;
   baseTotal: number;
   searchTerm: string;
-  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
+  normalization?: Normalization;
+  currency?: Currency;
 }
 
-const GroupedFunctionalAccordion: React.FC<GroupedFunctionalAccordionProps> = ({ func, baseTotal, searchTerm, normalization }) => {
-  const unit = getNormalizationUnit(normalization ?? 'total');
-  const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON';
+const GroupedFunctionalAccordion: React.FC<GroupedFunctionalAccordionProps> = ({ func, baseTotal, searchTerm, normalization, currency }) => {
+  const normalizationFormatOptions = { normalization: normalization ?? 'total', currency } as const
   if (func.economics.length === 0) {
     return (
       <div key={func.code} className="group grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto] items-center gap-1.5 sm:gap-4 py-2 px-3 sm:px-4 border-b">
@@ -25,13 +26,13 @@ const GroupedFunctionalAccordion: React.FC<GroupedFunctionalAccordionProps> = ({
         </div>
         <div className="text-right text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
           <p className="flex justify-end items-center gap-1 sm:gap-1.5">
-            {formatCurrency(func.totalAmount, "compact", currencyCode)}
+            {formatNormalizedValue(func.totalAmount, normalizationFormatOptions, "compact")}
             {baseTotal > 0 && (
               <span className="hidden sm:inline text-xs text-muted-foreground">{`(${formatNumber(func.totalAmount / baseTotal * 100)}%)`}</span>
             )}
           </p>
           <p className="text-xs text-muted-foreground font-normal">
-            {formatCurrency(func.totalAmount, "standard", currencyCode)}
+            {formatNormalizedValue(func.totalAmount, normalizationFormatOptions, "standard")}
           </p>
         </div>
       </div>
@@ -51,13 +52,13 @@ const GroupedFunctionalAccordion: React.FC<GroupedFunctionalAccordionProps> = ({
             </div>
             <div className="text-right text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
               <p className="flex justify-end items-center gap-1 sm:gap-1.5">
-                {formatCurrency(func.totalAmount, "compact", currencyCode)}
+                {formatNormalizedValue(func.totalAmount, normalizationFormatOptions, "compact")}
                 {baseTotal > 0 && (
                   <span className="hidden sm:inline text-xs text-muted-foreground">{`(${formatNumber(func.totalAmount / baseTotal * 100)}%)`}</span>
                 )}
               </p>
               <p className="text-xs text-muted-foreground font-normal">
-                {formatCurrency(func.totalAmount, "standard", currencyCode)}
+                {formatNormalizedValue(func.totalAmount, normalizationFormatOptions, "standard")}
               </p>
             </div>
           </div>
@@ -76,13 +77,13 @@ const GroupedFunctionalAccordion: React.FC<GroupedFunctionalAccordionProps> = ({
                 </div>
                 <div className="text-right text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
                   <p className="flex justify-end items-center gap-1 sm:gap-1.5">
-                    {formatCurrency(eco.amount, "compact", currencyCode)}
+                    {formatNormalizedValue(eco.amount, normalizationFormatOptions, "compact")}
                     {baseTotal > 0 && (
                       <span className="hidden sm:inline text-xs text-muted-foreground">{`(${formatNumber(eco.amount / baseTotal * 100)}%)`}</span>
                     )}
                   </p>
                   <p className="text-xs text-muted-foreground font-normal">
-                    {formatCurrency(eco.amount, "standard", currencyCode)}
+                    {formatNormalizedValue(eco.amount, normalizationFormatOptions, "standard")}
                   </p>
                 </div>
               </li>

@@ -4,6 +4,8 @@ import { UatTopNBarChart } from './UatTopNBarChart';
 import { UatPopulationSpendingScatterPlot } from './UatPopulationSpendingScatterPlot';
 import { t } from '@lingui/core/macro';
 import { useMapFilter } from '@/hooks/useMapFilter';
+import { useUserCurrency } from '@/lib/hooks/useUserCurrency';
+import type { Normalization } from '@/schemas/charts';
 
 interface UatDataChartsProps {
     data: (HeatmapUATDataPoint | HeatmapCountyDataPoint)[];
@@ -11,13 +13,27 @@ interface UatDataChartsProps {
 }
 
 export const UatDataCharts: React.FC<UatDataChartsProps> = ({ data, mapViewType }) => {
+    const { mapState } = useMapFilter();
+    const [userCurrency] = useUserCurrency();
+
     if (!data || data.length === 0) {
         return <p className="text-center text-muted-foreground">No data available to display charts.</p>;
     }
 
     const isUatView = mapViewType === 'UAT';
-    const { mapState } = useMapFilter();
-    const normalization = mapState.filters.normalization;
+    const normalizationRaw = mapState.filters.normalization ?? 'total';
+    let normalization: Normalization;
+    if (normalizationRaw === 'total_euro') {
+        normalization = 'total';
+    } else if (normalizationRaw === 'per_capita_euro') {
+        normalization = 'per_capita';
+    } else {
+        normalization = normalizationRaw;
+    }
+    const currency =
+        normalizationRaw === 'total_euro' || normalizationRaw === 'per_capita_euro'
+            ? 'EUR'
+            : (mapState.filters.currency ?? userCurrency);
 
     return (
         <div className="space-y-8 p-4 md:p-6">
@@ -32,6 +48,7 @@ export const UatDataCharts: React.FC<UatDataChartsProps> = ({ data, mapViewType 
                     yAxisLabel={isUatView ? t`UAT` : t`County`}
                     isCurrency={true}
                     normalization={normalization}
+                    currency={currency}
                 />
             </div>
 
@@ -42,6 +59,7 @@ export const UatDataCharts: React.FC<UatDataChartsProps> = ({ data, mapViewType 
                     xAxisLabel={t`Population`}
                     yAxisLabel={t`Amount`}
                     normalization={normalization}
+                    currency={currency}
                 />
             </div>
 

@@ -3,7 +3,6 @@ import { EntityFinancialSummary } from "../EntityFinancialSummary"
 import { EntityFinancialTrends } from "../EntityFinancialTrends"
 import { EntityLineItemsTabs } from "../EntityLineItemsTabs"
 import { LineItemsAnalytics } from "../LineItemsAnalytics"
-import { Normalization } from "@/schemas/charts";
 import type { GqlReportType, ReportPeriodInput, ReportPeriodType, TMonth, TQuarter } from "@/schemas/reporting";
 import { getYearLabel } from "../utils";
 import { toReportTypeValue } from "@/schemas/reporting";
@@ -27,13 +26,15 @@ import { Link } from '@tanstack/react-router'
 import type { EntityAnalyticsUrlState } from '@/routes/entity-analytics'
 import { ExternalLink } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import type { NormalizationOptions } from '@/lib/normalization'
+import { normalizeNormalizationOptions } from '@/lib/normalization'
 
 interface OverviewProps {
     cui: string;
     entity?: EntityDetailsData | null | undefined;
     isLoading: boolean;
     selectedYear: number;
-    normalization: Normalization;
+    normalizationOptions: NormalizationOptions;
     years: number[];
     periodType?: ReportPeriodType;
     reportPeriod: ReportPeriodInput;
@@ -49,7 +50,7 @@ interface OverviewProps {
         month?: string;
         [key: string]: any; // Allow additional URL state
     };
-    onChartNormalizationChange: (mode: Normalization) => void;
+    onChartNormalizationChange: (next: NormalizationOptions) => void;
     onYearChange: (year: number) => void;
     onPeriodItemSelect?: (label: string) => void;
     onSearchChange: (type: 'expense' | 'income', term: string) => void;
@@ -77,7 +78,7 @@ export const Overview = ({
     entity,
     isLoading,
     selectedYear,
-    normalization,
+    normalizationOptions,
     years,
     periodType,
     reportPeriod,
@@ -103,9 +104,12 @@ export const Overview = ({
     advancedFilter,
     onAdvancedFilterChange,
 }: OverviewProps) => {
+    const normalized = normalizeNormalizationOptions(normalizationOptions)
     const { data: lineItems, isLoading: isLoadingLineItems } = useEntityExecutionLineItems({
         cui,
-        normalization,
+        normalization: normalized.normalization as any,
+        currency: normalized.currency,
+        inflation_adjusted: normalized.inflation_adjusted,
         reportPeriod,
         reportType,
         enabled: true,
@@ -122,7 +126,17 @@ export const Overview = ({
 
     const debouncedPrefetch = useDebouncedCallback(
         (options: { reportPeriod: ReportPeriodInput, trendPeriod: ReportPeriodInput, reportType?: GqlReportType }) => {
-            queryClient.prefetchQuery(entityDetailsQueryOptions(cui, normalization, options.reportPeriod, options.reportType, options.trendPeriod, mainCreditorCui));
+            queryClient.prefetchQuery(entityDetailsQueryOptions({
+                cui,
+                normalization: normalized.normalization as any,
+                currency: normalized.currency,
+                inflation_adjusted: normalized.inflation_adjusted,
+                show_period_growth: normalized.show_period_growth,
+                reportPeriod: options.reportPeriod,
+                reportType: options.reportType,
+                trendPeriod: options.trendPeriod,
+                mainCreditorCui,
+            }));
         },
         100
     );
@@ -160,7 +174,7 @@ export const Overview = ({
     const handleAccountCategoryChange = (category: 'ch' | 'vn') => {
         setAccountCategory(category)
         onAccountCategoryChange?.(category)
-        if(category === 'vn') {
+        if (category === 'vn') {
             setPrimary('fn')
         }
         reset()
@@ -218,12 +232,14 @@ export const Overview = ({
             entity_cuis: [cui],
             report_period: reportPeriod,
             account_category: accountCategory,
-            normalization: normalization,
+            normalization: normalized.normalization as any,
+            currency: normalized.currency,
+            inflation_adjusted: normalized.inflation_adjusted,
             report_type: reportType ? toReportTypeValue(reportType) : 'Executie bugetara agregata la nivel de ordonator principal',
         },
         treemapPrimary: primary,
         treemapDepth: 'chapter',
-    }), [cui, reportPeriod, accountCategory, normalization, reportType, primary])
+    }), [cui, reportPeriod, accountCategory, normalized.normalization, normalized.currency, normalized.inflation_adjusted, reportType, primary])
 
     const periodLabel = usePeriodLabel(reportPeriod)
 
@@ -235,7 +251,7 @@ export const Overview = ({
                 budgetBalance={entity?.budgetBalance}
                 periodLabel={getYearLabel(selectedYear, search.month as TMonth, search.quarter as TQuarter)}
                 isLoading={isLoading}
-                currency={normalization === 'total_euro' || normalization === 'per_capita_euro' ? 'EUR' : 'RON'}
+                normalizationOptions={normalizationOptions}
             />
 
             <EntityFinancialTrends
@@ -244,8 +260,9 @@ export const Overview = ({
                 balanceTrend={entity?.balanceTrend ?? null}
                 currentYear={selectedYear}
                 entityName={entity?.name ?? ''}
-                normalization={normalization}
+                normalizationOptions={normalizationOptions}
                 onNormalizationChange={onChartNormalizationChange}
+                allowPerCapita={Boolean(entity?.is_uat || entity?.entity_type === 'admin_county_council')}
                 onYearChange={onYearChange}
                 periodType={periodType ?? 'YEAR'}
                 onSelectPeriod={onPeriodItemSelect}
@@ -298,7 +315,8 @@ export const Overview = ({
                             onNodeClick={onNodeClick}
                             onBreadcrumbClick={onBreadcrumbClick}
                             path={breadcrumbs}
-                            normalization={normalization}
+                            normalization={normalized.normalization as any}
+                            currency={normalized.currency as any}
                             excludedItemsSummary={excludedItemsSummary}
                         />
                     )}
@@ -319,7 +337,8 @@ export const Overview = ({
                     initialIncomeSearchTerm={search.incomeSearch ?? ''}
                     onSearchChange={(type: 'expense' | 'income', term: string) => handleSearchChange(type, term)}
                     isLoading={isLoading || isLoadingLineItems}
-                    normalization={normalization}
+                    normalization={normalized.normalization as any}
+                    currency={normalized.currency as any}
                     lineItemsTab={search.lineItemsTab as 'functional' | 'funding' | 'expenseType' | undefined}
                     onLineItemsTabChange={onLineItemsTabChange}
                     selectedFundingKey={search.selectedFundingKey as string | undefined}
@@ -345,7 +364,8 @@ export const Overview = ({
                     dataType={search.analyticsDataType ?? 'expense'}
                     onDataTypeChange={(type: 'income' | 'expense') => handleAnalyticsChange('analyticsDataType', type)}
                     isLoading={isLoading || isLoadingLineItems}
-                    normalization={normalization}
+                    normalization={normalized.normalization as any}
+                    currency={normalized.currency as any}
                 />
             </div>
 

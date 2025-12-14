@@ -1,7 +1,8 @@
 import L from 'leaflet';
 import { Feature, Geometry, Polygon, MultiPolygon } from 'geojson';
 import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
-import { formatNumber, getNormalizationUnit } from '@/lib/utils';
+import { formatValueWithUnit, getNormalizationUnit } from '@/lib/utils';
+import type { Currency, Normalization } from '@/schemas/charts';
 
 export interface PolygonLabelData {
   text: string;
@@ -165,8 +166,8 @@ export function doesLabelFit(
 /**
  * Format amount for display
  */
-export function formatAmount(amount: number): string {
-  return formatNumber(amount, 'compact');
+export function formatAmount(amount: number, unit: string): string {
+  return formatValueWithUnit(amount, unit, 'compact');
 }
 
 /**
@@ -199,7 +200,8 @@ export function processFeatureForLabel(
   zoom: number,
   mapViewType: 'UAT' | 'County',
   heatmapDataMap: Map<string | number, HeatmapUATDataPoint | HeatmapCountyDataPoint>,
-  normalization: 'total' | 'per_capita' | 'total_euro' | 'per_capita_euro',
+  normalization: Normalization,
+  currency?: Currency,
   maxValue?: number
 ): PolygonLabelData | null {
   const properties = feature.properties;
@@ -252,11 +254,19 @@ export function processFeatureForLabel(
 
   // Get heatmap data for both population and amount
   const heatmapData = getFeatureHeatmapData(feature, heatmapDataMap);
-  const amountValue = heatmapData
-    ? (normalization === 'per_capita' || normalization === 'per_capita_euro'
-        ? heatmapData.per_capita_amount
-        : heatmapData.total_amount)
-    : null;
+  const unit = getNormalizationUnit({ normalization: normalization as any, currency: currency as any });
+  const isPerCapita = normalization === 'per_capita' || normalization === 'per_capita_euro';
+  
+  let amountValue: number | null = null;
+  if (heatmapData) {
+    if (normalization === 'percent_gdp') {
+      amountValue = heatmapData.amount;
+    } else if (isPerCapita) {
+      amountValue = heatmapData.per_capita_amount;
+    } else {
+      amountValue = heatmapData.total_amount;
+    }
+  }
 
   // Don't show labels without amount data
   if (amountValue === null || amountValue === undefined) {
@@ -264,11 +274,14 @@ export function processFeatureForLabel(
   }
 
   // Get population for font size calculation
-  const population = heatmapData
-    ? (isCounty
-      ? (heatmapData as any).county_population
-      : (heatmapData as any).population)
-    : null;
+  let population: number | null = null;
+  if (heatmapData) {
+    if (isCounty) {
+      population = (heatmapData as any).county_population;
+    } else {
+      population = (heatmapData as any).population;
+    }
+  }
 
   // Calculate font size based on population for better visual hierarchy
   // If maxValue (max population) is not provided, fall back to area-based calculation
@@ -310,8 +323,8 @@ export function processFeatureForLabel(
 
   return {
     text: displayText,
-    amount: showAmount && amountValue !== null && amountValue !== undefined ? formatAmount(amountValue) : undefined,
-    unit: getNormalizationUnit(normalization),
+    amount: showAmount && amountValue !== null && amountValue !== undefined ? formatAmount(amountValue, unit) : undefined,
+    unit: undefined,
     position: centroid,
     bounds,
     area: screenArea,

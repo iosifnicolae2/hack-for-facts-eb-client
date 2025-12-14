@@ -1,11 +1,19 @@
 import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { i18n } from "@lingui/core";
+import { msg as t } from "@lingui/core/macro";
+
+// i18n messages for normalization units
+const normalizationMessages = {
+  percentOfGdp: t`% of GDP`,
+  perCapita: t`/capita`,
+};
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatCurrency(amount: number, notation?: "standard" | "compact", currency: "RON" | "EUR" = "RON"): string {
+export function formatCurrency(amount: number, notation?: "standard" | "compact", currency: "RON" | "EUR" | "USD" = "RON"): string {
   const locale = getUserLocale();
   const numberLocale = locale === "ro" ? "ro-RO" : "en-US";
   return new Intl.NumberFormat(numberLocale, {
@@ -99,20 +107,86 @@ export function setUserLocale(locale: Locale): void {
 }
 
 
-export function getNormalizationUnit(normalization: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro' | undefined) {
-  if (!normalization || normalization === 'total') {
-    return 'RON';
+type NormalizationUnitCurrency = 'RON' | 'EUR' | 'USD'
+
+type NormalizationUnitInput =
+  | {
+      normalization?: 'total' | 'per_capita' | 'percent_gdp' | 'total_euro' | 'per_capita_euro'
+      currency?: NormalizationUnitCurrency
+      show_period_growth?: boolean
+    }
+  | undefined
+
+export function getNormalizationUnit(
+  normalization: 'total' | 'per_capita' | 'percent_gdp' | 'total_euro' | 'per_capita_euro' | undefined,
+  currency?: NormalizationUnitCurrency,
+  showPeriodGrowth?: boolean,
+): string
+export function getNormalizationUnit(options: NormalizationUnitInput): string
+export function getNormalizationUnit(
+  normalizationOrOptions:
+    | 'total'
+    | 'per_capita'
+    | 'percent_gdp'
+    | 'total_euro'
+    | 'per_capita_euro'
+    | NormalizationUnitInput,
+  currencyArg?: NormalizationUnitCurrency,
+  showPeriodGrowthArg?: boolean,
+): string {
+  const normalization =
+    typeof normalizationOrOptions === 'string'
+      ? normalizationOrOptions
+      : normalizationOrOptions?.normalization
+  const currency =
+    typeof normalizationOrOptions === 'string'
+      ? currencyArg
+      : normalizationOrOptions?.currency
+  const showPeriodGrowth =
+    typeof normalizationOrOptions === 'string'
+      ? showPeriodGrowthArg
+      : normalizationOrOptions?.show_period_growth
+
+  if (showPeriodGrowth) return '%'
+  if (normalization === 'percent_gdp') return i18n._(normalizationMessages.percentOfGdp)
+
+  const effectiveCurrency: NormalizationUnitCurrency =
+    normalization === 'total_euro' || normalization === 'per_capita_euro'
+      ? 'EUR'
+      : (currency ?? 'RON')
+
+  const isPerCapita = normalization === 'per_capita' || normalization === 'per_capita_euro'
+  return isPerCapita ? `${effectiveCurrency}${i18n._(normalizationMessages.perCapita)}` : effectiveCurrency
+}
+
+type ValueNotation = 'standard' | 'compact'
+
+export function formatValueWithUnit(value: number, unit: string, notation: ValueNotation = 'compact'): string {
+  if (value == null || Number.isNaN(value)) return 'N/A'
+
+  if (unit === '%') {
+    return `${formatNumber(value, notation)}%`
   }
-  if (normalization === 'total_euro') {
-    return 'EUR';
+
+  if (unit === 'RON' || unit === 'EUR' || unit === 'USD') {
+    return formatCurrency(value, notation, unit)
   }
-  if (normalization === 'per_capita') {
-    return 'RON/capita';
+
+  const perCapitaSuffix = i18n._(normalizationMessages.perCapita)
+  if (unit.endsWith(perCapitaSuffix)) {
+    const currency = unit.replace(perCapitaSuffix, '') as NormalizationUnitCurrency
+    return `${formatCurrency(value, notation, currency)}${perCapitaSuffix}`
   }
-  if (normalization === 'per_capita_euro') {
-    return 'EUR/capita';
+
+  if (unit.includes('%')) {
+    return `${formatNumber(value, notation)}${unit}`.trim()
   }
-  throw new Error(`Unknown normalization mode: ${normalization}`);
+
+  return `${formatNumber(value, notation)} ${unit}`.trim()
+}
+
+export function formatNormalizedValue(value: number, options: NormalizationUnitInput, notation: ValueNotation = 'compact'): string {
+  return formatValueWithUnit(value, getNormalizationUnit(options), notation)
 }
 
 /**
@@ -120,7 +194,7 @@ export function getNormalizationUnit(normalization: 'total' | 'total_euro' | 'pe
  * Negative → red, Positive → green, Zero/undefined → muted.
  */
 export function getSignClass(value: number | null | undefined): string {
-  if (value == null || isNaN(value)) return 'text-muted-foreground';
+  if (value == null || Number.isNaN(value)) return 'text-muted-foreground';
   if (value < 0) return 'text-red-600';
   if (value > 0) return 'text-green-600';
   return 'text-muted-foreground';

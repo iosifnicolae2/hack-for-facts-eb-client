@@ -11,8 +11,8 @@ import {
   LabelList,
 } from 'recharts';
 import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
-import { formatCurrency, formatNumber } from '@/lib/utils';
-import { getNormalizationUnit } from '@/lib/utils';
+import { formatCurrency, formatNumber, getNormalizationUnit } from '@/lib/utils';
+import type { Currency, Normalization } from '@/schemas/charts';
 
 interface UatTopNBarChartProps {
   data: (HeatmapUATDataPoint | HeatmapCountyDataPoint)[];
@@ -24,7 +24,8 @@ interface UatTopNBarChartProps {
   xAxisLabel?: string;
   yAxisLabel?: string;
   isCurrency?: boolean; // Added to determine if valueKey is a currency
-  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
+  normalization?: Normalization;
+  currency?: Currency;
 }
 
 export const UatTopNBarChart: React.FC<UatTopNBarChartProps> = ({
@@ -38,9 +39,10 @@ export const UatTopNBarChart: React.FC<UatTopNBarChartProps> = ({
   yAxisLabel,
   isCurrency = true, // Default to true as this chart is often used for amounts
   normalization,
+  currency,
 }) => {
-  const unit = getNormalizationUnit(normalization as any);
-  const currencyCode: 'RON' | 'EUR' = unit.includes('EUR') ? 'EUR' : 'RON';
+  const unit = getNormalizationUnit({ normalization: normalization as any, currency: currency as any });
+  const currencyCode: Currency = currency ?? (unit.includes('EUR') ? 'EUR' : unit.includes('USD') ? 'USD' : 'RON');
   const isPerCapita = unit.includes('capita');
 
   const processedData = React.useMemo(() => {

@@ -10,6 +10,7 @@ import { Info, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Trans } from '@lingui/react/macro';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import type { Currency, Normalization } from '@/schemas/charts';
 
 export interface EntityLineItemsTabsProps {
   lineItems: readonly ExecutionLineItem[];
@@ -23,7 +24,8 @@ export interface EntityLineItemsTabsProps {
   initialIncomeSearchTerm: string;
   onSearchChange: (type: 'expense' | 'income', term: string) => void;
   isLoading?: boolean;
-  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
+  normalization?: Normalization;
+  currency?: Currency;
   onPrefetchYear?: (year: number) => void;
   // Shared tab state
   lineItemsTab?: 'functional' | 'funding' | 'expenseType';
@@ -53,6 +55,7 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
   onSearchChange,
   isLoading,
   normalization,
+  currency,
   onPrefetchYear,
   lineItemsTab = 'functional',
   onLineItemsTabChange,
@@ -223,6 +226,7 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
                 month={month}
                 quarter={quarter}
                 normalization={normalization}
+                currency={currency}
                 onYearChange={onYearChange}
                 onPrefetchYear={onPrefetchYear}
                 isLoading={isLoading}
@@ -246,6 +250,7 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
             selectedKey={selectedFundingKey}
             onSelectedKeyChange={onSelectedFundingKeyChange || (() => { })}
             normalization={normalization}
+            currency={currency}
             isLoading={isLoading}
             displayMode={badgeDisplayMode}
             accountCategory={badgeAccountCategory}
@@ -264,6 +269,7 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
                 month={month}
                 quarter={quarter}
                 normalization={normalization}
+                currency={currency}
                 onYearChange={onYearChange}
                 onPrefetchYear={onPrefetchYear}
                 isLoading={isLoading}
@@ -289,6 +295,7 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
             selectedKey={selectedExpenseTypeKey}
             onSelectedKeyChange={onSelectedExpenseTypeKeyChange || (() => { })}
             normalization={normalization}
+            currency={currency}
             isLoading={isLoading}
             displayMode={badgeDisplayMode}
             accountCategory={badgeAccountCategory}
@@ -307,6 +314,7 @@ export const EntityLineItemsTabs: React.FC<EntityLineItemsTabsProps> = ({
                 month={month}
                 quarter={quarter}
                 normalization={normalization}
+                currency={currency}
                 onYearChange={onYearChange}
                 onPrefetchYear={onPrefetchYear}
                 isLoading={isLoading}

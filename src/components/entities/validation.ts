@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { AnalyticsFilterSchema, defaultYearRange, Normalization } from "@/schemas/charts";
+import { AnalyticsFilterSchema, Currency, defaultYearRange, Normalization } from "@/schemas/charts";
 import { GqlReportTypeEnum } from "@/schemas/reporting";
 
 
@@ -58,7 +58,20 @@ export const entitySearchSchema = z.object({
         .describe('Advanced heatmap filters for the Map view (see AnalyticsFilterSchema).'),
     normalization: Normalization
         .optional()
-        .describe('Value normalization. total, total_euro, per_capita, per_capita_euro.'),
+        .describe('Value normalization. total, per_capita, percent_gdp. total_euro and per_capita_euro are legacy (prefer currency=EUR).'),
+    currency: Currency
+        .optional()
+        .describe('Output currency (RON, EUR, USD). Ignored for percent_gdp.'),
+    inflation_adjusted: z
+        .coerce
+        .boolean()
+        .optional()
+        .describe('Whether to adjust values for inflation (constant 2024 prices). Ignored for percent_gdp.'),
+    show_period_growth: z
+        .coerce
+        .boolean()
+        .optional()
+        .describe('Whether to show period-over-period growth (%) for trends.'),
     // Line items filter state (shared across all views)
     lineItemsTab: z
         .enum(['functional', 'funding', 'expenseType'])

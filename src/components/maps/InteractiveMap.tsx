@@ -159,6 +159,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
             mapViewType={mapViewType}
             heatmapDataMap={heatmapDataMap}
             normalization={filters.normalization || 'total'}
+            currency={(filters as any).currency}
           />
         </>
       )}

@@ -11,8 +11,8 @@ import {
   ZAxis,
 } from 'recharts';
 import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
-import { formatCurrency, formatNumber } from '@/lib/utils';
-import { getNormalizationUnit } from '@/lib/utils';
+import { formatCurrency, formatNumber, getNormalizationUnit } from '@/lib/utils';
+import type { Currency, Normalization } from '@/schemas/charts';
 
 interface UatPopulationSpendingScatterPlotProps {
   data: (HeatmapUATDataPoint | HeatmapCountyDataPoint)[];
@@ -20,7 +20,8 @@ interface UatPopulationSpendingScatterPlotProps {
   xAxisLabel?: string;
   yAxisLabel?: string;
   dotColor?: string;
-  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
+  normalization?: Normalization;
+  currency?: Currency;
 }
 
 // Define a proper interface for tooltip props with payload
@@ -32,7 +33,7 @@ interface CustomTooltipProps {
     name?: string;
   }>;
   label?: string | number;
-  currencyCode: 'RON' | 'EUR';
+  currencyCode: Currency;
   isPerCapita: boolean;
 }
 
@@ -60,9 +61,10 @@ export const UatPopulationSpendingScatterPlot: React.FC<UatPopulationSpendingSca
   yAxisLabel = 'Amount',
   dotColor = '#8884d8',
   normalization,
+  currency,
 }) => {
-  const unit = getNormalizationUnit(normalization as any);
-  const currencyCode: 'RON' | 'EUR' = unit.includes('EUR') ? 'EUR' : 'RON';
+  const unit = getNormalizationUnit({ normalization: normalization as any, currency: currency as any });
+  const currencyCode: Currency = currency ?? (unit.includes('EUR') ? 'EUR' : unit.includes('USD') ? 'USD' : 'RON');
   const isPerCapita = unit.includes('capita');
 
   const saneData = React.useMemo(() =>

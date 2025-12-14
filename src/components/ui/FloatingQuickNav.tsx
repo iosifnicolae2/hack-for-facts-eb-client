@@ -156,7 +156,7 @@ function convertFilterInputToChartState(
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
                 label: labelMaps.entityLabelMap.map(cui),
-                unit: getNormalizationUnit(filterInput.normalization),
+                unit: getNormalizationUnit({ normalization: filterInput.normalization, currency: filterInput.currency, show_period_growth: filterInput.show_period_growth }),
                 filter: {
                     ...filterInput,
                     account_category: accountCategory,
@@ -179,7 +179,7 @@ function convertFilterInputToChartState(
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
                 label: labelMaps.uatLabelMap.map(uatId),
-                unit: getNormalizationUnit(filterInput.normalization),
+                unit: getNormalizationUnit({ normalization: filterInput.normalization as any, currency: filterInput.currency as any, show_period_growth: filterInput.show_period_growth }),
                 filter: {
                     ...filterInput,
                     account_category: accountCategory,
@@ -201,7 +201,7 @@ function convertFilterInputToChartState(
                 type: 'line-items-aggregated-yearly',
                 enabled: true,
                 label: `County ${cc}`,
-                unit: getNormalizationUnit(filterInput.normalization),
+                unit: getNormalizationUnit({ normalization: filterInput.normalization as any, currency: filterInput.currency as any, show_period_growth: filterInput.show_period_growth }),
                 filter: {
                     ...filterInput,
                     account_category: accountCategory,
@@ -225,7 +225,7 @@ function convertFilterInputToChartState(
             type: 'line-items-aggregated-yearly',
             enabled: true,
             label: "Series",
-            unit: getNormalizationUnit(filterInput.normalization),
+            unit: getNormalizationUnit({ normalization: filterInput.normalization as any, currency: filterInput.currency as any, show_period_growth: filterInput.show_period_growth }),
             filter: {
                 ...filterInput,
                 account_category: accountCategory,
@@ -261,12 +261,13 @@ function convertFilterInputToChartState(
 function convertFilterInputToEntityTableState(filterInput: AnalyticsFilterType, mapViewType: 'UAT' | 'County'): EntityAnalyticsUrlState {
     const accountCategory = filterInput.account_category ?? 'ch'
     const reportType = coerceReportType(filterInput) ?? 'Executie bugetara agregata la nivel de ordonator principal'
+    const sanitized = stripGlobalCurrencyAndInflation(filterInput)
     const base: EntityAnalyticsUrlState = {
         view: 'table',
         sortOrder: 'desc',
         page: 1,
         pageSize: 25,
-        filter: { ...filterInput, account_category: accountCategory, report_type: reportType },
+        filter: { ...sanitized, account_category: accountCategory, report_type: reportType },
     }
 
     // Edge cases for uat table:
@@ -293,9 +294,18 @@ function convertFilterInputToEntityTableState(filterInput: AnalyticsFilterType, 
 function convertFilterInputToMapState(filterInput: AnalyticsFilterType, mapViewType: 'UAT' | 'County'): MapUrlState {
     const accountCategory = filterInput.account_category ?? 'ch'
     const reportType = coerceReportType(filterInput) ?? 'Executie bugetara agregata la nivel de ordonator principal'
+    const sanitized = stripGlobalCurrencyAndInflation(filterInput)
     return {
-        filters: { ...filterInput, account_category: accountCategory, report_type: reportType },
+        filters: { ...sanitized, account_category: accountCategory, report_type: reportType },
         mapViewType: mapViewType,
         activeView: 'map',
+    }
+}
+
+function stripGlobalCurrencyAndInflation(filterInput: AnalyticsFilterType): AnalyticsFilterType {
+    return {
+        ...filterInput,
+        currency: undefined,
+        inflation_adjusted: undefined,
     }
 }

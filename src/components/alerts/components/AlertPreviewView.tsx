@@ -6,6 +6,7 @@ import { ArrowLeft, ExternalLink } from 'lucide-react';
 import { Trans } from '@lingui/react/macro';
 import { useAlertStore } from '../hooks/useAlertStore';
 import { buildAlertPreviewChartLink, buildAlertPreviewChartState } from '@/lib/alert-links';
+import { formatValueWithUnit } from '@/lib/utils';
 
 export function AlertPreviewView() {
   const { alert, setView } = useAlertStore();
@@ -63,11 +64,12 @@ export function AlertPreviewView() {
                 ? (thresholdSeries as { value: number }).value
                 : 0;
               const condition = alert.conditions?.[index];
+              const thresholdDisplayValue = formatValueWithUnit(thresholdValue, condition?.unit ?? 'RON', 'standard');
               return (
                 <div key={thresholdSeries.id} className="flex items-center gap-1">
                   <span className="h-3 w-3 rounded-full" style={{ backgroundColor: thresholdSeries.config.color }} />
                   <span>
-                    <Trans>Threshold {index + 1}</Trans>: {thresholdValue} {condition?.unit ?? 'RON'}
+                    <Trans>Threshold {index + 1}</Trans>: {thresholdDisplayValue}
                   </span>
                 </div>
               );

@@ -1,12 +1,11 @@
 import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
 import { UatFeature, UatProperties } from './interfaces';
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency, formatNumber, getNormalizationUnit } from '@/lib/utils';
 import { DEFAULT_FEATURE_STYLE, PERMANENT_HIGHLIGHT_STYLE } from './constants';
 import L, { PathOptions } from 'leaflet';
 import { Feature, Geometry } from 'geojson';
 import { AnalyticsFilterType } from "@/schemas/charts";
 import { t } from "@lingui/core/macro";
-import { getNormalizationUnit } from '@/lib/utils';
 
 
 /**
@@ -66,9 +65,10 @@ export const createTooltipContent = (
   const featureIdentifier = isUAT ? properties.natcode : properties.mnemonic;
   const filterSummaryHtml = createFilterSummary(filters);
 
-  const unit = getNormalizationUnit(filters.normalization as any);
+  const unit = getNormalizationUnit({ normalization: filters.normalization as any, currency: (filters as any).currency });
   const currencyCode: 'RON' | 'EUR' = unit.includes('EUR') ? 'EUR' : 'RON';
   const isPerCapitaNorm = (filters.normalization === 'per_capita' || filters.normalization === 'per_capita_euro');
+  const isPercentGdpNorm = filters.normalization === 'percent_gdp';
 
   // Common styles for the tooltip
   const styles = {
@@ -91,7 +91,7 @@ export const createTooltipContent = (
 
   // --- Tooltip for features WITH data ---
   if (dataPoint) {
-    let name, subtext, population, perCapitaAmount, totalAmount;
+    let name, subtext, population, perCapitaAmount, totalAmount, normalizedAmount;
 
     if (isUAT && 'siruta_code' in dataPoint) {
       name = dataPoint.uat_name || properties.name;
@@ -99,12 +99,14 @@ export const createTooltipContent = (
       population = dataPoint.population;
       perCapitaAmount = dataPoint.per_capita_amount;
       totalAmount = dataPoint.total_amount;
+      normalizedAmount = dataPoint.amount;
     } else if (!isUAT && 'county_code' && 'county_population' in dataPoint) {
       name = dataPoint.county_name || properties.name;
       subtext = t`Mnemonic:` + ` ${featureIdentifier}`;
       population = dataPoint.county_population;
       perCapitaAmount = dataPoint.per_capita_amount;
       totalAmount = dataPoint.total_amount;
+      normalizedAmount = dataPoint.amount;
     } else {
       // Fallback if dataPoint is found but type guard fails
       return `<div>${t`Error: Invalid data point type.`}</div>`;
@@ -120,15 +122,24 @@ export const createTooltipContent = (
             ${population?.toLocaleString('ro-RO') ?? t`N/A`}
           </div>
 
-          <div style="${styles.dataLabel}">${t`Total Amount`}</div>
-          <div style="${styles.dataValue} ${!isPerCapitaNorm ? styles.highlight : ''}">
-            ${formatCurrency(totalAmount, 'compact', currencyCode)}
-          </div>
+          ${isPercentGdpNorm
+            ? `
+              <div style="${styles.dataLabel}">${t`% of GDP`}</div>
+              <div style="${styles.dataValue} ${styles.highlight}">
+                ${formatNumber(normalizedAmount, 'compact')}%
+              </div>
+            `
+            : `
+              <div style="${styles.dataLabel}">${t`Total Amount`}</div>
+              <div style="${styles.dataValue} ${!isPerCapitaNorm ? styles.highlight : ''}">
+                ${formatCurrency(totalAmount, 'compact', currencyCode)}
+              </div>
 
-          <div style="${styles.dataLabel}">${t`Amount Per Capita`}</div>
-          <div style="${styles.dataValue} ${isPerCapitaNorm ? styles.highlight : ''}">
-            ${formatCurrency(perCapitaAmount, 'compact', currencyCode)} ${unit.includes('capita') ? '/ capita' : ''}
-          </div>
+              <div style="${styles.dataLabel}">${t`Amount Per Capita`}</div>
+              <div style="${styles.dataValue} ${isPerCapitaNorm ? styles.highlight : ''}">
+                ${formatCurrency(perCapitaAmount, 'compact', currencyCode)} ${unit.includes('capita') ? '/ capita' : ''}
+              </div>
+            `}
         </div>
         ${filterSummaryHtml}
       </div>
@@ -162,7 +173,7 @@ export const getPercentileValues = (
   data: (HeatmapUATDataPoint | HeatmapCountyDataPoint)[] | undefined,
   lowerPercentile: number,
   upperPercentile: number,
-  valueKey: 'total_amount' | 'per_capita_amount'
+  valueKey: 'amount' | 'total_amount' | 'per_capita_amount'
 ): { min: number; max: number } => {
   if (!data || data.length === 0) {
     return { min: 0, max: 0 };
@@ -269,7 +280,7 @@ export const createHeatmapStyleFunction = (
   min: number,
   max: number,
   mapViewType: 'UAT' | 'County',
-  valueKey: 'total_amount' | 'per_capita_amount'
+  valueKey: 'amount' | 'total_amount' | 'per_capita_amount'
 ): ((feature: UatFeature) => L.PathOptions) => {
 
   return (feature: UatFeature) => {
@@ -394,4 +405,3 @@ export function restyleAllFeatures(
     // Silently ignore styling errors for resilience in production
   }
 }
-

@@ -2,9 +2,10 @@ import React, { useMemo } from 'react';
 import type { ExecutionLineItem, FundingSourceOption } from '@/lib/api/entities';
 import { t } from '@lingui/core/macro';
 import { Button } from '@/components/ui/button';
-import { formatCurrency, formatNumber, cn } from '@/lib/utils';
+import { formatNormalizedValue, formatNumber, cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TrendingUp, TrendingDown } from 'lucide-react';
+import type { Currency, Normalization } from '@/schemas/charts';
 
 type AccountCategory = 'vn' | 'ch';
 
@@ -29,7 +30,8 @@ interface LineItemsBadgeFiltersProps {
   mode: 'funding' | 'expenseType';
   selectedKey: string;
   onSelectedKeyChange: (key: string) => void;
-  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
+  normalization?: Normalization;
+  currency?: Currency;
   isLoading?: boolean;
   // Display mode: 'combined' shows income/expense, 'single' shows only the filtered type
   displayMode?: 'combined' | 'single';
@@ -44,11 +46,15 @@ export const LineItemsBadgeFilters: React.FC<LineItemsBadgeFiltersProps> = ({
   selectedKey,
   onSelectedKeyChange,
   normalization,
+  currency,
   isLoading = false,
   displayMode = 'combined',
   accountCategory,
 }) => {
-  const currencyCode = normalization === 'total_euro' || normalization === 'per_capita_euro' ? 'EUR' : 'RON';
+  const normalizationFormatOptions = useMemo(() => ({
+    normalization: normalization ?? 'total',
+    currency,
+  }), [normalization, currency])
 
   // Aggregate line items into display buckets for the selected mode.
   const { bucketSummaries, totalIncome, totalExpense } = useMemo<BucketComputationResult>(() => {
@@ -170,13 +176,13 @@ export const LineItemsBadgeFilters: React.FC<LineItemsBadgeFiltersProps> = ({
               ? (
                 <span className="flex items-center gap-1">
                   <TrendingUp className="w-3 h-3 text-green-500 flex-shrink-0" />
-                  <span className="truncate">{formatCurrency(totalIncome, 'compact', currencyCode)}</span>
+                  <span className="truncate">{formatNormalizedValue(totalIncome, normalizationFormatOptions, 'compact')}</span>
                   <span className="">/</span>
                   <TrendingDown className="w-3 h-3 text-red-500 flex-shrink-0" />
-                  <span className="truncate">{formatCurrency(totalExpense, 'compact', currencyCode)}</span>
+                  <span className="truncate">{formatNormalizedValue(totalExpense, normalizationFormatOptions, 'compact')}</span>
                 </span>
               )
-              : formatCurrency(singleViewCategory === 'vn' ? totalIncome : totalExpense, 'compact', currencyCode)
+              : formatNormalizedValue(singleViewCategory === 'vn' ? totalIncome : totalExpense, normalizationFormatOptions, 'compact')
             }
           </p>
         </Button>
@@ -194,8 +200,8 @@ export const LineItemsBadgeFilters: React.FC<LineItemsBadgeFiltersProps> = ({
             : `${formatNumber(singleViewCategory === 'vn' ? bucket.incomePercentage : bucket.expensePercentage)}%`;
 
           const tooltipText = isCombinedView
-            ? `${bucket.title}: ${formatCurrency(bucket.incomeTotal, 'standard', currencyCode)} (${formatNumber(bucket.incomePercentage)}%) / ${formatCurrency(bucket.expenseTotal, 'standard', currencyCode)} (${formatNumber(bucket.expensePercentage)}%)`
-            : `${bucket.title}: ${formatCurrency(singleViewCategory === 'vn' ? bucket.incomeTotal : bucket.expenseTotal, 'standard', currencyCode)} (${formatNumber(singleViewCategory === 'vn' ? bucket.incomePercentage : bucket.expensePercentage)}%)`;
+            ? `${bucket.title}: ${formatNormalizedValue(bucket.incomeTotal, normalizationFormatOptions, 'standard')} (${formatNumber(bucket.incomePercentage)}%) / ${formatNormalizedValue(bucket.expenseTotal, normalizationFormatOptions, 'standard')} (${formatNumber(bucket.expensePercentage)}%)`
+            : `${bucket.title}: ${formatNormalizedValue(singleViewCategory === 'vn' ? bucket.incomeTotal : bucket.expenseTotal, normalizationFormatOptions, 'standard')} (${formatNumber(singleViewCategory === 'vn' ? bucket.incomePercentage : bucket.expensePercentage)}%)`;
 
           return (
             <Button

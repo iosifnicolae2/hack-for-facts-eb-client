@@ -30,6 +30,20 @@ msgstr "{resultsCount} results found"
 msgid "*Check filters panel for more details."
 msgstr "*Check filters panel for more details."
 
+#: src/lib/utils.ts:9
+msgid "/capita"
+msgstr "/capita"
+
+#: src/components/charts/components/series-config/SeriesFilter.tsx:331
+#: src/components/entities/EntityReportControls.tsx:273
+#: src/components/filters/normalization-filter/NormalizationFilter.tsx:15
+#: src/components/maps/utils.ts:128
+#: src/components/normalization/normalization-controls.tsx:33
+#: src/components/normalization/normalization-mode-select.tsx:28
+#: src/lib/utils.ts:8
+msgid "% of GDP"
+msgstr "% of GDP"
+
 #: src/components/footer/AppFooter.tsx:157
 msgid "© {currentYear} Transparenta.eu. All rights reserved."
 msgstr "© {currentYear} Transparenta.eu. All rights reserved."
@@ -409,8 +423,8 @@ msgstr "Active filters"
 msgid "Active Series"
 msgstr "Active Series"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:116
-#: src/components/budget-explorer/SpendingBreakdown.tsx:185
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:113
+#: src/components/budget-explorer/SpendingBreakdown.tsx:183
 msgid "Actual impact on budget"
 msgstr "Actual impact on budget"
 
@@ -473,7 +487,11 @@ msgstr "Address"
 msgid "Adequacy decisions where applicable"
 msgstr "Adequacy decisions where applicable"
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:210
+#: src/components/normalization/normalization-controls.tsx:110
+msgid "Adjust for inflation (constant 2024 prices)"
+msgstr "Adjust for inflation (constant 2024 prices)"
+
+#: src/components/budget-explorer/RevenueBreakdown.tsx:209
 msgid "Adjustments marked as \"se scad\""
 msgstr "Adjustments marked as \"se scad\""
 
@@ -497,16 +515,20 @@ msgstr "Aggregated data"
 msgid "Aggregated Series Calculation"
 msgstr "Aggregated Series Calculation"
 
-#: src/components/maps/MapLegend.tsx:37
+#: src/components/maps/MapLegend.tsx:46
 msgid "Aggregated Value ({currencyCode})"
 msgstr "Aggregated Value ({currencyCode})"
 
-#: src/components/maps/MapLegend.tsx:37
+#: src/components/maps/MapLegend.tsx:46
 msgid "Aggregated Value ({currencyCode}/capita)"
 msgstr "Aggregated Value ({currencyCode}/capita)"
 
-#: src/routes/map.lazy.tsx:223
-#: src/routes/map.lazy.tsx:252
+#: src/components/maps/MapLegend.tsx:46
+msgid "Aggregated Value (% of GDP)"
+msgstr "Aggregated Value (% of GDP)"
+
+#: src/routes/map.lazy.tsx:296
+#: src/routes/map.lazy.tsx:326
 msgid "Aggregated Value Legend"
 msgstr "Aggregated Value Legend"
 
@@ -552,20 +574,20 @@ msgstr "Alert type"
 msgid "Alerts when important changes occur"
 msgstr "Alerts when important changes occur"
 
-#: src/components/entities/EntityLineItemsTabs.tsx:133
-#: src/components/entities/EntityLineItemsTabs.tsx:150
-#: src/components/entities/EntityReportControls.tsx:60
-#: src/components/entities/LineItemsBadgeFilters.tsx:166
-#: src/components/entities/LineItemsGroupedSection.tsx:170
-#: src/components/entities/LineItemsGroupedSection.tsx:172
+#: src/components/entities/EntityLineItemsTabs.tsx:136
+#: src/components/entities/EntityLineItemsTabs.tsx:153
+#: src/components/entities/EntityReportControls.tsx:68
+#: src/components/entities/LineItemsBadgeFilters.tsx:172
+#: src/components/entities/LineItemsGroupedSection.tsx:173
+#: src/components/entities/LineItemsGroupedSection.tsx:175
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:146
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:164
 #: src/routes/charts/index.lazy.tsx:245
 msgid "All"
 msgstr "All"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:70
-#: src/components/budget-explorer/SpendingBreakdown.tsx:101
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:69
+#: src/components/budget-explorer/SpendingBreakdown.tsx:102
 msgid "All budget expenditures"
 msgstr "All budget expenditures"
 
@@ -574,11 +596,11 @@ msgid "All changes saved"
 msgstr "All changes saved"
 
 #: src/components/classification-explorer/ClassificationBreadcrumb.tsx:32
-#: src/components/classification-explorer/ClassificationInfo.tsx:42
+#: src/components/classification-explorer/ClassificationInfo.tsx:47
 msgid "All Classifications"
 msgstr "All Classifications"
 
-#: src/components/entities/EntityLineItemsTabs.tsx:92
+#: src/components/entities/EntityLineItemsTabs.tsx:95
 msgid "All Economic"
 msgstr "All Economic"
 
@@ -586,7 +608,7 @@ msgstr "All Economic"
 msgid "All processors are bound by data protection agreements and GDPR-compliant safeguards, including standard contractual clauses for international transfers."
 msgstr "All processors are bound by data protection agreements and GDPR-compliant safeguards, including standard contractual clauses for international transfers."
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:153
+#: src/components/budget-explorer/RevenueBreakdown.tsx:154
 msgid "All recorded revenue inflows"
 msgstr "All recorded revenue inflows"
 
@@ -620,24 +642,24 @@ msgstr "Allow essential only"
 msgid "Always enabled"
 msgstr "Always enabled"
 
-#: src/components/maps/charts/UatDataCharts.tsx:31
-#: src/components/maps/charts/UatDataCharts.tsx:43
+#: src/components/maps/charts/UatDataCharts.tsx:42
+#: src/components/maps/charts/UatDataCharts.tsx:55
 msgid "Amount"
 msgstr "Amount"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:155
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:151
 msgid "Amount filter (this layer)"
 msgstr "Amount filter (this layer)"
 
-#: src/components/maps/HeatmapDataTable.tsx:343
-#: src/components/maps/HeatmapDataTable.tsx:450
-#: src/components/maps/utils.ts:128
+#: src/components/maps/HeatmapDataTable.tsx:348
+#: src/components/maps/HeatmapDataTable.tsx:455
+#: src/components/maps/utils.ts:139
 msgid "Amount Per Capita"
 msgstr "Amount Per Capita"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:608
-#: src/components/filters/EntityAnalyticsFilter.tsx:551
-#: src/components/filters/MapFilter.tsx:381
+#: src/components/charts/components/series-config/SeriesFilter.tsx:781
+#: src/components/filters/EntityAnalyticsFilter.tsx:583
+#: src/components/filters/MapFilter.tsx:371
 msgid "Amount Range"
 msgstr "Amount Range"
 
@@ -661,7 +683,7 @@ msgstr "Analytics and enhanced error reporting only with your consent."
 msgid "Analytics Cookies (opt-in only)"
 msgstr "Analytics Cookies (opt-in only)"
 
-#: src/routes/entity-analytics.lazy.tsx:163
+#: src/routes/entity-analytics.lazy.tsx:195
 msgid "Analyze aggregated values per entity and explore top entities."
 msgstr "Analyze aggregated values per entity and explore top entities."
 
@@ -694,7 +716,7 @@ msgstr "Anonymous usage patterns, page views, interactions."
 msgid "Apply Filters"
 msgstr "Apply Filters"
 
-#: src/components/entities/EntityFinancialTrends.tsx:89
+#: src/components/entities/EntityFinancialTrends.tsx:97
 msgid "April"
 msgstr "April"
 
@@ -737,7 +759,7 @@ msgstr "Ask AI Assistant"
 msgid "At a Glance"
 msgstr "At a Glance"
 
-#: src/components/entities/EntityFinancialTrends.tsx:90
+#: src/components/entities/EntityFinancialTrends.tsx:98
 msgid "August"
 msgstr "August"
 
@@ -765,7 +787,6 @@ msgstr "Availability and changes"
 msgid "Avg per-capita"
 msgstr "Avg per-capita"
 
-#: src/components/classification-explorer/ClassificationDetail.tsx:37
 #: src/routes/alerts/new.lazy.tsx:170
 msgid "Back"
 msgstr "Back"
@@ -792,7 +813,7 @@ msgstr "Back to top"
 msgid "Backup"
 msgstr "Backup"
 
-#: src/components/entities/EntityFinancialTrends.tsx:260
+#: src/components/entities/EntityFinancialTrends.tsx:296
 msgid "Balance"
 msgstr "Balance"
 
@@ -808,8 +829,8 @@ msgstr "Bar Chart (Aggregated)"
 msgid "Basic security logs are kept for a short period to protect accounts."
 msgstr "Basic security logs are kept for a short period to protect accounts."
 
-#: src/components/maps/HeatmapDataTable.tsx:443
-#: src/routes/entity-analytics.lazy.tsx:201
+#: src/components/maps/HeatmapDataTable.tsx:448
+#: src/routes/entity-analytics.lazy.tsx:233
 msgid "Both"
 msgstr "Both"
 
@@ -817,10 +838,10 @@ msgstr "Both"
 msgid "Browse and download all financial reports submitted by this entity"
 msgstr "Browse and download all financial reports submitted by this entity"
 
-#: src/components/entities/views/Overview.tsx:262
-#: src/components/entities/views/TrendsView.tsx:212
+#: src/components/entities/views/Overview.tsx:279
+#: src/components/entities/views/TrendsView.tsx:220
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:93
-#: src/routes/budget-explorer.lazy.tsx:378
+#: src/routes/budget-explorer.lazy.tsx:438
 msgid "Budget Distribution"
 msgstr "Budget Distribution"
 
@@ -833,13 +854,13 @@ msgstr "Budget Explorer"
 msgid "Budget sector"
 msgstr "Budget sector"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:577
-#: src/components/charts/components/series-config/SeriesFilter.tsx:772
+#: src/components/charts/components/series-config/SeriesFilter.tsx:750
+#: src/components/charts/components/series-config/SeriesFilter.tsx:945
 #: src/components/entities/EntityReportCard.tsx:139
-#: src/components/filters/EntityAnalyticsFilter.tsx:516
-#: src/components/filters/EntityAnalyticsFilter.tsx:694
-#: src/components/filters/MapFilter.tsx:343
-#: src/components/filters/MapFilter.tsx:523
+#: src/components/filters/EntityAnalyticsFilter.tsx:548
+#: src/components/filters/EntityAnalyticsFilter.tsx:726
+#: src/components/filters/MapFilter.tsx:333
+#: src/components/filters/MapFilter.tsx:513
 msgid "Budget Sector"
 msgstr "Budget Sector"
 
@@ -864,7 +885,7 @@ msgstr "Bulk edit filters"
 msgid "By Anomaly"
 msgstr "By Anomaly"
 
-#: src/components/entities/EntityLineItemsTabs.tsx:174
+#: src/components/entities/EntityLineItemsTabs.tsx:177
 msgid "By Category"
 msgstr "By Category"
 
@@ -872,11 +893,11 @@ msgstr "By Category"
 msgid "By Economic Category"
 msgstr "By Economic Category"
 
-#: src/components/entities/EntityLineItemsTabs.tsx:186
+#: src/components/entities/EntityLineItemsTabs.tsx:189
 msgid "By Expense Type"
 msgstr "By Expense Type"
 
-#: src/components/entities/EntityLineItemsTabs.tsx:180
+#: src/components/entities/EntityLineItemsTabs.tsx:183
 msgid "By Funding Source"
 msgstr "By Funding Source"
 
@@ -915,7 +936,7 @@ msgstr "Category name"
 msgid "Changes to this policy"
 msgstr "Changes to this policy"
 
-#: src/components/filters/MapFilter.tsx:201
+#: src/components/filters/MapFilter.tsx:193
 msgid "Chart"
 msgstr "Chart"
 
@@ -929,7 +950,7 @@ msgstr "Chart Configuration"
 msgid "Chart Data Error"
 msgstr "Chart Data Error"
 
-#: src/routes/map.lazy.tsx:295
+#: src/routes/map.lazy.tsx:370
 msgid "Chart data is loading or not available."
 msgstr "Chart data is loading or not available."
 
@@ -1002,22 +1023,22 @@ msgstr "Classifications"
 msgid "Clear"
 msgstr "Clear"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:471
-#: src/components/charts/components/series-config/SeriesFilter.tsx:669
+#: src/components/charts/components/series-config/SeriesFilter.tsx:575
+#: src/components/charts/components/series-config/SeriesFilter.tsx:842
 #: src/components/entities/EntityReports.tsx:131
-#: src/components/filters/EntityAnalyticsFilter.tsx:601
-#: src/components/filters/MapFilter.tsx:430
+#: src/components/filters/EntityAnalyticsFilter.tsx:634
+#: src/components/filters/MapFilter.tsx:420
 #: src/components/ui/multi-select.tsx:118
 msgid "Clear all"
 msgstr "Clear all"
 
-#: src/components/filters/EntityAnalyticsFilter.tsx:378
-#: src/routes/entity-analytics.lazy.tsx:185
+#: src/components/filters/EntityAnalyticsFilter.tsx:417
+#: src/routes/entity-analytics.lazy.tsx:217
 msgid "Clear filters"
 msgstr "Clear filters"
 
 #. placeholder {0}: totalOptionalFilters + totalExcludeFilters
-#: src/components/filters/MapFilter.tsx:183
+#: src/components/filters/MapFilter.tsx:175
 msgid "Clear filters ({0})"
 msgstr "Clear filters ({0})"
 
@@ -1026,7 +1047,7 @@ msgstr "Clear filters ({0})"
 msgid "Clear search"
 msgstr "Clear search"
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:54
+#: src/components/budget-explorer/RevenueBreakdown.tsx:55
 msgid "Clearing accounts"
 msgstr "Clearing accounts"
 
@@ -1055,34 +1076,34 @@ msgstr "Code copied to clipboard"
 msgid "Color"
 msgstr "Color"
 
-#. placeholder {0}: formatLegendValue(min, currencyCode, isPerCapita)
-#: src/components/maps/MapLegend.tsx:48
+#. placeholder {0}: formatLegendValue(min, unit, currencyCode, isPerCapita)
+#: src/components/maps/MapLegend.tsx:57
 msgid "Color for value {0}"
 msgstr "Color for value {0}"
 
-#: src/components/entity-analytics/EntityAnalyticsTable.tsx:253
-#: src/components/maps/HeatmapDataTable.tsx:130
-#: src/components/maps/HeatmapDataTable.tsx:189
-#: src/components/maps/HeatmapDataTable.tsx:243
-#: src/components/maps/HeatmapDataTable.tsx:297
-#: src/components/maps/HeatmapDataTable.tsx:359
+#: src/components/entity-analytics/EntityAnalyticsTable.tsx:281
+#: src/components/maps/HeatmapDataTable.tsx:135
+#: src/components/maps/HeatmapDataTable.tsx:194
+#: src/components/maps/HeatmapDataTable.tsx:248
+#: src/components/maps/HeatmapDataTable.tsx:302
+#: src/components/maps/HeatmapDataTable.tsx:364
 msgid "Column"
 msgstr "Column"
 
-#: src/components/maps/HeatmapDataTable.tsx:445
-#: src/routes/entity-analytics.lazy.tsx:203
+#: src/components/maps/HeatmapDataTable.tsx:450
+#: src/routes/entity-analytics.lazy.tsx:235
 msgid "Columns"
 msgstr "Columns"
 
-#: src/components/maps/HeatmapDataTable.tsx:437
-#: src/routes/entity-analytics.lazy.tsx:195
+#: src/components/maps/HeatmapDataTable.tsx:442
+#: src/routes/entity-analytics.lazy.tsx:227
 msgid "Comfortable"
 msgstr "Comfortable"
 
-#: src/components/maps/HeatmapDataTable.tsx:438
-#: src/components/maps/HeatmapDataTable.tsx:442
-#: src/routes/entity-analytics.lazy.tsx:196
-#: src/routes/entity-analytics.lazy.tsx:200
+#: src/components/maps/HeatmapDataTable.tsx:443
+#: src/components/maps/HeatmapDataTable.tsx:447
+#: src/routes/entity-analytics.lazy.tsx:228
+#: src/routes/entity-analytics.lazy.tsx:232
 msgid "Compact"
 msgstr "Compact"
 
@@ -1101,7 +1122,7 @@ msgstr "Configure"
 msgid "Configure Chart"
 msgstr "Configure Chart"
 
-#: src/routes/map.lazy.tsx:321
+#: src/routes/map.lazy.tsx:396
 msgid "Configure filters for the map view including period, account category, and normalization settings"
 msgstr "Configure filters for the map view including period, account category, and normalization settings"
 
@@ -1136,7 +1157,7 @@ msgstr "Confirm unsubscribe"
 msgid "Connector"
 msgstr "Connector"
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:94
+#: src/components/budget-explorer/RevenueBreakdown.tsx:95
 msgid "Consolidated Revenue Calculation"
 msgstr "Consolidated Revenue Calculation"
 
@@ -1259,26 +1280,26 @@ msgstr "Could Not Load UATs"
 msgid "Could not send error report."
 msgstr "Could not send error report."
 
-#: src/components/filters/MapFilter.tsx:296
-#: src/components/filters/MapFilter.tsx:473
+#: src/components/filters/MapFilter.tsx:286
+#: src/components/filters/MapFilter.tsx:463
 msgid "Counties"
 msgstr "Counties"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:533
-#: src/components/charts/components/series-config/SeriesFilter.tsx:716
+#: src/components/charts/components/series-config/SeriesFilter.tsx:706
+#: src/components/charts/components/series-config/SeriesFilter.tsx:889
 #: src/components/entities/UatDisplay.tsx:60
-#: src/components/entity-analytics/EntityAnalyticsTable.tsx:79
-#: src/components/filters/EntityAnalyticsFilter.tsx:466
-#: src/components/filters/EntityAnalyticsFilter.tsx:644
-#: src/components/filters/MapFilter.tsx:217
-#: src/components/maps/charts/UatDataCharts.tsx:32
-#: src/components/maps/HeatmapDataTable.tsx:447
-#: src/routes/entity-analytics.lazy.tsx:205
+#: src/components/entity-analytics/EntityAnalyticsTable.tsx:83
+#: src/components/filters/EntityAnalyticsFilter.tsx:498
+#: src/components/filters/EntityAnalyticsFilter.tsx:676
+#: src/components/filters/MapFilter.tsx:209
+#: src/components/maps/charts/UatDataCharts.tsx:43
+#: src/components/maps/HeatmapDataTable.tsx:452
+#: src/routes/entity-analytics.lazy.tsx:237
 msgid "County"
 msgstr "County"
 
-#: src/components/maps/utils.ts:98
-#: src/components/maps/utils.ts:140
+#: src/components/maps/utils.ts:99
+#: src/components/maps/utils.ts:152
 msgid "County:"
 msgstr "County:"
 
@@ -1327,11 +1348,17 @@ msgstr "Create your first chart to start visualizing public spending data."
 msgid "Creating…"
 msgstr "Creating…"
 
-#: src/components/maps/HeatmapDataTable.tsx:440
+#: src/components/charts/components/series-config/SeriesFilter.tsx:601
+#: src/components/maps/HeatmapDataTable.tsx:445
+#: src/components/normalization/normalization-controls.tsx:84
 #: src/components/theme/currency-toggle.tsx:22
-#: src/routes/entity-analytics.lazy.tsx:198
+#: src/routes/entity-analytics.lazy.tsx:230
 msgid "Currency"
 msgstr "Currency"
+
+#: src/components/charts/components/series-config/SeriesFilter.tsx:621
+msgid "Currency is ignored for % of GDP."
+msgstr "Currency is ignored for % of GDP."
 
 #: src/routes/en/learning/index.tsx:73
 #: src/routes/ro/learning/index.tsx:73
@@ -1421,11 +1448,11 @@ msgstr "Data sources and licensing"
 msgid "Data storage and retention"
 msgstr "Data storage and retention"
 
-#: src/routes/map.lazy.tsx:264
+#: src/routes/map.lazy.tsx:339
 msgid "Data Table View"
 msgstr "Data Table View"
 
-#: src/components/filters/MapFilter.tsx:192
+#: src/components/filters/MapFilter.tsx:184
 msgid "Data View"
 msgstr "Data View"
 
@@ -1433,7 +1460,7 @@ msgstr "Data View"
 msgid "Dates"
 msgstr "Dates"
 
-#: src/components/entities/EntityFinancialTrends.tsx:90
+#: src/components/entities/EntityFinancialTrends.tsx:98
 msgid "December"
 msgstr "December"
 
@@ -1480,8 +1507,8 @@ msgstr "Delete Series"
 msgid "Delete this chart?"
 msgstr "Delete this chart?"
 
-#: src/components/maps/HeatmapDataTable.tsx:436
-#: src/routes/entity-analytics.lazy.tsx:194
+#: src/components/maps/HeatmapDataTable.tsx:441
+#: src/routes/entity-analytics.lazy.tsx:226
 msgid "Density"
 msgstr "Density"
 
@@ -1490,11 +1517,11 @@ msgid "Description"
 msgstr "Description"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:122
-#: src/routes/budget-explorer.lazy.tsx:429
+#: src/routes/budget-explorer.lazy.tsx:489
 msgid "Detail level"
 msgstr "Detail level"
 
-#: src/components/entities/EntityReportControls.tsx:41
+#: src/components/entities/EntityReportControls.tsx:51
 #: src/components/entities/EntityReports.tsx:173
 msgid "Detailed"
 msgstr "Detailed"
@@ -1508,7 +1535,7 @@ msgid "Detailed Budget Execution"
 msgstr "Detailed Budget Execution"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:137
-#: src/routes/budget-explorer.lazy.tsx:442
+#: src/routes/budget-explorer.lazy.tsx:502
 msgid "Detailed categories"
 msgstr "Detailed categories"
 
@@ -1516,12 +1543,12 @@ msgstr "Detailed categories"
 msgid "Detailed Line Items Breakdown"
 msgstr "Detailed Line Items Breakdown"
 
-#: src/routes/entities.$cui.lazy.tsx:292
+#: src/routes/entities.$cui.lazy.tsx:336
 msgid "Details:"
 msgstr "Details:"
 
-#: src/components/entities/LineItemsBadgeFilters.tsx:81
-#: src/components/entities/LineItemsGroupedSection.tsx:113
+#: src/components/entities/LineItemsBadgeFilters.tsx:87
+#: src/components/entities/LineItemsGroupedSection.tsx:116
 msgid "Development"
 msgstr "Development"
 
@@ -1540,6 +1567,10 @@ msgstr "Disable Series"
 #: src/components/charts/components/views/SeriesConfigView.tsx:282
 msgid "Display data labels on the chart"
 msgstr "Display data labels on the chart"
+
+#: src/components/normalization/normalization-controls.tsx:68
+msgid "Display mode"
+msgstr "Display mode"
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:132
 msgid "Display Options"
@@ -1593,10 +1624,10 @@ msgstr "Ec"
 #: src/components/classification-explorer/ClassificationExplorer.tsx:196
 #: src/components/common/classification-info-link.tsx:89
 #: src/components/common/classification-info-link.tsx:134
-#: src/components/entities/views/Overview.tsx:286
-#: src/components/entities/views/TrendsView.tsx:215
+#: src/components/entities/views/Overview.tsx:303
+#: src/components/entities/views/TrendsView.tsx:223
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:117
-#: src/routes/budget-explorer.lazy.tsx:424
+#: src/routes/budget-explorer.lazy.tsx:484
 msgid "Economic"
 msgstr "Economic"
 
@@ -1604,17 +1635,17 @@ msgstr "Economic"
 msgid "Economic classification"
 msgstr "Economic classification"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:562
-#: src/components/charts/components/series-config/SeriesFilter.tsx:753
-#: src/components/filters/EntityAnalyticsFilter.tsx:499
-#: src/components/filters/EntityAnalyticsFilter.tsx:677
-#: src/components/filters/MapFilter.tsx:319
-#: src/components/filters/MapFilter.tsx:498
+#: src/components/charts/components/series-config/SeriesFilter.tsx:735
+#: src/components/charts/components/series-config/SeriesFilter.tsx:926
+#: src/components/filters/EntityAnalyticsFilter.tsx:531
+#: src/components/filters/EntityAnalyticsFilter.tsx:709
+#: src/components/filters/MapFilter.tsx:309
+#: src/components/filters/MapFilter.tsx:488
 msgid "Economic Classification"
 msgstr "Economic Classification"
 
-#: src/components/filters/MapFilter.tsx:326
-#: src/components/filters/MapFilter.tsx:506
+#: src/components/filters/MapFilter.tsx:316
+#: src/components/filters/MapFilter.tsx:496
 msgid "Economic Classification Prefix"
 msgstr "Economic Classification Prefix"
 
@@ -1626,10 +1657,10 @@ msgstr "economic codes"
 msgid "Economic prefix"
 msgstr "Economic prefix"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:569
-#: src/components/charts/components/series-config/SeriesFilter.tsx:762
-#: src/components/filters/EntityAnalyticsFilter.tsx:507
-#: src/components/filters/EntityAnalyticsFilter.tsx:685
+#: src/components/charts/components/series-config/SeriesFilter.tsx:742
+#: src/components/charts/components/series-config/SeriesFilter.tsx:935
+#: src/components/filters/EntityAnalyticsFilter.tsx:539
+#: src/components/filters/EntityAnalyticsFilter.tsx:717
 msgid "Economic Prefixes"
 msgstr "Economic Prefixes"
 
@@ -1656,12 +1687,12 @@ msgstr "Edit Annotations"
 msgid "Effective Date: {effectiveDate} • Version: {version}"
 msgstr "Effective Date: {effectiveDate} • Version: {version}"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:113
-#: src/components/budget-explorer/SpendingBreakdown.tsx:182
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:110
+#: src/components/budget-explorer/SpendingBreakdown.tsx:180
 msgid "Effective Spending"
 msgstr "Effective Spending"
 
-#: src/components/budget-explorer/SpendingBreakdown.tsx:42
+#: src/components/budget-explorer/SpendingBreakdown.tsx:43
 msgid "Effective Spending Calculation"
 msgstr "Effective Spending Calculation"
 
@@ -1733,21 +1764,21 @@ msgstr "Enter new value"
 msgid "Enter series label..."
 msgstr "Enter series label..."
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:506
-#: src/components/charts/components/series-config/SeriesFilter.tsx:683
+#: src/components/charts/components/series-config/SeriesFilter.tsx:679
+#: src/components/charts/components/series-config/SeriesFilter.tsx:856
 #: src/components/entity-analytics/EntityAnalyticsKPIs.tsx:23
-#: src/components/filters/EntityAnalyticsFilter.tsx:436
-#: src/components/filters/EntityAnalyticsFilter.tsx:614
-#: src/components/filters/MapFilter.tsx:266
-#: src/components/filters/MapFilter.tsx:443
+#: src/components/filters/EntityAnalyticsFilter.tsx:468
+#: src/components/filters/EntityAnalyticsFilter.tsx:646
+#: src/components/filters/MapFilter.tsx:256
+#: src/components/filters/MapFilter.tsx:433
 #: src/hooks/useEntityViews.tsx:39
 #: src/routes/index.lazy.tsx:69
 msgid "Entities"
 msgstr "Entities"
 
-#: src/components/entity-analytics/EntityAnalyticsTable.tsx:65
+#: src/components/entity-analytics/EntityAnalyticsTable.tsx:69
 #: src/lib/chart-filter-utils.ts:37
-#: src/routes/entity-analytics.lazy.tsx:204
+#: src/routes/entity-analytics.lazy.tsx:236
 msgid "Entity"
 msgstr "Entity"
 
@@ -1774,12 +1805,12 @@ msgstr "Entity Search"
 msgid "Entity type"
 msgstr "Entity type"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:540
-#: src/components/charts/components/series-config/SeriesFilter.tsx:725
-#: src/components/filters/EntityAnalyticsFilter.tsx:474
-#: src/components/filters/EntityAnalyticsFilter.tsx:652
-#: src/components/filters/MapFilter.tsx:335
-#: src/components/filters/MapFilter.tsx:515
+#: src/components/charts/components/series-config/SeriesFilter.tsx:713
+#: src/components/charts/components/series-config/SeriesFilter.tsx:898
+#: src/components/filters/EntityAnalyticsFilter.tsx:506
+#: src/components/filters/EntityAnalyticsFilter.tsx:684
+#: src/components/filters/MapFilter.tsx:325
+#: src/components/filters/MapFilter.tsx:505
 msgid "Entity Type"
 msgstr "Entity Type"
 
@@ -1795,11 +1826,11 @@ msgstr "equals"
 msgid "Error"
 msgstr "Error"
 
-#: src/routes/entities.$cui.lazy.tsx:289
+#: src/routes/entities.$cui.lazy.tsx:333
 msgid "Error Fetching Entity Details"
 msgstr "Error Fetching Entity Details"
 
-#: src/routes/entity-analytics.lazy.tsx:178
+#: src/routes/entity-analytics.lazy.tsx:210
 msgid "Error loading analytics"
 msgstr "Error loading analytics"
 
@@ -1811,7 +1842,7 @@ msgstr "Error Loading Chart Data"
 msgid "Error loading data"
 msgstr "Error loading data"
 
-#: src/routes/map.lazy.tsx:173
+#: src/routes/map.lazy.tsx:246
 msgid "Error loading data:"
 msgstr "Error loading data:"
 
@@ -1831,7 +1862,7 @@ msgstr "Error reporting (Sentry)"
 msgid "Error signal sent"
 msgstr "Error signal sent"
 
-#: src/components/maps/utils.ts:110
+#: src/components/maps/utils.ts:113
 msgid "Error: Invalid data point type."
 msgstr "Error: Invalid data point type."
 
@@ -1855,6 +1886,7 @@ msgstr "Essential Cookies and Storage (always active)"
 msgid "Essential storage is required for the app to work."
 msgstr "Essential storage is required for the app to work."
 
+#: src/components/charts/components/series-config/SeriesFilter.tsx:615
 #: src/components/theme/currency-toggle.tsx:37
 msgid "EUR"
 msgstr "EUR"
@@ -1863,53 +1895,53 @@ msgstr "EUR"
 msgid "Example: 2024-"
 msgstr "Example: 2024-"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:683
-#: src/components/charts/components/series-config/SeriesFilter.tsx:692
-#: src/components/charts/components/series-config/SeriesFilter.tsx:707
-#: src/components/charts/components/series-config/SeriesFilter.tsx:716
-#: src/components/charts/components/series-config/SeriesFilter.tsx:725
-#: src/components/charts/components/series-config/SeriesFilter.tsx:734
-#: src/components/charts/components/series-config/SeriesFilter.tsx:743
-#: src/components/charts/components/series-config/SeriesFilter.tsx:753
-#: src/components/charts/components/series-config/SeriesFilter.tsx:762
-#: src/components/charts/components/series-config/SeriesFilter.tsx:772
-#: src/components/charts/components/series-config/SeriesFilter.tsx:781
-#: src/components/filters/EntityAnalyticsFilter.tsx:614
-#: src/components/filters/EntityAnalyticsFilter.tsx:622
-#: src/components/filters/EntityAnalyticsFilter.tsx:636
-#: src/components/filters/EntityAnalyticsFilter.tsx:644
-#: src/components/filters/EntityAnalyticsFilter.tsx:652
-#: src/components/filters/EntityAnalyticsFilter.tsx:660
+#: src/components/charts/components/series-config/SeriesFilter.tsx:856
+#: src/components/charts/components/series-config/SeriesFilter.tsx:865
+#: src/components/charts/components/series-config/SeriesFilter.tsx:880
+#: src/components/charts/components/series-config/SeriesFilter.tsx:889
+#: src/components/charts/components/series-config/SeriesFilter.tsx:898
+#: src/components/charts/components/series-config/SeriesFilter.tsx:907
+#: src/components/charts/components/series-config/SeriesFilter.tsx:916
+#: src/components/charts/components/series-config/SeriesFilter.tsx:926
+#: src/components/charts/components/series-config/SeriesFilter.tsx:935
+#: src/components/charts/components/series-config/SeriesFilter.tsx:945
+#: src/components/charts/components/series-config/SeriesFilter.tsx:954
+#: src/components/filters/EntityAnalyticsFilter.tsx:646
+#: src/components/filters/EntityAnalyticsFilter.tsx:654
 #: src/components/filters/EntityAnalyticsFilter.tsx:668
-#: src/components/filters/EntityAnalyticsFilter.tsx:677
-#: src/components/filters/EntityAnalyticsFilter.tsx:685
-#: src/components/filters/EntityAnalyticsFilter.tsx:694
-#: src/components/filters/EntityAnalyticsFilter.tsx:702
-#: src/components/filters/MapFilter.tsx:443
-#: src/components/filters/MapFilter.tsx:451
-#: src/components/filters/MapFilter.tsx:465
-#: src/components/filters/MapFilter.tsx:473
-#: src/components/filters/MapFilter.tsx:481
-#: src/components/filters/MapFilter.tsx:489
-#: src/components/filters/MapFilter.tsx:498
-#: src/components/filters/MapFilter.tsx:506
-#: src/components/filters/MapFilter.tsx:515
-#: src/components/filters/MapFilter.tsx:523
-#: src/components/filters/MapFilter.tsx:531
+#: src/components/filters/EntityAnalyticsFilter.tsx:676
+#: src/components/filters/EntityAnalyticsFilter.tsx:684
+#: src/components/filters/EntityAnalyticsFilter.tsx:692
+#: src/components/filters/EntityAnalyticsFilter.tsx:700
+#: src/components/filters/EntityAnalyticsFilter.tsx:709
+#: src/components/filters/EntityAnalyticsFilter.tsx:717
+#: src/components/filters/EntityAnalyticsFilter.tsx:726
+#: src/components/filters/EntityAnalyticsFilter.tsx:734
+#: src/components/filters/MapFilter.tsx:433
+#: src/components/filters/MapFilter.tsx:441
+#: src/components/filters/MapFilter.tsx:455
+#: src/components/filters/MapFilter.tsx:463
+#: src/components/filters/MapFilter.tsx:471
+#: src/components/filters/MapFilter.tsx:479
+#: src/components/filters/MapFilter.tsx:488
+#: src/components/filters/MapFilter.tsx:496
+#: src/components/filters/MapFilter.tsx:505
+#: src/components/filters/MapFilter.tsx:513
+#: src/components/filters/MapFilter.tsx:521
 msgid "Exclude"
 msgstr "Exclude"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:650
-#: src/components/filters/EntityAnalyticsFilter.tsx:582
-#: src/components/filters/MapFilter.tsx:411
+#: src/components/charts/components/series-config/SeriesFilter.tsx:823
+#: src/components/filters/EntityAnalyticsFilter.tsx:614
+#: src/components/filters/MapFilter.tsx:401
 msgid "Exclude Filters"
 msgstr "Exclude Filters"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:131
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:127
 msgid "Excluded categories"
 msgstr "Excluded categories"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:90
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:88
 msgid "Excluded Items"
 msgstr "Excluded Items"
 
@@ -1917,7 +1949,7 @@ msgstr "Excluded Items"
 msgid "Excluding"
 msgstr "Excluding"
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:299
+#: src/components/budget-explorer/RevenueBreakdown.tsx:296
 msgid "Excluding inter-budget flows and financial operations"
 msgstr "Excluding inter-budget flows and financial operations"
 
@@ -1925,23 +1957,23 @@ msgstr "Excluding inter-budget flows and financial operations"
 msgid "Expense Trends"
 msgstr "Expense Trends"
 
-#: src/components/entities/LineItemsGroupedSection.tsx:177
+#: src/components/entities/LineItemsGroupedSection.tsx:180
 msgid "Expense Type"
 msgstr "Expense Type"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:63
-#: src/components/entities/EntityFinancialTrends.tsx:244
+#: src/components/budget-explorer/BudgetExplorerHeader.tsx:69
+#: src/components/entities/EntityFinancialTrends.tsx:280
 #: src/components/entities/EntityLineItems.tsx:95
-#: src/components/entities/EntityLineItemsTabs.tsx:81
-#: src/components/entities/LineItemsAnalytics.tsx:131
-#: src/components/entities/views/MapView.tsx:141
-#: src/components/entities/views/Overview.tsx:282
+#: src/components/entities/EntityLineItemsTabs.tsx:84
+#: src/components/entities/LineItemsAnalytics.tsx:134
+#: src/components/entities/views/MapView.tsx:139
+#: src/components/entities/views/Overview.tsx:299
 #: src/components/filters/account-type-filter/AccountCategoryRadio.tsx:12
-#: src/components/filters/EntityAnalyticsFilter.tsx:404
-#: src/components/filters/MapFilter.tsx:232
+#: src/components/filters/EntityAnalyticsFilter.tsx:443
+#: src/components/filters/MapFilter.tsx:224
 #: src/components/maps/utils.ts:27
 #: src/hooks/filters/useFilterLabels.tsx:191
-#: src/routes/entity-analytics.lazy.tsx:264
+#: src/routes/entity-analytics.lazy.tsx:297
 msgid "Expenses"
 msgstr "Expenses"
 
@@ -1961,7 +1993,7 @@ msgstr "Explore data through charts."
 msgid "Explore entities by aggregated values."
 msgstr "Explore entities by aggregated values."
 
-#: src/components/entities/views/MapView.tsx:171
+#: src/components/entities/views/MapView.tsx:166
 msgid "Explore Full Map"
 msgstr "Explore Full Map"
 
@@ -1977,11 +2009,11 @@ msgstr "Export as Image"
 msgid "Export as image or share with a link"
 msgstr "Export as image or share with a link"
 
-#: src/routes/entity-analytics.lazy.tsx:211
+#: src/routes/entity-analytics.lazy.tsx:243
 msgid "Export CSV"
 msgstr "Export CSV"
 
-#: src/routes/entity-analytics.lazy.tsx:211
+#: src/routes/entity-analytics.lazy.tsx:243
 msgid "Exporting…"
 msgstr "Exporting…"
 
@@ -2023,7 +2055,7 @@ msgstr "Failed to load alert"
 msgid "Failed to load alerts. Please try again."
 msgstr "Failed to load alerts. Please try again."
 
-#: src/routes/budget-explorer.lazy.tsx:453
+#: src/routes/budget-explorer.lazy.tsx:513
 msgid "Failed to load data."
 msgstr "Failed to load data."
 
@@ -2047,7 +2079,7 @@ msgstr "Favorites"
 msgid "Favorites first"
 msgstr "Favorites first"
 
-#: src/components/entities/EntityFinancialTrends.tsx:89
+#: src/components/entities/EntityFinancialTrends.tsx:97
 msgid "February"
 msgstr "February"
 
@@ -2067,20 +2099,20 @@ msgstr "Filter field"
 msgid "Filter Reports"
 msgstr "Filter Reports"
 
-#: src/components/entities/EntityLineItemsTabs.tsx:142
+#: src/components/entities/EntityLineItemsTabs.tsx:145
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:156
 msgid "Filter Transfers"
 msgstr "Filter Transfers"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:219
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:250
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:214
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:245
 msgid "Filtered"
 msgstr "Filtered"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:466
+#: src/components/charts/components/series-config/SeriesFilter.tsx:570
 #: src/components/entities/EntityReports.tsx:141
-#: src/components/filters/EntityAnalyticsFilter.tsx:374
-#: src/routes/map.lazy.tsx:319
+#: src/components/filters/EntityAnalyticsFilter.tsx:413
+#: src/routes/map.lazy.tsx:394
 msgid "Filters"
 msgstr "Filters"
 
@@ -2092,17 +2124,17 @@ msgstr "Filters applied to data series will appear here."
 msgid "Filters info"
 msgstr "Filters info"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:676
-#: src/components/filters/EntityAnalyticsFilter.tsx:608
-#: src/components/filters/MapFilter.tsx:437
+#: src/components/charts/components/series-config/SeriesFilter.tsx:849
+#: src/components/filters/EntityAnalyticsFilter.tsx:640
+#: src/components/filters/MapFilter.tsx:427
 msgid "Filters marked as exclude will remove data matching these criteria from the results."
 msgstr "Filters marked as exclude will remove data matching these criteria from the results."
 
-#: src/lib/chart-links.ts:27
+#: src/lib/chart-links.ts:29
 msgid "Financial Evolution - {entityName}"
 msgstr "Financial Evolution - {entityName}"
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:268
+#: src/components/budget-explorer/RevenueBreakdown.tsx:266
 msgid "Financial operations"
 msgstr "Financial operations"
 
@@ -2112,7 +2144,7 @@ msgstr "Financial operations"
 msgid "Financial Reports"
 msgstr "Financial Reports"
 
-#: src/components/entities/EntityFinancialTrends.tsx:179
+#: src/components/entities/EntityFinancialTrends.tsx:187
 msgid "Financial Trends"
 msgstr "Financial Trends"
 
@@ -2161,7 +2193,7 @@ msgstr "Focus year selector in entity details"
 msgid "For questions about this Privacy Policy, to exercise your rights, or to contact our data protection officer, email us at contact@transparenta.eu"
 msgstr "For questions about this Privacy Policy, to exercise your rights, or to contact our data protection officer, email us at contact@transparenta.eu"
 
-#: src/components/maps/utils.ts:151
+#: src/components/maps/utils.ts:163
 msgid "for the selected filters."
 msgstr "for the selected filters."
 
@@ -2174,10 +2206,10 @@ msgstr "Found {replacementCount} occurrence{0}"
 #: src/components/classification-explorer/ClassificationExplorer.tsx:193
 #: src/components/common/classification-info-link.tsx:89
 #: src/components/common/classification-info-link.tsx:134
-#: src/components/entities/views/Overview.tsx:285
-#: src/components/entities/views/TrendsView.tsx:214
+#: src/components/entities/views/Overview.tsx:302
+#: src/components/entities/views/TrendsView.tsx:222
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:110
-#: src/routes/budget-explorer.lazy.tsx:421
+#: src/routes/budget-explorer.lazy.tsx:481
 msgid "Functional"
 msgstr "Functional"
 
@@ -2185,17 +2217,17 @@ msgstr "Functional"
 msgid "Functional classification"
 msgstr "Functional classification"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:547
-#: src/components/charts/components/series-config/SeriesFilter.tsx:734
-#: src/components/filters/EntityAnalyticsFilter.tsx:482
-#: src/components/filters/EntityAnalyticsFilter.tsx:660
-#: src/components/filters/MapFilter.tsx:304
-#: src/components/filters/MapFilter.tsx:481
+#: src/components/charts/components/series-config/SeriesFilter.tsx:720
+#: src/components/charts/components/series-config/SeriesFilter.tsx:907
+#: src/components/filters/EntityAnalyticsFilter.tsx:514
+#: src/components/filters/EntityAnalyticsFilter.tsx:692
+#: src/components/filters/MapFilter.tsx:294
+#: src/components/filters/MapFilter.tsx:471
 msgid "Functional Classification"
 msgstr "Functional Classification"
 
-#: src/components/filters/MapFilter.tsx:311
-#: src/components/filters/MapFilter.tsx:489
+#: src/components/filters/MapFilter.tsx:301
+#: src/components/filters/MapFilter.tsx:479
 msgid "Functional Classification Prefix"
 msgstr "Functional Classification Prefix"
 
@@ -2207,10 +2239,10 @@ msgstr "functional codes"
 msgid "Functional prefix"
 msgstr "Functional prefix"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:554
-#: src/components/charts/components/series-config/SeriesFilter.tsx:743
-#: src/components/filters/EntityAnalyticsFilter.tsx:490
-#: src/components/filters/EntityAnalyticsFilter.tsx:668
+#: src/components/charts/components/series-config/SeriesFilter.tsx:727
+#: src/components/charts/components/series-config/SeriesFilter.tsx:916
+#: src/components/filters/EntityAnalyticsFilter.tsx:522
+#: src/components/filters/EntityAnalyticsFilter.tsx:700
 msgid "Functional Prefixes"
 msgstr "Functional Prefixes"
 
@@ -2218,7 +2250,7 @@ msgstr "Functional Prefixes"
 msgid "Funded Entities"
 msgstr "Funded Entities"
 
-#: src/components/entities/LineItemsGroupedSection.tsx:177
+#: src/components/entities/LineItemsGroupedSection.tsx:180
 msgid "Funding"
 msgstr "Funding"
 
@@ -2230,12 +2262,12 @@ msgstr "Funding Entities"
 msgid "Funding source"
 msgstr "Funding source"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:584
-#: src/components/charts/components/series-config/SeriesFilter.tsx:781
-#: src/components/filters/EntityAnalyticsFilter.tsx:524
-#: src/components/filters/EntityAnalyticsFilter.tsx:702
-#: src/components/filters/MapFilter.tsx:351
-#: src/components/filters/MapFilter.tsx:531
+#: src/components/charts/components/series-config/SeriesFilter.tsx:757
+#: src/components/charts/components/series-config/SeriesFilter.tsx:954
+#: src/components/filters/EntityAnalyticsFilter.tsx:556
+#: src/components/filters/EntityAnalyticsFilter.tsx:734
+#: src/components/filters/MapFilter.tsx:341
+#: src/components/filters/MapFilter.tsx:521
 msgid "Funding Source"
 msgstr "Funding Source"
 
@@ -2243,7 +2275,7 @@ msgstr "Funding Source"
 msgid "Generate random color"
 msgstr "Generate random color"
 
-#: src/components/entities/views/MapView.tsx:133
+#: src/components/entities/views/MapView.tsx:131
 msgid "Geographical View"
 msgstr "Geographical View"
 
@@ -2279,7 +2311,7 @@ msgstr "Go to Entity Table"
 msgid "Go to homepage"
 msgstr "Go to homepage"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:628
+#: src/components/budget-explorer/BudgetTreemap.tsx:630
 msgid "Go to Main Categories"
 msgstr "Go to Main Categories"
 
@@ -2292,7 +2324,7 @@ msgstr "Go to Main List"
 msgid "Go to Map"
 msgstr "Go to Map"
 
-#: src/components/entities/EntityLineItemsTabs.tsx:94
+#: src/components/entities/EntityLineItemsTabs.tsx:97
 msgid "Goods & Services"
 msgstr "Goods & Services"
 
@@ -2325,7 +2357,7 @@ msgid "Grid view"
 msgstr "Grid view"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:98
-#: src/routes/budget-explorer.lazy.tsx:411
+#: src/routes/budget-explorer.lazy.tsx:471
 msgid "Grouping"
 msgstr "Grouping"
 
@@ -2357,12 +2389,12 @@ msgid "Help us understand usage to improve the product. No analytics is sent unl
 msgstr "Help us understand usage to improve the product. No analytics is sent unless you opt in."
 
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:43
-#: src/components/entity-analytics/EntityAnalyticsTable.tsx:269
-#: src/components/maps/HeatmapDataTable.tsx:138
-#: src/components/maps/HeatmapDataTable.tsx:197
-#: src/components/maps/HeatmapDataTable.tsx:251
-#: src/components/maps/HeatmapDataTable.tsx:305
-#: src/components/maps/HeatmapDataTable.tsx:367
+#: src/components/entity-analytics/EntityAnalyticsTable.tsx:297
+#: src/components/maps/HeatmapDataTable.tsx:143
+#: src/components/maps/HeatmapDataTable.tsx:202
+#: src/components/maps/HeatmapDataTable.tsx:256
+#: src/components/maps/HeatmapDataTable.tsx:310
+#: src/components/maps/HeatmapDataTable.tsx:372
 msgid "Hide"
 msgstr "Hide"
 
@@ -2378,7 +2410,7 @@ msgstr "Hide details"
 msgid "Home"
 msgstr "Home"
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:99
+#: src/components/budget-explorer/RevenueBreakdown.tsx:100
 msgid "How we compute true consolidated revenues (excluding inter-budget flows and financial operations)"
 msgstr "How we compute true consolidated revenues (excluding inter-budget flows and financial operations)"
 
@@ -2406,21 +2438,21 @@ msgstr "Include visible attribution to the data source and Transparenta.eu when 
 msgid "Includes additional error context. No user identity is attached."
 msgstr "Includes additional error context. No user identity is attached."
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:57
-#: src/components/entities/EntityFinancialTrends.tsx:230
-#: src/components/entities/LineItemsAnalytics.tsx:131
-#: src/components/entities/views/MapView.tsx:145
-#: src/components/entities/views/Overview.tsx:281
+#: src/components/budget-explorer/BudgetExplorerHeader.tsx:63
+#: src/components/entities/EntityFinancialTrends.tsx:266
+#: src/components/entities/LineItemsAnalytics.tsx:134
+#: src/components/entities/views/MapView.tsx:143
+#: src/components/entities/views/Overview.tsx:298
 #: src/components/filters/account-type-filter/AccountCategoryRadio.tsx:13
-#: src/components/filters/EntityAnalyticsFilter.tsx:405
-#: src/components/filters/MapFilter.tsx:233
+#: src/components/filters/EntityAnalyticsFilter.tsx:444
+#: src/components/filters/MapFilter.tsx:225
 #: src/components/maps/utils.ts:27
 #: src/hooks/filters/useFilterLabels.tsx:192
-#: src/routes/entity-analytics.lazy.tsx:264
+#: src/routes/entity-analytics.lazy.tsx:297
 msgid "Income"
 msgstr "Income"
 
-#: src/components/entities/EntityFinancialSummary.tsx:63
+#: src/components/entities/EntityFinancialSummary.tsx:73
 msgid "Income - Expenses"
 msgstr "Income - Expenses"
 
@@ -2428,16 +2460,16 @@ msgstr "Income - Expenses"
 msgid "Income Trends"
 msgstr "Income Trends"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:30
+#: src/components/budget-explorer/BudgetExplorerHeader.tsx:36
 msgid "Income vs Expenses"
 msgstr "Income vs Expenses"
 
-#: src/components/filters/MapFilter.tsx:225
+#: src/components/filters/MapFilter.tsx:217
 msgid "Income/Expenses"
 msgstr "Income/Expenses"
 
 #: src/components/entities/EntityLineItems.tsx:76
-#: src/components/entities/EntityLineItemsTabs.tsx:81
+#: src/components/entities/EntityLineItemsTabs.tsx:84
 msgid "Incomes"
 msgstr "Incomes"
 
@@ -2445,15 +2477,23 @@ msgstr "Incomes"
 msgid "Independent project; no government affiliation."
 msgstr "Independent project; no government affiliation."
 
+#: src/components/charts/components/series-config/SeriesFilter.tsx:627
+msgid "Inflation Adjustment"
+msgstr "Inflation Adjustment"
+
+#: src/components/charts/components/series-config/SeriesFilter.tsx:646
+msgid "Inflation adjustment is ignored for % of GDP."
+msgstr "Inflation adjustment is ignored for % of GDP."
+
 #: src/routes/terms.lazy.tsx:23
 msgid "Informational purposes only; no warranties."
 msgstr "Informational purposes only; no warranties."
 
-#: src/components/filters/MapFilter.tsx:392
+#: src/components/filters/MapFilter.tsx:382
 msgid "inhabitants"
 msgstr "inhabitants"
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:55
+#: src/components/budget-explorer/RevenueBreakdown.tsx:56
 msgid "Institutional remittances"
 msgstr "Institutional remittances"
 
@@ -2461,9 +2501,9 @@ msgstr "Institutional remittances"
 msgid "Intellectual property"
 msgstr "Intellectual property"
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:50
 #: src/components/budget-explorer/RevenueBreakdown.tsx:51
-#: src/components/budget-explorer/RevenueBreakdown.tsx:53
+#: src/components/budget-explorer/RevenueBreakdown.tsx:52
+#: src/components/budget-explorer/RevenueBreakdown.tsx:54
 msgid "Inter-budget transfers"
 msgstr "Inter-budget transfers"
 
@@ -2471,11 +2511,11 @@ msgstr "Inter-budget transfers"
 msgid "Internal budget movements"
 msgstr "Internal budget movements"
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:55
+#: src/components/budget-explorer/RevenueBreakdown.tsx:56
 msgid "Internal flow, inter-budget"
 msgstr "Internal flow, inter-budget"
 
-#: src/components/budget-explorer/SpendingBreakdown.tsx:154
+#: src/components/budget-explorer/SpendingBreakdown.tsx:153
 msgid "Internal Transfers"
 msgstr "Internal Transfers"
 
@@ -2499,30 +2539,30 @@ msgstr "Invalid data detected in chart series"
 msgid "Invalid or expired link"
 msgstr "Invalid or expired link"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:599
-#: src/components/filters/EntityAnalyticsFilter.tsx:541
-#: src/components/filters/MapFilter.tsx:371
+#: src/components/charts/components/series-config/SeriesFilter.tsx:772
+#: src/components/filters/EntityAnalyticsFilter.tsx:573
+#: src/components/filters/MapFilter.tsx:361
 #: src/lib/chart-filter-utils.ts:46
 msgid "Is UAT"
 msgstr "Is UAT"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:619
+#: src/components/charts/components/series-config/SeriesFilter.tsx:792
 msgid "Item Amount"
 msgstr "Item Amount"
 
-#: src/components/entities/EntityFinancialTrends.tsx:89
+#: src/components/entities/EntityFinancialTrends.tsx:97
 msgid "January"
 msgstr "January"
 
-#: src/components/maps/HeatmapDataTable.tsx:173
+#: src/components/maps/HeatmapDataTable.tsx:178
 msgid "Județ"
 msgstr "Județ"
 
-#: src/components/entities/EntityFinancialTrends.tsx:90
+#: src/components/entities/EntityFinancialTrends.tsx:98
 msgid "July"
 msgstr "July"
 
-#: src/components/entities/EntityFinancialTrends.tsx:89
+#: src/components/entities/EntityFinancialTrends.tsx:97
 msgid "June"
 msgstr "June"
 
@@ -2560,7 +2600,7 @@ msgid "Legal bases for processing"
 msgstr "Legal bases for processing"
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:160
-#: src/routes/map.lazy.tsx:238
+#: src/routes/map.lazy.tsx:312
 msgid "Legend"
 msgstr "Legend"
 
@@ -2592,7 +2632,7 @@ msgstr "Limitation of liability"
 msgid "Line Chart"
 msgstr "Line Chart"
 
-#: src/components/filters/EntityAnalyticsFilter.tsx:392
+#: src/components/filters/EntityAnalyticsFilter.tsx:431
 msgid "Line Items"
 msgstr "Line Items"
 
@@ -2600,7 +2640,7 @@ msgstr "Line Items"
 msgid "Line Items Aggregated Yearly"
 msgstr "Line Items Aggregated Yearly"
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:237
+#: src/components/budget-explorer/RevenueBreakdown.tsx:235
 msgid "Lines marked as \"se scad\" inside other tax chapters are deducted here to adjust the tax bases. They are shown separately from inter-budget transfers (04.* and 11.*)."
 msgstr "Lines marked as \"se scad\" inside other tax chapters are deducted here to adjust the tax bases. They are shown separately from inter-budget transfers (04.* and 11.*)."
 
@@ -2621,19 +2661,19 @@ msgstr "Loading chart configuration..."
 msgid "Loading chart data..."
 msgstr "Loading chart data..."
 
-#: src/routes/map.lazy.tsx:144
+#: src/routes/map.lazy.tsx:217
 msgid "Loading data..."
 msgstr "Loading data..."
 
-#: src/routes/map.lazy.tsx:148
+#: src/routes/map.lazy.tsx:221
 msgid "Loading heatmap data..."
 msgstr "Loading heatmap data..."
 
-#: src/routes/map.lazy.tsx:146
+#: src/routes/map.lazy.tsx:219
 msgid "Loading map and heatmap data..."
 msgstr "Loading map and heatmap data..."
 
-#: src/routes/map.lazy.tsx:150
+#: src/routes/map.lazy.tsx:223
 msgid "Loading map data..."
 msgstr "Loading map data..."
 
@@ -2641,18 +2681,18 @@ msgstr "Loading map data..."
 msgid "Loading reports…"
 msgstr "Loading reports…"
 
-#: src/routes/map.lazy.tsx:278
+#: src/routes/map.lazy.tsx:353
 msgid "Loading table data..."
 msgstr "Loading table data..."
 
-#: src/components/classification-explorer/ClassificationDescription.tsx:25
+#: src/components/classification-explorer/ClassificationDescription.tsx:32
 #: src/routes/alerts/$alertId/index.lazy.tsx:133
 #: src/routes/alerts/new.lazy.tsx:122
 #: src/routes/settings/notifications.tsx:103
 msgid "Loading..."
 msgstr "Loading..."
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:271
+#: src/components/budget-explorer/RevenueBreakdown.tsx:269
 msgid "Loan repayments and other operations"
 msgstr "Loan repayments and other operations"
 
@@ -2668,31 +2708,31 @@ msgstr "Lock annotation"
 msgid "Locked"
 msgstr "Locked"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:541
-#: src/components/entities/LineItemsAnalytics.tsx:156
+#: src/components/budget-explorer/BudgetTreemap.tsx:543
+#: src/components/entities/LineItemsAnalytics.tsx:159
 msgid "Main Categories"
 msgstr "Main Categories"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:134
-#: src/routes/budget-explorer.lazy.tsx:439
+#: src/routes/budget-explorer.lazy.tsx:499
 msgid "Main chapters"
 msgstr "Main chapters"
 
-#: src/components/entities/EntityReportControls.tsx:299
+#: src/components/entities/EntityReportControls.tsx:300
 #: src/lib/chart-filter-utils.ts:38
 msgid "Main creditor"
 msgstr "Main creditor"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:513
-#: src/components/charts/components/series-config/SeriesFilter.tsx:692
-#: src/components/filters/EntityAnalyticsFilter.tsx:444
-#: src/components/filters/EntityAnalyticsFilter.tsx:622
-#: src/components/filters/MapFilter.tsx:274
-#: src/components/filters/MapFilter.tsx:451
+#: src/components/charts/components/series-config/SeriesFilter.tsx:686
+#: src/components/charts/components/series-config/SeriesFilter.tsx:865
+#: src/components/filters/EntityAnalyticsFilter.tsx:476
+#: src/components/filters/EntityAnalyticsFilter.tsx:654
+#: src/components/filters/MapFilter.tsx:264
+#: src/components/filters/MapFilter.tsx:441
 msgid "Main Creditor"
 msgstr "Main Creditor"
 
-#: src/components/entities/EntityReportControls.tsx:39
+#: src/components/entities/EntityReportControls.tsx:49
 msgid "Main creditor aggregated"
 msgstr "Main creditor aggregated"
 
@@ -2717,7 +2757,7 @@ msgstr "Manage your newsletter and alert subscriptions"
 msgid "Managing preferences"
 msgstr "Managing preferences"
 
-#: src/components/filters/MapFilter.tsx:199
+#: src/components/filters/MapFilter.tsx:191
 #: src/components/sidebar/nav-main.tsx:26
 #: src/components/ui/shortcuts.tsx:44
 #: src/hooks/useEntityViews.tsx:28
@@ -2725,15 +2765,15 @@ msgstr "Managing preferences"
 msgid "Map"
 msgstr "Map"
 
-#: src/routes/map.lazy.tsx:175
+#: src/routes/map.lazy.tsx:248
 msgid "Map data not available."
 msgstr "Map data not available."
 
-#: src/components/filters/MapFilter.tsx:179
+#: src/components/filters/MapFilter.tsx:171
 msgid "Map Filters"
 msgstr "Map Filters"
 
-#: src/components/filters/MapFilter.tsx:209
+#: src/components/filters/MapFilter.tsx:201
 msgid "Map View"
 msgstr "Map View"
 
@@ -2741,7 +2781,7 @@ msgstr "Map View"
 msgid "Maps"
 msgstr "Maps"
 
-#: src/components/entities/EntityFinancialTrends.tsx:89
+#: src/components/entities/EntityFinancialTrends.tsx:97
 msgid "March"
 msgstr "March"
 
@@ -2757,7 +2797,7 @@ msgstr "Master the app with these powerful keyboard shortcuts"
 msgid "Maximum"
 msgstr "Maximum"
 
-#: src/components/entities/EntityFinancialTrends.tsx:89
+#: src/components/entities/EntityFinancialTrends.tsx:97
 msgid "May"
 msgstr "May"
 
@@ -2773,25 +2813,25 @@ msgstr "Metadata"
 msgid "Minimum"
 msgstr "Minimum"
 
-#: src/components/classification-explorer/ClassificationDescription.tsx:32
-#: src/components/classification-explorer/ClassificationDescription.tsx:41
+#: src/components/classification-explorer/ClassificationDescription.tsx:39
+#: src/components/classification-explorer/ClassificationDescription.tsx:48
 msgid "Missing description"
 msgstr "Missing description"
 
 #: src/components/entities/AdvancedFilterDropdown.tsx:60
-#: src/components/entities/EntityLineItemsTabs.tsx:96
+#: src/components/entities/EntityLineItemsTabs.tsx:99
 msgid "Missing Items"
 msgstr "Missing Items"
 
 #: src/components/classification-explorer/ClassificationChildren.tsx:46
 #: src/components/classification-explorer/ClassificationGrid.tsx:99
-#: src/components/classification-explorer/ClassificationInfo.tsx:54
+#: src/components/classification-explorer/ClassificationInfo.tsx:60
 #: src/components/classification-explorer/ClassificationSiblings.tsx:51
 msgid "Missing title"
 msgstr "Missing title"
 
-#: src/components/maps/utils.ts:104
-#: src/components/maps/utils.ts:140
+#: src/components/maps/utils.ts:106
+#: src/components/maps/utils.ts:152
 msgid "Mnemonic:"
 msgstr "Mnemonic:"
 
@@ -2799,12 +2839,12 @@ msgstr "Mnemonic:"
 msgid "Monitor this institution"
 msgstr "Monitor this institution"
 
-#: src/components/entities/EntityFinancialTrends.tsx:92
-#: src/components/entities/EntityReportControls.tsx:238
+#: src/components/entities/EntityFinancialTrends.tsx:100
+#: src/components/entities/EntityReportControls.tsx:243
 msgid "Month"
 msgstr "Month"
 
-#: src/components/entities/EntityReportControls.tsx:170
+#: src/components/entities/EntityReportControls.tsx:175
 #: src/components/filters/period-filter/PeriodFilter.tsx:243
 msgid "Monthly"
 msgstr "Monthly"
@@ -2834,21 +2874,21 @@ msgstr "Most shortcuts work on both Windows/Linux (Ctrl) and macOS (⌘). Some s
 msgid "Move Down"
 msgstr "Move Down"
 
-#: src/components/entity-analytics/EntityAnalyticsTable.tsx:263
-#: src/components/maps/HeatmapDataTable.tsx:132
-#: src/components/maps/HeatmapDataTable.tsx:191
-#: src/components/maps/HeatmapDataTable.tsx:245
-#: src/components/maps/HeatmapDataTable.tsx:299
-#: src/components/maps/HeatmapDataTable.tsx:361
+#: src/components/entity-analytics/EntityAnalyticsTable.tsx:291
+#: src/components/maps/HeatmapDataTable.tsx:137
+#: src/components/maps/HeatmapDataTable.tsx:196
+#: src/components/maps/HeatmapDataTable.tsx:250
+#: src/components/maps/HeatmapDataTable.tsx:304
+#: src/components/maps/HeatmapDataTable.tsx:366
 msgid "Move left"
 msgstr "Move left"
 
-#: src/components/entity-analytics/EntityAnalyticsTable.tsx:266
-#: src/components/maps/HeatmapDataTable.tsx:135
-#: src/components/maps/HeatmapDataTable.tsx:194
-#: src/components/maps/HeatmapDataTable.tsx:248
-#: src/components/maps/HeatmapDataTable.tsx:302
-#: src/components/maps/HeatmapDataTable.tsx:364
+#: src/components/entity-analytics/EntityAnalyticsTable.tsx:294
+#: src/components/maps/HeatmapDataTable.tsx:140
+#: src/components/maps/HeatmapDataTable.tsx:199
+#: src/components/maps/HeatmapDataTable.tsx:253
+#: src/components/maps/HeatmapDataTable.tsx:307
+#: src/components/maps/HeatmapDataTable.tsx:369
 msgid "Move right"
 msgstr "Move right"
 
@@ -2856,14 +2896,14 @@ msgstr "Move right"
 msgid "Move Up"
 msgstr "Move Up"
 
-#: src/components/maps/utils.ts:98
-#: src/components/maps/utils.ts:120
-#: src/components/maps/utils.ts:140
+#: src/components/maps/utils.ts:99
+#: src/components/maps/utils.ts:123
+#: src/components/maps/utils.ts:152
 msgid "N/A"
 msgstr "N/A"
 
-#: src/components/maps/HeatmapDataTable.tsx:114
-#: src/components/maps/HeatmapDataTable.tsx:446
+#: src/components/maps/HeatmapDataTable.tsx:119
+#: src/components/maps/HeatmapDataTable.tsx:451
 msgid "Name"
 msgstr "Name"
 
@@ -2917,7 +2957,7 @@ msgid "No"
 msgstr "No"
 
 #. placeholder {0}: type === 'income' ? 'income' : 'expense'
-#: src/components/entities/LineItemsGroupedSection.tsx:186
+#: src/components/entities/LineItemsGroupedSection.tsx:189
 msgid "No {0} data available for this period."
 msgstr "No {0} data available for this period."
 
@@ -2930,7 +2970,7 @@ msgstr "No {0} found matching \"{searchTerm}\""
 msgid "No active notifications"
 msgstr "No active notifications"
 
-#: src/components/maps/utils.ts:148
+#: src/components/maps/utils.ts:160
 msgid "No aggregated data"
 msgstr "No aggregated data"
 
@@ -2938,7 +2978,7 @@ msgstr "No aggregated data"
 msgid "No annotations yet."
 msgstr "No annotations yet."
 
-#: src/components/budget-explorer/BudgetCategoryList.tsx:132
+#: src/components/budget-explorer/BudgetCategoryList.tsx:135
 msgid "No categories to display."
 msgstr "No categories to display."
 
@@ -2968,19 +3008,19 @@ msgstr "No conditions set"
 msgid "No Data Available"
 msgstr "No Data Available"
 
-#: src/routes/map.lazy.tsx:216
+#: src/routes/map.lazy.tsx:289
 msgid "No data available for the map."
 msgstr "No data available for the map."
 
-#: src/routes/map.lazy.tsx:282
+#: src/routes/map.lazy.tsx:357
 msgid "No data available for the table."
 msgstr "No data available for the table."
 
-#: src/components/entities/EntityFinancialTrends.tsx:191
+#: src/components/entities/EntityFinancialTrends.tsx:227
 msgid "No data available to display financial evolution."
 msgstr "No data available to display financial evolution."
 
-#: src/routes/entities.$cui.lazy.tsx:304
+#: src/routes/entities.$cui.lazy.tsx:348
 msgid "No Data Found"
 msgstr "No Data Found"
 
@@ -2996,7 +3036,7 @@ msgstr "No data series alerts"
 msgid "No data series yet."
 msgstr "No data series yet."
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:618
+#: src/components/budget-explorer/BudgetTreemap.tsx:620
 msgid "No data within the selected range."
 msgstr "No data within the selected range."
 
@@ -3004,7 +3044,7 @@ msgstr "No data within the selected range."
 msgid "No detailed data available for this selection."
 msgstr "No detailed data available for this selection."
 
-#: src/components/budget-explorer/BudgetCategoryList.tsx:144
+#: src/components/budget-explorer/BudgetCategoryList.tsx:147
 msgid "No economic breakdown is available for income."
 msgstr "No economic breakdown is available for income."
 
@@ -3012,7 +3052,7 @@ msgstr "No economic breakdown is available for income."
 msgid "No enabled series data available to display."
 msgstr "No enabled series data available to display."
 
-#: src/routes/entities.$cui.lazy.tsx:306
+#: src/routes/entities.$cui.lazy.tsx:350
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 
@@ -3024,7 +3064,7 @@ msgstr "No favorites yet"
 msgid "No Filters Applied"
 msgstr "No Filters Applied"
 
-#: src/components/entities/LineItemsGroupedSection.tsx:197
+#: src/components/entities/LineItemsGroupedSection.tsx:200
 msgid "No grouping available for the selected filter."
 msgstr "No grouping available for the selected filter."
 
@@ -3064,7 +3104,7 @@ msgstr "No reports found"
 msgid "No results"
 msgstr "No results"
 
-#: src/components/maps/HeatmapDataTable.tsx:501
+#: src/components/maps/HeatmapDataTable.tsx:506
 msgid "No results found."
 msgstr "No results found."
 
@@ -3080,14 +3120,21 @@ msgstr "No series found."
 msgid "No values to replace"
 msgstr "No values to replace"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:93
+#: src/components/charts/components/series-config/SeriesFilter.tsx:347
+#: src/components/charts/components/series-config/SeriesFilter.tsx:640
+#: src/components/theme/inflation-toggle.tsx:31
+msgid "Nominal"
+msgstr "Nominal"
+
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:91
 msgid "Non-direct spending"
 msgstr "Non-direct spending"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:70
-#: src/components/charts/components/series-config/SeriesFilter.tsx:489
-#: src/components/entities/EntityReportControls.tsx:247
-#: src/components/filters/EntityAnalyticsFilter.tsx:413
+#: src/components/budget-explorer/BudgetExplorerHeader.tsx:76
+#: src/components/charts/components/series-config/SeriesFilter.tsx:593
+#: src/components/entities/EntityReportControls.tsx:252
+#: src/components/filters/EntityAnalyticsFilter.tsx:452
+#: src/components/filters/MapFilter.tsx:234
 #: src/lib/chart-filter-utils.ts:50
 msgid "Normalization"
 msgstr "Normalization"
@@ -3096,11 +3143,11 @@ msgstr "Normalization"
 msgid "Note: Deleting authentication cookies will sign you out of your account. Deleting essential localStorage will reset your saved charts and preferences."
 msgstr "Note: Deleting authentication cookies will sign you out of your account. Deleting essential localStorage will reset your saved charts and preferences."
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:201
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:196
 msgid "Note: Transfer items are excluded as they represent internal movements within the public administration rather than actual expenditures or revenues."
 msgstr "Note: Transfer items are excluded as they represent internal movements within the public administration rather than actual expenditures or revenues."
 
-#: src/components/budget-explorer/SpendingBreakdown.tsx:204
+#: src/components/budget-explorer/SpendingBreakdown.tsx:201
 msgid "Note: Transfers between institutions (ec:51) and internal transfers (ec:55.01) are excluded from effective spending as they represent movements within the public administration rather than actual expenditures."
 msgstr "Note: Transfers between institutions (ec:51) and internal transfers (ec:55.01) are excluded from effective spending as they represent movements within the public administration rather than actual expenditures."
 
@@ -3112,11 +3159,11 @@ msgstr "Nothing to paste"
 msgid "Notifications Settings"
 msgstr "Notifications Settings"
 
-#: src/components/entities/EntityFinancialTrends.tsx:90
+#: src/components/entities/EntityFinancialTrends.tsx:98
 msgid "November"
 msgstr "November"
 
-#: src/components/entities/EntityFinancialTrends.tsx:90
+#: src/components/entities/EntityFinancialTrends.tsx:98
 msgid "October"
 msgstr "October"
 
@@ -3162,17 +3209,17 @@ msgstr "Open feedback dialog"
 msgid "Open floating entity search"
 msgstr "Open floating entity search"
 
-#: src/routes/budget-explorer.lazy.tsx:509
-#: src/routes/budget-explorer.lazy.tsx:525
-#: src/routes/budget-explorer.lazy.tsx:545
+#: src/routes/budget-explorer.lazy.tsx:571
+#: src/routes/budget-explorer.lazy.tsx:587
+#: src/routes/budget-explorer.lazy.tsx:607
 msgid "Open in Chart Builder"
 msgstr "Open in Chart Builder"
 
-#: src/components/entities/EntityFinancialTrends.tsx:180
+#: src/components/entities/EntityFinancialTrends.tsx:188
 msgid "Open in chart editor"
 msgstr "Open in chart editor"
 
-#: src/components/entities/views/ChartCard.tsx:55
+#: src/components/entities/views/ChartCard.tsx:60
 msgid "Open in Chart Editor"
 msgstr "Open in Chart Editor"
 
@@ -3180,8 +3227,8 @@ msgstr "Open in Chart Editor"
 msgid "Open in charts"
 msgstr "Open in charts"
 
-#: src/components/entities/views/Overview.tsx:268
-#: src/routes/budget-explorer.lazy.tsx:385
+#: src/components/entities/views/Overview.tsx:285
+#: src/routes/budget-explorer.lazy.tsx:445
 msgid "Open in entity analytics"
 msgstr "Open in entity analytics"
 
@@ -3194,8 +3241,8 @@ msgstr "Open on Wikipedia"
 msgid "Open Search"
 msgstr "Open Search"
 
-#: src/components/entities/LineItemsBadgeFilters.tsx:84
-#: src/components/entities/LineItemsGroupedSection.tsx:113
+#: src/components/entities/LineItemsBadgeFilters.tsx:90
+#: src/components/entities/LineItemsGroupedSection.tsx:116
 msgid "Operations"
 msgstr "Operations"
 
@@ -3223,7 +3270,7 @@ msgstr "Optional user accounts for newsletters and notifications."
 msgid "or"
 msgstr "or"
 
-#: src/components/entities/EntityLineItemsTabs.tsx:95
+#: src/components/entities/EntityLineItemsTabs.tsx:98
 msgid "Other Economic"
 msgstr "Other Economic"
 
@@ -3241,7 +3288,7 @@ msgstr "Page Failed to Load"
 msgid "Page not found"
 msgstr "Page not found"
 
-#: src/components/classification-explorer/ClassificationInfo.tsx:28
+#: src/components/classification-explorer/ClassificationInfo.tsx:33
 msgid "Parent"
 msgstr "Parent"
 
@@ -3262,46 +3309,50 @@ msgstr "Paste data from a spreadsheet. Each line should contain a year and a val
 msgid "Paused"
 msgstr "Paused"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:631
+#: src/components/charts/components/series-config/SeriesFilter.tsx:804
 msgid "people"
 msgstr "people"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:94
+#: src/components/charts/components/series-config/SeriesFilter.tsx:330
+#: src/components/entities/EntityReportControls.tsx:270
+#: src/components/normalization/normalization-controls.tsx:32
+#: src/components/normalization/normalization-mode-select.tsx:27
 msgid "Per capita"
 msgstr "Per capita"
 
 #: src/components/common/NormalizationSelector.tsx:22
-#: src/components/entities/EntityReportControls.tsx:47
-#: src/components/entities/views/MapView.tsx:163
-#: src/components/entity-analytics/EntityAnalyticsTable.tsx:103
-#: src/components/filters/EntityAnalyticsFilter.tsx:420
-#: src/components/filters/MapFilter.tsx:250
+#: src/components/entities/views/MapView.tsx:158
+#: src/components/entity-analytics/EntityAnalyticsTable.tsx:107
 #: src/components/filters/normalization-filter/NormalizationFilter.tsx:14
-#: src/routes/entity-analytics.lazy.tsx:207
+#: src/routes/entity-analytics.lazy.tsx:239
 msgid "Per Capita"
 msgstr "Per Capita"
 
-#: src/components/filters/normalization-filter/NormalizationFilter.tsx:16
-msgid "Per Capita (EUR)"
-msgstr "Per Capita (EUR)"
+#: src/components/filters/normalization-filter/NormalizationFilter.tsx:17
+#~ msgid "Per Capita (EUR)"
+#~ msgstr "Per Capita (EUR)"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:100
-#: src/components/charts/components/series-config/SeriesFilter.tsx:497
-#: src/components/entities/EntityReportControls.tsx:165
-#: src/components/filters/EntityAnalyticsFilter.tsx:426
-#: src/components/filters/MapFilter.tsx:257
+#: src/components/budget-explorer/BudgetExplorerHeader.tsx:82
+#: src/components/charts/components/series-config/SeriesFilter.tsx:670
+#: src/components/entities/EntityReportControls.tsx:170
+#: src/components/filters/EntityAnalyticsFilter.tsx:458
+#: src/components/filters/MapFilter.tsx:247
 #: src/components/maps/utils.ts:20
 #: src/components/maps/utils.ts:22
 #: src/lib/chart-filter-utils.ts:51
 msgid "Period"
 msgstr "Period"
 
+#: src/components/charts/components/series-config/SeriesFilter.tsx:652
+msgid "Period Growth"
+msgstr "Period Growth"
+
 #: src/components/filters/period-filter/PeriodFilter.tsx:233
 msgid "Period Type"
 msgstr "Period Type"
 
 #: src/components/entities/AdvancedFilterDropdown.tsx:48
-#: src/components/entities/EntityLineItemsTabs.tsx:93
+#: src/components/entities/EntityLineItemsTabs.tsx:96
 msgid "Personal Spending"
 msgstr "Personal Spending"
 
@@ -3310,22 +3361,22 @@ msgid "Pie Chart (Aggregated)"
 msgstr "Pie Chart (Aggregated)"
 
 #: src/components/entities/UatDisplay.tsx:39
-#: src/components/entity-analytics/EntityAnalyticsTable.tsx:89
-#: src/components/maps/charts/UatDataCharts.tsx:42
-#: src/components/maps/HeatmapDataTable.tsx:227
-#: src/components/maps/HeatmapDataTable.tsx:448
-#: src/components/maps/utils.ts:118
-#: src/routes/entity-analytics.lazy.tsx:206
+#: src/components/entity-analytics/EntityAnalyticsTable.tsx:93
+#: src/components/maps/charts/UatDataCharts.tsx:54
+#: src/components/maps/HeatmapDataTable.tsx:232
+#: src/components/maps/HeatmapDataTable.tsx:453
+#: src/components/maps/utils.ts:121
+#: src/routes/entity-analytics.lazy.tsx:238
 msgid "Population"
 msgstr "Population"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:630
-#: src/components/filters/EntityAnalyticsFilter.tsx:562
-#: src/components/filters/MapFilter.tsx:391
+#: src/components/charts/components/series-config/SeriesFilter.tsx:803
+#: src/components/filters/EntityAnalyticsFilter.tsx:594
+#: src/components/filters/MapFilter.tsx:381
 msgid "Population Range"
 msgstr "Population Range"
 
-#: src/components/maps/charts/UatDataCharts.tsx:41
+#: src/components/maps/charts/UatDataCharts.tsx:53
 msgid "Population vs. Total Amount"
 msgstr "Population vs. Total Amount"
 
@@ -3349,6 +3400,10 @@ msgstr "Preview"
 #: src/components/learning/ModulePage.tsx:32
 msgid "Previous"
 msgstr "Previous"
+
+#: src/components/theme/inflation-toggle.tsx:20
+msgid "Prices"
+msgstr "Prices"
 
 #: src/components/entities/EntityReports.tsx:171
 msgid "Principal Aggregated"
@@ -3375,7 +3430,7 @@ msgstr "Product"
 msgid "Public institutions often transfer funds between each other (e.g., from the state budget to local budgets). These transfers can double-count spending if not filtered."
 msgstr "Public institutions often transfer funds between each other (e.g., from the state budget to local budgets). These transfers can double-count spending if not filtered."
 
-#: src/components/entities/EntityLineItemsTabs.tsx:144
+#: src/components/entities/EntityLineItemsTabs.tsx:147
 msgid "Public institutions often transfer funds between each other. These transfers can double-count spending or revenue if not filtered."
 msgstr "Public institutions often transfer funds between each other. These transfers can double-count spending or revenue if not filtered."
 
@@ -3383,12 +3438,12 @@ msgstr "Public institutions often transfer funds between each other. These trans
 msgid "Public sector information from Ministerul Finanțelor. No government affiliation."
 msgstr "Public sector information from Ministerul Finanțelor. No government affiliation."
 
-#: src/components/entities/EntityFinancialTrends.tsx:92
-#: src/components/entities/EntityReportControls.tsx:228
+#: src/components/entities/EntityFinancialTrends.tsx:100
+#: src/components/entities/EntityReportControls.tsx:233
 msgid "Quarter"
 msgstr "Quarter"
 
-#: src/components/entities/EntityReportControls.tsx:169
+#: src/components/entities/EntityReportControls.tsx:174
 #: src/components/filters/period-filter/PeriodFilter.tsx:240
 msgid "Quarterly"
 msgstr "Quarterly"
@@ -3405,7 +3460,7 @@ msgstr "Quick Configuration"
 msgid "Quickly adjust chart settings"
 msgstr "Quickly adjust chart settings"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:158
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:154
 msgid "Range"
 msgstr "Range"
 
@@ -3420,6 +3475,15 @@ msgstr "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 #: src/routes/alerts/new.lazy.tsx:116
 msgid "Ready to create"
 msgstr "Ready to create"
+
+#: src/components/charts/components/series-config/SeriesFilter.tsx:347
+#: src/components/charts/components/series-config/SeriesFilter.tsx:641
+msgid "Real (2024 prices)"
+msgstr "Real (2024 prices)"
+
+#: src/components/theme/inflation-toggle.tsx:43
+msgid "Real (2024)"
+msgstr "Real (2024)"
 
 #: src/routes/charts/$chartId/index.lazy.tsx:40
 msgid "Redo successful"
@@ -3445,7 +3509,7 @@ msgstr "Relative Values"
 msgid "Remove condition"
 msgstr "Remove condition"
 
-#: src/components/entities/EntityLineItemsTabs.tsx:203
+#: src/components/entities/EntityLineItemsTabs.tsx:206
 msgid "Remove filter"
 msgstr "Remove filter"
 
@@ -3461,16 +3525,16 @@ msgstr "Replace value"
 msgid "Report bug"
 msgstr "Report bug"
 
-#: src/components/entities/EntityReportControls.tsx:281
+#: src/components/entities/EntityReportControls.tsx:282
 #: src/lib/chart-filter-utils.ts:45
 msgid "Report type"
 msgstr "Report type"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:591
+#: src/components/charts/components/series-config/SeriesFilter.tsx:764
 #: src/components/entities/EntityReportCard.tsx:124
 #: src/components/entities/EntityReports.tsx:163
-#: src/components/filters/EntityAnalyticsFilter.tsx:532
-#: src/components/filters/MapFilter.tsx:359
+#: src/components/filters/EntityAnalyticsFilter.tsx:564
+#: src/components/filters/MapFilter.tsx:349
 msgid "Report Type"
 msgstr "Report Type"
 
@@ -3478,11 +3542,11 @@ msgstr "Report Type"
 msgid "Reporting entity"
 msgstr "Reporting entity"
 
-#: src/components/entities/EntityReportControls.tsx:161
+#: src/components/entities/EntityReportControls.tsx:166
 msgid "Reporting filters"
 msgstr "Reporting filters"
 
-#: src/routes/entities.$cui.lazy.tsx:337
+#: src/routes/entities.$cui.lazy.tsx:381
 msgid "Reporting period"
 msgstr "Reporting period"
 
@@ -3498,8 +3562,8 @@ msgstr "Reports"
 msgid "Required for core functionality like security and preferences. Always on."
 msgstr "Required for core functionality like security and preferences. Always on."
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:633
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:190
+#: src/components/budget-explorer/BudgetTreemap.tsx:635
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:185
 msgid "Reset amount filter"
 msgstr "Reset amount filter"
 
@@ -3507,8 +3571,8 @@ msgstr "Reset amount filter"
 msgid "Restore"
 msgstr "Restore"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:478
-#: src/components/filters/EntityAnalyticsFilter.tsx:398
+#: src/components/charts/components/series-config/SeriesFilter.tsx:582
+#: src/components/filters/EntityAnalyticsFilter.tsx:437
 msgid "Revenues/Expenses"
 msgstr "Revenues/Expenses"
 
@@ -3528,12 +3592,13 @@ msgstr "Romanian"
 msgid "Romanian law and applicable EU law, including GDPR. Venue: Sibiu, Romania."
 msgstr "Romanian law and applicable EU law, including GDPR. Venue: Sibiu, Romania."
 
+#: src/components/charts/components/series-config/SeriesFilter.tsx:614
 #: src/components/theme/currency-toggle.tsx:29
 msgid "RON"
 msgstr "RON"
 
 #. placeholder {0}: start + row.index + 1
-#: src/components/maps/HeatmapDataTable.tsx:90
+#: src/components/maps/HeatmapDataTable.tsx:95
 msgid "Row {0}"
 msgstr "Row {0}"
 
@@ -3636,7 +3701,7 @@ msgstr "Search..."
 msgid "Secondary Aggregated"
 msgstr "Secondary Aggregated"
 
-#: src/components/entities/EntityReportControls.tsx:40
+#: src/components/entities/EntityReportControls.tsx:50
 msgid "Secondary creditor aggregated"
 msgstr "Secondary creditor aggregated"
 
@@ -3644,7 +3709,7 @@ msgstr "Secondary creditor aggregated"
 msgid "Security monitoring and logs"
 msgstr "Security monitoring and logs"
 
-#: src/routes/budget-explorer.lazy.tsx:484
+#: src/routes/budget-explorer.lazy.tsx:545
 msgid "See advanced view"
 msgstr "See advanced view"
 
@@ -3705,7 +3770,7 @@ msgstr "Selection Mode"
 msgid "Send feedback"
 msgstr "Send feedback"
 
-#: src/components/entities/EntityFinancialTrends.tsx:90
+#: src/components/entities/EntityFinancialTrends.tsx:98
 msgid "September"
 msgstr "September"
 
@@ -3755,11 +3820,11 @@ msgstr "Share Link"
 msgid "Share link copied"
 msgstr "Share link copied"
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:50
+#: src/components/budget-explorer/RevenueBreakdown.tsx:51
 msgid "Shares and amounts split from income tax"
 msgstr "Shares and amounts split from income tax"
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:51
+#: src/components/budget-explorer/RevenueBreakdown.tsx:52
 msgid "Shares from VAT"
 msgstr "Shares from VAT"
 
@@ -3802,6 +3867,13 @@ msgstr "Show Diff"
 msgid "Show Grid Lines"
 msgstr "Show Grid Lines"
 
+#: src/components/charts/components/series-config/SeriesFilter.tsx:355
+#: src/components/charts/components/series-config/SeriesFilter.tsx:665
+#: src/components/entities/EntityFinancialTrends.tsx:206
+#: src/components/entities/views/ChartCard.tsx:75
+msgid "Show growth (%)"
+msgstr "Show growth (%)"
+
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:62
 msgid "Show Legend"
 msgstr "Show Legend"
@@ -3819,6 +3891,10 @@ msgstr "Show Less"
 msgid "Show More"
 msgstr "Show More"
 
+#: src/components/normalization/normalization-controls.tsx:121
+msgid "Show period-over-period growth"
+msgstr "Show period-over-period growth"
+
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:64
 msgid "Show Relative Values (%)"
 msgstr "Show Relative Values (%)"
@@ -3827,7 +3903,7 @@ msgstr "Show Relative Values (%)"
 msgid "Show Tooltip"
 msgstr "Show Tooltip"
 
-#: src/components/entities/EntityLineItemsTabs.tsx:150
+#: src/components/entities/EntityLineItemsTabs.tsx:153
 msgid "Shows all items, including transfers between institutions."
 msgstr "Shows all items, including transfers between institutions."
 
@@ -3839,11 +3915,11 @@ msgstr "Shows all spending, including both direct payments and transfers to othe
 msgid "Shows only direct spending by this entity. Excludes funds moved to other institutions (codes 51 and 55)."
 msgstr "Shows only direct spending by this entity. Excludes funds moved to other institutions (codes 51 and 55)."
 
-#: src/components/entities/EntityLineItemsTabs.tsx:149
+#: src/components/entities/EntityLineItemsTabs.tsx:152
 msgid "Shows only direct spending/revenue. Excludes internal transfers."
 msgstr "Shows only direct spending/revenue. Excludes internal transfers."
 
-#: src/components/entities/EntityLineItemsTabs.tsx:151
+#: src/components/entities/EntityLineItemsTabs.tsx:154
 msgid "Shows only the funds transferred between public administration units."
 msgstr "Shows only the funds transferred between public administration units."
 
@@ -3912,13 +3988,13 @@ msgstr "Source"
 msgid "Source: "
 msgstr "Source: "
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:55
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:225
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:54
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:220
 msgid "Spending Calculation"
 msgstr "Spending Calculation"
 
-#: src/components/maps/HeatmapDataTable.tsx:441
-#: src/routes/entity-analytics.lazy.tsx:199
+#: src/components/maps/HeatmapDataTable.tsx:446
+#: src/routes/entity-analytics.lazy.tsx:231
 msgid "Standard"
 msgstr "Standard"
 
@@ -3967,11 +4043,11 @@ msgstr "Subject"
 msgid "Subscribe to Updates"
 msgstr "Subscribe to Updates"
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:52
+#: src/components/budget-explorer/RevenueBreakdown.tsx:53
 msgid "Subsidies"
 msgstr "Subsidies"
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:53
+#: src/components/budget-explorer/RevenueBreakdown.tsx:54
 msgid "Subsidies from other administrations"
 msgstr "Subsidies from other administrations"
 
@@ -3983,7 +4059,7 @@ msgstr "Subtitle"
 msgid "Successfully unsubscribed"
 msgstr "Successfully unsubscribed"
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:54
+#: src/components/budget-explorer/RevenueBreakdown.tsx:55
 msgid "Sums pending distribution"
 msgstr "Sums pending distribution"
 
@@ -3999,12 +4075,12 @@ msgstr "Syncing…"
 msgid "System"
 msgstr "System"
 
-#: src/components/filters/EntityAnalyticsFilter.tsx:391
-#: src/components/filters/MapFilter.tsx:200
+#: src/components/filters/EntityAnalyticsFilter.tsx:430
+#: src/components/filters/MapFilter.tsx:192
 msgid "Table"
 msgstr "Table"
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:213
+#: src/components/budget-explorer/RevenueBreakdown.tsx:212
 msgid "Tax deductions outside inter-budget transfers"
 msgstr "Tax deductions outside inter-budget transfers"
 
@@ -4052,7 +4128,7 @@ msgstr "The Service's software, design, and original content are protected by co
 msgid "The share link you are trying to access is invalid or no longer available."
 msgstr "The share link you are trying to access is invalid or no longer available."
 
-#: src/routes/entities.$cui.lazy.tsx:291
+#: src/routes/entities.$cui.lazy.tsx:335
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "There was a problem fetching the details for CUI: <0>{cui}</0>."
 
@@ -4156,33 +4232,33 @@ msgstr "Toggle theme"
 msgid "Tooltip"
 msgstr "Tooltip"
 
-#: src/components/entities/views/TrendsView.tsx:101
+#: src/components/entities/views/TrendsView.tsx:106
 msgid "Top {TOP_CATEGORIES_COUNT} Income Categories for {entityName}"
 msgstr "Top {TOP_CATEGORIES_COUNT} Income Categories for {entityName}"
 
-#: src/components/entities/views/TrendsView.tsx:101
+#: src/components/entities/views/TrendsView.tsx:106
 msgid "Top {TOP_CATEGORIES_COUNT} Spending Categories for {entityName}"
 msgstr "Top {TOP_CATEGORIES_COUNT} Spending Categories for {entityName}"
 
-#: src/components/maps/charts/UatDataCharts.tsx:30
+#: src/components/maps/charts/UatDataCharts.tsx:41
 msgid "Top 15 Counties by Total Amount"
 msgstr "Top 15 Counties by Total Amount"
 
-#: src/components/maps/charts/UatDataCharts.tsx:30
+#: src/components/maps/charts/UatDataCharts.tsx:41
 msgid "Top 15 UATs by Total Amount"
 msgstr "Top 15 UATs by Total Amount"
 
-#: src/routes/budget-explorer.lazy.tsx:481
+#: src/routes/budget-explorer.lazy.tsx:542
 msgid "Top Categories"
 msgstr "Top Categories"
 
-#: src/components/budget-explorer/BudgetCategoryList.tsx:139
 #: src/components/budget-explorer/BudgetCategoryList.tsx:142
+#: src/components/budget-explorer/BudgetCategoryList.tsx:145
 msgid "Top Economic Categories"
 msgstr "Top Economic Categories"
 
-#: src/components/budget-explorer/BudgetCategoryList.tsx:137
-#: src/routes/budget-explorer.lazy.tsx:541
+#: src/components/budget-explorer/BudgetCategoryList.tsx:140
+#: src/routes/budget-explorer.lazy.tsx:603
 msgid "Top Functional Categories"
 msgstr "Top Functional Categories"
 
@@ -4190,52 +4266,51 @@ msgstr "Top Functional Categories"
 msgid "total"
 msgstr "total"
 
-#: src/components/budget-explorer/BudgetExplorerHeader.tsx:88
-#: src/components/budget-explorer/BudgetTreemap.tsx:681
+#: src/components/budget-explorer/BudgetTreemap.tsx:683
+#: src/components/charts/components/series-config/SeriesFilter.tsx:332
 #: src/components/common/NormalizationSelector.tsx:21
-#: src/components/entities/EntityReportControls.tsx:46
-#: src/components/entities/views/MapView.tsx:167
-#: src/components/filters/EntityAnalyticsFilter.tsx:419
-#: src/components/filters/MapFilter.tsx:249
+#: src/components/entities/EntityReportControls.tsx:267
+#: src/components/entities/views/MapView.tsx:162
 #: src/components/filters/normalization-filter/NormalizationFilter.tsx:13
+#: src/components/normalization/normalization-mode-select.tsx:26
 msgid "Total"
 msgstr "Total"
 
-#: src/components/filters/normalization-filter/NormalizationFilter.tsx:15
-msgid "Total (EUR)"
-msgstr "Total (EUR)"
+#: src/components/filters/normalization-filter/NormalizationFilter.tsx:16
+#~ msgid "Total (EUR)"
+#~ msgstr "Total (EUR)"
 
 #: src/components/entity-analytics/EntityAnalyticsKPIs.tsx:29
+#: src/components/normalization/normalization-controls.tsx:31
 msgid "Total amount"
 msgstr "Total amount"
 
-#: src/components/entity-analytics/EntityAnalyticsTable.tsx:136
-#: src/components/filters/MapFilter.tsx:242
-#: src/components/maps/HeatmapDataTable.tsx:281
-#: src/components/maps/HeatmapDataTable.tsx:449
-#: src/components/maps/utils.ts:123
-#: src/routes/entity-analytics.lazy.tsx:208
+#: src/components/entity-analytics/EntityAnalyticsTable.tsx:143
+#: src/components/maps/HeatmapDataTable.tsx:286
+#: src/components/maps/HeatmapDataTable.tsx:454
+#: src/components/maps/utils.ts:134
+#: src/routes/entity-analytics.lazy.tsx:240
 msgid "Total Amount"
 msgstr "Total Amount"
 
-#: src/components/entities/EntityFinancialSummary.tsx:62
+#: src/components/entities/EntityFinancialSummary.tsx:72
 msgid "Total Expenses"
 msgstr "Total Expenses"
 
-#: src/components/entities/EntityFinancialSummary.tsx:61
+#: src/components/entities/EntityFinancialSummary.tsx:71
 msgid "Total Income"
 msgstr "Total Income"
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:150
+#: src/components/budget-explorer/RevenueBreakdown.tsx:151
 msgid "Total Revenues"
 msgstr "Total Revenues"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:67
-#: src/components/budget-explorer/SpendingBreakdown.tsx:98
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:66
+#: src/components/budget-explorer/SpendingBreakdown.tsx:99
 msgid "Total Spending"
 msgstr "Total Spending"
 
-#: src/components/entities/FinancialDataCard.tsx:81
+#: src/components/entities/FinancialDataCard.tsx:85
 msgid "Total:"
 msgstr "Total:"
 
@@ -4243,14 +4318,14 @@ msgstr "Total:"
 msgid "Transfers Between Institutions"
 msgstr "Transfers Between Institutions"
 
-#: src/components/entities/EntityLineItemsTabs.tsx:127
-#: src/components/entities/EntityLineItemsTabs.tsx:151
+#: src/components/entities/EntityLineItemsTabs.tsx:130
+#: src/components/entities/EntityLineItemsTabs.tsx:154
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:147
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:165
 msgid "Transfers Only"
 msgstr "Transfers Only"
 
-#: src/components/budget-explorer/SpendingBreakdown.tsx:157
+#: src/components/budget-explorer/SpendingBreakdown.tsx:156
 msgid "Transfers within public administration"
 msgstr "Transfers within public administration"
 
@@ -4258,7 +4333,7 @@ msgstr "Transfers within public administration"
 msgid "Transparenta.eu – Support"
 msgstr "Transparenta.eu – Support"
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:52
+#: src/components/budget-explorer/RevenueBreakdown.tsx:53
 msgid "Treated as inter-budget flows"
 msgstr "Treated as inter-budget flows"
 
@@ -4270,7 +4345,7 @@ msgstr "Tree view"
 msgid "Treemap Chart (Aggregated)"
 msgstr "Treemap Chart (Aggregated)"
 
-#: src/components/budget-explorer/RevenueBreakdown.tsx:296
+#: src/components/budget-explorer/RevenueBreakdown.tsx:293
 msgid "True Consolidated Revenues"
 msgstr "True Consolidated Revenues"
 
@@ -4291,35 +4366,35 @@ msgstr "Try Again"
 msgid "Type"
 msgstr "Type"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:526
-#: src/components/charts/components/series-config/SeriesFilter.tsx:707
-#: src/components/filters/EntityAnalyticsFilter.tsx:458
-#: src/components/filters/EntityAnalyticsFilter.tsx:636
-#: src/components/filters/MapFilter.tsx:216
-#: src/components/maps/charts/UatDataCharts.tsx:32
+#: src/components/charts/components/series-config/SeriesFilter.tsx:699
+#: src/components/charts/components/series-config/SeriesFilter.tsx:880
+#: src/components/filters/EntityAnalyticsFilter.tsx:490
+#: src/components/filters/EntityAnalyticsFilter.tsx:668
+#: src/components/filters/MapFilter.tsx:208
+#: src/components/maps/charts/UatDataCharts.tsx:43
 #: src/lib/chart-filter-utils.ts:39
 msgid "UAT"
 msgstr "UAT"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:262
-#: src/components/filters/EntityAnalyticsFilter.tsx:543
-#: src/components/filters/MapFilter.tsx:373
+#: src/components/charts/components/series-config/SeriesFilter.tsx:366
+#: src/components/filters/EntityAnalyticsFilter.tsx:575
+#: src/components/filters/MapFilter.tsx:363
 msgid "UAT: No"
 msgstr "UAT: No"
 
-#: src/components/charts/components/series-config/SeriesFilter.tsx:261
-#: src/components/filters/EntityAnalyticsFilter.tsx:543
-#: src/components/filters/MapFilter.tsx:373
+#: src/components/charts/components/series-config/SeriesFilter.tsx:365
+#: src/components/filters/EntityAnalyticsFilter.tsx:575
+#: src/components/filters/MapFilter.tsx:363
 msgid "UAT: Yes"
 msgstr "UAT: Yes"
 
-#: src/components/filters/MapFilter.tsx:288
-#: src/components/filters/MapFilter.tsx:465
+#: src/components/filters/MapFilter.tsx:278
+#: src/components/filters/MapFilter.tsx:455
 msgid "UATs"
 msgstr "UATs"
 
-#: src/components/budget-explorer/FilteredSpendingInfo.tsx:58
-#: src/components/budget-explorer/SpendingBreakdown.tsx:47
+#: src/components/budget-explorer/FilteredSpendingInfo.tsx:57
+#: src/components/budget-explorer/SpendingBreakdown.tsx:48
 msgid "Understanding the consolidated general budget spending"
 msgstr "Understanding the consolidated general budget spending"
 
@@ -4332,17 +4407,17 @@ msgstr "Undo successful"
 msgid "Unit"
 msgstr "Unit"
 
-#: src/routes/entity-analytics.lazy.tsx:179
+#: src/routes/entity-analytics.lazy.tsx:211
 msgid "Unknown error"
 msgstr "Unknown error"
 
-#: src/components/entities/LineItemsBadgeFilters.tsx:71
-#: src/components/entities/LineItemsGroupedSection.tsx:108
+#: src/components/entities/LineItemsBadgeFilters.tsx:77
+#: src/components/entities/LineItemsGroupedSection.tsx:111
 msgid "Unknown source"
 msgstr "Unknown source"
 
-#: src/components/entities/LineItemsBadgeFilters.tsx:87
-#: src/components/entities/LineItemsGroupedSection.tsx:113
+#: src/components/entities/LineItemsBadgeFilters.tsx:93
+#: src/components/entities/LineItemsGroupedSection.tsx:116
 msgid "Unknown type"
 msgstr "Unknown type"
 
@@ -4398,6 +4473,11 @@ msgstr "Updated:"
 msgid "Usage analytics"
 msgstr "Usage analytics"
 
+#: src/components/charts/components/series-config/SeriesFilter.tsx:616
+#: src/components/theme/currency-toggle.tsx:45
+msgid "USD"
+msgstr "USD"
+
 #: src/routes/cookie-policy.lazy.tsx:77
 msgid "Use <0>Cookie Settings</0> to manage analytics and error reporting consent, or use your browser controls to clear site data."
 msgstr "Use <0>Cookie Settings</0> to manage analytics and error reporting consent, or use your browser controls to clear site data."
@@ -4424,13 +4504,13 @@ msgid "Value"
 msgstr "Value"
 
 #: src/components/entities/AdvancedFilterDropdown.tsx:64
-#: src/components/entities/EntityLineItemsTabs.tsx:97
+#: src/components/entities/EntityLineItemsTabs.tsx:100
 msgid "Value Changed"
 msgstr "Value Changed"
 
-#: src/components/filters/EntityAnalyticsFilter.tsx:388
-#: src/components/maps/HeatmapDataTable.tsx:433
-#: src/routes/entity-analytics.lazy.tsx:190
+#: src/components/filters/EntityAnalyticsFilter.tsx:427
+#: src/components/maps/HeatmapDataTable.tsx:438
+#: src/routes/entity-analytics.lazy.tsx:222
 msgid "View"
 msgstr "View"
 
@@ -4446,7 +4526,7 @@ msgstr "View all classifications"
 msgid "View all reports"
 msgstr "View all reports"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:700
+#: src/components/budget-explorer/BudgetTreemap.tsx:701
 msgid "View as Chart"
 msgstr "View as Chart"
 
@@ -4457,7 +4537,7 @@ msgstr "View as Chart"
 msgid "View Chart"
 msgstr "View Chart"
 
-#: src/components/budget-explorer/BudgetTreemap.tsx:609
+#: src/components/budget-explorer/BudgetTreemap.tsx:611
 msgid "View Details"
 msgstr "View Details"
 
@@ -4469,7 +4549,7 @@ msgstr "View full details"
 msgid "View in Entity Analytics"
 msgstr "View in Entity Analytics"
 
-#: src/routes/map.lazy.tsx:240
+#: src/routes/map.lazy.tsx:314
 msgid "View the color scale and values for the heatmap visualization"
 msgstr "View the color scale and values for the heatmap visualization"
 
@@ -4522,8 +4602,8 @@ msgstr "What personal data we collect"
 msgid "Who we are"
 msgstr "Who we are"
 
-#: src/components/entities/EntityLineItemsTabs.tsx:121
-#: src/components/entities/EntityLineItemsTabs.tsx:149
+#: src/components/entities/EntityLineItemsTabs.tsx:124
+#: src/components/entities/EntityLineItemsTabs.tsx:152
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:145
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:163
 msgid "Without Transfers"
@@ -4534,8 +4614,8 @@ msgid "X-Axis Prefix To Remove"
 msgstr "X-Axis Prefix To Remove"
 
 #: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:91
-#: src/components/entities/EntityFinancialTrends.tsx:92
-#: src/components/entities/EntityReportControls.tsx:201
+#: src/components/entities/EntityFinancialTrends.tsx:100
+#: src/components/entities/EntityReportControls.tsx:206
 #: src/components/entities/EntityReports.tsx:180
 msgid "Year"
 msgstr "Year"
@@ -4544,7 +4624,7 @@ msgstr "Year"
 msgid "Year {headerLabel}"
 msgstr "Year {headerLabel}"
 
-#: src/components/entities/EntityReportControls.tsx:168
+#: src/components/entities/EntityReportControls.tsx:173
 #: src/components/filters/period-filter/PeriodFilter.tsx:237
 msgid "Yearly"
 msgstr "Yearly"

@@ -28,6 +28,7 @@ import { getEconomicChapterName } from '@/lib/economic-classifications'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { usePeriodLabel } from '@/hooks/use-period-label'
 import { useUserCurrency } from '@/lib/hooks/useUserCurrency'
+import { useUserInflationAdjusted } from '@/lib/hooks/useUserInflationAdjusted'
 import { Label } from '@/components/ui/label'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { t } from '@lingui/core/macro'
@@ -145,10 +146,40 @@ function BudgetExplorerPage() {
   const navigate = useNavigate({ from: '/budget-explorer' })
   const search = SearchSchema.parse(raw)
   const isMobile = useIsMobile()
-  const [currency] = useUserCurrency()
+  const [userCurrency, setUserCurrency] = useUserCurrency()
+  const [userInflationAdjusted, setUserInflationAdjusted] = useUserInflationAdjusted()
 
-  const { filter, primary, depth, treemapPrimary, treemapPath } = search
-  const filterHash = generateHash(JSON.stringify(filter))
+	  const { filter, primary, depth, treemapPrimary, treemapPath } = search
+	  const effectiveNormalization = useMemo(() => {
+	    const rawNormalization = filter.normalization ?? 'total'
+	    let normalized = rawNormalization
+	    if (rawNormalization === 'total_euro') {
+	      normalized = 'total'
+	    } else if (rawNormalization === 'per_capita_euro') {
+	      normalized = 'per_capita'
+	    }
+	    return normalized
+	  }, [filter.normalization])
+
+  const effectiveCurrency = useMemo(() => {
+    const rawNormalization = filter.normalization
+    if (rawNormalization === 'total_euro' || rawNormalization === 'per_capita_euro') return 'EUR'
+    return filter.currency ?? userCurrency
+  }, [filter.currency, filter.normalization, userCurrency])
+
+  const effectiveInflationAdjusted = useMemo(() => {
+    if (effectiveNormalization === 'percent_gdp') return false
+    return Boolean(filter.inflation_adjusted ?? userInflationAdjusted)
+  }, [effectiveNormalization, filter.inflation_adjusted, userInflationAdjusted])
+
+  const effectiveFilter: AnalyticsFilterType = useMemo(() => ({
+    ...filter,
+    normalization: effectiveNormalization,
+    currency: effectiveCurrency,
+    inflation_adjusted: effectiveInflationAdjusted,
+  }), [effectiveCurrency, effectiveInflationAdjusted, effectiveNormalization, filter])
+
+  const filterHash = generateHash(JSON.stringify(effectiveFilter))
 
   // Use treemapPrimary from URL if available, otherwise fall back to primary
   const initialTreemapPrimary = treemapPrimary ?? primary
@@ -157,7 +188,7 @@ function BudgetExplorerPage() {
     queryKey: ['budget-explorer', 'aggregatedLineItems', filterHash],
     queryFn: () =>
       fetchAggregatedLineItems({
-        filter,
+        filter: effectiveFilter,
         limit: 150000,
       }),
     staleTime: convertDaysToMs(3),
@@ -170,12 +201,43 @@ function BudgetExplorerPage() {
   // Drawer/side panel removed to match unified behavior
 
   useEffect(() => {
-    if (currency === 'EUR' && filter.normalization !== 'total_euro' && filter.normalization !== 'per_capita_euro') {
-      handleFilterChange({ filter: { ...filter, normalization: 'total_euro' } })
-    } else if (currency === 'RON' && filter.normalization !== 'total' && filter.normalization !== 'per_capita') {
-      handleFilterChange({ filter: { ...filter, normalization: 'total' } })
+    const urlCurrency = filter.currency
+    const urlInflationAdjusted = filter.inflation_adjusted
+    const normalizationRaw = filter.normalization
+
+    const nextFilterPatch: Partial<AnalyticsFilterType> = {}
+    let shouldPatchFilter = false
+
+    if (urlCurrency !== undefined) {
+      if (urlCurrency !== userCurrency) setUserCurrency(urlCurrency)
+      nextFilterPatch.currency = undefined
+      shouldPatchFilter = true
     }
-  }, [currency, filter.normalization])
+
+    if (urlInflationAdjusted !== undefined) {
+      if (Boolean(urlInflationAdjusted) !== Boolean(userInflationAdjusted)) {
+        setUserInflationAdjusted(Boolean(urlInflationAdjusted))
+      }
+      nextFilterPatch.inflation_adjusted = undefined
+      shouldPatchFilter = true
+    }
+
+    if (normalizationRaw === 'total_euro' || normalizationRaw === 'per_capita_euro') {
+      if (userCurrency !== 'EUR') setUserCurrency('EUR')
+      nextFilterPatch.normalization = normalizationRaw === 'total_euro' ? 'total' : 'per_capita'
+      shouldPatchFilter = true
+    }
+
+	    if (shouldPatchFilter) handleFilterChange({ filter: nextFilterPatch as BudgetExplorerState['filter'] })
+	  }, [
+    filter.currency,
+    filter.inflation_adjusted,
+    filter.normalization,
+    userCurrency,
+    userInflationAdjusted,
+    setUserCurrency,
+    setUserInflationAdjusted,
+  ])
 
   // Exclude non-direct spending items for spending view (account_category='ch')
   const excludeEcCodes = filter.account_category === 'ch' ? ['51', '55.01'] : []
@@ -223,7 +285,7 @@ function BudgetExplorerPage() {
 
   const functionalChart: Chart = useMemo(() => {
     const series = functionalMainChapters.map((code, index) => {
-      const seriesFilter = buildSeriesFilter(filter, { functional_prefixes: [code] })
+      const seriesFilter = buildSeriesFilter(effectiveFilter, { functional_prefixes: [code] })
       const seriesId = generateHash(JSON.stringify(seriesFilter))
       return SeriesConfigurationSchema.parse({
         id: seriesId,
@@ -237,7 +299,7 @@ function BudgetExplorerPage() {
       })
     })
 
-    const chartId = generateHash(JSON.stringify({ title: 'Functional Categories Comparison', filter }))
+    const chartId = generateHash(JSON.stringify({ title: 'Functional Categories Comparison', filter: effectiveFilter }))
     return ChartSchema.parse({
       id: chartId,
       title: 'Functional Categories Comparison',
@@ -248,11 +310,11 @@ function BudgetExplorerPage() {
       },
       series,
     })
-  }, [filter, isMobile])
+  }, [effectiveFilter, isMobile])
 
   const economicChart: Chart = useMemo(() => {
     const series = economicMainChapters.map((ecCode, index) => {
-      const seriesFilter = buildSeriesFilter(filter, { economic_prefixes: [ecCode.toString()] })
+      const seriesFilter = buildSeriesFilter(effectiveFilter, { economic_prefixes: [ecCode.toString()] })
       const seriesId = generateHash(JSON.stringify(seriesFilter))
       return SeriesConfigurationSchema.parse({
         id: seriesId,
@@ -266,7 +328,7 @@ function BudgetExplorerPage() {
       })
     })
 
-    const chartId = generateHash(JSON.stringify({ title: 'Economic Categories Comparison', filter }))
+    const chartId = generateHash(JSON.stringify({ title: 'Economic Categories Comparison', filter: effectiveFilter }))
     return ChartSchema.parse({
       id: chartId,
       title: 'Economic Categories Comparison',
@@ -277,12 +339,12 @@ function BudgetExplorerPage() {
       },
       series,
     })
-  }, [filter, isMobile])
+  }, [effectiveFilter, isMobile])
 
   // Revenue: Top Functional Categories comparison
   const revenueChart: Chart = useMemo(() => {
     const series = revenueTopFunctionalChapters.map((code, index) => {
-      const seriesFilter = buildSeriesFilter(filter, { functional_prefixes: [code] })
+      const seriesFilter = buildSeriesFilter(effectiveFilter, { functional_prefixes: [code] })
       const seriesId = generateHash(JSON.stringify(seriesFilter))
       return SeriesConfigurationSchema.parse({
         id: seriesId,
@@ -296,7 +358,7 @@ function BudgetExplorerPage() {
       })
     })
 
-    const chartId = generateHash(JSON.stringify({ title: 'Top Functional Categories (Revenue)', filter }))
+    const chartId = generateHash(JSON.stringify({ title: 'Top Functional Categories (Revenue)', filter: effectiveFilter }))
     return ChartSchema.parse({
       id: chartId,
       title: 'Top Functional Categories',
@@ -307,7 +369,7 @@ function BudgetExplorerPage() {
       },
       series,
     })
-  }, [filter, isMobile])
+  }, [effectiveFilter, isMobile])
 
   const handleFilterChange = (partial: Partial<BudgetExplorerState>) => {
     const { filter: partialFilter, primary: partialPrimary, treemapPrimary: partialTreemapPrimary, ...restPartial } = partial
@@ -362,7 +424,7 @@ function BudgetExplorerPage() {
         mapActive
         tableActive
         chartActive
-        filterInput={filter}
+        filterInput={effectiveFilter}
       />
       <div className="w-full max-w-[1200px] mx-auto space-y-6 lg:space-y-8">
         <BudgetExplorerHeader
@@ -394,7 +456,7 @@ function BudgetExplorerPage() {
                       filter: {
                         report_period: filter.report_period,
                         account_category: filter.account_category,
-                        normalization: filter.normalization,
+                        normalization: effectiveFilter.normalization,
                         report_type: filter.report_type,
                       },
                       treemapPrimary: activePrimary,
@@ -447,20 +509,19 @@ function BudgetExplorerPage() {
             </div>
           </CardHeader>
           <CardContent className="px-0 sm:px-6">
-            {isLoading ? (
-              <Skeleton className="w-full h-[600px]" />
-            ) : error ? (
+            {isLoading && <Skeleton className="w-full h-[600px]" />}
+            {!isLoading && error && (
               <p className="text-sm text-red-500"><Trans>Failed to load data.</Trans></p>
-            ) : (
+            )}
+            {!isLoading && !error && (
               <BudgetTreemap
                 data={treemapData}
                 onNodeClick={handleNodeClick}
                 onBreadcrumbClick={onBreadcrumbClick}
                 path={breadcrumbs}
                 primary={activePrimary}
-                onViewDetails={undefined}
-                showViewDetails={false}
-                normalization={filter.normalization}
+                normalization={effectiveFilter.normalization}
+                currency={effectiveFilter.currency}
                 excludedItemsSummary={excludedItemsSummary}
               />
             )}
@@ -469,10 +530,10 @@ function BudgetExplorerPage() {
 
         {/* Breakdowns: show spending or revenue based on active filter */}
         {filter.account_category === 'ch' && (
-          <SpendingBreakdown nodes={nodes} normalization={filter.normalization} periodLabel={periodLabel} isLoading={isLoading} />
+          <SpendingBreakdown nodes={nodes} normalization={effectiveFilter.normalization} currency={effectiveFilter.currency} periodLabel={periodLabel} isLoading={isLoading} />
         )}
         {filter.account_category === 'vn' && (
-          <RevenueBreakdown nodes={nodes} normalization={filter.normalization} periodLabel={periodLabel} isLoading={isLoading} />
+          <RevenueBreakdown nodes={nodes} normalization={effectiveFilter.normalization} currency={effectiveFilter.currency} periodLabel={periodLabel} isLoading={isLoading} />
         )}
 
         <Card className="shadow-sm">
@@ -480,18 +541,19 @@ function BudgetExplorerPage() {
             <div className="flex items-center justify-between">
               <h3 className="text-base sm:text-lg font-semibold"><Trans>Top Categories</Trans></h3>
               <Button asChild variant="outline" size="sm">
-                <Link to="/entity-analytics" search={{ view: 'line-items', filter }}>
+                <Link to="/entity-analytics" search={{ view: 'line-items', filter: { ...filter, currency: undefined, inflation_adjusted: undefined } }}>
                   <Trans>See advanced view</Trans>
                 </Link>
               </Button>
             </div>
           </CardHeader>
-          <CardContent>
-            <BudgetCategoryList
+        <CardContent>
+          <BudgetCategoryList
               aggregated={nodes}
               depth={currentDepthNumeric}
               accountCategory={filter.account_category}
-              normalization={filter.normalization}
+              normalization={effectiveFilter.normalization}
+              currency={effectiveFilter.currency}
               isLoading={isLoading}
             />
           </CardContent>
@@ -559,7 +621,7 @@ function BudgetExplorerPage() {
               data={data}
               groupBy={activePrimary}
               isLoading={isLoading}
-              filter={filter}
+              filter={effectiveFilter}
             />
           </CardContent>
         </Card>

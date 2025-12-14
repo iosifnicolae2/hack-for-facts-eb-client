@@ -4,13 +4,15 @@ import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { withDefaultExcludes } from "@/lib/filterUtils";
 
-const getDefaultMapFilters = (userCurrency: 'RON' | 'EUR'): AnalyticsFilterType => withDefaultExcludes({
+const getDefaultMapFilters = (currency: 'RON' | 'EUR' | 'USD'): AnalyticsFilterType => withDefaultExcludes({
   report_period: {
     type: 'YEAR',
     selection: { dates: [String(defaultYearRange.end)] },
   },
   account_category: 'ch',
-  normalization: userCurrency === 'EUR' ? 'per_capita_euro' : 'per_capita',
+  normalization: 'per_capita',
+  currency,
+  inflation_adjusted: false,
   exclude: {
     economic_prefixes: [...DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES],
     functional_prefixes: [...DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES], 
@@ -19,13 +21,13 @@ const getDefaultMapFilters = (userCurrency: 'RON' | 'EUR'): AnalyticsFilterType 
 
 interface UseEntityMapFilterProps {
     year: number;
-    userCurrency?: 'RON' | 'EUR';
+    currency?: 'RON' | 'EUR' | 'USD';
 }
 
-export const useEntityMapFilter = ({ year, userCurrency = 'RON' }: UseEntityMapFilterProps) => {
+export const useEntityMapFilter = ({ year, currency = 'RON' }: UseEntityMapFilterProps) => {
     const navigate = useNavigate({ from: '/entities/$cui' });
     const search = useSearch({ from: '/entities/$cui' });
-    const mapFilters = search.mapFilters ?? getDefaultMapFilters(userCurrency);
+    const mapFilters = search.mapFilters ?? getDefaultMapFilters(currency);
 
     // We want the year from the entity page to override the year from the map filters.
     mapFilters.report_period = {
@@ -44,12 +46,18 @@ export const useEntityMapFilter = ({ year, userCurrency = 'RON' }: UseEntityMapF
     };
 
     useEffect(() => {
-        if (userCurrency === 'EUR' && mapFilters.normalization !== 'total_euro' && mapFilters.normalization !== 'per_capita_euro') {
-            updateMapFilters({ normalization: 'per_capita_euro' })
-        } else if (userCurrency === 'RON' && mapFilters.normalization !== 'total' && mapFilters.normalization !== 'per_capita') {
-            updateMapFilters({ normalization: 'per_capita' })
+        if (!mapFilters.currency) {
+            updateMapFilters({ currency })
+            return
         }
-    }, [userCurrency, mapFilters.normalization, updateMapFilters])
+        if (mapFilters.normalization === 'total_euro') {
+            updateMapFilters({ normalization: 'total', currency: 'EUR' })
+            return
+        }
+        if (mapFilters.normalization === 'per_capita_euro') {
+            updateMapFilters({ normalization: 'per_capita', currency: 'EUR' })
+        }
+    }, [currency, mapFilters.currency, mapFilters.normalization, updateMapFilters])
 
     return { mapFilters, updateMapFilters };
 };

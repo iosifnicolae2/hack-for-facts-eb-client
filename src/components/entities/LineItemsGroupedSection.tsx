@@ -5,6 +5,7 @@ import { useFinancialData } from '@/hooks/useFinancialData';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import type { TMonth, TQuarter } from '@/schemas/reporting';
+import type { Currency, Normalization } from '@/schemas/charts';
 
 type GroupMode = 'functional' | 'funding' | 'expenseType';
 
@@ -17,7 +18,8 @@ export interface LineItemsGroupedSectionProps {
   years: number[];
   month?: TMonth;
   quarter?: TQuarter;
-  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
+  normalization?: Normalization;
+  currency?: Currency;
   onYearChange: (year: number) => void;
   onPrefetchYear?: (year: number) => void;
   isLoading?: boolean;
@@ -54,6 +56,7 @@ export const LineItemsGroupedSection: React.FC<LineItemsGroupedSectionProps> = (
   month,
   quarter,
   normalization,
+  currency,
   onYearChange,
   onPrefetchYear,
   isLoading = false,
@@ -220,10 +223,10 @@ export const LineItemsGroupedSection: React.FC<LineItemsGroupedSectionProps> = (
         groups={groups}
         baseTotal={baseTotal}
         normalization={normalization}
+        currency={currency}
         searchFocusKey={searchFocusKey}
         transferFilter={transferFilter}
       />
     </div>
   );
 };
-

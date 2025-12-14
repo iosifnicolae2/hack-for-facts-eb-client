@@ -1,8 +1,9 @@
 import { graphqlRequest } from "./graphql";
 import { createLogger } from "../logger";
 import { EntitySearchResult, EntitySearchNode } from "@/schemas/entities";
-import { Normalization, AnalyticsSeries } from '@/schemas/charts';
+import { AnalyticsSeries } from '@/schemas/charts';
 import { GqlReportType, ReportPeriodInput } from "@/schemas/reporting";
+import type { NormalizationOptions } from "@/lib/normalization";
 
 const logger = createLogger("entities-api");
 
@@ -110,7 +111,17 @@ export interface ReportConnection {
 }
 
 const GET_ENTITY_DETAILS_QUERY = `
-  query GetEntityDetails($cui: ID!, $normalization: Normalization, $reportPeriod: ReportPeriodInput!, $reportType: ReportType, $trendPeriod: ReportPeriodInput!, $mainCreditorCui: String) {
+  query GetEntityDetails(
+    $cui: ID!
+    $normalization: Normalization
+    $currency: Currency
+    $inflation_adjusted: Boolean
+    $show_period_growth: Boolean
+    $reportPeriod: ReportPeriodInput!
+    $reportType: ReportType
+    $trendPeriod: ReportPeriodInput!
+    $mainCreditorCui: String
+  ) {
     entity(cui: $cui) {
       cui
       name
@@ -133,22 +144,22 @@ const GET_ENTITY_DETAILS_QUERY = `
         cui 
         name
       }
-      totalIncome(period: $reportPeriod, reportType: $reportType, normalization: $normalization, main_creditor_cui: $mainCreditorCui)
-      totalExpenses(period: $reportPeriod, reportType: $reportType, normalization: $normalization, main_creditor_cui: $mainCreditorCui)
-      budgetBalance(period: $reportPeriod, reportType: $reportType, normalization: $normalization, main_creditor_cui: $mainCreditorCui)
-      incomeTrend(period: $trendPeriod, reportType: $reportType, normalization: $normalization, main_creditor_cui: $mainCreditorCui) {
+      totalIncome(period: $reportPeriod, reportType: $reportType, normalization: $normalization, currency: $currency, inflation_adjusted: $inflation_adjusted, main_creditor_cui: $mainCreditorCui)
+      totalExpenses(period: $reportPeriod, reportType: $reportType, normalization: $normalization, currency: $currency, inflation_adjusted: $inflation_adjusted, main_creditor_cui: $mainCreditorCui)
+      budgetBalance(period: $reportPeriod, reportType: $reportType, normalization: $normalization, currency: $currency, inflation_adjusted: $inflation_adjusted, main_creditor_cui: $mainCreditorCui)
+      incomeTrend(period: $trendPeriod, reportType: $reportType, normalization: $normalization, currency: $currency, inflation_adjusted: $inflation_adjusted, show_period_growth: $show_period_growth, main_creditor_cui: $mainCreditorCui) {
         seriesId
         xAxis { name type unit }
         yAxis { name type unit }
         data { x y }
       }
-      expenseTrend: expensesTrend(period: $trendPeriod, reportType: $reportType, normalization: $normalization, main_creditor_cui: $mainCreditorCui) {
+      expenseTrend: expensesTrend(period: $trendPeriod, reportType: $reportType, normalization: $normalization, currency: $currency, inflation_adjusted: $inflation_adjusted, show_period_growth: $show_period_growth, main_creditor_cui: $mainCreditorCui) {
         seriesId
         xAxis { name type unit }
         yAxis { name type unit }
         data { x y }
       }
-      balanceTrend(period: $trendPeriod, reportType: $reportType, normalization: $normalization, main_creditor_cui: $mainCreditorCui) {
+      balanceTrend(period: $trendPeriod, reportType: $reportType, normalization: $normalization, currency: $currency, inflation_adjusted: $inflation_adjusted, show_period_growth: $show_period_growth, main_creditor_cui: $mainCreditorCui) {
         seriesId
         xAxis { name type unit }
         yAxis { name type unit }
@@ -158,14 +169,24 @@ const GET_ENTITY_DETAILS_QUERY = `
   }
 `;
 
-export async function getEntityDetails(
-  cui: string,
-  normalization: Normalization = 'total',
-  reportPeriod: ReportPeriodInput,
-  reportType?: GqlReportType,
-  trendPeriod?: ReportPeriodInput,
+export async function getEntityDetails(params: {
+  cui: string
+  reportPeriod: ReportPeriodInput
+  reportType?: GqlReportType
+  trendPeriod?: ReportPeriodInput
   mainCreditorCui?: string
-): Promise<EntityDetailsData | null> {
+} & NormalizationOptions): Promise<EntityDetailsData | null> {
+  const {
+    cui,
+    reportPeriod,
+    reportType,
+    trendPeriod,
+    mainCreditorCui,
+    normalization = 'total',
+    currency = 'RON',
+    inflation_adjusted = false,
+    show_period_growth = false,
+  } = params
   logger.info(`Fetching entity details for CUI: ${cui}`);
 
   try {
@@ -177,7 +198,7 @@ export async function getEntityDetails(
       }) | null;
     }>(
       GET_ENTITY_DETAILS_QUERY,
-      { cui, normalization, reportPeriod, reportType, trendPeriod: trendPeriod ?? reportPeriod, mainCreditorCui }
+      { cui, normalization, currency, inflation_adjusted, show_period_growth, reportPeriod, reportType, trendPeriod: trendPeriod ?? reportPeriod, mainCreditorCui }
     );
 
     if (!response || !response.entity) {
@@ -322,10 +343,18 @@ export async function getReportsConnection(
 }
 
 const GET_ENTITY_LINE_ITEMS_QUERY = `
-  query GetEntityLineItems($cui: ID!, $reportPeriod: ReportPeriodInput!, $reportType: ReportType, $normalization: Normalization, $mainCreditorCui: String) {
+  query GetEntityLineItems(
+    $cui: ID!
+    $reportPeriod: ReportPeriodInput!
+    $reportType: ReportType
+    $normalization: Normalization
+    $currency: Currency
+    $inflation_adjusted: Boolean
+    $mainCreditorCui: String
+  ) {
     entity(cui: $cui) {
       executionLineItemsCh: executionLineItems(
-        filter: { account_category: ch, report_period: $reportPeriod, report_type: $reportType, normalization: $normalization, main_creditor_cui: $mainCreditorCui }
+        filter: { account_category: ch, report_period: $reportPeriod, report_type: $reportType, normalization: $normalization, currency: $currency, inflation_adjusted: $inflation_adjusted, main_creditor_cui: $mainCreditorCui }
         sort: { by: "amount", order: "DESC" }
         limit: 15000
       ) {
@@ -343,7 +372,7 @@ const GET_ENTITY_LINE_ITEMS_QUERY = `
         }
       }
       executionLineItemsVn: executionLineItems(
-        filter: { account_category: vn, report_period: $reportPeriod, report_type: $reportType, normalization: $normalization, main_creditor_cui: $mainCreditorCui }
+        filter: { account_category: vn, report_period: $reportPeriod, report_type: $reportType, normalization: $normalization, currency: $currency, inflation_adjusted: $inflation_adjusted, main_creditor_cui: $mainCreditorCui }
         sort: { by: "amount", order: "DESC" }
         limit: 15000
       ) {
@@ -371,19 +400,29 @@ const GET_ENTITY_LINE_ITEMS_QUERY = `
 `;
 
 export async function getEntityExecutionLineItems(
-  cui: string,
-  normalization: Normalization = 'total',
-  reportPeriod: ReportPeriodInput,
-  reportType?: GqlReportType,
-  mainCreditorCui?: string,
+  params: {
+    cui: string
+    reportPeriod: ReportPeriodInput
+    reportType?: GqlReportType
+    mainCreditorCui?: string
+  } & NormalizationOptions,
 ): Promise<{ nodes: ExecutionLineItem[], fundingSources: FundingSourceOption[] }> {
+  const {
+    cui,
+    reportPeriod,
+    reportType,
+    mainCreditorCui,
+    normalization = 'total',
+    currency = 'RON',
+    inflation_adjusted = false,
+  } = params
   const data = await graphqlRequest<{
     entity: {
       executionLineItemsCh?: { nodes: ExecutionLineItem[] } | null;
       executionLineItemsVn?: { nodes: ExecutionLineItem[] } | null;
     } | null;
     fundingSources?: { nodes: FundingSourceOption[] } | null;
-  }>(GET_ENTITY_LINE_ITEMS_QUERY, { cui, reportPeriod, reportType, normalization, mainCreditorCui });
+  }>(GET_ENTITY_LINE_ITEMS_QUERY, { cui, reportPeriod, reportType, normalization, currency, inflation_adjusted, mainCreditorCui });
 
   const periodType = reportPeriod.type;
   const mapWithAmount = (n: any): ExecutionLineItem => {

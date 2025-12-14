@@ -20,13 +20,38 @@ export const unitFormatters: Record<string, (value: number, notation: 'standard'
     'EUR': (value, notation) => formatCurrency(value, notation, 'EUR'),
     'EUR/capita': (value, notation) => formatCurrency(value, notation, 'EUR') + '/capita',
     'RON/capita': (value, notation) => formatCurrency(value, notation, 'RON') + '/capita',
+    'USD': (value, notation) => formatCurrency(value, notation, 'USD'),
+    'USD/capita': (value, notation) => formatCurrency(value, notation, 'USD') + '/capita',
 };
+
+type SupportedCurrency = 'RON' | 'EUR' | 'USD';
+
+function parseCurrencyUnit(unit: string): { currency: SupportedCurrency; suffix: string } | null {
+    const normalizedUnit = unit.trim().replace(/\s+/g, '');
+    if (!normalizedUnit) return null;
+
+    const supportedCurrencies: SupportedCurrency[] = ['RON', 'EUR', 'USD'];
+    for (const currency of supportedCurrencies) {
+        if (normalizedUnit === currency) return { currency, suffix: '' };
+        if (normalizedUnit.startsWith(`${currency}/`)) return { currency, suffix: normalizedUnit.slice(currency.length) };
+    }
+
+    return null;
+}
 
 export const yValueFormatter = (value: number, unit: string = '', notation: 'standard' | 'compact' = 'compact') => {
     const formatter = unitFormatters[unit];
     if (formatter) {
         return formatter(value, notation);
     }
+
+    // Handle localized per-capita suffixes (e.g., "RON/locuitor") and other currency-based units
+    // by falling back to currency formatting whenever the unit starts with a supported currency.
+    const currencyUnit = parseCurrencyUnit(unit);
+    if (currencyUnit) {
+        return `${formatCurrency(value, notation, currencyUnit.currency)}${currencyUnit.suffix}`;
+    }
+
     if (unit.includes('%')) {
         return `${formatNumber(value, notation)}${unit}`.trim();
     }

@@ -60,9 +60,13 @@ export const ReportTypeEnum = z.enum(['Executie bugetara agregata la nivel de or
   .describe('The aggregation level of budget execution reports in the Romanian public finance system. "Executie bugetara agregata la nivel de ordonator principal" (PRINCIPAL_AGGREGATED): data aggregated at the level of main budget administrators (e.g., Ministry of Education) - use for high-level analysis. "Executie bugetara agregata la nivel de ordonator secundar" (SECONDARY_AGGREGATED): data aggregated at secondary budget administrators - use for more detailed analysis. "Executie bugetara detaliata" (DETAILED): itemized budget execution with full detail - use for granular analysis. Choose based on desired detail level.');
 export type ReportType = z.infer<typeof ReportTypeEnum>;
 
-export const Normalization = z.enum(['total', 'total_euro', 'per_capita', 'per_capita_euro'])
-  .describe('How to normalize monetary values for fair comparison. "total": absolute amounts in RON - use for seeing actual budget sizes. "total_euro": absolute amounts converted to EUR - use for international comparisons. "per_capita": amounts divided by population in RON per person - use for comparing entities of different sizes (e.g., Cluj vs București). "per_capita_euro": per capita in EUR - use for international per-capita comparisons. Always use per_capita when comparing counties/cities to account for population differences.');
+export const Normalization = z.enum(['total', 'total_euro', 'per_capita', 'per_capita_euro', 'percent_gdp'])
+  .describe('How to normalize monetary values for fair comparison. "total": absolute amounts. "per_capita": amounts divided by population for fair comparisons between different-sized entities. "percent_gdp": express as % of GDP. "total_euro" and "per_capita_euro" are legacy; prefer normalization="total"|"per_capita" + currency="EUR".');
 export type Normalization = z.infer<typeof Normalization>;
+
+export const Currency = z.enum(['RON', 'EUR', 'USD'])
+  .describe('Output currency for normalized values. "RON": Romanian Leu (default). "EUR": Euro. "USD": US Dollar.');
+export type Currency = z.infer<typeof Currency>;
 
 // ----------------------------------------------------------------------------
 // Reporting period (client-side Zod schema to mirror GraphQL ReportPeriodInput)
@@ -126,7 +130,10 @@ export const AnalyticsFilterSchema = z.object({
   max_population: z.number().optional().describe('Maximum population threshold for filtering entities. Use to focus on smaller cities/communes or exclude large metropolitan areas. Example: 50000 to include only smaller towns. Useful for studying rural vs urban spending patterns. Combine with min_population to create population brackets like "medium-sized cities (50k-200k residents)".'),
 
   // Aggregates & transforms
-  normalization: z.enum(['total', 'per_capita', 'total_euro', 'per_capita_euro']).optional().describe('How to normalize/transform monetary values. "total": raw absolute amounts in RON. "per_capita": divide by population for fair comparison between different-sized entities. "total_euro": convert to EUR using official exchange rates. "per_capita_euro": per capita in EUR. Always use per_capita when comparing counties/cities of different sizes. Use euro variants for international comparisons.'),
+  normalization: z.enum(['total', 'per_capita', 'percent_gdp', 'total_euro', 'per_capita_euro']).optional().describe('How to normalize/transform monetary values. "total": raw absolute amounts. "per_capita": divide by population for fair comparison between different-sized entities. "percent_gdp": express as % of GDP. "total_euro" and "per_capita_euro" are legacy; prefer normalization="total"|"per_capita" + currency="EUR".'),
+  currency: Currency.optional().describe('Output currency for monetary values. Ignored when normalization="percent_gdp".'),
+  inflation_adjusted: z.boolean().optional().describe('Adjust monetary values for inflation to constant 2024 prices. Ignored when normalization="percent_gdp".'),
+  show_period_growth: z.boolean().optional().describe('For time series, return period-over-period growth (%) instead of levels.'),
   aggregate_min_amount: z.number().or(z.string()).optional().describe('Minimum threshold for aggregated total amounts (after summing all matching line items). Use to filter out small budget items when looking at totals. Example: 1000000 to show only aggregates over 1M RON. Applied after aggregation, so filters based on sum of all items. Different from item_min_amount which filters individual line items. Accepts number or string.'),
   aggregate_max_amount: z.number().or(z.string()).optional().describe('Maximum threshold for aggregated total amounts (after summing all matching line items). Use to focus on smaller budget categories or cap visualizations. Example: 10000000 to show only aggregates under 10M RON. Applied after aggregation. Useful for excluding very large categories that would skew treemap/pie charts. Accepts number or string.'),
 

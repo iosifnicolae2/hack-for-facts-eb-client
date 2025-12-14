@@ -7,17 +7,17 @@ import { Plus, BarChart3 } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 import { chartRelatesToEntity } from '@/lib/chart-entity-utils';
 import { buildEntityIncomeExpenseChartLink } from '@/lib/chart-links';
-import { Normalization } from '@/schemas/charts';
 import { Trans } from '@lingui/react/macro';
+import type { NormalizationOptions } from '@/lib/normalization';
 
 type Props = {
     entity?: EntityDetailsData | null | undefined;
-    normalization: Normalization;
+    normalizationOptions: NormalizationOptions;
 };
 
 const chartsStore = getChartsStore();
 
-export function RelatedChartsView({ entity, normalization }: Props) {
+export function RelatedChartsView({ entity, normalizationOptions }: Props) {
     const [charts, setCharts] = useState(() => chartsStore.loadSavedCharts({ filterDeleted: true, sort: true }));
     const [categories, setCategories] = useState(() => chartsStore.loadCategories());
 
@@ -50,7 +50,7 @@ export function RelatedChartsView({ entity, normalization }: Props) {
     }
 
     if (filtered.length === 0) {
-        const link = buildEntityIncomeExpenseChartLink(entity.cui, entity.name, normalization);
+        const link = buildEntityIncomeExpenseChartLink(entity.cui, entity.name, normalizationOptions);
         return (
             <div className="text-center py-16 space-y-4">
                 <BarChart3 className="h-16 w-16 mx-auto text-muted-foreground" />
@@ -79,5 +79,4 @@ export function RelatedChartsView({ entity, normalization }: Props) {
         </div>
     );
 }
-
 

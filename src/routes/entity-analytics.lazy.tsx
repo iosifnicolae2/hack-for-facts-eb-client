@@ -25,6 +25,9 @@ import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
 import { FloatingQuickNav } from '@/components/ui/FloatingQuickNav'
 import { usePeriodLabel } from '@/hooks/use-period-label'
+import { useUserCurrency } from '@/lib/hooks/useUserCurrency'
+import { useUserInflationAdjusted } from '@/lib/hooks/useUserInflationAdjusted'
+import type { Currency, Normalization } from '@/schemas/charts'
 
 export const Route = createLazyFileRoute('/entity-analytics')({
   component: EntityAnalyticsPage,
@@ -33,9 +36,36 @@ export const Route = createLazyFileRoute('/entity-analytics')({
 function EntityAnalyticsPage() {
   const { filter, sortBy, sortOrder, setSorting, page, pageSize, setPagination, resetFilter, view, treemapPrimary, treemapDepth, setTreemapPrimary, setTreemapDepth, treemapPath, setTreemapPath, transferFilter, setTransferFilter } = useEntityAnalyticsFilter()
   const [exporting, setExporting] = useState(false)
+  const [userCurrency] = useUserCurrency()
+  const [userInflationAdjusted] = useUserInflationAdjusted()
+
+  const effectiveNormalization: Normalization = useMemo(() => {
+    const raw = filter.normalization ?? 'total'
+    if (raw === 'total_euro') return 'total'
+    if (raw === 'per_capita_euro') return 'per_capita'
+    return raw
+  }, [filter.normalization])
+
+  const effectiveCurrency: Currency = useMemo(() => {
+    const rawNormalization = filter.normalization
+    if (rawNormalization === 'total_euro' || rawNormalization === 'per_capita_euro') return 'EUR'
+    return (filter.currency ?? userCurrency) as Currency
+  }, [filter.currency, filter.normalization, userCurrency])
+
+  const effectiveInflationAdjusted = useMemo(() => {
+    if (effectiveNormalization === 'percent_gdp') return false
+    return Boolean(filter.inflation_adjusted ?? userInflationAdjusted)
+  }, [effectiveNormalization, filter.inflation_adjusted, userInflationAdjusted])
+
+  const effectiveFilter: AnalyticsFilterType = useMemo(() => ({
+    ...filter,
+    normalization: effectiveNormalization,
+    currency: effectiveCurrency,
+    inflation_adjusted: effectiveInflationAdjusted,
+  }), [effectiveCurrency, effectiveInflationAdjusted, effectiveNormalization, filter])
 
   const offset = useMemo(() => (page - 1) * pageSize, [page, pageSize])
-  const filterHash = useMemo(() => generateHash(JSON.stringify(filter)), [filter])
+  const filterHash = useMemo(() => generateHash(JSON.stringify(effectiveFilter)), [effectiveFilter])
   const periodLabel = usePeriodLabel(filter.report_period)
   const previousFilterHashRef = useRef<string>(filterHash)
 
@@ -51,7 +81,7 @@ function EntityAnalyticsPage() {
     queryKey: ['entity-analytics', filterHash, sortBy, sortOrder, page, pageSize],
     queryFn: () =>
       fetchEntityAnalytics({
-        filter: normalizeFilterForSort(filter, sortBy),
+        filter: normalizeFilterForSort(effectiveFilter, sortBy),
         sort: sortBy
           ? { by: mapColumnIdToSortBy(sortBy), order: (normalizeOrder(sortOrder) as 'asc' | 'desc') }
           : undefined,
@@ -63,7 +93,7 @@ function EntityAnalyticsPage() {
 
   const { data: aggregatedData, isLoading: isLoadingAggregated, error: errorAggregated } = useQuery({
     queryKey: ['aggregatedLineItems', filterHash],
-    queryFn: () => fetchAggregatedLineItems({ filter, limit: 150000 }),
+    queryFn: () => fetchAggregatedLineItems({ filter: effectiveFilter, limit: 150000 }),
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled: view === 'line-items',
   });
@@ -108,7 +138,7 @@ function EntityAnalyticsPage() {
       const all: EntityAnalyticsDataPoint[] = []
       for (let fetched = 0; fetched < total; fetched += pageSizeBatch) {
         const batch = await fetchEntityAnalytics({
-          filter: normalizeFilterForSort(filter, sortBy),
+          filter: normalizeFilterForSort(effectiveFilter, sortBy),
           sort: sortBy ? { by: mapColumnIdToSortBy(sortBy), order: (normalizeOrder(sortOrder) as 'asc' | 'desc') } : undefined,
           limit: pageSizeBatch,
           offset: fetched,
@@ -167,7 +197,7 @@ function EntityAnalyticsPage() {
           mapViewType={mapViewType}
           mapActive
           chartActive
-          filterInput={filter}
+          filterInput={effectiveFilter}
         />
         <div className="flex justify-end">
           {/* EntityAnalyticsViewToggle removed, now handled within filter */}
@@ -227,7 +257,8 @@ function EntityAnalyticsPage() {
               onColumnOrderChange={setColumnOrder}
               currencyFormat={currencyFormat}
               rowNumberStart={offset}
-              normalization={filter.normalization}
+              normalization={effectiveFilter.normalization}
+              currency={effectiveFilter.currency}
             />
             {data?.pageInfo?.totalCount ? (
               <Pagination
@@ -244,7 +275,7 @@ function EntityAnalyticsPage() {
         ) : (
           <div className="mt-4 space-y-4">
             <EntityAnalyticsTreemap
-              filter={filter}
+              filter={effectiveFilter}
               data={aggregatedData}
               isLoading={isLoadingAggregated}
               initialPrimary={treemapPrimary ?? 'fn'}
@@ -255,12 +286,12 @@ function EntityAnalyticsPage() {
               onTreemapPathChange={setTreemapPath}
             />
             {filter.account_category === 'ch' ? (
-                <SpendingBreakdown nodes={aggregatedNodes} normalization={filter.normalization} isLoading={isLoadingAggregated} periodLabel={periodLabel} />
+                <SpendingBreakdown nodes={aggregatedNodes} normalization={effectiveFilter.normalization} currency={effectiveFilter.currency} isLoading={isLoadingAggregated} periodLabel={periodLabel} />
             ) : (
-                <RevenueBreakdown nodes={aggregatedNodes} normalization={filter.normalization} isLoading={isLoadingAggregated} periodLabel={periodLabel} />
+                <RevenueBreakdown nodes={aggregatedNodes} normalization={effectiveFilter.normalization} currency={effectiveFilter.currency} isLoading={isLoadingAggregated} periodLabel={periodLabel} />
             )}
             <EntityAnalyticsLineItems
-              filter={filter}
+              filter={effectiveFilter}
               title={filter.account_category === 'vn' ? t`Income` : t`Expenses`}
               data={aggregatedData}
               isLoading={isLoadingAggregated}
@@ -329,4 +360,3 @@ function normalizeFilterForSort(filter: AnalyticsFilterType, sortBy?: string) {
   if (!sortBy) return filter
   return filter
 }
-

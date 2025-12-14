@@ -5,6 +5,7 @@ import { formatCurrency, formatNumber, getNormalizationUnit } from '@/lib/utils'
 import type { GroupedItem } from './budget-transform'
 import { Skeleton } from '@/components/ui/skeleton'
 import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults'
+import type { Currency, Normalization } from '@/schemas/charts'
 
 type AggregatedItem = {
   fn_c: string | null
@@ -15,13 +16,14 @@ type AggregatedItem = {
 }
 
 type Props = {
-  aggregated: AggregatedItem[]
-  depth: 2 | 4 | 6
-  accountCategory?: 'ch' | 'vn'
-  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro'
-  showEconomic?: boolean
-  economicInfoText?: React.ReactNode
-  isLoading?: boolean
+  readonly aggregated: AggregatedItem[]
+  readonly depth: 2 | 4 | 6
+  readonly accountCategory?: 'ch' | 'vn'
+  readonly normalization?: Normalization
+  readonly currency?: Currency
+  readonly showEconomic?: boolean
+  readonly economicInfoText?: React.ReactNode
+  readonly isLoading?: boolean
 }
 
 const CategoryItemSkeleton = () => (
@@ -47,9 +49,10 @@ const CategoryItemSkeleton = () => (
     </div>
   )
 
-const CategoryColumn = ({ title, items, baseTotal, codePrefix, normalization }: { title: React.ReactNode, items: GroupedItem[], baseTotal: number, codePrefix: 'fn' | 'ec', normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro' }) => {
-    const unit = getNormalizationUnit(normalization ?? 'total');
-    const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON';
+const CategoryColumn = ({ title, items, baseTotal, codePrefix, normalization, currency }: { title: React.ReactNode, items: GroupedItem[], baseTotal: number, codePrefix: 'fn' | 'ec', normalization?: Normalization, currency?: Currency }) => {
+    const unit = getNormalizationUnit({ normalization: (normalization ?? 'total') as any, currency: currency as any });
+    const isPercent = unit.includes('%')
+    const currencyCode: Currency = currency ?? (unit.includes('EUR') ? 'EUR' : unit.includes('USD') ? 'USD' : 'RON');
     // Denominator for progress bars uses the sum of absolute item totals
     const absTotal = useMemo(() => items.reduce((sum, it) => sum + Math.abs(it.total), 0), [items])
 
@@ -72,10 +75,10 @@ const CategoryColumn = ({ title, items, baseTotal, codePrefix, normalization }: 
                             </div>
                             <div className="flex-shrink-0 text-right">
                                 <div className="font-semibold text-sm">
-                                    {formatCurrency(g.total, 'compact', currencyCode)} ({formatNumber(pctText)}%)
+                                    {isPercent ? `${formatNumber(g.total, 'compact')}%` : formatCurrency(g.total, 'compact', currencyCode)} ({formatNumber(pctText)}%)
                                 </div>
                                 <div className="text-xs text-muted-foreground font-mono">
-                                    {formatCurrency(g.total, 'standard', currencyCode)} {unit.includes('capita') && '/ capita'}
+                                    {isPercent ? `${formatNumber(g.total, 'standard')}%` : formatCurrency(g.total, 'standard', currencyCode)} {unit.includes('capita') && '/ capita'}
                                 </div>
                             </div>
                         </div>
@@ -93,7 +96,7 @@ const CategoryColumn = ({ title, items, baseTotal, codePrefix, normalization }: 
     )
 }
 
-export function BudgetCategoryList({ aggregated, depth, accountCategory, normalization, showEconomic = true, economicInfoText, isLoading }: Props) {
+export function BudgetCategoryList({ aggregated, depth, accountCategory, normalization, currency, showEconomic = true, economicInfoText, isLoading }: Props) {
   const filteredAggregated = useMemo(() => {
     if (accountCategory === 'ch') {
       return aggregated.filter((item) => {
@@ -134,9 +137,9 @@ export function BudgetCategoryList({ aggregated, depth, accountCategory, normali
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-      <CategoryColumn title={<Trans>Top Functional Categories</Trans>} items={functional.items} baseTotal={functional.baseTotal} codePrefix="fn" normalization={normalization} />
+      <CategoryColumn title={<Trans>Top Functional Categories</Trans>} items={functional.items} baseTotal={functional.baseTotal} codePrefix="fn" normalization={normalization} currency={currency} />
       {showEconomic ? (
-        <CategoryColumn title={<Trans>Top Economic Categories</Trans>} items={economic.items} baseTotal={economic.baseTotal} codePrefix="ec" normalization={normalization} />
+        <CategoryColumn title={<Trans>Top Economic Categories</Trans>} items={economic.items} baseTotal={economic.baseTotal} codePrefix="ec" normalization={normalization} currency={currency} />
       ) : (
         <div>
           <h4 className="text-base font-semibold mb-4"><Trans>Top Economic Categories</Trans></h4>

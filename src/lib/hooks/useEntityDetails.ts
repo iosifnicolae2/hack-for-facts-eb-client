@@ -1,33 +1,33 @@
 import { useQuery, queryOptions, keepPreviousData } from '@tanstack/react-query';
 import { getEntityDetails, getEntityExecutionLineItems, getEntityRelationships, getEntityReports, getReportsConnection, ReportsFilterInput, ReportConnection } from '@/lib/api/entities';
-import { Normalization } from '@/schemas/charts';
+import type { NormalizationOptions } from '@/lib/normalization';
 import { ReportPeriodInput, GqlReportType } from '@/schemas/reporting';
 import { generateHash } from '../utils';
 
 export const entityDetailsQueryOptions = (
-  cui: string,
-  normalization: Normalization,
-  reportPeriod: ReportPeriodInput,
-  reportType?: GqlReportType,
-  trendPeriod?: ReportPeriodInput,
-  mainCreditorCui?: string,
+  params: {
+    cui: string
+    reportPeriod: ReportPeriodInput
+    reportType?: GqlReportType
+    trendPeriod?: ReportPeriodInput
+    mainCreditorCui?: string
+  } & NormalizationOptions,
 ) => {
 
-  const payloadString = JSON.stringify({ cui, normalization, reportPeriod, reportType, trendPeriod, mainCreditorCui });
+  const payloadString = JSON.stringify(params);
   const hash = generateHash(payloadString);
 
   return queryOptions({
     queryKey: ['entityDetails', hash],
-    queryFn: () => getEntityDetails(cui, normalization, reportPeriod, reportType, trendPeriod, mainCreditorCui),
+    queryFn: () => getEntityDetails(params),
     staleTime: 1000 * 60 * 5, // 5 minutes
-    enabled: !!cui,
+    enabled: !!params.cui,
     placeholderData: keepPreviousData,
   });
 
 }
 interface UseEntityDetailsProps {
   cui: string;
-  normalization: Normalization;
   reportPeriod: ReportPeriodInput;
   reportType?: GqlReportType;
   trendPeriod?: ReportPeriodInput;
@@ -35,25 +35,24 @@ interface UseEntityDetailsProps {
 }
 
 export function useEntityDetails(
-  { cui, normalization, reportPeriod, reportType, trendPeriod, mainCreditorCui }: UseEntityDetailsProps
+  params: UseEntityDetailsProps & NormalizationOptions
 ) {
-  return useQuery(entityDetailsQueryOptions(cui, normalization, reportPeriod, reportType, trendPeriod, mainCreditorCui));
+  return useQuery(entityDetailsQueryOptions(params));
 }
 
 // Lazy hooks for heavy data
 
 export function useEntityExecutionLineItems(params: {
   cui: string;
-  normalization: Normalization;
   reportPeriod: ReportPeriodInput;
   reportType?: GqlReportType;
   enabled?: boolean;
   mainCreditorCui?: string;
-}) {
-  const { cui, normalization, reportPeriod, reportType, enabled = true, mainCreditorCui } = params;
+} & NormalizationOptions) {
+  const { cui, reportPeriod, reportType, enabled = true, mainCreditorCui, normalization, currency, inflation_adjusted } = params;
   return useQuery({
-    queryKey: ['entityLineItems', cui, normalization, reportPeriod, reportType, mainCreditorCui],
-    queryFn: () => getEntityExecutionLineItems(cui, normalization, reportPeriod, reportType, mainCreditorCui),
+    queryKey: ['entityLineItems', cui, normalization, currency, inflation_adjusted, reportPeriod, reportType, mainCreditorCui],
+    queryFn: () => getEntityExecutionLineItems({ cui, reportPeriod, reportType, mainCreditorCui, normalization, currency, inflation_adjusted }),
     enabled: !!cui && enabled,
     staleTime: 1000 * 60 * 5,
   });

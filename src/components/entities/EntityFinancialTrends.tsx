@@ -24,10 +24,13 @@ import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
 import { AnalyticsSeries } from '@/schemas/charts';
 import type { ReportPeriodType } from '@/schemas/reporting';
-import { Normalization } from '@/schemas/charts';
-import { NormalizationSelector } from '@/components/common/NormalizationSelector';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import type { NormalizationOptions } from '@/lib/normalization';
+import { normalizeNormalizationOptions } from '@/lib/normalization';
 import { getNormalizationUnit } from '@/lib/utils';
 import { useMediaQuery } from '@/hooks/use-media-query';
+import { NormalizationModeSelect } from '@/components/normalization/normalization-mode-select';
 
 interface EntityFinancialTrendsProps {
   incomeTrend?: AnalyticsSeries | null;
@@ -35,8 +38,9 @@ interface EntityFinancialTrendsProps {
   balanceTrend?: AnalyticsSeries | null;
   currentYear: number;
   entityName: string;
-  normalization: Normalization;
-  onNormalizationChange: (mode: Normalization) => void;
+  normalizationOptions: NormalizationOptions;
+  onNormalizationChange: (next: NormalizationOptions) => void;
+  allowPerCapita?: boolean;
   onYearChange?: (year: number) => void;
   isLoading?: boolean;
   periodType?: ReportPeriodType;
@@ -52,8 +56,9 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
   balanceTrend,
   currentYear,
   entityName,
-  normalization,
+  normalizationOptions,
   onNormalizationChange,
+  allowPerCapita = false,
   onYearChange,
   isLoading,
   periodType = 'YEAR',
@@ -65,6 +70,9 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
 
   const { cui } = useParams({ from: '/entities/$cui' });
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const normalized = normalizeNormalizationOptions(normalizationOptions)
+  const unit = getNormalizationUnit({ normalization: normalized.normalization, currency: normalized.currency, show_period_growth: normalized.show_period_growth })
+  const showPeriodGrowth = normalized.show_period_growth
 
   const trendsAvailable = incomeTrend?.data.length || expenseTrend?.data.length || balanceTrend?.data.length;
 
@@ -84,7 +92,7 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
   }, [incomeTrend, expenseTrend, balanceTrend]);
 
   const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: { name: string; value: number; color: string; stroke?: string; dataKey: string; }[]; label?: string }) => {
-    if (active && payload && payload.length) {
+    if (active && payload?.length) {
       const monthNames: Record<string, string> = {
         '01': t`January`, '02': t`February`, '03': t`March`, '04': t`April`, '05': t`May`, '06': t`June`,
         '07': t`July`, '08': t`August`, '09': t`September`, '10': t`October`, '11': t`November`, '12': t`December`,
@@ -98,7 +106,7 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
             {payload.map((pld) => (
               <div key={pld.dataKey} style={{ color: pld.stroke || pld.color }} className="flex flex-row gap-4 justify-between items-center text-sm">
                 <p>{pld.name}</p>
-                <p className="font-mono text-md font-bold text-slate-800 dark:text-slate-400">{yValueFormatter(pld.value, getNormalizationUnit(normalization))}</p>
+                <p className="font-mono text-md font-bold text-slate-800 dark:text-slate-400">{yValueFormatter(pld.value, unit)}</p>
               </div>
             ))}
           </div>
@@ -153,7 +161,7 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
     onPrefetchPeriod(label);
   };
 
-  const incomeExpenseChartLink = useMemo(() => cui ? buildEntityIncomeExpenseChartLink(cui, entityName, normalization) : null, [cui, entityName, normalization]);
+  const incomeExpenseChartLink = useMemo(() => cui ? buildEntityIncomeExpenseChartLink(cui, entityName, normalizationOptions) : null, [cui, entityName, normalizationOptions]);
 
   // Avoid restarting animations when data hasn't changed
   const dataSignature = useMemo(() => {
@@ -183,7 +191,35 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
               </Link>
             </Button>
           </CardTitle>
-          <NormalizationSelector value={normalization} onChange={onNormalizationChange} />
+          <div className="flex items-center gap-3">
+            <Checkbox
+              id="entity-growth-toggle"
+              checked={showPeriodGrowth}
+              onCheckedChange={(checked) => {
+                onNormalizationChange({
+                  ...normalizationOptions,
+                  show_period_growth: Boolean(checked),
+                })
+              }}
+            />
+            <Label htmlFor="entity-growth-toggle" className="text-xs text-muted-foreground cursor-pointer">
+              <Trans>Show growth (%)</Trans>
+            </Label>
+
+            <NormalizationModeSelect
+              value={normalized.normalization as any}
+              allowPerCapita={allowPerCapita}
+              onChange={(nextNormalization) => {
+                onNormalizationChange({
+                  ...normalizationOptions,
+                  normalization: nextNormalization,
+                  inflation_adjusted: nextNormalization === 'percent_gdp' ? false : normalizationOptions.inflation_adjusted,
+                })
+              }}
+              triggerClassName="h-8 text-xs"
+              className="w-[180px]"
+            />
+          </div>
         </div>
       </CardHeader>
       <CardContent className="pt-6">
@@ -193,7 +229,7 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
           <ResponsiveContainer width="100%" height={400}>
             <ComposedChart
               data={mergedData}
-              margin={{ top: 30, right: 40, left: getNormalizationUnit(normalization).length * 5 + 30, bottom: 5 }}
+              margin={{ top: 30, right: 40, left: unit.length * 5 + 30, bottom: 5 }}
               onClick={handleChartClick}
               onMouseMove={handleChartHover}
               className="cursor-pointer"
@@ -206,7 +242,7 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
                 axisLine={false}
               />
               <YAxis
-                tickFormatter={(val) => yValueFormatter(val, getNormalizationUnit(normalization))}
+                tickFormatter={(val) => yValueFormatter(val, unit)}
                 tick={{ fontSize: 12 }}
                 tickLine={false}
                 axisLine={false}
@@ -237,7 +273,7 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
                 animationEasing='ease-in-out'
                 animationBegin={shouldAnimate ? 300 : 0}
               >
-                {!isMobile && <LabelList dataKey="income" position="top" angle={periodType === 'QUARTER' ? 0 : -45} offset={24} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />}
+                {!isMobile && <LabelList dataKey="income" position="top" angle={periodType === 'QUARTER' ? 0 : -45} offset={24} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), unit, 'compact')} />}
               </Bar>
               <Bar
                 dataKey="expense"
@@ -251,7 +287,7 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
                 animationEasing='ease-in-out'
                 animationBegin={shouldAnimate ? 300 : 0}
               >
-                {!isMobile && <LabelList dataKey="expense" position="top" angle={periodType === 'QUARTER' ? 0 : -45} offset={24} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />}
+                {!isMobile && <LabelList dataKey="expense" position="top" angle={periodType === 'QUARTER' ? 0 : -45} offset={24} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), unit, 'compact')} />}
               </Bar>
 
               <Line
@@ -265,7 +301,7 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
                 dot={{ r: 4, fill: '#6366f1', strokeWidth: 2, stroke: '#f8fafc' }}
                 activeDot={{ r: 6 }}
               >
-                {!isMobile && <LabelList dataKey="balance" position="top" offset={8} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), '', 'compact')} />}
+                {!isMobile && <LabelList dataKey="balance" position="top" offset={8} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), unit, 'compact')} />}
               </Line>
             </ComposedChart>
           </ResponsiveContainer>
@@ -296,7 +332,10 @@ function arePropsEqual(prev: EntityFinancialTrendsProps, next: EntityFinancialTr
     areSeriesEqual(prev.balanceTrend, next.balanceTrend) &&
     prev.currentYear === next.currentYear &&
     prev.entityName === next.entityName &&
-    prev.normalization === next.normalization &&
+    prev.normalizationOptions.normalization === next.normalizationOptions.normalization &&
+    prev.normalizationOptions.currency === next.normalizationOptions.currency &&
+    prev.normalizationOptions.inflation_adjusted === next.normalizationOptions.inflation_adjusted &&
+    prev.normalizationOptions.show_period_growth === next.normalizationOptions.show_period_growth &&
     (prev.periodType ?? 'YEAR') === (next.periodType ?? 'YEAR') &&
     prev.selectedQuarter === next.selectedQuarter &&
     prev.selectedMonth === next.selectedMonth &&

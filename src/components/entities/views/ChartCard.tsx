@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { Chart, Normalization } from '@/schemas/charts';
+import { Chart } from '@/schemas/charts';
 import { useChartData, convertToTimeSeriesData, convertToAggregatedData } from '@/components/charts/hooks/useChartData';
 import { ChartDisplayArea } from '@/components/charts/components/chart-view/ChartDisplayArea';
 import { Button } from '@/components/ui/button';
@@ -7,7 +7,10 @@ import { ExternalLink } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
 import { Trans } from '@lingui/react/macro';
-import { NormalizationSelector } from '@/components/common/NormalizationSelector';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import type { NormalizationOptions } from '@/lib/normalization';
+import { NormalizationModeSelect } from '@/components/normalization/normalization-mode-select';
 
 interface ChartCardProps {
     chart: Chart;
@@ -15,11 +18,12 @@ interface ChartCardProps {
     onYearClick?: (year: number) => void;
     onXAxisItemClick?: (value: number | string) => void;
     xAxisMarker?: number | string;
-    normalization: Normalization;
-    onNormalizationChange: (normalization: Normalization) => void;
+    normalizationOptions: NormalizationOptions;
+    onNormalizationChange: (next: NormalizationOptions) => void;
+    allowPerCapita?: boolean;
 }
 
-export const ChartCard = React.memo(({ chart, onYearClick, onXAxisItemClick, currentYear, xAxisMarker, normalization, onNormalizationChange }: ChartCardProps) => {
+export const ChartCard = React.memo(({ chart, onYearClick, onXAxisItemClick, currentYear, xAxisMarker, normalizationOptions, onNormalizationChange, allowPerCapita = false }: ChartCardProps) => {
     const { dataSeriesMap, isLoadingData, dataError } = useChartData({ chart });
     const { data: timeSeriesData, unitMap: timeSeriesUnitMap } = useMemo(() => convertToTimeSeriesData(dataSeriesMap!, chart), [dataSeriesMap, chart]);
     const { data: aggregatedData, unitMap: aggregatedUnitMap } = useMemo(() => convertToAggregatedData(dataSeriesMap!, chart), [dataSeriesMap, chart]);
@@ -44,6 +48,7 @@ export const ChartCard = React.memo(({ chart, onYearClick, onXAxisItemClick, cur
     }, [onXAxisItemClick, onYearClick]);
 
     const noop = useCallback(() => { }, []);
+    const showPeriodGrowth = Boolean(normalizationOptions.show_period_growth)
 
     return (
         <Card>
@@ -55,7 +60,34 @@ export const ChartCard = React.memo(({ chart, onYearClick, onXAxisItemClick, cur
                         <Trans>Open in Chart Editor</Trans>
                     </Link>
                 </Button>
-                <NormalizationSelector value={normalization} onChange={onNormalizationChange} />
+                <div className="flex items-center gap-3">
+                    <Checkbox
+                        id={`growth-${chart.id}`}
+                        checked={showPeriodGrowth}
+                        onCheckedChange={(checked) => {
+                            onNormalizationChange({
+                                ...normalizationOptions,
+                                show_period_growth: Boolean(checked),
+                            })
+                        }}
+                    />
+                    <Label htmlFor={`growth-${chart.id}`} className="text-xs text-muted-foreground cursor-pointer">
+                        <Trans>Show growth (%)</Trans>
+                    </Label>
+                    <NormalizationModeSelect
+                        value={normalizationOptions.normalization}
+                        allowPerCapita={allowPerCapita}
+                        onChange={(nextNormalization) => {
+                            onNormalizationChange({
+                                ...normalizationOptions,
+                                normalization: nextNormalization,
+                                inflation_adjusted: nextNormalization === 'percent_gdp' ? false : normalizationOptions.inflation_adjusted,
+                            })
+                        }}
+                        triggerClassName="h-8 text-xs"
+                        className="w-[180px]"
+                    />
+                </div>
             </CardHeader>
             <CardContent>
                 <div>
@@ -77,4 +109,3 @@ export const ChartCard = React.memo(({ chart, onYearClick, onXAxisItemClick, cur
         </Card >
     );
 });
-

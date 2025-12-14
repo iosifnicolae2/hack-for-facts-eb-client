@@ -13,8 +13,7 @@ import { useDebouncedCallback } from '@/lib/hooks/useDebouncedCallback'
 
 type Props = {
   readonly excludedItemsSummary?: ExcludedItemsSummary
-  readonly currencyCode: 'RON' | 'EUR'
-  readonly perCapita?: boolean
+  readonly unit: string
   readonly amountFilter?: {
     minValue: number
     maxValue: number
@@ -23,7 +22,7 @@ type Props = {
   }
 }
 
-export function FilteredSpendingInfo({ excludedItemsSummary, currencyCode, perCapita, amountFilter }: Props) {
+export function FilteredSpendingInfo({ excludedItemsSummary, unit, amountFilter }: Props) {
   const isMobile = useIsMobile()
   const [dialogOpen, setDialogOpen] = useState(false)
   const [popoverOpen, setPopoverOpen] = useState(false)
@@ -70,13 +69,12 @@ export function FilteredSpendingInfo({ excludedItemsSummary, currencyCode, perCa
                   <Trans>All budget expenditures</Trans>
                 </div>
               </div>
-              <div className="text-right">
-                <div className="font-mono text-base font-semibold text-foreground whitespace-nowrap">
-                  {yValueFormatter(excludedItemsSummary.totalBeforeExclusion, currencyCode, 'compact')}
-                  {perCapita && <span className="ml-1 font-sans text-xs">/ capita</span>}
-                </div>
-              </div>
-            </div>
+	              <div className="text-right">
+	                <div className="font-mono text-base font-semibold text-foreground whitespace-nowrap">
+	                  {yValueFormatter(excludedItemsSummary.totalBeforeExclusion, unit, 'compact')}
+	                </div>
+	              </div>
+	            </div>
 
             <div className="flex items-center justify-center py-1">
               <div className="w-full border-t border-dashed border-border" />
@@ -93,13 +91,12 @@ export function FilteredSpendingInfo({ excludedItemsSummary, currencyCode, perCa
                   <Trans>Non-direct spending</Trans>
                 </div>
               </div>
-              <div className="text-right">
-                <div className="font-mono text-base font-semibold text-destructive whitespace-nowrap">
-                  {yValueFormatter(excludedItemsSummary.totalExcluded, currencyCode, 'compact')}
-                  {perCapita && <span className="ml-1 font-sans text-xs">/ capita</span>}
-                </div>
-              </div>
-            </div>
+	              <div className="text-right">
+	                <div className="font-mono text-base font-semibold text-destructive whitespace-nowrap">
+	                  {yValueFormatter(excludedItemsSummary.totalExcluded, unit, 'compact')}
+	                </div>
+	              </div>
+	            </div>
 
             <div className="flex items-center justify-center py-1">
               <div className="w-full border-t-2 border-primary/30" />
@@ -116,13 +113,12 @@ export function FilteredSpendingInfo({ excludedItemsSummary, currencyCode, perCa
                   <Trans>Actual impact on budget</Trans>
                 </div>
               </div>
-              <div className="text-right">
-                <div className="font-mono text-lg font-bold text-primary whitespace-nowrap">
-                  {yValueFormatter(excludedItemsSummary.totalAfterExclusion, currencyCode, 'compact')}
-                  {perCapita && <span className="ml-1 font-sans text-sm">/ capita</span>}
-                </div>
-              </div>
-            </div>
+	              <div className="text-right">
+	                <div className="font-mono text-lg font-bold text-primary whitespace-nowrap">
+	                  {yValueFormatter(excludedItemsSummary.totalAfterExclusion, unit, 'compact')}
+	                </div>
+	              </div>
+	            </div>
           </div>
 
           {/* Excluded categories details */}
@@ -139,11 +135,11 @@ export function FilteredSpendingInfo({ excludedItemsSummary, currencyCode, perCa
                       <span className="font-mono bg-muted/70 px-1.5 py-0.5 rounded">{item.code}</span>
                     </div>
                   </div>
-                  <div className="font-mono font-semibold text-foreground whitespace-nowrap">
-                    {yValueFormatter(item.amount, currencyCode, 'compact')}
-                  </div>
-                </div>
-              ))}
+	                  <div className="font-mono font-semibold text-foreground whitespace-nowrap">
+	                    {yValueFormatter(item.amount, unit, 'compact')}
+	                  </div>
+	                </div>
+	              ))}
             </div>
           </div>
         </>
@@ -154,13 +150,12 @@ export function FilteredSpendingInfo({ excludedItemsSummary, currencyCode, perCa
           <h5 className="text-xs font-semibold text-foreground mb-2">
             <Trans>Amount filter (this layer)</Trans>
           </h5>
-          <div className="mb-2 flex items-center justify-between">
-            <Label className="text-xs text-muted-foreground"><Trans>Range</Trans></Label>
-            <div className="text-xs text-muted-foreground font-mono">
-              {yValueFormatter(uiRange[0], currencyCode, 'compact')} – {yValueFormatter(uiRange[1], currencyCode, 'compact')}
-              {perCapita && ' / capita'}
-            </div>
-          </div>
+	          <div className="mb-2 flex items-center justify-between">
+	            <Label className="text-xs text-muted-foreground"><Trans>Range</Trans></Label>
+	            <div className="text-xs text-muted-foreground font-mono">
+	              {yValueFormatter(uiRange[0], unit, 'compact')} – {yValueFormatter(uiRange[1], unit, 'compact')}
+	            </div>
+	          </div>
           <Slider
             value={uiRange}
             min={Math.floor(amountFilter.minValue)}
@@ -172,10 +167,10 @@ export function FilteredSpendingInfo({ excludedItemsSummary, currencyCode, perCa
               debouncedOnChange(newRange)
             }}
           />
-          <div className="flex justify-between text-[10px] text-muted-foreground mt-1.5">
-            <span className="font-mono">{yValueFormatter(amountFilter.minValue, currencyCode, 'compact')}</span>
-            <span className="font-mono">{yValueFormatter(amountFilter.maxValue, currencyCode, 'compact')}</span>
-          </div>
+	          <div className="flex justify-between text-[10px] text-muted-foreground mt-1.5">
+	            <span className="font-mono">{yValueFormatter(amountFilter.minValue, unit, 'compact')}</span>
+	            <span className="font-mono">{yValueFormatter(amountFilter.maxValue, unit, 'compact')}</span>
+	          </div>
           {(amountFilter.range[0] > amountFilter.minValue || amountFilter.range[1] < amountFilter.maxValue) && (
             <div className="flex justify-end mt-2">
               <button

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Building2,
   XCircle,
@@ -12,6 +12,7 @@ import {
   Globe,
   Tags,
   MinusCircle,
+  TrendingUp,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../ui/card";
 import { Button } from "../../../ui/button";
@@ -34,7 +35,7 @@ import { useChartStore } from "../../hooks/useChartStore";
 import { OptionItem } from "../../../filters/base-filter/interfaces";
 import { FunctionalClassificationList } from "../../../filters/functional-classification-filter";
 import { AccountCategoryRadio } from "../../../filters/account-type-filter/AccountCategoryRadio";
-import { cn } from "@/lib/utils";
+import { cn, getNormalizationUnit } from "@/lib/utils";
 import { BudgetSectorList } from "@/components/filters/budget-sector-filter";
 import { FundingSourceList } from "@/components/filters/funding-source-filter";
 import {
@@ -57,6 +58,11 @@ import type { ReportPeriodInput } from "@/schemas/reporting";
 import { getPeriodTags } from "@/lib/period-utils";
 import { produce } from "immer";
 import { getEconomicPrefixLabel, getFunctionalPrefixLabel } from "@/lib/chart-filter-utils";
+import { RadioGroupButtons } from "@/components/ui/radio-group-buttons";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { useUserCurrency } from "@/lib/hooks/useUserCurrency";
+import { useUserInflationAdjusted } from "@/lib/hooks/useUserInflationAdjusted";
 
 export type SeriesFilterMutator = (draft: SeriesConfiguration) => void;
 
@@ -78,7 +84,38 @@ interface SeriesFilterInternalProps {
 
 type FilterValue = string | number | boolean | undefined;
 
-export function SeriesFilter({ seriesId, className, adapter }: SeriesFilterProps) {
+type CurrencyCode = "RON" | "EUR" | "USD";
+
+function buildSeriesFilterInitializationPatch(
+  filter: SeriesConfiguration["filter"],
+  defaults: { currency: CurrencyCode; inflationAdjusted: boolean }
+): Partial<SeriesConfiguration["filter"]> | null {
+  const patch: Partial<SeriesConfiguration["filter"]> = {};
+
+  const normalizationRaw = filter.normalization;
+
+  if (normalizationRaw === "total_euro") {
+    patch.normalization = "total";
+    patch.currency = "EUR";
+  } else if (normalizationRaw === "per_capita_euro") {
+    patch.normalization = "per_capita";
+    patch.currency = "EUR";
+  }
+
+  const normalizationEffective = (patch.normalization ?? normalizationRaw) as string | undefined;
+
+  if (filter.currency == null && patch.currency == null) {
+    patch.currency = defaults.currency;
+  }
+
+  if (filter.inflation_adjusted === undefined) {
+    patch.inflation_adjusted = normalizationEffective === "percent_gdp" ? false : defaults.inflationAdjusted;
+  }
+
+  return Object.keys(patch).length > 0 ? patch : null;
+}
+
+export function SeriesFilter({ seriesId, className, adapter }: Readonly<SeriesFilterProps>) {
   if (adapter) {
     return <SeriesFilterInternal adapter={adapter} className={className} />;
   }
@@ -90,7 +127,7 @@ export function SeriesFilter({ seriesId, className, adapter }: SeriesFilterProps
   return <SeriesFilterWithChart seriesId={seriesId} className={className} />;
 }
 
-function SeriesFilterWithChart({ seriesId, className }: { seriesId: string; className?: string }) {
+function SeriesFilterWithChart({ seriesId, className }: Readonly<{ seriesId: string; className?: string }>) {
   const { chart, updateSeries } = useChartStore();
 
   const chartSeries = chart.series.find(
@@ -121,24 +158,60 @@ function SeriesFilterWithChart({ seriesId, className }: { seriesId: string; clas
   return <SeriesFilterInternal adapter={adapter} className={className} />;
 }
 
-function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps) {
+function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInternalProps>) {
+  const applyChanges = adapter.applyChanges;
   const series = adapter.series;
+  const [userCurrency] = useUserCurrency();
+  const [userInflationAdjusted] = useUserInflationAdjusted();
+
+  const initializedRef = useRef<string | null>(null);
+
+  const entityLabelsStore = useEntityLabel(series?.filter.entity_cuis ?? []);
+  const uatLabelsStore = useUatLabel(series?.filter.uat_ids ?? []);
+  const economicClassificationLabelsStore = useEconomicClassificationLabel(series?.filter.economic_codes ?? []);
+  const functionalClassificationLabelsStore = useFunctionalClassificationLabel(series?.filter.functional_codes ?? []);
+  const budgetSectorLabelsStore = useBudgetSectorLabel(series?.filter.budget_sector_ids ?? []);
+  const fundingSourceLabelsStore = useFundingSourceLabel(series?.filter.funding_source_ids ?? []);
+  const entityTypeLabelsStore = useEntityTypeLabel();
+  const accountCategoryLabelsStore = useAccountCategoryLabel();
+
+  const exclude = series?.filter.exclude ?? {};
+  const excludeEntityLabelsStore = useEntityLabel(exclude.entity_cuis ?? []);
+  const excludeUatLabelsStore = useUatLabel(exclude.uat_ids ?? []);
+  const excludeEconomicClassificationLabelsStore = useEconomicClassificationLabel(exclude.economic_codes ?? []);
+  const excludeFunctionalClassificationLabelsStore = useFunctionalClassificationLabel(exclude.functional_codes ?? []);
+  const excludeBudgetSectorLabelsStore = useBudgetSectorLabel(exclude.budget_sector_ids ?? []);
+  const excludeFundingSourceLabelsStore = useFundingSourceLabel(exclude.funding_source_ids ?? []);
+
+  // Accordion open state - auto-open when there are active exclude filters
+  const [excludeValue, setExcludeValue] = useState<string | undefined>(undefined);
+
+  // Series filters should not auto-sync with global preferences after creation.
+  // Use globals only as defaults when fields are missing, and migrate legacy values once.
+  useEffect(() => {
+    if (!series) return;
+    if (initializedRef.current === series.id) return;
+
+    const patch = buildSeriesFilterInitializationPatch(series.filter, {
+      currency: userCurrency,
+      inflationAdjusted: userInflationAdjusted,
+    });
+    if (!patch) {
+      initializedRef.current = series.id;
+      return;
+    }
+
+    applyChanges((draft) => {
+      Object.assign(draft.filter, patch);
+    });
+    initializedRef.current = series.id;
+  }, [applyChanges, series, userCurrency, userInflationAdjusted]);
+
   if (!series) {
     return null;
   }
 
   const { filter } = series;
-  const applyChanges = adapter.applyChanges;
-
-
-  const entityLabelsStore = useEntityLabel(filter.entity_cuis ?? []);
-  const uatLabelsStore = useUatLabel(filter.uat_ids ?? []);
-  const economicClassificationLabelsStore = useEconomicClassificationLabel(filter.economic_codes ?? []);
-  const functionalClassificationLabelsStore = useFunctionalClassificationLabel(filter.functional_codes ?? []);
-  const budgetSectorLabelsStore = useBudgetSectorLabel(filter.budget_sector_ids ?? []);
-  const fundingSourceLabelsStore = useFundingSourceLabel(filter.funding_source_ids ?? []);
-  const entityTypeLabelsStore = useEntityTypeLabel();
-  const accountCategoryLabelsStore = useAccountCategoryLabel();
 
   const createListUpdater =
     (filterKey: keyof typeof filter, labelStore?: LabelStore) =>
@@ -246,9 +319,48 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
     });
   };
 
-  const normalization = filter.normalization;
+  let normalization: "total" | "per_capita" | "percent_gdp" | undefined;
+  if (filter.normalization === "total_euro") {
+    normalization = "total";
+  } else if (filter.normalization === "per_capita_euro") {
+    normalization = "per_capita";
+  } else if (filter.normalization === "total" || filter.normalization === "per_capita" || filter.normalization === "percent_gdp") {
+    normalization = filter.normalization;
+  } else {
+    normalization = undefined;
+  }
   const setNormalization = createValueUpdater("normalization", (value) => (value ? value : undefined));
-  const normalizationOption: OptionItem | null = normalization ? { id: normalization, label: normalization } : null;
+  let normalizationLabel;
+  if (normalization === "per_capita") {
+    normalizationLabel = t`Per capita`;
+  } else if (normalization === "percent_gdp") {
+    normalizationLabel = t`% of GDP`;
+  } else {
+    normalizationLabel = t`Total`;
+  }
+  const normalizationOption: OptionItem | null = normalization ? { id: normalization, label: normalizationLabel } : null;
+
+  const currency = filter.currency;
+  const setCurrency = createValueUpdater("currency", (value) => (value ? String(value) : undefined));
+  const effectiveCurrency = currency ?? userCurrency;
+  const currencyOption: OptionItem | null = effectiveCurrency ? { id: effectiveCurrency, label: effectiveCurrency } : null;
+
+  const inflationAdjusted = filter.inflation_adjusted;
+  const setInflationAdjusted = createValueUpdater("inflation_adjusted", (value) => {
+    if (value === undefined) return undefined;
+    return Boolean(value);
+  });
+  const inflationOption: OptionItem | null =
+    typeof inflationAdjusted === "boolean"
+      ? { id: inflationAdjusted ? "real" : "nominal", label: inflationAdjusted ? t`Real (2024 prices)` : t`Nominal` }
+      : null;
+
+  const showPeriodGrowth = Boolean(filter.show_period_growth);
+  const setShowPeriodGrowth = createValueUpdater("show_period_growth", (value) => {
+    if (value === undefined) return undefined;
+    return Boolean(value);
+  });
+  const growthOptions: OptionItem[] = showPeriodGrowth ? [{ id: "growth", label: t`Show growth (%)` }] : [];
 
   const reportTypeOption: OptionItem | null = reportType ? { id: reportType, label: reportType } : null;
 
@@ -270,16 +382,6 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
   // ============================================================================
   // EXCLUDE FILTERS STATE MANAGEMENT
   // ============================================================================
-
-  const exclude = filter.exclude ?? {};
-
-  // Label stores for exclude filters
-  const excludeEntityLabelsStore = useEntityLabel(exclude.entity_cuis ?? []);
-  const excludeUatLabelsStore = useUatLabel(exclude.uat_ids ?? []);
-  const excludeEconomicClassificationLabelsStore = useEconomicClassificationLabel(exclude.economic_codes ?? []);
-  const excludeFunctionalClassificationLabelsStore = useFunctionalClassificationLabel(exclude.functional_codes ?? []);
-  const excludeBudgetSectorLabelsStore = useBudgetSectorLabel(exclude.budget_sector_ids ?? []);
-  const excludeFundingSourceLabelsStore = useFundingSourceLabel(exclude.funding_source_ids ?? []);
 
   // Helper to create exclude list updaters
   const createExcludeListUpdater =
@@ -373,6 +475,9 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
     applyChanges((draft) => {
       draft.filter = {
         account_category: "ch",
+        normalization: "total",
+        currency: userCurrency,
+        inflation_adjusted: userInflationAdjusted,
         report_type: "Executie bugetara agregata la nivel de ordonator principal",
         exclude: undefined,
       } as SeriesConfiguration["filter"];
@@ -422,12 +527,12 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
     (exclude.functional_prefixes?.length ?? 0) +
     (exclude.economic_prefixes?.length ?? 0);
 
-  // Accordion open state - auto-open when there are active exclude filters
-  const [excludeValue, setExcludeValue] = useState<string | undefined>(undefined);
   const accordionValue = totalExcludeFilters > 0 ? (excludeValue ?? 'exclude') : excludeValue;
 
   const handleClearReportType = () => setReportType('Executie bugetara agregata la nivel de ordonator principal');
-  const handleClearNormalization = () => setNormalization(undefined);
+  const handleClearNormalization = () => setNormalization("total");
+  const handleClearCurrency = () => setCurrency(userCurrency);
+  const handleClearInflation = () => setInflationAdjusted(userInflationAdjusted);
 
   const handleClearFlag = (option: OptionItem) => {
     if (option.id === "isUat") {
@@ -457,6 +562,13 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
       }
     });
   };
+
+  const normalizationUnit = getNormalizationUnit({
+    normalization: filter.normalization as any,
+    currency: (filter.currency ?? userCurrency) as any,
+    show_period_growth: filter.show_period_growth,
+  });
+  const isPercentGdp = filter.normalization === "percent_gdp";
 
   return (
     <Card className={cn("flex flex-col", className)} role="region" aria-labelledby="series-filters-title">
@@ -493,6 +605,75 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
         >
           <NormalizationFilter normalization={normalization} setNormalization={setNormalization} />
         </FilterRadioContainer>
+        <FilterRadioContainer
+          title={t`Currency`}
+          icon={<EuroIcon className="w-4 h-4" aria-hidden="true" />}
+          selectedOption={currencyOption}
+          onClear={handleClearCurrency}
+        >
+          <div className={cn(isPercentGdp && "pointer-events-none opacity-50")}>
+            <RadioGroupButtons
+              value={effectiveCurrency}
+              onChange={(value) => {
+                if (value === undefined) return;
+                setCurrency(value as any);
+              }}
+              options={[
+                { value: "RON", label: t`RON` },
+                { value: "EUR", label: t`EUR` },
+                { value: "USD", label: t`USD` },
+              ]}
+            />
+            {isPercentGdp && (
+              <p className="mt-2 text-xs text-muted-foreground">
+                <Trans>Currency is ignored for % of GDP.</Trans>
+              </p>
+            )}
+          </div>
+        </FilterRadioContainer>
+        <FilterRadioContainer
+          title={t`Inflation Adjustment`}
+          icon={<SlidersHorizontal className="w-4 h-4" aria-hidden="true" />}
+          selectedOption={inflationOption}
+          onClear={handleClearInflation}
+        >
+          <div className={cn(isPercentGdp && "pointer-events-none opacity-50")}>
+            <RadioGroupButtons
+              value={typeof filter.inflation_adjusted === "boolean" ? filter.inflation_adjusted : userInflationAdjusted}
+              onChange={(value) => {
+                if (value === undefined) return;
+                setInflationAdjusted(value as any);
+              }}
+              options={[
+                { value: false, label: t`Nominal` },
+                { value: true, label: t`Real (2024 prices)` },
+              ]}
+            />
+            {isPercentGdp && (
+              <p className="mt-2 text-xs text-muted-foreground">
+                <Trans>Inflation adjustment is ignored for % of GDP.</Trans>
+              </p>
+            )}
+          </div>
+        </FilterRadioContainer>
+        <FilterContainer
+          title={t`Period Growth`}
+          icon={<TrendingUp className="w-4 h-4" aria-hidden="true" />}
+          selectedOptions={growthOptions}
+          onClearOption={() => setShowPeriodGrowth(undefined)}
+          onClearAll={() => setShowPeriodGrowth(undefined)}
+        >
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id={`series-growth-${series.id}`}
+              checked={showPeriodGrowth}
+              onCheckedChange={(checked) => setShowPeriodGrowth(Boolean(checked))}
+            />
+            <Label htmlFor={`series-growth-${series.id}`} className="text-sm cursor-pointer">
+              <Trans>Show growth (%)</Trans>
+            </Label>
+          </div>
+        </FilterContainer>
         <FilterContainer
           title={t`Period`}
           icon={<Calendar className="w-4 h-4" aria-hidden="true" />}
@@ -606,7 +787,7 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
         </FilterContainer>
         <FilterRangeContainer
           title={t`Amount Range`}
-          unit="RON"
+          unit={normalizationUnit}
           icon={<SlidersHorizontal className="w-4 h-4" aria-hidden="true" />}
           rangeComponent={AmountRangeFilter}
           minValue={minAmount}
@@ -617,7 +798,7 @@ function SeriesFilterInternal({ adapter, className }: SeriesFilterInternalProps)
         />
         <FilterRangeContainer
           title={t`Item Amount`}
-          unit="RON"
+          unit={normalizationUnit}
           icon={<SlidersHorizontal className="w-4 h-4" aria-hidden="true" />}
           rangeComponent={AmountRangeFilter}
           minValue={minItemAmount}

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { EntityDetailsData, filterLineItems } from '@/lib/api/entities';
-import { Chart, SeriesConfiguration, Normalization } from '@/schemas/charts';
+import { Chart, SeriesConfiguration } from '@/schemas/charts';
 import { useParams } from '@tanstack/react-router';
 import { getChapterMap, getTopFunctionalGroupCodes } from '@/lib/analytics-utils';
 import { getSeriesColor } from '@/components/charts/components/chart-renderer/utils';
@@ -22,6 +22,8 @@ import type { AggregatedNode } from '@/components/budget-explorer/budget-transfo
 import { getNormalizationUnit } from '@/lib/utils';
 import { Trans } from '@lingui/react/macro'
 import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults'
+import type { NormalizationOptions } from '@/lib/normalization'
+import { normalizeNormalizationOptions } from '@/lib/normalization'
 
 interface BaseTrendsViewProps {
   entity?: EntityDetailsData | null | undefined;
@@ -36,8 +38,8 @@ interface BaseTrendsViewProps {
   initialExpenseSearch?: string;
   onSearchChange: (type: 'income' | 'expense', search: string) => void;
   isLoading?: boolean;
-  normalization: Normalization;
-  onNormalizationChange: (mode: Normalization) => void;
+  normalizationOptions: NormalizationOptions;
+  onNormalizationChange: (next: NormalizationOptions) => void;
   reportPeriod: ReportPeriodInput;
   trendPeriod: ReportPeriodInput;
   reportType?: GqlReportType;
@@ -59,11 +61,12 @@ interface BaseTrendsViewProps {
 
 const TOP_CATEGORIES_COUNT = 10;
 
-export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, currentYear, onYearClick, onSelectPeriod, initialIncomeSearch, initialExpenseSearch, onSearchChange, isLoading, normalization, onNormalizationChange, reportPeriod, trendPeriod, reportType, years = [], lineItemsTab = 'functional', onLineItemsTabChange, selectedFundingKey = '', selectedExpenseTypeKey = '', onSelectedFundingKeyChange, onSelectedExpenseTypeKeyChange, treemapPrimary, onTreemapPrimaryChange, treemapPath, onTreemapPathChange, transferFilter = 'no-transfers', onTransferFilterChange, advancedFilter, onAdvancedFilterChange }) => {
+export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, currentYear, onYearClick, onSelectPeriod, initialIncomeSearch, initialExpenseSearch, onSearchChange, isLoading, normalizationOptions, onNormalizationChange, reportPeriod, trendPeriod, reportType, years = [], lineItemsTab = 'functional', onLineItemsTabChange, selectedFundingKey = '', selectedExpenseTypeKey = '', onSelectedFundingKeyChange, onSelectedExpenseTypeKeyChange, treemapPrimary, onTreemapPrimaryChange, treemapPath, onTreemapPathChange, transferFilter = 'no-transfers', onTransferFilterChange, advancedFilter, onAdvancedFilterChange }) => {
   const { cui } = useParams({ from: '/entities/$cui' });
   const isMobile = useIsMobile();
   const chapterMap = useMemo(() => getChapterMap(), []);
   const accountCategory = type === 'income' ? 'vn' : 'ch';
+  const normalized = normalizeNormalizationOptions(normalizationOptions)
 
   // Compute selected month/quarter from the report period anchor
   const anchor = (reportPeriod.selection as any)?.interval?.start as string | undefined;
@@ -73,7 +76,9 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
   // Lazy load full line items, then filter locally
   const { data: fullLineItems } = useEntityExecutionLineItems({
     cui,
-    normalization,
+    normalization: normalized.normalization,
+    currency: normalized.currency,
+    inflation_adjusted: normalized.inflation_adjusted,
     // Use report period and report type from controls
     reportPeriod,
     reportType: reportType ?? entity?.default_report_type,
@@ -112,13 +117,16 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
         functional_prefixes: [prefix],
         account_category: accountCategory,
         report_type: toReportTypeValue(reportType ?? entity.default_report_type),
-        normalization,
+        normalization: normalized.normalization,
+        currency: normalized.currency,
+        inflation_adjusted: normalized.inflation_adjusted,
+        show_period_growth: normalized.show_period_growth,
         report_period: trendPeriod,
         exclude: defaultExclude,
       },
       enabled: true,
       config: { color: getSeriesColor(index), showDataLabels: false },
-      unit: getNormalizationUnit(normalization),
+      unit: getNormalizationUnit({ normalization: normalized.normalization, currency: normalized.currency, show_period_growth: normalized.show_period_growth }),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     }));
@@ -136,7 +144,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
       },
       series,
     } as Chart;
-  }, [topFunctionalGroups, cui, type, chapterMap, entity, entityNameRaw, normalization, trendPeriod, reportType]);
+  }, [topFunctionalGroups, cui, type, chapterMap, entity, entityNameRaw, normalized, trendPeriod, reportType]);
 
   const handleXAxisClick = (value: number | string) => {
     const raw = String(value);
@@ -168,7 +176,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
       ec_c: n?.economicClassification?.economic_code ?? null,
       ec_n: n?.economicClassification?.economic_name ?? null,
       amount: Number(n?.amount ?? 0),
-      count: Number.isFinite((n as any)?.count) ? (n as any).count : 1,
+      count: Number.isFinite(n?.count) ? n.count : 1,
     }))
   }, [lineItems])
 
@@ -226,7 +234,8 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
               onNodeClick={onNodeClick}
               onBreadcrumbClick={onBreadcrumbClick}
               path={breadcrumbs}
-              normalization={normalization}
+              normalization={normalized.normalization}
+              currency={normalized.currency}
               excludedItemsSummary={excludedItemsSummary}
             />
           )}
@@ -245,7 +254,8 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
               aggregated={aggregatedNodes}
               depth={2}
               accountCategory={accountCategory}
-              normalization={normalization}
+              normalization={normalized.normalization}
+              currency={normalized.currency}
               showEconomic={type !== 'income'}
               economicInfoText={
                 <span>
@@ -263,8 +273,9 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
         onXAxisItemClick={handleXAxisClick}
         onYearClick={onYearClick}
         currentYear={currentYear}
-        normalization={normalization}
+        normalizationOptions={normalizationOptions}
         onNormalizationChange={onNormalizationChange}
+        allowPerCapita={Boolean(entity?.is_uat || entity?.entity_type === 'admin_county_council')}
       />
       <EntityLineItemsTabs
         lineItems={lineItems}
@@ -278,7 +289,8 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
         initialIncomeSearchTerm={initialIncomeSearch ?? ''}
         onSearchChange={onSearchChange}
         isLoading={isLoading || !fullLineItems}
-        normalization={normalization}
+        normalization={normalized.normalization}
+        currency={normalized.currency}
         lineItemsTab={lineItemsTab}
         onLineItemsTabChange={onLineItemsTabChange}
         selectedFundingKey={selectedFundingKey}

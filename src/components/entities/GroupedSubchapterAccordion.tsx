@@ -3,19 +3,20 @@ import { ClassificationInfoLink } from '@/components/common/classification-info-
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { GroupedSubchapter, GroupedFunctional } from '@/schemas/financial';
 import { highlightText } from './highlight-utils';
-import { formatCurrency, getNormalizationUnit } from '@/lib/utils';
+import { formatNormalizedValue } from '@/lib/utils';
+import type { Currency, Normalization } from '@/schemas/charts';
 
 interface GroupedSubchapterAccordionProps {
     sub: GroupedSubchapter;
     baseTotal: number;
     searchTerm: string;
-    normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
+    normalization?: Normalization;
+    currency?: Currency;
     codePrefix?: 'fn' | 'ec';
 }
 
-const GroupedSubchapterAccordion: React.FC<GroupedSubchapterAccordionProps> = ({ sub, baseTotal, searchTerm, normalization, codePrefix = 'fn' }) => {
-    const unit = getNormalizationUnit(normalization ?? 'total');
-    const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON';
+const GroupedSubchapterAccordion: React.FC<GroupedSubchapterAccordionProps> = ({ sub, baseTotal, searchTerm, normalization, currency, codePrefix = 'fn' }) => {
+    const normalizationFormatOptions = { normalization: normalization ?? 'total', currency } as const
     // Example:
     // fn:36.01 / ec:30.01 - Subchapter label
     // fn:36.01.00 - Venituri din aplicarea prescriptiei extinctive -> .00 child from the line items list
@@ -38,10 +39,10 @@ const GroupedSubchapterAccordion: React.FC<GroupedSubchapterAccordionProps> = ({
                 </div>
                 <div className="text-right text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
                     <p className="flex justify-end items-center gap-1.5">
-                        {formatCurrency(sub.totalAmount, 'compact', currencyCode)}
+                        {formatNormalizedValue(sub.totalAmount, normalizationFormatOptions, 'compact')}
                         { baseTotal > 0 && <span className="hidden sm:inline text-xs text-muted-foreground">{`(${(Math.round((sub.totalAmount / baseTotal) * 1000) / 10).toFixed(1)}%)`}</span> }
                     </p>
-                    <p className="text-xs text-muted-foreground font-normal">{formatCurrency(sub.totalAmount, 'standard', currencyCode)}</p>
+                    <p className="text-xs text-muted-foreground font-normal">{formatNormalizedValue(sub.totalAmount, normalizationFormatOptions, 'standard')}</p>
                 </div>
             </div>
         );
@@ -59,10 +60,10 @@ const GroupedSubchapterAccordion: React.FC<GroupedSubchapterAccordionProps> = ({
                         </div>
                         <div className="text-right text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
                             <p className="flex justify-end items-center gap-1.5">
-                                {formatCurrency(sub.totalAmount, 'compact', currencyCode)}
+                                {formatNormalizedValue(sub.totalAmount, normalizationFormatOptions, 'compact')}
                                 { baseTotal > 0 && <span className="hidden sm:inline text-xs text-muted-foreground">{`(${(Math.round((sub.totalAmount / baseTotal) * 1000) / 10).toFixed(1)}%)`}</span> }
                             </p>
-                            <p className="text-xs text-muted-foreground font-normal">{formatCurrency(sub.totalAmount, 'standard', currencyCode)}</p>
+                            <p className="text-xs text-muted-foreground font-normal">{formatNormalizedValue(sub.totalAmount, normalizationFormatOptions, 'standard')}</p>
                         </div>
                     </div>
                 </AccordionTrigger>
@@ -80,10 +81,10 @@ const GroupedSubchapterAccordion: React.FC<GroupedSubchapterAccordionProps> = ({
                                 </div>
                                 <div className="text-right text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
                                     <p className="flex justify-end items-center gap-1.5">
-                                        {formatCurrency(func.totalAmount, 'compact', currencyCode)}
+                                        {formatNormalizedValue(func.totalAmount, normalizationFormatOptions, 'compact')}
                                         { baseTotal > 0 && <span className="hidden sm:inline text-xs text-muted-foreground">{`(${(Math.round((func.totalAmount / baseTotal) * 1000) / 10).toFixed(1)}%)`}</span> }
                                     </p>
-                                    <p className="text-xs text-muted-foreground font-normal">{formatCurrency(func.totalAmount, 'standard', currencyCode)}</p>
+                                    <p className="text-xs text-muted-foreground font-normal">{formatNormalizedValue(func.totalAmount, normalizationFormatOptions, 'standard')}</p>
                                 </div>
                             </li>
                         ))}

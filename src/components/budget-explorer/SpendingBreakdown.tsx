@@ -5,19 +5,20 @@ import { getNormalizationUnit } from '@/lib/utils'
 import { Info } from 'lucide-react'
 import type { AggregatedNode } from './budget-transform'
 import { Skeleton } from '@/components/ui/skeleton'
+import type { Currency, Normalization } from '@/schemas/charts'
 
 type Props = {
   readonly nodes: readonly AggregatedNode[] | undefined
-  readonly normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro'
+  readonly normalization?: Normalization
+  readonly currency?: Currency
   readonly periodLabel?: string
   readonly isLoading?: boolean
 }
 
 const normalizeEc = (code?: string | null) => (code ?? '').replace(/[^0-9.]/g, '')
 
-export function SpendingBreakdown({ nodes, normalization, periodLabel, isLoading }: Props) {
-  const unit = getNormalizationUnit(normalization ?? 'total')
-  const currencyCode: 'RON' | 'EUR' = unit.includes('EUR') ? 'EUR' : 'RON'
+export function SpendingBreakdown({ nodes, normalization, currency, periodLabel, isLoading }: Props) {
+  const unit = getNormalizationUnit({ normalization: (normalization ?? 'total') as any, currency: currency as any })
 
   const totalSpending = (nodes ?? []).reduce((sum, n) => sum + (n.amount ?? 0), 0)
 
@@ -101,13 +102,12 @@ export function SpendingBreakdown({ nodes, normalization, periodLabel, isLoading
                     <Trans>All budget expenditures</Trans>
                   </div>
                 </div>
-                <div className="text-right w-full sm:w-auto">
+                  <div className="text-right w-full sm:w-auto">
                   <div className="font-mono text-base md:text-lg font-semibold text-foreground">
-                    {yValueFormatter(totalSpending, currencyCode, 'compact')}
+                    {yValueFormatter(totalSpending, unit, 'compact')}
                   </div>
                   <div className="font-mono text-xs text-muted-foreground">
-                    {yValueFormatter(totalSpending, currencyCode, 'standard')}
-                    {unit.includes('capita') && <span className="ml-1 font-sans">/ capita</span>}
+                    {yValueFormatter(totalSpending, unit, 'standard')}
                   </div>
                 </div>
               </div>
@@ -131,11 +131,10 @@ export function SpendingBreakdown({ nodes, normalization, periodLabel, isLoading
                 </div>
                 <div className="text-right w-full sm:w-auto">
                   <div className="font-mono text-base md:text-lg font-semibold text-foreground">
-                    {yValueFormatter(transfersEc51, currencyCode, 'compact')}
+                    {yValueFormatter(transfersEc51, unit, 'compact')}
                   </div>
                   <div className="font-mono text-xs text-muted-foreground">
-                    {yValueFormatter(transfersEc51, currencyCode, 'standard')}
-                    {unit.includes('capita') && <span className="ml-1 font-sans">/ capita</span>}
+                    {yValueFormatter(transfersEc51, unit, 'standard')}
                   </div>
                 </div>
               </div>
@@ -159,11 +158,10 @@ export function SpendingBreakdown({ nodes, normalization, periodLabel, isLoading
                 </div>
                 <div className="text-right w-full sm:w-auto">
                   <div className="font-mono text-base md:text-lg font-semibold text-foreground">
-                    {yValueFormatter(transfersEc55_01, currencyCode, 'compact')}
+                    {yValueFormatter(transfersEc55_01, unit, 'compact')}
                   </div>
                   <div className="font-mono text-xs text-muted-foreground">
-                    {yValueFormatter(transfersEc55_01, currencyCode, 'standard')}
-                    {unit.includes('capita') && <span className="ml-1 font-sans">/ capita</span>}
+                    {yValueFormatter(transfersEc55_01, unit, 'standard')}
                   </div>
                 </div>
               </div>
@@ -187,11 +185,10 @@ export function SpendingBreakdown({ nodes, normalization, periodLabel, isLoading
                 </div>
                 <div className="text-right w-full sm:w-auto">
                   <div className="font-mono text-lg md:text-xl font-bold text-primary">
-                    {yValueFormatter(effectiveSpending, currencyCode, 'compact')}
+                    {yValueFormatter(effectiveSpending, unit, 'compact')}
                   </div>
                   <div className="font-mono text-xs text-muted-foreground">
-                    {yValueFormatter(effectiveSpending, currencyCode, 'standard')}
-                    {unit.includes('capita') && <span className="ml-1 font-sans">/ capita</span>}
+                    {yValueFormatter(effectiveSpending, unit, 'standard')}
                   </div>
                 </div>
               </div>
@@ -210,5 +207,3 @@ export function SpendingBreakdown({ nodes, normalization, periodLabel, isLoading
     </Card>
   )
 }
-
-

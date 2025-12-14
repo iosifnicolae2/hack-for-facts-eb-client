@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { entityDetailsQueryOptions } from '@/lib/hooks/useEntityDetails';
 import { queryClient } from '@/lib/queryClient';
 import { entitySearchSchema } from '@/components/entities/validation';
-import { AnalyticsFilterType, AnalyticsInput, defaultYearRange, Normalization } from '@/schemas/charts';
+import { AnalyticsFilterType, AnalyticsInput, Currency, defaultYearRange, Normalization } from '@/schemas/charts';
 import { geoJsonQueryOptions } from '@/hooks/useGeoJson';
 import { heatmapJudetQueryOptions, heatmapUATQueryOptions } from '@/hooks/useHeatmapData';
 import { getTopFunctionalGroupCodes } from '@/lib/analytics-utils';
@@ -25,22 +25,43 @@ export const Route = createFileRoute('/entities/$cui')({
         const START_YEAR = defaultYearRange.start;
         const END_YEAR = defaultYearRange.end;
         const year = (search?.year as number | undefined) ?? END_YEAR;
-        const userCurrency = getPersistedState<'RON' | 'EUR'>('user-currency', 'RON');
-        const defaultNormalization: Normalization = userCurrency === 'EUR' ? 'total_euro' : 'total';
-        const normalization = (search?.normalization as Normalization | undefined) ?? defaultNormalization;
+        const userCurrency = getPersistedState<'RON' | 'EUR' | 'USD'>('user-currency', 'RON');
+        const userInflationAdjusted = getPersistedState<boolean>('user-inflation-adjusted', false);
+        const currencyParam = (search?.currency as Currency | undefined);
+        const inflationAdjustedParam = (search as any)?.inflation_adjusted as boolean | undefined;
+        const normalizationRaw = (search?.normalization as Normalization | undefined) ?? 'total';
+        const showPeriodGrowth = Boolean((search as any).show_period_growth);
+
+        const normalization: Normalization = (() => {
+            if (normalizationRaw === 'total_euro') return 'total';
+            if (normalizationRaw === 'per_capita_euro') return 'per_capita';
+            return normalizationRaw;
+        })();
+        const currency: Currency =
+            normalizationRaw === 'total_euro' || normalizationRaw === 'per_capita_euro'
+                ? 'EUR'
+                : (currencyParam ?? userCurrency);
+        const inflationAdjusted =
+            normalization === 'percent_gdp'
+                ? false
+                : (inflationAdjustedParam ?? userInflationAdjusted);
+
         const reportPeriod = getInitialFilterState(search.period ?? 'YEAR', year, search.month ?? '12', search.quarter ?? 'Q4');
         const trendPeriod = makeTrendPeriod(search.period ?? 'YEAR', year, START_YEAR, END_YEAR);
         const reportType = (search?.report_type as GqlReportType | undefined);
         const mainCreditorCui = (search?.main_creditor_cui as string | undefined);
         // Warm entity details in cache
-        const detailsOptions = entityDetailsQueryOptions(
-            params.cui,
+        const detailsOptions = entityDetailsQueryOptions({
+            cui: params.cui,
             normalization,
+            currency,
+            inflation_adjusted: inflationAdjusted,
+            show_period_growth: showPeriodGrowth,
             reportPeriod,
             reportType,
             trendPeriod,
             mainCreditorCui
-        );
+        });
         queryClient.ensureQueryData(detailsOptions);
 
         const desiredView = (search?.view as string | undefined) ?? 'overview';
@@ -52,6 +73,8 @@ export const Route = createFileRoute('/entities/$cui')({
             const filters = (search?.mapFilters as AnalyticsFilterType) || withDefaultExcludes({
                 account_category: 'ch',
                 normalization: 'per_capita',
+                currency,
+                inflation_adjusted: inflationAdjusted,
                 report_period: getInitialFilterState('YEAR', year, '12', 'Q4'),
             });
             if (mapViewType === 'UAT') {
@@ -78,6 +101,10 @@ export const Route = createFileRoute('/entities/$cui')({
                         functional_prefixes: [prefix],
                         account_category: accountCategory,
                         report_type: entity?.default_report_type ? toReportTypeValue(entity.default_report_type) : 'Executie bugetara agregata la nivel de ordonator principal',
+                        normalization,
+                        currency,
+                        inflation_adjusted: inflationAdjusted,
+                        show_period_growth: showPeriodGrowth,
                         exclude: defaultExclude,
                     },
                 }));

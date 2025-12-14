@@ -11,11 +11,12 @@ import {
 import { SearchToggleInput } from './SearchToggleInput';
 import GroupedChapterAccordion from "./GroupedChapterAccordion";
 import { GroupedChapter, GroupedFunctional, GroupedEconomic } from '@/schemas/financial';
-import { formatCurrency, formatNumber, getNormalizationUnit } from '@/lib/utils';
+import { formatNormalizedValue, formatNumber } from '@/lib/utils';
 import { Trans } from '@lingui/react/macro';
 import { TMonth, TQuarter } from '@/schemas/reporting';
 import { getYearLabel } from './utils';
 import { ClassificationInfoLink } from '@/components/common/classification-info-link';
+import type { Currency, Normalization } from '@/schemas/charts';
 
 interface GroupedItemsDisplayProps {
   groups: GroupedChapter[];
@@ -26,14 +27,21 @@ interface GroupedItemsDisplayProps {
   showTotalValueHeader?: boolean;
   month?: TMonth;
   quarter?: TQuarter;
-  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
+  normalization?: Normalization;
+  currency?: Currency;
   subchapterCodePrefix?: 'fn' | 'ec';
 }
 
 export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.memo(
-  ({ groups, title, baseTotal, searchTerm, currentYear, showTotalValueHeader = false, month, quarter, normalization, subchapterCodePrefix = 'fn' }) => {
+  ({ groups, title, baseTotal, searchTerm, currentYear, showTotalValueHeader = false, month, quarter, normalization, currency, subchapterCodePrefix = 'fn' }) => {
 
     const dateLabel = getYearLabel(currentYear, month, quarter);
+
+    // Sort chapters by totalAmount descending
+    const sortedGroups = useMemo(
+      () => [...groups].sort((a, b) => b.totalAmount - a.totalAmount),
+      [groups]
+    );
 
     const { totalValueFiltered, totalPercentageFiltered } = React.useMemo(() => {
       const sumFunctionalList = (funcs: GroupedFunctional[]): number =>
@@ -70,16 +78,18 @@ export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.mem
       );
     }
 
-    const openChapters = searchTerm ? groups.map((ch) => ch.prefix) : [];
+	    const openChapters = searchTerm ? sortedGroups.map((ch) => ch.prefix) : [];
 
-    const unit = getNormalizationUnit(normalization ?? 'total');
-    const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON'; // Unit can also be 'RON/capita' or 'EUR/capita', for currency we only need 'RON' or 'EUR'
+	    const normalizationFormatOptions = {
+	      normalization: normalization ?? 'total',
+	      currency,
+	    } as const
 
-    const TotalValueComponent = () => (
-      <div className="flex flex-col">
+	    const TotalValueComponent = () => (
+	      <div className="flex flex-col">
         <p className='flex justify-end items-center m-4 mb-0 font-semibold'>
           <Trans>Total:</Trans>{" "}
-          {formatCurrency(totalValueFiltered, "standard", currencyCode)}
+          {formatNormalizedValue(totalValueFiltered, normalizationFormatOptions, "standard")}
           {totalPercentageFiltered > 0 && totalPercentageFiltered <= 99.99 && (
             <span className="pl-2 text-sm text-muted-foreground">
               ({formatNumber(totalPercentageFiltered)}%)
@@ -87,7 +97,7 @@ export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.mem
           )}
         </p>
         <p className="text-sm text-muted-foreground text-right m-4 mt-0">
-          {formatCurrency(totalValueFiltered, "compact", currencyCode)}
+          {formatNormalizedValue(totalValueFiltered, normalizationFormatOptions, "compact")}
         </p>
       </div>
     )
@@ -99,13 +109,14 @@ export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.mem
         {...(searchTerm ? { value: openChapters } : {})}
       >
         {showTotalValueHeader && <TotalValueComponent />}
-        {groups.map((ch) => (
+        {sortedGroups.map((ch) => (
           <GroupedChapterAccordion
             key={ch.prefix}
             ch={ch}
             baseTotal={baseTotal}
             searchTerm={searchTerm}
             normalization={normalization}
+            currency={currency}
             codePrefixForSubchapters={subchapterCodePrefix}
           />
         ))}
@@ -134,7 +145,8 @@ interface FinancialDataCardProps {
   groups: GroupedChapter[];
   baseTotal: number;
   searchFocusKey?: string;
-  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
+  normalization?: Normalization;
+  currency?: Currency;
   onPrefetchYear?: (year: number) => void;
   transferFilter?: 'all' | 'no-transfers' | 'transfers-only';
 }
@@ -156,6 +168,7 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
   baseTotal,
   searchFocusKey,
   normalization,
+  currency,
   onPrefetchYear,
   transferFilter = 'no-transfers',
 }) => {
@@ -298,6 +311,7 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
           month={month}
           quarter={quarter}
           normalization={normalization}
+          currency={currency}
           baseTotal={filteredBaseTotal}
         />
       </CardContent>

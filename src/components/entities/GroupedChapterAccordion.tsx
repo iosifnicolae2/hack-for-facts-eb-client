@@ -4,20 +4,21 @@ import { GroupedChapter, GroupedFunctional, GroupedSubchapter } from '@/schemas/
 import GroupedFunctionalAccordion from './GroupedFunctionalAccordion';
 import GroupedSubchapterAccordion from './GroupedSubchapterAccordion';
 import { highlightText } from './highlight-utils';
-import { formatCurrency, formatNumber, getNormalizationUnit } from '@/lib/utils';
+import { formatNormalizedValue, formatNumber } from '@/lib/utils';
 import { ClassificationInfoLink } from '@/components/common/classification-info-link';
+import type { Currency, Normalization } from '@/schemas/charts';
 
 interface GroupedChapterAccordionProps {
   ch: GroupedChapter;
   baseTotal: number;
   searchTerm: string;
-  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
+  normalization?: Normalization;
+  currency?: Currency;
   codePrefixForSubchapters?: 'fn' | 'ec';
 }
 
-const GroupedChapterAccordion: React.FC<GroupedChapterAccordionProps> = ({ ch, baseTotal, searchTerm, normalization, codePrefixForSubchapters = 'fn' }) => {
-  const unit = getNormalizationUnit(normalization ?? 'total');
-  const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON'; // Unit can also be 'RON/capita' or 'EUR/capita', for currency we only need 'RON' or 'EUR'
+const GroupedChapterAccordion: React.FC<GroupedChapterAccordionProps> = ({ ch, baseTotal, searchTerm, normalization, currency, codePrefixForSubchapters = 'fn' }) => {
+  const normalizationFormatOptions = { normalization: normalization ?? 'total', currency } as const
   // Merge subchapters and functionals and sort by total amount descending
   const mergedSortedItems = React.useMemo(() => {
     const subs = (ch.subchapters ?? []).map((s) => ({ kind: 'sub' as const, amount: s.totalAmount, data: s }));
@@ -34,20 +35,20 @@ const GroupedChapterAccordion: React.FC<GroupedChapterAccordionProps> = ({ ch, b
               {highlightText(ch.description, searchTerm)}
             </span>
             <ClassificationInfoLink type="functional" code={ch.prefix} />
-          </div>
-          <div className="text-right text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
-            <p className="flex justify-end items-center gap-1 sm:gap-1.5">
-              {formatCurrency(ch.totalAmount, "compact", currencyCode)}
-              {baseTotal > 0 && (
-                <span className="hidden sm:inline text-xs text-muted-foreground">{`(${formatNumber(ch.totalAmount / baseTotal * 100)}%)`}</span>
-              )}
-            </p>
-            <p className="text-xs text-muted-foreground font-normal">
-              {formatCurrency(ch.totalAmount, "standard", currencyCode)}
-            </p>
-          </div>
-        </div>
-      </AccordionTrigger>
+	          </div>
+	          <div className="text-right text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
+	            <p className="flex justify-end items-center gap-1 sm:gap-1.5">
+	              {formatNormalizedValue(ch.totalAmount, normalizationFormatOptions, "compact")}
+	              {baseTotal > 0 && (
+	                <span className="hidden sm:inline text-xs text-muted-foreground">{`(${formatNumber(ch.totalAmount / baseTotal * 100)}%)`}</span>
+	              )}
+	            </p>
+	            <p className="text-xs text-muted-foreground font-normal">
+	              {formatNormalizedValue(ch.totalAmount, normalizationFormatOptions, "standard")}
+	            </p>
+	          </div>
+	        </div>
+	      </AccordionTrigger>
       <AccordionContent className="border-x-2 border-b-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800/50">
         <div className="space-y-2 px-3 sm:px-4 py-2">
           <div className="space-y-2">
@@ -59,6 +60,7 @@ const GroupedChapterAccordion: React.FC<GroupedChapterAccordionProps> = ({ ch, b
                   baseTotal={baseTotal}
                   searchTerm={searchTerm}
                   normalization={normalization}
+                  currency={currency}
                   codePrefix={codePrefixForSubchapters}
                 />
               ) : (
@@ -68,6 +70,7 @@ const GroupedChapterAccordion: React.FC<GroupedChapterAccordionProps> = ({ ch, b
                   baseTotal={baseTotal}
                   searchTerm={searchTerm}
                   normalization={normalization}
+                  currency={currency}
                 />
               )
             ))}

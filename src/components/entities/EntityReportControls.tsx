@@ -9,7 +9,6 @@ import { i18n } from '@lingui/core'
 import { t } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { useNormalizationSelection } from '@/hooks/useNormalizationSelection'
 
 type Props = {
   entity?: EntityDetailsData | null | undefined;
@@ -24,7 +23,18 @@ type Props = {
   onPrefetch?: (payload: { report_period: ReportPeriodInput; report_type?: GqlReportType; main_creditor_cui?: string; normalization?: Normalization }) => void
 }
 
-export function EntityReportControls({ entity, periodType, year, quarter, month, reportType, mainCreditor, normalization, onChange, onPrefetch }: Props) {
+export function EntityReportControls({
+  entity,
+  periodType,
+  year,
+  quarter,
+  month,
+  reportType,
+  mainCreditor,
+  normalization,
+  onChange,
+  onPrefetch,
+}: Props) {
   const monthFormatter = useMemo(() => new Intl.DateTimeFormat(i18n.locale || 'en', { month: 'short' }), [i18n.locale])
   const MONTHS: { id: TMonth; label: string }[] = useMemo(() => {
     return Array.from({ length: 12 }, (_, idx) => {
@@ -41,12 +51,10 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
     { id: 'DETAILED', label: t`Detailed` },
   ]
 
-  // Display only two options without currency suffix; map to actual normalization
-  const DISPLAY_NORMALIZATION_OPTIONS: { id: 'total' | 'per_capita'; label: ReactNode }[] = [
-    { id: 'total', label: t`Total` },
-    { id: 'per_capita', label: t`Per Capita` },
-  ]
-  const { toDisplayNormalization, toEffectiveNormalization } = useNormalizationSelection(normalization)
+  const normalizationValue: Normalization =
+    normalization === 'total_euro' ? 'total'
+      : normalization === 'per_capita_euro' ? 'per_capita'
+        : (normalization ?? 'total')
 
   const availableYears = useMemo(() => {
     return Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, idx) => defaultYearRange.end - idx)
@@ -67,7 +75,7 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
     { id: 'Q4', label: 'Q4' },
   ]
 
-  const emitChange = (type: ReportPeriodType, year: number, quarter: TQuarter, month: TMonth, reportType?: GqlReportType, creditor?: string, norm?: Normalization) => {
+  const emitChange = (type: ReportPeriodType, year: number, quarter: TQuarter, month: TMonth, reportType?: GqlReportType, creditor?: string, nextNormalization?: Normalization) => {
     let dateFilter: DateInput
     if (type === 'YEAR') dateFilter = `${year}`
     else if (type === 'QUARTER') dateFilter = `${year}-${quarter}`
@@ -75,10 +83,10 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
     else throw new Error('Invalid period type')
     const report_period = makeSingleTimePeriod(type, dateFilter)
     const main_creditor_cui = creditor === 'undefined' ? undefined : creditor
-    onChange?.({ report_period, report_type: reportType, main_creditor_cui, normalization: norm })
+    onChange?.({ report_period, report_type: reportType, main_creditor_cui, normalization: nextNormalization })
   }
 
-  const emitPrefetch = (type: ReportPeriodType, year: number, quarter: TQuarter, month: TMonth, reportType?: GqlReportType, creditor?: string, norm?: Normalization) => {
+  const emitPrefetch = (type: ReportPeriodType, year: number, quarter: TQuarter, month: TMonth, reportType?: GqlReportType, creditor?: string, nextNormalization?: Normalization) => {
     if (!onPrefetch) return
     let dateFilter: DateInput
     if (type === 'YEAR') dateFilter = `${year}`
@@ -87,7 +95,7 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
     else throw new Error('Invalid period type')
     const report_period = makeSingleTimePeriod(type, dateFilter)
     const main_creditor_cui = creditor === 'undefined' ? undefined : creditor
-    onPrefetch({ report_period, report_type: reportType, main_creditor_cui, normalization: norm })
+    onPrefetch({ report_period, report_type: reportType, main_creditor_cui, normalization: nextNormalization })
   }
 
   const handleTypeChange = (value: string | number | boolean | undefined) => {
@@ -121,37 +129,34 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
       }
     }
 
-    emitChange(nextType, nextYear, nextQuarter, nextMonth, reportType, mainCreditor, normalization)
+    emitChange(nextType, nextYear, nextQuarter, nextMonth, reportType, mainCreditor, normalizationValue)
   }
 
   const handleYearChange = (value: string) => {
     if (!value) return
     const y = Number(value)
-    emitChange(periodType, y, quarter, month, reportType, mainCreditor, normalization)
+    emitChange(periodType, y, quarter, month, reportType, mainCreditor, normalizationValue)
   }
   const handleQuarterChange = (value: string | number | boolean | undefined) => {
     if (!value) return
     const q = String(value) as TQuarter
-    emitChange(periodType, year, q, month, reportType, mainCreditor, normalization)
+    emitChange(periodType, year, q, month, reportType, mainCreditor, normalizationValue)
   }
   const handleMonthChange = (value: string | number | boolean | undefined) => {
     if (!value) return
     const monthValue = String(value) as TMonth
-    emitChange(periodType, year, quarter, monthValue, reportType, mainCreditor, normalization)
+    emitChange(periodType, year, quarter, monthValue, reportType, mainCreditor, normalizationValue)
   }
   const handleReportTypeChange = (value: string | number | boolean | undefined) => {
     if (!value) return
     const nextReportType = String(value) as GqlReportType
-    emitChange(periodType, year, quarter, month, nextReportType, mainCreditor, normalization)
+    emitChange(periodType, year, quarter, month, nextReportType, mainCreditor, normalizationValue)
   }
   const handleCreditorChange = (value: string) => {
     const creditor = value as string
-    emitChange(periodType, year, quarter, month, reportType, creditor, normalization)
+    emitChange(periodType, year, quarter, month, reportType, creditor, normalizationValue)
   }
-  const handleNormalizationChange = (display: 'total' | 'per_capita') => {
-    const effective = toEffectiveNormalization(display)
-    emitChange(periodType, year, quarter, month, reportType, mainCreditor, effective)
-  }
+  const allowPerCapita = Boolean(entity?.is_uat || entity?.entity_type === 'admin_county_council')
 
   return (
     <div className="flex flex-col gap-4 w-full">
@@ -189,7 +194,7 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
                       if (periodType === 'YEAR') nextMonth = '01'
                       else if (periodType === 'QUARTER') nextMonth = getQuarterEndMonth(nextQuarter)
                     }
-                    emitPrefetch(nextType, nextYear, nextQuarter, nextMonth, reportType, mainCreditor, normalization)
+                    emitPrefetch(nextType, nextYear, nextQuarter, nextMonth, reportType, mainCreditor, normalizationValue)
                   }}
                   className="flex-1 inline-flex items-center gap-2 data-[state=on]:bg-foreground data-[state=on]:text-background">
                   {o.label}
@@ -213,7 +218,7 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
                     <ToggleGroupItem
                       key={year}
                       value={String(year)}
-                      onMouseEnter={() => emitPrefetch(periodType, year, quarter, month, reportType, mainCreditor, normalization)}
+                      onMouseEnter={() => emitPrefetch(periodType, year, quarter, month, reportType, mainCreditor, normalizationValue)}
                       className="justify-center data-[state=on]:bg-foreground data-[state=on]:text-background"
                     >
                       {year}
@@ -228,7 +233,7 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
               <Label className="text-xs text-muted-foreground"><Trans>Quarter</Trans></Label>
               <ToggleGroup type="single" value={quarter} onValueChange={handleQuarterChange} variant="outline" size="sm" className="grid grid-cols-4 gap-2">
                 {quarterOptions.map((q) => (
-                  <ToggleGroupItem key={q.id} value={q.id} onMouseEnter={() => emitPrefetch(periodType, year, q.id as TQuarter, month, reportType, mainCreditor, normalization)} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{q.label}</ToggleGroupItem>
+                  <ToggleGroupItem key={q.id} value={q.id} onMouseEnter={() => emitPrefetch(periodType, year, q.id as TQuarter, month, reportType, mainCreditor, normalizationValue)} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{q.label}</ToggleGroupItem>
                 ))}
               </ToggleGroup>
             </div>
@@ -238,7 +243,7 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
               <Label className="text-xs text-muted-foreground"><Trans>Month</Trans></Label>
               <ToggleGroup type="single" value={month} onValueChange={handleMonthChange} variant="outline" size="sm" className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {MONTHS.map((m) => (
-                  <ToggleGroupItem key={m.id} value={m.id} onMouseEnter={() => emitPrefetch(periodType, year, quarter, m.id, reportType, mainCreditor, normalization)} className="justify-center data-[state=on]:bg-foreground data-[state=on]:text-background">{m.label}</ToggleGroupItem>
+                  <ToggleGroupItem key={m.id} value={m.id} onMouseEnter={() => emitPrefetch(periodType, year, quarter, m.id, reportType, mainCreditor, normalizationValue)} className="justify-center data-[state=on]:bg-foreground data-[state=on]:text-background">{m.label}</ToggleGroupItem>
                 ))}
               </ToggleGroup>
             </div>
@@ -247,30 +252,26 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
             <Label className="text-xs text-muted-foreground"><Trans>Normalization</Trans></Label>
             <ToggleGroup
               type="single"
-              value={toDisplayNormalization(normalization)}
-              onValueChange={(v) => v && handleNormalizationChange(v as 'total' | 'per_capita')}
+              value={normalizationValue}
+              onValueChange={(val) => {
+                if (!val) return
+                const next = val as Normalization
+                if (next === 'per_capita' && !allowPerCapita) return
+                emitChange(periodType, year, quarter, month, reportType, mainCreditor, next)
+              }}
               variant="outline"
               size="sm"
-              className="grid grid-cols-1 gap-2"
+              className="grid grid-cols-3 gap-2 items-stretch"
             >
-              {DISPLAY_NORMALIZATION_OPTIONS.map((o) => (
-                <ToggleGroupItem
-                  key={o.id}
-                  value={o.id}
-                  onMouseEnter={() => emitPrefetch(
-                    periodType,
-                    year,
-                    quarter,
-                    month,
-                    reportType,
-                    mainCreditor,
-                    toEffectiveNormalization(o.id)
-                  )}
-                  className="data-[state=on]:bg-foreground data-[state=on]:text-background"
-                >
-                  {o.label}
-                </ToggleGroupItem>
-              ))}
+              <ToggleGroupItem value="total" onMouseEnter={() => emitPrefetch(periodType, year, quarter, month, reportType, mainCreditor, 'total')} className="h-auto min-h-9 px-3 py-2 leading-snug whitespace-normal text-center data-[state=on]:bg-foreground data-[state=on]:text-background">
+                <Trans>Total</Trans>
+              </ToggleGroupItem>
+              <ToggleGroupItem value="per_capita" disabled={!allowPerCapita} onMouseEnter={() => allowPerCapita && emitPrefetch(periodType, year, quarter, month, reportType, mainCreditor, 'per_capita')} className="h-auto min-h-9 px-3 py-2 leading-snug whitespace-normal text-center data-[state=on]:bg-foreground data-[state=on]:text-background">
+                <Trans>Per capita</Trans>
+              </ToggleGroupItem>
+              <ToggleGroupItem value="percent_gdp" onMouseEnter={() => emitPrefetch(periodType, year, quarter, month, reportType, mainCreditor, 'percent_gdp')} className="h-auto min-h-9 px-3 py-2 leading-snug whitespace-normal text-center data-[state=on]:bg-foreground data-[state=on]:text-background">
+                <Trans>% of GDP</Trans>
+              </ToggleGroupItem>
             </ToggleGroup>
           </div>
         </div>
@@ -288,7 +289,7 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
           className="grid grid-cols-1 gap-2"
         >
           {REPORT_TYPE_OPTIONS.map((o) => (
-            <ToggleGroupItem key={o.id} value={o.id} onMouseEnter={() => emitPrefetch(periodType, year, quarter, month, o.id, mainCreditor, normalization)} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{o.label}</ToggleGroupItem>
+            <ToggleGroupItem key={o.id} value={o.id} onMouseEnter={() => emitPrefetch(periodType, year, quarter, month, o.id, mainCreditor, normalizationValue)} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{o.label}</ToggleGroupItem>
           ))}
         </ToggleGroup>
       </div>
@@ -306,7 +307,7 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
             className="grid grid-cols-1 gap-2"
           >
             {creditorOptions.map((c) => (
-              <ToggleGroupItem key={c.id} value={c.id} onMouseEnter={() => emitPrefetch(periodType, year, quarter, month, reportType, c.id, normalization)} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{c.label}</ToggleGroupItem>
+              <ToggleGroupItem key={c.id} value={c.id} onMouseEnter={() => emitPrefetch(periodType, year, quarter, month, reportType, c.id, normalizationValue)} className="data-[state=on]:bg-foreground data-[state=on]:text-background">{c.label}</ToggleGroupItem>
             ))}
           </ToggleGroup>
         </div>
@@ -314,5 +315,3 @@ export function EntityReportControls({ entity, periodType, year, quarter, month,
     </div>
   )
 }
-
-

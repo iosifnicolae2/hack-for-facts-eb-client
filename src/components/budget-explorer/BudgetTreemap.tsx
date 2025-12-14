@@ -11,7 +11,7 @@ import type { TreemapInput, ExcludedItemsSummary } from './budget-transform'
 import { FilteredSpendingInfo } from './FilteredSpendingInfo'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { getNormalizationUnit } from '@/lib/utils'
-import type { AnalyticsFilterType } from '@/schemas/charts'
+import type { AnalyticsFilterType, Currency, Normalization } from '@/schemas/charts'
 import { useTreemapChartLink } from './useTreemapChartLink'
 import { buildTreemapChartLink } from '@/lib/chart-links'
 import { ClassificationInfoLink } from '@/components/common/classification-info-link'
@@ -79,7 +79,8 @@ type Props = {
   path?: BreadcrumbEntry[]
   onViewDetails?: () => void
   showViewDetails?: boolean
-  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro'
+  normalization?: Normalization
+  currency?: Currency
   excludedItemsSummary?: ExcludedItemsSummary
   chartFilterInput?: AnalyticsFilterType // Optional filter input for the chart link
 }
@@ -94,13 +95,14 @@ const CustomizedContent: FC<{
   height: number
   fill: string
   root: { value: number }
-  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro'
+  normalization?: Normalization
+  currency?: Currency
   primary?: 'fn' | 'ec'
   code?: string
   // Recharts passes the original datum under `payload`. We use its fill for stable coloring.
   payload?: { fill?: string; code?: string; name?: string; value?: number }
 }> = (props) => {
-  const { name, value, depth, x, y, width, height, fill, root, normalization, primary } = props
+  const { name, value, depth, x, y, width, height, fill, root, normalization, currency, primary } = props
   const hasAnimatedInRef = useRef(false)
   const [isHovered, setIsHovered] = useState(false)
   const code = props.code ?? props.payload?.code
@@ -118,9 +120,8 @@ const CustomizedContent: FC<{
 
   const total = root?.value ?? 0
   const percentage = total > 0 ? (value / total) * 100 : 0
-  const unit = getNormalizationUnit(normalization ?? 'total')
-  const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON'
-  const displayValue = yValueFormatter(value, currencyCode, 'compact')
+  const unit = getNormalizationUnit({ normalization: (normalization ?? 'total') as any, currency: currency as any })
+  const displayValue = yValueFormatter(value, unit, 'compact')
 
   const baseColor = '#FFFFFF'
   const nameFontSize = 16
@@ -316,7 +317,7 @@ const CustomizedContent: FC<{
           fillOpacity={0.9}
           style={{ pointerEvents: 'none', userSelect: 'none' }}
         >
-          {displayValue} {unit.includes('capita') && '/ capita'}
+          {displayValue}
         </motion.text>
       )}
       {canShowPercentage && (
@@ -386,7 +387,7 @@ const CustomizedContent: FC<{
   )
 }
 
-export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, path = [], onViewDetails, showViewDetails = false, normalization, excludedItemsSummary, chartFilterInput: filterInput }: Props) {
+export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, path = [], onViewDetails, showViewDetails = false, normalization, currency, excludedItemsSummary, chartFilterInput: filterInput }: Props) {
   const isMobile = useIsMobile()
   const navigate = useNavigate()
 
@@ -481,8 +482,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
   }, [deferredAmountRange, payloadData, minValue, maxValue, amountRange])
 
   const totalValue = useMemo(() => filteredData.reduce((acc, curr) => acc + (Number.isFinite(curr.value) ? curr.value : 0), 0), [filteredData])
-  const unit = getNormalizationUnit(normalization ?? 'total')
-  const currencyCode: 'RON' | 'EUR' = unit.includes('EUR') ? 'EUR' : 'RON'
+  const unit = getNormalizationUnit({ normalization: normalization ?? 'total', currency })
 
   // Memoize root object to prevent unnecessary re-renders
   const rootValue = useMemo(() => ({ value: totalValue }), [totalValue])
@@ -506,18 +506,20 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
         root={rootValue}
         code={codeFromPayload}
         normalization={normalization}
+        currency={currency}
         primary={primary}
       />
     )
-  }, [rootValue, normalization, primary])
+  }, [rootValue, normalization, currency, primary])
 
   const memoizedTooltip = useMemo(() => (
     <CustomTooltip
       total={totalValue}
       primary={primary}
       normalization={normalization}
+      currency={currency}
     />
-  ), [totalValue, primary, normalization])
+  ), [totalValue, primary, normalization, currency])
 
   // On mobile, show only last 2 breadcrumb items
   const displayPath = isMobile && deferredPath.length > 2 ? deferredPath.slice(-2) : deferredPath
@@ -678,15 +680,14 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
           </div>
           <div className="flex flex-col items-center gap-2 text-center mt-4">
             <div className="text-sm sm:text-xl font-semibold">
-              <Trans>Total</Trans>: <span className="font-bold">{yValueFormatter(totalValue, currencyCode, 'compact')}</span> {unit.includes('capita') && '/ capita'}
+              <Trans>Total</Trans>: <span className="font-bold">{yValueFormatter(totalValue, unit, 'compact')}</span>
             </div>
             <div className="text-sm text-muted-foreground">
-              <span className="font-mono">{yValueFormatter(totalValue, currencyCode, 'standard')}</span> {unit.includes('capita') && '/ capita'}
+              <span className="font-mono">{yValueFormatter(totalValue, unit, 'standard')}</span>
             </div>
             <FilteredSpendingInfo
               excludedItemsSummary={excludedItemsSummary}
-              currencyCode={currencyCode}
-              perCapita={unit.includes('capita')}
+              unit={unit}
               amountFilter={{
                 minValue,
                 maxValue,
@@ -707,38 +708,38 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
   )
 }
 
-const CustomTooltip = ({ active, payload, total, primary, normalization }: {
+const CustomTooltip = ({ active, payload, total, primary, normalization, currency }: {
   active?: boolean,
   payload?: any[],
   total: number,
   primary: 'fn' | 'ec',
-  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro',
+  normalization?: Normalization,
+  currency?: Currency,
 }) => {
-  const lastTooltipDataRef = useRef<{
+  const lastTooltipDataRef = useRef<Readonly<{
     name: string
     code: string
     fill: string
     value: number
-  } | null>(null)
+  }> | null>(null)
 
   const isVisible = !!active && !!payload && payload.length > 0
 
   // Update ref when new valid data is available
-  if (isVisible && payload![0].payload) {
+  if (isVisible && payload?.[0]?.payload) {
     lastTooltipDataRef.current = {
-      name: payload![0].payload.name,
-      code: payload![0].payload.code,
-      fill: payload![0].payload.fill,
-      value: payload![0].value,
+      name: payload?.[0]?.payload?.name,
+      code: payload?.[0]?.payload?.code,
+      fill: payload?.[0]?.payload?.fill,
+      value: payload?.[0]?.value,
     }
   }
 
   // Use current data if visible, otherwise fall back to cached data
-  const data = isVisible ? payload![0].payload : lastTooltipDataRef.current
-  const value = isVisible ? payload![0].value : (lastTooltipDataRef.current?.value ?? 0)
+  const data = isVisible ? payload?.[0]?.payload : lastTooltipDataRef.current
+  const value = isVisible ? payload?.[0]?.value : (lastTooltipDataRef.current?.value ?? 0)
   const percentage = total > 0 ? (value / total) * 100 : 0
-  const unit = getNormalizationUnit(normalization ?? 'total')
-  const currencyCode = unit.includes('EUR') ? 'EUR' : 'RON'
+  const unit = getNormalizationUnit({ normalization: normalization ?? 'total', currency })
 
 
   return (
@@ -766,8 +767,8 @@ const CustomTooltip = ({ active, payload, total, primary, normalization }: {
             <div className="flex justify-between items-center gap-4">
               <span className="text-muted-foreground text-xs">Amount:</span>
               <div className="flex flex-col items-end">
-                <span className="font-mono font-semibold text-sm">{yValueFormatter(value, currencyCode, 'compact')} {unit.includes('capita') && '/ capita'}</span>
-                <span className="font-mono text-xs text-muted-foreground">{yValueFormatter(value, currencyCode, 'standard')}</span>
+                <span className="font-mono font-semibold text-sm">{yValueFormatter(value, unit, 'compact')}</span>
+                <span className="font-mono text-xs text-muted-foreground">{yValueFormatter(value, unit, 'standard')}</span>
               </div>
             </div>
             <div className="flex justify-between items-center gap-4">

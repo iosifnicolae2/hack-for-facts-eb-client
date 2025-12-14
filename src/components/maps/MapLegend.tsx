@@ -1,9 +1,8 @@
 import React from 'react';
 import { getHeatmapColor } from './utils';
-import { formatCurrency } from '@/lib/utils';
-import { cn } from '@/lib/utils';
+import { formatCurrency, formatNumber, cn, getNormalizationUnit } from '@/lib/utils';
 import { t } from '@lingui/core/macro';
-import { getNormalizationUnit } from '@/lib/utils';
+import type { Currency, Normalization } from '@/schemas/charts';
 
 interface MapLegendProps {
   min: number;
@@ -11,11 +10,18 @@ interface MapLegendProps {
   className?: string;
   title?: string;
   isInModal?: boolean;
-  normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
+  normalization?: Normalization;
+  currency?: Currency;
 }
 
-const formatLegendValue = (value: number | undefined | null, currency: 'RON' | 'EUR', isPerCapita: boolean): string => {
+const formatLegendValue = (
+  value: number | undefined | null,
+  unit: string,
+  currency: 'RON' | 'EUR' | 'USD',
+  isPerCapita: boolean,
+): string => {
   if (value === undefined || value === null) return 'N/A';
+  if (unit.startsWith('%')) return `${formatNumber(value, 'compact')}%`;
   return `${formatCurrency(value, 'compact', currency)}${isPerCapita ? ' / capita' : ''}`;
 };
 
@@ -26,15 +32,16 @@ export const MapLegend: React.FC<MapLegendProps> = ({
   title,
   isInModal = false,
   normalization,
+  currency,
 }) => {
   if (typeof min !== 'number' || typeof max !== 'number' || min > max) {
     return null;
   }
 
-  const unit = getNormalizationUnit(normalization as any);
-  const currencyCode: 'RON' | 'EUR' = unit.includes('EUR') ? 'EUR' : 'RON';
+  const unit = getNormalizationUnit({ normalization: normalization as any, currency: currency as any });
+  const currencyCode: 'RON' | 'EUR' | 'USD' = (currency ?? (unit.includes('EUR') ? 'EUR' : 'RON')) as any;
   const isPerCapita = unit.includes('capita');
-  const resolvedTitle = title ?? (isPerCapita ? t`Aggregated Value (${currencyCode}/capita)` : t`Aggregated Value (${currencyCode})`);
+  const resolvedTitle = title ?? (unit.startsWith('%') ? t`Aggregated Value (% of GDP)` : isPerCapita ? t`Aggregated Value (${currencyCode}/capita)` : t`Aggregated Value (${currencyCode})`);
 
   if (min === max) {
     const color = getHeatmapColor(0.5);
@@ -45,9 +52,9 @@ export const MapLegend: React.FC<MapLegendProps> = ({
           <div
             className="w-5 h-5 border border-border"
             style={{ backgroundColor: color }}
-            aria-label={t`Color for value ${formatLegendValue(min, currencyCode, isPerCapita)}`}
+            aria-label={t`Color for value ${formatLegendValue(min, unit, currencyCode, isPerCapita)}`}
           />
-          <span className={cn("text-xs", isInModal ? 'text-foreground' : 'text-card-foreground')}>{formatLegendValue(min, currencyCode, isPerCapita)}</span>
+          <span className={cn("text-xs", isInModal ? 'text-foreground' : 'text-card-foreground')}>{formatLegendValue(min, unit, currencyCode, isPerCapita)}</span>
         </div>
       </div>
     );
@@ -66,8 +73,8 @@ export const MapLegend: React.FC<MapLegendProps> = ({
           aria-label="Color gradient for the map legend"
         />
         <div className="flex justify-between text-xs">
-          <span>{formatLegendValue(min, currencyCode, isPerCapita)}</span>
-          <span>{formatLegendValue(max, currencyCode, isPerCapita)}</span>
+          <span>{formatLegendValue(min, unit, currencyCode, isPerCapita)}</span>
+          <span>{formatLegendValue(max, unit, currencyCode, isPerCapita)}</span>
         </div>
       </div>
     </div>

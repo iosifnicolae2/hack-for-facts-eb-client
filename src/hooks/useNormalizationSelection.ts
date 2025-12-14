@@ -2,7 +2,7 @@ import { useCallback, useMemo, useRef } from 'react'
 import { Normalization } from '@/schemas/charts'
 import { usePersistedState } from '@/lib/hooks/usePersistedState'
 
-type Currency = 'RON' | 'EUR'
+type Currency = 'RON' | 'EUR' | 'USD'
 export type DisplayNormalization = 'total' | 'per_capita'
 
 export function useNormalizationSelection(current?: Normalization) {
@@ -34,5 +34,4 @@ export function useNormalizationSelection(current?: Normalization) {
     toEffectiveNormalization,
   }
 }
-
 

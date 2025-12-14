@@ -2,12 +2,14 @@ import L from 'leaflet';
 import { GeoJsonObject, Feature, Geometry } from 'geojson';
 import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { processFeatureForLabel, PolygonLabelData } from './polygonLabels';
+import type { Currency, Normalization } from '@/schemas/charts';
 
 interface CanvasLabelLayerOptions extends L.LayerOptions {
   geoJsonData: GeoJsonObject | null;
   mapViewType: 'UAT' | 'County';
   heatmapDataMap: Map<string | number, HeatmapUATDataPoint | HeatmapCountyDataPoint>;
-  normalization: 'total' | 'per_capita' | 'total_euro' | 'per_capita_euro';
+  normalization: Normalization;
+  currency?: Currency;
   showLabels?: boolean;
 }
 
@@ -168,6 +170,7 @@ export class CanvasLabelLayer extends L.Layer {
         mapViewType,
         heatmapDataMap,
         normalization,
+        this.layerOptions.currency,
         maxValue
       );
       if (labelInfo) {
@@ -483,4 +486,3 @@ export class CanvasLabelLayer extends L.Layer {
 export function createCanvasLabelLayer(options: CanvasLabelLayerOptions): CanvasLabelLayer {
   return new CanvasLabelLayer(options);
 }
-

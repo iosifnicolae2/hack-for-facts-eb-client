@@ -18,6 +18,7 @@ import { t } from '@lingui/core/macro';
 import { TMonth, TQuarter } from '@/schemas/reporting';
 import { getYearLabel } from './utils';
 import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults';
+import type { Currency, Normalization } from '@/schemas/charts';
 
 interface AnalyticsProps {
     lineItems?: { nodes: readonly import('@/lib/api/entities').ExecutionLineItem[] } | null;
@@ -31,7 +32,8 @@ interface AnalyticsProps {
     dataType: DataType;
     onDataTypeChange: (type: DataType) => void;
     isLoading?: boolean;
-    normalization?: 'total' | 'total_euro' | 'per_capita' | 'per_capita_euro';
+    normalization?: Normalization;
+    currency?: Currency;
     onPrefetchYear?: (year: number) => void;
     onPrefetchDataType?: (type: DataType) => void;
     onPrefetchChartType?: (type: ChartType) => void;
@@ -55,6 +57,7 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
     onDataTypeChange,
     isLoading,
     normalization,
+    currency,
     onPrefetchYear,
     onPrefetchDataType,
     onPrefetchChartType,
@@ -124,7 +127,7 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
         return <LineItemsAnalyticsSkeleton />;
     }
 
-    const unit = getNormalizationUnit(normalization ?? 'total');
+    const unit = getNormalizationUnit({ normalization: (normalization ?? 'total') as any, currency: currency as any });
 
     const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: { name: string; value: number; color: string; stroke?: string; dataKey: string; }[]; label?: string }) => {
         if (!active || !payload || !payload.length) return null;

@@ -5,6 +5,7 @@ import { fetchEntityAnalytics } from '@/lib/api/entity-analytics'
 import { defaultEntityAnalyticsFilter } from '@/hooks/useEntityAnalyticsFilter'
 import { AnalyticsFilterSchema } from '@/schemas/charts'
 import { convertDaysToMs, generateHash } from '@/lib/utils'
+import { getPersistedState } from '@/lib/hooks/usePersistedState'
 
 const viewEnum = z.enum(['table', 'chart', 'line-items'])
 
@@ -47,7 +48,31 @@ export const Route = createFileRoute('/entity-analytics')({
     const sort = parsed.sortBy
       ? ({ by: mapColumnIdToSortBy(parsed.sortBy), order: parsed.sortOrder } as const)
       : undefined
-    const filterHash = generateHash(JSON.stringify(parsed.filter))
+    const userCurrency = getPersistedState<'RON' | 'EUR' | 'USD'>('user-currency', 'RON')
+    const userInflationAdjusted = getPersistedState<boolean>('user-inflation-adjusted', false)
+
+    const normalizationRaw = parsed.filter.normalization ?? 'total'
+    const normalization = (() => {
+      if (normalizationRaw === 'total_euro') return 'total'
+      if (normalizationRaw === 'per_capita_euro') return 'per_capita'
+      return normalizationRaw
+    })()
+    const currency =
+      normalizationRaw === 'total_euro' || normalizationRaw === 'per_capita_euro'
+        ? 'EUR'
+        : (parsed.filter.currency ?? userCurrency)
+    const inflationAdjusted =
+      normalization === 'percent_gdp'
+        ? false
+        : (parsed.filter.inflation_adjusted ?? userInflationAdjusted)
+
+    const effectiveFilter = {
+      ...parsed.filter,
+      normalization,
+      currency,
+      inflation_adjusted: inflationAdjusted,
+    }
+    const filterHash = generateHash(JSON.stringify(effectiveFilter))
 
     // Prime the list query so the page renders instantly
     if (parsed.view === 'table') {
@@ -55,7 +80,7 @@ export const Route = createFileRoute('/entity-analytics')({
         queryKey: ['entity-analytics', filterHash, parsed.sortBy, parsed.sortOrder, parsed.page, parsed.pageSize],
         queryFn: () =>
           fetchEntityAnalytics({
-            filter: parsed.filter,
+            filter: effectiveFilter,
             sort,
             limit: parsed.pageSize,
             offset,
@@ -66,5 +91,4 @@ export const Route = createFileRoute('/entity-analytics')({
     }
   },
 })
-
 

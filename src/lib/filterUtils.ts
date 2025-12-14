@@ -2,6 +2,7 @@ import { defaultYearRange, type AnalyticsFilterType } from '@/schemas/charts'
 import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from './analytics-defaults'
 import type { ReportPeriodInput, PeriodDate } from '@/schemas/reporting'
 import { toReportGqlType } from '@/schemas/reporting'
+import { normalizeNormalizationOptions } from '@/lib/normalization'
 
 function buildReportPeriodFromYears(years?: readonly number[] | number[]): ReportPeriodInput {
   const start = Array.isArray(years) && years.length > 0 ? Math.min(...years) : defaultYearRange.start
@@ -19,7 +20,7 @@ export function ensureReportPeriod(filter: AnalyticsFilterType, fallback?: { per
 }
 
 export function withDefaultExcludes(filter: AnalyticsFilterType): AnalyticsFilterType {
-  const accountCategory = (filter.account_category ?? 'ch') as 'ch' | 'vn'
+  const accountCategory = filter.account_category ?? 'ch'
   const exclude = { ...(filter.exclude ?? {}) }
 
   if (accountCategory === 'ch') {
@@ -49,11 +50,21 @@ export function withDefaultExcludes(filter: AnalyticsFilterType): AnalyticsFilte
 }
 
 export function normalizeAnalyticsFilter(filter: AnalyticsFilterType, fallback?: { period?: ReportPeriodInput }): AnalyticsFilterType {
-  const accountCategory = (filter.account_category ?? 'ch') as 'ch' | 'vn'
+  const accountCategory = filter.account_category ?? 'ch'
+  const normalizedNormalization = normalizeNormalizationOptions({
+    normalization: filter.normalization,
+    currency: filter.currency,
+    inflation_adjusted: filter.inflation_adjusted,
+    show_period_growth: filter.show_period_growth,
+  })
   const normalized: AnalyticsFilterType = {
     ...filter,
     account_category: accountCategory,
     report_period: ensureReportPeriod(filter, fallback),
+    normalization: normalizedNormalization.normalization,
+    currency: normalizedNormalization.currency,
+    inflation_adjusted: normalizedNormalization.inflation_adjusted,
+    show_period_growth: normalizedNormalization.show_period_growth,
   }
   return normalized
 }
@@ -86,6 +97,9 @@ export function prepareFilterForServer(filter: AnalyticsFilterType, fallback?: {
     'min_population',
     'max_population',
     'normalization',
+    'currency',
+    'inflation_adjusted',
+    'show_period_growth',
     'aggregate_min_amount',
     'aggregate_max_amount',
     'item_min_amount',
@@ -95,7 +109,7 @@ export function prepareFilterForServer(filter: AnalyticsFilterType, fallback?: {
   const serverFilter: any = {}
 
   for (const [k, v] of Object.entries(normalized)) {
-    if (allowedKeys.has(k)) (serverFilter as any)[k] = v
+    if (allowedKeys.has(k)) serverFilter[k] = v
   }
   // Pass through nested exclude filters if present
   if (normalized.exclude) {

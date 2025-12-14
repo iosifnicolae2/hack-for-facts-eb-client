@@ -21,7 +21,7 @@ import { AnalyticsFilterType, defaultYearRange, type Normalization } from '@/sch
 import { useEntityViews } from '@/hooks/useEntityViews'
 import { useRecentEntities } from '@/hooks/useRecentEntities'
 import { useEntityMapFilter } from '@/components/entities/hooks/useEntityMapFilter'
-import { useEntityDetails } from '@/lib/hooks/useEntityDetails'
+import { useEntityDetails, entityDetailsQueryOptions } from '@/lib/hooks/useEntityDetails'
 
 import { Analytics } from '@/lib/analytics'
 import { buildEntitySeo } from '@/lib/seo-entity'
@@ -31,8 +31,9 @@ import { EntityDetailsData } from '@/lib/api/entities'
 import { usePersistedState } from '@/lib/hooks/usePersistedState'
 import { useDebouncedCallback } from '@/lib/hooks/useDebouncedCallback'
 import { queryClient } from '@/lib/queryClient'
-import { entityDetailsQueryOptions } from '@/lib/hooks/useEntityDetails'
 import { FloatingQuickNav } from '@/components/ui/FloatingQuickNav'
+import type { NormalizationOptions } from '@/lib/normalization'
+import { useUserInflationAdjusted } from '@/lib/hooks/useUserInflationAdjusted'
 
 const TrendsView = lazy(() => import('@/components/entities/views/TrendsView').then(m => ({ default: m.TrendsView })))
 const EmployeesView = lazy(() => import('@/components/entities/views/EmployeesView').then(m => ({ default: m.EmployeesView })))
@@ -93,7 +94,8 @@ function EntityDetailsPage() {
   const search = useSearch({ from: '/entities/$cui' })
   const navigate = useNavigate({ from: '/entities/$cui' })
   const yearSelectorRef = useRef<HTMLButtonElement>(null)
-  const [userCurrency] = usePersistedState<'RON' | 'EUR'>('user-currency', 'RON')
+  const [userCurrency, setUserCurrency] = usePersistedState<'RON' | 'EUR' | 'USD'>('user-currency', 'RON')
+  const [userInflationAdjusted, setUserInflationAdjusted] = useUserInflationAdjusted()
   const [filtersOpen, setFiltersOpen] = useState(false)
 
   useHotkeys('mod+;', () => yearSelectorRef.current?.click(), {
@@ -110,8 +112,24 @@ function EntityDetailsPage() {
   const lineItemsTab = search.lineItemsTab as 'functional' | 'funding' | 'expenseType' | undefined
   const selectedFundingKey = search.selectedFundingKey as string | undefined
   const selectedExpenseTypeKey = search.selectedExpenseTypeKey as string | undefined
-  const defaultUserNormalization = userCurrency === 'EUR' ? 'total_euro' : 'total'
-  const normalization = search.normalization ?? defaultUserNormalization
+  const normalizationRaw = (search.normalization as Normalization | undefined) ?? 'total'
+  const currencyParam = (search as any).currency as 'RON' | 'EUR' | 'USD' | undefined
+  const inflationAdjustedParam = (search as any).inflation_adjusted as boolean | undefined
+  const showPeriodGrowth = Boolean((search as any).show_period_growth)
+
+  const normalization: Normalization = (() => {
+    if (normalizationRaw === 'total_euro') return 'total'
+    if (normalizationRaw === 'per_capita_euro') return 'per_capita'
+    return normalizationRaw
+  })()
+  const currency: 'RON' | 'EUR' | 'USD' =
+    normalizationRaw === 'total_euro' || normalizationRaw === 'per_capita_euro'
+      ? 'EUR'
+      : (currencyParam ?? userCurrency)
+  const inflationAdjusted =
+    normalization === 'percent_gdp'
+      ? false
+      : (inflationAdjustedParam ?? userInflationAdjusted)
   const treemapPrimary = search.treemapPrimary as 'fn' | 'ec' | undefined
   const accountCategory = search.accountCategory as 'ch' | 'vn' | undefined
 
@@ -124,6 +142,9 @@ function EntityDetailsPage() {
   const { data: entity, isLoading, isError, error } = useEntityDetails({
     cui,
     normalization,
+    currency,
+    inflation_adjusted: inflationAdjusted,
+    show_period_growth: showPeriodGrowth,
     reportPeriod,
     reportType: reportTypeState,
     trendPeriod,
@@ -131,7 +152,7 @@ function EntityDetailsPage() {
   })
 
   useRecentEntities(entity)
-  const { mapFilters, updateMapFilters } = useEntityMapFilter({ year: selectedYear, userCurrency })
+  const { mapFilters, updateMapFilters } = useEntityMapFilter({ year: selectedYear, currency })
   const views = useEntityViews(entity)
 
   const debouncedPrefetch = useDebouncedCallback(
@@ -141,14 +162,17 @@ function EntityDetailsPage() {
       const hoveredYear = Number(String(startAnchor).slice(0, 4)) || selectedYear;
       const nextTrend = makeTrendPeriod(report_period.type, hoveredYear, START_YEAR, END_YEAR);
       queryClient.prefetchQuery(
-        entityDetailsQueryOptions(
+        entityDetailsQueryOptions({
           cui,
-          norm ?? normalization,
-          report_period,
-          report_type,
-          nextTrend,
-          payload.main_creditor_cui ?? mainCreditorState,
-        )
+          normalization: norm ?? normalization,
+          currency,
+          inflation_adjusted: inflationAdjusted,
+          show_period_growth: showPeriodGrowth,
+          reportPeriod: report_period,
+          reportType: report_type,
+          trendPeriod: nextTrend,
+          mainCreditorCui: payload.main_creditor_cui ?? mainCreditorState,
+        })
       );
     },
     100
@@ -169,12 +193,26 @@ function EntityDetailsPage() {
   }, [navigate, search])
 
   useEffect(() => {
-    if (userCurrency === 'EUR' && normalization !== 'total_euro' && normalization !== 'per_capita_euro') {
-      updateSearch({ normalization: 'total_euro' })
-    } else if (userCurrency === 'RON' && normalization !== 'total' && normalization !== 'per_capita') {
-      updateSearch({ normalization: 'total' })
+    if (currencyParam) {
+      setUserCurrency(currencyParam)
+      updateSearch({ currency: undefined })
+      return
     }
-  }, [userCurrency, normalization, updateSearch])
+    if (inflationAdjustedParam !== undefined) {
+      setUserInflationAdjusted(Boolean(inflationAdjustedParam))
+      updateSearch({ inflation_adjusted: undefined })
+      return
+    }
+    if (normalizationRaw === 'total_euro') {
+      setUserCurrency('EUR')
+      updateSearch({ normalization: 'total', currency: undefined })
+      return
+    }
+    if (normalizationRaw === 'per_capita_euro') {
+      setUserCurrency('EUR')
+      updateSearch({ normalization: 'per_capita', currency: undefined })
+    }
+  }, [currencyParam, inflationAdjustedParam, normalizationRaw, setUserCurrency, setUserInflationAdjusted, updateSearch])
 
   const handleYearChange = useCallback((year: number) => updateSearch({ year }), [updateSearch])
 
@@ -225,10 +263,13 @@ function EntityDetailsPage() {
     updateSearch({ advancedFilter: filter })
   }, [updateSearch])
 
-  const handleNormalizationChange = useCallback((norm: Normalization) => {
-    updateSearch({ normalization: norm })
-    Analytics.capture(Analytics.EVENTS.EntityViewOpened, { cui, view: activeView, normalization: norm })
-  }, [updateSearch, cui, activeView])
+  const handleNormalizationChange = useCallback((next: NormalizationOptions) => {
+    updateSearch({
+      normalization: next.normalization,
+      show_period_growth: next.show_period_growth,
+    })
+    Analytics.capture(Analytics.EVENTS.EntityViewOpened, { cui, view: activeView, normalization: next.normalization, currency })
+  }, [updateSearch, cui, activeView, currency])
 
   const updateReportPeriodInSearch = useCallback((patch: Record<string, any>) => {
     startTransition(() => {
@@ -271,7 +312,10 @@ function EntityDetailsPage() {
     report_period: reportPeriod,
     account_category: accountCategory ?? 'ch',
     normalization: normalization,
-  }), [cui, reportPeriod, accountCategory, normalization])
+    currency,
+    inflation_adjusted: inflationAdjusted,
+    show_period_growth: showPeriodGrowth,
+  }), [cui, reportPeriod, accountCategory, normalization, currency, inflationAdjusted, showPeriodGrowth])
 
   // Determine mapViewType based on entity type
   const mapViewType = useMemo<'UAT' | 'County'>(() => {
@@ -358,39 +402,42 @@ function EntityDetailsPage() {
             />
           }
         />
-      <MemoizedViewsContent
-        cui={cui}
-        entity={entity}
-        isLoading={isLoading}
-        activeView={activeView}
-        selectedYear={selectedYear}
-        normalization={normalization}
-        years={years}
-        period={period}
-        reportPeriod={reportPeriod}
-        trendPeriod={trendPeriod}
-        reportTypeState={reportTypeState}
-        mainCreditorCui={mainCreditorState}
-        search={search}
-        mapFilters={mapFilters}
-        updateMapFilters={updateMapFilters}
-        handleYearChange={handleYearChange}
-        handleSearchChange={handleSearchChange}
-        handleNormalizationChange={handleNormalizationChange}
-        handlePeriodItemSelect={handlePeriodItemSelect}
-        handleAnalyticsChange={handleAnalyticsChange}
-        lineItemsTab={lineItemsTab ?? 'functional'}
-        handleLineItemsTabChange={handleLineItemsTabChange}
-        selectedFundingKey={selectedFundingKey ?? ''}
-        selectedExpenseTypeKey={selectedExpenseTypeKey ?? ''}
-        handleSelectedFundingKeyChange={handleSelectedFundingKeyChange}
-        handleSelectedExpenseTypeKeyChange={handleSelectedExpenseTypeKeyChange}
-        treemapPrimary={treemapPrimary}
-        accountCategory={accountCategory}
-        handleTreemapPrimaryChange={handleTreemapPrimaryChange}
-        handleAccountCategoryChange={handleAccountCategoryChange}
-        treemapPath={(search as any).treemapPath}
-        handleTreemapPathChange={handleTreemapPathChange}
+        <MemoizedViewsContent
+          cui={cui}
+          entity={entity}
+          isLoading={isLoading}
+          activeView={activeView}
+          selectedYear={selectedYear}
+          normalization={normalization}
+          currency={currency}
+          inflationAdjusted={inflationAdjusted}
+          showPeriodGrowth={showPeriodGrowth}
+          years={years}
+          period={period}
+          reportPeriod={reportPeriod}
+          trendPeriod={trendPeriod}
+          reportTypeState={reportTypeState}
+          mainCreditorCui={mainCreditorState}
+          search={search}
+          mapFilters={mapFilters}
+          updateMapFilters={updateMapFilters}
+          handleYearChange={handleYearChange}
+          handleSearchChange={handleSearchChange}
+          handleNormalizationChange={handleNormalizationChange}
+          handlePeriodItemSelect={handlePeriodItemSelect}
+          handleAnalyticsChange={handleAnalyticsChange}
+          lineItemsTab={lineItemsTab ?? 'functional'}
+          handleLineItemsTabChange={handleLineItemsTabChange}
+          selectedFundingKey={selectedFundingKey ?? ''}
+          selectedExpenseTypeKey={selectedExpenseTypeKey ?? ''}
+          handleSelectedFundingKeyChange={handleSelectedFundingKeyChange}
+          handleSelectedExpenseTypeKeyChange={handleSelectedExpenseTypeKeyChange}
+          treemapPrimary={treemapPrimary}
+          accountCategory={accountCategory}
+          handleTreemapPrimaryChange={handleTreemapPrimaryChange}
+          handleAccountCategoryChange={handleAccountCategoryChange}
+          treemapPath={(search as any).treemapPath}
+          handleTreemapPathChange={handleTreemapPathChange}
           transferFilter={transferFilter}
           handleTransferFilterChange={handleTransferFilterChange}
           advancedFilter={advancedFilter}
@@ -408,6 +455,9 @@ interface ViewsContentProps {
   activeView: string;
   selectedYear: number;
   normalization: Normalization;
+  currency: 'RON' | 'EUR' | 'USD';
+  inflationAdjusted: boolean;
+  showPeriodGrowth: boolean;
   years: number[];
   period: ReportPeriodType;
   reportPeriod: ReportPeriodInput;
@@ -419,7 +469,7 @@ interface ViewsContentProps {
   updateMapFilters: (update: Partial<AnalyticsFilterType>) => void;
   handleYearChange: (year: number) => void;
   handleSearchChange: (type: 'expense' | 'income', value: string) => void;
-  handleNormalizationChange: (norm: Normalization) => void;
+  handleNormalizationChange: (next: NormalizationOptions) => void;
   handlePeriodItemSelect: (label: string) => void;
   handleAnalyticsChange: (key: 'analyticsChartType' | 'analyticsDataType', value: string) => void;
   lineItemsTab: 'functional' | 'funding' | 'expenseType';
@@ -442,7 +492,7 @@ interface ViewsContentProps {
 
 function ViewsContent(props: ViewsContentProps) {
   const {
-    cui, entity, activeView, selectedYear, normalization, years, period, reportPeriod, trendPeriod,
+    cui, entity, activeView, selectedYear, normalization, currency, inflationAdjusted, showPeriodGrowth, years, period, reportPeriod, trendPeriod,
     reportTypeState, search, mapFilters, updateMapFilters, handleYearChange, mainCreditorCui,
     handleSearchChange, handleNormalizationChange, handlePeriodItemSelect, handleAnalyticsChange,
     lineItemsTab, handleLineItemsTabChange,
@@ -453,6 +503,13 @@ function ViewsContent(props: ViewsContentProps) {
     advancedFilter, handleAdvancedFilterChange,
   } = props;
 
+  const normalizationOptions: NormalizationOptions = {
+    normalization,
+    currency,
+    inflation_adjusted: inflationAdjusted,
+    show_period_growth: showPeriodGrowth,
+  }
+
   const trendsViewProps = {
     entity,
     isLoading: isLoading,
@@ -461,7 +518,7 @@ function ViewsContent(props: ViewsContentProps) {
     initialExpenseSearch: search.expenseSearch,
     initialIncomeSearch: search.incomeSearch,
     onSearchChange: handleSearchChange,
-    normalization,
+    normalizationOptions,
     onNormalizationChange: handleNormalizationChange,
     reportPeriod,
     trendPeriod,
@@ -490,9 +547,9 @@ function ViewsContent(props: ViewsContentProps) {
           case 'map': return <MapView entity={entity} mapFilters={mapFilters} updateMapFilters={updateMapFilters} period={reportPeriod} />
           case 'employees': return <EmployeesView entity={entity} />
           case 'ranking': return <RankingView />
-          case 'related-charts': return <RelatedChartsView entity={entity} normalization={normalization} />
+          case 'related-charts': return <RelatedChartsView entity={entity} normalizationOptions={normalizationOptions} />
           case 'relationships': return <EntityRelationships cui={cui} />
-          default: return <Overview cui={cui} entity={entity} isLoading={isLoading} selectedYear={selectedYear} normalization={normalization} years={years} periodType={period} reportPeriod={reportPeriod} reportType={reportTypeState} mainCreditorCui={mainCreditorCui} search={search} onChartNormalizationChange={handleNormalizationChange} onYearChange={handleYearChange} onPeriodItemSelect={handlePeriodItemSelect} onSearchChange={handleSearchChange} onAnalyticsChange={handleAnalyticsChange} onLineItemsTabChange={handleLineItemsTabChange} onSelectedFundingKeyChange={handleSelectedFundingKeyChange} onSelectedExpenseTypeKeyChange={handleSelectedExpenseTypeKeyChange} treemapPrimary={treemapPrimary} accountCategory={accountCategory} onTreemapPrimaryChange={handleTreemapPrimaryChange} onAccountCategoryChange={handleAccountCategoryChange} treemapPath={treemapPath} onTreemapPathChange={handleTreemapPathChange} transferFilter={transferFilter} onTransferFilterChange={handleTransferFilterChange} advancedFilter={advancedFilter} onAdvancedFilterChange={handleAdvancedFilterChange} />
+          default: return <Overview cui={cui} entity={entity} isLoading={isLoading} selectedYear={selectedYear} normalizationOptions={normalizationOptions} years={years} periodType={period} reportPeriod={reportPeriod} reportType={reportTypeState} mainCreditorCui={mainCreditorCui} search={search} onChartNormalizationChange={handleNormalizationChange} onYearChange={handleYearChange} onPeriodItemSelect={handlePeriodItemSelect} onSearchChange={handleSearchChange} onAnalyticsChange={handleAnalyticsChange} onLineItemsTabChange={handleLineItemsTabChange} onSelectedFundingKeyChange={handleSelectedFundingKeyChange} onSelectedExpenseTypeKeyChange={handleSelectedExpenseTypeKeyChange} treemapPrimary={treemapPrimary} accountCategory={accountCategory} onTreemapPrimaryChange={handleTreemapPrimaryChange} onAccountCategoryChange={handleAccountCategoryChange} treemapPath={treemapPath} onTreemapPathChange={handleTreemapPathChange} transferFilter={transferFilter} onTransferFilterChange={handleTransferFilterChange} advancedFilter={advancedFilter} onAdvancedFilterChange={handleAdvancedFilterChange} />
         }
       })()}
     </Suspense>

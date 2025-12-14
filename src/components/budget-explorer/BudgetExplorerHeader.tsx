@@ -8,18 +8,24 @@ import type { ReportPeriodInput } from '@/schemas/reporting'
 import { Button } from '@/components/ui/button'
 import { ResponsivePopover } from '@/components/ui/ResponsivePopover'
 import { EntityReportLabel } from '@/components/entities/EntityReportLabel'
+import { NormalizationModeSelect } from '@/components/normalization/normalization-mode-select'
 
-type Props = {
+type Props = Readonly<{
   state: BudgetExplorerState
   onChange: (partial: Partial<BudgetExplorerState>) => void
-}
+}>
 
 export function BudgetExplorerHeader({ state, onChange }: Props) {
   const { filter } = state
-  const isEuroMode =
-    filter.normalization === 'total_euro' ||
-    filter.normalization === 'per_capita_euro'
   const [advancedOpen, setAdvancedOpen] = useState(false)
+  const handleNormalizationChange = (normalization: BudgetExplorerState['filter']['normalization']) => {
+    onChange({
+      filter: {
+        ...filter,
+        normalization,
+      } as BudgetExplorerState['filter'],
+    })
+  }
 
   return (
     <div className="md:sticky top-0 z-30 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border rounded-xl shadow-md">
@@ -69,31 +75,7 @@ export function BudgetExplorerHeader({ state, onChange }: Props) {
             <Label className="text-xs text-muted-foreground">
               <Trans>Normalization</Trans>
             </Label>
-            <ToggleGroup
-              type="single"
-              value={filter.normalization ?? 'total'}
-              onValueChange={(
-                v: 'total' | 'per_capita' | 'total_euro' | 'per_capita_euro'
-              ) => {
-                if (v) onChange({ filter: { ...filter, normalization: v } as any })
-              }}
-              variant="outline"
-              size="default"
-              className="w-full"
-            >
-              <ToggleGroupItem
-                value={isEuroMode ? 'total_euro' : 'total'}
-                className="flex-1 data-[state=on]:bg-foreground data-[state=on]:text-background"
-              >
-                <Trans>Total</Trans>
-              </ToggleGroupItem>
-              <ToggleGroupItem
-                value={isEuroMode ? 'per_capita_euro' : 'per_capita'}
-                className="flex-1 data-[state=on]:bg-foreground data-[state=on]:text-background"
-              >
-                <Trans>Per capita</Trans>
-              </ToggleGroupItem>
-            </ToggleGroup>
+            <NormalizationModeSelect value={filter.normalization} allowPerCapita onChange={handleNormalizationChange} triggerClassName="w-full" />
           </div>
           <div className="flex flex-col gap-2 md:col-span-2 lg:col-span-1">
             <Label className="text-xs text-muted-foreground">
@@ -128,4 +110,3 @@ export function BudgetExplorerHeader({ state, onChange }: Props) {
     </div>
   )
 }
-

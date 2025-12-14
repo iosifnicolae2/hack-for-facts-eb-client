@@ -3,13 +3,15 @@ import { useMap } from 'react-leaflet';
 import { GeoJsonObject } from 'geojson';
 import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { CanvasLabelLayer } from './CanvasLabelLayer';
+import type { Currency, Normalization } from '@/schemas/charts';
 
 interface MapLabelsProps {
   geoJsonData: GeoJsonObject | null;
   showLabels?: boolean;
   mapViewType: 'UAT' | 'County';
   heatmapDataMap: Map<string | number, HeatmapUATDataPoint | HeatmapCountyDataPoint>;
-  normalization: 'total' | 'per_capita' | 'total_euro' | 'per_capita_euro';
+  normalization: Normalization;
+  currency?: Currency;
 }
 
 /**
@@ -22,6 +24,7 @@ export const MapLabels: React.FC<MapLabelsProps> = ({
   mapViewType,
   heatmapDataMap,
   normalization,
+  currency,
 }) => {
   const map = useMap();
   const layerRef = useRef<CanvasLabelLayer | null>(null);
@@ -36,6 +39,7 @@ export const MapLabels: React.FC<MapLabelsProps> = ({
       mapViewType,
       heatmapDataMap,
       normalization,
+      currency,
       showLabels,
     });
 
@@ -60,10 +64,11 @@ export const MapLabels: React.FC<MapLabelsProps> = ({
         mapViewType,
         heatmapDataMap,
         normalization,
+        currency,
         showLabels,
       });
     }
-  }, [geoJsonData, mapViewType, heatmapDataMap, normalization, showLabels]);
+  }, [geoJsonData, mapViewType, heatmapDataMap, normalization, currency, showLabels]);
 
   // This component doesn't render anything - the canvas layer handles rendering
   return null;
