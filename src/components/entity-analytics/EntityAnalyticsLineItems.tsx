@@ -183,6 +183,7 @@ export const EntityAnalyticsLineItems: React.FC<
             currentYear={0} // Year is not applicable here
             showTotalValueHeader={!!currentSearchActive}
             normalization={filter.normalization}
+            currency={filter.currency}
           />
         )}
       </CardContent>

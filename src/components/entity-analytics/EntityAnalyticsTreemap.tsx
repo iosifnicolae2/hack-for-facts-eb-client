@@ -156,6 +156,7 @@ export function EntityAnalyticsTreemap({
             onBreadcrumbClick={onBreadcrumbClick}
             path={breadcrumbs}
             normalization={filter.normalization}
+            currency={filter.currency}
             excludedItemsSummary={excludedItemsSummary}
             chartFilterInput={filter}
           />
