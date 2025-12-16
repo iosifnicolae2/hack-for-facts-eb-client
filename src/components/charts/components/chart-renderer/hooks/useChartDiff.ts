@@ -49,15 +49,15 @@ export const useChartDiff = (timeSeriesData: TimeSeriesDataPoint[], enabledSerie
     setDiffs(calculatedDiffs);
   }, [timeSeriesData, enabledSeries]);
 
-  const handleMouseDown = useCallback((e: { activeLabel: string | undefined } | undefined) => {
-    if (e && e.activeLabel) {
+  const handleMouseDown = useCallback((e: { activeLabel: string | number | undefined } | undefined) => {
+    if (e && e.activeLabel !== undefined) {
       setDragStart(e.activeLabel);
       setRefAreaRight('');
     }
   }, []);
 
-  const handleMouseMove = useCallback((e: { activeLabel: string | undefined } | undefined) => {
-    if (dragStart && e && e.activeLabel) {
+  const handleMouseMove = useCallback((e: { activeLabel: string | number | undefined } | undefined) => {
+    if (dragStart && e && e.activeLabel !== undefined) {
       setRefAreaLeft(dragStart);
       setRefAreaRight(e.activeLabel);
       setDiffs([]);

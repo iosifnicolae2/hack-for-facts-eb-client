@@ -8,7 +8,7 @@ import {
   useAuth as useClerkAuth,
   useUser as useClerkUser,
 } from '@clerk/clerk-react'
-import type { LoadedClerk } from '@clerk/types'
+import type { LoadedClerk } from '@clerk/shared/types'
 import { env } from '@/config/env'
 
 declare global {

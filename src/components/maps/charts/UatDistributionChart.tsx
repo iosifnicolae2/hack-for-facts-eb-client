@@ -99,7 +99,7 @@ export const UatDistributionChart: React.FC<UatDistributionChartProps> = ({
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" angle={-30} textAnchor="end" interval={0} tick={{ fontSize: 10 }} label={{ value: xAxisLabel, position: 'insideBottom', dy:30, fontSize: 12 }} />
           <YAxis label={{ value: yAxisLabel, angle: -90, position: 'insideLeft', fontSize: 12 }} tickFormatter={formatNumber} />
-          <Tooltip formatter={(value: number) => [value, 'Count']} />
+          <Tooltip formatter={(value) => [value ?? 0, 'Count']} />
           <Legend verticalAlign="top" height={36}/>
           <Bar dataKey="count" name="Number of UATs" fill={barColor}>
             <LabelList dataKey="count" position="top" fontSize={10} formatter={(value: React.ReactNode) => typeof value === 'number' && value > 0 ? value.toString() : ''} />

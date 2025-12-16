@@ -69,7 +69,7 @@ export const UatAverageSpendingCountyChart: React.FC<UatAverageSpendingCountyCha
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="county_name" angle={-45} textAnchor="end" interval={0} tick={{ fontSize: 10 }} height={50} label={{ value: xAxisLabel, position: 'insideBottom', dy: 50, fontSize: 12 }} />
           <YAxis tickFormatter={(value) => formatCurrency(value, 'compact')} label={{ value: yAxisLabel, angle: -90, position: 'insideLeft', dx: -75, fontSize: 12 }} />
-          <Tooltip formatter={(value: number) => [formatCurrency(value, 'compact'), 'Avg. Amount']} />
+          <Tooltip formatter={(value) => [formatCurrency(Number(value ?? 0), 'compact'), 'Avg. Amount']} />
           <Legend verticalAlign="top" height={36} />
           <Bar dataKey="average_amount" name="Avg. Amount per UAT" fill={barColor}>
             <LabelList dataKey="average_amount" position="top"  angle={-45} offset={50} formatter={(value: React.ReactNode) => typeof value === 'number' && value > 0 ? formatCurrency(value, 'compact') : ''} fontSize={10} />

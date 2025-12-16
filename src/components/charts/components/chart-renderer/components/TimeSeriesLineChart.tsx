@@ -37,8 +37,8 @@ export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotati
         margin={{ top: 30, right: 50, left: 50, bottom: 20, ...margins }}
         onMouseDown={(e) => {
           handleMouseDown(e)
-          if (e.activeLabel) {
-            onXAxisClick?.(e.activeLabel);
+          if (e?.activeLabel !== undefined) {
+            onXAxisClick?.(String(e.activeLabel));
           }
         }}
         onMouseMove={handleMouseMove}

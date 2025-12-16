@@ -1,6 +1,6 @@
 import path from "path";
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
+import react from "@vitejs/plugin-react";
 import checker from "vite-plugin-checker";
 import tanstackRouter from "@tanstack/router-plugin/vite";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
@@ -54,7 +54,9 @@ export default defineConfig(({ mode }) => ({
     lingui(),
     tanstackRouter(),
     react({
-      plugins: [["@lingui/swc-plugin", {}]],
+      babel: {
+        plugins: ["@lingui/babel-plugin-lingui-macro"],
+      },
     }),
     tailwindcss(),
     checker({

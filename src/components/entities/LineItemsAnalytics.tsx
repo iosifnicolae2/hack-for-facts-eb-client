@@ -219,7 +219,7 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
                                     strokeWidth={2}
                                     radius={[2, 2, 0, 0]}
                                 >
-                                    <LabelList content={renderBarLabel} />
+                                    <LabelList content={(props) => renderBarLabel(props as BarLabelProps)} />
                                 </Bar>
                             </BarChart>
                         ) : (
@@ -234,7 +234,7 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
                                     animationDuration={300}
                                     outerRadius={isMobile ? 80 : isTablet ? 100 : 140}
                                     labelLine={true}
-                                    label={({ name, percent }) => `${name.slice(0, isMobile ? 15 : 25)} (${((percent || 0) * 100).toFixed(0)}%)`}
+                                    label={({ name, percent }) => `${(name ?? '').slice(0, isMobile ? 15 : 25)} (${((percent || 0) * 100).toFixed(0)}%)`}
                                 >
                                     {activeData.map((_, index) => (
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

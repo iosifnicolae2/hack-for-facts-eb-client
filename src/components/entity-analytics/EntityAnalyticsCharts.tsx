@@ -48,7 +48,7 @@ export function EntityAnalyticsCharts({ data, normalization = 'per_capita' }: Pr
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="entity_name" tick={{ fontSize: 10 }} angle={-25} textAnchor="end" interval={0} />
               <YAxis tickFormatter={(v) => formatNumber(v)} />
-              <Tooltip formatter={(v: number) => formatCurrency(v)} />
+              <Tooltip formatter={(v) => formatCurrency(Number(v ?? 0))} />
               <Legend />
               <Bar dataKey={barKey} name={barLabel} fill="#3b82f6">
                 {topByTotal.map((entry, index) => (
@@ -77,8 +77,8 @@ export function EntityAnalyticsCharts({ data, normalization = 'per_capita' }: Pr
               <XAxis dataKey="population" name="Population" tickFormatter={(v) => formatNumber(v)} />
               <YAxis dataKey="per_capita_amount" name="Per Capita" tickFormatter={(v) => formatNumber(v)} />
               <Tooltip
-                formatter={(v: number, name: string) => [formatCurrency(v), name]}
-                labelFormatter={(label: any) => `Population: ${formatNumber(label)}`}
+                formatter={(v, name) => [formatCurrency(Number(v ?? 0)), name]}
+                labelFormatter={(label: string | number) => `Population: ${formatNumber(Number(label))}`}
               />
               <Legend />
               <Scatter data={scatterData} name="Entities" fill="#10b981" />
@@ -97,7 +97,7 @@ export function EntityAnalyticsCharts({ data, normalization = 'per_capita' }: Pr
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="county_name" tick={{ fontSize: 11 }} angle={-25} textAnchor="end" interval={0} />
               <YAxis tickFormatter={(v) => formatNumber(v)} />
-              <Tooltip formatter={(v: number) => formatCurrency(v)} />
+              <Tooltip formatter={(v) => formatCurrency(Number(v ?? 0))} />
               <Legend />
               <Bar dataKey={barKey} name={barLabel} fill="#6366f1">
                 {countyAgg.map((entry, index) => (
