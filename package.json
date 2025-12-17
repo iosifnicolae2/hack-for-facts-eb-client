@@ -15,7 +15,7 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest watch",
-    "test:integration": "playwright test --project=integration",
+    "test:integration": "playwright test --project=integration --workers=5",
     "test:integration:ui": "playwright test --project=integration --ui",
     "test:integration:debug": "playwright test --project=integration --debug",
     "test:e2e": "E2E_MODE=live playwright test --project=e2e",
