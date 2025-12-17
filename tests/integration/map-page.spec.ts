@@ -1,14 +1,11 @@
 /**
- * Map Page E2E Tests
+ * Map Page Integration Tests
  *
  * Tests the map page functionality including:
  * - Map display with Leaflet
  * - Filters panel
  * - View type toggles
  * - Legend display
- * - Filter interactions
- *
- * Data extracted from browser exploration on 2025-12-16
  */
 
 import { test, expect } from '@playwright/test'
@@ -16,266 +13,236 @@ import { test, expect } from '@playwright/test'
 test.describe('Map Page', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/map')
-    await page.waitForLoadState('domcontentloaded')
-    await page.waitForTimeout(3000) // Allow map to load
+    // Wait for filters region to be visible (indicates page loaded)
+    await expect(
+      page.getByRole('region', { name: /filtre.*hartă/i })
+    ).toBeVisible({ timeout: 15000 })
   })
 
-  test('displays map filters region', async ({ page }) => {
+  test('displays map filters region with title', async ({ page }) => {
     // Check for filters region
-    const filtersRegion = page.getByRole('region', { name: /filtre.*hartă|map.*filters/i }).or(
-      page.locator('text=/filtre.*hartă|map.*filters/i')
-    )
-    await expect(filtersRegion.first()).toBeVisible({ timeout: 10000 })
+    await expect(
+      page.getByRole('region', { name: /filtre.*hartă/i })
+    ).toBeVisible()
+
+    // Check for clear filters button
+    await expect(
+      page.getByRole('button', { name: /șterge.*filtre/i })
+    ).toBeVisible()
   })
 
   test('displays data view toggle (Map/Table/Chart)', async ({ page }) => {
     // Check for view type heading
-    const viewTypeHeading = page.locator('text=/vizualizare.*date|data.*view/i')
-    await expect(viewTypeHeading.first()).toBeVisible({ timeout: 5000 })
+    await expect(
+      page.getByRole('heading', { name: /vizualizare.*date/i, level: 4 })
+    ).toBeVisible({ timeout: 5000 })
 
-    // Check for Map radio
-    const mapRadio = page.getByRole('radio', { name: /map|hartă/i })
-    await expect(mapRadio.first()).toBeVisible()
+    // Check for radio buttons
+    await expect(page.getByRole('radio', { name: /hartă/i })).toBeVisible()
+    await expect(page.getByRole('radio', { name: /tabel/i })).toBeVisible()
+    await expect(page.getByRole('radio', { name: /grafic/i })).toBeVisible()
 
-    // Check for Table radio
-    const tableRadio = page.getByRole('radio', { name: /table|tabel/i })
-    await expect(tableRadio.first()).toBeVisible()
-
-    // Check for Chart radio
-    const chartRadio = page.getByRole('radio', { name: /chart|grafic/i })
-    await expect(chartRadio.first()).toBeVisible()
+    // Map should be selected by default
+    await expect(page.getByRole('radio', { name: /hartă/i })).toBeChecked()
   })
 
   test('displays map view toggle (UAT/County)', async ({ page }) => {
     // Check for map view heading
-    const mapViewHeading = page.locator('text=/vizualizare.*hartă|map.*view/i')
-    await expect(mapViewHeading.first()).toBeVisible({ timeout: 5000 })
+    await expect(
+      page.getByRole('heading', { name: /vizualizare.*hartă/i, level: 4 })
+    ).toBeVisible({ timeout: 5000 })
 
-    // Check for UAT radio
-    const uatRadio = page.getByRole('radio', { name: /uat/i })
-    await expect(uatRadio.first()).toBeVisible()
+    // Check for radio buttons
+    await expect(page.getByRole('radio', { name: /uat/i })).toBeVisible()
+    await expect(page.getByRole('radio', { name: /județ/i })).toBeVisible()
 
-    // Check for County radio
-    const countyRadio = page.getByRole('radio', { name: /județ|county/i })
-    await expect(countyRadio.first()).toBeVisible()
+    // UAT should be selected by default
+    await expect(page.getByRole('radio', { name: /uat/i })).toBeChecked()
   })
 
   test('displays income/expenses toggle', async ({ page }) => {
     // Check for income/expenses heading
-    const incomeExpenseHeading = page.locator('text=/venituri.*cheltuieli|income.*expense/i')
-    await expect(incomeExpenseHeading.first()).toBeVisible({ timeout: 5000 })
+    await expect(
+      page.getByRole('heading', { name: /venituri.*cheltuieli/i, level: 4 })
+    ).toBeVisible({ timeout: 5000 })
 
-    // Check for Expenses radio
-    const expensesRadio = page.getByRole('radio', { name: /cheltuieli|expenses/i })
-    await expect(expensesRadio.first()).toBeVisible()
+    // Check for radio buttons
+    await expect(page.getByRole('radio', { name: /cheltuieli/i })).toBeVisible()
+    await expect(page.getByRole('radio', { name: /venituri/i })).toBeVisible()
 
-    // Check for Income radio
-    const incomeRadio = page.getByRole('radio', { name: /venituri|income/i })
-    await expect(incomeRadio.first()).toBeVisible()
+    // Expenses should be selected by default
+    await expect(page.getByRole('radio', { name: /cheltuieli/i })).toBeChecked()
   })
 
   test('displays normalization selector', async ({ page }) => {
     // Check for normalization heading
-    const normalizationHeading = page.locator('text=/normalizare|normalization/i')
-    await expect(normalizationHeading.first()).toBeVisible({ timeout: 5000 })
+    await expect(
+      page.getByRole('heading', { name: /normalizare/i, level: 4 })
+    ).toBeVisible({ timeout: 5000 })
 
-    // Check for Total option in dropdown
-    const normalizationDropdown = page.getByRole('combobox').filter({ hasText: /total/i })
-    await expect(normalizationDropdown.first()).toBeVisible()
+    // Check for combobox
+    await expect(page.getByRole('combobox')).toBeVisible()
   })
 
-  test('displays period filter', async ({ page }) => {
-    // Check for period section
-    const periodSection = page.locator('text=/perioadă|period/i')
-    await expect(periodSection.first()).toBeVisible({ timeout: 5000 })
+  test('displays period filter with year selected', async ({ page }) => {
+    // Check for period button
+    const periodButton = page.getByRole('button', { name: /perioadă/i })
+    await expect(periodButton).toBeVisible({ timeout: 5000 })
 
-    // Check for 2025 selected
-    const year2025 = page.locator('text="2025"')
-    await expect(year2025.first()).toBeVisible()
+    // Check for year tag within filters region (exclude footer)
+    const filtersRegion = page.getByRole('region', { name: /filtre.*hartă/i })
+    await expect(filtersRegion.getByText('2025')).toBeVisible()
   })
 
   test('displays entity filter sections', async ({ page }) => {
     // Check for Entities filter
-    const entitiesFilter = page.getByRole('button', { name: /entități|entities/i })
-    await expect(entitiesFilter.first()).toBeVisible({ timeout: 5000 })
+    await expect(
+      page.getByRole('button', { name: /^entități$/i })
+    ).toBeVisible({ timeout: 5000 })
 
-    // Check for Principal Creditor filter
-    const creditorFilter = page.getByRole('button', { name: /creditor.*principal|principal.*creditor/i })
-    await expect(creditorFilter.first()).toBeVisible()
+    // Check for Creditor filter (exact match to avoid "Exclude Creditor Principal")
+    await expect(
+      page.getByRole('button', { name: 'Creditor Principal', exact: true })
+    ).toBeVisible()
 
-    // Check for UAT filter
-    const uatFilter = page.getByRole('button', { name: /uat/i })
-    await expect(uatFilter.first()).toBeVisible()
+    // Check for UAT filter (exact match to avoid "Exclude UAT-uri")
+    await expect(
+      page.getByRole('button', { name: 'UAT-uri', exact: true })
+    ).toBeVisible()
 
-    // Check for Counties filter
-    const countiesFilter = page.getByRole('button', { name: /județe|counties/i })
-    await expect(countiesFilter.first()).toBeVisible()
+    // Check for Counties filter (exact match to avoid "Exclude Județe")
+    await expect(
+      page.getByRole('button', { name: 'Județe', exact: true })
+    ).toBeVisible()
   })
 
   test('displays classification filter sections', async ({ page }) => {
     // Check for Functional Classification filter
-    const functionalFilter = page.getByRole('button', { name: /clasificație.*funcțională|functional.*classification/i })
-    await expect(functionalFilter.first()).toBeVisible({ timeout: 5000 })
+    await expect(
+      page.getByRole('button', { name: /clasificație.*funcțională/i }).first()
+    ).toBeVisible({ timeout: 5000 })
 
     // Check for Economic Classification filter
-    const economicFilter = page.getByRole('button', { name: /clasificație.*economică|economic.*classification/i })
-    await expect(economicFilter.first()).toBeVisible()
+    await expect(
+      page.getByRole('button', { name: /clasificație.*economică/i }).first()
+    ).toBeVisible()
   })
 
   test('displays report type filter', async ({ page }) => {
-    // Check for Report Type filter
-    const reportTypeFilter = page.getByRole('button', { name: /tip.*raportare|report.*type/i })
-    await expect(reportTypeFilter.first()).toBeVisible({ timeout: 5000 })
+    // Check for Report Type filter button
+    await expect(
+      page.getByRole('button', { name: /tip.*raportare/i })
+    ).toBeVisible({ timeout: 5000 })
 
     // Check for selected report type
-    const reportType = page.locator('text=/executie.*bugetara.*agregata|aggregated.*budget.*execution/i')
-    await expect(reportType.first()).toBeVisible()
+    await expect(
+      page.getByText(/executie.*bugetara.*agregata/i)
+    ).toBeVisible()
   })
 
   test('displays exclusion filters section', async ({ page }) => {
-    // Check for exclusion filters heading
-    const exclusionFilters = page.getByRole('button', { name: /filtre.*excludere|exclusion.*filters/i })
-    await expect(exclusionFilters.first()).toBeVisible({ timeout: 5000 })
+    // Check for exclusion filters button
+    await expect(
+      page.getByRole('button', { name: /filtre.*excludere/i })
+    ).toBeVisible({ timeout: 5000 })
   })
 
   test('displays map zoom controls', async ({ page }) => {
     // Check for zoom in button
-    const zoomInButton = page.getByRole('button', { name: /zoom.*in/i }).or(
-      page.locator('button:has-text("+")')
-    )
-    await expect(zoomInButton.first()).toBeVisible({ timeout: 5000 })
+    await expect(
+      page.getByRole('button', { name: /zoom.*in/i })
+    ).toBeVisible({ timeout: 5000 })
 
     // Check for zoom out button
-    const zoomOutButton = page.getByRole('button', { name: /zoom.*out/i }).or(
-      page.locator('button:has-text("−")')
-    )
-    await expect(zoomOutButton.first()).toBeVisible()
+    await expect(
+      page.getByRole('button', { name: /zoom.*out/i })
+    ).toBeVisible()
   })
 
   test('displays map legend', async ({ page }) => {
     // Check for legend heading
-    const legendHeading = page.locator('text=/legendă|legend/i')
-    await expect(legendHeading.first()).toBeVisible({ timeout: 5000 })
+    await expect(
+      page.getByRole('heading', { name: /legendă/i, level: 4 })
+    ).toBeVisible({ timeout: 5000 })
 
-    // Check for value range in legend (should show RON values)
-    const legendValues = page.locator('text=/\\d+.*RON|\\d+.*mil/i')
-    await expect(legendValues.first()).toBeVisible()
-  })
-
-  test('displays clear filters button', async ({ page }) => {
-    // Check for clear filters button
-    const clearFiltersButton = page.getByRole('button', { name: /șterge.*filtre|clear.*filters/i })
-    await expect(clearFiltersButton.first()).toBeVisible({ timeout: 5000 })
+    // Check for value range in legend (RON values)
+    await expect(
+      page.getByText(/mil\.\s*RON/i).first()
+    ).toBeVisible()
   })
 
   test('displays Leaflet attribution', async ({ page }) => {
     // Check for Leaflet link in attribution
-    const leafletLink = page.getByRole('link', { name: /leaflet/i })
-    await expect(leafletLink.first()).toBeVisible({ timeout: 5000 })
+    await expect(
+      page.getByRole('link', { name: /leaflet/i })
+    ).toBeVisible({ timeout: 5000 })
   })
 })
 
 test.describe('Map Page - Interactions', () => {
-  test('can toggle between map and table view', async ({ page }) => {
+  test.beforeEach(async ({ page }) => {
     await page.goto('/map')
-    await page.waitForLoadState('domcontentloaded')
-    await page.waitForTimeout(3000)
-
-    // Verify the view type section exists
-    const viewTypeHeading = page.locator('text=/vizualizare.*date|data.*view/i')
-    await expect(viewTypeHeading.first()).toBeVisible({ timeout: 5000 })
-
-    // Verify map radio is initially selected (default view)
-    const mapRadio = page.getByRole('radio', { name: /map|hartă/i }).first()
-    await expect(mapRadio).toBeVisible({ timeout: 5000 })
-
-    // Verify table radio exists
-    const tableRadio = page.getByRole('radio', { name: /table|tabel/i }).first()
-    await expect(tableRadio).toBeVisible({ timeout: 5000 })
+    await expect(
+      page.getByRole('region', { name: /filtre.*hartă/i })
+    ).toBeVisible({ timeout: 15000 })
   })
 
-  test('can toggle between UAT and County view', async ({ page }) => {
-    await page.goto('/map')
-    await page.waitForLoadState('domcontentloaded')
-    await page.waitForTimeout(3000)
+  test('can switch between map views (UAT/County)', async ({ page }) => {
+    // Verify UAT is selected by default
+    const uatRadio = page.getByRole('radio', { name: /uat/i })
+    await expect(uatRadio).toBeChecked()
 
-    // Click on County label
-    const countyLabel = page.locator('text=/^Județ$|^County$/i').first()
-    if (await countyLabel.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await countyLabel.click()
-  
-      const countyRadio = page.getByRole('radio', { name: /județ|county/i }).first()
-      await expect(countyRadio).toBeChecked()
-    }
+    // Click County within the map view group (radio is sr-only)
+    const mapViewGroup = page.getByRole('group', { name: /vizualizare.*hartă/i })
+    await mapViewGroup.getByText('Județ').click()
 
-    // Click back on UAT label
-    const uatLabel = page.locator('text=/^UAT$/i').first()
-    if (await uatLabel.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await uatLabel.click()
-  
-      const uatRadio = page.getByRole('radio', { name: /uat/i }).first()
-      await expect(uatRadio).toBeChecked()
-    }
+    // Verify County is now selected
+    const countyRadio = page.getByRole('radio', { name: /județ/i })
+    await expect(countyRadio).toBeChecked()
   })
 
-  test('can toggle between income and expenses', async ({ page }) => {
-    await page.goto('/map')
-    await page.waitForLoadState('domcontentloaded')
-    await page.waitForTimeout(3000)
+  test('can switch between income and expenses', async ({ page }) => {
+    // Verify Expenses is selected by default
+    const expensesRadio = page.getByRole('radio', { name: /cheltuieli/i })
+    await expect(expensesRadio).toBeChecked()
 
-    // Click on Income label
-    const incomeLabel = page.locator('text=/^Venituri$|^Income$/i').first()
-    if (await incomeLabel.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await incomeLabel.click()
-  
-      const incomeRadio = page.getByRole('radio', { name: /venituri|income/i }).first()
-      await expect(incomeRadio).toBeChecked()
-    }
+    // Click Income within the income/expenses group (radio is sr-only)
+    const incomeGroup = page.getByRole('group', { name: /venituri.*cheltuieli/i })
+    await incomeGroup.getByText('Venituri').click()
 
-    // Click back on Expenses label
-    const expensesLabel = page.locator('text=/^Cheltuieli$|^Expenses$/i').first()
-    if (await expensesLabel.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await expensesLabel.click()
-  
-      const expensesRadio = page.getByRole('radio', { name: /cheltuieli|expenses/i }).first()
-      await expect(expensesRadio).toBeChecked()
-    }
+    // Verify Income is now selected
+    const incomeRadio = page.getByRole('radio', { name: /venituri/i })
+    await expect(incomeRadio).toBeChecked()
   })
 
-  test('can expand filter sections', async ({ page }) => {
-    await page.goto('/map')
-    await page.waitForLoadState('domcontentloaded')
-    await page.waitForTimeout(3000)
-
-    // Verify the Entities filter section exists
-    const entitiesButton = page.getByRole('button', { name: /^entități$|^entities$/i }).first()
-    await expect(entitiesButton).toBeVisible({ timeout: 5000 })
-
-    // Verify other filter sections exist as well
-    const countiesButton = page.getByRole('button', { name: /județe|counties/i }).first()
-    await expect(countiesButton).toBeVisible({ timeout: 5000 })
-  })
-
-  test('map zoom controls work', async ({ page }) => {
-    await page.goto('/map')
-    await page.waitForLoadState('domcontentloaded')
-    await page.waitForTimeout(3000)
-
+  test('can use zoom controls', async ({ page }) => {
     // Click zoom in
-    const zoomInButton = page.locator('button:has-text("+")').first()
-    if (await zoomInButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await zoomInButton.click()
-  
-      // Map should still be visible after zoom
-      await expect(zoomInButton).toBeVisible()
-    }
+    const zoomInButton = page.getByRole('button', { name: /zoom.*in/i })
+    await expect(zoomInButton).toBeVisible({ timeout: 5000 })
+    await zoomInButton.click()
+
+    // Verify button still visible after click
+    await expect(zoomInButton).toBeVisible()
 
     // Click zoom out
-    const zoomOutButton = page.locator('button:has-text("−")').first()
-    if (await zoomOutButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await zoomOutButton.click()
-  
-      await expect(zoomOutButton).toBeVisible()
-    }
+    const zoomOutButton = page.getByRole('button', { name: /zoom.*out/i })
+    await zoomOutButton.click()
+    await expect(zoomOutButton).toBeVisible()
+  })
+
+  test('filter sections are expandable', async ({ page }) => {
+    // Verify filter section buttons exist
+    const entitiesButton = page.getByRole('button', { name: /^entități$/i })
+    await expect(entitiesButton).toBeVisible({ timeout: 5000 })
+
+    await expect(
+      page.getByRole('button', { name: 'Județe', exact: true })
+    ).toBeVisible()
+
+    // Click to expand entities section
+    await entitiesButton.click()
+
+    // Verify accordion expanded (check for expanded state)
+    await expect(entitiesButton).toHaveAttribute('data-state', 'open')
   })
 })

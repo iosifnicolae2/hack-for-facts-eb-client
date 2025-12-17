@@ -35,39 +35,36 @@ test.describe('Entity Exploration Flow', () => {
     // Navigate to the main page
     await page.goto('/')
 
-    // Look for a search input or entity search component
-    // The actual selector will depend on your UI
-    const searchInput = page.getByRole('searchbox').or(
-      page.getByPlaceholder(/search|caută|entitate/i)
-    ).or(
-      page.locator('[data-testid="entity-search"]')
-    )
-
-    // If search is visible on landing page, use it
-    if (await searchInput.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await searchInput.fill('Cluj')
-
-      // Wait for search results
-      await expect(
-        page.getByText(/MUNICIPIUL CLUJ-NAPOCA/i).or(
-          page.getByText(/Cluj-Napoca/i)
-        )
-      ).toBeVisible({ timeout: 5000 })
-
-      // Click on the first result
-      await page.getByText(/MUNICIPIUL CLUJ-NAPOCA/i).first().click()
-    } else {
-      // Navigate directly to a known entity page
-      await page.goto('/entities/4305857')
-    }
-
-    // Verify entity details are displayed
+    // Wait for main heading to appear
     await expect(
-      page.getByRole('heading', { name: /MUNICIPIUL CLUJ-NAPOCA/i }).first()
+      page.getByRole('heading', { name: 'Transparenta.eu', level: 1 })
+    ).toBeVisible({ timeout: 10000 })
+
+    // Find the entity search combobox
+    const searchInput = page.getByRole('combobox', { name: /entit|cui/i })
+    await expect(searchInput).toBeVisible({ timeout: 5000 })
+
+    // Search for Cluj
+    await searchInput.fill('Cluj')
+
+    // Wait for search results to appear
+    await expect(
+      page.getByText(/Cluj-Napoca/i).first()
+    ).toBeVisible({ timeout: 5000 })
+
+    // Click on the first result
+    await page.getByText(/Cluj-Napoca/i).first().click()
+
+    // Verify navigation to entity page (URL contains entity ID)
+    await page.waitForURL(/\/entities\/\d+/)
+
+    // Verify budget distribution heading appears (entity page loaded)
+    await expect(
+      page.getByRole('heading', { name: /distribuția.*bugetului/i })
     ).toBeVisible({ timeout: 10000 })
   })
 
-  test('entity details page loads successfully', async ({ page, mockApi }) => {
+  test('entity details page loads with budget distribution', async ({ page, mockApi }) => {
     if (mockApi.mode === 'live') {
       test.skip()
       return
@@ -75,41 +72,19 @@ test.describe('Entity Exploration Flow', () => {
 
     // Navigate directly to entity page
     await page.goto('/entities/4305857')
-    await page.waitForLoadState('domcontentloaded')
 
-    // Wait for the page to stabilize
-    await page.waitForTimeout(2000)
+    // Wait for budget distribution heading to appear (indicates page loaded)
+    await expect(
+      page.getByRole('heading', { name: /distribuția.*bugetului/i })
+    ).toBeVisible({ timeout: 10000 })
 
-    // Check that the page loaded (body is visible and has content)
-    const body = page.locator('body')
-    await expect(body).toBeVisible({ timeout: 10000 })
+    // Verify main content area is present
+    await expect(page.getByRole('main').first()).toBeVisible()
 
-    // Verify page has rendered content
-    const bodyContent = await body.textContent()
-    expect(bodyContent?.length).toBeGreaterThan(100)
-  })
-
-  test('entity page loads without crashing', async ({ page, mockApi }) => {
-    if (mockApi.mode === 'live') {
-      test.skip()
-      return
-    }
-
-    // Navigate directly to entity page
-    await page.goto('/entities/4305857')
-    await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {})
-
-    // Wait for main content to be visible
-    await page.locator('main').waitFor({ state: 'visible', timeout: 10000 }).catch(() => {})
-
-    // Check page has content (header, main, or navigation visible)
-    const hasContent = await page.locator('header, main, nav').first().isVisible({ timeout: 5000 }).catch(() => false)
-    expect(hasContent).toBe(true)
-
-    // Navigation should still work
-    const navLinks = page.locator('a[href="/"], nav a, [role="navigation"] a')
-    const hasNav = await navLinks.first().isVisible({ timeout: 5000 }).catch(() => false)
-    expect(hasNav).toBe(true)
+    // Verify navigation is accessible
+    await expect(
+      page.getByRole('navigation', { name: /produs/i })
+    ).toBeVisible()
   })
 
   test('handles loading states gracefully', async ({ page, mockApi }) => {
@@ -125,20 +100,10 @@ test.describe('Entity Exploration Flow', () => {
 
     await page.goto('/entities/4305857')
 
-    // Check for loading indicator
-    const loadingIndicator = page.getByRole('progressbar').or(
-      page.locator('[data-testid="loading"]').or(
-        page.getByText(/loading|încărcare/i)
-      )
-    )
-
-    // Loading should appear initially
-    const hasLoading = await loadingIndicator.isVisible({ timeout: 1000 }).catch(() => false)
-
-    // Eventually, content should load
+    // Eventually, content should load (budget distribution heading)
     await expect(
-      page.getByRole('heading', { name: /MUNICIPIUL CLUJ-NAPOCA/i }).first()
-    ).toBeVisible({ timeout: 5000 })
+      page.getByRole('heading', { name: /distribuția.*bugetului/i })
+    ).toBeVisible({ timeout: 10000 })
   })
 })
 
@@ -156,21 +121,17 @@ test.describe('Entity Exploration - Error Handling', () => {
 
     await page.goto('/entities/4305857')
 
-    // Should show some error state or fallback
-    // Adjust based on your error handling UI
-    const errorIndicator = page.getByText(/error|eroare|something went wrong|problemă/i).or(
-      page.locator('[data-testid="error"]')
-    )
+    // Page should still render with navigation (graceful degradation)
+    await expect(
+      page.getByRole('navigation', { name: /produs/i })
+    ).toBeVisible({ timeout: 10000 })
 
-    // Either show error or handle gracefully (not crash)
-    await page.waitForLoadState('networkidle')
-
-    // Page should not be completely blank
+    // Page should not be completely blank - body has content
     const bodyContent = await page.locator('body').textContent()
-    expect(bodyContent?.length).toBeGreaterThan(0)
+    expect(bodyContent?.length).toBeGreaterThan(100)
   })
 
-  test('handles 404 for non-existent entity', async ({ page, mockApi }) => {
+  test('handles non-existent entity gracefully', async ({ page, mockApi }) => {
     if (mockApi.mode !== 'mock') {
       test.skip()
       return
@@ -183,14 +144,9 @@ test.describe('Entity Exploration - Error Handling', () => {
 
     await page.goto('/entities/9999999999')
 
-    // Should show not found or redirect
-    await page.waitForLoadState('networkidle')
-
-    // Check the page handles this gracefully
-    const notFoundIndicator = page.getByText(/not found|nu a fost găsit|inexistent/i)
-    const hasNotFound = await notFoundIndicator.isVisible({ timeout: 3000 }).catch(() => false)
-
-    // Either shows not found message or redirects (both are valid)
-    expect(true).toBe(true) // Test passes if we get here without crashing
+    // Page should still be functional (navigation present)
+    await expect(
+      page.getByRole('navigation', { name: /produs/i })
+    ).toBeVisible({ timeout: 10000 })
   })
 })
