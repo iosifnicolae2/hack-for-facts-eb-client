@@ -22,6 +22,7 @@ export function DiffArea({ yAxisId, refAreaLeft, refAreaRight, diffs }: DiffArea
             fill={primaryColor}
             fillOpacity={0.05}
             ifOverflow="visible"
+            zIndex={10000}
             label={<DiffLabel data={diffs} start={refAreaLeft} end={refAreaRight} />}
         />
     )

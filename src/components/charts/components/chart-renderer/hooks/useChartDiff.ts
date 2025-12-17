@@ -58,11 +58,16 @@ export const useChartDiff = (timeSeriesData: TimeSeriesDataPoint[], enabledSerie
 
   const handleMouseMove = useCallback((e: { activeLabel: string | number | undefined } | undefined) => {
     if (dragStart && e && e.activeLabel !== undefined) {
-      setRefAreaLeft(dragStart);
-      setRefAreaRight(e.activeLabel);
-      setDiffs([]);
+      const left = dragStart;
+      const right = e.activeLabel;
+      setRefAreaLeft(left);
+      setRefAreaRight(right);
+      // Calculate diffs in real-time during drag if we have different bounds
+      if (left !== right) {
+        calculateAndSetDiffs(left, right);
+      }
     }
-  }, [dragStart]);
+  }, [dragStart, calculateAndSetDiffs]);
 
   const handleMouseUp = useCallback(() => {
     if (dragStart) {
@@ -75,6 +80,23 @@ export const useChartDiff = (timeSeriesData: TimeSeriesDataPoint[], enabledSerie
     setDragStart('');
   }, [dragStart, refAreaLeft, refAreaRight, calculateAndSetDiffs, clearSelection]);
 
+  // On mouse leave: finalize selection if we have valid bounds, otherwise cancel
+  const handleMouseLeave = useCallback(() => {
+    if (dragStart) {
+      // If we have a valid selection (both bounds set and different), finalize it
+      if (refAreaLeft && refAreaRight && refAreaLeft !== refAreaRight) {
+        calculateAndSetDiffs(refAreaLeft, refAreaRight);
+      } else {
+        // No valid selection, clear everything
+        setRefAreaLeft('');
+        setRefAreaRight('');
+        setDiffs([]);
+      }
+      setDragStart('');
+    }
+    // If not dragging, keep the finalized selection visible
+  }, [dragStart, refAreaLeft, refAreaRight, calculateAndSetDiffs]);
+
   return {
     refAreaLeft,
     refAreaRight,
@@ -82,6 +104,7 @@ export const useChartDiff = (timeSeriesData: TimeSeriesDataPoint[], enabledSerie
     handleMouseDown,
     handleMouseMove,
     handleMouseUp,
+    handleMouseLeave,
     clearSelection,
   };
 };

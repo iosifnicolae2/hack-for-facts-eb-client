@@ -16,7 +16,7 @@ export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotati
     handleMouseDown,
     handleMouseMove,
     handleMouseUp,
-    clearSelection,
+    handleMouseLeave,
     refAreaLeft,
     refAreaRight,
     diffs,
@@ -31,7 +31,7 @@ export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotati
   );
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer width="100%" height="100%" className="select-none">
       <LineChart
         data={timeSeriesData}
         margin={{ top: 30, right: 50, left: 50, bottom: 20, ...margins }}
@@ -43,7 +43,7 @@ export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotati
         }}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
-        onMouseLeave={clearSelection}
+        onMouseLeave={handleMouseLeave}
       >
         <MultiAxisChartContainer disableTooltip={diffEnabled} chart={chart} unitMap={unitMap} onAnnotationPositionChange={onAnnotationPositionChange} diffStateKey={diffStateKey}>
           {(getYAxisId: (seriesId: string) => string) => (

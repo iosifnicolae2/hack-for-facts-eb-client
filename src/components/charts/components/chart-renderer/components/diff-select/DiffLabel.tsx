@@ -48,7 +48,7 @@ export const DiffLabel = ({ viewBox, data, start, end }: DiffLabelProps) => {
   const [displayStart, displayEnd] = [start, end].sort((a, b) => Number(a) - Number(b));
 
   return (
-    <foreignObject x={x} y={y} width={panelWidth} height={panelHeight} className="overflow-visible" style={{ overflow: 'visible' }}>
+    <foreignObject x={x} y={y} width={panelWidth} height={panelHeight} className="overflow-visible" style={{ overflow: 'visible', zIndex: 50 }}>
       <div className={cn("w-full h-full flex justify-start items-start pointer-events-none bg-transparent", isAnimationActive && "ease-in duration-[100ms] fade-in-0 animate-in")} style={{ overflow: 'visible' }}>
         <div
           className="bg-background/95 backdrop-blur-sm border border-border rounded-lg p-3 shadow-lg select-none pointer-events-auto w-full"

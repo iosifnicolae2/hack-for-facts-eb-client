@@ -17,7 +17,7 @@ export function TimeSeriesBarChart({ chart, unitMap, timeSeriesData, onAnnotatio
     handleMouseDown,
     handleMouseMove,
     handleMouseUp,
-    clearSelection,
+    handleMouseLeave,
     refAreaLeft,
     refAreaRight,
     diffs,
@@ -32,14 +32,14 @@ export function TimeSeriesBarChart({ chart, unitMap, timeSeriesData, onAnnotatio
   );
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer width="100%" height="100%" className="select-none">
       <BarChart
         data={timeSeriesData}
         margin={{ top: 30, right: 50, left: 50, bottom: 20, ...margins }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
-        onMouseLeave={clearSelection}
+        onMouseLeave={handleMouseLeave}
       >
         <MultiAxisChartContainer disableTooltip={diffEnabled} chart={chart} unitMap={unitMap} onAnnotationPositionChange={onAnnotationPositionChange} diffStateKey={diffStateKey}>
           {(getYAxisId: (seriesId: string) => string) => (
