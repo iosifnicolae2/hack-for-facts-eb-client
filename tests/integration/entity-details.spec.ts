@@ -203,7 +203,8 @@ test.describe('Entity Details - Navigation', () => {
       page.getByRole('heading', { name: /MUNICIPIUL CLUJ-NAPOCA/i, level: 1 })
     ).toBeVisible({ timeout: 15000 })
 
-    const reportsLink = page.getByRole('link', { name: /rapoarte/i })
+    // Use exact match to avoid matching "Vezi toate rapoartele"
+    const reportsLink = page.getByRole('link', { name: 'Rapoarte', exact: true })
     await expect(reportsLink).toBeVisible()
     await reportsLink.click()
 
