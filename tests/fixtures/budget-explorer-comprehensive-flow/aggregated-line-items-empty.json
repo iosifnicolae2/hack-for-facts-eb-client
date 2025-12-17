@@ -1,0 +1,12 @@
+{
+  "data": {
+    "aggregatedLineItems": {
+      "nodes": [],
+      "pageInfo": {
+        "totalCount": 0,
+        "hasNextPage": false,
+        "hasPreviousPage": false
+      }
+    }
+  }
+}

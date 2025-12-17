@@ -1,26 +1,42 @@
-import { defineConfig, devices } from "@playwright/test";
+import { defineConfig, devices } from '@playwright/test'
 
+/**
+ * Playwright Configuration
+ *
+ * Test Types:
+ * - Integration: Fast tests with mocked API (tests/integration/)
+ * - E2E: Live API tests with snapshot validation (tests/e2e/)
+ */
 export default defineConfig({
-  testDir: "./tests",
+  testDir: './tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: "html",
+  reporter: 'html',
   use: {
-    baseURL: "http://localhost:5173",
-    trace: "on-first-retry",
-    video: "on-first-retry",
+    baseURL: 'http://localhost:5173',
+    trace: 'on-first-retry',
+    video: 'on-first-retry',
   },
   projects: [
+    // Integration tests (mocked API, fast)
     {
-      name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      name: 'integration',
+      testDir: './tests/integration',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    // E2E tests (live API, slower)
+    {
+      name: 'e2e',
+      testDir: './tests/e2e',
+      use: { ...devices['Desktop Chrome'] },
+      timeout: 60000, // Longer timeout for live API
     },
   ],
   webServer: {
-    command: "yarn dev",
-    url: "http://localhost:5173",
+    command: 'yarn dev',
+    url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI,
   },
-});
+})

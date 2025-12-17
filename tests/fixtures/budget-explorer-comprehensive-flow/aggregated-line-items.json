@@ -1,0 +1,181 @@
+{
+  "data": {
+    "aggregatedLineItems": {
+      "nodes": [
+        {
+          "fn_c": "68",
+          "fn_n": "Asigurări și asistență socială",
+          "ec_c": "57",
+          "ec_n": "Asistență socială",
+          "amount": 78901234567,
+          "count": 4500
+        },
+        {
+          "fn_c": "68",
+          "fn_n": "Asigurări și asistență socială",
+          "ec_c": "10",
+          "ec_n": "Cheltuieli de personal",
+          "amount": 23456789012,
+          "count": 2200
+        },
+        {
+          "fn_c": "66",
+          "fn_n": "Sănătate",
+          "ec_c": "10",
+          "ec_n": "Cheltuieli de personal",
+          "amount": 56789012345,
+          "count": 3100
+        },
+        {
+          "fn_c": "66",
+          "fn_n": "Sănătate",
+          "ec_c": "20",
+          "ec_n": "Bunuri și servicii",
+          "amount": 18901234567,
+          "count": 2400
+        },
+        {
+          "fn_c": "65",
+          "fn_n": "Învățământ",
+          "ec_c": "10",
+          "ec_n": "Cheltuieli de personal",
+          "amount": 67890123456,
+          "count": 4200
+        },
+        {
+          "fn_c": "65",
+          "fn_n": "Învățământ",
+          "ec_c": "20",
+          "ec_n": "Bunuri și servicii",
+          "amount": 19012345678,
+          "count": 2800
+        },
+        {
+          "fn_c": "65",
+          "fn_n": "Învățământ",
+          "ec_c": "71",
+          "ec_n": "Investiții",
+          "amount": 12345678901,
+          "count": 890
+        },
+        {
+          "fn_c": "84",
+          "fn_n": "Transporturi",
+          "ec_c": "71",
+          "ec_n": "Investiții",
+          "amount": 45678901234,
+          "count": 1200
+        },
+        {
+          "fn_c": "84",
+          "fn_n": "Transporturi",
+          "ec_c": "20",
+          "ec_n": "Bunuri și servicii",
+          "amount": 15678901234,
+          "count": 980
+        },
+        {
+          "fn_c": "51",
+          "fn_n": "Autorități publice și acțiuni externe",
+          "ec_c": "10",
+          "ec_n": "Cheltuieli de personal",
+          "amount": 28901234567,
+          "count": 3500
+        },
+        {
+          "fn_c": "51",
+          "fn_n": "Autorități publice și acțiuni externe",
+          "ec_c": "20",
+          "ec_n": "Bunuri și servicii",
+          "amount": 9012345678,
+          "count": 1800
+        },
+        {
+          "fn_c": "61",
+          "fn_n": "Ordine publică și siguranță națională",
+          "ec_c": "10",
+          "ec_n": "Cheltuieli de personal",
+          "amount": 19012345678,
+          "count": 1600
+        },
+        {
+          "fn_c": "70",
+          "fn_n": "Locuințe, servicii și dezvoltare publică",
+          "ec_c": "20",
+          "ec_n": "Bunuri și servicii",
+          "amount": 25678901234,
+          "count": 2100
+        },
+        {
+          "fn_c": "70",
+          "fn_n": "Locuințe, servicii și dezvoltare publică",
+          "ec_c": "71",
+          "ec_n": "Investiții",
+          "amount": 38901234567,
+          "count": 1500
+        },
+        {
+          "fn_c": "83",
+          "fn_n": "Agricultură, silvicultură, piscicultură și vânătoare",
+          "ec_c": "20",
+          "ec_n": "Bunuri și servicii",
+          "amount": 7890123456,
+          "count": 650
+        },
+        {
+          "fn_c": "60",
+          "fn_n": "Apărare",
+          "ec_c": "10",
+          "ec_n": "Cheltuieli de personal",
+          "amount": 15678901234,
+          "count": 890
+        },
+        {
+          "fn_c": "74",
+          "fn_n": "Protecția mediului",
+          "ec_c": "20",
+          "ec_n": "Bunuri și servicii",
+          "amount": 12890123456,
+          "count": 980
+        },
+        {
+          "fn_c": "74",
+          "fn_n": "Protecția mediului",
+          "ec_c": "71",
+          "ec_n": "Investiții",
+          "amount": 8901234567,
+          "count": 420
+        },
+        {
+          "fn_c": "55",
+          "fn_n": "Tranzacții privind datoria publică și împrumuturi",
+          "ec_c": "30",
+          "ec_n": "Dobânzi",
+          "amount": 19234567890,
+          "count": 350
+        },
+        {
+          "fn_c": "67",
+          "fn_n": "Cultură, recreere și religie",
+          "ec_c": "20",
+          "ec_n": "Bunuri și servicii",
+          "amount": 8567890123,
+          "count": 1100
+        },
+        {
+          "fn_c": "67",
+          "fn_n": "Cultură, recreere și religie",
+          "ec_c": "51",
+          "ec_n": "Transferuri între unități ale administrației publice",
+          "amount": 6789012345,
+          "count": 450
+        }
+      ],
+      "pageInfo": {
+        "totalCount": 21,
+        "hasNextPage": false,
+        "hasPreviousPage": false
+      }
+    }
+  }
+}

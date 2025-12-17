@@ -26,10 +26,11 @@
           "id": "claude-opus-4-5-20251101",
           "options": {
             "reasoningEffort": "high",
+            "effort": "high",
             "thinking": {
               "type": "enabled",
-              "budgetTokens": 64000
-            }
+              "budgetTokens": 63000,
+            },
           }
         },
         // Maximum reasoning - Extended thinking with 128K budget for hardest problems
@@ -37,10 +38,11 @@
           "id": "claude-opus-4-5-20251101",
           "options": {
             "reasoningEffort": "high",
+            "effort": "high",
             "thinking": {
               "type": "enabled",
-              "budgetTokens": 128000
-            }
+              "budgetTokens": 63000,
+            },
           }
         },
         // Fast mode - No extended thinking for speed
@@ -542,6 +544,22 @@
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
       "enabled": true
+    },
+    "playwright": {
+      "type": "local",
+      "command": [
+        "npx",
+        "@playwright/mcp@latest",
+        "--browser",
+        "chromium"
+      ]
+    },
+    "eslint": {
+      "type": "local",
+      "command": [
+        "npx",
+        "@eslint/mcp@latest"
+      ]
     }
   },
   // ============================================================================

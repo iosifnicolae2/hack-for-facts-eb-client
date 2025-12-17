@@ -191,17 +191,23 @@ function performOperation(
 
       case 'multiply':
         if (operandMaps.length > 0) {
-          value = 1;
-          let hasValue = false;
+          // Multiplication requires all operands to be present
+          // If any operand is missing, the result is undefined (null)
+          let allPresent = true;
+          let tempValue = 1;
+          
           for (const operandMap of operandMaps) {
             const operandValue = operandMap.get(year);
-            if (operandValue !== undefined) {
-              value *= operandValue;
-              hasValue = true;
+            if (operandValue === undefined) {
+              allPresent = false;
+              break;
             }
+            tempValue *= operandValue;
           }
-          // Only include if at least one operand had a value for this year
-          if (!hasValue) {
+          
+          if (allPresent) {
+            value = tempValue;
+          } else {
             value = null;
           }
         }
@@ -228,6 +234,9 @@ function performOperation(
                   message: `Division by zero at year ${year} (auto-removed)`,
                   value: { numerator, denominator: divisor },
                 });
+                break;
+              } else if (divisor === undefined) {
+                value = null; // Missing divisor
                 break;
               }
             }

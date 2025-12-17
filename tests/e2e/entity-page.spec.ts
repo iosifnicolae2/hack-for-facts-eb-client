@@ -1,0 +1,185 @@
+/**
+ * Entity Page E2E Tests
+ *
+ * Tests against real API using historical data (year 2023) for stability.
+ *
+ * Run modes:
+ * - `yarn test:e2e`                 - Live API (validates real integration)
+ * - `yarn test:e2e:snapshot:update` - Record API responses to snapshots
+ * - `yarn test:e2e:snapshot`        - Replay from snapshots (fast CI)
+ */
+
+import { test, expect } from '../utils/e2e-base'
+
+// Using historical year for stable data
+const TEST_YEAR = '2023'
+const TEST_ENTITY_CUI = '4305857' // MUNICIPIUL CLUJ-NAPOCA
+
+test.describe('Entity Page', () => {
+  test('loads entity overview with financial data', async ({ page }) => {
+    // Use historical year in URL for stable data
+    await page.goto(`/entities/${TEST_ENTITY_CUI}?year=${TEST_YEAR}`)
+
+    // Verify entity header loads
+    await expect(
+      page.getByRole('heading', { name: /MUNICIPIUL CLUJ-NAPOCA|Cluj-Napoca/i }).first()
+    ).toBeVisible({ timeout: 15000 })
+
+    // Verify CUI is displayed
+    await expect(page.locator(`text=${TEST_ENTITY_CUI}`)).toBeVisible()
+
+    // Verify financial data loads (not loading skeleton)
+    await expect(
+      page.locator('text=/total.*venituri|total.*income/i').first()
+    ).toBeVisible({ timeout: 15000 })
+
+    // Verify amounts are displayed
+    await expect(
+      page.locator('text=/mld|mil|RON/i').first()
+    ).toBeVisible({ timeout: 10000 })
+  })
+
+  test('displays expense breakdown', async ({ page }) => {
+    await page.goto(`/entities/${TEST_ENTITY_CUI}?year=${TEST_YEAR}`)
+
+    // Wait for page load
+    await expect(
+      page.getByRole('heading', { name: /MUNICIPIUL CLUJ-NAPOCA|Cluj-Napoca/i }).first()
+    ).toBeVisible({ timeout: 15000 })
+
+    // Verify expense section
+    await expect(
+      page.locator('text=/cheltuieli|expenses/i').first()
+    ).toBeVisible({ timeout: 10000 })
+
+    // Verify percentages are shown in breakdown
+    await expect(
+      page.locator('text=/%/').first()
+    ).toBeVisible({ timeout: 10000 })
+  })
+
+  test('can navigate between views', async ({ page }) => {
+    await page.goto(`/entities/${TEST_ENTITY_CUI}?year=${TEST_YEAR}`)
+
+    // Wait for page load
+    await expect(
+      page.getByRole('heading', { name: /MUNICIPIUL CLUJ-NAPOCA|Cluj-Napoca/i }).first()
+    ).toBeVisible({ timeout: 15000 })
+
+    // Navigate to reports view
+    const reportsTab = page.getByRole('link', { name: /reports|rapoarte/i }).first()
+    if (await reportsTab.isVisible({ timeout: 5000 }).catch(() => false)) {
+      await reportsTab.click()
+      await expect(page).toHaveURL(/view=reports/, { timeout: 5000 })
+    }
+
+    // Navigate back to overview
+    const overviewTab = page.getByRole('link', { name: /overview|prezentare/i }).first()
+    if (await overviewTab.isVisible({ timeout: 5000 }).catch(() => false)) {
+      await overviewTab.click()
+      await expect(page).toHaveURL(/view=overview|entities\/\d+/, { timeout: 5000 })
+    }
+  })
+})
+
+test.describe('Landing Page', () => {
+  test('loads with navigation elements', async ({ page }) => {
+    await page.goto('/')
+
+    // Verify main heading
+    await expect(
+      page.getByRole('heading', { name: /transparenta/i, level: 1 })
+    ).toBeVisible({ timeout: 10000 })
+
+    // Verify navigation cards
+    await expect(
+      page.getByRole('link', { name: /map|hartă/i }).first()
+    ).toBeVisible()
+
+    await expect(
+      page.getByRole('link', { name: /charts|grafice/i }).first()
+    ).toBeVisible()
+
+    await expect(
+      page.getByRole('link', { name: /budget.*explorer|explorator/i }).first()
+    ).toBeVisible()
+  })
+
+  test('entity search input is functional', async ({ page }) => {
+    await page.goto('/')
+
+    // Find and interact with search
+    const searchInput = page.getByPlaceholder(/enter entity name|denumirea entității/i).or(
+      page.getByRole('combobox').first()
+    )
+
+    await expect(searchInput).toBeVisible({ timeout: 10000 })
+    await searchInput.fill('Cluj')
+
+    // Wait for debounce
+    await page.waitForTimeout(1500)
+
+    // Verify input value persists
+    await expect(searchInput).toHaveValue('Cluj')
+  })
+})
+
+test.describe('Budget Explorer', () => {
+  test('loads with aggregated data', async ({ page }) => {
+    // Use historical year for stable data
+    await page.goto(`/budget-explorer?year=${TEST_YEAR}`)
+
+    // Verify page loads by checking for "Distribuția bugetului" heading
+    await expect(
+      page.getByRole('heading', { name: /distribuția bugetului|budget distribution/i }).first()
+    ).toBeVisible({ timeout: 15000 })
+
+    // Verify treemap data is displayed - check for "Total:" which indicates data loaded
+    await expect(
+      page.getByText(/Total:/i).first()
+    ).toBeVisible({ timeout: 15000 })
+  })
+
+  test('can toggle between spending and revenue', async ({ page }) => {
+    await page.goto(`/budget-explorer?year=${TEST_YEAR}`)
+
+    // Wait for page load - check for the spending/revenue radio group
+    const revenueToggle = page.getByRole('radio', { name: /venituri/i }).first()
+    const spendingToggle = page.getByRole('radio', { name: /cheltuieli/i }).first()
+
+    await expect(spendingToggle).toBeVisible({ timeout: 15000 })
+
+    // Toggle to revenue
+    await revenueToggle.click()
+    await expect(revenueToggle).toBeChecked()
+
+    // Toggle back to spending
+    await spendingToggle.click()
+    await expect(spendingToggle).toBeChecked()
+  })
+})
+
+test.describe('Entity Analytics', () => {
+  test('loads aggregated entity view', async ({ page }) => {
+    await page.goto(`/entity-analytics?year=${TEST_YEAR}`)
+
+    // Verify page loads
+    await expect(
+      page.locator('text=/entity.*analytics|analiză.*entități|entități/i').first()
+    ).toBeVisible({ timeout: 15000 })
+  })
+})
+
+test.describe('Map Page', () => {
+  test('loads map visualization', async ({ page }) => {
+    await page.goto('/map')
+
+    // Verify map container loads (try leaflet container or page heading)
+    const mapContainer = page.locator('.leaflet-container').first()
+    const mapHeading = page.getByRole('heading', { name: /map|hartă/i }).first()
+
+    await expect(
+      mapContainer.or(mapHeading)
+    ).toBeVisible({ timeout: 15000 })
+  })
+})

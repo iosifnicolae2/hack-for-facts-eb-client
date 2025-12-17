@@ -1,0 +1,77 @@
+{
+  "data": {
+    "aggregatedLineItems": {
+      "nodes": [
+        {
+          "fn_c": "21",
+          "fn_n": "Impozit pe venit, profit și câștiguri din capital",
+          "ec_c": "03",
+          "ec_n": "Impozit pe venit",
+          "amount": 125678901234,
+          "count": 8500
+        },
+        {
+          "fn_c": "10",
+          "fn_n": "Venituri din proprietate",
+          "ec_c": "30",
+          "ec_n": "Venituri din proprietate",
+          "amount": 45678901234,
+          "count": 3200
+        },
+        {
+          "fn_c": "42",
+          "fn_n": "Subvenții",
+          "ec_c": "42",
+          "ec_n": "Subvenții de la bugetul de stat",
+          "amount": 78901234567,
+          "count": 4500
+        },
+        {
+          "fn_c": "03",
+          "fn_n": "Impozite și taxe pe proprietate",
+          "ec_c": "07",
+          "ec_n": "Impozit pe clădiri",
+          "amount": 56789012345,
+          "count": 6200
+        },
+        {
+          "fn_c": "03",
+          "fn_n": "Impozite și taxe pe proprietate",
+          "ec_c": "02",
+          "ec_n": "Impozit pe teren",
+          "amount": 28901234567,
+          "count": 5800
+        },
+        {
+          "fn_c": "14",
+          "fn_n": "Impozite și taxe pe bunuri și servicii",
+          "ec_c": "03",
+          "ec_n": "Taxe pe utilizarea bunurilor",
+          "amount": 34567890123,
+          "count": 4100
+        },
+        {
+          "fn_c": "01",
+          "fn_n": "Alte venituri",
+          "ec_c": "50",
+          "ec_n": "Alte venituri din capital",
+          "amount": 12345678901,
+          "count": 1800
+        },
+        {
+          "fn_c": "33",
+          "fn_n": "Venituri din vânzări de bunuri și servicii",
+          "ec_c": "08",
+          "ec_n": "Venituri din prestări de servicii",
+          "amount": 19012345678,
+          "count": 2400
+        }
+      ],
+      "pageInfo": {
+        "totalCount": 8,
+        "hasNextPage": false,
+        "hasPreviousPage": false
+      }
+    }
+  }
+}

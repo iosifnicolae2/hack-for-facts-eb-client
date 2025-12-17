@@ -78,6 +78,7 @@ export function classifyError(error: unknown): ClassifiedError {
 export function getTechnicalMessage(error: unknown): string | null {
     if (!error) return null;
     if (error instanceof Error) return error.stack || error.message;
+    if (typeof error === 'string') return error;
     try {
         return JSON.stringify(error, null, 2);
     } catch {

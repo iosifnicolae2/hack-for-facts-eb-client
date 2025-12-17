@@ -1,22 +1,12 @@
 {
-  "model": {
-    "name": "gemini-3-pro-preview"
-  },
   "tools": {
     "core": [
       "read_file",
       "read_many_files",
-      "list_directory",
-      "glob",
       "write_file",
-      "search_file_content",
-      "replace",
       "web_fetch",
       "google_web_search",
       "save_memory",
-      "write_todos",
-      "run_shell_command(yarn test)",
-      "run_shell_command(yarn typecheck)",
       "run_shell_command(ls)",
       "run_shell_command(tree)",
       "run_shell_command(find)",
@@ -38,7 +28,9 @@
       "run_shell_command(git diff)",
       "run_shell_command(git status)",
       "run_shell_command(git status --verbose)",
-      "run_shell_command(git log)"
+      "run_shell_command(git log)",
+      "run_shell_command(git stash list)",
+      "run_shell_command(git stash apply)"
     ],
     "exclude": [
       "run_shell_command(rm)",
@@ -56,5 +48,6 @@
   },
   "general": {
     "preferredEditor": "cursor"
-  }
+  },
+  "model": "gemini-2.5-flash"
 }

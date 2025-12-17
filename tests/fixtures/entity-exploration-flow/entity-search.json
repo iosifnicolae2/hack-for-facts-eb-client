@@ -1,0 +1,32 @@
+{
+  "data": {
+    "entities": {
+      "nodes": [
+        {
+          "name": "MUNICIPIUL CLUJ-NAPOCA",
+          "cui": "4305857",
+          "uat": {
+            "county_name": "Cluj",
+            "name": "Cluj-Napoca"
+          }
+        },
+        {
+          "name": "MUNICIPIUL BUCURESTI",
+          "cui": "4267117",
+          "uat": {
+            "county_name": "Bucuresti",
+            "name": "Bucuresti"
+          }
+        },
+        {
+          "name": "MUNICIPIUL TIMISOARA",
+          "cui": "14756536",
+          "uat": {
+            "county_name": "Timis",
+            "name": "Timisoara"
+          }
+        }
+      ]
+    }
+  }
+}
