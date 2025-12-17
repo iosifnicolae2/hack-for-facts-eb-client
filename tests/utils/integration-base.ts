@@ -79,9 +79,25 @@ function getOperationKey(
   return `${operationName}?${sortedVars}`
 }
 
+/**
+ * Default cookie consent to dismiss the banner in tests
+ */
+const DEFAULT_COOKIE_CONSENT = {
+  version: 1,
+  essential: true,
+  analytics: false,
+  sentry: false,
+  updatedAt: new Date().toISOString(),
+}
+
 export const test = base.extend<{ mockApi: MockApiFixture }>({
   mockApi: async ({ page }, use, testInfo) => {
     const mode = getMode()
+
+    // Set cookie consent in localStorage before page loads to dismiss the banner
+    await page.addInitScript((consent) => {
+      window.localStorage.setItem('cookie-consent', JSON.stringify(consent))
+    }, DEFAULT_COOKIE_CONSENT)
 
     // Derive flow name from test file path for fixture organization
     // e.g., tests/flows/entity-exploration.spec.ts -> entity-exploration-flow

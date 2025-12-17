@@ -13,7 +13,10 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
+  reporter: [
+    ['list'],
+    ['html', { open: 'never' }],
+  ],
   use: {
     baseURL: 'http://localhost:5173',
     trace: 'on-first-retry',
@@ -21,10 +24,15 @@ export default defineConfig({
   },
   projects: [
     // Integration tests (mocked API, fast)
+    // Use tablet viewport (below md breakpoint 768px) to hide sidebar and avoid overlap issues
     {
       name: 'integration',
       testDir: './tests/integration',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1920, height: 1080 },
+      },
+      timeout: 60000,
     },
     // E2E tests (live API, slower)
     {

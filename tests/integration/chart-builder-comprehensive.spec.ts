@@ -267,10 +267,22 @@ test.describe('Chart Builder - Comprehensive Tests', () => {
         await addSeriesButton.click()
         await page.waitForTimeout(500)
 
-        // Add second series (button might need to be re-queried)
-        const addSeriesButton2 = page.getByRole('button', { name: SELECTORS.addSeries }).first()
-        await addSeriesButton2.click()
-        await page.waitForTimeout(500)
+        // After adding a series, UI navigates to series config view
+        // Navigate back to chart config to access Add Series button again
+        const chartConfigButton = page.getByRole('button', { name: /configurare grafic|chart config/i })
+          .or(page.getByRole('link', { name: /chart config/i }))
+
+        if (await chartConfigButton.first().isVisible({ timeout: 3000 }).catch(() => false)) {
+          await chartConfigButton.first().click()
+          await page.waitForTimeout(500)
+
+          // Now add second series
+          const addSeriesButton2 = page.getByRole('button', { name: SELECTORS.addSeries }).first()
+          if (await addSeriesButton2.isVisible({ timeout: 3000 }).catch(() => false)) {
+            await addSeriesButton2.click()
+            await page.waitForTimeout(500)
+          }
+        }
       }
 
       // Verify we're still on the page
