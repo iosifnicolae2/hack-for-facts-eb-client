@@ -46,29 +46,32 @@ test.describe('Entity Details Page', () => {
   })
 
   test('displays navigation tabs', async ({ page }) => {
+    // Scope to header to avoid matching sidebar links
+    const header = page.locator('header')
+
     // Check for main navigation links
     await expect(
-      page.getByRole('link', { name: /prezentare generală/i })
+      header.getByRole('link', { name: /prezentare generală/i })
     ).toBeVisible({ timeout: 5000 })
 
     await expect(
-      page.getByRole('link', { name: /evoluția cheltuielilor/i })
+      header.getByRole('link', { name: /evoluția cheltuielilor/i })
     ).toBeVisible()
 
     await expect(
-      page.getByRole('link', { name: /evoluția veniturilor/i })
+      header.getByRole('link', { name: /evoluția veniturilor/i })
     ).toBeVisible()
 
     await expect(
-      page.getByRole('link', { name: /hartă/i })
+      header.getByRole('link', { name: /hartă/i })
     ).toBeVisible()
 
     await expect(
-      page.getByRole('link', { name: /angajați/i })
+      header.getByRole('link', { name: /angajați/i })
     ).toBeVisible()
 
     await expect(
-      page.getByRole('link', { name: 'Rapoarte', exact: true })
+      header.getByRole('link', { name: 'Rapoarte', exact: true })
     ).toBeVisible()
   })
 
