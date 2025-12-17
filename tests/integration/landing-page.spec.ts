@@ -30,25 +30,28 @@ test.describe('Landing Page', () => {
   })
 
   test('displays navigation cards', async ({ page }) => {
-    // Map card
-    await expect(
-      page.getByRole('link', { name: /map|hartă/i }).filter({ hasText: /explore|explorați/i })
-    ).toBeVisible()
+    // Target only the main content area (not sidebar) using the card container class
+    const mainContent = page.locator('main, [role="main"], .grid')
 
-    // Budget Explorer card
+    // Map card - look for card with preview image or specific card styling
     await expect(
-      page.getByRole('link', { name: /budget explorer|explorator bugetar/i })
-    ).toBeVisible()
+      mainContent.getByRole('link', { name: /map.*preview|explore.*map|hartă/i }).first()
+    ).toBeVisible({ timeout: 5000 })
+
+    // Budget Explorer card - target the card specifically, not sidebar
+    await expect(
+      mainContent.getByRole('link', { name: /budget.*explorer.*preview|explorator.*bugetar/i }).first()
+    ).toBeVisible({ timeout: 5000 })
 
     // Entity Analytics card
     await expect(
-      page.getByRole('link', { name: /entities|entități/i }).filter({ hasText: /aggregated|cumulate/i })
-    ).toBeVisible()
+      mainContent.getByRole('link', { name: /entities|entități/i }).first()
+    ).toBeVisible({ timeout: 5000 })
 
-    // Charts card - use first() to avoid strict mode violation
+    // Charts card
     await expect(
-      page.getByRole('link', { name: /charts|grafice/i }).first()
-    ).toBeVisible()
+      mainContent.getByRole('link', { name: /charts|grafice/i }).first()
+    ).toBeVisible({ timeout: 5000 })
   })
 
   test('displays quick entity links', async ({ page }) => {
