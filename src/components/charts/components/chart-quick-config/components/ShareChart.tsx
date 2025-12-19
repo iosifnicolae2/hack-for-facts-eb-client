@@ -15,6 +15,7 @@ import { Trans } from '@lingui/react/macro';
 import { useAuth } from '@/lib/auth';
 import { ensureShortRedirectUrl } from '@/lib/api/shortLinks';
 import { getSiteUrl } from '@/config/env';
+import { useQueryClient } from '@tanstack/react-query';
 
 export interface ShareChartProps {
     /** Chart ID for generating the share link */
@@ -38,9 +39,10 @@ export function ShareChart({
     const [loadingAction, setLoadingAction] = useState<ShareAction>(null);
     const [copiedLink, setCopiedLink] = useState(false);
     const { isSignedIn } = useAuth();
+    const queryClient = useQueryClient();
 
     // Generate the chart share URL with path and query params
-    const shareUrl = window.location.href;
+    const shareUrl = typeof window !== "undefined" ? window.location.href : "";
 
     // Sanitize filename by removing special characters
     const sanitizeFilename = useCallback((filename: string): string => {
@@ -145,7 +147,7 @@ export function ShareChart({
             let linkToCopy = shareUrl;
             if (isSignedIn) {
                 try {
-                    linkToCopy = await ensureShortRedirectUrl(shareUrl, getSiteUrl());
+                    linkToCopy = await ensureShortRedirectUrl(shareUrl, getSiteUrl(), queryClient);
                 } catch (e) {
                     // Fall back to original link if short link creation fails
                     console.error('Short link creation failed, falling back to full URL:', e);
@@ -166,7 +168,7 @@ export function ShareChart({
                 let fallbackLink = shareUrl;
                 if (isSignedIn) {
                     try {
-                        fallbackLink = await ensureShortRedirectUrl(shareUrl, getSiteUrl());
+                        fallbackLink = await ensureShortRedirectUrl(shareUrl, getSiteUrl(), queryClient);
                     } catch (e) {
                         console.error('Short link creation failed in fallback, using full URL:', e);
                     }
@@ -187,7 +189,7 @@ export function ShareChart({
         } finally {
             setLoadingAction(null);
         }
-    }, [shareUrl, isSignedIn]);
+    }, [shareUrl, isSignedIn, queryClient]);
 
     return (
         <Card>

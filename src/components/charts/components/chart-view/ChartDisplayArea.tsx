@@ -189,7 +189,7 @@ const ChartContent = React.memo(
  */
 const ChartFooter = () => {
   // Get current URL on every render to ensure it's always up-to-date
-  const currentUrl = window.location.href;
+  const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
   return (
     <p className="flex items-center justify-between text-sm text-muted-foreground bg-muted/20 w-full p-4">

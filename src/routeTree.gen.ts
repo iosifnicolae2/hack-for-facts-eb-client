@@ -17,6 +17,7 @@ import { Route as MapRouteImport } from './routes/map'
 import { Route as EntityAnalyticsRouteImport } from './routes/entity-analytics'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as UnsubscribeTokenRouteImport } from './routes/unsubscribe.$token'
 import { Route as ShareCodeRouteImport } from './routes/share.$code'
 import { Route as SettingsProfileRouteImport } from './routes/settings/profile'
@@ -46,7 +47,6 @@ import { Route as EnLearningAdvancedConceptsRouteImport } from './routes/en/lear
 
 const TermsLazyRouteImport = createFileRoute('/terms')()
 const BudgetExplorerLazyRouteImport = createFileRoute('/budget-explorer')()
-const IndexLazyRouteImport = createFileRoute('/')()
 const ChartsIndexLazyRouteImport = createFileRoute('/charts/')()
 const ResearchEmployeesDataLazyRouteImport = createFileRoute(
   '/research/employees-data',
@@ -99,11 +99,11 @@ const CookiePolicyRoute = CookiePolicyRouteImport.update({
   path: '/cookie-policy',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/cookie-policy.lazy').then((d) => d.Route))
-const IndexLazyRoute = IndexLazyRouteImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+} as any)
 const ChartsIndexLazyRoute = ChartsIndexLazyRouteImport.update({
   id: '/charts/',
   path: '/charts/',
@@ -294,7 +294,7 @@ const EnLearningAdvancedConceptsRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexLazyRoute
+  '/': typeof IndexRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/cookies': typeof CookiesRoute
   '/entity-analytics': typeof EntityAnalyticsRoute
@@ -336,7 +336,7 @@ export interface FileRoutesByFullPath {
   '/ro/learning/organization/hierarchy': typeof RoLearningOrganizationHierarchyRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexLazyRoute
+  '/': typeof IndexRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/cookies': typeof CookiesRoute
   '/entity-analytics': typeof EntityAnalyticsRoute
@@ -375,7 +375,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexLazyRoute
+  '/': typeof IndexRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/cookies': typeof CookiesRoute
   '/entity-analytics': typeof EntityAnalyticsRoute
@@ -542,7 +542,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexLazyRoute: typeof IndexLazyRoute
+  IndexRoute: typeof IndexRoute
   CookiePolicyRoute: typeof CookiePolicyRoute
   CookiesRoute: typeof CookiesRoute
   EntityAnalyticsRoute: typeof EntityAnalyticsRoute
@@ -632,7 +632,7 @@ declare module '@tanstack/react-router' {
       id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexLazyRouteImport
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/charts/': {
@@ -922,7 +922,7 @@ const RoLearningRouteRouteWithChildren = RoLearningRouteRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexLazyRoute: IndexLazyRoute,
+  IndexRoute: IndexRoute,
   CookiePolicyRoute: CookiePolicyRoute,
   CookiesRoute: CookiesRoute,
   EntityAnalyticsRoute: EntityAnalyticsRoute,
@@ -952,3 +952,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

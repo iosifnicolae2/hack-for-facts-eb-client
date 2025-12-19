@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 
 export const usePersistedState = <T>(key: string, initialValue: T) => {
     const [value, setValue] = useState<T>(() => {
+        if (typeof window === "undefined") {
+            return initialValue;
+        }
         try {
-            const storedValue = localStorage.getItem(key);
+            const storedValue = window.localStorage.getItem(key);
             return storedValue ? JSON.parse(storedValue) : initialValue;
         } catch (error) {
             console.error(`Error parsing stored value for key ${key}:`, error);

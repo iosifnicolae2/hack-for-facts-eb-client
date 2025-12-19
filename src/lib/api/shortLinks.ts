@@ -1,7 +1,7 @@
 import { createLogger } from "../logger";
 import { getAuthToken } from "../auth";
 import { env } from "@/config/env";
-import { queryClient } from "@/lib/queryClient";
+import type { QueryClient } from "@tanstack/react-query";
 
 const logger = createLogger("short-links-client");
 
@@ -98,7 +98,10 @@ export async function resolveShortLinkCode(code: string): Promise<string> {
  * - Keyed by ['short-link-code', url]
  * - Deduplicates concurrent calls, returns cached value if present
  */
-export async function ensureShortCodeForUrl(url: string): Promise<string> {
+export async function ensureShortCodeForUrl(
+  url: string,
+  queryClient: QueryClient
+): Promise<string> {
   return queryClient.ensureQueryData({
     queryKey: ["short-link-code", url],
     queryFn: async () => {
@@ -113,9 +116,12 @@ export async function ensureShortCodeForUrl(url: string): Promise<string> {
  * Cached helper: ensure we have a short redirect URL for a URL.
  * - Produces `${getSiteUrl()}/share/:code` via cached code generation
  */
-export async function ensureShortRedirectUrl(url: string, siteBaseUrl: string): Promise<string> {
-  const code = await ensureShortCodeForUrl(url);
+export async function ensureShortRedirectUrl(
+  url: string,
+  siteBaseUrl: string,
+  queryClient: QueryClient
+): Promise<string> {
+  const code = await ensureShortCodeForUrl(url, queryClient);
   return `${siteBaseUrl}/share/${code}`;
 }
-
 

@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Map, BarChart2, Table, Link2, Check, Search } from 'lucide-react';
 import { AnalyticsFilterType, Chart, ChartSchema, ReportType } from '@/schemas/charts';
 import { useNavigate } from '@tanstack/react-router';
+import { useQueryClient } from '@tanstack/react-query';
 import { ChartUrlState } from '@/components/charts/page-schema';
 import { MapUrlState } from '@/schemas/map-filters';
 import { EntityAnalyticsUrlState } from '@/routes/entity-analytics';
@@ -42,6 +43,7 @@ export function FloatingQuickNav({ className, mapViewType, mapActive, tableActiv
     const uatLabelMap = useUatLabel((filterInput.uat_ids ?? []).map(String));
     const entityLabelMap = useEntityLabel((filterInput.entity_cuis ?? []) as string[]);
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
     const { isSignedIn } = useAuth();
     const [shareCopied, setShareCopied] = useState(false);
     const [showEntitySearch, setShowEntitySearch] = useState(false);
@@ -67,7 +69,7 @@ export function FloatingQuickNav({ className, mapViewType, mapActive, tableActiv
             let linkToCopy = url;
             if (isSignedIn) {
                 try {
-                    linkToCopy = await ensureShortRedirectUrl(url, getSiteUrl());
+                    linkToCopy = await ensureShortRedirectUrl(url, getSiteUrl(), queryClient);
                 } catch (e) {
                     console.error('Failed to generate short link, falling back to full URL', e);
                 }

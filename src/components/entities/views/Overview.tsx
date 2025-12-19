@@ -8,7 +8,7 @@ import { getYearLabel } from "../utils";
 import { toReportTypeValue } from "@/schemas/reporting";
 import { useEntityExecutionLineItems } from "@/lib/hooks/useEntityDetails";
 import { EntityReportsSummary } from "../EntityReportsSummary";
-import { queryClient } from '@/lib/queryClient';
+import { useQueryClient } from '@tanstack/react-query';
 import { entityDetailsQueryOptions } from '@/lib/hooks/useEntityDetails';
 import { getInitialFilterState, makeTrendPeriod } from '@/schemas/reporting';
 import { useDebouncedCallback } from "@/lib/hooks/useDebouncedCallback";
@@ -104,6 +104,7 @@ export const Overview = ({
     advancedFilter,
     onAdvancedFilterChange,
 }: OverviewProps) => {
+    const queryClient = useQueryClient()
     const normalized = normalizeNormalizationOptions(normalizationOptions)
     const { data: lineItems, isLoading: isLoadingLineItems } = useEntityExecutionLineItems({
         cui,

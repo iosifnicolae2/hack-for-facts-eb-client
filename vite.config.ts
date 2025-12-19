@@ -2,7 +2,7 @@ import path from "path";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import checker from "vite-plugin-checker";
-import tanstackRouter from "@tanstack/router-plugin/vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import { lingui } from "@lingui/vite-plugin";
@@ -52,7 +52,7 @@ export default defineConfig(({ mode }) => ({
       },
     },
     lingui(),
-    tanstackRouter(),
+    tanstackStart(),
     react({
       babel: {
         plugins: ["@lingui/babel-plugin-lingui-macro"],

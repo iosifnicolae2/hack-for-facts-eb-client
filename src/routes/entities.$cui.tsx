@@ -2,7 +2,6 @@ import { createFileRoute } from '@tanstack/react-router';
 import { ViewLoading } from '@/components/ui/ViewLoading';
 import { z } from 'zod';
 import { entityDetailsQueryOptions } from '@/lib/hooks/useEntityDetails';
-import { queryClient } from '@/lib/queryClient';
 import { entitySearchSchema } from '@/components/entities/validation';
 import { AnalyticsFilterType, AnalyticsInput, Currency, defaultYearRange, Normalization } from '@/schemas/charts';
 import { geoJsonQueryOptions } from '@/hooks/useGeoJson';
@@ -21,7 +20,8 @@ export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
 
 export const Route = createFileRoute('/entities/$cui')({
     validateSearch: entitySearchSchema,
-    beforeLoad: ({ params, search }) => {
+    beforeLoad: ({ context, params, search }) => {
+        const { queryClient } = context
         const START_YEAR = defaultYearRange.start;
         const END_YEAR = defaultYearRange.end;
         const year = (search?.year as number | undefined) ?? END_YEAR;

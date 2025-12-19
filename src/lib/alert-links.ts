@@ -5,6 +5,7 @@ import { createEmptyAlert, type Alert } from '@/schemas/alerts';
 import { t } from '@lingui/core/macro';
 import { ensureShortRedirectUrl } from '@/lib/api/shortLinks';
 import { getSiteUrl } from '@/config/env';
+import type { QueryClient } from '@tanstack/react-query';
 
 const DEFAULT_CHART_CONFIG: ChartConfig = {
   chartType: 'line',
@@ -131,10 +132,13 @@ export function buildAlertShareDestination(alert: Alert) {
   };
 }
 
-export async function ensureAlertShareUrl(alert: Alert): Promise<string> {
+export async function ensureAlertShareUrl(
+  alert: Alert,
+  queryClient: QueryClient
+): Promise<string> {
   const dest = buildAlertShareDestination(alert);
   const params = new URLSearchParams();
   params.set('preset', encodeURIComponent(JSON.stringify(dest.search.preset)));
   const url = `${getSiteUrl()}${dest.to}?${params.toString()}`;
-  return ensureShortRedirectUrl(url, getSiteUrl());
+  return ensureShortRedirectUrl(url, getSiteUrl(), queryClient);
 }
