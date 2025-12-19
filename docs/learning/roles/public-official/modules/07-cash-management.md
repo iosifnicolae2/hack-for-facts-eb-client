@@ -1,0 +1,479 @@
+# Module 7: Cash & Payment Management
+
+## Module Overview
+
+| Aspect | Details |
+|--------|---------|
+| **Duration** | 60-75 minutes |
+| **Difficulty** | Intermediate |
+| **Prerequisites** | [Module 6: Commitment Control (ALOP)](./06-commitment-control.md) |
+| **Next Module** | [Module 8: Accounting & Reporting](./08-accounting-reporting.md) |
+
+## Learning Objectives
+
+By the end of this module, you will be able to:
+
+- [ ] Manage treasury account operations correctly
+- [ ] Prioritize payments according to legal requirements
+- [ ] Plan monthly cash flows to prevent arrears
+- [ ] Recognize and report arrears immediately
+- [ ] Navigate Forexebug reporting requirements
+
+---
+
+## Introduction
+
+### Cash Is Not the Same as Budget
+
+Having approved budget doesn't mean you have cash. The Treasury (Trezoreria Statului) controls actual cash availability. Understanding this distinction—and planning accordingly—prevents payment delays and arrears.
+
+> **Key Insight:** Arrears (arierate) must be reported immediately—they cannot be hidden. Accumulated arrears trigger legal consequences and reflect poorly on management. Prevention through careful cash planning is essential.
+
+---
+
+## Interactive Element 1: Cash Flow Planner
+
+Plan monthly cash needs against expected availability.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                      CASH FLOW PLANNER                                  │
+│                                                                         │
+│   Plan your monthly cash requirements                                  │
+│                                                                         │
+│   Year: 2025    Quarter: Q2                                            │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   MONTHLY CASH FORECAST                                                │
+│   ─────────────────────                                                │
+│                                                                         │
+│   │ Category          │   April   │    May    │   June    │  Q2 Total │
+│   ├───────────────────┼───────────┼───────────┼───────────┼───────────┤
+│   │ Salaries (10)     │ 3,200,000 │ 3,200,000 │ 3,200,000 │ 9,600,000 │
+│   │ Utilities (20.01) │   180,000 │   150,000 │   120,000 │   450,000 │
+│   │ Contracts (20)    │   420,000 │   380,000 │   520,000 │ 1,320,000 │
+│   │ Investments (71)  │   800,000 │ 1,200,000 │   600,000 │ 2,600,000 │
+│   ├───────────────────┼───────────┼───────────┼───────────┼───────────┤
+│   │ TOTAL NEEDED      │ 4,600,000 │ 4,930,000 │ 4,440,000 │13,970,000 │
+│   ├───────────────────┼───────────┼───────────┼───────────┼───────────┤
+│   │ Cash Allocation   │ 4,500,000 │ 4,500,000 │ 5,000,000 │14,000,000 │
+│   ├───────────────────┼───────────┼───────────┼───────────┼───────────┤
+│   │ SURPLUS/(DEFICIT) │  (100,000)│  (430,000)│   560,000 │    30,000 │
+│   └───────────────────┴───────────┴───────────┴───────────┴───────────┘
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   ANALYSIS                                                             │
+│   ────────                                                             │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  ⚠️ CASH SHORTFALL DETECTED: April and May                       │  │
+│   │                                                                 │  │
+│   │  You have quarterly budget but monthly cash doesn't align.      │  │
+│   │                                                                 │  │
+│   │  Options:                                                       │  │
+│   │  1. Request earlier cash allocation for April/May               │  │
+│   │  2. Defer some investment payments to June (if contractually    │  │
+│   │     possible)                                                   │  │
+│   │  3. Prioritize: Salaries first, then utilities, then contracts  │  │
+│   │                                                                 │  │
+│   │  ⚠️ Do NOT delay salary payments—this creates legal issues.     │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   [Adjust Forecast]  [Request Additional Allocation]  [Export]         │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Suggested Implementation
+
+```typescript
+interface MonthlyCashForecast {
+  month: string
+  categories: {
+    code: string
+    name: string
+    amount: number
+    priority: number
+    deferrable: boolean
+  }[]
+  totalNeeded: number
+  cashAllocation: number
+  surplus: number
+}
+
+interface CashFlowPlan {
+  year: number
+  quarter: 'Q1' | 'Q2' | 'Q3' | 'Q4'
+  months: MonthlyCashForecast[]
+  quarterTotal: number
+  quarterAllocation: number
+  issues: string[]
+  recommendations: string[]
+}
+```
+
+---
+
+## Interactive Element 2: Payment Priority Queue
+
+Manage payment prioritization according to legal requirements.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                     PAYMENT PRIORITY QUEUE                             │
+│                                                                         │
+│   Prioritize payments when cash is limited                             │
+│                                                                         │
+│   Available Cash: 2,800,000 lei                                        │
+│   Total Pending:  3,450,000 lei                                        │
+│   Shortfall:        650,000 lei                                        │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   LEGAL PRIORITY ORDER                                                 │
+│   ────────────────────                                                 │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  PRIORITY 1: SALARIES & SOCIAL CONTRIBUTIONS                    │  │
+│   │  ═══════════════════════════════════════════                    │  │
+│   │                                                                 │  │
+│   │  ☑ Salarii - March 2025              1,850,000 lei   [Must Pay] │  │
+│   │  ☑ CAS contribution                    462,500 lei   [Must Pay] │  │
+│   │  ☑ CASS contribution                   185,000 lei   [Must Pay] │  │
+│   │  ─────────────────────────────────────────────────────────────  │  │
+│   │  Subtotal Priority 1:                2,497,500 lei              │  │
+│   │                                                                 │  │
+│   │  ✓ These MUST be paid by legal deadline. No exceptions.         │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  PRIORITY 2: UTILITIES & ESSENTIAL SERVICES                     │  │
+│   │  ═══════════════════════════════════════════                    │  │
+│   │                                                                 │  │
+│   │  ☑ Electricity - February             125,000 lei   [Due 15th]  │  │
+│   │  ☐ Gas - February                      85,000 lei   [Due 20th]  │  │
+│   │  ☐ Water - February                    32,000 lei   [Due 25th]  │  │
+│   │  ─────────────────────────────────────────────────────────────  │  │
+│   │  Subtotal Priority 2:                  242,000 lei              │  │
+│   │                                                                 │  │
+│   │  ⚠️ Pay by due date to avoid service interruption.              │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  PRIORITY 3: CONTRACTUAL OBLIGATIONS                            │  │
+│   │  ═══════════════════════════════════                            │  │
+│   │                                                                 │  │
+│   │  ☐ IT Services - Invoice #234         180,000 lei   [Net 30]    │  │
+│   │  ☐ Cleaning contract                   95,000 lei   [Net 30]    │  │
+│   │  ☐ Security services                  120,000 lei   [Net 30]    │  │
+│   │  ☐ Maintenance contract               115,000 lei   [Net 30]    │  │
+│   │  ─────────────────────────────────────────────────────────────  │  │
+│   │  Subtotal Priority 3:                  510,000 lei              │  │
+│   │                                                                 │  │
+│   │  Pay within contractual terms. Delays create arrears.           │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   PAYMENT PLAN WITH 2,800,000 AVAILABLE                               │
+│   ─────────────────────────────────────                               │
+│                                                                         │
+│   ✓ Priority 1 (Salaries):    2,497,500 lei  → PAY ALL               │  │
+│   ✓ Priority 2 (Electricity):   125,000 lei  → PAY (due soonest)     │  │
+│   ⚠️ Priority 2 (Gas/Water):    117,000 lei  → DEFER to next week    │  │
+│   ❌ Priority 3 (Contracts):    510,000 lei  → DEFER until cash      │  │
+│   ─────────────────────────────────────────────────────────────────   │
+│   Total to Pay Now:           2,622,500 lei                           │
+│   Remaining Cash:               177,500 lei                           │
+│   Deferred:                     827,500 lei  ← Monitor for arrears    │
+│                                                                         │
+│   [Execute Payment Plan]  [Notify Affected Suppliers]                 │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Suggested Implementation
+
+```typescript
+interface PaymentItem {
+  id: string
+  description: string
+  amount: number
+  priority: 1 | 2 | 3 | 4
+  dueDate: Date
+  contractualTerms: string
+  status: 'pending' | 'scheduled' | 'deferred' | 'paid'
+}
+
+interface PaymentPriorityQueue {
+  availableCash: number
+  totalPending: number
+  items: PaymentItem[]
+  generatePaymentPlan: () => {
+    toPay: PaymentItem[]
+    toDefer: PaymentItem[]
+    remainingCash: number
+  }
+  notifyDeferrals: () => void
+}
+```
+
+---
+
+## Interactive Element 3: Arrears Prevention Checker
+
+Monitor for potential arrears and take preventive action.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                   ARREARS PREVENTION CHECKER                           │
+│                                                                         │
+│   Monitor outstanding payments and prevent arrears                     │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   ARREARS STATUS                                                       │
+│   ──────────────                                                       │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │                                                                 │  │
+│   │  Current Arrears (overdue > 30 days):              0 lei       │  │
+│   │  At Risk (due within 7 days, insufficient cash): 285,000 lei   │  │
+│   │  Watch List (due within 30 days):                510,000 lei   │  │
+│   │                                                                 │  │
+│   │  Status: ⚠️ AT RISK                                             │  │
+│   │                                                                 │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   AT RISK ITEMS (Due within 7 days, cash may be insufficient)         │
+│   ─────────────────────────────────────────────────────────────────   │
+│                                                                         │
+│   │ Invoice      │ Supplier        │ Amount    │ Due Date  │ Days │   │
+│   ├──────────────┼─────────────────┼───────────┼───────────┼──────┤   │
+│   │ INV-2025-089 │ SC Electric SRL │   125,000 │ 15.03.25  │    3 │   │
+│   │ INV-2025-092 │ Gaz Natural SA  │    85,000 │ 18.03.25  │    6 │   │
+│   │ INV-2025-094 │ Apa Nova SRL    │    75,000 │ 20.03.25  │    8 │   │
+│   └──────────────┴─────────────────┴───────────┴───────────┴──────┘   │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   PREVENTION ACTIONS                                                   │
+│   ──────────────────                                                   │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  ⚠️ Action Required: Request emergency cash allocation          │  │
+│   │                                                                 │  │
+│   │  Cash needed by March 15:    125,000 lei                        │  │
+│   │  Current cash available:      92,000 lei                        │  │
+│   │  Shortfall:                   33,000 lei                        │  │
+│   │                                                                 │  │
+│   │  Options:                                                       │  │
+│   │  1. [Request additional allocation from OPC/OSC]                │  │
+│   │  2. [Defer lower-priority payment to free up cash]              │  │
+│   │  3. [Negotiate payment extension with supplier]                 │  │
+│   │                                                                 │  │
+│   │  ⚠️ If arrears cannot be avoided, REPORT IMMEDIATELY            │  │
+│   │     per Legea 273/2006, Art. 63 (local) or                      │  │
+│   │     Legea 500/2002 (state budget)                               │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   [Generate Arrears Report]  [Notify Superior]  [Export Watch List]   │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Arrears Definition
+
+Arrears (arierate) are payments that have exceeded their contractual due date. They must be:
+
+- **Reported immediately** to supervisory ordonator
+- **Disclosed** in financial statements
+- **Eliminated** through priority payment or rectification
+
+### Suggested Implementation
+
+```typescript
+interface ArrearsItem {
+  invoiceId: string
+  supplier: string
+  amount: number
+  dueDate: Date
+  daysOverdue: number
+  status: 'current' | 'at_risk' | 'arrears'
+}
+
+interface ArrearsChecker {
+  currentArrears: number
+  atRiskAmount: number
+  watchListAmount: number
+  items: ArrearsItem[]
+  checkStatus: () => 'clear' | 'at_risk' | 'arrears'
+  generateReport: () => void
+  suggestActions: () => string[]
+}
+```
+
+---
+
+## Core Concepts
+
+### Treasury Account Structure
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    TREZORERIA STATULUI                                  │
+│                    Your Institution's Accounts                         │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  CONT DE CHELTUIELI (Expenditure Account)                       │  │
+│   │  • Receives monthly cash allocation from treasury               │  │
+│   │  • Payments executed from here                                  │  │
+│   │  • Daily balance monitoring required                            │  │
+│   │  • Balance: 1,245,000 lei                                       │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  CONT DE VENITURI PROPRII (Own Revenue Account)                 │  │
+│   │  • Fees, services, rents collected                              │  │
+│   │  • Different spending rules apply                               │  │
+│   │  • Can supplement main budget                                   │  │
+│   │  • Balance: 328,000 lei                                         │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  CONT PENTRU FONDURI EXTERNE (EU Funds Account)                 │  │
+│   │  • Separate tracking required                                   │  │
+│   │  • Reimbursement-based flow                                     │  │
+│   │  • Strict eligibility rules                                     │  │
+│   │  • Balance: 0 lei (awaiting reimbursement)                      │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Forexebug Integration
+
+All public institutions must report through Forexebug for:
+- Real-time execution tracking
+- Automatic reporting to Ministry of Finance
+- Commitment vs. payment reconciliation
+- Transparency and monitoring
+
+---
+
+## Platform Integration
+
+> **Try it on Transparenta.eu:**
+> 1. Open [Entity Analytics](/entity-analytics)
+> 2. Search for your institution
+> 3. Review quarterly execution patterns
+> 4. Institutions with consistent patterns typically have better cash management
+> 5. Erratic patterns may indicate cash flow problems
+
+---
+
+## Knowledge Check
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         KNOWLEDGE CHECK                                 │
+│                                                                         │
+│   Question 1 of 4                                                       │
+│                                                                         │
+│   What is the first priority when cash is limited?                     │
+│                                                                         │
+│   ○ A) Capital investments                                             │
+│   ○ B) Salaries and social contributions                               │
+│   ○ C) Supplier contracts                                              │
+│   ○ D) Utility bills                                                   │
+│                                                                         │
+│   Question 2 of 4                                                       │
+│                                                                         │
+│   Arrears (arierate) must be:                                          │
+│                                                                         │
+│   ○ A) Hidden until year-end                                           │
+│   ○ B) Reported immediately to supervisory ordonator                   │
+│   ○ C) Resolved within 90 days                                         │
+│   ○ D) Transferred to next year's budget                               │
+│                                                                         │
+│   Question 3 of 4                                                       │
+│                                                                         │
+│   Forexebug is used for:                                               │
+│                                                                         │
+│   ○ A) Procurement management                                          │
+│   ○ B) Real-time budget execution reporting                            │
+│   ○ C) Employee payroll processing                                     │
+│   ○ D) Contract management                                             │
+│                                                                         │
+│   Question 4 of 4                                                       │
+│                                                                         │
+│   EU funds typically operate on what basis?                            │
+│                                                                         │
+│   ○ A) Advance payment                                                 │
+│   ○ B) Reimbursement after eligible expenditure                        │
+│   ○ C) Direct Treasury transfer                                        │
+│   ○ D) Monthly allocation                                              │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+**Answers:** 1-B, 2-B, 3-B, 4-B
+
+---
+
+## Key Takeaways
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                          KEY TAKEAWAYS                                  │
+│                                                                         │
+│   ✓ Budget ≠ Cash: Having approved budget doesn't mean cash is        │
+│     available. Plan monthly cash needs carefully.                      │
+│                                                                         │
+│   ✓ Payment priority: Salaries first, then utilities, then contracts  │
+│                                                                         │
+│   ✓ Arrears must be reported immediately—hiding them creates          │
+│     legal liability and audit findings                                 │
+│                                                                         │
+│   ✓ Forexebug integration is mandatory for real-time transparency     │
+│                                                                         │
+│   ✓ Treasury accounts have different rules—know which you're using    │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Module Navigation
+
+| Previous | Current | Next |
+|----------|---------|------|
+| [Module 6: Commitment Control](./06-commitment-control.md) | Module 7: Cash Management | [Module 8: Accounting & Reporting](./08-accounting-reporting.md) |
+
+---
+
+## Technical Notes
+
+### Components Needed
+
+- `CashFlowPlanner` — Monthly cash forecasting
+- `PaymentPriorityQueue` — Priority-based payment management
+- `ArrearsChecker` — Arrears monitoring and prevention
+- `TreasuryAccountViewer` — Account balance monitoring
+
+### Data Requirements
+
+- Cash allocation schedules
+- Payment due dates and amounts
+- Treasury account balances
+- Historical payment patterns
+
+### API Endpoints
+
+- `GET /api/entities/{cui}/cash-balance`
+- `GET /api/entities/{cui}/pending-payments`
+- `POST /api/payments/prioritize`

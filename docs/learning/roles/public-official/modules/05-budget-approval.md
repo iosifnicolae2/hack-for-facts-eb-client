@@ -1,0 +1,546 @@
+# Module 5: Budget Approval & Authorization
+
+## Module Overview
+
+| Aspect | Details |
+|--------|---------|
+| **Duration** | 60-75 minutes |
+| **Difficulty** | Beginner-Intermediate |
+| **Prerequisites** | [Module 4: Strategic Planning & Budget Preparation](./04-budget-preparation.md) |
+| **Next Module** | [Module 6: Commitment Control (ALOP)](./06-commitment-control.md) |
+
+## Learning Objectives
+
+By the end of this module, you will be able to:
+
+- [ ] Distinguish between commitment authority and budget appropriation
+- [ ] Apply credit transfer rules correctly (10% limit, Q3+ timing)
+- [ ] Plan quarterly allocations effectively
+- [ ] Recognize when rectification is required vs. transfer is sufficient
+- [ ] Manage multi-year project authorizations
+
+---
+
+## Introduction
+
+### Understanding What You're Authorized to Spend
+
+Approved budget doesn't mean unlimited spending power. You must understand two distinct concepts: commitment authority (what you can sign contracts for) and budget appropriation (what you can actually pay this year).
+
+> **Key Insight:** Credit transfers are limited to **10%** at chapter level, not 20% as commonly believed. Additionally, transfers are only permitted starting from **Q3** (trimestrul III). Planning errors that require earlier adjustments need formal rectification.
+
+---
+
+## Interactive Element 1: Credit Type Simulator
+
+Understand the difference between commitment authority and budget appropriation.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                     CREDIT TYPE SIMULATOR                               │
+│                                                                         │
+│   Simulate a multi-year project to understand credit types             │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   PROJECT: School Construction                                         │
+│   Total Value: 9,000,000 lei                                           │
+│   Duration: 3 years (2025-2027)                                        │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │                                                                 │  │
+│   │  CREDIT DE ANGAJAMENT (Commitment Authority)                    │  │
+│   │  ═══════════════════════════════════════════                    │  │
+│   │                                                                 │  │
+│   │  Total approved at project start: 9,000,000 lei                 │  │
+│   │                                                                 │  │
+│   │  This is your authority to SIGN CONTRACTS.                      │  │
+│   │  It covers the full project value across all years.             │  │
+│   │                                                                 │  │
+│   │  ████████████████████████████████████████████████ 9.0M          │  │
+│   │                                                                 │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │                                                                 │  │
+│   │  CREDITE BUGETARE (Budget Appropriation per Year)               │  │
+│   │  ════════════════════════════════════════════════               │  │
+│   │                                                                 │  │
+│   │  This is what you can ACTUALLY PAY each year.                   │  │
+│   │  It expires on December 31 of each year.                        │  │
+│   │                                                                 │  │
+│   │  Year 2025: ████████████████░░░░░░░░░░░░░░░░░░░░ 2.0M           │  │
+│   │  Year 2026: ████████████████████████████████░░░░ 4.0M           │  │
+│   │  Year 2027: ████████████████████████░░░░░░░░░░░░ 3.0M           │  │
+│   │             ──────────────────────────────────── ────           │  │
+│   │  Total:                                          9.0M           │  │
+│   │                                                                 │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   SCENARIO: What if construction progresses faster than planned?       │
+│   ─────────────────────────────────────────────────────────────────    │
+│                                                                         │
+│   Contractor invoices 3.5M in Year 1 (you budgeted 2.0M)               │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  ❌ PROBLEM: Insufficient credit bugetar for Year 1              │  │
+│   │                                                                 │  │
+│   │  Commitment authority: ✓ You can sign (9M available)            │  │
+│   │  Budget appropriation: ❌ You can only PAY 2M this year         │  │
+│   │                                                                 │  │
+│   │  OPTIONS:                                                       │  │
+│   │  1. Request rectificare to increase Year 1 appropriation        │  │
+│   │  2. Delay payment to contractor (creates arrears risk)          │  │
+│   │  3. Transfer from other chapters (10% limit, Q3+ only)          │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   [Try Another Scenario]  [View Transfer Rules →]                      │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Suggested Implementation
+
+```typescript
+interface CreditType {
+  type: 'angajament' | 'bugetar'
+  description: string
+  scope: string
+  expires: string
+  legalBasis: string
+}
+
+interface MultiYearProject {
+  name: string
+  totalValue: number
+  duration: number
+  commitmentAuthority: number
+  yearlyAppropriations: Map<number, number>
+  scenarios: {
+    description: string
+    problem: string
+    options: string[]
+  }[]
+}
+
+interface CreditSimulator {
+  project: MultiYearProject
+  simulateOverspend: (year: number, amount: number) => SimulationResult
+  suggestSolutions: (problem: string) => string[]
+}
+```
+
+---
+
+## Interactive Element 2: Transfer Limit Calculator
+
+Calculate whether a proposed credit transfer is within legal limits.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    TRANSFER LIMIT CALCULATOR                           │
+│                    (per Art. 47, Legea 500/2002)                       │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   TRANSFER REQUEST DETAILS                                             │
+│   ────────────────────────                                             │
+│                                                                         │
+│   From Chapter: [ 65.02 - Învățământ ▼ ]                               │
+│   Chapter Total: [ 45,000,000 ] lei                                    │
+│                                                                         │
+│   To Chapter: [ 67.02 - Cultură ▼ ]                                    │
+│   Transfer Amount: [ 5,500,000 ] lei                                   │
+│                                                                         │
+│   Current Quarter: [ Q3 - Trimestrul III ▼ ]                           │
+│                                                                         │
+│   [Calculate →]                                                        │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   CALCULATION RESULT                                                   │
+│   ──────────────────                                                   │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │                                                                 │  │
+│   │  Chapter 65.02 Total:      45,000,000 lei                       │  │
+│   │  Maximum Transfer (10%):    4,500,000 lei                       │  │
+│   │  Requested Transfer:        5,500,000 lei                       │  │
+│   │                                                                 │  │
+│   │  ════════════════════════════════════════════════════════════  │  │
+│   │                                                                 │  │
+│   │  ❌ EXCEEDS LIMIT BY: 1,000,000 lei                             │  │
+│   │                                                                 │  │
+│   │  This transfer CANNOT be approved by ordonator.                 │  │
+│   │  Requires formal budget rectification.                          │  │
+│   │                                                                 │  │
+│   │  ════════════════════════════════════════════════════════════  │  │
+│   │                                                                 │  │
+│   │  TIMING CHECK: ✓ Q3 — Transfers permitted                       │  │
+│   │                                                                 │  │
+│   │  Note: Transfers in Q1 or Q2 require rectification              │  │
+│   │  regardless of amount.                                          │  │
+│   │                                                                 │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   TRANSFER RULES SUMMARY                                               │
+│   ──────────────────────                                               │
+│                                                                         │
+│   │ Transfer Type           │ Authority      │ Limit              │   │
+│   ├─────────────────────────┼────────────────┼────────────────────┤   │
+│   │ Within same article     │ Ordonator      │ Unlimited*         │   │
+│   │ Between articles        │ Ordonator      │ 10% of chapter     │   │
+│   │ Between chapters        │ Approval body  │ 10% ch + 5% prog   │   │
+│   │ Between functional cat. │ Parliament/CL  │ Rectificare req.   │   │
+│   │ To/from personnel (10)  │ PROHIBITED     │ Cannot increase    │   │
+│   │                                                                 │   │
+│   │ * Subject to other restrictions                                │   │
+│   │                                                                 │   │
+│   │ TIMING: Transfers only permitted starting Q3                   │   │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Suggested Implementation
+
+```typescript
+interface TransferRequest {
+  fromChapter: string
+  fromChapterTotal: number
+  toChapter: string
+  amount: number
+  quarter: 'Q1' | 'Q2' | 'Q3' | 'Q4'
+}
+
+interface TransferCalculation {
+  request: TransferRequest
+  maxAllowed: number
+  isWithinLimit: boolean
+  excessAmount: number
+  timingAllowed: boolean
+  personnelRestriction: boolean
+  requiredAuthority: 'ordonator' | 'approval_body' | 'rectification'
+  legalBasis: string
+}
+
+interface TransferCalculator {
+  calculate: (request: TransferRequest) => TransferCalculation
+  suggestAlternative: (calculation: TransferCalculation) => TransferRequest[]
+}
+```
+
+---
+
+## Interactive Element 3: Quarterly Planner
+
+Plan quarterly allocations for effective cash management.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                      QUARTERLY PLANNER                                  │
+│                                                                         │
+│   Distribute your annual budget across quarters                        │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   ANNUAL BUDGET: 12,000,000 lei                                        │
+│   Category: Bunuri și Servicii (20)                                    │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │                                                                 │  │
+│   │  QUARTERLY ALLOCATION                                           │  │
+│   │  ─────────────────────                                          │  │
+│   │                                                                 │  │
+│   │  Q1 (Ian-Mar): [ 2,400,000 ] lei   ████████░░░░░░░░░░░ 20%      │  │
+│   │  Q2 (Apr-Iun): [ 2,800,000 ] lei   ██████████░░░░░░░░░ 23%      │  │
+│   │  Q3 (Iul-Sep): [ 3,000,000 ] lei   ██████████░░░░░░░░░ 25%      │  │
+│   │  Q4 (Oct-Dec): [ 3,800,000 ] lei   █████████████░░░░░░ 32%      │  │
+│   │  ────────────────────────────────────────────────────────────   │  │
+│   │  TOTAL:        12,000,000 lei                          100%     │  │
+│   │                                                                 │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   ANALYSIS & RECOMMENDATIONS                                           │
+│   ───────────────────────────                                          │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  ⚠️ Q4 CONCENTRATION: 32% of spending in final quarter          │  │
+│   │                                                                 │  │
+│   │  Risk factors:                                                  │  │
+│   │  • Year-end spending rush may affect quality                    │  │
+│   │  • Procurement delays push execution to Q4                      │  │
+│   │  • Creates audit scrutiny for "year-end spike"                  │  │
+│   │                                                                 │  │
+│   │  Recommendation: If possible, move some Q4 spending to Q3       │  │
+│   │  by advancing procurement timelines.                            │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  ✓ PERSONNEL TIP                                                │  │
+│   │                                                                 │  │
+│   │  Personnel (Titlu 10) should be evenly distributed:            │  │
+│   │  ~25% per quarter, with slight increase in months              │  │
+│   │  with bonuses (if applicable).                                  │  │
+│   │                                                                 │  │
+│   │  Uneven personnel allocation is a compliance red flag.          │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   [Apply Suggested Distribution]  [Export to Budget System]           │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Suggested Implementation
+
+```typescript
+interface QuarterlyAllocation {
+  quarter: 'Q1' | 'Q2' | 'Q3' | 'Q4'
+  amount: number
+  percentage: number
+  monthlyBreakdown?: number[]
+}
+
+interface QuarterlyPlan {
+  category: string
+  annualTotal: number
+  allocations: QuarterlyAllocation[]
+  analysis: {
+    q4Concentration: number
+    evenness: number
+    risks: string[]
+    recommendations: string[]
+  }
+}
+
+interface QuarterlyPlanner {
+  plan: QuarterlyPlan
+  suggestDistribution: (category: string) => QuarterlyAllocation[]
+  analyze: () => QuarterlyPlan['analysis']
+  export: () => void
+}
+```
+
+---
+
+## Core Concepts
+
+### Credit Transfer Rules (Art. 47, Legea 500/2002)
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    CREDIT TRANSFER RULES                                │
+│                    (Art. 47, Legea 500/2002)                           │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  TRANSFER TYPE           │ AUTHORITY      │ LIMIT              │  │
+│   ├──────────────────────────┼────────────────┼────────────────────┤  │
+│   │  Within same article     │ Ordonator      │ Unlimited*         │  │
+│   │  (between alineate)      │                │                    │  │
+│   ├──────────────────────────┼────────────────┼────────────────────┤  │
+│   │  Between articles        │ Ordonator      │ 10% of chapter     │  │
+│   │  (same chapter)          │                │                    │  │
+│   ├──────────────────────────┼────────────────┼────────────────────┤  │
+│   │  Between chapters        │ Approval body  │ 10% chapter +      │  │
+│   │                          │                │ 5% program         │  │
+│   ├──────────────────────────┼────────────────┼────────────────────┤  │
+│   │  Between functional      │ Parliament/    │ Rectificare        │  │
+│   │  categories              │ Council        │ required           │  │
+│   ├──────────────────────────┼────────────────┼────────────────────┤  │
+│   │  To/from personnel       │ PROHIBITED     │ Cannot increase    │  │
+│   │  (Titlu 10)              │                │ or transfer out    │  │
+│   └──────────────────────────┴────────────────┴────────────────────┘  │
+│                                                                         │
+│   ⚠️ CRITICAL TIMING RULE                                               │
+│   ═════════════════════════                                            │
+│                                                                         │
+│   Transfers only permitted starting from Q3 (trimestrul III)           │
+│   per Art. 47, Legea 500/2002.                                         │
+│                                                                         │
+│   Q1-Q2 adjustments require formal rectificare bugetară.               │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### When Rectification is Required
+
+| Situation | Transfer Sufficient? | Rectification Required? |
+|-----------|---------------------|------------------------|
+| Move funds within article | Yes | No |
+| Move 8% between articles in Q3 | Yes | No |
+| Move 15% between articles | No | Yes |
+| Move funds in Q1 or Q2 | No | Yes |
+| Increase personnel allocation | No | Yes |
+| Add new program not in original | No | Yes |
+| Revenue shortfall requiring cuts | No | Yes |
+
+---
+
+## Platform Integration: Monitor Approval Patterns
+
+### Guided Activity: Review Rectification History
+
+> **Try it on Transparenta.eu:**
+> 1. Open [Entity Analytics](/entity-analytics)
+> 2. Search for your institution or a peer
+> 3. Look at year-over-year changes in budget vs. execution
+> 4. Large discrepancies may indicate frequent rectifications
+> 5. Compare with peers to understand normal adjustment patterns
+
+---
+
+## Knowledge Check
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         KNOWLEDGE CHECK                                 │
+│                                                                         │
+│   Question 1 of 4                                                       │
+│   ───────────────                                                       │
+│                                                                         │
+│   What is the maximum percentage of a chapter that can be              │
+│   transferred between articles (per Art. 47)?                          │
+│                                                                         │
+│   ○ A) 5%                                                              │
+│   ○ B) 10%                                                             │
+│   ○ C) 15%                                                             │
+│   ○ D) 20%                                                             │
+│                                                                         │
+│   [Submit Answer]                                                       │
+│                                                                         │
+│   ─────────────────────────────────────────────────────────────────    │
+│                                                                         │
+│   Question 2 of 4                                                       │
+│   ───────────────                                                       │
+│                                                                         │
+│   Starting from which quarter are credit transfers permitted?          │
+│                                                                         │
+│   ○ A) Q1                                                              │
+│   ○ B) Q2                                                              │
+│   ○ C) Q3                                                              │
+│   ○ D) Q4                                                              │
+│                                                                         │
+│   [Submit Answer]                                                       │
+│                                                                         │
+│   ─────────────────────────────────────────────────────────────────    │
+│                                                                         │
+│   Question 3 of 4                                                       │
+│   ───────────────                                                       │
+│                                                                         │
+│   Credit de angajament allows you to:                                  │
+│                                                                         │
+│   ○ A) Pay invoices immediately                                        │
+│   ○ B) Sign contracts for future payment                               │
+│   ○ C) Transfer funds between chapters                                 │
+│   ○ D) Approve budget rectifications                                   │
+│                                                                         │
+│   [Submit Answer]                                                       │
+│                                                                         │
+│   ─────────────────────────────────────────────────────────────────    │
+│                                                                         │
+│   Question 4 of 4                                                       │
+│   ───────────────                                                       │
+│                                                                         │
+│   Which allocation cannot be increased through transfers?              │
+│                                                                         │
+│   ○ A) Capital investments (Titlu 71)                                  │
+│   ○ B) Goods and services (Titlu 20)                                   │
+│   ○ C) Personnel (Titlu 10)                                            │
+│   ○ D) Debt service (Titlu 81)                                         │
+│                                                                         │
+│   [Submit Answer]                                                       │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+**Answers:** 1-B, 2-C, 3-B, 4-C
+
+---
+
+## Key Takeaways
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                          KEY TAKEAWAYS                                  │
+│                                                                         │
+│   ✓ Credit de angajament = authority to sign contracts (multi-year)   │
+│     Credit bugetar = authority to pay this year (expires Dec 31)       │
+│                                                                         │
+│   ✓ Transfer limits: 10% at chapter level, NOT 20%                     │
+│                                                                         │
+│   ✓ Transfers only permitted starting from Q3 (trimestrul III)        │
+│                                                                         │
+│   ✓ Personnel (Titlu 10) cannot be increased through transfers        │
+│                                                                         │
+│   ✓ Multi-year projects need commitment authority approved upfront    │
+│     with yearly budget appropriations for actual payments              │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Call to Action
+
+### Next Steps
+
+- [ ] Review your institution's transfer history for the past year
+- [ ] Use the Transfer Limit Calculator on a recent transfer request
+- [ ] Create a quarterly allocation plan for your main spending categories
+- [ ] Identify any multi-year commitments and verify their authorization
+- [ ] Proceed to [Module 6: Commitment Control (ALOP)](./06-commitment-control.md)
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                                                                         │
+│   Ready to continue?                                                    │
+│                                                                         │
+│   [ Mark Module Complete ✓ ]    [ Next Module → ]                       │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Module Navigation
+
+| Previous | Current | Next |
+|----------|---------|------|
+| [Module 4: Budget Preparation](./04-budget-preparation.md) | Module 5: Budget Approval | [Module 6: Commitment Control](./06-commitment-control.md) |
+
+---
+
+## Technical Notes
+
+### Components Needed
+
+- `CreditTypeSimulator` — Multi-year project scenarios
+- `TransferLimitCalculator` — Real-time transfer validation
+- `QuarterlyPlanner` — Allocation distribution tool
+- `RectificationChecker` — When rectification is needed
+
+### Data Requirements
+
+- Chapter totals for transfer calculations
+- Historical transfer data
+- Quarterly execution patterns
+- Multi-year commitment tracking
+
+### API Endpoints
+
+- `GET /api/entities/{cui}/chapters`
+- `GET /api/entities/{cui}/transfers?year={year}`
+- `GET /api/entities/{cui}/quarterly?year={year}`
+- `POST /api/calculate/transfer-limit`
+
+### Accessibility
+
+- Calculator inputs with clear labels
+- Color-blind friendly status indicators
+- Screen reader support for all calculations
+- Keyboard navigation for planner
