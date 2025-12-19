@@ -1,1 +1,3 @@
-Based on the information you have about this project, how can we improve the curriculum to make it more engaging and effective? Use the questions tool to make sure you understand the project and the context.
+<!-- I have a draft for the learning module. First, let's review the problem statement and user requirements. -->
+
+Let' Uthink of a more creative names that are more related to our domain for the certification tiers.
