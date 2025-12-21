@@ -159,6 +159,7 @@ describe('progress-merge', () => {
           contentVersion: 'v1',
         },
       },
+      streak: { currentStreak: 1, longestStreak: 1, lastActivityDate: '2025-01-01' },
     }
 
     const remote: LearningGuestProgress = {
@@ -182,6 +183,7 @@ describe('progress-merge', () => {
           contentVersion: 'v1',
         },
       },
+      streak: { currentStreak: 3, longestStreak: 5, lastActivityDate: '2025-01-03' },
     }
 
     const merged = mergeLearningGuestProgress(local, remote)
@@ -207,6 +209,7 @@ describe('progress-merge', () => {
           contentVersion: 'v1',
         },
       },
+      streak: { currentStreak: 0, longestStreak: 0, lastActivityDate: null },
     }
 
     const remote: LearningGuestProgress = {
@@ -223,6 +226,7 @@ describe('progress-merge', () => {
           contentVersion: 'v2',
         },
       },
+      streak: { currentStreak: 2, longestStreak: 2, lastActivityDate: '2025-01-02' },
     }
 
     const once = mergeLearningGuestProgress(local, remote)

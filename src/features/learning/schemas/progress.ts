@@ -34,11 +34,18 @@ export const LearningOnboardingStateSchema = z.object({
   completedAt: z.string().datetime().nullable(),
 })
 
+export const LearningStreakStateSchema = z.object({
+  currentStreak: z.number().int().min(0),
+  longestStreak: z.number().int().min(0),
+  lastActivityDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable(),
+})
+
 const LearningGuestProgressSchema = z.object({
   version: z.literal(LEARNING_PROGRESS_SCHEMA_VERSION),
   onboarding: LearningOnboardingStateSchema,
   activePathId: z.string().nullable(),
   content: z.record(z.string(), LearningContentProgressSchema),
+  streak: LearningStreakStateSchema,
   lastUpdated: z.string().datetime(),
 })
 
@@ -48,6 +55,7 @@ export function getEmptyLearningGuestProgress(): LearningGuestProgress {
     onboarding: { role: null, depth: null, completedAt: null },
     activePathId: null,
     content: {},
+    streak: { currentStreak: 0, longestStreak: 0, lastActivityDate: null },
     lastUpdated: new Date().toISOString(),
   }
 }
@@ -61,6 +69,12 @@ export function parseLearningGuestProgress(raw: unknown): LearningGuestProgress 
 function normalizeLearningGuestProgress(raw: unknown): unknown {
   if (!raw || typeof raw !== 'object') return raw
   const draft = { ...(raw as Record<string, unknown>) }
+
+  // Add default streak if missing (migration from old progress)
+  if (!draft.streak || typeof draft.streak !== 'object') {
+    draft.streak = { currentStreak: 0, longestStreak: 0, lastActivityDate: null }
+  }
+
   const content = (draft as { content?: Record<string, unknown> }).content
 
   if (!content || typeof content !== 'object') return draft

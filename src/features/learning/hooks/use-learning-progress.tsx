@@ -4,6 +4,7 @@ import { useAuth } from '@/lib/auth'
 import { getEmptyLearningGuestProgress, parseLearningGuestProgress } from '../schemas/progress'
 import { mergeLearningGuestProgress } from '../utils/progress-merge'
 import { getQuizStatus } from '../utils/interactions'
+import { calculateStreakUpdate, getTodayDateString } from '../utils/streak'
 import type {
   LearningAuthState,
   LearningContentProgress,
@@ -284,12 +285,23 @@ export function LearningProgressProvider({ children }: { readonly children: Reac
       const existingContent = current.content[input.contentId]
       const nextContent = upsertContentProgress({ existing: existingContent, input, now: timestamp })
 
+      // Update streak when content is completed or passed
+      const isNewCompletion =
+        (input.status === 'completed' || input.status === 'passed') &&
+        existingContent?.status !== 'completed' &&
+        existingContent?.status !== 'passed'
+
+      const nextStreak = isNewCompletion
+        ? calculateStreakUpdate(current.streak, getTodayDateString())
+        : current.streak
+
       const nextState: LearningGuestProgress = {
         ...current,
         content: {
           ...current.content,
           [input.contentId]: nextContent,
         },
+        streak: nextStreak,
         lastUpdated: timestamp,
       }
 

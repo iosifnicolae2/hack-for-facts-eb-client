@@ -22,6 +22,18 @@ msgstr "{0} adnotări"
 msgid "{0} series configured"
 msgstr "{0} serii configurate"
 
+#: src/routes/$lang/learning/index.tsx:51
+msgid "{hours}h {mins}m remaining"
+msgstr ""
+
+#: src/routes/$lang/learning/index.tsx:50
+msgid "{hours}h remaining"
+msgstr ""
+
+#: src/routes/$lang/learning/index.tsx:47
+msgid "{minutes}m remaining"
+msgstr ""
+
 #: src/components/classification-explorer/ClassificationSearch.tsx:46
 msgid "{resultsCount} results found"
 msgstr "{resultsCount} rezultate găsite"
@@ -387,14 +399,6 @@ msgstr "<0>Analiza Utilizării (opțională):</0> Dacă sunteți de acord, colec
 #: src/routes/privacy.lazy.tsx:79
 msgid "<0>What We Send:</0> Budget execution updates (monthly, quarterly, or annual reports) for entities you follow, and alerts about significant budget changes if you've enabled them."
 msgstr "<0>Ce Trimitem:</0> Actualizări privind execuția bugetară (rapoarte lunare, trimestriale sau anuale) pentru entitățile pe care le urmăriți și alerte despre modificări bugetare semnificative, dacă le-ați activat."
-
-#: src/routes/$lang/learning/index.tsx:279
-msgid "1 Day"
-msgstr ""
-
-#: src/routes/$lang/learning/index.tsx:269
-msgid "2h remaining"
-msgstr ""
 
 #. js-lingui-explicit-id
 #: src/lib/errors-utils.ts:9
@@ -952,8 +956,8 @@ msgstr "Calcul"
 #: src/components/charts/components/views/SeriesConfigView.tsx:377
 #: src/features/notifications/components/alerts/AlertCard.tsx:122
 #: src/features/notifications/components/NotificationCard.tsx:124
-#: src/routes/$lang/learning/index.tsx:307
-#: src/routes/$lang/learning/index.tsx:329
+#: src/routes/$lang/learning/index.tsx:280
+#: src/routes/$lang/learning/index.tsx:302
 #: src/routes/alerts/$alertId/index.lazy.tsx:317
 #: src/routes/unsubscribe.$token.tsx:113
 msgid "Cancel"
@@ -1174,7 +1178,7 @@ msgstr ""
 msgid "Completed!"
 msgstr ""
 
-#: src/routes/$lang/learning/index.tsx:117
+#: src/routes/$lang/learning/index.tsx:218
 #: src/routes/certificates.$id.tsx:64
 msgid "Completion"
 msgstr ""
@@ -1225,7 +1229,7 @@ msgstr "Confirmă înlocuirea"
 msgid "Confirm unsubscribe"
 msgstr "Confirmare dezabonare"
 
-#: src/routes/$lang/learning/index.tsx:288
+#: src/routes/$lang/learning/index.tsx:261
 msgid "Congratulations!"
 msgstr ""
 
@@ -1262,9 +1266,9 @@ msgid "Contact us at contact@transparenta.eu See also our <0>Privacy Policy</0> 
 msgstr "Contactați-ne la adresa contact@transparenta.eu Consultați și <0>Politica de confidențialitate</0> și <1>Politica privind cookie-urile</1>."
 
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:198
-#: src/routes/$lang/learning/index.tsx:226
+#: src/routes/$lang/learning/index.tsx:179
 msgid "Continue"
-msgstr ""
+msgstr "Continuă"
 
 #: src/routes/$lang/learning/$pathId/index.tsx:196
 msgid "Continue Learning"
@@ -1465,15 +1469,6 @@ msgstr "Monedă"
 msgid "Currency is ignored for % of GDP."
 msgstr "Moneda este ignorată pentru % din PIB."
 
-#: src/routes/$lang/learning/index.tsx:165
-msgid "Current Path"
-msgstr ""
-
-#: src/routes/en/learning/index.tsx:73
-#: src/routes/ro/learning/index.tsx:73
-#~ msgid "Curriculum"
-#~ msgstr "Curriculum"
-
 #: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:62
 msgid "Custom Data"
 msgstr "Date personalizate"
@@ -1486,7 +1481,7 @@ msgstr "Serie personalizată"
 msgid "Custom Series Value"
 msgstr "Valoare serie personalizată"
 
-#: src/routes/$lang/learning/index.tsx:278
+#: src/routes/$lang/learning/index.tsx:251
 msgid "Daily Streak"
 msgstr ""
 
@@ -1572,6 +1567,14 @@ msgstr "Vizualizare date"
 #: src/components/filters/period-filter/PeriodFilter.tsx:253
 msgid "Dates"
 msgstr "Date"
+
+#: src/features/learning/utils/streak.ts:124
+msgid "day"
+msgstr "zi"
+
+#: src/features/learning/utils/streak.ts:124
+msgid "days"
+msgstr "zile"
 
 #: src/components/entities/EntityFinancialTrends.tsx:98
 msgid "December"
@@ -1688,6 +1691,10 @@ msgstr "Mod de afișare"
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:132
 msgid "Display Options"
 msgstr "Opțiuni de afișare"
+
+#: src/routes/$lang/learning/index.tsx:46
+msgid "Done"
+msgstr ""
 
 #: src/components/entities/EntityReportCard.tsx:64
 msgid "Download"
@@ -2011,7 +2018,7 @@ msgstr "Cookie-uri și Stocare Esențiale (întotdeauna active)"
 msgid "Essential storage is required for the app to work."
 msgstr "Stocarea esențială este necesară pentru funcționarea aplicației."
 
-#: src/routes/$lang/learning/index.tsx:268
+#: src/routes/$lang/learning/index.tsx:241
 msgid "Estimate"
 msgstr ""
 
@@ -2297,10 +2304,6 @@ msgstr "Găsește entitate de monitorizat"
 #: src/components/footer/ChatFab.tsx:123
 msgid "Find resources, report issues, or get in touch."
 msgstr "Găsește resurse, raportează probleme sau ia legătura cu noi."
-
-#: src/components/learning/ModulePage.tsx:48
-#~ msgid "Finish Course"
-#~ msgstr "Finalizează cursul"
 
 #: src/components/maps/utils.ts:30
 msgid "Fn"
@@ -2833,7 +2836,7 @@ msgstr ""
 msgid "lessons"
 msgstr ""
 
-#: src/routes/$lang/learning/index.tsx:124
+#: src/routes/$lang/learning/index.tsx:228
 msgid "Lessons"
 msgstr ""
 
@@ -3059,7 +3062,7 @@ msgstr ""
 msgid "Minimum"
 msgstr "Minim"
 
-#: src/features/learning/hooks/use-learning-progress.tsx:278
+#: src/features/learning/hooks/use-learning-progress.tsx:279
 msgid "Missing content id"
 msgstr ""
 
@@ -3575,7 +3578,7 @@ msgstr "Lipiți date dintr-o foaie de calcul. Fiecare linie trebuie să conțin�
 msgid "Path"
 msgstr ""
 
-#: src/routes/$lang/learning/index.tsx:232
+#: src/routes/$lang/learning/index.tsx:185
 msgid "Path Completed"
 msgstr ""
 
@@ -3583,7 +3586,7 @@ msgstr ""
 msgid "Path not found"
 msgstr ""
 
-#: src/routes/$lang/learning/index.tsx:249
+#: src/routes/$lang/learning/index.tsx:202
 msgid "Path Progress"
 msgstr ""
 
@@ -3610,10 +3613,6 @@ msgstr "Per capita"
 #: src/routes/entity-analytics.lazy.tsx:237
 msgid "Per Capita"
 msgstr "Pe cap de locuitor"
-
-#: src/components/filters/normalization-filter/NormalizationFilter.tsx:17
-#~ msgid "Per Capita (EUR)"
-#~ msgstr "Pe cap de locuitor (EUR)"
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:82
 #: src/components/charts/components/series-config/SeriesFilter.tsx:678
@@ -3775,6 +3774,10 @@ msgstr ""
 msgid "Ready to create"
 msgstr "Gata de creare"
 
+#: src/routes/$lang/learning/index.tsx:117
+msgid "Ready to learn?"
+msgstr ""
+
 #: src/features/learning/components/player/MarkComplete.tsx:80
 msgid "Ready to move on?"
 msgstr ""
@@ -3874,15 +3877,15 @@ msgstr "Necesar pentru funcționalități de bază, precum securitatea și prefe
 msgid "Reset amount filter"
 msgstr "Resetează filtrul de sumă"
 
-#: src/routes/$lang/learning/index.tsx:312
+#: src/routes/$lang/learning/index.tsx:285
 msgid "Restart"
 msgstr ""
 
-#: src/routes/$lang/learning/index.tsx:144
+#: src/routes/$lang/learning/index.tsx:138
 msgid "Restart Onboarding"
 msgstr ""
 
-#: src/routes/$lang/learning/index.tsx:301
+#: src/routes/$lang/learning/index.tsx:274
 msgid "Restart Onboarding?"
 msgstr ""
 
@@ -3904,7 +3907,7 @@ msgid "Review and manage alerts created from your custom data series."
 msgstr "Examinați și gestionați alertele create din seriile de date personalizate."
 
 #: src/routes/$lang/learning/$pathId/index.tsx:191
-#: src/routes/$lang/learning/index.tsx:291
+#: src/routes/$lang/learning/index.tsx:264
 msgid "Review Path"
 msgstr ""
 
@@ -4352,8 +4355,12 @@ msgstr "Clauze Contractuale Standard (CCS) aprobate de Comisia Europeană"
 msgid "Start Learning"
 msgstr "Începe studiul"
 
-#: src/routes/$lang/learning/index.tsx:226
+#: src/routes/$lang/learning/index.tsx:179
 msgid "Start Path"
+msgstr ""
+
+#: src/routes/$lang/learning/index.tsx:122
+msgid "Start your first lesson and track your progress."
 msgstr ""
 
 #: src/components/alerts/components/AlertEditorView.tsx:187
@@ -4371,10 +4378,6 @@ msgstr "Serie statică"
 #: src/components/alerts/components/AlertEditorView.tsx:285
 msgid "Status"
 msgstr "Stare"
-
-#: src/routes/$lang/learning/index.tsx:104
-msgid "Status: Active"
-msgstr ""
 
 #: src/components/alerts/components/UnsavedChangesDialog.tsx:44
 msgid "Stay here"
@@ -4423,10 +4426,6 @@ msgstr "Sume în așteptarea repartizării"
 #: src/routes/privacy.lazy.tsx:152
 msgid "Supervisory authority"
 msgstr "Autoritatea de supraveghere"
-
-#: src/routes/$lang/learning/index.tsx:171
-msgid "Switch Path"
-msgstr ""
 
 #: src/routes/alerts/$alertId/index.lazy.tsx:126
 msgid "Syncing…"
@@ -4553,11 +4552,11 @@ msgstr "Această valoare va fi utilizată pentru fiecare an din intervalul grafi
 msgid "This verification is a proof of concept using local storage."
 msgstr ""
 
-#: src/routes/$lang/learning/index.tsx:325
+#: src/routes/$lang/learning/index.tsx:298
 msgid "This will permanently delete all your learning progress, including completed lessons, quiz scores, and onboarding preferences. This action cannot be undone."
 msgstr ""
 
-#: src/routes/$lang/learning/index.tsx:303
+#: src/routes/$lang/learning/index.tsx:276
 msgid "This will reset your onboarding preferences and show the welcome flow again. Your lesson progress will be preserved."
 msgstr ""
 
@@ -4665,10 +4664,6 @@ msgstr "total"
 #: src/components/normalization/normalization-mode-select.tsx:30
 msgid "Total"
 msgstr "Total"
-
-#: src/components/filters/normalization-filter/NormalizationFilter.tsx:16
-#~ msgid "Total (EUR)"
-#~ msgstr "Total (EUR)"
 
 #: src/components/entity-analytics/EntityAnalyticsKPIs.tsx:29
 #: src/components/normalization/normalization-controls.tsx:31
@@ -4942,7 +4937,7 @@ msgid "View Chart"
 msgstr "Vezi graficul"
 
 #: src/components/budget-explorer/BudgetTreemap.tsx:611
-#: src/routes/$lang/learning/index.tsx:238
+#: src/routes/$lang/learning/index.tsx:191
 msgid "View Details"
 msgstr "Vezi detalii"
 
@@ -4999,7 +4994,7 @@ msgstr "Folosim cookie-uri și tehnologii similare pentru a vă îmbunătăți e
 msgid "We value your privacy"
 msgstr "Confidențialitatea dumneavoastră este importantă pentru noi"
 
-#: src/routes/$lang/learning/index.tsx:108
+#: src/routes/$lang/learning/index.tsx:117
 msgid "Welcome back."
 msgstr ""
 
@@ -5015,16 +5010,12 @@ msgstr ""
 msgid "Who we are"
 msgstr "Cine suntem"
 
-#: src/routes/$lang/learning/index.tsx:276
-#~ msgid "Wipe"
-#~ msgstr ""
-
-#: src/routes/$lang/learning/index.tsx:152
-#: src/routes/$lang/learning/index.tsx:334
+#: src/routes/$lang/learning/index.tsx:146
+#: src/routes/$lang/learning/index.tsx:307
 msgid "Wipe All Data"
 msgstr ""
 
-#: src/routes/$lang/learning/index.tsx:323
+#: src/routes/$lang/learning/index.tsx:296
 msgid "Wipe All Data?"
 msgstr ""
 
@@ -5111,11 +5102,11 @@ msgstr "Trebuie să fiți autentificat pentru a vă abona la notificări"
 msgid "You will no longer receive notifications via email."
 msgstr "Nu veți mai primi notificări prin e-mail."
 
-#: src/routes/$lang/learning/index.tsx:111
+#: src/routes/$lang/learning/index.tsx:121
 msgid "You're doing great. Keep up the momentum."
 msgstr ""
 
-#: src/routes/$lang/learning/index.tsx:289
+#: src/routes/$lang/learning/index.tsx:262
 msgid "You've completed this learning path."
 msgstr ""
 

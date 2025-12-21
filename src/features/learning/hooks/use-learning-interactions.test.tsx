@@ -37,6 +37,7 @@ function buildProgress(overrides: Partial<LearningGuestProgress> = {}): Learning
     onboarding: { role: null, depth: null, completedAt: null },
     activePathId: null,
     content: {},
+    streak: { currentStreak: 0, longestStreak: 0, lastActivityDate: null },
     lastUpdated: now,
     ...overrides,
   }

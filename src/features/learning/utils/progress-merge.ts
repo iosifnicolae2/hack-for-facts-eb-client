@@ -1,4 +1,4 @@
-import type { LearningContentProgress, LearningContentStatus, LearningGuestProgress, LearningInteractionState } from '../types'
+import type { LearningContentProgress, LearningContentStatus, LearningGuestProgress, LearningInteractionState, LearningStreakState } from '../types'
 
 const STATUS_RANK: Record<LearningContentStatus, number> = {
   not_started: 0,
@@ -52,6 +52,35 @@ export function mergeContentProgress(a: LearningContentProgress, b: LearningCont
   }
 }
 
+function mergeStreakState(local: LearningStreakState, remote: LearningStreakState): LearningStreakState {
+  // Pick the more recent activity date
+  const localTime = local.lastActivityDate ? isoToTime(local.lastActivityDate + 'T00:00:00') : 0
+  const remoteTime = remote.lastActivityDate ? isoToTime(remote.lastActivityDate + 'T00:00:00') : 0
+
+  if (localTime > remoteTime) {
+    return {
+      currentStreak: local.currentStreak,
+      longestStreak: Math.max(local.longestStreak, remote.longestStreak),
+      lastActivityDate: local.lastActivityDate,
+    }
+  }
+
+  if (remoteTime > localTime) {
+    return {
+      currentStreak: remote.currentStreak,
+      longestStreak: Math.max(local.longestStreak, remote.longestStreak),
+      lastActivityDate: remote.lastActivityDate,
+    }
+  }
+
+  // Same date or both null - pick higher current streak, keep max longest
+  return {
+    currentStreak: Math.max(local.currentStreak, remote.currentStreak),
+    longestStreak: Math.max(local.longestStreak, remote.longestStreak),
+    lastActivityDate: local.lastActivityDate,
+  }
+}
+
 export function mergeLearningGuestProgress(local: LearningGuestProgress, remote: LearningGuestProgress): LearningGuestProgress {
   const contentIds = new Set<string>([...Object.keys(local.content), ...Object.keys(remote.content)])
 
@@ -78,6 +107,7 @@ export function mergeLearningGuestProgress(local: LearningGuestProgress, remote:
     onboarding: remote.onboarding.completedAt ? remote.onboarding : local.onboarding,
     activePathId,
     content: mergedContent,
+    streak: mergeStreakState(local.streak, remote.streak),
     lastUpdated: maxIso(local.lastUpdated, remote.lastUpdated),
   }
 }

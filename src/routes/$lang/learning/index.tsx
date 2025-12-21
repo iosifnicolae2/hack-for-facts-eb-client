@@ -34,12 +34,22 @@ import {
   getLearningPaths,
   getTranslatedText,
 } from '@/features/learning/utils/paths'
+import { getDisplayStreak, formatStreak } from '@/features/learning/utils/streak'
 import { useLearningProgress } from '@/features/learning/hooks/use-learning-progress'
 import { LearningHubLoading } from '@/features/learning/components/loading/LearningHubLoading'
 
 export const Route = createFileRoute('/$lang/learning/')({
   component: LearningHubPage,
 })
+
+function formatRemainingTime(minutes: number): string {
+  if (minutes <= 0) return t`Done`
+  if (minutes < 60) return t`${minutes}m remaining`
+  const hours = Math.floor(minutes / 60)
+  const mins = minutes % 60
+  if (mins === 0) return t`${hours}h remaining`
+  return t`${hours}h ${mins}m remaining`
+}
 
 function LearningHubPage() {
   const { lang } = Route.useParams()
@@ -62,6 +72,14 @@ function LearningHubPage() {
     }).length
     const percentage = allLessons.length > 0 ? Math.round((completedCount / allLessons.length) * 100) : 0
 
+    // Calculate remaining time from incomplete lessons
+    const remainingMinutes = allLessons
+      .filter((l) => {
+        const status = progress.content[l.id]?.status
+        return status !== 'completed' && status !== 'passed'
+      })
+      .reduce((sum, l) => sum + (l.durationMinutes ?? 0), 0)
+
     // Find next lesson
     const nextLesson = allLessons.find((l) => {
       const status = progress.content[l.id]?.status
@@ -74,6 +92,7 @@ function LearningHubPage() {
       completedCount,
       totalCount: allLessons.length,
       percentage,
+      remainingMinutes,
       nextLesson,
       moduleId: module?.id,
     }
@@ -220,7 +239,7 @@ function LearningHubPage() {
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{t`Estimate`}</span>
-                    <span className="text-xs font-bold text-foreground tracking-tight">{t`2h remaining`}</span>
+                    <span className="text-xs font-bold text-foreground tracking-tight">{formatRemainingTime(stats?.remainingMinutes ?? 0)}</span>
                   </div>
                 </div>
 
@@ -230,7 +249,7 @@ function LearningHubPage() {
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{t`Daily Streak`}</span>
-                    <span className="text-xs font-bold text-foreground tracking-tight">{t`1 Day`}</span>
+                    <span className="text-xs font-bold text-foreground tracking-tight">{formatStreak(getDisplayStreak(progress.streak))}</span>
                   </div>
                 </div>
               </div>
