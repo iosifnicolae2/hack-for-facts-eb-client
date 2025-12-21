@@ -35,6 +35,7 @@ function buildProgress(overrides: Partial<LearningGuestProgress> = {}): Learning
   return {
     version: 1,
     onboarding: { role: null, depth: null, completedAt: null },
+    activePathId: null,
     content: {},
     lastUpdated: now,
     ...overrides,

@@ -243,9 +243,22 @@
   padding: 1rem 1rem 0 0 !important;
 }
 
-.smooth-scroll {
-  scroll-behavior: smooth;
-}
+  .smooth-scroll {
+    scroll-behavior: smooth;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
 
 /* Add details content padding */
 details> :not(summary) {

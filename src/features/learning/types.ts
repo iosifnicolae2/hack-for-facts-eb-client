@@ -86,6 +86,7 @@ export type LearningOnboardingState = {
 export type LearningGuestProgress = {
   readonly version: typeof LEARNING_PROGRESS_SCHEMA_VERSION
   readonly onboarding: LearningOnboardingState
+  readonly activePathId: string | null
   readonly content: Readonly<Record<string, LearningContentProgress>>
   readonly lastUpdated: string
 }

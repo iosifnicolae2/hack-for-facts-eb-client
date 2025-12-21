@@ -1,0 +1,624 @@
+# Module 3: Budget Classification System
+
+## Module Overview
+
+| Aspect | Details |
+|--------|---------|
+| **Duration** | 60-75 minutes |
+| **Difficulty** | Beginner |
+| **Prerequisites** | [Module 2: Legal Framework Mastery](./02-legal-framework.md) |
+| **Next Module** | [Module 4: Strategic Planning & Budget Preparation](./04-budget-preparation.md) |
+
+## Learning Objectives
+
+By the end of this module, you will be able to:
+
+- [ ] Apply the three-dimensional classification system correctly
+- [ ] Decode any budget line to understand what it funds
+- [ ] Build proper budget codes for new expenditures
+- [ ] Distinguish between functional and economic classifications
+- [ ] Use Transparenta.eu to explore classification in practice
+
+---
+
+## Introduction
+
+### Every Lei Has a Code
+
+Budget classification is the language of public finance. Every line in your budget has three dimensions that together answer: WHO is spending (organizational), FOR WHAT purpose (functional), and WHAT TYPE of spending (economic).
+
+> **Key Insight:** Correct classification isn't just bureaucracy—it determines legality. Spending money under the wrong code is a compliance violation that can trigger audit findings and personal liability.
+
+---
+
+## Interactive Element 1: Code Decoder Tool
+
+Enter any budget code to understand its meaning.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                       BUDGET CODE DECODER                               │
+│                                                                         │
+│   Enter a budget line code to decode:                                  │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  Budget Code: [ 65.02.04.01.20.01.01_____________ ]             │  │
+│   │                                                                 │  │
+│   │  [Decode →]                                                     │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   DECODED RESULT:                                                      │
+│   ───────────────                                                      │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  FUNCTIONAL CLASSIFICATION                                      │  │
+│   │  ─────────────────────────                                      │  │
+│   │                                                                 │  │
+│   │  65         = Învățământ (Education)                            │  │
+│   │  65.02      = Local budget (.02 suffix)                         │  │
+│   │  65.02.04   = Învățământ secundar (Secondary education)         │  │
+│   │  65.02.04.01 = Învățământ liceal (High school)                  │  │
+│   │                                                                 │  │
+│   │  ═══════════════════════════════════════════════════════════   │  │
+│   │                                                                 │  │
+│   │  ECONOMIC CLASSIFICATION                                        │  │
+│   │  ───────────────────────                                        │  │
+│   │                                                                 │  │
+│   │  TITLU:   20 = Bunuri și servicii (Goods and services)          │  │
+│   │  ARTICOL: 20.01 = Bunuri și servicii                            │  │
+│   │  ALINEAT: 20.01.01 = Furnituri de birou (Office supplies)       │  │
+│   │                                                                 │  │
+│   │  ═══════════════════════════════════════════════════════════   │  │
+│   │                                                                 │  │
+│   │  PLAIN LANGUAGE:                                                │  │
+│   │  "Office supplies for a high school, funded from local budget" │  │
+│   │                                                                 │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   [Copy Breakdown]  [View Similar Codes]  [Build New Code →]           │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Suggested Implementation
+
+```typescript
+interface BudgetCodeDecoder {
+  functionalCode: {
+    category: string       // e.g., "65"
+    budgetType: string     // e.g., "02" (local)
+    subcategory: string    // e.g., "04"
+    detail: string         // e.g., "01"
+    labels: {
+      ro: string
+      en: string
+    }
+  }
+  economicCode: {
+    titlu: string          // e.g., "20"
+    articol: string        // e.g., "01"
+    alineat: string        // e.g., "01"
+    labels: {
+      ro: string
+      en: string
+    }
+  }
+  plainLanguage: string
+}
+
+interface CodeDecoder {
+  decode: (code: string) => BudgetCodeDecoder
+  validate: (code: string) => { valid: boolean; errors: string[] }
+}
+```
+
+---
+
+## Interactive Element 2: Classification Builder
+
+Build a proper budget code for a new expenditure step by step.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                     CLASSIFICATION BUILDER                              │
+│                                                                         │
+│   Step 1: What is the purpose of this expenditure?                     │
+│   ─────────────────────────────────────────────────                    │
+│                                                                         │
+│   ○ 51-54  Public authorities and services                             │
+│   ○ 61     Public order and safety                                     │
+│   ● 65     Education                                                   │
+│   ○ 66     Healthcare                                                  │
+│   ○ 67     Culture, recreation, religion                               │
+│   ○ 68     Social assistance                                           │
+│   ○ 70-74  Housing, environment                                        │
+│   ○ 80-84  Economic affairs, transport                                 │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   Step 2: Budget type?                                                 │
+│   ────────────────────                                                 │
+│                                                                         │
+│   ○ .01 = State budget (buget de stat)                                 │
+│   ● .02 = Local budget (buget local)                                   │
+│                                                                         │
+│   Selected so far: 65.02                                               │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   Step 3: Education subcategory?                                       │
+│   ──────────────────────────────                                       │
+│                                                                         │
+│   ○ 65.02.03 = Învățământ preșcolar și primar                          │
+│   ● 65.02.04 = Învățământ secundar                                     │
+│   ○ 65.02.05 = Învățământ postliceal                                   │
+│   ○ 65.02.07 = Învățământ superior                                     │
+│                                                                         │
+│   Selected so far: 65.02.04                                            │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   Step 4: What type of spending?                                       │
+│   ──────────────────────────────                                       │
+│                                                                         │
+│   TITLU (Major category):                                              │
+│   ○ 10 = Cheltuieli de personal (Personnel)                            │
+│   ● 20 = Bunuri și servicii (Goods and services)                       │
+│   ○ 71 = Active nefinanciare (Capital investments)                     │
+│   ○ 81 = Rambursări de credite (Debt repayment)                        │
+│                                                                         │
+│   ARTICOL (Subcategory):                                               │
+│   ● 20.01 = Bunuri și servicii                                         │
+│   ○ 20.02 = Reparații curente                                          │
+│   ○ 20.30 = Alte cheltuieli                                            │
+│                                                                         │
+│   ALINEAT (Line item):                                                 │
+│   ○ 20.01.01 = Furnituri de birou                                      │
+│   ○ 20.01.02 = Materiale curățenie                                     │
+│   ● 20.01.03 = Încălzit, iluminat                                      │
+│   ○ 20.01.04 = Apă, canal, salubritate                                 │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   FINAL CODE: 65.02.04 / 20.01.03                                      │
+│                                                                         │
+│   "Heating and lighting for secondary education, local budget"         │
+│                                                                         │
+│   [Reset]  [Copy Code]  [Add to Budget Draft]                          │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Suggested Implementation
+
+```typescript
+interface ClassificationStep {
+  stepNumber: number
+  question: string
+  options: {
+    code: string
+    labelRo: string
+    labelEn: string
+    description?: string
+  }[]
+  selected?: string
+}
+
+interface ClassificationBuilder {
+  steps: ClassificationStep[]
+  currentStep: number
+  selectedCodes: {
+    functional: string
+    economic: string
+  }
+  advance: (selection: string) => void
+  reset: () => void
+  getResult: () => BudgetCodeDecoder
+}
+```
+
+---
+
+## Interactive Element 3: Three-Dimension Visualizer
+
+See how the three dimensions of classification work together.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│               THREE DIMENSIONS OF BUDGET CLASSIFICATION                 │
+│                                                                         │
+│                                                                         │
+│                        WHO spends?                                      │
+│                        ──────────                                       │
+│                    ORGANIZATIONAL                                       │
+│                                                                         │
+│                           ▲                                             │
+│                          /│\                                            │
+│                         / │ \                                           │
+│                        /  │  \                                          │
+│                       /   │   \                                         │
+│                      /    │    \                                        │
+│                     /     │     \                                       │
+│                    /      │      \                                      │
+│                   /       │       \                                     │
+│                  /        │        \                                    │
+│                 ◄─────────┼─────────►                                   │
+│   FOR WHAT      \         │         /      WHAT TYPE                   │
+│   purpose?       \        │        /       of spending?                │
+│   ─────────       \       │       /        ─────────────               │
+│   FUNCTIONAL       \      │      /         ECONOMIC                    │
+│                     \     │     /                                       │
+│                      \    │    /                                        │
+│                       \   │   /                                         │
+│                        \  │  /                                          │
+│                         \ │ /                                           │
+│                          \│/                                            │
+│                           ▼                                             │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   EXAMPLE: School renovation project                                   │
+│   ───────────────────────────────────                                  │
+│                                                                         │
+│   ┌────────────────┬────────────────┬────────────────┐                 │
+│   │ ORGANIZATIONAL │   FUNCTIONAL   │    ECONOMIC    │                 │
+│   ├────────────────┼────────────────┼────────────────┤                 │
+│   │ Liceul "Ion    │ 65.02.04.01    │ 71.01.01       │                 │
+│   │ Creangă"       │ Secondary      │ Construction   │                 │
+│   │ (CUI: xxxxxx)  │ education      │ (capital)      │                 │
+│   └────────────────┴────────────────┴────────────────┘                 │
+│                                                                         │
+│   Together these answer:                                               │
+│   "Ion Creangă High School spends on building construction            │
+│    for secondary education purposes"                                   │
+│                                                                         │
+│                                                                         │
+│   Click each dimension to explore its structure:                       │
+│                                                                         │
+│   [Organizational →]  [Functional →]  [Economic →]                     │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Suggested Implementation
+
+```typescript
+interface ThreeDimensionView {
+  organizational: {
+    entity: string
+    cui: string
+    hierarchy: string[] // e.g., ["Ministry", "ISJ", "School"]
+  }
+  functional: {
+    code: string
+    hierarchy: string[]
+    purpose: string
+  }
+  economic: {
+    code: string
+    hierarchy: string[]
+    spendingType: string
+  }
+  combinedDescription: string
+}
+```
+
+---
+
+## Core Concepts
+
+### Functional Classification Structure (COFOG-adapted)
+
+The functional classification answers: "FOR WHAT purpose is this money spent?"
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    FUNCTIONAL CLASSIFICATION                            │
+│                    (per OMFP 1954/2005)                                 │
+│                                                                         │
+│   CODE     │  CATEGORY                    │  COMMON SUBCATEGORIES      │
+│   ─────────┼──────────────────────────────┼────────────────────────────│
+│   51.02    │  Autorități publice          │  Administration, executive │
+│   54.02    │  Alte servicii publice       │  Debt, transfers           │
+│   55.02    │  Dobânzi                     │  Interest payments         │
+│   61.02    │  Ordine publică              │  Police, justice           │
+│   65.02    │  Învățământ                  │  All education levels      │
+│   66.02    │  Sănătate                    │  Hospitals, drugs          │
+│   67.02    │  Cultură, recreere           │  Libraries, sports         │
+│   68.02    │  Asistență socială           │  Pensions, assistance      │
+│   70.02    │  Locuințe, servicii          │  Housing, utilities        │
+│   74.02    │  Mediu                       │  Waste, pollution          │
+│   80.02    │  Acțiuni economice           │  Agriculture, industry     │
+│   84.02    │  Transporturi                │  Roads, urban transport    │
+│                                                                         │
+│   Note: .02 suffix = local budget; .01 suffix = state budget           │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Economic Classification Structure
+
+The economic classification answers: "WHAT TYPE of spending is this?"
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                     ECONOMIC CLASSIFICATION                             │
+│                                                                         │
+│   TITLU (Title) ─► ARTICOL (Article) ─► ALINEAT (Line item)            │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   TITLU 10 — CHELTUIELI DE PERSONAL                                    │
+│   ─────────────────────────────────                                    │
+│   ├── 10.01 Cheltuieli salariale în bani                               │
+│   │   ├── 10.01.01 Salarii de bază                                     │
+│   │   ├── 10.01.05 Sporuri condiții de muncă                           │
+│   │   ├── 10.01.06 Alte sporuri                                        │
+│   │   └── 10.01.30 Alte drepturi salariale                             │
+│   └── 10.03 Contribuții                                                │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   TITLU 20 — BUNURI ȘI SERVICII                                        │
+│   ─────────────────────────────                                        │
+│   ├── 20.01 Bunuri și servicii                                         │
+│   │   ├── 20.01.01 Furnituri de birou                                  │
+│   │   ├── 20.01.03 Încălzit, iluminat                                  │
+│   │   ├── 20.01.04 Apă, canal, salubritate                             │
+│   │   └── 20.01.30 Alte bunuri și servicii                             │
+│   ├── 20.02 Reparații curente                                          │
+│   └── 20.30.30 Alte cheltuieli ⚠️ (scrutinize carefully!)              │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   TITLU 71 — ACTIVE NEFINANCIARE (Capital)                             │
+│   ─────────────────────────────────────────                            │
+│   ├── 71.01 Construcții                                                │
+│   │   └── 71.01.01 Construcții                                         │
+│   ├── 71.02 Mașini, echipamente, transport                             │
+│   └── 71.03 Mobilier, aparatură                                        │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   TITLU 81 — RAMBURSĂRI DE CREDITE                                     │
+│   ────────────────────────────────                                     │
+│   ├── 81.01 Rambursări credite externe                                 │
+│   └── 81.02 Rambursări credite interne                                 │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Red Flag: Code 20.30.30
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│   ⚠️  WARNING: CODE 20.30.30 — "ALTE CHELTUIELI"                        │
+│                                                                         │
+│   This "other expenses" code is a known opacity indicator.             │
+│   Excessive use may trigger:                                           │
+│                                                                         │
+│   • Audit scrutiny from Curtea de Conturi                              │
+│   • Questions from journalists and civil society                       │
+│   • Classification correction requirements                             │
+│                                                                         │
+│   BEST PRACTICE:                                                       │
+│   Use specific codes whenever possible. Reserve 20.30.30 for           │
+│   genuinely unclassifiable expenses and document justification.        │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Platform Integration: Explore Classifications
+
+### Guided Activity: Navigate Real Classifications
+
+**Step 1: Open Classification Reference**
+
+> **Try it on Transparenta.eu:**
+> 1. Open [Functional Classifications](/classifications/functional/)
+> 2. Click on code 65 (Education)
+> 3. Explore subcategories: 65.02.03 (primary), 65.02.04 (secondary), etc.
+> 4. Note the structure: major category → subcategory → detail
+
+**Step 2: Explore Economic Codes**
+
+> 1. Open [Economic Classifications](/classifications/economic/)
+> 2. Find Titlu 20 (Goods and services)
+> 3. Explore down to alineat level (e.g., 20.01.03)
+> 4. Note which codes are most commonly used
+
+**Step 3: See Classification in Practice**
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                     CLASSIFICATION IN PRACTICE                         │
+│                                                                         │
+│   Search for your institution in Entity Analytics and review          │
+│   the breakdown by classification:                                     │
+│                                                                         │
+│   [Search Entity Analytics →]                                          │
+│                                                                         │
+│   Questions to consider:                                               │
+│   • What percentage is personnel (Titlu 10)?                           │
+│   • What percentage is capital investment (Titlu 71)?                  │
+│   • How does your functional classification compare to peers?          │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Practical Exercise: Classify These Items
+
+Practice applying the classification system to real scenarios:
+
+| Item | Your Classification | Correct Answer |
+|------|--------------------|--------------------|
+| Teacher salary at a high school | [ ] | 65.02.04.01 / 10.01.01 |
+| Electricity for a hospital | [ ] | 66.02 / 20.01.03 |
+| New police cars | [ ] | 61.02 / 71.02 |
+| Road construction | [ ] | 84.02 / 71.01.01 |
+| Library books | [ ] | 67.02 / 20.01.08 |
+| Office supplies for city hall | [ ] | 51.02 / 20.01.01 |
+
+---
+
+## Knowledge Check
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         KNOWLEDGE CHECK                                 │
+│                                                                         │
+│   Question 1 of 4                                                       │
+│   ───────────────                                                       │
+│                                                                         │
+│   What does the suffix ".02" in code 65.02 indicate?                   │
+│                                                                         │
+│   ○ A) Secondary education level                                       │
+│   ○ B) Local budget (as opposed to state budget)                       │
+│   ○ C) Second quarter of the year                                      │
+│   ○ D) Second-priority expenditure                                     │
+│                                                                         │
+│   [Submit Answer]                                                       │
+│                                                                         │
+│   ─────────────────────────────────────────────────────────────────    │
+│                                                                         │
+│   Question 2 of 4                                                       │
+│   ───────────────                                                       │
+│                                                                         │
+│   In economic classification, what does Titlu 71 cover?                │
+│                                                                         │
+│   ○ A) Personnel costs                                                 │
+│   ○ B) Goods and services                                              │
+│   ○ C) Capital investments (active nefinanciare)                       │
+│   ○ D) Debt repayment                                                  │
+│                                                                         │
+│   [Submit Answer]                                                       │
+│                                                                         │
+│   ─────────────────────────────────────────────────────────────────    │
+│                                                                         │
+│   Question 3 of 4                                                       │
+│   ───────────────                                                       │
+│                                                                         │
+│   Why is code 20.30.30 ("Alte cheltuieli") flagged as a red flag?     │
+│                                                                         │
+│   ○ A) It's illegal to use                                             │
+│   ○ B) It's the most expensive category                                │
+│   ○ C) Excessive use indicates poor classification practices           │
+│   ○ D) It requires special parliamentary approval                      │
+│                                                                         │
+│   [Submit Answer]                                                       │
+│                                                                         │
+│   ─────────────────────────────────────────────────────────────────    │
+│                                                                         │
+│   Question 4 of 4                                                       │
+│   ───────────────                                                       │
+│                                                                         │
+│   The three dimensions of classification answer which questions?       │
+│                                                                         │
+│   ○ A) When, Why, How much                                             │
+│   ○ B) Who, For what purpose, What type of spending                    │
+│   ○ C) Input, Output, Outcome                                          │
+│   ○ D) Plan, Execution, Variance                                       │
+│                                                                         │
+│   [Submit Answer]                                                       │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+**Answers:** 1-B, 2-C, 3-C, 4-B
+
+---
+
+## Key Takeaways
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                          KEY TAKEAWAYS                                  │
+│                                                                         │
+│   ✓ Every budget line has three dimensions: Organizational,           │
+│     Functional, and Economic                                           │
+│                                                                         │
+│   ✓ Functional codes (51-84) answer "for what purpose"                │
+│     .01 = state budget, .02 = local budget                             │
+│                                                                         │
+│   ✓ Economic codes answer "what type of spending":                     │
+│     Titlu 10 = Personnel, 20 = Goods/services, 71 = Capital            │
+│                                                                         │
+│   ✓ Code 20.30.30 ("other expenses") should be used sparingly—        │
+│     excessive use triggers audit scrutiny                              │
+│                                                                         │
+│   ✓ Correct classification is essential for legality and              │
+│     audit compliance—wrong classification = compliance violation       │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Call to Action
+
+### Next Steps
+
+- [ ] Practice with the Code Decoder on 5 budget lines from your institution
+- [ ] Build a classification for a new expenditure using the Classification Builder
+- [ ] Review your institution's use of code 20.30.30
+- [ ] Explore classifications on Transparenta.eu
+- [ ] Proceed to [Module 4: Strategic Planning & Budget Preparation](./04-budget-preparation.md)
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                                                                         │
+│   Ready to continue?                                                    │
+│                                                                         │
+│   [ Mark Module Complete ✓ ]    [ Next Module → ]                       │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Module Navigation
+
+| Previous | Current | Next |
+|----------|---------|------|
+| [Module 2: Legal Framework](./02-legal-framework.md) | Module 3: Classification | [Module 4: Budget Preparation](./04-budget-preparation.md) |
+
+---
+
+## Technical Notes
+
+### Components Needed
+
+- `CodeDecoder` — Parse and explain budget codes
+- `ClassificationBuilder` — Step-by-step code construction
+- `ThreeDimensionVisualizer` — Interactive 3D diagram
+- `ClassificationExplorer` — Browse classification hierarchies
+
+### Data Requirements
+
+- Complete functional classification tree (OMFP 1954/2005)
+- Complete economic classification tree
+- Entity-specific classification breakdown
+- Code validation rules
+
+### API Endpoints
+
+- `GET /api/classifications/functional`
+- `GET /api/classifications/functional/{code}`
+- `GET /api/classifications/economic`
+- `GET /api/classifications/economic/{code}`
+- `GET /api/entities/{cui}/classifications`
+
+### Accessibility
+
+- All classification trees keyboard-navigable
+- Screen reader labels for hierarchical structure
+- Color-blind friendly dimension indicators
+- Text search within classifications
+
+<MarkComplete label="Mark this module complete" />

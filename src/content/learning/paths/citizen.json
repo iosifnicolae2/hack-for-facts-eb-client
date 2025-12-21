@@ -15,37 +15,25 @@
       "id": "citizen-foundations",
       "slug": "foundations",
       "title": {
-        "en": "Foundations",
-        "ro": "Fundamente"
+        "en": "Foundations — Why Should I Care?",
+        "ro": "Foundations — Why Should I Care?"
       },
       "description": {
-        "en": "Understand what a public budget is and why it matters.",
-        "ro": "Înțelege ce este un buget public și de ce contează."
+        "en": "Learn about Foundations — Why Should I Care?.",
+        "ro": "Learn about Foundations — Why Should I Care?."
       },
       "lessons": [
         {
-          "id": "budget-basics",
-          "slug": "budget-basics",
+          "id": "citizen-foundations",
+          "slug": "foundations",
           "title": {
-            "en": "What is a budget?",
-            "ro": "Ce este un buget?"
+            "en": "Foundations — Why Should I Care?",
+            "ro": "Foundations — Why Should I Care?"
           },
-          "durationMinutes": 5,
-          "contentDir": "budget-basics",
-          "completionMode": "quiz",
-          "prerequisites": []
-        },
-        {
-          "id": "budget-structure",
-          "slug": "budget-structure",
-          "title": {
-            "en": "Budget Structure",
-            "ro": "Structura bugetului"
-          },
-          "durationMinutes": 10,
-          "contentDir": "budget-structure",
+          "durationMinutes": 13,
+          "contentDir": "citizen-foundations",
           "completionMode": "mark_complete",
-          "prerequisites": ["budget-basics"]
+          "prerequisites": []
         }
       ]
     },
@@ -53,25 +41,27 @@
       "id": "citizen-revenues",
       "slug": "revenues",
       "title": {
-        "en": "Revenues",
-        "ro": "Venituri"
+        "en": "Where Does the Money Come From? (Revenues)",
+        "ro": "Where Does the Money Come From? (Revenues)"
       },
       "description": {
-        "en": "Where does the money come from?",
-        "ro": "De unde vin banii?"
+        "en": "Learn about Where Does the Money Come From? (Revenues).",
+        "ro": "Learn about Where Does the Money Come From? (Revenues)."
       },
       "lessons": [
         {
-          "id": "revenue-collection",
-          "slug": "revenue-collection",
+          "id": "citizen-revenues",
+          "slug": "revenues",
           "title": {
-            "en": "Revenue Collection",
-            "ro": "Colectarea Veniturilor"
+            "en": "Where Does the Money Come From? (Revenues)",
+            "ro": "Where Does the Money Come From? (Revenues)"
           },
-          "durationMinutes": 8,
-          "contentDir": "revenue-collection",
+          "durationMinutes": 18,
+          "contentDir": "citizen-revenues",
           "completionMode": "mark_complete",
-          "prerequisites": ["budget-structure"]
+          "prerequisites": [
+            "citizen-foundations"
+          ]
         }
       ]
     },
@@ -79,25 +69,223 @@
       "id": "citizen-expenditures",
       "slug": "expenditures",
       "title": {
-        "en": "Expenditures",
-        "ro": "Cheltuieli"
+        "en": "Where Does the Money Go? (Expenditures)",
+        "ro": "Where Does the Money Go? (Expenditures)"
       },
       "description": {
-        "en": "Where does the money go?",
-        "ro": "Unde se duc banii?"
+        "en": "Learn about Where Does the Money Go? (Expenditures).",
+        "ro": "Learn about Where Does the Money Go? (Expenditures)."
       },
       "lessons": [
         {
-          "id": "spending",
-          "slug": "spending",
+          "id": "citizen-expenditures",
+          "slug": "expenditures",
           "title": {
-            "en": "Public Spending",
-            "ro": "Cheltuielile Publice"
+            "en": "Where Does the Money Go? (Expenditures)",
+            "ro": "Where Does the Money Go? (Expenditures)"
           },
-          "durationMinutes": 12,
-          "contentDir": "spending",
-          "completionMode": "quiz",
-          "prerequisites": ["revenue-collection"]
+          "durationMinutes": 18,
+          "contentDir": "citizen-expenditures",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "citizen-revenues"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "citizen-budget-cycle",
+      "slug": "budget-cycle",
+      "title": {
+        "en": "The Budget Cycle — A Year in the Life of Public Money",
+        "ro": "The Budget Cycle — A Year in the Life of Public Money"
+      },
+      "description": {
+        "en": "Learn about The Budget Cycle — A Year in the Life of Public Money.",
+        "ro": "Learn about The Budget Cycle — A Year in the Life of Public Money."
+      },
+      "lessons": [
+        {
+          "id": "citizen-budget-cycle",
+          "slug": "budget-cycle",
+          "title": {
+            "en": "The Budget Cycle — A Year in the Life of Public Money",
+            "ro": "The Budget Cycle — A Year in the Life of Public Money"
+          },
+          "durationMinutes": 13,
+          "contentDir": "citizen-budget-cycle",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "citizen-expenditures"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "citizen-classification",
+      "slug": "classification",
+      "title": {
+        "en": "Reading Budget Documents — The Classification System",
+        "ro": "Reading Budget Documents — The Classification System"
+      },
+      "description": {
+        "en": "Learn about Reading Budget Documents — The Classification System.",
+        "ro": "Learn about Reading Budget Documents — The Classification System."
+      },
+      "lessons": [
+        {
+          "id": "citizen-classification",
+          "slug": "classification",
+          "title": {
+            "en": "Reading Budget Documents — The Classification System",
+            "ro": "Reading Budget Documents — The Classification System"
+          },
+          "durationMinutes": 18,
+          "contentDir": "citizen-classification",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "citizen-budget-cycle"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "citizen-local-national",
+      "slug": "local-national",
+      "title": {
+        "en": "Local vs. National — Understanding the Levels",
+        "ro": "Local vs. National — Understanding the Levels"
+      },
+      "description": {
+        "en": "Learn about Local vs. National — Understanding the Levels.",
+        "ro": "Learn about Local vs. National — Understanding the Levels."
+      },
+      "lessons": [
+        {
+          "id": "citizen-local-national",
+          "slug": "local-national",
+          "title": {
+            "en": "Local vs. National — Understanding the Levels",
+            "ro": "Local vs. National — Understanding the Levels"
+          },
+          "durationMinutes": 13,
+          "contentDir": "citizen-local-national",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "citizen-classification"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "citizen-transparency",
+      "slug": "transparency",
+      "title": {
+        "en": "Following the Money — Transparency Tools",
+        "ro": "Following the Money — Transparency Tools"
+      },
+      "description": {
+        "en": "Learn about Following the Money — Transparency Tools.",
+        "ro": "Learn about Following the Money — Transparency Tools."
+      },
+      "lessons": [
+        {
+          "id": "citizen-transparency",
+          "slug": "transparency",
+          "title": {
+            "en": "Following the Money — Transparency Tools",
+            "ro": "Following the Money — Transparency Tools"
+          },
+          "durationMinutes": 18,
+          "contentDir": "citizen-transparency",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "citizen-local-national"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "citizen-citizen-rights",
+      "slug": "citizen-rights",
+      "title": {
+        "en": "Your Rights and Tools as a Citizen",
+        "ro": "Your Rights and Tools as a Citizen"
+      },
+      "description": {
+        "en": "Learn about Your Rights and Tools as a Citizen.",
+        "ro": "Learn about Your Rights and Tools as a Citizen."
+      },
+      "lessons": [
+        {
+          "id": "citizen-citizen-rights",
+          "slug": "citizen-rights",
+          "title": {
+            "en": "Your Rights and Tools as a Citizen",
+            "ro": "Your Rights and Tools as a Citizen"
+          },
+          "durationMinutes": 18,
+          "contentDir": "citizen-citizen-rights",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "citizen-transparency"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "citizen-red-flags",
+      "slug": "red-flags",
+      "title": {
+        "en": "Common Issues and Red Flags",
+        "ro": "Common Issues and Red Flags"
+      },
+      "description": {
+        "en": "Learn about Common Issues and Red Flags.",
+        "ro": "Learn about Common Issues and Red Flags."
+      },
+      "lessons": [
+        {
+          "id": "citizen-red-flags",
+          "slug": "red-flags",
+          "title": {
+            "en": "Common Issues and Red Flags",
+            "ro": "Common Issues and Red Flags"
+          },
+          "durationMinutes": 18,
+          "contentDir": "citizen-red-flags",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "citizen-citizen-rights"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "citizen-capstone",
+      "slug": "capstone",
+      "title": {
+        "en": "Capstone — Analyze Your Community's Budget",
+        "ro": "Capstone — Analyze Your Community's Budget"
+      },
+      "description": {
+        "en": "Learn about Capstone — Analyze Your Community's Budget.",
+        "ro": "Learn about Capstone — Analyze Your Community's Budget."
+      },
+      "lessons": [
+        {
+          "id": "citizen-capstone",
+          "slug": "capstone",
+          "title": {
+            "en": "Capstone — Analyze Your Community's Budget",
+            "ro": "Capstone — Analyze Your Community's Budget"
+          },
+          "durationMinutes": 38,
+          "contentDir": "citizen-capstone",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "citizen-red-flags"
+          ]
         }
       ]
     }

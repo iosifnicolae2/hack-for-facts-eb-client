@@ -3,22 +3,25 @@ import { t } from '@lingui/core/macro'
 import { useMemo } from 'react'
 import {
   ArrowRight,
-  BookOpen,
+  CheckCircle2,
+  ChevronDown,
   Clock,
-  GraduationCap,
-  Layers,
   Play,
   RotateCcw,
   Sparkles,
   Trophy,
 } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Progress } from '@/components/ui/progress'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import {
   getAllLessons,
-  getLearningPathById,
   getLearningPaths,
   getTranslatedText,
 } from '@/features/learning/utils/paths'
@@ -30,318 +33,230 @@ export const Route = createFileRoute('/$lang/learning/')({
   component: LearningHubPage,
 })
 
-type ContinueLearningData = {
-  readonly pathId: string
-  readonly pathTitle: string
-  readonly lessonId: string
-  readonly lessonTitle: string
-  readonly moduleId: string
-  readonly completedCount: number
-  readonly totalCount: number
-  readonly percentage: number
-}
-
 function LearningHubPage() {
   const { lang } = Route.useParams()
   const locale = lang as 'ro' | 'en'
   const paths = getLearningPaths()
-  const { progress, resetOnboarding } = useLearningProgress()
+  const { progress, resetOnboarding, setActivePathId } = useLearningProgress()
 
-  // Calculate continue learning data
-  const continueData = useMemo<ContinueLearningData | null>(() => {
-    for (const path of paths) {
-      const contentProgress = progress.content
-      const allLessons = getAllLessons(path)
-      const completedCount = allLessons.filter((l) => {
-        const status = contentProgress[l.id]?.status
-        return status === 'completed' || status === 'passed'
-      }).length
+  const activePath = useMemo(() => {
+    return paths.find((p) => p.id === progress.activePathId) ?? paths[0]
+  }, [paths, progress.activePathId])
 
-      if (completedCount > 0 && completedCount < allLessons.length) {
-        // Find next incomplete lesson
-        const nextLesson = allLessons.find((l) => {
-          const status = contentProgress[l.id]?.status
-          return status !== 'completed' && status !== 'passed'
-        })
-
-        if (nextLesson) {
-          const module = path.modules.find((m) => m.lessons.some((l) => l.id === nextLesson.id))
-          return {
-            pathId: path.id,
-            pathTitle: getTranslatedText(path.title, locale),
-            lessonId: nextLesson.id,
-            lessonTitle: getTranslatedText(nextLesson.title, locale),
-            moduleId: module?.id ?? path.modules[0]?.id ?? '',
-            completedCount,
-            totalCount: allLessons.length,
-            percentage: Math.round((completedCount / allLessons.length) * 100),
-          }
-        }
-      }
-    }
-    return null
-  }, [paths, progress.content, locale])
-
-  // Calculate overall stats
   const stats = useMemo(() => {
-    let totalLessons = 0
-    let completedLessons = 0
-    let totalMinutes = 0
+    if (!activePath) return null
+    const allLessons = getAllLessons(activePath)
+    const completedCount = allLessons.filter((l) => {
+      const status = progress.content[l.id]?.status
+      return status === 'completed' || status === 'passed'
+    }).length
+    const percentage = allLessons.length > 0 ? Math.round((completedCount / allLessons.length) * 100) : 0
+    
+    // Find next lesson
+    const nextLesson = allLessons.find((l) => {
+      const status = progress.content[l.id]?.status
+      return status !== 'completed' && status !== 'passed'
+    })
 
-    for (const path of paths) {
-      const contentProgress = progress.content
-      const allLessons = getAllLessons(path)
-      totalLessons += allLessons.length
-      for (const lesson of allLessons) {
-        totalMinutes += lesson.durationMinutes
-        const status = contentProgress[lesson.id]?.status
-        if (status === 'completed' || status === 'passed') {
-          completedLessons++
-        }
-      }
+    const module = nextLesson ? activePath.modules.find((m) => m.lessons.some((l) => l.id === nextLesson.id)) : null
+
+    return {
+      completedCount,
+      totalCount: allLessons.length,
+      percentage,
+      nextLesson,
+      moduleId: module?.id,
     }
-
-    return { totalLessons, completedLessons, totalMinutes, pathCount: paths.length }
-  }, [paths, progress.content])
+  }, [activePath, progress.content])
 
   if (!progress.onboarding.completedAt) {
     return <LearningOnboarding />
   }
 
-  const roleLabel =
-    progress.onboarding.role === 'citizen'
-      ? t`Citizen`
-      : progress.onboarding.role === 'journalist'
-        ? t`Journalist`
-        : progress.onboarding.role === 'researcher'
-          ? t`Researcher`
-          : progress.onboarding.role === 'student'
-            ? t`Student`
-            : progress.onboarding.role === 'public_servant'
-              ? t`Public Servant`
-              : ''
-
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-background border p-6 lg:p-8">
-        <div className="absolute top-0 right-0 -mt-8 -mr-8 h-32 w-32 rounded-full bg-primary/10 blur-3xl" />
-        <div className="absolute bottom-0 left-0 -mb-8 -ml-8 h-24 w-24 rounded-full bg-primary/10 blur-2xl" />
-
-        <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
-                <GraduationCap className="h-5 w-5 text-primary" />
-              </div>
-              <Badge variant="secondary" className="text-xs">
-                {roleLabel}
-              </Badge>
-            </div>
-            <div>
-              <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">
-                {t`Welcome back!`}
-              </h1>
-              <p className="text-muted-foreground mt-1">
-                {t`Continue your journey to understand public budgets.`}
-              </p>
-            </div>
+    <div className="max-w-4xl mx-auto space-y-16 animate-in fade-in duration-1000 py-10 px-6">
+      {/* Premium Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b pb-10">
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+            <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em]">
+              {t`Status: Active`}
+            </span>
           </div>
-
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => void resetOnboarding()}
-            className="self-start lg:self-center gap-2"
-          >
-            <RotateCcw className="h-3.5 w-3.5" />
-            {t`Reset preferences`}
-          </Button>
+          <h1 className="text-5xl font-black tracking-tight text-foreground leading-tight">
+            {t`Welcome back.`}
+          </h1>
+          <p className="text-muted-foreground font-medium text-lg opacity-60">
+            {t`You're doing great. Keep up the momentum.`}
+          </p>
         </div>
-
-        {/* Stats Row */}
-        <div className="relative mt-6 grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="rounded-xl bg-background/80 backdrop-blur-sm border p-4">
-            <div className="flex items-center gap-2 text-muted-foreground text-sm">
-              <Layers className="h-4 w-4" />
-              {t`Paths`}
+        
+        <div className="flex items-center gap-10">
+          <div className="flex flex-col items-end">
+            <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-1">{t`Completion`}</span>
+            <div className="flex items-baseline gap-1">
+              <span className="text-4xl font-black tabular-nums tracking-tighter">{stats?.percentage ?? 0}</span>
+              <span className="text-sm font-black text-muted-foreground">%</span>
             </div>
-            <div className="text-2xl font-bold mt-1">{stats.pathCount}</div>
           </div>
-          <div className="rounded-xl bg-background/80 backdrop-blur-sm border p-4">
-            <div className="flex items-center gap-2 text-muted-foreground text-sm">
-              <BookOpen className="h-4 w-4" />
-              {t`Lessons`}
+          <div className="flex flex-col items-end">
+            <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-1">{t`Lessons`}</span>
+            <div className="flex items-baseline gap-1">
+              <span className="text-4xl font-black tabular-nums tracking-tighter">{stats?.completedCount}</span>
+              <span className="text-sm font-black text-muted-foreground">/ {stats?.totalCount}</span>
             </div>
-            <div className="text-2xl font-bold mt-1">{stats.totalLessons}</div>
-          </div>
-          <div className="rounded-xl bg-background/80 backdrop-blur-sm border p-4">
-            <div className="flex items-center gap-2 text-muted-foreground text-sm">
-              <Trophy className="h-4 w-4" />
-              {t`Completed`}
-            </div>
-            <div className="text-2xl font-bold mt-1">{stats.completedLessons}</div>
-          </div>
-          <div className="rounded-xl bg-background/80 backdrop-blur-sm border p-4">
-            <div className="flex items-center gap-2 text-muted-foreground text-sm">
-              <Clock className="h-4 w-4" />
-              {t`Total time`}
-            </div>
-            <div className="text-2xl font-bold mt-1">{stats.totalMinutes} {t`min`}</div>
           </div>
         </div>
       </div>
 
-      {/* Continue Learning Card */}
-      {continueData ? (
-        <Card className="border-primary/30 bg-gradient-to-r from-primary/5 to-transparent overflow-hidden">
-          <CardContent className="p-0">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 p-6">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary/10">
-                <Play className="h-6 w-6 text-primary ml-0.5" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="text-sm text-muted-foreground">{t`Continue where you left off`}</div>
-                <div className="font-semibold text-lg truncate">{continueData.lessonTitle}</div>
-                <div className="text-sm text-muted-foreground mt-1">{continueData.pathTitle}</div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="hidden sm:block text-right">
-                  <div className="text-2xl font-bold text-primary">{continueData.percentage}%</div>
-                  <div className="text-xs text-muted-foreground">
-                    {continueData.completedCount}/{continueData.totalCount}
+      {/* Main Active Path Card */}
+      <div className="space-y-6">
+        <div className="flex items-center justify-between px-1">
+          <h2 className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em] flex items-center gap-2">
+            <div className="h-4 w-[2px] bg-primary rounded-full" />
+            {t`Current Path`}
+          </h2>
+          
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="h-9 px-4 rounded-full text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:bg-muted hover:text-foreground transition-all">
+                {t`Switch Path`}
+                <ChevronDown className="ml-2 h-3.5 w-3.5 opacity-50" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-72 rounded-[24px] p-2 shadow-2xl border-border/40 backdrop-blur-xl bg-background/95">
+              {paths.map((p) => (
+                <DropdownMenuItem 
+                  key={p.id} 
+                  onClick={() => setActivePathId(p.id)}
+                  className={cn(
+                    "flex flex-col items-start gap-1 p-4 cursor-pointer rounded-[18px] transition-all mb-1 last:mb-0",
+                    p.id === activePath?.id ? "bg-foreground text-background" : "hover:bg-muted"
+                  )}
+                >
+                  <div className="flex items-center gap-2 w-full">
+                    <span className="font-bold text-sm tracking-tight">{getTranslatedText(p.title, locale)}</span>
+                    {p.id === activePath?.id && <CheckCircle2 className="h-4 w-4 ml-auto" />}
                   </div>
-                </div>
-                <Button asChild size="lg" className="gap-2 shadow-md">
-                  <Link
-                    to={`/${lang}/learning/${continueData.pathId}/${continueData.moduleId}/${continueData.lessonId}` as '/'}
-                  >
-                    {t`Continue`}
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </Button>
-              </div>
-            </div>
-            <Progress value={continueData.percentage} className="h-1 rounded-none" />
-          </CardContent>
-        </Card>
-      ) : null}
-
-      {/* Learning Paths */}
-      <div className="space-y-4">
-        <div className="flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-primary" />
-          <h2 className="text-xl font-semibold">{t`Learning Paths`}</h2>
+                  <span className={cn(
+                    "text-[10px] font-medium line-clamp-1 opacity-60",
+                    p.id === activePath?.id ? "text-background" : "text-muted-foreground"
+                  )}>{getTranslatedText(p.description, locale)}</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          {paths.map((path) => {
-            const pathData = getLearningPathById(path.id)
-            const allLessons = pathData ? getAllLessons(pathData) : []
-            const contentProgress = progress.content
-            const completedCount = allLessons.filter((l) => {
-              const status = contentProgress[l.id]?.status
-              return status === 'completed' || status === 'passed'
-            }).length
-            const percentage = allLessons.length > 0 ? Math.round((completedCount / allLessons.length) * 100) : 0
-            const totalMinutes = allLessons.reduce((sum, l) => sum + l.durationMinutes, 0)
-            const isComplete = completedCount === allLessons.length && allLessons.length > 0
-            const hasStarted = completedCount > 0
-
-            return (
-              <Card
-                key={path.id}
-                className={cn(
-                  'group relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-primary/50',
-                  isComplete && 'border-green-500/50 bg-green-500/5'
-                )}
-              >
-                {/* Progress ring in corner */}
-                {hasStarted && (
-                  <div className="absolute top-4 right-4">
-                    <div className="relative h-12 w-12">
-                      <svg className="h-12 w-12 -rotate-90" viewBox="0 0 36 36">
-                        <path
-                          className="text-muted/30"
-                          stroke="currentColor"
-                          strokeWidth="3"
-                          fill="none"
-                          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                        />
-                        <path
-                          className={isComplete ? 'text-green-500' : 'text-primary'}
-                          stroke="currentColor"
-                          strokeWidth="3"
-                          fill="none"
-                          strokeLinecap="round"
-                          strokeDasharray={`${percentage}, 100`}
-                          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                        />
-                      </svg>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-xs font-bold">{percentage}%</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                <CardHeader className={cn(hasStarted && 'pr-20')}>
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={cn(
-                        'flex h-10 w-10 items-center justify-center rounded-xl transition-colors duration-200',
-                        isComplete ? 'bg-green-500/20 text-green-600' : 'bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground'
-                      )}
-                    >
-                      <BookOpen className="h-5 w-5" />
-                    </div>
-                    <div className="space-y-1">
-                      <CardTitle className="text-lg">{getTranslatedText(path.title, locale)}</CardTitle>
-                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Layers className="h-3 w-3" />
-                          {path.modules.length} {t`modules`}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          {totalMinutes} {t`min`}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <CardDescription className="mt-3">
-                    {getTranslatedText(path.description, locale)}
-                  </CardDescription>
-                </CardHeader>
-
-                <CardContent className="pt-0">
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm text-muted-foreground">
-                      {isComplete ? (
-                        <Badge variant="success" className="gap-1">
-                          <Trophy className="h-3 w-3" />
-                          {t`Completed`}
-                        </Badge>
-                      ) : hasStarted ? (
-                        <span>
-                          {completedCount}/{allLessons.length} {t`lessons`}
-                        </span>
-                      ) : (
-                        <Badge variant="secondary">{t`Not started`}</Badge>
-                      )}
-                    </div>
-                    <Button asChild variant={hasStarted ? 'default' : 'outline'} className="gap-2">
-                      <Link to={`/${lang}/learning/${path.id}` as '/'}>
-                        {isComplete ? t`Review` : hasStarted ? t`Continue` : t`Start`}
-                        <ArrowRight className="h-4 w-4" />
+        {activePath && (stats?.percentage ?? 0) < 100 ? (
+          <Card className="relative overflow-hidden rounded-[40px] border-none shadow-2xl shadow-primary/5 bg-gradient-to-br from-background via-background to-primary/[0.03] group transition-all hover:shadow-primary/10">
+            <div className="absolute top-0 right-0 p-10 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-1000">
+              <Trophy className="h-64 w-64 rotate-12" />
+            </div>
+            
+            <CardContent className="p-10 md:p-14 space-y-12">
+              <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-10">
+                <div className="space-y-6 flex-1">
+                  <Badge variant="secondary" className="rounded-full px-4 py-1 text-[10px] font-black uppercase tracking-[0.2em] bg-primary/10 text-primary border-none shadow-none">
+                    {activePath.difficulty}
+                  </Badge>
+                  <h3 className="text-4xl md:text-5xl font-black tracking-tighter leading-[1.1] text-foreground">
+                    {getTranslatedText(activePath.title, locale)}
+                  </h3>
+                  <p className="text-muted-foreground text-lg font-medium leading-relaxed max-w-xl opacity-70">
+                    {getTranslatedText(activePath.description, locale)}
+                  </p>
+                </div>
+                
+                <div className="flex flex-col gap-4 min-w-[240px]">
+                  {stats?.nextLesson ? (
+                    <Button asChild size="lg" className="rounded-[22px] px-10 h-16 text-lg font-black shadow-2xl shadow-primary/20 transition-all hover:scale-[1.03] active:scale-95 bg-primary text-primary-foreground border-none">
+                      <Link
+                        to={`/${lang}/learning/${activePath.id}/${stats.moduleId}/${stats.nextLesson.id}` as '/'}
+                      >
+                        <Play className="mr-3 h-5 w-5 fill-current" />
+                        {stats.completedCount > 0 ? t`Continue` : t`Start Path`}
                       </Link>
                     </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )
-          })}
+                  ) : (
+                    <Button variant="outline" size="lg" className="rounded-[22px] px-10 h-16 text-lg font-black border-2 border-green-500/20 bg-green-500/[0.05] text-green-600 hover:bg-green-500/10 transition-all">
+                      <Trophy className="mr-3 h-5 w-5" />
+                      {t`Path Completed`}
+                    </Button>
+                  )}
+                  
+                  <Button asChild variant="ghost" className="rounded-2xl h-14 text-sm font-black text-muted-foreground hover:bg-transparent hover:text-foreground group/link">
+                    <Link to={`/${lang}/learning/${activePath.id}` as '/'}>
+                      {t`View Details`}
+                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+
+              <div className="space-y-5 pt-4">
+                <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground px-1">
+                  <span className="flex items-center gap-2">
+                    <div className="h-1 w-1 rounded-full bg-primary" />
+                    {t`Path Progress`}
+                  </span>
+                  <span className="text-primary">{stats?.percentage}%</span>
+                </div>
+                <div className="h-3 w-full bg-muted/50 rounded-full overflow-hidden shadow-inner p-0.5">
+                  <div 
+                    className="h-full bg-primary rounded-full transition-all duration-1000 ease-out shadow-lg" 
+                    style={{ width: `${stats?.percentage}%` }}
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-20 text-center bg-muted/20 rounded-[40px] border-2 border-dashed border-muted">
+            <Trophy className="h-16 w-16 text-primary/40 mb-6" />
+            <h3 className="text-2xl font-black tracking-tight mb-2">{t`Congratulations!`}</h3>
+            <p className="text-muted-foreground font-medium mb-8">{t`You've completed this learning path.`}</p>
+            <Button asChild variant="outline" className="rounded-2xl px-8 h-12 font-bold">
+              <Link to={`/${lang}/learning/${activePath?.id}` as '/'}>{t`Review Path`}</Link>
+            </Button>
+          </div>
+        )}
+      </div>
+
+      {/* Tertiary Info & Settings */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-10 px-2 pt-6 border-t border-muted/40">
+        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-10">
+          <div className="flex items-center gap-3 group cursor-default">
+            <div className="h-10 w-10 rounded-2xl bg-muted/50 flex items-center justify-center group-hover:bg-primary/5 transition-colors">
+              <Clock className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{t`Estimate`}</span>
+              <span className="text-xs font-bold text-foreground tracking-tight">{t`2h remaining`}</span>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-3 group cursor-default">
+            <div className="h-10 w-10 rounded-2xl bg-muted/50 flex items-center justify-center group-hover:bg-amber-500/5 transition-colors">
+              <Sparkles className="h-4 w-4 text-muted-foreground group-hover:text-amber-500 transition-colors" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{t`Daily Streak`}</span>
+              <span className="text-xs font-bold text-foreground tracking-tight">{t`1 Day`}</span>
+            </div>
+          </div>
         </div>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => void resetOnboarding()}
+          className="h-10 px-6 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground hover:bg-destructive/5 hover:text-destructive transition-all"
+        >
+          <RotateCcw className="mr-2 h-3.5 w-3.5 opacity-50" />
+          {t`Reset Academy`}
+        </Button>
       </div>
     </div>
   )

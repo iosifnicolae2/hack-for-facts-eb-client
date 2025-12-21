@@ -1,0 +1,739 @@
+# Module 12: Procurement Execution
+
+## Part IV: Public Procurement Integration
+
+| Duration | Difficulty | Prerequisites | Next Module |
+|----------|------------|---------------|-------------|
+| 60-75 min | Intermediate | Module 11 | [Module 13: Proactive Transparency →](./13-proactive-transparency.md) |
+
+---
+
+## Learning Objectives
+
+By the end of this module, you will be able to:
+
+- [ ] Navigate the procurement procedure from publication to award
+- [ ] Avoid common evaluation and award violations
+- [ ] Manage contract modifications within legal limits
+- [ ] Track contract lifecycle milestones effectively
+- [ ] Handle complaints and challenges appropriately
+
+---
+
+## Introduction
+
+> **Key Insight**: Most procurement violations occur during execution—not planning. The moment you publish a procedure, every action is subject to challenge and potential personal liability.
+
+Once a procurement procedure is launched, strict rules apply to every step. Understanding the legal constraints prevents costly challenges, delays, and personal sanctions.
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│              PROCUREMENT EXECUTION TIMELINE                 │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  Publication ──► Submission ──► Evaluation ──► Award        │
+│       │              │              │            │          │
+│       │              │              │            │          │
+│       ▼              ▼              ▼            ▼          │
+│  ┌─────────┐   ┌─────────┐   ┌─────────┐   ┌─────────┐     │
+│  │ SEAP    │   │Clarifi- │   │Technical│   │Communi- │     │
+│  │ Notice  │   │cations  │   │& Price  │   │cation   │     │
+│  │         │   │Period   │   │Review   │   │& Stand- │     │
+│  │Min. days│   │         │   │         │   │still    │     │
+│  └─────────┘   └─────────┘   └─────────┘   └─────────┘     │
+│                                                             │
+│       │              │              │            │          │
+│       ▼              ▼              ▼            ▼          │
+│    30-52         10-20          Variable       11 days      │
+│    days          days           (depends)      standstill   │
+│                                                             │
+├─────────────────────────────────────────────────────────────┤
+│  ──► Contract ──► Execution ──► Modifications ──► Close     │
+│        │             │              │              │        │
+│        ▼             ▼              ▼              ▼        │
+│   ┌─────────┐   ┌─────────┐   ┌─────────┐   ┌─────────┐   │
+│   │Signing +│   │Delivery │   │Addenda  │   │Final    │   │
+│   │Register │   │Accept-  │   │(Max 50%)│   │Accept-  │   │
+│   │in SEAP  │   │ance     │   │         │   │ance     │   │
+│   └─────────┘   └─────────┘   └─────────┘   └─────────┘   │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Interactive Element 1: Procedure Selector
+
+Choosing the right procedure based on the situation, not just thresholds.
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    PROCEDURE SELECTOR                       │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  SITUATION ANALYSIS                                         │
+│                                                             │
+│  Contract value: [320,000 lei        ]                      │
+│  Contract type:  [● Services ○ Goods ○ Works]               │
+│                                                             │
+│  What are you procuring?                                    │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │ ○ Standard goods/services (clear specifications)   │    │
+│  │ ● Complex services (multiple solution approaches)  │    │
+│  │ ○ Works with detailed technical specifications     │    │
+│  │ ○ Research and development services               │    │
+│  │ ○ Urgent need (unforeseen emergency)              │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+│  Additional factors:                                        │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │ [ ] Only one supplier can provide this             │    │
+│  │ [✓] Multiple viable solutions exist                │    │
+│  │ [✓] Need to negotiate technical approach           │    │
+│  │ [ ] Previous procedure failed                      │    │
+│  │ [ ] Extreme urgency (disaster, emergency)          │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+│  RECOMMENDED PROCEDURE                                      │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │                                                    │    │
+│  │  ═══════════════════════════════════════════════  │    │
+│  │  COMPETITIVE NEGOTIATION                          │    │
+│  │  (Negociere competitivă)                          │    │
+│  │  ═══════════════════════════════════════════════  │    │
+│  │                                                    │    │
+│  │  Why this procedure:                               │    │
+│  │  • Value exceeds simplified threshold (270,120)    │    │
+│  │  • Complex services with negotiation need          │    │
+│  │  • Multiple solutions possible                     │    │
+│  │                                                    │    │
+│  │  Alternative: Open Tender (Licitație deschisă)    │    │
+│  │  • Simpler but less flexibility                    │    │
+│  │  • Cannot negotiate after submission               │    │
+│  │                                                    │    │
+│  │  Legal basis: Art. 70, Legea 98/2016              │    │
+│  │                                                    │    │
+│  │  Minimum timeline: 30 days + evaluation + 11 days │    │
+│  │                                                    │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+│  [ View Full Comparison ] [ Check Justification Template ]  │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Procedure Types Summary
+
+| Procedure | When to Use | Min. Days | Key Features |
+|-----------|-------------|-----------|--------------|
+| **Direct Acquisition** | Below threshold | N/A | Simple, 1 quote OK |
+| **Simplified** | Mid-range values | 6-10 | Fewer formalities |
+| **Open Tender** | Above threshold, clear specs | 30-35 | Most common |
+| **Restricted** | Need pre-qualification | 30+25 | Two-stage |
+| **Competitive Negotiation** | Complex, need flexibility | 30 | Can negotiate |
+| **Competitive Dialogue** | Cannot define specs | 30 | For innovation |
+| **Negotiation w/o Notice** | Emergency, sole source | 0 | Exceptional only |
+
+---
+
+## Interactive Element 2: Evaluation Compliance Checker
+
+The evaluation phase is where most challenges arise. Use this tool to verify compliance.
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│               EVALUATION COMPLIANCE CHECKER                 │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  EVALUATION COMMITTEE SETUP                                 │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │ ✓ Odd number of members (minimum 3)               │    │
+│  │ ✓ Technical expertise relevant to procurement      │    │
+│  │ ✓ All signed conflict of interest declarations    │    │
+│  │ ✓ Committee appointed BEFORE opening offers       │    │
+│  │ ⚠ Check: No member involved in specifications    │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+│  EVALUATION CRITERIA                                        │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │ Award criterion: [Best value (MEAT) ▼]             │    │
+│  │                                                    │    │
+│  │ Criteria defined in documentation:                 │    │
+│  │ ┌──────────────────────────────────────────────┐  │    │
+│  │ │ Criterion              │ Weight │ Methodology │  │    │
+│  │ ├──────────────────────────────────────────────┤  │    │
+│  │ │ Price                  │  40%   │ Formula     │  │    │
+│  │ │ Technical quality      │  35%   │ Scale 1-5   │  │    │
+│  │ │ Delivery time          │  15%   │ Formula     │  │    │
+│  │ │ Environmental cert.    │  10%   │ Yes/No      │  │    │
+│  │ └──────────────────────────────────────────────┘  │    │
+│  │                                                    │    │
+│  │ ✓ Criteria total = 100%                           │    │
+│  │ ✓ All criteria linked to subject matter           │    │
+│  │ ✓ Scoring methodology defined in advance          │    │
+│  │ ⚠ Environmental cert: Verify not discriminatory  │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+│  EVALUATION PROCESS                                         │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │ [ ] All offers received by deadline               │    │
+│  │ [ ] SEAP submission confirmed                     │    │
+│  │ [ ] Opening session documented                    │    │
+│  │ [ ] DUAE verified for all tenderers              │    │
+│  │ [ ] Price anomaly check (if lowest 15%+ below)   │    │
+│  │ [ ] Technical evaluation documented per criteria  │    │
+│  │ [ ] Individual scores by each committee member    │    │
+│  │ [ ] Clarifications requested through SEAP only   │    │
+│  │ [ ] Supporting docs from winner verified          │    │
+│  │ [ ] Evaluation report completed                   │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+│  COMMON VIOLATIONS TO AVOID                                 │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │ ✗ Evaluating criteria not in documentation        │    │
+│  │ ✗ Changing scoring methodology during evaluation  │    │
+│  │ ✗ Contacting tenderers outside SEAP              │    │
+│  │ ✗ Rejecting offers on technicalities              │    │
+│  │ ✗ Not documenting how scores were calculated      │    │
+│  │ ✗ Excluding offers without proper justification   │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+│  [ Generate Checklist ] [ Evaluation Report Template ]      │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Evaluation Best Practices
+
+| Do | Don't |
+|----|-------|
+| Score exactly as per published methodology | Invent new criteria during evaluation |
+| Document every decision with reasons | Leave scoring unexplained |
+| Use SEAP for all communications | Call or email tenderers directly |
+| Allow correction of minor formalities | Reject for minor administrative errors |
+| Request clarification if unclear | Assume tenderer's intent |
+| Check abnormally low prices | Accept unusually low prices without verification |
+
+---
+
+## Interactive Element 3: Contract Lifecycle Tracker
+
+From signing to close-out, track all critical milestones.
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                CONTRACT LIFECYCLE TRACKER                   │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  CONTRACT: IT Support Services 2024                         │
+│  Contractor: TechSolutions SRL                              │
+│  Value: 450,000 lei (fără TVA)                             │
+│  Duration: 01/03/2024 - 28/02/2025                         │
+│                                                             │
+│  LIFECYCLE PHASES                                           │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │                                                    │    │
+│  │  [✓] Award           [✓] Signing         [■] Execution   │
+│  │   │                   │                   │        │    │
+│  │   │   Standstill     │   SEAP upload    │        │    │
+│  │   │   11 days        │   5 days         │        │    │
+│  │   ▼                   ▼                   ▼        │    │
+│  │  15/02     →      26/02     →      01/03          │    │
+│  │                                                    │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+│  EXECUTION MONITORING                                       │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │                                                    │    │
+│  │  Timeline:  ████████████████░░░░░░░░  67%         │    │
+│  │             8 months completed / 12 months         │    │
+│  │                                                    │    │
+│  │  Payments:  ████████████████████░░░░  83%         │    │
+│  │             375,000 / 450,000 lei                  │    │
+│  │                                                    │    │
+│  │  Deliverables:                                     │    │
+│  │  ┌──────────────────────────────────────────────┐ │    │
+│  │  │ ✓ Q1 Report         Delivered    15/04/24   │ │    │
+│  │  │ ✓ Q2 Report         Delivered    15/07/24   │ │    │
+│  │  │ ✓ Q3 Report         Delivered    15/10/24   │ │    │
+│  │  │ ○ Q4 Report         Due          15/01/25   │ │    │
+│  │  │ ○ Final Report      Due          28/02/25   │ │    │
+│  │  └──────────────────────────────────────────────┘ │    │
+│  │                                                    │    │
+│  │  Issues:                                           │    │
+│  │  ┌──────────────────────────────────────────────┐ │    │
+│  │  │ ⚠ Q3 delivered 5 days late (no penalty)     │ │    │
+│  │  │ ✓ All payments within terms                  │ │    │
+│  │  │ ✓ No scope changes                          │ │    │
+│  │  └──────────────────────────────────────────────┘ │    │
+│  │                                                    │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+│  MODIFICATION BUDGET                                        │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │                                                    │    │
+│  │  Maximum allowed modifications: 225,000 lei (50%) │    │
+│  │  Used modifications:             0 lei (0%)       │    │
+│  │  Remaining capacity:           225,000 lei        │    │
+│  │                                                    │    │
+│  │  ████████████████████████████████████░░░░░░ 0%    │    │
+│  │  ↑ Modification capacity used                     │    │
+│  │                                                    │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+│  [ Add Deliverable ] [ Record Payment ] [ Request Change ] │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Interactive Element 4: Amendment Limit Checker
+
+Contract modifications are strictly limited. Stay within legal bounds.
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  AMENDMENT LIMIT CHECKER                    │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ORIGINAL CONTRACT                                          │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │ Contract value:     [850,000 lei    ]              │    │
+│  │ Contract type:      [Works ▼]                       │    │
+│  │ Threshold applied:  900,400 lei (Works)            │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+│  PROPOSED MODIFICATION                                      │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │ Modification type: [Value increase ▼]              │    │
+│  │ Modification amount: [150,000 lei   ]              │    │
+│  │ Reason: [Unforeseen ground conditions            ] │    │
+│  │ Previous modifications this contract: [0         ] │    │
+│  │                                                    │    │
+│  │ [Check Validity]                                   │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+│  ANALYSIS RESULT                                            │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │                                                    │    │
+│  │  ✓ MODIFICATION APPEARS VALID                     │    │
+│  │                                                    │    │
+│  │  Calculations:                                     │    │
+│  │  ┌──────────────────────────────────────────────┐ │    │
+│  │  │ Original value:      850,000 lei             │ │    │
+│  │  │ Max modification:    425,000 lei (50%)       │ │    │
+│  │  │ Previous mods:             0 lei             │ │    │
+│  │  │ This modification:   150,000 lei             │ │    │
+│  │  │ Total after:         150,000 lei (17.6%)     │ │    │
+│  │  │ Remaining capacity:  275,000 lei (32.4%)     │ │    │
+│  │  └──────────────────────────────────────────────┘ │    │
+│  │                                                    │    │
+│  │  Requirements met:                                 │    │
+│  │  ✓ Under 50% cumulative limit                     │    │
+│  │  ✓ Under 15% individual change limit              │    │
+│  │  ✓ New total under threshold (no new procedure)   │    │
+│  │                                                    │    │
+│  │  Additional checks needed:                         │    │
+│  │  ⚠ Document unforeseen circumstances              │    │
+│  │  ⚠ Verify not changing nature of contract         │    │
+│  │  ⚠ ANAP notification required within 5 days       │    │
+│  │                                                    │    │
+│  │  Legal basis: Art. 221, Legea 98/2016             │    │
+│  │                                                    │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+│  MODIFICATION TYPES (Art. 221, Legea 98/2016)               │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │                                                    │    │
+│  │  (a) De minimis - Up to 10% services/goods,       │    │
+│  │      15% works, AND under original threshold       │    │
+│  │      → No justification needed                     │    │
+│  │                                                    │    │
+│  │  (b) Additional works/services - Originally       │    │
+│  │      unforeseen, necessary for completion          │    │
+│  │      → Cumulative max 50%                          │    │
+│  │                                                    │    │
+│  │  (c) Unforeseen circumstances - Outside           │    │
+│  │      diligent contracting authority's control      │    │
+│  │      → Cumulative max 50%                          │    │
+│  │                                                    │    │
+│  │  (d) New contractor - Original cannot continue    │    │
+│  │      → Only if clause in original contract         │    │
+│  │                                                    │    │
+│  │  (e) Non-substantial - Doesn't change nature      │    │
+│  │      → Case-by-case assessment                     │    │
+│  │                                                    │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Amendment Limits Summary
+
+| Modification Type | Limit | Requires |
+|-------------------|-------|----------|
+| **De minimis** | 10% (goods/services) / 15% (works) AND under threshold | ANAP notification |
+| **Additional works/services** | 50% cumulative | Justification, ANAP notification |
+| **Unforeseen circumstances** | 50% cumulative | Documentation, ANAP notification |
+| **New value exceeds threshold** | N/A | NEW PROCEDURE required |
+
+---
+
+## Core Concepts
+
+### Standstill Period
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    STANDSTILL PERIOD                        │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  The mandatory waiting period between award and signing     │
+│                                                             │
+│  Award Decision          Contract Signing                   │
+│       │                        │                            │
+│       │◄───── 11 DAYS ────────►│                           │
+│       │      (minimum)         │                            │
+│       │                        │                            │
+│       ▼                        ▼                            │
+│  ┌─────────┐              ┌─────────┐                       │
+│  │Communi- │              │Sign if  │                       │
+│  │cate to  │              │no valid │                       │
+│  │all      │              │challenge│                       │
+│  │tenderers│              │         │                       │
+│  └─────────┘              └─────────┘                       │
+│                                                             │
+│  Purpose:                                                   │
+│  • Allows losing tenderers to review decision               │
+│  • Provides time to file challenges (contestații)          │
+│  • Prevents fait accompli before review                     │
+│                                                             │
+│  Duration:                                                  │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │ Above EU thresholds:     11 days (calendar)        │    │
+│  │ Below EU thresholds:      6 days (calendar)        │    │
+│  │ Urgent circumstances:      0 days (with risk)      │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+│  WHAT HAPPENS IF YOU SIGN EARLY?                            │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │ • Contract may be declared null (Art. 166)         │    │
+│  │ • Personal liability for contracting officer       │    │
+│  │ • ANAP sanctions                                   │    │
+│  │ • Criminal investigation possible                  │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Handling Challenges (Contestații)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                   CHALLENGE PROCESS                         │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  WHEN CAN CHALLENGES BE FILED?                              │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │ • Against documentation: Before submission deadline│    │
+│  │ • Against award: Within standstill period          │    │
+│  │ • Against contract: Within 6 months of signing     │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+│  WHERE ARE CHALLENGES FILED?                                │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │ CNSC (Consiliul Național pentru Soluționarea       │    │
+│  │       Contestațiilor)                              │    │
+│  │ OR                                                 │    │
+│  │ Curtea de Apel (Administrative Court)              │    │
+│  │                                                    │    │
+│  │ Choice is made by challenger; cannot use both      │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+│  YOUR RESPONSE AS CONTRACTING AUTHORITY                     │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │ 1. SUSPEND procedure immediately                   │    │
+│  │    (automatic for 10 days upon valid challenge)    │    │
+│  │                                                    │    │
+│  │ 2. PREPARE documentation:                          │    │
+│  │    • Complete procurement file                     │    │
+│  │    • Evaluation reports                            │    │
+│  │    • Communications through SEAP                   │    │
+│  │    • Point-by-point response to claims             │    │
+│  │                                                    │    │
+│  │ 3. SUBMIT to CNSC within 5 working days           │    │
+│  │                                                    │    │
+│  │ 4. AWAIT decision (typically 20-45 days)          │    │
+│  │                                                    │    │
+│  │ 5. IMPLEMENT decision or appeal (15 days)         │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+│  POSSIBLE OUTCOMES                                          │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │ • Challenge rejected → Continue with award         │    │
+│  │ • Challenge upheld:                                │    │
+│  │   - Re-evaluate offers                             │    │
+│  │   - Cancel procedure                               │    │
+│  │   - Modify documentation and restart               │    │
+│  │   - Annul award and re-award                       │    │
+│  │ • Partial: Some aspects upheld, others not        │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Platform Integration
+
+### Using Transparenta.eu for Contract Monitoring
+
+**Activity 1: Track Execution Progress**
+```
+Navigate to: /entity-analytics
+
+Monitor your procurement execution rates:
+
+• Capital spending (Code 71): Large procurement items
+• Goods & services (Codes 20, 30): Operational procurement
+
+Low execution may indicate:
+• Delayed procurement procedures
+• Failed tenders requiring re-launch
+• Contract modifications needed
+
+Compare to peers: Are they executing faster?
+```
+
+**Activity 2: Identify Procurement Patterns**
+```
+Navigate to: /budget-explorer → Your entity
+
+Analyze spending by economic code:
+
+Economic Code 20 (Goods & Services):
+• 20.01: Office supplies, materials
+• 20.02: Repairs, maintenance
+• 20.13: Training, professional development
+
+Economic Code 71 (Capital):
+• 71.01: Construction and installations
+• 71.02: Machinery and equipment
+• 71.03: Furniture, office equipment
+
+Use these patterns to improve next year's PAP accuracy.
+```
+
+---
+
+## Knowledge Check
+
+Test your understanding of procurement execution.
+
+### Question 1
+You receive a challenge (contestație) against your award decision on day 5 of the standstill period. What must you do?
+
+- A) Ignore it and sign the contract on day 12
+- B) Suspend the procedure and respond to CNSC within 5 working days
+- C) Immediately cancel the procedure
+- D) Sign quickly before the challenge is processed
+
+<details>
+<summary>Show Answer</summary>
+
+**B) Suspend the procedure and respond to CNSC within 5 working days**
+
+A valid challenge automatically suspends the procedure. You must compile your procurement file and respond to CNSC within 5 working days. Signing during suspension or ignoring the challenge can result in contract nullity and personal liability.
+</details>
+
+### Question 2
+A works contract of 800,000 lei needs an additional 180,000 lei for unforeseen ground conditions. Can this be done through a modification?
+
+- A) No, all modifications require a new procedure
+- B) Yes, this is within the 50% cumulative limit
+- C) No, the new total exceeds the works threshold
+- D) Yes, but only if predicted in original documentation
+
+<details>
+<summary>Show Answer</summary>
+
+**B) Yes, this is within the 50% cumulative limit**
+
+The original value is 800,000 lei. The 50% limit = 400,000 lei. The proposed modification of 180,000 lei (22.5%) is within this limit. The new total of 980,000 lei exceeds the works threshold of 900,400 lei, but since this is a modification to an existing contract (not a new procurement), the threshold test applies only to determine whether a new procedure is needed—which it isn't since Art. 221 modification rules apply.
+</details>
+
+### Question 3
+During evaluation, a committee member realizes that an important criterion was omitted from the documentation. What should they do?
+
+- A) Add the criterion and evaluate all offers against it
+- B) Cancel the procedure and re-launch with correct criteria
+- C) Evaluate without the criterion as published
+- D) Contact the preferred tenderer to check if they meet it
+
+<details>
+<summary>Show Answer</summary>
+
+**C) Evaluate without the criterion as published**
+
+Evaluation must be exactly as per the published documentation. Adding new criteria during evaluation is a serious violation. If the missing criterion is essential, the procedure might need cancellation, but the evaluation itself must follow published rules. The decision to cancel should be made by the contracting authority, not unilaterally by the committee.
+</details>
+
+### Question 4
+The standstill period for a contract above EU thresholds ends on a Sunday. When can you sign?
+
+- A) Sunday (the 11th day)
+- B) Monday (first working day after)
+- C) Friday before (last working day of the period)
+- D) Tuesday (12th calendar day)
+
+<details>
+<summary>Show Answer</summary>
+
+**B) Monday (first working day after)**
+
+The standstill period is 11 calendar days, but if it ends on a non-working day, it extends to the next working day. You cannot sign on Sunday (non-working), and signing Friday would be before the period ends. Monday is the first permissible date.
+</details>
+
+---
+
+## Key Takeaways
+
+1. **Procedure selection affects everything** - Choose based on situation, not just value; wrong procedure = cancellation risk
+
+2. **Evaluation must match documentation exactly** - No new criteria, no methodology changes, everything through SEAP
+
+3. **Standstill is mandatory** - Never sign before period ends; early signing can void the contract
+
+4. **Modifications are strictly limited** - 50% cumulative, document unforeseen circumstances, notify ANAP
+
+5. **Challenges suspend procedures** - Respond professionally, document thoroughly, implement decisions
+
+---
+
+## Call to Action
+
+Strengthen your procurement execution:
+
+### Immediate (This Week)
+- [ ] Review all active contracts for modification capacity
+- [ ] Check upcoming standstill deadlines
+- [ ] Verify evaluation committee declarations are current
+
+### Short-term (This Month)
+- [ ] Audit recent evaluations for documentation completeness
+- [ ] Train evaluation committees on common violations
+- [ ] Create contract monitoring calendar for all active contracts
+
+### Medium-term (This Quarter)
+- [ ] Analyze challenge history and root causes
+- [ ] Benchmark execution rates against peers on Transparenta.eu
+- [ ] Improve PAP accuracy based on actual execution data
+
+> **Platform Exercise**: Visit /entity-analytics to compare your capital spending execution rate (code 71) against similar institutions. Low execution often indicates procurement delays—identify bottlenecks in your procedures.
+
+---
+
+## Module Navigation
+
+| Previous | Current | Next |
+|----------|---------|------|
+| [← Module 11: Procurement Planning](./11-procurement-planning.md) | **Module 12: Procurement Execution** | [Module 13: Proactive Transparency →](./13-proactive-transparency.md) |
+
+---
+
+## Technical Notes
+
+### Component Requirements
+
+```typescript
+interface ProcedureSelection {
+  contractValue: number
+  contractType: 'goods' | 'services' | 'works'
+  complexity: 'standard' | 'complex' | 'innovative' | 'urgent'
+  factors: SelectionFactor[]
+  recommendedProcedure: ProcedureType
+  alternatives: ProcedureType[]
+  legalBasis: string
+  timeline: TimelineEstimate
+}
+
+interface EvaluationChecklist {
+  committeeSetup: CheckItem[]
+  criteriaCompliance: CheckItem[]
+  processSteps: CheckItem[]
+  violations: Violation[]
+  overallStatus: 'compliant' | 'issues' | 'violations'
+}
+
+interface ContractLifecycle {
+  contractId: string
+  contractor: string
+  value: number
+  startDate: Date
+  endDate: Date
+  phase: 'award' | 'standstill' | 'signing' | 'execution' | 'closing'
+  executionProgress: number
+  paymentProgress: number
+  deliverables: Deliverable[]
+  issues: Issue[]
+  modificationCapacity: ModificationCapacity
+}
+
+interface ModificationCapacity {
+  originalValue: number
+  maxModification: number
+  usedModification: number
+  remainingCapacity: number
+  percentageUsed: number
+  applicableLimits: ModificationLimit[]
+}
+
+interface ModificationCheck {
+  originalValue: number
+  contractType: 'goods' | 'services' | 'works'
+  proposedAmount: number
+  modificationType: 'de_minimis' | 'additional' | 'unforeseen' | 'new_contractor' | 'non_substantial'
+  previousModifications: number
+  isValid: boolean
+  calculations: ModificationCalculation
+  requirements: string[]
+  legalBasis: string
+}
+
+interface ChallengeProcess {
+  procedureId: string
+  challengeDate: Date
+  challengedAspect: 'documentation' | 'award' | 'contract'
+  filedWith: 'CNSC' | 'court'
+  responseDeadline: Date
+  status: 'pending' | 'responded' | 'decided' | 'appealed'
+  outcome?: ChallengeOutcome
+  documentsRequired: string[]
+}
+```
+
+### Data Requirements
+
+- Procedure types and selection criteria
+- Evaluation methodology templates
+- Standstill period calculations
+- Modification limit rules (Art. 221)
+- Challenge process timelines
+- CNSC decision database (for reference)
+
+### API Endpoints
+
+- `GET /api/entities/{cui}/execution-rate/{economicCode}` - Execution by category
+- `GET /api/entities/{cui}/spending-patterns` - Historical spending
+- `GET /api/benchmark/execution/{entityType}` - Peer comparison
+
+### Legal References
+
+- **Legea 98/2016**: Public Procurement Law (especially Art. 70-115, 221)
+- **HG 395/2016**: Implementation norms
+- **Legea 101/2016**: Remedies and review procedures
+- **Art. 166, Legea 98/2016**: Contract nullity
+- **Art. 221, Legea 98/2016**: Contract modifications
+
+<MarkComplete label="Mark this module complete" />

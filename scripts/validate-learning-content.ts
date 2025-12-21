@@ -1,6 +1,8 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
+import { compileSync } from '@mdx-js/mdx'
+import remarkGfm from 'remark-gfm'
 
 type LessonReference = {
   readonly pathFile: string
@@ -855,6 +857,32 @@ const VALIDATION_RULES: readonly ValidationRule[] = [
         }
       }
       return { errors: [], warnings }
+    },
+  },
+  {
+    name: 'mdx-compile',
+    run: (context) => {
+      const errors: string[] = []
+
+      for (const [mdxPath, source] of context.mdxSourceByPath.entries()) {
+        try {
+          compileSync(
+            {
+              value: source,
+              path: mdxPath,
+            },
+            {
+              remarkPlugins: [remarkGfm],
+            }
+          )
+        } catch (error) {
+          const relativePath = path.relative(PROJECT_ROOT, mdxPath)
+          const message = error instanceof Error ? error.message : String(error)
+          errors.push(`${relativePath}: ${message}`)
+        }
+      }
+
+      return { errors, warnings: [] }
     },
   },
 ]

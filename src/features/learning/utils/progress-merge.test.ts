@@ -148,6 +148,7 @@ describe('progress-merge', () => {
     const local: LearningGuestProgress = {
       version: LEARNING_PROGRESS_SCHEMA_VERSION,
       onboarding: { role: null, depth: null, completedAt: null },
+      activePathId: null,
       lastUpdated: ISO_1,
       content: {
         'budget-basics': {
@@ -163,6 +164,7 @@ describe('progress-merge', () => {
     const remote: LearningGuestProgress = {
       version: LEARNING_PROGRESS_SCHEMA_VERSION,
       onboarding: { role: 'student', depth: 'beginner', completedAt: ISO_2 },
+      activePathId: 'citizen',
       lastUpdated: ISO_3,
       content: {
         'budget-basics': {
@@ -195,6 +197,7 @@ describe('progress-merge', () => {
     const local: LearningGuestProgress = {
       version: LEARNING_PROGRESS_SCHEMA_VERSION,
       onboarding: { role: null, depth: null, completedAt: null },
+      activePathId: null,
       lastUpdated: ISO_1,
       content: {
         m1: {
@@ -209,6 +212,7 @@ describe('progress-merge', () => {
     const remote: LearningGuestProgress = {
       version: LEARNING_PROGRESS_SCHEMA_VERSION,
       onboarding: { role: 'student', depth: 'beginner', completedAt: ISO_2 },
+      activePathId: 'journalist',
       lastUpdated: ISO_2,
       content: {
         m1: {

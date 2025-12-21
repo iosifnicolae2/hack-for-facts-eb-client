@@ -69,6 +69,7 @@ type LearningProgressContextValue = {
   readonly saveContentProgress: (input: SaveContentProgressInput) => Promise<void>
   readonly dispatchInteractionAction: (action: LearningInteractionAction) => Promise<void>
   readonly saveOnboarding: (input: SaveOnboardingInput) => Promise<void>
+  readonly setActivePathId: (pathId: string | null) => Promise<void>
   readonly resetOnboarding: () => Promise<void>
   readonly sync: () => Promise<void>
   readonly clearProgress: () => void
@@ -288,6 +289,9 @@ export function LearningProgressProvider({ children }: { readonly children: Reac
 
       saveProgressForKey(storageKey, nextState)
       setProgress(nextState)
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('learning-progress-update'))
+      }
     },
     [auth.isAuthenticated, auth.userId],
   )
@@ -313,11 +317,36 @@ export function LearningProgressProvider({ children }: { readonly children: Reac
           depth: input.depth,
           completedAt: timestamp,
         },
+        activePathId: input.role, // Default active path to selected role
         lastUpdated: timestamp,
       }
 
       saveProgressForKey(storageKey, nextState)
       setProgress(nextState)
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('learning-progress-update'))
+      }
+    },
+    [auth.isAuthenticated, auth.userId],
+  )
+
+  const setActivePathId = useCallback(
+    async (pathId: string | null) => {
+      const storageKey = auth.isAuthenticated && auth.userId ? getAuthStorageKey(auth.userId) : GUEST_STORAGE_KEY
+      const current = loadProgressForKey(storageKey)
+      const timestamp = nowIso()
+
+      const nextState: LearningGuestProgress = {
+        ...current,
+        activePathId: pathId,
+        lastUpdated: timestamp,
+      }
+
+      saveProgressForKey(storageKey, nextState)
+      setProgress(nextState)
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('learning-progress-update'))
+      }
     },
     [auth.isAuthenticated, auth.userId],
   )
@@ -339,6 +368,9 @@ export function LearningProgressProvider({ children }: { readonly children: Reac
 
     saveProgressForKey(storageKey, nextState)
     setProgress(nextState)
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('learning-progress-update'))
+    }
   }, [auth.isAuthenticated, auth.userId])
 
   const getContentProgress = useCallback(
@@ -365,6 +397,7 @@ export function LearningProgressProvider({ children }: { readonly children: Reac
       saveContentProgress,
       dispatchInteractionAction,
       saveOnboarding,
+      setActivePathId,
       resetOnboarding,
       sync,
       clearProgress,
@@ -376,6 +409,7 @@ export function LearningProgressProvider({ children }: { readonly children: Reac
       saveContentProgress,
       dispatchInteractionAction,
       saveOnboarding,
+      setActivePathId,
       resetOnboarding,
       sync,
       clearProgress,

@@ -1,0 +1,486 @@
+# Module 8: Accounting & Reporting
+
+## Module Overview
+
+| Aspect | Details |
+|--------|---------|
+| **Duration** | 60-75 minutes |
+| **Difficulty** | Intermediate |
+| **Prerequisites** | [Module 7: Cash & Payment Management](./07-cash-management.md) |
+| **Next Module** | [Module 9: Internal Control System](./09-internal-control.md) |
+
+## Learning Objectives
+
+By the end of this module, you will be able to:
+
+- [ ] Apply the public sector accounting framework correctly
+- [ ] Meet all reporting deadlines throughout the year
+- [ ] Perform required reconciliations at proper intervals
+- [ ] Apply correct document retention periods (5 years general)
+- [ ] Prepare for annual accounts submission
+
+---
+
+## Introduction
+
+### Accounting Is the Memory of Compliance
+
+Proper accounting isn't just about numbers—it's the documentation that proves your compliance. When auditors come, your accounts tell the story of every lei spent.
+
+> **Key Insight:** Document retention was reduced to **5 years** by Legea 36/2023 (amending Legea 82/1991). The previous 10-year requirement no longer applies to general financial documents—though financial statements (bilanț) still require 10-year retention.
+
+---
+
+## Interactive Element 1: Report Calendar Tracker
+
+Never miss a reporting deadline.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                     REPORT CALENDAR TRACKER                            │
+│                                                                         │
+│   Track all reporting deadlines for your institution                   │
+│                                                                         │
+│   Current Date: March 12, 2025                                         │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   UPCOMING DEADLINES (Next 30 Days)                                    │
+│   ─────────────────────────────────                                    │
+│                                                                         │
+│   │ Date       │ Report                  │ Recipient        │ Status  │
+│   ├────────────┼─────────────────────────┼──────────────────┼─────────┤
+│   │ Mar 15     │ Monthly execution       │ Ordonator sup.   │ ⏳ Due  │
+│   │ Mar 25     │ D112 declaration        │ ANAF             │ ○ Pend  │
+│   │ Mar 31     │ Q1 preliminary report   │ Internal         │ ○ Pend  │
+│   │ Apr 10     │ Q4 2024 darea de seamă  │ MF, Ordon. sup.  │ ○ Pend  │
+│   └────────────┴─────────────────────────┴──────────────────┴─────────┘
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   ANNUAL REPORTING CALENDAR                                            │
+│   ─────────────────────────                                            │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  MONTHLY REPORTS                                                │  │
+│   │  ────────────────                                               │  │
+│   │  • Execuție bugetară → 15th of following month                  │  │
+│   │  • D112 (salaries/contributions) → 25th of following month      │  │
+│   │  • Cash reconciliation → Daily (internal)                       │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  QUARTERLY REPORTS                                              │  │
+│   │  ─────────────────                                              │  │
+│   │  • Darea de seamă contabilă → 40 days after quarter end         │  │
+│   │    (Q1: May 10, Q2: Aug 10, Q3: Nov 10, Q4: Feb 10)             │  │
+│   │  • Quarterly budget execution → to ordonator superior           │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  ANNUAL REPORTS                                                 │  │
+│   │  ──────────────                                                 │  │
+│   │  • Bilanț contabil:                                             │  │
+│   │    - State budget entities: April 30                            │  │
+│   │    - Local budget entities: May 31 (Legea 273/2006, Art. 57)    │  │
+│   │  • Raport de activitate → per internal rules                    │  │
+│   │  • Curtea de Conturi submission → as scheduled                  │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   [Set Email Reminders]  [Export Calendar]  [Sync to Outlook]          │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Suggested Implementation
+
+```typescript
+interface ReportDeadline {
+  name: string
+  dueDate: Date
+  frequency: 'daily' | 'monthly' | 'quarterly' | 'annual'
+  recipient: string
+  legalBasis: string
+  status: 'completed' | 'pending' | 'due' | 'overdue'
+  template?: string
+}
+
+interface ReportCalendar {
+  currentDate: Date
+  deadlines: ReportDeadline[]
+  getUpcoming: (days: number) => ReportDeadline[]
+  markComplete: (id: string) => void
+  setReminder: (id: string, daysBefore: number) => void
+}
+```
+
+---
+
+## Interactive Element 2: Reconciliation Checker
+
+Track required reconciliations and their frequency.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    RECONCILIATION CHECKER                              │
+│                                                                         │
+│   Ensure all required reconciliations are performed on schedule        │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   RECONCILIATION STATUS                                                │
+│   ─────────────────────                                                │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  DAILY RECONCILIATIONS                                          │  │
+│   │  ─────────────────────                                          │  │
+│   │                                                                 │  │
+│   │  ☑ Bank/Treasury Statements vs. Records                        │  │
+│   │    Last performed: Today (Mar 12)                               │  │
+│   │    Status: ✓ Current                                            │  │
+│   │                                                                 │  │
+│   │    What to check:                                               │  │
+│   │    • Opening balance matches previous day closing               │  │
+│   │    • All transactions recorded                                  │  │
+│   │    • Closing balance matches treasury statement                 │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  MONTHLY RECONCILIATIONS                                        │  │
+│   │  ──────────────────────                                         │  │
+│   │                                                                 │  │
+│   │  ☑ Budget accounts vs. Accounting records                       │  │
+│   │    Last performed: Feb 28                                       │  │
+│   │    Status: ⚠️ Due (March not yet reconciled)                    │  │
+│   │                                                                 │  │
+│   │  ☑ Third-party statements vs. Payables                          │  │
+│   │    Last performed: Feb 25                                       │  │
+│   │    Status: ⚠️ Due for March                                     │  │
+│   │                                                                 │  │
+│   │  What to check:                                                 │  │
+│   │  • Budget execution matches accounting entries                  │  │
+│   │  • Supplier statements match our payables                       │  │
+│   │  • Explain and document any differences                         │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  ANNUAL RECONCILIATIONS                                         │  │
+│   │  ─────────────────────                                          │  │
+│   │                                                                 │  │
+│   │  ☐ Fixed assets register vs. Physical inventory                 │  │
+│   │    Last performed: Dec 2024                                     │  │
+│   │    Next due: Dec 2025                                           │  │
+│   │    Status: ✓ On schedule                                        │  │
+│   │                                                                 │  │
+│   │  What to check:                                                 │  │
+│   │  • Physical count matches register                              │  │
+│   │  • Asset condition assessed                                     │  │
+│   │  • Discrepancies investigated and explained                     │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   [Start Reconciliation]  [View History]  [Generate Report]           │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Suggested Implementation
+
+```typescript
+interface Reconciliation {
+  type: string
+  frequency: 'daily' | 'monthly' | 'annual'
+  lastPerformed: Date
+  nextDue: Date
+  status: 'current' | 'due' | 'overdue'
+  checkpoints: string[]
+  documentationRequired: string[]
+}
+
+interface ReconciliationChecker {
+  reconciliations: Reconciliation[]
+  getOverdue: () => Reconciliation[]
+  getDue: () => Reconciliation[]
+  markComplete: (type: string, date: Date) => void
+}
+```
+
+---
+
+## Interactive Element 3: Retention Period Guide
+
+Know how long to keep each document type.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    RETENTION PERIOD GUIDE                              │
+│                    (Updated per Legea 36/2023)                         │
+│                                                                         │
+│   Search document type to find retention period                        │
+│                                                                         │
+│   Search: [ invoice_________________________ ] [Search]                │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   RETENTION PERIODS BY DOCUMENT TYPE                                   │
+│   ──────────────────────────────────                                   │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  GENERAL FINANCIAL/ACCOUNTING DOCUMENTS                         │  │
+│   │  ══════════════════════════════════════                         │  │
+│   │                                                                 │  │
+│   │  Retention: 5 YEARS (Changed from 10 by Legea 36/2023)          │  │
+│   │                                                                 │  │
+│   │  Includes:                                                      │  │
+│   │  • Invoices (facturi)                                           │  │
+│   │  • Payment orders (ordine de plată)                             │  │
+│   │  • Bank statements (extrase de cont)                            │  │
+│   │  • Journal entries (note contabile)                             │  │
+│   │  • CFPP documentation                                           │  │
+│   │  • Commitment documents                                         │  │
+│   │                                                                 │  │
+│   │  Legal basis: Legea 82/1991, Art. 25 as amended                 │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  FINANCIAL STATEMENTS (BILANȚ)                                  │  │
+│   │  ═════════════════════════════                                  │  │
+│   │                                                                 │  │
+│   │  Retention: 10 YEARS (Exception to 5-year rule)                 │  │
+│   │                                                                 │  │
+│   │  Includes:                                                      │  │
+│   │  • Annual balance sheet (bilanț contabil)                       │  │
+│   │  • Annexes to financial statements                              │  │
+│   │  • Audit reports                                                │  │
+│   │                                                                 │  │
+│   │  Legal basis: Legea 82/1991, Art. 25                            │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  PERSONNEL RECORDS                                              │  │
+│   │  ═════════════════                                              │  │
+│   │                                                                 │  │
+│   │  Retention: 75 YEARS                                            │  │
+│   │                                                                 │  │
+│   │  Includes:                                                      │  │
+│   │  • Employment contracts                                         │  │
+│   │  • Salary records                                               │  │
+│   │  • Work history documentation                                   │  │
+│   │                                                                 │  │
+│   │  Legal basis: Legea 16/1996 (Archives)                          │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  PROCUREMENT FILES                                              │  │
+│   │  ═════════════════                                              │  │
+│   │                                                                 │  │
+│   │  Retention: 5-10 YEARS after contract completion                │  │
+│   │                                                                 │  │
+│   │  Includes:                                                      │  │
+│   │  • Tender documentation                                         │  │
+│   │  • Evaluation reports                                           │  │
+│   │  • Contracts and amendments                                     │  │
+│   │  • Correspondence                                               │  │
+│   │                                                                 │  │
+│   │  Note: EU-funded procurement requires longer retention          │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  ASSET OWNERSHIP DOCUMENTS                                      │  │
+│   │  ═════════════════════════                                      │  │
+│   │                                                                 │  │
+│   │  Retention: LIFE OF ASSET + 5 YEARS                             │  │
+│   │                                                                 │  │
+│   │  Includes:                                                      │  │
+│   │  • Property deeds                                               │  │
+│   │  • Vehicle registration                                         │  │
+│   │  • Equipment acquisition documents                              │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   [Download Retention Schedule]  [Set Destruction Reminders]          │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Suggested Implementation
+
+```typescript
+interface RetentionCategory {
+  category: string
+  period: string
+  years: number | 'permanent'
+  legalBasis: string
+  documentTypes: string[]
+  notes?: string
+}
+
+interface RetentionGuide {
+  categories: RetentionCategory[]
+  search: (documentType: string) => RetentionCategory
+  getDestructionSchedule: (year: number) => { document: string; destroyDate: Date }[]
+}
+```
+
+---
+
+## Core Concepts
+
+### Public Sector Accounting Framework
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                PUBLIC SECTOR ACCOUNTING                                 │
+│                (Legea 82/1991)                                          │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  CONTABILITATE DE ANGAJAMENTE (Commitment Accounting)           │  │
+│   │  • Records when legal obligation arises                         │  │
+│   │  • Regardless of payment timing                                 │  │
+│   │  • Tracks against commitment authority                          │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  CONTABILITATE BUGETARĂ (Budget Accounting)                     │  │
+│   │  • Tracks against approved appropriations                       │  │
+│   │  • Execution vs. plan comparison                                │  │
+│   │  • Classification-based recording                               │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│   ┌─────────────────────────────────────────────────────────────────┐  │
+│   │  CONTABILITATE PATRIMONIALĂ (Asset Accounting)                  │  │
+│   │  • Assets, liabilities, equity                                  │  │
+│   │  • Accrual-based (IPSAS influenced)                             │  │
+│   │  • Full balance sheet accounting                                │  │
+│   └─────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Standard Execution Report Structure
+
+| Section | Content |
+|---------|---------|
+| Prevederi inițiale | Initial appropriation |
+| Prevederi definitive | After rectifications |
+| Angajamente bugetare | Budget commitments |
+| Angajamente legale | Legal commitments (signed contracts) |
+| Plăți efectuate | Payments made |
+| Diferențe și explicații | Variances and explanations |
+
+---
+
+## Platform Integration
+
+> **Try it on Transparenta.eu:**
+> 1. Open [Entity Analytics](/entity-analytics)
+> 2. Compare your execution reports with what appears publicly
+> 3. Discrepancies may indicate reporting or classification issues
+> 4. Review year-over-year changes for consistency
+
+---
+
+## Knowledge Check
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         KNOWLEDGE CHECK                                 │
+│                                                                         │
+│   Question 1 of 4                                                       │
+│                                                                         │
+│   What is the general document retention period per Legea 36/2023?     │
+│                                                                         │
+│   ○ A) 3 years                                                         │
+│   ○ B) 5 years                                                         │
+│   ○ C) 10 years                                                        │
+│   ○ D) 15 years                                                        │
+│                                                                         │
+│   Question 2 of 4                                                       │
+│                                                                         │
+│   When are local budget annual accounts (bilanț) due?                  │
+│                                                                         │
+│   ○ A) April 30                                                        │
+│   ○ B) May 31                                                          │
+│   ○ C) June 30                                                         │
+│   ○ D) March 31                                                        │
+│                                                                         │
+│   Question 3 of 4                                                       │
+│                                                                         │
+│   How often must treasury/bank reconciliation be performed?            │
+│                                                                         │
+│   ○ A) Weekly                                                          │
+│   ○ B) Monthly                                                         │
+│   ○ C) Daily                                                           │
+│   ○ D) Quarterly                                                       │
+│                                                                         │
+│   Question 4 of 4                                                       │
+│                                                                         │
+│   Personnel records must be retained for:                              │
+│                                                                         │
+│   ○ A) 5 years                                                         │
+│   ○ B) 10 years                                                        │
+│   ○ C) 50 years                                                        │
+│   ○ D) 75 years                                                        │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+**Answers:** 1-B, 2-B, 3-C, 4-D
+
+---
+
+## Key Takeaways
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                          KEY TAKEAWAYS                                  │
+│                                                                         │
+│   ✓ Document retention reduced to 5 YEARS by Legea 36/2023            │
+│     (exception: financial statements 10 years, personnel 75 years)    │
+│                                                                         │
+│   ✓ Local budget annual accounts due MAY 31 per Legea 273/2006        │
+│     (state budget entities: April 30)                                  │
+│                                                                         │
+│   ✓ Reconciliation frequency: Daily (treasury), Monthly (accounts),   │
+│     Annual (assets)                                                    │
+│                                                                         │
+│   ✓ Three types of public sector accounting: Commitment, Budget,      │
+│     and Asset (patrimony) accounting                                   │
+│                                                                         │
+│   ✓ Never miss reporting deadlines—late submissions create            │
+│     compliance issues and audit findings                               │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Module Navigation
+
+| Previous | Current | Next |
+|----------|---------|------|
+| [Module 7: Cash Management](./07-cash-management.md) | Module 8: Accounting & Reporting | [Module 9: Internal Control](./09-internal-control.md) |
+
+---
+
+## Technical Notes
+
+### Components Needed
+
+- `ReportCalendarTracker` — Deadline tracking with reminders
+- `ReconciliationChecker` — Reconciliation status tracker
+- `RetentionGuide` — Document retention lookup
+- `ExecutionReportBuilder` — Standard report generation
+
+### Data Requirements
+
+- Reporting calendar with legal deadlines
+- Reconciliation history
+- Document retention rules
+- Report templates
+
+### API Endpoints
+
+- `GET /api/calendar/reports`
+- `GET /api/reconciliations`
+- `GET /api/retention-rules`
+
+<MarkComplete label="Mark this module complete" />

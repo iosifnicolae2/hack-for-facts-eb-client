@@ -1,0 +1,507 @@
+# Module 6: Working with Budget Data at Scale
+
+## Module Overview
+
+| Property | Value |
+|----------|-------|
+| **Duration** | 45-55 minutes |
+| **Difficulty** | Intermediate-Advanced |
+| **Prerequisites** | [Module 5: Mastering FOIA](/learning/journalist/modules/05-mastering-foia) |
+| **Next Module** | [Module 7: Finding Stories in Budget Data](/learning/journalist/modules/07-finding-stories) |
+
+---
+
+## Learning Objectives
+
+By the end of this module, you will be able to:
+
+- [ ] Handle different data formats (PDF, Excel, CSV, API)
+- [ ] Clean and normalize budget data for analysis
+- [ ] Write basic SQL queries for anomaly detection
+- [ ] Use tools for data visualization and exploration
+
+---
+
+## Introduction
+
+### From Spreadsheets to Stories
+
+> **Key Insight:** SQL skills multiply your investigation capacity 100x. Instead of manually comparing 10 entities, you can analyze 3,000 in seconds.
+
+Budget data comes in many formats and sizes. Mastering data handling transforms you from a reporter who can analyze one entity to an investigator who can find patterns across thousands.
+
+---
+
+## Interactive Element 1: Data Format Navigator
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  📂 DATA FORMAT NAVIGATOR                                    │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Select the format you received to see handling guidance:    │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  ○ PDF tables (official reports, scanned documents)    │  │
+│  │  ● Excel files (FOIA responses, ministry data)         │  │
+│  │  ○ CSV exports (Transparenta.eu, SICAP)                 │  │
+│  │  ○ API/JSON (SICAP API, modern portals)                 │  │
+│  │  ○ Web tables (ministry websites)                       │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  SELECTED: Excel files                                       │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  📊 HANDLING EXCEL FILES                               │  │
+│  │  ──────────────────────────────────────────────────────│  │
+│  │                                                        │  │
+│  │  COMMON PROBLEMS:                                      │  │
+│  │  • Merged cells breaking data structure                │  │
+│  │  • Inconsistent date formats (01.01.2024 vs 2024-01-01)│  │
+│  │  • Numbers stored as text                              │  │
+│  │  • Multiple header rows                                │  │
+│  │  • Romanian characters encoding issues                 │  │
+│  │                                                        │  │
+│  │  CLEANING STEPS:                                       │  │
+│  │  1. Unmerge all cells                                  │  │
+│  │  2. Remove empty rows and columns                      │  │
+│  │  3. Ensure single header row                           │  │
+│  │  4. Convert text-numbers to numbers                    │  │
+│  │  5. Standardize date format to YYYY-MM-DD              │  │
+│  │  6. Save as UTF-8 CSV for further processing           │  │
+│  │                                                        │  │
+│  │  RECOMMENDED TOOLS:                                    │  │
+│  │  • Excel (basic cleaning)                              │  │
+│  │  • OpenRefine (advanced normalization)                 │  │
+│  │  • Python + pandas (automation)                        │  │
+│  │                                                        │  │
+│  │  [ Download Sample Cleaning Script ]                   │  │
+│  │                                                        │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  PDF EXTRACTION TOOLS:                                       │
+│  • Tabula (tabula.technology) — free, works offline         │
+│  • Camelot (Python) — programmatic extraction               │
+│  • Adobe Acrobat — export tables feature                    │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Interactive Element 2: SQL Query Builder
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🔧 SQL QUERY BUILDER FOR BUDGET ANALYSIS                    │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Build investigation queries step by step:                   │
+│                                                              │
+│  WHAT DO YOU WANT TO FIND?                                   │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  ○ Spending outliers (statistical anomalies)           │  │
+│  │  ● Year-over-year changes (unusual growth/decline)     │  │
+│  │  ○ Execution rate problems (low/high execution)        │  │
+│  │  ○ Vendor concentration (same vendors everywhere)      │  │
+│  │  ○ Category imbalances (high personnel ratio)          │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  FILTER BY:                                                  │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ Entity type: [ All                            ▼ ]      │  │
+│  │ County: [ All                                 ▼ ]      │  │
+│  │ Economic code: [ All                          ▼ ]      │  │
+│  │ Time period: [ 2023 ] to [ 2024 ]                      │  │
+│  │ Change threshold: [ 50 ]% (flag if exceeds)            │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  [ Generate Query → ]                                        │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  GENERATED SQL:                                              │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ -- Find institutions with unusual Y/Y spending change │  │
+│  │                                                        │  │
+│  │ SELECT                                                 │  │
+│  │   entity_name,                                         │  │
+│  │   entity_type,                                         │  │
+│  │   county,                                              │  │
+│  │   spending_2023,                                       │  │
+│  │   spending_2024,                                       │  │
+│  │   ROUND(                                               │  │
+│  │     (spending_2024 - spending_2023)                    │  │
+│  │     / NULLIF(spending_2023, 0) * 100,                  │  │
+│  │     1                                                  │  │
+│  │   ) AS pct_change                                      │  │
+│  │ FROM budget_execution                                  │  │
+│  │ WHERE year IN (2023, 2024)                             │  │
+│  │ HAVING ABS(pct_change) > 50                            │  │
+│  │ ORDER BY ABS(pct_change) DESC                          │  │
+│  │ LIMIT 100;                                             │  │
+│  │                                                        │  │
+│  │ -- This query finds entities with >50% change         │  │
+│  │ -- in either direction between 2023 and 2024          │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  EXPLANATION:                                                │
+│  • SELECT: Choose columns to display                         │
+│  • FROM: The data table                                      │
+│  • WHERE: Filter conditions                                  │
+│  • HAVING: Filter on calculated values                       │
+│  • ORDER BY: Sort results                                    │
+│  • LIMIT: Cap result count                                   │
+│                                                              │
+│  [ Copy Query ] [ Run in Database ] [ Download Results ]     │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Interactive Element 3: Anomaly Detection Simulator
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🔍 ANOMALY DETECTION SIMULATOR                              │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Practice identifying anomalies in sample data:              │
+│                                                              │
+│  SAMPLE DATASET: Commune spending on Code 20 (Goods/Services)│
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ Commune          │ Pop.  │ Code 20 │ Per Capita │ Flag │  │
+│  │──────────────────┼───────┼─────────┼────────────┼──────│  │
+│  │ Commune A        │ 5,200 │ 1.2M    │ 231        │      │  │
+│  │ Commune B        │ 4,800 │ 1.1M    │ 229        │      │  │
+│  │ Commune C        │ 5,100 │ 4.8M    │ 941        │ ⚠️   │  │
+│  │ Commune D        │ 4,950 │ 1.0M    │ 202        │      │  │
+│  │ Commune E        │ 5,300 │ 0.3M    │ 57         │ ⚠️   │  │
+│  │ Commune F        │ 5,000 │ 1.15M   │ 230        │      │  │
+│  │ ─────────────────────────────────────────────────────  │  │
+│  │ AVERAGE          │ 5,058 │ 1.59M   │ 315        │      │  │
+│  │ STD DEV          │  167  │ 1.56M   │ 311        │      │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  QUIZ: Which communes are statistical outliers?              │
+│                                                              │
+│  ☐ Commune A (per capita: 231 lei)                           │
+│  ☐ Commune B (per capita: 229 lei)                           │
+│  ☑ Commune C (per capita: 941 lei) — 2+ STD above mean       │
+│  ☐ Commune D (per capita: 202 lei)                           │
+│  ☑ Commune E (per capita: 57 lei) — 0.8 STD below mean       │
+│  ☐ Commune F (per capita: 230 lei)                           │
+│                                                              │
+│  [ Check Answer ]                                            │
+│                                                              │
+│  RESULT: ✓ Correct!                                          │
+│                                                              │
+│  ANALYSIS:                                                   │
+│  • Commune C spends 4x the average — investigate             │
+│    → Possible: Large project, corruption, misclassification  │
+│                                                              │
+│  • Commune E spends only 25% of average — investigate        │
+│    → Possible: Underfunding, data error, efficiency          │
+│                                                              │
+│  RULE OF THUMB:                                              │
+│  • >2 standard deviations from mean = likely outlier         │
+│  • >50% difference from similar entities = investigate       │
+│  • Year-over-year change >30% = needs explanation            │
+│                                                              │
+│  [ Try Another Dataset ] [ Generate Report ]                 │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Core Concept: The Data Pipeline
+
+### From Raw Data to Investigation
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│              THE INVESTIGATION DATA PIPELINE                 │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  STAGE 1: COLLECT                                           │
+│  ┌─────────────────────────────────────────────────────┐    │
+│  │ • Download from Transparenta.eu                     │    │
+│  │ • FOIA responses                                    │    │
+│  │ • SICAP exports                                     │    │
+│  │ • Web scraping (if necessary)                       │    │
+│  └─────────────────────────────────────────────────────┘    │
+│                          │                                  │
+│                          ▼                                  │
+│  STAGE 2: CLEAN                                             │
+│  ┌─────────────────────────────────────────────────────┐    │
+│  │ • Normalize institution names                       │    │
+│  │ • Standardize dates and numbers                     │    │
+│  │ • Handle missing values                             │    │
+│  │ • Merge related datasets                            │    │
+│  │ TOOLS: OpenRefine, Excel, Python/pandas             │    │
+│  └─────────────────────────────────────────────────────┘    │
+│                          │                                  │
+│                          ▼                                  │
+│  STAGE 3: ANALYZE                                           │
+│  ┌─────────────────────────────────────────────────────┐    │
+│  │ • Statistical outliers (mean, std dev)              │    │
+│  │ • Comparative analysis (similar entities)           │    │
+│  │ • Time series (year-over-year)                      │    │
+│  │ • Correlation (spending vs outcomes)                │    │
+│  │ TOOLS: SQL, Pivot tables, R, Python                 │    │
+│  └─────────────────────────────────────────────────────┘    │
+│                          │                                  │
+│                          ▼                                  │
+│  STAGE 4: VISUALIZE                                         │
+│  ┌─────────────────────────────────────────────────────┐    │
+│  │ • Charts for patterns                               │    │
+│  │ • Maps for geographic distribution                  │    │
+│  │ • Dashboards for monitoring                         │    │
+│  │ TOOLS: Datawrapper, Flourish, Tableau Public        │    │
+│  └─────────────────────────────────────────────────────┘    │
+│                          │                                  │
+│                          ▼                                  │
+│  STAGE 5: VERIFY                                            │
+│  ┌─────────────────────────────────────────────────────┐    │
+│  │ • Cross-check with other sources                    │    │
+│  │ • Confirm outliers aren't data errors               │    │
+│  │ • Document methodology                              │    │
+│  │ • Seek explanation before publication               │    │
+│  └─────────────────────────────────────────────────────┘    │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Common Data Problems
+
+```
+DATA PROBLEMS AND SOLUTIONS
+═══════════════════════════
+
+PROBLEM: Inconsistent institution names
+┌─────────────────────────────────────────────────────────────┐
+│ "Primaria Cluj-Napoca"                                      │
+│ "PRIMĂRIA MUNICIPIULUI CLUJ-NAPOCA"                         │
+│ "Primaria mun. Cluj-Napoca"                                 │
+│                                                             │
+│ SOLUTION: Build a normalization dictionary                  │
+│ • Create mapping table with all variations → canonical name │
+│ • Use fuzzy matching to catch new variations                │
+│ • Verify with CUI (unique identifier)                       │
+└─────────────────────────────────────────────────────────────┘
+
+PROBLEM: Missing or incomplete periods
+┌─────────────────────────────────────────────────────────────┐
+│ Entity has data for Q1, Q2, Q4 but not Q3                   │
+│                                                             │
+│ SOLUTION:                                                   │
+│ • Document the gap — don't interpolate                      │
+│ • Request missing data via FOIA                             │
+│ • Note in methodology that Q3 is missing                    │
+│ • Compare only complete periods                             │
+└─────────────────────────────────────────────────────────────┘
+
+PROBLEM: Currency/inflation over time
+┌─────────────────────────────────────────────────────────────┐
+│ 1M lei in 2015 ≠ 1M lei in 2024                            │
+│                                                             │
+│ SOLUTION:                                                   │
+│ • Convert to constant prices using INS deflators            │
+│ • State base year clearly (e.g., "2024 lei")               │
+│ • Alternative: Use percentage of total instead              │
+└─────────────────────────────────────────────────────────────┘
+
+PROBLEM: Classification changes between years
+┌─────────────────────────────────────────────────────────────┐
+│ Code structure changed in 2016, 2019                        │
+│                                                             │
+│ SOLUTION:                                                   │
+│ • Create mapping between old and new codes                  │
+│ • Note breaks in time series                                │
+│ • Be careful comparing across classification changes        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Platform Integration: Export and Analyze
+
+### Guided Activity
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🎯 HANDS-ON: From Export to Analysis                        │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Step 1: Export data from Transparenta.eu                    │
+│          [ Open Entity Analytics → ]                         │
+│          • Select 10 similar communes (same county)          │
+│          • Export to CSV                                     │
+│                                                              │
+│  Step 2: Open in Excel/Google Sheets                         │
+│          • Calculate per-capita spending                     │
+│          • Add column: Total / Population                    │
+│                                                              │
+│  Step 3: Create pivot table                                  │
+│          • Rows: Commune name                                │
+│          • Values: Sum of spending, Per capita               │
+│          • Add conditional formatting (high = red)           │
+│                                                              │
+│  Step 4: Identify outliers                                   │
+│          • Calculate AVERAGE and STDEV                       │
+│          • Flag values > AVERAGE + 2*STDEV                   │
+│                                                              │
+│  Step 5: Document findings                                   │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ Communes analyzed: [ ___ ]                             │  │
+│  │ Average per-capita: [ _______ ] lei                    │  │
+│  │ Standard deviation: [ _______ ] lei                    │  │
+│  │ Outliers found: [ ___ ]                                │  │
+│  │ Highest: [ _________________ ] at [ _______ ] lei/cap  │  │
+│  │ Lowest: [ _________________ ] at [ _______ ] lei/cap   │  │
+│  │ Investigation priority: [ _________________ ]          │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  Pro tip: Save your analysis file with methodology notes    │
+│  for reproducibility and potential publication.              │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Knowledge Check
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  ✍️ QUIZ: Data at Scale                                      │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  1. For extracting tables from PDF files, use:               │
+│                                                              │
+│     ○ Copy-paste only                                        │
+│     ● Tabula or Camelot ✓                                    │
+│     ○ OCR software                                           │
+│     ○ Python only                                            │
+│                                                              │
+│  2. A value is typically a statistical outlier when it's:    │
+│                                                              │
+│     ○ Above the median                                       │
+│     ○ Different from last year                               │
+│     ● More than 2 standard deviations from the mean ✓        │
+│     ○ The highest in the dataset                             │
+│                                                              │
+│  3. When comparing spending across years, you should:        │
+│                                                              │
+│     ○ Use raw numbers                                        │
+│     ● Adjust for inflation using constant prices ✓           │
+│     ○ Only compare adjacent years                            │
+│     ○ Ignore classification changes                          │
+│                                                              │
+│  4. If institution names are inconsistent across datasets:   │
+│                                                              │
+│     ○ Ignore the problem                                     │
+│     ○ Use only the first dataset                             │
+│     ● Create a normalization dictionary using CUI ✓          │
+│     ○ Average the numbers                                    │
+│                                                              │
+│  Score: 4/4  🎉                                              │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Key Takeaways
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  📌 REMEMBER                                                 │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ✓ Clean data before analysis — garbage in, garbage out     │
+│                                                              │
+│  ✓ SQL skills dramatically increase investigation capacity   │
+│                                                              │
+│  ✓ Statistical outliers (>2 std dev) are investigation leads │
+│                                                              │
+│  ✓ Always verify totals and check for classification changes │
+│                                                              │
+│  ✓ Document your methodology — you may need to defend it     │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Call to Action
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🚀 NEXT STEPS                                               │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  [ ] Complete the export-to-analysis exercise                │
+│      → Find at least one outlier in your county              │
+│                                                              │
+│  [ ] Install Tabula for PDF extraction                       │
+│      → Practice on a Ministry of Finance report              │
+│                                                              │
+│  [ ] Create your first pivot table analysis                  │
+│      → Compare per-capita spending across similar entities   │
+│                                                              │
+│                                                              │
+│  [ Mark as Complete & Continue to Module 7 → ]               │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Module Navigation
+
+| Previous | Current | Next |
+|----------|---------|------|
+| [← Module 5: Mastering FOIA](/learning/journalist/modules/05-mastering-foia) | **Module 6: Working with Data at Scale** | [Module 7: Finding Stories in Budget Data →](/learning/journalist/modules/07-finding-stories) |
+
+---
+
+## Technical Notes for Implementation
+
+### Components Needed
+
+1. **DataFormatNavigator** - Format selection with guidance
+2. **SQLQueryBuilder** - Visual query construction
+3. **AnomalySimulator** - Interactive dataset analysis
+4. **DataPipelineDiagram** - Visual pipeline with stages
+5. **ExportAnalysisExercise** - Guided CSV analysis
+
+### Data Requirements
+
+- Sample datasets for practice
+- SQL query templates
+- Statistical calculation helpers
+- Export functionality from Entity Analytics
+
+### External Tool Links
+
+- Tabula: tabula.technology
+- OpenRefine: openrefine.org
+- Datawrapper: datawrapper.de
+- Flourish: flourish.studio
+- Tableau Public: public.tableau.com
+
+### Accessibility
+
+- Code blocks have copy buttons
+- Query builder keyboard navigable
+- Simulator results announced
+- Visual diagrams have text descriptions
+
+<MarkComplete label="Mark this module complete" />

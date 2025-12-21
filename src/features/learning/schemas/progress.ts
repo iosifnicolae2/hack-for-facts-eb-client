@@ -37,6 +37,7 @@ export const LearningOnboardingStateSchema = z.object({
 const LearningGuestProgressSchema = z.object({
   version: z.literal(LEARNING_PROGRESS_SCHEMA_VERSION),
   onboarding: LearningOnboardingStateSchema,
+  activePathId: z.string().nullable(),
   content: z.record(z.string(), LearningContentProgressSchema),
   lastUpdated: z.string().datetime(),
 })
@@ -45,6 +46,7 @@ export function getEmptyLearningGuestProgress(): LearningGuestProgress {
   return {
     version: LEARNING_PROGRESS_SCHEMA_VERSION,
     onboarding: { role: null, depth: null, completedAt: null },
+    activePathId: null,
     content: {},
     lastUpdated: new Date().toISOString(),
   }

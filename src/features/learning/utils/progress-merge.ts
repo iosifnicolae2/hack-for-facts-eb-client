@@ -70,9 +70,13 @@ export function mergeLearningGuestProgress(local: LearningGuestProgress, remote:
     }
   }
 
+  const newerLocal = isoToTime(local.lastUpdated) >= isoToTime(remote.lastUpdated)
+  const activePathId = newerLocal ? (local.activePathId ?? remote.activePathId) : (remote.activePathId ?? local.activePathId)
+
   return {
     version: remote.version,
     onboarding: remote.onboarding.completedAt ? remote.onboarding : local.onboarding,
+    activePathId,
     content: mergedContent,
     lastUpdated: maxIso(local.lastUpdated, remote.lastUpdated),
   }
