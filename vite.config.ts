@@ -1,6 +1,8 @@
 import path from "path";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import mdx from "@mdx-js/rollup";
+import remarkGfm from "remark-gfm";
 import checker from "vite-plugin-checker";
 import tanstackRouter from "@tanstack/router-plugin/vite";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
@@ -53,6 +55,12 @@ export default defineConfig(({ mode }) => ({
     },
     lingui(),
     tanstackRouter(),
+    {
+      enforce: 'pre',
+      ...mdx({
+        remarkPlugins: [remarkGfm],
+      }),
+    },
     react({
       babel: {
         plugins: ["@lingui/babel-plugin-lingui-macro"],
