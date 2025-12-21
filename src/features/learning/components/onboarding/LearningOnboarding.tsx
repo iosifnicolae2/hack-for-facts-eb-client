@@ -1,5 +1,6 @@
 import { t } from '@lingui/core/macro'
 import { useMemo, useState } from 'react'
+import { useNavigate, useParams } from '@tanstack/react-router'
 import {
   ArrowRight,
   Check,
@@ -46,6 +47,8 @@ function StepIndicator({ currentStep }: { readonly currentStep: Step }) {
 }
 
 export function LearningOnboarding() {
+  const { lang } = useParams({ strict: false })
+  const navigate = useNavigate()
   const { saveOnboarding } = useLearningProgress()
   const [step, setStep] = useState<Step>('welcome')
   const [role, setRole] = useState<UserRole | null>(null)
@@ -99,6 +102,7 @@ export function LearningOnboarding() {
   const handleComplete = async () => {
     if (!role || !depth) return
     await saveOnboarding({ role, depth })
+    void navigate({ to: `/${lang}/learning` as '/', replace: true })
   }
 
   return (

@@ -63,6 +63,7 @@ type SaveOnboardingInput = {
 }
 
 type LearningProgressContextValue = {
+  readonly isReady: boolean
   readonly auth: LearningAuthState
   readonly progress: LearningGuestProgress
   readonly getContentProgress: (contentId: string) => LearningContentProgress | undefined
@@ -226,6 +227,7 @@ export function LearningProgressProvider({ children }: { readonly children: Reac
   }, [isEnabled, isSignedIn, user?.id])
 
   const [progress, setProgress] = useState<LearningGuestProgress>(() => getEmptyLearningGuestProgress())
+  const [isReady, setIsReady] = useState(false)
 
   const prevIsAuthenticatedRef = useRef<boolean>(auth.isAuthenticated)
 
@@ -254,17 +256,21 @@ export function LearningProgressProvider({ children }: { readonly children: Reac
   }, [auth.isAuthenticated, auth.userId, recomputeProgress])
 
   useEffect(() => {
-    if (!isLoaded) return
+    if (!isLoaded) {
+      setIsReady(false)
+      return
+    }
 
     const prevIsAuthenticated = prevIsAuthenticatedRef.current
     prevIsAuthenticatedRef.current = auth.isAuthenticated
 
     if (!prevIsAuthenticated && auth.isAuthenticated) {
-      void sync()
+      void sync().then(() => setIsReady(true))
       return
     }
 
     recomputeProgress()
+    setIsReady(true)
   }, [auth.isAuthenticated, isLoaded, recomputeProgress, sync])
 
   const saveContentProgress = useCallback(
@@ -391,6 +397,7 @@ export function LearningProgressProvider({ children }: { readonly children: Reac
 
   const value = useMemo<LearningProgressContextValue>(
     () => ({
+      isReady,
       auth,
       progress,
       getContentProgress,
@@ -403,6 +410,7 @@ export function LearningProgressProvider({ children }: { readonly children: Reac
       clearProgress,
     }),
     [
+      isReady,
       auth,
       progress,
       getContentProgress,

@@ -3,14 +3,11 @@ import { t } from '@lingui/core/macro'
 import {
   CheckCircle2,
   ChevronDown,
-  ChevronRight,
   Circle,
   GraduationCap,
   Home,
   Menu,
   Layers,
-  Settings2,
-  RotateCcw,
   LogIn,
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
@@ -140,7 +137,7 @@ function PathProgress({ percent }: { readonly percent: number }) {
 }
 
 function LearningSidebar({ pathname }: { readonly pathname: string }) {
-  const { progress, setActivePathId, clearProgress, resetOnboarding } = useLearningProgress()
+  const { progress, setActivePathId } = useLearningProgress()
   const { locale, pathId, lessonId } = parseLearningRoute(pathname)
 
   const paths = useMemo(() => getLearningPaths(), [])
@@ -176,32 +173,6 @@ function LearningSidebar({ pathname }: { readonly pathname: string }) {
               <span className="text-[10px] text-muted-foreground mt-0.5">{t`Learning Hub`}</span>
             </div>
           </Link>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-muted">
-                <Settings2 className="h-4 w-4 text-muted-foreground" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 rounded-xl">
-              <DropdownMenuItem
-                onClick={() => void resetOnboarding()}
-                className="flex items-center gap-2.5 py-2 cursor-pointer"
-              >
-                <RotateCcw className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">{t`Restart Onboarding`}</span>
-              </DropdownMenuItem>
-              {import.meta.env.DEV && (
-                <DropdownMenuItem
-                  onClick={clearProgress}
-                  className="flex items-center gap-2.5 py-2 text-destructive cursor-pointer"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                  <span className="text-sm">{t`Wipe All Data`}</span>
-                </DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
 
         {/* Path Selector */}

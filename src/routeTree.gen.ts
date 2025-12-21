@@ -32,6 +32,7 @@ import { Route as ClassificationsEconomicIndexRouteImport } from './routes/class
 import { Route as LangLearningIndexRouteImport } from './routes/$lang/learning/index'
 import { Route as ClassificationsFunctionalCodeRouteImport } from './routes/classifications/functional/$code'
 import { Route as ClassificationsEconomicCodeRouteImport } from './routes/classifications/economic/$code'
+import { Route as LangLearningOnboardingRouteImport } from './routes/$lang/learning/onboarding'
 import { Route as LangLearningPathIdIndexRouteImport } from './routes/$lang/learning/$pathId/index'
 import { Route as LangLearningCertificatesIdRouteImport } from './routes/$lang/learning/certificates.$id'
 import { Route as LangLearningPathIdModuleIdLessonIdRouteImport } from './routes/$lang/learning/$pathId/$moduleId/$lessonId'
@@ -219,6 +220,11 @@ const ClassificationsEconomicCodeRoute =
   } as any).lazy(() =>
     import('./routes/classifications/economic/$code.lazy').then((d) => d.Route),
   )
+const LangLearningOnboardingRoute = LangLearningOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => LangLearningRouteRoute,
+} as any)
 const LangLearningPathIdIndexRoute = LangLearningPathIdIndexRouteImport.update({
   id: '/$pathId/',
   path: '/$pathId/',
@@ -260,6 +266,7 @@ export interface FileRoutesByFullPath {
   '/charts/new': typeof ChartsNewLazyRoute
   '/research/employees-data': typeof ResearchEmployeesDataLazyRoute
   '/charts': typeof ChartsIndexLazyRoute
+  '/$lang/learning/onboarding': typeof LangLearningOnboardingRoute
   '/classifications/economic/$code': typeof ClassificationsEconomicCodeRoute
   '/classifications/functional/$code': typeof ClassificationsFunctionalCodeRoute
   '/$lang/learning/': typeof LangLearningIndexRoute
@@ -291,6 +298,7 @@ export interface FileRoutesByTo {
   '/charts/new': typeof ChartsNewLazyRoute
   '/research/employees-data': typeof ResearchEmployeesDataLazyRoute
   '/charts': typeof ChartsIndexLazyRoute
+  '/$lang/learning/onboarding': typeof LangLearningOnboardingRoute
   '/classifications/economic/$code': typeof ClassificationsEconomicCodeRoute
   '/classifications/functional/$code': typeof ClassificationsFunctionalCodeRoute
   '/$lang/learning': typeof LangLearningIndexRoute
@@ -326,6 +334,7 @@ export interface FileRoutesById {
   '/charts/new': typeof ChartsNewLazyRoute
   '/research/employees-data': typeof ResearchEmployeesDataLazyRoute
   '/charts/': typeof ChartsIndexLazyRoute
+  '/$lang/learning/onboarding': typeof LangLearningOnboardingRoute
   '/classifications/economic/$code': typeof ClassificationsEconomicCodeRoute
   '/classifications/functional/$code': typeof ClassificationsFunctionalCodeRoute
   '/$lang/learning/': typeof LangLearningIndexRoute
@@ -362,6 +371,7 @@ export interface FileRouteTypes {
     | '/charts/new'
     | '/research/employees-data'
     | '/charts'
+    | '/$lang/learning/onboarding'
     | '/classifications/economic/$code'
     | '/classifications/functional/$code'
     | '/$lang/learning/'
@@ -393,6 +403,7 @@ export interface FileRouteTypes {
     | '/charts/new'
     | '/research/employees-data'
     | '/charts'
+    | '/$lang/learning/onboarding'
     | '/classifications/economic/$code'
     | '/classifications/functional/$code'
     | '/$lang/learning'
@@ -427,6 +438,7 @@ export interface FileRouteTypes {
     | '/charts/new'
     | '/research/employees-data'
     | '/charts/'
+    | '/$lang/learning/onboarding'
     | '/classifications/economic/$code'
     | '/classifications/functional/$code'
     | '/$lang/learning/'
@@ -673,6 +685,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClassificationsEconomicCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$lang/learning/onboarding': {
+      id: '/$lang/learning/onboarding'
+      path: '/onboarding'
+      fullPath: '/$lang/learning/onboarding'
+      preLoaderRoute: typeof LangLearningOnboardingRouteImport
+      parentRoute: typeof LangLearningRouteRoute
+    }
     '/$lang/learning/$pathId/': {
       id: '/$lang/learning/$pathId/'
       path: '/$pathId'
@@ -698,6 +717,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface LangLearningRouteRouteChildren {
+  LangLearningOnboardingRoute: typeof LangLearningOnboardingRoute
   LangLearningIndexRoute: typeof LangLearningIndexRoute
   LangLearningCertificatesIdRoute: typeof LangLearningCertificatesIdRoute
   LangLearningPathIdIndexRoute: typeof LangLearningPathIdIndexRoute
@@ -705,6 +725,7 @@ interface LangLearningRouteRouteChildren {
 }
 
 const LangLearningRouteRouteChildren: LangLearningRouteRouteChildren = {
+  LangLearningOnboardingRoute: LangLearningOnboardingRoute,
   LangLearningIndexRoute: LangLearningIndexRoute,
   LangLearningCertificatesIdRoute: LangLearningCertificatesIdRoute,
   LangLearningPathIdIndexRoute: LangLearningPathIdIndexRoute,
