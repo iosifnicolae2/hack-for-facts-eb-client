@@ -1,0 +1,204 @@
+---
+title: "Authority Hierarchy"
+durationMinutes: 10
+concept: "The ordonator system (OPC/OSC/OTC)"
+---
+
+# Authority Hierarchy
+
+## Concept Introduction
+
+Romania's public finance system operates through a three-tier structure of budget authority: Ordonator Principal de Credite (OPC), Ordonator Secundar de Credite (OSC), and Ordonator Terțiar de Credite (OTC). Understanding where you fit in this hierarchy is essential — it determines what you can authorize, to whom you report, and who reports to you.
+
+This isn't just organizational trivia. Your position in the hierarchy defines your legal authority and accountability.
+
+> **Key Insight:** The ordonator hierarchy defines both your authority (what you can authorize) and your accountability (to whom you report). Know your position — it determines your legal standing.
+
+---
+
+## Interactive Element: Hierarchy Navigator
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                   ORDONATOR DE CREDITE HIERARCHY                        │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│   Click each level to see responsibilities and authority scope          │
+│                                                                         │
+│                    ┌─────────────────────────┐                          │
+│                    │   ORDONATOR PRINCIPAL   │                          │
+│                    │     DE CREDITE (OPC)    │                          │
+│                    │                         │                          │
+│                    │  • Ministers            │                          │
+│                    │  • Mayors (Primari)     │                          │
+│                    │  • County Council       │                          │
+│                    │    Presidents           │                          │
+│                    │                         │                          │
+│                    │  [Full budget authority]│                          │
+│                    └───────────┬─────────────┘                          │
+│                                │                                        │
+│              ┌─────────────────┴─────────────────┐                      │
+│              ▼                                   ▼                      │
+│   ┌─────────────────────────┐     ┌─────────────────────────┐          │
+│   │   ORDONATOR SECUNDAR    │     │   ORDONATOR SECUNDAR    │          │
+│   │     DE CREDITE (OSC)    │     │     DE CREDITE (OSC)    │          │
+│   │                         │     │                         │          │
+│   │  • ISJ (Education)      │     │  • DSP (Health)         │          │
+│   │  • Regional agencies    │     │  • Prefectura           │          │
+│   │  • Deconcentrated       │     │  • Sectoral agencies    │          │
+│   │    services             │     │                         │          │
+│   │                         │     │                         │          │
+│   │  [Coordinates OTCs]     │     │  [Coordinates OTCs]     │          │
+│   └───────────┬─────────────┘     └───────────┬─────────────┘          │
+│               │                               │                         │
+│      ┌────────┴────────┐             ┌────────┴────────┐                │
+│      ▼                 ▼             ▼                 ▼                │
+│   ┌──────────┐   ┌──────────┐   ┌──────────┐   ┌──────────┐            │
+│   │   OTC    │   │   OTC    │   │   OTC    │   │   OTC    │            │
+│   │  School  │   │  School  │   │ Hospital │   │  Agency  │            │
+│   │          │   │          │   │          │   │          │            │
+│   │[Executes │   │[Executes │   │[Executes │   │[Executes │            │
+│   │ budget]  │   │ budget]  │   │ budget]  │   │ budget]  │            │
+│   └──────────┘   └──────────┘   └──────────┘   └──────────┘            │
+│                                                                         │
+│   ════════════════════════════════════════════════════════════════     │
+│                                                                         │
+│   YOUR POSITION: [Select from dropdown ▼]                               │
+│                                                                         │
+│   • OPC (e.g., Mayor, Minister)                                        │
+│   • OSC (e.g., ISJ Director, DSP Director)                             │
+│   • OTC (e.g., School Principal, Hospital Manager)                     │
+│   • Support Staff (Budget officer, Accountant)                         │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification
+
+```typescript
+interface HierarchyNavigatorProps {
+  readonly levels: ReadonlyArray<{
+    id: 'OPC' | 'OSC' | 'OTC'
+    title: string
+    fullName: string
+    examples: string[]
+    reportsTo: string
+    authority: {
+      budgetApproval: boolean
+      creditTransfers: boolean
+      commitmentAuthority: boolean
+      paymentAuthorization: boolean
+    }
+    responsibilities: string[]
+    legalBasis: string
+  }>
+  readonly onPositionSelect: (position: string) => void
+}
+
+interface HierarchyNavigatorState {
+  selectedLevel: string | null
+  selectedPosition: string | null
+  expandedDetails: boolean
+}
+```
+
+**Behavior:**
+- Organizational chart visualization with three tiers
+- Click on any level to see detailed information
+- Dropdown to select user's own position
+- Upon selection: show personalized reporting relationships
+- Animated highlighting of selected level
+- Lines show reporting relationships
+
+**Accessibility:**
+- Tree navigation follows ARIA tree pattern
+- Keyboard navigation: arrow keys for tree, Enter for selection
+- Level details announced on focus
+- Visual hierarchy conveyed through text as well
+
+---
+
+## Core Explanation
+
+### The Three Tiers Explained
+
+#### Ordonator Principal de Credite (OPC) — Primary Level
+
+**Who:** Ministers, Mayors (Primari), County Council Presidents (Președinți CJ)
+
+**Authority:**
+- Approve and modify the institution's overall budget
+- Authorize credit transfers between budget chapters
+- Full commitment and payment authority within legal limits
+- Delegate authority to OSC and OTC levels
+
+**Reports to:** Parliament (for state budget), Local/County Council (for local budgets)
+
+#### Ordonator Secundar de Credite (OSC) — Secondary Level
+
+**Who:** County School Inspectorates (ISJ), Public Health Directorates (DSP), Prefectures, deconcentrated services
+
+**Authority:**
+- Distribute credits received from OPC to subordinate OTCs
+- Coordinate and monitor OTC budget execution
+- Limited credit transfer authority (within approved limits)
+- Submit consolidated reports to OPC
+
+**Reports to:** Respective OPC (Ministry, Mayor, County Council President)
+
+#### Ordonator Terțiar de Credite (OTC) — Tertiary Level
+
+**Who:** Individual schools, hospitals, cultural institutions, local agencies
+
+**Authority:**
+- Execute budget within approved allocations
+- Authorize payments up to approved limits
+- Cannot transfer credits between chapters
+- Prepare and submit execution reports to OSC
+
+**Reports to:** Respective OSC
+
+### Authority Flow
+
+| Action | OPC | OSC | OTC |
+|--------|-----|-----|-----|
+| Approve annual budget | ✓ | ✗ | ✗ |
+| Transfer between chapters | ✓ | Limited | ✗ |
+| Commit expenditures | ✓ | ✓ | ✓ |
+| Authorize payments | ✓ | ✓ | ✓ |
+| Report to higher level | To Parliament/Council | To OPC | To OSC |
+
+### Delegation and Its Limits
+
+An OPC can delegate authority to OSC and OTC levels, but:
+
+- Delegation must be in writing
+- Delegation doesn't transfer liability — both delegator and delegate can be held accountable
+- Certain decisions cannot be delegated (e.g., approval of the annual budget)
+- Delegation can be revoked at any time
+
+---
+
+## Practice
+
+<Quiz
+  id="hierarchy-quiz"
+  question="The principal of a public school (OTC) wants to transfer funds from 'Goods and Services' to 'Capital Investments' within their budget. Can they do this?"
+  options={[
+    { id: "a", text: "Yes — they control their own budget", isCorrect: false },
+    { id: "b", text: "No — OTCs cannot transfer credits between chapters; they must request this from their OSC or OPC", isCorrect: true },
+    { id: "c", text: "Yes, but only with CFPP approval", isCorrect: false },
+    { id: "d", text: "No — only Ministers can transfer credits", isCorrect: false }
+  ]}
+  explanation="OTCs (Tertiary Credit Authorizers) execute budgets but cannot transfer credits between budget chapters. They must request such transfers through their supervisory OSC, who may then request approval from the OPC if needed. This ensures proper oversight of budget modifications."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** The three-tier ordonator hierarchy (OPC → OSC → OTC) defines your authority and accountability. Know your position: OPCs approve budgets, OSCs coordinate, OTCs execute. Your authority to transfer credits, commit expenditures, and authorize payments depends on your tier.
+
+---
+
+<MarkComplete label="Mark Lesson Complete" />

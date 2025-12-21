@@ -47,7 +47,7 @@ const LearningPathDefinitionSchema = z.object({
 
 type RawPathModule = { readonly default: unknown }
 
-const pathModules = import.meta.glob('/src/content/learning/paths/*.json', { eager: true }) as Record<string, RawPathModule>
+const pathModules: Record<string, RawPathModule> = import.meta.glob('/src/content/learning/paths/*.json', { eager: true })
 
 function buildLessonSignature(lesson: LearningLessonDefinition): string {
   return JSON.stringify({

@@ -1,0 +1,196 @@
+---
+title: "Six Budget Principles"
+durationMinutes: 10
+concept: "Legea 500/2002 principles"
+---
+
+# Six Budget Principles
+
+## Concept Introduction
+
+Romania's public finance system is built on six foundational principles, legally mandated by Legea 500/2002 (the Public Finance Law). These aren't abstract ideals — they're legal requirements that govern every budget decision you make.
+
+Violating these principles isn't just poor practice; it can trigger personal liability. Understanding them is essential for both compliance and excellence in public administration.
+
+> **Key Insight:** The six principles aren't optional guidelines — they're legally mandated requirements. Every budget decision should be tested against them.
+
+---
+
+## Interactive Element: Principles Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                 SIX PRINCIPLES OF PUBLIC FINANCE                        │
+│                      (Legea 500/2002, Cap. II)                          │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│   Click each principle to learn more:                                   │
+│                                                                         │
+│   ┌───────────────────────────────────────────────────────────────┐    │
+│   │  1. 📢 PUBLICITATE (Publicity)                    Art. 9      │    │
+│   │     Budget information must be made public                     │    │
+│   │     "Citizens have the right to know"                          │    │
+│   └───────────────────────────────────────────────────────────────┘    │
+│   ┌───────────────────────────────────────────────────────────────┐    │
+│   │  2. 📦 UNITATE (Unity)                            Art. 10     │    │
+│   │     All revenues and expenses in one budget                    │    │
+│   │     "No parallel shadow budgets"                               │    │
+│   └───────────────────────────────────────────────────────────────┘    │
+│   ┌───────────────────────────────────────────────────────────────┐    │
+│   │  3. ➕ UNIVERSALITATE (Universality)              Art. 8      │    │
+│   │     Gross recording of all transactions                        │    │
+│   │     "No netting of revenues and expenses"                      │    │
+│   └───────────────────────────────────────────────────────────────┘    │
+│   ┌───────────────────────────────────────────────────────────────┐    │
+│   │  4. 📅 ANUALITATE (Annuality)                     Art. 11     │    │
+│   │     Budget approved and executed yearly                        │    │
+│   │     "Respect fiscal year boundaries"                           │    │
+│   └───────────────────────────────────────────────────────────────┘    │
+│   ┌───────────────────────────────────────────────────────────────┐    │
+│   │  5. 🎯 SPECIALIZARE (Specificity)                 Art. 12     │    │
+│   │     Spend only for approved purposes                           │    │
+│   │     "Classification determines eligibility"                    │    │
+│   └───────────────────────────────────────────────────────────────┘    │
+│   ┌───────────────────────────────────────────────────────────────┐    │
+│   │  6. ⚖️ LEGALITATE (Legality)                      Art. 14(2)  │    │
+│   │     All actions must have legal basis                          │    │
+│   │     "No payment without legal authorization"                   │    │
+│   └───────────────────────────────────────────────────────────────┘    │
+│                                                                         │
+│   Progress: [●●●●○○] 4/6 principles explored                           │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification
+
+```typescript
+interface PrinciplesDiagramProps {
+  readonly principles: ReadonlyArray<{
+    id: string
+    number: number
+    icon: string
+    nameRo: string
+    nameEn: string
+    article: string
+    summary: string
+    fullExplanation: string
+    practicalImplication: string
+    violations: string[]
+    testQuestion: string
+  }>
+  readonly onAllExplored: () => void
+}
+
+interface PrinciplesDiagramState {
+  expandedPrinciple: string | null
+  exploredPrinciples: Set<string>
+  isComplete: boolean
+}
+```
+
+**Behavior:**
+- Six principles displayed as expandable accordion items
+- Click expands to show full explanation and practical implications
+- Progress indicator tracks viewed principles
+- Upon viewing all 6: celebration + "Principles mastered!" badge
+- Each principle shows its legal article reference
+- Option to test understanding with quick question
+
+**Accessibility:**
+- Accordion follows ARIA accordion pattern
+- Expand/collapse via keyboard
+- Current state announced to screen readers
+- Focus management on expand
+
+---
+
+## Core Explanation
+
+### The Six Principles in Practice
+
+#### 1. Publicitate (Publicity) — Art. 9 📢
+
+**Requirement:** Proactively disclose budget information to the public.
+
+**Practical implication:** Budget approval decisions, execution reports, and major contracts must be published. Citizens have the right to request any budget information under Law 544/2001.
+
+**Violation example:** Refusing to publish budget execution reports or claiming they're "internal documents."
+
+#### 2. Unitate (Unity) — Art. 10 📦
+
+**Requirement:** All revenues and expenses must be recorded in a single budget.
+
+**Practical implication:** You cannot maintain separate "funds" or "accounts" outside the official budget. All money flows through one consolidated document.
+
+**Violation example:** Keeping certain revenues (like donations or sponsorships) in a separate, unreported account.
+
+#### 3. Universalitate (Universality) — Art. 8 ➕
+
+**Requirement:** Record all transactions at their gross (full) amounts.
+
+**Practical implication:** If you receive 100,000 RON and spend 80,000 on collection costs, you record 100,000 revenue AND 80,000 expense — not just 20,000 net.
+
+**Violation example:** Recording only net amounts or "netting" revenues against related expenses.
+
+#### 4. Anualitate (Annuality) — Art. 11 📅
+
+**Requirement:** The budget is approved for one fiscal year (January 1 - December 31).
+
+**Practical implication:** Commitments must be made within the budget year. Multi-year projects require special procedures. Funds don't automatically carry over.
+
+**Violation example:** Committing funds in December for work that won't happen until the next year without proper multi-year authorization.
+
+#### 5. Specializare (Specificity) — Art. 12 🎯
+
+**Requirement:** Money can only be spent for the purposes specified in the budget classification.
+
+**Practical implication:** If funds are allocated for "training" (economic code 20.13), you cannot use them for "office supplies" (20.01). Classification codes are legally binding.
+
+**Violation example:** Using personnel budget (Chapter 10) to cover goods and services (Chapter 20) without proper transfer approval.
+
+#### 6. Legalitate (Legality) — Art. 14(2) ⚖️
+
+**Requirement:** Every payment must have a legal basis — a law, contract, or regulation that authorizes it.
+
+**Practical implication:** Before approving any payment, you must be able to point to the specific legal provision that allows it. No legal basis = no payment.
+
+**Violation example:** Paying bonuses without a regulation or collective agreement that authorizes them.
+
+---
+
+## Practice
+
+<Quiz
+  id="principles-quiz"
+  question="A department head wants to record a donation of office equipment without showing it in the budget ('it's not public money'). Which principle does this violate?"
+  options={[
+    { id: "a", text: "Publicitate (Publicity) — because it's not disclosed", isCorrect: false },
+    { id: "b", text: "Unitate (Unity) — because all revenues must be in one budget", isCorrect: true },
+    { id: "c", text: "Specializare (Specificity) — because it's not classified", isCorrect: false },
+    { id: "d", text: "No principle is violated — donations are private", isCorrect: false }
+  ]}
+  explanation="This violates Unitate (Unity): ALL revenues, including in-kind donations, must be recorded in the official budget. There cannot be 'shadow' assets or parallel accounting. Once received by a public institution, it becomes public property and must be properly recorded."
+/>
+
+<Quiz
+  id="legalitate-quiz"
+  question="A colleague argues that since they have budget allocation for 'miscellaneous expenses,' they can use it for anything. Are they correct?"
+  options={[
+    { id: "a", text: "Yes — 'miscellaneous' is flexible by definition", isCorrect: false },
+    { id: "b", text: "No — even 'miscellaneous' has a specific classification code and defined eligible expenses", isCorrect: true },
+    { id: "c", text: "Yes, but only with supervisor approval", isCorrect: false },
+    { id: "d", text: "It depends on the amount", isCorrect: false }
+  ]}
+  explanation="This violates Specializare (Specificity). Even 'miscellaneous' budget lines have specific classification codes with defined eligible expenses. The name doesn't create unlimited flexibility — the classification code determines what can be funded."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** The six principles are your legal framework: Publicitate (disclose), Unitate (one budget), Universalitate (gross recording), Anualitate (fiscal year), Specializare (classification matters), and Legalitate (legal basis required). Test every decision against them.
+
+---
+
+<MarkComplete label="Mark Lesson Complete" />

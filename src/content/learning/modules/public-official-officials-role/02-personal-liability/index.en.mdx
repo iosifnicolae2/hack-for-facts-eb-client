@@ -1,0 +1,214 @@
+---
+title: "Personal Liability"
+durationMinutes: 10
+concept: "Four types of liability"
+---
+
+# Personal Liability
+
+## Concept Introduction
+
+As a public official, you're not just accountable in an abstract sense — you face real, personal consequences for how you manage public funds. Unlike private sector employees who typically face only job loss for poor decisions, public officials can face financial liability, administrative sanctions, criminal prosecution, and political consequences.
+
+Understanding these liability types isn't meant to frighten you — it's meant to help you protect yourself by following proper procedures.
+
+> **Key Insight:** Personal liability is real: you may be required to repay public funds from your own pocket if you authorize illegal payments. Following proper procedures (ALOP, CFPP visa) is your protection.
+
+---
+
+## Interactive Element: Liability Matrix
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                      PERSONAL LIABILITY MATRIX                          │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│   Click each liability type to see examples and mitigation strategies  │
+│                                                                         │
+│   ┌─────────────┬──────────────────┬─────────────────────────────────┐ │
+│   │ LIABILITY   │ RISK LEVEL       │ EXAMPLE TRIGGER                 │ │
+│   │ TYPE        │                  │                                 │ │
+│   ├─────────────┼──────────────────┼─────────────────────────────────┤ │
+│   │ 💰 FINANCIAL│ ████████░░ HIGH  │ Approving payment without       │ │
+│   │             │                  │ legal basis                     │ │
+│   ├─────────────┼──────────────────┼─────────────────────────────────┤ │
+│   │ 📋 ADMINIS- │ ██████░░░░ MED   │ Missing reporting deadlines     │ │
+│   │    TRATIVE  │                  │                                 │ │
+│   ├─────────────┼──────────────────┼─────────────────────────────────┤ │
+│   │ ⚖️ CRIMINAL │ ████░░░░░░ LOW*  │ Embezzlement, abuse of office   │ │
+│   │             │                  │ (*severe if triggered)          │ │
+│   ├─────────────┼──────────────────┼─────────────────────────────────┤ │
+│   │ 🏛️ POLITICAL│ ██████░░░░ MED   │ Poor execution, public scandal  │ │
+│   │             │                  │                                 │ │
+│   └─────────────┴──────────────────┴─────────────────────────────────┘ │
+│                                                                         │
+│   ═══════════════════════════════════════════════════════════════════  │
+│                                                                         │
+│   SELECTED: FINANCIAL LIABILITY                                        │
+│   ────────────────────────────────                                     │
+│                                                                         │
+│   Personal financial liability means you may be required to            │
+│   repay public funds from your own pocket if you authorize             │
+│   illegal or improper payments.                                        │
+│                                                                         │
+│   TRIGGERS:                                                            │
+│   ✗ Approving payment without legal basis                              │
+│   ✗ Exceeding budget allocations                                       │
+│   ✗ Bypassing required approval procedures                             │
+│   ✗ Ignoring CFPP refusal                                              │
+│                                                                         │
+│   MITIGATION STRATEGIES:                                               │
+│   ✓ Always verify legal basis before approval                          │
+│   ✓ Obtain CFPP visa before commitment                                 │
+│   ✓ Document all decisions in writing                                  │
+│   ✓ Follow the ALOP procedure strictly                                 │
+│                                                                         │
+│   Legal basis: Legea 500/2002, Art. 14(2); OG 119/1999                 │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification
+
+```typescript
+interface LiabilityMatrixProps {
+  readonly liabilityTypes: ReadonlyArray<{
+    id: 'financial' | 'administrative' | 'criminal' | 'political'
+    icon: string
+    name: string
+    riskLevel: number // 1-10
+    triggers: string[]
+    consequences: string[]
+    mitigationStrategies: string[]
+    legalBasis: string
+    caseExample?: {
+      description: string
+      outcome: string
+      lesson: string
+    }
+  }>
+  readonly onTypeSelect: (typeId: string) => void
+}
+
+interface LiabilityMatrixState {
+  selectedType: string | null
+  viewedTypes: Set<string>
+  isComplete: boolean
+}
+```
+
+**Behavior:**
+- Matrix displays all four types with risk indicators
+- Click on row expands detailed view below table
+- Risk level shown as visual bar (color: green/yellow/red)
+- View all four types to mark section complete
+- Each type includes real mitigation strategies
+
+**Accessibility:**
+- Table uses proper `<table>` semantics
+- Row selection via keyboard (arrow keys)
+- Details announced on selection
+- Risk level conveyed via text, not just color
+
+---
+
+## Core Explanation
+
+### The Four Types of Liability
+
+#### 1. Financial Liability 💰
+
+**The most immediate risk.** If you authorize payments without proper legal basis, you may be personally required to repay those funds.
+
+| Situation | Risk |
+|-----------|------|
+| Payment without CFPP visa | Personal repayment |
+| Exceeding approved budget | Personal repayment |
+| Payments for unauthorized purposes | Personal repayment |
+
+**Protection:** Always obtain CFPP visa, document legal basis, follow ALOP procedure.
+
+#### 2. Administrative Liability 📋
+
+**Disciplinary consequences** for procedural violations that don't necessarily involve financial loss.
+
+| Situation | Consequences |
+|-----------|--------------|
+| Missing reporting deadlines | Written warning, reprimand |
+| Incomplete documentation | Salary reduction |
+| Repeated minor violations | Demotion, dismissal |
+
+**Protection:** Know your deadlines, maintain complete records, follow procedures consistently.
+
+#### 3. Criminal Liability ⚖️
+
+**The most severe.** Intentional misconduct can result in prosecution.
+
+| Crime | Consequence |
+|-------|-------------|
+| Embezzlement (delapidare) | Prison, asset seizure |
+| Abuse of office (abuz în serviciu) | Prison, employment ban |
+| Forgery in official documents | Prison |
+
+**Protection:** Never cross the line between poor judgment and intentional wrongdoing. When in doubt, consult legal counsel.
+
+#### 4. Political Liability 🏛️
+
+**Career consequences** even when no laws are broken.
+
+| Situation | Consequences |
+|-----------|--------------|
+| Poor budget execution | Loss of position |
+| Public scandal | Forced resignation |
+| Loss of confidence | Non-renewal of mandate |
+
+**Protection:** Maintain execution rates, communicate proactively, document decisions.
+
+### The CFPP Visa: Your Shield
+
+The Control Financiar Preventiv Propriu (CFPP) visa is your most important protection. When a CFPP officer signs off, they confirm:
+
+- Legal basis exists for the transaction
+- Budget allocation is available
+- Proper documentation is in place
+- Classification codes are correct
+
+**Critical rule:** Never proceed without CFPP visa, even under pressure.
+
+---
+
+## Practice
+
+<Quiz
+  id="liability-type-quiz"
+  question="You approve a payment that later turns out to have been unnecessary (the service wasn't actually delivered). What type of liability are you most likely facing?"
+  options={[
+    { id: "a", text: "Criminal liability — this is fraud", isCorrect: false },
+    { id: "b", text: "Financial liability — you may need to repay the amount", isCorrect: true },
+    { id: "c", text: "Political liability only — it's just a mistake", isCorrect: false },
+    { id: "d", text: "No liability — you didn't intend any wrongdoing", isCorrect: false }
+  ]}
+  explanation="This is financial liability: you authorized payment without proper verification that the service was delivered. Criminal liability requires intent (fraud). But lack of intent doesn't eliminate financial liability — you may still be required to repay. The lesson: verify delivery before authorizing payment."
+/>
+
+<Quiz
+  id="cfpp-protection-quiz"
+  question="Your supervisor pressures you to approve a payment without waiting for the CFPP visa because 'it's urgent.' What should you do?"
+  options={[
+    { id: "a", text: "Comply — supervisors take responsibility for their orders", isCorrect: false },
+    { id: "b", text: "Refuse and document the pressure — the CFPP visa requirement is non-negotiable", isCorrect: true },
+    { id: "c", text: "Approve it this once but note your objection", isCorrect: false },
+    { id: "d", text: "Ask for the request in writing, then comply", isCorrect: false }
+  ]}
+  explanation="The CFPP visa is your protection — bypassing it exposes YOU to personal financial liability, regardless of who ordered it. Document the pressure, refuse to proceed without proper authorization, and if necessary, escalate. Written orders from supervisors don't transfer liability for illegal payments."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** You face four types of personal liability: financial (repay from your pocket), administrative (disciplinary action), criminal (prosecution for intentional wrongdoing), and political (career consequences). Your best protection is rigorous procedure — especially the CFPP visa.
+
+---
+
+<MarkComplete label="Mark Lesson Complete" />

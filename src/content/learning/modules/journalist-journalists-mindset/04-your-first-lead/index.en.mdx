@@ -1,0 +1,230 @@
+---
+title: "Your First Lead"
+durationMinutes: 8
+concept: "Platform exploration and practice"
+---
+
+# Your First Lead
+
+## Concept Introduction
+
+Theory is important, but investigation skills are built through practice. In this lesson, you'll apply everything you've learned — follow the money, ethical considerations, the investigation funnel — to find your first real lead.
+
+A lead isn't a story. It's a starting point worth pursuing. Your goal is to find something unusual, document what you see, and formulate the questions you'd need to answer to move it down the investigation funnel.
+
+> **Key Insight:** The best way to learn investigative journalism is to investigate. Start small, document carefully, and build your skills with each lead you pursue.
+
+---
+
+## Interactive Element: Guided Lead Discovery
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🎯 HANDS-ON: Find Your First Lead                           │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Follow these steps to discover a potential investigation    │
+│  lead using real budget data:                                │
+│                                                              │
+│  ════════════════════════════════════════════════════════    │
+│                                                              │
+│  STEP 1: Open the Budget Explorer                            │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ [ Open Budget Explorer → ]                             │  │
+│  └────────────────────────────────────────────────────────┘  │
+│  Look at the treemap overview. What category dominates?      │
+│  What categories are surprisingly small?                     │
+│                                                              │
+│  ────────────────────────────────────────────────────────    │
+│                                                              │
+│  STEP 2: Switch to "Execution Rate" View                     │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ In the view dropdown, select "Execution Rate"          │  │
+│  └────────────────────────────────────────────────────────┘  │
+│  Which categories have execution below 70%?                  │
+│  These are your first potential leads.                       │
+│                                                              │
+│  ────────────────────────────────────────────────────────    │
+│                                                              │
+│  STEP 3: Drill Into a Low-Execution Category                 │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ Click on a category with less than 70% execution       │  │
+│  └────────────────────────────────────────────────────────┘  │
+│  Find specific institutions or projects with low execution.  │
+│  Note the exact figures.                                     │
+│                                                              │
+│  ────────────────────────────────────────────────────────    │
+│                                                              │
+│  STEP 4: Document Your Finding                               │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ Category: [ __________________________________ ]        │  │
+│  │ Entity/Institution: [ ________________________ ]        │  │
+│  │ Execution Rate: [ _______ ] %                          │  │
+│  │ Planned Amount: [ ______________ ] RON                 │  │
+│  │ Actual Spent: [ ______________ ] RON                   │  │
+│  │ Gap: [ ______________ ] RON                            │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  ────────────────────────────────────────────────────────    │
+│                                                              │
+│  STEP 5: Formulate Investigation Questions                   │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ 1. Why wasn't this money spent?                        │  │
+│  │    [ ______________________________________________ ]   │  │
+│  │                                                        │  │
+│  │ 2. What documents would explain this?                  │  │
+│  │    [ ______________________________________________ ]   │  │
+│  │                                                        │  │
+│  │ 3. Who would I need to contact?                        │  │
+│  │    [ ______________________________________________ ]   │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  ════════════════════════════════════════════════════════    │
+│                                                              │
+│  ✅ REMINDER: This is a LEAD, not a story yet.               │
+│                                                              │
+│  To move from anomaly to story, you need:                    │
+│  • More data to confirm the pattern                          │
+│  • Documents to understand why                               │
+│  • Sources to provide context                                │
+│                                                              │
+│  [ Save Lead to Investigation Notes → ]                      │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification
+
+```typescript
+interface GuidedLeadDiscoveryProps {
+  readonly steps: ReadonlyArray<{
+    id: string
+    title: string
+    instruction: string
+    action?: {
+      type: 'link' | 'input' | 'select'
+      target?: string
+      placeholder?: string
+    }
+    hint?: string
+  }>
+  readonly documentationFields: ReadonlyArray<{
+    id: string
+    label: string
+    type: 'text' | 'number' | 'percentage' | 'currency'
+    required: boolean
+  }>
+  readonly onSaveLead: (leadData: LeadDocumentation) => void
+}
+
+interface LeadDocumentation {
+  category: string
+  entity: string
+  executionRate: number
+  plannedAmount: number
+  actualSpent: number
+  gap: number
+  questions: string[]
+  timestamp: Date
+}
+
+interface GuidedLeadDiscoveryState {
+  currentStep: number
+  completedSteps: Set<number>
+  formData: Partial<LeadDocumentation>
+  isFormValid: boolean
+}
+```
+
+**Behavior:**
+- Steps can be completed in order or jumped between
+- Budget Explorer opens in new tab/modal when button clicked
+- Form fields auto-calculate (e.g., Gap = Planned - Actual)
+- Percentage field validates 0-100 range
+- "Save Lead" persists to local storage for user reference
+- Progress indicator shows steps completed
+
+**Accessibility:**
+- Step-by-step navigation via keyboard
+- Form validation announced to screen readers
+- Clear focus indicators for all interactive elements
+
+---
+
+## Core Explanation
+
+### What Makes a Good Lead?
+
+Not every anomaly is worth investigating. A good lead has:
+
+| Characteristic | Why It Matters |
+|----------------|----------------|
+| **Significant gap** | Small variances might be rounding; large gaps (>30%) suggest real issues |
+| **Public interest** | Involves taxpayer money, public services, or accountability |
+| **Verifiable** | You can realistically obtain documents and sources |
+| **Proportionate** | The story would be worth the investigation effort |
+
+### Types of Leads in Budget Data
+
+1. **Execution Rate Anomalies**
+   - Very low execution (below 50%): Why wasn't money spent?
+   - Very high execution (>100%): Where did extra money come from?
+
+2. **Year-over-Year Changes**
+   - Sudden drops: Did a priority disappear?
+   - Sudden spikes: Emergency or opportunism?
+
+3. **Category Comparisons**
+   - Peer institutions with vastly different spending
+   - Costs per unit (per student, per patient) that vary widely
+
+4. **Timing Patterns**
+   - Year-end spending surges
+   - Pre-election spending increases
+
+### Moving from Lead to Investigation
+
+Once you have a lead, the next steps are:
+
+1. **Expand the data** — Is this pattern isolated or widespread?
+2. **Request documents** — Use Law 544/2001 to request procurement files, meeting minutes
+3. **Identify sources** — Who would know why this happened?
+4. **Apply ethics check** — Is this worth investigating proportionately?
+
+---
+
+## Practice
+
+<Quiz
+  id="good-lead-quiz"
+  question="You find that a county hospital has 45% execution on capital investments, while neighboring county hospitals are at 80%+. Is this a good lead?"
+  options={[
+    { id: "a", text: "No — 45% isn't that unusual for capital investments", isCorrect: false },
+    { id: "b", text: "Yes — the gap with peers suggests something specific to this hospital worth investigating", isCorrect: true },
+    { id: "c", text: "No — hospitals are too complex to investigate", isCorrect: false },
+    { id: "d", text: "Yes — this proves the hospital is corrupt", isCorrect: false }
+  ]}
+  explanation="This is a GOOD LEAD because: (1) There's a significant gap with comparable institutions, (2) It involves public health infrastructure (clear public interest), (3) It's specific enough to investigate (one hospital, one budget line). It doesn't prove anything yet — that's why it's a lead, not a story."
+/>
+
+<Quiz
+  id="next-steps-quiz"
+  question="You've documented a lead: a ministry with 35% execution on IT modernization funds. What should you do FIRST?"
+  options={[
+    { id: "a", text: "Publish an article about the ministry's failure", isCorrect: false },
+    { id: "b", text: "Check if this pattern repeats in previous years and similar ministries", isCorrect: true },
+    { id: "c", text: "File a criminal complaint", isCorrect: false },
+    { id: "d", text: "Call the minister for an interview", isCorrect: false }
+  ]}
+  explanation="First, expand the data: Does this pattern repeat? Is it unique to this ministry or common across government? This moves you from 'anomaly' toward 'pattern' in the investigation funnel. Contacting sources comes after you understand the scope."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** A lead is a starting point, not a destination. Document what you find (category, entity, numbers, gap), formulate investigation questions (why, what documents, who to contact), and remember: this is an anomaly until you verify it with patterns, documents, and sources.
+
+---
+
+<MarkComplete label="Complete Module" />

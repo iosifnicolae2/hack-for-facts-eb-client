@@ -1,0 +1,188 @@
+---
+title: "Steward of Public Resources"
+durationMinutes: 10
+concept: "Three dimensions of your role"
+---
+
+# Steward of Public Resources
+
+## Concept Introduction
+
+As a public official working with budgets, you occupy a position of significant trust. Citizens pay taxes expecting those funds to be managed with integrity, efficiency, and transparency. Your role is not merely administrative — it is fundamentally about maintaining public trust.
+
+Every budget decision you make is visible to the public. Platforms like Transparenta.eu allow citizens, journalists, and oversight bodies to see how your institution spends public money. Understanding this visibility is the first step to excellence in public finance.
+
+> **Key Insight:** Your role has three dimensions: you are a steward of public resources (managing money that belongs to citizens), an agent of transparency (ensuring the public can understand how money is spent), and a guardian of legality (ensuring all actions have proper legal basis).
+
+---
+
+## Interactive Element: Role Explorer Cards
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    YOUR ROLE IN PUBLIC FINANCE                          │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│   Explore the three dimensions of your role:                            │
+│                                                                         │
+│   ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐        │
+│   │   💼 STEWARD    │  │   🔍 AGENT OF   │  │   ⚖️ GUARDIAN   │        │
+│   │   OF PUBLIC     │  │   TRANSPARENCY  │  │   OF LEGALITY   │        │
+│   │   RESOURCES     │  │                 │  │                 │        │
+│   │                 │  │                 │  │                 │        │
+│   │  [Click]        │  │  [Click]        │  │  [Click]        │        │
+│   └─────────────────┘  └─────────────────┘  └─────────────────┘        │
+│                                                                         │
+│   ════════════════════════════════════════════════════════════════     │
+│                                                                         │
+│   STEWARD OF PUBLIC RESOURCES                                          │
+│   ─────────────────────────────                                        │
+│   As a steward, you are entrusted with managing money that             │
+│   belongs to the public. This means:                                   │
+│                                                                         │
+│   ✓ Ensuring value for money in every transaction                      │
+│   ✓ Protecting assets from waste, fraud, and misuse                    │
+│   ✓ Making decisions that serve the public interest                    │
+│   ✓ Maintaining accurate records of all transactions                   │
+│                                                                         │
+│   Legal basis: Constituția României, Art. 137                          │
+│                                                                         │
+│   ─────────────────────────────────────────────────────────────────    │
+│                                                                         │
+│   AGENT OF TRANSPARENCY                                                │
+│   ─────────────────────────────                                        │
+│   As an agent of transparency, you actively disclose information:      │
+│                                                                         │
+│   ✓ Proactively publish budget execution data                         │
+│   ✓ Respond to information requests (Law 544/2001)                     │
+│   ✓ Explain decisions in understandable terms                         │
+│   ✓ Make data accessible in usable formats                            │
+│                                                                         │
+│   Legal basis: Legea 500/2002, Art. 9 (Publicitate)                    │
+│                                                                         │
+│   ─────────────────────────────────────────────────────────────────    │
+│                                                                         │
+│   GUARDIAN OF LEGALITY                                                 │
+│   ─────────────────────────────                                        │
+│   As a guardian of legality, every action requires legal basis:        │
+│                                                                         │
+│   ✓ No payment without proper authorization                           │
+│   ✓ Follow ALOP procedure strictly                                    │
+│   ✓ Obtain required approvals (CFPP visa)                             │
+│   ✓ Document all decisions and their legal justification              │
+│                                                                         │
+│   Legal basis: Legea 500/2002, Art. 14(2)                              │
+│                                                                         │
+│   Progress: [●●○] 2/3 roles explored                                   │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification
+
+```typescript
+interface RoleExplorerCardsProps {
+  readonly roles: ReadonlyArray<{
+    id: 'steward' | 'transparency' | 'legality'
+    icon: string
+    title: string
+    subtitle: string
+    responsibilities: string[]
+    legalBasis: string
+    examples?: {
+      good: string
+      bad: string
+    }
+  }>
+  readonly onAllExplored: () => void
+}
+
+interface RoleExplorerCardsState {
+  exploredRoles: Set<string>
+  activeRole: string | null
+  isComplete: boolean
+}
+```
+
+**Behavior:**
+- Three cards displayed horizontally (stacked on mobile)
+- Click on card expands detailed view below
+- Only one card can be expanded at a time
+- Progress indicator shows "X/3 roles explored"
+- Upon exploring all 3: completion animation + badge
+- Legal basis links to relevant legislation
+
+**Accessibility:**
+- Cards are buttons with `aria-expanded` state
+- Content announced when expanded
+- Keyboard navigation between cards (Tab)
+- Enter/Space to toggle expansion
+
+---
+
+## Core Explanation
+
+### The Public Trust Relationship
+
+Your work exists within a fundamental trust relationship:
+
+```
+                         PUBLIC TRUST
+                              │
+        Citizens ────────────►│◄──────────── Taxpayers
+                              │
+                              ▼
+                 ┌─────────────────────┐
+                 │   PUBLIC OFFICIAL   │
+                 │                     │
+                 │  • Steward of       │
+                 │    public resources │
+                 │  • Agent of         │
+                 │    transparency     │
+                 │  • Guardian of      │
+                 │    legality         │
+                 └─────────────────────┘
+                              │
+                              ▼
+        ┌─────────────────────┼─────────────────────┐
+        │                     │                     │
+        ▼                     ▼                     ▼
+   Efficiency          Effectiveness         Accountability
+   (cost control)      (results)             (transparency)
+```
+
+### Why These Three Dimensions Matter
+
+| Dimension | Without It | With It |
+|-----------|------------|---------|
+| **Steward** | Waste, fraud, misuse | Value for taxpayer money |
+| **Transparency** | Suspicion, distrust | Public confidence |
+| **Legality** | Arbitrary decisions | Fair, consistent governance |
+
+Each dimension reinforces the others. A transparent institution is easier to hold accountable. Legal compliance protects both public resources and individual officials.
+
+---
+
+## Practice
+
+<Quiz
+  id="role-dimensions-quiz"
+  question="A colleague wants to approve a payment quickly and suggests skipping the CFPP visa 'just this once.' Which dimension of your role does this violate?"
+  options={[
+    { id: "a", text: "Steward of public resources only", isCorrect: false },
+    { id: "b", text: "Agent of transparency only", isCorrect: false },
+    { id: "c", text: "Guardian of legality primarily, but potentially all three", isCorrect: true },
+    { id: "d", text: "None — efficiency is also important", isCorrect: false }
+  ]}
+  explanation="Skipping required approvals violates the Guardian of Legality role (no legal basis for payment). But it also undermines Stewardship (proper controls protect resources) and potentially Transparency (incomplete documentation). Efficiency does not justify bypassing legal requirements — that's what creates personal liability."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** You occupy three roles simultaneously: Steward (protecting public money), Agent of Transparency (ensuring visibility), and Guardian of Legality (requiring legal basis for all actions). These aren't separate jobs — they're three facets of the same responsibility.
+
+---
+
+<MarkComplete label="Mark Lesson Complete" />

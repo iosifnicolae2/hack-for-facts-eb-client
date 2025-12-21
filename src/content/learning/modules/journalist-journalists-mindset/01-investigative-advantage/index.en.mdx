@@ -1,0 +1,175 @@
+---
+title: "The Investigative Advantage"
+durationMinutes: 8
+concept: "Follow the money principle"
+---
+
+# The Investigative Advantage
+
+## Concept Introduction
+
+Most journalists stop at the press release. They report what officials say, quote the announcement, and move on. But budget documents tell a different story — they reveal what governments actually prioritize, not what they claim to prioritize.
+
+Your competitive advantage as an investigative journalist is simple: **willingness to dig into documents others ignore.** Budget data is public, but underutilized. The gap between press releases and budget lines is where stories live.
+
+> **Key Insight:** Politicians announce; budgets reveal. The gap between rhetoric and spending is where investigations begin.
+
+---
+
+## Interactive Element: Investigative Principles Cards
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🎯 INVESTIGATIVE PRINCIPLES                                 │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Click each card to reveal the principle:                    │
+│                                                              │
+│  ┌──────────────────┐  ┌──────────────────┐                  │
+│  │                  │  │                  │                  │
+│  │  💰 FOLLOW THE   │  │  🔍 THINK IN     │                  │
+│  │     MONEY        │  │     SYSTEMS      │                  │
+│  │                  │  │                  │                  │
+│  │  [Click]         │  │  [Click]         │                  │
+│  │                  │  │                  │                  │
+│  └──────────────────┘  └──────────────────┘                  │
+│                                                              │
+│  ┌──────────────────┐  ┌──────────────────┐                  │
+│  │                  │  │                  │                  │
+│  │  🤔 ASSUME       │  │  📊 PERSISTENCE  │                  │
+│  │    INCOMPETENCE  │  │     BEATS        │                  │
+│  │    FIRST         │  │     TALENT       │                  │
+│  │  [Click]         │  │  [Click]         │                  │
+│  │                  │  │                  │                  │
+│  └──────────────────┘  └──────────────────┘                  │
+│                                                              │
+│  ─────────────────────────────────────────────────────────── │
+│                                                              │
+│  REVEALED CONTENT:                                           │
+│                                                              │
+│  💰 FOLLOW THE MONEY:                                        │
+│  Rhetoric is cheap. Budget allocations show real priorities. │
+│  Compare what officials SAY vs. what they actually FUND.     │
+│                                                              │
+│  🔍 THINK IN SYSTEMS:                                        │
+│  One suspicious contract is a tip. Patterns across           │
+│  multiple institutions are investigations. Look for          │
+│  repetition across entities, time periods, and suppliers.    │
+│                                                              │
+│  🤔 ASSUME INCOMPETENCE FIRST:                               │
+│  Most anomalies stem from poor planning, not malice.         │
+│  But incompetence can mask corruption — and both are         │
+│  worth investigating and reporting.                          │
+│                                                              │
+│  📊 PERSISTENCE BEATS TALENT:                                │
+│  Your advantage is willingness to read what others skip.     │
+│  Budget documents are public but underutilized. Show up,     │
+│  do the work, find what others missed.                       │
+│                                                              │
+│  Progress: [●●○○] 2/4 principles explored                    │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification
+
+```typescript
+interface PrincipleCardsProps {
+  readonly principles: ReadonlyArray<{
+    id: string
+    icon: string
+    title: string
+    subtitle?: string
+    description: string
+    platformLink?: string // Link to related platform feature
+  }>
+  readonly onAllViewed: () => void
+}
+
+interface PrincipleCardsState {
+  viewedCards: Set<string>
+  activeCard: string | null
+  isComplete: boolean
+}
+```
+
+**Behavior:**
+- Cards arranged in 2x2 grid (responsive: single column on mobile)
+- Click/tap triggers flip animation (400ms, 3D transform)
+- Back of card shows full principle description
+- Progress indicator updates as cards are viewed
+- Upon viewing all 4: celebration animation + "Principles mastered!" message
+- Optional: Each card can link to relevant platform feature
+
+**Accessibility:**
+- Cards are focusable with keyboard navigation
+- Enter/Space triggers flip
+- `aria-expanded` indicates card state
+- Screen reader announces card content on flip
+
+---
+
+## Core Explanation
+
+### Principle 1: Follow the Money 💰
+
+Every political promise has a budget implication. When a minister says "Education is our top priority," check the budget:
+
+| Check | Question |
+|-------|----------|
+| Allocation | Is education spending increasing year-over-year? |
+| Execution | Is the allocated money actually being spent? |
+| Comparison | How does per-pupil spending compare to EU averages? |
+
+**The formula:** Political claim + Budget data = Verification or contradiction
+
+### Principle 2: Think in Systems 🔍
+
+A single overpriced contract could be a mistake. But when you find:
+- The same supplier winning contracts across multiple ministries
+- Similar pricing anomalies in the same budget category each year
+- Patterns of year-end spending spikes
+
+...you're not looking at isolated incidents. You're looking at potential systems.
+
+### Principle 3: Assume Incompetence First 🤔
+
+Before assuming corruption, consider:
+- Poor planning and unrealistic budgets
+- Bureaucratic delays and procurement failures
+- Staff turnover and institutional knowledge loss
+- Genuine complexity in large projects
+
+This isn't naiveté — it's methodology. Investigate both explanations. Often, you'll find incompetence that enabled or masked corruption.
+
+### Principle 4: Persistence Beats Talent 📊
+
+The best investigative journalists aren't necessarily the smartest. They're the most persistent. They read the documents others skip. They compare this year's budget to last year's. They notice what's missing.
+
+Budget data rewards patience.
+
+---
+
+## Practice
+
+<Quiz
+  id="follow-money-quiz"
+  question="A government announces '2 billion RON for hospital modernization.' What should an investigative journalist check FIRST?"
+  options={[
+    { id: "a", text: "Interview the Health Minister about the announcement", isCorrect: false },
+    { id: "b", text: "Check if 2 billion is actually allocated in the budget, and last year's execution rate", isCorrect: true },
+    { id: "c", text: "Visit hospitals to see current conditions", isCorrect: false },
+    { id: "d", text: "Poll citizens about their healthcare satisfaction", isCorrect: false }
+  ]}
+  explanation="Following the money means verifying claims against actual budget data. Before doing anything else, check: (1) Is 2 billion actually allocated? (2) What was allocated last year and how much was actually spent? This gives you the factual foundation for any story."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** Your investigative advantage is simple: read what others skip. Budget documents are public but underutilized. Apply the four principles — follow the money, think in systems, assume incompetence first, persist — and you'll find stories others miss.
+
+---
+
+<MarkComplete label="Mark Lesson Complete" />

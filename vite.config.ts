@@ -2,6 +2,8 @@ import path from "path";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import mdx from "@mdx-js/rollup";
+import remarkFrontmatter from "remark-frontmatter";
+import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import remarkGfm from "remark-gfm";
 import checker from "vite-plugin-checker";
 import tanstackRouter from "@tanstack/router-plugin/vite";
@@ -58,7 +60,7 @@ export default defineConfig(({ mode }) => ({
     {
       enforce: 'pre',
       ...mdx({
-        remarkPlugins: [remarkGfm],
+        remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter, remarkGfm],
       }),
     },
     react({

@@ -1,0 +1,162 @@
+---
+title: "Promises vs Reality"
+durationMinutes: 5
+concept: "Execution rates and gap analysis"
+---
+
+# Promises vs Reality
+
+## Concept Introduction
+
+Politicians make promises. Budgets are planned. But what actually happens? The gap between what was **planned** and what was **spent** reveals the true priorities of any government — not their words, but their actions.
+
+This gap is measured by the **execution rate**: the percentage of planned budget that was actually spent. An execution rate of 100% means everything planned was spent. Below 70%? That's a significant gap worth investigating.
+
+> **Key Insight:** The budget reveals what a society truly values — not what politicians say, but where they actually put the money.
+
+---
+
+## Interactive Element: Promise Tracker
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  📊 PROMISE vs REALITY                                       │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Select a year to compare planned vs actual spending:        │
+│                                                              │
+│  [ 2022 ] [ 2023 ] [ 2024 ]                                  │
+│                                                              │
+│  ════════════════════════════════════════════════════════    │
+│                                                              │
+│  What was PLANNED:                                           │
+│  ████████████████████████████████████  100%                  │
+│                                                              │
+│  What was ACTUALLY SPENT:                                    │
+│  █████████████████████████░░░░░░░░░░░   72%                  │
+│                                                              │
+│  Gap: 28% of planned budget was NOT spent                    │
+│                                                              │
+│  ════════════════════════════════════════════════════════    │
+│                                                              │
+│  BREAKDOWN BY SPENDING TYPE:                                 │
+│                                                              │
+│  Personnel costs:      ██████████████████████  98%  ✓        │
+│  Goods & services:     █████████████████░░░░░  85%  ⚠        │
+│  Capital investments:  ██████████░░░░░░░░░░░░  58%  ⚠        │
+│  EU co-financing:      ████████████░░░░░░░░░░  61%  ⚠        │
+│                                                              │
+│  🔍 Key Finding: Salaries always get paid, but investments   │
+│     in schools, hospitals, and roads often get delayed.      │
+│                                                              │
+│  [ Explore in Budget Explorer → ]                            │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification
+
+```typescript
+interface PromiseTrackerProps {
+  readonly years: ReadonlyArray<number>
+  readonly defaultYear: number
+  readonly data: {
+    [year: number]: {
+      overall: { planned: number; executed: number }
+      breakdown: ReadonlyArray<{
+        category: string
+        planned: number
+        executed: number
+        executionRate: number
+      }>
+    }
+  }
+  readonly onExploreClick: (year: number, category?: string) => void
+}
+
+interface PromiseTrackerState {
+  selectedYear: number
+  hoveredCategory: string | null
+  animationComplete: boolean
+}
+```
+
+**Behavior:**
+- Year tabs switch data display with smooth transition (200ms fade)
+- Progress bars animate on load (1s duration, staggered by 100ms)
+- Color coding: green (&gt;90%), yellow (70-90%), red (&lt;70%)
+- Hover on category bar shows tooltip with exact figures
+- "Explore in Budget Explorer" opens filtered view for selected year
+- Key Finding updates based on data patterns
+
+**Accessibility:**
+- Progress bars use `role="progressbar"` with `aria-valuenow`
+- Color is not the only indicator (also icons: ✓, ⚠, ✗)
+- Keyboard navigation between year tabs
+
+---
+
+## Core Explanation
+
+### Understanding Execution Rates
+
+| Execution Rate | Meaning | Signal |
+|----------------|---------|--------|
+| 95-100% | Budget fully utilized | Normal operation |
+| 70-95% | Moderate underspending | Minor delays or savings |
+| 50-70% | Significant gap | Planning issues or blocked projects |
+| Below 50% | Major failure | Investigate: Why wasn't money spent? |
+
+### Why Does Underspending Happen?
+
+Not all underspending is bad, but patterns matter:
+
+1. **Bureaucratic delays** — Procurement takes longer than planned
+2. **Poor planning** — Budgets set unrealistically high
+3. **Capacity issues** — Institutions can't absorb funds fast enough
+4. **Political priorities** — Funds quietly redirected or frozen
+5. **External factors** — EU project conditions not met
+
+### The Personnel vs Investment Pattern
+
+One pattern repeats every year in Romania: **personnel costs execute at 95-100%** while **capital investments execute at 50-70%**.
+
+This means salaries always get paid, but the new school, the hospital wing, the road repair? Often delayed to next year. And next year. And the year after.
+
+---
+
+## Practice
+
+<Quiz
+  id="execution-rate-quiz"
+  question="A ministry planned to spend 10 billion RON but only spent 6 billion RON. What is the execution rate?"
+  options={[
+    { id: "a", text: "40%", isCorrect: false },
+    { id: "b", text: "60%", isCorrect: true },
+    { id: "c", text: "160%", isCorrect: false },
+    { id: "d", text: "Cannot be calculated", isCorrect: false }
+  ]}
+  explanation="Execution rate = (Actual Spent / Planned) × 100. In this case: (6 billion / 10 billion) × 100 = 60%. This is a significant gap that would warrant investigation into why 40% of planned spending didn't happen."
+/>
+
+<Quiz
+  id="pattern-recognition-quiz"
+  question="In Romania, which type of spending typically has the LOWEST execution rate?"
+  options={[
+    { id: "a", text: "Personnel costs (salaries)", isCorrect: false },
+    { id: "b", text: "Goods and services", isCorrect: false },
+    { id: "c", text: "Capital investments (infrastructure)", isCorrect: true },
+    { id: "d", text: "Social transfers (pensions)", isCorrect: false }
+  ]}
+  explanation="Capital investments consistently have the lowest execution rates (often 50-70%), meaning infrastructure projects — schools, hospitals, roads — frequently get delayed. Personnel costs, by contrast, execute near 100% because salaries must be paid."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** The gap between planned and spent reveals the truth. Watch execution rates — especially the pattern where salaries execute at 98% while infrastructure lingers at 58%. That gap is where unkept promises live.
+
+---
+
+<MarkComplete label="Complete Module" />

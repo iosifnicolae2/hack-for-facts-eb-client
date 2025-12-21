@@ -72,67 +72,81 @@ Generate ONE MDX file per lesson. Each lesson file should be self-contained and 
 
 ```
 src/content/learning/modules/{module-slug}/
-├── 01-{lesson-slug}.en.mdx
-├── 02-{lesson-slug}.en.mdx
-├── 03-{lesson-slug}.en.mdx
-└── index.json  (module metadata)
+├── 01-{lesson-slug}/
+│   ├── index.en.mdx
+│   └── index.ro.mdx  (optional, for Romanian translation)
+├── 02-{lesson-slug}/
+│   ├── index.en.mdx
+│   └── index.ro.mdx
+└── 03-{lesson-slug}/
+    ├── index.en.mdx
+    └── index.ro.mdx
 ```
 
-#### Module Metadata File (index.json)
+**Note**: Each lesson is a folder containing `index.{locale}.mdx` files. The English file contains both `title.en` and `title.ro` in frontmatter for convenience.
+
+#### Path Config (references lessons)
+
+Lessons are referenced in path config files (`src/content/learning/paths/*.json`). The generate script (`yarn learning:generate`) automatically populates lesson metadata from MDX frontmatter:
 
 ```json
 {
-  "id": "{module-slug}",
-  "title": { "en": "{Module Title}" },
-  "description": { "en": "{Brief module description}" },
-  "difficulty": "beginner|intermediate|advanced",
-  "totalDurationMinutes": {X},
-  "lessons": [
+  "id": "citizen",
+  "slug": "citizen",
+  "difficulty": "beginner",
+  "title": { "en": "Citizen", "ro": "Cetățean" },
+  "description": { "en": "...", "ro": "..." },
+  "modules": [
     {
-      "id": "{module-slug}-01",
-      "slug": "01-{lesson-slug}",
-      "title": { "en": "{Lesson 1 Title}" },
-      "concept": "{Core concept this lesson teaches}",
-      "durationMinutes": {X}
-    },
-    {
-      "id": "{module-slug}-02",
-      "slug": "02-{lesson-slug}",
-      "title": { "en": "{Lesson 2 Title}" },
-      "concept": "{Core concept this lesson teaches}",
-      "durationMinutes": {X}
+      "id": "{module-slug}",
+      "slug": "{slug}",
+      "title": { "en": "...", "ro": "..." },
+      "description": { "en": "...", "ro": "..." },
+      "lessons": [
+        {
+          "contentDir": "{module-slug}/01-{lesson-slug}",
+          "completionMode": "mark_complete",
+          "prerequisites": []
+        }
+      ]
     }
   ]
 }
 ```
 
+**Minimal lesson config**: Only `contentDir`, `completionMode`, and `prerequisites` are required. Run `yarn learning:generate` to populate `id`, `slug`, `title`, and `durationMinutes` from MDX frontmatter.
+
+#### Frontmatter Schema
+
+Each lesson MDX file **must** include YAML frontmatter with metadata:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `title.en` | string | Yes | English lesson title |
+| `title.ro` | string | Yes* | Romanian lesson title (*falls back to English if missing) |
+| `durationMinutes` | number | Yes | Estimated reading time in minutes |
+| `concept` | string | No | Core concept this lesson teaches |
+| `objective` | string | No | Learning objective for this lesson |
+
+**Note**: Both localized titles are stored in the English MDX file (`index.en.mdx`) using dot notation. The generate script (`yarn learning:generate`) automatically populates path config JSON files with these values.
+
+**Override Behavior**: Path config values take priority over frontmatter, allowing the same lesson content to be reused with different metadata in different paths.
+
 #### Lesson Structure Template
 
-Each lesson MDX file follows this atomic structure:
+Each lesson MDX file follows this atomic structure with **required frontmatter**:
 
 ```mdx
+---
+title.en: "{Lesson Title in English}"
+title.ro: "{Lesson Title in Romanian}"
+durationMinutes: {5-10}
+concept: "{The ONE key concept this lesson teaches}"
+---
+
 # {Lesson Title}
 
-## Lesson Overview
-
-| Property | Value |
-|----------|-------|
-| **Duration** | {5-10} minutes |
-| **Concept** | {The ONE key concept this lesson teaches} |
-| **Module** | {Parent module name} |
-| **Lesson** | {X} of {Y} |
-
----
-
-## Learning Objective
-
-By the end of this lesson, you will be able to:
-
-- [ ] {ONE specific, measurable objective for this concept}
-
----
-
-## {Concept Introduction}
+## Concept Introduction
 
 {2-3 paragraphs introducing the concept, connecting to prior knowledge}
 
@@ -191,12 +205,6 @@ interface {ComponentName}Props {
 > {ONE key takeaway that summarizes this lesson's concept}
 
 ---
-
-## Lesson Navigation
-
-| Previous | Current | Next |
-|----------|---------|------|
-| {Previous lesson or "—"} | **{Current Lesson}** | {Next lesson or "Module Complete"} |
 
 <MarkComplete label="Complete this lesson" />
 ```
@@ -412,12 +420,16 @@ Generate MULTIPLE files for each module:
 
 ```text
 src/content/learning/modules/{module-slug}/
-├── index.json              # Module metadata with lesson list
-├── 01-{lesson-slug}.en.mdx # First lesson
-├── 02-{lesson-slug}.en.mdx # Second lesson
-├── 03-{lesson-slug}.en.mdx # Third lesson (if needed)
-└── ...                     # Additional lessons as needed
+├── 01-{lesson-slug}/
+│   └── index.en.mdx        # First lesson
+├── 02-{lesson-slug}/
+│   └── index.en.mdx        # Second lesson
+├── 03-{lesson-slug}/
+│   └── index.en.mdx        # Third lesson (if needed)
+└── ...
 ```
+
+After creating MDX files, update the path config and run `yarn learning:generate` to populate metadata.
 
 ### Module Naming Convention
 
@@ -435,14 +447,12 @@ src/content/learning/modules/{module-slug}/
 
 ### Lesson Naming Convention
 
-Lessons are numbered and slugged within their module:
-- `01-what-is-a-budget.en.mdx`
-- `02-your-three-roles.en.mdx`
-- `03-promises-vs-reality.en.mdx`
+Lessons are numbered folders within their module, each containing `index.{locale}.mdx`:
+- `01-what-is-a-budget/index.en.mdx`
+- `02-your-three-roles/index.en.mdx`
+- `03-promises-vs-reality/index.en.mdx`
 
-Note: Romanian translations can be added later (e.g., `01-what-is-a-budget.ro.mdx`).
-
-```
+Note: Romanian translations can be added later as `index.ro.mdx` in the same folder.
 
 ---
 
@@ -466,30 +476,37 @@ Module specifications (content-based, not role-based):
 
 ### Output Structure
 
-Each module generates a folder with multiple lessons:
+Each module generates a folder with lesson subfolders:
+
 ```text
 src/content/learning/modules/{module-slug}/
-├── index.json                    # Module metadata
-├── 01-{lesson-slug}.en.mdx       # Lesson 1
-├── 02-{lesson-slug}.en.mdx       # Lesson 2
+├── 01-{lesson-slug}/
+│   └── index.en.mdx              # Lesson 1
+├── 02-{lesson-slug}/
+│   └── index.en.mdx              # Lesson 2
 └── ...
 ```
 
 ### Path Configuration (References Modules)
 
 Paths define which modules to include and in what order:
+
 - Citizen: `src/content/learning/paths/citizen.json`
 - Journalist: `src/content/learning/paths/journalist.json`
 - Public Official: `src/content/learning/paths/public_servant.json`
 
-Each path references shared modules:
+Each path references lessons with minimal config (run `yarn learning:generate` to populate metadata):
+
 ```json
 {
   "id": "citizen",
   "modules": [
-    { "moduleId": "budget-basics", "order": 1 },
-    { "moduleId": "revenue-sources", "order": 2 },
-    { "moduleId": "red-flag-detection", "order": 3 }
+    {
+      "id": "citizen-foundations",
+      "lessons": [
+        { "contentDir": "citizen-foundations/01-what-is-a-budget", "completionMode": "mark_complete", "prerequisites": [] }
+      ]
+    }
   ]
 }
 ```
@@ -835,17 +852,21 @@ Split into atomic lessons (one concept per lesson, 5-10 min each).
 Include full component behavior specifications for all interactive elements.
 
 Output:
-1. index.json (module metadata with lesson list)
-2. Each lesson as a separate MDX file (01-xxx.en.mdx, 02-xxx.en.mdx, etc.)
+1. Each lesson as a folder with index.en.mdx (01-xxx/index.en.mdx, 02-xxx/index.en.mdx, etc.)
+2. Use frontmatter with title.en, title.ro, and durationMinutes
+3. After creating files, update path config and run `yarn learning:generate`
 ```
 
 Example output structure:
+
 ```text
 src/content/learning/modules/budget-basics/
-├── index.json
-├── 01-what-is-a-budget.en.mdx
-├── 02-your-three-roles.en.mdx
-└── 03-promises-vs-reality.en.mdx
+├── 01-what-is-a-budget/
+│   └── index.en.mdx
+├── 02-your-three-roles/
+│   └── index.en.mdx
+└── 03-promises-vs-reality/
+    └── index.en.mdx
 ```
 
 ---
@@ -865,8 +886,11 @@ This prompt template enables you to:
 - Modules are **content-based**, NOT role-based
 - Each module contains **2-5 atomic lessons**
 - Paths (citizen, journalist, etc.) **reference shared modules**
+- MDX frontmatter contains localized titles (`title.en`, `title.ro`) and duration
+- Run `yarn learning:generate` to populate path configs from frontmatter
 
 **Files involved:**
 
 - Input: `docs/learning/modules/{module-name}.md`
-- Output: `src/content/learning/modules/{module-slug}/` (folder with index.json + lesson MDX files)
+- Output: `src/content/learning/modules/{module-slug}/` (folder with lesson subfolders containing `index.en.mdx`)
+- Config: `src/content/learning/paths/{path}.json` (references lessons by `contentDir`)

@@ -16,555 +16,79 @@
       "slug": "officials-role",
       "title": {
         "en": "The Public Official's Role",
-        "ro": "The Public Official's Role"
+        "ro": "Rolul Funcționarului Public"
       },
       "description": {
-        "en": "Learn about The Public Official's Role.",
-        "ro": "Learn about The Public Official's Role."
+        "en": "Understand your position within the public finance system, the legal principles governing your work, and how to benchmark your institution's performance.",
+        "ro": "Înțelege poziția ta în sistemul finanțelor publice, principiile legale care guvernează activitatea ta și cum să evaluezi performanța instituției tale."
       },
       "lessons": [
         {
-          "id": "public-official-officials-role",
-          "slug": "officials-role",
+          "id": "steward-of-resources",
+          "slug": "01-steward-of-resources",
           "title": {
-            "en": "The Public Official's Role",
-            "ro": "The Public Official's Role"
+            "en": "Steward of Public Resources",
+            "ro": "Administrator al Resurselor Publice"
           },
-          "durationMinutes": 53,
-          "contentDir": "public-official-officials-role",
+          "durationMinutes": 10,
+          "contentDir": "public-official-officials-role/01-steward-of-resources",
           "completionMode": "mark_complete",
           "prerequisites": []
-        }
-      ]
-    },
-    {
-      "id": "public-official-legal-framework",
-      "slug": "legal-framework",
-      "title": {
-        "en": "Legal Framework Mastery",
-        "ro": "Legal Framework Mastery"
-      },
-      "description": {
-        "en": "Learn about Legal Framework Mastery.",
-        "ro": "Learn about Legal Framework Mastery."
-      },
-      "lessons": [
+        },
         {
-          "id": "public-official-legal-framework",
-          "slug": "legal-framework",
+          "id": "personal-liability",
+          "slug": "02-personal-liability",
           "title": {
-            "en": "Legal Framework Mastery",
-            "ro": "Legal Framework Mastery"
+            "en": "Personal Liability",
+            "ro": "Răspunderea Personală"
           },
-          "durationMinutes": 68,
-          "contentDir": "public-official-legal-framework",
+          "durationMinutes": 10,
+          "contentDir": "public-official-officials-role/02-personal-liability",
           "completionMode": "mark_complete",
           "prerequisites": [
-            "public-official-officials-role"
+            "steward-of-resources"
           ]
-        }
-      ]
-    },
-    {
-      "id": "public-official-classification-system",
-      "slug": "classification-system",
-      "title": {
-        "en": "Budget Classification System",
-        "ro": "Budget Classification System"
-      },
-      "description": {
-        "en": "Learn about Budget Classification System.",
-        "ro": "Learn about Budget Classification System."
-      },
-      "lessons": [
+        },
         {
-          "id": "public-official-classification-system",
-          "slug": "classification-system",
+          "id": "authority-hierarchy",
+          "slug": "03-authority-hierarchy",
           "title": {
-            "en": "Budget Classification System",
-            "ro": "Budget Classification System"
+            "en": "Authority Hierarchy",
+            "ro": "Ierarhia Autorității"
           },
-          "durationMinutes": 68,
-          "contentDir": "public-official-classification-system",
+          "durationMinutes": 10,
+          "contentDir": "public-official-officials-role/03-authority-hierarchy",
           "completionMode": "mark_complete",
           "prerequisites": [
-            "public-official-legal-framework"
+            "personal-liability"
           ]
-        }
-      ]
-    },
-    {
-      "id": "public-official-budget-preparation",
-      "slug": "budget-preparation",
-      "title": {
-        "en": "Strategic Planning & Budget Preparation",
-        "ro": "Strategic Planning & Budget Preparation"
-      },
-      "description": {
-        "en": "Learn about Strategic Planning & Budget Preparation.",
-        "ro": "Learn about Strategic Planning & Budget Preparation."
-      },
-      "lessons": [
+        },
         {
-          "id": "public-official-budget-preparation",
-          "slug": "budget-preparation",
+          "id": "six-budget-principles",
+          "slug": "04-six-budget-principles",
           "title": {
-            "en": "Strategic Planning & Budget Preparation",
-            "ro": "Strategic Planning & Budget Preparation"
+            "en": "Six Budget Principles",
+            "ro": "Cele Șase Principii Bugetare"
           },
-          "durationMinutes": 75,
-          "contentDir": "public-official-budget-preparation",
+          "durationMinutes": 10,
+          "contentDir": "public-official-officials-role/04-six-budget-principles",
           "completionMode": "mark_complete",
           "prerequisites": [
-            "public-official-classification-system"
+            "authority-hierarchy"
           ]
-        }
-      ]
-    },
-    {
-      "id": "public-official-budget-approval",
-      "slug": "budget-approval",
-      "title": {
-        "en": "Budget Approval & Authorization",
-        "ro": "Budget Approval & Authorization"
-      },
-      "description": {
-        "en": "Learn about Budget Approval & Authorization.",
-        "ro": "Learn about Budget Approval & Authorization."
-      },
-      "lessons": [
+        },
         {
-          "id": "public-official-budget-approval",
-          "slug": "budget-approval",
+          "id": "benchmark-institution",
+          "slug": "05-benchmark-institution",
           "title": {
-            "en": "Budget Approval & Authorization",
-            "ro": "Budget Approval & Authorization"
+            "en": "Benchmark Your Institution",
+            "ro": "Evaluează-ți Instituția"
           },
-          "durationMinutes": 68,
-          "contentDir": "public-official-budget-approval",
+          "durationMinutes": 10,
+          "contentDir": "public-official-officials-role/05-benchmark-institution",
           "completionMode": "mark_complete",
           "prerequisites": [
-            "public-official-budget-preparation"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "public-official-commitment-control",
-      "slug": "commitment-control",
-      "title": {
-        "en": "Commitment Control (ALOP)",
-        "ro": "Commitment Control (ALOP)"
-      },
-      "description": {
-        "en": "Learn about Commitment Control (ALOP).",
-        "ro": "Learn about Commitment Control (ALOP)."
-      },
-      "lessons": [
-        {
-          "id": "public-official-commitment-control",
-          "slug": "commitment-control",
-          "title": {
-            "en": "Commitment Control (ALOP)",
-            "ro": "Commitment Control (ALOP)"
-          },
-          "durationMinutes": 83,
-          "contentDir": "public-official-commitment-control",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "public-official-budget-approval"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "public-official-cash-management",
-      "slug": "cash-management",
-      "title": {
-        "en": "Cash & Payment Management",
-        "ro": "Cash & Payment Management"
-      },
-      "description": {
-        "en": "Learn about Cash & Payment Management.",
-        "ro": "Learn about Cash & Payment Management."
-      },
-      "lessons": [
-        {
-          "id": "public-official-cash-management",
-          "slug": "cash-management",
-          "title": {
-            "en": "Cash & Payment Management",
-            "ro": "Cash & Payment Management"
-          },
-          "durationMinutes": 68,
-          "contentDir": "public-official-cash-management",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "public-official-commitment-control"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "public-official-accounting-reporting",
-      "slug": "accounting-reporting",
-      "title": {
-        "en": "Accounting & Reporting",
-        "ro": "Accounting & Reporting"
-      },
-      "description": {
-        "en": "Learn about Accounting & Reporting.",
-        "ro": "Learn about Accounting & Reporting."
-      },
-      "lessons": [
-        {
-          "id": "public-official-accounting-reporting",
-          "slug": "accounting-reporting",
-          "title": {
-            "en": "Accounting & Reporting",
-            "ro": "Accounting & Reporting"
-          },
-          "durationMinutes": 68,
-          "contentDir": "public-official-accounting-reporting",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "public-official-cash-management"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "public-official-internal-control",
-      "slug": "internal-control",
-      "title": {
-        "en": "Internal Control System",
-        "ro": "Internal Control System"
-      },
-      "description": {
-        "en": "Learn about Internal Control System.",
-        "ro": "Learn about Internal Control System."
-      },
-      "lessons": [
-        {
-          "id": "public-official-internal-control",
-          "slug": "internal-control",
-          "title": {
-            "en": "Internal Control System",
-            "ro": "Internal Control System"
-          },
-          "durationMinutes": 15,
-          "contentDir": "public-official-internal-control",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "public-official-accounting-reporting"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "public-official-internal-audit",
-      "slug": "internal-audit",
-      "title": {
-        "en": "Internal Audit",
-        "ro": "Internal Audit"
-      },
-      "description": {
-        "en": "Learn about Internal Audit.",
-        "ro": "Learn about Internal Audit."
-      },
-      "lessons": [
-        {
-          "id": "public-official-internal-audit",
-          "slug": "internal-audit",
-          "title": {
-            "en": "Internal Audit",
-            "ro": "Internal Audit"
-          },
-          "durationMinutes": 15,
-          "contentDir": "public-official-internal-audit",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "public-official-internal-control"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "public-official-procurement-planning",
-      "slug": "procurement-planning",
-      "title": {
-        "en": "Procurement Planning",
-        "ro": "Procurement Planning"
-      },
-      "description": {
-        "en": "Learn about Procurement Planning.",
-        "ro": "Learn about Procurement Planning."
-      },
-      "lessons": [
-        {
-          "id": "public-official-procurement-planning",
-          "slug": "procurement-planning",
-          "title": {
-            "en": "Procurement Planning",
-            "ro": "Procurement Planning"
-          },
-          "durationMinutes": 15,
-          "contentDir": "public-official-procurement-planning",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "public-official-internal-audit"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "public-official-procurement-execution",
-      "slug": "procurement-execution",
-      "title": {
-        "en": "Procurement Execution",
-        "ro": "Procurement Execution"
-      },
-      "description": {
-        "en": "Learn about Procurement Execution.",
-        "ro": "Learn about Procurement Execution."
-      },
-      "lessons": [
-        {
-          "id": "public-official-procurement-execution",
-          "slug": "procurement-execution",
-          "title": {
-            "en": "Procurement Execution",
-            "ro": "Procurement Execution"
-          },
-          "durationMinutes": 15,
-          "contentDir": "public-official-procurement-execution",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "public-official-procurement-planning"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "public-official-proactive-transparency",
-      "slug": "proactive-transparency",
-      "title": {
-        "en": "Proactive Transparency",
-        "ro": "Proactive Transparency"
-      },
-      "description": {
-        "en": "Learn about Proactive Transparency.",
-        "ro": "Learn about Proactive Transparency."
-      },
-      "lessons": [
-        {
-          "id": "public-official-proactive-transparency",
-          "slug": "proactive-transparency",
-          "title": {
-            "en": "Proactive Transparency",
-            "ro": "Proactive Transparency"
-          },
-          "durationMinutes": 15,
-          "contentDir": "public-official-proactive-transparency",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "public-official-procurement-execution"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "public-official-external-audit",
-      "slug": "external-audit",
-      "title": {
-        "en": "External Audit",
-        "ro": "External Audit"
-      },
-      "description": {
-        "en": "Learn about External Audit.",
-        "ro": "Learn about External Audit."
-      },
-      "lessons": [
-        {
-          "id": "public-official-external-audit",
-          "slug": "external-audit",
-          "title": {
-            "en": "External Audit",
-            "ro": "External Audit"
-          },
-          "durationMinutes": 15,
-          "contentDir": "public-official-external-audit",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "public-official-proactive-transparency"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "public-official-public-participation",
-      "slug": "public-participation",
-      "title": {
-        "en": "Public Participation",
-        "ro": "Public Participation"
-      },
-      "description": {
-        "en": "Learn about Public Participation.",
-        "ro": "Learn about Public Participation."
-      },
-      "lessons": [
-        {
-          "id": "public-official-public-participation",
-          "slug": "public-participation",
-          "title": {
-            "en": "Public Participation",
-            "ro": "Public Participation"
-          },
-          "durationMinutes": 15,
-          "contentDir": "public-official-public-participation",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "public-official-external-audit"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "public-official-eu-funds",
-      "slug": "eu-funds",
-      "title": {
-        "en": "EU Funds Management",
-        "ro": "EU Funds Management"
-      },
-      "description": {
-        "en": "Learn about EU Funds Management.",
-        "ro": "Learn about EU Funds Management."
-      },
-      "lessons": [
-        {
-          "id": "public-official-eu-funds",
-          "slug": "eu-funds",
-          "title": {
-            "en": "EU Funds Management",
-            "ro": "EU Funds Management"
-          },
-          "durationMinutes": 15,
-          "contentDir": "public-official-eu-funds",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "public-official-public-participation"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "public-official-performance-budgeting",
-      "slug": "performance-budgeting",
-      "title": {
-        "en": "Performance-Based Budgeting",
-        "ro": "Performance-Based Budgeting"
-      },
-      "description": {
-        "en": "Learn about Performance-Based Budgeting.",
-        "ro": "Learn about Performance-Based Budgeting."
-      },
-      "lessons": [
-        {
-          "id": "public-official-performance-budgeting",
-          "slug": "performance-budgeting",
-          "title": {
-            "en": "Performance-Based Budgeting",
-            "ro": "Performance-Based Budgeting"
-          },
-          "durationMinutes": 15,
-          "contentDir": "public-official-performance-budgeting",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "public-official-eu-funds"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "public-official-crisis-management",
-      "slug": "crisis-management",
-      "title": {
-        "en": "Crisis Management",
-        "ro": "Crisis Management"
-      },
-      "description": {
-        "en": "Learn about Crisis Management.",
-        "ro": "Learn about Crisis Management."
-      },
-      "lessons": [
-        {
-          "id": "public-official-crisis-management",
-          "slug": "crisis-management",
-          "title": {
-            "en": "Crisis Management",
-            "ro": "Crisis Management"
-          },
-          "durationMinutes": 15,
-          "contentDir": "public-official-crisis-management",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "public-official-performance-budgeting"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "public-official-digital-transformation",
-      "slug": "digital-transformation",
-      "title": {
-        "en": "Digital Transformation",
-        "ro": "Digital Transformation"
-      },
-      "description": {
-        "en": "Learn about Digital Transformation.",
-        "ro": "Learn about Digital Transformation."
-      },
-      "lessons": [
-        {
-          "id": "public-official-digital-transformation",
-          "slug": "digital-transformation",
-          "title": {
-            "en": "Digital Transformation",
-            "ro": "Digital Transformation"
-          },
-          "durationMinutes": 15,
-          "contentDir": "public-official-digital-transformation",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "public-official-crisis-management"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "public-official-professional-development",
-      "slug": "professional-development",
-      "title": {
-        "en": "Professional Development",
-        "ro": "Professional Development"
-      },
-      "description": {
-        "en": "Learn about Professional Development.",
-        "ro": "Learn about Professional Development."
-      },
-      "lessons": [
-        {
-          "id": "public-official-professional-development",
-          "slug": "professional-development",
-          "title": {
-            "en": "Professional Development",
-            "ro": "Professional Development"
-          },
-          "durationMinutes": 15,
-          "contentDir": "public-official-professional-development",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "public-official-digital-transformation"
+            "six-budget-principles"
           ]
         }
       ]

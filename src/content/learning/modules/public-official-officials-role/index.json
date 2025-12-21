@@ -1,0 +1,80 @@
+{
+  "id": "public-official-officials-role",
+  "title": {
+    "en": "The Public Official's Role",
+    "ro": "Rolul Funcționarului Public"
+  },
+  "description": {
+    "en": "Understand your position within the public finance system, the legal principles governing your work, and how to benchmark your institution's performance.",
+    "ro": "Înțelege poziția ta în sistemul finanțelor publice, principiile legale care guvernează activitatea ta și cum să evaluezi performanța instituției tale."
+  },
+  "difficulty": "beginner",
+  "durationMinutes": 50,
+  "lessons": [
+    {
+      "id": "steward-of-resources",
+      "slug": "01-steward-of-resources",
+      "title": {
+        "en": "Steward of Public Resources",
+        "ro": "Administrator al Resurselor Publice"
+      },
+      "concept": {
+        "en": "Three dimensions of your role",
+        "ro": "Cele trei dimensiuni ale rolului tău"
+      },
+      "durationMinutes": 10
+    },
+    {
+      "id": "personal-liability",
+      "slug": "02-personal-liability",
+      "title": {
+        "en": "Personal Liability",
+        "ro": "Răspunderea Personală"
+      },
+      "concept": {
+        "en": "Four types of liability",
+        "ro": "Cele patru tipuri de răspundere"
+      },
+      "durationMinutes": 10
+    },
+    {
+      "id": "authority-hierarchy",
+      "slug": "03-authority-hierarchy",
+      "title": {
+        "en": "Authority Hierarchy",
+        "ro": "Ierarhia Autorității"
+      },
+      "concept": {
+        "en": "The ordonator system (OPC/OSC/OTC)",
+        "ro": "Sistemul ordonatorilor (OPC/OSC/OTC)"
+      },
+      "durationMinutes": 10
+    },
+    {
+      "id": "six-budget-principles",
+      "slug": "04-six-budget-principles",
+      "title": {
+        "en": "Six Budget Principles",
+        "ro": "Cele Șase Principii Bugetare"
+      },
+      "concept": {
+        "en": "Legea 500/2002 principles",
+        "ro": "Principiile Legii 500/2002"
+      },
+      "durationMinutes": 10
+    },
+    {
+      "id": "benchmark-institution",
+      "slug": "05-benchmark-institution",
+      "title": {
+        "en": "Benchmark Your Institution",
+        "ro": "Evaluează-ți Instituția"
+      },
+      "concept": {
+        "en": "Platform integration and peer comparison",
+        "ro": "Integrarea cu platforma și comparația cu entități similare"
+      },
+      "durationMinutes": 10
+    }
+  ]
+}

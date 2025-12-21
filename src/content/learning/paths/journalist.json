@@ -16,471 +16,65 @@
       "slug": "journalists-mindset",
       "title": {
         "en": "The Journalist's Mindset",
-        "ro": "The Journalist's Mindset"
+        "ro": "Mentalitatea Jurnalistului"
       },
       "description": {
-        "en": "Learn about The Journalist's Mindset.",
-        "ro": "Learn about The Journalist's Mindset."
+        "en": "Master the investigative principles, ethical foundations, and analytical frameworks needed to transform budget data into impactful stories.",
+        "ro": "Stăpânește principiile investigative, fundamentele etice și cadrele analitice necesare pentru a transforma datele bugetare în povești cu impact."
       },
       "lessons": [
         {
-          "id": "journalist-journalists-mindset",
-          "slug": "journalists-mindset",
+          "id": "investigative-advantage",
+          "slug": "01-investigative-advantage",
           "title": {
-            "en": "The Journalist's Mindset",
-            "ro": "The Journalist's Mindset"
+            "en": "The Investigative Advantage",
+            "ro": "Avantajul Investigativ"
           },
-          "durationMinutes": 35,
-          "contentDir": "journalist-journalists-mindset",
+          "durationMinutes": 8,
+          "contentDir": "journalist-journalists-mindset/01-investigative-advantage",
           "completionMode": "mark_complete",
           "prerequisites": []
-        }
-      ]
-    },
-    {
-      "id": "journalist-public-finance-anatomy",
-      "slug": "public-finance-anatomy",
-      "title": {
-        "en": "Anatomy of Romanian Public Finance",
-        "ro": "Anatomy of Romanian Public Finance"
-      },
-      "description": {
-        "en": "Learn about Anatomy of Romanian Public Finance.",
-        "ro": "Learn about Anatomy of Romanian Public Finance."
-      },
-      "lessons": [
+        },
         {
-          "id": "journalist-public-finance-anatomy",
-          "slug": "public-finance-anatomy",
+          "id": "ethical-foundations",
+          "slug": "02-ethical-foundations",
           "title": {
-            "en": "Anatomy of Romanian Public Finance",
-            "ro": "Anatomy of Romanian Public Finance"
+            "en": "Ethical Foundations",
+            "ro": "Fundamente Etice"
           },
-          "durationMinutes": 40,
-          "contentDir": "journalist-public-finance-anatomy",
+          "durationMinutes": 8,
+          "contentDir": "journalist-journalists-mindset/02-ethical-foundations",
           "completionMode": "mark_complete",
           "prerequisites": [
-            "journalist-journalists-mindset"
+            "investigative-advantage"
           ]
-        }
-      ]
-    },
-    {
-      "id": "journalist-classification-system",
-      "slug": "classification-system",
-      "title": {
-        "en": "The Classification System",
-        "ro": "The Classification System"
-      },
-      "description": {
-        "en": "Learn about The Classification System.",
-        "ro": "Learn about The Classification System."
-      },
-      "lessons": [
+        },
         {
-          "id": "journalist-classification-system",
-          "slug": "classification-system",
+          "id": "anomaly-to-story",
+          "slug": "03-anomaly-to-story",
           "title": {
-            "en": "The Classification System",
-            "ro": "The Classification System"
+            "en": "From Anomaly to Story",
+            "ro": "De la Anomalie la Poveste"
           },
-          "durationMinutes": 45,
-          "contentDir": "journalist-classification-system",
+          "durationMinutes": 8,
+          "contentDir": "journalist-journalists-mindset/03-anomaly-to-story",
           "completionMode": "mark_complete",
           "prerequisites": [
-            "journalist-public-finance-anatomy"
+            "ethical-foundations"
           ]
-        }
-      ]
-    },
-    {
-      "id": "journalist-data-sources",
-      "slug": "data-sources",
-      "title": {
-        "en": "Primary Data Sources",
-        "ro": "Primary Data Sources"
-      },
-      "description": {
-        "en": "Learn about Primary Data Sources.",
-        "ro": "Learn about Primary Data Sources."
-      },
-      "lessons": [
+        },
         {
-          "id": "journalist-data-sources",
-          "slug": "data-sources",
+          "id": "your-first-lead",
+          "slug": "04-your-first-lead",
           "title": {
-            "en": "Primary Data Sources",
-            "ro": "Primary Data Sources"
+            "en": "Your First Lead",
+            "ro": "Prima Ta Pistă"
           },
-          "durationMinutes": 40,
-          "contentDir": "journalist-data-sources",
+          "durationMinutes": 8,
+          "contentDir": "journalist-journalists-mindset/04-your-first-lead",
           "completionMode": "mark_complete",
           "prerequisites": [
-            "journalist-classification-system"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "journalist-mastering-foia",
-      "slug": "mastering-foia",
-      "title": {
-        "en": "Mastering FOIA (Law 544/2001)",
-        "ro": "Mastering FOIA (Law 544/2001)"
-      },
-      "description": {
-        "en": "Learn about Mastering FOIA (Law 544/2001).",
-        "ro": "Learn about Mastering FOIA (Law 544/2001)."
-      },
-      "lessons": [
-        {
-          "id": "journalist-mastering-foia",
-          "slug": "mastering-foia",
-          "title": {
-            "en": "Mastering FOIA (Law 544/2001)",
-            "ro": "Mastering FOIA (Law 544/2001)"
-          },
-          "durationMinutes": 45,
-          "contentDir": "journalist-mastering-foia",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "journalist-data-sources"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "journalist-data-at-scale",
-      "slug": "data-at-scale",
-      "title": {
-        "en": "Working with Budget Data at Scale",
-        "ro": "Working with Budget Data at Scale"
-      },
-      "description": {
-        "en": "Learn about Working with Budget Data at Scale.",
-        "ro": "Learn about Working with Budget Data at Scale."
-      },
-      "lessons": [
-        {
-          "id": "journalist-data-at-scale",
-          "slug": "data-at-scale",
-          "title": {
-            "en": "Working with Budget Data at Scale",
-            "ro": "Working with Budget Data at Scale"
-          },
-          "durationMinutes": 50,
-          "contentDir": "journalist-data-at-scale",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "journalist-mastering-foia"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "journalist-finding-stories",
-      "slug": "finding-stories",
-      "title": {
-        "en": "Finding Stories in Budget Data",
-        "ro": "Finding Stories in Budget Data"
-      },
-      "description": {
-        "en": "Learn about Finding Stories in Budget Data.",
-        "ro": "Learn about Finding Stories in Budget Data."
-      },
-      "lessons": [
-        {
-          "id": "journalist-finding-stories",
-          "slug": "finding-stories",
-          "title": {
-            "en": "Finding Stories in Budget Data",
-            "ro": "Finding Stories in Budget Data"
-          },
-          "durationMinutes": 50,
-          "contentDir": "journalist-finding-stories",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "journalist-data-at-scale"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "journalist-red-flags",
-      "slug": "red-flags",
-      "title": {
-        "en": "Red Flags and Patterns",
-        "ro": "Red Flags and Patterns"
-      },
-      "description": {
-        "en": "Learn about Red Flags and Patterns.",
-        "ro": "Learn about Red Flags and Patterns."
-      },
-      "lessons": [
-        {
-          "id": "journalist-red-flags",
-          "slug": "red-flags",
-          "title": {
-            "en": "Red Flags and Patterns",
-            "ro": "Red Flags and Patterns"
-          },
-          "durationMinutes": 50,
-          "contentDir": "journalist-red-flags",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "journalist-finding-stories"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "journalist-investigation-workflow",
-      "slug": "investigation-workflow",
-      "title": {
-        "en": "The Investigation Workflow",
-        "ro": "The Investigation Workflow"
-      },
-      "description": {
-        "en": "Learn about The Investigation Workflow.",
-        "ro": "Learn about The Investigation Workflow."
-      },
-      "lessons": [
-        {
-          "id": "journalist-investigation-workflow",
-          "slug": "investigation-workflow",
-          "title": {
-            "en": "The Investigation Workflow",
-            "ro": "The Investigation Workflow"
-          },
-          "durationMinutes": 50,
-          "contentDir": "journalist-investigation-workflow",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "journalist-red-flags"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "journalist-source-protection",
-      "slug": "source-protection",
-      "title": {
-        "en": "Source Building and Protection",
-        "ro": "Source Building and Protection"
-      },
-      "description": {
-        "en": "Learn about Source Building and Protection.",
-        "ro": "Learn about Source Building and Protection."
-      },
-      "lessons": [
-        {
-          "id": "journalist-source-protection",
-          "slug": "source-protection",
-          "title": {
-            "en": "Source Building and Protection",
-            "ro": "Source Building and Protection"
-          },
-          "durationMinutes": 45,
-          "contentDir": "journalist-source-protection",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "journalist-investigation-workflow"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "journalist-eu-funds",
-      "slug": "eu-funds",
-      "title": {
-        "en": "EU Funds Investigation",
-        "ro": "EU Funds Investigation"
-      },
-      "description": {
-        "en": "Learn about EU Funds Investigation.",
-        "ro": "Learn about EU Funds Investigation."
-      },
-      "lessons": [
-        {
-          "id": "journalist-eu-funds",
-          "slug": "eu-funds",
-          "title": {
-            "en": "EU Funds Investigation",
-            "ro": "EU Funds Investigation"
-          },
-          "durationMinutes": 50,
-          "contentDir": "journalist-eu-funds",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "journalist-source-protection"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "journalist-local-government",
-      "slug": "local-government",
-      "title": {
-        "en": "Local Government Deep Dive",
-        "ro": "Local Government Deep Dive"
-      },
-      "description": {
-        "en": "Learn about Local Government Deep Dive.",
-        "ro": "Learn about Local Government Deep Dive."
-      },
-      "lessons": [
-        {
-          "id": "journalist-local-government",
-          "slug": "local-government",
-          "title": {
-            "en": "Local Government Deep Dive",
-            "ro": "Local Government Deep Dive"
-          },
-          "durationMinutes": 55,
-          "contentDir": "journalist-local-government",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "journalist-eu-funds"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "journalist-health-education",
-      "slug": "health-education",
-      "title": {
-        "en": "Health and Education Budgets",
-        "ro": "Health and Education Budgets"
-      },
-      "description": {
-        "en": "Learn about Health and Education Budgets.",
-        "ro": "Learn about Health and Education Budgets."
-      },
-      "lessons": [
-        {
-          "id": "journalist-health-education",
-          "slug": "health-education",
-          "title": {
-            "en": "Health and Education Budgets",
-            "ro": "Health and Education Budgets"
-          },
-          "durationMinutes": 55,
-          "contentDir": "journalist-health-education",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "journalist-local-government"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "journalist-procurement",
-      "slug": "procurement",
-      "title": {
-        "en": "Procurement Integration",
-        "ro": "Procurement Integration"
-      },
-      "description": {
-        "en": "Learn about Procurement Integration.",
-        "ro": "Learn about Procurement Integration."
-      },
-      "lessons": [
-        {
-          "id": "journalist-procurement",
-          "slug": "procurement",
-          "title": {
-            "en": "Procurement Integration",
-            "ro": "Procurement Integration"
-          },
-          "durationMinutes": 60,
-          "contentDir": "journalist-procurement",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "journalist-health-education"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "journalist-writing-stories",
-      "slug": "writing-stories",
-      "title": {
-        "en": "Writing Budget Stories",
-        "ro": "Writing Budget Stories"
-      },
-      "description": {
-        "en": "Learn about Writing Budget Stories.",
-        "ro": "Learn about Writing Budget Stories."
-      },
-      "lessons": [
-        {
-          "id": "journalist-writing-stories",
-          "slug": "writing-stories",
-          "title": {
-            "en": "Writing Budget Stories",
-            "ro": "Writing Budget Stories"
-          },
-          "durationMinutes": 45,
-          "contentDir": "journalist-writing-stories",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "journalist-procurement"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "journalist-legal-considerations",
-      "slug": "legal-considerations",
-      "title": {
-        "en": "Legal Considerations",
-        "ro": "Legal Considerations"
-      },
-      "description": {
-        "en": "Learn about Legal Considerations.",
-        "ro": "Learn about Legal Considerations."
-      },
-      "lessons": [
-        {
-          "id": "journalist-legal-considerations",
-          "slug": "legal-considerations",
-          "title": {
-            "en": "Legal Considerations",
-            "ro": "Legal Considerations"
-          },
-          "durationMinutes": 45,
-          "contentDir": "journalist-legal-considerations",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "journalist-writing-stories"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "journalist-creating-impact",
-      "slug": "creating-impact",
-      "title": {
-        "en": "Creating Impact",
-        "ro": "Creating Impact"
-      },
-      "description": {
-        "en": "Learn about Creating Impact.",
-        "ro": "Learn about Creating Impact."
-      },
-      "lessons": [
-        {
-          "id": "journalist-creating-impact",
-          "slug": "creating-impact",
-          "title": {
-            "en": "Creating Impact",
-            "ro": "Creating Impact"
-          },
-          "durationMinutes": 40,
-          "contentDir": "journalist-creating-impact",
-          "completionMode": "mark_complete",
-          "prerequisites": [
-            "journalist-legal-considerations"
+            "anomaly-to-story"
           ]
         }
       ]

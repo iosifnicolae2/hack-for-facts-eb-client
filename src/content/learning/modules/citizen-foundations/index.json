@@ -1,0 +1,54 @@
+{
+  "id": "citizen-foundations",
+  "title": {
+    "en": "Foundations — Why Should I Care?",
+    "ro": "Fundamente — De ce ar trebui să-mi pese?"
+  },
+  "description": {
+    "en": "Understand what public budgets are, why they matter to you personally, and how to start exploring budget data.",
+    "ro": "Înțelege ce sunt bugetele publice, de ce contează pentru tine personal și cum să începi să explorezi datele bugetare."
+  },
+  "difficulty": "beginner",
+  "durationMinutes": 13,
+  "lessons": [
+    {
+      "id": "what-is-a-budget",
+      "slug": "01-what-is-a-budget",
+      "title": {
+        "en": "What is a Public Budget?",
+        "ro": "Ce este un buget public?"
+      },
+      "concept": {
+        "en": "Budget as household analogy",
+        "ro": "Bugetul ca analogie a gospodăriei"
+      },
+      "durationMinutes": 4
+    },
+    {
+      "id": "your-three-roles",
+      "slug": "02-your-three-roles",
+      "title": {
+        "en": "Your Three Roles",
+        "ro": "Cele trei roluri ale tale"
+      },
+      "concept": {
+        "en": "Taxpayer, Beneficiary, Watchdog",
+        "ro": "Contribuabil, Beneficiar, Supraveghetor"
+      },
+      "durationMinutes": 4
+    },
+    {
+      "id": "promises-vs-reality",
+      "slug": "03-promises-vs-reality",
+      "title": {
+        "en": "Promises vs Reality",
+        "ro": "Promisiuni vs Realitate"
+      },
+      "concept": {
+        "en": "Execution rates and gap analysis",
+        "ro": "Rate de execuție și analiza decalajului"
+      },
+      "durationMinutes": 5
+    }
+  ]
+}

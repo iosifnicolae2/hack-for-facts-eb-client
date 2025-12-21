@@ -2,6 +2,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
 import { compileSync } from '@mdx-js/mdx'
+import matter from 'gray-matter'
 import remarkGfm from 'remark-gfm'
 
 type LessonReference = {
@@ -52,9 +53,20 @@ type PathDefinition = {
   readonly requiredModuleIds: readonly string[]
 }
 
+type MdxFrontmatter = {
+  readonly title?: string
+  readonly 'title.en'?: string
+  readonly 'title.ro'?: string
+  readonly durationMinutes?: number
+  readonly concept?: string
+  readonly objective?: string
+}
+
 type ValidationContext = {
   readonly mdxIndex: Map<string, Set<string>>
   readonly mdxSourceByPath: Map<string, string>
+  readonly mdxContentByPath: Map<string, string>
+  readonly frontmatterByPath: Map<string, MdxFrontmatter>
   readonly pathEntries: readonly PathDefinition[]
   readonly lessonRefs: readonly LessonReference[]
   readonly contentDirUsage: Map<string, LessonReference[]>
@@ -232,10 +244,15 @@ function hasMdxComponent(source: string, componentName: string): boolean {
   return pattern.test(source)
 }
 
-async function collectMdxSources(
-  mdxIndex: Map<string, Set<string>>
-): Promise<{ readonly mdxSourceByPath: Map<string, string>; readonly readIssues: string[] }> {
+async function collectMdxSources(mdxIndex: Map<string, Set<string>>): Promise<{
+  readonly mdxSourceByPath: Map<string, string>
+  readonly mdxContentByPath: Map<string, string>
+  readonly frontmatterByPath: Map<string, MdxFrontmatter>
+  readonly readIssues: string[]
+}> {
   const mdxSourceByPath = new Map<string, string>()
+  const mdxContentByPath = new Map<string, string>()
+  const frontmatterByPath = new Map<string, MdxFrontmatter>()
   const readIssues: string[] = []
 
   for (const [contentDir, locales] of mdxIndex.entries()) {
@@ -244,6 +261,11 @@ async function collectMdxSources(
       try {
         const source = await fs.readFile(mdxPath, 'utf8')
         mdxSourceByPath.set(mdxPath, source)
+
+        // Parse frontmatter
+        const parsed = matter(source)
+        mdxContentByPath.set(mdxPath, parsed.content)
+        frontmatterByPath.set(mdxPath, parsed.data as MdxFrontmatter)
       } catch (error) {
         const message = error instanceof Error ? error.message : 'unknown error'
         readIssues.push(`${path.relative(PROJECT_ROOT, mdxPath)}: Failed to read MDX (${message})`)
@@ -251,7 +273,7 @@ async function collectMdxSources(
     }
   }
 
-  return { mdxSourceByPath, readIssues }
+  return { mdxSourceByPath, mdxContentByPath, frontmatterByPath, readIssues }
 }
 
 async function readJson(filePath: string): Promise<unknown> {
@@ -637,6 +659,7 @@ const VALIDATION_RULES: readonly ValidationRule[] = [
             )
           }
 
+          // durationMinutes should be present in generated paths (merged from frontmatter by generate script)
           if (!lesson.durationMinutes || !Number.isInteger(lesson.durationMinutes) || lesson.durationMinutes <= 0) {
             errors.push(
               `Lesson "${lesson.lessonId}" in ${pathEntry.pathFile} has invalid durationMinutes "${lesson.durationMinutes ?? 'missing'}"`
@@ -864,11 +887,12 @@ const VALIDATION_RULES: readonly ValidationRule[] = [
     run: (context) => {
       const errors: string[] = []
 
-      for (const [mdxPath, source] of context.mdxSourceByPath.entries()) {
+      // Use content without frontmatter for MDX compilation
+      for (const [mdxPath, content] of context.mdxContentByPath.entries()) {
         try {
           compileSync(
             {
-              value: source,
+              value: content,
               path: mdxPath,
             },
             {
@@ -879,6 +903,46 @@ const VALIDATION_RULES: readonly ValidationRule[] = [
           const relativePath = path.relative(PROJECT_ROOT, mdxPath)
           const message = error instanceof Error ? error.message : String(error)
           errors.push(`${relativePath}: ${message}`)
+        }
+      }
+
+      return { errors, warnings: [] }
+    },
+  },
+  {
+    name: 'frontmatter-schema',
+    run: (context) => {
+      const errors: string[] = []
+
+      for (const [mdxPath, frontmatter] of context.frontmatterByPath.entries()) {
+        const relativePath = path.relative(PROJECT_ROOT, mdxPath)
+
+        // Required fields - accept either "title" or "title.en" (with optional "title.ro")
+        const hasTitle = frontmatter.title && typeof frontmatter.title === 'string'
+        const hasTitleEn = frontmatter['title.en'] && typeof frontmatter['title.en'] === 'string'
+
+        if (!hasTitle && !hasTitleEn) {
+          errors.push(`${relativePath}: Missing required frontmatter field "title" or "title.en"`)
+        }
+
+        // Validate title.ro type if present
+        if (frontmatter['title.ro'] !== undefined && typeof frontmatter['title.ro'] !== 'string') {
+          errors.push(`${relativePath}: Frontmatter field "title.ro" must be a string`)
+        }
+
+        if (frontmatter.durationMinutes === undefined || typeof frontmatter.durationMinutes !== 'number') {
+          errors.push(`${relativePath}: Missing or invalid frontmatter field "durationMinutes" (must be a number)`)
+        } else if (!Number.isInteger(frontmatter.durationMinutes) || frontmatter.durationMinutes <= 0) {
+          errors.push(`${relativePath}: "durationMinutes" must be a positive integer`)
+        }
+
+        // Optional fields type validation
+        if (frontmatter.concept !== undefined && typeof frontmatter.concept !== 'string') {
+          errors.push(`${relativePath}: Frontmatter field "concept" must be a string`)
+        }
+
+        if (frontmatter.objective !== undefined && typeof frontmatter.objective !== 'string') {
+          errors.push(`${relativePath}: Frontmatter field "objective" must be a string`)
         }
       }
 
@@ -899,7 +963,7 @@ function printIssues(label: string, issues: readonly string[]): void {
 
 async function main(): Promise<void> {
   const mdxIndex = await collectMdxIndex()
-  const { mdxSourceByPath, readIssues } = await collectMdxSources(mdxIndex)
+  const { mdxSourceByPath, mdxContentByPath, frontmatterByPath, readIssues } = await collectMdxSources(mdxIndex)
   const { pathEntries, lessonRefs, parseIssues: pathParseIssues } = await collectPathContent()
   const parseIssues = [...pathParseIssues, ...readIssues]
   const contentDirUsage = buildContentDirUsage(lessonRefs)
@@ -907,6 +971,8 @@ async function main(): Promise<void> {
   const context: ValidationContext = {
     mdxIndex,
     mdxSourceByPath,
+    mdxContentByPath,
+    frontmatterByPath,
     pathEntries,
     lessonRefs,
     contentDirUsage,
@@ -929,7 +995,10 @@ async function main(): Promise<void> {
   console.log(`\nLearning content validation: ${totalErrors} errors, ${totalWarnings} warnings`)
 
   if (totalErrors > 0) {
+    console.log('\n❌ VALIDATION FAILED: Fix the errors above before proceeding.')
     process.exitCode = 1
+  } else {
+    console.log('\n✅ Validation passed.')
   }
 }
 
