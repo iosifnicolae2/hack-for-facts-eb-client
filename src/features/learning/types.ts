@@ -36,15 +36,40 @@ export type LearningPathDefinition = {
   readonly modules: readonly LearningModuleDefinition[]
 }
 
-export type LearningModuleStatus = 'not_started' | 'in_progress' | 'completed' | 'passed'
+export type LearningContentStatus = 'not_started' | 'in_progress' | 'completed' | 'passed'
 
-export type LearningModuleProgress = {
-  readonly moduleId: string
-  readonly status: LearningModuleStatus
+export type LearningQuizInteractionState = {
+  readonly kind: 'quiz'
+  readonly selectedOptionId: string | null
+}
+
+export type LearningInteractionState = LearningQuizInteractionState
+
+export type LearningQuizAnswerAction = {
+  readonly type: 'quiz.answer'
+  readonly contentId: string
+  readonly interactionId: string
+  readonly selectedOptionId: string
+  readonly score: number
+  readonly contentVersion?: string
+}
+
+export type LearningQuizResetAction = {
+  readonly type: 'quiz.reset'
+  readonly contentId: string
+  readonly interactionId: string
+}
+
+export type LearningInteractionAction = LearningQuizAnswerAction | LearningQuizResetAction
+
+export type LearningContentProgress = {
+  readonly contentId: string
+  readonly status: LearningContentStatus
   readonly score?: number
   readonly lastAttemptAt: string
   readonly completedAt?: string
   readonly contentVersion: string
+  readonly interactions?: Readonly<Record<string, LearningInteractionState>>
 }
 
 export const LEARNING_PROGRESS_SCHEMA_VERSION = 1 as const
@@ -61,14 +86,7 @@ export type LearningOnboardingState = {
 export type LearningGuestProgress = {
   readonly version: typeof LEARNING_PROGRESS_SCHEMA_VERSION
   readonly onboarding: LearningOnboardingState
-  readonly paths: Readonly<
-    Record<
-      string,
-      {
-        readonly modules: Readonly<Record<string, LearningModuleProgress>>
-      }
-    >
-  >
+  readonly content: Readonly<Record<string, LearningContentProgress>>
   readonly lastUpdated: string
 }
 
@@ -94,5 +112,4 @@ export type LearningCertificatesState = {
 export type LearningAuthState = {
   readonly isAuthenticated: boolean
   readonly userId: string | null
-  readonly isSimulated: boolean
 }

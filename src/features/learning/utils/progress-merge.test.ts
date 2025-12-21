@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { LEARNING_PROGRESS_SCHEMA_VERSION } from '../types'
-import { mergeLearningGuestProgress, mergeModuleProgress } from './progress-merge'
-import type { LearningGuestProgress, LearningModuleProgress } from '../types'
+import { mergeContentProgress, mergeLearningGuestProgress } from './progress-merge'
+import type { LearningContentProgress, LearningGuestProgress } from '../types'
 
 describe('progress-merge', () => {
   const ISO_1 = '2025-01-01T00:00:00.000Z'
@@ -9,16 +9,16 @@ describe('progress-merge', () => {
   const ISO_3 = '2025-01-03T00:00:00.000Z'
 
   it('prefers the higher status rank', () => {
-    const a: LearningModuleProgress = {
-      moduleId: 'm1',
+    const a: LearningContentProgress = {
+      contentId: 'm1',
       status: 'completed',
       lastAttemptAt: ISO_1,
       completedAt: ISO_1,
       contentVersion: 'v1',
     }
 
-    const b: LearningModuleProgress = {
-      moduleId: 'm1',
+    const b: LearningContentProgress = {
+      contentId: 'm1',
       status: 'passed',
       score: 70,
       lastAttemptAt: ISO_2,
@@ -26,20 +26,20 @@ describe('progress-merge', () => {
       contentVersion: 'v2',
     }
 
-    expect(mergeModuleProgress(a, b).status).toBe('passed')
+    expect(mergeContentProgress(a, b).status).toBe('passed')
   })
 
   it('takes the max score and omits it when 0', () => {
-    const a: LearningModuleProgress = {
-      moduleId: 'm1',
+    const a: LearningContentProgress = {
+      contentId: 'm1',
       status: 'in_progress',
       score: 50,
       lastAttemptAt: ISO_1,
       contentVersion: 'v1',
     }
 
-    const b: LearningModuleProgress = {
-      moduleId: 'm1',
+    const b: LearningContentProgress = {
+      contentId: 'm1',
       status: 'completed',
       score: 0,
       lastAttemptAt: ISO_2,
@@ -47,83 +47,115 @@ describe('progress-merge', () => {
       contentVersion: 'v2',
     }
 
-    expect(mergeModuleProgress(a, b).score).toBe(50)
+    expect(mergeContentProgress(a, b).score).toBe(50)
 
-    const c: LearningModuleProgress = {
-      moduleId: 'm1',
+    const c: LearningContentProgress = {
+      contentId: 'm1',
       status: 'in_progress',
       lastAttemptAt: ISO_1,
       contentVersion: 'v1',
     }
 
-    const d: LearningModuleProgress = {
-      moduleId: 'm1',
+    const d: LearningContentProgress = {
+      contentId: 'm1',
       status: 'in_progress',
       score: 0,
       lastAttemptAt: ISO_2,
       contentVersion: 'v2',
     }
 
-    expect(mergeModuleProgress(c, d).score).toBeUndefined()
+    expect(mergeContentProgress(c, d).score).toBeUndefined()
   })
 
   it('uses the latest lastAttemptAt and completedAt', () => {
-    const a: LearningModuleProgress = {
-      moduleId: 'm1',
+    const a: LearningContentProgress = {
+      contentId: 'm1',
       status: 'completed',
       lastAttemptAt: ISO_1,
       completedAt: ISO_1,
       contentVersion: 'v1',
     }
 
-    const b: LearningModuleProgress = {
-      moduleId: 'm1',
+    const b: LearningContentProgress = {
+      contentId: 'm1',
       status: 'completed',
       lastAttemptAt: ISO_3,
       completedAt: ISO_2,
       contentVersion: 'v2',
     }
 
-    const merged = mergeModuleProgress(a, b)
+    const merged = mergeContentProgress(a, b)
 
     expect(merged.lastAttemptAt).toBe(ISO_3)
     expect(merged.completedAt).toBe(ISO_2)
   })
 
   it('uses the contentVersion from the most recent attempt; local wins ties', () => {
-    const a: LearningModuleProgress = {
-      moduleId: 'm1',
+    const a: LearningContentProgress = {
+      contentId: 'm1',
       status: 'in_progress',
       lastAttemptAt: ISO_2,
       contentVersion: 'local',
+      interactions: { q1: { kind: 'quiz', selectedOptionId: 'a' } },
     }
 
-    const b: LearningModuleProgress = {
-      moduleId: 'm1',
+    const b: LearningContentProgress = {
+      contentId: 'm1',
       status: 'in_progress',
       lastAttemptAt: ISO_2,
       contentVersion: 'remote',
+      interactions: {
+        q1: { kind: 'quiz', selectedOptionId: 'b' },
+        q2: { kind: 'quiz', selectedOptionId: 'c' },
+      },
     }
 
-    expect(mergeModuleProgress(a, b).contentVersion).toBe('local')
+    expect(mergeContentProgress(a, b).contentVersion).toBe('local')
   })
 
-  it('merges paths and modules, keeping remote schema version', () => {
+  it('merges interactions, preferring the most recent attempt for conflicts', () => {
+    const a: LearningContentProgress = {
+      contentId: 'm1',
+      status: 'in_progress',
+      lastAttemptAt: ISO_2,
+      contentVersion: 'v1',
+      interactions: {
+        q1: { kind: 'quiz', selectedOptionId: 'a' },
+        q2: { kind: 'quiz', selectedOptionId: 'b' },
+      },
+    }
+
+    const b: LearningContentProgress = {
+      contentId: 'm1',
+      status: 'in_progress',
+      lastAttemptAt: ISO_3,
+      contentVersion: 'v2',
+      interactions: {
+        q2: { kind: 'quiz', selectedOptionId: 'c' },
+        q3: { kind: 'quiz', selectedOptionId: 'd' },
+      },
+    }
+
+    const merged = mergeContentProgress(a, b)
+    expect(merged.interactions).toEqual({
+      q1: { kind: 'quiz', selectedOptionId: 'a' },
+      q2: { kind: 'quiz', selectedOptionId: 'c' },
+      q3: { kind: 'quiz', selectedOptionId: 'd' },
+    })
+  })
+
+  it('merges content progress, keeping remote schema version', () => {
     const local: LearningGuestProgress = {
       version: LEARNING_PROGRESS_SCHEMA_VERSION,
       onboarding: { role: null, depth: null, completedAt: null },
       lastUpdated: ISO_1,
-      paths: {
-        citizen: {
-          modules: {
-            'budget-basics': {
-              moduleId: 'budget-basics',
-              status: 'completed',
-              lastAttemptAt: ISO_1,
-              completedAt: ISO_1,
-              contentVersion: 'v1',
-            },
-          },
+      content: {
+        'budget-basics': {
+          contentId: 'budget-basics',
+          status: 'completed',
+          lastAttemptAt: ISO_1,
+          completedAt: ISO_1,
+          contentVersion: 'v1',
         },
       },
     }
@@ -132,28 +164,20 @@ describe('progress-merge', () => {
       version: LEARNING_PROGRESS_SCHEMA_VERSION,
       onboarding: { role: 'student', depth: 'beginner', completedAt: ISO_2 },
       lastUpdated: ISO_3,
-      paths: {
-        citizen: {
-          modules: {
-            'budget-basics': {
-              moduleId: 'budget-basics',
-              status: 'passed',
-              score: 80,
-              lastAttemptAt: ISO_2,
-              completedAt: ISO_2,
-              contentVersion: 'v2',
-            },
-          },
+      content: {
+        'budget-basics': {
+          contentId: 'budget-basics',
+          status: 'passed',
+          score: 80,
+          lastAttemptAt: ISO_2,
+          completedAt: ISO_2,
+          contentVersion: 'v2',
         },
-        another: {
-          modules: {
-            m2: {
-              moduleId: 'm2',
-              status: 'in_progress',
-              lastAttemptAt: ISO_3,
-              contentVersion: 'v1',
-            },
-          },
+        m2: {
+          contentId: 'm2',
+          status: 'in_progress',
+          lastAttemptAt: ISO_3,
+          contentVersion: 'v1',
         },
       },
     }
@@ -163,8 +187,8 @@ describe('progress-merge', () => {
     expect(merged.version).toBe(remote.version)
     expect(merged.lastUpdated).toBe(ISO_3)
     expect(merged.onboarding.role).toBe('student')
-    expect(merged.paths.citizen?.modules['budget-basics']?.status).toBe('passed')
-    expect(merged.paths.another?.modules.m2?.moduleId).toBe('m2')
+    expect(merged.content['budget-basics']?.status).toBe('passed')
+    expect(merged.content.m2?.contentId).toBe('m2')
   })
 
   it('is idempotent when re-merging the same remote state', () => {
@@ -172,16 +196,12 @@ describe('progress-merge', () => {
       version: LEARNING_PROGRESS_SCHEMA_VERSION,
       onboarding: { role: null, depth: null, completedAt: null },
       lastUpdated: ISO_1,
-      paths: {
-        citizen: {
-          modules: {
-            m1: {
-              moduleId: 'm1',
-              status: 'in_progress',
-              lastAttemptAt: ISO_1,
-              contentVersion: 'v1',
-            },
-          },
+      content: {
+        m1: {
+          contentId: 'm1',
+          status: 'in_progress',
+          lastAttemptAt: ISO_1,
+          contentVersion: 'v1',
         },
       },
     }
@@ -190,17 +210,13 @@ describe('progress-merge', () => {
       version: LEARNING_PROGRESS_SCHEMA_VERSION,
       onboarding: { role: 'student', depth: 'beginner', completedAt: ISO_2 },
       lastUpdated: ISO_2,
-      paths: {
-        citizen: {
-          modules: {
-            m1: {
-              moduleId: 'm1',
-              status: 'completed',
-              lastAttemptAt: ISO_2,
-              completedAt: ISO_2,
-              contentVersion: 'v2',
-            },
-          },
+      content: {
+        m1: {
+          contentId: 'm1',
+          status: 'completed',
+          lastAttemptAt: ISO_2,
+          completedAt: ISO_2,
+          contentVersion: 'v2',
         },
       },
     }

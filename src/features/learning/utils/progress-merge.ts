@@ -1,6 +1,6 @@
-import type { LearningGuestProgress, LearningModuleProgress, LearningModuleStatus } from '../types'
+import type { LearningContentProgress, LearningContentStatus, LearningGuestProgress, LearningInteractionState } from '../types'
 
-const STATUS_RANK: Record<LearningModuleStatus, number> = {
+const STATUS_RANK: Record<LearningContentStatus, number> = {
   not_started: 0,
   in_progress: 1,
   completed: 2,
@@ -16,7 +16,19 @@ function maxIso(a: string, b: string): string {
   return isoToTime(a) >= isoToTime(b) ? a : b
 }
 
-export function mergeModuleProgress(a: LearningModuleProgress, b: LearningModuleProgress): LearningModuleProgress {
+function mergeInteractions(
+  a: LearningContentProgress['interactions'],
+  b: LearningContentProgress['interactions'],
+  preferA: boolean,
+): LearningContentProgress['interactions'] {
+  if (!a && !b) return undefined
+  const base = preferA ? (b ?? {}) : (a ?? {})
+  const override = preferA ? (a ?? {}) : (b ?? {})
+  const merged: Record<string, LearningInteractionState> = { ...base, ...override }
+  return Object.keys(merged).length ? merged : undefined
+}
+
+export function mergeContentProgress(a: LearningContentProgress, b: LearningContentProgress): LearningContentProgress {
   const aRank = STATUS_RANK[a.status]
   const bRank = STATUS_RANK[b.status]
 
@@ -25,50 +37,43 @@ export function mergeModuleProgress(a: LearningModuleProgress, b: LearningModule
   const lastAttemptAt = maxIso(a.lastAttemptAt, b.lastAttemptAt)
   const completedAt = a.completedAt && b.completedAt ? maxIso(a.completedAt, b.completedAt) : a.completedAt ?? b.completedAt
 
-  const contentVersion = isoToTime(a.lastAttemptAt) >= isoToTime(b.lastAttemptAt) ? a.contentVersion : b.contentVersion
+  const preferA = isoToTime(a.lastAttemptAt) >= isoToTime(b.lastAttemptAt)
+  const contentVersion = preferA ? a.contentVersion : b.contentVersion
+  const interactions = mergeInteractions(a.interactions, b.interactions, preferA)
 
   return {
-    moduleId: a.moduleId,
+    contentId: a.contentId,
     status,
     score: score > 0 ? score : undefined,
     lastAttemptAt,
     completedAt,
     contentVersion,
+    interactions,
   }
 }
 
 export function mergeLearningGuestProgress(local: LearningGuestProgress, remote: LearningGuestProgress): LearningGuestProgress {
-  const pathIds = new Set<string>([...Object.keys(local.paths), ...Object.keys(remote.paths)])
+  const contentIds = new Set<string>([...Object.keys(local.content), ...Object.keys(remote.content)])
 
-  const mergedPaths: Record<string, { readonly modules: Record<string, LearningModuleProgress> }> = {}
+  const mergedContent: Record<string, LearningContentProgress> = {}
 
-  for (const pathId of pathIds) {
-    const localModules = local.paths[pathId]?.modules ?? {}
-    const remoteModules = remote.paths[pathId]?.modules ?? {}
+  for (const contentId of contentIds) {
+    const a = local.content[contentId]
+    const b = remote.content[contentId]
 
-    const moduleIds = new Set<string>([...Object.keys(localModules), ...Object.keys(remoteModules)])
-    const mergedModules: Record<string, LearningModuleProgress> = {}
-
-    for (const moduleId of moduleIds) {
-      const a = localModules[moduleId]
-      const b = remoteModules[moduleId]
-
-      if (a && b) {
-        mergedModules[moduleId] = mergeModuleProgress(a, b)
-      } else if (a) {
-        mergedModules[moduleId] = a
-      } else if (b) {
-        mergedModules[moduleId] = b
-      }
+    if (a && b) {
+      mergedContent[contentId] = mergeContentProgress(a, b)
+    } else if (a) {
+      mergedContent[contentId] = a
+    } else if (b) {
+      mergedContent[contentId] = b
     }
-
-    mergedPaths[pathId] = { modules: mergedModules }
   }
 
   return {
     version: remote.version,
     onboarding: remote.onboarding.completedAt ? remote.onboarding : local.onboarding,
-    paths: mergedPaths,
+    content: mergedContent,
     lastUpdated: maxIso(local.lastUpdated, remote.lastUpdated),
   }
 }

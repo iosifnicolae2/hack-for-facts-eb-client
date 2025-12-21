@@ -1,0 +1,91 @@
+{
+  "id": "public_servant",
+  "slug": "public-servant",
+  "difficulty": "advanced",
+  "title": {
+    "en": "Public Official",
+    "ro": "Funcționar Public"
+  },
+  "description": {
+    "en": "Professional training for managing public budgets, ensuring compliance, and promoting transparency.",
+    "ro": "Formare profesională pentru gestionarea bugetelor publice, asigurarea conformității și promovarea transparenței."
+  },
+  "modules": [
+    {
+      "id": "official-foundations",
+      "slug": "foundations",
+      "title": {
+        "en": "Foundations of Public Management",
+        "ro": "Bazele Managementului Public"
+      },
+      "description": {
+        "en": "Understand your role and the legal framework governing public finance.",
+        "ro": "Înțelege rolul tău și cadrul legal care guvernează finanțele publice."
+      },
+      "lessons": [
+        {
+          "id": "officials-role",
+          "slug": "officials-role",
+          "title": {
+            "en": "The Public Official's Role",
+            "ro": "Rolul Funcționarului Public"
+          },
+          "durationMinutes": 20,
+          "contentDir": "officials-role",
+          "completionMode": "mark_complete",
+          "prerequisites": []
+        },
+        {
+          "id": "legal-framework",
+          "slug": "legal-framework",
+          "title": {
+            "en": "Legal Framework Mastery",
+            "ro": "Stăpânirea Cadrului Legal"
+          },
+          "durationMinutes": 30,
+          "contentDir": "legal-framework",
+          "completionMode": "mark_complete",
+          "prerequisites": ["officials-role"]
+        }
+      ]
+    },
+    {
+      "id": "official-budgeting",
+      "slug": "budgeting",
+      "title": {
+        "en": "Budgeting and Planning",
+        "ro": "Bugetare și Planificare"
+      },
+      "description": {
+        "en": "Master the classification system and the strategic planning process.",
+        "ro": "Stăpânește sistemul de clasificare și procesul de planificare strategică."
+      },
+      "lessons": [
+        {
+          "id": "classification-system-official",
+          "slug": "classification-system",
+          "title": {
+            "en": "Budget Classification System",
+            "ro": "Sistemul de Clasificare Bugetară"
+          },
+          "durationMinutes": 30,
+          "contentDir": "classification-system-official",
+          "completionMode": "quiz",
+          "prerequisites": ["legal-framework"]
+        },
+        {
+          "id": "strategic-planning",
+          "slug": "strategic-planning",
+          "title": {
+            "en": "Strategic Planning",
+            "ro": "Planificare Strategică"
+          },
+          "durationMinutes": 25,
+          "contentDir": "strategic-planning",
+          "completionMode": "mark_complete",
+          "prerequisites": ["classification-system-official"]
+        }
+      ]
+    }
+  ]
+}

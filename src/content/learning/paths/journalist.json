@@ -1,0 +1,91 @@
+{
+  "id": "journalist",
+  "slug": "journalist",
+  "difficulty": "intermediate",
+  "title": {
+    "en": "Investigative Journalist",
+    "ro": "Jurnalist de Investigație"
+  },
+  "description": {
+    "en": "Master the tools and techniques for investigating public budgets and finding accountability stories.",
+    "ro": "Stăpânește instrumentele și tehnicile pentru investigarea bugetelor publice și găsirea poveștilor de responsabilitate."
+  },
+  "modules": [
+    {
+      "id": "journalist-foundations",
+      "slug": "foundations",
+      "title": {
+        "en": "Foundations of Budget Journalism",
+        "ro": "Bazele Jurnalismului de Buget"
+      },
+      "description": {
+        "en": "Develop the investigative mindset and understand the anatomy of public finance.",
+        "ro": "Dezvoltă mentalitatea de investigator și înțelege anatomia finanțelor publice."
+      },
+      "lessons": [
+        {
+          "id": "journalists-mindset",
+          "slug": "journalists-mindset",
+          "title": {
+            "en": "The Journalist's Mindset",
+            "ro": "Mentalitatea Jurnalistului"
+          },
+          "durationMinutes": 15,
+          "contentDir": "journalists-mindset",
+          "completionMode": "mark_complete",
+          "prerequisites": []
+        },
+        {
+          "id": "public-finance-anatomy",
+          "slug": "public-finance-anatomy",
+          "title": {
+            "en": "Anatomy of Public Finance",
+            "ro": "Anatomia Finanțelor Publice"
+          },
+          "durationMinutes": 20,
+          "contentDir": "public-finance-anatomy",
+          "completionMode": "mark_complete",
+          "prerequisites": ["journalists-mindset"]
+        }
+      ]
+    },
+    {
+      "id": "journalist-data-access",
+      "slug": "data-access",
+      "title": {
+        "en": "Data and Access",
+        "ro": "Date și Acces"
+      },
+      "description": {
+        "en": "Learn how to read budget codes and where to find primary data sources.",
+        "ro": "Învață cum să citești codurile bugetare și unde să găsești sursele primare de date."
+      },
+      "lessons": [
+        {
+          "id": "classification-system-journalist",
+          "slug": "classification-system",
+          "title": {
+            "en": "The Classification System",
+            "ro": "Sistemul de Clasificare"
+          },
+          "durationMinutes": 25,
+          "contentDir": "classification-system-journalist",
+          "completionMode": "quiz",
+          "prerequisites": ["public-finance-anatomy"]
+        },
+        {
+          "id": "data-sources",
+          "slug": "data-sources",
+          "title": {
+            "en": "Primary Data Sources",
+            "ro": "Surse Primare de Date"
+          },
+          "durationMinutes": 20,
+          "contentDir": "data-sources",
+          "completionMode": "mark_complete",
+          "prerequisites": ["classification-system-journalist"]
+        }
+      ]
+    }
+  ]
+}

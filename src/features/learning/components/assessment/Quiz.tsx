@@ -1,11 +1,10 @@
 import { useMemo, useState } from 'react'
 import { t } from '@lingui/core/macro'
-import { Check, X, RotateCcw } from 'lucide-react'
+import { Check, HelpCircle, Lightbulb, RotateCcw, Sparkles, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
-import { useLearningProgress } from '../../hooks/use-learning-progress'
-import { scoreSingleChoice } from '../../utils/scoring'
+import { useQuizInteraction } from '../../hooks/use-learning-interactions'
 
 export type QuizOption = {
   readonly id: string
@@ -18,107 +17,189 @@ export type QuizProps = {
   readonly question: string
   readonly options: readonly QuizOption[]
   readonly explanation: string
-  readonly pathId: string
-  readonly moduleId: string
+  readonly contentId: string
 }
 
-export function Quiz({ id, question, options, explanation, pathId, moduleId }: QuizProps) {
-  const { saveModuleProgress } = useLearningProgress()
-
+export function Quiz({ id, question, options, explanation, contentId }: QuizProps) {
   // Guard against missing or invalid options - must be defined early
   const validOptions = useMemo(() => (Array.isArray(options) ? options : []), [options])
 
-  const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null)
-  const [isSaving, setIsSaving] = useState(false)
+  const { selectedOptionId, isAnswered, isCorrect, answer, reset } = useQuizInteraction({
+    contentId,
+    quizId: id,
+    options: validOptions,
+    contentVersion: 'v1',
+  })
 
-  const score = useMemo(() => scoreSingleChoice(validOptions, selectedOptionId), [validOptions, selectedOptionId])
-  const isAnswered = selectedOptionId !== null
-  const isCorrect = score >= 70
+  const [isSaving, setIsSaving] = useState(false)
 
   const handleSelect = async (optionId: string) => {
     if (isAnswered || isSaving) return
 
-    setSelectedOptionId(optionId)
-
-    const nextScore = scoreSingleChoice(validOptions, optionId)
-    const status = nextScore >= 70 ? 'passed' : 'in_progress'
-
     setIsSaving(true)
     try {
-      await saveModuleProgress({
-        pathId,
-        moduleId,
-        status,
-        score: nextScore,
-        contentVersion: 'poc',
-      })
+      await answer(optionId)
     } finally {
       setIsSaving(false)
     }
   }
 
-  const handleRetry = () => {
-    setSelectedOptionId(null)
-  }
+  const handleRetry = () => void reset()
 
   if (validOptions.length === 0) {
     return (
-      <Card className="p-6 my-6 border-border bg-destructive/10">
-        <p className="text-destructive">{t`Quiz error: No options provided`}</p>
-        <pre className="text-xs mt-2">{JSON.stringify({ id, options }, null, 2)}</pre>
+      <Card className="my-6 border-destructive/50 bg-destructive/5">
+        <CardContent className="p-6">
+          <p className="text-sm text-destructive">{t`Quiz error: No options provided`}</p>
+          <pre className="text-xs mt-2 p-2 bg-muted rounded">{JSON.stringify({ id, options }, null, 2)}</pre>
+        </CardContent>
       </Card>
     )
   }
 
   return (
-    <Card className="p-6 my-6 border-border bg-muted/50">
-      <h3 className="font-semibold text-lg mb-4">{question}</h3>
-
-      <div className="space-y-3">
-        {validOptions.map((option) => {
-          const isSelected = selectedOptionId === option.id
-
-          return (
-            <button
-              key={`${id}-${option.id}`}
-              type="button"
-              onClick={() => void handleSelect(option.id)}
-              disabled={isAnswered || isSaving}
-              className={cn(
-                'w-full text-left p-4 rounded-lg border transition-all duration-200 flex items-center justify-between bg-background text-foreground',
-                !isAnswered && 'border-border hover:bg-muted cursor-pointer',
-                isAnswered && option.isCorrect && 'border-green-500 bg-green-100 dark:bg-green-900/30',
-                isAnswered && isSelected && !option.isCorrect && 'border-red-500 bg-red-100 dark:bg-red-900/30',
-                isAnswered && !option.isCorrect && !isSelected && 'opacity-50'
-              )}
-            >
-              <span>{option.text}</span>
-              {isAnswered && option.isCorrect ? <Check className="h-5 w-5 text-green-600" /> : null}
-              {isAnswered && isSelected && !option.isCorrect ? <X className="h-5 w-5 text-red-600" /> : null}
-            </button>
-          )
-        })}
-      </div>
-
-      {isAnswered ? (
-        <div className="mt-6 space-y-4">
+    <Card
+      className={cn(
+        'my-8 overflow-hidden transition-all duration-500',
+        !isAnswered && 'border-primary/30 bg-gradient-to-b from-primary/5 to-transparent',
+        isAnswered && isCorrect && 'border-green-500/50 bg-gradient-to-b from-green-500/10 to-green-500/5',
+        isAnswered && !isCorrect && 'border-red-500/50 bg-gradient-to-b from-red-500/10 to-red-500/5'
+      )}
+    >
+      <CardHeader className="pb-4">
+        <div className="flex items-start gap-3">
           <div
             className={cn(
-              'p-4 rounded-lg text-sm',
-              isCorrect
-                ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
-                : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'
+              'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors duration-300',
+              !isAnswered && 'bg-primary/10 text-primary',
+              isAnswered && isCorrect && 'bg-green-500 text-white',
+              isAnswered && !isCorrect && 'bg-red-500 text-white'
             )}
           >
-            <p className="font-semibold mb-1">{isCorrect ? t`Correct!` : t`Not quite right.`}</p>
-            <p>{explanation}</p>
+            {!isAnswered ? (
+              <HelpCircle className="h-5 w-5" />
+            ) : isCorrect ? (
+              <Check className="h-5 w-5 animate-in zoom-in duration-300" />
+            ) : (
+              <X className="h-5 w-5 animate-in zoom-in duration-300" />
+            )}
           </div>
-
-          <Button variant="outline" type="button" onClick={handleRetry} disabled={isSaving}>
-            <RotateCcw className="h-4 w-4 mr-2" /> {t`Try again`}
-          </Button>
+          <div className="flex-1 pt-1">
+            <CardTitle className="text-lg font-semibold leading-snug">{question}</CardTitle>
+          </div>
         </div>
-      ) : null}
+      </CardHeader>
+
+      <CardContent className="space-y-4">
+        <div className="space-y-2">
+          {validOptions.map((option, index) => {
+            const isSelected = selectedOptionId === option.id
+            const showAsCorrect = isAnswered && option.isCorrect
+            const showAsIncorrect = isAnswered && isSelected && !option.isCorrect
+
+            return (
+              <button
+                key={`${id}-${option.id}`}
+                type="button"
+                onClick={() => void handleSelect(option.id)}
+                disabled={isAnswered || isSaving}
+                className={cn(
+                  'w-full text-left rounded-xl border-2 p-4 transition-all duration-200 flex items-center gap-3',
+                  'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary/50',
+                  !isAnswered && 'border-border bg-background hover:border-primary/50 hover:bg-primary/5 cursor-pointer',
+                  showAsCorrect && 'border-green-500 bg-green-500/10 animate-in fade-in duration-300',
+                  showAsIncorrect && 'border-red-500 bg-red-500/10 animate-in fade-in duration-300',
+                  isAnswered && !showAsCorrect && !showAsIncorrect && 'border-muted bg-muted/30 opacity-60'
+                )}
+              >
+                {/* Option letter/indicator */}
+                <div
+                  className={cn(
+                    'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-sm font-bold transition-colors duration-200',
+                    !isAnswered && 'bg-muted text-muted-foreground',
+                    showAsCorrect && 'bg-green-500 text-white',
+                    showAsIncorrect && 'bg-red-500 text-white',
+                    isAnswered && !showAsCorrect && !showAsIncorrect && 'bg-muted/50 text-muted-foreground'
+                  )}
+                >
+                  {showAsCorrect ? (
+                    <Check className="h-4 w-4" />
+                  ) : showAsIncorrect ? (
+                    <X className="h-4 w-4" />
+                  ) : (
+                    String.fromCharCode(65 + index) // A, B, C, D...
+                  )}
+                </div>
+
+                <span className="flex-1">{option.text}</span>
+
+                {/* Correct indicator for other options */}
+                {isAnswered && option.isCorrect && !isSelected && (
+                  <span className="text-xs text-green-600 font-medium">{t`Correct answer`}</span>
+                )}
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Feedback section */}
+        {isAnswered && (
+          <div
+            className={cn(
+              'rounded-xl p-4 animate-in slide-in-from-bottom-2 fade-in duration-500',
+              isCorrect ? 'bg-green-500/10 border border-green-500/20' : 'bg-amber-500/10 border border-amber-500/20'
+            )}
+          >
+            <div className="flex items-start gap-3">
+              <div
+                className={cn(
+                  'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg',
+                  isCorrect ? 'bg-green-500/20' : 'bg-amber-500/20'
+                )}
+              >
+                {isCorrect ? (
+                  <Sparkles className="h-4 w-4 text-green-600 dark:text-green-400" />
+                ) : (
+                  <Lightbulb className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                )}
+              </div>
+              <div className="flex-1 space-y-1">
+                <p
+                  className={cn(
+                    'font-semibold',
+                    isCorrect ? 'text-green-700 dark:text-green-300' : 'text-amber-700 dark:text-amber-300'
+                  )}
+                >
+                  {isCorrect ? t`Excellent work!` : t`Not quite right`}
+                </p>
+                <p
+                  className={cn(
+                    'text-sm',
+                    isCorrect ? 'text-green-600 dark:text-green-400' : 'text-amber-600 dark:text-amber-400'
+                  )}
+                >
+                  {explanation}
+                </p>
+              </div>
+            </div>
+
+            {!isCorrect && (
+              <div className="mt-4 pt-3 border-t border-amber-500/20">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleRetry}
+                  disabled={isSaving}
+                  className="gap-2"
+                >
+                  <RotateCcw className="h-3.5 w-3.5" />
+                  {t`Try again`}
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
+      </CardContent>
     </Card>
   )
 }

@@ -10,18 +10,17 @@
     "en": "A short, practical path for understanding public budgets.",
     "ro": "Un parcurs scurt și practic pentru a înțelege bugetele publice."
   },
-  "requiredModuleIds": ["module-1", "module-2"],
   "modules": [
     {
-      "id": "module-1",
-      "slug": "basics",
+      "id": "citizen-foundations",
+      "slug": "foundations",
       "title": {
-        "en": "Public Budget Basics",
-        "ro": "Bazele Bugetului Public"
+        "en": "Foundations",
+        "ro": "Fundamente"
       },
       "description": {
-        "en": "Learn what a budget is and how it's structured.",
-        "ro": "Învață ce este un buget și cum este structurat."
+        "en": "Understand what a public budget is and why it matters.",
+        "ro": "Înțelege ce este un buget public și de ce contează."
       },
       "lessons": [
         {
@@ -51,15 +50,15 @@
       ]
     },
     {
-      "id": "module-2",
-      "slug": "execution",
+      "id": "citizen-revenues",
+      "slug": "revenues",
       "title": {
-        "en": "Budget Execution",
-        "ro": "Execuția Bugetară"
+        "en": "Revenues",
+        "ro": "Venituri"
       },
       "description": {
-        "en": "How money is collected and spent.",
-        "ro": "Cum sunt colectați și cheltuiți banii."
+        "en": "Where does the money come from?",
+        "ro": "De unde vin banii?"
       },
       "lessons": [
         {
@@ -73,7 +72,21 @@
           "contentDir": "revenue-collection",
           "completionMode": "mark_complete",
           "prerequisites": ["budget-structure"]
-        },
+        }
+      ]
+    },
+    {
+      "id": "citizen-expenditures",
+      "slug": "expenditures",
+      "title": {
+        "en": "Expenditures",
+        "ro": "Cheltuieli"
+      },
+      "description": {
+        "en": "Where does the money go?",
+        "ro": "Unde se duc banii?"
+      },
+      "lessons": [
         {
           "id": "spending",
           "slug": "spending",

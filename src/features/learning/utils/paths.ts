@@ -49,10 +49,45 @@ type RawPathModule = { readonly default: unknown }
 
 const pathModules = import.meta.glob('/src/content/learning/paths/*.json', { eager: true }) as Record<string, RawPathModule>
 
+function buildLessonSignature(lesson: LearningLessonDefinition): string {
+  return JSON.stringify({
+    contentDir: lesson.contentDir,
+    completionMode: lesson.completionMode,
+    durationMinutes: lesson.durationMinutes,
+    slug: lesson.slug,
+    prerequisites: [...lesson.prerequisites].sort(),
+    title: lesson.title,
+  })
+}
+
+function validateLessonDefinitions(paths: readonly LearningPathDefinition[]): void {
+  const lessonRegistry = new Map<string, { readonly signature: string; readonly location: string }>()
+
+  for (const path of paths) {
+    for (const module of path.modules) {
+      for (const lesson of module.lessons) {
+        const location = `${path.id}/${module.id}/${lesson.id}`
+        const signature = buildLessonSignature(lesson)
+        const existing = lessonRegistry.get(lesson.id)
+        if (existing && existing.signature !== signature) {
+          throw new Error(
+            `Conflicting lesson definitions for "${lesson.id}". Found "${location}" and "${existing.location}".`,
+          )
+        }
+        if (!existing) {
+          lessonRegistry.set(lesson.id, { signature, location })
+        }
+      }
+    }
+  }
+}
+
 export function getLearningPaths(): readonly LearningPathDefinition[] {
-  return Object.values(pathModules)
+  const paths = Object.values(pathModules)
     .map((m) => LearningPathDefinitionSchema.parse(m.default))
     .sort((a, b) => a.id.localeCompare(b.id))
+  validateLessonDefinitions(paths)
+  return paths
 }
 
 export function getLearningPathById(pathId: string): LearningPathDefinition | null {
@@ -84,12 +119,12 @@ export function getLearningPathCompletionStats(params: {
   readonly path: LearningPathDefinition
   readonly progress: LearningGuestProgress
 }): { readonly completedCount: number; readonly totalCount: number; readonly completionPercentage: number } {
-  const progressForPath = params.progress.paths[params.path.id]?.modules ?? {}
+  const contentProgress = params.progress.content
   const allLessons = getAllLessons(params.path)
   const totalCount = allLessons.length
   
   const completedCount = allLessons.filter((lesson) => {
-    const status = progressForPath[lesson.id]?.status
+    const status = contentProgress[lesson.id]?.status
     return status === 'completed' || status === 'passed'
   }).length
 

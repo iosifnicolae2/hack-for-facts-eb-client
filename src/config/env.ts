@@ -10,7 +10,7 @@ const envSchema = z.object({
 
   // Environment
   NODE_ENV: z
-    .enum(["development", "production"])
+    .enum(["development", "production", "test"])
     .optional()
     .default("production"),
 

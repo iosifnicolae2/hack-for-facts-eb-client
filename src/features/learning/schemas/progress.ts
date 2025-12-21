@@ -6,15 +6,23 @@ import {
   type LearningGuestProgress,
 } from '../types'
 
-export const LearningModuleStatusSchema = z.enum(['not_started', 'in_progress', 'completed', 'passed'])
+export const LearningContentStatusSchema = z.enum(['not_started', 'in_progress', 'completed', 'passed'])
 
-export const LearningModuleProgressSchema = z.object({
-  moduleId: z.string().min(1),
-  status: LearningModuleStatusSchema,
+const LearningQuizInteractionSchema = z.object({
+  kind: z.literal('quiz'),
+  selectedOptionId: z.string().nullable(),
+})
+
+const LearningInteractionStateSchema = z.discriminatedUnion('kind', [LearningQuizInteractionSchema])
+
+export const LearningContentProgressSchema = z.object({
+  contentId: z.string().min(1),
+  status: LearningContentStatusSchema,
   score: z.number().min(0).max(100).optional(),
   lastAttemptAt: z.string().datetime(),
   completedAt: z.string().datetime().optional(),
   contentVersion: z.string().min(1),
+  interactions: z.record(z.string(), LearningInteractionStateSchema).optional(),
 })
 
 export const UserRoleSchema = z.enum(['student', 'journalist', 'researcher', 'citizen', 'public_servant'])
@@ -26,15 +34,10 @@ export const LearningOnboardingStateSchema = z.object({
   completedAt: z.string().datetime().nullable(),
 })
 
-export const LearningGuestProgressSchema = z.object({
+const LearningGuestProgressSchema = z.object({
   version: z.literal(LEARNING_PROGRESS_SCHEMA_VERSION),
   onboarding: LearningOnboardingStateSchema,
-  paths: z.record(
-    z.string(),
-    z.object({
-      modules: z.record(z.string(), LearningModuleProgressSchema),
-    }),
-  ),
+  content: z.record(z.string(), LearningContentProgressSchema),
   lastUpdated: z.string().datetime(),
 })
 
@@ -42,15 +45,49 @@ export function getEmptyLearningGuestProgress(): LearningGuestProgress {
   return {
     version: LEARNING_PROGRESS_SCHEMA_VERSION,
     onboarding: { role: null, depth: null, completedAt: null },
-    paths: {},
+    content: {},
     lastUpdated: new Date().toISOString(),
   }
 }
 
 export function parseLearningGuestProgress(raw: unknown): LearningGuestProgress {
-  const parsed = LearningGuestProgressSchema.safeParse(raw)
+  const parsed = LearningGuestProgressSchema.safeParse(normalizeLearningGuestProgress(raw))
   if (parsed.success) return parsed.data
   return getEmptyLearningGuestProgress()
+}
+
+function normalizeLearningGuestProgress(raw: unknown): unknown {
+  if (!raw || typeof raw !== 'object') return raw
+  const draft = { ...(raw as Record<string, unknown>) }
+  const content = (draft as { content?: Record<string, unknown> }).content
+
+  if (!content || typeof content !== 'object') return draft
+
+  const nextContent: Record<string, unknown> = { ...content }
+
+  for (const [contentId, entry] of Object.entries(nextContent)) {
+    if (!entry || typeof entry !== 'object') continue
+    const record = entry as Record<string, unknown>
+    const quizAnswers = record.quizAnswers
+    if (!quizAnswers || typeof quizAnswers !== 'object') continue
+    if (record.interactions && typeof record.interactions === 'object') continue
+
+    const nextInteractions: Record<string, { readonly kind: 'quiz'; readonly selectedOptionId: string | null }> = {}
+
+    for (const [quizId, selectedOptionId] of Object.entries(quizAnswers as Record<string, unknown>)) {
+      if (typeof selectedOptionId === 'string' || selectedOptionId === null) {
+        nextInteractions[quizId] = { kind: 'quiz', selectedOptionId: selectedOptionId as string | null }
+      }
+    }
+
+    if (Object.keys(nextInteractions).length) {
+      record.interactions = nextInteractions
+      nextContent[contentId] = record
+    }
+  }
+
+  draft.content = nextContent
+  return draft
 }
 
 export const LearningCertificateTierSchema = z.enum(['bronze', 'silver', 'gold'])

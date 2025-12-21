@@ -1,15 +1,25 @@
 import { Link, Outlet, useLocation } from '@tanstack/react-router'
 import { t } from '@lingui/core/macro'
-import { BookOpen, CheckCircle2, ChevronDown, ChevronRight, Circle, Menu } from 'lucide-react'
+import {
+  BookOpen,
+  CheckCircle2,
+  ChevronDown,
+  ChevronRight,
+  Circle,
+  GraduationCap,
+  Home,
+  Menu,
+  PlayCircle,
+} from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
-import { Progress } from '@/components/ui/progress'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { cn } from '@/lib/utils'
 import { LearningProgressProvider, useLearningProgress } from '../../hooks/use-learning-progress'
-import { getLearningPathById, getLearningPaths, getTranslatedText, getAllLessons } from '../../utils/paths'
+import { getAllLessons, getLearningPathById, getLearningPaths, getTranslatedText } from '../../utils/paths'
 import type { LearningModuleDefinition } from '../../types'
 
 function parseLearningRoute(pathname: string): {
@@ -33,7 +43,7 @@ type ModuleNavProps = {
   readonly locale: 'en' | 'ro'
   readonly currentModuleId: string | null
   readonly currentLessonId: string | null
-  readonly lessonProgress: Record<string, { readonly status: string } | undefined>
+  readonly lessonProgress: Readonly<Record<string, { readonly status: string } | undefined>>
 }
 
 function ModuleNav({ module, pathId, locale, currentModuleId, currentLessonId, lessonProgress }: ModuleNavProps) {
@@ -48,47 +58,84 @@ function ModuleNav({ module, pathId, locale, currentModuleId, currentLessonId, l
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-      <CollapsibleTrigger className="group flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground">
-        <div className="flex items-center gap-2">
+      <CollapsibleTrigger className="group flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-sm transition-all duration-200 hover:bg-accent">
+        <div className="flex h-6 w-6 shrink-0 items-center justify-center">
           {isModuleComplete ? (
-            <CheckCircle2 className="h-4 w-4 text-green-600" />
+            <CheckCircle2 className="h-5 w-5 text-green-500" />
           ) : (
-            <Circle className="h-4 w-4 text-muted-foreground/50" />
+            <div className="relative h-5 w-5">
+              <svg className="h-5 w-5 -rotate-90" viewBox="0 0 20 20">
+                <circle
+                  className="text-muted/40"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  fill="none"
+                  cx="10"
+                  cy="10"
+                  r="8"
+                />
+                <circle
+                  className="text-primary transition-all duration-500"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeDasharray={`${(completedLessons / module.lessons.length) * 50.3} 50.3`}
+                  cx="10"
+                  cy="10"
+                  r="8"
+                />
+              </svg>
+              <span className="absolute inset-0 flex items-center justify-center text-[8px] font-bold text-muted-foreground">
+                {completedLessons}
+              </span>
+            </div>
           )}
-          <span className={cn('truncate', isCurrentModule && 'font-medium')}>
-            {getTranslatedText(module.title, locale)}
-          </span>
         </div>
-        <div className="flex items-center gap-2">
-          <Badge variant="secondary" className="text-xs">
-            {completedLessons}/{module.lessons.length}
-          </Badge>
-          <ChevronDown
-            className={cn('h-4 w-4 transition-transform text-muted-foreground', isOpen && 'rotate-180')}
-          />
-        </div>
+        <span className={cn('flex-1 text-left truncate', isCurrentModule && 'font-medium text-foreground')}>
+          {getTranslatedText(module.title, locale)}
+        </span>
+        <ChevronDown
+          className={cn(
+            'h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200',
+            isOpen && 'rotate-180'
+          )}
+        />
       </CollapsibleTrigger>
-      <CollapsibleContent className="pl-4">
-        <div className="grid gap-0.5 py-1">
-          {module.lessons.map((lesson) => {
+
+      <CollapsibleContent className="overflow-hidden data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up">
+        <div className="ml-4 border-l-2 border-muted pl-2 py-1 space-y-0.5">
+          {module.lessons.map((lesson, index) => {
             const status = lessonProgress[lesson.id]?.status
             const isCompleted = status === 'completed' || status === 'passed'
             const isActive = lesson.id === currentLessonId
+            const isNextUp = !isCompleted && index === module.lessons.findIndex((l) => {
+              const s = lessonProgress[l.id]?.status
+              return s !== 'completed' && s !== 'passed'
+            })
 
             return (
               <Link
                 key={lesson.id}
                 to={`/${locale}/learning/${pathId}/${module.id}/${lesson.id}` as '/'}
                 className={cn(
-                  'flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm transition-colors hover:bg-accent hover:text-accent-foreground',
-                  isActive ? 'bg-accent/50 font-medium' : 'text-muted-foreground'
+                  'group/lesson flex items-center gap-2 rounded-md px-2.5 py-2 text-sm transition-all duration-200',
+                  isActive
+                    ? 'bg-primary/10 text-primary font-medium'
+                    : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
                 )}
               >
-                {isCompleted ? (
-                  <CheckCircle2 className="h-3.5 w-3.5 text-green-600 shrink-0" />
-                ) : (
-                  <Circle className="h-3.5 w-3.5 text-muted-foreground/40 shrink-0" />
-                )}
+                <div className="flex h-5 w-5 shrink-0 items-center justify-center">
+                  {isCompleted ? (
+                    <CheckCircle2 className="h-4 w-4 text-green-500" />
+                  ) : isActive ? (
+                    <PlayCircle className="h-4 w-4 text-primary animate-pulse" />
+                  ) : isNextUp ? (
+                    <Circle className="h-4 w-4 text-primary" />
+                  ) : (
+                    <Circle className="h-4 w-4 text-muted-foreground/40" />
+                  )}
+                </div>
                 <span className="truncate">{getTranslatedText(lesson.title, locale)}</span>
               </Link>
             )
@@ -99,8 +146,46 @@ function ModuleNav({ module, pathId, locale, currentModuleId, currentLessonId, l
   )
 }
 
+function CircularProgress({ value, size = 48 }: { readonly value: number; readonly size?: number }) {
+  const strokeWidth = 4
+  const radius = (size - strokeWidth) / 2
+  const circumference = radius * 2 * Math.PI
+  const offset = circumference - (value / 100) * circumference
+
+  return (
+    <div className="relative" style={{ width: size, height: size }}>
+      <svg className="-rotate-90" width={size} height={size}>
+        <circle
+          className="text-muted/30"
+          stroke="currentColor"
+          strokeWidth={strokeWidth}
+          fill="none"
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+        />
+        <circle
+          className={cn('transition-all duration-500', value === 100 ? 'text-green-500' : 'text-primary')}
+          stroke="currentColor"
+          strokeWidth={strokeWidth}
+          fill="none"
+          strokeLinecap="round"
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+        />
+      </svg>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <span className="text-sm font-bold">{value}%</span>
+      </div>
+    </div>
+  )
+}
+
 function LearningSidebar({ pathname }: { readonly pathname: string }) {
-  const { auth, progress, poc } = useLearningProgress()
+  const { auth, progress, clearProgress } = useLearningProgress()
   const { locale, pathId, moduleId, lessonId } = parseLearningRoute(pathname)
 
   const paths = useMemo(() => getLearningPaths(), [])
@@ -110,110 +195,138 @@ function LearningSidebar({ pathname }: { readonly pathname: string }) {
     if (!activePath) return null
     const allLessons = getAllLessons(activePath)
     const total = allLessons.length
-    const lessonProgress = progress.paths[activePath.id]?.modules ?? {}
+    const lessonProgress = progress.content
     const completed = allLessons.filter((lesson) => {
       const status = lessonProgress[lesson.id]?.status
       return status === 'completed' || status === 'passed'
     }).length
     const percent = total > 0 ? Math.round((completed / total) * 100) : 0
     return { completed, total, percent }
-  }, [activePath, progress.paths])
+  }, [activePath, progress.content])
 
-  const lessonProgress = activePath ? (progress.paths[activePath.id]?.modules ?? {}) : {}
-  const authLabel = auth.isAuthenticated ? (auth.isSimulated ? t`Simulated auth` : t`Authenticated`) : t`Guest`
+  const lessonProgress = progress.content
+  const authLabel = auth.isAuthenticated ? t`Authenticated` : t`Guest`
 
   return (
-    <div className="flex h-full flex-col gap-4 py-4">
-      <div className="px-4 space-y-3">
-        <div>
-          <h2 className="text-lg font-semibold tracking-tight">{t`Budget Academy (PoC)`}</h2>
-          <p className="text-sm text-muted-foreground">{t`Learn the basics of public budgeting.`}</p>
+    <div className="flex h-full flex-col">
+      {/* Header */}
+      <div className="p-4 border-b bg-gradient-to-b from-muted/50 to-transparent">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+            <GraduationCap className="h-5 w-5 text-primary" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h2 className="font-semibold tracking-tight truncate">{t`Budget Academy`}</h2>
+            <p className="text-xs text-muted-foreground">{t`Learn public budgeting`}</p>
+          </div>
         </div>
+      </div>
 
-        {completionStats ? (
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-muted-foreground">{t`Path progress`}</span>
-              <Badge variant={completionStats.completed === completionStats.total ? 'success' : 'secondary'}>
+      {/* Progress Section - Only when path is active */}
+      {completionStats ? (
+        <div className="p-4 border-b">
+          <div className="flex items-center gap-4">
+            <CircularProgress value={completionStats.percent} />
+            <div className="flex-1 min-w-0">
+              <div className="font-medium text-sm truncate">
+                {activePath ? getTranslatedText(activePath.title, locale) : ''}
+              </div>
+              <div className="text-xs text-muted-foreground mt-0.5">
                 {completionStats.completed}/{completionStats.total} {t`lessons`}
+              </div>
+              <Badge
+                variant={completionStats.completed === completionStats.total ? 'success' : 'secondary'}
+                className="mt-2 text-xs"
+              >
+                {completionStats.completed === completionStats.total ? t`Complete!` : t`In progress`}
               </Badge>
             </div>
-            <Progress value={completionStats.percent} />
-            <div className="flex items-center justify-between text-xs text-muted-foreground">
-              <span>{authLabel}</span>
-              <span>{completionStats.percent}%</span>
-            </div>
           </div>
-        ) : (
-          <div className="text-xs text-muted-foreground">{t`Select a path to start.`}</div>
-        )}
-      </div>
+        </div>
+      ) : null}
 
-      <div className="flex-1 overflow-auto px-2">
-        <nav className="grid gap-1">
+      {/* Navigation */}
+      <ScrollArea className="flex-1">
+        <nav className="p-2 space-y-1">
+          {/* Hub Link */}
           <Link
             to={`/${locale}/learning` as '/'}
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
-            activeProps={{ className: 'bg-accent text-accent-foreground' }}
+            className={cn(
+              'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
+              !pathId ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+            )}
             activeOptions={{ exact: true }}
           >
-            <BookOpen className="h-4 w-4" />
-            {t`Learning hub`}
+            <Home className="h-4 w-4" />
+            {t`Learning Hub`}
           </Link>
 
-          <div className="my-2 border-t" />
+          {/* Paths Section */}
+          <div className="pt-4">
+            <div className="px-3 pb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              {t`Learning Paths`}
+            </div>
+            {paths.map((p) => {
+              const isActivePath = p.id === pathId
 
-          <div className="px-3 pt-2 text-xs font-medium text-muted-foreground">{t`Paths`}</div>
-          {paths.map((p) => (
-            <Link
-              key={p.id}
-              to={`/${locale}/learning/${p.id}` as '/'}
-              className={cn(
-                'flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground',
-                p.id === pathId ? 'bg-accent text-accent-foreground font-medium' : 'text-muted-foreground'
-              )}
-            >
-              <span className="truncate">{getTranslatedText(p.title, locale)}</span>
-              <ChevronRight className="h-4 w-4 opacity-60" />
-            </Link>
-          ))}
+              return (
+                <Link
+                  key={p.id}
+                  to={`/${locale}/learning/${p.id}` as '/'}
+                  className={cn(
+                    'flex items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-sm transition-colors',
+                    isActivePath
+                      ? 'bg-accent font-medium text-foreground'
+                      : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                  )}
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <BookOpen className="h-4 w-4 shrink-0" />
+                    <span className="truncate">{getTranslatedText(p.title, locale)}</span>
+                  </div>
+                  <ChevronRight className="h-4 w-4 shrink-0 opacity-50" />
+                </Link>
+              )
+            })}
+          </div>
 
+          {/* Modules for Active Path */}
           {activePath ? (
-            <>
-              <div className="my-2 border-t" />
-              <div className="px-3 pt-2 pb-1 text-xs font-medium text-muted-foreground">{t`Lessons`}</div>
-              {activePath.modules.map((module) => (
-                <ModuleNav
-                  key={module.id}
-                  module={module}
-                  pathId={activePath.id}
-                  locale={locale}
-                  currentModuleId={moduleId}
-                  currentLessonId={lessonId}
-                  lessonProgress={lessonProgress}
-                />
-              ))}
-            </>
+            <div className="pt-4">
+              <div className="px-3 pb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                {t`Modules`}
+              </div>
+              <div className="space-y-1">
+                {activePath.modules.map((module) => (
+                  <ModuleNav
+                    key={module.id}
+                    module={module}
+                    pathId={activePath.id}
+                    locale={locale}
+                    currentModuleId={moduleId}
+                    currentLessonId={lessonId}
+                    lessonProgress={lessonProgress}
+                  />
+                ))}
+              </div>
+            </div>
           ) : null}
         </nav>
-      </div>
+      </ScrollArea>
 
+      {/* Footer - Dev Controls */}
       {import.meta.env.DEV ? (
-        <div className="px-4">
-          <div className="rounded-lg border bg-muted/20 p-3 space-y-2 text-xs">
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground">{t`PoC controls`}</span>
-              <span className="font-mono">{auth.userId ?? '-'}</span>
+        <div className="p-3 border-t bg-muted/30">
+          <div className="rounded-lg border bg-background/50 p-3 space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-muted-foreground">{t`Dev Controls`}</span>
+              <Badge variant="outline" className="text-[10px] px-1.5">
+                {authLabel}
+              </Badge>
             </div>
-            <div className="flex flex-wrap gap-2">
-              <Button size="sm" variant="outline" onClick={poc.toggleSimulatedAuth} disabled={!poc.canSimulateAuth}>
-                {auth.isAuthenticated ? t`Use guest` : t`Simulate auth`}
-              </Button>
-              <Button size="sm" variant="outline" onClick={poc.clearGuest}>
-                {t`Clear guest`}
-              </Button>
-              <Button size="sm" variant="outline" onClick={poc.clearAuth} disabled={!auth.isAuthenticated}>
-                {t`Clear auth`}
+            <div className="flex flex-wrap gap-1.5">
+              <Button size="sm" variant="outline" className="h-7 text-xs" onClick={clearProgress}>
+                {t`Clear progress`}
               </Button>
             </div>
           </div>
@@ -229,11 +342,16 @@ export function LearningLayout() {
 
   return (
     <LearningProgressProvider>
-      <div className="flex min-h-screen w-full flex-col lg:flex-row">
+      <div className="flex min-h-screen w-full">
+        {/* Mobile Sidebar */}
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="lg:hidden absolute left-4 top-4 z-40">
-              <Menu className="h-6 w-6" />
+            <Button
+              variant="outline"
+              size="icon"
+              className="lg:hidden fixed left-4 top-4 z-40 shadow-md bg-background"
+            >
+              <Menu className="h-5 w-5" />
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-80 p-0">
@@ -241,10 +359,12 @@ export function LearningLayout() {
           </SheetContent>
         </Sheet>
 
-        <div className="hidden border-r bg-muted/10 lg:block lg:w-80 lg:shrink-0">
+        {/* Desktop Sidebar */}
+        <aside className="hidden lg:flex lg:w-80 lg:shrink-0 lg:flex-col border-r bg-muted/5">
           <LearningSidebar pathname={location.pathname} />
-        </div>
+        </aside>
 
+        {/* Main Content */}
         <main className="flex-1 overflow-auto">
           <div className="container max-w-4xl py-8 lg:py-12 px-4 lg:px-8">
             <Outlet />

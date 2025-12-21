@@ -3,16 +3,23 @@ import { t } from '@lingui/core/macro'
 import { useAuth } from '@/lib/auth'
 import { getEmptyLearningGuestProgress, parseLearningGuestProgress } from '../schemas/progress'
 import { mergeLearningGuestProgress } from '../utils/progress-merge'
-import type { LearningAuthState, LearningGuestProgress, LearningModuleProgress, LearningModuleStatus, UserRole, LearningDepth } from '../types'
+import { getQuizStatus } from '../utils/interactions'
+import type {
+  LearningAuthState,
+  LearningContentProgress,
+  LearningContentStatus,
+  LearningGuestProgress,
+  LearningInteractionAction,
+  LearningInteractionState,
+  UserRole,
+  LearningDepth,
+} from '../types'
 
 const GUEST_STORAGE_KEY = 'learning_progress'
 
 function getAuthStorageKey(userId: string): string {
   return `learning_progress:${userId}`
 }
-
-const POC_SIMULATED_AUTH_KEY = 'learning:poc:isAuthenticated'
-const POC_SIMULATED_USER_ID_KEY = 'learning:poc:userId'
 
 function readJsonFromStorage(key: string): unknown {
   if (typeof window === 'undefined') return null
@@ -39,12 +46,15 @@ function nowIso(): string {
   return new Date().toISOString()
 }
 
-type SaveModuleProgressInput = {
-  readonly pathId: string
-  readonly moduleId: string
-  readonly status: LearningModuleStatus
+type SaveContentProgressInput = {
+  readonly contentId: string
+  readonly status: LearningContentStatus
   readonly score?: number
   readonly contentVersion?: string
+  readonly interaction?: {
+    readonly interactionId: string
+    readonly state: LearningInteractionState | null
+  }
 }
 
 type SaveOnboardingInput = {
@@ -55,16 +65,13 @@ type SaveOnboardingInput = {
 type LearningProgressContextValue = {
   readonly auth: LearningAuthState
   readonly progress: LearningGuestProgress
-  readonly getModuleProgress: (pathId: string, moduleId: string) => LearningModuleProgress | undefined
-  readonly saveModuleProgress: (input: SaveModuleProgressInput) => Promise<void>
+  readonly getContentProgress: (contentId: string) => LearningContentProgress | undefined
+  readonly saveContentProgress: (input: SaveContentProgressInput) => Promise<void>
+  readonly dispatchInteractionAction: (action: LearningInteractionAction) => Promise<void>
   readonly saveOnboarding: (input: SaveOnboardingInput) => Promise<void>
+  readonly resetOnboarding: () => Promise<void>
   readonly sync: () => Promise<void>
-  readonly poc: {
-    readonly canSimulateAuth: boolean
-    readonly toggleSimulatedAuth: () => void
-    readonly clearGuest: () => void
-    readonly clearAuth: () => void
-  }
+  readonly clearProgress: () => void
 }
 
 const LearningProgressContext = createContext<LearningProgressContextValue | null>(null)
@@ -77,46 +84,23 @@ function saveProgressForKey(key: string, state: LearningGuestProgress): void {
   writeJsonToStorage(key, state)
 }
 
-function getSimulatedAuthFromStorage(): { readonly isAuthenticated: boolean; readonly userId: string } {
-  const rawAuth = readJsonFromStorage(POC_SIMULATED_AUTH_KEY)
-  const rawUserId = readJsonFromStorage(POC_SIMULATED_USER_ID_KEY)
-
-  const isAuthenticated = rawAuth === true
-  const userId = typeof rawUserId === 'string' && rawUserId.trim().length ? rawUserId : 'poc-user'
-
-  return { isAuthenticated, userId }
-}
-
-function getEffectiveAuthState(params: {
-  readonly isDev: boolean
+function getAuthState(params: {
   readonly isAuthEnabled: boolean
   readonly isSignedIn: boolean
   readonly userId: string | null
-  readonly simulated: { readonly isAuthenticated: boolean; readonly userId: string }
 }): LearningAuthState {
-  const isActuallyAuthenticated = params.isAuthEnabled && params.isSignedIn && Boolean(params.userId)
-  const canUseSimulated = params.isDev && !isActuallyAuthenticated
+  const isAuthenticated = params.isAuthEnabled && params.isSignedIn && Boolean(params.userId)
 
-  if (isActuallyAuthenticated) {
+  if (isAuthenticated) {
     return {
       isAuthenticated: true,
       userId: params.userId,
-      isSimulated: false,
-    }
-  }
-
-  if (canUseSimulated && params.simulated.isAuthenticated) {
-    return {
-      isAuthenticated: true,
-      userId: params.simulated.userId,
-      isSimulated: true,
     }
   }
 
   return {
     isAuthenticated: false,
     userId: null,
-    isSimulated: false,
   }
 }
 
@@ -125,28 +109,54 @@ function clampScore(value: number | undefined): number | undefined {
   return Math.max(0, Math.min(100, value))
 }
 
-function upsertModuleProgress(params: {
-  readonly existing: LearningModuleProgress | undefined
-  readonly input: SaveModuleProgressInput
+const STATUS_RANK: Record<LearningContentStatus, number> = {
+  not_started: 0,
+  in_progress: 1,
+  completed: 2,
+  passed: 3,
+}
+
+function pickHigherStatus(a: LearningContentStatus | undefined, b: LearningContentStatus): LearningContentStatus {
+  if (!a) return b
+  return STATUS_RANK[a] >= STATUS_RANK[b] ? a : b
+}
+
+function upsertContentProgress(params: {
+  readonly existing: LearningContentProgress | undefined
+  readonly input: SaveContentProgressInput
   readonly now: string
-}): LearningModuleProgress {
+}): LearningContentProgress {
   const score = clampScore(params.input.score)
-  const contentVersion = params.input.contentVersion ?? 'poc'
+  const contentVersion = params.input.contentVersion ?? params.existing?.contentVersion ?? 'v1'
+  const interaction = params.input.interaction
+  const interactions = (() => {
+    if (!interaction) return params.existing?.interactions
+    const nextInteractions = { ...(params.existing?.interactions ?? {}) }
+    if (interaction.state === null) {
+      delete nextInteractions[interaction.interactionId]
+    } else {
+      nextInteractions[interaction.interactionId] = interaction.state
+    }
+    return Object.keys(nextInteractions).length ? nextInteractions : undefined
+  })()
 
   if (!params.existing) {
     return {
-      moduleId: params.input.moduleId,
+      contentId: params.input.contentId,
       status: params.input.status,
       score,
       lastAttemptAt: params.now,
       completedAt: params.input.status === 'completed' || params.input.status === 'passed' ? params.now : undefined,
       contentVersion,
+      interactions,
     }
   }
 
+  const status = pickHigherStatus(params.existing.status, params.input.status)
   const completedAt =
-    params.input.status === 'completed' || params.input.status === 'passed'
-      ? params.existing.completedAt ?? params.now
+    status === 'completed' || status === 'passed'
+      ? params.existing.completedAt ??
+        (params.input.status === 'completed' || params.input.status === 'passed' ? params.now : undefined)
       : params.existing.completedAt
 
   const mergedScore = (() => {
@@ -157,31 +167,62 @@ function upsertModuleProgress(params: {
   })()
 
   return {
-    moduleId: params.existing.moduleId,
-    status: params.input.status,
+    contentId: params.existing.contentId,
+    status,
     score: mergedScore,
     lastAttemptAt: params.now,
     completedAt,
     contentVersion,
+    interactions,
+  }
+}
+
+function resolveInteractionAction(
+  action: LearningInteractionAction,
+  progress: LearningGuestProgress,
+): SaveContentProgressInput {
+  switch (action.type) {
+    case 'quiz.answer': {
+      const clampedScore = clampScore(action.score)
+      const status = getQuizStatus(clampedScore ?? 0)
+      return {
+        contentId: action.contentId,
+        status,
+        score: clampedScore,
+        contentVersion: action.contentVersion,
+        interaction: {
+          interactionId: action.interactionId,
+          state: {
+            kind: 'quiz',
+            selectedOptionId: action.selectedOptionId,
+          },
+        },
+      }
+    }
+    case 'quiz.reset': {
+      const currentStatus = progress.content[action.contentId]?.status ?? 'in_progress'
+      return {
+        contentId: action.contentId,
+        status: currentStatus,
+        interaction: {
+          interactionId: action.interactionId,
+          state: null,
+        },
+      }
+    }
   }
 }
 
 export function LearningProgressProvider({ children }: { readonly children: React.ReactNode }) {
   const { isEnabled, isLoaded, isSignedIn, user } = useAuth()
 
-  const [simulatedAuth, setSimulatedAuth] = useState(() =>
-    import.meta.env.DEV ? getSimulatedAuthFromStorage() : { isAuthenticated: false, userId: 'poc-user' },
-  )
-
   const auth = useMemo<LearningAuthState>(() => {
-    return getEffectiveAuthState({
-      isDev: import.meta.env.DEV,
+    return getAuthState({
       isAuthEnabled: isEnabled,
       isSignedIn,
       userId: user?.id ?? null,
-      simulated: simulatedAuth,
     })
-  }, [isEnabled, isSignedIn, simulatedAuth, user?.id])
+  }, [isEnabled, isSignedIn, user?.id])
 
   const [progress, setProgress] = useState<LearningGuestProgress>(() => getEmptyLearningGuestProgress())
 
@@ -225,28 +266,22 @@ export function LearningProgressProvider({ children }: { readonly children: Reac
     recomputeProgress()
   }, [auth.isAuthenticated, isLoaded, recomputeProgress, sync])
 
-  const saveModuleProgress = useCallback(
-    async (input: SaveModuleProgressInput) => {
-      if (!input.pathId.trim()) throw new Error(t`Missing path id`)
-      if (!input.moduleId.trim()) throw new Error(t`Missing module id`)
+  const saveContentProgress = useCallback(
+    async (input: SaveContentProgressInput) => {
+      if (!input.contentId.trim()) throw new Error(t`Missing content id`)
 
       const storageKey = auth.isAuthenticated && auth.userId ? getAuthStorageKey(auth.userId) : GUEST_STORAGE_KEY
       const current = loadProgressForKey(storageKey)
       const timestamp = nowIso()
 
-      const existingModule = current.paths[input.pathId]?.modules?.[input.moduleId]
-      const nextModule = upsertModuleProgress({ existing: existingModule, input, now: timestamp })
+      const existingContent = current.content[input.contentId]
+      const nextContent = upsertContentProgress({ existing: existingContent, input, now: timestamp })
 
       const nextState: LearningGuestProgress = {
         ...current,
-        paths: {
-          ...current.paths,
-          [input.pathId]: {
-            modules: {
-              ...(current.paths[input.pathId]?.modules ?? {}),
-              [input.moduleId]: nextModule,
-            },
-          },
+        content: {
+          ...current.content,
+          [input.contentId]: nextContent,
         },
         lastUpdated: timestamp,
       }
@@ -255,6 +290,14 @@ export function LearningProgressProvider({ children }: { readonly children: Reac
       setProgress(nextState)
     },
     [auth.isAuthenticated, auth.userId],
+  )
+
+  const dispatchInteractionAction = useCallback(
+    async (action: LearningInteractionAction) => {
+      const resolved = resolveInteractionAction(action, progress)
+      await saveContentProgress(resolved)
+    },
+    [progress, saveContentProgress],
   )
 
   const saveOnboarding = useCallback(
@@ -279,49 +322,64 @@ export function LearningProgressProvider({ children }: { readonly children: Reac
     [auth.isAuthenticated, auth.userId],
   )
 
-  const getModuleProgress = useCallback(
-    (pathId: string, moduleId: string) => {
-      return progress.paths[pathId]?.modules?.[moduleId]
+  const resetOnboarding = useCallback(async () => {
+    const storageKey = auth.isAuthenticated && auth.userId ? getAuthStorageKey(auth.userId) : GUEST_STORAGE_KEY
+    const current = loadProgressForKey(storageKey)
+    const timestamp = nowIso()
+
+    const nextState: LearningGuestProgress = {
+      ...current,
+      onboarding: {
+        role: null,
+        depth: null,
+        completedAt: null,
+      },
+      lastUpdated: timestamp,
+    }
+
+    saveProgressForKey(storageKey, nextState)
+    setProgress(nextState)
+  }, [auth.isAuthenticated, auth.userId])
+
+  const getContentProgress = useCallback(
+    (contentId: string) => {
+      return progress.content[contentId]
     },
-    [progress.paths],
+    [progress.content],
   )
 
-  const poc = useMemo(() => {
-    const canSimulateAuth = import.meta.env.DEV && !(isEnabled && isSignedIn && Boolean(user?.id))
-
-    return {
-      canSimulateAuth,
-      toggleSimulatedAuth: () => {
-        if (!canSimulateAuth) return
-
-        const next = { isAuthenticated: !simulatedAuth.isAuthenticated, userId: simulatedAuth.userId }
-        writeJsonToStorage(POC_SIMULATED_AUTH_KEY, next.isAuthenticated)
-        writeJsonToStorage(POC_SIMULATED_USER_ID_KEY, next.userId)
-        setSimulatedAuth(next)
-      },
-      clearGuest: () => {
-        removeFromStorage(GUEST_STORAGE_KEY)
-        recomputeProgress()
-      },
-      clearAuth: () => {
-        if (!auth.userId) return
-        removeFromStorage(getAuthStorageKey(auth.userId))
-        recomputeProgress()
-      },
+  const clearProgress = useCallback(() => {
+    if (auth.isAuthenticated && auth.userId) {
+      removeFromStorage(getAuthStorageKey(auth.userId))
+    } else {
+      removeFromStorage(GUEST_STORAGE_KEY)
     }
-  }, [auth.userId, isEnabled, isSignedIn, recomputeProgress, simulatedAuth, user?.id])
+    recomputeProgress()
+  }, [auth.isAuthenticated, auth.userId, recomputeProgress])
 
   const value = useMemo<LearningProgressContextValue>(
     () => ({
       auth,
       progress,
-      getModuleProgress,
-      saveModuleProgress,
+      getContentProgress,
+      saveContentProgress,
+      dispatchInteractionAction,
       saveOnboarding,
+      resetOnboarding,
       sync,
-      poc,
+      clearProgress,
     }),
-    [auth, progress, getModuleProgress, saveModuleProgress, saveOnboarding, sync, poc],
+    [
+      auth,
+      progress,
+      getContentProgress,
+      saveContentProgress,
+      dispatchInteractionAction,
+      saveOnboarding,
+      resetOnboarding,
+      sync,
+      clearProgress,
+    ],
   )
 
   return <LearningProgressContext.Provider value={value}>{children}</LearningProgressContext.Provider>
