@@ -40,7 +40,7 @@ const createProgress = (
   contentProgress: Record<string, { status: 'completed' | 'passed' | 'in_progress' | 'not_started'; lastAttemptAt?: string }> = {},
 ): LearningGuestProgress => ({
   version: 1,
-  onboarding: { role: null, depth: null, completedAt: null },
+  onboarding: { pathId: null, completedAt: null },
   activePathId: null,
   content: Object.fromEntries(
     Object.entries(contentProgress).map(([id, { status, lastAttemptAt }]) => [

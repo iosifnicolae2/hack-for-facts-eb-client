@@ -299,29 +299,34 @@ export function LearningLayout() {
 function LearningLayoutInner() {
   const location = useLocation()
   const [isOpen, setIsOpen] = useState(false)
+  const isOnboardingRoute = location.pathname.includes('/learning/onboarding')
 
   return (
     <div className="flex h-screen w-full overflow-hidden">
       {/* Mobile Sidebar */}
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger asChild>
-          <Button
-            variant="outline"
-            size="icon"
-            className="lg:hidden fixed left-4 top-4 z-40 shadow-sm bg-background/95 backdrop-blur-sm"
-          >
-            <Menu className="h-4 w-4" />
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left" className="w-72 p-0">
-          <LearningSidebar pathname={location.pathname} />
-        </SheetContent>
-      </Sheet>
+      {!isOnboardingRoute && (
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <SheetTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon"
+              className="lg:hidden fixed left-4 top-4 z-40 shadow-sm bg-background/95 backdrop-blur-sm"
+            >
+              <Menu className="h-4 w-4" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-72 p-0">
+            <LearningSidebar pathname={location.pathname} />
+          </SheetContent>
+        </Sheet>
+      )}
 
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex lg:w-72 xl:w-80 lg:shrink-0 lg:flex-col h-full">
-        <LearningSidebar pathname={location.pathname} />
-      </aside>
+      {!isOnboardingRoute && (
+        <aside className="hidden lg:flex lg:w-72 xl:w-80 lg:shrink-0 lg:flex-col h-full">
+          <LearningSidebar pathname={location.pathname} />
+        </aside>
+      )}
 
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto scroll-smooth">

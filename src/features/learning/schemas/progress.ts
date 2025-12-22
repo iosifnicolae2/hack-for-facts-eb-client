@@ -25,12 +25,8 @@ export const LearningContentProgressSchema = z.object({
   interactions: z.record(z.string(), LearningInteractionStateSchema).optional(),
 })
 
-export const UserRoleSchema = z.enum(['student', 'journalist', 'researcher', 'citizen', 'public_servant'])
-export const LearningDepthSchema = z.enum(['beginner', 'intermediate', 'advanced'])
-
 export const LearningOnboardingStateSchema = z.object({
-  role: UserRoleSchema.nullable(),
-  depth: LearningDepthSchema.nullable(),
+  pathId: z.string().nullable(),
   completedAt: z.string().datetime().nullable(),
 })
 
@@ -52,7 +48,7 @@ const LearningGuestProgressSchema = z.object({
 export function getEmptyLearningGuestProgress(): LearningGuestProgress {
   return {
     version: LEARNING_PROGRESS_SCHEMA_VERSION,
-    onboarding: { role: null, depth: null, completedAt: null },
+    onboarding: { pathId: null, completedAt: null },
     activePathId: null,
     content: {},
     streak: { currentStreak: 0, longestStreak: 0, lastActivityDate: null },
@@ -69,6 +65,19 @@ export function parseLearningGuestProgress(raw: unknown): LearningGuestProgress 
 function normalizeLearningGuestProgress(raw: unknown): unknown {
   if (!raw || typeof raw !== 'object') return raw
   const draft = { ...(raw as Record<string, unknown>) }
+
+  const onboarding = (draft as { onboarding?: Record<string, unknown> }).onboarding
+  if (onboarding && typeof onboarding === 'object') {
+    const onboardingRecord = onboarding as Record<string, unknown>
+    if (!('pathId' in onboardingRecord)) {
+      const role = onboardingRecord.role
+      onboardingRecord.pathId = typeof role === 'string' ? role : null
+    }
+    if ('role' in onboardingRecord) {
+      delete onboardingRecord.role
+    }
+    draft.onboarding = onboardingRecord
+  }
 
   // Add default streak if missing (migration from old progress)
   if (!draft.streak || typeof draft.streak !== 'object') {

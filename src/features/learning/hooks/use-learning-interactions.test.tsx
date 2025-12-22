@@ -34,7 +34,7 @@ function buildProgress(overrides: Partial<LearningGuestProgress> = {}): Learning
   const now = new Date().toISOString()
   return {
     version: 1,
-    onboarding: { role: null, depth: null, completedAt: null },
+    onboarding: { pathId: null, completedAt: null },
     activePathId: null,
     content: {},
     streak: { currentStreak: 0, longestStreak: 0, lastActivityDate: null },

@@ -1,0 +1,69 @@
+{
+  "id": "citizen-advanced",
+  "slug": "citizen-advanced",
+  "difficulty": "advanced",
+  "title": {
+    "en": "Citizen Advanced",
+    "ro": "Cetatean avansat"
+  },
+  "description": {
+    "en": "A deeper path for exploring public budgets and accountability.",
+    "ro": "Un parcurs mai avansat pentru explorarea bugetelor publice si a responsabilitatii."
+  },
+  "modules": [
+    {
+      "id": "citizen-advanced-insights",
+      "slug": "advanced-insights",
+      "title": {
+        "en": "Advanced Insights",
+        "ro": "Perspective avansate"
+      },
+      "description": {
+        "en": "Dig into patterns and signals in public spending.",
+        "ro": "Analizeaza tipare si semnale in cheltuielile publice."
+      },
+      "lessons": [
+        {
+          "id": "advanced-insights-basics",
+          "slug": "01-advanced-insights-basics",
+          "title": {
+            "en": "Signals and Patterns",
+            "ro": "Semnale si tipare"
+          },
+          "durationMinutes": 6,
+          "contentDir": "citizen-advanced-insights/01-advanced-insights-basics",
+          "completionMode": "mark_complete",
+          "prerequisites": []
+        }
+      ]
+    },
+    {
+      "id": "citizen-advanced-actions",
+      "slug": "advanced-actions",
+      "title": {
+        "en": "Advanced Actions",
+        "ro": "Actiuni avansate"
+      },
+      "description": {
+        "en": "Turn insights into questions and follow-ups.",
+        "ro": "Transforma insight-urile in intrebari si pasi urmatori."
+      },
+      "lessons": [
+        {
+          "id": "advanced-actions-next-steps",
+          "slug": "01-advanced-actions-next-steps",
+          "title": {
+            "en": "From Insight to Action",
+            "ro": "De la insight la actiune"
+          },
+          "durationMinutes": 6,
+          "contentDir": "citizen-advanced-actions/01-advanced-actions-next-steps",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "advanced-insights-basics"
+          ]
+        }
+      ]
+    }
+  ]
+}

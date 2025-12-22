@@ -1,0 +1,124 @@
+{
+  "id": "learning-onboarding",
+  "version": 1,
+  "rootNodeId": "goal",
+  "nodes": [
+    {
+      "id": "goal",
+      "type": "choice",
+      "prompt": {
+        "en": "What's your goal?",
+        "ro": "Care este scopul tău?"
+      },
+      "description": {
+        "en": "Choose the option that best describes why you're here.",
+        "ro": "Alege opțiunea care te descrie cel mai bine."
+      },
+      "options": [
+        {
+          "id": "goal-citizen",
+          "label": {
+            "en": "Understand my taxes",
+            "ro": "Vreau să înțeleg taxele mele"
+          },
+          "description": {
+            "en": "I want to see where local money goes",
+            "ro": "Vreau să văd unde se duc banii locali"
+          },
+          "nextNodeId": "citizen-track"
+        },
+        {
+          "id": "goal-journalist",
+          "label": {
+            "en": "Investigate stories",
+            "ro": "Vreau să investighez subiecte"
+          },
+          "description": {
+            "en": "I need to find contracts and anomalies",
+            "ro": "Am nevoie să găsesc contracte și anomalii"
+          },
+          "nextNodeId": "result",
+          "set": {
+            "pathId": "journalist"
+          }
+        },
+        {
+          "id": "goal-public-servant",
+          "label": {
+            "en": "Manage data",
+            "ro": "Gestionez date publice"
+          },
+          "description": {
+            "en": "I work in public administration",
+            "ro": "Lucrez în administrația publică"
+          },
+          "nextNodeId": "result",
+          "set": {
+            "pathId": "public_servant"
+          }
+        }
+      ]
+    },
+    {
+      "id": "citizen-track",
+      "type": "choice",
+      "prompt": {
+        "en": "How deep do you want to go?",
+        "ro": "Cât de departe vrei să mergi?"
+      },
+      "description": {
+        "en": "Pick the path that matches your time and goals.",
+        "ro": "Alege parcursul care se potrivește timpului și obiectivelor tale."
+      },
+      "options": [
+        {
+          "id": "citizen-track-simple",
+          "label": {
+            "en": "Simple",
+            "ro": "Simplu"
+          },
+          "description": {
+            "en": "A short, practical introduction",
+            "ro": "O introducere scurtă și practică"
+          },
+          "nextNodeId": "result",
+          "set": {
+            "pathId": "citizen"
+          }
+        },
+        {
+          "id": "citizen-track-advanced",
+          "label": {
+            "en": "Advanced",
+            "ro": "Avansat"
+          },
+          "description": {
+            "en": "Go deeper with advanced topics",
+            "ro": "Intră în subiecte avansate"
+          },
+          "nextNodeId": "result",
+          "set": {
+            "pathId": "citizen-advanced"
+          }
+        }
+      ]
+    },
+    {
+      "id": "result",
+      "type": "result",
+      "title": {
+        "en": "Your path is ready",
+        "ro": "Parcursul tău este pregătit"
+      },
+      "description": {
+        "en": "We'll start with the path that matches your goal and choices.",
+        "ro": "Incepem cu parcursul care se potriveste scopului si alegerilor tale."
+      },
+      "pathIdFrom": "pathId",
+      "ctaLabel": {
+        "en": "Let's Go",
+        "ro": "Hai să începem"
+      }
+    }
+  ]
+}

@@ -53,6 +53,34 @@ type PathDefinition = {
   readonly requiredModuleIds: readonly string[]
 }
 
+type OnboardingOptionDefinition = {
+  readonly optionId: string
+  readonly nextNodeId: string | null
+  readonly pathId: string | null
+  readonly set: Record<string, string> | null
+}
+
+type OnboardingChoiceNodeDefinition = {
+  readonly nodeId: string
+  readonly type: 'choice'
+  readonly options: readonly OnboardingOptionDefinition[]
+}
+
+type OnboardingResultNodeDefinition = {
+  readonly nodeId: string
+  readonly type: 'result'
+  readonly pathId: string | null
+  readonly pathIdFrom: string | null
+}
+
+type OnboardingNodeDefinition = OnboardingChoiceNodeDefinition | OnboardingResultNodeDefinition
+
+type OnboardingTreeDefinition = {
+  readonly pathFile: string
+  readonly rootNodeId: string | null
+  readonly nodes: readonly OnboardingNodeDefinition[]
+}
+
 type MdxFrontmatter = {
   readonly title?: string
   readonly 'title.en'?: string
@@ -71,6 +99,8 @@ type ValidationContext = {
   readonly lessonRefs: readonly LessonReference[]
   readonly contentDirUsage: Map<string, LessonReference[]>
   readonly parseIssues: readonly string[]
+  readonly onboardingTree: OnboardingTreeDefinition | null
+  readonly onboardingParseIssues: readonly string[]
   readonly requiredLocales: readonly string[]
   readonly optionalLocales: readonly string[]
 }
@@ -89,6 +119,7 @@ const PROJECT_ROOT = process.cwd()
 const LEARNING_ROOT = path.join(PROJECT_ROOT, 'src', 'content', 'learning')
 const MODULES_ROOT = path.join(LEARNING_ROOT, 'modules')
 const PATHS_ROOT = path.join(LEARNING_ROOT, 'paths')
+const ONBOARDING_TREE_FILE = path.join(LEARNING_ROOT, 'onboarding-tree.json')
 
 // Required locales must exist for every referenced module; optional locales only warn.
 const REQUIRED_LOCALES = ['en'] as const
@@ -157,6 +188,36 @@ function readStringArrayProperty(entry: unknown, propertyName: string): { readon
     return { values: [], invalid: false }
   }
   return readStringArray(record[propertyName])
+}
+
+function readStringRecordProperty(
+  entry: unknown,
+  propertyName: string
+): { readonly value: Record<string, string> | null; readonly invalid: boolean } {
+  if (!entry || typeof entry !== 'object') {
+    return { value: null, invalid: false }
+  }
+  const record = entry as Record<string, unknown>
+  if (!(propertyName in record)) {
+    return { value: null, invalid: false }
+  }
+  const raw = record[propertyName]
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+    return { value: null, invalid: true }
+  }
+
+  const next: Record<string, string> = {}
+  let invalid = false
+
+  for (const [key, value] of Object.entries(raw as Record<string, unknown>)) {
+    if (!isNonEmptyString(value)) {
+      invalid = true
+      continue
+    }
+    next[key] = value
+  }
+
+  return { value: next, invalid }
 }
 
 function readTranslatedStringProperty(
@@ -471,6 +532,182 @@ async function collectPathContent(): Promise<{
   return { pathEntries, lessonRefs, parseIssues }
 }
 
+async function collectOnboardingTree(): Promise<{
+  readonly onboardingTree: OnboardingTreeDefinition | null
+  readonly parseIssues: string[]
+}> {
+  const parseIssues: string[] = []
+  const relativePath = path.relative(PROJECT_ROOT, ONBOARDING_TREE_FILE)
+  let data: unknown
+
+  try {
+    data = await readJson(ONBOARDING_TREE_FILE)
+  } catch (error) {
+    parseIssues.push(`${relativePath}: Failed to parse JSON (${error instanceof Error ? error.message : 'unknown error'})`)
+    return { onboardingTree: null, parseIssues }
+  }
+
+  const treeId = readStringProperty(data, 'id')
+  if (!treeId) {
+    parseIssues.push(`${relativePath}: onboarding tree is missing "id"`)
+  }
+
+  const version = readNumberProperty(data, 'version')
+  if (!version || !Number.isInteger(version) || version <= 0) {
+    parseIssues.push(`${relativePath}: onboarding tree has invalid "version" "${version ?? 'missing'}"`)
+  }
+
+  const rootNodeId = readStringProperty(data, 'rootNodeId')
+  if (!rootNodeId) {
+    parseIssues.push(`${relativePath}: onboarding tree is missing "rootNodeId"`)
+  }
+
+  const nodes = data && typeof data === 'object' ? (data as Record<string, unknown>).nodes : null
+  if (!Array.isArray(nodes)) {
+    parseIssues.push(`${relativePath}: onboarding tree "nodes" must be an array`)
+    return { onboardingTree: null, parseIssues }
+  }
+
+  const nodeEntries: OnboardingNodeDefinition[] = []
+  const nodeIds = new Set<string>()
+
+  nodes.forEach((nodeEntry, nodeIndex) => {
+    const nodeIdValue = readStringProperty(nodeEntry, 'id')
+    const nodeId = nodeIdValue ?? `node-${nodeIndex}`
+    if (!nodeIdValue) {
+      parseIssues.push(`${relativePath}: onboarding node at index ${nodeIndex} is missing "id"`)
+    }
+
+    if (nodeIds.has(nodeId)) {
+      parseIssues.push(`${relativePath}: duplicate onboarding node id "${nodeId}"`)
+    }
+    nodeIds.add(nodeId)
+
+    const nodeType = readStringProperty(nodeEntry, 'type')
+    if (nodeType !== 'choice' && nodeType !== 'result') {
+      parseIssues.push(`${relativePath}: onboarding node "${nodeId}" has invalid "type" "${nodeType ?? 'missing'}"`)
+      return
+    }
+
+    if (nodeType === 'choice') {
+      const promptResult = readTranslatedStringProperty(nodeEntry, 'prompt')
+      if (!promptResult.value || promptResult.invalid) {
+        parseIssues.push(`${relativePath}: onboarding node "${nodeId}" has invalid "prompt" (requires en/ro strings)`)
+      }
+
+      const descriptionResult = readTranslatedStringProperty(nodeEntry, 'description')
+      if (descriptionResult.invalid) {
+        parseIssues.push(`${relativePath}: onboarding node "${nodeId}" has invalid "description" (requires en/ro strings)`)
+      }
+
+      const options =
+        nodeEntry && typeof nodeEntry === 'object' ? (nodeEntry as Record<string, unknown>).options : null
+      if (!Array.isArray(options)) {
+        parseIssues.push(`${relativePath}: onboarding node "${nodeId}" is missing an options array`)
+        return
+      }
+
+      const optionEntries: OnboardingOptionDefinition[] = []
+      const optionIds = new Set<string>()
+
+      options.forEach((optionEntry, optionIndex) => {
+        const optionIdValue = readStringProperty(optionEntry, 'id')
+        const optionId = optionIdValue ?? `option-${optionIndex}`
+        if (!optionIdValue) {
+          parseIssues.push(`${relativePath}: onboarding option at index ${optionIndex} in "${nodeId}" is missing "id"`)
+        }
+
+        if (optionIds.has(optionId)) {
+          parseIssues.push(`${relativePath}: duplicate onboarding option id "${optionId}" in node "${nodeId}"`)
+        }
+        optionIds.add(optionId)
+
+        const labelResult = readTranslatedStringProperty(optionEntry, 'label')
+        if (!labelResult.value || labelResult.invalid) {
+          parseIssues.push(`${relativePath}: onboarding option "${optionId}" in "${nodeId}" has invalid "label" (requires en/ro strings)`)
+        }
+
+        const optionDescriptionResult = readTranslatedStringProperty(optionEntry, 'description')
+        if (optionDescriptionResult.invalid) {
+          parseIssues.push(`${relativePath}: onboarding option "${optionId}" in "${nodeId}" has invalid "description" (requires en/ro strings)`)
+        }
+
+        const nextNodeId = readStringProperty(optionEntry, 'nextNodeId')
+        const pathId = readStringProperty(optionEntry, 'pathId')
+
+        if (!nextNodeId && !pathId) {
+          parseIssues.push(`${relativePath}: onboarding option "${optionId}" in "${nodeId}" must define "nextNodeId" or "pathId"`)
+        }
+
+        if (nextNodeId && pathId) {
+          parseIssues.push(`${relativePath}: onboarding option "${optionId}" in "${nodeId}" cannot define both "nextNodeId" and "pathId"`)
+        }
+
+        const setResult = readStringRecordProperty(optionEntry, 'set')
+        if (setResult.invalid) {
+          parseIssues.push(`${relativePath}: onboarding option "${optionId}" in "${nodeId}" has invalid "set" (must be string values)`)
+        }
+
+        optionEntries.push({
+          optionId,
+          nextNodeId: nextNodeId ?? null,
+          pathId: pathId ?? null,
+          set: setResult.value,
+        })
+      })
+
+      nodeEntries.push({
+        nodeId,
+        type: 'choice',
+        options: optionEntries,
+      })
+      return
+    }
+
+    const titleResult = readTranslatedStringProperty(nodeEntry, 'title')
+    if (titleResult.invalid) {
+      parseIssues.push(`${relativePath}: onboarding node "${nodeId}" has invalid "title" (requires en/ro strings)`)
+    }
+
+    const descriptionResult = readTranslatedStringProperty(nodeEntry, 'description')
+    if (descriptionResult.invalid) {
+      parseIssues.push(`${relativePath}: onboarding node "${nodeId}" has invalid "description" (requires en/ro strings)`)
+    }
+
+    const ctaLabelResult = readTranslatedStringProperty(nodeEntry, 'ctaLabel')
+    if (ctaLabelResult.invalid) {
+      parseIssues.push(`${relativePath}: onboarding node "${nodeId}" has invalid "ctaLabel" (requires en/ro strings)`)
+    }
+
+    const pathId = readStringProperty(nodeEntry, 'pathId')
+    const pathIdFrom = readStringProperty(nodeEntry, 'pathIdFrom')
+
+    if (!pathId && !pathIdFrom) {
+      parseIssues.push(`${relativePath}: onboarding node "${nodeId}" must define "pathId" or "pathIdFrom"`)
+    }
+
+    if (pathId && pathIdFrom) {
+      parseIssues.push(`${relativePath}: onboarding node "${nodeId}" cannot define both "pathId" and "pathIdFrom"`)
+    }
+
+    nodeEntries.push({
+      nodeId,
+      type: 'result',
+      pathId: pathId ?? null,
+      pathIdFrom: pathIdFrom ?? null,
+    })
+  })
+
+  return {
+    onboardingTree: {
+      pathFile: relativePath,
+      rootNodeId,
+      nodes: nodeEntries,
+    },
+    parseIssues,
+  }
+}
+
 function buildContentDirUsage(lessonRefs: readonly LessonReference[]): Map<string, LessonReference[]> {
   const usage = new Map<string, LessonReference[]>()
   for (const ref of lessonRefs) {
@@ -493,6 +730,173 @@ const VALIDATION_RULES: readonly ValidationRule[] = [
       errors: [...context.parseIssues],
       warnings: [],
     }),
+  },
+  {
+    name: 'onboarding-structure',
+    run: (context) => ({
+      errors: [...context.onboardingParseIssues],
+      warnings: [],
+    }),
+  },
+  {
+    name: 'onboarding-references',
+    run: (context) => {
+      const errors: string[] = []
+      const warnings: string[] = []
+
+      const onboardingTree = context.onboardingTree
+      if (!onboardingTree) {
+        return { errors, warnings }
+      }
+
+      const pathIds = new Set(context.pathEntries.map((entry) => entry.pathId))
+      const nodeById = new Map<string, OnboardingNodeDefinition>()
+      const setKeys = new Set<string>()
+      const allowedSetKeys = new Set(['pathId'])
+
+      for (const node of onboardingTree.nodes) {
+        nodeById.set(node.nodeId, node)
+      }
+
+      for (const node of onboardingTree.nodes) {
+        if (node.type !== 'choice') {
+          continue
+        }
+        for (const option of node.options) {
+          if (!option.set) {
+            continue
+          }
+          for (const key of Object.keys(option.set)) {
+            setKeys.add(key)
+          }
+        }
+      }
+
+      if (onboardingTree.rootNodeId && !nodeById.has(onboardingTree.rootNodeId)) {
+        errors.push(
+          `${onboardingTree.pathFile}: onboarding rootNodeId "${onboardingTree.rootNodeId}" does not match any node id`
+        )
+      }
+
+      let hasPathTarget = false
+
+      for (const node of onboardingTree.nodes) {
+        if (node.type === 'choice') {
+          for (const option of node.options) {
+            if (option.nextNodeId && !nodeById.has(option.nextNodeId)) {
+              errors.push(
+                `${onboardingTree.pathFile}: onboarding option "${option.optionId}" in "${node.nodeId}" references missing node "${option.nextNodeId}"`
+              )
+            }
+
+            if (option.pathId) {
+              hasPathTarget = true
+              if (!pathIds.has(option.pathId)) {
+                errors.push(
+                  `${onboardingTree.pathFile}: onboarding option "${option.optionId}" in "${node.nodeId}" references missing path "${option.pathId}"`
+                )
+              }
+            }
+
+            if (option.set) {
+              for (const [key, value] of Object.entries(option.set)) {
+                setKeys.add(key)
+                if (!allowedSetKeys.has(key)) {
+                  warnings.push(
+                    `${onboardingTree.pathFile}: onboarding option "${option.optionId}" in "${node.nodeId}" uses unknown set key "${key}"`
+                  )
+                }
+                if (key === 'pathId') {
+                  hasPathTarget = true
+                  if (!pathIds.has(value)) {
+                    errors.push(
+                      `${onboardingTree.pathFile}: onboarding option "${option.optionId}" in "${node.nodeId}" has invalid pathId "${value}"`
+                    )
+                  }
+                }
+              }
+            }
+          }
+        } else if (node.type === 'result') {
+          if (node.pathId) {
+            hasPathTarget = true
+            if (!pathIds.has(node.pathId)) {
+              errors.push(
+                `${onboardingTree.pathFile}: onboarding result "${node.nodeId}" references missing path "${node.pathId}"`
+              )
+            }
+          }
+
+          if (node.pathIdFrom) {
+            if (!setKeys.has(node.pathIdFrom)) {
+              errors.push(
+                `${onboardingTree.pathFile}: onboarding result "${node.nodeId}" references unset key "${node.pathIdFrom}"`
+              )
+            }
+            hasPathTarget = true
+          }
+        }
+      }
+
+      if (!hasPathTarget) {
+        errors.push(`${onboardingTree.pathFile}: onboarding tree does not reference any learning paths`)
+      }
+
+      if (onboardingTree.rootNodeId && nodeById.has(onboardingTree.rootNodeId)) {
+        const visiting = new Set<string>()
+        const visited = new Set<string>()
+        const stack: string[] = []
+        const cycles = new Set<string>()
+
+        const visit = (nodeId: string) => {
+          if (visited.has(nodeId)) {
+            return
+          }
+          if (visiting.has(nodeId)) {
+            return
+          }
+
+          visiting.add(nodeId)
+          stack.push(nodeId)
+
+          const node = nodeById.get(nodeId)
+          if (node && node.type === 'choice') {
+            for (const option of node.options) {
+              if (!option.nextNodeId) {
+                continue
+              }
+              if (visiting.has(option.nextNodeId)) {
+                const startIndex = stack.indexOf(option.nextNodeId)
+                if (startIndex >= 0) {
+                  const cycle = [...stack.slice(startIndex), option.nextNodeId]
+                  cycles.add(cycle.join(' -> '))
+                }
+                continue
+              }
+              visit(option.nextNodeId)
+            }
+          }
+
+          stack.pop()
+          visiting.delete(nodeId)
+          visited.add(nodeId)
+        }
+
+        visit(onboardingTree.rootNodeId)
+
+        for (const cycle of cycles) {
+          errors.push(`${onboardingTree.pathFile}: onboarding tree has a cycle: ${cycle}`)
+        }
+
+        for (const nodeId of nodeById.keys()) {
+          if (!visited.has(nodeId)) {
+            warnings.push(`${onboardingTree.pathFile}: onboarding node "${nodeId}" is unreachable`)
+          }
+        }
+      }
+
+      return { errors, warnings }
+    },
   },
   {
     name: 'path-ids',
@@ -965,6 +1369,7 @@ async function main(): Promise<void> {
   const mdxIndex = await collectMdxIndex()
   const { mdxSourceByPath, mdxContentByPath, frontmatterByPath, readIssues } = await collectMdxSources(mdxIndex)
   const { pathEntries, lessonRefs, parseIssues: pathParseIssues } = await collectPathContent()
+  const { onboardingTree, parseIssues: onboardingParseIssues } = await collectOnboardingTree()
   const parseIssues = [...pathParseIssues, ...readIssues]
   const contentDirUsage = buildContentDirUsage(lessonRefs)
 
@@ -977,6 +1382,8 @@ async function main(): Promise<void> {
     lessonRefs,
     contentDirUsage,
     parseIssues,
+    onboardingTree,
+    onboardingParseIssues,
     requiredLocales: REQUIRED_LOCALES,
     optionalLocales: OPTIONAL_LOCALES,
   }

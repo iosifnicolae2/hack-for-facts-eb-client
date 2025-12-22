@@ -7,7 +7,6 @@ import {
   CheckCircle2,
   Clock,
   Layers,
-  Lock,
   Play,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -176,26 +175,11 @@ function PathOverviewPage() {
             const totalLessons = module.lessons.length
             const isModuleComplete = completedLessons === totalLessons
 
-            // Check if previous module is complete (for unlock logic)
-            const isPreviousModuleComplete =
-              moduleIndex === 0 ||
-              (() => {
-                const prevModule = path.modules[moduleIndex - 1]
-                const prevCompleted = prevModule?.lessons.filter((l) => {
-                  const s = contentProgress[l.id]?.status
-                  return s === 'completed' || s === 'passed'
-                }).length
-                return prevCompleted === prevModule?.lessons.length
-              })()
-
-            const isLocked = !isPreviousModuleComplete && completedLessons === 0
-
             return (
               <Card
                 key={module.id}
                 className={cn(
-                  'relative overflow-hidden border-none transition-all duration-300',
-                  isLocked ? 'opacity-60 grayscale-[0.5]' : 'shadow-lg shadow-primary/5 bg-card'
+                  'relative overflow-hidden border-none transition-all duration-300 shadow-lg shadow-primary/5 bg-card'
                 )}
               >
                 {/* Module Header */}
@@ -208,15 +192,11 @@ function PathOverviewPage() {
                       'flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-lg font-bold transition-all shadow-sm',
                       isModuleComplete
                         ? 'bg-green-500 text-white shadow-green-500/20'
-                        : isLocked
-                          ? 'bg-muted text-muted-foreground'
-                          : 'bg-primary text-primary-foreground shadow-primary/20'
+                        : 'bg-primary text-primary-foreground shadow-primary/20'
                     )}
                   >
                     {isModuleComplete ? (
                       <CheckCircle2 className="h-6 w-6" aria-hidden="true" />
-                    ) : isLocked ? (
-                      <Lock className="h-5 w-5" aria-hidden="true" />
                     ) : (
                       moduleIndex + 1
                     )}
@@ -294,35 +274,20 @@ function PathOverviewPage() {
                             </div>
                           </div>
 
-                          {!isLocked && (
-                            <div className={cn(
-                              "h-8 w-8 rounded-full flex items-center justify-center transition-all",
-                              isNextUp ? "bg-primary text-primary-foreground scale-100 opacity-100 shadow-md shadow-primary/20" : "bg-muted text-muted-foreground scale-75 opacity-0 group-hover:opacity-100 group-hover:scale-100"
-                            )}>
-                              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                            </div>
-                          )}
+                          <div className={cn(
+                            "h-8 w-8 rounded-full flex items-center justify-center transition-all",
+                            isNextUp ? "bg-primary text-primary-foreground scale-100 opacity-100 shadow-md shadow-primary/20" : "bg-muted text-muted-foreground scale-75 opacity-0 group-hover:opacity-100 group-hover:scale-100"
+                          )}>
+                            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                          </div>
                         </>
                       )
 
                       const commonClasses = cn(
                         'group flex items-center gap-5 p-5 md:p-6 transition-all duration-200',
-                        !isLocked && 'hover:bg-muted/40',
-                        isNextUp && !isLocked && 'bg-primary/[0.03]'
+                        'hover:bg-muted/40',
+                        isNextUp && 'bg-primary/[0.03]'
                       )
-
-                      if (isLocked) {
-                        return (
-                          <div
-                            key={lesson.id}
-                            className={commonClasses}
-                            aria-disabled="true"
-                            aria-label={t`Lesson locked: ${getTranslatedText(lesson.title, locale)}`}
-                          >
-                            {lessonContent}
-                          </div>
-                        )
-                      }
 
                       return (
                         <Link

@@ -74,12 +74,8 @@ export type LearningContentProgress = {
 
 export const LEARNING_PROGRESS_SCHEMA_VERSION = 1 as const
 
-export type UserRole = 'student' | 'journalist' | 'researcher' | 'citizen' | 'public_servant'
-export type LearningDepth = 'beginner' | 'intermediate' | 'advanced'
-
 export type LearningOnboardingState = {
-  readonly role: UserRole | null
-  readonly depth: LearningDepth | null
+  readonly pathId: string | null
   readonly completedAt: string | null
 }
 

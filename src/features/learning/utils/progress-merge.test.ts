@@ -147,7 +147,7 @@ describe('progress-merge', () => {
   it('merges content progress, keeping remote schema version', () => {
     const local: LearningGuestProgress = {
       version: LEARNING_PROGRESS_SCHEMA_VERSION,
-      onboarding: { role: null, depth: null, completedAt: null },
+      onboarding: { pathId: null, completedAt: null },
       activePathId: null,
       lastUpdated: ISO_1,
       content: {
@@ -164,7 +164,7 @@ describe('progress-merge', () => {
 
     const remote: LearningGuestProgress = {
       version: LEARNING_PROGRESS_SCHEMA_VERSION,
-      onboarding: { role: 'student', depth: 'beginner', completedAt: ISO_2 },
+      onboarding: { pathId: 'citizen', completedAt: ISO_2 },
       activePathId: 'citizen',
       lastUpdated: ISO_3,
       content: {
@@ -190,7 +190,7 @@ describe('progress-merge', () => {
 
     expect(merged.version).toBe(remote.version)
     expect(merged.lastUpdated).toBe(ISO_3)
-    expect(merged.onboarding.role).toBe('student')
+    expect(merged.onboarding.pathId).toBe('citizen')
     expect(merged.content['budget-basics']?.status).toBe('passed')
     expect(merged.content.m2?.contentId).toBe('m2')
   })
@@ -198,7 +198,7 @@ describe('progress-merge', () => {
   it('is idempotent when re-merging the same remote state', () => {
     const local: LearningGuestProgress = {
       version: LEARNING_PROGRESS_SCHEMA_VERSION,
-      onboarding: { role: null, depth: null, completedAt: null },
+      onboarding: { pathId: null, completedAt: null },
       activePathId: null,
       lastUpdated: ISO_1,
       content: {
@@ -214,7 +214,7 @@ describe('progress-merge', () => {
 
     const remote: LearningGuestProgress = {
       version: LEARNING_PROGRESS_SCHEMA_VERSION,
-      onboarding: { role: 'student', depth: 'beginner', completedAt: ISO_2 },
+      onboarding: { pathId: 'citizen', completedAt: ISO_2 },
       activePathId: 'journalist',
       lastUpdated: ISO_2,
       content: {

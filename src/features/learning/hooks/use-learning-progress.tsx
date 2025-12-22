@@ -12,8 +12,6 @@ import type {
   LearningGuestProgress,
   LearningInteractionAction,
   LearningInteractionState,
-  UserRole,
-  LearningDepth,
 } from '../types'
 
 const GUEST_STORAGE_KEY = 'learning_progress'
@@ -59,8 +57,7 @@ type SaveContentProgressInput = {
 }
 
 type SaveOnboardingInput = {
-  readonly role: UserRole
-  readonly depth: LearningDepth
+  readonly pathId: string
 }
 
 type LearningProgressContextValue = {
@@ -324,6 +321,8 @@ export function LearningProgressProvider({ children }: { readonly children: Reac
 
   const saveOnboarding = useCallback(
     async (input: SaveOnboardingInput) => {
+      if (!input.pathId.trim()) throw new Error(t`Missing path id`)
+
       const storageKey = auth.isAuthenticated && auth.userId ? getAuthStorageKey(auth.userId) : GUEST_STORAGE_KEY
       const current = loadProgressForKey(storageKey)
       const timestamp = nowIso()
@@ -331,11 +330,10 @@ export function LearningProgressProvider({ children }: { readonly children: Reac
       const nextState: LearningGuestProgress = {
         ...current,
         onboarding: {
-          role: input.role,
-          depth: input.depth,
+          pathId: input.pathId,
           completedAt: timestamp,
         },
-        activePathId: input.role, // Default active path to selected role
+        activePathId: input.pathId,
         lastUpdated: timestamp,
       }
 
@@ -377,8 +375,7 @@ export function LearningProgressProvider({ children }: { readonly children: Reac
     const nextState: LearningGuestProgress = {
       ...current,
       onboarding: {
-        role: null,
-        depth: null,
+        pathId: null,
         completedAt: null,
       },
       lastUpdated: timestamp,

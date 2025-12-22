@@ -1,124 +1,142 @@
 import { t } from '@lingui/core/macro'
 import { useMemo, useState } from 'react'
 import { useNavigate, useParams } from '@tanstack/react-router'
-import {
-  ArrowRight,
-  Check,
-  Database,
-  GraduationCap,
-  Search,
-  Sparkles,
-  User,
-  Zap,
-} from 'lucide-react'
+import { ArrowRight, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { cn } from '@/lib/utils'
 import { useLearningProgress } from '../../hooks/use-learning-progress'
-import type { LearningDepth, UserRole } from '../../types'
-
-type Step = 'welcome' | 'role' | 'depth'
-
-function StepIndicator({ currentStep }: { readonly currentStep: Step }) {
-  if (currentStep === 'welcome') return null
-
-  const totalSteps = 2
-  const currentStepIndex = currentStep === 'role' ? 1 : 2
-
-  return (
-    <div className="w-full max-w-xs mx-auto mb-16">
-      <div className="h-1 w-full bg-muted rounded-full overflow-hidden">
-        <div 
-          className="h-full bg-primary transition-all duration-700 ease-in-out"
-          style={{ width: `${(currentStepIndex / totalSteps) * 100}%` }}
-        />
-      </div>
-      <div className="mt-3 flex justify-between items-center px-1">
-        <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">
-          {t`Step ${currentStepIndex}/${totalSteps}`}
-        </span>
-        <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">
-          {currentStep === 'role' ? t`Goal` : t`Experience`}
-        </span>
-      </div>
-    </div>
-  )
-}
+import { getLearningOnboardingTree, type LearningOnboardingNode, type LearningOnboardingOption } from '../../utils/onboarding'
+import { getLearningPathById, getTranslatedText } from '../../utils/paths'
 
 export function LearningOnboarding() {
   const { lang } = useParams({ strict: false })
+  const locale = lang === 'ro' ? 'ro' : 'en'
   const navigate = useNavigate()
   const { saveOnboarding } = useLearningProgress()
-  const [step, setStep] = useState<Step>('welcome')
-  const [role, setRole] = useState<UserRole | null>(null)
-  const [depth, setDepth] = useState<LearningDepth | null>(null)
 
-  const roles = useMemo<readonly { readonly id: UserRole; readonly label: string; readonly icon: typeof User; readonly description: string }[]>(
-    () => [
-      {
-        id: 'citizen',
-        label: t`Understand my taxes`,
-        icon: User,
-        description: t`I want to see where local money goes`,
-      },
-      {
-        id: 'journalist',
-        label: t`Investigate stories`,
-        icon: Search,
-        description: t`I need to find contracts and anomalies`,
-      },
-      {
-        id: 'public_servant',
-        label: t`Manage data`,
-        icon: Database,
-        description: t`I work in public administration`,
-      },
-    ],
-    []
+  const onboardingTree = useMemo(() => getLearningOnboardingTree(), [])
+  const nodeById = useMemo(
+    () => new Map<string, LearningOnboardingNode>(onboardingTree.nodes.map((node) => [node.id, node])),
+    [onboardingTree],
+  )
+  const [nodePath, setNodePath] = useState<string[]>([])
+  const [selections, setSelections] = useState<Record<string, LearningOnboardingOption>>({})
+  const [overridePathId, setOverridePathId] = useState<string | null>(null)
+
+  const currentNodeId = nodePath.length > 0 ? nodePath[nodePath.length - 1] : null
+  const currentNode = currentNodeId ? (nodeById.get(currentNodeId) ?? null) : null
+
+  const context = useMemo(() => {
+    const next: Record<string, string | undefined> = {}
+    for (const nodeId of nodePath) {
+      const selection = selections[nodeId]
+      if (selection?.set) {
+        Object.assign(next, selection.set)
+      }
+    }
+    return next
+  }, [nodePath, selections])
+
+  const selectedOption = currentNode?.type === 'choice' ? selections[currentNode.id] : null
+
+  const recommendedPathId = useMemo(() => {
+    if (overridePathId) return overridePathId
+    if (!currentNode || currentNode.type !== 'result') return null
+    if (currentNode.pathId) return currentNode.pathId
+    if (currentNode.pathIdFrom) return context[currentNode.pathIdFrom] ?? null
+    return null
+  }, [context, currentNode, overridePathId])
+
+  const recommendedPath = useMemo(
+    () => (recommendedPathId ? getLearningPathById(recommendedPathId) : null),
+    [recommendedPathId],
   )
 
-  const depths = useMemo<readonly { readonly id: LearningDepth; readonly label: string; readonly description?: string; readonly icon: typeof Sparkles }[]>(
-    () => [
-      {
-        id: 'beginner',
-        label: t`I'm new to this`,
-        icon: Sparkles,
-      },
-      {
-        id: 'intermediate',
-        label: t`I know the basics`,
-        icon: GraduationCap,
-      },
-      {
-        id: 'advanced',
-        label: t`I'm a pro`,
-        icon: Zap,
-      },
-    ],
-    []
-  )
+  const canComplete = Boolean(recommendedPath)
+
+  const handleStart = () => {
+    setSelections({})
+    setOverridePathId(null)
+    setNodePath([onboardingTree.rootNodeId])
+  }
+
+  const handleBack = () => {
+    setOverridePathId(null)
+    setNodePath((prev) => {
+      if (prev.length <= 1) {
+        setSelections({})
+        return []
+      }
+      return prev.slice(0, -1)
+    })
+  }
+
+  const handleOptionSelect = (value: string) => {
+    if (!currentNode || currentNode.type !== 'choice') return
+    const option = currentNode.options.find((item) => item.id === value)
+    if (!option) return
+    setSelections((prev) => ({
+      ...prev,
+      [currentNode.id]: option,
+    }))
+    advanceWithOption(option)
+  }
+
+  const advanceWithOption = (option: LearningOnboardingOption) => {
+    const nextId = option.nextNodeId
+    if (nextId) {
+      setOverridePathId(null)
+      setNodePath((prev) => [...prev, nextId])
+      return
+    }
+    if (option.pathId) {
+      const resultNode = onboardingTree.nodes.find((node) => node.type === 'result')
+      setOverridePathId(option.pathId)
+      if (resultNode) {
+        setNodePath((prev) => [...prev, resultNode.id])
+      }
+    }
+  }
 
   const handleComplete = async () => {
-    if (!role || !depth) return
-    await saveOnboarding({ role, depth })
-    void navigate({ to: `/${lang}/learning` as '/', replace: true })
+    if (!recommendedPath) return
+    await saveOnboarding({ pathId: recommendedPath.id })
+    void navigate({ to: `/${lang}/learning/${recommendedPath.id}` as '/', replace: true })
   }
+
+  const handleStartOver = () => {
+    setSelections({})
+    setOverridePathId(null)
+    setNodePath([])
+  }
+
+  const resultTitle =
+    currentNode?.type === 'result' && currentNode.title
+      ? getTranslatedText(currentNode.title, locale)
+      : t`Your path is ready`
+
+  const resultDescription =
+    currentNode?.type === 'result' && currentNode.description
+      ? getTranslatedText(currentNode.description, locale)
+      : t`We'll start with the path that matches your goal and choices.`
+
+  const resultCtaLabel =
+    currentNode?.type === 'result' && currentNode.ctaLabel
+      ? getTranslatedText(currentNode.ctaLabel, locale)
+      : t`Start Learning`
 
   return (
     <div className="min-h-[90vh] flex flex-col items-center justify-center p-8 bg-background">
       <div className="w-full max-w-3xl mx-auto flex flex-col items-center">
-        {step !== 'welcome' && (
-          <div className="w-full animate-in fade-in duration-1000">
-             <StepIndicator currentStep={step} />
-          </div>
-        )}
-
         <div className="w-full flex-1 flex flex-col items-center justify-center">
-          {step === 'welcome' && (
+          {nodePath.length === 0 && (
             <div className="text-center space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-1000 max-w-xl mx-auto">
-              <div className="text-8xl md:text-9xl mb-4 grayscale hover:grayscale-0 transition-all duration-700 cursor-default">🦉</div>
-              
+              <div className="text-8xl md:text-9xl mb-4">
+                🦉
+              </div>
+
               <div className="space-y-6">
                 <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-foreground leading-[1.1]">
                   {t`Learn public budgeting.`}
@@ -127,12 +145,12 @@ export function LearningOnboarding() {
                   {t`Personalized paths, interactive lessons, and verified certificates.`}
                 </p>
               </div>
-              
+
               <div className="pt-6">
-                <Button 
-                  size="lg" 
+                <Button
+                  size="lg"
                   className="group px-10 py-7 text-lg font-bold rounded-full transition-all bg-foreground text-background hover:bg-foreground/90 hover:scale-[1.02] active:scale-98"
-                  onClick={() => setStep('role')}
+                  onClick={handleStart}
                 >
                   <span className="flex items-center gap-3 tracking-tight">
                     {t`Get Started`}
@@ -143,101 +161,62 @@ export function LearningOnboarding() {
             </div>
           )}
 
-          {step === 'role' && (
+          {currentNode?.type === 'choice' && (
             <div
-              key="role-step"
+              key={currentNode.id}
               className="w-full max-w-md animate-in fade-in slide-in-from-bottom-4 duration-700"
             >
               <div className="text-center mb-12 space-y-3">
-                <h2 className="text-3xl font-black text-foreground tracking-tight">{t`What's your goal?`}</h2>
+                <h2 className="text-3xl font-black text-foreground tracking-tight">
+                  {getTranslatedText(currentNode.prompt, locale)}
+                </h2>
+                {currentNode.description && (
+                  <p className="text-sm text-muted-foreground font-medium">
+                    {getTranslatedText(currentNode.description, locale)}
+                  </p>
+                )}
               </div>
-              
+
               <RadioGroup
-                value={role ?? ''}
-                onValueChange={(v) => setRole(v as UserRole)}
+                value={selectedOption?.id ?? ''}
+                onValueChange={handleOptionSelect}
                 className="grid gap-3"
               >
-                {roles.map((item) => {
-                  const isSelected = role === item.id
+                {currentNode.options.map((item) => {
+                  const isSelected = selectedOption?.id === item.id
+                  const label = getTranslatedText(item.label, locale)
+                  const description = item.description ? getTranslatedText(item.description, locale) : null
 
                   return (
                     <Label
                       key={item.id}
+                      onClick={() => {
+                        if (isSelected) {
+                          advanceWithOption(item)
+                        }
+                      }}
                       className={cn(
                         'relative flex items-center gap-5 rounded-2xl border-2 p-5 cursor-pointer transition-all duration-300 bg-card',
                         isSelected
                           ? 'border-primary bg-primary/[0.02]'
-                          : 'border-muted bg-transparent hover:border-muted-foreground/30'
+                          : 'border-muted bg-transparent hover:border-muted-foreground/30',
                       )}
                     >
                       <RadioGroupItem value={item.id} className="sr-only" />
 
                       <div className="flex-1 space-y-0.5">
-                        <div className="font-bold text-base text-foreground tracking-tight">{item.label}</div>
-                        <div className="text-xs text-muted-foreground font-medium opacity-70">{item.description}</div>
+                        <div className="font-bold text-base text-foreground tracking-tight">{label}</div>
+                        {description && (
+                          <div className="text-xs text-muted-foreground font-medium opacity-70">{description}</div>
+                        )}
                       </div>
 
-                      <div className={cn(
-                        'flex h-5 w-5 items-center justify-center rounded-full border-2 transition-all',
-                        isSelected ? 'bg-primary border-primary' : 'border-muted'
-                      )}>
-                        {isSelected && <Check className="h-3 w-3 text-primary-foreground" />}
-                      </div>
-                    </Label>
-                  )
-                })}
-              </RadioGroup>
-
-              <div className="mt-10">
-                <Button
-                  onClick={() => setStep('depth')}
-                  disabled={!role}
-                  size="lg"
-                  className="w-full py-7 text-base font-bold rounded-2xl transition-all tracking-tight"
-                >
-                  {t`Continue`}
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {step === 'depth' && (
-            <div
-              key="depth-step"
-              className="w-full max-w-md animate-in fade-in slide-in-from-bottom-4 duration-700"
-            >
-              <div className="text-center mb-12 space-y-3">
-                <h2 className="text-3xl font-black text-foreground tracking-tight">{t`Experience level?`}</h2>
-              </div>
-
-              <RadioGroup
-                value={depth ?? ''}
-                onValueChange={(v) => setDepth(v as LearningDepth)}
-                className="grid gap-3"
-              >
-                {depths.map((item) => {
-                  const isSelected = depth === item.id
-
-                  return (
-                    <Label
-                      key={item.id}
-                      className={cn(
-                        'relative flex items-center gap-5 rounded-2xl border-2 p-5 cursor-pointer transition-all duration-300 bg-card',
-                        isSelected
-                          ? 'border-primary bg-primary/[0.02]'
-                          : 'border-muted bg-transparent hover:border-muted-foreground/30'
-                      )}
-                    >
-                      <RadioGroupItem value={item.id} className="sr-only" />
-
-                      <div className="flex-1">
-                        <div className="font-bold text-base text-foreground tracking-tight">{item.label}</div>
-                      </div>
-
-                      <div className={cn(
-                        'flex h-5 w-5 items-center justify-center rounded-full border-2 transition-all',
-                        isSelected ? 'bg-primary border-primary' : 'border-muted'
-                      )}>
+                      <div
+                        className={cn(
+                          'flex h-5 w-5 items-center justify-center rounded-full border-2 transition-all',
+                          isSelected ? 'bg-primary border-primary' : 'border-muted',
+                        )}
+                      >
                         {isSelected && <Check className="h-3 w-3 text-primary-foreground" />}
                       </div>
                     </Label>
@@ -247,19 +226,56 @@ export function LearningOnboarding() {
 
               <div className="mt-10 flex flex-col gap-3">
                 <Button
+                  variant="ghost"
+                  onClick={handleBack}
+                  className="w-full text-sm font-medium text-muted-foreground hover:text-foreground"
+                >
+                  {nodePath.length <= 1 ? t`Back to welcome` : t`Go back`}
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {currentNode?.type === 'result' && (
+            <div
+              key={currentNode.id}
+              className="w-full max-w-md animate-in fade-in slide-in-from-bottom-4 duration-700"
+            >
+              <div className="text-center mb-12 space-y-3">
+                <h2 className="text-3xl font-black text-foreground tracking-tight">{resultTitle}</h2>
+                <p className="text-sm text-muted-foreground font-medium">{resultDescription}</p>
+              </div>
+
+              {recommendedPath ? (
+                <div className="w-full rounded-2xl border-2 border-muted p-6 text-left bg-card">
+                  <div className="text-2xl font-black text-foreground tracking-tight">
+                    {getTranslatedText(recommendedPath.title, locale)}
+                  </div>
+                  <p className="text-sm text-muted-foreground font-medium mt-2">
+                    {getTranslatedText(recommendedPath.description, locale)}
+                  </p>
+                </div>
+              ) : (
+                <p className="text-sm text-destructive text-center">
+                  {t`The learning path you're looking for doesn't exist.`}
+                </p>
+              )}
+
+              <div className="mt-10 flex flex-col gap-3">
+                <Button
                   onClick={handleComplete}
-                  disabled={!depth}
+                  disabled={!canComplete}
                   size="lg"
                   className="w-full py-7 text-base font-bold rounded-2xl transition-all tracking-tight"
                 >
-                  {t`Start Learning`}
+                  {resultCtaLabel}
                 </Button>
-                <Button 
-                  variant="ghost" 
-                  onClick={() => setStep('role')} 
+                <Button
+                  variant="ghost"
+                  onClick={handleStartOver}
                   className="w-full text-sm font-medium text-muted-foreground hover:text-foreground"
                 >
-                  {t`Go back`}
+                  {t`Start over`}
                 </Button>
               </div>
             </div>
