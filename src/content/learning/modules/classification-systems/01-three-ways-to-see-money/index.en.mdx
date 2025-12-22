@@ -1,0 +1,191 @@
+---
+title.en: "Three Ways to See Money"
+title.ro: "Trei moduri de a vedea banii"
+durationMinutes: 5
+concept: "The three classification systems for public budgets"
+objective: "Understand organizational, functional, and economic classifications"
+---
+
+# Three Ways to See Money
+
+## Concept Introduction
+
+Budget documents look intimidating because they're full of numbers and codes. But once you crack the system, they become readable — and powerful.
+
+Every single expense in the public budget can be viewed through **three lenses**. Think of it like describing a person: you could say what department they work for (organizational), what their job is about (functional), or how they're paid (economic).
+
+> **Key Insight:** Every budget line answers three questions: WHO spends it, WHAT is it FOR, and WHAT TYPE of expense is it.
+
+---
+
+## Interactive Element: The Three Lenses
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  👁️ THREE WAYS TO VIEW EVERY EXPENSE                        │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│                      Same 1 million RON                      │
+│                            │                                 │
+│         ┌──────────────────┼──────────────────┐              │
+│         │                  │                  │              │
+│         ▼                  ▼                  ▼              │
+│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐        │
+│  │ORGANIZATIONAL│   │ FUNCTIONAL  │   │  ECONOMIC   │        │
+│  │             │   │             │   │             │        │
+│  │    WHO?     │   │   WHAT FOR? │   │  WHAT TYPE? │        │
+│  │             │   │             │   │             │        │
+│  │  Ministry   │   │  Education  │   │  Salaries   │        │
+│  │  of         │   │  (Code 65)  │   │  (Code 10)  │        │
+│  │  Education  │   │             │   │             │        │
+│  └─────────────┘   └─────────────┘   └─────────────┘        │
+│                                                              │
+│  EXAMPLE: "Teacher salary at a primary school"               │
+│  • WHO: Ministry of Education / Local School                 │
+│  • WHAT FOR: Primary education (65.02.03)                    │
+│  • WHAT TYPE: Personnel costs (10.01.01)                     │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### ThreeLensesExplorer Component
+
+```typescript
+/**
+ * ThreeLensesExplorer Component
+ *
+ * PURPOSE: Visualize how the same expense can be viewed through three different
+ * classification systems, building intuition for budget document structure.
+ */
+interface ThreeLensesExplorerProps {
+  readonly examples: ReadonlyArray<BudgetExample>
+  readonly onLensClick?: (lens: 'organizational' | 'functional' | 'economic') => void
+}
+
+interface BudgetExample {
+  readonly id: string
+  readonly amount: number
+  readonly description: string
+  readonly organizational: {
+    readonly entity: string
+    readonly code?: string
+  }
+  readonly functional: {
+    readonly category: string
+    readonly code: string
+    readonly subcategory?: string
+  }
+  readonly economic: {
+    readonly type: string
+    readonly code: string
+    readonly subtype?: string
+  }
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - activeLens: 'all' | 'organizational' | 'functional' | 'economic'
+ * - currentExample: number (index of selected example)
+ * - isAnimating: boolean
+ *
+ * STATE TRANSITIONS:
+ * - Click on lens card → highlight that lens, dim others
+ * - Click "Show All" → return to balanced view
+ * - Swipe/click arrows → change example
+ *
+ * USER INTERACTIONS:
+ * - Click on any lens card to focus on it
+ * - Click example arrows to see different budget items
+ * - Hover on code to see tooltip with full name
+ * - Keyboard: Arrow Left/Right to navigate examples, 1/2/3 to select lens
+ *
+ * VISUAL STATES:
+ * - Default: Three equal cards with subtle borders
+ * - Focused: Selected card scales up (1.05), others fade (opacity 0.6)
+ * - Hovering: Subtle shadow elevation
+ * - Animating: Smooth transitions between states (300ms ease-out)
+ *
+ * ANIMATIONS:
+ * - Card focus: scale + elevation (300ms)
+ * - Example change: crossfade (200ms)
+ * - Initial load: stagger cards from left to right (100ms delay each)
+ *
+ * ACCESSIBILITY:
+ * - role="radiogroup" for lens selection
+ * - Each card is role="radio" with aria-checked
+ * - Example navigation has aria-label with example description
+ * - Screen reader announces selected lens and example details
+ */
+```
+
+**Expected Behavior:**
+- Three cards represent the three lenses
+- Users can click each lens to focus on it
+- Example section shows how a real expense maps to all three
+- Each code is clickable to see its full name
+- "Learn More" buttons lead to next lessons (Functional, Economic)
+
+---
+
+## Core Explanation
+
+### Why Three Systems?
+
+Each classification system serves a different purpose:
+
+| System | Question | Purpose | Example Code |
+|--------|----------|---------|--------------|
+| **Organizational** | WHO spends? | Accountability — trace money to responsible entity | Ministry of Health |
+| **Functional** | WHAT FOR? | Purpose — understand policy priorities | 66 (Health) |
+| **Economic** | WHAT TYPE? | Nature — distinguish salaries from investments | 10 (Personnel) |
+
+### How They Work Together
+
+When you see a budget line like `65.02.04.01 - 71.01.01`, you're seeing:
+
+- **65.02.04.01** = Functional classification (Education → Local level → Secondary → Lower cycle)
+- **71.01.01** = Economic classification (Capital investments → Fixed assets → Construction)
+
+Together they tell you: "Construction for a middle school, funded from local budget."
+
+### Think of It Like…
+
+> **Map Analogy:** Imagine describing a trip. You can say WHERE you're going (functional), HOW you're getting there (economic), or WHO is arranging it (organizational). All three describe the same trip from different angles.
+
+---
+
+## Practice
+
+<Quiz
+  id="classification-systems-q1"
+  question="Which classification system answers the question 'What is this money being spent ON?'"
+  options={[
+    { id: "a", text: "Organizational classification", isCorrect: false },
+    { id: "b", text: "Functional classification", isCorrect: true },
+    { id: "c", text: "Economic classification", isCorrect: false },
+    { id: "d", text: "Temporal classification", isCorrect: false }
+  ]}
+  explanation="Functional classification answers 'What for?' — it tells you the PURPOSE of the spending, like Education (65), Health (66), or Defense (51). This is based on the international COFOG standard."
+/>
+
+<Quiz
+  id="classification-systems-q2"
+  question="If you want to know whether money was spent on salaries vs building construction, which classification would you check?"
+  options={[
+    { id: "a", text: "Organizational — it shows who gets paid", isCorrect: false },
+    { id: "b", text: "Functional — it shows the function of payments", isCorrect: false },
+    { id: "c", text: "Economic — it shows the type of expense", isCorrect: true },
+    { id: "d", text: "None of these — you need the actual document", isCorrect: false }
+  ]}
+  explanation="Economic classification tells you the TYPE of expense: code 10 is Personnel (salaries), code 71 is Capital investments (construction). This helps identify whether money went to operations or long-term investments."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** Every budget expense can be viewed through three lenses: WHO spends it (organizational), WHAT it's FOR (functional), and WHAT TYPE of expense (economic). Master these three perspectives and budget documents become readable maps.
+
+---
+
+<MarkComplete label="Complete Lesson" />

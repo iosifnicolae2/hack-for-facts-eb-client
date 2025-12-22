@@ -1,0 +1,240 @@
+---
+title.en: "Transparenta.eu Features"
+title.ro: "Functiile Transparenta.eu"
+durationMinutes: 6
+concept: "Platform tools and automated monitoring"
+objective: "Use Transparenta.eu's main features effectively and set up alerts"
+---
+
+# Transparenta.eu Features
+
+## Concept Introduction
+
+Official government portals contain raw data, but navigating them requires expertise. Transparenta.eu aggregates **80+ million budget records** into one searchable, visual platform designed for citizens, journalists, and officials alike.
+
+Instead of downloading spreadsheets and building your own analysis, you can explore budget data through interactive visualizations, compare entities side-by-side, and — most importantly — set up automated alerts so you don't have to check manually.
+
+> **Key Insight:** Transparenta.eu turns raw government data into actionable insights. Set up alerts once, and let the platform notify you when things change.
+
+---
+
+## Interactive Element: Platform Feature Tour
+
+Explore the main features of Transparenta.eu:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  TRANSPARENTA.EU — YOUR MAIN TOOL                            │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Transparenta.eu aggregates 80M+ budget records into one     │
+│  searchable, visual platform. Here's what you can do:        │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  BUDGET EXPLORER                       /budget-explorer│  │
+│  │  ──────────────────────────────────────────────────────│  │
+│  │  - Interactive treemap of all spending                 │  │
+│  │  - Switch between functional and economic views        │  │
+│  │  - Toggle spending vs. revenue                         │  │
+│  │  - Per capita normalization                            │  │
+│  │  - Historical comparison                               │  │
+│  │                                                        │  │
+│  │  USE IT FOR: Understanding the big picture             │  │
+│  │  [ Open Budget Explorer ]                              │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  ENTITY ANALYTICS                     /entity-analytics│  │
+│  │  ──────────────────────────────────────────────────────│  │
+│  │  - Search any public institution                       │  │
+│  │  - Compare multiple entities                           │  │
+│  │  - Filter by type, county, size                        │  │
+│  │  - Export data to CSV                                  │  │
+│  │                                                        │  │
+│  │  USE IT FOR: Deep dive on specific institutions        │  │
+│  │  [ Open Entity Analytics ]                             │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  MAP                                              /map │  │
+│  │  ──────────────────────────────────────────────────────│  │
+│  │  - Geographic visualization                            │  │
+│  │  - Spending heatmaps by county/UAT                     │  │
+│  │  - Click to drill into regions                         │  │
+│  │                                                        │  │
+│  │  USE IT FOR: Finding geographic patterns               │  │
+│  │  [ Open Map ]                                          │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  ALERTS                                        /alerts │  │
+│  │  ──────────────────────────────────────────────────────│  │
+│  │  - Monitor specific entities                           │  │
+│  │  - Get notified on data updates                        │  │
+│  │  - Track budget anomalies                              │  │
+│  │                                                        │  │
+│  │  USE IT FOR: Ongoing monitoring without manual checks  │  │
+│  │  [ Open Alerts ]                                       │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Interactive Element: Set Up Your First Alert
+
+Follow these steps to create your first budget alert:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  SET UP YOUR FIRST ALERT                                     │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Step 1: Choose what to monitor                              │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  ( ) My local government (city/commune)                │  │
+│  │  ( ) My county                                         │  │
+│  │  ( ) A specific institution (school, hospital)         │  │
+│  │  ( ) A spending category (education, health)           │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  Step 2: Search and select                                   │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  Search: [________________________]                    │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  Step 3: Choose alert type                                   │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  [x] New data available                                │  │
+│  │  [ ] Spending exceeds threshold                        │  │
+│  │  [ ] Execution rate drops below 70%                    │  │
+│  │  [ ] Year-over-year change > 20%                       │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  [ Create Alert ]                                            │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  SUCCESS: Alert created!                                     │
+│  You'll be notified when new data for your selection is      │
+│  available on Transparenta.eu.                               │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification
+
+```typescript
+/**
+ * AlertSetupWizard - Step-by-step guide to creating a budget alert
+ *
+ * PURPOSE: Walk users through creating their first alert with validation
+ */
+interface AlertSetupWizardProps {
+  readonly steps: ReadonlyArray<WizardStep>
+  readonly onComplete: (alertConfig: AlertConfig) => void
+  readonly deepLinkToAlerts: string
+}
+
+interface WizardStep {
+  readonly id: string
+  readonly title: string
+  readonly type: 'radio' | 'search' | 'checkbox'
+  readonly options?: ReadonlyArray<{ id: string; label: string }>
+  readonly placeholder?: string
+  readonly validation?: (value: unknown) => string | null
+}
+
+interface AlertConfig {
+  readonly monitorType: 'local' | 'county' | 'institution' | 'category'
+  readonly entityId: string
+  readonly entityName: string
+  readonly alertTypes: ReadonlyArray<'new_data' | 'threshold' | 'execution' | 'yoy_change'>
+}
+
+/**
+ * STATE:
+ * - currentStep: number (0-indexed)
+ * - stepData: Record<string, unknown> (collected values)
+ * - isSearching: boolean
+ * - searchResults: EntitySearchResult[]
+ * - isComplete: boolean
+ * - error: string | null
+ *
+ * INTERACTIONS:
+ * - Radio selection: store choice, enable Next button
+ * - Search input: debounced search (300ms), show results
+ * - Checkbox selection: toggle alert types
+ * - "Create Alert" button: validate and submit
+ * - "Open Alerts" link: navigate to /alerts page
+ *
+ * VISUAL STATES:
+ * - Step pending: dimmed, numbered badge
+ * - Step active: highlighted, full content visible
+ * - Step complete: checkmark badge, collapsed
+ * - Submitting: loading spinner on button
+ * - Success: confetti animation, success message
+ * - Error: red border, error message
+ *
+ * ANIMATIONS:
+ * - Step transition: slide-left (300ms)
+ * - Success: check mark draw animation (400ms)
+ * - Progress bar: smooth fill per step
+ *
+ * ACCESSIBILITY:
+ * - role="form" with aria-label
+ * - Steps announced via aria-live
+ * - Focus moves to first input of new step
+ * - Error messages linked via aria-describedby
+ */
+```
+
+---
+
+## Core Explanation
+
+### Feature Quick Reference
+
+| Feature | Best For | Key Actions |
+|---------|----------|-------------|
+| **Budget Explorer** | Big picture understanding | Toggle views, filter by year, compare categories |
+| **Entity Analytics** | Institution deep-dives | Search, compare entities, export data |
+| **Map** | Geographic patterns | Click regions, view spending heatmaps |
+| **Alerts** | Automated monitoring | Set conditions, get notified |
+
+### Why Alerts Matter
+
+Checking budget data manually is tedious and easy to forget. Alerts solve this by:
+
+1. **Monitoring continuously** — The platform watches even when you're not looking
+2. **Notifying proactively** — Get an email when something changes
+3. **Filtering noise** — Only alert on conditions you care about
+
+**Recommended first alert:** Monitor your local city/commune for new data. You'll be notified whenever Transparenta.eu updates their budget information.
+
+---
+
+## Practice
+
+<Quiz
+  id="transparency-tools-02-q1"
+  question="What can Transparenta.eu Alerts notify you about?"
+  options={[
+    { id: "a", text: "Only when new data is published", isCorrect: false },
+    { id: "b", text: "Only when spending exceeds a threshold", isCorrect: false },
+    { id: "c", text: "Multiple conditions: new data, thresholds, execution rates, and year-over-year changes", isCorrect: true },
+    { id: "d", text: "Alerts are not available — you must check manually", isCorrect: false }
+  ]}
+  explanation="Transparenta.eu Alerts support multiple trigger conditions: new data availability, spending thresholds, low execution rates, and significant year-over-year changes. You can combine conditions to create sophisticated monitoring rules."
+/>
+
+---
+
+## Key Takeaway
+
+> Transparenta.eu provides four main tools: Budget Explorer (big picture), Entity Analytics (institution details), Map (geographic view), and Alerts (automated monitoring). Set up at least one alert for your local government to stay informed without manual checking.
+
+---
+
+<MarkComplete label="Complete this lesson" />

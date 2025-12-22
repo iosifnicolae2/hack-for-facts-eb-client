@@ -62,6 +62,534 @@
           "prerequisites": [
             "your-three-roles"
           ]
+        },
+        {
+          "id": "explore-the-platform",
+          "slug": "04-explore-the-platform",
+          "title": {
+            "en": "Explore the Platform",
+            "ro": "Exploreaza platforma"
+          },
+          "durationMinutes": 5,
+          "contentDir": "citizen-foundations/04-explore-the-platform",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "promises-vs-reality"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "revenue-sources",
+      "slug": "revenues",
+      "title": {
+        "en": "Where Does the Money Come From?",
+        "ro": "De unde vin banii?"
+      },
+      "description": {
+        "en": "Discover how much you contribute through taxes and where Romania's public revenue comes from.",
+        "ro": "Descoperă cât contribui prin taxe și de unde provin veniturile publice ale României."
+      },
+      "lessons": [
+        {
+          "contentDir": "revenue-sources/01-your-tax-contribution",
+          "completionMode": "mark_complete",
+          "prerequisites": [],
+          "id": "your-tax-contribution",
+          "slug": "01-your-tax-contribution",
+          "title": {
+            "en": "Your Tax Contribution",
+            "ro": "Contributia ta la taxe"
+          },
+          "durationMinutes": 7
+        },
+        {
+          "contentDir": "revenue-sources/02-types-of-revenue",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "your-tax-contribution"
+          ],
+          "id": "types-of-revenue",
+          "slug": "02-types-of-revenue",
+          "title": {
+            "en": "Types of Public Revenue",
+            "ro": "Tipuri de venituri publice"
+          },
+          "durationMinutes": 7
+        },
+        {
+          "contentDir": "revenue-sources/03-romanias-revenue-challenge",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "types-of-revenue"
+          ],
+          "id": "romanias-revenue-challenge",
+          "slug": "03-romanias-revenue-challenge",
+          "title": {
+            "en": "Romania's Revenue Challenge",
+            "ro": "Provocarea veniturilor Romaniei"
+          },
+          "durationMinutes": 7
+        }
+      ]
+    },
+    {
+      "id": "expenditure-basics",
+      "slug": "expenditures",
+      "title": {
+        "en": "Where Does the Money Go?",
+        "ro": "Unde se duc banii?"
+      },
+      "description": {
+        "en": "Understand how Romania spends public money, the difference between functional and economic classifications, and why execution rates matter.",
+        "ro": "Înțelege cum cheltuiește România banii publici, diferența dintre clasificările funcționale și economice și de ce contează ratele de execuție."
+      },
+      "lessons": [
+        {
+          "contentDir": "expenditure-basics/01-be-the-finance-minister",
+          "completionMode": "mark_complete",
+          "prerequisites": [],
+          "id": "be-the-finance-minister",
+          "slug": "01-be-the-finance-minister",
+          "title": {
+            "en": "Be the Finance Minister",
+            "ro": "Fii Ministrul de Finanțe"
+          },
+          "durationMinutes": 6
+        },
+        {
+          "contentDir": "expenditure-basics/02-two-lenses-on-spending",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "be-the-finance-minister"
+          ],
+          "id": "two-lenses-on-spending",
+          "slug": "02-two-lenses-on-spending",
+          "title": {
+            "en": "Two Lenses on Spending",
+            "ro": "Două perspective asupra cheltuielilor"
+          },
+          "durationMinutes": 6
+        },
+        {
+          "contentDir": "expenditure-basics/03-the-execution-gap",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "two-lenses-on-spending"
+          ],
+          "id": "the-execution-gap",
+          "slug": "03-the-execution-gap",
+          "title": {
+            "en": "The Execution Gap",
+            "ro": "Decalajul execuției"
+          },
+          "durationMinutes": 6
+        }
+      ]
+    },
+    {
+      "id": "budget-cycle",
+      "slug": "budget-cycle",
+      "title": {
+        "en": "The Budget Cycle",
+        "ro": "Ciclul bugetar"
+      },
+      "description": {
+        "en": "Learn when budget decisions are made and how to engage effectively with the budget process.",
+        "ro": "Află când se iau deciziile bugetare și cum să te implici eficient în procesul bugetar."
+      },
+      "lessons": [
+        {
+          "contentDir": "budget-cycle/01-six-phases",
+          "completionMode": "mark_complete",
+          "prerequisites": [],
+          "id": "six-phases",
+          "slug": "01-six-phases",
+          "title": {
+            "en": "The Six Phases of the Budget Cycle",
+            "ro": "Cele șase faze ale ciclului bugetar"
+          },
+          "durationMinutes": 5
+        },
+        {
+          "contentDir": "budget-cycle/02-budget-rectifications",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "six-phases"
+          ],
+          "id": "budget-rectifications",
+          "slug": "02-budget-rectifications",
+          "title": {
+            "en": "Budget Rectifications Explained",
+            "ro": "Rectificările bugetare explicate"
+          },
+          "durationMinutes": 5
+        },
+        {
+          "contentDir": "budget-cycle/03-tracking-documents",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "budget-rectifications"
+          ],
+          "id": "tracking-documents",
+          "slug": "03-tracking-documents",
+          "title": {
+            "en": "Tracking Budget Documents",
+            "ro": "Urmărirea documentelor bugetare"
+          },
+          "durationMinutes": 5
+        }
+      ]
+    },
+    {
+      "id": "classification-systems",
+      "slug": "classification",
+      "title": {
+        "en": "Reading Budget Documents",
+        "ro": "Citirea documentelor bugetare"
+      },
+      "description": {
+        "en": "Master the classification systems used in budget documents to decode any budget line.",
+        "ro": "Stăpânește sistemele de clasificare utilizate în documentele bugetare pentru a decodifica orice linie bugetară."
+      },
+      "lessons": [
+        {
+          "contentDir": "classification-systems/01-three-ways-to-see-money",
+          "completionMode": "mark_complete",
+          "prerequisites": [],
+          "id": "three-ways-to-see-money",
+          "slug": "01-three-ways-to-see-money",
+          "title": {
+            "en": "Three Ways to See Money",
+            "ro": "Trei moduri de a vedea banii"
+          },
+          "durationMinutes": 5
+        },
+        {
+          "contentDir": "classification-systems/02-functional-classification",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "three-ways-to-see-money"
+          ],
+          "id": "functional-classification",
+          "slug": "02-functional-classification",
+          "title": {
+            "en": "Functional Classification",
+            "ro": "Clasificarea funcțională"
+          },
+          "durationMinutes": 5
+        },
+        {
+          "contentDir": "classification-systems/03-economic-classification",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "functional-classification"
+          ],
+          "id": "economic-classification",
+          "slug": "03-economic-classification",
+          "title": {
+            "en": "Economic Classification",
+            "ro": "Clasificarea economică"
+          },
+          "durationMinutes": 5
+        },
+        {
+          "contentDir": "classification-systems/04-decoding-budget-lines",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "economic-classification"
+          ],
+          "id": "decoding-budget-lines",
+          "slug": "04-decoding-budget-lines",
+          "title": {
+            "en": "Decoding Budget Lines",
+            "ro": "Decodificarea liniilor bugetare"
+          },
+          "durationMinutes": 5
+        }
+      ]
+    },
+    {
+      "id": "local-national-budgets",
+      "slug": "local-national",
+      "title": {
+        "en": "Local vs. National — Understanding the Levels",
+        "ro": "Local vs. Național — Înțelegerea Nivelurilor"
+      },
+      "description": {
+        "en": "Understand the difference between central and local budgets, discover Romania's 3,229 administrative units, and learn to explore your local government's budget.",
+        "ro": "Înțelege diferența dintre bugetele centrale și locale, descoperă cele 3.229 unități administrative ale României și învață să explorezi bugetul guvernului tău local."
+      },
+      "lessons": [
+        {
+          "contentDir": "local-national-budgets/01-budget-levels-explained",
+          "completionMode": "mark_complete",
+          "prerequisites": [],
+          "id": "budget-levels-explained",
+          "slug": "01-budget-levels-explained",
+          "title": {
+            "en": "Budget Levels Explained",
+            "ro": "Nivelurile Bugetare Explicate"
+          },
+          "durationMinutes": 5
+        },
+        {
+          "contentDir": "local-national-budgets/02-local-government-structure",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "budget-levels-explained"
+          ],
+          "id": "local-government-structure",
+          "slug": "02-local-government-structure",
+          "title": {
+            "en": "Local Government Structure",
+            "ro": "Structura Administrației Locale"
+          },
+          "durationMinutes": 5
+        },
+        {
+          "contentDir": "local-national-budgets/03-explore-your-local-budget",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "local-government-structure"
+          ],
+          "id": "explore-your-local-budget",
+          "slug": "03-explore-your-local-budget",
+          "title": {
+            "en": "Explore Your Local Budget",
+            "ro": "Explorează Bugetul Tău Local"
+          },
+          "durationMinutes": 5
+        }
+      ]
+    },
+    {
+      "id": "transparency-tools",
+      "slug": "transparency-tools",
+      "title": {
+        "en": "Following the Money — Transparency Tools",
+        "ro": "Urmărirea banilor — Instrumente de transparență"
+      },
+      "description": {
+        "en": "Master the official data sources and platform features you need to monitor public budgets effectively.",
+        "ro": "Stăpânește sursele oficiale de date și funcțiile platformei necesare pentru a monitoriza eficient bugetele publice."
+      },
+      "lessons": [
+        {
+          "contentDir": "transparency-tools/01-official-data-sources",
+          "completionMode": "mark_complete",
+          "prerequisites": [],
+          "id": "official-data-sources",
+          "slug": "01-official-data-sources",
+          "title": {
+            "en": "Official Data Sources",
+            "ro": "Surse oficiale de date"
+          },
+          "durationMinutes": 6
+        },
+        {
+          "contentDir": "transparency-tools/02-platform-features",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "official-data-sources"
+          ],
+          "id": "platform-features",
+          "slug": "02-platform-features",
+          "title": {
+            "en": "Transparenta.eu Features",
+            "ro": "Functiile Transparenta.eu"
+          },
+          "durationMinutes": 6
+        },
+        {
+          "contentDir": "transparency-tools/03-budget-analysis-skills",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "platform-features"
+          ],
+          "id": "budget-analysis-skills",
+          "slug": "03-budget-analysis-skills",
+          "title": {
+            "en": "Budget Analysis Skills",
+            "ro": "Abilitati de analiza bugetara"
+          },
+          "durationMinutes": 7
+        }
+      ]
+    },
+    {
+      "id": "citizen-rights",
+      "slug": "citizen-rights",
+      "title": {
+        "en": "Your Rights and Tools as a Citizen",
+        "ro": "Drepturile și instrumentele tale ca cetățean"
+      },
+      "description": {
+        "en": "Learn your legal rights to public information, how to file FOIA requests, and where to report problems when you find them.",
+        "ro": "Află-ți drepturile legale la informații publice, cum să depui cereri FOIA și unde să raportezi problemele când le găsești."
+      },
+      "lessons": [
+        {
+          "contentDir": "citizen-rights/01-your-legal-rights",
+          "completionMode": "mark_complete",
+          "prerequisites": [],
+          "id": "your-legal-rights",
+          "slug": "01-your-legal-rights",
+          "title": {
+            "en": "Your Legal Rights to Information",
+            "ro": "Drepturile tale legale la informație"
+          },
+          "durationMinutes": 6
+        },
+        {
+          "contentDir": "citizen-rights/02-writing-a-foia-request",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "your-legal-rights"
+          ],
+          "id": "writing-a-foia-request",
+          "slug": "02-writing-a-foia-request",
+          "title": {
+            "en": "Writing a FOIA Request",
+            "ro": "Redactarea unei cereri FOIA"
+          },
+          "durationMinutes": 7
+        },
+        {
+          "contentDir": "citizen-rights/03-taking-action",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "writing-a-foia-request"
+          ],
+          "id": "taking-action",
+          "slug": "03-taking-action",
+          "title": {
+            "en": "Taking Action: Engagement and Reporting",
+            "ro": "Treci la acțiune: implicare și raportare"
+          },
+          "durationMinutes": 7
+        }
+      ]
+    },
+    {
+      "id": "red-flags",
+      "slug": "red-flags",
+      "title": {
+        "en": "Common Issues and Red Flags",
+        "ro": "Probleme comune și semnale de alarmă"
+      },
+      "description": {
+        "en": "Learn to identify the 7 most common budget red flags, recognize patterns that suggest problems, and apply your analysis skills to real data.",
+        "ro": "Învață să identifici cele 7 semnale de alarmă bugetare cele mai comune, să recunoști tiparele care sugerează probleme și să aplici abilitățile tale de analiză pe date reale."
+      },
+      "lessons": [
+        {
+          "contentDir": "red-flags/01-recognizing-warning-signs",
+          "completionMode": "mark_complete",
+          "prerequisites": [],
+          "id": "recognizing-warning-signs",
+          "slug": "01-recognizing-warning-signs",
+          "title": {
+            "en": "Recognizing Budget Warning Signs",
+            "ro": "Recunoașterea semnelor de avertizare bugetare"
+          },
+          "durationMinutes": 6
+        },
+        {
+          "contentDir": "red-flags/02-seven-major-red-flags",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "recognizing-warning-signs"
+          ],
+          "id": "seven-major-red-flags",
+          "slug": "02-seven-major-red-flags",
+          "title": {
+            "en": "The Seven Major Red Flags",
+            "ro": "Cele șapte semnale de alarmă majore"
+          },
+          "durationMinutes": 8
+        },
+        {
+          "contentDir": "red-flags/03-applying-red-flag-analysis",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "seven-major-red-flags"
+          ],
+          "id": "applying-red-flag-analysis",
+          "slug": "03-applying-red-flag-analysis",
+          "title": {
+            "en": "Applying Red Flag Analysis",
+            "ro": "Aplicarea analizei semnalelor de avertizare"
+          },
+          "durationMinutes": 7
+        }
+      ]
+    },
+    {
+      "id": "community-budget-capstone",
+      "slug": "capstone",
+      "title": {
+        "en": "Capstone — Analyze Your Community's Budget",
+        "ro": "Proiect Final — Analizează Bugetul Comunității Tale"
+      },
+      "description": {
+        "en": "Apply everything you've learned to analyze your local government's budget, identify red flags, and create an actionable report.",
+        "ro": "Aplică tot ce ai învățat pentru a analiza bugetul administrației tale locale, identifică semnale de alarmă și creează un raport acționabil."
+      },
+      "lessons": [
+        {
+          "contentDir": "community-budget-capstone/01-find-your-entity",
+          "completionMode": "mark_complete",
+          "prerequisites": [],
+          "id": "find-your-entity",
+          "slug": "01-find-your-entity",
+          "title": {
+            "en": "Find Your Entity",
+            "ro": "Gaseste-ti Entitatea"
+          },
+          "durationMinutes": 8
+        },
+        {
+          "contentDir": "community-budget-capstone/02-gather-your-data",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "find-your-entity"
+          ],
+          "id": "gather-your-data",
+          "slug": "02-gather-your-data",
+          "title": {
+            "en": "Gather Your Data",
+            "ro": "Aduna Datele Tale"
+          },
+          "durationMinutes": 10
+        },
+        {
+          "contentDir": "community-budget-capstone/03-hunt-for-red-flags",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "gather-your-data"
+          ],
+          "id": "hunt-for-red-flags",
+          "slug": "03-hunt-for-red-flags",
+          "title": {
+            "en": "Hunt for Red Flags",
+            "ro": "Detecteaza Semnalele de Alarma"
+          },
+          "durationMinutes": 10
+        },
+        {
+          "contentDir": "community-budget-capstone/04-report-and-act",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "hunt-for-red-flags"
+          ],
+          "id": "report-and-act",
+          "slug": "04-report-and-act",
+          "title": {
+            "en": "Report and Act",
+            "ro": "Raporteaza si Actioneaza"
+          },
+          "durationMinutes": 10
         }
       ]
     }

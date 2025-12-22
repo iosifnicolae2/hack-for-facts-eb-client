@@ -1,0 +1,223 @@
+---
+title.en: "Functional Classification"
+title.ro: "Clasificarea funcțională"
+durationMinutes: 5
+concept: "COFOG-based purpose categories for public spending"
+objective: "Identify and navigate functional classification codes"
+---
+
+# Functional Classification
+
+## Concept Introduction
+
+Functional classification answers the question: **"What is this money FOR?"** It groups all spending by PURPOSE, regardless of which institution spends it or what type of expense it is.
+
+Romania uses the international COFOG (Classification of Functions of Government) standard, which means you can compare Romanian spending on education directly with French or German spending — same codes, same meaning.
+
+> **Key Insight:** Functional codes reveal PRIORITIES. If a government says education is important but code 65 gets only 3% of the budget, actions speak louder than words.
+
+---
+
+## Interactive Element: Classification Hierarchy Tree
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  📊 FUNCTIONAL CLASSIFICATION (COFOG-based)                  │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Click to expand any category:                               │
+│                                                              │
+│  ▼ 50 - General Public Services                              │
+│    ├── 50.01 - Executive and legislative organs              │
+│    ├── 50.02 - Financial and fiscal affairs                  │
+│    └── 50.03 - External affairs                              │
+│                                                              │
+│  ▶ 51 - Defense                                              │
+│                                                              │
+│  ▶ 54 - Public Order and Safety                              │
+│                                                              │
+│  ▶ 55 - Economic Affairs                                     │
+│                                                              │
+│  ▶ 56 - Environmental Protection                             │
+│                                                              │
+│  ▼ 65 - Education                                            │
+│    ├── 65.02 - Education (local level)                       │
+│    │   ├── 65.02.03 - Primary education                      │
+│    │   ├── 65.02.04 - Secondary education                    │
+│    │   └── 65.02.05 - Post-secondary education               │
+│    └── 65.01 - Education (central level)                     │
+│                                                              │
+│  ▶ 66 - Health                                               │
+│                                                              │
+│  ▶ 67 - Culture, Recreation, Religion                        │
+│                                                              │
+│  ▶ 68 - Social Protection                                    │
+│                                                              │
+│  [ Open Full Classification Explorer → ]                     │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### ClassificationTree Component
+
+```typescript
+/**
+ * ClassificationTree Component
+ *
+ * PURPOSE: Provide an expandable, interactive hierarchy view of functional
+ * or economic classification codes for exploration and learning.
+ */
+interface ClassificationTreeProps {
+  readonly type: 'functional' | 'economic'
+  readonly data: ReadonlyArray<ClassificationNode>
+  readonly initialExpanded?: ReadonlyArray<string>
+  readonly highlightCodes?: ReadonlyArray<string>
+  readonly onNodeClick?: (node: ClassificationNode) => void
+  readonly onExplorerLink?: () => void
+}
+
+interface ClassificationNode {
+  readonly code: string
+  readonly name: string
+  readonly nameRo?: string
+  readonly description?: string
+  readonly children?: ReadonlyArray<ClassificationNode>
+  readonly metadata?: {
+    readonly budgetLevel?: 'central' | 'local'
+    readonly importance?: 'high' | 'normal'
+    readonly watchFlag?: boolean
+  }
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - expandedNodes: Set<string> (codes of expanded nodes)
+ * - selectedNode: string | null (currently selected code)
+ * - searchQuery: string (for filtering nodes)
+ *
+ * STATE TRANSITIONS:
+ * - Click expand arrow → toggle node expansion
+ * - Click node text → select and show details
+ * - Type in search → filter visible nodes
+ * - Click "Collapse All" → reset expandedNodes
+ *
+ * USER INTERACTIONS:
+ * - Click arrow/chevron to expand/collapse
+ * - Click code/name to select and see description
+ * - Type to filter (search debounced 300ms)
+ * - Keyboard: Arrow Up/Down to navigate, Enter to expand, Escape to clear
+ *
+ * VISUAL STATES:
+ * - Collapsed: shows "▶" indicator
+ * - Expanded: shows "▼" indicator, children visible
+ * - Selected: highlighted background, details panel visible
+ * - Highlighted: pulsing border for important codes
+ * - Filtered out: hidden from view
+ *
+ * ANIMATIONS:
+ * - Expand/collapse: smooth height transition (200ms)
+ * - Selection: background fade (150ms)
+ * - Filter: fade out filtered items (150ms)
+ * - Highlight pulse: subtle scale animation (1s loop)
+ *
+ * ACCESSIBILITY:
+ * - role="tree" on container
+ * - role="treeitem" on each node
+ * - aria-expanded for expandable nodes
+ * - aria-selected for current selection
+ * - aria-level for depth indication
+ */
+```
+
+**Expected Behavior:**
+- Hierarchical tree with expand/collapse
+- Search/filter functionality
+- Click to see full description
+- Link to full Classification Explorer
+- Highlighted codes for important categories (65, 66, 68)
+
+---
+
+## Core Explanation
+
+### Main Functional Categories
+
+| Code | Function | What it covers |
+|------|----------|----------------|
+| **50** | General Public Services | Government operations, public administration |
+| **51** | Defense | Military, national security |
+| **54** | Public Order & Safety | Police, courts, prisons, fire services |
+| **55** | Economic Affairs | Transport, agriculture, energy subsidies |
+| **56** | Environment | Waste management, pollution control |
+| **65** | Education | Schools, universities, training |
+| **66** | Health | Hospitals, clinics, public health |
+| **67** | Culture, Recreation | Museums, sports, religious affairs |
+| **68** | Social Protection | Pensions, social assistance, unemployment |
+
+### Understanding Code Structure
+
+Functional codes have a hierarchical structure:
+
+```
+65.02.04.01
+│  │  │  │
+│  │  │  └── Detail level (Lower secondary = grades 5-8)
+│  │  └───── Subfunction (Secondary education)
+│  └──────── Budget level (.01 = central, .02 = local)
+└─────────── Main function (Education)
+```
+
+### The .01 vs .02 Pattern
+
+This is crucial for Romania:
+- **.01** = Central government level (Ministry budget)
+- **.02** = Local government level (City/County budget)
+
+So `65.01` is education funded from the Ministry of Education's central budget, while `65.02` is education funded from local (municipal/county) budgets.
+
+### Quick Reference: Functions at a Glance
+
+```
+50-59 = GOVERNMENT OPERATIONS (administration, defense, order)
+60-69 = SOCIAL SERVICES (education, health, culture)
+70-79 = ECONOMIC & INFRASTRUCTURE (housing, environment)
+80-89 = FINANCIAL & OTHER
+```
+
+---
+
+## Practice
+
+<Quiz
+  id="functional-classification-q1"
+  question="What function does code '66' represent?"
+  options={[
+    { id: "a", text: "Education", isCorrect: false },
+    { id: "b", text: "Health", isCorrect: true },
+    { id: "c", text: "Defense", isCorrect: false },
+    { id: "d", text: "Social Protection", isCorrect: false }
+  ]}
+  explanation="Code 66 is Health — covering hospitals, clinics, public health programs, and medical services. Code 65 is Education, 51 is Defense, and 68 is Social Protection."
+/>
+
+<Quiz
+  id="functional-classification-q2"
+  question="In code '65.02.04', what does the '.02' indicate?"
+  options={[
+    { id: "a", text: "The second year of a budget cycle", isCorrect: false },
+    { id: "b", text: "Local government budget level", isCorrect: true },
+    { id: "c", text: "Secondary education", isCorrect: false },
+    { id: "d", text: "February spending", isCorrect: false }
+  ]}
+  explanation="In Romanian functional codes, '.01' means central (national) level and '.02' means local (city/county) level. So 65.02 is Education funded from local budgets, while 65.01 would be Education funded from the central Ministry budget."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** Functional classification (COFOG) tells you the PURPOSE of spending. Key codes to know: 65=Education, 66=Health, 68=Social Protection. The .01/.02 suffix indicates central vs local budget level.
+
+---
+
+<MarkComplete label="Complete Lesson" />

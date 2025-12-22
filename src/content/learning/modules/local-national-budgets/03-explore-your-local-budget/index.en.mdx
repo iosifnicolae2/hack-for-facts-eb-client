@@ -1,0 +1,342 @@
+---
+title.en: "Explore Your Local Budget"
+title.ro: "Explorează Bugetul Tău Local"
+durationMinutes: 5
+concept: "Finding and comparing local government budgets"
+objective: "Navigate platform tools to analyze local budgets"
+---
+
+# Explore Your Local Budget
+
+## Concept Introduction
+
+Now that you understand how local governments are structured and funded, it's time to find YOUR local budget. Whether you live in a major city or a small village, your UAT has budget data available on Transparenta.eu.
+
+Local budgets are the best place to start your budget monitoring journey. They're smaller, more understandable, and the decision-makers — your mayor and local council — are accessible. You can actually attend council meetings and ask questions.
+
+> **Key Insight:** Start local, build skills, then scale up. Local budgets are easier to monitor, understand, and influence than national ones.
+
+---
+
+## Interactive Element: UAT Finder
+
+Use this tool to search for your city, town, or commune. You'll see key metrics and can deep-link into the Budget Explorer for details.
+
+### UATFinder Component
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🔍 FIND YOUR LOCAL GOVERNMENT                               │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Search by name:                                             │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  Cluj-Napoca                                      🔍   │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  Or browse by county:                                        │
+│  [ Select County ▼ ]                                         │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  RESULT: MUNICIPIUL CLUJ-NAPOCA                              │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  Type: Municipality                                    │  │
+│  │  County: Cluj                                          │  │
+│  │  Population: ~324,000                                  │  │
+│  │  Total Budget: ~2.1 billion RON                        │  │
+│  │  Per Capita: ~6,500 RON                                │  │
+│  │                                                        │  │
+│  │  [ View Full Budget Details → ]                        │  │
+│  │  [ Compare with Similar Cities → ]                     │  │
+│  │  [ View on Map → ]                                     │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+**Component Interface:**
+
+```typescript
+/**
+ * UATFinder - Search and discovery tool for local governments
+ *
+ * PURPOSE: Help users find and explore their local government's budget
+ */
+interface UATFinderProps {
+  readonly placeholder?: string
+  readonly onUATSelect?: (uat: UATResult) => void
+  readonly showComparison?: boolean
+  readonly initialCounty?: string
+}
+
+interface UATResult {
+  readonly id: string
+  readonly name: string
+  readonly type: 'municipality' | 'town' | 'commune' | 'county'
+  readonly county: string
+  readonly population: number
+  readonly totalBudget: number
+  readonly perCapita: number
+  readonly executionRate?: number
+  readonly fiscCode: string // For Budget Explorer deep link
+}
+
+interface UATFinderState {
+  readonly searchQuery: string
+  readonly selectedCounty: string | null
+  readonly searchResults: readonly UATResult[]
+  readonly selectedUAT: UATResult | null
+  readonly isSearching: boolean
+  readonly recentSearches: readonly string[]
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - searchQuery: string (debounced, triggers search after 300ms)
+ * - selectedCounty: string | null (filters results)
+ * - searchResults: UATResult[] (max 10 results shown)
+ * - selectedUAT: UATResult | null (shows detail card)
+ * - isSearching: boolean (loading state)
+ * - recentSearches: string[] (stored in localStorage)
+ *
+ * STATE TRANSITIONS:
+ * - Type in search → debounce 300ms → fetch results
+ * - Select county → filter results by county
+ * - Click result → set selectedUAT, show detail card
+ * - Clear search → reset to initial state
+ *
+ * USER INTERACTIONS:
+ * - Type to search with autocomplete
+ * - Arrow keys to navigate results
+ * - Enter to select highlighted result
+ * - Escape to clear selection
+ * - Click "View Full Budget" → navigate to entity page
+ * - Click "Compare" → navigate to comparison view
+ * - Click "View on Map" → navigate to map centered on UAT
+ *
+ * VISUAL STATES:
+ * - Empty: placeholder text, recent searches shown
+ * - Typing: input focused, suggestions appear after 2 chars
+ * - Loading: spinner in input, results skeleton
+ * - Results: dropdown with UAT cards, hover highlights
+ * - Selected: full detail card with metrics + action buttons
+ * - No results: helpful message with suggestions
+ *
+ * ANIMATIONS:
+ * - Dropdown appear: slide-down + fade (200ms)
+ * - Result hover: subtle scale + shadow (100ms)
+ * - Detail card: expand from result (300ms, spring)
+ * - Loading: skeleton pulse animation
+ *
+ * ACCESSIBILITY:
+ * - role="combobox" on search input
+ * - role="listbox" on results dropdown
+ * - aria-activedescendant for keyboard navigation
+ * - aria-expanded for dropdown state
+ * - Screen reader announces result count
+ * - Focus management: trap focus in dropdown when open
+ */
+```
+
+**Expected Behavior:**
+- Autocomplete search with fuzzy matching
+- Results grouped by type (municipality, town, commune)
+- Per-capita calculation helps compare different-sized localities
+- Deep links to entity page, comparison, and map views
+
+---
+
+## Why Start Local?
+
+Local budgets offer unique advantages for citizen oversight:
+
+| Aspect | National Budget | Local Budget |
+|--------|-----------------|--------------|
+| **Scale** | ~600B RON | ~2B RON (typical city) |
+| | Hard to comprehend | Manageable |
+| **Decision makers** | PM, Ministers | Mayor, Local Council |
+| | Hard to reach | Accessible |
+| **Meetings** | Parliament | Local council |
+| | Can't attend | Open to public |
+| **Direct impact** | Indirect | Roads, schools, parks |
+
+> 🎯 **Strategy:** Start local → Build skills → Scale up to county → Then national
+
+---
+
+## Guided Activity: Explore Your Area
+
+Complete these steps to discover your local budget:
+
+### GuidedActivityPanel Component
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🎯 HANDS-ON: Explore Your Local Budget                      │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ◯ Step 1: Open the Map                                      │
+│           [ Open Map → ]                                     │
+│           Find your county and note the total spending       │
+│                                                              │
+│  ◯ Step 2: Open Entity Analytics                             │
+│           [ Open Entity Analytics → ]                        │
+│           Search for your city or commune                    │
+│                                                              │
+│  ◯ Step 3: Note key metrics                                  │
+│           • Total budget amount                              │
+│           • Population                                       │
+│           • Per-capita spending                              │
+│                                                              │
+│  ◯ Step 4: Compare with a neighbor                           │
+│           Find a similar-sized locality nearby               │
+│           • Who spends more per person?                      │
+│           • Who has better execution rates?                  │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  ✅ Validation: What's your locality's per-capita spending?  │
+│                                                              │
+│  [ _______ ] RON    [ Check Answer ]                         │
+│                                                              │
+│  Progress: ████░░░░░░ 2 of 4 steps complete                  │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+**Component Interface:**
+
+```typescript
+/**
+ * GuidedActivityPanel - Step-by-step platform exploration
+ *
+ * PURPOSE: Guide users through discovering their local budget data
+ */
+interface GuidedActivityPanelProps {
+  readonly title: string
+  readonly steps: readonly GuidedStep[]
+  readonly onComplete?: () => void
+  readonly allowSkip?: boolean
+  readonly validationQuestion?: ValidationQuestion
+}
+
+interface GuidedStep {
+  readonly id: string
+  readonly instruction: string
+  readonly details?: string
+  readonly deepLink?: {
+    readonly label: string
+    readonly url: string
+    readonly openInNewTab?: boolean
+  }
+  readonly validation?: StepValidation
+}
+
+type StepValidation =
+  | { readonly type: 'manual' }
+  | { readonly type: 'input'; readonly question: string; readonly hint?: string }
+  | { readonly type: 'confirm'; readonly question: string }
+
+interface ValidationQuestion {
+  readonly question: string
+  readonly placeholder?: string
+  readonly unit?: string
+  readonly validateFn?: (value: string) => boolean
+}
+
+interface GuidedActivityState {
+  readonly currentStep: number
+  readonly completedSteps: Set<string>
+  readonly stepInputs: Record<string, string>
+  readonly validationAnswer: string
+  readonly isValidating: boolean
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - currentStep: number (0-indexed)
+ * - completedSteps: Set<string> (step IDs)
+ * - stepInputs: Record<string, string> (user inputs per step)
+ * - validationAnswer: string (final validation input)
+ * - isValidating: boolean (checking answer)
+ *
+ * STATE TRANSITIONS:
+ * - Click "Mark Done" → add to completedSteps, advance currentStep
+ * - Click "Open Link" → track click, allow manual completion
+ * - Submit validation → check answer, show feedback
+ * - Click "Back" → decrement currentStep
+ *
+ * USER INTERACTIONS:
+ * - Deep link buttons: open platform pages in new tabs
+ * - "Mark as Done" buttons: advance through steps
+ * - Text input: enter validation answer
+ * - Progress bar: click to navigate to specific step
+ *
+ * VISUAL STATES:
+ * - Pending step: muted, numbered circle
+ * - Current step: highlighted, full instructions visible
+ * - Completed step: green check, collapsed
+ * - Validation input: focused state, error state if wrong
+ * - All complete: celebration state with confetti
+ *
+ * ANIMATIONS:
+ * - Step transition: slide-up + fade (200ms)
+ * - Completion check: scale + checkmark draw (300ms)
+ * - Progress bar: smooth fill (300ms, ease-out)
+ * - Error shake: horizontal shake (200ms)
+ * - Final celebration: confetti burst
+ *
+ * ACCESSIBILITY:
+ * - role="group" with aria-label for activity
+ * - Each step is a list item with aria-current for current
+ * - Progress announced via aria-live region
+ * - Deep links have descriptive aria-labels
+ * - Keyboard: Tab through steps, Enter to complete
+ */
+```
+
+**Platform Deep Links:**
+- Map: `/map` - View county-level spending on interactive map
+- Entity Analytics: `/entity-analytics` - Search and compare UATs
+
+---
+
+## Take Action
+
+Now that you've explored your local budget, here's your action checklist:
+
+- [ ] **Bookmark your UAT's page** — You'll return here often
+- [ ] **Note the per-capita spending** — Use this to compare with neighbors
+- [ ] **Find 2-3 similar localities** — Are they spending more or less?
+- [ ] **Check execution rates** — Is your local government spending what they planned?
+
+---
+
+## Practice
+
+<Quiz
+  id="local-national-03-q1"
+  question="Why is it recommended to start monitoring budgets at the local level?"
+  options={[
+    { id: "a", text: "National budgets are more important", isCorrect: false },
+    { id: "b", text: "Local budgets are more accessible, understandable, and directly impact your daily life", isCorrect: true },
+    { id: "c", text: "Local budget data isn't publicly available", isCorrect: false },
+    { id: "d", text: "Only journalists should monitor national budgets", isCorrect: false }
+  ]}
+  explanation="Local budgets are the ideal starting point because they're smaller and more understandable, the decision-makers (mayor, council) are accessible, you can attend public meetings, and the services funded (roads, schools, parks) directly affect your daily life. Master local first, then scale up to county and national."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** Your local budget is the best place to start your budget monitoring journey. It's smaller, more understandable, and the people who control it — your mayor and local council — are accessible. Use Transparenta.eu's Map and Entity Analytics to find and compare your locality's budget today.
+
+---
+
+## What's Next?
+
+In the next module, you'll learn about **Transparency Tools** — how to use public records requests, open data portals, and other mechanisms to dig deeper into budget data when the standard reports aren't enough.
+
+<MarkComplete label="Complete this lesson" />

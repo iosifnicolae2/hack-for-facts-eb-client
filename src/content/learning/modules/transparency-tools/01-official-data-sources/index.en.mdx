@@ -1,0 +1,190 @@
+---
+title.en: "Official Data Sources"
+title.ro: "Surse oficiale de date"
+durationMinutes: 6
+concept: "Where official budget data lives"
+objective: "Navigate the key official budget data sources"
+---
+
+# Official Data Sources
+
+## Concept Introduction
+
+Budget transparency in Romania has improved dramatically over the past decade. The data exists — you just need to know where to find it. But with multiple government portals, each serving different purposes, navigating the landscape can be confusing.
+
+The good news? There are only **four main sources** you need to know. Each has a specific strength, and together they give you a complete picture of public finances.
+
+> **Key Insight:** Romania publishes more budget data than most citizens realize. Your advantage is knowing where to look.
+
+---
+
+## Interactive Element: Data Source Explorer
+
+Explore each of the four official data sources to understand when to use each one:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  OFFICIAL DATA SOURCES                                       │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Click each source to learn more:                            │
+│                                                              │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │  MINISTRY OF FINANCE                                 │    │
+│  │  mfinante.gov.ro                                     │    │
+│  │                                                      │    │
+│  │  - National budget data                              │    │
+│  │  - Budget laws and annexes                           │    │
+│  │  - Fiscal strategy documents                         │    │
+│  │  - Debt statistics                                   │    │
+│  │                                                      │    │
+│  │  Best for: Big picture, national trends              │    │
+│  │  [ Visit Site ]                                      │    │
+│  └──────────────────────────────────────────────────────┘    │
+│                                                              │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │  FOREXEBUG                                           │    │
+│  │  forexebug.mfinante.gov.ro                           │    │
+│  │                                                      │    │
+│  │  - Real-time budget execution                        │    │
+│  │  - Institution-level detail                          │    │
+│  │  - Quarterly and annual reports                      │    │
+│  │                                                      │    │
+│  │  TIP: Look for "Executie" (Execution) reports        │    │
+│  │  to compare planned vs. actual spending              │    │
+│  │                                                      │    │
+│  │  Best for: Execution monitoring, detail              │    │
+│  │  [ Visit Site ]                                      │    │
+│  └──────────────────────────────────────────────────────┘    │
+│                                                              │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │  SEAP (E-LICITATIE)                                  │    │
+│  │  e-licitatie.ro                                      │    │
+│  │                                                      │    │
+│  │  - Public procurement contracts                      │    │
+│  │  - Tender announcements                              │    │
+│  │  - Contract awards and values                        │    │
+│  │                                                      │    │
+│  │  Best for: Following specific contracts              │    │
+│  │  [ Visit Site ]                                      │    │
+│  └──────────────────────────────────────────────────────┘    │
+│                                                              │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │  COURT OF ACCOUNTS                                   │    │
+│  │  curteadeconturi.ro                                  │    │
+│  │                                                      │    │
+│  │  - Audit reports                                     │    │
+│  │  - Irregularity findings                             │    │
+│  │  - Recommendations                                   │    │
+│  │                                                      │    │
+│  │  Best for: Finding problems, follow-up               │    │
+│  │  [ Visit Site ]                                      │    │
+│  └──────────────────────────────────────────────────────┘    │
+│                                                              │
+│  Progress: [____] 0/4 sources explored                       │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification
+
+```typescript
+/**
+ * DataSourceExplorer - Flip cards showing official budget data sources
+ *
+ * PURPOSE: Help users understand which government portal to use for what purpose
+ */
+interface DataSourceExplorerProps {
+  readonly sources: ReadonlyArray<DataSource>
+  readonly onSourceViewed: (sourceId: string) => void
+  readonly onAllViewed: () => void
+}
+
+interface DataSource {
+  readonly id: string
+  readonly icon: string
+  readonly name: string
+  readonly url: string
+  readonly features: ReadonlyArray<string>
+  readonly tip?: string
+  readonly bestFor: string
+}
+
+/**
+ * STATE:
+ * - viewedSources: Set<string> (IDs of sources viewed)
+ * - expandedSource: string | null (currently expanded card)
+ * - isComplete: boolean (all sources viewed)
+ *
+ * INTERACTIONS:
+ * - Click/tap card: expand to show details
+ * - Enter/Space on focused card: toggle expansion
+ * - Tab: navigate between cards
+ * - "Visit Site" button: opens URL in new tab
+ *
+ * VISUAL STATES:
+ * - Collapsed: icon + name visible
+ * - Expanded: full details, features list, tip if present
+ * - Viewed: subtle checkmark indicator
+ * - All complete: celebration animation
+ *
+ * ANIMATIONS:
+ * - Expand: height transition (300ms, ease-out)
+ * - Progress bar: smooth fill as sources are viewed
+ * - Completion: confetti or checkmark burst
+ *
+ * ACCESSIBILITY:
+ * - Cards are buttons with aria-expanded
+ * - aria-live region for progress updates
+ * - External link icons have aria-label
+ */
+```
+
+---
+
+## Core Explanation
+
+### The Four Pillars of Budget Transparency
+
+Each source serves a distinct purpose in the budget transparency ecosystem:
+
+| Source | Purpose | Use When |
+|--------|---------|----------|
+| **Ministry of Finance** | Policy & planning | You need budget laws, fiscal strategy, or national aggregates |
+| **Forexebug** | Execution monitoring | You want real-time data on actual spending vs. plans |
+| **SEAP** | Procurement tracking | You're following specific contracts or suppliers |
+| **Court of Accounts** | Audit findings | You're looking for verified problems and irregularities |
+
+### Pro Tips
+
+**Start with Forexebug** when investigating a specific institution. It has the most granular, up-to-date execution data.
+
+**Cross-reference with Court of Accounts** if you find anomalies. They may have already investigated and documented the issue.
+
+**SEAP is your friend for procurement stories.** Every public contract above the threshold must be published here.
+
+---
+
+## Practice
+
+<Quiz
+  id="transparency-tools-01-q1"
+  question="Which official source provides real-time budget execution data at the institution level?"
+  options={[
+    { id: "a", text: "mfinante.gov.ro (Ministry of Finance)", isCorrect: false },
+    { id: "b", text: "Forexebug (forexebug.mfinante.gov.ro)", isCorrect: true },
+    { id: "c", text: "e-licitatie.ro (SEAP)", isCorrect: false },
+    { id: "d", text: "curteadeconturi.ro (Court of Accounts)", isCorrect: false }
+  ]}
+  explanation="Forexebug is the real-time budget execution system. It shows exactly how much each public institution has spent compared to their plan, updated regularly throughout the year. The Ministry of Finance site has the budget laws but not execution details."
+/>
+
+---
+
+## Key Takeaway
+
+> Four official sources cover Romanian budget data: Ministry of Finance (laws and strategy), Forexebug (real-time execution), SEAP (procurement contracts), and Court of Accounts (audit findings). Bookmark all four — you'll need different ones for different questions.
+
+---
+
+<MarkComplete label="Complete this lesson" />

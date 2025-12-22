@@ -1,0 +1,202 @@
+---
+title.en: "Be the Finance Minister"
+title.ro: "Fii Ministrul de Finanțe"
+durationMinutes: 6
+concept: "Romania's main spending categories and priorities"
+objective: "Identify the main spending categories in Romania's budget"
+---
+
+# Be the Finance Minister
+
+## Concept Introduction
+
+Now that you understand where money comes from (taxes, contributions, EU funds), let's see where it goes. Romania spends about **43.5% of GDP** through public budgets — that's over **600 billion RON** per year.
+
+But here's the thing: most of us have opinions about government spending without knowing the actual numbers. We think "too much goes to X" or "not enough to Y" — but how does our intuition compare to reality?
+
+> **Key Insight:** The question isn't just HOW MUCH is spent, but also: Is it spent where you think it should be? And does actual spending match your priorities?
+
+---
+
+## Interactive Element: Budget Allocator Game
+
+You're the Finance Minister for a day. You have 100 billion RON to allocate across spending categories. Make your choices, then see how they compare to Romania's actual budget.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🎮 BUDGET ALLOCATOR                                         │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  You have 100 billion RON to allocate. Drag the sliders     │
+│  to set priorities, then compare with actual spending.       │
+│                                                              │
+│  Social Protection  ████████████░░░░░░░░  35 billion  [━━●━] │
+│  Health             ████████░░░░░░░░░░░░  20 billion  [━●━━] │
+│  Education          ██████░░░░░░░░░░░░░░  15 billion  [━●━━] │
+│  Defense            ████░░░░░░░░░░░░░░░░  10 billion  [●━━━] │
+│  Infrastructure     ████░░░░░░░░░░░░░░░░  10 billion  [●━━━] │
+│  Other              ████░░░░░░░░░░░░░░░░  10 billion  [●━━━] │
+│  ─────────────────────────────────────────────────────────── │
+│  TOTAL:             100 billion RON                          │
+│                                                              │
+│  [ Compare with Real Budget → ]                              │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  COMPARISON RESULT:                                          │
+│  Your allocation vs. Romania's actual 2024 budget:           │
+│                                                              │
+│  Category          You      Actual    Difference             │
+│  Social Protection  35%       35%      ✓ Match!              │
+│  Health             20%       18%      +2% more generous     │
+│  Education          15%       12%      +3% more generous     │
+│  Defense            10%        6%      +4% more generous     │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification
+
+```typescript
+/**
+ * BudgetAllocatorGame Component
+ *
+ * PURPOSE: Let users allocate a hypothetical budget, then compare
+ * their choices against Romania's actual spending breakdown.
+ */
+interface BudgetAllocatorGameProps {
+  readonly totalBudget: number // e.g., 100 (billions)
+  readonly currency: 'RON' | 'EUR'
+  readonly categories: readonly BudgetCategory[]
+  readonly actualData: readonly ActualSpending[]
+  readonly onCompare?: (result: ComparisonResult) => void
+}
+
+interface BudgetCategory {
+  readonly id: string
+  readonly name: string
+  readonly icon: string
+  readonly minValue: number
+  readonly maxValue: number
+  readonly defaultValue: number
+  readonly description: string
+}
+
+interface ActualSpending {
+  readonly categoryId: string
+  readonly percentage: number
+  readonly year: number
+}
+
+interface ComparisonResult {
+  readonly allocations: readonly {
+    categoryId: string
+    userValue: number
+    actualValue: number
+    difference: number
+  }[]
+  readonly insights: readonly string[]
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - allocations: Record<categoryId, number> - user's current allocation
+ * - isComparing: boolean - comparison mode active
+ * - hasCompared: boolean - user has seen comparison at least once
+ * - validationError: string | null - if total doesn't equal 100
+ *
+ * STATE TRANSITIONS:
+ * - Slider drag → update allocations, recalculate total
+ * - Total !== 100 → show validation message
+ * - Click Compare → animate transition to comparison view
+ * - Reset button → restore default values
+ *
+ * USER INTERACTIONS:
+ * - Drag slider: adjust allocation (5% increments for mobile-friendly)
+ * - Direct input: type exact number (validates 0-100 range)
+ * - Compare button: reveal actual values with animation
+ * - Reset button: clear to defaults
+ * - Category hover: show description tooltip
+ *
+ * VISUAL STATES:
+ * - Default: sliders at default positions, no comparison
+ * - Invalid: total bar shows red if !== 100
+ * - Comparing: split view showing user vs actual bars
+ * - Match highlight: green glow on categories where user ≈ actual (±3%)
+ * - Difference badges: show +X% or -X% with color coding
+ *
+ * ANIMATIONS:
+ * - Slider movement: smooth 150ms transition
+ * - Compare reveal: staggered bar growth (100ms delay per category)
+ * - Difference badges: pop-in animation (200ms, scale from 0.8)
+ * - Total validation: shake on invalid (300ms)
+ *
+ * ACCESSIBILITY:
+ * - Sliders use role="slider" with aria-valuemin, aria-valuemax, aria-valuenow
+ * - aria-live="polite" on total and validation messages
+ * - Keyboard: Arrow keys adjust by 1%, Page Up/Down by 5%
+ * - Screen reader announces comparison results
+ */
+```
+
+**Expected Behavior:**
+
+- Sliders must sum to exactly 100%
+- Real-time total calculation as user adjusts
+- Compare button reveals Romania's actual allocation
+- Color-coded differences show where user's priorities differ
+- Insights generated based on patterns (e.g., "Most people allocate more to Education than the government does")
+
+---
+
+## Core Explanation: Romania's Spending Priorities
+
+Here's where Romania's money actually goes:
+
+| Rank | Category | % of Total | What it Covers |
+|------|----------|------------|----------------|
+| 1 | Social Protection | ~35% | Pensions, unemployment, welfare |
+| 2 | Health | ~18% | Hospitals, doctors, medicines |
+| 3 | Education | ~12% | Schools, universities, teachers |
+| 4 | Economic Affairs | ~10% | Agriculture, transport, industry |
+| 5 | Public Order | ~8% | Police, courts, prisons |
+| 6 | Defense | ~6% | Military, NATO commitments |
+| 7 | Other | ~11% | Housing, environment, culture |
+
+### The Social Protection Giant
+
+**Why is Social Protection so large?** One word: pensions.
+
+Romania has an aging population and a pay-as-you-go pension system. Current workers' contributions pay for current retirees. With fewer workers and more retirees, this category keeps growing.
+
+- ~9 million pensioners
+- Average pension: ~2,000 RON/month
+- This single expense is larger than Health + Education combined
+
+> **Reality Check:** Many Romanians think too much goes to "bureaucrats" or "politicians." In reality, Social Protection (mostly pensions) dominates the budget. The actual administration costs are a small fraction.
+
+---
+
+## Practice
+
+<Quiz
+  id="expenditure-largest-category"
+  question="What is Romania's largest spending category?"
+  options={[
+    { id: "a", text: "Education (schools and universities)", isCorrect: false },
+    { id: "b", text: "Health (hospitals and doctors)", isCorrect: false },
+    { id: "c", text: "Social Protection (pensions and welfare)", isCorrect: true },
+    { id: "d", text: "Defense (military and NATO)", isCorrect: false }
+  ]}
+  explanation="Social Protection accounts for approximately 35% of Romania's budget, making it by far the largest category. This is primarily driven by pension payments to roughly 9 million retirees. Health and Education combined are smaller than Social Protection alone."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** Social Protection (mainly pensions) is Romania's #1 expense at ~35% of the budget. Before criticizing "wasteful spending," it helps to know where the money actually goes — and most of it goes to grandparents.
+
+---
+
+<MarkComplete label="Continue to Classifications" />

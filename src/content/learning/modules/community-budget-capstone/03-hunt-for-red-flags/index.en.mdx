@@ -1,0 +1,258 @@
+---
+title.en: "Hunt for Red Flags"
+title.ro: "Detecteaza Semnalele de Alarma"
+durationMinutes: 10
+concept: "Applying red flag analysis to real budget data"
+objective: "Identify warning signs in your local government's budget"
+---
+
+# Hunt for Red Flags
+
+## Concept Introduction
+
+With your data collected, it's time for the detective work. Red flags are patterns that suggest something might be wrong — not proof of wrongdoing, but signals that deserve attention and questions.
+
+Think of this as a diagnostic checklist. Each red flag you find adds to your understanding. Multiple red flags together? That's when you really need to dig deeper.
+
+> **Key Insight:** One red flag is a data point. Multiple red flags are a pattern. Patterns demand investigation.
+
+---
+
+## Interactive Element: Red Flag Checker
+
+Go through each check and evaluate your entity's data:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  STEP 3: CHECK FOR RED FLAGS                                 │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Go through each red flag and check if it applies:           │
+│                                                              │
+│  [ ] 1. LOW INVESTMENT EXECUTION                             │
+│     Code 71 execution rate: [ _____ ]%                       │
+│     RED FLAG if below 70%                                    │
+│     Your status: [ OK / Borderline / Red Flag ]              │
+│                                                              │
+│  [ ] 2. PERSONNEL CROWDING                                   │
+│     Personnel as % of total: [ _____ ]%                      │
+│     RED FLAG if above 60%                                    │
+│     Your status: [ OK / Borderline / Red Flag ]              │
+│                                                              │
+│  [ ] 3. YEAR-OVER-YEAR CHANGE                                │
+│     Compare to previous year: [ +/- _____ ]%                 │
+│     INVESTIGATE if >20% change                               │
+│     Your status: [ Normal / Investigate ]                    │
+│                                                              │
+│  [ ] 4. EXECUTION RATE GAP                                   │
+│     Personnel execution: [ _____ ]%                          │
+│     Investment execution: [ _____ ]%                         │
+│     Gap: [ _____ ] percentage points                         │
+│     RED FLAG if gap >30 points                               │
+│     Your status: [ OK / Red Flag ]                           │
+│                                                              │
+│  [ ] 5. COMPARISON WITH NEIGHBORS                            │
+│     Your per capita: [ _________ ] RON                       │
+│     Similar neighbor: [ _________ ] RON                      │
+│     Difference: [ _____ ]%                                   │
+│     INVESTIGATE if >25% difference                           │
+│     Your status: [ Similar / Different ]                     │
+│                                                              │
+│  ─────────────────────────────────────────────────────────── │
+│                                                              │
+│  TOTAL RED FLAGS FOUND: [ ___ ] out of 5                     │
+│                                                              │
+│  [x] I've completed the red flag check                       │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification: RedFlagChecker
+
+```typescript
+/**
+ * RedFlagChecker Component
+ *
+ * PURPOSE: Systematically evaluate budget data against known
+ * red flag thresholds and generate a diagnostic summary.
+ */
+interface RedFlagCheckerProps {
+  readonly budgetData: CollectedBudgetData
+  readonly thresholds?: RedFlagThresholds
+  readonly onComplete: (results: RedFlagResults) => void
+}
+
+interface RedFlagThresholds {
+  readonly investmentExecutionMin: number // Default: 70
+  readonly personnelShareMax: number // Default: 60
+  readonly yearOverYearChangeMax: number // Default: 20
+  readonly executionGapMax: number // Default: 30
+  readonly perCapitaDifferenceMax: number // Default: 25
+}
+
+interface RedFlagCheck {
+  readonly id: string
+  readonly name: string
+  readonly description: string
+  readonly threshold: number
+  readonly unit: '%' | 'points' | 'RON'
+  readonly direction: 'below' | 'above'
+  readonly userValue: number | null
+  readonly status: 'ok' | 'borderline' | 'red_flag' | 'investigate'
+}
+
+interface RedFlagResults {
+  readonly checks: ReadonlyArray<RedFlagCheck>
+  readonly totalRedFlags: number
+  readonly severity: 'low' | 'medium' | 'high'
+  readonly recommendedActions: ReadonlyArray<string>
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - currentCheck: number (0-4)
+ * - checkValues: Record<string, number>
+ * - results: RedFlagCheck[]
+ * - isComplete: boolean
+ *
+ * STATE TRANSITIONS:
+ * - User enters value -> auto-evaluate against threshold
+ * - Evaluation complete -> show status indicator
+ * - All checks done -> calculate totals, show summary
+ *
+ * USER INTERACTIONS:
+ * - Number input for each check
+ * - Status buttons (OK/Borderline/Red Flag) for manual override
+ * - "Use Platform Data" button if connected to API
+ * - Accordion expand/collapse for each check
+ * - Tooltip on threshold explanation
+ *
+ * VISUAL STATES:
+ * - Check pending: neutral gray, question mark
+ * - OK status: green border, checkmark icon
+ * - Borderline: amber border, warning icon
+ * - Red Flag: red border, flag icon, pulsing indicator
+ * - Complete: summary card with severity level
+ *
+ * ANIMATIONS:
+ * - Status change: color transition + icon swap (200ms)
+ * - Red flag detected: subtle shake + pulse (300ms)
+ * - Progress through checks: slide-left transition
+ * - Summary reveal: fade-in + scale (400ms)
+ * - Counter animation for total red flags
+ *
+ * ACCESSIBILITY:
+ * - role="group" for each check with aria-label
+ * - Status announced via aria-live="polite"
+ * - Color-coded statuses have text labels
+ * - Focus moves to next check after completion
+ * - Screen reader announces severity level
+ */
+```
+
+**Data Integration:**
+- Comparison data: `GET /api/analytics/compare?entity={cui}&neighbors=true`
+- Year-over-year: Uses historical budget data endpoint
+
+---
+
+## The Five Red Flags Explained
+
+### 1. Low Investment Execution (Below 70%)
+
+Investment spending (Code 71) is the most revealing metric. When investment execution is low:
+
+- Projects were delayed or cancelled
+- Procurement may have failed
+- Planning was unrealistic
+- There may be capacity issues
+
+**Threshold:** Below 70% is a red flag. Below 50% is severe.
+
+### 2. Personnel Crowding (Above 60% of total)
+
+When personnel costs dominate the budget:
+
+- Less money for services and investments
+- May indicate overstaffing
+- Reduces flexibility for future priorities
+
+**Threshold:** Above 60% is concerning. Above 70% is a serious red flag.
+
+### 3. Year-Over-Year Changes (Above ±20%)
+
+Dramatic budget changes deserve explanation:
+
+- Large increases: New projects? Election-year spending?
+- Large decreases: Austerity? Loss of funding?
+
+**Threshold:** Changes above 20% warrant investigation.
+
+### 4. Execution Rate Gap (Above 30 points)
+
+Compare personnel execution vs. investment execution:
+
+| Personnel | Investment | Gap | Meaning |
+|-----------|------------|-----|---------|
+| 98% | 65% | 33 pts | Salaries prioritized over projects |
+| 95% | 40% | 55 pts | Severe imbalance |
+
+**Threshold:** Gap above 30 percentage points is a red flag.
+
+### 5. Neighbor Comparison (Above 25% difference)
+
+Compare per capita spending with similar entities:
+
+- Same county, similar population
+- Similar urban/rural classification
+- Same year for fair comparison
+
+**Threshold:** More than 25% difference warrants investigation.
+
+---
+
+## Interpreting Your Results
+
+| Red Flags Found | Severity | Recommended Action |
+|-----------------|----------|-------------------|
+| 0-1 | Low | Continue monitoring |
+| 2-3 | Medium | Formulate questions, research more |
+| 4-5 | High | Consider FOIA request, attend meetings |
+
+> **Remember:** Red flags indicate areas for investigation, not proof of wrongdoing. There may be valid explanations — but you won't know until you ask.
+
+---
+
+## Practice
+
+<Quiz
+  id="capstone-03-q1"
+  question="Your entity has 95% personnel execution but only 45% investment execution. What is the execution gap and is it a red flag?"
+  options={[
+    { id: "a", text: "50 percentage points — Yes, this is a red flag (above 30)", isCorrect: true },
+    { id: "b", text: "50% — No, this is normal", isCorrect: false },
+    { id: "c", text: "140 percentage points — Severe red flag", isCorrect: false },
+    { id: "d", text: "45 percentage points — Borderline, investigate", isCorrect: false }
+  ]}
+  explanation="The gap is 95% - 45% = 50 percentage points. This exceeds the 30-point threshold significantly, indicating that personnel costs are being prioritized while investments (new projects, infrastructure) are being neglected."
+/>
+
+<Quiz
+  id="capstone-03-q2"
+  question="You found 3 red flags in your analysis. What should you do next?"
+  options={[
+    { id: "a", text: "Assume corruption and report to authorities", isCorrect: false },
+    { id: "b", text: "Ignore them — red flags are common", isCorrect: false },
+    { id: "c", text: "Formulate specific questions and research further", isCorrect: true },
+    { id: "d", text: "Wait for next year's data to confirm", isCorrect: false }
+  ]}
+  explanation="With medium severity (2-3 red flags), the right approach is to formulate specific questions based on your findings and research further. Red flags aren't accusations — they're starting points for informed inquiry."
+/>
+
+---
+
+## Key Takeaway
+
+> You've completed your red flag analysis! You now know which areas of your local government's budget deserve scrutiny. In the final lesson, you'll transform these findings into an actionable report — with questions to ask and steps to take.
+
+<MarkComplete label="Complete Step 3" />

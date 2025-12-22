@@ -1,0 +1,362 @@
+---
+title.en: "Decoding Budget Lines"
+title.ro: "Decodificarea liniilor bugetare"
+durationMinutes: 5
+concept: "Combining functional and economic codes to read budget documents"
+objective: "Decode complete budget lines and use the Classification Explorer"
+---
+
+# Decoding Budget Lines
+
+## Concept Introduction
+
+Now that you know functional (what for?) and economic (what type?) classifications, it's time to put them together. Real budget lines combine BOTH systems, creating codes like `65.02.04.01 - 71.01.01`.
+
+At first glance, this looks like encrypted gibberish. But with your new knowledge, you can decode it instantly.
+
+> **Key Insight:** Once you can decode a budget line, budget documents become readable maps instead of intimidating spreadsheets.
+
+---
+
+## Interactive Element: Budget Code Decoder
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🔓 BUDGET CODE DECODER                                      │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Enter a budget code to decode it:                           │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  65.02.04.01 - 71.01.01                                │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  [ Decode → ]                                                │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  DECODED RESULT:                                             │
+│                                                              │
+│  FUNCTIONAL CLASSIFICATION (What is it for?)                 │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │  65      │ Education                                    │ │
+│  │  65.02   │ Education - local budget level               │ │
+│  │  65.02.04│ Secondary education                          │ │
+│  │  65.02.04.01 │ Secondary education - lower cycle        │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                              │
+│  ECONOMIC CLASSIFICATION (What type of expense?)             │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │  71      │ Active nefinanciare (Capital investments)    │ │
+│  │  71.01   │ Fixed assets                                 │ │
+│  │  71.01.01│ Construction works                           │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                              │
+│  📝 PLAIN ENGLISH:                                           │
+│  "Construction of a middle school (grades 5-8),              │
+│   funded from local budget"                                  │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### BudgetCodeDecoder Component
+
+```typescript
+/**
+ * BudgetCodeDecoder Component
+ *
+ * PURPOSE: Allow users to input any budget code and see it decoded
+ * into its functional and economic components with plain-language explanation.
+ */
+interface BudgetCodeDecoderProps {
+  readonly defaultValue?: string
+  readonly showBuilder?: boolean
+  readonly onDecode?: (result: DecodedBudgetLine) => void
+  readonly onSearchPlatform?: (code: string) => void
+}
+
+interface DecodedBudgetLine {
+  readonly rawCode: string
+  readonly functional: {
+    readonly fullCode: string
+    readonly hierarchy: ReadonlyArray<{
+      readonly code: string
+      readonly name: string
+      readonly nameRo: string
+    }>
+  }
+  readonly economic: {
+    readonly fullCode: string
+    readonly hierarchy: ReadonlyArray<{
+      readonly code: string
+      readonly name: string
+      readonly nameRo: string
+    }>
+  }
+  readonly plainEnglish: string
+  readonly plainRomanian: string
+  readonly watchFlags?: ReadonlyArray<{
+    readonly type: 'low_execution' | 'high_value' | 'sensitive'
+    readonly message: string
+  }>
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - inputValue: string (user's entered code)
+ * - decodedResult: DecodedBudgetLine | null
+ * - isDecoding: boolean
+ * - error: { message: string; suggestion?: string } | null
+ * - recentCodes: string[] (last 5 decoded codes)
+ *
+ * STATE TRANSITIONS:
+ * - User types → update inputValue, clear error
+ * - User clicks "Decode" or presses Enter → validate and decode
+ * - Invalid format → set error with format hint
+ * - Valid decode → show result with animation
+ *
+ * USER INTERACTIONS:
+ * - Input field with placeholder showing format
+ * - "Decode" button or Enter key triggers decode
+ * - Click on hierarchy item to see more details
+ * - "Copy Link" to share decoded result
+ * - "Search in Transparenta" to find real data
+ * - Recent codes dropdown for quick access
+ *
+ * VISUAL STATES:
+ * - Empty: placeholder text with format example
+ * - Typing: real-time format validation indicator
+ * - Decoding: brief loading shimmer (200ms)
+ * - Decoded: animated hierarchy reveal
+ * - Error: red border, error message, suggested correction
+ *
+ * ANIMATIONS:
+ * - Hierarchy items: stagger fade-in (100ms delay each)
+ * - Plain English: fade-in after hierarchy (300ms delay)
+ * - Warning flags: slide-in from right with attention pulse
+ * - Error: shake animation (200ms)
+ *
+ * ACCESSIBILITY:
+ * - Input has aria-describedby linking to format instructions
+ * - Decode result is announced via aria-live="polite"
+ * - Hierarchy levels use aria-level
+ * - Warning flags have role="alert"
+ * - Focus moves to result after successful decode
+ */
+```
+
+**Expected Behavior:**
+- Real-time input validation
+- Decode shows hierarchical breakdown for both classifications
+- Plain English/Romanian summary
+- Warning flags for code 71 or other red flag codes
+- Link to search this code in Transparenta platform
+
+---
+
+## Interactive Element: Code Builder
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🏗️ BUILD A BUDGET CODE                                     │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  What do you want to find?                                   │
+│                                                              │
+│  FUNCTIONAL (What is it for?)                                │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ Function:    [ Education            ▼]  → 65           │  │
+│  │ Level:       [ Local budget         ▼]  → .02          │  │
+│  │ Sub-function:[ Secondary education  ▼]  → .04          │  │
+│  │ Detail:      [ Lower secondary      ▼]  → .01          │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  ECONOMIC (What type of expense?)                            │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ Title:       [ Capital investments  ▼]  → 71           │  │
+│  │ Article:     [ Fixed assets         ▼]  → .01          │  │
+│  │ Sub-article: [ Construction         ▼]  → .01          │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  YOUR CODE:  65.02.04.01 - 71.01.01                          │
+│                                                              │
+│  MEANING: "Construction for lower secondary school,          │
+│            funded from local budget"                         │
+│                                                              │
+│  [ Search for this in Transparenta.eu → ]                    │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### BudgetCodeBuilder Component
+
+```typescript
+/**
+ * BudgetCodeBuilder Component
+ *
+ * PURPOSE: Guide users to construct budget codes through dropdowns,
+ * learning the classification structure through hands-on building.
+ */
+interface BudgetCodeBuilderProps {
+  readonly functionalData: ReadonlyArray<ClassificationNode>
+  readonly economicData: ReadonlyArray<ClassificationNode>
+  readonly onCodeBuilt?: (code: string, meaning: string) => void
+  readonly onSearchPlatform?: (code: string) => void
+}
+
+interface ClassificationNode {
+  readonly code: string
+  readonly name: string
+  readonly nameRo: string
+  readonly children?: ReadonlyArray<ClassificationNode>
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - functionalSelections: { level1: string; level2: string; level3: string; level4: string }
+ * - economicSelections: { title: string; article: string; subArticle: string }
+ * - builtCode: string (computed from selections)
+ * - meaning: string (computed plain language description)
+ *
+ * STATE TRANSITIONS:
+ * - Select dropdown value → update selection, cascade to child dropdowns
+ * - Clear selection → reset dependent dropdowns
+ * - All required filled → show complete code and meaning
+ *
+ * USER INTERACTIONS:
+ * - Dropdown menus for each classification level
+ * - Each selection updates next level's options
+ * - "Clear All" resets the builder
+ * - "Search in Platform" opens filtered view
+ * - Keyboard: Tab between dropdowns, type to filter options
+ *
+ * VISUAL STATES:
+ * - Empty: placeholder "Select..." on all dropdowns
+ * - Partial: filled dropdowns show values, empty show "Select..."
+ * - Complete: all dropdowns filled, code displayed prominently
+ * - Searching: loading state when fetching child options
+ *
+ * ANIMATIONS:
+ * - Dropdown open: slide-down (150ms)
+ * - Option select: brief highlight (200ms)
+ * - Built code reveal: fade-in + slight scale (300ms)
+ * - Cascade reset: wave animation through dropdowns
+ *
+ * ACCESSIBILITY:
+ * - Each dropdown has aria-label describing its role
+ * - Selected values announced on change
+ * - Built code is aria-live="polite" region
+ * - Instructions available via aria-describedby
+ */
+```
+
+---
+
+## Core Explanation
+
+### Reading a Real Budget Document
+
+Let's decode a real budget excerpt:
+
+```
+┌────────────────────────────────────────────────────────────┐
+│ BUGETUL LOCAL AL MUNICIPIULUI CLUJ-NAPOCA 2024             │
+├───────┬───────────────────────┬───────────┬────────────────┤
+│ Cod   │ Denumire              │ Prevederi │ Realizări (%)  │
+│       │                       │ (Planned) │ (Actual)       │
+├───────┼───────────────────────┼───────────┼────────────────┤
+│ 65.02 │ ÎNVĂȚĂMÂNT            │   450,000 │   385,000 (86%)│
+│ 10    │ Cheltuieli de personal│   280,000 │   275,000 (98%)│
+│ 20    │ Bunuri și servicii    │    90,000 │    78,000 (87%)│
+│ 71    │ Active nefinanciare   │    80,000 │    32,000 (40%)│
+│       │       ⚠️ RED FLAG!    │           │                │
+└───────┴───────────────────────┴───────────┴────────────────┘
+```
+
+**Reading this:**
+- **65.02** = Education, local budget level (functional)
+- **10** = Personnel costs (economic) → 98% execution ✓
+- **20** = Goods & services (economic) → 87% execution ~
+- **71** = Capital investments (economic) → 40% execution ⚠️
+
+**The story:** This municipality paid teacher salaries (10) and kept schools running (20), but only delivered 40% of planned construction/equipment investments (71). Renovations or equipment purchases were severely delayed.
+
+### Quick Reference Card
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  📋 CLASSIFICATION CHEAT SHEET                               │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  FUNCTIONAL (Main Categories)          ECONOMIC (Main Codes) │
+│  ────────────────────────────          ───────────────────── │
+│  50 - General services                 10 - Personnel        │
+│  51 - Defense                          20 - Goods & services │
+│  54 - Public order                     30 - Interest         │
+│  55 - Economic affairs                 40 - Subsidies        │
+│  56 - Environment                      50 - Transfers        │
+│  65 - Education                        70 - Capital expenses │
+│  66 - Health                           71 - Investments ⚠️   │
+│  67 - Culture                          79 - Financial ops    │
+│  68 - Social protection                80 - Debt service     │
+│                                                              │
+│  .01 = central level    .02 = local level                    │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Platform Integration: Guided Activity
+
+Try decoding budget lines on the actual platform:
+
+**Step 1:** Open the [Classification Explorer](/classifications/functional)
+
+**Step 2:** Find code "66" — what function is it? *(Hint: It's critical for everyone)*
+
+**Step 3:** Expand "66.02" and look for "66.02.06" — what specific health service is this?
+
+**Step 4:** Open the [Economic Classification Explorer](/classifications/economic)
+
+**Step 5:** Find code "71" and its subcategories. What's the difference between 71.01 and 71.03?
+
+**Bonus Challenge:** What does the full code "66.02.06 - 71.01.02" mean?
+*(Answer: Equipment purchase for local hospitals)*
+
+---
+
+## Practice
+
+<Quiz
+  id="decode-budget-line-q1"
+  question="What does the budget code '65.02.04.01 - 71.01.01' mean in plain language?"
+  options={[
+    { id: "a", text: "Teacher salaries at secondary schools", isCorrect: false },
+    { id: "b", text: "Construction for lower secondary education (local budget)", isCorrect: true },
+    { id: "c", text: "University research equipment purchases", isCorrect: false },
+    { id: "d", text: "Health services at local clinics", isCorrect: false }
+  ]}
+  explanation="65.02.04.01 is Secondary Education (lower cycle), local budget level. 71.01.01 is Construction (capital investments). Together: 'Construction for middle schools (grades 5-8), funded from local budget.'"
+/>
+
+<Quiz
+  id="decode-budget-line-q2"
+  question="Looking at this budget line: '66.02 - Personnel 98%, Investments 45%' — what's the story?"
+  options={[
+    { id: "a", text: "Healthcare is overfunded", isCorrect: false },
+    { id: "b", text: "Medical staff are underpaid", isCorrect: false },
+    { id: "c", text: "Hospital staff paid, but new equipment/buildings delayed", isCorrect: true },
+    { id: "d", text: "The data is unreliable", isCorrect: false }
+  ]}
+  explanation="66.02 is Health (local level). Personnel at 98% means salaries were paid. Investments at 45% means less than half of planned construction or equipment purchases happened. This is the classic pattern: operations continue, but infrastructure improvements get delayed."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** Budget codes combine functional (purpose) and economic (type). When you see low execution on code 71, that's infrastructure not being built. Use the Classification Explorer to decode any code you encounter — and watch for the personnel vs. investment pattern.
+
+---
+
+<MarkComplete label="Complete Module" />

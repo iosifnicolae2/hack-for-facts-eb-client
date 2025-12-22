@@ -1,0 +1,206 @@
+---
+title.en: "Find Your Entity"
+title.ro: "Gaseste-ti Entitatea"
+durationMinutes: 8
+concept: "Entity selection and basic data gathering"
+objective: "Select and identify your local government in the platform"
+---
+
+# Find Your Entity
+
+## Concept Introduction
+
+You've learned all the concepts throughout this course. Now it's time to apply them to **YOUR community**. This capstone project will guide you through a complete budget analysis of your local government.
+
+This is the most important module — because it's real, and it affects you directly. By the end, you'll have a shareable report and concrete next steps.
+
+> **Your Mission:** Analyze your local government's budget and produce a brief report that you could share with neighbors or use to ask informed questions.
+
+---
+
+## Your Capstone Journey
+
+Before we dive in, here's the roadmap for your analysis:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  YOUR CAPSTONE JOURNEY                                       │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ┌──────┐    ┌──────┐    ┌──────┐    ┌──────┐               │
+│  │ STEP │    │ STEP │    │ STEP │    │ STEP │               │
+│  │  1   │ -> │  2   │ -> │  3   │ -> │  4   │               │
+│  │      │    │      │    │      │    │      │               │
+│  │ Find │    │ Get  │    │ Hunt │    │Report│               │
+│  │ Your │    │ Data │    │ Red  │    │  &   │               │
+│  │Entity│    │      │    │Flags │    │ Act  │               │
+│  └──────┘    └──────┘    └──────┘    └──────┘               │
+│                                                              │
+│  Estimated time: 35-40 minutes                               │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Interactive Element: Entity Finder Guide
+
+Use the platform to find your local government. This guided activity will help you locate and record the basic information you need.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  STEP 1: FIND YOUR LOCAL GOVERNMENT                          │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Go to Entity Analytics and find your city/commune:          │
+│  [ Open Entity Analytics -> ]                                │
+│                                                              │
+│  Search for: ________________________________________        │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  RECORD BASIC INFO:                                          │
+│                                                              │
+│  Entity name:      [ _________________________ ]             │
+│  Type:             [ Municipality / Town / Commune ]         │
+│  County:           [ _________________________ ]             │
+│  Population:       [ _____________ ]                         │
+│  CUI (if visible): [ _____________ ]                         │
+│                                                              │
+│  [x] I've found my entity                                    │
+│                                                              │
+│  TIP: If you're unsure, pick the city/town you live in       │
+│       or the one whose services you use most.                │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification: EntityFinderGuide
+
+```typescript
+/**
+ * EntityFinderGuide Component
+ *
+ * PURPOSE: Guide users to find and select their local government entity
+ * in the platform and record basic identifying information.
+ */
+interface EntityFinderGuideProps {
+  readonly deepLinkUrl: string // URL to Entity Analytics
+  readonly onEntitySelected: (entity: SelectedEntity) => void
+  readonly onComplete: () => void
+}
+
+interface SelectedEntity {
+  readonly name: string
+  readonly type: 'municipality' | 'town' | 'commune'
+  readonly county: string
+  readonly population?: number
+  readonly cui?: string
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - searchQuery: string (user's search input)
+ * - selectedEntity: SelectedEntity | null
+ * - formData: Record<string, string> (captured form values)
+ * - isComplete: boolean
+ *
+ * STATE TRANSITIONS:
+ * - User opens deep link -> opens Entity Analytics in new tab
+ * - User fills form fields -> updates formData
+ * - User checks completion -> validates required fields, sets isComplete
+ *
+ * USER INTERACTIONS:
+ * - Click "Open Entity Analytics" -> window.open(deepLinkUrl, '_blank')
+ * - Type in search field -> update searchQuery (informational only)
+ * - Fill form fields -> update formData
+ * - Check completion checkbox -> validate and enable next step
+ * - Tab navigation between fields
+ * - Enter to confirm checkbox
+ *
+ * VISUAL STATES:
+ * - Default: empty form fields, dimmed completion section
+ * - In Progress: some fields filled, completion checkbox visible
+ * - Complete: all required fields filled, green success indicator
+ * - Validation Error: missing required fields highlighted in amber
+ *
+ * ANIMATIONS:
+ * - Deep link button: pulse animation on hover (150ms)
+ * - Form field focus: subtle border color transition (200ms)
+ * - Completion check: checkmark animation with confetti burst (300ms)
+ * - Progress indicator: smooth fill animation
+ *
+ * ACCESSIBILITY:
+ * - role="form" on the container
+ * - aria-required="true" on required fields
+ * - aria-describedby linking inputs to help text
+ * - Live region for completion status changes
+ * - Focus management: auto-focus first field after opening
+ * - Keyboard navigation: Tab between fields, Enter to check
+ */
+```
+
+**Data Integration:**
+- Entity search: `GET /api/entities/search?q={query}`
+- Entity details: `GET /api/entities/{cui}`
+
+---
+
+## How to Find Your Entity
+
+Follow these steps to locate your local government:
+
+1. **Open Entity Analytics** — Click the link or navigate to the Entities section
+2. **Search by name** — Type your city, town, or commune name
+3. **Verify the entity** — Check the county matches your location
+4. **Note the CUI** — This unique identifier helps track the entity
+
+### What Entity Types Mean
+
+| Type | Romanian Term | Description |
+|------|---------------|-------------|
+| Municipality | Municipiu | Large city (county capital or major urban center) |
+| Town | Oras | Medium-sized urban area |
+| Commune | Comuna | Rural administrative unit (villages) |
+
+> **Tip:** If your village name doesn't appear, search for the commune that administers it. Villages are part of communes in Romania's administrative structure.
+
+---
+
+## Why Population Matters
+
+Population is crucial for meaningful budget comparisons:
+
+- **Per capita spending** = Total Budget ÷ Population
+- Comparing raw totals is misleading (Bucharest vs. a small commune)
+- Per capita figures reveal spending intensity and priorities
+
+**Example:**
+- City A: 100 million RON budget, 100,000 population → 1,000 RON per capita
+- City B: 10 million RON budget, 5,000 population → 2,000 RON per capita
+
+City B actually spends more per person despite the smaller total!
+
+---
+
+## Practice
+
+<Quiz
+  id="capstone-01-q1"
+  question="Why is finding your entity's population important for budget analysis?"
+  options={[
+    { id: "a", text: "It determines how many council members the entity has", isCorrect: false },
+    { id: "b", text: "It allows meaningful per capita comparisons with similar entities", isCorrect: true },
+    { id: "c", text: "Population is required to access the budget data", isCorrect: false },
+    { id: "d", text: "Larger populations always mean better budget execution", isCorrect: false }
+  ]}
+  explanation="Population enables per capita calculations, which are essential for fair comparisons. A small commune spending 2,000 RON/person may be more relevant to compare than raw budget totals that vary wildly by size."
+/>
+
+---
+
+## Key Takeaway
+
+> You've completed Step 1! You now have your local government identified with its basic profile. In the next lesson, you'll dive into the actual budget numbers — planned spending, actual spending, and key metrics that reveal how well money is being managed.
+
+<MarkComplete label="Complete Step 1" />

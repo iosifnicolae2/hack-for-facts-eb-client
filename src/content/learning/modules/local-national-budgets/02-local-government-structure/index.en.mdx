@@ -1,0 +1,264 @@
+---
+title.en: "Local Government Structure"
+title.ro: "Structura Administrației Locale"
+durationMinutes: 5
+concept: "Romania's 3,229 administrative units and their funding"
+objective: "Identify UATs and understand central transfer dependencies"
+---
+
+# Local Government Structure
+
+## Concept Introduction
+
+Romania is divided into approximately **3,229 administrative-territorial units (UATs)**. These range from Bucharest with 2+ million people to tiny communes with just a few hundred residents. Each has its own budget, its own mayor, and its own local council.
+
+The key challenge? Most local governments don't generate enough revenue locally — they depend heavily on transfers from the central government. This creates a power dynamic that affects how your local services are funded.
+
+> **Key Insight:** About 85% of local government money comes from the center. This means local governments have limited fiscal autonomy — they can't fully control their own revenue.
+
+---
+
+## Interactive Element: Administrative Unit Types
+
+Romania's local governments are organized into clear tiers. Here's how they break down:
+
+### UATTypeBreakdown Component
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🗺️ ROMANIA'S ~3,229 ADMINISTRATIVE UNITS                   │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  LEVEL 1: COUNTIES (Județe)                                  │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  41 counties + Bucharest = 42 total                    │  │
+│  │  Each has a County Council (Consiliu Județean)         │  │
+│  │  [ View Map → ]                                        │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  LEVEL 2: MUNICIPALITIES, TOWNS, COMMUNES                    │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  ┌─────────────┐  ┌───────────┐  ┌─────────────────┐   │  │
+│  │  │MUNICIPALITIES│  │  TOWNS    │  │    COMMUNES     │   │  │
+│  │  │    103      │  │   217     │  │     ~2,861      │   │  │
+│  │  │             │  │           │  │                 │   │  │
+│  │  │ Large cities│  │Small cities│  │ Rural villages │   │  │
+│  │  │ >100k pop   │  │ 10k-100k  │  │    <10k pop    │   │  │
+│  │  └─────────────┘  └───────────┘  └─────────────────┘   │  │
+│  │                                                        │  │
+│  │  Total: ~3,229 Administrative-Territorial Units (UATs) │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+**Component Interface:**
+
+```typescript
+/**
+ * UATTypeBreakdown - Visual breakdown of administrative unit types
+ *
+ * PURPOSE: Help users understand the hierarchy of local governments
+ */
+interface UATTypeBreakdownProps {
+  readonly uatTypes: readonly UATType[]
+  readonly onTypeSelect?: (typeId: string) => void
+  readonly showMapLink?: boolean
+}
+
+interface UATType {
+  readonly id: string
+  readonly name: string
+  readonly nameRo: string
+  readonly count: number
+  readonly populationRange: string
+  readonly description: string
+  readonly examples?: readonly string[]
+  readonly icon?: string
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - selectedType: string | null
+ * - hoveredType: string | null
+ *
+ * USER INTERACTIONS:
+ * - Hover card: show tooltip with examples
+ * - Click card: expand to show representative examples
+ * - "View Map" link: opens map filtered by that type
+ *
+ * VISUAL STATES:
+ * - Default: cards with icon, count, population range
+ * - Hovered: elevation, border accent
+ * - Selected: expanded card with examples list
+ *
+ * ANIMATIONS:
+ * - Entry: cards stagger fade-in from left (300ms, 100ms delay)
+ * - Hover: scale(1.03) + shadow (150ms)
+ * - Expand: height animation (200ms)
+ *
+ * ACCESSIBILITY:
+ * - role="listitem" on each card
+ * - aria-label with full description
+ * - Focus visible ring on tab navigation
+ */
+```
+
+---
+
+## How Local Governments Get Money
+
+Here's where the money comes from — and it reveals a critical dependency:
+
+### MoneyFlowDiagram Component
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  💰 HOW LOCAL GOVERNMENTS GET MONEY                          │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│                    CENTRAL BUDGET                            │
+│                         │                                    │
+│         ┌───────────────┼───────────────┐                    │
+│         │               │               │                    │
+│         ▼               ▼               ▼                    │
+│    ┌─────────┐    ┌─────────────┐    ┌─────────┐             │
+│    │ Income  │    │Equalization │    │ Special │             │
+│    │Tax Share│    │   Grants    │    │ Grants  │             │
+│    │  ~45%   │    │    ~30%     │    │  ~10%   │             │
+│    └────┬────┘    └──────┬──────┘    └────┬────┘             │
+│         │                │               │                   │
+│         └────────────────┼───────────────┘                   │
+│                          ▼                                   │
+│                ┌─────────────────┐                           │
+│                │  LOCAL BUDGET   │                           │
+│                │                 │                           │
+│                │ + Own revenues  │                           │
+│                │   (~15%)        │                           │
+│                │   Property tax  │                           │
+│                │   Local fees    │                           │
+│                └─────────────────┘                           │
+│                                                              │
+│  ⚠️ KEY: Most local money (~85%) comes from CENTER           │
+│     → Local governments have LIMITED fiscal autonomy         │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+**Component Interface:**
+
+```typescript
+/**
+ * MoneyFlowDiagram - Animated Sankey-style flow visualization
+ *
+ * PURPOSE: Show how money flows from central to local budgets
+ */
+interface MoneyFlowDiagramProps {
+  readonly flows: readonly MoneyFlow[]
+  readonly highlightPath?: string[]
+  readonly showPercentages?: boolean
+}
+
+interface MoneyFlow {
+  readonly id: string
+  readonly source: string
+  readonly target: string
+  readonly percentage: number
+  readonly label: string
+  readonly description: string
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - highlightedFlow: string | null
+ * - animationComplete: boolean
+ *
+ * USER INTERACTIONS:
+ * - Hover flow: highlight path, show tooltip with details
+ * - Click source/target: show breakdown popup
+ *
+ * VISUAL STATES:
+ * - Default: all flows visible, muted colors
+ * - Highlighted: selected flow in accent color, others dimmed
+ * - Complete: all flows visible with final percentages
+ *
+ * ANIMATIONS:
+ * - Entry: flows draw from source to target (800ms, staggered)
+ * - Percentage counters: count-up animation (400ms)
+ * - Highlight: color transition (200ms)
+ *
+ * ACCESSIBILITY:
+ * - role="img" with descriptive aria-label
+ * - Each flow has aria-describedby for tooltip content
+ * - Screen reader announces flow percentages
+ */
+```
+
+### Revenue Sources Breakdown
+
+| Source | Percentage | Description |
+|--------|------------|-------------|
+| **Income Tax Share** | ~45% | Portion of national income tax redistributed to localities |
+| **Equalization Grants** | ~30% | Funds to help poorer areas match richer ones |
+| **Special Grants** | ~10% | Earmarked for specific projects (EU co-financing, etc.) |
+| **Own Revenues** | ~15% | Property tax, local fees, fines, service charges |
+
+---
+
+## Who Does What?
+
+Not all services are local. Here's how responsibilities are divided:
+
+| Service | Central | County | Local |
+|---------|:-------:|:------:|:-----:|
+| National defense | ● | | |
+| Foreign policy | ● | | |
+| National highways | ● | | |
+| Universities | ● | | |
+| County roads | | ● | |
+| County hospitals | | ● | |
+| Social services | | ● | ● |
+| **Local roads** | | | ● |
+| **Schools (pre-university)** | | | ● |
+| **Water & sanitation** | | | ● |
+| **Street lighting** | | | ● |
+| **Parks & green spaces** | | | ● |
+| **Waste management** | | | ● |
+
+> 💡 **Tip:** Focus on local services first — they're the ones that directly affect your daily life!
+
+---
+
+## Practice
+
+<Quiz
+  id="local-national-02-q1"
+  question="Approximately how many administrative-territorial units (UATs) does Romania have?"
+  options={[
+    { id: "a", text: "About 500", isCorrect: false },
+    { id: "b", text: "About 1,500", isCorrect: false },
+    { id: "c", text: "About 3,229", isCorrect: true },
+    { id: "d", text: "About 5,000", isCorrect: false }
+  ]}
+  explanation="Romania has approximately 3,229 UATs, including 42 counties (41 + Bucharest), 103 municipalities, 217 towns, and about 2,861 communes. Each has its own budget and local government."
+/>
+
+<Quiz
+  id="local-national-02-q2"
+  question="What percentage of local government revenue typically comes from central transfers?"
+  options={[
+    { id: "a", text: "About 30%", isCorrect: false },
+    { id: "b", text: "About 50%", isCorrect: false },
+    { id: "c", text: "About 85%", isCorrect: true },
+    { id: "d", text: "About 95%", isCorrect: false }
+  ]}
+  explanation="About 85% of local government revenue comes from central transfers (income tax share, equalization grants, special grants). Only ~15% comes from their own sources like property taxes and local fees. This limited fiscal autonomy means local governments depend heavily on central allocation decisions."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** Romania has ~3,229 local governments (UATs), but most depend on central transfers for ~85% of their funding. This means your local mayor has limited control over revenue — making it even more important to monitor how the money that does arrive gets spent.
+
+<MarkComplete label="Complete this lesson" />

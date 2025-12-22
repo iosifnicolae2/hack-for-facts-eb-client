@@ -1,0 +1,210 @@
+---
+title.en: "Recognizing Budget Warning Signs"
+title.ro: "Recunoașterea semnelor de avertizare bugetare"
+durationMinutes: 6
+concept: "Multiple red flags together warrant investigation"
+objective: "Understand that budget problems leave patterns and learn to identify warning signs"
+---
+
+# Recognizing Budget Warning Signs
+
+## Concept Introduction
+
+Budget problems leave traces. Once you know what to look for, patterns emerge. A government that's struggling financially, mismanaging resources, or potentially engaging in corruption will show telltale signs in its budget data.
+
+The key insight that separates casual observers from effective watchdogs is understanding that **context matters**. A single anomaly might have an innocent explanation — a construction project delayed by weather, or an unexpected emergency expense. But when multiple warning signs appear together, that's when you should pay attention.
+
+> **Key Insight:** A single red flag isn't proof of wrongdoing — but multiple red flags together warrant investigation.
+
+---
+
+## Interactive Element: Red Flag Detector
+
+The Red Flag Detector allows you to input key budget metrics and automatically identifies potential issues based on established thresholds.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🚨 RED FLAG DETECTOR                                        │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Enter entity data to check for red flags:                   │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  Investment execution rate:     [ 55 ]%                │  │
+│  │  Personnel execution rate:      [ 98 ]%                │  │
+│  │  Number of rectifications:      [ 4  ]                 │  │
+│  │  Year-over-year change:         [ 35 ]%                │  │
+│  │  Personnel as % of budget:      [ 72 ]%                │  │
+│  │  Direct award contracts:        [ 45 ]%                │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  [ Analyze → ]                                               │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  ANALYSIS RESULTS:                                           │
+│                                                              │
+│  🔴 LOW INVESTMENT EXECUTION (55%)                           │
+│     Expected: >70%  │  Severity: HIGH                        │
+│     → Money budgeted for development wasn't spent            │
+│                                                              │
+│  🔴 TOO MANY RECTIFICATIONS (4)                              │
+│     Expected: 1-2   │  Severity: MEDIUM                      │
+│     → Poor planning or political manipulation                │
+│                                                              │
+│  🔴 PERSONNEL CROWDING OUT (72%)                             │
+│     Expected: <60%  │  Severity: HIGH                        │
+│     → Little room for investment and development             │
+│                                                              │
+│  🟡 HIGH Y/Y CHANGE (35%)                                    │
+│     Expected: <20%  │  Severity: MEDIUM                      │
+│     → Investigate what caused the spike                      │
+│                                                              │
+│  🔴 HIGH DIRECT AWARDS (45%)                                 │
+│     Expected: <25%  │  Severity: HIGH                        │
+│     → Possible contract splitting or abuse                   │
+│                                                              │
+│  OVERALL SCORE: 5 RED FLAGS — INVESTIGATE FURTHER            │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification
+
+```typescript
+/**
+ * RedFlagDetector Component
+ *
+ * PURPOSE: Allow users to input budget metrics and identify potential issues
+ * based on established thresholds. Educational tool to teach pattern recognition.
+ */
+interface RedFlagDetectorProps {
+  readonly thresholds?: RedFlagThreshold[]
+  readonly onAnalyze?: (result: RedFlagAnalysis) => void
+}
+
+interface RedFlagThreshold {
+  readonly id: string
+  readonly name: string
+  readonly inputLabel: string
+  readonly expectedValue: string // e.g., ">70%", "<25%", "1-2"
+  readonly severity: 'HIGH' | 'MEDIUM' | 'LOW'
+  readonly checkFn: (value: number) => boolean // Returns true if red flag triggered
+  readonly explanation: string
+}
+
+interface RedFlagInput {
+  readonly id: string
+  readonly value: number
+  readonly suffix?: string // '%', etc.
+}
+
+interface RedFlagAnalysis {
+  readonly inputs: readonly RedFlagInput[]
+  readonly flags: readonly {
+    readonly thresholdId: string
+    readonly triggered: boolean
+    readonly severity: 'HIGH' | 'MEDIUM' | 'LOW'
+    readonly message: string
+  }[]
+  readonly totalFlags: number
+  readonly recommendation: string
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - inputs: Record<string, number> (user's entered values)
+ * - isAnalyzing: boolean (brief loading state for animation)
+ * - result: RedFlagAnalysis | null
+ * - errors: Record<string, string> (validation errors per field)
+ *
+ * STATE TRANSITIONS:
+ * - User types → update input value, clear error for that field
+ * - User clicks Analyze → validate all inputs, set isAnalyzing, compute analysis
+ * - Invalid input → set error message for specific field
+ * - Analysis complete → show results with animations
+ *
+ * USER INTERACTIONS:
+ * - Input fields: type numeric values (0-100 for percentages, 0-10 for counts)
+ * - Tab: navigate between input fields
+ * - Enter: trigger analysis
+ * - Click "Analyze" button: compute and display results
+ * - Click on result item: show tooltip with detailed explanation
+ *
+ * VISUAL STATES:
+ * - Empty/Initial: all fields show placeholder values
+ * - Filled: formatted numbers with appropriate suffixes
+ * - Analyzing: pulse animation on result area (300ms)
+ * - Results shown: flags appear with staggered animation
+ * - Error: red border on invalid field, error text below
+ *
+ * ANIMATIONS:
+ * - Input focus: subtle scale(1.02) + ring
+ * - Analyze button: pulse on hover
+ * - Results: stagger animation, 100ms delay between each flag
+ * - Flag icons: bounce-in effect (200ms, spring)
+ * - Overall score: count-up animation over 400ms
+ *
+ * ACCESSIBILITY:
+ * - role="form" on input section
+ * - aria-live="polite" on results region
+ * - Each input has aria-label describing expected format
+ * - Results announced via screen reader
+ * - Color is not the only indicator (icons + text describe severity)
+ */
+```
+
+**Default Thresholds:**
+
+| Metric | Expected | Red Flag | Severity |
+|--------|----------|----------|----------|
+| Investment execution | \>70% | ≤70% | HIGH |
+| Rectifications/year | 1-2 | ≥3 | MEDIUM |
+| Personnel % of budget | \<60% | ≥60% | HIGH |
+| Year-over-year change | \<20% | ≥20% | MEDIUM |
+| Direct award % | \<25% | ≥25% | HIGH |
+| Arrears present | 0 | \>0 | MEDIUM |
+
+---
+
+## Understanding Red Flag Severity
+
+Not all warning signs are equally serious. Understanding severity helps you prioritize your investigations:
+
+| Severity | Meaning | Action |
+|----------|---------|--------|
+| 🔴 **HIGH** | Likely indicates a serious problem | Investigate immediately, consider FOIA request |
+| 🟡 **MEDIUM** | Warrants attention and follow-up | Compare with similar entities, track over time |
+| 🟢 **LOW** | Minor concern, may be explainable | Note but don't prioritize |
+
+### The Compound Effect
+
+One red flag might be noise. Three red flags together form a pattern. When you see:
+
+- **2-3 flags**: Worth monitoring
+- **4-5 flags**: Warrants active investigation
+- **6+ flags**: Serious concern — document everything
+
+---
+
+## Practice
+
+<Quiz
+  id="red-flags-01-q1"
+  question="You're analyzing a city's budget and find: low investment execution (55%), high personnel costs (70%), and 3 rectifications this year. What should you do?"
+  options={[
+    { id: "a", text: "Ignore it — every city has some issues", isCorrect: false },
+    { id: "b", text: "Wait to see if next year is better", isCorrect: false },
+    { id: "c", text: "Investigate further — multiple red flags warrant attention", isCorrect: true },
+    { id: "d", text: "File a criminal complaint immediately", isCorrect: false }
+  ]}
+  explanation="Multiple red flags together (3 in this case) warrant investigation. While they don't prove wrongdoing, they indicate patterns that deserve scrutiny. Start by comparing with similar cities and preparing specific questions."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** Budget problems leave traces. A single red flag isn't proof — but when multiple warning signs appear together, that's your signal to dig deeper. Learn to recognize patterns, and you'll spot issues that others miss.
+
+<MarkComplete label="Complete this lesson" />

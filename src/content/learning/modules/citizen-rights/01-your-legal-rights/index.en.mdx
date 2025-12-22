@@ -1,0 +1,205 @@
+---
+title.en: "Your Legal Rights to Information"
+title.ro: "Drepturile tale legale la informație"
+durationMinutes: 6
+concept: "Two key laws protecting citizen access to public information"
+objective: "Cite the two key laws protecting your right to information"
+---
+
+# Your Legal Rights to Information
+
+## Concept Introduction
+
+You have more power than you think. Romanian law gives you real, enforceable rights to access public information and participate in government decisions. Most citizens don't know these rights exist—or how powerful they can be.
+
+Two foundational laws protect your ability to monitor and engage with public budgets:
+
+1. **Law 544/2001** — Free Access to Public Information
+2. **Law 52/2003** — Public Participation in Decision-Making
+
+> **Key Insight:** A well-crafted legal request is often more effective than social media complaints. The law is on your side—institutions are *required* to respond.
+
+---
+
+## Interactive Element: Rights FlipCards
+
+Explore each law by clicking on the cards below to reveal what rights it guarantees:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  ⚖️ YOUR LEGAL RIGHTS TO INFORMATION                         │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │  📜 LAW 544/2001                                     │    │
+│  │     Free Access to Public Information                │    │
+│  │                                                      │    │
+│  │     GUARANTEES:                                      │    │
+│  │     ✓ Request any public document                    │    │
+│  │     ✓ Get a response within 10 working days          │    │
+│  │     ✓ Complex requests: up to 30 days                │    │
+│  │     ✓ Free of charge (or minimal copying costs)      │    │
+│  │     ✓ Appeal if denied                               │    │
+│  │                                                      │    │
+│  │     COVERS:                                          │    │
+│  │     • Budget documents and execution reports         │    │
+│  │     • Contracts and procurement files                │    │
+│  │     • Organizational charts and salaries             │    │
+│  │     • Meeting minutes and decisions                  │    │
+│  └──────────────────────────────────────────────────────┘    │
+│                                                              │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │  📜 LAW 52/2003                                      │    │
+│  │     Public Participation in Decision-Making          │    │
+│  │                                                      │    │
+│  │     GUARANTEES:                                      │    │
+│  │     ✓ Draft decisions must be published              │    │
+│  │     ✓ 30 days for public comment                     │    │
+│  │     ✓ Right to attend public meetings                │    │
+│  │     ✓ Written feedback must be considered            │    │
+│  │                                                      │    │
+│  │     COVERS:                                          │    │
+│  │     • Budget proposals and rectifications            │    │
+│  │     • Local regulations and decisions                │    │
+│  │     • Public consultations                           │    │
+│  └──────────────────────────────────────────────────────┘    │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification: RightsFlipCards
+
+```typescript
+/**
+ * RightsFlipCards - Interactive cards revealing legal rights
+ *
+ * PURPOSE: Help citizens discover and remember the two key laws protecting
+ * their access to public information and participation in decisions.
+ */
+interface RightsFlipCardsProps {
+  readonly cards: readonly RightsCard[]
+  readonly onCardFlip?: (cardId: string) => void
+  readonly onAllViewed?: () => void
+}
+
+interface RightsCard {
+  readonly id: string
+  readonly lawNumber: string              // e.g., "544/2001"
+  readonly lawTitle: string               // Full title
+  readonly icon: string                   // Emoji
+  readonly guarantees: readonly string[]  // List of guarantees
+  readonly covers: readonly string[]      // What documents/topics it covers
+  readonly learnMoreUrl?: string          // Link to full law text
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - flippedCards: Set<string> (IDs of cards currently showing back)
+ * - viewedCards: Set<string> (IDs of cards viewed at least once)
+ *
+ * STATE TRANSITIONS:
+ * - User clicks card → toggle flip state, add to viewedCards
+ * - All cards viewed → trigger onAllViewed callback
+ *
+ * USER INTERACTIONS:
+ * - Click card: flip to reveal guarantees
+ * - Enter/Space on focused card: toggle flip
+ * - Escape: flip back to front
+ * - Tab: navigate between cards
+ *
+ * VISUAL STATES:
+ * - Front: law number, icon, title with gradient background
+ * - Back: guarantees list with checkmarks, "covers" section
+ * - Flipping: 3D rotateY 180deg (400ms, ease-in-out)
+ * - Viewed: subtle checkmark badge in corner
+ * - All viewed: celebration state with progress complete
+ *
+ * ANIMATIONS:
+ * - Flip: perspective 1000px, rotateY with backface-visibility
+ * - Hover (unflipped): scale(1.02), shadow elevation
+ * - Entry: staggered fade-in (100ms delay between cards)
+ * - Progress bar: fills as cards are viewed
+ *
+ * ACCESSIBILITY:
+ * - role="button" on each card
+ * - aria-pressed for flip state
+ * - aria-label with law title
+ * - Announce back content on flip via aria-live region
+ * - Focus visible outline on keyboard navigation
+ */
+```
+
+---
+
+## Core Explanation
+
+### Law 544/2001: Your Right to Know
+
+This is Romania's Freedom of Information Act (FOIA). It gives you the legal right to request any document of public interest from any public institution.
+
+| Aspect | Details |
+|--------|---------|
+| **Response Time** | 10 working days (standard) |
+| **Extended Time** | 30 days for complex requests |
+| **Cost** | Free (or minimal copying costs) |
+| **Appeal** | Yes—administrative, then court |
+| **Penalties** | Fines for non-compliance |
+
+**What you can request:**
+- Budget execution reports
+- Public contracts and procurement files
+- Salary grids and organizational charts
+- Meeting minutes and council decisions
+
+### Law 52/2003: Your Right to Participate
+
+This law ensures you can participate *before* decisions are made, not just react afterward.
+
+| Aspect | Details |
+|--------|---------|
+| **Draft Publication** | Must be published for comment |
+| **Comment Period** | Minimum 30 days |
+| **Public Meetings** | Right to attend and speak |
+| **Feedback** | Must be officially considered |
+
+**When it applies:**
+- Budget proposals and rectifications
+- New local regulations
+- Urban planning decisions
+- Any decision affecting citizens
+
+---
+
+## Practice
+
+<Quiz
+  id="citizen-rights-01-q1"
+  question="Which law guarantees your right to request public documents?"
+  options={[
+    { id: "a", text: "Law 52/2003", isCorrect: false },
+    { id: "b", text: "Law 544/2001", isCorrect: true },
+    { id: "c", text: "Law 215/2001", isCorrect: false },
+    { id: "d", text: "Law 188/1999", isCorrect: false }
+  ]}
+  explanation="Law 544/2001 (Free Access to Public Information) is Romania's FOIA law. It guarantees your right to request any document of public interest. Law 52/2003 is about participation in decision-making, not document access."
+/>
+
+<Quiz
+  id="citizen-rights-01-q2"
+  question="How many working days does an institution have to respond to a standard FOIA request?"
+  options={[
+    { id: "a", text: "5 working days", isCorrect: false },
+    { id: "b", text: "10 working days", isCorrect: true },
+    { id: "c", text: "30 working days", isCorrect: false },
+    { id: "d", text: "60 working days", isCorrect: false }
+  ]}
+  explanation="Under Law 544/2001, institutions must respond within 10 working days for standard requests. Complex requests that require gathering information from multiple sources can take up to 30 days. This timeline is legally binding."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** You have two powerful legal tools—Law 544/2001 lets you request any public document (10-day response), and Law 52/2003 ensures you can participate in government decisions before they're finalized. These aren't just suggestions—they're enforceable rights with penalties for non-compliance.
+
+<MarkComplete label="Mark Lesson Complete" />

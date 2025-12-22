@@ -1,0 +1,253 @@
+---
+title.en: "Budget Rectifications Explained"
+title.ro: "Rectificările bugetare explicate"
+durationMinutes: 5
+concept: "Understanding mid-year budget changes and their significance"
+objective: "Explain what budget rectifications are and identify warning signs"
+---
+
+# Budget Rectifications Explained
+
+## Concept Introduction
+
+What happens when reality doesn't match the plan? Governments adjust their budgets mid-year through a process called **rectification**. Understanding rectifications helps you separate normal adjustments from red flags that indicate poor planning or broken promises.
+
+Think of it like adjusting your personal budget: if you get a raise, you might allocate more to savings. If an unexpected expense comes up, you might cut entertainment spending. The government does the same thing — but with YOUR money.
+
+> **Key Insight:** Some rectifications are normal and necessary. But frequent or large rectifications often signal poor planning, broken promises, or political manipulation.
+
+---
+
+## What Are Budget Rectifications?
+
+A budget rectification is a **formal change to the approved annual budget** during the fiscal year. It requires a new law passed by Parliament, just like the original budget.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  📝 WHAT ARE RECTIFICATIONS?                                 │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Budget rectifications = mid-year changes to the budget      │
+│                                                              │
+│  ORIGINAL BUDGET (January)                                   │
+│  ████████████████████████████████████████  100 billion       │
+│                                                              │
+│            ↓ Rectification #1 (April)                        │
+│                                                              │
+│  ████████████████████████████████████████████  105 billion   │
+│  (+5 billion added)                                          │
+│                                                              │
+│            ↓ Rectification #2 (August)                       │
+│                                                              │
+│  ██████████████████████████████████████░░░░░░  98 billion    │
+│  (-7 billion cut)                                            │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Common Reasons for Rectifications
+
+| Reason | Example | Concern Level |
+|--------|---------|---------------|
+| **Revenue changes** | Tax collection higher/lower than expected | Normal |
+| **EU funds received** | New EU project approved | Normal |
+| **Emergency spending** | Natural disaster response | Normal |
+| **Political priorities** | Election-year spending increases | Watch carefully |
+| **Poor initial planning** | Unrealistic revenue projections | Red flag |
+| **Hidden spending** | Adding projects not in original budget | Red flag |
+
+---
+
+## Interactive Element: Rectification History
+
+Explore Romania's rectification patterns over recent years.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  📊 RECTIFICATION HISTORY (2020-2024)                        │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Year │ # of Rectifications │ Net Change │ Status            │
+│  ─────┼─────────────────────┼────────────┼─────────────────  │
+│  2024 │         3           │   +12%     │ 🟡 Above average  │
+│  2023 │         4           │   +8%      │ 🔴 Many changes   │
+│  2022 │         2           │   +5%      │ 🟢 Normal         │
+│  2021 │         5           │   +15%     │ 🔴 COVID impact   │
+│  2020 │         6           │   +22%     │ 🔴 Crisis year    │
+│                                                              │
+│  [ View details for each year → ]                            │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification
+
+```typescript
+/**
+ * RectificationHistory Component
+ *
+ * PURPOSE: Display historical rectification data with trend analysis
+ * and drill-down capability for each year
+ */
+interface RectificationHistoryProps {
+  readonly years: readonly YearRectificationData[]
+  readonly onYearClick?: (year: number) => void
+  readonly highlightYear?: number
+}
+
+interface YearRectificationData {
+  readonly year: number
+  readonly rectificationCount: number
+  readonly netChange: number  // percentage change from original
+  readonly status: 'normal' | 'above_average' | 'concerning'
+  readonly context?: string  // e.g., "COVID pandemic", "Election year"
+  readonly details?: readonly RectificationDetail[]
+}
+
+interface RectificationDetail {
+  readonly date: string
+  readonly amount: number
+  readonly direction: 'increase' | 'decrease'
+  readonly mainChanges: readonly string[]
+  readonly documentUrl?: string
+}
+
+/**
+ * STATE:
+ * - expandedYear: number | null
+ * - hoveredYear: number | null
+ * - sortOrder: 'year' | 'count' | 'change'
+ *
+ * INTERACTIONS:
+ * - Click row: expand year details
+ * - Hover row: highlight with tooltip
+ * - Click column header: sort by that column
+ * - Arrow keys: navigate rows
+ * - Enter: expand/collapse selected row
+ *
+ * VISUAL STATES:
+ * - Normal year: green indicator
+ * - Above average: yellow indicator
+ * - Concerning: red indicator
+ * - Hovered: background highlight
+ * - Expanded: details panel slides down
+ * - Context badge: special tag for crisis years
+ *
+ * ANIMATIONS:
+ * - Row hover: background fade (150ms)
+ * - Expand: slide down (300ms, ease-out)
+ * - Status indicators: subtle pulse on concerning years
+ * - Sort: rows reorder with spring animation
+ *
+ * ACCESSIBILITY:
+ * - role="table" with proper thead/tbody
+ * - aria-sort on sortable columns
+ * - aria-expanded on expandable rows
+ * - Status icons have aria-label with meaning
+ * - Screen reader announces trend context
+ */
+```
+
+**Expected Behavior:**
+- Table shows years with rectification counts
+- Click any year to see detailed breakdown
+- Color-coded status indicators
+- Sort by any column
+- Links to original documents when available
+
+---
+
+## Red Flags to Watch For
+
+Not all rectifications are problematic, but some patterns should raise concerns:
+
+### Warning Signs
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🚨 RED FLAGS IN BUDGET RECTIFICATIONS                       │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  🔴 Frequent rectifications = poor planning                  │
+│     → More than 2-3 per year suggests unrealistic budgets    │
+│                                                              │
+│  🔴 Large cuts to key services                               │
+│     → Health, education cuts often mean broken promises      │
+│                                                              │
+│  🔴 Pre-election spending spikes                             │
+│     → Increases 3-6 months before elections are suspicious   │
+│                                                              │
+│  🔴 Hidden new projects                                      │
+│     → Projects appearing in rectifications but not debates   │
+│                                                              │
+│  🟡 Late-year "cleanup" rectifications                       │
+│     → December rectifications often hide problems            │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  🟢 When rectifications are NORMAL:                          │
+│                                                              │
+│  ✓ Response to genuine emergencies (disasters, crises)       │
+│  ✓ EU funds received mid-year                                │
+│  ✓ Revenue significantly different than projected            │
+│  ✓ Small, technical adjustments between categories           │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Questions to Ask About Any Rectification
+
+1. **Why now?** Is there a genuine reason, or is it politically timed?
+2. **What's being cut?** Are essential services affected?
+3. **What's being added?** Were these projects discussed publicly?
+4. **How big?** Small adjustments are normal; 10%+ changes deserve scrutiny
+5. **How often?** Is this the third or fourth rectification this year?
+
+---
+
+## Tracking Rectifications on Transparenta.eu
+
+Transparenta.eu helps you monitor budget changes throughout the year:
+
+- **Compare original vs. current budget** for any institution
+- **See execution rates** to identify underspending or overspending
+- **Set alerts** to be notified when new data is published
+- **Download data** for your own analysis
+
+---
+
+## Practice
+
+<Quiz
+  id="budget-cycle-02-q1"
+  question="What is a budget rectification?"
+  options={[
+    { id: "a", text: "Fixing calculation errors in the budget", isCorrect: false },
+    { id: "b", text: "A mid-year change to the approved budget", isCorrect: true },
+    { id: "c", text: "An annual audit correction", isCorrect: false },
+    { id: "d", text: "A tax rate adjustment", isCorrect: false }
+  ]}
+  explanation="A budget rectification is a formal mid-year change to the approved annual budget. It requires a new law passed by Parliament, just like the original budget. Some rectifications are normal (responding to changed circumstances), while others may indicate poor planning."
+/>
+
+<Quiz
+  id="budget-cycle-02-q2"
+  question="Which of these is a RED FLAG in budget rectifications?"
+  options={[
+    { id: "a", text: "Adding EU funds received mid-year", isCorrect: false },
+    { id: "b", text: "Responding to a natural disaster", isCorrect: false },
+    { id: "c", text: "Large spending increases before elections", isCorrect: true },
+    { id: "d", text: "Small technical adjustments between categories", isCorrect: false }
+  ]}
+  explanation="Large spending increases 3-6 months before elections are a red flag because they may indicate politically-motivated spending rather than genuine needs. EU funds, disaster response, and small technical adjustments are typically normal reasons for rectifications."
+/>
+
+---
+
+## Key Takeaway
+
+> **Remember:** Rectifications reveal whether a government keeps its budget promises. Watch for patterns: frequent changes, pre-election spikes, and cuts to essential services are warning signs. Use Transparenta.eu to compare original budgets with current allocations.
+
+---
+
+<MarkComplete label="Complete Lesson and Continue" />

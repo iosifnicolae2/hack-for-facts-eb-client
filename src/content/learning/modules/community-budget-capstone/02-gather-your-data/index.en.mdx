@@ -1,0 +1,233 @@
+---
+title.en: "Gather Your Data"
+title.ro: "Aduna Datele Tale"
+durationMinutes: 10
+concept: "Systematic budget metrics collection"
+objective: "Collect key budget metrics for your local government"
+---
+
+# Gather Your Data
+
+## Concept Introduction
+
+With your entity identified, it's time to dig into the actual numbers. This lesson will guide you through collecting the key metrics you need for a meaningful analysis.
+
+Think of this as your data collection worksheet. By the end, you'll have all the raw materials needed to identify red flags and formulate smart questions.
+
+> **Key Insight:** Good analysis starts with good data. Take your time to find accurate numbers — they're the foundation of everything that follows.
+
+---
+
+## Interactive Element: Data Collection Worksheet
+
+Open your entity's detailed view in Transparenta.eu and fill in these metrics:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  STEP 2: COLLECT KEY METRICS                                 │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Open the entity's detailed view and find these numbers:     │
+│                                                              │
+│  SPENDING OVERVIEW (most recent year)                        │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  Total spending (planned):    [ _____________ ] RON    │  │
+│  │  Total spending (actual):     [ _____________ ] RON    │  │
+│  │  Overall execution rate:      [ _____ ]%               │  │
+│  │  Per capita spending:         [ _____________ ] RON    │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  SPENDING BY ECONOMIC TYPE                                   │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  Code │ Category        │ Planned │ Actual │ Execution │  │
+│  │  ─────┼─────────────────┼─────────┼────────┼────────── │  │
+│  │  10   │ Personnel       │ [_____] │ [____] │ [___]%    │  │
+│  │  20   │ Goods & Serv.   │ [_____] │ [____] │ [___]%    │  │
+│  │  71   │ Investments     │ [_____] │ [____] │ [___]%    │  │
+│  │  50-59│ Transfers       │ [_____] │ [____] │ [___]%    │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  TOP 3 SPENDING FUNCTIONS (by amount)                        │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  1. [ ________________________________ ] - [ _____ ]%  │  │
+│  │  2. [ ________________________________ ] - [ _____ ]%  │  │
+│  │  3. [ ________________________________ ] - [ _____ ]%  │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  [x] I've collected the data                                 │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification: DataCollectionWorksheet
+
+```typescript
+/**
+ * DataCollectionWorksheet Component
+ *
+ * PURPOSE: Guide users through systematically collecting budget metrics
+ * from the platform, organizing them for analysis.
+ */
+interface DataCollectionWorksheetProps {
+  readonly entityCui: string
+  readonly year?: number // Default to most recent
+  readonly onDataCollected: (data: CollectedBudgetData) => void
+  readonly onComplete: () => void
+}
+
+interface CollectedBudgetData {
+  readonly overview: {
+    readonly plannedTotal: number
+    readonly actualTotal: number
+    readonly executionRate: number
+    readonly perCapita: number
+  }
+  readonly byEconomicType: ReadonlyArray<{
+    readonly code: string
+    readonly category: string
+    readonly planned: number
+    readonly actual: number
+    readonly execution: number
+  }>
+  readonly topFunctions: ReadonlyArray<{
+    readonly name: string
+    readonly percentage: number
+  }>
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - formData: Partial<CollectedBudgetData>
+ * - currentSection: 'overview' | 'economic' | 'functions'
+ * - completedSections: Set<string>
+ * - validationErrors: Record<string, string>
+ *
+ * STATE TRANSITIONS:
+ * - User enters value -> validate format, update formData
+ * - User completes section -> mark section complete, show next
+ * - All sections complete -> enable final confirmation
+ *
+ * USER INTERACTIONS:
+ * - Number inputs with RON/% suffix display
+ * - Tab navigation between fields
+ * - Section accordions expand/collapse
+ * - Auto-calculate execution rate when planned/actual entered
+ * - "Copy from Platform" helper (optional)
+ *
+ * VISUAL STATES:
+ * - Section incomplete: dimmed header, progress indicator
+ * - Section active: expanded, highlighted border
+ * - Section complete: collapsed, green checkmark
+ * - Field error: red border, error message below
+ * - All complete: celebration animation, next button enabled
+ *
+ * ANIMATIONS:
+ * - Section expand: slide-down (250ms, ease-out)
+ * - Progress bar: smooth fill per section (200ms)
+ * - Auto-calculation: number count-up (300ms)
+ * - Completion: confetti or success pulse
+ *
+ * ACCESSIBILITY:
+ * - role="form" on worksheet container
+ * - aria-labelledby for each section
+ * - aria-describedby for field hints
+ * - Screen reader announces progress
+ * - Numeric inputs have inputmode="decimal"
+ */
+```
+
+**Data Integration:**
+- Budget data: `GET /api/analytics/entity-budget/{cui}?year={year}`
+- Economic breakdown: Uses classification codes from budget data
+
+---
+
+## Understanding the Key Metrics
+
+### Execution Rate
+
+**Formula:** Execution Rate = (Actual Spending ÷ Planned Spending) × 100
+
+| Range | Meaning |
+|-------|---------|
+| 90-100% | Excellent planning and execution |
+| 80-90% | Good, minor adjustments |
+| 70-80% | Moderate gaps to investigate |
+| Below 70% | Significant issues, investigate |
+
+### Economic Categories Explained
+
+| Code | Category | What It Covers |
+|------|----------|----------------|
+| 10 | Personnel | Salaries, benefits, bonuses for employees |
+| 20 | Goods & Services | Supplies, utilities, contracted services |
+| 71 | Investments | Capital projects: buildings, equipment, infrastructure |
+| 50-59 | Transfers | Money sent to other entities or programs |
+
+> **Why This Matters:** Personnel costs are "rigid" (hard to cut), while investments are "flexible" (easy to delay). When budgets are tight, investments often get sacrificed first.
+
+---
+
+## Functional Classification Basics
+
+The top spending functions show your entity's priorities:
+
+**Common functions at local level:**
+
+| Function | What It Funds |
+|----------|---------------|
+| Education | Schools, kindergartens (local share) |
+| General Administration | City hall operations, salaries |
+| Streets & Transport | Road maintenance, public transport |
+| Social Assistance | Aid programs, social services |
+| Culture & Recreation | Libraries, parks, sports facilities |
+
+**Look for patterns:**
+- Is administration consuming too much?
+- Are investments in infrastructure happening?
+- How does education compare to administration?
+
+---
+
+## Data Quality Tips
+
+1. **Use the most recent complete year** — Current year data is incomplete
+2. **Check for rectifications** — Budgets often change mid-year
+3. **Note the source** — "Initial" vs "Rectified" vs "Executed" budgets differ
+4. **Watch for zeros** — Missing data is common; note it, don't assume zero spending
+
+---
+
+## Practice
+
+<Quiz
+  id="capstone-02-q1"
+  question="If a local government planned 10 million RON in investments (Code 71) but only spent 6 million, what is the execution rate?"
+  options={[
+    { id: "a", text: "40%", isCorrect: false },
+    { id: "b", text: "60%", isCorrect: true },
+    { id: "c", text: "166%", isCorrect: false },
+    { id: "d", text: "6%", isCorrect: false }
+  ]}
+  explanation="Execution rate = (Actual ÷ Planned) × 100 = (6 ÷ 10) × 100 = 60%. This is below the 70% threshold and would be flagged for investigation — why weren't the planned investments completed?"
+/>
+
+<Quiz
+  id="capstone-02-q2"
+  question="Which economic category is typically the most 'rigid' (hardest to cut)?"
+  options={[
+    { id: "a", text: "Investments (Code 71)", isCorrect: false },
+    { id: "b", text: "Goods and Services (Code 20)", isCorrect: false },
+    { id: "c", text: "Personnel (Code 10)", isCorrect: true },
+    { id: "d", text: "Transfers (Code 50-59)", isCorrect: false }
+  ]}
+  explanation="Personnel costs are rigid because they involve employment contracts and legal obligations. You can't easily fire staff to balance a budget. This is why investments often get delayed instead — they're more flexible."
+/>
+
+---
+
+## Key Takeaway
+
+> You now have your data worksheet complete. You've collected the essential metrics: overall execution rate, spending by economic type, and top functional priorities. In the next lesson, you'll put this data to work — checking for red flags that reveal deeper issues.
+
+<MarkComplete label="Complete Step 2" />

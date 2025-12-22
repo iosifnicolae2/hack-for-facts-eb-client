@@ -1,0 +1,296 @@
+---
+title.en: "Taking Action: Engagement and Reporting"
+title.ro: "Treci la acțiune: implicare și raportare"
+durationMinutes: 7
+concept: "The civic engagement ladder and where to report problems"
+objective: "Identify opportunities for participation and know where to report irregularities"
+---
+
+# Taking Action: Engagement and Reporting
+
+## Concept Introduction
+
+Knowing your rights is just the first step. Real impact comes from taking action—whether that's monitoring budgets, attending public meetings, or reporting problems to the right authorities.
+
+Civic engagement isn't all-or-nothing. There's a ladder of involvement, from low-effort monitoring to high-impact reporting. Start where you're comfortable, and build up over time.
+
+> **Key Insight:** You don't need to become a full-time activist. Even setting up budget alerts on Transparenta.eu counts as civic engagement. The key is consistency—stay informed, and escalate when you find something wrong.
+
+---
+
+## Interactive Element: Engagement Ladder
+
+Explore the five levels of civic engagement. Click each level to see what actions you can take:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🪜 LADDER OF CIVIC ENGAGEMENT                               │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Level 5: REPORT & FOLLOW UP                                 │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │ Report irregularities to:                            │    │
+│  │ • Curtea de Conturi (Court of Accounts)              │    │
+│  │ • ANI (National Integrity Agency)                    │    │
+│  │ • DNA (Anti-Corruption Directorate)                  │    │
+│  │ Effort: ████████████████ High but high impact        │    │
+│  └──────────────────────────────────────────────────────┘    │
+│           ↑                                                  │
+│  Level 4: SUBMIT FEEDBACK                                    │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │ Respond to public consultations                      │    │
+│  │ Submit written feedback on budget drafts             │    │
+│  │ Effort: ████████████ Medium                          │    │
+│  └──────────────────────────────────────────────────────┘    │
+│           ↑                                                  │
+│  Level 3: ATTEND MEETINGS                                    │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │ Go to local council meetings                         │    │
+│  │ Ask questions during public sessions                 │    │
+│  │ Effort: ████████ Medium                              │    │
+│  └──────────────────────────────────────────────────────┘    │
+│           ↑                                                  │
+│  Level 2: ASK QUESTIONS (FOIA)                               │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │ Submit FOIA requests (Law 544)                       │    │
+│  │ Request specific documents                           │    │
+│  │ Effort: ██████ Low-Medium                            │    │
+│  └──────────────────────────────────────────────────────┘    │
+│           ↑                                                  │
+│  Level 1: MONITOR ← START HERE                               │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │ Set up alerts on Transparenta.eu                     │    │
+│  │ Follow budget news                                   │    │
+│  │ Effort: ██ Low                                       │    │
+│  └──────────────────────────────────────────────────────┘    │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification: EngagementLadder
+
+```typescript
+/**
+ * EngagementLadder - Interactive visualization of civic engagement levels
+ *
+ * PURPOSE: Help citizens understand different levels of engagement and
+ * choose actions appropriate to their time and comfort level.
+ */
+interface EngagementLadderProps {
+  readonly levels: readonly EngagementLevel[]
+  readonly currentLevel?: number        // User's current engagement level
+  readonly onLevelSelect?: (levelId: string) => void
+  readonly onActionClick?: (actionId: string) => void
+}
+
+interface EngagementLevel {
+  readonly id: string
+  readonly level: number                 // 1-5
+  readonly title: string
+  readonly description: string
+  readonly actions: readonly EngagementAction[]
+  readonly effortLevel: 'low' | 'medium' | 'high'
+  readonly impactLevel: 'low' | 'medium' | 'high'
+  readonly icon: string
+}
+
+interface EngagementAction {
+  readonly id: string
+  readonly label: string
+  readonly description: string
+  readonly link?: string                 // Platform deep link
+  readonly externalUrl?: string          // External resource
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - expandedLevel: string | null (currently expanded level)
+ * - completedActions: Set<string> (actions user has done)
+ * - animatingLevel: string | null (level currently animating)
+ *
+ * STATE TRANSITIONS:
+ * - Click level → expand/collapse (accordion behavior)
+ * - Click action → mark as started, open link if provided
+ * - Complete action → add to completedActions
+ *
+ * USER INTERACTIONS:
+ * - Click level header: expand to show actions
+ * - Click action: open associated link or modal
+ * - Keyboard: Arrow Up/Down to navigate levels
+ * - Enter/Space: expand selected level
+ *
+ * VISUAL STATES:
+ * - Collapsed: level number, title, effort bar
+ * - Expanded: full description, action buttons
+ * - Current level (if set): highlighted border
+ * - Completed actions: green checkmark
+ * - Recommended starting point (Level 1): pulsing "Start Here" badge
+ *
+ * ANIMATIONS:
+ * - Expand/collapse: smooth height transition (300ms)
+ * - Level hover: subtle elevation
+ * - Action hover: slide-right indicator
+ * - Progress bar: fills as actions completed
+ * - Entry: stagger from bottom (100ms delay per level)
+ *
+ * ACCESSIBILITY:
+ * - role="list" for ladder, "listitem" for levels
+ * - aria-expanded for accordion state
+ * - aria-controls linking header to content
+ * - Effort levels have text alternatives
+ * - Clear focus indicators for keyboard navigation
+ */
+```
+
+---
+
+## Core Explanation: Where to Report Problems
+
+When you discover irregularities, knowing the right authority to contact is crucial. Different problems go to different agencies:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🚨 WHERE TO REPORT WHAT                                     │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Problem Type           │ Report To                          │
+│  ───────────────────────┼──────────────────────────────────  │
+│  Irregular spending     │ Curtea de Conturi                  │
+│  Misspent public funds  │ (Court of Accounts)                │
+│  Low execution rates    │ curteadeconturi.ro                 │
+│  ───────────────────────┼──────────────────────────────────  │
+│  Conflicts of interest  │ ANI                                │
+│  Asset declarations     │ (National Integrity Agency)        │
+│  Incompatibilities      │ integritate.eu                     │
+│  ───────────────────────┼──────────────────────────────────  │
+│  Corruption             │ DNA                                │
+│  Bribery                │ (Anti-Corruption Directorate)      │
+│  Fraud                  │ pna.ro                             │
+│  ───────────────────────┼──────────────────────────────────  │
+│  Procurement violations │ ANAP                               │
+│  Contract irregularities│ (Public Procurement Agency)        │
+│  Rigged tenders         │ anap.gov.ro                        │
+│  ───────────────────────┼──────────────────────────────────  │
+│  Local issues           │ Prefect                            │
+│  Illegal decisions      │ (County level oversight)           │
+│  Procedural violations  │ prefectura[county].ro              │
+│                                                              │
+│  💡 TIP: Document everything before reporting               │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Reporting Matrix Component Specification
+
+```typescript
+/**
+ * ReportingMatrix - Interactive guide for reporting irregularities
+ *
+ * PURPOSE: Help citizens identify the correct authority for different
+ * types of budget irregularities and guide them through reporting.
+ */
+interface ReportingMatrixProps {
+  readonly categories: readonly ReportCategory[]
+  readonly onCategorySelect?: (categoryId: string) => void
+  readonly onReportClick?: (agencyId: string) => void
+}
+
+interface ReportCategory {
+  readonly id: string
+  readonly problems: readonly string[]
+  readonly agency: ReportingAgency
+}
+
+interface ReportingAgency {
+  readonly id: string
+  readonly name: string
+  readonly fullName: string
+  readonly website: string
+  readonly description: string
+  readonly contactMethod: 'online_form' | 'email' | 'postal' | 'in_person'
+  readonly responseTime?: string
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - selectedCategory: string | null
+ * - hoveredAgency: string | null
+ *
+ * USER INTERACTIONS:
+ * - Hover row: highlight entire row
+ * - Click agency name: show details modal with contact info
+ * - Click website: open in new tab
+ * - Search/filter: type to filter by problem type
+ *
+ * VISUAL STATES:
+ * - Default: alternating row backgrounds
+ * - Hover: row highlight with pointer cursor
+ * - Selected: persistent highlight
+ * - Agency link: underline on hover
+ *
+ * ACCESSIBILITY:
+ * - Semantic table structure
+ * - Row headers for problem types
+ * - Links have clear, descriptive text
+ * - Screen reader announces table summary
+ */
+```
+
+### Key Agencies Summary
+
+| Agency | Acronym | Handles | Website |
+|--------|---------|---------|---------|
+| Court of Accounts | Curtea de Conturi | Spending irregularities | curteadeconturi.ro |
+| National Integrity Agency | ANI | Conflicts of interest | integritate.eu |
+| Anti-Corruption Directorate | DNA | Corruption, bribery | pna.ro |
+| Public Procurement Agency | ANAP | Procurement violations | anap.gov.ro |
+| County Prefect | Prefectura | Local procedural issues | prefectura[county].ro |
+
+### Before You Report
+
+**Document everything:**
+- Screenshot relevant data from Transparenta.eu
+- Save budget documents and reports
+- Note dates, amounts, and specific discrepancies
+- Keep copies of any FOIA requests and responses
+
+**Be specific:**
+- Reference exact figures and classifications
+- Explain what the problem is and why it matters
+- Provide evidence, not just suspicions
+
+---
+
+## Practice
+
+<Quiz
+  id="citizen-rights-03-q1"
+  question="Where should you report suspected corruption or bribery involving public officials?"
+  options={[
+    { id: "a", text: "Local mayor's office", isCorrect: false },
+    { id: "b", text: "Ministry of Finance", isCorrect: false },
+    { id: "c", text: "DNA (Anti-Corruption Directorate)", isCorrect: true },
+    { id: "d", text: "European Commission", isCorrect: false }
+  ]}
+  explanation="DNA (Direcția Națională Anticorupție) is Romania's specialized anti-corruption agency. They handle cases of corruption, bribery, fraud, and abuse of office involving public funds. For spending irregularities without corruption, the Court of Accounts is more appropriate."
+/>
+
+<Quiz
+  id="citizen-rights-03-q2"
+  question="What is the recommended first step on the civic engagement ladder?"
+  options={[
+    { id: "a", text: "Immediately report problems to DNA", isCorrect: false },
+    { id: "b", text: "Attend local council meetings", isCorrect: false },
+    { id: "c", text: "Set up alerts and monitor budget news", isCorrect: true },
+    { id: "d", text: "Submit feedback on every consultation", isCorrect: false }
+  ]}
+  explanation="Level 1 (Monitor) is the recommended starting point. Setting up alerts on Transparenta.eu and following budget news requires minimal effort but keeps you informed. As you learn more, you can escalate to FOIA requests, meetings, and formal reporting."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** Civic engagement is a ladder, not a leap. Start with monitoring (Level 1), build up to FOIA requests and meetings, and escalate to formal reporting when you find real problems. Different agencies handle different issues—use the reporting matrix to find the right one. Always document everything before reporting.
+
+<MarkComplete label="Mark Lesson Complete" />

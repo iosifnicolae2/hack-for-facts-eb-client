@@ -1,0 +1,283 @@
+---
+title.en: "Writing a FOIA Request"
+title.ro: "Redactarea unei cereri FOIA"
+durationMinutes: 7
+concept: "How to craft and submit an effective FOIA request"
+objective: "Write and submit a FOIA request (Law 544/2001)"
+---
+
+# Writing a FOIA Request
+
+## Concept Introduction
+
+Now that you know your legal rights, it's time to use them. A FOIA (Freedom of Information Act) request under Law 544/2001 is your most powerful tool for getting specific budget information.
+
+The good news? It's simpler than you think. A well-crafted request takes 10 minutes to write and can unlock data that would otherwise be impossible to find.
+
+> **Key Insight:** Be specific. "Tell me about your budget" is weak. "Provide the 2024 budget execution report for functional classification 65.02 (Education)" is powerful—it shows you know exactly what you want.
+
+---
+
+## Interactive Element: FOIA Request Builder
+
+Use this step-by-step tool to generate a complete, legally-compliant FOIA request:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  📝 FOIA REQUEST BUILDER                                     │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Build your request step by step:                            │
+│                                                              │
+│  STEP 1: Who are you writing to?                             │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  Institution: [ Primăria Cluj-Napoca            ▼]     │  │
+│  │  Address:     Calea Moților 1-3, Cluj-Napoca           │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  STEP 2: What do you want? (select all that apply)           │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  ☑ Budget execution report for year: [2024]            │  │
+│  │  ☑ Spending details for category: [Education ▼]        │  │
+│  │  ☐ List of contracts over 100,000 RON                  │  │
+│  │  ☐ Personnel costs breakdown                           │  │
+│  │  ☐ Investment project status                           │  │
+│  │  ☐ Custom request: [_________________________]         │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  STEP 3: Your contact information                            │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  Name:  [ Ion Popescu                    ]             │  │
+│  │  Email: [ ion.popescu@email.com          ]             │  │
+│  │  Phone: [ 0721 123 456        ] (optional)             │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  [ Generate Request → ]                                      │
+│                                                              │
+├──────────────────────────────────────────────────────────────┤
+│  📄 YOUR GENERATED REQUEST                                   │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Către: Primăria Cluj-Napoca                                 │
+│  Adresa: Calea Moților 1-3, Cluj-Napoca                      │
+│                                                              │
+│  CERERE                                                      │
+│  în baza Legii 544/2001 privind liberul acces la             │
+│  informațiile de interes public                              │
+│                                                              │
+│  Subsemnatul Ion Popescu, domiciliat în ____________,        │
+│  în temeiul Legii 544/2001, solicit următoarele              │
+│  informații de interes public:                               │
+│                                                              │
+│  1. Raportul de execuție bugetară pentru anul 2024           │
+│  2. Situația detaliată a cheltuielilor pentru categoria      │
+│     "Învățământ" (cod funcțional 65.02)                      │
+│                                                              │
+│  Doresc să primesc răspunsul:                                │
+│  ☑ pe email la adresa: ion.popescu@email.com                 │
+│  ☐ la adresa poștală: ________________                       │
+│  ☐ personal, la sediul instituției                           │
+│                                                              │
+│  Termenul legal de răspuns este de 10 zile lucrătoare        │
+│  (sau 30 de zile pentru informații complexe).                │
+│                                                              │
+│  Data: [Today's date]                                        │
+│  Semnătura: _______________                                  │
+│                                                              │
+│  [ Copy to Clipboard ]  [ Download PDF ]  [ Email Directly ] │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification: FOIARequestBuilder
+
+```typescript
+/**
+ * FOIARequestBuilder - Step-by-step FOIA request generator
+ *
+ * PURPOSE: Guide citizens through creating a legally-compliant FOIA request,
+ * reducing friction and ensuring requests are properly formatted.
+ */
+interface FOIARequestBuilderProps {
+  readonly institutions: readonly Institution[]
+  readonly requestTemplates: readonly RequestTemplate[]
+  readonly onGenerate?: (request: GeneratedRequest) => void
+  readonly onCopy?: (text: string) => void
+  readonly onDownload?: (request: GeneratedRequest) => void
+}
+
+interface Institution {
+  readonly id: string
+  readonly name: string
+  readonly address: string
+  readonly email: string
+  readonly type: 'primarie' | 'consiliu_judetean' | 'ministere' | 'other'
+}
+
+interface RequestTemplate {
+  readonly id: string
+  readonly label: string
+  readonly description: string
+  readonly requestText: string
+  readonly variables?: readonly { key: string; type: 'year' | 'category' | 'text' }[]
+}
+
+interface GeneratedRequest {
+  readonly institution: Institution
+  readonly requestItems: readonly string[]
+  readonly contactInfo: ContactInfo
+  readonly deliveryMethod: 'email' | 'postal' | 'in_person'
+  readonly fullText: string
+  readonly generatedAt: Date
+}
+
+interface ContactInfo {
+  readonly name: string
+  readonly email: string
+  readonly phone?: string
+  readonly address?: string
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - currentStep: 1 | 2 | 3 (which step is active)
+ * - selectedInstitution: Institution | null
+ * - selectedTemplates: Set<string> (template IDs)
+ * - templateVariables: Record<string, string> (year, category values)
+ * - customRequest: string
+ * - contactInfo: ContactInfo
+ * - deliveryMethod: 'email' | 'postal' | 'in_person'
+ * - generatedRequest: GeneratedRequest | null
+ * - copyStatus: 'idle' | 'copied' | 'error'
+ *
+ * STATE TRANSITIONS:
+ * - Complete Step 1 → Enable Step 2
+ * - Select templates → Show variable inputs for selected templates
+ * - Complete all steps → Enable "Generate" button
+ * - Generate → Show preview with actions
+ * - Copy → Show "Copied!" for 2 seconds
+ *
+ * USER INTERACTIONS:
+ * - Institution dropdown: search/select with autocomplete
+ * - Template checkboxes: toggle selection
+ * - Variable inputs: year picker, category dropdown, free text
+ * - Contact form: validate email format
+ * - Generate button: compile full request text
+ * - Copy button: copy to clipboard with feedback
+ * - Download button: generate and download PDF
+ * - Email button: open mailto: with pre-filled content
+ *
+ * VISUAL STATES:
+ * - Steps: numbered indicators, completed = green check
+ * - Current step: highlighted, expanded
+ * - Incomplete step: dimmed, collapsed
+ * - Generated preview: card with syntax highlighting for legal references
+ * - Copy success: button turns green briefly
+ * - Validation error: red border + error message
+ *
+ * ANIMATIONS:
+ * - Step transitions: slide + fade (300ms)
+ * - Generate: brief loading spinner (500ms)
+ * - Preview appearance: slide-up + fade-in (400ms)
+ * - Copy success: scale pulse (200ms)
+ *
+ * ACCESSIBILITY:
+ * - Semantic form structure with fieldsets
+ * - Clear labels and aria-describedby for hints
+ * - Error messages linked via aria-errormessage
+ * - Step indicators with aria-current="step"
+ * - Success announcements via aria-live="polite"
+ * - Keyboard navigation between steps (Tab, Shift+Tab)
+ */
+```
+
+---
+
+## Core Explanation
+
+### Anatomy of an Effective Request
+
+Every FOIA request needs these elements:
+
+| Element | Purpose | Example |
+|---------|---------|---------|
+| **Legal Basis** | Shows you know the law | "în baza Legii 544/2001" |
+| **Specific Items** | Tells them exactly what | "Raportul de execuție bugetară 2024" |
+| **Classification Codes** | Proves you understand the system | "cod funcțional 65.02" |
+| **Response Method** | Makes it easy to reply | "pe email la..." |
+| **Deadline Reference** | Reminds them of obligations | "10 zile lucrătoare" |
+
+### Tips for Effective Requests
+
+1. **Be Specific** — "All contracts" is too vague. "Contracts over 100,000 RON signed in Q1 2024" is actionable.
+
+2. **Use Classification Codes** — Reference functional classifications (like 65.02 for Education) to show you understand budget structure.
+
+3. **Request Digital Copies** — Email is faster and creates an automatic paper trail with timestamps.
+
+4. **Keep a Copy** — Always save your request with the date sent. You'll need proof if you have to appeal.
+
+### Response Timeline
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  ⏱️ RESPONSE TIMELINE (LAW 544/2001)                        │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Day 0         Day 10        Day 30         Day 60           │
+│    │             │             │              │              │
+│    ▼             ▼             ▼              ▼              │
+│  ──●─────────────●─────────────●──────────────●───────       │
+│    │             │             │              │              │
+│  Submit      Standard      Complex        Court              │
+│  Request     Response      Response       Appeal             │
+│              Deadline      Deadline       Deadline           │
+│                                                              │
+│  IF NO RESPONSE:                                             │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ 1. Send reminder after 10 days                         │  │
+│  │ 2. File administrative appeal (plângere prealabilă)    │  │
+│  │ 3. If still ignored → File court case (within 60 days) │  │
+│  │ 4. Court can order release + penalties                 │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  💡 Most institutions respond on time to avoid court cases  │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Practice
+
+<Quiz
+  id="citizen-rights-02-q1"
+  question="What makes a FOIA request more effective?"
+  options={[
+    { id: "a", text: "Writing in all capital letters to show urgency", isCorrect: false },
+    { id: "b", text: "Being specific and referencing classification codes", isCorrect: true },
+    { id: "c", text: "Threatening legal action in the first sentence", isCorrect: false },
+    { id: "d", text: "Sending multiple requests on the same day", isCorrect: false }
+  ]}
+  explanation="Specific requests that reference classification codes (like 65.02 for Education) show you understand the budget system and make it easier for staff to locate the exact documents you need. Vague requests often get delayed or denied."
+/>
+
+<Quiz
+  id="citizen-rights-02-q2"
+  question="If an institution ignores your FOIA request after 10 days, what's your next step?"
+  options={[
+    { id: "a", text: "Give up—they have discretion to ignore requests", isCorrect: false },
+    { id: "b", text: "Immediately file a court case", isCorrect: false },
+    { id: "c", text: "Send a reminder, then file an administrative appeal", isCorrect: true },
+    { id: "d", text: "Post about it on social media", isCorrect: false }
+  ]}
+  explanation="The proper escalation is: 1) Send a polite reminder, 2) File an administrative appeal (plângere prealabilă), 3) If still ignored, file a court case within 60 days. Courts can order document release and impose penalties on non-compliant institutions."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** An effective FOIA request is specific, references legal articles and classification codes, and clearly states how you want to receive the response. Keep a copy of everything—you may need it for appeals. Most institutions respond on time once they see you know the law.
+
+<MarkComplete label="Mark Lesson Complete" />

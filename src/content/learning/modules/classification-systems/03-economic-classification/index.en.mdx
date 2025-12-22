@@ -1,0 +1,211 @@
+---
+title.en: "Economic Classification"
+title.ro: "Clasificarea economică"
+durationMinutes: 5
+concept: "Expense type categories for public spending"
+objective: "Identify economic codes and understand the investment warning flag"
+---
+
+# Economic Classification
+
+## Concept Introduction
+
+Economic classification answers: **"What TYPE of expense is this?"** While functional classification tells you the purpose (education, health), economic classification tells you the nature of the spending — is it salaries, utilities, or construction?
+
+This matters enormously because it reveals whether money goes to **operations** (keeping things running) or **investments** (building for the future).
+
+> **Key Insight:** Code 71 (Capital Investments) is the most watched code in budget analysis. It consistently has the lowest execution rates, meaning promised infrastructure often doesn't get built.
+
+---
+
+## Interactive Element: Economic Code Reference
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  💰 ECONOMIC CLASSIFICATION (Most Important Codes)           │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  CURRENT EXPENSES (Everyday operations)                      │
+│  ─────────────────────────────────────────────────────────── │
+│  Code │ Category           │ Examples                        │
+│  ─────┼────────────────────┼──────────────────────────────── │
+│  10   │ PERSONNEL          │ Salaries, bonuses, overtime     │
+│  10.01│   Basic salaries   │ Monthly wages                   │
+│  10.02│   Bonuses          │ Performance pay                 │
+│  10.03│   Contributions    │ Employer's social contributions │
+│  ─────┼────────────────────┼──────────────────────────────── │
+│  20   │ GOODS & SERVICES   │ Everything needed to operate    │
+│  20.01│   Utilities        │ Electricity, heating, water     │
+│  20.02│   Repairs          │ Maintenance, minor fixes        │
+│  20.05│   Materials        │ Office supplies, consumables    │
+│  20.30│   Other services   │ Consultants, outsourcing        │
+│                                                              │
+│  CAPITAL EXPENSES (Investments)                              │
+│  ─────────────────────────────────────────────────────────── │
+│  71   │ ACTIVE NEFINAN.    │ Things that last (assets)       │
+│  71.01│   Fixed assets     │ Buildings, equipment            │
+│  71.01.01 Construction     │ New buildings, renovations      │
+│  71.01.02 Machinery        │ Vehicles, computers             │
+│  71.03│   Major repairs    │ Large-scale rehabilitation      │
+│                                                              │
+│  ⚠️ Code 71 = WATCH CLOSELY (lowest execution rates)         │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### EconomicCodeReference Component
+
+```typescript
+/**
+ * EconomicCodeReference Component
+ *
+ * PURPOSE: Interactive reference table for economic classification codes,
+ * with emphasis on the Code 71 investment warning flag.
+ */
+interface EconomicCodeReferenceProps {
+  readonly codes: ReadonlyArray<EconomicCodeCategory>
+  readonly highlightCode?: string
+  readonly showExecutionWarning?: boolean
+  readonly onCodeClick?: (code: string) => void
+}
+
+interface EconomicCodeCategory {
+  readonly code: string
+  readonly name: string
+  readonly nameRo: string
+  readonly type: 'current' | 'capital' | 'financial'
+  readonly description: string
+  readonly examples: ReadonlyArray<string>
+  readonly watchFlag?: boolean
+  readonly averageExecutionRate?: number
+  readonly children?: ReadonlyArray<EconomicCodeCategory>
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - expandedCodes: Set<string>
+ * - hoveredCode: string | null
+ * - showTooltip: boolean
+ *
+ * STATE TRANSITIONS:
+ * - Click row → expand to show subcodes
+ * - Hover code → show tooltip with full description
+ * - Click warning badge → show execution rate info
+ *
+ * USER INTERACTIONS:
+ * - Click table row to expand/collapse subcategories
+ * - Hover on code for quick tooltip
+ * - Click "Learn More" to navigate to related lesson
+ * - Mobile: tap to expand, long-press for tooltip
+ *
+ * VISUAL STATES:
+ * - Default: clean table layout
+ * - Expanded: subcodes visible with indentation
+ * - Warning flag: pulsing ⚠️ icon for code 71
+ * - Hovered: row highlight (subtle background)
+ *
+ * ANIMATIONS:
+ * - Row expand: slide-down (200ms)
+ * - Warning pulse: subtle glow (2s loop)
+ * - Tooltip: fade-in (150ms)
+ *
+ * ACCESSIBILITY:
+ * - role="table" with proper header markup
+ * - aria-expanded for expandable rows
+ * - Warning flag has aria-label explaining the warning
+ * - Focus visible on all interactive elements
+ */
+```
+
+**Expected Behavior:**
+- Expandable table showing code hierarchy
+- Warning badge on code 71 with execution rate info
+- Click to see full examples and explanation
+- Link to Budget Explorer filtered by economic code
+
+---
+
+## Core Explanation
+
+### The Big Picture: Two Types of Spending
+
+| Type | Codes | Nature | Budget Behavior |
+|------|-------|--------|-----------------|
+| **Current Expenses** | 10, 20, 30, 40, 50 | Day-to-day operations | High execution (90%+) |
+| **Capital Expenses** | 71, 72 | Long-term investments | Low execution (50-70%) |
+
+### Most Important Economic Codes
+
+**Code 10 — Personnel Costs**
+- Salaries, bonuses, employer contributions
+- Almost ALWAYS executes at 98-100%
+- If under 95%, something is very wrong (unfilled positions?)
+
+**Code 20 — Goods and Services**
+- Utilities, repairs, materials, consultancy
+- Usually executes at 80-90%
+- Subcategory 20.30 (other services) often hides consulting contracts
+
+**Code 71 — Capital Investments** ⚠️
+- Construction, equipment, vehicles
+- THE RED FLAG CODE: often executes at only 50-70%
+- When this underperforms, promised infrastructure isn't being delivered
+
+### Why Code 71 Matters Most
+
+Every year, the pattern repeats:
+
+```
+Personnel (10):      ██████████████████████  98%  ✓ Salaries paid
+Goods & Services (20): █████████████████░░░░  85%  ~ Normal
+Investments (71):    ██████████░░░░░░░░░░░░  58%  ⚠️ RED FLAG
+```
+
+This means: **Salaries always get paid. But the school renovation? The hospital wing? The road repair? Often delayed to next year. And the year after.**
+
+### Code 71 Subcategories to Watch
+
+| Code | Type | What to look for |
+|------|------|------------------|
+| 71.01.01 | Construction | New buildings, major renovations |
+| 71.01.02 | Machinery/Equipment | Vehicles, medical equipment, IT |
+| 71.01.03 | Furniture | Office furniture, school desks |
+| 71.03 | Capital Repairs | Large-scale rehabilitation |
+
+---
+
+## Practice
+
+<Quiz
+  id="economic-classification-q1"
+  question="Economic code '71' refers to:"
+  options={[
+    { id: "a", text: "Personnel costs (salaries)", isCorrect: false },
+    { id: "b", text: "Interest payments on debt", isCorrect: false },
+    { id: "c", text: "Capital investments (construction, equipment)", isCorrect: true },
+    { id: "d", text: "Transfers to other entities", isCorrect: false }
+  ]}
+  explanation="Code 71 is 'Active nefinanciare' (non-financial assets) — capital investments like construction, equipment, and major repairs. This code consistently has the lowest execution rates, making it the most important to watch."
+/>
+
+<Quiz
+  id="economic-classification-q2"
+  question="Which economic code should you watch closely for execution rate issues?"
+  options={[
+    { id: "a", text: "10 (Personnel) — it often underspends", isCorrect: false },
+    { id: "b", text: "20 (Goods & services) — most volatile", isCorrect: false },
+    { id: "c", text: "71 (Investments) — consistently lowest rates", isCorrect: true },
+    { id: "d", text: "50 (Transfers) — most commonly delayed", isCorrect: false }
+  ]}
+  explanation="Code 71 (Capital Investments) consistently has the lowest execution rates (often 50-70%), while Personnel (10) executes at nearly 100%. When investments underperform, promised infrastructure — schools, hospitals, roads — doesn't get built."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** Economic classification tells you the TYPE of expense. Key codes: 10=Personnel (salaries), 20=Goods & Services, 71=Investments (construction). Code 71 is your RED FLAG — if it's low, promised infrastructure isn't being delivered.
+
+---
+
+<MarkComplete label="Complete Lesson" />

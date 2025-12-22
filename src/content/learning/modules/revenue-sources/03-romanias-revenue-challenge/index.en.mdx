@@ -1,0 +1,319 @@
+---
+title.en: "Romania's Revenue Challenge"
+title.ro: "Provocarea veniturilor Romaniei"
+durationMinutes: 7
+concept: "Understanding why Romania has a budget deficit and how it compares to other EU countries"
+objective: "Explain why Romania has a budget deficit and navigate the Revenue view in Budget Explorer"
+---
+
+# Romania's Revenue Challenge
+
+## Concept Introduction
+
+You've learned about your personal tax contribution and the types of public revenue. Now let's face a difficult truth: Romania collects the **lowest revenue as a percentage of GDP in the entire European Union** — yet spends close to the EU average.
+
+The math is simple: when you collect 34% but spend 43.5%, you get a deficit. And at 9.3% of GDP, Romania's deficit is one of the highest in Europe. This isn't just an abstract number — it affects interest rates, inflation, and future taxes.
+
+> **Key Insight:** Romania's problem isn't just about spending too much — it's fundamentally about collecting too little. Fixing this requires either higher taxes, better enforcement, or both.
+
+---
+
+## Interactive Element: EU Comparison Chart
+
+See how Romania compares to other EU countries in terms of revenue collection.
+
+### EUComparisonChart
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  REVENUE AS % OF GDP: EU COMPARISON                          │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  France      ████████████████████████████████████████  47%   │
+│  Germany     █████████████████████████████████████     45%   │
+│  EU Average  ████████████████████████████████████      44%   │
+│  Poland      ██████████████████████████████████        41%   │
+│  Hungary     █████████████████████████████████         40%   │
+│  Bulgaria    █████████████████████████████             36%   │
+│  ROMANIA     ██████████████████████████                34%   │ ← LOWEST
+│                                                              │
+│  ─────────────────────────────────────────────────────────── │
+│                                                              │
+│  Why is Romania's collection so low?                         │
+│  • Large informal economy (~30% estimated)                   │
+│  • Tax evasion (especially VAT fraud)                        │
+│  • Weak tax administration                                   │
+│  • Many exemptions and special regimes                       │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+**Component Interface:**
+
+```typescript
+/**
+ * EUComparisonChart Component
+ *
+ * PURPOSE: Visualize Romania's position compared to EU countries on revenue metrics
+ */
+interface EUComparisonChartProps {
+  readonly title: string
+  readonly items: readonly ComparisonItem[]
+  readonly unit?: string
+  readonly highlightItem?: string
+  readonly showAverage?: boolean
+  readonly averageLabel?: string
+  readonly annotations?: readonly {
+    readonly itemId: string
+    readonly text: string
+    readonly position: 'left' | 'right'
+  }[]
+  readonly onItemClick?: (itemId: string) => void
+}
+
+interface ComparisonItem {
+  readonly id: string
+  readonly label: string
+  readonly value: number
+  readonly flag?: string
+  readonly isHighlighted?: boolean
+  readonly metadata?: Record<string, string | number>
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - hoveredItem: string | null
+ * - sortedItems: ComparisonItem[] (computed, sorted by value)
+ * - maxValue: number (for scaling bars, typically max item + 10%)
+ *
+ * STATE TRANSITIONS:
+ * - Hover bar -> set hoveredItem, show tooltip with exact value
+ * - Click bar -> trigger onItemClick callback (for drill-down)
+ * - Mouse leave -> clear hoveredItem
+ *
+ * USER INTERACTIONS:
+ * - Hover bar: show exact value in tooltip
+ * - Click bar: optional drill-down to country details
+ * - Keyboard: arrow keys navigate between bars
+ * - Enter on focused bar: trigger click action
+ *
+ * VISUAL STATES:
+ * - Default: all bars in neutral color, highlighted item in accent
+ * - Hovered: bar elevates slightly, shows value tooltip
+ * - Average line: dashed vertical line if showAverage=true
+ * - Highlighted: Romania bar uses warning/red color with annotation
+ *
+ * ANIMATIONS:
+ * - Entry: bars grow from left to right (600ms, staggered 50ms between)
+ * - Hover: scale(1.02) on Y axis + shadow elevation (150ms)
+ * - Average line: draws from top to bottom (400ms, after bars complete)
+ * - Annotation: fade-in after bar animation (200ms delay)
+ *
+ * ACCESSIBILITY:
+ * - role="img" on container with aria-label describing the chart
+ * - Each bar has role="listitem" with aria-label: "[Country]: [Value]%"
+ * - Average line has aria-label: "EU Average: [Value]%"
+ * - Screen reader announces "Romania: 34%, lowest in EU" for highlighted item
+ */
+```
+
+**Expected Behavior:**
+- Horizontal bars sorted by value (highest to lowest)
+- Romania highlighted in distinct color with "← LOWEST" annotation
+- EU Average shown as dashed vertical line
+- Hover reveals exact percentage and country details
+
+---
+
+## Core Explanation: The Deficit Equation
+
+Understanding Romania's budget challenge requires simple math:
+
+```
+     REVENUE        SPENDING         DEFICIT
+       34%     -      43.5%     =     -9.3%
+```
+
+### Why Collection Is So Low
+
+| Factor | Impact | Example |
+|--------|--------|---------|
+| **Informal Economy** | ~30% of GDP | Cash payments, unreported income |
+| **VAT Gap** | ~35% uncollected | Highest VAT fraud rate in EU |
+| **Weak Administration** | Low audit rate | ANAF understaffed, outdated systems |
+| **Exemptions** | Reduce base | IT salary exemptions, micro-enterprise regime |
+
+### The Consequences
+
+1. **More borrowing** — Public debt growing rapidly
+2. **Higher interest rates** — Investors demand premium for risk
+3. **Inflation pressure** — Money printing to cover shortfall
+4. **Future tax increases** — Like the VAT hike to 21%
+5. **Reduced public services** — Less money for healthcare, education
+
+> **The irony:** Romanians pay relatively high tax rates (43% of labor cost), but so much goes uncollected that the government still doesn't have enough money.
+
+---
+
+## Platform Integration: Explore Revenue
+
+Now let's put theory into practice. Use the Budget Explorer to see real revenue data.
+
+### GuidedActivity
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  HANDS-ON: Explore Revenue Sources                           │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Step 1: Open the Budget Explorer in REVENUE mode            │
+│          [ Open Revenue View → ]                             │
+│          URL: /budget-explorer?accountCategory=vn            │
+│                                                              │
+│  Step 2: Look at the treemap                                 │
+│          • Which revenue source is largest?                  │
+│          • Find "Social contributions" — how big is it?      │
+│                                                              │
+│  Step 3: Switch between years                                │
+│          • Has VAT revenue increased or decreased?           │
+│          • What happened to EU funds?                        │
+│                                                              │
+│  Step 4: Try the "Per Capita" view                           │
+│          • How much revenue per person?                      │
+│          • Compare with your own calculations                │
+│                                                              │
+│  ✅ Task: What percentage comes from social contributions?   │
+│                                                              │
+│  Your answer: [ _____ ]%  [ Check Answer ]                   │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+**Component Interface:**
+
+```typescript
+/**
+ * GuidedActivity Component
+ *
+ * PURPOSE: Walk users through platform exploration with validation checkpoints
+ */
+interface GuidedActivityProps {
+  readonly title: string
+  readonly steps: readonly GuidedStep[]
+  readonly onComplete?: () => void
+  readonly onStepComplete?: (stepId: string) => void
+  readonly allowSkip?: boolean
+}
+
+interface GuidedStep {
+  readonly id: string
+  readonly instruction: string
+  readonly hint?: string
+  readonly deepLink?: string
+  readonly openInNewTab?: boolean
+  readonly validation: StepValidation
+}
+
+type StepValidation =
+  | { readonly type: 'manual' }
+  | { readonly type: 'input'; readonly question: string; readonly acceptedAnswers: readonly string[]; readonly tolerance?: number }
+  | { readonly type: 'confirm'; readonly question: string }
+
+/**
+ * STATE MANAGEMENT:
+ * - currentStep: number (0-indexed)
+ * - completedSteps: Set<string> (step IDs that have been completed)
+ * - stepInputs: Record<stepId, string> (user inputs for input-type validations)
+ * - isValidating: boolean
+ * - validationResult: 'correct' | 'incorrect' | null
+ *
+ * STATE TRANSITIONS:
+ * - Click "Open Link" -> opens deepLink in new tab, stays on step
+ * - Click "Mark Done" (manual) -> complete step, advance
+ * - Submit answer (input) -> validate, show feedback, advance if correct
+ * - Click "Skip" (if allowed) -> mark skipped, advance
+ * - Click "Back" -> return to previous step
+ *
+ * VALIDATION LOGIC (for input type):
+ * - Accept exact matches from acceptedAnswers array
+ * - If tolerance provided, accept numeric answers within ±tolerance
+ * - Example: acceptedAnswers: ["30", "31", "32"], tolerance: 2
+ *
+ * USER INTERACTIONS:
+ * - Numbered steps list: click to navigate (if completed)
+ * - "Open Link" button: opens Budget Explorer in new tab
+ * - "Mark Done" button: for manual validation steps
+ * - Input field + "Check Answer": for input validation steps
+ * - Back/Next buttons: navigate between steps
+ *
+ * VISUAL STATES:
+ * - Pending step: dimmed, numbered circle unfilled
+ * - Current step: highlighted, instruction visible, actions enabled
+ * - Completed step: green checkmark, collapsed
+ * - Incorrect answer: shake animation, red highlight, retry enabled
+ * - All complete: celebration animation, completion message
+ *
+ * ANIMATIONS:
+ * - Step transition: slide + fade (300ms, ease-out)
+ * - Completion: checkmark draw animation (400ms)
+ * - Error: shake (200ms, 3 oscillations)
+ * - Final celebration: confetti burst or success icon pulse
+ *
+ * ACCESSIBILITY:
+ * - role="group" with aria-label for the activity
+ * - Steps are ol/li elements
+ * - Current step has aria-current="step"
+ * - Validation results announced via aria-live="polite"
+ * - Deep link button has aria-describedby with URL context
+ */
+```
+
+**Expected Behavior:**
+- Steps progress linearly with ability to go back
+- Deep links open Budget Explorer with appropriate filters
+- Input validation accepts approximate answers (±2% tolerance)
+- Completion triggers celebration and marks lesson complete
+
+---
+
+## Practice
+
+<Quiz
+  id="revenue-sources-03-q1"
+  question="Romania collects approximately what percentage of GDP in revenue?"
+  options={[
+    { id: "a", text: "25%", isCorrect: false },
+    { id: "b", text: "34%", isCorrect: true },
+    { id: "c", text: "44%", isCorrect: false },
+    { id: "d", text: "50%", isCorrect: false }
+  ]}
+  explanation="Romania collects approximately 34% of GDP as public revenue — the lowest in the entire European Union. The EU average is 44%."
+/>
+
+<Quiz
+  id="revenue-sources-03-q2"
+  question="What is the primary reason Romania has a budget deficit?"
+  options={[
+    { id: "a", text: "Government spending is the highest in Europe", isCorrect: false },
+    { id: "b", text: "Revenue collection is too low compared to spending", isCorrect: true },
+    { id: "c", text: "The EU doesn't send enough funds", isCorrect: false },
+    { id: "d", text: "All government workers are overpaid", isCorrect: false }
+  ]}
+  explanation="Romania's deficit exists because it collects only 34% of GDP but spends about 43.5%. The spending level is close to EU average, but collection is the lowest — meaning the problem is primarily about collecting too little, not spending too much."
+/>
+
+---
+
+## Key Takeaway
+
+> **Remember:** Romania collects the LOWEST revenue in the EU (34% of GDP) but spends close to average (43.5%). This creates a 9.3% deficit — meaning future generations will pay through higher taxes, inflation, or reduced services. The solution requires better tax collection, not just higher rates.
+
+---
+
+## What's Next?
+
+Now that you understand where public money comes from, the next module will show you where it goes: **Expenditures**. You'll learn about the major spending categories and why pensions dominate the budget.
+
+---
+
+<MarkComplete label="Complete this lesson" />

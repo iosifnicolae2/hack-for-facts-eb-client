@@ -1,0 +1,261 @@
+---
+title.en: "Budget Analysis Skills"
+title.ro: "Abilitati de analiza bugetara"
+durationMinutes: 7
+concept: "What to look for in budget data"
+objective: "Know what to look for in budget data"
+---
+
+# Budget Analysis Skills
+
+## Concept Introduction
+
+Having access to budget data is only half the battle. The real skill is knowing **what to look for**. Raw numbers don't tell stories — patterns, anomalies, and comparisons do.
+
+This lesson teaches you the five key metrics that reveal whether public money is being spent wisely. Master these, and you'll be able to quickly assess any institution's budget health.
+
+> **Key Insight:** Budget analysis isn't about memorizing numbers. It's about asking the right questions: Is the money being spent? How does this compare? What changed?
+
+---
+
+## Interactive Element: Analysis Checklist
+
+Use this checklist when analyzing any budget data:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  WHAT TO LOOK FOR IN BUDGET DATA                             │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  [ ] EXECUTION RATES                                         │
+│      Formula: (Actual / Planned) x 100%                      │
+│      >90% = Good                                             │
+│      70-90% = Investigate                                    │
+│      <70% = Red flag                                         │
+│                                                              │
+│  [ ] YEAR-OVER-YEAR CHANGES                                  │
+│      Compare same category across years                      │
+│      Large changes (>20%) warrant investigation              │
+│      Ask: Why did this increase/decrease so much?            │
+│                                                              │
+│  [ ] PER CAPITA COMPARISONS                                  │
+│      Total spending doesn't tell the whole story             │
+│      Per capita normalizes for population                    │
+│      Compare similar-sized entities                          │
+│                                                              │
+│  [ ] INVESTMENT vs PERSONNEL                                 │
+│      Code 71 (investments) vs Code 10 (salaries)             │
+│      High personnel + low investment = stagnation            │
+│      Watch investment execution rates especially             │
+│                                                              │
+│  [ ] RECTIFICATION PATTERNS                                  │
+│      Multiple rectifications = poor planning                 │
+│      Large cuts in specific areas = broken promises          │
+│      Timing near elections = potential manipulation          │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Interactive Element: Analysis Practice
+
+Apply your skills to this sample budget data:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  PRACTICE: Analyze This Data                                 │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ENTITY: Example City (population: 50,000)                   │
+│  YEAR: 2024                                                  │
+│                                                              │
+│  Category         | Planned | Actual | Execution | Y/Y Change│
+│  ─────────────────|─────────|────────|───────────|──────────│
+│  Personnel (10)   |  80M    |  79M   |   99%     |   +5%    │
+│  Goods (20)       |  30M    |  27M   |   90%     |   +3%    │
+│  Investments (71) |  40M    |  22M   |   55%     |  -15%    │
+│  Transfers (50)   |  20M    |  19M   |   95%     |   +8%    │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  Questions:                                                  │
+│                                                              │
+│  1. Which category has the WORST execution rate?             │
+│     Answer: Investments (55%)                                │
+│                                                              │
+│  2. Is this a red flag? Why?                                 │
+│     Answer: Yes — 55% is very low, meaning planned           │
+│             infrastructure projects weren't delivered        │
+│                                                              │
+│  3. What might explain the -15% Y/Y investment change?       │
+│     ( ) More money for salaries                              │
+│     ( ) Projects delayed or cancelled                        │
+│     ( ) Better efficiency                                    │
+│     (x) All could explain it — need to investigate           │
+│                                                              │
+│  4. What question would you ask the city council?            │
+│     Example: "Why was only 55% of the investment budget      │
+│     spent? Which projects were not completed?"               │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification
+
+```typescript
+/**
+ * BudgetAnalysisPractice - Interactive exercise for analyzing sample budget data
+ *
+ * PURPOSE: Let users practice identifying red flags and asking good questions
+ */
+interface BudgetAnalysisPracticeProps {
+  readonly scenario: BudgetScenario
+  readonly questions: ReadonlyArray<AnalysisQuestion>
+  readonly onComplete: (score: number, answers: Record<string, string>) => void
+}
+
+interface BudgetScenario {
+  readonly entityName: string
+  readonly population: number
+  readonly year: number
+  readonly categories: ReadonlyArray<{
+    name: string
+    code: string
+    planned: number
+    actual: number
+    yoyChange: number
+  }>
+}
+
+interface AnalysisQuestion {
+  readonly id: string
+  readonly type: 'identify' | 'explain' | 'multiple_choice' | 'open_ended'
+  readonly question: string
+  readonly correctAnswer?: string
+  readonly options?: ReadonlyArray<{ id: string; text: string; isCorrect: boolean }>
+  readonly hint?: string
+  readonly exampleAnswer?: string
+}
+
+/**
+ * STATE:
+ * - answers: Record<string, string>
+ * - currentQuestion: number
+ * - showHint: Record<string, boolean>
+ * - isSubmitted: boolean
+ * - score: number
+ *
+ * INTERACTIONS:
+ * - Click execution rate: highlight corresponding row
+ * - Select answer: store choice, show feedback
+ * - "Show Hint" button: reveal hint text
+ * - Open-ended input: validate minimum length
+ * - "Check Answers" button: calculate score, show feedback
+ *
+ * VISUAL STATES:
+ * - Data table: rows highlight on hover, red flag rows have warning icon
+ * - Question pending: normal styling
+ * - Question answered: checkmark or X indicator
+ * - Correct answer: green highlight
+ * - Incorrect answer: red highlight with explanation
+ * - Complete: score display with celebration
+ *
+ * ANIMATIONS:
+ * - Row highlight: background fade (200ms)
+ * - Answer feedback: slide-in from right (300ms)
+ * - Score reveal: count-up animation (500ms)
+ *
+ * ACCESSIBILITY:
+ * - Table has proper header associations
+ * - Questions are fieldsets with legends
+ * - Feedback announced via aria-live
+ * - Focus moves to feedback after submission
+ */
+```
+
+---
+
+## Core Explanation
+
+### The Five Key Metrics
+
+#### 1. Execution Rate
+
+The most important single metric. It shows whether planned spending actually happened.
+
+**Formula:** (Actual Spending / Planned Budget) x 100%
+
+| Rate | Meaning | Action |
+|------|---------|--------|
+| >90% | Healthy execution | Normal — plans matched reality |
+| 70-90% | Moderate gap | Investigate — what wasn't delivered? |
+| <70% | Red flag | Serious concern — promises broken |
+
+#### 2. Year-over-Year Change
+
+Comparing the same category across years reveals priorities and trends.
+
+**Red flags:**
+- Sudden drops (>20%) in investment spending
+- Steady increases in personnel while services decline
+- Election-year spikes followed by cuts
+
+#### 3. Per Capita Spending
+
+Total budgets are misleading. A city of 500,000 spending 1 billion RON is very different from a town of 10,000 spending the same.
+
+**Always normalize:** Divide total spending by population to get per capita figures. Then compare similar-sized entities.
+
+#### 4. Investment vs Personnel Ratio
+
+Look at the balance between:
+- **Code 10 (Personnel):** Salaries and wages
+- **Code 71 (Capital investments):** Infrastructure, equipment
+
+High personnel spending with low investment suggests an institution focused on maintaining bureaucracy rather than delivering services or building infrastructure.
+
+#### 5. Rectification Patterns
+
+Budget rectifications (amendments during the year) reveal planning quality:
+- **Many small rectifications:** Poor forecasting
+- **Large cuts to specific areas:** Broken promises
+- **Increases near year-end:** Potential end-of-year spending rush
+
+---
+
+## Practice
+
+<Quiz
+  id="transparency-tools-03-q1"
+  question="An institution has a 55% execution rate for investments. What does this indicate?"
+  options={[
+    { id: "a", text: "Excellent efficiency — they saved money", isCorrect: false },
+    { id: "b", text: "Normal performance — most institutions are similar", isCorrect: false },
+    { id: "c", text: "Significant underspending — a red flag that planned projects weren't delivered", isCorrect: true },
+    { id: "d", text: "Good planning — they anticipated lower costs", isCorrect: false }
+  ]}
+  explanation="A 55% execution rate means almost half the planned investment budget was NOT spent. This is a serious red flag indicating that infrastructure projects, equipment purchases, or other capital investments didn't happen as promised. Always investigate why."
+/>
+
+<Quiz
+  id="transparency-tools-03-q2"
+  question="Why is per capita spending useful for comparison?"
+  options={[
+    { id: "a", text: "It's required by law for all budget reports", isCorrect: false },
+    { id: "b", text: "It normalizes for population size, making comparisons between different-sized entities meaningful", isCorrect: true },
+    { id: "c", text: "It's easier to calculate than total spending", isCorrect: false },
+    { id: "d", text: "All public budgets are the same size anyway", isCorrect: false }
+  ]}
+  explanation="Per capita spending divides total budget by population, allowing fair comparisons. A city of 100,000 people spending 500M RON and a town of 10,000 spending 50M RON have the same per capita spending (5,000 RON/person), even though their total budgets differ by 10x."
+/>
+
+---
+
+## Key Takeaway
+
+> Master five metrics for budget analysis: **Execution rate** (is money being spent?), **Y/Y change** (what's trending?), **Per capita** (fair comparisons), **Investment vs Personnel** (priorities), and **Rectification patterns** (planning quality). Always compare: planned vs actual, this year vs last year, entity vs neighbors.
+
+---
+
+<MarkComplete label="Complete this lesson" />

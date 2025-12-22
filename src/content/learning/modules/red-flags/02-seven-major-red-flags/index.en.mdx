@@ -1,0 +1,316 @@
+---
+title.en: "The Seven Major Red Flags"
+title.ro: "Cele șapte semnale de alarmă majore"
+durationMinutes: 8
+concept: "Specific patterns that indicate budget problems"
+objective: "Learn to identify the 7 most common budget red flags and understand why each matters"
+---
+
+# The Seven Major Red Flags
+
+## Concept Introduction
+
+Now that you understand how to think about red flags, let's examine the seven most common warning signs in Romanian public budgets. Each flag has a specific pattern, a reason it matters, and questions you should ask when you spot it.
+
+These seven flags aren't theoretical — they're drawn from real patterns observed across hundreds of Romanian local governments. Mastering them gives you a powerful toolkit for budget oversight.
+
+> **Key Insight:** Each red flag has three parts: **what it looks like**, **why it's a problem**, and **what questions to ask**.
+
+---
+
+## Interactive Element: Red Flag Explorer
+
+Explore each of the seven major red flags through interactive flip cards. Click each card to reveal detailed information.
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  🚩 RED FLAG EXPLORER                                           │
+│     Click each card to learn more                               │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌───────────┐ ┌───────────┐ ┌───────────┐ ┌───────────┐       │
+│  │    📉     │ │    📋     │ │    💳     │ │    👥     │       │
+│  │   LOW     │ │  FREQUENT │ │  ARREARS  │ │ PERSONNEL │       │
+│  │ EXECUTION │ │  RECTIFY  │ │  (Debts)  │ │ CROWDING  │       │
+│  └───────────┘ └───────────┘ └───────────┘ └───────────┘       │
+│                                                                 │
+│  ┌───────────┐ ┌───────────┐ ┌───────────┐                     │
+│  │    ✂️     │ │    🚨     │ │    🔀     │                     │
+│  │ CONTRACT  │ │ EMERGENCY │ │  OPAQUE   │                     │
+│  │ SPLITTING │ │  ABUSE    │ │ TRANSFERS │                     │
+│  └───────────┘ └───────────┘ └───────────┘                     │
+│                                                                 │
+│  Progress: [███████░░░] 7/7 viewed                              │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification
+
+```typescript
+/**
+ * RedFlagExplorer Component
+ *
+ * PURPOSE: Interactive flip cards for exploring each red flag in detail.
+ * Users must view all cards to understand the complete picture.
+ */
+interface RedFlagExplorerProps {
+  readonly flags: readonly RedFlag[]
+  readonly onAllViewed?: () => void
+  readonly onFlagViewed?: (flagId: string) => void
+}
+
+interface RedFlag {
+  readonly id: string
+  readonly icon: string
+  readonly shortName: string
+  readonly fullName: string
+  readonly whatItLooksLike: readonly string[]
+  readonly whyItsProblem: readonly string[]
+  readonly questionsToAsk: readonly string[]
+  readonly threshold?: string
+  readonly example?: {
+    readonly title: string
+    readonly details: readonly string[]
+  }
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - flippedCardId: string | null (currently flipped card)
+ * - viewedCards: Set<string> (cards that have been viewed)
+ * - allViewed: boolean (derived: viewedCards.size === flags.length)
+ *
+ * STATE TRANSITIONS:
+ * - Click card front → flip to back, add to viewedCards
+ * - Click card back → flip to front
+ * - Click different card → flip current back, flip new to back
+ * - Escape key → flip current card back to front
+ *
+ * USER INTERACTIONS:
+ * - Click card: toggle flip state
+ * - Enter/Space on focused card: toggle flip
+ * - Escape: close currently open card
+ * - Tab: navigate between cards
+ * - Arrow keys: navigate in grid pattern
+ *
+ * VISUAL STATES:
+ * - Front (unviewed): icon + short name, standard border
+ * - Front (viewed): checkmark badge in corner
+ * - Back: full content with sections
+ * - Flipping: 3D rotate animation
+ * - All viewed: celebration state with completion message
+ *
+ * ANIMATIONS:
+ * - Flip: rotateY(180deg) with perspective, 400ms ease-in-out
+ * - Hover (unflipped): scale(1.05), shadow elevation
+ * - View badge: fade-in + scale from center
+ * - Progress bar: smooth width transition
+ * - Completion: confetti burst or checkmark animation
+ *
+ * ACCESSIBILITY:
+ * - Cards are buttons with role="button"
+ * - aria-expanded for flip state
+ * - aria-pressed for viewed state
+ * - Back content announced on flip via aria-live
+ * - Progress announced: "X of 7 red flags explored"
+ */
+```
+
+---
+
+## The Seven Red Flags in Detail
+
+### 🚩 Red Flag #1: Low Execution Rates
+
+**What It Looks Like:**
+- Investment (Code 71) execution below 70%
+- Money allocated but not spent
+- Especially common for capital projects
+
+**Why It's a Problem:**
+- Infrastructure promised but not delivered
+- Schools, hospitals, roads not built
+- EU funds at risk of being lost
+
+**Questions to Ask:**
+- "Why was only X% of the investment budget spent?"
+- "Which projects were cancelled or delayed?"
+- "Will the money be reallocated or lost?"
+
+> **Example:** City X planned 50M RON for road repairs. Actual spending: 22M RON (44%). Result: Only 3 of 7 planned roads were repaired.
+
+---
+
+### 🚩 Red Flag #2: Frequent Rectifications
+
+**What It Looks Like:**
+- 3+ budget amendments in a single year
+- Large changes (>15% of original budget)
+- Changes timed near elections
+
+**Why It's a Problem:**
+- Poor initial planning
+- Political manipulation of priorities
+- Unreliable budget as policy tool
+
+**Questions to Ask:**
+- "Why was the original budget so inaccurate?"
+- "Who benefited from each rectification?"
+- "Were any cuts made to fund increases elsewhere?"
+
+---
+
+### 🚩 Red Flag #3: Arrears (Arierate)
+
+**What It Looks Like:**
+- Unpaid bills accumulating
+- "Arrears" appearing in execution reports
+- Growing debt to suppliers
+
+**Why It's a Problem:**
+- Institution is spending beyond its means
+- Suppliers may stop providing services
+- Hidden debt that must eventually be paid
+
+**Questions to Ask:**
+- "What is the current arrears balance?"
+- "How long have these bills been unpaid?"
+- "Is there a plan to clear the arrears?"
+
+---
+
+### 🚩 Red Flag #4: Personnel Crowding Out Investment
+
+**What It Looks Like:**
+- Personnel costs >60% of total budget
+- Investment consistently \<10%
+- Salary execution 99%+, investment \<60%
+
+**Why It's a Problem:**
+- No money for development
+- Institution maintaining status quo only
+- Infrastructure deteriorating
+
+**Questions to Ask:**
+- "What is the personnel-to-investment ratio?"
+- "Has staffing increased while investment decreased?"
+- "What development projects are being sacrificed?"
+
+---
+
+### 🚩 Red Flag #5: Contract Splitting
+
+**What It Looks Like:**
+- Multiple contracts just under €27,000 threshold
+- Same supplier, similar dates, similar services
+- High percentage of direct awards
+
+**Why It's a Problem:**
+- Avoids competitive bidding
+- Often leads to higher prices
+- May indicate favoritism or kickbacks
+
+> **€27,000** = threshold for direct purchase (no tender required)
+
+**Pattern Example:**
+```
+Jan 5:  IT Services  - Supplier A - €26,500
+Jan 12: IT Consulting - Supplier A - €26,800
+Jan 20: IT Support   - Supplier A - €25,900
+─────────────────────────────────────────────
+Total: €79,200 → Should have been ONE tender!
+```
+
+**Questions to Ask:**
+- "Why were these contracts not bundled?"
+- "How was this supplier selected each time?"
+- "What is the total spent with this supplier?"
+
+---
+
+### 🚩 Red Flag #6: Emergency Procurement Abuse
+
+**What It Looks Like:**
+- High percentage of "emergency" procedures
+- Non-emergency items procured urgently
+- Same suppliers winning repeatedly
+
+**Why It's a Problem:**
+- Bypasses competitive procedures
+- Often results in higher prices
+- May indicate collusion or corruption
+
+**Questions to Ask:**
+- "What was the emergency that justified this?"
+- "Why wasn't this planned in advance?"
+- "How does this price compare to market rates?"
+
+---
+
+### 🚩 Red Flag #7: Opaque Transfers
+
+**What It Looks Like:**
+- Large amounts in "Other transfers" categories
+- Money moving between entities without clear purpose
+- Transfers to organizations with unclear mandates
+
+**Why It's a Problem:**
+- Hides true spending purposes
+- May fund activities outside normal oversight
+- Creates opportunities for misuse
+
+**Questions to Ask:**
+- "What specific activities do these transfers fund?"
+- "Who are the ultimate recipients?"
+- "What outcomes were achieved?"
+
+---
+
+## Quick Reference Table
+
+| Red Flag | Threshold | Severity | Key Question |
+|----------|-----------|----------|--------------|
+| Low execution | \<70% for investments | HIGH | Why wasn't the money spent? |
+| Frequent rectifications | ≥3 per year | MEDIUM | Who benefited from changes? |
+| Arrears | Any amount | HIGH | How will debts be paid? |
+| Personnel crowding | \>60% of budget | HIGH | What's being sacrificed? |
+| Contract splitting | \<€27k patterns | HIGH | Why weren't contracts bundled? |
+| Emergency abuse | High % emergency | HIGH | What was the real emergency? |
+| Opaque transfers | Large "other" amounts | MEDIUM | Where does money actually go? |
+
+---
+
+## Practice
+
+<Quiz
+  id="red-flags-02-q1"
+  question="A city has three IT contracts with the same supplier: €26,500 (Jan 5), €26,800 (Jan 12), €25,900 (Jan 20). What red flag does this most likely indicate?"
+  options={[
+    { id: "a", text: "Low execution rates", isCorrect: false },
+    { id: "b", text: "Contract splitting to avoid competitive bidding", isCorrect: true },
+    { id: "c", text: "Personnel crowding out investment", isCorrect: false },
+    { id: "d", text: "Frequent rectifications", isCorrect: false }
+  ]}
+  explanation="This is a classic contract splitting pattern. Three contracts just under the €27,000 direct purchase threshold (€79,200 total) should have been one tender. This avoids competitive bidding and may indicate favoritism."
+/>
+
+<Quiz
+  id="red-flags-02-q2"
+  question="Personnel costs are 72% of a town's budget, while investment is only 8%. What is the primary concern?"
+  options={[
+    { id: "a", text: "Employees are overpaid", isCorrect: false },
+    { id: "b", text: "The town has too many staff", isCorrect: false },
+    { id: "c", text: "Little money remains for development and infrastructure", isCorrect: true },
+    { id: "d", text: "The budget is too large", isCorrect: false }
+  ]}
+  explanation="When personnel costs crowd out investment (>60% threshold), there's no room for development. Infrastructure deteriorates, and the institution can only maintain status quo. The town isn't investing in its future."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** The seven major red flags are low execution, frequent rectifications, arrears, personnel crowding out investment, contract splitting, emergency procurement abuse, and opaque transfers. Each has specific patterns and thresholds. Learn to spot them, and you'll see what others miss.
+
+<MarkComplete label="Complete this lesson" />

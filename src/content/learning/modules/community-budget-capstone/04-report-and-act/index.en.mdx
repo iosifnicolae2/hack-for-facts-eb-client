@@ -1,0 +1,445 @@
+---
+title.en: "Report and Act"
+title.ro: "Raporteaza si Actioneaza"
+durationMinutes: 10
+concept: "Creating actionable reports and planning civic engagement"
+objective: "Generate a shareable analysis report and plan next steps"
+---
+
+# Report and Act
+
+## Concept Introduction
+
+You've found your entity, collected the data, and identified red flags. Now it's time to turn analysis into action. In this final lesson, you'll create a shareable report and plan concrete next steps.
+
+This is where knowledge becomes power. A well-documented analysis with clear questions is the foundation of effective civic engagement.
+
+> **Key Insight:** Data without action changes nothing. A citizen who asks informed questions can change everything.
+
+---
+
+## Interactive Element: Question Builder
+
+Based on your red flags, build the right questions to ask:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  STEP 4A: BUILD YOUR QUESTIONS                               │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Based on your findings, what questions would you ask?       │
+│                                                              │
+│  IF YOU FOUND LOW INVESTMENT EXECUTION:                      │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ "Why was only [X]% of the investment budget spent?     │  │
+│  │  Which projects were delayed or cancelled?             │  │
+│  │  What happens to the unspent money?"                   │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  IF YOU FOUND HIGH PERSONNEL COSTS:                          │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ "What is the current staffing level compared to        │  │
+│  │  5 years ago? How does the personnel/investment        │  │
+│  │  ratio compare to similar cities?"                     │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  IF YOU FOUND UNUSUAL YEAR-OVER-YEAR CHANGE:                 │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ "What caused the [X]% increase/decrease in spending    │  │
+│  │  from [year] to [year]? Was this planned or reactive?" │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  YOUR CUSTOM QUESTIONS:                                      │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ 1. ____________________________________________        │  │
+│  │ 2. ____________________________________________        │  │
+│  │ 3. ____________________________________________        │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  [x] I've formulated my questions                            │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification: QuestionBuilder
+
+```typescript
+/**
+ * QuestionBuilder Component
+ *
+ * PURPOSE: Generate contextual questions based on red flags found,
+ * allowing users to customize and save their inquiry list.
+ */
+interface QuestionBuilderProps {
+  readonly redFlagResults: RedFlagResults
+  readonly entityName: string
+  readonly onQuestionsComplete: (questions: GeneratedQuestions) => void
+}
+
+interface QuestionTemplate {
+  readonly id: string
+  readonly triggerRedFlag: string
+  readonly questionText: string
+  readonly placeholders: ReadonlyArray<{
+    key: string
+    description: string
+  }>
+}
+
+interface GeneratedQuestions {
+  readonly suggested: ReadonlyArray<{
+    readonly template: string
+    readonly filled: string
+    readonly isSelected: boolean
+  }>
+  readonly custom: ReadonlyArray<string>
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - suggestedQuestions: QuestionTemplate[] (filtered by red flags)
+ * - selectedQuestions: Set<string>
+ * - customQuestions: string[]
+ * - isComplete: boolean
+ *
+ * STATE TRANSITIONS:
+ * - Component loads -> filter templates by detected red flags
+ * - User toggles question -> add/remove from selected set
+ * - User types custom -> add to custom questions array
+ * - At least 1 question selected -> enable completion
+ *
+ * USER INTERACTIONS:
+ * - Checkbox to select/deselect suggested questions
+ * - Text input for custom questions
+ * - "Add another" button for additional custom questions
+ * - Drag to reorder questions (optional)
+ * - "Copy all" button for clipboard
+ *
+ * VISUAL STATES:
+ * - Suggested question selected: highlighted with checkmark
+ * - Custom input active: focus ring, placeholder text
+ * - Complete: all questions visible, export options shown
+ *
+ * ANIMATIONS:
+ * - Question selection: checkbox fill + subtle highlight (150ms)
+ * - New custom question: slide-down entry (200ms)
+ * - Copy confirmation: checkmark flash (300ms)
+ *
+ * ACCESSIBILITY:
+ * - role="group" for question categories
+ * - Checkboxes have aria-describedby for question text
+ * - Custom inputs have clear labels
+ * - Announce question count updates
+ */
+```
+
+---
+
+## Interactive Element: Report Builder
+
+Compile your findings into a shareable report:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  STEP 4B: YOUR ANALYSIS REPORT                               │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│  BUDGET ANALYSIS REPORT                                      │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  ENTITY: _______________________________                     │
+│  YEAR ANALYZED: _______                                      │
+│  DATE: _______________                                       │
+│  PREPARED BY: __________________________                     │
+│                                                              │
+│  ─────────────────────────────────────────────────────────── │
+│  SUMMARY                                                     │
+│  ─────────────────────────────────────────────────────────── │
+│                                                              │
+│  Total Budget: _____________ RON                             │
+│  Population: _____________                                   │
+│  Per Capita: _____________ RON                               │
+│                                                              │
+│  ─────────────────────────────────────────────────────────── │
+│  KEY FINDINGS                                                │
+│  ─────────────────────────────────────────────────────────── │
+│                                                              │
+│  Overall Execution: [ _____ ]%                               │
+│  Investment Execution: [ _____ ]%  [ OK / Borderline / RED ] │
+│  Personnel Share: [ _____ ]%  [ OK / Borderline / RED ]      │
+│                                                              │
+│  Top 3 Spending Areas:                                       │
+│  1. _________________________ ( ____ %)                      │
+│  2. _________________________ ( ____ %)                      │
+│  3. _________________________ ( ____ %)                      │
+│                                                              │
+│  ─────────────────────────────────────────────────────────── │
+│  RED FLAGS IDENTIFIED                                        │
+│  ─────────────────────────────────────────────────────────── │
+│                                                              │
+│  [FLAG] ________________________________________________     │
+│  [FLAG] ________________________________________________     │
+│  [!] ________________________________________________        │
+│                                                              │
+│  ─────────────────────────────────────────────────────────── │
+│  QUESTIONS FOR LOCAL GOVERNMENT                              │
+│  ─────────────────────────────────────────────────────────── │
+│                                                              │
+│  1. ________________________________________________?        │
+│  2. ________________________________________________?        │
+│  3. ________________________________________________?        │
+│                                                              │
+│  ─────────────────────────────────────────────────────────── │
+│  RECOMMENDED ACTIONS                                         │
+│  ─────────────────────────────────────────────────────────── │
+│                                                              │
+│  [ ] Submit FOIA request for: _____________________________  │
+│  [ ] Attend local council meeting on: _____________________  │
+│  [ ] Set up Transparenta.eu alert for: ___________________   │
+│  [ ] Share findings with: ________________________________   │
+│                                                              │
+│  ─────────────────────────────────────────────────────────── │
+│                                                              │
+│  [ Download Report PDF ]  [ Share Link ]  [ Print ]          │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification: ReportBuilder
+
+```typescript
+/**
+ * ReportBuilder Component
+ *
+ * PURPOSE: Compile all collected data, red flags, and questions
+ * into a formatted, shareable report document.
+ */
+interface ReportBuilderProps {
+  readonly entityData: SelectedEntity
+  readonly budgetData: CollectedBudgetData
+  readonly redFlagResults: RedFlagResults
+  readonly questions: GeneratedQuestions
+  readonly onReportGenerated: (report: GeneratedReport) => void
+}
+
+interface GeneratedReport {
+  readonly id: string
+  readonly createdAt: Date
+  readonly entity: SelectedEntity
+  readonly summary: {
+    readonly totalBudget: number
+    readonly population: number
+    readonly perCapita: number
+  }
+  readonly findings: {
+    readonly overallExecution: number
+    readonly investmentExecution: number
+    readonly personnelShare: number
+    readonly topFunctions: ReadonlyArray<{ name: string; percentage: number }>
+  }
+  readonly redFlags: ReadonlyArray<{
+    readonly severity: 'warning' | 'red_flag'
+    readonly description: string
+  }>
+  readonly questions: ReadonlyArray<string>
+  readonly actions: ReadonlyArray<{
+    readonly type: 'foia' | 'meeting' | 'alert' | 'share'
+    readonly description: string
+    readonly isChecked: boolean
+  }>
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - reportData: GeneratedReport (compiled from props)
+ * - editMode: boolean
+ * - selectedActions: Set<string>
+ * - exportFormat: 'pdf' | 'html' | 'link'
+ *
+ * STATE TRANSITIONS:
+ * - Component mounts -> compile report from all props
+ * - User edits field -> update reportData
+ * - User checks action -> add to selectedActions
+ * - User clicks export -> generate in selected format
+ *
+ * USER INTERACTIONS:
+ * - Click field to edit (inline editing)
+ * - Checkbox for each recommended action
+ * - Export buttons: PDF, Share Link, Print
+ * - "Edit" toggle for review mode vs. edit mode
+ *
+ * VISUAL STATES:
+ * - View mode: clean, print-ready layout
+ * - Edit mode: fields have edit indicators
+ * - Exporting: loading spinner on button
+ * - Exported: success confirmation with copy-to-clipboard
+ *
+ * ANIMATIONS:
+ * - Field edit: border fade-in (150ms)
+ * - Export success: checkmark animation (300ms)
+ * - Share link copied: tooltip slide-up (200ms)
+ *
+ * ACCESSIBILITY:
+ * - role="document" on report container
+ * - Sections have proper heading hierarchy
+ * - Export buttons have clear aria-labels
+ * - Print styles for accessibility
+ */
+```
+
+**Data Integration:**
+- Report storage: `POST /api/reports` (optional, for persistence)
+- Share link generation: Creates unique shareable URL
+
+---
+
+## Your Action Plan
+
+Now that you have your report, what will you do with it?
+
+### Immediate Actions
+
+| Action | How | When |
+|--------|-----|------|
+| **Set up alerts** | Use Transparenta.eu to monitor this entity | Today |
+| **Share with neighbors** | Send your report to civic-minded friends | This week |
+| **Bookmark the entity** | Easy access for future checks | Today |
+
+### Medium-term Actions
+
+| Action | How | When |
+|--------|-----|------|
+| **Submit FOIA request** | Use the questions from your analysis | Within 30 days |
+| **Attend council meeting** | Find the next public meeting date | Next session |
+| **Connect with local groups** | Find civic organizations in your area | This month |
+
+### Long-term Engagement
+
+| Action | How | When |
+|--------|-----|------|
+| **Track year-over-year** | Compare next year's data to this baseline | Annually |
+| **Share your learning** | Teach others to do the same analysis | Ongoing |
+| **Vote informed** | Use budget knowledge in local elections | Election time |
+
+---
+
+## Congratulations!
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  CONGRATULATIONS!                                            │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  You've completed the Citizen's Guide to Public Budgets!     │
+│                                                              │
+│  You now have the knowledge to:                              │
+│  [x] Understand where public money comes from and goes       │
+│  [x] Read and interpret budget documents                     │
+│  [x] Navigate transparency tools effectively                 │
+│  [x] Identify red flags and ask informed questions           │
+│  [x] Exercise your rights as a citizen                       │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  "Never doubt that a small group of thoughtful, committed    │
+│   citizens can change the world; indeed, it's the only       │
+│   thing that ever has."                                      │
+│                        — Margaret Mead                       │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification: CompletionCertificate
+
+```typescript
+/**
+ * CompletionCertificate Component
+ *
+ * PURPOSE: Generate a personalized certificate of completion
+ * that users can download and share.
+ */
+interface CompletionCertificateProps {
+  readonly userName: string
+  readonly completionDate: Date
+  readonly pathName: string
+  readonly entityAnalyzed?: string
+  readonly onDownload: (format: 'pdf' | 'png') => void
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - isGenerating: boolean
+ * - downloadFormat: 'pdf' | 'png'
+ * - userName: string (editable before download)
+ *
+ * VISUAL STATES:
+ * - Preview: certificate design visible
+ * - Editing name: input field active
+ * - Generating: spinner overlay
+ * - Ready: download buttons enabled
+ *
+ * ANIMATIONS:
+ * - Certificate reveal: fade-in + scale (500ms)
+ * - Download complete: confetti burst (600ms)
+ * - Share buttons: stagger animation (100ms each)
+ *
+ * ACCESSIBILITY:
+ * - Certificate content readable by screen readers
+ * - Download buttons clearly labeled
+ * - High contrast for printability
+ */
+```
+
+---
+
+## Practice
+
+<Quiz
+  id="capstone-04-q1"
+  question="What is the most effective way to use your budget analysis findings?"
+  options={[
+    { id: "a", text: "Post complaints on social media without specifics", isCorrect: false },
+    { id: "b", text: "Assume officials know the issues and will fix them", isCorrect: false },
+    { id: "c", text: "Ask specific questions at council meetings or through FOIA requests", isCorrect: true },
+    { id: "d", text: "Wait until election time to mention budget issues", isCorrect: false }
+  ]}
+  explanation="Specific, data-backed questions are powerful. They show you've done your homework and make it harder for officials to deflect. General complaints are easy to dismiss; specific questions demand specific answers."
+/>
+
+<Quiz
+  id="capstone-04-q2"
+  question="After completing your analysis, what ongoing action is most valuable?"
+  options={[
+    { id: "a", text: "Delete your notes and move on", isCorrect: false },
+    { id: "b", text: "Set up alerts to monitor the entity and track changes over time", isCorrect: true },
+    { id: "c", text: "Assume things will stay the same next year", isCorrect: false },
+    { id: "d", text: "Only check again in 5 years", isCorrect: false }
+  ]}
+  explanation="Continuous monitoring is key. Setting up alerts and tracking year-over-year changes helps you spot trends, verify whether issues are addressed, and build a stronger case for accountability over time."
+/>
+
+---
+
+## Key Takeaway
+
+> **You did it!** You've completed a full budget analysis of your local government. You have data, red flags, questions, and an action plan. The most important step now is the simplest: **take one action today.** Set up an alert. Share your report. Attend a meeting. Budget oversight starts with one informed citizen — and that's now you.
+
+---
+
+## Capstone Completion Checklist
+
+Before finishing, confirm you've completed all steps:
+
+- [ ] Found and selected my local government
+- [ ] Collected all key budget data
+- [ ] Calculated execution rates (overall and by type)
+- [ ] Checked for all 5 red flags
+- [ ] Compared with at least 1 similar neighbor
+- [ ] Formulated at least 3 questions
+- [ ] Created my analysis report
+- [ ] Identified at least 1 action I will take
+
+---
+
+<MarkComplete label="Complete the Capstone" />

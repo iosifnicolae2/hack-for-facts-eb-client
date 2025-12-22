@@ -1,0 +1,250 @@
+---
+title.en: "Two Lenses on Spending"
+title.ro: "Două perspective asupra cheltuielilor"
+durationMinutes: 6
+concept: "Functional vs Economic classification systems"
+objective: "Distinguish between functional and economic classification"
+---
+
+# Two Lenses on Spending
+
+## Concept Introduction
+
+When you look at government spending, you can ask two very different questions:
+
+1. **"What is the money FOR?"** → Education, Health, Defense, etc.
+2. **"What TYPE of spending is it?"** → Salaries, Equipment, Buildings, etc.
+
+These two questions give you two different views of the same money. Romania's budget uses both systems, and understanding the difference unlocks powerful insights.
+
+> **Key Insight:** The same 10 million RON can be "Education spending" (functional) AND "Salary payments" (economic) at the same time. They're not competing categories — they're different lenses on the same reality.
+
+---
+
+## Interactive Element: Classification Toggle
+
+Explore how the same money looks different through each lens.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  👁️ TWO WAYS TO SEE THE SAME MONEY                          │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  [ FUNCTIONAL ]  [ ECONOMIC ]                                │
+│   (What for?)     (What type?)                               │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  FUNCTIONAL VIEW:                                            │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │                                                        │  │
+│  │  ┌─────────────────────────────┐ ┌──────────────────┐  │  │
+│  │  │                             │ │                  │  │  │
+│  │  │    SOCIAL PROTECTION        │ │     HEALTH       │  │  │
+│  │  │         35%                 │ │       18%        │  │  │
+│  │  │    (Pensions, welfare)      │ │   (Hospitals)    │  │  │
+│  │  │                             │ │                  │  │  │
+│  │  └─────────────────────────────┘ └──────────────────┘  │  │
+│  │  ┌──────────────────┐ ┌──────────────┐ ┌───────────┐   │  │
+│  │  │    EDUCATION     │ │   ECONOMIC   │ │  PUBLIC   │   │  │
+│  │  │       12%        │ │   AFFAIRS    │ │  ORDER    │   │  │
+│  │  │   (Schools)      │ │     10%      │ │    8%     │   │  │
+│  │  └──────────────────┘ └──────────────┘ └───────────┘   │  │
+│  │                                                        │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  Click any category to see its economic breakdown →          │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification
+
+```typescript
+/**
+ * ClassificationExplorer Component
+ *
+ * PURPOSE: Toggle between functional and economic views of the same budget,
+ * showing how the same money appears differently through each lens.
+ */
+interface ClassificationExplorerProps {
+  readonly budgetData: BudgetData
+  readonly defaultView: 'functional' | 'economic'
+  readonly onCategoryClick?: (category: CategoryDetail) => void
+  readonly showCrossReference?: boolean
+}
+
+interface BudgetData {
+  readonly year: number
+  readonly totalAmount: number
+  readonly functional: readonly FunctionalCategory[]
+  readonly economic: readonly EconomicCategory[]
+  readonly crossReference: readonly CrossReferenceItem[]
+}
+
+interface FunctionalCategory {
+  readonly code: string // e.g., "65" for Education
+  readonly name: string
+  readonly percentage: number
+  readonly amount: number
+  readonly description: string
+  readonly subcategories?: readonly FunctionalCategory[]
+}
+
+interface EconomicCategory {
+  readonly code: string // e.g., "10" for Personnel
+  readonly name: string
+  readonly percentage: number
+  readonly amount: number
+  readonly description: string
+}
+
+interface CrossReferenceItem {
+  readonly functionalCode: string
+  readonly economicCode: string
+  readonly amount: number
+  readonly percentage: number
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - currentView: 'functional' | 'economic'
+ * - selectedCategory: string | null
+ * - expandedCategory: string | null (for drill-down)
+ * - hoveredCategory: string | null
+ * - showCrossReference: boolean
+ *
+ * STATE TRANSITIONS:
+ * - Tab click → animate transition between views
+ * - Category click → show drill-down or cross-reference
+ * - Hover → highlight related categories in other view
+ *
+ * USER INTERACTIONS:
+ * - Tab toggle: switch between Functional/Economic views
+ * - Treemap click: drill into subcategories or show details
+ * - Legend hover: highlight corresponding treemap section
+ * - Keyboard: Tab to navigate, Enter to select, Escape to go back
+ *
+ * VISUAL STATES:
+ * - Default: treemap with color-coded categories
+ * - Hover: category slightly elevates, tooltip appears
+ * - Selected: category expands, shows breakdown
+ * - Cross-reference: arrows connect related functional/economic items
+ *
+ * ANIMATIONS:
+ * - View switch: morphing transition (400ms)
+ * - Treemap boxes: resize smoothly on data change
+ * - Drill-down: zoom effect into subcategories
+ * - Cross-reference arrows: draw-in animation (300ms)
+ *
+ * ACCESSIBILITY:
+ * - Treemap has role="img" with aria-label describing overview
+ * - Each box is focusable with descriptive aria-label
+ * - Tab navigation follows visual order
+ * - Color is supplemented with patterns or labels
+ */
+```
+
+**Expected Behavior:**
+
+- Toggle seamlessly between Functional and Economic views
+- Same total amount, different breakdown
+- Click any box to see cross-reference (e.g., Education spending split by Personnel/Goods/Investments)
+- Smooth animations when switching views
+
+---
+
+## Core Explanation: The Two Classifications
+
+### Functional Classification ("What for?")
+
+Answers: **What purpose does this money serve?**
+
+| Code | Category | Question it Answers |
+|------|----------|---------------------|
+| 65 | Education | How much goes to schools? |
+| 66 | Health | How much goes to hospitals? |
+| 68 | Social Protection | How much goes to pensions? |
+| 60 | Defense | How much goes to military? |
+
+This is what most citizens think of when they think about "the budget." It tells you which sectors receive funding.
+
+### Economic Classification ("What type?")
+
+Answers: **What is the nature of the expense?**
+
+| Code | Category | What it Includes |
+|------|----------|------------------|
+| 10 | Personnel | Salaries, bonuses, social contributions |
+| 20 | Goods & Services | Utilities, supplies, maintenance, contracts |
+| 50-59 | Transfers | Subsidies, grants, pensions, welfare |
+| 71 | Capital Investments | Buildings, roads, equipment, vehicles |
+| 80 | Debt Service | Interest payments, loan repayments |
+
+This reveals how money is spent regardless of sector. It's crucial for understanding the structure of government spending.
+
+### Why Both Matter
+
+Consider this question: **"How much does Romania spend on teacher salaries?"**
+
+To answer, you need BOTH classifications:
+- **Functional:** Filter to Education (code 65)
+- **Economic:** Filter to Personnel (code 10)
+- **Result:** Education + Personnel = Teacher salaries
+
+> **Pro Tip:** When investigating spending, always ask both questions. "Health spending increased" could mean more nurses (personnel) OR more medical equipment (investments). The economic breakdown tells you which.
+
+---
+
+## Economic Classification Deep Dive
+
+Here's Romania's spending by economic type:
+
+| Code | Type | Share | Key Insight |
+|------|------|-------|-------------|
+| 10 | Personnel | ~38% | Salaries must be paid — always high execution |
+| 50-59 | Transfers | ~30% | Pensions, subsidies — relatively stable |
+| 20 | Goods & Services | ~18% | Contracts, utilities — variable |
+| 71 | Capital Investments | ~8% | Buildings, roads — **lowest execution rate** |
+| 80 | Debt Service | ~6% | Interest — must be paid |
+
+> **🚨 Critical Pattern:** Code 71 (investments) is often budgeted but rarely fully spent. This is where infrastructure projects get delayed. Money is allocated for new schools and hospitals, but procurement issues, capacity constraints, and political factors mean it often doesn't get spent.
+
+---
+
+## Practice
+
+<Quiz
+  id="expenditure-classification-code71"
+  question="Economic code 71 (Active nefinanciare) refers to:"
+  options={[
+    { id: "a", text: "Personnel costs (salaries and benefits)", isCorrect: false },
+    { id: "b", text: "Capital investments (buildings, roads, equipment)", isCorrect: true },
+    { id: "c", text: "Interest payments on government debt", isCorrect: false },
+    { id: "d", text: "Transfers to citizens (pensions, subsidies)", isCorrect: false }
+  ]}
+  explanation="Code 71 'Active nefinanciare' (non-financial assets) covers capital investments: buildings, roads, IT systems, vehicles, and equipment. This is the category with typically the LOWEST execution rates, meaning infrastructure money is often budgeted but not spent."
+/>
+
+<Quiz
+  id="expenditure-classification-question"
+  question="If you want to know how much Romania spends on hospital buildings, which classifications do you need?"
+  options={[
+    { id: "a", text: "Functional only (Health)", isCorrect: false },
+    { id: "b", text: "Economic only (Capital investments)", isCorrect: false },
+    { id: "c", text: "Both Functional (Health) AND Economic (Capital investments)", isCorrect: true },
+    { id: "d", text: "Neither — this data isn't available", isCorrect: false }
+  ]}
+  explanation="To find hospital building spending, you need both lenses: Functional classification (Health, code 66) tells you it's for the health sector, and Economic classification (Capital investments, code 71) tells you it's for infrastructure. Cross-referencing both gives you the specific answer."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** Functional = "What for?" (Education, Health, Defense). Economic = "What type?" (Salaries, Buildings, Transfers). Use both lenses together to get the full picture. Pay special attention to Code 71 — that's where infrastructure promises often go unfulfilled.
+
+---
+
+<MarkComplete label="Continue to Execution Rates" />

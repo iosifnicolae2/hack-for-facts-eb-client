@@ -1,0 +1,267 @@
+---
+title.en: "Tracking Budget Documents"
+title.ro: "Urmărirea documentelor bugetare"
+durationMinutes: 5
+concept: "Key budget documents and where to find them"
+objective: "Know which documents to look for at each phase and where to find them"
+---
+
+# Tracking Budget Documents
+
+## Concept Introduction
+
+Knowing WHAT to look for is just as important as knowing WHEN to look. Each phase of the budget cycle produces specific documents that tell different parts of the story. This lesson gives you a checklist of key documents and where to find them.
+
+Think of it like tracking a court case: you need the original filing, the trial proceedings, and the verdict. For budgets, you need the proposal, the debates, and the execution reports.
+
+> **Key Insight:** Budget transparency means documents are public — but they're scattered across multiple government websites. Knowing where to look saves hours of searching.
+
+---
+
+## Key Documents by Phase
+
+### Document Checklist
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  📄 IMPORTANT BUDGET DOCUMENTS                               │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  DURING APPROVAL (Oct-Dec):                                  │
+│  ☐ Proiectul legii bugetului (Budget Law Draft)              │
+│  ☐ Anexele bugetare (Budget Annexes)                         │
+│  ☐ Raportul de fundamentare (Justification Report)           │
+│                                                              │
+│  DURING EXECUTION (Quarterly):                               │
+│  ☐ Rapoarte de execuție bugetară (Execution Reports)         │
+│  ☐ Situația arieratelor (Arrears Reports)                    │
+│                                                              │
+│  AFTER AUDIT (Following Year):                               │
+│  ☐ Rapoartele Curții de Conturi (Court of Accounts Reports)  │
+│                                                              │
+│  WHERE TO FIND THEM:                                         │
+│  • mfinante.gov.ro — Ministry of Finance                     │
+│  • cdep.ro / senat.ro — Parliament                           │
+│  • curteadeconturi.ro — Court of Accounts                    │
+│  • Transparenta.eu — Searchable execution data               │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Document Guide
+
+### 1. During Approval (October-December)
+
+| Document | What It Contains | Where to Find |
+|----------|------------------|---------------|
+| **Budget Law Draft** | Complete proposed budget for next year | cdep.ro, senat.ro |
+| **Budget Annexes** | Detailed allocations by ministry/institution | mfinante.gov.ro |
+| **Justification Report** | Why amounts were chosen, economic projections | mfinante.gov.ro |
+
+**Why these matter:** These documents show what the government PROMISES to spend. Compare them later to what actually happens.
+
+### 2. During Execution (Quarterly)
+
+| Document | What It Contains | Where to Find |
+|----------|------------------|---------------|
+| **Execution Reports** | Actual spending vs. planned | mfinante.gov.ro, Forexebug |
+| **Arrears Reports** | Unpaid debts by government entities | mfinante.gov.ro |
+| **Rectification Laws** | Mid-year budget changes | cdep.ro |
+
+**Why these matter:** These show reality vs. promises. Low execution rates mean money wasn't spent as planned.
+
+### 3. After Audit (Following Year)
+
+| Document | What It Contains | Where to Find |
+|----------|------------------|---------------|
+| **Court of Accounts Reports** | Independent audit findings | curteadeconturi.ro |
+| **Irregularity Reports** | Specific problems found | curteadeconturi.ro |
+| **Follow-up Reports** | Whether past problems were fixed | curteadeconturi.ro |
+
+**Why these matter:** Independent verification of whether money was spent legally and effectively.
+
+---
+
+## Interactive Element: Document Finder
+
+Set up your document tracking workflow.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🎯 HANDS-ON: Set Up Your Monitoring                         │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Step 1: Open the Alerts feature                             │
+│          [ Open Alerts → ]                                   │
+│          URL: /alerts                                        │
+│                                                              │
+│  Step 2: Create an alert for your local government           │
+│          • Search for your city/commune                      │
+│          • Set alert for "new data available"                │
+│                                                              │
+│  Step 3: Set a calendar reminder for budget season           │
+│          • October 1: Check if draft is published            │
+│          • November 15: Review Parliament discussions        │
+│          • December 20: Final budget approved                │
+│                                                              │
+│  Step 4: Bookmark key document sources                       │
+│          • Ministry of Finance                               │
+│          • Parliament (cdep.ro)                              │
+│          • Court of Accounts                                 │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification
+
+```typescript
+/**
+ * GuidedActivity Component
+ *
+ * PURPOSE: Guide users through a multi-step platform walkthrough
+ * with validation and progress tracking
+ */
+interface GuidedActivityProps {
+  readonly title: string
+  readonly description?: string
+  readonly steps: readonly GuidedStep[]
+  readonly onComplete?: () => void
+  readonly allowSkip?: boolean
+}
+
+interface GuidedStep {
+  readonly id: string
+  readonly instruction: string
+  readonly hint?: string
+  readonly deepLink?: string  // Platform URL to open
+  readonly externalLink?: string  // External URL (new tab)
+  readonly validation: StepValidation
+}
+
+type StepValidation =
+  | { type: 'manual' }  // User clicks "Done"
+  | { type: 'input'; question: string; expectedAnswer: string | string[] }
+  | { type: 'confirm'; question: string }
+
+/**
+ * STATE:
+ * - currentStep: number (0-indexed)
+ * - completedSteps: Set<string>
+ * - stepInputs: Record<string, string>
+ * - isComplete: boolean
+ *
+ * INTERACTIONS:
+ * - "Open Link" button: opens deep link (same tab) or external link (new tab)
+ * - "Mark Done" button: advances to next step
+ * - Input submission: validates answer before proceeding
+ * - "Skip" button: if allowSkip, moves to next without completion
+ * - Back button: return to previous step
+ * - Keyboard: Enter to advance, Tab to navigate
+ *
+ * VISUAL STATES:
+ * - Pending step: dimmed, numbered badge
+ * - Current step: full visibility, highlighted border
+ * - Completed step: green checkmark, collapsed
+ * - In progress: loading spinner on button
+ * - All complete: celebration state, confetti optional
+ *
+ * ANIMATIONS:
+ * - Step transition: slide-in from right (300ms)
+ * - Completion: checkmark scale + fade (200ms)
+ * - Error: shake animation (200ms)
+ * - Progress bar: smooth width transition (300ms)
+ * - Final: subtle celebration animation
+ *
+ * ACCESSIBILITY:
+ * - role="group" with aria-label for activity
+ * - Steps announced as "Step X of Y"
+ * - aria-current="step" on active step
+ * - Completion status announced via aria-live
+ * - External links announced with "opens in new tab"
+ */
+```
+
+**Expected Behavior:**
+- Guides users through setting up budget monitoring
+- Each step can have a link to platform features or external sites
+- Progress saved so users can return later
+- Validation ensures users complete each step
+
+---
+
+## Quick Reference: Key Websites
+
+| Site | URL | What You'll Find |
+|------|-----|------------------|
+| **Ministry of Finance** | mfinante.gov.ro | Budget drafts, execution reports, fiscal data |
+| **Chamber of Deputies** | cdep.ro | Budget law debates, voting records, amendments |
+| **Senate** | senat.ro | Budget law debates, committee discussions |
+| **Court of Accounts** | curteadeconturi.ro | Audit reports, irregularity findings |
+| **Forexebug** | forexebug.mfinante.ro | Real-time execution data for public institutions |
+| **Transparenta.eu** | transparenta.eu | Searchable, visualized budget data |
+
+---
+
+## Calendar: Your Budget Year
+
+Set these reminders to stay informed:
+
+| Date | Action | Why |
+|------|--------|-----|
+| **October 1** | Check for budget draft | Budget season begins |
+| **October 15** | Verify submission to Parliament | Legal deadline |
+| **November 15** | Review Parliament debates | Key discussion period |
+| **December 20** | Final budget approval | See what was approved |
+| **Quarterly** | Check execution reports | Monitor actual spending |
+| **Next June** | Read Court of Accounts reports | See audit findings |
+
+---
+
+## Practice
+
+<Quiz
+  id="budget-cycle-03-q1"
+  question="When are budget execution reports published?"
+  options={[
+    { id: "a", text: "Only at year end", isCorrect: false },
+    { id: "b", text: "Quarterly", isCorrect: true },
+    { id: "c", text: "Monthly", isCorrect: false },
+    { id: "d", text: "Only during audits", isCorrect: false }
+  ]}
+  explanation="Execution reports are published quarterly, allowing citizens to track how actual spending compares to the approved budget throughout the year. This regular reporting helps identify problems early, not just at year-end."
+/>
+
+<Quiz
+  id="budget-cycle-03-q2"
+  question="Where would you find the Court of Accounts audit reports?"
+  options={[
+    { id: "a", text: "mfinante.gov.ro (Ministry of Finance)", isCorrect: false },
+    { id: "b", text: "cdep.ro (Chamber of Deputies)", isCorrect: false },
+    { id: "c", text: "curteadeconturi.ro (Court of Accounts)", isCorrect: true },
+    { id: "d", text: "gov.ro (Government portal)", isCorrect: false }
+  ]}
+  explanation="The Court of Accounts (Curtea de Conturi) publishes its own audit reports on curteadeconturi.ro. These reports are independent assessments of how public money was spent and whether any irregularities were found."
+/>
+
+---
+
+## Key Takeaway
+
+> **Remember:** Budget documents are public, but scattered across multiple websites. Bookmark key sources, set calendar reminders for budget season (October-December), and use Transparenta.eu alerts to get notified when new data is available for the institutions you care about.
+
+---
+
+## Take Action
+
+Before completing this module, consider setting up your monitoring:
+
+- [ ] **Create an alert** on Transparenta.eu for your local government
+- [ ] **Bookmark** mfinante.gov.ro and curteadeconturi.ro
+- [ ] **Set a calendar reminder** for October 1 (budget season begins)
+- [ ] **Find your MP's contact** for when you want to engage during approval phase
+
+---
+
+<MarkComplete label="Complete Module: Budget Cycle" />

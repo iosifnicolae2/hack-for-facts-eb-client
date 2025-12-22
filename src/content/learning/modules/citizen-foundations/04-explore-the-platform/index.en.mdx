@@ -1,0 +1,188 @@
+---
+title.en: "Explore the Platform"
+title.ro: "Exploreaza platforma"
+durationMinutes: 5
+concept: "Hands-on Budget Explorer navigation"
+objective: "Navigate the Budget Explorer and find spending data for any category"
+---
+
+# Explore the Platform
+
+## Concept Introduction
+
+Knowledge without action is incomplete. Now that you understand what public budgets are, your three roles as a citizen, and how to spot the gap between promises and reality, it's time to put this knowledge into practice.
+
+Transparenta.eu's Budget Explorer is your tool for investigating public spending. In this lesson, you'll take a guided tour and complete a hands-on task.
+
+> **Key Insight:** The Budget Explorer transforms abstract budget numbers into interactive visualizations you can explore, filter, and understand.
+
+---
+
+## Interactive Element: Guided Platform Tour
+
+```
++--------------------------------------------------------------+
+|  YOUR FIRST EXPLORATION                                       |
++--------------------------------------------------------------+
+|                                                              |
+|  Follow these 4 steps to explore public spending:            |
+|                                                              |
+|  Step 1: Click the button below to open Budget Explorer      |
+|          [ Open Budget Explorer -> ]                          |
+|          Status: [ ] Opened                                  |
+|                                                              |
+|  Step 2: Look at the treemap - each box represents a         |
+|          spending category. Bigger box = more money.         |
+|          Status: [ ] Understood                              |
+|                                                              |
+|  Step 3: Click on "Social Protection" (usually the biggest)  |
+|          See what's inside: pensions, welfare, etc.          |
+|          Status: [ ] Explored                                |
+|                                                              |
+|  Step 4: Try switching to "Per Capita" view                  |
+|          Now you see spending per person, not totals.        |
+|          Status: [ ] Switched                                |
+|                                                              |
+|  Progress: [====              ] 0/4 steps completed          |
+|                                                              |
++--------------------------------------------------------------+
+```
+
+### Component Specification
+
+```typescript
+/**
+ * GuidedPlatformTour Component
+ *
+ * PURPOSE: Walk users through their first Budget Explorer experience
+ * with validation at each step
+ */
+interface GuidedPlatformTourProps {
+  readonly steps: readonly TourStep[]
+  readonly budgetExplorerUrl: string
+  readonly onComplete: () => void
+}
+
+interface TourStep {
+  readonly id: string
+  readonly instruction: string
+  readonly hint?: string
+  readonly validation: 'manual' | 'auto'
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - currentStep: number (0-indexed)
+ * - completedSteps: Set<string>
+ * - isExplorerOpen: boolean
+ *
+ * STATE TRANSITIONS:
+ * - User clicks "Open Budget Explorer" -> opens new tab, marks step 1 complete
+ * - User clicks "I did this" for each step -> advances to next
+ * - All steps complete -> triggers onComplete, shows celebration
+ *
+ * USER INTERACTIONS:
+ * - "Open Budget Explorer" button: opens /budget-explorer in new tab
+ * - "Mark as Done" checkbox/button for each step
+ * - "Skip this step" link (advances without completion badge)
+ *
+ * VISUAL STATES:
+ * - Pending step: gray, numbered
+ * - Current step: highlighted border, blue accent
+ * - Completed step: green checkmark, collapsed
+ * - All complete: celebration animation (confetti/checkmark)
+ *
+ * ANIMATIONS:
+ * - Step transition: slide + fade (300ms)
+ * - Completion: scale up + checkmark draw (400ms)
+ * - Progress bar: smooth fill on step completion
+ *
+ * ACCESSIBILITY:
+ * - role="group" with aria-label="Guided tour"
+ * - Each step is a list item
+ * - Current step has aria-current="step"
+ * - Completion announced via aria-live="polite"
+ */
+```
+
+**Expected Behavior:**
+- Opens Budget Explorer in new tab when user clicks the button
+- Each step has a "Mark as Done" action
+- Progress bar fills as steps complete
+- Celebration animation on full completion
+
+---
+
+## Core Explanation
+
+### What You'll Find in Budget Explorer
+
+The Budget Explorer presents budget data in several views:
+
+| View | What It Shows | Best For |
+|------|---------------|----------|
+| **Treemap** | Boxes sized by spending amount | Seeing relative sizes at a glance |
+| **Bar Chart** | Horizontal bars for comparison | Comparing specific categories |
+| **Time Series** | Spending over years | Tracking trends and changes |
+| **Per Capita** | Spending divided by population | Fair comparisons across entities |
+
+### Quick Navigation Tips
+
+1. **Drill Down** - Click any category to see its subcategories
+2. **Change Year** - Use the year selector to compare different periods
+3. **Switch Entity** - View national, local, or specific institution budgets
+4. **Export Data** - Download the data for your own analysis
+
+---
+
+## Practice: Find the Smallest Category
+
+Now test your navigation skills with a hands-on challenge:
+
+```
++--------------------------------------------------------------+
+|  CHALLENGE: Find the Smallest Spending Category              |
++--------------------------------------------------------------+
+|                                                              |
+|  Using the Budget Explorer, find which main category gets    |
+|  the LEAST amount of money in the national budget.           |
+|                                                              |
+|  Your answer: [ _________________ ]                          |
+|                                                              |
+|  Hint: Look at the treemap - the smallest boxes are the      |
+|  categories with the least spending.                         |
+|                                                              |
++--------------------------------------------------------------+
+```
+
+<Quiz
+  id="platform-exploration-quiz"
+  question="Approximately what percentage of Romania's GDP flows through public budgets?"
+  options={[
+    { id: "a", text: "About 20%", isCorrect: false },
+    { id: "b", text: "About 35%", isCorrect: false },
+    { id: "c", text: "About 43%", isCorrect: true },
+    { id: "d", text: "About 60%", isCorrect: false }
+  ]}
+  explanation="Approximately 43% of Romania's GDP flows through public budgets each year. This includes the state budget, local budgets, social insurance budgets, and special funds. Understanding this scale helps you appreciate why budget oversight matters."
+/>
+
+---
+
+## Key Takeaway
+
+> You now have the tools to explore public spending yourself. The Budget Explorer transforms complex budget data into visual, interactive formats you can navigate. Use it to verify claims, track trends, and exercise your watchdog role.
+
+---
+
+## Take Action Before Moving On
+
+Before continuing to the next module, choose ONE action to reinforce what you learned:
+
+- [ ] **Spend 5 minutes** in Budget Explorer - Find your city's or county's total spending
+- [ ] **Tell someone** what you learned - "Did you know 43% of Romania's GDP goes through public budgets?"
+- [ ] **Bookmark Transparenta.eu** - You'll use it throughout this learning path
+
+---
+
+<MarkComplete label="Complete Module 1" />

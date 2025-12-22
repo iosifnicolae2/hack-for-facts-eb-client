@@ -1,0 +1,367 @@
+---
+title.en: "The Execution Gap"
+title.ro: "Decalajul execuției"
+durationMinutes: 6
+concept: "Execution rates and what they reveal about priorities"
+objective: "Understand what execution rate means and why it matters"
+---
+
+# The Execution Gap
+
+## Concept Introduction
+
+Governments love to announce big budgets: "We're allocating 10 billion for education!" But here's the question they hope you don't ask: **How much of that money was actually spent?**
+
+The gap between planned budget and actual spending is measured by the **execution rate**. This simple metric reveals more about real priorities than any press release ever could.
+
+> **Key Insight:** Always check execution rates, not just allocations. A ministry can claim a "record budget" while actually spending less than the year before. The execution rate tells the truth.
+
+---
+
+## Interactive Element: Execution Rate Comparison
+
+See how different types of spending execute very differently.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  📊 EXECUTION RATES BY ECONOMIC TYPE (2023)                  │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Execution Rate = (Actual Spent ÷ Planned Budget) × 100%     │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  Personnel (Code 10)                                         │
+│  ████████████████████████████████████████████████  98%  🟢   │
+│  Almost always fully spent — salaries must be paid           │
+│                                                              │
+│  Goods & Services (Code 20)                                  │
+│  ██████████████████████████████████████████████░░  92%  🟢   │
+│  Usually well executed                                       │
+│                                                              │
+│  Transfers (Code 50-59)                                      │
+│  ████████████████████████████████████████████░░░░  88%  🟡   │
+│  Some delays in grant disbursements                          │
+│                                                              │
+│  INVESTMENTS (Code 71)                                       │
+│  ████████████████████████████░░░░░░░░░░░░░░░░░░░░  58%  🔴   │
+│  ⚠️ Money for development is often NOT spent!                │
+│                                                              │
+│  ─────────────────────────────────────────────────────────── │
+│                                                              │
+│  [ Select a category for details ]                           │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification
+
+```typescript
+/**
+ * ExecutionRateChart Component
+ *
+ * PURPOSE: Visualize execution rates across spending categories,
+ * highlighting the personnel vs investments gap pattern.
+ */
+interface ExecutionRateChartProps {
+  readonly year: number
+  readonly categories: readonly ExecutionCategory[]
+  readonly thresholds: ExecutionThresholds
+  readonly showTrend?: boolean
+  readonly onCategorySelect?: (categoryId: string) => void
+}
+
+interface ExecutionCategory {
+  readonly id: string
+  readonly code: string
+  readonly name: string
+  readonly planned: number
+  readonly executed: number
+  readonly executionRate: number
+  readonly description: string
+  readonly trend?: readonly { year: number; rate: number }[]
+  readonly reasons?: readonly string[]
+}
+
+interface ExecutionThresholds {
+  readonly excellent: number // >= this is green (default: 95)
+  readonly good: number      // >= this is yellow (default: 80)
+  readonly concerning: number // >= this is orange (default: 60)
+  // below concerning is red
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - selectedCategory: string | null
+ * - hoveredCategory: string | null
+ * - showReasons: boolean (toggle explanation for low rates)
+ * - animationProgress: number (0-1 for bar animation)
+ *
+ * STATE TRANSITIONS:
+ * - Component mount → animate bars from 0 to actual percentage
+ * - Category hover → show tooltip with exact figures
+ * - Category click → expand to show reasons and trend
+ *
+ * USER INTERACTIONS:
+ * - Hover bar: show tooltip with planned vs actual amounts
+ * - Click bar: expand to show historical trend and reasons
+ * - Legend click: filter to show only that threshold level
+ * - Keyboard: Arrow keys navigate, Enter expands
+ *
+ * VISUAL STATES:
+ * - Default: horizontal bars with color coding
+ * - Hover: bar elevates, tooltip appears
+ * - Selected: bar expands to show detail panel
+ * - Colors: green (🟢 >=95), yellow (🟡 80-94), orange (🟠 60-79), red (🔴 <60)
+ *
+ * ANIMATIONS:
+ * - Bar growth: animate width from 0 (600ms, staggered 100ms per bar)
+ * - Number counter: count up to final percentage (400ms)
+ * - Expansion: smooth height transition (300ms)
+ * - Icon pulse: subtle pulse on warning icons
+ *
+ * ACCESSIBILITY:
+ * - role="figure" with aria-label describing the chart
+ * - Each bar has role="progressbar" with aria-valuenow
+ * - Color is supplemented with icons (🟢 🟡 🟠 🔴)
+ * - Screen reader announces category and rate on focus
+ */
+```
+
+**Expected Behavior:**
+
+- Animated bars show percentage visually
+- Color coding: Green (>95%), Yellow (80-94%), Orange (60-79%), Red (<60%)
+- Click any category to see why execution is high/low
+- Shows the critical insight: salaries execute at 98%, investments at 58%
+
+---
+
+## Core Explanation: Why the Gap Matters
+
+### The Execution Rate Formula
+
+```
+Execution Rate = (Actually Spent ÷ Planned Budget) × 100%
+```
+
+**Example:**
+- Planned: 100 billion RON for Education
+- Spent: 85 billion RON
+- Execution Rate: 85%
+
+### What Different Rates Mean
+
+| Rate | Status | What it Signals |
+|------|--------|-----------------|
+| >95% | 🟢 Excellent | Money spent as planned |
+| 80-94% | 🟡 Good | Minor underspending, possibly savings |
+| 60-79% | 🟠 Concerning | Significant gap — investigate why |
+| <60% | 🔴 Poor | Major failure — promises not kept |
+
+### The Pattern That Repeats Every Year
+
+One pattern is remarkably consistent in Romania:
+
+| Spending Type | Typical Execution | Why? |
+|---------------|-------------------|------|
+| Personnel (salaries) | 95-100% | Must be paid — people expect their wages |
+| Goods & Services | 85-95% | Contracts signed, services rendered |
+| Transfers | 80-90% | Pensions, subsidies — mostly automatic |
+| **Investments** | **50-70%** | Projects delayed, procurement stuck |
+
+> **🔴 The Investment Problem:** This is where Romania's development gets stuck. Money is budgeted for schools, hospitals, and roads — but year after year, 30-50% of it goes unspent. The new hospital wing? Delayed. The road repair? Next year. The school renovation? Still waiting.
+
+### Why Do Investments Execute So Poorly?
+
+1. **Complex procurement** — Public tender rules take 6-12 months
+2. **Weak project preparation** — Projects aren't "shovel-ready"
+3. **Capacity constraints** — Not enough people to manage projects
+4. **Political interference** — Priorities shift with elections
+5. **EU fund conditions** — Complex requirements cause delays
+
+---
+
+## Romania in EU Context
+
+How does Romania compare on spending?
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  📊 SPENDING AS % OF GDP: EU COMPARISON                      │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  France      █████████████████████████████████████████  56%  │
+│  Germany     ████████████████████████████████████████   51%  │
+│  EU Average  ███████████████████████████████████████    49%  │
+│  Poland      ████████████████████████████████████       45%  │
+│  ROMANIA     ████████████████████████████████         43.5% │
+│  Bulgaria    ██████████████████████████████            39%  │
+│                                                              │
+│  ─────────────────────────────────────────────────────────── │
+│                                                              │
+│  💡 KEY INSIGHT                                              │
+│                                                              │
+│  Romania's spending (43.5% of GDP) is close to EU average.   │
+│  The REAL problem:                                           │
+│                                                              │
+│  Revenue: 34% ←─── 9.5% GAP ───→ 43.5% :Spending             │
+│                        │                                     │
+│                        ▼                                     │
+│               DEFICIT (among EU's highest)                   │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+> **The Real Problem:** Romania doesn't spend too little or too much — it collects too little. The 9.5% gap between revenue (34%) and spending (43.5%) is one of the highest deficits in the EU.
+
+---
+
+## Platform Integration: Explore the Data
+
+Now apply what you've learned using the Transparenta platform.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🎯 HANDS-ON: Explore Spending Data                          │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Step 1: Open the Budget Explorer                            │
+│          [ Open Budget Explorer → ]                          │
+│                                                              │
+│  Step 2: Switch to "Expenditures" view                       │
+│          Look for "Cheltuieli" tab                           │
+│                                                              │
+│  Step 3: Click on "Social Protection"                        │
+│          → What percentage is it?                            │
+│          → Click to see subcategories                        │
+│                                                              │
+│  Step 4: Switch to Economic classification                   │
+│          → Find "Active nefinanciare" (Code 71)              │
+│          → What's the execution rate?                        │
+│                                                              │
+│  ✅ Challenge: What is Romania's largest spending function?   │
+│                                                              │
+│  Your answer: [ _________________ ]  [ Check ]               │
+│  (Hint: It's ~35% of total spending)                         │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Component Specification
+
+```typescript
+/**
+ * GuidedActivity Component
+ *
+ * PURPOSE: Walk users through platform exploration with
+ * validation of their discoveries.
+ */
+interface GuidedActivityProps {
+  readonly title: string
+  readonly steps: readonly GuidedStep[]
+  readonly onComplete?: () => void
+  readonly allowSkip?: boolean
+}
+
+interface GuidedStep {
+  readonly id: string
+  readonly instruction: string
+  readonly hint?: string
+  readonly deepLink?: string
+  readonly validation: StepValidation
+}
+
+type StepValidation =
+  | { type: 'manual' }
+  | { type: 'input'; question: string; correctAnswers: string[] }
+  | { type: 'confirm'; question: string }
+
+/**
+ * STATE MANAGEMENT:
+ * - currentStep: number
+ * - completedSteps: Set<string>
+ * - stepInputs: Record<string, string>
+ * - isValidating: boolean
+ *
+ * STATE TRANSITIONS:
+ * - "Open Link" click → open deep link in new tab
+ * - "Mark Done" click → advance to next step
+ * - Input submit → validate against correct answers
+ * - All steps complete → trigger onComplete callback
+ *
+ * USER INTERACTIONS:
+ * - Deep link buttons: opens relevant platform page
+ * - Manual completion: checkbox or "Done" button
+ * - Input validation: free text with fuzzy matching
+ * - Skip button: if allowed, moves to next
+ *
+ * VISUAL STATES:
+ * - Pending: numbered, dimmed
+ * - Current: highlighted, full instruction visible
+ * - Completed: checkmark, collapsed
+ * - Error: shake animation, "Try again" message
+ *
+ * ANIMATIONS:
+ * - Step transition: slide + fade (300ms)
+ * - Completion checkmark: draw-in animation
+ * - Progress bar: smooth fill
+ *
+ * ACCESSIBILITY:
+ * - Steps are list items with aria-current on active
+ * - Deep links open in new tab with notice
+ * - Input has aria-describedby for hints
+ */
+```
+
+---
+
+## Practice
+
+<Quiz
+  id="expenditure-execution-rate"
+  question="What is a typical execution rate for capital investments (Code 71) in Romania?"
+  options={[
+    { id: "a", text: "95-100% (almost fully spent)", isCorrect: false },
+    { id: "b", text: "80-90% (mostly spent)", isCorrect: false },
+    { id: "c", text: "55-65% (significant underspending)", isCorrect: true },
+    { id: "d", text: "30-40% (severe underspending)", isCorrect: false }
+  ]}
+  explanation="Capital investments (Code 71 - Active nefinanciare) typically execute at only 55-65% in Romania. This means 35-45% of money allocated for buildings, roads, and equipment goes unspent. Meanwhile, personnel costs execute at 95-100%. This pattern explains why infrastructure projects are chronically delayed."
+/>
+
+<Quiz
+  id="expenditure-romania-problem"
+  question="Romania's spending as % of GDP is close to EU average. What is Romania's actual budget problem?"
+  options={[
+    { id: "a", text: "Spending is too high compared to other EU countries", isCorrect: false },
+    { id: "b", text: "Revenue collection is too low, causing a large deficit", isCorrect: true },
+    { id: "c", text: "There is no budget problem — Romania is on track", isCorrect: false },
+    { id: "d", text: "Romania spends too little on social programs", isCorrect: false }
+  ]}
+  explanation="Romania's spending (43.5% of GDP) is close to EU average (49%). The problem is revenue: Romania collects only 34% of GDP in taxes — the lowest in the EU. This 9.5% gap creates one of Europe's largest budget deficits, not overspending."
+/>
+
+---
+
+## Module Summary
+
+Congratulations! You've completed the Expenditures module. Here's what you learned:
+
+| Topic | Key Takeaway |
+|-------|--------------|
+| Spending Categories | Social Protection is #1 (~35%), mostly pensions |
+| Classifications | Functional = "what for", Economic = "what type" |
+| Code 71 | Investments have the lowest execution rates |
+| Execution Rates | Always check actual spending, not just allocations |
+| Romania vs EU | Spending is normal; revenue collection is the problem |
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** Always check execution rates, not just allocations. The consistent pattern — salaries at 98%, investments at 58% — reveals where promises go unfulfilled. Romania's challenge isn't spending too much; it's collecting too little and executing development projects poorly.
+
+---
+
+<MarkComplete label="Complete Module: Where Does the Money Go?" />

@@ -2,14 +2,14 @@
   "id": "citizen-foundations",
   "title": {
     "en": "Foundations — Why Should I Care?",
-    "ro": "Fundamente — De ce ar trebui să-mi pese?"
+    "ro": "Fundamente — De ce ar trebui sa-mi pese?"
   },
   "description": {
     "en": "Understand what public budgets are, why they matter to you personally, and how to start exploring budget data.",
-    "ro": "Înțelege ce sunt bugetele publice, de ce contează pentru tine personal și cum să începi să explorezi datele bugetare."
+    "ro": "Intelege ce sunt bugetele publice, de ce conteaza pentru tine personal si cum sa incepi sa explorezi datele bugetare."
   },
   "difficulty": "beginner",
-  "durationMinutes": 13,
+  "durationMinutes": 18,
   "lessons": [
     {
       "id": "what-is-a-budget",
@@ -20,7 +20,7 @@
       },
       "concept": {
         "en": "Budget as household analogy",
-        "ro": "Bugetul ca analogie a gospodăriei"
+        "ro": "Bugetul ca analogie a gospodariei"
       },
       "durationMinutes": 4
     },
@@ -46,7 +46,20 @@
       },
       "concept": {
         "en": "Execution rates and gap analysis",
-        "ro": "Rate de execuție și analiza decalajului"
+        "ro": "Rate de executie si analiza decalajului"
+      },
+      "durationMinutes": 5
+    },
+    {
+      "id": "explore-the-platform",
+      "slug": "04-explore-the-platform",
+      "title": {
+        "en": "Explore the Platform",
+        "ro": "Exploreaza platforma"
+      },
+      "concept": {
+        "en": "Hands-on Budget Explorer navigation",
+        "ro": "Navigare practica in Budget Explorer"
       },
       "durationMinutes": 5
     }

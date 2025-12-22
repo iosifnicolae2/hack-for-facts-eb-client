@@ -1,0 +1,277 @@
+---
+title.en: "Applying Red Flag Analysis"
+title.ro: "Aplicarea analizei semnalelor de avertizare"
+durationMinutes: 7
+concept: "Practical application of red flag analysis with Romania's macro context"
+objective: "Apply red flag analysis skills to real data and understand Romania's fiscal context"
+---
+
+# Applying Red Flag Analysis
+
+## Concept Introduction
+
+You've learned to recognize the seven major red flags. Now it's time to apply that knowledge. In this lesson, you'll analyze a case study, understand Romania's broader fiscal challenges, and practice finding red flags in real data.
+
+Understanding the macro context is essential because local budget problems often connect to national fiscal pressures. When the country runs a large deficit, the pressure flows down to local governments.
+
+> **Key Insight:** Local red flags often reflect national fiscal stress. Understanding both levels makes you a more effective watchdog.
+
+---
+
+## Romania's Macro Red Flag: The Deficit
+
+Before diving into local analysis, understand the national context. Romania runs one of the largest budget deficits in the EU — and this affects every public budget in the country.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🚨 MACRO RED FLAG: THE ~9% DEFICIT                          │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│       REVENUE              GAP            SPENDING           │
+│                                                              │
+│         34%        ←──  ~9%  ──→         ~43%               │
+│          │               │                 │                 │
+│          │               ▼                 │                 │
+│          │        ┌───────────┐            │                 │
+│          │        │  DEFICIT  │            │                 │
+│          │        │   ~9.3%   │            │                 │
+│          │        │  OF GDP   │            │                 │
+│          │        └───────────┘            │                 │
+│          │                                 │                 │
+│    Lowest in EU                    Close to EU average       │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### What the Deficit Means for You
+
+The deficit must be closed. There are only three ways:
+
+| Option | Impact |
+|--------|--------|
+| **Higher Taxes** | VAT increase to 21% (effective Aug 2025), possible income tax changes |
+| **Reduced Services** | Cuts to programs, delayed investments, service degradation |
+| **Inflation** | "Stealth tax" that erodes savings and purchasing power |
+
+**Why this matters for budget oversight:** When money is tight, every lei matters more. Waste, inefficiency, and corruption become even more damaging. This is why budget oversight is crucial right now.
+
+---
+
+## Interactive Element: Case Study Analyzer
+
+Practice identifying red flags in a realistic scenario.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🔍 CASE STUDY: ANALYZE THIS ENTITY                          │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ENTITY: Small Town (pop. 15,000)                            │
+│  TOTAL BUDGET: 45 million RON                                │
+│                                                              │
+│  DATA:                                                       │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │ Personnel (Code 10):       32M planned, 31.8M spent  │    │
+│  │ Goods & Services (20):     8M planned, 7.5M spent    │    │
+│  │ Investments (71):          5M planned, 1.8M spent    │    │
+│  │ Rectifications this year:  3                         │    │
+│  │ Direct award contracts:    38% of total procurement  │    │
+│  │ Y/Y spending change:       +12%                      │    │
+│  │ Arrears reported:          0.5M RON                  │    │
+│  └──────────────────────────────────────────────────────┘    │
+│                                                              │
+│  YOUR CALCULATIONS:                                          │
+│                                                              │
+│  Investment execution rate: [ _____ ]%                       │
+│     Formula: (spent ÷ planned) × 100                         │
+│                                                              │
+│  Personnel as % of budget: [ _____ ]%                        │
+│     Formula: (personnel planned ÷ total budget) × 100        │
+│                                                              │
+│  How many red flags present? ○ 1-2  ○ 3-4  ○ 5+              │
+│                                                              │
+│  [ Check My Answers → ]                                      │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Case Study Solution
+
+**Investment execution rate:** (1.8 ÷ 5) × 100 = **36%** 🔴 (threshold: >70%)
+
+**Personnel as % of budget:** (32 ÷ 45) × 100 = **71%** 🔴 (threshold: \<60%)
+
+**Red flags identified:**
+1. 🔴 **Extremely low investment execution (36%)** — Severely under threshold
+2. 🔴 **Personnel crowding out (71%)** — Over threshold
+3. 🔴 **Frequent rectifications (3)** — At warning threshold
+4. 🟡 **High direct awards (38%)** — Over 25% threshold
+5. 🟡 **Arrears present (0.5M)** — Any arrears is concerning
+
+**Verdict: 5 red flags present — this warrants investigation.**
+
+### Component Specification
+
+```typescript
+/**
+ * CaseStudyAnalyzer Component
+ *
+ * PURPOSE: Interactive case study where users calculate metrics and identify
+ * red flags based on provided data. Validates understanding through practice.
+ */
+interface CaseStudyAnalyzerProps {
+  readonly caseData: CaseStudyData
+  readonly questions: readonly CaseStudyQuestion[]
+  readonly onComplete?: (score: number) => void
+}
+
+interface CaseStudyData {
+  readonly entityName: string
+  readonly population: number
+  readonly totalBudget: number
+  readonly currency: 'RON' | 'EUR'
+  readonly metrics: readonly {
+    readonly label: string
+    readonly planned: number
+    readonly spent: number
+    readonly code?: string
+  }[]
+  readonly additionalData: Record<string, string | number>
+}
+
+interface CaseStudyQuestion {
+  readonly id: string
+  readonly type: 'calculation' | 'multiple_choice' | 'checkbox'
+  readonly question: string
+  readonly hint?: string
+  readonly correctAnswer: string | number | string[]
+  readonly explanation: string
+  readonly tolerance?: number // For calculations, allow margin of error
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - answers: Record<string, string | number | string[]>
+ * - submitted: boolean
+ * - results: Record<string, { correct: boolean; feedback: string }>
+ * - score: number (percentage correct)
+ *
+ * STATE TRANSITIONS:
+ * - User types/selects → update answers[questionId]
+ * - User submits → validate all, set submitted=true, compute results
+ * - Reset → clear all answers, set submitted=false
+ *
+ * USER INTERACTIONS:
+ * - Input fields: type numeric answers
+ * - Radio buttons: select single choice
+ * - Checkboxes: select multiple flags
+ * - Submit button: validate and show feedback
+ * - Tab/Enter: navigate between questions
+ *
+ * VISUAL STATES:
+ * - Initial: empty inputs, data panel visible
+ * - In progress: partially filled, no validation shown
+ * - Submitted correct: green highlight, checkmark
+ * - Submitted incorrect: amber highlight, show correct answer
+ * - Complete: score shown, option to review or continue
+ *
+ * ANIMATIONS:
+ * - Submit: ripple effect on button
+ * - Results: stagger reveal per question (200ms delay)
+ * - Score: count-up animation
+ * - Incorrect answers: gentle shake + correction reveal
+ *
+ * ACCESSIBILITY:
+ * - Questions are fieldsets with legend
+ * - Error messages linked via aria-describedby
+ * - Score announced via aria-live
+ * - Navigation hints for keyboard users
+ */
+```
+
+---
+
+## Guided Activity: Hunt for Red Flags
+
+Now apply your skills to real data. Follow these steps to analyze your local government:
+
+### Step 1: Open Entity Analytics
+
+Navigate to the Entity Analytics page on Transparenta.eu to access detailed budget data.
+
+[Open Entity Analytics →](/entities)
+
+### Step 2: Find Your Local Government
+
+Search for your city, town, or commune. Open the detailed view to see budget breakdowns.
+
+### Step 3: Check for Each Red Flag
+
+Use this checklist to systematically review:
+
+- [ ] **Investment execution rate (Code 71)** — Is it below 70%?
+- [ ] **Personnel as % of total budget** — Is it above 60%?
+- [ ] **Number of rectifications** — Are there 3 or more?
+- [ ] **Year-over-year spending change** — Is it above 20%?
+- [ ] **Look for arrears** — Any unpaid bills reported?
+
+### Step 4: Record Your Findings
+
+Document what you find:
+- How many potential red flags did you identify?
+- What questions would you ask based on the data?
+- Are there patterns that concern you?
+
+### Step 5: Compare with Neighbors
+
+Context matters. Compare your locality with similar neighbors:
+- Do they have the same issues?
+- Or is your locality an outlier?
+- What explains the differences?
+
+---
+
+## Practice
+
+<Quiz
+  id="red-flags-03-q1"
+  question="Romania's ~9% budget deficit means which of the following is most likely in the coming years?"
+  options={[
+    { id: "a", text: "The economy will grow faster", isCorrect: false },
+    { id: "b", text: "Tax increases, service cuts, or inflation — or some combination", isCorrect: true },
+    { id: "c", text: "Government will have more money to spend", isCorrect: false },
+    { id: "d", text: "EU funds will cover the difference", isCorrect: false }
+  ]}
+  explanation="A large deficit must eventually be closed. The only options are raising taxes (VAT is already increasing to 21%), cutting services, or allowing inflation to erode the real value of debt. Understanding this context makes local budget oversight even more important."
+/>
+
+<Quiz
+  id="red-flags-03-q2"
+  question="A town has personnel costs at 71% of budget, investment execution at 36%, and 3 rectifications. How many red flags is this?"
+  options={[
+    { id: "a", text: "1-2 red flags", isCorrect: false },
+    { id: "b", text: "3-4 red flags", isCorrect: true },
+    { id: "c", text: "5+ red flags", isCorrect: false },
+    { id: "d", text: "No red flags — these are normal", isCorrect: false }
+  ]}
+  explanation="This case shows 3 clear red flags: (1) Personnel crowding out at 71% (greater than 60% threshold), (2) Low investment execution at 36% (less than 70% threshold), and (3) Frequent rectifications at 3 (3 or more threshold). This combination warrants investigation."
+/>
+
+---
+
+## Take Action
+
+You've learned to recognize and analyze budget red flags. Now put that knowledge to work:
+
+- [ ] **Check your local government** for all 7 red flags
+- [ ] **Compare with at least 2 similar localities** — Is yours better, worse, or average?
+- [ ] **Prepare questions** based on red flags found — These become your FOIA requests
+- [ ] **Track over time** — Are things improving or getting worse?
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** Budget oversight is most valuable when applied systematically. Check every red flag, document your findings, compare with peers, and follow up with questions. Romania's fiscal pressures make this work more important than ever — every lei of waste or corruption is a lei that could have built a school or fixed a road.
+
+<MarkComplete label="Complete Module: Red Flags" />
