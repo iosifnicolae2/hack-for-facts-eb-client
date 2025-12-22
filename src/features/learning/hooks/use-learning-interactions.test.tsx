@@ -5,12 +5,14 @@ import { AuthProvider } from '@/lib/auth'
 import { LearningProgressProvider } from './use-learning-progress'
 import { useLessonCompletion, useQuizInteraction } from './use-learning-interactions'
 import type { LearningGuestProgress } from '../types'
+import type { LearningProgressEvent } from '../types'
 
 vi.mock('@lingui/core/macro', () => ({
   t: (strings: TemplateStringsArray) => strings[0],
 }))
 
-const STORAGE_KEY = 'learning_progress'
+const EVENTS_KEY = 'learning_progress_events'
+const SNAPSHOT_KEY = 'learning_progress_snapshot'
 
 const wrapper = ({ children }: { readonly children: ReactNode }) => (
   <AuthProvider>
@@ -18,12 +20,58 @@ const wrapper = ({ children }: { readonly children: ReactNode }) => (
   </AuthProvider>
 )
 
+function buildEventsFromProgress(progress: LearningGuestProgress): LearningProgressEvent[] {
+  const events: LearningProgressEvent[] = []
+  let counter = 0
+
+  for (const content of Object.values(progress.content)) {
+    if (!content) continue
+    const interactions = Object.entries(content.interactions ?? {})
+    if (interactions.length > 0) {
+      for (const [interactionId, state] of interactions) {
+        events.push({
+          eventId: `event-${content.contentId}-${counter++}`,
+          clientId: 'test-client',
+          occurredAt: content.lastAttemptAt,
+          type: 'content.progressed',
+          payload: {
+            contentId: content.contentId,
+            status: content.status,
+            score: content.score,
+            contentVersion: content.contentVersion,
+            interaction: {
+              interactionId,
+              state,
+            },
+          },
+        })
+      }
+    } else {
+      events.push({
+        eventId: `event-${content.contentId}-${counter++}`,
+        clientId: 'test-client',
+        occurredAt: content.lastAttemptAt,
+        type: 'content.progressed',
+        payload: {
+          contentId: content.contentId,
+          status: content.status,
+          score: content.score,
+          contentVersion: content.contentVersion,
+        },
+      })
+    }
+  }
+
+  return events
+}
+
 function seedProgress(progress: LearningGuestProgress) {
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(progress))
+  const events = buildEventsFromProgress(progress)
+  window.localStorage.setItem(EVENTS_KEY, JSON.stringify(events))
 }
 
 function readProgress(): LearningGuestProgress {
-  const raw = window.localStorage.getItem(STORAGE_KEY)
+  const raw = window.localStorage.getItem(SNAPSHOT_KEY)
   if (!raw) {
     throw new Error('Expected learning progress in storage')
   }

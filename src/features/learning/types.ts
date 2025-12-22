@@ -72,6 +72,61 @@ export type LearningContentProgress = {
   readonly interactions?: Readonly<Record<string, LearningInteractionState>>
 }
 
+export type LearningProgressEventType =
+  | 'content.progressed'
+  | 'onboarding.completed'
+  | 'onboarding.reset'
+  | 'activePath.set'
+  | 'progress.reset'
+
+export type LearningProgressEventBase = {
+  readonly eventId: string
+  readonly occurredAt: string
+  readonly clientId: string
+  readonly type: LearningProgressEventType
+}
+
+export type LearningContentProgressPayload = {
+  readonly contentId: string
+  readonly status: LearningContentStatus
+  readonly score?: number
+  readonly contentVersion?: string
+  readonly interaction?: {
+    readonly interactionId: string
+    readonly state: LearningInteractionState | null
+  }
+}
+
+export type LearningContentProgressedEvent = LearningProgressEventBase & {
+  readonly type: 'content.progressed'
+  readonly payload: LearningContentProgressPayload
+}
+
+export type LearningOnboardingCompletedEvent = LearningProgressEventBase & {
+  readonly type: 'onboarding.completed'
+  readonly payload: { readonly pathId: string }
+}
+
+export type LearningOnboardingResetEvent = LearningProgressEventBase & {
+  readonly type: 'onboarding.reset'
+}
+
+export type LearningActivePathSetEvent = LearningProgressEventBase & {
+  readonly type: 'activePath.set'
+  readonly payload: { readonly pathId: string | null }
+}
+
+export type LearningProgressResetEvent = LearningProgressEventBase & {
+  readonly type: 'progress.reset'
+}
+
+export type LearningProgressEvent =
+  | LearningContentProgressedEvent
+  | LearningOnboardingCompletedEvent
+  | LearningOnboardingResetEvent
+  | LearningActivePathSetEvent
+  | LearningProgressResetEvent
+
 export const LEARNING_PROGRESS_SCHEMA_VERSION = 1 as const
 
 export type LearningOnboardingState = {
