@@ -1,17 +1,7 @@
-import { createFileRoute, Link, Navigate } from '@tanstack/react-router'
+import { createFileRoute, Link, Navigate, useNavigate } from '@tanstack/react-router'
 import { t } from '@lingui/core/macro'
 import { useMemo, useState } from 'react'
-import {
-  ArrowRight,
-  Clock,
-  MoreVertical,
-  Play,
-  RotateCcw,
-  Sparkles,
-  Trash2,
-  Trophy,
-} from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
+import { ChevronDown, MoreVertical, RotateCcw, Trash2, Trophy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -30,34 +20,35 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible'
+import {
   getAllLessons,
   getLearningPaths,
-  getTranslatedText,
+  getPathProgressStats,
 } from '@/features/learning/utils/paths'
+import type { PathProgressStats } from '@/features/learning/utils/paths'
+import type { LearningPathDefinition } from '@/features/learning/types'
 import { getDisplayStreak, formatStreak } from '@/features/learning/utils/streak'
 import { useLearningProgress } from '@/features/learning/hooks/use-learning-progress'
 import { LearningHubLoading } from '@/features/learning/components/loading/LearningHubLoading'
+import { LearningPathCard } from '@/features/learning/components/cards/LearningPathCard'
 
 export const Route = createFileRoute('/$lang/learning/')({
   component: LearningHubPage,
 })
 
-function formatRemainingTime(minutes: number): string {
-  if (minutes <= 0) return t`Done`
-  if (minutes < 60) return t`${minutes}m remaining`
-  const hours = Math.floor(minutes / 60)
-  const mins = minutes % 60
-  if (mins === 0) return t`${hours}h remaining`
-  return t`${hours}h ${mins}m remaining`
-}
-
 function LearningHubPage() {
   const { lang } = Route.useParams()
   const locale = lang as 'ro' | 'en'
   const paths = getLearningPaths()
-  const { isReady, progress, resetOnboarding, clearProgress } = useLearningProgress()
+  const navigate = useNavigate()
+  const { isReady, progress, resetOnboarding, clearProgress, setActivePathId } = useLearningProgress()
   const [isRestartDialogOpen, setIsRestartDialogOpen] = useState(false)
   const [isWipeDialogOpen, setIsWipeDialogOpen] = useState(false)
+  const [isOtherPathsOpen, setIsOtherPathsOpen] = useState(false)
 
   const activePath = useMemo(() => {
     return paths.find((p) => p.id === progress.activePathId) ?? paths[0]
@@ -71,6 +62,9 @@ function LearningHubPage() {
       return status === 'completed' || status === 'passed'
     }).length
     const percentage = allLessons.length > 0 ? Math.round((completedCount / allLessons.length) * 100) : 0
+
+    // Calculate total time for all lessons
+    const totalMinutes = allLessons.reduce((sum, l) => sum + (l.durationMinutes ?? 0), 0)
 
     // Calculate remaining time from incomplete lessons
     const remainingMinutes = allLessons
@@ -93,10 +87,45 @@ function LearningHubPage() {
       totalCount: allLessons.length,
       percentage,
       remainingMinutes,
+      totalMinutes,
       nextLesson,
       moduleId: module?.id,
     }
   }, [activePath, progress.content])
+
+  // Compute other paths with their stats, sorted by last interaction then progress
+  const otherPathsWithStats = useMemo(() => {
+    type PathWithStats = {
+      readonly path: LearningPathDefinition
+      readonly stats: PathProgressStats
+    }
+
+    const otherPaths = paths.filter((p) => p.id !== activePath?.id)
+
+    const pathsWithStats: readonly PathWithStats[] = otherPaths.map((path) => ({
+      path,
+      stats: getPathProgressStats({ path, progress }),
+    }))
+
+    // Sort by: last interaction (most recent first), then by progress (higher first)
+    return [...pathsWithStats].sort((a, b) => {
+      // Paths with any interaction come first
+      const aHasInteraction = a.stats.lastInteractionAt !== null
+      const bHasInteraction = b.stats.lastInteractionAt !== null
+
+      if (aHasInteraction && !bHasInteraction) return -1
+      if (!aHasInteraction && bHasInteraction) return 1
+
+      // If both have interactions, sort by most recent
+      if (aHasInteraction && bHasInteraction) {
+        const timeCompare = b.stats.lastInteractionAt!.localeCompare(a.stats.lastInteractionAt!)
+        if (timeCompare !== 0) return timeCompare
+      }
+
+      // Then sort by progress percentage (higher first)
+      return b.stats.completionPercentage - a.stats.completionPercentage
+    })
+  }, [paths, activePath?.id, progress])
 
   // Show loading while auth/progress is loading
   if (!isReady) {
@@ -106,6 +135,17 @@ function LearningHubPage() {
   // Redirect to onboarding if not completed
   if (!progress.onboarding.completedAt) {
     return <Navigate to={`/${lang}/learning/onboarding` as '/'} replace />
+  }
+
+  const nextLessonUrl = stats?.nextLesson && stats.moduleId
+    ? `/${lang}/learning/${activePath?.id}/${stats.moduleId}/${stats.nextLesson.id}`
+    : undefined
+
+  const displayStreak = getDisplayStreak(progress.streak)
+
+  const handleNavigateAndSwitch = async (pathId: string, lessonUrl: string) => {
+    await setActivePathId(pathId)
+    void navigate({ to: lessonUrl as '/' })
   }
 
   return (
@@ -153,108 +193,24 @@ function LearningHubPage() {
       {/* Main Active Path Card */}
       <div className="space-y-6">
         {activePath && (stats?.percentage ?? 0) < 100 ? (
-          <Card className="relative overflow-hidden rounded-[40px] border-none shadow-2xl shadow-primary/5 bg-gradient-to-br from-background via-background to-primary/[0.03] group transition-all hover:shadow-primary/10">
-            <div className="absolute top-0 right-0 p-10 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-1000">
-              <Trophy className="h-64 w-64 rotate-12" />
-            </div>
-            
-            <CardContent className="p-6 md:p-10 space-y-10">
-              <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-8">
-                <div className="space-y-4 flex-1">
-                  <h3 className="text-3xl md:text-4xl font-black tracking-tighter leading-[1.1] text-foreground">
-                    {getTranslatedText(activePath.title, locale)}
-                  </h3>
-                  <p className="text-muted-foreground text-lg font-medium leading-relaxed max-w-xl opacity-70">
-                    {getTranslatedText(activePath.description, locale)}
-                  </p>
-                </div>
-                
-                <div className="flex flex-col gap-4 min-w-[240px]">
-                  {stats?.nextLesson ? (
-                    <Button asChild size="lg" className="rounded-[22px] px-10 h-16 text-lg font-black shadow-2xl shadow-primary/20 transition-all hover:scale-[1.03] active:scale-95 bg-primary text-primary-foreground border-none">
-                      <Link
-                        to={`/${lang}/learning/${activePath.id}/${stats.moduleId}/${stats.nextLesson.id}` as '/'}
-                      >
-                        <Play className="mr-3 h-5 w-5 fill-current" />
-                        {stats.completedCount > 0 ? t`Continue` : t`Start Path`}
-                      </Link>
-                    </Button>
-                  ) : (
-                    <Button variant="outline" size="lg" className="rounded-[22px] px-10 h-16 text-lg font-black border-2 border-green-500/20 bg-green-500/[0.05] text-green-600 hover:bg-green-500/10 transition-all">
-                      <Trophy className="mr-3 h-5 w-5" />
-                      {t`Path Completed`}
-                    </Button>
-                  )}
-                  
-                  <Button asChild variant="ghost" className="rounded-2xl h-14 text-sm font-black text-muted-foreground hover:bg-transparent hover:text-foreground group/link">
-                    <Link to={`/${lang}/learning/${activePath.id}` as '/'}>
-                      {t`View Details`}
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-
-              <div className="space-y-5 pt-4">
-                <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground px-1">
-                  <span className="flex items-center gap-2">
-                    <div className="h-1 w-1 rounded-full bg-primary" />
-                    {t`Path Progress`}
-                  </span>
-                  <span className="text-primary">{stats?.percentage}%</span>
-                </div>
-                <div className="h-3 w-full bg-muted/50 rounded-full overflow-hidden shadow-inner p-0.5">
-                  <div
-                    className="h-full bg-primary rounded-full transition-all duration-1000 ease-out shadow-lg"
-                    style={{ width: `${stats?.percentage}%` }}
-                  />
-                </div>
-              </div>
-
-              {/* Stats Footer */}
-              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-8 pt-8 border-t border-border/30">
-                <div className="flex items-center gap-3 group cursor-default">
-                  <div className="flex flex-col">
-                    <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{t`Completion`}</span>
-                    <div className="flex items-baseline gap-0.5">
-                      <span className="text-xl font-black tabular-nums tracking-tighter">{stats?.percentage ?? 0}</span>
-                      <span className="text-xs font-black text-muted-foreground">%</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 group cursor-default">
-                  <div className="flex flex-col">
-                    <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{t`Lessons`}</span>
-                    <div className="flex items-baseline gap-0.5">
-                      <span className="text-xl font-black tabular-nums tracking-tighter">{stats?.completedCount}</span>
-                      <span className="text-xs font-black text-muted-foreground">/ {stats?.totalCount}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 group cursor-default">
-                  <div className="h-10 w-10 rounded-2xl bg-muted/50 flex items-center justify-center group-hover:bg-primary/5 transition-colors">
-                    <Clock className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{t`Estimate`}</span>
-                    <span className="text-xs font-bold text-foreground tracking-tight">{formatRemainingTime(stats?.remainingMinutes ?? 0)}</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 group cursor-default">
-                  <div className="h-10 w-10 rounded-2xl bg-muted/50 flex items-center justify-center group-hover:bg-amber-500/5 transition-colors">
-                    <Sparkles className="h-4 w-4 text-muted-foreground group-hover:text-amber-500 transition-colors" />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{t`Daily Streak`}</span>
-                    <span className="text-xs font-bold text-foreground tracking-tight">{formatStreak(getDisplayStreak(progress.streak))}</span>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <LearningPathCard
+            path={activePath}
+            stats={{
+              completedCount: stats?.completedCount ?? 0,
+              totalCount: stats?.totalCount ?? 0,
+              percentage: stats?.percentage ?? 0,
+              remainingMinutes: stats?.remainingMinutes ?? 0,
+              totalMinutes: stats?.totalMinutes ?? 0,
+            }}
+            locale={locale}
+            lang={lang}
+            variant="active"
+            nextLessonUrl={nextLessonUrl}
+            streak={{
+              display: displayStreak,
+              formatted: formatStreak(displayStreak),
+            }}
+          />
         ) : (
           <div className="flex flex-col items-center justify-center py-20 text-center bg-muted/20 rounded-[40px] border-2 border-dashed border-muted">
             <Trophy className="h-16 w-16 text-primary/40 mb-6" />
@@ -266,6 +222,57 @@ function LearningHubPage() {
           </div>
         )}
       </div>
+
+      {/* Other Learning Paths Section - Collapsible */}
+      {otherPathsWithStats.length > 0 && (
+        <Collapsible open={isOtherPathsOpen} onOpenChange={setIsOtherPathsOpen}>
+          <CollapsibleTrigger asChild>
+            <button
+              type="button"
+              className="w-full flex items-center justify-center gap-3 py-4 px-6 rounded-2xl bg-muted/30 hover:bg-muted/50 transition-colors group cursor-pointer"
+            >
+              <span className="text-sm font-bold text-muted-foreground group-hover:text-foreground transition-colors">
+                {t`Explore more paths`}
+              </span>
+              <ChevronDown
+                className={`h-4 w-4 text-muted-foreground group-hover:text-foreground transition-all duration-300 ${
+                  isOtherPathsOpen ? 'rotate-180' : ''
+                }`}
+              />
+            </button>
+          </CollapsibleTrigger>
+          <CollapsibleContent className="pt-6 space-y-6 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0">
+            {otherPathsWithStats.map(({ path, stats: pathStats }) => {
+              const otherNextLessonUrl = pathStats.nextLesson && pathStats.nextModuleId
+                ? `/${lang}/learning/${path.id}/${pathStats.nextModuleId}/${pathStats.nextLesson.id}`
+                : undefined
+
+              return (
+                <LearningPathCard
+                  key={path.id}
+                  path={path}
+                  stats={{
+                    completedCount: pathStats.completedCount,
+                    totalCount: pathStats.totalCount,
+                    percentage: pathStats.completionPercentage,
+                    remainingMinutes: pathStats.remainingMinutes,
+                    totalMinutes: pathStats.totalMinutes,
+                  }}
+                  locale={locale}
+                  lang={lang}
+                  variant="other"
+                  nextLessonUrl={otherNextLessonUrl}
+                  onNavigateAndSwitch={
+                    otherNextLessonUrl
+                      ? () => void handleNavigateAndSwitch(path.id, otherNextLessonUrl)
+                      : undefined
+                  }
+                />
+              )
+            })}
+          </CollapsibleContent>
+        </Collapsible>
+      )}
 
       {/* Restart Onboarding Confirmation Dialog */}
       <AlertDialog open={isRestartDialogOpen} onOpenChange={setIsRestartDialogOpen}>

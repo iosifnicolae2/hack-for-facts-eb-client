@@ -51,10 +51,10 @@ type ModuleNavProps = {
 
 function LessonStatusIcon({ isCompleted, isActive }: { readonly isCompleted: boolean; readonly isActive: boolean }) {
   if (isCompleted) {
-    return <CheckCircle2 className={cn("h-3.5 w-3.5 stroke-[2.5px]", isActive ? "text-background" : "text-green-500")} />
+    return <CheckCircle2 className="h-3.5 w-3.5 stroke-[2.5px] text-green-500" />
   }
   if (isActive) {
-    return <div className="h-1.5 w-1.5 rounded-full bg-background" />
+    return <div className="h-2.5 w-2.5 rounded-full bg-background" />
   }
   return <Circle className="h-3.5 w-3.5 text-muted-foreground/25 group-hover:text-muted-foreground/40 stroke-[2px]" />
 }
@@ -96,7 +96,7 @@ function ModuleNav({ module, pathId, locale, currentLessonId, lessonProgress }: 
               className={cn(
                 'group flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] transition-all duration-200 min-w-0 overflow-hidden',
                 isActive
-                  ? 'bg-foreground text-background shadow-md font-medium'
+                  ? 'bg-foreground text-background font-medium'
                   : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
               )}
             >
@@ -191,7 +191,7 @@ function LearningSidebar({ pathname }: { readonly pathname: string }) {
               <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0 ml-2" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width) rounded-xl p-1.5">
+          <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width) rounded-xl p-1.5 space-y-2">
             {paths.map((p) => {
               const isActive = p.id === activePath?.id
               const pathUrl = `/${locale}/learning/${p.id}`
@@ -203,7 +203,7 @@ function LearningSidebar({ pathname }: { readonly pathname: string }) {
                   <Link
                     to={pathUrl}
                     onClick={() => setActivePathId(p.id)}
-                    className="flex flex-col items-start gap-0.5 p-3 rounded-lg w-full"
+                    className="flex flex-col items-start gap-0.5 p-3 rounded-xl w-full"
                   >
                     <div className="flex items-center gap-2 w-full">
                       <span className="font-semibold text-sm">{getTranslatedText(p.title, locale)}</span>

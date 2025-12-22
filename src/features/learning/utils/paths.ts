@@ -143,3 +143,70 @@ export function getAdjacentLessons(params: {
     next: idx >= 0 && idx < allLessons.length - 1 ? allLessons[idx + 1] : null,
   }
 }
+
+export type PathProgressStats = {
+  readonly completedCount: number
+  readonly totalCount: number
+  readonly completionPercentage: number
+  readonly lastInteractionAt: string | null
+  readonly remainingMinutes: number
+  readonly totalMinutes: number
+  readonly nextLesson: LearningLessonDefinition | null
+  readonly nextModuleId: string | null
+}
+
+export function getPathProgressStats(params: {
+  readonly path: LearningPathDefinition
+  readonly progress: LearningGuestProgress
+}): PathProgressStats {
+  const contentProgress = params.progress.content
+  const allLessons = getAllLessons(params.path)
+  const totalCount = allLessons.length
+
+  const completedCount = allLessons.filter((lesson) => {
+    const status = contentProgress[lesson.id]?.status
+    return status === 'completed' || status === 'passed'
+  }).length
+
+  const completionPercentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0
+
+  // Calculate total time for all lessons
+  const totalMinutes = allLessons.reduce((sum, lesson) => sum + (lesson.durationMinutes ?? 0), 0)
+
+  // Calculate remaining time from incomplete lessons
+  const remainingMinutes = allLessons
+    .filter((lesson) => {
+      const status = contentProgress[lesson.id]?.status
+      return status !== 'completed' && status !== 'passed'
+    })
+    .reduce((sum, lesson) => sum + (lesson.durationMinutes ?? 0), 0)
+
+  // Find the latest interaction timestamp for this path
+  const lastInteractionAt = allLessons.reduce<string | null>((latest, lesson) => {
+    const lessonProgress = contentProgress[lesson.id]
+    if (!lessonProgress?.lastAttemptAt) return latest
+    if (!latest) return lessonProgress.lastAttemptAt
+    return lessonProgress.lastAttemptAt > latest ? lessonProgress.lastAttemptAt : latest
+  }, null)
+
+  // Find next lesson
+  const nextLesson = allLessons.find((lesson) => {
+    const status = contentProgress[lesson.id]?.status
+    return status !== 'completed' && status !== 'passed'
+  }) ?? null
+
+  const nextModuleId = nextLesson
+    ? params.path.modules.find((m) => m.lessons.some((l) => l.id === nextLesson.id))?.id ?? null
+    : null
+
+  return {
+    completedCount,
+    totalCount,
+    completionPercentage,
+    lastInteractionAt,
+    remainingMinutes,
+    totalMinutes,
+    nextLesson,
+    nextModuleId,
+  }
+}
