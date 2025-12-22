@@ -302,7 +302,7 @@ function LearningLayoutInner() {
   const isOnboardingRoute = location.pathname.includes('/learning/onboarding')
 
   return (
-    <div className="flex h-screen w-full overflow-hidden">
+    <div className="flex min-h-full w-full">
       {/* Mobile Sidebar */}
       {!isOnboardingRoute && (
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -323,18 +323,18 @@ function LearningLayoutInner() {
 
       {/* Desktop Sidebar */}
       {!isOnboardingRoute && (
-        <aside className="hidden lg:flex lg:w-72 xl:w-80 lg:shrink-0 lg:flex-col h-full">
+        <aside className="hidden lg:flex lg:w-72 xl:w-80 lg:shrink-0 lg:flex-col lg:sticky lg:top-0 lg:h-svh">
           <LearningSidebar pathname={location.pathname} />
         </aside>
       )}
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto scroll-smooth">
+      <div className="flex-1">
         <LoginBanner />
         <div className="mx-auto max-w-3xl px-6 py-8 lg:px-10 lg:py-10">
           <Outlet />
         </div>
-      </main>
+      </div>
     </div>
   )
 }

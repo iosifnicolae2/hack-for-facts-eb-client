@@ -51,25 +51,21 @@ function RootComponent() {
           <ThemeProvider defaultTheme="light" storageKey="ui-theme">
             <HotkeysProvider>
               <SidebarProvider>
-                <div className="flex min-h-screen min-w-full">
-                  <HeadContent />
-                  <AppSidebar />
-                  <SidebarInset>
-                    <main role="main" className="flex-1">
-                      <div>
-                        <AnalyticsPageviewBridge />
-                        <Outlet />
-                        <Toaster />
-                        {isMobile && <FloatingEntitySearch showButton />}
-                      </div>
-                    </main>
-                    <AppFooter />
-                    <ChatFab />
-                    <MobileSidebarFab />
-                    <CookieConsentBanner />
-                    <Scripts />
-                  </SidebarInset>
-                </div>
+                <HeadContent />
+                <AppSidebar />
+                <SidebarInset>
+                  <div className="flex-1">
+                    <AnalyticsPageviewBridge />
+                    <Outlet />
+                    <Toaster />
+                    {isMobile && <FloatingEntitySearch showButton />}
+                  </div>
+                  <AppFooter />
+                  <ChatFab />
+                  <MobileSidebarFab />
+                  <CookieConsentBanner />
+                  <Scripts />
+                </SidebarInset>
               </SidebarProvider>
             </HotkeysProvider>
           </ThemeProvider>
