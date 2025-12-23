@@ -13,7 +13,7 @@ The budget isn't a one-time decision — it's a continuous cycle that repeats ev
 
 Think of it like farming seasons: there's a time to plant, a time to tend, and a time to harvest. Similarly, the budget has distinct phases where different activities happen. Miss the right window, and you wait another year.
 
-> **Key Insight:** October-December is "budget season" — the most important time for citizen engagement. This is when Parliament debates and approves next year's spending.
+> **Key Insight:** November-December is "budget season" — the most important time for citizen engagement. The Government must submit the budget to Parliament by **November 15** (not October 15 as older sources state), following amendments made by Law 270/2013.
 
 ---
 
@@ -34,16 +34,16 @@ Visualize when each budget phase occurs throughout the year.
 │  ════════════════════════════════════════════════════════════
 │  │████  EXECUTION (Year N)  ████████████████████████████████│
 │  ════════════════════════════════════════════════════════════
-│                          │▓▓▓▓▓▓▓▓▓▓▓│
-│                          │ PLANNING  │
-│                          │  (N+1)    │
-│                          │▓▓▓▓▓▓▓▓▓▓▓│
-│                                      │████████│
-│                                      │DRAFTING│
-│                                      │████████│
-│                                               │▓▓▓▓▓▓▓▓▓▓│
-│                                               │ APPROVAL │
-│                                               │▓▓▓▓▓▓▓▓▓▓│
+│                               │▓▓▓▓▓▓▓▓▓│
+│                               │PLANNING │
+│                               │ (N+1)   │
+│                               │▓▓▓▓▓▓▓▓▓│
+│                                       │██████████████│
+│                                       │   DRAFTING   │
+│                                       │██████████████│
+│                                                      │▓▓▓▓▓▓│
+│                                                      │APPROV│
+│                                                      │▓▓▓▓▓▓│
 │                                                              │
 │  Current phase: [EXECUTION]  Days until budget season: [XX]  │
 │                                                              │
@@ -80,7 +80,7 @@ interface BudgetPhase {
  * - currentDate: Date (defaults to today)
  * - activePhase: computed from currentDate
  * - expandedPhase: string | null (phase being viewed)
- * - daysUntilBudgetSeason: number (days until October 1)
+ * - daysUntilBudgetSeason: number (days until November 15)
  *
  * INTERACTIONS:
  * - Click phase segment: expand phase details
@@ -113,7 +113,7 @@ interface BudgetPhase {
 - Shows all 12 months with phase overlays
 - Current date marked with pulsing indicator
 - Click any phase to see details panel
-- Countdown shows days until October 1 (budget season start)
+- Countdown shows days until November 15 (budget submission deadline)
 - Keyboard navigable between phases
 
 ---
@@ -122,14 +122,14 @@ interface BudgetPhase {
 
 Every budget goes through these six phases. Here's what happens in each and when YOU can make a difference:
 
-| Phase | Timing | What Happens | Your Opportunity |
-|-------|--------|--------------|------------------|
-| **Planning** | May - Aug | Ministry sets ceilings, institutions prepare requests | Low - internal process |
-| **Drafting** | Sep - Oct 15 | Government consolidates requests | Medium - consultations may occur |
-| **Approval** | Oct - Dec | Parliament debates and votes | **HIGH** - contact MPs, attend sessions |
-| **Execution** | Jan - Dec | Institutions spend approved funds | Medium - monitor execution rates |
-| **Reporting** | Quarterly | Execution reports published | Medium - analyze and question |
-| **Audit** | Following year | Court of Accounts reviews spending | Low - read audit reports |
+| Phase | Timing | What Happens | Legal Basis | Your Opportunity |
+|-------|--------|--------------|-------------|------------------|
+| **Planning** | Jun - Aug | Macroeconomic forecasts (Jun 1), spending ceilings (Jul 31), framework letter (Aug 1) | Art. 31-33 | Low - internal process |
+| **Drafting** | Aug - Nov 15 | Institutions submit proposals (Sep 15), Ministry drafts budget (Sep 30), Government submits to Parliament (Nov 15) | Art. 34-35 | Medium - consultations may occur |
+| **Approval** | Nov 15 - Dec | Parliament debates and votes; urgent procedure if not adopted by Dec 15 | Art. 17(2), 35(4) | **HIGH** - contact MPs, attend sessions |
+| **Execution** | Jan - Dec | Institutions spend approved funds; rectifications possible (by Nov 30) | Art. 6, 61(1) | Medium - monitor execution rates |
+| **Reporting** | Quarterly | Execution reports published; local budgets: Apr, Jul, Oct, Dec | Art. 44, 55; Law 273/2006 Art. 49(12) | Medium - analyze and question |
+| **Audit** | Following year | Court of Accounts reviews spending, reports to Parliament by Jul 1 | Law 94/1992; Art. 56(4) | Low - read audit reports |
 
 ---
 
@@ -145,7 +145,7 @@ Explore each phase in detail with expandable cards.
 │  ┌────────────┐  ┌────────────┐  ┌────────────┐              │
 │  │    📋      │  │    ✏️      │  │    🏛️      │              │
 │  │  PLANNING  │  │  DRAFTING  │  │  APPROVAL  │              │
-│  │ May - Aug  │  │ Sep-Oct 15 │  │ Oct - Dec  │              │
+│  │ Jun - Aug  │  │ Aug-Nov 15 │  │ Nov - Dec  │              │
 │  │            │  │            │  │            │              │
 │  │  [Expand]  │  │  [Expand]  │  │  [Expand]  │              │
 │  └────────────┘  └────────────┘  └────────────┘              │
@@ -225,62 +225,74 @@ interface PhaseInfo {
 
 ### Phase Details (Expanded Content)
 
-**1. PLANNING (May-August)**
-- Ministry of Finance sets spending ceilings
-- Each institution prepares budget requests
-- Internal negotiations happen
+**1. PLANNING (June-August)** — *Law 500/2002, Art. 31-33*
+- **June 1:** Macroeconomic forecasts completed (Art. 31)
+- **July 31:** Ministry submits spending ceilings to Government (Art. 32)
+- **August 1:** Framework letter sent to principal credit authorizers (Art. 33)
 - **Your opportunity:** Limited — this is an internal government process
 
-**2. DRAFTING (September - October 15)**
-- Government consolidates all requests
-- Budget draft prepared
-- **Legal deadline: October 15** — must submit to Parliament
-- **Your opportunity:** Public consultations may occur, watch for announcements
+**2. DRAFTING (August - November 15)** — *Law 500/2002, Art. 34-35*
+- **September 15:** Institutions submit revised proposals to Ministry (Art. 34(5))
+- **September 30:** Ministry delivers draft budget to Government for first reading (Art. 35(1))
+- **November 15:** Government submits budget to Parliament (Art. 35(4)) — *amended from October 15 by Law 270/2013*
+- **Your opportunity:** Public consultations may occur under Law 52/2003 (but Parliament is exempt)
 
-**3. APPROVAL (October-December)**
-- Parliament debates the budget
+**3. APPROVAL (November 15-December)** — *Law 500/2002, Art. 17(2), 35(4), 37*
+- Parliament debates the budget in joint sittings
 - Amendments proposed and voted
-- Final vote usually in December
-- **Your opportunity:** HIGH — contact your MPs, attend public sessions, submit written opinions
+- **December 15:** If not adopted, urgent procedure required (Art. 17(2))
+- If unapproved 3 days before year-end, previous year's provisions apply (Art. 37)
+- **Your opportunity:** HIGH — contact your MPs, attend public sessions (note: no formal citizen input mechanism exists during Parliamentary consideration)
 
-**4. EXECUTION (January-December)**
+**4. EXECUTION (January-December)** — *Law 500/2002, Art. 6, 61(1)*
 - Institutions spend according to approved budget
-- Quarterly reports published
-- Rectifications may occur
+- Execution closes **December 31** (Art. 61(1))
+- **Rectifications:** May occur, typically September-November; must be elaborated by **November 30** (Art. 6)
+- Credit transfers between budget chapters allowed starting Q3
 - **Your opportunity:** Monitor execution rates on Transparenta.eu
 
-**5. REPORTING (Quarterly + Annual)**
-- Execution reports made public
-- Comparison: planned vs. actual
-- Available on Forexebug and ministry sites
+**5. REPORTING (Quarterly + Annual)** — *Law 500/2002, Art. 44, 55; Law 273/2006, Art. 49(12)*
+- Principal credit authorizers prepare quarterly monitoring reports (Art. 44(1))
+- Ministry publishes monthly execution notes
+- **Local budgets:** Reports due in April (Q1), July (Q2), October (Q3), December (Q4) per Law 273/2006
+- Annual execution account submitted to Parliament by **July 1** of following year (Art. 56(4))
 - **Your opportunity:** Analyze data, identify gaps, ask questions
 
-**6. AUDIT (Following Year)**
-- Court of Accounts reviews spending
-- Reports identify irregularities
-- Recommendations issued
-- **Your opportunity:** Read audit reports, follow up on findings
+**6. AUDIT (Following Year)** — *Law 94/1992 (Court of Accounts Law)*
+- **Curtea de Conturi** (Court of Accounts) reviews spending under Constitutional Article 140
+- Reports prepared within 6 months of receiving accounts (Art. 29)
+- Annual Public Report transmitted to Parliament
+- Court also houses EU Funds Audit Authority under Law 77/2002
+- **Your opportunity:** Read audit reports, follow up on findings with your MP
 
 ---
 
 ## Key Deadline Alert
 
-### October 15: The Legal Deadline
+### November 15: The Legal Deadline (Updated in 2013)
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│  ⏰ KEY DEADLINE: OCTOBER 15                                 │
+│  ⏰ KEY DEADLINE: NOVEMBER 15                                │
 ├──────────────────────────────────────────────────────────────┤
 │                                                              │
 │  The Government MUST submit the budget to Parliament by      │
-│  October 15 each year. This is a legal requirement.          │
+│  November 15 each year (Law 500/2002, Art. 35(4)).           │
+│                                                              │
+│  ⚠️  IMPORTANT: The October 15 deadline often cited in       │
+│  older sources is OUTDATED. Law 270/2013 extended it by      │
+│  one month to November 15.                                   │
 │                                                              │
 │  If this deadline is missed, it signals:                     │
 │  • Political instability or disagreements                    │
 │  • Poor planning by the government                           │
 │  • Potential budget execution problems                       │
 │                                                              │
-│  Mark your calendar: October = Budget Season begins!         │
+│  Other key dates:                                            │
+│  • Dec 15: Urgent procedure required if not adopted          │
+│  • Dec 31: Execution year closes                             │
+│                                                              │
+│  Mark your calendar: November = Budget Season begins!        │
 │                                                              │
 └──────────────────────────────────────────────────────────────┘
 ```
@@ -293,31 +305,31 @@ interface PhaseInfo {
   id="budget-cycle-01-q1"
   question="When must the Government submit the budget to Parliament?"
   options={[
-    { id: "a", text: "September 1", isCorrect: false },
-    { id: "b", text: "October 15", isCorrect: true },
+    { id: "a", text: "October 15", isCorrect: false },
+    { id: "b", text: "November 15", isCorrect: true },
     { id: "c", text: "November 30", isCorrect: false },
     { id: "d", text: "December 31", isCorrect: false }
   ]}
-  explanation="October 15 is the legal deadline for the Government to submit the budget to Parliament. This kicks off 'budget season' when Parliament debates and eventually approves the next year's budget."
+  explanation="November 15 is the legal deadline under Law 500/2002, Art. 35(4), as amended by Law 270/2013. Note: Many older sources incorrectly cite October 15, which was the original deadline before the 2013 amendment."
 />
 
 <Quiz
   id="budget-cycle-01-q2"
   question="Which phase offers the MOST opportunity for citizen engagement?"
   options={[
-    { id: "a", text: "Planning (May-August)", isCorrect: false },
+    { id: "a", text: "Planning (June-August)", isCorrect: false },
     { id: "b", text: "Execution (January-December)", isCorrect: false },
-    { id: "c", text: "Approval (October-December)", isCorrect: true },
+    { id: "c", text: "Approval (November-December)", isCorrect: true },
     { id: "d", text: "Audit (Following year)", isCorrect: false }
   ]}
-  explanation="The Approval phase (October-December) offers the highest opportunity for citizen input. During this time, Parliament openly debates the budget, and citizens can contact MPs, attend sessions, and submit written opinions to influence the final outcome."
+  explanation="The Approval phase (November-December) offers the highest opportunity for citizen input. During this time, Parliament openly debates the budget. While no formal citizen input mechanism exists during Parliamentary consideration, citizens can contact MPs, attend public sessions, and advocate through civil society organizations."
 />
 
 ---
 
 ## Key Takeaway
 
-> **Remember:** The budget cycle has six phases, but October-December is YOUR window. The legal deadline of October 15 starts "budget season" — this is when your voice can influence how public money is allocated next year.
+> **Remember:** The budget cycle has six phases, but November-December is YOUR window. The legal deadline of **November 15** (not October 15 as older sources state) starts "budget season" — this is when your voice can influence how public money is allocated next year. For local budgets, you also have a 15-day contestation period under Law 273/2006.
 
 ---
 

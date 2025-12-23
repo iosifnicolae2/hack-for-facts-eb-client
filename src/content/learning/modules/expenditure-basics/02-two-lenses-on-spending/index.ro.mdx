@@ -1,0 +1,249 @@
+---
+title: "Două perspective asupra cheltuielilor"
+durationMinutes: 6
+concept: "Clasificarea funcțională vs. clasificarea economică"
+objective: "Să distingem între clasificarea funcțională și cea economică"
+---
+
+# Două perspective asupra cheltuielilor
+
+## Introducere
+
+Când analizezi cheltuielile guvernamentale, poți pune două întrebări fundamental diferite:
+
+1. **„Pentru CE sunt banii?"** → Educație, Sănătate, Apărare etc.
+2. **„Ce TIP de cheltuială este?"** → Salarii, Echipamente, Clădiri etc.
+
+Aceste două întrebări îți oferă două perspective diferite asupra acelorași bani. Bugetul României folosește ambele sisteme, iar înțelegerea diferenței dintre ele îți deschide căi importante de analiză.
+
+> **Idee cheie:** Aceiași 10 milioane RON pot fi simultan „cheltuieli pentru educație" (clasificare funcțională) ȘI „plăți salariale" (clasificare economică). Nu sunt categorii care se exclud reciproc — sunt perspective diferite asupra aceleiași realități.
+
+---
+
+## Element interactiv: Comutator de clasificare
+
+Explorează cum aceiași bani arată diferit prin fiecare perspectivă.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  👁️ DOUĂ MODURI DE A VEDEA ACEIAȘI BANI                      │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  [ FUNCȚIONAL ]  [ ECONOMIC ]                                │
+│   (Pentru ce?)    (Ce tip?)                                  │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  PERSPECTIVA FUNCȚIONALĂ:                                    │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │                                                        │  │
+│  │  ┌─────────────────────────────┐ ┌──────────────────┐  │  │
+│  │  │                             │ │                  │  │  │
+│  │  │    PROTECȚIE SOCIALĂ        │ │    AFACERI       │  │  │
+│  │  │         33%                 │ │   ECONOMICE      │  │  │
+│  │  │    (Pensii, asistență)      │ │      17%         │  │  │
+│  │  │                             │ │                  │  │  │
+│  │  └─────────────────────────────┘ └──────────────────┘  │  │
+│  │  ┌──────────────────┐ ┌──────────────┐ ┌───────────┐   │  │
+│  │  │    SĂNĂTATE      │ │  EDUCAȚIE    │ │  ORDINE   │   │  │
+│  │  │       12%        │ │      9%      │ │  PUBLICĂ  │   │  │
+│  │  │   (Spitale)      │ │   (Școli)    │ │    7%     │   │  │
+│  │  └──────────────────┘ └──────────────┘ └───────────┘   │  │
+│  │                                                        │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  Apasă pe orice categorie pentru defalcarea economică →      │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Specificație componentă
+
+```typescript
+/**
+ * Componenta ClassificationExplorer
+ *
+ * SCOP: Comutare între vizualizările funcțională și economică ale aceluiași buget,
+ * arătând cum aceiași bani apar diferit prin fiecare perspectivă.
+ */
+interface ClassificationExplorerProps {
+  readonly budgetData: BudgetData
+  readonly defaultView: 'functional' | 'economic'
+  readonly onCategoryClick?: (category: CategoryDetail) => void
+  readonly showCrossReference?: boolean
+}
+
+interface BudgetData {
+  readonly year: number
+  readonly totalAmount: number
+  readonly functional: readonly FunctionalCategory[]
+  readonly economic: readonly EconomicCategory[]
+  readonly crossReference: readonly CrossReferenceItem[]
+}
+
+interface FunctionalCategory {
+  readonly code: string // ex: "65" pentru Educație
+  readonly name: string
+  readonly percentage: number
+  readonly amount: number
+  readonly description: string
+  readonly subcategories?: readonly FunctionalCategory[]
+}
+
+interface EconomicCategory {
+  readonly code: string // ex: "10" pentru Personal
+  readonly name: string
+  readonly percentage: number
+  readonly amount: number
+  readonly description: string
+}
+
+interface CrossReferenceItem {
+  readonly functionalCode: string
+  readonly economicCode: string
+  readonly amount: number
+  readonly percentage: number
+}
+
+/**
+ * GESTIONAREA STĂRII:
+ * - currentView: 'functional' | 'economic'
+ * - selectedCategory: string | null
+ * - expandedCategory: string | null (pentru detaliere)
+ * - hoveredCategory: string | null
+ * - showCrossReference: boolean
+ *
+ * TRANZIȚII DE STARE:
+ * - Click pe tab → animație de tranziție între vizualizări
+ * - Click pe categorie → arată detaliere sau referință încrucișată
+ * - Hover → evidențiază categoriile asociate din cealaltă vizualizare
+ *
+ * INTERACȚIUNI UTILIZATOR:
+ * - Comutare tab: schimbă între vizualizările Funcțional/Economic
+ * - Click treemap: intră în subcategorii sau arată detalii
+ * - Hover legendă: evidențiază secțiunea corespunzătoare din treemap
+ * - Tastatură: Tab pentru navigare, Enter pentru selecție, Escape pentru înapoi
+ *
+ * STĂRI VIZUALE:
+ * - Implicit: treemap cu categorii colorate
+ * - Hover: categoria se ridică ușor, apare tooltip
+ * - Selectat: categoria se extinde, arată defalcarea
+ * - Referință încrucișată: săgeți conectează elementele funcționale/economice
+ *
+ * ANIMAȚII:
+ * - Schimbare vizualizare: tranziție morfică (400ms)
+ * - Casete treemap: redimensionare lină la schimbarea datelor
+ * - Detaliere: efect de zoom în subcategorii
+ * - Săgeți referință încrucișată: animație de desenare (300ms)
+ *
+ * ACCESIBILITATE:
+ * - Treemap are role="img" cu aria-label descriptiv
+ * - Fiecare casetă este focusabilă cu aria-label descriptiv
+ * - Navigarea cu Tab urmează ordinea vizuală
+ * - Culorile sunt completate cu pattern-uri sau etichete
+ */
+```
+
+**Comportament așteptat:**
+
+- Comutare fluidă între vizualizările Funcțională și Economică
+- Aceeași sumă totală, defalcare diferită
+- Click pe orice casetă pentru referință încrucișată (ex: cheltuieli Educație defalcate pe Personal/Bunuri/Investiții)
+- Animații fluide la schimbarea vizualizărilor
+
+---
+
+## Explicație: Cele două clasificări
+
+### Clasificarea funcțională („Pentru ce?")
+
+Răspunde la întrebarea: **Ce scop servesc acești bani?**
+
+| Cod | Categorie | La ce întrebare răspunde |
+|-----|-----------|--------------------------|
+| 65 | Învățământ | Cât se alocă școlilor? |
+| 66 | Sănătate | Cât se alocă spitalelor? |
+| 68 | Asigurări și asistență socială | Cât se alocă pensiilor? |
+| 60 | Apărare | Cât se alocă armatei? |
+
+Aceasta este perspectiva la care se gândesc majoritatea cetățenilor când aud de „buget". Arată care sectoare primesc finanțare.
+
+### Clasificarea economică („Ce tip?")
+
+Răspunde la întrebarea: **Care este natura cheltuielii?**
+
+| Cod | Categorie | Ce include |
+|-----|-----------|------------|
+| 10 | Cheltuieli de personal | Salarii, prime, contribuții sociale |
+| 20 | Bunuri și servicii | Utilități, consumabile, întreținere, contracte |
+| 51, 55, 57 | Transferuri | Transferuri interguvernamentale, subvenții, asistență socială |
+| 71 | Active nefinanciare | Clădiri, drumuri, echipamente, vehicule |
+| 30, 81 | Serviciul datoriei | Plăți de dobânzi (30), rambursări de împrumuturi (81) |
+
+Aceasta relevă cum sunt cheltuiți banii, indiferent de sector. Este esențială pentru înțelegerea structurii cheltuielilor guvernamentale.
+
+### De ce contează ambele
+
+Ia în considerare această întrebare: **„Cât cheltuiește România pe salariile profesorilor?"**
+
+Pentru a răspunde, ai nevoie de AMBELE clasificări:
+- **Funcțional:** Filtrează după Învățământ (cod 65)
+- **Economic:** Filtrează după Personal (cod 10)
+- **Rezultat:** Învățământ + Personal = Salariile profesorilor
+
+> **Sfat util:** Când investighezi cheltuielile, pune mereu ambele întrebări. „Cheltuielile pentru sănătate au crescut" poate însemna mai multe asistente medicale (personal) SAU mai multe echipamente medicale (investiții). Defalcarea economică îți spune care dintre ele.
+
+---
+
+## Aprofundare: Clasificarea economică
+
+Iată cheltuielile României după tipul economic (date 2024):
+
+| Cod | Tip | Pondere | Observație cheie |
+|-----|-----|---------|------------------|
+| 51, 55, 57 | Transferuri | ~31% | Pensii, subvenții — relativ stabile |
+| 10 | Personal | ~23% | Salariile trebuie plătite — execuție mereu ridicată |
+| 71 | Active nefinanciare | ~17% | Clădiri, drumuri — **cea mai scăzută rată de execuție** |
+| 20 | Bunuri și servicii | ~13% | Contracte, utilități — variabilă |
+| 30, 81 | Serviciul datoriei | ~5% | Dobânzi și rambursări — trebuie plătite |
+
+> **🚨 Tipar critic:** Codul 71 (investiții) este adesea bugetat, dar rareori cheltuit integral. Aici se blochează proiectele de infrastructură. Banii sunt alocați pentru școli și spitale noi, dar problemele de achiziții, constrângerile de capacitate și factorii politici fac ca adesea să nu fie cheltuiți.
+
+---
+
+## Practică
+
+<Quiz
+  id="expenditure-classification-code71"
+  question="Codul economic 71 (Active nefinanciare) se referă la:"
+  options={[
+    { id: "a", text: "Cheltuieli de personal (salarii și beneficii)", isCorrect: false },
+    { id: "b", text: "Investiții de capital (clădiri, drumuri, echipamente)", isCorrect: true },
+    { id: "c", text: "Plăți de dobânzi pentru datoria publică", isCorrect: false },
+    { id: "d", text: "Transferuri către cetățeni (pensii, subvenții)", isCorrect: false }
+  ]}
+  explanation="Codul 71 'Active nefinanciare' acoperă investițiile de capital: clădiri, drumuri, sisteme IT, vehicule și echipamente. Aceasta este categoria cu de obicei cea mai SCĂZUTĂ rată de execuție, ceea ce înseamnă că banii pentru infrastructură sunt adesea bugetați, dar nu cheltuiți."
+/>
+
+<Quiz
+  id="expenditure-classification-question"
+  question="Dacă vrei să afli cât cheltuiește România pe clădiri pentru spitale, de ce clasificări ai nevoie?"
+  options={[
+    { id: "a", text: "Doar funcțională (Sănătate)", isCorrect: false },
+    { id: "b", text: "Doar economică (Investiții de capital)", isCorrect: false },
+    { id: "c", text: "Atât funcțională (Sănătate) CÂT ȘI economică (Investiții de capital)", isCorrect: true },
+    { id: "d", text: "Niciuna — aceste date nu sunt disponibile", isCorrect: false }
+  ]}
+  explanation="Pentru a găsi cheltuielile pe clădiri de spitale, ai nevoie de ambele perspective: clasificarea funcțională (Sănătate, cod 66) îți spune că este pentru sectorul sănătății, iar clasificarea economică (Investiții de capital, cod 71) îți spune că este pentru infrastructură. Încrucișarea ambelor îți oferă răspunsul specific."
+/>
+
+---
+
+## Concluzie
+
+> 📌 **De reținut:** Funcțional = „Pentru ce?" (Educație, Sănătate, Apărare). Economic = „Ce tip?" (Salarii, Clădiri, Transferuri). Folosește ambele perspective împreună pentru a obține imaginea completă. Acordă atenție specială Codului 71 — acolo promisiunile de infrastructură rămân adesea neîndeplinite.
+
+---
+
+<MarkComplete label="Continuă la Ratele de execuție" />

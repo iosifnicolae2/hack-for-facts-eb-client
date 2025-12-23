@@ -43,16 +43,17 @@ Explore each of the four official data sources to understand when to use each on
 │                                                              │
 │  ┌──────────────────────────────────────────────────────┐    │
 │  │  FOREXEBUG                                           │    │
-│  │  forexebug.mfinante.gov.ro                           │    │
+│  │  forexepublic.mfinante.gov.ro                        │    │
 │  │                                                      │    │
-│  │  - Real-time budget execution                        │    │
-│  │  - Institution-level detail                          │    │
+│  │  - Budget execution for 14,000+ institutions         │    │
 │  │  - Quarterly and annual reports                      │    │
+│  │  - Balance verification forms                        │    │
 │  │                                                      │    │
-│  │  TIP: Look for "Executie" (Execution) reports        │    │
-│  │  to compare planned vs. actual spending              │    │
+│  │  NOTE: Public access limited to forms & templates.   │    │
+│  │  Full data requires digital signature + Treasury     │    │
+│  │  registration.                                       │    │
 │  │                                                      │    │
-│  │  Best for: Execution monitoring, detail              │    │
+│  │  Best for: Understanding reporting structure         │    │
 │  │  [ Visit Site ]                                      │    │
 │  └──────────────────────────────────────────────────────┘    │
 │                                                              │
@@ -149,18 +150,26 @@ Each source serves a distinct purpose in the budget transparency ecosystem:
 
 | Source | Purpose | Use When |
 |--------|---------|----------|
-| **Ministry of Finance** | Policy & planning | You need budget laws, fiscal strategy, or national aggregates |
-| **Forexebug** | Execution monitoring | You want real-time data on actual spending vs. plans |
+| **Ministry of Finance** | Policy & planning | You need budget laws, fiscal strategy, debt statistics, or national aggregates |
+| **Forexebug** | Execution reporting | You need to understand how 14,000+ institutions report budget execution (note: limited public access) |
 | **SEAP** | Procurement tracking | You're following specific contracts or suppliers |
-| **Court of Accounts** | Audit findings | You're looking for verified problems and irregularities |
+| **Court of Accounts** | Audit findings | You're looking for verified problems — they audit 1,300+ entities yearly |
+
+### Important Access Notes
+
+**Forexebug requires authentication.** Unlike the other sources, Forexebug requires a qualified digital signature certificate and Treasury registration for full data access. Public users can only access forms, templates, and guidance documents.
+
+**SEAP has usability barriers.** Every page requires CAPTCHA completion, searches are limited to single CPV codes, and bulk data exports stopped in 2018 when SICAP replaced SEAP.
+
+**Court of Accounts is freely accessible.** All audit reports are downloadable as PDFs without registration — this is often the most accessible source for finding documented problems.
 
 ### Pro Tips
 
-**Start with Forexebug** when investigating a specific institution. It has the most granular, up-to-date execution data.
+**Start with Court of Accounts** when investigating — they may have already documented irregularities. In 2024, they found procurement violations in 58% of audited entities.
 
-**Cross-reference with Court of Accounts** if you find anomalies. They may have already investigated and documented the issue.
+**Cross-reference SEAP with audit reports.** Court of Accounts often identifies procurement-related damages that you can then trace back to specific contracts.
 
-**SEAP is your friend for procurement stories.** Every public contract above the threshold must be published here.
+**Use data.gov.ro for bulk data.** The Ministry of Finance publishes 97 datasets there, including state budget XML data and government debt reports.
 
 ---
 
@@ -168,21 +177,48 @@ Each source serves a distinct purpose in the budget transparency ecosystem:
 
 <Quiz
   id="transparency-tools-01-q1"
-  question="Which official source provides real-time budget execution data at the institution level?"
+  question="Which official source provides budget execution data for public institutions?"
   options={[
     { id: "a", text: "mfinante.gov.ro (Ministry of Finance)", isCorrect: false },
-    { id: "b", text: "Forexebug (forexebug.mfinante.gov.ro)", isCorrect: true },
+    { id: "b", text: "Forexebug (forexepublic.mfinante.gov.ro)", isCorrect: true },
     { id: "c", text: "e-licitatie.ro (SEAP)", isCorrect: false },
     { id: "d", text: "curteadeconturi.ro (Court of Accounts)", isCorrect: false }
   ]}
-  explanation="Forexebug is the real-time budget execution system. It shows exactly how much each public institution has spent compared to their plan, updated regularly throughout the year. The Ministry of Finance site has the budget laws but not execution details."
+  explanation="Forexebug (accessed at forexepublic.mfinante.gov.ro) is the budget execution reporting system covering 14,000+ public institutions. Note: Public access is limited to forms and templates — full execution data requires a digital signature certificate and Treasury registration."
 />
+
+---
+
+## Additional Sources
+
+Beyond the four main sources, these portals provide valuable complementary data:
+
+| Source | URL | What You'll Find |
+|--------|-----|------------------|
+| **data.gov.ro** | data.gov.ro | 4,800+ open datasets from 177 organizations, including Ministry of Finance budget data |
+| **European Commission** | economy-finance.ec.europa.eu | Romania's fiscal plans, draft budgets, and EU procedure documentation |
+| **Eurostat** | ec.europa.eu/eurostat | Standardized EU statistics for cross-country comparisons |
+| **EU Cohesion Data** | cohesiondata.ec.europa.eu | EU Structural Funds data for Romania (2014-2027) |
+
+---
+
+## Reality Check: Data Quality
+
+Romania scores **62/100** on the 2023 Open Budget Index — sufficient for informed debate but trailing neighbors like Moldova (81) and Bulgaria (79).
+
+**Key limitations to be aware of:**
+- SEAP bulk exports stopped in 2018, making historical analysis difficult
+- Forexebug has restricted public access — most data requires authentication
+- SEAP CAPTCHAs and single-CPV search limits slow down research
+- Some Court of Accounts recommendations have only 82% implementation rate
+
+Despite these barriers, investigative journalists have used these sources effectively — the RISE Project's Tel Drum investigation and Recorder's Orthodox Church investigation both relied on procurement and audit data to expose hundreds of millions in irregularities.
 
 ---
 
 ## Key Takeaway
 
-> Four official sources cover Romanian budget data: Ministry of Finance (laws and strategy), Forexebug (real-time execution), SEAP (procurement contracts), and Court of Accounts (audit findings). Bookmark all four — you'll need different ones for different questions.
+> Four official sources cover Romanian budget data: Ministry of Finance (laws and strategy), Forexebug (execution reporting — limited public access), SEAP (procurement contracts — expect CAPTCHAs), and Court of Accounts (freely accessible audit findings). Start with Court of Accounts for documented problems, and use data.gov.ro for bulk data downloads.
 
 ---
 

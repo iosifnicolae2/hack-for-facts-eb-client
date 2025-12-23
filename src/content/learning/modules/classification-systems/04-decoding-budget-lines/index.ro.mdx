@@ -1,0 +1,385 @@
+---
+title: "Decodificarea liniilor bugetare"
+durationMinutes: 5
+concept: "Combinarea codurilor funcționale și economice pentru citirea documentelor bugetare"
+objective: "Decodificarea liniilor bugetare complete și utilizarea Exploratorului de Clasificări"
+---
+
+# Decodificarea liniilor bugetare
+
+## Introducere
+
+Acum că știi clasificările funcționale (pentru ce?) și economice (ce tip?), este timpul să le combinăm. Liniile bugetare reale folosesc AMBELE sisteme, creând coduri precum `65.02.04.01 - 71.01.01`.
+
+La prima vedere, arată ca un cifru imposibil de descifrat. Dar cu noile tale cunoștințe, îl poți decoda instantaneu.
+
+> **Idee cheie:** Odată ce poți decoda o linie bugetară, documentele bugetare devin hărți lizibile în loc de tabele intimidante.
+
+---
+
+## Element interactiv: Decodificator de coduri bugetare
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🔓 DECODIFICATOR DE CODURI BUGETARE                         │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Introdu un cod bugetar pentru decodificare:                 │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  65.02.04.01 - 71.01.01                                │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  [ Decodifică → ]                                            │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  REZULTAT DECODIFICAT:                                       │
+│                                                              │
+│  CLASIFICARE FUNCȚIONALĂ (Pentru ce este?)                   │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │  65      │ Învățământ                                   │ │
+│  │  65.02   │ Învățământ - bugete locale                   │ │
+│  │  65.02.04│ Învățământ secundar                          │ │
+│  │  65.02.04.01 │ Învățământ secundar inferior             │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                              │
+│  CLASIFICARE ECONOMICĂ (Ce tip de cheltuială?)               │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │  71      │ Active nefinanciare (Investiții de capital)  │ │
+│  │  71.01   │ Active fixe                                  │ │
+│  │  71.01.01│ Construcții                                  │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                              │
+│  📝 PE ÎNȚELESUL TUTUROR:                                    │
+│  „Construcția unei școli gimnaziale (clasele 5-8),           │
+│   finanțată din bugetul local"                               │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Componenta BudgetCodeDecoder
+
+```typescript
+/**
+ * Componenta BudgetCodeDecoder
+ *
+ * SCOP: Permite utilizatorilor să introducă orice cod bugetar și să-l vadă
+ * decodificat în componentele funcționale și economice, cu explicație în limbaj simplu.
+ */
+interface BudgetCodeDecoderProps {
+  readonly defaultValue?: string
+  readonly showBuilder?: boolean
+  readonly onDecode?: (result: DecodedBudgetLine) => void
+  readonly onSearchPlatform?: (code: string) => void
+}
+
+interface DecodedBudgetLine {
+  readonly rawCode: string
+  readonly functional: {
+    readonly fullCode: string
+    readonly hierarchy: ReadonlyArray<{
+      readonly code: string
+      readonly name: string
+      readonly nameRo: string
+    }>
+  }
+  readonly economic: {
+    readonly fullCode: string
+    readonly hierarchy: ReadonlyArray<{
+      readonly code: string
+      readonly name: string
+      readonly nameRo: string
+    }>
+  }
+  readonly plainEnglish: string
+  readonly plainRomanian: string
+  readonly watchFlags?: ReadonlyArray<{
+    readonly type: 'low_execution' | 'high_value' | 'sensitive'
+    readonly message: string
+  }>
+}
+
+/**
+ * GESTIONAREA STĂRII:
+ * - inputValue: string (codul introdus de utilizator)
+ * - decodedResult: DecodedBudgetLine | null
+ * - isDecoding: boolean
+ * - error: { message: string; suggestion?: string } | null
+ * - recentCodes: string[] (ultimele 5 coduri decodificate)
+ *
+ * TRANZIȚII DE STARE:
+ * - Utilizatorul tastează → actualizare inputValue, ștergere eroare
+ * - Utilizatorul apasă „Decodifică" sau Enter → validare și decodificare
+ * - Format invalid → setare eroare cu indiciu de format
+ * - Decodificare validă → afișare rezultat cu animație
+ *
+ * INTERACȚIUNI UTILIZATOR:
+ * - Câmp de introducere cu placeholder indicând formatul
+ * - Butonul „Decodifică" sau tasta Enter declanșează decodificarea
+ * - Clic pe element din ierarhie pentru mai multe detalii
+ * - „Copiază link" pentru a partaja rezultatul decodificat
+ * - „Caută în Transparenta" pentru a găsi date reale
+ * - Dropdown cu coduri recente pentru acces rapid
+ *
+ * STĂRI VIZUALE:
+ * - Gol: text placeholder cu exemplu de format
+ * - Tastare: indicator de validare format în timp real
+ * - Decodificare: efect de încărcare scurt (200ms)
+ * - Decodificat: dezvăluire animată a ierarhiei
+ * - Eroare: bordură roșie, mesaj de eroare, corecție sugerată
+ *
+ * ANIMAȚII:
+ * - Elemente ierarhie: fade-in eșalonat (100ms întârziere fiecare)
+ * - Text simplu: fade-in după ierarhie (300ms întârziere)
+ * - Indicatoare de avertizare: slide-in din dreapta cu puls de atenție
+ * - Eroare: animație de scuturare (200ms)
+ *
+ * ACCESIBILITATE:
+ * - Input are aria-describedby legat de instrucțiuni de format
+ * - Rezultatul decodificării este anunțat via aria-live="polite"
+ * - Nivelurile ierarhiei folosesc aria-level
+ * - Indicatoarele de avertizare au role="alert"
+ * - Focus-ul se mută la rezultat după decodificare reușită
+ */
+```
+
+**Comportament așteptat:**
+- Validare input în timp real
+- Decodificarea arată descompunerea ierarhică pentru ambele clasificări
+- Rezumat în limbaj simplu (română/engleză)
+- Indicatoare de avertizare pentru codul 71 sau alte coduri semnalate
+- Link pentru căutarea acestui cod în platforma Transparenta
+
+---
+
+## Element interactiv: Constructor de coduri
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🏗️ CONSTRUIEȘTE UN COD BUGETAR                              │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Ce vrei să găsești?                                         │
+│                                                              │
+│  FUNCȚIONAL (Pentru ce este?)                                │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ Funcție:     [ Învățământ          ▼]  → 65            │  │
+│  │ Nivel:       [ Buget local         ▼]  → .02           │  │
+│  │ Sub-funcție: [ Învățământ secundar ▼]  → .04           │  │
+│  │ Detaliu:     [ Ciclu inferior      ▼]  → .01           │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  ECONOMIC (Ce tip de cheltuială?)                            │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ Titlu:       [ Investiții capital  ▼]  → 71            │  │
+│  │ Articol:     [ Active fixe         ▼]  → .01           │  │
+│  │ Sub-articol: [ Construcții         ▼]  → .01           │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  CODUL TĂU:  65.02.04.01 - 71.01.01                          │
+│                                                              │
+│  SEMNIFICAȚIE: „Construcții pentru învățământ secundar       │
+│                 inferior, finanțat din buget local"          │
+│                                                              │
+│  [ Caută acest cod în Transparenta.eu → ]                    │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Componenta BudgetCodeBuilder
+
+```typescript
+/**
+ * Componenta BudgetCodeBuilder
+ *
+ * SCOP: Ghidează utilizatorii să construiască coduri bugetare prin dropdown-uri,
+ * învățând structura clasificărilor prin construcție practică.
+ */
+interface BudgetCodeBuilderProps {
+  readonly functionalData: ReadonlyArray<ClassificationNode>
+  readonly economicData: ReadonlyArray<ClassificationNode>
+  readonly onCodeBuilt?: (code: string, meaning: string) => void
+  readonly onSearchPlatform?: (code: string) => void
+}
+
+interface ClassificationNode {
+  readonly code: string
+  readonly name: string
+  readonly nameRo: string
+  readonly children?: ReadonlyArray<ClassificationNode>
+}
+
+/**
+ * GESTIONAREA STĂRII:
+ * - functionalSelections: { level1: string; level2: string; level3: string; level4: string }
+ * - economicSelections: { title: string; article: string; subArticle: string }
+ * - builtCode: string (calculat din selecții)
+ * - meaning: string (descriere calculată în limbaj simplu)
+ *
+ * TRANZIȚII DE STARE:
+ * - Selectare valoare dropdown → actualizare selecție, cascadare la dropdown-uri copil
+ * - Ștergere selecție → resetare dropdown-uri dependente
+ * - Toate câmpurile obligatorii completate → afișare cod complet și semnificație
+ *
+ * INTERACȚIUNI UTILIZATOR:
+ * - Meniuri dropdown pentru fiecare nivel de clasificare
+ * - Fiecare selecție actualizează opțiunile nivelului următor
+ * - „Șterge tot" resetează constructorul
+ * - „Caută în platformă" deschide vizualizarea filtrată
+ * - Tastatură: Tab între dropdown-uri, tastare pentru filtrare opțiuni
+ *
+ * STĂRI VIZUALE:
+ * - Gol: placeholder „Selectează..." pe toate dropdown-urile
+ * - Parțial: dropdown-urile completate arată valori, cele goale arată „Selectează..."
+ * - Complet: toate dropdown-urile completate, cod afișat prominent
+ * - Căutare: stare de încărcare la preluarea opțiunilor copil
+ *
+ * ANIMAȚII:
+ * - Deschidere dropdown: slide-down (150ms)
+ * - Selectare opțiune: evidențiere scurtă (200ms)
+ * - Dezvăluire cod construit: fade-in + scalare ușoară (300ms)
+ * - Resetare în cascadă: animație de undă prin dropdown-uri
+ *
+ * ACCESIBILITATE:
+ * - Fiecare dropdown are aria-label descriind rolul său
+ * - Valorile selectate sunt anunțate la schimbare
+ * - Codul construit este într-o regiune aria-live="polite"
+ * - Instrucțiunile sunt disponibile via aria-describedby
+ */
+```
+
+---
+
+## Explicație de bază
+
+### Citirea unui document bugetar real
+
+Să decodificăm un extras bugetar real:
+
+```
+┌────────────────────────────────────────────────────────────┐
+│ BUGETUL LOCAL AL MUNICIPIULUI CLUJ-NAPOCA 2024             │
+├───────┬───────────────────────┬───────────┬────────────────┤
+│ Cod   │ Denumire              │ Prevederi │ Realizări (%)  │
+│       │                       │ (Planif.) │ (Efectiv)      │
+├───────┼───────────────────────┼───────────┼────────────────┤
+│ 65.02 │ ÎNVĂȚĂMÂNT            │   450,000 │   385,000 (86%)│
+│ 10    │ Cheltuieli de personal│   280,000 │   275,000 (98%)│
+│ 20    │ Bunuri și servicii    │    90,000 │    78,000 (87%)│
+│ 71    │ Active nefinanciare   │    80,000 │    32,000 (40%)│
+│       │       ⚠️ ATENȚIE!     │           │                │
+└───────┴───────────────────────┴───────────┴────────────────┘
+```
+
+**Cum citim:**
+- **65.02** = Învățământ, nivel buget local (funcțional)
+- **10** = Cheltuieli de personal (economic) → 98% execuție ✓
+- **20** = Bunuri și servicii (economic) → 87% execuție ~
+- **71** = Investiții de capital (economic) → 40% execuție ⚠️
+
+**Povestea:** Acest municipiu a plătit salariile profesorilor (10) și a menținut școlile funcționale (20), dar a realizat doar 40% din investițiile planificate în construcții/echipamente (71). Renovările sau achizițiile de echipamente au fost sever întârziate.
+
+### Fișă de referință rapidă
+
+Conform **OMFP nr. 1954/2005** (Ordinul Ministrului Finanțelor Publice), clasificările bugetare românești sunt organizate în cinci părți:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  📋 FIȘĂ CLASIFICĂRI BUGETARE (OMFP 1954/2005)               │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  FUNCȚIONAL (Categorii principale)     ECONOMIC (Coduri)     │
+│  ──────────────────────────────        ───────────────────── │
+│  Partea I: Servicii publice generale   10 - Personal         │
+│  51 - Autorități publice               20 - Bunuri & servicii│
+│  54 - Alte servicii generale           30 - Dobânzi          │
+│  55 - Tranzacții datorie publică       40 - Subvenții        │
+│  56 - Transferuri generale             50 - Transferuri      │
+│                                                              │
+│  Partea II: Apărare & Ordine publică   70 - Cheltuieli cap.  │
+│  60 - Apărare                          71 - Investiții ⚠️    │
+│  61 - Ordine publică & securitate      79 - Operațiuni fin.  │
+│                                                              │
+│  Partea III: Social-Cultural           80 - Serviciu datorie │
+│  65 - Învățământ                                             │
+│  66 - Sănătate                         DISTINCȚIE CAPITAL:   │
+│  67 - Cultură & religie                71.01 - Active noi    │
+│  68 - Protecție socială                71.03 - Reparații cap.│
+│                                                              │
+│  Partea IV: Locuințe & Mediu                                 │
+│  70 - Locuințe & dezv. publică                               │
+│  74 - Protecția mediului                                     │
+│                                                              │
+│  Partea V: Acțiuni economice                                 │
+│  80-87 - Afaceri economice                                   │
+│                                                              │
+│  SUFIXE NIVEL BUGET:                                         │
+│  .01 = buget central/stat   .02 = buget local                │
+│  .03 = asigurări sociale    .05 = asigurări sănătate         │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Integrare platformă: Activitate ghidată
+
+Încearcă să decodifici linii bugetare pe platforma reală:
+
+**Pasul 1:** Deschide [Exploratorul de Clasificări](/classifications/functional)
+
+**Pasul 2:** Găsește codul „66" — ce funcție este? *(Indiciu: Este esențial pentru toată lumea)*
+
+**Pasul 3:** Extinde „66.02" și caută „66.02.06" — ce serviciu de sănătate specific este acesta?
+*(Răspuns: Servicii medicale în unități sanitare cu paturi — Spitale)*
+
+**Pasul 4:** Deschide [Exploratorul de Clasificări Economice](/classifications/economic)
+
+**Pasul 5:** Găsește codul „71" și subcategoriile sale. Care este diferența între 71.01 și 71.03?
+
+> **Distincție critică:**
+> - **71.01** (Active fixe) = Achiziția de active fixe **NOI** — construcții noi, utilaje noi, echipamente noi
+> - **71.03** (Reparații capitale) = Reparații majore la active **EXISTENTE** — renovări, reabilitarea infrastructurii
+>
+> Acest lucru contează pentru analiza bugetară: 71.01 înseamnă extindere, 71.03 înseamnă menținerea capacității actuale.
+
+**Provocare bonus:** Ce înseamnă codul complet „66.02.06 - 71.01.02"?
+*(Răspuns: Achiziție de echipamente medicale pentru spitale locale — 66.02.06 este servicii spitalicești, 71.01.02 este mașini/echipamente/transport)*
+
+---
+
+## Exercițiu
+
+<Quiz
+  id="decode-budget-line-q1"
+  question='Ce înseamnă codul bugetar „65.02.04.01 - 71.01.01" în limbaj simplu?'
+  options={[
+    { id: "a", text: "Salariile profesorilor de la școlile secundare", isCorrect: false },
+    { id: "b", text: "Construcții pentru învățământ secundar inferior (buget local)", isCorrect: true },
+    { id: "c", text: "Achiziții de echipamente pentru cercetare universitară", isCorrect: false },
+    { id: "d", text: "Servicii medicale la clinici locale", isCorrect: false }
+  ]}
+  explanation='65.02.04.01 este Învățământ Secundar (ciclu inferior), nivel buget local. 71.01.01 este Construcții (investiții de capital). Împreună: „Construcții pentru școli gimnaziale (clasele 5-8), finanțate din buget local."'
+/>
+
+<Quiz
+  id="decode-budget-line-q2"
+  question='Privind această linie bugetară: „66.02 - Personal 98%, Investiții 45%" — care este povestea?'
+  options={[
+    { id: "a", text: "Sănătatea este suprafinanțată", isCorrect: false },
+    { id: "b", text: "Personalul medical este subplătit", isCorrect: false },
+    { id: "c", text: "Personalul spitalelor a fost plătit, dar echipamentele/clădirile noi au fost întârziate", isCorrect: true },
+    { id: "d", text: "Datele sunt nesigure", isCorrect: false }
+  ]}
+  explanation='66.02 este Sănătate (nivel local). Personal la 98% înseamnă că salariile au fost plătite. Investiții la 45% înseamnă că mai puțin de jumătate din construcțiile sau achizițiile de echipamente planificate s-au realizat. Acesta este tiparul clasic: operațiunile continuă, dar îmbunătățirile de infrastructură sunt întârziate.'
+/>
+
+---
+
+## Concluzie
+
+> 📌 **Reține:** Codurile bugetare combină clasificarea funcțională (scopul) și economică (tipul). Când vezi execuție scăzută la codul 71, aceasta înseamnă infrastructură neconstruită. Folosește Exploratorul de Clasificări pentru a decoda orice cod întâlnești — și fii atent la tiparul personal vs. investiții.
+
+---
+
+<MarkComplete label="Finalizează modulul" />

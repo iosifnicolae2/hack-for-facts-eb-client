@@ -1,0 +1,192 @@
+---
+title: "Trei moduri de a vedea banii"
+durationMinutes: 5
+concept: "Cele trei sisteme de clasificare pentru bugetele publice"
+objective: "Înțelegerea clasificărilor organizaționale, funcționale și economice"
+---
+
+# Trei moduri de a vedea banii
+
+## Introducere în concept
+
+Documentele bugetare par intimidante pentru că sunt pline de numere și coduri. Dar odată ce înțelegi sistemul, ele devin lizibile — și puternice.
+
+Fiecare cheltuială din bugetul public poate fi privită prin **trei lentile**. Gândește-te la asta ca la descrierea unei persoane: poți spune la ce departament lucrează (organizațional), despre ce este jobul ei (funcțional) sau cum este plătită (economic).
+
+> **Ideea cheie:** Fiecare linie bugetară răspunde la trei întrebări: CINE cheltuiește, PENTRU CE este și CE TIP de cheltuială este.
+
+---
+
+## Element interactiv: Cele trei lentile
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  👁️ TREI MODURI DE A VEDEA ORICE CHELTUIALĂ                  │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│                     Același 1 milion RON                     │
+│                            │                                 │
+│         ┌──────────────────┼──────────────────┐              │
+│         │                  │                  │              │
+│         ▼                  ▼                  ▼              │
+│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐        │
+│  │ORGANIZAȚIONAL│   │ FUNCȚIONAL  │   │  ECONOMIC   │        │
+│  │             │   │             │   │             │        │
+│  │    CINE?    │   │  PENTRU CE? │   │   CE TIP?   │        │
+│  │             │   │             │   │             │        │
+│  │ Ministerul  │   │  Învățământ │   │  Salarii    │        │
+│  │ Educației   │   │  (Cod 65)   │   │  (Cod 10)   │        │
+│  │             │   │             │   │             │        │
+│  └─────────────┘   └─────────────┘   └─────────────┘        │
+│                                                              │
+│  EXEMPLU: "Salariul unui profesor la o școală primară"       │
+│  • CINE: Ministerul Educației / Școală Locală                │
+│  • PENTRU CE: Învățământ primar (65.02.03.02)                │
+│  • CE TIP: Cheltuieli de personal (10.01.01)                 │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Componenta ThreeLensesExplorer
+
+```typescript
+/**
+ * Componenta ThreeLensesExplorer
+ *
+ * SCOP: Vizualizează modul în care aceeași cheltuială poate fi văzută prin trei
+ * sisteme de clasificare diferite, construind intuiția pentru structura documentelor bugetare.
+ */
+interface ThreeLensesExplorerProps {
+  readonly examples: ReadonlyArray<BudgetExample>
+  readonly onLensClick?: (lens: 'organizational' | 'functional' | 'economic') => void
+}
+
+interface BudgetExample {
+  readonly id: string
+  readonly amount: number
+  readonly description: string
+  readonly organizational: {
+    readonly entity: string
+    readonly code?: string
+  }
+  readonly functional: {
+    readonly category: string
+    readonly code: string
+    readonly subcategory?: string
+  }
+  readonly economic: {
+    readonly type: string
+    readonly code: string
+    readonly subtype?: string
+  }
+}
+
+/**
+ * GESTIONAREA STĂRII:
+ * - activeLens: 'all' | 'organizational' | 'functional' | 'economic'
+ * - currentExample: number (indexul exemplului selectat)
+ * - isAnimating: boolean
+ *
+ * TRANZIȚII DE STARE:
+ * - Click pe cardul lentilei → evidențiază acea lentilă, estompează celelalte
+ * - Click "Arată Tot" → revine la vizualizarea echilibrată
+ * - Swipe/click săgeți → schimbă exemplul
+ *
+ * INTERACȚIUNI UTILIZATOR:
+ * - Click pe orice card de lentilă pentru a-l focaliza
+ * - Click pe săgețile exemplului pentru a vedea diferite elemente bugetare
+ * - Hover pe cod pentru a vedea tooltip cu numele complet
+ * - Tastatură: Săgeată Stânga/Dreapta pentru navigare exemple, 1/2/3 pentru selectare lentilă
+ *
+ * STĂRI VIZUALE:
+ * - Implicit: Trei carduri egale cu margini subtile
+ * - Focalizat: Cardul selectat se mărește (1.05), celelalte se estompează (opacitate 0.6)
+ * - Hover: Elevație subtilă a umbrei
+ * - Animare: Tranziții line între stări (300ms ease-out)
+ *
+ * ANIMAȚII:
+ * - Focalizare card: scale + elevație (300ms)
+ * - Schimbare exemplu: crossfade (200ms)
+ * - Încărcare inițială: carduri în cascadă de la stânga la dreapta (100ms întârziere fiecare)
+ *
+ * ACCESIBILITATE:
+ * - role="radiogroup" pentru selecția lentilei
+ * - Fiecare card este role="radio" cu aria-checked
+ * - Navigarea exemplelor are aria-label cu descrierea exemplului
+ * - Screen reader anunță lentila selectată și detaliile exemplului
+ */
+```
+
+**Comportament așteptat:**
+- Trei carduri reprezintă cele trei lentile
+- Utilizatorii pot da click pe fiecare lentilă pentru a o focaliza
+- Secțiunea de exemplu arată cum o cheltuială reală se mapează la toate trei
+- Fiecare cod este clickabil pentru a vedea numele complet
+- Butoanele "Află Mai Mult" duc la lecțiile următoare (Funcțional, Economic)
+
+---
+
+## Explicație de bază
+
+### De ce trei sisteme?
+
+Fiecare sistem de clasificare servește un scop diferit:
+
+| Sistem | Întrebare | Scop | Exemplu Cod |
+|--------|-----------|------|-------------|
+| **Organizațional** | CINE cheltuiește? | Responsabilitate — urmărește banii până la entitatea responsabilă | Ministerul Sănătății |
+| **Funcțional** | PENTRU CE? | Scop — înțelege prioritățile de politică | 66 (Sănătate)* |
+| **Economic** | CE TIP? | Natură — distinge salariile de investiții | 10 (Personal) |
+
+> *Notă: România folosește propriile coduri de clasificare naționale (stabilite prin Ordinul MFP 1954/2005), care diferă de standardul internațional COFOG. De exemplu, codul românesc 66 = Sănătate corespunde COFOG 07, iar codul românesc 65 = Învățământ corespunde COFOG 09.
+
+### Cum funcționează împreună
+
+Când vezi o linie bugetară precum `65.02.04.01 - 71.01.01`, vezi:
+
+- **65.02.04.01** = Clasificare funcțională (Învățământ → Nivel local → Secundar → Ciclu inferior)
+- **71.01.01** = Clasificare economică (Investiții de capital → Active fixe → Construcții)
+
+Împreună îți spun: "Construcție pentru o școală gimnazială, finanțată din bugetul local."
+
+### Gândește-te la asta ca la…
+
+> **Analogia hărții:** Imaginează-ți că descrii o călătorie. Poți spune UNDE mergi (funcțional), CUM ajungi acolo (economic) sau CINE o organizează (organizațional). Toate trei descriu aceeași călătorie din unghiuri diferite.
+
+---
+
+## Practică
+
+<Quiz
+  id="classification-systems-q1"
+  question="Care sistem de clasificare răspunde la întrebarea 'Pentru CE se cheltuiesc acești bani?'"
+  options={[
+    { id: "a", text: "Clasificarea organizațională", isCorrect: false },
+    { id: "b", text: "Clasificarea funcțională", isCorrect: true },
+    { id: "c", text: "Clasificarea economică", isCorrect: false },
+    { id: "d", text: "Clasificarea temporală", isCorrect: false }
+  ]}
+  explanation="Clasificarea funcțională răspunde la 'Pentru ce?' — îți spune SCOPUL cheltuielii. România folosește propriile coduri naționale (65 pentru Învățământ, 66 pentru Sănătate, 60 pentru Apărare) care corespund, dar diferă de standardul internațional COFOG (COFOG folosește 09 pentru Învățământ, 07 pentru Sănătate, 02 pentru Apărare)."
+/>
+
+<Quiz
+  id="classification-systems-q2"
+  question="Dacă vrei să știi dacă banii au fost cheltuiți pe salarii vs. construcții de clădiri, ce clasificare ai verifica?"
+  options={[
+    { id: "a", text: "Organizațională — arată cine este plătit", isCorrect: false },
+    { id: "b", text: "Funcțională — arată funcția plăților", isCorrect: false },
+    { id: "c", text: "Economică — arată tipul cheltuielii", isCorrect: true },
+    { id: "d", text: "Niciuna dintre acestea — ai nevoie de documentul real", isCorrect: false }
+  ]}
+  explanation="Clasificarea economică îți spune TIPUL cheltuielii: codul 10 este Personal (salarii), codul 71 este Investiții de capital (construcții). Aceasta ajută la identificarea dacă banii au mers către operațiuni sau investiții pe termen lung."
+/>
+
+---
+
+## Concluzie cheie
+
+> 📌 **Ține minte:** Fiecare cheltuială bugetară poate fi privită prin trei lentile: CINE o cheltuiește (organizațional), PENTRU CE este (funcțional) și CE TIP de cheltuială este (economic). Stăpânește aceste trei perspective și documentele bugetare devin hărți lizibile.
+
+---
+
+<MarkComplete label="Finalizează Lecția" />

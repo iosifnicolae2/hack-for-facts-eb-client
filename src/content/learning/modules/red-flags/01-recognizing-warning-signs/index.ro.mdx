@@ -1,0 +1,231 @@
+---
+title: "Recunoașterea semnelor de avertizare bugetare"
+durationMinutes: 6
+concept: "Mai multe semnale de alertă combinate justifică investigarea"
+objective: "Înțelegeți că problemele bugetare lasă tipare și învățați să identificați semnele de avertizare"
+---
+
+# Recunoașterea semnelor de avertizare bugetare
+
+## Introducere
+
+Problemele bugetare lasă urme. Odată ce știi ce să cauți, tiparele devin vizibile. O administrație care se confruntă cu dificultăți financiare, care gestionează defectuos resursele sau care se implică potențial în acte de corupție va prezenta semne revelatoare în datele sale bugetare.
+
+Aspectul cheie care diferențiază observatorii ocazionali de supraveghetorii eficienți este înțelegerea faptului că **contextul contează**. O singură anomalie poate avea o explicație nevinovată — un proiect de construcție întârziat din cauza condițiilor meteo sau o cheltuială de urgență neprevăzută. Dar când mai multe semne de avertizare apar împreună, atunci trebuie să fiți atenți.
+
+> **Observație cheie:** Un singur semnal de alertă nu dovedește nereguli — dar mai multe semnale de alertă combinate justifică investigarea.
+
+---
+
+## Element interactiv: Detector de semnale de alertă
+
+Detectorul de semnale de alertă vă permite să introduceți indicatori bugetari cheie și identifică automat potențiale probleme pe baza pragurilor derivate din legislația românească, standardele UE și Cadrul PEFA (Public Expenditure and Financial Accountability - Cheltuieli Publice și Responsabilitate Financiară).
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🚨 DETECTOR DE SEMNALE DE ALERTĂ                            │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Introduceți datele entității pentru verificare:             │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  Rata execuției investițiilor:    [ 72 ]%              │  │
+│  │  Număr de rectificări:            [ 4  ]               │  │
+│  │  Variație an la an:               [ 25 ]%              │  │
+│  │  Contracte atribuite direct:      [ 18 ]%              │  │
+│  │  Arierate (% din cheltuieli):     [ 8  ]%              │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  [ Analizează → ]                                            │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  REZULTATELE ANALIZEI:                                       │
+│                                                              │
+│  🔴 EXECUȚIE SCĂZUTĂ A INVESTIȚIILOR (72%)                   │
+│     Așteptat: 85-115% (PEFA)  │  Severitate: RIDICATĂ        │
+│     → Sub 85% înseamnă performanță "slabă" conform PEFA      │
+│                                                              │
+│  🟡 RECTIFICĂRI MULTIPLE (4)                                 │
+│     Așteptat: ≤2 (Legea 69/2010)  │  Severitate: MEDIE       │
+│     → Depășește limita bugetului de stat; investigați        │
+│                                                              │
+│  🔴 VARIAȚIE RIDICATĂ AN/AN (25%)                            │
+│     Așteptat: <15% (PEFA)  │  Severitate: RIDICATĂ           │
+│     → Variație ≥15% = performanță "slabă" conform PEFA PI-2  │
+│                                                              │
+│  🔴 ATRIBUIRI DIRECTE RIDICATE (18%)                         │
+│     Așteptat: ≤10% (UE)  │  Severitate: RIDICATĂ             │
+│     → Peste pragul "semnal de alertă" UE de 10%              │
+│                                                              │
+│  🟡 ARIERATE SEMNIFICATIVE (8%)                              │
+│     Așteptat: ≤2% (PEFA)  │  Severitate: MEDIE               │
+│     → Între 6-10% indică stres fiscal                        │
+│                                                              │
+│  SCOR TOTAL: 5 SEMNALE — INVESTIGAȚI MAI DEPARTE             │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Specificația componentei
+
+```typescript
+/**
+ * RedFlagDetector Component
+ *
+ * PURPOSE: Allow users to input budget metrics and identify potential issues
+ * based on established thresholds. Educational tool to teach pattern recognition.
+ */
+interface RedFlagDetectorProps {
+  readonly thresholds?: RedFlagThreshold[]
+  readonly onAnalyze?: (result: RedFlagAnalysis) => void
+}
+
+interface RedFlagThreshold {
+  readonly id: string
+  readonly name: string
+  readonly inputLabel: string
+  readonly expectedValue: string // e.g., "85-115%", "≤10%", "≤2"
+  readonly source: string // e.g., "PEFA PI-1", "EU Single Market Scoreboard", "Law 69/2010"
+  readonly severity: 'HIGH' | 'MEDIUM' | 'LOW'
+  readonly checkFn: (value: number) => boolean // Returns true if red flag triggered
+  readonly explanation: string
+}
+
+interface RedFlagInput {
+  readonly id: string
+  readonly value: number
+  readonly suffix?: string // '%', etc.
+}
+
+interface RedFlagAnalysis {
+  readonly inputs: readonly RedFlagInput[]
+  readonly flags: readonly {
+    readonly thresholdId: string
+    readonly triggered: boolean
+    readonly severity: 'HIGH' | 'MEDIUM' | 'LOW'
+    readonly message: string
+  }[]
+  readonly totalFlags: number
+  readonly recommendation: string
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - inputs: Record<string, number> (user's entered values)
+ * - isAnalyzing: boolean (brief loading state for animation)
+ * - result: RedFlagAnalysis | null
+ * - errors: Record<string, string> (validation errors per field)
+ *
+ * STATE TRANSITIONS:
+ * - User types → update input value, clear error for that field
+ * - User clicks Analyze → validate all inputs, set isAnalyzing, compute analysis
+ * - Invalid input → set error message for specific field
+ * - Analysis complete → show results with animations
+ *
+ * USER INTERACTIONS:
+ * - Input fields: type numeric values (0-100 for percentages, 0-10 for counts)
+ * - Tab: navigate between input fields
+ * - Enter: trigger analysis
+ * - Click "Analyze" button: compute and display results
+ * - Click on result item: show tooltip with detailed explanation
+ *
+ * VISUAL STATES:
+ * - Empty/Initial: all fields show placeholder values
+ * - Filled: formatted numbers with appropriate suffixes
+ * - Analyzing: pulse animation on result area (300ms)
+ * - Results shown: flags appear with staggered animation
+ * - Error: red border on invalid field, error text below
+ *
+ * ANIMATIONS:
+ * - Input focus: subtle scale(1.02) + ring
+ * - Analyze button: pulse on hover
+ * - Results: stagger animation, 100ms delay between each flag
+ * - Flag icons: bounce-in effect (200ms, spring)
+ * - Overall score: count-up animation over 400ms
+ *
+ * ACCESSIBILITY:
+ * - role="form" on input section
+ * - aria-live="polite" on results region
+ * - Each input has aria-label describing expected format
+ * - Results announced via screen reader
+ * - Color is not the only indicator (icons + text describe severity)
+ */
+```
+
+**Praguri implicite (cu surse autoritative):**
+
+| Indicator | Așteptat | Semnal de alertă | Severitate | Sursă |
+|-----------|----------|------------------|------------|-------|
+| Execuția investițiilor | 85-115% | \<85% sau \>115% | RIDICATĂ | PEFA PI-1 |
+| Rectificări/an | ≤2 | ≥3 | MEDIE | Legea 69/2010, Art. 23(2) |
+| Variație an la an | \<15% | ≥15% | RIDICATĂ | PEFA PI-2 |
+| Atribuiri directe % | ≤10% | \>10% | RIDICATĂ | EU Single Market Scoreboard |
+| Arierate (% din cheltuieli) | ≤2% | \>2% | MEDIE | PEFA PI-22; Legea 273/2006 |
+
+**Notă:** Pragul pentru cheltuielile de personal (anterior listat la 60%) a fost eliminat deoarece nu are bază legală în legislația românească. Legislația română controlează cheltuielile de personal prin limite de posturi (OUG 63/2010) și plafoane nominale, nu prin plafoane procentuale. Curtea de Conturi monitorizează dacă administrațiile locale pot acoperi cheltuielile de personal din venituri proprii (doar 31% dintre comune au reușit acest lucru în 2023).
+
+---
+
+## Înțelegerea severității semnalelor de alertă
+
+Nu toate semnele de avertizare sunt la fel de grave. Înțelegerea severității vă ajută să prioritizați investigațiile:
+
+| Severitate | Semnificație | Acțiune |
+|------------|--------------|---------|
+| 🔴 **RIDICATĂ** | Indică probabil o problemă serioasă | Investigați imediat, luați în considerare o cerere FOIA |
+| 🟡 **MEDIE** | Necesită atenție și urmărire | Comparați cu entități similare, monitorizați în timp |
+| 🟢 **SCĂZUTĂ** | Preocupare minoră, poate fi explicabilă | Notați, dar nu prioritizați |
+
+### Efectul cumulativ
+
+Un singur semnal de alertă poate fi zgomot de fond. Trei semnale de alertă împreună formează un tipar. Când observați:
+
+- **2-3 semnale**: Merită monitorizare
+- **4-5 semnale**: Justifică investigație activă
+- **6+ semnale**: Preocupare serioasă — documentați totul
+
+---
+
+## Practică
+
+<Quiz
+  id="red-flags-01-q1"
+  question="Analizați bugetul unui oraș și găsiți: execuție scăzută a investițiilor (72%), atribuiri directe de 18% (peste pragul UE de 10%) și 3 rectificări în acest an. Ce ar trebui să faceți?"
+  options={[
+    { id: "a", text: "Ignorați — fiecare oraș are unele probleme", isCorrect: false },
+    { id: "b", text: "Așteptați să vedeți dacă anul viitor e mai bun", isCorrect: false },
+    { id: "c", text: "Investigați mai departe — mai multe semnale de alertă justifică atenție", isCorrect: true },
+    { id: "d", text: "Depuneți imediat o plângere penală", isCorrect: false }
+  ]}
+  explanation="Mai multe semnale de alertă combinate (3 în acest caz) justifică investigarea. Deși nu dovedesc nereguli, indică tipare care merită analizate. Execuția investițiilor sub 85% (standard PEFA), atribuirile directe peste 10% (semnal de alertă UE) și 3+ rectificări semnalează toate potențiale probleme. Începeți prin compararea cu orașe similare și pregătirea unor întrebări specifice."
+/>
+
+---
+
+## Concluzie cheie
+
+> 📌 **Rețineți:** Problemele bugetare lasă urme. Un singur semnal de alertă nu e o dovadă — dar când mai multe semne de avertizare apar împreună, acesta e semnalul să săpați mai adânc. Învățați să recunoașteți tiparele și veți observa probleme pe care alții le ratează.
+
+---
+
+## Surse
+
+Pragurile din această lecție se bazează pe surse autoritative din legislația românească și standarde internaționale:
+
+**Cadrul legal românesc:**
+- **Legea 69/2010** (Legea responsabilității fiscal-bugetare) — Limitele rectificărilor bugetare (Art. 23)
+- **Legea 273/2006** (Legea finanțelor publice locale) — Definiția arieratelor și regulile bugetelor locale (Art. 2, 14, 19)
+- **Legea 98/2016** și **Legea 208/2022** — Pragurile achizițiilor publice
+- **OUG 63/2010** — Limitele de posturi pentru administrațiile locale
+
+**Standarde internaționale:**
+- **Cadrul PEFA 2016** (Public Expenditure and Financial Accountability) — Praguri de referință pentru execuția bugetară (PI-1, PI-2, PI-22, PI-24)
+- **EU Single Market Scoreboard** — Indicatori de competitivitate în achiziții
+
+**Instituții românești:**
+- Curtea de Conturi — rapoarte anuale de performanță
+- ANAP — Strategia Națională în domeniul Achizițiilor Publice 2023-2027
+- Ministerul Finanțelor — date privind execuția bugetară (mfinante.gov.ro)
+
+<MarkComplete label="Finalizează această lecție" />

@@ -1,0 +1,283 @@
+---
+title: "Competențe de analiză bugetară"
+durationMinutes: 7
+concept: "Ce să cauți în datele bugetare"
+objective: "Să știi ce să cauți în datele bugetare"
+---
+
+# Competențe de analiză bugetară
+
+## Introducere conceptuală
+
+Accesul la datele bugetare este doar jumătate din provocare. Adevărata competență constă în a ști **ce să cauți**. Cifrele brute nu spun povești — tiparele, anomaliile și comparațiile o fac.
+
+Această lecție te învață cele cinci metrici cheie care dezvăluie dacă banii publici sunt cheltuiți cu înțelepciune. Stăpânește-le, și vei putea evalua rapid sănătatea bugetară a oricărei instituții.
+
+> **Idee cheie:** Analiza bugetară nu înseamnă memorarea cifrelor. Înseamnă să pui întrebările corecte: Se cheltuiesc banii? Cum se compară? Ce s-a schimbat?
+
+---
+
+## Element interactiv: Lista de verificare pentru analiză
+
+Folosește această listă de verificare când analizezi orice date bugetare:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  CE SĂ CAUȚI ÎN DATELE BUGETARE                              │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  [ ] RATE DE EXECUȚIE (Standard PEFA)                        │
+│      Formula: (Realizat / Planificat) x 100%                 │
+│      95-105% = Excelent (A) — execuție optimă                │
+│      90-110% = Bun (B) — abatere acceptabilă                 │
+│      85-115% = De bază (C) — necesită îmbunătățiri           │
+│      În afara 85-115% = Slab (D) — problemă serioasă         │
+│                                                              │
+│  [ ] VARIAȚII AN LA AN (Praguri de materialitate)            │
+│      Compară aceeași categorie de-a lungul anilor            │
+│      <5% = Presupus imaterial                                │
+│      5-10% = Necesită raționament profesional                │
+│      >10% = Presupus material — investighează                │
+│      >20% = Clar material — necesită explicații              │
+│                                                              │
+│  [ ] COMPARAȚII PE CAP DE LOCUITOR                           │
+│      Cheltuielile totale nu spun întreaga poveste            │
+│      Per capita normalizează pentru populație                │
+│      Compară entități de dimensiuni similare                 │
+│                                                              │
+│  [ ] INVESTIȚII vs PERSONAL                                  │
+│      Cod 71 (active nefinanciare) vs Cod 10 (personal)       │
+│      Personal mare + investiții mici = stagnare              │
+│      Urmărește în special execuția investițiilor             │
+│                                                              │
+│  [ ] TIPARE DE RECTIFICARE                                   │
+│      Buget de stat: max 2/an (după primele 6 luni)           │
+│      Bugete locale: fără limită legală (10+/an e comun)      │
+│      Reduceri mari în anumite domenii = promisiuni nerespectate │
+│      Timing aproape de alegeri = potențială manipulare       │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Element interactiv: Exercițiu de analiză
+
+Aplică-ți competențele pe aceste date bugetare:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  EXERCIȚIU: Analizează aceste date                           │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ENTITATE: Oraș Exemplu (populație: 50.000)                  │
+│  AN: 2024                                                    │
+│                                                              │
+│  Categorie        | Planificat| Realizat| Execuție| Var. A/A│
+│  ─────────────────|───────────|─────────|─────────|─────────│
+│  Personal (10)    |  80M      |  79M    |   99%   |   +5%   │
+│  Bunuri (20)      |  30M      |  27M    |   90%   |   +3%   │
+│  Active nefin.(71)|  40M      |  22M    |   55%   |  -15%   │
+│  Transferuri (51) |  20M      |  19M    |   95%   |   +8%   │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  Întrebări:                                                  │
+│                                                              │
+│  1. Care categorie are CEA MAI SLABĂ rată de execuție?       │
+│     Răspuns: Active nefinanciare (55%)                       │
+│                                                              │
+│  2. Este un semnal de alarmă? De ce?                         │
+│     Răspuns: Da — 55% este foarte scăzut, ceea ce înseamnă   │
+│              că proiectele de infrastructură planificate     │
+│              nu au fost realizate                            │
+│                                                              │
+│  3. Ce ar putea explica variația de -15% A/A la investiții?  │
+│     ( ) Mai mulți bani pentru salarii                        │
+│     ( ) Proiecte amânate sau anulate                         │
+│     ( ) Eficiență mai bună                                   │
+│     (x) Toate ar putea explica — necesită investigație       │
+│                                                              │
+│  4. Ce întrebare ai adresa consiliului local?                │
+│     Exemplu: „De ce s-a cheltuit doar 55% din bugetul de     │
+│     investiții? Care proiecte nu au fost finalizate?"        │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Specificație componentă
+
+```typescript
+/**
+ * BudgetAnalysisPractice - Exercițiu interactiv pentru analiza datelor bugetare
+ *
+ * SCOP: Permite utilizatorilor să exerseze identificarea semnalelor de alarmă
+ *       și formularea întrebărilor potrivite
+ */
+interface BudgetAnalysisPracticeProps {
+  readonly scenario: BudgetScenario
+  readonly questions: ReadonlyArray<AnalysisQuestion>
+  readonly onComplete: (score: number, answers: Record<string, string>) => void
+}
+
+interface BudgetScenario {
+  readonly entityName: string
+  readonly population: number
+  readonly year: number
+  readonly categories: ReadonlyArray<{
+    name: string
+    code: string
+    planned: number
+    actual: number
+    yoyChange: number
+  }>
+}
+
+interface AnalysisQuestion {
+  readonly id: string
+  readonly type: 'identify' | 'explain' | 'multiple_choice' | 'open_ended'
+  readonly question: string
+  readonly correctAnswer?: string
+  readonly options?: ReadonlyArray<{ id: string; text: string; isCorrect: boolean }>
+  readonly hint?: string
+  readonly exampleAnswer?: string
+}
+
+/**
+ * STARE:
+ * - answers: Record<string, string>
+ * - currentQuestion: number
+ * - showHint: Record<string, boolean>
+ * - isSubmitted: boolean
+ * - score: number
+ *
+ * INTERACȚIUNI:
+ * - Click pe rata de execuție: evidențiază rândul corespunzător
+ * - Selectare răspuns: stochează alegerea, afișează feedback
+ * - Buton „Arată indiciu": dezvăluie textul indiciului
+ * - Input deschis: validează lungimea minimă
+ * - Buton „Verifică răspunsurile": calculează scorul, afișează feedback
+ *
+ * STĂRI VIZUALE:
+ * - Tabel de date: rândurile se evidențiază la hover, rândurile cu probleme au pictogramă de avertizare
+ * - Întrebare în așteptare: stil normal
+ * - Întrebare răspunsă: indicator bifă sau X
+ * - Răspuns corect: evidențiere verde
+ * - Răspuns incorect: evidențiere roșie cu explicație
+ * - Finalizat: afișare scor cu celebrare
+ *
+ * ANIMAȚII:
+ * - Evidențiere rând: fade fundal (200ms)
+ * - Feedback răspuns: slide-in din dreapta (300ms)
+ * - Afișare scor: animație count-up (500ms)
+ *
+ * ACCESIBILITATE:
+ * - Tabelul are asocieri corecte de header
+ * - Întrebările sunt fieldset-uri cu legende
+ * - Feedback-ul este anunțat via aria-live
+ * - Focus-ul se mută la feedback după trimitere
+ */
+```
+
+---
+
+## Explicație principală
+
+### Cele cinci metrici cheie
+
+#### 1. Rata de execuție
+
+Cea mai importantă metrică individuală. Arată dacă cheltuielile planificate s-au realizat efectiv.
+
+**Formula:** (Cheltuieli realizate / Buget planificat) x 100%
+
+Standardul internațional PEFA (Cheltuieli Publice și Responsabilitate Financiară) oferă aceste praguri:
+
+| Rată | Scor PEFA | Semnificație |
+|------|-----------|--------------|
+| 95-105% | A (Excelent) | Execuție optimă — planurile au corespuns realității |
+| 90-110% | B (Bun) | Abatere acceptabilă |
+| 85-115% | C (De bază) | Necesită îmbunătățiri — investighează diferențele |
+| În afara 85-115% | D (Slab) | Problemă serioasă — abatere peste 15% |
+
+> **Notă:** O rată de execuție de 55% reprezintă o subexecuție de 45% — adânc în teritoriul „Slab" conform standardelor PEFA.
+
+#### 2. Variația an la an
+
+Compararea aceleiași categorii de-a lungul anilor dezvăluie prioritățile și tendințele.
+
+**Praguri de materialitate (Cadrul IPSAS al ONU):**
+- **Sub 5%:** Presupus imaterial
+- **5-10%:** Necesită raționament profesional
+- **Peste 10%:** Presupus material — investighează
+- **Peste 20%:** Clar material — necesită explicații detaliate
+
+**Semnale de alarmă:**
+- Scăderi bruște (peste 10%) la cheltuielile de investiții
+- Creșteri constante la personal în timp ce serviciile scad
+- Creșteri în anul electoral urmate de reduceri
+
+#### 3. Cheltuieli pe cap de locuitor
+
+Bugetele totale sunt înșelătoare. Un oraș de 500.000 de locuitori care cheltuiește 1 miliard RON este foarte diferit de o localitate de 10.000 care cheltuiește la fel.
+
+**Normalizează întotdeauna:** Împarte cheltuielile totale la populație pentru a obține cifrele pe cap de locuitor. Apoi compară entități de dimensiuni similare.
+
+#### 4. Raportul investiții vs personal
+
+Urmărește echilibrul între:
+- **Cod 10 (Personal):** Salarii și indemnizații
+- **Cod 71 (Active nefinanciare):** Infrastructură, echipamente, reparații capitale
+
+Cheltuieli mari de personal cu investiții scăzute sugerează o instituție concentrată pe menținerea birocrației mai degrabă decât pe furnizarea de servicii sau construirea infrastructurii.
+
+#### 5. Tipare de rectificare
+
+Rectificările bugetare (modificări în cursul anului) dezvăluie calitatea planificării.
+
+**Limitele legale diferă în funcție de nivel:**
+- **Buget de stat:** Maximum 2 rectificări pe an, interzise în primele 6 luni (Legea 69/2010)
+- **Bugete locale:** Fără limită legală — peste 10 pe an este comun și legal (Legea 273/2006)
+
+**Ce să urmărești:**
+- **Reduceri mari în anumite domenii:** Promisiuni nerespectate
+- **Creșteri spre sfârșitul anului:** Potențială grabă de cheltuire a fondurilor
+- **Tipare electorale:** Creșteri de cheltuieli pre-electorale urmate de reduceri post-electorale
+
+---
+
+## Practică
+
+<Quiz
+  id="transparency-tools-03-q1"
+  question="O instituție are o rată de execuție de 55% pentru investiții. Ce indică acest lucru?"
+  options={[
+    { id: "a", text: "Eficiență excelentă — au economisit bani", isCorrect: false },
+    { id: "b", text: "Performanță normală — majoritatea instituțiilor sunt similare", isCorrect: false },
+    { id: "c", text: "Subexecuție semnificativă — un semnal de alarmă că proiectele planificate nu au fost realizate", isCorrect: true },
+    { id: "d", text: "Planificare bună — au anticipat costuri mai mici", isCorrect: false }
+  ]}
+  explanation='O rată de execuție de 55% înseamnă că aproape jumătate din bugetul planificat pentru active nefinanciare NU a fost cheltuită. Conform standardelor PEFA, aceasta reprezintă o abatere de 45% — adânc în teritoriul „Slab" (D) unde orice în afara intervalului 85-115% este considerat serios. Aceasta indică faptul că proiectele de infrastructură, achizițiile de echipamente sau reparațiile capitale nu s-au realizat conform promisiunilor. Investighează întotdeauna motivul.'
+/>
+
+<Quiz
+  id="transparency-tools-03-q2"
+  question="De ce sunt utile cheltuielile pe cap de locuitor pentru comparații?"
+  options={[
+    { id: "a", text: "Este cerut prin lege pentru toate rapoartele bugetare", isCorrect: false },
+    { id: "b", text: "Normalizează pentru dimensiunea populației, făcând comparațiile între entități de dimensiuni diferite semnificative", isCorrect: true },
+    { id: "c", text: "Este mai ușor de calculat decât cheltuielile totale", isCorrect: false },
+    { id: "d", text: "Toate bugetele publice sunt oricum de aceeași dimensiune", isCorrect: false }
+  ]}
+  explanation="Cheltuielile pe cap de locuitor împart bugetul total la populație, permițând comparații echitabile. Un oraș de 100.000 de locuitori care cheltuiește 500M RON și o localitate de 10.000 care cheltuiește 50M RON au aceleași cheltuieli pe cap de locuitor (5.000 RON/persoană), chiar dacă bugetele lor totale diferă de 10 ori."
+/>
+
+---
+
+## Concluzie cheie
+
+> Stăpânește cinci metrici pentru analiza bugetară: **Rata de execuție** (se cheltuiesc banii?), **Variația A/A** (care sunt tendințele?), **Pe cap de locuitor** (comparații echitabile), **Investiții vs Personal** (priorități) și **Tipare de rectificare** (calitatea planificării). Compară întotdeauna: planificat vs realizat, anul acesta vs anul trecut, entitatea vs vecinii.
+
+---
+
+<MarkComplete label="Finalizează această lecție" />

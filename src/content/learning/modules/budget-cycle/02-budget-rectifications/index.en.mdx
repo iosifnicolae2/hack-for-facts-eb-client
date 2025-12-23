@@ -66,13 +66,17 @@ Explore Romania's rectification patterns over recent years.
 │  📊 RECTIFICATION HISTORY (2020-2024)                        │
 ├──────────────────────────────────────────────────────────────┤
 │                                                              │
-│  Year │ # of Rectifications │ Net Change │ Status            │
-│  ─────┼─────────────────────┼────────────┼─────────────────  │
-│  2024 │         3           │   +12%     │ 🟡 Above average  │
-│  2023 │         4           │   +8%      │ 🔴 Many changes   │
-│  2022 │         2           │   +5%      │ 🟢 Normal         │
-│  2021 │         5           │   +15%     │ 🔴 COVID impact   │
-│  2020 │         6           │   +22%     │ 🔴 Crisis year    │
+│  Year │ Rectifications │ Deficit   │ Status                  │
+│  ─────┼────────────────┼───────────┼───────────────────────  │
+│  2024 │       1        │  9.3% GDP │ 🔴 Election year        │
+│  2023 │    0 formal    │  6.5% GDP │ 🔴 Reserve Fund bypass  │
+│  2022 │       2        │  6.0% GDP │ 🟡 Energy crisis        │
+│  2021 │       2        │  8.4% GDP │ 🔴 Record magnitude     │
+│  2020 │       3        │  9.2% GDP │ 🔴 COVID crisis         │
+│                                                              │
+│  Note: 2023 had no formal rectifications for the first      │
+│  time in 30 years. Instead, 32 billion lei (€6.4B) was      │
+│  distributed through the Reserve Fund mechanism.             │
 │                                                              │
 │  [ View details for each year → ]                            │
 │                                                              │
@@ -85,7 +89,7 @@ Explore Romania's rectification patterns over recent years.
 /**
  * RectificationHistory Component
  *
- * PURPOSE: Display historical rectification data with trend analysis
+ * PURPOSE: Display historical rectification data with deficit tracking
  * and drill-down capability for each year
  */
 interface RectificationHistoryProps {
@@ -96,15 +100,16 @@ interface RectificationHistoryProps {
 
 interface YearRectificationData {
   readonly year: number
-  readonly rectificationCount: number
-  readonly netChange: number  // percentage change from original
-  readonly status: 'normal' | 'above_average' | 'concerning'
-  readonly context?: string  // e.g., "COVID pandemic", "Election year"
+  readonly rectificationCount: number | 'none_formal'  // 0 formal = Reserve Fund bypass
+  readonly deficitPercent: number  // deficit as % of GDP
+  readonly status: 'normal' | 'energy_crisis' | 'election_year' | 'covid_crisis' | 'reserve_bypass'
+  readonly context: string  // e.g., "COVID pandemic", "Election year", "Reserve Fund bypass"
   readonly details?: readonly RectificationDetail[]
 }
 
 interface RectificationDetail {
   readonly date: string
+  readonly ougNumber: string  // e.g., "OUG 113/2024"
   readonly amount: number
   readonly direction: 'increase' | 'decrease'
   readonly mainChanges: readonly string[]
@@ -126,11 +131,11 @@ interface RectificationDetail {
  *
  * VISUAL STATES:
  * - Normal year: green indicator
- * - Above average: yellow indicator
- * - Concerning: red indicator
+ * - Energy crisis: yellow indicator
+ * - COVID crisis / Election year / Reserve bypass: red indicator
  * - Hovered: background highlight
- * - Expanded: details panel slides down
- * - Context badge: special tag for crisis years
+ * - Expanded: details panel slides down with OUG numbers
+ * - Context badge: special tag (COVID, Election, Energy, Reserve Fund)
  *
  * ANIMATIONS:
  * - Row hover: background fade (150ms)
@@ -167,28 +172,32 @@ Not all rectifications are problematic, but some patterns should raise concerns:
 │  🚨 RED FLAGS IN BUDGET RECTIFICATIONS                       │
 ├──────────────────────────────────────────────────────────────┤
 │                                                              │
-│  🔴 Frequent rectifications = poor planning                  │
-│     → More than 2-3 per year suggests unrealistic budgets    │
+│  🔴 Bypassing Parliament through OUG (Emergency Ordinances)  │
+│     → Rectifications via OUG skip proper legislative debate  │
 │                                                              │
-│  🔴 Large cuts to key services                               │
-│     → Health, education cuts often mean broken promises      │
+│  🔴 Reserve Fund bypass instead of formal rectification      │
+│     → In 2023, Romania distributed 32B lei without formal    │
+│       rectification for the first time in 30 years           │
 │                                                              │
 │  🔴 Pre-election spending spikes                             │
-│     → Increases 3-6 months before elections are suspicious   │
+│     → 2024: Pension increases 2 months before elections      │
+│     → Deficit jumped to 9.3% GDP (highest in EU)             │
 │                                                              │
-│  🔴 Hidden new projects                                      │
-│     → Projects appearing in rectifications but not debates   │
+│  🔴 Deficits consistently above targets                      │
+│     → Initial targets systematically underestimate spending  │
+│     → Romania's deficit exceeds EU 3% limit since 2020       │
 │                                                              │
-│  🟡 Late-year "cleanup" rectifications                       │
-│     → December rectifications often hide problems            │
+│  🟡 Large magnitude changes                                  │
+│     → 2021 rectification: +17B lei expenditures              │
+│     → 2024 rectification: +47.5B lei expenditures            │
 │                                                              │
 │  ═══════════════════════════════════════════════════════════ │
 │                                                              │
 │  🟢 When rectifications are NORMAL:                          │
 │                                                              │
-│  ✓ Response to genuine emergencies (disasters, crises)       │
-│  ✓ EU funds received mid-year                                │
-│  ✓ Revenue significantly different than projected            │
+│  ✓ Response to genuine emergencies (COVID-19, energy crisis) │
+│  ✓ EU/PNRR funds co-financing received mid-year              │
+│  ✓ Revenue collection significantly different than projected │
 │  ✓ Small, technical adjustments between categories           │
 │                                                              │
 └──────────────────────────────────────────────────────────────┘
@@ -196,11 +205,11 @@ Not all rectifications are problematic, but some patterns should raise concerns:
 
 ### Questions to Ask About Any Rectification
 
-1. **Why now?** Is there a genuine reason, or is it politically timed?
-2. **What's being cut?** Are essential services affected?
-3. **What's being added?** Were these projects discussed publicly?
-4. **How big?** Small adjustments are normal; 10%+ changes deserve scrutiny
-5. **How often?** Is this the third or fourth rectification this year?
+1. **Is it through OUG or Parliament?** OUG bypasses proper legislative debate
+2. **What's the new deficit target?** Compare to original budget and EU limits (3% GDP)
+3. **Is it an election year?** Pre-election spending spikes are common manipulation
+4. **What changed from the original budget?** Large deviations suggest poor initial planning
+5. **What does the Fiscal Council say?** Their opinions often highlight problems ignored by government
 
 ---
 
@@ -226,26 +235,26 @@ Transparenta.eu helps you monitor budget changes throughout the year:
     { id: "c", text: "An annual audit correction", isCorrect: false },
     { id: "d", text: "A tax rate adjustment", isCorrect: false }
   ]}
-  explanation="A budget rectification is a formal mid-year change to the approved annual budget. It requires a new law passed by Parliament, just like the original budget. Some rectifications are normal (responding to changed circumstances), while others may indicate poor planning."
+  explanation="A budget rectification is a formal mid-year change to the approved annual budget. Under Law 500/2002, it should require Parliament approval, but governments often use Emergency Ordinances (OUG) to bypass legislative debate. Law 69/2010 limits rectifications to maximum 2 per year and prohibits them in the first semester."
 />
 
 <Quiz
   id="budget-cycle-02-q2"
   question="Which of these is a RED FLAG in budget rectifications?"
   options={[
-    { id: "a", text: "Adding EU funds received mid-year", isCorrect: false },
-    { id: "b", text: "Responding to a natural disaster", isCorrect: false },
-    { id: "c", text: "Large spending increases before elections", isCorrect: true },
+    { id: "a", text: "Adding EU/PNRR funds received mid-year", isCorrect: false },
+    { id: "b", text: "Responding to a crisis like COVID-19", isCorrect: false },
+    { id: "c", text: "Using the Reserve Fund to bypass formal rectification", isCorrect: true },
     { id: "d", text: "Small technical adjustments between categories", isCorrect: false }
   ]}
-  explanation="Large spending increases 3-6 months before elections are a red flag because they may indicate politically-motivated spending rather than genuine needs. EU funds, disaster response, and small technical adjustments are typically normal reasons for rectifications."
+  explanation="Using the Reserve Fund instead of formal rectification (as Romania did in 2023 with 32 billion lei) bypasses transparency requirements and Parliament oversight. In 2023, this approach was used for the first time in 30 years, drawing criticism from the Fiscal Council for being a 'de facto rectification' without proper debate."
 />
 
 ---
 
 ## Key Takeaway
 
-> **Remember:** Rectifications reveal whether a government keeps its budget promises. Watch for patterns: frequent changes, pre-election spikes, and cuts to essential services are warning signs. Use Transparenta.eu to compare original budgets with current allocations.
+> **Remember:** Rectifications reveal whether a government keeps its budget promises. Romania has been under EU Excessive Deficit Procedure since 2020, with deficits ranging from 6% to 9.3% of GDP. Watch for: OUG bypassing Parliament, Reserve Fund bypasses, pre-election spending spikes, and deficits far above targets. Use Transparenta.eu to compare original budgets with actual execution.
 
 ---
 

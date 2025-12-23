@@ -26,16 +26,19 @@ Use this checklist when analyzing any budget data:
 │  WHAT TO LOOK FOR IN BUDGET DATA                             │
 ├──────────────────────────────────────────────────────────────┤
 │                                                              │
-│  [ ] EXECUTION RATES                                         │
+│  [ ] EXECUTION RATES (PEFA Standard)                         │
 │      Formula: (Actual / Planned) x 100%                      │
-│      >90% = Good                                             │
-│      70-90% = Investigate                                    │
-│      <70% = Red flag                                         │
+│      95-105% = Excellent (A) — optimal execution             │
+│      90-110% = Good (B) — acceptable deviation               │
+│      85-115% = Basic (C) — needs improvement                 │
+│      Outside 85-115% = Poor (D) — serious concern            │
 │                                                              │
-│  [ ] YEAR-OVER-YEAR CHANGES                                  │
+│  [ ] YEAR-OVER-YEAR CHANGES (Materiality thresholds)         │
 │      Compare same category across years                      │
-│      Large changes (>20%) warrant investigation              │
-│      Ask: Why did this increase/decrease so much?            │
+│      <5% = Presumed immaterial                               │
+│      5-10% = Requires judgment                               │
+│      >10% = Presumed material — investigate                  │
+│      >20% = Clearly material — requires explanation          │
 │                                                              │
 │  [ ] PER CAPITA COMPARISONS                                  │
 │      Total spending doesn't tell the whole story             │
@@ -43,12 +46,13 @@ Use this checklist when analyzing any budget data:
 │      Compare similar-sized entities                          │
 │                                                              │
 │  [ ] INVESTMENT vs PERSONNEL                                 │
-│      Code 71 (investments) vs Code 10 (salaries)             │
+│      Code 71 (non-financial assets) vs Code 10 (personnel)   │
 │      High personnel + low investment = stagnation            │
 │      Watch investment execution rates especially             │
 │                                                              │
 │  [ ] RECTIFICATION PATTERNS                                  │
-│      Multiple rectifications = poor planning                 │
+│      State budget: max 2/year (after first 6 months)         │
+│      Local budgets: no legal limit (10+/year is common)      │
 │      Large cuts in specific areas = broken promises          │
 │      Timing near elections = potential manipulation          │
 │                                                              │
@@ -73,15 +77,15 @@ Apply your skills to this sample budget data:
 │  ─────────────────|─────────|────────|───────────|──────────│
 │  Personnel (10)   |  80M    |  79M   |   99%     |   +5%    │
 │  Goods (20)       |  30M    |  27M   |   90%     |   +3%    │
-│  Investments (71) |  40M    |  22M   |   55%     |  -15%    │
-│  Transfers (50)   |  20M    |  19M   |   95%     |   +8%    │
+│  Non-fin assets(71)|  40M   |  22M   |   55%     |  -15%    │
+│  Transfers (51)   |  20M    |  19M   |   95%     |   +8%    │
 │                                                              │
 │  ═══════════════════════════════════════════════════════════ │
 │                                                              │
 │  Questions:                                                  │
 │                                                              │
 │  1. Which category has the WORST execution rate?             │
-│     Answer: Investments (55%)                                │
+│     Answer: Non-financial assets (55%)                       │
 │                                                              │
 │  2. Is this a red flag? Why?                                 │
 │     Answer: Yes — 55% is very low, meaning planned           │
@@ -185,18 +189,29 @@ The most important single metric. It shows whether planned spending actually hap
 
 **Formula:** (Actual Spending / Planned Budget) x 100%
 
-| Rate | Meaning | Action |
-|------|---------|--------|
-| >90% | Healthy execution | Normal — plans matched reality |
-| 70-90% | Moderate gap | Investigate — what wasn't delivered? |
-| \< 70% | Red flag | Serious concern — promises broken |
+The international PEFA (Public Expenditure and Financial Accountability) standard provides these thresholds:
+
+| Rate | PEFA Score | Meaning |
+|------|------------|---------|
+| 95-105% | A (Excellent) | Optimal execution — plans matched reality |
+| 90-110% | B (Good) | Acceptable deviation |
+| 85-115% | C (Basic) | Needs improvement — investigate gaps |
+| Outside 85-115% | D (Poor) | Serious concern — >15% deviation |
+
+> **Note:** A 55% execution rate represents a 45% underspend — deep into "Poor" territory under PEFA standards.
 
 #### 2. Year-over-Year Change
 
 Comparing the same category across years reveals priorities and trends.
 
+**Materiality thresholds (UN IPSAS Framework):**
+- **Under 5%:** Presumed immaterial
+- **5-10%:** Requires professional judgment
+- **Over 10%:** Presumed material — investigate
+- **Over 20%:** Clearly material — requires detailed explanation
+
 **Red flags:**
-- Sudden drops (>20%) in investment spending
+- Sudden drops (>10%) in investment spending
 - Steady increases in personnel while services decline
 - Election-year spikes followed by cuts
 
@@ -210,16 +225,22 @@ Total budgets are misleading. A city of 500,000 spending 1 billion RON is very d
 
 Look at the balance between:
 - **Code 10 (Personnel):** Salaries and wages
-- **Code 71 (Capital investments):** Infrastructure, equipment
+- **Code 71 (Non-financial assets):** Infrastructure, equipment, major repairs
 
 High personnel spending with low investment suggests an institution focused on maintaining bureaucracy rather than delivering services or building infrastructure.
 
 #### 5. Rectification Patterns
 
-Budget rectifications (amendments during the year) reveal planning quality:
-- **Many small rectifications:** Poor forecasting
+Budget rectifications (amendments during the year) reveal planning quality.
+
+**Legal limits differ by level:**
+- **State budget:** Maximum 2 rectifications per year, prohibited in first 6 months (Law 69/2010)
+- **Local budgets:** No legal limit — 10+ per year is common and legal (Law 273/2006)
+
+**What to watch for:**
 - **Large cuts to specific areas:** Broken promises
 - **Increases near year-end:** Potential end-of-year spending rush
+- **Election-year patterns:** Pre-election spending spikes followed by post-election cuts
 
 ---
 
@@ -234,7 +255,7 @@ Budget rectifications (amendments during the year) reveal planning quality:
     { id: "c", text: "Significant underspending — a red flag that planned projects weren't delivered", isCorrect: true },
     { id: "d", text: "Good planning — they anticipated lower costs", isCorrect: false }
   ]}
-  explanation="A 55% execution rate means almost half the planned investment budget was NOT spent. This is a serious red flag indicating that infrastructure projects, equipment purchases, or other capital investments didn't happen as promised. Always investigate why."
+  explanation="A 55% execution rate means almost half the planned budget for non-financial assets was NOT spent. Under PEFA standards, this represents a 45% deviation — deep into 'Poor' (D) territory where anything outside 85-115% is considered serious. This indicates infrastructure projects, equipment purchases, or major repairs didn't happen as promised. Always investigate why."
 />
 
 <Quiz

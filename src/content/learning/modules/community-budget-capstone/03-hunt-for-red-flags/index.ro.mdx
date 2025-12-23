@@ -1,0 +1,257 @@
+---
+title: "Căutarea Semnalelor de Alarmă"
+durationMinutes: 10
+concept: "Aplicarea analizei semnalelor de alarmă pe date bugetare reale"
+objective: "Identificarea semnelor de avertizare în bugetul administrației locale"
+---
+
+# Căutarea Semnalelor de Alarmă
+
+## Introducerea Conceptului
+
+Cu datele colectate, este timpul pentru munca de detectiv. Semnalele de alarmă sunt tipare care sugerează că ceva ar putea fi greșit — nu dovezi ale unor nereguli, ci indicii care merită atenție și întrebări.
+
+Gândiți-vă la aceasta ca la o listă de verificare diagnostică. Fiecare semnal de alarmă pe care îl găsiți adaugă la înțelegerea dumneavoastră. Mai multe semnale de alarmă împreună? Atunci chiar trebuie să investigați mai profund.
+
+> **Idee Cheie:** Un singur semnal de alarmă este un punct de date. Mai multe semnale de alarmă reprezintă un tipar. Tiparele necesită investigație.
+
+---
+
+## Element Interactiv: Verificatorul de Semnale de Alarmă
+
+Parcurgeți fiecare verificare și evaluați datele entității dumneavoastră:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  PASUL 3: VERIFICAȚI SEMNALELE DE ALARMĂ                     │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Parcurgeți fiecare semnal și verificați dacă se aplică:     │
+│                                                              │
+│  [ ] 1. EXECUȚIE SCĂZUTĂ A INVESTIȚIILOR                     │
+│     Rata de execuție Cod 71: [ _____ ]%                      │
+│     SEMNAL DE ALARMĂ dacă sub 70%                            │
+│     Statusul dvs.: [ OK / Limită / Semnal de Alarmă ]        │
+│                                                              │
+│  [ ] 2. SUPRAÎNCĂRCARE CU PERSONAL                           │
+│     Personal ca % din total: [ _____ ]%                      │
+│     SEMNAL DE ALARMĂ dacă peste 60%                          │
+│     Statusul dvs.: [ OK / Limită / Semnal de Alarmă ]        │
+│                                                              │
+│  [ ] 3. VARIAȚIE AN-LA-AN                                    │
+│     Comparație cu anul anterior: [ +/- _____ ]%              │
+│     DE INVESTIGAT dacă variația >20%                         │
+│     Statusul dvs.: [ Normal / De Investigat ]                │
+│                                                              │
+│  [ ] 4. DIFERENȚA RATELOR DE EXECUȚIE                        │
+│     Execuție personal: [ _____ ]%                            │
+│     Execuție investiții: [ _____ ]%                          │
+│     Diferență: [ _____ ] puncte procentuale                  │
+│     SEMNAL DE ALARMĂ dacă diferența >30 puncte               │
+│     Statusul dvs.: [ OK / Semnal de Alarmă ]                 │
+│                                                              │
+│  [ ] 5. COMPARAȚIE CU VECINII                                │
+│     Per capita dvs.: [ _________ ] RON                       │
+│     Vecin similar: [ _________ ] RON                         │
+│     Diferență: [ _____ ]%                                    │
+│     DE INVESTIGAT dacă diferența >25%                        │
+│     Statusul dvs.: [ Similar / Diferit ]                     │
+│                                                              │
+│  ─────────────────────────────────────────────────────────── │
+│                                                              │
+│  TOTAL SEMNALE DE ALARMĂ GĂSITE: [ ___ ] din 5               │
+│                                                              │
+│  [x] Am finalizat verificarea semnalelor de alarmă           │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Specificație Componentă: RedFlagChecker
+
+```typescript
+/**
+ * Componenta RedFlagChecker
+ *
+ * SCOP: Evaluarea sistematică a datelor bugetare în raport cu
+ * pragurile cunoscute ale semnalelor de alarmă și generarea unui rezumat diagnostic.
+ */
+interface RedFlagCheckerProps {
+  readonly budgetData: CollectedBudgetData
+  readonly thresholds?: RedFlagThresholds
+  readonly onComplete: (results: RedFlagResults) => void
+}
+
+interface RedFlagThresholds {
+  readonly investmentExecutionMin: number // Implicit: 70
+  readonly personnelShareMax: number // Implicit: 60
+  readonly yearOverYearChangeMax: number // Implicit: 20
+  readonly executionGapMax: number // Implicit: 30
+  readonly perCapitaDifferenceMax: number // Implicit: 25
+}
+
+interface RedFlagCheck {
+  readonly id: string
+  readonly name: string
+  readonly description: string
+  readonly threshold: number
+  readonly unit: '%' | 'points' | 'RON'
+  readonly direction: 'below' | 'above'
+  readonly userValue: number | null
+  readonly status: 'ok' | 'borderline' | 'red_flag' | 'investigate'
+}
+
+interface RedFlagResults {
+  readonly checks: ReadonlyArray<RedFlagCheck>
+  readonly totalRedFlags: number
+  readonly severity: 'low' | 'medium' | 'high'
+  readonly recommendedActions: ReadonlyArray<string>
+}
+
+/**
+ * GESTIONAREA STĂRII:
+ * - currentCheck: number (0-4)
+ * - checkValues: Record<string, number>
+ * - results: RedFlagCheck[]
+ * - isComplete: boolean
+ *
+ * TRANZIȚII DE STARE:
+ * - Utilizatorul introduce valoare -> evaluare automată față de prag
+ * - Evaluare completă -> afișare indicator status
+ * - Toate verificările finalizate -> calcul totaluri, afișare rezumat
+ *
+ * INTERACȚIUNI UTILIZATOR:
+ * - Input numeric pentru fiecare verificare
+ * - Butoane status (OK/Limită/Semnal de Alarmă) pentru suprascriere manuală
+ * - Buton „Folosește Datele Platformei" dacă este conectat la API
+ * - Acordeon expandabil/restrâns pentru fiecare verificare
+ * - Tooltip cu explicația pragului
+ *
+ * STĂRI VIZUALE:
+ * - Verificare în așteptare: gri neutru, semn de întrebare
+ * - Status OK: bordură verde, pictogramă bifă
+ * - Limită: bordură chihlimbar, pictogramă avertisment
+ * - Semnal de Alarmă: bordură roșie, pictogramă steag, indicator pulsând
+ * - Complet: card rezumat cu nivelul de severitate
+ *
+ * ANIMAȚII:
+ * - Schimbare status: tranziție culoare + schimbare pictogramă (200ms)
+ * - Semnal de alarmă detectat: agitare subtilă + puls (300ms)
+ * - Progres prin verificări: tranziție glisare-stânga
+ * - Afișare rezumat: fade-in + scalare (400ms)
+ * - Animație contor pentru totalul semnalelor de alarmă
+ *
+ * ACCESIBILITATE:
+ * - role="group" pentru fiecare verificare cu aria-label
+ * - Statusul anunțat prin aria-live="polite"
+ * - Statusurile codificate prin culori au etichete text
+ * - Focusul se mută la următoarea verificare după finalizare
+ * - Cititorul de ecran anunță nivelul de severitate
+ */
+```
+
+**Integrare Date:**
+- Date comparative: `GET /api/analytics/compare?entity={cui}&neighbors=true`
+- An-la-an: Folosește endpoint-ul de date bugetare istorice
+
+---
+
+## Cele Cinci Semnale de Alarmă Explicate
+
+### 1. Execuție Scăzută a Investițiilor (Sub 70%)
+
+Cheltuielile pentru investiții (Codul 71) sunt cel mai revelator indicator. Când execuția investițiilor este scăzută:
+
+- Proiectele au fost amânate sau anulate
+- Achizițiile publice pot fi eșuate
+- Planificarea a fost nerealistă
+- Pot exista probleme de capacitate
+
+**Prag:** Sub 70% este un semnal de alarmă. Sub 50% este sever.
+
+### 2. Supraîncărcare cu Personal (Peste 60% din total)
+
+Când costurile cu personalul domină bugetul:
+
+- Mai puțini bani pentru servicii și investiții
+- Poate indica supradimensionarea personalului
+- Reduce flexibilitatea pentru prioritățile viitoare
+
+**Prag:** Peste 60% este îngrijorător. Peste 70% este un semnal de alarmă serios.
+
+### 3. Variații An-la-An (Peste ±20%)
+
+Schimbările bugetare dramatice necesită explicații:
+
+- Creșteri mari: Proiecte noi? Cheltuieli în an electoral?
+- Scăderi mari: Austeritate? Pierderea finanțării?
+
+**Prag:** Schimbările de peste 20% necesită investigare.
+
+### 4. Diferența Ratelor de Execuție (Peste 30 puncte)
+
+Comparați execuția personalului cu execuția investițiilor:
+
+| Personal | Investiții | Diferență | Semnificație |
+|----------|------------|-----------|--------------|
+| 98% | 65% | 33 pct | Salariile prioritizate în fața proiectelor |
+| 95% | 40% | 55 pct | Dezechilibru sever |
+
+**Prag:** Diferența de peste 30 de puncte procentuale este un semnal de alarmă.
+
+### 5. Comparație cu Vecinii (Peste 25% diferență)
+
+Comparați cheltuielile per capita cu entități similare:
+
+- Același județ, populație similară
+- Clasificare urbană/rurală similară
+- Același an pentru o comparație corectă
+
+**Prag:** Diferențele de peste 25% necesită investigare.
+
+---
+
+## Interpretarea Rezultatelor
+
+| Semnale Găsite | Severitate | Acțiune Recomandată |
+|----------------|------------|---------------------|
+| 0-1 | Scăzută | Continuați monitorizarea |
+| 2-3 | Medie | Formulați întrebări, cercetați mai mult |
+| 4-5 | Ridicată | Luați în considerare o cerere FOIA, participați la ședințe |
+
+> **Rețineți:** Semnalele de alarmă indică domenii care necesită investigare, nu dovezi ale unor nereguli. Pot exista explicații valide — dar nu veți ști până nu întrebați.
+
+---
+
+## Exersare
+
+<Quiz
+  id="capstone-03-q1"
+  question="Entitatea dumneavoastră are 95% execuție pentru personal dar doar 45% execuție pentru investiții. Care este diferența și este un semnal de alarmă?"
+  options={[
+    { id: "a", text: "50 puncte procentuale — Da, este un semnal de alarmă (peste 30)", isCorrect: true },
+    { id: "b", text: "50% — Nu, este normal", isCorrect: false },
+    { id: "c", text: "140 puncte procentuale — Semnal de alarmă sever", isCorrect: false },
+    { id: "d", text: "45 puncte procentuale — Limită, de investigat", isCorrect: false }
+  ]}
+  explanation="Diferența este 95% - 45% = 50 puncte procentuale. Aceasta depășește semnificativ pragul de 30 de puncte, indicând că cheltuielile cu personalul sunt prioritizate în timp ce investițiile (proiecte noi, infrastructură) sunt neglijate."
+/>
+
+<Quiz
+  id="capstone-03-q2"
+  question="Ați găsit 3 semnale de alarmă în analiza dumneavoastră. Ce ar trebui să faceți în continuare?"
+  options={[
+    { id: "a", text: "Presupuneți corupție și raportați autorităților", isCorrect: false },
+    { id: "b", text: "Ignorați-le — semnalele de alarmă sunt comune", isCorrect: false },
+    { id: "c", text: "Formulați întrebări specifice și cercetați mai mult", isCorrect: true },
+    { id: "d", text: "Așteptați datele de anul viitor pentru confirmare", isCorrect: false }
+  ]}
+  explanation="Cu o severitate medie (2-3 semnale de alarmă), abordarea corectă este să formulați întrebări specifice bazate pe constatările dumneavoastră și să cercetați mai mult. Semnalele de alarmă nu sunt acuzații — sunt puncte de plecare pentru o investigație informată."
+/>
+
+---
+
+## Concluzie Principală
+
+> Ați finalizat analiza semnalelor de alarmă! Acum știți care sunt domeniile din bugetul administrației locale care merită scrutate. În lecția finală, veți transforma aceste constatări într-un raport acționabil — cu întrebări de adresat și pași de urmat.
+
+<MarkComplete label="Finalizează Pasul 3" />

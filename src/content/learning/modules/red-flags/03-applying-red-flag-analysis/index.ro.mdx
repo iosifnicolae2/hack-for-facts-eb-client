@@ -1,0 +1,276 @@
+---
+title: "Aplicarea analizei semnalelor de alarmă"
+durationMinutes: 7
+concept: "Aplicarea practică a analizei semnalelor de alarmă în contextul macroeconomic al României"
+objective: "Aplicați abilitățile de analiză a semnalelor de alarmă pe date reale și înțelegeți contextul fiscal al României"
+---
+
+# Aplicarea analizei semnalelor de alarmă
+
+## Introducere
+
+Ați învățat să recunoașteți cele șapte semnale majore de alarmă. Acum este momentul să aplicați aceste cunoștințe. În această lecție, veți analiza un studiu de caz, veți înțelege provocările fiscale mai ample ale României și veți exersa identificarea semnalelor de alarmă în date reale.
+
+Înțelegerea contextului macroeconomic este esențială deoarece problemele bugetelor locale sunt adesea legate de presiunile fiscale naționale. Când țara înregistrează un deficit mare, presiunea se propagă către administrațiile locale.
+
+> **Observație cheie:** Semnalele de alarmă locale reflectă adesea stresul fiscal național. Înțelegerea ambelor niveluri vă face un supraveghetor civic mai eficient.
+
+---
+
+## Semnalul de alarmă macro al României: Deficitul
+
+Înainte de a analiza bugetele locale, trebuie să înțelegeți contextul național. România înregistrează cel mai mare deficit bugetar din UE — iar acest lucru afectează fiecare buget public din țară.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🚨 SEMNAL DE ALARMĂ MACRO: DEFICITUL DE ~9%                 │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│       VENITURI            DECALAJ        CHELTUIELI          │
+│                                                              │
+│         34%        ←──  ~9%  ──→         ~43%               │
+│          │               │                 │                 │
+│          │               ▼                 │                 │
+│          │        ┌───────────┐            │                 │
+│          │        │  DEFICIT  │            │                 │
+│          │        │   ~9,3%   │            │                 │
+│          │        │  DIN PIB  │            │                 │
+│          │        └───────────┘            │                 │
+│          │                                 │                 │
+│  Al doilea cel mai mic din UE    Mult sub media UE          │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Ce înseamnă deficitul pentru dumneavoastră
+
+Deficitul trebuie acoperit. Există doar trei modalități:
+
+| Opțiune | Impact |
+|---------|--------|
+| **Taxe mai mari** | Creșterea TVA la 21% (din august 2025), posibile modificări ale impozitului pe venit |
+| **Servicii reduse** | Reduceri ale programelor, investiții amânate, degradarea serviciilor |
+| **Inflație** | „Taxă invizibilă" care erodează economiile și puterea de cumpărare |
+
+**De ce contează pentru supravegherea bugetară:** Când banii sunt puțini, fiecare leu contează mai mult. Risipa, ineficiența și corupția devin și mai dăunătoare. De aceea supravegherea bugetară este crucială în acest moment.
+
+---
+
+## Element interactiv: Analizor de studiu de caz
+
+Exersați identificarea semnalelor de alarmă într-un scenariu realistic.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🔍 STUDIU DE CAZ: ANALIZAȚI ACEASTĂ ENTITATE                │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ENTITATE: Oraș mic (pop. 15.000)                            │
+│  BUGET TOTAL: 45 milioane RON                                │
+│                                                              │
+│  DATE:                                                       │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │ Personal (Cod 10):         32M planificat, 31,8M exec│    │
+│  │ Bunuri & Servicii (20):    8M planificat, 7,5M exec  │    │
+│  │ Investiții (71):           5M planificat, 1,8M exec  │    │
+│  │ Rectificări în acest an:   3                         │    │
+│  │ Contracte directe:         38% din totalul achizițiilor│   │
+│  │ Variație cheltuieli an/an: +12%                      │    │
+│  │ Arierate raportate:        0,5M RON                  │    │
+│  └──────────────────────────────────────────────────────┘    │
+│                                                              │
+│  CALCULELE DUMNEAVOASTRĂ:                                    │
+│                                                              │
+│  Rata de execuție a investițiilor: [ _____ ]%               │
+│     Formula: (executat ÷ planificat) × 100                   │
+│                                                              │
+│  Personal ca % din buget: [ _____ ]%                         │
+│     Formula: (personal planificat ÷ buget total) × 100       │
+│                                                              │
+│  Câte semnale de alarmă sunt prezente? ○ 1-2  ○ 3-4  ○ 5+   │
+│                                                              │
+│  [ Verifică răspunsurile → ]                                 │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Soluția studiului de caz
+
+**Rata de execuție a investițiilor:** (1,8 ÷ 5) × 100 = **36%** 🔴 (prag: >70%)
+
+**Personal ca % din buget:** (32 ÷ 45) × 100 = **71%** 🔴 (prag: \<60%)
+
+**Semnale de alarmă identificate:**
+1. 🔴 **Execuție extrem de scăzută a investițiilor (36%)** — Mult sub prag
+2. 🔴 **Dominanța cheltuielilor de personal (71%)** — Peste prag
+3. 🔴 **Rectificări frecvente (3)** — La pragul de avertizare
+4. 🟡 **Contracte directe ridicate (38%)** — Peste pragul de 25%
+5. 🟡 **Arierate prezente (0,5M)** — Orice arierat este îngrijorător
+
+**Verdict: 5 semnale de alarmă prezente — situația necesită investigații.**
+
+### Specificație componentă
+
+```typescript
+/**
+ * CaseStudyAnalyzer Component
+ *
+ * PURPOSE: Interactive case study where users calculate metrics and identify
+ * red flags based on provided data. Validates understanding through practice.
+ */
+interface CaseStudyAnalyzerProps {
+  readonly caseData: CaseStudyData
+  readonly questions: readonly CaseStudyQuestion[]
+  readonly onComplete?: (score: number) => void
+}
+
+interface CaseStudyData {
+  readonly entityName: string
+  readonly population: number
+  readonly totalBudget: number
+  readonly currency: 'RON' | 'EUR'
+  readonly metrics: readonly {
+    readonly label: string
+    readonly planned: number
+    readonly spent: number
+    readonly code?: string
+  }[]
+  readonly additionalData: Record<string, string | number>
+}
+
+interface CaseStudyQuestion {
+  readonly id: string
+  readonly type: 'calculation' | 'multiple_choice' | 'checkbox'
+  readonly question: string
+  readonly hint?: string
+  readonly correctAnswer: string | number | string[]
+  readonly explanation: string
+  readonly tolerance?: number // For calculations, allow margin of error
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - answers: Record<string, string | number | string[]>
+ * - submitted: boolean
+ * - results: Record<string, { correct: boolean; feedback: string }>
+ * - score: number (percentage correct)
+ *
+ * STATE TRANSITIONS:
+ * - User types/selects → update answers[questionId]
+ * - User submits → validate all, set submitted=true, compute results
+ * - Reset → clear all answers, set submitted=false
+ *
+ * USER INTERACTIONS:
+ * - Input fields: type numeric answers
+ * - Radio buttons: select single choice
+ * - Checkboxes: select multiple flags
+ * - Submit button: validate and show feedback
+ * - Tab/Enter: navigate between questions
+ *
+ * VISUAL STATES:
+ * - Initial: empty inputs, data panel visible
+ * - In progress: partially filled, no validation shown
+ * - Submitted correct: green highlight, checkmark
+ * - Submitted incorrect: amber highlight, show correct answer
+ * - Complete: score shown, option to review or continue
+ *
+ * ANIMATIONS:
+ * - Submit: ripple effect on button
+ * - Results: stagger reveal per question (200ms delay)
+ * - Score: count-up animation
+ * - Incorrect answers: gentle shake + correction reveal
+ *
+ * ACCESSIBILITY:
+ * - Questions are fieldsets with legend
+ * - Error messages linked via aria-describedby
+ * - Score announced via aria-live
+ * - Navigation hints for keyboard users
+ */
+```
+
+---
+
+## Activitate ghidată: Căutarea semnalelor de alarmă
+
+Acum aplicați abilitățile pe date reale. Urmați acești pași pentru a analiza administrația locală:
+
+### Pasul 1: Deschideți Analytics pentru entități
+
+Navigați la pagina Entity Analytics pe Transparenta.eu pentru a accesa date bugetare detaliate.
+
+[Deschide Entity Analytics →](/entities)
+
+### Pasul 2: Găsiți administrația locală
+
+Căutați orașul, comuna sau județul dumneavoastră. Deschideți vizualizarea detaliată pentru a vedea defalcarea bugetului.
+
+### Pasul 3: Verificați fiecare semnal de alarmă
+
+Folosiți această listă de verificare pentru o analiză sistematică:
+
+- [ ] **Rata de execuție a investițiilor (Cod 71)** — Este sub 70%?
+- [ ] **Personalul ca % din bugetul total** — Este peste 60%?
+- [ ] **Numărul de rectificări** — Sunt 3 sau mai multe?
+- [ ] **Variația cheltuielilor an de an** — Este peste 20%?
+- [ ] **Căutați arierate** — Există facturi neplătite raportate?
+
+### Pasul 4: Înregistrați constatările
+
+Documentați ce găsiți:
+- Câte potențiale semnale de alarmă ați identificat?
+- Ce întrebări ați pune pe baza datelor?
+- Există tipare care vă îngrijorează?
+
+### Pasul 5: Comparați cu vecinii
+
+Contextul contează. Comparați localitatea dumneavoastră cu vecini similari:
+- Au aceleași probleme?
+- Sau localitatea dumneavoastră este o excepție?
+- Ce explică diferențele?
+
+---
+
+## Practică
+
+<Quiz
+  id="red-flags-03-q1"
+  question="Deficitul bugetar al României de ~9% înseamnă că în anii următori este cel mai probabil:"
+  options={[
+    { id: "a", text: "Economia va crește mai rapid", isCorrect: false },
+    { id: "b", text: "Creșteri de taxe, reduceri de servicii sau inflație — sau o combinație", isCorrect: true },
+    { id: "c", text: "Guvernul va avea mai mulți bani de cheltuit", isCorrect: false },
+    { id: "d", text: "Fondurile UE vor acoperi diferența", isCorrect: false }
+  ]}
+  explanation="Un deficit mare trebuie în cele din urmă acoperit. Singurele opțiuni sunt creșterea taxelor (TVA crește deja la 21%), reducerea serviciilor sau permiterea inflației să erodeze valoarea reală a datoriei. Înțelegerea acestui context face supravegherea bugetelor locale și mai importantă."
+/>
+
+<Quiz
+  id="red-flags-03-q2"
+  question="Un oraș are costuri de personal de 71% din buget, execuție de investiții de 36% și 3 rectificări. Câte semnale de alarmă sunt?"
+  options={[
+    { id: "a", text: "1-2 semnale de alarmă", isCorrect: false },
+    { id: "b", text: "3-4 semnale de alarmă", isCorrect: true },
+    { id: "c", text: "5+ semnale de alarmă", isCorrect: false },
+    { id: "d", text: "Niciun semnal de alarmă — acestea sunt normale", isCorrect: false }
+  ]}
+  explanation="Acest caz arată 3 semnale clare de alarmă: (1) Dominanța personalului la 71% (peste pragul de 60%), (2) Execuție scăzută a investițiilor la 36% (sub pragul de 70%), și (3) Rectificări frecvente — 3 (pragul este 3 sau mai multe). Această combinație justifică o investigație."
+/>
+
+---
+
+## Treceți la acțiune
+
+Ați învățat să recunoașteți și să analizați semnalele de alarmă bugetare. Acum puneți aceste cunoștințe în practică:
+
+- [ ] **Verificați administrația locală** pentru toate cele 7 semnale de alarmă
+- [ ] **Comparați cu cel puțin 2 localități similare** — Este a voastră mai bună, mai rea sau la media?
+- [ ] **Pregătiți întrebări** bazate pe semnalele de alarmă găsite — Acestea devin cererile de informații publice
+- [ ] **Urmăriți în timp** — Lucrurile se îmbunătățesc sau se înrăutățesc?
+
+---
+
+## Concluzie
+
+> 📌 **Rețineți:** Supravegherea bugetară este cea mai valoroasă când este aplicată sistematic. Verificați fiecare semnal de alarmă, documentați constatările, comparați cu alte entități și adresați întrebări. Presiunile fiscale ale României fac această muncă mai importantă ca niciodată — fiecare leu irosit sau furat este un leu care ar fi putut construi o școală sau repara un drum.
+
+<MarkComplete label="Finalizează modulul: Semnale de alarmă" />

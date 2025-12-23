@@ -1,0 +1,445 @@
+---
+title: "Raportează și acționează"
+durationMinutes: 10
+concept: "Crearea rapoartelor acționabile și planificarea implicării civice"
+objective: "Generarea unui raport de analiză care poate fi distribuit și planificarea pașilor următori"
+---
+
+# Raportează și acționează
+
+## Introducerea conceptului
+
+Ai găsit entitatea, ai colectat datele și ai identificat semnalele de alarmă. Acum este momentul să transformi analiza în acțiune. În această ultimă lecție, vei crea un raport care poate fi distribuit și vei planifica pașii concreți următori.
+
+Aici cunoașterea devine putere. O analiză bine documentată cu întrebări clare este fundamentul implicării civice eficiente.
+
+> **Idee cheie:** Datele fără acțiune nu schimbă nimic. Un cetățean care pune întrebări informate poate schimba totul.
+
+---
+
+## Element interactiv: Generator de întrebări
+
+Pe baza semnalelor de alarmă identificate, construiește întrebările potrivite:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  PASUL 4A: CONSTRUIEȘTE-ȚI ÎNTREBĂRILE                       │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Pe baza constatărilor tale, ce întrebări ai adresa?         │
+│                                                              │
+│  DACĂ AI GĂSIT EXECUȚIE SCĂZUTĂ LA INVESTIȚII:               │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ „De ce s-a cheltuit doar [X]% din bugetul de           │  │
+│  │  investiții? Ce proiecte au fost amânate sau anulate?  │  │
+│  │  Ce se întâmplă cu banii necheltuiți?"                 │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  DACĂ AI GĂSIT COSTURI RIDICATE CU PERSONALUL:               │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ „Care este nivelul actual de personal comparat cu cel  │  │
+│  │  de acum 5 ani? Cum se compară raportul                │  │
+│  │  personal/investiții cu al orașelor similare?"         │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  DACĂ AI GĂSIT VARIAȚII NEOBIȘNUITE AN DE AN:                │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ „Ce a cauzat creșterea/scăderea de [X]% a cheltuielilor│  │
+│  │  din [an] în [an]? A fost planificată sau reactivă?"   │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  ÎNTREBĂRILE TALE PERSONALIZATE:                             │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ 1. ____________________________________________        │  │
+│  │ 2. ____________________________________________        │  │
+│  │ 3. ____________________________________________        │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  [x] Mi-am formulat întrebările                              │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Specificația componentei: QuestionBuilder
+
+```typescript
+/**
+ * Componenta QuestionBuilder
+ *
+ * SCOP: Generarea întrebărilor contextuale pe baza semnalelor de alarmă găsite,
+ * permițând utilizatorilor să personalizeze și să salveze lista de întrebări.
+ */
+interface QuestionBuilderProps {
+  readonly redFlagResults: RedFlagResults
+  readonly entityName: string
+  readonly onQuestionsComplete: (questions: GeneratedQuestions) => void
+}
+
+interface QuestionTemplate {
+  readonly id: string
+  readonly triggerRedFlag: string
+  readonly questionText: string
+  readonly placeholders: ReadonlyArray<{
+    key: string
+    description: string
+  }>
+}
+
+interface GeneratedQuestions {
+  readonly suggested: ReadonlyArray<{
+    readonly template: string
+    readonly filled: string
+    readonly isSelected: boolean
+  }>
+  readonly custom: ReadonlyArray<string>
+}
+
+/**
+ * GESTIONAREA STĂRII:
+ * - suggestedQuestions: QuestionTemplate[] (filtrate după semnalele de alarmă)
+ * - selectedQuestions: Set<string>
+ * - customQuestions: string[]
+ * - isComplete: boolean
+ *
+ * TRANZIȚII DE STARE:
+ * - Componenta se încarcă -> filtrează șabloanele după semnalele detectate
+ * - Utilizatorul comută întrebarea -> adaugă/elimină din setul selectat
+ * - Utilizatorul scrie personalizat -> adaugă în array-ul de întrebări personalizate
+ * - Cel puțin 1 întrebare selectată -> activează finalizarea
+ *
+ * INTERACȚIUNI UTILIZATOR:
+ * - Căsuță de bifare pentru selectarea/deselectarea întrebărilor sugerate
+ * - Câmp text pentru întrebări personalizate
+ * - Buton „Adaugă alta" pentru întrebări personalizate suplimentare
+ * - Tragere pentru reordonare (opțional)
+ * - Buton „Copiază tot" pentru clipboard
+ *
+ * STĂRI VIZUALE:
+ * - Întrebare sugerată selectată: evidențiată cu bifă
+ * - Câmp personalizat activ: contur de focalizare, text placeholder
+ * - Finalizat: toate întrebările vizibile, opțiuni de export afișate
+ *
+ * ANIMAȚII:
+ * - Selectare întrebare: umplere căsuță + evidențiere subtilă (150ms)
+ * - Întrebare personalizată nouă: intrare prin alunecare în jos (200ms)
+ * - Confirmare copiere: flash cu bifă (300ms)
+ *
+ * ACCESIBILITATE:
+ * - role="group" pentru categoriile de întrebări
+ * - Căsuțele au aria-describedby pentru textul întrebării
+ * - Câmpurile personalizate au etichete clare
+ * - Anunțare actualizări număr întrebări
+ */
+```
+
+---
+
+## Element interactiv: Generator de raport
+
+Compilează constatările tale într-un raport care poate fi distribuit:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  PASUL 4B: RAPORTUL TĂU DE ANALIZĂ                           │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│  RAPORT DE ANALIZĂ BUGETARĂ                                  │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  ENTITATE: _______________________________                   │
+│  AN ANALIZAT: _______                                        │
+│  DATA: _______________                                       │
+│  ÎNTOCMIT DE: __________________________                     │
+│                                                              │
+│  ─────────────────────────────────────────────────────────── │
+│  SUMAR                                                       │
+│  ─────────────────────────────────────────────────────────── │
+│                                                              │
+│  Buget total: _____________ RON                              │
+│  Populație: _____________                                    │
+│  Per capita: _____________ RON                               │
+│                                                              │
+│  ─────────────────────────────────────────────────────────── │
+│  CONSTATĂRI PRINCIPALE                                       │
+│  ─────────────────────────────────────────────────────────── │
+│                                                              │
+│  Execuție generală: [ _____ ]%                               │
+│  Execuție investiții: [ _____ ]%  [ OK / Limită / ROȘU ]     │
+│  Pondere personal: [ _____ ]%  [ OK / Limită / ROȘU ]        │
+│                                                              │
+│  Top 3 domenii de cheltuieli:                                │
+│  1. _________________________ ( ____ %)                      │
+│  2. _________________________ ( ____ %)                      │
+│  3. _________________________ ( ____ %)                      │
+│                                                              │
+│  ─────────────────────────────────────────────────────────── │
+│  SEMNALE DE ALARMĂ IDENTIFICATE                              │
+│  ─────────────────────────────────────────────────────────── │
+│                                                              │
+│  [STEAG] ________________________________________________    │
+│  [STEAG] ________________________________________________    │
+│  [!] ________________________________________________        │
+│                                                              │
+│  ─────────────────────────────────────────────────────────── │
+│  ÎNTREBĂRI PENTRU ADMINISTRAȚIA LOCALĂ                       │
+│  ─────────────────────────────────────────────────────────── │
+│                                                              │
+│  1. ________________________________________________?        │
+│  2. ________________________________________________?        │
+│  3. ________________________________________________?        │
+│                                                              │
+│  ─────────────────────────────────────────────────────────── │
+│  ACȚIUNI RECOMANDATE                                         │
+│  ─────────────────────────────────────────────────────────── │
+│                                                              │
+│  [ ] Trimite cerere L544 pentru: ___________________________ │
+│  [ ] Participă la ședința consiliului din: _________________ │
+│  [ ] Configurează alertă Transparenta.eu pentru: ___________ │
+│  [ ] Distribuie constatările către: ________________________ │
+│                                                              │
+│  ─────────────────────────────────────────────────────────── │
+│                                                              │
+│  [ Descarcă raport PDF ]  [ Distribuie link ]  [ Tipărește ] │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Specificația componentei: ReportBuilder
+
+```typescript
+/**
+ * Componenta ReportBuilder
+ *
+ * SCOP: Compilarea tuturor datelor colectate, semnalelor de alarmă și întrebărilor
+ * într-un document de raport formatat, care poate fi distribuit.
+ */
+interface ReportBuilderProps {
+  readonly entityData: SelectedEntity
+  readonly budgetData: CollectedBudgetData
+  readonly redFlagResults: RedFlagResults
+  readonly questions: GeneratedQuestions
+  readonly onReportGenerated: (report: GeneratedReport) => void
+}
+
+interface GeneratedReport {
+  readonly id: string
+  readonly createdAt: Date
+  readonly entity: SelectedEntity
+  readonly summary: {
+    readonly totalBudget: number
+    readonly population: number
+    readonly perCapita: number
+  }
+  readonly findings: {
+    readonly overallExecution: number
+    readonly investmentExecution: number
+    readonly personnelShare: number
+    readonly topFunctions: ReadonlyArray<{ name: string; percentage: number }>
+  }
+  readonly redFlags: ReadonlyArray<{
+    readonly severity: 'warning' | 'red_flag'
+    readonly description: string
+  }>
+  readonly questions: ReadonlyArray<string>
+  readonly actions: ReadonlyArray<{
+    readonly type: 'foia' | 'meeting' | 'alert' | 'share'
+    readonly description: string
+    readonly isChecked: boolean
+  }>
+}
+
+/**
+ * GESTIONAREA STĂRII:
+ * - reportData: GeneratedReport (compilat din props)
+ * - editMode: boolean
+ * - selectedActions: Set<string>
+ * - exportFormat: 'pdf' | 'html' | 'link'
+ *
+ * TRANZIȚII DE STARE:
+ * - Componenta se montează -> compilează raportul din toate props-urile
+ * - Utilizatorul editează câmpul -> actualizează reportData
+ * - Utilizatorul bifează acțiunea -> adaugă în selectedActions
+ * - Utilizatorul apasă export -> generează în formatul selectat
+ *
+ * INTERACȚIUNI UTILIZATOR:
+ * - Click pe câmp pentru editare (editare inline)
+ * - Căsuță de bifare pentru fiecare acțiune recomandată
+ * - Butoane de export: PDF, Distribuie link, Tipărește
+ * - Comutator „Editare" pentru modul vizualizare vs. editare
+ *
+ * STĂRI VIZUALE:
+ * - Mod vizualizare: layout curat, pregătit pentru tipărire
+ * - Mod editare: câmpurile au indicatori de editare
+ * - În curs de export: spinner de încărcare pe buton
+ * - Exportat: confirmare de succes cu copiere în clipboard
+ *
+ * ANIMAȚII:
+ * - Editare câmp: fade-in contur (150ms)
+ * - Succes export: animație bifă (300ms)
+ * - Link de distribuire copiat: tooltip cu alunecare în sus (200ms)
+ *
+ * ACCESIBILITATE:
+ * - role="document" pe containerul raportului
+ * - Secțiunile au ierarhie corectă de titluri
+ * - Butoanele de export au aria-labels clare
+ * - Stiluri de tipărire pentru accesibilitate
+ */
+```
+
+**Integrare date:**
+- Stocare raport: `POST /api/reports` (opțional, pentru persistență)
+- Generare link de distribuire: Creează URL unic de distribuire
+
+---
+
+## Planul tău de acțiune
+
+Acum că ai raportul, ce vei face cu el?
+
+### Acțiuni imediate
+
+| Acțiune | Cum | Când |
+|---------|-----|------|
+| **Configurează alerte** | Folosește Transparenta.eu pentru a monitoriza această entitate | Astăzi |
+| **Distribuie vecinilor** | Trimite raportul prietenilor implicați civic | Săptămâna aceasta |
+| **Adaugă entitatea la favorite** | Acces ușor pentru verificări viitoare | Astăzi |
+
+### Acțiuni pe termen mediu
+
+| Acțiune | Cum | Când |
+|---------|-----|------|
+| **Trimite cerere L544** | Folosește întrebările din analiza ta | În 30 de zile |
+| **Participă la ședința consiliului** | Găsește data următoarei ședințe publice | Următoarea sesiune |
+| **Conectează-te cu grupuri locale** | Găsește organizații civice din zona ta | Luna aceasta |
+
+### Implicare pe termen lung
+
+| Acțiune | Cum | Când |
+|---------|-----|------|
+| **Urmărește an de an** | Compară datele anului viitor cu această referință | Anual |
+| **Împărtășește ce ai învățat** | Învață-i pe alții să facă aceeași analiză | Continuu |
+| **Votează informat** | Folosește cunoștințele bugetare în alegerile locale | La alegeri |
+
+---
+
+## Felicitări!
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  FELICITĂRI!                                                 │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Ai finalizat Ghidul cetățeanului pentru bugetele publice!   │
+│                                                              │
+│  Acum ai cunoștințele necesare pentru a:                     │
+│  [x] Înțelege de unde vin și unde se duc banii publici       │
+│  [x] Citi și interpreta documente bugetare                   │
+│  [x] Naviga eficient instrumentele de transparență           │
+│  [x] Identifica semnale de alarmă și a pune întrebări        │
+│      informate                                               │
+│  [x] Exercita drepturile tale de cetățean                    │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  „Nu te îndoi niciodată că un grup mic de cetățeni           │
+│   gânditori și dedicați poate schimba lumea;                 │
+│   de fapt, este singurul lucru care a reușit-o vreodată."    │
+│                        — Margaret Mead                       │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Specificația componentei: CompletionCertificate
+
+```typescript
+/**
+ * Componenta CompletionCertificate
+ *
+ * SCOP: Generarea unui certificat personalizat de finalizare
+ * pe care utilizatorii îl pot descărca și distribui.
+ */
+interface CompletionCertificateProps {
+  readonly userName: string
+  readonly completionDate: Date
+  readonly pathName: string
+  readonly entityAnalyzed?: string
+  readonly onDownload: (format: 'pdf' | 'png') => void
+}
+
+/**
+ * GESTIONAREA STĂRII:
+ * - isGenerating: boolean
+ * - downloadFormat: 'pdf' | 'png'
+ * - userName: string (editabil înainte de descărcare)
+ *
+ * STĂRI VIZUALE:
+ * - Previzualizare: design certificat vizibil
+ * - Editare nume: câmp de input activ
+ * - În generare: overlay cu spinner
+ * - Gata: butoane de descărcare activate
+ *
+ * ANIMAȚII:
+ * - Afișare certificat: fade-in + scalare (500ms)
+ * - Descărcare completă: explozie de confetti (600ms)
+ * - Butoane de distribuire: animație eșalonată (100ms fiecare)
+ *
+ * ACCESIBILITATE:
+ * - Conținutul certificatului citibil de cititoare de ecran
+ * - Butoane de descărcare clar etichetate
+ * - Contrast ridicat pentru printabilitate
+ */
+```
+
+---
+
+## Practică
+
+<Quiz
+  id="capstone-04-q1"
+  question="Care este cel mai eficient mod de a folosi constatările analizei tale bugetare?"
+  options={[
+    { id: "a", text: "Postează reclamații pe rețelele sociale fără detalii specifice", isCorrect: false },
+    { id: "b", text: "Presupune că oficialii cunosc problemele și le vor rezolva", isCorrect: false },
+    { id: "c", text: "Pune întrebări specifice la ședințele consiliului sau prin cereri L544", isCorrect: true },
+    { id: "d", text: "Așteaptă până la alegeri pentru a menționa problemele bugetare", isCorrect: false }
+  ]}
+  explanation="Întrebările specifice, susținute de date, sunt puternice. Ele arată că ți-ai făcut temele și fac mai dificil pentru oficiali să evite răspunsul. Reclamațiile generale sunt ușor de respins; întrebările specifice necesită răspunsuri specifice."
+/>
+
+<Quiz
+  id="capstone-04-q2"
+  question="După finalizarea analizei, care acțiune continuă este cea mai valoroasă?"
+  options={[
+    { id: "a", text: "Șterge notițele și treci mai departe", isCorrect: false },
+    { id: "b", text: "Configurează alerte pentru a monitoriza entitatea și urmări schimbările în timp", isCorrect: true },
+    { id: "c", text: "Presupune că lucrurile vor rămâne la fel anul viitor", isCorrect: false },
+    { id: "d", text: "Verifică din nou doar peste 5 ani", isCorrect: false }
+  ]}
+  explanation="Monitorizarea continuă este esențială. Configurarea alertelor și urmărirea schimbărilor an de an te ajută să observi tendințe, să verifici dacă problemele sunt rezolvate și să construiești un caz mai solid pentru responsabilizare în timp."
+/>
+
+---
+
+## Ideea cheie
+
+> **Ai reușit!** Ai finalizat o analiză bugetară completă a administrației tale locale. Ai date, semnale de alarmă, întrebări și un plan de acțiune. Cel mai important pas acum este cel mai simplu: **fă o acțiune astăzi.** Configurează o alertă. Distribuie raportul. Participă la o ședință. Supravegherea bugetară începe cu un singur cetățean informat — și acesta ești acum tu.
+
+---
+
+## Lista de verificare pentru finalizarea proiectului
+
+Înainte de a termina, confirmă că ai parcurs toți pașii:
+
+- [ ] Am găsit și selectat administrația mea locală
+- [ ] Am colectat toate datele bugetare cheie
+- [ ] Am calculat ratele de execuție (generale și pe tipuri)
+- [ ] Am verificat toate cele 5 semnale de alarmă
+- [ ] Am comparat cu cel puțin 1 vecin similar
+- [ ] Am formulat cel puțin 3 întrebări
+- [ ] Am creat raportul meu de analiză
+- [ ] Am identificat cel puțin 1 acțiune pe care o voi întreprinde
+
+---
+
+<MarkComplete label="Finalizează proiectul" />

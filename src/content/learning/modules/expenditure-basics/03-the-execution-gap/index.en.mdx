@@ -21,9 +21,11 @@ The gap between planned budget and actual spending is measured by the **executio
 
 See how different types of spending execute very differently.
 
+> **Note:** The percentages below are typical patterns observed in Romanian budgets. The Ministry of Finance publishes spending in absolute values (billion lei), not as execution percentages. These estimates are based on comparing planned vs. actual spending data.
+
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│  📊 EXECUTION RATES BY ECONOMIC TYPE (2023)                  │
+│  📊 TYPICAL EXECUTION RATES BY ECONOMIC TYPE                 │
 ├──────────────────────────────────────────────────────────────┤
 │                                                              │
 │  Execution Rate = (Actual Spent ÷ Planned Budget) × 100%     │
@@ -31,19 +33,19 @@ See how different types of spending execute very differently.
 │  ═══════════════════════════════════════════════════════════ │
 │                                                              │
 │  Personnel (Code 10)                                         │
-│  ████████████████████████████████████████████████  98%  🟢   │
+│  ████████████████████████████████████████████████  ~98% 🟢   │
 │  Almost always fully spent — salaries must be paid           │
 │                                                              │
 │  Goods & Services (Code 20)                                  │
-│  ██████████████████████████████████████████████░░  92%  🟢   │
+│  ██████████████████████████████████████████████░░  ~92% 🟢   │
 │  Usually well executed                                       │
 │                                                              │
-│  Transfers (Code 50-59)                                      │
-│  ████████████████████████████████████████████░░░░  88%  🟡   │
-│  Some delays in grant disbursements                          │
+│  Transfers & Other (Code 50-59)                              │
+│  ████████████████████████████████████████████░░░░  ~88% 🟡   │
+│  Includes social assistance, grants, reserves                │
 │                                                              │
 │  INVESTMENTS (Code 71)                                       │
-│  ████████████████████████████░░░░░░░░░░░░░░░░░░░░  58%  🔴   │
+│  ████████████████████████████░░░░░░░░░░░░░░░░░░░░ 50-70% 🔴  │
 │  ⚠️ Money for development is often NOT spent!                │
 │                                                              │
 │  ─────────────────────────────────────────────────────────── │
@@ -132,7 +134,7 @@ interface ExecutionThresholds {
 - Animated bars show percentage visually
 - Color coding: Green (\>95%), Yellow (80-94%), Orange (60-79%), Red (\<60%)
 - Click any category to see why execution is high/low
-- Shows the critical insight: salaries execute at 98%, investments at 58%
+- Shows the critical insight: salaries execute at ~98%, investments at 50-70%
 
 ---
 
@@ -164,9 +166,9 @@ One pattern is remarkably consistent in Romania:
 
 | Spending Type | Typical Execution | Why? |
 |---------------|-------------------|------|
-| Personnel (salaries) | 95-100% | Must be paid — people expect their wages |
-| Goods & Services | 85-95% | Contracts signed, services rendered |
-| Transfers | 80-90% | Pensions, subsidies — mostly automatic |
+| Personnel (salaries) | ~95-100% | Must be paid — people expect their wages |
+| Goods & Services | ~85-95% | Contracts signed, services rendered |
+| Transfers & Other | ~80-90% | Social assistance, grants — mostly automatic |
 | **Investments** | **50-70%** | Projects delayed, procurement stuck |
 
 > **🔴 The Investment Problem:** This is where Romania's development gets stuck. Money is budgeted for schools, hospitals, and roads — but year after year, 30-50% of it goes unspent. The new hospital wing? Delayed. The road repair? Next year. The school renovation? Still waiting.
@@ -183,36 +185,36 @@ One pattern is remarkably consistent in Romania:
 
 ## Romania in EU Context
 
-How does Romania compare on spending?
+How does Romania compare on spending? (Data: Eurostat 2023)
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│  📊 SPENDING AS % OF GDP: EU COMPARISON                      │
+│  📊 SPENDING AS % OF GDP: EU COMPARISON (2023)               │
 ├──────────────────────────────────────────────────────────────┤
 │                                                              │
-│  France      █████████████████████████████████████████  56%  │
-│  Germany     ████████████████████████████████████████   51%  │
+│  France      ██████████████████████████████████████████ 58%  │
 │  EU Average  ███████████████████████████████████████    49%  │
-│  Poland      ████████████████████████████████████       45%  │
-│  ROMANIA     ████████████████████████████████         43.5% │
-│  Bulgaria    ██████████████████████████████            39%  │
+│  Germany     ████████████████████████████████████████   48%  │
+│  Poland      ███████████████████████████████████████    47%  │
+│  ROMANIA     █████████████████████████████████████    43.5%  │
+│  Bulgaria    ██████████████████████████████████         39%  │
 │                                                              │
 │  ─────────────────────────────────────────────────────────── │
 │                                                              │
 │  💡 KEY INSIGHT                                              │
 │                                                              │
-│  Romania's spending (43.5% of GDP) is close to EU average.   │
-│  The REAL problem:                                           │
+│  Romania's spending (43.5% of GDP) is below EU average.      │
+│  The REAL problem is twofold:                                │
 │                                                              │
-│  Revenue: 34% ←─── 9.5% GAP ───→ 43.5% :Spending             │
+│  Revenue: 34% ←─── 9.3% GAP ───→ 43.5% :Spending             │
 │                        │                                     │
 │                        ▼                                     │
-│               DEFICIT (among EU's highest)                   │
+│               DEFICIT (THE HIGHEST IN THE EU)                │
 │                                                              │
 └──────────────────────────────────────────────────────────────┘
 ```
 
-> **The Real Problem:** Romania doesn't spend too little or too much — it collects too little. The 9.5% gap between revenue (34%) and spending (43.5%) is one of the highest deficits in the EU.
+> **The Real Problem:** Romania faces a dual challenge. First, it collects too little — at 34% of GDP, revenue is among the lowest in the EU. Second, the 9.3% gap between revenue and spending creates the EU's highest deficit. Romania isn't overspending; it's under-collecting.
 
 ---
 
@@ -242,7 +244,7 @@ Now apply what you've learned using the Transparenta platform.
 │  ✅ Challenge: What is Romania's largest spending function?   │
 │                                                              │
 │  Your answer: [ _________________ ]  [ Check ]               │
-│  (Hint: It's ~35% of total spending)                         │
+│  (Hint: It's ~33% of total spending)                         │
 │                                                              │
 └──────────────────────────────────────────────────────────────┘
 ```
@@ -257,22 +259,22 @@ Now apply what you've learned using the Transparenta platform.
   options={[
     { id: "a", text: "95-100% (almost fully spent)", isCorrect: false },
     { id: "b", text: "80-90% (mostly spent)", isCorrect: false },
-    { id: "c", text: "55-65% (significant underspending)", isCorrect: true },
+    { id: "c", text: "50-70% (significant underspending)", isCorrect: true },
     { id: "d", text: "30-40% (severe underspending)", isCorrect: false }
   ]}
-  explanation="Capital investments (Code 71 - Active nefinanciare) typically execute at only 55-65% in Romania. This means 35-45% of money allocated for buildings, roads, and equipment goes unspent. Meanwhile, personnel costs execute at 95-100%. This pattern explains why infrastructure projects are chronically delayed."
+  explanation="Capital investments (Code 71 - Active nefinanciare) typically execute at only 50-70% in Romania. This means 30-50% of money allocated for buildings, roads, and equipment goes unspent. Meanwhile, personnel costs execute at ~95-100%. This pattern explains why infrastructure projects are chronically delayed."
 />
 
 <Quiz
   id="expenditure-romania-problem"
-  question="Romania's spending as % of GDP is close to EU average. What is Romania's actual budget problem?"
+  question="Romania's spending as % of GDP is below EU average. What is Romania's actual budget problem?"
   options={[
     { id: "a", text: "Spending is too high compared to other EU countries", isCorrect: false },
-    { id: "b", text: "Revenue collection is too low, causing a large deficit", isCorrect: true },
+    { id: "b", text: "Revenue collection is too low, creating the EU's highest deficit", isCorrect: true },
     { id: "c", text: "There is no budget problem — Romania is on track", isCorrect: false },
     { id: "d", text: "Romania spends too little on social programs", isCorrect: false }
   ]}
-  explanation="Romania's spending (43.5% of GDP) is close to EU average (49%). The problem is revenue: Romania collects only 34% of GDP in taxes — the lowest in the EU. This 9.5% gap creates one of Europe's largest budget deficits, not overspending."
+  explanation="Romania's spending (43.5% of GDP) is below the EU average (49%). The problem is revenue: Romania collects only 34% of GDP — among the lowest in the EU. This 9.3% gap creates the EU's highest budget deficit, not overspending."
 />
 
 ---
@@ -283,17 +285,17 @@ Congratulations! You've completed the Expenditures module. Here's what you learn
 
 | Topic | Key Takeaway |
 |-------|--------------|
-| Spending Categories | Social Protection is #1 (~35%), mostly pensions |
+| Spending Categories | Social Protection is #1 (~33%), mostly pensions |
 | Classifications | Functional = "what for", Economic = "what type" |
-| Code 71 | Investments have the lowest execution rates |
+| Code 71 | Investments have the lowest execution rates (50-70%) |
 | Execution Rates | Always check actual spending, not just allocations |
-| Romania vs EU | Spending is normal; revenue collection is the problem |
+| Romania vs EU | Dual problem: low revenue + poor investment execution |
 
 ---
 
 ## Key Takeaway
 
-> 📌 **Remember:** Always check execution rates, not just allocations. The consistent pattern — salaries at 98%, investments at 58% — reveals where promises go unfulfilled. Romania's challenge isn't spending too much; it's collecting too little and executing development projects poorly.
+> 📌 **Remember:** Always check execution rates, not just allocations. The consistent pattern — salaries at ~98%, investments at 50-70% — reveals where promises go unfulfilled. Romania faces a dual challenge: collecting too little revenue (creating the EU's highest deficit) and executing development projects poorly.
 
 ---
 

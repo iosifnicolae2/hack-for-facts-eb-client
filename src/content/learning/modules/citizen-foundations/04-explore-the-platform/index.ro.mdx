@@ -1,0 +1,189 @@
+---
+title: "Explorează Platforma"
+durationMinutes: 5
+concept: "Navigarea practică în Budget Explorer"
+objective: "Navighează în Budget Explorer și găsește date despre cheltuieli pentru orice categorie"
+---
+
+# Explorează Platforma
+
+## Introducerea Conceptului
+
+Cunoașterea fără acțiune este incompletă. Acum că înțelegi ce sunt bugetele publice, cele trei roluri ale tale ca cetățean și cum să identifici diferența dintre promisiuni și realitate, este timpul să pui aceste cunoștințe în practică.
+
+Budget Explorer de pe Transparenta.eu este instrumentul tău pentru investigarea cheltuielilor publice. În această lecție, vei parcurge un tur ghidat și vei finaliza o sarcină practică.
+
+> **Informație cheie:** Budget Explorer transformă cifrele abstracte din buget în vizualizări interactive pe care le poți explora, filtra și înțelege.
+
+---
+
+## Element Interactiv: Tur Ghidat al Platformei
+
+```
++--------------------------------------------------------------+
+|  PRIMA TA EXPLORARE                                           |
++--------------------------------------------------------------+
+|                                                              |
+|  Urmează acești 4 pași pentru a explora cheltuielile publice:|
+|                                                              |
+|  Pasul 1: Apasă butonul de mai jos pentru a deschide         |
+|          Budget Explorer                                      |
+|          [ Deschide Budget Explorer -> ]                      |
+|          Status: [ ] Deschis                                 |
+|                                                              |
+|  Pasul 2: Privește harta arborescentă - fiecare casetă       |
+|          reprezintă o categorie de cheltuieli.               |
+|          Casetă mai mare = mai mulți bani.                   |
+|          Status: [ ] Înțeles                                 |
+|                                                              |
+|  Pasul 3: Apasă pe „Protecție Socială" (de obicei cea mai    |
+|          mare). Vezi ce conține: pensii, ajutoare etc.       |
+|          Status: [ ] Explorat                                |
+|                                                              |
+|  Pasul 4: Încearcă să schimbi la vizualizarea „Per Capita"   |
+|          Acum vezi cheltuielile pe persoană, nu totaluri.    |
+|          Status: [ ] Schimbat                                |
+|                                                              |
+|  Progres: [====              ] 0/4 pași finalizați           |
+|                                                              |
++--------------------------------------------------------------+
+```
+
+### Specificația Componentei
+
+```typescript
+/**
+ * GuidedPlatformTour Component
+ *
+ * SCOP: Ghidează utilizatorii prin prima lor experiență cu Budget Explorer
+ * cu validare la fiecare pas
+ */
+interface GuidedPlatformTourProps {
+  readonly steps: readonly TourStep[]
+  readonly budgetExplorerUrl: string
+  readonly onComplete: () => void
+}
+
+interface TourStep {
+  readonly id: string
+  readonly instruction: string
+  readonly hint?: string
+  readonly validation: 'manual' | 'auto'
+}
+
+/**
+ * GESTIONAREA STĂRII:
+ * - currentStep: number (indexat de la 0)
+ * - completedSteps: Set<string>
+ * - isExplorerOpen: boolean
+ *
+ * TRANZIȚII DE STARE:
+ * - Utilizatorul apasă „Deschide Budget Explorer" -> deschide tab nou, marchează pasul 1 complet
+ * - Utilizatorul apasă „Am făcut asta" pentru fiecare pas -> avansează la următorul
+ * - Toți pașii finalizați -> declanșează onComplete, afișează celebrare
+ *
+ * INTERACȚIUNI UTILIZATOR:
+ * - Buton „Deschide Budget Explorer": deschide /budget-explorer în tab nou
+ * - Checkbox/buton „Marchează ca Finalizat" pentru fiecare pas
+ * - Link „Sari peste acest pas" (avansează fără insignă de finalizare)
+ *
+ * STĂRI VIZUALE:
+ * - Pas în așteptare: gri, numerotat
+ * - Pas curent: bordură evidențiată, accent albastru
+ * - Pas finalizat: bifă verde, restrâns
+ * - Toate complete: animație de celebrare (confetti/bifă)
+ *
+ * ANIMAȚII:
+ * - Tranziție pas: glisare + estompare (300ms)
+ * - Finalizare: mărire + desenare bifă (400ms)
+ * - Bară de progres: umplere lină la finalizarea pasului
+ *
+ * ACCESIBILITATE:
+ * - role="group" cu aria-label="Tur ghidat"
+ * - Fiecare pas este un element de listă
+ * - Pasul curent are aria-current="step"
+ * - Finalizarea anunțată prin aria-live="polite"
+ */
+```
+
+**Comportament Așteptat:**
+- Deschide Budget Explorer într-un tab nou când utilizatorul apasă butonul
+- Fiecare pas are o acțiune „Marchează ca Finalizat"
+- Bara de progres se umple pe măsură ce pașii sunt finalizați
+- Animație de celebrare la finalizarea completă
+
+---
+
+## Explicație de Bază
+
+### Ce Vei Găsi în Budget Explorer
+
+Budget Explorer prezintă datele bugetare în mai multe vizualizări:
+
+| Vizualizare | Ce Afișează | Cel Mai Potrivit Pentru |
+|-------------|-------------|-------------------------|
+| **Hartă Arborescentă** | Casete dimensionate după suma cheltuită | Vizualizarea rapidă a dimensiunilor relative |
+| **Grafic cu Bare** | Bare orizontale pentru comparație | Compararea categoriilor specifice |
+| **Serie Temporală** | Cheltuieli de-a lungul anilor | Urmărirea tendințelor și schimbărilor |
+| **Per Capita** | Cheltuieli împărțite la populație | Comparații corecte între entități |
+
+### Sfaturi Rapide de Navigare
+
+1. **Detaliază** - Apasă pe orice categorie pentru a vedea subcategoriile
+2. **Schimbă Anul** - Folosește selectorul de an pentru a compara perioade diferite
+3. **Schimbă Entitatea** - Vizualizează bugetele naționale, locale sau ale instituțiilor specifice
+4. **Exportă Datele** - Descarcă datele pentru propria analiză
+
+---
+
+## Practică: Găsește Cea Mai Mică Categorie
+
+Acum testează-ți abilitățile de navigare cu o provocare practică:
+
+```
++--------------------------------------------------------------+
+|  PROVOCARE: Găsește Cea Mai Mică Categorie de Cheltuieli      |
++--------------------------------------------------------------+
+|                                                              |
+|  Folosind Budget Explorer, găsește care categorie principală |
+|  primește CEA MAI MICĂ sumă de bani din bugetul național.    |
+|                                                              |
+|  Răspunsul tău: [ _________________ ]                        |
+|                                                              |
+|  Indiciu: Privește harta arborescentă - cele mai mici casete |
+|  sunt categoriile cu cele mai puține cheltuieli.             |
+|                                                              |
++--------------------------------------------------------------+
+```
+
+<Quiz
+  id="platform-exploration-quiz"
+  question="Aproximativ ce procent din PIB-ul României trece prin bugetele publice?"
+  options={[
+    { id: "a", text: "Aproximativ 20%", isCorrect: false },
+    { id: "b", text: "Aproximativ 35%", isCorrect: false },
+    { id: "c", text: "Aproximativ 43%", isCorrect: true },
+    { id: "d", text: "Aproximativ 60%", isCorrect: false }
+  ]}
+  explanation="Aproximativ 43% din PIB-ul României trece prin bugetele publice în fiecare an. Aceasta include bugetul de stat, bugetele locale, bugetele asigurărilor sociale și fondurile speciale. Înțelegerea acestei dimensiuni te ajută să apreciezi de ce contează supravegherea bugetară."
+/>
+
+---
+
+## Ideea Principală
+
+> Acum ai instrumentele necesare pentru a explora singur cheltuielile publice. Budget Explorer transformă datele bugetare complexe în formate vizuale și interactive prin care poți naviga. Folosește-l pentru a verifica afirmații, a urmări tendințe și a-ți exercita rolul de supraveghetor.
+
+---
+
+## Acționează Înainte de a Continua
+
+Înainte de a continua la modulul următor, alege O acțiune pentru a consolida ce ai învățat:
+
+- [ ] **Petrece 5 minute** în Budget Explorer - Găsește cheltuielile totale ale orașului sau județului tău
+- [ ] **Spune cuiva** ce ai învățat - „Știai că 43% din PIB-ul României trece prin bugetele publice?"
+- [ ] **Salvează Transparenta.eu în favorite** - Îl vei folosi pe tot parcursul acestui traseu de învățare
+
+---
+
+<MarkComplete label="Finalizează Modulul 1" />

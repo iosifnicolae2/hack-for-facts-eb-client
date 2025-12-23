@@ -1,0 +1,257 @@
+---
+title: "Clasificarea funcțională"
+durationMinutes: 5
+concept: "Categorii de destinație bazate pe COFOG pentru cheltuielile publice"
+objective: "Identificarea și navigarea codurilor de clasificare funcțională"
+---
+
+# Clasificarea funcțională
+
+## Introducere
+
+Clasificarea funcțională răspunde la întrebarea: **„Pentru CE este destinată această sumă?"** Grupează toate cheltuielile după SCOP, indiferent de instituția care le efectuează sau de tipul de cheltuială.
+
+Clasificarea funcțională a României este **adaptată după** standardul internațional COFOG (Classification of Functions of Government). În timp ce COFOG-ul internațional folosește codurile 01-10, România utilizează un sistem național de codificare (în principal codurile 50-87) organizat în cinci „Părți" funcționale. Acest sistem românesc **se mapează la COFOG** pentru raportările către Eurostat, permițând comparații internaționale.
+
+> **Observație cheie:** Codurile funcționale dezvăluie PRIORITĂȚILE. Dacă un guvern spune că educația este importantă, dar codul 65 primește doar 3% din buget, faptele vorbesc mai tare decât cuvintele.
+
+---
+
+## Element interactiv: Arborele ierarhiei de clasificare
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  📊 CLASIFICAREA FUNCȚIONALĂ ROMÂNEASCĂ (adaptată COFOG)     │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  PARTEA I - Servicii publice generale                        │
+│  ▶ 51 - Autorități publice și acțiuni externe                │
+│  ▶ 53 - Cercetare fundamentală și C&D                        │
+│  ▶ 54 - Alte servicii publice generale                       │
+│  ▶ 55 - Tranzacții privind datoria publică                   │
+│                                                              │
+│  PARTEA a II-a - Apărare și securitate                       │
+│  ▶ 60 - Apărare                                              │
+│  ▶ 61 - Ordine publică și siguranță națională                │
+│                                                              │
+│  PARTEA a III-a - Cheltuieli social-culturale                │
+│  ▼ 65 - Învățământ                                           │
+│    ├── 65.02 - Învățământ (nivel local)                      │
+│    │   ├── 65.02.03 - Învățământ preșcolar și primar         │
+│    │   ├── 65.02.04 - Învățământ secundar                    │
+│    │   └── 65.02.05 - Învățământ postliceal                  │
+│    └── 65.01 - Învățământ (nivel central)                    │
+│  ▶ 66 - Sănătate                                             │
+│  ▶ 67 - Cultură, recreere și religie                         │
+│  ▶ 68 - Asigurări și asistență socială                       │
+│                                                              │
+│  PARTEA a IV-a - Servicii și dezvoltare publică              │
+│  ▶ 70 - Locuințe, servicii și dezvoltare publică             │
+│  ▶ 74 - Protecția mediului                                   │
+│                                                              │
+│  PARTEA a V-a - Acțiuni economice                            │
+│  ▶ 80 - Acțiuni generale economice și de muncă               │
+│  ▶ 84 - Transporturi                                         │
+│  ▶ 87 - Alte acțiuni economice                               │
+│                                                              │
+│  [ Deschide exploratorul complet de clasificări → ]          │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Componenta ClassificationTree
+
+```typescript
+/**
+ * Componenta ClassificationTree
+ *
+ * SCOP: Oferă o vizualizare ierarhică expandabilă și interactivă a codurilor
+ * de clasificare funcțională sau economică pentru explorare și învățare.
+ */
+interface ClassificationTreeProps {
+  readonly type: 'functional' | 'economic'
+  readonly data: ReadonlyArray<ClassificationNode>
+  readonly initialExpanded?: ReadonlyArray<string>
+  readonly highlightCodes?: ReadonlyArray<string>
+  readonly onNodeClick?: (node: ClassificationNode) => void
+  readonly onExplorerLink?: () => void
+}
+
+interface ClassificationNode {
+  readonly code: string
+  readonly name: string
+  readonly nameRo?: string
+  readonly description?: string
+  readonly children?: ReadonlyArray<ClassificationNode>
+  readonly metadata?: {
+    readonly budgetLevel?: 'central' | 'local'
+    readonly importance?: 'high' | 'normal'
+    readonly watchFlag?: boolean
+  }
+}
+
+/**
+ * GESTIONAREA STĂRII:
+ * - expandedNodes: Set<string> (codurile nodurilor expandate)
+ * - selectedNode: string | null (codul selectat curent)
+ * - searchQuery: string (pentru filtrarea nodurilor)
+ *
+ * TRANZIȚII DE STARE:
+ * - Click pe săgeată de expandare → comută expandarea nodului
+ * - Click pe textul nodului → selectează și afișează detalii
+ * - Tastare în căutare → filtrează nodurile vizibile
+ * - Click pe „Restrânge tot" → resetează expandedNodes
+ *
+ * INTERACȚIUNI UTILIZATOR:
+ * - Click pe săgeată/chevron pentru expandare/restrângere
+ * - Click pe cod/nume pentru selectare și vizualizare descriere
+ * - Tastare pentru filtrare (căutare cu debounce 300ms)
+ * - Tastatură: Săgeată Sus/Jos pentru navigare, Enter pentru expandare, Escape pentru ștergere
+ *
+ * STĂRI VIZUALE:
+ * - Restrâns: afișează indicatorul „▶"
+ * - Expandat: afișează indicatorul „▼", copiii sunt vizibili
+ * - Selectat: fundal evidențiat, panou de detalii vizibil
+ * - Evidențiat: bordură pulsantă pentru codurile importante
+ * - Filtrat: ascuns din vizualizare
+ *
+ * ANIMAȚII:
+ * - Expandare/restrângere: tranziție lină de înălțime (200ms)
+ * - Selecție: estompare fundal (150ms)
+ * - Filtrare: estompare elemente filtrate (150ms)
+ * - Puls evidențiere: animație subtilă de scalare (buclă 1s)
+ *
+ * ACCESIBILITATE:
+ * - role="tree" pe container
+ * - role="treeitem" pe fiecare nod
+ * - aria-expanded pentru nodurile expandabile
+ * - aria-selected pentru selecția curentă
+ * - aria-level pentru indicarea adâncimii
+ */
+```
+
+**Comportament așteptat:**
+- Arbore ierarhic cu expandare/restrângere
+- Funcționalitate de căutare/filtrare
+- Click pentru vizualizarea descrierii complete
+- Link către exploratorul complet de clasificări
+- Coduri evidențiate pentru categoriile importante (65, 66, 68)
+
+---
+
+## Explicație detaliată
+
+### Principalele categorii funcționale
+
+România organizează cheltuielile funcționale în **cinci Părți**:
+
+**Partea I — Servicii publice generale:**
+
+| Cod | Funcție | Ce acoperă |
+|-----|---------|------------|
+| **51** | Autorități publice | Organe executive, legislative, acțiuni externe |
+| **53** | Cercetare | Cercetare fundamentală și cercetare-dezvoltare |
+| **54** | Alte servicii generale | Servicii publice generale neclasificate în altă parte |
+| **55** | Datoria publică | Tranzacții privind datoria și plăți de dobânzi |
+
+**Partea a II-a — Apărare și securitate:**
+
+| Cod | Funcție | Ce acoperă |
+|-----|---------|------------|
+| **60** | Apărare | Forțe armate, securitate națională |
+| **61** | Ordine publică și siguranță | Poliție, instanțe, penitenciare, pompieri |
+
+**Partea a III-a — Cheltuieli social-culturale:**
+
+| Cod | Funcție | Ce acoperă |
+|-----|---------|------------|
+| **65** | Învățământ | Școli, universități, formare profesională |
+| **66** | Sănătate | Spitale, clinici, sănătate publică |
+| **67** | Cultură, recreere | Muzee, sport, culte religioase |
+| **68** | Protecție socială | Pensii, asistență socială, șomaj |
+
+**Partea a IV-a — Servicii și dezvoltare publică:**
+
+| Cod | Funcție | Ce acoperă |
+|-----|---------|------------|
+| **70** | Locuințe și dezvoltare | Locuințe, utilități publice, dezvoltare urbană |
+| **74** | Mediu | Gestionarea deșeurilor, controlul poluării |
+
+**Partea a V-a — Acțiuni economice:**
+
+| Cod | Funcție | Ce acoperă |
+|-----|---------|------------|
+| **80** | Economic și muncă | Acțiuni economice generale, programe de muncă |
+| **84** | Transporturi | Drumuri, căi ferate, transport aerian și naval |
+| **87** | Alte acțiuni economice | Agricultură, energie, subvenții industrie |
+
+### Înțelegerea structurii codurilor
+
+Codurile funcționale au o structură ierarhică:
+
+```
+65.02.04.01
+│  │  │  │
+│  │  │  └── Nivel de detaliu (Gimnazial = clasele 5-8)
+│  │  └───── Subfuncție (Învățământ secundar)
+│  └──────── Nivel bugetar (.01 = central, .02 = local)
+└─────────── Funcție principală (Învățământ)
+```
+
+### Diferența dintre .01 și .02
+
+Aceasta este esențială pentru România:
+- **.01** = Nivelul administrației centrale (buget de minister)
+- **.02** = Nivelul administrației locale (buget de oraș/județ)
+
+Astfel, `65.01` reprezintă învățământul finanțat din bugetul central al Ministerului Educației, în timp ce `65.02` reprezintă învățământul finanțat din bugetele locale (municipale/județene).
+
+### Referință rapidă: Coduri cheie de reținut
+
+| Parte | Coduri | Domeniu |
+|-------|--------|---------|
+| **I** | 51, 53, 54, 55 | Operațiuni guvernamentale, administrație publică |
+| **II** | 60, 61 | Apărare și ordine publică |
+| **III** | 65, 66, 67, 68 | Servicii sociale (educație, sănătate, cultură, asistență) |
+| **IV** | 70, 74 | Locuințe și mediu |
+| **V** | 80, 84, 87 | Acțiuni economice și transport |
+
+> **Notă:** România folosește coduri specifice non-secvențiale, nu intervale continue. Coduri precum 52, 62-64, 71-73 etc. **nu sunt definite**.
+
+---
+
+## Practică
+
+<Quiz
+  id="functional-classification-q1"
+  question="Ce funcție reprezintă codul '66'?"
+  options={[
+    { id: "a", text: "Învățământ", isCorrect: false },
+    { id: "b", text: "Sănătate", isCorrect: true },
+    { id: "c", text: "Apărare", isCorrect: false },
+    { id: "d", text: "Protecție socială", isCorrect: false }
+  ]}
+  explanation="Codul 66 este Sănătate — acoperind spitale, clinici, programe de sănătate publică și servicii medicale. Codul 65 este Învățământ, 60 este Apărare, iar 68 este Protecție socială."
+/>
+
+<Quiz
+  id="functional-classification-q2"
+  question="În codul '65.02.04', ce indică '.02'?"
+  options={[
+    { id: "a", text: "Al doilea an dintr-un ciclu bugetar", isCorrect: false },
+    { id: "b", text: "Nivelul bugetului administrației locale", isCorrect: true },
+    { id: "c", text: "Învățământ secundar", isCorrect: false },
+    { id: "d", text: "Cheltuieli din februarie", isCorrect: false }
+  ]}
+  explanation="În codurile funcționale românești, '.01' înseamnă nivel central (național), iar '.02' înseamnă nivel local (oraș/județ). Astfel, 65.02 este Învățământ finanțat din bugete locale, în timp ce 65.01 ar fi Învățământ finanțat din bugetul central al Ministerului."
+/>
+
+---
+
+## Concluzie
+
+> 📌 **Rețineți:** Clasificarea funcțională a României (adaptată COFOG) indică SCOPUL cheltuielilor. Coduri cheie de știut: 60=Apărare, 61=Ordine publică, 65=Învățământ, 66=Sănătate, 68=Protecție socială. Sufixul .01/.02 indică nivelul bugetar central vs. local.
+
+---
+
+<MarkComplete label="Finalizează lecția" />

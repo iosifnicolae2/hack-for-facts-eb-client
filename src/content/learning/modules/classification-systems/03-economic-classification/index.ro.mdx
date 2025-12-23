@@ -1,0 +1,233 @@
+---
+title: "Clasificarea Economică"
+durationMinutes: 5
+concept: "Categorii de tipuri de cheltuieli pentru fondurile publice"
+objective: "Identifică codurile economice și înțelege semnalul de avertizare pentru investiții"
+---
+
+# Clasificarea Economică
+
+## Introducere
+
+Clasificarea economică răspunde la întrebarea: **„Ce TIP de cheltuială este aceasta?"** În timp ce clasificarea funcțională îți spune destinația (educație, sănătate), clasificarea economică îți arată natura cheltuielii — sunt salarii, utilități sau construcții?
+
+Acest lucru contează enorm pentru că relevă dacă banii merg către **operațiuni curente** (menținerea funcționării) sau către **investiții** (construirea viitorului).
+
+> **Observație cheie:** Codul 71 (Investiții de capital) este cel mai urmărit cod în analiza bugetară. Are în mod constant cele mai scăzute rate de execuție, ceea ce înseamnă că infrastructura promisă adesea nu se construiește.
+
+---
+
+## Element Interactiv: Referință Coduri Economice
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  💰 CLASIFICARE ECONOMICĂ (Cele mai importante coduri)       │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  CHELTUIELI CURENTE (Operațiuni zilnice)                     │
+│  ─────────────────────────────────────────────────────────── │
+│  Cod  │ Categorie          │ Exemple                         │
+│  ─────┼────────────────────┼──────────────────────────────── │
+│  10   │ PERSONAL           │ Salarii, contribuții            │
+│  10.01│   Salarii în bani  │ Salariu, sporuri, ore supli.    │
+│  10.02│   Salarii în natură│ Tichete vacanță, beneficii      │
+│  10.03│   Contribuții      │ Contribuții sociale angajator   │
+│  ─────┼────────────────────┼──────────────────────────────── │
+│  20   │ BUNURI & SERVICII  │ Tot ce e necesar funcționării   │
+│  20.01│   Bunuri operațion.│ Consumabile, utilități, carb.   │
+│  20.02│   Reparații curente│ Întreținere, reparații minore   │
+│  20.05│   Obiecte inventar │ Echipamente, lenjerie, unelte   │
+│  20.30│   Alte cheltuieli  │ Consultanți, externalizare      │
+│  ─────┼────────────────────┼──────────────────────────────── │
+│  51   │ TRANSFERURI        │ Între unități ale statului      │
+│  57   │ ASISTENȚĂ SOCIALĂ  │ Beneficii, programe de ajutor   │
+│                                                              │
+│  CHELTUIELI DE CAPITAL (Investiții)                          │
+│  ─────────────────────────────────────────────────────────── │
+│  71   │ ACTIVE NEFINANC.   │ Active fizice durabile          │
+│  71.01│   Active fixe      │ Clădiri, echipamente, vehicule  │
+│  71.01.01 Construcții      │ Clădiri noi, renovări           │
+│  71.01.02 Mașini/Transport │ Vehicule, echipamente, IT       │
+│  71.03│   Reparații capit. │ Reabilitări la scară mare       │
+│  ─────┼────────────────────┼──────────────────────────────── │
+│  72   │ ACTIVE FINANCIARE  │ Participații la capital social  │
+│                                                              │
+│  ⚠️ Codul 71 = ATENȚIE MAXIMĂ (cele mai mici rate execuție)  │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Componenta EconomicCodeReference
+
+```typescript
+/**
+ * Componenta EconomicCodeReference
+ *
+ * SCOP: Tabel de referință interactiv pentru codurile de clasificare economică,
+ * cu accent pe semnalul de avertizare al Codului 71 pentru investiții.
+ */
+interface EconomicCodeReferenceProps {
+  readonly codes: ReadonlyArray<EconomicCodeCategory>
+  readonly highlightCode?: string
+  readonly showExecutionWarning?: boolean
+  readonly onCodeClick?: (code: string) => void
+}
+
+interface EconomicCodeCategory {
+  readonly code: string
+  readonly name: string
+  readonly nameRo: string
+  readonly type: 'current' | 'capital' | 'financial'
+  readonly description: string
+  readonly examples: ReadonlyArray<string>
+  readonly watchFlag?: boolean
+  readonly averageExecutionRate?: number
+  readonly children?: ReadonlyArray<EconomicCodeCategory>
+}
+
+/**
+ * GESTIONARE STARE:
+ * - expandedCodes: Set<string>
+ * - hoveredCode: string | null
+ * - showTooltip: boolean
+ *
+ * TRANZIȚII DE STARE:
+ * - Click pe rând → extinde pentru a arăta subcodurile
+ * - Hover pe cod → afișează tooltip cu descriere completă
+ * - Click pe insigna de avertizare → afișează informații despre rata de execuție
+ *
+ * INTERACȚIUNI UTILIZATOR:
+ * - Click pe rândul tabelului pentru a extinde/restrânge subcategoriile
+ * - Hover pe cod pentru tooltip rapid
+ * - Click pe „Află mai multe" pentru a naviga la lecția conexă
+ * - Mobil: tap pentru extindere, apăsare lungă pentru tooltip
+ *
+ * STĂRI VIZUALE:
+ * - Implicit: aspect tabel curat
+ * - Extins: subcoduri vizibile cu indentare
+ * - Semnal de avertizare: icon ⚠️ pulsând pentru codul 71
+ * - Hover: evidențiere rând (fundal subtil)
+ *
+ * ANIMAȚII:
+ * - Extindere rând: glisare în jos (200ms)
+ * - Pulsare avertizare: strălucire subtilă (buclă 2s)
+ * - Tooltip: fade-in (150ms)
+ *
+ * ACCESIBILITATE:
+ * - role="table" cu markup header adecvat
+ * - aria-expanded pentru rândurile extensibile
+ * - Semnalul de avertizare are aria-label explicând avertismentul
+ * - Focus vizibil pe toate elementele interactive
+ */
+```
+
+**Comportament așteptat:**
+- Tabel extensibil care arată ierarhia codurilor
+- Insignă de avertizare pe codul 71 cu informații despre rata de execuție
+- Click pentru a vedea exemple complete și explicații
+- Link către Exploratorul de Buget filtrat după codul economic
+
+---
+
+## Explicație Detaliată
+
+### Imaginea de Ansamblu: Două Tipuri de Cheltuieli
+
+| Tip | Coduri Cheie | Natură | Comportament Bugetar |
+|-----|--------------|--------|----------------------|
+| **Cheltuieli Curente** | 10, 20, 30, 40, 51, 55, 57 | Operațiuni zilnice | Execuție ridicată (85%+) |
+| **Cheltuieli de Capital** | 71, 72 | Investiții pe termen lung | Execuție scăzută (50-70%) |
+
+**Codurile cheltuielilor curente explicate:**
+- **10** = Personal, **20** = Bunuri și servicii, **30** = Dobânzi (la datorie)
+- **40** = Subvenții, **51** = Transferuri între administrații, **55** = Alte transferuri
+- **57** = Asistență socială (categorie majoră la nivel local)
+
+### Cele Mai Importante Coduri Economice
+
+**Codul 10 — Cheltuieli de personal**
+- **10.01**: Cheltuieli salariale în bani (salarii, sporuri, ore suplimentare) — sporurile sunt la 10.01.04-10.01.06
+- **10.02**: Cheltuieli salariale în natură (tichete de vacanță, tichete de masă)
+- **10.03**: Contribuții angajator (asigurări sociale, sănătate)
+- Tratate ca și costuri fixe obligatorii — de regulă execuție aproape integrală
+- Dacă sunt semnificativ sub buget, pot indica posturi neocupate
+
+**Codul 20 — Bunuri și servicii**
+- **20.01**: Bunuri și servicii operaționale (include utilități la 20.01.03-04)
+- **20.02**: Reparații curente (întreținere)
+- **20.05**: Bunuri de natura obiectelor de inventar (echipamente, lenjerie, unelte)
+- **20.30**: Alte cheltuieli — adesea conține contracte de consultanță
+- Are flexibilitate intermediară în rectificările bugetare
+
+**Codul 71 — Active nefinanciare** ⚠️
+- **71.01**: Active fixe (clădiri, echipamente, vehicule)
+- **71.03**: Reparații capitale (reabilitări la scară mare)
+- **CODUL SEMNAL DE ALARMĂ**: execuție verificată de doar 53,7% până în octombrie 2022
+- Din 140 de proiecte de investiții prioritare urmărite de Minister, 68 au avut 0% execuție fizică
+- Când acest cod subperformează, infrastructura promisă nu se construiește
+
+### De Ce Contează Cel Mai Mult Codul 71
+
+În fiecare an, tiparul se repetă:
+
+```
+Personal (10):       ██████████████████████  ~95%+ ✓ Salarii plătite
+Bunuri & Servicii (20): █████████████████░░░░  ~85%  ~ Normal
+Investiții (71):     ██████████░░░░░░░░░░░░  ~54%  ⚠️ SEMNAL ROȘU
+                                          (verificat oct. 2022)
+```
+
+Aceasta înseamnă: **Salariile se plătesc mereu. Dar renovarea școlii? Aripa spitalului? Reparația drumului? Adesea amânate pentru anul viitor. Și pentru anul de după.**
+
+> **Verificare 2023:** Ținta de investiții a României era de 7,2% din PIB, dar execuția a ajuns la doar ~3% până în septembrie. Comisia Europeană a remarcat că România necesită „o execuție bugetară mult mai strictă decât în ultimii ani."
+
+### Subcategorii ale Codului 71 de Urmărit
+
+| Cod | Denumire Oficială | Ce să cauți |
+|-----|-------------------|-------------|
+| 71.01.01 | Construcții | Clădiri noi, renovări majore |
+| 71.01.02 | Mașini, echipamente și mijloace de transport | Vehicule, echipamente medicale, IT, calculatoare |
+| 71.01.03 | Mobilier, aparatură | Mobilier de birou, bănci școlare, electrocasnice |
+| 71.03 | Reparații capitale | Proiecte de reabilitare la scară mare |
+
+> **Notă:** Proiectele finanțate din fonduri UE (codurile 56/58/60) au reprezentat 61,58% din execuția investițiilor în 2023. Când analizezi cheltuielile de capital, verifică întotdeauna dacă execuția depinde de absorbția fondurilor europene.
+
+---
+
+## Practică
+
+<Quiz
+  id="economic-classification-q1"
+  question="Codul economic '71' se referă la:"
+  options={[
+    { id: "a", text: "Cheltuieli de personal (salarii)", isCorrect: false },
+    { id: "b", text: "Plăți de dobânzi la datorie", isCorrect: false },
+    { id: "c", text: "Investiții de capital (construcții, echipamente)", isCorrect: true },
+    { id: "d", text: "Transferuri către alte entități", isCorrect: false }
+  ]}
+  explanation='Codul 71 este „Active nefinanciare" — investiții de capital precum construcții, echipamente și reparații capitale. Acest cod are în mod constant cele mai scăzute rate de execuție, fiind cel mai important de urmărit.'
+/>
+
+<Quiz
+  id="economic-classification-q2"
+  question="Care cod economic ar trebui urmărit îndeaproape pentru probleme de rată de execuție?"
+  options={[
+    { id: "a", text: "10 (Personal) — adesea subcheltuit", isCorrect: false },
+    { id: "b", text: "20 (Bunuri și servicii) — cel mai volatil", isCorrect: false },
+    { id: "c", text: "71 (Investiții) — constant cele mai scăzute rate", isCorrect: true },
+    { id: "d", text: "51 (Transferuri) — cel mai frecvent întârziat", isCorrect: false }
+  ]}
+  explanation='Codul 71 (Investiții de capital) are rate de execuție verificate de doar 53,7% (octombrie 2022), în timp ce Personalul (10) este tratat ca și cheltuială obligatorie fixă. Când investițiile subperformează, infrastructura promisă — școli, spitale, drumuri — nu se construiește.'
+/>
+
+---
+
+## Concluzie Cheie
+
+> 📌 **Reține:** Clasificarea economică îți spune TIPUL cheltuielii. Coduri cheie: 10=Personal (salarii în bani și în natură), 20=Bunuri și servicii, 51=Transferuri între administrații, 57=Asistență socială, 71=Investiții de capital. **Codul 71 este SEMNALUL TĂU ROȘU** — verificat la doar ~54% execuție. Când este scăzut, infrastructura promisă nu se livrează.
+
+*Sursa clasificării: OMFP nr. 1954/2005 și actualizările ulterioare ale Ministerului Finanțelor.*
+
+---
+
+<MarkComplete label="Finalizează lecția" />

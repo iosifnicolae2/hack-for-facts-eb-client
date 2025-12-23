@@ -1,0 +1,225 @@
+---
+title: "Surse oficiale de date"
+durationMinutes: 6
+concept: "Unde se găsesc datele bugetare oficiale"
+objective: "Navigarea principalelor surse oficiale de date bugetare"
+---
+
+# Surse oficiale de date
+
+## Introducere
+
+Transparența bugetară în România s-a îmbunătățit semnificativ în ultimul deceniu. Datele există — trebuie doar să știi unde să le cauți. Dar cu multiple portaluri guvernamentale, fiecare cu scopuri diferite, navigarea poate fi confuză.
+
+Vestea bună? Trebuie să cunoști doar **patru surse principale**. Fiecare are un punct forte specific, iar împreună îți oferă o imagine completă a finanțelor publice.
+
+> **Idee cheie:** România publică mai multe date bugetare decât realizează majoritatea cetățenilor. Avantajul tău este să știi unde să cauți.
+
+---
+
+## Element interactiv: Exploratorul surselor de date
+
+Explorează fiecare dintre cele patru surse oficiale de date pentru a înțelege când să le folosești:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  SURSE OFICIALE DE DATE                                      │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Click pe fiecare sursă pentru detalii:                      │
+│                                                              │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │  MINISTERUL FINANȚELOR                               │    │
+│  │  mfinante.gov.ro                                     │    │
+│  │                                                      │    │
+│  │  - Date bugetare naționale                           │    │
+│  │  - Legi bugetare și anexe                            │    │
+│  │  - Documente de strategie fiscală                    │    │
+│  │  - Statistici privind datoria publică                │    │
+│  │                                                      │    │
+│  │  Recomandat pentru: Perspectiva de ansamblu          │    │
+│  │  [ Vizitează site-ul ]                               │    │
+│  └──────────────────────────────────────────────────────┘    │
+│                                                              │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │  FOREXEBUG                                           │    │
+│  │  forexepublic.mfinante.gov.ro                        │    │
+│  │                                                      │    │
+│  │  - Execuție bugetară pentru 14.000+ instituții       │    │
+│  │  - Rapoarte trimestriale și anuale                   │    │
+│  │  - Formulare de balanță de verificare                │    │
+│  │                                                      │    │
+│  │  NOTĂ: Accesul public limitat la formulare și        │    │
+│  │  șabloane. Datele complete necesită semnătură        │    │
+│  │  digitală + înregistrare la Trezorerie.              │    │
+│  │                                                      │    │
+│  │  Recomandat pentru: Înțelegerea structurii raportării│    │
+│  │  [ Vizitează site-ul ]                               │    │
+│  └──────────────────────────────────────────────────────┘    │
+│                                                              │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │  SEAP (E-LICITAȚIE)                                  │    │
+│  │  e-licitatie.ro                                      │    │
+│  │                                                      │    │
+│  │  - Contracte de achiziții publice                    │    │
+│  │  - Anunțuri de licitații                             │    │
+│  │  - Atribuiri și valori contracte                     │    │
+│  │                                                      │    │
+│  │  Recomandat pentru: Urmărirea contractelor specifice │    │
+│  │  [ Vizitează site-ul ]                               │    │
+│  └──────────────────────────────────────────────────────┘    │
+│                                                              │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │  CURTEA DE CONTURI                                   │    │
+│  │  curteadeconturi.ro                                  │    │
+│  │                                                      │    │
+│  │  - Rapoarte de audit                                 │    │
+│  │  - Constatări privind neregulile                     │    │
+│  │  - Recomandări                                       │    │
+│  │                                                      │    │
+│  │  Recomandat pentru: Identificarea problemelor        │    │
+│  │  [ Vizitează site-ul ]                               │    │
+│  └──────────────────────────────────────────────────────┘    │
+│                                                              │
+│  Progres: [____] 0/4 surse explorate                         │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Specificație componentă
+
+```typescript
+/**
+ * DataSourceExplorer - Carduri flip cu sursele oficiale de date bugetare
+ *
+ * SCOP: Ajută utilizatorii să înțeleagă ce portal guvernamental să folosească
+ */
+interface DataSourceExplorerProps {
+  readonly sources: ReadonlyArray<DataSource>
+  readonly onSourceViewed: (sourceId: string) => void
+  readonly onAllViewed: () => void
+}
+
+interface DataSource {
+  readonly id: string
+  readonly icon: string
+  readonly name: string
+  readonly url: string
+  readonly features: ReadonlyArray<string>
+  readonly tip?: string
+  readonly bestFor: string
+}
+
+/**
+ * STARE:
+ * - viewedSources: Set<string> (ID-uri surse vizualizate)
+ * - expandedSource: string | null (card curent expandat)
+ * - isComplete: boolean (toate sursele vizualizate)
+ *
+ * INTERACȚIUNI:
+ * - Click/tap card: expandează pentru detalii
+ * - Enter/Space pe card focusat: comută expandarea
+ * - Tab: navigare între carduri
+ * - Buton "Vizitează site-ul": deschide URL în tab nou
+ *
+ * STĂRI VIZUALE:
+ * - Restrâns: iconiță + nume vizibile
+ * - Expandat: toate detaliile, lista de funcții, sfat dacă există
+ * - Vizualizat: indicator subtil de bifă
+ * - Toate complete: animație de celebrare
+ *
+ * ANIMAȚII:
+ * - Expandare: tranziție înălțime (300ms, ease-out)
+ * - Bară progres: umplere lină pe măsură ce sursele sunt vizualizate
+ * - Finalizare: confetti sau explozie de bifă
+ *
+ * ACCESIBILITATE:
+ * - Cardurile sunt butoane cu aria-expanded
+ * - Regiune aria-live pentru actualizări progres
+ * - Icoanele link extern au aria-label
+ */
+```
+
+---
+
+## Explicație principală
+
+### Cei patru piloni ai transparenței bugetare
+
+Fiecare sursă servește un scop distinct în ecosistemul transparenței bugetare:
+
+| Sursă | Scop | Când să o folosești |
+|-------|------|---------------------|
+| **Ministerul Finanțelor** | Politici și planificare | Ai nevoie de legi bugetare, strategie fiscală, statistici privind datoria sau agregate naționale |
+| **Forexebug** | Raportare execuție | Vrei să înțelegi cum raportează execuția bugetară cele 14.000+ instituții (notă: acces public limitat) |
+| **SEAP** | Urmărire achiziții | Urmărești contracte sau furnizori specifici |
+| **Curtea de Conturi** | Constatări audit | Cauți probleme verificate — auditează anual peste 1.300 de entități |
+
+### Note importante privind accesul
+
+**Forexebug necesită autentificare.** Spre deosebire de celelalte surse, Forexebug necesită certificat de semnătură electronică calificată și înregistrare la Trezorerie pentru acces complet la date. Utilizatorii publici pot accesa doar formulare, șabloane și documente de îndrumare.
+
+**SEAP are bariere de utilizare.** Fiecare pagină necesită completare CAPTCHA, căutările sunt limitate la coduri CPV individuale, iar exporturile de date în masă s-au oprit în 2018 când SICAP a înlocuit SEAP.
+
+**Curtea de Conturi este liber accesibilă.** Toate rapoartele de audit pot fi descărcate ca PDF fără înregistrare — aceasta este adesea cea mai accesibilă sursă pentru găsirea problemelor documentate.
+
+### Sfaturi practice
+
+**Începe cu Curtea de Conturi** când investighezi — s-ar putea să fi documentat deja neregulile. În 2024, au găsit încălcări ale achizițiilor în 58% din entitățile auditate.
+
+**Corelează SEAP cu rapoartele de audit.** Curtea de Conturi identifică adesea prejudicii legate de achiziții pe care le poți urmări înapoi către contracte specifice.
+
+**Folosește data.gov.ro pentru date în masă.** Ministerul Finanțelor publică acolo 97 de seturi de date, inclusiv date XML ale bugetului de stat și rapoarte privind datoria guvernamentală.
+
+---
+
+## Practică
+
+<Quiz
+  id="transparency-tools-01-q1"
+  question="Care sursă oficială furnizează date privind execuția bugetară pentru instituțiile publice?"
+  options={[
+    { id: "a", text: "mfinante.gov.ro (Ministerul Finanțelor)", isCorrect: false },
+    { id: "b", text: "Forexebug (forexepublic.mfinante.gov.ro)", isCorrect: true },
+    { id: "c", text: "e-licitatie.ro (SEAP)", isCorrect: false },
+    { id: "d", text: "curteadeconturi.ro (Curtea de Conturi)", isCorrect: false }
+  ]}
+  explanation="Forexebug (accesat la forexepublic.mfinante.gov.ro) este sistemul de raportare a execuției bugetare care acoperă peste 14.000 de instituții publice. Notă: Accesul public este limitat la formulare și șabloane — datele complete de execuție necesită certificat de semnătură digitală și înregistrare la Trezorerie."
+/>
+
+---
+
+## Surse suplimentare
+
+Dincolo de cele patru surse principale, aceste portaluri oferă date complementare valoroase:
+
+| Sursă | URL | Ce vei găsi |
+|-------|-----|-------------|
+| **data.gov.ro** | data.gov.ro | Peste 4.800 seturi de date deschise de la 177 organizații, inclusiv date bugetare ale Ministerului Finanțelor |
+| **Comisia Europeană** | economy-finance.ec.europa.eu | Planurile fiscale ale României, proiecte de buget și documentație proceduri UE |
+| **Eurostat** | ec.europa.eu/eurostat | Statistici UE standardizate pentru comparații între țări |
+| **Date Coeziune UE** | cohesiondata.ec.europa.eu | Date Fonduri Structurale UE pentru România (2014-2027) |
+
+---
+
+## Verificare realitate: Calitatea datelor
+
+România obține **62/100** la Indicele Bugetului Deschis 2023 — suficient pentru o dezbatere informată, dar în urma vecinilor precum Moldova (81) și Bulgaria (79).
+
+**Limitări cheie de care trebuie să fii conștient:**
+- Exporturile în masă SEAP s-au oprit în 2018, făcând analiza istorică dificilă
+- Forexebug are acces public restricționat — majoritatea datelor necesită autentificare
+- CAPTCHA-urile SEAP și limitele de căutare pe un singur cod CPV încetinesc cercetarea
+- Doar 82% din recomandările Curții de Conturi sunt implementate
+
+În ciuda acestor bariere, jurnaliștii de investigație au folosit aceste surse cu succes — investigația RISE Project despre Tel Drum și investigația Recorder despre Biserica Ortodoxă s-au bazat pe date de achiziții și audit pentru a expune sute de milioane în nereguli.
+
+---
+
+## Concluzie cheie
+
+> Patru surse oficiale acoperă datele bugetare românești: Ministerul Finanțelor (legi și strategie), Forexebug (raportare execuție — acces public limitat), SEAP (contracte achiziții — așteaptă-te la CAPTCHA) și Curtea de Conturi (constatări audit liber accesibile). Începe cu Curtea de Conturi pentru probleme documentate și folosește data.gov.ro pentru descărcări de date în masă.
+
+---
+
+<MarkComplete label="Finalizează această lecție" />

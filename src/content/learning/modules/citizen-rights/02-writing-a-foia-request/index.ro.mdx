@@ -1,0 +1,287 @@
+---
+title: "Redactarea unei cereri de acces la informații publice"
+durationMinutes: 7
+concept: "Cum să redactezi și să depui o cerere eficientă conform Legii 544/2001"
+objective: "Redactarea și depunerea unei cereri de acces la informații publice (Legea 544/2001)"
+---
+
+# Redactarea unei cereri de acces la informații publice
+
+## Introducere
+
+Acum că îți cunoști drepturile legale, este timpul să le folosești. O cerere în baza Legii 544/2001 privind liberul acces la informațiile de interes public este instrumentul tău cel mai puternic pentru a obține informații bugetare specifice.
+
+Vestea bună? Este mai simplu decât crezi. O cerere bine formulată durează 10 minute să fie redactată și poate debloca date care altfel ar fi imposibil de găsit.
+
+> **Idee cheie:** Fii specific. „Spuneți-mi despre bugetul dumneavoastră" este vag. „Vă rog să furnizați raportul de execuție bugetară pentru anul 2024 pentru clasificația funcțională 65.02 (Învățământ)" este eficient — demonstrează că știi exact ce vrei.
+
+---
+
+## Element interactiv: Generator de cereri
+
+Folosește acest instrument pas cu pas pentru a genera o cerere completă, conformă cu legislația:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  📝 GENERATOR DE CERERI                                      │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Construiește cererea pas cu pas:                            │
+│                                                              │
+│  PASUL 1: Cui îi scrii?                                      │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  Instituție: [ Primăria Cluj-Napoca            ▼]      │  │
+│  │  Adresă:     Calea Moților 1-3, Cluj-Napoca            │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  PASUL 2: Ce dorești? (selectează tot ce se aplică)          │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  ☑ Raport de execuție bugetară pentru anul: [2024]     │  │
+│  │  ☑ Detalii cheltuieli pentru categoria: [Învățământ ▼] │  │
+│  │  ☐ Lista contractelor peste 100.000 RON                │  │
+│  │  ☐ Defalcare costuri de personal                       │  │
+│  │  ☐ Stadiu proiecte de investiții                       │  │
+│  │  ☐ Cerere personalizată: [_______________________]     │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  PASUL 3: Datele tale de contact                             │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  Nume:   [ Ion Popescu                    ]            │  │
+│  │  Email:  [ ion.popescu@email.com          ]            │  │
+│  │  Telefon: [ 0721 123 456        ] (opțional)           │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  [ Generează cererea → ]                                     │
+│                                                              │
+├──────────────────────────────────────────────────────────────┤
+│  📄 CEREREA TA GENERATĂ                                      │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Către: Primăria Cluj-Napoca                                 │
+│  Adresa: Calea Moților 1-3, Cluj-Napoca                      │
+│                                                              │
+│  CERERE                                                      │
+│  în baza Legii 544/2001 privind liberul acces la             │
+│  informațiile de interes public                              │
+│                                                              │
+│  Subsemnatul Ion Popescu, domiciliat în ____________,        │
+│  în temeiul Legii 544/2001, solicit următoarele              │
+│  informații de interes public:                               │
+│                                                              │
+│  1. Raportul de execuție bugetară pentru anul 2024           │
+│  2. Situația detaliată a cheltuielilor pentru categoria      │
+│     "Învățământ" (cod funcțional 65.02)                      │
+│                                                              │
+│  Doresc să primesc răspunsul:                                │
+│  ☑ pe email la adresa: ion.popescu@email.com                 │
+│  ☐ la adresa poștală: ________________                       │
+│  ☐ personal, la sediul instituției                           │
+│                                                              │
+│  Termenul legal de răspuns este de 10 zile lucrătoare        │
+│  (sau 30 de zile pentru informații complexe).                │
+│                                                              │
+│  Data: [Data curentă]                                        │
+│  Semnătura: _______________                                  │
+│                                                              │
+│  [ Copiază în clipboard ]  [ Descarcă PDF ]  [ Trimite email]│
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Specificație componentă: FOIARequestBuilder
+
+```typescript
+/**
+ * FOIARequestBuilder - Generator pas cu pas pentru cereri Legea 544/2001
+ *
+ * SCOP: Ghidează cetățenii în crearea unei cereri conforme legal,
+ * reducând fricțiunea și asigurând formatarea corectă a cererilor.
+ */
+interface FOIARequestBuilderProps {
+  readonly institutions: readonly Institution[]
+  readonly requestTemplates: readonly RequestTemplate[]
+  readonly onGenerate?: (request: GeneratedRequest) => void
+  readonly onCopy?: (text: string) => void
+  readonly onDownload?: (request: GeneratedRequest) => void
+}
+
+interface Institution {
+  readonly id: string
+  readonly name: string
+  readonly address: string
+  readonly email: string
+  readonly type: 'primarie' | 'consiliu_judetean' | 'ministere' | 'other'
+}
+
+interface RequestTemplate {
+  readonly id: string
+  readonly label: string
+  readonly description: string
+  readonly requestText: string
+  readonly variables?: readonly { key: string; type: 'year' | 'category' | 'text' }[]
+}
+
+interface GeneratedRequest {
+  readonly institution: Institution
+  readonly requestItems: readonly string[]
+  readonly contactInfo: ContactInfo
+  readonly deliveryMethod: 'email' | 'postal' | 'in_person'
+  readonly fullText: string
+  readonly generatedAt: Date
+}
+
+interface ContactInfo {
+  readonly name: string
+  readonly email: string
+  readonly phone?: string
+  readonly address?: string
+}
+
+/**
+ * GESTIONAREA STĂRII:
+ * - currentStep: 1 | 2 | 3 (pasul activ)
+ * - selectedInstitution: Institution | null
+ * - selectedTemplates: Set<string> (ID-uri șabloane)
+ * - templateVariables: Record<string, string> (valori an, categorie)
+ * - customRequest: string
+ * - contactInfo: ContactInfo
+ * - deliveryMethod: 'email' | 'postal' | 'in_person'
+ * - generatedRequest: GeneratedRequest | null
+ * - copyStatus: 'idle' | 'copied' | 'error'
+ *
+ * TRANZIȚII DE STARE:
+ * - Finalizare Pas 1 → Activare Pas 2
+ * - Selectare șabloane → Afișare câmpuri variabile pentru șabloanele selectate
+ * - Finalizare toți pașii → Activare buton "Generează"
+ * - Generare → Afișare previzualizare cu acțiuni
+ * - Copiere → Afișare "Copiat!" pentru 2 secunde
+ *
+ * INTERACȚIUNI UTILIZATOR:
+ * - Dropdown instituție: căutare/selectare cu autocompletare
+ * - Casete de bifat șabloane: comutare selecție
+ * - Câmpuri variabile: selector an, dropdown categorie, text liber
+ * - Formular contact: validare format email
+ * - Buton generare: compilare text complet cerere
+ * - Buton copiere: copiere în clipboard cu feedback
+ * - Buton descărcare: generare și descărcare PDF
+ * - Buton email: deschidere mailto: cu conținut pre-completat
+ *
+ * STĂRI VIZUALE:
+ * - Pași: indicatori numerotați, finalizat = bifă verde
+ * - Pas curent: evidențiat, expandat
+ * - Pas nefinalizat: estompat, restrâns
+ * - Previzualizare generată: card cu evidențiere sintaxă pentru referințe legale
+ * - Copiere reușită: butonul devine verde temporar
+ * - Eroare validare: chenar roșu + mesaj eroare
+ *
+ * ANIMAȚII:
+ * - Tranziții pași: slide + fade (300ms)
+ * - Generare: spinner încărcare scurt (500ms)
+ * - Apariție previzualizare: slide-up + fade-in (400ms)
+ * - Succes copiere: puls scalare (200ms)
+ *
+ * ACCESIBILITATE:
+ * - Structură formular semantică cu fieldsets
+ * - Etichete clare și aria-describedby pentru indicații
+ * - Mesaje eroare conectate prin aria-errormessage
+ * - Indicatori pași cu aria-current="step"
+ * - Anunțuri succes prin aria-live="polite"
+ * - Navigare cu tastatura între pași (Tab, Shift+Tab)
+ */
+```
+
+---
+
+## Explicație detaliată
+
+### Anatomia unei cereri eficiente
+
+Fiecare cerere conform Legii 544/2001 are nevoie de aceste elemente:
+
+| Element | Scop | Exemplu |
+|---------|------|---------|
+| **Temeiul legal** | Arată că știi legea | „în baza Legii 544/2001" |
+| **Elemente specifice** | Spune exact ce vrei | „Raportul de execuție bugetară 2024" |
+| **Coduri de clasificare** | Dovedește că înțelegi sistemul | „cod funcțional 65.02" |
+| **Metoda de răspuns** | Facilitează răspunsul | „pe email la..." |
+| **Referință termen** | Reamintește obligațiile | „10 zile lucrătoare" |
+
+### Sfaturi pentru cereri eficiente
+
+1. **Fii specific** — „Toate contractele" este prea vag. „Contractele peste 100.000 RON semnate în T1 2024" este acționabil.
+
+2. **Folosește coduri de clasificare** — Referențiază clasificațiile funcționale (precum 65.02 pentru Învățământ) pentru a arăta că înțelegi structura bugetară.
+
+3. **Solicită copii digitale** — Email-ul este mai rapid și creează automat o pistă de audit cu timestamps.
+
+4. **Păstrează o copie** — Salvează întotdeauna cererea cu data trimiterii. Vei avea nevoie de dovadă dacă trebuie să faci reclamație.
+
+### Cronologia răspunsului
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  ⏱️ CRONOLOGIA RĂSPUNSULUI (LEGEA 544/2001)                  │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Ziua 0        Ziua 10       Ziua 30                         │
+│    │             │             │                              │
+│    ▼             ▼             ▼                              │
+│  ──●─────────────●─────────────●──────────────────────       │
+│    │             │             │                              │
+│  Depunere    Termen         Info complexe /                  │
+│  cerere      standard       Contestație                      │
+│              răspuns        instanță                         │
+│                                                              │
+│  DACĂ NU PRIMEȘTI RĂSPUNS:                                   │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │ 1. Trimite un reminder după 10 zile                    │  │
+│  │ 2. Depune reclamație administrativă (plângere          │  │
+│  │    prealabilă) la conducătorul instituției             │  │
+│  │    (în termen de 30 zile de la refuz)                  │  │
+│  │ 3. Dacă ești ignorat → Acțiune în instanță             │  │
+│  │    (în termen de 30 zile)                              │  │
+│  │ 4. Instanța poate dispune furnizarea informațiilor     │  │
+│  │    + acorda daune (scutit de taxă de timbru)           │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  💡 Majoritatea instituțiilor răspund la timp pentru a      │
+│     evita procesele                                          │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Exersează
+
+<Quiz
+  id="citizen-rights-02-q1"
+  question="Ce face o cerere conform Legii 544/2001 mai eficientă?"
+  options={[
+    { id: "a", text: "Scrierea cu majuscule pentru a arăta urgența", isCorrect: false },
+    { id: "b", text: "Formularea specifică și referirea codurilor de clasificare", isCorrect: true },
+    { id: "c", text: "Amenințarea cu acțiuni legale din prima propoziție", isCorrect: false },
+    { id: "d", text: "Trimiterea mai multor cereri în aceeași zi", isCorrect: false }
+  ]}
+  explanation="Cererile specifice care referențiază coduri de clasificare (precum 65.02 pentru Învățământ) arată că înțelegi sistemul bugetar și facilitează identificarea documentelor exacte de către funcționari. Cererile vagi sunt adesea întârziate sau respinse."
+/>
+
+<Quiz
+  id="citizen-rights-02-q2"
+  question="Dacă o instituție ignoră cererea ta după 10 zile, care este pasul următor?"
+  options={[
+    { id: "a", text: "Renunți — au dreptul să ignore cererile", isCorrect: false },
+    { id: "b", text: "Depui imediat o acțiune în instanță", isCorrect: false },
+    { id: "c", text: "Trimiți un reminder, apoi depui o reclamație administrativă", isCorrect: true },
+    { id: "d", text: "Postezi despre asta pe rețelele sociale", isCorrect: false }
+  ]}
+  explanation="Escaladarea corectă este: 1) Trimite un reminder politicos, 2) Depune o reclamație administrativă (plângere prealabilă) la conducătorul instituției în termen de 30 de zile, 3) Dacă ești în continuare ignorat, depune acțiune în instanță în termen de 30 de zile. Instanțele pot dispune furnizarea documentelor și acorda daune — iar procesele sunt scutite de taxă de timbru."
+/>
+
+---
+
+## Concluzie
+
+> 📌 **Reține:** O cerere eficientă conform Legii 544/2001 este specifică, referențiază articole de lege și coduri de clasificare, și precizează clar cum dorești să primești răspunsul. Păstrează o copie a tuturor documentelor — s-ar putea să ai nevoie de ele pentru contestații. Majoritatea instituțiilor răspund la timp odată ce văd că știi legea.
+
+<MarkComplete label="Marchează lecția ca finalizată" />

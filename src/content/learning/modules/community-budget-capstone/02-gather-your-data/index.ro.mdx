@@ -1,0 +1,232 @@
+---
+title: "Colectează datele"
+durationMinutes: 10
+concept: "Colectarea sistematică a indicatorilor bugetari"
+objective: "Colectează indicatorii bugetari esențiali pentru administrația ta locală"
+---
+
+# Colectează datele
+
+## Introducere
+
+Cu entitatea identificată, este momentul să analizezi cifrele concrete. Această lecție te va ghida prin colectarea indicatorilor cheie de care ai nevoie pentru o analiză relevantă.
+
+Consideră aceasta ca pe o fișă de lucru pentru colectarea datelor. La final, vei avea toate materialele necesare pentru a identifica semnalele de alarmă și a formula întrebări pertinente.
+
+> **Idee esențială:** O analiză bună începe cu date bune. Acordă-ți timp pentru a găsi cifre exacte — acestea sunt fundamentul întregii analize.
+
+---
+
+## Element interactiv: Fișă de lucru pentru colectarea datelor
+
+Deschide vizualizarea detaliată a entității tale pe Transparenta.eu și completează acești indicatori:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  PASUL 2: COLECTEAZĂ INDICATORII CHEIE                       │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Deschide vizualizarea detaliată și găsește aceste cifre:    │
+│                                                              │
+│  SUMAR CHELTUIELI (cel mai recent an)                        │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  Cheltuieli totale (planificate): [ _____________ ] RON│  │
+│  │  Cheltuieli totale (realizate):   [ _____________ ] RON│  │
+│  │  Rata de execuție globală:        [ _____ ]%           │  │
+│  │  Cheltuieli per capita:           [ _____________ ] RON│  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  CHELTUIELI PE TIP ECONOMIC                                  │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  Cod  │ Categorie       │Planificat│Realizat│ Execuție │  │
+│  │  ─────┼─────────────────┼──────────┼────────┼───────── │  │
+│  │  10   │ Personal        │ [______] │ [____] │ [___]%   │  │
+│  │  20   │ Bunuri și serv. │ [______] │ [____] │ [___]%   │  │
+│  │  71   │ Investiții      │ [______] │ [____] │ [___]%   │  │
+│  │  50-59│ Transferuri     │ [______] │ [____] │ [___]%   │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  TOP 3 FUNCȚII DE CHELTUIELI (după sumă)                     │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  1. [ ________________________________ ] - [ _____ ]%  │  │
+│  │  2. [ ________________________________ ] - [ _____ ]%  │  │
+│  │  3. [ ________________________________ ] - [ _____ ]%  │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  [x] Am colectat datele                                      │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Specificație componentă: DataCollectionWorksheet
+
+```typescript
+/**
+ * DataCollectionWorksheet Component
+ *
+ * PURPOSE: Guide users through systematically collecting budget metrics
+ * from the platform, organizing them for analysis.
+ */
+interface DataCollectionWorksheetProps {
+  readonly entityCui: string
+  readonly year?: number // Default to most recent
+  readonly onDataCollected: (data: CollectedBudgetData) => void
+  readonly onComplete: () => void
+}
+
+interface CollectedBudgetData {
+  readonly overview: {
+    readonly plannedTotal: number
+    readonly actualTotal: number
+    readonly executionRate: number
+    readonly perCapita: number
+  }
+  readonly byEconomicType: ReadonlyArray<{
+    readonly code: string
+    readonly category: string
+    readonly planned: number
+    readonly actual: number
+    readonly execution: number
+  }>
+  readonly topFunctions: ReadonlyArray<{
+    readonly name: string
+    readonly percentage: number
+  }>
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - formData: Partial<CollectedBudgetData>
+ * - currentSection: 'overview' | 'economic' | 'functions'
+ * - completedSections: Set<string>
+ * - validationErrors: Record<string, string>
+ *
+ * STATE TRANSITIONS:
+ * - User enters value -> validate format, update formData
+ * - User completes section -> mark section complete, show next
+ * - All sections complete -> enable final confirmation
+ *
+ * USER INTERACTIONS:
+ * - Number inputs with RON/% suffix display
+ * - Tab navigation between fields
+ * - Section accordions expand/collapse
+ * - Auto-calculate execution rate when planned/actual entered
+ * - "Copy from Platform" helper (optional)
+ *
+ * VISUAL STATES:
+ * - Section incomplete: dimmed header, progress indicator
+ * - Section active: expanded, highlighted border
+ * - Section complete: collapsed, green checkmark
+ * - Field error: red border, error message below
+ * - All complete: celebration animation, next button enabled
+ *
+ * ANIMATIONS:
+ * - Section expand: slide-down (250ms, ease-out)
+ * - Progress bar: smooth fill per section (200ms)
+ * - Auto-calculation: number count-up (300ms)
+ * - Completion: confetti or success pulse
+ *
+ * ACCESSIBILITY:
+ * - role="form" on worksheet container
+ * - aria-labelledby for each section
+ * - aria-describedby for field hints
+ * - Screen reader announces progress
+ * - Numeric inputs have inputmode="decimal"
+ */
+```
+
+**Integrare date:**
+- Date bugetare: `GET /api/analytics/entity-budget/{cui}?year={year}`
+- Defalcare economică: Folosește codurile de clasificare din datele bugetare
+
+---
+
+## Înțelegerea indicatorilor cheie
+
+### Rata de execuție
+
+**Formula:** Rata de execuție = (Cheltuieli realizate ÷ Cheltuieli planificate) × 100
+
+| Interval | Semnificație |
+|----------|--------------|
+| 90-100% | Planificare și execuție excelentă |
+| 80-90% | Bună, ajustări minore |
+| 70-80% | Discrepanțe moderate de investigat |
+| Sub 70% | Probleme semnificative, necesită investigare |
+
+### Categoriile economice explicate
+
+| Cod | Categorie | Ce acoperă |
+|-----|-----------|------------|
+| 10 | Personal | Salarii, beneficii, bonusuri pentru angajați |
+| 20 | Bunuri și servicii | Consumabile, utilități, servicii contractate |
+| 71 | Investiții | Proiecte de capital: clădiri, echipamente, infrastructură |
+| 50-59 | Transferuri | Fonduri transferate altor entități sau programe |
+
+> **De ce contează:** Cheltuielile de personal sunt „rigide" (greu de redus), în timp ce investițiile sunt „flexibile" (ușor de amânat). Când bugetele sunt strânse, investițiile sunt adesea sacrificate primele.
+
+---
+
+## Bazele clasificării funcționale
+
+Funcțiile cu cele mai mari cheltuieli arată prioritățile entității tale:
+
+**Funcții comune la nivel local:**
+
+| Funcție | Ce finanțează |
+|---------|---------------|
+| Educație | Școli, grădinițe (contribuția locală) |
+| Administrație generală | Operațiuni ale primăriei, salarii |
+| Străzi și transport | Întreținerea drumurilor, transport public |
+| Asistență socială | Programe de ajutor, servicii sociale |
+| Cultură și recreere | Biblioteci, parcuri, facilități sportive |
+
+**Caută tipare:**
+- Consumă administrația prea mult?
+- Se fac investiții în infrastructură?
+- Cum se compară educația cu administrația?
+
+---
+
+## Sfaturi pentru calitatea datelor
+
+1. **Folosește cel mai recent an complet** — Datele anului curent sunt incomplete
+2. **Verifică rectificările** — Bugetele se modifică adesea pe parcursul anului
+3. **Notează sursa** — Bugetele „Inițial" vs „Rectificat" vs „Executat" diferă
+4. **Atenție la zerouri** — Datele lipsă sunt frecvente; notează-le, nu presupune cheltuieli zero
+
+---
+
+## Practică
+
+<Quiz
+  id="capstone-02-q1"
+  question="Dacă o administrație locală a planificat 10 milioane RON în investiții (Cod 71) dar a cheltuit doar 6 milioane, care este rata de execuție?"
+  options={[
+    { id: "a", text: "40%", isCorrect: false },
+    { id: "b", text: "60%", isCorrect: true },
+    { id: "c", text: "166%", isCorrect: false },
+    { id: "d", text: "6%", isCorrect: false }
+  ]}
+  explanation="Rata de execuție = (Realizat ÷ Planificat) × 100 = (6 ÷ 10) × 100 = 60%. Aceasta este sub pragul de 70% și ar fi semnalată pentru investigare — de ce nu au fost finalizate investițiile planificate?"
+/>
+
+<Quiz
+  id="capstone-02-q2"
+  question='Care categorie economică este de obicei cea mai „rigidă" (cea mai greu de redus)?'
+  options={[
+    { id: "a", text: "Investiții (Cod 71)", isCorrect: false },
+    { id: "b", text: "Bunuri și servicii (Cod 20)", isCorrect: false },
+    { id: "c", text: "Personal (Cod 10)", isCorrect: true },
+    { id: "d", text: "Transferuri (Cod 50-59)", isCorrect: false }
+  ]}
+  explanation="Cheltuielile de personal sunt rigide deoarece implică contracte de muncă și obligații legale. Nu poți concedia ușor personalul pentru a echilibra bugetul. De aceea investițiile sunt adesea amânate — sunt mai flexibile."
+/>
+
+---
+
+## Ideea principală
+
+> Acum ai fișa de lucru completată. Ai colectat indicatorii esențiali: rata de execuție globală, cheltuielile pe tip economic și prioritățile funcționale principale. În lecția următoare, vei pune aceste date la lucru — verificând semnalele de alarmă care dezvăluie probleme mai profunde.
+
+<MarkComplete label="Finalizează Pasul 2" />

@@ -19,7 +19,7 @@ The key insight that separates casual observers from effective watchdogs is unde
 
 ## Interactive Element: Red Flag Detector
 
-The Red Flag Detector allows you to input key budget metrics and automatically identifies potential issues based on established thresholds.
+The Red Flag Detector allows you to input key budget metrics and automatically identifies potential issues based on thresholds derived from Romanian law, EU standards, and the PEFA Framework (Public Expenditure and Financial Accountability).
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
@@ -29,12 +29,11 @@ The Red Flag Detector allows you to input key budget metrics and automatically i
 │  Enter entity data to check for red flags:                   │
 │                                                              │
 │  ┌────────────────────────────────────────────────────────┐  │
-│  │  Investment execution rate:     [ 55 ]%                │  │
-│  │  Personnel execution rate:      [ 98 ]%                │  │
+│  │  Investment execution rate:     [ 72 ]%                │  │
 │  │  Number of rectifications:      [ 4  ]                 │  │
-│  │  Year-over-year change:         [ 35 ]%                │  │
-│  │  Personnel as % of budget:      [ 72 ]%                │  │
-│  │  Direct award contracts:        [ 45 ]%                │  │
+│  │  Year-over-year change:         [ 25 ]%                │  │
+│  │  Direct award contracts:        [ 18 ]%                │  │
+│  │  Arrears (% of expenditure):    [ 8  ]%                │  │
 │  └────────────────────────────────────────────────────────┘  │
 │                                                              │
 │  [ Analyze → ]                                               │
@@ -43,27 +42,27 @@ The Red Flag Detector allows you to input key budget metrics and automatically i
 │                                                              │
 │  ANALYSIS RESULTS:                                           │
 │                                                              │
-│  🔴 LOW INVESTMENT EXECUTION (55%)                           │
-│     Expected: >70%  │  Severity: HIGH                        │
-│     → Money budgeted for development wasn't spent            │
+│  🔴 LOW INVESTMENT EXECUTION (72%)                           │
+│     Expected: 85-115% (PEFA)  │  Severity: HIGH              │
+│     → Below 85% is "poor" performance per PEFA standards     │
 │                                                              │
-│  🔴 TOO MANY RECTIFICATIONS (4)                              │
-│     Expected: 1-2   │  Severity: MEDIUM                      │
-│     → Poor planning or political manipulation                │
+│  🟡 MULTIPLE RECTIFICATIONS (4)                              │
+│     Expected: ≤2 (Law 69/2010)  │  Severity: MEDIUM          │
+│     → Exceeds state budget limit; investigate justification  │
 │                                                              │
-│  🔴 PERSONNEL CROWDING OUT (72%)                             │
-│     Expected: <60%  │  Severity: HIGH                        │
-│     → Little room for investment and development             │
+│  🔴 HIGH Y/Y CHANGE (25%)                                    │
+│     Expected: <15% (PEFA)  │  Severity: HIGH                 │
+│     → ≥15% variance is "poor" performance per PEFA PI-2      │
 │                                                              │
-│  🟡 HIGH Y/Y CHANGE (35%)                                    │
-│     Expected: <20%  │  Severity: MEDIUM                      │
-│     → Investigate what caused the spike                      │
+│  🔴 HIGH DIRECT AWARDS (18%)                                 │
+│     Expected: ≤10% (EU)  │  Severity: HIGH                   │
+│     → Above EU "red flag" threshold of 10%                   │
 │                                                              │
-│  🔴 HIGH DIRECT AWARDS (45%)                                 │
-│     Expected: <25%  │  Severity: HIGH                        │
-│     → Possible contract splitting or abuse                   │
+│  🟡 SIGNIFICANT ARREARS (8%)                                 │
+│     Expected: ≤2% (PEFA)  │  Severity: MEDIUM                │
+│     → Between 6-10% indicates fiscal stress                  │
 │                                                              │
-│  OVERALL SCORE: 5 RED FLAGS — INVESTIGATE FURTHER            │
+│  OVERALL SCORE: 5 FLAGS — INVESTIGATE FURTHER                │
 │                                                              │
 └──────────────────────────────────────────────────────────────┘
 ```
@@ -86,7 +85,8 @@ interface RedFlagThreshold {
   readonly id: string
   readonly name: string
   readonly inputLabel: string
-  readonly expectedValue: string // e.g., ">70%", "<25%", "1-2"
+  readonly expectedValue: string // e.g., "85-115%", "≤10%", "≤2"
+  readonly source: string // e.g., "PEFA PI-1", "EU Single Market Scoreboard", "Law 69/2010"
   readonly severity: 'HIGH' | 'MEDIUM' | 'LOW'
   readonly checkFn: (value: number) => boolean // Returns true if red flag triggered
   readonly explanation: string
@@ -153,16 +153,17 @@ interface RedFlagAnalysis {
  */
 ```
 
-**Default Thresholds:**
+**Default Thresholds (with authoritative sources):**
 
-| Metric | Expected | Red Flag | Severity |
-|--------|----------|----------|----------|
-| Investment execution | \>70% | ≤70% | HIGH |
-| Rectifications/year | 1-2 | ≥3 | MEDIUM |
-| Personnel % of budget | \<60% | ≥60% | HIGH |
-| Year-over-year change | \<20% | ≥20% | MEDIUM |
-| Direct award % | \<25% | ≥25% | HIGH |
-| Arrears present | 0 | \>0 | MEDIUM |
+| Metric | Expected | Red Flag | Severity | Source |
+|--------|----------|----------|----------|--------|
+| Investment execution | 85-115% | \<85% or \>115% | HIGH | PEFA PI-1 |
+| Rectifications/year | ≤2 | ≥3 | MEDIUM | Law 69/2010, Art. 23(2) |
+| Year-over-year change | \<15% | ≥15% | HIGH | PEFA PI-2 |
+| Direct award % | ≤10% | \>10% | HIGH | EU Single Market Scoreboard |
+| Arrears (% of expenditure) | ≤2% | \>2% | MEDIUM | PEFA PI-22; Law 273/2006 |
+
+**Note:** The personnel costs threshold (previously listed at 60%) has been removed as it has no legal basis in Romanian law. Romanian law controls personnel spending through position limits (OUG 63/2010) and nominal ceilings, not percentage caps. The Court of Accounts monitors whether local governments can cover personnel costs from own revenues (only 31% of communes achieved this in 2023).
 
 ---
 
@@ -190,14 +191,14 @@ One red flag might be noise. Three red flags together form a pattern. When you s
 
 <Quiz
   id="red-flags-01-q1"
-  question="You're analyzing a city's budget and find: low investment execution (55%), high personnel costs (70%), and 3 rectifications this year. What should you do?"
+  question="You're analyzing a city's budget and find: low investment execution (72%), direct awards at 18% (above EU's 10% threshold), and 3 rectifications this year. What should you do?"
   options={[
     { id: "a", text: "Ignore it — every city has some issues", isCorrect: false },
     { id: "b", text: "Wait to see if next year is better", isCorrect: false },
     { id: "c", text: "Investigate further — multiple red flags warrant attention", isCorrect: true },
     { id: "d", text: "File a criminal complaint immediately", isCorrect: false }
   ]}
-  explanation="Multiple red flags together (3 in this case) warrant investigation. While they don't prove wrongdoing, they indicate patterns that deserve scrutiny. Start by comparing with similar cities and preparing specific questions."
+  explanation="Multiple red flags together (3 in this case) warrant investigation. While they don't prove wrongdoing, they indicate patterns that deserve scrutiny. The investment execution below 85% (PEFA standard), direct awards above 10% (EU red flag), and 3+ rectifications all signal potential issues. Start by comparing with similar cities and preparing specific questions."
 />
 
 ---
@@ -205,5 +206,26 @@ One red flag might be noise. Three red flags together form a pattern. When you s
 ## Key Takeaway
 
 > 📌 **Remember:** Budget problems leave traces. A single red flag isn't proof — but when multiple warning signs appear together, that's your signal to dig deeper. Learn to recognize patterns, and you'll spot issues that others miss.
+
+---
+
+## Sources
+
+The thresholds in this lesson are based on authoritative Romanian legal sources and international standards:
+
+**Romanian Legal Framework:**
+- **Law 69/2010** (Legea responsabilității fiscal-bugetare) — Budget rectification limits (Art. 23)
+- **Law 273/2006** (Legea finanțelor publice locale) — Arrears definition and local budget rules (Art. 2, 14, 19)
+- **Law 98/2016** and **Law 208/2022** — Public procurement thresholds
+- **OUG 63/2010** — Personnel position limits for local governments
+
+**International Standards:**
+- **PEFA Framework 2016** (Public Expenditure and Financial Accountability) — Budget execution benchmarks (PI-1, PI-2, PI-22, PI-24)
+- **EU Single Market Scoreboard** — Procurement competition indicators
+
+**Romanian Institutions:**
+- Curtea de Conturi (Court of Accounts) annual performance reports
+- ANAP National Public Procurement Strategy 2023-2027
+- Ministry of Finance budget execution data (mfinante.gov.ro)
 
 <MarkComplete label="Complete this lesson" />

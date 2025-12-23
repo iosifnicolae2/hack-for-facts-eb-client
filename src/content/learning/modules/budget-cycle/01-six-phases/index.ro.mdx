@@ -1,0 +1,336 @@
+---
+title: "Cele șase faze ale ciclului bugetar"
+durationMinutes: 5
+concept: "Înțelegerea momentului în care se iau deciziile bugetare și când să te implici"
+objective: "Descrie cele șase faze ale ciclului bugetar și identifică momentele optime de implicare"
+---
+
+# Cele șase faze ale ciclului bugetar
+
+## Introducere
+
+Bugetul nu este o decizie unică — este un ciclu continuu care se repetă în fiecare an. Înțelegerea CÂND se iau deciziile te ajută să știi CÂND să fii atent și să te implici eficient.
+
+Gândește-te ca la anotimpurile agricole: există un timp pentru semănat, un timp pentru îngrijit și un timp pentru recoltat. Similar, bugetul are faze distincte în care se desfășoară activități diferite. Dacă ratezi fereastra potrivită, aștepți încă un an.
+
+> **Idee cheie:** Noiembrie-decembrie este „sezonul bugetar" — cel mai important moment pentru implicarea cetățenilor. Guvernul trebuie să depună bugetul la Parlament până la **15 noiembrie** (nu 15 octombrie, cum indică sursele mai vechi), conform amendamentelor aduse prin Legea 270/2013.
+
+---
+
+## Element interactiv: Cronologia ciclului bugetar
+
+Vizualizează când are loc fiecare fază bugetară de-a lungul anului.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  📅 CICLUL BUGETAR                                           │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Click pe orice fază pentru detalii                          │
+│                                                              │
+│     IAN  FEB  MAR  APR  MAI  IUN  IUL  AUG  SEP  OCT  NOI  DEC
+│      │    │    │    │    │    │    │    │    │    │    │    │
+│      ▼    ▼    ▼    ▼    ▼    ▼    ▼    ▼    ▼    ▼    ▼    ▼
+│  ════════════════════════════════════════════════════════════
+│  │████  EXECUȚIE (Anul N)  ████████████████████████████████│
+│  ════════════════════════════════════════════════════════════
+│                               │▓▓▓▓▓▓▓▓▓│
+│                               │PLANIFIC.│
+│                               │ (N+1)   │
+│                               │▓▓▓▓▓▓▓▓▓│
+│                                       │██████████████│
+│                                       │  ELABORARE   │
+│                                       │██████████████│
+│                                                      │▓▓▓▓▓▓│
+│                                                      │APROB.│
+│                                                      │▓▓▓▓▓▓│
+│                                                              │
+│  Faza curentă: [EXECUȚIE]  Zile până la sezonul bugetar: [XX]│
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Specificație componentă
+
+```typescript
+/**
+ * BudgetCycleTimeline Component
+ *
+ * PURPOSE: Visualize the budget cycle phases across a calendar year
+ * with current date indicator and countdown to budget season
+ */
+interface BudgetCycleTimelineProps {
+  readonly currentDate?: Date
+  readonly onPhaseClick?: (phaseId: string) => void
+  readonly highlightPhase?: string
+}
+
+interface BudgetPhase {
+  readonly id: string
+  readonly name: string
+  readonly startMonth: number  // 1-12
+  readonly endMonth: number
+  readonly description: string
+  readonly citizenOpportunity: 'high' | 'medium' | 'low'
+  readonly color: string
+}
+
+/**
+ * STATE:
+ * - currentDate: Date (defaults to today)
+ * - activePhase: computed from currentDate
+ * - expandedPhase: string | null (phase being viewed)
+ * - daysUntilBudgetSeason: number (days until November 15)
+ *
+ * INTERACTIONS:
+ * - Click phase segment: expand phase details
+ * - Hover phase: show tooltip with quick info
+ * - Arrow keys: navigate between phases
+ * - Escape: collapse expanded phase
+ *
+ * VISUAL STATES:
+ * - Default: all phases visible with muted colors
+ * - Current: current phase highlighted with pulse
+ * - Hovered: slight scale up, brighter color
+ * - Expanded: phase details panel slides in
+ * - Budget season: special glow during Oct-Dec
+ *
+ * ANIMATIONS:
+ * - Current date marker: subtle pulse (2s loop)
+ * - Phase expansion: slide + fade (300ms, ease-out)
+ * - Countdown: number flip animation daily
+ * - Entry: phases stagger in from left (600ms total)
+ *
+ * ACCESSIBILITY:
+ * - role="img" with aria-label describing the timeline
+ * - Each phase is focusable with aria-describedby
+ * - Screen reader announces current phase and countdown
+ * - Color is not the only indicator (icons + patterns)
+ */
+```
+
+**Comportament așteptat:**
+- Afișează toate cele 12 luni cu suprapunerea fazelor
+- Data curentă marcată cu indicator pulsatoriu
+- Click pe orice fază pentru a vedea panoul de detalii
+- Numărătoarea inversă arată zilele până la 15 noiembrie (termenul de depunere a bugetului)
+- Navigare cu tastatura între faze
+
+---
+
+## Cele șase faze explicate
+
+Fiecare buget trece prin aceste șase faze. Iată ce se întâmplă în fiecare și când POȚI face diferența:
+
+| Fază | Perioadă | Ce se întâmplă | Temei legal | Oportunitatea ta |
+|------|----------|----------------|-------------|------------------|
+| **Planificare** | Iun - Aug | Prognoze macroeconomice (1 iun), plafoane de cheltuieli (31 iul), scrisoarea-cadru (1 aug) | Art. 31-33 | Redusă - proces intern |
+| **Elaborare** | Aug - 15 nov | Instituțiile depun propuneri (15 sep), Ministerul elaborează proiectul (30 sep), Guvernul depune la Parlament (15 nov) | Art. 34-35 | Medie - pot avea loc consultări |
+| **Aprobare** | 15 nov - dec | Parlamentul dezbate și votează; procedură de urgență dacă nu e adoptat până la 15 dec | Art. 17(2), 35(4) | **RIDICATĂ** - contactează parlamentarii, participă la ședințe |
+| **Execuție** | Ian - dec | Instituțiile cheltuiesc conform bugetului aprobat; rectificări posibile (până la 30 nov) | Art. 6, 61(1) | Medie - monitorizează ratele de execuție |
+| **Raportare** | Trimestrial | Rapoarte de execuție publicate; bugete locale: apr, iul, oct, dec | Art. 44, 55; Legea 273/2006 Art. 49(12) | Medie - analizează și pune întrebări |
+| **Audit** | Anul următor | Curtea de Conturi verifică cheltuielile, raportează Parlamentului până la 1 iul | Legea 94/1992; Art. 56(4) | Redusă - citește rapoartele de audit |
+
+---
+
+## Element interactiv: Carduri cu faze
+
+Explorează fiecare fază în detaliu cu carduri extensibile.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🔄 FAZELE BUGETARE (click pentru extindere)                 │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ┌────────────┐  ┌────────────┐  ┌────────────┐              │
+│  │    📋      │  │    ✏️      │  │    🏛️      │              │
+│  │ PLANIFIC.  │  │ ELABORARE  │  │  APROBARE  │              │
+│  │ Iun - Aug  │  │Aug - 15nov │  │ Nov - Dec  │              │
+│  │            │  │            │  │            │              │
+│  │ [Extinde]  │  │ [Extinde]  │  │ [Extinde]  │              │
+│  └────────────┘  └────────────┘  └────────────┘              │
+│                                                              │
+│  ┌────────────┐  ┌────────────┐  ┌────────────┐              │
+│  │    💰      │  │    📊      │  │    🔍      │              │
+│  │  EXECUȚIE  │  │ RAPORTARE  │  │   AUDIT    │              │
+│  │  Ian-Dec   │  │Trimestrial │  │Anul următor│              │
+│  │            │  │            │  │            │              │
+│  │ [Extinde]  │  │ [Extinde]  │  │ [Extinde]  │              │
+│  └────────────┘  └────────────┘  └────────────┘              │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Specificație componentă
+
+```typescript
+/**
+ * PhaseCards Component
+ *
+ * PURPOSE: Present budget phases as expandable cards with detailed information
+ */
+interface PhaseCardsProps {
+  readonly phases: readonly PhaseInfo[]
+  readonly onPhaseExpand?: (phaseId: string) => void
+  readonly onAllViewed?: () => void
+}
+
+interface PhaseInfo {
+  readonly id: string
+  readonly icon: string
+  readonly name: string
+  readonly timing: string
+  readonly description: string
+  readonly keyActivities: readonly string[]
+  readonly citizenOpportunity: {
+    readonly level: 'high' | 'medium' | 'low'
+    readonly actions: readonly string[]
+  }
+  readonly keyDeadline?: string
+}
+
+/**
+ * STATE:
+ * - expandedCard: string | null
+ * - viewedCards: Set<string> (cards viewed at least once)
+ * - allViewed: boolean (computed)
+ *
+ * INTERACTIONS:
+ * - Click card: toggle expand/collapse
+ * - Enter/Space on focused card: toggle
+ * - Escape: collapse current card
+ * - Tab: navigate between cards
+ * - Arrow keys: navigate within expanded content
+ *
+ * VISUAL STATES:
+ * - Collapsed: icon + name + timing, compact
+ * - Expanded: full content slides down
+ * - Viewed: subtle checkmark badge
+ * - High opportunity: gold/amber border
+ * - Current phase: pulsing indicator
+ *
+ * ANIMATIONS:
+ * - Expand: height auto with slide (300ms)
+ * - Collapse: reverse (200ms)
+ * - Badge appear: scale + fade (200ms)
+ * - Grid layout: responsive 2x3 to 1x6 on mobile
+ *
+ * ACCESSIBILITY:
+ * - Each card is role="button" with aria-expanded
+ * - Expanded content has aria-labelledby
+ * - Focus management on expand/collapse
+ * - Progress announced: "4 of 6 phases viewed"
+ */
+```
+
+### Detalii faze (Conținut extins)
+
+**1. PLANIFICARE (Iunie-August)** — *Legea 500/2002, Art. 31-33*
+- **1 iunie:** Prognozele macroeconomice finalizate (Art. 31)
+- **31 iulie:** Ministerul transmite plafoanele de cheltuieli către Guvern (Art. 32)
+- **1 august:** Scrisoarea-cadru transmisă ordonatorilor principali de credite (Art. 33)
+- **Oportunitatea ta:** Limitată — acesta este un proces guvernamental intern
+
+**2. ELABORARE (August - 15 noiembrie)** — *Legea 500/2002, Art. 34-35*
+- **15 septembrie:** Instituțiile depun propunerile revizuite la Minister (Art. 34(5))
+- **30 septembrie:** Ministerul transmite proiectul de buget Guvernului pentru prima lectură (Art. 35(1))
+- **15 noiembrie:** Guvernul depune bugetul la Parlament (Art. 35(4)) — *modificat de la 15 octombrie prin Legea 270/2013*
+- **Oportunitatea ta:** Pot avea loc consultări publice conform Legii 52/2003 (dar Parlamentul este exceptat)
+
+**3. APROBARE (15 noiembrie - decembrie)** — *Legea 500/2002, Art. 17(2), 35(4), 37*
+- Parlamentul dezbate bugetul în ședințe comune
+- Amendamentele sunt propuse și votate
+- **15 decembrie:** Dacă nu este adoptat, se impune procedura de urgență (Art. 17(2))
+- Dacă nu este aprobat cu 3 zile înainte de sfârșitul anului, se aplică prevederile anului anterior (Art. 37)
+- **Oportunitatea ta:** RIDICATĂ — contactează-ți parlamentarii, participă la ședințele publice (notă: nu există un mecanism formal de consultare a cetățenilor în timpul dezbaterilor parlamentare)
+
+**4. EXECUȚIE (Ianuarie-Decembrie)** — *Legea 500/2002, Art. 6, 61(1)*
+- Instituțiile cheltuiesc conform bugetului aprobat
+- Execuția se închide la **31 decembrie** (Art. 61(1))
+- **Rectificări:** Pot avea loc, de obicei în septembrie-noiembrie; trebuie elaborate până la **30 noiembrie** (Art. 6)
+- Virările de credite între capitolele bugetare sunt permise începând cu T3
+- **Oportunitatea ta:** Monitorizează ratele de execuție pe Transparenta.eu
+
+**5. RAPORTARE (Trimestrial + Anual)** — *Legea 500/2002, Art. 44, 55; Legea 273/2006, Art. 49(12)*
+- Ordonatorii principali de credite întocmesc rapoarte trimestriale de monitorizare (Art. 44(1))
+- Ministerul publică note lunare de execuție
+- **Bugetele locale:** Rapoarte datorate în aprilie (T1), iulie (T2), octombrie (T3), decembrie (T4) conform Legii 273/2006
+- Contul anual general de execuție este prezentat Parlamentului până la **1 iulie** al anului următor (Art. 56(4))
+- **Oportunitatea ta:** Analizează datele, identifică lacunele, pune întrebări
+
+**6. AUDIT (Anul următor)** — *Legea 94/1992 (Legea Curții de Conturi)*
+- **Curtea de Conturi** verifică cheltuielile în baza Articolului 140 din Constituție
+- Rapoartele sunt întocmite în termen de 6 luni de la primirea conturilor (Art. 29)
+- Raportul Public Anual este transmis Parlamentului
+- Curtea găzduiește și Autoritatea de Audit pentru fondurile UE conform Legii 77/2002
+- **Oportunitatea ta:** Citește rapoartele de audit, urmărește constatările cu parlamentarul tău
+
+---
+
+## Alertă termen limită cheie
+
+### 15 noiembrie: Termenul legal (Actualizat în 2013)
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  ⏰ TERMEN CHEIE: 15 NOIEMBRIE                               │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Guvernul TREBUIE să depună bugetul la Parlament până la     │
+│  15 noiembrie în fiecare an (Legea 500/2002, Art. 35(4)).    │
+│                                                              │
+│  ⚠️  IMPORTANT: Termenul de 15 octombrie citat frecvent în   │
+│  sursele mai vechi este DEPĂȘIT. Legea 270/2013 l-a extins   │
+│  cu o lună, până la 15 noiembrie.                            │
+│                                                              │
+│  Dacă acest termen este depășit, semnalează:                 │
+│  • Instabilitate politică sau dezacorduri                    │
+│  • Planificare deficitară din partea guvernului              │
+│  • Potențiale probleme în execuția bugetară                  │
+│                                                              │
+│  Alte date cheie:                                            │
+│  • 15 dec: Procedură de urgență necesară dacă nu e adoptat   │
+│  • 31 dec: Anul de execuție se închide                       │
+│                                                              │
+│  Notează în calendar: Noiembrie = Începe sezonul bugetar!    │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Practică
+
+<Quiz
+  id="budget-cycle-01-q1"
+  question="Când trebuie Guvernul să depună bugetul la Parlament?"
+  options={[
+    { id: "a", text: "15 octombrie", isCorrect: false },
+    { id: "b", text: "15 noiembrie", isCorrect: true },
+    { id: "c", text: "30 noiembrie", isCorrect: false },
+    { id: "d", text: "31 decembrie", isCorrect: false }
+  ]}
+  explanation="15 noiembrie este termenul legal conform Legii 500/2002, Art. 35(4), așa cum a fost modificat prin Legea 270/2013. Notă: Multe surse mai vechi citează incorect 15 octombrie, care era termenul inițial înainte de amendamentul din 2013."
+/>
+
+<Quiz
+  id="budget-cycle-01-q2"
+  question="Care fază oferă CEA MAI MARE oportunitate pentru implicarea cetățenilor?"
+  options={[
+    { id: "a", text: "Planificare (iunie-august)", isCorrect: false },
+    { id: "b", text: "Execuție (ianuarie-decembrie)", isCorrect: false },
+    { id: "c", text: "Aprobare (noiembrie-decembrie)", isCorrect: true },
+    { id: "d", text: "Audit (anul următor)", isCorrect: false }
+  ]}
+  explanation="Faza de Aprobare (noiembrie-decembrie) oferă cea mai mare oportunitate pentru contribuția cetățenilor. În această perioadă, Parlamentul dezbate deschis bugetul. Deși nu există un mecanism formal de consultare a cetățenilor în timpul dezbaterilor parlamentare, cetățenii pot contacta parlamentarii, participa la ședințele publice și milita prin intermediul organizațiilor societății civile."
+/>
+
+---
+
+## Concluzie cheie
+
+> **Reține:** Ciclul bugetar are șase faze, dar noiembrie-decembrie este FEREASTRA TA. Termenul legal de **15 noiembrie** (nu 15 octombrie, cum indică sursele mai vechi) deschide „sezonul bugetar" — acesta este momentul în care vocea ta poate influența modul în care sunt alocați banii publici anul viitor. Pentru bugetele locale, ai și o perioadă de 15 zile pentru contestații conform Legii 273/2006.
+
+---
+
+<MarkComplete label="Finalizează lecția și continuă" />

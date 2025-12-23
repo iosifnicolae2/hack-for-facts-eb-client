@@ -11,7 +11,7 @@ objective: "Identify and navigate functional classification codes"
 
 Functional classification answers the question: **"What is this money FOR?"** It groups all spending by PURPOSE, regardless of which institution spends it or what type of expense it is.
 
-Romania uses the international COFOG (Classification of Functions of Government) standard, which means you can compare Romanian spending on education directly with French or German spending — same codes, same meaning.
+Romania's functional classification is **adapted from** the international COFOG (Classification of Functions of Government) standard. While the international COFOG uses codes 01-10, Romania uses a national coding system (primarily codes 50-87) organized into five functional "Parts" (Părți). This Romanian system **maps to COFOG** for Eurostat reporting, enabling international comparisons.
 
 > **Key Insight:** Functional codes reveal PRIORITIES. If a government says education is important but code 65 gets only 3% of the budget, actions speak louder than words.
 
@@ -21,36 +21,38 @@ Romania uses the international COFOG (Classification of Functions of Government)
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│  📊 FUNCTIONAL CLASSIFICATION (COFOG-based)                  │
+│  📊 ROMANIAN FUNCTIONAL CLASSIFICATION (COFOG-adapted)       │
 ├──────────────────────────────────────────────────────────────┤
 │                                                              │
-│  Click to expand any category:                               │
+│  PART I - General Public Services                            │
+│  ▶ 51 - Public Authorities and External Actions              │
+│  ▶ 53 - Fundamental Research and R&D                         │
+│  ▶ 54 - Other General Public Services                        │
+│  ▶ 55 - Public Debt Transactions                             │
 │                                                              │
-│  ▼ 50 - General Public Services                              │
-│    ├── 50.01 - Executive and legislative organs              │
-│    ├── 50.02 - Financial and fiscal affairs                  │
-│    └── 50.03 - External affairs                              │
+│  PART II - Defense and Security                              │
+│  ▶ 60 - Defense                                              │
+│  ▶ 61 - Public Order and National Safety                     │
 │                                                              │
-│  ▶ 51 - Defense                                              │
-│                                                              │
-│  ▶ 54 - Public Order and Safety                              │
-│                                                              │
-│  ▶ 55 - Economic Affairs                                     │
-│                                                              │
-│  ▶ 56 - Environmental Protection                             │
-│                                                              │
+│  PART III - Social-Cultural Expenditures                     │
 │  ▼ 65 - Education                                            │
 │    ├── 65.02 - Education (local level)                       │
-│    │   ├── 65.02.03 - Primary education                      │
+│    │   ├── 65.02.03 - Preschool and Primary education        │
 │    │   ├── 65.02.04 - Secondary education                    │
 │    │   └── 65.02.05 - Post-secondary education               │
 │    └── 65.01 - Education (central level)                     │
-│                                                              │
 │  ▶ 66 - Health                                               │
-│                                                              │
 │  ▶ 67 - Culture, Recreation, Religion                        │
+│  ▶ 68 - Social Insurance and Assistance                      │
 │                                                              │
-│  ▶ 68 - Social Protection                                    │
+│  PART IV - Public Services and Development                   │
+│  ▶ 70 - Housing, Services and Public Development             │
+│  ▶ 74 - Environmental Protection                             │
+│                                                              │
+│  PART V - Economic Actions                                   │
+│  ▶ 80 - General Economic and Labor Actions                   │
+│  ▶ 84 - Transportation                                       │
+│  ▶ 87 - Other Economic Actions                               │
 │                                                              │
 │  [ Open Full Classification Explorer → ]                     │
 │                                                              │
@@ -141,17 +143,47 @@ interface ClassificationNode {
 
 ### Main Functional Categories
 
+Romania organizes functional expenditure into **five Parts** (Părți):
+
+**Part I — General Public Services:**
+
 | Code | Function | What it covers |
 |------|----------|----------------|
-| **50** | General Public Services | Government operations, public administration |
-| **51** | Defense | Military, national security |
-| **54** | Public Order & Safety | Police, courts, prisons, fire services |
-| **55** | Economic Affairs | Transport, agriculture, energy subsidies |
-| **56** | Environment | Waste management, pollution control |
+| **51** | Public Authorities | Executive, legislative organs, external affairs |
+| **53** | Research | Fundamental research and R&D |
+| **54** | Other General Services | General public services not elsewhere classified |
+| **55** | Public Debt | Debt transactions and interest payments |
+
+**Part II — Defense and Security:**
+
+| Code | Function | What it covers |
+|------|----------|----------------|
+| **60** | Defense | Military, national security |
+| **61** | Public Order & Safety | Police, courts, prisons, fire services |
+
+**Part III — Social-Cultural Expenditures:**
+
+| Code | Function | What it covers |
+|------|----------|----------------|
 | **65** | Education | Schools, universities, training |
 | **66** | Health | Hospitals, clinics, public health |
 | **67** | Culture, Recreation | Museums, sports, religious affairs |
 | **68** | Social Protection | Pensions, social assistance, unemployment |
+
+**Part IV — Public Services and Development:**
+
+| Code | Function | What it covers |
+|------|----------|----------------|
+| **70** | Housing & Development | Housing, public utilities, urban development |
+| **74** | Environment | Waste management, pollution control |
+
+**Part V — Economic Actions:**
+
+| Code | Function | What it covers |
+|------|----------|----------------|
+| **80** | Economic & Labor | General economic actions, labor programs |
+| **84** | Transportation | Roads, railways, air and water transport |
+| **87** | Other Economic | Agriculture, energy, industry subsidies |
 
 ### Understanding Code Structure
 
@@ -174,14 +206,17 @@ This is crucial for Romania:
 
 So `65.01` is education funded from the Ministry of Education's central budget, while `65.02` is education funded from local (municipal/county) budgets.
 
-### Quick Reference: Functions at a Glance
+### Quick Reference: Key Codes to Remember
 
-```
-50-59 = GOVERNMENT OPERATIONS (administration, defense, order)
-60-69 = SOCIAL SERVICES (education, health, culture)
-70-79 = ECONOMIC & INFRASTRUCTURE (housing, environment)
-80-89 = FINANCIAL & OTHER
-```
+| Part | Codes | Focus Area |
+|------|-------|------------|
+| **I** | 51, 53, 54, 55 | Government operations, public admin |
+| **II** | 60, 61 | Defense and public order |
+| **III** | 65, 66, 67, 68 | Social services (education, health, culture, welfare) |
+| **IV** | 70, 74 | Housing and environment |
+| **V** | 80, 84, 87 | Economic actions and transport |
+
+> **Note:** Romania uses specific non-sequential codes, not continuous ranges. Codes like 52, 62-64, 71-73, etc. are **not defined**.
 
 ---
 
@@ -196,7 +231,7 @@ So `65.01` is education funded from the Ministry of Education's central budget, 
     { id: "c", text: "Defense", isCorrect: false },
     { id: "d", text: "Social Protection", isCorrect: false }
   ]}
-  explanation="Code 66 is Health — covering hospitals, clinics, public health programs, and medical services. Code 65 is Education, 51 is Defense, and 68 is Social Protection."
+  explanation="Code 66 is Health — covering hospitals, clinics, public health programs, and medical services. Code 65 is Education, 60 is Defense, and 68 is Social Protection."
 />
 
 <Quiz
@@ -215,7 +250,7 @@ So `65.01` is education funded from the Ministry of Education's central budget, 
 
 ## Key Takeaway
 
-> 📌 **Remember:** Functional classification (COFOG) tells you the PURPOSE of spending. Key codes to know: 65=Education, 66=Health, 68=Social Protection. The .01/.02 suffix indicates central vs local budget level.
+> 📌 **Remember:** Romania's functional classification (COFOG-adapted) tells you the PURPOSE of spending. Key codes to know: 60=Defense, 61=Public Order, 65=Education, 66=Health, 68=Social Protection. The .01/.02 suffix indicates central vs local budget level.
 
 ---
 

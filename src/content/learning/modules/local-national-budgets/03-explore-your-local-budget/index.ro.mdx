@@ -1,0 +1,212 @@
+---
+title: "Explorează bugetul localității tale"
+durationMinutes: 5
+concept: "Găsirea și compararea bugetelor administrației locale"
+objective: "Navighează instrumentele platformei pentru a analiza bugetele locale"
+---
+
+# Explorează bugetul localității tale
+
+## Introducere
+
+Acum că înțelegi cum sunt structurate și finanțate administrațiile locale, este timpul să găsești bugetul localității TALE. Fie că locuiești într-un oraș mare sau într-un sat mic, UAT-ul tău are date bugetare disponibile pe Transparenta.eu.
+
+Bugetele locale sunt cel mai bun punct de pornire în călătoria ta de monitorizare bugetară. Sunt mai mici, mai ușor de înțeles, iar factorii de decizie — primarul și consiliul local — sunt accesibili. Poți participa efectiv la ședințele consiliului și pune întrebări.
+
+> **Idee cheie:** Începe local, dezvoltă-ți abilitățile, apoi extinde-te. Bugetele locale sunt mai ușor de monitorizat, înțeles și influențat decât cele naționale.
+
+---
+
+## Element interactiv: Căutare UAT
+
+Folosește acest instrument pentru a căuta orașul, comuna sau satul tău. Vei vedea indicatori cheie și poți accesa direct Exploratorul de Buget pentru detalii.
+
+### Componenta UATFinder
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🔍 GĂSEȘTE ADMINISTRAȚIA TA LOCALĂ                          │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Caută după nume:                                            │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  Cluj-Napoca                                      🔍   │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+│  Sau navighează după județ:                                  │
+│  [ Selectează Județul ▼ ]                                    │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  REZULTAT: MUNICIPIUL CLUJ-NAPOCA                            │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │  Tip: Municipiu                                       │  │
+│  │  Județ: Cluj                                          │  │
+│  │  Populație: ~287.000                                  │  │
+│  │  Buget total: ~4,0 miliarde RON                       │  │
+│  │  Per capita: ~14.000 RON                              │  │
+│  │                                                        │  │
+│  │  [ Vezi detalii complete buget → ]                    │  │
+│  │  [ Compară cu orașe similare → ]                      │  │
+│  │  [ Vezi pe hartă → ]                                  │  │
+│  └────────────────────────────────────────────────────────┘  │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+**Interfața componentei:**
+
+```typescript
+/**
+ * UATFinder - Instrument de căutare și descoperire pentru administrațiile locale
+ *
+ * SCOP: Ajută utilizatorii să găsească și să exploreze bugetul administrației lor locale
+ */
+interface UATFinderProps {
+  readonly placeholder?: string
+  readonly onUATSelect?: (uat: UATResult) => void
+  readonly showComparison?: boolean
+  readonly initialCounty?: string
+}
+
+interface UATResult {
+  readonly id: string
+  readonly name: string
+  readonly type: 'municipality' | 'town' | 'commune' | 'county'
+  readonly county: string
+  readonly population: number
+  readonly totalBudget: number
+  readonly perCapita: number
+  readonly executionRate?: number
+  readonly fiscCode: string // Pentru link direct la Exploratorul de Buget
+}
+
+interface UATFinderState {
+  readonly searchQuery: string
+  readonly selectedCounty: string | null
+  readonly searchResults: readonly UATResult[]
+  readonly selectedUAT: UATResult | null
+  readonly isSearching: boolean
+  readonly recentSearches: readonly string[]
+}
+
+/**
+ * GESTIONAREA STĂRII:
+ * - searchQuery: string (cu debounce, declanșează căutarea după 300ms)
+ * - selectedCounty: string | null (filtrează rezultatele)
+ * - searchResults: UATResult[] (maximum 10 rezultate afișate)
+ * - selectedUAT: UATResult | null (afișează cardul de detalii)
+ * - isSearching: boolean (stare de încărcare)
+ * - recentSearches: string[] (stocate în localStorage)
+ *
+ * TRANZIȚII DE STARE:
+ * - Tastare în căutare → debounce 300ms → preluare rezultate
+ * - Selectare județ → filtrare rezultate după județ
+ * - Click pe rezultat → setare selectedUAT, afișare card detalii
+ * - Ștergere căutare → resetare la starea inițială
+ *
+ * INTERACȚIUNI UTILIZATOR:
+ * - Tastare pentru căutare cu autocompletare
+ * - Taste săgeți pentru navigarea rezultatelor
+ * - Enter pentru selectarea rezultatului evidențiat
+ * - Escape pentru ștergerea selecției
+ * - Click „Vezi buget complet" → navigare la pagina entității
+ * - Click „Compară" → navigare la vizualizarea comparativă
+ * - Click „Vezi pe hartă" → navigare la hartă centrată pe UAT
+ *
+ * STĂRI VIZUALE:
+ * - Gol: text placeholder, căutări recente afișate
+ * - Tastare: input focalizat, sugestii apar după 2 caractere
+ * - Încărcare: spinner în input, schelet rezultate
+ * - Rezultate: dropdown cu carduri UAT, evidențiere la hover
+ * - Selectat: card complet cu metrici + butoane de acțiune
+ * - Fără rezultate: mesaj util cu sugestii
+ *
+ * ANIMAȚII:
+ * - Apariție dropdown: slide-down + fade (200ms)
+ * - Hover rezultat: scalare subtilă + umbră (100ms)
+ * - Card detalii: expandare din rezultat (300ms, spring)
+ * - Încărcare: animație puls schelet
+ *
+ * ACCESIBILITATE:
+ * - role="combobox" pe inputul de căutare
+ * - role="listbox" pe dropdown-ul de rezultate
+ * - aria-activedescendant pentru navigare cu tastatura
+ * - aria-expanded pentru starea dropdown-ului
+ * - Screen reader anunță numărul de rezultate
+ * - Gestionare focus: captează focusul în dropdown când e deschis
+ */
+```
+
+**Comportament așteptat:**
+- Căutare cu autocompletare și potrivire aproximativă
+- Rezultate grupate după tip (municipiu, oraș, comună)
+- Calculul per capita ajută la compararea localităților de dimensiuni diferite
+- Link-uri directe către pagina entității, comparație și vizualizări pe hartă
+
+---
+
+## De ce să începi local?
+
+Bugetele locale oferă avantaje unice pentru supravegherea cetățenească:
+
+| Aspect | Buget național | Buget local |
+|--------|----------------|-------------|
+| **Scară** | ~727 mld. RON | ~500 mil.–4 mld. RON (variază după mărime) |
+| | Greu de înțeles | Gestionabil |
+| **Factori de decizie** | Prim-ministru, Miniștri | Primar, Consiliu Local |
+| | Greu de contactat | Accesibili |
+| **Ședințe** | Parlament | Consiliu local |
+| | Nu poți participa | Deschise publicului |
+| **Impact direct** | Indirect | Drumuri, școli, parcuri |
+
+> 🎯 **Strategie:** Începe local → Dezvoltă abilități → Extinde la nivel de județ → Apoi național
+
+---
+
+---
+
+**Link-uri directe în platformă:**
+- Hartă: `/map` - Vezi cheltuielile la nivel de județ pe harta interactivă
+- Analiză entități: `/entity-analytics` - Caută și compară UAT-uri
+
+---
+
+## Treci la acțiune
+
+Acum că ai explorat bugetul localității tale, iată lista ta de verificare:
+
+- [ ] **Salvează pagina UAT-ului tău** — Te vei întoarce des aici
+- [ ] **Notează cheltuiala per capita** — Folosește-o pentru comparații cu vecinii
+- [ ] **Găsește 2-3 localități similare** — Cheltuiesc mai mult sau mai puțin?
+- [ ] **Verifică ratele de execuție** — Administrația ta locală cheltuiește ce a planificat?
+
+---
+
+## Practică
+
+<Quiz
+  id="local-national-03-q1"
+  question="De ce este recomandat să începi monitorizarea bugetelor la nivel local?"
+  options={[
+    { id: "a", text: "Bugetele naționale sunt mai importante", isCorrect: false },
+    { id: "b", text: "Bugetele locale sunt mai accesibile, mai ușor de înțeles și au impact direct asupra vieții tale de zi cu zi", isCorrect: true },
+    { id: "c", text: "Datele bugetelor locale nu sunt disponibile public", isCorrect: false },
+    { id: "d", text: "Doar jurnaliștii ar trebui să monitorizeze bugetele naționale", isCorrect: false }
+  ]}
+  explanation="Bugetele locale sunt punctul de pornire ideal deoarece sunt mai mici și mai ușor de înțeles, factorii de decizie (primar, consiliu) sunt accesibili, poți participa la ședințele publice, iar serviciile finanțate (drumuri, școli, parcuri) îți afectează direct viața de zi cu zi. Stăpânește mai întâi nivelul local, apoi extinde-te la județ și național."
+/>
+
+---
+
+## Concluzie cheie
+
+> 📌 **Reține:** Bugetul localității tale este cel mai bun loc pentru a începe călătoria de monitorizare bugetară. Este mai mic, mai ușor de înțeles, iar oamenii care îl controlează — primarul și consiliul local — sunt accesibili. Folosește Harta și Analiza Entităților de pe Transparenta.eu pentru a găsi și compara bugetul localității tale chiar azi.
+
+---
+
+## Ce urmează?
+
+În modulul următor, vei învăța despre **Instrumente de transparență** — cum să folosești cererile de acces la informații de interes public, portalurile de date deschise și alte mecanisme pentru a aprofunda datele bugetare atunci când rapoartele standard nu sunt suficiente.
+
+<MarkComplete label="Finalizează această lecție" />

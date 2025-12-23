@@ -28,24 +28,29 @@ This matters enormously because it reveals whether money goes to **operations** 
 │  ─────────────────────────────────────────────────────────── │
 │  Code │ Category           │ Examples                        │
 │  ─────┼────────────────────┼──────────────────────────────── │
-│  10   │ PERSONNEL          │ Salaries, bonuses, overtime     │
-│  10.01│   Basic salaries   │ Monthly wages                   │
-│  10.02│   Bonuses          │ Performance pay                 │
+│  10   │ PERSONNEL          │ Salaries, contributions         │
+│  10.01│   Cash salaries    │ Wages, bonuses, overtime        │
+│  10.02│   In-kind salaries │ Holiday vouchers, benefits      │
 │  10.03│   Contributions    │ Employer's social contributions │
 │  ─────┼────────────────────┼──────────────────────────────── │
 │  20   │ GOODS & SERVICES   │ Everything needed to operate    │
-│  20.01│   Utilities        │ Electricity, heating, water     │
-│  20.02│   Repairs          │ Maintenance, minor fixes        │
-│  20.05│   Materials        │ Office supplies, consumables    │
-│  20.30│   Other services   │ Consultants, outsourcing        │
+│  20.01│   Operating goods  │ Supplies, utilities, fuel       │
+│  20.02│   Current repairs  │ Maintenance, minor fixes        │
+│  20.05│   Inventory items  │ Equipment, linens, tools        │
+│  20.30│   Other expenses   │ Consultants, outsourcing        │
+│  ─────┼────────────────────┼──────────────────────────────── │
+│  51   │ TRANSFERS          │ Between government units        │
+│  57   │ SOCIAL ASSISTANCE  │ Benefits, aid programs          │
 │                                                              │
 │  CAPITAL EXPENSES (Investments)                              │
 │  ─────────────────────────────────────────────────────────── │
-│  71   │ ACTIVE NEFINAN.    │ Things that last (assets)       │
-│  71.01│   Fixed assets     │ Buildings, equipment            │
+│  71   │ NON-FINANCIAL      │ Physical assets that last       │
+│  71.01│   Fixed assets     │ Buildings, equipment, vehicles  │
 │  71.01.01 Construction     │ New buildings, renovations      │
-│  71.01.02 Machinery        │ Vehicles, computers             │
-│  71.03│   Major repairs    │ Large-scale rehabilitation      │
+│  71.01.02 Machinery/Transp │ Vehicles, equipment, computers  │
+│  71.03│   Capital repairs  │ Large-scale rehabilitation      │
+│  ─────┼────────────────────┼──────────────────────────────── │
+│  72   │ FINANCIAL ASSETS   │ Share capital participation     │
 │                                                              │
 │  ⚠️ Code 71 = WATCH CLOSELY (lowest execution rates)         │
 │                                                              │
@@ -128,26 +133,37 @@ interface EconomicCodeCategory {
 
 ### The Big Picture: Two Types of Spending
 
-| Type | Codes | Nature | Budget Behavior |
-|------|-------|--------|-----------------|
-| **Current Expenses** | 10, 20, 30, 40, 50 | Day-to-day operations | High execution (90%+) |
+| Type | Key Codes | Nature | Budget Behavior |
+|------|-----------|--------|-----------------|
+| **Current Expenses** | 10, 20, 30, 40, 51, 55, 57 | Day-to-day operations | High execution (85%+) |
 | **Capital Expenses** | 71, 72 | Long-term investments | Low execution (50-70%) |
+
+**Current expense codes explained:**
+- **10** = Personnel, **20** = Goods & services, **30** = Interest (on debt)
+- **40** = Subsidies, **51** = Inter-government transfers, **55** = Other transfers
+- **57** = Social assistance (major category at local level)
 
 ### Most Important Economic Codes
 
-**Code 10 — Personnel Costs**
-- Salaries, bonuses, employer contributions
-- Almost ALWAYS executes at 98-100%
-- If under 95%, something is very wrong (unfilled positions?)
+**Code 10 — Personnel Costs** (Cheltuieli de personal)
+- **10.01**: Cash salaries (wages, bonuses, overtime) — bonuses are at 10.01.04-10.01.06
+- **10.02**: In-kind salaries (holiday vouchers, meal tickets)
+- **10.03**: Employer contributions (social security, health)
+- Treated as obligatory fixed costs — typically near-full execution
+- If significantly under budget, may indicate unfilled positions
 
-**Code 20 — Goods and Services**
-- Utilities, repairs, materials, consultancy
-- Usually executes at 80-90%
-- Subcategory 20.30 (other services) often hides consulting contracts
+**Code 20 — Goods and Services** (Bunuri și servicii)
+- **20.01**: Operating goods (includes utilities at 20.01.03-04)
+- **20.02**: Current repairs (maintenance)
+- **20.05**: Inventory items (equipment, linens, tools)
+- **20.30**: Other expenses — often contains consulting contracts
+- Has intermediate flexibility in budget rectifications
 
-**Code 71 — Capital Investments** ⚠️
-- Construction, equipment, vehicles
-- THE RED FLAG CODE: often executes at only 50-70%
+**Code 71 — Capital Investments** ⚠️ (Active nefinanciare)
+- **71.01**: Fixed assets (buildings, equipment, vehicles)
+- **71.03**: Capital repairs (large-scale rehabilitation)
+- **THE RED FLAG CODE**: verified execution of only 53.7% by October 2022
+- Of 140 priority investment projects tracked by the Ministry, 68 had 0% physical execution
 - When this underperforms, promised infrastructure isn't being delivered
 
 ### Why Code 71 Matters Most
@@ -155,21 +171,26 @@ interface EconomicCodeCategory {
 Every year, the pattern repeats:
 
 ```
-Personnel (10):      ██████████████████████  98%  ✓ Salaries paid
-Goods & Services (20): █████████████████░░░░  85%  ~ Normal
-Investments (71):    ██████████░░░░░░░░░░░░  58%  ⚠️ RED FLAG
+Personnel (10):      ██████████████████████  ~95%+ ✓ Salaries paid
+Goods & Services (20): █████████████████░░░░  ~85%  ~ Normal
+Investments (71):    ██████████░░░░░░░░░░░░  ~54%  ⚠️ RED FLAG
+                                          (verified Oct 2022)
 ```
 
 This means: **Salaries always get paid. But the school renovation? The hospital wing? The road repair? Often delayed to next year. And the year after.**
 
+> **2023 Reality Check:** Romania's investment target was 7.2% of GDP, but execution reached only ~3% by September. The European Commission noted Romania requires "much stricter budget execution than in the past few years."
+
 ### Code 71 Subcategories to Watch
 
-| Code | Type | What to look for |
-|------|------|------------------|
-| 71.01.01 | Construction | New buildings, major renovations |
-| 71.01.02 | Machinery/Equipment | Vehicles, medical equipment, IT |
-| 71.01.03 | Furniture | Office furniture, school desks |
-| 71.03 | Capital Repairs | Large-scale rehabilitation |
+| Code | Official Name | What to look for |
+|------|---------------|------------------|
+| 71.01.01 | Construcții | New buildings, major renovations |
+| 71.01.02 | Mașini, echipamente și mijloace de transport | Vehicles, medical equipment, IT, computers |
+| 71.01.03 | Mobilier, aparatură | Office furniture, school desks, appliances |
+| 71.03 | Reparații capitale | Large-scale rehabilitation projects |
+
+> **Note:** EU-funded projects (codes 56/58/60) constituted 61.58% of 2023 investment execution. When analyzing capital spending, always check if execution depends on EU fund absorption.
 
 ---
 
@@ -194,16 +215,18 @@ This means: **Salaries always get paid. But the school renovation? The hospital 
     { id: "a", text: "10 (Personnel) — it often underspends", isCorrect: false },
     { id: "b", text: "20 (Goods & services) — most volatile", isCorrect: false },
     { id: "c", text: "71 (Investments) — consistently lowest rates", isCorrect: true },
-    { id: "d", text: "50 (Transfers) — most commonly delayed", isCorrect: false }
+    { id: "d", text: "51 (Transfers) — most commonly delayed", isCorrect: false }
   ]}
-  explanation="Code 71 (Capital Investments) consistently has the lowest execution rates (often 50-70%), while Personnel (10) executes at nearly 100%. When investments underperform, promised infrastructure — schools, hospitals, roads — doesn't get built."
+  explanation="Code 71 (Capital Investments) has verified execution rates as low as 53.7% (October 2022), while Personnel (10) is treated as fixed obligatory spending. When investments underperform, promised infrastructure — schools, hospitals, roads — doesn't get built."
 />
 
 ---
 
 ## Key Takeaway
 
-> 📌 **Remember:** Economic classification tells you the TYPE of expense. Key codes: 10=Personnel (salaries), 20=Goods & Services, 71=Investments (construction). Code 71 is your RED FLAG — if it's low, promised infrastructure isn't being delivered.
+> 📌 **Remember:** Economic classification tells you the TYPE of expense. Key codes: 10=Personnel (cash & in-kind salaries), 20=Goods & Services, 51=Inter-government transfers, 57=Social assistance, 71=Capital investments. **Code 71 is your RED FLAG** — verified at only ~54% execution. When it's low, promised infrastructure isn't being delivered.
+
+*Classification source: OMFP nr. 1954/2005 and subsequent Ministry of Finance updates.*
 
 ---
 

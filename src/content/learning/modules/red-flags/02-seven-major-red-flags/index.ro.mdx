@@ -1,0 +1,340 @@
+---
+title: "Cele șapte semnale de alarmă majore"
+durationMinutes: 8
+concept: "Tipare specifice care indică probleme bugetare"
+objective: "Învață să identifici cele 7 semnale de alarmă bugetare cele mai frecvente și să înțelegi de ce contează fiecare"
+---
+
+# Cele șapte semnale de alarmă majore
+
+## Introducere în concept
+
+Acum că înțelegi cum să gândești despre semnalele de alarmă, hai să examinăm cele șapte semne de avertizare cele mai comune în bugetele publice românești. Fiecare semnal are un tipar specific, un motiv pentru care contează și întrebări pe care ar trebui să le pui când îl observi.
+
+Aceste șapte semnale nu sunt teoretice — sunt extrase din tipare reale observate în sute de administrații locale românești. Stăpânirea lor îți oferă un set puternic de instrumente pentru supravegherea bugetară.
+
+> **Idee cheie:** Fiecare semnal de alarmă are trei părți: **cum arată**, **de ce este o problemă** și **ce întrebări să pui**.
+
+---
+
+## Element interactiv: Exploratorul semnalelor de alarmă
+
+Explorează fiecare dintre cele șapte semnale de alarmă majore prin carduri interactive. Apasă pe fiecare card pentru a afla informații detaliate.
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  🚩 EXPLORATOR SEMNALE DE ALARMĂ                                │
+│     Apasă pe fiecare card pentru a afla mai multe               │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌───────────┐ ┌───────────┐ ┌───────────┐ ┌───────────┐       │
+│  │    📉     │ │    📋     │ │    💳     │ │    👥     │       │
+│  │ EXECUȚIE  │ │RECTIFICĂRI│ │  ARIERATE │ │  PERSONAL │       │
+│  │  SCĂZUTĂ  │ │ FRECVENTE │ │  (Datorii)│ │ MAJORITAR │       │
+│  └───────────┘ └───────────┘ └───────────┘ └───────────┘       │
+│                                                                 │
+│  ┌───────────┐ ┌───────────┐ ┌───────────┐                     │
+│  │    ✂️     │ │    🚨     │ │    🔀     │                     │
+│  │ DIVIZARE  │ │   ABUZ    │ │TRANSFERURI│                     │
+│  │ CONTRACTE │ │  URGENȚE  │ │  OPACE    │                     │
+│  └───────────┘ └───────────┘ └───────────┘                     │
+│                                                                 │
+│  Progres: [███████░░░] 7/7 vizualizate                          │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Specificația componentei
+
+```typescript
+/**
+ * Componenta RedFlagExplorer
+ *
+ * SCOP: Carduri interactive flip pentru explorarea fiecărui semnal de alarmă în detaliu.
+ * Utilizatorii trebuie să vizualizeze toate cardurile pentru a înțelege imaginea completă.
+ */
+interface RedFlagExplorerProps {
+  readonly flags: readonly RedFlag[]
+  readonly onAllViewed?: () => void
+  readonly onFlagViewed?: (flagId: string) => void
+}
+
+interface RedFlag {
+  readonly id: string
+  readonly icon: string
+  readonly shortName: string
+  readonly fullName: string
+  readonly whatItLooksLike: readonly string[]
+  readonly whyItsProblem: readonly string[]
+  readonly questionsToAsk: readonly string[]
+  readonly threshold?: string
+  readonly example?: {
+    readonly title: string
+    readonly details: readonly string[]
+  }
+}
+
+/**
+ * GESTIONAREA STĂRII:
+ * - flippedCardId: string | null (cardul curent întors)
+ * - viewedCards: Set<string> (carduri care au fost vizualizate)
+ * - allViewed: boolean (derivat: viewedCards.size === flags.length)
+ *
+ * TRANZIȚII DE STARE:
+ * - Click pe fața cardului → întoarce pe spate, adaugă la viewedCards
+ * - Click pe spatele cardului → întoarce pe față
+ * - Click pe alt card → întoarce cardul curent, întoarce noul card
+ * - Tasta Escape → întoarce cardul curent pe față
+ *
+ * INTERACȚIUNI UTILIZATOR:
+ * - Click card: comută starea flip
+ * - Enter/Space pe card focusat: comută flip
+ * - Escape: închide cardul deschis curent
+ * - Tab: navighează între carduri
+ * - Săgeți: navighează în model grilă
+ *
+ * STĂRI VIZUALE:
+ * - Față (nevizualizat): iconiță + nume scurt, bordură standard
+ * - Față (vizualizat): insignă bifă în colț
+ * - Spate: conținut complet cu secțiuni
+ * - Întoarcere: animație rotire 3D
+ * - Toate vizualizate: stare de celebrare cu mesaj de finalizare
+ *
+ * ANIMAȚII:
+ * - Flip: rotateY(180deg) cu perspectivă, 400ms ease-in-out
+ * - Hover (neîntors): scale(1.05), elevare umbră
+ * - Insignă vizualizare: fade-in + scalare din centru
+ * - Bară progres: tranziție lățime lină
+ * - Finalizare: explozie confetti sau animație bifă
+ *
+ * ACCESIBILITATE:
+ * - Cardurile sunt butoane cu role="button"
+ * - aria-expanded pentru starea flip
+ * - aria-pressed pentru starea vizualizat
+ * - Conținutul din spate anunțat la flip prin aria-live
+ * - Progres anunțat: "X din 7 semnale de alarmă explorate"
+ */
+```
+
+---
+
+## Cele șapte semnale de alarmă în detaliu
+
+### 🚩 Semnal de alarmă #1: Rate de execuție scăzute
+
+**Cum arată:**
+- Execuția investițiilor (Cod 71 - Cheltuieli de capital) semnificativ sub bugetul alocat
+- Bani alocați dar necheltuiți
+- Frecvent întâlnit la proiectele de capital
+
+**De ce este o problemă:**
+- Infrastructură promisă dar nelivrată
+- Școli, spitale, drumuri neconstruite
+- Fonduri UE în risc de a fi pierdute
+
+> **Context legal:** Legislația românească nu conține un prag procentual fix pentru ratele de execuție acceptabile. Totuși, **OUG 90/2023** stabilește că dacă execuția scade sub **50% până la 31 octombrie**, ordonatorii de credite trebuie să transfere minimum 10% din creditele rămase către Fondul de rezervă al Guvernului. Auditurile Curții de Conturi observă de obicei rate de execuție de 70-90% ca reper practic.
+
+**Întrebări de pus:**
+- „De ce s-a cheltuit doar X% din bugetul de investiții?"
+- „Ce proiecte au fost anulate sau amânate?"
+- „Banii vor fi realocați sau pierduți?"
+
+> **Exemplu:** Orașul X a planificat 50M RON pentru reparații drumuri. Cheltuieli efective: 22M RON (44%). Rezultat: Doar 3 din 7 drumuri planificate au fost reparate.
+
+---
+
+### 🚩 Semnal de alarmă #2: Rectificări frecvente
+
+**Cum arată:**
+- Multiple amendamente bugetare într-un singur an cu modificări mari
+- Schimbări semnificative (>15% din bugetul original)
+- Modificări programate aproape de alegeri
+
+**De ce este o problemă:**
+- Planificare inițială slabă
+- Manipulare politică a priorităților
+- Buget nesigur ca instrument de politică
+
+> **Context legal (Legea 273/2006, Art. 19):** Nu există **nicio limită legală** pentru câte rectificări sunt permise pe an. Rectificările pot fi aprobate în 30 de zile de la rectificarea bugetului de stat, pe baza propunerilor fundamentate. Totuși, **echilibrul bugetar trebuie menținut** și **aprobarea autorității deliberative (consiliul local)** este necesară pentru toate rectificările. Deși legale, schimbările mari frecvente sugerează probleme de planificare.
+
+**Întrebări de pus:**
+- „De ce a fost bugetul original atât de inexact?"
+- „Cine a beneficiat de fiecare rectificare?"
+- „Au fost făcute reduceri pentru a finanța creșteri în altă parte?"
+
+---
+
+### 🚩 Semnal de alarmă #3: Arierate
+
+**Cum arată:**
+- Facturi neplătite care se acumulează
+- „Arierate" apărând în rapoartele de execuție
+- Datorii în creștere către furnizori
+
+**De ce este o problemă:**
+- Instituția cheltuiește peste posibilități
+- Furnizorii pot opri prestarea serviciilor
+- Datorie ascunsă care trebuie plătită în final
+
+> **Definiție legală (Legea 273/2006, Art. 2(4¹)):** Arieratele sunt plăți restante cu scadență de mai mult de **90 de zile** de la data scadenței. Ordonatorii de credite cu arierate trebuie să **reducă volumul acestora lunar cu cel puțin 5%**. Neconformitatea declanșează **suspendarea automată** a cotelor defalcate și sumelor din veniturile bugetului de stat. Unitățile cu arierate **nu pot autoriza împrumuturi noi** până la achitare.
+
+**Întrebări de pus:**
+- „Care este soldul curent al arieratelor?"
+- „De cât timp sunt neplătite aceste facturi (90+ zile = arierate)?"
+- „Există un plan pentru a realiza reducerea lunară de 5% necesară?"
+
+---
+
+### 🚩 Semnal de alarmă #4: Personalul sufocă investițiile
+
+**Cum arată:**
+- Costurile de personal consumă o parte disproporționată din bugetul total
+- Investiții constant \<10%
+- Execuție salarii 99%+, investiții mult mai scăzute
+
+**De ce este o problemă:**
+- Nu rămân bani pentru dezvoltare
+- Instituția menține doar status quo-ul
+- Infrastructura se deteriorează
+
+> **Context legal:** Reglementările românești folosesc **limite maxime de posturi** (OUG 63/2010) în loc de praguri procentuale pentru costurile de personal. Datele Curții de Conturi arată că cheltuielile de personal reprezintă în medie ~46% pentru administrațiile comunale/orășenești. Doar **31% din comune** au putut acoperi costurile de personal din venituri proprii în 2023. Deși nu există un procent legal, rapoartele ridicate personal-investiții rămân o preocupare practică pentru capacitatea de dezvoltare.
+
+**Întrebări de pus:**
+- „Care este raportul personal-investiții?"
+- „A crescut numărul de angajați în timp ce investițiile au scăzut?"
+- „Ce proiecte de dezvoltare sunt sacrificate?"
+
+---
+
+### 🚩 Semnal de alarmă #5: Divizarea contractelor
+
+**Cum arată:**
+- Multiple contracte chiar sub pragul de achiziție directă
+- Același furnizor, date similare, servicii similare
+- Procentaj ridicat de atribuiri directe
+
+**De ce este o problemă:**
+- Evită licitația competitivă
+- Conduce adesea la prețuri mai mari
+- Poate indica favoritism sau mită
+
+> **Praguri legale (Legea 98/2016, Art. 7(5)):**
+> - **Produse și servicii:** 270.120 RON (~54.300 €)
+> - **Lucrări:** 900.400 RON (~180.900 €)
+>
+> Sub aceste praguri, achiziția directă fără licitație este permisă.
+
+**Exemplu de tipar:**
+```
+5 ian:  Servicii IT    - Furnizor A - 53.500 €
+12 ian: Consultanță IT - Furnizor A - 53.800 €
+20 ian: Suport IT      - Furnizor A - 52.900 €
+─────────────────────────────────────────────
+Total: 160.200 € → Ar fi trebuit să fie O SINGURĂ licitație!
+```
+
+**Întrebări de pus:**
+- „De ce nu au fost grupate aceste contracte?"
+- „Cum a fost selectat acest furnizor de fiecare dată?"
+- „Care este totalul cheltuit cu acest furnizor?"
+
+---
+
+### 🚩 Semnal de alarmă #6: Abuzul de achiziții de urgență
+
+**Cum arată:**
+- Procentaj ridicat de proceduri de „urgență" (negociere fără publicare prealabilă)
+- Articole non-urgente achiziționate urgent
+- Aceiași furnizori câștigă în mod repetat
+
+**De ce este o problemă:**
+- Ocolește procedurile competitive
+- Rezultă adesea în prețuri mai mari
+- Poate indica coluziune sau corupție
+
+> **Cerințe legale (Legea 98/2016, Art. 104(1)(c)):** Achizițiile de urgență necesită **trei condiții cumulative**:
+> 1. Există **urgență extremă**
+> 2. Urgența este cauzată de **evenimente imprevizibile**
+> 3. Situația **nu este atribuibilă niciunei acțiuni sau inacțiuni** a autorității contractante
+>
+> Aceste condiții sunt interpretate **strict** de instanțe. Penalități pentru nenotificare: amendă 5.000-30.000 lei.
+
+**Întrebări de pus:**
+- „Care a fost urgența care a justificat acest lucru? Au fost îndeplinite toate cele trei condiții legale?"
+- „De ce nu a fost planificat în avans (a fost inacțiunea un factor)?"
+- „Cum se compară acest preț cu prețurile pieței?"
+
+---
+
+### 🚩 Semnal de alarmă #7: Transferuri opace
+
+**Cum arată:**
+- Sume mari în categoriile „Alte transferuri"
+- Bani care circulă între entități fără scop clar
+- Transferuri către organizații cu mandate neclare
+
+**De ce este o problemă:**
+- Ascunde scopurile reale ale cheltuielilor
+- Poate finanța activități în afara supravegherii normale
+- Creează oportunități pentru utilizare abuzivă
+
+> **Clasificație bugetară (Ordinul MFP 1954/2005):**
+> - **Titlul VI (Cod 51):** Transferuri între unități ale administrației publice - supuse cadrelor legale explicite
+> - **Titlul VII (Cod 55):** Alte transferuri - supraveghere mai puțin specifică
+>
+> Codul 55 include transferuri interne (55.01) precum sprijin pentru locuințe, scheme de ajutor de stat și ajutor de minimis. Acestea necesită aprobarea autorității deliberative, dar au o supraveghere mai puțin riguroasă decât transferurile interguvernamentale.
+
+**Întrebări de pus:**
+- „Ce activități specifice finanțează aceste transferuri?"
+- „Cine sunt beneficiarii finali?"
+- „Ce rezultate au fost obținute?"
+
+---
+
+## Tabel de referință rapidă
+
+| Semnal de alarmă | Prag / Bază legală | Severitate | Întrebare cheie |
+|------------------|-------------------|------------|-----------------|
+| Execuție scăzută | \<50% declanșează regulile OUG 90/2023 | RIDICATĂ | De ce nu s-au cheltuit banii? |
+| Rectificări frecvente | Nicio limită legală (Legea 273/2006) | MEDIE | Cine a beneficiat de modificări? |
+| Arierate | 90+ zile restante (Legea 273/2006) | RIDICATĂ | Se respectă reducerea lunară de 5%? |
+| Personal majoritar | Limite de posturi (OUG 63/2010) | RIDICATĂ | Ce se sacrifică? |
+| Divizare contracte | \<54,3k€/180,9k€ (Legea 98/2016) | RIDICATĂ | De ce nu au fost grupate contractele? |
+| Abuz urgențe | 3 condiții cumulative necesare | RIDICATĂ | Au fost îndeplinite toate condițiile legale? |
+| Transferuri opace | Codul 55 are supraveghere redusă | MEDIE | Unde merg de fapt banii? |
+
+---
+
+## Practică
+
+<Quiz
+  id="red-flags-02-q1"
+  question="Un oraș are trei contracte IT cu același furnizor: 53.500 € (5 ian), 53.800 € (12 ian), 52.900 € (20 ian). Ce semnal de alarmă indică cel mai probabil acest lucru?"
+  options={[
+    { id: "a", text: "Rate de execuție scăzute", isCorrect: false },
+    { id: "b", text: "Divizarea contractelor pentru a evita licitația competitivă", isCorrect: true },
+    { id: "c", text: "Personalul sufocă investițiile", isCorrect: false },
+    { id: "d", text: "Rectificări frecvente", isCorrect: false }
+  ]}
+  explanation="Acesta este un tipar clasic de divizare a contractelor. Trei contracte chiar sub pragul de achiziție directă de 54.300 € (160.200 € total) ar fi trebuit să fie o singură licitație. Aceasta evită licitația competitivă și poate indica favoritism."
+/>
+
+<Quiz
+  id="red-flags-02-q2"
+  question="Costurile de personal sunt 72% din bugetul unui oraș, în timp ce investițiile sunt doar 8%. Care este preocuparea principală?"
+  options={[
+    { id: "a", text: "Angajații sunt plătiți excesiv", isCorrect: false },
+    { id: "b", text: "Orașul are prea mult personal", isCorrect: false },
+    { id: "c", text: "Rămân puțini bani pentru dezvoltare și infrastructură", isCorrect: true },
+    { id: "d", text: "Bugetul este prea mare", isCorrect: false }
+  ]}
+  explanation="Când costurile de personal sufocă investițiile, nu mai rămâne loc pentru dezvoltare. Deși legislația românească folosește limite de posturi în loc de praguri procentuale, 72% este mult peste media de ~46% pentru administrațiile locale. Infrastructura se deteriorează, iar instituția poate menține doar status quo-ul."
+/>
+
+---
+
+## Concluzie cheie
+
+> 📌 **Reține:** Cele șapte semnale de alarmă majore sunt execuția scăzută, rectificările frecvente, arieratele, personalul care sufocă investițiile, divizarea contractelor, abuzul de achiziții de urgență și transferurile opace. Fiecare are tipare specifice și baze legale (Legea 98/2016, Legea 273/2006, OUG 63/2010). Învață să le observi și vei vedea ce le scapă altora.
+
+<MarkComplete label="Finalizează această lecție" />

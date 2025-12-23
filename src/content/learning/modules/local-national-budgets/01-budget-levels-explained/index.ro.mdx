@@ -1,0 +1,165 @@
+---
+title: "Nivelurile Bugetare Explicate"
+durationMinutes: 5
+concept: "Structura bugetară pe trei piloni a României"
+objective: "Distinge între bugetele centrale și cele locale"
+---
+
+# Nivelurile Bugetare Explicate
+
+## Introducere
+
+Bugetul național face titlurile în presă, dar de fapt este doar o piesă dintr-un puzzle mai mare. Finanțele publice ale României sunt organizate într-un **Buget General Consolidat** care combină bani din mai multe surse și niveluri de guvernare.
+
+Gândește-te la asta ca la o familie în care fiecare membru își gestionează propriul portofel, dar toți contribuie la cheltuielile comune ale gospodăriei. Guvernul, județele, orașele și fondurile de asigurări sociale au fiecare propriile bugete — dar toate sunt interconectate.
+
+> **Observație cheie:** Bugetele locale au adesea un impact mai direct asupra vieții tale zilnice decât bugetul național. Drumurile, parcurile și apa sunt responsabilități locale, în timp ce școlile au finanțare mixtă — bugetele locale acoperă infrastructura și funcționarea, dar salariile profesorilor vin din bugetul de stat.
+
+---
+
+## Element Interactiv: Vizualizator al Ierarhiei Bugetare
+
+Această diagramă interactivă arată cum este structurat bugetul României. Apasă pe orice nivel pentru a explora ce acoperă.
+
+### Componentă BudgetHierarchyVisualizer
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🏛️ STRUCTURA BUGETARĂ A ROMÂNIEI                            │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Apasă pe orice nivel pentru a explora:                      │
+│                                                              │
+│              ┌────────────────────────────────┐              │
+│              │    BUGETUL GENERAL CONSOLIDAT  │              │
+│              │    (Consolidated General Budget)│              │
+│              │       ~600+ miliarde RON       │              │
+│              └───────────────┬────────────────┘              │
+│                              │                               │
+│       ┌──────────────────────┼──────────────────────┐        │
+│       │                      │                      │        │
+│       ▼                      ▼                      ▼        │
+│  ┌─────────┐          ┌─────────────┐        ┌──────────┐   │
+│  │ BUGETUL │          │  BUGETELE   │        │ASIGURĂRI │   │
+│  │ DE STAT │          │   LOCALE    │        │ SOCIALE  │   │
+│  │         │          │ ~3.228 UAT  │        │          │   │
+│  │  ~50%   │          │    ~25%     │        │   ~25%   │   │
+│  └────┬────┘          └──────┬──────┘        └─────┬────┘   │
+│       │                      │                     │         │
+│       ▼                      ▼                     ▼         │
+│  Ministere            Județe (41)            Pensii         │
+│  Apărare              Municipii              Sănătate       │
+│  Externe              Orașe                  Șomaj          │
+│  Justiție             Comune                                │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+**Interfața Componentei:**
+
+```typescript
+/**
+ * BudgetHierarchyVisualizer - Diagramă arborescentă interactivă a structurii bugetare
+ *
+ * SCOP: Ajută utilizatorii să înțeleagă relația dintre diferitele niveluri bugetare
+ */
+interface BudgetHierarchyVisualizerProps {
+  readonly levels: readonly BudgetLevel[]
+  readonly onLevelSelect?: (levelId: string) => void
+  readonly initialExpandedLevel?: string
+}
+
+interface BudgetLevel {
+  readonly id: string
+  readonly name: string
+  readonly nameRo: string
+  readonly percentage: number
+  readonly amount: string // ex., "~600B RON"
+  readonly description: string
+  readonly children?: readonly BudgetLevel[]
+  readonly examples?: readonly string[]
+}
+
+/**
+ * GESTIONAREA STĂRII:
+ * - selectedLevel: string | null (nivelul evidențiat curent)
+ * - expandedLevels: Set<string> (care niveluri afișează copiii)
+ * - hoveredLevel: string | null (pentru efecte de hover)
+ *
+ * TRANZIȚII DE STARE:
+ * - Click pe nivel → comută expandat, setează selectedLevel
+ * - Hover pe nivel → setează hoveredLevel
+ * - Tastatură Enter/Space → comută nivelul selectat
+ *
+ * INTERACȚIUNI UTILIZATOR:
+ * - Click pe casetă: expandează/restrânge copiii, afișează panoul de detalii
+ * - Hover: efect subtil de elevare + strălucire
+ * - Tastatură: Tab pentru navigare, Enter pentru selectare
+ * - Touch: atingere pentru expandare, apăsare lungă pentru detalii
+ *
+ * STĂRI VIZUALE:
+ * - Implicit: bordură subtilă, linii de ierarhie vizibile
+ * - Hover: scale(1.02), elevare umbră, evidențiere bordură
+ * - Selectat: bordură accent, panou detalii expandat
+ * - Expandat: copiii vizibili cu animație secvențială
+ *
+ * ANIMAȚII:
+ * - Intrare: noduri fade-in + scalare din centru (400ms, secvențial 100ms)
+ * - Expandare: copiii slide-down + fade-in (300ms)
+ * - Selecție: animație puls bordură (200ms)
+ * - Hover: tranziție scalare + umbră (150ms, ease-out)
+ *
+ * ACCESIBILITATE:
+ * - role="tree" pe container
+ * - role="treeitem" pe fiecare nivel
+ * - aria-expanded pentru elementele expandabile
+ * - aria-selected pentru selecția curentă
+ * - aria-label cu numele nivelului și procentajul
+ */
+```
+
+**Comportament Așteptat:**
+- Utilizatorii pot apăsa pe orice nivel bugetar pentru a vedea detalii
+- Copiii se expandează cu animație fluidă
+- Barele de procente vizualizează dimensiunile relative
+- Linkuri directe disponibile către Exploratorul de Buget pentru fiecare categorie
+
+---
+
+## Cei Trei Piloni
+
+Bugetul General Consolidat al României (~600+ miliarde RON) este format din trei piloni principali:
+
+| Pilon | Pondere | Ce Acoperă |
+|-------|---------|------------|
+| **Bugetul de Stat** | ~50% | Ministere, apărare, afaceri externe, justiție, programe naționale |
+| **Bugetele Locale** | ~25% | Județe (41), municipii, orașe, comune — servicii locale |
+| **Asigurări Sociale** | ~25% | Pensii, sănătate, indemnizații de șomaj |
+
+### De Ce Contează
+
+Când auzi „guvernul a tăiat bugetul", trebuie să întrebi: **care buget?** O reducere a bugetului de stat afectează programele naționale, în timp ce o reducere a bugetelor locale îți afectează direct drumurile, școlile și parcurile.
+
+---
+
+## Practică
+
+<Quiz
+  id="local-national-01-q1"
+  question="Ce procent din bugetul consolidat al României merge către administrațiile locale?"
+  options={[
+    { id: "a", text: "Aproximativ 50%", isCorrect: false },
+    { id: "b", text: "Aproximativ 25%", isCorrect: true },
+    { id: "c", text: "Aproximativ 10%", isCorrect: false },
+    { id: "d", text: "Aproximativ 35%", isCorrect: false }
+  ]}
+  explanation="Bugetele locale primesc aproximativ 25% din bugetul consolidat al României. Acestea finanțează cele 41 de județe, municipii, orașe și comune — toate cele 3.228 de unități administrativ-teritoriale care furnizează servicii locale. Bugetul de stat (~50%) și asigurările sociale (~25%) completează restul."
+/>
+
+---
+
+## Concluzie
+
+> 📌 **Reține:** Bugetul public al României nu este un singur vas cu bani — este o structură consolidată cu trei piloni: Bugetul de Stat (~50%), Bugetele Locale (~25%) și Asigurările Sociale (~25%). Înțelegerea acestei structuri te ajută să știi care nivel este responsabil pentru serviciile pe care le folosești.
+
+<MarkComplete label="Finalizează această lecție" />

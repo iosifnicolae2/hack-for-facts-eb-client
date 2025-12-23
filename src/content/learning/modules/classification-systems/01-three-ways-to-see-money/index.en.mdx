@@ -41,7 +41,7 @@ Every single expense in the public budget can be viewed through **three lenses**
 │                                                              │
 │  EXAMPLE: "Teacher salary at a primary school"               │
 │  • WHO: Ministry of Education / Local School                 │
-│  • WHAT FOR: Primary education (65.02.03)                    │
+│  • WHAT FOR: Primary education (65.02.03.02)                 │
 │  • WHAT TYPE: Personnel costs (10.01.01)                     │
 │                                                              │
 └──────────────────────────────────────────────────────────────┘
@@ -135,8 +135,10 @@ Each classification system serves a different purpose:
 | System | Question | Purpose | Example Code |
 |--------|----------|---------|--------------|
 | **Organizational** | WHO spends? | Accountability — trace money to responsible entity | Ministry of Health |
-| **Functional** | WHAT FOR? | Purpose — understand policy priorities | 66 (Health) |
+| **Functional** | WHAT FOR? | Purpose — understand policy priorities | 66 (Health)* |
 | **Economic** | WHAT TYPE? | Nature — distinguish salaries from investments | 10 (Personnel) |
+
+> *Note: Romania uses its own national classification codes (established by Order MFP 1954/2005), which differ from the international COFOG standard. For example, Romanian code 66 = Health maps to COFOG 07, and Romanian code 65 = Education maps to COFOG 09.
 
 ### How They Work Together
 
@@ -164,7 +166,7 @@ Together they tell you: "Construction for a middle school, funded from local bud
     { id: "c", text: "Economic classification", isCorrect: false },
     { id: "d", text: "Temporal classification", isCorrect: false }
   ]}
-  explanation="Functional classification answers 'What for?' — it tells you the PURPOSE of the spending, like Education (65), Health (66), or Defense (51). This is based on the international COFOG standard."
+  explanation="Functional classification answers 'What for?' — it tells you the PURPOSE of the spending. Romania uses its own national codes (65 for Education, 66 for Health, 60 for Defense) which map to but differ from the international COFOG standard (COFOG uses 09 for Education, 07 for Health, 02 for Defense)."
 />
 
 <Quiz

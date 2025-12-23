@@ -281,24 +281,41 @@ Let's decode a real budget excerpt:
 
 ### Quick Reference Card
 
+Based on **OMFP nr. 1954/2005** (Order of the Minister of Public Finance), Romanian budget classifications are organized into five parts:
+
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│  📋 CLASSIFICATION CHEAT SHEET                               │
+│  📋 CLASSIFICATION CHEAT SHEET (OMFP 1954/2005)              │
 ├──────────────────────────────────────────────────────────────┤
 │                                                              │
 │  FUNCTIONAL (Main Categories)          ECONOMIC (Main Codes) │
 │  ────────────────────────────          ───────────────────── │
-│  50 - General services                 10 - Personnel        │
-│  51 - Defense                          20 - Goods & services │
-│  54 - Public order                     30 - Interest         │
-│  55 - Economic affairs                 40 - Subsidies        │
-│  56 - Environment                      50 - Transfers        │
-│  65 - Education                        70 - Capital expenses │
-│  66 - Health                           71 - Investments ⚠️   │
-│  67 - Culture                          79 - Financial ops    │
-│  68 - Social protection                80 - Debt service     │
+│  Part I: General Public Services       10 - Personnel        │
+│  51 - Public authorities               20 - Goods & services │
+│  54 - Other general services           30 - Interest         │
+│  55 - Public debt transactions         40 - Subsidies        │
+│  56 - General transfers                50 - Transfers        │
 │                                                              │
-│  .01 = central level    .02 = local level                    │
+│  Part II: Defense & Public Order       70 - Capital expenses │
+│  60 - Defense                          71 - Investments ⚠️   │
+│  61 - Public order & security          79 - Financial ops    │
+│                                                              │
+│  Part III: Social-Cultural             80 - Debt service     │
+│  65 - Education                                              │
+│  66 - Health                           CAPITAL DISTINCTION:  │
+│  67 - Culture & religion               71.01 - New assets    │
+│  68 - Social protection                71.03 - Major repairs │
+│                                                              │
+│  Part IV: Housing & Environment                              │
+│  70 - Housing & public dev.                                  │
+│  74 - Environment protection                                 │
+│                                                              │
+│  Part V: Economic Actions                                    │
+│  80-87 - Economic affairs                                    │
+│                                                              │
+│  BUDGET LEVEL SUFFIXES:                                      │
+│  .01 = central/state budget   .02 = local budget             │
+│  .03 = social insurance       .05 = health insurance         │
 │                                                              │
 └──────────────────────────────────────────────────────────────┘
 ```
@@ -314,13 +331,20 @@ Try decoding budget lines on the actual platform:
 **Step 2:** Find code "66" — what function is it? *(Hint: It's critical for everyone)*
 
 **Step 3:** Expand "66.02" and look for "66.02.06" — what specific health service is this?
+*(Answer: Servicii medicale în unități sanitare cu paturi — Inpatient medical services / hospitals)*
 
 **Step 4:** Open the [Economic Classification Explorer](/classifications/economic)
 
 **Step 5:** Find code "71" and its subcategories. What's the difference between 71.01 and 71.03?
 
+> **Critical distinction:**
+> - **71.01** (Active fixe) = Acquisition of **NEW** fixed assets — new construction, new machinery, new equipment
+> - **71.03** (Reparații capitale) = Major repairs to **EXISTING** assets — renovations, rehabilitation of infrastructure
+>
+> This matters for budget analysis: 71.01 means expansion, 71.03 means maintenance of current capacity.
+
 **Bonus Challenge:** What does the full code "66.02.06 - 71.01.02" mean?
-*(Answer: Equipment purchase for local hospitals)*
+*(Answer: Medical equipment purchase for local hospitals — 66.02.06 is inpatient services, 71.01.02 is machinery/equipment/transport)*
 
 ---
 

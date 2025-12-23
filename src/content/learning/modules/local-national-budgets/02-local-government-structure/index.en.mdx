@@ -1,7 +1,7 @@
 ---
 title: "Local Government Structure"
 durationMinutes: 5
-concept: "Romania's 3,229 administrative units and their funding"
+concept: "Romania's 3,181 administrative units and their funding"
 objective: "Identify UATs and understand central transfer dependencies"
 ---
 
@@ -9,7 +9,7 @@ objective: "Identify UATs and understand central transfer dependencies"
 
 ## Concept Introduction
 
-Romania is divided into approximately **3,229 administrative-territorial units (UATs)**. These range from Bucharest with 2+ million people to tiny communes with just a few hundred residents. Each has its own budget, its own mayor, and its own local council.
+Romania is divided into approximately **3,181 administrative-territorial units (UATs)** at the base level. These range from Bucharest with 2+ million people to tiny communes with just a few hundred residents. Each has its own budget, its own mayor, and its own local council.
 
 The key challenge? Most local governments don't generate enough revenue locally — they depend heavily on transfers from the central government. This creates a power dynamic that affects how your local services are funded.
 
@@ -25,7 +25,7 @@ Romania's local governments are organized into clear tiers. Here's how they brea
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│  🗺️ ROMANIA'S ~3,229 ADMINISTRATIVE UNITS                   │
+│  🗺️ ROMANIA'S ~3,181 ADMINISTRATIVE UNITS                   │
 ├──────────────────────────────────────────────────────────────┤
 │                                                              │
 │  LEVEL 1: COUNTIES (Județe)                                  │
@@ -39,13 +39,14 @@ Romania's local governments are organized into clear tiers. Here's how they brea
 │  ┌────────────────────────────────────────────────────────┐  │
 │  │  ┌─────────────┐  ┌───────────┐  ┌─────────────────┐   │  │
 │  │  │MUNICIPALITIES│  │  TOWNS    │  │    COMMUNES     │   │  │
-│  │  │    103      │  │   217     │  │     ~2,861      │   │  │
+│  │  │    103      │  │   216     │  │     2,862       │   │  │
 │  │  │             │  │           │  │                 │   │  │
 │  │  │ Large cities│  │Small cities│  │ Rural villages │   │  │
-│  │  │ >100k pop   │  │ 10k-100k  │  │    <10k pop    │   │  │
+│  │  │ min 40k*    │  │ min 10k*  │  │   min 1,500*   │   │  │
 │  │  └─────────────┘  └───────────┘  └─────────────────┘   │  │
 │  │                                                        │  │
-│  │  Total: ~3,229 Administrative-Territorial Units (UATs) │  │
+│  │  Total: ~3,181 Administrative-Territorial Units (UATs) │  │
+│  │  *Legal minimums for NEW classifications only          │  │
 │  └────────────────────────────────────────────────────────┘  │
 │                                                              │
 └──────────────────────────────────────────────────────────────┘
@@ -121,11 +122,11 @@ Here's where the money comes from — and it reveals a critical dependency:
 │         ┌───────────────┼───────────────┐                    │
 │         │               │               │                    │
 │         ▼               ▼               ▼                    │
-│    ┌─────────┐    ┌─────────────┐    ┌─────────┐             │
-│    │ Income  │    │Equalization │    │ Special │             │
-│    │Tax Share│    │   Grants    │    │ Grants  │             │
-│    │  ~45%   │    │    ~30%     │    │  ~10%   │             │
-│    └────┬────┘    └──────┬──────┘    └────┬────┘             │
+│    ┌─────────┐    ┌─────────────┐    ┌──────────┐            │
+│    │ Income  │    │Equalization │    │ Earmarked│            │
+│    │Tax Share│    │   Grants    │    │  Grants  │            │
+│    │ ~25-32% │    │   ~10-17%   │    │ ~28-38%  │            │
+│    └────┬────┘    └──────┬──────┘    └────┬─────┘            │
 │         │                │               │                   │
 │         └────────────────┼───────────────┘                   │
 │                          ▼                                   │
@@ -133,13 +134,15 @@ Here's where the money comes from — and it reveals a critical dependency:
 │                │  LOCAL BUDGET   │                           │
 │                │                 │                           │
 │                │ + Own revenues  │                           │
-│                │   (~15%)        │                           │
+│                │   (~14-15%)     │                           │
 │                │   Property tax  │                           │
 │                │   Local fees    │                           │
 │                └─────────────────┘                           │
 │                                                              │
 │  ⚠️ KEY: Most local money (~85%) comes from CENTER           │
 │     → Local governments have LIMITED fiscal autonomy         │
+│  Note: Earmarked grants include education funding where      │
+│  local govts pay teacher salaries set by central government  │
 │                                                              │
 └──────────────────────────────────────────────────────────────┘
 ```
@@ -197,10 +200,12 @@ interface MoneyFlow {
 
 | Source | Percentage | Description |
 |--------|------------|-------------|
-| **Income Tax Share** | ~45% | Portion of national income tax redistributed to localities |
-| **Equalization Grants** | ~30% | Funds to help poorer areas match richer ones |
-| **Special Grants** | ~10% | Earmarked for specific projects (EU co-financing, etc.) |
-| **Own Revenues** | ~15% | Property tax, local fees, fines, service charges |
+| **Income Tax Share** | ~25-32% | Portion of national income tax redistributed to localities (82% of income tax is redistributed: 47% to municipalities/towns/communes, 13% to county councils, 22% to equalization) |
+| **Equalization Grants** | ~10-17% | Funds allocated through a formula: 70% based on fiscal capacity, 30% based on land area |
+| **Earmarked Grants** | ~28-38% | Largest category — includes education funding (teacher salaries), social programs, fuel subsidies, capital projects |
+| **Own Revenues** | ~14-15% | Property tax, local fees, fines, service charges |
+
+> **Note:** Earmarked grants are the largest transfer category. Education funding alone accounts for ~28% of local revenue — local governments act as "paymasters" for centrally-determined teacher salaries without policy control.
 
 ---
 
@@ -208,23 +213,25 @@ interface MoneyFlow {
 
 Not all services are local. Here's how responsibilities are divided:
 
-| Service | Central | County | Local |
-|---------|:-------:|:------:|:-----:|
-| National defense | ● | | |
-| Foreign policy | ● | | |
-| National highways | ● | | |
-| Universities | ● | | |
-| County roads | | ● | |
-| County hospitals | | ● | |
-| Social services | | ● | ● |
-| **Local roads** | | | ● |
-| **Schools (pre-university)** | | | ● |
-| **Water & sanitation** | | | ● |
-| **Street lighting** | | | ● |
-| **Parks & green spaces** | | | ● |
-| **Waste management** | | | ● |
+| Service | Central | County | Local | Notes |
+|---------|:-------:|:------:|:-----:|-------|
+| National defense | ● | | | |
+| Foreign policy | ● | | | |
+| National highways | ● | | | Via CNAIR |
+| Universities | ● | | | |
+| Healthcare/Hospitals | ● | ● | | ~90% centrally funded via National Health Insurance |
+| County roads | | ● | | |
+| Social services | | ● | ● | |
+| **Schools (pre-university)** | ● | ● | ● | Shared: Central sets curriculum & salaries; local maintains buildings & pays teachers |
+| **Local roads** | | | ● | Exclusive local competency |
+| **Water & sanitation** | | | ● | Exclusive local competency |
+| **Street lighting** | | | ● | |
+| **Parks & green spaces** | | | ● | |
+| **Waste management** | | ● | ● | Local handles collection; county coordinates plans |
 
 > 💡 **Tip:** Focus on local services first — they're the ones that directly affect your daily life!
+>
+> **Important nuance:** Education is a "shared competency" where local governments maintain school buildings and process teacher payrolls, but the Ministry of Education controls curriculum, standards, and salary levels. This means locals bear administrative costs without policy control.
 
 ---
 
@@ -232,14 +239,14 @@ Not all services are local. Here's how responsibilities are divided:
 
 <Quiz
   id="local-national-02-q1"
-  question="Approximately how many administrative-territorial units (UATs) does Romania have?"
+  question="Approximately how many administrative-territorial units (UATs) does Romania have at the base level?"
   options={[
     { id: "a", text: "About 500", isCorrect: false },
     { id: "b", text: "About 1,500", isCorrect: false },
-    { id: "c", text: "About 3,229", isCorrect: true },
+    { id: "c", text: "About 3,181", isCorrect: true },
     { id: "d", text: "About 5,000", isCorrect: false }
   ]}
-  explanation="Romania has approximately 3,229 UATs, including 42 counties (41 + Bucharest), 103 municipalities, 217 towns, and about 2,861 communes. Each has its own budget and local government."
+  explanation="Romania has approximately 3,181 UATs at the base level, including 42 counties (41 + Bucharest), 103 municipalities, 216 towns, and 2,862 communes. Each has its own budget and local government."
 />
 
 <Quiz
@@ -251,13 +258,13 @@ Not all services are local. Here's how responsibilities are divided:
     { id: "c", text: "About 85%", isCorrect: true },
     { id: "d", text: "About 95%", isCorrect: false }
   ]}
-  explanation="About 85% of local government revenue comes from central transfers (income tax share, equalization grants, special grants). Only ~15% comes from their own sources like property taxes and local fees. This limited fiscal autonomy means local governments depend heavily on central allocation decisions."
+  explanation="About 85% of local government revenue comes from central transfers: income tax share (~25-32%), equalization grants (~10-17%), and earmarked grants (~28-38%, primarily for education). Only ~14-15% comes from their own sources like property taxes and local fees. This places Romania in the 'very low decentralization' category, with only 28% of local units able to cover half their budget from own revenues."
 />
 
 ---
 
 ## Key Takeaway
 
-> 📌 **Remember:** Romania has ~3,229 local governments (UATs), but most depend on central transfers for ~85% of their funding. This means your local mayor has limited control over revenue — making it even more important to monitor how the money that does arrive gets spent.
+> 📌 **Remember:** Romania has ~3,181 local governments (UATs), but most depend on central transfers for ~85% of their funding. The largest chunk (~28-38%) comes as earmarked grants for education, where local governments pay teacher salaries without controlling salary levels. This means your local mayor has limited control over revenue — making it even more important to monitor how the money that does arrive gets spent.
 
 <MarkComplete label="Complete this lesson" />

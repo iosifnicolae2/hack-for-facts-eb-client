@@ -1,0 +1,222 @@
+---
+title: "Drepturile tale legale la informare"
+durationMinutes: 6
+concept: "Două legi esențiale care protejează accesul cetățenilor la informații publice"
+objective: "Identifică cele două legi cheie care îți protejează dreptul la informare"
+---
+
+# Drepturile tale legale la informare
+
+## Introducere
+
+Ai mai multă putere decât crezi. Legislația românească îți oferă drepturi reale și aplicabile pentru a accesa informații publice și a participa la deciziile guvernamentale. Majoritatea cetățenilor nu știu că aceste drepturi există — sau cât de puternice pot fi.
+
+Două legi fundamentale îți protejează capacitatea de a monitoriza și de a te implica în bugetele publice:
+
+1. **Legea 544/2001** — Liberul acces la informațiile de interes public
+2. **Legea 52/2003** — Transparența decizională în administrația publică
+
+> **Perspectivă cheie:** O solicitare legală bine formulată este adesea mai eficientă decât plângerile pe rețelele sociale. Legea este de partea ta — instituțiile sunt *obligate* să răspundă.
+
+---
+
+## Element interactiv: Carduri informative
+
+Explorează fiecare lege făcând clic pe cardurile de mai jos pentru a descoperi ce drepturi îți garantează:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  ⚖️ DREPTURILE TALE LEGALE LA INFORMARE                       │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │  📜 LEGEA 544/2001                                   │    │
+│  │     Liberul acces la informațiile de interes public  │    │
+│  │                                                      │    │
+│  │     GARANTEAZĂ:                                      │    │
+│  │     ✓ Solicitarea oricărui document public           │    │
+│  │     ✓ Răspuns în 10 zile lucrătoare                  │    │
+│  │     ✓ Solicitări complexe: până la 30 de zile        │    │
+│  │     ✓ Gratuit (sau costuri minime de copiere)        │    │
+│  │     ✓ Drept de contestație în caz de refuz           │    │
+│  │                                                      │    │
+│  │     ACOPERĂ:                                         │    │
+│  │     • Documente bugetare și rapoarte de execuție     │    │
+│  │     • Contracte și dosare de achiziții publice       │    │
+│  │     • Organigramă                                    │    │
+│  │     • Hotărâri ale consiliului                       │    │
+│  └──────────────────────────────────────────────────────┘    │
+│                                                              │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │  📜 LEGEA 52/2003                                    │    │
+│  │     Transparența decizională                         │    │
+│  │                                                      │    │
+│  │     GARANTEAZĂ:                                      │    │
+│  │     ✓ Proiectele de acte normative trebuie publicate │    │
+│  │     ✓ Anunț cu 30 de zile lucrătoare înainte         │    │
+│  │     ✓ Min. 10 zile calendaristice pentru comentarii  │    │
+│  │     ✓ Dreptul de a participa la ședințe publice      │    │
+│  │     ✓ Autoritatea trebuie să justifice respingerile  │    │
+│  │                                                      │    │
+│  │     ACOPERĂ:                                         │    │
+│  │     • Propuneri și rectificări bugetare              │    │
+│  │     • Regulamente și hotărâri locale                 │    │
+│  │     • Consultări publice                             │    │
+│  └──────────────────────────────────────────────────────┘    │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Specificație componentă: RightsFlipCards
+
+```typescript
+/**
+ * RightsFlipCards - Carduri interactive care dezvăluie drepturile legale
+ *
+ * SCOP: Ajută cetățenii să descopere și să rețină cele două legi cheie care
+ * le protejează accesul la informații publice și participarea la decizii.
+ */
+interface RightsFlipCardsProps {
+  readonly cards: readonly RightsCard[]
+  readonly onCardFlip?: (cardId: string) => void
+  readonly onAllViewed?: () => void
+}
+
+interface RightsCard {
+  readonly id: string
+  readonly lawNumber: string              // ex: "544/2001"
+  readonly lawTitle: string               // Titlul complet
+  readonly icon: string                   // Emoji
+  readonly guarantees: readonly string[]  // Lista de garanții
+  readonly covers: readonly string[]      // Ce documente/subiecte acoperă
+  readonly learnMoreUrl?: string          // Link către textul complet al legii
+}
+
+/**
+ * GESTIONAREA STĂRII:
+ * - flippedCards: Set<string> (ID-urile cardurilor care arată spatele)
+ * - viewedCards: Set<string> (ID-urile cardurilor vizualizate cel puțin o dată)
+ *
+ * TRANZIȚII DE STARE:
+ * - Utilizatorul face clic pe card → comută starea de flip, adaugă la viewedCards
+ * - Toate cardurile vizualizate → declanșează callback-ul onAllViewed
+ *
+ * INTERACȚIUNI UTILIZATOR:
+ * - Clic pe card: întoarce pentru a dezvălui garanțiile
+ * - Enter/Space pe cardul focalizat: comută flip
+ * - Escape: întoarce la față
+ * - Tab: navighează între carduri
+ *
+ * STĂRI VIZUALE:
+ * - Față: numărul legii, pictogramă, titlu cu fundal gradient
+ * - Spate: lista de garanții cu bifări, secțiunea "acoperă"
+ * - Întoarcere: rotateY 3D 180deg (400ms, ease-in-out)
+ * - Vizualizat: insignă subtilă cu bifă în colț
+ * - Toate vizualizate: stare de celebrare cu progres complet
+ *
+ * ANIMAȚII:
+ * - Flip: perspective 1000px, rotateY cu backface-visibility
+ * - Hover (neîntors): scale(1.02), elevare umbră
+ * - Intrare: fade-in escalonat (100ms întârziere între carduri)
+ * - Bară de progres: se umple pe măsură ce cardurile sunt vizualizate
+ *
+ * ACCESIBILITATE:
+ * - role="button" pe fiecare card
+ * - aria-pressed pentru starea de flip
+ * - aria-label cu titlul legii
+ * - Anunță conținutul din spate la flip via aria-live region
+ * - Contur vizibil de focus la navigarea cu tastatura
+ */
+```
+
+---
+
+## Explicație detaliată
+
+### Legea 544/2001: Dreptul tău de a ști
+
+Aceasta este Legea accesului liber la informațiile de interes public din România. Îți oferă dreptul legal de a solicita orice document de interes public de la orice instituție publică.
+
+| Aspect | Detalii |
+|--------|---------|
+| **Termen de răspuns** | 10 zile lucrătoare (standard) |
+| **Termen prelungit** | 30 de zile pentru solicitări complexe |
+| **Termen pentru refuz** | 5 zile pentru a comunica un refuz |
+| **Solicitări mass-media** | 24 de ore pentru solicitări verbale |
+| **Cost** | Gratuit (contestațiile în instanță sunt scutite de taxe) |
+| **Contestație** | Administrativă sau direct în instanță |
+| **Răspundere** | Sancțiuni disciplinare pentru funcționari |
+
+**Ce poți solicita (acoperit explicit de Art. 5):**
+- Rapoarte de execuție bugetară și situații financiare
+- Contracte publice și dosare de achiziții
+- Organigramă
+- Hotărâri ale consiliului și acte normative
+
+> **Notă:** Grilele salariale și procesele-verbale ale ședințelor nu sunt enumerate explicit în Art. 5 și pot face obiectul excepțiilor din Art. 12 (deliberări, date personale).
+
+### Legea 52/2003: Dreptul tău de a participa
+
+Această lege asigură că poți participa *înainte* ca deciziile să fie luate, nu doar să reacționezi ulterior.
+
+| Aspect | Detalii |
+|--------|---------|
+| **Anunț prealabil** | 30 de zile lucrătoare înainte de aprobare |
+| **Perioadă de comentarii** | Minimum 10 zile calendaristice |
+| **Publicarea proiectului** | Site web, afișare la sediu, mass-media, părți interesate |
+| **Ședințe publice** | Drept de participare (anunț cu 3 zile înainte) |
+| **Răspuns la feedback** | Autoritatea trebuie să justifice comentariile respinse |
+
+**Când se aplică:**
+- Propuneri și rectificări bugetare
+- Noi regulamente locale
+- Decizii de urbanism
+- Orice decizie care afectează cetățenii
+
+---
+
+## Verifică-ți cunoștințele
+
+<Quiz
+  id="citizen-rights-01-q1"
+  question="Care lege îți garantează dreptul de a solicita documente publice?"
+  options={[
+    { id: "a", text: "Legea 52/2003", isCorrect: false },
+    { id: "b", text: "Legea 544/2001", isCorrect: true },
+    { id: "c", text: "Legea 215/2001", isCorrect: false },
+    { id: "d", text: "Legea 188/1999", isCorrect: false }
+  ]}
+  explanation="Legea 544/2001 (Liberul acces la informațiile de interes public) este legea românească echivalentă FOIA. Îți garantează dreptul de a solicita orice document de interes public. Legea 52/2003 privește participarea la procesul decizional, nu accesul la documente."
+/>
+
+<Quiz
+  id="citizen-rights-01-q2"
+  question="În câte zile lucrătoare trebuie să răspundă o instituție la o solicitare standard de informații publice?"
+  options={[
+    { id: "a", text: "5 zile lucrătoare", isCorrect: false },
+    { id: "b", text: "10 zile lucrătoare", isCorrect: true },
+    { id: "c", text: "30 de zile lucrătoare", isCorrect: false },
+    { id: "d", text: "60 de zile lucrătoare", isCorrect: false }
+  ]}
+  explanation="Conform Legii 544/2001, instituțiile trebuie să răspundă în 10 zile lucrătoare pentru solicitările standard. Solicitările complexe care necesită adunarea de informații din mai multe surse pot dura până la 30 de zile. Acest termen este obligatoriu din punct de vedere legal."
+/>
+
+<Quiz
+  id="citizen-rights-01-q3"
+  question="Conform Legii 52/2003, care este perioada minimă de comentarii pentru proiectele de acte normative?"
+  options={[
+    { id: "a", text: "10 zile calendaristice", isCorrect: true },
+    { id: "b", text: "30 de zile calendaristice", isCorrect: false },
+    { id: "c", text: "5 zile lucrătoare", isCorrect: false },
+    { id: "d", text: "15 zile lucrătoare", isCorrect: false }
+  ]}
+  explanation="Legea 52/2003 prevede minimum 10 zile calendaristice pentru comentarii publice (Art. 7(4)). Cele 30 de zile lucrătoare se referă la perioada de anunț prealabil între publicare și aprobarea finală — o cerință separată. Autoritățile trebuie, de asemenea, să justifice de ce au respins feedback-ul primit."
+/>
+
+---
+
+## Concluzie
+
+> 📌 **De reținut:** Ai două instrumente legale puternice — Legea 544/2001 îți permite să soliciți orice document public (răspuns în 10 zile, contestații scutite de taxe judiciare), iar Legea 52/2003 îți oferă minimum 10 zile calendaristice pentru a comenta proiectele de decizii. Instanțele dau în mod constant câștig de cauză solicitanților — ONG-urile au câștigat procese de referință care stabilesc că nu trebuie să justifici de ce dorești informația.
+
+<MarkComplete label="Marchează lecția ca finalizată" />

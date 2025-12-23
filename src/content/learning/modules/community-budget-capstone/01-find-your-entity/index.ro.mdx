@@ -1,0 +1,209 @@
+---
+title: "Găsește-ți Entitatea"
+durationMinutes: 8
+concept: "Selectarea entității și colectarea datelor de bază"
+objective: "Selectează și identifică administrația locală în platformă"
+---
+
+# Găsește-ți Entitatea
+
+## Introducerea Conceptului
+
+Ai învățat toate conceptele pe parcursul acestui curs. Acum este momentul să le aplici în **COMUNITATEA TA**. Acest proiect final te va ghida printr-o analiză bugetară completă a administrației tale locale.
+
+Acesta este cel mai important modul — pentru că este real și te afectează direct. La final, vei avea un raport pe care îl poți distribui și pași concreți de urmat.
+
+> **Misiunea Ta:** Analizează bugetul administrației tale locale și realizează un raport succint pe care l-ai putea împărtăși vecinilor sau folosi pentru a pune întrebări documentate.
+
+---
+
+## Parcursul Proiectului Tău Final
+
+Înainte de a începe, iată foaia de parcurs pentru analiza ta:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  PARCURSUL PROIECTULUI TĂU FINAL                            │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ┌──────┐    ┌──────┐    ┌──────┐    ┌──────┐               │
+│  │PASUL │    │PASUL │    │PASUL │    │PASUL │               │
+│  │  1   │ -> │  2   │ -> │  3   │ -> │  4   │               │
+│  │      │    │      │    │      │    │      │               │
+│  │Găsește│   │Obține│    │Caută │    │Raport│               │
+│  │ Enti-│    │ Date │    │Semna-│    │  și  │               │
+│  │tatea │    │      │    │le de │    │ Acți-│               │
+│  │      │    │      │    │Alarmă│    │onează│               │
+│  └──────┘    └──────┘    └──────┘    └──────┘               │
+│                                                              │
+│  Timp estimat: 35-40 minute                                  │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Element Interactiv: Ghid de Căutare a Entității
+
+Folosește platforma pentru a găsi administrația ta locală. Această activitate ghidată te va ajuta să localizezi și să înregistrezi informațiile de bază de care ai nevoie.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  PASUL 1: GĂSEȘTE-ȚI ADMINISTRAȚIA LOCALĂ                    │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Accesează Analiza Entităților și găsește orașul/comuna ta:  │
+│  [ Deschide Analiza Entităților -> ]                         │
+│                                                              │
+│  Caută: ________________________________________             │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  ÎNREGISTREAZĂ INFORMAȚIILE DE BAZĂ:                         │
+│                                                              │
+│  Numele entității: [ _________________________ ]             │
+│  Tip:              [ Municipiu / Oraș / Comună ]             │
+│  Județ:            [ _________________________ ]             │
+│  Populație:        [ _____________ ]                         │
+│  CUI (dacă este    [ _____________ ]                         │
+│  vizibil):                                                   │
+│                                                              │
+│  [x] Mi-am găsit entitatea                                   │
+│                                                              │
+│  SFAT: Dacă nu ești sigur, alege orașul/comuna în care       │
+│        locuiești sau cea ale cărei servicii le folosești     │
+│        cel mai des.                                          │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Specificația Componentei: EntityFinderGuide
+
+```typescript
+/**
+ * Componenta EntityFinderGuide
+ *
+ * SCOP: Ghidează utilizatorii să găsească și să selecteze entitatea
+ * administrației lor locale în platformă și să înregistreze
+ * informațiile de bază de identificare.
+ */
+interface EntityFinderGuideProps {
+  readonly deepLinkUrl: string // URL către Analiza Entităților
+  readonly onEntitySelected: (entity: SelectedEntity) => void
+  readonly onComplete: () => void
+}
+
+interface SelectedEntity {
+  readonly name: string
+  readonly type: 'municipality' | 'town' | 'commune'
+  readonly county: string
+  readonly population?: number
+  readonly cui?: string
+}
+
+/**
+ * GESTIONAREA STĂRII:
+ * - searchQuery: string (textul căutat de utilizator)
+ * - selectedEntity: SelectedEntity | null
+ * - formData: Record<string, string> (valorile capturate din formular)
+ * - isComplete: boolean
+ *
+ * TRANZIȚII DE STARE:
+ * - Utilizatorul deschide link-ul -> deschide Analiza Entităților într-un tab nou
+ * - Utilizatorul completează câmpurile formularului -> actualizează formData
+ * - Utilizatorul bifează finalizarea -> validează câmpurile obligatorii, setează isComplete
+ *
+ * INTERACȚIUNI ALE UTILIZATORULUI:
+ * - Click pe „Deschide Analiza Entităților" -> window.open(deepLinkUrl, '_blank')
+ * - Tastare în câmpul de căutare -> actualizează searchQuery (doar informativ)
+ * - Completare câmpuri formular -> actualizează formData
+ * - Bifare căsuță de finalizare -> validează și activează pasul următor
+ * - Navigare cu Tab între câmpuri
+ * - Enter pentru a confirma căsuța de bifare
+ *
+ * STĂRI VIZUALE:
+ * - Implicit: câmpuri goale, secțiune de finalizare estompată
+ * - În progres: unele câmpuri completate, căsuța de finalizare vizibilă
+ * - Finalizat: toate câmpurile obligatorii completate, indicator verde de succes
+ * - Eroare de validare: câmpuri obligatorii lipsă evidențiate în chihlimbar
+ *
+ * ANIMAȚII:
+ * - Buton link direct: animație puls la hover (150ms)
+ * - Focus câmp formular: tranziție subtilă a culorii marginii (200ms)
+ * - Bifare finalizare: animație bifă cu explozie de confetti (300ms)
+ * - Indicator de progres: animație de umplere lină
+ *
+ * ACCESIBILITATE:
+ * - role="form" pe container
+ * - aria-required="true" pe câmpurile obligatorii
+ * - aria-describedby conectând input-urile la textul de ajutor
+ * - Regiune live pentru modificările stării de finalizare
+ * - Gestionarea focusului: focusare automată pe primul câmp după deschidere
+ * - Navigare cu tastatura: Tab între câmpuri, Enter pentru bifare
+ */
+```
+
+**Integrare Date:**
+- Căutare entitate: `GET /api/entities/search?q={query}`
+- Detalii entitate: `GET /api/entities/{cui}`
+
+---
+
+## Cum să Îți Găsești Entitatea
+
+Urmează acești pași pentru a localiza administrația ta locală:
+
+1. **Deschide Analiza Entităților** — Apasă pe link sau navighează la secțiunea Entități
+2. **Caută după nume** — Tastează numele orașului, comunei sau municipiului
+3. **Verifică entitatea** — Asigură-te că județul corespunde locației tale
+4. **Notează CUI-ul** — Acest identificator unic ajută la urmărirea entității
+
+### Ce Înseamnă Tipurile de Entități
+
+| Tip | Termen Românesc | Descriere |
+|------|-----------------|-----------|
+| Municipiu | Municipiu | Oraș mare (reședință de județ sau centru urban major) |
+| Oraș | Oraș | Zonă urbană de dimensiune medie |
+| Comună | Comuna | Unitate administrativă rurală (sate) |
+
+> **Sfat:** Dacă numele satului tău nu apare, caută comuna care îl administrează. Satele fac parte din comune în structura administrativă a României.
+
+---
+
+## De Ce Contează Populația
+
+Populația este esențială pentru comparații bugetare relevante:
+
+- **Cheltuieli pe cap de locuitor** = Buget Total ÷ Populație
+- Compararea totalurilor brute este înșelătoare (București vs. o comună mică)
+- Cifrele per capita relevă intensitatea cheltuielilor și prioritățile
+
+**Exemplu:**
+- Orașul A: 100 milioane RON buget, 100.000 populație → 1.000 RON per capita
+- Orașul B: 10 milioane RON buget, 5.000 populație → 2.000 RON per capita
+
+Orașul B cheltuiește de fapt mai mult pe persoană, în ciuda totalului mai mic!
+
+---
+
+## Practică
+
+<Quiz
+  id="capstone-01-q1"
+  question="De ce este important să găsești populația entității tale pentru analiza bugetară?"
+  options={[
+    { id: "a", text: "Determină câți consilieri are entitatea", isCorrect: false },
+    { id: "b", text: "Permite comparații relevante per capita cu entități similare", isCorrect: true },
+    { id: "c", text: "Populația este necesară pentru a accesa datele bugetare", isCorrect: false },
+    { id: "d", text: "Populațiile mai mari înseamnă întotdeauna o execuție bugetară mai bună", isCorrect: false }
+  ]}
+  explanation="Populația permite calculele per capita, care sunt esențiale pentru comparații corecte. O comună mică care cheltuiește 2.000 RON/persoană poate fi mai relevantă pentru comparație decât totalurile bugetare brute care variază foarte mult în funcție de dimensiune."
+/>
+
+---
+
+## Concluzia Cheie
+
+> Ai finalizat Pasul 1! Acum ai administrația ta locală identificată cu profilul său de bază. În lecția următoare, vei aprofunda cifrele bugetare reale — cheltuieli planificate, cheltuieli efective și indicatori cheie care relevă cât de bine sunt gestionați banii.
+
+<MarkComplete label="Finalizează Pasul 1" />
