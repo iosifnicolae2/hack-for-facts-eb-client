@@ -13,6 +13,7 @@ import { MarkComplete } from './MarkComplete'
 import { BudgetFootprintRevealer } from '../interactive/BudgetFootprintRevealer'
 import { FlashCard, FlashCardDeck } from '../interactive/FlashCardDeck'
 import { PromiseTracker } from '../interactive/PromiseTracker'
+import { SalaryTaxCalculator } from '../interactive/SalaryTaxCalculator'
 
 type LessonPlayerProps = {
   readonly locale: LearningLocale
@@ -38,6 +39,10 @@ type BudgetFootprintRevealerMdxProps = {
 }
 
 type PromiseTrackerMdxProps = {
+  readonly id?: string
+}
+
+type SalaryTaxCalculatorMdxProps = {
   readonly id?: string
 }
 
@@ -99,6 +104,16 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
     [locale, lessonId]
   )
 
+  const SalaryTaxCalculatorWrapper = useCallback(
+    (props: SalaryTaxCalculatorMdxProps) => (
+      <SalaryTaxCalculator
+        contentId={lessonId}
+        calculatorId={props.id ?? 'salary-tax-calculator'}
+      />
+    ),
+    [lessonId]
+  )
+
   const mdxComponents = useMemo(
     () => ({
       Quiz: QuizWrapper,
@@ -107,8 +122,9 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
       PromiseTracker: PromiseTrackerWrapper,
       FlashCard,
       FlashCardDeck,
+      SalaryTaxCalculator: SalaryTaxCalculatorWrapper,
     }),
-    [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, PromiseTrackerWrapper]
+    [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, PromiseTrackerWrapper, SalaryTaxCalculatorWrapper]
   )
 
   if (!path || !module || !lesson) {

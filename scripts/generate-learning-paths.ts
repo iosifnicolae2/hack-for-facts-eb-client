@@ -27,8 +27,6 @@ const PATHS_ROOT = path.join(LEARNING_ROOT, 'paths')
 
 type MdxFrontmatter = {
   readonly title?: string
-  readonly 'title.en'?: string
-  readonly 'title.ro'?: string
   readonly durationMinutes?: number
   readonly concept?: string
   readonly objective?: string
@@ -153,9 +151,9 @@ function updateLessonWithFrontmatter(
     result.title = { en: undefined, ro: undefined }
   }
 
-  // Try title.en first (dot notation in same file), then title from separate locale files
-  const enTitle = frontmatter?.en?.['title.en'] ?? frontmatter?.en?.title
-  const roTitle = frontmatter?.en?.['title.ro'] ?? frontmatter?.ro?.title
+  // Read title from each locale-specific file (index.en.mdx has English title, index.ro.mdx has Romanian title)
+  const enTitle = frontmatter?.en?.title
+  const roTitle = frontmatter?.ro?.title
 
   if (result.title.en === undefined && enTitle) {
     result.title = { ...result.title, en: enTitle }

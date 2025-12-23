@@ -4,7 +4,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook, waitFor } from '@/test/test-utils'
 import { AuthProvider } from '@/lib/auth'
 import { LearningProgressProvider } from './use-learning-progress'
-import { useLessonCompletion, usePredictionInteraction, useQuizInteraction } from './use-learning-interactions'
+import {
+  useLessonCompletion,
+  usePredictionInteraction,
+  useQuizInteraction,
+  useSalaryCalculatorInteraction,
+} from './use-learning-interactions'
 import type { LearningGuestProgress } from '../types'
 import type { LearningProgressEvent } from '../types'
 
@@ -464,6 +469,210 @@ describe('use-learning-interactions', () => {
         expect(reveal).toBeDefined()
         expect(reveal?.guess).toBe(75)
         expect(reveal?.actualRate).toBe(60)
+      })
+    })
+  })
+
+  describe('useSalaryCalculatorInteraction', () => {
+    it('returns null savedState when no persisted state', async () => {
+      const { result } = renderHook(
+        () => useSalaryCalculatorInteraction({ contentId: 'lesson-1', calculatorId: 'calculator-1' }),
+        { wrapper },
+      )
+
+      await waitFor(() => {
+        expect(result.current.savedState).toBeNull()
+      })
+
+      expect(result.current.isCompleted).toBe(false)
+    })
+
+    it('restores persisted calculator state', async () => {
+      const now = new Date().toISOString()
+      seedProgress(
+        buildProgress({
+          lastUpdated: now,
+          content: {
+            'lesson-1': {
+              contentId: 'lesson-1',
+              status: 'in_progress',
+              lastAttemptAt: now,
+              contentVersion: 'v1',
+              interactions: {
+                'calculator-1': {
+                  kind: 'salary-calculator',
+                  gross: 5000,
+                  userGuess: 3500,
+                  step: 'GUESS',
+                },
+              },
+            },
+          },
+        }),
+      )
+
+      const { result } = renderHook(
+        () => useSalaryCalculatorInteraction({ contentId: 'lesson-1', calculatorId: 'calculator-1' }),
+        { wrapper },
+      )
+
+      await waitFor(() => {
+        expect(result.current.savedState).not.toBeNull()
+      })
+
+      expect(result.current.savedState?.gross).toBe(5000)
+      expect(result.current.savedState?.userGuess).toBe(3500)
+      expect(result.current.savedState?.step).toBe('GUESS')
+      expect(result.current.isCompleted).toBe(false)
+    })
+
+    it('stores calculator state via action dispatch', async () => {
+      const { result } = renderHook(
+        () => useSalaryCalculatorInteraction({ contentId: 'lesson-1', calculatorId: 'calculator-1', contentVersion: 'v1' }),
+        { wrapper },
+      )
+
+      await act(async () => {
+        await result.current.save(5000, 3500, 'GUESS')
+      })
+
+      await waitFor(() => {
+        const stored = readProgress()
+        const lesson = stored.content['lesson-1']
+        const interaction = lesson?.interactions?.['calculator-1']
+        expect(interaction?.kind).toBe('salary-calculator')
+        if (interaction?.kind === 'salary-calculator') {
+          expect(interaction.gross).toBe(5000)
+          expect(interaction.userGuess).toBe(3500)
+          expect(interaction.step).toBe('GUESS')
+        }
+      })
+    })
+
+    it('sets status to completed when step is REVEAL', async () => {
+      const { result } = renderHook(
+        () => useSalaryCalculatorInteraction({ contentId: 'lesson-1', calculatorId: 'calculator-1', contentVersion: 'v1' }),
+        { wrapper },
+      )
+
+      await act(async () => {
+        await result.current.save(5000, 3500, 'REVEAL')
+      })
+
+      await waitFor(() => {
+        const stored = readProgress()
+        const lesson = stored.content['lesson-1']
+        expect(lesson?.status).toBe('completed')
+      })
+
+      expect(result.current.isCompleted).toBe(true)
+    })
+
+    it('updates state when changing from GUESS to REVEAL', async () => {
+      const { result } = renderHook(
+        () => useSalaryCalculatorInteraction({ contentId: 'lesson-1', calculatorId: 'calculator-1', contentVersion: 'v1' }),
+        { wrapper },
+      )
+
+      await act(async () => {
+        await result.current.save(5000, 3500, 'GUESS')
+      })
+
+      await act(async () => {
+        await result.current.save(5000, 3700, 'REVEAL')
+      })
+
+      await waitFor(() => {
+        const stored = readProgress()
+        const lesson = stored.content['lesson-1']
+        const interaction = lesson?.interactions?.['calculator-1']
+        expect(interaction?.kind).toBe('salary-calculator')
+        if (interaction?.kind === 'salary-calculator') {
+          expect(interaction.gross).toBe(5000)
+          expect(interaction.userGuess).toBe(3700)
+          expect(interaction.step).toBe('REVEAL')
+          expect(interaction.completedAt).toBeDefined()
+        }
+      })
+    })
+
+    it('clears state on reset', async () => {
+      const now = new Date().toISOString()
+      seedProgress(
+        buildProgress({
+          lastUpdated: now,
+          content: {
+            'lesson-1': {
+              contentId: 'lesson-1',
+              status: 'completed',
+              lastAttemptAt: now,
+              contentVersion: 'v1',
+              interactions: {
+                'calculator-1': {
+                  kind: 'salary-calculator',
+                  gross: 5000,
+                  userGuess: 3500,
+                  step: 'REVEAL',
+                  completedAt: now,
+                },
+              },
+            },
+          },
+        }),
+      )
+
+      const { result } = renderHook(
+        () => useSalaryCalculatorInteraction({ contentId: 'lesson-1', calculatorId: 'calculator-1' }),
+        { wrapper },
+      )
+
+      await waitFor(() => {
+        expect(result.current.savedState).not.toBeNull()
+      })
+
+      await act(async () => {
+        await result.current.reset()
+      })
+
+      await waitFor(() => {
+        expect(result.current.savedState).toBeNull()
+      })
+
+      expect(result.current.isCompleted).toBe(false)
+    })
+
+    it('returns isCompleted true only for REVEAL step', async () => {
+      const now = new Date().toISOString()
+      seedProgress(
+        buildProgress({
+          lastUpdated: now,
+          content: {
+            'lesson-1': {
+              contentId: 'lesson-1',
+              status: 'completed',
+              lastAttemptAt: now,
+              contentVersion: 'v1',
+              interactions: {
+                'calculator-1': {
+                  kind: 'salary-calculator',
+                  gross: 5000,
+                  userGuess: 3500,
+                  step: 'REVEAL',
+                  completedAt: now,
+                },
+              },
+            },
+          },
+        }),
+      )
+
+      const { result } = renderHook(
+        () => useSalaryCalculatorInteraction({ contentId: 'lesson-1', calculatorId: 'calculator-1' }),
+        { wrapper },
+      )
+
+      await waitFor(() => {
+        expect(result.current.isCompleted).toBe(true)
       })
     })
   })

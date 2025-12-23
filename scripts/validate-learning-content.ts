@@ -83,8 +83,6 @@ type OnboardingTreeDefinition = {
 
 type MdxFrontmatter = {
   readonly title?: string
-  readonly 'title.en'?: string
-  readonly 'title.ro'?: string
   readonly durationMinutes?: number
   readonly concept?: string
   readonly objective?: string
@@ -1321,17 +1319,9 @@ const VALIDATION_RULES: readonly ValidationRule[] = [
       for (const [mdxPath, frontmatter] of context.frontmatterByPath.entries()) {
         const relativePath = path.relative(PROJECT_ROOT, mdxPath)
 
-        // Required fields - accept either "title" or "title.en" (with optional "title.ro")
-        const hasTitle = frontmatter.title && typeof frontmatter.title === 'string'
-        const hasTitleEn = frontmatter['title.en'] && typeof frontmatter['title.en'] === 'string'
-
-        if (!hasTitle && !hasTitleEn) {
-          errors.push(`${relativePath}: Missing required frontmatter field "title" or "title.en"`)
-        }
-
-        // Validate title.ro type if present
-        if (frontmatter['title.ro'] !== undefined && typeof frontmatter['title.ro'] !== 'string') {
-          errors.push(`${relativePath}: Frontmatter field "title.ro" must be a string`)
+        // Required fields - title is required (locale determined by file name: index.en.mdx, index.ro.mdx)
+        if (!frontmatter.title || typeof frontmatter.title !== 'string') {
+          errors.push(`${relativePath}: Missing required frontmatter field "title"`)
         }
 
         if (frontmatter.durationMinutes === undefined || typeof frontmatter.durationMinutes !== 'number') {

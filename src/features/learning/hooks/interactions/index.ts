@@ -34,3 +34,10 @@ export {
   type LessonCompletionContext,
   type UseLessonCompletionInput,
 } from './use-lesson-completion'
+
+// Salary calculator interaction
+export {
+  useSalaryCalculatorInteraction,
+  type SalaryCalculatorInteractionContext,
+  type UseSalaryCalculatorInteractionInput,
+} from './use-salary-calculator-interaction'

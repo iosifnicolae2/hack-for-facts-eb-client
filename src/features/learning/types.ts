@@ -54,7 +54,20 @@ export type LearningPredictionInteractionState = {
   readonly reveals: Readonly<Record<string, LearningPredictionReveal>>
 }
 
-export type LearningInteractionState = LearningQuizInteractionState | LearningPredictionInteractionState
+export type LearningSalaryCalculatorStep = 'INPUT' | 'GUESS' | 'REVEAL'
+
+export type LearningSalaryCalculatorInteractionState = {
+  readonly kind: 'salary-calculator'
+  readonly gross: number
+  readonly userGuess: number
+  readonly step: LearningSalaryCalculatorStep
+  readonly completedAt?: string
+}
+
+export type LearningInteractionState =
+  | LearningQuizInteractionState
+  | LearningPredictionInteractionState
+  | LearningSalaryCalculatorInteractionState
 
 export type LearningQuizAnswerAction = {
   readonly type: 'quiz.answer'
@@ -87,11 +100,29 @@ export type LearningPredictionResetAction = {
   readonly interactionId: string
 }
 
+export type LearningSalaryCalculatorSaveAction = {
+  readonly type: 'salaryCalculator.save'
+  readonly contentId: string
+  readonly interactionId: string
+  readonly gross: number
+  readonly userGuess: number
+  readonly step: LearningSalaryCalculatorStep
+  readonly contentVersion?: string
+}
+
+export type LearningSalaryCalculatorResetAction = {
+  readonly type: 'salaryCalculator.reset'
+  readonly contentId: string
+  readonly interactionId: string
+}
+
 export type LearningInteractionAction =
   | LearningQuizAnswerAction
   | LearningQuizResetAction
   | LearningPredictionRevealAction
   | LearningPredictionResetAction
+  | LearningSalaryCalculatorSaveAction
+  | LearningSalaryCalculatorResetAction
 
 export type LearningContentProgress = {
   readonly contentId: string

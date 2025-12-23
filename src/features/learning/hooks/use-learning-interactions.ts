@@ -11,10 +11,13 @@ export {
   useQuizInteraction,
   usePredictionInteraction,
   useLessonCompletion,
+  useSalaryCalculatorInteraction,
   type QuizInteractionContext,
   type UseQuizInteractionInput,
   type PredictionInteractionContext,
   type UsePredictionInteractionInput,
   type LessonCompletionContext,
   type UseLessonCompletionInput,
+  type SalaryCalculatorInteractionContext,
+  type UseSalaryCalculatorInteractionInput,
 } from './interactions'

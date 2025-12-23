@@ -18,9 +18,20 @@ const LearningPredictionInteractionSchema = z.object({
   reveals: z.record(z.string(), LearningPredictionRevealSchema),
 })
 
+const LearningSalaryCalculatorStepSchema = z.enum(['INPUT', 'GUESS', 'REVEAL'])
+
+const LearningSalaryCalculatorInteractionSchema = z.object({
+  kind: z.literal('salary-calculator'),
+  gross: z.number().min(0),
+  userGuess: z.number().min(0),
+  step: LearningSalaryCalculatorStepSchema,
+  completedAt: z.string().datetime().optional(),
+})
+
 const LearningInteractionStateSchema = z.discriminatedUnion('kind', [
   LearningQuizInteractionSchema,
   LearningPredictionInteractionSchema,
+  LearningSalaryCalculatorInteractionSchema,
 ])
 
 const LearningProgressEventBaseSchema = z.object({
