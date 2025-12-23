@@ -17,62 +17,15 @@ The key difference? **It's YOUR money they're spending.** Every lei in the publi
 
 ---
 
-## Interactive Element: Budget Impact Checklist
+## Interactive: Your Invisible Budget Day
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│  💰 YOUR DAILY BUDGET IMPACT                                │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  Every day, public budgets affect you through:              │
-│                                                             │
-│  🏥 Healthcare        → Hospital visits, ambulances         │
-│  🎓 Education         → Schools, universities, libraries    │
-│  🚗 Infrastructure    → Roads, bridges, public transport    │
-│  👮 Security          → Police, firefighters, emergency     │
-│  🌳 Environment       → Parks, waste management, water      │
-│                                                             │
-│  ────────────────────────────────────────────────────────   │
-│                                                             │
-│  Which services did YOU use today?                          │
-│                                                             │
-│  [ ] Drove on public roads                                  │
-│  [ ] Used public transport                                  │
-│  [ ] Visited a public park                                  │
-│  [ ] Benefited from street lighting                         │
-│  [ ] Used tap water / waste services                        │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
+Most people think they only interact with public budgets when they pay taxes. The truth? **You're surrounded by budget-funded services right now** — you just don't see them.
 
-### Component Specification
+Let's make the invisible visible. Tap each activity below to reveal the hidden public infrastructure supporting your day:
 
-```typescript
-interface BudgetImpactChecklistProps {
-  readonly categories: ReadonlyArray<{
-    icon: string
-    name: string
-    examples: string
-    budgetCategory: string // Links to Budget Explorer
-  }>
-  readonly dailyServices: ReadonlyArray<{
-    id: string
-    label: string
-    relatedCategory: string
-  }>
-  readonly onComplete: (selectedServices: string[]) => void
-}
-```
-
-**Behavior:**
-- User checks services they used today
-- Each checked item animates with a subtle highlight
-- Progress indicator shows "X of Y selected"
-- Upon checking 3+ items, display message: "You interact with the public budget every day!"
-- Each category links to Budget Explorer filtered view
+<BudgetFootprintRevealer budgetExplorerUrl="/budget-explorer" />
 
 ---
-
 ## Core Explanation
 
 ### The Social Contract

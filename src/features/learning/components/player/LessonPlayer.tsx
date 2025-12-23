@@ -10,6 +10,7 @@ import type { LearningLocale } from '../../types'
 import { getAdjacentLessons, getLearningPathById, getTranslatedText } from '../../utils/paths'
 import { Quiz, type QuizOption } from '../assessment/Quiz'
 import { MarkComplete } from './MarkComplete'
+import { BudgetFootprintRevealer } from '../interactive/BudgetFootprintRevealer'
 
 type LessonPlayerProps = {
   readonly locale: LearningLocale
@@ -27,6 +28,11 @@ type QuizMdxProps = {
 
 type MarkCompleteMdxProps = {
   readonly label?: string
+}
+
+type BudgetFootprintRevealerMdxProps = {
+  readonly componentId?: string
+  readonly budgetExplorerUrl?: string
 }
 
 export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlayerProps) {
@@ -68,12 +74,20 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
     [lessonId]
   )
 
+  const BudgetFootprintRevealerWrapper = useCallback(
+    (props: BudgetFootprintRevealerMdxProps) => (
+      <BudgetFootprintRevealer {...props} locale={locale} />
+    ),
+    [locale]
+  )
+
   const mdxComponents = useMemo(
     () => ({
       Quiz: QuizWrapper,
       MarkComplete: MarkCompleteWrapper,
+      BudgetFootprintRevealer: BudgetFootprintRevealerWrapper,
     }),
-    [QuizWrapper, MarkCompleteWrapper]
+    [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper]
   )
 
   if (!path || !module || !lesson) {

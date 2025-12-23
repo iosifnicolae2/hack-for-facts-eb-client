@@ -22,27 +22,30 @@ msgstr "{0} adnotări"
 msgid "{0} series configured"
 msgstr "{0} serii configurate"
 
-#: src/features/learning/components/cards/LearningPathCard.tsx:23
+#: src/features/learning/components/cards/LearningPathCard.tsx:200
+#: src/routes/$lang/learning/$pathId/index.tsx:90
 msgid "{hours}h"
 msgstr ""
 
-#: src/features/learning/components/cards/LearningPathCard.tsx:24
+#: src/features/learning/components/cards/LearningPathCard.tsx:201
+#: src/routes/$lang/learning/$pathId/index.tsx:91
 msgid "{hours}h {mins}m"
 msgstr ""
 
-#: src/features/learning/components/cards/LearningPathCard.tsx:15
+#: src/features/learning/components/cards/LearningPathCard.tsx:192
 msgid "{hours}h {mins}m remaining"
 msgstr ""
 
-#: src/features/learning/components/cards/LearningPathCard.tsx:14
+#: src/features/learning/components/cards/LearningPathCard.tsx:191
 msgid "{hours}h remaining"
 msgstr ""
 
-#: src/features/learning/components/cards/LearningPathCard.tsx:20
+#: src/features/learning/components/cards/LearningPathCard.tsx:197
+#: src/routes/$lang/learning/$pathId/index.tsx:87
 msgid "{minutes}m"
 msgstr ""
 
-#: src/features/learning/components/cards/LearningPathCard.tsx:11
+#: src/features/learning/components/cards/LearningPathCard.tsx:188
 msgid "{minutes}m remaining"
 msgstr ""
 
@@ -796,8 +799,8 @@ msgid "August"
 msgstr "August"
 
 #: src/routes/$lang/learning/$pathId/index.tsx:211
-msgid "Authenticated"
-msgstr ""
+#~ msgid "Authenticated"
+#~ msgstr ""
 
 #: src/routes/cookie-policy.lazy.tsx:47
 msgid "Authentication Cookies (essential if you have an account)"
@@ -836,13 +839,18 @@ msgstr "Înapoi la alertă"
 msgid "Back to Configuration"
 msgstr "Înapoi la configurare"
 
+#: src/routes/$lang/learning/$pathId/index.tsx:105
+msgid "Back to Hub"
+msgstr ""
+
 #: src/routes/$lang/learning/certificates.$id.tsx:80
 #: src/routes/certificates.$id.tsx:80
 msgid "Back to learning"
 msgstr ""
 
-#: src/features/learning/components/player/LessonPlayer.tsx:91
-#: src/routes/$lang/learning/$pathId/index.tsx:100
+#: src/features/learning/components/player/LessonPlayer.tsx:105
+#: src/routes/$lang/learning/$pathId/index.tsx:44
+#: src/routes/$lang/learning/$pathId/index.tsx:102
 msgid "Back to Learning Hub"
 msgstr ""
 
@@ -850,7 +858,7 @@ msgstr ""
 msgid "Back to Overview"
 msgstr "Înapoi la sinteză"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:163
+#: src/features/learning/components/player/LessonPlayer.tsx:177
 msgid "Back to path"
 msgstr ""
 
@@ -858,6 +866,10 @@ msgstr ""
 #: src/components/footer/AppFooter.tsx:188
 msgid "Back to top"
 msgstr "Înapoi sus"
+
+#: src/features/learning/components/onboarding/LearningOnboarding.tsx:233
+msgid "Back to welcome"
+msgstr ""
 
 #: src/components/charts/components/backup-restore/ChartsBackupRestore.tsx:181
 msgid "Backup"
@@ -887,6 +899,10 @@ msgstr "Ambele"
 #: src/components/entities/EntityReports.tsx:73
 msgid "Browse and download all financial reports submitted by this entity"
 msgstr "Răsfoiți și descărcați toate rapoartele financiare depuse de această entitate"
+
+#: src/features/learning/components/interactive/BudgetFootprintRevealer.tsx:358
+msgid "Budget category"
+msgstr "Categorie bugetară"
 
 #: src/components/entities/views/Overview.tsx:279
 #: src/components/entities/views/TrendsView.tsx:220
@@ -1064,8 +1080,8 @@ msgid "Choose operator"
 msgstr "Alegeți operatorul"
 
 #: src/routes/$lang/learning/$pathId/index.tsx:451
-msgid "Claim Certificate"
-msgstr ""
+#~ msgid "Claim Certificate"
+#~ msgstr ""
 
 #: src/components/common/classification-info-link.tsx:105
 #: src/components/common/classification-info-link.tsx:150
@@ -1179,10 +1195,10 @@ msgid "Compact"
 msgstr "Compact"
 
 #: src/routes/$lang/learning/$pathId/index.tsx:392
-msgid "Complete at least 60% of lessons to earn your certificate."
-msgstr ""
+#~ msgid "Complete at least 60% of lessons to earn your certificate."
+#~ msgstr ""
 
-#: src/features/learning/components/player/LessonPlayer.tsx:185
+#: src/features/learning/components/player/LessonPlayer.tsx:199
 msgid "Complete path"
 msgstr ""
 
@@ -1191,10 +1207,10 @@ msgstr ""
 #~ msgstr ""
 
 #: src/routes/$lang/learning/$pathId/index.tsx:175
-msgid "Completed!"
-msgstr ""
+#~ msgid "Completed!"
+#~ msgstr ""
 
-#: src/features/learning/components/cards/LearningPathCard.tsx:171
+#: src/features/learning/components/cards/LearningPathCard.tsx:114
 #: src/routes/certificates.$id.tsx:64
 msgid "Completion"
 msgstr ""
@@ -1250,8 +1266,8 @@ msgid "Congratulations!"
 msgstr ""
 
 #: src/routes/$lang/learning/$pathId/index.tsx:391
-msgid "Congratulations! You've completed enough to claim your certificate."
-msgstr ""
+#~ msgid "Congratulations! You've completed enough to claim your certificate."
+#~ msgstr ""
 
 #: src/components/charts/components/views/AnnotationConfigView.tsx:135
 msgid "Connector"
@@ -1281,14 +1297,14 @@ msgstr "Contactează Suportul"
 msgid "Contact us at contact@transparenta.eu See also our <0>Privacy Policy</0> and <1>Cookie Policy</1>."
 msgstr "Contactați-ne la adresa contact@transparenta.eu Consultați și <0>Politica de confidențialitate</0> și <1>Politica privind cookie-urile</1>."
 
-#: src/features/learning/components/cards/LearningPathCard.tsx:74
-#: src/features/learning/components/onboarding/LearningOnboarding.tsx:198
+#: src/features/learning/components/cards/LearningPathCard.tsx:24
+#: src/routes/$lang/learning/$pathId/index.tsx:130
 msgid "Continue"
 msgstr "Continuă"
 
 #: src/routes/$lang/learning/$pathId/index.tsx:196
-msgid "Continue Learning"
-msgstr ""
+#~ msgid "Continue Learning"
+#~ msgstr ""
 
 #: src/features/learning/components/player/MarkComplete.tsx:56
 msgid "Continue to the next lesson to keep learning."
@@ -1420,9 +1436,13 @@ msgstr "Județ"
 msgid "County:"
 msgstr "Județ:"
 
-#: src/routes/$lang/learning/$pathId/index.tsx:221
-msgid "Course Modules"
+#: src/routes/$lang/learning/$pathId/index.tsx:167
+msgid "Course Content"
 msgstr ""
+
+#: src/routes/$lang/learning/$pathId/index.tsx:221
+#~ msgid "Course Modules"
+#~ msgstr ""
 
 #: src/features/learning/components/layout/LearningLayout.tsx:124
 msgid "Course Progress"
@@ -1497,7 +1517,7 @@ msgstr "Serie personalizată"
 msgid "Custom Series Value"
 msgstr "Valoare serie personalizată"
 
-#: src/features/learning/components/cards/LearningPathCard.tsx:231
+#: src/features/learning/components/cards/LearningPathCard.tsx:174
 msgid "Daily Streak"
 msgstr ""
 
@@ -1584,6 +1604,7 @@ msgstr "Vizualizare date"
 msgid "Dates"
 msgstr "Date"
 
+#: src/features/learning/components/interactive/BudgetFootprintRevealer.tsx:457
 #: src/features/learning/utils/streak.ts:124
 msgid "day"
 msgstr "zi"
@@ -1708,8 +1729,9 @@ msgstr "Mod de afișare"
 msgid "Display Options"
 msgstr "Opțiuni de afișare"
 
-#: src/features/learning/components/cards/LearningPathCard.tsx:10
-#: src/features/learning/components/cards/LearningPathCard.tsx:19
+#: src/features/learning/components/cards/LearningPathCard.tsx:187
+#: src/features/learning/components/cards/LearningPathCard.tsx:196
+#: src/routes/$lang/learning/$pathId/index.tsx:86
 msgid "Done"
 msgstr ""
 
@@ -1740,7 +1762,7 @@ msgstr "Duplică seria de date"
 msgid "Duplicate Series"
 msgstr "Duplică seria"
 
-#: src/features/learning/components/cards/LearningPathCard.tsx:215
+#: src/features/learning/components/cards/LearningPathCard.tsx:158
 msgid "Duration"
 msgstr ""
 
@@ -1754,8 +1776,8 @@ msgid "e.g., RON, %, Units..."
 msgstr "ex: RON, %, Unități..."
 
 #: src/routes/$lang/learning/$pathId/index.tsx:381
-msgid "Earn Your Certificate"
-msgstr ""
+#~ msgid "Earn Your Certificate"
+#~ msgstr ""
 
 #: src/features/notifications/components/EntityNotificationBell.tsx:71
 msgid "Easily manage your subscriptions"
@@ -1842,8 +1864,8 @@ msgid "Effective Spending Calculation"
 msgstr "Calculul cheltuielilor efective"
 
 #: src/routes/$lang/learning/$pathId/index.tsx:385
-msgid "Eligible"
-msgstr ""
+#~ msgid "Eligible"
+#~ msgstr ""
 
 #: src/components/footer/ChatFab.tsx:51
 msgid "Email address copied to clipboard!"
@@ -1914,8 +1936,8 @@ msgid "Enter series label..."
 msgstr "Introduceți eticheta seriei..."
 
 #: src/routes/$lang/learning/$pathId/index.tsx:427
-msgid "Enter your name"
-msgstr ""
+#~ msgid "Enter your name"
+#~ msgstr ""
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:687
 #: src/components/charts/components/series-config/SeriesFilter.tsx:864
@@ -2039,7 +2061,7 @@ msgstr "Cookie-uri și Stocare Esențiale (întotdeauna active)"
 msgid "Essential storage is required for the app to work."
 msgstr "Stocarea esențială este necesară pentru funcționarea aplicației."
 
-#: src/features/learning/components/cards/LearningPathCard.tsx:215
+#: src/features/learning/components/cards/LearningPathCard.tsx:158
 msgid "Estimate"
 msgstr ""
 
@@ -2139,12 +2161,12 @@ msgid "Expenses"
 msgstr "Cheltuieli"
 
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:42
-msgid "Experience"
-msgstr ""
+#~ msgid "Experience"
+#~ msgstr ""
 
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:210
-msgid "Experience level?"
-msgstr ""
+#~ msgid "Experience level?"
+#~ msgstr ""
 
 #: src/components/classification-explorer/ClassificationExplorer.tsx:179
 msgid "Explore budget classifications to understand how public spending is organized and categorized"
@@ -2452,7 +2474,7 @@ msgstr "Vizualizare geografică"
 msgid "Get monthly email updates about this institution. Receive alerts when new reports are published, budget changes occur, or important financial data is updated."
 msgstr "Primiți actualizări lunare prin e-mail despre această instituție. Primiți alerte când sunt publicate rapoarte noi, apar modificări bugetare sau sunt actualizate date financiare importante."
 
-#: src/features/learning/components/onboarding/LearningOnboarding.tsx:138
+#: src/features/learning/components/onboarding/LearningOnboarding.tsx:156
 msgid "Get Started"
 msgstr ""
 
@@ -2464,7 +2486,7 @@ msgstr "Primiți actualizări despre"
 msgid "Global Chart Settings"
 msgstr "Setări globale pentru grafic"
 
-#: src/features/learning/components/onboarding/LearningOnboarding.tsx:262
+#: src/features/learning/components/onboarding/LearningOnboarding.tsx:233
 msgid "Go back"
 msgstr ""
 
@@ -2482,7 +2504,7 @@ msgstr "Vezi Grafic"
 msgid "Go to Entity Table"
 msgstr "Vezi Tabel"
 
-#: src/routes/__root.tsx:104
+#: src/routes/__root.tsx:100
 #: src/routes/unsubscribe.$token.tsx:48
 #: src/routes/unsubscribe.$token.tsx:81
 msgid "Go to homepage"
@@ -2502,8 +2524,8 @@ msgid "Go to Map"
 msgstr "Vezi harta"
 
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:42
-msgid "Goal"
-msgstr ""
+#~ msgid "Goal"
+#~ msgstr ""
 
 #: src/components/entities/EntityLineItemsTabs.tsx:97
 msgid "Goods & Services"
@@ -2568,6 +2590,10 @@ msgstr "Ajutați-ne să remediem problemele trimițând rapoarte de erori. Când
 msgid "Help us understand usage to improve the product. No analytics is sent unless you opt in."
 msgstr "Ajutați-ne să înțelegem modul de utilizare pentru a îmbunătăți produsul. Nu se trimit date de analiză decât dacă optați explicit pentru aceasta."
 
+#: src/features/learning/components/interactive/BudgetFootprintRevealer.tsx:338
+msgid "Hidden infrastructure you used"
+msgstr "Infrastructura ascunsă pe care ai folosit-o"
+
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:43
 #: src/components/entity-analytics/EntityAnalyticsTable.tsx:297
 #: src/components/maps/HeatmapDataTable.tsx:143
@@ -2599,28 +2625,28 @@ msgid "How we use your data"
 msgstr "Cum folosim datele dumneavoastră"
 
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:90
-msgid "I know the basics"
-msgstr ""
+#~ msgid "I know the basics"
+#~ msgstr ""
 
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:69
-msgid "I need to find contracts and anomalies"
-msgstr ""
+#~ msgid "I need to find contracts and anomalies"
+#~ msgstr ""
 
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:63
-msgid "I want to see where local money goes"
-msgstr ""
+#~ msgid "I want to see where local money goes"
+#~ msgstr ""
 
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:75
-msgid "I work in public administration"
-msgstr ""
+#~ msgid "I work in public administration"
+#~ msgstr ""
 
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:95
-msgid "I'm a pro"
-msgstr ""
+#~ msgid "I'm a pro"
+#~ msgstr ""
 
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:85
-msgid "I'm new to this"
-msgstr ""
+#~ msgid "I'm new to this"
+#~ msgstr ""
 
 #: src/routes/cookie-policy.lazy.tsx:48
 msgid "If you create an account, Clerk sets the following cookies for authentication and session management:"
@@ -2744,8 +2770,8 @@ msgid "Invalid or expired link"
 msgstr "Link invalid sau expirat"
 
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:67
-msgid "Investigate stories"
-msgstr ""
+#~ msgid "Investigate stories"
+#~ msgstr ""
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:780
 #: src/components/filters/EntityAnalyticsFilter.tsx:573
@@ -2800,7 +2826,7 @@ msgstr "Ultima evaluare"
 msgid "Learn all the keyboard shortcuts available in the application."
 msgstr "Învață toate comenzile rapide de la tastatură disponibile în aplicație."
 
-#: src/features/learning/components/onboarding/LearningOnboarding.tsx:124
+#: src/features/learning/components/onboarding/LearningOnboarding.tsx:142
 msgid "Learn public budgeting."
 msgstr ""
 
@@ -2853,20 +2879,26 @@ msgstr "Mai mic decât"
 msgid "Lesson completed!"
 msgstr ""
 
-#: src/features/learning/components/player/LessonPlayer.tsx:86
+#: src/features/learning/components/player/LessonPlayer.tsx:100
 msgid "Lesson not found"
 msgstr ""
 
 #: src/routes/$lang/learning/$pathId/index.tsx:152
-msgid "lessons"
-msgstr ""
+#~ msgid "lessons"
+#~ msgstr ""
 
-#: src/features/learning/components/cards/LearningPathCard.tsx:187
+#: src/features/learning/components/cards/LearningPathCard.tsx:130
+#: src/routes/$lang/learning/$pathId/index.tsx:158
+#: src/routes/$lang/learning/$pathId/index.tsx:217
 msgid "Lessons"
 msgstr ""
 
 #: src/routes/$lang/learning/$pathId/index.tsx:170
-msgid "lessons completed"
+#~ msgid "lessons completed"
+#~ msgstr ""
+
+#: src/routes/$lang/learning/$pathId/index.tsx:156
+msgid "Lessons Completed"
 msgstr ""
 
 #: src/components/theme/mode-toggle.tsx:27
@@ -2922,7 +2954,7 @@ msgstr "Se încarcă datele..."
 msgid "Loading heatmap data..."
 msgstr "Se încarcă datele pentru harta termică..."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:126
+#: src/features/learning/components/player/LessonPlayer.tsx:140
 msgid "Loading lesson..."
 msgstr ""
 
@@ -2998,8 +3030,8 @@ msgid "Manage all notifications"
 msgstr "Gestionează toate notificările"
 
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:73
-msgid "Manage data"
-msgstr ""
+#~ msgid "Manage data"
+#~ msgstr ""
 
 #: src/features/notifications/components/EntityNotificationBell.tsx:103
 #: src/routes/unsubscribe.$token.tsx:43
@@ -3078,8 +3110,7 @@ msgstr "Poate mai târziu"
 msgid "Metadata"
 msgstr "Metadate"
 
-#: src/routes/$lang/learning/$pathId/index.tsx:156
-#: src/routes/$lang/learning/$pathId/index.tsx:354
+#: src/routes/$lang/learning/$pathId/index.tsx:272
 msgid "min"
 msgstr ""
 
@@ -3087,7 +3118,7 @@ msgstr ""
 msgid "Minimum"
 msgstr "Minim"
 
-#: src/features/learning/hooks/use-learning-progress.tsx:279
+#: src/features/learning/hooks/use-learning-progress.tsx:698
 msgid "Missing content id"
 msgstr ""
 
@@ -3100,6 +3131,10 @@ msgstr "Descriere lipsă"
 #: src/components/entities/EntityLineItemsTabs.tsx:99
 msgid "Missing Items"
 msgstr "Elemente lipsă"
+
+#: src/features/learning/hooks/use-learning-progress.tsx:740
+msgid "Missing path id"
+msgstr ""
 
 #: src/components/classification-explorer/ClassificationChildren.tsx:46
 #: src/components/classification-explorer/ClassificationGrid.tsx:99
@@ -3114,7 +3149,12 @@ msgid "Mnemonic:"
 msgstr "Mnemonic:"
 
 #: src/routes/$lang/learning/$pathId/index.tsx:148
-msgid "modules"
+#~ msgid "modules"
+#~ msgstr ""
+
+#: src/routes/$lang/learning/$pathId/index.tsx:146
+#: src/routes/$lang/learning/$pathId/index.tsx:148
+msgid "Modules"
 msgstr ""
 
 #: src/features/notifications/components/EntityNotificationAnnouncement.tsx:95
@@ -3191,8 +3231,8 @@ msgid "Name"
 msgstr "Nume"
 
 #: src/routes/$lang/learning/$pathId/index.tsx:423
-msgid "Name on certificate"
-msgstr ""
+#~ msgid "Name on certificate"
+#~ msgstr ""
 
 #: src/components/ui/shortcuts.tsx:24
 msgid "Navigate to chart view"
@@ -3235,7 +3275,7 @@ msgstr "Consimțământul și gestionarea buletinului informativ"
 msgid "Newsletters and notifications"
 msgstr "Buletine informative și notificări"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:173
+#: src/features/learning/components/player/LessonPlayer.tsx:187
 msgid "Next"
 msgstr "Următorul"
 
@@ -3583,7 +3623,7 @@ msgstr "Prezentare generală"
 msgid "error.pageRenderErrorTitle"
 msgstr "Eroare la încărcarea paginii"
 
-#: src/routes/__root.tsx:95
+#: src/routes/__root.tsx:91
 msgid "Page not found"
 msgstr "Pagina nu a fost găsită"
 
@@ -3607,15 +3647,15 @@ msgstr "Lipiți date dintr-o foaie de calcul. Fiecare linie trebuie să conțin�
 msgid "Path"
 msgstr ""
 
-#: src/features/learning/components/cards/LearningPathCard.tsx:103
+#: src/features/learning/components/cards/LearningPathCard.tsx:278
 msgid "Path Completed"
 msgstr ""
 
-#: src/routes/$lang/learning/$pathId/index.tsx:97
+#: src/routes/$lang/learning/$pathId/index.tsx:41
 msgid "Path not found"
 msgstr ""
 
-#: src/features/learning/components/cards/LearningPathCard.tsx:149
+#: src/features/learning/components/cards/LearningPathCard.tsx:88
 msgid "Path Progress"
 msgstr ""
 
@@ -3667,7 +3707,7 @@ msgstr "Tip perioadă"
 msgid "Personal Spending"
 msgstr "Cheltuieli de personal"
 
-#: src/features/learning/components/onboarding/LearningOnboarding.tsx:127
+#: src/features/learning/components/onboarding/LearningOnboarding.tsx:145
 msgid "Personalized paths, interactive lessons, and verified certificates."
 msgstr ""
 
@@ -3712,7 +3752,7 @@ msgstr "Se pregătește linkul de partajare..."
 msgid "Preview"
 msgstr "Previzualizare"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:151
+#: src/features/learning/components/player/LessonPlayer.tsx:165
 msgid "Previous"
 msgstr "Anterior"
 
@@ -3742,8 +3782,8 @@ msgid "Product"
 msgstr "Produs"
 
 #: src/routes/$lang/learning/$pathId/index.tsx:402
-msgid "Progress to eligibility"
-msgstr ""
+#~ msgid "Progress to eligibility"
+#~ msgstr ""
 
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:158
 msgid "Public institutions often transfer funds between each other (e.g., from the state budget to local budgets). These transfers can double-count spending if not filtered."
@@ -3935,7 +3975,7 @@ msgstr "Anulează modificările"
 msgid "Review and manage alerts created from your custom data series."
 msgstr "Examinați și gestionați alertele create din seriile de date personalizate."
 
-#: src/routes/$lang/learning/$pathId/index.tsx:191
+#: src/routes/$lang/learning/$pathId/index.tsx:125
 #: src/routes/$lang/learning/index.tsx:220
 msgid "Review Path"
 msgstr ""
@@ -4311,8 +4351,8 @@ msgid "Sign in required"
 msgstr "Autentificare necesară"
 
 #: src/routes/$lang/learning/$pathId/index.tsx:468
-msgid "Sign in to claim your certificate."
-msgstr ""
+#~ msgid "Sign in to claim your certificate."
+#~ msgstr ""
 
 #: src/routes/alerts/$alertId/index.lazy.tsx:157
 #: src/routes/alerts/new.lazy.tsx:146
@@ -4383,12 +4423,17 @@ msgstr "Clauze Contractuale Standard (CCS) aprobate de Comisia Europeană"
 #~ msgid "Start"
 #~ msgstr ""
 
-#: src/features/learning/components/onboarding/LearningOnboarding.tsx:255
-#: src/routes/$lang/learning/$pathId/index.tsx:201
+#: src/features/learning/components/onboarding/LearningOnboarding.tsx:128
+#: src/routes/$lang/learning/$pathId/index.tsx:135
 msgid "Start Learning"
 msgstr "Începe studiul"
 
-#: src/features/learning/components/cards/LearningPathCard.tsx:74
+#: src/features/learning/components/interactive/BudgetFootprintRevealer.tsx:443
+#: src/features/learning/components/onboarding/LearningOnboarding.tsx:278
+msgid "Start over"
+msgstr "Începe din nou"
+
+#: src/features/learning/components/cards/LearningPathCard.tsx:24
 msgid "Start Path"
 msgstr ""
 
@@ -4417,8 +4462,8 @@ msgid "Stay here"
 msgstr "Rămâi aici"
 
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:39
-msgid "Step {currentStepIndex}/{totalSteps}"
-msgstr ""
+#~ msgid "Step {currentStepIndex}/{totalSteps}"
+#~ msgstr ""
 
 #: src/components/charts/components/views/SeriesConfigView.tsx:316
 msgid "Strip this prefix from x-axis labels for this series (e.g., 2024-). Helps align yearly and monthly data on a common axis."
@@ -4481,6 +4526,10 @@ msgstr "Sistem"
 msgid "Table"
 msgstr "Tabel"
 
+#: src/features/learning/components/interactive/BudgetFootprintRevealer.tsx:318
+msgid "Tap"
+msgstr "Apasă"
+
 #: src/components/budget-explorer/RevenueBreakdown.tsx:212
 msgid "Tax deductions outside inter-budget transfers"
 msgstr "Deduceri fiscale în afara transferurilor inter-bugetare"
@@ -4509,15 +4558,19 @@ msgstr "Eroare de test"
 msgid "The classification code \"{selectedCode}\" could not be found."
 msgstr "Codul de clasificare „{selectedCode}” nu a putut fi găsit."
 
-#: src/routes/$lang/learning/$pathId/index.tsx:98
+#: src/routes/$lang/learning/$pathId/index.tsx:42
+msgid "The learning path you're looking for doesn't exist or has been moved."
+msgstr ""
+
+#: src/features/learning/components/onboarding/LearningOnboarding.tsx:260
 msgid "The learning path you're looking for doesn't exist."
 msgstr ""
 
-#: src/features/learning/components/player/LessonPlayer.tsx:88
+#: src/features/learning/components/player/LessonPlayer.tsx:102
 msgid "The lesson you're looking for doesn't exist or may have been moved."
 msgstr ""
 
-#: src/routes/__root.tsx:98
+#: src/routes/__root.tsx:94
 msgid "The page you are looking for doesn't exist or has been moved."
 msgstr "Pagina pe care o căutați nu există sau a fost mutată."
 
@@ -4719,6 +4772,10 @@ msgstr "Sumă totală"
 msgid "Total Amount"
 msgstr "Sumă totală"
 
+#: src/routes/$lang/learning/$pathId/index.tsx:151
+msgid "Total Duration"
+msgstr ""
+
 #: src/components/entities/EntityFinancialSummary.tsx:82
 msgid "Total Expenses"
 msgstr "Total Cheltuieli"
@@ -4821,8 +4878,8 @@ msgid "UATs"
 msgstr "UAT-uri"
 
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:61
-msgid "Understand my taxes"
-msgstr ""
+#~ msgid "Understand my taxes"
+#~ msgstr ""
 
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:57
 #: src/components/budget-explorer/SpendingBreakdown.tsx:48
@@ -4949,7 +5006,6 @@ msgstr ""
 
 #: src/components/filters/EntityAnalyticsFilter.tsx:427
 #: src/components/maps/HeatmapDataTable.tsx:438
-#: src/routes/$lang/learning/$pathId/index.tsx:457
 #: src/routes/entity-analytics.lazy.tsx:220
 msgid "View"
 msgstr "Vizualizare"
@@ -4978,7 +5034,7 @@ msgid "View Chart"
 msgstr "Vezi graficul"
 
 #: src/components/budget-explorer/BudgetTreemap.tsx:611
-#: src/features/learning/components/cards/LearningPathCard.tsx:136
+#: src/features/learning/components/cards/LearningPathCard.tsx:75
 msgid "View Details"
 msgstr "Vezi detalii"
 
@@ -5035,6 +5091,10 @@ msgstr "Folosim cookie-uri și tehnologii similare pentru a vă îmbunătăți e
 msgid "We value your privacy"
 msgstr "Confidențialitatea dumneavoastră este importantă pentru noi"
 
+#: src/features/learning/components/onboarding/LearningOnboarding.tsx:123
+msgid "We'll start with the path that matches your goal and choices."
+msgstr ""
+
 #: src/routes/$lang/learning/index.tsx:157
 msgid "Welcome back."
 msgstr ""
@@ -5044,8 +5104,8 @@ msgid "What personal data we collect"
 msgstr "Ce date personale colectăm"
 
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:152
-msgid "What's your goal?"
-msgstr ""
+#~ msgid "What's your goal?"
+#~ msgstr ""
 
 #: src/routes/privacy.lazy.tsx:32
 msgid "Who we are"
@@ -5153,6 +5213,14 @@ msgstr ""
 
 #: src/features/learning/components/player/MarkComplete.tsx:51
 msgid "You've completed this lesson"
+msgstr ""
+
+#: src/features/learning/components/interactive/BudgetFootprintRevealer.tsx:450
+msgid "Your daily budget footprint"
+msgstr "Amprenta ta bugetară zilnică"
+
+#: src/features/learning/components/onboarding/LearningOnboarding.tsx:118
+msgid "Your path is ready"
 msgstr ""
 
 #: src/routes/privacy.lazy.tsx:110
