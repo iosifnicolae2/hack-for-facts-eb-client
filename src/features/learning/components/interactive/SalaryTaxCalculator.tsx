@@ -1,5 +1,7 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { motion, AnimatePresence, useSpring, useTransform, Variants } from 'framer-motion'
+import { t } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 import { ArrowRight, Calculator, Check, RefreshCcw, TrendingDown, Wallet, Stethoscope, Landmark, ShieldCheck } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -220,17 +222,17 @@ export function SalaryTaxCalculator({ contentId, calculatorId, contentVersion }:
                     <Calculator className="w-10 h-10" />
                   </motion.div>
                   <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-zinc-900 dark:text-white mt-6 leading-[0.95]">
-                    What's your <span className="text-indigo-600 dark:text-indigo-400 italic">gross</span> salary?
+                    <Trans>What's your <span className="text-indigo-600 dark:text-indigo-400 italic">gross</span> salary?</Trans>
                   </h2>
                   <p className="text-xl text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed">
-                    Ever wondered where your money actually goes?
-                    <br className="hidden md:block" /> Start by entering your monthly Gross (Brut) income.
+                    {t`Ever wondered where your money actually goes?`}
+                    <br className="hidden md:block" /> {t`Start by entering your monthly Gross (Brut) income.`}
                   </p>
                 </div>
 
                 <div className="w-full max-w-md space-y-6">
                   <div className="relative flex items-center group transition-all duration-500">
-                    <span className="absolute left-8 text-indigo-300 dark:text-indigo-800 font-black text-2xl pointer-events-none group-focus-within:text-indigo-500 transition-colors">RON</span>
+                    <span className="absolute left-8 text-indigo-300 dark:text-indigo-800 font-black text-2xl pointer-events-none group-focus-within:text-indigo-500 transition-colors">{t`RON`}</span>
                     <Input
                       type="number"
                       value={grossInput}
@@ -244,7 +246,7 @@ export function SalaryTaxCalculator({ contentId, calculatorId, contentVersion }:
                     className="w-full h-20 rounded-[1.8rem] text-2xl font-black bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 hover:bg-black dark:hover:bg-zinc-100 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl"
                     disabled={gross <= 0}
                   >
-                    Start Analysis <ArrowRight className="ml-2 w-7 h-7" />
+                    {t`Start Analysis`} <ArrowRight className="ml-2 w-7 h-7" />
                   </Button>
                 </div>
               </div>
@@ -268,12 +270,12 @@ export function SalaryTaxCalculator({ contentId, calculatorId, contentVersion }:
             <Card className="p-10 md:p-20 rounded-[3.5rem] bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white shadow-3xl overflow-hidden relative border-none transition-colors duration-500">
               <div className="relative z-10 flex flex-col items-center text-center space-y-14">
                 <div className="space-y-6">
-                  <div className="text-zinc-400 dark:text-zinc-500 text-sm font-black uppercase tracking-[0.3em]">Phase 02</div>
+                  <div className="text-zinc-400 dark:text-zinc-500 text-sm font-black uppercase tracking-[0.3em]">{t`Phase 02`}</div>
                   <h2 className="text-4xl md:text-6xl font-black tracking-tight leading-none text-zinc-900 dark:text-zinc-100 mt-6">
-                    How much stays <br /><span className="text-emerald-500 dark:text-emerald-400">in your wallet?</span>
+                    <Trans>How much stays <br /><span className="text-emerald-500 dark:text-emerald-400">in your wallet?</span></Trans>
                   </h2>
                   <p className="text-xl text-zinc-500 dark:text-zinc-400 font-medium max-w-sm mx-auto leading-relaxed">
-                    If you earn <strong>{formatCurrency(gross)}</strong> brut, drag the slider to your expected net home pay.
+                    <Trans>If you earn <strong>{formatCurrency(gross)}</strong> gross, drag the slider to your expected net home pay.</Trans>
                   </p>
                 </div>
 
@@ -283,7 +285,7 @@ export function SalaryTaxCalculator({ contentId, calculatorId, contentVersion }:
                       <span className="text-7xl md:text-8xl font-black tracking-tighter text-emerald-500 dark:text-emerald-400 transition-all">
                         <AnimatedNumber value={userGuess} />
                       </span>
-                      <div className="mt-2 text-xs font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-600 block">YOUR PREDICTION</div>
+                      <div className="mt-2 text-xs font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-600 block">{t`YOUR PREDICTION`}</div>
                     </div>
 
                     <div className="px-4">
@@ -300,8 +302,8 @@ export function SalaryTaxCalculator({ contentId, calculatorId, contentVersion }:
                     </div>
 
                     <div className="flex justify-between text-[11px] font-black text-zinc-300 dark:text-zinc-700 uppercase tracking-widest px-2">
-                      <span>Minimum Pay</span>
-                      <span className="text-zinc-500 dark:text-zinc-500">Gross: {formatCurrency(gross)}</span>
+                      <span>{t`Minimum Pay`}</span>
+                      <span className="text-zinc-500 dark:text-zinc-500">{t`Gross`}: {formatCurrency(gross)}</span>
                     </div>
                   </div>
 
@@ -309,7 +311,7 @@ export function SalaryTaxCalculator({ contentId, calculatorId, contentVersion }:
                     onClick={handleReveal}
                     className="w-full h-24 rounded-[2rem] text-2xl font-black bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 hover:bg-black dark:hover:bg-zinc-100 hover:scale-[1.03] active:scale-[0.97] transition-all shadow-xl group"
                   >
-                    Lock In Prediction <Check className="ml-3 w-8 h-8 group-hover:scale-110 transition-transform" />
+                    {t`Lock In Prediction`} <Check className="ml-3 w-8 h-8 group-hover:scale-110 transition-transform" />
                   </Button>
                 </div>
               </div>
@@ -340,9 +342,9 @@ export function SalaryTaxCalculator({ contentId, calculatorId, contentVersion }:
                     className="inline-flex flex-col items-center mb-6"
                   >
                     <div className="px-5 py-1.5 rounded-full bg-zinc-200/40 dark:bg-zinc-800/40 backdrop-blur-md text-[10px] font-black text-zinc-500 dark:text-zinc-400 uppercase tracking-[0.2em] border border-zinc-300/20 dark:border-zinc-700/20 my-2">
-                      Your guess: {formatCurrency(userGuess)}
+                      {t`Your guess`}: {formatCurrency(userGuess)}
                     </div>
-                    <div className="text-[10px] font-bold text-zinc-400 uppercase tracking-[0.2em]">Net Monthly Income</div>
+                    <div className="text-sm font-extrabold text-zinc-800 uppercase tracking-[0.2em]">{t`Net Monthly Income`}</div>
                   </motion.div>
 
                   <h2 className="text-[4.5rem] md:text-[6rem] font-[1000] text-zinc-950 dark:text-white tracking-[-0.04em] mb-6 mt-6 leading-none drop-shadow-sm">
@@ -351,10 +353,10 @@ export function SalaryTaxCalculator({ contentId, calculatorId, contentVersion }:
 
                   <div className="flex flex-wrap justify-center gap-2.5">
                     <InsightPill className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 py-2">
-                      <Wallet className="w-3.5 h-3.5" /> This is yours
+                      <Wallet className="w-3.5 h-3.5" /> {t`This is yours`}
                     </InsightPill>
                     <InsightPill className="bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20 py-2">
-                      <TrendingDown className="w-3.5 h-3.5" /> State takes {Math.round((result.gross - result.net) / result.gross * 100)}%
+                      <TrendingDown className="w-3.5 h-3.5" /> {t`State takes ${Math.round((result.gross - result.net) / result.gross * 100)}%`}
                     </InsightPill>
                   </div>
                 </div>
@@ -370,15 +372,15 @@ export function SalaryTaxCalculator({ contentId, calculatorId, contentVersion }:
                 {/* Single Breakdown Block */}
                 <div className="rounded-[2.5rem] border border-zinc-100 dark:border-zinc-800/60 overflow-hidden bg-zinc-50/30 dark:bg-zinc-950/30">
                   <RowBreakdown
-                    label="Monthly Gross Income"
+                    label={t`Monthly Gross Income`}
                     value={formatCurrency(result.gross)}
-                    calculation="Base Amount (100%)"
+                    calculation={t`Base Amount (100%)`}
                     icon={Landmark}
                     colorClass="text-zinc-600 dark:text-zinc-400"
                   />
 
                   <RowBreakdown
-                    label="Pension (CAS)"
+                    label={t`Pension (CAS)`}
                     value={`-${formatCurrency(result.cas)}`}
                     calculation={`${formatCurrency(result.gross)} × 25%`}
                     icon={ShieldCheck}
@@ -387,7 +389,7 @@ export function SalaryTaxCalculator({ contentId, calculatorId, contentVersion }:
                   />
 
                   <RowBreakdown
-                    label="Health (CASS)"
+                    label={t`Health (CASS)`}
                     value={`-${formatCurrency(result.cass)}`}
                     calculation={`${formatCurrency(result.gross)} × 10%`}
                     icon={Stethoscope}
@@ -396,9 +398,9 @@ export function SalaryTaxCalculator({ contentId, calculatorId, contentVersion }:
                   />
 
                   <RowBreakdown
-                    label="Income Tax"
+                    label={t`Income Tax`}
                     value={`-${formatCurrency(result.incomeTax)}`}
-                    calculation={`(${formatCurrency(result.gross)} - deductions) × 10%`}
+                    calculation={t`(${formatCurrency(result.gross)} - deductions) × 10%`}
                     icon={TrendingDown}
                     colorClass="text-rose-600 dark:text-rose-400"
                     delay={0.3}
@@ -411,10 +413,10 @@ export function SalaryTaxCalculator({ contentId, calculatorId, contentVersion }:
                   <div className="w-full rounded-[2.5rem] bg-zinc-900 dark:bg-zinc-800/50 text-zinc-400 p-10 flex flex-col items-center text-center gap-8 relative overflow-hidden transition-all hover:bg-zinc-950 dark:hover:bg-zinc-800">
                     <div className="relative z-10 flex flex-col items-center gap-4">
                       <div className="space-y-2">
-                        <h4 className="font-black text-white text-xl tracking-tight uppercase tracking-[0.2em] text-[10px] opacity-50">Labor Cost Summary</h4>
+                        <h4 className="font-black text-white text-xl tracking-tight uppercase tracking-[0.2em] text-[10px] opacity-50">{t`Labor Cost Summary`}</h4>
                         <p className="text-lg leading-relaxed font-medium max-w-sm">
-                          Your employer actually spends <span className="text-white font-black">{formatCurrency(result.employerTotal)}</span>.
-                          <br /> The state total claim is <span className="text-indigo-400 font-black tracking-tighter">{formatCurrency(result.employerTotal - result.net)}</span>.
+                          <Trans>Your employer actually spends <span className="text-white font-black">{formatCurrency(result.employerTotal)}</span>.</Trans>
+                          <br /> <Trans>The state total claim is <span className="text-indigo-400 font-black tracking-tighter">{formatCurrency(result.employerTotal - result.net)}</span>.</Trans>
                         </p>
                       </div>
                     </div>
@@ -423,7 +425,7 @@ export function SalaryTaxCalculator({ contentId, calculatorId, contentVersion }:
                       onClick={handleReset}
                       className="relative z-10 h-14 px-8 rounded-2xl bg-white text-zinc-950 hover:bg-zinc-100 transition-all font-black uppercase tracking-[0.2em] text-[10px]"
                     >
-                      <RefreshCcw className="w-3.5 h-3.5 mr-2.5" /> Start Over
+                      <RefreshCcw className="w-3.5 h-3.5 mr-2.5" /> {t`Start Over`}
                     </Button>
 
                     {/* Atmospheric effects */}

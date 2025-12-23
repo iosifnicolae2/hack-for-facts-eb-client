@@ -12,6 +12,11 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. placeholder {0}: formatCurrency(result.gross)
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:403
+msgid "({0} - deductions) × 10%"
+msgstr "({0} - deductions) × 10%"
+
 #. placeholder {0}: chart.annotations.length
 #: src/components/charts/components/chart-annotations/AnnotationsList.tsx:61
 msgid "{0} annotations"
@@ -848,7 +853,7 @@ msgstr "Back to Hub"
 msgid "Back to learning"
 msgstr "Back to learning"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:126
+#: src/features/learning/components/player/LessonPlayer.tsx:142
 #: src/routes/$lang/learning/$pathId/index.tsx:44
 #: src/routes/$lang/learning/$pathId/index.tsx:102
 msgid "Back to Learning Hub"
@@ -858,7 +863,7 @@ msgstr "Back to Learning Hub"
 msgid "Back to Overview"
 msgstr "Back to Overview"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:198
+#: src/features/learning/components/player/LessonPlayer.tsx:214
 msgid "Back to path"
 msgstr "Back to path"
 
@@ -886,6 +891,10 @@ msgstr "Bar Chart"
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:51
 msgid "Bar Chart (Aggregated)"
 msgstr "Bar Chart (Aggregated)"
+
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:377
+msgid "Base Amount (100%)"
+msgstr "Base Amount (100%)"
 
 #: src/routes/privacy.lazy.tsx:27
 msgid "Basic security logs are kept for a short period to protect accounts."
@@ -1198,7 +1207,7 @@ msgstr "Comfortable"
 msgid "Compact"
 msgstr "Compact"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:220
+#: src/features/learning/components/player/LessonPlayer.tsx:236
 msgid "Complete path"
 msgstr "Complete path"
 
@@ -1370,10 +1379,6 @@ msgstr "Copy Support Email"
 #: src/features/learning/components/assessment/Quiz.tsx:159
 msgid "Correct"
 msgstr "Correct"
-
-#: src/features/learning/components/assessment/Quiz.tsx:138
-#~ msgid "Correct answer"
-#~ msgstr "Correct answer"
 
 #: src/components/filters/budget-sector-filter/BudgetSectorFilter.tsx:75
 msgid "Could Not Load Budget Sectors"
@@ -2054,13 +2059,13 @@ msgstr "EU Co-financed Projects"
 msgid "EUR"
 msgstr "EUR"
 
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:228
+msgid "Ever wondered where your money actually goes?"
+msgstr "Ever wondered where your money actually goes?"
+
 #: src/components/charts/components/views/SeriesConfigView.tsx:325
 msgid "Example: 2024-"
 msgstr "Example: 2024-"
-
-#: src/features/learning/components/assessment/Quiz.tsx:173
-#~ msgid "Excellent work!"
-#~ msgstr "Excellent work!"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:864
 #: src/components/charts/components/series-config/SeriesFilter.tsx:873
@@ -2540,6 +2545,10 @@ msgstr "Greater than"
 msgid "Grid view"
 msgstr "Grid view"
 
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:306
+msgid "Gross"
+msgstr "Gross"
+
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:98
 #: src/routes/budget-explorer.lazy.tsx:473
 msgid "Grouping"
@@ -2548,6 +2557,10 @@ msgstr "Grouping"
 #: src/routes/share.$code.tsx:56
 msgid "Hang tight while we resolve and redirect you to the destination."
 msgstr "Hang tight while we resolve and redirect you to the destination."
+
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:392
+msgid "Health (CASS)"
+msgstr "Health (CASS)"
 
 #. placeholder {0}: typeof window !== 'undefined' ? window.location.href : 'N/A'
 #: src/components/footer/ChatFab.tsx:43
@@ -2598,6 +2611,10 @@ msgstr "Hide details"
 msgid "Home"
 msgstr "Home"
 
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:275
+msgid "How much stays <0/><1>in your wallet?</1>"
+msgstr "How much stays <0/><1>in your wallet?</1>"
+
 #: src/components/budget-explorer/RevenueBreakdown.tsx:100
 msgid "How we compute true consolidated revenues (excluding inter-budget flows and financial operations)"
 msgstr "How we compute true consolidated revenues (excluding inter-budget flows and financial operations)"
@@ -2609,6 +2626,11 @@ msgstr "How we use your data"
 #: src/routes/cookie-policy.lazy.tsx:48
 msgid "If you create an account, Clerk sets the following cookies for authentication and session management:"
 msgstr "If you create an account, Clerk sets the following cookies for authentication and session management:"
+
+#. placeholder {0}: formatCurrency(gross)
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:278
+msgid "If you earn <0>{0}</0> gross, drag the slider to your expected net home pay."
+msgstr "If you earn <0>{0}</0> gross, drag the slider to your expected net home pay."
 
 #: src/routes/cookies.lazy.tsx:95
 msgid "If you sign in, authentication cookies (Clerk) are essential to manage your session. Deleting them will sign you out."
@@ -2643,6 +2665,10 @@ msgstr "Income"
 #: src/components/entities/EntityFinancialSummary.tsx:83
 msgid "Income - Expenses"
 msgstr "Income - Expenses"
+
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:401
+msgid "Income Tax"
+msgstr "Income Tax"
 
 #: src/hooks/useEntityViews.tsx:22
 msgid "Income Trends"
@@ -2772,6 +2798,10 @@ msgstr "Keyboard Shortcuts"
 msgid "Label"
 msgstr "Label"
 
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:416
+msgid "Labor Cost Summary"
+msgstr "Labor Cost Summary"
+
 #: src/components/theme/language-toggle.tsx:31
 msgid "Language"
 msgstr "Language"
@@ -2837,7 +2867,7 @@ msgstr "Less than"
 msgid "Lesson completed!"
 msgstr "Lesson completed!"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:121
+#: src/features/learning/components/player/LessonPlayer.tsx:137
 msgid "Lesson not found"
 msgstr "Lesson not found"
 
@@ -2904,7 +2934,7 @@ msgstr "Loading data..."
 msgid "Loading heatmap data..."
 msgstr "Loading heatmap data..."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:161
+#: src/features/learning/components/player/LessonPlayer.tsx:177
 msgid "Loading lesson..."
 msgstr "Loading lesson..."
 
@@ -2942,6 +2972,10 @@ msgstr "Local-first: charts and preferences are stored in your browser."
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:42
 msgid "Lock annotation"
 msgstr "Lock annotation"
+
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:314
+msgid "Lock In Prediction"
+msgstr "Lock In Prediction"
 
 #: src/components/charts/components/views/AnnotationConfigView.tsx:131
 msgid "Locked"
@@ -3068,7 +3102,11 @@ msgstr "min"
 msgid "Minimum"
 msgstr "Minimum"
 
-#: src/features/learning/hooks/use-learning-progress.tsx:653
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:305
+msgid "Minimum Pay"
+msgstr "Minimum Pay"
+
+#: src/features/learning/hooks/use-learning-progress.tsx:654
 msgid "Missing content id"
 msgstr "Missing content id"
 
@@ -3082,7 +3120,7 @@ msgstr "Missing description"
 msgid "Missing Items"
 msgstr "Missing Items"
 
-#: src/features/learning/hooks/use-learning-progress.tsx:696
+#: src/features/learning/hooks/use-learning-progress.tsx:697
 msgid "Missing path id"
 msgstr "Missing path id"
 
@@ -3116,6 +3154,10 @@ msgstr "Month"
 #: src/components/filters/period-filter/PeriodFilter.tsx:243
 msgid "Monthly"
 msgstr "Monthly"
+
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:375
+msgid "Monthly Gross Income"
+msgstr "Monthly Gross Income"
 
 #: src/components/alerts/components/AlertEditorView.tsx:204
 msgid "Monthly monitoring"
@@ -3196,6 +3238,10 @@ msgstr "Navigation"
 msgid "Need help?"
 msgstr "Need help?"
 
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:347
+msgid "Net Monthly Income"
+msgstr "Net Monthly Income"
+
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:107
 msgid "New value"
 msgstr "New value"
@@ -3217,7 +3263,7 @@ msgstr "Newsletter consent and management"
 msgid "Newsletters and notifications"
 msgstr "Newsletters and notifications"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:208
+#: src/features/learning/components/player/LessonPlayer.tsx:224
 msgid "Next"
 msgstr "Next"
 
@@ -3413,10 +3459,6 @@ msgstr "Non-direct spending"
 msgid "Normalization"
 msgstr "Normalization"
 
-#: src/features/learning/components/assessment/Quiz.tsx:173
-#~ msgid "Not quite right"
-#~ msgstr "Not quite right"
-
 #: src/routes/cookie-policy.lazy.tsx:78
 msgid "Note: Deleting authentication cookies will sign you out of your account. Deleting essential localStorage will reset your saved charts and preferences."
 msgstr "Note: Deleting authentication cookies will sign you out of your account. Deleting essential localStorage will reset your saved charts and preferences."
@@ -3606,6 +3648,10 @@ msgstr "Path Progress"
 msgid "Paused"
 msgstr "Paused"
 
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:383
+msgid "Pension (CAS)"
+msgstr "Pension (CAS)"
+
 #: src/components/charts/components/series-config/SeriesFilter.tsx:812
 msgid "people"
 msgstr "people"
@@ -3661,9 +3707,9 @@ msgstr "Personnel Costs (Salaries)"
 msgid "Personnel costs grew 24% year-over-year, goods & services increased 21% — both exceeding initial allocations. Meanwhile, only 30% of EU project funds and 55% of investment budgets were used. Result: a record 8.65% GDP deficit (152B RON vs. planned 86.6B RON)."
 msgstr "Personnel costs grew 24% year-over-year, goods & services increased 21% — both exceeding initial allocations. Meanwhile, only 30% of EU project funds and 55% of investment budgets were used. Result: a record 8.65% GDP deficit (152B RON vs. planned 86.6B RON)."
 
-#: src/features/learning/components/interactive/PromiseTracker.tsx:311
-#~ msgid "Personnel costs grew 24% year-over-year, goods & services increased 21% — both exceeding initial allocations. Meanwhile, only 34% of EU project funds and 55% of investment budgets were used. Result: a record 8.65% GDP deficit (152B RON vs. planned 87B RON)."
-#~ msgstr "Personnel costs grew 24% year-over-year, goods & services increased 21% — both exceeding initial allocations. Meanwhile, only 34% of EU project funds and 55% of investment budgets were used. Result: a record 8.65% GDP deficit (152B RON vs. planned 87B RON)."
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:273
+msgid "Phase 02"
+msgstr "Phase 02"
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:52
 msgid "Pie Chart (Aggregated)"
@@ -3710,7 +3756,7 @@ msgstr "Preparing your share link..."
 msgid "Preview"
 msgstr "Preview"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:186
+#: src/features/learning/components/player/LessonPlayer.tsx:202
 msgid "Previous"
 msgstr "Previous"
 
@@ -3780,10 +3826,6 @@ msgstr "Quite a difference..."
 #: src/features/learning/components/assessment/Quiz.tsx:53
 msgid "Quiz configuration error"
 msgstr "Quiz configuration error"
-
-#: src/features/learning/components/assessment/Quiz.tsx:53
-#~ msgid "Quiz error: No options provided"
-#~ msgstr "Quiz error: No options provided"
 
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:154
 msgid "Range"
@@ -3955,10 +3997,6 @@ msgid "Review Path"
 msgstr "Review Path"
 
 #: src/features/learning/components/interactive/PromiseTracker.tsx:303
-#~ msgid "Romania runs a deficit AND underspends on investments. How? Money gets redirected: salaries and social transfers often exceed initial plans (100%+), while infrastructure and EU projects lag behind (50-60%). The overspending on recurring costs outweighs the underspending on investments."
-#~ msgstr "Romania runs a deficit AND underspends on investments. How? Money gets redirected: salaries and social transfers often exceed initial plans (100%+), while infrastructure and EU projects lag behind (50-60%). The overspending on recurring costs outweighs the underspending on investments."
-
-#: src/features/learning/components/interactive/PromiseTracker.tsx:303
 msgid "Romania runs a deficit AND underspends on investments. How? Money gets redirected: salaries and social transfers often exceed initial plans (100%+), while infrastructure lags at 55-60% and EU projects at just 30-35%. The overspending on recurring costs outweighs the underspending on investments."
 msgstr "Romania runs a deficit AND underspends on investments. How? Money gets redirected: salaries and social transfers often exceed initial plans (100%+), while infrastructure lags at 55-60% and EU projects at just 30-35%. The overspending on recurring costs outweighs the underspending on investments."
 
@@ -3972,6 +4010,7 @@ msgstr "Romanian law and applicable EU law, including GDPR. Venue: Sibiu, Romani
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:622
 #: src/components/theme/currency-toggle.tsx:29
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:235
 msgid "RON"
 msgstr "RON"
 
@@ -4405,6 +4444,14 @@ msgstr "Standard"
 msgid "Standard Contractual Clauses (SCCs) approved by the European Commission"
 msgstr "Standard Contractual Clauses (SCCs) approved by the European Commission"
 
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:249
+msgid "Start Analysis"
+msgstr "Start Analysis"
+
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:229
+msgid "Start by entering your monthly Gross (Brut) income."
+msgstr "Start by entering your monthly Gross (Brut) income."
+
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:128
 #: src/routes/$lang/learning/$pathId/index.tsx:135
 msgid "Start Learning"
@@ -4416,6 +4463,10 @@ msgstr "Start Learning"
 msgid "Start over"
 msgstr "Start over"
 
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:428
+msgid "Start Over"
+msgstr "Start Over"
+
 #: src/features/learning/components/cards/LearningPathCard.tsx:24
 msgid "Start Path"
 msgstr "Start Path"
@@ -4423,6 +4474,11 @@ msgstr "Start Path"
 #: src/routes/$lang/learning/index.tsx:162
 msgid "Start your first lesson and track your progress."
 msgstr "Start your first lesson and track your progress."
+
+#. placeholder {0}: Math.round((result.gross - result.net) / result.gross * 100)
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:359
+msgid "State takes {0}%"
+msgstr "State takes {0}%"
 
 #: src/components/alerts/components/AlertEditorView.tsx:187
 msgid "Static dataset"
@@ -4541,7 +4597,7 @@ msgstr "The learning path you're looking for doesn't exist or has been moved."
 msgid "The learning path you're looking for doesn't exist."
 msgstr "The learning path you're looking for doesn't exist."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:123
+#: src/features/learning/components/player/LessonPlayer.tsx:139
 msgid "The lesson you're looking for doesn't exist or may have been moved."
 msgstr "The lesson you're looking for doesn't exist or may have been moved."
 
@@ -4568,6 +4624,11 @@ msgstr "The share link you are trying to access is invalid or no longer availabl
 #: src/features/learning/components/interactive/PromiseTracker.tsx:300
 msgid "The Spending Redirection Pattern"
 msgstr "The Spending Redirection Pattern"
+
+#. placeholder {0}: formatCurrency(result.employerTotal - result.net)
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:419
+msgid "The state total claim is <0>{0}</0>."
+msgstr "The state total claim is <0>{0}</0>."
 
 #: src/routes/entities.$cui.lazy.tsx:335
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
@@ -4616,6 +4677,10 @@ msgstr "This entity has no funding or funded relationships."
 #: src/routes/$lang/learning/certificates.$id.tsx:38
 msgid "This is a proof-of-concept verification page stored in your browser."
 msgstr "This is a proof-of-concept verification page stored in your browser."
+
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:356
+msgid "This is yours"
+msgstr "This is yours"
 
 #: src/components/charts/components/series-config/CustomSeriesValueEditor.tsx:47
 msgid "This value will be used for every year in the chart's range."
@@ -5078,6 +5143,10 @@ msgstr "Welcome back."
 msgid "What personal data we collect"
 msgstr "What personal data we collect"
 
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:225
+msgid "What's your <0>gross</0> salary?"
+msgstr "What's your <0>gross</0> salary?"
+
 #: src/routes/privacy.lazy.tsx:32
 msgid "Who we are"
 msgstr "Who we are"
@@ -5190,6 +5259,15 @@ msgstr "You've completed this lesson"
 msgid "Your daily budget footprint"
 msgstr "Your daily budget footprint"
 
+#. placeholder {0}: formatCurrency(result.employerTotal)
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:418
+msgid "Your employer actually spends <0>{0}</0>."
+msgstr "Your employer actually spends <0>{0}</0>."
+
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:345
+msgid "Your guess"
+msgstr "Your guess"
+
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:118
 msgid "Your path is ready"
 msgstr "Your path is ready"
@@ -5198,6 +5276,10 @@ msgstr "Your path is ready"
 #: src/features/learning/components/interactive/PromiseTracker.tsx:254
 msgid "Your Prediction"
 msgstr "Your Prediction"
+
+#: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:288
+msgid "YOUR PREDICTION"
+msgstr "YOUR PREDICTION"
 
 #: src/routes/privacy.lazy.tsx:110
 msgid "Your rights under GDPR"
