@@ -419,8 +419,8 @@ function AnimatedCounter({ value, duration = 500 }: AnimatedCounterProps) {
 const TOTAL_DAILY_BUDGET_RON = 108
 
 const DISCLAIMER_TEXT = {
-  en: `This is a selection of visible daily services. Romania's total public budget is ~${TOTAL_DAILY_BUDGET_RON} RON/day per person (39,680 RON/capita/year).`,
-  ro: `Aceasta este o selecție de servicii zilnice vizibile. Bugetul public total al României este de ~${TOTAL_DAILY_BUDGET_RON} RON/zi per persoană (39.680 RON/capita/an).`,
+  en: `This is a selection of visible daily services. Romania's total public budget is ~${TOTAL_DAILY_BUDGET_RON} RON/day per person (39,680 RON/person in 2024).`,
+  ro: `Aceasta este o selecție de servicii zilnice vizibile. Bugetul public total al României este de ~${TOTAL_DAILY_BUDGET_RON} RON/zi per persoană (39.680 RON/personă în 2024).`,
 } as const
 
 type TotalDisplayProps = {

@@ -894,3 +894,39 @@ This prompt template enables you to:
 - Input: `docs/learning/modules/{module-name}.md`
 - Output: `src/content/learning/modules/{module-slug}/` (folder with lesson subfolders containing `index.en.mdx`)
 - Config: `src/content/learning/paths/{path}.json` (references lessons by `contentDir`)
+
+
+---
+
+# Role
+You are an expert UI Engineer specializing in "Brilliant.org"-style interactive learning components. Your goal is to build a React component that teaches a concept through interaction, not just reading.
+# Task
+Create an interactive component for: [TOPIC/DATA POINT TO TEACH]
+# Key Requirements
+1.  **Core Philosophy ("Active Learning")**:
+    *   **The Curiosity Gap**: Never simply present data. Challenge the user to guess, predict, or assemble the answer first.
+    *   **Mental Commitment**: The user must perform an action (drag, click, sort, connect) to commit to their mental model before the truth is revealed.
+    *   **Immediate Payoff**: The reveal must be instant and visually satisfying.
+2.  **Visual Style (Premium & Airy)**:
+    *   **Typography**: Use large tailored fonts (text-5xl to text-7xl) for the main numbers. Use `tracking-tight` and `font-black`.
+    *   **Shapes**: Use heavily rounded corners (`rounded-3xl` or `rounded-[2rem]`).
+    *   **Colors**: Use a semantic palette (Primary, Muted) + Soft status colors (Amber/Emerald/Rose) with low-opacity backgrounds (e.g., `bg-primary/5`).
+    *   **Spacing**: Use generous padding (`p-8` or `p-10`). Avoid clutter.
+3.  **Interaction Guidelines**:
+    *   **Tactile Feel**: Controls should feel hefty and responsive. Use large drag handles, clear hover states, and "juicy" feedback.
+    *   **Motion**: Use `framer-motion` to act as the narrator. animate elements in, spring numbers up, and layout transitions to guide the eye.
+    *   **Feedback Loop**: Always close the loop. If they guessed, tell them how close they were. If they sorted, tell them what they got right.
+4.  **Tech Stack**:
+    *   React (Functional Component)
+    *   Tailwind CSS (via `cn` utility)
+    *   Framer Motion (`motion/react`)
+    *   Lucide React (Icons)
+    *   Shadcn UI (Base components)
+# General Flow Pattern
+1.  **The Hook**: A clear, concise question or challenge.
+2.  **The Interaction**: The user manipulates the UI to express their answer (Prediction, Categorization, Estimation, etc.).
+3.  **The Reveal**:
+    *   Dramatic reveal of the "Truth".
+    *   Comparison with user's input (if applicable).
+    *   **The "Why"**: A distinct "Insight Card" (Icon + short text) explaining the core concept.
+4.  **The Conclusion**: A path forward (Reset, Next, or detailed breakdown if necessary).

@@ -12,6 +12,7 @@ import { Quiz, type QuizOption } from '../assessment/Quiz'
 import { MarkComplete } from './MarkComplete'
 import { BudgetFootprintRevealer } from '../interactive/BudgetFootprintRevealer'
 import { FlashCard, FlashCardDeck } from '../interactive/FlashCardDeck'
+import { PromiseTracker } from '../interactive/PromiseTracker'
 
 type LessonPlayerProps = {
   readonly locale: LearningLocale
@@ -87,10 +88,11 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
       Quiz: QuizWrapper,
       MarkComplete: MarkCompleteWrapper,
       BudgetFootprintRevealer: BudgetFootprintRevealerWrapper,
+      PromiseTracker: (props: any) => <PromiseTracker {...props} locale={locale} />,
       FlashCard,
       FlashCardDeck,
     }),
-    [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper]
+    [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, locale]
   )
 
   if (!path || !module || !lesson) {
