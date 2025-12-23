@@ -9,9 +9,9 @@ objective: "Explain why Romania has a budget deficit and navigate the Revenue vi
 
 ## Concept Introduction
 
-You've learned about your personal tax contribution and the types of public revenue. Now let's face a difficult truth: Romania collects the **lowest revenue as a percentage of GDP in the entire European Union** — yet spends close to the EU average.
+You've learned about your personal tax contribution and the types of public revenue. Now let's face a difficult truth: Romania collects **one of the lowest revenue rates in the European Union** — yet spends close to the EU average.
 
-The math is simple: when you collect 34% but spend 43.5%, you get a deficit. And at 9.3% of GDP, Romania's deficit is one of the highest in Europe. This isn't just an abstract number — it affects interest rates, inflation, and future taxes.
+The math is simple: when you collect 34% but spend 43.5%, you get a deficit. And at 9.3% of GDP, Romania's deficit is **the highest in the entire EU**. This isn't just an abstract number — it affects interest rates, inflation, and future taxes.
 
 > **Key Insight:** Romania's problem isn't just about spending too much — it's fundamentally about collecting too little. Fixing this requires either higher taxes, better enforcement, or both.
 
@@ -21,33 +21,24 @@ The math is simple: when you collect 34% but spend 43.5%, you get a deficit. And
 
 See how Romania compares to other EU countries in terms of revenue collection.
 
-### EUComparisonChart
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  REVENUE AS % OF GDP: EU COMPARISON                          │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  France      ████████████████████████████████████████  47%   │
-│  Germany     █████████████████████████████████████     45%   │
-│  EU Average  ████████████████████████████████████      44%   │
-│  Poland      ██████████████████████████████████        41%   │
-│  Hungary     █████████████████████████████████         40%   │
-│  Bulgaria    █████████████████████████████             36%   │
-│  ROMANIA     ██████████████████████████                34%   │ ← LOWEST
-│                                                              │
-│  ─────────────────────────────────────────────────────────── │
-│                                                              │
-│  Why is Romania's collection so low?                         │
-│  • Large informal economy (~30% estimated)                   │
-│  • Tax evasion (especially VAT fraud)                        │
-│  • Weak tax administration                                   │
-│  • Many exemptions and special regimes                       │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
+<EUComparisonChart
+  title="Revenue as % of GDP (2024)"
+  unit="%"
+  averageValue={46}
+  items={[
+    { id: 'eu', label: 'EU Averange', value: 46, flag: '🇪🇺' },
+    { id: 'fra', label: 'France', value: 45, flag: '🇫🇷' },
+    { id: 'deu', label: 'Germany', value: 41, flag: '🇩🇪' },
+    { id: 'hun', label: 'Hungary', value: 40, flag: '🇭🇺' },
+    { id: 'pol', label: 'Poland', value: 38, flag: '🇵🇱' },
+    { id: 'bgr', label: 'Bulgaria', value: 36, flag: '🇧🇬' },
+    { id: 'rou', label: 'ROMANIA', value: 34, flag: '🇷🇴', isHighlighted: true },
+  ]}
+/>
 
-**Component Interface:**
+<Hidden label="Implementation Specs: EU Comparison Chart">
+#### Component Interface:
 
 ```typescript
 /**
@@ -112,15 +103,16 @@ interface ComparisonItem {
  * - role="img" on container with aria-label describing the chart
  * - Each bar has role="listitem" with aria-label: "[Country]: [Value]%"
  * - Average line has aria-label: "EU Average: [Value]%"
- * - Screen reader announces "Romania: 34%, lowest in EU" for highlighted item
+ * - Screen reader announces "Romania: 34%, among lowest in EU" for highlighted item
  */
 ```
 
-**Expected Behavior:**
+#### Expected Behavior:
 - Horizontal bars sorted by value (highest to lowest)
 - Romania highlighted in distinct color with "← LOWEST" annotation
 - EU Average shown as dashed vertical line
 - Hover reveals exact percentage and country details
+</Hidden>
 
 ---
 
@@ -128,19 +120,19 @@ interface ComparisonItem {
 
 Understanding Romania's budget challenge requires simple math:
 
-```
-     REVENUE        SPENDING         DEFICIT
-       34%     -      43.5%     =     -9.3%
-```
+<DeficitVisual />
+
 
 ### Why Collection Is So Low
 
+<ResponsiveTable>
 | Factor | Impact | Example |
 |--------|--------|---------|
 | **Informal Economy** | ~30% of GDP | Cash payments, unreported income |
-| **VAT Gap** | ~35% uncollected | Highest VAT fraud rate in EU |
+| **VAT Gap** | ~30% uncollected | Highest VAT fraud rate in EU |
 | **Weak Administration** | Low audit rate | ANAF understaffed, outdated systems |
-| **Exemptions** | Reduce base | IT salary exemptions, micro-enterprise regime |
+| **Exemptions** | Reduce base | IT salary exemptions (abolished Jan 2025), micro-enterprise regime (being phased down) |
+</ResponsiveTable>
 
 ### The Consequences
 
@@ -150,7 +142,7 @@ Understanding Romania's budget challenge requires simple math:
 4. **Future tax increases** — Like the VAT hike to 21%
 5. **Reduced public services** — Less money for healthcare, education
 
-> **The irony:** Romanians pay relatively high tax rates (43% of labor cost), but so much goes uncollected that the government still doesn't have enough money.
+> **The irony:** Romanians pay relatively high tax rates (~41.5% of labor cost), but so much goes uncollected that the government still doesn't have enough money.
 
 ---
 
@@ -158,120 +150,17 @@ Understanding Romania's budget challenge requires simple math:
 
 Now let's put theory into practice. Use the Budget Explorer to see real revenue data.
 
-### GuidedActivity
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│  HANDS-ON: Explore Revenue Sources                           │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  Step 1: Open the Budget Explorer in REVENUE mode            │
-│          [ Open Revenue View → ]                             │
-│          URL: /budget-explorer?accountCategory=vn            │
-│                                                              │
-│  Step 2: Look at the treemap                                 │
-│          • Which revenue source is largest?                  │
-│          • Find "Social contributions" — how big is it?      │
-│                                                              │
-│  Step 3: Switch between years                                │
-│          • Has VAT revenue increased or decreased?           │
-│          • What happened to EU funds?                        │
-│                                                              │
-│  Step 4: Try the "Per Capita" view                           │
-│          • How much revenue per person?                      │
-│          • Compare with your own calculations                │
-│                                                              │
-│  ✅ Task: What percentage comes from social contributions?   │
-│                                                              │
-│  Your answer: [ _____ ]%  [ Check Answer ]                   │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-**Component Interface:**
-
-```typescript
-/**
- * GuidedActivity Component
- *
- * PURPOSE: Walk users through platform exploration with validation checkpoints
- */
-interface GuidedActivityProps {
-  readonly title: string
-  readonly steps: readonly GuidedStep[]
-  readonly onComplete?: () => void
-  readonly onStepComplete?: (stepId: string) => void
-  readonly allowSkip?: boolean
-}
-
-interface GuidedStep {
-  readonly id: string
-  readonly instruction: string
-  readonly hint?: string
-  readonly deepLink?: string
-  readonly openInNewTab?: boolean
-  readonly validation: StepValidation
-}
-
-type StepValidation =
-  | { readonly type: 'manual' }
-  | { readonly type: 'input'; readonly question: string; readonly acceptedAnswers: readonly string[]; readonly tolerance?: number }
-  | { readonly type: 'confirm'; readonly question: string }
-
-/**
- * STATE MANAGEMENT:
- * - currentStep: number (0-indexed)
- * - completedSteps: Set<string> (step IDs that have been completed)
- * - stepInputs: Record<stepId, string> (user inputs for input-type validations)
- * - isValidating: boolean
- * - validationResult: 'correct' | 'incorrect' | null
- *
- * STATE TRANSITIONS:
- * - Click "Open Link" -> opens deepLink in new tab, stays on step
- * - Click "Mark Done" (manual) -> complete step, advance
- * - Submit answer (input) -> validate, show feedback, advance if correct
- * - Click "Skip" (if allowed) -> mark skipped, advance
- * - Click "Back" -> return to previous step
- *
- * VALIDATION LOGIC (for input type):
- * - Accept exact matches from acceptedAnswers array
- * - If tolerance provided, accept numeric answers within ±tolerance
- * - Example: acceptedAnswers: ["30", "31", "32"], tolerance: 2
- *
- * USER INTERACTIONS:
- * - Numbered steps list: click to navigate (if completed)
- * - "Open Link" button: opens Budget Explorer in new tab
- * - "Mark Done" button: for manual validation steps
- * - Input field + "Check Answer": for input validation steps
- * - Back/Next buttons: navigate between steps
- *
- * VISUAL STATES:
- * - Pending step: dimmed, numbered circle unfilled
- * - Current step: highlighted, instruction visible, actions enabled
- * - Completed step: green checkmark, collapsed
- * - Incorrect answer: shake animation, red highlight, retry enabled
- * - All complete: celebration animation, completion message
- *
- * ANIMATIONS:
- * - Step transition: slide + fade (300ms, ease-out)
- * - Completion: checkmark draw animation (400ms)
- * - Error: shake (200ms, 3 oscillations)
- * - Final celebration: confetti burst or success icon pulse
- *
- * ACCESSIBILITY:
- * - role="group" with aria-label for the activity
- * - Steps are ol/li elements
- * - Current step has aria-current="step"
- * - Validation results announced via aria-live="polite"
- * - Deep link button has aria-describedby with URL context
- */
-```
-
-**Expected Behavior:**
-- Steps progress linearly with ability to go back
-- Deep links open Budget Explorer with appropriate filters
-- Input validation accepts approximate answers (±2% tolerance)
-- Completion triggers celebration and marks lesson complete
+<PlatformMission
+  title="Analyze the Revenue Data"
+  description="Put theory into practice by exploring real revenue data in our Budget Explorer."
+  tasks={[
+    "Look at the treemap visualization. Which revenue source is the absolute largest? (VAT or Social Contributions)",
+    "Switch to the 'Trend' view. Observe if VAT revenue has increased or decreased in the last year.",
+    "Find the 'European Funds' section. Compare its size to Income Tax."
+  ]}
+  actionLabel="Open Budget Explorer"
+  actionLink="/budget-explorer?accountCategory=vn"
+/>
 
 ---
 
@@ -286,7 +175,7 @@ type StepValidation =
     { id: "c", text: "44%", isCorrect: false },
     { id: "d", text: "50%", isCorrect: false }
   ]}
-  explanation="Romania collects approximately 34% of GDP as public revenue — the lowest in the entire European Union. The EU average is 44%."
+  explanation="Romania collects approximately 34% of GDP as public revenue — among the lowest in the European Union. The EU average is 46%."
 />
 
 <Quiz
@@ -298,14 +187,14 @@ type StepValidation =
     { id: "c", text: "The EU doesn't send enough funds", isCorrect: false },
     { id: "d", text: "All government workers are overpaid", isCorrect: false }
   ]}
-  explanation="Romania's deficit exists because it collects only 34% of GDP but spends about 43.5%. The spending level is close to EU average, but collection is the lowest — meaning the problem is primarily about collecting too little, not spending too much."
+  explanation="Romania's deficit exists because it collects only 34% of GDP but spends about 43.5%. The spending level is close to EU average, but collection is among the lowest in the EU — meaning the problem is primarily about collecting too little, not spending too much."
 />
 
 ---
 
 ## Key Takeaway
 
-> **Remember:** Romania collects the LOWEST revenue in the EU (34% of GDP) but spends close to average (43.5%). This creates a 9.3% deficit — meaning future generations will pay through higher taxes, inflation, or reduced services. The solution requires better tax collection, not just higher rates.
+> **Remember:** Romania collects among the LOWEST revenue in the EU (34% of GDP) but spends close to average (43.5%). This creates a 9.3% deficit — the highest in the entire EU — meaning future generations will pay through higher taxes, inflation, or reduced services. The solution requires better tax collection, not just higher rates.
 
 ---
 

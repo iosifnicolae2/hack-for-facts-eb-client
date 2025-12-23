@@ -96,21 +96,21 @@ export function VATCalculator() {
                   variant="outline" 
                   size="icon"
                   onClick={() => setTotalSpending(s => Math.max(0, s - 100))}
-                  className="w-14 h-14 rounded-full border-zinc-100 bg-zinc-50 hover:bg-zinc-100 text-zinc-400 hover:text-zinc-600 transition-colors shadow-sm"
+                className="w-10 h-10 md:w-14 md:h-14 rounded-full border-zinc-100 bg-zinc-50 hover:bg-zinc-100 text-zinc-400 hover:text-zinc-600 transition-colors shadow-sm"
               >
-                  <Minus className="w-6 h-6" />
+                <Minus className="w-4 h-4 md:w-6 md:h-6" />
               </Button>
               
               <div className="relative group">
-                <div className="flex items-baseline justify-center gap-2">
+                <div className="flex items-baseline justify-center gap-1 md:gap-2">
                     <Input 
                       type="number"
                       value={totalSpending}
                       onChange={(e) => setTotalSpending(Math.max(0, parseInt(e.target.value) || 0))}
-                      className="w-64 bg-transparent border-none text-7xl md:text-8xl font-black text-center p-0 h-auto focus:ring-0 text-zinc-900 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none placeholder:text-zinc-200 tracking-tighter"
+                    className="w-40 md:w-64 bg-transparent border-none text-5xl md:text-8xl font-black text-center p-0 h-auto focus:ring-0 text-zinc-900 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none placeholder:text-zinc-200 tracking-tighter"
                       placeholder="0"
                     />
-                    <span className="text-2xl font-black text-zinc-300 self-start mt-4">RON</span>
+                  <span className="text-xl md:text-2xl font-black text-zinc-300 self-start mt-2 md:mt-4">RON</span>
                 </div>
               </div>
 
@@ -118,9 +118,9 @@ export function VATCalculator() {
                   variant="outline"
                   size="icon"
                   onClick={() => setTotalSpending(s => s + 100)}
-                  className="w-14 h-14 rounded-full border-zinc-100 bg-zinc-50 hover:bg-zinc-100 text-zinc-400 hover:text-zinc-600 transition-colors shadow-sm"
+                className="w-10 h-10 md:w-14 md:h-14 rounded-full border-zinc-100 bg-zinc-50 hover:bg-zinc-100 text-zinc-400 hover:text-zinc-600 transition-colors shadow-sm"
               >
-                  <Plus className="w-6 h-6" />
+                <Plus className="w-4 h-4 md:w-6 md:h-6" />
               </Button>
             </div>
           </div>
@@ -149,7 +149,7 @@ export function VATCalculator() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-12 gap-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-x-12 md:gap-y-8">
                 <div className="space-y-2 p-4 rounded-3xl bg-indigo-50/50 border border-indigo-100/50">
                     <div className="text-[10px] font-black uppercase tracking-widest text-indigo-400">{t`Net Price`}</div>
                     <div className="text-3xl font-black text-indigo-900 tracking-tight">{formatCurrency(results.totalNet)}</div>
@@ -179,7 +179,7 @@ export function VATCalculator() {
                         <p className="text-zinc-300 font-medium">
                             {t`In one year, you will pay`}
                         </p>
-                        <div className="text-5xl md:text-6xl font-black text-white tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white to-zinc-400">
+                <div className="text-3xl md:text-6xl font-black text-white tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white to-zinc-400">
                              {formatCurrency(results.totalVat * 12)}
                         </div>
                         <p className="text-zinc-500 text-sm">

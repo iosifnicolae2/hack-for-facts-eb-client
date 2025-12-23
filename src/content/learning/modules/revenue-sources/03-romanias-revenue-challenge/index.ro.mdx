@@ -1,0 +1,205 @@
+---
+title: "Provocarea Veniturilor României"
+durationMinutes: 7
+concept: "Înțelegerea de ce România are un deficit bugetar și cum se compară cu alte țări UE"
+objective: "Explicarea motivului pentru care România are un deficit bugetar și navigarea în vizualizarea Veniturilor din Exploratorul Bugetar"
+---
+
+# Provocarea Veniturilor României
+
+## Introducere Conceptuală
+
+Ai învățat despre contribuția ta personală la taxe și despre tipurile de venituri publice. Acum să înfruntăm un adevăr dificil: România colectează **una dintre cele mai scăzute rate de venituri din Uniunea Europeană** — dar cheltuiește aproape de media UE.
+
+Matematica este simplă: când colectezi 34% dar cheltuiești 43,5%, obții un deficit. Iar la 9,3% din PIB, deficitul României este **cel mai mare din întreaga UE**. Acesta nu este doar un număr abstract — afectează ratele dobânzilor, inflația și taxele viitoare.
+
+> **Observație Cheie:** Problema României nu ține doar de cheltuieli excesive — este fundamental vorba de colectarea insuficientă. Rezolvarea acestei situații necesită fie taxe mai mari, fie o aplicare mai bună a legii, sau ambele.
+
+---
+
+## Element Interactiv: Grafic Comparativ UE
+
+Vezi cum se compară România cu alte țări UE în ceea ce privește colectarea veniturilor.
+
+
+<EUComparisonChart
+  title="Venituri ca % din PIB (2024)"
+  unit="%"
+  averageValue={46}
+  items={[
+    { id: 'eu', label: 'Media UE', value: 46, flag: '🇪🇺' },
+    { id: 'fra', label: 'Franța', value: 45, flag: '🇫🇷' },
+    { id: 'deu', label: 'Germania', value: 41, flag: '🇩🇪' },
+    { id: 'hun', label: 'Ungaria', value: 40, flag: '🇭🇺' },
+    { id: 'pol', label: 'Polonia', value: 38, flag: '🇵🇱' },
+    { id: 'bgr', label: 'Bulgaria', value: 36, flag: '🇧🇬' },
+    { id: 'rou', label: 'ROMÂNIA', value: 34, flag: '🇷🇴', isHighlighted: true },
+  ]}
+/>
+
+<Hidden label="Specificații Implementare: Grafic Comparativ UE">
+#### Interfață Componentă:
+
+```typescript
+/**
+ * Componenta EUComparisonChart
+ *
+ * SCOP: Vizualizarea poziției României comparativ cu țările UE pe metrici de venituri
+ */
+interface EUComparisonChartProps {
+  readonly title: string
+  readonly items: readonly ComparisonItem[]
+  readonly unit?: string
+  readonly highlightItem?: string
+  readonly showAverage?: boolean
+  readonly averageLabel?: string
+  readonly annotations?: readonly {
+    readonly itemId: string
+    readonly text: string
+    readonly position: 'left' | 'right'
+  }[]
+  readonly onItemClick?: (itemId: string) => void
+}
+
+interface ComparisonItem {
+  readonly id: string
+  readonly label: string
+  readonly value: number
+  readonly flag?: string
+  readonly isHighlighted?: boolean
+  readonly metadata?: Record<string, string | number>
+}
+
+/**
+ * GESTIONAREA STĂRII:
+ * - hoveredItem: string | null
+ * - sortedItems: ComparisonItem[] (calculat, sortat după valoare)
+ * - maxValue: number (pentru scalarea barelor, de obicei max item + 10%)
+ *
+ * TRANZIȚII DE STARE:
+ * - Hover bară -> setează hoveredItem, afișează tooltip cu valoarea exactă
+ * - Click bară -> declanșează callback onItemClick (pentru detalii)
+ * - Mouse leave -> șterge hoveredItem
+ *
+ * INTERACȚIUNI UTILIZATOR:
+ * - Hover bară: afișează valoarea exactă în tooltip
+ * - Click bară: navigare opțională la detalii țară
+ * - Tastatură: săgețile navighează între bare
+ * - Enter pe bara focusată: declanșează acțiunea click
+ *
+ * STĂRI VIZUALE:
+ * - Implicit: toate barele în culoare neutră, element evidențiat în accent
+ * - Hover: bara se ridică ușor, afișează tooltip cu valoare
+ * - Linie medie: linie verticală punctată dacă showAverage=true
+ * - Evidențiat: bara României folosește culoare de avertizare/roșu cu adnotare
+ *
+ * ANIMAȚII:
+ * - Intrare: barele cresc de la stânga la dreapta (600ms, eșalonat 50ms între ele)
+ * - Hover: scale(1.02) pe axa Y + elevație umbră (150ms)
+ * - Linia medie: se desenează de sus în jos (400ms, după finalizarea barelor)
+ * - Adnotare: fade-in după animația barei (întârziere 200ms)
+ *
+ * ACCESIBILITATE:
+ * - role="img" pe container cu aria-label care descrie graficul
+ * - Fiecare bară are role="listitem" cu aria-label: "[Țară]: [Valoare]%"
+ * - Linia medie are aria-label: "Media UE: [Valoare]%"
+ * - Screen reader anunță "România: 34%, printre cele mai scăzute din UE" pentru elementul evidențiat
+ */
+```
+
+#### Comportament Așteptat:
+- Bare orizontale sortate după valoare (de la cea mai mare la cea mai mică)
+- România evidențiată într-o culoare distinctă cu adnotare "← CEL MAI SCĂZUT"
+- Media UE afișată ca linie verticală punctată
+- Hover-ul dezvăluie procentajul exact și detaliile țării
+</Hidden>
+
+---
+
+## Explicație de Bază: Ecuația Deficitului
+
+Înțelegerea provocării bugetare a României necesită matematică simplă:
+
+<DeficitVisual />
+
+
+### De Ce Colectarea Este Atât de Scăzută
+
+| Factor | Impact | Exemplu |
+|--------|--------|---------|
+| **Economia Informală** | ~30% din PIB | Plăți în numerar, venituri nedeclarate |
+| **Decalajul TVA** | ~30% necolectat | Cea mai mare rată de fraudă TVA din UE |
+| **Administrație Slabă** | Rată scăzută de audit | ANAF subfinanțat, sisteme învechite |
+| **Scutiri** | Reduc baza impozabilă | Scutirile salariale IT (abolite ian. 2025), regimul microîntreprinderilor (în curs de reducere) |
+
+### Consecințele
+
+1. **Mai multe împrumuturi** — Datoria publică crește rapid
+2. **Dobânzi mai mari** — Investitorii cer primă pentru risc
+3. **Presiune inflaționistă** — Tipărirea banilor pentru a acoperi deficitul
+4. **Creșteri viitoare de taxe** — Precum majorarea TVA la 21%
+5. **Servicii publice reduse** — Mai puțini bani pentru sănătate, educație
+
+> **Ironia:** Românii plătesc rate de impozitare relativ ridicate (~41,5% din costul muncii), dar atât de mult rămâne necolectat încât guvernul tot nu are suficienți bani.
+
+---
+
+## Integrare cu Platforma: Explorează Veniturile
+
+Acum să punem teoria în practică. Folosește Exploratorul Bugetar pentru a vedea date reale despre venituri.
+
+<PlatformMission
+  title="Analizează Datele despre Venituri"
+  description="Pune teoria în practică explorând datele reale despre venituri în Exploratorul nostru Bugetar."
+  tasks={[
+    "Uită-te la vizualizarea treemap. Care sursă de venit este cea mai mare? (TVA sau Contribuții Sociale)",
+    "Treci la vizualizarea 'Evoluție'. Observă dacă veniturile din TVA au crescut sau au scăzut în ultimul an.",
+    "Găsește secțiunea 'Fonduri Europene'. Compară dimensiunea acesteia cu Impozitul pe Venit."
+  ]}
+  actionLabel="Deschide Exploratorul Bugetar"
+  actionLink="/budget-explorer?accountCategory=vn"
+/>
+
+---
+
+## Practică
+
+<Quiz
+  id="revenue-sources-03-q1"
+  question="România colectează aproximativ ce procent din PIB ca venituri?"
+  options={[
+    { id: "a", text: "25%", isCorrect: false },
+    { id: "b", text: "34%", isCorrect: true },
+    { id: "c", text: "44%", isCorrect: false },
+    { id: "d", text: "50%", isCorrect: false }
+  ]}
+  explanation="România colectează aproximativ 34% din PIB ca venituri publice — printre cele mai scăzute din Uniunea Europeană. Media UE este de 46%."
+/>
+
+<Quiz
+  id="revenue-sources-03-q2"
+  question="Care este motivul principal pentru care România are un deficit bugetar?"
+  options={[
+    { id: "a", text: "Cheltuielile guvernamentale sunt cele mai mari din Europa", isCorrect: false },
+    { id: "b", text: "Colectarea veniturilor este prea scăzută comparativ cu cheltuielile", isCorrect: true },
+    { id: "c", text: "UE nu trimite suficiente fonduri", isCorrect: false },
+    { id: "d", text: "Toți angajații guvernamentali sunt supraplatiti", isCorrect: false }
+  ]}
+  explanation="Deficitul României există pentru că colectează doar 34% din PIB dar cheltuiește aproximativ 43,5%. Nivelul cheltuielilor este aproape de media UE, dar colectarea este printre cele mai scăzute din UE — ceea ce înseamnă că problema este în principal despre colectarea insuficientă, nu despre cheltuieli excesive."
+/>
+
+---
+
+## Concluzie Cheie
+
+> **Reține:** România colectează printre CELE MAI SCĂZUTE venituri din UE (34% din PIB) dar cheltuiește aproape de medie (43,5%). Aceasta creează un deficit de 9,3% — cel mai mare din întreaga UE — ceea ce înseamnă că generațiile viitoare vor plăti prin taxe mai mari, inflație sau servicii reduse. Soluția necesită o colectare mai bună a taxelor, nu doar rate mai mari.
+
+---
+
+## Ce Urmează?
+
+Acum că înțelegi de unde vin banii publici, modulul următor îți va arăta unde se duc: **Cheltuielile**. Vei învăța despre categoriile principale de cheltuieli și de ce pensiile domină bugetul.
+
+---
+
+<MarkComplete label="Finalizează această lecție" />

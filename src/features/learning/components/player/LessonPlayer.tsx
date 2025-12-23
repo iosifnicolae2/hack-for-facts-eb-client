@@ -17,6 +17,12 @@ import { SalaryTaxCalculator } from '../interactive/SalaryTaxCalculator'
 import { RevenueDistributionGame } from '../interactive/RevenueDistributionGame'
 import { VATCalculator } from '../interactive/VATCalculator'
 import { VATReformCard } from '../interactive/VATReformCard'
+import { EUComparisonChart } from '../interactive/EUComparisonChart'
+import { PlatformMission } from '../interactive/PlatformMission'
+import { DeficitVisual } from '../interactive/DeficitVisual'
+import { Hidden } from '../interactive/Hidden'
+import { Sources } from '../interactive/Sources'
+import { ResponsiveTable } from '../interactive/ResponsiveTable'
 
 type LessonPlayerProps = {
   readonly locale: LearningLocale
@@ -129,8 +135,15 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
       RevenueDistributionGame,
       VATCalculator,
       VATReformCard,
+      EUComparisonChart,
+      PlatformMission,
+      DeficitVisual,
+      Hidden,
+      Sources,
+      ResponsiveTable,
     }),
-    [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, PromiseTrackerWrapper, SalaryTaxCalculatorWrapper, RevenueDistributionGame, VATCalculator]
+    // Ensure all interactive components are included in the dependency array
+    [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, PromiseTrackerWrapper, SalaryTaxCalculatorWrapper, RevenueDistributionGame, VATCalculator, VATReformCard, EUComparisonChart, PlatformMission, DeficitVisual, Hidden, Sources, ResponsiveTable]
   )
 
   if (!path || !module || !lesson) {

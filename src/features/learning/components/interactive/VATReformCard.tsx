@@ -75,7 +75,7 @@ export function VATReformCard({
                 {/* Visual Connector Line */}
                 <div className="relative py-2">
                    
-                   <div className="grid grid-cols-2 gap-4 md:gap-8">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
                        {/* Standard Rate */}
                        <div className="flex flex-col md:flex-row items-center justify-between bg-zinc-50 rounded-2xl p-6 md:px-8 group-hover:bg-zinc-100/80 transition-colors gap-2 md:gap-0">
                             <div className="space-y-1 text-center md:text-left">

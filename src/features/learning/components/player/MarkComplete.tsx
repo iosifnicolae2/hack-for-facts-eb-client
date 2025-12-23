@@ -33,75 +33,82 @@ export function MarkComplete({ label, contentId }: MarkCompleteProps) {
     return (
       <Card
         className={cn(
-          'my-8 border-green-500/50 bg-gradient-to-r from-green-500/10 via-green-500/5 to-transparent overflow-hidden',
-          justCompleted && 'animate-in fade-in slide-in-from-bottom-2 duration-500'
+          'my-8 rounded-[2.5rem] bg-emerald-50 border-none shadow-sm overflow-hidden relative',
+          justCompleted && 'animate-in fade-in slide-in-from-bottom-4 duration-700'
         )}
       >
-        <CardContent className="py-6">
-          <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-green-500 text-white">
-              {justCompleted ? (
-                <PartyPopper className="h-6 w-6 animate-in zoom-in duration-300" />
-              ) : (
-                <CheckCircle2 className="h-6 w-6" />
-              )}
-            </div>
-            <div className="flex-1">
-              <h3 className="font-semibold text-green-700 dark:text-green-300">
-                {justCompleted ? t`Lesson completed!` : t`You've completed this lesson`}
-              </h3>
-              <p className="text-sm text-green-600 dark:text-green-400 mt-0.5">
-                {justCompleted
-                  ? t`Great job! Your progress has been saved.`
-                  : t`Continue to the next lesson to keep learning.`}
-              </p>
+        <CardContent className="p-8 md:p-12 relative z-10">
+          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+            <div className="flex flex-1 items-center gap-6 md:gap-8">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-3xl bg-emerald-500 text-white shadow-xl shadow-emerald-200">
+                {justCompleted ? (
+                  <PartyPopper className="h-8 w-8 animate-in zoom-in duration-500" />
+                ) : (
+                  <CheckCircle2 className="h-8 w-8" />
+                )}
+              </div>
+              <div className="space-y-1 text-left">
+                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-600/70">{t`Progress Saved`}</div>
+                <h3 className="text-2xl md:text-3xl font-black text-emerald-900 tracking-tight leading-tight">
+                  {justCompleted ? t`Lesson Completed!` : t`Step Successfully Finished`}
+                </h3>
+                <p className="text-base md:text-lg font-bold text-emerald-800/60 leading-relaxed max-w-2xl">
+                  {justCompleted
+                    ? t`Mastering the budget one step at a time. Your progress is recorded.`
+                    : t`Continue to the next chapter to complete the module.`}
+                </p>
+              </div>
             </div>
             {justCompleted && (
-              <div className="hidden sm:flex items-center gap-1 text-green-500">
+              <div className="flex items-center gap-2 text-emerald-500 bg-white/50 px-4 py-2 rounded-2xl border border-emerald-100/50">
                 <Sparkles className="h-5 w-5 animate-pulse" />
-                <Sparkles className="h-4 w-4 animate-pulse delay-75" />
-                <Sparkles className="h-3 w-3 animate-pulse delay-150" />
+                <span className="text-[10px] font-black uppercase tracking-widest">{t`Unstoppable`}</span>
               </div>
             )}
           </div>
         </CardContent>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
       </Card>
     )
   }
 
   return (
-    <Card className="my-8 border-primary/30 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 overflow-hidden">
-      <CardContent className="py-6">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
-            <CheckCircle2 className="h-6 w-6 text-primary" />
-          </div>
-          <div className="flex-1">
-            <h3 className="font-semibold">{t`Ready to move on?`}</h3>
-            <p className="text-sm text-muted-foreground mt-0.5">
-              {t`Mark this lesson as complete to track your progress.`}
-            </p>
+    <Card className="my-8 rounded-[2.5rem] bg-zinc-50 border-none shadow-sm overflow-hidden relative">
+      <CardContent className="p-8 md:p-12 relative z-10">
+        <div className="flex flex-col items-center gap-6">
+          <div className="flex flex-1 items-center gap-6 md:gap-8">
+            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-3xl bg-white text-zinc-400 shadow-sm border border-zinc-100">
+              <CheckCircle2 className="h-8 w-8" />
+            </div>
+            <div className="space-y-1">
+              <div className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">{t`Mission End`}</div>
+              <h3 className="text-2xl md:text-3xl font-black text-zinc-900 tracking-tight leading-tight">{t`Ready to level up?`}</h3>
+              <p className="text-base md:text-lg font-bold text-zinc-500 leading-relaxed max-w-2xl">
+                {t`Seal your progress and move closer to becoming a budget expert.`}
+              </p>
+            </div>
           </div>
           <Button
             onClick={handleMarkComplete}
             disabled={isMarking}
-            size="lg"
-            className="gap-2 shadow-md w-full sm:w-auto"
+            className="self-center rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-white font-black h-14 px-10 text-base shadow-2xl shadow-zinc-200 transition-all hover:scale-[1.05] active:scale-[0.95] w-full lg:w-auto"
           >
             {isMarking ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                {t`Saving...`}
+                <Loader2 className="h-5 w-5 animate-spin mr-3" />
+                {t`Recording...`}
               </>
             ) : (
               <>
-                <CheckCircle2 className="h-4 w-4" />
-                {label ?? t`Mark as complete`}
+                  <CheckCircle2 className="h-5 w-5 mr-3" />
+                  {label ?? t`Complete this lesson`}
               </>
             )}
           </Button>
         </div>
       </CardContent>
+      <div className="absolute top-0 right-0 w-80 h-80 bg-zinc-400/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-400/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
     </Card>
   )
 }

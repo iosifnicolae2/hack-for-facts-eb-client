@@ -453,6 +453,10 @@ msgstr "Acceptarea"
 msgid "Account category"
 msgstr "Categorie cont"
 
+#: src/features/learning/components/interactive/GuidedActivity.tsx:160
+msgid "Action Required"
+msgstr ""
+
 #: src/components/alerts/components/AlertEditorView.tsx:286
 #: src/components/charts/components/views/SeriesConfigView.tsx:206
 #: src/features/notifications/components/alerts/AlertCard.tsx:71
@@ -466,6 +470,10 @@ msgstr "Filtre active"
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:242
 msgid "Active Series"
 msgstr "Serie Activată"
+
+#: src/features/learning/components/interactive/GuidedActivity.tsx:127
+msgid "Activity Complete!"
+msgstr ""
 
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:113
 #: src/components/budget-explorer/SpendingBreakdown.tsx:183
@@ -803,6 +811,10 @@ msgstr "Întreabă Asistentul AI"
 msgid "At a Glance"
 msgstr "Pe scurt"
 
+#: src/features/learning/components/interactive/VATReformCard.tsx:26
+msgid "Aug 1, 2025"
+msgstr ""
+
 #: src/components/entities/EntityFinancialTrends.tsx:98
 msgid "August"
 msgstr "August"
@@ -831,6 +843,7 @@ msgstr "Disponibilitate și modificări"
 msgid "Avg per-capita"
 msgstr "Medie pe cap de locuitor"
 
+#: src/features/learning/components/interactive/GuidedActivity.tsx:213
 #: src/routes/alerts/new.lazy.tsx:170
 msgid "Back"
 msgstr "Înapoi"
@@ -853,7 +866,7 @@ msgstr "Înapoi la Hub"
 msgid "Back to learning"
 msgstr "Înapoi la învățare"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:142
+#: src/features/learning/components/player/LessonPlayer.tsx:157
 #: src/routes/$lang/learning/$pathId/index.tsx:44
 #: src/routes/$lang/learning/$pathId/index.tsx:102
 msgid "Back to Learning Hub"
@@ -863,7 +876,7 @@ msgstr "Înapoi la Hub-ul de învățare"
 msgid "Back to Overview"
 msgstr "Înapoi la sinteză"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:214
+#: src/features/learning/components/player/LessonPlayer.tsx:229
 msgid "Back to path"
 msgstr "Înapoi la parcurs"
 
@@ -895,6 +908,10 @@ msgstr "Grafic bare (agregat)"
 #: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:377
 msgid "Base Amount (100%)"
 msgstr "Suma de bază (100%)"
+
+#: src/features/learning/components/interactive/RevenueDistributionGame.tsx:224
+msgid "Based on 2024 budgetary data"
+msgstr ""
 
 #: src/routes/privacy.lazy.tsx:27
 msgid "Basic security logs are kept for a short period to protect accounts."
@@ -988,6 +1005,10 @@ msgstr "Prin utilizarea Serviciului, sunteți de acord cu acești Termeni. Dacă
 msgid "Calculation"
 msgstr "Calcul"
 
+#: src/features/learning/components/interactive/VATCalculator.tsx:198
+msgid "Calculations assume a basket of 40% essential goods (11% VAT) and 60% general goods (21% VAT)."
+msgstr ""
+
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:65
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:135
 #: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:71
@@ -1079,6 +1100,10 @@ msgstr "Tip grafic"
 #: src/routes/index.lazy.tsx:76
 msgid "Charts"
 msgstr "Grafice"
+
+#: src/features/learning/components/interactive/GuidedActivity.tsx:181
+msgid "Check"
+msgstr ""
 
 #: src/components/charts/components/chart-view/ChartDisplayArea.tsx:136
 msgid "Check your series filters and try again."
@@ -1211,7 +1236,7 @@ msgstr "Confortabil"
 msgid "Compact"
 msgstr "Compact"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:236
+#: src/features/learning/components/player/LessonPlayer.tsx:251
 msgid "Complete path"
 msgstr "Finalizează parcursul"
 
@@ -1597,6 +1622,10 @@ msgstr "Vizualizare tabelară"
 msgid "Data View"
 msgstr "Vizualizare date"
 
+#: src/features/learning/components/interactive/EUComparisonChart.tsx:124
+msgid "Data: Eurostat 2024 (Provisional)"
+msgstr ""
+
 #: src/components/filters/period-filter/PeriodFilter.tsx:253
 msgid "Dates"
 msgstr "Date"
@@ -1740,6 +1769,10 @@ msgstr "Finalizat"
 msgid "Download"
 msgstr "Descarcă"
 
+#: src/features/learning/components/interactive/RevenueDistributionGame.tsx:167
+msgid "Drag the sliders to guess how much each source contributes."
+msgstr ""
+
 #: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:40
 #: src/components/charts/components/views/AnnotationConfigView.tsx:221
 #: src/components/charts/components/views/SeriesConfigView.tsx:248
@@ -1845,6 +1878,10 @@ msgstr "Editează adnotarea"
 msgid "Edit Annotations"
 msgstr "Editează adnotări"
 
+#: src/features/learning/components/interactive/VATReformCard.tsx:25
+msgid "Effective Date"
+msgstr ""
+
 #: src/routes/cookie-policy.lazy.tsx:18
 #: src/routes/privacy.lazy.tsx:17
 #: src/routes/terms.lazy.tsx:17
@@ -1927,6 +1964,10 @@ msgstr "Introduceți valoarea nouă"
 #: src/components/charts/components/views/SeriesConfigView.tsx:176
 msgid "Enter series label..."
 msgstr "Introduceți eticheta seriei..."
+
+#: src/features/learning/components/interactive/GuidedActivity.tsx:170
+msgid "Enter Value"
+msgstr ""
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:687
 #: src/components/charts/components/series-config/SeriesFilter.tsx:864
@@ -2050,13 +2091,29 @@ msgstr "Cookie-uri și Stocare Esențiale (întotdeauna active)"
 msgid "Essential storage is required for the app to work."
 msgstr "Stocarea esențială este necesară pentru funcționarea aplicației."
 
+#: src/features/learning/components/interactive/VATReformCard.tsx:31
+msgid "Essentials"
+msgstr ""
+
 #: src/features/learning/components/cards/LearningPathCard.tsx:158
 msgid "Estimate"
 msgstr "Estimare"
 
+#: src/features/learning/components/interactive/RevenueDistributionGame.tsx:166
+msgid "Estimate the Shares"
+msgstr ""
+
+#: src/features/learning/components/interactive/EUComparisonChart.tsx:29
+msgid "EU Average"
+msgstr ""
+
 #: src/features/learning/components/interactive/PromiseTracker.tsx:93
 msgid "EU Co-financed Projects"
 msgstr "Proiecte cofinanțate de UE"
+
+#: src/features/learning/components/interactive/RevenueDistributionGame.tsx:78
+msgid "EU Funds, Dividends, etc."
+msgstr ""
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:623
 #: src/components/theme/currency-toggle.tsx:37
@@ -2455,6 +2512,10 @@ msgstr "Sursă de finanțare"
 msgid "Funding Source"
 msgstr "Sursă de Finanțare"
 
+#: src/features/learning/components/interactive/RevenueDistributionGame.tsx:73
+msgid "Funds the pension checks and hospital bills directly. It's a huge mandatory system."
+msgstr ""
+
 #: src/components/charts/components/views/SeriesConfigView.tsx:231
 msgid "Generate random color"
 msgstr "Generează o culoare aleatorie"
@@ -2562,6 +2623,10 @@ msgstr "Brut"
 msgid "Grouping"
 msgstr "Grupare"
 
+#: src/features/learning/components/interactive/GuidedActivity.tsx:105
+msgid "Guided Activity"
+msgstr ""
+
 #: src/routes/share.$code.tsx:56
 msgid "Hang tight while we resolve and redirect you to the destination."
 msgstr "Te rugăm să aștepți cât timp te redirecționăm către destinație."
@@ -2610,6 +2675,10 @@ msgstr "Ascunde setările avansate"
 msgid "Hide details"
 msgstr "Ascunde detaliile"
 
+#: src/features/learning/components/interactive/GuidedActivity.tsx:195
+msgid "HINT"
+msgstr ""
+
 #: src/components/footer/AppFooter.tsx:85
 msgid "Home"
 msgstr "Acasă"
@@ -2625,6 +2694,14 @@ msgstr "Cum calculăm veniturile consolidate reale (excluzând fluxurile inter-b
 #: src/routes/privacy.lazy.tsx:58
 msgid "How we use your data"
 msgstr "Cum folosim datele dumneavoastră"
+
+#: src/features/learning/components/interactive/VATCalculator.tsx:92
+msgid "I spend monthly"
+msgstr ""
+
+#: src/features/learning/components/interactive/GuidedActivity.tsx:162
+msgid "I've done this"
+msgstr ""
 
 #: src/routes/cookie-policy.lazy.tsx:48
 msgid "If you create an account, Clerk sets the following cookies for authentication and session management:"
@@ -2643,6 +2720,14 @@ msgstr "Dacă vă autentificați, cookie-urile de autentificare (Clerk) sunt ese
 msgid "If you unsubscribe, you will no longer receive emails for this notification. You can always resubscribe later from your account settings."
 msgstr "Dacă vă dezabonați, nu veți mai primi e-mailuri pentru această notificare. Vă puteți reabona oricând din setările contului."
 
+#: src/features/learning/components/interactive/VATCalculator.tsx:186
+msgid "in \"invisible\" consumption taxes."
+msgstr ""
+
+#: src/features/learning/components/interactive/VATCalculator.tsx:180
+msgid "In one year, you will pay"
+msgstr ""
+
 #: src/routes/terms.lazy.tsx:82
 msgid "Include visible attribution to the data source and Transparenta.eu when sharing charts/maps."
 msgstr "Includeți o atribuire vizibilă a sursei datelor și a Transparenta.eu la partajarea graficelor/hărților."
@@ -2650,6 +2735,10 @@ msgstr "Includeți o atribuire vizibilă a sursei datelor și a Transparenta.eu 
 #: src/routes/cookies.lazy.tsx:139
 msgid "Includes additional error context. No user identity is attached."
 msgstr "Include context suplimentar pentru erori. Nu se atașează nicio identitate a utilizatorului."
+
+#: src/features/learning/components/interactive/RevenueDistributionGame.tsx:82
+msgid "Includes EU money (PNRR) and profits from state-owned companies. Essential but smaller."
+msgstr ""
 
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:63
 #: src/components/entities/EntityFinancialTrends.tsx:266
@@ -2813,6 +2902,10 @@ msgstr "Limbă"
 msgid "Last evaluated"
 msgstr "Ultima evaluare"
 
+#: src/features/learning/components/interactive/VATReformCard.tsx:23
+msgid "Law 141/2025"
+msgstr ""
+
 #: src/components/ui/shortcuts-modal.tsx:26
 msgid "Learn all the keyboard shortcuts available in the application."
 msgstr "Învață toate comenzile rapide de la tastatură disponibile în aplicație."
@@ -2870,7 +2963,7 @@ msgstr "Mai mic decât"
 msgid "Lesson completed!"
 msgstr "Lecție finalizată!"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:137
+#: src/features/learning/components/player/LessonPlayer.tsx:152
 msgid "Lesson not found"
 msgstr "Lecția nu a fost găsită"
 
@@ -2883,6 +2976,10 @@ msgstr "Lecții"
 #: src/routes/$lang/learning/$pathId/index.tsx:156
 msgid "Lessons Completed"
 msgstr "Lecții finalizate"
+
+#: src/features/learning/components/interactive/RevenueDistributionGame.tsx:142
+msgid "Let's find out"
+msgstr ""
 
 #: src/components/theme/mode-toggle.tsx:27
 msgid "Light"
@@ -2937,7 +3034,7 @@ msgstr "Se încarcă datele..."
 msgid "Loading heatmap data..."
 msgstr "Se încarcă datele pentru harta termică..."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:177
+#: src/features/learning/components/player/LessonPlayer.tsx:192
 msgid "Loading lesson..."
 msgstr "Se încarcă lecția..."
 
@@ -3011,6 +3108,10 @@ msgstr "Creditor Principal"
 #: src/components/entities/EntityReportControls.tsx:49
 msgid "Main creditor aggregated"
 msgstr "Creditor principal agregat"
+
+#: src/features/learning/components/interactive/VATReformCard.tsx:22
+msgid "Major Reform"
+msgstr ""
 
 #: src/features/learning/components/interactive/PromiseTracker.tsx:202
 msgid "Make a Prediction for {selectedYear}"
@@ -3144,6 +3245,10 @@ msgstr "Mnemonic:"
 msgid "Modules"
 msgstr "Module"
 
+#: src/features/learning/components/interactive/VATCalculator.tsx:166
+msgid "Money the seller collects just to pass to the state."
+msgstr ""
+
 #: src/features/notifications/components/EntityNotificationAnnouncement.tsx:95
 msgid "Monitor this institution"
 msgstr "Monitorizează această instituție"
@@ -3178,6 +3283,10 @@ msgstr "mai mult"
 #: src/components/ui/breadcrumb.tsx:103
 msgid "More"
 msgstr "Mai mult"
+
+#: src/features/learning/components/interactive/RevenueDistributionGame.tsx:134
+msgid "Most people think they know, but the reality often surprises. Ready to test your intuition?"
+msgstr ""
 
 #: src/components/ui/shortcuts.tsx:129
 msgid "Most shortcuts work on both Windows/Linux (Ctrl) and macOS (⌘). Some shortcuts may conflict with browser defaults."
@@ -3245,6 +3354,18 @@ msgstr "Ai nevoie de ajutor?"
 msgid "Net Monthly Income"
 msgstr "Venit net lunar"
 
+#: src/features/learning/components/interactive/VATCalculator.tsx:154
+msgid "Net Price"
+msgstr ""
+
+#: src/features/learning/components/interactive/VATReformCard.tsx:30
+msgid "New"
+msgstr ""
+
+#: src/features/learning/components/interactive/VATReformCard.tsx:28
+msgid "New Reality"
+msgstr ""
+
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:107
 msgid "New value"
 msgstr "Valoare nouă"
@@ -3266,7 +3387,8 @@ msgstr "Consimțământul și gestionarea buletinului informativ"
 msgid "Newsletters and notifications"
 msgstr "Buletine informative și notificări"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:224
+#: src/features/learning/components/interactive/GuidedActivity.tsx:238
+#: src/features/learning/components/player/LessonPlayer.tsx:239
 msgid "Next"
 msgstr "Următorul"
 
@@ -3462,6 +3584,10 @@ msgstr "Cheltuieli indirecte"
 msgid "Normalization"
 msgstr "Normalizare"
 
+#: src/features/learning/components/interactive/GuidedActivity.tsx:186
+msgid "Not quite. Try again! Check the hint if stuck."
+msgstr ""
+
 #: src/routes/cookie-policy.lazy.tsx:78
 msgid "Note: Deleting authentication cookies will sign you out of your account. Deleting essential localStorage will reset your saved charts and preferences."
 msgstr "Notă: Ștergerea cookie-urilor de autentificare vă va deconecta din cont. Ștergerea localStorage-ului esențial va reseta graficele și preferințele dumneavoastră salvate."
@@ -3490,6 +3616,10 @@ msgstr "Noiembrie"
 msgid "October"
 msgstr "Octombrie"
 
+#: src/features/learning/components/interactive/VATReformCard.tsx:27
+msgid "Old Rates"
+msgstr ""
+
 #: src/routes/charts/index.lazy.tsx:216
 msgid "Oldest"
 msgstr "Cele mai vechi"
@@ -3503,6 +3633,10 @@ msgstr "Cele mai vechi primele"
 msgid "on Infrastructure. How much of that budget was actually used?"
 msgstr "pentru Infrastructură. Cât din acel buget a fost utilizat efectiv?"
 
+#: src/features/learning/components/interactive/EUComparisonChart.tsx:30
+msgid "One of the lowest"
+msgstr ""
+
 #: src/routes/cookie-policy.lazy.tsx:57
 msgid "Only set if you consent to analytics:"
 msgstr "Setate doar dacă sunteți de acord cu analiza:"
@@ -3510,6 +3644,10 @@ msgstr "Setate doar dacă sunteți de acord cu analiza:"
 #: src/routes/cookie-policy.lazy.tsx:63
 msgid "Only set if you consent to enhanced error reporting:"
 msgstr "Setate doar dacă sunteți de acord cu raportarea îmbunătățită a erorilor:"
+
+#: src/features/learning/components/interactive/GuidedActivity.tsx:151
+msgid "Open Budget Explorer"
+msgstr ""
 
 #: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:36
 msgid "Open Config Panel"
@@ -3601,6 +3739,10 @@ msgstr "sau"
 msgid "Other Economic"
 msgstr "Alte categorii economice"
 
+#: src/features/learning/components/interactive/RevenueDistributionGame.tsx:77
+msgid "Other Sources"
+msgstr ""
+
 #: src/hooks/useEntityViews.tsx:14
 msgid "Overview"
 msgstr "Prezentare generală"
@@ -3654,6 +3796,10 @@ msgstr "Pauză"
 #: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:383
 msgid "Pension (CAS)"
 msgstr "Pensie (CAS)"
+
+#: src/features/learning/components/interactive/RevenueDistributionGame.tsx:69
+msgid "Pensions (CAS), Health (CASS)"
+msgstr ""
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:812
 msgid "people"
@@ -3759,7 +3905,7 @@ msgstr "Se pregătește linkul de partajare..."
 msgid "Preview"
 msgstr "Previzualizare"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:202
+#: src/features/learning/components/player/LessonPlayer.tsx:217
 msgid "Previous"
 msgstr "Anterior"
 
@@ -3868,6 +4014,7 @@ msgid "Real (2024)"
 msgstr "Real (2024)"
 
 #: src/features/learning/components/interactive/PromiseTracker.tsx:265
+#: src/features/learning/components/interactive/RevenueDistributionGame.tsx:275
 msgid "Reality"
 msgstr "Realitate"
 
@@ -3980,6 +4127,18 @@ msgstr "Restaurează"
 #: src/features/learning/components/interactive/PromiseTracker.tsx:238
 msgid "Reveal Reality"
 msgstr "Dezvăluie realitatea"
+
+#: src/features/learning/components/interactive/RevenueDistributionGame.tsx:201
+msgid "Reveal Truth"
+msgstr ""
+
+#: src/features/learning/components/interactive/DeficitVisual.tsx:10
+msgid "Revenue"
+msgstr ""
+
+#: src/features/learning/components/interactive/EUComparisonChart.tsx:25
+msgid "Revenue as % of GDP: EU Comparison"
+msgstr ""
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:590
 #: src/components/filters/EntityAnalyticsFilter.tsx:437
@@ -4197,6 +4356,10 @@ msgstr "Călătoria selectată"
 msgid "Selection Mode"
 msgstr "Mod de selecție"
 
+#: src/features/learning/components/interactive/VATCalculator.tsx:135
+msgid "Seller Keeps"
+msgstr ""
+
 #: src/components/footer/AppFooter.tsx:178
 #: src/components/sentry/SendFeedbackAction.tsx:17
 msgid "Send feedback"
@@ -4395,6 +4558,10 @@ msgstr "Autentificați-vă pentru a primi actualizări despre entitățile care 
 msgid "Sign in to save your progress and track your learning journey."
 msgstr "Autentifică-te pentru a salva progresul și a urmări călătoria ta de învățare."
 
+#: src/features/learning/components/interactive/RevenueDistributionGame.tsx:68
+msgid "Social Contrib."
+msgstr ""
+
 #: src/components/charts/components/ChartDataError.tsx:232
 msgid "Some data issues were automatically resolved"
 msgstr "Unele probleme cu datele au fost rezolvate automat"
@@ -4425,6 +4592,10 @@ msgstr "Sursă"
 msgid "Source: "
 msgstr "Sursă: "
 
+#: src/features/learning/components/interactive/DeficitVisual.tsx:17
+msgid "Spending"
+msgstr ""
+
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:54
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:220
 msgid "Spending Calculation"
@@ -4439,6 +4610,7 @@ msgid "Spot on!"
 msgstr "Exact!"
 
 #: src/components/maps/HeatmapDataTable.tsx:446
+#: src/features/learning/components/interactive/VATReformCard.tsx:29
 #: src/routes/entity-analytics.lazy.tsx:229
 msgid "Standard"
 msgstr "Standard"
@@ -4477,6 +4649,10 @@ msgstr "Începe parcursul"
 #: src/routes/$lang/learning/index.tsx:162
 msgid "Start your first lesson and track your progress."
 msgstr "Începe prima lecție și urmărește-ți progresul."
+
+#: src/features/learning/components/interactive/VATCalculator.tsx:136
+msgid "State Takes"
+msgstr ""
 
 #. placeholder {0}: Math.round((result.gross - result.net) / result.gross * 100)
 #: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:359
@@ -4564,6 +4740,10 @@ msgstr "Apasă"
 msgid "Tax deductions outside inter-budget transfers"
 msgstr "Deduceri fiscale în afara transferurilor inter-bugetare"
 
+#: src/features/learning/components/interactive/RevenueDistributionGame.tsx:59
+msgid "Taxes"
+msgstr ""
+
 #: src/routes/cookie-policy.lazy.tsx:30
 msgid "Technologies we use"
 msgstr "Tehnologiile pe care le folosim"
@@ -4584,13 +4764,25 @@ msgstr "Termeni de utilizare"
 msgid "Test error"
 msgstr "Eroare de test"
 
+#: src/features/learning/components/interactive/VATCalculator.tsx:157
+msgid "The actual value of goods & services you receive."
+msgstr ""
+
 #: src/components/classification-explorer/ClassificationExplorer.tsx:150
 msgid "The classification code \"{selectedCode}\" could not be found."
 msgstr "Codul de clasificare „{selectedCode}” nu a putut fi găsit."
 
+#: src/features/learning/components/interactive/DeficitVisual.tsx:24
+msgid "The Deficit"
+msgstr ""
+
 #: src/features/learning/components/interactive/PromiseTracker.tsx:205
 msgid "The government planned to spend"
 msgstr "Guvernul a planificat să cheltuiască"
+
+#: src/features/learning/components/interactive/RevenueDistributionGame.tsx:64
+msgid "The largest chunk. VAT alone brings in nearly as much as all salary taxes combined."
+msgstr ""
 
 #: src/routes/$lang/learning/$pathId/index.tsx:42
 msgid "The learning path you're looking for doesn't exist or has been moved."
@@ -4600,13 +4792,25 @@ msgstr "Parcursul de învățare pe care îl cauți nu există sau a fost mutat.
 msgid "The learning path you're looking for doesn't exist."
 msgstr "Parcursul de învățare pe care îl cauți nu există."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:139
+#: src/features/learning/components/player/LessonPlayer.tsx:154
 msgid "The lesson you're looking for doesn't exist or may have been moved."
 msgstr "Lecția pe care o cauți nu există sau este posibil să fi fost mutată."
+
+#: src/features/learning/components/interactive/VATReformCard.tsx:24
+msgid "The new fiscal reality affecting your wallet."
+msgstr ""
 
 #: src/routes/__root.tsx:94
 msgid "The page you are looking for doesn't exist or has been moved."
 msgstr "Pagina pe care o căutați nu există sau a fost mutată."
+
+#: src/features/learning/components/interactive/RevenueDistributionGame.tsx:222
+msgid "The Reality"
+msgstr ""
+
+#: src/features/learning/components/interactive/VATReformCard.tsx:34
+msgid "The reform simplified the tax code but increased the burden on consumption. The \"Essentials\" category now consolidates food, books, and tourism under a single 11% rate."
+msgstr ""
 
 #: src/routes/privacy.lazy.tsx:144
 msgid "The Service is not directed to children under 16. We do not knowingly collect personal data from children under 16. If you believe we have collected data from a child under 16, please contact us immediately."
@@ -4893,6 +5097,10 @@ msgstr "Încearcă din nou"
 msgid "Try Again"
 msgstr "Încercați din nou"
 
+#: src/features/learning/components/interactive/RevenueDistributionGame.tsx:314
+msgid "Try guessing again"
+msgstr ""
+
 #: src/components/maps/utils.ts:26
 msgid "Type"
 msgstr "Tip"
@@ -4932,6 +5140,10 @@ msgstr "Înțelegerea cheltuielilor bugetului general consolidat"
 #: src/routes/charts/$chartId/index.lazy.tsx:33
 msgid "Undo successful"
 msgstr "Anulare reușită"
+
+#: src/features/learning/components/interactive/VATReformCard.tsx:32
+msgid "Unified"
+msgstr ""
 
 #: src/components/alerts/components/ConditionsList.tsx:116
 #: src/components/charts/components/series-config/UnitInput.tsx:28
@@ -5043,6 +5255,18 @@ msgstr "Valoare"
 msgid "Value Changed"
 msgstr "Valoare modificată"
 
+#: src/features/learning/components/interactive/VATCalculator.tsx:161
+msgid "VAT Collected"
+msgstr ""
+
+#: src/features/learning/components/interactive/VATCalculator.tsx:88
+msgid "VAT Reality Check"
+msgstr ""
+
+#: src/features/learning/components/interactive/RevenueDistributionGame.tsx:60
+msgid "VAT, Income, Profit"
+msgstr ""
+
 #: src/routes/$lang/learning/certificates.$id.tsx:93
 msgid "Verify a learning certificate (proof of concept)."
 msgstr "Verifică un certificat de învățare (proof of concept)."
@@ -5146,13 +5370,25 @@ msgstr "Bine ai revenit."
 msgid "What personal data we collect"
 msgstr "Ce date personale colectăm"
 
+#: src/features/learning/components/interactive/VATReformCard.tsx:33
+msgid "What this means"
+msgstr ""
+
 #: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:225
 msgid "What's your <0>gross</0> salary?"
 msgstr "Care este salariul tău <0>brut</0>?"
 
+#: src/features/learning/components/interactive/RevenueDistributionGame.tsx:131
+msgid "Who fuels the budget?"
+msgstr ""
+
 #: src/routes/privacy.lazy.tsx:32
 msgid "Who we are"
 msgstr "Cine suntem"
+
+#: src/features/learning/components/interactive/VATCalculator.tsx:175
+msgid "Why it matters"
+msgstr ""
 
 #: src/routes/$lang/learning/index.tsx:186
 #: src/routes/$lang/learning/index.tsx:314
@@ -5193,6 +5429,10 @@ msgstr "Anual"
 #: src/components/filters/flags-filter/index.tsx:24
 msgid "Yes"
 msgstr "Da"
+
+#: src/features/learning/components/interactive/RevenueDistributionGame.tsx:287
+msgid "You"
+msgstr ""
 
 #: src/routes/cookies.lazy.tsx:91
 msgid "You are signed in. Authentication cookies (Clerk) are essential and required to keep you signed in. Deleting them will sign you out."
@@ -5257,6 +5497,10 @@ msgstr "Ai finalizat acest parcurs de învățare."
 #: src/features/learning/components/player/MarkComplete.tsx:51
 msgid "You've completed this lesson"
 msgstr "Ai finalizat această lecție"
+
+#: src/features/learning/components/interactive/GuidedActivity.tsx:128
+msgid "You've successfully analyzed the revenue data. You're ready to proceed."
+msgstr ""
 
 #: src/features/learning/components/interactive/BudgetFootprintRevealer.tsx:449
 msgid "Your daily budget footprint"

@@ -125,7 +125,7 @@ export function RevenueDistributionGame() {
             animate="visible"
             exit="exit"
           >
-            <Card className="p-12 md:p-20 text-center rounded-[3rem] bg-white text-zinc-900 shadow-xl border border-zinc-100 relative overflow-hidden">
+            <Card className="p-6 md:p-20 text-center rounded-[3rem] bg-white text-zinc-900 shadow-xl border border-zinc-100 relative overflow-hidden">
               <div className="relative z-10 space-y-6 pt-10">
                 <h2 className="text-4xl md:text-6xl font-black tracking-tighter leading-[1.1]">
                   <Trans>Who fuels the budget?</Trans>
@@ -160,7 +160,7 @@ export function RevenueDistributionGame() {
             animate="visible"
             exit="exit"
           >
-            <Card className="p-8 md:p-14 rounded-[3rem] shadow-xl border-white/10 relative">
+            <Card className="p-4 md:p-14 rounded-[3rem] shadow-xl border-white/10 relative">
               <div className="space-y-10">
                 <div className="text-center space-y-3">
                   <h3 className="text-3xl md:text-4xl font-black tracking-tight"><Trans>Estimate the Shares</Trans></h3>
@@ -175,7 +175,7 @@ export function RevenueDistributionGame() {
                           <div className={cn("p-2 rounded-xl", COLOR_VARIANTS[cat.color as keyof typeof COLOR_VARIANTS].bgLight, COLOR_VARIANTS[cat.color as keyof typeof COLOR_VARIANTS].text)}>
                             <cat.icon className="w-5 h-5" />
                           </div>
-                          <span className="font-bold text-xl tracking-tight">{cat.label}</span>
+                          <span className="font-bold text-lg md:text-xl tracking-tight">{cat.label}</span>
                         </div>
                         <span className={cn("text-2xl font-black tabular-nums", COLOR_VARIANTS[cat.color as keyof typeof COLOR_VARIANTS].text)}>
                           {guesses[cat.id]}%
@@ -215,7 +215,7 @@ export function RevenueDistributionGame() {
             animate="visible"
             exit="exit"
           >
-            <Card className="p-8 md:p-14 rounded-[3rem] bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white shadow-3xl border-none relative overflow-hidden transition-colors duration-500">
+            <Card className="p-4 md:p-14 rounded-[3rem] bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white shadow-3xl border-none relative overflow-hidden transition-colors duration-500">
               <div className="relative z-10 space-y-10">
                 <div className="text-center space-y-2">
                   <h3 className="text-3xl md:text-5xl font-black tracking-tighter text-zinc-900 dark:text-white">

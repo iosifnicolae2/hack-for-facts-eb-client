@@ -1,0 +1,204 @@
+---
+title: "Fii Ministrul Finanțelor"
+durationMinutes: 6
+concept: "Principalele categorii de cheltuieli și priorități ale României"
+objective: "Identifică principalele categorii de cheltuieli din bugetul României"
+---
+
+# Fii Ministrul Finanțelor
+
+## Introducere
+
+Acum că înțelegi de unde vin banii (taxe, contribuții, fonduri UE), hai să vedem unde se duc. România cheltuiește aproximativ **43,5% din PIB** prin bugetele publice — adică peste **727 miliarde RON** pe an (2024).
+
+Dar iată problema: majoritatea dintre noi avem opinii despre cheltuielile guvernamentale fără să cunoaștem cifrele reale. Credem că „prea mult se duce pe X" sau „nu e suficient pentru Y" — dar cum se compară intuiția noastră cu realitatea?
+
+> **Idee cheie:** Întrebarea nu este doar CÂT se cheltuiește, ci și: Se cheltuiește acolo unde crezi tu că ar trebui? Și cheltuielile reale corespund priorităților tale?
+
+---
+
+## Element Interactiv: Jocul Alocării Bugetului
+
+Ești Ministrul Finanțelor pentru o zi. Ai 100 de miliarde RON de alocat pe categorii de cheltuieli. Fă-ți alegerile, apoi vezi cum se compară cu bugetul real al României.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  🎮 ALOCATOR DE BUGET                                        │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Ai 100 miliarde RON de alocat. Trage cursoarele pentru     │
+│  a seta prioritățile, apoi compară cu cheltuielile reale.    │
+│                                                              │
+│  Protecție Socială  ████████████░░░░░░░░  35 miliarde [━━●━] │
+│  Sănătate           ████████░░░░░░░░░░░░  20 miliarde [━●━━] │
+│  Educație           ██████░░░░░░░░░░░░░░  15 miliarde [━●━━] │
+│  Apărare            ████░░░░░░░░░░░░░░░░  10 miliarde [●━━━] │
+│  Infrastructură     ████░░░░░░░░░░░░░░░░  10 miliarde [●━━━] │
+│  Altele             ████░░░░░░░░░░░░░░░░  10 miliarde [●━━━] │
+│  ─────────────────────────────────────────────────────────── │
+│  TOTAL:             100 miliarde RON                         │
+│                                                              │
+│  [ Compară cu Bugetul Real → ]                               │
+│                                                              │
+│  ═══════════════════════════════════════════════════════════ │
+│                                                              │
+│  REZULTATUL COMPARAȚIEI:                                     │
+│  Alocarea ta vs. bugetul real al României din 2024:          │
+│                                                              │
+│  Categorie          Tu       Real      Diferență             │
+│  Protecție Socială  35%       32%      +3% mai generos       │
+│  Sănătate           20%       12%      +8% mai generos       │
+│  Educație           15%        8%      +7% mai generos       │
+│  Apărare            10%        4%      +6% mai generos       │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Specificații Componentă
+
+```typescript
+/**
+ * BudgetAllocatorGame Component
+ *
+ * PURPOSE: Let users allocate a hypothetical budget, then compare
+ * their choices against Romania's actual spending breakdown.
+ */
+interface BudgetAllocatorGameProps {
+  readonly totalBudget: number // e.g., 100 (billions)
+  readonly currency: 'RON' | 'EUR'
+  readonly categories: readonly BudgetCategory[]
+  readonly actualData: readonly ActualSpending[]
+  readonly onCompare?: (result: ComparisonResult) => void
+}
+
+interface BudgetCategory {
+  readonly id: string
+  readonly name: string
+  readonly icon: string
+  readonly minValue: number
+  readonly maxValue: number
+  readonly defaultValue: number
+  readonly description: string
+}
+
+interface ActualSpending {
+  readonly categoryId: string
+  readonly percentage: number
+  readonly year: number
+}
+
+interface ComparisonResult {
+  readonly allocations: readonly {
+    categoryId: string
+    userValue: number
+    actualValue: number
+    difference: number
+  }[]
+  readonly insights: readonly string[]
+}
+
+/**
+ * STATE MANAGEMENT:
+ * - allocations: Record<categoryId, number> - user's current allocation
+ * - isComparing: boolean - comparison mode active
+ * - hasCompared: boolean - user has seen comparison at least once
+ * - validationError: string | null - if total doesn't equal 100
+ *
+ * STATE TRANSITIONS:
+ * - Slider drag → update allocations, recalculate total
+ * - Total !== 100 → show validation message
+ * - Click Compare → animate transition to comparison view
+ * - Reset button → restore default values
+ *
+ * USER INTERACTIONS:
+ * - Drag slider: adjust allocation (5% increments for mobile-friendly)
+ * - Direct input: type exact number (validates 0-100 range)
+ * - Compare button: reveal actual values with animation
+ * - Reset button: clear to defaults
+ * - Category hover: show description tooltip
+ *
+ * VISUAL STATES:
+ * - Default: sliders at default positions, no comparison
+ * - Invalid: total bar shows red if !== 100
+ * - Comparing: split view showing user vs actual bars
+ * - Match highlight: green glow on categories where user ≈ actual (±3%)
+ * - Difference badges: show +X% or -X% with color coding
+ *
+ * ANIMATIONS:
+ * - Slider movement: smooth 150ms transition
+ * - Compare reveal: staggered bar growth (100ms delay per category)
+ * - Difference badges: pop-in animation (200ms, scale from 0.8)
+ * - Total validation: shake on invalid (300ms)
+ *
+ * ACCESSIBILITY:
+ * - Sliders use role="slider" with aria-valuemin, aria-valuemax, aria-valuenow
+ * - aria-live="polite" on total and validation messages
+ * - Keyboard: Arrow keys adjust by 1%, Page Up/Down by 5%
+ * - Screen reader announces comparison results
+ */
+```
+
+**Comportament Așteptat:**
+
+- Cursoarele trebuie să însumeze exact 100%
+- Calculul totalului în timp real pe măsură ce utilizatorul ajustează
+- Butonul de comparare dezvăluie alocarea reală a României
+- Diferențele colorate arată unde prioritățile utilizatorului diferă
+- Observații generate pe baza tiparelor (de ex., „Majoritatea oamenilor alocă mai mult pentru Educație decât guvernul")
+
+---
+
+## Explicație: Prioritățile de Cheltuieli ale României
+
+Iată unde se duc de fapt banii României:
+
+| Rang | Categorie | % din Total | Ce acoperă |
+|------|-----------|-------------|------------|
+| 1 | Protecție Socială | ~31-32% | Pensii, șomaj, asistență socială |
+| 2 | Afaceri Economice | ~15-17% | Transport, energie, agricultură, industrie |
+| 3 | Servicii Publice Generale | ~11-12% | Administrație, serviciul datoriei, contribuții UE |
+| 4 | Sănătate | ~11-12% | Spitale, medici, medicamente |
+| 5 | Educație | ~8-9% | Școli, universități, profesori |
+| 6 | Ordine Publică | ~6-7% | Poliție, instanțe, penitenciare |
+| 7 | Apărare | ~4% | Armată, angajamente NATO |
+| 8 | Altele | ~5-7% | Locuințe, mediu, cultură |
+
+### Gigantul Protecției Sociale
+
+**De ce este Protecția Socială atât de mare?** Un singur cuvânt: pensiile.
+
+România are o populație îmbătrânită și un sistem de pensii de tip „pay-as-you-go". Contribuțiile lucrătorilor actuali plătesc pentru pensionarii actuali. Cu mai puțini lucrători și mai mulți pensionari, această categorie continuă să crească.
+
+- ~4,7 milioane de pensionari (decembrie 2024)
+- Pensia medie: ~2.748 RON/lună (după reforma din septembrie 2024)
+- Doar această cheltuială este mai mare decât Sănătatea + Educația la un loc
+
+> **Verificare a realității:** Mulți români cred că prea mult se duce la „birocrați" sau „politicieni". În realitate, Protecția Socială (în principal pensiile) domină bugetul. Costurile reale de administrare sunt o fracțiune mică.
+
+---
+
+## Exercițiu
+
+<Quiz
+  id="expenditure-largest-category"
+  question="Care este cea mai mare categorie de cheltuieli a României?"
+  options={[
+    { id: "a", text: "Educație (școli și universități)", isCorrect: false },
+    { id: "b", text: "Sănătate (spitale și medici)", isCorrect: false },
+    { id: "c", text: "Protecție Socială (pensii și asistență socială)", isCorrect: true },
+    { id: "d", text: "Apărare (armată și NATO)", isCorrect: false }
+  ]}
+  explanation="Protecția Socială reprezintă aproximativ 31-32% din bugetul României, fiind de departe cea mai mare categorie. Aceasta este determinată în principal de plățile de pensii către aproximativ 4,7 milioane de pensionari. Sănătatea și Educația combinate sunt mai mici decât Protecția Socială singură."
+/>
+
+---
+
+## Concluzie
+
+> 📌 **Reține:** Protecția Socială (în principal pensiile) este cheltuiala #1 a României, reprezentând ~31-32% din buget. Înainte de a critica „cheltuielile risipitoare", e bine să știi unde se duc de fapt banii — și cea mai mare parte se duce la bunici.
+
+---
+
+<Sources>Surse de date: Baza de date Eurostat COFOG (gov_10a_exp), Casa Națională de Pensii Publice (CNPP) statistici decembrie 2024, Ministerul Finanțelor rapoarte de execuție bugetară. Cifrele reflectă execuția bugetară din 2024.</Sources>
+
+<MarkComplete label="Continuă la Clasificări" />
