@@ -29,22 +29,41 @@ This gap is measured by the **execution rate**: the percentage of planned budget
 | 70-95% | Moderate underspending | Minor delays or savings |
 | 50-70% | Significant gap | Planning issues or blocked projects |
 | Below 50% | Major failure | Investigate: Why wasn't money spent? |
+| Above 100% | Overspending | Budget revisions or emergency spending |
 
-### Why Does Underspending Happen?
+### The Deficit Paradox: How Can You Overspend AND Underspend?
 
-Not all underspending is bad, but patterns matter:
+Here's a puzzle: Romania had a **record deficit of 8.65% GDP in 2024** (152 billion RON vs. planned 86.6 billion RON). Yet domestic infrastructure investments only reached **55-60% execution**, while EU-financed projects performed even worse at **3-37%** depending on the program. How is this possible?
 
-1. **Bureaucratic delays** — Procurement takes longer than planned
-2. **Poor planning** — Budgets set unrealistically high
-3. **Capacity issues** — Institutions can't absorb funds fast enough
-4. **Political priorities** — Funds quietly redirected or frozen
-5. **External factors** — EU project conditions not met
+The answer reveals how public money actually flows:
+
+| Category | What Happened | Effect |
+|----------|---------------|--------|
+| Personnel (salaries) | Grew 24%, **exceeded** initial plan | Significant overspend |
+| Goods & Services | Grew 21%, **exceeded** initial plan | Significant overspend |
+| Social Transfers | Rose 17%, **exceeded** plan | Significant overspend |
+| Capital Investments | Only 55-60% spent | Major underspend |
+| EU Projects | Only 3-37% absorbed* | Major underspend |
+
+*\*EU absorption varies by program: PNRR 29-37%, Regional Programs 3.2%, Transport 27%*
+
+**The pattern:** Overspending on recurring costs (salaries, goods, social benefits) was larger than underspending on investments. The money didn't disappear — it was **redirected** from building things to paying people.
+
+### Why Does This Happen?
+
+1. **Salaries are legally mandatory** — Public employees must be paid, and raises are hard to reverse
+2. **Investments are easy to delay** — Construction can wait; salaries cannot
+3. **Weak administrative capacity** — Institutions struggle to execute complex projects
+4. **EU project complexity** — Strict conditions, audits, and procurement rules slow absorption
+5. **Political incentives** — Visible salary increases win votes faster than multi-year infrastructure
 
 ### The Personnel vs Investment Pattern
 
-One pattern repeats every year in Romania: **personnel costs execute at 95-100%** while **capital investments execute at 50-70%**.
+One pattern repeats every year in Romania: **personnel costs execute at 98-100%+** while **capital investments execute at 50-62%**.
 
-This means salaries always get paid, but the new school, the hospital wing, the road repair? Often delayed to next year. And next year. And the year after.
+This means salaries always get paid (sometimes more than planned), but the new school, the hospital wing, the road repair? Often delayed to next year. And next year. And the year after.
+
+The consequence: Romania risks losing **€5.2 billion** from EU structural funds due to absorption failures, and potentially **€10 billion** from PNRR (Recovery Fund) due to missed milestones.
 
 ---
 
@@ -52,34 +71,50 @@ This means salaries always get paid, but the new school, the hospital wing, the 
 
 <Quiz
   id="execution-rate-quiz"
-  question="A ministry planned to spend 10 billion RON but only spent 6 billion RON. What is the execution rate?"
+  question="A city planned 100 million RON for a new hospital wing. Only 55 million was spent. What's the execution rate?"
   options={[
-    { id: "a", text: "40%", isCorrect: false },
-    { id: "b", text: "60%", isCorrect: true },
-    { id: "c", text: "160%", isCorrect: false },
-    { id: "d", text: "Cannot be calculated", isCorrect: false }
+    { id: "a", text: "45%", isCorrect: false },
+    { id: "b", text: "55%", isCorrect: true },
+    { id: "c", text: "100%", isCorrect: false },
+    { id: "d", text: "155%", isCorrect: false }
   ]}
-  explanation="Execution rate = (Actual Spent / Planned) × 100. In this case: (6 billion / 10 billion) × 100 = 60%. This is a significant gap that would warrant investigation into why 40% of planned spending didn't happen."
+  explanation="Execution rate = Spent ÷ Planned × 100. Here: 55 ÷ 100 × 100 = 55%. This matches the typical infrastructure execution rate you just saw in the interactive above!"
 />
 
 <Quiz
-  id="pattern-recognition-quiz"
-  question="In Romania, which type of spending typically has the LOWEST execution rate?"
+  id="pattern-meaning-quiz"
+  question="You saw that salaries execute at ~98% while infrastructure executes at ~55%. What does this mean in practice?"
   options={[
-    { id: "a", text: "Personnel costs (salaries)", isCorrect: false },
-    { id: "b", text: "Goods and services", isCorrect: false },
-    { id: "c", text: "Capital investments (infrastructure)", isCorrect: true },
-    { id: "d", text: "Social transfers (pensions)", isCorrect: false }
+    { id: "a", text: "Public employees get paid on time, but the new school gets delayed", isCorrect: true },
+    { id: "b", text: "The government is saving money efficiently", isCorrect: false },
+    { id: "c", text: "Infrastructure projects are ahead of schedule", isCorrect: false },
+    { id: "d", text: "Salaries are being cut to fund construction", isCorrect: false }
   ]}
-  explanation="Capital investments consistently have the lowest execution rates (often 50-70%), meaning infrastructure projects — schools, hospitals, roads — frequently get delayed. Personnel costs, by contrast, execute near 100% because salaries must be paid."
+  explanation="This is the core pattern: recurring costs (salaries) are prioritized and always paid, while capital projects (schools, hospitals, roads) get pushed to 'next year' — sometimes indefinitely. The budget promise exists, but the building doesn't."
+/>
+
+<Quiz
+  id="why-investments-lag-quiz"
+  question="Why do investment budgets consistently underperform compared to salary budgets?"
+  options={[
+    { id: "a", text: "Construction is illegal in Romania", isCorrect: false },
+    { id: "b", text: "Salaries must be paid monthly; construction can wait", isCorrect: true },
+    { id: "c", text: "There are no infrastructure needs", isCorrect: false },
+    { id: "d", text: "Investment budgets are always set at zero", isCorrect: false }
+  ]}
+  explanation="Salaries are legally mandatory and politically sensitive — you can't tell employees to wait until next year. But a construction project? It can be delayed, replanned, or 'carried forward.' This structural difference explains why the gap persists year after year."
 />
 
 ---
 
 ## Key Takeaway
 
-> 📌 **Remember:** The gap between planned and spent reveals the truth. Watch execution rates — especially the pattern where salaries execute at 98% while infrastructure lingers at 58%. That gap is where unkept promises live.
+> 📌 **Remember:** Salaries at 98%, infrastructure at 55%. This gap is where budget promises go to die. When a politician announces funding for a new hospital, check the execution rate — that's when the promise becomes real.
 
 ---
 
 <MarkComplete label="Mark Lesson Complete" />
+
+---
+
+<small>*Data sources: Romanian Ministry of Finance (mfinante.gov.ro), Fiscal Council (Consiliul Fiscal) February 2025 report, European Commission PNRR assessments. Figures reflect 2024 budget execution.*</small>

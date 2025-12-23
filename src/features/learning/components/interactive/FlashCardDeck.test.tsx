@@ -195,22 +195,25 @@ describe('FlashCardDeck', () => {
 
   describe('reset functionality', () => {
     it('shows reset button after flipping a card', async () => {
-      render(<TestDeck />)
+      // Need to provide a title for the header (with reset button) to render
+      render(<TestDeck title="Test Title" />)
 
-      // Initially no reset button
-      expect(screen.queryByText('Start over')).not.toBeInTheDocument()
+      // Initially no reset button (shows only when cards are flipped)
+      expect(screen.queryByLabelText('Start over')).not.toBeInTheDocument()
 
       // Flip a card
       const cardButtons = getCardButtons()
       fireEvent.click(cardButtons[0])
 
       await waitFor(() => {
-        expect(screen.getByText('Start over')).toBeInTheDocument()
+        // The reset button has aria-label, not visible text
+        expect(screen.getByLabelText('Start over')).toBeInTheDocument()
       })
     })
 
     it('resets all cards when reset button is clicked', async () => {
-      render(<TestDeck />)
+      // Need to provide a title for the header (with reset button) to render
+      render(<TestDeck title="Test Title" />)
 
       const cardButtons = getCardButtons()
       
@@ -222,8 +225,8 @@ describe('FlashCardDeck', () => {
         expect(screen.getByText(/2\/2/)).toBeInTheDocument()
       })
 
-      // Click reset
-      fireEvent.click(screen.getByText('Start over'))
+      // Click reset button (identified by aria-label)
+      fireEvent.click(screen.getByLabelText('Start over'))
 
       await waitFor(() => {
         expect(screen.getByText(/0\/2/)).toBeInTheDocument()

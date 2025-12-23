@@ -7,7 +7,21 @@ const LearningQuizInteractionSchema = z.object({
   selectedOptionId: z.string().nullable(),
 })
 
-const LearningInteractionStateSchema = z.discriminatedUnion('kind', [LearningQuizInteractionSchema])
+const LearningPredictionRevealSchema = z.object({
+  guess: z.number().min(0).max(100),
+  actualRate: z.number().min(0).max(100),
+  revealedAt: z.string().datetime(),
+})
+
+const LearningPredictionInteractionSchema = z.object({
+  kind: z.literal('prediction'),
+  reveals: z.record(z.string(), LearningPredictionRevealSchema),
+})
+
+const LearningInteractionStateSchema = z.discriminatedUnion('kind', [
+  LearningQuizInteractionSchema,
+  LearningPredictionInteractionSchema,
+])
 
 const LearningProgressEventBaseSchema = z.object({
   eventId: z.string().min(1),

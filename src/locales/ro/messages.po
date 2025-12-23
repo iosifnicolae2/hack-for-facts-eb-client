@@ -415,6 +415,10 @@ msgstr "<0>Analiza Utilizării (opțională):</0> Dacă sunteți de acord, colec
 msgid "<0>What We Send:</0> Budget execution updates (monthly, quarterly, or annual reports) for entities you follow, and alerts about significant budget changes if you've enabled them."
 msgstr "<0>Ce Trimitem:</0> Actualizări privind execuția bugetară (rapoarte lunare, trimestriale sau anuale) pentru entitățile pe care le urmăriți și alerte despre modificări bugetare semnificative, dacă le-ați activat."
 
+#: src/features/learning/components/interactive/PromiseTracker.tsx:308
+msgid "2024 Example"
+msgstr ""
+
 #. js-lingui-explicit-id
 #: src/lib/errors-utils.ts:9
 msgid "error.updateAvailable"
@@ -844,7 +848,7 @@ msgstr ""
 msgid "Back to learning"
 msgstr ""
 
-#: src/features/learning/components/player/LessonPlayer.tsx:108
+#: src/features/learning/components/player/LessonPlayer.tsx:126
 #: src/routes/$lang/learning/$pathId/index.tsx:44
 #: src/routes/$lang/learning/$pathId/index.tsx:102
 msgid "Back to Learning Hub"
@@ -854,7 +858,7 @@ msgstr ""
 msgid "Back to Overview"
 msgstr "Înapoi la sinteză"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:180
+#: src/features/learning/components/player/LessonPlayer.tsx:198
 msgid "Back to path"
 msgstr ""
 
@@ -986,6 +990,10 @@ msgstr "Calcul"
 #: src/routes/unsubscribe.$token.tsx:113
 msgid "Cancel"
 msgstr "Anulează"
+
+#: src/features/learning/components/interactive/PromiseTracker.tsx:92
+msgid "Capital Investments (Infrastructure)"
+msgstr ""
 
 #: src/routes/cookie-policy.lazy.tsx:32
 msgid "Categories"
@@ -1139,6 +1147,10 @@ msgstr "Faceți clic pe linkul de mai jos pentru a explora toate clasificările 
 msgid "Clipboard does not contain copied chart series."
 msgstr "Clipboardul nu conține serii de grafic copiate."
 
+#: src/features/learning/components/interactive/PromiseTracker.tsx:166
+msgid "Close enough!"
+msgstr ""
+
 #: src/components/ui/shortcuts.tsx:32
 msgid "Close entity search dialog"
 msgstr "Închide dialogul de căutare entitate"
@@ -1186,7 +1198,7 @@ msgstr "Confortabil"
 msgid "Compact"
 msgstr "Compact"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:202
+#: src/features/learning/components/player/LessonPlayer.tsx:220
 msgid "Complete path"
 msgstr ""
 
@@ -1355,9 +1367,13 @@ msgstr "Copiază linkul de partajare"
 msgid "Copy Support Email"
 msgstr "Copiază Emailul de Suport"
 
-#: src/features/learning/components/assessment/Quiz.tsx:138
-msgid "Correct answer"
+#: src/features/learning/components/assessment/Quiz.tsx:159
+msgid "Correct"
 msgstr ""
+
+#: src/features/learning/components/assessment/Quiz.tsx:138
+#~ msgid "Correct answer"
+#~ msgstr ""
 
 #: src/components/filters/budget-sector-filter/BudgetSectorFilter.tsx:75
 msgid "Could Not Load Budget Sectors"
@@ -1667,6 +1683,10 @@ msgstr "Categorii detaliate"
 #: src/components/budget-explorer/BudgetLineItemsPreview.tsx:68
 msgid "Detailed Line Items Breakdown"
 msgstr "Detalierea liniilor bugetare"
+
+#: src/features/learning/components/interactive/PromiseTracker.tsx:326
+msgid "Detailed Spending Breakdown ({selectedYear})"
+msgstr ""
 
 #: src/routes/entities.$cui.lazy.tsx:336
 msgid "Details:"
@@ -2025,6 +2045,10 @@ msgstr "Stocarea esențială este necesară pentru funcționarea aplicației."
 msgid "Estimate"
 msgstr ""
 
+#: src/features/learning/components/interactive/PromiseTracker.tsx:93
+msgid "EU Co-financed Projects"
+msgstr ""
+
 #: src/components/charts/components/series-config/SeriesFilter.tsx:623
 #: src/components/theme/currency-toggle.tsx:37
 msgid "EUR"
@@ -2035,8 +2059,8 @@ msgid "Example: 2024-"
 msgstr "Exemplu: 2024-"
 
 #: src/features/learning/components/assessment/Quiz.tsx:173
-msgid "Excellent work!"
-msgstr ""
+#~ msgid "Excellent work!"
+#~ msgstr ""
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:864
 #: src/components/charts/components/series-config/SeriesFilter.tsx:873
@@ -2480,6 +2504,7 @@ msgid "Go to Map"
 msgstr "Vezi harta"
 
 #: src/components/entities/EntityLineItemsTabs.tsx:97
+#: src/features/learning/components/interactive/PromiseTracker.tsx:91
 msgid "Goods & Services"
 msgstr "Bunuri și servicii"
 
@@ -2630,6 +2655,10 @@ msgstr "Venituri/Cheltuieli"
 #: src/components/entities/EntityLineItemsTabs.tsx:84
 msgid "Incomes"
 msgstr "Venituri"
+
+#: src/features/learning/components/assessment/Quiz.tsx:159
+msgid "Incorrect"
+msgstr ""
 
 #: src/routes/terms.lazy.tsx:24
 msgid "Independent project; no government affiliation."
@@ -2803,7 +2832,7 @@ msgstr "Mai mic decât"
 msgid "Lesson completed!"
 msgstr ""
 
-#: src/features/learning/components/player/LessonPlayer.tsx:103
+#: src/features/learning/components/player/LessonPlayer.tsx:121
 msgid "Lesson not found"
 msgstr ""
 
@@ -2870,7 +2899,7 @@ msgstr "Se încarcă datele..."
 msgid "Loading heatmap data..."
 msgstr "Se încarcă datele pentru harta termică..."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:143
+#: src/features/learning/components/player/LessonPlayer.tsx:161
 msgid "Loading lesson..."
 msgstr ""
 
@@ -2940,6 +2969,10 @@ msgstr "Creditor Principal"
 #: src/components/entities/EntityReportControls.tsx:49
 msgid "Main creditor aggregated"
 msgstr "Creditor principal agregat"
+
+#: src/features/learning/components/interactive/PromiseTracker.tsx:202
+msgid "Make a Prediction for {selectedYear}"
+msgstr ""
 
 #: src/features/notifications/components/NotificationQuickMenu.tsx:91
 msgid "Manage all notifications"
@@ -3030,7 +3063,7 @@ msgstr ""
 msgid "Minimum"
 msgstr "Minim"
 
-#: src/features/learning/hooks/use-learning-progress.tsx:698
+#: src/features/learning/hooks/use-learning-progress.tsx:653
 msgid "Missing content id"
 msgstr ""
 
@@ -3044,7 +3077,7 @@ msgstr "Descriere lipsă"
 msgid "Missing Items"
 msgstr "Elemente lipsă"
 
-#: src/features/learning/hooks/use-learning-progress.tsx:740
+#: src/features/learning/hooks/use-learning-progress.tsx:696
 msgid "Missing path id"
 msgstr ""
 
@@ -3179,7 +3212,7 @@ msgstr "Consimțământul și gestionarea buletinului informativ"
 msgid "Newsletters and notifications"
 msgstr "Buletine informative și notificări"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:190
+#: src/features/learning/components/player/LessonPlayer.tsx:208
 msgid "Next"
 msgstr "Următorul"
 
@@ -3376,8 +3409,8 @@ msgid "Normalization"
 msgstr "Normalizare"
 
 #: src/features/learning/components/assessment/Quiz.tsx:173
-msgid "Not quite right"
-msgstr ""
+#~ msgid "Not quite right"
+#~ msgstr ""
 
 #: src/routes/cookie-policy.lazy.tsx:78
 msgid "Note: Deleting authentication cookies will sign you out of your account. Deleting essential localStorage will reset your saved charts and preferences."
@@ -3415,6 +3448,10 @@ msgstr "Cele mai vechi"
 #: src/components/entities/EntityReports.tsx:205
 msgid "Oldest first"
 msgstr "Cele mai vechi primele"
+
+#: src/features/learning/components/interactive/PromiseTracker.tsx:205
+msgid "on Infrastructure. How much of that budget was actually used?"
+msgstr ""
 
 #: src/routes/cookie-policy.lazy.tsx:57
 msgid "Only set if you consent to analytics:"
@@ -3611,9 +3648,25 @@ msgstr "Cheltuieli de personal"
 msgid "Personalized paths, interactive lessons, and verified certificates."
 msgstr ""
 
+#: src/features/learning/components/interactive/PromiseTracker.tsx:90
+msgid "Personnel Costs (Salaries)"
+msgstr ""
+
+#: src/features/learning/components/interactive/PromiseTracker.tsx:311
+msgid "Personnel costs grew 24% year-over-year, goods & services increased 21% — both exceeding initial allocations. Meanwhile, only 30% of EU project funds and 55% of investment budgets were used. Result: a record 8.65% GDP deficit (152B RON vs. planned 86.6B RON)."
+msgstr ""
+
+#: src/features/learning/components/interactive/PromiseTracker.tsx:311
+#~ msgid "Personnel costs grew 24% year-over-year, goods & services increased 21% — both exceeding initial allocations. Meanwhile, only 34% of EU project funds and 55% of investment budgets were used. Result: a record 8.65% GDP deficit (152B RON vs. planned 87B RON)."
+#~ msgstr ""
+
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:52
 msgid "Pie Chart (Aggregated)"
 msgstr "Grafic circular (agregat)"
+
+#: src/features/learning/components/interactive/PromiseTracker.tsx:351
+msgid "Planned"
+msgstr ""
 
 #: src/components/entities/UatDisplay.tsx:39
 #: src/components/entity-analytics/EntityAnalyticsTable.tsx:93
@@ -3652,7 +3705,7 @@ msgstr "Se pregătește linkul de partajare..."
 msgid "Preview"
 msgstr "Previzualizare"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:168
+#: src/features/learning/components/player/LessonPlayer.tsx:186
 msgid "Previous"
 msgstr "Anterior"
 
@@ -3715,9 +3768,17 @@ msgstr "Configurare rapidă"
 msgid "Quickly adjust chart settings"
 msgstr "Ajustați rapid setările graficului"
 
-#: src/features/learning/components/assessment/Quiz.tsx:53
-msgid "Quiz error: No options provided"
+#: src/features/learning/components/interactive/PromiseTracker.tsx:167
+msgid "Quite a difference..."
 msgstr ""
+
+#: src/features/learning/components/assessment/Quiz.tsx:53
+msgid "Quiz configuration error"
+msgstr ""
+
+#: src/features/learning/components/assessment/Quiz.tsx:53
+#~ msgid "Quiz error: No options provided"
+#~ msgstr ""
 
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:154
 msgid "Range"
@@ -3755,6 +3816,10 @@ msgstr "Real (prețuri 2024)"
 #: src/components/theme/inflation-toggle.tsx:43
 msgid "Real (2024)"
 msgstr "Real (2024)"
+
+#: src/features/learning/components/interactive/PromiseTracker.tsx:265
+msgid "Reality"
+msgstr ""
 
 #: src/routes/$lang/learning/certificates.$id.tsx:52
 msgid "Recipient"
@@ -3842,6 +3907,10 @@ msgstr "Necesar pentru funcționalități de bază, precum securitatea și prefe
 msgid "Reset amount filter"
 msgstr "Resetează filtrul de sumă"
 
+#: src/features/learning/components/interactive/PromiseTracker.tsx:386
+msgid "Reset Prediction"
+msgstr ""
+
 #: src/routes/$lang/learning/index.tsx:292
 msgid "Restart"
 msgstr ""
@@ -3857,6 +3926,10 @@ msgstr ""
 #: src/components/charts/components/backup-restore/ChartsBackupRestore.tsx:185
 msgid "Restore"
 msgstr "Restaurează"
+
+#: src/features/learning/components/interactive/PromiseTracker.tsx:238
+msgid "Reveal Reality"
+msgstr ""
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:590
 #: src/components/filters/EntityAnalyticsFilter.tsx:437
@@ -3874,6 +3947,14 @@ msgstr "Examinați și gestionați alertele create din seriile de date personali
 #: src/routes/$lang/learning/$pathId/index.tsx:125
 #: src/routes/$lang/learning/index.tsx:220
 msgid "Review Path"
+msgstr ""
+
+#: src/features/learning/components/interactive/PromiseTracker.tsx:303
+#~ msgid "Romania runs a deficit AND underspends on investments. How? Money gets redirected: salaries and social transfers often exceed initial plans (100%+), while infrastructure and EU projects lag behind (50-60%). The overspending on recurring costs outweighs the underspending on investments."
+#~ msgstr ""
+
+#: src/features/learning/components/interactive/PromiseTracker.tsx:303
+msgid "Romania runs a deficit AND underspends on investments. How? Money gets redirected: salaries and social transfers often exceed initial plans (100%+), while infrastructure lags at 55-60% and EU projects at just 30-35%. The overspending on recurring costs outweighs the underspending on investments."
 msgstr ""
 
 #: src/components/theme/language-toggle.tsx:46
@@ -4302,6 +4383,14 @@ msgstr "Sursă: "
 msgid "Spending Calculation"
 msgstr "Calculul cheltuielilor"
 
+#: src/features/learning/components/interactive/PromiseTracker.tsx:363
+msgid "spent"
+msgstr ""
+
+#: src/features/learning/components/interactive/PromiseTracker.tsx:165
+msgid "Spot on!"
+msgstr ""
+
 #: src/components/maps/HeatmapDataTable.tsx:446
 #: src/routes/entity-analytics.lazy.tsx:229
 msgid "Standard"
@@ -4435,6 +4524,10 @@ msgstr "Eroare de test"
 msgid "The classification code \"{selectedCode}\" could not be found."
 msgstr "Codul de clasificare „{selectedCode}” nu a putut fi găsit."
 
+#: src/features/learning/components/interactive/PromiseTracker.tsx:205
+msgid "The government planned to spend"
+msgstr ""
+
 #: src/routes/$lang/learning/$pathId/index.tsx:42
 msgid "The learning path you're looking for doesn't exist or has been moved."
 msgstr ""
@@ -4443,7 +4536,7 @@ msgstr ""
 msgid "The learning path you're looking for doesn't exist."
 msgstr ""
 
-#: src/features/learning/components/player/LessonPlayer.tsx:105
+#: src/features/learning/components/player/LessonPlayer.tsx:123
 msgid "The lesson you're looking for doesn't exist or may have been moved."
 msgstr ""
 
@@ -4466,6 +4559,10 @@ msgstr "Software-ul, designul și conținutul original al Serviciului sunt prote
 #: src/routes/share.$code.tsx:76
 msgid "The share link you are trying to access is invalid or no longer available."
 msgstr "Linkul de partajare pe care încerci să-l accesezi este invalid sau nu mai este disponibil."
+
+#: src/features/learning/components/interactive/PromiseTracker.tsx:300
+msgid "The Spending Redirection Pattern"
+msgstr ""
 
 #: src/routes/entities.$cui.lazy.tsx:335
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
@@ -4713,12 +4810,12 @@ msgstr "Venituri consolidate reale"
 msgid "Try a different search term or sorting."
 msgstr "Încercați un alt termen de căutare sau o altă sortare."
 
-#: src/features/learning/components/assessment/Quiz.tsx:196
 #: src/routes/alerts/$alertId/index.lazy.tsx:192
 #: src/routes/unsubscribe.$token.tsx:77
 msgid "Try again"
 msgstr "Încearcă din nou"
 
+#: src/features/learning/components/assessment/Quiz.tsx:175
 #: src/routes/settings/notifications.tsx:160
 msgid "Try Again"
 msgstr "Încercați din nou"
@@ -5090,6 +5187,11 @@ msgstr "Amprenta ta bugetară zilnică"
 
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:118
 msgid "Your path is ready"
+msgstr ""
+
+#: src/features/learning/components/interactive/PromiseTracker.tsx:212
+#: src/features/learning/components/interactive/PromiseTracker.tsx:254
+msgid "Your Prediction"
 msgstr ""
 
 #: src/routes/privacy.lazy.tsx:110

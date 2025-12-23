@@ -37,6 +37,10 @@ type BudgetFootprintRevealerMdxProps = {
   readonly budgetExplorerUrl?: string
 }
 
+type PromiseTrackerMdxProps = {
+  readonly id?: string
+}
+
 export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlayerProps) {
   const path = getLearningPathById(pathId)
   const module = path?.modules.find((m) => m.id === moduleId) ?? null
@@ -83,16 +87,28 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
     [locale]
   )
 
+  const PromiseTrackerWrapper = useCallback(
+    (props: PromiseTrackerMdxProps) => (
+      <PromiseTracker
+        {...props}
+        locale={locale}
+        contentId={lessonId}
+        predictionId={props.id ?? 'promise-tracker'}
+      />
+    ),
+    [locale, lessonId]
+  )
+
   const mdxComponents = useMemo(
     () => ({
       Quiz: QuizWrapper,
       MarkComplete: MarkCompleteWrapper,
       BudgetFootprintRevealer: BudgetFootprintRevealerWrapper,
-      PromiseTracker: (props: any) => <PromiseTracker {...props} locale={locale} />,
+      PromiseTracker: PromiseTrackerWrapper,
       FlashCard,
       FlashCardDeck,
     }),
-    [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, locale]
+    [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, PromiseTrackerWrapper]
   )
 
   if (!path || !module || !lesson) {

@@ -43,7 +43,18 @@ export type LearningQuizInteractionState = {
   readonly selectedOptionId: string | null
 }
 
-export type LearningInteractionState = LearningQuizInteractionState
+export type LearningPredictionReveal = {
+  readonly guess: number
+  readonly actualRate: number
+  readonly revealedAt: string
+}
+
+export type LearningPredictionInteractionState = {
+  readonly kind: 'prediction'
+  readonly reveals: Readonly<Record<string, LearningPredictionReveal>>
+}
+
+export type LearningInteractionState = LearningQuizInteractionState | LearningPredictionInteractionState
 
 export type LearningQuizAnswerAction = {
   readonly type: 'quiz.answer'
@@ -60,7 +71,27 @@ export type LearningQuizResetAction = {
   readonly interactionId: string
 }
 
-export type LearningInteractionAction = LearningQuizAnswerAction | LearningQuizResetAction
+export type LearningPredictionRevealAction = {
+  readonly type: 'prediction.reveal'
+  readonly contentId: string
+  readonly interactionId: string
+  readonly year: string
+  readonly guess: number
+  readonly actualRate: number
+  readonly contentVersion?: string
+}
+
+export type LearningPredictionResetAction = {
+  readonly type: 'prediction.reset'
+  readonly contentId: string
+  readonly interactionId: string
+}
+
+export type LearningInteractionAction =
+  | LearningQuizAnswerAction
+  | LearningQuizResetAction
+  | LearningPredictionRevealAction
+  | LearningPredictionResetAction
 
 export type LearningContentProgress = {
   readonly contentId: string

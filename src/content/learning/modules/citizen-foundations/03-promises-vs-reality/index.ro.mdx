@@ -1,0 +1,120 @@
+---
+title.en: "Promises vs Reality"
+title.ro: "Promisiuni vs Realitate"
+durationMinutes: 5
+concept: "Rata de execuție și analiza decalajelor"
+---
+
+# Promisiuni vs Realitate
+
+## Introducere
+
+Politicienii fac promisiuni. Bugetele sunt planificate. Dar ce se întâmplă de fapt? Decalajul dintre ce a fost **planificat** și ce a fost **cheltuit** dezvăluie adevăratele priorități ale oricărui guvern — nu vorbele lor, ci acțiunile.
+
+Acest decalaj se măsoară prin **rata de execuție**: procentul din bugetul planificat care a fost efectiv cheltuit. O rată de execuție de 100% înseamnă că tot ce a fost planificat a fost cheltuit. Sub 70%? Acesta este un decalaj semnificativ care merită investigat.
+
+> **Ideea cheie:** Bugetul dezvăluie ce valorează cu adevărat o societate — nu ce spun politicienii, ci unde pun efectiv banii.
+
+---
+<PromiseTracker client:load />
+---
+
+## Explicație
+
+### Înțelegerea ratelor de execuție
+
+| Rata de execuție | Semnificație | Semnal |
+|------------------|--------------|--------|
+| 95-100% | Buget utilizat integral | Funcționare normală |
+| 70-95% | Subexecuție moderată | Întârzieri minore sau economii |
+| 50-70% | Decalaj semnificativ | Probleme de planificare sau proiecte blocate |
+| Sub 50% | Eșec major | De investigat: De ce nu s-au cheltuit banii? |
+| Peste 100% | Depășire bugetară | Rectificări bugetare sau cheltuieli de urgență |
+
+### Paradoxul deficitului: Cum poți să cheltuiești prea mult ȘI prea puțin?
+
+Iată un puzzle: România a avut un **deficit record de 8,65% din PIB în 2024** (152 miliarde RON vs. 86,6 miliarde RON planificate). Cu toate acestea, investițiile în infrastructură au atins doar **55-60% execuție**, iar proiectele finanțate din fonduri UE au performat și mai slab, la **3-37%** în funcție de program. Cum este posibil?
+
+Răspunsul dezvăluie cum circulă de fapt banii publici:
+
+| Categorie | Ce s-a întâmplat | Efect |
+|-----------|------------------|-------|
+| Personal (salarii) | Creștere 24%, a **depășit** planul inițial | Depășire semnificativă |
+| Bunuri și Servicii | Creștere 21%, a **depășit** planul inițial | Depășire semnificativă |
+| Transferuri Sociale | Creștere 17%, a **depășit** planul | Depășire semnificativă |
+| Investiții de Capital | Doar 55-60% cheltuit | Subexecuție majoră |
+| Proiecte UE | Doar 3-37% absorbit* | Subexecuție majoră |
+
+*\*Absorbția UE variază pe programe: PNRR 29-37%, Programe Regionale 3,2%, Transport 27%*
+
+**Tiparul:** Depășirile la cheltuielile curente (salarii, bunuri, beneficii sociale) au fost mai mari decât subexecuția la investiții. Banii nu au dispărut — au fost **redirecționați** de la construcții către plata oamenilor.
+
+### De ce se întâmplă asta?
+
+1. **Salariile sunt obligatorii legal** — Angajații publici trebuie plătiți, iar majorările sunt greu de anulat
+2. **Investițiile pot fi amânate** — Construcțiile pot aștepta; salariile nu
+3. **Capacitate administrativă slabă** — Instituțiile se chinuie să execute proiecte complexe
+4. **Complexitatea proiectelor UE** — Condiții stricte, audituri și reguli de achiziții încetinesc absorbția
+5. **Stimulente politice** — Majorările salariale vizibile câștigă voturi mai repede decât infrastructura pe termen lung
+
+### Tiparul Personal vs Investiții
+
+Un tipar se repetă în fiecare an în România: **cheltuielile de personal se execută la 98-100%+** în timp ce **investițiile de capital se execută la 50-62%**.
+
+Asta înseamnă că salariile se plătesc întotdeauna (uneori mai mult decât era planificat), dar noua școală, aripa de spital, reparația drumului? Adesea amânate pentru anul viitor. Și anul viitor. Și anul următor.
+
+Consecința: România riscă să piardă **5,2 miliarde EUR** din fondurile structurale UE din cauza eșecurilor de absorbție, și potențial **10 miliarde EUR** din PNRR (Fondul de Redresare) din cauza jaloanelor neîndeplinite.
+
+---
+
+## Practică
+
+<Quiz
+  id="execution-rate-quiz"
+  question="Un oraș a planificat 100 milioane RON pentru o nouă aripă de spital. S-au cheltuit doar 55 milioane. Care este rata de execuție?"
+  options={[
+    { id: "a", text: "45%", isCorrect: false },
+    { id: "b", text: "55%", isCorrect: true },
+    { id: "c", text: "100%", isCorrect: false },
+    { id: "d", text: "155%", isCorrect: false }
+  ]}
+  explanation="Rata de execuție = Cheltuit ÷ Planificat × 100. Aici: 55 ÷ 100 × 100 = 55%. Aceasta corespunde ratei tipice de execuție pentru infrastructură pe care tocmai ai văzut-o în componenta interactivă de mai sus!"
+/>
+
+<Quiz
+  id="pattern-meaning-quiz"
+  question="Ai văzut că salariile se execută la ~98% în timp ce infrastructura la ~55%. Ce înseamnă asta în practică?"
+  options={[
+    { id: "a", text: "Angajații publici sunt plătiți la timp, dar noua școală este amânată", isCorrect: true },
+    { id: "b", text: "Guvernul economisește bani eficient", isCorrect: false },
+    { id: "c", text: "Proiectele de infrastructură sunt înaintea programului", isCorrect: false },
+    { id: "d", text: "Salariile sunt tăiate pentru a finanța construcții", isCorrect: false }
+  ]}
+  explanation="Acesta este tiparul central: cheltuielile curente (salarii) sunt prioritizate și plătite întotdeauna, în timp ce proiectele de capital (școli, spitale, drumuri) sunt amânate pentru 'anul viitor' — uneori la nesfârșit. Promisiunea bugetară există, dar clădirea nu."
+/>
+
+<Quiz
+  id="why-investments-lag-quiz"
+  question="De ce bugetele de investiții au constant performanțe mai slabe decât bugetele de salarii?"
+  options={[
+    { id: "a", text: "Construcțiile sunt ilegale în România", isCorrect: false },
+    { id: "b", text: "Salariile trebuie plătite lunar; construcțiile pot aștepta", isCorrect: true },
+    { id: "c", text: "Nu există nevoi de infrastructură", isCorrect: false },
+    { id: "d", text: "Bugetele de investiții sunt întotdeauna zero", isCorrect: false }
+  ]}
+  explanation="Salariile sunt obligatorii legal și sensibile politic — nu poți spune angajaților să aștepte până anul viitor. Dar un proiect de construcție? Poate fi amânat, replanificat sau 'reportat'. Această diferență structurală explică de ce decalajul persistă an de an."
+/>
+
+---
+
+## Concluzie
+
+> **De reținut:** Salarii la 98%, infrastructură la 55%. Acest decalaj este locul unde promisiunile bugetare mor. Când un politician anunță finanțare pentru un nou spital, verifică rata de execuție — atunci promisiunea devine reală.
+
+---
+
+<MarkComplete label="Marchează lecția ca finalizată" />
+
+---
+
+<small>*Surse de date: Ministerul Finanțelor din România (mfinante.gov.ro), Raportul Consiliului Fiscal din februarie 2025, evaluările Comisiei Europene privind PNRR. Cifrele reflectă execuția bugetară din 2024.*</small>

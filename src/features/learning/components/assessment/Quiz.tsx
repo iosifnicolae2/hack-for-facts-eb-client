@@ -70,7 +70,7 @@ export function Quiz({ id, question, options, explanation, contentId }: QuizProp
         </motion.div>
 
         <div className="space-y-3">
-          <AnimatePresence mode="wait">
+          <AnimatePresence>
             {validOptions.map((option, index) => {
               const isSelected = selectedOptionId === option.id
               const showAsCorrect = isAnswered && option.isCorrect

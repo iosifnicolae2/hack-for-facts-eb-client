@@ -6,16 +6,18 @@ import { fetchLearningProgress, syncLearningProgressEvents } from '../api/progre
 import { getEmptyLearningGuestProgress } from '../schemas/progress'
 import { parseLearningProgressEvents } from '../schemas/progress-events'
 import { applyLearningProgressEvent, reduceLearningProgressEvents } from '../utils/progress-event-reducer'
-import { getQuizStatus } from '../utils/interactions'
+import { resolveInteractionAction, type SaveContentProgressInput } from './interactions/interaction-resolver'
 import type {
   LearningAuthState,
   LearningContentProgress,
-  LearningContentStatus,
   LearningGuestProgress,
   LearningInteractionAction,
-  LearningInteractionState,
   LearningProgressEvent,
 } from '../types'
+
+// Import resolvers to register them
+import './interactions/quiz-resolver'
+import './interactions/prediction-resolver'
 
 const GUEST_EVENTS_KEY = 'learning_progress_events'
 const GUEST_SNAPSHOT_KEY = 'learning_progress_snapshot'
@@ -67,15 +69,9 @@ function nowIso(): string {
   return new Date().toISOString()
 }
 
-type SaveContentProgressInput = {
-  readonly contentId: string
-  readonly status: LearningContentStatus
-  readonly score?: number
-  readonly contentVersion?: string
-  readonly interaction?: {
-    readonly interactionId: string
-    readonly state: LearningInteractionState | null
-  }
+function clampScore(value: number | undefined): number | undefined {
+  if (typeof value !== 'number' || Number.isNaN(value)) return undefined
+  return Math.max(0, Math.min(100, value))
 }
 
 type SaveOnboardingInput = {
@@ -145,47 +141,6 @@ function mergeEventLogs(...logs: LearningProgressEvent[][]): LearningProgressEve
     }
   }
   return Array.from(byId.values())
-}
-
-function clampScore(value: number | undefined): number | undefined {
-  if (typeof value !== 'number' || Number.isNaN(value)) return undefined
-  return Math.max(0, Math.min(100, value))
-}
-
-function resolveInteractionAction(
-  action: LearningInteractionAction,
-  progress: LearningGuestProgress,
-): SaveContentProgressInput {
-  switch (action.type) {
-    case 'quiz.answer': {
-      const clampedScore = clampScore(action.score)
-      const status = getQuizStatus(clampedScore ?? 0)
-      return {
-        contentId: action.contentId,
-        status,
-        score: clampedScore,
-        contentVersion: action.contentVersion,
-        interaction: {
-          interactionId: action.interactionId,
-          state: {
-            kind: 'quiz',
-            selectedOptionId: action.selectedOptionId,
-          },
-        },
-      }
-    }
-    case 'quiz.reset': {
-      const currentStatus = progress.content[action.contentId]?.status ?? 'in_progress'
-      return {
-        contentId: action.contentId,
-        status: currentStatus,
-        interaction: {
-          interactionId: action.interactionId,
-          state: null,
-        },
-      }
-    }
-  }
 }
 
 function createEventId(): string {
@@ -729,7 +684,8 @@ export function LearningProgressProvider({ children }: { readonly children: Reac
 
   const dispatchInteractionAction = useCallback(
     async (action: LearningInteractionAction) => {
-      const resolved = resolveInteractionAction(action, progress)
+      const context = { progress, nowIso }
+      const resolved = resolveInteractionAction(action, context)
       await saveContentProgress(resolved)
     },
     [progress, saveContentProgress],
