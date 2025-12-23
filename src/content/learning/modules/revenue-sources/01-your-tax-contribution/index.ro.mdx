@@ -1,0 +1,85 @@
+---
+title: "Contribuția ta la taxe"
+durationMinutes: 7
+concept: "Înțelegerea modului în care salariul tău este impozitat prin CAS, CASS și impozit pe venit"
+objective: "Calculează aproximativ cât contribui prin taxe"
+---
+
+# Contribuția ta la taxe
+
+## Introducere
+
+De fiecare dată când primești un salariu, o parte semnificativă ajunge la stat înainte să o vezi. Dar cât anume? Majoritatea oamenilor știu de impozitul pe venit de 10%, dar acesta este doar vârful aisbergului.
+
+Adevărata surpriză vine când aduni toate contribuțiile. Între ce se deduce din salariul tău și ce plătește angajatorul în numele tău, **aproximativ 43% din costul total al muncii tale ajunge la stat**.
+
+> **Ideea cheie:** Când cineva spune „plătesc 10% taxe," numără doar impozitul pe venit. Tabloul complet include contribuția la pensie (CAS), asigurarea de sănătate (CASS) și contribuțiile angajatorului — totalizând mult mai mult decât realizează majoritatea.
+
+---
+
+## Element interactiv: Calculator taxe salariale
+
+Înțelegerea poverii fiscale reale începe cu vizualizarea cifrelor. Introdu salariul brut lunar pentru a vedea exact unde se duc banii tăi.
+
+### Calculator salariu
+
+<SalaryTaxCalculator />
+
+---
+
+## Explicație: Tabloul complet al taxelor
+
+Când îți vezi fluturaușul de salariu, vezi doar o parte din poveste. Iată defalcarea completă a ce se întâmplă cu un salariu brut tipic de 5.000 RON:
+
+### Deduceri angajat (Din salariul tău)
+
+| Contribuție | Procent | Sumă | Scop |
+|-------------|---------|------|------|
+| **CAS** (Pensie) | 25% | 1.250 RON | Fondul public de pensii |
+| **CASS** (Sănătate) | 10% | 500 RON | Asigurare publică de sănătate |
+| **Impozit pe venit** | 10%* | 325 RON | Bugetul general al statului |
+| **Total dedus** | | **2.075 RON** | |
+
+*Impozitul pe venit se calculează la suma după deducerea CAS și CASS.
+
+### Contribuția angajatorului (Cost ascuns)
+
+| Contribuție | Procent | Sumă | Scop |
+|-------------|---------|------|------|
+| **CAM** (Asigurare muncă) | 2,25% | 113 RON | Asigurare pentru accidente de muncă |
+
+### Rezultatul final
+
+```
+Salariu brut:         5.000 RON
+Salariul tău net:     2.925 RON  (58,5% din brut)
+Total către stat:     2.188 RON  (43% din costul angajatorului)
+```
+
+> **Important:** Angajatorul tău cheltuie de fapt 5.113 RON pentru a-ți plăti 2.925 RON net. Diferența — aproape jumătate — merge la stat sub diverse forme.
+
+---
+
+## Practică
+
+<Quiz
+  id="revenue-sources-01-q1"
+  question="Ce procent din salariul brut merge la CAS (contribuția la pensie)?"
+  options={[
+    { id: "a", text: "10%", isCorrect: false },
+    { id: "b", text: "16%", isCorrect: false },
+    { id: "c", text: "25%", isCorrect: true },
+    { id: "d", text: "35%", isCorrect: false }
+  ]}
+  explanation="CAS (Contribuția de Asigurări Sociale) este 25% din salariul brut, fiind cea mai mare deducere unică din salariu. Aceasta finanțează sistemul public de pensii."
+/>
+
+---
+
+## Concluzie
+
+> **Reține:** Când câștigi un salariu brut, aproximativ 43% din costul total al muncii merge la stat — nu doar impozitul pe venit de 10% la care te-ai putea gândi. Fluturaușul de salariu arată CAS (25%), CASS (10%) și impozitul pe venit (10%), iar angajatorul tău plătește în plus 2,25% CAM.
+
+---
+
+<MarkComplete label="Finalizează această lecție" />
