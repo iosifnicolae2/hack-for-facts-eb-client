@@ -310,3 +310,20 @@ details> :not(summary) {
   /* Add sentry feedback style */
   /* https://docs.sentry.io/platforms/javascript/guides/solid/user-feedback/configuration/ */
 }
+
+/* 3D Flip Card Utilities */
+@utility perspective-1000 {
+  perspective: 1000px;
+}
+
+@utility transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+@utility backface-hidden {
+  backface-visibility: hidden;
+}
+
+@utility rotate-y-180 {
+  transform: rotateY(180deg);
+}

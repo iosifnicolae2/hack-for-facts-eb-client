@@ -798,10 +798,6 @@ msgstr "At a Glance"
 msgid "August"
 msgstr "August"
 
-#: src/routes/$lang/learning/$pathId/index.tsx:211
-#~ msgid "Authenticated"
-#~ msgstr "Authenticated"
-
 #: src/routes/cookie-policy.lazy.tsx:47
 msgid "Authentication Cookies (essential if you have an account)"
 msgstr "Authentication Cookies (essential if you have an account)"
@@ -848,7 +844,7 @@ msgstr "Back to Hub"
 msgid "Back to learning"
 msgstr "Back to learning"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:105
+#: src/features/learning/components/player/LessonPlayer.tsx:108
 #: src/routes/$lang/learning/$pathId/index.tsx:44
 #: src/routes/$lang/learning/$pathId/index.tsx:102
 msgid "Back to Learning Hub"
@@ -858,7 +854,7 @@ msgstr "Back to Learning Hub"
 msgid "Back to Overview"
 msgstr "Back to Overview"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:177
+#: src/features/learning/components/player/LessonPlayer.tsx:180
 msgid "Back to path"
 msgstr "Back to path"
 
@@ -1079,10 +1075,6 @@ msgstr "Choose between essential-only or all cookies, then fine-tune options bel
 msgid "Choose operator"
 msgstr "Choose operator"
 
-#: src/routes/$lang/learning/$pathId/index.tsx:451
-#~ msgid "Claim Certificate"
-#~ msgstr "Claim Certificate"
-
 #: src/components/common/classification-info-link.tsx:105
 #: src/components/common/classification-info-link.tsx:150
 msgid "classification"
@@ -1194,21 +1186,13 @@ msgstr "Comfortable"
 msgid "Compact"
 msgstr "Compact"
 
-#: src/routes/$lang/learning/$pathId/index.tsx:392
-#~ msgid "Complete at least 60% of lessons to earn your certificate."
-#~ msgstr "Complete at least 60% of lessons to earn your certificate."
-
-#: src/features/learning/components/player/LessonPlayer.tsx:199
+#: src/features/learning/components/player/LessonPlayer.tsx:202
 msgid "Complete path"
 msgstr "Complete path"
 
-#: src/features/learning/components/cards/LearningPathCard.tsx:94
-#~ msgid "Completed"
-#~ msgstr "Completed"
-
-#: src/routes/$lang/learning/$pathId/index.tsx:175
-#~ msgid "Completed!"
-#~ msgstr "Completed!"
+#: src/features/learning/components/interactive/FlashCardDeck.tsx:270
+msgid "Complete!"
+msgstr "Complete!"
 
 #: src/features/learning/components/cards/LearningPathCard.tsx:114
 #: src/routes/certificates.$id.tsx:64
@@ -1265,10 +1249,6 @@ msgstr "Confirm unsubscribe"
 msgid "Congratulations!"
 msgstr "Congratulations!"
 
-#: src/routes/$lang/learning/$pathId/index.tsx:391
-#~ msgid "Congratulations! You've completed enough to claim your certificate."
-#~ msgstr "Congratulations! You've completed enough to claim your certificate."
-
 #: src/components/charts/components/views/AnnotationConfigView.tsx:135
 msgid "Connector"
 msgstr "Connector"
@@ -1301,10 +1281,6 @@ msgstr "Contact us at contact@transparenta.eu See also our <0>Privacy Policy</0>
 #: src/routes/$lang/learning/$pathId/index.tsx:130
 msgid "Continue"
 msgstr "Continue"
-
-#: src/routes/$lang/learning/$pathId/index.tsx:196
-#~ msgid "Continue Learning"
-#~ msgstr "Continue Learning"
 
 #: src/features/learning/components/player/MarkComplete.tsx:56
 msgid "Continue to the next lesson to keep learning."
@@ -1439,10 +1415,6 @@ msgstr "County:"
 #: src/routes/$lang/learning/$pathId/index.tsx:167
 msgid "Course Content"
 msgstr "Course Content"
-
-#: src/routes/$lang/learning/$pathId/index.tsx:221
-#~ msgid "Course Modules"
-#~ msgstr "Course Modules"
 
 #: src/features/learning/components/layout/LearningLayout.tsx:124
 msgid "Course Progress"
@@ -1604,7 +1576,7 @@ msgstr "Data View"
 msgid "Dates"
 msgstr "Dates"
 
-#: src/features/learning/components/interactive/BudgetFootprintRevealer.tsx:457
+#: src/features/learning/components/interactive/BudgetFootprintRevealer.tsx:456
 #: src/features/learning/utils/streak.ts:124
 msgid "day"
 msgstr "day"
@@ -1775,10 +1747,6 @@ msgstr "e.g. Expense growth alert"
 msgid "e.g., RON, %, Units..."
 msgstr "e.g., RON, %, Units..."
 
-#: src/routes/$lang/learning/$pathId/index.tsx:381
-#~ msgid "Earn Your Certificate"
-#~ msgstr "Earn Your Certificate"
-
 #: src/features/notifications/components/EntityNotificationBell.tsx:71
 msgid "Easily manage your subscriptions"
 msgstr "Easily manage your subscriptions"
@@ -1863,10 +1831,6 @@ msgstr "Effective Spending"
 msgid "Effective Spending Calculation"
 msgstr "Effective Spending Calculation"
 
-#: src/routes/$lang/learning/$pathId/index.tsx:385
-#~ msgid "Eligible"
-#~ msgstr "Eligible"
-
 #: src/components/footer/ChatFab.tsx:51
 msgid "Email address copied to clipboard!"
 msgstr "Email address copied to clipboard!"
@@ -1934,10 +1898,6 @@ msgstr "Enter new value"
 #: src/components/charts/components/views/SeriesConfigView.tsx:176
 msgid "Enter series label..."
 msgstr "Enter series label..."
-
-#: src/routes/$lang/learning/$pathId/index.tsx:427
-#~ msgid "Enter your name"
-#~ msgstr "Enter your name"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:687
 #: src/components/charts/components/series-config/SeriesFilter.tsx:864
@@ -2160,14 +2120,6 @@ msgstr "Expense Type"
 msgid "Expenses"
 msgstr "Expenses"
 
-#: src/features/learning/components/onboarding/LearningOnboarding.tsx:42
-#~ msgid "Experience"
-#~ msgstr "Experience"
-
-#: src/features/learning/components/onboarding/LearningOnboarding.tsx:210
-#~ msgid "Experience level?"
-#~ msgstr "Experience level?"
-
 #: src/components/classification-explorer/ClassificationExplorer.tsx:179
 msgid "Explore budget classifications to understand how public spending is organized and categorized"
 msgstr "Explore budget classifications to understand how public spending is organized and categorized"
@@ -2195,6 +2147,10 @@ msgstr "Explore more paths"
 #: src/routes/index.lazy.tsx:63
 msgid "Explore national budget."
 msgstr "Explore national budget."
+
+#: src/features/learning/components/interactive/FlashCardDeck.tsx:266
+msgid "explored"
+msgstr "explored"
 
 #: src/components/charts/components/chart-quick-config/components/ShareChart.tsx:207
 msgid "Export as Image"
@@ -2523,10 +2479,6 @@ msgstr "Go to Main List"
 msgid "Go to Map"
 msgstr "Go to Map"
 
-#: src/features/learning/components/onboarding/LearningOnboarding.tsx:42
-#~ msgid "Goal"
-#~ msgstr "Goal"
-
 #: src/components/entities/EntityLineItemsTabs.tsx:97
 msgid "Goods & Services"
 msgstr "Goods & Services"
@@ -2628,30 +2580,6 @@ msgstr "How we compute true consolidated revenues (excluding inter-budget flows 
 #: src/routes/privacy.lazy.tsx:58
 msgid "How we use your data"
 msgstr "How we use your data"
-
-#: src/features/learning/components/onboarding/LearningOnboarding.tsx:90
-#~ msgid "I know the basics"
-#~ msgstr "I know the basics"
-
-#: src/features/learning/components/onboarding/LearningOnboarding.tsx:69
-#~ msgid "I need to find contracts and anomalies"
-#~ msgstr "I need to find contracts and anomalies"
-
-#: src/features/learning/components/onboarding/LearningOnboarding.tsx:63
-#~ msgid "I want to see where local money goes"
-#~ msgstr "I want to see where local money goes"
-
-#: src/features/learning/components/onboarding/LearningOnboarding.tsx:75
-#~ msgid "I work in public administration"
-#~ msgstr "I work in public administration"
-
-#: src/features/learning/components/onboarding/LearningOnboarding.tsx:95
-#~ msgid "I'm a pro"
-#~ msgstr "I'm a pro"
-
-#: src/features/learning/components/onboarding/LearningOnboarding.tsx:85
-#~ msgid "I'm new to this"
-#~ msgstr "I'm new to this"
 
 #: src/routes/cookie-policy.lazy.tsx:48
 msgid "If you create an account, Clerk sets the following cookies for authentication and session management:"
@@ -2774,10 +2702,6 @@ msgstr "Invalid data detected in chart series"
 msgid "Invalid or expired link"
 msgstr "Invalid or expired link"
 
-#: src/features/learning/components/onboarding/LearningOnboarding.tsx:67
-#~ msgid "Investigate stories"
-#~ msgstr "Investigate stories"
-
 #: src/components/charts/components/series-config/SeriesFilter.tsx:780
 #: src/components/filters/EntityAnalyticsFilter.tsx:573
 #: src/components/filters/MapFilter.tsx:361
@@ -2884,23 +2808,15 @@ msgstr "Less than"
 msgid "Lesson completed!"
 msgstr "Lesson completed!"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:100
+#: src/features/learning/components/player/LessonPlayer.tsx:103
 msgid "Lesson not found"
 msgstr "Lesson not found"
-
-#: src/routes/$lang/learning/$pathId/index.tsx:152
-#~ msgid "lessons"
-#~ msgstr "lessons"
 
 #: src/features/learning/components/cards/LearningPathCard.tsx:130
 #: src/routes/$lang/learning/$pathId/index.tsx:158
 #: src/routes/$lang/learning/$pathId/index.tsx:217
 msgid "Lessons"
 msgstr "Lessons"
-
-#: src/routes/$lang/learning/$pathId/index.tsx:170
-#~ msgid "lessons completed"
-#~ msgstr "lessons completed"
 
 #: src/routes/$lang/learning/$pathId/index.tsx:156
 msgid "Lessons Completed"
@@ -2959,7 +2875,7 @@ msgstr "Loading data..."
 msgid "Loading heatmap data..."
 msgstr "Loading heatmap data..."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:140
+#: src/features/learning/components/player/LessonPlayer.tsx:143
 msgid "Loading lesson..."
 msgstr "Loading lesson..."
 
@@ -3033,10 +2949,6 @@ msgstr "Main creditor aggregated"
 #: src/features/notifications/components/NotificationQuickMenu.tsx:91
 msgid "Manage all notifications"
 msgstr "Manage all notifications"
-
-#: src/features/learning/components/onboarding/LearningOnboarding.tsx:73
-#~ msgid "Manage data"
-#~ msgstr "Manage data"
 
 #: src/features/notifications/components/EntityNotificationBell.tsx:103
 #: src/routes/unsubscribe.$token.tsx:43
@@ -3153,10 +3065,6 @@ msgstr "Missing title"
 msgid "Mnemonic:"
 msgstr "Mnemonic:"
 
-#: src/routes/$lang/learning/$pathId/index.tsx:148
-#~ msgid "modules"
-#~ msgstr "modules"
-
 #: src/routes/$lang/learning/$pathId/index.tsx:146
 #: src/routes/$lang/learning/$pathId/index.tsx:148
 msgid "Modules"
@@ -3235,10 +3143,6 @@ msgstr "N/A"
 msgid "Name"
 msgstr "Name"
 
-#: src/routes/$lang/learning/$pathId/index.tsx:423
-#~ msgid "Name on certificate"
-#~ msgstr "Name on certificate"
-
 #: src/components/ui/shortcuts.tsx:24
 msgid "Navigate to chart view"
 msgstr "Navigate to chart view"
@@ -3280,7 +3184,7 @@ msgstr "Newsletter consent and management"
 msgid "Newsletters and notifications"
 msgstr "Newsletters and notifications"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:187
+#: src/features/learning/components/player/LessonPlayer.tsx:190
 msgid "Next"
 msgstr "Next"
 
@@ -3615,10 +3519,6 @@ msgstr "or"
 msgid "Other Economic"
 msgstr "Other Economic"
 
-#: src/routes/$lang/learning/index.tsx:213
-#~ msgid "Other Paths"
-#~ msgstr "Other Paths"
-
 #: src/hooks/useEntityViews.tsx:14
 msgid "Overview"
 msgstr "Overview"
@@ -3757,7 +3657,7 @@ msgstr "Preparing your share link..."
 msgid "Preview"
 msgstr "Preview"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:165
+#: src/features/learning/components/player/LessonPlayer.tsx:168
 msgid "Previous"
 msgstr "Previous"
 
@@ -3785,10 +3685,6 @@ msgstr "Processing..."
 #: src/components/footer/AppFooter.tsx:81
 msgid "Product"
 msgstr "Product"
-
-#: src/routes/$lang/learning/$pathId/index.tsx:402
-#~ msgid "Progress to eligibility"
-#~ msgstr "Progress to eligibility"
 
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:158
 msgid "Public institutions often transfer funds between each other (e.g., from the state budget to local budgets). These transfers can double-count spending if not filtered."
@@ -4355,10 +4251,6 @@ msgstr "Sign In"
 msgid "Sign in required"
 msgstr "Sign in required"
 
-#: src/routes/$lang/learning/$pathId/index.tsx:468
-#~ msgid "Sign in to claim your certificate."
-#~ msgstr "Sign in to claim your certificate."
-
 #: src/routes/alerts/$alertId/index.lazy.tsx:157
 #: src/routes/alerts/new.lazy.tsx:146
 msgid "Sign in to create and manage alerts for your entities."
@@ -4424,16 +4316,13 @@ msgstr "Standard"
 msgid "Standard Contractual Clauses (SCCs) approved by the European Commission"
 msgstr "Standard Contractual Clauses (SCCs) approved by the European Commission"
 
-#: src/routes/$lang/learning/index.tsx:138
-#~ msgid "Start"
-#~ msgstr "Start"
-
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:128
 #: src/routes/$lang/learning/$pathId/index.tsx:135
 msgid "Start Learning"
 msgstr "Start Learning"
 
-#: src/features/learning/components/interactive/BudgetFootprintRevealer.tsx:443
+#: src/features/learning/components/interactive/BudgetFootprintRevealer.tsx:442
+#: src/features/learning/components/interactive/FlashCardDeck.tsx:357
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:278
 msgid "Start over"
 msgstr "Start over"
@@ -4465,10 +4354,6 @@ msgstr "Status"
 #: src/components/alerts/components/UnsavedChangesDialog.tsx:44
 msgid "Stay here"
 msgstr "Stay here"
-
-#: src/features/learning/components/onboarding/LearningOnboarding.tsx:39
-#~ msgid "Step {currentStepIndex}/{totalSteps}"
-#~ msgstr "Step {currentStepIndex}/{totalSteps}"
 
 #: src/components/charts/components/views/SeriesConfigView.tsx:316
 msgid "Strip this prefix from x-axis labels for this series (e.g., 2024-). Helps align yearly and monthly data on a common axis."
@@ -4509,14 +4394,6 @@ msgstr "Sums pending distribution"
 #: src/routes/privacy.lazy.tsx:152
 msgid "Supervisory authority"
 msgstr "Supervisory authority"
-
-#: src/routes/$lang/learning/index.tsx:138
-#~ msgid "Switch"
-#~ msgstr "Switch"
-
-#: src/features/learning/components/cards/LearningPathCard.tsx:114
-#~ msgid "Switch Path"
-#~ msgstr "Switch Path"
 
 #: src/routes/alerts/$alertId/index.lazy.tsx:126
 msgid "Syncing…"
@@ -4571,7 +4448,7 @@ msgstr "The learning path you're looking for doesn't exist or has been moved."
 msgid "The learning path you're looking for doesn't exist."
 msgstr "The learning path you're looking for doesn't exist."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:102
+#: src/features/learning/components/player/LessonPlayer.tsx:105
 msgid "The lesson you're looking for doesn't exist or may have been moved."
 msgstr "The lesson you're looking for doesn't exist or may have been moved."
 
@@ -4882,10 +4759,6 @@ msgstr "UAT: Yes"
 msgid "UATs"
 msgstr "UATs"
 
-#: src/features/learning/components/onboarding/LearningOnboarding.tsx:61
-#~ msgid "Understand my taxes"
-#~ msgstr "Understand my taxes"
-
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:57
 #: src/components/budget-explorer/SpendingBreakdown.tsx:48
 msgid "Understanding the consolidated general budget spending"
@@ -5108,10 +4981,6 @@ msgstr "Welcome back."
 msgid "What personal data we collect"
 msgstr "What personal data we collect"
 
-#: src/features/learning/components/onboarding/LearningOnboarding.tsx:152
-#~ msgid "What's your goal?"
-#~ msgstr "What's your goal?"
-
 #: src/routes/privacy.lazy.tsx:32
 msgid "Who we are"
 msgstr "Who we are"
@@ -5220,7 +5089,7 @@ msgstr "You've completed this learning path."
 msgid "You've completed this lesson"
 msgstr "You've completed this lesson"
 
-#: src/features/learning/components/interactive/BudgetFootprintRevealer.tsx:450
+#: src/features/learning/components/interactive/BudgetFootprintRevealer.tsx:449
 msgid "Your daily budget footprint"
 msgstr "Your daily budget footprint"
 

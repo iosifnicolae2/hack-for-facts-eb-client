@@ -17,74 +17,36 @@ Understanding all three roles empowers you to engage more meaningfully with how 
 
 ---
 
-## Interactive Element: Role Cards
+## Discover Your Three Roles
 
-```
-┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
-│                 │  │                 │  │                 │
-│   💰 TAXPAYER   │  │  📋 BENEFICIARY │  │  👁️ WATCHDOG   │
-│                 │  │                 │  │                 │
-│   [Click to     │  │   [Click to     │  │   [Click to     │
-│    reveal]      │  │    reveal]      │  │    reveal]      │
-│                 │  │                 │  │                 │
-└─────────────────┘  └─────────────────┘  └─────────────────┘
+Tap each card to flip it and discover your different relationships with public budgets:
 
-═══════════════════════════════════════════════════════════════
-
-REVEALED CONTENT (appears on click):
-
-💰 TAXPAYER:
-You fund the budget through income tax, VAT, and social
-contributions. Approximately 35% of an average salary
-goes to the state in various forms.
-
-📋 BENEFICIARY:
-You use public services daily: schools, hospitals, roads,
-police, parks. The value of services received often exceeds
-what individuals pay in taxes.
-
-👁️ WATCHDOG:
-You have the LEGAL RIGHT to know how your money is spent.
-Law 544/2001 guarantees access to public information.
-You can request budget details from any public institution.
-```
-
-### Component Specification
-
-```typescript
-interface RoleCardsProps {
-  readonly roles: ReadonlyArray<{
-    id: 'taxpayer' | 'beneficiary' | 'watchdog'
-    icon: string
-    title: string
-    frontText: string
-    backContent: {
-      description: string
-      keyFact: string
-      learnMoreLink?: string
-    }
-  }>
-  readonly onAllRevealed: () => void
-}
-
-interface RoleCardsState {
-  revealedCards: Set<string>
-  isComplete: boolean
-}
-```
-
-**Behavior:**
-- Cards start with front side visible (icon + title + "Click to reveal")
-- Click triggers flip animation (300ms, ease-in-out)
-- Back side reveals detailed information
-- Progress indicator: "1/3 roles explored"
-- When all 3 revealed: show completion message + unlock next section
-- Keyboard accessible: Enter/Space to flip focused card
-
-**Accessibility:**
-- `role="button"` on each card
-- `aria-pressed` indicates revealed state
-- Screen reader announces "Card flipped. [content]" on reveal
+<FlashCardDeck 
+  componentId="role-cards-en" 
+  showProgress={false}
+>
+  <FlashCard
+    id="taxpayer"
+    icon="💰"
+    title="Taxpayer"
+    frontText="You fund the public budget. About 41.5% of your gross salary goes to the state."
+    backText="You contribute through income tax, VAT (21% on most purchases), and social contributions. This money funds everything from local roads to national defense."
+  />
+  <FlashCard
+    id="beneficiary"
+    icon="📋"
+    title="Beneficiary"
+    frontText="You use public services every day, even if you don't always notice them."
+    backText="Schools, hospitals, roads, police, parks — all funded by public budgets. Most citizens receive more in services than they pay in taxes."
+  />
+  <FlashCard
+    id="watchdog"
+    icon="👁️"
+    title="Watchdog"
+    frontText="You have the LEGAL RIGHT to know how your money is being spent."
+    backText="Law 544/2001 guarantees access to public information. You can request budget details from any public institution. This is the foundation of democracy."
+  />
+</FlashCardDeck>
 
 ---
 
@@ -92,7 +54,7 @@ interface RoleCardsState {
 
 ### Role 1: Taxpayer 💰
 
-Every purchase you make includes VAT (19% standard rate). Every paycheck has income tax and social contributions deducted. In total, the average Romanian worker contributes roughly 35% of their gross salary to the state.
+Every purchase you make includes VAT (21% standard rate since August 2025). Every paycheck has income tax and social contributions deducted. In total, the average Romanian worker contributes roughly 41.5% of their gross salary to the state: 25% pension (CAS), 10% health insurance (CASS), and 10% income tax applied to the remaining 65% taxable base (effectively 6.5% of gross).
 
 This money funds everything from your local road repairs to national defense.
 
@@ -102,9 +64,9 @@ Don't just think about what you pay — think about what you receive:
 
 | Service | Annual Value (approx.) |
 |---------|------------------------|
-| Road access | ~2,000 RON |
+| Transport infrastructure | ~1,500 RON |
 | Public healthcare | ~4,500 RON |
-| Education (per child) | ~6,000 RON |
+| Education (per child) | ~16,000 RON |
 | Security services | ~1,500 RON |
 
 Most citizens receive more in services than they pay in taxes — that's how progressive taxation and public goods work.
@@ -130,7 +92,7 @@ Transparenta.eu makes exercising this role easier by pre-analyzing public budget
   options={[
     { id: "a", text: "Law 500/2002 (Public Finance Law)", isCorrect: false },
     { id: "b", text: "Law 544/2001 (Free Access to Public Information)", isCorrect: true },
-    { id: "c", text: "Law 215/2001 (Local Public Administration)", isCorrect: false },
+    { id: "c", text: "Law 215/2001 (repealed, now Administrative Code)", isCorrect: false },
     { id: "d", text: "There is no such law", isCorrect: false }
   ]}
   explanation="Law 544/2001 explicitly guarantees citizens' right to access public information, including budget data. This is your legal foundation for the 'watchdog' role — you can formally request budget details from any public institution."
@@ -141,7 +103,5 @@ Transparenta.eu makes exercising this role easier by pre-analyzing public budget
 ## Key Takeaway
 
 > 📌 **Remember:** You are simultaneously a taxpayer (funding the system), a beneficiary (using public services), and a watchdog (with legal rights to oversight). The watchdog role — guaranteed by Law 544/2001 — is what makes the other two roles accountable.
-
----
 
 <MarkComplete label="Mark Lesson Complete" />

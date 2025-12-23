@@ -11,6 +11,7 @@ import { getAdjacentLessons, getLearningPathById, getTranslatedText } from '../.
 import { Quiz, type QuizOption } from '../assessment/Quiz'
 import { MarkComplete } from './MarkComplete'
 import { BudgetFootprintRevealer } from '../interactive/BudgetFootprintRevealer'
+import { FlashCard, FlashCardDeck } from '../interactive/FlashCardDeck'
 
 type LessonPlayerProps = {
   readonly locale: LearningLocale
@@ -86,6 +87,8 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
       Quiz: QuizWrapper,
       MarkComplete: MarkCompleteWrapper,
       BudgetFootprintRevealer: BudgetFootprintRevealerWrapper,
+      FlashCard,
+      FlashCardDeck,
     }),
     [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper]
   )
