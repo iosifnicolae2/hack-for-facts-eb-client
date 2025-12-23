@@ -14,6 +14,9 @@ import { BudgetFootprintRevealer } from '../interactive/BudgetFootprintRevealer'
 import { FlashCard, FlashCardDeck } from '../interactive/FlashCardDeck'
 import { PromiseTracker } from '../interactive/PromiseTracker'
 import { SalaryTaxCalculator } from '../interactive/SalaryTaxCalculator'
+import { RevenueDistributionGame } from '../interactive/RevenueDistributionGame'
+import { VATCalculator } from '../interactive/VATCalculator'
+import { VATReformCard } from '../interactive/VATReformCard'
 
 type LessonPlayerProps = {
   readonly locale: LearningLocale
@@ -123,8 +126,11 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
       FlashCard,
       FlashCardDeck,
       SalaryTaxCalculator: SalaryTaxCalculatorWrapper,
+      RevenueDistributionGame,
+      VATCalculator,
+      VATReformCard,
     }),
-    [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, PromiseTrackerWrapper, SalaryTaxCalculatorWrapper]
+    [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, PromiseTrackerWrapper, SalaryTaxCalculatorWrapper, RevenueDistributionGame, VATCalculator]
   )
 
   if (!path || !module || !lesson) {

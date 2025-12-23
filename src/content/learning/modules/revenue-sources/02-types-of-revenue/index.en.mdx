@@ -21,140 +21,29 @@ Romania collects approximately **34% of GDP** as public revenue each year. This 
 
 Understanding where public money comes from helps you see the full scope of taxation in your life — not just your salary, but everything you buy.
 
-### RevenueSourcesDiagram
+<RevenueDistributionGame />
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  WHERE PUBLIC MONEY COMES FROM                               │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│                    TOTAL REVENUE                             │
-│                    ~34% of GDP                               │
-│                         │                                    │
-│         ┌───────────────┼───────────────┐                    │
-│         │               │               │                    │
-│         ▼               ▼               ▼                    │
-│   ┌──────────┐   ┌──────────┐   ┌──────────┐                │
-│   │  TAXES   │   │ SOCIAL   │   │  OTHER   │                │
-│   │  ~60%    │   │ CONTRIB. │   │  ~10%    │                │
-│   │          │   │  ~30%    │   │          │                │
-│   └────┬─────┘   └────┬─────┘   └────┬─────┘                │
-│        │              │              │                       │
-│   ┌────┴────┐    ┌────┴────┐   ┌────┴────┐                  │
-│   │ VAT 19% │    │CAS 25%  │   │EU Funds │                  │
-│   │ Income  │    │CASS 10% │   │Dividends│                  │
-│   │ Corp.   │    │CAM 2.25%│   │Fees     │                  │
-│   │ Excise  │    │         │   │Debt     │                  │
-│   └─────────┘    └─────────┘   └─────────┘                  │
-│                                                              │
-│   [Click any box to learn more]                              │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
 
-**Component Interface:**
 
-```typescript
-/**
- * RevenueSourcesDiagram Component
- *
- * PURPOSE: Visualize the hierarchy of public revenue sources with interactive exploration
- */
-interface RevenueSourcesDiagramProps {
-  readonly data: RevenueSourcesData
-  readonly onCategorySelect?: (categoryId: string) => void
-  readonly highlightedCategory?: string
-  readonly showPercentages?: boolean
-}
 
-interface RevenueSourcesData {
-  readonly totalRevenue: {
-    readonly amount: number
-    readonly gdpPercentage: number
-    readonly year: number
-  }
-  readonly categories: readonly RevenueCategory[]
-}
 
-interface RevenueCategory {
-  readonly id: string
-  readonly name: string
-  readonly percentage: number
-  readonly color: string
-  readonly icon: string
-  readonly description: string
-  readonly subcategories: readonly {
-    readonly id: string
-    readonly name: string
-    readonly rate?: string
-    readonly description: string
-    readonly budgetExplorerLink?: string
-  }[]
-}
-
-/**
- * STATE MANAGEMENT:
- * - expandedCategory: string | null (which category is currently expanded)
- * - hoveredItem: string | null (which item is being hovered)
- * - animationState: 'idle' | 'expanding' | 'collapsing'
- *
- * STATE TRANSITIONS:
- * - Click category -> toggle expandedCategory
- * - Hover item -> set hoveredItem, show tooltip
- * - Mouse leave -> clear hoveredItem
- * - Click subcategory -> navigate to Budget Explorer with filter
- *
- * USER INTERACTIONS:
- * - Click on category box: expand to show subcategories
- * - Click subcategory: open Budget Explorer filtered to that revenue type
- * - Hover any item: show tooltip with description
- * - Keyboard navigation: Tab between categories, Enter to expand, Escape to collapse
- *
- * VISUAL STATES:
- * - Default: all categories shown as boxes with percentage
- * - Hovered: box elevates slightly, border highlights
- * - Expanded: category box grows, subcategories animate in below
- * - Selected subcategory: highlighted with accent color
- *
- * ANIMATIONS:
- * - Entry: categories fade in with stagger (100ms between each)
- * - Expand: height animates from 0 with ease-out (300ms)
- * - Hover: scale(1.02) + box-shadow increase (150ms)
- * - Connection lines: draw animation from parent to children (400ms)
- *
- * ACCESSIBILITY:
- * - role="tree" on container
- * - role="treeitem" on each category
- * - aria-expanded for expandable categories
- * - aria-describedby for percentage labels
- * - Focus visible outline on all interactive elements
- */
-```
-
-**Expected Behavior:**
-- Tree structure with clickable nodes
-- Clicking a category reveals subcategories with animation
-- Subcategories link to Budget Explorer with appropriate filters
-- Tooltip on hover shows detailed description
-
----
 
 ## Core Explanation: Revenue Categories
 
 Let's break down the three main sources of public revenue:
 
-### 1. Taxes (~60% of revenue)
+### 1. Taxes (~50% of revenue)
 
 | Tax Type | Rate | Who Pays | Example |
 |----------|------|----------|---------|
-| **VAT** | 19% standard | Everyone (consumers) | Buy a phone for 1,190 RON = 190 RON VAT |
+| **VAT** | 21% standard | Everyone (consumers) | Buy a phone for 1,210 RON = 210 RON VAT |
 | **Income Tax** | 10% flat | Employees | Salary of 5,000 RON = 325 RON tax |
 | **Corporate Tax** | 16% | Companies | Profit of 1M RON = 160,000 RON tax |
 | **Excise Duties** | Varies | Consumers | Fuel, alcohol, tobacco |
 
-> **VAT has reduced rates too:** 9% for food and tourism, 5% for books and new housing.
+> **VAT has reduced rates too:** 11% applies to food, tourism, books, medicines, and hotels. A 9% transitional rate applies until July 2026 for qualifying new housing (under 120 m², valued below RON 600,000, with pre-contracts signed by August 1, 2025).
 
-### 2. Social Contributions (~30% of revenue)
+### 2. Social Contributions (~34% of revenue)
 
 These fund specific social programs:
 
@@ -162,7 +51,7 @@ These fund specific social programs:
 - **CASS (10%)** — Public health insurance
 - **CAM (2.25%)** — Work accident and disease insurance
 
-### 3. Other Sources (~10% of revenue)
+### 3. Other Sources (~16% of revenue)
 
 - **EU Funds** — Structural, Cohesion, Recovery (PNRR)
 - **Dividends** — From state-owned companies
@@ -175,198 +64,46 @@ These fund specific social programs:
 
 VAT is often "invisible" because it's included in prices. Let's make it visible.
 
-### VATCalculator
+<VATCalculator />
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  VAT CALCULATOR                                              │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  Monthly spending estimate:                                  │
-│  ┌────────────────────────────────────────┐                  │
-│  │ RON  3,000                             │                  │
-│  └────────────────────────────────────────┘                  │
-│                                                              │
-│  Breakdown by VAT rate:                                      │
-│  ┌─────────────────────────────────────────────────────────┐ │
-│  │  Food & basic goods (9%)        1,500 RON → 124 RON VAT │ │
-│  │  General purchases (19%)        1,200 RON → 192 RON VAT │ │
-│  │  Books, culture (5%)              300 RON →  14 RON VAT │ │
-│  │  ─────────────────────────────────────────────────────  │ │
-│  │  TOTAL VAT PAID                            330 RON/month│ │
-│  │  ANNUAL VAT                              3,960 RON/year │ │
-│  └─────────────────────────────────────────────────────────┘ │
-│                                                              │
-│  After August 2025 (21% rate):                               │
-│  ANNUAL VAT                                ~4,356 RON/year   │
-│  INCREASE                                    +396 RON/year   │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
+## Legislative Context: VAT Reform
 
-**Component Interface:**
+<VATReformCard
+  badge="Major Reform"
+  title="Law 141/2025"
+  description="The new fiscal reality affecting your wallet."
+  dateLabel="Effective Date"
+  date="Aug 1, 2025"
+  oldRatesLabel="Old Rates"
+  newRealityLabel="New Reality"
+  standardLabel="Standard"
+  newLabel="New"
+  essentialsLabel="Essentials"
+  unifiedLabel="Unified"
+  explanationTitle="What this means"
+  explanation="The reform simplified the tax code but increased the burden on consumption. The 'Essentials' category now consolidates food, books, and tourism under a single 11% rate."
+/>
 
-```typescript
-/**
- * VATCalculator Component
- *
- * PURPOSE: Calculate VAT contribution based on spending patterns
- */
-interface VATCalculatorProps {
-  readonly categories: readonly VATCategory[]
-  readonly futureRateChange?: {
-    readonly effectiveDate: string
-    readonly newStandardRate: number
-    readonly lawReference: string
-  }
-  readonly onCalculate?: (result: VATCalculationResult) => void
-}
-
-interface VATCategory {
-  readonly id: string
-  readonly name: string
-  readonly rate: number
-  readonly futureRate?: number
-  readonly defaultPercentage: number // Default % of total spending
-  readonly examples: string
-}
-
-interface VATCalculationResult {
-  readonly totalSpending: number
-  readonly totalVAT: number
-  readonly annualVAT: number
-  readonly breakdown: readonly {
-    readonly categoryId: string
-    readonly spending: number
-    readonly vatAmount: number
-  }[]
-  readonly futureComparison?: {
-    readonly futureAnnualVAT: number
-    readonly increase: number
-  }
-}
-
-/**
- * STATE MANAGEMENT:
- * - totalSpending: number (user's monthly spending input)
- * - categoryBreakdown: Record<categoryId, number> (spending per category)
- * - result: VATCalculationResult | null
- * - showFutureComparison: boolean
- *
- * STATE TRANSITIONS:
- * - User changes total spending -> recalculate all categories proportionally
- * - User adjusts category slider -> update that category, recalculate VAT
- * - Toggle future comparison -> show/hide August 2025 projection
- *
- * CATEGORY DEFAULTS:
- * - Food & basics (9%): 50% of spending
- * - General (19%): 40% of spending
- * - Books/culture (5%): 10% of spending
- *
- * USER INTERACTIONS:
- * - Total spending input: type amount or use +/- buttons
- * - Category sliders: adjust percentage allocation
- * - Reset button: restore default proportions
- * - Toggle switch: show/hide future VAT rate comparison
- *
- * VISUAL STATES:
- * - Empty: placeholder with typical spending example
- * - Filled: animated breakdown bars by VAT rate
- * - Future comparison: side-by-side current vs. future with difference highlighted
- *
- * ANIMATIONS:
- * - Bars: width animates on value change (300ms, ease-out)
- * - Numbers: count-up animation (400ms)
- * - Future comparison: slide-in from right (200ms)
- *
- * ACCESSIBILITY:
- * - Input has aria-label and aria-describedby
- * - Sliders have aria-valuemin, aria-valuemax, aria-valuenow
- * - Results announced via aria-live="polite"
- */
-```
-
----
-
-## Legislative Alert: VAT Increase
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│  ⚠️ LEGISLATIVE ALERT                                        │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  VAT INCREASE: 19% → 21%                                     │
-│  Effective: August 1, 2025                                   │
-│  Law: 141/2025                                               │
-│                                                              │
-│  What this means for you:                                    │
-│  • Everything you buy will be ~2% more expensive             │
-│  • Government expects ~5 billion RON more revenue            │
-│  • Part of deficit reduction measures                        │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-**AlertBox Component Interface:**
-
-```typescript
-/**
- * AlertBox Component
- *
- * PURPOSE: Highlight time-sensitive legislative changes and important updates
- */
-interface AlertBoxProps {
-  readonly type: 'info' | 'warning' | 'success' | 'legislative'
-  readonly title: string
-  readonly content: string
-  readonly effectiveDate?: string
-  readonly lawReference?: string
-  readonly sourceLink?: string
-  readonly dismissible?: boolean
-  readonly onDismiss?: () => void
-}
-
-/**
- * VISUAL STATES:
- * - info: blue accent, info icon (i)
- * - warning: amber accent, warning triangle
- * - success: green accent, checkmark
- * - legislative: purple accent, gavel icon, date badge
- *
- * ANIMATIONS:
- * - Entry: slide-down + fade (200ms, ease-out)
- * - Dismiss: slide-up + fade (200ms, ease-in)
- * - Date badge: subtle pulse on hover
- *
- * ACCESSIBILITY:
- * - role="alert" for warning type
- * - role="status" for info/success/legislative
- * - Dismiss button has aria-label="Dismiss alert"
- * - Link has aria-describedby with law reference
- */
-```
-
----
 
 ## Practice
 
 <Quiz
   id="revenue-sources-02-q1"
-  question="What is Romania's standard VAT rate (until August 2025)?"
+  question="What is Romania's current standard VAT rate (since August 2025)?"
   options={[
-    { id: "a", text: "9%", isCorrect: false },
-    { id: "b", text: "19%", isCorrect: true },
-    { id: "c", text: "21%", isCorrect: false },
+    { id: "a", text: "11%", isCorrect: false },
+    { id: "b", text: "19%", isCorrect: false },
+    { id: "c", text: "21%", isCorrect: true },
     { id: "d", text: "24%", isCorrect: false }
   ]}
-  explanation="Romania's standard VAT rate is 19%. Reduced rates of 9% apply to food and tourism, while 5% applies to books and new housing. The rate will increase to 21% in August 2025."
+  explanation="Romania's standard VAT rate increased from 19% to 21% in August 2025 under Law 141/2025. The reduced rates were also unified from 5%/9% to 11%, applying to food, tourism, books, and other essential goods."
 />
 
 ---
 
 ## Key Takeaway
 
-> **Remember:** Public revenue comes from three main sources: taxes (~60%, with VAT being the largest), social contributions (~30%, like CAS and CASS), and other sources (~10%, including EU funds). Every time you buy something, you're paying VAT — often more than you realize.
+> **Remember:** Public revenue comes from three main sources: taxes (~50%, with VAT being the largest), social contributions (~34%, like CAS and CASS), and other sources (~16%, including EU funds). Every time you buy something, you're paying VAT at 21% (or 11% for food and books) — often more than you realize.
 
 ---
 
