@@ -434,12 +434,12 @@ msgid "A platform for exploring public financial data for citizens, journalists,
 msgstr "Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice, și alte persoane interesate."
 
 #: src/features/learning/components/layout/LearningLayout.tsx:172
-msgid "Academy"
-msgstr "Academy"
+#~ msgid "Academy"
+#~ msgstr "Academy"
 
 #: src/features/learning/components/layout/LearningLayout.tsx:260
-msgid "Academy Hub"
-msgstr "Academy Hub"
+#~ msgid "Academy Hub"
+#~ msgstr "Academy Hub"
 
 #: src/components/privacy/CookieConsentBanner.tsx:112
 msgid "Accept All"
@@ -939,6 +939,10 @@ msgstr "Budget sector"
 msgid "Budget Sector"
 msgstr "Budget Sector"
 
+#: src/features/learning/components/layout/LearningLayout.tsx:177
+msgid "Budgetary Academy"
+msgstr "Budgetary Academy"
+
 #: src/routes/charts/index.lazy.tsx:174
 msgid "Build and manage custom visualizations of public spending data."
 msgstr "Build and manage custom visualizations of public spending data."
@@ -1437,7 +1441,7 @@ msgstr "County:"
 msgid "Course Content"
 msgstr "Course Content"
 
-#: src/features/learning/components/layout/LearningLayout.tsx:124
+#: src/features/learning/components/layout/LearningLayout.tsx:123
 msgid "Course Progress"
 msgstr "Course Progress"
 
@@ -2365,6 +2369,10 @@ msgstr "Focus Year Selector"
 msgid "Focus year selector in entity details"
 msgstr "Focus year selector in entity details"
 
+#: src/features/learning/components/layout/LearningLayout.tsx:180
+msgid "Follow the money"
+msgstr "Follow the money"
+
 #: src/routes/privacy.lazy.tsx:150
 msgid "For questions about this Privacy Policy, to exercise your rights, or to contact our data protection officer, email us at contact@transparenta.eu"
 msgstr "For questions about this Privacy Policy, to exercise your rights, or to contact our data protection officer, email us at contact@transparenta.eu"
@@ -2823,8 +2831,8 @@ msgid "Learning Certificate Verification (PoC)"
 msgstr "Learning Certificate Verification (PoC)"
 
 #: src/features/learning/components/layout/LearningLayout.tsx:173
-msgid "Learning Hub"
-msgstr "Learning Hub"
+#~ msgid "Learning Hub"
+#~ msgstr "Learning Hub"
 
 #: src/routes/$lang/learning/certificates.$id.tsx:64
 msgid "Learning path"
@@ -3839,7 +3847,7 @@ msgstr "Read Documentation"
 msgid "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 msgstr "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 
-#: src/features/learning/components/layout/LearningLayout.tsx:247
+#: src/features/learning/components/layout/LearningLayout.tsx:261
 msgid "Ready to Begin?"
 msgstr "Ready to Begin?"
 
@@ -4166,7 +4174,7 @@ msgstr "Select operation"
 msgid "Select options"
 msgstr "Select options"
 
-#: src/features/learning/components/layout/LearningLayout.tsx:188
+#: src/features/learning/components/layout/LearningLayout.tsx:196
 msgid "Select Path"
 msgstr "Select Path"
 
@@ -4186,7 +4194,7 @@ msgstr "Select years..."
 msgid "Selected"
 msgstr "Selected"
 
-#: src/features/learning/components/layout/LearningLayout.tsx:186
+#: src/features/learning/components/layout/LearningLayout.tsx:193
 msgid "Selected Journey"
 msgstr "Selected Journey"
 
@@ -4356,7 +4364,7 @@ msgstr "Shows only the funds transferred between public administration units."
 msgid "Shows only the funds transferred to other public administration units."
 msgstr "Shows only the funds transferred to other public administration units."
 
-#: src/features/learning/components/layout/LearningLayout.tsx:283
+#: src/features/learning/components/layout/LearningLayout.tsx:286
 #: src/features/notifications/components/EntityNotificationBell.tsx:82
 #: src/routes/alerts/$alertId/index.lazy.tsx:163
 #: src/routes/alerts/new.lazy.tsx:152
@@ -4388,7 +4396,7 @@ msgstr "Sign in to receive updates about <0>{entityName}</0>:"
 msgid "Sign in to receive updates about the entities you care about."
 msgstr "Sign in to receive updates about the entities you care about."
 
-#: src/features/learning/components/layout/LearningLayout.tsx:279
+#: src/features/learning/components/layout/LearningLayout.tsx:282
 msgid "Sign in to save your progress and track your learning journey."
 msgstr "Sign in to save your progress and track your learning journey."
 

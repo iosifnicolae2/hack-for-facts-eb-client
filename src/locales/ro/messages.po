@@ -434,12 +434,12 @@ msgid "A platform for exploring public financial data for citizens, journalists,
 msgstr "Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice și alte persoane interesate."
 
 #: src/features/learning/components/layout/LearningLayout.tsx:172
-msgid "Academy"
-msgstr "Academie"
+#~ msgid "Academy"
+#~ msgstr "Academie"
 
 #: src/features/learning/components/layout/LearningLayout.tsx:260
-msgid "Academy Hub"
-msgstr "Hub-ul Academiei"
+#~ msgid "Academy Hub"
+#~ msgstr "Hub-ul Academiei"
 
 #: src/components/privacy/CookieConsentBanner.tsx:112
 msgid "Accept All"
@@ -939,6 +939,10 @@ msgstr "Sector bugetar"
 msgid "Budget Sector"
 msgstr "Sector bugetar"
 
+#: src/features/learning/components/layout/LearningLayout.tsx:177
+msgid "Budgetary Academy"
+msgstr ""
+
 #: src/routes/charts/index.lazy.tsx:174
 msgid "Build and manage custom visualizations of public spending data."
 msgstr "Creați și gestionați vizualizări personalizate ale datelor privind cheltuielile publice."
@@ -1437,7 +1441,7 @@ msgstr "Județ:"
 msgid "Course Content"
 msgstr "Conținutul cursului"
 
-#: src/features/learning/components/layout/LearningLayout.tsx:124
+#: src/features/learning/components/layout/LearningLayout.tsx:123
 msgid "Course Progress"
 msgstr "Progresul cursului"
 
@@ -2365,6 +2369,10 @@ msgstr "Focalizează Selectorul de An"
 msgid "Focus year selector in entity details"
 msgstr "Focalizează selectorul de an în detaliile entității"
 
+#: src/features/learning/components/layout/LearningLayout.tsx:180
+msgid "Follow the money"
+msgstr ""
+
 #: src/routes/privacy.lazy.tsx:150
 msgid "For questions about this Privacy Policy, to exercise your rights, or to contact our data protection officer, email us at contact@transparenta.eu"
 msgstr "Pentru întrebări despre această Politică de Confidențialitate, pentru a vă exercita drepturile sau pentru a contacta responsabilul nostru cu protecția datelor, trimiteți-ne un e-mail la contact@transparenta.eu"
@@ -2818,8 +2826,8 @@ msgid "Learning Certificate Verification (PoC)"
 msgstr "Verificarea certificatului de învățare (PoC)"
 
 #: src/features/learning/components/layout/LearningLayout.tsx:173
-msgid "Learning Hub"
-msgstr "Hub de învățare"
+#~ msgid "Learning Hub"
+#~ msgstr "Hub de învățare"
 
 #: src/routes/$lang/learning/certificates.$id.tsx:64
 msgid "Learning path"
@@ -3834,7 +3842,7 @@ msgstr "Citește Documentația"
 msgid "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 msgstr "Citiți <0>Politica privind cookie-urile</0> și <1>Politica de confidențialitate</1>."
 
-#: src/features/learning/components/layout/LearningLayout.tsx:247
+#: src/features/learning/components/layout/LearningLayout.tsx:261
 msgid "Ready to Begin?"
 msgstr "Ești gata să începi?"
 
@@ -4161,7 +4169,7 @@ msgstr "Selectează operația"
 msgid "Select options"
 msgstr "Selectează opțiuni"
 
-#: src/features/learning/components/layout/LearningLayout.tsx:188
+#: src/features/learning/components/layout/LearningLayout.tsx:196
 msgid "Select Path"
 msgstr "Selectează parcursul"
 
@@ -4181,7 +4189,7 @@ msgstr "Selectează anii..."
 msgid "Selected"
 msgstr "Selectat"
 
-#: src/features/learning/components/layout/LearningLayout.tsx:186
+#: src/features/learning/components/layout/LearningLayout.tsx:193
 msgid "Selected Journey"
 msgstr "Călătoria selectată"
 
@@ -4351,7 +4359,7 @@ msgstr "Afișează doar fondurile transferate între unitățile administrației
 msgid "Shows only the funds transferred to other public administration units."
 msgstr "Afișează doar fondurile transferate către alte unități ale administrației publice."
 
-#: src/features/learning/components/layout/LearningLayout.tsx:283
+#: src/features/learning/components/layout/LearningLayout.tsx:286
 #: src/features/notifications/components/EntityNotificationBell.tsx:82
 #: src/routes/alerts/$alertId/index.lazy.tsx:163
 #: src/routes/alerts/new.lazy.tsx:152
@@ -4383,7 +4391,7 @@ msgstr "Autentificați-vă pentru a primi actualizări despre <0>{entityName}</0
 msgid "Sign in to receive updates about the entities you care about."
 msgstr "Autentificați-vă pentru a primi actualizări despre entitățile care vă interesează."
 
-#: src/features/learning/components/layout/LearningLayout.tsx:279
+#: src/features/learning/components/layout/LearningLayout.tsx:282
 msgid "Sign in to save your progress and track your learning journey."
 msgstr "Autentifică-te pentru a salva progresul și a urmări călătoria ta de învățare."
 

@@ -5,8 +5,7 @@ import {
   ChevronDown,
   Circle,
   GraduationCap,
-  Home,
-  Menu,
+  Library,
   Layers,
   LogIn,
 } from 'lucide-react'
@@ -161,66 +160,81 @@ function LearningSidebar({ pathname }: { readonly pathname: string }) {
 
   return (
     <div className="flex h-full flex-col bg-background border-r border-border/50">
-      {/* Header */}
-      <div className="shrink-0 p-4 border-b border-border/50">
-        <div className="flex items-center justify-between mb-4">
-          <Link to={`/${locale}/learning` as '/'} className="group flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-foreground text-background transition-transform group-hover:scale-105">
-              <GraduationCap className="h-5 w-5" />
+      <div className="shrink-0">
+        {/* Hero Area */}
+        <div className="relative overflow-hidden bg-zinc-950 py-2 px-4 text-zinc-50">
+          {/* Ambient background glow */}
+          <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-primary/20 blur-[40px] pointer-events-none" />
+          <div className="absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-blue-500/10 blur-[40px] pointer-events-none" />
+
+          <Link to={`/${locale}/learning` as '/'} className="relative group flex items-center gap-3.5">
+            <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 border border-white/10 text-white shadow-2xl transition-all duration-300 group-hover:scale-105 group-hover:bg-white/10 group-hover:border-white/20">
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <GraduationCap className="h-5 w-5 relative z-10" />
             </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-sm leading-none">{t`Academy`}</span>
-              <span className="text-[10px] text-muted-foreground mt-0.5">{t`Learning Hub`}</span>
+            <div className="flex flex-col min-w-0">
+              <span className="font-bold text-base tracking-tight leading-none bg-gradient-to-br from-white to-white/70 bg-clip-text text-transparent truncate">
+                {t`Budgetary Academy`}
+              </span>
+              <span className="text-[10px] text-zinc-500 mt-1 font-bold tracking-[0.05em] uppercase truncate">
+                {t`Follow the money`}
+              </span>
             </div>
           </Link>
         </div>
 
-        {/* Path Selector */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              className="w-full justify-between h-auto py-3 px-3.5 rounded-xl border-border/60 hover:bg-muted/40 hover:border-border"
+        {/* Path Selector - Full Width */}
+        <div className="border-b border-border/50">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="w-full flex items-center justify-between py-3 px-4 hover:bg-muted/50 transition-all text-left outline-none group border-none bg-transparent">
+                <div className="flex flex-col items-start gap-0.5 min-w-0 flex-1">
+                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.15em] leading-none">
+                    {t`Selected Journey`}
+                  </span>
+                  <span className="font-semibold text-sm truncate w-full text-foreground group-hover:text-primary transition-colors">
+                    {activePath ? getTranslatedText(activePath.title, locale) : t`Select Path`}
+                  </span>
+                </div>
+                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-all ml-3 shrink-0">
+                  <ChevronDown className="h-3.5 w-3.5 transition-transform group-data-[state=open]:rotate-180" />
+                </div>
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="start"
+              className="w-(--radix-dropdown-menu-trigger-width) rounded-lg p-1 shadow-2xl border-border/50"
             >
-              <div className="flex flex-col items-start gap-0.5 text-left min-w-0 flex-1">
-                <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">{t`Selected Journey`}</span>
-                <span className="font-semibold text-sm truncate w-full">
-                  {activePath ? getTranslatedText(activePath.title, locale) : t`Select Path`}
-                </span>
-              </div>
-              <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0 ml-2" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width) rounded-xl p-1.5 space-y-2">
-            {paths.map((p) => {
-              const isActive = p.id === activePath?.id
-              const pathUrl = `/${locale}/learning/${p.id}`
+              {paths.map((p) => {
+                const isActive = p.id === activePath?.id
+                const pathUrl = `/${locale}/learning/${p.id}`
 
-              return (
-                <DropdownMenuItem key={p.id} asChild className={cn(
-                  isActive && "bg-foreground text-background focus:bg-foreground focus:text-background data-highlighted:bg-foreground data-highlighted:text-background"
-                )}>
-                  <Link
-                    to={pathUrl}
-                    onClick={() => setActivePathId(p.id)}
-                    className="flex flex-col items-start gap-0.5 p-3 rounded-xl w-full"
-                  >
-                    <div className="flex items-center gap-2 w-full">
-                      <span className="font-semibold text-sm">{getTranslatedText(p.title, locale)}</span>
-                      {isActive && <CheckCircle2 className="h-3.5 w-3.5 ml-auto" />}
-                    </div>
-                    <span className={cn(
-                      "text-xs line-clamp-1",
-                      isActive ? "opacity-70" : "text-muted-foreground"
-                    )}>
-                      {getTranslatedText(p.description, locale)}
-                    </span>
-                  </Link>
-                </DropdownMenuItem>
-              )
-            })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+                return (
+                  <DropdownMenuItem key={p.id} asChild className={cn(
+                    isActive && "bg-foreground text-background focus:bg-foreground focus:text-background data-highlighted:bg-foreground data-highlighted:text-background"
+                  )}>
+                    <Link
+                      to={pathUrl}
+                      onClick={() => setActivePathId(p.id)}
+                      className="flex flex-col items-start gap-0 py-2 px-2.5 rounded-md w-full"
+                    >
+                      <div className="flex items-center gap-2 w-full">
+                        <span className="font-medium text-sm">{getTranslatedText(p.title, locale)}</span>
+                        {isActive && <CheckCircle2 className="h-3 w-3 ml-auto" />}
+                      </div>
+                      <span className={cn(
+                        "text-xs line-clamp-1",
+                        isActive ? "opacity-70" : "text-muted-foreground"
+                      )}>
+                        {getTranslatedText(p.description, locale)}
+                      </span>
+                    </Link>
+                  </DropdownMenuItem>
+                )
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
       {completionStats && <PathProgress percent={completionStats.percent} />}
@@ -249,18 +263,7 @@ function LearningSidebar({ pathname }: { readonly pathname: string }) {
           )}
         </nav>
       </ScrollArea>
-
-      {/* Footer */}
-      <div className="shrink-0 p-3 pr-4 border-t border-border/40">
-        <Link
-          to={`/${locale}/learning` as '/'}
-          className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50"
-        >
-          <Home className="h-4 w-4" />
-          <span className="text-xs font-medium">{t`Academy Hub`}</span>
-        </Link>
-      </div>
-    </div >
+    </div>
   )
 }
 
@@ -303,16 +306,16 @@ function LearningLayoutInner() {
 
   return (
     <div className="flex min-h-full w-full">
-      {/* Mobile Sidebar */}
+      {/* Mobile Sidebar Trigger */}
       {!isOnboardingRoute && (
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
             <Button
               variant="outline"
               size="icon"
-              className="lg:hidden fixed left-4 top-4 z-40 shadow-sm bg-background/95 backdrop-blur-sm"
+              className="lg:hidden fixed left-6 md:left-16 bottom-24 md:bottom-6 z-50 h-14 w-14 rounded-full shadow-lg bg-background/95 backdrop-blur-sm border-border hover:bg-muted transition-all active:scale-95"
             >
-              <Menu className="h-4 w-4" />
+              <Library className="h-6 w-6" />
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-72 p-0">
