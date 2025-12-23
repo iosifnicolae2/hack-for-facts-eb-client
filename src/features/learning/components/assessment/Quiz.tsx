@@ -57,15 +57,15 @@ export function Quiz({ id, question, options, explanation, contentId }: QuizProp
   }
 
   return (
-    <Card className="my-8 w-full max-w-3xl mx-auto rounded-[2.5rem] bg-zinc-50 border-none shadow-sm relative overflow-hidden">
+    <Card className="my-8 w-full max-w-3xl mx-auto rounded-[2.5rem] bg-zinc-50 dark:bg-zinc-900/50 border-none shadow-sm relative overflow-hidden">
       <CardContent className="p-6 md:p-10 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
         >
-          <div className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 mb-2">{t`Quick Quiz`}</div>
-          <h3 className="text-xl md:text-2xl font-black leading-tight tracking-tight text-zinc-900 mb-10">
+          <div className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-500 mb-2">{t`Quick Quiz`}</div>
+          <h3 className="text-xl md:text-2xl font-black leading-tight tracking-tight text-zinc-900 dark:text-zinc-100 mb-10">
             {question}
           </h3>
         </motion.div>
@@ -96,15 +96,15 @@ export function Quiz({ id, question, options, explanation, contentId }: QuizProp
                     'relative group w-full text-left p-4 rounded-2xl border-2 transition-all duration-200 outline-none',
                     'flex items-center justify-between',
                     // Default clean state
-                    !isAnswered && !isSelected && 'bg-white/60 border-white hover:bg-white hover:border-zinc-200 shadow-sm',
+                    !isAnswered && !isSelected && 'bg-white/60 dark:bg-zinc-800/50 border-white dark:border-zinc-800 hover:bg-white dark:hover:bg-zinc-800 hover:border-zinc-200 dark:hover:border-zinc-700 shadow-sm',
                     // Selected state (pre-reveal)
-                    !isAnswered && isSelected && 'bg-white border-zinc-900 shadow-md ring-4 ring-zinc-900/5',
+                    !isAnswered && isSelected && 'bg-white dark:bg-zinc-800 border-zinc-900 dark:border-zinc-100 shadow-md ring-4 ring-zinc-900/5 dark:ring-zinc-100/5',
                     // Success State
-                    showAsCorrect && 'bg-emerald-500 border-emerald-500 text-white shadow-md shadow-emerald-200 !opacity-100 !bg-emerald-500',
+                    showAsCorrect && 'bg-emerald-500 border-emerald-500 text-white shadow-md shadow-emerald-200 dark:shadow-none !opacity-100 !bg-emerald-500',
                     // Error State
-                    showAsIncorrect && 'bg-rose-500 border-rose-500 text-white shadow-md shadow-rose-200 !opacity-100 !bg-rose-500',
+                    showAsIncorrect && 'bg-rose-500 border-rose-500 text-white shadow-md shadow-rose-200 dark:shadow-none !opacity-100 !bg-rose-500',
                     // Dimmed state for unselected options
-                    isDimmed && 'bg-transparent border-zinc-200/50 grayscale-[0.5] opacity-40',
+                    isDimmed && 'bg-transparent border-zinc-200/50 dark:border-zinc-800/50 grayscale-[0.5] opacity-40',
                     isSaving && 'cursor-wait opacity-70'
                   )}
                 >
@@ -112,18 +112,18 @@ export function Quiz({ id, question, options, explanation, contentId }: QuizProp
                     <div
                       className={cn(
                         'flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-sm font-black transition-colors duration-300',
-                        !isAnswered && !isSelected && 'bg-zinc-100 text-zinc-400 group-hover:bg-zinc-900 group-hover:text-white',
-                        isSelected && !isAnswered && 'bg-zinc-900 text-white',
+                        !isAnswered && !isSelected && 'bg-zinc-100 dark:bg-zinc-700 text-zinc-400 dark:text-zinc-400 group-hover:bg-zinc-900 dark:group-hover:bg-zinc-100 group-hover:text-white dark:group-hover:text-zinc-900',
+                        isSelected && !isAnswered && 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900',
                         showAsCorrect && 'bg-white/20 text-white',
                         showAsIncorrect && 'bg-white/20 text-white',
-                        isDimmed && 'bg-zinc-100 text-zinc-300'
+                        isDimmed && 'bg-zinc-100 dark:bg-zinc-800 text-zinc-300 dark:text-zinc-600'
                       )}
                     >
                       {showAsCorrect ? <Check className="w-5 h-5" /> : showAsIncorrect ? <X className="w-5 h-5" /> : String.fromCharCode(65 + index)}
                     </div>
                     <span className={cn(
                       "text-base font-bold transition-colors",
-                      showAsCorrect || showAsIncorrect ? "text-white" : "text-zinc-700"
+                      showAsCorrect || showAsIncorrect ? "text-white" : "text-zinc-700 dark:text-zinc-300"
                     )}>
                       {option.text}
                     </span>
@@ -146,20 +146,20 @@ export function Quiz({ id, question, options, explanation, contentId }: QuizProp
               <div className={cn(
                 "mt-10 rounded-3xl p-6 md:p-10 border-2",
                 isCorrect
-                  ? "bg-emerald-50/50 border-emerald-200 shadow-sm"
-                  : "bg-rose-50/50 border-rose-200 shadow-sm"
+                  ? "bg-emerald-50/50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800 shadow-sm"
+                  : "bg-rose-50/50 dark:bg-rose-900/20 border-rose-200 dark:border-rose-800 shadow-sm"
               )}>
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center gap-2">
                     <span className={cn(
                       "text-xs font-black uppercase tracking-[0.2em]",
-                      isCorrect ? "text-emerald-600" : "text-rose-600"
+                      isCorrect ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
                     )}>
                       {isCorrect ? t`Correct Choice` : t`Not Quite`}
                     </span>
                   </div>
 
-                  <p className="text-zinc-700 font-bold leading-relaxed text-base">
+                  <p className="text-zinc-700 dark:text-zinc-300 font-bold leading-relaxed text-base">
                     {explanation}
                   </p>
 
@@ -168,7 +168,7 @@ export function Quiz({ id, question, options, explanation, contentId }: QuizProp
                       <Button
                         onClick={handleRetry}
                         variant="ghost"
-                        className="group h-12 rounded-xl border-2 border-rose-200 text-rose-600 font-black hover:bg-rose-100/50 hover:text-rose-700 hover:border-rose-300"
+                        className="group h-12 rounded-xl border-2 border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400 font-black hover:bg-rose-100/50 dark:hover:bg-rose-900/30 hover:text-rose-700 dark:hover:text-rose-300 hover:border-rose-300 dark:hover:border-rose-700"
                       >
                         <RotateCcw className="w-5 h-5 mr-3 group-hover:-rotate-180 transition-transform duration-500" />
                         {t`Try Again`}
@@ -183,8 +183,8 @@ export function Quiz({ id, question, options, explanation, contentId }: QuizProp
       </CardContent>
 
       {/* Decorative elements to match other cards */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-red-400/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-emerald-400/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-red-400/5 dark:bg-red-400/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-emerald-400/5 dark:bg-emerald-400/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
     </Card>
   )
 }
