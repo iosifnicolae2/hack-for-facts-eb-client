@@ -849,7 +849,7 @@ msgstr "Back to Hub"
 msgid "Back to learning"
 msgstr "Back to learning"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:161
+#: src/features/learning/components/player/LessonPlayer.tsx:349
 #: src/routes/$lang/learning/$pathId/index.tsx:44
 #: src/routes/$lang/learning/$pathId/index.tsx:102
 msgid "Back to Learning Hub"
@@ -859,7 +859,7 @@ msgstr "Back to Learning Hub"
 msgid "Back to Overview"
 msgstr "Back to Overview"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:233
+#: src/features/learning/components/player/LessonPlayer.tsx:418
 msgid "Back to path"
 msgstr "Back to path"
 
@@ -1215,11 +1215,11 @@ msgstr "Comfortable"
 msgid "Compact"
 msgstr "Compact"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:255
+#: src/features/learning/components/player/LessonPlayer.tsx:440
 msgid "Complete path"
 msgstr "Complete path"
 
-#: src/features/learning/components/player/MarkComplete.tsx:104
+#: src/features/learning/components/player/MarkComplete.tsx:117
 msgid "Complete this lesson"
 msgstr "Complete this lesson"
 
@@ -1315,7 +1315,7 @@ msgstr "Contact us at contact@transparenta.eu See also our <0>Privacy Policy</0>
 msgid "Continue"
 msgstr "Continue"
 
-#: src/features/learning/components/player/MarkComplete.tsx:58
+#: src/features/learning/components/player/MarkComplete.tsx:71
 msgid "Continue to the next chapter to complete the module."
 msgstr "Continue to the next chapter to complete the module."
 
@@ -2919,11 +2919,11 @@ msgstr "less than"
 msgid "Less than"
 msgstr "Less than"
 
-#: src/features/learning/components/player/MarkComplete.tsx:53
+#: src/features/learning/components/player/MarkComplete.tsx:66
 msgid "Lesson Completed!"
 msgstr "Lesson Completed!"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:156
+#: src/features/learning/components/player/LessonPlayer.tsx:344
 msgid "Lesson not found"
 msgstr "Lesson not found"
 
@@ -2994,9 +2994,13 @@ msgstr "Loading data..."
 msgid "Loading heatmap data..."
 msgstr "Loading heatmap data..."
 
+#: src/features/learning/components/loading/LessonSkeleton.tsx:61
+msgid "Loading lesson content..."
+msgstr "Loading lesson content..."
+
 #: src/features/learning/components/player/LessonPlayer.tsx:196
-msgid "Loading lesson..."
-msgstr "Loading lesson..."
+#~ msgid "Loading lesson..."
+#~ msgstr "Loading lesson..."
 
 #: src/routes/map.lazy.tsx:217
 msgid "Loading map and heatmap data..."
@@ -3134,7 +3138,7 @@ msgstr "Mark charts as favorites to quickly find them here."
 msgid "Master the app with these powerful keyboard shortcuts"
 msgstr "Master the app with these powerful keyboard shortcuts"
 
-#: src/features/learning/components/player/MarkComplete.tsx:57
+#: src/features/learning/components/player/MarkComplete.tsx:70
 msgid "Mastering the budget one step at a time. Your progress is recorded."
 msgstr "Mastering the budget one step at a time. Your progress is recorded."
 
@@ -3191,7 +3195,7 @@ msgstr "Missing path id"
 msgid "Missing title"
 msgstr "Missing title"
 
-#: src/features/learning/components/player/MarkComplete.tsx:84
+#: src/features/learning/components/player/MarkComplete.tsx:97
 msgid "Mission End"
 msgstr "Mission End"
 
@@ -3347,7 +3351,7 @@ msgstr "Newsletter consent and management"
 msgid "Newsletters and notifications"
 msgstr "Newsletters and notifications"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:243
+#: src/features/learning/components/player/LessonPlayer.tsx:428
 msgid "Next"
 msgstr "Next"
 
@@ -3864,7 +3868,7 @@ msgstr "Preparing your share link..."
 msgid "Preview"
 msgstr "Preview"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:221
+#: src/features/learning/components/player/LessonPlayer.tsx:406
 msgid "Previous"
 msgstr "Previous"
 
@@ -3893,7 +3897,7 @@ msgstr "Processing..."
 msgid "Product"
 msgstr "Product"
 
-#: src/features/learning/components/player/MarkComplete.tsx:51
+#: src/features/learning/components/player/MarkComplete.tsx:64
 msgid "Progress Saved"
 msgstr "Progress Saved"
 
@@ -3967,7 +3971,7 @@ msgstr "Ready to create"
 msgid "Ready to learn?"
 msgstr "Ready to learn?"
 
-#: src/features/learning/components/player/MarkComplete.tsx:85
+#: src/features/learning/components/player/MarkComplete.tsx:98
 msgid "Ready to level up?"
 msgstr "Ready to level up?"
 
@@ -3989,7 +3993,7 @@ msgstr "Reality"
 msgid "Recipient"
 msgstr "Recipient"
 
-#: src/features/learning/components/player/MarkComplete.tsx:99
+#: src/features/learning/components/player/MarkComplete.tsx:112
 msgid "Recording..."
 msgstr "Recording..."
 
@@ -4172,7 +4176,7 @@ msgstr "Save cookie preferences"
 msgid "Saving…"
 msgstr "Saving…"
 
-#: src/features/learning/components/player/MarkComplete.tsx:87
+#: src/features/learning/components/player/MarkComplete.tsx:100
 msgid "Seal your progress and move closer to becoming a budget expert."
 msgstr "Seal your progress and move closer to becoming a budget expert."
 
@@ -4650,7 +4654,7 @@ msgstr "Status"
 msgid "Stay here"
 msgstr "Stay here"
 
-#: src/features/learning/components/player/MarkComplete.tsx:53
+#: src/features/learning/components/player/MarkComplete.tsx:66
 msgid "Step Successfully Finished"
 msgstr "Step Successfully Finished"
 
@@ -4767,7 +4771,7 @@ msgstr "The learning path you're looking for doesn't exist or has been moved."
 msgid "The learning path you're looking for doesn't exist."
 msgstr "The learning path you're looking for doesn't exist."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:158
+#: src/features/learning/components/player/LessonPlayer.tsx:346
 msgid "The lesson you're looking for doesn't exist or may have been moved."
 msgstr "The lesson you're looking for doesn't exist or may have been moved."
 
@@ -5148,7 +5152,7 @@ msgstr "Unlock annotation"
 msgid "Unsaved changes"
 msgstr "Unsaved changes"
 
-#: src/features/learning/components/player/MarkComplete.tsx:65
+#: src/features/learning/components/player/MarkComplete.tsx:78
 msgid "Unstoppable"
 msgstr "Unstoppable"
 

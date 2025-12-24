@@ -64,16 +64,18 @@ export function useLessonChallenges() {
 
 export function useRegisterLessonChallenge(params: { readonly id: string; readonly isCompleted: boolean }) {
   const context = useContext(LessonChallengesContext)
+  const setChallenge = context?.setChallenge
+  const removeChallenge = context?.removeChallenge
 
   useEffect(() => {
-    if (!context) return
+    if (!removeChallenge) return
     return () => {
-      context.removeChallenge(params.id)
+      removeChallenge(params.id)
     }
-  }, [context, params.id])
+  }, [removeChallenge, params.id])
 
   useEffect(() => {
-    if (!context) return
-    context.setChallenge(params.id, params.isCompleted)
-  }, [context, params.id, params.isCompleted])
+    if (!setChallenge) return
+    setChallenge(params.id, params.isCompleted)
+  }, [params.id, params.isCompleted, setChallenge])
 }

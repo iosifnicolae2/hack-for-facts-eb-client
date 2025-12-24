@@ -849,7 +849,7 @@ msgstr "Înapoi la Hub"
 msgid "Back to learning"
 msgstr "Înapoi la învățare"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:161
+#: src/features/learning/components/player/LessonPlayer.tsx:349
 #: src/routes/$lang/learning/$pathId/index.tsx:44
 #: src/routes/$lang/learning/$pathId/index.tsx:102
 msgid "Back to Learning Hub"
@@ -859,7 +859,7 @@ msgstr "Înapoi la Hub-ul de învățare"
 msgid "Back to Overview"
 msgstr "Înapoi la sinteză"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:233
+#: src/features/learning/components/player/LessonPlayer.tsx:418
 msgid "Back to path"
 msgstr "Înapoi la parcurs"
 
@@ -1215,11 +1215,11 @@ msgstr "Confortabil"
 msgid "Compact"
 msgstr "Compact"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:255
+#: src/features/learning/components/player/LessonPlayer.tsx:440
 msgid "Complete path"
 msgstr "Finalizează parcursul"
 
-#: src/features/learning/components/player/MarkComplete.tsx:104
+#: src/features/learning/components/player/MarkComplete.tsx:117
 msgid "Complete this lesson"
 msgstr "Finalizează această lecție"
 
@@ -1315,7 +1315,7 @@ msgstr "Contactați-ne la adresa contact@transparenta.eu Consultați și <0>Poli
 msgid "Continue"
 msgstr "Continuă"
 
-#: src/features/learning/components/player/MarkComplete.tsx:58
+#: src/features/learning/components/player/MarkComplete.tsx:71
 msgid "Continue to the next chapter to complete the module."
 msgstr "Continuă la următorul capitol pentru a finaliza modulul."
 
@@ -2914,11 +2914,11 @@ msgstr "mai mic decât"
 msgid "Less than"
 msgstr "Mai mic decât"
 
-#: src/features/learning/components/player/MarkComplete.tsx:53
+#: src/features/learning/components/player/MarkComplete.tsx:66
 msgid "Lesson Completed!"
 msgstr "Lecție finalizată!"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:156
+#: src/features/learning/components/player/LessonPlayer.tsx:344
 msgid "Lesson not found"
 msgstr "Lecția nu a fost găsită"
 
@@ -2989,9 +2989,13 @@ msgstr "Se încarcă datele..."
 msgid "Loading heatmap data..."
 msgstr "Se încarcă datele pentru harta termică..."
 
+#: src/features/learning/components/loading/LessonSkeleton.tsx:61
+msgid "Loading lesson content..."
+msgstr ""
+
 #: src/features/learning/components/player/LessonPlayer.tsx:196
-msgid "Loading lesson..."
-msgstr "Se încarcă lecția..."
+#~ msgid "Loading lesson..."
+#~ msgstr "Se încarcă lecția..."
 
 #: src/routes/map.lazy.tsx:217
 msgid "Loading map and heatmap data..."
@@ -3129,7 +3133,7 @@ msgstr "Marcați graficele ca favorite pentru a le găsi rapid aici."
 msgid "Master the app with these powerful keyboard shortcuts"
 msgstr "Stăpânește aplicația cu aceste comenzi rapide puternice de la tastatură"
 
-#: src/features/learning/components/player/MarkComplete.tsx:57
+#: src/features/learning/components/player/MarkComplete.tsx:70
 msgid "Mastering the budget one step at a time. Your progress is recorded."
 msgstr "Stăpânești bugetul pas cu pas. Progresul tău este înregistrat."
 
@@ -3186,7 +3190,7 @@ msgstr "Lipsește ID-ul parcursului"
 msgid "Missing title"
 msgstr "Titlu lipsă"
 
-#: src/features/learning/components/player/MarkComplete.tsx:84
+#: src/features/learning/components/player/MarkComplete.tsx:97
 msgid "Mission End"
 msgstr "Sfârșitul misiunii"
 
@@ -3342,7 +3346,7 @@ msgstr "Consimțământul și gestionarea buletinului informativ"
 msgid "Newsletters and notifications"
 msgstr "Buletine informative și notificări"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:243
+#: src/features/learning/components/player/LessonPlayer.tsx:428
 msgid "Next"
 msgstr "Următorul"
 
@@ -3859,7 +3863,7 @@ msgstr "Se pregătește linkul de partajare..."
 msgid "Preview"
 msgstr "Previzualizare"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:221
+#: src/features/learning/components/player/LessonPlayer.tsx:406
 msgid "Previous"
 msgstr "Anterior"
 
@@ -3888,7 +3892,7 @@ msgstr "Se procesează..."
 msgid "Product"
 msgstr "Produs"
 
-#: src/features/learning/components/player/MarkComplete.tsx:51
+#: src/features/learning/components/player/MarkComplete.tsx:64
 msgid "Progress Saved"
 msgstr "Progres salvat"
 
@@ -3962,7 +3966,7 @@ msgstr "Gata de creare"
 msgid "Ready to learn?"
 msgstr "Ești gata să înveți?"
 
-#: src/features/learning/components/player/MarkComplete.tsx:85
+#: src/features/learning/components/player/MarkComplete.tsx:98
 msgid "Ready to level up?"
 msgstr "Gata să treci la nivelul următor?"
 
@@ -3984,7 +3988,7 @@ msgstr "Realitate"
 msgid "Recipient"
 msgstr "Destinatar"
 
-#: src/features/learning/components/player/MarkComplete.tsx:99
+#: src/features/learning/components/player/MarkComplete.tsx:112
 msgid "Recording..."
 msgstr "Se înregistrează..."
 
@@ -4167,7 +4171,7 @@ msgstr "Salvează preferințele cookie"
 msgid "Saving…"
 msgstr "Se salvează..."
 
-#: src/features/learning/components/player/MarkComplete.tsx:87
+#: src/features/learning/components/player/MarkComplete.tsx:100
 msgid "Seal your progress and move closer to becoming a budget expert."
 msgstr "Consolidează-ți progresul și apropie-te de a deveni un expert în buget."
 
@@ -4645,7 +4649,7 @@ msgstr "Stare"
 msgid "Stay here"
 msgstr "Rămâi aici"
 
-#: src/features/learning/components/player/MarkComplete.tsx:53
+#: src/features/learning/components/player/MarkComplete.tsx:66
 msgid "Step Successfully Finished"
 msgstr "Pas finalizat cu succes"
 
@@ -4762,7 +4766,7 @@ msgstr "Parcursul de învățare pe care îl cauți nu există sau a fost mutat.
 msgid "The learning path you're looking for doesn't exist."
 msgstr "Parcursul de învățare pe care îl cauți nu există."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:158
+#: src/features/learning/components/player/LessonPlayer.tsx:346
 msgid "The lesson you're looking for doesn't exist or may have been moved."
 msgstr "Lecția pe care o cauți nu există sau este posibil să fi fost mutată."
 
@@ -5143,7 +5147,7 @@ msgstr "Deblochează adnotarea"
 msgid "Unsaved changes"
 msgstr "Modificări nesalvate"
 
-#: src/features/learning/components/player/MarkComplete.tsx:65
+#: src/features/learning/components/player/MarkComplete.tsx:78
 msgid "Unstoppable"
 msgstr "De neoprit"
 

@@ -14,6 +14,7 @@ import { QUIZ_PASS_SCORE } from '../../utils/interactions'
 import { Quiz, type QuizOption } from '../assessment/Quiz'
 import { MarkComplete } from './MarkComplete'
 import { LessonChallengesProvider, useRegisterLessonChallenge } from './lesson-challenges-context'
+import { LessonSkeleton } from '../loading/LessonSkeleton'
 import { BudgetFootprintRevealer } from '../interactive/BudgetFootprintRevealer'
 import { FlashCard, FlashCardDeck } from '../interactive/FlashCardDeck'
 import { PromiseTracker } from '../interactive/PromiseTracker'
@@ -26,7 +27,6 @@ import { PlatformMission } from '../interactive/PlatformMission'
 import { DeficitVisual } from '../interactive/DeficitVisual'
 import { Hidden } from '../interactive/Hidden'
 import { Sources } from '../interactive/Sources'
-import { ResponsiveTable } from '../interactive/ResponsiveTable'
 
 type LessonPlayerProps = {
   readonly locale: LearningLocale
@@ -183,10 +183,8 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
       DeficitVisual,
       Hidden,
       Sources,
-      ResponsiveTable,
     }),
-    // Ensure all interactive components are included in the dependency array
-    [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, PromiseTrackerWrapper, SalaryTaxCalculatorWrapper, RevenueDistributionGame, VATCalculator, VATReformCard, EUComparisonChart, PlatformMission, DeficitVisual, Hidden, Sources, ResponsiveTable]
+    [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, PromiseTrackerWrapper, SalaryTaxCalculatorWrapper]
   )
 
   if (!path || !module || !lesson) {
@@ -228,18 +226,54 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
           'prose-p:leading-relaxed',
           'prose-a:text-primary prose-a:no-underline hover:prose-a:underline',
           'prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-normal prose-code:before:content-none prose-code:after:content-none',
-          'prose-pre:bg-muted prose-pre:border',
-          'prose-img:rounded-xl prose-img:shadow-md'
+          'prose-img:rounded-xl prose-img:shadow-md',
+          // Code block styling - max 90vw with horizontal scroll
+          '[&_pre]:max-w-[90vw] [&_pre]:mx-auto [&_pre]:my-6',
+          '[&_pre]:overflow-x-auto [&_pre]:rounded-xl',
+          '[&_pre]:border [&_pre]:border-zinc-200 dark:[&_pre]:border-zinc-700',
+          '[&_pre]:bg-zinc-100 dark:[&_pre]:bg-zinc-900',
+          '[&_pre]:p-4 [&_pre]:text-sm',
+          // CSS scroll shadows for code blocks
+          '[&_pre]:bg-[linear-gradient(to_right,var(--color-zinc-100)_30%,transparent),linear-gradient(to_left,var(--color-zinc-100)_30%,transparent),linear-gradient(to_right,var(--color-zinc-300),transparent),linear-gradient(to_left,var(--color-zinc-300),transparent)]',
+          'dark:[&_pre]:bg-[linear-gradient(to_right,var(--color-zinc-900)_30%,transparent),linear-gradient(to_left,var(--color-zinc-900)_30%,transparent),linear-gradient(to_right,var(--color-zinc-600),transparent),linear-gradient(to_left,var(--color-zinc-600),transparent)]',
+          '[&_pre]:bg-position-[left_center,right_center,left_center,right_center]',
+          '[&_pre]:bg-size-[40px_100%,40px_100%,14px_100%,14px_100%]',
+          '[&_pre]:bg-no-repeat',
+          '[&_pre]:[background-attachment:local,local,scroll,scroll]',
+          // Code inside pre - ensure it doesn't wrap
+          '[&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-inherit',
+          '[&_pre_code]:whitespace-pre [&_pre_code]:break-normal',
+          // Table styling
+          '[&_table]:my-8',
+          '[&_table]:overflow-x-auto',
+          '[&_table]:border [&_table]:border-zinc-200 dark:[&_table]:border-zinc-700',
+          '[&_table]:bg-zinc-50 dark:[&_table]:bg-zinc-900/50',
+          '[&_table]:text-sm',
+          // CSS scroll shadows using background-attachment trick
+          '[&_table]:bg-[linear-gradient(to_right,var(--color-zinc-50)_30%,transparent),linear-gradient(to_left,var(--color-zinc-50)_30%,transparent),linear-gradient(to_right,var(--color-zinc-300),transparent),linear-gradient(to_left,var(--color-zinc-300),transparent)]',
+          'dark:[&_table]:bg-[linear-gradient(to_right,var(--color-zinc-900)_30%,transparent),linear-gradient(to_left,var(--color-zinc-900)_30%,transparent),linear-gradient(to_right,var(--color-zinc-600),transparent),linear-gradient(to_left,var(--color-zinc-600),transparent)]',
+          '[&_table]:bg-position-[left_center,right_center,left_center,right_center]',
+          '[&_table]:bg-size-[40px_100%,40px_100%,14px_100%,14px_100%]',
+          '[&_table]:bg-no-repeat',
+          '[&_table]:[background-attachment:local,local,scroll,scroll]',
+          // Header styling
+          '[&_thead]:bg-zinc-100/80 dark:[&_thead]:bg-zinc-800/80',
+          '[&_thead]:border-b [&_thead]:border-zinc-200 dark:[&_thead]:border-zinc-700',
+          '[&_th]:px-4 [&_th]:py-3 [&_th]:text-left [&_th]:font-bold [&_th]:text-xs [&_th]:uppercase [&_th]:tracking-wider',
+          '[&_th]:text-zinc-700 dark:[&_th]:text-zinc-200',
+          // Body styling
+          '[&_tbody_tr:nth-child(odd)]:bg-white/80 dark:[&_tbody_tr:nth-child(odd)]:bg-zinc-900/30',
+          '[&_tbody_tr:nth-child(even)]:bg-zinc-50/50 dark:[&_tbody_tr:nth-child(even)]:bg-zinc-800/20',
+          '[&_tbody_tr]:border-b [&_tbody_tr]:border-zinc-100 dark:[&_tbody_tr]:border-zinc-800/60',
+          '[&_tbody_tr:last-child]:border-b-0',
+          '[&_tbody_tr]:transition-colors',
+          '[&_tbody_tr:hover]:bg-zinc-100/50 dark:[&_tbody_tr:hover]:bg-zinc-800/40',
+          // Cell styling
+          '[&_td]:px-4 [&_td]:py-3',
+          '[&_td]:text-zinc-600 dark:[&_td]:text-zinc-300'
         )}
       >
-        {isLoading && (
-          <div className="flex items-center justify-center py-16">
-            <div className="flex flex-col items-center gap-3">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-              <p className="text-sm text-muted-foreground">{t`Loading lesson...`}</p>
-            </div>
-          </div>
-        )}
+        {isLoading && <LessonSkeleton />}
         {error && (
           <Card className="border-destructive/50 bg-destructive/5">
             <CardContent className="p-6 text-center">
