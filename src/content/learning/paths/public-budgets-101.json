@@ -1,0 +1,83 @@
+{
+  "id": "public-budgets-101",
+  "slug": "public-budgets-101",
+  "difficulty": "beginner",
+  "title": {
+    "en": "Public Budgets 101",
+    "ro": "Bugetele Publice 101"
+  },
+  "description": {
+    "en": "Understand public budgets in under 20 minutes.",
+    "ro": "Intelege bugetele publice in mai putin de 20 de minute."
+  },
+  "modules": [
+    {
+      "id": "budget-basics",
+      "slug": "basics",
+      "title": {
+        "en": "Budget Basics",
+        "ro": "Bazele Bugetului"
+      },
+      "description": {
+        "en": "Everything you need to know about public budgets - fast.",
+        "ro": "Tot ce trebuie sa stii despre bugetele publice - rapid."
+      },
+      "lessons": [
+        {
+          "id": "pb101-what-is-a-budget",
+          "slug": "01-what-is-a-budget",
+          "contentDir": "citizen-foundations/01-what-is-a-budget",
+          "completionMode": "mark_complete",
+          "prerequisites": [],
+          "durationMinutes": 4,
+          "title": {
+            "en": "What is a Public Budget?",
+            "ro": "Ce este un buget public?"
+          }
+        },
+        {
+          "id": "pb101-your-three-roles",
+          "slug": "02-your-three-roles",
+          "title": {
+            "en": "Your Three Roles",
+            "ro": "Cele trei roluri ale tale"
+          },
+          "durationMinutes": 4,
+          "contentDir": "citizen-foundations/02-your-three-roles",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "pb101-what-is-a-budget"
+          ]
+        },
+        {
+          "id": "pb101-your-money-at-work",
+          "slug": "03-your-money-at-work",
+          "title": {
+            "en": "Your Money at Work",
+            "ro": "Banii tai la lucru"
+          },
+          "durationMinutes": 5,
+          "contentDir": "budget-basics/03-your-money-at-work",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "pb101-your-three-roles"
+          ]
+        },
+        {
+          "id": "pb101-explore-the-platform",
+          "slug": "04-explore-the-platform",
+          "title": {
+            "en": "Explore the Platform",
+            "ro": "Exploreaza platforma"
+          },
+          "durationMinutes": 4,
+          "contentDir": "citizen-foundations/04-explore-the-platform",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "pb101-your-money-at-work"
+          ]
+        }
+      ]
+    }
+  ]
+}

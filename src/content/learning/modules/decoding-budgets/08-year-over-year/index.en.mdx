@@ -1,0 +1,123 @@
+---
+title: "Year-over-Year Comparison"
+durationMinutes: 6
+concept: "Comparing budgets across time accurately"
+objective: "Perform meaningful year-over-year budget analysis"
+---
+
+# Year-over-Year Comparison
+
+## Concept Introduction
+
+Comparing this year's budget to last year's seems simple - but doing it correctly requires accounting for inflation, structural changes, and proper baselines.
+
+> **Key Insight:** A budget that "increased by 5%" might actually be a cut if inflation was 10%. Always adjust for inflation when comparing years.
+
+---
+
+## The Basics: Nominal vs. Real
+
+### Nominal Values
+- The actual numbers in the budget
+- What you see in official documents
+- Affected by inflation
+
+### Real Values (Inflation-Adjusted)
+- Nominal values adjusted for purchasing power
+- Shows true change in resources
+- Essential for meaningful comparison
+
+### How to Adjust
+
+```
+Real Change = (Current Year Value / Previous Year Value × 100) - Inflation Rate
+```
+
+**Example:**
+- 2023 Education Budget: 50 billion RON
+- 2024 Education Budget: 55 billion RON
+- Nominal increase: 10%
+- Inflation 2023-2024: 7%
+- Real increase: approximately 3%
+
+---
+
+## Finding Comparable Categories
+
+Budget categories change over time. Before comparing:
+
+### Check for Reclassifications
+- Did functions move between ministries?
+- Were new subcategories created?
+- Did economic classification codes change?
+
+### Adjust for Scope Changes
+- New programs added → might need to exclude for like-for-like comparison
+- Programs ended → might need to add back
+- Merged entities → combine historical data
+
+### Use Consistent Perimeters
+Compare the same set of entities across years. If a new hospital opened, decide whether to include it in both years or exclude it.
+
+---
+
+## Key Metrics to Track
+
+### Growth Rates
+
+| Metric | Formula | What It Shows |
+|--------|---------|---------------|
+| **Nominal Growth** | (New - Old) / Old × 100 | Headline change |
+| **Real Growth** | Nominal Growth - Inflation | True resource change |
+| **Per Capita Growth** | Real Growth - Population Growth | Per-person change |
+
+### Shares
+
+| Metric | Formula | What It Shows |
+|--------|---------|---------------|
+| **Share of Total** | Category / Total Budget × 100 | Priority relative to others |
+| **Share of GDP** | Category / GDP × 100 | Priority relative to economy |
+| **Share Change** | Current Share - Previous Share | Shifting priorities |
+
+---
+
+## Common Comparison Mistakes
+
+### 1. Ignoring Inflation
+The #1 mistake. A "flat" budget is actually a cut in real terms.
+
+### 2. Wrong Baseline Year
+Picking an unusual year (pandemic, crisis) as baseline distorts the picture.
+
+### 3. Mixing Planned and Executed
+Compare planned to planned, executed to executed. Not planned to executed.
+
+### 4. Ignoring Rectifications
+Compare final/rectified budgets, not just initial budgets.
+
+### 5. Cherry-Picking Periods
+Choosing periods that support a narrative rather than showing the full picture.
+
+---
+
+## Practice
+
+<Quiz
+  id="year-over-year-quiz"
+  question="If a budget increases by 5% nominally but inflation is 8%, what happened in real terms?"
+  options={[
+    { id: "a", text: "The budget increased by 5%", isCorrect: false },
+    { id: "b", text: "The budget increased by 13%", isCorrect: false },
+    { id: "c", text: "The budget decreased by approximately 3%", isCorrect: true },
+    { id: "d", text: "We cannot determine without more information", isCorrect: false }
+  ]}
+  explanation="Real change = Nominal change - Inflation. So 5% - 8% = -3%. Despite the nominal 'increase,' the budget actually decreased in real (purchasing power) terms. This is a common way governments can claim increases while actually cutting resources."
+/>
+
+---
+
+## Key Takeaway
+
+> Meaningful year-over-year comparison requires adjusting for inflation, ensuring comparable categories, and using consistent baselines. Always convert to real terms and be skeptical of nominal increases that don't exceed inflation.
+
+<MarkComplete label="Continue to Next Lesson" />

@@ -1,0 +1,196 @@
+---
+title: "Mini Case Study: Analyzing a Real Budget"
+durationMinutes: 10
+concept: "Applying all skills to analyze a budget"
+objective: "Complete a systematic budget analysis using learned techniques"
+---
+
+# Mini Case Study: Analyzing a Real Budget
+
+## Introduction
+
+Now it's time to put everything together. In this lesson, we'll walk through a systematic analysis of a real budget entity, applying all the skills you've learned.
+
+> **Goal:** By the end of this lesson, you'll have a repeatable framework for analyzing any Romanian public budget.
+
+---
+
+## The Scenario
+
+You've been asked to analyze your local city's budget. A friend claims "the city is spending less on education this year." Is this true?
+
+Let's systematically investigate.
+
+---
+
+## Step 1: Find the Data
+
+### Where to Look
+1. **City website** → Usually has budget section under "Transparency"
+2. **data.gov.ro** → Search for your city name + "buget"
+3. **Transparenta.eu** → Use the entity search
+
+### What to Download
+- Current year's approved budget (initial + rectifications)
+- Previous year's executed budget
+- At least 3 years if analyzing trends
+
+### What We Found (Example: A Medium-Sized City)
+
+| Year | Education Budget (Planned) | Education Budget (Executed) |
+|------|---------------------------|----------------------------|
+| 2022 | 45M RON | 42M RON (93% execution) |
+| 2023 | 48M RON | 44M RON (92% execution) |
+| 2024 | 50M RON | (in progress) |
+
+---
+
+## Step 2: Apply Classifications
+
+### Functional View
+Education spending falls under Chapter 65 "Education" in the functional classification.
+
+Check what's included:
+- Pre-school (kindergartens)
+- Primary and secondary schools
+- High schools (if any are city-managed)
+- School infrastructure
+- School transport
+
+### Economic View
+Breaking down by economic classification:
+- Personnel costs (salaries): 60%
+- Goods and services: 25%
+- Capital expenditure: 15%
+
+### Cross-Reference Insight
+If capital expenditure dropped significantly, it might mean fewer school renovations - even if total education spending increased.
+
+---
+
+## Step 3: Normalize and Compare
+
+### Nominal Check
+2023 → 2024: 48M → 50M = +4.2% nominal increase
+
+### Inflation Adjustment
+Inflation 2023-2024: ~7%
+Real change: 4.2% - 7% = **-2.8% real decrease**
+
+### Per Capita Check
+If school-age population changed:
+- 2023: 12,000 students → 44M / 12,000 = 3,667 RON/student
+- 2024: 11,500 students → 50M / 11,500 = 4,348 RON/student
+- Per-student increase: +18.6%
+
+### What This Tells Us
+The nominal budget increased, but in real terms it decreased. However, per student, spending actually increased significantly due to demographic decline.
+
+---
+
+## Step 4: Check for Context
+
+### Classification Changes
+Did the city move any education-related spending to another category?
+- Check if school meals moved to "Social assistance"
+- Check if school transport moved to "Transport"
+
+### One-Time Items
+- Was there major renovation in 2023 that won't repeat?
+- Are there new EU-funded projects not in the main budget?
+
+### Execution Patterns
+Historical execution rate is ~93%. If the city only executed 85% this year, the actual spending might be even lower.
+
+---
+
+## Step 5: Form Conclusions
+
+### Our Findings
+
+| Metric | Change | Interpretation |
+|--------|--------|----------------|
+| Nominal budget | +4.2% | Headline increase |
+| Real (inflation-adjusted) | -2.8% | Less purchasing power |
+| Per student | +18.6% | More per child |
+| Capital expenditure | -30% | Fewer renovations |
+
+### Nuanced Answer
+"The city is spending less on education" is:
+- **True** in real terms (after inflation)
+- **False** per student (more per child)
+- **True** for infrastructure (capital cuts)
+
+The friend's claim is partially correct but lacks nuance.
+
+---
+
+## Your Analysis Template
+
+Use this checklist for any budget analysis:
+
+### 1. Data Collection
+- [ ] Identify the entity (city, ministry, hospital, etc.)
+- [ ] Find current and historical budget documents
+- [ ] Note: planned vs executed, initial vs rectified
+
+### 2. Classification Analysis
+- [ ] What functional category/chapter?
+- [ ] What economic breakdown?
+- [ ] Any cross-references of interest?
+
+### 3. Comparison
+- [ ] Calculate nominal change
+- [ ] Adjust for inflation (real change)
+- [ ] Normalize if needed (per capita, per unit)
+- [ ] Compare to peers or benchmarks
+
+### 4. Context
+- [ ] Check for reclassifications
+- [ ] Identify one-time items
+- [ ] Review execution rates
+- [ ] Consider external factors
+
+### 5. Conclusions
+- [ ] State findings clearly
+- [ ] Acknowledge limitations
+- [ ] Avoid overclaiming causation
+- [ ] Identify follow-up questions
+
+---
+
+## Practice
+
+<Quiz
+  id="case-study-quiz"
+  question="A city's healthcare budget went from 30M RON to 33M RON (10% increase). Inflation was 8%. The city population grew 5%. What happened to real per-capita healthcare spending?"
+  options={[
+    { id: "a", text: "It increased by 10%", isCorrect: false },
+    { id: "b", text: "It increased by about 2%", isCorrect: false },
+    { id: "c", text: "It decreased by about 3%", isCorrect: true },
+    { id: "d", text: "It stayed the same", isCorrect: false }
+  ]}
+  explanation="Nominal increase: 10%. Real increase: 10% - 8% = 2%. Per capita change: 2% - 5% = -3%. Despite the headline '10% increase', real per-capita spending actually decreased by about 3% because inflation and population growth outpaced the budget increase."
+/>
+
+---
+
+## Next Steps
+
+Now that you've completed the Decoding Budgets curriculum, you can:
+
+1. **Analyze your own municipality** using the template above
+2. **Explore Transparenta.eu** to find data for any entity
+3. **Compare entities** using benchmarking techniques
+4. **Track budget changes** over the year with rectifications
+5. **Share insights** with your community
+
+---
+
+## Key Takeaway
+
+> Budget analysis is systematic, not mystical. By following a consistent process - find data, apply classifications, normalize comparisons, check context, form conclusions - you can analyze any public budget and contribute to democratic accountability.
+
+**Congratulations on completing the Decoding Budgets curriculum!**
+
+<MarkComplete label="Complete Curriculum" />

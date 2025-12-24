@@ -74,16 +74,16 @@
         {
           "id": "citizen-track-simple",
           "label": {
-            "en": "Simple",
-            "ro": "Simplu"
+            "en": "Quick Start",
+            "ro": "Start Rapid"
           },
           "description": {
-            "en": "A short, practical introduction",
-            "ro": "O introducere scurtă și practică"
+            "en": "Understand public budgets in under 20 minutes",
+            "ro": "Intelege bugetele publice in mai putin de 20 de minute"
           },
           "nextNodeId": "result",
           "set": {
-            "pathId": "citizen"
+            "pathId": "public-budgets-101"
           }
         },
         {

@@ -1,0 +1,549 @@
+{
+  "id": "decoding-budgets",
+  "slug": "decoding-budgets",
+  "difficulty": "intermediate",
+  "title": {
+    "en": "Decoding Budgets",
+    "ro": "Decodificarea Bugetelor"
+  },
+  "description": {
+    "en": "A comprehensive guide to reading, understanding, and analyzing Romanian public budgets.",
+    "ro": "Un ghid complet pentru citirea, intelegerea si analizarea bugetelor publice romanesti."
+  },
+  "modules": [
+    {
+      "id": "db-why-budgets-matter",
+      "slug": "why-budgets-matter",
+      "title": {
+        "en": "Why Budgets Matter",
+        "ro": "De ce conteaza bugetele"
+      },
+      "description": {
+        "en": "Understand the importance of public budgets and your role as a citizen.",
+        "ro": "Intelege importanta bugetelor publice si rolul tau ca cetatean."
+      },
+      "lessons": [
+        {
+          "id": "db-what-is-a-budget",
+          "slug": "01-what-is-a-budget",
+          "contentDir": "citizen-foundations/01-what-is-a-budget",
+          "completionMode": "mark_complete",
+          "prerequisites": [],
+          "durationMinutes": 4,
+          "title": {
+            "en": "What is a Public Budget?",
+            "ro": "Ce este un buget public?"
+          }
+        },
+        {
+          "id": "db-your-three-roles",
+          "slug": "02-your-three-roles",
+          "contentDir": "citizen-foundations/02-your-three-roles",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-what-is-a-budget"],
+          "durationMinutes": 4,
+          "title": {
+            "en": "Your Three Roles",
+            "ro": "Cele trei roluri ale tale"
+          }
+        },
+        {
+          "id": "db-democratic-power",
+          "slug": "03-democratic-power",
+          "contentDir": "decoding-budgets/01-democratic-power",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-your-three-roles"],
+          "durationMinutes": 6,
+          "title": {
+            "en": "The Democratic Power of Budgets",
+            "ro": "Puterea democratica a bugetelor"
+          }
+        },
+        {
+          "id": "db-promises-vs-reality",
+          "slug": "04-promises-vs-reality",
+          "contentDir": "citizen-foundations/03-promises-vs-reality",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-democratic-power"],
+          "durationMinutes": 5,
+          "title": {
+            "en": "Promises vs Reality",
+            "ro": "Promisiuni vs Realitate"
+          }
+        }
+      ]
+    },
+    {
+      "id": "db-revenue",
+      "slug": "revenue",
+      "title": {
+        "en": "Where Money Comes From",
+        "ro": "De unde vin banii"
+      },
+      "description": {
+        "en": "Discover how public revenue is collected and what sources fund the budget.",
+        "ro": "Descopera cum sunt colectate veniturile publice si ce surse finanteaza bugetul."
+      },
+      "lessons": [
+        {
+          "id": "db-your-tax-contribution",
+          "slug": "01-your-tax-contribution",
+          "contentDir": "revenue-sources/01-your-tax-contribution",
+          "completionMode": "mark_complete",
+          "prerequisites": [],
+          "durationMinutes": 7,
+          "title": {
+            "en": "Your Tax Contribution",
+            "ro": "Contributia ta la taxe"
+          }
+        },
+        {
+          "id": "db-types-of-revenue",
+          "slug": "02-types-of-revenue",
+          "contentDir": "revenue-sources/02-types-of-revenue",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-your-tax-contribution"],
+          "durationMinutes": 7,
+          "title": {
+            "en": "Types of Public Revenue",
+            "ro": "Tipuri de venituri publice"
+          }
+        },
+        {
+          "id": "db-romanias-revenue-challenge",
+          "slug": "03-romanias-revenue-challenge",
+          "contentDir": "revenue-sources/03-romanias-revenue-challenge",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-types-of-revenue"],
+          "durationMinutes": 7,
+          "title": {
+            "en": "Romania's Revenue Challenge",
+            "ro": "Provocarea veniturilor Romaniei"
+          }
+        },
+        {
+          "id": "db-revenue-trends",
+          "slug": "04-revenue-trends",
+          "contentDir": "decoding-budgets/02-revenue-trends",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-romanias-revenue-challenge"],
+          "durationMinutes": 5,
+          "title": {
+            "en": "Revenue Trends and Forecasting",
+            "ro": "Tendinte si prognoza veniturilor"
+          }
+        }
+      ]
+    },
+    {
+      "id": "db-expenditure",
+      "slug": "expenditure",
+      "title": {
+        "en": "Where Money Goes",
+        "ro": "Unde se duc banii"
+      },
+      "description": {
+        "en": "Understand how public money is spent and what drives spending decisions.",
+        "ro": "Intelege cum sunt cheltuiti banii publici si ce determina deciziile de cheltuieli."
+      },
+      "lessons": [
+        {
+          "id": "db-be-the-finance-minister",
+          "slug": "01-be-the-finance-minister",
+          "contentDir": "expenditure-basics/01-be-the-finance-minister",
+          "completionMode": "mark_complete",
+          "prerequisites": [],
+          "durationMinutes": 6,
+          "title": {
+            "en": "Be the Finance Minister",
+            "ro": "Fii Ministrul de Finante"
+          }
+        },
+        {
+          "id": "db-two-lenses-on-spending",
+          "slug": "02-two-lenses-on-spending",
+          "contentDir": "expenditure-basics/02-two-lenses-on-spending",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-be-the-finance-minister"],
+          "durationMinutes": 6,
+          "title": {
+            "en": "Two Lenses on Spending",
+            "ro": "Doua perspective asupra cheltuielilor"
+          }
+        },
+        {
+          "id": "db-the-execution-gap",
+          "slug": "03-the-execution-gap",
+          "contentDir": "expenditure-basics/03-the-execution-gap",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-two-lenses-on-spending"],
+          "durationMinutes": 6,
+          "title": {
+            "en": "The Execution Gap",
+            "ro": "Decalajul executiei"
+          }
+        },
+        {
+          "id": "db-mandatory-discretionary",
+          "slug": "04-mandatory-discretionary",
+          "contentDir": "decoding-budgets/03-mandatory-discretionary",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-the-execution-gap"],
+          "durationMinutes": 7,
+          "title": {
+            "en": "Mandatory vs Discretionary Spending",
+            "ro": "Cheltuieli obligatorii vs discretionare"
+          }
+        }
+      ]
+    },
+    {
+      "id": "db-budget-lifecycle",
+      "slug": "lifecycle",
+      "title": {
+        "en": "The Budget Lifecycle",
+        "ro": "Ciclul de viata al bugetului"
+      },
+      "description": {
+        "en": "Learn how budgets are created, approved, and modified throughout the year.",
+        "ro": "Invata cum sunt create, aprobate si modificate bugetele pe parcursul anului."
+      },
+      "lessons": [
+        {
+          "id": "db-six-phases",
+          "slug": "01-six-phases",
+          "contentDir": "budget-cycle/01-six-phases",
+          "completionMode": "mark_complete",
+          "prerequisites": [],
+          "durationMinutes": 5,
+          "title": {
+            "en": "The Six Phases of the Budget Cycle",
+            "ro": "Cele sase faze ale ciclului bugetar"
+          }
+        },
+        {
+          "id": "db-budget-rectifications",
+          "slug": "02-budget-rectifications",
+          "contentDir": "budget-cycle/02-budget-rectifications",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-six-phases"],
+          "durationMinutes": 5,
+          "title": {
+            "en": "Budget Rectifications Explained",
+            "ro": "Rectificarile bugetare explicate"
+          }
+        },
+        {
+          "id": "db-tracking-documents",
+          "slug": "03-tracking-documents",
+          "contentDir": "budget-cycle/03-tracking-documents",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-budget-rectifications"],
+          "durationMinutes": 5,
+          "title": {
+            "en": "Tracking Budget Documents",
+            "ro": "Urmarirea documentelor bugetare"
+          }
+        },
+        {
+          "id": "db-key-dates",
+          "slug": "04-key-dates",
+          "contentDir": "decoding-budgets/04-key-dates",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-tracking-documents"],
+          "durationMinutes": 5,
+          "title": {
+            "en": "Key Dates and Participation Windows",
+            "ro": "Date cheie si ferestre de participare"
+          }
+        }
+      ]
+    },
+    {
+      "id": "db-classifications",
+      "slug": "classifications",
+      "title": {
+        "en": "Classification Systems Deep Dive",
+        "ro": "Aprofundarea sistemelor de clasificare"
+      },
+      "description": {
+        "en": "Master the classification systems used to categorize every budget line.",
+        "ro": "Stapaneste sistemele de clasificare folosite pentru a categoriza fiecare linie bugetara."
+      },
+      "lessons": [
+        {
+          "id": "db-three-ways-to-see-money",
+          "slug": "01-three-ways-to-see-money",
+          "contentDir": "classification-systems/01-three-ways-to-see-money",
+          "completionMode": "mark_complete",
+          "prerequisites": [],
+          "durationMinutes": 5,
+          "title": {
+            "en": "Three Ways to See Money",
+            "ro": "Trei moduri de a vedea banii"
+          }
+        },
+        {
+          "id": "db-functional-classification",
+          "slug": "02-functional-classification",
+          "contentDir": "classification-systems/02-functional-classification",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-three-ways-to-see-money"],
+          "durationMinutes": 5,
+          "title": {
+            "en": "Functional Classification",
+            "ro": "Clasificarea functionala"
+          }
+        },
+        {
+          "id": "db-economic-classification",
+          "slug": "03-economic-classification",
+          "contentDir": "classification-systems/03-economic-classification",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-functional-classification"],
+          "durationMinutes": 5,
+          "title": {
+            "en": "Economic Classification",
+            "ro": "Clasificarea economica"
+          }
+        },
+        {
+          "id": "db-decoding-budget-lines",
+          "slug": "04-decoding-budget-lines",
+          "contentDir": "classification-systems/04-decoding-budget-lines",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-economic-classification"],
+          "durationMinutes": 5,
+          "title": {
+            "en": "Decoding Budget Lines",
+            "ro": "Decodificarea liniilor bugetare"
+          }
+        },
+        {
+          "id": "db-cross-referencing",
+          "slug": "05-cross-referencing",
+          "contentDir": "decoding-budgets/05-cross-referencing",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-decoding-budget-lines"],
+          "durationMinutes": 5,
+          "title": {
+            "en": "Cross-Referencing Classifications",
+            "ro": "Referinte incrucisate intre clasificari"
+          }
+        }
+      ]
+    },
+    {
+      "id": "db-levels-entities",
+      "slug": "levels-entities",
+      "title": {
+        "en": "Budget Levels and Entities",
+        "ro": "Niveluri bugetare si entitati"
+      },
+      "description": {
+        "en": "Understand the structure of public institutions and how budgets flow through them.",
+        "ro": "Intelege structura institutiilor publice si cum circula bugetele prin ele."
+      },
+      "lessons": [
+        {
+          "id": "db-budget-levels-explained",
+          "slug": "01-budget-levels-explained",
+          "contentDir": "local-national-budgets/01-budget-levels-explained",
+          "completionMode": "mark_complete",
+          "prerequisites": [],
+          "durationMinutes": 5,
+          "title": {
+            "en": "Budget Levels Explained",
+            "ro": "Nivelurile bugetare explicate"
+          }
+        },
+        {
+          "id": "db-local-government-structure",
+          "slug": "02-local-government-structure",
+          "contentDir": "local-national-budgets/02-local-government-structure",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-budget-levels-explained"],
+          "durationMinutes": 5,
+          "title": {
+            "en": "Local Government Structure",
+            "ro": "Structura administratiei locale"
+          }
+        },
+        {
+          "id": "db-explore-your-local-budget",
+          "slug": "03-explore-your-local-budget",
+          "contentDir": "local-national-budgets/03-explore-your-local-budget",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-local-government-structure"],
+          "durationMinutes": 5,
+          "title": {
+            "en": "Explore Your Local Budget",
+            "ro": "Exploreaza bugetul tau local"
+          }
+        },
+        {
+          "id": "db-budget-entities",
+          "slug": "04-budget-entities",
+          "contentDir": "decoding-budgets/06-budget-entities",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-explore-your-local-budget"],
+          "durationMinutes": 5,
+          "title": {
+            "en": "Understanding Budget Entities",
+            "ro": "Intelegerea entitatilor bugetare"
+          }
+        }
+      ]
+    },
+    {
+      "id": "db-data-sources",
+      "slug": "data-sources",
+      "title": {
+        "en": "Finding and Using Data",
+        "ro": "Gasirea si utilizarea datelor"
+      },
+      "description": {
+        "en": "Learn where to find official budget data and how to navigate budget documents.",
+        "ro": "Invata unde gasesti datele bugetare oficiale si cum navighezi documentele bugetare."
+      },
+      "lessons": [
+        {
+          "id": "db-official-data-sources",
+          "slug": "01-official-data-sources",
+          "contentDir": "transparency-tools/01-official-data-sources",
+          "completionMode": "mark_complete",
+          "prerequisites": [],
+          "durationMinutes": 6,
+          "title": {
+            "en": "Official Data Sources",
+            "ro": "Surse oficiale de date"
+          }
+        },
+        {
+          "id": "db-platform-features",
+          "slug": "02-platform-features",
+          "contentDir": "transparency-tools/02-platform-features",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-official-data-sources"],
+          "durationMinutes": 6,
+          "title": {
+            "en": "Transparenta.eu Features",
+            "ro": "Functiile Transparenta.eu"
+          }
+        },
+        {
+          "id": "db-reading-documents",
+          "slug": "03-reading-documents",
+          "contentDir": "decoding-budgets/07-reading-documents",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-platform-features"],
+          "durationMinutes": 8,
+          "title": {
+            "en": "Reading Official Budget Documents",
+            "ro": "Citirea documentelor bugetare oficiale"
+          }
+        }
+      ]
+    },
+    {
+      "id": "db-analysis-skills",
+      "slug": "analysis",
+      "title": {
+        "en": "Budget Analysis Skills",
+        "ro": "Abilitati de analiza bugetara"
+      },
+      "description": {
+        "en": "Develop skills to analyze and interpret budget data effectively.",
+        "ro": "Dezvolta abilitati pentru a analiza si interpreta eficient datele bugetare."
+      },
+      "lessons": [
+        {
+          "id": "db-budget-analysis-basics",
+          "slug": "01-budget-analysis-basics",
+          "contentDir": "transparency-tools/03-budget-analysis-skills",
+          "completionMode": "mark_complete",
+          "prerequisites": [],
+          "durationMinutes": 7,
+          "title": {
+            "en": "Budget Analysis Skills",
+            "ro": "Abilitati de analiza bugetara"
+          }
+        },
+        {
+          "id": "db-year-over-year",
+          "slug": "02-year-over-year",
+          "contentDir": "decoding-budgets/08-year-over-year",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-budget-analysis-basics"],
+          "durationMinutes": 6,
+          "title": {
+            "en": "Year-over-Year Comparison",
+            "ro": "Comparatie an dupa an"
+          }
+        },
+        {
+          "id": "db-benchmarking",
+          "slug": "03-benchmarking",
+          "contentDir": "decoding-budgets/09-benchmarking",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-year-over-year"],
+          "durationMinutes": 6,
+          "title": {
+            "en": "Benchmarking and Comparisons",
+            "ro": "Benchmarking si comparatii"
+          }
+        },
+        {
+          "id": "db-common-mistakes",
+          "slug": "04-common-mistakes",
+          "contentDir": "decoding-budgets/10-common-mistakes",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-benchmarking"],
+          "durationMinutes": 6,
+          "title": {
+            "en": "Common Analysis Mistakes",
+            "ro": "Greseli frecvente de analiza"
+          }
+        }
+      ]
+    },
+    {
+      "id": "db-practice",
+      "slug": "practice",
+      "title": {
+        "en": "Practice and Application",
+        "ro": "Practica si aplicare"
+      },
+      "description": {
+        "en": "Apply everything you've learned to analyze real budget data.",
+        "ro": "Aplica tot ce ai invatat pentru a analiza date bugetare reale."
+      },
+      "lessons": [
+        {
+          "id": "db-explore-the-platform",
+          "slug": "01-explore-the-platform",
+          "contentDir": "citizen-foundations/04-explore-the-platform",
+          "completionMode": "mark_complete",
+          "prerequisites": [],
+          "durationMinutes": 5,
+          "title": {
+            "en": "Explore the Platform",
+            "ro": "Exploreaza platforma"
+          }
+        },
+        {
+          "id": "db-mini-case-study",
+          "slug": "02-mini-case-study",
+          "contentDir": "decoding-budgets/11-mini-case-study",
+          "completionMode": "mark_complete",
+          "prerequisites": ["db-explore-the-platform"],
+          "durationMinutes": 10,
+          "title": {
+            "en": "Mini Case Study: Analyzing a Real Budget",
+            "ro": "Studiu de caz: Analizarea unui buget real"
+          }
+        }
+      ]
+    }
+  ]
+}
