@@ -83,7 +83,7 @@ describe('salary-calculator-resolver', () => {
       expect(result.status).toBe('in_progress')
     })
 
-    it('sets status to completed for REVEAL step', () => {
+    it('sets status to in_progress for REVEAL step', () => {
       const action: LearningSalaryCalculatorSaveAction = {
         type: 'salaryCalculator.save',
         contentId: 'lesson-1',
@@ -96,7 +96,7 @@ describe('salary-calculator-resolver', () => {
 
       const result = resolveInteractionAction(action, createContext())
 
-      expect(result.status).toBe('completed')
+      expect(result.status).toBe('in_progress')
     })
 
     it('sets completedAt for REVEAL step', () => {

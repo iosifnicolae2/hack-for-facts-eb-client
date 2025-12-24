@@ -205,10 +205,10 @@ describe('use-learning-interactions', () => {
     await waitFor(() => {
       const stored = readProgress()
       const lesson = stored.content['lesson-1']
-      expect(lesson.status).toBe('passed')
+      expect(lesson.status).toBe('in_progress')
       expect(lesson.score).toBe(100)
       expect(lesson.interactions?.['quiz-1']).toEqual({ kind: 'quiz', selectedOptionId: 'b' })
-      expect(lesson.completedAt).toBeTruthy()
+      expect(lesson.completedAt).toBeUndefined()
     })
   })
 
@@ -549,7 +549,7 @@ describe('use-learning-interactions', () => {
       })
     })
 
-    it('sets status to completed when step is REVEAL', async () => {
+    it('sets status to in_progress when step is REVEAL', async () => {
       const { result } = renderHook(
         () => useSalaryCalculatorInteraction({ contentId: 'lesson-1', calculatorId: 'calculator-1', contentVersion: 'v1' }),
         { wrapper },
@@ -562,7 +562,7 @@ describe('use-learning-interactions', () => {
       await waitFor(() => {
         const stored = readProgress()
         const lesson = stored.content['lesson-1']
-        expect(lesson?.status).toBe('completed')
+        expect(lesson?.status).toBe('in_progress')
       })
 
       expect(result.current.isCompleted).toBe(true)

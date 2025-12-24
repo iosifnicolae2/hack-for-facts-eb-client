@@ -6,10 +6,14 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { prefetchModuleContent, useModuleContent } from '../../hooks/use-module-content'
+import { useLearningProgress } from '../../hooks/use-learning-progress'
 import type { LearningLocale } from '../../types'
 import { getAdjacentLessons, getLearningPathById, getTranslatedText } from '../../utils/paths'
+import { scoreSingleChoice } from '../../utils/scoring'
+import { QUIZ_PASS_SCORE } from '../../utils/interactions'
 import { Quiz, type QuizOption } from '../assessment/Quiz'
 import { MarkComplete } from './MarkComplete'
+import { LessonChallengesProvider, useRegisterLessonChallenge } from './lesson-challenges-context'
 import { BudgetFootprintRevealer } from '../interactive/BudgetFootprintRevealer'
 import { FlashCard, FlashCardDeck } from '../interactive/FlashCardDeck'
 import { PromiseTracker } from '../interactive/PromiseTracker'
@@ -55,6 +59,53 @@ type SalaryTaxCalculatorMdxProps = {
   readonly id?: string
 }
 
+type LessonQuizWrapperProps = QuizMdxProps & {
+  readonly lessonId: string
+}
+
+type LessonPromiseTrackerWrapperProps = PromiseTrackerMdxProps & {
+  readonly lessonId: string
+  readonly locale: LearningLocale
+}
+
+type LessonSalaryTaxCalculatorWrapperProps = SalaryTaxCalculatorMdxProps & {
+  readonly lessonId: string
+}
+
+function LessonQuizWrapper({ lessonId, ...props }: LessonQuizWrapperProps) {
+  const { progress } = useLearningProgress()
+  const interaction = progress.content[lessonId]?.interactions?.[props.id]
+  const selectedOptionId = interaction?.kind === 'quiz' ? interaction.selectedOptionId : null
+  const score = scoreSingleChoice(props.options, selectedOptionId)
+  const isCompleted = score >= QUIZ_PASS_SCORE
+
+  useRegisterLessonChallenge({ id: `quiz:${props.id}`, isCompleted })
+
+  return <Quiz {...props} contentId={lessonId} />
+}
+
+function LessonPromiseTrackerWrapper({ lessonId, locale, id }: LessonPromiseTrackerWrapperProps) {
+  const { progress } = useLearningProgress()
+  const predictionId = id ?? 'promise-tracker'
+  const interaction = progress.content[lessonId]?.interactions?.[predictionId]
+  const hasReveal = interaction?.kind === 'prediction' && Object.keys(interaction.reveals ?? {}).length > 0
+
+  useRegisterLessonChallenge({ id: `prediction:${predictionId}`, isCompleted: hasReveal })
+
+  return <PromiseTracker locale={locale} contentId={lessonId} predictionId={predictionId} />
+}
+
+function LessonSalaryTaxCalculatorWrapper({ lessonId, id }: LessonSalaryTaxCalculatorWrapperProps) {
+  const { progress } = useLearningProgress()
+  const calculatorId = id ?? 'salary-tax-calculator'
+  const interaction = progress.content[lessonId]?.interactions?.[calculatorId]
+  const isCompleted = interaction?.kind === 'salary-calculator' && interaction.step === 'REVEAL'
+
+  useRegisterLessonChallenge({ id: `salary:${calculatorId}`, isCompleted })
+
+  return <SalaryTaxCalculator contentId={lessonId} calculatorId={calculatorId} />
+}
+
 export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlayerProps) {
   const path = getLearningPathById(pathId)
   const module = path?.modules.find((m) => m.id === moduleId) ?? null
@@ -85,7 +136,7 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
 
   // Memoize MDX component wrappers to prevent re-mounting on every render
   const QuizWrapper = useCallback(
-    (props: QuizMdxProps) => <Quiz {...props} contentId={lessonId} />,
+    (props: QuizMdxProps) => <LessonQuizWrapper {...props} lessonId={lessonId} />,
     [lessonId]
   )
 
@@ -103,22 +154,14 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
 
   const PromiseTrackerWrapper = useCallback(
     (props: PromiseTrackerMdxProps) => (
-      <PromiseTracker
-        {...props}
-        locale={locale}
-        contentId={lessonId}
-        predictionId={props.id ?? 'promise-tracker'}
-      />
+      <LessonPromiseTrackerWrapper {...props} lessonId={lessonId} locale={locale} />
     ),
     [locale, lessonId]
   )
 
   const SalaryTaxCalculatorWrapper = useCallback(
     (props: SalaryTaxCalculatorMdxProps) => (
-      <SalaryTaxCalculator
-        contentId={lessonId}
-        calculatorId={props.id ?? 'salary-tax-calculator'}
-      />
+      <LessonSalaryTaxCalculatorWrapper {...props} lessonId={lessonId} />
     ),
     [lessonId]
   )
@@ -204,7 +247,11 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
             </CardContent>
           </Card>
         )}
-        {Component ? <Component components={mdxComponents} /> : null}
+        {Component ? (
+          <LessonChallengesProvider>
+            <Component components={mdxComponents} />
+          </LessonChallengesProvider>
+        ) : null}
       </div>
 
       {/* Navigation footer */}

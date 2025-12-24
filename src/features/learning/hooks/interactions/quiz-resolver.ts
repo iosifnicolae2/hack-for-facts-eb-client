@@ -4,7 +4,6 @@
  * Handles quiz.answer and quiz.reset actions.
  */
 
-import { QUIZ_PASS_SCORE } from '../../utils/interactions'
 import type { LearningContentStatus, LearningQuizAnswerAction, LearningQuizResetAction } from '../../types'
 import {
   registerInteractionResolver,
@@ -21,10 +20,6 @@ function clampScore(value: number | undefined): number | undefined {
   return Math.max(0, Math.min(100, value))
 }
 
-function getQuizStatus(score: number): LearningContentStatus {
-  return score >= QUIZ_PASS_SCORE ? 'passed' : 'in_progress'
-}
-
 // ═══════════════════════════════════════════════════════════════════════════
 // Resolvers
 // ═══════════════════════════════════════════════════════════════════════════
@@ -34,7 +29,7 @@ function resolveQuizAnswer(
   _context: InteractionResolverContext
 ): SaveContentProgressInput {
   const clampedScore = clampScore(action.score)
-  const status = getQuizStatus(clampedScore ?? 0)
+  const status: LearningContentStatus = 'in_progress'
 
   return {
     contentId: action.contentId,

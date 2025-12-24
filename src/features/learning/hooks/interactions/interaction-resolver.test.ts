@@ -78,7 +78,7 @@ describe('interaction-resolver', () => {
       const result = resolveInteractionAction(action, createContext())
 
       expect(result.contentId).toBe('lesson-1')
-      expect(result.status).toBe('passed')
+      expect(result.status).toBe('in_progress')
       expect(result.score).toBe(100)
       expect(result.interaction?.interactionId).toBe('quiz-1')
       expect(result.interaction?.state).toEqual({

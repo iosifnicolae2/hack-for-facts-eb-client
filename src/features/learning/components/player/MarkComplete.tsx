@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { t } from '@lingui/core/macro'
 import { CheckCircle2, Loader2, PartyPopper, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { useLessonCompletion } from '../../hooks/use-learning-interactions'
+import { useLessonChallenges } from './lesson-challenges-context'
 
 export type MarkCompleteProps = {
   readonly label?: string
@@ -12,12 +13,18 @@ export type MarkCompleteProps = {
 }
 
 export function MarkComplete({ label, contentId }: MarkCompleteProps) {
-  const { isCompleted, markComplete } = useLessonCompletion({ contentId, contentVersion: 'v1' })
+  const { status, markComplete } = useLessonCompletion({ contentId, contentVersion: 'v1' })
+  const { hasChallenges, allChallengesCompleted } = useLessonChallenges()
   const [isMarking, setIsMarking] = useState(false)
   const [justCompleted, setJustCompleted] = useState(false)
+  const autoCompletionTriggeredRef = useRef(false)
 
-  const handleMarkComplete = async () => {
-    if (isMarking || isCompleted) return
+  const isPersistedComplete = status === 'completed'
+  const isAutoComplete = hasChallenges && allChallengesCompleted
+  const isCompleted = isPersistedComplete || isAutoComplete
+
+  const handleMarkComplete = useCallback(async () => {
+    if (isMarking || isPersistedComplete) return
 
     setIsMarking(true)
     try {
@@ -26,7 +33,13 @@ export function MarkComplete({ label, contentId }: MarkCompleteProps) {
     } finally {
       setIsMarking(false)
     }
-  }
+  }, [isMarking, isPersistedComplete, markComplete])
+
+  useEffect(() => {
+    if (!isAutoComplete || isPersistedComplete || isMarking || autoCompletionTriggeredRef.current) return
+    autoCompletionTriggeredRef.current = true
+    void handleMarkComplete()
+  }, [handleMarkComplete, isAutoComplete, isMarking, isPersistedComplete])
 
   // Show celebration state
   if (justCompleted || isCompleted) {

@@ -6,11 +6,7 @@
  * enter their gross salary, guess their net salary, and reveal the calculation.
  */
 
-import type {
-  LearningContentStatus,
-  LearningSalaryCalculatorSaveAction,
-  LearningSalaryCalculatorResetAction,
-} from '../../types'
+import type { LearningContentStatus, LearningSalaryCalculatorSaveAction, LearningSalaryCalculatorResetAction } from '../../types'
 import {
   registerInteractionResolver,
   type InteractionResolverContext,
@@ -21,10 +17,6 @@ import {
 // Helpers
 // ═══════════════════════════════════════════════════════════════════════════
 
-function getStatusForStep(step: 'INPUT' | 'GUESS' | 'REVEAL'): LearningContentStatus {
-  return step === 'REVEAL' ? 'completed' : 'in_progress'
-}
-
 // ═══════════════════════════════════════════════════════════════════════════
 // Resolvers
 // ═══════════════════════════════════════════════════════════════════════════
@@ -33,7 +25,7 @@ function resolveSalaryCalculatorSave(
   action: LearningSalaryCalculatorSaveAction,
   context: InteractionResolverContext
 ): SaveContentProgressInput {
-  const status = getStatusForStep(action.step)
+  const status: LearningContentStatus = 'in_progress'
   const completedAt = action.step === 'REVEAL' ? context.nowIso() : undefined
 
   return {

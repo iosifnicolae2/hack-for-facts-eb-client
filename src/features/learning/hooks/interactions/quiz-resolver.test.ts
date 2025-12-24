@@ -25,7 +25,7 @@ function createContext(progress?: LearningGuestProgress): InteractionResolverCon
 
 describe('quiz-resolver', () => {
   describe('quiz.answer', () => {
-    it('returns passed status when score >= 70', () => {
+    it('returns in_progress status for answered quizzes', () => {
       const action: LearningQuizAnswerAction = {
         type: 'quiz.answer',
         contentId: 'lesson-1',
@@ -37,7 +37,7 @@ describe('quiz-resolver', () => {
 
       const result = resolveInteractionAction(action, createContext())
 
-      expect(result.status).toBe('passed')
+      expect(result.status).toBe('in_progress')
       expect(result.score).toBe(100)
     })
 
@@ -57,7 +57,7 @@ describe('quiz-resolver', () => {
       expect(result.score).toBe(50)
     })
 
-    it('returns passed status when score is exactly 70', () => {
+    it('returns in_progress status when score is exactly 70', () => {
       const action: LearningQuizAnswerAction = {
         type: 'quiz.answer',
         contentId: 'lesson-1',
@@ -69,7 +69,7 @@ describe('quiz-resolver', () => {
 
       const result = resolveInteractionAction(action, createContext())
 
-      expect(result.status).toBe('passed')
+      expect(result.status).toBe('in_progress')
     })
 
     it('clamps score to 0-100 range', () => {
