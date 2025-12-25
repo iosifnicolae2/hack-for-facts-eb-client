@@ -845,7 +845,7 @@ msgstr "Înapoi la Hub"
 msgid "Back to learning"
 msgstr "Înapoi la învățare"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:215
+#: src/features/learning/components/player/LessonPlayer.tsx:228
 #: src/routes/$lang/learning/$pathId/index.tsx:44
 #: src/routes/$lang/learning/$pathId/index.tsx:102
 msgid "Back to Learning Hub"
@@ -855,7 +855,7 @@ msgstr "Înapoi la Hub-ul de învățare"
 msgid "Back to Overview"
 msgstr "Înapoi la sinteză"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:359
+#: src/features/learning/components/player/LessonPlayer.tsx:372
 msgid "Back to path"
 msgstr "Înapoi la parcurs"
 
@@ -1207,7 +1207,7 @@ msgstr "Confortabil"
 msgid "Compact"
 msgstr "Compact"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:383
+#: src/features/learning/components/player/LessonPlayer.tsx:396
 msgid "Complete path"
 msgstr "Finalizează parcursul"
 
@@ -2927,7 +2927,7 @@ msgstr "Mai mic decât"
 msgid "Lesson Completed!"
 msgstr "Lecție finalizată!"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:210
+#: src/features/learning/components/player/LessonPlayer.tsx:223
 msgid "Lesson not found"
 msgstr "Lecția nu a fost găsită"
 
@@ -3351,7 +3351,7 @@ msgstr "Consimțământul și gestionarea buletinului informativ"
 msgid "Newsletters and notifications"
 msgstr "Buletine informative și notificări"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:370
+#: src/features/learning/components/player/LessonPlayer.tsx:383
 msgid "Next"
 msgstr "Următorul"
 
@@ -3868,7 +3868,7 @@ msgstr "Se pregătește linkul de partajare..."
 msgid "Preview"
 msgstr "Previzualizare"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:346
+#: src/features/learning/components/player/LessonPlayer.tsx:359
 msgid "Previous"
 msgstr "Anterior"
 
@@ -4770,7 +4770,7 @@ msgstr "Parcursul de învățare pe care îl cauți nu există sau a fost mutat.
 msgid "The learning path you're looking for doesn't exist."
 msgstr "Parcursul de învățare pe care îl cauți nu există."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:212
+#: src/features/learning/components/player/LessonPlayer.tsx:225
 msgid "The lesson you're looking for doesn't exist or may have been moved."
 msgstr "Lecția pe care o cauți nu există sau este posibil să fi fost mutată."
 

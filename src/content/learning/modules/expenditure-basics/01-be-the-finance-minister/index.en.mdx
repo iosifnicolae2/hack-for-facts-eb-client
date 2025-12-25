@@ -19,132 +19,254 @@ But here's the thing: most of us have opinions about government spending without
 
 ## Interactive Element: Budget Allocator Game
 
-You're the Finance Minister for a day. You have 100 billion RON to allocate across spending categories. Make your choices, then see how they compare to Romania's actual budget.
+You're the Finance Minister for a day. You have 100% of the budget to allocate across spending categories. Make your choices, then see how they compare to Romania's actual budget.
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  🎮 BUDGET ALLOCATOR                                         │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  You have 100 billion RON to allocate. Drag the sliders     │
-│  to set priorities, then compare with actual spending.       │
-│                                                              │
-│  Social Protection  ████████████░░░░░░░░  35 billion  [━━●━] │
-│  Health             ████████░░░░░░░░░░░░  20 billion  [━●━━] │
-│  Education          ██████░░░░░░░░░░░░░░  15 billion  [━●━━] │
-│  Defense            ████░░░░░░░░░░░░░░░░  10 billion  [●━━━] │
-│  Infrastructure     ████░░░░░░░░░░░░░░░░  10 billion  [●━━━] │
-│  Other              ████░░░░░░░░░░░░░░░░  10 billion  [●━━━] │
-│  ─────────────────────────────────────────────────────────── │
-│  TOTAL:             100 billion RON                          │
-│                                                              │
-│  [ Compare with Real Budget → ]                              │
-│                                                              │
-│  ═══════════════════════════════════════════════════════════ │
-│                                                              │
-│  COMPARISON RESULT:                                          │
-│  Your allocation vs. Romania's actual 2024 budget:           │
-│                                                              │
-│  Category          You      Actual    Difference             │
-│  Social Protection  35%       32%      +3% more generous     │
-│  Health             20%       12%      +8% more generous     │
-│  Education          15%        8%      +7% more generous     │
-│  Defense            10%        4%      +6% more generous     │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-### Component Specification
-
-```typescript
-/**
- * BudgetAllocatorGame Component
- *
- * PURPOSE: Let users allocate a hypothetical budget, then compare
- * their choices against Romania's actual spending breakdown.
- */
-interface BudgetAllocatorGameProps {
-  readonly totalBudget: number // e.g., 100 (billions)
-  readonly currency: 'RON' | 'EUR'
-  readonly categories: readonly BudgetCategory[]
-  readonly actualData: readonly ActualSpending[]
-  readonly onCompare?: (result: ComparisonResult) => void
-}
-
-interface BudgetCategory {
-  readonly id: string
-  readonly name: string
-  readonly icon: string
-  readonly minValue: number
-  readonly maxValue: number
-  readonly defaultValue: number
-  readonly description: string
-}
-
-interface ActualSpending {
-  readonly categoryId: string
-  readonly percentage: number
-  readonly year: number
-}
-
-interface ComparisonResult {
-  readonly allocations: readonly {
-    categoryId: string
-    userValue: number
-    actualValue: number
-    difference: number
-  }[]
-  readonly insights: readonly string[]
-}
-
-/**
- * STATE MANAGEMENT:
- * - allocations: Record<categoryId, number> - user's current allocation
- * - isComparing: boolean - comparison mode active
- * - hasCompared: boolean - user has seen comparison at least once
- * - validationError: string | null - if total doesn't equal 100
- *
- * STATE TRANSITIONS:
- * - Slider drag → update allocations, recalculate total
- * - Total !== 100 → show validation message
- * - Click Compare → animate transition to comparison view
- * - Reset button → restore default values
- *
- * USER INTERACTIONS:
- * - Drag slider: adjust allocation (5% increments for mobile-friendly)
- * - Direct input: type exact number (validates 0-100 range)
- * - Compare button: reveal actual values with animation
- * - Reset button: clear to defaults
- * - Category hover: show description tooltip
- *
- * VISUAL STATES:
- * - Default: sliders at default positions, no comparison
- * - Invalid: total bar shows red if !== 100
- * - Comparing: split view showing user vs actual bars
- * - Match highlight: green glow on categories where user ≈ actual (±3%)
- * - Difference badges: show +X% or -X% with color coding
- *
- * ANIMATIONS:
- * - Slider movement: smooth 150ms transition
- * - Compare reveal: staggered bar growth (100ms delay per category)
- * - Difference badges: pop-in animation (200ms, scale from 0.8)
- * - Total validation: shake on invalid (300ms)
- *
- * ACCESSIBILITY:
- * - Sliders use role="slider" with aria-valuemin, aria-valuemax, aria-valuenow
- * - aria-live="polite" on total and validation messages
- * - Keyboard: Arrow keys adjust by 1%, Page Up/Down by 5%
- * - Screen reader announces comparison results
- */
-```
-
-**Expected Behavior:**
-
-- Sliders must sum to exactly 100%
-- Real-time total calculation as user adjusts
-- Compare button reveals Romania's actual allocation
-- Color-coded differences show where user's priorities differ
-- Insights generated based on patterns (e.g., "Most people allocate more to Education than the government does")
+<BudgetAllocatorGame
+  categories={[
+    {
+      id: "social-protection",
+      label: "Social Protection",
+      subLabel: "Pensions, Unemployment, Welfare",
+      icon: "shield",
+      color: "rose",
+      actualPercentage: 32,
+      defaultValue: 25,
+      stakeholders: ["pensioners", "workers"],
+      consequences: [
+        { minDiff: -100, maxDiff: -10, severity: "negative", impacts: ["Pension payments delayed or reduced by ~15%", "~700,000 pensioners fall below poverty line", "Unemployment benefits cut to 3 months max", "Child allowances suspended for 6+ months"] },
+        { minDiff: -10, maxDiff: -5, severity: "negative", impacts: ["Average pension frozen (no inflation adjustment)", "~200,000 fewer welfare recipients covered", "Disability benefits processing delayed 6+ months"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Pension increases below inflation rate", "Some social programs see reduced funding"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["4.7 million pensioners receive stable payments", "Average pension: ~2,748 RON/month maintained", "Current welfare programs continue unchanged"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Pension increase above inflation (+3-5%)", "50,000 more families receive child benefits"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Significant pension increase (+8-10%)", "New parental leave extension program", "Disability benefits increase by 15%", "Warning: May require borrowing or cuts elsewhere"] }
+      ]
+    },
+    {
+      id: "economic-affairs",
+      label: "Economic Affairs",
+      subLabel: "Transport, Energy, Industry",
+      icon: "building-2",
+      color: "blue",
+      actualPercentage: 16,
+      defaultValue: 12,
+      stakeholders: ["workers", "business"],
+      consequences: [
+        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Major highway projects suspended (A7, A8)", "Railway modernization halted", "Energy subsidies for industry cancelled", "Agricultural support payments delayed"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Infrastructure projects delayed 1-2 years", "Reduced support for SME development"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Current infrastructure projects continue", "PNRR transport investments on track", "Agricultural subsidies maintained"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Highway construction accelerated (+50km/year)", "New renewable energy incentives"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Major new highway corridors funded", "High-speed rail feasibility studies begin", "Green energy transition accelerated"] }
+      ]
+    },
+    {
+      id: "public-services",
+      label: "General Public Services",
+      subLabel: "Administration, Debt, EU",
+      icon: "landmark",
+      color: "slate",
+      actualPercentage: 12,
+      defaultValue: 10,
+      stakeholders: ["business"],
+      consequences: [
+        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Risk of debt default increases", "EU contribution payments delayed", "Government digitalization projects cancelled", "Public servant salaries frozen or cut"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Debt servicing becomes strained", "Administrative modernization slowed"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Debt payments on schedule", "EU membership contributions paid", "Administrative costs stable"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Accelerated debt reduction", "E-government services expanded"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Significant debt reduction possible", "Full government digitalization", "Warning: May be over-allocated for admin"] }
+      ]
+    },
+    {
+      id: "health",
+      label: "Health",
+      subLabel: "Hospitals, Doctors, Medicines",
+      icon: "heart",
+      color: "emerald",
+      actualPercentage: 11,
+      defaultValue: 15,
+      stakeholders: ["doctors", "parents"],
+      consequences: [
+        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["~3,200 hospital beds closed", "Emergency room wait times: 4h → 8h+", "12 rural hospitals lose night shifts", "Medicine shortages for chronic diseases"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Doctor emigration accelerates (+500/year)", "Medical equipment upgrades cancelled", "Preventive care programs reduced"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["6.2 hospital beds per 1,000 people maintained", "Current doctor salaries preserved", "National health programs continue"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["850 new doctors can be hired", "12 rural hospitals upgraded", "New oncology treatment centers opened"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Major hospital construction program", "Doctor salaries reach EU average", "Universal screening programs launched", "Wait times reduced by 40%"] }
+      ]
+    },
+    {
+      id: "education",
+      label: "Education",
+      subLabel: "Schools, Universities, Teachers",
+      icon: "graduation-cap",
+      color: "amber",
+      actualPercentage: 9,
+      defaultValue: 12,
+      stakeholders: ["teachers", "parents"],
+      consequences: [
+        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Teacher salaries cut by 10-15%", "500+ rural schools close", "University funding slashed, tuition rises", "School renovation projects cancelled"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Teacher salaries frozen (no raises)", "Classroom sizes increase to 35+", "Textbook updates delayed"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Current teacher salaries maintained", "Existing school programs continue", "PISA score remains around 428"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Teacher salary increase (+10%)", "2,400 new kindergarten spots created", "Digital equipment for 800 schools"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Teacher salaries approach EU average", "Major school construction program", "5,000 new university scholarships", "PISA scores could improve 20+ points"] }
+      ]
+    },
+    {
+      id: "public-order",
+      label: "Public Order & Safety",
+      subLabel: "Police, Courts, Prisons",
+      icon: "scale",
+      color: "violet",
+      actualPercentage: 6,
+      defaultValue: 5,
+      stakeholders: ["workers"],
+      consequences: [
+        { minDiff: -100, maxDiff: -3, severity: "negative", impacts: ["Police patrols reduced by 30%", "Court case backlog increases 50%", "Prison overcrowding worsens"] },
+        { minDiff: -3, maxDiff: -1, severity: "negative", impacts: ["Police equipment upgrades delayed", "Judicial system reforms slowed"] },
+        { minDiff: -1, maxDiff: 1, severity: "neutral", impacts: ["Current police force maintained", "Court operations continue normally", "Prison capacity stable"] },
+        { minDiff: 1, maxDiff: 3, severity: "positive", impacts: ["2,000 new police officers hired", "Court digitalization accelerated"] },
+        { minDiff: 3, maxDiff: 100, severity: "positive", impacts: ["Major police modernization program", "New prison rehabilitation programs", "Faster justice system processing"] }
+      ]
+    },
+    {
+      id: "defense",
+      label: "Defense",
+      subLabel: "Military, NATO Commitments",
+      icon: "swords",
+      color: "red",
+      actualPercentage: 4,
+      defaultValue: 3,
+      stakeholders: ["workers"],
+      consequences: [
+        { minDiff: -100, maxDiff: -2, severity: "negative", impacts: ["Falls below NATO 2% GDP target", "Military equipment purchases cancelled", "Troop readiness decreases", "Allied trust diminishes"] },
+        { minDiff: -2, maxDiff: -1, severity: "negative", impacts: ["NATO 2% target barely met", "Some modernization delayed"] },
+        { minDiff: -1, maxDiff: 1, severity: "neutral", impacts: ["NATO 2% GDP commitment maintained", "Current military programs continue", "75,000 active personnel funded"] },
+        { minDiff: 1, maxDiff: 2, severity: "positive", impacts: ["Exceeds NATO target (2.5% GDP)", "Accelerated equipment modernization"] },
+        { minDiff: 2, maxDiff: 100, severity: "positive", impacts: ["Major military expansion", "New fighter jets and naval vessels", "Warning: May exceed regional needs"] }
+      ]
+    },
+    {
+      id: "other",
+      label: "Other",
+      subLabel: "Environment, Housing, Culture",
+      icon: "trees",
+      color: "teal",
+      actualPercentage: 10,
+      defaultValue: 8,
+      stakeholders: ["parents", "workers"],
+      consequences: [
+        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Environmental protection cuts", "Social housing programs cancelled", "Cultural institutions close", "Parks and recreation neglected"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Recycling programs reduced", "Housing subsidies cut"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Environmental programs maintained", "Cultural funding stable", "Housing programs continue"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Green energy incentives expanded", "New affordable housing projects"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Major environmental restoration", "Large-scale housing construction", "Cultural renaissance funding"] }
+      ]
+    }
+  ]}
+  stakeholders={[
+    {
+      id: "pensioners",
+      emoji: "👴",
+      label: "Pensioners",
+      affectedBy: ["social-protection"],
+      reactions: {
+        happy: { threshold: 2, message: "Good news for our pensions!" },
+        angry: { threshold: -2, message: "This hurts the elderly..." },
+        neutral: { message: "Pensions seem stable." }
+      }
+    },
+    {
+      id: "parents",
+      emoji: "👨‍👩‍👧",
+      label: "Parents",
+      affectedBy: ["education", "health"],
+      reactions: {
+        happy: { threshold: 2, message: "Better schools and hospitals!" },
+        angry: { threshold: -2, message: "Worried about schools and healthcare..." },
+        neutral: { message: "Schools and hospitals seem okay." }
+      }
+    },
+    {
+      id: "doctors",
+      emoji: "🏥",
+      label: "Healthcare Workers",
+      affectedBy: ["health"],
+      reactions: {
+        happy: { threshold: 3, message: "More resources to save lives!" },
+        angry: { threshold: -3, message: "Healthcare system under pressure." },
+        neutral: { message: "Healthcare funding stable." }
+      }
+    },
+    {
+      id: "teachers",
+      emoji: "👨‍🏫",
+      label: "Teachers",
+      affectedBy: ["education"],
+      reactions: {
+        happy: { threshold: 3, message: "More resources for our students!" },
+        angry: { threshold: -3, message: "How can we teach with less?" },
+        neutral: { message: "Education budget seems stable." }
+      }
+    },
+    {
+      id: "workers",
+      emoji: "💼",
+      label: "Workers",
+      affectedBy: ["economic-affairs", "public-order"],
+      reactions: {
+        happy: { threshold: 2, message: "Economy getting good support." },
+        angry: { threshold: -2, message: "Worried about economic future." },
+        neutral: { message: "Economic situation seems stable." }
+      }
+    },
+    {
+      id: "business",
+      emoji: "🏢",
+      label: "Business Owners",
+      affectedBy: ["economic-affairs", "public-services"],
+      reactions: {
+        happy: { threshold: 2, message: "Infrastructure investments help us." },
+        angry: { threshold: -2, message: "Bureaucracy and infrastructure suffer." },
+        neutral: { message: "Business conditions stable." }
+      }
+    }
+  ]}
+  deficitLevels={[
+    { minDeficit: 1, maxDeficit: 10, severity: "mild", consequence: "Manageable deficit. Romania's current deficit is ~7%. Interest rates may increase slightly." },
+    { minDeficit: 10, maxDeficit: 30, severity: "moderate", consequence: "Significant deficit. Credit rating agencies issue warnings. Borrowing costs rise 1-2%." },
+    { minDeficit: 30, maxDeficit: 100, severity: "severe", consequence: "Severe deficit. EU excessive deficit procedure triggered. Austerity measures likely required." },
+    { minDeficit: 100, maxDeficit: 200, severity: "critical", consequence: "Critical deficit. IMF intervention likely. Public sector wages frozen, major program cuts." },
+    { minDeficit: 200, maxDeficit: 999, severity: "catastrophic", consequence: "Catastrophic deficit. National bankruptcy risk. Currency collapse, hyperinflation possible." }
+  ]}
+  surplusLevels={[
+    { minSurplus: 1, maxSurplus: 10, consequence: "Minor unallocation. Some services may be underfunded but manageable." },
+    { minSurplus: 10, maxSurplus: 30, consequence: "Significant unallocation. Major programs will face cuts. Public services degraded." },
+    { minSurplus: 30, maxSurplus: 999, consequence: "Extreme unallocation. Government services barely functional. Social crisis likely." }
+  ]}
+  text={{
+    hookTitle: "Be the Finance Minister",
+    hookSubtitle: "You control Romania's 727 billion RON budget. Allocate it wisely — every choice has real consequences for real people.",
+    hookButton: "Start Allocating",
+    allocateTitle: "Drag to Allocate",
+    allocateSubtitle: "Adjust each category. Tap to see consequences.",
+    compareButton: "See Impact Summary",
+    compareTitle: "Your Budget Decisions",
+    compareSubtitle: "Here's what would happen with your allocations",
+    tryAgainButton: "Try Again",
+    insightsTitle: "Key Insights",
+    stakeholdersTitle: "Stakeholder Reactions",
+    negativeImpactsTitle: "Negative Impacts",
+    positiveImpactsTitle: "Positive Impacts",
+    balanceLabels: {
+      balanced: "Balanced",
+      deficit: "Deficit",
+      surplus: "Surplus"
+    }
+  }}
+  budgetInfo={{
+    totalBillions: 727,
+    currency: "RON",
+    year: 2024
+  }}
+/>
 
 ---
 

@@ -19,6 +19,7 @@ import type {
 import './interactions/quiz-resolver'
 import './interactions/prediction-resolver'
 import './interactions/salary-calculator-resolver'
+import './interactions/budget-allocator-resolver'
 
 const GUEST_EVENTS_KEY = 'learning_progress_events'
 const GUEST_SNAPSHOT_KEY = 'learning_progress_snapshot'

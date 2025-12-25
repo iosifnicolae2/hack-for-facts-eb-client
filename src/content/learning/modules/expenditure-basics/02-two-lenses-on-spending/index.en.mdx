@@ -22,135 +22,72 @@ These two questions give you two different views of the same money. Romania's bu
 
 ## Interactive Element: Classification Toggle
 
-Explore how the same money looks different through each lens.
+Explore how the same money looks different through each lens. Toggle between the **Functional** and **Economic** views to see how Romania's budget can be analyzed from two perspectives.
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  👁️ TWO WAYS TO SEE THE SAME MONEY                          │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  [ FUNCTIONAL ]  [ ECONOMIC ]                                │
-│   (What for?)     (What type?)                               │
-│                                                              │
-│  ═══════════════════════════════════════════════════════════ │
-│                                                              │
-│  FUNCTIONAL VIEW:                                            │
-│                                                              │
-│  ┌────────────────────────────────────────────────────────┐  │
-│  │                                                        │  │
-│  │  ┌─────────────────────────────┐ ┌──────────────────┐  │  │
-│  │  │                             │ │                  │  │  │
-│  │  │    SOCIAL PROTECTION        │ │    ECONOMIC      │  │  │
-│  │  │         33%                 │ │    AFFAIRS       │  │  │
-│  │  │    (Pensions, welfare)      │ │      17%         │  │  │
-│  │  │                             │ │                  │  │  │
-│  │  └─────────────────────────────┘ └──────────────────┘  │  │
-│  │  ┌──────────────────┐ ┌──────────────┐ ┌───────────┐   │  │
-│  │  │     HEALTH       │ │  EDUCATION   │ │  PUBLIC   │   │  │
-│  │  │       12%        │ │      9%      │ │  ORDER    │   │  │
-│  │  │   (Hospitals)    │ │  (Schools)   │ │    7%     │   │  │
-│  │  └──────────────────┘ └──────────────┘ └───────────┘   │  │
-│  │                                                        │  │
-│  └────────────────────────────────────────────────────────┘  │
-│                                                              │
-│  Click any category to see its economic breakdown →          │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-### Component Specification
-
-```typescript
-/**
- * ClassificationExplorer Component
- *
- * PURPOSE: Toggle between functional and economic views of the same budget,
- * showing how the same money appears differently through each lens.
- */
-interface ClassificationExplorerProps {
-  readonly budgetData: BudgetData
-  readonly defaultView: 'functional' | 'economic'
-  readonly onCategoryClick?: (category: CategoryDetail) => void
-  readonly showCrossReference?: boolean
-}
-
-interface BudgetData {
-  readonly year: number
-  readonly totalAmount: number
-  readonly functional: readonly FunctionalCategory[]
-  readonly economic: readonly EconomicCategory[]
-  readonly crossReference: readonly CrossReferenceItem[]
-}
-
-interface FunctionalCategory {
-  readonly code: string // e.g., "65" for Education
-  readonly name: string
-  readonly percentage: number
-  readonly amount: number
-  readonly description: string
-  readonly subcategories?: readonly FunctionalCategory[]
-}
-
-interface EconomicCategory {
-  readonly code: string // e.g., "10" for Personnel
-  readonly name: string
-  readonly percentage: number
-  readonly amount: number
-  readonly description: string
-}
-
-interface CrossReferenceItem {
-  readonly functionalCode: string
-  readonly economicCode: string
-  readonly amount: number
-  readonly percentage: number
-}
-
-/**
- * STATE MANAGEMENT:
- * - currentView: 'functional' | 'economic'
- * - selectedCategory: string | null
- * - expandedCategory: string | null (for drill-down)
- * - hoveredCategory: string | null
- * - showCrossReference: boolean
- *
- * STATE TRANSITIONS:
- * - Tab click → animate transition between views
- * - Category click → show drill-down or cross-reference
- * - Hover → highlight related categories in other view
- *
- * USER INTERACTIONS:
- * - Tab toggle: switch between Functional/Economic views
- * - Treemap click: drill into subcategories or show details
- * - Legend hover: highlight corresponding treemap section
- * - Keyboard: Tab to navigate, Enter to select, Escape to go back
- *
- * VISUAL STATES:
- * - Default: treemap with color-coded categories
- * - Hover: category slightly elevates, tooltip appears
- * - Selected: category expands, shows breakdown
- * - Cross-reference: arrows connect related functional/economic items
- *
- * ANIMATIONS:
- * - View switch: morphing transition (400ms)
- * - Treemap boxes: resize smoothly on data change
- * - Drill-down: zoom effect into subcategories
- * - Cross-reference arrows: draw-in animation (300ms)
- *
- * ACCESSIBILITY:
- * - Treemap has role="img" with aria-label describing overview
- * - Each box is focusable with descriptive aria-label
- * - Tab navigation follows visual order
- * - Color is supplemented with patterns or labels
- */
-```
-
-**Expected Behavior:**
-
-- Toggle seamlessly between Functional and Economic views
-- Same total amount, different breakdown
-- Click any box to see cross-reference (e.g., Education spending split by Personnel/Goods/Investments)
-- Smooth animations when switching views
+<ClassificationExplorer
+  defaultView="fn"
+  sourceUrl="/budget-explorer?primary=fn&filter={%22report_period%22:{%22type%22:%22YEAR%22,%22selection%22:{%22dates%22:[%222024%22]}},%22account_category%22:%22ch%22,%22report_type%22:%22Executie+bugetara+agregata+la+nivel+de+ordonator+principal%22,%22exclude%22:{%22economic_prefixes%22:[%2251%22,%2255.01%22]}}&treemapPrimary=fn"
+  budgetInfo={{
+    totalBillions: 757.24,
+    currency: "RON",
+    year: 2024
+  }}
+  functionalData={[
+    { code: "68", name: "Social Protection", value: 235710000000 },
+    { code: "66", name: "Health", value: 112620000000 },
+    { code: "65", name: "Education", value: 74160000000 },
+    { code: "84", name: "Transport", value: 59790000000 },
+    { code: "51", name: "Public Authorities", value: 59700000000 },
+    { code: "61", name: "Public Order & Safety", value: 41280000000 },
+    { code: "55", name: "Debt Transactions", value: 40030000000 },
+    { code: "83", name: "Agriculture", value: 35070000000 },
+    { code: "60", name: "Defense", value: 26050000000 },
+    { code: "74", name: "Environment", value: 21960000000 },
+    { code: "70", name: "Housing & Development", value: 19750000000 },
+    { code: "67", name: "Culture & Recreation", value: 15890000000 },
+    { code: "87", name: "Other Economic Affairs", value: 15230000000 }
+  ]}
+  economicData={[
+    { code: "57", name: "Social Assistance", value: 223920000000 },
+    { code: "10", name: "Personnel Expenses", value: 163750000000 },
+    { code: "20", name: "Goods & Services", value: 115260000000 },
+    { code: "71", name: "Non-Financial Assets", value: 53700000000 },
+    { code: "30", name: "Interest", value: 37580000000 },
+    { code: "51", name: "Transfers Between Entities", value: 56340000000 },
+    { code: "55", name: "Other Transfers", value: 48520000000 },
+    { code: "59", name: "Other Expenses", value: 32170000000 },
+    { code: "81", name: "Loan Repayments", value: 26000000000 }
+  ]}
+  text={{
+    hookTitle: "Two Ways to See",
+    hookTitleHighlight: "the Same Money",
+    hookSubtitle: "Government budgets can be viewed through two different lenses. Switch between them to see how the same 757 billion RON appears completely different.",
+    hookButton: "Start Exploring",
+    explorePhaseLabel: "Classification Explorer",
+    exploreTitle: "Switch the",
+    exploreTitleHighlight: "Lens",
+    functionalLabel: "Functional",
+    functionalQuestion: "What for?",
+    economicLabel: "Economic",
+    economicQuestion: "What type?",
+    functionalHint: "Functional view answers \"What is the money FOR?\" — showing spending by sector like Education, Health, Defense. This is how most citizens think about the budget.",
+    economicHint: "Economic view answers \"What TYPE of spending?\" — showing categories like Salaries, Equipment, Buildings. This reveals how money flows regardless of sector.",
+    keyInsightTitle: "Key Insight",
+    keyInsightText: "The same money appears in BOTH views. Functional classification shows WHERE it goes (Education, Health). Economic classification shows HOW it is spent (Salaries, Buildings). Use both together for complete analysis.",
+    resetButton: "Start Over",
+    sourceLabel: "Data from Transparenta.eu",
+    fnPreview: {
+      title: "Functional",
+      subtitle: "What for?",
+      examples: "Education, Health, Defense..."
+    },
+    ecPreview: {
+      title: "Economic",
+      subtitle: "What type?",
+      examples: "Salaries, Buildings, Transfers..."
+    }
+  }}
+/>
 
 ---
 
@@ -193,6 +130,8 @@ To answer, you need BOTH classifications:
 - **Result:** Education + Personnel = Teacher salaries
 
 > **Pro Tip:** When investigating spending, always ask both questions. "Health spending increased" could mean more nurses (personnel) OR more medical equipment (investments). The economic breakdown tells you which.
+
+> **Looking Ahead:** These classification codes are your investigation tools. In the [Classification Systems](/learning/local-budgets-guide/classification-systems) module, you'll learn to decode the full code hierarchy (like `65.02.04.01 + 71.01.01`), enabling you to drill down to exactly what you're looking for.
 
 ---
 

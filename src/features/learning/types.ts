@@ -64,10 +64,20 @@ export type LearningSalaryCalculatorInteractionState = {
   readonly completedAt?: string
 }
 
+export type LearningBudgetAllocatorStep = 'ALLOCATE' | 'COMPARE'
+
+export type LearningBudgetAllocatorInteractionState = {
+  readonly kind: 'budget-allocator'
+  readonly allocations: Readonly<Record<string, number>>
+  readonly step: LearningBudgetAllocatorStep
+  readonly completedAt?: string
+}
+
 export type LearningInteractionState =
   | LearningQuizInteractionState
   | LearningPredictionInteractionState
   | LearningSalaryCalculatorInteractionState
+  | LearningBudgetAllocatorInteractionState
 
 export type LearningQuizAnswerAction = {
   readonly type: 'quiz.answer'
@@ -116,6 +126,20 @@ export type LearningSalaryCalculatorResetAction = {
   readonly interactionId: string
 }
 
+export type LearningBudgetAllocatorSubmitAction = {
+  readonly type: 'budgetAllocator.submit'
+  readonly contentId: string
+  readonly interactionId: string
+  readonly allocations: Readonly<Record<string, number>>
+  readonly contentVersion?: string
+}
+
+export type LearningBudgetAllocatorResetAction = {
+  readonly type: 'budgetAllocator.reset'
+  readonly contentId: string
+  readonly interactionId: string
+}
+
 export type LearningInteractionAction =
   | LearningQuizAnswerAction
   | LearningQuizResetAction
@@ -123,6 +147,8 @@ export type LearningInteractionAction =
   | LearningPredictionResetAction
   | LearningSalaryCalculatorSaveAction
   | LearningSalaryCalculatorResetAction
+  | LearningBudgetAllocatorSubmitAction
+  | LearningBudgetAllocatorResetAction
 
 export type LearningContentProgress = {
   readonly contentId: string

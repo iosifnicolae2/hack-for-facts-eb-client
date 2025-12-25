@@ -845,7 +845,7 @@ msgstr "Back to Hub"
 msgid "Back to learning"
 msgstr "Back to learning"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:215
+#: src/features/learning/components/player/LessonPlayer.tsx:228
 #: src/routes/$lang/learning/$pathId/index.tsx:44
 #: src/routes/$lang/learning/$pathId/index.tsx:102
 msgid "Back to Learning Hub"
@@ -855,7 +855,7 @@ msgstr "Back to Learning Hub"
 msgid "Back to Overview"
 msgstr "Back to Overview"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:359
+#: src/features/learning/components/player/LessonPlayer.tsx:372
 msgid "Back to path"
 msgstr "Back to path"
 
@@ -1207,7 +1207,7 @@ msgstr "Comfortable"
 msgid "Compact"
 msgstr "Compact"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:383
+#: src/features/learning/components/player/LessonPlayer.tsx:396
 msgid "Complete path"
 msgstr "Complete path"
 
@@ -2932,7 +2932,7 @@ msgstr "Less than"
 msgid "Lesson Completed!"
 msgstr "Lesson Completed!"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:210
+#: src/features/learning/components/player/LessonPlayer.tsx:223
 msgid "Lesson not found"
 msgstr "Lesson not found"
 
@@ -3356,7 +3356,7 @@ msgstr "Newsletter consent and management"
 msgid "Newsletters and notifications"
 msgstr "Newsletters and notifications"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:370
+#: src/features/learning/components/player/LessonPlayer.tsx:383
 msgid "Next"
 msgstr "Next"
 
@@ -3873,7 +3873,7 @@ msgstr "Preparing your share link..."
 msgid "Preview"
 msgstr "Preview"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:346
+#: src/features/learning/components/player/LessonPlayer.tsx:359
 msgid "Previous"
 msgstr "Previous"
 
@@ -4775,7 +4775,7 @@ msgstr "The learning path you're looking for doesn't exist or has been moved."
 msgid "The learning path you're looking for doesn't exist."
 msgstr "The learning path you're looking for doesn't exist."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:212
+#: src/features/learning/components/player/LessonPlayer.tsx:225
 msgid "The lesson you're looking for doesn't exist or may have been moved."
 msgstr "The lesson you're looking for doesn't exist or may have been moved."
 

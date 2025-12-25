@@ -109,6 +109,100 @@ Exersați identificarea semnalelor de alarmă într-un scenariu realistic.
 
 **Verdict: 5 semnale de alarmă prezente — situația necesită investigații.**
 
+---
+
+## Metodologia investigației: De la semnal de alarmă la anchetă
+
+Identificarea semnalelor de alarmă este doar începutul. Iată o abordare structurată pentru a transforma observațiile în investigații acționabile.
+
+### Pasul 1: Confirmați tiparul
+
+Înainte de a investiga, verificați că vedeți o problemă reală:
+
+| Verificare | Cum | De ce |
+|------------|-----|-------|
+| **Mai mulți ani** | Analizați 3+ ani de date | Un an prost ar putea fi o anomalie |
+| **Mai mulți indicatori** | Verificați semnale de alarmă conexe | Tiparele sunt mai convingătoare decât puncte de date izolate |
+| **Comparați cu similari** | Verificați 2-3 localități similare | Valorile aberante față de similari merită mai multă atenție |
+
+> **Regulă de bază:** O singură valoare la limită într-un an este zgomot. Același tipar pe mai mulți ani și indicatori este semnal.
+
+### Pasul 2: Detaliați cu codurile de clasificare
+
+Folosiți cunoștințele de clasificare pentru a fi specifici:
+
+**Dacă găsiți execuție scăzută a investițiilor (Cod 71):**
+- Ce sub-coduri sunt afectate? (71.01 active noi vs 71.03 reparații)
+- Ce domenii funcționale? (65 Educație vs 84 Transport)
+- Sunt toate investițiile sau sectoare specifice?
+
+**Dacă găsiți costuri ridicate de personal (Cod 10):**
+- Ce sub-coduri domină? (10.01 salarii vs 10.02 bonusuri)
+- Ce unități funcționale sunt principalii consumatori?
+- Cum se compară cu prestarea serviciilor?
+
+<ExpandableHint trigger="Exemplu de detaliere">
+
+**Semnal de alarmă inițial:** Execuția investițiilor este 42%
+
+**Constatări din detaliere:**
+- Investiții educație (65): execuție 78% ✓
+- Investiții sănătate (66): execuție 65% ⚠️
+- Investiții transport (84): execuție 22% 🔴
+
+**Întrebare rafinată:** „De ce investițiile în infrastructura de transport au avut doar 22% execuție în timp ce educația a realizat 78%? Ce proiecte specifice de drumuri sau transport au fost întârziate?"
+
+</ExpandableHint>
+
+### Pasul 3: Formulați întrebări specifice
+
+Transformați semnalele de alarmă în întrebări precise și cu răspuns posibil:
+
+**Întrebare proastă:** „De ce sunt cheltuielile atât de mici?"
+**Întrebare bună:** „Vă rugăm să furnizați raportul de execuție pentru Codul 71.01.01 (construcții) sub codul funcțional 65.02.04 (învățământ secundar) pentru 2023-2024, incluzând defalcarea pe proiecte și motivele declarate pentru orice subexecuție."
+
+**Formula întrebării:**
+> „Vă rugăm să furnizați [tip specific de date] pentru [coduri specifice] în [perioadă specifică], incluzând [defalcări specifice] și [explicații specifice]."
+
+### Pasul 4: Combinați mai multe semnale de alarmă
+
+Când găsiți mai multe semnale de alarmă, țeseți-le într-o narațiune coerentă:
+
+**Exemplu de tipar:** Investiții scăzute + Personal ridicat + Rectificări frecvente
+
+**Interpretare narativă:**
+„Costurile de personal par să sufocă capacitatea de investiție. Entitatea rectifică în mod repetat bugetul pentru a muta bani de la proiecte de capital la cheltuieli operaționale, sugerând probleme cronice de planificare sau decizii de personal care nu lasă loc pentru dezvoltare."
+
+**Anchetă combinată:**
+1. Ce a determinat cele trei rectificări din acest an?
+2. În fiecare rectificare, ce s-a tăiat vs ce s-a adăugat?
+3. A crescut numărul de personal în timp ce investițiile au scăzut în ultimii 5 ani?
+4. Ce proiecte de capital au fost sacrificate pentru a acoperi costurile de personal?
+
+### Pasul 5: Alegeți canalul de acțiune
+
+Pe baza a ceea ce găsiți, alegeți abordarea potrivită:
+
+| Situație | Cel mai bun canal | De ce |
+|----------|-------------------|-------|
+| **Aveți nevoie de mai multe date** | Cerere FOIA (Legea 544/2001) | Forțează un răspuns scris în 10 zile |
+| **Doriți discuție publică** | Întrebare în ședința consiliului | Creează un dosar public și poate atrage interesul presei |
+| **Suspectați nereguli** | Raport către organism de control | DNA, Curtea de Conturi sau CNSC în funcție de problemă |
+| **Doriți să informați pe alții** | Împărtășiți cu jurnaliști/grupuri civice | Amplifică impactul și poate declanșa investigație profesională |
+
+### Lista de verificare pentru investigație
+
+Înainte de a acționa, verificați că ați parcurs acești pași:
+
+- [ ] Confirmat tiparul pe mai mulți ani/indicatori
+- [ ] Detaliat la coduri și sectoare specifice
+- [ ] Comparat cu localități similare
+- [ ] Formulat întrebări specifice, cu răspuns posibil
+- [ ] Combinat semnale de alarmă conexe într-o narațiune coerentă
+- [ ] Ales canalul de acțiune potrivit
+
+---
+
 ### Specificație componentă
 
 ```typescript

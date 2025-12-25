@@ -109,6 +109,100 @@ Practice identifying red flags in a realistic scenario.
 
 **Verdict: 5 red flags present — this warrants investigation.**
 
+---
+
+## Investigation Methodology: From Red Flag to Inquiry
+
+Spotting red flags is just the beginning. Here's a structured approach to turn observations into actionable investigations.
+
+### Step 1: Confirm the Pattern
+
+Before investigating, verify you're seeing a real issue:
+
+| Check | How | Why |
+|-------|-----|-----|
+| **Multiple years** | Look at 3+ years of data | One bad year could be an anomaly |
+| **Multiple indicators** | Check related red flags | Patterns are more convincing than isolated data points |
+| **Compare peers** | Check 2-3 similar localities | Outliers from peers deserve more scrutiny |
+
+> **Rule of thumb:** A single borderline value in one year is noise. The same pattern across multiple years and indicators is signal.
+
+### Step 2: Drill Down with Classification Codes
+
+Use your classification knowledge to get specific:
+
+**If you find low investment execution (Code 71):**
+- Which sub-codes are affected? (71.01 new assets vs 71.03 repairs)
+- Which functional areas? (65 Education vs 84 Transport)
+- Is it all investments or specific sectors?
+
+**If you find high personnel costs (Code 10):**
+- Which sub-codes dominate? (10.01 salaries vs 10.02 bonuses)
+- Which functional units are top spenders?
+- How does it compare to service delivery?
+
+<ExpandableHint trigger="Example drill-down">
+
+**Initial red flag:** Investment execution is 42%
+
+**Drill-down findings:**
+- Education (65) investment: 78% execution ✓
+- Health (66) investment: 65% execution ⚠️
+- Transport (84) investment: 22% execution 🔴
+
+**Refined question:** "Why was transport infrastructure investment only 22% executed while education achieved 78%? What specific road or transit projects were delayed?"
+
+</ExpandableHint>
+
+### Step 3: Formulate Specific Questions
+
+Transform red flags into precise, answerable questions:
+
+**Bad question:** "Why is spending so low?"
+**Good question:** "Please provide the execution report for Code 71.01.01 (construction) under functional code 65.02.04 (secondary education) for 2023-2024, including project-level breakdown and stated reasons for any underspending."
+
+**Question formula:**
+> "Please provide [specific data type] for [specific codes] during [specific period], including [specific breakdowns] and [specific explanations]."
+
+### Step 4: Combine Multiple Red Flags
+
+When you find multiple red flags, weave them into a coherent narrative:
+
+**Example pattern:** Low investment + High personnel + Frequent rectifications
+
+**Narrative interpretation:**
+"Personnel costs appear to be crowding out investment capacity. The entity repeatedly rectifies its budget to shift money from capital projects to operating expenses, suggesting chronic planning issues or staffing decisions that leave no room for development."
+
+**Combined inquiry:**
+1. What drove the three rectifications this year?
+2. In each rectification, what was cut vs. what was added?
+3. Has staffing increased while investment decreased over the past 5 years?
+4. What capital projects were sacrificed to cover personnel costs?
+
+### Step 5: Choose Your Action Channel
+
+Based on what you find, pick the right approach:
+
+| Situation | Best Channel | Why |
+|-----------|--------------|-----|
+| **Need more data** | FOIA request (Law 544/2001) | Forces a written response within 10 days |
+| **Want public discussion** | Council meeting question | Creates public record and may spark media interest |
+| **Suspect wrongdoing** | Report to oversight body | DNA, Court of Accounts, or CNSC depending on issue |
+| **Want to inform others** | Share with journalists/civic groups | Amplifies impact and may trigger professional investigation |
+
+### The Investigation Checklist
+
+Before taking action, verify you've completed these steps:
+
+- [ ] Confirmed pattern across multiple years/indicators
+- [ ] Drilled down to specific codes and sectors
+- [ ] Compared with peer localities
+- [ ] Formulated specific, answerable questions
+- [ ] Combined related red flags into coherent narrative
+- [ ] Chosen appropriate action channel
+
+---
+
 ### Component Specification
 
 ```typescript

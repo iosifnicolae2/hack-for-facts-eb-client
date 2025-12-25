@@ -83,13 +83,13 @@ describe('useAutoOnboarding', () => {
 
   it('auto-completes onboarding for new users with a valid path', async () => {
     // Start with no onboarding
-    renderHook(() => useAutoOnboarding({ pathId: 'citizen' }), { wrapper: createWrapper() })
+    renderHook(() => useAutoOnboarding({ pathId: 'budget-basics' }), { wrapper: createWrapper() })
 
     await waitFor(() => {
       const stored = readProgress()
       expect(stored.onboarding.completedAt).toBeTruthy()
-      expect(stored.onboarding.pathId).toBe('citizen')
-      expect(stored.activePathId).toBe('citizen')
+      expect(stored.onboarding.pathId).toBe('budget-basics')
+      expect(stored.activePathId).toBe('budget-basics')
     })
   })
 
@@ -97,19 +97,19 @@ describe('useAutoOnboarding', () => {
     const completedAt = '2024-01-01T00:00:00.000Z'
     seedProgress(
       buildProgress({
-        onboarding: { pathId: 'journalist', relatedPaths: [], completedAt },
-        activePathId: 'journalist',
+        onboarding: { pathId: 'advanced-budgets-journalists', relatedPaths: [], completedAt },
+        activePathId: 'advanced-budgets-journalists',
       }),
     )
 
-    renderHook(() => useAutoOnboarding({ pathId: 'citizen' }), { wrapper: createWrapper() })
+    renderHook(() => useAutoOnboarding({ pathId: 'budget-basics' }), { wrapper: createWrapper() })
 
     // Wait a bit to ensure the hook has processed
     await new Promise((resolve) => setTimeout(resolve, 100))
 
     const stored = readProgress()
     // Should still have the original onboarding, not the new path
-    expect(stored.onboarding.pathId).toBe('journalist')
+    expect(stored.onboarding.pathId).toBe('advanced-budgets-journalists')
     expect(stored.onboarding.completedAt).toBe(completedAt)
   })
 
@@ -127,23 +127,23 @@ describe('useAutoOnboarding', () => {
   it('handles pathId changes correctly', async () => {
     const { rerender } = renderHook(
       ({ pathId }: { readonly pathId: string }) => useAutoOnboarding({ pathId }),
-      { wrapper: createWrapper(), initialProps: { pathId: 'citizen' } },
+      { wrapper: createWrapper(), initialProps: { pathId: 'budget-basics' } },
     )
 
     await waitFor(() => {
       const stored = readProgress()
-      expect(stored.onboarding.pathId).toBe('citizen')
+      expect(stored.onboarding.pathId).toBe('budget-basics')
     })
 
     // Rerender with a different pathId - should NOT change onboarding
     // because onboarding is already completed
-    rerender({ pathId: 'journalist' })
+    rerender({ pathId: 'advanced-budgets-journalists' })
 
     // Wait a bit
     await new Promise((resolve) => setTimeout(resolve, 100))
 
     const stored = readProgress()
     // Should still have the original path since onboarding is already completed
-    expect(stored.onboarding.pathId).toBe('citizen')
+    expect(stored.onboarding.pathId).toBe('budget-basics')
   })
 })

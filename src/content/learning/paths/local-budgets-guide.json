@@ -76,6 +76,20 @@
           "prerequisites": [
             "promises-vs-reality"
           ]
+        },
+        {
+          "id": "foundations-review",
+          "slug": "05-module-review",
+          "title": {
+            "en": "Foundations Review",
+            "ro": "Recapitulare Fundamente"
+          },
+          "durationMinutes": 4,
+          "contentDir": "citizen-foundations/05-module-review",
+          "completionMode": "quiz",
+          "prerequisites": [
+            "explore-the-platform"
+          ]
         }
       ]
     },
@@ -130,6 +144,20 @@
             "ro": "Provocarea veniturilor Romaniei"
           },
           "durationMinutes": 7
+        },
+        {
+          "id": "revenues-review",
+          "slug": "04-module-review",
+          "title": {
+            "en": "Revenue Sources Review",
+            "ro": "Recapitulare Surse de Venituri"
+          },
+          "durationMinutes": 4,
+          "contentDir": "revenue-sources/04-module-review",
+          "completionMode": "quiz",
+          "prerequisites": [
+            "romanias-revenue-challenge"
+          ]
         }
       ]
     },
@@ -184,6 +212,20 @@
             "ro": "Decalajul execuției"
           },
           "durationMinutes": 6
+        },
+        {
+          "id": "expenditures-review",
+          "slug": "04-module-review",
+          "title": {
+            "en": "Expenditures Review",
+            "ro": "Recapitulare Cheltuieli"
+          },
+          "durationMinutes": 4,
+          "contentDir": "expenditure-basics/04-module-review",
+          "completionMode": "quiz",
+          "prerequisites": [
+            "the-execution-gap"
+          ]
         }
       ]
     },
@@ -238,6 +280,20 @@
             "ro": "Urmărirea documentelor bugetare"
           },
           "durationMinutes": 5
+        },
+        {
+          "id": "budget-cycle-review",
+          "slug": "04-module-review",
+          "title": {
+            "en": "Budget Cycle Review",
+            "ro": "Recapitulare Ciclul Bugetar"
+          },
+          "durationMinutes": 4,
+          "contentDir": "budget-cycle/04-module-review",
+          "completionMode": "quiz",
+          "prerequisites": [
+            "tracking-documents"
+          ]
         }
       ]
     },
@@ -306,6 +362,34 @@
             "ro": "Decodificarea liniilor bugetare"
           },
           "durationMinutes": 5
+        },
+        {
+          "id": "investigating-with-classifications",
+          "slug": "05-investigating-with-classifications",
+          "title": {
+            "en": "Investigating with Classifications",
+            "ro": "Investigarea cu Clasificări"
+          },
+          "durationMinutes": 6,
+          "contentDir": "classification-systems/05-investigating-with-classifications",
+          "completionMode": "mark_complete",
+          "prerequisites": [
+            "decoding-budget-lines"
+          ]
+        },
+        {
+          "id": "classification-review",
+          "slug": "06-module-review",
+          "title": {
+            "en": "Classification Systems Review",
+            "ro": "Recapitulare Sisteme de Clasificare"
+          },
+          "durationMinutes": 5,
+          "contentDir": "classification-systems/06-module-review",
+          "completionMode": "quiz",
+          "prerequisites": [
+            "investigating-with-classifications"
+          ]
         }
       ]
     },
@@ -360,6 +444,20 @@
             "ro": "Explorează Bugetul Tău Local"
           },
           "durationMinutes": 5
+        },
+        {
+          "id": "local-national-review",
+          "slug": "04-module-review",
+          "title": {
+            "en": "Local vs National Review",
+            "ro": "Recapitulare Local vs Național"
+          },
+          "durationMinutes": 4,
+          "contentDir": "local-national-budgets/04-module-review",
+          "completionMode": "quiz",
+          "prerequisites": [
+            "explore-your-local-budget"
+          ]
         }
       ]
     },
@@ -414,6 +512,20 @@
             "ro": "Abilitati de analiza bugetara"
           },
           "durationMinutes": 7
+        },
+        {
+          "id": "transparency-tools-review",
+          "slug": "04-module-review",
+          "title": {
+            "en": "Transparency Tools Review",
+            "ro": "Recapitulare Instrumente de Transparență"
+          },
+          "durationMinutes": 4,
+          "contentDir": "transparency-tools/04-module-review",
+          "completionMode": "quiz",
+          "prerequisites": [
+            "budget-analysis-skills"
+          ]
         }
       ]
     },
@@ -468,6 +580,20 @@
             "ro": "Treci la acțiune: implicare și raportare"
           },
           "durationMinutes": 7
+        },
+        {
+          "id": "citizen-rights-review",
+          "slug": "04-module-review",
+          "title": {
+            "en": "Citizen Rights Review",
+            "ro": "Recapitulare Drepturile Cetățeanului"
+          },
+          "durationMinutes": 4,
+          "contentDir": "citizen-rights/04-module-review",
+          "completionMode": "quiz",
+          "prerequisites": [
+            "taking-action"
+          ]
         }
       ]
     },
@@ -522,6 +648,20 @@
             "ro": "Aplicarea analizei semnalelor de avertizare"
           },
           "durationMinutes": 7
+        },
+        {
+          "id": "red-flags-review",
+          "slug": "04-module-review",
+          "title": {
+            "en": "Red Flags Review",
+            "ro": "Recapitulare Semnale de Alarmă"
+          },
+          "durationMinutes": 4,
+          "contentDir": "red-flags/04-module-review",
+          "completionMode": "quiz",
+          "prerequisites": [
+            "applying-red-flag-analysis"
+          ]
         }
       ]
     },
@@ -590,6 +730,20 @@
             "ro": "Raporteaza si Actioneaza"
           },
           "durationMinutes": 10
+        },
+        {
+          "id": "capstone-review",
+          "slug": "05-module-review",
+          "title": {
+            "en": "Capstone Review",
+            "ro": "Recapitulare Finală"
+          },
+          "durationMinutes": 5,
+          "contentDir": "community-budget-capstone/05-module-review",
+          "completionMode": "quiz",
+          "prerequisites": [
+            "report-and-act"
+          ]
         }
       ]
     }

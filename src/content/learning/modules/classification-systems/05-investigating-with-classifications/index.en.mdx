@@ -1,0 +1,199 @@
+---
+title: "Investigating with Classifications"
+durationMinutes: 6
+concept: "Using classification codes to investigate budget anomalies"
+objective: "Apply classification systems to investigate the root cause of budget red flags"
+---
+
+# Investigating with Classifications
+
+## Quick Recall
+
+<ExpandableHint trigger="What are the three classification lenses?">
+
+1. **Functional** (What is it for?) — Education (65), Health (66), etc.
+2. **Economic** (What type of expense?) — Personnel (10), Investments (71), etc.
+3. **Organizational** (Who controls it?) — .01 state budget, .02 local budget
+
+These three lenses let you decode any budget line. Now we'll use them to **investigate** problems, not just read budgets.
+
+</ExpandableHint>
+
+## You Found a Red Flag. Now What?
+
+Spotting a budget problem is just the beginning. The real skill is **investigating** what's behind it.
+
+When the Red Flags module teaches you to look for low investment execution or unusual spending patterns, your classification knowledge becomes the investigative tool. Without it, you know *something* is wrong — with it, you know *what specifically* failed and *where to dig deeper*.
+
+> **Key Insight:** Classifications are your microscope. Red flags tell you where to look; classifications show you what you're seeing.
+
+---
+
+## Investigation Method: The Drill-Down
+
+When you spot a red flag, use classifications to drill down from general to specific:
+
+```
+RED FLAG DETECTED
+       ↓
+FUNCTIONAL: What purpose failed?
+       ↓
+ECONOMIC: What type of spending failed?
+       ↓
+SUB-CODES: Which specific activities failed?
+       ↓
+ROOT CAUSE: Now you have the right question
+```
+
+### Investigation Example 1: Low Investment Execution
+
+**Red Flag:** A city has only 45% execution on capital investments (Code 71).
+
+**Without classification knowledge:** "They didn't spend investment money." *(vague, no direction)*
+
+**With classification knowledge:**
+
+**Step 1 — Drill into Economic Sub-codes:**
+| Sub-code | Name | Execution | Signal |
+|----------|------|-----------|--------|
+| 71.01.01 | Construction | 38% | Major issue |
+| 71.01.02 | Equipment | 62% | Moderate |
+| 71.01.03 | Vehicles | 95% | Fine |
+| 71.03 | Major Repairs | 28% | Critical |
+
+**Step 2 — Drill into Functional Classifications:**
+| Function | Code 71 Execution | Meaning |
+|----------|-------------------|---------|
+| Education (65.02) | 32% | School construction stalled |
+| Health (66.02) | 41% | Hospital equipment delayed |
+| Housing (70.02) | 55% | Some housing projects progressed |
+
+**Step 3 — Formulate Targeted Questions:**
+- "Why did school construction (65.02 + 71.01.01) achieve only 32% execution?"
+- "Were procurement procedures blocked? Land issues? Contractor problems?"
+- "What specific schools were planned but not built?"
+
+**Result:** Instead of asking "why wasn't money spent?", you can ask "why wasn't the new middle school on Strada Victoriei built when 4.2 million RON was allocated?"
+
+---
+
+## Investigation Example 2: Personnel Crowding Out Investment
+
+**Red Flag:** Personnel costs are 68% of total budget (above the 60% warning threshold).
+
+**Step 1 — Identify which functions are affected:**
+
+| Function | Personnel % | Investment % | Pattern |
+|----------|-------------|--------------|---------|
+| Education (65.02) | 72% | 8% | Severe crowding |
+| Health (66.02) | 64% | 12% | Moderate |
+| Culture (67.02) | 45% | 35% | Balanced |
+| Public Order (61.02) | 55% | 25% | Balanced |
+
+**Step 2 — Focus on the worst case (Education):**
+- Code 10 (personnel) at 72% means almost all money goes to salaries
+- Code 71 (investments) at 8% means virtually no infrastructure improvements
+- **What's suffering?** School renovations, new equipment, building repairs
+
+**Step 3 — Formulate Investigation Questions:**
+- "How many teaching positions were added in the last 3 years versus infrastructure investments?"
+- "Which schools are in the worst physical condition, and are they receiving any capital funding?"
+- "Is the high personnel percentage due to overstaffing or underfunding of total budget?"
+
+---
+
+## Cross-Referencing: The Power Move
+
+The most powerful investigation technique combines **multiple classification perspectives**:
+
+<ExpandableHint trigger="Investigation Scenario: The Education Budget Mystery">
+
+**The Red Flags:**
+1. Education (65.02) has 95% personnel execution but only 35% investment execution
+2. Total education spending is growing 15% per year
+3. Parent complaints about deteriorating school buildings
+
+**Cross-Reference Investigation:**
+
+| Question | Classification Path | What You Find |
+|----------|---------------------|---------------|
+| Where's the money going? | 65.02 → Code 10 | Salaries growing fast |
+| What's NOT happening? | 65.02 → Code 71.01 | No new construction |
+| What about repairs? | 65.02 → Code 71.03 | Major repairs at 28% |
+| Which schools? | 65.02.04 vs 65.02.03 | Secondary worse than primary |
+
+**Root Cause Hypothesis:** New teaching hires are absorbing budget growth, leaving nothing for building maintenance. Secondary schools (65.02.04) are hit hardest, possibly due to enrollment-based staffing formulas.
+
+**FOIA Question:** "Please provide the breakdown of personnel growth (number of positions and salary increases) versus capital expenditure for code 65.02 over the past 5 years."
+
+</ExpandableHint>
+
+---
+
+## The Investigation Checklist
+
+When you find a red flag, use this systematic approach:
+
+<FlashCardDeck
+  cards={[
+    { front: "Step 1: Economic Drill-Down", back: "Break down the economic code (10, 20, 71) into sub-categories. Which specific type of spending is the problem?" },
+    { front: "Step 2: Functional Drill-Down", back: "Check which government functions (Education 65, Health 66, etc.) are affected. Is it one sector or many?" },
+    { front: "Step 3: Cross-Reference", back: "Combine functional + economic views. Example: Is low 71 execution specific to Education, or affecting all sectors?" },
+    { front: "Step 4: Compare Periods", back: "Is this a new pattern or recurring? Check 2-3 years of data to spot trends." },
+    { front: "Step 5: Formulate Questions", back: "Write specific questions using the codes you found. 'Why is 65.02.04 + 71.03 at 28%?' is better than 'Why low investment?'" }
+  ]}
+/>
+
+---
+
+## Practice: Investigate This Red Flag
+
+A municipality shows these patterns:
+
+| Category | Execution Rate |
+|----------|---------------|
+| Total Budget | 82% |
+| Personnel (10) | 99% |
+| Goods & Services (20) | 94% |
+| Investments (71) | 41% |
+
+Additionally:
+- Health (66.02) investment execution: 22%
+- Education (65.02) investment execution: 55%
+- Transportation (84.02) investment execution: 38%
+
+<Quiz
+  id="investigation-q1"
+  question="Based on the data above, which area should you investigate first?"
+  options={[
+    { id: "a", text: "Personnel spending, since it's at 99%", isCorrect: false },
+    { id: "b", text: "Health investments (66.02 + 71), since they're at only 22%", isCorrect: true },
+    { id: "c", text: "Goods & Services, since 94% shows overspending", isCorrect: false },
+    { id: "d", text: "Total budget, since 82% is concerning", isCorrect: false }
+  ]}
+  explanation="Health investments at 22% is the most severe red flag. 99% personnel execution is normal (salaries must be paid). 94% on goods/services is fine. Health at 22% means planned hospital equipment, renovations, or expansions didn't happen — this affects citizens directly and deserves investigation."
+/>
+
+<Quiz
+  id="investigation-q2"
+  question="What should your FOIA request focus on, given the Health investment red flag?"
+  options={[
+    { id: "a", text: "All budget data for the entire municipality", isCorrect: false },
+    { id: "b", text: "Salary information for healthcare workers", isCorrect: false },
+    { id: "c", text: "Breakdown of planned vs. executed investments for code 66.02, including project-level details", isCorrect: true },
+    { id: "d", text: "Comparison with other municipalities", isCorrect: false }
+  ]}
+  explanation="Your investigation showed Health investments (66.02 + 71) at 22%. A targeted FOIA request asks for the specific projects under code 66.02 capital investments — what was planned, what was executed, and why the gap exists. General requests get general (useless) answers. Specific requests based on classification codes get actionable information."
+/>
+
+---
+
+## Key Takeaway
+
+> 📌 **Remember:** Classifications transform vague red flags into specific investigations. When you spot a problem, drill down through economic codes (what type of spending?), functional codes (which government purpose?), and sub-codes (which specific activities?). The result: targeted questions that get real answers.
+
+**Next:** Now that you can both detect red flags AND investigate them, you're ready to apply these skills to real data in the Capstone project.
+
+---
+
+<MarkComplete label="Mark Lesson Complete" />

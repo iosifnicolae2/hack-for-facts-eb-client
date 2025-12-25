@@ -15,6 +15,7 @@ import { Quiz, type QuizOption } from '../assessment/Quiz'
 import { MarkComplete } from './MarkComplete'
 import { LessonChallengesProvider, useRegisterLessonChallenge } from './lesson-challenges-context'
 import { LessonSkeleton } from '../loading/LessonSkeleton'
+import { BudgetAllocatorGame } from '../interactive/BudgetAllocatorGame'
 import { BudgetFootprintRevealer } from '../interactive/BudgetFootprintRevealer'
 import { FlashCard, FlashCardDeck } from '../interactive/FlashCardDeck'
 import { PromiseTracker } from '../interactive/PromiseTracker'
@@ -28,6 +29,7 @@ import { DeficitVisual } from '../interactive/DeficitVisual'
 import { GuidedPlatformTour } from '../interactive/GuidedPlatformTour'
 import { ExpandableHint } from '../interactive/ExpandableHint'
 import { Sources } from '../interactive/Sources'
+import { ClassificationExplorer } from '../interactive/ClassificationExplorer'
 
 type LessonPlayerProps = {
   readonly locale: LearningLocale
@@ -64,6 +66,12 @@ type GuidedPlatformTourMdxProps = {
   readonly budgetExplorerUrl?: string
 }
 
+type ClassificationExplorerMdxProps = React.ComponentProps<typeof ClassificationExplorer>
+
+type BudgetAllocatorGameMdxProps = React.ComponentProps<typeof BudgetAllocatorGame> & {
+  readonly id?: string
+}
+
 type LessonQuizWrapperProps = QuizMdxProps & {
   readonly lessonId: string
 }
@@ -74,6 +82,10 @@ type LessonPromiseTrackerWrapperProps = PromiseTrackerMdxProps & {
 }
 
 type LessonSalaryTaxCalculatorWrapperProps = SalaryTaxCalculatorMdxProps & {
+  readonly lessonId: string
+}
+
+type LessonBudgetAllocatorWrapperProps = BudgetAllocatorGameMdxProps & {
   readonly lessonId: string
 }
 
@@ -109,6 +121,17 @@ function LessonSalaryTaxCalculatorWrapper({ lessonId, id }: LessonSalaryTaxCalcu
   useRegisterLessonChallenge({ id: `salary:${calculatorId}`, isCompleted })
 
   return <SalaryTaxCalculator contentId={lessonId} calculatorId={calculatorId} />
+}
+
+function LessonBudgetAllocatorWrapper({ lessonId, id, ...props }: LessonBudgetAllocatorWrapperProps) {
+  const { progress } = useLearningProgress()
+  const interactionId = id ?? 'budget-allocator'
+  const interaction = progress.content[lessonId]?.interactions?.[interactionId]
+  const isCompleted = interaction?.kind === 'budget-allocator' && interaction.step === 'COMPARE'
+
+  useRegisterLessonChallenge({ id: `budget:${interactionId}`, isCompleted })
+
+  return <BudgetAllocatorGame {...props} contentId={lessonId} interactionId={interactionId} />
 }
 
 export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlayerProps) {
@@ -178,6 +201,20 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
     [locale]
   )
 
+  const ClassificationExplorerWrapper = useCallback(
+    (props: ClassificationExplorerMdxProps) => (
+      <ClassificationExplorer {...props} />
+    ),
+    []
+  )
+
+  const BudgetAllocatorWrapper = useCallback(
+    (props: BudgetAllocatorGameMdxProps) => (
+      <LessonBudgetAllocatorWrapper {...props} lessonId={lessonId} />
+    ),
+    [lessonId]
+  )
+
   const mdxComponents = useMemo(
     () => ({
       Quiz: QuizWrapper,
@@ -189,6 +226,7 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
       SalaryTaxCalculator: SalaryTaxCalculatorWrapper,
       GuidedPlatformTour: GuidedPlatformTourWrapper,
       RevenueDistributionGame,
+      BudgetAllocatorGame: BudgetAllocatorWrapper,
       VATCalculator,
       VATReformCard,
       EUComparisonChart,
@@ -196,8 +234,9 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
       DeficitVisual,
       ExpandableHint,
       Sources,
+      ClassificationExplorer: ClassificationExplorerWrapper,
     }),
-    [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, PromiseTrackerWrapper, SalaryTaxCalculatorWrapper, GuidedPlatformTourWrapper]
+    [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, PromiseTrackerWrapper, SalaryTaxCalculatorWrapper, GuidedPlatformTourWrapper, ClassificationExplorerWrapper, BudgetAllocatorWrapper]
   )
 
   if (!path || !module || !lesson) {

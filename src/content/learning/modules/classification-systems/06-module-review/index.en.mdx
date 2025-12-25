@@ -1,0 +1,116 @@
+---
+title: "Classification Review"
+durationMinutes: 6
+concept: "Module review and knowledge check"
+objective: "Demonstrate mastery of budget classification systems and investigation techniques"
+---
+
+# Classification Review
+
+This module covered the three classification lenses, decoding budget lines, and using classifications to investigate red flags. Let's verify your mastery.
+
+---
+
+## Key Terms Review
+
+<FlashCardDeck
+  cards={[
+    { front: "Code 65", back: "Education (functional classification). 65.02 = local budget level." },
+    { front: "Code 66", back: "Health (functional classification). 66.02 = local budget level." },
+    { front: "Code 71.01", back: "Acquisition of NEW fixed assets (economic). Construction, equipment purchases." },
+    { front: "Code 71.03", back: "Major REPAIRS to existing assets (economic). Renovations, rehabilitation." },
+    { front: "Budget Level Suffix", back: ".01 = central/state budget, .02 = local budget, .03 = social insurance, .05 = health insurance" }
+  ]}
+/>
+
+---
+
+## Module Quiz
+
+<Quiz
+  id="classification-review-q1"
+  question="What do the three classification 'lenses' tell you about a budget line?"
+  options={[
+    { id: "a", text: "Functional (purpose), Economic (type), Organizational (who controls)", isCorrect: true },
+    { id: "b", text: "Revenue, Expenditure, Balance", isCorrect: false },
+    { id: "c", text: "Past, Present, Future", isCorrect: false },
+    { id: "d", text: "National, Regional, Local", isCorrect: false }
+  ]}
+  explanation="The three lenses are: Functional (What is the money FOR? Education, Health...), Economic (What TYPE of spending? Salaries, Investments...), and Organizational (WHO controls it? State budget, local budget...). Together they decode any budget line."
+/>
+
+<Quiz
+  id="classification-review-q2"
+  question="What is the difference between Code 71.01 and Code 71.03?"
+  options={[
+    { id: "a", text: "71.01 is for salaries, 71.03 is for equipment", isCorrect: false },
+    { id: "b", text: "71.01 is NEW assets (construction), 71.03 is REPAIRS to existing assets", isCorrect: true },
+    { id: "c", text: "71.01 is national budget, 71.03 is local budget", isCorrect: false },
+    { id: "d", text: "They are the same thing with different numbers", isCorrect: false }
+  ]}
+  explanation="This distinction matters for analysis: 71.01 (active fixe) means acquiring NEW assets—building a new school. 71.03 (reparații capitale) means major repairs to EXISTING assets—renovating an old school. Low 71.01 means no expansion; low 71.03 means no maintenance."
+/>
+
+<Quiz
+  id="classification-review-q3"
+  question="The budget code '65.02.04.01 - 71.01.01' means:"
+  options={[
+    { id: "a", text: "Teacher salaries at secondary schools", isCorrect: false },
+    { id: "b", text: "Hospital equipment purchase for local clinics", isCorrect: false },
+    { id: "c", text: "Construction for lower secondary education (local budget)", isCorrect: true },
+    { id: "d", text: "University research funding", isCorrect: false }
+  ]}
+  explanation="Decoding: 65 = Education, 65.02 = local budget level, 65.02.04 = secondary education, 65.02.04.01 = lower secondary (grades 5-8). 71.01.01 = construction works. Together: 'Building a middle school, local budget.'"
+/>
+
+<Quiz
+  id="classification-review-q4"
+  question="You find low execution on Code 71 across all functional categories. What does this suggest?"
+  options={[
+    { id: "a", text: "Each sector has unique problems with investment", isCorrect: false },
+    { id: "b", text: "A systemic problem—likely administrative capacity or budget pressure", isCorrect: true },
+    { id: "c", text: "The data is unreliable", isCorrect: false },
+    { id: "d", text: "Investment is not needed in any sector", isCorrect: false }
+  ]}
+  explanation="If 71 is low across Education AND Health AND Transport, it's not a sector-specific issue—it's systemic. Common causes: weak procurement capacity, overall budget cuts, or funds being redirected to personnel. Cross-referencing classifications reveals whether problems are sector-specific or systemic."
+/>
+
+<Quiz
+  id="classification-review-q5"
+  question="To investigate why a municipality's Education investments are low, which drill-down path would you use?"
+  options={[
+    { id: "a", text: "Start with economic code 10, then check functional codes", isCorrect: false },
+    { id: "b", text: "Start with functional code 65.02, then drill into economic sub-codes (71.01 vs 71.03)", isCorrect: true },
+    { id: "c", text: "Check only the total budget figures", isCorrect: false },
+    { id: "d", text: "Compare with other municipalities first", isCorrect: false }
+  ]}
+  explanation="The investigation method: (1) Start with functional (65.02 Education, local), (2) Drill into economic sub-codes to see what TYPE of investment failed—new construction (71.01.01) or repairs (71.03), (3) Formulate specific questions based on what you find."
+/>
+
+<Quiz
+  id="classification-review-q6"
+  question="(Recall from Budget Cycle) When would you use classification knowledge to analyze a budget rectification?"
+  options={[
+    { id: "a", text: "Rectifications don't use classification codes", isCorrect: false },
+    { id: "b", text: "To see which functional areas and economic types were cut or increased", isCorrect: true },
+    { id: "c", text: "Only when the rectification is about education", isCorrect: false },
+    { id: "d", text: "Classifications only apply to the original budget", isCorrect: false }
+  ]}
+  explanation="Rectifications use the same classification codes. By examining which codes were cut (often 71 - investments) and which increased (often 10 - personnel), you can see the real-time trade-offs happening mid-year. Classification knowledge makes rectifications readable."
+/>
+
+<Quiz
+  id="classification-review-q7"
+  question="What makes a FOIA question based on classification codes more effective than a general question?"
+  options={[
+    { id: "a", text: "It sounds more official", isCorrect: false },
+    { id: "b", text: "It targets specific data, making it harder to evade with vague answers", isCorrect: true },
+    { id: "c", text: "General questions are always rejected", isCorrect: false },
+    { id: "d", text: "There is no difference", isCorrect: false }
+  ]}
+  explanation="A general question like 'Why is investment spending low?' invites vague answers. A specific question like 'Why did code 65.02.04 + 71.01.01 execute at only 28%?' forces a specific answer about which school construction project failed. Classification codes make your watchdog questions precise."
+/>
+
+---
+
+<MarkComplete label="Complete Classification Review" />

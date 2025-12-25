@@ -19,132 +19,254 @@ Dar iată problema: majoritatea dintre noi avem opinii despre cheltuielile guver
 
 ## Element Interactiv: Jocul Alocării Bugetului
 
-Ești Ministrul Finanțelor pentru o zi. Ai 100 de miliarde RON de alocat pe categorii de cheltuieli. Fă-ți alegerile, apoi vezi cum se compară cu bugetul real al României.
+Ești Ministrul Finanțelor pentru o zi. Ai 100% din buget de alocat pe categorii de cheltuieli. Fă-ți alegerile, apoi vezi cum se compară cu bugetul real al României.
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  🎮 ALOCATOR DE BUGET                                        │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  Ai 100 miliarde RON de alocat. Trage cursoarele pentru     │
-│  a seta prioritățile, apoi compară cu cheltuielile reale.    │
-│                                                              │
-│  Protecție Socială  ████████████░░░░░░░░  35 miliarde [━━●━] │
-│  Sănătate           ████████░░░░░░░░░░░░  20 miliarde [━●━━] │
-│  Educație           ██████░░░░░░░░░░░░░░  15 miliarde [━●━━] │
-│  Apărare            ████░░░░░░░░░░░░░░░░  10 miliarde [●━━━] │
-│  Infrastructură     ████░░░░░░░░░░░░░░░░  10 miliarde [●━━━] │
-│  Altele             ████░░░░░░░░░░░░░░░░  10 miliarde [●━━━] │
-│  ─────────────────────────────────────────────────────────── │
-│  TOTAL:             100 miliarde RON                         │
-│                                                              │
-│  [ Compară cu Bugetul Real → ]                               │
-│                                                              │
-│  ═══════════════════════════════════════════════════════════ │
-│                                                              │
-│  REZULTATUL COMPARAȚIEI:                                     │
-│  Alocarea ta vs. bugetul real al României din 2024:          │
-│                                                              │
-│  Categorie          Tu       Real      Diferență             │
-│  Protecție Socială  35%       32%      +3% mai generos       │
-│  Sănătate           20%       12%      +8% mai generos       │
-│  Educație           15%        8%      +7% mai generos       │
-│  Apărare            10%        4%      +6% mai generos       │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-### Specificații Componentă
-
-```typescript
-/**
- * BudgetAllocatorGame Component
- *
- * PURPOSE: Let users allocate a hypothetical budget, then compare
- * their choices against Romania's actual spending breakdown.
- */
-interface BudgetAllocatorGameProps {
-  readonly totalBudget: number // e.g., 100 (billions)
-  readonly currency: 'RON' | 'EUR'
-  readonly categories: readonly BudgetCategory[]
-  readonly actualData: readonly ActualSpending[]
-  readonly onCompare?: (result: ComparisonResult) => void
-}
-
-interface BudgetCategory {
-  readonly id: string
-  readonly name: string
-  readonly icon: string
-  readonly minValue: number
-  readonly maxValue: number
-  readonly defaultValue: number
-  readonly description: string
-}
-
-interface ActualSpending {
-  readonly categoryId: string
-  readonly percentage: number
-  readonly year: number
-}
-
-interface ComparisonResult {
-  readonly allocations: readonly {
-    categoryId: string
-    userValue: number
-    actualValue: number
-    difference: number
-  }[]
-  readonly insights: readonly string[]
-}
-
-/**
- * STATE MANAGEMENT:
- * - allocations: Record<categoryId, number> - user's current allocation
- * - isComparing: boolean - comparison mode active
- * - hasCompared: boolean - user has seen comparison at least once
- * - validationError: string | null - if total doesn't equal 100
- *
- * STATE TRANSITIONS:
- * - Slider drag → update allocations, recalculate total
- * - Total !== 100 → show validation message
- * - Click Compare → animate transition to comparison view
- * - Reset button → restore default values
- *
- * USER INTERACTIONS:
- * - Drag slider: adjust allocation (5% increments for mobile-friendly)
- * - Direct input: type exact number (validates 0-100 range)
- * - Compare button: reveal actual values with animation
- * - Reset button: clear to defaults
- * - Category hover: show description tooltip
- *
- * VISUAL STATES:
- * - Default: sliders at default positions, no comparison
- * - Invalid: total bar shows red if !== 100
- * - Comparing: split view showing user vs actual bars
- * - Match highlight: green glow on categories where user ≈ actual (±3%)
- * - Difference badges: show +X% or -X% with color coding
- *
- * ANIMATIONS:
- * - Slider movement: smooth 150ms transition
- * - Compare reveal: staggered bar growth (100ms delay per category)
- * - Difference badges: pop-in animation (200ms, scale from 0.8)
- * - Total validation: shake on invalid (300ms)
- *
- * ACCESSIBILITY:
- * - Sliders use role="slider" with aria-valuemin, aria-valuemax, aria-valuenow
- * - aria-live="polite" on total and validation messages
- * - Keyboard: Arrow keys adjust by 1%, Page Up/Down by 5%
- * - Screen reader announces comparison results
- */
-```
-
-**Comportament Așteptat:**
-
-- Cursoarele trebuie să însumeze exact 100%
-- Calculul totalului în timp real pe măsură ce utilizatorul ajustează
-- Butonul de comparare dezvăluie alocarea reală a României
-- Diferențele colorate arată unde prioritățile utilizatorului diferă
-- Observații generate pe baza tiparelor (de ex., „Majoritatea oamenilor alocă mai mult pentru Educație decât guvernul")
+<BudgetAllocatorGame
+  categories={[
+    {
+      id: "social-protection",
+      label: "Protecție Socială",
+      subLabel: "Pensii, Șomaj, Asistență Socială",
+      icon: "shield",
+      color: "rose",
+      actualPercentage: 32,
+      defaultValue: 25,
+      stakeholders: ["pensioners", "workers"],
+      consequences: [
+        { minDiff: -100, maxDiff: -10, severity: "negative", impacts: ["Plățile pensiilor întârziate sau reduse cu ~15%", "~700.000 de pensionari sub pragul sărăciei", "Indemnizațiile de șomaj limitate la 3 luni", "Alocațiile pentru copii suspendate 6+ luni"] },
+        { minDiff: -10, maxDiff: -5, severity: "negative", impacts: ["Pensia medie înghețată (fără ajustare la inflație)", "~200.000 mai puțini beneficiari de asistență socială", "Procesarea indemnizațiilor de handicap întârziată 6+ luni"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Creșteri de pensii sub rata inflației", "Unele programe sociale văd finanțare redusă"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["4,7 milioane de pensionari primesc plăți stabile", "Pensia medie: ~2.748 RON/lună menținută", "Programele actuale de asistență socială continuă"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Creșterea pensiilor peste inflație (+3-5%)", "50.000 de familii în plus primesc alocații pentru copii"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Creștere semnificativă a pensiilor (+8-10%)", "Nou program de extindere a concediului parental", "Indemnizațiile de handicap cresc cu 15%", "Atenție: Poate necesita împrumuturi sau reduceri în altă parte"] }
+      ]
+    },
+    {
+      id: "economic-affairs",
+      label: "Afaceri Economice",
+      subLabel: "Transport, Energie, Industrie",
+      icon: "building-2",
+      color: "blue",
+      actualPercentage: 16,
+      defaultValue: 12,
+      stakeholders: ["workers", "business"],
+      consequences: [
+        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Proiecte majore de autostrăzi suspendate (A7, A8)", "Modernizarea căilor ferate oprită", "Subvențiile pentru energie industrială anulate", "Plățile pentru sprijin agricol întârziate"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Proiectele de infrastructură întârziate 1-2 ani", "Sprijin redus pentru dezvoltarea IMM-urilor"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Proiectele actuale de infrastructură continuă", "Investițiile PNRR în transport pe drumul cel bun", "Subvențiile agricole menținute"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Construcția de autostrăzi accelerată (+50km/an)", "Noi stimulente pentru energie regenerabilă"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Noi coridoare majore de autostrăzi finanțate", "Încep studiile de fezabilitate pentru tren de mare viteză", "Tranziția către energie verde accelerată"] }
+      ]
+    },
+    {
+      id: "public-services",
+      label: "Servicii Publice Generale",
+      subLabel: "Administrație, Datorie, UE",
+      icon: "landmark",
+      color: "slate",
+      actualPercentage: 12,
+      defaultValue: 10,
+      stakeholders: ["business"],
+      consequences: [
+        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Riscul de neplată a datoriei crește", "Plățile contribuției la UE întârziate", "Proiectele de digitalizare guvernamentală anulate", "Salariile funcționarilor publici înghețate sau reduse"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Serviciul datoriei devine tensionat", "Modernizarea administrativă încetinită"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Plățile datoriei la termen", "Contribuțiile de membru UE plătite", "Costurile administrative stabile"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Reducerea accelerată a datoriei", "Servicii e-guvernare extinse"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Reducere semnificativă a datoriei posibilă", "Digitalizare completă a guvernului", "Atenție: Poate fi supraalocat pentru administrație"] }
+      ]
+    },
+    {
+      id: "health",
+      label: "Sănătate",
+      subLabel: "Spitale, Medici, Medicamente",
+      icon: "heart",
+      color: "emerald",
+      actualPercentage: 11,
+      defaultValue: 15,
+      stakeholders: ["doctors", "parents"],
+      consequences: [
+        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["~3.200 de paturi de spital închise", "Timpul de așteptare la urgențe: 4h → 8h+", "12 spitale rurale pierd turele de noapte", "Lipsă de medicamente pentru boli cronice"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Emigrarea medicilor se accelerează (+500/an)", "Modernizarea echipamentelor medicale anulată", "Programele de prevenție reduse"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["6,2 paturi de spital la 1.000 de locuitori menținute", "Salariile actuale ale medicilor păstrate", "Programele naționale de sănătate continuă"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["850 de medici noi pot fi angajați", "12 spitale rurale modernizate", "Noi centre de tratament oncologic deschise"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Program major de construcție de spitale", "Salariile medicilor ajung la media UE", "Programe universale de screening lansate", "Timpii de așteptare reduși cu 40%"] }
+      ]
+    },
+    {
+      id: "education",
+      label: "Educație",
+      subLabel: "Școli, Universități, Profesori",
+      icon: "graduation-cap",
+      color: "amber",
+      actualPercentage: 9,
+      defaultValue: 12,
+      stakeholders: ["teachers", "parents"],
+      consequences: [
+        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Salariile profesorilor reduse cu 10-15%", "500+ școli rurale se închid", "Finanțarea universitară tăiată, taxele cresc", "Proiectele de renovare a școlilor anulate"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Salariile profesorilor înghețate (fără măriri)", "Numărul de elevi per clasă crește la 35+", "Actualizarea manualelor întârziată"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Salariile actuale ale profesorilor menținute", "Programele școlare existente continuă", "Scorul PISA rămâne în jur de 428"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Creștere a salariilor profesorilor (+10%)", "2.400 de locuri noi în grădinițe create", "Echipamente digitale pentru 800 de școli"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Salariile profesorilor se apropie de media UE", "Program major de construcție de școli", "5.000 de burse universitare noi", "Scorurile PISA ar putea crește cu 20+ puncte"] }
+      ]
+    },
+    {
+      id: "public-order",
+      label: "Ordine Publică și Siguranță",
+      subLabel: "Poliție, Instanțe, Penitenciare",
+      icon: "scale",
+      color: "violet",
+      actualPercentage: 6,
+      defaultValue: 5,
+      stakeholders: ["workers"],
+      consequences: [
+        { minDiff: -100, maxDiff: -3, severity: "negative", impacts: ["Patrulele de poliție reduse cu 30%", "Restanțele cazurilor în instanțe cresc cu 50%", "Supraaglomerarea în penitenciare se agravează"] },
+        { minDiff: -3, maxDiff: -1, severity: "negative", impacts: ["Modernizarea echipamentelor poliției întârziată", "Reformele sistemului judiciar încetinite"] },
+        { minDiff: -1, maxDiff: 1, severity: "neutral", impacts: ["Forța de poliție actuală menținută", "Operațiunile instanțelor continuă normal", "Capacitatea penitenciarelor stabilă"] },
+        { minDiff: 1, maxDiff: 3, severity: "positive", impacts: ["2.000 de polițiști noi angajați", "Digitalizarea instanțelor accelerată"] },
+        { minDiff: 3, maxDiff: 100, severity: "positive", impacts: ["Program major de modernizare a poliției", "Noi programe de reabilitare în penitenciare", "Procesare mai rapidă în sistemul de justiție"] }
+      ]
+    },
+    {
+      id: "defense",
+      label: "Apărare",
+      subLabel: "Armată, Angajamente NATO",
+      icon: "swords",
+      color: "red",
+      actualPercentage: 4,
+      defaultValue: 3,
+      stakeholders: ["workers"],
+      consequences: [
+        { minDiff: -100, maxDiff: -2, severity: "negative", impacts: ["Scade sub ținta NATO de 2% din PIB", "Achizițiile de echipamente militare anulate", "Pregătirea trupelor scade", "Încrederea aliaților se diminuează"] },
+        { minDiff: -2, maxDiff: -1, severity: "negative", impacts: ["Ținta NATO de 2% abia atinsă", "Unele modernizări întârziate"] },
+        { minDiff: -1, maxDiff: 1, severity: "neutral", impacts: ["Angajamentul NATO de 2% din PIB menținut", "Programele militare actuale continuă", "75.000 de personal activ finanțat"] },
+        { minDiff: 1, maxDiff: 2, severity: "positive", impacts: ["Depășește ținta NATO (2,5% din PIB)", "Modernizarea echipamentelor accelerată"] },
+        { minDiff: 2, maxDiff: 100, severity: "positive", impacts: ["Expansiune militară majoră", "Noi avioane de luptă și nave", "Atenție: Poate depăși nevoile regionale"] }
+      ]
+    },
+    {
+      id: "other",
+      label: "Altele",
+      subLabel: "Mediu, Locuințe, Cultură",
+      icon: "trees",
+      color: "teal",
+      actualPercentage: 10,
+      defaultValue: 8,
+      stakeholders: ["parents", "workers"],
+      consequences: [
+        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Reduceri în protecția mediului", "Programele de locuințe sociale anulate", "Instituții culturale se închid", "Parcuri și recreere neglijate"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Programe de reciclare reduse", "Subvenții pentru locuințe tăiate"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Programele de mediu menținute", "Finanțarea culturală stabilă", "Programele de locuințe continuă"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Stimulente pentru energie verde extinse", "Noi proiecte de locuințe accesibile"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Restaurare majoră de mediu", "Construcție de locuințe la scară largă", "Finanțare pentru renaștere culturală"] }
+      ]
+    }
+  ]}
+  stakeholders={[
+    {
+      id: "pensioners",
+      emoji: "👴",
+      label: "Pensionari",
+      affectedBy: ["social-protection"],
+      reactions: {
+        happy: { threshold: 2, message: "Vești bune pentru pensiile noastre!" },
+        angry: { threshold: -2, message: "Asta afectează vârstnicii..." },
+        neutral: { message: "Pensiile par stabile." }
+      }
+    },
+    {
+      id: "parents",
+      emoji: "👨‍👩‍👧",
+      label: "Părinți",
+      affectedBy: ["education", "health"],
+      reactions: {
+        happy: { threshold: 2, message: "Școli și spitale mai bune!" },
+        angry: { threshold: -2, message: "Îngrijorați de școli și sănătate..." },
+        neutral: { message: "Școlile și spitalele par ok." }
+      }
+    },
+    {
+      id: "doctors",
+      emoji: "🏥",
+      label: "Cadre Medicale",
+      affectedBy: ["health"],
+      reactions: {
+        happy: { threshold: 3, message: "Mai multe resurse pentru a salva vieți!" },
+        angry: { threshold: -3, message: "Sistemul de sănătate sub presiune." },
+        neutral: { message: "Finanțarea sănătății stabilă." }
+      }
+    },
+    {
+      id: "teachers",
+      emoji: "👨‍🏫",
+      label: "Profesori",
+      affectedBy: ["education"],
+      reactions: {
+        happy: { threshold: 3, message: "Mai multe resurse pentru elevii noștri!" },
+        angry: { threshold: -3, message: "Cum putem preda cu mai puțin?" },
+        neutral: { message: "Bugetul educației pare stabil." }
+      }
+    },
+    {
+      id: "workers",
+      emoji: "💼",
+      label: "Angajați",
+      affectedBy: ["economic-affairs", "public-order"],
+      reactions: {
+        happy: { threshold: 2, message: "Economia primește sprijin bun." },
+        angry: { threshold: -2, message: "Îngrijorați de viitorul economic." },
+        neutral: { message: "Situația economică pare stabilă." }
+      }
+    },
+    {
+      id: "business",
+      emoji: "🏢",
+      label: "Antreprenori",
+      affectedBy: ["economic-affairs", "public-services"],
+      reactions: {
+        happy: { threshold: 2, message: "Investițiile în infrastructură ne ajută." },
+        angry: { threshold: -2, message: "Birocrația și infrastructura suferă." },
+        neutral: { message: "Condițiile de afaceri stabile." }
+      }
+    }
+  ]}
+  deficitLevels={[
+    { minDeficit: 1, maxDeficit: 10, severity: "mild", consequence: "Deficit gestionabil. Deficitul actual al României este ~7%. Dobânzile pot crește ușor." },
+    { minDeficit: 10, maxDeficit: 30, severity: "moderate", consequence: "Deficit semnificativ. Agențiile de rating emit avertismente. Costurile de împrumut cresc cu 1-2%." },
+    { minDeficit: 30, maxDeficit: 100, severity: "severe", consequence: "Deficit sever. Procedura UE de deficit excesiv declanșată. Măsuri de austeritate probabile." },
+    { minDeficit: 100, maxDeficit: 200, severity: "critical", consequence: "Deficit critic. Intervenție FMI probabilă. Salariile în sectorul public înghețate, reduceri majore de programe." },
+    { minDeficit: 200, maxDeficit: 999, severity: "catastrophic", consequence: "Deficit catastrofal. Risc de faliment național. Prăbușirea monedei, hiperinflație posibilă." }
+  ]}
+  surplusLevels={[
+    { minSurplus: 1, maxSurplus: 10, consequence: "Nealocare minoră. Unele servicii pot fi subfinanțate dar gestionabil." },
+    { minSurplus: 10, maxSurplus: 30, consequence: "Nealocare semnificativă. Programele majore vor suferi reduceri. Servicii publice degradate." },
+    { minSurplus: 30, maxSurplus: 999, consequence: "Nealocare extremă. Serviciile guvernamentale aproape nefuncționale. Criză socială probabilă." }
+  ]}
+  text={{
+    hookTitle: "Fii Ministrul Finanțelor",
+    hookSubtitle: "Controlezi bugetul de 727 miliarde RON al României. Alocă-l cu înțelepciune — fiecare alegere are consecințe reale pentru oameni reali.",
+    hookButton: "Începe Alocarea",
+    allocateTitle: "Trage pentru a Aloca",
+    allocateSubtitle: "Ajustează fiecare categorie. Apasă pentru a vedea consecințele.",
+    compareButton: "Vezi Rezumatul Impactului",
+    compareTitle: "Deciziile Tale Bugetare",
+    compareSubtitle: "Iată ce s-ar întâmpla cu alocările tale",
+    tryAgainButton: "Încearcă Din Nou",
+    insightsTitle: "Observații Cheie",
+    stakeholdersTitle: "Reacțiile Părților Interesate",
+    negativeImpactsTitle: "Impacturi Negative",
+    positiveImpactsTitle: "Impacturi Pozitive",
+    balanceLabels: {
+      balanced: "Echilibrat",
+      deficit: "Deficit",
+      surplus: "Excedent"
+    }
+  }}
+  budgetInfo={{
+    totalBillions: 727,
+    currency: "RON",
+    year: 2024
+  }}
+/>
 
 ---
 

@@ -22,135 +22,72 @@ Aceste două întrebări îți oferă două perspective diferite asupra acelora�
 
 ## Element interactiv: Comutator de clasificare
 
-Explorează cum aceiași bani arată diferit prin fiecare perspectivă.
+Explorează cum aceiași bani arată diferit prin fiecare perspectivă. Comută între vizualizările **Funcțională** și **Economică** pentru a vedea cum bugetul României poate fi analizat din două perspective.
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  👁️ DOUĂ MODURI DE A VEDEA ACEIAȘI BANI                      │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  [ FUNCȚIONAL ]  [ ECONOMIC ]                                │
-│   (Pentru ce?)    (Ce tip?)                                  │
-│                                                              │
-│  ═══════════════════════════════════════════════════════════ │
-│                                                              │
-│  PERSPECTIVA FUNCȚIONALĂ:                                    │
-│                                                              │
-│  ┌────────────────────────────────────────────────────────┐  │
-│  │                                                        │  │
-│  │  ┌─────────────────────────────┐ ┌──────────────────┐  │  │
-│  │  │                             │ │                  │  │  │
-│  │  │    PROTECȚIE SOCIALĂ        │ │    AFACERI       │  │  │
-│  │  │         33%                 │ │   ECONOMICE      │  │  │
-│  │  │    (Pensii, asistență)      │ │      17%         │  │  │
-│  │  │                             │ │                  │  │  │
-│  │  └─────────────────────────────┘ └──────────────────┘  │  │
-│  │  ┌──────────────────┐ ┌──────────────┐ ┌───────────┐   │  │
-│  │  │    SĂNĂTATE      │ │  EDUCAȚIE    │ │  ORDINE   │   │  │
-│  │  │       12%        │ │      9%      │ │  PUBLICĂ  │   │  │
-│  │  │   (Spitale)      │ │   (Școli)    │ │    7%     │   │  │
-│  │  └──────────────────┘ └──────────────┘ └───────────┘   │  │
-│  │                                                        │  │
-│  └────────────────────────────────────────────────────────┘  │
-│                                                              │
-│  Apasă pe orice categorie pentru defalcarea economică →      │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-### Specificație componentă
-
-```typescript
-/**
- * Componenta ClassificationExplorer
- *
- * SCOP: Comutare între vizualizările funcțională și economică ale aceluiași buget,
- * arătând cum aceiași bani apar diferit prin fiecare perspectivă.
- */
-interface ClassificationExplorerProps {
-  readonly budgetData: BudgetData
-  readonly defaultView: 'functional' | 'economic'
-  readonly onCategoryClick?: (category: CategoryDetail) => void
-  readonly showCrossReference?: boolean
-}
-
-interface BudgetData {
-  readonly year: number
-  readonly totalAmount: number
-  readonly functional: readonly FunctionalCategory[]
-  readonly economic: readonly EconomicCategory[]
-  readonly crossReference: readonly CrossReferenceItem[]
-}
-
-interface FunctionalCategory {
-  readonly code: string // ex: "65" pentru Educație
-  readonly name: string
-  readonly percentage: number
-  readonly amount: number
-  readonly description: string
-  readonly subcategories?: readonly FunctionalCategory[]
-}
-
-interface EconomicCategory {
-  readonly code: string // ex: "10" pentru Personal
-  readonly name: string
-  readonly percentage: number
-  readonly amount: number
-  readonly description: string
-}
-
-interface CrossReferenceItem {
-  readonly functionalCode: string
-  readonly economicCode: string
-  readonly amount: number
-  readonly percentage: number
-}
-
-/**
- * GESTIONAREA STĂRII:
- * - currentView: 'functional' | 'economic'
- * - selectedCategory: string | null
- * - expandedCategory: string | null (pentru detaliere)
- * - hoveredCategory: string | null
- * - showCrossReference: boolean
- *
- * TRANZIȚII DE STARE:
- * - Click pe tab → animație de tranziție între vizualizări
- * - Click pe categorie → arată detaliere sau referință încrucișată
- * - Hover → evidențiază categoriile asociate din cealaltă vizualizare
- *
- * INTERACȚIUNI UTILIZATOR:
- * - Comutare tab: schimbă între vizualizările Funcțional/Economic
- * - Click treemap: intră în subcategorii sau arată detalii
- * - Hover legendă: evidențiază secțiunea corespunzătoare din treemap
- * - Tastatură: Tab pentru navigare, Enter pentru selecție, Escape pentru înapoi
- *
- * STĂRI VIZUALE:
- * - Implicit: treemap cu categorii colorate
- * - Hover: categoria se ridică ușor, apare tooltip
- * - Selectat: categoria se extinde, arată defalcarea
- * - Referință încrucișată: săgeți conectează elementele funcționale/economice
- *
- * ANIMAȚII:
- * - Schimbare vizualizare: tranziție morfică (400ms)
- * - Casete treemap: redimensionare lină la schimbarea datelor
- * - Detaliere: efect de zoom în subcategorii
- * - Săgeți referință încrucișată: animație de desenare (300ms)
- *
- * ACCESIBILITATE:
- * - Treemap are role="img" cu aria-label descriptiv
- * - Fiecare casetă este focusabilă cu aria-label descriptiv
- * - Navigarea cu Tab urmează ordinea vizuală
- * - Culorile sunt completate cu pattern-uri sau etichete
- */
-```
-
-**Comportament așteptat:**
-
-- Comutare fluidă între vizualizările Funcțională și Economică
-- Aceeași sumă totală, defalcare diferită
-- Click pe orice casetă pentru referință încrucișată (ex: cheltuieli Educație defalcate pe Personal/Bunuri/Investiții)
-- Animații fluide la schimbarea vizualizărilor
+<ClassificationExplorer
+  defaultView="fn"
+  sourceUrl="/budget-explorer?primary=fn&filter={%22report_period%22:{%22type%22:%22YEAR%22,%22selection%22:{%22dates%22:[%222024%22]}},%22account_category%22:%22ch%22,%22report_type%22:%22Executie+bugetara+agregata+la+nivel+de+ordonator+principal%22,%22exclude%22:{%22economic_prefixes%22:[%2251%22,%2255.01%22]}}&treemapPrimary=fn"
+  budgetInfo={{
+    totalBillions: 757.24,
+    currency: "RON",
+    year: 2024
+  }}
+  functionalData={[
+    { code: "68", name: "Protecție socială", value: 235710000000 },
+    { code: "66", name: "Sănătate", value: 112620000000 },
+    { code: "65", name: "Învățământ", value: 74160000000 },
+    { code: "84", name: "Transporturi", value: 59790000000 },
+    { code: "51", name: "Autorități publice", value: 59700000000 },
+    { code: "61", name: "Ordine publică și siguranță", value: 41280000000 },
+    { code: "55", name: "Tranzacții privind datoria", value: 40030000000 },
+    { code: "83", name: "Agricultură", value: 35070000000 },
+    { code: "60", name: "Apărare", value: 26050000000 },
+    { code: "74", name: "Protecția mediului", value: 21960000000 },
+    { code: "70", name: "Locuințe și dezvoltare", value: 19750000000 },
+    { code: "67", name: "Cultură și recreere", value: 15890000000 },
+    { code: "87", name: "Alte acțiuni economice", value: 15230000000 }
+  ]}
+  economicData={[
+    { code: "57", name: "Asistență socială", value: 223920000000 },
+    { code: "10", name: "Cheltuieli de personal", value: 163750000000 },
+    { code: "20", name: "Bunuri și servicii", value: 115260000000 },
+    { code: "71", name: "Active nefinanciare", value: 53700000000 },
+    { code: "30", name: "Dobânzi", value: 37580000000 },
+    { code: "51", name: "Transferuri între entități", value: 56340000000 },
+    { code: "55", name: "Alte transferuri", value: 48520000000 },
+    { code: "59", name: "Alte cheltuieli", value: 32170000000 },
+    { code: "81", name: "Rambursări de împrumuturi", value: 26000000000 }
+  ]}
+  text={{
+    hookTitle: "Două moduri de a vedea",
+    hookTitleHighlight: "aceiași bani",
+    hookSubtitle: "Bugetele guvernamentale pot fi vizualizate prin două perspective diferite. Comută între ele pentru a vedea cum aceiași 757 miliarde RON arată complet diferit.",
+    hookButton: "Începe explorarea",
+    explorePhaseLabel: "Explorator clasificări",
+    exploreTitle: "Schimbă",
+    exploreTitleHighlight: "perspectiva",
+    functionalLabel: "Funcțional",
+    functionalQuestion: "Pentru ce?",
+    economicLabel: "Economic",
+    economicQuestion: "Ce tip?",
+    functionalHint: "Vizualizarea funcțională răspunde la întrebarea \"Pentru CE sunt banii?\" — arătând cheltuielile pe sectoare precum Educație, Sănătate, Apărare. Așa gândesc majoritatea cetățenilor despre buget.",
+    economicHint: "Vizualizarea economică răspunde la întrebarea \"Ce TIP de cheltuială?\" — arătând categorii precum Salarii, Echipamente, Clădiri. Aceasta relevă cum circulă banii, indiferent de sector.",
+    keyInsightTitle: "Idee cheie",
+    keyInsightText: "Aceiași bani apar în AMBELE vizualizări. Clasificarea funcțională arată UNDE se duc (Educație, Sănătate). Clasificarea economică arată CUM sunt cheltuiți (Salarii, Clădiri). Folosește-le împreună pentru o analiză completă.",
+    resetButton: "Începe din nou",
+    sourceLabel: "Date de pe Transparenta.eu",
+    fnPreview: {
+      title: "Funcțional",
+      subtitle: "Pentru ce?",
+      examples: "Educație, Sănătate, Apărare..."
+    },
+    ecPreview: {
+      title: "Economic",
+      subtitle: "Ce tip?",
+      examples: "Salarii, Clădiri, Transferuri..."
+    }
+  }}
+/>
 
 ---
 
@@ -193,6 +130,8 @@ Pentru a răspunde, ai nevoie de AMBELE clasificări:
 - **Rezultat:** Învățământ + Personal = Salariile profesorilor
 
 > **Sfat util:** Când investighezi cheltuielile, pune mereu ambele întrebări. „Cheltuielile pentru sănătate au crescut" poate însemna mai multe asistente medicale (personal) SAU mai multe echipamente medicale (investiții). Defalcarea economică îți spune care dintre ele.
+
+> **Privind înainte:** Aceste coduri de clasificare sunt instrumentele tale de investigație. În modulul [Sistemele de clasificare](/learning/local-budgets-guide/classification-systems), vei învăța să decodifici întreaga ierarhie de coduri (precum `65.02.04.01 + 71.01.01`), permițându-ți să ajungi exact la ceea ce cauți.
 
 ---
 
