@@ -269,19 +269,19 @@ function ActivityCard({ activity, isRevealed, isExpanded, onReveal, onToggle }: 
   )
 
   const handleClick = () => {
-    if (!isRevealed) {
-      onReveal()
-    } else {
+    if (isRevealed) {
       onToggle()
+    } else {
+      onReveal()
     }
   }
 
   return (
     <Card
       className={cn(
-        'cursor-pointer overflow-hidden transition-all duration-300',
-        !isRevealed && 'hover:border-primary/50 hover:shadow-md',
-        isRevealed && 'border-green-500/50 bg-green-500/5'
+        'cursor-pointer overflow-hidden transition-all duration-300 rounded-4xl border-2',
+        !isRevealed && 'border-zinc-100 dark:border-zinc-800 hover:border-zinc-200 dark:hover:border-zinc-700 hover:shadow-lg bg-white dark:bg-zinc-950',
+        isRevealed && 'border-emerald-500/30 bg-emerald-50/30 dark:bg-emerald-950/10'
       )}
       onClick={handleClick}
       role="button"
@@ -294,60 +294,63 @@ function ActivityCard({ activity, isRevealed, isExpanded, onReveal, onToggle }: 
         }
       }}
     >
-      <CardContent className="p-4">
+      <CardContent className="p-6">
         {/* Header row */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-5">
           <div
             className={cn(
-              'flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-2xl transition-colors',
-              !isRevealed && 'bg-muted',
-              isRevealed && 'bg-green-500/20'
+              'flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl text-3xl transition-colors shadow-sm',
+              !isRevealed && 'bg-zinc-100 dark:bg-zinc-900',
+              isRevealed && 'bg-white dark:bg-zinc-900 shadow-emerald-100 dark:shadow-none'
             )}
           >
             {activity.icon}
           </div>
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-medium text-muted-foreground">{activity.time}</span>
-              {isRevealed && <Check className="h-3.5 w-3.5 text-green-500" />}
-            </div>
-            <p className="truncate font-medium">{activity.label}</p>
-          </div>
-          {!isRevealed ? (
-            <span className="rounded-full bg-muted px-2 py-1 text-xs text-muted-foreground">
-              {t`Tap`}
-            </span>
-          ) : (
-            <div className="flex items-center gap-1">
-              <span className="text-sm font-semibold text-green-600">+{totalCost.toFixed(1)}</span>
-              <span className="text-xs text-muted-foreground">RON</span>
-              {isExpanded ? (
-                <ChevronUp className="h-4 w-4 text-muted-foreground" />
-              ) : (
-                <ChevronDown className="h-4 w-4 text-muted-foreground" />
+          <div className="min-w-0 flex-1 space-y-1">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">{activity.time}</span>
+                {isRevealed && <Check className="h-4 w-4 text-emerald-500 stroke-3" />}
+              </div>
+              {isRevealed && (
+                <div className="flex items-center gap-1.5">
+                  <span className="text-lg font-black text-emerald-600 dark:text-emerald-400">+{totalCost.toFixed(1)}</span>
+                  <span className="text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">RON</span>
+                  {isExpanded ? (
+                    <ChevronUp className="h-5 w-5 text-zinc-400" />
+                  ) : (
+                    <ChevronDown className="h-5 w-5 text-zinc-400" />
+                  )}
+                </div>
+              )}
+              {!isRevealed && (
+                <span className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                  {t`Tap`}
+                </span>
               )}
             </div>
-          )}
+            <p className="text-lg font-bold text-zinc-900 dark:text-zinc-100">{activity.label}</p>
+          </div>
         </div>
 
         {/* Expanded content */}
         {isRevealed && isExpanded && (
-          <div className="mt-4 animate-in fade-in slide-in-from-top-2 space-y-3 border-t border-border/50 pt-4 duration-300">
-            <div className="space-y-2">
-              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          <div className="mt-6 animate-in fade-in slide-in-from-top-2 space-y-5 border-t border-emerald-500/10 pt-6 duration-300">
+            <div className="space-y-3">
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-500">
                 {t`Hidden infrastructure you used`}
               </p>
               {activity.hiddenServices.map((service, index) => (
                 <div
                   key={service.id}
-                  className="flex animate-in items-center justify-between fade-in slide-in-from-left duration-300"
+                  className="flex animate-in items-center justify-between fade-in slide-in-from-left duration-300 group"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">{service.icon}</span>
-                    <span className="text-sm">{service.name}</span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xl group-hover:scale-110 transition-transform">{service.icon}</span>
+                    <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{service.name}</span>
                   </div>
-                  <span className="text-sm font-medium text-green-600">
+                  <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">
                     +{service.dailyCostRon.toFixed(1)} RON
                   </span>
                 </div>
@@ -355,15 +358,15 @@ function ActivityCard({ activity, isRevealed, isExpanded, onReveal, onToggle }: 
             </div>
 
             <div className="flex items-center justify-between text-xs">
-              <span className="text-muted-foreground">{t`Budget category`}</span>
-              <span className="rounded-full bg-primary/10 px-2 py-0.5 font-medium text-primary">
+              <span className="font-medium text-zinc-500 dark:text-zinc-400">{t`Budget category`}</span>
+              <span className="rounded-full bg-indigo-50 dark:bg-indigo-500/10 px-3 py-1 font-bold text-indigo-600 dark:text-indigo-400 text-[10px] uppercase tracking-wide">
                 {activity.budgetCategory}
               </span>
             </div>
 
-            <div className="flex items-start gap-2 rounded-lg border border-amber-500/20 bg-amber-500/10 p-3">
-              <Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" />
-              <p className="text-xs text-amber-700 dark:text-amber-300">{activity.funFact}</p>
+            <div className="flex items-start gap-3 rounded-2xl border border-amber-200/50 dark:border-amber-500/20 bg-amber-50/50 dark:bg-amber-500/5 p-4">
+              <Lightbulb className="mt-0.5 h-5 w-5 shrink-0 text-amber-500 fill-amber-500/20" />
+              <p className="text-sm font-medium text-amber-800 dark:text-amber-200 leading-relaxed">{activity.funFact}</p>
             </div>
           </div>
         )}
@@ -432,7 +435,7 @@ type TotalDisplayProps = {
 function TotalDisplay({ totalCost, onReset, locale }: TotalDisplayProps) {
 
   return (
-    <Card className="border-green-500/30 bg-gradient-to-b from-green-500/5 to-transparent">
+    <Card className="border-green-500/30 bg-linear-to-b from-green-500/5 to-transparent rounded-4xl">
       <CardContent className="relative p-6">
         <Button
           variant="ghost"
