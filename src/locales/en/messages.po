@@ -849,7 +849,7 @@ msgstr "Back to Hub"
 msgid "Back to learning"
 msgstr "Back to learning"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:349
+#: src/features/learning/components/player/LessonPlayer.tsx:202
 #: src/routes/$lang/learning/$pathId/index.tsx:44
 #: src/routes/$lang/learning/$pathId/index.tsx:102
 msgid "Back to Learning Hub"
@@ -859,7 +859,7 @@ msgstr "Back to Learning Hub"
 msgid "Back to Overview"
 msgstr "Back to Overview"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:418
+#: src/features/learning/components/player/LessonPlayer.tsx:344
 msgid "Back to path"
 msgstr "Back to path"
 
@@ -1215,11 +1215,11 @@ msgstr "Comfortable"
 msgid "Compact"
 msgstr "Compact"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:440
+#: src/features/learning/components/player/LessonPlayer.tsx:366
 msgid "Complete path"
 msgstr "Complete path"
 
-#: src/features/learning/components/player/MarkComplete.tsx:117
+#: src/features/learning/components/player/MarkComplete.tsx:111
 msgid "Complete this lesson"
 msgstr "Complete this lesson"
 
@@ -2886,6 +2886,10 @@ msgstr "Learning Certificate Verification (PoC)"
 msgid "Learning path"
 msgstr "Learning path"
 
+#: src/features/learning/components/layout/LearningLayout.tsx:193
+msgid "Learning Path"
+msgstr "Learning Path"
+
 #: src/components/alerts/components/UnsavedChangesDialog.tsx:52
 msgid "Leave without saving"
 msgstr "Leave without saving"
@@ -2923,7 +2927,7 @@ msgstr "Less than"
 msgid "Lesson Completed!"
 msgstr "Lesson Completed!"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:344
+#: src/features/learning/components/player/LessonPlayer.tsx:197
 msgid "Lesson not found"
 msgstr "Lesson not found"
 
@@ -3195,7 +3199,7 @@ msgstr "Missing path id"
 msgid "Missing title"
 msgstr "Missing title"
 
-#: src/features/learning/components/player/MarkComplete.tsx:97
+#: src/features/learning/components/player/MarkComplete.tsx:91
 msgid "Mission End"
 msgstr "Mission End"
 
@@ -3351,7 +3355,7 @@ msgstr "Newsletter consent and management"
 msgid "Newsletters and notifications"
 msgstr "Newsletters and notifications"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:428
+#: src/features/learning/components/player/LessonPlayer.tsx:354
 msgid "Next"
 msgstr "Next"
 
@@ -3868,7 +3872,7 @@ msgstr "Preparing your share link..."
 msgid "Preview"
 msgstr "Preview"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:406
+#: src/features/learning/components/player/LessonPlayer.tsx:332
 msgid "Previous"
 msgstr "Previous"
 
@@ -3971,7 +3975,7 @@ msgstr "Ready to create"
 msgid "Ready to learn?"
 msgstr "Ready to learn?"
 
-#: src/features/learning/components/player/MarkComplete.tsx:98
+#: src/features/learning/components/player/MarkComplete.tsx:92
 msgid "Ready to level up?"
 msgstr "Ready to level up?"
 
@@ -3993,7 +3997,7 @@ msgstr "Reality"
 msgid "Recipient"
 msgstr "Recipient"
 
-#: src/features/learning/components/player/MarkComplete.tsx:112
+#: src/features/learning/components/player/MarkComplete.tsx:106
 msgid "Recording..."
 msgstr "Recording..."
 
@@ -4176,7 +4180,7 @@ msgstr "Save cookie preferences"
 msgid "Saving…"
 msgstr "Saving…"
 
-#: src/features/learning/components/player/MarkComplete.tsx:100
+#: src/features/learning/components/player/MarkComplete.tsx:94
 msgid "Seal your progress and move closer to becoming a budget expert."
 msgstr "Seal your progress and move closer to becoming a budget expert."
 
@@ -4324,8 +4328,8 @@ msgid "Selected"
 msgstr "Selected"
 
 #: src/features/learning/components/layout/LearningLayout.tsx:193
-msgid "Selected Journey"
-msgstr "Selected Journey"
+#~ msgid "Selected Journey"
+#~ msgstr "Selected Journey"
 
 #: src/components/filters/period-filter/PeriodFilter.tsx:249
 msgid "Selection Mode"
@@ -4771,7 +4775,7 @@ msgstr "The learning path you're looking for doesn't exist or has been moved."
 msgid "The learning path you're looking for doesn't exist."
 msgstr "The learning path you're looking for doesn't exist."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:346
+#: src/features/learning/components/player/LessonPlayer.tsx:199
 msgid "The lesson you're looking for doesn't exist or may have been moved."
 msgstr "The lesson you're looking for doesn't exist or may have been moved."
 
@@ -5153,8 +5157,8 @@ msgid "Unsaved changes"
 msgstr "Unsaved changes"
 
 #: src/features/learning/components/player/MarkComplete.tsx:78
-msgid "Unstoppable"
-msgstr "Unstoppable"
+#~ msgid "Unstoppable"
+#~ msgstr "Unstoppable"
 
 #: src/routes/unsubscribe.$token.tsx:67
 msgid "Unsubscribe error"

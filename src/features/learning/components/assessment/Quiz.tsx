@@ -88,8 +88,8 @@ export function Quiz({ id, question, options, explanation, contentId }: QuizProp
                     x: 0,
                     scale: isSelected ? 1.02 : 1
                   }}
-                  whileHover={!isAnswered ? { scale: 1.01 } : {}}
-                  whileTap={!isAnswered ? { scale: 0.99 } : {}}
+                  whileHover={isAnswered ? {} : { scale: 1.01 }}
+                  whileTap={isAnswered ? {} : { scale: 0.99 }}
                   onClick={() => void handleSelect(option.id)}
                   disabled={isAnswered || isSaving}
                   className={cn(
@@ -100,9 +100,9 @@ export function Quiz({ id, question, options, explanation, contentId }: QuizProp
                     // Selected state (pre-reveal)
                     !isAnswered && isSelected && 'bg-white dark:bg-zinc-800 border-zinc-900 dark:border-zinc-100 shadow-md ring-4 ring-zinc-900/5 dark:ring-zinc-100/5',
                     // Success State
-                    showAsCorrect && 'bg-emerald-500 border-emerald-500 text-white shadow-md shadow-emerald-200 dark:shadow-none !opacity-100 !bg-emerald-500',
+                    showAsCorrect && 'bg-emerald-500 border-emerald-300 dark:border-emerald-700 text-white shadow-md shadow-emerald-200 dark:shadow-none !opacity-100',
                     // Error State
-                    showAsIncorrect && 'bg-rose-500 border-rose-500 text-white shadow-md shadow-rose-200 dark:shadow-none !opacity-100 !bg-rose-500',
+                    showAsIncorrect && 'bg-rose-500 border-rose-300 dark:border-rose-700 text-white shadow-md shadow-rose-200 dark:shadow-none !opacity-100',
                     // Dimmed state for unselected options
                     isDimmed && 'bg-transparent border-zinc-200/50 dark:border-zinc-800/50 grayscale-[0.5] opacity-40',
                     isSaving && 'cursor-wait opacity-70'

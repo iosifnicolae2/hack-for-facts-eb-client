@@ -1,122 +1,39 @@
 ---
-title: "Explorează Platforma"
+title: "Prima Ta Investigație"
 durationMinutes: 5
 concept: "Navigarea practică în Budget Explorer"
 objective: "Navighează în Budget Explorer și găsește date despre cheltuieli pentru orice categorie"
 ---
 
-# Explorează Platforma
+# Prima Ta Investigație
 
-## Introducerea Conceptului
+Undeva în Budget Explorer, există un număr care te va surprinde. În următoarele 5 minute, îl vei găsi.
 
-Cunoașterea fără acțiune este incompletă. Acum că înțelegi ce sunt bugetele publice, cele trei roluri ale tale ca cetățean și cum să identifici diferența dintre promisiuni și realitate, este timpul să pui aceste cunoștințe în practică.
+Cunoașterea fără acțiune este incompletă. Acum înțelegi ce sunt bugetele publice, cele trei roluri ale tale ca cetățean și cum curg banii de la salarii la servicii. E timpul să pui aceste cunoștințe în practică.
 
-Budget Explorer de pe Transparenta.eu este instrumentul tău pentru investigarea cheltuielilor publice. În această lecție, vei parcurge un tur ghidat și vei finaliza o sarcină practică.
-
-> **Informație cheie:** Budget Explorer transformă cifrele abstracte din buget în vizualizări interactive pe care le poți explora, filtra și înțelege.
+> **După această lecție, vei putea:** Să navighezi în Budget Explorer și să găsești date despre cheltuieli pentru orice categorie.
 
 ---
 
-## Element Interactiv: Tur Ghidat al Platformei
+## Reamintire Rapidă
 
-```
-+--------------------------------------------------------------+
-|  PRIMA TA EXPLORARE                                           |
-+--------------------------------------------------------------+
-|                                                              |
-|  Urmează acești 4 pași pentru a explora cheltuielile publice:|
-|                                                              |
-|  Pasul 1: Apasă butonul de mai jos pentru a deschide         |
-|          Budget Explorer                                      |
-|          [ Deschide Budget Explorer -> ]                      |
-|          Status: [ ] Deschis                                 |
-|                                                              |
-|  Pasul 2: Privește harta arborescentă - fiecare casetă       |
-|          reprezintă o categorie de cheltuieli.               |
-|          Casetă mai mare = mai mulți bani.                   |
-|          Status: [ ] Înțeles                                 |
-|                                                              |
-|  Pasul 3: Apasă pe „Protecție Socială" (de obicei cea mai    |
-|          mare). Vezi ce conține: pensii, ajutoare etc.       |
-|          Status: [ ] Explorat                                |
-|                                                              |
-|  Pasul 4: Încearcă să schimbi la vizualizarea „Per Capita"   |
-|          Acum vezi cheltuielile pe persoană, nu totaluri.    |
-|          Status: [ ] Schimbat                                |
-|                                                              |
-|  Progres: [====              ] 0/4 pași finalizați           |
-|                                                              |
-+--------------------------------------------------------------+
-```
+<Hidden trigger="Din Lecția 3: Care este cea mai mare categorie de cheltuieli a României?">
+**Protecția Socială** (~32%)—în principal pensiile pentru aproximativ 4,7 milioane de pensionari. Este mai mare decât Sănătatea și Educația la un loc.
+</Hidden>
 
-### Specificația Componentei
-
-```typescript
-/**
- * GuidedPlatformTour Component
- *
- * SCOP: Ghidează utilizatorii prin prima lor experiență cu Budget Explorer
- * cu validare la fiecare pas
- */
-interface GuidedPlatformTourProps {
-  readonly steps: readonly TourStep[]
-  readonly budgetExplorerUrl: string
-  readonly onComplete: () => void
-}
-
-interface TourStep {
-  readonly id: string
-  readonly instruction: string
-  readonly hint?: string
-  readonly validation: 'manual' | 'auto'
-}
-
-/**
- * GESTIONAREA STĂRII:
- * - currentStep: number (indexat de la 0)
- * - completedSteps: Set<string>
- * - isExplorerOpen: boolean
- *
- * TRANZIȚII DE STARE:
- * - Utilizatorul apasă „Deschide Budget Explorer" -> deschide tab nou, marchează pasul 1 complet
- * - Utilizatorul apasă „Am făcut asta" pentru fiecare pas -> avansează la următorul
- * - Toți pașii finalizați -> declanșează onComplete, afișează celebrare
- *
- * INTERACȚIUNI UTILIZATOR:
- * - Buton „Deschide Budget Explorer": deschide /budget-explorer în tab nou
- * - Checkbox/buton „Marchează ca Finalizat" pentru fiecare pas
- * - Link „Sari peste acest pas" (avansează fără insignă de finalizare)
- *
- * STĂRI VIZUALE:
- * - Pas în așteptare: gri, numerotat
- * - Pas curent: bordură evidențiată, accent albastru
- * - Pas finalizat: bifă verde, restrâns
- * - Toate complete: animație de celebrare (confetti/bifă)
- *
- * ANIMAȚII:
- * - Tranziție pas: glisare + estompare (300ms)
- * - Finalizare: mărire + desenare bifă (400ms)
- * - Bară de progres: umplere lină la finalizarea pasului
- *
- * ACCESIBILITATE:
- * - role="group" cu aria-label="Tur ghidat"
- * - Fiecare pas este un element de listă
- * - Pasul curent are aria-current="step"
- * - Finalizarea anunțată prin aria-live="polite"
- */
-```
-
-**Comportament Așteptat:**
-- Deschide Budget Explorer într-un tab nou când utilizatorul apasă butonul
-- Fiecare pas are o acțiune „Marchează ca Finalizat"
-- Bara de progres se umple pe măsură ce pașii sunt finalizați
-- Animație de celebrare la finalizarea completă
+Ești pe cale să verifici asta tu însuți.
 
 ---
 
-## Explicație de Bază
+## Turul Tău Ghidat
 
-### Ce Vei Găsi în Budget Explorer
+Budget Explorer de pe Transparenta.eu transformă cifrele abstracte din buget în vizualizări interactive pe care le poți explora, filtra și înțelege.
+
+<GuidedPlatformTour budgetExplorerUrl="/budget-explorer" />
+
+---
+
+## Ce Vei Găsi în Budget Explorer
 
 Budget Explorer prezintă datele bugetare în mai multe vizualizări:
 
@@ -129,61 +46,82 @@ Budget Explorer prezintă datele bugetare în mai multe vizualizări:
 
 ### Sfaturi Rapide de Navigare
 
-1. **Detaliază** - Apasă pe orice categorie pentru a vedea subcategoriile
-2. **Schimbă Anul** - Folosește selectorul de an pentru a compara perioade diferite
-3. **Schimbă Entitatea** - Vizualizează bugetele naționale, locale sau ale instituțiilor specifice
-4. **Exportă Datele** - Descarcă datele pentru propria analiză
+1. **Detaliază** — Apasă pe orice categorie pentru a vedea subcategoriile
+2. **Schimbă Anul** — Folosește selectorul de an pentru a compara perioade diferite
+3. **Schimbă Entitatea** — Vizualizează bugetele naționale, locale sau ale instituțiilor specifice
+4. **Exportă Datele** — Descarcă datele pentru propria analiză
 
 ---
 
-## Practică: Găsește Cea Mai Mică Categorie
+## Prima Ta Provocare
 
 Acum testează-ți abilitățile de navigare cu o provocare practică:
 
-```
-+--------------------------------------------------------------+
-|  PROVOCARE: Găsește Cea Mai Mică Categorie de Cheltuieli      |
-+--------------------------------------------------------------+
-|                                                              |
-|  Folosind Budget Explorer, găsește care categorie principală |
-|  primește CEA MAI MICĂ sumă de bani din bugetul național.    |
-|                                                              |
-|  Răspunsul tău: [ _________________ ]                        |
-|                                                              |
-|  Indiciu: Privește harta arborescentă - cele mai mici casete |
-|  sunt categoriile cu cele mai puține cheltuieli.             |
-|                                                              |
-+--------------------------------------------------------------+
-```
+<Hidden trigger="Provocare: Găsește cea mai mică categorie principală de cheltuieli din bugetul național">
+Deschide Budget Explorer și privește harta arborescentă. Cele mai mici casete reprezintă cele mai mici categorii de cheltuieli. Ar trebui să găsești **Recreere, Cultură și Religie** sau **Protecția Mediului** printre cele mai mici—de obicei în jur de 1-2% din buget.
+</Hidden>
+
+---
+
+## Conectând Ce Ai Învățat
+
+Acum ai completat fundația:
+
+| Lecție | Ce Ai Învățat | Cum Să Aplici |
+|--------|---------------|---------------|
+| 1. Bugetul Tău Invizibil | Bugetele te înconjoară zilnic | Observă serviciile finanțate din buget în jurul tău |
+| 2. Cele Trei Roluri | Contribuabil, Beneficiar, Gardian | Folosește Legea 544/2001 pentru a cere informații |
+| 3. Urmărind Cei 4 Lei | Banii curg de la salariu la servicii | Calculează contribuția ta personală |
+| 4. Prima Investigație | Navighează în Budget Explorer | Găsește și verifică datele bugetare tu însuți |
+
+---
+
+## Verifică-ți Înțelegerea
 
 <Quiz
-  id="platform-exploration-quiz"
-  question="Aproximativ ce procent din PIB-ul României trece prin bugetele publice?"
+  id="platform-navigation-application"
+  question="Găsești că bugetul de sănătate al unui oraș arată execuție de 60% în timp ce educația arată 95%. Bazat pe ce ai învățat în Lecția 3, ce sugerează asta și care ar fi pasul tău următor ca cetățean gardian?"
   options={[
-    { id: "a", text: "Aproximativ 20%", isCorrect: false },
-    { id: "b", text: "Aproximativ 35%", isCorrect: false },
-    { id: "c", text: "Aproximativ 43%", isCorrect: true },
-    { id: "d", text: "Aproximativ 60%", isCorrect: false }
+    { id: "a", text: "Ambele sunt acceptabile—treci la alte categorii", isCorrect: false },
+    { id: "b", text: "Sănătatea are un decalaj semnificativ—folosește Legea 544/2001 pentru a cere înregistrări detaliate ale cheltuielilor", isCorrect: true },
+    { id: "c", text: "Educația cheltuiește prea mult—investighează de ce au folosit 95%", isCorrect: false },
+    { id: "d", text: "Cifrele sunt probabil greșite—ignoră datele", isCorrect: false }
   ]}
-  explanation="Aproximativ 43% din PIB-ul României trece prin bugetele publice în fiecare an. Aceasta include bugetul de stat, bugetele locale, bugetele asigurărilor sociale și fondurile speciale. Înțelegerea acestei dimensiuni te ajută să apreciezi de ce contează supravegherea bugetară."
+  explanation="O rată de execuție de 60% la sănătate înseamnă că 40% din cheltuielile planificate nu s-au realizat—un decalaj semnificativ care ar putea afecta îngrijirea pacienților. Ca gardian (Lecția 2), poți folosi Legea 544/2001 pentru a cere înregistrări detaliate. Educația la 95% este de fapt o execuție bună—o oarecare subcheltuire este normală din cauza economiilor sau timpului. Opțiunea C înțelege greșit că 95% nu înseamnă supracheltuire. Opțiunea D respinge date valide fără investigație."
 />
 
 ---
 
-## Ideea Principală
+## Ce Urmează
 
-> Acum ai instrumentele necesare pentru a explora singur cheltuielile publice. Budget Explorer transformă datele bugetare complexe în formate vizuale și interactive prin care poți naviga. Folosește-l pentru a verifica afirmații, a urmări tendințe și a-ți exercita rolul de supraveghetor.
+Ai completat **Bugetele Publice 101**. Acum ai fundația pentru a:
+
+- **Înțelege** ce sunt bugetele publice și de ce contează
+- **Recunoaște** cele trei roluri ale tale ca cetățean
+- **Urmări** unde se duc banii din taxele tale
+- **Naviga** în Budget Explorer pentru a găsi date reale
+
+### Continuă-ți Învățarea
+
+Gata să mergi mai adânc? Ia în considerare aceste trasee:
+
+- **Traseul Cetățean** — Învățare cuprinzătoare pentru cetățeni implicați (8 module)
+- **Decodarea Bugetelor** — Analiză avansată pentru jurnaliști și cercetători
+
+### Acționează Astăzi
+
+Înainte de a închide această lecție, alege O acțiune pentru a consolida ce ai învățat:
+
+- **Petrece 5 minute** în Budget Explorer — Găsește cheltuielile totale ale orașului sau județului tău
+- **Spune cuiva** ce ai învățat — „Știai că Protecția Socială este cea mai mare categorie bugetară a României?"
+- **Salvează Transparenta.eu în favorite** — Îl vei folosi pentru investigațiile tale viitoare
 
 ---
 
-## Acționează Înainte de a Continua
+## Ideea Cheie
 
-Înainte de a continua la modulul următor, alege O acțiune pentru a consolida ce ai învățat:
+> Budget Explorer transformă datele bugetare complexe în formate vizuale și interactive prin care poți naviga. Combinat cu drepturile tale de gardian garantate de **Legea 544/2001**, acum ai instrumentele pentru a verifica afirmații, a urmări tendințe și a trage la răspundere instituțiile publice.
 
-- [ ] **Petrece 5 minute** în Budget Explorer - Găsește cheltuielile totale ale orașului sau județului tău
-- [ ] **Spune cuiva** ce ai învățat - „Știai că 43% din PIB-ul României trece prin bugetele publice?"
-- [ ] **Salvează Transparenta.eu în favorite** - Îl vei folosi pe tot parcursul acestui traseu de învățare
+**Prima ta investigație este completă.** Dar acesta este doar începutul.
 
----
-
-<MarkComplete label="Finalizează Modulul 1" />
+<MarkComplete label="Finalizează Bugetele Publice 101" />

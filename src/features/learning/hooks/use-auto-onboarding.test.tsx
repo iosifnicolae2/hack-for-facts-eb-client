@@ -34,7 +34,7 @@ function buildProgress(overrides: Partial<LearningGuestProgress> = {}): Learning
   const now = new Date().toISOString()
   return {
     version: 1,
-    onboarding: { pathId: null, completedAt: null },
+    onboarding: { pathId: null, relatedPaths: [], completedAt: null },
     activePathId: null,
     content: {},
     streak: { currentStreak: 0, longestStreak: 0, lastActivityDate: null },
@@ -52,7 +52,7 @@ function buildEventsFromProgress(progress: LearningGuestProgress): LearningProgr
       clientId: 'test-client',
       occurredAt: progress.onboarding.completedAt,
       type: 'onboarding.completed',
-      payload: { pathId: progress.onboarding.pathId },
+      payload: { pathId: progress.onboarding.pathId, relatedPaths: progress.onboarding.relatedPaths ?? [] },
     })
   }
 
@@ -97,7 +97,7 @@ describe('useAutoOnboarding', () => {
     const completedAt = '2024-01-01T00:00:00.000Z'
     seedProgress(
       buildProgress({
-        onboarding: { pathId: 'journalist', completedAt },
+        onboarding: { pathId: 'journalist', relatedPaths: [], completedAt },
         activePathId: 'journalist',
       }),
     )

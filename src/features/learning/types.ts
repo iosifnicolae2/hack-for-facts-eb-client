@@ -166,7 +166,7 @@ export type LearningContentProgressedEvent = LearningProgressEventBase & {
 
 export type LearningOnboardingCompletedEvent = LearningProgressEventBase & {
   readonly type: 'onboarding.completed'
-  readonly payload: { readonly pathId: string }
+  readonly payload: { readonly pathId: string; readonly relatedPaths: readonly string[] }
 }
 
 export type LearningOnboardingResetEvent = LearningProgressEventBase & {
@@ -193,6 +193,7 @@ export const LEARNING_PROGRESS_SCHEMA_VERSION = 1 as const
 
 export type LearningOnboardingState = {
   readonly pathId: string | null
+  readonly relatedPaths: readonly string[]
   readonly completedAt: string | null
 }
 

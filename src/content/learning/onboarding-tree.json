@@ -39,7 +39,8 @@
           },
           "nextNodeId": "result",
           "set": {
-            "pathId": "journalist"
+            "pathId": "journalist",
+            "relatedPaths": ["decoding-budgets", "citizen"]
           }
         },
         {
@@ -54,7 +55,8 @@
           },
           "nextNodeId": "result",
           "set": {
-            "pathId": "public_servant"
+            "pathId": "public_servant",
+            "relatedPaths": ["decoding-budgets", "citizen"]
           }
         }
       ]
@@ -83,7 +85,8 @@
           },
           "nextNodeId": "result",
           "set": {
-            "pathId": "public-budgets-101"
+            "pathId": "public-budgets-101",
+            "relatedPaths": ["citizen", "decoding-budgets"]
           }
         },
         {
@@ -98,7 +101,8 @@
           },
           "nextNodeId": "result",
           "set": {
-            "pathId": "citizen-advanced"
+            "pathId": "citizen-advanced",
+            "relatedPaths": ["citizen", "decoding-budgets", "public-budgets-101"]
           }
         }
       ]

@@ -13,7 +13,7 @@ const LearningOnboardingOptionSchema = z
     description: TranslatedStringSchema.optional(),
     nextNodeId: z.string().min(1).optional(),
     pathId: z.string().min(1).optional(),
-    set: z.record(z.string(), z.string().min(1)).optional(),
+    set: z.record(z.string(), z.union([z.string().min(1), z.array(z.string().min(1))])).optional(),
   })
   .superRefine((value, ctx) => {
     const hasNext = Boolean(value.nextNodeId)

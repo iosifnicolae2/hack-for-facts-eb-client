@@ -29,7 +29,7 @@ export function LearningOnboarding() {
   const currentNode = currentNodeId ? (nodeById.get(currentNodeId) ?? null) : null
 
   const context = useMemo(() => {
-    const next: Record<string, string | undefined> = {}
+    const next: Record<string, string | string[] | undefined> = {}
     for (const nodeId of nodePath) {
       const selection = selections[nodeId]
       if (selection?.set) {
@@ -45,9 +45,17 @@ export function LearningOnboarding() {
     if (overridePathId) return overridePathId
     if (!currentNode || currentNode.type !== 'result') return null
     if (currentNode.pathId) return currentNode.pathId
-    if (currentNode.pathIdFrom) return context[currentNode.pathIdFrom] ?? null
+    if (currentNode.pathIdFrom) {
+      const value = context[currentNode.pathIdFrom]
+      return typeof value === 'string' ? value : null
+    }
     return null
   }, [context, currentNode, overridePathId])
+
+  const relatedPaths = useMemo(() => {
+    const value = context.relatedPaths
+    return Array.isArray(value) ? value : []
+  }, [context])
 
   const recommendedPath = useMemo(
     () => (recommendedPathId ? getLearningPathById(recommendedPathId) : null),
@@ -102,7 +110,7 @@ export function LearningOnboarding() {
 
   const handleComplete = async () => {
     if (!recommendedPath) return
-    await saveOnboarding({ pathId: recommendedPath.id })
+    await saveOnboarding({ pathId: recommendedPath.id, relatedPaths })
     void navigate({ to: `/${lang}/learning/${recommendedPath.id}` as '/', replace: true })
   }
 

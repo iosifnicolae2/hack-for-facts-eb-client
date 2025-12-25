@@ -24,7 +24,7 @@ const router = createRouter({
   // Enable automatic scroll-to-top on navigation
   scrollRestoration: true,
   // Use smooth scrolling for better UX
-  scrollRestorationBehavior: 'smooth',
+  scrollRestorationBehavior: 'instant',
   // Scroll both window and main content area
   scrollToTopSelectors: ['window', '[role="main"]'],
 });

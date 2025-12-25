@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect, useRef } from 'react'
 import { motion, AnimatePresence, useSpring, useTransform, Variants } from 'framer-motion'
 import { t } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
-import { ArrowRight, Calculator, Check, RefreshCcw, TrendingDown, Wallet, Stethoscope, Landmark, ShieldCheck } from 'lucide-react'
+import { ArrowRight, Calculator, Check, RefreshCcw, TrendingDown, Stethoscope, Landmark, ShieldCheck } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
@@ -63,7 +63,7 @@ function formatCurrency(amount: number) {
 // SUB-COMPONENTS
 // -----------------------------------------------------------------------------
 
-function AnimatedNumber({ value }: { value: number }) {
+function AnimatedNumber({ value, size }: { value: number; size?: string }) {
   const spring = useSpring(value, { mass: 0.8, stiffness: 75, damping: 15 })
   const display = useTransform(spring, (current) => formatCurrency(Math.floor(current)))
 
@@ -71,7 +71,7 @@ function AnimatedNumber({ value }: { value: number }) {
     spring.set(value)
   }, [value, spring])
 
-  return <motion.span className="tabular-nums">{display}</motion.span>
+  return <motion.span className={cn("tabular-nums", size && `text-${size}`)}>{display}</motion.span>
 }
 
 function RowBreakdown({
@@ -331,93 +331,91 @@ export function SalaryTaxCalculator({ contentId, calculatorId, contentVersion }:
             exit="exit"
           >
             <Card className="rounded-[4rem] overflow-hidden border-none shadow-3xl bg-white dark:bg-zinc-950 transition-colors duration-500">
-
-              {/* Analysis Header */}
-              <div className="pt-0 pb-8 md:pt-2 md:pb-10 mx-12 bg-zinc-50 dark:bg-zinc-900/50 rounded-b-[3.5rem] text-center relative overflow-hidden transition-colors duration-500">
-                <div className="relative z-10">
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="inline-flex flex-col items-center mb-6"
-                  >
-                    <div className="px-5 py-1.5 rounded-full bg-zinc-200/40 dark:bg-zinc-800/40 backdrop-blur-md text-[10px] font-black text-zinc-500 dark:text-zinc-400 uppercase tracking-[0.2em] border border-zinc-300/20 dark:border-zinc-700/20 my-2">
-                      {t`Your guess`}: {formatCurrency(userGuess)}
-                    </div>
-                    <div className="text-sm font-extrabold text-zinc-800 uppercase tracking-[0.2em]">{t`Net Monthly Income`}</div>
-                  </motion.div>
-
-                  <h2 className="text-[4.5rem] md:text-[6rem] font-[1000] text-zinc-950 dark:text-white tracking-[-0.04em] mb-6 mt-6 leading-none drop-shadow-sm">
-                    <AnimatedNumber value={result.net} />
-                  </h2>
-
-                  <div className="flex flex-wrap justify-center gap-2.5">
-                    <InsightPill className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 py-2">
-                      <Wallet className="w-3.5 h-3.5" /> {t`This is yours`}
-                    </InsightPill>
-                    <InsightPill className="bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20 py-2">
-                      <TrendingDown className="w-3.5 h-3.5" /> {t`State takes ${Math.round((result.gross - result.net) / result.gross * 100)}%`}
-                    </InsightPill>
+              
+              <div className="p-8 md:p-12 max-w-2xl mx-auto space-y-12">
+                
+                {/* Breakdown Block */}
+                <div className="space-y-6">
+                  <div className="text-center">
+                     <h3 className="text-sm font-black text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.2em]">{t`Salary Calculation`}</h3>
+                  </div>
+                  <div className="rounded-[2.5rem] border border-zinc-100 dark:border-zinc-800/60 overflow-hidden bg-zinc-50/30 dark:bg-zinc-950/30">
+                    <RowBreakdown
+                      label={t`Monthly Gross Income`}
+                      value={formatCurrency(result.gross)}
+                      calculation={t`Base Amount (100%)`}
+                      icon={Landmark}
+                      colorClass="text-zinc-600 dark:text-zinc-400"
+                    />
+                    <RowBreakdown
+                      label={t`Pension (CAS)`}
+                      value={`-${formatCurrency(result.cas)}`}
+                      calculation={`${formatCurrency(result.gross)} × 25%`}
+                      icon={ShieldCheck}
+                      colorClass="text-amber-600 dark:text-amber-400"
+                      delay={0.1}
+                    />
+                    <RowBreakdown
+                      label={t`Health (CASS)`}
+                      value={`-${formatCurrency(result.cass)}`}
+                      calculation={`${formatCurrency(result.gross)} × 10%`}
+                      icon={Stethoscope}
+                      colorClass="text-indigo-600 dark:text-indigo-400"
+                      delay={0.2}
+                    />
+                    <RowBreakdown
+                      label={t`Income Tax`}
+                      value={`-${formatCurrency(result.incomeTax)}`}
+                      calculation={t`(${formatCurrency(result.gross)} - deductions) × 10%`}
+                      icon={TrendingDown}
+                      colorClass="text-rose-600 dark:text-rose-400"
+                      delay={0.3}
+                      isLast={true}
+                    />
                   </div>
                 </div>
 
-                {/* Visual atmosphere - refined gradient */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(99,102,241,0.04),transparent)] pointer-events-none" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_100%,rgba(16,185,129,0.04),transparent)] pointer-events-none" />
-              </div>
-
-              {/* Integrated Content */}
-              <div className="p-8 md:p-12 max-w-2xl mx-auto space-y-12">
-
-                {/* Single Breakdown Block */}
-                <div className="rounded-[2.5rem] border border-zinc-100 dark:border-zinc-800/60 overflow-hidden bg-zinc-50/30 dark:bg-zinc-950/30">
-                  <RowBreakdown
-                    label={t`Monthly Gross Income`}
-                    value={formatCurrency(result.gross)}
-                    calculation={t`Base Amount (100%)`}
-                    icon={Landmark}
-                    colorClass="text-zinc-600 dark:text-zinc-400"
-                  />
-
-                  <RowBreakdown
-                    label={t`Pension (CAS)`}
-                    value={`-${formatCurrency(result.cas)}`}
-                    calculation={`${formatCurrency(result.gross)} × 25%`}
-                    icon={ShieldCheck}
-                    colorClass="text-amber-600 dark:text-amber-400"
-                    delay={0.1}
-                  />
-
-                  <RowBreakdown
-                    label={t`Health (CASS)`}
-                    value={`-${formatCurrency(result.cass)}`}
-                    calculation={`${formatCurrency(result.gross)} × 10%`}
-                    icon={Stethoscope}
-                    colorClass="text-indigo-600 dark:text-indigo-400"
-                    delay={0.2}
-                  />
-
-                  <RowBreakdown
-                    label={t`Income Tax`}
-                    value={`-${formatCurrency(result.incomeTax)}`}
-                    calculation={t`(${formatCurrency(result.gross)} - deductions) × 10%`}
-                    icon={TrendingDown}
-                    colorClass="text-rose-600 dark:text-rose-400"
-                    delay={0.3}
-                    isLast={true}
-                  />
+                {/* Net Income Display - Moved Here */}
+                <div className="text-center relative z-10">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.4 }}
+                    className="space-y-2"
+                  >
+                    <div className="text-sm font-extrabold text-zinc-400 uppercase tracking-[0.2em]">{t`Net Monthly Income`}</div>
+                    <h2 className="text-4xl font-[1000] text-zinc-950 dark:text-white tracking-[-0.04em] leading-none drop-shadow-sm">
+                      <AnimatedNumber size="4xl" value={result.net} />
+                    </h2>
+                    
+                    <div className="flex flex-wrap justify-center gap-2.5 pt-2">
+                      <div className="px-4 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-[10px] font-black text-zinc-500 dark:text-zinc-400 uppercase tracking-[0.2em]">
+                        {t`Your guess`}: {formatCurrency(userGuess)}
+                      </div>
+                      <InsightPill className="bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20 py-1.5 text-xs">
+                        <TrendingDown className="w-3 h-3" /> {t`State takes ${Math.round((result.gross - result.net) / result.gross * 100)}%`}
+                      </InsightPill>
+                    </div>
+                  </motion.div>
                 </div>
 
-                {/* Footer Insight (Integrated) */}
+                {/* Footer Insight (Labor Cost) */}
                 <div className="flex flex-col items-center space-y-10 group pb-4">
                   <div className="w-full rounded-[2.5rem] bg-zinc-900 dark:bg-zinc-800/50 text-zinc-400 p-10 flex flex-col items-center text-center gap-8 relative overflow-hidden transition-all hover:bg-zinc-950 dark:hover:bg-zinc-800">
                     <div className="relative z-10 flex flex-col items-center gap-4">
-                      <div className="space-y-2">
+                      <div className="space-y-4">
                         <h4 className="font-black text-white text-xl tracking-tight uppercase tracking-[0.2em] text-[10px] opacity-50">{t`Labor Cost Summary`}</h4>
-                        <p className="text-lg leading-relaxed font-medium max-w-sm">
-                          <Trans>Your employer actually spends <span className="text-white font-black">{formatCurrency(result.employerTotal)}</span>.</Trans>
-                          <br /> <Trans>The state total claim is <span className="text-indigo-400 font-black tracking-tighter">{formatCurrency(result.employerTotal - result.net)}</span>.</Trans>
-                        </p>
+                        <div className="space-y-2">
+                            <p className="text-lg leading-relaxed font-medium max-w-sm">
+                            <Trans>Your employer actually spends <span className="text-white font-black">{formatCurrency(result.employerTotal)}</span>.</Trans>
+                            </p>
+                            <p className="text-lg leading-relaxed font-medium max-w-sm">
+                            <Trans>The state total claim is <span className="text-indigo-400 font-black tracking-tighter">{formatCurrency(result.employerTotal - result.net)}</span>.</Trans>
+                            </p>
+                            <p className="text-sm text-zinc-500 mt-1">
+                              <Trans>That is <span className="text-indigo-300 font-bold">{formatCurrency((result.employerTotal - result.net) * 12)}</span> per year.</Trans>
+                            </p>
+                        </div>
                       </div>
                     </div>
 
@@ -432,6 +430,7 @@ export function SalaryTaxCalculator({ contentId, calculatorId, contentVersion }:
                     <div className="absolute right-0 bottom-0 w-[20rem] h-[20rem] bg-indigo-500/10 rounded-full blur-[80px] translate-x-1/2 translate-y-1/2 pointer-events-none" />
                   </div>
                 </div>
+
               </div>
             </Card>
           </motion.div>

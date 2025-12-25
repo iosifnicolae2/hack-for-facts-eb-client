@@ -12,7 +12,7 @@ import './prediction-resolver'
 function createEmptyProgress(): LearningGuestProgress {
   return {
     version: 1,
-    onboarding: { pathId: null, completedAt: null },
+    onboarding: { pathId: null, relatedPaths: [], completedAt: null },
     activePathId: null,
     content: {},
     streak: { currentStreak: 0, longestStreak: 0, lastActivityDate: null },
@@ -57,7 +57,7 @@ describe('prediction-resolver', () => {
     it('preserves existing reveals when adding new year', () => {
       const progress: LearningGuestProgress = {
         version: 1,
-        onboarding: { pathId: null, completedAt: null },
+        onboarding: { pathId: null, relatedPaths: [], completedAt: null },
         activePathId: null,
         content: {
           'lesson-1': {
@@ -115,7 +115,7 @@ describe('prediction-resolver', () => {
     it('overwrites existing reveal for same year', () => {
       const progress: LearningGuestProgress = {
         version: 1,
-        onboarding: { pathId: null, completedAt: null },
+        onboarding: { pathId: null, relatedPaths: [], completedAt: null },
         activePathId: null,
         content: {
           'lesson-1': {
@@ -243,7 +243,7 @@ describe('prediction-resolver', () => {
     it('clears all reveals by setting state to null', () => {
       const progress: LearningGuestProgress = {
         version: 1,
-        onboarding: { pathId: null, completedAt: null },
+        onboarding: { pathId: null, relatedPaths: [], completedAt: null },
         activePathId: null,
         content: {
           'lesson-1': {

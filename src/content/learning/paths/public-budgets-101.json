@@ -8,7 +8,7 @@
   },
   "description": {
     "en": "Understand public budgets in under 20 minutes.",
-    "ro": "Intelege bugetele publice in mai putin de 20 de minute."
+    "ro": "Înțelege bugetele publice în mai puțin de 20 de minute."
   },
   "modules": [
     {
@@ -20,7 +20,7 @@
       },
       "description": {
         "en": "Everything you need to know about public budgets - fast.",
-        "ro": "Tot ce trebuie sa stii despre bugetele publice - rapid."
+        "ro": "Tot ce trebuie să știi despre bugetele publice - rapid."
       },
       "lessons": [
         {
@@ -31,16 +31,16 @@
           "prerequisites": [],
           "durationMinutes": 4,
           "title": {
-            "en": "What is a Public Budget?",
-            "ro": "Ce este un buget public?"
+            "en": "Your Invisible Budget",
+            "ro": "Bugetul Tău Invizibil"
           }
         },
         {
           "id": "pb101-your-three-roles",
           "slug": "02-your-three-roles",
           "title": {
-            "en": "Your Three Roles",
-            "ro": "Cele trei roluri ale tale"
+            "en": "Taxpayer, Beneficiary, Watchdog",
+            "ro": "Contribuabil, Beneficiar, Gardian"
           },
           "durationMinutes": 4,
           "contentDir": "citizen-foundations/02-your-three-roles",
@@ -53,8 +53,8 @@
           "id": "pb101-your-money-at-work",
           "slug": "03-your-money-at-work",
           "title": {
-            "en": "Your Money at Work",
-            "ro": "Banii tai la lucru"
+            "en": "From Paycheck to Services",
+            "ro": "De la Salariu la Servicii"
           },
           "durationMinutes": 5,
           "contentDir": "budget-basics/03-your-money-at-work",
@@ -67,10 +67,10 @@
           "id": "pb101-explore-the-platform",
           "slug": "04-explore-the-platform",
           "title": {
-            "en": "Explore the Platform",
-            "ro": "Exploreaza platforma"
+            "en": "Your First Investigation",
+            "ro": "Prima Ta Investigație"
           },
-          "durationMinutes": 4,
+          "durationMinutes": 5,
           "contentDir": "citizen-foundations/04-explore-the-platform",
           "completionMode": "mark_complete",
           "prerequisites": [

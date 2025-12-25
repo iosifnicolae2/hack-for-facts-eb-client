@@ -8,7 +8,7 @@ import './quiz-resolver'
 function createEmptyProgress(): LearningGuestProgress {
   return {
     version: 1,
-    onboarding: { pathId: null, completedAt: null },
+    onboarding: { pathId: null, relatedPaths: [], completedAt: null },
     activePathId: null,
     content: {},
     streak: { currentStreak: 0, longestStreak: 0, lastActivityDate: null },
@@ -155,7 +155,7 @@ describe('quiz-resolver', () => {
     it('preserves passed status when resetting', () => {
       const progress: LearningGuestProgress = {
         version: 1,
-        onboarding: { pathId: null, completedAt: null },
+        onboarding: { pathId: null, relatedPaths: [], completedAt: null },
         activePathId: null,
         content: {
           'lesson-1': {
@@ -187,7 +187,7 @@ describe('quiz-resolver', () => {
     it('preserves completed status when resetting', () => {
       const progress: LearningGuestProgress = {
         version: 1,
-        onboarding: { pathId: null, completedAt: null },
+        onboarding: { pathId: null, relatedPaths: [], completedAt: null },
         activePathId: null,
         content: {
           'lesson-1': {

@@ -4,7 +4,7 @@ import {
   CheckCircle2,
   ChevronDown,
   Circle,
-  GraduationCap,
+  Compass,
   Library,
   Layers,
   LogIn,
@@ -161,22 +161,17 @@ function LearningSidebar({ pathname }: { readonly pathname: string }) {
   return (
     <div className="flex h-full flex-col bg-background border-r border-border/50">
       <div className="shrink-0">
-        {/* Hero Area */}
-        <div className="relative overflow-hidden bg-zinc-950 py-2 px-4 text-zinc-50">
-          {/* Ambient background glow */}
-          <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-primary/20 blur-[40px] pointer-events-none" />
-          <div className="absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-blue-500/10 blur-[40px] pointer-events-none" />
-
-          <Link to={`/${locale}/learning` as '/'} className="relative group flex items-center gap-3.5">
-            <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 border border-white/10 text-white shadow-2xl transition-all duration-300 group-hover:scale-105 group-hover:bg-white/10 group-hover:border-white/20">
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <GraduationCap className="h-5 w-5 relative z-10" />
+        {/* Hero Area - Light & Clean */}
+        <div className="relative overflow-hidden bg-linear-to-b from-blue-50/50 to-transparent dark:from-blue-950/20 py-4 px-4">
+          <Link to={`/${locale}/learning` as '/'} className="relative group flex items-center gap-3">
+            <div className="flex h-6 w-6 items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm shadow-blue-600/20 transition-all duration-200 group-hover:scale-105 group-hover:bg-blue-700">
+              <Compass className="h-5 w-5" />
             </div>
             <div className="flex flex-col min-w-0">
-              <span className="font-bold text-base tracking-tight leading-none bg-gradient-to-br from-white to-white/70 bg-clip-text text-transparent truncate">
+              <span className="font-bold text-sm tracking-tight leading-none text-foreground truncate group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
                 {t`Budgetary Academy`}
               </span>
-              <span className="text-[10px] text-zinc-500 mt-1 font-bold tracking-[0.05em] uppercase truncate">
+              <span className="text-[10px] text-muted-foreground mt-1 font-medium tracking-wide uppercase truncate">
                 {t`Follow the money`}
               </span>
             </div>
@@ -190,7 +185,7 @@ function LearningSidebar({ pathname }: { readonly pathname: string }) {
               <button className="w-full flex items-center justify-between py-3 px-4 hover:bg-muted/50 transition-all text-left outline-none group border-none bg-transparent">
                 <div className="flex flex-col items-start gap-0.5 min-w-0 flex-1">
                   <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.15em] leading-none">
-                    {t`Selected Journey`}
+                    {t`Learning Path`}
                   </span>
                   <span className="font-semibold text-sm truncate w-full text-foreground group-hover:text-primary transition-colors">
                     {activePath ? getTranslatedText(activePath.title, locale) : t`Select Path`}

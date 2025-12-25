@@ -92,14 +92,14 @@ describe('progress-event-reducer', () => {
         clientId: 'client-1',
         occurredAt: '2024-01-01T10:00:00.000Z',
         type: 'onboarding.completed',
-        payload: { pathId: 'citizen' },
+        payload: { pathId: 'citizen', relatedPaths: [] },
       },
       {
         eventId: 'event-2',
         clientId: 'client-1',
         occurredAt: '2024-01-02T10:00:00.000Z',
         type: 'onboarding.completed',
-        payload: { pathId: 'journalist' },
+        payload: { pathId: 'journalist', relatedPaths: [] },
       },
     ]
 
@@ -128,7 +128,7 @@ describe('progress-event-reducer', () => {
         clientId: 'client-1',
         occurredAt: '2024-01-02T10:00:00.000Z',
         type: 'onboarding.completed',
-        payload: { pathId: 'citizen' },
+        payload: { pathId: 'citizen', relatedPaths: [] },
       },
       {
         eventId: 'event-3',

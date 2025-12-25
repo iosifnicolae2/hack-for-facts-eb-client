@@ -2,16 +2,27 @@
 title: "Common Analysis Mistakes"
 durationMinutes: 6
 concept: "Pitfalls to avoid in budget analysis"
-objective: "Recognize and avoid common errors in interpreting budget data"
+objective: "Identify the six most common budget analysis errors and explain how to avoid each one"
 ---
 
 # Common Analysis Mistakes
 
-## Concept Introduction
+A well-known news outlet reports: "Government slashes education by 40%!" Social media explodes. Politicians demand resignations.
 
-Even experienced analysts make mistakes when interpreting budget data. Knowing the common pitfalls helps you avoid them - and spot them when others make claims.
+Three days later, a correction: staff were moved to a different ministry, not cut. The budget decreased because the responsibility moved. Zero jobs lost.
 
-> **Key Insight:** Most budget analysis errors come from comparing incomparable things, ignoring context, or drawing conclusions the data doesn't support.
+This wasn't malicious — it was a common analytical error. Today you'll learn to spot six mistakes that trap even experienced analysts.
+
+> **After this lesson, you'll be able to:**
+> - Identify six common budget analysis errors
+> - Explain why each error leads to wrong conclusions
+> - Apply a pre-publication checklist to your own analysis
+
+<Hidden trigger="Can you guess the most common budget analysis mistake before we reveal it?">
+**#1 Mistake: Ignoring Inflation**
+
+A "flat" budget is actually a cut. A 5% increase with 8% inflation is a 3% cut. Most headlines report nominal figures, not real ones. This is the easiest mistake to make — and to spot.
+</Hidden>
 
 ---
 
@@ -124,23 +135,53 @@ A country's economy and population change. Raw numbers don't tell the full story
 
 ---
 
-## Quick Checklist
+## Pre-Publication Checklist
 
-Before publishing any budget analysis, ask:
+<Hidden trigger="Click to reveal the 6-point checklist every analyst should use">
+Before publishing any budget analysis, verify:
 
-- [ ] Am I comparing the same type of data (planned vs. planned)?
-- [ ] Have I adjusted for inflation?
-- [ ] Is my time period appropriate and explained?
-- [ ] Did classifications change between years?
-- [ ] Am I making causal claims I can't support?
-- [ ] Have I normalized for size/population?
+**1. ☐ SAME DATA TYPE**
+Am I comparing planned to planned, or executed to executed? (Never mix them)
+
+**2. ☐ INFLATION ADJUSTED**
+Have I calculated the real (inflation-adjusted) change?
+
+**3. ☐ APPROPRIATE PERIOD**
+Is my time period explained? Am I avoiding unusual baseline years?
+
+**4. ☐ UNCHANGED CLASSIFICATIONS**
+Did categories change between years? Were responsibilities moved?
+
+**5. ☐ NO OVERCLAIMING**
+Am I saying "associated with" rather than "caused by"?
+
+**6. ☐ PROPERLY NORMALIZED**
+Have I adjusted for population, GDP, or other relevant denominators?
+
+If any answer is "no" or "I don't know" — stop and investigate before publishing.
+</Hidden>
+
+---
+
+## Quick Reference: The Six Errors
+
+<FlashCardDeck
+  cards={[
+    { front: "Mistake #1", back: "PLANNED VS EXECUTED: Comparing last year's actual spending to this year's planned budget. Always compare same type." },
+    { front: "Mistake #2", back: "IGNORING INFLATION: A 5% increase with 8% inflation is a 3% cut. Most headlines are nominal, not real." },
+    { front: "Mistake #3", back: "CHERRY-PICKING PERIODS: Choosing dates that support your narrative. Use consistent periods, avoid unusual baselines." },
+    { front: "Mistake #4", back: "IGNORING RECLASSIFICATIONS: A 40% 'cut' might be money moved to another ministry, not eliminated." },
+    { front: "Mistake #5", back: "CAUSATION CLAIMS: 'Crime dropped after police budget increased' — many factors affect outcomes. Use 'associated with' not 'caused by'." },
+    { front: "Mistake #6", back: "IGNORING THE DENOMINATOR: 'Pension spending up 50%!' — but if pensioners also increased 50%, per-person spending is unchanged." }
+  ]}
+/>
 
 ---
 
 ## Practice
 
 <Quiz
-  id="common-mistakes-quiz"
+  id="common-mistakes-q1"
   question="A government claims 'education spending reached a record high this year.' What question should you ask first?"
   options={[
     { id: "a", text: "How does it compare to other countries?", isCorrect: false },
@@ -148,13 +189,33 @@ Before publishing any budget analysis, ask:
     { id: "c", text: "Which party is in power?", isCorrect: false },
     { id: "d", text: "What did they spend on defense?", isCorrect: false }
   ]}
-  explanation="'Record high' claims are almost always in nominal terms. With consistent inflation, nominal spending will naturally reach new highs each year. The first question should be whether the increase exceeds inflation - is this a real increase in resources or just inflation?"
+  explanation="'Record high' claims are almost always in nominal terms. With consistent inflation, nominal spending will naturally reach new highs each year. The first question should be whether the increase exceeds inflation — is this a real increase in resources or just inflation?"
+/>
+
+<Quiz
+  id="common-mistakes-q2"
+  question="A news report says 'Ministry X budget cut by 35%!' but staff were moved to Ministry Y. What mistake did the journalist make?"
+  options={[
+    { id: "a", text: "Ignoring inflation", isCorrect: false },
+    { id: "b", text: "Ignoring reclassifications", isCorrect: true },
+    { id: "c", text: "Cherry-picking periods", isCorrect: false },
+    { id: "d", text: "Confusing planned vs executed", isCorrect: false }
+  ]}
+  explanation="This is a reclassification error. When responsibilities move between ministries, the budget follows. The ministry's budget decreased not because of cuts, but because the work (and money) is now elsewhere. Always check if categories or responsibilities changed."
 />
 
 ---
 
-## Key Takeaway
+## Key Takeaways
 
-> Budget analysis errors usually come from comparing incomparable things, ignoring context, or overclaiming causation. Always check: planned vs. executed, real vs. nominal, consistent periods, unchanged classifications, and proper normalization.
+> **The Six Deadly Sins of Budget Analysis:**
+> 1. Mixing planned and executed data
+> 2. Ignoring inflation
+> 3. Cherry-picking periods
+> 4. Missing reclassifications
+> 5. Overclaiming causation
+> 6. Forgetting the denominator
+
+**Before you share any budget claim:** Run it through the 6-point checklist. If you can't verify all six, don't publish.
 
 <MarkComplete label="Continue to Final Lesson" />

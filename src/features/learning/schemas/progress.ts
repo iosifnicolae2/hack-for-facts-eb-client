@@ -27,6 +27,7 @@ export const LearningContentProgressSchema = z.object({
 
 export const LearningOnboardingStateSchema = z.object({
   pathId: z.string().nullable(),
+  relatedPaths: z.array(z.string()).default([]),
   completedAt: z.string().datetime().nullable(),
 })
 
@@ -48,7 +49,7 @@ const LearningGuestProgressSchema = z.object({
 export function getEmptyLearningGuestProgress(): LearningGuestProgress {
   return {
     version: LEARNING_PROGRESS_SCHEMA_VERSION,
-    onboarding: { pathId: null, completedAt: null },
+    onboarding: { pathId: null, relatedPaths: [], completedAt: null },
     activePathId: null,
     content: {},
     streak: { currentStreak: 0, longestStreak: 0, lastActivityDate: null },

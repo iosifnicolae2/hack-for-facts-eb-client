@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { t } from '@lingui/core/macro'
-import { TrendingDown, ArrowRight, RotateCcw } from 'lucide-react'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Trans } from '@lingui/react/macro'
+import { ArrowRight, RotateCcw, Building2, AlertCircle, Wallet, Briefcase, Truck } from 'lucide-react'
+import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -24,14 +25,6 @@ const DEFAULT_YEAR = 2024
 /**
  * Official Romanian Consolidated General Budget (Buget General Consolidat) data
  * Source: Ministry of Finance (mfinante.gov.ro), Fiscal Council, Court of Accounts
- *
- * Key patterns confirmed by official sources:
- * - Personnel costs: ~98% execution (consistently prioritized)
- * - Capital investments: 50-60% execution (chronic underperformance)
- * - EU co-financed projects: 30-45% execution (absorption failures)
- *
- * Note: Category breakdowns represent major expenditure categories.
- * Total budget includes additional categories (social transfers, etc.)
  */
 const DATA: Record<number, YearlyData> = {
     2022: {
@@ -69,13 +62,36 @@ const DATA: Record<number, YearlyData> = {
     }
 }
 
+const CATEGORY_ICONS: Record<BudgetCategory, React.ElementType> = {
+    personnel: Briefcase,
+    goods: Truck,
+    investments: Building2,
+    'eu-projects': Wallet,
+}
 
+function getRateColorClasses(rate: number) {
+    const isLow = rate < 70
+    const isHigh = rate > 90
 
-const CATEGORY_ICONS: Record<BudgetCategory, string> = {
-    personnel: '👷',
-    goods: '📦',
-    investments: '🏗️',
-    'eu-projects': '🇪🇺',
+    if (isLow) {
+        return {
+            bar: "bg-rose-500/50",
+            icon: "bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400",
+            text: "text-rose-600 dark:text-rose-400"
+        }
+    }
+    if (isHigh) {
+        return {
+            bar: "bg-emerald-500/50",
+            icon: "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+            text: "text-emerald-600 dark:text-emerald-400"
+        }
+    }
+    return {
+        bar: "bg-amber-500/50",
+        icon: "bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400",
+        text: "text-amber-600 dark:text-amber-400"
+    }
 }
 
 interface PromiseTrackerProps {
@@ -85,12 +101,24 @@ interface PromiseTrackerProps {
     readonly contentVersion?: string
 }
 
+function InsightPill({ children, className }: { children: React.ReactNode; className?: string }) {
+    return (
+        <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className={cn("inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black tracking-tight border", className)}
+        >
+            {children}
+        </motion.div>
+    )
+}
+
 export function PromiseTracker({ locale, contentId, predictionId, contentVersion = 'v1' }: PromiseTrackerProps) {
     const CATEGORY_LABELS: Record<BudgetCategory, string> = {
-        personnel: t`Personnel Costs (Salaries)`,
+        personnel: t`Personnel Costs`,
         goods: t`Goods & Services`,
-        investments: t`Capital Investments (Infrastructure)`,
-        'eu-projects': t`EU Co-financed Projects`,
+        investments: t`Infrastructure`,
+        'eu-projects': t`EU Projects`,
     }
 
     // Progress tracking hook
@@ -148,7 +176,7 @@ export function PromiseTracker({ locale, contentId, predictionId, contentVersion
         setIsRevealing(true)
         try {
             await reveal(String(selectedYear), guess, actualRate)
-            setTimeout(() => setShowBreakdown(true), 1500)
+            setTimeout(() => setShowBreakdown(true), 800)
         } finally {
             setIsRevealing(false)
         }
@@ -160,238 +188,241 @@ export function PromiseTracker({ locale, contentId, predictionId, contentVersion
         setShowBreakdown(false)
     }
 
-    const getAccuracyFeedback = () => {
-        const diff = Math.abs(guess - actualRate)
-        if (diff < 5) return t`Spot on!`
-        if (diff < 15) return t`Close enough!`
-        return t`Quite a difference...`
+    const containerVariants = {
+        hidden: { opacity: 0, y: 20, scale: 0.98 },
+        visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } },
+        exit: { opacity: 0, scale: 0.95, transition: { duration: 0.3 } }
     }
 
     return (
-        <Card className="my-10 w-full max-w-3xl mx-auto shadow-md border-border/60 overflow-hidden">
-            <CardHeader className="bg-transparent pb-0 border-b-0 pt-8 px-8 md:px-10">
-                <div className="flex justify-center w-full">
-                    <Tabs
-                        value={selectedYear.toString()}
-                        onValueChange={handleYearChange}
-                        className="w-full sm:w-auto"
+        <div className="w-full max-w-4xl mx-auto mb-16 font-sans">
+            <AnimatePresence mode="wait">
+                {!hasGuessed ? (
+                    <motion.div
+                        key="guessing-phase"
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
                     >
-                        <TabsList className="grid w-full grid-cols-3 sm:w-[320px] h-12 bg-muted/40 rounded-full p-1.5 gap-1">
-                            <TabsTrigger value="2022" className="rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm font-medium">2022</TabsTrigger>
-                            <TabsTrigger value="2023" className="rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm font-medium">2023</TabsTrigger>
-                            <TabsTrigger value="2024" className="rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm font-medium">2024</TabsTrigger>
-                        </TabsList>
-                    </Tabs>
-                </div>
-            </CardHeader>
+                        <Card className="p-10 md:p-16 rounded-[3rem] bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 shadow-lg overflow-hidden relative border-none">
+                            <div className="relative z-10 flex flex-col items-center text-center space-y-10">
+                                {/* Year Selector */}
+                                <div className="w-full flex justify-center">
+                                    <Tabs
+                                        value={selectedYear.toString()}
+                                        onValueChange={handleYearChange}
+                                        className="w-auto"
+                                    >
+                                        <TabsList className="grid grid-cols-3 w-[280px] h-12 bg-zinc-100 dark:bg-zinc-900 rounded-full p-1.5 gap-1">
+                                            {[2022, 2023, 2024].map((year) => (
+                                                <TabsTrigger
+                                                    key={year}
+                                                    value={year.toString()}
+                                                    className="rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-800 data-[state=active]:shadow-sm transition-all text-sm font-bold text-zinc-500 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-zinc-100"
+                                                >
+                                                    {year}
+                                                </TabsTrigger>
+                                            ))}
+                                        </TabsList>
+                                    </Tabs>
+                                </div>
 
-            <CardContent className="p-2 space-y-4">
+                                <div className="space-y-6 max-w-xl">
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.5 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                                        className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 mb-2 shadow-inner"
+                                    >
+                                        <Building2 className="w-10 h-10" />
+                                    </motion.div>
+                                    <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-zinc-900 dark:text-white mt-6 leading-[0.95]">
+                                        <Trans>How much was <span className="text-blue-600 dark:text-blue-400 italic">built</span>?</Trans>
+                                    </h2>
+                                    <p className="text-xl text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed">
+                                        <Trans>The government planned to spend <strong>{formatBillions(investmentData.planned)}</strong> on Infrastructure in {selectedYear}.</Trans>
+                                        <br className="hidden md:block" />
+                                        <Trans>What percentage was actually used?</Trans>
+                                    </p>
+                                </div>
 
-                {/* GUESSING SECTION */}
-                <AnimatePresence mode="wait">
-                    {!hasGuessed ? (
-                        <motion.div
-                            key="guessing-phase"
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.98 }}
-                            className="space-y-12 pb-16"
-                        >
-                            <div className="text-center space-y-4">
-                                <h3 className="text-3xl font-bold text-foreground tracking-tight">
-                                    {t`Make a Prediction for ${selectedYear}`}
-                                </h3>
-                                <p className="text-muted-foreground text-lg max-w-xl mx-auto leading-relaxed">
-                                    {t`The government planned to spend`} <span className="font-bold text-foreground">{formatBillions(investmentData.planned)}</span> {t`on Infrastructure. How much of that budget was actually used?`}
-                                </p>
-                            </div>
+                                <div className="w-full max-w-lg space-y-10">
+                                    <div className="space-y-6">
+                                        <div className="flex flex-col items-center">
+                                            <span className="text-7xl md:text-8xl font-black tracking-tighter text-blue-600 dark:text-blue-400 transition-all">
+                                                {guess}%
+                                            </span>
+                                            <div className="mt-2 text-xs font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-600 block">{t`YOUR PREDICTION`}</div>
+                                        </div>
 
-                            <div className="max-w-xl mx-auto bg-card border rounded-[2rem] p-10 shadow-sm hover:shadow-md transition-shadow duration-300">
-                                <div className="space-y-10">
-                                    <div className="flex flex-col items-center gap-2">
-                                        <span className="text-sm font-bold text-muted-foreground uppercase tracking-widest">{t`Your Prediction`}</span>
-                                        <span className="text-7xl font-black text-primary tabular-nums tracking-tighter">
-                                            {guess}%
-                                        </span>
-                                    </div>
-
-                                    <div className="px-2">
-                                        <Slider
-                                            value={[guess]}
-                                            onValueChange={(vals) => setGuess(vals[0])}
-                                            max={100}
-                                            step={1}
-                                            className="py-4"
-                                        />
-                                        <div className="flex justify-between mt-2 text-xs font-semibold text-muted-foreground/60 uppercase tracking-wider">
-                                            <span>0%</span>
-                                            <span>100%</span>
+                                        <div className="px-4">
+                                            <Slider
+                                                value={[guess]}
+                                                onValueChange={(vals) => setGuess(vals[0])}
+                                                max={100}
+                                                step={1}
+                                                className="py-6 scale-110 md:scale-125"
+                                            />
+                                            <div className="flex justify-between mt-2 text-[10px] font-black text-zinc-300 dark:text-zinc-700 uppercase tracking-widest px-2">
+                                                <span>0%</span>
+                                                <span>100%</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <Button
-                                    onClick={() => void handleSubmitGuess()}
-                                    disabled={isRevealing}
-                                    className="w-full h-14 mt-10 text-lg font-bold rounded-2xl shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.01] transition-all"
-                                >
-                                    {t`Reveal Reality`}
-                                    <ArrowRight className="ml-2 w-5 h-5" />
-                                </Button>
+                                    <Button
+                                        onClick={() => void handleSubmitGuess()}
+                                        disabled={isRevealing}
+                                        className="w-full h-20 rounded-[1.8rem] text-2xl font-black bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 hover:bg-black dark:hover:bg-zinc-100 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl group"
+                                    >
+                                        {t`Reveal Reality`} <ArrowRight className="ml-2 w-7 h-7 group-hover:translate-x-1 transition-transform" />
+                                    </Button>
+                                </div>
                             </div>
-                        </motion.div>
-                    ) : (
-                        <motion.div
-                            key="result-phase"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                                className="space-y-10 p-10"
-                        >
-                            {/* RESULT COMPARISON CARD */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-                                {/* USER GUESS */}
-                                <div className="flex flex-col items-center justify-center p-10 bg-muted/20 rounded-[2rem] border border-border/40">
-                                    <span className="text-xs text-muted-foreground uppercase tracking-widest font-bold mb-4">{t`Your Prediction`}</span>
-                                    <span className="text-6xl font-black text-muted-foreground/40 tabular-nums tracking-tighter">{guess}%</span>
-                                </div>
 
-                                {/* REALITY with Animation */}
-                                <div className={cn(
-                                    "flex flex-col items-center justify-center p-10 rounded-[2rem] border-2 transition-all duration-1000 relative overflow-hidden",
-                                    "bg-primary/5 border-primary/20"
-                                )}>
-                                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50" />
+                            {/* Decorative artifacts */}
+                            <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-blue-100/30 dark:bg-blue-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+                            <div className="absolute bottom-0 left-0 w-[20rem] h-[20rem] bg-indigo-100/20 dark:bg-indigo-500/5 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/4 pointer-events-none" />
+                        </Card>
+                    </motion.div>
+                ) : (
+                    <motion.div
+                        key="result-phase"
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                    >
+                        <Card className="rounded-[4rem] overflow-hidden border-none shadow-3xl bg-white dark:bg-zinc-950 transition-colors duration-500">
+                            <div className="p-8 md:p-12 max-w-2xl mx-auto space-y-12">
 
-                                    <span className="text-xs text-primary font-bold uppercase tracking-widest mb-4 relative z-10">{t`Reality`}</span>
+                                {/* Header Section */}
+                                <div className="text-center space-y-6">
+                                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-900 text-xs font-black text-zinc-500 dark:text-zinc-400 uppercase tracking-[0.2em]">
+                                        {selectedYear} {t`Reality Check`}
+                                    </div>
 
-                                    <div className="relative z-10 flex flex-col items-center">
-                                        <motion.span
-                                            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                                            transition={{ type: "spring", bounce: 0.4, delay: 0.1 }}
-                                            className="text-7xl font-black text-primary tabular-nums tracking-tighter"
-                                        >
+                                    <div className="relative">
+                                        <h2 className="text-[6rem] md:text-[8rem] font-[1000] text-zinc-950 dark:text-white tracking-[-0.04em] leading-none drop-shadow-sm">
                                             {actualRate}%
-                                        </motion.span>
+                                        </h2>
+                                        <div className="absolute -right-4 top-0 rotate-12">
+                                            <div className={cn(
+                                                "px-4 py-2 rounded-xl text-sm font-black text-white shadow-lg transform hover:scale-110 transition-transform",
+                                                Math.abs(guess - actualRate) < 15 ? "bg-emerald-500" : "bg-rose-500"
+                                            )}>
+                                                {Math.abs(guess - actualRate) < 15 ? t`Close!` : t`Way off!`}
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: 0.6 }}
-                                            className="mt-4"
-                                        >
-                                            <span className="inline-flex items-center rounded-full bg-background px-4 py-1.5 text-sm font-semibold text-foreground shadow-sm ring-1 ring-inset ring-border/60">
-                                                {getAccuracyFeedback()}
-                                            </span>
-                                        </motion.div>
+                                    <div className="flex justify-center gap-3">
+                                        <InsightPill className="bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700">
+                                            {t`Your guess`}: {guess}%
+                                        </InsightPill>
+                                        <InsightPill className="bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20">
+                                            <Building2 className="w-3 h-3" /> {t`Infrastructure`}
+                                        </InsightPill>
                                     </div>
                                 </div>
-                            </div>
 
-                            {/* MAIN INSIGHT */}
-                            <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: 'auto' }}
-                                transition={{ delay: 0.5 }}
-                                className="bg-amber-50/50 dark:bg-amber-950/20 border-2 border-amber-100 dark:border-amber-900/40 rounded-3xl p-6 space-y-4"
-                            >
-                                <div className="space-y-1">
-                                    <h4 className="font-bold text-amber-950 dark:text-amber-200 text-lg">
-                                        {t`The Spending Redirection Pattern`}
-                                    </h4>
-                                    <p className="text-amber-900/80 dark:text-amber-300/80 text-sm leading-relaxed">
-                                        {t`Romania runs a deficit AND underspends on investments. How? Money gets redirected: salaries and social transfers often exceed initial plans (100%+), while infrastructure lags at 55-60% and EU projects at just 30-35%. The overspending on recurring costs outweighs the underspending on investments.`}
-                                    </p>
-                                </div>
-                                <div className="space-y-1 pt-2 border-t border-amber-200/50 dark:border-amber-800/50">
-                                    <h4 className="font-bold text-amber-950 dark:text-amber-200 text-sm">
-                                        {t`2024 Example`}
-                                    </h4>
-                                    <p className="text-amber-900/80 dark:text-amber-300/80 text-sm leading-relaxed">
-                                        {t`Personnel costs grew 24% year-over-year, goods & services increased 21% — both exceeding initial allocations. Meanwhile, only 30% of EU project funds and 55% of investment budgets were used. Result: a record 8.65% GDP deficit (152B RON vs. planned 86.6B RON).`}
-                                    </p>
-                                </div>
-                            </motion.div>
+                                {/* Breakdown List */}
+                                {showBreakdown && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="space-y-6"
+                                    >
+                                        <div className="text-center">
+                                            <h3 className="text-sm font-black text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.2em]">{t`Where did the money go?`}</h3>
+                                        </div>
 
-                            {/* FULL BREAKDOWN */}
-                            {showBreakdown && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.2 }}
-                                    className="pt-8"
-                                >
-                                    <h4 className="font-bold text-lg mb-8 flex items-center gap-3 text-foreground/80">
-                                        <TrendingDown className="w-5 h-5" />
-                                        {t`Detailed Spending Breakdown (${selectedYear})`}
-                                    </h4>
+                                        <div className="rounded-[2.5rem] border border-zinc-100 dark:border-zinc-800/60 overflow-hidden bg-zinc-50/30 dark:bg-zinc-950/30 divide-y divide-zinc-100 dark:divide-zinc-800/40">
+                                            {(Object.entries(currentData.breakdown) as [BudgetCategory, { planned: number; executed: number }][]).map(([key, data], idx) => {
+                                                const rate = Math.round((data.executed / data.planned) * 100)
+                                                const colorClasses = getRateColorClasses(rate)
+                                                const Icon = CATEGORY_ICONS[key]
 
-                                    <div className="grid gap-6">
-                                        {(Object.entries(currentData.breakdown) as [BudgetCategory, { planned: number; executed: number }][]).map(([key, data], idx) => {
-                                            const rate = Math.round((data.executed / data.planned) * 100)
-                                            const isLow = rate < 70
-                                            const isHigh = rate > 90
-
-                                            return (
-                                                <motion.div
-                                                    key={key}
-                                                    initial={{ opacity: 0, x: -10 }}
-                                                    animate={{ opacity: 1, x: 0 }}
-                                                    transition={{ delay: idx * 0.1 }}
-                                                    className="group"
-                                                >
-                                                    <div className="flex justify-between items-center mb-2.5">
-                                                        <div className="flex items-center gap-4">
-                                                            <div className="w-10 h-10 rounded-xl bg-muted/50 group-hover:bg-muted transition-colors flex items-center justify-center text-xl shadow-sm">
-                                                                {CATEGORY_ICONS[key]}
-                                                            </div>
-                                                            <div className="flex flex-col">
-                                                                <span className="font-bold text-foreground">{CATEGORY_LABELS[key]}</span>
-                                                                <span className="text-xs text-muted-foreground">
-                                                                    {t`Planned`}: {formatBillions(data.planned)}
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <div className="text-right">
-                                                            <div className={cn(
-                                                                "font-black font-mono text-xl",
-                                                                isLow ? "text-rose-600 dark:text-rose-400" : isHigh ? "text-emerald-600 dark:text-emerald-400" : "text-amber-600 dark:text-amber-400"
-                                                            )}>
-                                                                {rate}%
-                                                            </div>
-                                                            <div className="text-xs font-medium text-muted-foreground/70">
-                                                                {formatBillions(data.executed)} {t`spent`}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="h-4 w-full bg-muted/30 rounded-full overflow-hidden p-0.5">
+                                                return (
+                                                    <motion.div
+                                                        key={key}
+                                                        initial={{ opacity: 0, x: -10 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ delay: idx * 0.1 }}
+                                                        className="p-6 flex items-center justify-between group hover:bg-white/50 dark:hover:bg-zinc-900/50 transition-colors relative overflow-hidden"
+                                                    >
+                                                        {/* Subtle Progress Bar Background */}
+                                                        <div className="absolute bottom-0 left-0 h-1 bg-zinc-100 dark:bg-zinc-800 w-full" />
                                                         <motion.div
                                                             initial={{ width: 0 }}
                                                             animate={{ width: `${rate}%` }}
-                                                            transition={{ duration: 1.2, delay: idx * 0.1 + 0.5, type: "spring", bounce: 0 }}
-                                                            className={cn(
-                                                                "h-full rounded-full shadow-sm",
-                                                                isLow ? "bg-rose-500" : isHigh ? "bg-emerald-500" : "bg-amber-500"
-                                                            )}
+                                                            transition={{ duration: 1, delay: 0.5 + (idx * 0.1) }}
+                                                            className={cn("absolute bottom-0 left-0 h-1", colorClasses.bar)}
                                                         />
-                                                    </div>
-                                                </motion.div>
-                                            )
-                                        })}
-                                    </div>
 
-                                    <div className="mt-12 pt-8 border-t flex justify-center">
-                                        <Button variant="ghost" className="text-muted-foreground hover:text-foreground hover:bg-muted/50" onClick={() => void handleReset()}>
-                                            <RotateCcw className="w-4 h-4 mr-2" />
-                                            {t`Reset Prediction`}
-                                        </Button>
+                                                        <div className="flex items-center gap-4 relative z-10">
+                                                            <div className={cn("p-3 rounded-xl shadow-sm transition-colors", colorClasses.icon)}>
+                                                                <Icon className="w-5 h-5" />
+                                                            </div>
+                                                            <div>
+                                                                <div className="text-sm font-black text-zinc-900 dark:text-zinc-100">{CATEGORY_LABELS[key]}</div>
+                                                                <div className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
+                                                                    {t`Planned`}: {formatBillions(data.planned)}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="text-right relative z-10">
+                                                            <div className={cn("text-xl font-black tabular-nums", colorClasses.text)}>
+                                                                {rate}%
+                                                            </div>
+                                                            <div className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
+                                                                {t`Executed`}
+                                                            </div>
+                                                        </div>
+                                                    </motion.div>
+                                                )
+                                            })}
+                                        </div>
+                                    </motion.div>
+                                )}
+
+                                {/* Insight Card */}
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ delay: 0.4 }}
+                                    className="bg-amber-50 dark:bg-amber-950/20 border border-amber-100 dark:border-amber-900/30 rounded-[2rem] p-8 relative overflow-hidden"
+                                >
+                                    <div className="relative z-10 space-y-4">
+                                        <div className="flex items-center gap-3 text-amber-700 dark:text-amber-400">
+                                            <AlertCircle className="w-5 h-5" />
+                                            <h4 className="font-black text-sm uppercase tracking-widest">{t`The Pattern`}</h4>
+                                        </div>
+                                        <p className="text-lg font-medium text-amber-900 dark:text-amber-200 leading-relaxed">
+                                            {t`Money gets redirected: salaries and social transfers often exceed initial plans (100%+), while infrastructure lags at 55-60% and EU projects at just 30-35%.`}
+                                        </p>
                                     </div>
+                                    <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
                                 </motion.div>
-                            )}
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </CardContent>
-        </Card>
+
+                                {/* Reset Button */}
+                                <div className="flex justify-center pt-4">
+                                    <Button
+                                        variant="ghost"
+                                        onClick={() => void handleReset()}
+                                        className="h-12 px-6 rounded-xl text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all font-bold uppercase tracking-widest text-xs"
+                                    >
+                                        <RotateCcw className="w-4 h-4 mr-2" />
+                                        {t`Try Another Year`}
+                                    </Button>
+                                </div>
+
+                            </div>
+                        </Card>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
     )
 }

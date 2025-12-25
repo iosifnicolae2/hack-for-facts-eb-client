@@ -146,6 +146,7 @@ function applyOnboardingCompletedEvent(
     ...progress,
     onboarding: {
       pathId: event.payload.pathId,
+      relatedPaths: event.payload.relatedPaths ?? [],
       completedAt: event.occurredAt,
     },
     activePathId: event.payload.pathId,
@@ -162,6 +163,7 @@ function applyOnboardingResetEvent(
     ...progress,
     onboarding: {
       pathId: null,
+      relatedPaths: [],
       completedAt: null,
     },
     lastUpdated: maxIso(progress.lastUpdated, event.occurredAt),

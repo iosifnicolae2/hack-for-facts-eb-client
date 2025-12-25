@@ -61,7 +61,10 @@ const ContentProgressedEventSchema = LearningProgressEventBaseSchema.extend({
 
 const OnboardingCompletedEventSchema = LearningProgressEventBaseSchema.extend({
   type: z.literal('onboarding.completed'),
-  payload: z.object({ pathId: z.string().min(1) }),
+  payload: z.object({
+    pathId: z.string().min(1),
+    relatedPaths: z.array(z.string()).default([]),
+  }),
 })
 
 const OnboardingResetEventSchema = LearningProgressEventBaseSchema.extend({

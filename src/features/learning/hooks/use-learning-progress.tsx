@@ -77,6 +77,7 @@ function clampScore(value: number | undefined): number | undefined {
 
 type SaveOnboardingInput = {
   readonly pathId: string
+  readonly relatedPaths?: readonly string[]
 }
 
 type LearningProgressContextValue = {
@@ -701,7 +702,7 @@ export function LearningProgressProvider({ children }: { readonly children: Reac
         occurredAt: nowIso(),
         clientId: getClientId(),
         type: 'onboarding.completed',
-        payload: { pathId: input.pathId },
+        payload: { pathId: input.pathId, relatedPaths: input.relatedPaths ?? [] },
       }
 
       const keys = getStorageKeys()

@@ -1,6 +1,6 @@
 import { createFileRoute, Link, Navigate, useNavigate } from '@tanstack/react-router'
 import { t } from '@lingui/core/macro'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ChevronDown, MoreVertical, RotateCcw, Trash2, Trophy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -93,6 +93,13 @@ function LearningHubPage() {
     }
   }, [activePath, progress.content])
 
+  // Auto-expand "Explore more paths" when current path is completed
+  useEffect(() => {
+    if (stats?.percentage === 100) {
+      setIsOtherPathsOpen(true)
+    }
+  }, [stats?.percentage])
+
   // Compute other paths with their stats, sorted by last interaction then progress
   const otherPathsWithStats = useMemo(() => {
     type PathWithStats = {
@@ -107,23 +114,37 @@ function LearningHubPage() {
       stats: getPathProgressStats({ path, progress }),
     }))
 
-    // Sort by: last interaction (most recent first), then by progress (higher first)
+    // Sort by: in_progress → completed → new (with relevance scoring for new paths)
+    const getCategory = (pct: number): number => {
+      if (pct > 0 && pct < 100) return 0 // in_progress - highest priority
+      if (pct === 100) return 1 // completed
+      return 2 // new (0%)
+    }
+
+    const relatedPathsSet = new Set(progress.onboarding.relatedPaths ?? [])
+
     return [...pathsWithStats].sort((a, b) => {
-      // Paths with any interaction come first
-      const aHasInteraction = a.stats.lastInteractionAt !== null
-      const bHasInteraction = b.stats.lastInteractionAt !== null
+      const aPercentage = a.stats.completionPercentage
+      const bPercentage = b.stats.completionPercentage
+      const aCategory = getCategory(aPercentage)
+      const bCategory = getCategory(bPercentage)
 
-      if (aHasInteraction && !bHasInteraction) return -1
-      if (!aHasInteraction && bHasInteraction) return 1
+      // Sort by category first
+      if (aCategory !== bCategory) return aCategory - bCategory
 
-      // If both have interactions, sort by most recent
-      if (aHasInteraction && bHasInteraction) {
-        const timeCompare = b.stats.lastInteractionAt!.localeCompare(a.stats.lastInteractionAt!)
-        if (timeCompare !== 0) return timeCompare
+      // Within in_progress or completed: sort by most recent interaction, then by progress
+      if (aCategory === 0 || aCategory === 1) {
+        if (a.stats.lastInteractionAt && b.stats.lastInteractionAt) {
+          const timeCompare = b.stats.lastInteractionAt.localeCompare(a.stats.lastInteractionAt)
+          if (timeCompare !== 0) return timeCompare
+        }
+        return bPercentage - aPercentage
       }
 
-      // Then sort by progress percentage (higher first)
-      return b.stats.completionPercentage - a.stats.completionPercentage
+      // New paths: sort by onboarding relevance (from stored relatedPaths)
+      const aRelevance = relatedPathsSet.has(a.path.id) ? 1 : 0
+      const bRelevance = relatedPathsSet.has(b.path.id) ? 1 : 0
+      return bRelevance - aRelevance
     })
   }, [paths, activePath?.id, progress])
 

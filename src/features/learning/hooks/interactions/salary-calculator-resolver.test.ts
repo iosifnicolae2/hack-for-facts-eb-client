@@ -12,7 +12,7 @@ import './salary-calculator-resolver'
 function createEmptyProgress(): LearningGuestProgress {
   return {
     version: 1,
-    onboarding: { pathId: null, completedAt: null },
+    onboarding: { pathId: null, relatedPaths: [], completedAt: null },
     activePathId: null,
     content: {},
     streak: { currentStreak: 0, longestStreak: 0, lastActivityDate: null },
@@ -142,7 +142,7 @@ describe('salary-calculator-resolver', () => {
     it('overwrites existing state', () => {
       const progress: LearningGuestProgress = {
         version: 1,
-        onboarding: { pathId: null, completedAt: null },
+        onboarding: { pathId: null, relatedPaths: [], completedAt: null },
         activePathId: null,
         content: {
           'lesson-1': {
@@ -248,7 +248,7 @@ describe('salary-calculator-resolver', () => {
     it('clears state by setting state to null', () => {
       const progress: LearningGuestProgress = {
         version: 1,
-        onboarding: { pathId: null, completedAt: null },
+        onboarding: { pathId: null, relatedPaths: [], completedAt: null },
         activePathId: null,
         content: {
           'lesson-1': {
