@@ -191,7 +191,7 @@ function readStringArrayProperty(entry: unknown, propertyName: string): { readon
 function readStringRecordProperty(
   entry: unknown,
   propertyName: string
-): { readonly value: Record<string, string> | null; readonly invalid: boolean } {
+): { readonly value: Record<string, string | string[]> | null; readonly invalid: boolean } {
   if (!entry || typeof entry !== 'object') {
     return { value: null, invalid: false }
   }
@@ -204,15 +204,17 @@ function readStringRecordProperty(
     return { value: null, invalid: true }
   }
 
-  const next: Record<string, string> = {}
+  const next: Record<string, string | string[]> = {}
   let invalid = false
 
   for (const [key, value] of Object.entries(raw as Record<string, unknown>)) {
-    if (!isNonEmptyString(value)) {
+    if (isNonEmptyString(value)) {
+      next[key] = value
+    } else if (Array.isArray(value) && value.every((item) => isNonEmptyString(item))) {
+      next[key] = value as string[]
+    } else {
       invalid = true
-      continue
     }
-    next[key] = value
   }
 
   return { value: next, invalid }
@@ -643,7 +645,7 @@ async function collectOnboardingTree(): Promise<{
 
         const setResult = readStringRecordProperty(optionEntry, 'set')
         if (setResult.invalid) {
-          parseIssues.push(`${relativePath}: onboarding option "${optionId}" in "${nodeId}" has invalid "set" (must be string values)`)
+          parseIssues.push(`${relativePath}: onboarding option "${optionId}" in "${nodeId}" has invalid "set" (values must be strings or string arrays)`)
         }
 
         optionEntries.push({
@@ -750,7 +752,7 @@ const VALIDATION_RULES: readonly ValidationRule[] = [
       const pathIds = new Set(context.pathEntries.map((entry) => entry.pathId))
       const nodeById = new Map<string, OnboardingNodeDefinition>()
       const setKeys = new Set<string>()
-      const allowedSetKeys = new Set(['pathId'])
+      const allowedSetKeys = new Set(['pathId', 'relatedPaths'])
 
       for (const node of onboardingTree.nodes) {
         nodeById.set(node.nodeId, node)
@@ -804,12 +806,21 @@ const VALIDATION_RULES: readonly ValidationRule[] = [
                     `${onboardingTree.pathFile}: onboarding option "${option.optionId}" in "${node.nodeId}" uses unknown set key "${key}"`
                   )
                 }
-                if (key === 'pathId') {
+                if (key === 'pathId' && typeof value === 'string') {
                   hasPathTarget = true
                   if (!pathIds.has(value)) {
                     errors.push(
                       `${onboardingTree.pathFile}: onboarding option "${option.optionId}" in "${node.nodeId}" has invalid pathId "${value}"`
                     )
+                  }
+                }
+                if (key === 'relatedPaths' && Array.isArray(value)) {
+                  for (const relatedPathId of value) {
+                    if (!pathIds.has(relatedPathId)) {
+                      errors.push(
+                        `${onboardingTree.pathFile}: onboarding option "${option.optionId}" in "${node.nodeId}" references missing relatedPath "${relatedPathId}"`
+                      )
+                    }
                   }
                 }
               }

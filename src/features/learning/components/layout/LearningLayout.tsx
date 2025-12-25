@@ -7,7 +7,6 @@ import {
   Compass,
   Library,
   Layers,
-  LogIn,
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
@@ -20,10 +19,10 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
-import { useAuth, AuthSignInButton } from '@/lib/auth'
 import { LearningProgressProvider, useLearningProgress } from '../../hooks/use-learning-progress'
 import { getAllLessons, getLearningPathById, getLearningPaths, getTranslatedText } from '../../utils/paths'
 import type { LearningModuleDefinition } from '../../types'
+import { LoginBanner } from './LoginBanner'
 
 function parseLearningRoute(pathname: string): {
   readonly locale: 'en' | 'ro'
@@ -258,30 +257,6 @@ function LearningSidebar({ pathname }: { readonly pathname: string }) {
           )}
         </nav>
       </ScrollArea>
-    </div>
-  )
-}
-
-function LoginBanner() {
-  const { isSignedIn, isLoaded } = useAuth()
-
-  if (!isLoaded || isSignedIn) {
-    return null
-  }
-
-  return (
-    <div className="mx-auto max-w-3xl px-6 lg:px-10 pt-6 lg:pt-8">
-      <div className="flex items-center gap-3 rounded-lg border border-primary/20 bg-primary/5 px-4 py-3">
-        <LogIn className="h-4 w-4 text-primary shrink-0" />
-        <p className="text-sm text-muted-foreground flex-1">
-          {t`Sign in to save your progress and track your learning journey.`}
-        </p>
-        <AuthSignInButton>
-          <Button size="sm" variant="default" className="shrink-0">
-            {t`Sign In`}
-          </Button>
-        </AuthSignInButton>
-      </div>
     </div>
   )
 }
