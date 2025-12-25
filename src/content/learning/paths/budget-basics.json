@@ -1,10 +1,10 @@
 {
-  "id": "public-budgets-101",
-  "slug": "public-budgets-101",
+  "id": "budget-basics",
+  "slug": "budget-basics",
   "difficulty": "beginner",
   "title": {
-    "en": "Public Budgets 101",
-    "ro": "Bugetele Publice 101"
+    "en": "Budget Basics",
+    "ro": "Bazele Bugetelor"
   },
   "description": {
     "en": "Understand public budgets in under 20 minutes.",

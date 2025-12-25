@@ -26,7 +26,7 @@ import { EUComparisonChart } from '../interactive/EUComparisonChart'
 import { PlatformMission } from '../interactive/PlatformMission'
 import { DeficitVisual } from '../interactive/DeficitVisual'
 import { GuidedPlatformTour } from '../interactive/GuidedPlatformTour'
-import { Hidden } from '../interactive/Hidden'
+import { ExpandableHint } from '../interactive/ExpandableHint'
 import { Sources } from '../interactive/Sources'
 
 type LessonPlayerProps = {
@@ -194,7 +194,7 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
       EUComparisonChart,
       PlatformMission,
       DeficitVisual,
-      Hidden,
+      ExpandableHint,
       Sources,
     }),
     [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, PromiseTrackerWrapper, SalaryTaxCalculatorWrapper, GuidedPlatformTourWrapper]
@@ -259,12 +259,12 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
           '[&_blockquote]:after:absolute [&_blockquote]:after:right-6 [&_blockquote]:after:top-4',
           '[&_blockquote]:after:text-6xl [&_blockquote]:after:font-serif [&_blockquote]:after:leading-none',
           '[&_blockquote]:after:text-amber-200/60 dark:[&_blockquote]:after:text-amber-700/30',
-          '[&_blockquote]:after:content-["""]',
           // Typography
           '[&_blockquote_p]:relative [&_blockquote_p]:z-10',
           '[&_blockquote_p]:text-base [&_blockquote_p]:md:text-lg [&_blockquote_p]:font-medium [&_blockquote_p]:leading-relaxed',
           '[&_blockquote_p]:text-amber-950/80 dark:[&_blockquote_p]:text-amber-100/90',
           '[&_blockquote_p:first-child]:mt-0 [&_blockquote_p:last-child]:mb-0',
+          '[&_blockquote_p:first-of-type]:before:content-none [&_blockquote_p:last-of-type]:after:content-none',
           '[&_blockquote_strong]:font-black [&_blockquote_strong]:text-amber-700 dark:[&_blockquote_strong]:text-amber-400',
           '[&_blockquote_strong]:tracking-tight',
           'prose-a:text-primary prose-a:no-underline hover:prose-a:underline',

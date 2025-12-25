@@ -1,6 +1,6 @@
 {
   "id": "learning-onboarding",
-  "version": 1,
+  "version": 2,
   "rootNodeId": "goal",
   "nodes": [
     {
@@ -16,93 +16,51 @@
       },
       "options": [
         {
-          "id": "goal-citizen",
+          "id": "goal-quick",
           "label": {
-            "en": "Understand my taxes",
-            "ro": "Vreau să înțeleg taxele mele"
+            "en": "Quick overview",
+            "ro": "Prezentare rapidă"
           },
           "description": {
-            "en": "I want to see where local money goes",
-            "ro": "Vreau să văd unde se duc banii locali"
+            "en": "Understand public budgets in under 20 minutes",
+            "ro": "Înțelege bugetele publice în mai puțin de 20 de minute"
           },
-          "nextNodeId": "citizen-track"
+          "nextNodeId": "result",
+          "set": {
+            "pathId": "budget-basics",
+            "relatedPaths": ["local-budgets-guide", "advanced-budgets-journalists"]
+          }
+        },
+        {
+          "id": "goal-citizen",
+          "label": {
+            "en": "Monitor local budgets",
+            "ro": "Monitorizez bugetele locale"
+          },
+          "description": {
+            "en": "Learn to track and analyze your community's budget",
+            "ro": "Învață să urmărești și să analizezi bugetul comunității tale"
+          },
+          "nextNodeId": "result",
+          "set": {
+            "pathId": "local-budgets-guide",
+            "relatedPaths": ["budget-basics", "advanced-budgets-journalists"]
+          }
         },
         {
           "id": "goal-journalist",
           "label": {
-            "en": "Investigate stories",
-            "ro": "Vreau să investighez subiecte"
+            "en": "Investigate professionally",
+            "ro": "Investighez profesional"
           },
           "description": {
-            "en": "I need to find contracts and anomalies",
-            "ro": "Am nevoie să găsesc contracte și anomalii"
+            "en": "Advanced analysis for journalists and researchers",
+            "ro": "Analiză avansată pentru jurnaliști și cercetători"
           },
           "nextNodeId": "result",
           "set": {
-            "pathId": "journalist",
-            "relatedPaths": ["decoding-budgets", "citizen"]
-          }
-        },
-        {
-          "id": "goal-public-servant",
-          "label": {
-            "en": "Manage data",
-            "ro": "Gestionez date publice"
-          },
-          "description": {
-            "en": "I work in public administration",
-            "ro": "Lucrez în administrația publică"
-          },
-          "nextNodeId": "result",
-          "set": {
-            "pathId": "public_servant",
-            "relatedPaths": ["decoding-budgets", "citizen"]
-          }
-        }
-      ]
-    },
-    {
-      "id": "citizen-track",
-      "type": "choice",
-      "prompt": {
-        "en": "How deep do you want to go?",
-        "ro": "Cât de departe vrei să mergi?"
-      },
-      "description": {
-        "en": "Pick the path that matches your time and goals.",
-        "ro": "Alege parcursul care se potrivește timpului și obiectivelor tale."
-      },
-      "options": [
-        {
-          "id": "citizen-track-simple",
-          "label": {
-            "en": "Quick Start",
-            "ro": "Start Rapid"
-          },
-          "description": {
-            "en": "Understand public budgets in under 20 minutes",
-            "ro": "Intelege bugetele publice in mai putin de 20 de minute"
-          },
-          "nextNodeId": "result",
-          "set": {
-            "pathId": "public-budgets-101",
-            "relatedPaths": ["citizen", "decoding-budgets"]
-          }
-        },
-        {
-          "id": "citizen-track-advanced",
-          "label": {
-            "en": "Advanced",
-            "ro": "Avansat"
-          },
-          "description": {
-            "en": "Go deeper with advanced topics",
-            "ro": "Intră în subiecte avansate"
-          },
-          "nextNodeId": "result",
-          "set": {
-            "pathId": "citizen-advanced",
-            "relatedPaths": ["citizen", "decoding-budgets", "public-budgets-101"]
+            "pathId": "advanced-budgets-journalists",
+            "relatedPaths": ["local-budgets-guide", "budget-basics"]
           }
         }
       ]
@@ -115,8 +73,8 @@
         "ro": "Parcursul tău este pregătit"
       },
       "description": {
-        "en": "We'll start with the path that matches your goal and choices.",
-        "ro": "Incepem cu parcursul care se potriveste scopului si alegerilor tale."
+        "en": "We'll start with the path that matches your goal.",
+        "ro": "Începem cu parcursul care se potrivește scopului tău."
       },
       "pathIdFrom": "pathId",
       "ctaLabel": {

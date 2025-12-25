@@ -607,10 +607,10 @@ Think salaries vs. equipment vs. transfers.
 
 ```
 ADD AFTER CHUNK:
-<Hidden trigger="Quick check: What's the difference between functional and economic classifications?">
+<ExpandableHint trigger="Quick check: What's the difference between functional and economic classifications?">
 Functional classifications group by **purpose** (what the money is for),
 while economic classifications group by **type** (what kind of expense).
-</Hidden>
+</ExpandableHint>
 ```
 
 #### Abrupt Ending → Transfer + Summary

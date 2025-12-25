@@ -742,7 +742,7 @@ Requirements:
 Approaches:
 
 - "Remember when we explored [prior concept]? Today we'll build on that..."
-- <Hidden trigger="Quick check: What is [prior concept]?">[Brief answer]</Hidden>
+- <ExpandableHint trigger="Quick check: What is [prior concept]?">[Brief answer]</ExpandableHint>
 - "You already know that [familiar concept]. This lesson shows how..."
 
 ### Section 4: CORE CONTENT (Present Content + Provide Guidance)
@@ -963,9 +963,9 @@ ALWAYS INCLUDE:
 ## Hidden Component
 
 ```jsx
-<Hidden trigger="Click to see the answer">
+<ExpandableHint trigger="Click to see the answer">
   Content revealed after clicking.
-</Hidden>
+</ExpandableHint>
 ```
 
 **Uses:**

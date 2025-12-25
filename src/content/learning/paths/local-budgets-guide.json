@@ -1,10 +1,10 @@
 {
-  "id": "citizen",
-  "slug": "citizen",
+  "id": "local-budgets-guide",
+  "slug": "local-budgets-guide",
   "difficulty": "beginner",
   "title": {
-    "en": "Citizen",
-    "ro": "Cetățean"
+    "en": "Your Guide to Local Budget Oversight",
+    "ro": "Ghidul Tău pentru Supravegherea Bugetului Local"
   },
   "description": {
     "en": "A short, practical path for understanding public budgets.",
