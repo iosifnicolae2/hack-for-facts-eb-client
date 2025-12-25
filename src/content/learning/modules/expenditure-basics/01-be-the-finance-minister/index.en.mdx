@@ -29,16 +29,16 @@ You're the Finance Minister for a day. You have 100% of the budget to allocate a
       subLabel: "Pensions, Unemployment, Welfare",
       icon: "shield",
       color: "rose",
-      actualPercentage: 32,
+      actualPercentage: 30,
       defaultValue: 25,
       stakeholders: ["pensioners", "workers"],
       consequences: [
-        { minDiff: -100, maxDiff: -10, severity: "negative", impacts: ["Pension payments delayed or reduced by ~15%", "~700,000 pensioners fall below poverty line", "Unemployment benefits cut to 3 months max", "Child allowances suspended for 6+ months"] },
-        { minDiff: -10, maxDiff: -5, severity: "negative", impacts: ["Average pension frozen (no inflation adjustment)", "~200,000 fewer welfare recipients covered", "Disability benefits processing delayed 6+ months"] },
-        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Pension increases below inflation rate", "Some social programs see reduced funding"] },
-        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["4.7 million pensioners receive stable payments", "Average pension: ~2,748 RON/month maintained", "Current welfare programs continue unchanged"] },
-        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Pension increase above inflation (+3-5%)", "50,000 more families receive child benefits"] },
-        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Significant pension increase (+8-10%)", "New parental leave extension program", "Disability benefits increase by 15%", "Warning: May require borrowing or cuts elsewhere"] }
+        { minDiff: -100, maxDiff: -10, severity: "negative", impacts: ["Pension payments delayed — 4.7 million pensioners affected", "September 2024 reform gains (+622 RON/month average) reversed", "3.6 million children lose frozen allowances entirely", "Worker-to-pensioner ratio (1.27:1) becomes unsustainable"] },
+        { minDiff: -10, maxDiff: -5, severity: "negative", impacts: ["Average pension frozen at 2,748 RON (no inflation adjustment)", "Child allowance freeze (already 2025-2026) extended further", "Regions like Teleorman (14-15 pensioners per 10 workers) hit hardest"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Pension increases fall below inflation", "82.56% who got 2024 increases see gains erode", "Some Group I/II hazardous work benefits reduced"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["4,703,349 pensioners receive stable payments (Dec 2024)", "Average pension maintained at 2,748 RON/month", "Child allowances frozen at 718 RON (0-2) / 291 RON (2-18)"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Pension increase above inflation (+3-5%)", "Child allowance freeze lifted for 3.6 million children", "4.4% with frozen pensions get catch-up increases"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Major pension reform expansion (+8-10%)", "Early retirement for hazardous work restored", "Warning: Adds billions to 9.3% deficit — may trigger EU sanctions"] }
       ]
     },
     {
@@ -47,32 +47,32 @@ You're the Finance Minister for a day. You have 100% of the budget to allocate a
       subLabel: "Transport, Energy, Industry",
       icon: "building-2",
       color: "blue",
-      actualPercentage: 16,
+      actualPercentage: 17,
       defaultValue: 12,
       stakeholders: ["workers", "business"],
       consequences: [
-        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Major highway projects suspended (A7, A8)", "Railway modernization halted", "Energy subsidies for industry cancelled", "Agricultural support payments delayed"] },
-        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Infrastructure projects delayed 1-2 years", "Reduced support for SME development"] },
-        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Current infrastructure projects continue", "PNRR transport investments on track", "Agricultural subsidies maintained"] },
-        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Highway construction accelerated (+50km/year)", "New renewable energy incentives"] },
-        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Major new highway corridors funded", "High-speed rail feasibility studies begin", "Green energy transition accelerated"] }
+        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["A7 Moldova highway (only 195km of 440km done) suspended", "A8 Unification highway pushed past 2030", "Railway modernization collapses — only 77km done in 2024 vs 298km target", "PNRR absorption drops below 7.9% — EU may suspend €1.3B+"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Highway contractor UMB delays worsen (11 of 14 A7 lots)", "APIA agricultural payments delayed for 365,000+ hectares", "Green energy transition slowed"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["A7 highway progresses toward 2026 PNRR deadline", "Railway modernization continues at current slow pace", "PNRR €10.7B absorbed of €28.5B (37.6% total)"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Highway construction accelerated (+50km/year)", "Railway modernization catches up on 633km backlog", "PNRR absorption rises toward EU average (56.4%)"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["A7 and A8 completion accelerated by 2-3 years", "High-speed rail feasibility studies begin", "Full PNRR utilization unlocked", "Warning: May strain already critical 9.3% deficit"] }
       ]
     },
     {
       id: "public-services",
       label: "General Public Services",
-      subLabel: "Administration, Debt, EU",
+      subLabel: "Administration, Debt Interest, EU",
       icon: "landmark",
       color: "slate",
-      actualPercentage: 12,
+      actualPercentage: 13,
       defaultValue: 10,
       stakeholders: ["business"],
       consequences: [
-        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Risk of debt default increases", "EU contribution payments delayed", "Government digitalization projects cancelled", "Public servant salaries frozen or cut"] },
-        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Debt servicing becomes strained", "Administrative modernization slowed"] },
-        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Debt payments on schedule", "EU membership contributions paid", "Administrative costs stable"] },
-        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Accelerated debt reduction", "E-government services expanded"] },
-        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Significant debt reduction possible", "Full government digitalization", "Warning: May be over-allocated for admin"] }
+        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Risk of debt default — 10-year bond yields already at 7.56%", "Interest payments (2.1% of GDP) become unpayable", "BBB-/Baa3 credit rating downgraded to junk status", "EU may suspend ESI Funds and RRF payments"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Debt servicing becomes strained at 54.8% debt-to-GDP", "EU Excessive Deficit Procedure (ongoing since 2020) intensifies", "Government digitalization projects cancelled"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Interest payments (2.1% GDP) maintained", "EU membership contributions paid on schedule", "Credit rating stable at lowest investment grade (BBB-/Baa3)"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Debt trajectory improves toward 60% target", "E-government services expanded", "Credit rating outlook improves from negative"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Significant deficit reduction toward EU 3% target", "Exit from Excessive Deficit Procedure possible", "Warning: Requires cuts elsewhere in a 9.3% deficit crisis"] }
       ]
     },
     {
@@ -85,11 +85,11 @@ You're the Finance Minister for a day. You have 100% of the budget to allocate a
       defaultValue: 15,
       stakeholders: ["doctors", "parents"],
       consequences: [
-        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["~3,200 hospital beds closed", "Emergency room wait times: 4h → 8h+", "12 rural hospitals lose night shifts", "Medicine shortages for chronic diseases"] },
-        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Doctor emigration accelerates (+500/year)", "Medical equipment upgrades cancelled", "Preventive care programs reduced"] },
-        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["6.2 hospital beds per 1,000 people maintained", "Current doctor salaries preserved", "National health programs continue"] },
-        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["850 new doctors can be hired", "12 rural hospitals upgraded", "New oncology treatment centers opened"] },
-        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Major hospital construction program", "Doctor salaries reach EU average", "Universal screening programs launched", "Wait times reduced by 40%"] }
+        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Doctor emigration accelerates — 25,000+ already abroad (1/3 of all trained)", "54% of hospitals without CT/MRI face equipment failures", "7-hour ER waits (like Alba Iulia Dec 2024) become norm", "320-424 localities lose last hope for family doctors"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["57.5% of doctors under 35 accelerate emigration plans", "559,000 rural residents without primary care grows", "6-month MRI wait times extend further", "UPU emergency rooms operate with 1-2 doctors for 170+ patients"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["7.28 hospital beds per 1,000 maintained (3rd highest in EU)", "Current doctor salaries preserved (25% June 2024 increase)", "National health programs continue at current level"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["1,530 family doctor shortage partially addressed", "CT/MRI equipment for 54% of underequipped hospitals", "Rural medical deserts reduced — 1,100 rural doctors hired"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Major hospital equipment program — all public hospitals get imaging", "Doctor salaries competitive with Western Europe — emigration reversed", "ER wait times reduced from 7 hours to EU standards", "Warning: Major deficit impact in 9.3% crisis"] }
       ]
     },
     {
@@ -102,11 +102,11 @@ You're the Finance Minister for a day. You have 100% of the budget to allocate a
       defaultValue: 12,
       stakeholders: ["teachers", "parents"],
       consequences: [
-        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Teacher salaries cut by 10-15%", "500+ rural schools close", "University funding slashed, tuition rises", "School renovation projects cancelled"] },
-        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Teacher salaries frozen (no raises)", "Classroom sizes increase to 35+", "Textbook updates delayed"] },
-        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Current teacher salaries maintained", "Existing school programs continue", "PISA score remains around 428"] },
-        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Teacher salary increase (+10%)", "2,400 new kindergarten spots created", "Digital equipment for 800 schools"] },
-        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Teacher salaries approach EU average", "Major school construction program", "5,000 new university scholarships", "PISA scores could improve 20+ points"] }
+        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Teacher salaries cut — risk of repeat 2023 strike (150,000 teachers, 22 days)", "44,600 substitute teachers become permanent solution", "33.2% functional illiteracy rate (PISA 2022) worsens", "79% of rural students lose transportation funding"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Physics teacher crisis deepens — 700+ vacancies, only 200 candidates", "Rural-urban gap widens (Bac pass: 70.4% vs 82.4%)", "119-point PISA gap between rural and urban grows"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Teacher salaries at 6,446 RON gross (debutant) maintained", "PISA score remains at 428 (all subjects)", "Rural school closures continue at current rate"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Teacher salary increase (+10%) reduces 44,600 substitute dependency", "Rural school transportation funded", "Digital equipment reaches 800 underserved schools"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Teacher salaries approach EU average — emigration stops", "PISA functional illiteracy rate could drop from 33% toward OECD 16%", "Rural-urban education gap addressed systematically", "Warning: Significant deficit impact required"] }
       ]
     },
     {
@@ -119,11 +119,11 @@ You're the Finance Minister for a day. You have 100% of the budget to allocate a
       defaultValue: 5,
       stakeholders: ["workers"],
       consequences: [
-        { minDiff: -100, maxDiff: -3, severity: "negative", impacts: ["Police patrols reduced by 30%", "Court case backlog increases 50%", "Prison overcrowding worsens"] },
-        { minDiff: -3, maxDiff: -1, severity: "negative", impacts: ["Police equipment upgrades delayed", "Judicial system reforms slowed"] },
-        { minDiff: -1, maxDiff: 1, severity: "neutral", impacts: ["Current police force maintained", "Court operations continue normally", "Prison capacity stable"] },
-        { minDiff: 1, maxDiff: 3, severity: "positive", impacts: ["2,000 new police officers hired", "Court digitalization accelerated"] },
-        { minDiff: 3, maxDiff: 100, severity: "positive", impacts: ["Major police modernization program", "New prison rehabilitation programs", "Faster justice system processing"] }
+        { minDiff: -100, maxDiff: -3, severity: "negative", impacts: ["25-29% police vacancy rate (Teleorman, Constanța) becomes 40%+", "Court case duration extends past 228 days (already up from 160 in 2021)", "Prison overcrowding worsens past 116% capacity", "115 unimplemented ECtHR rulings grow — EU sanctions risk"] },
+        { minDiff: -3, maxDiff: -1, severity: "negative", impacts: ["Police forced unpaid standby becomes standard", "Court clearance rate drops below 87% (2023)", "Rezmiveș prison conditions case violations continue"] },
+        { minDiff: -1, maxDiff: 1, severity: "neutral", impacts: ["Current police force maintained despite vacancies", "Court case backlog at 6.99 cases per 100 inhabitants (highest in EU)", "Prison occupancy stable at 116%"] },
+        { minDiff: 1, maxDiff: 3, severity: "positive", impacts: ["Police vacancies in worst counties (25-29%) reduced", "Court digitalization accelerates clearance rate"] },
+        { minDiff: 3, maxDiff: 100, severity: "positive", impacts: ["Major police hiring program fills vacancies", "Court processing times return toward 160-day level", "Prison rehabilitation programs address ECtHR concerns"] }
       ]
     },
     {
@@ -132,15 +132,15 @@ You're the Finance Minister for a day. You have 100% of the budget to allocate a
       subLabel: "Military, NATO Commitments",
       icon: "swords",
       color: "red",
-      actualPercentage: 4,
+      actualPercentage: 5,
       defaultValue: 3,
       stakeholders: ["workers"],
       consequences: [
-        { minDiff: -100, maxDiff: -2, severity: "negative", impacts: ["Falls below NATO 2% GDP target", "Military equipment purchases cancelled", "Troop readiness decreases", "Allied trust diminishes"] },
-        { minDiff: -2, maxDiff: -1, severity: "negative", impacts: ["NATO 2% target barely met", "Some modernization delayed"] },
-        { minDiff: -1, maxDiff: 1, severity: "neutral", impacts: ["NATO 2% GDP commitment maintained", "Current military programs continue", "75,000 active personnel funded"] },
-        { minDiff: 1, maxDiff: 2, severity: "positive", impacts: ["Exceeds NATO target (2.5% GDP)", "Accelerated equipment modernization"] },
-        { minDiff: 2, maxDiff: 100, severity: "positive", impacts: ["Major military expansion", "New fighter jets and naval vessels", "Warning: May exceed regional needs"] }
+        { minDiff: -100, maxDiff: -2, severity: "negative", impacts: ["Falls below NATO 2% GDP — 2024's 2.26% achievement reversed", "F-35 acquisition ($6.5-7.2B for 32 jets by 2034-2040) cancelled", "43% officer vacancy rate worsens", "Allied trust diminishes amid regional tensions"] },
+        { minDiff: -2, maxDiff: -1, severity: "negative", impacts: ["NATO 2.26% achievement drops to bare minimum 2%", "Patriot system maintenance delayed", "25-28% NCO/Major vacancy rates worsen"] },
+        { minDiff: -1, maxDiff: 1, severity: "neutral", impacts: ["NATO 2.26% GDP commitment maintained (€19B — largest in 30 years)", "33 F-16s operational, 49 by end-2025 on track", "~70,000-72,000 active personnel funded"] },
+        { minDiff: 1, maxDiff: 2, severity: "positive", impacts: ["Exceeds NATO target toward 2.5% GDP", "F-35 delivery accelerated", "Officer/NCO vacancy rates addressed"] },
+        { minDiff: 2, maxDiff: 100, severity: "positive", impacts: ["Major military expansion beyond NATO requirements", "Full F-35 fleet delivery accelerated", "Warning: May exceed regional defensive needs"] }
       ]
     },
     {
@@ -149,15 +149,15 @@ You're the Finance Minister for a day. You have 100% of the budget to allocate a
       subLabel: "Environment, Housing, Culture",
       icon: "trees",
       color: "teal",
-      actualPercentage: 10,
+      actualPercentage: 9,
       defaultValue: 8,
       stakeholders: ["parents", "workers"],
       consequences: [
-        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Environmental protection cuts", "Social housing programs cancelled", "Cultural institutions close", "Parks and recreation neglected"] },
-        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Recycling programs reduced", "Housing subsidies cut"] },
-        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Environmental programs maintained", "Cultural funding stable", "Housing programs continue"] },
-        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Green energy incentives expanded", "New affordable housing projects"] },
-        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Major environmental restoration", "Large-scale housing construction", "Cultural renaissance funding"] }
+        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Environmental protection (1.9% GDP) severely cut", "Social housing programs cancelled", "Cultural institutions close", "Green transition goals missed"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Recycling and waste management programs reduced", "Housing subsidies cut", "Parks and recreation neglected"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Environmental programs maintained at current level", "Cultural funding stable", "Housing programs continue"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Green energy incentives expanded", "New affordable housing projects launched"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Major environmental restoration program", "Large-scale social housing construction", "Cultural renaissance funding"] }
       ]
     }
   ]}
@@ -230,11 +230,11 @@ You're the Finance Minister for a day. You have 100% of the budget to allocate a
     }
   ]}
   deficitLevels={[
-    { minDeficit: 1, maxDeficit: 10, severity: "mild", consequence: "Manageable deficit. Romania's current deficit is ~7%. Interest rates may increase slightly." },
-    { minDeficit: 10, maxDeficit: 30, severity: "moderate", consequence: "Significant deficit. Credit rating agencies issue warnings. Borrowing costs rise 1-2%." },
-    { minDeficit: 30, maxDeficit: 100, severity: "severe", consequence: "Severe deficit. EU excessive deficit procedure triggered. Austerity measures likely required." },
-    { minDeficit: 100, maxDeficit: 200, severity: "critical", consequence: "Critical deficit. IMF intervention likely. Public sector wages frozen, major program cuts." },
-    { minDeficit: 200, maxDeficit: 999, severity: "catastrophic", consequence: "Catastrophic deficit. National bankruptcy risk. Currency collapse, hyperinflation possible." }
+    { minDeficit: 1, maxDeficit: 10, severity: "mild", consequence: "Manageable deficit. Romania's 2024 deficit was 9.3% — the worst in the EU (3x the EU average of 3.2%). 10-year bond yields already at 7.56%." },
+    { minDeficit: 10, maxDeficit: 30, severity: "moderate", consequence: "Significant deficit. Credit ratings (BBB-/Baa3 — lowest investment grade) face downgrade risk. EU Excessive Deficit Procedure intensifies." },
+    { minDeficit: 30, maxDeficit: 100, severity: "severe", consequence: "Severe deficit. EU may suspend ESI Funds and RRF payments (€1.3B+ at risk). Austerity measures mandatory by October 2025." },
+    { minDeficit: 100, maxDeficit: 200, severity: "critical", consequence: "Critical deficit. IMF intervention likely. Credit rating falls to junk status. Public sector wages frozen, major program cuts." },
+    { minDeficit: 200, maxDeficit: 999, severity: "catastrophic", consequence: "Catastrophic deficit. National bankruptcy risk. Currency collapse, debt-to-GDP spiral past 60% toward Greek crisis levels." }
   ]}
   surplusLevels={[
     { minSurplus: 1, maxSurplus: 10, consequence: "Minor unallocation. Some services may be underfunded but manageable." },
@@ -270,32 +270,34 @@ You're the Finance Minister for a day. You have 100% of the budget to allocate a
 
 ---
 
-## Core Explanation: Romania's Spending Priorities
+## Core Explanation: Romania's Spending Priorities (COFOG 2024)
 
 Here's where Romania's money actually goes:
 
 | Rank | Category | % of Total | What it Covers |
 |------|----------|------------|----------------|
-| 1 | Social Protection | ~31-32% | Pensions, unemployment, welfare |
-| 2 | Economic Affairs | ~15-17% | Transport, energy, agriculture, industry |
-| 3 | General Public Services | ~11-12% | Administration, debt servicing, EU contributions |
-| 4 | Health | ~11-12% | Hospitals, doctors, medicines |
-| 5 | Education | ~8-9% | Schools, universities, teachers |
-| 6 | Public Order | ~6-7% | Police, courts, prisons |
-| 7 | Defense | ~4% | Military, NATO commitments |
-| 8 | Other | ~5-7% | Housing, environment, culture |
+| 1 | Social Protection | ~29-30% | Pensions (4.7M recipients), child allowances, unemployment, social assistance |
+| 2 | Economic Affairs | ~16-17% | Transport (A7, railways), energy, agriculture, industry support |
+| 3 | General Public Services | ~12-14% | Administration, **2.1% GDP for interest payments**, EU contributions |
+| 4 | Health | ~10-11% | Hospitals (7.28 beds/1,000), doctors, medicines |
+| 5 | Education | ~8-9% | Schools, universities, teacher salaries |
+| 6 | Public Order | ~6-7% | Police, courts, prisons (116% capacity) |
+| 7 | Defense | ~5% | Military, NATO commitments (2.26% GDP achieved) |
+| 8 | Other | ~9-10% | Environment (1.9% GDP), housing, culture, recreation |
 
 ### The Social Protection Giant
 
 **Why is Social Protection so large?** One word: pensions.
 
-Romania has an aging population and a pay-as-you-go pension system. Current workers' contributions pay for current retirees. With fewer workers and more retirees, this category keeps growing.
+Romania has an aging population and a pay-as-you-go pension system. Current workers' contributions pay for current retirees. With only **1.27 workers per pensioner** (8 pensioners for every 10 employees), this category keeps growing.
 
-- ~4.7 million pensioners (December 2024)
-- Average pension: ~2,748 RON/month (post-September 2024 reform)
+- **4,703,349 pensioners** (December 2024)
+- Average pension: **2,748 RON/month** (post-September 2024 reform)
+- 82.56% received increases averaging **+622 RON/month** (+27%)
 - This single expense is larger than Health + Education combined
+- Regional disparity: București has 4 pensioners per 10 workers, while Teleorman has **14-15 pensioners per 10 workers**
 
-> **Reality Check:** Many Romanians think too much goes to "bureaucrats" or "politicians." In reality, Social Protection (mostly pensions) dominates the budget. The actual administration costs are a small fraction.
+> **Reality Check:** Many Romanians think too much goes to "bureaucrats" or "politicians." In reality, Social Protection (mostly pensions) dominates the budget. Interest payments on debt (2.1% of GDP) are also substantial — a consequence of Romania's **9.3% deficit** (the worst in the EU).
 
 ---
 
@@ -310,17 +312,17 @@ Romania has an aging population and a pay-as-you-go pension system. Current work
     { id: "c", text: "Social Protection (pensions and welfare)", isCorrect: true },
     { id: "d", text: "Defense (military and NATO)", isCorrect: false }
   ]}
-  explanation="Social Protection accounts for approximately 31-32% of Romania's budget, making it by far the largest category. This is primarily driven by pension payments to approximately 4.7 million pensioners. Health and Education combined are smaller than Social Protection alone."
+  explanation="Social Protection accounts for approximately 29-30% of Romania's budget (12.7% of GDP), making it by far the largest category. This is primarily driven by pension payments to 4,703,349 pensioners (December 2024). The 2024 pension reform increased average pensions by 27% (+622 RON/month). Health and Education combined are smaller than Social Protection alone."
 />
 
 ---
 
 ## Key Takeaway
 
-> 📌 **Remember:** Social Protection (mainly pensions) is Romania's #1 expense at ~31-32% of the budget. Before criticizing "wasteful spending," it helps to know where the money actually goes — and most of it goes to grandparents.
+> 📌 **Remember:** Social Protection (mainly pensions) is Romania's #1 expense at ~29-30% of the budget. With 4.7 million pensioners and only 1.27 workers per retiree, this spending is structurally locked in. Before criticizing "wasteful spending," know that most of it goes to grandparents — and cutting it risks a 2024-style pension crisis.
 
 ---
 
-<Sources>Data sources: Eurostat COFOG database (gov_10a_exp), Casa Națională de Pensii Publice (CNPP) December 2024 statistics, Romanian Ministry of Finance budget execution reports. Figures reflect 2024 budget execution.</Sources>
+<Sources>Data sources: Eurostat COFOG database (gov_10a_exp), Casa Națională de Pensii Publice (CNPP) December 2024 statistics (4,703,349 pensioners, 2,748 RON average), Romanian Ministry of Finance 2024 budget execution (727.32B RON, 9.3% deficit), IMF Article IV consultation November 2025, Court of Accounts hospital equipment report, PISA 2022 results. All figures verified against 2024 official data.</Sources>
 
 <MarkComplete label="Continue to Classifications" />

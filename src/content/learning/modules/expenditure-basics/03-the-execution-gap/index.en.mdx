@@ -23,118 +23,15 @@ See how different types of spending execute very differently.
 
 > **Note:** The percentages below are typical patterns observed in Romanian budgets. The Ministry of Finance publishes spending in absolute values (billion lei), not as execution percentages. These estimates are based on comparing planned vs. actual spending data.
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  📊 TYPICAL EXECUTION RATES BY ECONOMIC TYPE                 │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  Execution Rate = (Actual Spent ÷ Planned Budget) × 100%     │
-│                                                              │
-│  ═══════════════════════════════════════════════════════════ │
-│                                                              │
-│  Personnel (Code 10)                                         │
-│  ████████████████████████████████████████████████  ~98% 🟢   │
-│  Almost always fully spent — salaries must be paid           │
-│                                                              │
-│  Goods & Services (Code 20)                                  │
-│  ██████████████████████████████████████████████░░  ~92% 🟢   │
-│  Usually well executed                                       │
-│                                                              │
-│  Transfers & Other (Code 50-59)                              │
-│  ████████████████████████████████████████████░░░░  ~88% 🟡   │
-│  Includes social assistance, grants, reserves                │
-│                                                              │
-│  INVESTMENTS (Code 71)                                       │
-│  ████████████████████████████░░░░░░░░░░░░░░░░░░░░ 50-70% 🔴  │
-│  ⚠️ Money for development is often NOT spent!                │
-│                                                              │
-│  ─────────────────────────────────────────────────────────── │
-│                                                              │
-│  [ Select a category for details ]                           │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-### Component Specification
-
-```typescript
-/**
- * ExecutionRateChart Component
- *
- * PURPOSE: Visualize execution rates across spending categories,
- * highlighting the personnel vs investments gap pattern.
- */
-interface ExecutionRateChartProps {
-  readonly year: number
-  readonly categories: readonly ExecutionCategory[]
-  readonly thresholds: ExecutionThresholds
-  readonly showTrend?: boolean
-  readonly onCategorySelect?: (categoryId: string) => void
-}
-
-interface ExecutionCategory {
-  readonly id: string
-  readonly code: string
-  readonly name: string
-  readonly planned: number
-  readonly executed: number
-  readonly executionRate: number
-  readonly description: string
-  readonly trend?: readonly { year: number; rate: number }[]
-  readonly reasons?: readonly string[]
-}
-
-interface ExecutionThresholds {
-  readonly excellent: number // >= this is green (default: 95)
-  readonly good: number      // >= this is yellow (default: 80)
-  readonly concerning: number // >= this is orange (default: 60)
-  // below concerning is red
-}
-
-/**
- * STATE MANAGEMENT:
- * - selectedCategory: string | null
- * - hoveredCategory: string | null
- * - showReasons: boolean (toggle explanation for low rates)
- * - animationProgress: number (0-1 for bar animation)
- *
- * STATE TRANSITIONS:
- * - Component mount → animate bars from 0 to actual percentage
- * - Category hover → show tooltip with exact figures
- * - Category click → expand to show reasons and trend
- *
- * USER INTERACTIONS:
- * - Hover bar: show tooltip with planned vs actual amounts
- * - Click bar: expand to show historical trend and reasons
- * - Legend click: filter to show only that threshold level
- * - Keyboard: Arrow keys navigate, Enter expands
- *
- * VISUAL STATES:
- * - Default: horizontal bars with color coding
- * - Hover: bar elevates, tooltip appears
- * - Selected: bar expands to show detail panel
- * - Colors: green (🟢 >=95), yellow (🟡 80-94), orange (🟠 60-79), red (🔴 <60)
- *
- * ANIMATIONS:
- * - Bar growth: animate width from 0 (600ms, staggered 100ms per bar)
- * - Number counter: count up to final percentage (400ms)
- * - Expansion: smooth height transition (300ms)
- * - Icon pulse: subtle pulse on warning icons
- *
- * ACCESSIBILITY:
- * - role="figure" with aria-label describing the chart
- * - Each bar has role="progressbar" with aria-valuenow
- * - Color is supplemented with icons (🟢 🟡 🟠 🔴)
- * - Screen reader announces category and rate on focus
- */
-```
-
-**Expected Behavior:**
-
-- Animated bars show percentage visually
-- Color coding: Green (\>95%), Yellow (80-94%), Orange (60-79%), Red (\<60%)
-- Click any category to see why execution is high/low
-- Shows the critical insight: salaries execute at ~98%, investments at 50-70%
+<ExecutionRateChart
+  title="Typical Execution Rates by Economic Type"
+  categories={[
+    { id: "personnel", code: "10", name: "Personnel", executionRate: 98, description: "Almost always fully spent — salaries must be paid" },
+    { id: "goods", code: "20", name: "Goods & Services", executionRate: 92, description: "Usually well executed" },
+    { id: "transfers", code: "50-59", name: "Transfers & Other", executionRate: 88, description: "Includes social assistance, grants, reserves" },
+    { id: "investments", code: "71", name: "Investments", executionRate: 60, description: "Money for development is often NOT spent!" }
+  ]}
+/>
 
 ---
 
@@ -185,36 +82,30 @@ One pattern is remarkably consistent in Romania:
 
 ## Romania in EU Context
 
-How does Romania compare on spending? (Data: Eurostat 2023)
+How does Romania compare on spending? (Data: Eurostat 2024)
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  📊 SPENDING AS % OF GDP: EU COMPARISON (2023)               │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  France      ██████████████████████████████████████████ 58%  │
-│  EU Average  ███████████████████████████████████████    49%  │
-│  Germany     ████████████████████████████████████████   48%  │
-│  Poland      ███████████████████████████████████████    47%  │
-│  ROMANIA     █████████████████████████████████████    43.5%  │
-│  Bulgaria    ██████████████████████████████████         39%  │
-│                                                              │
-│  ─────────────────────────────────────────────────────────── │
-│                                                              │
-│  💡 KEY INSIGHT                                              │
-│                                                              │
-│  Romania's spending (43.5% of GDP) is below EU average.      │
-│  The REAL problem is twofold:                                │
-│                                                              │
-│  Revenue: 34% ←─── 9.3% GAP ───→ 43.5% :Spending             │
-│                        │                                     │
-│                        ▼                                     │
-│               DEFICIT (THE HIGHEST IN THE EU)                │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
+<EUComparisonChart
+  title="Spending as % of GDP: EU Comparison (2024)"
+  items={[
+    { id: "france", label: "France", value: 57, flag: "🇫🇷" },
+    { id: "eu", label: "EU Average", value: 49.2 },
+    { id: "germany", label: "Germany", value: 49, flag: "🇩🇪" },
+    { id: "poland", label: "Poland", value: 49, flag: "🇵🇱" },
+    { id: "romania", label: "Romania", value: 43.5, flag: "🇷🇴", isHighlighted: true },
+    { id: "bulgaria", label: "Bulgaria", value: 40, flag: "🇧🇬" }
+  ]}
+  averageValue={49.2}
+  averageLabel="EU Average"
+  highlightLabel="Below EU average"
+  insight={{
+    title: "Key Insight",
+    content: "Romania's spending (43.5% of GDP) is below EU average. The REAL problem is twofold: Romania collects too little revenue (34.1% of GDP) and the 9.4% gap creates the EU's highest deficit.",
+    revenue: 34.1,
+    spending: 43.5
+  }}
+/>
 
-> **The Real Problem:** Romania faces a dual challenge. First, it collects too little — at 34% of GDP, revenue is among the lowest in the EU. Second, the 9.3% gap between revenue and spending creates the EU's highest deficit. Romania isn't overspending; it's under-collecting.
+> **The Real Problem:** Romania faces a dual challenge. First, it collects too little — at 34.1% of GDP, revenue is among the lowest in the EU. Second, the 9.4% gap between revenue and spending creates the EU's highest deficit (9.3% in 2024). Romania isn't overspending; it's under-collecting.
 
 ---
 
@@ -222,32 +113,20 @@ How does Romania compare on spending? (Data: Eurostat 2023)
 
 Now apply what you've learned using the Transparenta platform.
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  🎯 HANDS-ON: Explore Spending Data                          │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  Step 1: Open the Budget Explorer                            │
-│          [ Open Budget Explorer → ]                          │
-│                                                              │
-│  Step 2: Switch to "Expenditures" view                       │
-│          Look for "Cheltuieli" tab                           │
-│                                                              │
-│  Step 3: Click on "Social Protection"                        │
-│          → What percentage is it?                            │
-│          → Click to see subcategories                        │
-│                                                              │
-│  Step 4: Switch to Economic classification                   │
-│          → Find "Active nefinanciare" (Code 71)              │
-│          → What's the execution rate?                        │
-│                                                              │
-│  ✅ Challenge: What is Romania's largest spending function?   │
-│                                                              │
-│  Your answer: [ _________________ ]  [ Check ]               │
-│  (Hint: It's ~33% of total spending)                         │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
+<HandsOnExplorer
+  title="Explore Spending Data"
+  steps={[
+    { number: 1, instruction: "Open the Budget Explorer", link: "/explorer", hint: "Click the button to open in a new tab" },
+    { number: 2, instruction: "Switch to 'Expenditures' view", hint: "Look for 'Cheltuieli' tab" },
+    { number: 3, instruction: "Click on 'Social Protection'", hint: "What percentage is it? Click to see subcategories" },
+    { number: 4, instruction: "Switch to Economic classification", hint: "Find 'Active nefinanciare' (Code 71) — What's the execution rate?" }
+  ]}
+  challenge={{
+    question: "What is Romania's largest spending function?",
+    hint: "It's approximately 33% of total spending",
+    correctAnswer: "Social Protection"
+  }}
+/>
 
 ---
 

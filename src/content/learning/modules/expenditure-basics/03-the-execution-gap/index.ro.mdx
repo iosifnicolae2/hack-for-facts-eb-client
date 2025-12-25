@@ -23,120 +23,15 @@ Vezi cum diferite tipuri de cheltuieli se execută foarte diferit.
 
 > **Notă:** Procentele de mai jos sunt tipare tipice observate în bugetele României. Ministerul Finanțelor publică cheltuielile în valori absolute (miliarde lei), nu ca procente de execuție. Aceste estimări se bazează pe compararea datelor planificate cu cele efective.
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  📊 RATE TIPICE DE EXECUȚIE PE TIP ECONOMIC                  │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  Rata de execuție = (Cheltuit efectiv ÷ Buget planificat)    │
-│                     × 100%                                   │
-│                                                              │
-│  ═══════════════════════════════════════════════════════════ │
-│                                                              │
-│  Personal (Cod 10)                                           │
-│  ████████████████████████████████████████████████  ~98% 🟢   │
-│  Aproape întotdeauna cheltuit integral — salariile trebuie   │
-│  plătite                                                     │
-│                                                              │
-│  Bunuri și Servicii (Cod 20)                                 │
-│  ██████████████████████████████████████████████░░  ~92% 🟢   │
-│  De obicei bine executat                                     │
-│                                                              │
-│  Transferuri și Altele (Cod 50-59)                           │
-│  ████████████████████████████████████████████░░░░  ~88% 🟡   │
-│  Include asistență socială, granturi, rezerve                │
-│                                                              │
-│  INVESTIȚII (Cod 71)                                         │
-│  ████████████████████████████░░░░░░░░░░░░░░░░░░░░ 50-70% 🔴  │
-│  ⚠️ Banii pentru dezvoltare adesea NU sunt cheltuiți!        │
-│                                                              │
-│  ─────────────────────────────────────────────────────────── │
-│                                                              │
-│  [ Selectează o categorie pentru detalii ]                   │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-### Specificație Componentă
-
-```typescript
-/**
- * ExecutionRateChart Component
- *
- * PURPOSE: Visualize execution rates across spending categories,
- * highlighting the personnel vs investments gap pattern.
- */
-interface ExecutionRateChartProps {
-  readonly year: number
-  readonly categories: readonly ExecutionCategory[]
-  readonly thresholds: ExecutionThresholds
-  readonly showTrend?: boolean
-  readonly onCategorySelect?: (categoryId: string) => void
-}
-
-interface ExecutionCategory {
-  readonly id: string
-  readonly code: string
-  readonly name: string
-  readonly planned: number
-  readonly executed: number
-  readonly executionRate: number
-  readonly description: string
-  readonly trend?: readonly { year: number; rate: number }[]
-  readonly reasons?: readonly string[]
-}
-
-interface ExecutionThresholds {
-  readonly excellent: number // >= this is green (default: 95)
-  readonly good: number      // >= this is yellow (default: 80)
-  readonly concerning: number // >= this is orange (default: 60)
-  // below concerning is red
-}
-
-/**
- * STATE MANAGEMENT:
- * - selectedCategory: string | null
- * - hoveredCategory: string | null
- * - showReasons: boolean (toggle explanation for low rates)
- * - animationProgress: number (0-1 for bar animation)
- *
- * STATE TRANSITIONS:
- * - Component mount → animate bars from 0 to actual percentage
- * - Category hover → show tooltip with exact figures
- * - Category click → expand to show reasons and trend
- *
- * USER INTERACTIONS:
- * - Hover bar: show tooltip with planned vs actual amounts
- * - Click bar: expand to show historical trend and reasons
- * - Legend click: filter to show only that threshold level
- * - Keyboard: Arrow keys navigate, Enter expands
- *
- * VISUAL STATES:
- * - Default: horizontal bars with color coding
- * - Hover: bar elevates, tooltip appears
- * - Selected: bar expands to show detail panel
- * - Colors: green (🟢 >=95), yellow (🟡 80-94), orange (🟠 60-79), red (🔴 <60)
- *
- * ANIMATIONS:
- * - Bar growth: animate width from 0 (600ms, staggered 100ms per bar)
- * - Number counter: count up to final percentage (400ms)
- * - Expansion: smooth height transition (300ms)
- * - Icon pulse: subtle pulse on warning icons
- *
- * ACCESSIBILITY:
- * - role="figure" with aria-label describing the chart
- * - Each bar has role="progressbar" with aria-valuenow
- * - Color is supplemented with icons (🟢 🟡 🟠 🔴)
- * - Screen reader announces category and rate on focus
- */
-```
-
-**Comportament Așteptat:**
-
-- Barele animate arată procentul vizual
-- Codificare prin culori: Verde (\>95%), Galben (80-94%), Portocaliu (60-79%), Roșu (\<60%)
-- Click pe orice categorie pentru a vedea de ce execuția este ridicată/scăzută
-- Arată observația critică: salariile se execută la ~98%, investițiile la 50-70%
+<ExecutionRateChart
+  title="Rate Tipice de Execuție pe Tip Economic"
+  categories={[
+    { id: "personnel", code: "10", name: "Personal", executionRate: 98, description: "Aproape întotdeauna cheltuit integral — salariile trebuie plătite" },
+    { id: "goods", code: "20", name: "Bunuri și Servicii", executionRate: 92, description: "De obicei bine executat" },
+    { id: "transfers", code: "50-59", name: "Transferuri și Altele", executionRate: 88, description: "Include asistență socială, granturi, rezerve" },
+    { id: "investments", code: "71", name: "Investiții", executionRate: 60, description: "Banii pentru dezvoltare adesea NU sunt cheltuiți!" }
+  ]}
+/>
 
 ---
 
@@ -187,36 +82,30 @@ Un tipar este remarcabil de constant în România:
 
 ## România în Context European
 
-Cum se compară România la cheltuieli? (Date: Eurostat 2023)
+Cum se compară România la cheltuieli? (Date: Eurostat 2024)
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  📊 CHELTUIELI CA % DIN PIB: COMPARAȚIE UE (2023)            │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  Franța       ██████████████████████████████████████████ 58% │
-│  Media UE     ███████████████████████████████████████    49% │
-│  Germania     ████████████████████████████████████████   48% │
-│  Polonia      ███████████████████████████████████████    47% │
-│  ROMÂNIA      █████████████████████████████████████   43,5%  │
-│  Bulgaria     ██████████████████████████████████         39% │
-│                                                              │
-│  ─────────────────────────────────────────────────────────── │
-│                                                              │
-│  💡 OBSERVAȚIE CHEIE                                         │
-│                                                              │
-│  Cheltuielile României (43,5% din PIB) sunt sub media UE.    │
-│  Problema REALĂ este dublă:                                  │
-│                                                              │
-│  Venituri: 34% ←── DECALAJ 9,3% ──→ 43,5% :Cheltuieli        │
-│                        │                                     │
-│                        ▼                                     │
-│               DEFICIT (CEL MAI MARE DIN UE)                  │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
+<EUComparisonChart
+  title="Cheltuieli ca % din PIB: Comparație UE (2024)"
+  items={[
+    { id: "france", label: "Franța", value: 57, flag: "🇫🇷" },
+    { id: "eu", label: "Media UE", value: 49.2 },
+    { id: "germany", label: "Germania", value: 49, flag: "🇩🇪" },
+    { id: "poland", label: "Polonia", value: 49, flag: "🇵🇱" },
+    { id: "romania", label: "România", value: 43.5, flag: "🇷🇴", isHighlighted: true },
+    { id: "bulgaria", label: "Bulgaria", value: 40, flag: "🇧🇬" }
+  ]}
+  averageValue={49.2}
+  averageLabel="Media UE"
+  highlightLabel="Sub media UE"
+  insight={{
+    title: "Observație Cheie",
+    content: "Cheltuielile României (43,5% din PIB) sunt sub media UE. Problema REALĂ este dublă: România colectează prea puține venituri (34,1% din PIB) și decalajul de 9,4% creează cel mai mare deficit din UE.",
+    revenue: 34.1,
+    spending: 43.5
+  }}
+/>
 
-> **Problema Reală:** România se confruntă cu o provocare dublă. În primul rând, colectează prea puțin — la 34% din PIB, veniturile sunt printre cele mai scăzute din UE. În al doilea rând, decalajul de 9,3% între venituri și cheltuieli creează cel mai mare deficit din UE. România nu cheltuiește prea mult; colectează prea puțin.
+> **Problema Reală:** România se confruntă cu o provocare dublă. În primul rând, colectează prea puțin — la 34,1% din PIB, veniturile sunt printre cele mai scăzute din UE. În al doilea rând, decalajul de 9,4% între venituri și cheltuieli creează cel mai mare deficit din UE (9,3% în 2024). România nu cheltuiește prea mult; colectează prea puțin.
 
 ---
 
@@ -224,33 +113,20 @@ Cum se compară România la cheltuieli? (Date: Eurostat 2023)
 
 Acum aplică ce ai învățat folosind platforma Transparenta.
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  🎯 PRACTICĂ: Explorează Datele despre Cheltuieli            │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  Pasul 1: Deschide Budget Explorer                           │
-│           [ Deschide Budget Explorer → ]                     │
-│                                                              │
-│  Pasul 2: Comută la vizualizarea „Cheltuieli"                │
-│           Caută tab-ul „Cheltuieli"                          │
-│                                                              │
-│  Pasul 3: Click pe „Protecție Socială"                       │
-│           → Ce procent reprezintă?                           │
-│           → Click pentru a vedea subcategoriile              │
-│                                                              │
-│  Pasul 4: Comută la clasificarea Economică                   │
-│           → Găsește „Active nefinanciare" (Cod 71)           │
-│           → Care este rata de execuție?                      │
-│                                                              │
-│  ✅ Provocare: Care este cea mai mare funcție de cheltuială   │
-│               a României?                                    │
-│                                                              │
-│  Răspunsul tău: [ _________________ ]  [ Verifică ]          │
-│  (Indiciu: Este ~33% din totalul cheltuielilor)              │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
+<HandsOnExplorer
+  title="Explorează Datele despre Cheltuieli"
+  steps={[
+    { number: 1, instruction: "Deschide Budget Explorer", link: "/explorer", hint: "Click pe buton pentru a deschide într-un tab nou" },
+    { number: 2, instruction: "Comută la vizualizarea 'Cheltuieli'", hint: "Caută tab-ul 'Cheltuieli'" },
+    { number: 3, instruction: "Click pe 'Protecție Socială'", hint: "Ce procent reprezintă? Click pentru a vedea subcategoriile" },
+    { number: 4, instruction: "Comută la clasificarea Economică", hint: "Găsește 'Active nefinanciare' (Cod 71) — Care este rata de execuție?" }
+  ]}
+  challenge={{
+    question: "Care este cea mai mare funcție de cheltuială a României?",
+    hint: "Este aproximativ 33% din totalul cheltuielilor",
+    correctAnswer: "Protecție Socială"
+  }}
+/>
 
 ---
 
@@ -277,7 +153,7 @@ Acum aplică ce ai învățat folosind platforma Transparenta.
     { id: "c", text: "Nu există nicio problemă bugetară — România este pe drumul cel bun", isCorrect: false },
     { id: "d", text: "România cheltuiește prea puțin pe programe sociale", isCorrect: false }
   ]}
-  explanation="Cheltuielile României (43,5% din PIB) sunt sub media UE (49%). Problema este la venituri: România colectează doar 34% din PIB — printre cele mai scăzute din UE. Acest decalaj de 9,3% creează cel mai mare deficit bugetar din UE, nu supracheltuirea."
+  explanation="Cheltuielile României (43,5% din PIB) sunt sub media UE (49,2%). Problema este la venituri: România colectează doar 34,1% din PIB — printre cele mai scăzute din UE. Acest decalaj de 9,4% creează cel mai mare deficit bugetar din UE (9,3% în 2024), nu supracheltuirea."
 />
 
 ---

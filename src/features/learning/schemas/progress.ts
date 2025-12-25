@@ -13,7 +13,58 @@ const LearningQuizInteractionSchema = z.object({
   selectedOptionId: z.string().nullable(),
 })
 
-const LearningInteractionStateSchema = z.discriminatedUnion('kind', [LearningQuizInteractionSchema])
+const LearningPredictionRevealSchema = z.object({
+  guess: z.number().min(0).max(100),
+  actualRate: z.number().min(0).max(100),
+  revealedAt: z.string().datetime(),
+})
+
+const LearningPredictionInteractionSchema = z.object({
+  kind: z.literal('prediction'),
+  reveals: z.record(z.string(), LearningPredictionRevealSchema),
+})
+
+const LearningSalaryCalculatorStepSchema = z.enum(['INPUT', 'GUESS', 'REVEAL'])
+
+const LearningSalaryCalculatorInteractionSchema = z.object({
+  kind: z.literal('salary-calculator'),
+  gross: z.number().min(0),
+  userGuess: z.number().min(0),
+  step: LearningSalaryCalculatorStepSchema,
+  completedAt: z.string().datetime().optional(),
+})
+
+const LearningBudgetAllocatorStepSchema = z.enum(['ALLOCATE', 'COMPARE'])
+
+const LearningBudgetAllocatorInteractionSchema = z.object({
+  kind: z.literal('budget-allocator'),
+  allocations: z.record(z.string(), z.number()),
+  step: LearningBudgetAllocatorStepSchema,
+  completedAt: z.string().datetime().optional(),
+})
+
+/**
+ * CRITICAL: All interaction types MUST be registered in this discriminated union.
+ *
+ * This schema validates stored progress snapshots. If a new interaction type is added
+ * but not registered here, the entire progress object will fail validation and be
+ * replaced with an empty state - losing all user progress.
+ *
+ * See also: progress-events.ts LearningInteractionStateSchema (same requirement)
+ *
+ * Checklist when adding a new interaction:
+ * 1. Add TypeScript types to types.ts
+ * 2. Create resolver in hooks/interactions/
+ * 3. Register resolver import in hooks/interactions/index.ts
+ * 4. Add schema to progress-events.ts
+ * 5. ADD SCHEMA HERE - Easy to forget!
+ */
+const LearningInteractionStateSchema = z.discriminatedUnion('kind', [
+  LearningQuizInteractionSchema,
+  LearningPredictionInteractionSchema,
+  LearningSalaryCalculatorInteractionSchema,
+  LearningBudgetAllocatorInteractionSchema,
+])
 
 export const LearningContentProgressSchema = z.object({
   contentId: z.string().min(1),

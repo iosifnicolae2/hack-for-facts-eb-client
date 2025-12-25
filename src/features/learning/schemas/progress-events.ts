@@ -28,10 +28,37 @@ const LearningSalaryCalculatorInteractionSchema = z.object({
   completedAt: z.string().datetime().optional(),
 })
 
+const LearningBudgetAllocatorStepSchema = z.enum(['ALLOCATE', 'COMPARE'])
+
+const LearningBudgetAllocatorInteractionSchema = z.object({
+  kind: z.literal('budget-allocator'),
+  allocations: z.record(z.string(), z.number()),
+  step: LearningBudgetAllocatorStepSchema,
+  completedAt: z.string().datetime().optional(),
+})
+
+/**
+ * CRITICAL: All interaction types MUST be registered in this discriminated union.
+ *
+ * When a new interaction type is added (e.g., budget-allocator), it MUST be added here.
+ * Otherwise, events will be saved to localStorage but SILENTLY REJECTED on parse,
+ * causing state restoration to fail without any error.
+ *
+ * The parsing in parseLearningProgressEvents() uses safeParse which drops invalid
+ * entries without throwing, making this bug hard to detect.
+ *
+ * Checklist when adding a new interaction:
+ * 1. Add TypeScript types to types.ts
+ * 2. Create resolver in hooks/interactions/
+ * 3. Register resolver import in hooks/interactions/index.ts
+ * 4. ADD SCHEMA HERE - Easy to forget!
+ * 5. Add schema to progress.ts as well
+ */
 const LearningInteractionStateSchema = z.discriminatedUnion('kind', [
   LearningQuizInteractionSchema,
   LearningPredictionInteractionSchema,
   LearningSalaryCalculatorInteractionSchema,
+  LearningBudgetAllocatorInteractionSchema,
 ])
 
 const LearningProgressEventBaseSchema = z.object({

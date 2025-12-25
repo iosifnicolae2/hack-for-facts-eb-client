@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useRef } from 'react'
+import { useState, useMemo, useCallback, useRef, useEffect } from 'react'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import { useLearningProgress } from '@/features/learning/hooks/use-learning-progress'
 import {
@@ -746,23 +746,32 @@ export function BudgetAllocatorGame({
   interactionId,
 }: Readonly<BudgetAllocatorGameProps>) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const hasRestoredRef = useRef(false)
   const { progress, dispatchInteractionAction } = useLearningProgress()
 
-  // Restore state from progress (if contentId provided)
-  const savedInteraction = contentId
-    ? progress.content[contentId]?.interactions?.[interactionId ?? 'budget-allocator']
-    : null
-  const restoredState = savedInteraction?.kind === 'budget-allocator' ? savedInteraction : null
+  // Derive saved state reactively from progress (follows SalaryTaxCalculator pattern)
+  const savedState = useMemo(() => {
+    if (!contentId) return null
+    const interaction = progress.content[contentId]?.interactions?.[interactionId ?? 'budget-allocator']
+    return interaction?.kind === 'budget-allocator' ? interaction : null
+  }, [progress, contentId, interactionId])
 
-  const [step, setStep] = useState<GameStep>(() => restoredState?.step ?? 'HOOK')
+  const [step, setStep] = useState<GameStep>('HOOK')
   const [allocations, setAllocations] = useState<Record<string, number>>(() =>
-    restoredState?.allocations
-      ? { ...restoredState.allocations }
-      : getInitialAllocationsFromProps(categories)
+    getInitialAllocationsFromProps(categories)
   )
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
     () => new Set([categories[0]?.id ?? 'social-protection'])
   )
+
+  // Restore state when savedState becomes available (follows SalaryTaxCalculator pattern)
+  useEffect(() => {
+    if (savedState && !hasRestoredRef.current) {
+      hasRestoredRef.current = true
+      setStep(savedState.step)
+      setAllocations({ ...savedState.allocations })
+    }
+  }, [savedState])
 
   const toggleCategory = useCallback((id: string) => {
     setExpandedCategories((prev) => {

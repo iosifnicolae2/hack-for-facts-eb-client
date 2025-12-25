@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { motion } from 'framer-motion'
 import { t } from '@lingui/core/macro'
+import { Lightbulb } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 
@@ -13,6 +14,13 @@ interface ComparisonItem {
     isHighlighted?: boolean
 }
 
+interface InsightData {
+    readonly title: string
+    readonly content: string
+    readonly revenue?: number
+    readonly spending?: number
+}
+
 interface EUComparisonChartProps {
     title?: string
     items: ReadonlyArray<ComparisonItem>
@@ -20,6 +28,68 @@ interface EUComparisonChartProps {
     averageValue?: number
     averageLabel?: string
     highlightLabel?: string
+    insight?: InsightData
+}
+
+function InsightBox({ insight, inView }: { insight: InsightData; inView: boolean }) {
+    const hasGap = insight.revenue !== undefined && insight.spending !== undefined
+    const gap = hasGap ? insight.spending! - insight.revenue! : 0
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ delay: 1.0, duration: 0.5 }}
+            className="mt-8 p-6 rounded-2xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/50 dark:border-amber-800/50"
+        >
+            <div className="flex items-start gap-4">
+                <div className="p-2 rounded-xl bg-amber-100 dark:bg-amber-900/30 shrink-0">
+                    <Lightbulb className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                </div>
+                <div className="flex-1 min-w-0">
+                    <h4 className="font-bold text-zinc-900 dark:text-zinc-100 mb-2">
+                        {insight.title}
+                    </h4>
+                    <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
+                        {insight.content}
+                    </p>
+
+                    {hasGap && (
+                        <div className="flex flex-wrap items-center gap-4 md:gap-6 pt-4 border-t border-amber-200/50 dark:border-amber-800/50">
+                            <div className="text-center">
+                                <div className="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-1">
+                                    {t`Revenue`}
+                                </div>
+                                <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 tabular-nums">
+                                    {insight.revenue}%
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-4 md:gap-6">
+                                <div className="text-2xl font-black text-zinc-300 dark:text-zinc-600">←</div>
+                                <div className="text-center">
+                                    <div className="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-1">
+                                        {t`Gap`}
+                                    </div>
+                                    <div className="text-xl font-black text-red-600 dark:text-red-400 tabular-nums">
+                                        {gap.toFixed(1)}%
+                                    </div>
+                                </div>
+                                <div className="text-2xl font-black text-zinc-300 dark:text-zinc-600">→</div>
+                            </div>
+                            <div className="text-center">
+                                <div className="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-1">
+                                    {t`Spending`}
+                                </div>
+                                <div className="text-xl font-black text-zinc-900 dark:text-zinc-100 tabular-nums">
+                                    {insight.spending}%
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </motion.div>
+    )
 }
 
 export function EUComparisonChart({
@@ -28,7 +98,8 @@ export function EUComparisonChart({
     unit = '%',
     averageValue,
     averageLabel = t`EU Average`,
-    highlightLabel = t`One of the lowest`
+    highlightLabel = t`One of the lowest`,
+    insight,
 }: Readonly<EUComparisonChartProps>) {
     const { ref, inView } = useInView({
         triggerOnce: true,
@@ -126,9 +197,12 @@ export function EUComparisonChart({
                     ))}
                 </div>
 
+                {/* Insight Box */}
+                {insight && <InsightBox insight={insight} inView={inView} />}
+
                 {/* Footer info */}
-                <div className="mt-10 pt-6 border-t border-zinc-100/50 text-center">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400">
+                <div className="mt-10 pt-6 border-t border-zinc-100/50 dark:border-zinc-800/50 text-center">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
                         {t`Data: Eurostat 2024 (Provisional)`}
                     </p>
                 </div>

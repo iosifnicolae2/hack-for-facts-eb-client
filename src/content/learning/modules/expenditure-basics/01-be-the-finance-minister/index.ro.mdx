@@ -29,16 +29,16 @@ Ești Ministrul Finanțelor pentru o zi. Ai 100% din buget de alocat pe categori
       subLabel: "Pensii, Șomaj, Asistență Socială",
       icon: "shield",
       color: "rose",
-      actualPercentage: 32,
+      actualPercentage: 30,
       defaultValue: 25,
       stakeholders: ["pensioners", "workers"],
       consequences: [
-        { minDiff: -100, maxDiff: -10, severity: "negative", impacts: ["Plățile pensiilor întârziate sau reduse cu ~15%", "~700.000 de pensionari sub pragul sărăciei", "Indemnizațiile de șomaj limitate la 3 luni", "Alocațiile pentru copii suspendate 6+ luni"] },
-        { minDiff: -10, maxDiff: -5, severity: "negative", impacts: ["Pensia medie înghețată (fără ajustare la inflație)", "~200.000 mai puțini beneficiari de asistență socială", "Procesarea indemnizațiilor de handicap întârziată 6+ luni"] },
-        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Creșteri de pensii sub rata inflației", "Unele programe sociale văd finanțare redusă"] },
-        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["4,7 milioane de pensionari primesc plăți stabile", "Pensia medie: ~2.748 RON/lună menținută", "Programele actuale de asistență socială continuă"] },
-        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Creșterea pensiilor peste inflație (+3-5%)", "50.000 de familii în plus primesc alocații pentru copii"] },
-        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Creștere semnificativă a pensiilor (+8-10%)", "Nou program de extindere a concediului parental", "Indemnizațiile de handicap cresc cu 15%", "Atenție: Poate necesita împrumuturi sau reduceri în altă parte"] }
+        { minDiff: -100, maxDiff: -10, severity: "negative", impacts: ["Plățile pensiilor întârziate — 4,7 milioane de pensionari afectați", "Câștigurile din reforma din septembrie 2024 (+622 RON/lună în medie) anulate", "3,6 milioane de copii pierd alocațiile înghețate complet", "Raportul lucrători-pensionari (1,27:1) devine nesustenabil"] },
+        { minDiff: -10, maxDiff: -5, severity: "negative", impacts: ["Pensia medie înghețată la 2.748 RON (fără ajustare la inflație)", "Înghețarea alocațiilor (deja 2025-2026) extinsă mai mult", "Regiuni ca Teleorman (14-15 pensionari la 10 lucrători) cel mai afectate"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Creșterile de pensii sub inflație", "82,56% care au primit creșteri în 2024 văd câștigurile erodate", "Unele beneficii pentru muncă periculoasă (Grupa I/II) reduse"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["4.703.349 pensionari primesc plăți stabile (dec 2024)", "Pensia medie menținută la 2.748 RON/lună", "Alocațiile înghețate la 718 RON (0-2 ani) / 291 RON (2-18 ani)"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Creșterea pensiilor peste inflație (+3-5%)", "Înghețarea alocațiilor ridicată pentru 3,6 milioane de copii", "4,4% cu pensii înghețate primesc creșteri compensatorii"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Extindere majoră a reformei pensiilor (+8-10%)", "Pensionare anticipată pentru muncă periculoasă restabilită", "Atenție: Adaugă miliarde la deficitul de 9,3% — poate declanșa sancțiuni UE"] }
       ]
     },
     {
@@ -47,32 +47,32 @@ Ești Ministrul Finanțelor pentru o zi. Ai 100% din buget de alocat pe categori
       subLabel: "Transport, Energie, Industrie",
       icon: "building-2",
       color: "blue",
-      actualPercentage: 16,
+      actualPercentage: 17,
       defaultValue: 12,
       stakeholders: ["workers", "business"],
       consequences: [
-        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Proiecte majore de autostrăzi suspendate (A7, A8)", "Modernizarea căilor ferate oprită", "Subvențiile pentru energie industrială anulate", "Plățile pentru sprijin agricol întârziate"] },
-        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Proiectele de infrastructură întârziate 1-2 ani", "Sprijin redus pentru dezvoltarea IMM-urilor"] },
-        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Proiectele actuale de infrastructură continuă", "Investițiile PNRR în transport pe drumul cel bun", "Subvențiile agricole menținute"] },
-        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Construcția de autostrăzi accelerată (+50km/an)", "Noi stimulente pentru energie regenerabilă"] },
-        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Noi coridoare majore de autostrăzi finanțate", "Încep studiile de fezabilitate pentru tren de mare viteză", "Tranziția către energie verde accelerată"] }
+        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Autostrada A7 Moldova (doar 195km din 440km gata) suspendată", "Autostrada A8 Unirii amânată după 2030", "Modernizarea căilor ferate colapsează — doar 77km în 2024 vs ținta de 298km", "Absorbția PNRR scade sub 7,9% — UE poate suspenda €1,3 miliarde+"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Întârzierile constructorului UMB se agravează (11 din 14 loturi A7)", "Plățile APIA întârziate pentru 365.000+ hectare", "Tranziția la energie verde încetinită"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["A7 progresează spre termenul PNRR 2026", "Modernizarea căilor ferate continuă în ritmul actual lent", "PNRR €10,7 miliarde absorbite din €28,5 miliarde (37,6% total)"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Construcția de autostrăzi accelerată (+50km/an)", "Modernizarea căilor ferate recuperează restanța de 633km", "Absorbția PNRR crește spre media UE (56,4%)"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Finalizarea A7 și A8 accelerată cu 2-3 ani", "Încep studiile de fezabilitate pentru tren de mare viteză", "Utilizare completă PNRR deblocată", "Atenție: Poate tensiona deficitul critic de 9,3%"] }
       ]
     },
     {
       id: "public-services",
       label: "Servicii Publice Generale",
-      subLabel: "Administrație, Datorie, UE",
+      subLabel: "Administrație, Dobânzi Datorie, UE",
       icon: "landmark",
       color: "slate",
-      actualPercentage: 12,
+      actualPercentage: 13,
       defaultValue: 10,
       stakeholders: ["business"],
       consequences: [
-        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Riscul de neplată a datoriei crește", "Plățile contribuției la UE întârziate", "Proiectele de digitalizare guvernamentală anulate", "Salariile funcționarilor publici înghețate sau reduse"] },
-        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Serviciul datoriei devine tensionat", "Modernizarea administrativă încetinită"] },
-        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Plățile datoriei la termen", "Contribuțiile de membru UE plătite", "Costurile administrative stabile"] },
-        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Reducerea accelerată a datoriei", "Servicii e-guvernare extinse"] },
-        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Reducere semnificativă a datoriei posibilă", "Digitalizare completă a guvernului", "Atenție: Poate fi supraalocat pentru administrație"] }
+        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Risc de neplată — randamentele obligațiunilor pe 10 ani deja la 7,56%", "Plățile dobânzilor (2,1% din PIB) devin neplătibile", "Rating de credit BBB-/Baa3 retrogradat la junk", "UE poate suspenda Fondurile ESI și plățile RRF"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Serviciul datoriei tensionat la 54,8% datorie/PIB", "Procedura de Deficit Excesiv UE (în curs din 2020) se intensifică", "Proiectele de digitalizare guvernamentală anulate"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Plățile dobânzilor (2,1% PIB) menținute", "Contribuțiile UE plătite la termen", "Rating de credit stabil la cel mai jos grad de investiție (BBB-/Baa3)"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Traiectoria datoriei se îmbunătățește spre ținta de 60%", "Servicii e-guvernare extinse", "Perspectiva ratingului de credit se îmbunătățește din negativ"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Reducere semnificativă a deficitului spre ținta UE de 3%", "Ieșire din Procedura de Deficit Excesiv posibilă", "Atenție: Necesită reduceri în altă parte în criza deficitului de 9,3%"] }
       ]
     },
     {
@@ -85,11 +85,11 @@ Ești Ministrul Finanțelor pentru o zi. Ai 100% din buget de alocat pe categori
       defaultValue: 15,
       stakeholders: ["doctors", "parents"],
       consequences: [
-        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["~3.200 de paturi de spital închise", "Timpul de așteptare la urgențe: 4h → 8h+", "12 spitale rurale pierd turele de noapte", "Lipsă de medicamente pentru boli cronice"] },
-        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Emigrarea medicilor se accelerează (+500/an)", "Modernizarea echipamentelor medicale anulată", "Programele de prevenție reduse"] },
-        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["6,2 paturi de spital la 1.000 de locuitori menținute", "Salariile actuale ale medicilor păstrate", "Programele naționale de sănătate continuă"] },
-        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["850 de medici noi pot fi angajați", "12 spitale rurale modernizate", "Noi centre de tratament oncologic deschise"] },
-        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Program major de construcție de spitale", "Salariile medicilor ajung la media UE", "Programe universale de screening lansate", "Timpii de așteptare reduși cu 40%"] }
+        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Emigrarea medicilor se accelerează — 25.000+ deja plecați (1/3 din toți formați)", "54% din spitale fără CT/RMN se confruntă cu defecțiuni echipamente", "Așteptări de 7 ore la urgențe (ca Alba Iulia dec 2024) devin normă", "320-424 localități pierd ultima speranță pentru medici de familie"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["57,5% din medicii sub 35 ani accelerează planurile de emigrare", "559.000 rezidenți rurali fără asistență primară cresc", "Timpii de așteptare de 6 luni pentru RMN se extind", "UPU-uri funcționează cu 1-2 medici pentru 170+ pacienți"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["7,28 paturi de spital la 1.000 menținute (al 3-lea în UE)", "Salariile actuale ale medicilor păstrate (creștere 25% iunie 2024)", "Programele naționale de sănătate continuă la nivelul actual"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Lipsa de 1.530 medici de familie parțial adresată", "Echipamente CT/RMN pentru 54% din spitalele subechipate", "Deșerturile medicale rurale reduse — 1.100 medici rurali angajați"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Program major de echipare spitale — toate spitalele publice primesc imagistică", "Salariile medicilor competitive cu Europa de Vest — emigrarea inversată", "Timpii de așteptare la urgențe reduși de la 7 ore la standarde UE", "Atenție: Impact major pe deficit în criza de 9,3%"] }
       ]
     },
     {
@@ -102,11 +102,11 @@ Ești Ministrul Finanțelor pentru o zi. Ai 100% din buget de alocat pe categori
       defaultValue: 12,
       stakeholders: ["teachers", "parents"],
       consequences: [
-        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Salariile profesorilor reduse cu 10-15%", "500+ școli rurale se închid", "Finanțarea universitară tăiată, taxele cresc", "Proiectele de renovare a școlilor anulate"] },
-        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Salariile profesorilor înghețate (fără măriri)", "Numărul de elevi per clasă crește la 35+", "Actualizarea manualelor întârziată"] },
-        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Salariile actuale ale profesorilor menținute", "Programele școlare existente continuă", "Scorul PISA rămâne în jur de 428"] },
-        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Creștere a salariilor profesorilor (+10%)", "2.400 de locuri noi în grădinițe create", "Echipamente digitale pentru 800 de școli"] },
-        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Salariile profesorilor se apropie de media UE", "Program major de construcție de școli", "5.000 de burse universitare noi", "Scorurile PISA ar putea crește cu 20+ puncte"] }
+        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Salariile profesorilor tăiate — risc de repetare a grevei din 2023 (150.000 profesori, 22 zile)", "44.600 suplinitori devin soluție permanentă", "Rata analfabetismului funcțional de 33,2% (PISA 2022) se agravează", "79% din elevii rurali pierd finanțarea pentru transport"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Criza profesorilor de fizică se adâncește — 700+ posturi, doar 200 candidați", "Diferența rural-urban se lărgește (Bac: 70,4% vs 82,4%)", "Diferența de 119 puncte PISA între rural și urban crește"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Salariile profesorilor la 6.446 RON brut (debutanți) menținute", "Scorul PISA rămâne la 428 (toate subiectele)", "Închiderile de școli rurale continuă în ritmul actual"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Creștere salarii profesori (+10%) reduce dependența de 44.600 suplinitori", "Transport școlar rural finanțat", "Echipamente digitale ajung la 800 școli defavorizate"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Salariile profesorilor se apropie de media UE — emigrarea se oprește", "Rata analfabetismului funcțional PISA ar putea scădea de la 33% spre 16% OCDE", "Diferența rural-urban în educație adresată sistematic", "Atenție: Impact semnificativ pe deficit necesar"] }
       ]
     },
     {
@@ -119,11 +119,11 @@ Ești Ministrul Finanțelor pentru o zi. Ai 100% din buget de alocat pe categori
       defaultValue: 5,
       stakeholders: ["workers"],
       consequences: [
-        { minDiff: -100, maxDiff: -3, severity: "negative", impacts: ["Patrulele de poliție reduse cu 30%", "Restanțele cazurilor în instanțe cresc cu 50%", "Supraaglomerarea în penitenciare se agravează"] },
-        { minDiff: -3, maxDiff: -1, severity: "negative", impacts: ["Modernizarea echipamentelor poliției întârziată", "Reformele sistemului judiciar încetinite"] },
-        { minDiff: -1, maxDiff: 1, severity: "neutral", impacts: ["Forța de poliție actuală menținută", "Operațiunile instanțelor continuă normal", "Capacitatea penitenciarelor stabilă"] },
-        { minDiff: 1, maxDiff: 3, severity: "positive", impacts: ["2.000 de polițiști noi angajați", "Digitalizarea instanțelor accelerată"] },
-        { minDiff: 3, maxDiff: 100, severity: "positive", impacts: ["Program major de modernizare a poliției", "Noi programe de reabilitare în penitenciare", "Procesare mai rapidă în sistemul de justiție"] }
+        { minDiff: -100, maxDiff: -3, severity: "negative", impacts: ["Rata de 25-29% posturi vacante în poliție (Teleorman, Constanța) devine 40%+", "Durata cazurilor în instanțe depășește 228 zile (deja crescută de la 160 în 2021)", "Supraaglomerarea penitenciarelor se agravează peste 116% capacitate", "115 hotărâri CEDO neimplementate cresc — risc sancțiuni UE"] },
+        { minDiff: -3, maxDiff: -1, severity: "negative", impacts: ["Gardă neplătită forțată în poliție devine standard", "Rata de soluționare instanțe scade sub 87% (2023)", "Încălcările din cazul condițiilor penitenciar Rezmiveș continuă"] },
+        { minDiff: -1, maxDiff: 1, severity: "neutral", impacts: ["Forța de poliție actuală menținută în ciuda posturilor vacante", "Restanța cazurilor la 6,99 cazuri la 100 locuitori (cea mai mare în UE)", "Ocuparea penitenciarelor stabilă la 116%"] },
+        { minDiff: 1, maxDiff: 3, severity: "positive", impacts: ["Posturile vacante de poliție în județele cele mai afectate (25-29%) reduse", "Digitalizarea instanțelor accelerează rata de soluționare"] },
+        { minDiff: 3, maxDiff: 100, severity: "positive", impacts: ["Program major de angajări în poliție ocupă posturile vacante", "Timpii de procesare în instanțe revin spre nivelul de 160 zile", "Programe de reabilitare în penitenciare adresează preocupările CEDO"] }
       ]
     },
     {
@@ -132,15 +132,15 @@ Ești Ministrul Finanțelor pentru o zi. Ai 100% din buget de alocat pe categori
       subLabel: "Armată, Angajamente NATO",
       icon: "swords",
       color: "red",
-      actualPercentage: 4,
+      actualPercentage: 5,
       defaultValue: 3,
       stakeholders: ["workers"],
       consequences: [
-        { minDiff: -100, maxDiff: -2, severity: "negative", impacts: ["Scade sub ținta NATO de 2% din PIB", "Achizițiile de echipamente militare anulate", "Pregătirea trupelor scade", "Încrederea aliaților se diminuează"] },
-        { minDiff: -2, maxDiff: -1, severity: "negative", impacts: ["Ținta NATO de 2% abia atinsă", "Unele modernizări întârziate"] },
-        { minDiff: -1, maxDiff: 1, severity: "neutral", impacts: ["Angajamentul NATO de 2% din PIB menținut", "Programele militare actuale continuă", "75.000 de personal activ finanțat"] },
-        { minDiff: 1, maxDiff: 2, severity: "positive", impacts: ["Depășește ținta NATO (2,5% din PIB)", "Modernizarea echipamentelor accelerată"] },
-        { minDiff: 2, maxDiff: 100, severity: "positive", impacts: ["Expansiune militară majoră", "Noi avioane de luptă și nave", "Atenție: Poate depăși nevoile regionale"] }
+        { minDiff: -100, maxDiff: -2, severity: "negative", impacts: ["Scade sub 2% PIB NATO — realizarea de 2,26% din 2024 anulată", "Achiziția F-35 ($6,5-7,2 miliarde pentru 32 avioane până în 2034-2040) anulată", "Rata de 43% posturi vacante de ofițeri se agravează", "Încrederea aliaților scade în tensiunile regionale"] },
+        { minDiff: -2, maxDiff: -1, severity: "negative", impacts: ["Realizarea NATO 2,26% scade la minimul de 2%", "Întreținerea sistemului Patriot întârziată", "Ratele de 25-28% posturi vacante subofițeri/maiori se agravează"] },
+        { minDiff: -1, maxDiff: 1, severity: "neutral", impacts: ["Angajamentul NATO 2,26% PIB menținut (€19 miliarde — cel mai mare în 30 ani)", "33 F-16 operaționale, 49 până la sfârșitul 2025 pe drumul cel bun", "~70.000-72.000 personal activ finanțat"] },
+        { minDiff: 1, maxDiff: 2, severity: "positive", impacts: ["Depășește ținta NATO spre 2,5% PIB", "Livrarea F-35 accelerată", "Ratele de posturi vacante ofițeri/subofițeri adresate"] },
+        { minDiff: 2, maxDiff: 100, severity: "positive", impacts: ["Expansiune militară majoră dincolo de cerințele NATO", "Livrare completă flotă F-35 accelerată", "Atenție: Poate depăși nevoile defensive regionale"] }
       ]
     },
     {
@@ -149,15 +149,15 @@ Ești Ministrul Finanțelor pentru o zi. Ai 100% din buget de alocat pe categori
       subLabel: "Mediu, Locuințe, Cultură",
       icon: "trees",
       color: "teal",
-      actualPercentage: 10,
+      actualPercentage: 9,
       defaultValue: 8,
       stakeholders: ["parents", "workers"],
       consequences: [
-        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Reduceri în protecția mediului", "Programele de locuințe sociale anulate", "Instituții culturale se închid", "Parcuri și recreere neglijate"] },
-        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Programe de reciclare reduse", "Subvenții pentru locuințe tăiate"] },
-        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Programele de mediu menținute", "Finanțarea culturală stabilă", "Programele de locuințe continuă"] },
-        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Stimulente pentru energie verde extinse", "Noi proiecte de locuințe accesibile"] },
-        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Restaurare majoră de mediu", "Construcție de locuințe la scară largă", "Finanțare pentru renaștere culturală"] }
+        { minDiff: -100, maxDiff: -5, severity: "negative", impacts: ["Protecția mediului (1,9% PIB) sever redusă", "Programele de locuințe sociale anulate", "Instituții culturale se închid", "Obiectivele tranziției verzi ratate"] },
+        { minDiff: -5, maxDiff: -2, severity: "negative", impacts: ["Programele de reciclare și gestionare deșeuri reduse", "Subvenții pentru locuințe tăiate", "Parcuri și recreere neglijate"] },
+        { minDiff: -2, maxDiff: 2, severity: "neutral", impacts: ["Programele de mediu menținute la nivelul actual", "Finanțarea culturală stabilă", "Programele de locuințe continuă"] },
+        { minDiff: 2, maxDiff: 5, severity: "positive", impacts: ["Stimulente pentru energie verde extinse", "Noi proiecte de locuințe accesibile lansate"] },
+        { minDiff: 5, maxDiff: 100, severity: "positive", impacts: ["Program major de restaurare a mediului", "Construcție de locuințe sociale la scară largă", "Finanțare pentru renaștere culturală"] }
       ]
     }
   ]}
@@ -230,11 +230,11 @@ Ești Ministrul Finanțelor pentru o zi. Ai 100% din buget de alocat pe categori
     }
   ]}
   deficitLevels={[
-    { minDeficit: 1, maxDeficit: 10, severity: "mild", consequence: "Deficit gestionabil. Deficitul actual al României este ~7%. Dobânzile pot crește ușor." },
-    { minDeficit: 10, maxDeficit: 30, severity: "moderate", consequence: "Deficit semnificativ. Agențiile de rating emit avertismente. Costurile de împrumut cresc cu 1-2%." },
-    { minDeficit: 30, maxDeficit: 100, severity: "severe", consequence: "Deficit sever. Procedura UE de deficit excesiv declanșată. Măsuri de austeritate probabile." },
-    { minDeficit: 100, maxDeficit: 200, severity: "critical", consequence: "Deficit critic. Intervenție FMI probabilă. Salariile în sectorul public înghețate, reduceri majore de programe." },
-    { minDeficit: 200, maxDeficit: 999, severity: "catastrophic", consequence: "Deficit catastrofal. Risc de faliment național. Prăbușirea monedei, hiperinflație posibilă." }
+    { minDeficit: 1, maxDeficit: 10, severity: "mild", consequence: "Deficit gestionabil. Deficitul României din 2024 a fost 9,3% — cel mai mare din UE (de 3x media UE de 3,2%). Randamentele obligațiunilor pe 10 ani deja la 7,56%." },
+    { minDeficit: 10, maxDeficit: 30, severity: "moderate", consequence: "Deficit semnificativ. Ratingurile de credit (BBB-/Baa3 — cel mai jos grad de investiție) riscă retrogradare. Procedura de Deficit Excesiv UE se intensifică." },
+    { minDeficit: 30, maxDeficit: 100, severity: "severe", consequence: "Deficit sever. UE poate suspenda Fondurile ESI și plățile RRF (€1,3 miliarde+ în risc). Măsuri de austeritate obligatorii până în octombrie 2025." },
+    { minDeficit: 100, maxDeficit: 200, severity: "critical", consequence: "Deficit critic. Intervenție FMI probabilă. Ratingul de credit scade la junk. Salariile în sectorul public înghețate, reduceri majore de programe." },
+    { minDeficit: 200, maxDeficit: 999, severity: "catastrophic", consequence: "Deficit catastrofal. Risc de faliment național. Prăbușirea monedei, spirala datorie/PIB peste 60% spre niveluri de criză greacă." }
   ]}
   surplusLevels={[
     { minSurplus: 1, maxSurplus: 10, consequence: "Nealocare minoră. Unele servicii pot fi subfinanțate dar gestionabil." },
@@ -270,32 +270,34 @@ Ești Ministrul Finanțelor pentru o zi. Ai 100% din buget de alocat pe categori
 
 ---
 
-## Explicație: Prioritățile de Cheltuieli ale României
+## Explicație: Prioritățile de Cheltuieli ale României (COFOG 2024)
 
 Iată unde se duc de fapt banii României:
 
 | Rang | Categorie | % din Total | Ce acoperă |
 |------|-----------|-------------|------------|
-| 1 | Protecție Socială | ~31-32% | Pensii, șomaj, asistență socială |
-| 2 | Afaceri Economice | ~15-17% | Transport, energie, agricultură, industrie |
-| 3 | Servicii Publice Generale | ~11-12% | Administrație, serviciul datoriei, contribuții UE |
-| 4 | Sănătate | ~11-12% | Spitale, medici, medicamente |
-| 5 | Educație | ~8-9% | Școli, universități, profesori |
-| 6 | Ordine Publică | ~6-7% | Poliție, instanțe, penitenciare |
-| 7 | Apărare | ~4% | Armată, angajamente NATO |
-| 8 | Altele | ~5-7% | Locuințe, mediu, cultură |
+| 1 | Protecție Socială | ~29-30% | Pensii (4,7M beneficiari), alocații copii, șomaj, asistență socială |
+| 2 | Afaceri Economice | ~16-17% | Transport (A7, căi ferate), energie, agricultură, sprijin industrie |
+| 3 | Servicii Publice Generale | ~12-14% | Administrație, **2,1% PIB pentru dobânzi**, contribuții UE |
+| 4 | Sănătate | ~10-11% | Spitale (7,28 paturi/1.000), medici, medicamente |
+| 5 | Educație | ~8-9% | Școli, universități, salarii profesori |
+| 6 | Ordine Publică | ~6-7% | Poliție, instanțe, penitenciare (116% capacitate) |
+| 7 | Apărare | ~5% | Armată, angajamente NATO (2,26% PIB atins) |
+| 8 | Altele | ~9-10% | Mediu (1,9% PIB), locuințe, cultură, recreere |
 
 ### Gigantul Protecției Sociale
 
 **De ce este Protecția Socială atât de mare?** Un singur cuvânt: pensiile.
 
-România are o populație îmbătrânită și un sistem de pensii de tip „pay-as-you-go". Contribuțiile lucrătorilor actuali plătesc pentru pensionarii actuali. Cu mai puțini lucrători și mai mulți pensionari, această categorie continuă să crească.
+România are o populație îmbătrânită și un sistem de pensii de tip „pay-as-you-go". Contribuțiile lucrătorilor actuali plătesc pentru pensionarii actuali. Cu doar **1,27 lucrători per pensionar** (8 pensionari la fiecare 10 angajați), această categorie continuă să crească.
 
-- ~4,7 milioane de pensionari (decembrie 2024)
-- Pensia medie: ~2.748 RON/lună (după reforma din septembrie 2024)
+- **4.703.349 pensionari** (decembrie 2024)
+- Pensia medie: **2.748 RON/lună** (după reforma din septembrie 2024)
+- 82,56% au primit creșteri în medie de **+622 RON/lună** (+27%)
 - Doar această cheltuială este mai mare decât Sănătatea + Educația la un loc
+- Disparitate regională: București are 4 pensionari la 10 lucrători, în timp ce Teleorman are **14-15 pensionari la 10 lucrători**
 
-> **Verificare a realității:** Mulți români cred că prea mult se duce la „birocrați" sau „politicieni". În realitate, Protecția Socială (în principal pensiile) domină bugetul. Costurile reale de administrare sunt o fracțiune mică.
+> **Verificare a realității:** Mulți români cred că prea mult se duce la „birocrați" sau „politicieni". În realitate, Protecția Socială (în principal pensiile) domină bugetul. Plățile dobânzilor la datorie (2,1% din PIB) sunt de asemenea substanțiale — o consecință a **deficitului de 9,3%** al României (cel mai mare din UE).
 
 ---
 
@@ -310,17 +312,17 @@ România are o populație îmbătrânită și un sistem de pensii de tip „pay-
     { id: "c", text: "Protecție Socială (pensii și asistență socială)", isCorrect: true },
     { id: "d", text: "Apărare (armată și NATO)", isCorrect: false }
   ]}
-  explanation="Protecția Socială reprezintă aproximativ 31-32% din bugetul României, fiind de departe cea mai mare categorie. Aceasta este determinată în principal de plățile de pensii către aproximativ 4,7 milioane de pensionari. Sănătatea și Educația combinate sunt mai mici decât Protecția Socială singură."
+  explanation="Protecția Socială reprezintă aproximativ 29-30% din bugetul României (12,7% din PIB), fiind de departe cea mai mare categorie. Aceasta este determinată în principal de plățile de pensii către 4.703.349 pensionari (decembrie 2024). Reforma pensiilor din 2024 a crescut pensiile medii cu 27% (+622 RON/lună). Sănătatea și Educația combinate sunt mai mici decât Protecția Socială singură."
 />
 
 ---
 
 ## Concluzie
 
-> 📌 **Reține:** Protecția Socială (în principal pensiile) este cheltuiala #1 a României, reprezentând ~31-32% din buget. Înainte de a critica „cheltuielile risipitoare", e bine să știi unde se duc de fapt banii — și cea mai mare parte se duce la bunici.
+> 📌 **Reține:** Protecția Socială (în principal pensiile) este cheltuiala #1 a României, reprezentând ~29-30% din buget. Cu 4,7 milioane de pensionari și doar 1,27 lucrători per pensionar, această cheltuială este structural blocată. Înainte de a critica „cheltuielile risipitoare", să știi că cea mai mare parte se duce la bunici — și reducerea ei riscă o criză de tip 2024.
 
 ---
 
-<Sources>Surse de date: Baza de date Eurostat COFOG (gov_10a_exp), Casa Națională de Pensii Publice (CNPP) statistici decembrie 2024, Ministerul Finanțelor rapoarte de execuție bugetară. Cifrele reflectă execuția bugetară din 2024.</Sources>
+<Sources>Surse de date: Baza de date Eurostat COFOG (gov_10a_exp), Casa Națională de Pensii Publice (CNPP) statistici decembrie 2024 (4.703.349 pensionari, 2.748 RON medie), Ministerul Finanțelor execuție bugetară 2024 (727,32 miliarde RON, deficit 9,3%), Consultare FMI Articolul IV noiembrie 2025, Raport Curtea de Conturi echipamente spitalicești, rezultate PISA 2022. Toate cifrele verificate cu date oficiale 2024.</Sources>
 
 <MarkComplete label="Continuă la Clasificări" />

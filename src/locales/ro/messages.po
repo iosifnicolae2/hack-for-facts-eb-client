@@ -845,7 +845,7 @@ msgstr "Înapoi la Hub"
 msgid "Back to learning"
 msgstr "Înapoi la învățare"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:228
+#: src/features/learning/components/player/LessonPlayer.tsx:254
 #: src/routes/$lang/learning/$pathId/index.tsx:44
 #: src/routes/$lang/learning/$pathId/index.tsx:102
 msgid "Back to Learning Hub"
@@ -855,7 +855,7 @@ msgstr "Înapoi la Hub-ul de învățare"
 msgid "Back to Overview"
 msgstr "Înapoi la sinteză"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:372
+#: src/features/learning/components/player/LessonPlayer.tsx:398
 msgid "Back to path"
 msgstr "Înapoi la parcurs"
 
@@ -1028,6 +1028,10 @@ msgstr "Certificatul nu a fost găsit"
 msgid "Certificate verified (PoC)"
 msgstr "Certificat verificat (Prototip)"
 
+#: src/features/learning/components/interactive/HandsOnExplorer.tsx:142
+msgid "Challenge Question"
+msgstr ""
+
 #: src/routes/privacy.lazy.tsx:146
 msgid "Changes to this policy"
 msgstr "Modificări ale acestei politici"
@@ -1168,6 +1172,10 @@ msgstr "Închide Căutarea"
 msgid "Close!"
 msgstr "Aproape!"
 
+#: src/features/learning/components/interactive/ExecutionRateChart.tsx:145
+msgid "Code"
+msgstr ""
+
 #: src/components/classification-explorer/ClassificationActions.tsx:26
 msgid "Code copied to clipboard"
 msgstr "Codul a fost copiat"
@@ -1207,7 +1215,7 @@ msgstr "Confortabil"
 msgid "Compact"
 msgstr "Compact"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:396
+#: src/features/learning/components/player/LessonPlayer.tsx:422
 msgid "Complete path"
 msgstr "Finalizează parcursul"
 
@@ -1223,6 +1231,10 @@ msgstr "Complet!"
 #: src/routes/certificates.$id.tsx:64
 msgid "Completion"
 msgstr "Finalizare"
+
+#: src/features/learning/components/interactive/ExecutionRateChart.tsx:245
+msgid "Concerning"
+msgstr ""
 
 #. placeholder {0}: index + 1
 #: src/components/alerts/components/ConditionsList.tsx:64
@@ -1383,6 +1395,10 @@ msgstr "Copiază Emailul de Suport"
 #: src/features/learning/components/assessment/Quiz.tsx:158
 msgid "Correct Choice"
 msgstr "Alegere corectă"
+
+#: src/features/learning/components/interactive/HandsOnExplorer.tsx:199
+msgid "Correct!"
+msgstr ""
 
 #: src/components/filters/budget-sector-filter/BudgetSectorFilter.tsx:75
 msgid "Could Not Load Budget Sectors"
@@ -1597,7 +1613,7 @@ msgstr "Vizualizare tabelară"
 msgid "Data View"
 msgstr "Vizualizare date"
 
-#: src/features/learning/components/interactive/EUComparisonChart.tsx:132
+#: src/features/learning/components/interactive/EUComparisonChart.tsx:206
 msgid "Data: Eurostat 2024 (Provisional)"
 msgstr "Date: Eurostat 2024 (Provizorii)"
 
@@ -2070,7 +2086,7 @@ msgstr "Estimare"
 msgid "Estimate the <0>Shares</0>"
 msgstr "Estimează <0>Proporțiile</0>"
 
-#: src/features/learning/components/interactive/EUComparisonChart.tsx:30
+#: src/features/learning/components/interactive/EUComparisonChart.tsx:100
 msgid "EU Average"
 msgstr "Media UE"
 
@@ -2094,6 +2110,10 @@ msgstr "Te-ai întrebat vreodată unde se duc banii tăi?"
 #: src/components/charts/components/views/SeriesConfigView.tsx:325
 msgid "Example: 2024-"
 msgstr "Exemplu: 2024-"
+
+#: src/features/learning/components/interactive/ExecutionRateChart.tsx:233
+msgid "Excellent"
+msgstr ""
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:864
 #: src/components/charts/components/series-config/SeriesFilter.tsx:873
@@ -2487,6 +2507,10 @@ msgstr "Sursă de Finanțare"
 msgid "Funds the pension checks and hospital bills directly. It's a huge mandatory system."
 msgstr "Finanțează direct pensiile și facturile spitalelor. Este un sistem obligatoriu uriaș."
 
+#: src/features/learning/components/interactive/EUComparisonChart.tsx:71
+msgid "Gap"
+msgstr ""
+
 #: src/components/charts/components/views/SeriesConfigView.tsx:231
 msgid "Generate random color"
 msgstr "Generează o culoare aleatorie"
@@ -2548,6 +2572,10 @@ msgstr "Mergi la lista principală"
 msgid "Go to Map"
 msgstr "Vezi harta"
 
+#: src/features/learning/components/interactive/ExecutionRateChart.tsx:239
+msgid "Good"
+msgstr ""
+
 #: src/components/entities/EntityLineItemsTabs.tsx:97
 #: src/features/learning/components/interactive/PromiseTracker.tsx:119
 msgid "Goods & Services"
@@ -2589,6 +2617,10 @@ msgstr "Brut"
 #: src/routes/budget-explorer.lazy.tsx:473
 msgid "Grouping"
 msgstr "Grupare"
+
+#: src/features/learning/components/interactive/HandsOnExplorer.tsx:270
+msgid "Hands-On Activity"
+msgstr ""
 
 #: src/routes/share.$code.tsx:56
 msgid "Hang tight while we resolve and redirect you to the destination."
@@ -2927,7 +2959,7 @@ msgstr "Mai mic decât"
 msgid "Lesson Completed!"
 msgstr "Lecție finalizată!"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:223
+#: src/features/learning/components/player/LessonPlayer.tsx:249
 msgid "Lesson not found"
 msgstr "Lecția nu a fost găsită"
 
@@ -3166,7 +3198,7 @@ msgstr "Minim"
 msgid "Minimum Pay"
 msgstr "Salariu minim"
 
-#: src/features/learning/hooks/use-learning-progress.tsx:655
+#: src/features/learning/hooks/use-learning-progress.tsx:656
 msgid "Missing content id"
 msgstr "Lipsește ID-ul conținutului"
 
@@ -3180,7 +3212,7 @@ msgstr "Descriere lipsă"
 msgid "Missing Items"
 msgstr "Elemente lipsă"
 
-#: src/features/learning/hooks/use-learning-progress.tsx:698
+#: src/features/learning/hooks/use-learning-progress.tsx:699
 msgid "Missing path id"
 msgstr "Lipsește ID-ul parcursului"
 
@@ -3351,7 +3383,7 @@ msgstr "Consimțământul și gestionarea buletinului informativ"
 msgid "Newsletters and notifications"
 msgstr "Buletine informative și notificări"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:383
+#: src/features/learning/components/player/LessonPlayer.tsx:409
 msgid "Next"
 msgstr "Următorul"
 
@@ -3551,6 +3583,10 @@ msgstr "Normalizare"
 msgid "Not Quite"
 msgstr "Nu chiar"
 
+#: src/features/learning/components/interactive/HandsOnExplorer.tsx:207
+msgid "Not quite!"
+msgstr ""
+
 #: src/routes/cookie-policy.lazy.tsx:78
 msgid "Note: Deleting authentication cookies will sign you out of your account. Deleting essential localStorage will reset your saved charts and preferences."
 msgstr "Notă: Ștergerea cookie-urilor de autentificare vă va deconecta din cont. Ștergerea localStorage-ului esențial va reseta graficele și preferințele dumneavoastră salvate."
@@ -3592,7 +3628,7 @@ msgstr "Cele mai vechi"
 msgid "Oldest first"
 msgstr "Cele mai vechi primele"
 
-#: src/features/learning/components/interactive/EUComparisonChart.tsx:31
+#: src/features/learning/components/interactive/EUComparisonChart.tsx:101
 msgid "One of the lowest"
 msgstr "Una dintre cele mai scăzute"
 
@@ -3603,6 +3639,10 @@ msgstr "Setate doar dacă sunteți de acord cu analiza:"
 #: src/routes/cookie-policy.lazy.tsx:63
 msgid "Only set if you consent to enhanced error reporting:"
 msgstr "Setate doar dacă sunteți de acord cu raportarea îmbunătățită a erorilor:"
+
+#: src/features/learning/components/interactive/HandsOnExplorer.tsx:106
+msgid "Open"
+msgstr ""
 
 #: src/features/learning/components/interactive/GuidedPlatformTour.tsx:199
 msgid "Open Budget Explorer"
@@ -3831,6 +3871,10 @@ msgstr "Planificat"
 msgid "Platform Mission"
 msgstr "Misiunea platformei"
 
+#: src/features/learning/components/interactive/ExecutionRateChart.tsx:251
+msgid "Poor"
+msgstr ""
+
 #: src/components/entities/UatDisplay.tsx:39
 #: src/components/entity-analytics/EntityAnalyticsTable.tsx:93
 #: src/components/maps/charts/UatDataCharts.tsx:59
@@ -3868,7 +3912,7 @@ msgstr "Se pregătește linkul de partajare..."
 msgid "Preview"
 msgstr "Previzualizare"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:359
+#: src/features/learning/components/player/LessonPlayer.tsx:385
 msgid "Previous"
 msgstr "Anterior"
 
@@ -4104,10 +4148,11 @@ msgid "Reveal Truth"
 msgstr "Dezvăluie adevărul"
 
 #: src/features/learning/components/interactive/DeficitVisual.tsx:10
+#: src/features/learning/components/interactive/EUComparisonChart.tsx:61
 msgid "Revenue"
 msgstr "Venituri"
 
-#: src/features/learning/components/interactive/EUComparisonChart.tsx:26
+#: src/features/learning/components/interactive/EUComparisonChart.tsx:96
 msgid "Revenue as % of GDP: EU Comparison"
 msgstr "Venituri ca % din PIB: Comparație UE"
 
@@ -4568,6 +4613,7 @@ msgid "Source: "
 msgstr "Sursă: "
 
 #: src/features/learning/components/interactive/DeficitVisual.tsx:17
+#: src/features/learning/components/interactive/EUComparisonChart.tsx:81
 msgid "Spending"
 msgstr "Cheltuieli"
 
@@ -4745,6 +4791,10 @@ msgstr "Asta înseamnă <0>{0}</0> pe an."
 msgid "The actual value of goods & services you receive."
 msgstr "Valoarea reală a bunurilor și serviciilor pe care le primești."
 
+#: src/features/learning/components/interactive/HandsOnExplorer.tsx:210
+msgid "The answer is:"
+msgstr ""
+
 #: src/components/classification-explorer/ClassificationExplorer.tsx:150
 msgid "The classification code \"{selectedCode}\" could not be found."
 msgstr "Codul de clasificare „{selectedCode}” nu a putut fi găsit."
@@ -4770,7 +4820,7 @@ msgstr "Parcursul de învățare pe care îl cauți nu există sau a fost mutat.
 msgid "The learning path you're looking for doesn't exist."
 msgstr "Parcursul de învățare pe care îl cauți nu există."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:225
+#: src/features/learning/components/player/LessonPlayer.tsx:251
 msgid "The lesson you're looking for doesn't exist or may have been moved."
 msgstr "Lecția pe care o cauți nu există sau este posibil să fi fost mutată."
 
@@ -5065,6 +5115,7 @@ msgstr "Venituri consolidate reale"
 msgid "Try a different search term or sorting."
 msgstr "Încercați un alt termen de căutare sau o altă sortare."
 
+#: src/features/learning/components/interactive/HandsOnExplorer.tsx:218
 #: src/routes/alerts/$alertId/index.lazy.tsx:192
 #: src/routes/unsubscribe.$token.tsx:77
 msgid "Try again"
@@ -5086,6 +5137,10 @@ msgstr "Încearcă să ghicești din nou"
 #: src/components/maps/utils.ts:26
 msgid "Type"
 msgstr "Tip"
+
+#: src/features/learning/components/interactive/HandsOnExplorer.tsx:157
+msgid "Type your answer..."
+msgstr ""
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:707
 #: src/components/charts/components/series-config/SeriesFilter.tsx:888

@@ -845,7 +845,7 @@ msgstr "Back to Hub"
 msgid "Back to learning"
 msgstr "Back to learning"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:228
+#: src/features/learning/components/player/LessonPlayer.tsx:254
 #: src/routes/$lang/learning/$pathId/index.tsx:44
 #: src/routes/$lang/learning/$pathId/index.tsx:102
 msgid "Back to Learning Hub"
@@ -855,7 +855,7 @@ msgstr "Back to Learning Hub"
 msgid "Back to Overview"
 msgstr "Back to Overview"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:372
+#: src/features/learning/components/player/LessonPlayer.tsx:398
 msgid "Back to path"
 msgstr "Back to path"
 
@@ -1028,6 +1028,10 @@ msgstr "Certificate not found"
 msgid "Certificate verified (PoC)"
 msgstr "Certificate verified (PoC)"
 
+#: src/features/learning/components/interactive/HandsOnExplorer.tsx:142
+msgid "Challenge Question"
+msgstr "Challenge Question"
+
 #: src/routes/privacy.lazy.tsx:146
 msgid "Changes to this policy"
 msgstr "Changes to this policy"
@@ -1168,6 +1172,10 @@ msgstr "Close Search"
 msgid "Close!"
 msgstr "Close!"
 
+#: src/features/learning/components/interactive/ExecutionRateChart.tsx:145
+msgid "Code"
+msgstr "Code"
+
 #: src/components/classification-explorer/ClassificationActions.tsx:26
 msgid "Code copied to clipboard"
 msgstr "Code copied to clipboard"
@@ -1207,7 +1215,7 @@ msgstr "Comfortable"
 msgid "Compact"
 msgstr "Compact"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:396
+#: src/features/learning/components/player/LessonPlayer.tsx:422
 msgid "Complete path"
 msgstr "Complete path"
 
@@ -1223,6 +1231,10 @@ msgstr "Complete!"
 #: src/routes/certificates.$id.tsx:64
 msgid "Completion"
 msgstr "Completion"
+
+#: src/features/learning/components/interactive/ExecutionRateChart.tsx:245
+msgid "Concerning"
+msgstr "Concerning"
 
 #. placeholder {0}: index + 1
 #: src/components/alerts/components/ConditionsList.tsx:64
@@ -1383,6 +1395,10 @@ msgstr "Copy Support Email"
 #: src/features/learning/components/assessment/Quiz.tsx:158
 msgid "Correct Choice"
 msgstr "Correct Choice"
+
+#: src/features/learning/components/interactive/HandsOnExplorer.tsx:199
+msgid "Correct!"
+msgstr "Correct!"
 
 #: src/components/filters/budget-sector-filter/BudgetSectorFilter.tsx:75
 msgid "Could Not Load Budget Sectors"
@@ -1597,7 +1613,7 @@ msgstr "Data Table View"
 msgid "Data View"
 msgstr "Data View"
 
-#: src/features/learning/components/interactive/EUComparisonChart.tsx:132
+#: src/features/learning/components/interactive/EUComparisonChart.tsx:206
 msgid "Data: Eurostat 2024 (Provisional)"
 msgstr "Data: Eurostat 2024 (Provisional)"
 
@@ -2070,7 +2086,7 @@ msgstr "Estimate"
 msgid "Estimate the <0>Shares</0>"
 msgstr "Estimate the <0>Shares</0>"
 
-#: src/features/learning/components/interactive/EUComparisonChart.tsx:30
+#: src/features/learning/components/interactive/EUComparisonChart.tsx:100
 msgid "EU Average"
 msgstr "EU Average"
 
@@ -2094,6 +2110,10 @@ msgstr "Ever wondered where your money actually goes?"
 #: src/components/charts/components/views/SeriesConfigView.tsx:325
 msgid "Example: 2024-"
 msgstr "Example: 2024-"
+
+#: src/features/learning/components/interactive/ExecutionRateChart.tsx:233
+msgid "Excellent"
+msgstr "Excellent"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:864
 #: src/components/charts/components/series-config/SeriesFilter.tsx:873
@@ -2487,6 +2507,10 @@ msgstr "Funding Source"
 msgid "Funds the pension checks and hospital bills directly. It's a huge mandatory system."
 msgstr "Funds the pension checks and hospital bills directly. It's a huge mandatory system."
 
+#: src/features/learning/components/interactive/EUComparisonChart.tsx:71
+msgid "Gap"
+msgstr "Gap"
+
 #: src/components/charts/components/views/SeriesConfigView.tsx:231
 msgid "Generate random color"
 msgstr "Generate random color"
@@ -2548,6 +2572,10 @@ msgstr "Go to Main List"
 msgid "Go to Map"
 msgstr "Go to Map"
 
+#: src/features/learning/components/interactive/ExecutionRateChart.tsx:239
+msgid "Good"
+msgstr "Good"
+
 #: src/components/entities/EntityLineItemsTabs.tsx:97
 #: src/features/learning/components/interactive/PromiseTracker.tsx:119
 msgid "Goods & Services"
@@ -2589,6 +2617,10 @@ msgstr "Gross"
 #: src/routes/budget-explorer.lazy.tsx:473
 msgid "Grouping"
 msgstr "Grouping"
+
+#: src/features/learning/components/interactive/HandsOnExplorer.tsx:270
+msgid "Hands-On Activity"
+msgstr "Hands-On Activity"
 
 #: src/routes/share.$code.tsx:56
 msgid "Hang tight while we resolve and redirect you to the destination."
@@ -2932,7 +2964,7 @@ msgstr "Less than"
 msgid "Lesson Completed!"
 msgstr "Lesson Completed!"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:223
+#: src/features/learning/components/player/LessonPlayer.tsx:249
 msgid "Lesson not found"
 msgstr "Lesson not found"
 
@@ -3171,7 +3203,7 @@ msgstr "Minimum"
 msgid "Minimum Pay"
 msgstr "Minimum Pay"
 
-#: src/features/learning/hooks/use-learning-progress.tsx:655
+#: src/features/learning/hooks/use-learning-progress.tsx:656
 msgid "Missing content id"
 msgstr "Missing content id"
 
@@ -3185,7 +3217,7 @@ msgstr "Missing description"
 msgid "Missing Items"
 msgstr "Missing Items"
 
-#: src/features/learning/hooks/use-learning-progress.tsx:698
+#: src/features/learning/hooks/use-learning-progress.tsx:699
 msgid "Missing path id"
 msgstr "Missing path id"
 
@@ -3356,7 +3388,7 @@ msgstr "Newsletter consent and management"
 msgid "Newsletters and notifications"
 msgstr "Newsletters and notifications"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:383
+#: src/features/learning/components/player/LessonPlayer.tsx:409
 msgid "Next"
 msgstr "Next"
 
@@ -3556,6 +3588,10 @@ msgstr "Normalization"
 msgid "Not Quite"
 msgstr "Not Quite"
 
+#: src/features/learning/components/interactive/HandsOnExplorer.tsx:207
+msgid "Not quite!"
+msgstr "Not quite!"
+
 #: src/routes/cookie-policy.lazy.tsx:78
 msgid "Note: Deleting authentication cookies will sign you out of your account. Deleting essential localStorage will reset your saved charts and preferences."
 msgstr "Note: Deleting authentication cookies will sign you out of your account. Deleting essential localStorage will reset your saved charts and preferences."
@@ -3597,7 +3633,7 @@ msgstr "Oldest"
 msgid "Oldest first"
 msgstr "Oldest first"
 
-#: src/features/learning/components/interactive/EUComparisonChart.tsx:31
+#: src/features/learning/components/interactive/EUComparisonChart.tsx:101
 msgid "One of the lowest"
 msgstr "One of the lowest"
 
@@ -3608,6 +3644,10 @@ msgstr "Only set if you consent to analytics:"
 #: src/routes/cookie-policy.lazy.tsx:63
 msgid "Only set if you consent to enhanced error reporting:"
 msgstr "Only set if you consent to enhanced error reporting:"
+
+#: src/features/learning/components/interactive/HandsOnExplorer.tsx:106
+msgid "Open"
+msgstr "Open"
 
 #: src/features/learning/components/interactive/GuidedPlatformTour.tsx:199
 msgid "Open Budget Explorer"
@@ -3836,6 +3876,10 @@ msgstr "Planned"
 msgid "Platform Mission"
 msgstr "Platform Mission"
 
+#: src/features/learning/components/interactive/ExecutionRateChart.tsx:251
+msgid "Poor"
+msgstr "Poor"
+
 #: src/components/entities/UatDisplay.tsx:39
 #: src/components/entity-analytics/EntityAnalyticsTable.tsx:93
 #: src/components/maps/charts/UatDataCharts.tsx:59
@@ -3873,7 +3917,7 @@ msgstr "Preparing your share link..."
 msgid "Preview"
 msgstr "Preview"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:359
+#: src/features/learning/components/player/LessonPlayer.tsx:385
 msgid "Previous"
 msgstr "Previous"
 
@@ -4109,10 +4153,11 @@ msgid "Reveal Truth"
 msgstr "Reveal Truth"
 
 #: src/features/learning/components/interactive/DeficitVisual.tsx:10
+#: src/features/learning/components/interactive/EUComparisonChart.tsx:61
 msgid "Revenue"
 msgstr "Revenue"
 
-#: src/features/learning/components/interactive/EUComparisonChart.tsx:26
+#: src/features/learning/components/interactive/EUComparisonChart.tsx:96
 msgid "Revenue as % of GDP: EU Comparison"
 msgstr "Revenue as % of GDP: EU Comparison"
 
@@ -4573,6 +4618,7 @@ msgid "Source: "
 msgstr "Source: "
 
 #: src/features/learning/components/interactive/DeficitVisual.tsx:17
+#: src/features/learning/components/interactive/EUComparisonChart.tsx:81
 msgid "Spending"
 msgstr "Spending"
 
@@ -4750,6 +4796,10 @@ msgstr "That is <0>{0}</0> per year."
 msgid "The actual value of goods & services you receive."
 msgstr "The actual value of goods & services you receive."
 
+#: src/features/learning/components/interactive/HandsOnExplorer.tsx:210
+msgid "The answer is:"
+msgstr "The answer is:"
+
 #: src/components/classification-explorer/ClassificationExplorer.tsx:150
 msgid "The classification code \"{selectedCode}\" could not be found."
 msgstr "The classification code \"{selectedCode}\" could not be found."
@@ -4775,7 +4825,7 @@ msgstr "The learning path you're looking for doesn't exist or has been moved."
 msgid "The learning path you're looking for doesn't exist."
 msgstr "The learning path you're looking for doesn't exist."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:225
+#: src/features/learning/components/player/LessonPlayer.tsx:251
 msgid "The lesson you're looking for doesn't exist or may have been moved."
 msgstr "The lesson you're looking for doesn't exist or may have been moved."
 
@@ -5070,6 +5120,7 @@ msgstr "True Consolidated Revenues"
 msgid "Try a different search term or sorting."
 msgstr "Try a different search term or sorting."
 
+#: src/features/learning/components/interactive/HandsOnExplorer.tsx:218
 #: src/routes/alerts/$alertId/index.lazy.tsx:192
 #: src/routes/unsubscribe.$token.tsx:77
 msgid "Try again"
@@ -5091,6 +5142,10 @@ msgstr "Try guessing again"
 #: src/components/maps/utils.ts:26
 msgid "Type"
 msgstr "Type"
+
+#: src/features/learning/components/interactive/HandsOnExplorer.tsx:157
+msgid "Type your answer..."
+msgstr "Type your answer..."
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:707
 #: src/components/charts/components/series-config/SeriesFilter.tsx:888

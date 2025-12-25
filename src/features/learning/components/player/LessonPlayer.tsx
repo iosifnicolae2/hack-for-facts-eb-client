@@ -30,6 +30,8 @@ import { GuidedPlatformTour } from '../interactive/GuidedPlatformTour'
 import { ExpandableHint } from '../interactive/ExpandableHint'
 import { Sources } from '../interactive/Sources'
 import { ClassificationExplorer } from '../interactive/ClassificationExplorer'
+import { ExecutionRateChart } from '../interactive/ExecutionRateChart'
+import { HandsOnExplorer } from '../interactive/HandsOnExplorer'
 
 type LessonPlayerProps = {
   readonly locale: LearningLocale
@@ -235,6 +237,8 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
       ExpandableHint,
       Sources,
       ClassificationExplorer: ClassificationExplorerWrapper,
+      ExecutionRateChart,
+      HandsOnExplorer,
     }),
     [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, PromiseTrackerWrapper, SalaryTaxCalculatorWrapper, GuidedPlatformTourWrapper, ClassificationExplorerWrapper, BudgetAllocatorWrapper]
   )
