@@ -55,6 +55,36 @@ describe('errors-utils', () => {
         expect(result.friendlyMessage).toBe(messages.updateAvailable)
       })
 
+      it('classifies "error loading dynamically imported module" as update available', () => {
+        const error = new Error('Error loading dynamically imported module')
+        const result = classifyError(error)
+        expect(result.title).toBe(messages.updateAvailableTitle)
+        expect(result.friendlyMessage).toBe(messages.updateAvailable)
+      })
+
+      it('classifies module script load failures as update available', () => {
+        const error = new Error('Importing a module script failed.')
+        const result = classifyError(error)
+        expect(result.title).toBe(messages.updateAvailableTitle)
+        expect(result.friendlyMessage).toBe(messages.updateAvailable)
+      })
+
+      it('classifies module script MIME errors as update available', () => {
+        const error = new Error(
+          'Failed to load module script: Expected a JavaScript module script but the server responded with a MIME type of "text/html".',
+        )
+        const result = classifyError(error)
+        expect(result.title).toBe(messages.updateAvailableTitle)
+        expect(result.friendlyMessage).toBe(messages.updateAvailable)
+      })
+
+      it('classifies error-like objects with update markers', () => {
+        const error = { message: 'Loading chunk 999 failed' }
+        const result = classifyError(error)
+        expect(result.title).toBe(messages.updateAvailableTitle)
+        expect(result.friendlyMessage).toBe(messages.updateAvailable)
+      })
+
       it('is case-insensitive for chunk errors', () => {
         const error = new Error('LOADING CHUNK 456 FAILED')
         const result = classifyError(error)

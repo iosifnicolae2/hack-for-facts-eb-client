@@ -29,6 +29,68 @@ export interface ClassifiedError {
     friendlyMessage: ReturnType<typeof defineMessage>;
 }
 
+const UPDATE_ERROR_MARKERS = [
+    "loading chunk",
+    "chunkloaderror",
+    "failed to fetch dynamically imported module",
+    "error loading dynamically imported module",
+    "importing a module script failed",
+    "failed to load module script",
+    "module script failed to load",
+    "expected a javascript module script",
+    "non-javascript mime type",
+    "unexpected token '<'",
+];
+
+type ErrorLike = {
+    readonly message?: unknown;
+    readonly name?: unknown;
+    readonly cause?: unknown;
+    readonly reason?: unknown;
+    readonly error?: unknown;
+};
+
+function pushMessage(messages: string[], value: unknown): void {
+    if (!value) return;
+    if (typeof value === "string") {
+        messages.push(value);
+        return;
+    }
+    if (value instanceof Error) {
+        if (value.message) messages.push(value.message);
+        if (value.name) messages.push(value.name);
+        return;
+    }
+    if (typeof value === "object") {
+        const errorLike = value as ErrorLike;
+        if (typeof errorLike.message === "string") messages.push(errorLike.message);
+        if (typeof errorLike.name === "string") messages.push(errorLike.name);
+    }
+}
+
+function getErrorText(error: unknown): string {
+    const messages: string[] = [];
+    pushMessage(messages, error);
+
+    if (typeof error === "object" && error) {
+        const errorLike = error as ErrorLike;
+        pushMessage(messages, errorLike.cause);
+        pushMessage(messages, errorLike.reason);
+        pushMessage(messages, errorLike.error);
+    }
+
+    if (messages.length === 0) {
+        return String(error).toLowerCase();
+    }
+
+    return messages.join(" ").toLowerCase();
+}
+
+function isUpdateAvailableMessage(message: string): boolean {
+    if (!message) return false;
+    return UPDATE_ERROR_MARKERS.some((marker) => message.includes(marker));
+}
+
 /**
  * Analyzes an error and classifies it for user-friendly display.
  * @param error The error object to classify.
@@ -42,14 +104,10 @@ export function classifyError(error: unknown): ClassifiedError {
         };
     }
 
-    const message = (error instanceof Error ? error.message : String(error)).toLowerCase();
+    const normalizedMessage = getErrorText(error);
 
     // Detect typical chunk/dynamic import errors after a new deployment
-    if (
-        message.includes("loading chunk") ||
-        message.includes("chunkloaderror") ||
-        message.includes("failed to fetch dynamically imported module")
-    ) {
+    if (isUpdateAvailableMessage(normalizedMessage)) {
         return {
             title: messages.updateAvailableTitle,
             friendlyMessage: messages.updateAvailable,
@@ -57,7 +115,10 @@ export function classifyError(error: unknown): ClassifiedError {
     }
 
     // Detect common data validation errors
-    if (message.includes("zoderror") || message.includes("validation failed")) {
+    if (
+        normalizedMessage.includes("zoderror") ||
+        normalizedMessage.includes("validation failed")
+    ) {
         return {
             title: messages.pageRenderErrorTitle,
             friendlyMessage: messages.validationIssue,
