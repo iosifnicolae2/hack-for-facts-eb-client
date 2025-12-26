@@ -15,6 +15,9 @@ export { ExecutionRateChart } from './ExecutionRateChart'
 export { HandsOnExplorer } from './HandsOnExplorer'
 export { BudgetCycleTimeline } from './BudgetCycleTimeline'
 export { PhaseCards } from './PhaseCards'
+export { RectificationFlow } from './RectificationFlow'
+export { RectificationHistory } from './RectificationHistory'
+export { RedFlagCards } from './RedFlagCards'
 export {
   BUDGET_PHASES,
   OPPORTUNITY_COLORS,
@@ -28,3 +31,15 @@ export type {
   BudgetPhaseId,
   OpportunityLevel,
 } from './budget-cycle-data'
+export {
+  FLOW_STAGES_BY_LOCALE,
+  HISTORY_DATA_BY_LOCALE,
+  RED_FLAGS_BY_LOCALE,
+  STATUS_COLORS,
+} from './rectification-data'
+export type {
+  RectificationStage,
+  YearRectification,
+  RedFlagItem,
+  StatusLevel,
+} from './rectification-data'

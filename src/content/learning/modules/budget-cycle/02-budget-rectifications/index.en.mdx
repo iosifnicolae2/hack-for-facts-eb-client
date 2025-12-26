@@ -21,28 +21,7 @@ Think of it like adjusting your personal budget: if you get a raise, you might a
 
 A budget rectification is a **formal change to the approved annual budget** during the fiscal year. It requires a new law passed by Parliament, just like the original budget.
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  📝 WHAT ARE RECTIFICATIONS?                                 │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  Budget rectifications = mid-year changes to the budget      │
-│                                                              │
-│  ORIGINAL BUDGET (January)                                   │
-│  ████████████████████████████████████████  100 billion       │
-│                                                              │
-│            ↓ Rectification #1 (April)                        │
-│                                                              │
-│  ████████████████████████████████████████████  105 billion   │
-│  (+5 billion added)                                          │
-│                                                              │
-│            ↓ Rectification #2 (August)                       │
-│                                                              │
-│  ██████████████████████████████████████░░░░░░  98 billion    │
-│  (-7 billion cut)                                            │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
+<RectificationFlow locale="en" />
 
 ### Common Reasons for Rectifications
 
@@ -61,103 +40,7 @@ A budget rectification is a **formal change to the approved annual budget** duri
 
 Explore Romania's rectification patterns over recent years.
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  📊 RECTIFICATION HISTORY (2020-2024)                        │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  Year │ Rectifications │ Deficit   │ Status                  │
-│  ─────┼────────────────┼───────────┼───────────────────────  │
-│  2024 │       1        │  9.3% GDP │ 🔴 Election year        │
-│  2023 │    0 formal    │  6.5% GDP │ 🔴 Reserve Fund bypass  │
-│  2022 │       2        │  6.0% GDP │ 🟡 Energy crisis        │
-│  2021 │       2        │  8.4% GDP │ 🔴 Record magnitude     │
-│  2020 │       3        │  9.2% GDP │ 🔴 COVID crisis         │
-│                                                              │
-│  Note: 2023 had no formal rectifications for the first      │
-│  time in 30 years. Instead, 32 billion lei (€6.4B) was      │
-│  distributed through the Reserve Fund mechanism.             │
-│                                                              │
-│  [ View details for each year → ]                            │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-### Component Specification
-
-```typescript
-/**
- * RectificationHistory Component
- *
- * PURPOSE: Display historical rectification data with deficit tracking
- * and drill-down capability for each year
- */
-interface RectificationHistoryProps {
-  readonly years: readonly YearRectificationData[]
-  readonly onYearClick?: (year: number) => void
-  readonly highlightYear?: number
-}
-
-interface YearRectificationData {
-  readonly year: number
-  readonly rectificationCount: number | 'none_formal'  // 0 formal = Reserve Fund bypass
-  readonly deficitPercent: number  // deficit as % of GDP
-  readonly status: 'normal' | 'energy_crisis' | 'election_year' | 'covid_crisis' | 'reserve_bypass'
-  readonly context: string  // e.g., "COVID pandemic", "Election year", "Reserve Fund bypass"
-  readonly details?: readonly RectificationDetail[]
-}
-
-interface RectificationDetail {
-  readonly date: string
-  readonly ougNumber: string  // e.g., "OUG 113/2024"
-  readonly amount: number
-  readonly direction: 'increase' | 'decrease'
-  readonly mainChanges: readonly string[]
-  readonly documentUrl?: string
-}
-
-/**
- * STATE:
- * - expandedYear: number | null
- * - hoveredYear: number | null
- * - sortOrder: 'year' | 'count' | 'change'
- *
- * INTERACTIONS:
- * - Click row: expand year details
- * - Hover row: highlight with tooltip
- * - Click column header: sort by that column
- * - Arrow keys: navigate rows
- * - Enter: expand/collapse selected row
- *
- * VISUAL STATES:
- * - Normal year: green indicator
- * - Energy crisis: yellow indicator
- * - COVID crisis / Election year / Reserve bypass: red indicator
- * - Hovered: background highlight
- * - Expanded: details panel slides down with OUG numbers
- * - Context badge: special tag (COVID, Election, Energy, Reserve Fund)
- *
- * ANIMATIONS:
- * - Row hover: background fade (150ms)
- * - Expand: slide down (300ms, ease-out)
- * - Status indicators: subtle pulse on concerning years
- * - Sort: rows reorder with spring animation
- *
- * ACCESSIBILITY:
- * - role="table" with proper thead/tbody
- * - aria-sort on sortable columns
- * - aria-expanded on expandable rows
- * - Status icons have aria-label with meaning
- * - Screen reader announces trend context
- */
-```
-
-**Expected Behavior:**
-- Table shows years with rectification counts
-- Click any year to see detailed breakdown
-- Color-coded status indicators
-- Sort by any column
-- Links to original documents when available
+<RectificationHistory locale="en" />
 
 ---
 
@@ -165,43 +48,7 @@ interface RectificationDetail {
 
 Not all rectifications are problematic, but some patterns should raise concerns:
 
-### Warning Signs
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│  🚨 RED FLAGS IN BUDGET RECTIFICATIONS                       │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  🔴 Bypassing Parliament through OUG (Emergency Ordinances)  │
-│     → Rectifications via OUG skip proper legislative debate  │
-│                                                              │
-│  🔴 Reserve Fund bypass instead of formal rectification      │
-│     → In 2023, Romania distributed 32B lei without formal    │
-│       rectification for the first time in 30 years           │
-│                                                              │
-│  🔴 Pre-election spending spikes                             │
-│     → 2024: Pension increases 2 months before elections      │
-│     → Deficit jumped to 9.3% GDP (highest in EU)             │
-│                                                              │
-│  🔴 Deficits consistently above targets                      │
-│     → Initial targets systematically underestimate spending  │
-│     → Romania's deficit exceeds EU 3% limit since 2020       │
-│                                                              │
-│  🟡 Large magnitude changes                                  │
-│     → 2021 rectification: +17B lei expenditures              │
-│     → 2024 rectification: +47.5B lei expenditures            │
-│                                                              │
-│  ═══════════════════════════════════════════════════════════ │
-│                                                              │
-│  🟢 When rectifications are NORMAL:                          │
-│                                                              │
-│  ✓ Response to genuine emergencies (COVID-19, energy crisis) │
-│  ✓ EU/PNRR funds co-financing received mid-year              │
-│  ✓ Revenue collection significantly different than projected │
-│  ✓ Small, technical adjustments between categories           │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
+<RedFlagCards locale="en" />
 
 ### Questions to Ask About Any Rectification
 

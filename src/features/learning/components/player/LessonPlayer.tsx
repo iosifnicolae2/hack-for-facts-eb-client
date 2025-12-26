@@ -193,6 +193,21 @@ const PhaseCards = createLazyComponent(() =>
     default: module.PhaseCards,
   }))
 )
+const RectificationFlow = createLazyComponent(() =>
+  import('../interactive/RectificationFlow').then((module) => ({
+    default: module.RectificationFlow,
+  }))
+)
+const RectificationHistory = createLazyComponent(() =>
+  import('../interactive/RectificationHistory').then((module) => ({
+    default: module.RectificationHistory,
+  }))
+)
+const RedFlagCards = createLazyComponent(() =>
+  import('../interactive/RedFlagCards').then((module) => ({
+    default: module.RedFlagCards,
+  }))
+)
 
 function LessonQuizWrapper({ lessonId, ...props }: LessonQuizWrapperProps) {
   const { progress } = useLearningProgress()
@@ -344,6 +359,9 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
       HandsOnExplorer,
       BudgetCycleTimeline,
       PhaseCards,
+      RectificationFlow,
+      RectificationHistory,
+      RedFlagCards,
     }),
     [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, PromiseTrackerWrapper, SalaryTaxCalculatorWrapper, GuidedPlatformTourWrapper, ClassificationExplorerWrapper, BudgetAllocatorWrapper]
   )

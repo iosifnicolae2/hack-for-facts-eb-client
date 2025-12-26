@@ -182,45 +182,28 @@ type CurrentDateIndicatorProps = {
 }
 
 function CurrentDateIndicator({ date }: CurrentDateIndicatorProps) {
-  // Calculate precise position based on day of month
-  const monthIndex = date.getMonth() // 0-11
-  const day = date.getDate()
-  const daysInMonth = new Date(date.getFullYear(), monthIndex + 1, 0).getDate()
-  
-  // Calculate percentage: (completed months + current month progress) / 12
-  const monthProgress = (day - 1) / daysInMonth
-  
-  // Standard grid assumes month starts at i/12.
-  // So Jan 1 is at 0. Jan 15 is at 0.5/12.
-  // The previous logic ((month - 1) / 12) * 100 + 100 / 24 centered it in the column.
-  // Let's align it exactly to the time.
-  // Month start: (monthIndex / 12) * 100
-  // Month width: 100 / 12
-  // Position = Start + (Progress * Width)
-  const exactLeftPercent = ((monthIndex + monthProgress) / 12) * 100
+  // Calculate day of year (1-365/366)
+  const startOfYear = new Date(date.getFullYear(), 0, 0)
+  const diff = date.getTime() - startOfYear.getTime()
+  const oneDay = 1000 * 60 * 60 * 24
+  const dayOfYear = Math.floor(diff / oneDay)
+
+  // Total days in year (accounts for leap years)
+  const isLeapYear = (date.getFullYear() % 4 === 0 && date.getFullYear() % 100 !== 0) || date.getFullYear() % 400 === 0
+  const totalDays = isLeapYear ? 366 : 365
+
+  // Position as percentage of year
+  const leftPercent = (dayOfYear / totalDays) * 100
 
   return (
     <div
       className="absolute top-0 bottom-0 z-20 pointer-events-none"
-      style={{ left: `${exactLeftPercent}%` }}
+      style={{ left: `${leftPercent}%` }}
     >
-      {/* Scanline effect - thinner and more subtle */}
-      <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-linear-to-b from-transparent via-red-500/60 to-transparent dark:via-red-400/60" />
-      
-      {/* Glow - slightly wider but softer */}
-      <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[8px] bg-red-500/10 blur-xs" />
-
-      {/* Header Pill - moved up slightly to clear month labels and refined */}
-      <motion.div
-        className="absolute left-1/2 -translate-x-1/2 -top-6 flex flex-col items-center"
-        animate={{ y: [0, -2, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <div className="px-2 py-0.5 rounded-md bg-red-500/90 dark:bg-red-500/90 text-[10px] font-black uppercase text-white shadow-lg shadow-red-500/20 tracking-widest backdrop-blur-sm border border-red-400/50">
-          Now
-        </div>
-        <div className="w-px h-6 bg-linear-to-b from-red-500/50 to-transparent" />
-      </motion.div>
+      <div className="absolute left-0 -translate-x-1/2 top-0 bottom-0 w-0.5 bg-red-500 dark:bg-red-400" />
+      <div className="absolute left-0 -translate-x-1/2 -top-5 px-1.5 py-0.5 rounded bg-red-500 dark:bg-red-400 text-[10px] font-bold uppercase text-white">
+        Now
+      </div>
     </div>
   )
 }
@@ -275,7 +258,7 @@ function PhaseBar({ phase, label, isSelected, isCurrent, onClick, animationDelay
       transition={{ duration: 0.5, delay: animationDelay, ease: [0.22, 1, 0.36, 1] }}
     >
       {/* Phase label (left side) */}
-      <div className="absolute right-full pr-4 flex flex-col items-end justify-center h-full">
+      <div className="absolute right-full pr-2 flex flex-col items-start justify-center h-full">
         <span className={cn(
           "text-sm font-bold transition-colors duration-200",
           isSelected ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-200"
@@ -289,14 +272,14 @@ function PhaseBar({ phase, label, isSelected, isCurrent, onClick, animationDelay
 
       {/* Bar container (full width for positioning) */}
       <div className="relative w-full h-full">
-          {/* The actual bar */}
+        {/* The actual bar */}
         <motion.button
           className={cn(
             'absolute top-1/2 -translate-y-1/2 h-10 rounded-xl cursor-pointer transition-all duration-300',
             'flex items-center justify-center gap-2 px-3 shadow-sm',
             colors.bgSolid,
-            isSelected 
-              ? 'ring-4 ring-offset-2 ring-offset-white dark:ring-offset-zinc-950 shadow-md scale-[1.02]' 
+            isSelected
+              ? 'ring-4 ring-offset-2 ring-offset-white dark:ring-offset-zinc-950 shadow-md scale-[1.02]'
               : 'hover:scale-[1.01] hover:shadow-md opacity-90 hover:opacity-100',
             isSelected && (isHighOpportunity ? 'ring-amber-200 dark:ring-amber-800' : 'ring-blue-200 dark:ring-blue-800'),
             isHighOpportunity && !isSelected && 'shadow-amber-500/20',
@@ -323,9 +306,9 @@ function PhaseBar({ phase, label, isSelected, isCurrent, onClick, animationDelay
           )}>
             <Icon className="w-4 h-4 text-white" />
           </div>
-          
+
           {isHighOpportunity && <Star className="w-3.5 h-3.5 text-amber-200 fill-current animate-pulse" />}
-          
+
           <span className={cn(
             "text-xs font-bold text-white tracking-tight",
             !isFullYear && "hidden lg:inline",
@@ -420,7 +403,7 @@ function PhaseInfoPanel({ phase, content, label, onClose, text }: PhaseInfoPanel
     >
       <div
         className={cn(
-          'p-6 md:p-8 rounded-3xl border mt-6 relative overflow-hidden',
+          'p-6 md:p-8 rounded-3xl border mt-4 relative overflow-hidden',
           isHighOpportunity
             ? 'bg-amber-50/50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800/50'
             : 'bg-zinc-50/50 dark:bg-zinc-900/50 border-zinc-200 dark:border-zinc-800'
@@ -433,11 +416,11 @@ function PhaseInfoPanel({ phase, content, label, onClose, text }: PhaseInfoPanel
         )} />
 
         {/* Header */}
-        <div className="flex items-start justify-between gap-4 mb-8 relative z-10">
-          <div className="flex items-center gap-4">
+        <div className="flex items-start justify-between gap-3 mb-4 relative z-10">
+          <div className="flex items-center gap-3">
             <div
               className={cn(
-                'shrink-0 p-3.5 rounded-2xl shadow-sm',
+                'shrink-0 p-2.5 rounded-2xl shadow-sm',
                 colors.bgSolid,
                 isHighOpportunity && 'ring-4 ring-amber-100 dark:ring-amber-900/30'
               )}
@@ -445,7 +428,7 @@ function PhaseInfoPanel({ phase, content, label, onClose, text }: PhaseInfoPanel
               <Icon className="w-6 h-6 text-white" />
             </div>
             <div>
-              <div className="flex items-center gap-2 mb-1">
+              <div className="flex items-center gap-2">
                 <h4 className="font-black text-xl md:text-2xl text-zinc-900 dark:text-zinc-50 tracking-tight">
                   {label.name}
                 </h4>
@@ -456,7 +439,7 @@ function PhaseInfoPanel({ phase, content, label, onClose, text }: PhaseInfoPanel
                   </span>
                 )}
               </div>
-              <p className="text-base text-zinc-500 dark:text-zinc-400 font-medium">{label.timing}</p>
+              <p className="text-base text-zinc-500 mt-0 dark:text-zinc-400 font-medium">{label.timing}</p>
             </div>
           </div>
           <Button
@@ -470,7 +453,7 @@ function PhaseInfoPanel({ phase, content, label, onClose, text }: PhaseInfoPanel
         </div>
 
         {/* Description */}
-        <p className="text-base md:text-lg text-zinc-700 dark:text-zinc-300 mb-8 leading-relaxed max-w-3xl relative z-10">
+        <p className="text-base md:text-lg text-zinc-700 dark:text-zinc-300 mb-6 leading-relaxed max-w-3xl relative z-10">
           {content.description}
         </p>
 
@@ -670,9 +653,9 @@ export function BudgetCycleTimeline({
         )}
 
         {/* Desktop: Gantt Chart */}
-        <div className="hidden md:block">
+        <div className="hidden md:block overflow-visible pr-8">
           {/* Month labels */}
-          <div className="flex ml-40 mb-2 relative">
+          <div className="flex ml-28 mb-2 relative">
             {MONTH_LABELS.map((label, i) => (
               <div
                 key={i}
@@ -689,18 +672,13 @@ export function BudgetCycleTimeline({
           </div>
 
           {/* Chart area */}
-          <div className="relative ml-40">
+          <div className="relative ml-28">
             {/* Grid lines */}
             <div className="absolute inset-0 flex pointer-events-none">
               {MONTH_LABELS.map((_, i) => (
                 <div
                   key={i}
-                  className={cn(
-                    'flex-1 border-l',
-                    i + 1 === currentMonth
-                      ? 'border-red-200 dark:border-red-800'
-                      : 'border-zinc-100 dark:border-zinc-800'
-                  )}
+                  className="flex-1 border-l border-zinc-100 dark:border-zinc-800"
                 />
               ))}
               <div className="border-l border-zinc-100 dark:border-zinc-800" />

@@ -21,28 +21,7 @@ Gândește-te la ajustarea bugetului personal: dacă primești o mărire de sala
 
 O rectificare bugetară este o **modificare formală a bugetului anual aprobat** în timpul anului fiscal. Ar trebui să necesite o nouă lege adoptată de Parlament, la fel ca bugetul inițial.
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  📝 CE SUNT RECTIFICĂRILE?                                   │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  Rectificări bugetare = modificări ale bugetului pe an       │
-│                                                              │
-│  BUGET INIȚIAL (Ianuarie)                                    │
-│  ████████████████████████████████████████  100 miliarde      │
-│                                                              │
-│            ↓ Rectificarea #1 (Aprilie)                       │
-│                                                              │
-│  ████████████████████████████████████████████  105 miliarde  │
-│  (+5 miliarde adăugate)                                      │
-│                                                              │
-│            ↓ Rectificarea #2 (August)                        │
-│                                                              │
-│  ██████████████████████████████████████░░░░░░  98 miliarde   │
-│  (-7 miliarde tăiate)                                        │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
+<RectificationFlow locale="ro" />
 
 ### Motive frecvente pentru rectificări
 
@@ -61,103 +40,7 @@ O rectificare bugetară este o **modificare formală a bugetului anual aprobat**
 
 Explorează tiparele rectificărilor din România în ultimii ani.
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  📊 ISTORICUL RECTIFICĂRILOR (2020-2024)                     │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  An   │ Rectificări    │ Deficit   │ Context                 │
-│  ─────┼────────────────┼───────────┼───────────────────────  │
-│  2024 │       1        │  9,3% PIB │ 🔴 An electoral         │
-│  2023 │  0 formale     │  6,5% PIB │ 🔴 Ocolire Fond Rezervă │
-│  2022 │       2        │  6,0% PIB │ 🟡 Criza energetică     │
-│  2021 │       2        │  8,4% PIB │ 🔴 Amploare record       │
-│  2020 │       3        │  9,2% PIB │ 🔴 Criza COVID          │
-│                                                              │
-│  Notă: 2023 nu a avut rectificări formale pentru prima       │
-│  dată în 30 de ani. În schimb, 32 miliarde lei (6,4 mld €)   │
-│  au fost distribuite prin mecanismul Fondului de Rezervă.    │
-│                                                              │
-│  [ Vezi detalii pentru fiecare an → ]                        │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-### Specificația componentei
-
-```typescript
-/**
- * Componenta RectificationHistory
- *
- * SCOP: Afișarea datelor istorice despre rectificări cu urmărirea deficitului
- * și posibilitatea de detaliere pentru fiecare an
- */
-interface RectificationHistoryProps {
-  readonly years: readonly YearRectificationData[]
-  readonly onYearClick?: (year: number) => void
-  readonly highlightYear?: number
-}
-
-interface YearRectificationData {
-  readonly year: number
-  readonly rectificationCount: number | 'none_formal'  // 0 formale = ocolire Fond Rezervă
-  readonly deficitPercent: number  // deficit ca % din PIB
-  readonly status: 'normal' | 'energy_crisis' | 'election_year' | 'covid_crisis' | 'reserve_bypass'
-  readonly context: string  // ex: "Pandemie COVID", "An electoral", "Ocolire Fond Rezervă"
-  readonly details?: readonly RectificationDetail[]
-}
-
-interface RectificationDetail {
-  readonly date: string
-  readonly ougNumber: string  // ex: "OUG 113/2024"
-  readonly amount: number
-  readonly direction: 'increase' | 'decrease'
-  readonly mainChanges: readonly string[]
-  readonly documentUrl?: string
-}
-
-/**
- * STARE:
- * - expandedYear: number | null
- * - hoveredYear: number | null
- * - sortOrder: 'year' | 'count' | 'change'
- *
- * INTERACȚIUNI:
- * - Click pe rând: extinde detaliile anului
- * - Hover pe rând: evidențiere cu tooltip
- * - Click pe antet coloană: sortare după acea coloană
- * - Taste săgeți: navigare între rânduri
- * - Enter: extinde/restrânge rândul selectat
- *
- * STĂRI VIZUALE:
- * - An normal: indicator verde
- * - Criză energetică: indicator galben
- * - Criză COVID / An electoral / Ocolire fond: indicator roșu
- * - Hover: evidențiere fundal
- * - Extins: panoul de detalii glisează în jos cu numere OUG
- * - Etichetă context: tag special (COVID, Electoral, Energie, Fond Rezervă)
- *
- * ANIMAȚII:
- * - Hover rând: fundal fade (150ms)
- * - Extindere: glisare în jos (300ms, ease-out)
- * - Indicatori status: pulsație subtilă pe anii îngrijorători
- * - Sortare: rândurile se reordonează cu animație spring
- *
- * ACCESIBILITATE:
- * - role="table" cu thead/tbody corecte
- * - aria-sort pe coloanele sortabile
- * - aria-expanded pe rândurile extensibile
- * - Iconițele de status au aria-label cu semnificația
- * - Screen reader anunță contextul tendinței
- */
-```
-
-**Comportament așteptat:**
-- Tabelul afișează anii cu numărul de rectificări
-- Click pe orice an pentru detalii
-- Indicatori de status color-codați
-- Sortare după orice coloană
-- Link-uri către documentele originale când sunt disponibile
+<RectificationHistory locale="ro" />
 
 ---
 
@@ -165,43 +48,7 @@ interface RectificationDetail {
 
 Nu toate rectificările sunt problematice, dar unele tipare ar trebui să ridice semne de întrebare:
 
-### Semne de avertizare
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│  🚨 SEMNALE DE ALARMĂ ÎN RECTIFICĂRILE BUGETARE              │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  🔴 Ocolirea Parlamentului prin OUG (Ordonanțe de Urgență)   │
-│     → Rectificările prin OUG evită dezbaterea legislativă    │
-│                                                              │
-│  🔴 Ocolirea prin Fondul de Rezervă în loc de rectificare    │
-│     → În 2023, România a distribuit 32 mld lei fără          │
-│       rectificare formală, pentru prima dată în 30 de ani    │
-│                                                              │
-│  🔴 Creșteri de cheltuieli pre-electorale                    │
-│     → 2024: Majorări de pensii la 2 luni de alegeri          │
-│     → Deficitul a sărit la 9,3% PIB (cel mai mare din UE)    │
-│                                                              │
-│  🔴 Deficite constant peste ținte                            │
-│     → Țintele inițiale subestimează sistematic cheltuielile  │
-│     → Deficitul României depășește limita UE de 3% din 2020  │
-│                                                              │
-│  🟡 Modificări de amploare mare                              │
-│     → Rectificarea 2021: +17 mld lei cheltuieli              │
-│     → Rectificarea 2024: +47,5 mld lei cheltuieli            │
-│                                                              │
-│  ═══════════════════════════════════════════════════════════ │
-│                                                              │
-│  🟢 Când rectificările sunt NORMALE:                         │
-│                                                              │
-│  ✓ Răspuns la urgențe reale (COVID-19, criză energetică)     │
-│  ✓ Cofinanțare fonduri UE/PNRR primite pe parcurs            │
-│  ✓ Încasări semnificativ diferite față de proiecții          │
-│  ✓ Ajustări tehnice mici între categorii                     │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
+<RedFlagCards locale="ro" />
 
 ### Întrebări de pus despre orice rectificare
 
