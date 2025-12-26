@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, lazy, Suspense, type ComponentType } from 'react'
 import { Link } from '@tanstack/react-router'
 import { t } from '@lingui/core/macro'
 import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { cn } from '@/lib/utils'
 import { prefetchModuleContent, useModuleContent } from '../../hooks/use-module-content'
 import { useLearningProgress } from '../../hooks/use-learning-progress'
@@ -15,25 +16,8 @@ import { Quiz, type QuizOption } from '../assessment/Quiz'
 import { MarkComplete } from './MarkComplete'
 import { LessonChallengesProvider, useRegisterLessonChallenge } from './lesson-challenges-context'
 import { LessonSkeleton } from '../loading/LessonSkeleton'
-import { BudgetAllocatorGame } from '../interactive/BudgetAllocatorGame'
-import { BudgetFootprintRevealer } from '../interactive/BudgetFootprintRevealer'
-import { FlashCard, FlashCardDeck } from '../interactive/FlashCardDeck'
-import { PromiseTracker } from '../interactive/PromiseTracker'
-import { SalaryTaxCalculator } from '../interactive/SalaryTaxCalculator'
-import { RevenueDistributionGame } from '../interactive/RevenueDistributionGame'
-import { VATCalculator } from '../interactive/VATCalculator'
-import { VATReformCard } from '../interactive/VATReformCard'
-import { EUComparisonChart } from '../interactive/EUComparisonChart'
-import { PlatformMission } from '../interactive/PlatformMission'
-import { DeficitVisual } from '../interactive/DeficitVisual'
-import { GuidedPlatformTour } from '../interactive/GuidedPlatformTour'
-import { ExpandableHint } from '../interactive/ExpandableHint'
-import { Sources } from '../interactive/Sources'
-import { ClassificationExplorer } from '../interactive/ClassificationExplorer'
-import { ExecutionRateChart } from '../interactive/ExecutionRateChart'
-import { HandsOnExplorer } from '../interactive/HandsOnExplorer'
-import { BudgetCycleTimeline } from '../interactive/BudgetCycleTimeline'
-import { PhaseCards } from '../interactive/PhaseCards'
+import type { BudgetAllocatorGameProps } from '../interactive/budget-allocator-data'
+import type { ClassificationExplorerProps } from '../interactive/classification-explorer-data'
 
 type LessonPlayerProps = {
   readonly locale: LearningLocale
@@ -70,9 +54,9 @@ type GuidedPlatformTourMdxProps = {
   readonly budgetExplorerUrl?: string
 }
 
-type ClassificationExplorerMdxProps = React.ComponentProps<typeof ClassificationExplorer>
+type ClassificationExplorerMdxProps = ClassificationExplorerProps
 
-type BudgetAllocatorGameMdxProps = React.ComponentProps<typeof BudgetAllocatorGame> & {
+type BudgetAllocatorGameMdxProps = Omit<BudgetAllocatorGameProps, 'contentId' | 'interactionId'> & {
   readonly id?: string
 }
 
@@ -92,6 +76,123 @@ type LessonSalaryTaxCalculatorWrapperProps = SalaryTaxCalculatorMdxProps & {
 type LessonBudgetAllocatorWrapperProps = BudgetAllocatorGameMdxProps & {
   readonly lessonId: string
 }
+
+function createLazyComponent<Props = Record<string, unknown>>(
+  loader: () => Promise<{ default: ComponentType<any> }>
+) {
+  const LazyComponent = lazy(loader)
+
+  return function LazyWrapper(props: Props) {
+    return (
+      <Suspense
+        fallback={<LoadingSpinner size="sm" text={t`Loading interactive content...`} className="my-6" />}
+      >
+        <LazyComponent {...(props as Record<string, unknown>)} />
+      </Suspense>
+    )
+  }
+}
+
+const BudgetAllocatorGame = createLazyComponent<BudgetAllocatorGameProps>(() =>
+  import('../interactive/BudgetAllocatorGame').then((module) => ({
+    default: module.BudgetAllocatorGame,
+  }))
+)
+const BudgetFootprintRevealer = createLazyComponent(() =>
+  import('../interactive/BudgetFootprintRevealer').then((module) => ({
+    default: module.BudgetFootprintRevealer,
+  }))
+)
+const FlashCard = createLazyComponent(() =>
+  import('../interactive/FlashCardDeck').then((module) => ({
+    default: module.FlashCard,
+  }))
+)
+const FlashCardDeck = createLazyComponent(() =>
+  import('../interactive/FlashCardDeck').then((module) => ({
+    default: module.FlashCardDeck,
+  }))
+)
+const PromiseTracker = createLazyComponent(() =>
+  import('../interactive/PromiseTracker').then((module) => ({
+    default: module.PromiseTracker,
+  }))
+)
+const SalaryTaxCalculator = createLazyComponent(() =>
+  import('../interactive/SalaryTaxCalculator').then((module) => ({
+    default: module.SalaryTaxCalculator,
+  }))
+)
+const RevenueDistributionGame = createLazyComponent(() =>
+  import('../interactive/RevenueDistributionGame').then((module) => ({
+    default: module.RevenueDistributionGame,
+  }))
+)
+const VATCalculator = createLazyComponent(() =>
+  import('../interactive/VATCalculator').then((module) => ({
+    default: module.VATCalculator,
+  }))
+)
+const VATReformCard = createLazyComponent(() =>
+  import('../interactive/VATReformCard').then((module) => ({
+    default: module.VATReformCard,
+  }))
+)
+const EUComparisonChart = createLazyComponent(() =>
+  import('../interactive/EUComparisonChart').then((module) => ({
+    default: module.EUComparisonChart,
+  }))
+)
+const PlatformMission = createLazyComponent(() =>
+  import('../interactive/PlatformMission').then((module) => ({
+    default: module.PlatformMission,
+  }))
+)
+const DeficitVisual = createLazyComponent(() =>
+  import('../interactive/DeficitVisual').then((module) => ({
+    default: module.DeficitVisual,
+  }))
+)
+const GuidedPlatformTour = createLazyComponent(() =>
+  import('../interactive/GuidedPlatformTour').then((module) => ({
+    default: module.GuidedPlatformTour,
+  }))
+)
+const ExpandableHint = createLazyComponent(() =>
+  import('../interactive/ExpandableHint').then((module) => ({
+    default: module.ExpandableHint,
+  }))
+)
+const Sources = createLazyComponent(() =>
+  import('../interactive/Sources').then((module) => ({
+    default: module.Sources,
+  }))
+)
+const ClassificationExplorer = createLazyComponent<ClassificationExplorerProps>(() =>
+  import('../interactive/ClassificationExplorer').then((module) => ({
+    default: module.ClassificationExplorer,
+  }))
+)
+const ExecutionRateChart = createLazyComponent(() =>
+  import('../interactive/ExecutionRateChart').then((module) => ({
+    default: module.ExecutionRateChart,
+  }))
+)
+const HandsOnExplorer = createLazyComponent(() =>
+  import('../interactive/HandsOnExplorer').then((module) => ({
+    default: module.HandsOnExplorer,
+  }))
+)
+const BudgetCycleTimeline = createLazyComponent(() =>
+  import('../interactive/BudgetCycleTimeline').then((module) => ({
+    default: module.BudgetCycleTimeline,
+  }))
+)
+const PhaseCards = createLazyComponent(() =>
+  import('../interactive/PhaseCards').then((module) => ({
+    default: module.PhaseCards,
+  }))
+)
 
 function LessonQuizWrapper({ lessonId, ...props }: LessonQuizWrapperProps) {
   const { progress } = useLearningProgress()

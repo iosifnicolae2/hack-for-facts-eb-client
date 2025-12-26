@@ -164,7 +164,9 @@ const LangLearningRouteRoute = LangLearningRouteRouteImport.update({
   id: '/$lang/learning',
   path: '/$lang/learning',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() =>
+  import('./routes/$lang/learning/route.lazy').then((d) => d.Route),
+)
 const ChartsChartIdIndexLazyRoute = ChartsChartIdIndexLazyRouteImport.update({
   id: '/',
   path: '/',
@@ -201,7 +203,9 @@ const LangLearningIndexRoute = LangLearningIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => LangLearningRouteRoute,
-} as any)
+} as any).lazy(() =>
+  import('./routes/$lang/learning/index.lazy').then((d) => d.Route),
+)
 const ClassificationsFunctionalCodeRoute =
   ClassificationsFunctionalCodeRouteImport.update({
     id: '/classifications/functional/$code',
@@ -224,24 +228,36 @@ const LangLearningOnboardingRoute = LangLearningOnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
   getParentRoute: () => LangLearningRouteRoute,
-} as any)
+} as any).lazy(() =>
+  import('./routes/$lang/learning/onboarding.lazy').then((d) => d.Route),
+)
 const LangLearningPathIdIndexRoute = LangLearningPathIdIndexRouteImport.update({
   id: '/$pathId/',
   path: '/$pathId/',
   getParentRoute: () => LangLearningRouteRoute,
-} as any)
+} as any).lazy(() =>
+  import('./routes/$lang/learning/$pathId/index.lazy').then((d) => d.Route),
+)
 const LangLearningCertificatesIdRoute =
   LangLearningCertificatesIdRouteImport.update({
     id: '/certificates/$id',
     path: '/certificates/$id',
     getParentRoute: () => LangLearningRouteRoute,
-  } as any)
+  } as any).lazy(() =>
+    import('./routes/$lang/learning/certificates.$id.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 const LangLearningPathIdModuleIdLessonIdRoute =
   LangLearningPathIdModuleIdLessonIdRouteImport.update({
     id: '/$pathId/$moduleId/$lessonId',
     path: '/$pathId/$moduleId/$lessonId',
     getParentRoute: () => LangLearningRouteRoute,
-  } as any)
+  } as any).lazy(() =>
+    import('./routes/$lang/learning/$pathId/$moduleId/$lessonId.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute

@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { ExecutionLineItem } from '@/lib/api/entities';
 import { getUserLocale } from './utils';
+import functionalClassificationsRo from '@/assets/functional-classifications-general-ro.json';
+import functionalClassificationsEn from '@/assets/functional-classifications-general-en.json';
 
 interface BudgetNode {
   description: string;
@@ -44,10 +46,8 @@ const trySaveMapCache = (key: string, map: Map<string, string>): void => {
 };
 
 const fetchFunctionalTree = async (): Promise<FunctionalTree> => {
-  const mod = userLocale == 'ro' ?
-    await import('@/assets/functional-classifications-general-ro.json') :
-    await import('@/assets/functional-classifications-general-en.json');
-  return (mod as { default: unknown }).default as FunctionalTree;
+  const data = userLocale === 'ro' ? functionalClassificationsRo : functionalClassificationsEn;
+  return data as FunctionalTree;
 };
 
 /** Trim + normalize odd spaces/BOM. */
