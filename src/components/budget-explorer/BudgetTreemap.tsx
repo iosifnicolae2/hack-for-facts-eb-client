@@ -1,7 +1,7 @@
 import { type FC, useCallback, useEffect, useMemo, useRef, useState, useDeferredValue, startTransition } from 'react'
 import { ResponsiveContainer, Treemap, Tooltip } from 'recharts'
 import { Trans } from '@lingui/react/macro'
-import { motion, useAnimationControls } from 'motion/react'
+import { motion, useAnimationControls } from 'framer-motion'
 import { ArrowLeft, LineChart } from 'lucide-react'
 import { useNavigate } from '@tanstack/react-router'
 

@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from 'react'
-import { motion, AnimatePresence, type Variants } from 'motion/react'
+import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import {
   ArrowRight,
   RotateCcw,

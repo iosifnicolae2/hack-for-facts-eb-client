@@ -106,5 +106,18 @@ export default defineConfig(({ mode }) => ({
     // Using 'hidden' avoids adding sourceMappingURL references to the bundled files
     sourcemap: 'hidden',
     chunkSizeWarningLimit: 1500,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          recharts: ['recharts'],
+          leaflet: ['leaflet', 'react-leaflet'],
+          clerk: ['@clerk/clerk-react'],
+          motion: ['framer-motion', 'motion'],
+          sentry: ['@sentry/react'],
+          posthog: ['posthog-js'],
+          tanstack: ['@tanstack/react-query', '@tanstack/react-table', '@tanstack/react-virtual'],
+        },
+      },
+    },
   },
 }));

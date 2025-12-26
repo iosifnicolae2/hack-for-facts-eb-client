@@ -33,7 +33,7 @@ import { FloatingQuickNav } from "@/components/ui/FloatingQuickNav";
 import { getSiteUrl } from "@/config/env";
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useUserCurrency } from "@/lib/hooks/useUserCurrency";
 import { useUserInflationAdjusted } from "@/lib/hooks/useUserInflationAdjusted";
 import type { AnalyticsFilterType, Currency, Normalization } from "@/schemas/charts";
