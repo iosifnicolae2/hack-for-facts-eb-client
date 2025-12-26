@@ -18,6 +18,9 @@ export const useEntityViews = (entity: EntityDetailsData | null | undefined): En
     return views;
   }
 
+  views.push({ id: 'contracts', label: t`Contracts`, icon: <ScrollText className="w-4 h-4" /> });
+
+
   views.push({ id: 'expense-trends', label: t`Expense Trends`, icon: <TrendingDownIcon className="w-4 h-4" /> });
   views.push({ id: 'income-trends', label: t`Income Trends`, icon: <TrendingUpIcon className="w-4 h-4" /> });
 
@@ -37,8 +40,6 @@ export const useEntityViews = (entity: EntityDetailsData | null | undefined): En
 
 
   views.push({ id: 'relationships', label: t`Entities`, icon: <Building2Icon className="w-4 h-4" /> });
-
-  views.push({ id: 'contracts', label: t`Contracts`, icon: <ScrollText className="w-4 h-4" /> });
 
   views.push({ id: 'reports', label: t`Reports`, icon: <FileText className="w-4 h-4" /> });
 

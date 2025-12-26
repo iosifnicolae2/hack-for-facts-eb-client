@@ -920,8 +920,8 @@ msgid "Both"
 msgstr "Both"
 
 #: src/components/entities/views/ContractsView.tsx:22
-msgid "Browse all public procurement contracts awarded to or by this entity"
-msgstr "Browse all public procurement contracts awarded to or by this entity"
+#~ msgid "Browse all public procurement contracts awarded to or by this entity"
+#~ msgstr "Browse all public procurement contracts awarded to or by this entity"
 
 #: src/components/entities/EntityReports.tsx:73
 msgid "Browse and download all financial reports submitted by this entity"
@@ -1367,8 +1367,8 @@ msgid "Continue to the next chapter to complete the module."
 msgstr "Continue to the next chapter to complete the module."
 
 #: src/components/entities/views/ContractsView.tsx:21
-msgid "Contract Search"
-msgstr "Contract Search"
+#~ msgid "Contract Search"
+#~ msgstr "Contract Search"
 
 #: src/hooks/useEntityViews.tsx:41
 msgid "Contracts"
@@ -1624,8 +1624,8 @@ msgid "Data Labels"
 msgstr "Data Labels"
 
 #: src/components/entities/views/ContractsView.tsx:80
-msgid "Data provided by SICAP.ai, an independent platform that aggregates public contracts from Romania's Electronic Public Procurement System (SEAP)."
-msgstr "Data provided by SICAP.ai, an independent platform that aggregates public contracts from Romania's Electronic Public Procurement System (SEAP)."
+#~ msgid "Data provided by SICAP.ai, an independent platform that aggregates public contracts from Romania's Electronic Public Procurement System (SEAP)."
+#~ msgstr "Data provided by SICAP.ai, an independent platform that aggregates public contracts from Romania's Electronic Public Procurement System (SEAP)."
 
 #: src/routes/privacy.lazy.tsx:99
 msgid "Data retention"
@@ -2314,8 +2314,8 @@ msgid "Explore national budget."
 msgstr "Explore national budget."
 
 #: src/components/entities/views/ContractsView.tsx:32
-msgid "Explore relationships with contractors and service providers"
-msgstr "Explore relationships with contractors and service providers"
+#~ msgid "Explore relationships with contractors and service providers"
+#~ msgstr "Explore relationships with contractors and service providers"
 
 #: src/features/learning/components/interactive/FlashCardDeck.tsx:266
 msgid "explored"
@@ -2533,6 +2533,10 @@ msgstr "for the selected filters."
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:114
 msgid "Found {replacementCount} occurrence{0}"
 msgstr "Found {replacementCount} occurrence{0}"
+
+#: src/components/entities/views/ContractsView.tsx:49
+msgid "Full Procurement Portal"
+msgstr "Full Procurement Portal"
 
 #: src/components/classification-explorer/ClassificationExplorer.tsx:192
 #: src/components/classification-explorer/ClassificationExplorer.tsx:193
@@ -3057,6 +3061,10 @@ msgstr "Language"
 #: src/components/alerts/components/AlertEditorView.tsx:290
 msgid "Last evaluated"
 msgstr "Last evaluated"
+
+#: src/components/entities/views/ContractsView.tsx:34
+msgid "Latest Contracts"
+msgstr "Latest Contracts"
 
 #: src/features/learning/components/interactive/VATReformCard.tsx:23
 msgid "Law 141/2025"
@@ -3900,9 +3908,9 @@ msgstr "Open in charts"
 msgid "Open in entity analytics"
 msgstr "Open in entity analytics"
 
-#: src/components/entities/views/ContractsView.tsx:48
-#~ msgid "Open in SICAP.ai"
-#~ msgstr "Open in SICAP.ai"
+#: src/components/entities/views/ContractsView.tsx:81
+msgid "Open in SICAP.ai"
+msgstr "Open in SICAP.ai"
 
 #: src/components/entities/EntityHeader.tsx:113
 #: src/components/entities/EntityInfo.tsx:42
@@ -4172,8 +4180,8 @@ msgid "Progress Saved"
 msgstr "Progress Saved"
 
 #: src/components/entities/views/ContractsView.tsx:44
-msgid "Public Contracts"
-msgstr "Public Contracts"
+#~ msgid "Public Contracts"
+#~ msgstr "Public Contracts"
 
 #: src/components/entities/views/ContractsView.tsx:19
 #~ msgid "Public contracts data for this entity will be available soon."
@@ -4187,9 +4195,9 @@ msgstr "Public institutions often transfer funds between each other (e.g., from 
 msgid "Public institutions often transfer funds between each other. These transfers can double-count spending or revenue if not filtered."
 msgstr "Public institutions often transfer funds between each other. These transfers can double-count spending or revenue if not filtered."
 
-#: src/components/entities/views/ContractsView.tsx:35
-#~ msgid "Public procurement data is provided by SICAP.ai, an independent platform that aggregates and analyzes public contracts from Romania's Electronic Public Procurement System (SEAP)."
-#~ msgstr "Public procurement data is provided by SICAP.ai, an independent platform that aggregates and analyzes public contracts from Romania's Electronic Public Procurement System (SEAP)."
+#: src/components/entities/views/ContractsView.tsx:68
+msgid "Public procurement data is provided by SICAP.ai, an independent platform that aggregates and analyzes public contracts from Romania's Electronic Public Procurement System (SEAP)."
+msgstr "Public procurement data is provided by SICAP.ai, an independent platform that aggregates and analyzes public contracts from Romania's Electronic Public Procurement System (SEAP)."
 
 #: src/routes/privacy.lazy.tsx:86
 msgid "Public sector information from Ministerul Finanțelor. No government affiliation."
@@ -4880,8 +4888,8 @@ msgid "Spending"
 msgstr "Spending"
 
 #: src/components/entities/views/ContractsView.tsx:26
-msgid "Spending Analysis"
-msgstr "Spending Analysis"
+#~ msgid "Spending Analysis"
+#~ msgstr "Spending Analysis"
 
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:54
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:220
@@ -5004,8 +5012,8 @@ msgid "Supervisory authority"
 msgstr "Supervisory authority"
 
 #: src/components/entities/views/ContractsView.tsx:31
-msgid "Supplier Information"
-msgstr "Supplier Information"
+#~ msgid "Supplier Information"
+#~ msgstr "Supplier Information"
 
 #: src/routes/alerts/$alertId/index.lazy.tsx:126
 msgid "Syncing…"
@@ -5620,13 +5628,12 @@ msgid "View Chart"
 msgstr "View Chart"
 
 #: src/components/entities/views/ContractsView.tsx:71
-msgid "View Contracts on SICAP.ai"
-msgstr "View Contracts on SICAP.ai"
+#~ msgid "View Contracts on SICAP.ai"
+#~ msgstr "View Contracts on SICAP.ai"
 
-#. placeholder {0}: entity.name
 #: src/components/entities/views/ContractsView.tsx:47
-msgid "View detailed public procurement data for {0} on SICAP.ai"
-msgstr "View detailed public procurement data for {0} on SICAP.ai"
+#~ msgid "View detailed public procurement data for {0} on SICAP.ai"
+#~ msgstr "View detailed public procurement data for {0} on SICAP.ai"
 
 #: src/components/budget-explorer/BudgetTreemap.tsx:611
 #: src/features/learning/components/cards/LearningPathCard.tsx:75
@@ -5646,8 +5653,8 @@ msgid "View the color scale and values for the heatmap visualization"
 msgstr "View the color scale and values for the heatmap visualization"
 
 #: src/components/entities/views/ContractsView.tsx:27
-msgid "View trends and statistics on public spending patterns"
-msgstr "View trends and statistics on public spending patterns"
+#~ msgid "View trends and statistics on public spending patterns"
+#~ msgstr "View trends and statistics on public spending patterns"
 
 #: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:620
 msgid "Viewing:"
