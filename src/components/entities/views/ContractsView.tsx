@@ -2,48 +2,21 @@ import { EntityDetailsData } from '@/lib/api/entities';
 import { ExternalLink, Info } from 'lucide-react';
 import { Trans } from '@lingui/react/macro';
 import { Button } from '@/components/ui/button';
-import { useTheme } from '@/components/theme/theme-provider';
 
 type Props = {
-    entity?: EntityDetailsData | null | undefined;
+    entity: EntityDetailsData | null | undefined;
 };
 
-export function ContractsView({ entity }: Props) {
-    const { theme } = useTheme();
+export function ContractsView({ entity }: Readonly<Props>) {
 
     if (!entity) {
         return null;
     }
 
-    // Determine the effective theme for the embed
-    const getEffectiveTheme = (): 'dark' | 'light' => {
-        if (theme === 'system') {
-            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        }
-        return theme;
-    };
-
-    const effectiveTheme = getEffectiveTheme();
     const sicapUrl = `https://sicap.ai/autoritate/${entity.cui}`;
-    const sicapEmbedUrl = `https://sicap.ai/embed?cui=${entity.cui}&theme=${effectiveTheme}`;
 
     return (
         <div className="space-y-6">
-            <div className="space-y-3">
-                <h3 className="text-lg font-semibold">
-                    <Trans>Latest Contracts</Trans>
-                </h3>
-                <div className="w-full overflow-hidden rounded-lg border bg-background shadow-sm">
-                    <iframe
-                        src={sicapEmbedUrl}
-                        title="SICAP.ai Latest Contracts"
-                        className="w-full"
-                        style={{ height: '600px' }}
-                        loading="lazy"
-                    />
-                </div>
-            </div>
-
             <div className="space-y-3">
                 <h3 className="text-lg font-semibold">
                     <Trans>Full Procurement Portal</Trans>
