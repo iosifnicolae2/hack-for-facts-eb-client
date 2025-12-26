@@ -19,119 +19,175 @@ Think of it like tracking a court case: you need the original filing, the trial 
 
 ## Key Documents by Phase
 
-### Document Checklist
+Use the tabs below to explore documents for each phase of the budget cycle.
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  📄 IMPORTANT BUDGET DOCUMENTS                               │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  DURING APPROVAL (Oct-Dec):                                  │
-│  ☐ Proiectul legii bugetului de stat (Budget Law Draft)      │
-│  ☐ Anexe la buget (Budget Annexes)                           │
-│  ☐ Expunere de motive (Explanatory Memorandum)               │
-│                                                              │
-│  DURING EXECUTION (Monthly):                                 │
-│  ☐ Rapoarte de execuție bugetară (Execution Reports)         │
-│  ☐ Situația arieratelor (Arrears Reports)                    │
-│                                                              │
-│  AFTER AUDIT (12-18 months after fiscal year):               │
-│  ☐ Rapoartele Curții de Conturi (Court of Accounts Reports)  │
-│                                                              │
-│  WHERE TO FIND THEM:                                         │
-│  • mfinante.gov.ro — Ministry of Finance                     │
-│  • forexe.mfinante.gov.ro — Forexebug (real-time data)       │
-│  • cdep.ro / senat.ro — Parliament                           │
-│  • curteadeconturi.ro — Court of Accounts                    │
-│  • data.gov.ro — Open Data Portal                            │
-│  • Transparenta.eu — Searchable execution data               │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
+<DocumentLibrary
+  locale="en"
+  phaseLabels={{
+    approval: { name: 'Approval', timing: 'Oct-Dec' },
+    execution: { name: 'Execution', timing: 'Monthly' },
+    audit: { name: 'Audit', timing: '12-18 months after' },
+  }}
+  documents={[
+    {
+      id: 'budget-law-draft',
+      phase: 'approval',
+      name: 'Budget Law Draft',
+      description: 'Complete proposed budget for next year',
+      links: [
+        { label: 'cdep.ro', url: 'https://cdep.ro' },
+        { label: 'senat.ro', url: 'https://senat.ro' },
+      ],
+    },
+    {
+      id: 'budget-annexes',
+      phase: 'approval',
+      name: 'Budget Annexes',
+      description: 'Detailed allocations by ministry/institution',
+      links: [{ label: 'mfinante.gov.ro', url: 'https://mfinante.gov.ro' }],
+    },
+    {
+      id: 'explanatory-memo',
+      phase: 'approval',
+      name: 'Explanatory Memorandum',
+      description: 'Why amounts were chosen, economic projections',
+      links: [{ label: 'mfinante.gov.ro', url: 'https://mfinante.gov.ro' }],
+    },
+    {
+      id: 'execution-reports',
+      phase: 'execution',
+      name: 'Execution Reports',
+      description: 'Actual spending vs. planned (published monthly)',
+      links: [
+        { label: 'mfinante.gov.ro', url: 'https://mfinante.gov.ro' },
+        { label: 'Forexebug', url: 'https://forexe.mfinante.gov.ro' },
+      ],
+    },
+    {
+      id: 'arrears-reports',
+      phase: 'execution',
+      name: 'Arrears Reports',
+      description: 'Unpaid debts over 90 days by government entities',
+      links: [{ label: 'mfinante.gov.ro', url: 'https://mfinante.gov.ro' }],
+    },
+    {
+      id: 'rectification-laws',
+      phase: 'execution',
+      name: 'Rectification Laws',
+      description: 'Mid-year budget changes',
+      links: [{ label: 'cdep.ro', url: 'https://cdep.ro' }],
+    },
+    {
+      id: 'annual-public-report',
+      phase: 'audit',
+      name: 'Annual Public Report',
+      description: 'Comprehensive audit findings submitted to Parliament',
+      links: [{ label: 'curteadeconturi.ro', url: 'https://curteadeconturi.ro' }],
+    },
+    {
+      id: 'financial-audit',
+      phase: 'audit',
+      name: 'Financial Audit Reports',
+      description: 'Opinions on entity financial statements',
+      links: [{ label: 'curteadeconturi.ro', url: 'https://curteadeconturi.ro' }],
+    },
+    {
+      id: 'compliance-audit',
+      phase: 'audit',
+      name: 'Compliance Audit Reports',
+      description: 'Regularity and legality verification',
+      links: [{ label: 'curteadeconturi.ro', url: 'https://curteadeconturi.ro' }],
+    },
+    {
+      id: 'performance-audit',
+      phase: 'audit',
+      name: 'Performance Audit Reports',
+      description: 'Economy, efficiency, effectiveness evaluation',
+      links: [{ label: 'curteadeconturi.ro', url: 'https://curteadeconturi.ro' }],
+    },
+  ]}
+/>
 
----
+### Why These Documents Matter
 
-## Document Guide
-
-### 1. During Approval (October-December)
-
-| Document | Romanian Name | What It Contains | Where to Find |
-|----------|---------------|------------------|---------------|
-| **Budget Law Draft** | Proiectul legii bugetului de stat | Complete proposed budget for next year | cdep.ro, senat.ro |
-| **Budget Annexes** | Anexe la buget (Anexa nr. 1, 2, etc.) | Detailed allocations by ministry/institution | mfinante.gov.ro |
-| **Explanatory Memorandum** | Expunere de motive | Why amounts were chosen, economic projections | mfinante.gov.ro |
-
-**Why these matter:** These documents show what the government PROMISES to spend. Compare them later to what actually happens.
-
-### 2. During Execution (Monthly)
-
-| Document | Romanian Name | What It Contains | Where to Find |
-|----------|---------------|------------------|---------------|
-| **Execution Reports** | Rapoarte de execuție bugetară | Actual spending vs. planned (published monthly) | mfinante.gov.ro, Forexebug |
-| **Arrears Reports** | Situația arieratelor (Form F1118) | Unpaid debts over 90 days by government entities | mfinante.gov.ro |
-| **Rectification Laws** | Legi de rectificare | Mid-year budget changes | cdep.ro |
-
-**Why these matter:** These show reality vs. promises. Low execution rates mean money wasn't spent as planned. Monthly reporting allows early detection of problems.
-
-### 3. After Audit (12-18 Months After Fiscal Year)
-
-| Document | Romanian Name | What It Contains | Where to Find |
-|----------|---------------|------------------|---------------|
-| **Annual Public Report** | Raportul Public Anual | Comprehensive audit findings submitted to Parliament | curteadeconturi.ro |
-| **Financial Audit Reports** | Rapoarte de Audit Financiar | Opinions on entity financial statements | curteadeconturi.ro |
-| **Compliance Audit Reports** | Rapoarte de Audit de Conformitate | Regularity and legality verification | curteadeconturi.ro |
-| **Performance Audit Reports** | Rapoarte de Audit al Performanței | Economy, efficiency, effectiveness evaluation | curteadeconturi.ro |
-| **Follow-up Reports** | Rapoarte de Follow-up | Whether past problems were fixed | curteadeconturi.ro |
-
-**Why these matter:** Independent verification of whether money was spent legally and effectively. Note: Reports typically publish 12-18 months after the fiscal year ends, not immediately in June.
-
----
-
-## Interactive Element: Document Finder
-
-Set up your document tracking workflow.
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│  🎯 HANDS-ON: Set Up Your Monitoring                         │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  Step 1: Open the Alerts feature                             │
-│          [ Open Alerts → ]                                   │
-│          URL: /alerts                                        │
-│                                                              │
-│  Step 2: Create an alert for your local government           │
-│          • Search for your city/commune                      │
-│          • Set alert for "new data available"                │
-│                                                              │
-│  Step 3: Set a calendar reminder for budget season           │
-│          • October 1: Check if draft is published            │
-│          • November 15: Review Parliament discussions        │
-│          • December 20: Final budget approved                │
-│                                                              │
-│  Step 4: Bookmark key document sources                       │
-│          • Ministry of Finance                               │
-│          • Parliament (cdep.ro)                              │
-│          • Court of Accounts                                 │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
+- **Approval phase documents** show what the government PROMISES to spend. Compare them later to what actually happens.
+- **Execution phase documents** show reality vs. promises. Low execution rates mean money wasn't spent as planned.
+- **Audit phase documents** provide independent verification of whether money was spent legally and effectively.
 
 ---
 
-## Quick Reference: Key Websites
+## Key Websites
 
-| Site | URL | What You'll Find |
-|------|-----|------------------|
-| **Ministry of Finance** | mfinante.gov.ro | Budget drafts, execution reports, fiscal data |
-| **Budget Transparency Portal** | mfinante.gov.ro/apps/transparenta-bugetara | Monthly monitoring of ~13,700 public institutions |
-| **Chamber of Deputies** | cdep.ro | Budget law debates, voting records, amendments |
-| **Senate** | senat.ro | Budget law debates, committee discussions |
-| **Court of Accounts** | curteadeconturi.ro | Audit reports, irregularity findings |
-| **Forexebug (Main Portal)** | forexe.mfinante.gov.ro | Real-time execution data for ~14,000 public entities |
-| **Forexebug (Public)** | forexepublic.mfinante.gov.ro | Public transparency portal for Forexebug data |
-| **Open Data Portal** | data.gov.ro | Central government datasets including budget info |
-| **Transparenta.eu** | transparenta.eu | Searchable, visualized budget data |
+Find budget documents on these official sources.
+
+<QuickLinks
+  locale="en"
+  links={[
+    {
+      id: 'mfinante',
+      name: 'Ministry of Finance',
+      description: 'Budget drafts, execution reports, fiscal data',
+      url: 'https://mfinante.gov.ro',
+      icon: 'ministry',
+    },
+    {
+      id: 'forexebug',
+      name: 'Forexebug',
+      description: 'Real-time execution data for ~14,000 public entities',
+      url: 'https://forexe.mfinante.gov.ro',
+      icon: 'data',
+    },
+    {
+      id: 'cdep',
+      name: 'Chamber of Deputies',
+      description: 'Budget law debates, voting records, amendments',
+      url: 'https://cdep.ro',
+      icon: 'parliament',
+    },
+    {
+      id: 'senat',
+      name: 'Senate',
+      description: 'Budget law debates, committee discussions',
+      url: 'https://senat.ro',
+      icon: 'parliament',
+    },
+    {
+      id: 'curteadeconturi',
+      name: 'Court of Accounts',
+      description: 'Audit reports, irregularity findings',
+      url: 'https://curteadeconturi.ro',
+      icon: 'audit',
+    },
+    {
+      id: 'datagov',
+      name: 'Open Data Portal',
+      description: 'Central government datasets including budget info',
+      url: 'https://data.gov.ro',
+      icon: 'data',
+    },
+    {
+      id: 'transparenta',
+      name: 'Transparenta.eu',
+      description: 'Searchable, visualized budget data',
+      url: 'https://transparenta.eu',
+      icon: 'transparency',
+    },
+  ]}
+/>
+
+---
+
+## Set Up Your Monitoring
+
+### Step-by-step guide:
+
+1. **Open the Alerts feature** at `/alerts` on Transparenta.eu
+2. **Create an alert** for your local government — search for your city/commune and set alert for "new data available"
+3. **Set calendar reminders** for budget season:
+   - October 1: Check if draft is published
+   - November 15: Review Parliament discussions
+   - December 20: Final budget approved
+4. **Bookmark key sources**: Ministry of Finance, Parliament (cdep.ro), Court of Accounts
 
 ---
 
@@ -146,7 +202,7 @@ Set these reminders to stay informed:
 | **November 15** | Review Parliament debates | Key discussion period |
 | **December 15** | Target adoption date | Emergency procedures if not adopted |
 | **Monthly** | Check execution reports | Monitor actual spending vs. planned |
-| **12-18 months after fiscal year** | Read Court of Accounts reports | See audit findings (not June as commonly believed) |
+| **12-18 months after fiscal year** | Read Court of Accounts reports | See audit findings |
 
 ---
 

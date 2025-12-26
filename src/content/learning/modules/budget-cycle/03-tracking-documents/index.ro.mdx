@@ -19,121 +19,175 @@ Gândește-te la asta ca la urmărirea unui dosar în instanță: ai nevoie de a
 
 ## Documente Cheie pe Faze
 
-### Lista de Verificare
+Folosește tab-urile de mai jos pentru a explora documentele fiecărei faze a ciclului bugetar.
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  📄 DOCUMENTE BUGETARE IMPORTANTE                            │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  ÎN TIMPUL APROBĂRII (Oct-Dec):                              │
-│  ☐ Proiectul legii bugetului de stat                         │
-│  ☐ Anexe la buget                                            │
-│  ☐ Expunere de motive                                        │
-│                                                              │
-│  ÎN TIMPUL EXECUȚIEI (Lunar):                                │
-│  ☐ Rapoarte de execuție bugetară                             │
-│  ☐ Situația arieratelor                                      │
-│                                                              │
-│  DUPĂ AUDIT (12-18 luni după anul fiscal):                   │
-│  ☐ Rapoartele Curții de Conturi                              │
-│                                                              │
-│  UNDE LE GĂSEȘTI:                                            │
-│  • mfinante.gov.ro — Ministerul Finanțelor                   │
-│  • forexe.mfinante.gov.ro — Forexebug (date în timp real)    │
-│  • cdep.ro / senat.ro — Parlamentul                          │
-│  • curteadeconturi.ro — Curtea de Conturi                    │
-│  • data.gov.ro — Portalul de Date Deschise                   │
-│  • Transparenta.eu — Date de execuție cu funcție de căutare  │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
+<DocumentLibrary
+  locale="ro"
+  phaseLabels={{
+    approval: { name: 'Aprobare', timing: 'Oct-Dec' },
+    execution: { name: 'Execuție', timing: 'Lunar' },
+    audit: { name: 'Audit', timing: '12-18 luni după' },
+  }}
+  documents={[
+    {
+      id: 'budget-law-draft',
+      phase: 'approval',
+      name: 'Proiectul legii bugetului de stat',
+      description: 'Bugetul complet propus pentru anul următor',
+      links: [
+        { label: 'cdep.ro', url: 'https://cdep.ro' },
+        { label: 'senat.ro', url: 'https://senat.ro' },
+      ],
+    },
+    {
+      id: 'budget-annexes',
+      phase: 'approval',
+      name: 'Anexe la buget',
+      description: 'Alocări detaliate pe ministere/instituții',
+      links: [{ label: 'mfinante.gov.ro', url: 'https://mfinante.gov.ro' }],
+    },
+    {
+      id: 'explanatory-memo',
+      phase: 'approval',
+      name: 'Expunere de motive',
+      description: 'De ce au fost alese sumele, proiecții economice',
+      links: [{ label: 'mfinante.gov.ro', url: 'https://mfinante.gov.ro' }],
+    },
+    {
+      id: 'execution-reports',
+      phase: 'execution',
+      name: 'Rapoarte de execuție bugetară',
+      description: 'Cheltuieli reale vs. planificate (publicate lunar)',
+      links: [
+        { label: 'mfinante.gov.ro', url: 'https://mfinante.gov.ro' },
+        { label: 'Forexebug', url: 'https://forexe.mfinante.gov.ro' },
+      ],
+    },
+    {
+      id: 'arrears-reports',
+      phase: 'execution',
+      name: 'Situația arieratelor (F1118)',
+      description: 'Datorii neplătite de peste 90 de zile ale entităților guvernamentale',
+      links: [{ label: 'mfinante.gov.ro', url: 'https://mfinante.gov.ro' }],
+    },
+    {
+      id: 'rectification-laws',
+      phase: 'execution',
+      name: 'Legi de rectificare',
+      description: 'Modificări bugetare pe parcursul anului',
+      links: [{ label: 'cdep.ro', url: 'https://cdep.ro' }],
+    },
+    {
+      id: 'annual-public-report',
+      phase: 'audit',
+      name: 'Raportul Public Anual',
+      description: 'Constatări comprehensive de audit prezentate Parlamentului',
+      links: [{ label: 'curteadeconturi.ro', url: 'https://curteadeconturi.ro' }],
+    },
+    {
+      id: 'financial-audit',
+      phase: 'audit',
+      name: 'Rapoarte de Audit Financiar',
+      description: 'Opinii asupra situațiilor financiare ale entităților',
+      links: [{ label: 'curteadeconturi.ro', url: 'https://curteadeconturi.ro' }],
+    },
+    {
+      id: 'compliance-audit',
+      phase: 'audit',
+      name: 'Rapoarte de Audit de Conformitate',
+      description: 'Verificarea regularității și legalității',
+      links: [{ label: 'curteadeconturi.ro', url: 'https://curteadeconturi.ro' }],
+    },
+    {
+      id: 'performance-audit',
+      phase: 'audit',
+      name: 'Rapoarte de Audit al Performanței',
+      description: 'Evaluarea economicității, eficienței, eficacității',
+      links: [{ label: 'curteadeconturi.ro', url: 'https://curteadeconturi.ro' }],
+    },
+  ]}
+/>
 
----
+### De Ce Contează Aceste Documente
 
-## Ghidul Documentelor
-
-### 1. În Timpul Aprobării (Octombrie-Decembrie)
-
-| Document | Ce Conține | Unde îl Găsești |
-|----------|------------|-----------------|
-| **Proiectul legii bugetului de stat** | Bugetul complet propus pentru anul următor | cdep.ro, senat.ro |
-| **Anexe la buget** (Anexa nr. 1, 2, etc.) | Alocări detaliate pe ministere/instituții | mfinante.gov.ro |
-| **Expunere de motive** | De ce au fost alese sumele, proiecții economice | mfinante.gov.ro |
-
-**De ce contează:** Aceste documente arată ce PROMITE guvernul să cheltuiască. Compară-le ulterior cu ce se întâmplă de fapt.
-
-### 2. În Timpul Execuției (Lunar)
-
-| Document | Ce Conține | Unde îl Găsești |
-|----------|------------|-----------------|
-| **Rapoarte de execuție bugetară** | Cheltuieli reale vs. planificate (publicate lunar) | mfinante.gov.ro, Forexebug |
-| **Situația arieratelor** (Formular F1118) | Datorii neplătite de peste 90 de zile ale entităților guvernamentale | mfinante.gov.ro |
-| **Legi de rectificare** | Modificări bugetare pe parcursul anului | cdep.ro |
-
-**De ce contează:** Acestea arată realitatea vs. promisiunile. Ratele scăzute de execuție înseamnă că banii nu au fost cheltuiți conform planului. Raportarea lunară permite detectarea timpurie a problemelor.
-
-### 3. După Audit (12-18 Luni După Anul Fiscal)
-
-| Document | Ce Conține | Unde îl Găsești |
-|----------|------------|-----------------|
-| **Raportul Public Anual** | Constatări comprehensive de audit prezentate Parlamentului | curteadeconturi.ro |
-| **Rapoarte de Audit Financiar** | Opinii asupra situațiilor financiare ale entităților | curteadeconturi.ro |
-| **Rapoarte de Audit de Conformitate** | Verificarea regularității și legalității | curteadeconturi.ro |
-| **Rapoarte de Audit al Performanței** | Evaluarea economicității, eficienței, eficacității | curteadeconturi.ro |
-| **Rapoarte de Follow-up** | Dacă problemele anterioare au fost remediate | curteadeconturi.ro |
-
-**De ce contează:** Verificare independentă dacă banii au fost cheltuiți legal și eficient. Notă: Rapoartele se publică de obicei la 12-18 luni după încheierea anului fiscal, nu imediat în iunie.
-
----
-
-## Element Interactiv: Căutător de Documente
-
-Configurează-ți fluxul de urmărire a documentelor.
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│  🎯 PRACTICĂ: Configurează-ți Monitorizarea                  │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  Pasul 1: Deschide funcția de Alerte                         │
-│           [ Deschide Alerte → ]                              │
-│           URL: /alerts                                       │
-│                                                              │
-│  Pasul 2: Creează o alertă pentru administrația ta locală    │
-│           • Caută orașul/comuna ta                           │
-│           • Setează alertă pentru „date noi disponibile"     │
-│                                                              │
-│  Pasul 3: Setează un memento în calendar pentru sezonul      │
-│           bugetar                                            │
-│           • 1 Octombrie: Verifică dacă proiectul e publicat  │
-│           • 15 Noiembrie: Revizuiește discuțiile din         │
-│             Parlament                                        │
-│           • 20 Decembrie: Bugetul final aprobat              │
-│                                                              │
-│  Pasul 4: Salvează în favorite sursele cheie de documente    │
-│           • Ministerul Finanțelor                            │
-│           • Parlamentul (cdep.ro)                            │
-│           • Curtea de Conturi                                │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
+- **Documentele din faza de aprobare** arată ce PROMITE guvernul să cheltuiască. Compară-le ulterior cu ce se întâmplă de fapt.
+- **Documentele din faza de execuție** arată realitatea vs. promisiunile. Ratele scăzute de execuție înseamnă că banii nu au fost cheltuiți conform planului.
+- **Documentele din faza de audit** oferă verificare independentă dacă banii au fost cheltuiți legal și eficient.
 
 ---
 
-## Referință Rapidă: Site-uri Cheie
+## Site-uri Cheie
 
-| Site | URL | Ce Găsești |
-|------|-----|------------|
-| **Ministerul Finanțelor** | mfinante.gov.ro | Proiecte de buget, rapoarte de execuție, date fiscale |
-| **Portalul de Transparență Bugetară** | mfinante.gov.ro/apps/transparenta-bugetara | Monitorizare lunară a ~13.700 instituții publice |
-| **Camera Deputaților** | cdep.ro | Dezbateri pe legea bugetului, înregistrări de vot, amendamente |
-| **Senatul** | senat.ro | Dezbateri pe legea bugetului, discuții în comisii |
-| **Curtea de Conturi** | curteadeconturi.ro | Rapoarte de audit, constatări de nereguli |
-| **Forexebug (Portal Principal)** | forexe.mfinante.gov.ro | Date de execuție în timp real pentru ~14.000 entități publice |
-| **Forexebug (Public)** | forexepublic.mfinante.gov.ro | Portal public de transparență pentru datele Forexebug |
-| **Portalul de Date Deschise** | data.gov.ro | Seturi de date guvernamentale centrale, inclusiv informații bugetare |
-| **Transparenta.eu** | transparenta.eu | Date bugetare cu funcție de căutare și vizualizare |
+Găsește documentele bugetare pe aceste surse oficiale.
+
+<QuickLinks
+  locale="ro"
+  links={[
+    {
+      id: 'mfinante',
+      name: 'Ministerul Finanțelor',
+      description: 'Proiecte de buget, rapoarte de execuție, date fiscale',
+      url: 'https://mfinante.gov.ro',
+      icon: 'ministry',
+    },
+    {
+      id: 'forexebug',
+      name: 'Forexebug',
+      description: 'Date de execuție în timp real pentru ~14.000 entități publice',
+      url: 'https://forexe.mfinante.gov.ro',
+      icon: 'data',
+    },
+    {
+      id: 'cdep',
+      name: 'Camera Deputaților',
+      description: 'Dezbateri pe legea bugetului, înregistrări de vot, amendamente',
+      url: 'https://cdep.ro',
+      icon: 'parliament',
+    },
+    {
+      id: 'senat',
+      name: 'Senatul',
+      description: 'Dezbateri pe legea bugetului, discuții în comisii',
+      url: 'https://senat.ro',
+      icon: 'parliament',
+    },
+    {
+      id: 'curteadeconturi',
+      name: 'Curtea de Conturi',
+      description: 'Rapoarte de audit, constatări de nereguli',
+      url: 'https://curteadeconturi.ro',
+      icon: 'audit',
+    },
+    {
+      id: 'datagov',
+      name: 'Portalul de Date Deschise',
+      description: 'Seturi de date guvernamentale centrale, inclusiv informații bugetare',
+      url: 'https://data.gov.ro',
+      icon: 'data',
+    },
+    {
+      id: 'transparenta',
+      name: 'Transparenta.eu',
+      description: 'Date bugetare cu funcție de căutare și vizualizare',
+      url: 'https://transparenta.eu',
+      icon: 'transparency',
+    },
+  ]}
+/>
+
+---
+
+## Configurează-ți Monitorizarea
+
+### Ghid pas cu pas:
+
+1. **Deschide funcția de Alerte** la `/alerts` pe Transparenta.eu
+2. **Creează o alertă** pentru administrația ta locală — caută orașul/comuna ta și setează alertă pentru „date noi disponibile"
+3. **Setează mementouri în calendar** pentru sezonul bugetar:
+   - 1 Octombrie: Verifică dacă proiectul e publicat
+   - 15 Noiembrie: Revizuiește discuțiile din Parlament
+   - 20 Decembrie: Bugetul final aprobat
+4. **Salvează în favorite sursele cheie**: Ministerul Finanțelor, Parlamentul (cdep.ro), Curtea de Conturi
 
 ---
 
@@ -148,7 +202,7 @@ Setează aceste mementouri pentru a fi informat:
 | **15 Noiembrie** | Revizuiește dezbaterile parlamentare | Perioadă cheie de discuții |
 | **15 Decembrie** | Dată țintă pentru adoptare | Proceduri de urgență dacă nu e adoptat |
 | **Lunar** | Verifică rapoartele de execuție | Monitorizează cheltuielile reale vs. planificate |
-| **12-18 luni după anul fiscal** | Citește rapoartele Curții de Conturi | Vezi constatările de audit (nu în iunie, cum se crede de obicei) |
+| **12-18 luni după anul fiscal** | Citește rapoartele Curții de Conturi | Vezi constatările de audit |
 
 ---
 

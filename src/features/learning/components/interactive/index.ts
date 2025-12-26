@@ -18,6 +18,8 @@ export { PhaseCards } from './PhaseCards'
 export { RectificationFlow } from './RectificationFlow'
 export { RectificationHistory } from './RectificationHistory'
 export { RedFlagCards } from './RedFlagCards'
+export { DocumentLibrary } from './DocumentLibrary'
+export { QuickLinks } from './QuickLinks'
 export {
   BUDGET_PHASES,
   OPPORTUNITY_COLORS,
@@ -43,3 +45,8 @@ export type {
   RedFlagItem,
   StatusLevel,
 } from './rectification-data'
+export type {
+  DocumentPhase,
+  BudgetDocument,
+  QuickLinkItem,
+} from './document-tracking-data'

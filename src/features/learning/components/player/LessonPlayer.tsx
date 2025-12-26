@@ -208,6 +208,16 @@ const RedFlagCards = createLazyComponent(() =>
     default: module.RedFlagCards,
   }))
 )
+const DocumentLibrary = createLazyComponent(() =>
+  import('../interactive/DocumentLibrary').then((module) => ({
+    default: module.DocumentLibrary,
+  }))
+)
+const QuickLinks = createLazyComponent(() =>
+  import('../interactive/QuickLinks').then((module) => ({
+    default: module.QuickLinks,
+  }))
+)
 
 function LessonQuizWrapper({ lessonId, ...props }: LessonQuizWrapperProps) {
   const { progress } = useLearningProgress()
@@ -362,6 +372,8 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
       RectificationFlow,
       RectificationHistory,
       RedFlagCards,
+      DocumentLibrary,
+      QuickLinks,
     }),
     [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, PromiseTrackerWrapper, SalaryTaxCalculatorWrapper, GuidedPlatformTourWrapper, ClassificationExplorerWrapper, BudgetAllocatorWrapper]
   )
