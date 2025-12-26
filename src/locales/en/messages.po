@@ -859,7 +859,7 @@ msgstr "Back to Hub"
 msgid "Back to learning"
 msgstr "Back to learning"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:427
+#: src/features/learning/components/player/LessonPlayer.tsx:445
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:44
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:102
 msgid "Back to Learning Hub"
@@ -869,7 +869,7 @@ msgstr "Back to Learning Hub"
 msgid "Back to Overview"
 msgstr "Back to Overview"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:571
+#: src/features/learning/components/player/LessonPlayer.tsx:589
 msgid "Back to path"
 msgstr "Back to path"
 
@@ -918,6 +918,10 @@ msgstr "Basic security logs are kept for a short period to protect accounts."
 #: src/routes/entity-analytics.lazy.tsx:231
 msgid "Both"
 msgstr "Both"
+
+#: src/components/entities/views/ContractsView.tsx:22
+msgid "Browse all public procurement contracts awarded to or by this entity"
+msgstr "Browse all public procurement contracts awarded to or by this entity"
 
 #: src/components/entities/EntityReports.tsx:73
 msgid "Browse and download all financial reports submitted by this entity"
@@ -1250,7 +1254,7 @@ msgstr "Comfortable"
 msgid "Compact"
 msgstr "Compact"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:595
+#: src/features/learning/components/player/LessonPlayer.tsx:613
 msgid "Complete path"
 msgstr "Complete path"
 
@@ -1361,6 +1365,14 @@ msgstr "Continue"
 #: src/features/learning/components/player/MarkComplete.tsx:71
 msgid "Continue to the next chapter to complete the module."
 msgstr "Continue to the next chapter to complete the module."
+
+#: src/components/entities/views/ContractsView.tsx:21
+msgid "Contract Search"
+msgstr "Contract Search"
+
+#: src/hooks/useEntityViews.tsx:41
+msgid "Contracts"
+msgstr "Contracts"
 
 #: src/routes/privacy.lazy.tsx:34
 msgid "Controller: Claudiu Constantin Bogdan, persoana fizica. Contact: contact@transparenta.eu"
@@ -1611,6 +1623,10 @@ msgstr "Data Label Offset"
 msgid "Data Labels"
 msgstr "Data Labels"
 
+#: src/components/entities/views/ContractsView.tsx:80
+msgid "Data provided by SICAP.ai, an independent platform that aggregates public contracts from Romania's Electronic Public Procurement System (SEAP)."
+msgstr "Data provided by SICAP.ai, an independent platform that aggregates public contracts from Romania's Electronic Public Procurement System (SEAP)."
+
 #: src/routes/privacy.lazy.tsx:99
 msgid "Data retention"
 msgstr "Data retention"
@@ -1769,7 +1785,7 @@ msgstr "Detailed categories"
 msgid "Detailed Line Items Breakdown"
 msgstr "Detailed Line Items Breakdown"
 
-#: src/routes/entities.$cui.lazy.tsx:336
+#: src/routes/entities.$cui.lazy.tsx:337
 msgid "Details:"
 msgstr "Details:"
 
@@ -2070,7 +2086,7 @@ msgstr "equals"
 msgid "Error"
 msgstr "Error"
 
-#: src/routes/entities.$cui.lazy.tsx:333
+#: src/routes/entities.$cui.lazy.tsx:334
 msgid "Error Fetching Entity Details"
 msgstr "Error Fetching Entity Details"
 
@@ -2296,6 +2312,10 @@ msgstr "Explore more paths"
 #: src/routes/index.lazy.tsx:63
 msgid "Explore national budget."
 msgstr "Explore national budget."
+
+#: src/components/entities/views/ContractsView.tsx:32
+msgid "Explore relationships with contractors and service providers"
+msgstr "Explore relationships with contractors and service providers"
 
 #: src/features/learning/components/interactive/FlashCardDeck.tsx:266
 msgid "explored"
@@ -3103,7 +3123,7 @@ msgstr "Less than"
 msgid "Lesson Completed!"
 msgstr "Lesson Completed!"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:422
+#: src/features/learning/components/player/LessonPlayer.tsx:440
 msgid "Lesson not found"
 msgstr "Lesson not found"
 
@@ -3543,7 +3563,7 @@ msgstr "Newsletter consent and management"
 msgid "Newsletters and notifications"
 msgstr "Newsletters and notifications"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:582
+#: src/features/learning/components/player/LessonPlayer.tsx:600
 msgid "Next"
 msgstr "Next"
 
@@ -3624,7 +3644,7 @@ msgstr "No data available for the table."
 msgid "No data available to display financial evolution."
 msgstr "No data available to display financial evolution."
 
-#: src/routes/entities.$cui.lazy.tsx:348
+#: src/routes/entities.$cui.lazy.tsx:349
 msgid "No Data Found"
 msgstr "No Data Found"
 
@@ -3660,7 +3680,7 @@ msgstr "No economic breakdown is available for income."
 msgid "No enabled series data available to display."
 msgstr "No enabled series data available to display."
 
-#: src/routes/entities.$cui.lazy.tsx:350
+#: src/routes/entities.$cui.lazy.tsx:351
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 
@@ -3879,6 +3899,10 @@ msgstr "Open in charts"
 #: src/routes/budget-explorer.lazy.tsx:447
 msgid "Open in entity analytics"
 msgstr "Open in entity analytics"
+
+#: src/components/entities/views/ContractsView.tsx:48
+#~ msgid "Open in SICAP.ai"
+#~ msgstr "Open in SICAP.ai"
 
 #: src/components/entities/EntityHeader.tsx:113
 #: src/components/entities/EntityInfo.tsx:42
@@ -4114,7 +4138,7 @@ msgstr "Preparing your share link..."
 msgid "Preview"
 msgstr "Preview"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:558
+#: src/features/learning/components/player/LessonPlayer.tsx:576
 msgid "Previous"
 msgstr "Previous"
 
@@ -4147,6 +4171,14 @@ msgstr "Product"
 msgid "Progress Saved"
 msgstr "Progress Saved"
 
+#: src/components/entities/views/ContractsView.tsx:44
+msgid "Public Contracts"
+msgstr "Public Contracts"
+
+#: src/components/entities/views/ContractsView.tsx:19
+#~ msgid "Public contracts data for this entity will be available soon."
+#~ msgstr "Public contracts data for this entity will be available soon."
+
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:158
 msgid "Public institutions often transfer funds between each other (e.g., from the state budget to local budgets). These transfers can double-count spending if not filtered."
 msgstr "Public institutions often transfer funds between each other (e.g., from the state budget to local budgets). These transfers can double-count spending if not filtered."
@@ -4154,6 +4186,10 @@ msgstr "Public institutions often transfer funds between each other (e.g., from 
 #: src/components/entities/EntityLineItemsTabs.tsx:147
 msgid "Public institutions often transfer funds between each other. These transfers can double-count spending or revenue if not filtered."
 msgstr "Public institutions often transfer funds between each other. These transfers can double-count spending or revenue if not filtered."
+
+#: src/components/entities/views/ContractsView.tsx:35
+#~ msgid "Public procurement data is provided by SICAP.ai, an independent platform that aggregates and analyzes public contracts from Romania's Electronic Public Procurement System (SEAP)."
+#~ msgstr "Public procurement data is provided by SICAP.ai, an independent platform that aggregates and analyzes public contracts from Romania's Electronic Public Procurement System (SEAP)."
 
 #: src/routes/privacy.lazy.tsx:86
 msgid "Public sector information from Ministerul Finanțelor. No government affiliation."
@@ -4316,7 +4352,7 @@ msgstr "Reporting entity"
 msgid "Reporting filters"
 msgstr "Reporting filters"
 
-#: src/routes/entities.$cui.lazy.tsx:381
+#: src/routes/entities.$cui.lazy.tsx:382
 msgid "Reporting period"
 msgstr "Reporting period"
 
@@ -4324,7 +4360,7 @@ msgstr "Reporting period"
 msgid "Reporting:"
 msgstr "Reporting:"
 
-#: src/hooks/useEntityViews.tsx:41
+#: src/hooks/useEntityViews.tsx:43
 msgid "Reports"
 msgstr "Reports"
 
@@ -4843,6 +4879,10 @@ msgstr "Source: "
 msgid "Spending"
 msgstr "Spending"
 
+#: src/components/entities/views/ContractsView.tsx:26
+msgid "Spending Analysis"
+msgstr "Spending Analysis"
+
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:54
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:220
 msgid "Spending Calculation"
@@ -4963,6 +5003,10 @@ msgstr "Sums pending distribution"
 msgid "Supervisory authority"
 msgstr "Supervisory authority"
 
+#: src/components/entities/views/ContractsView.tsx:31
+msgid "Supplier Information"
+msgstr "Supplier Information"
+
 #: src/routes/alerts/$alertId/index.lazy.tsx:126
 msgid "Syncing…"
 msgstr "Syncing…"
@@ -5050,7 +5094,7 @@ msgstr "The learning path you're looking for doesn't exist or has been moved."
 msgid "The learning path you're looking for doesn't exist."
 msgstr "The learning path you're looking for doesn't exist."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:424
+#: src/features/learning/components/player/LessonPlayer.tsx:442
 msgid "The lesson you're looking for doesn't exist or may have been moved."
 msgstr "The lesson you're looking for doesn't exist or may have been moved."
 
@@ -5095,7 +5139,7 @@ msgstr "The share link you are trying to access is invalid or no longer availabl
 msgid "The state total claim is <0>{0}</0>."
 msgstr "The state total claim is <0>{0}</0>."
 
-#: src/routes/entities.$cui.lazy.tsx:335
+#: src/routes/entities.$cui.lazy.tsx:336
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "There was a problem fetching the details for CUI: <0>{cui}</0>."
 
@@ -5575,6 +5619,15 @@ msgstr "View as Chart"
 msgid "View Chart"
 msgstr "View Chart"
 
+#: src/components/entities/views/ContractsView.tsx:71
+msgid "View Contracts on SICAP.ai"
+msgstr "View Contracts on SICAP.ai"
+
+#. placeholder {0}: entity.name
+#: src/components/entities/views/ContractsView.tsx:47
+msgid "View detailed public procurement data for {0} on SICAP.ai"
+msgstr "View detailed public procurement data for {0} on SICAP.ai"
+
 #: src/components/budget-explorer/BudgetTreemap.tsx:611
 #: src/features/learning/components/cards/LearningPathCard.tsx:75
 msgid "View Details"
@@ -5591,6 +5644,10 @@ msgstr "View in Entity Analytics"
 #: src/routes/map.lazy.tsx:312
 msgid "View the color scale and values for the heatmap visualization"
 msgstr "View the color scale and values for the heatmap visualization"
+
+#: src/components/entities/views/ContractsView.tsx:27
+msgid "View trends and statistics on public spending patterns"
+msgstr "View trends and statistics on public spending patterns"
 
 #: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:620
 msgid "Viewing:"

@@ -859,7 +859,7 @@ msgstr "Înapoi la Hub"
 msgid "Back to learning"
 msgstr "Înapoi la învățare"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:427
+#: src/features/learning/components/player/LessonPlayer.tsx:445
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:44
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:102
 msgid "Back to Learning Hub"
@@ -869,7 +869,7 @@ msgstr "Înapoi la Hub-ul de învățare"
 msgid "Back to Overview"
 msgstr "Înapoi la sinteză"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:571
+#: src/features/learning/components/player/LessonPlayer.tsx:589
 msgid "Back to path"
 msgstr "Înapoi la parcurs"
 
@@ -918,6 +918,10 @@ msgstr "Jurnalele de securitate de bază sunt păstrate pentru o perioadă scurt
 #: src/routes/entity-analytics.lazy.tsx:231
 msgid "Both"
 msgstr "Ambele"
+
+#: src/components/entities/views/ContractsView.tsx:22
+msgid "Browse all public procurement contracts awarded to or by this entity"
+msgstr ""
 
 #: src/components/entities/EntityReports.tsx:73
 msgid "Browse and download all financial reports submitted by this entity"
@@ -1250,7 +1254,7 @@ msgstr "Confortabil"
 msgid "Compact"
 msgstr "Compact"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:595
+#: src/features/learning/components/player/LessonPlayer.tsx:613
 msgid "Complete path"
 msgstr "Finalizează parcursul"
 
@@ -1361,6 +1365,14 @@ msgstr "Continuă"
 #: src/features/learning/components/player/MarkComplete.tsx:71
 msgid "Continue to the next chapter to complete the module."
 msgstr "Continuă la următorul capitol pentru a finaliza modulul."
+
+#: src/components/entities/views/ContractsView.tsx:21
+msgid "Contract Search"
+msgstr ""
+
+#: src/hooks/useEntityViews.tsx:41
+msgid "Contracts"
+msgstr ""
 
 #: src/routes/privacy.lazy.tsx:34
 msgid "Controller: Claudiu Constantin Bogdan, persoana fizica. Contact: contact@transparenta.eu"
@@ -1611,6 +1623,10 @@ msgstr "Decalaj etichetă de date"
 msgid "Data Labels"
 msgstr "Etichete de date"
 
+#: src/components/entities/views/ContractsView.tsx:80
+msgid "Data provided by SICAP.ai, an independent platform that aggregates public contracts from Romania's Electronic Public Procurement System (SEAP)."
+msgstr ""
+
 #: src/routes/privacy.lazy.tsx:99
 msgid "Data retention"
 msgstr "Păstrarea datelor"
@@ -1769,7 +1785,7 @@ msgstr "Categorii detaliate"
 msgid "Detailed Line Items Breakdown"
 msgstr "Detalierea liniilor bugetare"
 
-#: src/routes/entities.$cui.lazy.tsx:336
+#: src/routes/entities.$cui.lazy.tsx:337
 msgid "Details:"
 msgstr "Detalii:"
 
@@ -2070,7 +2086,7 @@ msgstr "este egal cu"
 msgid "Error"
 msgstr "Eroare"
 
-#: src/routes/entities.$cui.lazy.tsx:333
+#: src/routes/entities.$cui.lazy.tsx:334
 msgid "Error Fetching Entity Details"
 msgstr "Eroare la preluarea detaliilor entității"
 
@@ -2296,6 +2312,10 @@ msgstr "Explorează mai multe parcursuri"
 #: src/routes/index.lazy.tsx:63
 msgid "Explore national budget."
 msgstr "Explorați bugetul național."
+
+#: src/components/entities/views/ContractsView.tsx:32
+msgid "Explore relationships with contractors and service providers"
+msgstr ""
 
 #: src/features/learning/components/interactive/FlashCardDeck.tsx:266
 msgid "explored"
@@ -3098,7 +3118,7 @@ msgstr "Mai mic decât"
 msgid "Lesson Completed!"
 msgstr "Lecție finalizată!"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:422
+#: src/features/learning/components/player/LessonPlayer.tsx:440
 msgid "Lesson not found"
 msgstr "Lecția nu a fost găsită"
 
@@ -3538,7 +3558,7 @@ msgstr "Consimțământul și gestionarea buletinului informativ"
 msgid "Newsletters and notifications"
 msgstr "Buletine informative și notificări"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:582
+#: src/features/learning/components/player/LessonPlayer.tsx:600
 msgid "Next"
 msgstr "Următorul"
 
@@ -3619,7 +3639,7 @@ msgstr "Nu sunt date disponibile pentru tabel."
 msgid "No data available to display financial evolution."
 msgstr "Nu sunt date disponibile pentru afișarea evoluției financiare."
 
-#: src/routes/entities.$cui.lazy.tsx:348
+#: src/routes/entities.$cui.lazy.tsx:349
 msgid "No Data Found"
 msgstr "Nu s-au găsit date"
 
@@ -3655,7 +3675,7 @@ msgstr "Nu este disponibilă o detaliere economică pentru venituri."
 msgid "No enabled series data available to display."
 msgstr "Nu există date disponibile în seriile activate pentru a fi afișate."
 
-#: src/routes/entities.$cui.lazy.tsx:350
+#: src/routes/entities.$cui.lazy.tsx:351
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "Nu s-au găsit detalii despre entitate pentru CUI: <0>{cui}</0>. Este posibil ca această entitate să nu existe sau să nu aibă date asociate."
 
@@ -3874,6 +3894,10 @@ msgstr "Deschide în grafice"
 #: src/routes/budget-explorer.lazy.tsx:447
 msgid "Open in entity analytics"
 msgstr "Deschide în analitice entitate"
+
+#: src/components/entities/views/ContractsView.tsx:48
+#~ msgid "Open in SICAP.ai"
+#~ msgstr ""
 
 #: src/components/entities/EntityHeader.tsx:113
 #: src/components/entities/EntityInfo.tsx:42
@@ -4109,7 +4133,7 @@ msgstr "Se pregătește linkul de partajare..."
 msgid "Preview"
 msgstr "Previzualizare"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:558
+#: src/features/learning/components/player/LessonPlayer.tsx:576
 msgid "Previous"
 msgstr "Anterior"
 
@@ -4142,6 +4166,14 @@ msgstr "Produs"
 msgid "Progress Saved"
 msgstr "Progres salvat"
 
+#: src/components/entities/views/ContractsView.tsx:44
+msgid "Public Contracts"
+msgstr ""
+
+#: src/components/entities/views/ContractsView.tsx:19
+#~ msgid "Public contracts data for this entity will be available soon."
+#~ msgstr ""
+
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:158
 msgid "Public institutions often transfer funds between each other (e.g., from the state budget to local budgets). These transfers can double-count spending if not filtered."
 msgstr "Instituțiile publice transferă adesea fonduri între ele (de exemplu, de la bugetul de stat la bugetele locale). Aceste transferuri pot duce la dublarea cheltuielilor dacă nu sunt filtrate."
@@ -4149,6 +4181,10 @@ msgstr "Instituțiile publice transferă adesea fonduri între ele (de exemplu, 
 #: src/components/entities/EntityLineItemsTabs.tsx:147
 msgid "Public institutions often transfer funds between each other. These transfers can double-count spending or revenue if not filtered."
 msgstr "Instituțiile publice transferă adesea fonduri între ele. Aceste transferuri pot duce la dubla contabilizare a cheltuielilor sau veniturilor dacă nu sunt filtrate."
+
+#: src/components/entities/views/ContractsView.tsx:35
+#~ msgid "Public procurement data is provided by SICAP.ai, an independent platform that aggregates and analyzes public contracts from Romania's Electronic Public Procurement System (SEAP)."
+#~ msgstr ""
 
 #: src/routes/privacy.lazy.tsx:86
 msgid "Public sector information from Ministerul Finanțelor. No government affiliation."
@@ -4311,7 +4347,7 @@ msgstr "Entitate raportoare"
 msgid "Reporting filters"
 msgstr "Filtre de raportare"
 
-#: src/routes/entities.$cui.lazy.tsx:381
+#: src/routes/entities.$cui.lazy.tsx:382
 msgid "Reporting period"
 msgstr "Perioada de raportare"
 
@@ -4319,7 +4355,7 @@ msgstr "Perioada de raportare"
 msgid "Reporting:"
 msgstr "Raportare:"
 
-#: src/hooks/useEntityViews.tsx:41
+#: src/hooks/useEntityViews.tsx:43
 msgid "Reports"
 msgstr "Rapoarte"
 
@@ -4838,6 +4874,10 @@ msgstr "Sursă: "
 msgid "Spending"
 msgstr "Cheltuieli"
 
+#: src/components/entities/views/ContractsView.tsx:26
+msgid "Spending Analysis"
+msgstr ""
+
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:54
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:220
 msgid "Spending Calculation"
@@ -4958,6 +4998,10 @@ msgstr "Sume în așteptarea repartizării"
 msgid "Supervisory authority"
 msgstr "Autoritatea de supraveghere"
 
+#: src/components/entities/views/ContractsView.tsx:31
+msgid "Supplier Information"
+msgstr ""
+
 #: src/routes/alerts/$alertId/index.lazy.tsx:126
 msgid "Syncing…"
 msgstr "Se sincronizează..."
@@ -5045,7 +5089,7 @@ msgstr "Parcursul de învățare pe care îl cauți nu există sau a fost mutat.
 msgid "The learning path you're looking for doesn't exist."
 msgstr "Parcursul de învățare pe care îl cauți nu există."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:424
+#: src/features/learning/components/player/LessonPlayer.tsx:442
 msgid "The lesson you're looking for doesn't exist or may have been moved."
 msgstr "Lecția pe care o cauți nu există sau este posibil să fi fost mutată."
 
@@ -5090,7 +5134,7 @@ msgstr "Linkul de partajare pe care încerci să-l accesezi este invalid sau nu 
 msgid "The state total claim is <0>{0}</0>."
 msgstr "Totalul reținut de stat este <0>{0}</0>."
 
-#: src/routes/entities.$cui.lazy.tsx:335
+#: src/routes/entities.$cui.lazy.tsx:336
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "A apărut o problemă la preluarea detaliilor pentru CUI: <0>{cui}</0>."
 
@@ -5570,6 +5614,15 @@ msgstr "Vezi Graficul"
 msgid "View Chart"
 msgstr "Vezi graficul"
 
+#: src/components/entities/views/ContractsView.tsx:71
+msgid "View Contracts on SICAP.ai"
+msgstr ""
+
+#. placeholder {0}: entity.name
+#: src/components/entities/views/ContractsView.tsx:47
+msgid "View detailed public procurement data for {0} on SICAP.ai"
+msgstr ""
+
 #: src/components/budget-explorer/BudgetTreemap.tsx:611
 #: src/features/learning/components/cards/LearningPathCard.tsx:75
 msgid "View Details"
@@ -5586,6 +5639,10 @@ msgstr "Vizualizați în Analiza Entităților"
 #: src/routes/map.lazy.tsx:312
 msgid "View the color scale and values for the heatmap visualization"
 msgstr "Vizualizați scala de culori și valorile pentru vizualizarea hărții de căldură"
+
+#: src/components/entities/views/ContractsView.tsx:27
+msgid "View trends and statistics on public spending patterns"
+msgstr ""
 
 #: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:620
 msgid "Viewing:"

@@ -42,6 +42,7 @@ const RankingView = lazy(() => import('@/components/entities/views/RankingView')
 const RelatedChartsView = lazy(() => import('@/components/entities/views/RelatedChartsView').then(m => ({ default: m.RelatedChartsView })))
 const EntityReports = lazy(() => import('@/components/entities/EntityReports'))
 const EntityRelationships = lazy(() => import('@/components/entities/EntityRelationships').then(m => ({ default: m.EntityRelationships })))
+const ContractsView = lazy(() => import('@/components/entities/views/ContractsView').then(m => ({ default: m.ContractsView })))
 
 
 export const Route = createLazyFileRoute('/entities/$cui')({
@@ -549,6 +550,7 @@ function ViewsContent(props: ViewsContentProps) {
           case 'ranking': return <RankingView />
           case 'related-charts': return <RelatedChartsView entity={entity} normalizationOptions={normalizationOptions} />
           case 'relationships': return <EntityRelationships cui={cui} />
+          case 'contracts': return <ContractsView entity={entity} />
           default: return <Overview cui={cui} entity={entity} isLoading={isLoading} selectedYear={selectedYear} normalizationOptions={normalizationOptions} years={years} periodType={period} reportPeriod={reportPeriod} reportType={reportTypeState} mainCreditorCui={mainCreditorCui} search={search} onChartNormalizationChange={handleNormalizationChange} onYearChange={handleYearChange} onPeriodItemSelect={handlePeriodItemSelect} onSearchChange={handleSearchChange} onAnalyticsChange={handleAnalyticsChange} onLineItemsTabChange={handleLineItemsTabChange} onSelectedFundingKeyChange={handleSelectedFundingKeyChange} onSelectedExpenseTypeKeyChange={handleSelectedExpenseTypeKeyChange} treemapPrimary={treemapPrimary} accountCategory={accountCategory} onTreemapPrimaryChange={handleTreemapPrimaryChange} onAccountCategoryChange={handleAccountCategoryChange} treemapPath={treemapPath} onTreemapPathChange={handleTreemapPathChange} transferFilter={transferFilter} onTransferFilterChange={handleTransferFilterChange} advancedFilter={advancedFilter} onAdvancedFilterChange={handleAdvancedFilterChange} />
         }
       })()}
