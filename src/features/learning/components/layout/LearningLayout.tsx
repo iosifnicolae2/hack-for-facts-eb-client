@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
 import { LearningProgressProvider, useLearningProgress } from '../../hooks/use-learning-progress'
+import { useScrollToActive } from '../../hooks/use-scroll-to-active'
 import { getAllLessons, getLearningPathById, getLearningPaths, getTranslatedText } from '../../utils/paths'
 import type { LearningModuleDefinition } from '../../types'
 import { LoginBanner } from './LoginBanner'
@@ -45,6 +46,7 @@ type ModuleNavProps = {
   readonly locale: 'en' | 'ro'
   readonly currentLessonId: string | null
   readonly lessonProgress: Readonly<Record<string, { readonly status: string } | undefined>>
+  readonly activeLessonRef?: React.RefObject<HTMLAnchorElement | null>
 }
 
 function LessonStatusIcon({ isCompleted, isActive }: { readonly isCompleted: boolean; readonly isActive: boolean }) {
@@ -57,7 +59,7 @@ function LessonStatusIcon({ isCompleted, isActive }: { readonly isCompleted: boo
   return <Circle className="h-3.5 w-3.5 text-muted-foreground/25 group-hover:text-muted-foreground/40 stroke-[2px]" />
 }
 
-function ModuleNav({ module, pathId, locale, currentLessonId, lessonProgress }: ModuleNavProps) {
+function ModuleNav({ module, pathId, locale, currentLessonId, lessonProgress, activeLessonRef }: ModuleNavProps) {
   const completedLessons = module.lessons.filter((lesson) => {
     const status = lessonProgress[lesson.id]?.status
     return status === 'completed' || status === 'passed'
@@ -90,6 +92,7 @@ function ModuleNav({ module, pathId, locale, currentLessonId, lessonProgress }: 
           return (
             <Link
               key={lesson.id}
+              ref={isActive ? activeLessonRef : undefined}
               to={`/${locale}/learning/${pathId}/${module.id}/${lesson.id}` as '/'}
               className={cn(
                 'group flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] transition-all duration-200 min-w-0 overflow-hidden',
@@ -137,6 +140,7 @@ function PathProgress({ percent }: { readonly percent: number }) {
 function LearningSidebar({ pathname }: { readonly pathname: string }) {
   const { progress, setActivePathId } = useLearningProgress()
   const { locale, pathId, lessonId } = parseLearningRoute(pathname)
+  const activeLessonRef = useScrollToActive<HTMLAnchorElement>(lessonId)
 
   const paths = useMemo(() => getLearningPaths(), [])
   const activePath = useMemo(() => {
@@ -245,6 +249,7 @@ function LearningSidebar({ pathname }: { readonly pathname: string }) {
                 locale={locale}
                 currentLessonId={lessonId}
                 lessonProgress={progress.content}
+                activeLessonRef={activeLessonRef}
               />
             ))
           ) : (

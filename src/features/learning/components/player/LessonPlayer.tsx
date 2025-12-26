@@ -242,6 +242,11 @@ const ExecutionPatternComparison = createLazyComponent<ExecutionPatternCompariso
     default: module.ExecutionPatternComparison,
   }))
 )
+const BudgetHierarchyVisualizer = createLazyComponent(() =>
+  import('../interactive/BudgetHierarchyVisualizer').then((module) => ({
+    default: module.BudgetHierarchyVisualizer,
+  }))
+)
 
 function LessonQuizWrapper({ lessonId, ...props }: LessonQuizWrapperProps) {
   const { progress } = useLearningProgress()
@@ -402,6 +407,7 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
       FunctionalClassificationAccordion,
       EconomicCodeReference,
       ExecutionPatternComparison,
+      BudgetHierarchyVisualizer,
     }),
     [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, PromiseTrackerWrapper, SalaryTaxCalculatorWrapper, GuidedPlatformTourWrapper, ClassificationExplorerWrapper, BudgetAllocatorWrapper]
   )

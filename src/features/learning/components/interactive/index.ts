@@ -24,6 +24,12 @@ export { ThreeLensesExplorer } from './ThreeLensesExplorer'
 export { FunctionalClassificationAccordion } from './FunctionalClassificationAccordion'
 export { EconomicCodeReference } from './EconomicCodeReference'
 export { ExecutionPatternComparison } from './ExecutionPatternComparison'
+export { BudgetHierarchyVisualizer } from './BudgetHierarchyVisualizer'
+export type {
+  BudgetHierarchyData,
+  BudgetHierarchyText,
+  BudgetLevel,
+} from './budget-hierarchy-data'
 export type {
   ExecutionPatternComparisonProps,
   ExecutionPatternItem,

@@ -21,102 +21,103 @@ Think of it as a family where each member manages their own wallet, but they all
 
 This interactive diagram shows how Romania's budget is structured. Click any level to explore what it covers.
 
-### BudgetHierarchyVisualizer Component
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│  🏛️ ROMANIA'S BUDGET STRUCTURE                              │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  Click any level to explore:                                 │
-│                                                              │
-│              ┌────────────────────────────────┐              │
-│              │  CONSOLIDATED GENERAL BUDGET   │              │
-│              │      (Buget General Consolidat)│              │
-│              │         ~600+ billion RON      │              │
-│              └───────────────┬────────────────┘              │
-│                              │                               │
-│       ┌──────────────────────┼──────────────────────┐        │
-│       │                      │                      │        │
-│       ▼                      ▼                      ▼        │
-│  ┌─────────┐          ┌─────────────┐        ┌──────────┐   │
-│  │ STATE   │          │   LOCAL     │        │  SOCIAL  │   │
-│  │ BUDGET  │          │  BUDGETS    │        │INSURANCE │   │
-│  │         │          │ ~3,228 UATs │        │          │   │
-│  │  ~50%   │          │    ~25%     │        │   ~25%   │   │
-│  └────┬────┘          └──────┬──────┘        └─────┬────┘   │
-│       │                      │                     │         │
-│       ▼                      ▼                     ▼         │
-│  Ministries           Counties (41)          Pensions       │
-│  Defense              Municipalities         Healthcare     │
-│  Foreign              Towns                  Unemployment   │
-│  Justice              Communes                              │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-**Component Interface:**
-
-```typescript
-/**
- * BudgetHierarchyVisualizer - Interactive tree diagram of budget structure
- *
- * PURPOSE: Help users understand the relationship between different budget levels
- */
-interface BudgetHierarchyVisualizerProps {
-  readonly levels: readonly BudgetLevel[]
-  readonly onLevelSelect?: (levelId: string) => void
-  readonly initialExpandedLevel?: string
-}
-
-interface BudgetLevel {
-  readonly id: string
-  readonly name: string
-  readonly nameRo: string
-  readonly percentage: number
-  readonly amount: string // e.g., "~600B RON"
-  readonly description: string
-  readonly children?: readonly BudgetLevel[]
-  readonly examples?: readonly string[]
-}
-
-/**
- * STATE MANAGEMENT:
- * - selectedLevel: string | null (currently highlighted level)
- * - expandedLevels: Set<string> (which levels show children)
- * - hoveredLevel: string | null (for hover effects)
- *
- * STATE TRANSITIONS:
- * - Click level → toggle expanded, set selectedLevel
- * - Hover level → set hoveredLevel
- * - Keyboard Enter/Space → toggle selected level
- *
- * USER INTERACTIONS:
- * - Click on box: expand/collapse children, show details panel
- * - Hover: subtle elevation + glow effect
- * - Keyboard: Tab to navigate, Enter to select
- * - Touch: tap to expand, long-press for details
- *
- * VISUAL STATES:
- * - Default: subtle border, hierarchy lines visible
- * - Hovered: scale(1.02), shadow elevation, border highlight
- * - Selected: accent border, expanded details panel
- * - Expanded: children visible with stagger animation
- *
- * ANIMATIONS:
- * - Entry: nodes fade-in + scale from center (400ms, staggered 100ms)
- * - Expand: children slide-down + fade-in (300ms)
- * - Selection: border pulse animation (200ms)
- * - Hover: scale + shadow transition (150ms, ease-out)
- *
- * ACCESSIBILITY:
- * - role="tree" on container
- * - role="treeitem" on each level
- * - aria-expanded for expandable items
- * - aria-selected for current selection
- * - aria-label with level name and percentage
- */
-```
+<BudgetHierarchyVisualizer
+  locale="en"
+  text={{
+    title: "Romania's Budget Structure (2024)",
+    subtitle: "Based on 2024 executed budget data from the Ministry of Finance",
+    clickToExplore: "Click to explore",
+    percentageLabel: "of total budget",
+    examplesLabel: "Includes",
+    exploreInPlatform: "Explore in Budget Explorer"
+  }}
+  explorerUrl="/en/explorer"
+  data={{
+    root: {
+      id: "consolidated",
+      name: "Consolidated General Budget",
+      nameRo: "Bugetul General Consolidat",
+      percentage: 100,
+      amount: "727B RON",
+      description: "Total public expenditures of Romania in 2024, combining all government levels. This represents 41% of GDP (1,764.5B RON).",
+      descriptionRo: "Cheltuielile publice totale ale României în 2024, combinând toate nivelurile de guvernare. Reprezintă 41% din PIB (1.764,5 mld RON).",
+      color: "slate",
+      icon: "Landmark",
+      children: [
+        {
+          id: "state",
+          name: "State Budget",
+          nameRo: "Bugetul de Stat",
+          percentage: 53,
+          amount: "389B RON",
+          description: "Central government spending: ministries, defense, justice, Parliament, intelligence services, and transfers to local budgets",
+          descriptionRo: "Cheltuielile guvernului central: ministere, apărare, justiție, Parlament, servicii de informații și transferuri către bugetele locale",
+          color: "blue",
+          icon: "Building",
+          examples: [
+            { name: "Ministries", nameRo: "Ministere" },
+            { name: "Defense (43B)", nameRo: "Apărare (43 mld)" },
+            { name: "Justice", nameRo: "Justiție" },
+            { name: "Parliament", nameRo: "Parlament" }
+          ],
+          children: [
+            { id: "ministries", name: "Ministries", nameRo: "Ministere", percentage: 30, description: "Core government functions and national programs", descriptionRo: "Funcțiile de bază ale guvernului și programe naționale", color: "blue", icon: "Building" },
+            { id: "defense", name: "Defense", nameRo: "Apărare", percentage: 6, description: "National security and military (~43B RON)", descriptionRo: "Securitate națională și armată (~43 mld RON)", color: "blue", icon: "Landmark" },
+            { id: "transfers", name: "Local Transfers", nameRo: "Transferuri Locale", percentage: 12, description: "VAT allocations and transfers to local budgets", descriptionRo: "Alocări TVA și transferuri către bugetele locale", color: "blue", icon: "Landmark" },
+            { id: "debt", name: "Debt Service", nameRo: "Serviciul Datoriei", percentage: 5, description: "Interest payments on public debt", descriptionRo: "Plăți de dobânzi la datoria publică", color: "blue", icon: "Landmark" }
+          ],
+          explorerFilter: "budgetType=state"
+        },
+        {
+          id: "local",
+          name: "Local Budgets",
+          nameRo: "Bugetele Locale",
+          percentage: 19,
+          amount: "137B RON",
+          description: "3,228 administrative units: 41 counties, 103 municipalities, 216 towns, 2,862 communes, plus București with 6 sectors",
+          descriptionRo: "3.228 unități administrativ-teritoriale: 41 județe, 103 municipii, 216 orașe, 2.862 comune, plus București cu 6 sectoare",
+          color: "emerald",
+          icon: "MapPin",
+          examples: [
+            { name: "Counties (41)", nameRo: "Județe (41)" },
+            { name: "Municipalities (103)", nameRo: "Municipii (103)" },
+            { name: "Towns (216)", nameRo: "Orașe (216)" },
+            { name: "Communes (2,862)", nameRo: "Comune (2.862)" }
+          ],
+          children: [
+            { id: "counties", name: "Counties (41)", nameRo: "Județe (41)", percentage: 5, description: "Regional administration and county-level services", descriptionRo: "Administrație regională și servicii la nivel de județ", color: "emerald", icon: "MapPin" },
+            { id: "municipalities", name: "Municipalities (103)", nameRo: "Municipii (103)", percentage: 8, description: "Large urban centers including București", descriptionRo: "Centre urbane mari, inclusiv București", color: "emerald", icon: "MapPin" },
+            { id: "towns", name: "Towns (216)", nameRo: "Orașe (216)", percentage: 3, description: "Smaller urban areas", descriptionRo: "Zone urbane mai mici", color: "emerald", icon: "MapPin" },
+            { id: "communes", name: "Communes (2,862)", nameRo: "Comune (2.862)", percentage: 3, description: "Rural administrative units", descriptionRo: "Unități administrative rurale", color: "emerald", icon: "MapPin" }
+          ],
+          explorerFilter: "budgetType=local"
+        },
+        {
+          id: "social",
+          name: "Social Insurance",
+          nameRo: "Asigurări Sociale",
+          percentage: 28,
+          amount: "209B RON",
+          description: "Pensions (CNPP), healthcare (CNAS/FNUASS), and unemployment (ANOFM) — managed by separate specialized agencies",
+          descriptionRo: "Pensii (CNPP), sănătate (CNAS/FNUASS) și șomaj (ANOFM) — gestionate de agenții specializate separate",
+          color: "amber",
+          icon: "Heart",
+          examples: [
+            { name: "Pensions (CNPP)", nameRo: "Pensii (CNPP)" },
+            { name: "Healthcare (CNAS)", nameRo: "Sănătate (CNAS)" },
+            { name: "Unemployment (ANOFM)", nameRo: "Șomaj (ANOFM)" }
+          ],
+          children: [
+            { id: "pensions", name: "Pensions (CNPP)", nameRo: "Pensii (CNPP)", percentage: 19, description: "Retirement benefits managed by Casa Națională de Pensii Publice (~135B RON)", descriptionRo: "Pensii gestionate de Casa Națională de Pensii Publice (~135 mld RON)", color: "amber", icon: "Heart" },
+            { id: "healthcare", name: "Healthcare (CNAS)", nameRo: "Sănătate (CNAS)", percentage: 10, description: "Public health insurance via FNUASS (~74B RON)", descriptionRo: "Asigurări de sănătate prin FNUASS (~74 mld RON)", color: "amber", icon: "Heart" },
+            { id: "unemployment", name: "Unemployment (ANOFM)", nameRo: "Șomaj (ANOFM)", percentage: 1, description: "Unemployment benefits and job placement (~3B RON)", descriptionRo: "Indemnizații de șomaj și plasare forță de muncă (~3 mld RON)", color: "amber", icon: "Heart" }
+          ],
+          explorerFilter: "budgetType=social"
+        }
+      ]
+    }
+  }}
+/>
 
 **Expected Behavior:**
 - Users can click any budget level to see details
@@ -128,13 +129,15 @@ interface BudgetLevel {
 
 ## The Three Pillars
 
-Romania's Consolidated General Budget (~600+ billion RON) consists of three main pillars:
+Romania's Consolidated General Budget (**727 billion RON** in 2024 executed expenditures) consists of three main pillars:
 
-| Pillar | Share | What It Covers |
-|--------|-------|----------------|
-| **State Budget** | ~50% | Ministries, defense, foreign affairs, justice, national programs |
-| **Local Budgets** | ~25% | Counties (41), municipalities, towns, communes — local services |
-| **Social Insurance** | ~25% | Pensions, healthcare, unemployment benefits |
+| Pillar | Share | Amount (2024) | What It Covers |
+|--------|-------|---------------|----------------|
+| **State Budget** | ~53% | 389B RON | Ministries, defense, justice, Parliament, transfers to local budgets |
+| **Local Budgets** | ~19% | 137B RON | 41 counties, 103 municipalities, 216 towns, 2,862 communes |
+| **Social Insurance** | ~28% | 209B RON | Pensions (CNPP), healthcare (CNAS), unemployment (ANOFM) |
+
+> **Note:** This three-pillar structure is a pedagogical simplification. The legal framework (Law 500/2002) defines ten distinct budget categories, including special funds, autonomous institutions, and EU funds (PNRR). The percentages are approximate and vary between revenue and expenditure calculations.
 
 ### Why This Matters
 
@@ -146,20 +149,20 @@ When you hear "the government cut the budget," you need to ask: **which budget?*
 
 <Quiz
   id="local-national-01-q1"
-  question="What percentage of Romania's consolidated budget goes to local governments?"
+  question="What percentage of Romania's consolidated budget expenditures goes to local governments (2024 data)?"
   options={[
     { id: "a", text: "About 50%", isCorrect: false },
-    { id: "b", text: "About 25%", isCorrect: true },
+    { id: "b", text: "About 19%", isCorrect: true },
     { id: "c", text: "About 10%", isCorrect: false },
     { id: "d", text: "About 35%", isCorrect: false }
   ]}
-  explanation="Local budgets receive approximately 25% of Romania's consolidated budget. This funds 41 counties, municipalities, towns, and communes — all 3,228 administrative units that provide local services. The state budget (~50%) and social insurance (~25%) make up the rest."
+  explanation="Local budgets receive approximately 19% of Romania's consolidated budget expenditures (137B of 727B RON in 2024). This funds all 3,228 administrative units: 41 counties, 103 municipalities, 216 towns, and 2,862 communes. The state budget (~53%) and social insurance (~28%) make up the rest."
 />
 
 ---
 
 ## Key Takeaway
 
-> 📌 **Remember:** Romania's public budget isn't a single pot of money — it's a consolidated structure with three pillars: State Budget (~50%), Local Budgets (~25%), and Social Insurance (~25%). Understanding this structure helps you know which level is responsible for the services you use.
+> 📌 **Remember:** Romania's public budget isn't a single pot of money — it's a consolidated structure with three main pillars: State Budget (~53%), Local Budgets (~19%), and Social Insurance (~28%). In 2024, total expenditures reached 727 billion RON. Understanding this structure helps you know which level is responsible for the services you use.
 
 <MarkComplete label="Complete this lesson" />

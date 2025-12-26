@@ -859,7 +859,7 @@ msgstr "Înapoi la Hub"
 msgid "Back to learning"
 msgstr "Înapoi la învățare"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:400
+#: src/features/learning/components/player/LessonPlayer.tsx:427
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:44
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:102
 msgid "Back to Learning Hub"
@@ -869,7 +869,7 @@ msgstr "Înapoi la Hub-ul de învățare"
 msgid "Back to Overview"
 msgstr "Înapoi la sinteză"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:544
+#: src/features/learning/components/player/LessonPlayer.tsx:571
 msgid "Back to path"
 msgstr "Înapoi la parcurs"
 
@@ -966,7 +966,7 @@ msgstr "Sector bugetar"
 msgid "Budget submitted for {0}"
 msgstr "Buget depus pentru {0}"
 
-#: src/features/learning/components/layout/LearningLayout.tsx:171
+#: src/features/learning/components/layout/LearningLayout.tsx:175
 msgid "Budgetary Academy"
 msgstr "Academia Bugetară"
 
@@ -1250,7 +1250,7 @@ msgstr "Confortabil"
 msgid "Compact"
 msgstr "Compact"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:568
+#: src/features/learning/components/player/LessonPlayer.tsx:595
 msgid "Complete path"
 msgstr "Finalizează parcursul"
 
@@ -1500,7 +1500,7 @@ msgstr "Județ:"
 msgid "Course Content"
 msgstr "Conținutul cursului"
 
-#: src/features/learning/components/layout/LearningLayout.tsx:122
+#: src/features/learning/components/layout/LearningLayout.tsx:125
 msgid "Course Progress"
 msgstr "Progresul cursului"
 
@@ -2497,7 +2497,7 @@ msgstr "Focalizează Selectorul de An"
 msgid "Focus year selector in entity details"
 msgstr "Focalizează selectorul de an în detaliile entității"
 
-#: src/features/learning/components/layout/LearningLayout.tsx:174
+#: src/features/learning/components/layout/LearningLayout.tsx:178
 msgid "Follow the money"
 msgstr "Urmărește banii"
 
@@ -2763,6 +2763,10 @@ msgstr "Impact ridicat"
 msgid "High opportunity"
 msgstr "Oportunitate ridicată"
 
+#: src/features/learning/components/interactive/EconomicCodeReference.tsx:259
+msgid "High risk of low execution in Romanian public administration. Investments are often the first to be cut during budget rectifications."
+msgstr ""
+
 #: src/components/footer/AppFooter.tsx:85
 msgid "Home"
 msgstr "Acasă"
@@ -3000,6 +3004,10 @@ msgstr "Activități cheie"
 msgid "Key Deadlines"
 msgstr "Termene cheie"
 
+#: src/features/learning/components/interactive/EconomicCodeReference.tsx:372
+msgid "Key Lesson Insight"
+msgstr ""
+
 #: src/features/learning/components/interactive/QuickLinks.tsx:98
 msgid "Key Websites"
 msgstr ""
@@ -3045,7 +3053,7 @@ msgstr "Verificarea certificatului de învățare (PoC)"
 msgid "Learning path"
 msgstr "Parcurs de învățare"
 
-#: src/features/learning/components/layout/LearningLayout.tsx:187
+#: src/features/learning/components/layout/LearningLayout.tsx:191
 msgid "Learning Path"
 msgstr "Traseu de Învățare"
 
@@ -3090,7 +3098,7 @@ msgstr "Mai mic decât"
 msgid "Lesson Completed!"
 msgstr "Lecție finalizată!"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:395
+#: src/features/learning/components/player/LessonPlayer.tsx:422
 msgid "Lesson not found"
 msgstr "Lecția nu a fost găsită"
 
@@ -3161,7 +3169,7 @@ msgstr "Se încarcă datele..."
 msgid "Loading heatmap data..."
 msgstr "Se încarcă datele pentru harta termică..."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:89
+#: src/features/learning/components/player/LessonPlayer.tsx:92
 msgid "Loading interactive content..."
 msgstr ""
 
@@ -3530,7 +3538,7 @@ msgstr "Consimțământul și gestionarea buletinului informativ"
 msgid "Newsletters and notifications"
 msgstr "Buletine informative și notificări"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:555
+#: src/features/learning/components/player/LessonPlayer.tsx:582
 msgid "Next"
 msgstr "Următorul"
 
@@ -3765,6 +3773,10 @@ msgstr "Notă: Transferurile între instituții (ec:51) și transferurile intern
 #: src/components/charts/components/chart-config/SeriesToolbar.tsx:18
 msgid "Nothing to paste"
 msgstr "Nimic de lipit"
+
+#: src/features/learning/components/interactive/EconomicCodeReference.tsx:375
+msgid "Notice the gap: <0>Current Expenses</0> (salaries, utilities) almost always reach full execution.<1> Capital Expenses</1> (investments) are the first to be cut or delayed, often falling below 60%. Always check <2>Code 71</2> to see if promised infrastructure is actually being built."
+msgstr ""
 
 #: src/routes/settings/notifications.tsx:38
 msgid "Notifications Settings"
@@ -4097,7 +4109,7 @@ msgstr "Se pregătește linkul de partajare..."
 msgid "Preview"
 msgstr "Previzualizare"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:531
+#: src/features/learning/components/player/LessonPlayer.tsx:558
 msgid "Previous"
 msgstr "Anterior"
 
@@ -4184,7 +4196,7 @@ msgstr "Citește Documentația"
 msgid "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 msgstr "Citiți <0>Politica privind cookie-urile</0> și <1>Politica de confidențialitate</1>."
 
-#: src/features/learning/components/layout/LearningLayout.tsx:255
+#: src/features/learning/components/layout/LearningLayout.tsx:260
 msgid "Ready to Begin?"
 msgstr "Ești gata să începi?"
 
@@ -4557,7 +4569,7 @@ msgstr "Selectează operația"
 msgid "Select options"
 msgstr "Selectează opțiuni"
 
-#: src/features/learning/components/layout/LearningLayout.tsx:190
+#: src/features/learning/components/layout/LearningLayout.tsx:194
 msgid "Select Path"
 msgstr "Selectează parcursul"
 
@@ -5033,7 +5045,7 @@ msgstr "Parcursul de învățare pe care îl cauți nu există sau a fost mutat.
 msgid "The learning path you're looking for doesn't exist."
 msgstr "Parcursul de învățare pe care îl cauți nu există."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:397
+#: src/features/learning/components/player/LessonPlayer.tsx:424
 msgid "The lesson you're looking for doesn't exist or may have been moved."
 msgstr "Lecția pe care o cauți nu există sau este posibil să fi fost mutată."
 

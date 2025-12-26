@@ -859,7 +859,7 @@ msgstr "Back to Hub"
 msgid "Back to learning"
 msgstr "Back to learning"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:400
+#: src/features/learning/components/player/LessonPlayer.tsx:427
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:44
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:102
 msgid "Back to Learning Hub"
@@ -869,7 +869,7 @@ msgstr "Back to Learning Hub"
 msgid "Back to Overview"
 msgstr "Back to Overview"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:544
+#: src/features/learning/components/player/LessonPlayer.tsx:571
 msgid "Back to path"
 msgstr "Back to path"
 
@@ -966,7 +966,7 @@ msgstr "Budget Sector"
 msgid "Budget submitted for {0}"
 msgstr "Budget submitted for {0}"
 
-#: src/features/learning/components/layout/LearningLayout.tsx:171
+#: src/features/learning/components/layout/LearningLayout.tsx:175
 msgid "Budgetary Academy"
 msgstr "Budgetary Academy"
 
@@ -1250,7 +1250,7 @@ msgstr "Comfortable"
 msgid "Compact"
 msgstr "Compact"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:568
+#: src/features/learning/components/player/LessonPlayer.tsx:595
 msgid "Complete path"
 msgstr "Complete path"
 
@@ -1500,7 +1500,7 @@ msgstr "County:"
 msgid "Course Content"
 msgstr "Course Content"
 
-#: src/features/learning/components/layout/LearningLayout.tsx:122
+#: src/features/learning/components/layout/LearningLayout.tsx:125
 msgid "Course Progress"
 msgstr "Course Progress"
 
@@ -2497,7 +2497,7 @@ msgstr "Focus Year Selector"
 msgid "Focus year selector in entity details"
 msgstr "Focus year selector in entity details"
 
-#: src/features/learning/components/layout/LearningLayout.tsx:174
+#: src/features/learning/components/layout/LearningLayout.tsx:178
 msgid "Follow the money"
 msgstr "Follow the money"
 
@@ -2768,6 +2768,10 @@ msgstr "High Impact"
 msgid "High opportunity"
 msgstr "High opportunity"
 
+#: src/features/learning/components/interactive/EconomicCodeReference.tsx:259
+msgid "High risk of low execution in Romanian public administration. Investments are often the first to be cut during budget rectifications."
+msgstr "High risk of low execution in Romanian public administration. Investments are often the first to be cut during budget rectifications."
+
 #: src/components/footer/AppFooter.tsx:85
 msgid "Home"
 msgstr "Home"
@@ -3005,6 +3009,10 @@ msgstr "Key Activities"
 msgid "Key Deadlines"
 msgstr "Key Deadlines"
 
+#: src/features/learning/components/interactive/EconomicCodeReference.tsx:372
+msgid "Key Lesson Insight"
+msgstr "Key Lesson Insight"
+
 #: src/features/learning/components/interactive/QuickLinks.tsx:98
 msgid "Key Websites"
 msgstr "Key Websites"
@@ -3050,7 +3058,7 @@ msgstr "Learning Certificate Verification (PoC)"
 msgid "Learning path"
 msgstr "Learning path"
 
-#: src/features/learning/components/layout/LearningLayout.tsx:187
+#: src/features/learning/components/layout/LearningLayout.tsx:191
 msgid "Learning Path"
 msgstr "Learning Path"
 
@@ -3095,7 +3103,7 @@ msgstr "Less than"
 msgid "Lesson Completed!"
 msgstr "Lesson Completed!"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:395
+#: src/features/learning/components/player/LessonPlayer.tsx:422
 msgid "Lesson not found"
 msgstr "Lesson not found"
 
@@ -3166,7 +3174,7 @@ msgstr "Loading data..."
 msgid "Loading heatmap data..."
 msgstr "Loading heatmap data..."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:89
+#: src/features/learning/components/player/LessonPlayer.tsx:92
 msgid "Loading interactive content..."
 msgstr "Loading interactive content..."
 
@@ -3535,7 +3543,7 @@ msgstr "Newsletter consent and management"
 msgid "Newsletters and notifications"
 msgstr "Newsletters and notifications"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:555
+#: src/features/learning/components/player/LessonPlayer.tsx:582
 msgid "Next"
 msgstr "Next"
 
@@ -3770,6 +3778,10 @@ msgstr "Note: Transfers between institutions (ec:51) and internal transfers (ec:
 #: src/components/charts/components/chart-config/SeriesToolbar.tsx:18
 msgid "Nothing to paste"
 msgstr "Nothing to paste"
+
+#: src/features/learning/components/interactive/EconomicCodeReference.tsx:375
+msgid "Notice the gap: <0>Current Expenses</0> (salaries, utilities) almost always reach full execution.<1> Capital Expenses</1> (investments) are the first to be cut or delayed, often falling below 60%. Always check <2>Code 71</2> to see if promised infrastructure is actually being built."
+msgstr "Notice the gap: <0>Current Expenses</0> (salaries, utilities) almost always reach full execution.<1> Capital Expenses</1> (investments) are the first to be cut or delayed, often falling below 60%. Always check <2>Code 71</2> to see if promised infrastructure is actually being built."
 
 #: src/routes/settings/notifications.tsx:38
 msgid "Notifications Settings"
@@ -4102,7 +4114,7 @@ msgstr "Preparing your share link..."
 msgid "Preview"
 msgstr "Preview"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:531
+#: src/features/learning/components/player/LessonPlayer.tsx:558
 msgid "Previous"
 msgstr "Previous"
 
@@ -4189,7 +4201,7 @@ msgstr "Read Documentation"
 msgid "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 msgstr "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 
-#: src/features/learning/components/layout/LearningLayout.tsx:255
+#: src/features/learning/components/layout/LearningLayout.tsx:260
 msgid "Ready to Begin?"
 msgstr "Ready to Begin?"
 
@@ -4562,7 +4574,7 @@ msgstr "Select operation"
 msgid "Select options"
 msgstr "Select options"
 
-#: src/features/learning/components/layout/LearningLayout.tsx:190
+#: src/features/learning/components/layout/LearningLayout.tsx:194
 msgid "Select Path"
 msgstr "Select Path"
 
@@ -5038,7 +5050,7 @@ msgstr "The learning path you're looking for doesn't exist or has been moved."
 msgid "The learning path you're looking for doesn't exist."
 msgstr "The learning path you're looking for doesn't exist."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:397
+#: src/features/learning/components/player/LessonPlayer.tsx:424
 msgid "The lesson you're looking for doesn't exist or may have been moved."
 msgstr "The lesson you're looking for doesn't exist or may have been moved."
 
