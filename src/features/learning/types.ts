@@ -88,12 +88,26 @@ export type LearningBudgetCycleInteractionState = {
   readonly completedAt?: string
 }
 
+export type LearningUATFinderStep = 'IDLE' | 'SELECTED' | 'EXPLORED'
+
+export type LearningUATFinderExploredAction = 'view_budget' | 'compare' | 'map'
+
+export type LearningUATFinderInteractionState = {
+  readonly kind: 'uat-finder'
+  readonly step: LearningUATFinderStep
+  readonly selectedCui: string | null
+  readonly selectedName: string | null
+  readonly exploredAction: LearningUATFinderExploredAction | null
+  readonly completedAt?: string
+}
+
 export type LearningInteractionState =
   | LearningQuizInteractionState
   | LearningPredictionInteractionState
   | LearningSalaryCalculatorInteractionState
   | LearningBudgetAllocatorInteractionState
   | LearningBudgetCycleInteractionState
+  | LearningUATFinderInteractionState
 
 export type LearningQuizAnswerAction = {
   readonly type: 'quiz.answer'
@@ -170,6 +184,30 @@ export type LearningBudgetCycleResetAction = {
   readonly interactionId: string
 }
 
+export type LearningUATFinderSelectAction = {
+  readonly type: 'uatFinder.select'
+  readonly contentId: string
+  readonly interactionId: string
+  readonly cui: string
+  readonly name: string
+  readonly contentVersion?: string
+}
+
+export type LearningUATFinderExploreAction = {
+  readonly type: 'uatFinder.explore'
+  readonly contentId: string
+  readonly interactionId: string
+  readonly cui: string
+  readonly action: LearningUATFinderExploredAction
+  readonly contentVersion?: string
+}
+
+export type LearningUATFinderResetAction = {
+  readonly type: 'uatFinder.reset'
+  readonly contentId: string
+  readonly interactionId: string
+}
+
 export type LearningInteractionAction =
   | LearningQuizAnswerAction
   | LearningQuizResetAction
@@ -181,6 +219,9 @@ export type LearningInteractionAction =
   | LearningBudgetAllocatorResetAction
   | LearningBudgetCycleExploreAction
   | LearningBudgetCycleResetAction
+  | LearningUATFinderSelectAction
+  | LearningUATFinderExploreAction
+  | LearningUATFinderResetAction
 
 export type LearningContentProgress = {
   readonly contentId: string

@@ -21,128 +21,29 @@ Local budgets are the best place to start your budget monitoring journey. They'r
 
 Use this tool to search for your city, town, or commune. You'll see key metrics and can deep-link into the Budget Explorer for details.
 
-### UATFinder Component
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│  🔍 FIND YOUR LOCAL GOVERNMENT                               │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  Search by name:                                             │
-│  ┌────────────────────────────────────────────────────────┐  │
-│  │  Cluj-Napoca                                      🔍   │  │
-│  └────────────────────────────────────────────────────────┘  │
-│                                                              │
-│  Or browse by county:                                        │
-│  [ Select County ▼ ]                                         │
-│                                                              │
-│  ═══════════════════════════════════════════════════════════ │
-│                                                              │
-│  RESULT: MUNICIPIUL CLUJ-NAPOCA                              │
-│  ┌────────────────────────────────────────────────────────┐  │
-│  │  Type: Municipality                                    │  │
-│  │  County: Cluj                                          │  │
-│  │  Population: ~287,000                                  │  │
-│  │  Total Budget: ~4.0 billion RON                        │  │
-│  │  Per Capita: ~14,000 RON                               │  │
-│  │                                                        │  │
-│  │  [ View Full Budget Details → ]                        │  │
-│  │  [ Compare with Similar Cities → ]                     │  │
-│  │  [ View on Map → ]                                     │  │
-│  └────────────────────────────────────────────────────────┘  │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-**Component Interface:**
-
-```typescript
-/**
- * UATFinder - Search and discovery tool for local governments
- *
- * PURPOSE: Help users find and explore their local government's budget
- */
-interface UATFinderProps {
-  readonly placeholder?: string
-  readonly onUATSelect?: (uat: UATResult) => void
-  readonly showComparison?: boolean
-  readonly initialCounty?: string
-}
-
-interface UATResult {
-  readonly id: string
-  readonly name: string
-  readonly type: 'municipality' | 'town' | 'commune' | 'county'
-  readonly county: string
-  readonly population: number
-  readonly totalBudget: number
-  readonly perCapita: number
-  readonly executionRate?: number
-  readonly fiscCode: string // For Budget Explorer deep link
-}
-
-interface UATFinderState {
-  readonly searchQuery: string
-  readonly selectedCounty: string | null
-  readonly searchResults: readonly UATResult[]
-  readonly selectedUAT: UATResult | null
-  readonly isSearching: boolean
-  readonly recentSearches: readonly string[]
-}
-
-/**
- * STATE MANAGEMENT:
- * - searchQuery: string (debounced, triggers search after 300ms)
- * - selectedCounty: string | null (filters results)
- * - searchResults: UATResult[] (max 10 results shown)
- * - selectedUAT: UATResult | null (shows detail card)
- * - isSearching: boolean (loading state)
- * - recentSearches: string[] (stored in localStorage)
- *
- * STATE TRANSITIONS:
- * - Type in search → debounce 300ms → fetch results
- * - Select county → filter results by county
- * - Click result → set selectedUAT, show detail card
- * - Clear search → reset to initial state
- *
- * USER INTERACTIONS:
- * - Type to search with autocomplete
- * - Arrow keys to navigate results
- * - Enter to select highlighted result
- * - Escape to clear selection
- * - Click "View Full Budget" → navigate to entity page
- * - Click "Compare" → navigate to comparison view
- * - Click "View on Map" → navigate to map centered on UAT
- *
- * VISUAL STATES:
- * - Empty: placeholder text, recent searches shown
- * - Typing: input focused, suggestions appear after 2 chars
- * - Loading: spinner in input, results skeleton
- * - Results: dropdown with UAT cards, hover highlights
- * - Selected: full detail card with metrics + action buttons
- * - No results: helpful message with suggestions
- *
- * ANIMATIONS:
- * - Dropdown appear: slide-down + fade (200ms)
- * - Result hover: subtle scale + shadow (100ms)
- * - Detail card: expand from result (300ms, spring)
- * - Loading: skeleton pulse animation
- *
- * ACCESSIBILITY:
- * - role="combobox" on search input
- * - role="listbox" on results dropdown
- * - aria-activedescendant for keyboard navigation
- * - aria-expanded for dropdown state
- * - Screen reader announces result count
- * - Focus management: trap focus in dropdown when open
- */
-```
-
-**Expected Behavior:**
-- Autocomplete search with fuzzy matching
-- Results grouped by type (municipality, town, commune)
-- Per-capita calculation helps compare different-sized localities
-- Deep links to entity page, comparison, and map views
+<UATFinder
+  locale="en"
+  finderId="uat-finder-main"
+  text={{
+    title: "Find Your Local Government",
+    subtitle: "Search for your city, town, or commune",
+    searchPlaceholder: "Search cities, towns, communes...",
+    recentSearchesLabel: "Recent Searches",
+    noResultsMessage: "No results found for \"{searchTerm}\"",
+    loadingMessage: "Searching...",
+    errorMessage: "Error loading results",
+    typeLabel: "Type",
+    countyLabel: "County",
+    populationLabel: "Population",
+    totalBudgetLabel: "Total Budget",
+    perCapitaLabel: "Per Capita",
+    dataYearLabel: "Data from",
+    viewDetailsLabel: "View Full Budget",
+    compareLabel: "Compare",
+    viewOnMapLabel: "View on Map",
+    clearLabel: "Clear"
+  }}
+/>
 
 ---
 

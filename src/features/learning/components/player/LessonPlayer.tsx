@@ -257,6 +257,11 @@ const MoneyFlowDiagram = createLazyComponent(() =>
     default: module.MoneyFlowDiagram,
   }))
 )
+const UATFinder = createLazyComponent(() =>
+  import('../interactive/UATFinder').then((module) => ({
+    default: module.UATFinder,
+  }))
+)
 
 function LessonQuizWrapper({ lessonId, ...props }: LessonQuizWrapperProps) {
   const { progress } = useLearningProgress()
@@ -420,6 +425,7 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
       BudgetHierarchyVisualizer,
       UATTypeBreakdown,
       MoneyFlowDiagram,
+      UATFinder,
     }),
     [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, PromiseTrackerWrapper, SalaryTaxCalculatorWrapper, GuidedPlatformTourWrapper, ClassificationExplorerWrapper, BudgetAllocatorWrapper]
   )

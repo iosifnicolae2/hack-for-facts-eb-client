@@ -21,128 +21,29 @@ Bugetele locale sunt cel mai bun punct de pornire în călătoria ta de monitori
 
 Folosește acest instrument pentru a căuta orașul, comuna sau satul tău. Vei vedea indicatori cheie și poți accesa direct Exploratorul de Buget pentru detalii.
 
-### Componenta UATFinder
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│  🔍 GĂSEȘTE ADMINISTRAȚIA TA LOCALĂ                          │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  Caută după nume:                                            │
-│  ┌────────────────────────────────────────────────────────┐  │
-│  │  Cluj-Napoca                                      🔍   │  │
-│  └────────────────────────────────────────────────────────┘  │
-│                                                              │
-│  Sau navighează după județ:                                  │
-│  [ Selectează Județul ▼ ]                                    │
-│                                                              │
-│  ═══════════════════════════════════════════════════════════ │
-│                                                              │
-│  REZULTAT: MUNICIPIUL CLUJ-NAPOCA                            │
-│  ┌────────────────────────────────────────────────────────┐  │
-│  │  Tip: Municipiu                                       │  │
-│  │  Județ: Cluj                                          │  │
-│  │  Populație: ~287.000                                  │  │
-│  │  Buget total: ~4,0 miliarde RON                       │  │
-│  │  Per capita: ~14.000 RON                              │  │
-│  │                                                        │  │
-│  │  [ Vezi detalii complete buget → ]                    │  │
-│  │  [ Compară cu orașe similare → ]                      │  │
-│  │  [ Vezi pe hartă → ]                                  │  │
-│  └────────────────────────────────────────────────────────┘  │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-**Interfața componentei:**
-
-```typescript
-/**
- * UATFinder - Instrument de căutare și descoperire pentru administrațiile locale
- *
- * SCOP: Ajută utilizatorii să găsească și să exploreze bugetul administrației lor locale
- */
-interface UATFinderProps {
-  readonly placeholder?: string
-  readonly onUATSelect?: (uat: UATResult) => void
-  readonly showComparison?: boolean
-  readonly initialCounty?: string
-}
-
-interface UATResult {
-  readonly id: string
-  readonly name: string
-  readonly type: 'municipality' | 'town' | 'commune' | 'county'
-  readonly county: string
-  readonly population: number
-  readonly totalBudget: number
-  readonly perCapita: number
-  readonly executionRate?: number
-  readonly fiscCode: string // Pentru link direct la Exploratorul de Buget
-}
-
-interface UATFinderState {
-  readonly searchQuery: string
-  readonly selectedCounty: string | null
-  readonly searchResults: readonly UATResult[]
-  readonly selectedUAT: UATResult | null
-  readonly isSearching: boolean
-  readonly recentSearches: readonly string[]
-}
-
-/**
- * GESTIONAREA STĂRII:
- * - searchQuery: string (cu debounce, declanșează căutarea după 300ms)
- * - selectedCounty: string | null (filtrează rezultatele)
- * - searchResults: UATResult[] (maximum 10 rezultate afișate)
- * - selectedUAT: UATResult | null (afișează cardul de detalii)
- * - isSearching: boolean (stare de încărcare)
- * - recentSearches: string[] (stocate în localStorage)
- *
- * TRANZIȚII DE STARE:
- * - Tastare în căutare → debounce 300ms → preluare rezultate
- * - Selectare județ → filtrare rezultate după județ
- * - Click pe rezultat → setare selectedUAT, afișare card detalii
- * - Ștergere căutare → resetare la starea inițială
- *
- * INTERACȚIUNI UTILIZATOR:
- * - Tastare pentru căutare cu autocompletare
- * - Taste săgeți pentru navigarea rezultatelor
- * - Enter pentru selectarea rezultatului evidențiat
- * - Escape pentru ștergerea selecției
- * - Click „Vezi buget complet" → navigare la pagina entității
- * - Click „Compară" → navigare la vizualizarea comparativă
- * - Click „Vezi pe hartă" → navigare la hartă centrată pe UAT
- *
- * STĂRI VIZUALE:
- * - Gol: text placeholder, căutări recente afișate
- * - Tastare: input focalizat, sugestii apar după 2 caractere
- * - Încărcare: spinner în input, schelet rezultate
- * - Rezultate: dropdown cu carduri UAT, evidențiere la hover
- * - Selectat: card complet cu metrici + butoane de acțiune
- * - Fără rezultate: mesaj util cu sugestii
- *
- * ANIMAȚII:
- * - Apariție dropdown: slide-down + fade (200ms)
- * - Hover rezultat: scalare subtilă + umbră (100ms)
- * - Card detalii: expandare din rezultat (300ms, spring)
- * - Încărcare: animație puls schelet
- *
- * ACCESIBILITATE:
- * - role="combobox" pe inputul de căutare
- * - role="listbox" pe dropdown-ul de rezultate
- * - aria-activedescendant pentru navigare cu tastatura
- * - aria-expanded pentru starea dropdown-ului
- * - Screen reader anunță numărul de rezultate
- * - Gestionare focus: captează focusul în dropdown când e deschis
- */
-```
-
-**Comportament așteptat:**
-- Căutare cu autocompletare și potrivire aproximativă
-- Rezultate grupate după tip (municipiu, oraș, comună)
-- Calculul per capita ajută la compararea localităților de dimensiuni diferite
-- Link-uri directe către pagina entității, comparație și vizualizări pe hartă
+<UATFinder
+  locale="ro"
+  finderId="uat-finder-main"
+  text={{
+    title: "Găsește administrația ta locală",
+    subtitle: "Caută orașul, comuna sau satul tău",
+    searchPlaceholder: "Caută orașe, comune...",
+    recentSearchesLabel: "Căutări recente",
+    noResultsMessage: "Nu s-au găsit rezultate pentru \"{searchTerm}\"",
+    loadingMessage: "Se caută...",
+    errorMessage: "Eroare la încărcarea rezultatelor",
+    typeLabel: "Tip",
+    countyLabel: "Județ",
+    populationLabel: "Populație",
+    totalBudgetLabel: "Buget total",
+    perCapitaLabel: "Per capita",
+    dataYearLabel: "Date din",
+    viewDetailsLabel: "Vezi bugetul complet",
+    compareLabel: "Compară",
+    viewOnMapLabel: "Vezi pe hartă",
+    clearLabel: "Șterge"
+  }}
+/>
 
 ---
 
@@ -163,6 +64,71 @@ Bugetele locale oferă avantaje unice pentru supravegherea cetățenească:
 > 🎯 **Strategie:** Începe local → Dezvoltă abilități → Extinde la nivel de județ → Apoi național
 
 ---
+
+## Exercițiu ghidat: Explorează bugetul localității tale
+
+Urmează acești pași pentru a efectua prima ta analiză a unui buget local:
+
+### Pasul 1: Găsește UAT-ul tău
+
+1. Mergi la pagina [Analiză Entități](/entity-analytics) pe Transparenta.eu
+2. Scrie numele orașului, comunei sau localității tale în caseta de căutare
+3. Selectează UAT-ul tău din rezultatele dropdown-ului
+
+<ExpandableHint trigger="Nu știi care este UAT-ul tău?">
+
+**Satele fac parte din comune.** Dacă locuiești într-un sat, caută numele comunei. De exemplu, dacă locuiești în satul Florești de lângă Cluj, caută „Comuna Florești" în loc de doar „Florești."
+
+**Orașele pot avea denumiri oficiale diferite.** Încearcă variații precum „Municipiul Cluj-Napoca" vs „Cluj-Napoca" sau „Orașul Turda" vs „Turda."
+
+</ExpandableHint>
+
+### Pasul 2: Notează indicatorii cheie
+
+După ce ți-ai găsit UAT-ul, notează aceste cifre:
+
+| Indicator | Valoarea UAT-ului tău | Ce să urmărești |
+|-----------|----------------------|-----------------|
+| **Buget total** | _____________ RON | Crește sau scade de la an la an? |
+| **Per capita** | _____________ RON | Compară cu UAT-urile vecine |
+| **Rata de execuție** | _____________% | Sub 80% = merită investigat |
+| **Categoria principală de cheltuieli** | _____________ | Care e prioritatea principală a UAT-ului tău? |
+
+### Pasul 3: Compară cu vecinii
+
+Acum găsește 2-3 localități similare pentru comparație:
+
+1. Apasă „Compară cu similare" sau navighează la vizualizarea [Hartă](/map)
+2. Alege UAT-uri de dimensiuni similare din județul tău
+3. Compară cheltuielile per capita (nu totalurile — dimensiunea contează!)
+
+<ExpandableHint trigger="Ce înseamnă 'similar'?">
+
+**Comparații bune:**
+- Același tip de UAT (municipiu vs. municipiu, comună vs. comună)
+- Populație similară (în proporție de 50% una față de cealaltă)
+- Același județ sau județe vecine
+- Profil economic similar (urban vs. rural)
+
+**Fii atent la:**
+- Compararea unui municipiu reședință de județ cu o comună mică
+- Compararea unui oraș turistic cu o comună agricolă
+- Compararea între regiuni foarte diferite
+
+</ExpandableHint>
+
+### Pasul 4: Identifică o întrebare
+
+Pe baza a ceea ce ai găsit, identifică o întrebare care merită investigată:
+
+**Întrebări model:**
+- „De ce cheltuielile noastre per capita sunt [mai mari/mai mici] decât [UAT-ul de comparație]?"
+- „De ce rata de execuție a investițiilor este doar [X]%?"
+- „De ce [categoria] consumă [X]% din bugetul nostru?"
+
+**Întrebarea ta:** ______________________________________
+
+> **Salvează întrebarea!** O vei folosi în modulul Capstone pentru a conduce o investigație completă.
 
 ---
 

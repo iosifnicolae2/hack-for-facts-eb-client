@@ -103,3 +103,19 @@ export type {
   CategoryType,
 } from './economic-code-reference-data'
 export { CATEGORY_COLORS } from './economic-code-reference-data'
+export { UATFinder } from './UATFinder'
+export type {
+  UATFinderProps,
+  UATFinderText,
+  UATSearchResult,
+  UATDetailResult,
+  UATType,
+} from './uat-finder-data'
+export {
+  ROMANIA_COUNTIES,
+  UAT_TYPE_MAP,
+  UAT_TYPE_CONFIG,
+  formatPopulation,
+  formatBudget,
+  formatPerCapita,
+} from './uat-finder-data'
