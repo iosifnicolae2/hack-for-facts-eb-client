@@ -20,6 +20,14 @@ export { RectificationHistory } from './RectificationHistory'
 export { RedFlagCards } from './RedFlagCards'
 export { DocumentLibrary } from './DocumentLibrary'
 export { QuickLinks } from './QuickLinks'
+export { ThreeLensesExplorer } from './ThreeLensesExplorer'
+export { FunctionalClassificationAccordion } from './FunctionalClassificationAccordion'
+export { EconomicCodeReference } from './EconomicCodeReference'
+export { ExecutionPatternComparison } from './ExecutionPatternComparison'
+export type {
+  ExecutionPatternComparisonProps,
+  ExecutionPatternItem,
+} from './ExecutionPatternComparison'
 export {
   BUDGET_PHASES,
   OPPORTUNITY_COLORS,
@@ -50,3 +58,26 @@ export type {
   BudgetDocument,
   QuickLinkItem,
 } from './document-tracking-data'
+export type {
+  BudgetLensExample,
+  ThreeLensesTextProp,
+  ThreeLensesExplorerProps,
+  LensType,
+} from './three-lenses-data'
+export { LENS_COLORS } from './three-lenses-data'
+export type {
+  FunctionalClassificationAccordionProps,
+  FunctionalPartProp,
+  ClassificationCodeProp,
+  FunctionalClassificationTextProp,
+} from './functional-classification-accordion-data'
+export { PART_COLORS, DEFAULT_PART_COLORS } from './functional-classification-accordion-data'
+export type {
+  EconomicCodeReferenceProps,
+  EconomicCategoryProp,
+  EconomicCodeProp,
+  EconomicSubcodeProp,
+  EconomicCodeReferenceTextProp,
+  CategoryType,
+} from './economic-code-reference-data'
+export { CATEGORY_COLORS } from './economic-code-reference-data'

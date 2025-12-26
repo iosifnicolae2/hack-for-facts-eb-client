@@ -17,125 +17,69 @@ Clasificarea funcțională a României este **adaptată după** standardul inter
 
 ---
 
-## Element interactiv: Arborele ierarhiei de clasificare
+## Element interactiv: Ierarhia clasificării
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  📊 CLASIFICAREA FUNCȚIONALĂ ROMÂNEASCĂ (adaptată COFOG)     │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  PARTEA I - Servicii publice generale                        │
-│  ▶ 51 - Autorități publice și acțiuni externe                │
-│  ▶ 53 - Cercetare fundamentală și C&D                        │
-│  ▶ 54 - Alte servicii publice generale                       │
-│  ▶ 55 - Tranzacții privind datoria publică                   │
-│                                                              │
-│  PARTEA a II-a - Apărare și securitate                       │
-│  ▶ 60 - Apărare                                              │
-│  ▶ 61 - Ordine publică și siguranță națională                │
-│                                                              │
-│  PARTEA a III-a - Cheltuieli social-culturale                │
-│  ▼ 65 - Învățământ                                           │
-│    ├── 65.02 - Învățământ (nivel local)                      │
-│    │   ├── 65.02.03 - Învățământ preșcolar și primar         │
-│    │   ├── 65.02.04 - Învățământ secundar                    │
-│    │   └── 65.02.05 - Învățământ postliceal                  │
-│    └── 65.01 - Învățământ (nivel central)                    │
-│  ▶ 66 - Sănătate                                             │
-│  ▶ 67 - Cultură, recreere și religie                         │
-│  ▶ 68 - Asigurări și asistență socială                       │
-│                                                              │
-│  PARTEA a IV-a - Servicii și dezvoltare publică              │
-│  ▶ 70 - Locuințe, servicii și dezvoltare publică             │
-│  ▶ 74 - Protecția mediului                                   │
-│                                                              │
-│  PARTEA a V-a - Acțiuni economice                            │
-│  ▶ 80 - Acțiuni generale economice și de muncă               │
-│  ▶ 84 - Transporturi                                         │
-│  ▶ 87 - Alte acțiuni economice                               │
-│                                                              │
-│  [ Deschide exploratorul complet de clasificări → ]          │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-### Componenta ClassificationTree
-
-```typescript
-/**
- * Componenta ClassificationTree
- *
- * SCOP: Oferă o vizualizare ierarhică expandabilă și interactivă a codurilor
- * de clasificare funcțională sau economică pentru explorare și învățare.
- */
-interface ClassificationTreeProps {
-  readonly type: 'functional' | 'economic'
-  readonly data: ReadonlyArray<ClassificationNode>
-  readonly initialExpanded?: ReadonlyArray<string>
-  readonly highlightCodes?: ReadonlyArray<string>
-  readonly onNodeClick?: (node: ClassificationNode) => void
-  readonly onExplorerLink?: () => void
-}
-
-interface ClassificationNode {
-  readonly code: string
-  readonly name: string
-  readonly nameRo?: string
-  readonly description?: string
-  readonly children?: ReadonlyArray<ClassificationNode>
-  readonly metadata?: {
-    readonly budgetLevel?: 'central' | 'local'
-    readonly importance?: 'high' | 'normal'
-    readonly watchFlag?: boolean
-  }
-}
-
-/**
- * GESTIONAREA STĂRII:
- * - expandedNodes: Set<string> (codurile nodurilor expandate)
- * - selectedNode: string | null (codul selectat curent)
- * - searchQuery: string (pentru filtrarea nodurilor)
- *
- * TRANZIȚII DE STARE:
- * - Click pe săgeată de expandare → comută expandarea nodului
- * - Click pe textul nodului → selectează și afișează detalii
- * - Tastare în căutare → filtrează nodurile vizibile
- * - Click pe „Restrânge tot" → resetează expandedNodes
- *
- * INTERACȚIUNI UTILIZATOR:
- * - Click pe săgeată/chevron pentru expandare/restrângere
- * - Click pe cod/nume pentru selectare și vizualizare descriere
- * - Tastare pentru filtrare (căutare cu debounce 300ms)
- * - Tastatură: Săgeată Sus/Jos pentru navigare, Enter pentru expandare, Escape pentru ștergere
- *
- * STĂRI VIZUALE:
- * - Restrâns: afișează indicatorul „▶"
- * - Expandat: afișează indicatorul „▼", copiii sunt vizibili
- * - Selectat: fundal evidențiat, panou de detalii vizibil
- * - Evidențiat: bordură pulsantă pentru codurile importante
- * - Filtrat: ascuns din vizualizare
- *
- * ANIMAȚII:
- * - Expandare/restrângere: tranziție lină de înălțime (200ms)
- * - Selecție: estompare fundal (150ms)
- * - Filtrare: estompare elemente filtrate (150ms)
- * - Puls evidențiere: animație subtilă de scalare (buclă 1s)
- *
- * ACCESIBILITATE:
- * - role="tree" pe container
- * - role="treeitem" pe fiecare nod
- * - aria-expanded pentru nodurile expandabile
- * - aria-selected pentru selecția curentă
- * - aria-level pentru indicarea adâncimii
- */
-```
-
-**Comportament așteptat:**
-- Arbore ierarhic cu expandare/restrângere
-- Funcționalitate de căutare/filtrare
-- Click pentru vizualizarea descrierii complete
-- Link către exploratorul complet de clasificări
-- Coduri evidențiate pentru categoriile importante (65, 66, 68)
+<FunctionalClassificationAccordion
+  parts={[
+    {
+      id: "I",
+      name: "Servicii publice generale",
+      color: "slate",
+      codes: [
+        { code: "51", name: "Autorități publice", description: "Organe executive, legislative, acțiuni externe" },
+        { code: "53", name: "Cercetare", description: "Cercetare fundamentală și cercetare-dezvoltare" },
+        { code: "54", name: "Alte servicii generale", description: "Servicii publice generale neclasificate în altă parte" },
+        { code: "55", name: "Datoria publică", description: "Tranzacții privind datoria și plăți de dobânzi" }
+      ]
+    },
+    {
+      id: "II",
+      name: "Apărare și securitate",
+      color: "red",
+      codes: [
+        { code: "60", name: "Apărare", description: "Forțe armate, securitate națională" },
+        { code: "61", name: "Ordine publică și siguranță", description: "Poliție, instanțe, penitenciare, pompieri" }
+      ]
+    },
+    {
+      id: "III",
+      name: "Cheltuieli social-culturale",
+      color: "emerald",
+      codes: [
+        { code: "65", name: "Învățământ", description: "Școli, universități, formare profesională" },
+        { code: "66", name: "Sănătate", description: "Spitale, clinici, sănătate publică" },
+        { code: "67", name: "Cultură, recreere", description: "Muzee, sport, culte religioase" },
+        { code: "68", name: "Protecție socială", description: "Pensii, asistență socială, șomaj" }
+      ]
+    },
+    {
+      id: "IV",
+      name: "Servicii și dezvoltare publică",
+      color: "blue",
+      codes: [
+        { code: "70", name: "Locuințe și dezvoltare", description: "Locuințe, utilități publice, dezvoltare urbană" },
+        { code: "74", name: "Mediu", description: "Gestionarea deșeurilor, controlul poluării" }
+      ]
+    },
+    {
+      id: "V",
+      name: "Acțiuni economice",
+      color: "purple",
+      codes: [
+        { code: "80", name: "Economic și muncă", description: "Acțiuni economice generale, programe de muncă" },
+        { code: "84", name: "Transporturi", description: "Drumuri, căi ferate, transport aerian și naval" },
+        { code: "87", name: "Alte acțiuni economice", description: "Agricultură, energie, subvenții industrie" }
+      ]
+    }
+  ]}
+  highlightCodes={["65", "66", "68"]}
+  text={{
+    title: "Clasificarea funcțională românească",
+    subtitle: "Structură adaptată COFOG pentru cheltuieli publice (coduri 50-87)",
+    explorerLabel: "Deschide exploratorul complet"
+  }}
+  explorerUrl="/ro/classifications/functional"
+/>
 
 ---
 

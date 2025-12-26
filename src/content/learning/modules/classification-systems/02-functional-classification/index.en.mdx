@@ -17,125 +17,69 @@ Romania's functional classification is **adapted from** the international COFOG 
 
 ---
 
-## Interactive Element: Classification Hierarchy Tree
+## Interactive Element: Classification Hierarchy
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  📊 ROMANIAN FUNCTIONAL CLASSIFICATION (COFOG-adapted)       │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  PART I - General Public Services                            │
-│  ▶ 51 - Public Authorities and External Actions              │
-│  ▶ 53 - Fundamental Research and R&D                         │
-│  ▶ 54 - Other General Public Services                        │
-│  ▶ 55 - Public Debt Transactions                             │
-│                                                              │
-│  PART II - Defense and Security                              │
-│  ▶ 60 - Defense                                              │
-│  ▶ 61 - Public Order and National Safety                     │
-│                                                              │
-│  PART III - Social-Cultural Expenditures                     │
-│  ▼ 65 - Education                                            │
-│    ├── 65.02 - Education (local level)                       │
-│    │   ├── 65.02.03 - Preschool and Primary education        │
-│    │   ├── 65.02.04 - Secondary education                    │
-│    │   └── 65.02.05 - Post-secondary education               │
-│    └── 65.01 - Education (central level)                     │
-│  ▶ 66 - Health                                               │
-│  ▶ 67 - Culture, Recreation, Religion                        │
-│  ▶ 68 - Social Insurance and Assistance                      │
-│                                                              │
-│  PART IV - Public Services and Development                   │
-│  ▶ 70 - Housing, Services and Public Development             │
-│  ▶ 74 - Environmental Protection                             │
-│                                                              │
-│  PART V - Economic Actions                                   │
-│  ▶ 80 - General Economic and Labor Actions                   │
-│  ▶ 84 - Transportation                                       │
-│  ▶ 87 - Other Economic Actions                               │
-│                                                              │
-│  [ Open Full Classification Explorer → ]                     │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-### ClassificationTree Component
-
-```typescript
-/**
- * ClassificationTree Component
- *
- * PURPOSE: Provide an expandable, interactive hierarchy view of functional
- * or economic classification codes for exploration and learning.
- */
-interface ClassificationTreeProps {
-  readonly type: 'functional' | 'economic'
-  readonly data: ReadonlyArray<ClassificationNode>
-  readonly initialExpanded?: ReadonlyArray<string>
-  readonly highlightCodes?: ReadonlyArray<string>
-  readonly onNodeClick?: (node: ClassificationNode) => void
-  readonly onExplorerLink?: () => void
-}
-
-interface ClassificationNode {
-  readonly code: string
-  readonly name: string
-  readonly nameRo?: string
-  readonly description?: string
-  readonly children?: ReadonlyArray<ClassificationNode>
-  readonly metadata?: {
-    readonly budgetLevel?: 'central' | 'local'
-    readonly importance?: 'high' | 'normal'
-    readonly watchFlag?: boolean
-  }
-}
-
-/**
- * STATE MANAGEMENT:
- * - expandedNodes: Set<string> (codes of expanded nodes)
- * - selectedNode: string | null (currently selected code)
- * - searchQuery: string (for filtering nodes)
- *
- * STATE TRANSITIONS:
- * - Click expand arrow → toggle node expansion
- * - Click node text → select and show details
- * - Type in search → filter visible nodes
- * - Click "Collapse All" → reset expandedNodes
- *
- * USER INTERACTIONS:
- * - Click arrow/chevron to expand/collapse
- * - Click code/name to select and see description
- * - Type to filter (search debounced 300ms)
- * - Keyboard: Arrow Up/Down to navigate, Enter to expand, Escape to clear
- *
- * VISUAL STATES:
- * - Collapsed: shows "▶" indicator
- * - Expanded: shows "▼" indicator, children visible
- * - Selected: highlighted background, details panel visible
- * - Highlighted: pulsing border for important codes
- * - Filtered out: hidden from view
- *
- * ANIMATIONS:
- * - Expand/collapse: smooth height transition (200ms)
- * - Selection: background fade (150ms)
- * - Filter: fade out filtered items (150ms)
- * - Highlight pulse: subtle scale animation (1s loop)
- *
- * ACCESSIBILITY:
- * - role="tree" on container
- * - role="treeitem" on each node
- * - aria-expanded for expandable nodes
- * - aria-selected for current selection
- * - aria-level for depth indication
- */
-```
-
-**Expected Behavior:**
-- Hierarchical tree with expand/collapse
-- Search/filter functionality
-- Click to see full description
-- Link to full Classification Explorer
-- Highlighted codes for important categories (65, 66, 68)
+<FunctionalClassificationAccordion
+  parts={[
+    {
+      id: "I",
+      name: "General Public Services",
+      color: "slate",
+      codes: [
+        { code: "51", name: "Public Authorities", description: "Executive, legislative organs, external affairs" },
+        { code: "53", name: "Research", description: "Fundamental research and R&D" },
+        { code: "54", name: "Other General Services", description: "General public services not elsewhere classified" },
+        { code: "55", name: "Public Debt", description: "Debt transactions and interest payments" }
+      ]
+    },
+    {
+      id: "II",
+      name: "Defense and Security",
+      color: "red",
+      codes: [
+        { code: "60", name: "Defense", description: "Military, national security" },
+        { code: "61", name: "Public Order & Safety", description: "Police, courts, prisons, fire services" }
+      ]
+    },
+    {
+      id: "III",
+      name: "Social-Cultural Expenditures",
+      color: "emerald",
+      codes: [
+        { code: "65", name: "Education", description: "Schools, universities, training" },
+        { code: "66", name: "Health", description: "Hospitals, clinics, public health" },
+        { code: "67", name: "Culture, Recreation", description: "Museums, sports, religious affairs" },
+        { code: "68", name: "Social Protection", description: "Pensions, social assistance, unemployment" }
+      ]
+    },
+    {
+      id: "IV",
+      name: "Public Services and Development",
+      color: "blue",
+      codes: [
+        { code: "70", name: "Housing & Development", description: "Housing, public utilities, urban development" },
+        { code: "74", name: "Environment", description: "Waste management, pollution control" }
+      ]
+    },
+    {
+      id: "V",
+      name: "Economic Actions",
+      color: "purple",
+      codes: [
+        { code: "80", name: "Economic & Labor", description: "General economic actions, labor programs" },
+        { code: "84", name: "Transportation", description: "Roads, railways, air and water transport" },
+        { code: "87", name: "Other Economic", description: "Agriculture, energy, industry subsidies" }
+      ]
+    }
+  ]}
+  highlightCodes={["65", "66", "68"]}
+  text={{
+    title: "Romanian Functional Classification",
+    subtitle: "COFOG-adapted structure for public spending (codes 50-87)",
+    explorerLabel: "Open Full Classification Explorer"
+  }}
+  explorerUrl="/en/classifications/functional"
+/>
 
 ---
 

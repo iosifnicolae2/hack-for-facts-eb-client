@@ -21,110 +21,92 @@ Every single expense in the public budget can be viewed through **three lenses**
 
 ## Interactive Element: The Three Lenses
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  👁️ THREE WAYS TO VIEW EVERY EXPENSE                        │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│                      Same 1 million RON                      │
-│                            │                                 │
-│         ┌──────────────────┼──────────────────┐              │
-│         │                  │                  │              │
-│         ▼                  ▼                  ▼              │
-│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐        │
-│  │ORGANIZATIONAL│   │ FUNCTIONAL  │   │  ECONOMIC   │        │
-│  │             │   │             │   │             │        │
-│  │    WHO?     │   │   WHAT FOR? │   │  WHAT TYPE? │        │
-│  │             │   │             │   │             │        │
-│  │  Ministry   │   │  Education  │   │  Salaries   │        │
-│  │  of         │   │  (Code 65)  │   │  (Code 10)  │        │
-│  │  Education  │   │             │   │             │        │
-│  └─────────────┘   └─────────────┘   └─────────────┘        │
-│                                                              │
-│  EXAMPLE: "Teacher salary at a primary school"               │
-│  • WHO: Ministry of Education / Local School                 │
-│  • WHAT FOR: Primary education (65.02.03.02)                 │
-│  • WHAT TYPE: Personnel costs (10.01.01)                     │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-### ThreeLensesExplorer Component
-
-```typescript
-/**
- * ThreeLensesExplorer Component
- *
- * PURPOSE: Visualize how the same expense can be viewed through three different
- * classification systems, building intuition for budget document structure.
- */
-interface ThreeLensesExplorerProps {
-  readonly examples: ReadonlyArray<BudgetExample>
-  readonly onLensClick?: (lens: 'organizational' | 'functional' | 'economic') => void
-}
-
-interface BudgetExample {
-  readonly id: string
-  readonly amount: number
-  readonly description: string
-  readonly organizational: {
-    readonly entity: string
-    readonly code?: string
-  }
-  readonly functional: {
-    readonly category: string
-    readonly code: string
-    readonly subcategory?: string
-  }
-  readonly economic: {
-    readonly type: string
-    readonly code: string
-    readonly subtype?: string
-  }
-}
-
-/**
- * STATE MANAGEMENT:
- * - activeLens: 'all' | 'organizational' | 'functional' | 'economic'
- * - currentExample: number (index of selected example)
- * - isAnimating: boolean
- *
- * STATE TRANSITIONS:
- * - Click on lens card → highlight that lens, dim others
- * - Click "Show All" → return to balanced view
- * - Swipe/click arrows → change example
- *
- * USER INTERACTIONS:
- * - Click on any lens card to focus on it
- * - Click example arrows to see different budget items
- * - Hover on code to see tooltip with full name
- * - Keyboard: Arrow Left/Right to navigate examples, 1/2/3 to select lens
- *
- * VISUAL STATES:
- * - Default: Three equal cards with subtle borders
- * - Focused: Selected card scales up (1.05), others fade (opacity 0.6)
- * - Hovering: Subtle shadow elevation
- * - Animating: Smooth transitions between states (300ms ease-out)
- *
- * ANIMATIONS:
- * - Card focus: scale + elevation (300ms)
- * - Example change: crossfade (200ms)
- * - Initial load: stagger cards from left to right (100ms delay each)
- *
- * ACCESSIBILITY:
- * - role="radiogroup" for lens selection
- * - Each card is role="radio" with aria-checked
- * - Example navigation has aria-label with example description
- * - Screen reader announces selected lens and example details
- */
-```
-
-**Expected Behavior:**
-- Three cards represent the three lenses
-- Users can click each lens to focus on it
-- Example section shows how a real expense maps to all three
-- Each code is clickable to see its full name
-- "Learn More" buttons lead to next lessons (Functional, Economic)
+<ThreeLensesExplorer
+  examples={[
+    {
+      id: "teacher-salary",
+      title: "Teacher Salary",
+      amount: 5000,
+      organizational: { entity: "Ministry of Education" },
+      functional: {
+        category: "Education",
+        subcategory: "Primary Education",
+        code: "65.02.03.02"
+      },
+      economic: {
+        type: "Personnel Costs",
+        subtype: "Basic Salaries",
+        code: "10.01.01"
+      }
+    },
+    {
+      id: "hospital-construction",
+      title: "Hospital Construction",
+      amount: 15000000,
+      organizational: { entity: "Ministry of Health" },
+      functional: {
+        category: "Health",
+        subcategory: "Health Services",
+        code: "66.02"
+      },
+      economic: {
+        type: "Capital Investments",
+        subtype: "Construction",
+        code: "71.01.01"
+      }
+    },
+    {
+      id: "road-maintenance",
+      title: "Road Maintenance",
+      amount: 250000,
+      organizational: { entity: "Local Council - Cluj-Napoca" },
+      functional: {
+        category: "Transport",
+        subcategory: "Road Infrastructure",
+        code: "84.02"
+      },
+      economic: {
+        type: "Goods and Services",
+        subtype: "Maintenance",
+        code: "20.01.09"
+      }
+    }
+  ]}
+  text={{
+    title: "Same Expense, Three Views",
+    subtitle: "Every budget item can be described through three classification lenses",
+    exampleLabel: "Current Example",
+    organizational: {
+      label: "Organizational",
+      question: "WHO?",
+      insight: {
+        title: "Organizational Perspective",
+        text: "Identifies WHO spends the money — the ministry, agency, or public entity responsible. In Romania, there is no coding system for organizational classification; only the institution name is used. This perspective shows the chain of accountability for each expense."
+      }
+    },
+    functional: {
+      label: "Functional",
+      question: "WHAT FOR?",
+      insight: {
+        title: "Functional Perspective",
+        text: "Shows WHAT the money is spent FOR — education, health, defense, etc. Romania uses its own national codes (e.g., 65 = Education, 66 = Health), which correspond to but differ from the international COFOG standard. This classification enables comparison of public policy priorities."
+      }
+    },
+    economic: {
+      label: "Economic",
+      question: "WHAT TYPE?",
+      insight: {
+        title: "Economic Perspective",
+        text: "Describes WHAT TYPE of expense it is — salaries (code 10), goods and services (code 20), investments (code 71). This classification shows the economic nature of the transaction and helps understand whether money goes to current operations or long-term investments."
+      }
+    },
+    insightTitle: "Key Insight",
+    insightText: "The same expense appears in three different classification systems. Together, they tell the complete story: WHO paid it, WHAT it was FOR, and WHAT TYPE of expense it was.",
+    noCodeLabel: "(Entity name, no numerical code)",
+    closeInsightLabel: "Close",
+    hintText: "Click a card to learn more"
+  }}
+/>
 
 ---
 

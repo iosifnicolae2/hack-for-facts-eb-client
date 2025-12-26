@@ -19,110 +19,92 @@ Fiecare cheltuială din bugetul public poate fi privită prin **trei lentile**. 
 
 ## Element interactiv: Cele trei lentile
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  👁️ TREI MODURI DE A VEDEA ORICE CHELTUIALĂ                  │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│                     Același 1 milion RON                     │
-│                            │                                 │
-│         ┌──────────────────┼──────────────────┐              │
-│         │                  │                  │              │
-│         ▼                  ▼                  ▼              │
-│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐        │
-│  │ORGANIZAȚIONAL│   │ FUNCȚIONAL  │   │  ECONOMIC   │        │
-│  │             │   │             │   │             │        │
-│  │    CINE?    │   │  PENTRU CE? │   │   CE TIP?   │        │
-│  │             │   │             │   │             │        │
-│  │ Ministerul  │   │  Învățământ │   │  Salarii    │        │
-│  │ Educației   │   │  (Cod 65)   │   │  (Cod 10)   │        │
-│  │             │   │             │   │             │        │
-│  └─────────────┘   └─────────────┘   └─────────────┘        │
-│                                                              │
-│  EXEMPLU: "Salariul unui profesor la o școală primară"       │
-│  • CINE: Ministerul Educației / Școală Locală                │
-│  • PENTRU CE: Învățământ primar (65.02.03.02)                │
-│  • CE TIP: Cheltuieli de personal (10.01.01)                 │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-### Componenta ThreeLensesExplorer
-
-```typescript
-/**
- * Componenta ThreeLensesExplorer
- *
- * SCOP: Vizualizează modul în care aceeași cheltuială poate fi văzută prin trei
- * sisteme de clasificare diferite, construind intuiția pentru structura documentelor bugetare.
- */
-interface ThreeLensesExplorerProps {
-  readonly examples: ReadonlyArray<BudgetExample>
-  readonly onLensClick?: (lens: 'organizational' | 'functional' | 'economic') => void
-}
-
-interface BudgetExample {
-  readonly id: string
-  readonly amount: number
-  readonly description: string
-  readonly organizational: {
-    readonly entity: string
-    readonly code?: string
-  }
-  readonly functional: {
-    readonly category: string
-    readonly code: string
-    readonly subcategory?: string
-  }
-  readonly economic: {
-    readonly type: string
-    readonly code: string
-    readonly subtype?: string
-  }
-}
-
-/**
- * GESTIONAREA STĂRII:
- * - activeLens: 'all' | 'organizational' | 'functional' | 'economic'
- * - currentExample: number (indexul exemplului selectat)
- * - isAnimating: boolean
- *
- * TRANZIȚII DE STARE:
- * - Click pe cardul lentilei → evidențiază acea lentilă, estompează celelalte
- * - Click "Arată Tot" → revine la vizualizarea echilibrată
- * - Swipe/click săgeți → schimbă exemplul
- *
- * INTERACȚIUNI UTILIZATOR:
- * - Click pe orice card de lentilă pentru a-l focaliza
- * - Click pe săgețile exemplului pentru a vedea diferite elemente bugetare
- * - Hover pe cod pentru a vedea tooltip cu numele complet
- * - Tastatură: Săgeată Stânga/Dreapta pentru navigare exemple, 1/2/3 pentru selectare lentilă
- *
- * STĂRI VIZUALE:
- * - Implicit: Trei carduri egale cu margini subtile
- * - Focalizat: Cardul selectat se mărește (1.05), celelalte se estompează (opacitate 0.6)
- * - Hover: Elevație subtilă a umbrei
- * - Animare: Tranziții line între stări (300ms ease-out)
- *
- * ANIMAȚII:
- * - Focalizare card: scale + elevație (300ms)
- * - Schimbare exemplu: crossfade (200ms)
- * - Încărcare inițială: carduri în cascadă de la stânga la dreapta (100ms întârziere fiecare)
- *
- * ACCESIBILITATE:
- * - role="radiogroup" pentru selecția lentilei
- * - Fiecare card este role="radio" cu aria-checked
- * - Navigarea exemplelor are aria-label cu descrierea exemplului
- * - Screen reader anunță lentila selectată și detaliile exemplului
- */
-```
-
-**Comportament așteptat:**
-- Trei carduri reprezintă cele trei lentile
-- Utilizatorii pot da click pe fiecare lentilă pentru a o focaliza
-- Secțiunea de exemplu arată cum o cheltuială reală se mapează la toate trei
-- Fiecare cod este clickabil pentru a vedea numele complet
-- Butoanele "Află Mai Mult" duc la lecțiile următoare (Funcțional, Economic)
+<ThreeLensesExplorer
+  examples={[
+    {
+      id: "teacher-salary",
+      title: "Salariul Profesorului",
+      amount: 5000,
+      organizational: { entity: "Ministerul Educației" },
+      functional: {
+        category: "Învățământ",
+        subcategory: "Învățământ Primar",
+        code: "65.02.03.02"
+      },
+      economic: {
+        type: "Cheltuieli de Personal",
+        subtype: "Salarii de Bază",
+        code: "10.01.01"
+      }
+    },
+    {
+      id: "hospital-construction",
+      title: "Construcție Spital",
+      amount: 15000000,
+      organizational: { entity: "Ministerul Sănătății" },
+      functional: {
+        category: "Sănătate",
+        subcategory: "Servicii de Sănătate",
+        code: "66.02"
+      },
+      economic: {
+        type: "Investiții de Capital",
+        subtype: "Construcții",
+        code: "71.01.01"
+      }
+    },
+    {
+      id: "road-maintenance",
+      title: "Întreținere Drumuri",
+      amount: 250000,
+      organizational: { entity: "Consiliul Local - Cluj-Napoca" },
+      functional: {
+        category: "Transport",
+        subcategory: "Infrastructură Rutieră",
+        code: "84.02"
+      },
+      economic: {
+        type: "Bunuri și Servicii",
+        subtype: "Întreținere",
+        code: "20.01.09"
+      }
+    }
+  ]}
+  text={{
+    title: "Aceeași Cheltuială, Trei Perspective",
+    subtitle: "Fiecare element bugetar poate fi descris prin trei lentile de clasificare",
+    exampleLabel: "Exemplu Curent",
+    organizational: {
+      label: "Organizațional",
+      question: "CINE?",
+      insight: {
+        title: "Perspectiva Organizațională",
+        text: "Identifică CINE cheltuiește banii — ministerul, agenția sau entitatea publică responsabilă. În România, nu există un sistem de coduri pentru clasificarea organizațională; se folosește doar numele instituției. Această perspectivă arată lanțul de responsabilitate pentru fiecare cheltuială."
+      }
+    },
+    functional: {
+      label: "Funcțional",
+      question: "PENTRU CE?",
+      insight: {
+        title: "Perspectiva Funcțională",
+        text: "Arată PENTRU CE se cheltuiesc banii — învățământ, sănătate, apărare etc. România folosește propriile coduri naționale (ex: 65 = Învățământ, 66 = Sănătate), care corespund, dar diferă de standardul internațional COFOG. Această clasificare permite compararea priorităților de politici publice."
+      }
+    },
+    economic: {
+      label: "Economic",
+      question: "CE TIP?",
+      insight: {
+        title: "Perspectiva Economică",
+        text: "Descrie CE TIP de cheltuială este — salarii (cod 10), bunuri și servicii (cod 20), investiții (cod 71). Această clasificare arată natura economică a tranzacției și ajută la înțelegerea dacă banii merg către operațiuni curente sau investiții pe termen lung."
+      }
+    },
+    insightTitle: "Idee Cheie",
+    insightText: "Aceeași cheltuială apare în trei sisteme de clasificare diferite. Împreună, ele spun povestea completă: CINE a plătit, PENTRU CE a fost și CE TIP de cheltuială a fost.",
+    noCodeLabel: "(Nume entitate, fără cod numeric)",
+    closeInsightLabel: "Închide",
+    hintText: "Apasă pe o card pentru detalii"
+  }}
+/>
 
 ---
 

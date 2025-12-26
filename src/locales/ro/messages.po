@@ -22,6 +22,11 @@ msgstr "({0} - deduceri) × 10%"
 msgid "{0} annotations"
 msgstr "{0} adnotări"
 
+#. placeholder {0}: data.rectificationCount
+#: src/features/learning/components/interactive/RectificationHistory.tsx:127
+msgid "{0} rectifications"
+msgstr ""
+
 #. placeholder {0}: chart.series.length
 #: src/components/charts/components/chart-view/SeriesList.tsx:91
 msgid "{0} series configured"
@@ -421,8 +426,8 @@ msgid "<0>What We Send:</0> Budget execution updates (monthly, quarterly, or ann
 msgstr "<0>Ce Trimitem:</0> Actualizări privind execuția bugetară (rapoarte lunare, trimestriale sau anuale) pentru entitățile pe care le urmăriți și alerte despre modificări bugetare semnificative, dacă le-ați activat."
 
 #: src/features/learning/components/interactive/RectificationHistory.tsx:95
-msgid "0 formal"
-msgstr ""
+#~ msgid "0 formal"
+#~ msgstr ""
 
 #. js-lingui-explicit-id
 #: src/lib/errors-utils.ts:9
@@ -618,6 +623,7 @@ msgstr "Alerte când apar modificări importante"
 #: src/components/entities/LineItemsGroupedSection.tsx:175
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:146
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:164
+#: src/features/learning/components/interactive/DocumentLibrary.tsx:147
 #: src/routes/charts/index.lazy.tsx:245
 msgid "All"
 msgstr "Toate"
@@ -853,7 +859,7 @@ msgstr "Înapoi la Hub"
 msgid "Back to learning"
 msgstr "Înapoi la învățare"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:381
+#: src/features/learning/components/player/LessonPlayer.tsx:400
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:44
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:102
 msgid "Back to Learning Hub"
@@ -863,7 +869,7 @@ msgstr "Înapoi la Hub-ul de învățare"
 msgid "Back to Overview"
 msgstr "Înapoi la sinteză"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:525
+#: src/features/learning/components/player/LessonPlayer.tsx:544
 msgid "Back to path"
 msgstr "Înapoi la parcurs"
 
@@ -931,6 +937,10 @@ msgstr "Cronologia ciclului bugetar"
 #: src/routes/budget-explorer.lazy.tsx:440
 msgid "Budget Distribution"
 msgstr "Distribuția bugetului"
+
+#: src/features/learning/components/interactive/DocumentLibrary.tsx:133
+msgid "Budget Documents"
+msgstr ""
 
 #: src/components/sidebar/nav-main.tsx:36
 #: src/routes/index.lazy.tsx:62
@@ -1240,7 +1250,7 @@ msgstr "Confortabil"
 msgid "Compact"
 msgstr "Compact"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:549
+#: src/features/learning/components/player/LessonPlayer.tsx:568
 msgid "Complete path"
 msgstr "Finalizează parcursul"
 
@@ -1340,8 +1350,8 @@ msgid "Contact us at contact@transparenta.eu See also our <0>Privacy Policy</0> 
 msgstr "Contactați-ne la adresa contact@transparenta.eu Consultați și <0>Politica de confidențialitate</0> și <1>Politica privind cookie-urile</1>."
 
 #: src/features/learning/components/interactive/RectificationHistory.tsx:176
-msgid "Context"
-msgstr ""
+#~ msgid "Context"
+#~ msgstr ""
 
 #: src/features/learning/components/cards/LearningPathCard.tsx:24
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:130
@@ -1460,8 +1470,8 @@ msgid "Could not send error report."
 msgstr "Nu s-a putut trimite raportul de eroare."
 
 #: src/features/learning/components/interactive/RectificationHistory.tsx:174
-msgid "Count"
-msgstr ""
+#~ msgid "Count"
+#~ msgstr ""
 
 #: src/components/filters/MapFilter.tsx:286
 #: src/components/filters/MapFilter.tsx:463
@@ -1672,6 +1682,10 @@ msgstr "zile"
 msgid "December"
 msgstr "Decembrie"
 
+#: src/features/learning/components/interactive/RectificationFlow.tsx:181
+msgid "decrease"
+msgstr ""
+
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:47
 msgid "Default Color"
 msgstr "Culoare implicită"
@@ -1680,7 +1694,7 @@ msgstr "Culoare implicită"
 msgid "Default settings that apply to all series (can be overridden per series)"
 msgstr "Setări implicite care se aplică tuturor seriilor (pot fi suprascrise pentru fiecare serie în parte)"
 
-#: src/features/learning/components/interactive/RectificationHistory.tsx:175
+#: src/features/learning/components/interactive/RectificationHistory.tsx:49
 msgid "Deficit"
 msgstr ""
 
@@ -2153,7 +2167,7 @@ msgstr "EUR"
 msgid "Ever wondered where your money actually goes?"
 msgstr "Te-ai întrebat vreodată unde se duc banii tăi?"
 
-#: src/features/learning/components/interactive/RedFlagCards.tsx:94
+#: src/features/learning/components/interactive/RedFlagCards.tsx:116
 msgid "Example:"
 msgstr ""
 
@@ -2417,7 +2431,11 @@ msgid "Filters marked as exclude will remove data matching these criteria from t
 msgstr "Filtrele marcate ca excludere vor elimina din rezultate datele care corespund acestor criterii."
 
 #: src/features/learning/components/interactive/RectificationFlow.tsx:143
-msgid "Final budget:"
+#~ msgid "Final budget:"
+#~ msgstr ""
+
+#: src/features/learning/components/interactive/RectificationFlow.tsx:172
+msgid "Final:"
 msgstr ""
 
 #: src/lib/chart-links.ts:29
@@ -2446,6 +2464,10 @@ msgstr "Găsește entitate de monitorizat"
 #: src/components/footer/ChatFab.tsx:123
 msgid "Find resources, report issues, or get in touch."
 msgstr "Găsește resurse, raportează probleme sau ia legătura cu noi."
+
+#: src/features/learning/components/interactive/RectificationFlow.tsx:147
+msgid "Flow"
+msgstr ""
 
 #: src/components/maps/utils.ts:30
 msgid "Fn"
@@ -2745,7 +2767,7 @@ msgstr "Oportunitate ridicată"
 msgid "Home"
 msgstr "Acasă"
 
-#: src/features/learning/components/interactive/RectificationFlow.tsx:123
+#: src/features/learning/components/interactive/RectificationFlow.tsx:144
 msgid "How Budgets Change"
 msgstr ""
 
@@ -2849,6 +2871,10 @@ msgstr "Venituri/Cheltuieli"
 msgid "Incomes"
 msgstr "Venituri"
 
+#: src/features/learning/components/interactive/RectificationFlow.tsx:186
+msgid "increase"
+msgstr ""
+
 #: src/routes/terms.lazy.tsx:24
 msgid "Independent project; no government affiliation."
 msgstr "Proiect independent; nicio afiliere guvernamentală."
@@ -2887,6 +2913,10 @@ msgstr "Proprietate intelectuală"
 #: src/components/budget-explorer/RevenueBreakdown.tsx:54
 msgid "Inter-budget transfers"
 msgstr "Transferuri inter-bugetare"
+
+#: src/features/learning/components/interactive/RectificationHistory.tsx:225
+msgid "Interactive"
+msgstr ""
 
 #: src/components/budget-explorer/SpendingBreakdown.tsx:129
 msgid "Internal budget movements"
@@ -2970,6 +3000,10 @@ msgstr "Activități cheie"
 msgid "Key Deadlines"
 msgstr "Termene cheie"
 
+#: src/features/learning/components/interactive/QuickLinks.tsx:98
+msgid "Key Websites"
+msgstr ""
+
 #: src/components/ui/shortcuts-modal.tsx:23
 #: src/components/ui/shortcuts.tsx:66
 msgid "Keyboard Shortcuts"
@@ -3049,14 +3083,14 @@ msgid "Less than"
 msgstr "Mai mic decât"
 
 #: src/features/learning/components/interactive/RectificationFlow.tsx:148
-msgid "less than original"
-msgstr ""
+#~ msgid "less than original"
+#~ msgstr ""
 
 #: src/features/learning/components/player/MarkComplete.tsx:66
 msgid "Lesson Completed!"
 msgstr "Lecție finalizată!"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:376
+#: src/features/learning/components/player/LessonPlayer.tsx:395
 msgid "Lesson not found"
 msgstr "Lecția nu a fost găsită"
 
@@ -3127,7 +3161,7 @@ msgstr "Se încarcă datele..."
 msgid "Loading heatmap data..."
 msgstr "Se încarcă datele pentru harta termică..."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:88
+#: src/features/learning/components/player/LessonPlayer.tsx:89
 msgid "Loading interactive content..."
 msgstr ""
 
@@ -3390,8 +3424,8 @@ msgid "More"
 msgstr "Mai mult"
 
 #: src/features/learning/components/interactive/RectificationFlow.tsx:152
-msgid "more than original"
-msgstr ""
+#~ msgid "more than original"
+#~ msgstr ""
 
 #: src/features/learning/components/interactive/RevenueDistributionGame.tsx:143
 msgid "Most people think they know, but the reality often surprises. Ready to test your intuition?"
@@ -3496,7 +3530,7 @@ msgstr "Consimțământul și gestionarea buletinului informativ"
 msgid "Newsletters and notifications"
 msgstr "Buletine informative și notificări"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:536
+#: src/features/learning/components/player/LessonPlayer.tsx:555
 msgid "Next"
 msgstr "Următorul"
 
@@ -3534,6 +3568,10 @@ msgstr "Nicio categorie de afișat."
 #: src/routes/certificates.$id.tsx:74
 msgid "No certificate record was found for this ID in local storage."
 msgstr "Nu a fost găsită nicio înregistrare de certificat pentru acest ID în stocarea locală."
+
+#: src/features/learning/components/interactive/RectificationFlow.tsx:189
+msgid "No change"
+msgstr ""
 
 #. placeholder {0}: cat.name
 #: src/routes/charts/index.lazy.tsx:301
@@ -3597,6 +3635,10 @@ msgstr "Nu există date în intervalul selectat."
 msgid "No detailed data available for this selection."
 msgstr "Nu sunt disponibile date detaliate pentru această selecție."
 
+#: src/features/learning/components/interactive/RectificationHistory.tsx:193
+msgid "No detailed records available."
+msgstr ""
+
 #: src/components/budget-explorer/BudgetCategoryList.tsx:147
 msgid "No economic breakdown is available for income."
 msgstr "Nu este disponibilă o detaliere economică pentru venituri."
@@ -3644,6 +3686,10 @@ msgstr "Niciun operand. Adăugați o serie sau un calcul nou."
 #: src/components/ui/multi-select.tsx:106
 msgid "No options found."
 msgstr "Nu s-au găsit opțiuni."
+
+#: src/features/learning/components/interactive/RectificationHistory.tsx:127
+msgid "No rectifications"
+msgstr ""
 
 #: src/components/entities/views/RelatedChartsView.tsx:57
 msgid "No related charts yet"
@@ -3703,6 +3749,10 @@ msgstr "Nu chiar!"
 #: src/routes/cookie-policy.lazy.tsx:78
 msgid "Note: Deleting authentication cookies will sign you out of your account. Deleting essential localStorage will reset your saved charts and preferences."
 msgstr "Notă: Ștergerea cookie-urilor de autentificare vă va deconecta din cont. Ștergerea localStorage-ului esențial va reseta graficele și preferințele dumneavoastră salvate."
+
+#: src/features/learning/components/interactive/RectificationHistory.tsx:245
+msgid "Note: Romania has been under EU Excessive Deficit Procedure since 2020"
+msgstr ""
 
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:196
 msgid "Note: Transfer items are excluded as they represent internal movements within the public administration rather than actual expenditures or revenues."
@@ -3850,6 +3900,10 @@ msgstr "Conturi de utilizator opționale pentru buletine informative și notific
 #: src/components/ui/shortcuts.tsx:105
 msgid "or"
 msgstr "sau"
+
+#: src/features/learning/components/interactive/RectificationFlow.tsx:170
+msgid "Original:"
+msgstr ""
 
 #: src/components/entities/EntityLineItemsTabs.tsx:98
 msgid "Other Economic"
@@ -4043,7 +4097,7 @@ msgstr "Se pregătește linkul de partajare..."
 msgid "Preview"
 msgstr "Previzualizare"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:512
+#: src/features/learning/components/player/LessonPlayer.tsx:531
 msgid "Previous"
 msgstr "Anterior"
 
@@ -4176,7 +4230,7 @@ msgstr "Se înregistrează..."
 #~ msgid "rect."
 #~ msgstr ""
 
-#: src/features/learning/components/interactive/RectificationHistory.tsx:168
+#: src/features/learning/components/interactive/RectificationHistory.tsx:222
 msgid "Rectification History (2020-2024)"
 msgstr ""
 
@@ -4326,8 +4380,8 @@ msgid "Review Path"
 msgstr "Revizuiește parcursul"
 
 #: src/features/learning/components/interactive/RectificationHistory.tsx:195
-msgid "Romania has been under EU Excessive Deficit Procedure since 2020"
-msgstr ""
+#~ msgid "Romania has been under EU Excessive Deficit Procedure since 2020"
+#~ msgstr ""
 
 #: src/components/theme/language-toggle.tsx:46
 msgid "Romanian"
@@ -4979,7 +5033,7 @@ msgstr "Parcursul de învățare pe care îl cauți nu există sau a fost mutat.
 msgid "The learning path you're looking for doesn't exist."
 msgstr "Parcursul de învățare pe care îl cauți nu există."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:378
+#: src/features/learning/components/player/LessonPlayer.tsx:397
 msgid "The lesson you're looking for doesn't exist or may have been moved."
 msgstr "Lecția pe care o cauți nu există sau este posibil să fi fost mutată."
 
@@ -5329,8 +5383,8 @@ msgid "UATs"
 msgstr "UAT-uri"
 
 #: src/features/learning/components/interactive/RectificationFlow.tsx:155
-msgid "unchanged from original"
-msgstr ""
+#~ msgid "unchanged from original"
+#~ msgstr ""
 
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:57
 #: src/components/budget-explorer/SpendingBreakdown.tsx:48
@@ -5525,7 +5579,7 @@ msgstr "Vizualizați scala de culori și valorile pentru vizualizarea hărții d
 msgid "Viewing:"
 msgstr "Vizualizare:"
 
-#: src/features/learning/components/interactive/RedFlagCards.tsx:121
+#: src/features/learning/components/interactive/RedFlagCards.tsx:147
 msgid "Warning Signs"
 msgstr ""
 
@@ -5602,7 +5656,7 @@ msgstr "Ce înseamnă asta"
 msgid "What's your <0>gross</0> salary?"
 msgstr "Care este salariul tău <0>brut</0>?"
 
-#: src/features/learning/components/interactive/RedFlagCards.tsx:138
+#: src/features/learning/components/interactive/RedFlagCards.tsx:165
 msgid "When Rectifications Are Normal"
 msgstr ""
 
@@ -5646,7 +5700,6 @@ msgstr "Prefix de eliminat pe axa X"
 #: src/components/entities/EntityFinancialTrends.tsx:100
 #: src/components/entities/EntityReportControls.tsx:206
 #: src/components/entities/EntityReports.tsx:180
-#: src/features/learning/components/interactive/RectificationHistory.tsx:173
 msgid "Year"
 msgstr "An"
 

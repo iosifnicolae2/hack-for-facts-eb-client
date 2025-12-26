@@ -18,6 +18,10 @@ import { LessonChallengesProvider, useRegisterLessonChallenge } from './lesson-c
 import { LessonSkeleton } from '../loading/LessonSkeleton'
 import type { BudgetAllocatorGameProps } from '../interactive/budget-allocator-data'
 import type { ClassificationExplorerProps } from '../interactive/classification-explorer-data'
+import type { ThreeLensesExplorerProps } from '../interactive/three-lenses-data'
+import type { FunctionalClassificationAccordionProps } from '../interactive/functional-classification-accordion-data'
+import type { EconomicCodeReferenceProps } from '../interactive/economic-code-reference-data'
+import type { ExecutionPatternComparisonProps } from '../interactive/ExecutionPatternComparison'
 
 type LessonPlayerProps = {
   readonly locale: LearningLocale
@@ -218,6 +222,26 @@ const QuickLinks = createLazyComponent(() =>
     default: module.QuickLinks,
   }))
 )
+const ThreeLensesExplorer = createLazyComponent<ThreeLensesExplorerProps>(() =>
+  import('../interactive/ThreeLensesExplorer').then((module) => ({
+    default: module.ThreeLensesExplorer,
+  }))
+)
+const FunctionalClassificationAccordion = createLazyComponent<FunctionalClassificationAccordionProps>(() =>
+  import('../interactive/FunctionalClassificationAccordion').then((module) => ({
+    default: module.FunctionalClassificationAccordion,
+  }))
+)
+const EconomicCodeReference = createLazyComponent<EconomicCodeReferenceProps>(() =>
+  import('../interactive/EconomicCodeReference').then((module) => ({
+    default: module.EconomicCodeReference,
+  }))
+)
+const ExecutionPatternComparison = createLazyComponent<ExecutionPatternComparisonProps>(() =>
+  import('../interactive/ExecutionPatternComparison').then((module) => ({
+    default: module.ExecutionPatternComparison,
+  }))
+)
 
 function LessonQuizWrapper({ lessonId, ...props }: LessonQuizWrapperProps) {
   const { progress } = useLearningProgress()
@@ -374,6 +398,10 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
       RedFlagCards,
       DocumentLibrary,
       QuickLinks,
+      ThreeLensesExplorer,
+      FunctionalClassificationAccordion,
+      EconomicCodeReference,
+      ExecutionPatternComparison,
     }),
     [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, PromiseTrackerWrapper, SalaryTaxCalculatorWrapper, GuidedPlatformTourWrapper, ClassificationExplorerWrapper, BudgetAllocatorWrapper]
   )

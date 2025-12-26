@@ -28,113 +28,84 @@ Both are needed to fully understand a budget line.
 
 ## Interactive Element: Economic Code Reference
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  💰 ECONOMIC CLASSIFICATION (Most Important Codes)           │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  CURRENT EXPENSES (Everyday operations)                      │
-│  ─────────────────────────────────────────────────────────── │
-│  Code │ Category           │ Examples                        │
-│  ─────┼────────────────────┼──────────────────────────────── │
-│  10   │ PERSONNEL          │ Salaries, contributions         │
-│  10.01│   Cash salaries    │ Wages, bonuses, overtime        │
-│  10.02│   In-kind salaries │ Holiday vouchers, benefits      │
-│  10.03│   Contributions    │ Employer's social contributions │
-│  ─────┼────────────────────┼──────────────────────────────── │
-│  20   │ GOODS & SERVICES   │ Everything needed to operate    │
-│  20.01│   Operating goods  │ Supplies, utilities, fuel       │
-│  20.02│   Current repairs  │ Maintenance, minor fixes        │
-│  20.05│   Inventory items  │ Equipment, linens, tools        │
-│  20.30│   Other expenses   │ Consultants, outsourcing        │
-│  ─────┼────────────────────┼──────────────────────────────── │
-│  51   │ TRANSFERS          │ Between government units        │
-│  57   │ SOCIAL ASSISTANCE  │ Benefits, aid programs          │
-│                                                              │
-│  CAPITAL EXPENSES (Investments)                              │
-│  ─────────────────────────────────────────────────────────── │
-│  71   │ NON-FINANCIAL      │ Physical assets that last       │
-│  71.01│   Fixed assets     │ Buildings, equipment, vehicles  │
-│  71.01.01 Construction     │ New buildings, renovations      │
-│  71.01.02 Machinery/Transp │ Vehicles, equipment, computers  │
-│  71.03│   Capital repairs  │ Large-scale rehabilitation      │
-│  ─────┼────────────────────┼──────────────────────────────── │
-│  72   │ FINANCIAL ASSETS   │ Share capital participation     │
-│                                                              │
-│  ⚠️ Code 71 = WATCH CLOSELY (lowest execution rates)         │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-### EconomicCodeReference Component
-
-```typescript
-/**
- * EconomicCodeReference Component
- *
- * PURPOSE: Interactive reference table for economic classification codes,
- * with emphasis on the Code 71 investment warning flag.
- */
-interface EconomicCodeReferenceProps {
-  readonly codes: ReadonlyArray<EconomicCodeCategory>
-  readonly highlightCode?: string
-  readonly showExecutionWarning?: boolean
-  readonly onCodeClick?: (code: string) => void
-}
-
-interface EconomicCodeCategory {
-  readonly code: string
-  readonly name: string
-  readonly nameRo: string
-  readonly type: 'current' | 'capital' | 'financial'
-  readonly description: string
-  readonly examples: ReadonlyArray<string>
-  readonly watchFlag?: boolean
-  readonly averageExecutionRate?: number
-  readonly children?: ReadonlyArray<EconomicCodeCategory>
-}
-
-/**
- * STATE MANAGEMENT:
- * - expandedCodes: Set<string>
- * - hoveredCode: string | null
- * - showTooltip: boolean
- *
- * STATE TRANSITIONS:
- * - Click row → expand to show subcodes
- * - Hover code → show tooltip with full description
- * - Click warning badge → show execution rate info
- *
- * USER INTERACTIONS:
- * - Click table row to expand/collapse subcategories
- * - Hover on code for quick tooltip
- * - Click "Learn More" to navigate to related lesson
- * - Mobile: tap to expand, long-press for tooltip
- *
- * VISUAL STATES:
- * - Default: clean table layout
- * - Expanded: subcodes visible with indentation
- * - Warning flag: pulsing ⚠️ icon for code 71
- * - Hovered: row highlight (subtle background)
- *
- * ANIMATIONS:
- * - Row expand: slide-down (200ms)
- * - Warning pulse: subtle glow (2s loop)
- * - Tooltip: fade-in (150ms)
- *
- * ACCESSIBILITY:
- * - role="table" with proper header markup
- * - aria-expanded for expandable rows
- * - Warning flag has aria-label explaining the warning
- * - Focus visible on all interactive elements
- */
-```
-
-**Expected Behavior:**
-- Expandable table showing code hierarchy
-- Warning badge on code 71 with execution rate info
-- Click to see full examples and explanation
-- Link to Budget Explorer filtered by economic code
+<EconomicCodeReference
+  categories={[
+    {
+      type: "current",
+      executionRate: 85,
+      codes: [
+        {
+          code: "10",
+          name: "PERSONNEL",
+          description: "Salaries, bonuses, employer contributions",
+          executionRate: 95,
+          subcodes: [
+            { code: "10.01", name: "Cash salaries", examples: ["Wages", "Bonuses", "Overtime"] },
+            { code: "10.02", name: "In-kind salaries", examples: ["Holiday vouchers", "Meal tickets"] },
+            { code: "10.03", name: "Contributions", examples: ["Social security", "Health insurance"] }
+          ]
+        },
+        {
+          code: "20",
+          name: "GOODS & SERVICES",
+          description: "Everything needed to operate",
+          subcodes: [
+            { code: "20.01", name: "Operating goods", examples: ["Supplies", "Utilities", "Fuel"] },
+            { code: "20.02", name: "Current repairs", examples: ["Maintenance", "Minor fixes"] },
+            { code: "20.05", name: "Inventory items", examples: ["Equipment", "Tools"] },
+            { code: "20.30", name: "Other expenses", examples: ["Consultants", "Outsourcing"] }
+          ]
+        },
+        {
+          code: "51",
+          name: "TRANSFERS",
+          description: "Money moved between government units"
+        },
+        {
+          code: "57",
+          name: "SOCIAL ASSISTANCE",
+          description: "Benefits and aid programs paid to citizens"
+        }
+      ]
+    },
+    {
+      type: "capital",
+      executionRate: 54,
+      codes: [
+        {
+          code: "71",
+          name: "INVESTMENTS",
+          description: "Construction, equipment, major repairs",
+          executionRate: 54,
+          isWarningFlag: true,
+          subcodes: [
+            { code: "71.01", name: "Fixed assets", examples: ["Buildings", "Equipment", "Vehicles"] },
+            { code: "71.01.01", name: "Construction", examples: ["New buildings", "Renovations"] },
+            { code: "71.01.02", name: "Machinery & Transport", examples: ["Vehicles", "Computers"] },
+            { code: "71.03", name: "Capital repairs", examples: ["Large-scale rehabilitation"] }
+          ]
+        },
+        {
+          code: "72",
+          name: "FINANCIAL ASSETS",
+          description: "Share capital participation"
+        }
+      ]
+    }
+  ]}
+  text={{
+    title: "Economic Classification",
+    subtitle: "What TYPE of expense is this?",
+    currentLabel: "CURRENT EXPENSES",
+    currentDescription: "Day-to-day operations — typically 85%+ execution rate",
+    capitalLabel: "CAPITAL EXPENSES",
+    capitalDescription: "Long-term investments — often only ~54% execution",
+    executionLabel: "execution",
+    warningLabel: "WATCH CLOSELY",
+    explorerLabel: "Open in Budget Explorer"
+  }}
+  explorerUrl="/en/explorer"
+/>
 
 ---
 
@@ -179,12 +150,15 @@ interface EconomicCodeCategory {
 
 Every year, the pattern repeats:
 
-```
-Personnel (10):      ██████████████████████  ~95%+ ✓ Salaries paid
-Goods & Services (20): █████████████████░░░░  ~85%  ~ Normal
-Investments (71):    ██████████░░░░░░░░░░░░  ~54%  ⚠️ RED FLAG
-                                          (verified Oct 2022)
-```
+<ExecutionPatternComparison
+  title="Annual Execution Pattern"
+  items={[
+    { code: "10", name: "Personnel", rate: 95, status: "excellent", statusLabel: "Salaries paid" },
+    { code: "20", name: "Goods & Services", rate: 85, status: "normal", statusLabel: "Normal" },
+    { code: "71", name: "Investments", rate: 54, status: "warning", statusLabel: "RED FLAG" }
+  ]}
+  footnote="(verified Oct 2022)"
+/>
 
 This means: **Salaries always get paid. But the school renovation? The hospital wing? The road repair? Often delayed to next year. And the year after.**
 

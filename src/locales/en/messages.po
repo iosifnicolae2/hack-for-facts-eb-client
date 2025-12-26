@@ -22,6 +22,11 @@ msgstr "({0} - deductions) × 10%"
 msgid "{0} annotations"
 msgstr "{0} annotations"
 
+#. placeholder {0}: data.rectificationCount
+#: src/features/learning/components/interactive/RectificationHistory.tsx:127
+msgid "{0} rectifications"
+msgstr "{0} rectifications"
+
 #. placeholder {0}: chart.series.length
 #: src/components/charts/components/chart-view/SeriesList.tsx:91
 msgid "{0} series configured"
@@ -421,8 +426,8 @@ msgid "<0>What We Send:</0> Budget execution updates (monthly, quarterly, or ann
 msgstr "<0>What We Send:</0> Budget execution updates (monthly, quarterly, or annual reports) for entities you follow, and alerts about significant budget changes if you've enabled them."
 
 #: src/features/learning/components/interactive/RectificationHistory.tsx:95
-msgid "0 formal"
-msgstr "0 formal"
+#~ msgid "0 formal"
+#~ msgstr "0 formal"
 
 #. js-lingui-explicit-id
 #: src/lib/errors-utils.ts:9
@@ -618,6 +623,7 @@ msgstr "Alerts when important changes occur"
 #: src/components/entities/LineItemsGroupedSection.tsx:175
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:146
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:164
+#: src/features/learning/components/interactive/DocumentLibrary.tsx:147
 #: src/routes/charts/index.lazy.tsx:245
 msgid "All"
 msgstr "All"
@@ -853,7 +859,7 @@ msgstr "Back to Hub"
 msgid "Back to learning"
 msgstr "Back to learning"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:381
+#: src/features/learning/components/player/LessonPlayer.tsx:400
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:44
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:102
 msgid "Back to Learning Hub"
@@ -863,7 +869,7 @@ msgstr "Back to Learning Hub"
 msgid "Back to Overview"
 msgstr "Back to Overview"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:525
+#: src/features/learning/components/player/LessonPlayer.tsx:544
 msgid "Back to path"
 msgstr "Back to path"
 
@@ -931,6 +937,10 @@ msgstr "Budget Cycle Timeline"
 #: src/routes/budget-explorer.lazy.tsx:440
 msgid "Budget Distribution"
 msgstr "Budget Distribution"
+
+#: src/features/learning/components/interactive/DocumentLibrary.tsx:133
+msgid "Budget Documents"
+msgstr "Budget Documents"
 
 #: src/components/sidebar/nav-main.tsx:36
 #: src/routes/index.lazy.tsx:62
@@ -1240,7 +1250,7 @@ msgstr "Comfortable"
 msgid "Compact"
 msgstr "Compact"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:549
+#: src/features/learning/components/player/LessonPlayer.tsx:568
 msgid "Complete path"
 msgstr "Complete path"
 
@@ -1340,8 +1350,8 @@ msgid "Contact us at contact@transparenta.eu See also our <0>Privacy Policy</0> 
 msgstr "Contact us at contact@transparenta.eu See also our <0>Privacy Policy</0> and <1>Cookie Policy</1>."
 
 #: src/features/learning/components/interactive/RectificationHistory.tsx:176
-msgid "Context"
-msgstr "Context"
+#~ msgid "Context"
+#~ msgstr "Context"
 
 #: src/features/learning/components/cards/LearningPathCard.tsx:24
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:130
@@ -1460,8 +1470,8 @@ msgid "Could not send error report."
 msgstr "Could not send error report."
 
 #: src/features/learning/components/interactive/RectificationHistory.tsx:174
-msgid "Count"
-msgstr "Count"
+#~ msgid "Count"
+#~ msgstr "Count"
 
 #: src/components/filters/MapFilter.tsx:286
 #: src/components/filters/MapFilter.tsx:463
@@ -1672,6 +1682,10 @@ msgstr "days"
 msgid "December"
 msgstr "December"
 
+#: src/features/learning/components/interactive/RectificationFlow.tsx:181
+msgid "decrease"
+msgstr "decrease"
+
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:47
 msgid "Default Color"
 msgstr "Default Color"
@@ -1680,7 +1694,7 @@ msgstr "Default Color"
 msgid "Default settings that apply to all series (can be overridden per series)"
 msgstr "Default settings that apply to all series (can be overridden per series)"
 
-#: src/features/learning/components/interactive/RectificationHistory.tsx:175
+#: src/features/learning/components/interactive/RectificationHistory.tsx:49
 msgid "Deficit"
 msgstr "Deficit"
 
@@ -2153,7 +2167,7 @@ msgstr "EUR"
 msgid "Ever wondered where your money actually goes?"
 msgstr "Ever wondered where your money actually goes?"
 
-#: src/features/learning/components/interactive/RedFlagCards.tsx:94
+#: src/features/learning/components/interactive/RedFlagCards.tsx:116
 msgid "Example:"
 msgstr "Example:"
 
@@ -2417,8 +2431,12 @@ msgid "Filters marked as exclude will remove data matching these criteria from t
 msgstr "Filters marked as exclude will remove data matching these criteria from the results."
 
 #: src/features/learning/components/interactive/RectificationFlow.tsx:143
-msgid "Final budget:"
-msgstr "Final budget:"
+#~ msgid "Final budget:"
+#~ msgstr "Final budget:"
+
+#: src/features/learning/components/interactive/RectificationFlow.tsx:172
+msgid "Final:"
+msgstr "Final:"
 
 #: src/lib/chart-links.ts:29
 msgid "Financial Evolution - {entityName}"
@@ -2446,6 +2464,10 @@ msgstr "Find Entity to Monitor"
 #: src/components/footer/ChatFab.tsx:123
 msgid "Find resources, report issues, or get in touch."
 msgstr "Find resources, report issues, or get in touch."
+
+#: src/features/learning/components/interactive/RectificationFlow.tsx:147
+msgid "Flow"
+msgstr "Flow"
 
 #: src/components/maps/utils.ts:30
 msgid "Fn"
@@ -2750,7 +2772,7 @@ msgstr "High opportunity"
 msgid "Home"
 msgstr "Home"
 
-#: src/features/learning/components/interactive/RectificationFlow.tsx:123
+#: src/features/learning/components/interactive/RectificationFlow.tsx:144
 msgid "How Budgets Change"
 msgstr "How Budgets Change"
 
@@ -2854,6 +2876,10 @@ msgstr "Income/Expenses"
 msgid "Incomes"
 msgstr "Incomes"
 
+#: src/features/learning/components/interactive/RectificationFlow.tsx:186
+msgid "increase"
+msgstr "increase"
+
 #: src/routes/terms.lazy.tsx:24
 msgid "Independent project; no government affiliation."
 msgstr "Independent project; no government affiliation."
@@ -2892,6 +2918,10 @@ msgstr "Intellectual property"
 #: src/components/budget-explorer/RevenueBreakdown.tsx:54
 msgid "Inter-budget transfers"
 msgstr "Inter-budget transfers"
+
+#: src/features/learning/components/interactive/RectificationHistory.tsx:225
+msgid "Interactive"
+msgstr "Interactive"
 
 #: src/components/budget-explorer/SpendingBreakdown.tsx:129
 msgid "Internal budget movements"
@@ -2975,6 +3005,10 @@ msgstr "Key Activities"
 msgid "Key Deadlines"
 msgstr "Key Deadlines"
 
+#: src/features/learning/components/interactive/QuickLinks.tsx:98
+msgid "Key Websites"
+msgstr "Key Websites"
+
 #: src/components/ui/shortcuts-modal.tsx:23
 #: src/components/ui/shortcuts.tsx:66
 msgid "Keyboard Shortcuts"
@@ -3054,14 +3088,14 @@ msgid "Less than"
 msgstr "Less than"
 
 #: src/features/learning/components/interactive/RectificationFlow.tsx:148
-msgid "less than original"
-msgstr "less than original"
+#~ msgid "less than original"
+#~ msgstr "less than original"
 
 #: src/features/learning/components/player/MarkComplete.tsx:66
 msgid "Lesson Completed!"
 msgstr "Lesson Completed!"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:376
+#: src/features/learning/components/player/LessonPlayer.tsx:395
 msgid "Lesson not found"
 msgstr "Lesson not found"
 
@@ -3132,7 +3166,7 @@ msgstr "Loading data..."
 msgid "Loading heatmap data..."
 msgstr "Loading heatmap data..."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:88
+#: src/features/learning/components/player/LessonPlayer.tsx:89
 msgid "Loading interactive content..."
 msgstr "Loading interactive content..."
 
@@ -3395,8 +3429,8 @@ msgid "More"
 msgstr "More"
 
 #: src/features/learning/components/interactive/RectificationFlow.tsx:152
-msgid "more than original"
-msgstr "more than original"
+#~ msgid "more than original"
+#~ msgstr "more than original"
 
 #: src/features/learning/components/interactive/RevenueDistributionGame.tsx:143
 msgid "Most people think they know, but the reality often surprises. Ready to test your intuition?"
@@ -3501,7 +3535,7 @@ msgstr "Newsletter consent and management"
 msgid "Newsletters and notifications"
 msgstr "Newsletters and notifications"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:536
+#: src/features/learning/components/player/LessonPlayer.tsx:555
 msgid "Next"
 msgstr "Next"
 
@@ -3539,6 +3573,10 @@ msgstr "No categories to display."
 #: src/routes/certificates.$id.tsx:74
 msgid "No certificate record was found for this ID in local storage."
 msgstr "No certificate record was found for this ID in local storage."
+
+#: src/features/learning/components/interactive/RectificationFlow.tsx:189
+msgid "No change"
+msgstr "No change"
 
 #. placeholder {0}: cat.name
 #: src/routes/charts/index.lazy.tsx:301
@@ -3602,6 +3640,10 @@ msgstr "No data within the selected range."
 msgid "No detailed data available for this selection."
 msgstr "No detailed data available for this selection."
 
+#: src/features/learning/components/interactive/RectificationHistory.tsx:193
+msgid "No detailed records available."
+msgstr "No detailed records available."
+
 #: src/components/budget-explorer/BudgetCategoryList.tsx:147
 msgid "No economic breakdown is available for income."
 msgstr "No economic breakdown is available for income."
@@ -3649,6 +3691,10 @@ msgstr "No operands. Add a series or a new calculation."
 #: src/components/ui/multi-select.tsx:106
 msgid "No options found."
 msgstr "No options found."
+
+#: src/features/learning/components/interactive/RectificationHistory.tsx:127
+msgid "No rectifications"
+msgstr "No rectifications"
 
 #: src/components/entities/views/RelatedChartsView.tsx:57
 msgid "No related charts yet"
@@ -3708,6 +3754,10 @@ msgstr "Not quite!"
 #: src/routes/cookie-policy.lazy.tsx:78
 msgid "Note: Deleting authentication cookies will sign you out of your account. Deleting essential localStorage will reset your saved charts and preferences."
 msgstr "Note: Deleting authentication cookies will sign you out of your account. Deleting essential localStorage will reset your saved charts and preferences."
+
+#: src/features/learning/components/interactive/RectificationHistory.tsx:245
+msgid "Note: Romania has been under EU Excessive Deficit Procedure since 2020"
+msgstr "Note: Romania has been under EU Excessive Deficit Procedure since 2020"
 
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:196
 msgid "Note: Transfer items are excluded as they represent internal movements within the public administration rather than actual expenditures or revenues."
@@ -3855,6 +3905,10 @@ msgstr "Optional user accounts for newsletters and notifications."
 #: src/components/ui/shortcuts.tsx:105
 msgid "or"
 msgstr "or"
+
+#: src/features/learning/components/interactive/RectificationFlow.tsx:170
+msgid "Original:"
+msgstr "Original:"
 
 #: src/components/entities/EntityLineItemsTabs.tsx:98
 msgid "Other Economic"
@@ -4048,7 +4102,7 @@ msgstr "Preparing your share link..."
 msgid "Preview"
 msgstr "Preview"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:512
+#: src/features/learning/components/player/LessonPlayer.tsx:531
 msgid "Previous"
 msgstr "Previous"
 
@@ -4181,7 +4235,7 @@ msgstr "Recording..."
 #~ msgid "rect."
 #~ msgstr "rect."
 
-#: src/features/learning/components/interactive/RectificationHistory.tsx:168
+#: src/features/learning/components/interactive/RectificationHistory.tsx:222
 msgid "Rectification History (2020-2024)"
 msgstr "Rectification History (2020-2024)"
 
@@ -4331,8 +4385,8 @@ msgid "Review Path"
 msgstr "Review Path"
 
 #: src/features/learning/components/interactive/RectificationHistory.tsx:195
-msgid "Romania has been under EU Excessive Deficit Procedure since 2020"
-msgstr "Romania has been under EU Excessive Deficit Procedure since 2020"
+#~ msgid "Romania has been under EU Excessive Deficit Procedure since 2020"
+#~ msgstr "Romania has been under EU Excessive Deficit Procedure since 2020"
 
 #: src/components/theme/language-toggle.tsx:46
 msgid "Romanian"
@@ -4984,7 +5038,7 @@ msgstr "The learning path you're looking for doesn't exist or has been moved."
 msgid "The learning path you're looking for doesn't exist."
 msgstr "The learning path you're looking for doesn't exist."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:378
+#: src/features/learning/components/player/LessonPlayer.tsx:397
 msgid "The lesson you're looking for doesn't exist or may have been moved."
 msgstr "The lesson you're looking for doesn't exist or may have been moved."
 
@@ -5334,8 +5388,8 @@ msgid "UATs"
 msgstr "UATs"
 
 #: src/features/learning/components/interactive/RectificationFlow.tsx:155
-msgid "unchanged from original"
-msgstr "unchanged from original"
+#~ msgid "unchanged from original"
+#~ msgstr "unchanged from original"
 
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:57
 #: src/components/budget-explorer/SpendingBreakdown.tsx:48
@@ -5530,7 +5584,7 @@ msgstr "View the color scale and values for the heatmap visualization"
 msgid "Viewing:"
 msgstr "Viewing:"
 
-#: src/features/learning/components/interactive/RedFlagCards.tsx:121
+#: src/features/learning/components/interactive/RedFlagCards.tsx:147
 msgid "Warning Signs"
 msgstr "Warning Signs"
 
@@ -5607,7 +5661,7 @@ msgstr "What this means"
 msgid "What's your <0>gross</0> salary?"
 msgstr "What's your <0>gross</0> salary?"
 
-#: src/features/learning/components/interactive/RedFlagCards.tsx:138
+#: src/features/learning/components/interactive/RedFlagCards.tsx:165
 msgid "When Rectifications Are Normal"
 msgstr "When Rectifications Are Normal"
 
@@ -5651,7 +5705,6 @@ msgstr "X-Axis Prefix To Remove"
 #: src/components/entities/EntityFinancialTrends.tsx:100
 #: src/components/entities/EntityReportControls.tsx:206
 #: src/components/entities/EntityReports.tsx:180
-#: src/features/learning/components/interactive/RectificationHistory.tsx:173
 msgid "Year"
 msgstr "Year"
 
