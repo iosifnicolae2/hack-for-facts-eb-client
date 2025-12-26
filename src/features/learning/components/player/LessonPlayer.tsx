@@ -32,6 +32,8 @@ import { Sources } from '../interactive/Sources'
 import { ClassificationExplorer } from '../interactive/ClassificationExplorer'
 import { ExecutionRateChart } from '../interactive/ExecutionRateChart'
 import { HandsOnExplorer } from '../interactive/HandsOnExplorer'
+import { BudgetCycleTimeline } from '../interactive/BudgetCycleTimeline'
+import { PhaseCards } from '../interactive/PhaseCards'
 
 type LessonPlayerProps = {
   readonly locale: LearningLocale
@@ -239,6 +241,8 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
       ClassificationExplorer: ClassificationExplorerWrapper,
       ExecutionRateChart,
       HandsOnExplorer,
+      BudgetCycleTimeline,
+      PhaseCards,
     }),
     [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, PromiseTrackerWrapper, SalaryTaxCalculatorWrapper, GuidedPlatformTourWrapper, ClassificationExplorerWrapper, BudgetAllocatorWrapper]
   )

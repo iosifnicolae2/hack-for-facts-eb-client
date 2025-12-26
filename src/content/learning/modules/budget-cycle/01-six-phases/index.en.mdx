@@ -21,100 +21,32 @@ Think of it like farming seasons: there's a time to plant, a time to tend, and a
 
 Visualize when each budget phase occurs throughout the year.
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  📅 THE BUDGET CYCLE                                         │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  Click any phase to learn more                               │
-│                                                              │
-│     JAN  FEB  MAR  APR  MAY  JUN  JUL  AUG  SEP  OCT  NOV  DEC
-│      │    │    │    │    │    │    │    │    │    │    │    │
-│      ▼    ▼    ▼    ▼    ▼    ▼    ▼    ▼    ▼    ▼    ▼    ▼
-│  ════════════════════════════════════════════════════════════
-│  │████  EXECUTION (Year N)  ████████████████████████████████│
-│  ════════════════════════════════════════════════════════════
-│                               │▓▓▓▓▓▓▓▓▓│
-│                               │PLANNING │
-│                               │ (N+1)   │
-│                               │▓▓▓▓▓▓▓▓▓│
-│                                       │██████████████│
-│                                       │   DRAFTING   │
-│                                       │██████████████│
-│                                                      │▓▓▓▓▓▓│
-│                                                      │APPROV│
-│                                                      │▓▓▓▓▓▓│
-│                                                              │
-│  Current phase: [EXECUTION]  Days until budget season: [XX]  │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-### Component Specification
-
-```typescript
-/**
- * BudgetCycleTimeline Component
- *
- * PURPOSE: Visualize the budget cycle phases across a calendar year
- * with current date indicator and countdown to budget season
- */
-interface BudgetCycleTimelineProps {
-  readonly currentDate?: Date
-  readonly onPhaseClick?: (phaseId: string) => void
-  readonly highlightPhase?: string
+export const phaseLabels = {
+  planning: { name: "Planning", timing: "Jun - Aug" },
+  drafting: { name: "Drafting", timing: "Aug - Nov 15" },
+  approval: { name: "Approval", timing: "Nov 15 - Dec" },
+  execution: { name: "Execution", timing: "Jan - Dec" },
+  reporting: { name: "Reporting", timing: "Quarterly" },
+  audit: { name: "Audit", timing: "Following Year" }
 }
 
-interface BudgetPhase {
-  readonly id: string
-  readonly name: string
-  readonly startMonth: number  // 1-12
-  readonly endMonth: number
-  readonly description: string
-  readonly citizenOpportunity: 'high' | 'medium' | 'low'
-  readonly color: string
+export const timelineText = {
+  title: "Budget Cycle Timeline",
+  subtitle: "See when each phase occurs and how long until budget season",
+  countdownLabel: "days until Nov 15",
+  budgetSeasonLabel: "It's budget season! November-December is the best time for citizen engagement.",
+  activitiesLabel: "Key Activities",
+  opportunitiesLabel: "Your Opportunity",
+  deadlinesLabel: "Key Deadlines",
+  viewingPhaseLabel: "Viewing:",
+  clickToExploreLabel: "Click a phase to explore details"
 }
 
-/**
- * STATE:
- * - currentDate: Date (defaults to today)
- * - activePhase: computed from currentDate
- * - expandedPhase: string | null (phase being viewed)
- * - daysUntilBudgetSeason: number (days until November 15)
- *
- * INTERACTIONS:
- * - Click phase segment: expand phase details
- * - Hover phase: show tooltip with quick info
- * - Arrow keys: navigate between phases
- * - Escape: collapse expanded phase
- *
- * VISUAL STATES:
- * - Default: all phases visible with muted colors
- * - Current: current phase highlighted with pulse
- * - Hovered: slight scale up, brighter color
- * - Expanded: phase details panel slides in
- * - Budget season: special glow during Oct-Dec
- *
- * ANIMATIONS:
- * - Current date marker: subtle pulse (2s loop)
- * - Phase expansion: slide + fade (300ms, ease-out)
- * - Countdown: number flip animation daily
- * - Entry: phases stagger in from left (600ms total)
- *
- * ACCESSIBILITY:
- * - role="img" with aria-label describing the timeline
- * - Each phase is focusable with aria-describedby
- * - Screen reader announces current phase and countdown
- * - Color is not the only indicator (icons + patterns)
- */
-```
-
-**Expected Behavior:**
-- Shows all 12 months with phase overlays
-- Current date marked with pulsing indicator
-- Click any phase to see details panel
-- Countdown shows days until November 15 (budget submission deadline)
-- Keyboard navigable between phases
+<BudgetCycleTimeline
+  phaseLabels={phaseLabels}
+  text={timelineText}
+  content={phaseContent}
+/>
 
 ---
 
@@ -137,165 +69,156 @@ Every budget goes through these six phases. Here's what happens in each and when
 
 Explore each phase in detail with expandable cards.
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  🔄 BUDGET PHASES (click to expand)                          │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  ┌────────────┐  ┌────────────┐  ┌────────────┐              │
-│  │    📋      │  │    ✏️      │  │    🏛️      │              │
-│  │  PLANNING  │  │  DRAFTING  │  │  APPROVAL  │              │
-│  │ Jun - Aug  │  │ Aug-Nov 15 │  │ Nov - Dec  │              │
-│  │            │  │            │  │            │              │
-│  │  [Expand]  │  │  [Expand]  │  │  [Expand]  │              │
-│  └────────────┘  └────────────┘  └────────────┘              │
-│                                                              │
-│  ┌────────────┐  ┌────────────┐  ┌────────────┐              │
-│  │    💰      │  │    📊      │  │    🔍      │              │
-│  │ EXECUTION  │  │ REPORTING  │  │   AUDIT    │              │
-│  │  Jan-Dec   │  │ Quarterly  │  │ Next Year  │              │
-│  │            │  │            │  │            │              │
-│  │  [Expand]  │  │  [Expand]  │  │  [Expand]  │              │
-│  └────────────┘  └────────────┘  └────────────┘              │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-### Component Specification
-
-```typescript
-/**
- * PhaseCards Component
- *
- * PURPOSE: Present budget phases as expandable cards with detailed information
- */
-interface PhaseCardsProps {
-  readonly phases: readonly PhaseInfo[]
-  readonly onPhaseExpand?: (phaseId: string) => void
-  readonly onAllViewed?: () => void
-}
-
-interface PhaseInfo {
-  readonly id: string
-  readonly icon: string
-  readonly name: string
-  readonly timing: string
-  readonly description: string
-  readonly keyActivities: readonly string[]
-  readonly citizenOpportunity: {
-    readonly level: 'high' | 'medium' | 'low'
-    readonly actions: readonly string[]
+export const phaseContent = {
+  planning: {
+    name: "Planning",
+    timing: "June - August",
+    description: "The government prepares macroeconomic forecasts and sets spending ceilings. This internal process lays the groundwork for next year's budget.",
+    keyActivities: [
+      "June 1: Macroeconomic forecasts completed (Art. 31)",
+      "July 31: Ministry submits spending ceilings to Government (Art. 32)",
+      "August 1: Framework letter sent to principal credit authorizers (Art. 33)"
+    ],
+    citizenOpportunities: [
+      "Limited — this is an internal government process"
+    ],
+    keyDeadlines: [
+      { date: "Jun 1", description: "Macroeconomic forecasts due" },
+      { date: "Jul 31", description: "Spending ceilings submitted" }
+    ]
+  },
+  drafting: {
+    name: "Drafting",
+    timing: "August - November 15",
+    description: "Institutions prepare budget proposals and the Ministry assembles the draft budget for Government review before submission to Parliament.",
+    keyActivities: [
+      "September 15: Institutions submit revised proposals to Ministry (Art. 34(5))",
+      "September 30: Ministry delivers draft budget to Government (Art. 35(1))",
+      "November 15: Government submits budget to Parliament (Art. 35(4))"
+    ],
+    citizenOpportunities: [
+      "Public consultations may occur under Law 52/2003",
+      "Note: Parliament is exempt from consultation requirements"
+    ],
+    keyDeadlines: [
+      { date: "Sep 15", description: "Institution proposals due" },
+      { date: "Nov 15", description: "Budget submitted to Parliament" }
+    ]
+  },
+  approval: {
+    name: "Approval",
+    timing: "November 15 - December",
+    description: "Parliament debates and votes on the budget. This is YOUR best opportunity to influence how public money is allocated!",
+    keyActivities: [
+      "Parliament debates budget in joint sittings",
+      "Amendments proposed and voted",
+      "December 15: If not adopted, urgent procedure required (Art. 17(2))",
+      "If unapproved 3 days before year-end, previous year's provisions apply"
+    ],
+    citizenOpportunities: [
+      "Contact your MPs directly about budget priorities",
+      "Attend public Parliamentary sessions",
+      "Work with civil society organizations to advocate"
+    ],
+    keyDeadlines: [
+      { date: "Dec 15", description: "Urgent procedure if not adopted" },
+      { date: "Dec 31", description: "Budget must be approved" }
+    ]
+  },
+  execution: {
+    name: "Execution",
+    timing: "January - December",
+    description: "Institutions spend according to the approved budget. Rectifications (amendments) are possible until November 30.",
+    keyActivities: [
+      "Institutions spend according to approved budget",
+      "Execution closes December 31 (Art. 61(1))",
+      "Rectifications possible until November 30 (Art. 6)",
+      "Credit transfers between budget chapters allowed starting Q3"
+    ],
+    citizenOpportunities: [
+      "Monitor execution rates on Transparenta.eu",
+      "Track how institutions are spending their allocations"
+    ],
+    keyDeadlines: [
+      { date: "Nov 30", description: "Last date for rectifications" },
+      { date: "Dec 31", description: "Execution year closes" }
+    ]
+  },
+  reporting: {
+    name: "Reporting",
+    timing: "Quarterly",
+    description: "Principal credit authorizers prepare quarterly monitoring reports. The Ministry publishes monthly execution notes.",
+    keyActivities: [
+      "Quarterly monitoring reports (Art. 44(1))",
+      "Monthly execution notes from Ministry",
+      "Local budgets: Reports in April, July, October, December",
+      "Annual execution account to Parliament by July 1"
+    ],
+    citizenOpportunities: [
+      "Analyze data and identify gaps",
+      "Ask questions about discrepancies",
+      "Compare planned vs. actual spending"
+    ],
+    keyDeadlines: [
+      { date: "Q1-Q4", description: "Quarterly reports due" },
+      { date: "Jul 1", description: "Annual account to Parliament" }
+    ]
+  },
+  audit: {
+    name: "Audit",
+    timing: "Following Year",
+    description: "The Court of Accounts (Curtea de Conturi) reviews spending under Constitutional Article 140 and reports to Parliament.",
+    keyActivities: [
+      "Court of Accounts reviews spending",
+      "Reports prepared within 6 months of receiving accounts",
+      "Annual Public Report transmitted to Parliament",
+      "EU Funds Audit Authority operates under Law 77/2002"
+    ],
+    citizenOpportunities: [
+      "Read audit reports for your area of interest",
+      "Follow up on findings with your MP"
+    ],
+    keyDeadlines: [
+      { date: "Jul 1", description: "Report to Parliament" }
+    ]
   }
-  readonly keyDeadline?: string
 }
 
-/**
- * STATE:
- * - expandedCard: string | null
- * - viewedCards: Set<string> (cards viewed at least once)
- * - allViewed: boolean (computed)
- *
- * INTERACTIONS:
- * - Click card: toggle expand/collapse
- * - Enter/Space on focused card: toggle
- * - Escape: collapse current card
- * - Tab: navigate between cards
- * - Arrow keys: navigate within expanded content
- *
- * VISUAL STATES:
- * - Collapsed: icon + name + timing, compact
- * - Expanded: full content slides down
- * - Viewed: subtle checkmark badge
- * - High opportunity: gold/amber border
- * - Current phase: pulsing indicator
- *
- * ANIMATIONS:
- * - Expand: height auto with slide (300ms)
- * - Collapse: reverse (200ms)
- * - Badge appear: scale + fade (200ms)
- * - Grid layout: responsive 2x3 to 1x6 on mobile
- *
- * ACCESSIBILITY:
- * - Each card is role="button" with aria-expanded
- * - Expanded content has aria-labelledby
- * - Focus management on expand/collapse
- * - Progress announced: "4 of 6 phases viewed"
- */
-```
+export const phaseCardsText = {
+  title: "Budget Phases",
+  subtitle: "Click each card to explore what happens and how you can engage",
+  activitiesLabel: "Key Activities",
+  opportunitiesLabel: "Your Opportunity",
+  deadlinesLabel: "Key Deadlines",
+  highOpportunityBadge: "High Opportunity"
+}
 
-### Phase Details (Expanded Content)
-
-**1. PLANNING (June-August)** — *Law 500/2002, Art. 31-33*
-- **June 1:** Macroeconomic forecasts completed (Art. 31)
-- **July 31:** Ministry submits spending ceilings to Government (Art. 32)
-- **August 1:** Framework letter sent to principal credit authorizers (Art. 33)
-- **Your opportunity:** Limited — this is an internal government process
-
-**2. DRAFTING (August - November 15)** — *Law 500/2002, Art. 34-35*
-- **September 15:** Institutions submit revised proposals to Ministry (Art. 34(5))
-- **September 30:** Ministry delivers draft budget to Government for first reading (Art. 35(1))
-- **November 15:** Government submits budget to Parliament (Art. 35(4)) — *amended from October 15 by Law 270/2013*
-- **Your opportunity:** Public consultations may occur under Law 52/2003 (but Parliament is exempt)
-
-**3. APPROVAL (November 15-December)** — *Law 500/2002, Art. 17(2), 35(4), 37*
-- Parliament debates the budget in joint sittings
-- Amendments proposed and voted
-- **December 15:** If not adopted, urgent procedure required (Art. 17(2))
-- If unapproved 3 days before year-end, previous year's provisions apply (Art. 37)
-- **Your opportunity:** HIGH — contact your MPs, attend public sessions (note: no formal citizen input mechanism exists during Parliamentary consideration)
-
-**4. EXECUTION (January-December)** — *Law 500/2002, Art. 6, 61(1)*
-- Institutions spend according to approved budget
-- Execution closes **December 31** (Art. 61(1))
-- **Rectifications:** May occur, typically September-November; must be elaborated by **November 30** (Art. 6)
-- Credit transfers between budget chapters allowed starting Q3
-- **Your opportunity:** Monitor execution rates on Transparenta.eu
-
-**5. REPORTING (Quarterly + Annual)** — *Law 500/2002, Art. 44, 55; Law 273/2006, Art. 49(12)*
-- Principal credit authorizers prepare quarterly monitoring reports (Art. 44(1))
-- Ministry publishes monthly execution notes
-- **Local budgets:** Reports due in April (Q1), July (Q2), October (Q3), December (Q4) per Law 273/2006
-- Annual execution account submitted to Parliament by **July 1** of following year (Art. 56(4))
-- **Your opportunity:** Analyze data, identify gaps, ask questions
-
-**6. AUDIT (Following Year)** — *Law 94/1992 (Court of Accounts Law)*
-- **Curtea de Conturi** (Court of Accounts) reviews spending under Constitutional Article 140
-- Reports prepared within 6 months of receiving accounts (Art. 29)
-- Annual Public Report transmitted to Parliament
-- Court also houses EU Funds Audit Authority under Law 77/2002
-- **Your opportunity:** Read audit reports, follow up on findings with your MP
+<PhaseCards
+  content={phaseContent}
+  text={phaseCardsText}
+  contentId="budget-cycle-01-six-phases"
+/>
 
 ---
 
 ## Key Deadline Alert
 
-### November 15: The Legal Deadline (Updated in 2013)
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│  ⏰ KEY DEADLINE: NOVEMBER 15                                │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  The Government MUST submit the budget to Parliament by      │
-│  November 15 each year (Law 500/2002, Art. 35(4)).           │
-│                                                              │
-│  ⚠️  IMPORTANT: The October 15 deadline often cited in       │
-│  older sources is OUTDATED. Law 270/2013 extended it by      │
-│  one month to November 15.                                   │
-│                                                              │
-│  If this deadline is missed, it signals:                     │
-│  • Political instability or disagreements                    │
-│  • Poor planning by the government                           │
-│  • Potential budget execution problems                       │
-│                                                              │
-│  Other key dates:                                            │
-│  • Dec 15: Urgent procedure required if not adopted          │
-│  • Dec 31: Execution year closes                             │
-│                                                              │
-│  Mark your calendar: November = Budget Season begins!        │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
+> **KEY DEADLINE: NOVEMBER 15**
+>
+> The Government **MUST** submit the budget to Parliament by November 15 each year (Law 500/2002, Art. 35(4)).
+>
+> **IMPORTANT:** The October 15 deadline often cited in older sources is **OUTDATED**. Law 270/2013 extended it by one month to November 15.
+>
+> If this deadline is missed, it signals:
+> - Political instability or disagreements
+> - Poor planning by the government
+> - Potential budget execution problems
+>
+> **Other key dates:**
+> - **Dec 15:** Urgent procedure required if not adopted
+> - **Dec 31:** Execution year closes
+>
+> **Mark your calendar: November = Budget Season begins!**
 
 ---
 
@@ -329,7 +252,28 @@ interface PhaseInfo {
 
 ## Key Takeaway
 
-> **Remember:** The budget cycle has six phases, but November-December is YOUR window. The legal deadline of **November 15** (not October 15 as older sources state) starts "budget season" — this is when your voice can influence how public money is allocated next year. For local budgets, you also have a 15-day contestation period under Law 273/2006.
+### What You Learned
+
+The budget cycle has **six distinct phases**, each with its own timeline and engagement opportunities:
+
+| Phase | Opportunity | Action |
+|-------|-------------|--------|
+| Planning | Low | Follow news about forecasts |
+| Drafting | Medium | Participate in public consultations |
+| **Approval** | **HIGH** | **Contact your MPs** |
+| Execution | Medium | Monitor on Transparenta.eu |
+| Reporting | Medium | Analyze reports |
+| Audit | Low | Read audit findings |
+
+### Key Dates to Remember
+
+- **November 15** — Government submits budget to Parliament
+- **December 15** — Urgent procedure if not adopted
+- **December 31** — Budget must be approved
+
+### Next Step
+
+> **Take Action:** November-December is **YOUR WINDOW**. Mark **November 15** in your calendar — that's when "budget season" starts and your voice can influence how public money is allocated for the next year.
 
 ---
 

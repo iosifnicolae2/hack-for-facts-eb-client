@@ -37,6 +37,22 @@ const LearningBudgetAllocatorInteractionSchema = z.object({
   completedAt: z.string().datetime().optional(),
 })
 
+const BudgetPhaseIdSchema = z.enum([
+  'planning',
+  'drafting',
+  'approval',
+  'execution',
+  'reporting',
+  'audit',
+])
+
+const LearningBudgetCycleInteractionSchema = z.object({
+  kind: z.literal('budget-cycle'),
+  exploredPhases: z.array(BudgetPhaseIdSchema),
+  lastExploredPhase: BudgetPhaseIdSchema.nullable(),
+  completedAt: z.string().datetime().optional(),
+})
+
 /**
  * CRITICAL: All interaction types MUST be registered in this discriminated union.
  *
@@ -59,6 +75,7 @@ const LearningInteractionStateSchema = z.discriminatedUnion('kind', [
   LearningPredictionInteractionSchema,
   LearningSalaryCalculatorInteractionSchema,
   LearningBudgetAllocatorInteractionSchema,
+  LearningBudgetCycleInteractionSchema,
 ])
 
 const LearningProgressEventBaseSchema = z.object({

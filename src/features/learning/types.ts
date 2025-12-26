@@ -73,11 +73,27 @@ export type LearningBudgetAllocatorInteractionState = {
   readonly completedAt?: string
 }
 
+export type BudgetPhaseId =
+  | 'planning'
+  | 'drafting'
+  | 'approval'
+  | 'execution'
+  | 'reporting'
+  | 'audit'
+
+export type LearningBudgetCycleInteractionState = {
+  readonly kind: 'budget-cycle'
+  readonly exploredPhases: readonly BudgetPhaseId[]
+  readonly lastExploredPhase: BudgetPhaseId | null
+  readonly completedAt?: string
+}
+
 export type LearningInteractionState =
   | LearningQuizInteractionState
   | LearningPredictionInteractionState
   | LearningSalaryCalculatorInteractionState
   | LearningBudgetAllocatorInteractionState
+  | LearningBudgetCycleInteractionState
 
 export type LearningQuizAnswerAction = {
   readonly type: 'quiz.answer'
@@ -140,6 +156,20 @@ export type LearningBudgetAllocatorResetAction = {
   readonly interactionId: string
 }
 
+export type LearningBudgetCycleExploreAction = {
+  readonly type: 'budgetCycle.explore'
+  readonly contentId: string
+  readonly interactionId: string
+  readonly phaseId: BudgetPhaseId
+  readonly contentVersion?: string
+}
+
+export type LearningBudgetCycleResetAction = {
+  readonly type: 'budgetCycle.reset'
+  readonly contentId: string
+  readonly interactionId: string
+}
+
 export type LearningInteractionAction =
   | LearningQuizAnswerAction
   | LearningQuizResetAction
@@ -149,6 +179,8 @@ export type LearningInteractionAction =
   | LearningSalaryCalculatorResetAction
   | LearningBudgetAllocatorSubmitAction
   | LearningBudgetAllocatorResetAction
+  | LearningBudgetCycleExploreAction
+  | LearningBudgetCycleResetAction
 
 export type LearningContentProgress = {
   readonly contentId: string

@@ -41,3 +41,13 @@ export {
   type SalaryCalculatorInteractionContext,
   type UseSalaryCalculatorInteractionInput,
 } from './use-salary-calculator-interaction'
+
+// Budget cycle interaction
+export {
+  useBudgetCycleInteraction,
+  type BudgetCycleInteractionContext,
+  type UseBudgetCycleInteractionInput,
+} from './use-budget-cycle-interaction'
+
+// Register resolvers (side-effects)
+import './budget-cycle-resolver'

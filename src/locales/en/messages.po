@@ -636,6 +636,10 @@ msgstr "All Classifications"
 msgid "All Economic"
 msgstr "All Economic"
 
+#: src/features/learning/components/interactive/PhaseCards.tsx:124
+msgid "All phases explored!"
+msgstr "All phases explored!"
+
 #: src/routes/privacy.lazy.tsx:97
 msgid "All processors are bound by data protection agreements and GDPR-compliant safeguards, including standard contractual clauses for international transfers."
 msgstr "All processors are bound by data protection agreements and GDPR-compliant safeguards, including standard contractual clauses for international transfers."
@@ -845,7 +849,7 @@ msgstr "Back to Hub"
 msgid "Back to learning"
 msgstr "Back to learning"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:254
+#: src/features/learning/components/player/LessonPlayer.tsx:262
 #: src/routes/$lang/learning/$pathId/index.tsx:44
 #: src/routes/$lang/learning/$pathId/index.tsx:102
 msgid "Back to Learning Hub"
@@ -855,7 +859,7 @@ msgstr "Back to Learning Hub"
 msgid "Back to Overview"
 msgstr "Back to Overview"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:398
+#: src/features/learning/components/player/LessonPlayer.tsx:406
 msgid "Back to path"
 msgstr "Back to path"
 
@@ -909,6 +913,10 @@ msgstr "Browse and download all financial reports submitted by this entity"
 msgid "Budget category"
 msgstr "Budget category"
 
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:632
+msgid "Budget Cycle Timeline"
+msgstr "Budget Cycle Timeline"
+
 #: src/components/entities/views/Overview.tsx:279
 #: src/components/entities/views/TrendsView.tsx:220
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:93
@@ -934,6 +942,11 @@ msgstr "Budget sector"
 #: src/components/filters/MapFilter.tsx:513
 msgid "Budget Sector"
 msgstr "Budget Sector"
+
+#. placeholder {0}: new Date().getFullYear()
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:125
+msgid "Budget submitted for {0}"
+msgstr "Budget submitted for {0}"
 
 #: src/features/learning/components/layout/LearningLayout.tsx:171
 msgid "Budgetary Academy"
@@ -1151,6 +1164,10 @@ msgstr "Clear search"
 msgid "Clearing accounts"
 msgstr "Clearing accounts"
 
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:646
+msgid "Click a phase to explore details"
+msgstr "Click a phase to explore details"
+
 #: src/components/common/classification-info-link.tsx:113
 #: src/components/common/classification-info-link.tsx:158
 msgid "Click the link below to explore all {type} classifications."
@@ -1215,7 +1232,7 @@ msgstr "Comfortable"
 msgid "Compact"
 msgstr "Compact"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:422
+#: src/features/learning/components/player/LessonPlayer.tsx:430
 msgid "Complete path"
 msgstr "Complete path"
 
@@ -1518,6 +1535,10 @@ msgstr "Currency"
 msgid "Currency is ignored for % of GDP."
 msgstr "Currency is ignored for % of GDP."
 
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:761
+msgid "Current date"
+msgstr "Current date"
+
 #: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:62
 msgid "Custom Data"
 msgstr "Custom Data"
@@ -1626,6 +1647,7 @@ msgstr "Dates"
 msgid "day"
 msgstr "day"
 
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:163
 #: src/features/learning/utils/streak.ts:124
 msgid "days"
 msgstr "days"
@@ -2201,6 +2223,10 @@ msgstr "Expense Type"
 msgid "Expenses"
 msgstr "Expenses"
 
+#: src/features/learning/components/interactive/PhaseCards.tsx:95
+msgid "Exploration Progress"
+msgstr "Exploration Progress"
+
 #: src/components/classification-explorer/ClassificationExplorer.tsx:179
 msgid "Explore budget classifications to understand how public spending is organized and categorized"
 msgstr "Explore budget classifications to understand how public spending is organized and categorized"
@@ -2675,6 +2701,19 @@ msgstr "Hide advanced settings"
 msgid "Hide details"
 msgstr "Hide details"
 
+#: src/features/learning/components/interactive/PhaseCards.tsx:306
+msgid "High"
+msgstr "High"
+
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:455
+#: src/features/learning/components/interactive/PhaseCards.tsx:382
+msgid "High Impact"
+msgstr "High Impact"
+
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:765
+msgid "High opportunity"
+msgstr "High opportunity"
+
 #: src/components/footer/AppFooter.tsx:85
 msgid "Home"
 msgstr "Home"
@@ -2862,6 +2901,10 @@ msgstr "Is UAT"
 msgid "Issued at"
 msgstr "Issued at"
 
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:667
+msgid "It's budget season! November-December is the best time for citizen engagement."
+msgstr "It's budget season! November-December is the best time for citizen engagement."
+
 #: src/components/charts/components/series-config/SeriesFilter.tsx:800
 msgid "Item Amount"
 msgstr "Item Amount"
@@ -2881,6 +2924,16 @@ msgstr "July"
 #: src/components/entities/EntityFinancialTrends.tsx:97
 msgid "June"
 msgstr "June"
+
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:483
+#: src/features/learning/components/interactive/PhaseCards.tsx:397
+msgid "Key Activities"
+msgstr "Key Activities"
+
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:529
+#: src/features/learning/components/interactive/PhaseCards.tsx:441
+msgid "Key Deadlines"
+msgstr "Key Deadlines"
 
 #: src/components/ui/shortcuts-modal.tsx:23
 #: src/components/ui/shortcuts.tsx:66
@@ -2964,7 +3017,7 @@ msgstr "Less than"
 msgid "Lesson Completed!"
 msgstr "Lesson Completed!"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:249
+#: src/features/learning/components/player/LessonPlayer.tsx:257
 msgid "Lesson not found"
 msgstr "Lesson not found"
 
@@ -3082,6 +3135,10 @@ msgstr "Lock In Prediction"
 msgid "Locked"
 msgstr "Locked"
 
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:773
+msgid "Low opportunity"
+msgstr "Low opportunity"
+
 #: src/components/budget-explorer/BudgetTreemap.tsx:543
 #: src/components/entities/LineItemsAnalytics.tsx:159
 msgid "Main Categories"
@@ -3186,6 +3243,10 @@ msgstr "May"
 #: src/features/notifications/components/EntityNotificationAnnouncement.tsx:109
 msgid "Maybe Later"
 msgstr "Maybe Later"
+
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:769
+msgid "Medium opportunity"
+msgstr "Medium opportunity"
 
 #: src/components/alerts/components/AlertEditorView.tsx:265
 msgid "Metadata"
@@ -3388,7 +3449,7 @@ msgstr "Newsletter consent and management"
 msgid "Newsletters and notifications"
 msgstr "Newsletters and notifications"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:409
+#: src/features/learning/components/player/LessonPlayer.tsx:417
 msgid "Next"
 msgstr "Next"
 
@@ -3615,6 +3676,10 @@ msgstr "Notifications Settings"
 #: src/components/entities/EntityFinancialTrends.tsx:98
 msgid "November"
 msgstr "November"
+
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:384
+msgid "Now"
+msgstr "Now"
 
 #: src/components/entities/EntityFinancialTrends.tsx:98
 msgid "October"
@@ -3864,6 +3929,12 @@ msgstr "Phase 01"
 msgid "Phase 02"
 msgstr "Phase 02"
 
+#. placeholder {0}: content.name
+#: src/features/learning/components/interactive/PhaseCards.tsx:189
+#: src/features/learning/components/interactive/PhaseCards.tsx:269
+msgid "Phase: {0}"
+msgstr "Phase: {0}"
+
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:52
 msgid "Pie Chart (Aggregated)"
 msgstr "Pie Chart (Aggregated)"
@@ -3917,7 +3988,7 @@ msgstr "Preparing your share link..."
 msgid "Preview"
 msgstr "Preview"
 
-#: src/features/learning/components/player/LessonPlayer.tsx:385
+#: src/features/learning/components/player/LessonPlayer.tsx:393
 msgid "Previous"
 msgstr "Previous"
 
@@ -4127,6 +4198,10 @@ msgstr "Required for core functionality like security and preferences. Always on
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:185
 msgid "Reset amount filter"
 msgstr "Reset amount filter"
+
+#: src/features/learning/components/interactive/PhaseCards.tsx:530
+msgid "Reset progress"
+msgstr "Reset progress"
 
 #: src/routes/$lang/learning/index.tsx:313
 msgid "Restart"
@@ -4825,7 +4900,7 @@ msgstr "The learning path you're looking for doesn't exist or has been moved."
 msgid "The learning path you're looking for doesn't exist."
 msgstr "The learning path you're looking for doesn't exist."
 
-#: src/features/learning/components/player/LessonPlayer.tsx:251
+#: src/features/learning/components/player/LessonPlayer.tsx:259
 msgid "The lesson you're looking for doesn't exist or may have been moved."
 msgstr "The lesson you're looking for doesn't exist or may have been moved."
 
@@ -5228,6 +5303,10 @@ msgstr "Unsubscribe from notifications"
 msgid "Unsupported chart type: {0}"
 msgstr "Unsupported chart type: {0}"
 
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:170
+msgid "Until Nov 15"
+msgstr "Until Nov 15"
+
 #: src/features/notifications/components/alerts/AlertCard.tsx:68
 msgid "Untitled alert"
 msgstr "Untitled alert"
@@ -5358,6 +5437,10 @@ msgstr "View in Entity Analytics"
 #: src/routes/map.lazy.tsx:312
 msgid "View the color scale and values for the heatmap visualization"
 msgstr "View the color scale and values for the heatmap visualization"
+
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:637
+msgid "Viewing:"
+msgstr "Viewing:"
 
 #: src/components/charts/components/ChartDataError.tsx:311
 msgid "Warnings"
@@ -5548,6 +5631,10 @@ msgstr "You're doing great. Keep up the momentum."
 msgid "You've completed this learning path."
 msgstr "You've completed this learning path."
 
+#: src/features/learning/components/interactive/PhaseCards.tsx:609
+msgid "You've explored all 6 phases of the budget cycle!"
+msgstr "You've explored all 6 phases of the budget cycle!"
+
 #: src/features/learning/components/interactive/GuidedPlatformTour.tsx:235
 msgid "You've mastered the basics of the Budget Explorer. You're ready to investigate public spending on your own."
 msgstr "You've mastered the basics of the Budget Explorer. You're ready to investigate public spending on your own."
@@ -5569,6 +5656,11 @@ msgstr "Your First Exploration"
 #: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:393
 msgid "Your guess"
 msgstr "Your guess"
+
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:502
+#: src/features/learning/components/interactive/PhaseCards.tsx:416
+msgid "Your Opportunity"
+msgstr "Your Opportunity"
 
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:126
 msgid "Your path is ready"
