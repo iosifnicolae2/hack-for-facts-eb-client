@@ -425,10 +425,6 @@ msgstr "<0>Usage Analytics (opt-in):</0> If you consent, we collect custom usage
 msgid "<0>What We Send:</0> Budget execution updates (monthly, quarterly, or annual reports) for entities you follow, and alerts about significant budget changes if you've enabled them."
 msgstr "<0>What We Send:</0> Budget execution updates (monthly, quarterly, or annual reports) for entities you follow, and alerts about significant budget changes if you've enabled them."
 
-#: src/features/learning/components/interactive/RectificationHistory.tsx:95
-#~ msgid "0 formal"
-#~ msgstr "0 formal"
-
 #. js-lingui-explicit-id
 #: src/lib/errors-utils.ts:9
 msgid "error.updateAvailable"
@@ -910,18 +906,10 @@ msgstr "Based on 2024 budgetary data"
 msgid "Basic security logs are kept for a short period to protect accounts."
 msgstr "Basic security logs are kept for a short period to protect accounts."
 
-#: src/features/learning/components/interactive/RectificationFlow.tsx:126
-#~ msgid "billion"
-#~ msgstr "billion"
-
 #: src/components/maps/HeatmapDataTable.tsx:448
 #: src/routes/entity-analytics.lazy.tsx:231
 msgid "Both"
 msgstr "Both"
-
-#: src/components/entities/views/ContractsView.tsx:22
-#~ msgid "Browse all public procurement contracts awarded to or by this entity"
-#~ msgstr "Browse all public procurement contracts awarded to or by this entity"
 
 #: src/components/entities/EntityReports.tsx:73
 msgid "Browse and download all financial reports submitted by this entity"
@@ -1109,7 +1097,7 @@ msgstr "Chart Type"
 #: src/components/footer/AppFooter.tsx:100
 #: src/components/sidebar/nav-main.tsx:31
 #: src/components/ui/shortcuts.tsx:38
-#: src/hooks/useEntityViews.tsx:36
+#: src/hooks/useEntityViews.tsx:39
 #: src/routes/charts/index.lazy.tsx:171
 #: src/routes/index.lazy.tsx:76
 msgid "Charts"
@@ -1353,10 +1341,6 @@ msgstr "Contact Support"
 msgid "Contact us at contact@transparenta.eu See also our <0>Privacy Policy</0> and <1>Cookie Policy</1>."
 msgstr "Contact us at contact@transparenta.eu See also our <0>Privacy Policy</0> and <1>Cookie Policy</1>."
 
-#: src/features/learning/components/interactive/RectificationHistory.tsx:176
-#~ msgid "Context"
-#~ msgstr "Context"
-
 #: src/features/learning/components/cards/LearningPathCard.tsx:24
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:130
 msgid "Continue"
@@ -1366,11 +1350,7 @@ msgstr "Continue"
 msgid "Continue to the next chapter to complete the module."
 msgstr "Continue to the next chapter to complete the module."
 
-#: src/components/entities/views/ContractsView.tsx:21
-#~ msgid "Contract Search"
-#~ msgstr "Contract Search"
-
-#: src/hooks/useEntityViews.tsx:41
+#: src/hooks/useEntityViews.tsx:21
 msgid "Contracts"
 msgstr "Contracts"
 
@@ -1480,10 +1460,6 @@ msgstr "Could Not Load UATs"
 #: src/hooks/useSendBugReport.ts:40
 msgid "Could not send error report."
 msgstr "Could not send error report."
-
-#: src/features/learning/components/interactive/RectificationHistory.tsx:174
-#~ msgid "Count"
-#~ msgstr "Count"
 
 #: src/components/filters/MapFilter.tsx:286
 #: src/components/filters/MapFilter.tsx:463
@@ -1622,10 +1598,6 @@ msgstr "Data Label Offset"
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:43
 msgid "Data Labels"
 msgstr "Data Labels"
-
-#: src/components/entities/views/ContractsView.tsx:80
-#~ msgid "Data provided by SICAP.ai, an independent platform that aggregates public contracts from Romania's Electronic Public Procurement System (SEAP)."
-#~ msgstr "Data provided by SICAP.ai, an independent platform that aggregates public contracts from Romania's Electronic Public Procurement System (SEAP)."
 
 #: src/routes/privacy.lazy.tsx:99
 msgid "Data retention"
@@ -1960,7 +1932,7 @@ msgstr "Effective Spending Calculation"
 msgid "Email address copied to clipboard!"
 msgstr "Email address copied to clipboard!"
 
-#: src/hooks/useEntityViews.tsx:33
+#: src/hooks/useEntityViews.tsx:36
 msgid "Employees"
 msgstr "Employees"
 
@@ -2031,7 +2003,7 @@ msgstr "Enter series label..."
 #: src/components/filters/EntityAnalyticsFilter.tsx:646
 #: src/components/filters/MapFilter.tsx:256
 #: src/components/filters/MapFilter.tsx:433
-#: src/hooks/useEntityViews.tsx:39
+#: src/hooks/useEntityViews.tsx:42
 #: src/routes/index.lazy.tsx:69
 msgid "Entities"
 msgstr "Entities"
@@ -2158,10 +2130,6 @@ msgstr "Estimate"
 msgid "Estimate the <0>Shares</0>"
 msgstr "Estimate the <0>Shares</0>"
 
-#: src/features/learning/components/interactive/RectificationHistory.tsx:305
-#~ msgid "EU 3% limit"
-#~ msgstr "EU 3% limit"
-
 #: src/features/learning/components/interactive/EUComparisonChart.tsx:100
 msgid "EU Average"
 msgstr "EU Average"
@@ -2257,7 +2225,7 @@ msgstr "Excluding inter-budget flows and financial operations"
 msgid "Executed"
 msgstr "Executed"
 
-#: src/hooks/useEntityViews.tsx:21
+#: src/hooks/useEntityViews.tsx:24
 msgid "Expense Trends"
 msgstr "Expense Trends"
 
@@ -2312,10 +2280,6 @@ msgstr "Explore more paths"
 #: src/routes/index.lazy.tsx:63
 msgid "Explore national budget."
 msgstr "Explore national budget."
-
-#: src/components/entities/views/ContractsView.tsx:32
-#~ msgid "Explore relationships with contractors and service providers"
-#~ msgstr "Explore relationships with contractors and service providers"
 
 #: src/features/learning/components/interactive/FlashCardDeck.tsx:266
 msgid "explored"
@@ -2449,10 +2413,6 @@ msgstr "Filters info"
 #: src/components/filters/MapFilter.tsx:427
 msgid "Filters marked as exclude will remove data matching these criteria from the results."
 msgstr "Filters marked as exclude will remove data matching these criteria from the results."
-
-#: src/features/learning/components/interactive/RectificationFlow.tsx:143
-#~ msgid "Final budget:"
-#~ msgstr "Final budget:"
 
 #: src/features/learning/components/interactive/RectificationFlow.tsx:172
 msgid "Final:"
@@ -2887,7 +2847,7 @@ msgstr "Income - Expenses"
 msgid "Income Tax"
 msgstr "Income Tax"
 
-#: src/hooks/useEntityViews.tsx:22
+#: src/hooks/useEntityViews.tsx:25
 msgid "Income Trends"
 msgstr "Income Trends"
 
@@ -3024,10 +2984,6 @@ msgstr "June"
 msgid "Key Activities"
 msgstr "Key Activities"
 
-#: src/features/learning/components/interactive/RectificationHistory.tsx:225
-#~ msgid "Key Changes"
-#~ msgstr "Key Changes"
-
 #: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:512
 #: src/features/learning/components/interactive/PhaseCards.tsx:441
 msgid "Key Deadlines"
@@ -3122,10 +3078,6 @@ msgstr "less than"
 #: src/components/alerts/components/ConditionsList.tsx:92
 msgid "Less than"
 msgstr "Less than"
-
-#: src/features/learning/components/interactive/RectificationFlow.tsx:148
-#~ msgid "less than original"
-#~ msgstr "less than original"
 
 #: src/features/learning/components/player/MarkComplete.tsx:66
 msgid "Lesson Completed!"
@@ -3313,7 +3265,7 @@ msgstr "Managing preferences"
 #: src/components/filters/MapFilter.tsx:191
 #: src/components/sidebar/nav-main.tsx:26
 #: src/components/ui/shortcuts.tsx:44
-#: src/hooks/useEntityViews.tsx:28
+#: src/hooks/useEntityViews.tsx:31
 #: src/routes/index.lazy.tsx:55
 msgid "Map"
 msgstr "Map"
@@ -3463,10 +3415,6 @@ msgstr "more"
 #: src/components/ui/breadcrumb.tsx:103
 msgid "More"
 msgstr "More"
-
-#: src/features/learning/components/interactive/RectificationFlow.tsx:152
-#~ msgid "more than original"
-#~ msgstr "more than original"
 
 #: src/features/learning/components/interactive/RevenueDistributionGame.tsx:143
 msgid "Most people think they know, but the reality often surprises. Ready to test your intuition?"
@@ -4007,10 +3955,6 @@ msgstr "Path not found"
 msgid "Path Progress"
 msgstr "Path Progress"
 
-#: src/features/learning/components/interactive/RectificationFlow.tsx:295
-#~ msgid "Pause"
-#~ msgstr "Pause"
-
 #: src/components/alerts/components/AlertEditorView.tsx:286
 #: src/features/notifications/components/alerts/AlertCard.tsx:71
 msgid "Paused"
@@ -4101,10 +4045,6 @@ msgstr "Planned"
 msgid "Platform Mission"
 msgstr "Platform Mission"
 
-#: src/features/learning/components/interactive/RectificationFlow.tsx:295
-#~ msgid "Play"
-#~ msgstr "Play"
-
 #: src/features/learning/components/interactive/ExecutionRateChart.tsx:251
 msgid "Poor"
 msgstr "Poor"
@@ -4178,14 +4118,6 @@ msgstr "Product"
 #: src/features/learning/components/player/MarkComplete.tsx:64
 msgid "Progress Saved"
 msgstr "Progress Saved"
-
-#: src/components/entities/views/ContractsView.tsx:44
-#~ msgid "Public Contracts"
-#~ msgstr "Public Contracts"
-
-#: src/components/entities/views/ContractsView.tsx:19
-#~ msgid "Public contracts data for this entity will be available soon."
-#~ msgstr "Public contracts data for this entity will be available soon."
 
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:158
 msgid "Public institutions often transfer funds between each other (e.g., from the state budget to local budgets). These transfers can double-count spending if not filtered."
@@ -4287,17 +4219,9 @@ msgstr "Recipient"
 msgid "Recording..."
 msgstr "Recording..."
 
-#: src/features/learning/components/interactive/RectificationHistory.tsx:153
-#~ msgid "rect."
-#~ msgstr "rect."
-
 #: src/features/learning/components/interactive/RectificationHistory.tsx:222
 msgid "Rectification History (2020-2024)"
 msgstr "Rectification History (2020-2024)"
-
-#: src/features/learning/components/interactive/RectificationHistory.tsx:153
-#~ msgid "rects."
-#~ msgstr "rects."
 
 #: src/routes/charts/$chartId/index.lazy.tsx:40
 msgid "Redo successful"
@@ -4368,17 +4292,13 @@ msgstr "Reporting period"
 msgid "Reporting:"
 msgstr "Reporting:"
 
-#: src/hooks/useEntityViews.tsx:43
+#: src/hooks/useEntityViews.tsx:44
 msgid "Reports"
 msgstr "Reports"
 
 #: src/routes/cookies.lazy.tsx:80
 msgid "Required for core functionality like security and preferences. Always on."
 msgstr "Required for core functionality like security and preferences. Always on."
-
-#: src/features/learning/components/interactive/RectificationFlow.tsx:286
-#~ msgid "Reset"
-#~ msgstr "Reset"
 
 #: src/components/budget-explorer/BudgetTreemap.tsx:635
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:185
@@ -4439,10 +4359,6 @@ msgstr "Review and manage alerts created from your custom data series."
 #: src/routes/$lang/learning/index.lazy.tsx:241
 msgid "Review Path"
 msgstr "Review Path"
-
-#: src/features/learning/components/interactive/RectificationHistory.tsx:195
-#~ msgid "Romania has been under EU Excessive Deficit Procedure since 2020"
-#~ msgstr "Romania has been under EU Excessive Deficit Procedure since 2020"
 
 #: src/components/theme/language-toggle.tsx:46
 msgid "Romanian"
@@ -4887,10 +4803,6 @@ msgstr "Source: "
 msgid "Spending"
 msgstr "Spending"
 
-#: src/components/entities/views/ContractsView.tsx:26
-#~ msgid "Spending Analysis"
-#~ msgstr "Spending Analysis"
-
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:54
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:220
 msgid "Spending Calculation"
@@ -5011,10 +4923,6 @@ msgstr "Sums pending distribution"
 msgid "Supervisory authority"
 msgstr "Supervisory authority"
 
-#: src/components/entities/views/ContractsView.tsx:31
-#~ msgid "Supplier Information"
-#~ msgstr "Supplier Information"
-
 #: src/routes/alerts/$alertId/index.lazy.tsx:126
 msgid "Syncing…"
 msgstr "Syncing…"
@@ -5031,10 +4939,6 @@ msgstr "Table"
 #: src/features/learning/components/interactive/BudgetFootprintRevealer.tsx:328
 msgid "Tap"
 msgstr "Tap"
-
-#: src/features/learning/components/interactive/RectificationHistory.tsx:296
-#~ msgid "Tap a year to see details. Red = concerning pattern."
-#~ msgstr "Tap a year to see details. Red = concerning pattern."
 
 #: src/components/budget-explorer/RevenueBreakdown.tsx:212
 msgid "Tax deductions outside inter-budget transfers"
@@ -5451,10 +5355,6 @@ msgstr "UAT: Yes"
 msgid "UATs"
 msgstr "UATs"
 
-#: src/features/learning/components/interactive/RectificationFlow.tsx:155
-#~ msgid "unchanged from original"
-#~ msgstr "unchanged from original"
-
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:57
 #: src/components/budget-explorer/SpendingBreakdown.tsx:48
 msgid "Understanding the consolidated general budget spending"
@@ -5627,14 +5527,6 @@ msgstr "View as Chart"
 msgid "View Chart"
 msgstr "View Chart"
 
-#: src/components/entities/views/ContractsView.tsx:71
-#~ msgid "View Contracts on SICAP.ai"
-#~ msgstr "View Contracts on SICAP.ai"
-
-#: src/components/entities/views/ContractsView.tsx:47
-#~ msgid "View detailed public procurement data for {0} on SICAP.ai"
-#~ msgstr "View detailed public procurement data for {0} on SICAP.ai"
-
 #: src/components/budget-explorer/BudgetTreemap.tsx:611
 #: src/features/learning/components/cards/LearningPathCard.tsx:75
 msgid "View Details"
@@ -5652,10 +5544,6 @@ msgstr "View in Entity Analytics"
 msgid "View the color scale and values for the heatmap visualization"
 msgstr "View the color scale and values for the heatmap visualization"
 
-#: src/components/entities/views/ContractsView.tsx:27
-#~ msgid "View trends and statistics on public spending patterns"
-#~ msgstr "View trends and statistics on public spending patterns"
-
 #: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:620
 msgid "Viewing:"
 msgstr "Viewing:"
@@ -5667,10 +5555,6 @@ msgstr "Warning Signs"
 #: src/components/charts/components/ChartDataError.tsx:311
 msgid "Warnings"
 msgstr "Warnings"
-
-#: src/features/learning/components/interactive/RectificationFlow.tsx:275
-#~ msgid "Watch how rectifications adjust the budget through the year"
-#~ msgstr "Watch how rectifications adjust the budget through the year"
 
 #: src/features/learning/components/interactive/PromiseTracker.tsx:315
 msgid "Way off!"

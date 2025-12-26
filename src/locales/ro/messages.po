@@ -25,7 +25,7 @@ msgstr "{0} adnotări"
 #. placeholder {0}: data.rectificationCount
 #: src/features/learning/components/interactive/RectificationHistory.tsx:127
 msgid "{0} rectifications"
-msgstr ""
+msgstr "{0} rectificări"
 
 #. placeholder {0}: chart.series.length
 #: src/components/charts/components/chart-view/SeriesList.tsx:91
@@ -424,10 +424,6 @@ msgstr "<0>Analiza Utilizării (opțională):</0> Dacă sunteți de acord, colec
 #: src/routes/privacy.lazy.tsx:79
 msgid "<0>What We Send:</0> Budget execution updates (monthly, quarterly, or annual reports) for entities you follow, and alerts about significant budget changes if you've enabled them."
 msgstr "<0>Ce Trimitem:</0> Actualizări privind execuția bugetară (rapoarte lunare, trimestriale sau anuale) pentru entitățile pe care le urmăriți și alerte despre modificări bugetare semnificative, dacă le-ați activat."
-
-#: src/features/learning/components/interactive/RectificationHistory.tsx:95
-#~ msgid "0 formal"
-#~ msgstr ""
 
 #. js-lingui-explicit-id
 #: src/lib/errors-utils.ts:9
@@ -910,18 +906,10 @@ msgstr "Bazat pe datele bugetare din 2024"
 msgid "Basic security logs are kept for a short period to protect accounts."
 msgstr "Jurnalele de securitate de bază sunt păstrate pentru o perioadă scurtă pentru a proteja conturile."
 
-#: src/features/learning/components/interactive/RectificationFlow.tsx:126
-#~ msgid "billion"
-#~ msgstr ""
-
 #: src/components/maps/HeatmapDataTable.tsx:448
 #: src/routes/entity-analytics.lazy.tsx:231
 msgid "Both"
 msgstr "Ambele"
-
-#: src/components/entities/views/ContractsView.tsx:22
-#~ msgid "Browse all public procurement contracts awarded to or by this entity"
-#~ msgstr ""
 
 #: src/components/entities/EntityReports.tsx:73
 msgid "Browse and download all financial reports submitted by this entity"
@@ -944,7 +932,7 @@ msgstr "Distribuția bugetului"
 
 #: src/features/learning/components/interactive/DocumentLibrary.tsx:133
 msgid "Budget Documents"
-msgstr ""
+msgstr "Documente bugetare"
 
 #: src/components/sidebar/nav-main.tsx:36
 #: src/routes/index.lazy.tsx:62
@@ -1109,7 +1097,7 @@ msgstr "Tip grafic"
 #: src/components/footer/AppFooter.tsx:100
 #: src/components/sidebar/nav-main.tsx:31
 #: src/components/ui/shortcuts.tsx:38
-#: src/hooks/useEntityViews.tsx:36
+#: src/hooks/useEntityViews.tsx:39
 #: src/routes/charts/index.lazy.tsx:171
 #: src/routes/index.lazy.tsx:76
 msgid "Charts"
@@ -1353,10 +1341,6 @@ msgstr "Contactează Suportul"
 msgid "Contact us at contact@transparenta.eu See also our <0>Privacy Policy</0> and <1>Cookie Policy</1>."
 msgstr "Contactați-ne la adresa contact@transparenta.eu Consultați și <0>Politica de confidențialitate</0> și <1>Politica privind cookie-urile</1>."
 
-#: src/features/learning/components/interactive/RectificationHistory.tsx:176
-#~ msgid "Context"
-#~ msgstr ""
-
 #: src/features/learning/components/cards/LearningPathCard.tsx:24
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:130
 msgid "Continue"
@@ -1366,13 +1350,9 @@ msgstr "Continuă"
 msgid "Continue to the next chapter to complete the module."
 msgstr "Continuă la următorul capitol pentru a finaliza modulul."
 
-#: src/components/entities/views/ContractsView.tsx:21
-#~ msgid "Contract Search"
-#~ msgstr ""
-
-#: src/hooks/useEntityViews.tsx:41
+#: src/hooks/useEntityViews.tsx:21
 msgid "Contracts"
-msgstr ""
+msgstr "Contracte"
 
 #: src/routes/privacy.lazy.tsx:34
 msgid "Controller: Claudiu Constantin Bogdan, persoana fizica. Contact: contact@transparenta.eu"
@@ -1480,10 +1460,6 @@ msgstr "UAT-urile nu au putut fi încărcate"
 #: src/hooks/useSendBugReport.ts:40
 msgid "Could not send error report."
 msgstr "Nu s-a putut trimite raportul de eroare."
-
-#: src/features/learning/components/interactive/RectificationHistory.tsx:174
-#~ msgid "Count"
-#~ msgstr ""
 
 #: src/components/filters/MapFilter.tsx:286
 #: src/components/filters/MapFilter.tsx:463
@@ -1623,10 +1599,6 @@ msgstr "Decalaj etichetă de date"
 msgid "Data Labels"
 msgstr "Etichete de date"
 
-#: src/components/entities/views/ContractsView.tsx:80
-#~ msgid "Data provided by SICAP.ai, an independent platform that aggregates public contracts from Romania's Electronic Public Procurement System (SEAP)."
-#~ msgstr ""
-
 #: src/routes/privacy.lazy.tsx:99
 msgid "Data retention"
 msgstr "Păstrarea datelor"
@@ -1700,7 +1672,7 @@ msgstr "Decembrie"
 
 #: src/features/learning/components/interactive/RectificationFlow.tsx:181
 msgid "decrease"
-msgstr ""
+msgstr "scădere"
 
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:47
 msgid "Default Color"
@@ -1712,7 +1684,7 @@ msgstr "Setări implicite care se aplică tuturor seriilor (pot fi suprascrise p
 
 #: src/features/learning/components/interactive/RectificationHistory.tsx:49
 msgid "Deficit"
-msgstr ""
+msgstr "Deficit"
 
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:57
 #: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:63
@@ -1960,7 +1932,7 @@ msgstr "Calculul cheltuielilor efective"
 msgid "Email address copied to clipboard!"
 msgstr "Adresa de email a fost copiată în clipboard!"
 
-#: src/hooks/useEntityViews.tsx:33
+#: src/hooks/useEntityViews.tsx:36
 msgid "Employees"
 msgstr "Angajați"
 
@@ -2031,7 +2003,7 @@ msgstr "Introduceți eticheta seriei..."
 #: src/components/filters/EntityAnalyticsFilter.tsx:646
 #: src/components/filters/MapFilter.tsx:256
 #: src/components/filters/MapFilter.tsx:433
-#: src/hooks/useEntityViews.tsx:39
+#: src/hooks/useEntityViews.tsx:42
 #: src/routes/index.lazy.tsx:69
 msgid "Entities"
 msgstr "Entități"
@@ -2158,10 +2130,6 @@ msgstr "Estimare"
 msgid "Estimate the <0>Shares</0>"
 msgstr "Estimează <0>Proporțiile</0>"
 
-#: src/features/learning/components/interactive/RectificationHistory.tsx:305
-#~ msgid "EU 3% limit"
-#~ msgstr ""
-
 #: src/features/learning/components/interactive/EUComparisonChart.tsx:100
 msgid "EU Average"
 msgstr "Media UE"
@@ -2185,7 +2153,7 @@ msgstr "Te-ai întrebat vreodată unde se duc banii tăi?"
 
 #: src/features/learning/components/interactive/RedFlagCards.tsx:116
 msgid "Example:"
-msgstr ""
+msgstr "Exemplu:"
 
 #: src/components/charts/components/views/SeriesConfigView.tsx:325
 msgid "Example: 2024-"
@@ -2257,7 +2225,7 @@ msgstr "Excluzând fluxurile inter-bugetare și operațiunile financiare"
 msgid "Executed"
 msgstr "Executat"
 
-#: src/hooks/useEntityViews.tsx:21
+#: src/hooks/useEntityViews.tsx:24
 msgid "Expense Trends"
 msgstr "Evoluția cheltuielilor"
 
@@ -2312,10 +2280,6 @@ msgstr "Explorează mai multe parcursuri"
 #: src/routes/index.lazy.tsx:63
 msgid "Explore national budget."
 msgstr "Explorați bugetul național."
-
-#: src/components/entities/views/ContractsView.tsx:32
-#~ msgid "Explore relationships with contractors and service providers"
-#~ msgstr ""
 
 #: src/features/learning/components/interactive/FlashCardDeck.tsx:266
 msgid "explored"
@@ -2450,13 +2414,9 @@ msgstr "Informații filtre"
 msgid "Filters marked as exclude will remove data matching these criteria from the results."
 msgstr "Filtrele marcate ca excludere vor elimina din rezultate datele care corespund acestor criterii."
 
-#: src/features/learning/components/interactive/RectificationFlow.tsx:143
-#~ msgid "Final budget:"
-#~ msgstr ""
-
 #: src/features/learning/components/interactive/RectificationFlow.tsx:172
 msgid "Final:"
-msgstr ""
+msgstr "Final:"
 
 #: src/lib/chart-links.ts:29
 msgid "Financial Evolution - {entityName}"
@@ -2487,7 +2447,7 @@ msgstr "Găsește resurse, raportează probleme sau ia legătura cu noi."
 
 #: src/features/learning/components/interactive/RectificationFlow.tsx:147
 msgid "Flow"
-msgstr ""
+msgstr "Flux"
 
 #: src/components/maps/utils.ts:30
 msgid "Fn"
@@ -2536,7 +2496,7 @@ msgstr "S-au găsit {replacementCount} apariții"
 
 #: src/components/entities/views/ContractsView.tsx:49
 msgid "Full Procurement Portal"
-msgstr ""
+msgstr "Portal complet achiziții"
 
 #: src/components/classification-explorer/ClassificationExplorer.tsx:192
 #: src/components/classification-explorer/ClassificationExplorer.tsx:193
@@ -2789,7 +2749,7 @@ msgstr "Oportunitate ridicată"
 
 #: src/features/learning/components/interactive/EconomicCodeReference.tsx:259
 msgid "High risk of low execution in Romanian public administration. Investments are often the first to be cut during budget rectifications."
-msgstr ""
+msgstr "Risc ridicat de execuție redusă în administrația publică din România. Investițiile sunt adesea primele tăiate în timpul rectificărilor bugetare."
 
 #: src/components/footer/AppFooter.tsx:85
 msgid "Home"
@@ -2797,7 +2757,7 @@ msgstr "Acasă"
 
 #: src/features/learning/components/interactive/RectificationFlow.tsx:144
 msgid "How Budgets Change"
-msgstr ""
+msgstr "Cum se modifică bugetele"
 
 #: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:275
 msgid "How much stays <0/><1>in your wallet?</1>"
@@ -2882,7 +2842,7 @@ msgstr "Venituri - Cheltuieli"
 msgid "Income Tax"
 msgstr "Impozit pe venit"
 
-#: src/hooks/useEntityViews.tsx:22
+#: src/hooks/useEntityViews.tsx:25
 msgid "Income Trends"
 msgstr "Evoluția veniturilor"
 
@@ -2901,7 +2861,7 @@ msgstr "Venituri"
 
 #: src/features/learning/components/interactive/RectificationFlow.tsx:186
 msgid "increase"
-msgstr ""
+msgstr "creștere"
 
 #: src/routes/terms.lazy.tsx:24
 msgid "Independent project; no government affiliation."
@@ -2944,7 +2904,7 @@ msgstr "Transferuri inter-bugetare"
 
 #: src/features/learning/components/interactive/RectificationHistory.tsx:225
 msgid "Interactive"
-msgstr ""
+msgstr "Interactiv"
 
 #: src/components/budget-explorer/SpendingBreakdown.tsx:129
 msgid "Internal budget movements"
@@ -3019,10 +2979,6 @@ msgstr "Iunie"
 msgid "Key Activities"
 msgstr "Activități cheie"
 
-#: src/features/learning/components/interactive/RectificationHistory.tsx:225
-#~ msgid "Key Changes"
-#~ msgstr ""
-
 #: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:512
 #: src/features/learning/components/interactive/PhaseCards.tsx:441
 msgid "Key Deadlines"
@@ -3030,11 +2986,11 @@ msgstr "Termene cheie"
 
 #: src/features/learning/components/interactive/EconomicCodeReference.tsx:372
 msgid "Key Lesson Insight"
-msgstr ""
+msgstr "Idee esențială"
 
 #: src/features/learning/components/interactive/QuickLinks.tsx:98
 msgid "Key Websites"
-msgstr ""
+msgstr "Website-uri cheie"
 
 #: src/components/ui/shortcuts-modal.tsx:23
 #: src/components/ui/shortcuts.tsx:66
@@ -3059,7 +3015,7 @@ msgstr "Ultima evaluare"
 
 #: src/components/entities/views/ContractsView.tsx:34
 msgid "Latest Contracts"
-msgstr ""
+msgstr "Ultimele contracte"
 
 #: src/features/learning/components/interactive/VATReformCard.tsx:23
 msgid "Law 141/2025"
@@ -3117,10 +3073,6 @@ msgstr "mai mic decât"
 #: src/components/alerts/components/ConditionsList.tsx:92
 msgid "Less than"
 msgstr "Mai mic decât"
-
-#: src/features/learning/components/interactive/RectificationFlow.tsx:148
-#~ msgid "less than original"
-#~ msgstr ""
 
 #: src/features/learning/components/player/MarkComplete.tsx:66
 msgid "Lesson Completed!"
@@ -3199,7 +3151,7 @@ msgstr "Se încarcă datele pentru harta termică..."
 
 #: src/features/learning/components/player/LessonPlayer.tsx:92
 msgid "Loading interactive content..."
-msgstr ""
+msgstr "Se încarcă conținutul interactiv..."
 
 #: src/features/learning/components/loading/LessonSkeleton.tsx:61
 msgid "Loading lesson content..."
@@ -3308,7 +3260,7 @@ msgstr "Gestionarea preferințelor"
 #: src/components/filters/MapFilter.tsx:191
 #: src/components/sidebar/nav-main.tsx:26
 #: src/components/ui/shortcuts.tsx:44
-#: src/hooks/useEntityViews.tsx:28
+#: src/hooks/useEntityViews.tsx:31
 #: src/routes/index.lazy.tsx:55
 msgid "Map"
 msgstr "Hartă"
@@ -3459,10 +3411,6 @@ msgstr "mai mult"
 msgid "More"
 msgstr "Mai mult"
 
-#: src/features/learning/components/interactive/RectificationFlow.tsx:152
-#~ msgid "more than original"
-#~ msgstr ""
-
 #: src/features/learning/components/interactive/RevenueDistributionGame.tsx:143
 msgid "Most people think they know, but the reality often surprises. Ready to test your intuition?"
 msgstr "Majoritatea oamenilor cred că știu, dar realitatea surprinde adesea. Ești gata să-ți testezi intuiția?"
@@ -3607,7 +3555,7 @@ msgstr "Nu a fost găsită nicio înregistrare de certificat pentru acest ID în
 
 #: src/features/learning/components/interactive/RectificationFlow.tsx:189
 msgid "No change"
-msgstr ""
+msgstr "Nicio modificare"
 
 #. placeholder {0}: cat.name
 #: src/routes/charts/index.lazy.tsx:301
@@ -3673,7 +3621,7 @@ msgstr "Nu sunt disponibile date detaliate pentru această selecție."
 
 #: src/features/learning/components/interactive/RectificationHistory.tsx:193
 msgid "No detailed records available."
-msgstr ""
+msgstr "Nu există înregistrări detaliate disponibile."
 
 #: src/components/budget-explorer/BudgetCategoryList.tsx:147
 msgid "No economic breakdown is available for income."
@@ -3725,7 +3673,7 @@ msgstr "Nu s-au găsit opțiuni."
 
 #: src/features/learning/components/interactive/RectificationHistory.tsx:127
 msgid "No rectifications"
-msgstr ""
+msgstr "Fără rectificări"
 
 #: src/components/entities/views/RelatedChartsView.tsx:57
 msgid "No related charts yet"
@@ -3788,7 +3736,7 @@ msgstr "Notă: Ștergerea cookie-urilor de autentificare vă va deconecta din co
 
 #: src/features/learning/components/interactive/RectificationHistory.tsx:245
 msgid "Note: Romania has been under EU Excessive Deficit Procedure since 2020"
-msgstr ""
+msgstr "Notă: România se află în Procedura de Deficit Excesiv a UE din 2020"
 
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:196
 msgid "Note: Transfer items are excluded as they represent internal movements within the public administration rather than actual expenditures or revenues."
@@ -3804,7 +3752,7 @@ msgstr "Nimic de lipit"
 
 #: src/features/learning/components/interactive/EconomicCodeReference.tsx:375
 msgid "Notice the gap: <0>Current Expenses</0> (salaries, utilities) almost always reach full execution.<1> Capital Expenses</1> (investments) are the first to be cut or delayed, often falling below 60%. Always check <2>Code 71</2> to see if promised infrastructure is actually being built."
-msgstr ""
+msgstr "Observați decalajul: <0>Cheltuielile curente</0> (salarii, utilități) ating aproape întotdeauna execuția completă.<1> Cheltuielile de capital</1> (investiții) sunt primele tăiate sau amânate, scăzând adesea sub 60%. Verificați întotdeauna <2>Codul 71</2> pentru a vedea dacă infrastructura promisă se construiește efectiv."
 
 #: src/routes/settings/notifications.tsx:38
 msgid "Notifications Settings"
@@ -3905,7 +3853,7 @@ msgstr "Deschide în analitice entitate"
 
 #: src/components/entities/views/ContractsView.tsx:81
 msgid "Open in SICAP.ai"
-msgstr ""
+msgstr "Deschide în SICAP.ai"
 
 #: src/components/entities/EntityHeader.tsx:113
 #: src/components/entities/EntityInfo.tsx:42
@@ -3947,7 +3895,7 @@ msgstr "sau"
 
 #: src/features/learning/components/interactive/RectificationFlow.tsx:170
 msgid "Original:"
-msgstr ""
+msgstr "Inițial:"
 
 #: src/components/entities/EntityLineItemsTabs.tsx:98
 msgid "Other Economic"
@@ -4001,10 +3949,6 @@ msgstr "Parcursul nu a fost găsit"
 #: src/features/learning/components/cards/LearningPathCard.tsx:88
 msgid "Path Progress"
 msgstr "Progresul parcursului"
-
-#: src/features/learning/components/interactive/RectificationFlow.tsx:295
-#~ msgid "Pause"
-#~ msgstr ""
 
 #: src/components/alerts/components/AlertEditorView.tsx:286
 #: src/features/notifications/components/alerts/AlertCard.tsx:71
@@ -4096,10 +4040,6 @@ msgstr "Planificat"
 msgid "Platform Mission"
 msgstr "Misiunea platformei"
 
-#: src/features/learning/components/interactive/RectificationFlow.tsx:295
-#~ msgid "Play"
-#~ msgstr ""
-
 #: src/features/learning/components/interactive/ExecutionRateChart.tsx:251
 msgid "Poor"
 msgstr "Slab"
@@ -4174,14 +4114,6 @@ msgstr "Produs"
 msgid "Progress Saved"
 msgstr "Progres salvat"
 
-#: src/components/entities/views/ContractsView.tsx:44
-#~ msgid "Public Contracts"
-#~ msgstr ""
-
-#: src/components/entities/views/ContractsView.tsx:19
-#~ msgid "Public contracts data for this entity will be available soon."
-#~ msgstr ""
-
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:158
 msgid "Public institutions often transfer funds between each other (e.g., from the state budget to local budgets). These transfers can double-count spending if not filtered."
 msgstr "Instituțiile publice transferă adesea fonduri între ele (de exemplu, de la bugetul de stat la bugetele locale). Aceste transferuri pot duce la dublarea cheltuielilor dacă nu sunt filtrate."
@@ -4192,7 +4124,7 @@ msgstr "Instituțiile publice transferă adesea fonduri între ele. Aceste trans
 
 #: src/components/entities/views/ContractsView.tsx:68
 msgid "Public procurement data is provided by SICAP.ai, an independent platform that aggregates and analyzes public contracts from Romania's Electronic Public Procurement System (SEAP)."
-msgstr ""
+msgstr "Datele privind achizițiile publice sunt furnizate de SICAP.ai, o platformă independentă care agregă și analizează contractele publice din Sistemul Electronic de Achiziții Publice (SEAP) din România."
 
 #: src/routes/privacy.lazy.tsx:86
 msgid "Public sector information from Ministerul Finanțelor. No government affiliation."
@@ -4282,17 +4214,9 @@ msgstr "Destinatar"
 msgid "Recording..."
 msgstr "Se înregistrează..."
 
-#: src/features/learning/components/interactive/RectificationHistory.tsx:153
-#~ msgid "rect."
-#~ msgstr ""
-
 #: src/features/learning/components/interactive/RectificationHistory.tsx:222
 msgid "Rectification History (2020-2024)"
-msgstr ""
-
-#: src/features/learning/components/interactive/RectificationHistory.tsx:153
-#~ msgid "rects."
-#~ msgstr ""
+msgstr "Istoric rectificări (2020-2024)"
 
 #: src/routes/charts/$chartId/index.lazy.tsx:40
 msgid "Redo successful"
@@ -4363,17 +4287,13 @@ msgstr "Perioada de raportare"
 msgid "Reporting:"
 msgstr "Raportare:"
 
-#: src/hooks/useEntityViews.tsx:43
+#: src/hooks/useEntityViews.tsx:44
 msgid "Reports"
 msgstr "Rapoarte"
 
 #: src/routes/cookies.lazy.tsx:80
 msgid "Required for core functionality like security and preferences. Always on."
 msgstr "Necesar pentru funcționalități de bază, precum securitatea și preferințele. Activat permanent."
-
-#: src/features/learning/components/interactive/RectificationFlow.tsx:286
-#~ msgid "Reset"
-#~ msgstr ""
 
 #: src/components/budget-explorer/BudgetTreemap.tsx:635
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:185
@@ -4434,10 +4354,6 @@ msgstr "Examinați și gestionați alertele create din seriile de date personali
 #: src/routes/$lang/learning/index.lazy.tsx:241
 msgid "Review Path"
 msgstr "Revizuiește parcursul"
-
-#: src/features/learning/components/interactive/RectificationHistory.tsx:195
-#~ msgid "Romania has been under EU Excessive Deficit Procedure since 2020"
-#~ msgstr ""
 
 #: src/components/theme/language-toggle.tsx:46
 msgid "Romanian"
@@ -4882,10 +4798,6 @@ msgstr "Sursă: "
 msgid "Spending"
 msgstr "Cheltuieli"
 
-#: src/components/entities/views/ContractsView.tsx:26
-#~ msgid "Spending Analysis"
-#~ msgstr ""
-
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:54
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:220
 msgid "Spending Calculation"
@@ -5006,10 +4918,6 @@ msgstr "Sume în așteptarea repartizării"
 msgid "Supervisory authority"
 msgstr "Autoritatea de supraveghere"
 
-#: src/components/entities/views/ContractsView.tsx:31
-#~ msgid "Supplier Information"
-#~ msgstr ""
-
 #: src/routes/alerts/$alertId/index.lazy.tsx:126
 msgid "Syncing…"
 msgstr "Se sincronizează..."
@@ -5026,10 +4934,6 @@ msgstr "Tabel"
 #: src/features/learning/components/interactive/BudgetFootprintRevealer.tsx:328
 msgid "Tap"
 msgstr "Apasă"
-
-#: src/features/learning/components/interactive/RectificationHistory.tsx:296
-#~ msgid "Tap a year to see details. Red = concerning pattern."
-#~ msgstr ""
 
 #: src/components/budget-explorer/RevenueBreakdown.tsx:212
 msgid "Tax deductions outside inter-budget transfers"
@@ -5417,7 +5321,7 @@ msgstr "Tip"
 
 #: src/features/learning/components/interactive/HandsOnExplorer.tsx:157
 msgid "Type your answer..."
-msgstr ""
+msgstr "Introduceți răspunsul..."
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:707
 #: src/components/charts/components/series-config/SeriesFilter.tsx:888
@@ -5445,10 +5349,6 @@ msgstr "UAT: Da"
 #: src/components/filters/MapFilter.tsx:455
 msgid "UATs"
 msgstr "UAT-uri"
-
-#: src/features/learning/components/interactive/RectificationFlow.tsx:155
-#~ msgid "unchanged from original"
-#~ msgstr ""
 
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:57
 #: src/components/budget-explorer/SpendingBreakdown.tsx:48
@@ -5622,14 +5522,6 @@ msgstr "Vezi Graficul"
 msgid "View Chart"
 msgstr "Vezi graficul"
 
-#: src/components/entities/views/ContractsView.tsx:71
-#~ msgid "View Contracts on SICAP.ai"
-#~ msgstr ""
-
-#: src/components/entities/views/ContractsView.tsx:47
-#~ msgid "View detailed public procurement data for {0} on SICAP.ai"
-#~ msgstr ""
-
 #: src/components/budget-explorer/BudgetTreemap.tsx:611
 #: src/features/learning/components/cards/LearningPathCard.tsx:75
 msgid "View Details"
@@ -5647,25 +5539,17 @@ msgstr "Vizualizați în Analiza Entităților"
 msgid "View the color scale and values for the heatmap visualization"
 msgstr "Vizualizați scala de culori și valorile pentru vizualizarea hărții de căldură"
 
-#: src/components/entities/views/ContractsView.tsx:27
-#~ msgid "View trends and statistics on public spending patterns"
-#~ msgstr ""
-
 #: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:620
 msgid "Viewing:"
 msgstr "Vizualizare:"
 
 #: src/features/learning/components/interactive/RedFlagCards.tsx:147
 msgid "Warning Signs"
-msgstr ""
+msgstr "Semne de avertizare"
 
 #: src/components/charts/components/ChartDataError.tsx:311
 msgid "Warnings"
 msgstr "Avertismente"
-
-#: src/features/learning/components/interactive/RectificationFlow.tsx:275
-#~ msgid "Watch how rectifications adjust the budget through the year"
-#~ msgstr ""
 
 #: src/features/learning/components/interactive/PromiseTracker.tsx:315
 msgid "Way off!"
@@ -5734,7 +5618,7 @@ msgstr "Care este salariul tău <0>brut</0>?"
 
 #: src/features/learning/components/interactive/RedFlagCards.tsx:165
 msgid "When Rectifications Are Normal"
-msgstr ""
+msgstr "Când rectificările sunt normale"
 
 #: src/features/learning/components/interactive/PromiseTracker.tsx:338
 msgid "Where did the money go?"
