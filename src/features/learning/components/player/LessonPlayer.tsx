@@ -247,6 +247,16 @@ const BudgetHierarchyVisualizer = createLazyComponent(() =>
     default: module.BudgetHierarchyVisualizer,
   }))
 )
+const UATTypeBreakdown = createLazyComponent(() =>
+  import('../interactive/UATTypeBreakdown').then((module) => ({
+    default: module.UATTypeBreakdown,
+  }))
+)
+const MoneyFlowDiagram = createLazyComponent(() =>
+  import('../interactive/MoneyFlowDiagram').then((module) => ({
+    default: module.MoneyFlowDiagram,
+  }))
+)
 
 function LessonQuizWrapper({ lessonId, ...props }: LessonQuizWrapperProps) {
   const { progress } = useLearningProgress()
@@ -408,6 +418,8 @@ export function LessonPlayer({ locale, pathId, moduleId, lessonId }: LessonPlaye
       EconomicCodeReference,
       ExecutionPatternComparison,
       BudgetHierarchyVisualizer,
+      UATTypeBreakdown,
+      MoneyFlowDiagram,
     }),
     [QuizWrapper, MarkCompleteWrapper, BudgetFootprintRevealerWrapper, PromiseTrackerWrapper, SalaryTaxCalculatorWrapper, GuidedPlatformTourWrapper, ClassificationExplorerWrapper, BudgetAllocatorWrapper]
   )

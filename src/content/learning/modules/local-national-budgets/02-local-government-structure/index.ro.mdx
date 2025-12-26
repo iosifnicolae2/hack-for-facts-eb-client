@@ -1,7 +1,7 @@
 ---
 title: "Structura administrației locale"
 durationMinutes: 5
-concept: "Cele 3.181 de unități administrative ale României și finanțarea lor"
+concept: "Cele 3.228 de unități administrative ale României și finanțarea lor"
 objective: "Identificarea UAT-urilor și înțelegerea dependenței de transferurile centrale"
 ---
 
@@ -9,7 +9,7 @@ objective: "Identificarea UAT-urilor și înțelegerea dependenței de transferu
 
 ## Introducere
 
-România este împărțită în aproximativ **3.181 de unități administrativ-teritoriale (UAT-uri)** la nivel de bază. Acestea variază de la București, cu peste 2 milioane de locuitori, până la comune mici cu doar câteva sute de rezidenți. Fiecare are propriul buget, propriul primar și propriul consiliu local.
+România este împărțită în **3.228 de unități administrativ-teritoriale (UAT-uri)** la nivel de bază. Acestea variază de la București, cu peste 2 milioane de locuitori, până la comune mici cu doar câteva sute de rezidenți. Fiecare are propriul buget, propriul primar și propriul consiliu local.
 
 Provocarea principală? Majoritatea administrațiilor locale nu generează suficiente venituri proprii — depind în mare măsură de transferurile de la guvernul central. Aceasta creează o dinamică de putere care afectează modul în care sunt finanțate serviciile locale.
 
@@ -19,90 +19,108 @@ Provocarea principală? Majoritatea administrațiilor locale nu generează sufic
 
 ## Element interactiv: Tipuri de unități administrative
 
-Administrațiile locale din România sunt organizate pe niveluri clare. Iată cum sunt structurate:
+Administrațiile locale din România sunt organizate pe niveluri clare. Apasă pe orice categorie pentru a vedea exemple:
 
-### Componenta UATTypeBreakdown
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│  🗺️ CELE ~3.181 UNITĂȚI ADMINISTRATIVE ALE ROMÂNIEI          │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  NIVELUL 1: JUDEȚE                                           │
-│  ┌────────────────────────────────────────────────────────┐  │
-│  │  41 de județe + București = 42 în total               │  │
-│  │  Fiecare are un Consiliu Județean                     │  │
-│  │  [ Vezi harta → ]                                     │  │
-│  └────────────────────────────────────────────────────────┘  │
-│                                                              │
-│  NIVELUL 2: MUNICIPII, ORAȘE, COMUNE                         │
-│  ┌────────────────────────────────────────────────────────┐  │
-│  │  ┌─────────────┐  ┌───────────┐  ┌─────────────────┐   │  │
-│  │  │  MUNICIPII  │  │   ORAȘE   │  │     COMUNE      │   │  │
-│  │  │    103      │  │   216     │  │     2.862       │   │  │
-│  │  │             │  │           │  │                 │   │  │
-│  │  │Orașe mari   │  │Orașe mici │  │ Sate rurale     │   │  │
-│  │  │ min 40k*    │  │ min 10k*  │  │   min 1.500*    │   │  │
-│  │  └─────────────┘  └───────────┘  └─────────────────┘   │  │
-│  │                                                        │  │
-│  │  Total: ~3.181 Unități Administrativ-Teritoriale (UAT) │  │
-│  │  *Praguri legale doar pentru clasificări NOI           │  │
-│  └────────────────────────────────────────────────────────┘  │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-**Interfața componentei:**
-
-```typescript
-/**
- * UATTypeBreakdown - Reprezentare vizuală a tipurilor de unități administrative
- *
- * SCOP: Ajută utilizatorii să înțeleagă ierarhia administrațiilor locale
- */
-interface UATTypeBreakdownProps {
-  readonly uatTypes: readonly UATType[]
-  readonly onTypeSelect?: (typeId: string) => void
-  readonly showMapLink?: boolean
-}
-
-interface UATType {
-  readonly id: string
-  readonly name: string
-  readonly nameRo: string
-  readonly count: number
-  readonly populationRange: string
-  readonly description: string
-  readonly examples?: readonly string[]
-  readonly icon?: string
-}
-
-/**
- * GESTIONAREA STĂRII:
- * - selectedType: string | null
- * - hoveredType: string | null
- *
- * INTERACȚIUNI UTILIZATOR:
- * - Hover pe card: afișează tooltip cu exemple
- * - Click pe card: extinde pentru a arăta exemple reprezentative
- * - Link "Vezi harta": deschide harta filtrată după acel tip
- *
- * STĂRI VIZUALE:
- * - Implicit: carduri cu pictogramă, număr, interval de populație
- * - Hover: elevație, accent pe bordură
- * - Selectat: card extins cu listă de exemple
- *
- * ANIMAȚII:
- * - Intrare: cardurile apar treptat din stânga (300ms, întârziere 100ms)
- * - Hover: scale(1.03) + umbră (150ms)
- * - Extindere: animație înălțime (200ms)
- *
- * ACCESIBILITATE:
- * - role="listitem" pe fiecare card
- * - aria-label cu descriere completă
- * - Inel de focus vizibil la navigarea cu Tab
- */
-```
+<UATTypeBreakdown
+  locale="ro"
+  mapBaseUrl="/ro/entities"
+  text={{
+    title: "Cele 3.228 de Unități Administrative ale României",
+    subtitle: "Apasă pe orice categorie pentru a vedea exemple",
+    level1Label: "Nivelul 1: Județe",
+    level2Label: "Nivelul 2: Unități Locale",
+    totalLabel: "Total",
+    viewMapLabel: "Vezi pe Hartă",
+    legalNoteLabel: "*Pragurile legale se aplică doar clasificărilor NOI",
+    clickToExpand: "Apasă pe orice card pentru a vedea exemple",
+    examplesLabel: "Exemple",
+    closeLabel: "Închide"
+  }}
+  data={{
+    totalCount: 3228,
+    level1: {
+      id: "counties",
+      name: "Counties",
+      nameRo: "Județe",
+      count: 42,
+      description: "41 counties + București, each with a County Council",
+      descriptionRo: "41 de județe + București, fiecare cu un Consiliu Județean",
+      color: "slate",
+      icon: "Map",
+      mapFilterParam: "type=county",
+      examples: [
+        { name: "București", population: "1,8M" },
+        { name: "Cluj", population: "691k" },
+        { name: "Timiș", population: "683k" },
+        { name: "Iași", population: "773k" },
+        { name: "Constanța", population: "684k" },
+        { name: "Prahova", population: "720k" }
+      ]
+    },
+    level2: [
+      {
+        id: "municipalities",
+        name: "Municipalities",
+        nameRo: "Municipii",
+        count: 103,
+        populationMin: "min 40.000*",
+        description: "Large urban centers",
+        descriptionRo: "Centre urbane mari",
+        color: "blue",
+        icon: "Building2",
+        mapFilterParam: "type=municipality",
+        examples: [
+          { name: "Cluj-Napoca", population: "324k" },
+          { name: "Timișoara", population: "319k" },
+          { name: "Iași", population: "382k" },
+          { name: "Constanța", population: "283k" },
+          { name: "Craiova", population: "269k" },
+          { name: "Brașov", population: "253k" }
+        ]
+      },
+      {
+        id: "towns",
+        name: "Towns",
+        nameRo: "Orașe",
+        count: 216,
+        populationMin: "min 10.000*",
+        description: "Smaller urban areas",
+        descriptionRo: "Zone urbane mai mici",
+        color: "indigo",
+        icon: "Home",
+        mapFilterParam: "type=town",
+        examples: [
+          { name: "Eforie", population: "10k" },
+          { name: "Sinaia", population: "10k" },
+          { name: "Bușteni", population: "9k" },
+          { name: "Predeal", population: "5k" },
+          { name: "Sovata", population: "10k" },
+          { name: "Techirghiol", population: "8k" }
+        ]
+      },
+      {
+        id: "communes",
+        name: "Communes",
+        nameRo: "Comune",
+        count: 2862,
+        populationMin: "min 1.500*",
+        description: "Rural villages and hamlets",
+        descriptionRo: "Sate și cătune rurale",
+        color: "emerald",
+        icon: "Trees",
+        mapFilterParam: "type=commune",
+        examples: [
+          { name: "Bran", population: "5k" },
+          { name: "Moieciu", population: "5k" },
+          { name: "Moeciu de Sus" },
+          { name: "Fundata" },
+          { name: "Șirnea" },
+          { name: "Peștera" }
+        ]
+      }
+    ]
+  }}
+/>
 
 ---
 
@@ -110,95 +128,117 @@ interface UATType {
 
 Iată de unde provin banii — și aceasta relevă o dependență critică:
 
-### Componenta MoneyFlowDiagram
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│  💰 CUM OBȚIN BANI ADMINISTRAȚIILE LOCALE                    │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│                    BUGETUL CENTRAL                           │
-│                         │                                    │
-│         ┌───────────────┼───────────────┐                    │
-│         │               │               │                    │
-│         ▼               ▼               ▼                    │
-│    ┌─────────┐    ┌─────────────┐    ┌──────────┐            │
-│    │  Cota   │    │  Sume de    │    │  Sume cu │            │
-│    │din imp. │    │ echilibrare │    │destinație│            │
-│    │pe venit │    │             │    │ specială │            │
-│    │ ~25-32% │    │   ~10-17%   │    │ ~28-38%  │            │
-│    └────┬────┘    └──────┬──────┘    └────┬─────┘            │
-│         │                │               │                   │
-│         └────────────────┼───────────────┘                   │
-│                          ▼                                   │
-│                ┌─────────────────┐                           │
-│                │  BUGETUL LOCAL  │                           │
-│                │                 │                           │
-│                │ + Venituri      │                           │
-│                │   proprii       │                           │
-│                │   (~14-15%)     │                           │
-│                │   Impozit pe    │                           │
-│                │   proprietate   │                           │
-│                │   Taxe locale   │                           │
-│                └─────────────────┘                           │
-│                                                              │
-│  ⚠️ CHEIE: Majoritatea banilor locali (~85%) vin de la      │
-│     CENTRU → Autonomie fiscală LIMITATĂ                      │
-│  Notă: Sumele cu destinație specială includ finanțarea       │
-│  educației, unde autoritățile locale plătesc salariile       │
-│  profesorilor stabilite de guvernul central                  │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-**Interfața componentei:**
-
-```typescript
-/**
- * MoneyFlowDiagram - Vizualizare animată de tip Sankey
- *
- * SCOP: Arată cum circulă banii de la bugetul central la cele locale
- */
-interface MoneyFlowDiagramProps {
-  readonly flows: readonly MoneyFlow[]
-  readonly highlightPath?: string[]
-  readonly showPercentages?: boolean
-}
-
-interface MoneyFlow {
-  readonly id: string
-  readonly source: string
-  readonly target: string
-  readonly percentage: number
-  readonly label: string
-  readonly description: string
-}
-
-/**
- * GESTIONAREA STĂRII:
- * - highlightedFlow: string | null
- * - animationComplete: boolean
- *
- * INTERACȚIUNI UTILIZATOR:
- * - Hover pe flux: evidențiază traseul, afișează tooltip cu detalii
- * - Click pe sursă/destinație: afișează popup cu detalii
- *
- * STĂRI VIZUALE:
- * - Implicit: toate fluxurile vizibile, culori atenuate
- * - Evidențiat: fluxul selectat în culoare accent, restul estompate
- * - Complet: toate fluxurile vizibile cu procentele finale
- *
- * ANIMAȚII:
- * - Intrare: fluxurile se desenează de la sursă la destinație (800ms, eșalonat)
- * - Contoare procente: animație de numărare (400ms)
- * - Evidențiere: tranziție de culoare (200ms)
- *
- * ACCESIBILITATE:
- * - role="img" cu aria-label descriptiv
- * - Fiecare flux are aria-describedby pentru conținutul tooltip-ului
- * - Screen reader-ul anunță procentele fluxurilor
- */
-```
+<MoneyFlowDiagram
+  locale="ro"
+  text={{
+    title: "Cum Obțin Bani Administrațiile Locale",
+    subtitle: "Apasă pe orice tip de transfer pentru a afla mai multe",
+    centralLabel: "Bugetul Central",
+    localLabel: "Bugetul Local",
+    ownRevenuesLabel: "Venituri Proprii",
+    keyInsightTitle: "Autonomie Fiscală Limitată",
+    keyInsightText: "Aproximativ 85% din banii administrațiilor locale provin de la centru. Aceasta înseamnă că administrațiile locale nu pot controla pe deplin propriile venituri — depind de deciziile guvernului central.",
+    clickToLearnMore: "Apasă pe orice card de mai sus pentru detalii",
+    closeLabel: "Închide",
+    fromCenterLabel: "De la Bugetul Central",
+    detailsLabel: "Detalii"
+  }}
+  data={{
+    centralBudget: {
+      name: "Central Budget",
+      nameRo: "Bugetul Central"
+    },
+    localBudget: {
+      name: "Local Budget",
+      nameRo: "Bugetul Local"
+    },
+    totalCentralPercentage: 85,
+    transfers: [
+      {
+        id: "income-tax",
+        name: "Income Tax Share",
+        nameRo: "Cota din Impozitul pe Venit",
+        percentageRange: "25-32%",
+        percentageMin: 25,
+        percentageMax: 32,
+        description: "Portion of national income tax redistributed to localities",
+        descriptionRo: "Partea din impozitul pe venit național redistribuită localităților",
+        details: [
+          "82% of income tax is redistributed to local governments",
+          "47% goes to municipalities, towns, and communes",
+          "13% goes to county councils",
+          "22% allocated for equalization between regions"
+        ],
+        detailsRo: [
+          "82% din impozitul pe venit este redistribuit administrațiilor locale",
+          "47% merge la municipii, orașe și comune",
+          "13% merge la consiliile județene",
+          "22% alocat pentru echilibrare între regiuni"
+        ],
+        color: "blue",
+        icon: "Banknote"
+      },
+      {
+        id: "equalization",
+        name: "Equalization Grants",
+        nameRo: "Sume de Echilibrare",
+        percentageRange: "10-17%",
+        percentageMin: 10,
+        percentageMax: 17,
+        description: "Formula-based funds to balance regional disparities",
+        descriptionRo: "Fonduri alocate prin formulă pentru echilibrarea disparităților regionale",
+        details: [
+          "Allocated through a national formula",
+          "70% based on fiscal capacity (poorer areas get more)",
+          "30% based on land area (larger areas get more)",
+          "Helps ensure basic services across all regions"
+        ],
+        detailsRo: [
+          "Alocate printr-o formulă națională",
+          "70% pe baza capacității fiscale (zonele mai sărace primesc mai mult)",
+          "30% pe baza suprafeței (zonele mai mari primesc mai mult)",
+          "Ajută la asigurarea serviciilor de bază în toate regiunile"
+        ],
+        color: "purple",
+        icon: "Scale"
+      },
+      {
+        id: "earmarked",
+        name: "Earmarked Grants",
+        nameRo: "Sume cu Destinație Specială",
+        percentageRange: "28-38%",
+        percentageMin: 28,
+        percentageMax: 38,
+        description: "Largest category — includes education funding and specific programs",
+        descriptionRo: "Cea mai mare categorie — include finanțarea educației și programe specifice",
+        details: [
+          "Education funding (~28% of local revenue alone)",
+          "Local govts pay teacher salaries set by central government",
+          "Social assistance programs",
+          "Fuel subsidies for heating",
+          "Capital investment projects"
+        ],
+        detailsRo: [
+          "Finanțarea educației (~28% din veniturile locale)",
+          "Localitățile plătesc salariile profesorilor stabilite central",
+          "Programe de asistență socială",
+          "Subvenții pentru combustibil de încălzire",
+          "Proiecte de investiții de capital"
+        ],
+        color: "amber",
+        icon: "Target"
+      }
+    ],
+    ownRevenues: {
+      id: "own",
+      name: "Own Revenues",
+      nameRo: "Venituri Proprii",
+      percentage: 15,
+      items: ["Property tax", "Local fees", "Fines", "Service charges"],
+      itemsRo: ["Impozit pe proprietate", "Taxe locale", "Amenzi", "Tarife servicii"]
+    }
+  }}
+/>
 
 ### Defalcarea surselor de venituri
 
@@ -219,19 +259,19 @@ Nu toate serviciile sunt locale. Iată cum sunt împărțite responsabilitățil
 
 | Serviciu | Central | Județean | Local | Note |
 |----------|:-------:|:--------:|:-----:|------|
-| Apărarea națională | ● | | | |
-| Politica externă | ● | | | |
-| Autostrăzi naționale | ● | | | Prin CNAIR |
-| Universități | ● | | | |
-| Sănătate/Spitale | ● | ● | | ~90% finanțat central prin CNAS |
-| Drumuri județene | | ● | | |
-| Servicii sociale | | ● | ● | |
-| **Școli (preuniversitar)** | ● | ● | ● | Partajat: Centralul stabilește curricula și salariile; localul întreține clădirile și plătește profesorii |
-| **Drumuri locale** | | | ● | Competență locală exclusivă |
-| **Apă și canalizare** | | | ● | Competență locală exclusivă |
-| **Iluminat public** | | | ● | |
-| **Parcuri și spații verzi** | | | ● | |
-| **Gestionarea deșeurilor** | | ● | ● | Localul se ocupă de colectare; județul coordonează planurile |
+| Apărarea națională | <span className="text-slate-600">●</span> | | | |
+| Politica externă | <span className="text-slate-600">●</span> | | | |
+| Autostrăzi naționale | <span className="text-slate-600">●</span> | | | Prin CNAIR |
+| Universități | <span className="text-slate-600">●</span> | | | |
+| Sănătate/Spitale | <span className="text-slate-600">●</span> | <span className="text-purple-500">●</span> | | ~90% finanțat central prin CNAS |
+| Drumuri județene | | <span className="text-purple-500">●</span> | | |
+| Servicii sociale | | <span className="text-purple-500">●</span> | <span className="text-emerald-500">●</span> | |
+| **Școli (preuniversitar)** | <span className="text-slate-600">●</span> | <span className="text-purple-500">●</span> | <span className="text-emerald-500">●</span> | Partajat: Centralul stabilește curricula și salariile; localul întreține clădirile și plătește profesorii |
+| **Drumuri locale** | | | <span className="text-emerald-500">●</span> | Competență locală exclusivă |
+| **Apă și canalizare** | | | <span className="text-emerald-500">●</span> | Competență locală exclusivă |
+| **Iluminat public** | | | <span className="text-emerald-500">●</span> | |
+| **Parcuri și spații verzi** | | | <span className="text-emerald-500">●</span> | |
+| **Gestionarea deșeurilor** | | <span className="text-purple-500">●</span> | <span className="text-emerald-500">●</span> | Localul se ocupă de colectare; județul coordonează planurile |
 
 > 💡 **Sfat:** Concentrează-te mai întâi pe serviciile locale — acestea sunt cele care îți afectează direct viața de zi cu zi!
 >
@@ -243,14 +283,14 @@ Nu toate serviciile sunt locale. Iată cum sunt împărțite responsabilitățil
 
 <Quiz
   id="local-national-02-q1"
-  question="Aproximativ câte unități administrativ-teritoriale (UAT-uri) are România la nivel de bază?"
+  question="Câte unități administrativ-teritoriale (UAT-uri) are România?"
   options={[
     { id: "a", text: "Aproximativ 500", isCorrect: false },
     { id: "b", text: "Aproximativ 1.500", isCorrect: false },
-    { id: "c", text: "Aproximativ 3.181", isCorrect: true },
+    { id: "c", text: "Aproximativ 3.228", isCorrect: true },
     { id: "d", text: "Aproximativ 5.000", isCorrect: false }
   ]}
-  explanation="România are aproximativ 3.181 de UAT-uri la nivel de bază, incluzând 42 de județe (41 + București), 103 municipii, 216 orașe și 2.862 de comune. Fiecare are propriul buget și propria administrație locală."
+  explanation="România are 3.228 de UAT-uri: 42 de județe (41 + București), 103 municipii, 216 orașe, 2.862 de comune, plus cele 6 sectoare ale Bucureștiului. Fiecare are propriul buget și propria administrație locală."
 />
 
 <Quiz
@@ -269,6 +309,6 @@ Nu toate serviciile sunt locale. Iată cum sunt împărțite responsabilitățil
 
 ## Concluzie
 
-> 📌 **De reținut:** România are ~3.181 de administrații locale (UAT-uri), dar majoritatea depind de transferurile centrale pentru ~85% din finanțare. Cea mai mare parte (~28-38%) vine sub formă de sume cu destinație specială pentru educație, unde administrațiile locale plătesc salariile profesorilor fără a controla nivelurile salariale. Aceasta înseamnă că primarul tău local are un control limitat asupra veniturilor — făcând și mai important să monitorizezi cum sunt cheltuiți banii care ajung efectiv.
+> 📌 **De reținut:** România are 3.228 de administrații locale (UAT-uri), dar majoritatea depind de transferurile centrale pentru ~85% din finanțare. Cea mai mare parte (~28-38%) vine sub formă de sume cu destinație specială pentru educație, unde administrațiile locale plătesc salariile profesorilor fără a controla nivelurile salariale. Aceasta înseamnă că primarul tău local are un control limitat asupra veniturilor — făcând și mai important să monitorizezi cum sunt cheltuiți banii care ajung efectiv.
 
 <MarkComplete label="Finalizează această lecție" />

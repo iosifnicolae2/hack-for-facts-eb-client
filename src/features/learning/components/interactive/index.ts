@@ -30,6 +30,22 @@ export type {
   BudgetHierarchyText,
   BudgetLevel,
 } from './budget-hierarchy-data'
+export { UATTypeBreakdown } from './UATTypeBreakdown'
+export type {
+  UATTypeBreakdownData,
+  UATTypeBreakdownText,
+  UATCategory,
+  UATExample,
+} from './uat-type-breakdown-data'
+export { UAT_COLORS } from './uat-type-breakdown-data'
+export { MoneyFlowDiagram } from './MoneyFlowDiagram'
+export type {
+  MoneyFlowDiagramData,
+  MoneyFlowDiagramText,
+  TransferType,
+  OwnRevenueSource,
+} from './money-flow-diagram-data'
+export { TRANSFER_COLORS } from './money-flow-diagram-data'
 export type {
   ExecutionPatternComparisonProps,
   ExecutionPatternItem,

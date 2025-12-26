@@ -1,7 +1,7 @@
 ---
 title: "Local Government Structure"
 durationMinutes: 5
-concept: "Romania's 3,181 administrative units and their funding"
+concept: "Romania's 3,228 administrative units and their funding"
 objective: "Identify UATs and understand central transfer dependencies"
 ---
 
@@ -9,7 +9,7 @@ objective: "Identify UATs and understand central transfer dependencies"
 
 ## Concept Introduction
 
-Romania is divided into approximately **3,181 administrative-territorial units (UATs)** at the base level. These range from Bucharest with 2+ million people to tiny communes with just a few hundred residents. Each has its own budget, its own mayor, and its own local council.
+Romania is divided into **3,228 administrative-territorial units (UATs)** at the base level. These range from Bucharest with 2+ million people to tiny communes with just a few hundred residents. Each has its own budget, its own mayor, and its own local council.
 
 The key challenge? Most local governments don't generate enough revenue locally — they depend heavily on transfers from the central government. This creates a power dynamic that affects how your local services are funded.
 
@@ -19,90 +19,108 @@ The key challenge? Most local governments don't generate enough revenue locally 
 
 ## Interactive Element: Administrative Unit Types
 
-Romania's local governments are organized into clear tiers. Here's how they break down:
+Romania's local governments are organized into clear tiers. Click any category to explore examples:
 
-### UATTypeBreakdown Component
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│  🗺️ ROMANIA'S ~3,181 ADMINISTRATIVE UNITS                   │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│  LEVEL 1: COUNTIES (Județe)                                  │
-│  ┌────────────────────────────────────────────────────────┐  │
-│  │  41 counties + Bucharest = 42 total                    │  │
-│  │  Each has a County Council (Consiliu Județean)         │  │
-│  │  [ View Map → ]                                        │  │
-│  └────────────────────────────────────────────────────────┘  │
-│                                                              │
-│  LEVEL 2: MUNICIPALITIES, TOWNS, COMMUNES                    │
-│  ┌────────────────────────────────────────────────────────┐  │
-│  │  ┌─────────────┐  ┌───────────┐  ┌─────────────────┐   │  │
-│  │  │MUNICIPALITIES│  │  TOWNS    │  │    COMMUNES     │   │  │
-│  │  │    103      │  │   216     │  │     2,862       │   │  │
-│  │  │             │  │           │  │                 │   │  │
-│  │  │ Large cities│  │Small cities│  │ Rural villages │   │  │
-│  │  │ min 40k*    │  │ min 10k*  │  │   min 1,500*   │   │  │
-│  │  └─────────────┘  └───────────┘  └─────────────────┘   │  │
-│  │                                                        │  │
-│  │  Total: ~3,181 Administrative-Territorial Units (UATs) │  │
-│  │  *Legal minimums for NEW classifications only          │  │
-│  └────────────────────────────────────────────────────────┘  │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-**Component Interface:**
-
-```typescript
-/**
- * UATTypeBreakdown - Visual breakdown of administrative unit types
- *
- * PURPOSE: Help users understand the hierarchy of local governments
- */
-interface UATTypeBreakdownProps {
-  readonly uatTypes: readonly UATType[]
-  readonly onTypeSelect?: (typeId: string) => void
-  readonly showMapLink?: boolean
-}
-
-interface UATType {
-  readonly id: string
-  readonly name: string
-  readonly nameRo: string
-  readonly count: number
-  readonly populationRange: string
-  readonly description: string
-  readonly examples?: readonly string[]
-  readonly icon?: string
-}
-
-/**
- * STATE MANAGEMENT:
- * - selectedType: string | null
- * - hoveredType: string | null
- *
- * USER INTERACTIONS:
- * - Hover card: show tooltip with examples
- * - Click card: expand to show representative examples
- * - "View Map" link: opens map filtered by that type
- *
- * VISUAL STATES:
- * - Default: cards with icon, count, population range
- * - Hovered: elevation, border accent
- * - Selected: expanded card with examples list
- *
- * ANIMATIONS:
- * - Entry: cards stagger fade-in from left (300ms, 100ms delay)
- * - Hover: scale(1.03) + shadow (150ms)
- * - Expand: height animation (200ms)
- *
- * ACCESSIBILITY:
- * - role="listitem" on each card
- * - aria-label with full description
- * - Focus visible ring on tab navigation
- */
-```
+<UATTypeBreakdown
+  locale="en"
+  mapBaseUrl="/en/entities"
+  text={{
+    title: "Romania's 3,228 Administrative Units",
+    subtitle: "Click any category to explore examples",
+    level1Label: "Level 1: Counties",
+    level2Label: "Level 2: Local Units",
+    totalLabel: "Total",
+    viewMapLabel: "View on Map",
+    legalNoteLabel: "*Legal minimums apply only to NEW classifications",
+    clickToExpand: "Click any card to see examples",
+    examplesLabel: "Examples",
+    closeLabel: "Close"
+  }}
+  data={{
+    totalCount: 3228,
+    level1: {
+      id: "counties",
+      name: "Counties",
+      nameRo: "Județe",
+      count: 42,
+      description: "41 counties + București, each with a County Council",
+      descriptionRo: "41 de județe + București, fiecare cu un Consiliu Județean",
+      color: "slate",
+      icon: "Map",
+      mapFilterParam: "type=county",
+      examples: [
+        { name: "București", population: "1.8M" },
+        { name: "Cluj", population: "691k" },
+        { name: "Timiș", population: "683k" },
+        { name: "Iași", population: "773k" },
+        { name: "Constanța", population: "684k" },
+        { name: "Prahova", population: "720k" }
+      ]
+    },
+    level2: [
+      {
+        id: "municipalities",
+        name: "Municipalities",
+        nameRo: "Municipii",
+        count: 103,
+        populationMin: "min 40,000*",
+        description: "Large urban centers",
+        descriptionRo: "Centre urbane mari",
+        color: "blue",
+        icon: "Building2",
+        mapFilterParam: "type=municipality",
+        examples: [
+          { name: "Cluj-Napoca", population: "324k" },
+          { name: "Timișoara", population: "319k" },
+          { name: "Iași", population: "382k" },
+          { name: "Constanța", population: "283k" },
+          { name: "Craiova", population: "269k" },
+          { name: "Brașov", population: "253k" }
+        ]
+      },
+      {
+        id: "towns",
+        name: "Towns",
+        nameRo: "Orașe",
+        count: 216,
+        populationMin: "min 10,000*",
+        description: "Smaller urban areas",
+        descriptionRo: "Zone urbane mai mici",
+        color: "indigo",
+        icon: "Home",
+        mapFilterParam: "type=town",
+        examples: [
+          { name: "Eforie", population: "10k" },
+          { name: "Sinaia", population: "10k" },
+          { name: "Bușteni", population: "9k" },
+          { name: "Predeal", population: "5k" },
+          { name: "Sovata", population: "10k" },
+          { name: "Techirghiol", population: "8k" }
+        ]
+      },
+      {
+        id: "communes",
+        name: "Communes",
+        nameRo: "Comune",
+        count: 2862,
+        populationMin: "min 1,500*",
+        description: "Rural villages and hamlets",
+        descriptionRo: "Sate și cătune rurale",
+        color: "emerald",
+        icon: "Trees",
+        mapFilterParam: "type=commune",
+        examples: [
+          { name: "Bran", population: "5k" },
+          { name: "Moieciu", population: "5k" },
+          { name: "Moeciu de Sus" },
+          { name: "Fundata" },
+          { name: "Șirnea" },
+          { name: "Peștera" }
+        ]
+      }
+    ]
+  }}
+/>
 
 ---
 
@@ -110,91 +128,117 @@ interface UATType {
 
 Here's where the money comes from — and it reveals a critical dependency:
 
-### MoneyFlowDiagram Component
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│  💰 HOW LOCAL GOVERNMENTS GET MONEY                          │
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│                    CENTRAL BUDGET                            │
-│                         │                                    │
-│         ┌───────────────┼───────────────┐                    │
-│         │               │               │                    │
-│         ▼               ▼               ▼                    │
-│    ┌─────────┐    ┌─────────────┐    ┌──────────┐            │
-│    │ Income  │    │Equalization │    │ Earmarked│            │
-│    │Tax Share│    │   Grants    │    │  Grants  │            │
-│    │ ~25-32% │    │   ~10-17%   │    │ ~28-38%  │            │
-│    └────┬────┘    └──────┬──────┘    └────┬─────┘            │
-│         │                │               │                   │
-│         └────────────────┼───────────────┘                   │
-│                          ▼                                   │
-│                ┌─────────────────┐                           │
-│                │  LOCAL BUDGET   │                           │
-│                │                 │                           │
-│                │ + Own revenues  │                           │
-│                │   (~14-15%)     │                           │
-│                │   Property tax  │                           │
-│                │   Local fees    │                           │
-│                └─────────────────┘                           │
-│                                                              │
-│  ⚠️ KEY: Most local money (~85%) comes from CENTER           │
-│     → Local governments have LIMITED fiscal autonomy         │
-│  Note: Earmarked grants include education funding where      │
-│  local govts pay teacher salaries set by central government  │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-**Component Interface:**
-
-```typescript
-/**
- * MoneyFlowDiagram - Animated Sankey-style flow visualization
- *
- * PURPOSE: Show how money flows from central to local budgets
- */
-interface MoneyFlowDiagramProps {
-  readonly flows: readonly MoneyFlow[]
-  readonly highlightPath?: string[]
-  readonly showPercentages?: boolean
-}
-
-interface MoneyFlow {
-  readonly id: string
-  readonly source: string
-  readonly target: string
-  readonly percentage: number
-  readonly label: string
-  readonly description: string
-}
-
-/**
- * STATE MANAGEMENT:
- * - highlightedFlow: string | null
- * - animationComplete: boolean
- *
- * USER INTERACTIONS:
- * - Hover flow: highlight path, show tooltip with details
- * - Click source/target: show breakdown popup
- *
- * VISUAL STATES:
- * - Default: all flows visible, muted colors
- * - Highlighted: selected flow in accent color, others dimmed
- * - Complete: all flows visible with final percentages
- *
- * ANIMATIONS:
- * - Entry: flows draw from source to target (800ms, staggered)
- * - Percentage counters: count-up animation (400ms)
- * - Highlight: color transition (200ms)
- *
- * ACCESSIBILITY:
- * - role="img" with descriptive aria-label
- * - Each flow has aria-describedby for tooltip content
- * - Screen reader announces flow percentages
- */
-```
+<MoneyFlowDiagram
+  locale="en"
+  text={{
+    title: "How Local Governments Get Money",
+    subtitle: "Click any transfer type to learn more",
+    centralLabel: "Central Budget",
+    localLabel: "Local Budget",
+    ownRevenuesLabel: "Own Revenues",
+    keyInsightTitle: "Limited Fiscal Autonomy",
+    keyInsightText: "About 85% of local government money comes from the center. This means local governments can't fully control their own revenue — they depend on central government decisions.",
+    clickToLearnMore: "Click any card above to see details",
+    closeLabel: "Close",
+    fromCenterLabel: "From Central Budget",
+    detailsLabel: "Details"
+  }}
+  data={{
+    centralBudget: {
+      name: "Central Budget",
+      nameRo: "Bugetul Central"
+    },
+    localBudget: {
+      name: "Local Budget",
+      nameRo: "Bugetul Local"
+    },
+    totalCentralPercentage: 85,
+    transfers: [
+      {
+        id: "income-tax",
+        name: "Income Tax Share",
+        nameRo: "Cota din Impozitul pe Venit",
+        percentageRange: "25-32%",
+        percentageMin: 25,
+        percentageMax: 32,
+        description: "Portion of national income tax redistributed to localities",
+        descriptionRo: "Partea din impozitul pe venit național redistribuită localităților",
+        details: [
+          "82% of income tax is redistributed to local governments",
+          "47% goes to municipalities, towns, and communes",
+          "13% goes to county councils",
+          "22% allocated for equalization between regions"
+        ],
+        detailsRo: [
+          "82% din impozitul pe venit este redistribuit administrațiilor locale",
+          "47% merge la municipii, orașe și comune",
+          "13% merge la consiliile județene",
+          "22% alocat pentru echilibrare între regiuni"
+        ],
+        color: "blue",
+        icon: "Banknote"
+      },
+      {
+        id: "equalization",
+        name: "Equalization Grants",
+        nameRo: "Sume de Echilibrare",
+        percentageRange: "10-17%",
+        percentageMin: 10,
+        percentageMax: 17,
+        description: "Formula-based funds to balance regional disparities",
+        descriptionRo: "Fonduri alocate prin formulă pentru echilibrarea disparităților regionale",
+        details: [
+          "Allocated through a national formula",
+          "70% based on fiscal capacity (poorer areas get more)",
+          "30% based on land area (larger areas get more)",
+          "Helps ensure basic services across all regions"
+        ],
+        detailsRo: [
+          "Alocate printr-o formulă națională",
+          "70% pe baza capacității fiscale (zonele mai sărace primesc mai mult)",
+          "30% pe baza suprafeței (zonele mai mari primesc mai mult)",
+          "Ajută la asigurarea serviciilor de bază în toate regiunile"
+        ],
+        color: "purple",
+        icon: "Scale"
+      },
+      {
+        id: "earmarked",
+        name: "Earmarked Grants",
+        nameRo: "Sume cu Destinație Specială",
+        percentageRange: "28-38%",
+        percentageMin: 28,
+        percentageMax: 38,
+        description: "Largest category — includes education funding and specific programs",
+        descriptionRo: "Cea mai mare categorie — include finanțarea educației și programe specifice",
+        details: [
+          "Education funding (~28% of local revenue alone)",
+          "Local govts pay teacher salaries set by central government",
+          "Social assistance programs",
+          "Fuel subsidies for heating",
+          "Capital investment projects"
+        ],
+        detailsRo: [
+          "Finanțarea educației (~28% din veniturile locale)",
+          "Localitățile plătesc salariile profesorilor stabilite central",
+          "Programe de asistență socială",
+          "Subvenții pentru combustibil de încălzire",
+          "Proiecte de investiții de capital"
+        ],
+        color: "amber",
+        icon: "Target"
+      }
+    ],
+    ownRevenues: {
+      id: "own",
+      name: "Own Revenues",
+      nameRo: "Venituri Proprii",
+      percentage: 15,
+      items: ["Property tax", "Local fees", "Fines", "Service charges"],
+      itemsRo: ["Impozit pe proprietate", "Taxe locale", "Amenzi", "Tarife servicii"]
+    }
+  }}
+/>
 
 ### Revenue Sources Breakdown
 
@@ -215,19 +259,19 @@ Not all services are local. Here's how responsibilities are divided:
 
 | Service | Central | County | Local | Notes |
 |---------|:-------:|:------:|:-----:|-------|
-| National defense | ● | | | |
-| Foreign policy | ● | | | |
-| National highways | ● | | | Via CNAIR |
-| Universities | ● | | | |
-| Healthcare/Hospitals | ● | ● | | ~90% centrally funded via National Health Insurance |
-| County roads | | ● | | |
-| Social services | | ● | ● | |
-| **Schools (pre-university)** | ● | ● | ● | Shared: Central sets curriculum & salaries; local maintains buildings & pays teachers |
-| **Local roads** | | | ● | Exclusive local competency |
-| **Water & sanitation** | | | ● | Exclusive local competency |
-| **Street lighting** | | | ● | |
-| **Parks & green spaces** | | | ● | |
-| **Waste management** | | ● | ● | Local handles collection; county coordinates plans |
+| National defense | <span className="text-slate-600">●</span> | | | |
+| Foreign policy | <span className="text-slate-600">●</span> | | | |
+| National highways | <span className="text-slate-600">●</span> | | | Via CNAIR |
+| Universities | <span className="text-slate-600">●</span> | | | |
+| Healthcare/Hospitals | <span className="text-slate-600">●</span> | <span className="text-purple-500">●</span> | | ~90% centrally funded via National Health Insurance |
+| County roads | | <span className="text-purple-500">●</span> | | |
+| Social services | | <span className="text-purple-500">●</span> | <span className="text-emerald-500">●</span> | |
+| **Schools (pre-university)** | <span className="text-slate-600">●</span> | <span className="text-purple-500">●</span> | <span className="text-emerald-500">●</span> | Shared: Central sets curriculum & salaries; local maintains buildings & pays teachers |
+| **Local roads** | | | <span className="text-emerald-500">●</span> | Exclusive local competency |
+| **Water & sanitation** | | | <span className="text-emerald-500">●</span> | Exclusive local competency |
+| **Street lighting** | | | <span className="text-emerald-500">●</span> | |
+| **Parks & green spaces** | | | <span className="text-emerald-500">●</span> | |
+| **Waste management** | | <span className="text-purple-500">●</span> | <span className="text-emerald-500">●</span> | Local handles collection; county coordinates plans |
 
 > 💡 **Tip:** Focus on local services first — they're the ones that directly affect your daily life!
 >
@@ -239,14 +283,14 @@ Not all services are local. Here's how responsibilities are divided:
 
 <Quiz
   id="local-national-02-q1"
-  question="Approximately how many administrative-territorial units (UATs) does Romania have at the base level?"
+  question="How many administrative-territorial units (UATs) does Romania have?"
   options={[
     { id: "a", text: "About 500", isCorrect: false },
     { id: "b", text: "About 1,500", isCorrect: false },
-    { id: "c", text: "About 3,181", isCorrect: true },
+    { id: "c", text: "About 3,228", isCorrect: true },
     { id: "d", text: "About 5,000", isCorrect: false }
   ]}
-  explanation="Romania has approximately 3,181 UATs at the base level, including 42 counties (41 + Bucharest), 103 municipalities, 216 towns, and 2,862 communes. Each has its own budget and local government."
+  explanation="Romania has 3,228 UATs: 42 counties (41 + București), 103 municipalities, 216 towns, 2,862 communes, plus București's 6 sectors. Each has its own budget and local government."
 />
 
 <Quiz
@@ -265,6 +309,6 @@ Not all services are local. Here's how responsibilities are divided:
 
 ## Key Takeaway
 
-> 📌 **Remember:** Romania has ~3,181 local governments (UATs), but most depend on central transfers for ~85% of their funding. The largest chunk (~28-38%) comes as earmarked grants for education, where local governments pay teacher salaries without controlling salary levels. This means your local mayor has limited control over revenue — making it even more important to monitor how the money that does arrive gets spent.
+> 📌 **Remember:** Romania has 3,228 local governments (UATs), but most depend on central transfers for ~85% of their funding. The largest chunk (~28-38%) comes as earmarked grants for education, where local governments pay teacher salaries without controlling salary levels. This means your local mayor has limited control over revenue — making it even more important to monitor how the money that does arrive gets spent.
 
 <MarkComplete label="Complete this lesson" />
