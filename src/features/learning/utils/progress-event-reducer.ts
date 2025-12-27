@@ -166,6 +166,7 @@ function applyOnboardingResetEvent(
       relatedPaths: [],
       completedAt: null,
     },
+    activePathId: null,
     lastUpdated: maxIso(progress.lastUpdated, event.occurredAt),
   }
 }
