@@ -3,6 +3,23 @@ import { expect, afterEach, vi } from "vitest";
 import { cleanup } from "@testing-library/react";
 import * as matchers from "@testing-library/jest-dom/matchers";
 
+// Mock @/config/env before any other imports to avoid environment validation errors
+// This must be at the top level to ensure it's hoisted before module resolution
+vi.mock("@/config/env", () => ({
+  env: {
+    VITE_APP_VERSION: "1.0.0-test",
+    VITE_APP_NAME: "Transparenta",
+    VITE_APP_ENVIRONMENT: "test",
+    VITE_API_URL: "http://localhost:3000",
+    NODE_ENV: "test",
+    VITE_POSTHOG_ENABLED: false,
+    VITE_SENTRY_ENABLED: false,
+    VITE_SENTRY_FEEDBACK_ENABLED: false,
+    VITE_CLERK_PUBLISHABLE_KEY: undefined,
+  },
+  getSiteUrl: () => "http://localhost:3000",
+}));
+
 // Extend Vitest's expect method with methods from react-testing-library
 expect.extend(matchers);
 
