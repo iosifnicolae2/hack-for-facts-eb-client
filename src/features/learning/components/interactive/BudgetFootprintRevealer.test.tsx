@@ -25,24 +25,26 @@ import {
   type DailyActivity,
 } from './BudgetFootprintRevealer'
 
-// Mock localStorage
-const localStorageMock = (() => {
-  let store: Record<string, string> = {}
-  return {
-    getItem: vi.fn((key: string) => store[key] ?? null),
-    setItem: vi.fn((key: string, value: string) => {
-      store[key] = value
-    }),
-    removeItem: vi.fn((key: string) => {
-      delete store[key]
-    }),
-    clear: vi.fn(() => {
-      store = {}
-    }),
-  }
-})()
+// Mock localStorage with proper isolation
+let localStorageStore: Record<string, string> = {}
+const localStorageMock = {
+  getItem: vi.fn((key: string) => localStorageStore[key] ?? null),
+  setItem: vi.fn((key: string, value: string) => {
+    localStorageStore[key] = value
+  }),
+  removeItem: vi.fn((key: string) => {
+    delete localStorageStore[key]
+  }),
+  clear: vi.fn(() => {
+    localStorageStore = {}
+  }),
+  get length() {
+    return Object.keys(localStorageStore).length
+  },
+  key: vi.fn((index: number) => Object.keys(localStorageStore)[index] ?? null),
+}
 
-Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+Object.defineProperty(window, 'localStorage', { value: localStorageMock, writable: true })
 
 // Test data
 const TEST_ACTIVITIES: readonly DailyActivity[] = [
@@ -71,7 +73,8 @@ const TEST_ACTIVITIES: readonly DailyActivity[] = [
 
 describe('BudgetFootprintRevealer', () => {
   beforeEach(() => {
-    localStorageMock.clear()
+    // Reset localStorage store directly and clear mocks
+    localStorageStore = {}
     vi.clearAllMocks()
   })
 
