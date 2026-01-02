@@ -1,0 +1,284 @@
+# Deep Research: Verificare 33
+
+# Capitol 33 — Venituri din prestări de servicii și alte activități
+
+## URL
+
+https://claude.ai/chat/768a9d86-e9b4-4a79-8852-56135416b9d7
+
+## Prompt
+
+```
+Efectuează o verificare aprofundată și detaliată a documentației bugetare pentru clasificația funcțională românească prezentată mai jos.
+
+## Context
+Acest document face parte din platforma Transparenta.eu care prezintă clasificația bugetară funcțională conform Ordinului MFP nr. 1954/2005. Platforma este destinată analizei datelor bugetare publice din România.
+
+## Obiectiv
+Verifică acuratețea, completitudinea și calitatea documentației pentru a asigura că informațiile prezentate sunt corecte și utile pentru utilizatori fără pregătire de specialitate bugetară.
+
+## Checklist de Verificare
+
+### 1. Acuratețe Legală și Tehnică (CRITIC)
+Verifică următoarele aspecte critice:
+- [ ] Codul bugetar (capitol/subcapitol) corespunde cu Ordinul MFP nr. 1954/2005
+- [ ] Denumirea oficială este identică cu cea din Anexa I (clasificația veniturilor) sau Anexa II (clasificația cheltuielilor)
+- [ ] Referințele legislative sunt actuale și corect citate (verifică pe legislatie.just.ro)
+- [ ] Semnul matematic (+/-) pentru calcule bugetare este corect documentat
+- [ ] Tratamentul în consolidare (buget general consolidat) este corect specificat
+- [ ] Cotele de impozitare și alte procente menționate sunt corecte și actuale
+- [ ] Termenele de plată și declarare (dacă sunt menționate) sunt corecte
+
+### 2. Completitudine și Structură
+Verifică prezența și corectitudinea secțiunilor:
+- [ ] Secțiunea "Definiție și scop" este prezentă și completă
+- [ ] Secțiunea "Cum funcționează în practică" explică mecanismul (cine plătește, cine primește, cum se execută)
+- [ ] Secțiunea "Utilizare în calcul și impact bugetar" specifică impactul pe tipuri de bugete
+- [ ] Secțiunea "Aspecte importante" acoperă cazuri speciale, excepții și modificări recente
+- [ ] Secțiunea "Interpretare pentru analiză tehnică și consolidare" oferă ghid pentru analiza datelor
+- [ ] Secțiunea "Documente relevante" conține referințe la legislația primară
+- [ ] Subcapitolele și paragrafele sunt listate conform clasificației oficiale MFP
+
+### 3. Claritate și Calitate Conținut
+Verifică calitatea explicațiilor:
+- [ ] Explicațiile sunt clare și accesibile pentru un utilizator fără pregătire de specialitate
+- [ ] Terminologia este consistentă cu nomenclatura oficială MFP
+- [ ] Nu există erori factuale sau date inventate
+- [ ] Exemplele practice (dacă există) sunt relevante și au surse citate
+- [ ] Fluxul financiar este ilustrat clar
+- [ ] Nu există cod SQL, sintaxă de programare sau referințe tehnice de implementare
+
+### 4. Link-uri și Referințe
+Verifică validitatea link-urilor:
+- [ ] Link-urile către legislatie.just.ro funcționează și afișează documentul corect
+- [ ] Link-urile către mfinante.gov.ro funcționează
+- [ ] Referințele legislative citate sunt corecte (număr și an)
+
+### 5. Limba Română
+Verifică calitatea limbii:
+- [ ] Gramatică și ortografie corecte
+- [ ] Diacritice corecte (ș, ț, ă, â, î - forme Unicode corecte, nu formele vechi ş, ţ)
+- [ ] Stilul este consistent în tot documentul (formal, tehnic)
+- [ ] Acronimele sunt explicate la prima utilizare
+
+### 6. Conformitate cu Standarde
+Verifică dacă este aplicabil:
+- [ ] Maparea COFOG (clasificare internațională) este prezentă și corectă
+- [ ] Corespondența cu clasificația economică este menționată unde este relevant
+
+## Resurse pentru verificare
+Folosește următoarele surse oficiale pentru a verifica informațiile:
+
+1. **Ordinul MFP nr. 1954/2005** - legislatie.just.ro/Public/DetaliiDocument/67596
+2. **Anexa I - Clasificația veniturilor**: mfinante.gov.ro/static/10/Mfp/buget/sitebuget/clasificatii/AnexanrI_13102025.xls
+3. **Anexa II - Clasificația cheltuielilor**: mfinante.gov.ro/static/10/Mfp/buget/sitebuget/clasificatii/AnexanrII_29012025.xls
+4. **Anexa 7 - Corespondență COFOG**: mfinante.gov.ro/static/10/Mfp/buget/sitebuget/clasificatii/Anexanr7_13052025.xls
+5. **Codul Fiscal** - legislatie.just.ro/Public/DetaliiDocument/171282
+6. **Legea 500/2002 - Finanțele publice** - legislatie.just.ro/Public/DetaliiDocumentAfis/37954
+7. **Execuție bugetară MFP** - mfinante.gov.ro/domenii/bugetul-de-stat/informatii-executie-bugetara
+
+## Format de răspuns dorit
+
+Structurează răspunsul astfel:
+
+### 1. Rezumat General
+Un paragraf scurt cu concluzia generală a verificării.
+
+### 2. Probleme Critice Găsite
+Lista problemelor care necesită corectare imediată (dacă există):
+- Erori în codurile bugetare
+- Denumiri oficiale incorecte
+- Referințe legislative greșite sau expirate
+- Date factuale incorecte
+
+### 3. Probleme Minore / Sugestii de Îmbunătățire
+Lista aspectelor care ar putea fi îmbunătățite:
+- Clarificări necesare
+- Informații lipsă
+- Formatare
+- Link-uri nefuncționale
+
+### 4. Confirmări ale Informațiilor Corecte
+Lista aspectelor verificate și confirmate ca fiind corecte:
+- Cod bugetar corect
+- Denumire oficială corectă
+- Referințe legislative valide
+- Etc.
+
+### 5. Surse Consultate
+Lista link-urilor și documentelor consultate pentru verificare.
+
+---
+
+## Conținutul fișierului de verificat:
+
+# Capitol 33 — Venituri din prestări de servicii și alte activități
+
+## Definiție și scop
+
+Capitolul 33 „Venituri din prestări de servicii și alte activități" cuprinde veniturile realizate de instituțiile publice din activități economice auxiliare sau complementare funcției lor principale. Aceste venituri provin din prestarea de servicii către cetățeni, companii sau alte entități publice, în schimbul unei contravalori (tarif, taxă administrativă, chirie etc.).
+
+### Destinații și utilizări specifice
+
+- Eliberare de certificate, avize, autorizații și alte documente administrative
+- Taxe pentru accesul la servicii publice (biblioteci, muzee, parcări)
+- Chirii și închirieri de spații/bunuri proprietate publică
+- Concesionarea sau închirierea de terenuri și imobile
+- Prestări de servicii educaționale (cursuri, examene, cazare în cămine)
+- Servicii medicale complementare în spitale publice
+- Vânzarea de publicații, materiale informative
+- Activități culturale și sportive cu participare în regim contra-cost
+- Servicii de laborator, analize, expertize tehnice
+- Venituri din cercetare și contracte cu casele de asigurări de sănătate
+- Alte activități economice permise prin lege
+
+### Baza legală principală
+
+- **Ordinul MFP nr. 1954/2005** — Clasificația indicatorilor privind finanțele publice (Anexa I — Clasificația economică a veniturilor)
+- **Legea nr. 273/2006** privind finanțele publice locale (art. 28–30)
+- **Legea nr. 500/2002** privind finanțele publice (art. 62, 65–66)
+- Codul Fiscal (Titlul IX — Impozite și taxe locale, pentru taxe administrative)
+
+---
+
+## Cum funcționează în practică
+
+Veniturile din capitol 33 sunt generate prin activități economice curente ale instituțiilor publice, care furnizează servicii contra-cost în baza unor reglementări legale specifice.
+
+### Mecanismul operațional
+
+1. **Stabilirea tarifelor:** Instituția publică stabilește tarife/prețuri pentru serviciile oferite, în baza metodologiilor aprobate sau a hotărârilor organelor deliberative (consilii locale, consilii de administrație).
+
+2. **Prestarea serviciului:** Cetățeanul sau persoana juridică solicită serviciul și achită tariful stabilit (la ghișeu, online sau prin virament bancar).
+
+3. **Încasarea venitului:** Sumele încasate intră în contul bugetar al instituției respective — fie ca venituri proprii, fie în bugetul local sau de stat, în funcție de tipul instituției.
+
+4. **Evidența și raportarea:** Instituția evidențiază aceste venituri în execuția bugetară la capitol 33, cu defalcare pe subcategorii specifice.
+
+### Exemple practice
+
+- Un cetățean plătește taxa pentru eliberarea unui certificat de urbanism → venit la bugetul local, subcapitol 33.02
+- O companie plătește chirie lunară pentru un spațiu comercial aparținând primăriei → venit la bugetul local, capitol 33 (sau 30 pentru închirieri, în funcție de clasificare)
+- Un student plătește taxă de cămin la o universitate de stat → venit propriu al universității, subcapitol 33.10.05 (Taxe și alte venituri în învățământ)
+- Un spital public încasează venituri din servicii medicale contractate cu CNAS → subcapitol 33.10.21
+
+---
+
+## Structura clasificației Capitol 33
+
+Conform Ordinului MFP nr. 1954/2005, Capitol 33 se împarte în mai multe subcapitole, diferențiate după tipul de buget:
+
+| Cod | Denumire | Aplicabilitate |
+|-----|----------|----------------|
+| 33.01 | Venituri din prestări de servicii și alte activități | Buget de stat |
+| 33.02 | Venituri din prestări de servicii și alte activități | Bugete locale |
+| 33.10 | Venituri din prestări de servicii și alte activități | Instituții publice finanțate din venituri proprii |
+
+### Subcapitole frecvent utilizate
+
+- **33.XX.01** — Taxe de metrologie
+- **33.XX.02** — Taxe consulare
+- **33.XX.03** — Venituri din taxe pentru prestații vamale
+- **33.XX.04** — Taxe și tarife pentru analize și servicii efectuate de laboratoare
+- **33.XX.05** — Taxe și alte venituri în învățământ
+- **33.XX.06** — Venituri din expertiză tehnică judiciară și extrajudiciară
+- **33.XX.08** — Venituri din prestări de servicii
+- **33.XX.20** — Venituri din cercetare
+- **33.XX.21** — Venituri din contractele încheiate cu casele de asigurări sociale de sănătate
+- **33.XX.30** — Venituri din contractele încheiate cu direcțiile de sănătate publică
+- **33.XX.50** — Alte venituri din prestări de servicii și alte activități
+
+---
+
+## Utilizare în calcul și impact bugetar
+
+### Semn și logică
+
+Capitol 33 reprezintă **venituri efective** cu semn pozitiv (+). Aceste sume se adună la veniturile totale ale bugetului respectiv și pot fi utilizate pentru finanțarea cheltuielilor instituției.
+
+### Impact pe tipuri de bugete
+
+**Buget de Stat:** Impact limitat; unele instituții centrale (ministere, agenții) pot realiza venituri din prestări de servicii (taxe consulare, taxe de metrologie, autorizații etc.).
+
+**Bugete Locale:** Impact semnificativ; reprezintă o sursă importantă de venituri proprii. Primăriile încasează venituri din chirii, concesiuni, taxe administrative și servicii publice locale.
+
+**Bugete ale instituțiilor publice (spitale, universități, școli):** Impact foarte important; pentru unele instituții (în special spitale universitare, muzee, teatre), veniturile din prestări de servicii pot reprezenta o parte substanțială din bugetul total de funcționare.
+
+---
+
+## Aspecte importante
+
+### 1. Caracter complementar și limitări legale
+
+Veniturile din capitol 33 nu pot substitui finanțarea de bază a instituțiilor publice. Instituțiile nu pot transforma activitățile de servicii în scop principal. Tarifele trebuie să acopere costurile efectiv suportate, fără a genera profit nejustificat.
+
+### 2. Autonomie și venituri proprii
+
+Pentru instituțiile cu personalitate juridică și autonomie financiară (universități, spitale, instituții de cultură), veniturile din capitol 33 constituie „venituri proprii" care pot fi utilizate cu flexibilitate pentru necesitățile instituției, în completarea finanțării de bază de la buget. Conform art. 65 din Legea 500/2002, aceste venituri provin din „chirii, organizarea de manifestări culturale și sportive, concursuri artistice, publicații, prestări editoriale, studii, proiecte, valorificări de produse din activități proprii sau anexe, prestări de servicii și altele asemenea."
+
+### 3. Transparența tarifelor
+
+Tarifele pentru serviciile care generează venituri la capitol 33 trebuie să fie publice, aprobate prin acte administrative (hotărâri ale consiliilor locale, ordine ale conducătorilor de instituții) și trebuie să respecte principiile legalității și proporționalității.
+
+### 4. Variabilitate și sezonalitate
+
+Veniturile din capitol 33 pot prezenta volatilitate ridicată în funcție de cererea pentru servicii. De exemplu, veniturile din turism cultural sunt sezoniere, iar veniturile din chirii comerciale pot fluctua în funcție de ciclul economic.
+
+---
+
+## Interpretare pentru analiză și consolidare
+
+### Pentru analiză la nivel individual (neconsolidat)
+
+- Capitol 33 se tratează ca **venit propriu efectiv** al instituției.
+- Pentru analiza performanței instituției: se monitorizează evoluția anuală și raportul dintre veniturile din capitol 33 și cheltuielile de funcționare.
+- **Atenție:** Se verifică dacă veniturile sunt înregistrate brut sau net de TVA.
+
+### Pentru analiză la nivel de buget general consolidat
+
+**Regula generală:** Capitol 33 se păstrează integral în consolidare, deoarece reprezintă venituri din afara sectorului public (de la populație și companii private).
+
+**Excepții importante — tranzacții intra-guvernamentale care trebuie eliminate:**
+
+- Chirii plătite de o instituție publică către alta
+- Servicii prestate între instituții publice (de exemplu: analize de laborator comandate de o primărie de la un spital public)
+- Concesiuni/închirieri între niveluri ale administrației publice
+
+La consolidare, aceste tranzacții interne se elimină pentru a evita supraestimarea veniturilor sectorului public.
+
+---
+
+## Documente relevante pentru consultare
+
+1. **Ordinul MFP nr. 1954/2005** — Clasificația indicatorilor privind finanțele publice  
+   → [Portal Legislativ — Ordin 1954/2005](https://legislatie.just.ro/Public/DetaliiDocument/67596)
+
+2. **Pagina Ministerului Finanțelor — Clasificații bugetare actualizate**  
+   → [mfinante.gov.ro — Clasificații bugetare](https://mfinante.gov.ro/en/domenii/buget/clasificatiile-bugetare)
+
+3. **Legea nr. 273/2006** privind finanțele publice locale  
+   → [Portal Legislativ — Legea 273/2006](https://legislatie.just.ro/Public/DetaliiDocument/73527)
+
+4. **Legea nr. 500/2002** privind finanțele publice (art. 62, 65–66 pentru veniturile proprii)  
+   → [Portal Legislativ — Legea 500/2002](https://legislatie.just.ro/Public/DetaliiDocumentAfis/37954)
+
+5. **Codul Fiscal — Titlul IX (Impozite și taxe locale)**  
+   → [mfinante.gov.ro — Codul Fiscal Titlul IX](https://www.mfinante.gov.ro/static/10/Mfp/legislatie/cod_fiscal/titlul_9.htm)
+
+6. **Anexele la Ordinul 1954/2005 — Structura detaliată a clasificației veniturilor**  
+   → [mfinante.gov.ro — Anexa nr. I Venituri (PDF)](https://www.mfinante.gov.ro/static/10/Mfp/legislatie/clasificatie_economica/pdf11/Anexa%20nr.I_venit.pdf)
+
+---
+
+## Notă importantă
+
+Capitol 33 este esențial pentru evaluarea capacității instituțiilor publice de a genera resurse proprii și pentru analiza gradului de dependență față de transferuri bugetare. La nivel local, acest capitol oferă indicii despre activismul economic al primăriilor (valorificarea patrimoniului public, dinamica concesionărilor). Pentru analiza corectă a datelor la nivel național, este crucial să se identifice și să se excludă din consolidare tranzacțiile între instituții publice, pentru a evita dubla contabilizare.
+```
+
+## Context
+
+- **Created**: 2026-01-02 04:36:35
+- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/33.md
+- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+
+## Research Results

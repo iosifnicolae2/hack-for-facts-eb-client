@@ -1,0 +1,293 @@
+# Deep Research: Verificare 87
+
+# Capitol 87 - Alte acțiuni economice
+
+## URL
+
+[PASTE URL HERE AFTER STARTING RESEARCH]
+
+## Prompt
+
+```
+Efectuează o verificare aprofundată și detaliată a documentației bugetare pentru clasificația funcțională românească prezentată mai jos.
+
+## Context
+Acest document face parte din platforma Transparenta.eu care prezintă clasificația bugetară funcțională conform Ordinului MFP nr. 1954/2005. Platforma este destinată analizei datelor bugetare publice din România.
+
+## Obiectiv
+Verifică acuratețea, completitudinea și calitatea documentației pentru a asigura că informațiile prezentate sunt corecte și utile pentru utilizatori fără pregătire de specialitate bugetară.
+
+## Checklist de Verificare
+
+### 1. Acuratețe Legală și Tehnică (CRITIC)
+Verifică următoarele aspecte critice:
+- [ ] Codul bugetar (capitol/subcapitol) corespunde cu Ordinul MFP nr. 1954/2005
+- [ ] Denumirea oficială este identică cu cea din Anexa I (clasificația veniturilor) sau Anexa II (clasificația cheltuielilor)
+- [ ] Referințele legislative sunt actuale și corect citate (verifică pe legislatie.just.ro)
+- [ ] Semnul matematic (+/-) pentru calcule bugetare este corect documentat
+- [ ] Tratamentul în consolidare (buget general consolidat) este corect specificat
+- [ ] Cotele de impozitare și alte procente menționate sunt corecte și actuale
+- [ ] Termenele de plată și declarare (dacă sunt menționate) sunt corecte
+
+### 2. Completitudine și Structură
+Verifică prezența și corectitudinea secțiunilor:
+- [ ] Secțiunea "Definiție și scop" este prezentă și completă
+- [ ] Secțiunea "Cum funcționează în practică" explică mecanismul (cine plătește, cine primește, cum se execută)
+- [ ] Secțiunea "Utilizare în calcul și impact bugetar" specifică impactul pe tipuri de bugete
+- [ ] Secțiunea "Aspecte importante" acoperă cazuri speciale, excepții și modificări recente
+- [ ] Secțiunea "Interpretare pentru analiză tehnică și consolidare" oferă ghid pentru analiza datelor
+- [ ] Secțiunea "Documente relevante" conține referințe la legislația primară
+- [ ] Subcapitolele și paragrafele sunt listate conform clasificației oficiale MFP
+
+### 3. Claritate și Calitate Conținut
+Verifică calitatea explicațiilor:
+- [ ] Explicațiile sunt clare și accesibile pentru un utilizator fără pregătire de specialitate
+- [ ] Terminologia este consistentă cu nomenclatura oficială MFP
+- [ ] Nu există erori factuale sau date inventate
+- [ ] Exemplele practice (dacă există) sunt relevante și au surse citate
+- [ ] Fluxul financiar este ilustrat clar
+- [ ] Nu există cod SQL, sintaxă de programare sau referințe tehnice de implementare
+
+### 4. Link-uri și Referințe
+Verifică validitatea link-urilor:
+- [ ] Link-urile către legislatie.just.ro funcționează și afișează documentul corect
+- [ ] Link-urile către mfinante.gov.ro funcționează
+- [ ] Referințele legislative citate sunt corecte (număr și an)
+
+### 5. Limba Română
+Verifică calitatea limbii:
+- [ ] Gramatică și ortografie corecte
+- [ ] Diacritice corecte (ș, ț, ă, â, î - forme Unicode corecte, nu formele vechi ş, ţ)
+- [ ] Stilul este consistent în tot documentul (formal, tehnic)
+- [ ] Acronimele sunt explicate la prima utilizare
+
+### 6. Conformitate cu Standarde
+Verifică dacă este aplicabil:
+- [ ] Maparea COFOG (clasificare internațională) este prezentă și corectă
+- [ ] Corespondența cu clasificația economică este menționată unde este relevant
+
+## Resurse pentru verificare
+Folosește următoarele surse oficiale pentru a verifica informațiile:
+
+1. **Ordinul MFP nr. 1954/2005** - legislatie.just.ro/Public/DetaliiDocument/67596
+2. **Anexa I - Clasificația veniturilor**: mfinante.gov.ro/static/10/Mfp/buget/sitebuget/clasificatii/AnexanrI_13102025.xls
+3. **Anexa II - Clasificația cheltuielilor**: mfinante.gov.ro/static/10/Mfp/buget/sitebuget/clasificatii/AnexanrII_29012025.xls
+4. **Anexa 7 - Corespondență COFOG**: mfinante.gov.ro/static/10/Mfp/buget/sitebuget/clasificatii/Anexanr7_13052025.xls
+5. **Codul Fiscal** - legislatie.just.ro/Public/DetaliiDocument/171282
+6. **Legea 500/2002 - Finanțele publice** - legislatie.just.ro/Public/DetaliiDocumentAfis/37954
+7. **Execuție bugetară MFP** - mfinante.gov.ro/domenii/bugetul-de-stat/informatii-executie-bugetara
+
+## Format de răspuns dorit
+
+Structurează răspunsul astfel:
+
+### 1. Rezumat General
+Un paragraf scurt cu concluzia generală a verificării.
+
+### 2. Probleme Critice Găsite
+Lista problemelor care necesită corectare imediată (dacă există):
+- Erori în codurile bugetare
+- Denumiri oficiale incorecte
+- Referințe legislative greșite sau expirate
+- Date factuale incorecte
+
+### 3. Probleme Minore / Sugestii de Îmbunătățire
+Lista aspectelor care ar putea fi îmbunătățite:
+- Clarificări necesare
+- Informații lipsă
+- Formatare
+- Link-uri nefuncționale
+
+### 4. Confirmări ale Informațiilor Corecte
+Lista aspectelor verificate și confirmate ca fiind corecte:
+- Cod bugetar corect
+- Denumire oficială corectă
+- Referințe legislative valide
+- Etc.
+
+### 5. Surse Consultate
+Lista link-urilor și documentelor consultate pentru verificare.
+
+---
+
+## Conținutul fișierului de verificat:
+
+# Capitol 87 - Alte acțiuni economice
+
+## Definiție și scop
+
+Capitolul 87 „Alte acțiuni economice" reprezintă categoria de cheltuieli economice care nu pot fi încadrate în celelalte capitole specifice ale Părții a V-a (Acțiuni Economice) din clasificația funcțională. Este un capitol rezidual care grupează cheltuieli pentru programe și inițiative economice cu caracter special sau multifuncțional.
+
+### Destinații specifice
+
+- **Fondul Român de Dezvoltare Socială (87.02.01 pentru bugete locale)** - finanțarea proiectelor de dezvoltare locală și reducere a sărăciei
+- **Zone libere (87.01.03/87.02.03)** - cheltuieli pentru înființarea, administrarea și dezvoltarea zonelor libere economice
+- **Promovarea și dezvoltarea turismului (87.01.04/87.02.04)** - promovarea și dezvoltarea turismului național și local
+- **Proiecte de dezvoltare multifuncțională (87.01.05/87.02.05)** - proiecte cu impact economic complex (parcuri industriale, proiecte de infrastructură urbană, proiecte de dezvoltare rurală)
+- **Alte acțiuni economice (87.02.50)** - alte cheltuieli economice diverse, la nivel local
+
+### Baza legală principală
+
+- **Ordinul MFP nr. 1954/2005** - Clasificația indicatorilor privind finanțele publice (Anexa I - Clasificația funcțională a cheltuielilor), cu modificările și completările ulterioare
+- **Legea nr. 273/2006** privind finanțele publice locale
+- **Legea nr. 129/1998** (republicată) pentru înființarea, organizarea și funcționarea Fondului Român de Dezvoltare Socială
+- Acte normative specifice pentru fiecare domeniu de activitate (zone libere, turism etc.)
+
+---
+
+## Cum funcționează în practică
+
+Cheltuielile din Capitolul 87 sunt efectuate de autorități publice centrale și locale pentru acțiuni economice care au caracter transversal sau care nu se potrivesc categoriilor mai specializate (agricultură, industrie, transporturi, comunicații etc.).
+
+### Mecanismul operațional
+
+1. **Bugetare**: Autoritățile publice (primării, consilii locale/județene, ministere) înscriu în bugetele lor cheltuieli pentru acțiunile economice specifice acestui capitol.
+
+2. **Alocare fonduri**:
+   - Pentru FRDS: se alocă fonduri din bugetul de stat sau bugete locale pentru cofinanțarea proiectelor de dezvoltare socială
+   - Pentru turism: cheltuieli pentru promovare turistică, evenimente, infrastructură turistică
+   - Pentru zone libere: cheltuieli administrative și de dezvoltare a zonelor libere
+   - Pentru proiecte multifuncționale: finanțare pentru inițiative complexe de dezvoltare economică
+
+3. **Execuție**: Sumele se virează către beneficiari (FRDS, operatori zone libere, agenții de turism locale) sau se cheltuiesc direct pentru activitățile planificate.
+
+4. **Raportare**: Cheltuielile se raportează distinct pe subcapitole pentru a permite urmărirea fiecărei categorii de acțiuni economice.
+
+---
+
+## Utilizare în calcul și impact bugetar
+
+### Natura indicatorului
+
+Capitol de **CHELTUIELI** (clasificație funcțională) - reprezintă ieșiri de fonduri din bugetele publice.
+
+### Semn și logică
+
+Cheltuielile din Capitolul 87 se **adună (+)** la totalul cheltuielilor bugetare. În contabilitatea bugetară, acestea reprezintă ieșiri de fonduri din bugetele publice către acțiuni economice specifice.
+
+### Formula simplificată
+
+```
+Total Cheltuieli Acțiuni Economice (Partea a V-a) = 
+    Cap. 80 (Acțiuni generale economice, comerciale și de muncă) 
+  + Cap. 81 (Combustibili și energie) 
+  + Cap. 82 (Industria extractivă, prelucrătoare și construcții) 
+  + Cap. 83 (Agricultură, silvicultură, piscicultură și vânătoare) 
+  + Cap. 84 (Transporturi) 
+  + Cap. 85 (Comunicații) 
+  + Cap. 86 (Cercetare și dezvoltare în domeniul economic) 
+  + Cap. 87 (Alte acțiuni economice)
+```
+
+### Impact pe tipuri de bugete
+
+- **Buget de Stat (87.01)**: Cheltuieli pentru FRDS (cofinanțare proiecte de dezvoltare), programe naționale de turism, coordonarea zonelor libere
+- **Bugete Locale (87.02)**: Cheltuieli pentru promovarea turismului local, susținerea zonelor libere de pe teritoriul lor, proiecte de dezvoltare economică locală, cofinanțare FRDS
+- **Bugete instituții publice**: Cheltuieli specifice pentru activități economice neîncadrate în alte capitole
+
+---
+
+## Aspecte importante
+
+### 1. Caracter rezidual și diversitate
+
+Capitolul 87 este un „coș" pentru acțiunile economice care nu au un capitol dedicat. Spre deosebire de alte capitole mai omogene (de exemplu, Cap. 83 - Agricultură), aici se regăsesc categorii foarte diferite de cheltuieli, unite doar de faptul că sunt acțiuni economice atipice sau mixte.
+
+### 2. Fondul Român de Dezvoltare Socială
+
+FRDS este un organism de interes public, înființat prin Legea nr. 129/1998, care administrează fonduri externe nerambursabile (Granturile SEE și Norvegiene) plus cofinanțare din bugetul național pentru proiecte de:
+
+- Reducerea sărăciei și excluziunii sociale
+- Dezvoltare locală în comunități marginalizate
+- Incluziune socială a copiilor, tinerilor și romilor
+- Îmbunătățirea serviciilor sociale la nivel local
+
+Deși FRDS are misiune socială, cheltuielile apar la Cap. 87 (economic) din cauza naturii lor de „proiecte de dezvoltare" cu impact economic comunitar.
+
+### 3. Zone libere - stimulente economice
+
+Cheltuielile pentru zone libere vizează crearea de medii economice favorizante pentru investiții, producție și comerț. Autoritățile locale suportă costuri pentru:
+
+- Administrarea zonelor libere
+- Infrastructură în perimetrul zonelor libere
+- Promovarea investițiilor în zonele libere
+
+### 4. Turism - promovare și dezvoltare
+
+Autoritățile locale cheltuiesc pentru:
+
+- Campanii de promovare turistică
+- Evenimente și festivaluri cu caracter turistic
+- Infrastructură turistică (puncte info, marcaje, amenajări)
+- Studii și strategii de dezvoltare turistică
+
+### 5. Magnitudine financiară
+
+Volumul financiar al Capitolului 87 este relativ modest comparativ cu capitolele mari (transporturi, agricultură). Însă pentru bugetele locale mici, cheltuielile pentru turism sau cofinanțarea FRDS pot fi semnificative. La nivel național, programele FRDS pot atinge zeci de milioane de euro anual (fonduri externe + cofinanțare).
+
+---
+
+## Interpretare pentru analiză tehnică și consolidare
+
+### Pentru analiză la nivel individual (neconsolidat)
+
+Când analizezi execuția bugetară a unei primării, a unui consiliu județean sau a bugetului de stat:
+
+- Capitolul 87 reprezintă cheltuieli efective pentru acțiuni economice diverse
+- Se raportează distinct pe subcapitole (87.01, 87.02 cu defalcare pe paragrafe: .01, .03, .04, .05, .50) pentru transparență
+- Indică prioritățile economice ale autorității respective în domenii precum turism, dezvoltare locală, zone libere
+
+### Pentru analiză la nivel de buget general consolidat
+
+Când construiești bugetul general consolidat al României (care elimină transferurile interne între bugete):
+
+- Cheltuielile din Capitolul 87 se **adună** direct, fără ajustări de consolidare în majoritatea cazurilor
+- **Nu există transferuri între bugete** de tip „virări Cap. 87" care să necesite eliminare (spre deosebire de Cap. 56 - Transferuri între nivele de administrație)
+- **Excepție pentru FRDS**: Dacă analizezi fluxurile FRDS care primesc atât de la bugetul de stat, cât și de la bugete locale, trebuie să eviți dubla înregistrare prin:
+  - La nivel național: înregistrezi cheltuiala totală a FRDS
+  - La nivel local: elimini partea de cofinanțare care ajunge la FRDS (pentru a nu cumula „cheltuiala locală pentru FRDS" cu „cheltuiala efectivă a FRDS")
+
+### Principiu de analiză
+
+- Capitolul 87 = cheltuieli finale, nu intermediare
+- Se consideră „ieșiri din sistem" (banii pleacă către economie: zone libere, turism, dezvoltare locală)
+- Nu necesită eliminare la consolidare (nu sunt simple mutări de bani între bugete publice)
+
+---
+
+## Documente relevante pentru consultare
+
+1. **Ordin MFP nr. 1954/2005** - Clasificația indicatorilor privind finanțele publice (Anexa I - Clasificația funcțională)  
+   [legislatie.just.ro - Ordin 1954/2005](https://legislatie.just.ro/Public/DetaliiDocumentAfis/67596)
+
+2. **Legea nr. 273/2006** privind finanțele publice locale (inclusiv art. 26 privind clasificația cheltuielilor)  
+   [legislatie.just.ro - Legea 273/2006](https://legislatie.just.ro/Public/DetaliiDocument/73527)
+
+3. **Legea nr. 129/1998** (republicată) pentru înființarea, organizarea și funcționarea Fondului Român de Dezvoltare Socială  
+   [legislatie.just.ro - Legea 129/1998 republicată](https://legislatie.just.ro/Public/DetaliiDocumentAfis/62200)
+
+4. **Site-ul oficial FRDS** - pentru programe active și valori bugetare  
+   [www.frds.ro](https://www.frds.ro)
+
+5. **Clasificația indicatorilor privind bugetele locale (Anexa 2 - PDF)**  
+   [mfinante.gov.ro - Anexa 2 Bugete Locale](https://www.mfinante.gov.ro/static/10/Mfp/legislatie/clasificatie_economica/pdf/TranspFunc_anexa2.pdf)
+
+6. **Modificări în clasificația bugetară - site MFP**  
+   [mfinante.gov.ro - Clasificații bugetare](https://mfinante.gov.ro/domenii/buget/clasificatiile-bugetare)
+
+---
+
+## Notă importantă
+
+Capitolul 87 este esențial pentru înțelegerea diversității acțiunilor economice locale și a modului în care autoritățile publice susțin dezvoltarea economică prin programe atipice sau transversale. Datorită caracterului său rezidual, este recomandat să analizați separat fiecare subcapitol pentru a înțelege alocările efective și prioritățile reale ale fiecărei autorități publice.
+```
+
+## Context
+
+- **Created**: 2026-01-02 04:36:40
+- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/87.md
+- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+
+## Research Results
+
+https://claude.ai/chat/68fc27be-3f22-4e96-a6d2-8e1536ca3150
