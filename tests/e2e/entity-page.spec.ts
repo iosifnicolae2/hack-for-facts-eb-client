@@ -129,12 +129,16 @@ test.describe('Budget Explorer', () => {
     // Use historical year for stable data
     await page.goto(`/budget-explorer?year=${TEST_YEAR}`)
 
-    // Verify page loads by checking for "Budget Distribution" heading
-    // The heading check is sufficient - the "Total:" text in the treemap
-    // can take variable time to load from the API
+    // Verify page loads by checking for "Budget Distribution" heading with year
     await expect(
       page.getByRole('heading', { name: /distribuția bugetului|budget distribution/i }).first()
     ).toBeVisible({ timeout: 15000 })
+
+    // Verify data loads - check for "Total:" text in the treemap
+    // This confirms the year parameter was respected and data was fetched
+    await expect(
+      page.getByText(/Total:/i).first()
+    ).toBeVisible({ timeout: 20000 })
   })
 
   test('can toggle between spending and revenue', async ({ page }) => {

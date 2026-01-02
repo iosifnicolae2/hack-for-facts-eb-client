@@ -62,6 +62,7 @@ const SearchSchema = z.object({
   filter: AnalyticsFilterSchema.default(defaultFilter).describe('Budget filter including report_period, account_category, normalization, report_type.'),
   treemapPrimary: PrimaryLevelEnum.optional().describe('Explicit treemap grouping override: fn | ec.'),
   treemapPath: z.string().optional().describe('Treemap drilldown breadcrumb codes, comma-separated.'),
+  year: z.coerce.number().optional().describe('Shorthand for setting report year (overrides filter.report_period).'),
 })
 
 export type BudgetExplorerState = z.infer<typeof SearchSchema>
@@ -149,7 +150,21 @@ function BudgetExplorerPage() {
   const [userCurrency, setUserCurrency] = useUserCurrency()
   const [userInflationAdjusted, setUserInflationAdjusted] = useUserInflationAdjusted()
 
-	  const { filter, primary, depth, treemapPrimary, treemapPath } = search
+	  const { primary, depth, treemapPrimary, treemapPath, year } = search
+
+  // Apply year shorthand: if year is provided in URL, override filter.report_period
+  const filter = useMemo(() => {
+    if (year && Number.isFinite(year)) {
+      return {
+        ...search.filter,
+        report_period: {
+          type: 'YEAR' as const,
+          selection: { dates: [String(year)] },
+        },
+      }
+    }
+    return search.filter
+  }, [search.filter, year])
 	  const effectiveNormalization = useMemo(() => {
 	    const rawNormalization = filter.normalization ?? 'total'
 	    let normalized = rawNormalization
