@@ -312,7 +312,106 @@ La nivel local, subcapitolul **81.02.06 (Energie termică)** reprezintă una din
 ## Context
 
 - **Created**: 2026-01-02 04:36:39
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/81.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/81.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație bugetară pentru Capitolul 81 "Combustibili și energie"
+
+Documentația bugetară pentru Capitolul 81 este **în mare parte corectă**, dar necesită corecții la formatul codurilor și la câteva denumiri oficiale. Toate cele șase referințe legislative sunt în vigoare în ianuarie 2026, iar datele bugetare privind Ministerul Energiei sunt confirmate de surse oficiale. Principalele probleme identificate vizează formatul codurilor (care variază între 81.00.xx, 81.01.xx și 81.02.xx în funcție de tipul de buget) și două subcapitole omise din structura completă.
+
+## Probleme critice identificate
+
+**Formatul codurilor bugetare este incorect.** Documentația utilizează codurile 81.01.xx și 81.02.xx mixt, dar acestea aparțin unor anexe diferite: formatul **81.00.xx** este pentru clasificația generală (Anexa I), **81.01.xx** pentru bugetul de stat (Anexa nr. 1), iar **81.02.xx** pentru bugetele locale (Anexa nr. 2). Această distincție trebuie clarificată explicit în document pentru a evita confuzii.
+
+**Denumirea subcapitolului 81.00.02 este incompletă.** Denumirea oficială completă este "Cărbune și **alți** combustibili minerali solizi", nu doar "Cărbune și combustibili solizi". Cuvântul "alți" și "minerali" lipsesc, ceea ce poate crea ambiguități interpretative.
+
+**Două subcapitole esențiale lipsesc din verificare.** Structura oficială a Capitolului 81 include și **81.00.05 - Energie electrică** și **81.00.07 - Alți combustibili**, care nu sunt menționate în documentația verificată. Pentru completitudine, aceste subcapitole ar trebui adăugate dacă sunt relevante pentru subiectul tratat.
+
+## Probleme minore identificate
+
+Link-ul către Ordinul MFP 1954/2005 necesită o mică ajustare de format. URL-ul furnizat folosește `/DetaliiDocument/67596`, dar formatul corect și funcțional al portalului legislativ este `/DetaliiDocumentAfis/67596`. Link-ul complet corect este: `https://legislatie.just.ro/Public/DetaliiDocumentAfis/67596`.
+
+Link-urile către fișierele XLS de pe mfinante.gov.ro pot fi învechite sau temporare. Site-ul Ministerului Finanțelor actualizează periodic aceste fișiere cu noi date în nume (ex: `AnexanrII_29012025.xls`). Se recomandă înlocuirea link-urilor directe cu o referință către pagina stabilă de clasificații bugetare: `https://mfinante.gov.ro/domenii/buget/clasificatiile-bugetare`.
+
+Variații minore în cifrele bugetare sunt raportate de diferite surse de presă: unele menționează **14,7 miliarde lei** (declarația oficială a ministrului), altele **15 miliarde lei** (Digi24) sau **15,2 miliarde lei** (ProTV). Se recomandă utilizarea cifrei oficiale din declarația ministerului (**14,7 mld lei**) cu mențiunea că există variații în presă.
+
+## Confirmări ale informațiilor corecte
+
+### Referințele legislative sunt toate valide și în vigoare
+
+| Act normativ | Status | Observații |
+|-------------|--------|-----------|
+| Ordinul MFP nr. 1954/2005 | ✅ În vigoare | Actualizat periodic prin comunicări MFP |
+| Legea nr. 500/2002 | ✅ În vigoare | Ultima modificare: Legea 262/2023 |
+| Legea nr. 273/2006 | ✅ În vigoare | Modificată prin Legea 387/2023, OUG 89/2025 |
+| Legea nr. 325/2006 | ✅ În vigoare | **Republicată în MO nr. 217 din 16.03.2023** |
+| Legea nr. 226/2021 | ✅ În vigoare | Norme de aplicare în HG 1073/2021 |
+| OUG nr. 27/2022 | ✅ În vigoare | Prelungită prin OUG 6/2025 |
+
+### Datele bugetare sunt confirmate
+
+Toate cele trei afirmații privind bugetul Ministerului Energiei pentru 2025 sunt **confirmate** de declarațiile oficiale ale ministrului Sebastian Burduja și de Legea nr. 9/2025 a bugetului de stat:
+
+- **14,7 miliarde lei** buget total - confirmat oficial
+- **Creștere de peste 152%** față de 2024 - confirmat (calculabil la aproximativ 153% față de bugetul 2024 de ~5,8 mld lei)  
+- **Peste 75% pentru investiții** - confirmat (include fonduri PNRR și Fondul pentru Modernizare)
+
+### Corespondența COFOG este corectă
+
+Capitolul 81 "Combustibili și energie" corespunde **COFOG Grupa 04.3 (Fuel and energy)**, parte din Divizia 04 "Afaceri economice". Structura subcapitolelor românești reflectă fidel clasele COFOG 04.3.x:
+
+| Cod România | Cod COFOG | Denumire |
+|-------------|-----------|----------|
+| 81.00.01 | 04.3.0 | Administrație centrală |
+| 81.00.02 | 04.3.1 | Cărbune și combustibili solizi |
+| 81.00.03 | 04.3.2 | Petrol și gaze naturale |
+| 81.00.04 | 04.3.3 | Combustibil nuclear |
+| 81.00.05 | 04.3.5 | Energie electrică |
+| 81.00.06 | 04.3.6 | Energie termică (non-electrică) |
+| 81.00.07 | 04.3.4 | Alți combustibili |
+| 81.00.50 | 04.3.0 | Alte cheltuieli n.e.c. |
+
+## Structura completă oficială a Capitolului 81
+
+Conform Ordinului MFP 1954/2005, structura oficială completă este:
+
+| Cod | Denumire oficială |
+|-----|-------------------|
+| **81.00** | **Combustibili și energie** (Capitol) |
+| 81.00.01 | Administrație centrală |
+| 81.00.02 | Cărbune și alți combustibili minerali solizi |
+| 81.00.03 | Petrol și gaze naturale |
+| 81.00.04 | Combustibil nuclear |
+| 81.00.05 | Energie electrică |
+| 81.00.06 | Energie termică |
+| 81.00.07 | Alți combustibili |
+| 81.00.50 | Alte cheltuieli privind combustibilii și energia |
+
+## Link-uri recomandate pentru actualizare
+
+Pentru a menține documentația actualizată, se recomandă următoarele surse stabile:
+
+- **Clasificații bugetare:** `https://mfinante.gov.ro/domenii/buget/clasificatiile-bugetare` — conține link-uri actualizate către toate anexele clasificației funcționale și economice
+- **Ordinul MFP 1954/2005:** `https://legislatie.just.ro/Public/DetaliiDocumentAfis/67596`
+- **Legea 500/2002:** `https://legislatie.just.ro/Public/DetaliiDocumentAfis/37954`
+- **Legislație bugetară MFP:** `https://mfinante.gov.ro/domenii/buget/legislatie-buget`
+
+## Recomandări pentru îmbunătățire
+
+**Clarificarea sistemului de codificare** este esențială. Documentul ar trebui să explice explicit că există trei formate de coduri: 81.00.xx (clasificare generală), 81.01.xx (buget de stat), 81.02.xx (bugete locale). Utilizatorii fără pregătire de specialitate pot fi confuzați de această varianță.
+
+**Completarea subcapitolelor lipsă** ar îmbunătăți acuratețea. Subcapitolele 81.00.05 (Energie electrică) și 81.00.07 (Alți combustibili) fac parte din structura oficială și ar trebui menționate dacă sunt relevante.
+
+**Utilizarea denumirilor oficiale complete** este necesară pentru conformitate cu actele normative. De exemplu, "Cărbune și alți combustibili minerali solizi" în loc de versiunea prescurtată.
+
+## Concluzie
+
+Documentația verificată este **substanțial corectă** din punct de vedere al referințelor legislative și al datelor bugetare. Problemele identificate sunt predominant de natură tehnică — format de coduri și denumiri complete — și nu afectează conținutul de fond. Republicarea Legii 325/2006 în martie 2023 este confirmată, iar toate cifrele bugetare pentru Ministerul Energiei 2025 corespund declarațiilor oficiale. Corecțiile recomandate ar crește acuratețea și utilitatea documentului pentru utilizatorii nespecialiști.
+
+## Processed
+
+- **Date**: 2026-01-02 16:24:43
+- **Source file**: ./public/assets/text/ro/functional/81.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-81-2026-01-02-160309.log

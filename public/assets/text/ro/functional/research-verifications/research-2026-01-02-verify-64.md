@@ -301,7 +301,158 @@ Capitolul 64 are următoarele subdiviziuni:
 ## Context
 
 - **Created**: 2026-01-02 04:36:36
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/64.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/64.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație bugetară: Capitol 64 – Fondul de Garantare Creanțe Salariale
+
+Documentația pentru Capitolul 64 este **parțial corectă**, însă conține două erori critice care necesită corectare imediată: plafonul maxim și perioada de acoperire au fost modificate în 2021, de la 3 la 5 salarii medii brute și respectiv de la 3 la 5 luni calendaristice. Cadrul legal de bază, clasificarea bugetară și mecanismele instituționale sunt corect descrise. Documentul oferă o prezentare clară a funcționării fondului pentru utilizatori nespecialiști.
+
+---
+
+## Probleme critice care necesită corectare imediată
+
+### Plafonul maxim de creanțe este depășit
+
+Documentul afirmă că plafonul maxim este de **3 salarii medii brute pe economie**, cu valori estimate de 27.000-28.500 lei în 2025. Acest lucru este **incorect** – legislația a fost modificată succesiv:
+
+- **OUG 35/2021** (mai 2021): majorare de la 3 la 4 salarii medii brute
+- **OUG 53/2021** (iunie 2021): majorare de la 4 la **5 salarii medii brute**
+
+Plafonul actual corect este de **5 salarii medii brute pe economie**, reprezentând aproximativ **45.000-47.500 lei** pentru anul 2025, nu 27.000-28.500 lei cum se menționează în document.
+
+### Perioada de acoperire este incorectă
+
+Documentul indică o perioadă de acoperire de **3 luni calendaristice**. Aceasta este **depășită** – conform aceleiași evoluții legislative:
+
+- **OUG 35/2021**: majorare de la 3 la 4 luni consecutive
+- **OUG 53/2021**: majorare de la 4 la **5 luni consecutive**
+
+Site-ul oficial ANOFM confirmă: „creanțele salariale prevăzute la lit. a), c), d) și e) se suportă pentru o **perioadă de 5 luni calendaristice**". Documentul trebuie actualizat pentru a reflecta această modificare esențială.
+
+---
+
+## Probleme minore și sugestii de îmbunătățire
+
+### Referința la Codul Fiscal necesită completare
+
+Documentul citează articolele **220³-220⁶** din Legea 227/2015 (Codul Fiscal). Deși aceste articole sunt corecte și relevante, cadrul complet al Contribuției Asiguratorii pentru Muncă este reglementat de **articolele 220¹-220⁷** (Capitolul IX). Se recomandă extinderea referinței la „art. 220¹-220⁷" sau menționarea întregului „Capitol IX – Contribuția asiguratorie pentru muncă" pentru completitudine.
+
+### Evoluția cotelor CAM alocate FGPCS
+
+Cotele menționate (15% bază, 12% în 2023, 1% în 2024) sunt corecte. Pentru claritate, se recomandă:
+
+- Menționarea că **cota de 1% pentru 2024** reprezintă o reducere semnificativă față de anii anteriori
+- Adăugarea cotei pentru **2025** când devine disponibilă prin legea bugetului
+- Specificarea sursei pentru fiecare cotă anuală (legea bugetului asigurărilor sociale de stat)
+
+### Modificările recente ale Legii 200/2006 trebuie menționate
+
+Secțiunea de bază legală ar trebui să includă în „Aspecte importante" referințe la:
+
+- **OUG 35/2021** și **OUG 53/2021** – modificări privind plafonul și perioada
+- **HG 510/2021** – modificarea normelor metodologice (HG 1850/2006)
+- **Proiect 2025**: Ministerul Muncii a propus majorarea la 12 salarii și 12 luni pentru companiile din domenii strategice
+
+### Variații minore de capitalizare
+
+Denumirea oficială în clasificare folosește minuscule: „Cheltuielile fondului de garantare pentru plata creanțelor salariale". Documentul folosește majuscule la fiecare cuvânt principal. Aceasta este o diferență stilistică acceptabilă în documentația de prezentare, dar poate fi menționată pentru rigoare.
+
+### Secțiuni incomplete în documentul furnizat
+
+Documentul se întrerupe la „Formula simplificată pentru echilibrul fondului" fără a prezenta efectiv formula. Structura completă ar trebui să includă și secțiunile:
+
+- „Aspecte importante" (cazuri speciale, excepții)
+- „Interpretare pentru analiză tehnică și consolidare"
+- „Documente relevante" (legislație primară completă)
+- Subcapitolele oficiale (64.04.01 și 64.04.02)
+
+---
+
+## Confirmări ale informațiilor corecte
+
+### Clasificarea bugetară este validată
+
+Codul **64.04** este corect pentru „Cheltuielile fondului de garantare pentru plata creanțelor salariale". Capitolul aparține **Anexei 4** din Ordinul MFP 1954/2005 („Clasificația indicatorilor privind bugetul asigurărilor pentru șomaj"), exact cum se menționează. Subcapitolele oficiale sunt **64.04.01** (Asigurări pentru plata creanțelor salariale) și **64.04.02** (Cheltuieli de gestionare).
+
+### Cadrul legal principal este corect
+
+| Referință legislativă | Status | Observații |
+|----------------------|--------|------------|
+| Legea 200/2006 | ✓ Validată | Titlul și obiectul corespund |
+| Directiva 2008/94/CE | ✓ Validată | Privind protecția lucrătorilor în cazul insolvenței |
+| Ordinul MFP 1954/2005 | ✓ Validată | Conține Anexa 4 menționată |
+| Legea 85/2014 | ✓ Validată | Proceduri de insolvență |
+| Legea 227/2015 (Codul Fiscal) | ✓ Validată | Capitolul IX – CAM |
+
+### Ratele și procentele verificate
+
+Următoarele date sunt **corecte și actuale**:
+
+- **Cota CAM de 2,25%** din fondul de salarii brut – confirmată prin art. 220³ Cod Fiscal
+- **Cota de bază 15%** pentru FGPCS din CAM – conform Codului Fiscal
+- **Cota 12% pentru 2023** – conform Legii 368/2022 (buget 2023)
+- **Cota 1% pentru 2024** – confirmată prin legea bugetului 2024
+- **Limita de 5% pentru cheltuieli de gestionare** – conform art. 12 din Legea 200/2006
+- **Salariul mediu brut 9.000-9.500 lei/lună** pentru 2025 – corespunde datelor INS (variind între 8.910 și 9.495 lei pe lună în 2025)
+
+### Rolurile instituționale sunt corect descrise
+
+Distribuția responsabilităților este **verificată** conform Legii 200/2006:
+
+- **ANAF** colectează contribuțiile (art. 9)
+- **ANOFM** gestionează fondul prin agențiile teritoriale (art. 10)
+- **AJOFM** primește și soluționează cererile (art. 11)
+- Plățile se efectuează **direct în conturile salariaților**
+- Fondul devine **creditor prin subrogare** în drepturile salariaților plătiți
+
+### Clasificarea internațională COFOG
+
+Tipul de cheltuială corespunde clasificării **COFOG 10.5 – Șomaj** (Unemployment), parte din Diviziunea 10 „Protecție socială". Această corespondență poate fi adăugată în documentație pentru conformitate cu standardele europene.
+
+---
+
+## Calitatea limbii române
+
+Documentul utilizează **diacriticele Unicode corecte** (ș, ț, ă, â, î), nu formele vechi. Gramatica și ortografia sunt corecte. Stilul este consistent – formal și tehnic. Terminologia este aliniată cu nomenclatura oficială MFP. Nu au fost identificate erori de limbă.
+
+---
+
+## Rezumat acțiuni necesare
+
+**Corectări obligatorii:**
+
+1. Actualizarea plafonului de la „3 salarii medii brute" la **„5 salarii medii brute pe economie"**
+2. Actualizarea perioadei de acoperire de la „3 luni" la **„5 luni calendaristice"**
+3. Recalcularea valorilor în lei pentru plafon: de la ~27.000 lei la **~45.000-47.500 lei** (pentru 2025)
+4. Adăugarea referințelor la **OUG 35/2021** și **OUG 53/2021** în secțiunea de bază legală
+
+**Îmbunătățiri recomandate:**
+
+- Completarea referinței Cod Fiscal la „art. 220¹-220⁷"
+- Adăugarea clasificării COFOG 10.5
+- Listarea subcapitolelor oficiale (64.04.01 și 64.04.02)
+- Completarea secțiunilor lipsă din document
+
+---
+
+## Surse consultate pentru verificare
+
+**Surse oficiale verificate:**
+- ANOFM – pagina oficială Creanțe Salariale (anofm.ro)
+- EUR-Lex – Directiva 2008/94/CE text integral
+- Monitorul Oficial – OUG 35/2021, OUG 53/2021, HG 510/2021
+- Institutul Național de Statistică – date salariu mediu brut 2025
+- Ministerul Finanțelor – clasificații bugetare și comunicări
+- Codul Fiscal – art. 220¹-220⁷ (Capitolul IX CAM)
+- Legea 200/2006 – text consolidat cu modificări
+- CECCAR Business Magazine – analiza OUG 53/2021
+- LegeAZ.net – monitorizare modificări legislative
+
+## Processed
+
+- **Date**: 2026-01-02 16:06:52
+- **Source file**: ./public/assets/text/ro/functional/64.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-64-2026-01-02-160309.log

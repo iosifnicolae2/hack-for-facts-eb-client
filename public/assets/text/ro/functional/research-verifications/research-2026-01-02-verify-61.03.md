@@ -308,7 +308,125 @@ Aceasta permite comparații cu alte state membre UE. România alocă pentru serv
 ## Context
 
 - **Created**: 2026-01-02 04:36:36
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/61.03.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/61.03.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație bugetară 61.[01/02].03 - Ordine publică
+
+Documentația pentru subcapitolul „Ordine publică" este **în mare parte corectă** și conformă cu legislația în vigoare. Verificarea detaliată a identificat o problemă critică privind denumirea paragrafului 61.02.03.04, câteva inexactități minore în citarea titlurilor legilor, dar confirmă acuratețea structurii codurilor bugetare și a conținutului de fond.
+
+---
+
+## 1. Rezumat general - concluzia verificării
+
+Documentația analizată pentru clasificația funcțională **61.[01/02].03 - Ordine publică** prezintă un nivel bun de acuratețe. Codurile bugetare **61.01.03** (buget de stat) și **61.02.03** (bugete locale) corespund integral cu Ordinul MFP nr. 1954/2005. Denumirea „Ordine publică" este **oficială și corectă**. Toate cele șase acte normative citate sunt în vigoare. S-a identificat o discrepanță critică: paragraful 61.02.03.04 se numește oficial „**Poliție Comunitară**" în clasificația MFP, nu „Poliția Locală" cum este menționat în document.
+
+---
+
+## 2. Probleme critice găsite
+
+### Denumirea paragrafului 61.02.03.04 necesită corectare
+
+Documentul menționează codul **61.02.03.04** ca fiind pentru „Poliția Locală", însă denumirea oficială din clasificația MFP este **„Poliție Comunitară"**. Conform Notei MFP nr. 120428, sumele pentru serviciile de poliție locală se evidențiază la paragraful „Poliție Comunitară" cod 61.02.03.04. Această denumire istorică a rămas în clasificarea bugetară chiar și după intrarea în vigoare a Legii nr. 155/2010 care a reorganizat Poliția Comunitară ca Poliție Locală.
+
+**Recomandare:** Corectați textul astfel: *„Paragraful 61.02.03.04 «Poliție Comunitară» (utilizat în prezent pentru evidențierea cheltuielilor cu Poliția Locală, conform Legii nr. 155/2010)"*.
+
+---
+
+## 3. Probleme minore și sugestii de îmbunătățire
+
+### Titlurile legilor sunt incomplete
+
+Documentul citează legile în formă prescurtată. Titlurile oficiale complete sunt:
+
+| Citare în document | Titlu oficial complet |
+|---|---|
+| „Legea nr. 218/2002 - Poliția Română" | Legea nr. 218/2002 **privind organizarea și funcționarea Poliției Române** |
+| „Legea nr. 550/2004 - Jandarmeria Română" | Legea nr. 550/2004 **privind organizarea și funcționarea Jandarmeriei Române** |
+| „OUG nr. 104/2001 - Poliția de Frontieră" | OUG nr. 104/2001 **privind organizarea și funcționarea Poliției de Frontieră Române** |
+| „Legea nr. 155/2010 - Poliția Locală" | Legea nr. 155/2010 **a poliției locale** (nu „privind") |
+
+**Recomandare:** Fie completați titlurile, fie adăugați o notă că sunt menționate în formă prescurtată.
+
+### Sugestii suplimentare de îmbunătățire
+
+- **Adăugați referința la Legea nr. 371/2004** (privind Poliția Comunitară, abrogată) pentru a explica de ce paragraful 61.02.03.04 poartă încă denumirea „Poliție Comunitară" în clasificație
+- **Clarificați sufixul .10** menționat în document - acesta se referă la „instituții publice și activități finanțate integral/parțial din venituri proprii", nu doar „instituții finanțate din venituri proprii"
+- **Adăugați mențiunea că IGPR, IGJR și IGPF** funcționează ca structuri cu personalitate juridică în subordinea MAI, pentru claritate instituțională
+
+---
+
+## 4. Confirmări ale informațiilor corecte
+
+### Codurile bugetare - CORECTE ✅
+- **61.01.03** - Ordine publică (buget de stat) - confirmat în Ordinul MFP 1954/2005
+- **61.02.03** - Ordine publică (bugete locale) - confirmat în Ordinul MFP 1954/2005
+- **61.10.03** - Ordine publică (instituții cu venituri proprii) - confirmat
+
+### Denumirile oficiale - CORECTE ✅
+- Capitol 61: „**Ordine publică și siguranță națională**" - conform MFP
+- Subcapitol 03: „**Ordine publică**" - conform MFP
+
+### Structura paragrafelor pentru 61.01.03 - CORECTĂ ✅
+Conform clasificației MFP:
+- 61.01.03.01 - Poliție
+- 61.01.03.02 - Jandarmerie  
+- 61.01.03.03 - Paza și supravegherea frontierei
+
+### Legislația citată - TOATE ÎN VIGOARE ✅
+| Act normativ | Status | Link verificat |
+|---|---|---|
+| Ordinul MFP nr. 1954/2005 | ✅ În vigoare | legislatie.just.ro/Public/DetaliiDocument/67596 |
+| Legea nr. 218/2002 | ✅ În vigoare, republicată | legislatie.just.ro/Public/DetaliiDocument/35841 |
+| Legea nr. 550/2004 | ✅ În vigoare | legislatie.just.ro/Public/DetaliiDocument/57610 |
+| OUG nr. 104/2001 | ✅ În vigoare | legislatie.just.ro/Public/DetaliiDocument/29274 |
+| Legea nr. 81/2002 | ✅ În vigoare | legislatie.just.ro |
+| Legea nr. 273/2006 | ✅ În vigoare | legislatie.just.ro/Public/DetaliiDocument/73527 |
+| Legea nr. 155/2010 | ✅ În vigoare, republicată | legislatie.just.ro/Public/DetaliiDocument/120615 |
+
+### Instituțiile menționate - CORECT ✅
+- **IGPR** (Inspectoratul General al Poliției Române) - subordonat MAI
+- **IGJR** (Inspectoratul General al Jandarmeriei Române) - subordonat MAI
+- **IGPF** (Inspectoratul General al Poliției de Frontieră) - subordonat MAI
+
+### Corespondența COFOG - CORECTĂ ✅
+Subcapitolul românesc **61.03 „Ordine publică"** corespunde codului **COFOG 03.1 „Police services"** (Servicii de poliție), conform clasificației ONU utilizată în raportările către Eurostat.
+
+### Gramatică și diacritice - CORECTE ✅
+Nu s-au identificat erori gramaticale sau de utilizare a diacriticelor în textul verificat.
+
+---
+
+## 5. Surse oficiale consultate
+
+### Surse legislative verificate
+- **Ordinul MFP nr. 1954/2005**: https://legislatie.just.ro/Public/DetaliiDocument/67596
+- **Legea nr. 218/2002** (Poliția Română): https://legislatie.just.ro/Public/DetaliiDocument/35841
+- **Legea nr. 550/2004** (Jandarmeria): https://legislatie.just.ro/Public/DetaliiDocument/57610
+- **OUG nr. 104/2001** (Poliția de Frontieră): https://legislatie.just.ro/Public/DetaliiDocument/29274
+- **Legea nr. 155/2010** (Poliția Locală): https://legislatie.just.ro/Public/DetaliiDocument/120615
+- **Legea nr. 273/2006** (Finanțe publice locale): https://legislatie.just.ro/Public/DetaliiDocument/73527
+
+### Surse MFP verificate
+- **Pagina clasificații bugetare MFP**: mfinante.gov.ro/domenii/buget/clasificatiile-bugetare
+- **Nota MFP nr. 120428** privind utilizarea codului 61.02.03.04
+- **Anexa II - Clasificația cheltuielilor**: AnexanrII_29012025.xls (fișier confirmat existent)
+- **Anexa 7 - Corespondență COFOG**: Anexanr7_13052025.xls (fișier confirmat existent)
+
+### Surse COFOG
+- Clasificația COFOG - UN Statistics Division
+- Raportări Eurostat pentru România (COFOG Division 03)
+
+---
+
+## Concluzie finală
+
+Documentația pentru **61.[01/02].03 - Ordine publică** este de **calitate bună** și poate fi utilizată cu încredere după efectuarea unei singure corecții critice: actualizarea mențiunii despre paragraful 61.02.03.04 pentru a reflecta denumirea oficială „Poliție Comunitară" din clasificația MFP, cu explicația că acest cod este utilizat pentru Poliția Locală conform Legii 155/2010. Această clarificare este esențială pentru acuratețea tehnică a documentației și pentru evitarea confuziilor în practica bugetară.
+
+## Processed
+
+- **Date**: 2026-01-02 14:56:32
+- **Source file**: ./public/assets/text/ro/functional/61.03.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-61.03-2026-01-02-143612.log

@@ -261,7 +261,136 @@ Pentru analiza tendințelor: monitorizați evoluția în timp — o creștere se
 ## Context
 
 - **Created**: 2026-01-02 04:36:39
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/68.50.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/68.50.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Raport de verificare a documentației bugetare 68.50
+
+Documentația pentru subcapitolul 68.50 „Alte cheltuieli în domeniul asigurărilor și asistenței sociale" este **în mare parte corectă și bine structurată**, cu câteva probleme ce necesită corectare. Verificarea a confirmat acuratețea majorității referințelor legislative și a exemplelor bugetare concrete, însă a identificat o eroare factuală critică privind clasificarea centrelor de primire pentru refugiați.
+
+---
+
+## 1. Rezumat general
+
+Documentul verificat prezintă corect **cadrul juridic fundamental** și **definiția subcapitolului 68.50**. Denumirea oficială „Alte cheltuieli în domeniul asigurărilor și asistenței sociale" corespunde exact cu clasificația MFP, iar exemplul bugetar MAI 2019 (**7.684 mii lei**) a fost confirmat în documentele oficiale. Totuși, afirmația că MAI clasifică centrele de primire pentru refugiați la 68.50 este incorectă — aceste cheltuieli sunt de fapt încadrate la **68.01.15.03** (Prevenirea excluderii sociale). Din punct de vedere tehnic, referințele la Ordinul MFP 1954/2005, Nota 121866/2007 și legăturile cu Legea 200/2006 sunt verificate și corecte.
+
+---
+
+## 2. Probleme critice găsite
+
+### Eroare factuală privind clasificarea centrelor pentru refugiați
+
+Documentul afirmă că MAI utilizează subcapitolul 68.50 pentru „Centre de primire și cazare pentru solicitanții statutului de refugiat". **Această informație este incorectă.** Conform documentului oficial al MAI „Sinteza Buget 2019 pe capitole și subcapitole", aceste cheltuieli sunt clasificate la:
+
+- **Subcapitol 68.01.15** – Prevenirea excluderii sociale
+- **Paragraf 68.01.15.03** – Centre de primire și cazare a persoanelor solicitante a statutului de refugiat
+- Sumă alocată în 2019: **4.321 mii lei** (nu la 68.50, ci la 68.01.15.03)
+
+**Recomandare**: Eliminați sau corectați referința la centrele pentru refugiați din lista de utilizări specifice pentru 68.50.
+
+### URL posibil incorect pentru Legea 200/2006
+
+Link-ul furnizat `https://legislatie.just.ro/Public/DetaliiDocument/72918` ar putea fi incorect. Conform verificărilor, ID-urile corecte pentru această lege sunt:
+- **72030** – forma inițială a legii
+- **242693** – forma actualizată republicată
+
+**Recomandare**: Verificați și actualizați URL-ul pentru Legea 200/2006.
+
+---
+
+## 3. Probleme minore și sugestii de îmbunătățire
+
+### Clarificarea sistemului de codificare
+
+Documentul folosește notația prescurtată „68.50", dar clasificația oficială folosește coduri cu prefix pentru tipul de buget:
+- **68.01.50** – Bugetul de stat
+- **68.02.50** – Bugetele locale
+- **68.04.50** – Bugetul asigurărilor pentru șomaj
+- **68.10.50** – Activități finanțate din venituri proprii
+
+**Sugestie**: Adăugați o notă explicativă despre sistemul de codificare cu prefixe sau specificați explicit că „68.50" este forma prescurtată generică.
+
+### Semnul matematic (+) pentru cheltuieli
+
+Documentul menționează verificarea semnului (+) pentru cheltuieli, dar nu am identificat o referință explicită în documentația MFP care să menționeze această convenție. În rapoartele de execuție bugetară, cheltuielile apar ca valori pozitive, iar plățile recuperate cu semn negativ — aceasta pare o practică implicită, nu documentată formal.
+
+**Sugestie**: Dacă se face referire la convenția de semn, ar fi util să se clarifice că este o practică contabilă standard, nu o prevedere explicită MFP.
+
+### Fișierele Excel de clasificare
+
+URL-urile pentru fișierele Excel de pe mfinante.gov.ro (AnexanrII_29012025.xls și Anexanr7_13052025.xls) nu au putut fi accesate direct din cauza restricțiilor robots.txt, dar pagina clasificărilor bugetare este accesibilă la `https://mfinante.gov.ro/domenii/buget/clasificatiile-bugetare`.
+
+**Sugestie**: Verificați periodic disponibilitatea link-urilor directe către fișierele Excel și actualizați-le dacă se schimbă.
+
+---
+
+## 4. Confirmări ale informațiilor corecte
+
+### Cod și denumire oficială – ✓ CONFIRMATE
+
+| Element | Status |
+|---------|--------|
+| Cod subcapitol: 68.50 | ✅ Corect |
+| Capitol părinte: 68 (Asigurări și asistență socială) | ✅ Corect |
+| Denumire: „Alte cheltuieli în domeniul asigurărilor și asistenței sociale" | ✅ Identică cu Anexa II MFP |
+
+### Referințe legislative – ✓ VERIFICATE ȘI FUNCȚIONALE
+
+| Act normativ | Link | Status |
+|--------------|------|--------|
+| Ordinul MFP 1954/2005 | legislatie.just.ro/Public/DetaliiDocumentAfis/67596 | ✅ Funcționează |
+| Legea 273/2006 | legislatie.just.ro/Public/DetaliiDocument/73527 | ✅ Funcționează |
+| Legea 500/2002 | legislatie.just.ro/Public/DetaliiDocumentAfis/37954 | ✅ Funcționează |
+| Legea 292/2011 | legislatie.just.ro/Public/DetaliiDocument/133913 | ✅ Funcționează |
+| Legea 200/2006 | ⚠️ De verificat URL | ✅ Actul există și este corect citat |
+
+### Nota MFP 121866/2007 – ✓ CONFIRMATĂ
+
+Nota există și este accesibilă la `mfinante.gov.ro/static/10/Mfp/legislatie/clasificatie_economica/nota121866.htm`. Documentul confirmă explicit:
+- Codul **68.01.50** pentru „Alte cheltuieli în domeniul asigurărilor și asistenței sociale"
+- Utilizarea acestui cod pentru subvențiile legate de Fondul de garantare pentru plata creanțelor salariale
+
+### Exemplul bugetar MAI 2019 – ✓ CONFIRMAT EXACT
+
+Din documentul oficial MAI „Sinteza Buget 2019 pe capitole și subcapitole":
+> *„Subcapitolul 68.01.50 Alte cheltuieli în domeniul asigurărilor și asistenței sociale – **7.684** [mii lei]"*
+
+Suma din documentația verificată corespunde **exact** cu sursa oficială.
+
+### Fondul de garantare creanțe salariale – ✓ CONFIRMAT
+
+Nota MFP 121866/2007 confirmă explicit că cheltuielile de gestionare ale Fondului de garantare pentru plata creanțelor salariale (Legea 200/2006) se înregistrează la subcapitolul 68.01.50. Aceasta validează referința din document.
+
+### Corespondența COFOG – ✓ CONFIRMATĂ
+
+Capitolul 68 (Asigurări și asistență socială) corespunde **COFOG Division 10 – Social Protection**, conform rapoartelor oficiale de execuție bugetară și standardelor Eurostat ESA2010.
+
+---
+
+## 5. Surse consultate
+
+### Surse legislative verificate
+- **legislatie.just.ro** – Ordinul MFP 1954/2005, Legea 273/2006, Legea 500/2002, Legea 292/2011, Legea 200/2006
+- **mfinante.gov.ro** – Nota 121866/2007, Pagina clasificații bugetare
+
+### Surse pentru date bugetare
+- **mai.gov.ro** – Sinteza Buget 2019 pe capitole și subcapitole (document PDF oficial)
+- **static.anaf.ro** – Raport de execuție bugetară COFOG (martie 2024)
+
+### Surse pentru verificări suplimentare
+- **ec.europa.eu/eurostat** – Clasificarea COFOG pentru protecție socială
+- **anofm.ro** – Informații despre Fondul de garantare pentru creanțe salariale
+
+---
+
+## Concluzie finală
+
+Documentația este **de bună calitate**, cu referințe legislative corecte și exemple verificabile. **Problema critică** care necesită corectare imediată este afirmația eronată despre clasificarea centrelor pentru refugiați la 68.50 (corect: 68.01.15.03). După efectuarea acestei corecturi și verificarea URL-ului pentru Legea 200/2006, documentul va fi pregătit pentru publicare pe platforma Transparenta.eu.
+
+## Processed
+
+- **Date**: 2026-01-02 16:19:09
+- **Source file**: ./public/assets/text/ro/functional/68.50.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-68.50-2026-01-02-160309.log

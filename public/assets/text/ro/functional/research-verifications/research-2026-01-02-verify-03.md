@@ -260,7 +260,171 @@ Pentru analize la nivel de UAT, afișarea cotelor defalcate primite oferă o ima
 ## Context
 
 - **Created**: 2026-01-02 04:36:34
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/03.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/03.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație Capitol 03 – Impozit pe venit: Erori critice identificate în cotele defalcate
+
+**Documentația pentru Capitol 03 prezintă mai multe probleme semnificative care necesită corecții urgente.** Verificarea a identificat că procentele cotelor defalcate din impozitul pe venit sunt depășite, corespunzând formei legislative anterioare anului 2020, nu celei în vigoare. Codul bugetar și referințele legislative principale sunt corecte, însă structura subcapitolelor și link-urile MFP necesită actualizare.
+
+---
+
+## 1. Rezumat general al verificării
+
+Verificarea completă a documentației pentru Capitol 03 – Impozit pe venit a analizat **șase categorii de informații**: coduri bugetare, referințe legislative, cote fiscale, mecanisme de redistribuire, link-uri funcționale și OUG 156/2024. Rezultatele evidențiază o **problemă critică majoră** legată de procentele cotelor defalcate și multiple **probleme minore** privind structura codurilor și URL-urile către sursele MFP.
+
+| Categorie verificată | Status | Prioritate corecție |
+|---------------------|--------|---------------------|
+| Cod Capitol 03 = Impozit pe venit | ✅ Corect | - |
+| Cota standard 10% impozit pe venit | ✅ Corect | - |
+| OUG 156/2024 - dividende 10% | ✅ Corect | - |
+| Referințe legislative (Ordin MFP, Cod Fiscal) | ✅ Corecte | - |
+| **Cote defalcate art. 32 Legea 273/2006** | ❌ **INCORECTE** | **Urgentă** |
+| Structura subcapitolelor | ⚠️ Necesită clarificare | Medie |
+| Link-uri MFP | ⚠️ Parțial nefuncționale | Medie |
+
+---
+
+## 2. Probleme critice găsite
+
+### Procentele cotelor defalcate sunt depășite și incorecte
+
+**Aceasta este cea mai importantă eroare identificată.** Documentația menționează următoarele procente pentru cotele defalcate din impozitul pe venit conform art. 32 din Legea 273/2006:
+- 47% direct la comune/orașe/municipii
+- 13% la bugetul județean
+- 22% pentru echilibrare
+- ~18% rămâne la bugetul de stat
+
+**Aceste procente corespund formei vechi a legii, anterioară modificărilor din decembrie 2020.** Legea 286/2020, publicată în Monitorul Oficial nr. 1201 din 10.12.2020, a modificat substanțial art. 32, iar forma actualizată prevede cote complet diferite.
+
+### Comparație forme veche vs. actuală a art. 32
+
+| Destinație | Forma veche (pre-2020) | Forma actualizată Legea 286/2020 |
+|------------|----------------------|--------------------------------|
+| Bugetele locale comune/orașe/municipii | 47% | **65%** |
+| Bugetul local al județului | 13% | **15%** |
+| Repartizare consiliu județean | - | **6%** (element nou) |
+| Echilibrarea bugetelor locale | 22% | **14%** |
+| Bugetul de stat | ~18% | **0%** |
+| **TOTAL** | 100% | **100%** |
+
+**Aspectul cel mai important**: în forma actualizată a Legii 273/2006, **întregul impozit pe venit colectat se redistribuie către bugetele locale** (100%), fără a rămâne nicio cotă la bugetul de stat din sumele defalcate. Afirmația că „~18% rămâne la bugetul de stat" este **incorectă** pentru legislația în vigoare.
+
+### Derogări anuale prin legea bugetului
+
+Situația este complicată și de faptul că în fiecare an se adoptă derogări de la art. 32-33 prin legea bugetului de stat sau ordonanțe de urgență. Pentru **2025**, OUG 156/2024 prevede regim special pentru București (**97%** către municipiu și sectoare, **3%** către județul Ilfov). Pentru **2026**, OUG 89/2025 („ordonanța trenuleț") stabilește prin derogare cotele: **63%** comune/orașe, **15%** buget județean, **22%** echilibrare.
+
+---
+
+## 3. Probleme minore și sugestii de îmbunătățire
+
+### Structura subcapitolelor necesită clarificare
+
+Documentația menționează subcapitolele **03.01, 03.02, 03.03, 03.04, 03.05, 03.06, 03.07, 03.18**. În clasificația oficială MFP actuală (Ordinul 1954/2005 cu modificările ulterioare), structura este diferită:
+
+- **Capitol 03.01** = „Impozitul pe venit" (pentru bugetul de stat)
+- **Capitol 03.02** = „Impozit pe venit" (pentru bugetele locale)
+- Subcapitolele au format cu trei niveluri: **03.01.XX** (ex: 03.01.18, 03.01.21)
+
+Notația **03.01-03.07, 03.18** sugerează fie o clasificație anterioară, fie o confuzie între capitole și subcapitole. Se recomandă verificarea și alinierea la nomenclatura oficială MFP.
+
+### Link-uri MFP necesită actualizare
+
+| Link documentat | Status | Problemă | Soluție recomandată |
+|-----------------|--------|----------|---------------------|
+| mfinante.gov.ro/domenii/bugetul-de-stat/clasificatiile-bugetare | ⚠️ Incorect | Calea „bugetul-de-stat" nu există | Înlocuiți cu: `mfinante.gov.ro/en/domenii/buget/clasificatiile-bugetare` |
+| AnexanrI_13102025.xls | ❌ Nefuncțional | Data „13.10.2025" depășită sau fișier înlocuit | Folosiți versiunea curentă: `AnexanrI_09012025.xls` sau link către pagina principală |
+| mfinante.gov.ro/.../informatii-executie-bugetara | ⚠️ Verificare | Posibil redirect | Adăugați prefixul `/en/` pentru consistență |
+
+### Recomandare pentru actualizarea dinamică
+
+Fișierele XLS cu clasificațiile bugetare se actualizează periodic pe site-ul MFP (format `AnexanrI_DDMMYYYY.xls`). În loc de link direct către un fișier specific, recomandăm linkarea către **pagina principală a clasificațiilor** și indicarea instrucțiunilor de descărcare a versiunii curente.
+
+---
+
+## 4. Confirmări ale informațiilor corecte
+
+### Cod bugetar Capitol 03
+
+✅ **CONFIRMAT** – În clasificația funcțională a veniturilor bugetare, Capitol **03.01** corespunde cu „**Impozitul pe venit**" pentru bugetul de stat, iar Capitol **03.02** pentru bugetele locale. Denumirea este corectă.
+
+### Cota standard de impozit pe venit 10%
+
+✅ **CONFIRMAT** – Conform Art. 64 din Legea 227/2015 (Codul Fiscal), Titlul IV, cota de impozit pe venit este de **10%** și se aplică asupra venitului impozabil corespunzător fiecărei surse. Această cotă este în vigoare de la 1 ianuarie 2018 (reducere de la 16%) și **nu a fost modificată** prin legislația recentă.
+
+### OUG 156/2024 și impozitul pe dividende
+
+✅ **CONFIRMAT** – OUG 156/2024 există și este în vigoare. Actul normativ, publicat în Monitorul Oficial nr. 1334 din 31 decembrie 2024, a modificat într-adevăr cota de impozit pe dividende de la **8%** la **10%**, cu aplicare pentru dividendele distribuite începând cu **1 ianuarie 2025**.
+
+Textul exact (Art. LXVI din OUG 156/2024) modifică:
+- Art. 43 alin. (2) din Codul Fiscal (dividende către persoane juridice): cotă **10%**
+- Art. 97 alin. (7) din Codul Fiscal (dividende către persoane fizice): cotă **10%**
+
+**Notă importantă**: Conform Legii 141/2025 (intrată în vigoare în august 2025), cota de impozit pe dividende va crește la **16%** începând cu **1 ianuarie 2026**.
+
+### Referințe legislative principale
+
+✅ **CORECTE** – Următoarele referințe legislative sunt valide și link-urile funcționează:
+
+| Document | Link | Status |
+|----------|------|--------|
+| Ordinul MFP nr. 1954/2005 | legislatie.just.ro/Public/DetaliiDocumentAfis/67596 | ✅ Funcțional |
+| Codul Fiscal (Legea 227/2015) | legislatie.just.ro/Public/DetaliiDocumentAfis/171282 | ✅ Funcțional |
+| Legea 273/2006 finanțe publice locale | legislatie.just.ro/Public/DetaliiDocumentAfis/73527 | ✅ Funcțional |
+
+### Formula Cap. 03 - Cap. 04
+
+✅ **CORECTĂ** – Formula „Venituri nete = Cap. 03 - Cap. 04" este logică și corectă:
+- **Cap. 03** = Impozit pe venit, profit și câștiguri din capital de la persoane fizice (încasări brute)
+- **Cap. 04** = Cote și sume defalcate din impozitul pe venit (sumele transferate la bugetele locale)
+- **Diferența** = Venitul net rămas la bugetul de stat
+
+### Regimul special pentru București
+
+✅ **MENȚIONARE CORECTĂ** – Art. 32 alin. (3) din Legea 273/2006 prevede într-adevăr un regim special pentru București, unde nu se aplică schema standard de repartizare pe județe. Conform OUG 89/2025 pentru 2026: din cota de **86%** rămasă după echilibrare (14%), **45%** merge la bugetul local al municipiului București și **55%** la sectoare (proporțional cu încasările din anul anterior). Din cota de 45%, **1,5%** se alocă județului Ilfov pentru secțiunea de dezvoltare.
+
+---
+
+## 5. Recomandări de corecție
+
+### Corecții urgente necesare
+
+**1. Actualizarea procentelor cotelor defalcate** – Înlocuiți complet secțiunea cu procentele actuale din Legea 286/2020 și menționați explicit că anual pot exista derogări:
+
+> *Forma actualizată art. 32 Legea 273/2006 (după Legea 286/2020):*
+> - 65% – bugetele locale ale comunelor, orașelor și municipiilor
+> - 15% – bugetul local al județului  
+> - 6% – repartizare prin hotărâre a consiliului județean
+> - 14% – echilibrarea bugetelor locale
+> 
+> *Notă: Anual, prin legea bugetului de stat, se pot stabili derogări de la aceste procente.*
+
+**2. Clarificarea structurii subcapitolelor** – Specificați că folosiți fie structura pe două niveluri (Capitol.Subcapitol cu 2 cifre), fie pe trei niveluri (Capitol.Subcapitol cu 4 cifre: XX.XX.XX), pentru aliniere la clasificația MFP.
+
+**3. Actualizarea link-urilor MFP**:
+- Înlocuiți `mfinante.gov.ro/domenii/bugetul-de-stat/clasificatiile-bugetare` cu `mfinante.gov.ro/en/domenii/buget/clasificatiile-bugetare`
+- Eliminați link-ul direct către fișierul XLS sau actualizați-l periodic
+
+### Îmbunătățiri sugerate
+
+- Adăugați o notă privind **evoluția viitoare a impozitului pe dividende** (16% din 2026)
+- Menționați că platforma legislatie.just.ro funcționează în browser dar poate bloca accesul automatizat
+- Includeți **surse alternative** pentru Codul Fiscal: `static.anaf.ro/static/10/Anaf/legislatie/L_227_2015.htm`
+
+---
+
+## Concluzii
+
+Verificarea a identificat o **eroare factuală majoră** în documentație: procentele cotelor defalcate din impozitul pe venit sunt depășite cu **5 ani**, corespunzând legislației anterioare modificărilor din decembrie 2020. Această eroare poate induce în eroare utilizatorii platformei Transparenta.eu și afectează credibilitatea informațiilor prezentate.
+
+Celelalte elemente verificate – codul bugetar Capitol 03, cota de 10% pentru impozitul pe venit, confirmarea OUG 156/2024 privind dividendele, și referințele legislative principale – sunt **corecte și actuale**. Problemele cu link-urile MFP sunt tehnice și relativ ușor de remediat.
+
+**Prioritatea maximă** pentru actualizarea documentației este corectarea procentelor din art. 32 Legea 273/2006, urmată de ajustarea link-urilor și clarificarea structurii subcapitolelor pentru aliniere la clasificația oficială MFP în vigoare.
+
+## Processed
+
+- **Date**: 2026-01-02 14:05:29
+- **Source file**: ./public/assets/text/ro/functional/03.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-03-2026-01-02-140450.log

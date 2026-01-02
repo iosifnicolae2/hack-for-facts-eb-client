@@ -3,8 +3,7 @@
 # Capitol 87 - Alte acțiuni economice
 
 ## URL
-
-[PASTE URL HERE AFTER STARTING RESEARCH]
+https://claude.ai/chat/68fc27be-3f22-4e96-a6d2-8e1536ca3150
 
 ## Prompt
 
@@ -285,9 +284,106 @@ Capitolul 87 este esențial pentru înțelegerea diversității acțiunilor econ
 ## Context
 
 - **Created**: 2026-01-02 04:36:40
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/87.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/87.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
 
-https://claude.ai/chat/68fc27be-3f22-4e96-a6d2-8e1536ca3150
+# Verificare documentație bugetară Capitol 87 – Rezultate și constatări
+
+Verificarea clasificației funcționale pentru Capitolul 87 „Alte acțiuni economice" relevă **două erori critice privind coduri inexistente** și **o denumire care necesită actualizare**. Documentul analizat pentru platforma Transparenta.eu conține informații în mare parte corecte, dar subcapitolele referitoare la „Zone libere" și „Proiecte de dezvoltare multifuncțională la nivel local" nu există în clasificația oficială actuală.
+
+---
+
+## 1. Rezumat general
+
+Ordinul MFP nr. 1954/2005 și toate referințele legislative menționate sunt în vigoare și corect identificate. Structura Capitolului 87 este confirmată, dar mai simplă decât cea documentată – clasificația oficială include doar **5 subcapitole active** la nivelul bugetelor de stat și locale, față de cele 7 poziții prezentate în documentul verificat. Corespondența COFOG cu **diviziunea 04.9** (Economic affairs n.e.c.) este corectă.
+
+---
+
+## 2. Probleme critice identificate
+
+### Coduri bugetare inexistente în clasificația oficială
+
+**87.01.03 / 87.02.03 – „Zone libere"** nu există în Anexa II la Ordinul MFP 1954/2005. Acest subcapitol nu apare în nicio versiune a clasificației funcționale actuale. Cheltuielile pentru zone libere sunt probabil încadrate în alte capitole sau la nivel economic, nu funcțional.
+
+**87.02.05 – „Proiecte de dezvoltare multifuncțională" (bugete locale)** nu există. Subcapitolul pentru proiecte de dezvoltare multifuncțională este prezent exclusiv la nivelul bugetului de stat (**87.01.05**), nu și pentru bugete locale. Această eroare poate induce utilizatorii în eroare privind posibilitățile de alocare bugetară locală.
+
+### Denumire incorectă
+
+Subcapitolele **87.01.04 și 87.02.04** au denumirea oficială simplificată „**Turism**", nu „Promovarea și dezvoltarea turismului". Vechea denumire aparținea codului 69.02.13 din clasificația anterioară (OMF 1394/1995) și a fost înlocuită odată cu intrarea în vigoare a Ordinului 1954/2005.
+
+---
+
+## 3. Probleme minore și sugestii de îmbunătățire
+
+### Subcapitole neacoperite în documentație
+
+Documentul verificat nu menționează următoarele subcapitole oficiale:
+
+- **87.01.01 – Fondul Român de Dezvoltare Socială** (buget de stat) – complementar codului 87.02.01 pentru bugete locale
+- **87.06.01 – FRDS** pentru fonduri externe nerambursabile
+- **87.10.50 – Alte acțiuni economice** pentru instituții publice cu venituri proprii
+
+### Recomandări pentru Transparenta.eu
+
+Pentru utilizatorii fără pregătire de specialitate, ar fi util să se adauge o notă explicativă privind diferența între sufixele „.01" (buget de stat) și „.02" (bugete locale), precum și faptul că nu toate subcapitolele există în ambele clasificări. De asemenea, menționarea corespondenței COFOG (04.9 – Economic affairs n.e.c.) ar facilita comparațiile internaționale.
+
+---
+
+## 4. Confirmări ale informațiilor corecte
+
+### Coduri bugetare validate
+
+| Cod | Denumire oficială | Status |
+|-----|-------------------|--------|
+| **87.02.01** | Fondul Român de Dezvoltare Socială | ✅ Corect |
+| **87.01.04** | Turism | ✅ Corect (cu denumirea actualizată) |
+| **87.02.04** | Turism | ✅ Corect (cu denumirea actualizată) |
+| **87.01.05** | Proiecte de dezvoltare multifuncționale | ✅ Corect |
+| **87.02.50** | Alte acțiuni economice | ✅ Corect |
+
+### Referințe legislative confirmate
+
+**Ordinul MFP nr. 1954/16.12.2005** este în vigoare de la 1 ianuarie 2006, cu modificări periodice (ultima actualizare: ianuarie 2025). Anexa II conține clasificația funcțională pentru bugete locale. Link-ul legislatie.just.ro/Public/DetaliiDocument/67596 este funcțional și conduce către documentul corect.
+
+**Legea nr. 273/2006** privind finanțele publice locale este cadrul normativ corect și actual pentru bugetele locale, cu ultima modificare prin OUG 89/2025.
+
+**Legea nr. 129/1998** privind FRDS este în vigoare, republicată în Monitorul Oficial nr. 483/2005. Fondul Român de Dezvoltare Socială funcționează pe durată nedeterminată din 2001, cu sediul în București și filiale în Iași și Alba Iulia. Director executiv actual: Gabriela-Liliana Popescu (numită în martie 2025).
+
+### Corespondență COFOG confirmată
+
+Capitolul 87 corespunde clasificării internaționale **COFOG 04.9** (Economic affairs not elsewhere classified). Subcapitolul pentru turism are corespondență și în COFOG 04.7.3, iar proiectele de dezvoltare multifuncțională în COFOG 04.7.4.
+
+---
+
+## 5. Surse consultate
+
+### Documente oficiale Ministerul Finanțelor
+- Anexa II la Ordinul MFP 1954/2005 – clasificația funcțională actualizată 2025
+- TranspFunc_anexa1.pdf, TranspFunc_anexa2.pdf – transpunere funcțională
+- Portal clasificații bugetare: mfinante.gov.ro/domenii/buget/clasificatiile-bugetare
+
+### Portal legislativ
+- legislatie.just.ro – verificare status acte normative (Ordinul 1954/2005, Legea 273/2006, Legea 129/1998)
+- Monitorul Oficial (publicări oficiale și republicări)
+
+### Surse COFOG
+- Eurostat – Government expenditure by function
+- UN Statistics Division – COFOG Classification
+- Documentația de corespondență MFP – Anexa 7
+
+### Site oficial FRDS
+- frds.ro – verificare status organizațional și conducere actuală
+
+---
+
+## Concluzie
+
+Documentația pentru Capitolul 87 necesită **corectarea imediată a două coduri inexistente** (87.01.03/87.02.03 și 87.02.05) și **actualizarea denumirii** pentru subcapitolele de turism. Eliminarea codurilor pentru „Zone libere" este prioritară, deoarece poate genera confuzie în interpretarea datelor bugetare. Restul informațiilor sunt corecte și bine documentate, iar referințele legislative sunt valide și actuale pentru ianuarie 2026.
+
+## Processed
+
+- **Date**: 2026-01-02 16:33:00
+- **Source file**: ./public/assets/text/ro/functional/87.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-87-2026-01-02-160309.log

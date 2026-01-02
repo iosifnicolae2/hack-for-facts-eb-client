@@ -290,7 +290,128 @@ CAM (2,25%) este colectată de ANAF într-un cont distinct și distribuită ulte
 ## Context
 
 - **Created**: 2026-01-02 04:36:35
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/20.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/20.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificarea documentației Capitol 20 – concluzii și recomandări
+
+Documentația pentru Capitol 20 „Contribuțiile angajatorilor" de pe Transparenta.eu este în mare parte **corectă și completă**, cu o singură eroare legislativă critică: referința la Legea 263/2010 care a fost abrogată și înlocuită cu Legea 360/2023 din septembrie 2024. Toate cotele de contribuții, termenele de declarare și structura clasificației bugetare sunt verificate și conforme cu legislația în vigoare pentru 2025.
+
+---
+
+## Problemă critică: referința legislativă expirată
+
+Documentul citează **Legea nr. 263/2010 privind sistemul unitar de pensii publice** ca bază legală pentru contribuțiile suplimentare CAS (4% pentru condiții deosebite, 8% pentru condiții speciale). Această lege a fost **abrogată integral** și înlocuită de **Legea nr. 360/2023 privind sistemul public de pensii**, care a intrat în vigoare la **1 septembrie 2024**.
+
+Secțiunile afectate necesită actualizarea referințelor:
+- „Baza legală principală" – menționează explicit Legea 263/2010
+- Tabelul cu cotele CAS suplimentare – face trimitere la „Legea nr. 263/2010"
+- Secțiunea despre calculul contribuțiilor pentru condiții de muncă speciale
+
+**Corecție necesară**: Înlocuirea tuturor mențiunilor „Legea nr. 263/2010" cu „Legea nr. 360/2023 privind sistemul public de pensii".
+
+---
+
+## Confirmări: elementele verificate ca fiind corecte
+
+Verificarea a confirmat acuratețea următoarelor elemente din documentație:
+
+**Clasificarea bugetară**
+Codul **20.00** și denumirea oficială „**Contribuțiile angajatorilor**" corespund exact cu Ordinul MFP nr. 1954/2005, Anexa I – Clasificația Veniturilor. Capitol 20 este încadrat corect în Secțiunea B „Contribuții de Asigurări" din categoria Venituri Curente.
+
+**Cotele de contribuții pentru 2025**
+Toate procentele menționate sunt **corecte și actuale** conform Codului Fiscal (Legea 227/2015):
+
+| Contribuție | Cotă | Bază legală verificată |
+|-------------|------|------------------------|
+| CAM | **2,25%** | Art. 220³ alin. (1) Cod Fiscal |
+| CAS suplimentară condiții deosebite | **4%** | Art. 138 lit. b) Cod Fiscal |
+| CAS suplimentară condiții speciale | **8%** | Art. 138 lit. c) Cod Fiscal |
+| CAS (reținută angajat) | **25%** | Art. 138 lit. a) Cod Fiscal |
+| CASS (reținută angajat) | **10%** | Art. 156 Cod Fiscal |
+
+**Termenul de declarare și plată**
+Termenul de **25 a lunii următoare** pentru depunerea Declarației 112 și plata contribuțiilor este corect, conform Art. 147 alin. (1) din Codul Fiscal.
+
+**Alte referințe legislative valide**
+Celelalte acte normative citate sunt în vigoare cu modificări:
+- Legea 76/2002 (asigurări șomaj) – în vigoare, cu modificări prin Legea 45/2025 și Legea 10/2025
+- OUG 158/2005 (concedii medicale) – în vigoare, contribuția integrată în CAM din 2018
+- Legea 500/2002 (finanțe publice) – în vigoare
+- Ordinul MFP 1954/2005 – în vigoare, cu actualizări anuale ale anexelor
+
+---
+
+## Sugestii de îmbunătățire și observații minore
+
+### Distribuția CAM – clarificări necesare
+
+Documentul menționează corect că „cotele de distribuție se modifică anual prin legea bugetului de stat", dar ar beneficia de includerea cotelor actuale pentru 2024-2025, care diferă semnificativ de cele din Codul Fiscal:
+
+| Destinație | Cotă Cod Fiscal (art. 220⁶) | Cotă Legea Bugetului 2024-2025 |
+|------------|----------------------------|-------------------------------|
+| Fondul de garantare creanțe salariale | 15% | 1% |
+| Bugetul asigurărilor șomaj | 20% | 17% |
+| Accidente de muncă și boli profesionale | 5% | 2% |
+| FNUASS – concedii medicale | 40% | 30% |
+| Bugetul de stat | 20% | 50% |
+
+### Subcapitolele oficiale ale Capitol 20
+
+Documentul prezintă corect destinațiile contribuțiilor, dar ar putea include structura oficială a subcapitolelor conform clasificației MFP pentru mai multă precizie:
+- 20.00.01 – Contribuții de asigurări sociale de stat datorate de angajatori
+- 20.00.02 – Contribuții de asigurări pentru șomaj datorate de angajatori
+- 20.00.03 – Contribuții de asigurări sociale de sănătate datorate de angajatori
+- 20.00.04 – Contribuții pentru accidente de muncă și boli profesionale
+- 20.00.05 – Vărsăminte pentru persoane cu handicap neîncadrate
+- 20.00.50 – Alte contribuții pentru asigurări sociale
+
+### Clarificare despre reforma din 2018
+
+Secțiunea explicativă menționează corect reforma fiscală din 2018, dar ar putea specifica mai clar că **înainte de 2018**, angajatorii datorau multiple contribuții separate (CAS, CASS, șomaj, accidente de muncă), iar **după 2018** acestea au fost consolidate în CAM pentru angajatori și transferate parțial către angajați prin majorarea CAS și CASS.
+
+### Modificări 2025 relevante
+
+Pentru actualizarea documentației, este util de menționat că prin OUG 156/2024, facilitățile fiscale pentru sectorul IT, sănătate și agricultură au fost **eliminate** pentru 2025. Angajații din aceste sectoare plătesc acum cote integrale de contribuții pentru veniturile peste **10.000 lei**.
+
+---
+
+## Verificarea calității lingvistice
+
+Documentul este redactat în **limba română corectă**, cu utilizarea corespunzătoare a diacriticelor (ș, ț, ă, â, î). Stilul este formal și tehnic, consistent cu terminologia oficială MFP. Nu s-au identificat erori gramaticale sau ortografice.
+
+---
+
+## Surse consultate pentru verificare
+
+**Legislație primară**
+- Ordinul MFP nr. 1954/2005 – legislatie.just.ro/Public/DetaliiDocument/67596
+- Legea 227/2015 (Codul Fiscal) – legislatie.just.ro/Public/DetaliiDocument/171282
+- Legea 360/2023 (sistemul pensiilor) – înlocuiește Legea 263/2010 din 1 septembrie 2024
+- Legea 76/2002 (asigurări șomaj) – legislatie.just.ro/Public/DetaliiDocument/33919
+- OUG 158/2005 (concedii medicale) – legislatie.just.ro/Public/DetaliiDocument/66305
+
+**Clasificație bugetară**
+- Portal clasificații MFP: mfinante.gov.ro/domenii/buget/clasificatiile-bugetare
+- Anexa I 2025 (clasificația veniturilor): mfinante.gov.ro/static/10/Mfp/buget/sitebuget/clasificatii/
+
+**Surse complementare**
+- Comunicatele oficiale gov.ro privind contribuțiile sociale
+- Documentația ANAF pentru Declarația 112
+- CNPP pentru informații despre tranziția la Legea 360/2023
+
+---
+
+## Concluzie și recomandări finale
+
+Documentația Capitol 20 este **solidă din punct de vedere tehnic** și utilă pentru utilizatorii fără pregătire de specialitate. Singurul element care necesită **corecție imediată** este actualizarea referinței la Legea 263/2010 cu Legea 360/2023. După această corecție, documentul va fi complet aliniat la legislația în vigoare pentru 2025.
+
+Pentru menținerea acurateții în timp, se recomandă verificarea anuală a cotelor de distribuție CAM (care se modifică prin legea bugetului) și monitorizarea modificărilor la Codul Fiscal care pot afecta contribuțiile angajatorilor.
+
+## Processed
+
+- **Date**: 2026-01-02 14:06:44
+- **Source file**: ./public/assets/text/ro/functional/20.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-20-2026-01-02-140450.log

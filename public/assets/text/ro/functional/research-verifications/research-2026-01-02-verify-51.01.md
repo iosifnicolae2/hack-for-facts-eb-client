@@ -288,7 +288,142 @@ Codul 51.01 (pentru bugetul de stat) și 51.02.01 (pentru bugete locale) este es
 ## Context
 
 - **Created**: 2026-01-02 04:36:35
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/51.01.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/51.01.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație bugetară cod 51.01 – o eroare critică de codificare
+
+**Concluzia principală**: Documentația pentru platforma Transparenta.eu conține o **eroare critică de codificare bugetară**. Codul 51.01 nu are denumirea „Autorități executive și legislative" – aceasta este denumirea pentru subcapitolul **51.01.01**. Capitolul 51.01 se numește oficial „Autorități publice și acțiuni externe". Referințele legislative și corespondența COFOG sunt în general corecte, însă această confuzie între capitol și subcapitol necesită corectare imediată.
+
+---
+
+## 1. Rezumat general
+
+Verificarea a analizat documentația pentru codul bugetar funcțional 51.01 contra surselor oficiale (mfinante.gov.ro, legislatie.just.ro). S-au identificat **o problemă critică** (eroare de codificare), câteva aspecte minore care necesită clarificări și s-au confirmat ca fiind corecte majoritatea referințelor legislative. Baza legală (Ordinul MFP 1954/2005) este în vigoare și corect citată.
+
+---
+
+## 2. Probleme critice care necesită corectare imediată
+
+### Eroare de codificare bugetară
+
+Documentul verificat afirmă că **51.01 = „Autorități executive și legislative"**, ceea ce este **incorect**. Conform clasificației oficiale aprobate prin Ordinul MFP nr. 1954/2005:
+
+| Cod | Denumire oficială corectă | Ce spune documentul verificat |
+|-----|---------------------------|-------------------------------|
+| **51** | Partea de capitol | Autorități publice și acțiuni externe |
+| **51.01** | Capitol (buget de stat) | AUTORITĂȚI PUBLICE ȘI ACȚIUNI EXTERNE |
+| **51.01.01** | Subcapitol | Autorități executive și legislative |
+
+Denumirea „Autorități executive și legislative" aparține **subcapitolului 51.01.01**, nu capitolului 51.01. Această confuzie între capitol și subcapitol poate genera erori în raportarea și interpretarea datelor bugetare.
+
+### Structura corectă sub 51.01.01
+
+Subcapitolul „Autorități executive și legislative" (51.01.01) se subdivide în:
+- **51.01.01.01** – Administrația prezidențială
+- **51.01.01.02** – Autorități legislative
+- **51.01.01.03** – Autorități executive
+- **51.01.01.04** – Alte organe ale autorităților publice
+
+---
+
+## 3. Probleme minore și sugestii de îmbunătățire
+
+### Relevanța OUG nr. 57/2019 trebuie clarificată
+
+Codul administrativ (OUG 57/2019) **nu conține prevederi specifice despre clasificația bugetară**. Relevanța sa pentru documentația 51.01 este doar indirectă – reglementează organizarea autorităților publice, nu clasificarea cheltuielilor lor. Documentația ar trebui să clarifice de ce este citată această ordonanță sau să o elimine dacă nu aduce plus valoare.
+
+### Clarificarea articolelor 25-26 din Legea 273/2006
+
+Referința la „art. 25-26 din Legea 273/2006" este corectă, dar articolul cel mai relevant pentru clasificația bugetară este **art. 26**, care stabilește că veniturile și cheltuielile se grupează pe baza clasificației bugetare aprobate de Ministerul Finanțelor. Art. 25 se referă la elaborarea proiectelor de buget. Recomandarea este să se citeze precis: „art. 26 alin. (1)-(2) din Legea 273/2006".
+
+### Link-uri cu acces restricționat
+
+Link-urile directe către fișierele Excel de pe mfinante.gov.ro au restricții de acces:
+- https://mfinante.gov.ro/static/10/Mfp/buget/sitebuget/clasificatii/AnexanrII_29012025.xls – **nu este accesibil public direct**
+- https://mfinante.gov.ro/static/10/Mfp/buget/sitebuget/clasificatii/Anexanr7_13052025.xls – **nu este accesibil public direct**
+
+**Recomandare**: Utilizați link-ul principal către secțiunea de clasificații bugetare: https://mfinante.gov.ro/en/domenii/buget/clasificatiile-bugetare sau linkurile PDF publice pentru anexele de transpunere funcțională.
+
+### Variante de codificare pentru diferite bugete
+
+Documentația ar trebui să precizeze că există variante ale codului în funcție de tipul de buget:
+- **51.01** – Bugetul de stat
+- **51.02** – Bugete locale
+- **51.08** – Fonduri externe nerambursabile
+- **51.10** – Bugetul instituțiilor publice finanțate din venituri proprii
+
+---
+
+## 4. Informații confirmate ca fiind corecte
+
+### Baza legală principală
+
+**Ordinul MFP nr. 1954/2005** este confirmat ca fiind:
+- ✅ În vigoare de la 1 ianuarie 2006
+- ✅ Baza legală corectă pentru clasificația bugetară funcțională și economică
+- ✅ Actualizat periodic prin note de modificare publicate pe mfinante.gov.ro
+- ✅ Publicat în Monitorul Oficial nr. 1176 din 27 decembrie 2005
+
+### Referințe legislative verificate și corecte
+
+| Act normativ | Articol | Status | Relevanță |
+|--------------|---------|--------|-----------|
+| Legea 500/2002 | Art. 19 lit. f) | ✅ În vigoare | **Fundamentală** – stabilește că MFP aprobă clasificațiile bugetare |
+| Legea 273/2006 | Art. 26 | ✅ În vigoare | Directă – obligativitatea clasificației pentru bugete locale |
+| OUG 57/2019 | General | ✅ În vigoare (cu modificări) | Indirectă |
+
+### Corespondența COFOG confirmată
+
+Codul românesc **51.01.01** „Autorități executive și legislative" corespunde codului internațional **COFOG 01.1.1** – „Executive and legislative organs". Această corespondență este:
+- ✅ Conformă cu standardele ONU pentru clasificarea funcțiilor guvernamentale
+- ✅ Utilizată în raportările României către Eurostat
+- ✅ Documentată în Anexa 7 la Ordinul MFP 1954/2005
+
+România raportează cheltuieli pe această categorie de aproximativ **2,9% din PIB** (date Eurostat 2023).
+
+### Destinații specifice corecte
+
+Destinațiile menționate în document sunt corecte conform clasificației oficiale:
+- ✅ Funcționarea aparatului Guvernului
+- ✅ Funcționarea Parlamentului
+- ✅ Funcționarea ministerelor
+- ✅ Funcționarea prefecturilor și consiliilor locale/județene
+- ✅ Activități de elaborare politici publice
+- ✅ Servicii de protocol și audituri interne
+
+---
+
+## 5. Surse oficiale consultate
+
+### Ministerul Finanțelor (mfinante.gov.ro)
+- Secțiunea Clasificații bugetare: https://mfinante.gov.ro/en/domenii/buget/clasificatiile-bugetare
+- Anexa 1 – Clasificația indicatorilor buget de stat (PDF disponibil)
+- Anexa 2 – Clasificația indicatorilor bugete locale (PDF disponibil)
+- Note de modificare și comunicări oficiale pentru 2024-2025
+
+### Portalul Legislativ (legislatie.just.ro)
+- Ordinul MFP 1954/2005: https://legislatie.just.ro/Public/DetaliiDocumentAfis/67596
+- Legea 500/2002: https://legislatie.just.ro/Public/DetaliiDocumentAfis/37954
+- Legea 273/2006: https://legislatie.just.ro/Public/DetaliiDocument/73527
+- OUG 57/2019: https://legislatie.just.ro/Public/DetaliiDocument/215925
+
+### Alte surse
+- data.gov.ro – Set de date clasificații bugetare
+- Eurostat – Raportări COFOG pentru România
+
+---
+
+## Concluzie și recomandări
+
+Documentația pentru Transparenta.eu necesită **o singură corecție critică**: modificarea codificării din „51.01 – Autorități executive și legislative" în varianta corectă „51.01.01 – Autorități executive și legislative" sau clarificarea că 51.01 este capitolul „Autorități publice și acțiuni externe" care conține subcapitolul 51.01.01.
+
+Referințele legislative sunt în general corecte și actuale. Se recomandă precizarea mai exactă a articolelor relevante (în special art. 26 din Legea 273/2006) și clarificarea relevanței OUG 57/2019. Link-urile directe către fișierele Excel de pe mfinante.gov.ro ar trebui înlocuite cu link-uri către pagina principală de clasificații, care este accesibilă public.
+
+## Processed
+
+- **Date**: 2026-01-02 14:46:01
+- **Source file**: ./public/assets/text/ro/functional/51.01.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-51.01-2026-01-02-143612.log

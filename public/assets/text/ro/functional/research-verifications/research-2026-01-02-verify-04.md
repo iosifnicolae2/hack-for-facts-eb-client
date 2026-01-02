@@ -554,7 +554,70 @@ Sumele se primesc în contul **21.A.04.06.00 „Sume repartizate pentru finanța
 ## Context
 
 - **Created**: 2026-01-02 04:36:34
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/04.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/04.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Raport de verificare: Capitol 04 - Clasificația bugetară românească
+
+Verificarea documentației pentru **Capitolul 04 "Cote și sume defalcate din impozitul pe venit"** relevă **corectitudine substanțială** a informațiilor tehnico-juridice, cu câteva observații importante privind precizarea și actualizarea conținutului. Documentația demonstrează o înțelegere solidă a mecanismului de descentralizare fiscală, fiind în concordanță cu cadrul legislativ în vigoare.
+
+## Confirmări ale informațiilor corecte
+
+**Denumirea oficială verificată și confirmată.** Capitolul 04.02 este denumit oficial "Cote și sume defalcate din impozitul pe venit" în clasificația indicatorilor privind finanțele publice, conform Ordinului MFP nr. 1954/2005. Această denumire coincide cu cea menționată în documentație.
+
+**Încadrarea ca venituri proprii - CORECT.** Afirmația că Art. 5 alin. (1) lit. a) din Legea nr. 273/2006 clasifică cotele defalcate din impozitul pe venit în categoria veniturilor proprii este **complet exactă**. Textul legal stipulează explicit: "*venituri proprii, formate din: impozite, taxe, contribuții, alte vărsăminte, alte venituri și cote defalcate din impozitul pe venit*". Această distincție juridică este fundamentală: cotele defalcate NU sunt transferuri sau subvenții, ci venituri proprii ale bugetelor locale.
+
+Referințele legislative principale sunt corecte:
+
+- **Legea nr. 273/2006** privind finanțele publice locale - articulele 5, 32 și 33 reglementează efectiv acest mecanism
+- **Ordinul MFP nr. 1954/2005** pentru aprobarea Clasificației indicatorilor privind finanțele publice este actul normativ care stabilește codificarea bugetară
+- URL-ul de pe legislatie.just.ro pentru Ordinul 1954/2005 este valid (https://legislatie.just.ro/Public/DetaliiDocumentAfis/67596)
+
+Descrierea mecanismului de descentralizare fiscală și a funcțiilor îndeplinite (descentralizare, subsidiaritate, echitate teritorială, predictibilitate) reflectă corect principiile finanțelor publice locale din legislația română.
+
+## Probleme critice identificate
+
+**Codul bugetar necesită clarificare.** Documentația menționează "Capitol 04", dar codul complet oficial este **04.02** pentru bugetele locale. Sufixul ".02" indică apartenența la clasificația bugetelor locale (vs. ".01" pentru bugetul de stat). Capitolul 04.01 nu există în clasificarea veniturilor bugetului de stat - acest tip de venit este specific exclusiv bugetelor locale.
+
+**Structura subcapitolelor trebuie specificată.** Pentru o documentație completă, ar trebui menționate subcapitolele oficiale:
+
+- **04.02.01** - Cote defalcate din impozitul pe venit
+- **04.02.04** - Sume alocate din cotele defalcate din impozitul pe venit pentru echilibrarea bugetelor locale  
+- **04.02.05** - Sume repartizate din Fondul la dispoziția Consiliului Județean
+
+**Procentele de defalcare au fost modificate.** Legea 286/2020 a modificat substanțial Art. 32, actualizând procentele de repartizare. Forma actuală (începând din decembrie 2020) prevede: **65%** la bugetele locale ale comunelor/orașelor/municipiilor, **15%** la bugetul local al județului, **6%** pentru repartizare prin hotărâre a consiliului județean, și **14%** pentru echilibrarea bugetelor locale. Dacă documentația menționează procentele vechi (47%-13%-22%), acestea necesită actualizare.
+
+## Probleme minore și sugestii de îmbunătățire
+
+**Precizie terminologică privind tipul de clasificație.** Capitol 04.02 face parte din **clasificația veniturilor** bugetelor locale, NU din clasificația funcțională. Clasificația funcțională grupează *cheltuielile* după destinație (educație, sănătate, apărare etc.), pe când clasificația veniturilor grupează *sursele de finanțare*. Această distincție tehnică merită clarificată pentru a evita confuzia utilizatorilor.
+
+Sugestii pentru îmbunătățirea accesibilității includ adăugarea unui **exemplu numeric concret** care să ilustreze fluxul financiar (de exemplu: "Dacă un angajat din comuna X plătește 1.000 lei impozit pe venit, 650 lei revin bugetului local al comunei, 150 lei bugetului județean..."). De asemenea, ar fi utilă o **schemă vizuală** a mecanismului de colectare-redistribuire și menționarea că modificările procentelor se pot produce anual prin legea bugetului de stat, oferind context despre posibilele derogări temporare.
+
+**Limbă și diacritice:** Nu am identificat probleme gramaticale sau de ortografie semnificative în afirmațiile verificate. Denumirea oficială folosește diacriticele corecte (ș, ț, ă).
+
+## Observații privind sursele și link-urile
+
+**Link-ul legislatie.just.ro funcționează** - portalul legislativ este accesibil și conține actele normative de referință. Totuși, unele pagini pot avea restricții de acces automatizat (robots.txt), ceea ce poate afecta verificarea automată.
+
+**Surse suplimentare recomandate pentru documentație:**
+- Pagina oficială MFP pentru clasificații: https://mfinante.gov.ro/en/domenii/buget/clasificatiile-bugetare
+- Textul actualizat al Legii 273/2006: https://legislatie.just.ro/Public/DetaliiDocument/73527
+
+## Modificări legislative recente de menționat
+
+**OUG 89/2025** introduce derogări temporare de la Art. 32 și 33 pentru anul 2026, modificând formula de repartizare a impozitului pe venit. Documentația ar putea beneficia de o notă care să avertizeze utilizatorii că procentele pot varia anual prin derogări bugetare.
+
+## Concluzie și recomandări
+
+Documentația verificată este **substanțial corectă din punct de vedere juridic și tehnic**, demonstrând o bună înțelegere a mecanismului cotelor defalcate din impozitul pe venit. Principalele corecții necesare sunt de natură tehnică: specificarea codului complet 04.02, clarificarea apartenenței la clasificația veniturilor (nu funcțională), și actualizarea procentelor conform Legii 286/2020.
+
+Calitatea explicațiilor privind descentralizarea fiscală și încadrarea juridică a veniturilor proprii este bună, fiind accesibilă pentru utilizatori fără pregătire de specialitate. Afirmația centrală - că cotele defalcate sunt venituri proprii, nu transferuri - este confirmată și reprezintă o distincție juridică importantă corect prezentată.
+
+**Scor de acuratețe estimat: 85-90%** - documentația este solidă, necesitând doar ajustări tehnice minore pentru conformitate deplină cu nomenclatura oficială actualizată.
+## Processed
+
+- **Date**: 2026-01-02 14:05:34
+- **Source file**: ./public/assets/text/ro/functional/04.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-04-2026-01-02-140450.log

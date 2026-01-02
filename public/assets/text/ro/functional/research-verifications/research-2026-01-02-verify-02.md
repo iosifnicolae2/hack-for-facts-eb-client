@@ -285,7 +285,145 @@ Acest capitol este relativ minor din perspectiva volumului veniturilor bugetare,
 ## Context
 
 - **Created**: 2026-01-02 04:36:34
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/02.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/02.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație bugetară Capitol 02: constatări și corecții necesare
+
+Documentația privind Capitolul 02 „Alte impozite pe venit, profit și câștiguri din capital de la persoane juridice" este în mare parte corectă din punct de vedere tehnic și fiscal, însă conține **o eroare critică de clasificare** și **referințe legislative depășite** care necesită actualizare. Suma de **18.000 lei** pentru impozitul pe reprezentanțe, termenele de plată și procedurile fiscale sunt confirmate ca fiind exacte și actuale.
+
+---
+
+## Probleme critice identificate
+
+### Eroare de clasificare bugetară: A11, nu A13
+
+Documentul indică incorect că Capitolul 02 aparține categoriei **A13** „Alte impozite pe venit, profit și câștiguri din capital". Conform Ordinului MFP nr. 1954/2005 și anexelor oficiale de pe mfinante.gov.ro, încadrarea corectă este:
+
+| Nivel | Cod | Denumire oficială |
+|-------|-----|-------------------|
+| Titlu | **A1** | Impozit pe venit, profit și câștiguri din capital |
+| Subcategorie | **A11** | Impozit pe venit, profit și câștiguri din capital de la persoane juridice |
+| Capitol | **02.01** | Alte impozite pe venit, profit și câștiguri din capital de la persoane juridice |
+
+Categoria A13 există, dar reprezintă o categorie reziduală separată, fără specificarea „de la persoane juridice". Această eroare afectează întreaga logică de clasificare din document și trebuie corectată.
+
+### Referință legislativă depășită: Decretul-lege 122/1990
+
+Documentul face referire la Decretul-lege nr. 122/1990 ca bază legală pentru autorizarea reprezentanțelor, ceea ce este parțial inexact. Deși decretul-lege rămâne **în vigoare**, acesta a fost **modificat substanțial** prin **Ordonanța Guvernului nr. 18/2022** (publicată în Monitorul Oficial nr. 799 din 4 august 2022, aprobată prin Legea nr. 95/2023).
+
+Modificări majore aduse de OG 18/2022:
+- Digitalizarea completă a procedurii de autorizare
+- Taxa de autorizare modificată de la 1.200 USD/an la **1.000 EUR/an**
+- Noi motive de retragere a autorizației (nerespectarea reglementărilor anti-spălare de bani, neîndeplinirea obligațiilor fiscale)
+- Introducerea duratei minime de 1 an pentru autorizații
+
+### Autoritate competentă greșită pentru autorizare
+
+Documentul menționează „Departamentul de Comerț Exterior din cadrul Ministerului Economiei" ca autoritate emitentă a autorizațiilor. Această referință este **complet depășită**. Autoritatea competentă actuală este:
+
+**Ministerul Antreprenoriatului și Turismului (MAT)** – prin Direcția Politici Comerciale
+
+Denumirea veche reflectă structura guvernamentală din 1990, care a suferit multiple reorganizări în ultimele trei decenii.
+
+---
+
+## Confirmări ale informațiilor corecte
+
+### Codul Fiscal – articolele 235-237
+
+Toate referințele la Legea nr. 227/2015 privind Codul Fiscal sunt **corecte și actuale**:
+
+- **Art. 235** – Contribuabili (definește reprezentanțele persoanelor juridice străine ca plătitori)
+- **Art. 236** – Stabilirea impozitului (suma de 18.000 lei/an fiscal)
+- **Art. 237** – Plata impozitului și depunerea declarației fiscale
+
+Textul exact din art. 236 alin. (1): *„Impozitul pe reprezentanță pentru un an fiscal este de 18.000 lei."* Suma este în vigoare de la **1 ianuarie 2018**, fiind stabilită prin Ordonanța Guvernului nr. 25/2017.
+
+### Termenele de plată și declarare
+
+Toate termenele menționate în document sunt **verificate și corecte**:
+
+| Situație | Termen | Sursa legală |
+|----------|--------|--------------|
+| Plată anuală | Ultima zi a lunii februarie a anului de impunere | Art. 237 alin. (1) Cod Fiscal |
+| Înregistrare fiscală la înființare | 30 de zile de la înființare | Art. 237 alin. (2) Cod Fiscal |
+| Declarare la desființare | 30 de zile de la desființare | Art. 237 alin. (3) Cod Fiscal |
+
+### HG 1/2016 și punctele 24-26
+
+Referința la Hotărârea Guvernului nr. 1/2016 privind Normele metodologice de aplicare a Codului Fiscal, punctele 24-26, este **corectă**. Aceste puncte detaliază:
+- Punctul 24: Statutul reprezentanțelor (nu au personalitate juridică, nu pot desfășura activități de producție, comerț sau prestări servicii)
+- Punctele 25-26: Metodologia de calcul și plată a impozitului pe reprezentanțe
+
+### Competența organelor fiscale
+
+Informațiile privind administrarea fiscală sunt **corecte**:
+
+- **București**: Administrația fiscală pentru contribuabili nerezidenți din cadrul DGRFP București (Biroul de Administrare a Reprezentanțelor Străine)
+- **Alte județe**: Administrațiile județene ale finanțelor publice în a căror rază teritorială își au sediul reprezentanțele
+
+### Formularul de înregistrare fiscală
+
+Deși documentul menționează „formular 015", această referință este **corectă**. Formularul 015 – „Declarație de înregistrare fiscală/Declarație de mențiuni/Declarație de radiere pentru contribuabilii nerezidenți care nu au sediu permanent în România" – este actualizat prin OPANAF 2420/2025 și conține secțiunea specifică pentru reprezentanțe (Secțiunea VI, Rândul 7).
+
+---
+
+## Probleme minore și sugestii de îmbunătățire
+
+### Terminologie imprecisă pentru subcapitole
+
+Documentul menționează „Alte încasări din impozite directe de la persoane juridice" ca subcategorie. Terminologia oficială MFP folosește „Alte impozite pe venit, profit și câștiguri din capital de la persoane juridice" (cod 02.01.50), nu „încasări din impozite directe".
+
+### Subcapitole oficiale nespecificate
+
+Clasificarea oficială MFP include subcapitole specifice care ar putea fi menționate pentru completitudine:
+
+- 02.01.01 – Impozit pe veniturile realizate de persoanele juridice nerezidente
+- 02.01.03 – Impozit pe dividende datorat de persoane juridice
+- 02.01.06 – Impozit pe venitul microîntreprinderilor
+- 02.01.50 – Alte impozite pe venit, profit și câștiguri din capital de la persoane juridice (categoria reziduală)
+
+### Format cod bugetar
+
+Documentul folosește „Capitol 02", dar formatul oficial complet este **02.01** pentru bugetul de stat, unde „02" este capitolul și „01" indică apartenența la bugetul de stat.
+
+### Diacritice și terminologie
+
+Diacriticele sunt utilizate corect în document (ș, ț, ă, â, î). Terminologia este în general conformă cu cea oficială MFP, cu excepția minorelor observații menționate mai sus.
+
+---
+
+## Link-uri și surse verificate
+
+### Funcționale și relevante
+- **legislatie.just.ro/Public/DetaliiDocument/171282** – Codul Fiscal (Legea 227/2015) – accesibil și actualizat
+- **legislatie.just.ro** – Decretul-lege 122/1990 – disponibil, dar necesită coroborare cu OG 18/2022
+
+### Parțial accesibile
+- **legislatie.just.ro/Public/DetaliiDocument/67596** – Ordinul MFP 1954/2005 – textul de bază disponibil; anexele complete necesită acces la mfinante.gov.ro
+
+### Surse suplimentare verificate
+- **static.anaf.ro** – Codul Fiscal consolidat (actualizat prin OUG 89/2025)
+- **mfinante.gov.ro** – Anexa I – Clasificația veniturilor (PDF-uri disponibile dar cu acces restricționat prin robots.txt)
+- **OPANAF 2420/2025** – Formularul 015 actualizat
+
+---
+
+## Concluzie și recomandări de actualizare
+
+Documentul verificat demonstrează o înțelegere solidă a mecanismelor fiscale pentru impozitul pe reprezentanțe, cu referințe legislative în mare parte corecte. Totuși, trei corecții sunt **obligatorii** pentru conformitatea cu legislația actuală:
+
+1. **Corectați clasificarea** de la A13 la **A11** pentru încadrarea corectă în ierarhia veniturilor bugetare
+2. **Actualizați baza legală** pentru autorizarea reprezentanțelor cu menționarea **OG 18/2022** (care a modificat substanțial Decretul-lege 122/1990)
+3. **Înlocuiți autoritatea competentă** „Departamentul de Comerț Exterior din cadrul Ministerului Economiei" cu **Ministerul Antreprenoriatului și Turismului (MAT)**
+
+Informațiile privind suma impozitului (18.000 lei), termenele de plată (ultima zi din februarie, 30 de zile pentru cazuri speciale), competența organelor fiscale ANAF și normele metodologice HG 1/2016 sunt toate verificate ca fiind exacte și actuale pentru anul 2026.
+
+## Processed
+
+- **Date**: 2026-01-02 14:05:57
+- **Source file**: ./public/assets/text/ro/functional/02.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-02-2026-01-02-140450.log

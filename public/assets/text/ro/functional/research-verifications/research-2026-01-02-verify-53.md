@@ -317,7 +317,176 @@ Capitolul 53 este esențial pentru analiza efortului de finanțare publică a ce
 ## Context
 
 - **Created**: 2026-01-02 04:36:36
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/53.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/53.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificarea documentației pentru Capitol 53: constatări și recomandări
+
+Verificarea aprofundată a documentației bugetare pentru Capitolul 53 "Cercetare fundamentală și cercetare dezvoltare" din clasificația funcțională românească relevă **acuratețe generală ridicată**, dar identifică și **câteva discrepanțe critice** care necesită corecții. Documentația consultată corespunde în linii mari legislației în vigoare, însă au fost depistate probleme privind structura instituțională actualizată și codificarea subcapitolelor.
+
+---
+
+## Verificare confirmată: cadrul legislativ este corect citat
+
+**Ordinul MFP nr. 1954/2005** rămâne baza legală validă pentru clasificația indicatorilor bugetari, fiind publicat în Monitorul Oficial nr. 1.176 din 27 decembrie 2005 și aplicat începând cu 1 ianuarie 2006. Ministerul Finanțelor actualizează periodic această clasificație prin note de comunicare, cele mai recente fiind din anul 2025 (peste 13 comunicări în primul semestru). Temeiul legal este Art. 19 lit. f) din Legea 500/2002 privind finanțele publice.
+
+Referințele legislative menționate în documentație sunt **toate valide și în vigoare**:
+
+- **OG 57/2002** privind cercetarea științifică și dezvoltarea tehnologică – în vigoare, ultima modificare semnificativă prin OUG 43/2023 (M.Of. 460/25.05.2023)
+- **Legea 324/2003** – aprobă OG 57/2002, în vigoare
+- **Legea 500/2002** privind finanțele publice – în vigoare cu modificări
+- **Legea 273/2006** privind finanțele publice locale – în vigoare, modificată prin Legea 387/2023 și OUG 89/2025
+- **HG 1188/2022** pentru aprobarea PNCDI IV – în vigoare, publicată în M.Of. 969/05.10.2022
+
+---
+
+## Problemă critică: structura subcapitolelor are codificare incorectă
+
+Verificarea clasificației oficiale MFP relevă o **discrepanță majoră** în codificarea subcapitolelor. Denumirile oficiale exacte din Anexa 1 a clasificației funcționale sunt:
+
+| Cod Oficial | Denumire Oficială |
+|-------------|-------------------|
+| **53.01** | Cercetare fundamentală și cercetare dezvoltare |
+| **53.01.01** | Cercetare fundamentală (de bază) |
+| **53.01.02** | Cercetare și dezvoltare pentru servicii publice generale |
+
+Dacă documentația verificată utilizează codurile **53.01** și **53.02** ca subcapitole separate pentru tipuri diferite de cercetare, aceasta este **incorect**. În clasificația oficială, codurile de tip ".01" vs ".02" la nivel de capitol (ex: 53.01 vs 53.02) diferențiază **tipul de buget** (buget de stat vs bugetele locale), nu tipurile de cercetare. Subdiviziunea pe tipuri de cercetare se face la nivel de paragraf: **53.01.01** și **53.01.02**.
+
+---
+
+## Problemă critică: structura instituțională necesită actualizare urgentă
+
+Cercetarea a identificat **modificări majore** în structura instituțională din 2025:
+
+**MCID (Ministerul Cercetării, Inovării și Digitalizării) a fost desființat.** Conform comunicatului Guvernului din 27 februarie 2025, cele 117 posturi ale fostului MCID au fost transferate la Ministerul Economiei, Digitalizării, Antreprenoriatului și Turismului, iar atribuțiile de cercetare au trecut la **Ministerul Educației și Cercetării (MEC)** prin Autoritatea Națională pentru Cercetare (ANC). HG nr. 187/2025 (M.Of. 185/03.03.2025) confirmă reorganizarea.
+
+Dacă documentația face referire la MCID ca autoritate competentă, informația este **depășită** și necesită corectare. Denumirea corectă actuală este **Ministerul Educației și Cercetării**, cu ministru Daniel David și gestionare operațională prin **Autoritatea Națională pentru Cercetare (ANC)**.
+
+**UEFISCDI** este confirmat corect ca principal organism de finanțare competițională. Denumirea completă oficială este "Unitatea Executivă pentru Finanțarea Învățământului Superior, a Cercetării, Dezvoltării și Inovării" – instituție publică în subordinea MEC.
+
+---
+
+## Confirmări pozitive privind conținutul tehnic
+
+### Încadrarea în Partea I este corectă
+
+Capitolul 53 se află într-adevăr în **Partea I-a – Servicii Publice Generale** (cod 50.01), conform ierarhiei:
+```
+50.01 Partea I-a SERVICII PUBLICE GENERALE
+├── 51.01 Autorități publice și acțiuni externe
+├── 53.01 CERCETARE FUNDAMENTALĂ ȘI CERCETARE DEZVOLTARE
+├── 54.01 Alte servicii publice generale
+└── 55.01 Tranzacții privind datoria publică
+```
+
+### Maparea COFOG este corectă
+
+Corespondența cu clasificarea internațională COFOG este validată:
+- **01.4 Basic research** → 53.01.01 Cercetare fundamentală (de bază)
+- **01.5 R&D General public services** → 53.01.02 Cercetare și dezvoltare pentru servicii publice generale
+
+Ambele categorii se află în Divizia 01 "General Public Services" a COFOG, conform Manualului Eurostat și standardelor OECD/UN.
+
+### Raportarea cercetării sectoriale este corect descrisă
+
+Afirmația că cercetarea din domenii specifice (apărare, sănătate, educație, agricultură) se raportează la capitolele funcționale respective, nu la Capitolul 53, este **confirmată**. Conform OG 57/2002, art. 50-51, ordonatorii principali de credite cu alocări pentru cercetare le utilizează pentru programele proprii. Astfel:
+- Cercetare în apărare → Capitol Apărare Națională
+- Cercetare în sănătate → Capitol 66 Sănătate
+- Cercetare în agricultură → Capitol Agricultură, silvicultură
+
+### PNCDI IV – confirmat corect
+
+**HG 1188/2022** este validă, iar PNCDI IV este programul actual în vigoare pentru perioada **2022-2027** (cu plăți posibile până în 2030). Structura pe **10 programe** este confirmată:
+
+1. P5.1 Idei (cercetare fundamentală)
+2. P5.2 Resurse Umane
+3. P5.3 Organizații de cercetare performante
+4. P5.4 Nucleu
+5. P5.5 Infrastructuri de cercetare
+6. P5.6 Provocări
+7. P5.7 Parteneriate pentru inovare
+8. P5.8 Cooperare europeană și internațională
+9. P5.9 Cercetare în domenii de interes strategic
+10. P5.10 Știință și societate
+
+Bugetul maxim alocat este de **60 miliarde lei**.
+
+---
+
+## Clarificări privind infrastructurile de cercetare
+
+### ELI-NP – clarificare privind finanțarea
+
+ELI-NP (Extreme Light Infrastructure – Nuclear Physics) este confirmat ca infrastructură majoră localizată în **Măgurele, județul Ilfov**, pe platforma IFIN-HH. Sistemul laser de **2x10 PetaWatts** reprezintă cel mai puternic laser din lume. Totuși, **finanțarea NU provine direct din Capitolul 53** în sens generic, ci prin mecanisme specifice:
+- Fonduri structurale europene (POSCCE) – investiție inițială ~350-500 mil. euro
+- PNCDI IV, **Programul 5.9** – Subprogramul 5.9.1 ELI-RO
+- Mecanismul Elvețian de Finanțare CDI – 13 mil. CHF
+
+### DANUBIUS-RI – actualizare importantă
+
+DANUBIUS-RI a obținut în **iunie 2025** statutul de **ERIC** (European Research Infrastructure Consortium), devenind primul ERIC coordonat de România. HUB-ul central este în **Murighiol, județul Tulcea**. Finanțarea provine din:
+- PNCDI IV, Programul 5.9, Subprogramul 5.9.4
+- POCIDIF – **128,6 milioane euro**
+- Proiect DANUBIUS-RO-2 – 49,29 milioane lei
+
+---
+
+## Probleme tehnice identificate: link-urile MFP
+
+Link-urile directe către fișierele Excel de pe site-ul MFP **nu funcționează** prin acces automatizat din cauza restricțiilor server:
+- `mfinante.gov.ro/.../AnexanrII_29012025.xls` – blocat de robots.txt
+- `mfinante.gov.ro/.../Anexanr7_13052025.xls` – blocat de robots.txt
+
+Documentele există și sunt disponibile prin navigarea manuală pe pagina https://mfinante.gov.ro/en/domenii/buget/clasificatiile-bugetare, dar link-urile directe nu sunt accesibile programatic.
+
+---
+
+## Concluzii și recomandări de corecție
+
+### Erori critice de remediat
+
+1. **Codificarea subcapitolelor**: Dacă documentația folosește 53.01/53.02 pentru tipuri de cercetare, trebuie corectată în 53.01.01/53.01.02
+2. **Autoritatea competentă**: Înlocuirea oricăror referințe la MCID cu "Ministerul Educației și Cercetării" și "Autoritatea Națională pentru Cercetare"
+3. **Finanțarea infrastructurilor**: Clarificarea că ELI-NP și DANUBIUS-RI sunt finanțate prin PNCDI IV Programul 5.9 și fonduri europene, nu generic prin Capitolul 53
+
+### Actualizări recomandate
+
+- Adăugarea referinței la **OUG 43/2023** care modifică OG 57/2002
+- Actualizarea statutului DANUBIUS-RI la ERIC (iunie 2025)
+- Menționarea **HG 187/2025** pentru structura actuală MEC-ANC
+
+### Confirmări finale
+
+Documentația prezintă **acuratețe bună** în privința: denumirii Capitolului 53, încadrării în Partea I, mapării COFOG, legislației-cadru (cu excepția neincluderii modificărilor din 2023-2025), structurii PNCDI IV, și principiului raportării sectoriale a cercetării. Corectarea problemelor identificate va asigura conformitatea deplină cu nomenclatura oficială MFP în vigoare la 2 ianuarie 2026.
+
+---
+
+## Surse oficiale consultate
+
+**Legislație primară**
+- Portalul Legislativ (legislatie.just.ro) – Ordinul MFP 1954/2005, OG 57/2002, Legea 324/2003, HG 1188/2022
+- Monitorul Oficial al României
+
+**Clasificații bugetare MFP**
+- Pagina oficială clasificații: mfinante.gov.ro/en/domenii/buget/clasificatiile-bugetare
+- Anexa 1 clasificație funcțională (TranspFunc_anexa1.pdf)
+- Note de modificare 2025 (Comunicări 532880-536037)
+
+**Instituții și programe**
+- Site-ul Guvernului României (gov.ro) – comunicat restructurare 27.02.2025
+- UEFISCDI (uefiscdi.gov.ro)
+- Autoritatea Națională pentru Cercetare (research.gov.ro)
+- ELI-NP (eli-np.ro)
+- DANUBIUS-RI (danubius-ro.eu)
+
+**Standarde internaționale**
+- Manual COFOG – Eurostat (KS-GQ-19-010)
+- Clasificarea OECD/UN pentru statistici financiare guvernamentale
+
+## Processed
+
+- **Date**: 2026-01-02 14:52:35
+- **Source file**: ./public/assets/text/ro/functional/53.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-53-2026-01-02-143612.log

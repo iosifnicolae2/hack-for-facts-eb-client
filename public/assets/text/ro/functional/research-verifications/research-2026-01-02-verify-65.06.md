@@ -227,7 +227,15 @@ GROUP BY clasificatie_functionala;
 ## Context
 
 - **Created**: 2026-01-02 04:36:37
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/65.06.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/65.06.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+Aceasta este o solicitare foarte clară și detaliată pentru verificarea documentației bugetare aferentă clasificației funcționale 61.06 "Autorități judecătorești". Voi demara cercetarea aprofundată pentru a verifica toate aspectele menționate în checklist-ul tău.Raportul de verificare a documentației bugetare pentru clasificația 61.06 „Autorități judecătorești" este finalizat. Am identificat probleme critice care necesită corectare imediată: referințe la legislație abrogată din 2022 (Legile 304/2004 și 303/2004), includerea eronată a birourilor notariale și serviciilor de medicină legală, și un mecanism bugetar descris simplificat. Raportul confirmă corectitudinea codului 61.06, a corespondenței COFOG cu 03.3 Law courts, și include un tabel recapitulativ al erorilor cu acțiunile necesare.
+
+## Processed
+
+- **Date**: 2026-01-02 14:58:19
+- **Source file**: ./public/assets/text/ro/functional/65.06.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-65.06-2026-01-02-143612.log

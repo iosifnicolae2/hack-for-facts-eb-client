@@ -270,7 +270,154 @@ Capitol 55 este esențial pentru înțelegerea **costului îndatorării publice*
 ## Context
 
 - **Created**: 2026-01-02 04:36:36
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/55.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/55.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație Capitol 55: acuratețe înaltă cu erori minore
+
+Documentația pentru Capitolul 55 „Tranzacții privind datoria publică și împrumuturi" demonstrează un **nivel ridicat de acuratețe și calitate profesională**. Verificarea a confirmat corectitudinea majorității informațiilor legislative, statistice și tehnice. Au fost identificate **o problemă critică** (link legislativ eronat) și **două probleme minore** care necesită corecție. Restul conținutului corespunde standardelor oficiale ale Ministerului Finanțelor și poate fi utilizat cu încredere.
+
+---
+
+## 1. Rezumat general
+
+Documentul a fost verificat pe toate cele 6 axe din checklist și prezintă o calitate generală **bună spre foarte bună**. Structura este completă, terminologia este consistentă cu nomenclatura oficială MFP, iar datele statistice pentru 2024 sunt actualizate și corecte. Baza legală este corect citată, toate actele normative menționate sunt în vigoare, iar clasificațiile bugetare (coduri, titluri, subcapitole) corespund cu anexele oficiale ale Ministerului Finanțelor. Singura problemă critică identificată este un URL eronat pentru Legea 500/2002.
+
+---
+
+## 2. Probleme critice găsite
+
+### Link eronat pentru Legea 500/2002
+
+**Problema:** URL-ul indicat în document pentru Legea 500/2002 privind finanțele publice este **incorect**.
+
+| Aspect | Valoare |
+|--------|---------|
+| URL din document | `https://legislatie.just.ro/Public/DetaliiDocument/37400` |
+| URL corect | `https://legislatie.just.ro/Public/DetaliiDocumentAfis/37954` |
+| Cauza erorii | ID-ul documentului este 37954, nu 37400 |
+
+**Acțiune necesară:** Modificați ID-ul din 37400 în **37954** și actualizați tipul de endpoint din `DetaliiDocument` în `DetaliiDocumentAfis` pentru consistență cu formatul Portal Legislativ.
+
+---
+
+## 3. Probleme minore și sugestii de îmbunătățire
+
+### Datoria publică locală supraestimată
+
+Documentul menționează **„aproximativ 26 miliarde lei"** pentru datoria publică locală la finalul 2024. Conform datelor oficiale publicate de Ministerul Finanțelor, valoarea exactă este **24,307 miliarde lei** (decembrie 2024). Diferența este de aproximativ **1,7 miliarde lei (7%)**.
+
+**Recomandare:** Modificați textul în „aproximativ **24-25 miliarde lei**" sau specificați „24,31 miliarde lei conform datelor MF".
+
+### Datoria publică metodologie extinsă necesită clarificare
+
+Cifra de **1.129,9 miliarde lei** pentru „metodologie extinsă" nu a fost confirmată direct în sursele oficiale disponibile. Datoria guvernamentală conform OUG 64/2007 este de aproximativ **961 miliarde lei**, iar diferența ar putea proveni din includerea garanțiilor de stat sau metodologii alternative de calcul.
+
+**Recomandare:** Clarificați sursa exactă și metodologia utilizată pentru această cifră sau adăugați o notă explicativă privind diferența dintre metodologia națională și cea extinsă.
+
+### Secțiunea „Documente relevante" poate fi îmbunătățită
+
+- Adăugați link funcțional pentru **HG 1470/2007** (în prezent e menționată doar „referință prin căutare Google")
+- Link-ul către clasificațiile bugetare MF (https://mfinante.gov.ro/en/domenii/buget/clasificatiile-bugetare) este în engleză; alternativ, utilizați versiunea română
+
+---
+
+## 4. Confirmări ale informațiilor corecte
+
+### Coduri bugetare și clasificații
+
+| Element | Status | Observații |
+|---------|--------|------------|
+| Capitol 55 „Tranzacții privind datoria publică și împrumuturi" | ✅ Corect | Denumirea este identică cu Anexa II MFP |
+| Subcapitol 55.01 (Buget de stat) | ✅ Corect | Conform clasificației funcționale |
+| Subcapitol 55.02 (Bugete locale) | ✅ Corect | Conform clasificației funcționale |
+| Titlul 30 - Dobânzi (art. 30.01, 30.02, 30.03) | ✅ Corect | Clasificație economică validă |
+| Titlul 81 - Rambursări de credite | ✅ Corect | Operațiuni financiare, nu cheltuieli curente |
+| Titlul 20 art. 20.24 - Comisioane | ✅ Corect | Cheltuieli materiale aferente împrumuturilor |
+| Mapare COFOG **GF01.7** (Public debt transactions) | ✅ Corect | Conform standardului internațional |
+
+### Referințe legislative
+
+| Act normativ | URL funcțional | Status | Ultima modificare notabilă |
+|--------------|----------------|--------|---------------------------|
+| Ordinul MFP 1954/2005 | [ID 67596](https://legislatie.just.ro/Public/DetaliiDocument/67596) | ✅ În vigoare | Actualizări anuale |
+| OUG 64/2007 | [ID 83212](https://legislatie.just.ro/Public/DetaliiDocument/83212) | ✅ În vigoare | OUG 101/2024 |
+| Legea 273/2006 | [ID 73527](https://legislatie.just.ro/Public/DetaliiDocument/73527) | ✅ În vigoare | OUG 89/2025 |
+| HG 1470/2007 | Căutare necesară | ✅ În vigoare | Multiple modificări |
+
+### Date statistice 2024
+
+| Indicator | Valoare din document | Valoare verificată | Status |
+|-----------|---------------------|-------------------|--------|
+| Cheltuieli dobânzi 2024 | >36 miliarde lei | 36,28 miliarde lei | ✅ Corect |
+| Datoria publică (metodologie națională) | ~964 miliarde lei | 964,345 miliarde lei | ✅ Corect |
+| Pondere datorie/PIB | 54,6% | 54,6% | ✅ Corect |
+| Deficit bugetar (cash) | 8,65% | 8,65% | ✅ Corect |
+| Deficit bugetar (ESA) | 9,3% | 9,28-9,3% | ✅ Corect |
+| România cel mai mare deficit UE | Afirmat | Confirmat Eurostat | ✅ Corect |
+| Cheltuieli dobânzi estimate 2025 | ~51 miliarde lei | 51 miliarde lei | ✅ Corect |
+| Dobânzi termen lung | 7-7,5% | 7,15-7,5% | ✅ Corect |
+
+### Context economic și procedural
+
+- **Procedura de deficit excesiv din 2020** - ✅ Corect, confirmată prin Decizia UE 2020/509 din 3 aprilie 2020
+- **„Cel mai mare deficit din UE"** pentru 2024 - ✅ Corect, România a înregistrat 9,3% față de Polonia (6,6%) pe locul 2
+- **Tratamentul în consolidare** (nu se elimină) - ✅ Corect, cheltuielile sunt către creditori externi sistemului bugetar
+- **Formula soldului primar** - ✅ Corect conceptual (Deficit - Dobânzi)
+
+### Aspecte de limbă română și formatare
+
+- Gramatica și ortografia sunt corecte în general
+- Diacriticele sunt utilizate corect (ș, ț, ă, â, î în formă Unicode standard)
+- Stilul este formal, tehnic și consistent
+- Structura secțiunilor este completă conform checklistului
+
+---
+
+## 5. Surse consultate
+
+### Surse legislative
+
+- Portal Legislativ (legislatie.just.ro) - verificare acte normative
+- Ordinul MFP 1954/2005 - clasificația indicatorilor privind finanțele publice
+- OUG 64/2007 - cadrul legal al datoriei publice
+- Legea 500/2002 - finanțele publice (ID corect: 37954)
+- Legea 273/2006 - finanțele publice locale
+
+### Surse statistice
+
+- Ministerul Finanțelor - date execuție bugetară 2024
+- Eurostat - date deficit bugetar și comparații UE (aprilie 2025)
+- Comisia Europeană - procedura de deficit excesiv (EUR-Lex)
+- Declarații oficiale vicepremier Tanczos Barna (septembrie 2025)
+
+### Surse pentru clasificații bugetare
+
+- Anexa II MFP - clasificația funcțională a cheltuielilor
+- Anexa 7 MFP - corespondența COFOG
+- OECD/Eurostat - standard COFOG GF01.7
+
+### Publicații verificate
+
+- Economedia, Ziarul Financiar, România Liberă, Profit.ro - date execuție bugetară
+- Euronews România, Digi24 - declarații oficiale
+- Curs de Guvernare - analize datorie publică
+
+---
+
+## Concluzie finală
+
+Documentația pentru Capitolul 55 este de **calitate foarte bună**, cu o acuratețe ridicată atât în privința cadrului legal, cât și a datelor statistice. Problemele identificate sunt minore și pot fi corectate rapid:
+
+1. **Prioritate maximă:** Corectați URL-ul pentru Legea 500/2002 (ID 37954, nu 37400)
+2. **Prioritate medie:** Ajustați valoarea datoriei publice locale la 24-25 miliarde lei
+3. **Prioritate scăzută:** Clarificați sursa pentru cifra de 1.129,9 miliarde lei
+
+După aceste corecții, documentul va fi pe deplin conform cu sursele oficiale și pregătit pentru publicare pe platforma Transparenta.eu.k
+## Processed
+
+- **Date**: 2026-01-02 16:03:40
+- **Source file**: ./public/assets/text/ro/functional/55.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-55-2026-01-02-160309.log

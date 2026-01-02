@@ -321,7 +321,187 @@ Acest capitol este fundamental pentru înțelegerea politicilor sociale de comba
 ## Context
 
 - **Created**: 2026-01-02 04:36:39
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/68.15.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/68.15.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare completă a documentației bugetare 68.15 "Prevenirea excluderii sociale"
+
+Documentația de pe platforma Transparenta.eu pentru clasificația funcțională 68.15 a fost verificată exhaustiv față de sursele oficiale MFP, legislația în vigoare și contextul PNRR. **Concluzia generală este pozitivă** - majoritatea informațiilor sunt corecte, cu câteva discrepanțe tehnice ce necesită atenție.
+
+---
+
+## 1. Rezumat General
+
+Verificarea a confirmat **acuratețea substanțială** a documentației pentru codul bugetar 68.15 "Prevenirea excluderii sociale". Toate referințele legislative majore sunt corecte și în vigoare, cuantumurile VMI pentru martie 2025 sunt exacte (**366 lei, 533 lei, 930 lei**), iar încadrarea în PNRR Componenta C13 Reforma 3 este validată. S-au identificat **3 probleme minore** legate de structura subcapitolelor și numerotarea acestora, care nu afectează substanțial utilitatea documentației dar necesită corecție pentru conformitate deplină cu Ordinul MFP 1954/2005.
+
+---
+
+## 2. Probleme Critice Găsite
+
+### ⚠️ Discrepanță la codul 68.15.03
+
+**Situație identificată**: Documentația menționează codul 68.15.03 pentru "Locuințe"
+
+**Situație corectă conform Anexa 1 MFP**: Codul **68.01.15.03** are denumirea oficială "**Centre de primire și cazare a persoanelor solicitante a statutului de refugiat**" - NU "Locuințe"
+
+**Impact**: Eroare de clasificare. Ajutoarele pentru locuințe sunt clasificate separat:
+- **68.xx.10** "Ajutoare pentru locuințe" - pentru subvenții locuințe
+- **70.xx.03** "Locuințe" - la capitolul Dezvoltare publică
+
+**Acțiune recomandată**: Corectare imediată a denumirii sau eliminarea referinței la 68.15.03 pentru locuințe
+
+### ⚠️ Clarificare necesară privind prefixele codurilor
+
+Documentația folosește notația simplificată **68.15** fără a specifica sursa bugetară. În clasificația oficială, codurile sunt întotdeauna prefixate:
+
+| Prefix | Sursă bugetară |
+|--------|----------------|
+| **68.01.15** | Bugetul de stat |
+| **68.02.15** | Bugetele locale |
+| **68.05.15** | Bugetul asigurărilor sociale |
+| **68.06.15** | Credite externe |
+
+**Acțiune recomandată**: Adăugarea unei note explicative că 68.15 este o notație simplificată
+
+---
+
+## 3. Probleme Minore / Sugestii de Îmbunătățire
+
+### Structura subcapitolelor diferă între bugete
+
+Subcapitolul **68.xx.15.02 "Cantine de ajutor social"** există doar pentru:
+- Bugetele locale (68.02.15.02)
+- Credite externe (68.06.15.02)
+
+**NU există** pentru bugetul de stat - documentația ar trebui să clarifice acest lucru.
+
+### Link-uri cu formatare diferită pe legislatie.just.ro
+
+Unele URL-uri folosesc `/DetaliiDocument/` iar altele `/DetaliiDocumentAfis/` - ambele formate sunt valide, dar se recomandă consistență. Formatul cu `DetaliiDocumentAfis` tinde să fie mai stabil.
+
+### Clarificare termenul de raportare modificări
+
+Documentația specifică corect **10 zile** pentru raportarea modificărilor de către beneficiari, dar există surse neoficiale care menționează 15 zile. Se recomandă evidențierea clară a temeiului legal: **Art. 25 din Legea 196/2016**.
+
+### Actualizare referințe pentru cuantumuri istorice
+
+Dacă documentația menționează cuantumurile din 2024, ar fi util să includă și evoluția:
+- 2024: 346 lei / 504 lei / 880 lei
+- 2025 (martie): **366 lei / 533 lei / 930 lei** (indexare +5,6%)
+
+---
+
+## 4. Confirmări ale Informațiilor Corecte
+
+### ✅ Acuratețe legală și tehnică
+
+| Element verificat | Status | Observații |
+|-------------------|--------|------------|
+| Ordinul MFP 1954/2005 | ✅ CORECT | În vigoare, actualizat continuu (Note 2025: 536037, 535982, etc.) |
+| Denumirea "Prevenirea excluderii sociale" | ✅ CORECT | Confirmată în Anexele I și II MFP |
+| Subcapitol 68.15.01 "Ajutor social" | ✅ CORECT | Există în toate clasificările |
+| Subcapitol 68.15.50 "Alte cheltuieli" | ✅ CORECT | Denumire completă: "Alte cheltuieli în domeniul prevenirii excluderii sociale" |
+
+### ✅ Legislația VMI verificată complet
+
+| Act normativ | Status | Link funcțional |
+|--------------|--------|-----------------|
+| Legea 196/2016 (VMI) | ✅ CORECT | legislatie.just.ro/Public/DetaliiDocumentAfis/183328 |
+| OUG 114/2022 | ✅ CORECT | legislatie.just.ro/Public/DetaliiDocument/258691 |
+| HG 1154/2022 (Norme metodologice) | ✅ CORECT | legislatie.just.ro/Public/DetaliiDocument/259624 |
+| Legea 292/2011 (Asistența socială) | ✅ CORECT | legislatie.just.ro/public/detaliidocument/133913 |
+| Legea 116/2002 (Marginalizare socială) | ✅ CORECT | legislatie.just.ro/Public/DetaliiDocumentAfis/34645 |
+| Legea 122/2006 (Azilul în România) | ✅ CORECT | legislatie.just.ro/Public/DetaliiDocument/71808 |
+| Legea 273/2006 (Finanțe publice locale) | ✅ CORECT | legislatie.just.ro/Public/DetaliiDocument/73527 |
+
+### ✅ Cuantumuri VMI Martie 2025
+
+| Tip beneficiu | Sumă documentație | Status |
+|---------------|-------------------|--------|
+| Ajutor de incluziune (maxim/membru) | 366 lei/lună | ✅ CORECT |
+| Persoana singură ≥65 ani | 533 lei/lună | ✅ CORECT |
+| Prag venituri ajutor familie cu copii | 930 lei | ✅ CORECT |
+| Mecanismul de indexare anuală | Rata inflației | ✅ CORECT (5,6% pentru 2025) |
+
+### ✅ Componente VMI și flux administrativ
+
+| Element | Status | Detalii |
+|---------|--------|---------|
+| Structura VMI | ✅ CORECT | Ajutor de incluziune + Ajutor pentru familia cu copii |
+| VMI înlocuiește VMG și ASF | ✅ CORECT | Din 1 ianuarie 2024 |
+| Flux: Primărie → SPAS/DGASPC → ANPIS | ✅ CORECT | Conform HG 1154/2022 |
+| Obligații: AJOFM, activități interes local | ✅ CORECT | Persoane apte de muncă |
+| Declarații la 6 luni | ✅ CORECT | Declarație pe propria răspundere |
+| Raportare schimbări în 10 zile | ✅ CORECT | Art. 25 din Legea 196/2016 |
+
+### ✅ Context PNRR confirmat
+
+| Afirmație | Status |
+|-----------|--------|
+| VMI în PNRR Componenta C13 "Reforme sociale" | ✅ CORECT |
+| Reforma 3 - Implementarea VMI | ✅ CORECT |
+| Jalon 384 | ✅ CORECT |
+| Data implementare: 1 ianuarie 2024 | ✅ CORECT |
+| Termen final PNRR: 30 iunie 2025 | ✅ CORECT |
+
+### ✅ Clasificație economică
+
+| Articol | Denumire | Status |
+|---------|----------|--------|
+| **57.02** | Ajutoare sociale | ✅ CORECT |
+| 57.02.01 | Ajutoare sociale în numerar | ✅ CORECT (pentru plăți VMI) |
+| **20.xx** | Bunuri și servicii | ✅ CORECT (pentru administrare) |
+
+### ✅ Mapare COFOG
+
+| Cod românesc | Corespondent COFOG | Status |
+|--------------|-------------------|--------|
+| 68.15 Prevenirea excluderii sociale | **COFOG 10.7** - Social exclusion n.e.c. | ✅ CORECT |
+
+Capitolul 68 "Asigurări și asistență socială" corespunde integral cu **COFOG Division 10 - Social Protection**.
+
+---
+
+## 5. Surse Consultate
+
+### Portal Legislativ (legislatie.just.ro)
+- Legea 196/2016: https://legislatie.just.ro/Public/DetaliiDocumentAfis/183328
+- OUG 114/2022: https://legislatie.just.ro/Public/DetaliiDocument/258691
+- HG 1154/2022: https://legislatie.just.ro/Public/DetaliiDocument/259624
+- Legea 292/2011: https://legislatie.just.ro/public/detaliidocument/133913
+- Legea 116/2002: https://legislatie.just.ro/Public/DetaliiDocumentAfis/34645
+- Legea 122/2006: https://legislatie.just.ro/Public/DetaliiDocument/71808
+- Legea 273/2006: https://legislatie.just.ro/Public/DetaliiDocument/73527
+
+### Ministerul Finanțelor (mfinante.gov.ro)
+- Clasificații bugetare 2025: https://mfinante.gov.ro/en/domenii/buget/clasificatiile-bugetare
+- Anexa 1 - Clasificația funcțională buget de stat (PDF disponibil pe site)
+- Anexa 2 - Clasificația funcțională bugete locale (PDF disponibil pe site)
+- Anexa 7 - Mapare COFOG (disponibilă pe site)
+
+### Ministerul Muncii (mmuncii.ro)
+- Informații VMI: https://mmuncii.ro/j33/index.php/ro/2-uncategorised/7122-20231208-vmi-ghid-plian-poster
+- HG 1154/2022 (PDF): https://mmuncii.ro/j33/images/Documente/Familie/Beneficii_sociale/HG_1154_2022.pdf
+
+### Agenții și autorități locale consultate
+- ANPIS (mmanpis.ro) - statistici beneficiari
+- DGASPC Sector 3 (dgaspc3.ro) - informații cuantumuri
+- Direcții locale de asistență socială
+
+### Context european
+- PNRR România - Componenta C13, Jalon 384
+- Eurostat COFOG Statistics
+- Pilonul European al Drepturilor Sociale - Principiul 14
+
+---
+
+## Concluzie finală
+
+Documentația de pe Transparenta.eu pentru clasificația 68.15 este **în mare parte corectă și de înaltă calitate**. Singura problemă semnificativă este referința eronată la codul 68.15.03 ca "Locuințe" - în realitate, acest cod se referă la centre pentru refugiați. Se recomandă corectarea acestei discrepanțe și adăugarea unei note clarificatoare privind prefixele codurilor bugetare (68.01.15 vs. 68.02.15). Toate cuantumurile VMI, referințele legislative și încadrarea PNRR sunt accurate și actuale pentru anul 2025.
+## Processed
+
+- **Date**: 2026-01-02 16:18:29
+- **Source file**: ./public/assets/text/ro/functional/68.15.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-68.15-2026-01-02-160309.log

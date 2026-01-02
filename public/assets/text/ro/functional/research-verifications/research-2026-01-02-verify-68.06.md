@@ -298,7 +298,146 @@ Această corespondență permite:
 ## Context
 
 - **Created**: 2026-01-02 04:36:39
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/68.06.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/68.06.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Raport de verificare: 68.06 - Asistență socială pentru familie și copii
+
+Documentația pentru clasificația funcțională 68.06 este **în general corectă**, cu câteva clarificări necesare privind structura codificării bugetare și data intrării în vigoare a Legii 196/2016. Toate link-urile legislative funcționează, iar corespondența COFOG 10.4 este confirmată.
+
+---
+
+## 1. Rezumat general
+
+Verificarea a confirmat acuratețea majorității informațiilor din document. Codul **68.xx.06** reprezintă corect „Asistență socială pentru familie și copii" în clasificația funcțională românească, iar corespondența cu **COFOG 10.4** (Family and children) este validă. Toate cele șapte acte normative citate au link-uri funcționale pe Portal Legislativ, iar denumirile oficiale corespund. S-au identificat două erori factuale privind Legea 196/2016: data intrării în vigoare necesită nuanțare, iar legea înlocuiește integral (nu parțial) Legea 277/2010.
+
+---
+
+## 2. Probleme critice găsite
+
+### Data intrării în vigoare a Legii 196/2016 necesită corectare
+
+Documentul afirmă că Legea 196/2016 a intrat „în vigoare de la **1 ianuarie 2024**". Aceasta este o simplificare inexactă:
+
+- **1 aprilie 2023**: Dispozițiile generale ale legii au intrat în vigoare (conform Legii 56/2023)
+- **1 ianuarie 2024**: Prevederile privind solicitarea, stabilirea drepturilor și **plata** venitului minim de incluziune au devenit operaționale
+
+**Formulare corectă sugerată**: „în vigoare de la 1 aprilie 2023, cu aplicarea prevederilor de plată de la 1 ianuarie 2024"
+
+### Legea 196/2016 înlocuiește integral, nu parțial, Legea 277/2010
+
+Documentul menționează că Legea 196/2016 „înlocuiește parțial Legea 277/2010". Conform articolului 96 litera b) din Legea 196/2016, **Legea 277/2010 a fost abrogată integral** la data de 1 ianuarie 2024. Legea 196/2016 unifică două beneficii anterioare:
+
+- Venitul Minim Garantat (Legea 416/2001)
+- Alocația pentru susținerea familiei (Legea 277/2010)
+
+Ambele sunt înlocuite de noul „Venit Minim de Incluziune" (VMI).
+
+---
+
+## 3. Probleme minore și sugestii de îmbunătățire
+
+### Clarificare privind structura codului 68.06
+
+Clasificația bugetară românească utilizează sufixe după numărul capitolului pentru a indica tipul bugetului:
+
+| Sufix | Tipul bugetului | Cod complet |
+|-------|-----------------|-------------|
+| .01 | Bugetul de stat | 68.01.06 |
+| .02 | Bugetele locale | 68.02.06 |
+| .05 | FNUASS (sănătate) | 68.05.06 |
+| .06 | Credite externe | 68.06.06 |
+| .10 | Instituții cu venituri proprii | 68.10.06 |
+
+Documentul folosește „68.06" ca prescurtare pentru subgrupă, ceea ce este acceptabil în context, dar ar putea fi clarificat că denumirea „Asistență socială pentru familie și copii" se aplică subgrupei **.06** din cadrul capitolului 68, indiferent de tipul bugetului.
+
+### Link-uri MFP indisponibile pentru acces direct
+
+Fișierele Excel de pe mfinante.gov.ro (Anexa II și Anexa 7) nu au putut fi accesate direct din cauza restricțiilor robots.txt. Se recomandă verificarea periodică a acestor URL-uri și actualizarea numelor fișierelor când MFP le modifică (datele din nume sugerează versiuni din ianuarie și mai 2025).
+
+### Formatare inconsistentă a URL-urilor legislatie.just.ro
+
+URL-ul pentru Legea 292/2011 folosește caractere lowercase (`/public/detaliidocument/`), în timp ce celelalte folosesc case mixt (`/Public/DetaliiDocument/`). Deși portalul legislativ acceptă ambele variante, se recomandă uniformizarea pentru consistență.
+
+---
+
+## 4. Confirmări ale informațiilor corecte
+
+### Cod bugetar și denumire oficială
+
+- ✅ **Codul 68.xx.06** există în clasificația funcțională MFP
+- ✅ **Denumirea „Asistență socială pentru familie și copii"** corespunde exact cu nomenclatura oficială din Ordinul MFP 1954/2005
+- ✅ **Capitolul 68** = „Asigurări și asistență socială" (confirmat)
+
+### Corespondența COFOG
+
+- ✅ **COFOG 10.4 - Family and children** corespunde codului românesc 68.06
+- ✅ Diviziunea COFOG 10 = „Social protection" cuprinde 9 grupe, iar 10.4 acoperă exact tipurile de cheltuieli din clasificația românească
+
+### Acte normative verificate și funcționale
+
+| Act normativ | Link | Status | Titlu oficial |
+|--------------|------|--------|---------------|
+| Ordinul MFP 1954/2005 | legislatie.just.ro/Public/DetaliiDocument/67596 | ✅ Funcțional | Clasificația indicatorilor privind finanțele publice |
+| Legea 272/2004 | legislatie.just.ro/Public/DetaliiDocument/52909 | ✅ Funcțional | Protecția și promovarea drepturilor copilului (republicată) |
+| Legea 61/1993 | legislatie.just.ro/Public/DetaliiDocument/3202 | ✅ Funcțional | Alocația de stat pentru copii (republicată) |
+| OUG 111/2010 | legislatie.just.ro/Public/DetaliiDocument/124331 | ✅ Funcțional | Concediul și indemnizația lunară pentru creșterea copiilor |
+| Legea 292/2011 | legislatie.just.ro/public/detaliidocument/133913 | ✅ Funcțional | Legea asistenței sociale |
+| Legea 196/2016 | legislatie.just.ro/Public/DetaliiDocument/183197 | ✅ Funcțional | Venitul minim de incluziune |
+
+### Indexarea alocațiilor cu inflația
+
+- ✅ **Confirmat**: Conform OUG 126/2021 care modifică Legea 61/1993, alocația de stat pentru copii se indexează anual, din oficiu, cu rata medie anuală a inflației, începând cu ianuarie 2023
+- Rata inflației utilizată este indicatorul definitiv comunicat de INS pentru anul calendaristic anterior
+
+### Denumire și website agenție
+
+- ✅ **ANPIS** = Agenția Națională pentru Plăți și Inspecție Socială (denumire corectă)
+- ✅ **mmanpis.ro** este website-ul oficial corect (prefixul „mm" indică afilierea la Ministerul Muncii)
+- ⚠️ **anpis.ro** NU este un domeniu oficial - dacă documentul îl menționează, trebuie corectat la mmanpis.ro
+- ✅ **mmuncii.ro** este un domeniu valid pentru Ministerul Muncii
+
+---
+
+## 5. Surse consultate
+
+### Documente oficiale MFP
+
+- Anexa nr. II - Clasificația funcțională a cheltuielilor (AnexanrII_29012025.xls) - verificată prin documente secundare
+- Anexa nr. 7 - Corespondența COFOG (Anexanr7_13052025.xls) - verificată prin clasificarea internațională UN
+- Ordinul MFP nr. 1954/2005 publicat în M.O. nr. 1176/27.12.2005
+
+### Portal Legislativ
+
+- legislatie.just.ro - toate cele 7 acte normative verificate
+
+### Surse internaționale COFOG
+
+- UN Statistics Division Classification COFOG (unstats.un.org)
+- Eurostat COFOG Manual 2019 (KS-GQ-19-010-EN-N)
+- ESSPROS - European System of integrated Social Protection Statistics
+
+### Website-uri instituționale
+
+- mmanpis.ro - Agenția Națională pentru Plăți și Inspecție Socială
+- mmuncii.ro / mmuncii.gov.ro - Ministerul Muncii
+- mfinante.gov.ro - Ministerul Finanțelor
+
+---
+
+## Concluzie și recomandări
+
+Documentul verificat prezintă un **nivel ridicat de acuratețe** pentru utilizarea pe platforma Transparenta.eu. Cele două corecții critice necesare sunt:
+
+1. **Modificarea formulării** privind Legea 196/2016: „în vigoare de la 1 aprilie 2023 (dispoziții generale) și 1 ianuarie 2024 (prevederi de plată); înlocuiește integral Legea 277/2010"
+
+2. **Verificarea URL-ului** mmanpis.ro dacă documentul complet menționează vreun alt domeniu pentru ANPIS
+
+Structura documentului, explicațiile privind destinațiile cheltuielilor și referințele legislative sunt conforme cu nomenclatura oficială și adecvate pentru publicul țintă al platformei de transparență bugetară.
+## Processed
+
+- **Date**: 2026-01-02 16:16:59
+- **Source file**: ./public/assets/text/ro/functional/68.06.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-68.06-2026-01-02-160309.log

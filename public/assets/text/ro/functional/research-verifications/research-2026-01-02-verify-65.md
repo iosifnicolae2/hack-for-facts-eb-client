@@ -328,7 +328,159 @@ Capitolul 65 este unul dintre cele mai importante capitole de cheltuieli din bug
 ## Context
 
 - **Created**: 2026-01-02 04:36:37
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/65.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/65.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificarea documentației bugetare Capitol 65 - Învățământ
+
+Documentația de pe Transparenta.eu pentru Capitolul 65 „Învățământ" este **în mare parte corectă**, însă conține o **problemă critică** referitoare la HG 72/2013 care a fost abrogată în 2024 și înlocuită cu noul cadru HG 68/2024. Codurile bugetare și structura subcapitolelor sunt conforme cu clasificația oficială MFP, iar afirmația despre noul cadru legal format din Legile 198/2023 și 199/2023 este corectă. Totuși, mecanismul de finanțare prin sume defalcate din TVA necesită clarificări, deoarece **cheltuielile salariale se finanțează acum direct din bugetul de stat**, nu din sume defalcate.
+
+---
+
+## Probleme critice identificate
+
+### HG 72/2013 nu mai este în vigoare
+
+**Eroare majoră:** Documentul menționează HG 72/2013 ca bază pentru metodologia costului standard per elev. Această hotărâre de guvern a fost **abrogată la 1 februarie 2024** și înlocuită cu un cadru legislativ nou:
+
+- **HG 68/2024** – pentru finanțarea de bază a unităților de învățământ preuniversitar de stat (modificată prin HG 281/2025)
+- **HG 69/2024** – pentru finanțarea unităților de învățământ particular și confesional acreditate
+
+Valorile actuale ale costului standard pentru 2025 sunt: **9.620 lei** (coeficient 1 - cheltuieli salariale) și **704 lei** (coeficient 1 - bunuri și servicii), totalizând **10.324 lei** pentru un elev gimnazial din mediul urban.
+
+### Clarificare necesară privind sumele defalcate din TVA
+
+Descrierea finanțării prin „sume defalcate din TVA" este parțial inexactă conform noii legislații. Structura actuală a finanțării este:
+
+- **Cheltuieli salariale** → finanțate direct din bugetul de stat, prin bugetul Ministerului Educației
+- **Cheltuieli cu bunuri, servicii și formare continuă** → finanțate din sume defalcate din unele venituri ale bugetului de stat, prin bugetele locale
+
+### Terminologia DJIP în perioada de tranziție
+
+Documentul menționează corect DJIP (Direcția Județeană de Învățământ Preuniversitar), însă reorganizarea Inspectoratelor Școlare Județene (ISJ) în DJIP, prevăzută de Legea 198/2023, a fost finalizată etapizat în perioada 2024-2025. În documente oficiale recente se folosesc ambele denumiri, cu precizarea că inspecția școlară propriu-zisă a trecut la ARACIIP (Agenția Română pentru Asigurarea Calității și Inspecție în Învățământul Preuniversitar).
+
+---
+
+## Probleme minore și sugestii de îmbunătățire
+
+### Subcapitole lipsă din prezentarea generală
+
+Documentul verificat nu menționează următoarele subcapitole care există în clasificația oficială MFP:
+
+| Cod | Denumire | Observații |
+|-----|----------|------------|
+| 65.01.01 / 65.10.01 | Administrație centrală | Cheltuieli administrative ale Ministerului Educației |
+| 65.0X.06.01 | Învățământ universitar | Subdiviziune a 65.01.06 |
+| 65.0X.06.02 | Învățământ postuniversitar | Subdiviziune a 65.01.06 |
+| 65.0X.07.01 | Centre de specializare și calificare | Subdiviziune a 65.0X.07 |
+| 65.01.07.02 | Biblioteci universitare și pedagogice | Doar la bugetul de stat |
+| 65.0X.11.04 | Cămine și cantine pentru studenți | Doar la 65.01 și 65.10 |
+| 65.0X.11.30 | Alte servicii auxiliare | Subdiviziune a 65.0X.11 |
+| 65.01.25 | Cercetare și dezvoltare pentru învățământ | Doar la bugetul de stat |
+
+### Detalii despre coeficienții de ajustare
+
+Documentul ar beneficia de informații mai concrete despre sistemul de coeficienți. Conform HG 68/2024, coeficienții de diferențiere variază semnificativ: de la **0,663** pentru învățământ preșcolar program normal (urban) până la **2,800** pentru liceu de muzică. Pentru elevi cu CES integrați, costul standard se majorează cu **minimum 75%**, iar pentru școli din spital cu **minimum 100%**.
+
+### Actualizarea referințelor la OUG 89/2025
+
+Pentru articolele 32-34 din Legea 273/2006, merită menționat că OUG 89/2025 a instituit reguli tranzitorii de la 1 ianuarie 2026 până la adoptarea legii bugetului de stat pe 2026.
+
+---
+
+## Confirmări ale informațiilor corecte
+
+### Coduri bugetare și structură
+
+Toate codurile bugetare verificate sunt **corecte și conforme** cu clasificația funcțională aprobată prin Ordinul MFP 1954/2005:
+
+- ✅ **65.0X.03** Învățământ preșcolar și primar (cu 03.01 și 03.02)
+- ✅ **65.0X.04** Învățământ secundar (cu 04.01, 04.02 și 04.03)
+- ✅ **65.0X.05** Învățământ postliceal
+- ✅ **65.01.06** Învățământ superior (corect indicat doar pentru bugetul de stat)
+- ✅ **65.0X.07** Învățământ nedefinibil prin nivel (cu 07.04 special)
+- ✅ **65.0X.11** Servicii auxiliare pentru educație (cu 11.03)
+- ✅ **65.0X.50** Alte cheltuieli în domeniul învățământului
+
+Notația cu „0X" este corectă: 01 = buget de stat, 02 = bugete locale, 10 = instituții cu venituri proprii.
+
+### Cadrul legislativ din 2023
+
+Afirmația că „începând cu anul școlar 2023-2024, cadrul legal principal pentru educație este format din Legea 198/2023 și Legea 199/2023" este **complet corectă**. Ambele legi au intrat în vigoare la **3 septembrie 2023**, iar Legea 1/2011 a fost abrogată în majoritate, cu excepția unor dispoziții tranzitorii minore.
+
+### Cele trei tipuri de finanțare pentru învățământul superior
+
+Legea 199/2023 prevede într-adevăr cele **3 tipuri de finanțare** pentru universități:
+
+- **Finanțare de bază (FB)** – pentru cheltuieli operaționale curente, calculată pe baza numărului de studenți
+- **Finanțare suplimentară (FS)** – minimum 30% din finanțarea de bază, pentru stimularea excelenței
+- **Finanțare complementară (FC)** – pentru investiții, dotări și cercetare științifică universitară
+
+### Statutul actelor normative de referință
+
+| Act normativ | Status (ianuarie 2026) |
+|-------------|------------------------|
+| Ordinul MFP 1954/2005 | ✅ În vigoare (cu modificări) |
+| Legea 273/2006 | ✅ În vigoare (cu derogări prin OUG 89/2025) |
+| Legea 198/2023 | ✅ În vigoare (modificată prin Legea 141/2025) |
+| Legea 199/2023 | ✅ În vigoare (modificată prin Legea 98/2024) |
+| Legea 1/2011 | ⚠️ Abrogată în majoritate din 03.09.2023 |
+
+### Corespondența cu clasificația COFOG
+
+Capitol 65 „Învățământ" corespunde corect cu **COFOG 09 „Education"** din clasificația internațională, cu maparea directă a subcapitolelor (preșcolar-primar → 09.1, secundar → 09.2, superior → 09.4, etc.).
+
+### Funcționalitatea link-urilor
+
+Toate link-urile verificate sunt **funcționale**:
+
+- **legislatie.just.ro/Public/DetaliiDocument/67596** – afișează Ordinul MFP 1954/2005
+- **mfinante.gov.ro/static/.../clasificatii/** – directorul cu fișierele XLS ale anexelor
+- **mfinante.gov.ro/domenii/bugetul-de-stat/clasificatii-bugetare** – pagina principală actualizată pentru 2025
+
+---
+
+## Recomandări de actualizare
+
+Pentru conformitate deplină cu legislația actuală, documentul de pe Transparenta.eu ar trebui să includă următoarele modificări:
+
+1. **Înlocuirea referinței la HG 72/2013** cu „HG 68/2024 modificată prin HG 281/2025"
+2. **Clarificarea sursei cheltuielilor salariale** – direct din bugetul de stat, nu din sume defalcate
+3. **Actualizarea valorilor costului standard** – 10.324 lei pentru 2025 (coeficient 1)
+4. **Menționarea CNFIP** – Consiliul Național pentru Finanțarea Învățământului Preuniversitar, organism cu rol în stabilirea metodologiei
+5. **Adăugarea subcapitolelor lipsă** – în special 65.01.25 Cercetare și dezvoltare pentru învățământ
+
+---
+
+## Surse oficiale consultate
+
+**Legislație primară:**
+- Ordinul MFP nr. 1954/2005 – legislatie.just.ro/Public/DetaliiDocument/67596
+- Legea nr. 273/2006 – legislatie.just.ro/Public/DetaliiDocument/73527
+- Legea nr. 198/2023 – legislatie.just.ro/Public/DetaliiDocument/301748
+- Legea nr. 199/2023 – legislatie.just.ro/Public/DetaliiDocument/271898
+- HG 68/2024 – legislatie.just.ro/Public/DetaliiDocument/278772
+- HG 281/2025, HG 282/2025 – modificări pentru anul 2025
+
+**Clasificații bugetare MFP:**
+- Anexa II clasificație funcțională: mfinante.gov.ro/static/10/Mfp/buget/sitebuget/clasificatii/AnexanrII_29012025.xls
+- Anexa 7 COFOG: mfinante.gov.ro/static/10/Mfp/buget/sitebuget/clasificatii/Anexanr7_13052025.xls
+- Pagina clasificații: mfinante.gov.ro/domenii/bugetul-de-stat/clasificatii-bugetare
+
+**Portale de transparență:**
+- Transparența bugetară oficială: www.transparenta-bugetara.gov.ro (MFP)
+- Date deschise: data.gov.ro (Dataset „Clasificatiile bugetare")
+
+---
+
+## Concluzie
+
+Documentația pentru Capitol 65 – Învățământ de pe Transparenta.eu demonstrează o înțelegere corectă a structurii clasificației funcționale românești și a cadrului legislativ general. Problema critică identificată – referința la HG 72/2013 abrogată – necesită corecție imediată pentru a reflecta noul cadru HG 68/2024. Nuanțarea mecanismului de finanțare (cheltuieli salariale direct din bugetul de stat vs. bunuri și servicii din sume defalcate) ar îmbunătăți acuratețea tehnică. În ansamblu, documentul oferă o bază solidă pentru înțelegerea bugetării în educație, cu condiția implementării actualizărilor recomandate.
+
+## Processed
+
+- **Date**: 2026-01-02 16:10:02
+- **Source file**: ./public/assets/text/ro/functional/65.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-65-2026-01-02-160309.log

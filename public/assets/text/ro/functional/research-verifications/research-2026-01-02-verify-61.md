@@ -316,7 +316,121 @@ Capitolul 61 este esențial pentru înțelegerea structurii statului și a aloc�
 ## Context
 
 - **Created**: 2026-01-02 04:36:36
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/61.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/61.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificarea documentației bugetare Capitol 61 - Raport complet
+
+Această analiză confirmă că documentația pentru Capitolul 61 "Ordine publică și siguranță națională" conține **două erori critice de codificare** și **toate referințele legislative sunt funcționale și corecte**. Cifrele bugetare menționate sunt plauzibile, dar necesită verificare în documentele primare pentru confirmare exactă.
+
+## Rezumat general al verificării
+
+Verificarea a acoperit cinci dimensiuni: clasificația oficială MFP, referințele legislative, datele factuale bugetare, maparea COFOG și funcționalitatea link-urilor. Documentația analizată demonstrează o bună cunoaștere a cadrului legal și a structurii bugetare, cu excepția a două erori de codificare care necesită corectare imediată. **Nota platformei Transparenta.eu**: după cercetare extensivă, nu s-a identificat o pagină de documentație dedicată specific Capitolului 61 pe această platformă - aceasta se concentrează pe vizualizarea execuției bugetare, nu pe documentație explicativă.
+
+## Probleme critice găsite
+
+### Erori în codurile bugetare (corectare imediată necesară)
+
+Documentul listează incorect două coduri de subcapitole:
+
+| Cod eronat | Cod corect | Denumire |
+|------------|------------|----------|
+| **61.00.05** | **61.01.05** | Protecție civilă și protecție contra incendiilor |
+| **61.00.08** | **61.01.08** | Protecție civilă |
+
+**Explicația tehnică**: Sufixul determină tipul de buget - **.01** se folosește pentru bugetul de stat, **.02** pentru bugete locale, **.06** pentru credite externe, **.10** pentru venituri proprii, iar **.00** doar pentru structura generică din Anexa I. Când se documentează cheltuielile din bugetul de stat, toate codurile trebuie să aibă sufixul **.01**. Această eroare poate induce în eroare utilizatorii fără pregătire de specialitate și trebuie corectată.
+
+### Observație importantă privind maparea COFOG
+
+Subcapitolul **61.01.04 Siguranță națională** (servicii de informații - SRI, SIE) este clasificat în România la Capitol 61, dar conform standardului internațional COFOG, aceste servicii ar trebui să fie la **COFOG 01.1** (Organe executive și legislative) sau **COFOG 02** (Apărare), nu la COFOG 03 (Ordine publică). Această particularitate națională explică de ce România raportează Eurostat cele mai mari cheltuieli pe ordine publică din UE (**2.7% din PIB** în 2023, față de media UE de 1.7%).
+
+## Confirmări ale informațiilor corecte
+
+### Toate referințele legislative sunt valide și funcționale
+
+| Act normativ | Link | Status |
+|--------------|------|--------|
+| Ordinul MFP 1954/2005 | legislatie.just.ro/Public/DetaliiDocumentAfis/67596 | ✅ În vigoare |
+| Legea 500/2002 (Finanțe publice) | legislatie.just.ro/Public/DetaliiDocument/37954 | ✅ În vigoare |
+| Legea 273/2006 (Finanțe publice locale) | legislatie.just.ro/Public/DetaliiDocument/73527 | ✅ În vigoare |
+| Legea 218/2002 (Poliția Română) | legislatie.just.ro/Public/DetaliiDocument/35841 | ✅ În vigoare, republicată |
+| Legea 550/2004 (Jandarmeria) | legislatie.just.ro/Public/DetaliiDocument/57610 | ✅ În vigoare |
+| Legea 51/1991 (Securitatea națională) | legislatie.just.ro/Public/DetaliiDocument/1517 | ✅ În vigoare* |
+| OG 88/2001 (Servicii urgență) | legislatie.just.ro/Public/DetaliiDocumentAfis/30372 | ✅ În vigoare |
+
+*Notă: Legea 51/1991 are unele dispoziții declarate neconstituționale prin Deciziile CCR nr. 91/2018 și 802/2018 (art. 3 lit. f).
+
+### Structura oficială confirmată a subcapitolelor
+
+Conform Ordinului MFP 1954/2005 și documentelor oficiale MAI, structura corectă pentru Capitol 61 (buget de stat) este:
+
+- **61.01.01** - Administrația centrală
+- **61.01.02** - Servicii publice descentralizate  
+- **61.01.03** - Ordine publică
+  - 61.01.03.01 - Poliție
+  - 61.01.03.02 - Jandarmerie
+  - 61.01.03.03 - Pază și supravegherea frontierei
+  - 61.01.03.04 - Poliție comunitară (adăugat ulterior)
+- **61.01.04** - Siguranță națională
+- **61.01.05** - Protecție civilă și protecție contra incendiilor
+- **61.01.06** - Autorități judecătorești
+- **61.01.07** - Penitenciare
+- **61.01.08** - Protecție civilă
+- **61.01.09** - Sistemul național unic pentru apeluri de urgență
+- **61.01.25** - Cercetare și dezvoltare pentru ordine publică și siguranță națională
+- **61.01.50** - Alte cheltuieli în domeniul ordinii publice și siguranței naționale
+
+### Fondurile europene sunt corect denumite
+
+**FAMI** (Fondul pentru Azil, Migrație și Integrare) și **FSI** (Fondul pentru Securitate Internă) sunt confirmate ca existând și fiind operaționale în perioada 2021-2027. Autoritatea de management este Direcția Fonduri Externe Nerambursabile din MAI (fed.mai.gov.ro).
+
+## Probleme minore și sugestii de îmbunătățire
+
+### Date factuale ce necesită verificare
+
+**Cifra de 29,87 miliarde lei** pentru cheltuieli de personal în 2025 este **plauzibilă** dar nu a putut fi confirmată exact. Bugetul total MAI pentru 2025 este de aproximativ **34,03 miliarde lei** (conform Legii nr. 9/2025), ceea ce face cifra compatibilă. Pentru confirmare precisă, trebuie consultată Anexa nr. 3 la Legea bugetului de stat 2025 (MO nr. 118 bis).
+
+**Procentul de 70-80% cheltuieli de personal** este o estimare rezonabilă. Datele din bugetul MAI 2019 arată că cheltuielile de personal reprezentau **87,7%** din total (10,66 miliarde lei din 12,15 miliarde lei pentru Capitol 61.01). Procentul menționat este deci conservator și corect.
+
+### Clarificări recomandate pentru utilizatori
+
+Documentația ar beneficia de explicații suplimentare privind:
+- Diferența dintre 61.01.05 (Protecție civilă ȘI protecție contra incendiilor) și 61.01.08 (Protecție civilă) - nu sunt duplicate, ci clasificări diferite
+- Sistemul de sufixe (.01, .02, .06, .10) pentru diferitele tipuri de bugete
+- Contextul comparativ UE pentru cheltuielile românești (cele mai mari din UE ca procent din PIB)
+
+### Link suplimentar recomandat
+
+Pagina oficială MFP pentru clasificații bugetare actualizate: https://mfinante.gov.ro/domenii/buget/clasificatiile-bugetare
+
+## Surse consultate pentru verificare
+
+### Documente oficiale MFP
+- Ordinul MFP nr. 1954/16.12.2005 (Monitorul Oficial nr. 1176 din 27.12.2005)
+- Anexa nr. 6 - Clasificația funcțională: mfinante.gov.ro/static/10/Mfp/legislatie/clasificatie_economica/pdf11/Anexa%20nr.6.pdf
+- Anexa 1 - TranspFunc: mfinante.gov.ro/static/10/Mfp/legislatie/clasificatie_economica/pdf/TranspFunc_anexa1.pdf
+- Comunicat MFP 230.276/07.04.2008 privind modificările clasificației
+
+### Documente MAI
+- Sinteză Buget MAI 2019: mai.gov.ro/wp-content/uploads/2020/05/SINTEZA-Buget-2019-capitole-si-subcapitole.pdf
+- Portal Fonduri Externe MAI: fed.mai.gov.ro
+
+### Legislație verificată pe legislatie.just.ro
+- Toate cele 7 acte normative listate în task (verificate ca funcționale și în vigoare)
+
+### Date bugetare și statistice
+- Legea nr. 9/2025 a bugetului de stat
+- OUG 50/2025 privind rectificarea bugetară
+- Eurostat - Government expenditure on public order and safety (COFOG 03)
+- HG nr. 1081/2023 - Strategia Națională de Ordine și Siguranță Publică 2023-2027
+
+## Concluzie
+
+Documentația analizată este în general **de bună calitate** pentru utilizatori fără pregătire de specialitate, cu referințe legislative corecte și actualizate. **Corectarea imediată** a codurilor 61.00.05 → 61.01.05 și 61.00.08 → 61.01.08 este esențială pentru acuratețe. Cifrele bugetare prezentate sunt în limite rezonabile, deși ar beneficia de citarea exactă a sursei primare (Anexa 3 la legea bugetului). Maparea COFOG funcționează, dar documentația ar putea menționa particularitatea românească privind clasificarea serviciilor de securitate națională pentru context internațional complet.
+## Processed
+
+- **Date**: 2026-01-02 16:04:53
+- **Source file**: ./public/assets/text/ro/functional/61.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-61-2026-01-02-160309.log

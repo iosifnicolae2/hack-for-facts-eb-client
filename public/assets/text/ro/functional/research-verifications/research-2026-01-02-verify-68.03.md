@@ -290,7 +290,167 @@ Impact deficit = Total național 68.03 (fără eliminări)
 ## Context
 
 - **Created**: 2026-01-02 04:36:38
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/68.03.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/68.03.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație bugetară 68.03 "Pensii și ajutoare pentru bătrânețe"
+
+Documentația pentru clasificația funcțională românească 68.03 de pe platforma Transparenta.eu este **în mare parte corectă**, cu o singură eroare semnificativă identificată: **cota Pilon II este depășită** (3,75% în loc de 4,75% în vigoare de la 1 ianuarie 2024). Toate celelalte referințe legislative, formule de calcul și date instituționale au fost confirmate ca fiind exacte și actuale.
+
+---
+
+## 1. Rezumat general
+
+Verificarea a acoperit **8 surse legislative principale** și peste 15 puncte specifice de control. Documentul analizat demonstrează o acuratețe ridicată în ceea ce privește:
+
+- **Clasificația bugetară** conform Ordinului MFP 1954/2005
+- **Legea 360/2023** privind sistemul public de pensii (intrare în vigoare, formula de calcul, valoarea punctului de referință)
+- **Cadrul instituțional** (rolul CNPP, ANAF, fluxul financiar)
+- **Legislația conexă** (Legile 500/2002, 273/2006, 17/2000)
+
+Toate link-urile legislative verificate pe **legislatie.just.ro** sunt funcționale. Fișierele Excel de pe **mfinante.gov.ro** nu sunt accesibile public prin URL direct, necesitând acces prin interfața web a ministerului.
+
+---
+
+## 2. Probleme critice găsite
+
+### Eroare: Cota Pilon II depășită
+
+| Element | Valoare în document | Valoare corectă actuală |
+|---------|---------------------|-------------------------|
+| **Contribuție Pilon II** | 3,75% | **4,75%** |
+
+**Baza legală a modificării:** OUG 23/2022 și jaloanele PNRR (componenta C8, R6, jalon 213) au stabilit majorarea cotei de la **3,75% la 4,75% începând cu 1 ianuarie 2024**.
+
+Evoluția cotei:
+- **2018-2023:** 3,75%
+- **De la 1 ianuarie 2024:** 4,75%
+
+**Consecința:** Distribuția CAS 25% trebuie actualizată:
+- Pilonul I (sistem public): **20,25%** (nu 21,25%)
+- Pilonul II (pensii private): **4,75%** (nu 3,75%)
+
+**Recomandare:** Actualizarea urgentă a documentului pentru a reflecta noua cotă Pilon II în vigoare de peste un an.
+
+---
+
+## 3. Probleme minore și sugestii de îmbunătățire
+
+### Clarificare privind codul 68.03
+
+Sistemul de codificare bugetară folosește **două niveluri** de numerotare care pot crea confuzie:
+
+- **68.03** (prefix) = tip de buget → **Bugetul Asigurărilor Sociale de Stat**
+- **68.XX.03** (sufix) = subcapitol funcțional → **"Pensii și ajutoare pentru bătrânețe"**
+
+Exemple de codificare completă:
+- 68.01.03 = Pensii pentru bătrânețe în bugetul de stat
+- 68.02.03 = Pensii pentru bătrânețe în bugetele locale
+- 68.03.03 = Pensii pentru bătrânețe în bugetul asigurărilor sociale de stat
+
+**Sugestie:** Documentul ar putea clarifica această dublă semnificație pentru cititori.
+
+### Accesibilitatea Anexelor MFP
+
+URL-urile directe către fișierele Excel de pe mfinante.gov.ro nu sunt accesibile public:
+- `AnexanrII_29012025.xls` - ❌ necesită acces prin portal
+- `Anexanr7_13052025.xls` - ❌ necesită acces prin portal
+
+**Sugestie:** Înlocuirea link-urilor directe cu referința la pagina de clasificații bugetare: `mfinante.gov.ro/domenii/buget/clasificatiile-bugetare`
+
+### Anexa 7 din structura MFP
+
+Anexa nr. 7 din clasificația actuală MFP conține **"Clasificația cheltuielilor din credite interne"**, nu corespondența COFOG. Tabelul de corespondență COFOG se găsește în documente separate sau în transpunerile funcționale (TranspFunc_anexa1.pdf etc.).
+
+---
+
+## 4. Confirmări ale informațiilor corecte
+
+### Legea 360/2023 privind sistemul public de pensii
+
+| Verificare | Status | Confirmare |
+|------------|--------|------------|
+| Lege în vigoare | ✅ | Publicată M.Of. 1089/04.12.2023 |
+| Data intrării în vigoare: 1 septembrie 2024 | ✅ | Art. 167 din lege |
+| Abrogarea Legii 263/2010 | ✅ | Art. 168 alin. (1) lit. a) |
+| Formula: puncte × VPR | ✅ | Art. 83 alin. (1) |
+| VPR = 81 lei | ✅ | Art. 84 alin. (2), menținut în 2025 prin OUG 156/2024 |
+
+**Text exact din Art. 83:** *"Cuantumul pensiei se determină prin înmulțirea numărului total de puncte realizat de asigurat cu valoarea punctului de referință."*
+
+### Cadrul instituțional CNPP și BASS
+
+| Verificare | Status | Confirmare |
+|------------|--------|------------|
+| CNPP administrează sistemul public | ✅ | Art. 4 din Legea 360/2023 |
+| CNPP administrează BASS | ✅ | Art. 17-18 din Legea 360/2023 |
+| ANAF colectează CAS | ✅ | Prin Declarația 112 |
+| CNPP distribuie către Pilon II | ✅ | Cu decalaj de 2 luni |
+
+### Codul Fiscal și contribuții
+
+| Verificare | Status | Confirmare |
+|------------|--------|------------|
+| CAS 25% | ✅ | Art. 138 lit. a) Codul Fiscal |
+| CAS condiții deosebite: +4% | ✅ | Art. 138 lit. b) |
+| CAS condiții speciale: +8% | ✅ | Art. 138 lit. c) |
+
+### Clasificația bugetară
+
+| Verificare | Status | Confirmare |
+|------------|--------|------------|
+| Ordinul MFP 1954/2005 în vigoare | ✅ | Cu modificări ulterioare |
+| Capitol 68: "Asigurări și asistență socială" | ✅ | Denumire oficială exactă |
+| Subcapitol 03: "Pensii și ajutoare pentru bătrânețe" | ✅ | Denumire oficială exactă |
+| Corespondență COFOG Divizia 10.2 (Bătrânețe) | ✅ | GF10.2 - Old age |
+
+### Legislație conexă
+
+| Lege | Status | Ultima actualizare |
+|------|--------|--------------------|
+| **Legea 17/2000** (asistență persoane vârstnice) | ✅ În vigoare | Republicată de 2 ori în 2024 (M.Of. 61/23.01.2024 și M.Of. 868/29.08.2024) |
+| **Legea 273/2006** (finanțe publice locale) | ✅ În vigoare | Modificată prin OUG 89/2025 |
+| **Legea 500/2002** (finanțe publice) | ✅ În vigoare | Modificări 2024 |
+
+---
+
+## 5. Surse consultate și funcționalitate link-uri
+
+### Link-uri verificate funcționale
+
+| Sursă | URL | Status |
+|-------|-----|--------|
+| Ordinul MFP 1954/2005 | legislatie.just.ro/Public/DetaliiDocument/67596 | ✅ Funcțional |
+| Codul Fiscal | legislatie.just.ro/Public/DetaliiDocument/171282 | ✅ Funcțional |
+| Legea 500/2002 | legislatie.just.ro/Public/DetaliiDocumentAfis/37954 | ✅ Funcțional |
+| Legea 273/2006 | legislatie.just.ro/Public/DetaliiDocument/73527 | ✅ Funcțional |
+| Legea 17/2000 | legislatie.just.ro/Public/DetaliiDocument/80013 | ✅ Funcțional |
+| Legea 360/2023 | legislatie.just.ro/Public/DetaliiDocument/276927 | ✅ Funcțional |
+
+### Link-uri cu probleme de accesibilitate
+
+| Sursă | URL | Status |
+|-------|-----|--------|
+| Anexa II MFP | mfinante.gov.ro/.../AnexanrII_29012025.xls | ❌ Necesită acces portal |
+| Anexa 7 MFP | mfinante.gov.ro/.../Anexanr7_13052025.xls | ❌ Necesită acces portal |
+
+### Surse oficiale utilizate
+
+- **Portal Legislativ** (legislatie.just.ro) - texte integrale legi
+- **Ministerul Finanțelor** (mfinante.gov.ro) - clasificații bugetare
+- **Casa Națională de Pensii Publice** (cnpp.ro) - valoarea punctului de referință
+- **Monitorul Oficial al României** - publicarea actelor normative
+
+---
+
+## Concluzie finală
+
+Documentația bugetară pentru clasificația 68.03 de pe Transparenta.eu este **substanțial corectă și bine documentată**. Singura eroare critică identificată este **cota Pilon II de 3,75%**, care trebuie actualizată la **4,75%** conform legislației în vigoare de la 1 ianuarie 2024. Toate celelalte referințe legislative, formulele de calcul și datele instituționale sunt confirmate ca exacte și actuale la data verificării (ianuarie 2026).
+
+## Processed
+
+- **Date**: 2026-01-02 16:16:30
+- **Source file**: ./public/assets/text/ro/functional/68.03.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-68.03-2026-01-02-160309.log

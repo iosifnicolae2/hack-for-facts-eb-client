@@ -282,7 +282,142 @@ Capitolul 54 funcționează ca un „colector" pentru diverse cheltuieli adminis
 ## Context
 
 - **Created**: 2026-01-02 04:36:36
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/54.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/54.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație Capitol 54 - Rezultate complete
+
+Documentația pentru Capitol 54 „Alte servicii publice generale" este **în mare parte corectă și conformă** cu legislația în vigoare. Verificarea aprofundată a identificat o problemă minoră la un link și câteva sugestii de îmbunătățire, dar nu au fost găsite erori critice în conținutul tehnic sau juridic.
+
+---
+
+## Rezumat general
+
+Documentul verificat prezintă informații **fidele și corecte** privind clasificația funcțională bugetară din România. Codul bugetar **54** corespunde exact denumirii oficiale „Alte servicii publice generale" conform Ordinului MFP nr. 1954/2005. Referințele legislative principale (Legea 273/2006, Legea 500/2002, OG 84/2001) sunt valide și citate corect. Articolul 36 alineatul (1) din Legea 273/2006 confirmă limita de **până la 5%** pentru fondul de rezervă bugetară. Structura documentului este clară și accesibilă pentru utilizatori fără pregătire de specialitate.
+
+---
+
+## Probleme critice găsite
+
+**Nu au fost identificate probleme critice.**
+
+Toate codurile bugetare, denumirile oficiale și referințele legislative verificate sunt corecte:
+
+| Element verificat | Status | Observație |
+|-------------------|--------|------------|
+| Capitol 54 = „Alte servicii publice generale" | ✅ Corect | Conform Anexa II MFP |
+| Încadrare în Partea I „Servicii publice generale" | ✅ Corect | Cod 50.XX |
+| Art. 36 alin. (1) Legea 273/2006 - limita 5% | ✅ Corect | „în cotă de până la 5% din totalul cheltuielilor" |
+| Subcapitole: fonduri de rezervă | ✅ Corect | 54.01.02 (Guvern), 54.02.05 (local) |
+| Subcapitole: servicii evidență persoane | ✅ Corect | 54.02.10, 54.10.10 |
+| Subcapitole: fonduri de garantare | ✅ Corect | 54.02.06, 54.02.07 |
+
+---
+
+## Probleme minore și sugestii de îmbunătățire
+
+### 1. Link cu variantă alternativă (minor)
+**Link indicat:** `legislatie.just.ro/Public/DetaliiDocumentAfis/37954` (Legea 500/2002)
+
+**Observație:** Funcționează corect, dar varianta standard fără „Afis" este: `legislatie.just.ro/Public/DetaliiDocument/37954`. Ambele variante sunt valide, însă pentru consistență se recomandă utilizarea formatului standard.
+
+### 2. Fișierele Excel de pe mfinante.gov.ro necesită verificare manuală
+Link-urile către fișierele `.xls` din clasificația MFP:
+- `AnexanrII_29012025.xls`
+- `Anexanr7_13052025.xls`
+
+**Observație:** Aceste fișiere sunt blocate pentru acces automat (robots.txt), dar sunt listate pe pagina oficială https://mfinante.gov.ro/en/domenii/buget/clasificatiile-bugetare. Se recomandă verificarea periodică a accesibilității în browser.
+
+### 3. Sugestii de completare pentru claritate sporită
+
+**a) Alineatul (2) al art. 36 din Legea 273/2006** ar putea fi menționat pentru completitudine:
+> „Fondul de rezervă bugetară poate fi majorat în cursul anului din disponibilităţile de credite bugetare care nu mai sunt necesare până la sfârşitul anului."
+
+**b) Precizarea unor subcapitole suplimentare** relevante pentru bugetul de stat (54.01):
+- 54.01.03 - Fond de intervenție la dispoziția Guvernului
+- 54.01.12 - Fondul Național de Dezvoltare
+- 54.01.01 - Programe de informare și prezentare a imaginii României
+
+Aceste subcapitole sunt menționate în text, dar codurile lor ar fi utile pentru utilizatorii avansați.
+
+**c) Referința la Legea 215/2001** (Legea administrației publice locale) ar putea fi adăugată ca bază legală complementară pentru înființarea serviciilor publice de interes local.
+
+### 4. Aspecte de limbă română
+**Diacriticele** (ș, ț, ă, â, î) sunt utilizate corect în tot documentul. Nu au fost identificate erori gramaticale sau ortografice. Terminologia este consistentă cu nomenclatura oficială MFP.
+
+---
+
+## Confirmări ale informațiilor corecte
+
+### Verificări legislative confirmate
+
+| Referință | Verificat | Detalii |
+|-----------|-----------|---------|
+| **Ordinul MFP 1954/2005** | ✅ | Publicat în M.Of. nr. 1.176/27.12.2005; conține clasificația funcțională cu Capitol 54 |
+| **Legea 273/2006** art. 36 | ✅ | Limita de 5% și cele 3 destinații ale fondului de rezervă sunt citate corect |
+| **Legea 500/2002** | ✅ | Art. 30 reglementează fondurile de rezervă la nivel central; relevantă pentru Capitol 54 |
+| **OG 84/2001** | ✅ | Reglementează serviciile publice comunitare de evidență a persoanelor; aprobată prin Legea 372/2002 |
+
+### Structura subcapitolelor confirmată oficial
+
+**Pentru bugete locale (54.02):**
+- 54.02.05 - Fond de rezervă bugetară la dispoziția autorităților locale
+- 54.02.06 - Fond pentru garantarea împrumuturilor externe contractate/garantate de stat
+- 54.02.07 - Fond pentru garantarea împrumuturilor externe contractate/garantate de administrația publică locală
+- 54.02.10 - Servicii publice comunitare de evidență a persoanelor
+- 54.02.50 - Alte servicii publice generale
+
+**Pentru bugetul de stat (54.01):**
+- 54.01.01 - Programe de informare și prezentare a imaginii României
+- 54.01.02 - Fond de rezervă bugetară la dispoziția Guvernului
+- 54.01.03 - Fond de intervenție la dispoziția Guvernului
+- 54.01.12 - Fondul Național de Dezvoltare
+
+### Fluxuri financiare verificate
+Fluxurile descrise în document sunt corecte:
+- **Fonduri de rezervă:** Buget local → Fond de rezervă (max 5%) → Cheltuieli urgente (prin HCL)
+- **Servicii evidență persoane:** TVA colectat → Sume defalcate → Bugete locale → Servicii comunitare
+
+### Aspecte de conținut confirmate
+- ✅ Secțiunea „Definiție și scop" - completă și corectă
+- ✅ Secțiunea „Cum funcționează în practică" - explicații clare și accesibile
+- ✅ Secțiunea „Utilizare în calcul și impact bugetar" - corectă (cheltuială netă, semn +)
+- ✅ Caracterul rezidual al capitolului - corect explicat
+- ✅ Încadrarea în Partea I „Servicii publice generale" - corectă
+
+---
+
+## Surse consultate
+
+### Link-uri legislative verificate și funcționale
+| Sursă | URL | Status |
+|-------|-----|--------|
+| Ordinul MFP 1954/2005 | legislatie.just.ro/Public/DetaliiDocument/67596 | ✅ Funcțional |
+| Legea 500/2002 | legislatie.just.ro/Public/DetaliiDocumentAfis/37954 | ✅ Funcțional |
+| OG 84/2001 | legislatie.just.ro/Public/DetaliiDocument/30375 | ✅ Funcțional |
+| Pagina clasificații MFP | mfinante.gov.ro/en/domenii/buget/clasificatiile-bugetare | ✅ Funcțional |
+
+### Fișiere Excel MFP (verificare manuală necesară)
+| Fișier | URL | Status |
+|--------|-----|--------|
+| Anexa II - Clasificația cheltuielilor | mfinante.gov.ro/.../AnexanrII_29012025.xls | ⚠️ Blocat pentru acces automat |
+| Anexa 7 - Corespondență COFOG | mfinante.gov.ro/.../Anexanr7_13052025.xls | ⚠️ Blocat pentru acces automat |
+
+### Surse complementare utilizate
+- Comunicări oficiale MFP privind modificările clasificației bugetare
+- Portal legislativ just.ro - texte consolidate
+- Execuții bugetare locale (exemplu: Municipiul Iași) pentru validarea codurilor în practică
+
+---
+
+## Concluzie finală
+
+**Documentul este VALID pentru utilizare.** Informațiile prezentate pentru Capitol 54 „Alte servicii publice generale" sunt corecte din punct de vedere juridic și tehnic, iar explicațiile sunt accesibile pentru publicul larg. Singurele recomandări vizează verificarea periodică a accesibilității fișierelor Excel de pe site-ul MFP și posibila completare cu coduri de subcapitole pentru utilizatorii avansați.
+
+## Processed
+
+- **Date**: 2026-01-02 14:54:46
+- **Source file**: ./public/assets/text/ro/functional/54.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-54-2026-01-02-143612.log

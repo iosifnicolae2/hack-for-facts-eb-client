@@ -372,7 +372,160 @@ Coduri economice frecvent asociate cu 74.05:
 ## Context
 
 - **Created**: 2026-01-02 04:36:39
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/74.05.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/74.05.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație bugetară cod 74.05 - Salubritate
+
+**Documentația de pe platforma Transparenta.eu pentru codul funcțional 74.05 este în mare parte corectă și completă**, cu câteva clarificări tehnice necesare privind formatul codului bugetar și o actualizare minoră a link-urilor. Toate referințele legislative sunt în vigoare, terminologia este corectă, iar conținutul tehnic corespunde legislației actuale. Documentul este accesibil pentru utilizatori fără pregătire de specialitate bugetară și oferă o imagine clară a serviciilor de salubritate din perspectivă bugetară.
+
+---
+
+## 1. Rezumat general
+
+Verificarea a acoperit **șase dimensiuni principale**: acuratețea codului bugetar, referințele legislative, validitatea link-urilor, conținutul tehnic, claritatea explicațiilor și corectitudinea lingvistică. Documentația analizată demonstrează **un nivel ridicat de acuratețe** - toate cele șase acte normative citate sunt în vigoare, activitățile și sursele de finanțare sunt corect enumerate conform Legii 101/2006, iar terminologia (TMB, ANRSC, PNRR, POR) este standard. Singura problemă tehnică identificată privește **notația simplificată a codului bugetar** care necesită o clarificare pentru a preveni confuziile în utilizare.
+
+---
+
+## 2. Probleme critice găsite
+
+### Clarificare necesară privind formatul codului bugetar
+
+Documentația folosește notația **„74.05"**, care este o formă simplificată. Codul complet conform Ordinului MFP 1954/2005 este:
+
+| Tip buget | Cod complet | Denumire |
+|-----------|-------------|----------|
+| Bugete locale | **74.02.05** | Salubritate și gestiunea deșeurilor |
+| Buget de stat | **74.01.05** | Salubritate și gestiunea deșeurilor |
+
+Structura completă include și paragrafe:
+- **74.02.05.01** — Salubritate
+- **74.02.05.02** — Colectarea, tratarea și distrugerea deșeurilor
+
+**Recomandare:** Adăugați o notă explicativă care să clarifice că „74.05" este subcapitolul din capitolul 74, iar codul complet pentru bugetele locale este 74.02.05.
+
+### Eroare format URL legislatie.just.ro
+
+Link-ul pentru Ordinul MFP 1954/2005 utilizează formatul incorect:
+- ❌ `legislatie.just.ro/Public/DetaliiDocument/67596`
+- ✅ `legislatie.just.ro/Public/DetaliiDocumentAfis/67596`
+
+Portalul legislativ folosește **„DetaliiDocumentAfis"** (nu „DetaliiDocument") pentru afișarea documentelor.
+
+---
+
+## 3. Probleme minore și sugestii de îmbunătățire
+
+### Actualizare referință Ordinul ANRSC 640/2022
+
+Ordinul ANRSC 640/2022 a fost **modificat de Ordinul ANRSC 324/2025** (iunie 2025). Tabelul din documentație ar trebui actualizat pentru a reflecta că metodologia tarifară a suferit modificări recente:
+
+| Act normativ | Conținut (actualizat) |
+|-------------|----------------------|
+| Ordinul ANRSC nr. 640/2022 | Metodologia de stabilire a tarifelor *(modificat prin Ord. 324/2025)* |
+
+### Adăugare corespondență COFOG
+
+Documentația ar beneficia de includerea **corespondenței cu clasificația internațională COFOG** (Classification of Functions of Government):
+- Codul 74.02.05 corespunde **COFOG 05.1** — Managementul deșeurilor (Waste Management)
+
+### Lipsă tratament consolidare
+
+Documentația nu menționează **tratamentul în consolidare** al cheltuielilor. Conform Legii 273/2006 art. 2 pct. 15, consolidarea elimină transferurile între bugete pentru a evita dubla evidențiere. Se recomandă adăugarea unei note privind modul în care cheltuielile cod 74.05 sunt tratate la consolidarea bugetelor locale.
+
+### Clarificări terminologice suplimentare
+
+Deși acronimele principale sunt clare din context, se recomandă adăugarea unui glosar explicit:
+- **TMB** — Tratare mecanico-biologică
+- **ANRSC** — Autoritatea Națională de Reglementare pentru Serviciile Comunitare de Utilități Publice
+- **PNRR** — Planul Național de Redresare și Reziliență
+- **POR** — Programul Operațional Regional
+
+---
+
+## 4. Confirmări ale informațiilor corecte
+
+### Referințe legislative — toate în vigoare
+
+| Act normativ | Status | Observații |
+|-------------|--------|-----------|
+| ✅ Ordinul MFP nr. 1954/2005 | **În vigoare** | Baza clasificației funcționale, M.Of. 1176/27.12.2005 |
+| ✅ Legea nr. 273/2006 | **În vigoare** | Finanțele publice locale, cu modificări ulterioare |
+| ✅ Legea nr. 101/2006 | **În vigoare** | Republicată M.Of. 920/12.10.2023 |
+| ✅ OUG nr. 92/2021 | **În vigoare** | Regimul deșeurilor, abrogă Legea 211/2011 |
+| ✅ Ordinul ANRSC nr. 97/2025 | **În vigoare** | M.Of. 190/05.03.2025, abrogă Ord. 82/2015 |
+| ✅ Ordinul ANRSC nr. 640/2022 | **În vigoare** | Cu modificări din Ord. 201/2023 și 324/2025 |
+
+### Denumire oficială — corectă
+
+Denumirea **„Salubritate și gestiunea deșeurilor"** corespunde exact cu Anexa II din Ordinul MFP 1954/2005 pentru subcapitolul 05 din capitolul 74 „Protecția mediului".
+
+### Organizare serviciu — corect descrisă
+
+Conform art. 14 din Legea 101/2006, modalitățile de gestiune sunt corect enumerate:
+- **Gestiune directă**: compartimente specializate, servicii publice, societăți comerciale cu capital 100% UAT
+- **Gestiune delegată**: contract de delegare cu operatori licențiați ANRSC
+
+### Surse de finanțare — corect identificate
+
+Toate sursele menționate sunt confirmate de art. 25-26 din Legea 101/2006:
+- Taxe și tarife de la utilizatori (persoane fizice și juridice)
+- Subvenții din bugetul local pentru diferența de cost
+- Transferuri de la bugetul de stat pentru investiții majore
+- Fonduri europene (PNRR Componenta C3, Programe Regionale 2021-2027)
+
+### Activități incluse — listă completă și corectă
+
+Activitățile enumerate corespund art. 2 alin. (3) din Legea 101/2006 republicată:
+
+| Activitate din documentație | Corespondent legal |
+|----------------------------|-------------------|
+| Colectarea deșeurilor | Art. 2(3) lit. a) |
+| Transportul deșeurilor | Art. 2(3) — transport și transfer |
+| Tratarea și valorificarea (TMB) | Art. 2(3) lit. g) |
+| Eliminarea finală | Art. 2(3) lit. i) — depozitare |
+| Curățenie stradală | Art. 2(3) lit. j) — măturat, spălat, stropit |
+| Investiții în infrastructură | Art. 25-28 |
+
+### Calitatea limbii române
+
+Documentația utilizează **diacritice corecte** (ș, ț, ă, â, î în format Unicode), gramatica este corectă, iar stilul este formal-tehnic, adecvat scopului. Nu au fost identificate erori ortografice sau gramaticale.
+
+---
+
+## 5. Surse consultate pentru verificare
+
+### Portalul Legislativ (legislatie.just.ro)
+
+- **Ordinul MFP 1954/2005**: DetaliiDocumentAfis/67596 — confirmat publicat în M.Of. 1176/27.12.2005
+- **Legea 273/2006**: DetaliiDocument/73527 — în vigoare cu modificări
+- **Legea 101/2006**: DetaliiDocument/71304 — republicată octombrie 2023
+- **OUG 92/2021**: DetaliiDocument/245846 — aprobată prin Legea 17/2023
+- **Ordinul ANRSC 97/2025**: DetaliiDocument/295150 — publicat martie 2025
+- **Ordinul ANRSC 640/2022**: DetaliiDocument/260303 — în vigoare cu modificări
+
+### Ministerul Finanțelor (mfinante.gov.ro)
+
+- Pagina clasificații bugetare: `/en/domenii/buget/clasificatiile-bugetare`
+- Anexa II (clasificația funcțională): `AnexanrII_29012025.xls` — versiune ianuarie 2025
+- Anexa 7 (corespondență COFOG): `Anexanr7_13052025.xls` — versiune mai 2025
+
+### Alte surse oficiale consultate
+
+- ANRSC (anrsc.ro) — verificare denumire completă și atribuții
+- Portal PNRR (mfe.gov.ro/pnrr) — Componenta C3 Managementul deșeurilor
+- Documente HCL diverse primării — verificare practică de aplicare
+
+---
+
+## Concluzie finală
+
+Documentația pentru codul bugetar 74.05 de pe platforma Transparenta.eu este **substanțial corectă** și utilă pentru publicul larg. Corectarea formatului URL pentru legislatie.just.ro și adăugarea unei note explicative privind notația completă a codului (74.02.05 pentru bugete locale) ar elimina singurele probleme tehnice identificate. Toate referințele legislative sunt actuale, conținutul tehnic corespunde cadrului legal în vigoare, iar explicațiile sunt accesibile pentru utilizatori fără pregătire de specialitate bugetară.
+
+## Processed
+
+- **Date**: 2026-01-02 16:22:21
+- **Source file**: ./public/assets/text/ro/functional/74.05.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-74.05-2026-01-02-160309.log

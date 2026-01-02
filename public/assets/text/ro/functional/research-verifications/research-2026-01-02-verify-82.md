@@ -278,7 +278,96 @@ Spre deosebire de capitolele de venituri sau de cele cu comportament special (de
 ## Context
 
 - **Created**: 2026-01-02 04:36:40
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/82.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/82.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație bugetară Capitol 82: erori critice identificate
+
+Analiza documentului pentru Capitol 82 "Industria extractivă, prelucrătoare și construcții" din platforma Transparenta.eu relevă **două erori critice** și câteva probleme minore care necesită corectare imediată. Codul bugetar și denumirea capitolului sunt corecte, însă referințele la anexele Ordinului MFP 1954/2005 și denumirea ministerului sunt inexacte.
+
+---
+
+## Probleme critice identificate
+
+### Eroare în referința la Anexa I
+
+Documentul verificat afirmă că baza legală este "**Ordinul MFP nr. 1954/2005 (Anexa I - Clasificația funcțională)**". Această afirmație este **tehnică inexactă**. Conform structurii oficiale a Ordinului 1954/2005, publicată pe mfinante.gov.ro:
+
+- **Anexa I** conține clasificația indicatorilor privind finanțele publice (generală)
+- **Anexa I (economică)** conține clasificația economică în formă extinsă
+- **Anexa II** reprezintă clasificația în profil **departamental** (pe ordonatori principali de credite), nu clasificația funcțională a cheltuielilor
+- **Anexele numerotate 1-10** conțin clasificația pe tipuri de bugete (Anexa 1 = buget de stat, Anexa 2 = bugete locale etc.)
+
+Clasificația funcțională unde apare Capitol 82 este inclusă în **Anexele numerotate 1-10**, nu într-o anexă separată "Anexa I" sau "Anexa II". Documentul trebuie corectat pentru a reflecta această structură corectă.
+
+### Denumire ministerială depășită
+
+Documentul menționează "**Ministerul Economiei, Antreprenoriatului și Turismului**" ca mecanism pentru Programul Geologic. Această denumire este **depășită din martie 2025**. Prin HG nr. 189/2025 (publicată în Monitorul Oficial nr. 185 din 3 martie 2025), ministerul a fost reorganizat, domeniul digitalizării fiind transferat de la Ministerul Cercetării. Denumirea oficială actuală este **Ministerul Economiei, Digitalizării, Antreprenoriatului și Turismului (MEDAT)**.
+
+---
+
+## Informații confirmate ca fiind corecte
+
+**Codul și denumirea Capitol 82** sunt perfect corecte. Conform documentelor oficiale de pe mfinante.gov.ro și Ordinului MFP 1954/2005, Capitol 82 poartă denumirea exactă "**INDUSTRIA EXTRACTIVĂ, PRELUCRĂTOARE ȘI CONSTRUCȚII**", identică cu cea din documentul verificat.
+
+Structura subcapitolelor oficiale confirmată:
+
+| Cod | Denumire oficială |
+|-----|-------------------|
+| 82.01 | Industria extractivă, prelucrătoare și construcții (buget de stat) |
+| 82.01.01 | Industria extractivă a resurselor minerale altele decât combustibilii minerali |
+| 82.01.02 | Industria prelucrătoare |
+| 82.01.50 | Alte cheltuieli în domeniul industriei |
+| 82.10.03 | Construcții (instituții finanțate din venituri proprii) |
+
+**Legea 500/2002** este confirmată în vigoare cu ultima modificare prin Legea 262/2023. Articolele **2 punctul 11** (definiția clasificației funcționale), **12** (principiul specializării bugetare) și **29** (structura veniturilor și cheltuielilor pe capitole) constituie baza legală corectă pentru clasificația bugetară.
+
+**Maparea COFOG** este corectă: Capitol 82 corespunde codului **COFOG 04.4** "Mining, Manufacturing and Construction" din clasificația internațională a funcțiilor guvernamentale, parte a diviziei 04 "Afaceri economice".
+
+**Programul Geologic** există și este administrat de MEDAT (fostul MEAT). Este identificat ca "Program 8" în bugetul ministerului, cu scopul creșterii cunoașterii potențialului geologic de resurse minerale. ANRM (Agenția Națională pentru Resurse Minerale) este implementatorul tehnic.
+
+---
+
+## Verificarea funcționalității link-urilor
+
+Link-urile directe către fișierele XLS de pe mfinante.gov.ro (AnexanrII_29012025.xls, Anexanr7_13052025.xls) **nu sunt accesibile public** din cauza restricțiilor robots.txt. Cu toate acestea, pagina principală a clasificațiilor este funcțională la https://mfinante.gov.ro/en/domenii/buget/clasificatiile-bugetare, iar documentele PDF de transpunere (TranspFunc_anexa1.pdf, TranspFunc_anexa2.pdf) sunt disponibile.
+
+Link-ul pentru **Ordinul MFP 1954/2005** pe legislatie.just.ro (document ID 67596) este **funcțional**. Link-ul pentru **Legea 500/2002** (document ID 37954) este de asemenea **funcțional**.
+
+---
+
+## Acțiuni corective recomandate
+
+Pentru documentul verificat din platforma Transparenta.eu sunt necesare următoarele corecții:
+
+1. **Modificare urgentă**: Înlocuirea referinței "Anexa I - Clasificația funcțională" cu formularea corectă care indică faptul că clasificația funcțională este inclusă în Anexele numerotate 1-10 ale Ordinului MFP 1954/2005, conform tipului de buget
+
+2. **Actualizare denumire minister**: Schimbarea denumirii "Ministerul Economiei, Antreprenoriatului și Turismului" în "Ministerul Economiei, Digitalizării, Antreprenoriatului și Turismului (MEDAT)"
+
+3. **Clarificare suplimentară recomandată**: Adăugarea codului COFOG 04.4 pentru conformitate cu standardele europene de raportare
+
+4. **Verificare periodică link-uri**: Implementarea unui mecanism de verificare automată a link-urilor către sursele oficiale MFP, dat fiind că URL-urile fișierelor includ data actualizării
+
+---
+
+## Statutul actelor normative verificate
+
+| Act normativ | Statut | Ultima modificare |
+|--------------|--------|-------------------|
+| Ordinul MFP 1954/2005 | ✅ În vigoare | Comunicări 2025 (nr. 536037 etc.) |
+| Legea 500/2002 | ✅ În vigoare | Legea 262/2023 |
+| HG 189/2025 (organizare MEDAT) | ✅ În vigoare | Martie 2025 |
+
+---
+
+## Concluzie finală
+
+Documentul verificat conține informații fundamentale corecte privind Capitol 82 și destinațiile bugetare, dar prezintă **două erori critice**: referința incorectă la "Anexa I - Clasificația funcțională" și denumirea depășită a ministerului. Pentru utilizarea pe platforma Transparenta.eu în scopul analizei datelor bugetare publice, aceste corecții sunt esențiale pentru menținerea acurateței și credibilității informațiilor prezentate utilizatorilor.
+
+## Processed
+
+- **Date**: 2026-01-02 16:25:12
+- **Source file**: ./public/assets/text/ro/functional/82.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-82-2026-01-02-160309.log

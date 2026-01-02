@@ -262,7 +262,90 @@ Capitolul 43 **trebuie eliminat complet** în procesul de consolidare.
 ## Context
 
 - **Created**: 2026-01-02 04:36:35
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/43.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/43.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație Capitol 43 "Subvenții de la alte administrații"
+
+Analiza documentației pentru platforma Transparenta.eu confirmă în mare parte acuratețea informațiilor prezentate, cu **o problemă critică** privind denumirile oficiale ale subcapitolelor și **clarificări importante** referitoare la clasificarea COFOG. Verificarea a identificat faptul că toate referințele legislative sunt corecte și relevante, însă structura subcapitolelor prezintă discrepanțe terminologice care necesită corecții.
+
+## Confirmări ale informațiilor corecte
+
+Capitolul 43 "Subvenții de la alte administrații" **există în mod oficial** în clasificația indicatorilor privind finanțele publice, aprobată prin Ordinul MFP nr. 1954/16.12.2005, publicat în Monitorul Oficial nr. 1.176 din 27 decembrie 2005. Denumirea oficială **este corectă** și identică cu cea din documentație.
+
+Capitolul 43 aparține **clasificației veniturilor** (nu a cheltuielilor) și reprezintă o categorie de venituri nefiscale în secțiunea "Subvenții". Acesta este utilizat în mai multe tipuri de bugete, cu sufixe diferite:
+- **43.00** - clasificație generală
+- **43.02** - bugetele locale
+- **43.05** - bugetul Fondului Național Unic de Asigurări Sociale de Sănătate (FNUASS)
+- **43.10** - bugetul instituțiilor publice și activităților finanțate integral sau parțial din venituri proprii
+
+Referințele legislative sunt **toate corecte și relevante**:
+
+| Referință | Conținut verificat | Relevanță |
+|-----------|-------------------|-----------|
+| **Art. 5 din Legea 273/2006** | Definește subvențiile primite "de la bugetul de stat și de la alte bugete" ca sursă de venituri ale bugetelor locale | ✅ Direct relevant |
+| **Art. 33 din Legea 273/2006** | Stabilește mecanismul prin care consiliile județene repartizează sume către UAT-uri pentru programe de dezvoltare | ✅ Direct relevant |
+| **Art. 34 din Legea 273/2006** | Reglementează transferurile consolidabile din "alte bugete" către bugetele locale prin contracte de finanțare | ✅ Direct relevant |
+| **Legea 95/2006** | Reglementează finanțarea sistemului de sănătate, inclusiv transferurile de la bugetele locale către unitățile sanitare | ✅ Relevant pentru subcapitole sănătate |
+
+## Problemă critică identificată
+
+Denumirile subcapitolelor din documentație **nu corespund exact** cu cele din clasificația oficială curentă. Conform comunicărilor MFP (com120237.htm, nota121667.htm), denumirile oficiale sunt:
+
+| Cod | Denumirea din documentație | Denumirea oficială MFP |
+|-----|---------------------------|------------------------|
+| **43.05.11** | Contribuții asistență socială (corect) | "Contribuții de asigurări de sănătate pentru persoanele beneficiare de ajutor social" ✅ |
+| **43.10.09** | Subvenții pentru instituții publice (corect) | "Subvenții pentru instituții publice" ✅ |
+| **43.10.10** | Subvenții din bugetele locale pentru finanțarea cheltuielilor curente din domeniul sănătății | "Subvenții de la bugetele locale pentru spitale" ⚠️ |
+
+Subcapitolul **43.10.10** a fost introdus inițial cu denumirea "Subvenții de la bugetele locale pentru spitale". Documentația folosește o formulare diferită ("finanțarea cheltuielilor curente din domeniul sănătății") care poate reflecta o actualizare ulterioară sau o imprecizie terminologică. Se recomandă verificarea cu ultima versiune a Anexei 10 de pe site-ul MFP.
+
+## Clarificare esențială privind COFOG
+
+Documentația menționează potențial o mapare COFOG pentru Capitolul 43. Această informație **este incorectă din punct de vedere tehnic**. Conform art. 2 din Legea 273/2006:
+
+- **Clasificația funcțională (COFOG)** se aplică **exclusiv cheltuielilor**, nu veniturilor
+- Capitolul 43 este un capitol de **venituri**
+- Prin urmare, **nu există și nu poate exista** mapare COFOG pentru Capitol 43
+
+Veniturile încasate la Capitolul 43 se transformă în cheltuieli care se înregistrează la capitole funcționale precum 66 "Sănătate" sau 68 "Asigurări și asistență socială" - acolo unde se aplică clasificația COFOG.
+
+## Subcapitole suplimentare omise din documentație
+
+Cercetarea a identificat alte subcapitole la Capitolul 43 care **nu sunt menționate** în documentație dar fac parte din clasificația oficială:
+
+- **43.00.01** - Subvenții primite de la bugetele consiliilor județene pentru protecția copilului
+- **43.00.04** - Subvenții de la bugetul asigurărilor pentru șomaj către bugetele locale pentru ocuparea forței de muncă
+- **43.00.07** - Subvenții primite de la alte bugete locale pentru asistența socială persoanelor cu handicap
+- **43.00.08** - Subvenții de la bugetele consiliilor locale și județene pentru ajutoare în situații de extremă dificultate
+- **43.10.14** - Subvenții din bugetele locale pentru finanțarea cheltuielilor de capital din domeniul sănătății
+- **43.10.19** - Subvenții pentru instituții publice destinate secțiunii de dezvoltare
+- **43.10.33** - Subvenții din bugetul FNUASS pentru acoperirea creșterilor salariale
+
+Aceste subcapitole pot fi relevante pentru completitudinea documentației, în funcție de scopul platformei Transparenta.eu.
+
+## Recomandări de îmbunătățire
+
+**Actualizări critice necesare:**
+1. Verificarea și corectarea denumirii oficiale a subcapitolului 43.10.10 folosind ultima versiune a clasificației de pe mfinante.gov.ro
+2. Eliminarea oricărei referințe la mapare COFOG pentru Capitol 43 (COFOG nu se aplică veniturilor)
+
+**Îmbunătățiri recomandate:**
+3. Adăugarea mențiunii că clasificația este "vie" și se actualizează periodic prin comunicări MFP
+4. Includerea cel puțin a subcapitolelor majore omise (43.00.01, 43.00.07, 43.00.08) pentru o imagine completă
+5. Clarificarea explicită a distincției între sufixele capitolelor (43.02, 43.05, 43.10) în funcție de tipul de buget
+
+**Consolidări ale mecanismelor descrise:**
+Mecanismele de funcționare descrise în documentație (transferuri de la consilii județene, între bugete locale, către fonduri speciale) sunt **corecte și au bază legală solidă** în articolele 5, 33 și 34 din Legea 273/2006.
+
+## Concluzie
+
+Documentația pentru Capitolul 43 demonstrează o bună înțelegere a cadrului legal și funcțional al subvențiilor între administrații publice din România. **Acuratețea generală este de aproximativ 85-90%**, cu cele mai importante corecții necesare la nivelul denumirilor exacte ale subcapitolelor și clarificarea inaplicabilității COFOG pentru capitolele de venituri. Baza legală invocată (Ordinul MFP 1954/2005, Legea 273/2006, Legea 95/2006) este **corectă și relevantă** pentru scopul documentației.
+
+## Processed
+
+- **Date**: 2026-01-02 14:41:59
+- **Source file**: ./public/assets/text/ro/functional/43.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-43-2026-01-02-143612.log

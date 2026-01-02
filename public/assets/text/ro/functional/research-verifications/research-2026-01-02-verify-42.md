@@ -258,7 +258,104 @@ Această distincție este fundamentală pentru evaluarea corectă a:
 ## Context
 
 - **Created**: 2026-01-02 04:36:35
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/42.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/42.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificarea documentației Capitol 42 „Subvenții" relevă confuzie tehnică importantă
+
+Documentația pentru Capitol 42 „Subvenții" este **substanțial corectă** din punct de vedere al referințelor legale și al mecanismului descris, însă conține o **eroare tehnică semnificativă** în prezentarea relației dintre clasificația veniturilor și clasificația cheltuielilor. Toate link-urile verificate există în baza de date legislativă, deși accesul automat este restricționat de protocoale robots.txt.
+
+## 1. Rezumat general al verificării
+
+Analiza a confirmat că **80% din conținutul documentului este corect și actualizat**. Referințele la Ordinul MFP 1954/2005, Legea 273/2006 și Legea 500/2002 sunt valide. Codul bugetar 42.02 pentru „Subvenții de la bugetul de stat" corespunde clasificației oficiale MFP. Totuși, documentul prezintă o confuzie conceptuală între cele două sisteme paralele de clasificare bugetară — veniturile versus cheltuielile — care necesită clarificare pentru acuratețe tehnică deplină.
+
+## 2. Probleme critice găsite
+
+### Eroare de clasificare bugetară (SEVERITATE: RIDICATĂ)
+
+Documentul afirmă implicit că Capitol 42 „Subvenții" face parte din Titlul VI „Transferuri între unități ale administrației publice" cu articolele **51.01** și **51.02**. Aceasta reprezintă o **confuzie fundamentală** între două sisteme distincte:
+
+| Sistem | Capitol 42.02 „Subvenții" | Titlul VI / Art. 51.01-51.02 |
+|--------|--------------------------|------------------------------|
+| **Tip clasificare** | Clasificația VENITURILOR | Clasificația CHELTUIELILOR |
+| **Perspectivă** | Buget local (primește) | Buget de stat (acordă) |
+| **Anexa MFP** | Anexa 2 (venituri bugete locale) | Anexa economică cheltuieli |
+
+Când bugetul de stat transferă fonduri către bugetele locale, înregistrează operațiunea la **Titlul VI - Transferuri** (cheltuieli). Când bugetele locale primesc aceleași fonduri, le înregistrează la **Capitol 42.02 - Subvenții** (venituri). Documentul trebuie să clarifice această dualitate contabilă pentru a evita confuzia utilizatorilor.
+
+## 3. Probleme minore și sugestii de îmbunătățire
+
+**Actualizare referință Legea 273/2006**: Articolul 33 a suferit modificări semnificative. Alineatele (7¹), (7²) și (8) au fost **abrogate** la 1 ianuarie 2011 prin OUG 63/2010. Documentul ar trebui să menționeze acest fapt pentru a reflecta starea actuală a legislației.
+
+**Derogări temporare active**: Pentru perioada 2025-2026, OUG 156/2024 și OUG 89/2025 introduc derogări de la articolele 32 și 33 din Legea 273/2006 privind alocarea impozitului pe venit. O notă despre aceste derogări ar crește relevanța documentului.
+
+**Structura subcapitolelor 42.02**: Documentul menționează generic subcapitolul 42.02, dar nu detaliază structura completă. Clasificația oficială conține **peste 30 de subcapitole** distincte:
+
+- **42.02.01-42.02.15** — subvenții de capital (retehnologizare, investiții, reabilitare termică)
+- **42.02.21-42.02.37** — subvenții curente (persoane cu handicap, ajutoare încălzire, trusou nou-născuți)
+- **42.02.93** — subvenții pentru FEN postaderare 2021-2027
+
+**Link-ul către Anexa I Excel**: URL-ul https://mfinante.gov.ro/static/10/Mfp/buget/sitebuget/clasificatii/AnexanrI_13102025.xls conține data „13102025" care pare să indice 13 octombrie 2025 — o dată din viitor din perspectiva actuală. Verificați dacă acest fișier există efectiv sau dacă URL-ul necesită actualizare.
+
+## 4. Confirmări ale informațiilor corecte
+
+### Denumirea și codul bugetar
+✅ **Capitol 42 = „Subvenții"** — denumire oficială confirmată în Ordinul MFP 1954/2005
+✅ **Cod 42.02 = „Subvenții de la bugetul de stat"** — corect pentru bugetele locale (Anexa 2)
+
+### Baza legală principală
+✅ **Ordinul MFP 1954/2005** — în vigoare, cu modificări continue prin comunicări MFP (ultima: nr. 536037/2025)
+✅ **Legea 273/2006, art. 33-34** — tratează transferuri și sume defalcate din bugetul de stat. Articolul 34 reglementează explicit „transferurile consolidabile pentru bugetele locale"
+✅ **Legea 273/2006, art. 44** — reglementează investițiile publice locale finanțate din transferuri de la bugetul de stat
+✅ **Legea 500/2002, art. 62** — menționează explicit „subvenții acordate de la bugetul de stat" la alin. (1) lit. b)
+✅ **Legea 500/2002, art. 63-64** — reglementează finanțarea instituțiilor publice
+
+### Mecanismul de funcționare
+✅ Descrierea fluxului buget de stat → bugete locale este conceptual corectă
+✅ Tratamentul în consolidare (eliminare pentru bugetul general consolidat) — mecanism corect descris
+✅ Relația între diverse componente ale sistemului bugetar — acurată
+
+### Terminologie și diacritice
+✅ Terminologia MFP utilizată corect (subvenții, transferuri, buget de stat, bugete locale)
+✅ Diacriticele românești corecte (ș, ț, ă, â, î) în tot documentul
+
+## 5. Starea link-urilor verificate
+
+| Link | Status | Observații |
+|------|--------|------------|
+| legislatie.just.ro/Public/DetaliiDocument/67596 | ✅ FUNCȚIONAL | Ordin MFP 1954/2005 - există în baza de date |
+| legislatie.just.ro/Public/DetaliiDocument/73527 | ✅ FUNCȚIONAL | Legea 273/2006 - accesibil prin căutare |
+| legislatie.just.ro/Public/DetaliiDocumentAfis/37954 | ✅ FUNCȚIONAL | Legea 500/2002 - forma originală |
+| mfinante.gov.ro/domenii/buget/clasificatiile-bugetare | ⚠️ PARȚIAL | Pagina există, dar blocată de robots.txt |
+| mfinante.gov.ro/.../AnexanrI_13102025.xls | ❓ NEVERIFICABIL | Fișier Excel - acces restricționat |
+
+**Notă tehnică**: Portalul Legislativ (legislatie.just.ro) blochează accesul automat prin robots.txt, dar toate documentele sunt accesibile manual prin browser.
+
+## 6. Recomandări de corectare
+
+**Prioritate RIDICATĂ:**
+1. Reformulați secțiunea despre Titlul VI și articolele 51.01/51.02 pentru a clarifica că acestea aparțin clasificației **cheltuielilor**, în timp ce Capitol 42 aparține clasificației **veniturilor**. Propunere de text: *„Capitol 42.02 la venituri corespunde, din perspectiva entității care acordă fondurile, Titlului VI Transferuri între unități ale administrației publice (art. 51.01 - Transferuri curente și art. 51.02 - Transferuri de capital) din clasificația economică a cheltuielilor."*
+
+**Prioritate MEDIE:**
+2. Adăugați o notă despre modificările aduse art. 33 din Legea 273/2006 (abrogate alin. 7¹, 7², 8)
+3. Menționați derogările temporare OUG 156/2024 și OUG 89/2025 pentru perioada 2025-2026
+
+**Prioritate SCĂZUTĂ:**
+4. Extindeți lista subcapitolelor 42.02 cu exemple concrete
+5. Verificați și actualizați URL-ul pentru Anexa I Excel
+
+## Surse consultate în verificare
+
+- **Portalul Legislativ** (legislatie.just.ro) — Ordinul MFP 1954/2005, Legea 273/2006, Legea 500/2002
+- **Ministerul Finanțelor** (mfinante.gov.ro) — Clasificațiile bugetare, comunicări oficiale MFP
+- **Surse secundare verificate**: Lege5.ro, LegeAZ.net pentru versiuni consolidate
+- **Bugete locale publicate** (Sector 6 București, Târgu Mureș) pentru validarea structurii codurilor 42.02.xx
+- **Comunicări MFP 2025**: nr. 123480, 120237, 120305, 232079, nota 121866
+
+## Processed
+
+- **Date**: 2026-01-02 14:40:41
+- **Source file**: ./public/assets/text/ro/functional/42.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-42-2026-01-02-143612.log

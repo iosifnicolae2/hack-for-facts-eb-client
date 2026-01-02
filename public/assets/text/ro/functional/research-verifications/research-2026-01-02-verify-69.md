@@ -303,7 +303,165 @@ Pentru analiza financiară corectă a sistemului, trebuie urmărite:
 ## Context
 
 - **Created**: 2026-01-02 04:36:39
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/69.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/69.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Raport de verificare: Cod 69 - Asigurări și asistență socială pentru accidente de muncă
+
+**Documentația a fost verificată minuțios și conține informații în mare parte corecte**, cu o eroare critică de referință legislativă și câteva omisiuni care necesită atenție. Majoritatea datelor tehnice privind cotele de contribuție, mecanismele de plată și prestațiile sunt accurate și reflectă legislația în vigoare.
+
+---
+
+## 1. Rezumat general
+
+Documentația pentru Codul 69 prezintă o calitate bună în ansamblu, demonstrând o înțelegere solidă a sistemului de asigurare pentru accidente de muncă și boli profesionale. Informațiile privind Contribuția Asiguratorie pentru Muncă (**2,25%**), distribuția de **2%** pentru sistemul de accidente și mecanismele de plată a indemnizațiilor sunt **verificate și corecte**. Totuși, documentul conține o **eroare critică** privind localizarea clasificației funcționale în Ordinul MFP 1954/2005 și omite modificările aduse recent prin OUG 127/2024.
+
+---
+
+## 2. Probleme critice găsite
+
+### 2.1. Eroare de referință la Anexa MFP ⚠️ CRITIC
+**Afirmație în document:** „Ordinul MFP nr. 1954/2005 - Anexa II (Clasificația funcțională a cheltuielilor)"
+
+**Corect:** Clasificația funcțională a cheltuielilor se află în **Anexa I** (Clasificaţia indicatorilor privind finanţele publice), nu în Anexa II. Anexa II conține clasificația în profil departamental (ministerială), nu clasificația funcțională.
+
+**Acțiune necesară:** Înlocuiți toate referințele la „Anexa II" cu „Anexa I" în secțiunile relevante.
+
+### 2.2. Clarificare privind poziționarea în clasificație
+Documentul afirmă că Codul 69 face parte din „Grupa 6 - Asigurări și asistență socială". În realitate, capitolele 68 și 69 sunt **capitole paralele** în cadrul „Partea a III-a CHELTUIELI SOCIAL-CULTURALE", nu subcategorii una a celeilalte. Codul 68 (Asigurări și asistență socială) și Codul 69 (pentru accidente de muncă) sunt entități distincte la același nivel ierarhic.
+
+### 2.3. Subcapitole lipsă
+Documentul nu listează subcapitolele oficiale ale Codului 69, care conform clasificației MFP sunt:
+
+| Cod | Denumire oficială |
+|-----|-------------------|
+| 69.00.05 | Asistență socială în caz de boli și invalidități |
+| 69.00.05.01 | Asistență socială în caz de boli |
+| 69.00.05.02 | Asistență socială în caz de invaliditate |
+| 69.00.07 | Asigurări pentru șomaj |
+| 69.00.09 | Ajutoare pentru urmași |
+| 69.00.15 | Prevenirea excluderii sociale |
+| 69.00.50 | Alte cheltuieli în domeniul asigurărilor și asistenței sociale |
+
+---
+
+## 3. Probleme minore și sugestii de îmbunătățire
+
+### 3.1. Actualizare privind republicarea Legii 346/2002
+Documentul menționează corect republicarea din M.Of. nr. 772/2009, dar omite faptul că legea a fost **republicată a doua oară** în Monitorul Oficial nr. 251 din 8 aprilie 2014. Forma consolidată actuală se bazează pe republicarea din 2014.
+
+**Sugestie:** Adăugați menționarea republicării din 2014 pentru acuratețe completă.
+
+### 3.2. Modificări OUG 127/2024 incomplet reflectate
+Documentul menționează OUG 127/2024 în contextul Art. 19, dar nu reflectă integral modificările:
+
+- **Nou Art. 36¹:** Indemnizație de **100%** pentru victime cu arsuri grave din accidente de muncă, pe întreaga perioadă de tratament și recuperare
+- **Modificare Art. 19(1):** Precizare explicită că baza de calcul **exclude veniturile obținute de la alți angajatori** – se iau în calcul doar veniturile de la angajatorul la care s-a produs evenimentul
+- **Abrogare Art. 18 lit. i):** Prevederi privind pensia de urmaș transferate la bugetul de stat începând cu 1 septembrie 2024 (conform Legii 360/2023)
+
+### 3.3. Absența mapării COFOG
+Documentul nu menționează corespondența cu clasificația internațională COFOG, care ar fi utilă pentru analiza comparativă europeană.
+
+**Cod COFOG corespunzător:** **10.1** (Sickness and disability / Boală și invaliditate), din Diviziunea 10 - Protecție socială.
+
+### 3.4. Link-uri potențial problematice
+
+| Link | Status | Recomandare |
+|------|--------|-------------|
+| legislatie.just.ro (toate) | Funcțional | Accesibil prin browser, restrictionat pentru crawlere |
+| mfinante.gov.ro clasificații XLS | Verificați | Actualizați numele fișierelor cu versiunile curente |
+| cnpp.ro/accidente-de-munca-si-boli-profesionale1 | Funcțional | Păstrați |
+
+### 3.5. Discrepanța Cod Fiscal vs. Lege Buget
+Documentul ar putea clarifica mai bine că:
+- Art. 220^6 alin. (4) din Codul Fiscal prevede cotele **implicite** de distribuție CAM (5% pentru accidente de muncă)
+- Art. 220^6 alin. (6) permite modificarea anuală prin legea bugetului
+- Cotele **efective** pentru 2024-2025 sunt cele din legile bugetului (**2%** pentru accidente de muncă)
+
+---
+
+## 4. Confirmări ale informațiilor corecte ✓
+
+### 4.1. Denumire și cod bugetar
+✓ **CORECT** – Codul 69 cu denumirea „Asigurări și asistență socială pentru accidente de muncă și boli profesionale" corespunde textului oficial din Ordinul MFP 1954/2005
+
+### 4.2. Contribuția Asiguratorie pentru Muncă (CAM)
+- ✓ **CORECT** – Cota CAM de **2,25%** (Art. 220^3 Cod Fiscal)
+- ✓ **CORECT** – Distribuție de **2%** pentru sistemul de accidente de muncă în 2024 (menținută și pentru 2025)
+- ✓ **CORECT** – Schimbarea din 1 ianuarie 2018 prin OUG 79/2017
+- ✓ **CORECT** – Cotele anterioare de 0,15%-0,85% diferențiate pe clase de risc (sistem abrogat)
+
+### 4.3. Legea 346/2002 - Prestații
+- ✓ **CORECT** – Art. 4: Răspunderea civilă a angajatorului preluată de asigurator
+- ✓ **CORECT** – Art. 34: Primele 3 zile ITM plătite de angajator, din ziua a 4-a din bugetul asigurărilor sociale
+- ✓ **CORECT** – Art. 33: Indemnizație ITM de 80% (100% pentru urgențe medico-chirurgicale)
+- ✓ **CORECT** – Art. 44: Compensație pentru atingerea integrității - maxim **12 salarii minime brute**
+- ✓ **CORECT** – Art. 45: Despăgubire în caz de deces - **4 salarii medii brute** (comunicate de INS)
+- ✓ **CORECT** – Art. 42: Pragul de reducere a capacității de muncă **20-50%** pentru compensația de integritate
+- ✓ **CORECT** – Art. 19: Baza de calcul - media veniturilor brute din ultimele 6 luni
+
+### 4.4. Administrare sistem
+- ✓ **CORECT** – CNPP prin casele teritoriale de pensii gestionează sistemul
+- ✓ **CORECT** – Mecanismul de vizare a certificatelor medicale de către DSP (boli profesionale) și CTP (accidente de muncă)
+- ✓ **CORECT** – Aplicabilitatea europeană prin Regulamentele 883/2004 și 987/2009, document portabil A1
+
+### 4.5. Referințe legislative
+- ✓ **CORECT** – Legea 273/2006 privind finanțele publice locale
+- ✓ **CORECT** – Legea 360/2023 privind sistemul public de pensii
+- ✓ **CORECT** – Legea 227/2015 (Codul Fiscal), Art. 220^1-220^7
+
+### 4.6. Calitatea limbii române
+- ✓ **CORECT** – Diacritice corecte (ș, ț, ă, â, î - forme Unicode moderne)
+- ✓ **CORECT** – Gramatică și ortografie corespunzătoare
+- ✓ **CORECT** – Stil formal și tehnic consistent
+- ✓ **CORECT** – Acronime explicate (CAM, CNPP, ITM, etc.)
+
+### 4.7. Structură și accesibilitate
+- ✓ **CORECT** – Toate secțiunile obligatorii sunt prezente
+- ✓ **CORECT** – Fluxul financiar este ilustrat clar
+- ✓ **CORECT** – Explicațiile sunt accesibile pentru utilizatori fără pregătire de specialitate
+- ✓ **CORECT** – Nu conține cod SQL sau referințe tehnice de implementare
+
+---
+
+## 5. Surse consultate
+
+### Surse primare verificate:
+1. **Ordinul MFP nr. 1954/2005** – text complet verificat prin portal legislativ și surse alternative (snppc.ro)
+2. **Legea nr. 346/2002** republicată – verificată pe cnpp.ro și prin căutare legislativă
+3. **Codul Fiscal (Legea 227/2015)**, Art. 220^1-220^7 – verificat pe multiple surse (noulcodfiscal.ro, lege5.ro)
+4. **OUG 127/2024** – verificată prin cdep.ro (Camera Deputaților)
+5. **Legea bugetului asigurărilor sociale 2024-2025** – verificate cotele de distribuție CAM
+
+### Site-uri oficiale consultate:
+- **cnpp.ro** – Secțiunea Accidente de muncă și boli profesionale (actualizat septembrie-noiembrie 2024)
+- **mfinante.gov.ro** – Clasificații bugetare
+- **legislatie.just.ro** – Portal legislativ Just
+- **cdep.ro** – Camera Deputaților (pentru OUG 127/2024)
+
+### Verificări suplimentare:
+- Corespondență COFOG verificată prin documentația Eurostat și INSEE
+- Cote CAM 2025 verificate prin surse specializate (economica.net, contzilla.ro, cabinetexpert.ro)
+- Verificare funcționalitate link-uri principale
+
+---
+
+## Concluzii și prioritizare acțiuni
+
+| Prioritate | Acțiune | Impact |
+|------------|---------|--------|
+| **CRITICĂ** | Corectați referința de la „Anexa II" la „Anexa I" | Acuratețe legislativă |
+| **RIDICATĂ** | Adăugați subcapitolele oficiale 69.00.05 - 69.00.50 | Completitudine |
+| **MEDIE** | Actualizați cu modificările OUG 127/2024 complete | Actualitate |
+| **MEDIE** | Adăugați maparea COFOG 10.1 | Comparabilitate europeană |
+| **SCĂZUTĂ** | Menționați republicarea din M.Of. 251/2014 | Precizie istorică |
+
+**Scor general al documentației:** ★★★★☆ (4/5) – Document de bună calitate, necesită corecții punctuale
+
+## Processed
+
+- **Date**: 2026-01-02 16:20:16
+- **Source file**: ./public/assets/text/ro/functional/69.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-69-2026-01-02-160309.log

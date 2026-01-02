@@ -278,7 +278,153 @@ Capitol 33 este esențial pentru evaluarea capacității instituțiilor publice 
 ## Context
 
 - **Created**: 2026-01-02 04:36:35
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/33.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/33.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație bugetară: Capitol 33
+
+**Documentul pentru Capitol 33 „Venituri din prestări de servicii și alte activități" este în mare parte corect, dar conține câteva erori de referințe legislative care necesită corectare.** Structura de coduri bugetare este conformă cu Ordinul MFP nr. 1954/2005, iar link-urile legislative principale funcționează. Principala problemă identificată: articolele din Legea 273/2006 citate (art. 28-30) nu sunt cele mai relevante pentru subiect.
+
+---
+
+## Probleme critice identificate
+
+### Eroare în citarea Legii 273/2006
+
+Documentul citează articolele 28, 29 și 30 din Legea 273/2006 ca bază legală pentru veniturile din prestări de servicii, însă aceste articole reglementează **alte categorii de venituri**:
+
+- **Articolul 28** se referă la sumele din valorificarea mijloacelor fixe (demolări, dezmembrări, concesiuni), nu la prestări de servicii
+- **Articolul 29** reglementează veniturile din vânzarea bunurilor din domeniul privat al unităților administrativ-teritoriale
+- **Articolul 30** privește taxele speciale pentru funcționarea serviciilor publice locale, categorie diferită de veniturile instituțiilor publice din prestări de servicii
+
+**Articolele relevante din Legea 273/2006** pentru Capitol 33 ar trebui să fie: Art. 1 alin.(2) lit.c) privind bugetele instituțiilor finanțate din venituri proprii, Art. 5 alin.(2) privind fundamentarea veniturilor din servicii prestate și Art. 28 alin.(2) doar pentru veniturile reținute de instituții.
+
+### Relevanța discutabilă a Codului Fiscal - Titlul IX
+
+Link-ul către Titlul IX din Codul Fiscal (https://www.mfinante.gov.ro/static/10/Mfp/legislatie/cod_fiscal/titlul_9.htm) este menționat în document, însă Titlul IX reglementează **impozitele și taxele locale** (impozit pe clădiri, terenuri, mijloace de transport), nu taxele administrative care constituie obiectul Capitolului 33. Conexiunea este doar parțială prin capitolul „Alte taxe locale".
+
+### Paragraful 33.XX.30 neconfirmat
+
+Paragraful **33.XX.30 „Direcții sănătate publică"** nu a fost identificat în versiunea originală a Ordinului MFP nr. 1954/2005. Acest cod poate fi o adăugare ulterioară prin comunicări de modificare sau poate fi specific doar anumitor tipuri de bugete. Necesită verificare suplimentară și clarificare în document.
+
+---
+
+## Probleme minore și sugestii de îmbunătățire
+
+### Link-uri care necesită actualizare
+
+Link-ul către clasificația economică din document (https://www.mfinante.gov.ro/static/10/Mfp/legislatie/clasificatie_economica/pdf11/Anexa nr.I_venit.pdf) conține spații în URL care pot cauza probleme de accesare. Formatul corect ar trebui să folosească `%20` pentru spații sau un URL fără spații.
+
+Link-ul către Anexa I XLS (https://mfinante.gov.ro/static/10/Mfp/buget/sitebuget/clasificatii/AnexanrI_13102025.xls) sugerează o dată viitoare (13.10.2025) care ar putea fi incorectă sau reprezintă convenția de denumire MFP. Recomandare: verificare și actualizare periodică.
+
+### Clarificări recomandate
+
+**Denumiri prescurtate**: Documentul folosește denumiri prescurtate pentru paragrafe (ex: „Taxe vamale" în loc de denumirea oficială „Venituri din taxe pentru prestații vamale", sau „Analize laboratoare" în loc de „Taxe și tarife pentru analize și servicii efectuate de laboratoare"). Deși acceptabile pentru claritate, ar fi utilă o notă care să menționeze că sunt denumiri simplificate.
+
+**Structura codificării**: Ar fi benefic să se explice mai clar diferența între 33.00.xx (clasificația generală), 33.01.xx (buget de stat) și 33.10.xx (instituții publice), deoarece utilizatorii fără pregătire de specialitate pot fi confuzi de numerotarea aparent nelogică.
+
+### Informații lipsă utile
+
+- Lipsește menționarea actualizărilor legislative recente din 2025 (OUG 78/2025, Legea 239/2025)
+- Nu este menționat Art. 6 din Ordinul 1954/2005 care precizează că „clasificațiile nu constituie temei legal pentru încasarea de venituri"
+- Nu sunt listate toate paragrafele existente în Capitol 33 (ex: 33.XX.07 - participări organizații internaționale, 33.XX.09 - protecția mediului, 33.XX.10-17 - contribuții diverse)
+
+---
+
+## Confirmări ale informațiilor corecte
+
+### Structura și denumirea Capitolului 33
+
+Codul bugetar **Capitol 33** este corect, iar denumirea oficială **„Venituri din prestări de servicii și alte activități"** corespunde exact cu Anexa I din Ordinul MFP nr. 1954/2005. Ordinul este în vigoare de la 1 ianuarie 2006 și se actualizează continuu prin comunicări MFP.
+
+### Structura subcapitolelor pe tipuri de bugete
+
+Structura de subcapitole este corectă:
+- **33.01** — Bugetul de stat ✓
+- **33.02** — Bugetele locale ✓
+- **33.10** — Instituții publice finanțate din venituri proprii ✓
+
+### Paragrafele confirmate ca existente
+
+| Cod | Denumire oficială | Status |
+|-----|-------------------|--------|
+| 33.XX.01 | Taxe de metrologie | ✓ Confirmat |
+| 33.XX.02 | Taxe consulare | ✓ Confirmat |
+| 33.XX.03 | Venituri din taxe pentru prestații vamale | ✓ Confirmat |
+| 33.XX.04 | Taxe și tarife pentru analize și servicii efectuate de laboratoare | ✓ Confirmat |
+| 33.XX.05 | Taxe și alte venituri în învățământ | ✓ Confirmat |
+| 33.XX.06 | Venituri din expertiza tehnică judiciară și extrajudiciară | ✓ Confirmat |
+| 33.XX.08 | Venituri din prestări de servicii | ✓ Confirmat |
+| 33.XX.20 | Venituri din cercetare | ✓ Confirmat |
+| 33.XX.21 | Venituri din contractele încheiate cu casele de asigurări sociale de sănătate | ✓ Confirmat |
+| 33.XX.50 | Alte venituri din prestări de servicii și alte activități | ✓ Confirmat |
+
+### Referințe legislative corecte din Legea 500/2002
+
+Articolele citate din Legea 500/2002 sunt **toate corecte și relevante**:
+
+- **Art. 62** stabilește cele trei modalități de finanțare a instituțiilor publice, inclusiv „integral din veniturile proprii" — fundamental pentru Capitol 33
+- **Art. 65 alin.(2)** enumeră explicit **„prestări de servicii"** ca sursă de venituri proprii — cea mai relevantă prevedere legală
+- **Art. 66** reglementează excedentele bugetelor instituțiilor finanțate din venituri proprii
+
+### Link-uri legislative funcționale
+
+Toate cele trei link-uri legislative principale sunt **funcționale** și conduc la documentele corecte:
+- https://legislatie.just.ro/Public/DetaliiDocument/67596 → Ordinul MFP nr. 1954/2005 ✓
+- https://legislatie.just.ro/Public/DetaliiDocument/73527 → Legea nr. 273/2006 ✓
+- https://legislatie.just.ro/Public/DetaliiDocumentAfis/37954 → Legea nr. 500/2002 ✓
+
+### Încadrarea în clasificația bugetară
+
+Capitolul 33 este corect încadrat în structura clasificației veniturilor:
+- **Categoria C — Venituri nefiscale**
+- **Subcategoria C2 — Vânzări de bunuri și servicii**
+- **Capitol 33.00 — Venituri din prestări de servicii și alte activități**
+
+---
+
+## Recomandări pentru corectare
+
+### Acțiuni prioritare
+
+1. **Corectarea referințelor din Legea 273/2006**: Înlocuirea art. 28-30 cu art. 1 alin.(2) lit.c), art. 5 alin.(2) și, dacă relevant, păstrarea doar a art. 28 alin.(2)
+
+2. **Clarificarea relevanței Titlul IX Cod Fiscal**: Adăugarea unei note că Titlul IX privește impozitele locale, nu taxele administrative, și că este relevant doar parțial prin capitolul „Alte taxe locale"
+
+3. **Verificarea paragrafului 33.XX.30**: Confirmarea existenței acestui cod în clasificația actualizată sau eliminarea din document dacă nu există
+
+### Acțiuni secundare
+
+4. Actualizarea link-ului PDF cu spații în URL
+5. Adăugarea listei complete de paragrafe existente pentru Capitol 33
+6. Includerea unei note despre actualizările legislative din 2025
+7. Menționarea că denumirile paragrafelor din document sunt prescurtări ale denumirilor oficiale
+
+---
+
+## Surse consultate pentru verificare
+
+**Surse legislative oficiale verificate:**
+- Portal Legislativ (legislatie.just.ro) — Ordinul MFP 1954/2005, Legea 273/2006, Legea 500/2002, Codul Fiscal
+- Ministerul Finanțelor — pagina clasificațiilor bugetare (mfinante.gov.ro)
+- Documentele de clasificație bugetară — Anexa I (clasificația veniturilor)
+
+**Articole din Legea 500/2002 verificate textual:** Art. 62 (finanțarea instituțiilor publice), Art. 65 (veniturile proprii — confirmă explicit „prestări de servicii"), Art. 66 (excedentele bugetare)
+
+**Articole din Legea 273/2006 verificate textual:** Art. 28 (valorificarea mijloacelor fixe), Art. 29 (vânzări bunuri domeniu privat), Art. 30 (taxe speciale servicii publice locale)
+
+**Status acte normative:** Toate actele normative verificate sunt în vigoare la data verificării (ianuarie 2026), cu modificări și completări ulterioare incluzând actualizări din 2025.
+
+---
+
+## Concluzie
+
+Documentația pentru Capitol 33 este **în mare parte corectă** și utilă pentru platforma Transparenta.eu. Principala corecție necesară privește articolele citate din Legea 273/2006, care nu sunt cele mai relevante pentru subiect. Structura codurilor bugetare, denumirea capitolului și referințele la Legea 500/2002 sunt corecte. După implementarea corecțiilor recomandate, documentul va fi complet și precis pentru utilizatorii fără pregătire de specialitate bugetară.
+
+## Processed
+
+- **Date**: 2026-01-02 14:07:13
+- **Source file**: ./public/assets/text/ro/functional/33.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-33-2026-01-02-140450.log

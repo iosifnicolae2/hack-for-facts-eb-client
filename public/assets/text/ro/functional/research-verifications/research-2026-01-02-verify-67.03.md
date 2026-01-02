@@ -316,7 +316,173 @@ Cheltuieli consolidate servicii culturale (67.03) =
 ## Context
 
 - **Created**: 2026-01-02 04:36:38
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/67.03.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/67.03.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație bugetară: Cod 67.03 – Servicii culturale
+
+Documentația pentru codul bugetar **67.03 – Servicii culturale** este în mare parte corectă din punct de vedere tehnic și legal, cu o **eroare critică** identificată în lanțul de abrogare legislativă. Codurile bugetare, denumirile oficiale și majoritatea referințelor legislative sunt conforme cu clasificația MFP și legislația în vigoare. Totuși, afirmația că „OUG 118/2006 a fost înlocuită de OUG 189/2008" este **falsă** – cele două acte normative coexistă și reglementează aspecte diferite ale domeniului cultural.
+
+---
+
+## 1. Rezumat general al verificării
+
+Verificarea a acoperit patru domenii principale: codurile bugetare oficiale, referințele legislative, lanțul de abrogare și statisticile menționate. Rezultatul global: **documentația necesită o corecție critică** referitoare la relația dintre OUG 118/2006 și OUG 189/2008, dar în rest este conformă cu clasificația oficială a Ministerului Finanțelor.
+
+| Domeniu verificat | Rezultat |
+|-------------------|----------|
+| Coduri bugetare (67.03, 67.04, 67.05, 67.06, 67.50) | ✅ Corect |
+| Structura codificării (67.01.03, 67.02.03, 67.10.03) | ✅ Corect |
+| Referințe legislative principale | ✅ Corect |
+| Lanțul abrogare Legea 292/2003 | ⚠️ Parțial corect – eroare critică |
+| Statistici bugetare | ⚠️ Parțial corect – necesită nuanțări |
+
+---
+
+## 2. Probleme critice găsite
+
+### Eroare în lanțul de abrogare legislativă
+
+Documentul afirmă că „Legea 292/2003 a fost abrogată prin OUG 118/2006, **înlocuită de OUG 189/2008**". Această afirmație este **parțial falsă**:
+
+**Prima parte – CORECTĂ:**
+Legea 292/2003 privind organizarea așezămintelor culturale a fost într-adevăr abrogată prin art. 28 din OUG 118/2006, la data de 28 decembrie 2006.
+
+**A doua parte – INCORECTĂ:**
+OUG 118/2006 **nu a fost abrogată sau înlocuită** de OUG 189/2008. Cele două acte normative sunt **ambele în vigoare** și reglementează aspecte diferite:
+
+| Act normativ | Ce reglementează | Status |
+|--------------|------------------|--------|
+| **OUG 118/2006** | Înființarea, organizarea și funcționarea așezămintelor culturale | **ÎN VIGOARE** |
+| **OUG 189/2008** | Managementul (conducerea) instituțiilor publice de cultură | **ÎN VIGOARE** |
+
+OUG 189/2008 a înlocuit **OG 26/2005** privind managementul instituțiilor publice de cultură, nu OUG 118/2006.
+
+**Corecția necesară:** Textul trebuie modificat astfel: „Legea 292/2003 a fost abrogată prin OUG 118/2006. Managementul instituțiilor publice de cultură este reglementat de OUG 189/2008 (care a înlocuit OG 26/2005)."
+
+---
+
+## 3. Probleme minore și sugestii
+
+### Statistici care necesită nuanțări
+
+**Cheltuieli 0,4-0,6% din PIB** – intervalul este ușor optimist pentru realitatea actuală:
+- Bugetul Ministerului Culturii reprezintă doar **0,07-0,08% din PIB**
+- Cheltuielile totale (central + local) se apropie de **0,3-0,4% din PIB**
+- România se situează sub media UE de **0,5%**
+
+*Sugestie:* Specificați că intervalul include toate sursele de finanțare (buget central, local, venituri proprii) sau actualizați la intervalul mai precis de 0,3-0,5%.
+
+**Cheltuieli 1-2% din bugetul consolidat** – ușor supraevaluat:
+- În practică, alocările pentru cultură nu au reușit să depășească constant **1% din bugetul total**
+- Intervalul real este aproximativ **0,4-1,0%**
+
+*Sugestie:* Reformulați ca „aproximativ 1% din cheltuielile consolidate" sau indicați sursa datelor.
+
+**Finanțare 70-90% pentru teatre naționale** – corect, chiar conservator:
+- În practică, teatrele primesc **90-98%** din bugetul public
+- Veniturile proprii (bilete, închirieri) acoperă doar **2-10%** din cheltuieli
+
+### Clarificări terminologice recomandate
+
+Pentru consistență cu nomenclatura MFP, se recomandă:
+- Utilizarea denumirii complete **„CULTURĂ, RECREERE ȘI RELIGIE"** pentru capitolul 67 (majuscule în documentele oficiale)
+- Specificarea că 67.04 se referă la „**Servicii de emisiuni radio-tv și publicații**" (nu doar generic)
+
+### Referință legislativă incompletă
+
+HG 387/2003 privind „direcțiile pentru cultură" are un titlu mai complex:
+- **Titlu complet:** „Hotărârea Guvernului nr. 387/2003 privind înființarea pe lângă Ministerul Culturii și Cultelor, direcțiile pentru cultură, culte și patrimoniul cultural național județene [...] a unor activități finanțate integral din venituri proprii"
+- *Sugestie:* Adăugați mențiunea că organizarea actuală a direcțiilor este reglementată și prin HG 90/2010.
+
+---
+
+## 4. Confirmări – ce s-a verificat și este corect
+
+### Coduri bugetare confirmate
+
+Toate codurile bugetare menționate în document corespund exact cu clasificația oficială MFP:
+
+| Cod | Denumire oficială | Status |
+|-----|-------------------|--------|
+| 67 | Cultură, recreere și religie | ✅ Corect |
+| 67.03 | Servicii culturale | ✅ Corect |
+| 67.04 | Servicii de emisiuni radio-tv și publicații | ✅ Corect |
+| 67.05 | Servicii recreative și sportive | ✅ Corect |
+| 67.06 | Servicii religioase | ✅ Corect |
+| 67.50 | Alte servicii în domeniul culturii, recreerii și religiei | ✅ Corect |
+
+### Structura codificării verificată
+
+Sistemul de codificare pe trei niveluri este **corect implementat**:
+
+| Cod | Semnificație | Anexa MFP |
+|-----|--------------|-----------|
+| 67.**01**.03 | Servicii culturale – buget de stat | Anexa 1 |
+| 67.**02**.03 | Servicii culturale – bugete locale | Anexa 2 |
+| 67.**10**.03 | Servicii culturale – instituții cu venituri proprii | Anexa 10 |
+
+Structura codului: **67.XX.YY** unde 67 = capitol, XX = tip buget, YY = subcapitol.
+
+### Referințe legislative confirmate
+
+Toate actele normative principale sunt **în vigoare** și **corect citate**:
+
+| Act normativ | Titlu oficial | Status |
+|--------------|---------------|--------|
+| Ordinul MFP nr. 1954/2005 | Aprobarea Clasificației indicatorilor privind finanțele publice | ✅ În vigoare |
+| Legea 273/2006 | Privind finanțele publice locale | ✅ În vigoare |
+| Legea 500/2002 | Privind finanțele publice | ✅ În vigoare |
+| OUG 189/2008 | Privind managementul instituțiilor publice de cultură | ✅ În vigoare |
+| HG 387/2003 | Privind activități finanțate din venituri proprii pe lângă direcțiile pentru cultură | ✅ În vigoare |
+
+### Lista instituțiilor culturale validată
+
+Categoriile menționate (biblioteci, muzee, teatre, case de cultură, cămine culturale) corespund cu definițiile din:
+- **OUG 189/2008** – instituții de spectacole, muzee, biblioteci, așezăminte culturale
+- **OUG 118/2006** – cămine culturale, case de cultură, centre culturale
+
+Paragrafele detaliate sub 67.XX.03 includ: biblioteci publice (67.XX.03.02), muzee (67.XX.03.03), instituții de spectacole și concerte (67.XX.03.04), case de cultură (67.XX.03.06), cămine culturale (67.XX.03.07).
+
+---
+
+## 5. Surse oficiale consultate
+
+### Documente verificate și confirmate
+
+**Clasificație bugetară:**
+- Ordinul MFP nr. 1954/2005 – legislatie.just.ro/Public/DetaliiDocument/67596
+- Anexa II (clasificația cheltuielilor) – mfinante.gov.ro
+- Pagina oficială MFP clasificații bugetare – mfinante.gov.ro/domenii/buget/clasificatiile-bugetare
+
+**Legislație primară:**
+- Legea 500/2002 – legislatie.just.ro/Public/DetaliiDocumentAfis/37954
+- Legea 273/2006 – legislatie.just.ro/Public/DetaliiDocument/73527
+- OUG 189/2008 – legislatie.just.ro/Public/DetaliiDocument/99863
+- OUG 118/2006 – legislatie.just.ro (verificat abrogarea Legii 292/2003)
+
+**Statistici culturale:**
+- Eurostat – date COFOG pentru servicii culturale
+- Ministerul Culturii – buget și legislație
+- culturalpolicies.net – profil politici culturale România
+
+---
+
+## Recomandări finale pentru Transparenta.eu
+
+**Acțiune imediată necesară:** Corectați eroarea privind lanțul de abrogare OUG 118/2006 → OUG 189/2008. Această eroare poate genera confuzie juridică pentru utilizatorii platformei.
+
+**Îmbunătățiri recomandate:**
+1. Adăugați mențiunea că OUG 118/2006 și OUG 189/2008 coexistă, reglementând aspecte complementare
+2. Nuanțați statisticile bugetare cu intervalele verificate (0,3-0,5% PIB, sub 1% buget consolidat)
+3. Actualizați referința la HG 387/2003 cu mențiunea HG 90/2010 pentru organizarea actuală
+
+**Calitatea generală:** Documentația este de bună calitate pentru o platformă de transparență bugetară. Codurile și structura clasificației sunt corecte, iar majoritatea referințelor legislative sunt valide și în vigoare.
+
+## Processed
+
+- **Date**: 2026-01-02 16:14:25
+- **Source file**: ./public/assets/text/ro/functional/67.03.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-67.03-2026-01-02-160309.log

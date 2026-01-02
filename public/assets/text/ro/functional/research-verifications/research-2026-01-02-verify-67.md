@@ -306,7 +306,129 @@ Pentru a înțelege cum sunt cheltuiți banii publici în comunitatea dumneavoas
 ## Context
 
 - **Created**: 2026-01-02 04:36:38
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/67.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/67.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare Documentație Bugetară Capitolul 67: Rezultate și Recomandări
+
+Documentația pentru Capitolul 67 „Cultură, recreere și religie" din clasificația funcțională românească este **în mare parte corectă și conformă** cu legislația în vigoare. Verificarea a identificat câteva aspecte ce necesită atenție, dar structura de bază, referințele legislative principale și afirmațiile factuale sunt validate de sursele oficiale.
+
+## Rezumat general al verificării
+
+Toate cele **șapte link-uri legislative principale** către Portalul Legislativ (legislatie.just.ro) sunt funcționale și conțin documentele indicate. Codul bugetar Capitol 67, denumirea oficială „Cultură, recreere și religie" și structura pe trei categorii de buget (67.01, 67.02, 67.10) corespund Ordinului MFP nr. 1954/2005. Corespondența cu **Diviziunea 08 COFOG** („Recreation, culture and religion") este confirmată. Toate afirmațiile privind instituțiile responsabile – Ministerul Culturii, AFCN, Agenția Națională pentru Sport și Secretariatul de Stat pentru Culte – sunt factual corecte.
+
+## Probleme critice identificate
+
+### Structura subcapitolelor necesită clarificări
+
+**Subcapitolul 67.02.04** menționat în lista de verificat („Servicii de emisiuni radio-tv și publicații" la nivel local) nu a putut fi confirmat în sursele accesate. Acest subcapitol există clar pentru bugetul de stat la **67.01.04**, dar la nivel de bugete locale (67.02) structura standard include: 67.02.03 (Servicii culturale), 67.02.05 (Servicii recreative și sportive), 67.02.06 (Servicii religioase), 67.02.50 (Alte servicii). Recomandare: verificați dacă 67.02.04 este utilizat efectiv în clasificațiile actuale sau dacă trebuie eliminat din documentație.
+
+### Clarificare privind semnificația codului 67.10
+
+În sarcina de verificare, se menționează subcapitolele **67.10.03** și **67.10.05** fără context complet. Este esențial să se clarifice în documentație că „67.10" nu reprezintă o categorie funcțională separată (precum „Servicii religioase"), ci desemnează **bugetul instituțiilor publice finanțate integral sau parțial din venituri proprii**. Astfel:
+- 67.10.03 = Servicii culturale (instituții cu venituri proprii)
+- 67.10.05 = Servicii recreative și sportive (instituții cu venituri proprii)
+
+Serviciile religioase la acest nivel ar fi 67.10.06, nu există ca subcapitol distinct deoarece unitățile de cult nu sunt instituții publice finanțate din venituri proprii.
+
+## Probleme minore și sugestii de îmbunătățire
+
+### Actualizări legislative necesare
+
+**OG nr. 51/1998** a suferit modificări substanțiale prin OUG nr. 83/2022 și OG nr. 20/2024 (aprobată prin Legea nr. 148/2025). Documentația ar trebui să menționeze aceste actualizări pentru a reflecta forma în vigoare. **Legea nr. 69/2000** privind educația fizică și sportul a fost completată prin OG nr. 28/2024, care adaugă prevederi noi privind finanțarea cluburilor sportive private pentru activități cu copii și juniori.
+
+**Legea nr. 489/2006** trebuie referită în forma republicată din 21 martie 2014 (Monitorul Oficial nr. 201), nu în forma inițială. HG nr. 894/2024 a modificat normele metodologice pentru acordarea sprijinului financiar pentru culte, actualizare ce ar putea fi menționată.
+
+### Structura instituțională sport
+
+Documentația ar trebui să clarifice că, începând cu **20 iunie 2023**, Ministerul Sportului a fost desființat și înlocuit cu **Agenția Națională pentru Sport (ANS)**, instituție publică în subordinea Guvernului și coordonarea prim-ministrului. Referințele la „Agenția Națională pentru Sport" sunt corecte pentru perioada actuală, dar contextul istoric al reorganizărilor frecvente (MTS → Ministerul Sportului → ANS) ar putea fi util.
+
+### Link-uri fișiere Excel MFP
+
+Link-urile directe către fișierele Excel de pe mfinante.gov.ro (AnexanrII_29012025.xls și Anexanr7_13052025.xls) sunt restricționate de configurația robots.txt a site-ului. Deși fișierele există, accesul automatizat este blocat. Se recomandă verificarea manuală periodică și eventual adăugarea unor link-uri alternative către versiunile PDF ale clasificațiilor sau către pagina principală https://mfinante.gov.ro/domenii/buget/clasificatiile-bugetare.
+
+### Secțiunea despre descentralizare
+
+Procesul de descentralizare a instituțiilor culturale este în derulare activă. Măsurile anunțate pentru 1 ianuarie 2025 includ transferul direcțiilor județene de cultură către autoritățile publice județene. Documentația ar trebui actualizată periodic pentru a reflecta stadiul implementării și eventualele modificări legislative.
+
+## Confirmări ale informațiilor corecte
+
+### Codul bugetar și denumirea oficială
+
+**Capitol 67** – „Cultură, recreere și religie" este **corect** conform Ordinului MFP nr. 1954/2005, publicat în Monitorul Oficial nr. 1.176 din 27 decembrie 2005. Structura pe trei tipuri de buget este confirmată:
+
+| Cod | Tip buget |
+|-----|-----------|
+| 67.01 | Buget de stat |
+| 67.02 | Bugete locale |
+| 67.10 | Instituții finanțate din venituri proprii |
+
+### Subcapitolele confirmate integral
+
+Următoarele subcapitole au fost **verificate și confirmate** în clasificațiile oficiale:
+- **67.01.01** – Administrație centrală
+- **67.01.03** – Servicii culturale (cu detalieri: 67.01.03.03 Muzee, 67.01.03.04 Instituții de spectacole și concerte, 67.01.03.12 Consolidarea monumentelor istorice etc.)
+- **67.01.04** – Servicii de emisiuni radio-tv și publicații
+- **67.01.05** – Servicii recreative și sportive (67.01.05.01 Sport, 67.01.05.02 Tineret)
+- **67.01.06** – Servicii religioase
+- **67.01.25** – Cercetare și dezvoltare în domeniul culturii, recreerii și religiei
+- **67.01.50** – Alte servicii în domeniile culturii, recreerii și religiei
+- **67.02.03** – Servicii culturale (buget local)
+- **67.02.05** – Servicii recreative și sportive (buget local)
+- **67.02.06** – Servicii religioase (buget local)
+- **67.02.50** – Alte servicii (buget local)
+- **67.10.03** – Servicii culturale (venituri proprii)
+- **67.10.05** – Servicii recreative și sportive (venituri proprii)
+
+### Referințele legislative validate
+
+Toate referințele legislative principale sunt **corecte și accesibile**:
+
+| Act normativ | Link | Status |
+|--------------|------|--------|
+| Ordinul MFP nr. 1954/2005 | legislatie.just.ro/Public/DetaliiDocumentAfis/67596 | ✓ Funcțional |
+| Legea nr. 273/2006 | legislatie.just.ro/Public/DetaliiDocument/73527 | ✓ Funcțional |
+| Legea nr. 500/2002 | legislatie.just.ro/Public/DetaliiDocument/38262 | ✓ Funcțional |
+| OG nr. 51/1998 | legislatie.just.ro/Public/DetaliiDocumentAfis/15449 | ✓ Funcțional |
+| Legea nr. 489/2006 (republicată) | legislatie.just.ro/Public/DetaliiDocument/156588 | ✓ Funcțional |
+| Legea nr. 69/2000 | legislatie.just.ro/Public/DetaliiDocument/22262 | ✓ Funcțional |
+
+### Articolul 10 alin. (6) din Legea 489/2006
+
+Textul exact, **confirmat**: „Cultele recunoscute pot beneficia, la cerere, de sprijin material din partea statului, pentru cheltuielile privind funcționarea unităților de cult, pentru reparații și construcții noi, în raport cu numărul credincioșilor, conform ultimului recensământ, și cu nevoile reale."
+
+### Corespondența COFOG
+
+**Confirmată** – Capitolul 67 din clasificația națională corespunde Diviziunii 08 COFOG („Recreation, culture and religion") conform standardelor internaționale.
+
+### Afirmațiile instituționale validate
+
+**Ministerul Culturii** gestionează efectiv alocările pentru instituțiile naționale de cultură, având aproximativ 95 de entități subordonate, inclusiv 42 de direcții județene. Bugetul pentru 2025 este de **1,274 miliarde lei**.
+
+**AFCN** (Administrația Fondului Cultural Național) există și funcționează activ, acordând finanțări nerambursabile conform OG 51/1998. Organizează două sesiuni anuale de finanțare, cu bugete de aproximativ **45-50 milioane lei** per sesiune. Din 2025, aplicațiile se depun pe platforma www.fonduri-cultura.ro.
+
+**Agenția Națională pentru Sport** (nu Ministerul Sportului) finanțează federațiile sportive pe baza Legii nr. 69/2000, art. 18 alin. (1) lit. i). În 2025, bugetul alocat celor 69 de federații sportive este de **137.250.000 lei**.
+
+**Secretariatul de Stat pentru Culte** există în subordinea Guvernului și coordonarea prim-ministrului (HG nr. 725/2024), gestionând sprijinul pentru cele 19 culte recunoscute și 53 de asociații religioase din România.
+
+**Descentralizarea instituțiilor culturale** este un proces real, inițiat din 1996. Instituțiile descentralizate includ: biblioteci publice județene, muzee județene, centre pentru conservarea culturii tradiționale, instituții de spectacole și concerte, cămine culturale, case de cultură.
+
+## Surse consultate pentru verificare
+
+**Portalul Legislativ** (legislatie.just.ro) – verificarea tuturor actelor normative referite, inclusiv formele actualizate și republicare ale legilor.
+
+**Ministerul Finanțelor** (mfinante.gov.ro) – pagina clasificațiilor bugetare, documentele de transparență funcțională (TranspFunc_anexa1.pdf, TranspFunc_anexa2.pdf).
+
+**Site-uri instituționale**: cultura.ro (Ministerul Culturii), afcn.ro (Administrația Fondului Cultural Național), sport.gov.ro (Agenția Națională pentru Sport), culte.gov.ro (Secretariatul de Stat pentru Culte).
+
+**Surse complementare**: Secretariatul General al Guvernului (sgg.gov.ro) pentru planuri strategice instituționale, AGERPRES pentru actualizări bugetare, platforme juridice (lege5.ro, legeaz.net) pentru verificări legislative încrucișate.
+
+**Documente specifice verificate**: Ordinul MFP nr. 1954/2005 (forma actualizată), Strategia generală de descentralizare (HG 12.04.2017), HG nr. 725/2024 privind organizarea Secretariatului pentru Culte, Planul Strategic Instituțional al Ministerului Culturii 2025-2028.
+
+## Processed
+
+- **Date**: 2026-01-02 16:16:00
+- **Source file**: ./public/assets/text/ro/functional/67.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-67-2026-01-02-160309.log

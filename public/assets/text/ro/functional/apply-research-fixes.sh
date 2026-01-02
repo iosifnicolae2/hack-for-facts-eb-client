@@ -6,16 +6,23 @@
 # Processes research verification files and uses Claude Code CLI to fix/improve
 # the original markdown files based on the research findings.
 #
-# Usage: ./apply-research-fixes.sh
+# Usage: ./apply-research-fixes.sh [--dry-run|-n]
+#        --dry-run, -n  Preview which files would be processed without making changes
 # =============================================================================
 
 set -e
+
+# Parse arguments
+DRY_RUN=false
+if [[ "$1" == "--dry-run" ]] || [[ "$1" == "-n" ]]; then
+    DRY_RUN=true
+fi
 
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RESEARCH_DIR="$SCRIPT_DIR/research-verifications"
 LOG_DIR="$SCRIPT_DIR/fix-logs"
-BATCH_SIZE=10
+BATCH_SIZE=1
 DATE_STAMP=$(date +%Y-%m-%d-%H%M%S)
 
 # Colors for output
@@ -30,6 +37,7 @@ total_processed=0
 total_skipped=0
 total_success=0
 total_failed=0
+total_already_processed=0
 
 # Create log directory
 mkdir -p "$LOG_DIR"
@@ -66,12 +74,19 @@ if [[ $total_files -eq 0 ]]; then
 fi
 
 log "=========================================="
-log "Apply Research Fixes - Starting"
+if [[ "$DRY_RUN" == true ]]; then
+    log "Apply Research Fixes - DRY RUN MODE"
+else
+    log "Apply Research Fixes - Starting"
+fi
 log "=========================================="
 log "Research directory: $RESEARCH_DIR"
 log "Total research files: $total_files"
 log "Batch size: $BATCH_SIZE"
 log "Log file: $MAIN_LOG"
+if [[ "$DRY_RUN" == true ]]; then
+    log "Mode: DRY RUN (no changes will be made)"
+fi
 log "=========================================="
 
 # Function to process a single research file
@@ -94,11 +109,23 @@ process_research_file() {
         return
     fi
 
-    # Extract research results (everything after "## Research Results" until end of file or next major section)
-    local research_results=$(awk '/^## Research Results$/{found=1; next} found && /^## [^R]/{exit} found{print}' "$research_file")
+    # Extract research results (everything after "## Research Results" to end of file)
+    # Simple approach: grep line number of "## Research Results" and get everything after it
+    local start_line=$(grep -n "^## Research Results$" "$research_file" | cut -d: -f1)
+    local research_results=""
+    if [[ -n "$start_line" ]]; then
+        research_results=$(tail -n +$((start_line + 1)) "$research_file")
+    fi
 
-    # Check if research results contain actual content (not just placeholder)
-    if [[ -z "$research_results" ]] || [[ "$research_results" == *"[PASTE RESEARCH RESULTS HERE]"* ]]; then
+    # Check if already processed (has ## Processed marker)
+    if grep -q "^## Processed$" "$research_file" 2>/dev/null; then
+        echo "SKIP:ALREADY_PROCESSED"
+        return
+    fi
+
+    # Check if research results contain actual content (not just placeholder or whitespace)
+    local trimmed_results=$(echo "$research_results" | sed '/^[[:space:]]*$/d' | head -1)
+    if [[ -z "$trimmed_results" ]] || [[ "$research_results" == *"[PASTE RESEARCH RESULTS HERE]"* ]]; then
         echo "SKIP:NO_RESEARCH_RESULTS"
         return
     fi
@@ -132,21 +159,33 @@ $research_results
 Începe acum: citește fișierul și apoi aplică modificările necesare bazate pe cercetare.
 PROMPT_EOF
 
-    # Run Claude CLI
-    if claude -p \
-        --dangerously-skip-permissions \
-        --tools "Read,Edit" \
-        --model opus \
-        "$prompt" > "$log_file" 2>&1; then
-        echo "SUCCESS:$source_file"
+    # Run Claude CLI (or just report in dry-run mode)
+    if [[ "$DRY_RUN" == true ]]; then
+        echo "WOULD_PROCESS:$source_file"
+        echo "Research lines: $(echo "$research_results" | wc -l | tr -d ' ')"
     else
-        echo "FAILED:$source_file"
+        if claude -p \
+            --dangerously-skip-permissions \
+            --tools "Read,Edit" \
+            --model opus \
+            "$prompt" > "$log_file" 2>&1; then
+            # Mark as processed with timestamp
+            echo "" >> "$research_file"
+            echo "## Processed" >> "$research_file"
+            echo "" >> "$research_file"
+            echo "- **Date**: $(date '+%Y-%m-%d %H:%M:%S')" >> "$research_file"
+            echo "- **Source file**: $source_file" >> "$research_file"
+            echo "- **Log file**: $log_file" >> "$research_file"
+            echo "SUCCESS:$source_file"
+        else
+            echo "FAILED:$source_file"
+        fi
     fi
 }
 
 # Export function for use in subshells
 export -f process_research_file
-export LOG_DIR DATE_STAMP
+export LOG_DIR DATE_STAMP DRY_RUN
 
 # Arrays for batch processing
 declare -a batch_files=()
@@ -254,6 +293,7 @@ log "Processing Complete"
 log "=========================================="
 log "Total files processed: $total_processed"
 log "Successfully fixed: $total_success"
+log "Already processed: $total_already_processed"
 log "Skipped (no research): $total_skipped"
 log "Failed: $total_failed"
 log "Log directory: $LOG_DIR"

@@ -282,7 +282,169 @@ Când analizați date pe clasificare funcțională, acest cod poate fi un **indi
 ## Context
 
 - **Created**: 2026-01-02 04:36:36
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/54.50.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/54.50.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Raport de verificare: Clasificația funcțională 54.01.50/54.02.50 „Alte servicii publice generale"
+
+Clasificația bugetară funcțională analizată este **validă și corect definită** în Ordinul MFP nr. 1954/2005, cu o singură problemă critică identificată privind descrierea intervalului de subcapitole. Codurile **54.01.50** (buget de stat) și **54.02.50** (bugete locale) există și sunt denumite corect „Alte servicii publice generale", fiind categorie reziduală conformă cu standardele internaționale COFOG 01.6.
+
+---
+
+## 1. Rezumat general al verificării
+
+Verificarea documentației pentru platforma Transparenta.eu a confirmat că informațiile de bază privind clasificația funcțională 54.01.50/54.02.50 sunt **în general corecte**, cu un punct critic ce necesită corectare. Ordinul MFP nr. 1954/2005 este **în vigoare** din 1 ianuarie 2006, cu actualizări periodice prin comunicări ale Ministerului Finanțelor. Ambele legi de bază — Legea 500/2002 privind finanțele publice și Legea 273/2006 privind finanțele publice locale — sunt **în vigoare** și corect citate ca temei legal.
+
+Denumirea oficială „Alte servicii publice generale" corespunde exact cu textul din Anexa II a clasificației cheltuielilor, iar maparea COFOG către codul **01.6 - General public services n.e.c.** (servicii publice generale neclasificate în altă parte) este corectă și conformă cu standardele Eurostat.
+
+---
+
+## 2. Probleme critice găsite
+
+### Eroare în descrierea intervalului de subcapitole
+
+Documentul verificat menționează că 54.01.50/54.02.50 este „o categorie reziduală pentru cheltuieli servicii publice generale care nu se încadrează în **subcategoriile 54.01/02.01 până la 54.01/02.40**". Această formulare este **incorectă**.
+
+**Situația reală conform Ordinului MFP 1954/2005:**
+
+| Cod (Buget Stat) | Cod (Bugete Locale) | Denumire oficială |
+|------------------|---------------------|-------------------|
+| 54.01.01 | — | Programe de informare și prezentare a imaginii României |
+| 54.01.02 | — | Fond de rezervă bugetară la dispoziția Guvernului |
+| 54.01.03 | — | Fond de intervenție la dispoziția Guvernului |
+| 54.01.04 | — | Fondul Național de Preaderare |
+| — | 54.02.05 | Fond de rezervă bugetară la dispoziția autorităților locale |
+| 54.01.06 | 54.02.06 | Fond pentru garantarea împrumuturilor externe, contractate/garantate de stat |
+| — | 54.02.07 | Fond pentru garantarea împrumuturilor externe, contractate/garantate de administrațiile publice locale |
+| — | 54.02.08 | Fond de rulment |
+| 54.01.09 | — | Târguri, saloane și expoziții de carte și de publicații culturale |
+| — | 54.02.10 | Servicii publice comunitare de evidență a persoanelor |
+| 54.01.12 | — | Fondul Național de Dezvoltare |
+| **54.01.50** | **54.02.50** | **Alte servicii publice generale** |
+
+**Corectarea necesară:** Subcapitolele **nu ajung până la .40**, ci includ doar coduri specifice (01-12 și 50), diferențiate între bugetul de stat și bugetele locale. Formularea corectă ar trebui să fie: *„subcategoriile specifice ale capitolului 54 (coduri .01-.12, unde aplicabile)"*.
+
+---
+
+## 3. Probleme minore și sugestii de îmbunătățire
+
+### Link-uri cu acces restricționat
+
+Fișierele Excel oficiale din link-urile furnizate au restricții de acces automat (robots.txt):
+- **Anexa II** (AnexanrII_29012025.xls) — nu poate fi accesat programatic
+- **Anexa 7** (Anexanr7_13052025.xls) — nu poate fi accesat programatic
+
+**Recomandare:** Pentru utilizatorii Transparenta.eu, adăugați o notă că descărcarea fișierelor necesită acces manual la pagina MFP: `https://mfinante.gov.ro/domenii/bugetul-de-stat/clasificatii`
+
+### Clarificare privind semnul matematic (+)
+
+Documentul menționează verificarea semnului matematic (+) pentru cheltuieli efective. În Ordinul MFP 1954/2005, semnul **„+"** este utilizat pentru a indica **adăugiri la poziții existente** (de exemplu, restanțe din anii anteriori), **nu** pentru a marca cheltuieli efective.
+
+**Exemplu din ordin:** *„20.01.50 Alte contribuții pentru asigurări sociale datorate de angajatori (+restante anii anteriori din contribuția agenților economici pentru persoane cu handicap)"*
+
+### Structura diferențiată 54.01 vs 54.02
+
+Este important de clarificat pentru utilizatori că:
+- **54.01** conține subcapitole specifice bugetului de stat central (fonduri guvernamentale)
+- **54.02** conține subcapitole specifice bugetelor locale (fonduri la dispoziția autorităților locale)
+- Nu există o corespondență unu-la-unu între toate subcapitolele celor două clasificări
+
+---
+
+## 4. Confirmări ale informațiilor corecte
+
+### Coduri bugetare — CONFIRMATE ✓
+
+| Element | Status | Detalii |
+|---------|--------|---------|
+| Cod 54.01.50 | ✅ Valid | Clasificația funcțională buget de stat |
+| Cod 54.02.50 | ✅ Valid | Clasificația funcțională bugete locale |
+| Denumire oficială | ✅ Corectă | „Alte servicii publice generale" |
+| Capitol 54 | ✅ Corect | Parte din „Servicii publice generale" (Partea I, cod 50) |
+
+### Referințe legislative — CONFIRMATE ✓
+
+**Legea nr. 500/2002** privind finanțele publice:
+- **Art. 2 pct. 11** definește clasificația funcțională: *„gruparea cheltuielilor după destinația lor pentru a evalua alocarea fondurilor publice unor activități sau obiective care definesc necesitățile publice"*
+- **Art. 19 lit. f)** conferă MFP atribuția de a aproba clasificațiile bugetare — temei legal pentru Ordinul 1954/2005
+- **Art. 29** stabilește structura bugetelor: părți, capitole, subcapitole, titluri, articole, alineate
+
+**Legea nr. 273/2006** privind finanțele publice locale:
+- **Art. 26 alin. (1)** confirmă că clasificația bugetară este aprobată de Ministerul Finanțelor
+- **Art. 2 pct. 12** definește clasificația funcțională în mod identic cu Legea 500/2002
+- Include diferențierea între tipurile de bugete locale
+
+**Ordinul MFP nr. 1954/2005:**
+- Publicat în Monitorul Oficial nr. 1.176 din 27 decembrie 2005
+- În vigoare de la **1 ianuarie 2006**
+- A înlocuit Ordinul MF nr. 1.394/1995 și Ordinul MFP nr. 1.025/2005
+- Se actualizează periodic prin comunicări MFP
+
+### Mapare COFOG — CONFIRMATĂ ✓
+
+Codul **54.50** corespunde clasificării internaționale **COFOG 01.6** — „General public services not elsewhere classified" (Servicii publice generale neclasificate în altă parte). Această corespondență este conformă cu:
+- Manualul de statistică a finanțelor publice al FMI (ediția 2001/GFS Manual)
+- Sistemul conturilor naționale (SCN)
+- Regulamentele Eurostat privind transmiterea datelor statistice
+
+### Structura clasificației funcționale — CONFIRMATĂ ✓
+
+**Partea I-a „Servicii publice generale" (cod 50)** include următoarele capitole:
+
+- **51** — Autorități publice și acțiuni externe
+- **53** — Cercetare fundamentală și cercetare-dezvoltare
+- **54** — Alte servicii publice generale
+- **55** — Tranzacții privind datoria publică și împrumuturi
+- **56** — Transferuri cu caracter general între diferite nivele ale administrației
+
+### Nota privind statutul juridic al clasificației — CONFIRMATĂ ✓
+
+Conform textului original al ordinului: *„Prezenta clasificație nu reprezintă temei legal pentru încasarea de venituri și efectuarea de cheltuieli; se adaptează și completează de Ministerul Finanțelor Publice în funcție de apariția și modificarea legislației."*
+
+---
+
+## 5. Surse oficiale consultate
+
+### Documente legislative verificate:
+
+1. **Ordinul MFP nr. 1954/2005** pentru aprobarea Clasificației indicatorilor privind finanțele publice
+   - Portal Legislativ: `legislatie.just.ro/Public/DetaliiDocument/67596`
+   - Monitorul Oficial nr. 1.176 din 27.12.2005
+
+2. **Legea nr. 500/2002** privind finanțele publice
+   - Portal Legislativ: `legislatie.just.ro/Public/DetaliiDocumentAfis/37954`
+   - Actualizată cu modificările până în 2025
+
+3. **Legea nr. 273/2006** privind finanțele publice locale
+   - Portal Legislativ: `legislatie.just.ro/Public/DetaliiDocument/73527`
+   - Actualizată cu modificările până în 2025
+
+### Documente MFP consultate:
+
+4. **Anexa 1** — Clasificația funcțională buget de stat
+   - `mfinante.gov.ro/static/10/Mfp/legislatie/clasificatie_economica/pdf/TranspFunc_anexa1.pdf`
+
+5. **Anexa 2** — Clasificația indicatorilor privind bugetele locale
+   - `mfinante.gov.ro/static/10/Mfp/legislatie/clasificatie_economica/pdf/TranspFunc_anexa2.pdf`
+
+6. **Comunicări MFP** privind modificări ale clasificației
+   - `mfinante.gov.ro/static/10/Mfp/legislatie/clasificatie_economica/`
+
+7. **Pagina clasificații bugetare MFP**
+   - `mfinante.gov.ro/domenii/bugetul-de-stat/clasificatii`
+
+---
+
+## Concluzie
+
+Documentația pentru clasificația 54.01.50/54.02.50 pe platforma Transparenta.eu este **în mare parte corectă și conformă** cu legislația în vigoare. Singura problemă critică identificată este formularea eronată privind intervalul de subcapitole (.01-.40 în loc de subcapitolele specifice .01-.12 și .50). Această corectare este esențială pentru acuratețea informațiilor oferite utilizatorilor care procesează cele peste **80 de milioane de înregistrări bugetare**.
+
+Toate referințele legislative (Legea 500/2002, Legea 273/2006, Ordinul MFP 1954/2005) sunt corect citate și în vigoare. Maparea COFOG 01.6 este validă și conformă cu standardele internaționale, asigurând comparabilitatea datelor bugetare românești cu cele europene.
+
+## Processed
+
+- **Date**: 2026-01-02 14:53:52
+- **Source file**: ./public/assets/text/ro/functional/54.50.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-54.50-2026-01-02-143612.log

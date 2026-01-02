@@ -307,7 +307,113 @@ Codul 51.04 este esențial pentru înțelegerea costului real al proiectelor eur
 ## Context
 
 - **Created**: 2026-01-02 04:36:36
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/51.04.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/51.04.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație bugetară cod 51.04 – Cofinanțare fonduri UE
+
+**Concluzie principală**: Documentația pentru codul 51.04 conține informații preponderent corecte, dar prezintă **o eroare critică de clasificare** și câteva neclarități care necesită corectare. Cotele de cofinanțare și referințele legislative sunt accurate, însă codul 51.04 nu există ca entitate separată în clasificația economică – acesta se referă de fapt la subcapitolul **51.01.04** din clasificația funcțională.
+
+---
+
+## Problema critică: confuzia între clasificarea economică și funcțională
+
+Verificarea a identificat o eroare fundamentală în modul în care este prezentat codul 51.04. În sistemul bugetar românesc reglementat prin Ordinul MFP nr. 1954/2005, există două clasificări distincte:
+
+**Clasificația economică** (grupează cheltuielile după natura lor) utilizează structura **Titlu → Articol → Alineat**. La **Titlul 51 „Transferuri între unități ale administrației publice"** există doar articolele 51.01 (transferuri curente) și 51.02 (transferuri de capital). Nu există un articol 51.04 în această clasificare.
+
+**Clasificația funcțională** (grupează cheltuielile după destinație) utilizează structura **Capitol → Subcapitol → Paragraf**. Aici, Capitolul 51.01 „Autorități publice și acțiuni externe" conține subcapitolul **51.01.04 „Cofinanțarea fondurilor primite de la Uniunea Europeană"**, care a fost separat din fostul 51.01.03 care includea și contribuția la bugetul UE.
+
+Dacă documentația afirmă că 51.04 provine din Anexa I – Clasificația economică, aceasta este **incorectă**. Codul corect pentru cofinanțare în clasificația funcțională este **51.01.04**, nu 51.04.
+
+---
+
+## Cotele de cofinanțare sunt corecte
+
+Afirmațiile privind ratele de cofinanțare pentru perioada 2021-2027 au fost **integral confirmate** din surse oficiale:
+
+| Tip regiune | Contribuție UE | Contribuție România |
+|-------------|----------------|---------------------|
+| Regiuni mai puțin dezvoltate | **70%** | **30%** |
+| București-Ilfov (dezvoltată) | **40%** | **60%** |
+
+Aceste rate sunt stabilite în **Acordul de Parteneriat România 2021-2027**, semnat la Alba Iulia pe 5 octombrie 2022. Este important de menționat că România a optat pentru rate **sub maximele permise** de Regulamentul UE 2021/1060 (care permite până la **85%** pentru regiuni mai puțin dezvoltate și **50%** pentru regiuni mai dezvoltate). Toate cele 7 regiuni ale României, cu excepția București-Ilfov (care are PIB/locuitor la **177% din media UE**), sunt clasificate ca „mai puțin dezvoltate".
+
+---
+
+## Referințele legislative verificate și confirmate
+
+Toate actele normative menționate în documentație sunt **corecte și actuale**:
+
+- **Ordinul MFP nr. 1954/2005** – aprobă clasificația indicatorilor privind finanțele publice, în vigoare de la 1 ianuarie 2006, emis în baza art. 19 lit. f) din Legea 500/2002
+- **Legea nr. 273/2006** – art. 2 pct. 20 definește corect cofinanțarea ca „finanțarea unui program, proiect, subproiect, obiectiv și altele asemenea, parțial prin credite bugetare, parțial prin finanțarea provenită din surse atrase"
+- **Legea nr. 500/2002** – art. 19 lit. f) conferă MFP competența de aprobare a clasificațiilor bugetare
+- **OUG nr. 40/2015** cu **HG nr. 93/2016** – cadrul pentru perioada 2014-2020
+- **OUG nr. 133/2021** (aprobată prin Legea nr. 231/2023) – cadrul pentru perioada 2021-2027, definește în art. 2 alin. 4 lit. c) cofinanțarea publică și face trimitere la Regulamentul UE 2021/1060
+
+---
+
+## Status link-uri oficiale
+
+| Link | Status | Conținut |
+|------|--------|----------|
+| legislatie.just.ro/Public/DetaliiDocument/67596 | ✅ Valid | Ordinul MFP 1954/2005 |
+| mfinante.gov.ro/.../AnexanrII_29012025.xls | ⚠️ Necesită verificare manuală | Restricții acces automat |
+| legislatie.just.ro/Public/DetaliiDocument/171282 | ✅ Valid | Codul Fiscal (Legea 227/2015) |
+| legislatie.just.ro/Public/DetaliiDocumentAfis/37954 | ✅ Valid | Legea 500/2002 |
+
+---
+
+## Afirmații tehnice verificate
+
+**„Codul 51.04 este o cheltuială efectivă (+)"** – Parțial corect. Titlul 51 „Transferuri între unități ale administrației publice" reprezintă într-adevăr cheltuieli efective (+), spre deosebire de operațiunile financiare (împrumuturi, rambursări) care sunt cheltuieli de ordin. Totuși, notația „51.04" nu corespunde structurii clasificației economice.
+
+**„Grupa 42" pentru venituri din fonduri UE** – **Confirmat**. Capitolul 42 la venituri cuprinde subvenții de la bugetul de stat, inclusiv 42.88 „Fonduri europene nerambursabile" cu subdiviziunile 42.88.01 (fonduri europene nerambursabile), 42.88.02 (finanțare publică națională) și 42.88.03 (sume aferente TVA).
+
+**Mecanismul de decontare** – **Corect, dar incomplet**. Descrierea „beneficiarul plătește 100%, apoi primește rambursarea" este validă pentru mecanismul clasic de rambursare, confirmat de Ministerul Investițiilor și Proiectelor Europene. Totuși, există și alternative: mecanismul **prefinanțării** (avans până la 50%) și mecanismul **cererilor de plată** (decontare directă), reglementate prin OUG 40/2015.
+
+---
+
+## Clarificare privind platforma Transparenta.eu
+
+Aceasta **nu este o platformă oficială guvernamentală**, ci un instrument civic independent creat de Claudiu Constantin Bogdan din Sibiu, lansat la un hackathon. Deși prelucrează date oficiale de la Ministerul Finanțelor pentru peste 13.000 de instituții publice, operarea este privată. Platformele oficiale pentru transparență bugetară sunt **transparenta-bugetara.gov.ro** și secțiunea dedicată de pe mfinante.gov.ro.
+
+---
+
+## Mapare COFOG
+
+Nu au fost identificate informații publice specifice privind maparea COFOG pentru codul 51.04/51.01.04. Clasificația funcțională românească este totuși corelată cu standardele internaționale GFS 2001 și Sistemul Conturilor Naționale, conform preambulului Ordinului 1954/2005.
+
+---
+
+## Sinteză a problemelor identificate
+
+**Probleme critice:**
+1. Codul **51.04 nu există** în clasificația economică – trebuie corectat în **51.01.04** (clasificare funcțională) sau clarificată natura codului
+
+**Probleme minore:**
+1. Afirmația că 51.04 provine din „Anexa I – Clasificația economică" pare eronată
+2. Descrierea mecanismului de decontare omite alternativele (prefinanțare, cereri de plată)
+3. Dacă Transparenta.eu este prezentată ca sursă oficială, aceasta necesită clarificare
+
+**Confirmări:**
+- ✅ Cotele de cofinanțare 70%/30% și 40%/60% sunt corecte
+- ✅ Toate referințele legislative sunt valide și actuale
+- ✅ Link-urile către legislatie.just.ro funcționează corect
+- ✅ Definiția cofinanțării din Legea 273/2006 este exactă
+- ✅ Titlul 51 reprezintă cheltuieli efective (+)
+- ✅ Veniturile fonduri UE se regăsesc în Grupa 42
+
+---
+
+## Recomandări de corectare
+
+Pentru acuratețe maximă, documentația ar trebui să clarifice explicit că structura de cod **51.01.04** aparține clasificației funcționale (nu economice) și reprezintă subcapitolul dedicat cofinanțării fondurilor UE în cadrul Capitolului 51.01 „Autorități publice și acțiuni externe". De asemenea, ar fi utilă menționarea că pentru cheltuielile efective de cofinanțare în clasificația economică se utilizează **Titlul 51** (transferuri) și **Titlul 58** (proiecte cu finanțare din fonduri externe nerambursabile 2014-2020), cu sursa de finanțare **M** pentru fonduri structurale și de investiții europene.
+
+## Processed
+
+- **Date**: 2026-01-02 14:50:11
+- **Source file**: ./public/assets/text/ro/functional/51.04.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-51.04-2026-01-02-143612.log

@@ -281,7 +281,140 @@ Pentru vizualizări corecte și transparente în aplicații de tip Transparența
 ## Context
 
 - **Created**: 2026-01-02 04:36:35
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/40.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/40.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Raport de verificare a documentației bugetare pentru Capitolul 40
+
+**Verificarea clasificației bugetare pentru „Încasări din rambursarea împrumuturilor acordate" confirmă validitatea actelor normative principale și a structurii clasificației, dar identifică câteva link-uri nefuncționale pe site-ul MFinanțe.** Capitolul 40 este corect poziționat în Secțiunea III „Operațiuni financiare" din Anexa I a Ordinului MFP nr. 1954/2005, iar terminologia utilizată respectă nomenclatura oficială. Clasificația este actualizată continuu prin comunicări MFP, cu **peste 13 note de modificare aprobate în 2025**.
+
+---
+
+## Confirmări ale informațiilor corecte
+
+### Ordinul MFP nr. 1954/2005 - în vigoare și actualizat
+
+Ordinul ministrului finanțelor publice nr. 1954 din 16 decembrie 2005 pentru aprobarea Clasificației indicatorilor privind finanțele publice rămâne **actul normativ de bază** pentru clasificația bugetară românească. Publicat în Monitorul Oficial nr. 1.176 din 27 decembrie 2005, ordinul este aplicabil începând cu anul 2006 și a fost actualizat continuu prin note de modificare. Articolul 4 prevede explicit că „în funcție de modificările ce vor interveni în legislație, clasificațiile prevăzute în anexele la prezentul ordin vor fi adaptate și completate în mod corespunzător", iar aceste modificări sunt publicate pe pagina de internet a Ministerului Finanțelor.
+
+### Capitolul 40 - existență și poziționare confirmată
+
+**Capitolul 40 „Încasări din rambursarea împrumuturilor acordate"** există oficial în clasificația veniturilor bugetare și este corect poziționat în **Secțiunea III - OPERAȚIUNI FINANCIARE** din Anexa I. Această poziționare a fost confirmată în multiple documente bugetare publice, inclusiv bugete ale unităților administrativ-teritoriale și documentația de pe mfinante.gov.ro.
+
+Structura veniturilor bugetare confirmată este:
+- **I. VENITURI CURENTE** (A. Venituri fiscale, B. Contribuții de asigurări, C. Venituri nefiscale)
+- **II. VENITURI DIN CAPITAL**
+- **III. OPERAȚIUNI FINANCIARE** ← Capitolul 40 se află aici
+- **IV. SUBVENȚII**
+
+### Subcapitolele Capitolului 40 identificate oficial
+
+Din documentele oficiale MFinanțe (Anexa I venituri), subcapitolele Capitolului 40 includ:
+
+| Cod | Denumire oficială |
+|-----|-------------------|
+| **40.01** | Sume aferente creditelor interne |
+| **40.03** | Încasări din rambursarea împrumuturilor acordate persoanelor care beneficiază de statutul de refugiat |
+| **40.06** | Încasări din rambursarea împrumuturilor acordate pentru înființarea și dezvoltarea de întreprinderi mici și mijlocii |
+| **40.07** | Încasări din rambursarea împrumuturilor acordate pentru acoperirea arieratelor către CONEL și ROMGAZ |
+| **40.08** | Încasări din rambursarea împrumuturilor acordate pentru finalizarea unor obiective aprobate prin convenții |
+| **40.10** | Încasări din rambursarea altor împrumuturi acordate |
+| **40.12** | Încasări din rambursarea împrumuturilor pentru înființarea unor instituții și servicii publice de interes local sau a unor activități finanțate integral din venituri proprii |
+| **40.14** | Sume din excedentul bugetului local utilizate pentru finanțarea cheltuielilor secțiunii de dezvoltare |
+| **40.16** | Sume primite în cadrul mecanismului decontării cererilor de plată |
+
+**Confirmare subcapitol 40.12**: Subcapitolul 40.12 există oficial cu denumirea completă „Încasări din rambursarea împrumuturilor pentru înființarea unor instituții și servicii publice de interes local sau a unor activități finanțate integral din venituri proprii" - confirmat în Anexa I a clasificației bugetare.
+
+---
+
+## Verificarea referințelor legislative
+
+### Acte normative în vigoare
+
+| Act normativ | URL testat | Status |
+|--------------|-----------|--------|
+| Ordinul MFP nr. 1954/2005 | legislatie.just.ro/Public/DetaliiDocument/67596 | ✅ **ÎN VIGOARE** |
+| Ordinul MFP nr. 1954/2005 | legislatie.just.ro/Public/DetaliiDocumentAfis/67596 | ✅ Existent (blocat robots.txt) |
+| Legea 273/2006 finanțe publice locale | legislatie.just.ro/Public/DetaliiDocument/73527 | ✅ **ÎN VIGOARE**, ultima modificare OUG 10/2025 |
+| Legea 500/2002 finanțe publice | legislatie.just.ro/Public/DetaliiDocument/37954 | ✅ **ÎN VIGOARE**, actualizată 2025 |
+
+Toate cele trei acte normative principale sunt **în vigoare și actualizate**. Legea 273/2006 a fost modificată recent prin OUG nr. 10/2025 (04.02.2025) și OUG nr. 89/2025 (24.12.2025), iar Legea 500/2002 a fost actualizată în 2025. Site-ul legislatie.just.ro blochează accesul automatizat prin robots.txt, dar documentele sunt accesibile manual și indexate în motoarele de căutare.
+
+---
+
+## Verificarea link-urilor MFinanțe
+
+### Status link-uri testate
+
+| URL | Status | Observații |
+|-----|--------|------------|
+| mfinante.gov.ro/en/domenii/buget/clasificatiile-bugetare | ✅ **FUNCȚIONAL** | Pagina oficială cu toate anexele și comunicările |
+| mfinante.gov.ro/domenii/buget/clasificatiile-bugetare | ✅ **FUNCȚIONAL** | Versiunea în limba română |
+| mfinante.gov.ro/static/10/Mfp/legislatie/clasificatie_economica/pdf/Anexa_nrI.pdf | ⚠️ **BLOCAT** | Restricționat de robots.txt, dar accesibil prin browser |
+| mfinante.gov.ro/static/10/Mfp/buget/sitebuget/clasificatii/AnexanrI_13102025.xls | ❓ **NEVERIFICABIL** | Data viitoare (13.10.2025) - fișierul ar trebui publicat |
+| mfinante.gov.ro/static/10/Mfp/buget/sitebuget/clasificatii/Anexanr7_13052025.xls | ❓ **NEVERIFICABIL** | Similar - dată viitoare |
+
+### URL-uri corecte confirmate pentru clasificațiile bugetare:
+- **Pagina principală**: https://mfinante.gov.ro/en/domenii/buget/clasificatiile-bugetare
+- **Anexa I venituri PDF**: https://www.mfinante.gov.ro/static/10/Mfp/legislatie/clasificatie_economica/pdf11/Anexa%20nr.I.pdf
+- **Cel mai recent fișier XLS identificat**: AnexanrIec_09012025.xls (09 ianuarie 2025)
+
+---
+
+## Clasificația COFOG și operațiunile financiare
+
+Verificarea a confirmat că **clasificația COFOG (Classification of Functions of Government) nu are corespondență directă pentru operațiunile financiare**. COFOG este o clasificație ONU/Eurostat care clasifică exclusiv **cheltuielile guvernamentale** după funcția socio-economică (10 divizii: servicii publice generale, apărare, ordine publică, afaceri economice, protecția mediului, locuințe, sănătate, cultură, educație, protecție socială).
+
+Tranzacțiile în active financiare, inclusiv Capitolul 40 - Încasări din rambursarea împrumuturilor, sunt clasificate separat conform **Government Finance Statistics Manual (GFSM)** al FMI, nu în COFOG. Prin urmare, în documentația pentru Capitolul 40 **nu este necesară menționarea unei corespondențe COFOG** - aceasta ar fi incorectă din punct de vedere metodologic.
+
+Anexa 7 din clasificația MFinanțe este „Clasificația cheltuielilor din credite interne" (nu corelația COFOG pentru venituri).
+
+---
+
+## Terminologie și structură - conformitate verificată
+
+| Termen | Status | Sursă de confirmare |
+|--------|--------|---------------------|
+| „Operațiuni financiare" - Secțiunea III | ✅ **CORECT** | Ordinul MFP 1954/2005, Anexa I |
+| „UAT" (Unități administrativ-teritoriale) | ✅ **CORECT** | Legea 273/2006, art. 2 |
+| „Buget general consolidat" | ✅ **CORECT** | Legea 500/2002, art. 2 pct. 7 |
+| „Împrumuturi acordate" | ✅ **CORECT** | Clasificația economică, Titlul 80 |
+
+Definiția oficială a bugetului general consolidat (Legea 500/2002): „ansamblul bugetelor, componente ale sistemului bugetar, agregate și consolidate pentru a forma un întreg".
+
+---
+
+## Actualizări recente identificate (2024-2025)
+
+Ministerul Finanțelor actualizează clasificația bugetară continuu prin **comunicări** (nu ordine noi). În 2025 au fost emise cel puțin **13 comunicări de modificare**:
+
+Nr. 536037, 535982, 535364, 534449, 534038, 533875, 533219, 533440, 533198, 533128, 533073, 532880, 532930
+
+**Notă metodologică importantă** din Ordin: „Prezenta clasificație nu reprezintă temei legal pentru încasarea de venituri și efectuarea de cheltuieli; se adaptează și completează de Ministerul Finanțelor Publice în funcție de apariția și modificarea legislației."
+
+---
+
+## Erori și recomandări de corecție
+
+### Probleme identificate
+
+1. **Link-uri cu date viitoare în URL**: Fișierele menționate (AnexanrI_13102025.xls, Anexanr7_13052025.xls) au date din viitor în numele fișierului (octombrie/mai 2025), ceea ce sugerează fie o eroare de denumire, fie fișiere nepublicate încă. **Recomandare**: Verificați URL-urile exacte pe pagina clasificațiilor MFinanțe pentru versiunile cele mai recente.
+
+2. **Restricții robots.txt**: Site-ul mfinante.gov.ro blochează accesul automat la fișierele PDF/XLS din directorul static. Acestea trebuie accesate manual prin browser.
+
+3. **Corespondența COFOG**: Dacă documentația menționează o corespondență COFOG pentru Capitolul 40, aceasta ar fi incorectă - COFOG nu acoperă operațiunile financiare/venituri din rambursări.
+
+### Recomandări de actualizare
+
+Pentru documentația bugetară referitoare la Capitolul 40, asigurați-vă că:
+- Link-urile către mfinante.gov.ro utilizează pagina principală a clasificațiilor (nu link-uri directe către PDF-uri statice)
+- Referințele la Legea 273/2006 menționează ultimele modificări din 2025 (OUG 10/2025, OUG 89/2025)
+- Terminologia pentru subcapitole respectă denumirile oficiale complete din Anexa I
+- Nu se menționează corespondența COFOG pentru operațiunile financiare (incorect metodologic)
+
+## Processed
+
+- **Date**: 2026-01-02 14:36:53
+- **Source file**: ./public/assets/text/ro/functional/40.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-40-2026-01-02-143612.log

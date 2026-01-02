@@ -314,7 +314,152 @@ Capitolul 14 - Accize reprezintă un indicator esențial pentru analiza fiscalit
 ## Context
 
 - **Created**: 2026-01-02 04:36:34
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/14.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/14.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificarea documentației pentru Capitolul 14 - Accize: constatări mixte
+
+**Documentația pentru Capitolul 14 - Accize prezintă acuratețe ridicată în datele bugetare și referințele legislative majore, dar conține o eroare critică privind structura subcapitolelor care nu corespunde clasificației oficiale MFP.** Cifrele execuției bugetare 2024 (46,33 mld lei, +24,3%) sunt confirmate de rapoartele oficiale, iar cadrul legislativ european și românesc este corect identificat. Totuși, organizarea subcapitolelor descrisă în document diferă fundamental de structura oficială din Ordinul MFP 1954/2005.
+
+---
+
+## Probleme critice găsite
+
+### Structura subcapitolelor este incorectă
+
+Documentația afirmă că subcapitolele sunt organizate astfel: **14.01.01-09** pentru produse energetice, **14.01.10-14** pentru alcool, **14.01.15-19** pentru tutun, **14.01.20+** pentru accize nearmonizate. Această structură **NU corespunde** clasificației oficiale MFP.
+
+Structura reală din Ordinul MFP 1954/2005 organizează subcapitolele **pe tipul tranzacției**, nu pe categorii de produse în intervale consecutive:
+
+| Interval real | Conținut oficial MFP |
+|--------------|----------------------|
+| 14.01.01-14.01.08 | Vânzări interne (uleiuri minerale, alcool, tutun, cafea, alte produse, energie electrică, autoturisme, aer condiționat) |
+| 14.01.11-14.01.18 | Import/vamă (aceleași categorii din import) |
+| 14.01.30 | Banderole fiscale pentru băuturi alcoolice |
+| 14.01.50 | Restituiri/compensări accize |
+
+De exemplu, accizele din alcool se regăsesc la **14.01.02** (vânzări interne) și **14.01.12** (import), nu în intervalul 14.01.10-14 cum afirmă documentația.
+
+### Confuzie între Formularul 120 și termenul de plată
+
+Documentația asociază Formularul 120 cu termenul de plată de 25 a lunii următoare. Aceasta este o **confuzie parțială**:
+
+- **Formularul 120** ("Decont privind accizele") este declarația **ANUALĂ**, cu termen de depunere **30 aprilie** a anului următor
+- **Termenul de 25 a lunii următoare** se aplică **plății accizelor** și declarației lunare (**Formularul 100**)
+
+Informația despre termenul de 25 este corectă pentru plata accizelor (art. 345 Cod Fiscal), dar asocierea cu Formularul 120 este eronată.
+
+---
+
+## Probleme minore și sugestii de îmbunătățire
+
+### Link-uri care necesită actualizare
+
+Două URL-uri din documentație folosesc formatul vechi al Portalului Legislativ:
+
+| Link din documentație | Link corect recomandat |
+|----------------------|------------------------|
+| legislatie.just.ro/Public/**DetaliiDocument**/67596 | legislatie.just.ro/Public/**DetaliiDocumentAfis**/67596 |
+| legislatie.just.ro/Public/**DetaliiDocument**/171282 | legislatie.just.ro/Public/**DetaliiDocumentAfis**/171282 |
+
+Conținutul documentelor este corect (Ordinul MFP 1954/2005 și Codul Fiscal), dar path-ul URL trebuie actualizat de la `DetaliiDocument` la `DetaliiDocumentAfis`.
+
+### Distribuția pe componente - neverificabilă oficial
+
+Afirmația că distribuția accizelor este **55-60% produse energetice, 35-40% tutun, 5% alcool** este plauzibilă dar **nu poate fi confirmată** din surse oficiale publice. Rapoartele MFP prezintă doar dinamici de creștere pe componente (+27% produse energetice, +19,2% tutun în 2024), nu ponderi procentuale. Se recomandă fie eliminarea acestei afirmații, fie notarea că reprezintă o estimare.
+
+### Clarificări recomandate pentru clasificația dinamică
+
+Ordinul MFP 1954/2005 specifică explicit (Art. 5): *"În funcție de modificările ce vor interveni în legislație, clasificațiile prevăzute în anexele la prezentul ordin vor fi adaptate și completate în mod corespunzător."* Documentația ar trebui să menționeze că structura subcapitolelor poate diferi de versiunea originală din 2005 și să facă referire la Anexa I actualizată.
+
+---
+
+## Confirmări ale informațiilor corecte
+
+### Date bugetare 2024 - confirmate integral
+
+| Afirmație din documentație | Valoare oficială MFP | Status |
+|---------------------------|---------------------|--------|
+| Accize totale 2024: ~46,33 mld lei | 46,33 mld lei | ✓ Confirmat |
+| Creștere față de 2023: 24,3% | 24,3% (calculat: 24,33%) | ✓ Confirmat |
+| Pondere din venituri: 7-8% | 8,06% în 2024, 7,14% în 2023 | ✓ Confirmat |
+
+Sursa oficială citează textual: *"Veniturile din accize au însumat 46,33 mld lei, înregistrând o creștere de 24,3%, susținută de sporul încasărilor din accizele pentru produsele energetice (+27%)."*
+
+### Cadrul legislativ de bază - confirmat
+
+| Element | Verificare |
+|---------|------------|
+| Capitolul 14 = "Accize" | ✓ Denumire oficială corectă |
+| Legea 227/2015 Codul Fiscal, Titlul VIII | ✓ Art. 335-452 reglementează accizele |
+| Legea 500/2002 privind finanțele publice | ✓ În vigoare, actualizată prin Legea 262/2023 |
+| HG 1/2016 Norme metodologice | ✓ În vigoare, actualizată prin HG 1393/2024 |
+| Subcapitolul 14.01.30 pentru banderole | ✓ Confirmat prin nota MFP nr. 120264 |
+
+### Directiva UE 2020/262 - confirmat integral
+
+- **Înlocuiește Directiva 2008/118/CE** - confirmat
+- **Data de aplicare: 13 februarie 2023** - confirmat pe EUR-Lex
+- Regulamentele de punere în aplicare (2022/1636, 2022/1637) au aceeași dată
+
+### Derogări și modificări recente - confirmate
+
+| Act normativ | Conținut verificat | Status |
+|--------------|-------------------|--------|
+| **Legea 296/2023** | Introduce accize nearmonizate pentru băuturi cu zahăr adăugat de la 1 ianuarie 2024 | ✓ Confirmat |
+| **OUG 115/2023** | Derogări privind nivelurile accizelor, transpunere Directivă UE | ✓ Confirmat |
+| **OUG 123/2024** | Calendar creștere accize bere 2025-2026; obligația de plată anticipată 36 luni pentru antrepozitari noi | ✓ Confirmat |
+
+### Detalii legislative confirmate
+
+- **Băuturi cu zahăr adăugat** - introduse prin Legea 296/2023, art. 439 alin. (2) lit. d) și e), în vigoare de la **1 ianuarie 2024** ✓
+- **Plata anticipată 36 luni** pentru antrepozitari autorizați începând cu 2024 - confirmat prin OUG 123/2024 ✓
+- **Calendar bere 2025-2026**: 4,82 lei/hl/1 grad Plato (2025), 5,06 lei/hl/1 grad Plato (2026) ✓
+
+### Link-uri funcționale
+
+Cinci din cele șapte link-uri verificate funcționează complet:
+
+| URL | Conținut | Status |
+|-----|----------|--------|
+| legislatie.just.ro/Public/DetaliiDocumentAfis/37954 | Legea 500/2002 | ✓ Funcțional |
+| mfinante.gov.ro/domenii/fiscalitate/impozite-si-taxe/regim-accize | Regim accize MFP | ✓ Funcțional |
+| mfinante.gov.ro/domenii/buget/clasificatiile-bugetare | Clasificațiile bugetare | ✓ Funcțional |
+| mfinante.gov.ro/domenii/bugetul-de-stat/informatii-executie-bugetara | Execuție bugetară | ✓ Funcțional |
+| eur-lex.europa.eu/legal-content/RO/TXT/?uri=CELEX:32020L0262 | Directiva UE 2020/262 | ✓ Funcțional |
+
+---
+
+## Surse consultate
+
+### Surse oficiale românești
+- **Ordinul MFP nr. 1954/2005** - text integral via Portal Legislativ și snppc.ro
+- **Ministerul Finanțelor** - Nota privind execuția bugetului general consolidat la 31 decembrie 2024
+- **Ministerul Finanțelor** - Clasificațiile bugetare (mfinante.gov.ro/domenii/buget/clasificatiile-bugetare)
+- **Nota MFP nr. 120264** - confirmarea subcapitolului 14.01.30
+- **ANAF** - Cod fiscal și norme 2023 (static.anaf.ro)
+- **Portal Legislativ** - legislatie.just.ro (Legea 227/2015, Legea 500/2002, OUG 115/2023, OUG 123/2024)
+- **Senatul României** - Raport buget 2023
+
+### Surse oficiale europene
+- **EUR-Lex** - Directiva (UE) 2020/262 și regulamentele de punere în aplicare (2022/1636, 2022/1637)
+
+### Surse secundare de verificare
+- PwC România - Alerte fiscale privind Legea 296/2023 și OUG 115/2023
+- CECCAR Business Magazine - Analize privind accizele
+- Juridice.ro, Lege5.ro - Comentarii legislative OUG 123/2024
+- AGERPRES, Economedia, News.ro - Raportări execuție bugetară 2024
+
+---
+
+## Concluzie
+
+Documentația pentru Capitolul 14 - Accize demonstrează **acuratețe ridicată** în ceea ce privește datele bugetare factuale și cadrul legislativ general, cu toate cifrele cheie confirmate de sursele oficiale MFP. **Problema critică** identificată este structura eronată a subcapitolelor, care descrie o organizare pe categorii de produse (energetice, alcool, tutun) în intervale consecutive, când de fapt clasificația oficială MFP organizează subcapitolele pe tipul tranzacției (vânzări interne vs. import). Această eroare necesită corectare urgentă pentru a asigura conformitatea cu Ordinul MFP 1954/2005. Celelalte probleme identificate (confuzia Formular 120 / termen de plată, URL-uri depășite, distribuția neverificabilă) sunt minore și se pot remedia ușor.
+
+## Processed
+
+- **Date**: 2026-01-02 14:05:34
+- **Source file**: ./public/assets/text/ro/functional/14.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-14-2026-01-02-140450.log

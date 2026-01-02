@@ -329,7 +329,130 @@ Pentru o analiză completă a intervenției statului în economie, acest capitol
 ## Context
 
 - **Created**: 2026-01-02 04:36:39
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/80.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/80.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație bugetară: Capitolul 80 confirmat cu precizări structurale
+
+Documentația pentru Capitolul 80 "Acțiuni generale economice, comerciale și de muncă" este **substanțial corectă**, cu o excepție importantă: sistemul de numerotare a subcapitolelor (80.01 vs 80.02) se referă la tipul de buget, nu la subcategorii tematice. Toate actele normative citate sunt în vigoare, instituțiile au denumirile corecte, iar corespondența COFOG 04.1 este validă.
+
+---
+
+## Confirmări pentru coduri și denumiri oficiale
+
+**Capitolul 80 "Acțiuni generale economice, comerciale și de muncă"** există în Ordinul MFP nr. 1954/2005 și face parte din **Partea a V-a - ACȚIUNI ECONOMICE** (cod 79). Ordinul rămâne în vigoare cu modificări succesive până în 2025, fiind documentul de bază pentru clasificația funcțională a cheltuielilor bugetare din România.
+
+Structura subcapitolelor confirmată oficial cuprinde:
+- **80.XX.01** - Acțiuni generale economice și comerciale
+- **80.XX.02** - Acțiuni generale de muncă
+
+⚠️ **Clarificare critică privind codificarea:** Prefixul numeric ("XX") variază în funcție de tipul de buget utilizat. Codul **80.01** reprezintă capitolul pentru bugetul de stat, **80.02** reprezintă capitolul pentru bugetele locale, iar **80.10** este pentru instituții publice cu venituri proprii. Astfel, afirmația că "80.01" și "80.02" sunt subcapitole distincte reprezintă o **inexactitate** - acestea sunt de fapt coduri pentru același capitol în bugete diferite.
+
+Paragrafele confirmate pentru subcapitolul "Acțiuni generale economice și comerciale" includ: administrație centrală, servicii publice descentralizate, **meteorologie (80.01.01.03)**, educația și protecția consumatorului, sistemul național antigrindină, prevenire inundații, stimularea exportului, cooperare economică internațională, stimulare IMM-uri, programe de dezvoltare regională, **rezerve de stat și de mobilizare (80.01.01.11)**, **ajutoare de stat (80.01.01.12)** și alte cheltuieli.
+
+---
+
+## Legislația citată este validă și actualizată
+
+Toate cele cinci acte normative verificate sunt **în vigoare** la data de 2 ianuarie 2026:
+
+| Act normativ | Status | Ultima modificare cunoscută |
+|--------------|--------|----------------------------|
+| Ordinul MFP nr. 1954/2005 | ✅ În vigoare | Note modificare 2024-2025 |
+| Legea nr. 500/2002 privind finanțele publice | ✅ În vigoare | Legea 262/2023 |
+| Legea nr. 273/2006 privind finanțele publice locale | ✅ În vigoare | OUG 89/2025 (dec. 2025) |
+| Legea nr. 76/2002 privind șomajul | ✅ În vigoare | Legea 45/2025 (apr. 2025) |
+| Legea nr. 477/2003 privind pregătirea economiei | ✅ În vigoare | Republicată M.Of. 201/21.03.2014 |
+
+**Legea nr. 477/2003** a fost într-adevăr republicată în **Monitorul Oficial nr. 201 din 21 martie 2014**, în temeiul art. 248 din Legea nr. 187/2012 pentru punerea în aplicare a Codului penal. Această informație este **confirmată integral**.
+
+---
+
+## Instituțiile menționate au denumiri corecte
+
+**ANRSPS** - Administrația Națională a Rezervelor de Stat și Probleme Speciale - denumirea și acronimul sunt **corecte**. Instituția funcționează conform HG 1380/2009, modificat prin HG 328/2025. Din 2025, face parte din sistemul național de apărare și securitate națională, în subordinea Guvernului și coordonarea Secretariatului General al Guvernului. Site oficial: www.anrsps.gov.ro.
+
+**ANOFM** - Agenția Națională pentru Ocuparea Forței de Muncă - denumirea și acronimul sunt **corecte**. Funcționează conform Legii 202/2006 (republicată 2009) sub autoritatea Ministerului Muncii și Solidarității Sociale, fiind finanțată din bugetul asigurărilor pentru șomaj. Coordonează 41 de agenții județene și 8 centre regionale de formare. Site oficial: www.anofm.ro.
+
+**Inspecția Muncii** - denumirea este **corectă**. Funcționează conform Legii 108/1999 (republicată 2012) ca organ de specialitate al administrației publice centrale, în subordinea MMSS. Gestionează sistemul REGES-ONLINE pentru evidența salariaților și coordonează 42 de inspectorate teritoriale. Site oficial: www.inspectiamuncii.ro.
+
+---
+
+## Corespondența COFOG este validată
+
+Capitolul 80 corespunde integral codului **COFOG 04.1 - "General economic, commercial and labour affairs"**, subdivizat în:
+- **04.1.1** - General economic and commercial affairs
+- **04.1.2** - General labour affairs
+
+Clasificația română este armonizată cu standardul COFOG pentru respectarea cerințelor UE și FMI privind raportarea statistică. Anexele MFP conțin tabele de transpunere între clasificația funcțională românească și sistemul COFOG internațional.
+
+---
+
+## Conținut tehnic verificat și confirmat
+
+Toate destinațiile cheltuielilor menționate în documentație sunt **corect încadrate**:
+
+| Element | Cod paragraf | Confirmare |
+|---------|--------------|------------|
+| Meteorologie | 80.01.01.03 | ✅ Confirmat |
+| Rezerve de stat și mobilizare | 80.01.01.11 | ✅ Confirmat |
+| Ajutoare de stat | 80.01.01.12 | ✅ Confirmat (adăugat ulterior) |
+| Protecția muncii | 80.XX.02.01 | ✅ Confirmat |
+
+Sistemul național antigrindină, prevenirea inundațiilor, stimularea exportului, cooperarea economică internațională și stimularea IMM-urilor sunt de asemenea corect încadrate în subcapitolul Acțiuni generale economice și comerciale.
+
+---
+
+## Informații care nu au putut fi verificate complet
+
+1. **Anexa 7 MFP** menționată specific pentru maparea COFOG - nu a fost identificată o anexă separată cu acest număr; maparea COFOG este integrată în tabelele de transpunere din Ordinul 1954/2005
+
+2. **Textul integral actualizat 2025** al Ordinului 1954/2005 - deși se confirmă că ordinul a fost modificat continuu, nu a fost accesibil textul consolidat complet cu toate modificările până în 2025
+
+---
+
+## Erori și inexactități identificate
+
+⚠️ **Eroare principală:** Afirmația că subcapitolele sunt codificate **80.01** (Acțiuni generale economice și comerciale) și **80.02** (Acțiuni generale de muncă) este **incorectă**.
+
+**Situația reală:**
+- **80.01** = Capitolul 80 pentru bugetul de stat
+- **80.02** = Capitolul 80 pentru bugetele locale
+- **80.10** = Capitolul 80 pentru instituții publice cu venituri proprii
+
+Subcapitolele reale sunt codificate **80.XX.01** și **80.XX.02**, unde "XX" reprezintă tipul de buget. Această distincție este esențială pentru corectitudinea clasificării.
+
+---
+
+## Surse oficiale consultate
+
+**Portal Legislativ:**
+- https://legislatie.just.ro/Public/DetaliiDocument/67596 (Ordinul 1954/2005)
+- https://legislatie.just.ro/Public/DetaliiDocument/37954 (Legea 500/2002)
+- https://legislatie.just.ro/Public/DetaliiDocument/73527 (Legea 273/2006)
+- https://legislatie.just.ro/Public/DetaliiDocument/33919 (Legea 76/2002)
+- https://legislatie.just.ro/Public/DetaliiDocument/47873 (Legea 477/2003)
+
+**Ministerul Finanțelor:**
+- https://mfinante.gov.ro/domenii/buget/clasificatiile-bugetare
+- Anexa I - Clasificația funcțională
+- Tabel transpunere funcțională
+
+**Site-uri instituționale:**
+- www.anrsps.gov.ro
+- www.anofm.ro  
+- www.inspectiamuncii.ro
+
+---
+
+## Concluzie finală
+
+Documentația bugetară pentru Capitolul 80 este **în esență corectă și bine documentată**. Toate actele normative citate sunt în vigoare, denumirile instituțiilor sunt exacte, iar conținutul tehnic corespunde clasificației oficiale. **Singura corecție necesară** vizează sistemul de numerotare a subcapitolelor: distincția 80.01/80.02 se referă la tipul de buget (stat vs. local), nu la categoriile tematice (economic vs. muncă). Pentru precizie maximă, subcapitolele trebuie referite ca 80.XX.01 și 80.XX.02.
+
+## Processed
+
+- **Date**: 2026-01-02 16:23:46
+- **Source file**: ./public/assets/text/ro/functional/80.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-80-2026-01-02-160309.log

@@ -314,7 +314,67 @@ Pentru analize precise, se recomandă consultarea:
 ## Context
 
 - **Created**: 2026-01-02 04:36:36
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/61.06.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/61.06.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație bugetară 61.06 - Autorități judecătorești
+
+Documentația prezintă o calitate bună în ansamblu, cu informații în mare parte corecte despre clasificația bugetară pentru autoritățile judecătorești. Am identificat **două erori care necesită corectare** și câteva aspecte minore de îmbunătățit. Structura explicativă este clară și accesibilă pentru utilizatori fără pregătire de specialitate.
+
+## Probleme critice care necesită corectare imediată
+
+**Referința la art. 142 din Legea 304/2022 este incorectă.** Documentul afirmă că "conform art. 142 din Legea nr. 304/2022, Înalta Curte de Casație și Justiție a devenit ordonator principal de credite". Această afirmație este inexactă din punct de vedere juridic. Calitatea de ordonator principal de credite a președintelui ÎCCJ este stabilită de **art. 20 alin. (3)** din Legea 304/2022, care prevede textual: *"Președintele Înaltei Curți de Casație și Justiție are calitatea de ordonator principal de credite, putând delega această calitate unuia dintre vicepreședinți."* Art. 142, în schimb, reglementează mecanismul de repartizare a fondurilor de la Ministerul Finanțelor către ordonatorul principal și apoi către ordonatorii secundari și terțiari. Referința trebuie corectată pentru acuratețe juridică.
+
+**Numărul de judecătorii menționat este imprecis.** Documentul indică **176 judecătorii**, dar conform Anexei nr. 1 la Legea 304/2022, numărul total este de **188 judecătorii**, dintre care 11 nu funcționează efectiv. Rezultă astfel 177 judecătorii funcționale, nu 176. Discrepanța de o unitate poate părea minoră, dar pentru un document de referință este important să reflecte datele oficiale exacte sau să specifice că se referă la judecătoriile funcționale.
+
+## Sugestii de îmbunătățire și observații minore
+
+Codul bugetar 61.06 ar beneficia de o clarificare suplimentară. Deși notația simplificată este corectă și utilizată frecvent în practică, documentul ar trebui să explice mai clar structura completă: **61.01.06** pentru cheltuieli din bugetul de stat și **61.10.06** pentru instituții finanțate din venituri proprii. Cifra din mijloc (01 sau 10) identifică sursa de finanțare conform sistemului de clasificare al Ordinului MFP 1954/2005. Această clarificare ar ajuta utilizatorii să înțeleagă mai bine sistemul de codificare.
+
+Referințele legislative ar trebui să includă formularea standard **"cu modificările și completările ulterioare"** pentru Legea 500/2002 și Legea 273/2006, deoarece ambele acte normative au suferit numeroase modificări de la adoptare. Această mențiune este o practică juridică standard și indică utilizatorilor că trebuie să consulte versiunile actualizate.
+
+Numărul de tribunale menționat (42 tribunale județene) ar putea fi detaliat pentru precizie: sunt 41 tribunale județene plus Tribunalul București, rezultând 42 în total. Adăugarea mențiunii despre tribunalele specializate (4 la momentul adoptării legii) ar completa imaginea structurii instanțelor.
+
+## Informații verificate și confirmate ca fiind corecte
+
+| Element verificat | Status | Sursă de confirmare |
+|-------------------|--------|---------------------|
+| Capitol 61 - "Ordine publică și siguranță națională" | ✓ Corect | Ordinul MFP 1954/2005, Anexa II |
+| Denumirea "Autorități judecătorești" pentru subcapitol | ✓ Corect | Clasificația funcțională MFP |
+| Legea 304/2022 a înlocuit Legea 304/2004 | ✓ Corect | Abrogată la 16.12.2022 conform art. 168 alin. (5) |
+| 15 curți de apel | ✓ Corect | Legea 304/2022, art. 39 și Anexa nr. 1 |
+| 42 tribunale (41 județene + București) | ✓ Corect | Legea 304/2022, art. 40 și Anexa nr. 1 |
+| Art. 133 Constituție - CSM garant al independenței justiției | ✓ Corect | Text exact: "CSM este garantul independenței justiției" |
+| Legea 500/2002 privind finanțele publice | ✓ În vigoare | Portal Legislativ, actualizată 2025 |
+| Legea 273/2006 privind finanțele publice locale | ✓ În vigoare | Portal Legislativ, actualizată 2025 |
+| Ordinul MFP 1954/2005 | ✓ În vigoare | Actualizat periodic de Ministerul Finanțelor |
+| ÎCCJ ordonator principal de credite din 2023 | ✓ Corect | Art. 20 alin. (3) din Legea 304/2022 |
+| Președinții curților de apel - ordonatori secundari | ✓ Corect | Art. 49 alin. (1) din Legea 304/2022 |
+| Președinții tribunalelor - ordonatori terțiari | ✓ Corect | Art. 49 alin. (1) din Legea 304/2022 |
+
+Structura ierarhică a ordonatorilor de credite prezentată în document este corectă și conformă cu Legea 304/2022: ÎCCJ (ordonator principal) → Curți de apel (ordonatori secundari) → Tribunale (ordonatori terțiari). Etapele procesului bugetar descrise sunt accurate și reflectă practica actuală.
+
+## Corecturi recomandate pentru implementare
+
+Pentru **art. 142**, textul actual trebuie modificat astfel: *"Începând cu anul 2023, conform art. 20 alin. (3) din Legea nr. 304/2022, Președintele Înaltei Curți de Casație și Justiție are calitatea de ordonator principal de credite pentru toate instanțele judecătorești. Art. 142 din aceeași lege reglementează mecanismul de repartizare a fondurilor de la Ministerul Finanțelor."*
+
+Pentru numărul de judecătorii, se recomandă formularea: *"188 judecătorii conform Anexei nr. 1 la Legea 304/2022 (dintre care aproximativ 177 funcționale)"* sau verificarea numărului actual funcțional la data actualizării documentului.
+
+## Surse oficiale consultate pentru verificare
+
+- **Portal Legislativ** - Legea 304/2022: legislatie.just.ro/Public/DetaliiDocument/261410
+- **Portal Legislativ** - Legea 500/2002: legislatie.just.ro/Public/DetaliiDocumentAfis/37954
+- **Portal Legislativ** - Ordinul MFP 1954/2005: legislatie.just.ro/Public/DetaliiDocument/67596
+- **Ministerul Finanțelor** - Clasificații bugetare: mfinante.gov.ro/domenii/bugetul-de-stat/clasificatii
+- **Constituția României** - art. 133: constitutia.ro/art-133-rolul-si-structura.htm
+- **ÎCCJ** - Decizia nr. 14/2025 (interpretare art. 142): iccj.ro/2025/02/21/decizia-nr-14-din-27-ianuarie-2025-2/
+- **Camera Deputaților** - Legea 304/2022: cdep.ro/pls/legis/legis_pck.htp_act?nr=304&an=2022
+- **Lege5.ro** - Legea 304/2022 actualizată: lege5.ro/Gratuit/gezdsobzgqzdo/legea-nr-304-2022-privind-organizarea-judiciara
+
+## Processed
+
+- **Date**: 2026-01-02 16:04:13
+- **Source file**: ./public/assets/text/ro/functional/61.06.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-61.06-2026-01-02-160309.log

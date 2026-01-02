@@ -319,7 +319,129 @@ Pentru analiza datelor de transparență bugetară, este important să diferenț
 ## Context
 
 - **Created**: 2026-01-02 04:36:34
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/16.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/16.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificarea documentației bugetare pentru Capitolul 16 - Raport complet
+
+**Concluzie generală**: Verificarea a identificat **o problemă critică majoră** privind structura codurilor bugetare prezentate în documentație, împreună cu mai multe erori minore și confirmări ale informațiilor corecte. Documentația necesită revizuiri semnificative pentru a reflecta corect sistemul de clasificare bugetară românesc.
+
+## Probleme critice identificate
+
+### Eroare fundamentală în structura codurilor bugetare
+
+Documentația prezintă subcapitolele 16.01, 16.02, 16.03, 16.04, 16.05, 16.06, 16.07, 16.50 ca fiind **subcapitole diferite** ale aceluiași capitol. **Aceasta este o interpretare incorectă** a sistemului de clasificare bugetară.
+
+În sistemul bugetar românesc, sufixul indică **tipul de buget**, nu subcapitolul:
+
+| Sufix | Semnificație |
+|-------|-------------|
+| **.01** | Bugetul de stat |
+| **.02** | Bugetele locale |
+| **.03** | Bugetul asigurărilor sociale de stat |
+| **.04** | Bugetul asigurărilor pentru șomaj |
+| **.05** | Bugetul FNUASS |
+| **.10** | Bugetul instituțiilor publice și activităților finanțate din venituri proprii |
+
+Astfel, **16.01** și **16.02** nu sunt subcapitole diferite ale capitolului 16, ci **aceeași categorie de venituri** (taxe pe utilizarea bunurilor) raportată în bugete diferite. Subcapitolele reale sunt: 16.02.02, 16.02.03, 16.02.50 pentru bugetele locale și 16.01.08, 16.01.50 pentru bugetul de stat.
+
+### Structura corectă confirmată
+
+**Pentru BUGETUL DE STAT (cod 16.01)**:
+- 16.01.08 - Taxe speciale pentru autoturisme și autovehicule la prima înmatriculare în România
+- 16.01.50 - Alte taxe pe utilizarea bunurilor, autorizarea utilizării bunurilor sau pe desfășurare de activități
+
+**Pentru BUGETELE LOCALE (cod 16.02)**:
+- 16.02.02 - Taxa asupra mijloacelor de transport (cu 16.02.02.01 pentru persoane fizice și 16.02.02.02 pentru persoane juridice)
+- 16.02.03 - Taxe și tarife pentru eliberarea de licențe și autorizații de funcționare
+- 16.02.50 - Alte taxe pe utilizarea bunurilor
+
+### Interpretarea "dualității bugetare"
+
+Afirmația din documentație că "în clasificația bugetului de stat codul este 16.01" și "în clasificația bugetelor locale codul devine 16.02" este **tehnic corectă**, dar terminologia "dualitate bugetară" este **improprie**. Nu există o dualitate sau contradicție, ci un **sistem unificat de codificare** unde capitolul 16 rămâne constant, iar sufixul diferențiază doar tipul de buget.
+
+## Alte probleme și erori identificate
+
+### Acronimul ANRMPSG folosit incorect
+
+**ANRMPSG** (Autoritatea Națională de Reglementare în Domeniul Minier, Petrolier și al Stocării Geologice a Dioxidului de Carbon) este autoritatea pentru domeniul **minier**, nu pentru jocuri de noroc. Dacă acronimul apare în context de jocuri de noroc, este o eroare. Autoritatea competentă pentru jocuri de noroc este **ONJN** (Oficiul Național pentru Jocuri de Noroc).
+
+### Repartizarea redevenței miniere - clarificare necesară
+
+Procentele **35% județ, 45% UAT, 20% buget de stat** sunt corecte conform art. 45¹ din Legea 85/2003, dar cu o **clarificare importantă**: această repartizare se aplică **exclusiv** pentru exploatarea resurselor la suprafață (cariere, balastiere) și a apelor minerale naturale. Pentru exploatarea **subterană** (mine), redevența se constituie **100% venit la bugetul de stat**.
+
+### Modificări legislative 2026 neacoperite
+
+Codul Fiscal a suferit modificări semnificative prin OUG 78/17.12.2025, aplicabile de la 01.01.2026, care afectează taxa pe mijloacele de transport. Scutirile pentru autovehicule electrice, persoane cu handicap grav/accentuat și alte categorii au fost **eliminate**. Documentația trebuie actualizată pentru a reflecta aceste schimbări.
+
+### Link-uri problematice
+
+Accesul direct la documentele PDF de pe **legislatie.just.ro** și **mfinante.gov.ro** este restricționat de configurările robots.txt, ceea ce poate îngreuna verificarea de către utilizatori. Link-ul pentru Anexa I (AnexanrI_13102025.xls) nu a putut fi verificat ca funcțional.
+
+## Informații confirmate ca fiind corecte
+
+### Denumirea oficială a capitolului
+**"TAXE PE UTILIZAREA BUNURILOR, AUTORIZAREA UTILIZĂRII BUNURILOR SAU PE DESFĂȘURAREA DE ACTIVITĂȚI"** - denumirea este identică cu cea din clasificația oficială.
+
+### Procentele de distribuție pentru jocuri de noroc
+Legea 30/2022 confirmă distribuția:
+- **98,8%** - bugetul de stat
+- **1%** - Comitetul Olimpic și Sportiv Român (COSR)
+- **0,2%** - Comitetul Național Paralimpic
+
+Conturile de virament sunt 5505 (COSR) și 5506 (Comitet Paralimpic).
+
+### Data de referință pentru taxa pe mijloacele de transport
+Art. 471 alin. (1) din Codul Fiscal confirmă explicit că impozitul pe mijlocul de transport este datorat pentru întregul an fiscal de persoana care deține dreptul de proprietate la **data de 31 decembrie a anului fiscal anterior**.
+
+### Taxa pe mijloacele de transport - destinație
+Taxa se încasează exclusiv la **bugetul local** al UAT-ului unde persoana fizică sau juridică își are domiciliul, sediul sau punctul de lucru, conform art. 468 alin. (3) din Codul Fiscal.
+
+### Semnul matematic pentru calculele bugetare
+Utilizarea semnului **(+)** pentru totalizarea subcapitolelor este corectă, conform clasificației oficiale.
+
+### Legislația pentru finanțe publice locale
+Art. 5 din Legea 273/2006 reglementează corect veniturile bugetare locale, iar citarea este precisă.
+
+### Taxele miniere
+Art. 44-45 din Legea 85/2003 reglementează taxele pentru prospecțiune, explorare și exploatare, cu valori actualizate anual prin HG. Valorile pentru 2024 (HG 645/2024): prospecțiune **528 lei/km²**, explorare **2.122 lei/km²**, exploatare **53.024 lei/km²**.
+
+## Sugestii de îmbunătățire
+
+Documentația ar beneficia de o explicație clară a **sistemului de codificare bugetară**, precizând că sufixul (.01, .02, .10 etc.) indică tipul de buget, nu subcapitolul. Pentru utilizatorii fără pregătire bugetară, această distincție este esențială.
+
+Se recomandă includerea unei **note privind modificările legislative din 2026** care afectează scutirile pentru taxa pe mijloacele de transport și introducerea coeficientului bazat pe norma de poluare EURO.
+
+Secțiunea despre jocurile de noroc ar trebui să clarifice diferența dintre **taxele de licență/autorizare** (reglementate de OUG 77/2009) și **taxa de timbru social** (dacă este relevantă), precum și să menționeze corect autoritatea competentă (ONJN).
+
+Pentru redevențele miniere, se recomandă specificarea explicită că repartizarea 35%/45%/20% se aplică doar pentru exploatarea la suprafață, nu și pentru activitățile subterane.
+
+## Surse consultate
+
+**Portal Legislativ (legislatie.just.ro)**
+- Ordinul MFP 1954/2005 - https://legislatie.just.ro/Public/DetaliiDocument/67596
+- OUG 77/2009 - https://legislatie.just.ro/Public/DetaliiDocument/108149
+- Legea 273/2006 - https://legislatie.just.ro/Public/DetaliiDocument/73527
+
+**Ministerul Finanțelor (mfinante.gov.ro)**
+- Pagina clasificații bugetare - https://mfinante.gov.ro/en/domenii/buget/clasificatiile-bugetare
+- Anexa I Venituri - https://www.mfinante.gov.ro/static/10/Mfp/legislatie/clasificatie_economica/pdf11/Anexa%20nr.I_venit.pdf
+- Nota de modificare 121866 - https://mfinante.gov.ro/static/10/Mfp/legislatie/clasificatie_economica/nota121866.htm
+
+**ANAF**
+- Codul Fiscal cu norme - https://static.anaf.ro/static/10/Anaf/legislatie/
+- Nomenclator conturi venituri bugetare - https://static.anaf.ro/static/10/Anaf/Aplicatii/OP_FV/optt2013/OPTT_conturi_05122018.pdf
+
+**Alte surse**
+- Cod Fiscal - Titlul IX (art. 468-472) - https://www.noulcodfiscal.ro/titlu-9/capitol-4/
+- ONJN legislație - https://onjn.gov.ro/legislatie-2/
+- Legea 85/2003 actualizată - Camera Deputaților și Portal Legislativ
+- OUG 81/2024 privind înființarea ANRMPSG
+
+## Processed
+
+- **Date**: 2026-01-02 14:05:42
+- **Source file**: ./public/assets/text/ro/functional/16.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-16-2026-01-02-140450.log

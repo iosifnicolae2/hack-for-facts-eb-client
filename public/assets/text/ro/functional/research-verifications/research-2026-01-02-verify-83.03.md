@@ -291,7 +291,173 @@ Codul 83.03 corespunde clasificației **COFOG** (Classification of the Functions
 ## Context
 
 - **Created**: 2026-01-02 04:36:40
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/83.03.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/83.03.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație bugetară subcapitol 83.03 "Agricultură"
+
+Documentația pentru platforma Transparenta.eu este **în mare parte corectă**, cu o singură problemă critică identificată: schema de plăți SAPS a fost înlocuită cu BISS din ianuarie 2023. Codurile bugetare, denumirile și referințele legislative sunt conforme cu sursele oficiale, necesitând doar actualizări minore de formulare.
+
+---
+
+## 1. Rezumat general
+
+Verificarea a acoperit codurile bugetare din clasificația funcțională, legislația citată, informațiile despre APIA și fondurile europene, schemele de plăți agricole, funcționalitatea link-urilor și corespondența COFOG. Din cele **6 domenii verificate**, rezultatele confirmă că informațiile din document sunt corecte în proporție de aproximativ **90%**, cu necesitatea unei actualizări importante privind schema de plăți directe.
+
+**Perioada de referință:** Verificare efectuată în ianuarie 2026, pe baza clasificației bugetare actualizate (29.01.2025) și a Planului Strategic PAC 2023-2027.
+
+---
+
+## 2. Probleme critice găsite
+
+### SAPS nu mai este schema de plată în vigoare
+
+**Aceasta este singura problemă critică identificată.** Dacă documentația menționează SAPS (Schema de Plată Unică pe Suprafață), aceasta trebuie actualizată:
+
+| Element | Informație veche | Informație corectă (din 2023) |
+|---------|------------------|-------------------------------|
+| Schema de bază | SAPS | **BISS** (Sprijin de bază pentru venit în scopul sustenabilității) |
+| Cuantum 2025 | variabil | **99,27 €/ha** |
+| Baza legală | PAC 2014-2022 | **Planul Strategic PAC 2023-2027** |
+
+SAPS a fost înlocuită începând cu **1 ianuarie 2023** prin noua Politică Agricolă Comună. Schemele actuale de plăți directe în România includ:
+
+- **BISS** (PD-01) – sprijin de bază: 99,27 €/ha
+- **CRISS** (PD-02) – sprijin redistributiv pentru 1-50 ha: 52,08 €/ha
+- **Ecoscheme** (PD-04, PD-05) – practici benefice pentru mediu
+- **Sprijin pentru tinerii fermieri** (PD-03): 48 €/ha
+
+---
+
+## 3. Probleme minore și sugestii de îmbunătățire
+
+### Funcționalitatea link-urilor
+
+| Link | Status | Recomandare |
+|------|--------|-------------|
+| mfinante.gov.ro/.../AnexanrII_29012025.xls | ❌ Nefuncțional | Folosiți pagina principală clasificații |
+| mfinante.gov.ro/.../Anexanr7_13052025.xls | ❌ Nefuncțional | Accesați manual secțiunea MFP |
+| legislatie.just.ro/Public/DetaliiDocument/67596 | ⚠️ Parțial | Link valid, dar portal cu restricții temporare |
+| legislatie.just.ro/Public/DetaliiDocumentAfis/37954 | ⚠️ Parțial | Link valid, dar portal cu restricții temporare |
+
+**Recomandare:** Înlocuiți link-urile directe către fișierele XLS cu link către pagina principală: `https://mfinante.gov.ro/domenii/buget/clasificatiile-bugetare`
+
+### Clarificare privind codificarea bugetară
+
+Documentul menționează codul "83.03" pentru subcapitolul Agricultură. Deși aceasta este o prescurtare acceptată, codul complet include tipul de buget:
+- **83.01.03** – Agricultură (bugetul de stat)
+- **83.02.03** – Agricultură (bugetele locale)
+
+Cifra din mijloc indică tipul bugetului, nu subcapitolul. Se recomandă adăugarea unei note explicative despre această structură.
+
+### Diferențe minore de formulare
+
+| Paragraf | Document verificat | Sursă oficială (OMFP 1954/2005) |
+|----------|-------------------|--------------------------------|
+| 83.03.01 | "Amend**area** solurilor..." | "Amend**are** soluri..." |
+| 83.03.03 | "...și **carantină**..." | "...si **carantina**..." |
+
+Diferențele sunt nesemnificative și constau doar în forme verbale și diacritice actualizate.
+
+### Anexa 7 și corespondența COFOG
+
+Link-ul menționat pentru Anexa 7 nu conține tabelul de corespondență COFOG – Anexa 7 din clasificația standard se referă la "Clasificația veniturilor din credite interne". Corespondența COFOG este utilizată în rapoartele de execuție bugetară către EUROSTAT, nu în anexele clasificației.
+
+---
+
+## 4. Confirmări ale informațiilor corecte
+
+### Coduri și denumiri bugetare ✅
+
+Toate codurile verificate sunt **CORECTE**:
+
+| Element | Verificare |
+|---------|------------|
+| Capitol 83 – "Agricultură, silvicultură, piscicultură și vânătoare" | ✅ Corect |
+| Subcapitol 83.03 – "Agricultură" | ✅ Corect |
+| Paragraf 83.03.01 – Amendarea solurilor acide și alcaline | ✅ Corect |
+| Paragraf 83.03.02 – Îmbunătățiri funciare, irigații, desecări | ✅ Corect |
+| Paragraf 83.03.03 – Protecția plantelor și carantină fitosanitară | ✅ Corect |
+| Paragraf 83.03.04 – Programe pentru sprijinirea producătorilor agricoli | ✅ Corect |
+| Paragraf 83.03.05 – Reproducția și selecția animalelor | ✅ Corect |
+| Paragraf 83.03.30 – Alte cheltuieli în domeniul agriculturii | ✅ Corect |
+
+Lista paragrafelor este **COMPLETĂ** – nu există paragrafe suplimentare pentru subcapitolul 83.03.
+
+### Legislație ✅
+
+| Act normativ | Status | Observații |
+|--------------|--------|------------|
+| Ordinul MFP nr. 1954/2005 | ✅ În vigoare | Cu modificări și completări ulterioare |
+| Legea nr. 500/2002 | ✅ În vigoare | Modificată, forma actuală consolidată |
+| Legea nr. 273/2006 | ✅ În vigoare | Ultima modificare OUG 89/2025 |
+| Legea nr. 247/2005, Titlul XI | ✅ În vigoare | Renta viageră agricolă activă |
+
+### Valorile rentei viagere agricole ✅
+
+Valorile menționate sunt **CORECTE și ACTUALE**:
+- **100 euro/ha/an** pentru înstrăinare (vânzare)
+- **50 euro/ha/an** pentru arendare
+
+Plata se efectuează în lei la cursul mediu BNR. Programul de înscriere s-a încheiat la 31.12.2009, dar beneficiarii existenți continuă să primească renta.
+
+### APIA și fonduri europene ✅
+
+| Element | Verificare |
+|---------|------------|
+| APIA în subordinea MADR | ✅ Corect |
+| FEGA – Fondul European de Garantare Agricolă | ✅ Corect |
+| FEADR – Fondul European Agricol pentru Dezvoltare Rurală | ✅ Corect |
+
+APIA gestionează plățile directe din FEGA și 11 intervenții delegate din FEADR. Structura: aparat central + 42 centre județene + 262 centre locale.
+
+### Corespondența COFOG ✅
+
+| Cod românesc | Denumire | Cod COFOG | Denumire COFOG |
+|--------------|----------|-----------|----------------|
+| Capitol 83 | Agricultură, silvicultură, piscicultură și vânătoare | **04.2** | Agriculture, forestry, fishing and hunting |
+| Subcapitol 83.03 | Agricultură | **04.2.1** | Agriculture |
+
+Corespondența este conformă cu standardele internaționale și aliniată la metodologia EUROSTAT.
+
+---
+
+## 5. Surse consultate
+
+### Surse oficiale verificate
+
+**Ministerul Finanțelor:**
+- Clasificația indicatorilor privind finanțele publice (OMFP 1954/2005)
+- Pagina clasificații bugetare: mfinante.gov.ro/domenii/buget/clasificatiile-bugetare
+
+**Portal Legislativ:**
+- Ordinul MFP 1954/2005: legislatie.just.ro/Public/DetaliiDocument/67596
+- Legea 500/2002: legislatie.just.ro/Public/DetaliiDocumentAfis/37954
+- Legea 273/2006: legislatie.just.ro/Public/DetaliiDocument/73527
+
+**APIA:**
+- Site oficial: apia.org.ro
+- Informații despre plăți directe și renta viageră agricolă
+
+**MADR și AFIR:**
+- Planul Strategic PAC 2023-2027 (versiunea 7.1)
+- Informații despre FEGA, FEADR și schemele de plăți
+
+**Surse internaționale:**
+- EUROSTAT – Manual COFOG 2019
+- UN Statistics Division – COFOG 1999 Classification
+- IMF Government Finance Statistics Manual
+
+---
+
+## Concluzie
+
+Documentația bugetară pentru subcapitolul 83.03 "Agricultură" este **de bună calitate** și conformă cu clasificația oficială. Singura actualizare critică necesară este înlocuirea referințelor la SAPS cu noua schemă BISS, introdusă din 2023. Link-urile directe către fișierele XLS de pe site-ul MFP necesită actualizare, iar o notă clarificatoare despre structura codurilor bugetare (83.01.03 vs 83.03) ar îmbunătăți înțelegerea documentului.
+
+## Processed
+
+- **Date**: 2026-01-02 16:25:51
+- **Source file**: ./public/assets/text/ro/functional/83.03.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-83.03-2026-01-02-160309.log

@@ -4,7 +4,7 @@
 
 ## URL
 
-https://claude.ai/chat/ac293059-b044-411a-8910-3352fed1d41e
+<https://claude.ai/chat/ac293059-b044-411a-8910-3352fed1d41e>
 
 ## Prompt
 
@@ -173,6 +173,7 @@ La nivel central, Ministerul Sănătății coordonează implementarea, iar la ni
 ### Fluxul banilor – explicație simplificată
 
 ```
+
 BUGET DE STAT / BUGETE LOCALE
           ↓
     MINISTERUL SĂNĂTĂȚII / AUTORITĂȚI LOCALE
@@ -186,6 +187,7 @@ BUGET DE STAT / BUGETE LOCALE
     BENEFICIARI FINALI:
     Populație (prin campanii, supraveghere, prevenție)
     Furnizori de servicii (prin contracte)
+
 ```
 
 ---
@@ -338,7 +340,140 @@ Codul 66.50 este o **categorie reziduală** („alte cheltuieli") care include t
 ## Context
 
 - **Created**: 2026-01-02 04:36:37
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/66.50.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/66.50.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație bugetară: cod 66.50 "Alte cheltuieli în domeniul sănătății"
+
+Documentația bugetară pentru clasificația funcțională cod **66.50** este **substanțial corectă din punct de vedere tehnic și juridic**, cu câteva omisiuni și posibilități de îmbunătățire. Codul există oficial în clasificația MFP, denumirea este corectă, iar referințele legislative citate sunt valide și în vigoare. Totuși, documentația ar beneficia de includerea paragrafelor detaliate și a corespondenței COFOG pentru conformitate internațională.
+
+---
+
+## Confirmări ale informațiilor corecte
+
+Verificarea a confirmat acuratețea majorității elementelor din documentație:
+
+**Existența și denumirea codului sunt confirmate.** Codul bugetar **66.50** există oficial în clasificația funcțională MFP cu denumirea exactă **"Alte cheltuieli în domeniul sănătății"**. Această denumire apare consistent în toate anexele oficiale: Anexa 1 (buget de stat - cod 66.01.50), Anexa 2 (bugete locale - cod 66.02.50) și Anexa 10 (instituții publice finanțate din venituri proprii - cod 66.10.50).
+
+**Baza legală citată este validă.** Toate cele patru acte normative menționate sunt în vigoare:
+
+| Act normativ | Status | Observații |
+|-------------|--------|------------|
+| Ordinul MFP nr. 1954/2005 | ✅ În vigoare | Actualizat permanent prin comunicări MFP |
+| Legea nr. 95/2006 | ✅ În vigoare | Republicată în 2015, amendată recent prin OUG 66/2024 și OUG 106/2024 |
+| Legea nr. 500/2002 | ✅ În vigoare | Temei legal direct pentru clasificația bugetară |
+| Legea nr. 273/2006 | ✅ În vigoare | Actualizată prin Legea 387/2023 și OUG 89/2025 |
+
+**Structura capitolului 66 Sănătate este corectă.** Subcapitolul 50 face parte din structura oficială a capitolului 66, care include: 66.XX.01 (Administrația centrală), 66.XX.04 (Servicii medicale în ambulatoriu), 66.XX.06 (Servicii medicale în unități sanitare cu paturi), 66.XX.08 (Servicii de sănătate publică), 66.XX.10 (Cercetare aplicativă în sănătate) și **66.XX.50** (Alte cheltuieli în domeniul sănătății).
+
+**Destinațiile menționate corespund realității.** Conform comunicărilor oficiale MFP, subcapitolul 66.50 include efectiv cheltuieli pentru: unități medico-sociale, autorități de sănătate publică, și alte instituții și acțiuni sanitare care nu se încadrează în celelalte subcapitole.
+
+---
+
+## Probleme critice identificate
+
+Nu au fost găsite erori critice care să invalideze documentația, însă există o **omisiune semnificativă** privind structura paragrafelor oficiale.
+
+**Structura completă a paragrafelor 66.XX.50 lipsește.** Clasificația oficială MFP include următoarele paragrafe sub subcapitolul 50 care nu sunt menționate în documentație:
+
+- **66.XX.50.01** - Activități de ergoterapie în unități medico-sanitare
+- **66.XX.50.02** - Policlinici cu plată  
+- **66.XX.50.03** - Creșe
+- **66.XX.50.50** - Alte instituții și acțiuni sanitare
+
+Această structură detaliată ar trebui inclusă pentru completitudine, deoarece utilizatorii trebuie să știe unde se încadrează exact diferitele tipuri de cheltuieli.
+
+**Observație importantă privind unitățile medico-sociale**: Conform comunicării MFP nr. 120.237/02.02.2007, unitățile medico-sociale au fost mutate parțial la paragraful **66.XX.06.03** (Servicii medicale în unități sanitare cu paturi) și nu sunt exclusiv în 66.50. Documentația ar trebui să clarifice această distincție.
+
+---
+
+## Probleme minore și sugestii de îmbunătățire
+
+### Lipsa corespondenței COFOG
+
+Documentația nu menționează corespondența cu clasificația internațională **COFOG** (Classification of Functions of Government):
+
+- **66.50** → **COFOG 07.6** (Health not elsewhere classified / Sănătate neclasificată în altă parte)
+- Capitolul 66 complet → **COFOG Division 07** (Health)
+
+Această informație este importantă pentru utilizatorii care doresc comparații internaționale sau care raportează date către Eurostat.
+
+### Formularea referințelor legislative
+
+Se recomandă adăugarea mențiunii **"cu modificările și completările ulterioare"** pentru toate actele normative, având în vedere că acestea sunt actualizate frecvent. Formulări recomandate:
+
+- Ordinul MFP nr. 1954/16.12.2005 **cu modificările și completările ulterioare**
+- Legea nr. 95/2006 **republicată, cu modificările și completările ulterioare**
+
+### Informații suplimentare de adăugat
+
+1. **Precizarea că Ordinul 1954/2005 nu constituie temei legal** pentru efectuarea cheltuielilor - clasificația servește doar organizării bugetare
+2. **Link direct către pagina clasificații MFP** actualizată: <https://mfinante.gov.ro/domenii/bugetul-de-stat/clasificatii>
+3. **Explicarea sufixelor de cod**: 66.**01**.50 (buget de stat), 66.**02**.50 (bugete locale), 66.**10**.50 (instituții cu venituri proprii)
+
+### Clarificări terminologice
+
+Terminologia folosită trebuie să fie consistentă cu nomenclatura oficială. Verificați că se folosește:
+
+- "Alte cheltuieli în domeniul **sănătății**" (cu diacritice corecte: ș, ț, ă)
+- "subcapitol" (nu "sub-capitol" sau "subchapter")
+- "paragraf" pentru nivelul sub subcapitol
+
+---
+
+## Verificarea link-urilor
+
+### Link-uri funcționale ✅
+
+| Sursă | URL | Status |
+|-------|-----|--------|
+| Pagina clasificații MFP | mfinante.gov.ro/domenii/bugetul-de-stat/clasificatii | ✅ Funcțional |
+| Portal Legislativ | legislatie.just.ro/Public/DetaliiDocument/67596 | ✅ Funcțional (cu restricții) |
+| Legea 500/2002 | legislatie.just.ro/Public/DetaliiDocumentAfis/37954 | ✅ Funcțional |
+
+### Observații privind accesibilitatea
+
+- **legislatie.just.ro** funcționează, dar accesul automat este restricționat de robots.txt; utilizatorii umani pot accesa paginile fără probleme
+- **Fișierele Excel de pe mfinante.gov.ro** (AnexanrII_29012025.xls, Anexanr7_13052025.xls) necesită descărcare manuală; link-urile directe nu sunt întotdeauna accesibile din browsere
+- Platforma **Transparenta.eu** este o aplicație web de vizualizare a datelor, nu un portal informativ cu documentație textuală despre clasificații
+
+---
+
+## Surse oficiale consultate
+
+Verificarea s-a bazat pe următoarele documente și resurse oficiale:
+
+**Ministerul Finanțelor Publice:**
+
+- Ordinul MFP nr. 1954/16.12.2005 (Monitorul Oficial nr. 1176 din 27.12.2005)
+- Anexa 1 - Clasificația indicatorilor privind bugetul de stat (TranspFunc_anexa1.pdf)
+- Anexa 2 - Clasificația indicatorilor privind bugetele locale (TranspFunc_anexa2.pdf)
+- Comunicarea MFP nr. 120.237/02.02.2007 privind modificările clasificației
+- Pagina oficială clasificații bugetare MFP
+
+**Legislație:**
+
+- Legea nr. 95/2006 privind reforma în domeniul sănătății (republicată M.O. nr. 652/2015)
+- Legea nr. 500/2002 privind finanțele publice
+- Legea nr. 273/2006 privind finanțele publice locale
+
+**Surse internaționale:**
+
+- Clasificația COFOG (UN Statistics Division)
+- Eurostat Manual on COFOG Statistics 2019
+
+---
+
+## Concluzie
+
+Documentația bugetară pentru codul 66.50 este **tehnică și juridic corectă** în elementele fundamentale: codul există, denumirea este oficială, și referințele legislative sunt valide. Pentru a atinge un nivel de excelență, documentația ar trebui să includă **structura completă a paragrafelor** (66.XX.50.01 până la 66.XX.50.50), **corespondența COFOG 07.6**, și **clarificări privind distincția** față de alte subcapitole ale capitolului 66.
+
+**Grad de acuratețe estimat: 85%** - Informațiile prezente sunt corecte, dar lipsesc detalii structurale importante pentru utilizatorii care trebuie să clasifice cheltuieli specifice.
+
+## Processed
+
+- **Date**: 2026-01-02 16:12:50
+- **Source file**: ./public/assets/text/ro/functional/66.50.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-66.50-2026-01-02-160309.log

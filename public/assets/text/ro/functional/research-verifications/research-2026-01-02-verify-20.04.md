@@ -321,7 +321,147 @@ Cheltuieli medicamente consolidate = Suma achizițiilor directe de la furnizori 
 ## Context
 
 - **Created**: 2026-01-02 04:36:34
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/20.04.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/20.04.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație bugetară: Articolul 20.04
+
+**Concluzie generală:** Documentația pentru articolul 20.04 „Medicamente și materiale sanitare" este **corectă și conformă** cu legislația în vigoare. Toate codurile bugetare, denumirile oficiale și referințele legislative au fost verificate și confirmate. S-au identificat doar probleme minore privind accesibilitatea unor link-uri către anexele Excel de pe portalul MFP.
+
+---
+
+## Rezumat general al verificării
+
+Documentul analizat respectă integral structura clasificației bugetare aprobate prin **Ordinul MFP nr. 1954/2005**. Verificarea a acoperit toate aspectele critice: coduri bugetare, denumiri oficiale, structura alineatelor, încadrarea în clasificația funcțională, maparea COFOG și funcționalitatea referințelor legislative. Rezultatul confirmă că platforma Transparenta.eu prezintă informații **fidele și actualizate** pentru utilizatorii fără pregătire de specialitate bugetară.
+
+---
+
+## Probleme critice găsite
+
+**Nu au fost identificate probleme critice.** Toate elementele esențiale verificate sunt corecte:
+
+| Element verificat | Status |
+|-------------------|--------|
+| Codul articolului 20.04 | ✅ Corect |
+| Denumirea „Medicamente și materiale sanitare" | ✅ Identică cu sursa oficială |
+| Structura celor 4 alineate | ✅ Completă și corectă |
+| Încadrarea în Titlul II (cod 20) | ✅ Confirmată |
+| Referințele legislative | ✅ Corecte și în vigoare |
+
+---
+
+## Probleme minore și sugestii de îmbunătățire
+
+### Link-uri MFP cu accesibilitate redusă
+
+Trei link-uri către fișierele Excel de pe portalul MFP nu sunt direct accesibile public datorită restricțiilor de acces:
+
+- `mfinante.gov.ro/static/10/Mfp/buget/sitebuget/clasificatii/AnexanrI_13102025.xls`
+- `mfinante.gov.ro/static/10/Mfp/buget/sitebuget/clasificatii/AnexanrII_29012025.xls`
+- `mfinante.gov.ro/static/10/Mfp/buget/sitebuget/clasificatii/Anexanr7_13052025.xls`
+
+**Recomandare:** Se pot înlocui cu versiunile PDF alternative disponibile pe portalul MFP:
+- Anexa I (economică): `mfinante.gov.ro/static/10/Mfp/legislatie/clasificatie_economica/pdf/Anexa_nrI_ec.pdf`
+- Clasificația funcțională: `mfinante.gov.ro/static/10/Mfp/legislatie/clasificatie_economica/pdf/TranspFunc_anexa1.pdf`
+
+### Clarificări recomandate pentru utilizatori
+
+Documentul ar putea beneficia de următoarele completări pentru utilizatorii fără pregătire bugetară:
+
+- Explicarea relației dintre clasificația **economică** (articolul 20.04) și clasificația **funcțională** (capitolul 66), deoarece acestea sunt sisteme complementare, nu identice
+- Menționarea că semnul **plus (+)** se utilizează pentru calcule de însumare (totalul articolului = suma alineatelor), iar semnul **minus (-)** se aplică doar pentru plăți recuperate (Titlul 85)
+- Precizarea că articolul 20.04 poate fi utilizat și de alte capitole funcționale, nu exclusiv de capitolul 66 „Sănătate"
+
+---
+
+## Confirmări ale informațiilor corecte
+
+### Structura codurilor bugetare verificată integral
+
+Ordinul MFP 1954/2005 confirmă exact structura prezentată în document:
+
+| Cod | Denumire oficială | Status |
+|-----|-------------------|--------|
+| **20** | TITLUL II BUNURI ȘI SERVICII | ✅ Confirmat |
+| **20.04** | Medicamente și materiale sanitare | ✅ Confirmat |
+| **20.04.01** | Medicamente | ✅ Confirmat |
+| **20.04.02** | Materiale sanitare | ✅ Confirmat |
+| **20.04.03** | Reactivi | ✅ Confirmat |
+| **20.04.04** | Dezinfectanți | ✅ Confirmat |
+
+### Clasificația funcțională și COFOG
+
+S-a confirmat corespondența corectă:
+- **Capitolul 66** în clasificația funcțională românească = **Sănătate**
+- **COFOG diviziunea 07** = **Health** (Sănătate) conform standardelor ONU/Eurostat
+- Maparea Cap. 66 ↔ COFOG 07 este corectă
+
+Subcapitolele verificate din clasificația funcțională Cap. 66:
+- 66.01 / 66.02 / 66.10 - Sănătate (diferite tipuri de bugete)
+- 66.01.06 - Servicii medicale în unități sanitare cu paturi
+- 66.02.06.03 - Unități medico-sociale
+
+### Link-uri legislative funcționale și corecte
+
+Toate referințele legislative principale sunt **funcționale și actualizate**:
+
+| Legislație | Link | Status | Observații |
+|------------|------|--------|------------|
+| Ordinul MFP 1954/2005 | legislatie.just.ro/Public/DetaliiDocument/67596 | ✅ Funcțional | Baza clasificației bugetare |
+| Legea 95/2006 | legislatie.just.ro/Public/DetaliiDocumentAfis/170974 | ✅ Funcțional | Republicată, actualizată 2025 |
+| Legea 273/2006 | legislatie.just.ro/Public/DetaliiDocument/73527 | ✅ Funcțional | În vigoare cu modificări |
+| Legea 500/2002 | legislatie.just.ro/Public/DetaliiDocumentAfis/37954 | ✅ Funcțional | În vigoare cu modificări |
+| Legea 98/2016 | legislatie.just.ro/public/detaliidocument/178667 | ✅ Funcțional | Praguri actualizate 2026 |
+
+### Link-uri instituționale verificate
+
+| Instituție | URL | Status |
+|------------|-----|--------|
+| CNAS | https://cnas.ro/ | ✅ Funcțional - Site oficial |
+| ANMDMR | https://www.anm.ro/ | ✅ Funcțional - Site oficial |
+| Nomenclator medicamente | https://nomenclator.anm.ro/medicamente | ✅ Funcțional - Actualizat |
+| Portal MFP clasificații | mfinante.gov.ro/domenii/buget/clasificatiile-bugetare | ✅ Activ |
+
+### FNUASS confirmat în cadrul legislativ
+
+Fondul Național Unic de Asigurări Sociale de Sănătate este reglementat în **Legea 95/2006**, art. 219, și reprezintă principalul mecanism de finanțare pentru medicamente și servicii medicale. Legea confirmă că din bugetul FNUASS se asigură contravaloarea medicamentelor, inclusiv cele inovative (conform OUG 8/2025).
+
+---
+
+## Surse oficiale consultate
+
+### Documente legislative primare
+- **Ordinul MFP nr. 1954/16.12.2005** - Clasificația indicatorilor privind finanțele publice (Monitorul Oficial nr. 1176/27.12.2005)
+- **Legea nr. 95/2006** republicată - Reforma în domeniul sănătății
+- **Legea nr. 273/2006** - Finanțele publice locale
+- **Legea nr. 500/2002** - Finanțele publice
+- **Legea nr. 98/2016** - Achizițiile publice
+
+### Surse verificate online
+- Portal Legislativ România: legislatie.just.ro
+- Ministerul Finanțelor Publice: mfinante.gov.ro/domenii/buget/clasificatiile-bugetare
+- Casa Națională de Asigurări de Sănătate: cnas.ro
+- ANMDMR: anm.ro și nomenclator.anm.ro
+- Clasificație economică MFP: Anexa I, Anexa I (economica) - versiuni PDF
+- Clasificație funcțională MFP: TranspFunc_anexa1.pdf, TranspFunc_anexa2.pdf
+- ANAF - documente contabile și corespondențe coduri bugetare
+- Lege5.ro - text integral Ordinul 1954/2005
+
+### Standard internațional consultat
+- **COFOG** (Classification of the Functions of Government) - UN Statistics Division și Eurostat
+
+---
+
+## Concluzie finală
+
+Documentația pentru articolul bugetar 20.04 „Medicamente și materiale sanitare" de pe platforma Transparenta.eu este **exactă, completă și conformă** cu clasificația bugetară oficială aprobată prin Ordinul MFP nr. 1954/2005. Structura celor 4 alineate, încadrarea în Titlul II, asocierea cu clasificația funcțională și referințele legislative sunt toate verificate și corecte.
+
+**Singura recomandare** vizează actualizarea link-urilor către anexele MFP din format Excel în format PDF, pentru o accesibilitate mai bună pentru utilizatorii platformei.
+
+## Processed
+
+- **Date**: 2026-01-02 14:06:41
+- **Source file**: ./public/assets/text/ro/functional/20.04.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-20.04-2026-01-02-140450.log

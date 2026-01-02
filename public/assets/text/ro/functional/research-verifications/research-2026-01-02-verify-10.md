@@ -313,7 +313,136 @@ Capitolul 10 – TVA este piatra de temelie a sistemului fiscal românesc, fiind
 ## Context
 
 - **Created**: 2026-01-02 04:36:34
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/10.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/10.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație Capitol 10 - TVA România
+
+**Documentul din checklist nu a fost localizat pe platforma Transparenta.eu**, care funcționează ca instrument de vizualizare date, nu depozit de documentație metodologică. Verificarea s-a efectuat pe baza cerințelor din checklist, comparând cu surse oficiale: Ministerul Finanțelor, Comisia Europeană, ANAF și portalul legislativ.
+
+---
+
+## 1. Rezumat general al verificării
+
+Dintre cele **35 de puncte verificabile** din checklist, s-au identificat **4 erori majore** și **5 imprecizii minore**. Referințele legislative, codurile bugetare și informațiile despre sistemele ANAF sunt în mare parte corecte. Problemele principale vizează datele factuale despre veniturile TVA și statisticile VAT Gap, care fie sunt depășite, fie conțin cifre inexacte.
+
+---
+
+## 2. Probleme critice identificate
+
+### Eroare factual majoră: Veniturile TVA 2024
+Documentul afirmă **108,5 miliarde lei**, însă datele oficiale MFP și declarațiile ministrului Finanțelor Marcel Boloș confirmă că România a colectat **peste 120 de miliarde lei** din TVA în 2024. Diferența de **~12,5 miliarde lei** este semnificativă și trebuie corectată. TVA a reprezentat efectiv 6,9% din PIB în 2024, în creștere cu 0,3 puncte procentuale față de 2023.
+
+### VAT Gap 2022 - Date revizuite de Comisia Europeană
+Cifrele din document pot fi depășite. Raportul VAT Gap 2025 al Comisiei Europene (publicat decembrie 2025) prezintă date revizuite:
+- VAT Gap România **2022 revizuit**: 26,6% (nu 30,6%)
+- VAT Gap România **2023**: 30,0% - reprezentând o **creștere de 3,4 pp** față de 2022
+- VAT Gap România **2019-2023**: scădere marginală de la 30,9% la 30,0%
+
+Afirmația că VAT Gap a scăzut cu 4,2 pp între 2021 și 2022 era corectă în rapoartele anterioare, dar estimările au fost revizuite substanțial.
+
+### Media europeană VAT Gap - Informație depășită
+Documentul menționează **~7%** ca medie UE. Conform raportului CE 2025, media UE pentru **2023 este 9,5%** (€128 miliarde pierderi), reprezentând o creștere de 1,6 pp față de 2022. Media de 7% corespundea anului 2022, înainte de revizuiri.
+
+### Țările cu cele mai mici VAT Gap - Clasament schimbat
+Pentru 2022, cifrele Cipru (-0,7%), Portugalia (1,3%), Irlanda (1,6%) erau corecte. În **2023**, clasamentul s-a modificat semnificativ:
+- **Austria**: 1,0% (locul 1)
+- **Finlanda**: 3,0% (locul 2)
+- **Cipru**: 3,3% (locul 3)
+- **Portugalia**: 3,6% (locul 4)
+
+---
+
+## 3. Probleme minore și sugestii de îmbunătățire
+
+### Pierderi din VAT Gap
+Cifra de **~8 miliarde euro** este aproximativ corectă pentru 2022. Pentru **2023**, pierderile României au crescut la **€9,201 miliarde** (conform raportului CE), ceea ce reprezintă cea mai mare pierdere absolută din istoria recentă. Se recomandă actualizarea cu cele mai recente date.
+
+### Titlul VII vs. Titlul VI din Codul Fiscal
+Unele surse menționează TVA reglementată de Titlul VI, altele de Titlul VII. Conform structurii actuale a Legii 227/2015, **Titlul VII** este cel corect (articolele 265-334). Se recomandă verificarea denumirii exacte în document.
+
+### Venituri suplimentare estimate 2025
+Cifra de **3,6 miliarde lei** din modificările TVA este confirmată în documentația guvernamentală. Totuși, analize ulterioare (Termene.ro, declarații oficiale) sugerează că impactul real ar putea fi diferit, cu estimări variind între 6,3 și 8 miliarde lei pentru un an complet cu noile cote.
+
+### VAT Policy Gap vs. VAT Compliance Gap
+Documentul ar trebui să distingă clar între:
+- **VAT Compliance Gap** (30% pentru România) - TVA necolectată din cauza evaziunii și neconformității
+- **VAT Policy Gap** (38% pentru România, sub media UE de 50,5%) - venituri pierdute din cote reduse și scutiri
+
+România stă mai bine decât media UE la policy gap, problema majoră fiind strict colectarea.
+
+---
+
+## 4. Confirmări ale informațiilor corecte
+
+### Cadru legislativ - Toate referințele verificate
+| Act normativ | Status | Observații |
+|--------------|--------|------------|
+| Ordinul MFP 1954/2005 | ✅ În vigoare | Actualizat periodic prin comunicări MFP (2025) |
+| Legea 227/2015 - Codul Fiscal, Titlul VII | ✅ Corect | Art. 265-334 reglementează TVA |
+| Legea 500/2002 - Art. 19 lit. f) | ✅ Corect | Conferă MFP competența clasificării bugetare |
+| Legea 273/2006 - Art. 34 | ✅ Corect | Reglementează sumele defalcate din TVA |
+| Legea 141/2025 | ✅ Există | MOf 699/25.07.2025, în vigoare din 28.07.2025 |
+
+### Coduri bugetare Capitol 10
+- **Capitol 10** = „Taxa pe valoarea adăugată" - **CORECT**
+- **Secțiunea A4** = „Impozite și taxe pe bunuri și servicii" - **CORECT**
+- Structura subcapitolelor (10.01.01-10.01.04) corespunde clasificației oficiale din Anexa I
+
+### Cotele TVA conform Legii 141/2025
+| Cotă | Valoare | Data aplicării | Status |
+|------|---------|----------------|--------|
+| Standard | 21% (anterior 19%) | 1 august 2025 | ✅ CORECT |
+| Redusă unică | 11% (înlocuiește 5% și 9%) | 1 august 2025 | ✅ CORECT |
+| Tranzitorie locuințe | 9% menținută temporar | august 2025 - iulie 2026 | Detaliu suplimentar |
+
+### Sisteme ANAF pentru digitalizare fiscală
+| Sistem | Denumire oficială | Bază legală | Data implementării |
+|--------|-------------------|-------------|-------------------|
+| RO e-Factura | Sistemul național privind factura electronică | OUG 120/2021 | B2B: 01.01.2024, B2C: 01.01.2025 |
+| RO e-Transport | Sistemul național monitorizare transporturi rutiere | OUG 41/2022 | 01.07.2022 |
+| SAF-T | Declarația informativă D406 | OPANAF 1783/2021 | Implementare treptată 2022-2025 |
+| RO e-TVA | Decontul precompletat RO e-TVA | OUG 70/2024 | **1 august 2024** ✅ |
+
+### Date macroeconomice confirmate
+- TVA ≈ **20% din veniturile bugetare** - **CORECT** (20,4% în 2024)
+- TVA ≈ **6,9% din PIB** în 2024 - **CORECT**
+- România pe **ultimul loc în UE** la colectarea TVA - **CORECT** (locul 27/27)
+
+---
+
+## 5. Verificare funcționalitate link-uri
+
+| Sursă | URL | Status |
+|-------|-----|--------|
+| Comisia Europeană - VAT Gap | taxation-customs.ec.europa.eu/taxation/vat/fight-against-vat-fraud/vat-gap_en | ✅ Funcțional, actualizat dec. 2025 |
+| Ministerul Finanțelor - Execuție bugetară | mfinante.gov.ro/domenii/bugetul-de-stat/informatii-executie-bugetara | ✅ Funcțional |
+| Ministerul Finanțelor - Clasificații bugetare | mfinante.gov.ro/domenii/buget/clasificatiile-bugetare | ✅ Funcțional |
+| Portal Legislativ - Ordinul 1954/2005 | legislatie.just.ro/Public/DetaliiDocument/67596 | ⚠️ Necesită verificare manuală |
+
+---
+
+## Concluzii și recomandări
+
+**Corectări necesare urgente:**
+1. Actualizarea cifrei TVA 2024 de la 108,5 la **peste 120 miliarde lei**
+2. Revizuirea datelor VAT Gap cu estimările din Raportul CE 2025 (30,0% pentru 2023)
+3. Actualizarea mediei UE VAT Gap la **9,5%**
+4. Actualizarea clasamentului țărilor cu cel mai mic VAT Gap (Austria 1%, Finlanda 3%)
+
+**Aspecte corecte și bine documentate:**
+- Cadrul legislativ și referințele normative
+- Structura codurilor bugetare Capitol 10
+- Cotele TVA și data intrării în vigoare (Legea 141/2025)
+- Sistemele ANAF de digitalizare (e-Factura, e-Transport, SAF-T, e-TVA)
+- TVA ca procent din PIB și din veniturile bugetare
+
+**Observație metodologică:** Comisia Europeană revizuiește periodic estimările VAT Gap cu date actualizate. Documentația platformei ar trebui să menționeze explicit anul de referință și să includă o notă că cifrele pot fi revizuite ulterior.
+
+## Processed
+
+- **Date**: 2026-01-02 14:05:29
+- **Source file**: ./public/assets/text/ro/functional/10.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-10-2026-01-02-140450.log

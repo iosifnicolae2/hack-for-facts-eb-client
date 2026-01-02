@@ -294,7 +294,82 @@ Pentru analize precise, este recomandată verificarea subcapitolelor active la m
 ## Context
 
 - **Created**: 2026-01-02 04:36:34
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/12.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/12.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificarea documentației pentru Capitol 12 dezvăluie erori legislative critice
+
+Analiza documentației bugetare de pe platforma Transparenta.eu pentru Capitolul 12 "Alte impozite și taxe generale pe bunuri și servicii" a identificat o **eroare legislativă majoră**: referințele la articolele 478-485 din Codul Fiscal pentru taxa hotelieră sunt complet incorecte. Aceste articole reglementează în prezent taxa pentru afișaj publicitar, impozitul pe spectacole și taxele speciale - nu taxa hotelieră. Codurile bugetare și denumirile subcapitolelor sunt corecte conform Ordinului MFP nr. 1954/2005, însă documentația necesită o revizuire fundamentală a cadrului legislativ menționat.
+
+## Problema critică: referințele legislative pentru taxa hotelieră sunt eronate
+
+Verificarea Legii 227/2015 (Codul Fiscal) arată că **taxa hotelieră clasică nu mai există ca instituție juridică separată**. Articolele 478-485 din Titlul IX au următorul conținut real:
+
+| Articol | Conținut actual (Legea 227/2015) |
+|---------|----------------------------------|
+| **Art. 478** | Taxa pentru afișaj în scop de reclamă și publicitate |
+| **Art. 479** | Scutiri de la taxa pentru reclamă și publicitate |
+| **Art. 480-483** | Impozitul pe spectacole |
+| **Art. 484-485** | Taxe speciale |
+
+Reglementarea taxei hoteliere cu cote de **0,5%-5%** și termenul de plată **până la data de 10 a lunii următoare** provin din **Legea 571/2003** (vechiul Cod Fiscal), articolele 278-281, care a fost abrogată în 2016. În prezent, promovarea turistică se realizează opțional prin mecanismul taxelor speciale prevăzut la art. 484, unde fiecare consiliu local stabilește cotele și termenele prin hotărâre proprie.
+
+## Codurile bugetare și denumirile sunt corecte
+
+Verificarea Ordinului MFP nr. 1954/2005 confirmă că **denumirile oficiale** corespund cu cele din documentația de verificat:
+
+- **Capitol 12.00** - "Alte impozite și taxe generale pe bunuri și servicii" ✓
+- **12.00.04** - "Taxa de timbru social asupra valorii automobilelor noi din import" ✓
+- **12.00.06** - "Cote din taxe de școlarizare" ✓
+- **12.00.07** - "Taxe hoteliere" ✓
+- **12.00.50** - "Alte impozite și taxe generale pe cifra de afaceri, vânzări și valoare adăugată" ✓
+
+Structura de codificare (capitol.subcapitol.paragraf) este conformă cu clasificația oficială MFP, iar codul ".50" pentru categoria reziduală respectă convenția standard.
+
+## Caracterul opțional al taxei hoteliere este confirmat parțial
+
+Conform art. 484 alin. (1) din Legea 227/2015, consiliile locale "**pot adopta**" taxe speciale pentru promovarea turistică - formulare care confirmă caracterul opțional. Cu toate acestea, mecanismul legislativ descris în documentație (cote fixe 0,5%-5%, termen de 10 ale lunii) nu mai este aplicabil în forma menționată. În prezent:
+
+- **Cota taxei** se stabilește individual de fiecare consiliu local
+- **Termenul de plată** variază - de exemplu, Municipiul București folosește data de 10, dar alte localități pot folosi data de 25
+- **Baza de calcul** nu este impusă legal - poate fi procentuală sau sumă fixă per noapte de cazare
+- **Colectarea** se face de unitățile de cazare sau platformele online (Booking, Airbnb) și se varsă la bugetul local
+
+## Starea accesibilității link-urilor verificate
+
+**Link-uri funcționale:**
+- Portal legislativ (legislatie.just.ro/Public/DetaliiDocument/67596) - Ordinul 1954/2005 este accesibil
+- Pagina clasificații bugetare MFP (mfinante.gov.ro/en/domenii/buget/clasificatiile-bugetare) - activă cu actualizări pentru 2025
+
+**Link-uri cu restricții:**
+- Fișierul XLS Anexa I (AnexanrI_13102025.xls) - restricționat pentru acces automat, necesită descărcare manuală
+- Codul Fiscal pe legislatie.just.ro - restricții robots.txt pentru acces automat direct
+
+**Platformă fără documentație:**
+- Transparenta.eu - nu publică documentație textuală despre clasificarea bugetară; platforma funcționează exclusiv pentru vizualizarea execuțiilor bugetare ale celor peste 13.000 de instituții publice din România
+
+## Sugestii de corectare urgentă
+
+**1. Actualizarea referințelor legislative pentru taxa hotelieră:**
+- Înlocuirea referinței "Legea 227/2015, Titlul IX, Capitolul VIII, art. 478-485" cu referința corectă la art. 484-485 "Taxe speciale"
+- Menționarea explicită că taxa hotelieră clasică a fost înlocuită cu mecanismul taxelor speciale pentru promovarea turistică
+- Adăugarea referinței la punctul 161 lit. b) din HG 1/2016 (Normele metodologice)
+
+**2. Corectarea cotelor și termenelor:**
+- Eliminarea cotelor fixe 0,5%-5% care nu mai sunt în vigoare
+- Precizarea că fiecare consiliu local stabilește cotele și termenele prin HCL
+
+**3. Clarificarea mecanismului de colectare:**
+- Actualizarea informațiilor pentru a reflecta că platformele de rezervări online sunt acum obligate să colecteze taxa în anumite localități
+
+## Concluzie
+
+Documentația pentru Capitol 12 prezintă **coduri bugetare și denumiri corecte**, însă conține **erori legislative critice** privind taxa hotelieră. Referința la articolele 478-485 din Codul Fiscal este fundamentalmente greșită - aceste articole nu reglementează taxa hotelieră. Cotele de 0,5%-5% și termenul de plată de 10 ale lunii provin din legislația abrogată în 2016. Documentația necesită o revizuire completă a secțiunii privind taxele hoteliere pentru a reflecta cadrul legal actual bazat pe taxe speciale adoptate opțional de consiliile locale.
+
+## Processed
+
+- **Date**: 2026-01-02 14:05:26
+- **Source file**: ./public/assets/text/ro/functional/12.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-12-2026-01-02-140450.log

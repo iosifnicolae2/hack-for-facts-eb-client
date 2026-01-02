@@ -286,7 +286,137 @@ UAT-urile cu strategii clare de dezvoltare urbană tind să aibă cheltuieli mai
 ## Context
 
 - **Created**: 2026-01-02 04:36:39
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/70.50.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/70.50.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație bugetară: Clasificația 70.50 confirmată ca acurată
+
+Documentația pentru clasificația funcțională românească 70.50 "Alte servicii în domeniile locuințelor, serviciilor și dezvoltării comunale" este **în mare parte corectă și conformă** cu legislația în vigoare. Verificarea amănunțită a surselor oficiale MFP și a cadrului legislativ a confirmat acuratețea codurilor bugetare, maparea COFOG și referințele legislative principale. Au fost identificate doar **câteva inexactități minore** în denumirile oficiale ale subcapitolelor și o omisiune a subcapitolului 70.25 (Cercetare și dezvoltare).
+
+---
+
+## 1. Rezumat general al verificării
+
+Analiza documentației a cuprins verificarea a **5 surse oficiale principale**: Ordinul MFP 1954/2005, Legea 273/2006, OUG 57/2019, Legea 350/2001 și clasificațiile bugetare publicate de Ministerul Finanțelor. Toate link-urile furnizate sunt **funcționale și accesibile**. Codul bugetar **70.50 există** în clasificația funcțională oficială, iar denumirea corespunde cu cea din documentele MFP. Maparea către clasificația internațională COFOG (Diviziunea 06, Grupa 06.6) este **metodologic corectă** și conformă cu standardele Eurostat.
+
+Documentul demonstrează o înțelegere solidă a structurii clasificației funcționale românești și a cadrului legal aplicabil. Explicațiile privind mecanismul de funcționare și utilizarea în practică sunt relevante pentru utilizatorii fără pregătire de specialitate bugetară.
+
+---
+
+## 2. Probleme critice găsite
+
+**Nu au fost identificate probleme critice.** Toate elementele fundamentale ale documentației sunt corecte:
+
+- Codul **70.50** există și este corect denumit în clasificația oficială
+- Baza legală principală (Ordinul 1954/2005, Legea 273/2006, OUG 57/2019, Legea 350/2001) este **corect citată și în vigoare**
+- Afirmația că Ordinul 1954/2005 a intrat în vigoare din 2006 este **confirmată** (Art. 7: "începând cu data de 1 ianuarie 2006")
+- Legea 215/2001 a fost **într-adevăr abrogată** și înlocuită de OUG 57/2019 (conform art. 597 alin. 2 lit. e din OUG 57/2019)
+- Codurile economice menționate (**20.30.30** - Alte cheltuieli cu bunuri și servicii; **71.01.01** - Construcții) sunt **corecte**
+
+---
+
+## 3. Probleme minore și sugestii de îmbunătățire
+
+### Denumiri incomplete ale subcapitolelor
+
+| Subcapitol | Denumire în document | Denumire oficială completă |
+|------------|---------------------|----------------------------|
+| 70.06 | "Iluminat public și electrificări" | "Iluminat public și **electrificări rurale**" |
+| 70.07 | "Alimentare cu gaze naturale" | "Alimentare cu gaze naturale **în localități**" |
+
+**Recomandare:** Actualizați denumirile pentru a reflecta formulările oficiale complete din Anexa II MFP.
+
+### Subcapitol omis din structura Capitolului 70
+
+Documentul menționează subcapitolele 70.03, 70.05, 70.06, 70.07 și 70.50, dar **omite subcapitolul 70.25** - "Cercetare și dezvoltare în domeniul locuințelor, serviciilor și dezvoltării publice". Deși mai rar utilizat, face parte din structura oficială.
+
+**Structura completă a Capitolului 70:**
+- 70.03 - Locuințe (cu paragrafe: 70.03.01, 70.03.30)
+- 70.05 - Alimentare cu apă și amenajări hidrotehnice (cu paragrafe: 70.05.01, 70.05.02)
+- 70.06 - Iluminat public și electrificări rurale
+- 70.07 - Alimentare cu gaze naturale în localități
+- **70.25** - Cercetare și dezvoltare în domeniul locuințelor, serviciilor și dezvoltării publice
+- 70.50 - Alte servicii în domeniile locuințelor, serviciilor și dezvoltării comunale
+
+### Clarificări suplimentare recomandate
+
+Documentul ar putea beneficia de adăugarea următoarelor precizări:
+- Subcapitolul **70.50 nu are paragrafe** specificate în clasificația de bază (funcționează ca subdiviziune reziduală)
+- Sistemul complet de codificare pe tipuri de bugete: **70.01.50** (buget de stat), **70.02.50** (bugete locale), **70.06.50** (credite externe), **70.10.50** (instituții publice cu venituri proprii)
+
+---
+
+## 4. Confirmări ale informațiilor corecte
+
+### Acuratețe legală și tehnică
+| Verificare | Status |
+|------------|--------|
+| Codul 70.50 există în clasificația funcțională | ✅ Confirmat |
+| Denumirea oficială corespunde | ✅ Confirmat |
+| Formatul 70.02.50 pentru bugete locale | ✅ Corect |
+| Ordinul 1954/2005 intrat în vigoare din 2006 | ✅ Confirmat (Art. 7) |
+| Legea 215/2001 abrogată de OUG 57/2019 | ✅ Confirmat |
+| Articolele 5-6 din Legea 273/2006 reglementează competențele UAT | ✅ Confirmat |
+
+### Mapare COFOG verificată și confirmată
+
+Maparea **70.50 → COFOG Diviziunea 06, Grupa 06.6** este **metodologic corectă**. Grupa 06.6 "Housing and community amenities n.e.c." (not elsewhere classified) este categoria reziduală pentru servicii din domeniul locuințelor și amenajărilor comunale care nu se încadrează în grupele 06.1-06.5. Formularea "Alte servicii" corespunde semantic perfect cu "n.e.c."
+
+Structura COFOG Division 06 confirmată:
+- 06.1 - Housing development (Dezvoltarea locuințelor)
+- 06.2 - Community development (Dezvoltare comunitară)
+- 06.3 - Water supply (Alimentare cu apă)
+- 06.4 - Street lighting (Iluminat stradal)
+- 06.5 - R&D Housing and community amenities (Cercetare-dezvoltare)
+- 06.6 - Housing and community amenities n.e.c. (Servicii neclasificate în altă parte)
+
+### Link-uri verificate
+
+| Sursă | URL | Status |
+|-------|-----|--------|
+| Ordinul MFP 1954/2005 | legislatie.just.ro/Public/DetaliiDocument/67596 | ✅ Funcțional |
+| Legea 273/2006 | legislatie.just.ro/Public/DetaliiDocument/73527 | ✅ Funcțional |
+| OUG 57/2019 | legislatie.just.ro/Public/DetaliiDocument/215925 | ✅ Funcțional |
+| Legea 350/2001 | legislatie.just.ro/Public/DetaliiDocument/29453 | ✅ Funcțional |
+| Pagina MFP clasificații | mfinante.gov.ro/domenii/buget/clasificatiile-bugetare | ✅ Funcțional |
+
+### Coduri economice confirmate
+
+- **20.30.30** = "Alte cheltuieli cu bunuri și servicii" (Titlul 20 - Bunuri și servicii, Articolul 30, Alineatul 30)
+- **71.01.01** = "Construcții" (Titlul 71 - Active nefinanciare, Articolul 01 - Active fixe, Alineatul 01)
+
+---
+
+## 5. Surse consultate pentru verificare
+
+### Surse legislative primare
+- **Ordinul MFP nr. 1954/16.12.2005** - text integral, publicat în M.Of. nr. 1.176/27.12.2005
+- **Legea nr. 273/2006** privind finanțele publice locale - forma consolidată actualizată
+- **OUG nr. 57/2019** - Codul administrativ, cu modificări până în 2025
+- **Legea nr. 350/2001** privind amenajarea teritoriului și urbanismul
+
+### Surse administrative MFP
+- Portal Ministerul Finanțelor - secțiunea clasificații bugetare
+- Anexa II - Clasificația cheltuielilor (actualizare 29.01.2025)
+- Anexa nr. 7 - Tabel de corespondență cu clasificația COFOG
+- Documente de transpunere funcțională (TranspFunc_anexa1, anexa2, anexa10)
+
+### Surse COFOG internaționale
+- Eurostat - Government expenditure on housing and community amenities (Statistics Explained, martie 2025)
+- United Nations Statistics Division - COFOG Classification Code 06
+- Eurostat Manual on sources and methods for COFOG Statistics (2019 edition, KS-GQ-19-010)
+- IMF Government Finance Statistics Manual - Annex to Chapter 6
+
+---
+
+## Concluzie
+
+Documentația pentru clasificația bugetară 70.50 este de **calitate ridicată** și utilă pentru utilizatorii fără pregătire de specialitate. Corecțiile necesare sunt minore și vizează completarea denumirilor oficiale și adăugarea subcapitolului 70.25 în structura Capitolului 70. Cadrul legal este corect citat, iar maparea COFOG este conformă cu standardele europene. Toate referințele legislative sunt **actuale și în vigoare** la data verificării (ianuarie 2026).
+
+## Processed
+
+- **Date**: 2026-01-02 16:20:59
+- **Source file**: ./public/assets/text/ro/functional/70.50.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-70.50-2026-01-02-160309.log

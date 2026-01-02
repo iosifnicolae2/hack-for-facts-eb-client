@@ -3,6 +3,7 @@
 # Capitol 84 - Transporturi
 
 ## URL
+https://claude.ai/chat/62f5c3ce-1f2e-4308-8f94-5bbb4eb58c29
 
 [PASTE URL HERE AFTER STARTING RESEARCH]
 
@@ -303,9 +304,114 @@ Cheltuielile pe Capitol 84 sunt raportate:
 ## Context
 
 - **Created**: 2026-01-02 04:36:40
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/84.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/84.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
 
-https://claude.ai/chat/62f5c3ce-1f2e-4308-8f94-5bbb4eb58c29
+# Verificarea documentației Capitol 84 Transporturi evidențiază erori critice în codurile bugetare
+
+Analiza documentației pentru Capitolul 84 „Transporturi" din clasificația funcțională românească a identificat **patru erori majore** în codificarea subcapitolelor care necesită corectare imediată. Documentul conține informații fundamentale corecte despre structura ierarhică și baza legală, însă erorile de codificare ar putea induce în eroare utilizatorii platformei Transparența.eu. Toate referințele legislative sunt actuale și în vigoare, iar terminologia generală este conformă cu nomenclatura oficială MFP.
+
+---
+
+## Erori critice în subcapitolele Capitolului 84
+
+Verificarea Ordinului MFP nr. 1954/2005 și a clasificațiilor bugetare actualizate pe site-ul Ministerului Finanțelor a relevat **neconcordanțe semnificative** între subcapitolele prezentate în document și structura oficială.
+
+**Subcapitolul 84.02 „Servicii publice descentralizate" nu există** în clasificația funcțională pentru domeniul Transporturi. Spre deosebire de alte capitole funcționale (51 - Autorități publice, 61 - Ordine publică, 65 - Învățământ) care includ acest subcapitol standard, Capitolul 84 Transporturi nu are această subdiviziune. Includerea sa în documentație este o eroare factuală care trebuie eliminată.
+
+**Codurile 84.05 și 84.06 sunt inversate** în document. Conform clasificației oficiale MFP:
+- **84.05** = Transport pe apă (nu „Transport aerian" cum indică documentul)
+- **84.06** = Transport aerian (nu „Transport naval" cum indică documentul)
+
+**Subcapitolul 84.07 are denumirea incorectă**. Documentul afirmă că 84.07 este „Transport pe căi navigabile interioare". În realitate, conform Anexei II din Ordinul MFP 1954/2005, codul **84.07 corespunde „Conducte și alte sisteme de transport"**. Transportul pe căi navigabile interioare este inclus în subcapitolul 84.05 „Transport pe apă", alături de transportul maritim.
+
+---
+
+## Structura corectă a subcapitolelor Capitolului 84
+
+Conform clasificației oficiale în vigoare, Capitolul 84 „Transporturi" are următoarea structură:
+
+| Cod | Denumire oficială MFP |
+|-----|----------------------|
+| **84.01** | Administrație centrală |
+| **84.03** | Transport rutier |
+| **84.04** | Transport feroviar |
+| **84.05** | Transport pe apă |
+| **84.06** | Transport aerian |
+| **84.07** | Conducte și alte sisteme de transport |
+| **84.50** | Alte cheltuieli în domeniul transporturilor |
+
+Paragrafele pentru subcapitolul 84.03 „Transport rutier" sunt corecte în document: **84.03.01** (Drumuri și poduri), **84.03.02** (Transport în comun) și **84.03.03** (Străzi). La fel, pentru 84.04 „Transport feroviar": **84.04.01** (Transport pe calea ferată) și **84.04.02** (Transport cu metroul).
+
+---
+
+## Verificarea referințelor legislative confirmă actualitatea
+
+Toate cele cinci acte normative citate în document sunt **în vigoare** și corect referențiate:
+
+**Ordinul MFP nr. 1954/2005** rămâne actul normativ de bază pentru clasificația indicatorilor privind finanțele publice. Clasificația se actualizează permanent prin comunicări MFP - în anul 2025 s-au emis deja peste 15 note de modificare conform datelor de pe mfinante.gov.ro.
+
+**Legea nr. 500/2002** privind finanțele publice și **Legea nr. 273/2006** privind finanțele publice locale sunt ambele în vigoare cu modificări ulterioare, inclusiv actualizări din 2023-2024.
+
+**Legea nr. 92/2007** a serviciilor publice de transport necesită o mențiune: titlul oficial actual, după modificările prin Legea nr. 328/2018, este „Legea serviciilor publice de transport persoane în unitățile administrativ-teritoriale". Documentul folosește formularea corectă.
+
+---
+
+## Aspecte verificate și confirmate ca fiind corecte
+
+Secțiunea „Definiție și scop" explică **corect** distincția fundamentală dintre clasificația funcțională (pentru ce scop se cheltuie banii) și clasificația economică (ce natură are cheltuiala). Această clarificare este esențială pentru utilizatorii fără pregătire bugetară.
+
+**Structura ierarhică** Capitol > Subcapitol > Paragraf este prezentată corect, cu exemple adecvate. Tabelul explicativ este util și precis.
+
+**Exemplele practice** (subvenționare transport public local și construcție autostradă) sunt corect structurate și demonstrează cum interacționează clasificația funcțională cu cea economică.
+
+**Destinațiile principale** enumerate pentru Capitol 84 sunt corecte ca domenii acoperite, chiar dacă codificarea subcapitolelor conține erori.
+
+**Corespondența COFOG** este implicită dar corectă - Capitolul 84 Transporturi corespunde diviziunii COFOG **04.5 Transport** (din grupa 04 „Afaceri economice"). Subcapitolele românești au echivalenți direcți: Transport rutier (04.5.1), Transport pe apă (04.5.2), Transport feroviar (04.5.3), Transport aerian (04.5.4).
+
+---
+
+## Probleme minore și recomandări de îmbunătățire
+
+**Semnul matematic lipsă**: În secțiunea „Semn și logică contabilă", textul menționează „semn pozitiv ( )" dar semnul „+" efectiv lipsește din paranteze. Aceasta pare o eroare de formatare care trebuie corectată.
+
+**Secțiunea „Formula simplificată de înțelegere"** este incompletă - documentul se întrerupe fără a prezenta formula promisă. Aceasta necesită completare.
+
+**Terminologia „Transport naval"** folosită în document ar trebui înlocuită cu **„Transport pe apă"** - denumirea oficială din clasificația MFP care acoperă atât transportul maritim, cât și cel fluvial.
+
+**Subcapitolul 84.07** (Conducte și alte sisteme de transport) lipsește complet din documentația verificată. Acesta ar trebui adăugat pentru completitudine, fiind relevant pentru infrastructura de transport prin conducte (gaze naturale, produse petroliere).
+
+**Referința la metrou**: Documentul menționează „Metrou și alte sisteme de transport urban" în destinații principale, dar nu specifică clar că metroul se încadrează la subcapitolul 84.04.02 (Transport feroviar > Transport cu metroul), conform clasificației oficiale.
+
+---
+
+## Surse consultate pentru verificare
+
+- **Ministerul Finanțelor** - Secțiunea Clasificații bugetare 2025 (mfinante.gov.ro/domenii/buget/clasificatiile-bugetare)
+- **Portalul Legislativ** - Ordinul MFP nr. 1954/2005 (legislatie.just.ro/Public/DetaliiDocument/67596)
+- **Anexa I și Anexa II** la Ordinul MFP 1954/2005 - Clasificația funcțională a cheltuielilor (TranspFunc_anexa1.pdf, TranspFunc_anexa2.pdf)
+- **Note de modificare MFP 2025** - Comunicări oficiale privind actualizarea clasificației
+- **Bugetul Ministerului Transporturilor și Infrastructurii 2025** - Structura capitolului 84.01 „Transporturi"
+- **Clasificația COFOG** - Manual Eurostat 2019 și documente ONU Statistics Division
+- **Legea bugetului de stat 2025** - mfinante.gov.ro/transparenta/proiectbuget2025
+
+---
+
+## Concluzii și acțiuni necesare
+
+Documentația verificată necesită **corectări imediate** pentru cele patru erori critice de codificare:
+
+1. **Eliminarea** subcapitolului fictiv 84.02 „Servicii publice descentralizate"
+2. **Corectarea** codului 84.05 în „Transport pe apă" (nu „Transport aerian")
+3. **Corectarea** codului 84.06 în „Transport aerian" (nu „Transport naval")
+4. **Corectarea** codului 84.07 în „Conducte și alte sisteme de transport" (nu „Transport pe căi navigabile interioare")
+
+După aceste corectări, documentul va oferi utilizatorilor platformei Transparența.eu informații precise și conforme cu nomenclatorul oficial MFP, îndeplinind obiectivul de a fi o resursă utilă pentru persoane fără pregătire de specialitate bugetară.
+
+## Processed
+
+- **Date**: 2026-01-02 16:28:54
+- **Source file**: ./public/assets/text/ro/functional/84.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-84-2026-01-02-160309.log

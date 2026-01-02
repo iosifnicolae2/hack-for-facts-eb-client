@@ -3,8 +3,7 @@
 # Capitol 86 - Cercetare și dezvoltare în domeniul economic
 
 ## URL
-
-[PASTE URL HERE AFTER STARTING RESEARCH]
+https://claude.ai/chat/41e4970d-7473-4510-997f-8255821cc254
 
 ## Prompt
 
@@ -290,9 +289,129 @@ Capitolul 86 este esențial pentru înțelegerea modului în care statul român 
 ## Context
 
 - **Created**: 2026-01-02 04:36:40
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/86.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/86.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
 
-https://claude.ai/chat/41e4970d-7473-4510-997f-8255821cc254
+# Verificare documentație Capitol 86 – probleme semnificative identificate
+
+**Analiza documentației bugetare pentru Capitol 86 „Cercetare și dezvoltare în domeniul economic" relevă erori structurale importante și informații instituționale perimate.** Deși baza legală principală este corect citată și toate actele normative sunt în vigoare, documentul conține omisiuni critice în structura subcapitolelor și reflectă o structură guvernamentală depășită. **Două subcapitole oficiale lipsesc complet** (86.01.05 și 86.01.06), iar denumirea subcapitolului 86.01 este eronată. Documentul necesită actualizări urgente pentru conformitate cu clasificația oficială MFP.
+
+---
+
+## Probleme critice identificate
+
+### Denumire incorectă a subcapitolului 86.01
+
+Documentul definește **86.01** drept „Unități de cercetare specializate în economie" – această denumire este **complet eronată**. Conform Ordinului MFP nr. 1954/2005 și Anexei nr. 1 de pe mfinante.gov.ro, denumirea oficială a subcapitolului 86.01 este identică cu cea a capitolului: **„Cercetare și dezvoltare în domeniul economic"**.
+
+### Subcapitole oficiale omise din document
+
+Documentul verificat **nu include** două paragrafe din clasificația oficială:
+
+| Cod | Denumire oficială lipsă |
+|-----|------------------------|
+| **86.01.05** | Cercetare și dezvoltare în domeniul transporturilor |
+| **86.01.06** | Cercetare și dezvoltare în domeniul comunicațiilor |
+
+Această omisiune reprezintă o lacună majoră care afectează completitudinea și utilitatea documentației.
+
+### Eroare sistematică în denumirile paragrafelor
+
+Toate denumirile paragrafelor 86.01.01–86.01.07 omit în mod sistematic expresia **„și dezvoltare"**. Documentul scrie „Cercetare în..." în loc de formularea oficială „Cercetare **și dezvoltare** în domeniul...". De asemenea, formele gramaticale diferă (ex: „agricultură" vs. „agriculturii", „combustibil" vs. „combustibilului").
+
+| Cod | În document | Denumire oficială corectă |
+|-----|-------------|--------------------------|
+| 86.01.01 | Cercetare în domeniul acțiunilor generale... | Cercetare **și dezvoltare** în domeniul acțiunilor generale economice, comerciale și de muncă |
+| 86.01.02 | Cercetare în agricultură, silvicultură... | Cercetare **și dezvoltare** în domeniul **agriculturii, silviculturii**, pisciculturii și vânătorii |
+| 86.01.03 | Cercetare în combustibil și energie | Cercetare **și dezvoltare** în domeniul **combustibilului și energiei** |
+| 86.01.04 | Cercetare în industrie extractivă... | Cercetare **și dezvoltare** în domeniul **industriei extractive**, prelucrătoare și construcțiilor |
+
+---
+
+## Informații instituționale perimate
+
+### Structura guvernamentală pentru cercetare a fost reorganizată
+
+Documentul menționează „Autoritatea Națională pentru Cercetare (fostul MCID)" – această formulare este **depășită**. Din **25 decembrie 2024**, Ministerul Cercetării, Inovării și Digitalizării (MCID) nu mai există ca minister de sine stătător. Cercetarea este acum integrată în **Ministerul Educației și Cercetării (MEC)**, iar Autoritatea Națională pentru Cercetare (ANC) funcționează în subordinea acestuia. Formularea corectă ar fi: „Autoritatea Națională pentru Cercetare, în subordinea Ministerului Educației și Cercetării".
+
+### Programul Operațional Competitivitate – referință perimată
+
+Referința la „Programul Operațional Competitivitate" este **perimată**. POC a fost programul pentru perioada de programare **2014-2020** și se află în faza de închidere. Pentru perioada **2021-2027**, acesta a fost înlocuit de **PoCIDIF – Programul Creștere Inteligentă, Digitalizare și Instrumente Financiare**, administrat de Ministerul Investițiilor și Proiectelor Europene (MIPE).
+
+---
+
+## Sugestii de îmbunătățire și clarificări necesare
+
+Denumirea Legii 25/2023 este citată prescurtat ca „privind integrarea voluntară în Spațiul European de Cercetare". Denumirea oficială completă este: **„Legea nr. 25/2023 privind integrarea voluntară a organizațiilor de cercetare, dezvoltare și inovare din România în Spațiul European de Cercetare, precum și pentru modificarea Ordonanței Guvernului nr. 57/2002 privind cercetarea științifică și dezvoltarea tehnologică"**. Se recomandă menționarea faptului că această lege modifică și OG 57/2002.
+
+HG nr. 1188/2022 privind PNCDI IV a fost **modificată prin HG nr. 1248/2023** din 8 decembrie 2023. Documentația ar trebui să menționeze această actualizare și să precizeze că plățile pentru proiecte pot fi efectuate până la **31 decembrie 2030**, deși perioada de contractare se încheie în 2027.
+
+Documentul ar beneficia de adăugarea link-urilor directe către site-urile oficiale: research.gov.ro pentru ANC, uefiscdi.gov.ro pentru UEFISCDI și asas.ro pentru ASAS, pentru a facilita accesul la informații actualizate.
+
+---
+
+## Confirmări ale informațiilor corecte
+
+### Baza legală principală – verificată și validă
+
+- **Ordinul MFP nr. 1954/2005** pentru aprobarea Clasificației indicatorilor privind finanțele publice – **în vigoare**, corect citat, actualizat frecvent
+- **OG 57/2002** privind cercetarea științifică și dezvoltarea tehnologică – **în vigoare**, aprobată prin Legea 324/2003, denumire corectă
+- **Legea 45/2009** privind organizarea și funcționarea ASAS „Gheorghe Ionescu-Șișești" – **în vigoare**, denumirea ASAS este corectă
+- **Legea 25/2023** privind Spațiul European de Cercetare – **în vigoare**, publicată în M.Of. nr. 33/11.01.2023
+- **HG 1188/2022** privind PNCDI IV 2022-2027 – **în vigoare**, publicată în M.Of. nr. 969/05.10.2022
+
+### Denumirea capitolului 86 este corectă
+
+Denumirea **„Cercetare și dezvoltare în domeniul economic"** pentru Capitol 86 corespunde exact cu clasificația funcțională oficială.
+
+### Informații instituționale corecte
+
+- **UEFISCDI** (Unitatea Executivă pentru Finanțarea Învățământului Superior, a Cercetării, Dezvoltării și Inovării) – există și funcționează, denumire corectă
+- **Academia de Științe Agricole și Silvice „Gheorghe Ionescu-Șișești"** (ASAS) – denumire completă și corectă, funcționează în coordonarea Ministrului Agriculturii
+- **PNCDI IV 2022-2027** – denumire și perioadă corecte, buget maxim de 60 miliarde lei
+- **Orizont Europa** – România participă activ, corect menționat
+
+### Maparea COFOG – conformă cu standardele internaționale
+
+Capitol 86 corespunde corect grupului **COFOG 04.8 – R&D Economic Affairs**. Structura subcapitolelor românești (86.01.01–86.01.07) se aliniază perfect cu clasele COFOG (04.8.1–04.8.7), asigurând comparabilitatea internațională a datelor statistice.
+
+---
+
+## Surse oficiale consultate
+
+### Clasificații bugetare și legislație MFP
+- Ministerul Finanțelor – secțiunea clasificații bugetare: mfinante.gov.ro/domenii/buget/clasificatiile-bugetare
+- Ordinul MFP nr. 1954/2005: legislatie.just.ro/Public/DetaliiDocumentAfis/67596
+- Anexa nr. 1 – Clasificația funcțională: mfinante.gov.ro/static/10/Mfp/legislatie/clasificatie_economica/pdf/Anexa_nr1.pdf
+
+### Acte normative verificate pe Portalul Legislativ
+- OG 57/2002: legislatie.just.ro/Public/DetaliiDocument/38222
+- Legea 45/2009 ASAS: legislatie.just.ro/Public/DetaliiDocument/103997
+- Legea 25/2023: legislatie.just.ro/Public/DetaliiDocumentAfis/263844
+- HG 1188/2022 PNCDI IV: legislatie.just.ro/Public/DetaliiDocument/259888
+- HG 1248/2023 (modificare PNCDI): legislatie.just.ro/Public/DetaliiDocumentAfis/277233
+
+### Documentație COFOG internațională
+- UN Statistics Division – COFOG Classification: unstats.un.org/unsd/classifications/cofog/revision
+- Eurostat Manual on COFOG Statistics (ediția 2019)
+- IMF Government Finance Statistics Manual
+
+### Site-uri instituționale
+- Autoritatea Națională pentru Cercetare: research.gov.ro
+- UEFISCDI: uefiscdi.gov.ro
+- ASAS: asas.ro
+- PoCIDIF: mfe.gov.ro/pocidif/despre-programul-pocidif/
+
+---
+
+## Concluzie
+
+Documentația pentru Capitol 86 necesită **corecturi urgente** în trei direcții principale: (1) rectificarea denumirilor subcapitolelor conform clasificației oficiale MFP, cu adăugarea expresiei „și dezvoltare"; (2) completarea cu subcapitolele lipsă 86.01.05 (transporturi) și 86.01.06 (comunicații); (3) actualizarea informațiilor instituționale pentru a reflecta reorganizarea din decembrie 2024 și înlocuirea POC cu PoCIDIF. Baza legală citată este solidă și corectă, iar maparea COFOG este conformă cu standardele internaționale.
+
+## Processed
+
+- **Date**: 2026-01-02 16:31:05
+- **Source file**: ./public/assets/text/ro/functional/86.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-86-2026-01-02-160309.log

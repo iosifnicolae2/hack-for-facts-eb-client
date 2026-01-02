@@ -313,7 +313,161 @@ Pentru transparență maximă, datele ar trebui să permită dezagregarea pe fie
 ## Context
 
 - **Created**: 2026-01-02 04:36:37
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/66.06.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/66.06.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Raport de verificare a documentației bugetare pentru codul 66.06
+
+Verificarea documentației pentru clasificația funcțională **66.06 "Servicii medicale în unități sanitare cu paturi"** confirmă că majoritatea informațiilor tehnice și juridice sunt corecte, cu o excepție critică privind procentul cheltuielilor de sănătate din PIB. Toate actele normative citate sunt în vigoare, iar codurile bugetare corespund clasificărilor oficiale MFP. Link-urile legislative funcționează, deși portalul Curții de Conturi prezintă probleme tehnice de certificat SSL.
+
+---
+
+## Rezumat general
+
+Documentația analizată prezintă corect **structura clasificației funcționale** a cheltuielilor pentru sănătate, cu codul 66.06 corespunzând exact denumirii oficiale din Anexa II MFP. Cadrul legislativ citat (Ordinul MFP 1954/2005, Legea 95/2006, Legea 273/2006, HG 521/2023) este valid și actualizat. Sistemul DRG este confirmat ca mecanism principal de finanțare pentru aproximativ **300 de spitale**, iar maparea COFOG la grupul **07.3 Hospital Services** este corectă.
+
+Verificarea a identificat o **eroare factuală majoră**: cheltuielile totale pentru sănătate reprezintă **5,7% din PIB** (conform Eurostat 2023), nu 2-2,5% cum se menționează în document. De asemenea, procentul veniturilor CNAS din contribuții a crescut la **74-86%** în perioada 2023-2025, depășind intervalul 60-80% indicat.
+
+---
+
+## Probleme critice
+
+### Eroare majoră privind procentul din PIB
+
+Afirmația că cheltuielile pentru sănătate reprezintă **2-2,5% din PIB** este **incorectă și necesită corectare imediată**. Datele Eurostat pentru 2023 arată că România alocă **5,7% din PIB** pentru sănătate, poziționându-se totuși pe ultimul loc în UE (media europeană fiind 10%). Această discrepanță de aproape 3 puncte procentuale reprezintă o eroare semnificativă care poate induce în eroare utilizatorii documentației.
+
+Posibile explicații pentru eroare: valoarea de 2-2,5% s-ar putea referi exclusiv la cheltuielile bugetului de stat pentru sănătate (excluzând FNUASS și contribuțiile de asigurări) sau la o componentă specifică precum cheltuielile de investiții. Recomandare: clarificarea contextului și actualizarea la cifra corectă de **5,7% din PIB** pentru cheltuielile totale.
+
+### Link nefuncțional Curtea de Conturi
+
+URL-ul pentru secțiunea Sănătate a Curții de Conturi (https://www.curteadeconturi.ro/publicatii/rapoarte-in-urma-misiunilor-proprii/46-sanatate) prezintă **erori de certificat SSL** ("certificate verify failed"). Deși conținutul rămâne accesibil prin metode alternative, link-ul ar trebui actualizat sau însoțit de o notă privind problema tehnică. Rapoartele recente ale Curții sunt disponibile, inclusiv auditul PIAS din octombrie 2025 și raportul financiar CNAS 2024.
+
+---
+
+## Probleme minore și sugestii
+
+### Actualizare interval venituri CNAS
+
+Intervalul **60-80%** pentru ponderea veniturilor proprii CNAS din FNUASS este conservator. Datele recente indică valori mai ridicate: **74%** în 2023, **84%** în 2024, și **85,89%** în primele 11 luni ale anului 2025. Se recomandă actualizarea intervalului la **70-86%** sau menționarea tendinței crescătoare ca urmare a eliminării excepțiilor de la plata CASS și a majorării salariului minim.
+
+### Completare subcapitole lipsă
+
+Documentația ar trebui să includă lista completă a **paragrafelor** aferente codului 66.06, variind în funcție de tipul de buget:
+
+| Paragraf | Denumire |
+|----------|----------|
+| 66.06.01 | Spitale generale |
+| 66.06.02 | Spitale de specialitate |
+| 66.06.03 | Spitale de pediatrie / Unități medico-sociale |
+| 66.06.04 | Unități de recuperare-reabilitare a sănătății |
+| 66.06.05 | Maternități |
+| 66.06.06 | Sanatorii balneare și de recuperare |
+| 66.06.07 | Centre medicale cu paturi |
+| 66.06.50 | Alte unități sanitare cu paturi |
+
+Codificarea variază: **66.01.06** pentru bugetul de stat, **66.02.06** pentru bugete locale, **66.10.06** pentru instituții cu venituri proprii.
+
+### Menționare modificări legislative recente
+
+Actele normative citate au suferit modificări semnificative în 2025 care ar trebui menționate: Legea 95/2006 a fost modificată prin **OUG 84/2025** (decembrie 2025), iar Legea 273/2006 prin **OUG 89/2025** (23 decembrie 2025). HG 521/2023 a fost completată prin **HG 687/2024** cu efecte de la 1 iulie 2024.
+
+---
+
+## Confirmări ale informațiilor corecte
+
+### Denumirea oficială și structura codului 66.06
+
+**Confirmată integral.** Codul 66.06 corespunde denumirii oficiale **"Servicii medicale în unități sanitare cu paturi"** din Anexa II a Ordinului MFP nr. 1954/2005. Capitolul 66 "Sănătate" include toate subcapitolele menționate: 66.01 (Administrație centrală), 66.04 (Servicii medicale în ambulator), 66.06 (Servicii spitalicești), 66.08 (Servicii de sănătate publică), 66.10 (Cercetare), 66.50 (Alte cheltuieli).
+
+### Legislație citată - în vigoare și accesibilă
+
+Toate cele patru acte normative verificate sunt **valide și funcționale**:
+
+| Act normativ | Status | Ultima modificare |
+|--------------|--------|-------------------|
+| Ordinul MFP 1954/2005 | ✅ În vigoare | Note de modificare 2024-2025 |
+| Legea 95/2006 | ✅ În vigoare (republicată 2015) | OUG 84/2025 (18 decembrie 2025) |
+| Legea 273/2006 | ✅ În vigoare | OUG 89/2025 (23 decembrie 2025) |
+| HG 521/2023 | ✅ În vigoare | HG 687/2024 |
+
+Link-urile de pe legislatie.just.ro sunt funcționale, deși portalul blochează accesul automat prin robots.txt - utilizatorii pot accesa direct în browser.
+
+### Sistemul DRG confirmat ca mecanism de finanțare
+
+**Confirmat integral.** Sistemul DRG (Diagnostic Related Groups) este mecanismul principal de finanțare pentru spitalele din România. Versiunea **RO-DRG** (bazată pe modelul australian) funcționează din decembrie 2010, acoperind aproximativ **300 de spitale** și **4,12 milioane de pacienți** decontați în 2024. Formula de calcul utilizează ICM × TCP × număr de cazuri, cu tarife diferențiate pe 5 nivele în funcție de categoria spitalului.
+
+### Ponderea cheltuielilor spitalicești
+
+**Confirmată.** Procentul de **40-50%** pentru ponderea serviciilor spitalicești în cheltuielile de sănătate este corect. România ocupă primul loc în Europa la acest indicator, cu **48%** din cheltuieli direcționate către îngrijirea spitalicească (date OCDE 2022). CNAS alocă aproximativ **60%** din fondurile pentru servicii medicale către spitale.
+
+### Coduri de sursă de finanțare
+
+**Confirmate integral.** Codurile menționate corespund clasificației oficiale din Anexa I MFP:
+- **11** = Buget de stat ✅
+- **12** = Buget local ✅
+- **51** = Venituri proprii ✅
+- **42** = Fonduri externe nerambursabile ✅
+
+### Articole bugetare (clasificație economică)
+
+**Confirmate integral.** Structura articolelor bugetare este corectă conform clasificației economice a cheltuielilor:
+- **10.01** = Cheltuieli de personal (Titlul 10, articolul 01) ✅
+- **20.01** = Bunuri și servicii ✅
+- **20.05** = Bunuri de natura obiectelor de inventar ✅
+- **71.01** = Construcții (cheltuieli de capital) ✅
+
+### Corespondența COFOG
+
+**Confirmată integral.** Codul 66.06 corespunde grupului **COFOG 07.3 "Hospital services"** conform Anexei 7 MFP (versiunea din 13 mai 2025). Maparea detaliată:
+- 66.06.01 Spitale generale → COFOG 07.3.1 General hospital services
+- 66.06.06 Sanatorii de recuperare → COFOG 07.3.4 Nursing and convalescent home services
+- 66.06.50 Alte unități → COFOG 07.3.2/07.3.3/07.3.4 în funcție de tipul specific
+
+### Documente CNAS
+
+**Link-uri funcționale:**
+- Contract-cadru CNAS (PDF din aprilie 2024) - accesibil, conține HG 521/2023
+- Raport de activitate CNAS 2024 (PDF din mai 2025) - accesibil, ediție aniversară 25 ani
+- Buget FNUASS 2024: **62,37 miliarde lei** (+4% față de 2023)
+- **735 contracte** cu spitale la 31.12.2024 (creștere de la 708)
+
+---
+
+## Surse consultate
+
+### Legislație și clasificații bugetare
+- **Ordinul MFP nr. 1954/16.12.2005** - Clasificația indicatorilor privind finanțele publice, Monitorul Oficial nr. 1176/27.12.2005
+- **Anexa II MFP** - Clasificația funcțională a cheltuielilor (versiunea 29.01.2025)
+- **Anexa 7 MFP** - Corespondență clasificație funcțională cu COFOG (versiunea 13.05.2025)
+- **Portalul Legislativ** - legislatie.just.ro (Legea 95/2006, Legea 273/2006, HG 521/2023)
+
+### Surse statistice și rapoarte
+- **Eurostat** - Statistici cheltuieli sănătate UE 2023
+- **CNAS** - Raport de activitate 2024, Contract-cadru, date execuție FNUASS
+- **Curtea de Conturi a României** - Raport audit PIAS octombrie 2025, Raport financiar CNAS 2024
+- **OCDE** - Health Statistics 2022-2023, raport "State of Health in the EU"
+- **Centrul DRG** - www.drg.ro, documentație sistem RO-DRG
+
+### Surse internaționale
+- **Eurostat Manual on COFOG Statistics** - ediția 2019 (ISBN 978-92-76-09695-5)
+- **IMF Government Finance Statistics Manual**
+- **UN COFOG Classification 1999**
+
+---
+
+## Concluzii
+
+Documentația bugetară pentru codul 66.06 este **substanțial corectă** din punct de vedere tehnic și juridic. Singura problemă critică identificată este eroarea privind procentul cheltuielilor de sănătate din PIB (**5,7%**, nu 2-2,5%). Se recomandă corectarea acestei valori, actualizarea intervalului pentru veniturile CNAS, și includerea listei complete de subcapitole/paragrafe. Toate link-urile legislative sunt funcționale, iar corespondența COFOG este validă pentru raportarea internațională către Eurostat.
+
+---
+
+*Verificare efectuată: 2 ianuarie 2026*  
+*Metodologie: Verificare încrucișată cu surse oficiale MFP, CNAS, Eurostat și Portal Legislativ*
+
+## Processed
+
+- **Date**: 2026-01-02 16:11:16
+- **Source file**: ./public/assets/text/ro/functional/66.06.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-66.06-2026-01-02-160309.log

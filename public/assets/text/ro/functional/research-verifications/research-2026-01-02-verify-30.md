@@ -250,7 +250,154 @@ Pentru o imagine completă a veniturilor din valorificarea patrimoniului, Capito
 ## Context
 
 - **Created**: 2026-01-02 04:36:35
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/30.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/30.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație Capitol 30: constatări și recomandări
+
+Documentația pentru Capitol 30 "Venituri din proprietate" este **substanțial corectă**, cu toate referințele legislative în vigoare și codurile bugetare validate. Totuși, există **patru subcapitole omise** din clasificația oficială și o denumire legislativă care necesită actualizare. Procentul de 2-5% din veniturile totale este plauzibil, iar companiile exemplificate sunt confirmate oficial ca principalii contribuitori la buget.
+
+---
+
+## 1. Rezumat general
+
+Verificarea a validat majoritatea informațiilor din documentație. **Capitol 30 aparține corect categoriei C1 - Venituri nefiscale**, iar toate cele cinci subcapitole menționate corespund clasificației MFP. Legislația citată este în vigoare și corect referențiată. Singurele probleme identificate sunt completitudinea listei de subcapitole și o eroare minoră în denumirea Legii nr. 31/1990.
+
+Surse consultate: Ordinul MFP nr. 1954/2005 actualizat, Anexa I Clasificația veniturilor (mfinante.gov.ro), Portal Legislativ (legislatie.just.ro), rapoarte AMEPIP și execuție bugetară MFP 2024-2025.
+
+---
+
+## 2. Probleme critice găsite
+
+### Subcapitole lipsă din documentație
+
+Clasificația oficială MFP include la Capitol 30 **patru subcapitole suplimentare** care nu sunt menționate:
+
+| Cod | Denumire oficială | Observații |
+|-----|-------------------|------------|
+| **30.01.02** | Încasări din cota reținută, conform Codului Penal | Specific buget de stat |
+| **30.01.03** | Restituiri de fonduri din finanțarea bugetară a anilor precedenți | Specific buget de stat |
+| **30.10.06** | Venituri din cota-parte transferată din tarifele de utilizare a spectrului | Instituții cu venituri proprii |
+| **30.00.07** | Alte venituri pentru asigurările de accidente de muncă și boli profesionale | Forma consolidată |
+
+**Recomandare:** Completați documentația cu aceste subcapitole sau menționați explicit că lista prezentată acoperă doar cele mai frecvent utilizate categorii.
+
+### Nuanță privind subcapitolul 30.01.09
+
+Codul **30.01.09 - Venituri din utilizarea pășunilor comunale** există în clasificație, dar este utilizat predominant la nivelul **30.10.09** (instituții publice finanțate din venituri proprii) și **30.00.09** (forma consolidată). La bugetul de stat propriu-zis (30.01.xx) și bugetele locale (30.02.xx), acest subcapitol nu apare frecvent în practica bugetară. Documentația ar trebui să clarifice acest aspect.
+
+---
+
+## 3. Probleme minore și sugestii de îmbunătățire
+
+### Denumirea Legii nr. 31/1990 necesită actualizare
+
+Legea este citată ca "Legea nr. 31/1990 privind societățile", însă denumirea corectă actuală este **"Legea nr. 31/1990 privind societățile"** (fără "comerciale"). Modificarea a fost operată prin art. 18(1) din Legea nr. 76/2012. Verificați dacă documentația folosește termenul "societăți comerciale" - acesta trebuie eliminat.
+
+### Clarificarea procentului de 2-5%
+
+Afirmația că "veniturile din proprietate reprezintă aproximativ 2-5% din veniturile totale" este **plauzibilă dar imprecisă**:
+
+- **Veniturile din proprietate stricto sensu** (dividende + dobânzi + redevențe la Capitol 30): aproximativ **1,5-2,5%** din veniturile totale
+- **Veniturile nefiscale totale** (categorie C1+C2): aproximativ **7-8%** din veniturile totale (49 miliarde lei în 2024)
+
+**Recomandare:** Reformulați astfel: "Veniturile din proprietate (Capitol 30) reprezintă aproximativ **1,5-3%** din veniturile totale ale bugetului general consolidat, cu variații semnificative în funcție de profitabilitatea companiilor de stat (ex. în 2022-2023, ponderea a fost mai mare datorită crizei energetice)."
+
+### Structura ierarhică ar putea fi mai clară
+
+Documentația ar beneficia de explicarea sistemului de codificare:
+- **30.01.xx** = Buget de stat
+- **30.02.xx** = Bugete locale  
+- **30.10.xx** = Instituții publice finanțate din venituri proprii
+- **30.00.xx** = Forma consolidată/generală
+
+### Acte normative suplimentare recomandate
+
+Pentru completitudine, considerați adăugarea:
+- **Legea nr. 207/2015** privind Codul de procedură fiscală (pentru procedurile de colectare)
+- **HG nr. 1/2016** - Normele metodologice de aplicare a Codului fiscal (actualizat prin HG 602/2025)
+
+---
+
+## 4. Confirmări ale informațiilor corecte
+
+### Codurile bugetare - toate validate
+
+| Cod verificat | Denumire | Status |
+|---------------|----------|--------|
+| **30.01.01** | Vărsăminte din profitul net al regiilor autonome, societăților și companiilor naționale | ✅ Corect |
+| **30.01.05** | Venituri din concesiuni și închirieri | ✅ Corect |
+| **30.01.08** | Venituri din dividende | ✅ Corect |
+| **30.01.09** | Venituri din utilizarea pășunilor comunale | ✅ Corect (cu nuanța de mai sus) |
+| **30.01.50** | Alte venituri din proprietate | ✅ Corect |
+
+### Încadrarea în clasificație
+
+- **Capitol 30 în categoria C1 - Venituri nefiscale**: ✅ **Confirmat**
+- **Capitol 31 conține separat veniturile din dobânzi**: ✅ **Confirmat** (subcapitole 31.01.01, 31.01.02, 31.01.03 etc.)
+- **Capitol 30 și 31 împreună formează categoria C1 - VENITURI DIN PROPRIETATE**: ✅ **Confirmat**
+
+### Legislația citată - toate actele în vigoare
+
+| Act normativ | Status | Observații |
+|--------------|--------|------------|
+| **Ordinul MFP nr. 1954/2005** | ✅ În vigoare | Actualizat anual; clasificațiile curente pe mfinante.gov.ro |
+| **Legea nr. 500/2002** | ✅ În vigoare | Multiple modificări recente (OUG 89/2025, Legea 141/2025) |
+| **Legea nr. 273/2006** | ✅ În vigoare | Modificări prin OUG 89/2025 |
+| **Codul Fiscal (Legea nr. 227/2015)** | ✅ În vigoare | Actualizări frecvente; ultimele: OUG 89/2025, HG 602/2025 |
+| **Legea nr. 31/1990** | ✅ În vigoare | Denumirea actualizată: "Legea societăților" |
+
+### URL-urile legislative - toate funcționale
+
+Toate URL-urile de pe legislatie.just.ro sunt corecte și funcționale:
+- https://legislatie.just.ro/Public/DetaliiDocument/67596 (Ordinul 1954/2005)
+- https://legislatie.just.ro/Public/DetaliiDocumentAfis/37954 (Legea 500/2002)
+- https://legislatie.just.ro/Public/DetaliiDocument/73527 (Legea 273/2006)
+- https://legislatie.just.ro/Public/DetaliiDocumentAfis/171282 (Codul Fiscal)
+
+### Companiile exemplificate - confirmate oficial
+
+**Hidroelectrica, Romgaz și Nuclearelectrica** sunt confirmate de AMEPIP (martie 2025) ca **TOP 3 plătitori de dividende** către bugetul de stat:
+
+| Companie | Participație stat | Dividende 2024 pentru stat | Sursă |
+|----------|-------------------|---------------------------|-------|
+| **Hidroelectrica** | ~80% | ~5 miliarde lei | AMEPIP, BVB |
+| **Romgaz** | ~70% | ~1,5 miliarde lei | ME, BVB |
+| **Nuclearelectrica** | ~82% | ~0,8 miliarde lei | ME, BVB |
+
+Încasările totale din dividende companiilor de stat: **7,5-8 miliarde lei/an** (proiecție MFP 2025-2028).
+
+---
+
+## 5. Surse consultate
+
+### Surse primare oficiale
+- **Ministerul Finanțelor** - Anexa I Clasificația veniturilor (mfinante.gov.ro/domenii/bugetul-de-stat)
+- **Portal Legislativ** (legislatie.just.ro) - toate actele normative citate
+- **Ordinul MFP nr. 1954/16.12.2005** cu modificările și completările ulterioare
+
+### Date statistice și de execuție
+- Execuție bugetară 2024 - Ministerul Finanțelor (venituri nefiscale: 49,06 mld lei)
+- Proiect buget 2025 - Ministerul Finanțelor
+- Raport AMEPIP privind întreprinderile publice (martie 2025)
+
+### Documente bugetare verificate
+- Bugete locale publicate (Primăria Sector 6, Municipiul Sibiu, Municipiul Zalău)
+- Documente de transpunere clasificație bugetară MFP
+- Comunicări oficiale BVB pentru companiile de stat
+
+---
+
+## Concluzie finală
+
+Documentația pentru Capitol 30 "Venituri din proprietate" este **solidă din punct de vedere tehnic și juridic**. Problemele identificate sunt de natură completitudine (subcapitole lipsă) și precizie (procentul 2-5%), nu erori fundamentale. Implementarea celor patru recomandări de mai sus va îmbunătăți semnificativ utilitatea documentației pentru utilizatorii fără pregătire de specialitate bugetară.
+
+**Scor calitate documentație: 8/10** - Corectă și utilă, necesită completări minore.
+
+## Processed
+
+- **Date**: 2026-01-02 14:06:32
+- **Source file**: ./public/assets/text/ro/functional/30.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-30-2026-01-02-140450.log

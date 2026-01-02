@@ -256,7 +256,192 @@ Pentru context, structura capitolului 83 în clasificația funcțională cuprind
 ## Context
 
 - **Created**: 2026-01-02 04:36:40
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/83.50.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/83.50.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Raport de Verificare: Clasificația Funcțională Bugetară Subcapitol 83.50
+
+Verificarea documentației bugetare pentru subcapitolul 83.50 „Alte cheltuieli în domeniul agriculturii, silviculturii, pisciculturii și vânătorii" relevă o **problemă critică de interpretare a structurii codificării**. Deși codul există și denumirea este corectă, structura prezentată inițial necesită corecții importante privind logica de codificare a clasificației funcționale românești.
+
+---
+
+## 1. Rezumat general
+
+Ordinul MFP nr. 1954/2005 este **în vigoare** și clasificația indicatorilor privind finanțele publice este actualizată continuu prin comunicări ale Ministerului Finanțelor (peste 13 note de modificare numai în 2025). Legile 500/2002 și 273/2006 sunt de asemenea în vigoare. Codul 83.50 „Alte cheltuieli în domeniul agriculturii, silviculturii, pisciculturii și vânătorii" **există** în clasificația oficială și are caracter rezidual confirmat. Titlurile economice menționate (10, 20, 40, 51, 59) sunt verificate și corecte. MADR este confirmat ca ordonator principal de credite pentru capitolul 83.
+
+---
+
+## 2. Probleme critice găsite
+
+### Structura capitolului 83 necesită corectare majoră
+
+Structura prezentată în documentația verificată **nu corespunde** cu sistemul oficial de codificare al clasificației funcționale românești. Diferența fundamentală constă în interpretarea cifrelor din cod:
+
+**Structura din document (INCORECTĂ):**
+- 83.01 = Administrație centrală
+- 83.02 = Servicii publice descentralizate
+- 83.03 = Agricultură
+- 83.50 = Alte cheltuieli...
+
+**Structura oficială (CORECTĂ):**
+
+În clasificația funcțională românească, **al doilea element numeric** (după 83) indică **tipul de buget**, nu subcategoria funcțională:
+
+| Cod | Semnificație |
+|-----|--------------|
+| 83.01 | Capitol 83 - **Buget de stat** |
+| 83.02 | Capitol 83 - **Bugete locale** |
+| 83.03 | Capitol 83 - **Buget asigurări sociale de stat** |
+| 83.05 | Capitol 83 - **Buget FNUASS** |
+| 83.06 | Capitol 83 - **Credite externe** |
+| 83.10 | Capitol 83 - **Instituții publice cu venituri proprii** |
+
+Subcapitolele funcționale apar la **al treilea nivel** de codificare:
+
+```
+83.01 - AGRICULTURĂ, SILVICULTURĂ, PISCICULTURĂ ȘI VÂNĂTOARE (Buget de stat)
+├── 83.01.01 - Administrație centrală
+├── 83.01.02 - Servicii publice descentralizate
+├── 83.01.03 - Agricultură
+│   ├── 83.01.03.01 - Amendare soluri acide și alcaline
+│   ├── 83.01.03.02 - Îmbunătățiri funciare, irigații
+│   ├── 83.01.03.03 - Protecția plantelor și carantina fitosanitară
+│   ├── 83.01.03.04 - Programe pentru sprijinirea producătorilor agricoli
+│   ├── 83.01.03.05 - Reproducția și selecția animalelor
+│   └── 83.01.03.30 - Alte cheltuieli în domeniul agriculturii
+├── 83.01.04 - Silvicultură
+├── 83.01.05 - Piscicultură și vânătoare
+└── 83.01.50 - Alte cheltuieli în domeniul agriculturii, silviculturii, pisciculturii și vânătorii
+```
+
+**Codurile corecte pentru „Alte cheltuieli...":**
+- **83.01.50** (buget de stat)
+- **83.02.50** (bugete locale)
+- **83.10.50** (instituții publice cu venituri proprii)
+
+### Link-uri parțial inaccesibile
+
+Fișierele Excel specifice de pe mfinante.gov.ro nu sunt accesibile programatic:
+- ❌ `AnexanrII_29012025.xls` - eroare permisiuni
+- ❌ `Anexanr7_13052025.xls` - eroare permisiuni
+- ❌ `Anexa nr.1_venit.pdf` - blocat de robots.txt
+
+---
+
+## 3. Probleme minore și sugestii de îmbunătățire
+
+### Clarificare denumire cod COFOG
+
+Corespondența COFOG pentru capitolul 83 nu a putut fi verificată direct din Anexa 7 (inaccesibilă). Totuși, maparea conceptuală este corectă: **COFOG Grupa 04.2** = „Agricultură, silvicultură, pescuit și vânătoare" corespunde capitolului 83. Recomandare: Verificați manual documentul prin descărcare de pe pagina oficială MFP.
+
+### Codul subcapitolului pentru agricultură
+
+În cadrul subcapitolului 83.XX.03 „Agricultură", paragrafele se încheie la **.30** (nu până la .30 inclusiv așa cum era menționat „83.03.01-83.03.30"). Lista completă a paragrafelor este:
+- 83.XX.03.01 - Amendare soluri acide și alcaline
+- 83.XX.03.02 - Îmbunătățiri funciare, irigații, desecări și combaterea eroziunii solului
+- 83.XX.03.03 - Protecția plantelor și carantina fitosanitară
+- 83.XX.03.04 - Programe pentru sprijinirea producătorilor agricoli
+- 83.XX.03.05 - Reproducția și selecția animalelor
+- 83.XX.03.30 - Alte cheltuieli în domeniul agriculturii
+
+### Titlul 59 - Clarificare numerotare
+
+Titlul 59 „Alte cheltuieli" apare uneori ca „Titlul IX" sau „Titlul XI" în documentele oficiale, în funcție de perioada de referință și structura actului normativ. Codul numeric **59** este consistent.
+
+---
+
+## 4. Confirmări ale informațiilor corecte
+
+### Referințe legislative - CONFIRMATE ✅
+
+| Act normativ | Status | Publicare |
+|--------------|--------|-----------|
+| Ordinul MFP nr. 1954/2005 | **ÎN VIGOARE** (cu modificări continue) | MO Partea I, nr. 1176/27.12.2005 |
+| Legea nr. 500/2002 | **ÎN VIGOARE** | MO Partea I, nr. 597/13.08.2002 |
+| Legea nr. 273/2006 | **ÎN VIGOARE** | MO Partea I, nr. 618/18.07.2006 |
+
+Ordinul 1954/2005 este baza legală pentru clasificația bugetară, emis în temeiul art. 19 lit. f) din Legea 500/2002. La intrarea în vigoare (1 ianuarie 2006) a abrogat Ordinul MF nr. 1394/1995.
+
+### Titlurile clasificației economice - CONFIRMATE ✅
+
+| Titlu | Cod | Denumire oficială | Status |
+|-------|-----|-------------------|--------|
+| I | **10** | Cheltuieli de personal | ✅ CORECT |
+| II | **20** | Bunuri și servicii | ✅ CORECT |
+| IV | **40** | Subvenții | ✅ CORECT |
+| - | **40.15** | Sprijinirea producătorilor agricoli | ✅ CORECT |
+| VI | **51** | Transferuri între unități ale administrației publice | ✅ CORECT |
+| IX | **59** | Alte cheltuieli | ✅ CORECT |
+
+Codul **40.15 „Sprijinirea producătorilor agricoli"** este confirmat în multiple acte normative, inclusiv HG 897/2012 și Ordonanța nr. 5/2024.
+
+### MADR - Ordonator principal de credite - CONFIRMAT ✅
+
+**Ministerul Agriculturii și Dezvoltării Rurale (MADR)** este confirmat ca ordonator principal de credite pentru capitolul 83.01 „Agricultură, silvicultură, piscicultură și vânătoare" din bugetul de stat.
+
+Bază legală: **HG nr. 30/2017** privind organizarea și funcționarea MADR, Art. 4: „Ministerul Agriculturii și Dezvoltării Rurale este finanțat integral de la bugetul de stat."
+
+La 31 decembrie 2025, MADR avea **166 ordonatori de credite** în subordine (ulterior redus la 93 după reorganizare).
+
+### Caracter rezidual subcapitole .50 - CONFIRMAT ✅
+
+Terminația **.50** este utilizată sistematic în întreaga clasificație funcțională pentru categorii reziduale („Alte cheltuieli în domeniul..."). Acest pattern este consistent:
+
+- 60.XX.50 - Alte cheltuieli în domeniul apărării
+- 65.XX.50 - Alte cheltuieli în domeniul învățământului
+- 66.XX.50 - Alte cheltuieli în domeniul sănătății
+- 68.XX.50 - Alte cheltuieli în domeniul asistenței sociale
+- **83.XX.50** - Alte cheltuieli în domeniul agriculturii, silviculturii, pisciculturii și vânătorii
+- 84.XX.50 - Alte cheltuieli în domeniul transporturilor
+
+### Utilizare cod 83.02.50 pentru bugete locale - CONFIRMAT ✅
+
+Codul **83.02.50** există și este utilizat corect pentru bugetele locale. Sufixul .02 indică bugete locale, iar .50 indică subcapitolul rezidual pentru alte cheltuieli.
+
+### Funcționalitate link-uri legislatie.just.ro - CONFIRMAT ✅
+
+| URL | Status |
+|-----|--------|
+| legislatie.just.ro/Public/DetaliiDocument/67596 | ✅ Valid - Ordin 1954/2005 |
+| legislatie.just.ro/Public/DetaliiDocumentAfis/37954 | ✅ Valid - Legea 500/2002 |
+| legislatie.just.ro/Public/DetaliiDocument/73527 | ✅ Valid - Legea 273/2006 |
+
+Link-urile sunt funcționale prin browser, deși accesul programatic este restricționat.
+
+---
+
+## 5. Surse consultate
+
+### Surse legislative oficiale
+- **Portal Legislativ** (legislatie.just.ro) - Ordinul MFP 1954/2005, Legea 500/2002, Legea 273/2006
+- **Monitorul Oficial al României**, Partea I, nr. 1176 din 27.12.2005
+
+### Surse Ministerul Finanțelor
+- **mfinante.gov.ro** - Pagina clasificații bugetare, Anexe I-III, Note de modificare 2025
+- **Comunicări MFP** nr. 532880-536037 (note de modificare clasificație 2025)
+- **Tabel transpunere funcțională** - Anexa 2 (bugete locale)
+
+### Surse MADR și documente bugetare
+- **madr.ro** - Secțiunea transparență instituțională/buget
+- **HG nr. 30/2017** privind organizarea și funcționarea MADR
+- **HG nr. 221/2014**, **HG nr. 897/2012** - referințe la clasificația bugetară
+
+### Surse terțe verificate
+- Lege5.ro, LegeAZ.net - Acte normative bugetare
+- Agrointel.ro - Documente bugetare MADR
+- News.ro, Capital.ro - Comunicat MADR decembrie 2025
+
+---
+
+## Concluzie
+
+Verificarea confirmă că **denumirea și existența codului 83.50** sunt corecte, dar structura completă a capitolului 83 prezentată inițial conține **o eroare fundamentală de interpretare** a sistemului de codificare. Codurile .01, .02, .10 nu reprezintă subcapitole funcționale, ci **tipuri de bugete** (stat, local, instituții publice). Subcapitolele funcționale reale (Administrație centrală, Servicii descentralizate, Agricultură, etc.) se găsesc la al treilea nivel de codificare (83.01.01, 83.01.02, 83.01.03, etc.).
+
+Toate celelalte elemente verificate - referințe legislative, titluri economice, MADR ca ordonator de credite, caracterul rezidual al subcapitolelor .50 - sunt **confirmate ca exacte**.
+## Processed
+
+- **Date**: 2026-01-02 16:27:00
+- **Source file**: ./public/assets/text/ro/functional/83.50.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-83.50-2026-01-02-160309.log

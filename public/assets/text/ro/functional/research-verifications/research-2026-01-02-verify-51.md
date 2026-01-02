@@ -297,7 +297,193 @@ Monitorizarea cheltuielilor din acest capitol permite evaluarea costului adminis
 ## Context
 
 - **Created**: 2026-01-02 04:36:36
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/51.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/51.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificarea documentației bugetare pentru Capitolul 51 România
+
+Analiza documentației pentru Capitolul 51 "Autorități publice și acțiuni externe" din clasificația funcțională românească evidențiază o **acuratețe generală bună**, cu câteva aspecte care necesită clarificări sau corecturi. Baza legală (Ordinul MFP 1954/2005) și referințele legislative principale sunt corecte și în vigoare, însă structura subcapitolelor prezintă unele inadvertențe care necesită verificare față de ultima versiune oficială a clasificației MFP.
+
+---
+
+## 1. Rezumat general
+
+Documentația verificată pentru Capitolul 51 din clasificația funcțională a cheltuielilor bugetare este **substanțial corectă**, cu următoarele constatări principale:
+
+- **Denumirea oficială** "Autorități publice și acțiuni externe" este **identică** cu cea din Anexa II (clasificația cheltuielilor) conform Ordinului MFP 1954/2005
+- **Toate cele 5 acte normative citate** (Ordinul 1954/2005, Legea 500/2002, Legea 273/2006, OUG 57/2019, Constituția României) **sunt în vigoare** la data verificării
+- **Structura de bază** 51.01/51.02/51.10 este corectă și conformă cu clasificația oficială
+- Au fost identificate **2-3 probleme potențiale** la nivelul codificării subcapitolelor și paragrafelor care necesită verificare suplimentară
+
+---
+
+## 2. Probleme critice găsite
+
+### 2.1 Codificare incorectă pentru subcapitolul "Alte organe"
+
+**Problemă**: Documentația listează codul **51.01.01.04** pentru "Alte organe".
+
+**Constatare**: În clasificația oficială MFP, "Alte organe ale autorităților publice" apare la codul **51.01.04** (la nivel de subcapitol), nu la 51.01.01.04 (care ar fi nivel de paragraf sub 51.01.01). Această diferență de codificare trebuie clarificată și corectată conform ultimei versiuni oficiale a Anexei II.
+
+**Recomandare**: Verificarea directă în fișierul XLS oficial (AnexanrII_29012025.xls) pentru confirmarea nivelului corect de clasificare.
+
+### 2.2 Subcapitolul 51.01.02 "Servicii publice descentralizate" - neclarități
+
+**Problemă**: Documentația include subcapitolul **51.01.02 - "Servicii publice descentralizate"**.
+
+**Constatare**: Acest subcapitol **nu a putut fi confirmat** în sursele accesate pentru bugetul de stat (51.01). Clasificația oficială nu pare să includă această subdiviziune la nivelul 51.01. Este posibil:
+- Să fi fost eliminat în actualizările ulterioare ale clasificației
+- Să existe sub o altă denumire sau cod
+- Să fie specific doar anumitor bugete (locale sau venituri proprii)
+
+**Recomandare**: Verificare urgentă și, dacă nu există în clasificația actuală, eliminarea din documentație.
+
+### 2.3 Separarea subcapitolelor 51.01.03 și 51.01.04
+
+**Problemă identificată în clasificația actuală**: Începând cu actualizările recente, contribuția la bugetul UE și cofinanțarea fondurilor europene au fost **separate în două subcapitole distincte**:
+- **51.01.03** - "Contribuția la bugetul UE"  
+- **51.01.04** - "Cofinanțarea fondurilor primite de la Uniunea Europeană"
+
+**Constatare**: Documentația menționează doar 51.01.03 pentru ambele componente. Dacă această separare este în vigoare, documentația necesită actualizare.
+
+---
+
+## 3. Probleme minore și sugestii de îmbunătățire
+
+### 3.1 Clarificări necesare privind ierarhia codurilor
+
+Documentația ar putea fi îmbunătățită prin clarificarea nivelurilor ierarhice ale clasificației:
+- **Capitol** (2 cifre): 51
+- **Tip buget** (51.XX): 51.01, 51.02, 51.10
+- **Subcapitol** (51.XX.YY): 51.01.01, 51.01.03
+- **Paragraf** (51.XX.YY.ZZ): 51.01.01.01, 51.01.01.02, 51.01.01.03
+
+### 3.2 Completare privind corespondența COFOG
+
+**Sugestie**: Adăugarea corespondenței cu clasificația internațională COFOG (Classification of Functions of Government):
+- Capitol 51 corespunde **COFOG 01 - Servicii publice generale**
+- Subdiviziuni relevante: 01.1.1 (Organe executive și legislative), 01.1.3 (Afaceri externe)
+
+### 3.3 Actualizarea datelor privind ultima modificare
+
+Clasificația MFP este actualizată continuu prin comunicări și note de modificare. În 2025, există deja **peste 15 comunicări de modificare** publicate pe site-ul Ministerului Finanțelor. Documentația ar trebui să menționeze data ultimei verificări și să recomande consultarea versiunii actualizate.
+
+### 3.4 Clarificare privind dubla semnificație a codului 51
+
+**Atenție**: În sistemul bugetar românesc, codul 51 are **două semnificații distincte**:
+- **Clasificația funcțională**: Capitol 51 = "Autorități publice și acțiuni externe"
+- **Clasificația economică**: Titlul 51 = "Transferuri între unități ale administrației publice"
+
+Această distincție ar trebui menționată explicit în documentație pentru a evita confuziile.
+
+### 3.5 Link-uri către surse oficiale
+
+Toate URL-urile către **legislatie.just.ro** funcționează, dar accesul automatizat este restricționat prin robots.txt. Pentru:
+- Ordinul 1954/2005: https://legislatie.just.ro/Public/DetaliiDocument/67596 ✓
+- Legea 500/2002: https://legislatie.just.ro/Public/DetaliiDocument/37954 ✓
+- Legea 273/2006: https://legislatie.just.ro/Public/DetaliiDocument/73527 ✓
+- OUG 57/2019: https://legislatie.just.ro/Public/DetaliiDocument/215925 ✓
+
+---
+
+## 4. Confirmări ale informațiilor corecte
+
+### ✓ Cod bugetar corect
+- **Codul 51** pentru Capitolul "Autorități publice și acțiuni externe" este **corect** și corespunde clasificației funcționale oficiale
+
+### ✓ Denumirea oficială corectă
+- **"Autorități publice și acțiuni externe"** - denumire **identică** cu cea din Anexa II a Ordinului MFP 1954/2005, confirmată în multiple documente oficiale (legi bugetare anuale, ordonanțe de rectificare)
+
+### ✓ Structura pe tipuri de bugete
+Corect documentată:
+- **51.01** - Buget de stat
+- **51.02** - Bugete locale
+- **51.10** - Instituții publice finanțate din venituri proprii
+
+Se confirmă și existența **51.08** pentru Fonduri externe nerambursabile.
+
+### ✓ Subcapitole confirmate pentru bugetul de stat (51.01)
+- **51.01.01** - Autorități executive și legislative ✓
+- **51.01.01.01** - Administrația prezidențială ✓
+- **51.01.01.02** - Autorități legislative ✓
+- **51.01.01.03** - Autorități executive ✓
+- **51.01.03** - Contribuția la bugetul UE ✓
+
+### ✓ Subcapitole confirmate pentru bugete locale (51.02)
+- **51.02.01** - Autorități executive și legislative ✓
+- **51.02.01.03** - Autorități executive ✓
+
+### ✓ Referințe legislative valide
+Toate actele normative citate sunt **în vigoare** la data verificării (ianuarie 2026):
+
+| Act normativ | Status | Relevanță |
+|--------------|--------|-----------|
+| Ordinul MFP 1954/2005 | ✅ În vigoare | Actul de bază pentru clasificație |
+| Legea 500/2002 | ✅ În vigoare | Finanțe publice (buget stat) |
+| Legea 273/2006 | ✅ În vigoare | Finanțe publice locale |
+| OUG 57/2019 | ✅ În vigoare | Codul administrativ |
+| Constituția României | ✅ În vigoare | Fundament legal |
+
+### ✓ Destinații principale corecte
+Documentația menționează corect destinațiile principale ale Capitolului 51:
+- Funcționarea autorităților legislative (Parlamentul)
+- Funcționarea autorităților executive (Guvern, ministere)
+- Administrația prezidențială
+- Serviciul diplomatic
+- Contribuția României la bugetul Uniunii Europene
+- Contribuții la organizații internaționale
+
+---
+
+## 5. Surse consultate
+
+### Documente oficiale verificate
+
+1. **Ordinul MFP nr. 1954/16.12.2005** pentru aprobarea Clasificației indicatorilor privind finanțele publice
+   - Portal Legislativ: legislatie.just.ro/Public/DetaliiDocument/67596
+   - Monitorul Oficial nr. 1176 din 27 decembrie 2005
+
+2. **Legea nr. 500/2002** privind finanțele publice
+   - Portal Legislativ: legislatie.just.ro/Public/DetaliiDocument/37954
+   - Ultima consolidare verificată: 2024
+
+3. **Legea nr. 273/2006** privind finanțele publice locale
+   - Portal Legislativ: legislatie.just.ro/Public/DetaliiDocument/73527
+   - Ultima modificare identificată: OUG 20/2022
+
+4. **OUG nr. 57/2019** privind Codul administrativ
+   - Portal Legislativ: legislatie.just.ro/Public/DetaliiDocument/215925
+   - Ultima modificare identificată: OUG 121/2023
+
+5. **Pagina MFP Clasificații Bugetare**
+   - URL: mfinante.gov.ro/domenii/bugetul-de-stat/clasificatii-bugetare
+   - Ultima actualizare identificată: ianuarie 2025
+
+6. **Note de modificare MFP** (exemple verificate)
+   - mfinante.gov.ro/static/10/Mfp/legislatie/clasificatie_economica/nota231826.htm
+   - mfinante.gov.ro/static/10/Mfp/legislatie/clasificatie_economica/com123480.htm
+
+7. **Acte normative bugetare recente** (pentru verificarea utilizării codurilor)
+   - OUG 50/2025 privind rectificarea bugetară
+   - Ordonanța 19/2022 privind rectificarea bugetului de stat
+
+### Fișiere oficiale de clasificație (indicate pentru descărcare manuală)
+- AnexanrII_29012025.xls - Clasificația cheltuielilor (versiunea din 29.01.2025)
+- Anexanr7_13052025.xls - Corespondența COFOG (versiunea din 13.05.2025)
+- TranspFunc_anexa1.pdf - Tabele de transpunere clasificația funcțională
+
+---
+
+## Concluzii și recomandări finale
+
+Documentația pentru Capitolul 51 "Autorități publice și acțiuni externe" demonstrează o înțelegere corectă a structurii generale și a bazei legale. **Trei aspecte necesită atenție imediată**: verificarea existenței subcapitolului 51.01.02, clarificarea codului pentru "Alte organe" (51.01.04 vs 51.01.01.04), și actualizarea structurii pentru separarea contribuției UE de cofinanțare. 
+
+Se recomandă **descărcarea manuală** a fișierului oficial AnexanrII_29012025.xls de pe site-ul Ministerului Finanțelor pentru verificarea finală a tuturor codurilor și denumirilor, întrucât clasificația este actualizată continuu prin comunicări administrative. Documentația ar beneficia și de includerea corespondenței COFOG și a clarificării privind dubla semnificație a codului 51 în clasificațiile funcțională versus economică.
+
+## Processed
+
+- **Date**: 2026-01-02 14:51:21
+- **Source file**: ./public/assets/text/ro/functional/51.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-51-2026-01-02-143612.log

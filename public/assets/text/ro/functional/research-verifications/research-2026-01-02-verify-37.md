@@ -279,7 +279,144 @@ La nivel consolidat național:
 ## Context
 
 - **Created**: 2026-01-02 04:36:35
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/37.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/37.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație bugetară Capitol 37 - Raport complet
+
+**Concluzia principală**: Documentația pentru Capitol 37 „Transferuri voluntare, altele decât subvențiile" este **substanțial corectă**, dar prezintă **lacune în documentarea subcapitolelor** și o **formulare imprecisă** privind sursele de venituri. Toate referințele legislative sunt valide și în vigoare.
+
+---
+
+## 1. Rezumat general
+
+Verificarea documentației bugetare pentru Capitolul 37 din clasificația funcțională românească confirmă că denumirea oficială și codul bugetar sunt **corect identificate**. Capitolul 37 face parte din **Secțiunea I - Venituri Curente**, **Categoria C - Venituri Nefiscale**, conform Ordinului MFP nr. 1954/2005. Denumirea exactă din clasificația oficială MFP este **„TRANSFERURI VOLUNTARE, ALTELE DECÂT SUBVENȚIILE"**, care corespunde cu documentul verificat. Cadrul legislativ citat (Ordinul MFP 1954/2005, Legea 500/2002, Legea 273/2006, Legea 32/1994) este valid și în vigoare la data verificării.
+
+---
+
+## 2. Probleme critice găsite
+
+### Subcapitolele oficiale nu sunt documentate complet
+
+Clasificația oficială MFP stabilește **două subcapitole distincte** pentru Capitol 37, care lipsesc din documentația furnizată:
+
+| Cod oficial | Denumire oficială MFP |
+|-------------|----------------------|
+| **37.XX.01** | Donații și sponsorizări |
+| **37.XX.50** | Alte transferuri voluntare |
+
+Unde XX = 00 (agregat general), 01 (buget de stat), 02 (bugete locale), sau 10 (buget instituții finanțate din venituri proprii).
+
+**Exemple concrete de coduri complete:**
+- 37.01.01 — Donații și sponsorizări (Buget de stat)
+- 37.02.01 — Donații și sponsorizări (Bugete locale)
+- 37.10.50 — Alte transferuri voluntare (Instituții publice)
+
+### Formulare imprecisă la secțiunea „Surse"
+
+Documentația menționează „vărsăminte interne între secțiunile bugetului local" ca sursă pentru Capitol 37. Această formulare este **imprecisă** - vărsămintele interne între secțiuni au **codificare distinctă** în clasificația bugetară și nu sunt subcategorii ale Capitolului 37 conform anexelor oficiale MFP. Transferurile voluntare din Capitolul 37 provin din surse externe instituțiilor publice (donații, sponsorizări), nu din transferuri intra-bugetare.
+
+---
+
+## 3. Probleme minore și sugestii de îmbunătățire
+
+### Completarea structurii de subcapitole
+
+Documentația ar trebui să includă structura oficială completă:
+- **37.XX.01 - Donații și sponsorizări**: acoperă donațiile de la persoane fizice/juridice și contractele de sponsorizare conform Legii 32/1994
+- **37.XX.50 - Alte transferuri voluntare**: include alte forme de transferuri voluntare care nu sunt sponsorizări sau donații în sens strict
+
+### Clarificare privind corespondența contabilă
+
+Pentru o documentație completă, se recomandă adăugarea corespondenței cu planul de conturi:
+- Codul **37.10.01 „Donații și sponsorizări"** corespunde contului **779** „Venituri din bunuri și servicii primite cu titlu gratuit" conform OMFP 1917/2005
+
+### Clarificare COFOG
+
+Capitolul 37 nu are o corespondență directă în clasificația COFOG internațională. În sistemul COFOG (care folosește **10 diviziuni numerotate 01-10**), transferurile voluntare sunt clasificate în funcție de scopul lor funcțional, nu ca o categorie separată. Această distincție ar trebui menționată pentru utilizatorii familiarizați cu standardele internaționale.
+
+### Actualizarea referințelor la Legea 32/1994
+
+Legea 32/1994 privind sponsorizarea rămâne în vigoare, dar a suferit **modificări semnificative** prin:
+- Ordonanța nr. 36/1998
+- Legea nr. 204/2001
+- Legea nr. 394/2006
+- Ordonanța nr. 18/2018
+
+Se recomandă menționarea formei actualizate: „Legea nr. 32/1994 privind sponsorizarea, cu modificările și completările ulterioare".
+
+---
+
+## 4. Confirmări ale informațiilor corecte
+
+### Codul bugetar Capitol 37 - CONFIRMAT ✓
+Codul **37** pentru „Transferuri voluntare, altele decât subvențiile" este corect și corespunde clasificației oficiale din Ordinul MFP nr. 1954/2005.
+
+### Denumirea oficială - CONFIRMATĂ ✓
+**„Transferuri voluntare, altele decât subvențiile"** este denumirea exactă din Anexa I a clasificației veniturilor publicate de Ministerul Finanțelor.
+
+### Încadrarea în clasificația veniturilor - CONFIRMATĂ ✓
+Capitolul 37 este corect încadrat în:
+- **Secțiunea I**: Venituri Curente
+- **Categoria C**: Venituri Nefiscale
+
+### Legea nr. 500/2002 - CONFIRMATĂ ✓
+**Titlu oficial**: „Legea nr. 500 din 11 iulie 2002 privind finanțele publice"  
+**Status**: În vigoare (cu modificări până în 2024)  
+**Relevanță**: Articolul 19 lit. f) acordă MFP competența de aprobare a clasificațiilor bugetare
+
+### Legea nr. 273/2006 - CONFIRMATĂ ✓
+**Titlu oficial**: „Legea nr. 273 din 29 iunie 2006 privind finanțele publice locale"  
+**Status**: În vigoare (modificată inclusiv prin OUG 89/2025)  
+**Relevanță**: Art. 2 pct. 25 definește donația; Art. 7 alin. (2) stabilește excepția pentru donații și sponsorizări de la principiul universalității bugetare
+
+### Legea nr. 32/1994 - CONFIRMATĂ ✓
+**Titlu oficial**: „Legea nr. 32 din 19 mai 1994 privind sponsorizarea"  
+**Status**: În vigoare (cu modificări până în 2024)  
+**Relevanță**: Reglementează cadrul juridic al sponsorizării și mecenatului, definind condițiile pentru transferurile voluntare din sectorul privat
+
+### Ordinul MFP nr. 1954/2005 - CONFIRMAT ✓
+**Titlu oficial**: „Ordinul nr. 1.954 din 16 decembrie 2005 pentru aprobarea Clasificației indicatorilor privind finanțele publice"  
+**Status**: În vigoare de la 1 ianuarie 2006, cu modificări anuale continue  
+**Temeiul legal**: Art. 19 lit. f) din Legea 500/2002
+
+---
+
+## 5. Surse oficiale consultate
+
+### Legislație primară verificată
+- **Ordinul MFP nr. 1954/2005** — legislatie.just.ro/Public/DetaliiDocument/67596
+- **Legea nr. 500/2002** — legislatie.just.ro/Public/DetaliiDocumentAfis/37954  
+- **Legea nr. 273/2006** — Portalul Legislativ (legislatie.just.ro)
+- **Legea nr. 32/1994** — Portalul Legislativ (în vigoare cu modificări)
+
+### Documente MFP consultate
+- Anexa nr. I — Clasificația indicatorilor privind finanțele publice (venituri)
+- Anexa nr. 1 — Clasificația indicatorilor buget de stat
+- Anexa nr. 2 — Clasificația indicatorilor bugete locale
+- Note de modificare 2025 (comunicări MFP nr. 536037, 535982)
+
+### Surse secundare
+- Pagina oficială clasificații bugetare mfinante.gov.ro
+- Documentație normele contabile OMFP 1917/2005
+
+---
+
+## Concluzie și recomandări pentru Transparenta.eu
+
+Documentația pentru Capitol 37 este **fundamentally corectă** în ceea ce privește codul bugetar, denumirea oficială și cadrul legislativ. Pentru a atinge standardele de acuratețe necesare unei platforme de transparență bugetară, se recomandă:
+
+1. **Adăugarea structurii complete de subcapitole** (37.XX.01 și 37.XX.50)
+2. **Eliminarea sau clarificarea** referinței la „vărsăminte interne între secțiunile bugetului local"
+3. **Actualizarea citării** Legii 32/1994 cu mențiunea „cu modificările și completările ulterioare"
+4. **Adăugarea unei note** privind lipsa corespondenței directe COFOG pentru acest capitol
+
+Aceste ajustări vor asigura alinierea completă cu documentele oficiale MFP și vor crește încrederea utilizatorilor în acuratețea datelor prezentate.
+
+## Processed
+
+- **Date**: 2026-01-02 14:06:57
+- **Source file**: ./public/assets/text/ro/functional/37.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-37-2026-01-02-140450.log

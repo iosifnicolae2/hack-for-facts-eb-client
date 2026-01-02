@@ -270,8 +270,8 @@ Acest capitol este esențial pentru înțelegerea relațiilor financiare între 
 ## Context
 
 - **Created**: 2026-01-02 04:36:34
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/11.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/11.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
 

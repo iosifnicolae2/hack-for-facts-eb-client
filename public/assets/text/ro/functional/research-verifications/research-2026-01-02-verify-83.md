@@ -329,7 +329,177 @@ Se fac ajustări pentru separarea:
 ## Context
 
 - **Created**: 2026-01-02 04:36:40
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/83.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/83.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare completă documentație bugetară Capitol 83
+
+Verificarea documentației bugetare pentru **Capitol 83 - Agricultura** confirmă că **majoritatea informațiilor sunt corecte**, cu o eroare semnificativă privind procentul din PIB și câteva imprecizii minore care necesită corectare. Documentul are o bază solidă în legislația și clasificațiile oficiale, dar prezintă câteva simplificări care pot induce în eroare cititorii tehnici.
+
+---
+
+## 1. Rezumat general al verificării
+
+Din cele **6 afirmații cheie** verificate, rezultatele sunt:
+- **4 afirmații** complet corecte ✅
+- **1 afirmație** parțial incorectă ⚠️ (procentul din PIB)
+- **1 afirmație** corectă dar necesită clarificare terminologică (codurile 83.01/83.10)
+
+Cadrul legislativ și sursele de date sunt corect identificate. Clasificația funcțională și corespondența COFOG sunt verificate ca fiind corecte. Link-urile furnizate sunt în general valide, cu o excepție importantă privind APIA.
+
+---
+
+## 2. Probleme critice găsite
+
+### ⚠️ Eroare privind procentul din PIB
+
+**Afirmația din document:** „Bugetul MADR reprezintă circa 2% din PIB"
+
+**Realitatea verificată:**
+| An | Credite bugetare | PIB | Procent real |
+|----|------------------|-----|--------------|
+| 2024 | 25,2-26,2 mld lei | 1.766 mld lei | **1,42-1,48%** |
+| 2025 | 25,0-25,8 mld lei | 1.913 mld lei | **1,31-1,35%** |
+
+**Explicație:** Procentul de „2% din PIB" menționat de ministrul agriculturii în declarații parlamentare se referă la **suma cumulată a creditelor bugetare plus creditelor de angajament** (~60 mld lei în 2024), nu doar la creditele bugetare. Documentul combină incorect cifra de 25-27 mld lei (corectă pentru credite bugetare) cu procentul de 2% (valid doar pentru suma totală).
+
+**Recomandare:** Corectați la „aproximativ **1,4-1,5% din PIB** pentru credite bugetare" sau specificați că 2% include și creditele de angajament.
+
+### ⚠️ URL incorect pentru APIA
+
+**Afirmația din document:** Link către `https://www.apia.org.ro`
+
+**Realitatea:** URL-ul corect este **`https://apia.org.ro`** (fără „www"). Domeniul `www.apia.ro` aparține Asociației Producătorilor și Importatorilor de Automobile, ceea ce poate crea confuzie.
+
+---
+
+## 3. Probleme minore și sugestii de îmbunătățire
+
+### Clarificare terminologică necesară privind codurile 83.01 și 83.10
+
+**Afirmația din document:** „Codul complet în clasificație este 83.01 pentru bugetul de stat și 83.10 pentru bugetele instituțiilor publice"
+
+**Nuanță importantă:** Aceasta este corectă ca informație, dar terminologia poate fi îmbunătățită. Codurile **83.01** și **83.10** nu sunt „subcapitole" în sensul tradițional al termenului, ci reprezintă **același capitol funcțional (83)** aplicat la **tipuri diferite de bugete**:
+
+| Sufix cod | Tip de buget |
+|-----------|--------------|
+| **.01** | Buget de stat (administrație centrală) |
+| **.02** | Bugete locale (administrație locală) |
+| **.10** | Instituții publice finanțate integral/parțial din venituri proprii |
+
+**Recomandare:** Clarificați în document că structura codurilor indică tipul de buget, nu o diferență de activitate sau scop.
+
+### Completări sugerate pentru subcapitole
+
+Documentul ar putea include lista completă a subcapitolelor pentru Capitol 83.01:
+
+| Cod | Denumire |
+|-----|----------|
+| 83.01.01 | Administrație centrală |
+| 83.01.02 | Servicii publice descentralizate |
+| 83.01.03 | Agricultură |
+| 83.01.03.01 | Amendare soluri acide și alcaline |
+| 83.01.03.02 | Îmbunătățiri funciare, irigații, desecări |
+| 83.01.03.30 | Alte cheltuieli în domeniul agriculturii |
+| 83.01.50 | Alte cheltuieli în domeniul agriculturii, silviculturii, pisciculturii și vânătorii |
+
+### Link-uri cu acces restricționat
+
+Unele link-uri din document, deși valide, pot avea restricții tehnice de acces direct:
+- `mfinante.gov.ro` – fișierele Excel pot fi blocate de robots.txt
+- `madr.ro/transparenta-institutionala/buget.html` – poate necesita navigare manuală
+
+**Recomandare:** Adăugați o notă că utilizatorii pot fi nevoiți să navigheze direct pe site pentru a accesa documentele.
+
+---
+
+## 4. Confirmări ale informațiilor corecte
+
+### ✅ Capitol 83 - Denumire și existență
+Capitolul **83** există în clasificația funcțională oficială cu denumirea exactă: **„AGRICULTURĂ, SILVICULTURĂ, PISCICULTURĂ ȘI VÂNĂTOARE"** – verificat în acte normative recente (OUG 120/2024, HG 393/2023).
+
+### ✅ Baza legală corect identificată
+| Act normativ | Verificare | Conținut relevant |
+|--------------|------------|-------------------|
+| **Ordinul MFP 1954/2005** | ✅ În vigoare | Actul principal pentru clasificația bugetară funcțională și economică |
+| **Legea 500/2002 art. 2 pct. 11** | ✅ Corect citat | Definește clasificația funcțională ca „gruparea cheltuielilor după destinația lor" |
+| **Legea 273/2006 art. 6** | ✅ Corect citat | Reglementează transferul de competențe către administrația locală |
+
+### ✅ Corespondența COFOG
+Capitol 83 românesc corespunde grupei **COFOG 04.2** (Agriculture, forestry, fishing and hunting), parte din diviziunea 04 – Economic Affairs. Maparea este corectă conform clasificării ONU.
+
+### ✅ Buget MADR 2024-2025
+Cifrele de **25-27 miliarde lei credite bugetare anual** sunt corecte:
+- **2024:** 25,2-26,2 miliarde lei credite bugetare (34,4 mld lei credite de angajament)
+- **2025:** 25,0-25,8 miliarde lei credite bugetare (37,2-38 mld lei credite de angajament)
+
+### ✅ Plăți directe pentru fermieri
+Afirmația că „aproximativ **17 miliarde lei** sunt destinate sprijinirii veniturilor fermierilor" este corectă:
+- **2024:** 17,068 miliarde lei
+- **2025:** 16,993 miliarde lei (proiect buget)
+
+### ✅ Informații PAC
+| Afirmație | Verificare |
+|-----------|------------|
+| Cadru financiar 2021-2027 | ✅ Corect |
+| Aplicare efectivă din 2023 | ✅ Corect (după doi ani de tranziție 2021-2022) |
+| Plan Național Strategic PAC 2023-2027 | ✅ Aprobat de CE la 7 decembrie 2022 |
+| Total fonduri România | **15,83 miliarde EUR** pentru 2023-2027 |
+
+### ✅ FEADR și FEGA
+| Fond | Denumire completă | Pilon PAC | Agenție implementare |
+|------|-------------------|-----------|---------------------|
+| **FEADR** | Fondul European Agricol pentru Dezvoltare Rurală | Pilonul II | AFIR |
+| **FEGA** | Fondul European de Garantare Agricolă | Pilonul I | APIA |
+
+---
+
+## 5. Surse consultate
+
+### Documente oficiale MFP
+- Ordinul MFP nr. 1954/2005 (Portal Legislativ)
+- OUG nr. 120/09.10.2024 (clasificația cheltuielilor)
+- HG nr. 393/04.05.2023 și HG nr. 1236/2024
+- Comunicări modificări clasificație bugetară 2025
+
+### Legislație verificată
+- **Legea 500/2002** – legislatie.just.ro/Public/DetaliiDocumentAfis/37954 ✅
+- **Legea 273/2006** – legislatie.just.ro/Public/DetaliiDocument/73527 ✅
+- **Ordinul MFP 1954/2005** – legislatie.just.ro/Public/DetaliiDocument/67596 ✅
+
+### Date bugetare
+- Proiectul Legii bugetului de stat 2025 (Ministerul Finanțelor)
+- Raportări Agrointel.ro, Agroinfo.ro, Agerpres
+- Declarații oficiale ministrul Florin Barbu (februarie 2025)
+- INS – PIB România 2024 (1.766 mld lei)
+
+### Fonduri europene și PAC
+- AFIR – www.afir.ro ✅
+- APIA – apia.org.ro ✅
+- Planul Național Strategic PAC 2023-2027 (MADR)
+- Clasificarea COFOG – unstats.un.org
+
+### Link-uri verificate ca funcționale
+| Link | Status |
+|------|--------|
+| legislatie.just.ro (Legea 500/2002) | ✅ Funcțional |
+| legislatie.just.ro (Legea 273/2006) | ✅ Funcțional |
+| legislatie.just.ro (Ordinul 1954/2005) | ✅ Funcțional |
+| www.afir.ro | ✅ Funcțional |
+| apia.org.ro | ✅ Funcțional |
+| mfinante.gov.ro | ⚠️ Restricții tehnice |
+| madr.ro | ⚠️ Restricții tehnice |
+
+---
+
+## Concluzie finală
+
+Documentația bugetară pentru Capitol 83 este **în mare parte corectă și bine documentată**. Singura eroare semnificativă este supraevaluarea procentului din PIB (2% în loc de ~1,4-1,5%), care trebuie corectată pentru a menține acuratețea tehnică. Recomandăm actualizarea URL-ului APIA și adăugarea unor clarificări privind structura codurilor bugetare pentru a îmbunătăți utilitatea documentului pentru analiștii tehnici.
+
+## Processed
+
+- **Date**: 2026-01-02 16:27:29
+- **Source file**: ./public/assets/text/ro/functional/83.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-83-2026-01-02-160309.log

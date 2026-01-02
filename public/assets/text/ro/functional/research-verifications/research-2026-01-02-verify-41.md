@@ -280,7 +280,84 @@ Analiștii ar trebui să monitorizeze acest capitol în corelație cu indicatori
 ## Context
 
 - **Created**: 2026-01-02 04:36:35
-- **Source File**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional/41.md
-- **Working Directory**: /Users/claudiuconstantinbogdan/projects/devostack/hack-for-facts-eb-client/public/assets/text/ro/functional
+- **Source File**: ./public/assets/text/ro/functional/41.md
+- **Working Directory**: ./public/assets/text/ro/functional
 
 ## Research Results
+
+# Verificare documentație Capitol 41 "Alte operațiuni financiare"
+
+**Capitol 41 nu există în clasificația bugetară română actuală.** Aceasta este problema critică centrală a documentului verificat. Documentația prezentată conține erori fundamentale de încadrare bugetară care necesită corectare urgentă înainte de utilizare. Referințele legislative sunt corecte, iar descrierile tehnice ale operațiunilor financiare sunt în general exacte, dar încadrarea în clasificația bugetară este greșită.
+
+## Probleme critice identificate
+
+### Codul bugetar nu există în clasificația oficială
+Verificarea efectuată pe sursele MFP confirmă că **nu există "Capitol 41" în clasificația bugetară română actuală**. În clasificația economică a cheltuielilor (Anexa I conform Ordinului MFP 1954/2005), operațiunile financiare au următoarea structură:
+
+- **Cod 79** – OPERAȚIUNI FINANCIARE (79 = 80 + 81)
+- **Cod 80** – TITLUL XVI ÎMPRUMUTURI (articole 80.01-80.30)
+- **Cod 81** – TITLUL XVII RAMBURSĂRI DE CREDITE (articole 81.01-81.02)
+
+Codul 41 nu apare nicăieri în structura clasificației economice oficiale. Zona codurilor 40-41 corespunde **Titlului IV SUBVENȚII**, nu operațiunilor financiare.
+
+### Confuzie între clasificația funcțională și economică
+Documentul afirmă că prezintă "clasificația funcțională românească – Capitol 41", dar conținutul descrie de fapt operațiuni care aparțin clasificației **economice**. Clasificația funcțională grupează cheltuielile pe domenii de activitate (învățământ, sănătate, apărare) și folosește capitole precum 51, 54, 55, 60, 65. Clasificația economică grupează cheltuielile după natura lor (salarii, bunuri, operațiuni financiare) și folosește **titluri**, nu capitole. Această confuzie terminologică este o eroare majoră de concept.
+
+### Secțiunea "Utilizare în calcul și impact bugetar" este trunchiată
+Documentul se întrerupe brusc după subtitlul "Formula conceptuală" fără a furniza formula menționată. Această secțiune incompletă afectează utilitatea practică a documentației.
+
+## Informații corecte confirmate
+
+### Legislația citată este validă și în vigoare
+Toate cele patru acte normative menționate au fost verificate și confirmate:
+
+**Ordinul MFP nr. 1954/2005** privind clasificația indicatorilor bugetari rămâne în vigoare cu modificări și completări ulterioare. A fost publicat în Monitorul Oficial nr. 1176 din 27 decembrie 2005 și intrat în vigoare la 1 ianuarie 2006.
+
+**OUG nr. 64/2007** privind datoria publică este în vigoare, aprobată prin Legea nr. 109/2008 și modificată cel mai recent prin OUG 101/2024. Stabilește cadrul general pentru administrarea datoriei publice guvernamentale și locale.
+
+**Legea nr. 500/2002** privind finanțele publice reprezintă actul normativ-cadru pentru finanțele publice din România și rămâne în vigoare cu modificările ulterioare.
+
+**OG nr. 14/2018** care modifică OUG 64/2007 este corect citată și confirmată. Această ordonanță a introdus explicit prevederile privind instrumentele financiare derivate, inclusiv definițiile pentru colateral, clauze de compensare cu exigibilitate imediată și autorizarea MFP pentru tranzacții cu instrumente derivate.
+
+### Descrierea mecanismului operațiunilor financiare este corectă
+Descrierea utilizării swap-urilor valutare, swap-urilor pe rată de dobândă și a acordurilor cadru ISDA Master Agreement este conformă cu practica Ministerului Finanțelor. Banca Mondială a furnizat asistență tehnică României în perioada 2017-2018 pentru dezvoltarea cadrului de utilizare a instrumentelor derivate (proiect P156803), confirmând mecanismul descris în documentație.
+
+## Probleme minore și sugestii de îmbunătățire
+
+**Lipsa mapării COFOG** reprezintă o omisiune notabilă. Operațiunile privind datoria publică corespund codului COFOG **01.7** "Public debt transactions", sub funcția principală 01 "General public services". Această mapare este obligatorie pentru raportările către Eurostat și ar trebui inclusă.
+
+**Tratamentul în consolidare lipsește.** Documentația nu explică cum se tratează aceste cheltuieli în bugetul general consolidat. Cheltuielile cu dobânzile și operațiunile financiare cu terți nu se elimină în procesul de consolidare, spre deosebire de transferurile intra-guvernamentale.
+
+**Lista subcapitolelor oficiale nu este prezentată.** Documentul ar trebui să includă subdiviziunile oficiale ale titlului de operațiuni financiare conform clasificației MFP actualizate.
+
+**Referința la actualizări legislative** ar putea fi îmbunătățită prin menționarea că OUG 64/2007 a fost modificată cel mai recent prin OUG 101/2024 publicată în Monitorul Oficial nr. 845 din 23 august 2024.
+
+## Calitatea limbii române și a conținutului
+
+Documentul utilizează **diacritice corecte** și limbaj formal adecvat pentru documentația bugetară. Terminologia este în general consistentă cu nomenclatura oficială MFP, cu excepția erorii fundamentale de clasificare menționată.
+
+Explicațiile sunt **suficient de clare pentru utilizatori fără pregătire de specialitate**, prezentând mecanismul operațiunilor financiare într-un mod accesibil. Nu există cod SQL sau sintaxă de programare în document.
+
+## Recomandări pentru corectare
+
+Documentul necesită **revizuire fundamentală** pentru a corecta încadrarea bugetară. Opțiunile sunt:
+
+1. **Reformulare completă** – dacă scopul este documentarea operațiunilor financiare din clasificația economică, titlul și conținutul trebuie modificate pentru a reflecta corect Titlul 79 OPERAȚIUNI FINANCIARE (sau subdiviziunile 80/81).
+
+2. **Verificarea sursei** – dacă "Capitol 41" provine dintr-o clasificație istorică anterioară anului 2006 sau dintr-un context specific (de exemplu, o anexă particulară sau un buget sectorial), acest lucru trebuie clarificat explicit și documentat.
+
+3. **Completarea secțiunilor lipsă** – adăugarea formulei conceptuale promise, a mapării COFOG 01.7, a tratamentului în consolidare și a listei complete de subdiviziuni oficiale.
+
+## Surse consultate pentru verificare
+
+- **Pagina MFP clasificații bugetare**: mfinante.gov.ro/en/domenii/buget/clasificatiile-bugetare
+- **Anexa I Clasificația economică a cheltuielilor**: mfinante.gov.ro/static/10/Mfp/legislatie/clasificatie_economica/pdf/Anexa_nrI_ec.pdf
+- **Legislatie.just.ro**: verificare Ordinul MFP 1954/2005, OUG 64/2007, Legea 500/2002, Legea 109/2008, OG 14/2018
+- **Documente World Bank P156803**: asistență tehnică pentru cadrul instrumentelor derivate în România
+- **Bugete locale și execuție bugetară**: primarie6.ro, economie.gov.ro pentru verificarea structurii codurilor în practică
+
+## Processed
+
+- **Date**: 2026-01-02 14:39:43
+- **Source file**: ./public/assets/text/ro/functional/41.md
+- **Log file**: ./public/assets/text/ro/functional/fix-logs/research-2026-01-02-verify-41-2026-01-02-143612.log
