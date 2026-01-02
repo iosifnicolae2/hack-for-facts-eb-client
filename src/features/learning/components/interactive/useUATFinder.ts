@@ -7,6 +7,7 @@ import { fetchEntityAnalytics } from '@/lib/api/entity-analytics'
 import type { EntitySearchNode } from '@/schemas/entities'
 import type { UATSearchResult, UATDetailResult, UATType } from './uat-finder-data'
 import { getUATType } from './uat-finder-data'
+import { defaultYearRange } from '@/schemas/charts'
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Types
@@ -120,8 +121,8 @@ export function useUATFinder({
   // Detail Query (when UAT is selected)
   // ─────────────────────────────────────────────────────────────────────────
 
-  const currentYear = new Date().getFullYear()
-  const lastCompleteYear = String(currentYear - 1)
+  const defaultYear = defaultYearRange.end
+  const lastCompleteYear = String(defaultYear - 1)
 
   const {
     data: analyticsData,

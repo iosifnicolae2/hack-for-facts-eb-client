@@ -12,6 +12,7 @@ import { ResponsivePopover } from '@/components/ui/ResponsivePopover';
 import { Pagination } from '@/components/ui/pagination';
 import { EntityReportCard } from './EntityReportCard';
 import { Separator } from '@/components/ui/separator';
+import { defaultYearRange } from '@/schemas/charts';
 
 type EntityReportsProps = {
   readonly cui: string;
@@ -185,7 +186,7 @@ export default function EntityReports({ cui, initialType }: EntityReportsProps) 
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="ALL">{t`All years`}</SelectItem>
-                        {Array.from({ length: 20 }, (_, i) => new Date().getFullYear() - i).map(y => (
+                        {Array.from({ length: 20 }, (_, i) => defaultYearRange.end - i).map(y => (
                           <SelectItem key={y} value={String(y)}>{y}</SelectItem>
                         ))}
                       </SelectContent>

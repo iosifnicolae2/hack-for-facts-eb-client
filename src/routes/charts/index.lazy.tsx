@@ -23,6 +23,7 @@ import { getSiteUrl } from "@/config/env";
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
 import { FloatingQuickNav } from "@/components/ui/FloatingQuickNav";
+import { defaultYearRange } from "@/schemas/charts";
 
 export const Route = createLazyFileRoute("/charts/")({
   component: ChartsListPage,
@@ -156,7 +157,7 @@ function ChartsListPage() {
           county_codes: [],
           report_period: {
             type: 'YEAR',
-            selection: { dates: [String(new Date().getFullYear())] },
+            selection: { dates: [String(defaultYearRange.end)] },
           },
           account_category: 'ch',
           normalization: 'total',

@@ -4,6 +4,7 @@ import { openSentryFeedback } from "@/lib/sentry";
 import { useSentryConsent } from "@/hooks/useSentryConsent";
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
+import { defaultYearRange } from "@/schemas/charts";
 
 /**
  * App-wide footer displayed at the bottom of the main layout.
@@ -14,7 +15,7 @@ import { t } from "@lingui/core/macro";
  * - Uses internal `Link` for app routes and external anchors for resources.
  */
 export function AppFooter(): ReactElement {
-    const currentYear = new Date().getFullYear();
+    const defaultYear = defaultYearRange.end;
     const showSentryFeedback = useSentryConsent();
     const location = useLocation();
 
@@ -154,7 +155,7 @@ export function AppFooter(): ReactElement {
                         </a>
                         .
                     </p>
-                    <p className="whitespace-nowrap"><Trans>&copy; {currentYear} Transparenta.eu. All rights reserved.</Trans></p>
+                    <p className="whitespace-nowrap"><Trans>&copy; {defaultYear} Transparenta.eu. All rights reserved.</Trans></p>
                 </div>
 
                 {/* Bottom utilities: Feedback / Status / Back to top */}

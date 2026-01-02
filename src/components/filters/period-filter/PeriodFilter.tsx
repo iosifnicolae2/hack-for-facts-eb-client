@@ -23,7 +23,7 @@ export function PeriodFilter({ value, onChange, allowDeselect = true }: Props) {
   const handlePeriodTypeChange = (type: ReportPeriodType) => {
     if (!type) return
     // Reset selection when changing period type
-    const currentYear = String(new Date().getFullYear())
+    const currentYear = String(defaultYearRange.end)
     let defaultDate: PeriodDate
     switch (type) {
       case 'YEAR':
@@ -43,7 +43,7 @@ export function PeriodFilter({ value, onChange, allowDeselect = true }: Props) {
     if (!mode) return
     // Reset selection when changing mode
     if (mode === 'dates') {
-      const currentYear = String(new Date().getFullYear())
+      const currentYear = String(defaultYearRange.end)
       let defaultDate: PeriodDate
       switch (periodType) {
         case 'YEAR':
@@ -58,7 +58,7 @@ export function PeriodFilter({ value, onChange, allowDeselect = true }: Props) {
       }
       onChange?.({ type: periodType, selection: { dates: [defaultDate] } })
     } else {
-      const currentYear = String(new Date().getFullYear())
+      const currentYear = String(defaultYearRange.end)
       let start: PeriodDate
       let end: PeriodDate
 

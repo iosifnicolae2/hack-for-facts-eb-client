@@ -6,6 +6,7 @@
  * legal basis, and citizen engagement opportunities.
  */
 
+import { defaultYearRange } from '@/schemas/charts'
 import type { LucideIcon } from 'lucide-react'
 import {
   Calendar,
@@ -153,7 +154,7 @@ export const BUDGET_PHASES: readonly BudgetPhaseDefinition[] = [
  * Get the budget submission deadline for a given year.
  * Default is November 15 as per Law 500/2002, Art. 35(4), amended by Law 270/2013.
  */
-export function getBudgetSubmissionDeadline(year: number = new Date().getFullYear()): Date {
+export function getBudgetSubmissionDeadline(year: number = defaultYearRange.end): Date {
   return new Date(year, 10, 15) // Month is 0-indexed, so 10 = November
 }
 

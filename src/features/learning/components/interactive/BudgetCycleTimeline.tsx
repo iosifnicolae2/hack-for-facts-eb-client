@@ -45,6 +45,7 @@ import {
   type BudgetPhaseDefinition,
   type BudgetPhaseId,
 } from './budget-cycle-data'
+import { defaultYearRange } from '@/schemas/charts'
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Types
@@ -122,7 +123,7 @@ function Countdown({ days, label, deadlinePassedLabel }: CountdownProps) {
     return (
       <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-4 py-2 rounded-2xl border border-emerald-100 dark:border-emerald-800">
         <span className="text-sm font-bold">
-          {deadlinePassedLabel ?? t`Budget submitted for ${new Date().getFullYear()}`}
+          {deadlinePassedLabel ?? t`Budget submitted for ${defaultYearRange.end}`}
         </span>
       </div>
     )
