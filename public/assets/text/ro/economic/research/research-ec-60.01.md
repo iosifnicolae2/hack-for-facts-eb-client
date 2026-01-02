@@ -123,3 +123,8 @@ A: [România riscă să nu primească tranșele de finanțare de la UE]
 ## Research URL
 
 https://claude.ai/chat/e04e98ac-78d0-44a4-8d85-063dd8f23dac
+
+## Processed
+
+- **Date:** 2026-01-02 23:43:00
+- **Output:** [60.01.md](../60.01.md)

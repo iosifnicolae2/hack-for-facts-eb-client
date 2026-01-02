@@ -128,3 +128,8 @@ A: [Da, dacă au contractat împrumuturi - se înregistrează la 30.01.03]
 ## Research URL
 
 https://claude.ai/chat/ea1eb66f-fdfc-4ab2-9fad-dea83b69df5e
+
+## Processed
+
+- **Date:** 2026-01-02 23:40:00
+- **Output:** [30.01.md](../30.01.md)

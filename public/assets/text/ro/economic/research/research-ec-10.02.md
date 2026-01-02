@@ -123,3 +123,7 @@ A: [Da, dacă sunt parte a drepturilor angajatului; altfel pot fi la 20.05]
 ## Research URL
 
 https://claude.ai/chat/ab13f4a2-417e-4ed2-a003-f4578193d406
+## Processed
+
+- **Date:** 2026-01-02 23:38:40
+- **Output:** [10.02.md](../10.02.md)

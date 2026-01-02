@@ -123,3 +123,7 @@ A: [Direct la bugetele de asigurări sociale - BASS, FNUASS, buget șomaj]
 ## Research URL
 
 https://claude.ai/chat/af33fa3f-24e9-4076-9134-3f5ddb86c266
+## Processed
+
+- **Date:** 2026-01-02 23:38:52
+- **Output:** [10.03.md](../10.03.md)

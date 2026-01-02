@@ -129,3 +129,8 @@ A: [71.01 = achiziții noi; 71.03 = reparații care măresc valoarea activelor e
 ## Research URL
 
 https://claude.ai/chat/f1280116-0266-473e-82a1-46cdfde226e9
+
+## Processed
+
+- **Date:** 2026-01-02 23:43:56
+- **Output:** [71.01.md](../71.01.md)

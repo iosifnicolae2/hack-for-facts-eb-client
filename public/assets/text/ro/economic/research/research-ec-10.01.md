@@ -125,3 +125,7 @@ A: [Cresc valorile la 10.01.01 și proporțional la sporuri calculate procentual
 ## Research URL
 
 https://claude.ai/chat/1d26d57d-4b44-425a-95f5-04a7dd2f2e8f
+## Processed
+
+- **Date:** 2026-01-02 23:38:29
+- **Output:** [10.01.md](../10.01.md)

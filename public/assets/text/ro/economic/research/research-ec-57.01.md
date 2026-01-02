@@ -132,3 +132,8 @@ A: [Da, toate pensiile (inclusiv cele speciale) sunt asigurări sociale contribu
 ## Research URL
 
 https://claude.ai/chat/fe6d44c7-7dc5-467a-82fb-5aa99ab14a26
+
+## Processed
+
+- **Date:** 2026-01-02 23:41:53
+- **Output:** [57.01.md](../57.01.md)

@@ -127,3 +127,8 @@ A: [Nu, bursele studențești sunt de la bugetul de stat prin universități]
 ## Research URL
 
 https://claude.ai/chat/0c8188f7-8a2a-4680-820c-6e5ecd6e8573
+
+## Processed
+
+- **Date:** 2026-01-02 23:42:38
+- **Output:** [59.01.md](../59.01.md)

@@ -134,3 +134,8 @@ A: [Îl REDUCE - cu cât mai multe recuperări, cu atât cheltuielile nete sunt 
 ## Research URL
 
 https://claude.ai/chat/914a535a-af6d-4c10-aa6a-0126df727b3d
+
+## Processed
+
+- **Date:** 2026-01-02 23:45:48
+- **Output:** [85.01.md](../85.01.md)

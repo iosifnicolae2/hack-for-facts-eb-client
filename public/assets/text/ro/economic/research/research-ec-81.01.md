@@ -132,3 +132,8 @@ A: [UAT-urile care au contractat credite externe trebuie să le ramburseze din b
 ## Research URL
 
 https://claude.ai/chat/8612ccbe-8fb3-4a26-87f3-e549b8227584
+
+## Processed
+
+- **Date:** 2026-01-02 23:45:14
+- **Output:** [81.01.md](../81.01.md)

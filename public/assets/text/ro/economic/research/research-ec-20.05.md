@@ -127,3 +127,8 @@ A: [Depinde: dacă sunt drept salarial = 10.02; dacă sunt dotare instituție = 
 ## Research URL
 
 https://claude.ai/chat/e740b2be-625b-48ce-ac80-cf7ffcc19789
+
+## Processed
+
+- **Date:** 2026-01-02 23:39:27
+- **Output:** [20.05.md](../20.05.md)

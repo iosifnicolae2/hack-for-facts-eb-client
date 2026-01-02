@@ -125,3 +125,8 @@ A: [Da, primele de asigurare non-viață (RCA, CASCO, clădiri) sunt la 20.30.03
 ## Research URL
 
 https://claude.ai/chat/5d38e55d-be26-4ef7-8391-936fea4d3b81
+
+## Processed
+
+- **Date:** 2026-01-02 23:39:38
+- **Output:** [20.30.md](../20.30.md)
