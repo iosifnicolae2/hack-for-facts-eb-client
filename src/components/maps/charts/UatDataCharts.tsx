@@ -5,7 +5,6 @@ import { UatPopulationSpendingScatterPlot } from './UatPopulationSpendingScatter
 import { t } from '@lingui/core/macro';
 import { useMapFilter } from '@/hooks/useMapFilter';
 import { useUserCurrency } from '@/lib/hooks/useUserCurrency';
-import type { Normalization } from '@/schemas/charts';
 
 interface UatDataChartsProps {
     data: (HeatmapUATDataPoint | HeatmapCountyDataPoint)[];
@@ -22,7 +21,7 @@ export const UatDataCharts: React.FC<UatDataChartsProps> = ({ data, mapViewType 
 
     const isUatView = mapViewType === 'UAT';
     const normalizationRaw = mapState.filters.normalization ?? 'total';
-    let normalization: Normalization;
+    let normalization: string;
     if (normalizationRaw === 'total_euro') {
         normalization = 'total';
     } else if (normalizationRaw === 'per_capita_euro') {
