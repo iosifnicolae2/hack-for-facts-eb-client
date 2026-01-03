@@ -10,6 +10,7 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import { lingui } from "@lingui/vite-plugin";
+import { nitro } from "nitro/vite";
 import fs from "fs";
 
 const getHttpsConfig = () => {
@@ -58,6 +59,7 @@ export default defineConfig(({ mode }) => ({
     },
     lingui(),
     tanstackStart(),
+    nitro({ preset: "vercel" }),
     {
       enforce: 'pre',
       ...mdx({

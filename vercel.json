@@ -1,12 +1,20 @@
 {
-  "routes": [
-    { "src": "/docs", "dest": "/docs/index.html" },
-    { "src": "/docs/(.*)", "dest": "/docs/$1" },
-
-    { "src": "/assets/geojson/(.*)\\.json", "headers": { "Cache-Control": "public, max-age=604800, stale-while-revalidate=31536000" } },
-    { "src": "/assets/(.*)", "headers": { "Cache-Control": "public, max-age=86400, immutable" } },
-
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "headers": [
+    {
+      "source": "/assets/geojson/(.*).json",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=604800, stale-while-revalidate=31536000" }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400, immutable" }
+      ]
+    }
+  ],
+  "rewrites": [
+    { "source": "/docs", "destination": "/docs/index.html" },
+    { "source": "/docs/:path*", "destination": "/docs/:path*" }
   ]
 }

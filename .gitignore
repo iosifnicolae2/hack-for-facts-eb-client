@@ -54,3 +54,6 @@ src/locales/en/messages.js
 #SSL
 localhost-key.pem
 localhost-cert.pem
+
+#Vercel
+.vercel
