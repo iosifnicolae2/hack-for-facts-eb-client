@@ -81,9 +81,9 @@ msgstr "/locuitor"
 msgid "% of GDP"
 msgstr "% din PIB"
 
-#: src/components/footer/AppFooter.tsx:157
-msgid "© {currentYear} Transparenta.eu. All rights reserved."
-msgstr "© {currentYear} Transparenta.eu. Toate drepturile rezervate."
+#: src/components/footer/AppFooter.tsx:158
+msgid "© {defaultYear} Transparenta.eu. All rights reserved."
+msgstr ""
 
 #: src/routes/cookie-policy.lazy.tsx:52
 msgid "<0>__clerk_*</0>: Various Clerk cookies for account management and security."
@@ -430,7 +430,7 @@ msgstr "<0>Ce Trimitem:</0> Actualizări privind execuția bugetară (rapoarte l
 msgid "error.updateAvailable"
 msgstr "O nouă versiune a aplicației este disponibilă. Vă rugăm să reîncărcați pagina pentru a obține cele mai recente actualizări."
 
-#: src/components/footer/AppFooter.tsx:35
+#: src/components/footer/AppFooter.tsx:36
 msgid "A platform for exploring public financial data for citizens, journalists, public figures, and other interested parties."
 msgstr "Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice și alte persoane interesate."
 
@@ -620,7 +620,7 @@ msgstr "Alerte când apar modificări importante"
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:146
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:164
 #: src/features/learning/components/interactive/DocumentLibrary.tsx:147
-#: src/routes/charts/index.lazy.tsx:245
+#: src/routes/charts/index.lazy.tsx:246
 msgid "All"
 msgstr "Toate"
 
@@ -654,13 +654,13 @@ msgstr "Toți operatorii împuterniciți sunt obligați prin acorduri de protec�
 msgid "All recorded revenue inflows"
 msgstr "Toate încasările de venituri înregistrate"
 
-#: src/components/entities/EntityReports.tsx:167
-#: src/components/entities/EntityReports.tsx:170
+#: src/components/entities/EntityReports.tsx:168
+#: src/components/entities/EntityReports.tsx:171
 msgid "All types"
 msgstr "Toate tipurile"
 
-#: src/components/entities/EntityReports.tsx:184
-#: src/components/entities/EntityReports.tsx:187
+#: src/components/entities/EntityReports.tsx:185
+#: src/components/entities/EntityReports.tsx:188
 msgid "All years"
 msgstr "Toți anii"
 
@@ -729,7 +729,7 @@ msgstr "Cookie-uri de Analiză (doar opționale)"
 msgid "Analyze aggregated values per entity and explore top entities."
 msgstr "Analizați valorile cumulate pe entitate și explorați entitățile de top."
 
-#: src/components/footer/AppFooter.tsx:146
+#: src/components/footer/AppFooter.tsx:147
 msgid "and"
 msgstr "și"
 
@@ -754,7 +754,7 @@ msgstr "Adnotări"
 msgid "Anonymous usage patterns, page views, interactions."
 msgstr "Modele de utilizare anonime, vizualizări de pagină, interacțiuni."
 
-#: src/components/entities/EntityReports.tsx:237
+#: src/components/entities/EntityReports.tsx:238
 msgid "Apply Filters"
 msgstr "Aplică filtrele"
 
@@ -861,7 +861,7 @@ msgstr "Înapoi la învățare"
 msgid "Back to Learning Hub"
 msgstr "Înapoi la Hub-ul de învățare"
 
-#: src/components/entities/EntityReports.tsx:80
+#: src/components/entities/EntityReports.tsx:81
 msgid "Back to Overview"
 msgstr "Înapoi la sinteză"
 
@@ -869,8 +869,8 @@ msgstr "Înapoi la sinteză"
 msgid "Back to path"
 msgstr "Înapoi la parcurs"
 
-#: src/components/footer/AppFooter.tsx:186
-#: src/components/footer/AppFooter.tsx:188
+#: src/components/footer/AppFooter.tsx:187
+#: src/components/footer/AppFooter.tsx:189
 msgid "Back to top"
 msgstr "Înapoi sus"
 
@@ -911,7 +911,7 @@ msgstr "Jurnalele de securitate de bază sunt păstrate pentru o perioadă scurt
 msgid "Both"
 msgstr "Ambele"
 
-#: src/components/entities/EntityReports.tsx:73
+#: src/components/entities/EntityReports.tsx:74
 msgid "Browse and download all financial reports submitted by this entity"
 msgstr "Răsfoiți și descărcați toate rapoartele financiare depuse de această entitate"
 
@@ -919,14 +919,14 @@ msgstr "Răsfoiți și descărcați toate rapoartele financiare depuse de aceast
 msgid "Budget category"
 msgstr "Categorie bugetară"
 
-#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:615
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:616
 msgid "Budget Cycle Timeline"
 msgstr "Cronologia ciclului bugetar"
 
 #: src/components/entities/views/Overview.tsx:279
 #: src/components/entities/views/TrendsView.tsx:220
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:93
-#: src/routes/budget-explorer.lazy.tsx:440
+#: src/routes/budget-explorer.lazy.tsx:455
 msgid "Budget Distribution"
 msgstr "Distribuția bugetului"
 
@@ -953,8 +953,8 @@ msgstr "Sector bugetar"
 msgid "Budget Sector"
 msgstr "Sector bugetar"
 
-#. placeholder {0}: new Date().getFullYear()
-#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:125
+#. placeholder {0}: defaultYearRange.end
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:126
 msgid "Budget submitted for {0}"
 msgstr "Buget depus pentru {0}"
 
@@ -962,7 +962,7 @@ msgstr "Buget depus pentru {0}"
 msgid "Budgetary Academy"
 msgstr "Academia Bugetară"
 
-#: src/routes/charts/index.lazy.tsx:174
+#: src/routes/charts/index.lazy.tsx:175
 msgid "Build and manage custom visualizations of public spending data."
 msgstr "Creați și gestionați vizualizări personalizate ale datelor privind cheltuielile publice."
 
@@ -1094,11 +1094,11 @@ msgstr "Titlu grafic"
 msgid "Chart Type"
 msgstr "Tip grafic"
 
-#: src/components/footer/AppFooter.tsx:100
+#: src/components/footer/AppFooter.tsx:101
 #: src/components/sidebar/nav-main.tsx:31
 #: src/components/ui/shortcuts.tsx:38
 #: src/hooks/useEntityViews.tsx:39
-#: src/routes/charts/index.lazy.tsx:171
+#: src/routes/charts/index.lazy.tsx:172
 #: src/routes/index.lazy.tsx:76
 msgid "Charts"
 msgstr "Grafice"
@@ -1141,14 +1141,14 @@ msgstr "clasificări"
 msgid "Classifications"
 msgstr "Clasificări"
 
-#: src/components/entities/EntityReports.tsx:225
+#: src/components/entities/EntityReports.tsx:226
 #: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:73
 msgid "Clear"
 msgstr "Șterge"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:583
 #: src/components/charts/components/series-config/SeriesFilter.tsx:850
-#: src/components/entities/EntityReports.tsx:131
+#: src/components/entities/EntityReports.tsx:132
 #: src/components/filters/EntityAnalyticsFilter.tsx:634
 #: src/components/filters/MapFilter.tsx:420
 #: src/components/ui/multi-select.tsx:118
@@ -1174,7 +1174,7 @@ msgstr "Șterge căutarea"
 msgid "Clearing accounts"
 msgstr "Conturi de decontare"
 
-#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:629
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:630
 msgid "Click a phase to explore details"
 msgstr "Apasă pe o fază pentru a explora detaliile"
 
@@ -1273,8 +1273,8 @@ msgstr "Condiția {0}"
 msgid "Configure"
 msgstr "Configurează"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:68
-#: src/routes/charts/$chartId/index.lazy.tsx:70
+#: src/routes/charts/$chartId/index.lazy.tsx:69
+#: src/routes/charts/$chartId/index.lazy.tsx:71
 msgid "Configure Chart"
 msgstr "Configurează graficul"
 
@@ -1371,7 +1371,7 @@ msgstr "Durata cookie-urilor"
 msgid "Cookie Policy"
 msgstr "Politica privind cookie-urile"
 
-#: src/components/footer/AppFooter.tsx:123
+#: src/components/footer/AppFooter.tsx:124
 #: src/routes/cookies.lazy.tsx:71
 msgid "Cookie Settings"
 msgstr "Setări cookie-uri"
@@ -1513,7 +1513,7 @@ msgstr "Creare alertă"
 msgid "Create alert from this series"
 msgstr "Creează alertă din această serie de date"
 
-#: src/routes/charts/index.lazy.tsx:191
+#: src/routes/charts/index.lazy.tsx:192
 msgid "Create chart"
 msgstr "Creează grafic"
 
@@ -1525,11 +1525,11 @@ msgstr "Creează grafic pentru această entitate"
 msgid "Create new alert"
 msgstr "Creează o alertă nouă"
 
-#: src/routes/charts/index.lazy.tsx:233
+#: src/routes/charts/index.lazy.tsx:234
 msgid "Create your first chart"
 msgstr "Creați primul dumneavoastră grafic"
 
-#: src/routes/charts/index.lazy.tsx:229
+#: src/routes/charts/index.lazy.tsx:230
 msgid "Create your first chart to start visualizing public spending data."
 msgstr "Creați primul dumneavoastră grafic pentru a începe vizualizarea datelor privind cheltuielile publice."
 
@@ -1549,7 +1549,7 @@ msgstr "Monedă"
 msgid "Currency is ignored for % of GDP."
 msgstr "Moneda este ignorată pentru % din PIB."
 
-#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:739
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:740
 msgid "Current date"
 msgstr "Data curentă"
 
@@ -1628,7 +1628,7 @@ msgstr "Filtru serie de date"
 msgid "Data sharing and processors"
 msgstr "Partajarea datelor și operatorii împuterniciți"
 
-#: src/components/footer/AppFooter.tsx:136
+#: src/components/footer/AppFooter.tsx:137
 msgid "Data source: \"Budget Transparency\" portal administered by ANAF/Ministry of Finance. See official resources:"
 msgstr "Sursa datelor: portalul „Transparența Bugetară\" administrat de ANAF/Ministerul Finanțelor. Vedeți resursele oficiale:"
 
@@ -1661,7 +1661,7 @@ msgstr "Date"
 msgid "day"
 msgstr "zi"
 
-#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:163
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:164
 #: src/features/learning/utils/streak.ts:124
 msgid "days"
 msgstr "zile"
@@ -1731,12 +1731,12 @@ msgid "Description"
 msgstr "Descriere"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:122
-#: src/routes/budget-explorer.lazy.tsx:491
+#: src/routes/budget-explorer.lazy.tsx:506
 msgid "Detail level"
 msgstr "Nivel de detaliu"
 
 #: src/components/entities/EntityReportControls.tsx:51
-#: src/components/entities/EntityReports.tsx:173
+#: src/components/entities/EntityReports.tsx:174
 msgid "Detailed"
 msgstr "Detaliat"
 
@@ -1749,7 +1749,7 @@ msgid "Detailed Budget Execution"
 msgstr "Executie bugetara detaliata"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:137
-#: src/routes/budget-explorer.lazy.tsx:504
+#: src/routes/budget-explorer.lazy.tsx:519
 msgid "Detailed categories"
 msgstr "Categorii detaliate"
 
@@ -1855,7 +1855,7 @@ msgstr "Ec"
 #: src/components/entities/views/Overview.tsx:303
 #: src/components/entities/views/TrendsView.tsx:223
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:117
-#: src/routes/budget-explorer.lazy.tsx:486
+#: src/routes/budget-explorer.lazy.tsx:501
 msgid "Economic"
 msgstr "Economic"
 
@@ -2016,7 +2016,7 @@ msgstr "Entitate"
 
 #: src/components/entity-analytics/EntityAnalyticsLayout.tsx:15
 #: src/components/entity-analytics/EntityAnalyticsLayout.tsx:46
-#: src/components/footer/AppFooter.tsx:90
+#: src/components/footer/AppFooter.tsx:91
 #: src/components/sidebar/nav-main.tsx:41
 msgid "Entity Analytics"
 msgstr "Analiza entităților"
@@ -2339,7 +2339,7 @@ msgstr "Eroare la încărcarea alertei"
 msgid "Failed to load alerts. Please try again."
 msgstr "Eroare la încărcarea alertelor. Vă rugăm să încercați din nou."
 
-#: src/routes/budget-explorer.lazy.tsx:514
+#: src/routes/budget-explorer.lazy.tsx:529
 msgid "Failed to load data."
 msgstr "Eroare la încărcarea datelor."
 
@@ -2351,15 +2351,15 @@ msgstr "Nu s-a putut deschide un tab nou."
 msgid "Failed to save"
 msgstr "Salvare eșuată"
 
-#: src/routes/charts/index.lazy.tsx:179
+#: src/routes/charts/index.lazy.tsx:180
 msgid "favorites"
 msgstr "favorite"
 
-#: src/routes/charts/index.lazy.tsx:247
+#: src/routes/charts/index.lazy.tsx:248
 msgid "Favorites"
 msgstr "Favorite"
 
-#: src/routes/charts/index.lazy.tsx:219
+#: src/routes/charts/index.lazy.tsx:220
 msgid "Favorites first"
 msgstr "Favoritele primele"
 
@@ -2367,7 +2367,7 @@ msgstr "Favoritele primele"
 msgid "February"
 msgstr "Februarie"
 
-#: src/components/footer/AppFooter.tsx:169
+#: src/components/footer/AppFooter.tsx:170
 msgid "Feedback / Report an issue"
 msgstr "Feedback / Raportați o problemă"
 
@@ -2379,7 +2379,7 @@ msgstr "Feedback-ul este indisponibil momentan."
 msgid "Filter field"
 msgstr "Câmp de filtrare"
 
-#: src/components/entities/EntityReports.tsx:152
+#: src/components/entities/EntityReports.tsx:153
 msgid "Filter Reports"
 msgstr "Filtrare rapoarte"
 
@@ -2394,7 +2394,7 @@ msgid "Filtered"
 msgstr "Filtrat"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:578
-#: src/components/entities/EntityReports.tsx:141
+#: src/components/entities/EntityReports.tsx:142
 #: src/components/filters/EntityAnalyticsFilter.tsx:413
 #: src/routes/map.lazy.tsx:392
 msgid "Filters"
@@ -2426,7 +2426,7 @@ msgstr "Evoluție financiară - {entityName}"
 msgid "Financial operations"
 msgstr "Operațiuni financiare"
 
-#: src/components/entities/EntityReports.tsx:64
+#: src/components/entities/EntityReports.tsx:65
 #: src/components/entities/EntityReportsSummary.tsx:77
 #: src/components/entities/EntityReportsSummary.tsx:96
 msgid "Financial Reports"
@@ -2494,7 +2494,7 @@ msgstr "pentru filtrele selectate."
 msgid "Found {replacementCount} occurrence{0}"
 msgstr "S-au găsit {replacementCount} apariții"
 
-#: src/components/entities/views/ContractsView.tsx:49
+#: src/components/entities/views/ContractsView.tsx:22
 msgid "Full Procurement Portal"
 msgstr "Portal complet achiziții"
 
@@ -2505,7 +2505,7 @@ msgstr "Portal complet achiziții"
 #: src/components/entities/views/Overview.tsx:302
 #: src/components/entities/views/TrendsView.tsx:222
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:110
-#: src/routes/budget-explorer.lazy.tsx:483
+#: src/routes/budget-explorer.lazy.tsx:498
 msgid "Functional"
 msgstr "Funcțional"
 
@@ -2678,7 +2678,7 @@ msgid "Gross"
 msgstr "Brut"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:98
-#: src/routes/budget-explorer.lazy.tsx:473
+#: src/routes/budget-explorer.lazy.tsx:488
 msgid "Grouping"
 msgstr "Grupare"
 
@@ -2738,12 +2738,12 @@ msgstr "Ascunde detaliile"
 msgid "High"
 msgstr "Ridicat"
 
-#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:438
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:439
 #: src/features/learning/components/interactive/PhaseCards.tsx:382
 msgid "High Impact"
 msgstr "Impact ridicat"
 
-#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:743
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:744
 msgid "High opportunity"
 msgstr "Oportunitate ridicată"
 
@@ -2751,7 +2751,7 @@ msgstr "Oportunitate ridicată"
 msgid "High risk of low execution in Romanian public administration. Investments are often the first to be cut during budget rectifications."
 msgstr "Risc ridicat de execuție redusă în administrația publică din România. Investițiile sunt adesea primele tăiate în timpul rectificărilor bugetare."
 
-#: src/components/footer/AppFooter.tsx:85
+#: src/components/footer/AppFooter.tsx:86
 msgid "Home"
 msgstr "Acasă"
 
@@ -2950,7 +2950,7 @@ msgstr "Este UAT"
 msgid "Issued at"
 msgstr "Emis la"
 
-#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:650
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:651
 msgid "It's budget season! November-December is the best time for citizen engagement."
 msgstr "Este sezonul bugetar! Noiembrie-decembrie este cel mai bun moment pentru implicarea cetățenilor."
 
@@ -2974,12 +2974,12 @@ msgstr "Iulie"
 msgid "June"
 msgstr "Iunie"
 
-#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:466
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:467
 #: src/features/learning/components/interactive/PhaseCards.tsx:397
 msgid "Key Activities"
 msgstr "Activități cheie"
 
-#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:512
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:513
 #: src/features/learning/components/interactive/PhaseCards.tsx:441
 msgid "Key Deadlines"
 msgstr "Termene cheie"
@@ -3013,10 +3013,6 @@ msgstr "Limbă"
 msgid "Last evaluated"
 msgstr "Ultima evaluare"
 
-#: src/components/entities/views/ContractsView.tsx:34
-msgid "Latest Contracts"
-msgstr "Ultimele contracte"
-
 #: src/features/learning/components/interactive/VATReformCard.tsx:23
 msgid "Law 141/2025"
 msgstr "Legea 141/2025"
@@ -3045,7 +3041,7 @@ msgstr "Traseu de Învățare"
 msgid "Leave without saving"
 msgstr "Părăsește fără a salva"
 
-#: src/components/footer/AppFooter.tsx:108
+#: src/components/footer/AppFooter.tsx:109
 msgid "Legal"
 msgstr "Legal"
 
@@ -3200,7 +3196,7 @@ msgstr "Confirmă predicția"
 msgid "Locked"
 msgstr "Blocat"
 
-#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:751
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:752
 msgid "Low opportunity"
 msgstr "Oportunitate scăzută"
 
@@ -3210,7 +3206,7 @@ msgid "Main Categories"
 msgstr "Categorii Principale"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:134
-#: src/routes/budget-explorer.lazy.tsx:501
+#: src/routes/budget-explorer.lazy.tsx:516
 msgid "Main chapters"
 msgstr "Capitole principale"
 
@@ -3277,7 +3273,7 @@ msgstr "Filtre hartă"
 msgid "Map View"
 msgstr "Vizualizare hartă"
 
-#: src/components/footer/AppFooter.tsx:95
+#: src/components/footer/AppFooter.tsx:96
 msgid "Maps"
 msgstr "Hărți"
 
@@ -3285,7 +3281,7 @@ msgstr "Hărți"
 msgid "March"
 msgstr "Martie"
 
-#: src/routes/charts/index.lazy.tsx:281
+#: src/routes/charts/index.lazy.tsx:282
 msgid "Mark charts as favorites to quickly find them here."
 msgstr "Marcați graficele ca favorite pentru a le găsi rapid aici."
 
@@ -3309,7 +3305,7 @@ msgstr "Mai"
 msgid "Maybe Later"
 msgstr "Poate mai târziu"
 
-#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:747
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:748
 msgid "Medium opportunity"
 msgstr "Oportunitate medie"
 
@@ -3497,12 +3493,12 @@ msgstr "Noua realitate"
 msgid "New value"
 msgstr "Valoare nouă"
 
-#: src/routes/charts/index.lazy.tsx:215
+#: src/routes/charts/index.lazy.tsx:216
 msgid "Newest"
 msgstr "Cele mai noi"
 
-#: src/components/entities/EntityReports.tsx:121
-#: src/components/entities/EntityReports.tsx:204
+#: src/components/entities/EntityReports.tsx:122
+#: src/components/entities/EntityReports.tsx:205
 msgid "Newest first"
 msgstr "Cele mai noi primele"
 
@@ -3558,11 +3554,11 @@ msgid "No change"
 msgstr "Nicio modificare"
 
 #. placeholder {0}: cat.name
-#: src/routes/charts/index.lazy.tsx:301
+#: src/routes/charts/index.lazy.tsx:302
 msgid "No charts in “{0}”"
 msgstr "Niciun grafic în „{0}”"
 
-#: src/routes/charts/index.lazy.tsx:228
+#: src/routes/charts/index.lazy.tsx:229
 msgid "No charts yet"
 msgstr "Niciun grafic încă"
 
@@ -3635,7 +3631,7 @@ msgstr "Nu există date disponibile în seriile activate pentru a fi afișate."
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "Nu s-au găsit detalii despre entitate pentru CUI: <0>{cui}</0>. Este posibil ca această entitate să nu existe sau să nu aibă date asociate."
 
-#: src/routes/charts/index.lazy.tsx:280
+#: src/routes/charts/index.lazy.tsx:281
 msgid "No favorites yet"
 msgstr "Niciun favorit încă"
 
@@ -3679,11 +3675,11 @@ msgstr "Fără rectificări"
 msgid "No related charts yet"
 msgstr "Încă nu există grafice asociate"
 
-#: src/components/entities/EntityReports.tsx:294
+#: src/components/entities/EntityReports.tsx:295
 msgid "No reports found"
 msgstr "Nu s-au găsit rapoarte"
 
-#: src/routes/charts/index.lazy.tsx:262
+#: src/routes/charts/index.lazy.tsx:263
 msgid "No results"
 msgstr "Niciun rezultat"
 
@@ -3762,7 +3758,7 @@ msgstr "Setări notificări"
 msgid "November"
 msgstr "Noiembrie"
 
-#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:367
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:368
 msgid "Now"
 msgstr "Acum"
 
@@ -3774,12 +3770,12 @@ msgstr "Octombrie"
 msgid "Old Rates"
 msgstr "Cotele vechi"
 
-#: src/routes/charts/index.lazy.tsx:216
+#: src/routes/charts/index.lazy.tsx:217
 msgid "Oldest"
 msgstr "Cele mai vechi"
 
-#: src/components/entities/EntityReports.tsx:121
-#: src/components/entities/EntityReports.tsx:205
+#: src/components/entities/EntityReports.tsx:122
+#: src/components/entities/EntityReports.tsx:206
 msgid "Oldest first"
 msgstr "Cele mai vechi primele"
 
@@ -3820,7 +3816,7 @@ msgstr "Datele deschise respectă licența sursei."
 msgid "Open entity search dialog"
 msgstr "Deschide dialogul de căutare entitate"
 
-#: src/components/footer/AppFooter.tsx:176
+#: src/components/footer/AppFooter.tsx:177
 msgid "Open feedback dialog"
 msgstr "Deschide fereastra de feedback"
 
@@ -3828,9 +3824,9 @@ msgstr "Deschide fereastra de feedback"
 msgid "Open floating entity search"
 msgstr "Deschide căutarea flotantă de entități"
 
-#: src/routes/budget-explorer.lazy.tsx:571
-#: src/routes/budget-explorer.lazy.tsx:587
-#: src/routes/budget-explorer.lazy.tsx:607
+#: src/routes/budget-explorer.lazy.tsx:586
+#: src/routes/budget-explorer.lazy.tsx:602
+#: src/routes/budget-explorer.lazy.tsx:622
 msgid "Open in Chart Builder"
 msgstr "Deschide în Generatorul de Grafice"
 
@@ -3847,11 +3843,11 @@ msgid "Open in charts"
 msgstr "Deschide în grafice"
 
 #: src/components/entities/views/Overview.tsx:285
-#: src/routes/budget-explorer.lazy.tsx:447
+#: src/routes/budget-explorer.lazy.tsx:462
 msgid "Open in entity analytics"
 msgstr "Deschide în analitice entitate"
 
-#: src/components/entities/views/ContractsView.tsx:81
+#: src/components/entities/views/ContractsView.tsx:54
 msgid "Open in SICAP.ai"
 msgstr "Deschide în SICAP.ai"
 
@@ -4089,11 +4085,11 @@ msgstr "Anterior"
 msgid "Prices"
 msgstr "Prețuri"
 
-#: src/components/entities/EntityReports.tsx:171
+#: src/components/entities/EntityReports.tsx:172
 msgid "Principal Aggregated"
 msgstr "Agregat principal"
 
-#: src/components/footer/AppFooter.tsx:111
+#: src/components/footer/AppFooter.tsx:112
 #: src/routes/privacy.lazy.tsx:16
 msgid "Privacy Policy"
 msgstr "Politica de confidențialitate"
@@ -4106,7 +4102,7 @@ msgstr "Sfat Pro"
 msgid "Processing..."
 msgstr "Se procesează..."
 
-#: src/components/footer/AppFooter.tsx:81
+#: src/components/footer/AppFooter.tsx:82
 msgid "Product"
 msgstr "Produs"
 
@@ -4122,7 +4118,7 @@ msgstr "Instituțiile publice transferă adesea fonduri între ele (de exemplu, 
 msgid "Public institutions often transfer funds between each other. These transfers can double-count spending or revenue if not filtered."
 msgstr "Instituțiile publice transferă adesea fonduri între ele. Aceste transferuri pot duce la dubla contabilizare a cheltuielilor sau veniturilor dacă nu sunt filtrate."
 
-#: src/components/entities/views/ContractsView.tsx:68
+#: src/components/entities/views/ContractsView.tsx:41
 msgid "Public procurement data is provided by SICAP.ai, an independent platform that aggregates and analyzes public contracts from Romania's Electronic Public Procurement System (SEAP)."
 msgstr "Datele privind achizițiile publice sunt furnizate de SICAP.ai, o platformă independentă care agregă și analizează contractele publice din Sistemul Electronic de Achiziții Publice (SEAP) din România."
 
@@ -4218,11 +4214,11 @@ msgstr "Se înregistrează..."
 msgid "Rectification History (2020-2024)"
 msgstr "Istoric rectificări (2020-2024)"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:40
+#: src/routes/charts/$chartId/index.lazy.tsx:41
 msgid "Redo successful"
 msgstr "Refacere reușită"
 
-#: src/components/entities/EntityReports.tsx:154
+#: src/components/entities/EntityReports.tsx:155
 msgid "Refine your search using the options below"
 msgstr "Rafinați căutarea folosind opțiunile de mai jos"
 
@@ -4265,7 +4261,7 @@ msgstr "Tip Raportare"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:772
 #: src/components/entities/EntityReportCard.tsx:124
-#: src/components/entities/EntityReports.tsx:163
+#: src/components/entities/EntityReports.tsx:164
 #: src/components/filters/EntityAnalyticsFilter.tsx:564
 #: src/components/filters/MapFilter.tsx:349
 msgid "Report Type"
@@ -4427,11 +4423,11 @@ msgstr "Caută după nume sau cod (ex: Agricultură, 43.00, ec:43.00)"
 msgid "Search by name or code (ex: Social assistance, 7.06, fn:7.06)"
 msgstr "Caută după nume sau cod (ex: Asistență socială, 7.06, fn:7.06)"
 
-#: src/routes/charts/index.lazy.tsx:206
+#: src/routes/charts/index.lazy.tsx:207
 msgid "Search charts"
 msgstr "Caută grafice"
 
-#: src/routes/charts/index.lazy.tsx:204
+#: src/routes/charts/index.lazy.tsx:205
 msgid "Search charts…"
 msgstr "Caută grafice…"
 
@@ -4481,7 +4477,7 @@ msgstr "Caută UAT-uri (ex: Municipiul Arad)"
 msgid "Search..."
 msgstr "Caută..."
 
-#: src/components/entities/EntityReports.tsx:172
+#: src/components/entities/EntityReports.tsx:173
 msgid "Secondary Aggregated"
 msgstr "Agregat secundar"
 
@@ -4493,7 +4489,7 @@ msgstr "Creditor secundar agregat"
 msgid "Security monitoring and logs"
 msgstr "Monitorizare și jurnale de securitate"
 
-#: src/routes/budget-explorer.lazy.tsx:545
+#: src/routes/budget-explorer.lazy.tsx:560
 msgid "See advanced view"
 msgstr "Vezi vizualizarea avansată"
 
@@ -4557,7 +4553,7 @@ msgstr "Mod de selecție"
 msgid "Seller Keeps"
 msgstr "Vânzătorul păstrează"
 
-#: src/components/footer/AppFooter.tsx:178
+#: src/components/footer/AppFooter.tsx:179
 #: src/components/sentry/SendFeedbackAction.tsx:17
 msgid "Send feedback"
 msgstr "Trimite feedback"
@@ -4776,11 +4772,11 @@ msgstr "Unii furnizori de servicii pot prelucra date în afara UE/SEE. Toate tra
 msgid "error.genericError"
 msgstr "Ceva nu a funcționat corect la redarea acestei pagini."
 
-#: src/routes/charts/index.lazy.tsx:212
+#: src/routes/charts/index.lazy.tsx:213
 msgid "Sort by"
 msgstr "Sortează după"
 
-#: src/components/entities/EntityReports.tsx:197
+#: src/components/entities/EntityReports.tsx:198
 msgid "Sort Order"
 msgstr "Ordine de sortare"
 
@@ -4951,7 +4947,7 @@ msgstr "Tehnologiile pe care le folosim"
 msgid "Temporarily enable scroll wheel zoom"
 msgstr "Activează temporar zoom-ul cu rotița mouse-ului"
 
-#: src/components/footer/AppFooter.tsx:114
+#: src/components/footer/AppFooter.tsx:115
 msgid "Terms of Service"
 msgstr "Termeni și condiții"
 
@@ -5139,11 +5135,11 @@ msgstr "Sfat: Copiere/Tăiere/Lipire cu ⌘/Ctrl+C, X, V. Duplicare cu ⌘/Ctrl+
 msgid "Title"
 msgstr "Titlu"
 
-#: src/routes/charts/index.lazy.tsx:217
+#: src/routes/charts/index.lazy.tsx:218
 msgid "Title A–Z"
 msgstr "Titlu A–Z"
 
-#: src/routes/charts/index.lazy.tsx:218
+#: src/routes/charts/index.lazy.tsx:219
 msgid "Title Z–A"
 msgstr "Titlu Z–A"
 
@@ -5187,7 +5183,7 @@ msgstr "Top 15 județe după suma totală"
 msgid "Top 15 UATs by Total Amount"
 msgstr "Top 15 UAT-uri după suma totală"
 
-#: src/routes/budget-explorer.lazy.tsx:542
+#: src/routes/budget-explorer.lazy.tsx:557
 msgid "Top Categories"
 msgstr "Categorii principale"
 
@@ -5197,11 +5193,11 @@ msgid "Top Economic Categories"
 msgstr "Categorii economice principale"
 
 #: src/components/budget-explorer/BudgetCategoryList.tsx:140
-#: src/routes/budget-explorer.lazy.tsx:603
+#: src/routes/budget-explorer.lazy.tsx:618
 msgid "Top Functional Categories"
 msgstr "Categorii funcționale principale"
 
-#: src/routes/charts/index.lazy.tsx:177
+#: src/routes/charts/index.lazy.tsx:178
 msgid "total"
 msgstr "total"
 
@@ -5292,7 +5288,7 @@ msgstr "Grafic Treemap (agregat)"
 msgid "True Consolidated Revenues"
 msgstr "Venituri consolidate reale"
 
-#: src/routes/charts/index.lazy.tsx:263
+#: src/routes/charts/index.lazy.tsx:264
 msgid "Try a different search term or sorting."
 msgstr "Încercați un alt termen de căutare sau o altă sortare."
 
@@ -5355,7 +5351,7 @@ msgstr "UAT-uri"
 msgid "Understanding the consolidated general budget spending"
 msgstr "Înțelegerea cheltuielilor bugetului general consolidat"
 
-#: src/routes/charts/$chartId/index.lazy.tsx:33
+#: src/routes/charts/$chartId/index.lazy.tsx:34
 msgid "Undo successful"
 msgstr "Anulare reușită"
 
@@ -5404,7 +5400,7 @@ msgstr "Dezabonare de la notificări"
 msgid "Unsupported chart type: {0}"
 msgstr "Tip de grafic neacceptat: {0}"
 
-#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:170
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:171
 msgid "Until Nov 15"
 msgstr "Până la 15 nov"
 
@@ -5447,7 +5443,7 @@ msgstr "USD"
 msgid "Use <0>Cookie Settings</0> to manage analytics and error reporting consent, or use your browser controls to clear site data."
 msgstr "Folosiți <0>Setările Cookie</0> pentru a gestiona consimțământul pentru analize și raportarea erorilor sau folosiți controalele browserului pentru a șterge datele site-ului."
 
-#: src/routes/charts/index.lazy.tsx:302
+#: src/routes/charts/index.lazy.tsx:303
 msgid "Use the tag menu on a chart card to add it to this category."
 msgstr "Folosiți meniul de etichete de pe cardul unui grafic pentru a-l adăuga în această categorie."
 
@@ -5539,7 +5535,7 @@ msgstr "Vizualizați în Analiza Entităților"
 msgid "View the color scale and values for the heatmap visualization"
 msgstr "Vizualizați scala de culori și valorile pentru vizualizarea hărții de căldură"
 
-#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:620
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:621
 msgid "Viewing:"
 msgstr "Vizualizare:"
 
@@ -5659,7 +5655,7 @@ msgstr "Prefix de eliminat pe axa X"
 #: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:91
 #: src/components/entities/EntityFinancialTrends.tsx:100
 #: src/components/entities/EntityReportControls.tsx:206
-#: src/components/entities/EntityReports.tsx:180
+#: src/components/entities/EntityReports.tsx:181
 msgid "Year"
 msgstr "An"
 
@@ -5766,7 +5762,7 @@ msgstr "Prima Ta Explorare"
 msgid "Your guess"
 msgstr "Estimarea ta"
 
-#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:485
+#: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:486
 #: src/features/learning/components/interactive/PhaseCards.tsx:416
 msgid "Your Opportunity"
 msgstr "Oportunitatea ta"
