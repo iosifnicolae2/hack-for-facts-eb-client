@@ -2,6 +2,8 @@ import { Chart, ChartSchema } from "@/schemas/charts";
 import { z } from "zod";
 import { Analytics } from "@/lib/analytics";
 
+const isBrowser = typeof window !== 'undefined';
+
 const chartsKey = 'saved-charts';
 const categoriesKey = 'chart-categories';
 
@@ -62,6 +64,8 @@ export type ImportResult = {
 export const getChartsStore = () => {
 
     const loadSavedCharts = ({ filterDeleted = false, sort = false }: { filterDeleted?: boolean, sort?: boolean } = {}): StoredChart[] => {
+        if (!isBrowser) return [];
+
         const getRawCharts = () => {
             const chartsRaw = localStorage.getItem(chartsKey);
             if (!chartsRaw) {
@@ -103,6 +107,8 @@ export const getChartsStore = () => {
     }
 
     const loadCategories = (): ChartCategory[] => {
+        if (!isBrowser) return [];
+
         const raw = localStorage.getItem(categoriesKey);
         if (!raw) return [];
         try {
@@ -123,6 +129,7 @@ export const getChartsStore = () => {
     };
 
     const saveCategories = (categories: readonly ChartCategory[]) => {
+        if (!isBrowser) return;
         localStorage.setItem(categoriesKey, JSON.stringify(categories));
     };
 
@@ -156,6 +163,8 @@ export const getChartsStore = () => {
     };
 
     const deleteCategory = (id: string) => {
+        if (!isBrowser) return;
+
         const categories = loadCategories();
         const filtered = categories.filter((c) => c.id !== id);
         saveCategories(filtered);
@@ -169,6 +178,8 @@ export const getChartsStore = () => {
     };
 
     const deleteChart = (chartId: string) => {
+        if (!isBrowser) return;
+
         const savedCharts = loadSavedCharts();
         const newCharts = savedCharts.map((c: Chart) => {
             if (c.id === chartId) {
@@ -181,6 +192,8 @@ export const getChartsStore = () => {
     }
 
     const saveChartToLocalStorage = (chart: Chart) => {
+        if (!isBrowser) return;
+
         const savedCharts = loadSavedCharts();
         const hasChart = savedCharts.some((c) => c.id === chart.id);
         if (hasChart) {
@@ -200,6 +213,8 @@ export const getChartsStore = () => {
     }
 
     const updateChartInLocalStorage = (chart: Chart) => {
+        if (!isBrowser) return;
+
         const savedCharts = loadSavedCharts();
         const chartIndex = savedCharts.findIndex((c: Chart) => c.id === chart.id);
         const oldChart = savedCharts[chartIndex];
@@ -291,6 +306,10 @@ export const getChartsStore = () => {
     };
 
     const importBackup = (input: unknown, strategy: ConflictStrategy): { ok: true; result: ImportResult } | { ok: false; error: string } => {
+        if (!isBrowser) {
+            return { ok: false, error: 'Cannot import on server' };
+        }
+
         const parsed = chartsBackupSchema.safeParse(input);
         if (!parsed.success) {
             return { ok: false, error: parsed.error.flatten().formErrors.join('\n') };

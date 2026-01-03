@@ -79,13 +79,6 @@ vi.mock('@/lib/api/entities', async () => {
   }
 })
 
-// Mock query client
-vi.mock('@/lib/queryClient', () => ({
-  queryClient: {
-    prefetchQuery: vi.fn(),
-  },
-}))
-
 // Mock debounced callback
 vi.mock('@/lib/hooks/useDebouncedCallback', () => ({
   useDebouncedCallback: (fn: () => void) => fn,

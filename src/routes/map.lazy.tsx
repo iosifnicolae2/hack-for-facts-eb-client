@@ -1,11 +1,14 @@
 import { HeatmapUATDataPoint, HeatmapCountyDataPoint } from "@/schemas/heatmap";
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
-import React, { useState } from "react";
+import React, { useState, lazy, Suspense } from "react";
 import { getPercentileValues, createHeatmapStyleFunction } from "@/components/maps/utils";
-import { InteractiveMap } from "@/components/maps/InteractiveMap";
 import type { LeafletMouseEvent } from "leaflet";
 import { UatProperties } from "@/components/maps/interfaces";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { ClientOnly } from "@/components/ssr/ClientOnly";
+
+// Lazy load InteractiveMap to prevent Leaflet from being evaluated on the server
+const InteractiveMap = lazy(() => import("@/components/maps/InteractiveMap").then(m => ({ default: m.InteractiveMap })));
 import { useGeoJsonData } from "@/hooks/useGeoJson";
 import { MapFilter } from "@/components/filters/MapFilter";
 import { MapLegend } from "@/components/maps/MapLegend";
@@ -250,17 +253,21 @@ function MapPage() {
               <div className={mapState.activeView === "map" ? "sm:h-screen md:h-[calc(100vh-10rem)] w-full m-0 relative" : "hidden"}>
                 {heatmapData ? (
                   <>
-                    <InteractiveMap
-                      onFeatureClick={handleFeatureClick}
-                      getFeatureStyle={aDynamicGetFeatureStyle}
-                      heatmapData={heatmapData}
-                      geoJsonData={geoJsonData}
-                      zoom={mapZoom}
-                      center={mapState.mapCenter}
-                      mapViewType={mapState.mapViewType}
-                      filters={effectiveFilters}
-                      onViewChange={handleMapViewChange}
-                    />
+                    <ClientOnly fallback={<div className="flex items-center justify-center h-full w-full"><LoadingSpinner size="lg" text={t`Loading map...`} /></div>}>
+                      <Suspense fallback={<div className="flex items-center justify-center h-full w-full"><LoadingSpinner size="lg" text={t`Loading map...`} /></div>}>
+                        <InteractiveMap
+                          onFeatureClick={handleFeatureClick}
+                          getFeatureStyle={aDynamicGetFeatureStyle}
+                          heatmapData={heatmapData}
+                          geoJsonData={geoJsonData}
+                          zoom={mapZoom}
+                          center={mapState.mapCenter}
+                          mapViewType={mapState.mapViewType}
+                          filters={effectiveFilters}
+                          onViewChange={handleMapViewChange}
+                        />
+                      </Suspense>
+                    </ClientOnly>
                     <AnimatePresence>
                       {isLoading && (
                         <motion.div

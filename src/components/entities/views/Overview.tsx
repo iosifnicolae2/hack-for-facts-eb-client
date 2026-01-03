@@ -8,7 +8,6 @@ import { getYearLabel } from "../utils";
 import { toReportTypeValue } from "@/schemas/reporting";
 import { useEntityExecutionLineItems } from "@/lib/hooks/useEntityDetails";
 import { EntityReportsSummary } from "../EntityReportsSummary";
-import { queryClient } from '@/lib/queryClient';
 import { entityDetailsQueryOptions } from '@/lib/hooks/useEntityDetails';
 import { getInitialFilterState, makeTrendPeriod } from '@/schemas/reporting';
 import { useDebouncedCallback } from "@/lib/hooks/useDebouncedCallback";
@@ -28,6 +27,7 @@ import { ExternalLink } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import type { NormalizationOptions } from '@/lib/normalization'
 import { normalizeNormalizationOptions } from '@/lib/normalization'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface OverviewProps {
     cui: string;
@@ -104,6 +104,7 @@ export const Overview = ({
     advancedFilter,
     onAdvancedFilterChange,
 }: OverviewProps) => {
+    const queryClient = useQueryClient();
     const normalized = normalizeNormalizationOptions(normalizationOptions)
     const { data: lineItems, isLoading: isLoadingLineItems } = useEntityExecutionLineItems({
         cui,

@@ -17,6 +17,7 @@ import { useAuth } from '@/lib/auth';
 import { useState } from 'react';
 import { FloatingEntitySearch } from '@/components/entities/FloatingEntitySearch';
 import { useHotkeys } from 'react-hotkeys-hook';
+import { useQueryClient } from '@tanstack/react-query';
 
 type ActionKey = 'map' | 'table' | 'chart' | 'share' | 'search';
 
@@ -42,6 +43,7 @@ export function FloatingQuickNav({ className, mapViewType, mapActive, tableActiv
     const uatLabelMap = useUatLabel((filterInput.uat_ids ?? []).map(String));
     const entityLabelMap = useEntityLabel((filterInput.entity_cuis ?? []) as string[]);
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
     const { isSignedIn } = useAuth();
     const [shareCopied, setShareCopied] = useState(false);
     const [showEntitySearch, setShowEntitySearch] = useState(false);
@@ -67,7 +69,7 @@ export function FloatingQuickNav({ className, mapViewType, mapActive, tableActiv
             let linkToCopy = url;
             if (isSignedIn) {
                 try {
-                    linkToCopy = await ensureShortRedirectUrl(url, getSiteUrl());
+                    linkToCopy = await ensureShortRedirectUrl(url, getSiteUrl(), queryClient);
                 } catch (e) {
                     console.error('Failed to generate short link, falling back to full URL', e);
                 }

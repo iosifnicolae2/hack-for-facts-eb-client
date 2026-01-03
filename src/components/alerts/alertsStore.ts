@@ -1,6 +1,8 @@
 import { Alert, AlertSchema } from '@/schemas/alerts';
 import { z } from 'zod';
 
+const isBrowser = typeof window !== 'undefined';
+
 const alertsKey = 'saved-alerts';
 
 const storedAlertSchema = AlertSchema.extend({
@@ -11,6 +13,8 @@ export type StoredAlert = z.infer<typeof storedAlertSchema>;
 
 export const getAlertsStore = () => {
   const loadSavedAlerts = ({ filterDeleted = false }: { filterDeleted?: boolean } = {}): StoredAlert[] => {
+    if (!isBrowser) return [];
+
     const raw = localStorage.getItem(alertsKey);
     if (!raw) {
       return [];
@@ -45,6 +49,7 @@ export const getAlertsStore = () => {
   };
 
   const persistAlerts = (alerts: readonly StoredAlert[]) => {
+    if (!isBrowser) return;
     localStorage.setItem(alertsKey, JSON.stringify(alerts));
   };
 

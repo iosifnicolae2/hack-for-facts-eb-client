@@ -30,10 +30,10 @@ import { Overview } from '@/components/entities/views/Overview'
 import { EntityDetailsData } from '@/lib/api/entities'
 import { usePersistedState } from '@/lib/hooks/usePersistedState'
 import { useDebouncedCallback } from '@/lib/hooks/useDebouncedCallback'
-import { queryClient } from '@/lib/queryClient'
 import { FloatingQuickNav } from '@/components/ui/FloatingQuickNav'
 import type { NormalizationOptions } from '@/lib/normalization'
 import { useUserInflationAdjusted } from '@/lib/hooks/useUserInflationAdjusted'
+import { useQueryClient } from '@tanstack/react-query'
 
 const TrendsView = lazy(() => import('@/components/entities/views/TrendsView').then(m => ({ default: m.TrendsView })))
 const EmployeesView = lazy(() => import('@/components/entities/views/EmployeesView').then(m => ({ default: m.EmployeesView })))
@@ -94,6 +94,7 @@ function EntityDetailsPage() {
   const { cui } = useParams({ from: '/entities/$cui' })
   const search = useSearch({ from: '/entities/$cui' })
   const navigate = useNavigate({ from: '/entities/$cui' })
+  const queryClient = useQueryClient();
   const yearSelectorRef = useRef<HTMLButtonElement>(null)
   const [userCurrency, setUserCurrency] = usePersistedState<'RON' | 'EUR' | 'USD'>('user-currency', 'RON')
   const [userInflationAdjusted, setUserInflationAdjusted] = useUserInflationAdjusted()

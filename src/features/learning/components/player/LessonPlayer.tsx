@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
+import { ClientOnly } from '@/components/ssr/ClientOnly'
 import { cn } from '@/lib/utils'
 import { prefetchModuleContent, useModuleContent } from '../../hooks/use-module-content'
 import { useLearningProgress } from '../../hooks/use-learning-progress'
@@ -87,12 +88,14 @@ function createLazyComponent<Props = Record<string, unknown>>(
   const LazyComponent = lazy(loader)
 
   return function LazyWrapper(props: Props) {
+    const fallback = <LoadingSpinner size="sm" text={t`Loading interactive content...`} className="my-6" />
+
     return (
-      <Suspense
-        fallback={<LoadingSpinner size="sm" text={t`Loading interactive content...`} className="my-6" />}
-      >
-        <LazyComponent {...(props as Record<string, unknown>)} />
-      </Suspense>
+      <ClientOnly fallback={fallback}>
+        <Suspense fallback={fallback}>
+          <LazyComponent {...(props as Record<string, unknown>)} />
+        </Suspense>
+      </ClientOnly>
     )
   }
 }

@@ -1,17 +1,30 @@
-import { useState, useEffect } from 'react';
+import { useSyncExternalStore } from "react";
 
+/**
+ * A React hook that returns true if the viewport matches the given media query.
+ * This implementation uses `useSyncExternalStore` to provide the correct value
+ * from the very first render, avoiding UI flicker and SSR mismatches.
+ *
+ * @param query The media query string to match (e.g., "(max-width: 768px)")
+ * @returns {boolean} True if the current viewport matches the media query.
+ */
 export function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(false);
+  const subscribe = (callback: () => void): (() => void) => {
+    const mql = window.matchMedia(query);
+    mql.addEventListener("change", callback);
+    return () => {
+      mql.removeEventListener("change", callback);
+    };
+  };
 
-  useEffect(() => {
-    const media = window.matchMedia(query);
-    if (media.matches !== matches) {
-      setMatches(media.matches);
-    }
-    const listener = () => setMatches(media.matches);
-    window.addEventListener('resize', listener);
-    return () => window.removeEventListener('resize', listener);
-  }, [matches, query]);
+  const getSnapshot = (): boolean => {
+    return window.matchMedia(query).matches;
+  };
 
-  return matches;
+  const getServerSnapshot = (): boolean => {
+    // Return false on the server - client will hydrate with correct value
+    return false;
+  };
+
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }

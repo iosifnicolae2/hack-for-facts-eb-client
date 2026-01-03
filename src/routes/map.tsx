@@ -1,5 +1,4 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { queryClient } from '@/lib/queryClient'
 import { geoJsonQueryOptions } from '@/hooks/useGeoJson'
 import { heatmapJudetQueryOptions, heatmapUATQueryOptions } from '@/hooks/useHeatmapData'
 import { MapStateSchema } from '@/schemas/map-filters'
@@ -9,7 +8,8 @@ import { getPersistedState } from '@/lib/hooks/usePersistedState'
 type MapViewType = 'UAT' | 'County'
 
 export const Route = createFileRoute('/map')({
-  beforeLoad: ({ search }) => {
+  beforeLoad: ({ context, search }) => {
+    const { queryClient } = context
     // Parse and normalize search params using zod defaults to ensure valid filters
     const parsed = MapStateSchema.parse(search)
     const viewType: MapViewType = parsed.mapViewType
@@ -50,4 +50,3 @@ export const Route = createFileRoute('/map')({
     }
   },
 })
-

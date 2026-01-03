@@ -1,6 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
-import { queryClient } from '@/lib/queryClient'
 import { fetchEntityAnalytics } from '@/lib/api/entity-analytics'
 import { defaultEntityAnalyticsFilter } from '@/hooks/useEntityAnalyticsFilter'
 import { AnalyticsFilterSchema } from '@/schemas/charts'
@@ -42,7 +41,8 @@ function mapColumnIdToSortBy(columnId: string): string {
 }
 
 export const Route = createFileRoute('/entity-analytics')({
-  beforeLoad: ({ search }) => {
+  beforeLoad: ({ context, search }) => {
+    const { queryClient } = context
     const parsed = EntityAnalyticsSchema.parse(search)
     const offset = (parsed.page - 1) * parsed.pageSize
     const sort = parsed.sortBy
@@ -91,4 +91,3 @@ export const Route = createFileRoute('/entity-analytics')({
     }
   },
 })
-

@@ -5,7 +5,11 @@ import { getUserLocale } from "@/lib/utils";
 
 const getDatasetStorageKey = () => `datasets_${getUserLocale()}`;
 
+const isBrowser = typeof window !== 'undefined';
+
 const loadLocalData = (): Record<string, Dataset> => {
+    if (!isBrowser) return {};
+
     try {
         const storage = localStorage.getItem(getDatasetStorageKey());
         return storage ? JSON.parse(storage) : {};
@@ -16,6 +20,7 @@ const loadLocalData = (): Record<string, Dataset> => {
 };
 
 const saveLocalData = (data: Record<string, Dataset>) => {
+    if (!isBrowser) return;
     localStorage.setItem(getDatasetStorageKey(), JSON.stringify(data));
 };
 

@@ -2,7 +2,7 @@ import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from "@/schemas/heatmap";
 import { UatFeature, UatProperties } from './interfaces';
 import { formatCurrency, formatNumber, getNormalizationUnit } from '@/lib/utils';
 import { DEFAULT_FEATURE_STYLE, PERMANENT_HIGHLIGHT_STYLE } from './constants';
-import L, { PathOptions } from 'leaflet';
+import type { PathOptions, GeoJSON as LeafletGeoJSON } from 'leaflet';
 import { Feature, Geometry } from 'geojson';
 import { AnalyticsFilterType } from "@/schemas/charts";
 import { t } from "@lingui/core/macro";
@@ -281,7 +281,7 @@ export const createHeatmapStyleFunction = (
   max: number,
   mapViewType: 'UAT' | 'County',
   valueKey: 'amount' | 'total_amount' | 'per_capita_amount'
-): ((feature: UatFeature) => L.PathOptions) => {
+): ((feature: UatFeature) => PathOptions) => {
 
   return (feature: UatFeature) => {
     if (!feature || !feature.properties) {
@@ -386,9 +386,10 @@ export function buildHeatmapDataMap(
 
 /**
  * Re-applies styles to all features from the current GeoJSON layer group.
+ * Note: This function is only safe to call on the client side.
  */
 export function restyleAllFeatures(
-  layerGroup: L.GeoJSON | null,
+  layerGroup: LeafletGeoJSON | null,
   styleFn: (feature?: Feature<Geometry, unknown>) => PathOptions
 ) {
   if (!layerGroup) return;
@@ -397,8 +398,10 @@ export function restyleAllFeatures(
       const feature = (layer as unknown as { feature?: Feature<Geometry, unknown> }).feature;
       if (!feature) return;
       const nextStyle = styleFn(feature);
-      if (layer instanceof L.Path) {
-        layer.setStyle(nextStyle);
+      // Use duck typing instead of instanceof to avoid runtime Leaflet import
+      const layerWithStyle = layer as unknown as { setStyle?: (style: PathOptions) => void };
+      if (typeof layerWithStyle.setStyle === 'function') {
+        layerWithStyle.setStyle(nextStyle);
       }
     });
   } catch {

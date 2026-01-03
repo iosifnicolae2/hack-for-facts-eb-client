@@ -81,6 +81,9 @@ function NoopAuthProvider({ children }: PropsWithChildren) {
 }
 
 export function AuthProvider({ publishableKey, children }: PropsWithChildren<{ publishableKey?: string }>) {
+  if (typeof window === 'undefined') {
+    return <NoopAuthProvider>{children}</NoopAuthProvider>
+  }
   if (publishableKey) {
     return (
       <ClerkProvider publishableKey={publishableKey}>
@@ -142,6 +145,7 @@ export const authKey = env.VITE_CLERK_PUBLISHABLE_KEY
 // Find a better strategy, like waiting for the provider to be mounted or using the session cookie when using same api/client domain.
 // For protected routes, we should prevent page load or prefetching until the user is authenticated.
 export async function getAuthToken(): Promise<string | null> {
+  if (typeof window === 'undefined') return null
   try {
     const token = await window.Clerk?.session?.getToken()
     return token ?? null

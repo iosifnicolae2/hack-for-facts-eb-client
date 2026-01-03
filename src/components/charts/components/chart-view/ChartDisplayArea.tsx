@@ -11,6 +11,7 @@ import { ChartTitle } from "../chart-renderer/components/ChartTitle";
 import { DataPointPayload, DataSeriesMap, TimeSeriesDataPoint, UnitMap } from "../../hooks/useChartData";
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
+import { getSiteUrl } from "@/config/env";
 
 // --- Type Definitions ---
 
@@ -189,7 +190,7 @@ const ChartContent = React.memo(
  */
 const ChartFooter = () => {
   // Get current URL on every render to ensure it's always up-to-date
-  const currentUrl = window.location.href;
+  const currentUrl = typeof window !== "undefined" ? window.location.href : getSiteUrl();
 
   return (
     <p className="flex items-center justify-between text-sm text-muted-foreground bg-muted/20 w-full p-4">

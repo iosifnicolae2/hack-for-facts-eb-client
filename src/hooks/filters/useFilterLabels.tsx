@@ -13,8 +13,11 @@ const FunctionalClassificationLabelStorageKey = 'functional-classification-label
 const BudgetSectorLabelStorageKey = 'budget-sector-labels';
 const FundingSourceLabelStorageKey = 'funding-source-labels';
 
+const isBrowser = typeof window !== 'undefined';
 
 const loadLocalData = (key: string): Record<string, string> => {
+    if (!isBrowser) return {};
+
     try {
         const storage = localStorage.getItem(key);
         const parseJson = storage ? JSON.parse(storage) : {};
@@ -27,6 +30,7 @@ const loadLocalData = (key: string): Record<string, string> => {
 };
 
 const saveLocalData = (key: string, data: Record<string, string>) => {
+    if (!isBrowser) return;
     localStorage.setItem(key, JSON.stringify(data));
 };
 
