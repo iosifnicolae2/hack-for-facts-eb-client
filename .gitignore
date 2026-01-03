@@ -57,3 +57,4 @@ localhost-cert.pem
 
 #Vercel
 .vercel
+.env*.local

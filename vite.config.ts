@@ -1,6 +1,6 @@
 import path from "path";
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import react from "@vitejs/plugin-react-swc";
 import mdx from "@mdx-js/rollup";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
@@ -59,8 +59,7 @@ export default defineConfig(({ mode }) => ({
     },
     lingui(),
     tanstackStart(),
-    // nitro plugin only for production - causes SSR hydration issues in dev
-    ...(mode === "production" ? [nitro({ preset: "vercel" })] : []),
+    nitro({ preset: "vercel" }),
     {
       enforce: 'pre',
       ...mdx({
@@ -68,9 +67,7 @@ export default defineConfig(({ mode }) => ({
       }),
     },
     react({
-      babel: {
-        plugins: ["@lingui/babel-plugin-lingui-macro"],
-      },
+      plugins: [["@lingui/swc-plugin", {}]],
     }),
     tailwindcss(),
     checker({

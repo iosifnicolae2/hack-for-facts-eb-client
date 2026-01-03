@@ -122,7 +122,7 @@
   },
   "devDependencies": {
     "@lingui/cli": "^5.7.0",
-    "@lingui/swc-plugin": "^5.9.0",
+    "@lingui/swc-plugin": "5.10.0",
     "@lingui/vite-plugin": "^5.7.0",
     "@mdx-js/react": "^3.1.1",
     "@mdx-js/rollup": "^3.1.1",
