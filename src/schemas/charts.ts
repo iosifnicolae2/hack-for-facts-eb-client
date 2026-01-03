@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { ChartTypeEnum, DEFAULT_CHART } from './constants';
-import { generateRandomColor } from '@/components/charts/components/chart-renderer/utils';
+import { generateRandomColor } from '@/components/charts/components/chart-renderer/color-utils';
 import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES } from '@/lib/analytics-defaults';
 
 export const defaultYearRange = {

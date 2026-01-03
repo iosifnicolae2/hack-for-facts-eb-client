@@ -29,25 +29,26 @@ export const Route = createLazyFileRoute("/charts/")({
   component: ChartsListPage,
 });
 
-const chartsStore = getChartsStore();
+// Get store lazily on first use to avoid SSR issues
+const getStore = () => getChartsStore();
 
 type SortOption = "newest" | "oldest" | "a-z" | "z-a" | "favorites-first";
 
 type ActiveTab = "all" | "favorites" | `category:${string}`;
 
 function ChartsListPage() {
-  const [charts, setCharts] = useState<StoredChart[]>(
-    chartsStore.loadSavedCharts({ filterDeleted: true, sort: true })
+  const [charts, setCharts] = useState<StoredChart[]>(() =>
+    getStore().loadSavedCharts({ filterDeleted: true, sort: true })
   );
   const [search, setSearch] = useState<string>("");
   const [activeTab, setActiveTab] = useState<ActiveTab>("all");
   const [sortBy, setSortBy] = usePersistedState<SortOption>("charts-page-sort-by", "newest");
-  const [categories, setCategories] = useState<readonly ChartCategory[]>(chartsStore.loadCategories());
+  const [categories, setCategories] = useState<readonly ChartCategory[]>(() => getStore().loadCategories());
   //
 
   const handleDeleteChart = useCallback(async (chartId: string) => {
     try {
-      await chartsStore.deleteChart(chartId);
+      await getStore().deleteChart(chartId);
       setCharts((previousCharts) => previousCharts.filter((chart) => chart.id !== chartId));
       toast.success("Chart deleted");
     } catch (error) {
@@ -57,7 +58,7 @@ function ChartsListPage() {
   }, []);
 
   const handleToggleFavorite = useCallback((chartId: string) => {
-    chartsStore.toggleChartFavorite(chartId);
+    getStore().toggleChartFavorite(chartId);
     setCharts((previousCharts) => {
       const chartBeforeToggle = previousCharts.find((c) => c.id === chartId);
       const updatedCharts = previousCharts.map((chart) =>
@@ -72,8 +73,8 @@ function ChartsListPage() {
 
   useEffect(() => {
     const reloadFromStorage = () => {
-      setCharts(chartsStore.loadSavedCharts({ filterDeleted: true, sort: true }));
-      setCategories(chartsStore.loadCategories());
+      setCharts(getStore().loadSavedCharts({ filterDeleted: true, sort: true }));
+      setCategories(getStore().loadCategories());
     };
     window.addEventListener("storage", reloadFromStorage);
     return () => window.removeEventListener("storage", reloadFromStorage);
@@ -141,7 +142,7 @@ function ChartsListPage() {
   );
 
   const handleToggleChartCategory = useCallback((chartId: string, categoryId: string) => {
-    chartsStore.toggleChartCategory(chartId, categoryId);
+    getStore().toggleChartCategory(chartId, categoryId);
     setCharts((prev) => prev.map((c) => c.id === chartId ? { ...c, categories: (c.categories ?? []).includes(categoryId) ? (c.categories ?? []).filter((id) => id !== categoryId) : [...(c.categories ?? []), categoryId] } : c));
   }, []);
 
@@ -183,8 +184,8 @@ function ChartsListPage() {
           </div>
           <div className="flex items-center gap-2">
             <ChartsBackupRestore onAfterImport={() => {
-              setCharts(chartsStore.loadSavedCharts({ filterDeleted: true, sort: true }));
-              setCategories(chartsStore.loadCategories());
+              setCharts(getStore().loadSavedCharts({ filterDeleted: true, sort: true }));
+              setCategories(getStore().loadCategories());
             }} />
             <Link to="/charts/new" replace={false}>
               <Button size="lg" className="text-base h-11 px-6">
@@ -252,7 +253,7 @@ function ChartsListPage() {
                 activeTab={activeTab}
                 onChangeActiveTab={(tab) => setActiveTab(tab)}
                 onCategoriesChange={(next) => setCategories(next)}
-                refreshCharts={() => setCharts(chartsStore.loadSavedCharts({ filterDeleted: true, sort: true }))}
+                refreshCharts={() => setCharts(getStore().loadSavedCharts({ filterDeleted: true, sort: true }))}
               />
             </TabsList>
           </div>

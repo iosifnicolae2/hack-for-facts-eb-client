@@ -28,75 +28,6 @@ const getHttpsConfig = () => {
   }
 }
 
-const LEARNING_LOCALES = ["en", "ro"] as const;
-
-type LearningPathJson = {
-  readonly id?: string;
-  readonly modules?: Array<{
-    readonly id?: string;
-    readonly lessons?: Array<{
-      readonly id?: string;
-      readonly contentDir?: string;
-    }>;
-  }>;
-};
-
-const getLearningPrerenderPages = () => {
-  const pages = new Set<string>();
-  const pathsDir = path.resolve(__dirname, "src", "content", "learning", "paths");
-  const modulesDir = path.resolve(__dirname, "src", "content", "learning", "modules");
-
-  if (!fs.existsSync(pathsDir)) {
-    return [];
-  }
-
-  const pathFiles = fs.readdirSync(pathsDir).filter((file) => file.endsWith(".json"));
-
-  const hasLessonContent = (contentDir: string) => {
-    const baseDir = path.resolve(modulesDir, contentDir);
-    return (
-      fs.existsSync(path.join(baseDir, "index.en.mdx")) ||
-      fs.existsSync(path.join(baseDir, "index.ro.mdx"))
-    );
-  };
-
-  for (const file of pathFiles) {
-    let parsed: LearningPathJson | null = null;
-    try {
-      parsed = JSON.parse(fs.readFileSync(path.join(pathsDir, file), "utf-8")) as LearningPathJson;
-    } catch {
-      continue;
-    }
-
-    if (!parsed?.id || !Array.isArray(parsed.modules)) {
-      continue;
-    }
-
-    for (const locale of LEARNING_LOCALES) {
-      pages.add(`/${locale}/learning/${parsed.id}`);
-
-      for (const module of parsed.modules) {
-        if (!module?.id || !Array.isArray(module.lessons)) {
-          continue;
-        }
-
-        for (const lesson of module.lessons) {
-          if (!lesson?.id || !lesson.contentDir) {
-            continue;
-          }
-
-          if (!hasLessonContent(lesson.contentDir)) {
-            continue;
-          }
-
-          pages.add(`/${locale}/learning/${parsed.id}/${module.id}/${lesson.id}`);
-        }
-      }
-    }
-  }
-
-  return Array.from(pages).map((pagePath) => ({ path: pagePath }));
-};
 
 export default defineConfig(({ mode }) => ({
   plugins: [
@@ -126,13 +57,7 @@ export default defineConfig(({ mode }) => ({
       },
     },
     lingui(),
-    tanstackStart({
-      prerender: {
-        enabled: true,
-        crawlLinks: false,
-      },
-      pages: getLearningPrerenderPages(),
-    }),
+    tanstackStart(),
     {
       enforce: 'pre',
       ...mdx({

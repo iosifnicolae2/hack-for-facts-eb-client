@@ -2,9 +2,8 @@ import { getChartsStore } from "@/components/charts/chartsStore";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { chartUrlStateSchema } from "../../../components/charts/page-schema";
 
-const chartsStore = getChartsStore();
-
 export const Route = createFileRoute("/charts/$chartId")({
+    ssr: false,
     validateSearch: chartUrlStateSchema,
     component: RouteComponent,
     onEnter: async ({ params, search }) => {
@@ -12,7 +11,10 @@ export const Route = createFileRoute("/charts/$chartId")({
             search.chart.id = params.chartId;
         }
 
-        chartsStore.saveChartToLocalStorage(search.chart)
+        // Defer store access to runtime - getChartsStore checks for browser internally
+        if (typeof window !== 'undefined') {
+            getChartsStore().saveChartToLocalStorage(search.chart)
+        }
 
         return {
             ...search,
