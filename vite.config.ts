@@ -59,7 +59,8 @@ export default defineConfig(({ mode }) => ({
     },
     lingui(),
     tanstackStart(),
-    nitro({ preset: "vercel" }),
+    // nitro plugin only for production - causes SSR hydration issues in dev
+    ...(mode === "production" ? [nitro({ preset: "vercel" })] : []),
     {
       enforce: 'pre',
       ...mdx({
