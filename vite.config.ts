@@ -108,6 +108,23 @@ export default defineConfig(({ mode }) => ({
     sourcemap: 'hidden',
     chunkSizeWarningLimit: 1500,
   },
+  // SSR configuration - bundle packages that have import issues when externalized
+  ssr: {
+    noExternal: [
+      'decimal.js-light',
+      'recharts',
+      'recharts-scale',
+      'd3-scale',
+      'd3-array',
+      'd3-format',
+      'd3-interpolate',
+      'd3-time',
+      'd3-time-format',
+      'd3-color',
+      'd3-path',
+      'd3-shape',
+    ],
+  },
   // Client-specific build options (manualChunks don't apply to SSR where packages are external)
   environments: {
     client: {
