@@ -20,8 +20,14 @@ export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
 
 export const Route = createFileRoute('/entities/$cui')({
     validateSearch: entitySearchSchema,
-    beforeLoad: ({ context, params, search }) => {
+    beforeLoad: ({ context, params, search, preload }) => {
         const { queryClient } = context
+        const shouldPrefetchData = !preload || !import.meta.env.DEV
+
+        if (!shouldPrefetchData) {
+            return
+        }
+
         const START_YEAR = defaultYearRange.start;
         const END_YEAR = defaultYearRange.end;
         const year = (search?.year as number | undefined) ?? END_YEAR;
