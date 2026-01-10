@@ -31,6 +31,18 @@ const getHttpsConfig = () => {
   }
 }
 
+const lodashMemoizeExtensionPlugin = () => ({
+  name: "lodash-memoize-extension",
+  enforce: "pre" as const,
+  transform(code: string, id: string) {
+    if (!code.includes("lodash/memoize")) return null;
+    if (!id.match(/\.(cjs|mjs|js|jsx|ts|tsx)$/)) return null;
+    const updated = code.replace(/lodash\/memoize(?!\.js)/g, "lodash/memoize.js");
+    if (updated === code) return null;
+    return { code: updated, map: null };
+  },
+});
+
 
 export default defineConfig(({ mode }) => {
   // TODO: review this. What are best practices? Link the research doc when done.
@@ -109,11 +121,17 @@ export default defineConfig(({ mode }) => {
         });
       },
     },
+    lodashMemoizeExtensionPlugin(),
     lingui(),
     tanstackStart(),
-    nitro({ preset: "vercel" }),
+    nitro({
+      preset: "vercel",
+      alias: {
+        "lodash/memoize": "lodash/memoize.js",
+      },
+    }),
     {
-      enforce: 'pre',
+      enforce: 'pre' as const,
       ...mdx({
         remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter, remarkGfm],
       }),
@@ -142,6 +160,7 @@ export default defineConfig(({ mode }) => {
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "lodash/memoize": "lodash/memoize.js",
     },
   },
     server: {
@@ -165,6 +184,7 @@ export default defineConfig(({ mode }) => {
   ssr: {
     noExternal: [
       'decimal.js-light',
+      'lodash',
       'recharts',
       'recharts-scale',
       'd3-scale',

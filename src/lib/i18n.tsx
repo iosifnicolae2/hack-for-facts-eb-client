@@ -7,18 +7,33 @@ export type SupportedLocale = "ro" | "en";
 const loadedLocales = new Set<string>();
 const loadingLocales = new Map<string, Promise<void>>();
 
-const localeCatalogLoaders = import.meta.glob("../locales/*/messages.po");
+type CatalogLoader = () => Promise<unknown>;
+type CatalogEntry = unknown | CatalogLoader;
+
+// Use two separate glob imports with static options - Vite requires static values at compile time
+const localeCatalogsEager = import.meta.glob("../locales/*/messages.po", {
+  eager: true,
+}) as Record<string, unknown>;
+
+const localeCatalogsLazy = import.meta.glob("../locales/*/messages.po", {
+  eager: false,
+}) as Record<string, CatalogLoader>;
+
+// Select the appropriate catalog based on the runtime environment
+const localeCatalogs: Record<string, CatalogEntry> = import.meta.env.SSR
+  ? localeCatalogsEager
+  : localeCatalogsLazy;
 
 if (import.meta.env.SSR) {
-  const defaultCatalogs = import.meta.glob("../locales/ro/messages.po", {
-    eager: true,
-  });
-  const defaultCatalog = defaultCatalogs[
-    "../locales/ro/messages.po"
-  ] as { messages?: Messages } | undefined;
-  if (defaultCatalog?.messages) {
-    i18n.load(DEFAULT_LOCALE, defaultCatalog.messages);
-    loadedLocales.add(DEFAULT_LOCALE);
+  const defaultEntry = localeCatalogs[
+    `../locales/${DEFAULT_LOCALE}/messages.po`
+  ];
+  if (defaultEntry && typeof defaultEntry !== "function") {
+    const messages = extractMessages(defaultEntry);
+    if (Object.keys(messages).length > 0) {
+      i18n.load(DEFAULT_LOCALE, messages);
+      loadedLocales.add(DEFAULT_LOCALE);
+    }
   }
 }
 
@@ -39,8 +54,17 @@ function extractMessages(module: unknown): Messages {
   return {};
 }
 
+function isCatalogLoader(entry: CatalogEntry): entry is CatalogLoader {
+  return typeof entry === "function";
+}
+
 function getCatalogLoader(locale: string): (() => Promise<unknown>) | undefined {
-  return localeCatalogLoaders[`../locales/${locale}/messages.po`];
+  const entry = localeCatalogs[`../locales/${locale}/messages.po`];
+  if (!entry) return undefined;
+  if (isCatalogLoader(entry)) {
+    return entry;
+  }
+  return async () => entry;
 }
 
 export function normalizeLocale(

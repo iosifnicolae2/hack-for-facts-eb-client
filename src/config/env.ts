@@ -5,6 +5,10 @@ const envSchema = z.object({
   VITE_APP_NAME: z.string().min(1),
   VITE_APP_ENVIRONMENT: z.string().min(1),
   VITE_API_URL: z.string().url(),
+  VITE_API_USE_PROXY: z
+    .enum(["true", "false"])
+    .optional()
+    .transform((val) => val === "true"),
   // Optional canonical site URL used for SEO metadata generation
   VITE_SITE_URL: z.string().url().optional(),
 
@@ -76,20 +80,12 @@ export function getSiteUrl(): string {
 }
 
 /**
- * Returns the API base URL. In development, prefer same-origin to allow Vite proxying
- * and avoid browser CORS issues when the configured API host differs.
+ * Returns the API base URL. In development, opt into same-origin to allow Vite
+ * proxying and avoid browser CORS issues when the configured API host differs.
  */
 export function getApiBaseUrl(): string {
-  if (import.meta.env.DEV && typeof window !== 'undefined') {
-    try {
-      const configuredOrigin = new URL(env.VITE_API_URL).origin;
-      if (configuredOrigin !== window.location.origin) {
-        return window.location.origin;
-      }
-    } catch {
-      return window.location.origin;
-    }
+  if (import.meta.env.DEV && typeof window !== "undefined" && env.VITE_API_USE_PROXY) {
+    return window.location.origin;
   }
-
   return env.VITE_API_URL;
 }
