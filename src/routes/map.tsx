@@ -3,20 +3,20 @@ import { geoJsonQueryOptions } from '@/hooks/useGeoJson'
 import { heatmapJudetQueryOptions, heatmapUATQueryOptions } from '@/hooks/useHeatmapData'
 import { MapStateSchema } from '@/schemas/map-filters'
 import { AnalyticsFilterType } from '@/schemas/charts'
-import { getPersistedState } from '@/lib/hooks/usePersistedState'
+import { readUserCurrencyPreference, readUserInflationAdjustedPreference } from '@/lib/user-preferences'
 
 type MapViewType = 'UAT' | 'County'
 
 export const Route = createFileRoute('/map')({
-  beforeLoad: ({ context, search }) => {
+  beforeLoad: async ({ context, search }) => {
     const { queryClient } = context
     // Parse and normalize search params using zod defaults to ensure valid filters
     const parsed = MapStateSchema.parse(search)
     const viewType: MapViewType = parsed.mapViewType
     const filters = parsed.filters
 
-    const userCurrency = getPersistedState<'RON' | 'EUR' | 'USD'>('user-currency', 'RON')
-    const userInflationAdjusted = getPersistedState<boolean>('user-inflation-adjusted', false)
+    const userCurrency = await readUserCurrencyPreference()
+    const userInflationAdjusted = await readUserInflationAdjustedPreference()
 
     const normalizationRaw = filters.normalization ?? 'total'
     const normalization = (() => {

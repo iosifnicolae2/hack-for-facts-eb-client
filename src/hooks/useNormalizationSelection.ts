@@ -1,12 +1,12 @@
 import { useCallback, useMemo, useRef } from 'react'
 import { Normalization } from '@/schemas/charts'
-import { usePersistedState } from '@/lib/hooks/usePersistedState'
+import { useUserCurrency } from '@/lib/hooks/useUserCurrency'
 
 type Currency = 'RON' | 'EUR' | 'USD'
 export type DisplayNormalization = 'total' | 'per_capita'
 
 export function useNormalizationSelection(current?: Normalization) {
-  const [currency] = usePersistedState<Currency>('user-currency', 'RON')
+  const [currency] = useUserCurrency()
   const initialCurrency = useRef<Currency>(currency)
 
   const defaultNormalization: Normalization = useMemo(
@@ -34,4 +34,3 @@ export function useNormalizationSelection(current?: Normalization) {
     toEffectiveNormalization,
   }
 }
-

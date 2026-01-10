@@ -12,7 +12,7 @@ import { generateHash } from '@/lib/utils';
 import { GqlReportType, toReportTypeValue } from '@/schemas/reporting';
 import { getInitialFilterState, makeTrendPeriod } from '@/schemas/reporting';
 import { prepareFilterForServer, withDefaultExcludes } from '@/lib/filterUtils';
-import { getPersistedState } from '@/lib/hooks/usePersistedState';
+import { readUserCurrencyPreference, readUserInflationAdjustedPreference } from '@/lib/user-preferences';
 import type { EntityDetailsData } from '@/lib/api/entities';
 import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults';
 
@@ -32,8 +32,8 @@ export const Route = createFileRoute('/entities/$cui')({
         const START_YEAR = defaultYearRange.start;
         const END_YEAR = defaultYearRange.end;
         const year = (search?.year as number | undefined) ?? END_YEAR;
-        const userCurrency = getPersistedState<'RON' | 'EUR' | 'USD'>('user-currency', 'RON');
-        const userInflationAdjusted = getPersistedState<boolean>('user-inflation-adjusted', false);
+        const userCurrency = await readUserCurrencyPreference();
+        const userInflationAdjusted = await readUserInflationAdjustedPreference();
         const currencyParam = (search?.currency as Currency | undefined);
         const inflationAdjustedParam = (search as any)?.inflation_adjusted as boolean | undefined;
         const normalizationRaw = (search?.normalization as Normalization | undefined) ?? 'total';

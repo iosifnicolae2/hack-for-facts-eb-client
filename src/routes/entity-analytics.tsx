@@ -4,7 +4,7 @@ import { fetchEntityAnalytics } from '@/lib/api/entity-analytics'
 import { defaultEntityAnalyticsFilter } from '@/hooks/useEntityAnalyticsFilter'
 import { AnalyticsFilterSchema } from '@/schemas/charts'
 import { convertDaysToMs, generateHash } from '@/lib/utils'
-import { getPersistedState } from '@/lib/hooks/usePersistedState'
+import { readUserCurrencyPreference, readUserInflationAdjustedPreference } from '@/lib/user-preferences'
 
 const viewEnum = z.enum(['table', 'chart', 'line-items'])
 
@@ -41,15 +41,15 @@ function mapColumnIdToSortBy(columnId: string): string {
 }
 
 export const Route = createFileRoute('/entity-analytics')({
-  beforeLoad: ({ context, search }) => {
+  beforeLoad: async ({ context, search }) => {
     const { queryClient } = context
     const parsed = EntityAnalyticsSchema.parse(search)
     const offset = (parsed.page - 1) * parsed.pageSize
     const sort = parsed.sortBy
       ? ({ by: mapColumnIdToSortBy(parsed.sortBy), order: parsed.sortOrder } as const)
       : undefined
-    const userCurrency = getPersistedState<'RON' | 'EUR' | 'USD'>('user-currency', 'RON')
-    const userInflationAdjusted = getPersistedState<boolean>('user-inflation-adjusted', false)
+    const userCurrency = await readUserCurrencyPreference()
+    const userInflationAdjusted = await readUserInflationAdjustedPreference()
 
     const normalizationRaw = parsed.filter.normalization ?? 'total'
     const normalization = (() => {

@@ -28,7 +28,7 @@ import { buildEntitySeo } from '@/lib/seo-entity'
 import { getSiteUrl } from '@/config/env'
 import { Overview } from '@/components/entities/views/Overview'
 import { EntityDetailsData } from '@/lib/api/entities'
-import { usePersistedState } from '@/lib/hooks/usePersistedState'
+import { useUserCurrency } from '@/lib/hooks/useUserCurrency'
 import { useDebouncedCallback } from '@/lib/hooks/useDebouncedCallback'
 import { FloatingQuickNav } from '@/components/ui/FloatingQuickNav'
 import type { NormalizationOptions } from '@/lib/normalization'
@@ -96,7 +96,7 @@ function EntityDetailsPage() {
   const navigate = useNavigate({ from: '/entities/$cui' })
   const queryClient = useQueryClient();
   const yearSelectorRef = useRef<HTMLButtonElement>(null)
-  const [userCurrency, setUserCurrency] = usePersistedState<'RON' | 'EUR' | 'USD'>('user-currency', 'RON')
+  const [userCurrency, setUserCurrency] = useUserCurrency()
   const [userInflationAdjusted, setUserInflationAdjusted] = useUserInflationAdjusted()
   const [filtersOpen, setFiltersOpen] = useState(false)
 

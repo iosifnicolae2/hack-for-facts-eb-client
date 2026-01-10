@@ -1,14 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "../ui/sidebar";
 import { Trans } from "@lingui/react/macro";
-import { usePersistedState } from "@/lib/hooks/usePersistedState";
+import { useUserCurrency } from "@/lib/hooks/useUserCurrency";
 
 type CurrencyCode = 'RON' | 'EUR' | 'USD'
 
 export function CurrencyToggle() {
     const { state } = useSidebar();
     const collapsed = state === "collapsed";
-    const [currency, setCurrency] = usePersistedState<CurrencyCode>("user-currency", "RON");
+    const [currency, setCurrency] = useUserCurrency();
 
     const applyCurrency = (next: CurrencyCode) => {
         setCurrency(next);
@@ -50,4 +50,3 @@ export function CurrencyToggle() {
         </SidebarGroup>
     );
 }
-
