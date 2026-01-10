@@ -12,12 +12,10 @@ import { i18n } from "@lingui/core";
 import type { RouterContext } from "@/router-context";
 import appCss from "@/index.css?url";
 import { getSiteUrl } from "@/config/env";
-import { dynamicActivate } from "@/lib/i18n";
+import { dynamicActivate, DEFAULT_LOCALE } from "@/lib/i18n";
 import { AppShell } from "@/components/app/app-shell";
 
 const ANONYMOUS_CROSS_ORIGIN = "anonymous" as const;
-const DEFAULT_LOCALE = "ro" as const;
-
 type SupportedLocale = "ro" | "en";
 
 export const Route = createRootRouteWithContext<RouterContext>()({
