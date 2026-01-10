@@ -25,7 +25,7 @@ const formatMessage = (
   }
   let output = message;
   for (const [key, value] of Object.entries(normalized)) {
-    output = output.replaceAll(`{${key}}`, String(value));
+    output = output.split(`{${key}}`).join(String(value));
   }
   return output;
 };

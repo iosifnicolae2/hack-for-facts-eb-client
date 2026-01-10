@@ -11,14 +11,14 @@ export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  retries: process.env.CI ? 2 : 1, // Add 1 retry locally to handle server instability
+  workers: process.env.CI ? 1 : 2, // Reduce workers to avoid overwhelming the dev server
   reporter: [
     ['list'],
     ['html', { open: 'never' }],
   ],
   use: {
-    baseURL: 'http://localhost:5173',
+    baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',
     video: 'on-first-retry',
   },
@@ -45,6 +45,7 @@ export default defineConfig({
   webServer: {
     command: 'yarn dev',
     url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI
+    reuseExistingServer: !process.env.CI,
+    timeout: 120000,
   },
 })
