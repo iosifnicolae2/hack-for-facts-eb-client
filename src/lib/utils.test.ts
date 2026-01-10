@@ -337,6 +337,7 @@ describe('utils', () => {
       vi.stubGlobal('location', {
         search: '',
       })
+      document.cookie = 'user-locale=; Max-Age=0; path=/';
     })
 
     afterEach(() => {
@@ -350,6 +351,12 @@ describe('utils', () => {
 
     it('should return locale from localStorage', () => {
       (localStorage.getItem as ReturnType<typeof vi.fn>).mockReturnValue('en')
+      expect(getUserLocale()).toBe('en')
+    })
+
+    it('should return locale from cookie when present', () => {
+      document.cookie = 'user-locale=en; path=/';
+      (localStorage.getItem as ReturnType<typeof vi.fn>).mockReturnValue(null)
       expect(getUserLocale()).toBe('en')
     })
 
@@ -382,6 +389,7 @@ describe('utils', () => {
         getItem: vi.fn(),
         setItem: vi.fn(),
       })
+      document.cookie = 'user-locale=; Max-Age=0; path=/';
     })
 
     afterEach(() => {
@@ -391,11 +399,13 @@ describe('utils', () => {
     it('should save locale to localStorage', () => {
       setUserLocale('en')
       expect(localStorage.setItem).toHaveBeenCalledWith('user-locale', 'en')
+      expect(document.cookie).toContain('user-locale=en')
     })
 
     it('should save ro locale', () => {
       setUserLocale('ro')
       expect(localStorage.setItem).toHaveBeenCalledWith('user-locale', 'ro')
+      expect(document.cookie).toContain('user-locale=ro')
     })
   })
 

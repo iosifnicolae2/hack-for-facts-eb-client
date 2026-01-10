@@ -1,6 +1,8 @@
 import { i18n, type Messages } from "@lingui/core";
 
 export const DEFAULT_LOCALE = "ro" as const;
+export const LOCALE_COOKIE_NAME = "user-locale";
+export type SupportedLocale = "ro" | "en";
 
 const loadedLocales = new Set<string>();
 const loadingLocales = new Map<string, Promise<void>>();
@@ -39,6 +41,37 @@ function extractMessages(module: unknown): Messages {
 
 function getCatalogLoader(locale: string): (() => Promise<unknown>) | undefined {
   return localeCatalogLoaders[`../locales/${locale}/messages.po`];
+}
+
+export function normalizeLocale(
+  value: string | null | undefined,
+): SupportedLocale | null {
+  if (value === "ro" || value === "en") {
+    return value;
+  }
+  return null;
+}
+
+export function resolveLocale(options: {
+  pathname: string;
+  searchStr?: string;
+  cookieLocale?: string | null;
+  storedLocale?: string | null;
+}): SupportedLocale {
+  const searchParams = new URLSearchParams(options.searchStr ?? "");
+  const searchLocale = normalizeLocale(searchParams.get("lang"));
+  if (searchLocale) return searchLocale;
+
+  const pathLocale = normalizeLocale(options.pathname.split("/")[1]);
+  if (pathLocale) return pathLocale;
+
+  const cookieLocale = normalizeLocale(options.cookieLocale);
+  if (cookieLocale) return cookieLocale;
+
+  const storedLocale = normalizeLocale(options.storedLocale);
+  if (storedLocale) return storedLocale;
+
+  return DEFAULT_LOCALE;
 }
 
 export async function dynamicActivate(locale: string): Promise<void> {

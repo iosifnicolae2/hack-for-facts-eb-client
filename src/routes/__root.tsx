@@ -12,17 +12,27 @@ import { i18n } from "@lingui/core";
 import type { RouterContext } from "@/router-context";
 import appCss from "@/index.css?url";
 import { getSiteUrl } from "@/config/env";
-import { dynamicActivate, DEFAULT_LOCALE } from "@/lib/i18n";
+import {
+  DEFAULT_LOCALE,
+  LOCALE_COOKIE_NAME,
+  dynamicActivate,
+  resolveLocale,
+} from "@/lib/i18n";
 import { AppShell } from "@/components/app/app-shell";
 
 const ANONYMOUS_CROSS_ORIGIN = "anonymous" as const;
-type SupportedLocale = "ro" | "en";
-
 export const Route = createRootRouteWithContext<RouterContext>()({
   ssr: true,
   head: getGlobalHead,
   beforeLoad: async ({ location }) => {
-    const locale = resolveLocale(location.pathname, location.searchStr);
+    const cookieLocale = await readLocaleCookie();
+    const storedLocale = readStoredLocale();
+    const locale = resolveLocale({
+      pathname: location.pathname,
+      searchStr: location.searchStr,
+      cookieLocale,
+      storedLocale,
+    });
     await dynamicActivate(locale);
   },
   errorComponent: ({ error }) => <GlobalErrorPage error={error} />,
@@ -190,17 +200,23 @@ function getGlobalHead() {
   };
 }
 
-function resolveLocale(pathname: string, searchStr?: string): SupportedLocale {
-  const searchParams = new URLSearchParams(searchStr ?? "");
-  const searchLocale = searchParams.get("lang");
-  if (searchLocale === "ro" || searchLocale === "en") {
-    return searchLocale;
+function readStoredLocale(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return window.localStorage.getItem(LOCALE_COOKIE_NAME);
+  } catch {
+    return null;
   }
+}
 
-  const pathLocale = pathname.split("/")[1];
-  if (pathLocale === "ro" || pathLocale === "en") {
-    return pathLocale;
+async function readLocaleCookie(): Promise<string | null> {
+  if (import.meta.env.SSR) {
+    const { getCookie } = await import("@tanstack/react-start/server");
+    return getCookie(LOCALE_COOKIE_NAME) ?? null;
   }
-
-  return DEFAULT_LOCALE;
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.match(
+    new RegExp(`(?:^|; )${LOCALE_COOKIE_NAME}=([^;]*)`),
+  );
+  return match ? decodeURIComponent(match[1]) : null;
 }

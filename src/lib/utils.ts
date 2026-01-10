@@ -2,6 +2,12 @@ import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { i18n } from "@lingui/core";
 import { msg as t } from "@lingui/core/macro";
+import {
+  DEFAULT_LOCALE,
+  LOCALE_COOKIE_NAME,
+  normalizeLocale,
+  type SupportedLocale,
+} from "@/lib/i18n";
 
 // i18n messages for normalization units
 const normalizationMessages = {
@@ -77,32 +83,63 @@ export function slugify(input: string): string {
     .replace(/(^-|-$)+/g, '');
 }
 
-type Locale = 'en' | 'ro';
+type Locale = SupportedLocale;
+
+const LOCALE_COOKIE_MAX_AGE_DAYS = 365;
+
+function getLocaleFromCookie(): Locale | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.match(
+    new RegExp(`(?:^|; )${LOCALE_COOKIE_NAME}=([^;]*)`),
+  );
+  if (!match) return null;
+  return normalizeLocale(decodeURIComponent(match[1]));
+}
 
 /**
  * Gets the user's locale with the following priority:
+ * 0. Activated Lingui locale (when available)
  * 1. URL query parameter `lang` (for shareable links)
- * 2. localStorage value
- * 3. Default to 'ro'
+ * 2. Cookie value
+ * 3. localStorage value
+ * 4. Default to 'ro'
  */
 export function getUserLocale(): Locale {
+  const activeLocale = normalizeLocale(i18n.locale);
+  if (activeLocale) return activeLocale;
+
   // Check URL query parameter first
   if (typeof window !== 'undefined') {
     const urlParams = new URLSearchParams(window.location.search);
-    const langParam = urlParams.get('lang');
-    if (langParam === 'en' || langParam === 'ro') {
-      return langParam;
-    }
+    const langParam = normalizeLocale(urlParams.get('lang'));
+    if (langParam) return langParam;
+
+    const cookieLocale = getLocaleFromCookie();
+    if (cookieLocale) return cookieLocale;
   }
 
   // Fall back to localStorage
-  const savedLocale: Locale | null = typeof window !== 'undefined' ? window.localStorage.getItem('user-locale') as Locale | null : null;
-  return savedLocale || 'ro';
+  const savedLocale: Locale | null =
+    typeof window !== 'undefined'
+      ? normalizeLocale(window.localStorage.getItem(LOCALE_COOKIE_NAME))
+      : null;
+  return savedLocale || DEFAULT_LOCALE;
 }
 
 export function setUserLocale(locale: Locale): void {
   if (typeof window !== 'undefined') {
-    window.localStorage.setItem('user-locale', locale);
+    window.localStorage.setItem(LOCALE_COOKIE_NAME, locale);
+    const maxAgeSeconds = LOCALE_COOKIE_MAX_AGE_DAYS * 24 * 60 * 60;
+    const cookieParts = [
+      `${LOCALE_COOKIE_NAME}=${encodeURIComponent(locale)}`,
+      "Path=/",
+      `Max-Age=${maxAgeSeconds}`,
+      "SameSite=Lax",
+    ];
+    if (window.location.protocol === "https:") {
+      cookieParts.push("Secure");
+    }
+    document.cookie = cookieParts.join("; ");
   }
 }
 

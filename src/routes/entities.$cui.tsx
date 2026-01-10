@@ -20,14 +20,15 @@ export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
 
 export const Route = createFileRoute('/entities/$cui')({
     validateSearch: entitySearchSchema,
-    beforeLoad: ({ context, params, search, preload }) => {
-        const { queryClient } = context
-        const shouldPrefetchData = !preload || !import.meta.env.DEV
+    loader: async ({ context, params, location, preload }) => {
+        const { queryClient } = context;
+        const shouldPrefetchData = !preload || !import.meta.env.DEV;
 
         if (!shouldPrefetchData) {
-            return
+            return;
         }
 
+        const search = entitySearchSchema.parse(location.search);
         const START_YEAR = defaultYearRange.start;
         const END_YEAR = defaultYearRange.end;
         const year = (search?.year as number | undefined) ?? END_YEAR;
@@ -56,7 +57,7 @@ export const Route = createFileRoute('/entities/$cui')({
         const trendPeriod = makeTrendPeriod(search.period ?? 'YEAR', year, START_YEAR, END_YEAR);
         const reportType = (search?.report_type as GqlReportType | undefined);
         const mainCreditorCui = (search?.main_creditor_cui as string | undefined);
-        // Warm entity details in cache
+
         const detailsOptions = entityDetailsQueryOptions({
             cui: params.cui,
             normalization,
@@ -68,14 +69,19 @@ export const Route = createFileRoute('/entities/$cui')({
             trendPeriod,
             mainCreditorCui
         });
-        queryClient.ensureQueryData(detailsOptions);
+
+        await queryClient.ensureQueryData(detailsOptions);
 
         const desiredView = (search?.view as string | undefined) ?? 'overview';
         const entity = queryClient.getQueryData<EntityDetailsData>(detailsOptions.queryKey);
 
-        if (desiredView === 'map' && entity?.is_uat) {
+        if (!entity) {
+            return;
+        }
+
+        if (desiredView === 'map' && entity.is_uat) {
             const mapViewType = entity.entity_type === 'admin_county_council' || entity.cui === '4267117' ? 'County' : 'UAT';
-            queryClient.prefetchQuery(geoJsonQueryOptions(mapViewType));
+            void queryClient.prefetchQuery(geoJsonQueryOptions(mapViewType));
             const filters = (search?.mapFilters as AnalyticsFilterType) || withDefaultExcludes({
                 account_category: 'ch',
                 normalization: 'per_capita',
@@ -84,15 +90,15 @@ export const Route = createFileRoute('/entities/$cui')({
                 report_period: getInitialFilterState('YEAR', year, '12', 'Q4'),
             });
             if (mapViewType === 'UAT') {
-                queryClient.prefetchQuery(heatmapUATQueryOptions(filters));
+                void queryClient.prefetchQuery(heatmapUATQueryOptions(filters));
             } else {
-                queryClient.prefetchQuery(heatmapJudetQueryOptions(filters));
+                void queryClient.prefetchQuery(heatmapJudetQueryOptions(filters));
             }
         }
 
         if (desiredView === 'income-trends' || desiredView === 'expense-trends') {
             const accountCategory: 'vn' | 'ch' = desiredView === 'income-trends' ? 'vn' : 'ch';
-            const lineItems = entity?.executionLineItems?.nodes ?? [];
+            const lineItems = entity.executionLineItems?.nodes ?? [];
             type MinimalLineItem = { account_category: 'vn' | 'ch'; amount: number; functionalClassification?: { functional_code?: string | null } };
             const filtered = (lineItems as MinimalLineItem[]).filter((li) => li.account_category === accountCategory);
             const topGroups: string[] = getTopFunctionalGroupCodes(filtered as unknown as import('@/lib/api/entities').ExecutionLineItem[], 10);
@@ -106,7 +112,7 @@ export const Route = createFileRoute('/entities/$cui')({
                         entity_cuis: [params.cui],
                         functional_prefixes: [prefix],
                         account_category: accountCategory,
-                        report_type: entity?.default_report_type ? toReportTypeValue(entity.default_report_type) : 'Executie bugetara agregata la nivel de ordonator principal',
+                        report_type: entity.default_report_type ? toReportTypeValue(entity.default_report_type) : 'Executie bugetara agregata la nivel de ordonator principal',
                         normalization,
                         currency,
                         inflation_adjusted: inflationAdjusted,
@@ -124,7 +130,7 @@ export const Route = createFileRoute('/entities/$cui')({
                     .sort((a, b) => a.seriesId.localeCompare(b.seriesId))
                     .reduce((acc, input) => acc + input.seriesId + '::' + JSON.stringify(input.filter), '');
                 const hash = generateHash(payloadHash);
-                queryClient.prefetchQuery({
+                void queryClient.prefetchQuery({
                     queryKey: ['chart-data', hash],
                     queryFn: () => getChartAnalytics(inputs),
                     staleTime: 1000 * 60 * 60 * 24,
