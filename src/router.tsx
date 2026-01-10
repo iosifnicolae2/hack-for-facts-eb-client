@@ -7,9 +7,15 @@ import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {
   const queryClient = createQueryClient();
-  // Avoid SSR redirect loops caused by space normalization in query strings.
+  // Avoid SSR redirect loops caused by query string normalization differences.
   const stringifySearch = (search: Record<string, any>) =>
-    defaultStringifySearch(search).replace(/\+/g, "%20");
+    defaultStringifySearch(search)
+      .replace(/\+/g, "%20")
+      .replace(/%21/gi, "!")
+      .replace(/%27/gi, "'")
+      .replace(/%28/gi, "(")
+      .replace(/%29/gi, ")")
+      .replace(/%7e/gi, "~");
 
   const router = createRouter({
     routeTree,
