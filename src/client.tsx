@@ -7,24 +7,34 @@ import { getUserLocale } from "@/lib/utils";
 import { getReactRootErrorHandlers } from "@/lib/sentry";
 
 const hasWindow = typeof window !== "undefined";
-const userLocale = hasWindow ? getUserLocale() : "ro";
-i18n.load(userLocale, {});
-i18n.activate(userLocale);
 
-if (hasWindow) {
-  void dynamicActivate(userLocale).catch((error) => {
-    if (import.meta.env.DEV) {
-      console.error("Failed to load translations:", error);
+async function bootstrap() {
+  const userLocale = hasWindow ? getUserLocale() : "ro";
+
+  if (hasWindow) {
+    try {
+      await dynamicActivate(userLocale);
+    } catch (error) {
+      i18n.load(userLocale, {});
+      i18n.activate(userLocale);
+      if (import.meta.env.DEV) {
+        console.error("Failed to load translations:", error);
+      }
     }
+  } else {
+    i18n.load(userLocale, {});
+    i18n.activate(userLocale);
+  }
+
+  startTransition(() => {
+    hydrateRoot(
+      document,
+      <StrictMode>
+        <StartClient />
+      </StrictMode>,
+      getReactRootErrorHandlers(),
+    );
   });
 }
 
-startTransition(() => {
-  hydrateRoot(
-    document,
-    <StrictMode>
-      <StartClient />
-    </StrictMode>,
-    getReactRootErrorHandlers(),
-  );
-});
+void bootstrap();

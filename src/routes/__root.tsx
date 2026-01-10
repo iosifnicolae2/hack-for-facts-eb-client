@@ -8,6 +8,7 @@ import GlobalErrorPage from "@/components/errors/GlobalErrorPage";
 import { Button } from "@/components/ui/button";
 import { Home, FileQuestion } from "lucide-react";
 import { t } from "@lingui/core/macro";
+import { i18n } from "@lingui/core";
 import type { RouterContext } from "@/router-context";
 import appCss from "@/index.css?url";
 import { getSiteUrl } from "@/config/env";
@@ -35,7 +36,7 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
-    <html lang="en">
+    <html lang={i18n.locale || DEFAULT_LOCALE}>
       <head>
         <HeadContent />
       </head>
