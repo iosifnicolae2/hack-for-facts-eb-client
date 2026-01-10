@@ -31,13 +31,25 @@ const getHttpsConfig = () => {
   }
 }
 
-const lodashMemoizeExtensionPlugin = () => ({
-  name: "lodash-memoize-extension",
+const esmExtensionFixesPlugin = () => ({
+  name: "esm-extension-fixes",
   enforce: "pre" as const,
   transform(code: string, id: string) {
-    if (!code.includes("lodash/memoize")) return null;
+    if (
+      !code.includes("lodash/memoize") &&
+      !code.includes("@visx/drag/lib/")
+    ) {
+      return null;
+    }
     if (!id.match(/\.(cjs|mjs|js|jsx|ts|tsx)$/)) return null;
-    const updated = code.replace(/lodash\/memoize(?!\.js)/g, "lodash/memoize.js");
+    let updated = code.replace(
+      /lodash\/memoize(?!\.js)/g,
+      "lodash/memoize.js",
+    );
+    updated = updated.replace(
+      /@visx\/drag\/lib\/([A-Za-z0-9_/-]+)(?!\.js)/g,
+      "@visx/drag/lib/$1.js",
+    );
     if (updated === code) return null;
     return { code: updated, map: null };
   },
@@ -121,7 +133,7 @@ export default defineConfig(({ mode }) => {
         });
       },
     },
-    lodashMemoizeExtensionPlugin(),
+    esmExtensionFixesPlugin(),
     lingui(),
     tanstackStart(),
     nitro({
