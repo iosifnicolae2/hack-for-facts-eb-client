@@ -1,7 +1,8 @@
 import { getAuthToken } from '@/lib/auth';
+import { getApiBaseUrl } from '@/config/env';
 import type { Notification, NotificationType } from '../types';
 
-const getApiUrl = () => import.meta.env.VITE_API_URL;
+const getApiUrl = () => getApiBaseUrl();
 
 interface ApiResponse<T> {
   ok: boolean;

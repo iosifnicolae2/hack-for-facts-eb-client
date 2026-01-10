@@ -74,3 +74,22 @@ export function getSiteUrl(): string {
   // Sensible default for build-time usage where window is not available
   return 'https://transparenta.eu';
 }
+
+/**
+ * Returns the API base URL. In development, prefer same-origin to allow Vite proxying
+ * and avoid browser CORS issues when the configured API host differs.
+ */
+export function getApiBaseUrl(): string {
+  if (import.meta.env.DEV && typeof window !== 'undefined') {
+    try {
+      const configuredOrigin = new URL(env.VITE_API_URL).origin;
+      if (configuredOrigin !== window.location.origin) {
+        return window.location.origin;
+      }
+    } catch {
+      return window.location.origin;
+    }
+  }
+
+  return env.VITE_API_URL;
+}

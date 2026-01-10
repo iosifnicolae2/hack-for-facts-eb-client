@@ -1,5 +1,6 @@
 import { createLogger } from "../logger";
 import { getAuthToken } from "../auth";
+import { getApiBaseUrl } from "@/config/env";
 
 const logger = createLogger("graphql-client");
 
@@ -23,7 +24,7 @@ export async function graphqlRequest<T = unknown>(
   query: string,
   variables?: Record<string, unknown>
 ): Promise<T> {
-  const endpoint = import.meta.env.VITE_API_URL + "/graphql";
+  const endpoint = `${getApiBaseUrl()}/graphql`;
 
   try {
     logger.info("Making GraphQL request", { query, variables });

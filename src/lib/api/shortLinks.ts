@@ -1,6 +1,6 @@
 import { createLogger } from "../logger";
 import { getAuthToken } from "../auth";
-import { env } from "@/config/env";
+import { getApiBaseUrl } from "@/config/env";
 import type { QueryClient } from "@tanstack/react-query";
 
 const logger = createLogger("short-links-client");
@@ -24,7 +24,7 @@ type ApiResponse<T> = ApiSuccess<T> | ApiError;
  * Requires authentication via Bearer token.
  */
 export async function createShortLink(originalUrl: string): Promise<string> {
-  const endpoint = `${env.VITE_API_URL}/api/v1/short-links`;
+  const endpoint = `${getApiBaseUrl()}/api/v1/short-links`;
 
   try {
     const token = await getAuthToken();
@@ -66,7 +66,7 @@ export async function createShortLink(originalUrl: string): Promise<string> {
  * Resolve a short link code into the original URL. Public endpoint.
  */
 export async function resolveShortLinkCode(code: string): Promise<string> {
-  const endpoint = `${env.VITE_API_URL}/api/v1/short-links/${encodeURIComponent(code)}`;
+  const endpoint = `${getApiBaseUrl()}/api/v1/short-links/${encodeURIComponent(code)}`;
 
   try {
     logger.info("Resolving short link code", { code });
@@ -124,4 +124,3 @@ export async function ensureShortRedirectUrl(
   const code = await ensureShortCodeForUrl(url, queryClient);
   return `${siteBaseUrl}/share/${code}`;
 }
-

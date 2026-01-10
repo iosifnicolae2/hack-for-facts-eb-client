@@ -1,9 +1,10 @@
 import { getAuthToken } from '@/lib/auth'
+import { getApiBaseUrl } from '@/config/env'
 import { parseLearningGuestProgress } from '../schemas/progress'
 import { parseLearningProgressEvents } from '../schemas/progress-events'
 import type { LearningGuestProgress, LearningProgressEvent } from '../types'
 
-const getApiUrl = () => import.meta.env.VITE_API_URL
+const getApiUrl = () => getApiBaseUrl()
 
 type ApiResponse<T> = {
   ok: boolean

@@ -5,6 +5,8 @@ type WindowSize = {
   height: number;
 };
 
+let cachedSnapshot: WindowSize | null = null;
+
 /**
  * Subscribes to window resize events and calls the callback on change.
  * @param callback The function to call when the window size changes.
@@ -21,10 +23,15 @@ function subscribe(callback: () => void): () => void {
  * Gets the current window size on the client.
  */
 function getSnapshot(): WindowSize {
-  return {
-    width: window.innerWidth,
-    height: window.innerHeight,
-  };
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+
+  if (cachedSnapshot && cachedSnapshot.width === width && cachedSnapshot.height === height) {
+    return cachedSnapshot;
+  }
+
+  cachedSnapshot = { width, height };
+  return cachedSnapshot;
 }
 
 /**
