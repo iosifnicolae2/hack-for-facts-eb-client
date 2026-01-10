@@ -205,58 +205,64 @@ test.describe('Budget Explorer - Comprehensive Tests', () => {
 
     test('3.1 Switch to economic classification', async ({ page }) => {
       await page.goto('/budget-explorer')
+      await page.waitForLoadState('networkidle')
 
-      // Find and click economic toggle
-      const economicToggle = page.getByRole('radio', { name: SELECTORS.economicLabel })
-        .or(page.locator('button').filter({ hasText: SELECTORS.economicLabel }))
-
+      // Find and click economic toggle - wait for it to be ready
+      const economicToggle = page.locator('button[role="radio"]').filter({ hasText: SELECTORS.economicLabel }).first()
+      await expect(economicToggle).toBeVisible({ timeout: 10000 })
       await economicToggle.click()
+      await page.waitForTimeout(500) // Allow state update
 
-      // Verify economic is now selected
-      const selectedToggle = page.locator('[data-state="on"]').filter({ hasText: SELECTORS.economicLabel })
-      await expect(selectedToggle).toBeVisible()
+      // Verify economic toggle has data-state="on"
+      await expect(economicToggle).toHaveAttribute('data-state', 'on', { timeout: 5000 })
     })
 
     test('3.2 Switch back to functional classification', async ({ page }) => {
       // Start with economic
       await page.goto('/budget-explorer?treemapPrimary=ec')
+      await page.waitForLoadState('networkidle')
 
-      // Click functional
-      const functionalToggle = page.getByRole('radio', { name: SELECTORS.functionalLabel })
-        .or(page.locator('button').filter({ hasText: SELECTORS.functionalLabel }))
-
+      // Click functional toggle
+      const functionalToggle = page.locator('button[role="radio"]').filter({ hasText: SELECTORS.functionalLabel }).first()
+      await expect(functionalToggle).toBeVisible({ timeout: 10000 })
       await functionalToggle.click()
+      await page.waitForTimeout(500)
 
-      // Verify functional is selected
-      const selectedToggle = page.locator('[data-state="on"]').filter({ hasText: SELECTORS.functionalLabel })
-      await expect(selectedToggle).toBeVisible()
+      // Verify functional toggle has data-state="on"
+      await expect(functionalToggle).toHaveAttribute('data-state', 'on', { timeout: 5000 })
     })
 
     test('3.3 Economic classification is disabled for revenue view', async ({ page }) => {
       // Navigate to budget explorer and switch to revenue view
       await page.goto('/budget-explorer')
+      await page.waitForLoadState('networkidle')
 
       // Click income toggle to switch to revenue view
-      const incomeToggle = page.locator('button').filter({ hasText: SELECTORS.incomeLabel })
+      const incomeToggle = page.locator('button[role="radio"]').filter({ hasText: SELECTORS.incomeLabel }).first()
+      await expect(incomeToggle).toBeVisible({ timeout: 10000 })
       await incomeToggle.click()
+      await page.waitForTimeout(500)
 
       // Wait for the income toggle to be selected
-      await expect(page.locator('[data-state="on"]').filter({ hasText: SELECTORS.incomeLabel })).toBeVisible()
+      await expect(incomeToggle).toHaveAttribute('data-state', 'on', { timeout: 5000 })
 
       // Economic toggle should be disabled
-      const economicToggle = page.locator('button').filter({ hasText: SELECTORS.economicLabel })
+      const economicToggle = page.locator('button[role="radio"]').filter({ hasText: SELECTORS.economicLabel }).first()
       await expect(economicToggle).toBeDisabled()
     })
 
     test('3.4 Classification selection persists in URL', async ({ page }) => {
       await page.goto('/budget-explorer')
+      await page.waitForLoadState('networkidle')
 
-      // Click economic
-      const economicToggle = page.locator('button').filter({ hasText: SELECTORS.economicLabel })
+      // Click economic toggle
+      const economicToggle = page.locator('button[role="radio"]').filter({ hasText: SELECTORS.economicLabel }).first()
+      await expect(economicToggle).toBeVisible({ timeout: 10000 })
       await economicToggle.click()
+      await page.waitForTimeout(500)
 
       // Verify URL contains treemapPrimary=ec
-      await expect(page).toHaveURL(/treemapPrimary=ec/)
+      await expect(page).toHaveURL(/treemapPrimary=ec/, { timeout: 5000 })
     })
   })
 
@@ -270,38 +276,45 @@ test.describe('Budget Explorer - Comprehensive Tests', () => {
 
     test('4.1 Switch to detailed categories', async ({ page }) => {
       await page.goto('/budget-explorer')
+      await page.waitForLoadState('networkidle')
 
-      // Click detailed categories
-      const detailedToggle = page.locator('button').filter({ hasText: SELECTORS.detailedCategoriesLabel })
+      // Click detailed categories toggle
+      const detailedToggle = page.locator('button[role="radio"]').filter({ hasText: SELECTORS.detailedCategoriesLabel }).first()
+      await expect(detailedToggle).toBeVisible({ timeout: 10000 })
       await detailedToggle.click()
+      await page.waitForTimeout(500)
 
       // Verify it's selected
-      const selectedToggle = page.locator('[data-state="on"]').filter({ hasText: SELECTORS.detailedCategoriesLabel })
-      await expect(selectedToggle).toBeVisible()
+      await expect(detailedToggle).toHaveAttribute('data-state', 'on', { timeout: 5000 })
     })
 
     test('4.2 Switch back to main chapters', async ({ page }) => {
       // Start with detailed
       await page.goto('/budget-explorer?depth=subchapter')
+      await page.waitForLoadState('networkidle')
 
-      // Click main chapters
-      const mainChaptersToggle = page.locator('button').filter({ hasText: SELECTORS.mainChaptersLabel })
+      // Click main chapters toggle
+      const mainChaptersToggle = page.locator('button[role="radio"]').filter({ hasText: SELECTORS.mainChaptersLabel }).first()
+      await expect(mainChaptersToggle).toBeVisible({ timeout: 10000 })
       await mainChaptersToggle.click()
+      await page.waitForTimeout(500)
 
       // Verify it's selected
-      const selectedToggle = page.locator('[data-state="on"]').filter({ hasText: SELECTORS.mainChaptersLabel })
-      await expect(selectedToggle).toBeVisible()
+      await expect(mainChaptersToggle).toHaveAttribute('data-state', 'on', { timeout: 5000 })
     })
 
     test('4.3 Depth selection persists in URL', async ({ page }) => {
       await page.goto('/budget-explorer')
+      await page.waitForLoadState('networkidle')
 
       // Click detailed categories
-      const detailedToggle = page.locator('button').filter({ hasText: SELECTORS.detailedCategoriesLabel })
+      const detailedToggle = page.locator('button[role="radio"]').filter({ hasText: SELECTORS.detailedCategoriesLabel }).first()
+      await expect(detailedToggle).toBeVisible({ timeout: 10000 })
       await detailedToggle.click()
+      await page.waitForTimeout(500)
 
       // Verify URL contains depth=subchapter
-      await expect(page).toHaveURL(/depth=subchapter/)
+      await expect(page).toHaveURL(/depth=subchapter/, { timeout: 5000 })
     })
   })
 
@@ -315,55 +328,66 @@ test.describe('Budget Explorer - Comprehensive Tests', () => {
 
     test('5.1 Switch to revenue view', async ({ page }) => {
       await page.goto('/budget-explorer')
+      await page.waitForLoadState('networkidle')
 
       // Click income toggle
-      const incomeToggle = page.locator('button').filter({ hasText: SELECTORS.incomeLabel })
+      const incomeToggle = page.locator('button[role="radio"]').filter({ hasText: SELECTORS.incomeLabel }).first()
+      await expect(incomeToggle).toBeVisible({ timeout: 10000 })
       await incomeToggle.click()
+      await page.waitForTimeout(500)
 
       // Verify income is selected
-      const selectedToggle = page.locator('[data-state="on"]').filter({ hasText: SELECTORS.incomeLabel })
-      await expect(selectedToggle).toBeVisible()
+      await expect(incomeToggle).toHaveAttribute('data-state', 'on', { timeout: 5000 })
     })
 
     test('5.2 Switch back to spending view', async ({ page }) => {
       // Start at budget explorer and switch to revenue first
       await page.goto('/budget-explorer')
+      await page.waitForLoadState('networkidle')
 
       // Switch to revenue view first
-      const incomeToggle = page.locator('button').filter({ hasText: SELECTORS.incomeLabel })
+      const incomeToggle = page.locator('button[role="radio"]').filter({ hasText: SELECTORS.incomeLabel }).first()
+      await expect(incomeToggle).toBeVisible({ timeout: 10000 })
       await incomeToggle.click()
-      await expect(page.locator('[data-state="on"]').filter({ hasText: SELECTORS.incomeLabel })).toBeVisible()
+      await page.waitForTimeout(500)
+      await expect(incomeToggle).toHaveAttribute('data-state', 'on', { timeout: 5000 })
 
       // Now click expenses toggle to switch back
-      const expensesToggle = page.locator('button').filter({ hasText: SELECTORS.expensesLabel })
+      const expensesToggle = page.locator('button[role="radio"]').filter({ hasText: SELECTORS.expensesLabel }).first()
       await expensesToggle.click()
+      await page.waitForTimeout(500)
 
       // Verify expenses is selected
-      const selectedToggle = page.locator('[data-state="on"]').filter({ hasText: SELECTORS.expensesLabel })
-      await expect(selectedToggle).toBeVisible()
+      await expect(expensesToggle).toHaveAttribute('data-state', 'on', { timeout: 5000 })
     })
 
     test('5.3 Spending/revenue selection persists in URL', async ({ page }) => {
       await page.goto('/budget-explorer')
+      await page.waitForLoadState('networkidle')
 
       // Click income
-      const incomeToggle = page.locator('button').filter({ hasText: SELECTORS.incomeLabel })
+      const incomeToggle = page.locator('button[role="radio"]').filter({ hasText: SELECTORS.incomeLabel }).first()
+      await expect(incomeToggle).toBeVisible({ timeout: 10000 })
       await incomeToggle.click()
+      await page.waitForTimeout(500)
 
       // Verify URL contains account_category: vn
-      await expect(page).toHaveURL(/account_category.*vn/i)
+      await expect(page).toHaveURL(/account_category.*vn/i, { timeout: 5000 })
     })
 
     test('5.4 Revenue view shows revenue-specific categories', async ({ page }) => {
       // Navigate to budget explorer and switch to revenue
       await page.goto('/budget-explorer')
+      await page.waitForLoadState('networkidle')
 
       // Click income toggle
-      const incomeToggle = page.locator('button').filter({ hasText: SELECTORS.incomeLabel })
+      const incomeToggle = page.locator('button[role="radio"]').filter({ hasText: SELECTORS.incomeLabel }).first()
+      await expect(incomeToggle).toBeVisible({ timeout: 10000 })
       await incomeToggle.click()
+      await page.waitForTimeout(500)
 
       // Wait for income toggle to be selected
-      await expect(page.locator('[data-state="on"]').filter({ hasText: SELECTORS.incomeLabel })).toBeVisible()
+      await expect(incomeToggle).toHaveAttribute('data-state', 'on', { timeout: 5000 })
 
       // Wait for treemap to render
       await page.waitForSelector('.recharts-responsive-container', { timeout: 10000 })
@@ -392,32 +416,42 @@ test.describe('Budget Explorer - Comprehensive Tests', () => {
 
     test('6.2 Switch to per capita normalization', async ({ page }) => {
       await page.goto('/budget-explorer')
+      await page.waitForLoadState('networkidle')
 
       // Click the normalization select
       const normSelect = page.getByRole('combobox').first()
+      await expect(normSelect).toBeVisible({ timeout: 10000 })
       await normSelect.click()
+      await page.waitForTimeout(300)
 
       // Select per capita option
       const perCapitaOption = page.getByRole('option', { name: SELECTORS.perCapitaLabel })
+      await expect(perCapitaOption).toBeVisible({ timeout: 5000 })
       await perCapitaOption.click()
+      await page.waitForTimeout(300)
 
       // Verify selection
-      await expect(normSelect).toContainText(/per.*capita/i)
+      await expect(normSelect).toContainText(/per.*capita/i, { timeout: 5000 })
     })
 
     test('6.3 Normalization persists in URL', async ({ page }) => {
       await page.goto('/budget-explorer')
+      await page.waitForLoadState('networkidle')
 
       // Click the normalization select
       const normSelect = page.getByRole('combobox').first()
+      await expect(normSelect).toBeVisible({ timeout: 10000 })
       await normSelect.click()
+      await page.waitForTimeout(300)
 
       // Select per capita option
       const perCapitaOption = page.getByRole('option', { name: SELECTORS.perCapitaLabel })
+      await expect(perCapitaOption).toBeVisible({ timeout: 5000 })
       await perCapitaOption.click()
+      await page.waitForTimeout(300)
 
       // Verify URL contains normalization
-      await expect(page).toHaveURL(/normalization.*per_capita/i)
+      await expect(page).toHaveURL(/normalization.*per_capita/i, { timeout: 5000 })
     })
   })
 
@@ -442,12 +476,15 @@ test.describe('Budget Explorer - Comprehensive Tests', () => {
 
     test('7.2 Period popover opens on click', async ({ page }) => {
       await page.goto('/budget-explorer')
+      await page.waitForLoadState('networkidle')
 
       // Click period button - look for button with year label
       const periodButton = page.locator('button[aria-label*="period" i]')
         .or(page.locator('button').filter({ hasText: /202\d|an|year/i }))
 
+      await expect(periodButton.first()).toBeVisible({ timeout: 10000 })
       await periodButton.first().click()
+      await page.waitForTimeout(300)
 
       // Verify popover opens (look for year selection, checkboxes, or period picker)
       const popoverContent = page.getByRole('dialog')
@@ -519,20 +556,24 @@ test.describe('Budget Explorer - Comprehensive Tests', () => {
 
     test('9.2 Page refresh preserves state', async ({ page }) => {
       await page.goto('/budget-explorer')
+      await page.waitForLoadState('networkidle')
 
       // Change classification to economic
-      const economicToggle = page.locator('button').filter({ hasText: SELECTORS.economicLabel })
+      const economicToggle = page.locator('button[role="radio"]').filter({ hasText: SELECTORS.economicLabel }).first()
+      await expect(economicToggle).toBeVisible({ timeout: 10000 })
       await economicToggle.click()
+      await page.waitForTimeout(500)
 
       // Wait for URL update
-      await expect(page).toHaveURL(/treemapPrimary=ec/)
+      await expect(page).toHaveURL(/treemapPrimary=ec/, { timeout: 5000 })
 
       // Refresh page
       await page.reload()
+      await page.waitForLoadState('networkidle')
 
       // Verify economic is still selected
       const selectedToggle = page.locator('[data-state="on"]').filter({ hasText: SELECTORS.economicLabel })
-      await expect(selectedToggle).toBeVisible()
+      await expect(selectedToggle).toBeVisible({ timeout: 10000 })
     })
 
     test('9.3 Browser back works with URL history', async ({ page }) => {

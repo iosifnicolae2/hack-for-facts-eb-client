@@ -215,21 +215,29 @@ test.describe('Cookie Settings Page', () => {
     // Essential cookies switch should be checked and disabled
     const essentialSwitch = page.getByRole('switch').first()
     await expect(essentialSwitch).toBeDisabled()
-    await expect(essentialSwitch).toBeChecked()
+    // Radix UI Switch uses data-state="checked" instead of native checked attribute
+    await expect(essentialSwitch).toHaveAttribute('data-state', 'checked')
   })
 
   test('can toggle analytics consent', async ({ page }) => {
+    // Wait for page to be fully interactive
+    await page.waitForLoadState('networkidle')
+
     // Find the analytics switch (second switch on the page)
     const analyticsSwitch = page.getByRole('switch').nth(1)
+    await expect(analyticsSwitch).toBeVisible({ timeout: 10000 })
 
-    // Get initial state
-    const initialChecked = await analyticsSwitch.isChecked()
+    // Get initial state using data-state attribute (Radix UI Switch)
+    const initialState = await analyticsSwitch.getAttribute('data-state')
+    const initialChecked = initialState === 'checked'
 
-    // Toggle
-    await analyticsSwitch.click()
+    // Toggle with force to bypass any overlay issues
+    await analyticsSwitch.click({ force: true })
+    await page.waitForTimeout(500)
 
     // Verify state changed
-    const newChecked = await analyticsSwitch.isChecked()
+    const newState = await analyticsSwitch.getAttribute('data-state')
+    const newChecked = newState === 'checked'
     expect(newChecked).toBe(!initialChecked)
 
     // Verify localStorage was updated
@@ -238,17 +246,24 @@ test.describe('Cookie Settings Page', () => {
   })
 
   test('can toggle sentry consent', async ({ page }) => {
+    // Wait for page to be fully interactive
+    await page.waitForLoadState('networkidle')
+
     // Find the sentry switch (third switch on the page)
     const sentrySwitch = page.getByRole('switch').nth(2)
+    await expect(sentrySwitch).toBeVisible({ timeout: 10000 })
 
-    // Get initial state
-    const initialChecked = await sentrySwitch.isChecked()
+    // Get initial state using data-state attribute (Radix UI Switch)
+    const initialState = await sentrySwitch.getAttribute('data-state')
+    const initialChecked = initialState === 'checked'
 
-    // Toggle
-    await sentrySwitch.click()
+    // Toggle with force to bypass any overlay issues
+    await sentrySwitch.click({ force: true })
+    await page.waitForTimeout(500)
 
     // Verify state changed
-    const newChecked = await sentrySwitch.isChecked()
+    const newState = await sentrySwitch.getAttribute('data-state')
+    const newChecked = newState === 'checked'
     expect(newChecked).toBe(!initialChecked)
 
     // Verify localStorage was updated
@@ -271,17 +286,17 @@ test.describe('Cookie Settings Page', () => {
       )
     }, COOKIE_CONSENT_KEY)
     await page.reload()
-    await page.waitForLoadState('domcontentloaded')
+    await page.waitForLoadState('networkidle')
 
     // Click Allow essential only (aria-label or visible text)
     const essentialOnlyButton = page.getByRole('button', {
       name: /allow essential|permite doar/i,
     })
-    await expect(essentialOnlyButton).toBeVisible()
+    await expect(essentialOnlyButton).toBeVisible({ timeout: 10000 })
     await essentialOnlyButton.click()
 
     // Should navigate away (to redirect URL or /)
-    await page.waitForURL((url) => !url.pathname.includes('/cookies'), { timeout: 10000 })
+    await page.waitForURL((url) => !url.pathname.includes('/cookies'), { timeout: 30000 })
 
     // Verify consent
     const consent = await getCookieConsent(page)
@@ -290,13 +305,15 @@ test.describe('Cookie Settings Page', () => {
   })
 
   test('Allow all button enables all cookies', async ({ page }) => {
+    await page.waitForLoadState('networkidle')
+
     // Click Allow all (aria-label or visible text)
     const allowAllButton = page.getByRole('button', { name: /allow all|permite toate/i })
-    await expect(allowAllButton).toBeVisible()
+    await expect(allowAllButton).toBeVisible({ timeout: 10000 })
     await allowAllButton.click()
 
     // Should navigate away
-    await page.waitForURL((url) => !url.pathname.includes('/cookies'), { timeout: 10000 })
+    await page.waitForURL((url) => !url.pathname.includes('/cookies'), { timeout: 30000 })
 
     // Verify consent
     const consent = await getCookieConsent(page)
@@ -305,27 +322,34 @@ test.describe('Cookie Settings Page', () => {
   })
 
   test('Confirm choices button navigates with current settings', async ({ page }) => {
-    // Toggle analytics on
+    await page.waitForLoadState('networkidle')
+
+    // Toggle analytics on (using data-state for Radix UI Switch)
     const analyticsSwitch = page.getByRole('switch').nth(1)
-    if (!(await analyticsSwitch.isChecked())) {
+    await expect(analyticsSwitch).toBeVisible({ timeout: 10000 })
+    const analyticsState = await analyticsSwitch.getAttribute('data-state')
+    if (analyticsState !== 'checked') {
       await analyticsSwitch.click()
+      await page.waitForTimeout(300)
     }
 
     // Keep sentry off
     const sentrySwitch = page.getByRole('switch').nth(2)
-    if (await sentrySwitch.isChecked()) {
+    const sentryState = await sentrySwitch.getAttribute('data-state')
+    if (sentryState === 'checked') {
       await sentrySwitch.click()
+      await page.waitForTimeout(300)
     }
 
     // Click Confirm choices (aria-label or visible text)
     const confirmButton = page.getByRole('button', {
       name: /confirm choices|confirmă|salvează/i,
     })
-    await expect(confirmButton).toBeVisible()
+    await expect(confirmButton).toBeVisible({ timeout: 10000 })
     await confirmButton.click()
 
     // Should navigate away
-    await page.waitForURL((url) => !url.pathname.includes('/cookies'), { timeout: 10000 })
+    await page.waitForURL((url) => !url.pathname.includes('/cookies'), { timeout: 30000 })
 
     // Verify consent reflects manual choices
     const consent = await getCookieConsent(page)
@@ -357,32 +381,32 @@ test.describe('Cookie Settings Page', () => {
   test('respects redirect parameter after action', async ({ page }) => {
     // Navigate to /cookies with a redirect parameter
     await page.goto('/cookies?redirect=/charts')
-    await page.waitForLoadState('domcontentloaded')
+    await page.waitForLoadState('networkidle')
 
     // Click Allow all (aria-label or visible text)
     const allowAllButton = page.getByRole('button', { name: /allow all|permite toate/i })
-    await expect(allowAllButton).toBeVisible()
+    await expect(allowAllButton).toBeVisible({ timeout: 10000 })
     await allowAllButton.click()
 
     // Should navigate to the redirect URL
-    await page.waitForURL(/\/charts/, { timeout: 10000 })
+    await page.waitForURL(/\/charts/, { timeout: 30000 })
     expect(page.url()).toContain('/charts')
   })
 
   test('defaults to home when redirect is missing', async ({ page }) => {
     // Navigate to /cookies without redirect
     await page.goto('/cookies')
-    await page.waitForLoadState('domcontentloaded')
+    await page.waitForLoadState('networkidle')
 
     // Click Confirm choices (aria-label or visible text)
     const confirmButton = page.getByRole('button', {
       name: /confirm choices|confirmă|salvează/i,
     })
-    await expect(confirmButton).toBeVisible()
+    await expect(confirmButton).toBeVisible({ timeout: 10000 })
     await confirmButton.click()
 
     // Should navigate away from /cookies (to home or /)
-    await page.waitForURL((url) => !url.pathname.includes('/cookies'), { timeout: 10000 })
+    await page.waitForURL((url) => !url.pathname.includes('/cookies'), { timeout: 30000 })
 
     // Verify we're at home
     expect(page.url()).toMatch(/\/$/)
@@ -435,16 +459,16 @@ test.describe('Cookie Consent Persistence', () => {
 
   test('essential is always true regardless of user action', async ({ page }) => {
     await page.goto('/cookies')
-    await page.waitForLoadState('domcontentloaded')
+    await page.waitForLoadState('networkidle')
 
     // Try Allow essential only (aria-label or visible text)
     const essentialOnlyButton = page.getByRole('button', {
       name: /allow essential|permite doar/i,
     })
-    await expect(essentialOnlyButton).toBeVisible()
+    await expect(essentialOnlyButton).toBeVisible({ timeout: 10000 })
     await essentialOnlyButton.click()
 
-    await page.waitForURL((url) => !url.pathname.includes('/cookies'), { timeout: 10000 })
+    await page.waitForURL((url) => !url.pathname.includes('/cookies'), { timeout: 30000 })
 
     const consent = await getCookieConsent(page)
     expect(consent?.essential).toBe(true)

@@ -8,6 +8,12 @@ import { routeTree } from "./routeTree.gen";
 export function getRouter() {
   const queryClient = createQueryClient();
   // Avoid SSR redirect loops caused by query string normalization differences.
+  // FIXME: Start canonicalizes the URL on SSR by re-stringifying search params.
+  // Vercel + browsers typically use encodeURIComponent-style encoding
+  // (%20 for spaces, and they leave ! ' ( ) ~ unescaped), while the default
+  // serializer uses URLSearchParams (+ for spaces and percent-encodes those
+  // characters). If we don't normalize, reloads can loop with 307 redirects
+  // when search contains human-readable strings (alert titles, report types).
   const stringifySearch = (search: Record<string, any>) =>
     defaultStringifySearch(search)
       .replace(/\+/g, "%20")
