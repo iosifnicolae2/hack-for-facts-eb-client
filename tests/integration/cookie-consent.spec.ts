@@ -12,6 +12,7 @@
  */
 
 import { test, expect, type Page } from '@playwright/test'
+import { waitForHydration } from '../utils/test-helpers'
 
 const COOKIE_CONSENT_KEY = 'cookie-consent'
 
@@ -34,6 +35,17 @@ async function clearCookieConsent(page: Page): Promise<void> {
   }, COOKIE_CONSENT_KEY)
 }
 
+/**
+ * Wait for the cookie consent banner to appear.
+ * The banner has built-in delays (500ms + 100ms) and requires React hydration.
+ */
+async function waitForBanner(page: Page, timeout = 5000): Promise<void> {
+  const bannerHeading = page.getByRole('heading', {
+    name: /we value your privacy|confidențialitatea/i,
+  })
+  await expect(bannerHeading).toBeVisible({ timeout })
+}
+
 test.describe('Cookie Consent Banner', () => {
   test.beforeEach(async ({ page }) => {
     // Clear any existing consent before each test
@@ -41,16 +53,14 @@ test.describe('Cookie Consent Banner', () => {
     await clearCookieConsent(page)
     // Reload to trigger banner display
     await page.reload()
-    await page.waitForLoadState('domcontentloaded')
+    // Wait for React hydration (banner requires useEffect to run)
+    await waitForHydration(page)
   })
 
   test('displays banner when no consent is stored', async ({ page }) => {
-    // Wait for the banner to appear (has 500ms delay + 100ms animation)
+    // Wait for the banner to appear (has 500ms delay + 100ms animation after hydration)
     // Banner heading: EN "We value your privacy" / RO "Confidențialitatea dumneavoastră este importantă pentru noi"
-    const bannerHeading = page.getByRole('heading', {
-      name: /we value your privacy|confidențialitatea/i,
-    })
-    await expect(bannerHeading).toBeVisible({ timeout: 3000 })
+    await waitForBanner(page)
 
     // Check for action buttons (EN/RO) - these are inside the banner
     await expect(page.getByRole('link', { name: /advanced|avansat/i })).toBeVisible()
@@ -72,24 +82,23 @@ test.describe('Cookie Consent Banner', () => {
       )
     }, COOKIE_CONSENT_KEY)
 
-    // Reload page
+    // Reload page and wait for hydration
     await page.reload()
-    await page.waitForLoadState('domcontentloaded')
+    await waitForHydration(page)
 
-    // Wait a bit for potential banner appearance
-    await page.waitForTimeout(1000)
-
-    // Banner heading should NOT be visible
+    // Banner heading should NOT be visible (give time for any potential appearance)
     const bannerHeading = page.getByRole('heading', {
       name: /we value your privacy|confidențialitatea/i,
     })
-    await expect(bannerHeading).not.toBeVisible()
+    // Use a short timeout since we're checking for absence
+    await expect(bannerHeading).not.toBeVisible({ timeout: 2000 })
   })
 
   test('Accept All button saves consent with all options enabled', async ({ page }) => {
-    // Wait for banner
+    // Wait for banner to appear
+    await waitForBanner(page)
     const acceptButton = page.getByRole('button', { name: /accept all|acceptă tot/i })
-    await expect(acceptButton).toBeVisible({ timeout: 3000 })
+    await expect(acceptButton).toBeVisible()
 
     // Click Accept All
     await acceptButton.click()
@@ -108,9 +117,10 @@ test.describe('Cookie Consent Banner', () => {
   })
 
   test('Advanced link navigates to /cookies and declines consent', async ({ page }) => {
-    // Wait for banner
+    // Wait for banner to appear
+    await waitForBanner(page)
     const advancedLink = page.getByRole('link', { name: /advanced|avansat/i })
-    await expect(advancedLink).toBeVisible({ timeout: 3000 })
+    await expect(advancedLink).toBeVisible()
 
     // Click Advanced
     await advancedLink.click()
@@ -132,38 +142,34 @@ test.describe('Cookie Consent Banner', () => {
     await page.goto('/cookies')
     await clearCookieConsent(page)
     await page.reload()
-    await page.waitForLoadState('domcontentloaded')
-
-    // Wait a bit for potential banner appearance
-    await page.waitForTimeout(1000)
+    await waitForHydration(page)
 
     // Banner heading should NOT be visible on /cookies page
     const bannerHeading = page.getByRole('heading', {
       name: /we value your privacy|confidențialitatea/i,
     })
-    await expect(bannerHeading).not.toBeVisible()
+    // Use a short timeout since we're checking for absence
+    await expect(bannerHeading).not.toBeVisible({ timeout: 2000 })
   })
 
   test('banner dismisses with animation', async ({ page }) => {
     // Wait for banner to appear
+    await waitForBanner(page)
     const acceptButton = page.getByRole('button', { name: /accept all|acceptă tot/i })
-    await expect(acceptButton).toBeVisible({ timeout: 3000 })
+    await expect(acceptButton).toBeVisible()
 
     // Click Accept All
     await acceptButton.click()
 
-    // Wait for animation to complete (300ms + buffer)
-    await page.waitForTimeout(500)
-
-    // Button should be gone after animation
-    await expect(acceptButton).not.toBeVisible()
+    // Button should be gone after animation (wait with auto-retry)
+    await expect(acceptButton).not.toBeVisible({ timeout: 2000 })
   })
 })
 
 test.describe('Cookie Settings Page', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/cookies')
-    await page.waitForLoadState('domcontentloaded')
+    await waitForHydration(page)
   })
 
   test('displays all cookie setting sections', async ({ page }) => {
@@ -220,55 +226,41 @@ test.describe('Cookie Settings Page', () => {
   })
 
   test('can toggle analytics consent', async ({ page }) => {
-    // Wait for page to be fully interactive
-    await page.waitForLoadState('networkidle')
-
     // Find the analytics switch (second switch on the page)
     const analyticsSwitch = page.getByRole('switch').nth(1)
-    await expect(analyticsSwitch).toBeVisible({ timeout: 10000 })
+    await expect(analyticsSwitch).toBeVisible()
 
     // Get initial state using data-state attribute (Radix UI Switch)
     const initialState = await analyticsSwitch.getAttribute('data-state')
     const initialChecked = initialState === 'checked'
+    const expectedState = initialChecked ? 'unchecked' : 'checked'
 
-    // Toggle with force to bypass any overlay issues
-    await analyticsSwitch.click({ force: true })
-    await page.waitForTimeout(500)
-
-    // Verify state changed
-    const newState = await analyticsSwitch.getAttribute('data-state')
-    const newChecked = newState === 'checked'
-    expect(newChecked).toBe(!initialChecked)
+    // Toggle and wait for state to change (auto-retry)
+    await analyticsSwitch.click()
+    await expect(analyticsSwitch).toHaveAttribute('data-state', expectedState)
 
     // Verify localStorage was updated
     const consent = await getCookieConsent(page)
-    expect(consent?.analytics).toBe(newChecked)
+    expect(consent?.analytics).toBe(!initialChecked)
   })
 
   test('can toggle sentry consent', async ({ page }) => {
-    // Wait for page to be fully interactive
-    await page.waitForLoadState('networkidle')
-
     // Find the sentry switch (third switch on the page)
     const sentrySwitch = page.getByRole('switch').nth(2)
-    await expect(sentrySwitch).toBeVisible({ timeout: 10000 })
+    await expect(sentrySwitch).toBeVisible()
 
     // Get initial state using data-state attribute (Radix UI Switch)
     const initialState = await sentrySwitch.getAttribute('data-state')
     const initialChecked = initialState === 'checked'
+    const expectedState = initialChecked ? 'unchecked' : 'checked'
 
-    // Toggle with force to bypass any overlay issues
-    await sentrySwitch.click({ force: true })
-    await page.waitForTimeout(500)
-
-    // Verify state changed
-    const newState = await sentrySwitch.getAttribute('data-state')
-    const newChecked = newState === 'checked'
-    expect(newChecked).toBe(!initialChecked)
+    // Toggle and wait for state to change (auto-retry)
+    await sentrySwitch.click()
+    await expect(sentrySwitch).toHaveAttribute('data-state', expectedState)
 
     // Verify localStorage was updated
     const consent = await getCookieConsent(page)
-    expect(consent?.sentry).toBe(newChecked)
+    expect(consent?.sentry).toBe(!initialChecked)
   })
 
   test('Allow essential only button disables all optional cookies', async ({ page }) => {
@@ -286,13 +278,13 @@ test.describe('Cookie Settings Page', () => {
       )
     }, COOKIE_CONSENT_KEY)
     await page.reload()
-    await page.waitForLoadState('networkidle')
+    await waitForHydration(page)
 
     // Click Allow essential only (aria-label or visible text)
     const essentialOnlyButton = page.getByRole('button', {
       name: /allow essential|permite doar/i,
     })
-    await expect(essentialOnlyButton).toBeVisible({ timeout: 10000 })
+    await expect(essentialOnlyButton).toBeVisible()
     await essentialOnlyButton.click()
 
     // Should navigate away (to redirect URL or /)
@@ -305,11 +297,9 @@ test.describe('Cookie Settings Page', () => {
   })
 
   test('Allow all button enables all cookies', async ({ page }) => {
-    await page.waitForLoadState('networkidle')
-
     // Click Allow all (aria-label or visible text)
     const allowAllButton = page.getByRole('button', { name: /allow all|permite toate/i })
-    await expect(allowAllButton).toBeVisible({ timeout: 10000 })
+    await expect(allowAllButton).toBeVisible()
     await allowAllButton.click()
 
     // Should navigate away
@@ -322,15 +312,13 @@ test.describe('Cookie Settings Page', () => {
   })
 
   test('Confirm choices button navigates with current settings', async ({ page }) => {
-    await page.waitForLoadState('networkidle')
-
     // Toggle analytics on (using data-state for Radix UI Switch)
     const analyticsSwitch = page.getByRole('switch').nth(1)
-    await expect(analyticsSwitch).toBeVisible({ timeout: 10000 })
+    await expect(analyticsSwitch).toBeVisible()
     const analyticsState = await analyticsSwitch.getAttribute('data-state')
     if (analyticsState !== 'checked') {
       await analyticsSwitch.click()
-      await page.waitForTimeout(300)
+      await expect(analyticsSwitch).toHaveAttribute('data-state', 'checked')
     }
 
     // Keep sentry off
@@ -338,14 +326,14 @@ test.describe('Cookie Settings Page', () => {
     const sentryState = await sentrySwitch.getAttribute('data-state')
     if (sentryState === 'checked') {
       await sentrySwitch.click()
-      await page.waitForTimeout(300)
+      await expect(sentrySwitch).toHaveAttribute('data-state', 'unchecked')
     }
 
     // Click Confirm choices (aria-label or visible text)
     const confirmButton = page.getByRole('button', {
       name: /confirm choices|confirmă|salvează/i,
     })
-    await expect(confirmButton).toBeVisible({ timeout: 10000 })
+    await expect(confirmButton).toBeVisible()
     await confirmButton.click()
 
     // Should navigate away
@@ -372,7 +360,7 @@ test.describe('Cookie Settings Page', () => {
       )
     }, COOKIE_CONSENT_KEY)
     await page.reload()
-    await page.waitForLoadState('domcontentloaded')
+    await waitForHydration(page)
 
     // Check for Updated text: EN "Updated" / RO "Actualizat"
     await expect(page.getByText(/updated|actualizat/i)).toBeVisible()
@@ -381,11 +369,11 @@ test.describe('Cookie Settings Page', () => {
   test('respects redirect parameter after action', async ({ page }) => {
     // Navigate to /cookies with a redirect parameter
     await page.goto('/cookies?redirect=/charts')
-    await page.waitForLoadState('networkidle')
+    await waitForHydration(page)
 
     // Click Allow all (aria-label or visible text)
     const allowAllButton = page.getByRole('button', { name: /allow all|permite toate/i })
-    await expect(allowAllButton).toBeVisible({ timeout: 10000 })
+    await expect(allowAllButton).toBeVisible()
     await allowAllButton.click()
 
     // Should navigate to the redirect URL
@@ -396,13 +384,13 @@ test.describe('Cookie Settings Page', () => {
   test('defaults to home when redirect is missing', async ({ page }) => {
     // Navigate to /cookies without redirect
     await page.goto('/cookies')
-    await page.waitForLoadState('networkidle')
+    await waitForHydration(page)
 
     // Click Confirm choices (aria-label or visible text)
     const confirmButton = page.getByRole('button', {
       name: /confirm choices|confirmă|salvează/i,
     })
-    await expect(confirmButton).toBeVisible({ timeout: 10000 })
+    await expect(confirmButton).toBeVisible()
     await confirmButton.click()
 
     // Should navigate away from /cookies (to home or /)
@@ -419,15 +407,17 @@ test.describe('Cookie Consent Persistence', () => {
     await page.goto('/')
     await clearCookieConsent(page)
     await page.reload()
+    await waitForHydration(page)
 
     // Accept all
+    await waitForBanner(page)
     const acceptButton = page.getByRole('button', { name: /accept all|acceptă tot/i })
-    await expect(acceptButton).toBeVisible({ timeout: 3000 })
+    await expect(acceptButton).toBeVisible()
     await acceptButton.click()
 
     // Navigate to another page
     await page.goto('/charts')
-    await page.waitForLoadState('domcontentloaded')
+    await waitForHydration(page)
 
     // Consent should still be there
     const consent = await getCookieConsent(page)
@@ -435,21 +425,22 @@ test.describe('Cookie Consent Persistence', () => {
     expect(consent?.sentry).toBe(true)
 
     // Banner should not reappear
-    await page.waitForTimeout(1000)
     const bannerHeading = page.getByRole('heading', {
       name: /we value your privacy|confidențialitatea/i,
     })
-    await expect(bannerHeading).not.toBeVisible()
+    await expect(bannerHeading).not.toBeVisible({ timeout: 2000 })
   })
 
   test('consent version is always 1', async ({ page }) => {
     await page.goto('/')
     await clearCookieConsent(page)
     await page.reload()
+    await waitForHydration(page)
 
     // Accept cookies
+    await waitForBanner(page)
     const acceptButton = page.getByRole('button', { name: /accept all|acceptă tot/i })
-    await expect(acceptButton).toBeVisible({ timeout: 3000 })
+    await expect(acceptButton).toBeVisible()
     await acceptButton.click()
 
     // Check version
@@ -459,13 +450,13 @@ test.describe('Cookie Consent Persistence', () => {
 
   test('essential is always true regardless of user action', async ({ page }) => {
     await page.goto('/cookies')
-    await page.waitForLoadState('networkidle')
+    await waitForHydration(page)
 
     // Try Allow essential only (aria-label or visible text)
     const essentialOnlyButton = page.getByRole('button', {
       name: /allow essential|permite doar/i,
     })
-    await expect(essentialOnlyButton).toBeVisible({ timeout: 10000 })
+    await expect(essentialOnlyButton).toBeVisible()
     await essentialOnlyButton.click()
 
     await page.waitForURL((url) => !url.pathname.includes('/cookies'), { timeout: 30000 })
@@ -478,7 +469,7 @@ test.describe('Cookie Consent Persistence', () => {
 test.describe('Cookie Policy Page', () => {
   test('displays cookie policy content', async ({ page }) => {
     await page.goto('/cookie-policy')
-    await page.waitForLoadState('domcontentloaded')
+    await waitForHydration(page)
 
     // Check for page heading: EN "Cookie Policy" / RO "Politica cookie-urilor" or "Politica privind cookie-urile"
     await expect(
@@ -494,7 +485,7 @@ test.describe('Cookie Policy Page', () => {
 
   test('links to cookie settings page', async ({ page }) => {
     await page.goto('/cookie-policy')
-    await page.waitForLoadState('domcontentloaded')
+    await waitForHydration(page)
 
     // Find link to cookie settings: EN "Cookie Settings" / RO "Setări cookie-uri"
     const settingsLink = page.getByRole('link', { name: /cookie settings|setări cookie/i })
