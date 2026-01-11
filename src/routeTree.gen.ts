@@ -17,6 +17,7 @@ import { Route as MapRouteImport } from './routes/map'
 import { Route as EntityAnalyticsRouteImport } from './routes/entity-analytics'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
+import { Route as BudgetExplorerRouteImport } from './routes/budget-explorer'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UnsubscribeTokenRouteImport } from './routes/unsubscribe.$token'
 import { Route as ShareCodeRouteImport } from './routes/share.$code'
@@ -39,7 +40,6 @@ import { Route as LangLearningCertificatesIdRouteImport } from './routes/$lang/l
 import { Route as LangLearningPathIdModuleIdLessonIdRouteImport } from './routes/$lang/learning/$pathId/$moduleId/$lessonId'
 
 const TermsLazyRouteImport = createFileRoute('/terms')()
-const BudgetExplorerLazyRouteImport = createFileRoute('/budget-explorer')()
 const ChartsIndexLazyRouteImport = createFileRoute('/charts/')()
 const ResearchEmployeesDataLazyRouteImport = createFileRoute(
   '/research/employees-data',
@@ -53,13 +53,6 @@ const TermsLazyRoute = TermsLazyRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/terms.lazy').then((d) => d.Route))
-const BudgetExplorerLazyRoute = BudgetExplorerLazyRouteImport.update({
-  id: '/budget-explorer',
-  path: '/budget-explorer',
-  getParentRoute: () => rootRouteImport,
-} as any).lazy(() =>
-  import('./routes/budget-explorer.lazy').then((d) => d.Route),
-)
 const TestErrorRoute = TestErrorRouteImport.update({
   id: '/test-error',
   path: '/test-error',
@@ -92,6 +85,13 @@ const CookiePolicyRoute = CookiePolicyRouteImport.update({
   path: '/cookie-policy',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/cookie-policy.lazy').then((d) => d.Route))
+const BudgetExplorerRoute = BudgetExplorerRouteImport.update({
+  id: '/budget-explorer',
+  path: '/budget-explorer',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() =>
+  import('./routes/budget-explorer.lazy').then((d) => d.Route),
+)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -261,13 +261,13 @@ const LangLearningPathIdModuleIdLessonIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/budget-explorer': typeof BudgetExplorerRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/cookies': typeof CookiesRoute
   '/entity-analytics': typeof EntityAnalyticsRoute
   '/map': typeof MapRoute
   '/privacy': typeof PrivacyRoute
   '/test-error': typeof TestErrorRoute
-  '/budget-explorer': typeof BudgetExplorerLazyRoute
   '/terms': typeof TermsLazyRoute
   '/$lang/learning': typeof LangLearningRouteRouteWithChildren
   '/alerts/$alertId': typeof AlertsAlertIdRouteRouteWithChildren
@@ -296,13 +296,13 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/budget-explorer': typeof BudgetExplorerRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/cookies': typeof CookiesRoute
   '/entity-analytics': typeof EntityAnalyticsRoute
   '/map': typeof MapRoute
   '/privacy': typeof PrivacyRoute
   '/test-error': typeof TestErrorRoute
-  '/budget-explorer': typeof BudgetExplorerLazyRoute
   '/terms': typeof TermsLazyRoute
   '/alerts/new': typeof AlertsNewRoute
   '/certificates/$id': typeof CertificatesIdRoute
@@ -329,13 +329,13 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/budget-explorer': typeof BudgetExplorerRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/cookies': typeof CookiesRoute
   '/entity-analytics': typeof EntityAnalyticsRoute
   '/map': typeof MapRoute
   '/privacy': typeof PrivacyRoute
   '/test-error': typeof TestErrorRoute
-  '/budget-explorer': typeof BudgetExplorerLazyRoute
   '/terms': typeof TermsLazyRoute
   '/$lang/learning': typeof LangLearningRouteRouteWithChildren
   '/alerts/$alertId': typeof AlertsAlertIdRouteRouteWithChildren
@@ -366,13 +366,13 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/budget-explorer'
     | '/cookie-policy'
     | '/cookies'
     | '/entity-analytics'
     | '/map'
     | '/privacy'
     | '/test-error'
-    | '/budget-explorer'
     | '/terms'
     | '/$lang/learning'
     | '/alerts/$alertId'
@@ -401,13 +401,13 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/budget-explorer'
     | '/cookie-policy'
     | '/cookies'
     | '/entity-analytics'
     | '/map'
     | '/privacy'
     | '/test-error'
-    | '/budget-explorer'
     | '/terms'
     | '/alerts/new'
     | '/certificates/$id'
@@ -433,13 +433,13 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/budget-explorer'
     | '/cookie-policy'
     | '/cookies'
     | '/entity-analytics'
     | '/map'
     | '/privacy'
     | '/test-error'
-    | '/budget-explorer'
     | '/terms'
     | '/$lang/learning'
     | '/alerts/$alertId'
@@ -469,13 +469,13 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BudgetExplorerRoute: typeof BudgetExplorerRoute
   CookiePolicyRoute: typeof CookiePolicyRoute
   CookiesRoute: typeof CookiesRoute
   EntityAnalyticsRoute: typeof EntityAnalyticsRoute
   MapRoute: typeof MapRoute
   PrivacyRoute: typeof PrivacyRoute
   TestErrorRoute: typeof TestErrorRoute
-  BudgetExplorerLazyRoute: typeof BudgetExplorerLazyRoute
   TermsLazyRoute: typeof TermsLazyRoute
   LangLearningRouteRoute: typeof LangLearningRouteRouteWithChildren
   AlertsAlertIdRouteRoute: typeof AlertsAlertIdRouteRouteWithChildren
@@ -503,13 +503,6 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsLazyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/budget-explorer': {
-      id: '/budget-explorer'
-      path: '/budget-explorer'
-      fullPath: '/budget-explorer'
-      preLoaderRoute: typeof BudgetExplorerLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/test-error': {
@@ -552,6 +545,13 @@ declare module '@tanstack/react-router' {
       path: '/cookie-policy'
       fullPath: '/cookie-policy'
       preLoaderRoute: typeof CookiePolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/budget-explorer': {
+      id: '/budget-explorer'
+      path: '/budget-explorer'
+      fullPath: '/budget-explorer'
+      preLoaderRoute: typeof BudgetExplorerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -776,13 +776,13 @@ const ChartsChartIdRouteRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BudgetExplorerRoute: BudgetExplorerRoute,
   CookiePolicyRoute: CookiePolicyRoute,
   CookiesRoute: CookiesRoute,
   EntityAnalyticsRoute: EntityAnalyticsRoute,
   MapRoute: MapRoute,
   PrivacyRoute: PrivacyRoute,
   TestErrorRoute: TestErrorRoute,
-  BudgetExplorerLazyRoute: BudgetExplorerLazyRoute,
   TermsLazyRoute: TermsLazyRoute,
   LangLearningRouteRoute: LangLearningRouteRouteWithChildren,
   AlertsAlertIdRouteRoute: AlertsAlertIdRouteRouteWithChildren,

@@ -19,6 +19,10 @@ import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCT
 export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
 
 export const Route = createFileRoute('/entities/$cui')({
+    headers: () => ({
+        // Entity data is dynamic but cacheable - cache 5 min CDN, 1 hour stale-while-revalidate
+        "Cache-Control": "public, max-age=0, s-maxage=300, stale-while-revalidate=3600",
+    }),
     validateSearch: entitySearchSchema,
     loader: async ({ context, params, location, preload }) => {
         const { queryClient } = context;

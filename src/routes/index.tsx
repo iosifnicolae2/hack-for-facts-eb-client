@@ -16,6 +16,10 @@ const title = "Transparenta.eu";
 
 export const Route = createFileRoute("/")({
   ssr: true,
+  headers: () => ({
+    // Homepage is static - cache aggressively: 1 hour CDN, 7 days stale-while-revalidate
+    "Cache-Control": "public, max-age=3600, s-maxage=3600, stale-while-revalidate=604800",
+  }),
   head: buildHomeHead,
   component: Index,
 });

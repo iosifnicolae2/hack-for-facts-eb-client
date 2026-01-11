@@ -61,7 +61,7 @@ const SearchSchema = z.object({
   search: z.string().optional().describe('Text search within categories.'),
   filter: AnalyticsFilterSchema.default(defaultFilter).describe('Budget filter including report_period, account_category, normalization, report_type.'),
   treemapPrimary: PrimaryLevelEnum.optional().describe('Explicit treemap grouping override: fn | ec.'),
-  treemapPath: z.string().optional().describe('Treemap drilldown breadcrumb codes, comma-separated.'),
+  treemapPath: z.coerce.string().optional().describe('Treemap drilldown breadcrumb codes, comma-separated.'),
   year: z.coerce.number().optional().describe('Shorthand for setting report year (overrides filter.report_period).'),
 })
 

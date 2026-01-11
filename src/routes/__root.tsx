@@ -29,6 +29,10 @@ const DEFAULT_THEME: ResolvedTheme = "light";
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   ssr: true,
+  headers: () => ({
+    // Enable Vercel CDN caching: cache for 1 hour, serve stale for 24h during revalidation
+    "Cache-Control": "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400",
+  }),
   head: getGlobalHead,
   beforeLoad: async ({ location }) => {
     // Read locale from cookie/storage
