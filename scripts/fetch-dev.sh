@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Fetch Vercel protected URL with share token
-URL="https://dev.transparenta.eu/entities/4270740"
+URL="https://dev.transparenta.eu/ro/learning/local-budgets-guide/expenditure-basics/be-the-finance-minister"
 SHARE_TOKEN="Nt2eNechmJEswSECnNAhAr60l4wvyaaE"
 OUTPUT="dev.html"
 

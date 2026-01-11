@@ -58,3 +58,9 @@ localhost-cert.pem
 #Vercel
 .vercel
 .env*.local
+
+# Dev HTML for static site analysis
+dev.html
+
+# Prompt tmp
+tmp/

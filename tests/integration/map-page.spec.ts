@@ -9,15 +9,17 @@
  */
 
 import { test, expect } from '@playwright/test'
+import { waitForHydration } from '../utils/test-helpers'
 
 test.describe('Map Page', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/map')
-    // Wait for filters region to be visible (indicates page loaded)
-    await expect(
-      page.getByRole('region', { name: /filtre.*hartă/i })
-    ).toBeVisible({ timeout: 15000 })
-  })
+	test.beforeEach(async ({ page }) => {
+		await page.goto('/map')
+		// Wait for filters region to be visible (indicates page loaded)
+		await expect(
+			page.getByRole('region', { name: /filtre.*hartă/i })
+		).toBeVisible({ timeout: 15000 })
+		await waitForHydration(page)
+	})
 
   test('displays map filters region with title', async ({ page }) => {
     // Check for filters region
@@ -180,40 +182,42 @@ test.describe('Map Page', () => {
 })
 
 test.describe('Map Page - Interactions', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/map')
-    await expect(
-      page.getByRole('region', { name: /filtre.*hartă/i })
-    ).toBeVisible({ timeout: 15000 })
-  })
+	test.beforeEach(async ({ page }) => {
+		await page.goto('/map')
+		await expect(
+			page.getByRole('region', { name: /filtre.*hartă/i })
+		).toBeVisible({ timeout: 15000 })
+		await waitForHydration(page)
+	})
 
-  test('can switch between map views (UAT/County)', async ({ page }) => {
+	test('can switch between map views (UAT/County)', async ({ page }) => {
     // Verify UAT is selected by default
     const uatRadio = page.getByRole('radio', { name: /uat/i })
     await expect(uatRadio).toBeChecked()
 
-    // Click County within the map view group (radio is sr-only)
-    const mapViewGroup = page.getByRole('group', { name: /vizualizare.*hartă/i })
-    await mapViewGroup.getByText('Județ').click()
+		// Click County within the map view group (radio is sr-only)
+		const mapViewGroup = page.getByRole('group', { name: /vizualizare.*hartă/i })
+		await mapViewGroup.getByText(/județ/i).click()
 
-    // Verify County is now selected
-    const countyRadio = page.getByRole('radio', { name: /județ/i })
-    await expect(countyRadio).toBeChecked()
-  })
+		// Verify County is now selected
+		const countyRadio = page.getByRole('radio', { name: /județ/i })
+		await expect(page).toHaveURL(/mapViewType=County/, { timeout: 10000 })
+		await expect(countyRadio).toBeChecked({ timeout: 10000 })
+	})
 
-  test('can switch between income and expenses', async ({ page }) => {
+	test('can switch between income and expenses', async ({ page }) => {
     // Verify Expenses is selected by default
     const expensesRadio = page.getByRole('radio', { name: /cheltuieli/i })
     await expect(expensesRadio).toBeChecked()
 
-    // Click Income within the income/expenses group (radio is sr-only)
-    const incomeGroup = page.getByRole('group', { name: /venituri.*cheltuieli/i })
-    await incomeGroup.getByText('Venituri').click()
+		// Click Income within the income/expenses group (radio is sr-only)
+		const incomeGroup = page.getByRole('group', { name: /venituri.*cheltuieli/i })
+		await incomeGroup.getByText(/venituri/i).click()
 
-    // Verify Income is now selected
-    const incomeRadio = page.getByRole('radio', { name: /venituri/i })
-    await expect(incomeRadio).toBeChecked()
-  })
+		// Verify Income is now selected
+		const incomeRadio = page.getByRole('radio', { name: /venituri/i })
+		await expect(incomeRadio).toBeChecked({ timeout: 10000 })
+	})
 
   test('can use zoom controls', async ({ page }) => {
     // Click zoom in
