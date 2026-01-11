@@ -93,7 +93,7 @@ describe('SpendingBreakdown', () => {
       render(<SpendingBreakdown nodes={[]} />)
 
       expect(
-        screen.getByText(/Transfers between institutions/)
+        screen.getByText(/Transfers to subordinate public institutions/)
       ).toBeInTheDocument()
     })
   })
@@ -116,7 +116,7 @@ describe('SpendingBreakdown', () => {
       render(<SpendingBreakdown nodes={[]} isLoading />)
 
       expect(
-        screen.queryByText(/Transfers between institutions/)
+        screen.queryByText(/Transfers to subordinate public institutions/)
       ).not.toBeInTheDocument()
     })
   })
@@ -153,7 +153,7 @@ describe('SpendingBreakdown', () => {
       expect(amountElements.length).toBeGreaterThan(0)
     })
 
-    it('deducts transfers between institutions (ec:51)', () => {
+    it('deducts transfers to subordinate institutions (ec:51.01, 51.02)', () => {
       const nodes = [
         createNode('10', 5000),
         createNode('51.01', 1000),
@@ -162,27 +162,15 @@ describe('SpendingBreakdown', () => {
 
       render(<SpendingBreakdown nodes={nodes} />)
 
-      expect(screen.getByText('Transfers Between Institutions')).toBeInTheDocument()
-      expect(screen.getByText('ec:51')).toBeInTheDocument()
-    })
-
-    it('deducts internal transfers (ec:55.01)', () => {
-      const nodes = [
-        createNode('10', 5000),
-        createNode('55.01.01', 300),
-      ]
-
-      render(<SpendingBreakdown nodes={nodes} />)
-
-      expect(screen.getByText('Internal Transfers')).toBeInTheDocument()
-      expect(screen.getByText('ec:55.01')).toBeInTheDocument()
+      expect(screen.getByText('Transfers to Subordinate Institutions')).toBeInTheDocument()
+      expect(screen.getByText('ec:51.01 + 51.02')).toBeInTheDocument()
     })
 
     it('calculates effective spending correctly', () => {
       const nodes = [
         createNode('10', 10000), // regular spending
-        createNode('51.01', 1000), // transfers between institutions
-        createNode('55.01.01', 500), // internal transfers
+        createNode('51.01', 1000), // transfers to subordinate institutions
+        createNode('51.02', 500), // capital transfers to subordinate institutions
       ]
 
       render(<SpendingBreakdown nodes={nodes} />)
@@ -209,7 +197,7 @@ describe('SpendingBreakdown', () => {
   })
 
   describe('visual structure', () => {
-    it('renders minus signs between sections', () => {
+    it('renders minus sign between total and transfers', () => {
       const nodes = [
         createNode('10', 5000),
         createNode('51.01', 1000),
@@ -218,7 +206,7 @@ describe('SpendingBreakdown', () => {
       render(<SpendingBreakdown nodes={nodes} />)
 
       const minusSigns = screen.getAllByText('−')
-      expect(minusSigns.length).toBe(2) // Two deduction rows
+      expect(minusSigns.length).toBe(1) // One deduction row (transfers to subordinate institutions)
     })
 
     it('renders equals sign before effective spending', () => {
@@ -252,13 +240,13 @@ describe('SpendingBreakdown', () => {
     it('handles codes with non-numeric characters', () => {
       const nodes = [
         createNode('10', 5000),
-        createNode('51-01', 1000), // hyphen instead of dot
+        createNode('51.01.01', 1000), // nested code under 51.01
       ]
 
       render(<SpendingBreakdown nodes={nodes} />)
 
       // Should still deduct 1000 from transfers
-      expect(screen.getByText('Transfers Between Institutions')).toBeInTheDocument()
+      expect(screen.getByText('Transfers to Subordinate Institutions')).toBeInTheDocument()
     })
 
     it('handles null or undefined ec_c values', () => {

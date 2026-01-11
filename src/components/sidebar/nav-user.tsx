@@ -152,14 +152,12 @@ export function NavUser(_props: NavUserProps) {
                 <span>Log out</span>
               </DropdownMenuItem>
             ) : (
-              <DropdownMenuItem asChild>
-                <AuthSignInButton>
-                  <span className="flex items-center w-full">
-                    <LogIn className="mr-2 h-4 w-4" />
-                    <span>Sign in</span>
-                  </span>
-                </AuthSignInButton>
-              </DropdownMenuItem>
+              <AuthSignInButton>
+                <DropdownMenuItem>
+                  <LogIn className="mr-2 h-4 w-4" />
+                  <span>Sign in</span>
+                </DropdownMenuItem>
+              </AuthSignInButton>
             )}
           </DropdownMenuContent>
         </DropdownMenu>

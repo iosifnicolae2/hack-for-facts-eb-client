@@ -170,27 +170,31 @@ describe('RevenueBreakdown', () => {
       expect(screen.getByText('Shares from VAT')).toBeInTheDocument()
     })
 
-    it('deducts subsidies (fn:42.*)', () => {
+    it('deducts institutional remittances (fn:36.02.05)', () => {
       const nodes = [
         createNode('01', 5000),
-        createNode('42.01', 300),
+        createNode('36.02.05', 300),
       ]
 
       render(<RevenueBreakdown nodes={nodes} />)
 
-      expect(screen.getByText('Subsidies')).toBeInTheDocument()
+      expect(screen.getByText('Institutional remittances')).toBeInTheDocument()
     })
 
-    it('deducts subsidies from other administrations (fn:43.*)', () => {
+    it('deducts section transfers (fn:37.02.03, fn:37.02.04)', () => {
       const nodes = [
         createNode('01', 5000),
-        createNode('43.01', 200),
+        createNode('37.02.03', 200),
+        createNode('37.02.04', 150),
       ]
 
       render(<RevenueBreakdown nodes={nodes} />)
 
       expect(
-        screen.getByText('Subsidies from other administrations')
+        screen.getByText('Operating section transfers')
+      ).toBeInTheDocument()
+      expect(
+        screen.getByText('Development section transfers')
       ).toBeInTheDocument()
     })
 
@@ -353,10 +357,10 @@ describe('RevenueBreakdown', () => {
   })
 
   describe('pending distribution and institutional remittances', () => {
-    it('shows pending distribution (fn:47.*)', () => {
+    it('shows pending distribution (fn:47.02.04)', () => {
       const nodes = [
         createNode('01', 5000),
-        createNode('47.01', 150),
+        createNode('47.02.04', 150),
       ]
 
       render(<RevenueBreakdown nodes={nodes} />)
@@ -364,10 +368,10 @@ describe('RevenueBreakdown', () => {
       expect(screen.getByText('Sums pending distribution')).toBeInTheDocument()
     })
 
-    it('shows institutional remittances (fn:36.05)', () => {
+    it('shows institutional remittances (fn:36.02.05)', () => {
       const nodes = [
         createNode('01', 5000),
-        createNode('36.05', 75),
+        createNode('36.02.05', 75),
       ]
 
       render(<RevenueBreakdown nodes={nodes} />)

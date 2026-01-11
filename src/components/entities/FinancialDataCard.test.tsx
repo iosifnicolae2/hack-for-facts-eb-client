@@ -275,8 +275,8 @@ describe('FinancialDataCard', () => {
           functionals: []
         },
         {
-          prefix: '42.02', // Subsidies (Transfer Income)
-          description: 'Subsidies',
+          prefix: '36.02.05', // Institutional remittances (Transfer Income)
+          description: 'Institutional remittances',
           totalAmount: 300,
           functionals: []
         }
@@ -284,31 +284,31 @@ describe('FinancialDataCard', () => {
 
       // Case 1: No transfers (default)
       const { rerender } = render(
-        <FinancialDataCard 
-          {...defaultProps} 
+        <FinancialDataCard
+          {...defaultProps}
           iconType="income"
-          groups={incomeGroups} 
+          groups={incomeGroups}
           baseTotal={800}
-          transferFilter="no-transfers" 
+          transferFilter="no-transfers"
         />
       )
-      
+
       expect(screen.getByTestId('chapter-04.02')).toBeInTheDocument()
-      expect(screen.queryByTestId('chapter-42.02')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('chapter-36.02.05')).not.toBeInTheDocument()
 
       // Case 2: Transfers only
       rerender(
-        <FinancialDataCard 
-          {...defaultProps} 
+        <FinancialDataCard
+          {...defaultProps}
           iconType="income"
-          groups={incomeGroups} 
+          groups={incomeGroups}
           baseTotal={800}
-          transferFilter="transfers-only" 
+          transferFilter="transfers-only"
         />
       )
-      
+
       expect(screen.queryByTestId('chapter-04.02')).not.toBeInTheDocument()
-      expect(screen.getByTestId('chapter-42.02')).toBeInTheDocument()
+      expect(screen.getByTestId('chapter-36.02.05')).toBeInTheDocument()
     })
   })
 })
