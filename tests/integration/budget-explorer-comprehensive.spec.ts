@@ -175,9 +175,12 @@ test.describe('Budget Explorer - Comprehensive Tests', () => {
       await page.goto('/budget-explorer?treemapPath=68')
       await waitForPageReady(page)
 
-      // Click on Main Categories breadcrumb
-      const mainCategoriesBreadcrumb = page.getByText(SELECTORS.mainCategories)
-      if (await mainCategoriesBreadcrumb.isVisible()) {
+      // Click on Main Categories breadcrumb - target the breadcrumb navigation specifically
+      // The breadcrumb is in an ol element with breadcrumb items
+      const breadcrumbNav = page.locator('nav[aria-label*="breadcrumb" i], ol[class*="breadcrumb" i]').first()
+      const mainCategoriesBreadcrumb = breadcrumbNav.locator('a, button').filter({ hasText: SELECTORS.mainCategories }).first()
+
+      if (await mainCategoriesBreadcrumb.isVisible({ timeout: 5000 }).catch(() => false)) {
         await mainCategoriesBreadcrumb.click()
 
         // Verify URL is updated - treemapPath should be removed
