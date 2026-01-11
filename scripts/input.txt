@@ -1,0 +1,32 @@
+
+./src/locales/ro/messages.po-1-msgid ""
+./src/locales/ro/messages.po:2:msgstr ""
+--
+./src/locales/ro/messages.po-84-#: src/components/footer/AppFooter.tsx:158
+./src/locales/ro/messages.po-85-msgid "© {defaultYear} Transparenta.eu. All rights reserved."
+./src/locales/ro/messages.po:86:msgstr "© {defaultYear} Transparenta.eu. Toate drepturile rezervate."
+--
+./src/locales/ro/messages.po-1769-#: src/components/budget-explorer/RevenueBreakdown.tsx:62
+./src/locales/ro/messages.po-1770-msgid "Development section transfers"
+./src/locales/ro/messages.po:1771:msgstr "Transferuri secțiune dezvoltare"
+--
+./src/locales/ro/messages.po-2921-#: src/components/budget-explorer/RevenueBreakdown.tsx:62
+./src/locales/ro/messages.po-2922-msgid "Internal movements between sections"
+./src/locales/ro/messages.po:2923:msgstr "Mișcări interne între secțiuni"
+--
+./src/locales/ro/messages.po-3175-#: src/routes/map.lazy.tsx:257
+./src/locales/ro/messages.po-3176-msgid "Loading map..."
+./src/locales/ro/messages.po:3177:msgstr "Se încarcă harta..."
+--
+./src/locales/ro/messages.po-3760-#: src/components/budget-explorer/SpendingBreakdown.tsx:177
+./src/locales/ro/messages.po-3761-msgid "Note: Transfers to subordinate public institutions (ec:51.01, 51.02) are excluded from effective spending as they represent movements within the consolidated perimeter rather than actual expenditures."
+./src/locales/ro/messages.po:3762:msgstr "Notă: Transferurile către instituțiile publice subordonate (ec:51.01, 51.02) sunt excluse din cheltuielile efective deoarece reprezintă mișcări în cadrul perimetrului consolidat și nu cheltuieli reale."
+--
+./src/locales/ro/messages.po-3882-#: src/components/budget-explorer/RevenueBreakdown.tsx:61
+./src/locales/ro/messages.po-3883-msgid "Operating section transfers"
+./src/locales/ro/messages.po:3884:msgstr "Transferuri secțiune funcționare"
+--
+./src/locales/ro/messages.po-5290-#: src/components/budget-explorer/SpendingBreakdown.tsx:129
+./src/locales/ro/messages.po-5291-msgid "Transfers to Subordinate Institutions"
+./src/locales/ro/messages.po:5292:msgstr "Transferuri către instituții subordonate"
+--

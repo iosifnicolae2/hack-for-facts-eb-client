@@ -42,7 +42,7 @@ export const EntityAnalyticsLineItems: React.FC<
     let nodes = data.nodes;
 
     if (filter.account_category === 'ch' && transferFilter !== 'all') {
-      const isTransfer = (code: string) => code.startsWith('51') || code.startsWith('55');
+      const isTransfer = (code: string) => code.startsWith('51.01') || code.startsWith('51.02');
       nodes = nodes.filter(item => {
         const code = item.ec_c || '';
         const isTrans = isTransfer(code);

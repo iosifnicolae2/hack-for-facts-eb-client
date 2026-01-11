@@ -182,11 +182,11 @@ export const FinancialDataCard: React.FC<FinancialDataCardProps> = ({
       return { filteredGroups: groups, filteredBaseTotal: baseTotal };
     }
 
-    // For expenses: filter on economic codes (ec: 51, 55.01)
-    // For income: filter on functional codes (fn: 42, 43, 47, 36.05)
-    const isExpenseTransfer = (code: string) => code.startsWith('51') || code.startsWith('55.01');
+    // For expenses: filter on economic codes (ec: 51.01, 51.02)
+    // For income: filter on functional codes (fn: 36.02.05, 37.02.03, 37.02.04, 47.02.04)
+    const isExpenseTransfer = (code: string) => code.startsWith('51.01') || code.startsWith('51.02');
     const isIncomeTransfer = (code: string) =>
-      code.startsWith('42') || code.startsWith('43') || code.startsWith('47') || code.startsWith('36.05');
+      code.startsWith('36.02.05') || code.startsWith('37.02.03') || code.startsWith('37.02.04') || code.startsWith('47.02.04');
 
     if (iconType === 'income') {
       // For income: filter entire chapters based on functional code (chapter.prefix)

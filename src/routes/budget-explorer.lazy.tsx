@@ -34,6 +34,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { t } from '@lingui/core/macro'
 import { getSiteUrl } from '@/config/env'
 import { withDefaultExcludes } from '@/lib/filterUtils'
+import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults'
 // JSON-LD injected via Route.head
 
 export const Route = createLazyFileRoute('/budget-explorer')({
@@ -255,9 +256,9 @@ function BudgetExplorerPage() {
   ])
 
   // Exclude non-direct spending items for spending view (account_category='ch')
-  const excludeEcCodes = filter.account_category === 'ch' ? ['51', '55.01'] : []
+  const excludeEcCodes = filter.account_category === 'ch' ? [...DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES] : []
   // Exclude transfer codes for income view (account_category='vn')
-  const excludeFnCodes = filter.account_category === 'vn' ? ['42', '43', '47', '36.05'] : []
+  const excludeFnCodes = filter.account_category === 'vn' ? [...DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES] : []
 
   // Unified drilldown state using shared hook
   const {

@@ -28,6 +28,7 @@ import { Button } from '@/components/ui/button'
 import type { NormalizationOptions } from '@/lib/normalization'
 import { normalizeNormalizationOptions } from '@/lib/normalization'
 import { useQueryClient } from '@tanstack/react-query'
+import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults'
 
 interface OverviewProps {
     cui: string;
@@ -206,9 +207,9 @@ export const Overview = ({
     }, [filteredItems])
 
     // Exclude non-direct spending items for expense view
-    const excludeEcCodes = accountCategory === 'ch' ? ['51', '55.01'] : []
+    const excludeEcCodes = accountCategory === 'ch' ? [...DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES] : []
     // Exclude transfer codes for income view
-    const excludeFnCodes = accountCategory === 'vn' ? ['42', '43', '47', '36.05'] : []
+    const excludeFnCodes = accountCategory === 'vn' ? [...DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES] : []
 
     const { primary, activePrimary, setPrimary, treemapData, breadcrumbs, excludedItemsSummary, onNodeClick, onBreadcrumbClick, reset } = useTreemapDrilldown({
         nodes: aggregatedNodes,

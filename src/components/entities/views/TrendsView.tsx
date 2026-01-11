@@ -181,9 +181,9 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
   }, [lineItems])
 
   // Exclude non-direct spending items for expense view
-  const excludeEcCodes = type === 'expense' ? ['51', '55.01'] : []
+  const excludeEcCodes = type === 'expense' ? [...DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES] : []
   // Exclude transfer codes for income view
-  const excludeFnCodes = type === 'income' ? ['42', '43', '47', '36.05'] : []
+  const excludeFnCodes = type === 'income' ? [...DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES] : []
 
   const {
     primary,

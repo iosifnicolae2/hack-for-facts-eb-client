@@ -22,17 +22,20 @@ export function SpendingBreakdown({ nodes, normalization, currency, periodLabel,
 
   const totalSpending = (nodes ?? []).reduce((sum, n) => sum + (n.amount ?? 0), 0)
 
-  const transfersEc51 = (nodes ?? []).reduce((sum, n) => {
+  // Transfers to subordinate public institutions (51.01) and capital transfers (51.02)
+  const transfersEc51_01 = (nodes ?? []).reduce((sum, n) => {
     const ec = normalizeEc(n.ec_c)
-    return ec.startsWith('51') ? sum + (n.amount ?? 0) : sum
+    return ec.startsWith('51.01') ? sum + (n.amount ?? 0) : sum
   }, 0)
 
-  const transfersEc55_01 = (nodes ?? []).reduce((sum, n) => {
+  const transfersEc51_02 = (nodes ?? []).reduce((sum, n) => {
     const ec = normalizeEc(n.ec_c)
-    return ec.startsWith('55.01') ? sum + (n.amount ?? 0) : sum
+    return ec.startsWith('51.02') ? sum + (n.amount ?? 0) : sum
   }, 0)
 
-  const effectiveSpending = totalSpending - transfersEc51 - transfersEc55_01
+  const totalTransfers = transfersEc51_01 + transfersEc51_02
+
+  const effectiveSpending = totalSpending - totalTransfers
 
   return (
     <Card className="shadow-sm border-l-4 border-l-primary/20">
@@ -119,49 +122,22 @@ export function SpendingBreakdown({ nodes, normalization, currency, periodLabel,
                 <div className="w-full border-t border-dashed border-border" />
               </div>
 
-              {/* Transfers */}
+              {/* Transfers to subordinate institutions */}
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                 <div className="flex-1">
                   <div className="text-sm font-medium text-foreground">
-                    <Trans>Transfers Between Institutions</Trans>
+                    <Trans>Transfers to Subordinate Institutions</Trans>
                   </div>
                   <div className="text-xs text-muted-foreground">
-                    <Trans>Internal budget movements</Trans> <span className="font-mono text-[10px] bg-muted px-1 py-0.5 rounded">ec:51</span>
+                    <Trans>Internal budget movements</Trans> <span className="font-mono text-[10px] bg-muted px-1 py-0.5 rounded">ec:51.01 + 51.02</span>
                   </div>
                 </div>
                 <div className="text-right w-full sm:w-auto">
                   <div className="font-mono text-base md:text-lg font-semibold text-foreground">
-                    {yValueFormatter(transfersEc51, unit, 'compact')}
+                    {yValueFormatter(totalTransfers, unit, 'compact')}
                   </div>
                   <div className="font-mono text-xs text-muted-foreground">
-                    {yValueFormatter(transfersEc51, unit, 'standard')}
-                  </div>
-                </div>
-              </div>
-
-              {/* Minus sign */}
-              <div className="flex items-center justify-center py-1">
-                <div className="w-full border-t border-dashed border-border" />
-                <span className="px-3 text-lg font-bold text-muted-foreground">−</span>
-                <div className="w-full border-t border-dashed border-border" />
-              </div>
-
-              {/* Internal transfers */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-                <div className="flex-1">
-                  <div className="text-sm font-medium text-foreground">
-                    <Trans>Internal Transfers</Trans>
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    <Trans>Transfers within public administration</Trans> <span className="font-mono text-[10px] bg-muted px-1 py-0.5 rounded">ec:55.01</span>
-                  </div>
-                </div>
-                <div className="text-right w-full sm:w-auto">
-                  <div className="font-mono text-base md:text-lg font-semibold text-foreground">
-                    {yValueFormatter(transfersEc55_01, unit, 'compact')}
-                  </div>
-                  <div className="font-mono text-xs text-muted-foreground">
-                    {yValueFormatter(transfersEc55_01, unit, 'standard')}
+                    {yValueFormatter(totalTransfers, unit, 'standard')}
                   </div>
                 </div>
               </div>
@@ -198,7 +174,7 @@ export function SpendingBreakdown({ nodes, normalization, currency, periodLabel,
             <div className="flex gap-2 text-xs text-muted-foreground bg-muted/20 rounded-md p-3">
               <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />
               <p>
-                <Trans>Note: Transfers between institutions (ec:51) and internal transfers (ec:55.01) are excluded from effective spending as they represent movements within the public administration rather than actual expenditures.</Trans>
+                <Trans>Note: Transfers to subordinate public institutions (ec:51.01, 51.02) are excluded from effective spending as they represent movements within the consolidated perimeter rather than actual expenditures.</Trans>
               </p>
             </div>
           </>

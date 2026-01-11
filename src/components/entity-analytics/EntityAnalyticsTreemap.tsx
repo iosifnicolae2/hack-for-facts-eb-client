@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { Label } from '@/components/ui/label'
 import type { AggregatedLineItemConnection } from '@/schemas/entity-analytics'
+import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults'
 
 interface EntityAnalyticsTreemapProps {
   filter: AnalyticsFilterType
@@ -54,9 +55,9 @@ export function EntityAnalyticsTreemap({
   }, [data])
 
   // Exclude non-direct spending items for spending view (account_category='ch')
-  const excludeEcCodes = filter.account_category === 'ch' ? ['51', '55.01'] : []
+  const excludeEcCodes = filter.account_category === 'ch' ? [...DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES] : []
   // Exclude transfer codes for income view (account_category='vn')
-  const excludeFnCodes = filter.account_category === 'vn' ? ['42', '43', '47', '36.05'] : []
+  const excludeFnCodes = filter.account_category === 'vn' ? [...DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES] : []
 
   const {
     primary,

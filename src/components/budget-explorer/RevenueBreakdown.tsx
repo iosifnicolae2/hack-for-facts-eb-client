@@ -31,16 +31,23 @@ export function RevenueBreakdown({ nodes, normalization, currency, periodLabel, 
         return matchPrefix(fn, prefix) ? sum + (n.amount ?? 0) : sum
     }, 0)
 
+    // Display items (shares from state budget - kept for display)
     const sharesFromIncomeTax = sumByFnPrefix('04')
     const sharesFromVAT = sumByFnPrefix('11')
     const financialOps40 = sumByFnPrefix('40')
     const financialOps41 = sumByFnPrefix('41')
-    const subsidies42 = sumByFnPrefix('42')
-    const subsidiesFromOtherAdm43 = sumByFnPrefix('43')
-    const pendingDistribution47 = sumByFnPrefix('47')
-    const institutionalRemittances3605 = sumByFnPrefix('36.05')
 
-    const interBudgetTransfers = sharesFromIncomeTax + sharesFromVAT + subsidies42 + subsidiesFromOtherAdm43 + pendingDistribution47 + institutionalRemittances3605
+    // Codes to EXCLUDE from total (per Legea 273/2006 consolidation rules)
+    const institutionalRemittances36_02_05 = sumByFnPrefix('36.02.05')
+    const internalMovements37_02_03 = sumByFnPrefix('37.02.03')
+    const internalMovements37_02_04 = sumByFnPrefix('37.02.04')
+    const pendingDistribution47_02_04 = sumByFnPrefix('47.02.04')
+
+    const interBudgetTransfers = sharesFromIncomeTax + sharesFromVAT +
+        institutionalRemittances36_02_05 +
+        internalMovements37_02_03 +
+        internalMovements37_02_04 +
+        pendingDistribution47_02_04
     const financialOps = financialOps40 + financialOps41
 
     // effectiveRevenue computed below after applying additional deductions
@@ -50,10 +57,10 @@ export function RevenueBreakdown({ nodes, normalization, currency, periodLabel, 
     const interBudgetRows: Row[] = [
         { key: '04', label: <Trans>Shares and amounts split from income tax</Trans>, subtitle: <Trans>Inter-budget transfers</Trans>, badge: 'fn:04.*', amount: sharesFromIncomeTax },
         { key: '11', label: <Trans>Shares from VAT</Trans>, subtitle: <Trans>Inter-budget transfers</Trans>, badge: 'fn:11.*', amount: sharesFromVAT },
-        { key: '42', label: <Trans>Subsidies</Trans>, subtitle: <Trans>Treated as inter-budget flows</Trans>, badge: 'fn:42.*', amount: subsidies42 },
-        { key: '43', label: <Trans>Subsidies from other administrations</Trans>, subtitle: <Trans>Inter-budget transfers</Trans>, badge: 'fn:43.*', amount: subsidiesFromOtherAdm43 },
-        { key: '47', label: <Trans>Sums pending distribution</Trans>, subtitle: <Trans>Clearing accounts</Trans>, badge: 'fn:47.*', amount: pendingDistribution47 },
-        { key: '36.05', label: <Trans>Institutional remittances</Trans>, subtitle: <Trans>Internal flow, inter-budget</Trans>, badge: 'fn:36.05', amount: institutionalRemittances3605 },
+        { key: '36.02.05', label: <Trans>Institutional remittances</Trans>, subtitle: <Trans>Internal flow, inter-budget</Trans>, badge: 'fn:36.02.05', amount: institutionalRemittances36_02_05 },
+        { key: '37.02.03', label: <Trans>Operating section transfers</Trans>, subtitle: <Trans>Internal movements between sections</Trans>, badge: 'fn:37.02.03', amount: internalMovements37_02_03 },
+        { key: '37.02.04', label: <Trans>Development section transfers</Trans>, subtitle: <Trans>Internal movements between sections</Trans>, badge: 'fn:37.02.04', amount: internalMovements37_02_04 },
+        { key: '47.02.04', label: <Trans>Sums pending distribution</Trans>, subtitle: <Trans>Clearing accounts</Trans>, badge: 'fn:47.02.04', amount: pendingDistribution47_02_04 },
     ]
 
     const sortedInterBudget = interBudgetRows
