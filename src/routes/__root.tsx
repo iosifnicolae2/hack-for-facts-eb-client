@@ -19,12 +19,19 @@ import {
   resolveLocale,
 } from "@/lib/i18n";
 import { AppShell } from "@/components/app/app-shell";
+import {
+  THEME_COOKIE_NAME,
+  type ResolvedTheme,
+} from "@/components/theme/theme-provider";
 
 const ANONYMOUS_CROSS_ORIGIN = "anonymous" as const;
+const DEFAULT_THEME: ResolvedTheme = "light";
+
 export const Route = createRootRouteWithContext<RouterContext>()({
   ssr: true,
   head: getGlobalHead,
   beforeLoad: async ({ location }) => {
+    // Read locale from cookie/storage
     const cookieLocale = await readLocaleCookie();
     const storedLocale = readStoredLocale();
     const locale = resolveLocale({
@@ -34,6 +41,12 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       storedLocale,
     });
     await dynamicActivate(locale);
+
+    // Read theme from cookie for SSR (prevents FOUC)
+    const themeCookie = await readThemeCookie();
+    const ssrTheme = resolveThemeFromCookie(themeCookie);
+
+    return { ssrTheme };
   },
   errorComponent: ({ error }) => <GlobalErrorPage error={error} />,
   notFoundComponent: NotFoundPage,
@@ -41,15 +54,16 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 });
 
 function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
+  const { queryClient, ssrTheme } = Route.useRouteContext();
+  const themeClass = ssrTheme || DEFAULT_THEME;
 
   return (
-    <html lang={i18n.locale || DEFAULT_LOCALE}>
+    <html lang={i18n.locale || DEFAULT_LOCALE} className={themeClass}>
       <head>
         <HeadContent />
       </head>
       <body>
-        <AppShell queryClient={queryClient} />
+        <AppShell queryClient={queryClient} ssrTheme={ssrTheme} />
         <Scripts />
       </body>
     </html>
@@ -219,4 +233,29 @@ async function readLocaleCookie(): Promise<string | null> {
     new RegExp(`(?:^|; )${LOCALE_COOKIE_NAME}=([^;]*)`),
   );
   return match ? decodeURIComponent(match[1]) : null;
+}
+
+async function readThemeCookie(): Promise<string | null> {
+  if (import.meta.env.SSR) {
+    const { getCookie } = await import("@tanstack/react-start/server");
+    return getCookie(THEME_COOKIE_NAME) ?? null;
+  }
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.match(
+    new RegExp(`(?:^|; )${THEME_COOKIE_NAME}=([^;]*)`),
+  );
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+/**
+ * Resolves the theme from cookie value to a concrete theme class.
+ * "system" cannot be resolved during SSR (no access to prefers-color-scheme),
+ * so we default to light theme for SSR when system is selected.
+ */
+function resolveThemeFromCookie(cookieValue: string | null): ResolvedTheme {
+  if (cookieValue === "dark") return "dark";
+  if (cookieValue === "light") return "light";
+  // For "system" or missing cookie, default to light during SSR
+  // Client will adjust if system preference is dark
+  return DEFAULT_THEME;
 }

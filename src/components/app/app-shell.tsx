@@ -11,7 +11,7 @@ import { useSentryConsent } from "@/hooks/useSentryConsent";
 import { AuthProvider, authKey } from "@/lib/auth";
 import { env } from "@/config/env";
 import { cleanupSentry, initSentry } from "@/lib/sentry";
-import { ThemeProvider } from "@/components/theme/theme-provider";
+import { ThemeProvider, type ResolvedTheme } from "@/components/theme/theme-provider";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { Toaster } from "sonner";
@@ -29,9 +29,11 @@ const isBrowser = typeof window !== 'undefined';
 
 type AppShellProps = {
   queryClient: QueryClient;
+  /** Theme resolved during SSR from cookie, used to prevent FOUC */
+  ssrTheme?: ResolvedTheme;
 };
 
-export function AppShell({ queryClient }: AppShellProps) {
+export function AppShell({ queryClient, ssrTheme }: AppShellProps) {
   const router = useRouter();
   const hasSentryConsent = useSentryConsent();
   const isMobile = useIsMobile();
@@ -90,7 +92,7 @@ export function AppShell({ queryClient }: AppShellProps) {
         <ErrorProvider>
           <QueryClientProvider client={queryClient}>
             <I18nProvider i18n={i18n}>
-              <ThemeProvider defaultTheme="light" storageKey="ui-theme">
+              <ThemeProvider defaultTheme="light" ssrTheme={ssrTheme}>
                 <HotkeysProvider>
                   <SidebarProvider>
                     <div className="flex min-h-screen min-w-full">

@@ -66,11 +66,16 @@ function ClerkAuthBridge({ children }: PropsWithChildren) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
+/**
+ * SSR-safe auth placeholder that returns isLoaded: false to prevent hydration mismatches.
+ * On SSR, components should render loading/skeleton states that match what client renders
+ * before Clerk is fully loaded.
+ */
 function NoopAuthProvider({ children }: PropsWithChildren) {
   const value = useMemo<AuthContextValue>(
     () => ({
       isEnabled: false,
-      isLoaded: true,
+      isLoaded: false, // Must match client's initial Clerk state to prevent hydration mismatch
       isSignedIn: false,
       user: null,
       signOut: () => Promise.resolve(),
