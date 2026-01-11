@@ -42,7 +42,10 @@ export const Route = createFileRoute('/map')({
       inflation_adjusted: inflationAdjusted,
     }
 
-    queryClient.prefetchQuery(geoJsonQueryOptions(viewType))
+    // GeoJSON uses relative URLs that don't work during SSR, prefetch only on client
+    if (typeof window !== 'undefined') {
+      queryClient.prefetchQuery(geoJsonQueryOptions(viewType))
+    }
     if (viewType === 'UAT') {
       queryClient.prefetchQuery(heatmapUATQueryOptions(normalizedFilters))
     } else {

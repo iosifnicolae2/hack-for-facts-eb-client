@@ -1,5 +1,5 @@
 import { EntityDetailsData } from '@/lib/api/entities';
-import { LatLngExpression } from 'leaflet';
+import type { LatLngExpression } from 'leaflet';
 import { GeoJsonObject, Feature, FeatureCollection } from 'geojson';
 import bbox from '@turf/bbox';
 import center from '@turf/center';

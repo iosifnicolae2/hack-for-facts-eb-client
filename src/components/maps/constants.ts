@@ -1,4 +1,4 @@
-import { PathOptions, LatLngExpression, LatLngBoundsExpression } from 'leaflet';
+import type { PathOptions, LatLngExpression, LatLngBoundsExpression } from 'leaflet';
 
 export const DEFAULT_MAP_CENTER: LatLngExpression = [45.9432, 24.9668]; // Center of Romania
 export const DEFAULT_MAP_ZOOM = 7;

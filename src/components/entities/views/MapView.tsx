@@ -1,5 +1,4 @@
-import React, { useMemo } from 'react';
-import { InteractiveMap } from '@/components/maps/InteractiveMap';
+import React, { useMemo, lazy, Suspense } from 'react';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertTriangle, Maximize } from 'lucide-react';
@@ -19,6 +18,11 @@ import { AnalyticsFilterType } from '@/schemas/charts';
 import { Trans } from '@lingui/react/macro';
 import { ReportPeriodInput } from '@/schemas/reporting';
 import { cn } from '@/lib/utils';
+import { ClientOnly } from '@/components/ssr/ClientOnly';
+import { t } from '@lingui/core/macro';
+
+// Lazy load InteractiveMap to prevent Leaflet from being evaluated on the server
+const InteractiveMap = lazy(() => import('@/components/maps/InteractiveMap').then(m => ({ default: m.InteractiveMap })));
 
 interface MapViewProps {
   entity: EntityDetailsData | null | undefined;
@@ -176,19 +180,23 @@ export const MapView: React.FC<MapViewProps> = ({ entity, mapFilters, updateMapF
             </div>
           }
           {geoJsonData && (
-            <InteractiveMap
-              onFeatureClick={handleFeatureClick}
-              getFeatureStyle={getFeatureStyle}
-              heatmapData={heatmapData || []}
-              geoJsonData={geoJsonData}
-              center={center}
-              zoom={zoom}
-              highlightedFeatureId={featureId?.toString()}
-              scrollWheelZoom={false}
-              mapHeight={mapHeight}
-              mapViewType={mapViewType}
-              filters={mapFilters}
-            />
+            <ClientOnly fallback={<div className="flex items-center justify-center h-full w-full"><LoadingSpinner size="lg" text={t`Loading map...`} /></div>}>
+              <Suspense fallback={<div className="flex items-center justify-center h-full w-full"><LoadingSpinner size="lg" text={t`Loading map...`} /></div>}>
+                <InteractiveMap
+                  onFeatureClick={handleFeatureClick}
+                  getFeatureStyle={getFeatureStyle}
+                  heatmapData={heatmapData || []}
+                  geoJsonData={geoJsonData}
+                  center={center}
+                  zoom={zoom}
+                  highlightedFeatureId={featureId?.toString()}
+                  scrollWheelZoom={false}
+                  mapHeight={mapHeight}
+                  mapViewType={mapViewType}
+                  filters={mapFilters}
+                />
+              </Suspense>
+            </ClientOnly>
           )}
         </div>
       </CardContent>

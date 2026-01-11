@@ -81,7 +81,10 @@ export const Route = createFileRoute('/entities/$cui')({
 
         if (desiredView === 'map' && entity.is_uat) {
             const mapViewType = entity.entity_type === 'admin_county_council' || entity.cui === '4267117' ? 'County' : 'UAT';
-            void queryClient.prefetchQuery(geoJsonQueryOptions(mapViewType));
+            // GeoJSON uses relative URLs that don't work during SSR, prefetch only on client
+            if (typeof window !== 'undefined') {
+                void queryClient.prefetchQuery(geoJsonQueryOptions(mapViewType));
+            }
             const filters = (search?.mapFilters as AnalyticsFilterType) || withDefaultExcludes({
                 account_category: 'ch',
                 normalization: 'per_capita',
