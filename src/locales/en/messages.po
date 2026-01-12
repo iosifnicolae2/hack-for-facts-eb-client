@@ -791,10 +791,6 @@ msgstr "Area Chart"
 msgid "As a data subject under GDPR, you have the following rights:"
 msgstr "As a data subject under GDPR, you have the following rights:"
 
-#: src/components/footer/ChatFab.tsx:78
-msgid "Ask AI Assistant"
-msgstr "Ask AI Assistant"
-
 #: src/routes/cookie-policy.lazy.tsx:21
 #: src/routes/privacy.lazy.tsx:21
 #: src/routes/terms.lazy.tsx:21
@@ -1333,7 +1329,7 @@ msgstr "Contact"
 msgid "Contact and data protection officer"
 msgstr "Contact and data protection officer"
 
-#: src/components/footer/ChatFab.tsx:88
+#: src/components/footer/ChatFab.tsx:62
 msgid "Contact Support"
 msgstr "Contact Support"
 
@@ -1419,7 +1415,7 @@ msgstr "Copy Series"
 msgid "Copy Share Link"
 msgstr "Copy Share Link"
 
-#: src/components/footer/ChatFab.tsx:93
+#: src/components/footer/ChatFab.tsx:67
 msgid "Copy Support Email"
 msgstr "Copy Support Email"
 
@@ -1932,7 +1928,7 @@ msgstr "Effective Spending"
 msgid "Effective Spending Calculation"
 msgstr "Effective Spending Calculation"
 
-#: src/components/footer/ChatFab.tsx:51
+#: src/components/footer/ChatFab.tsx:39
 msgid "Email address copied to clipboard!"
 msgstr "Email address copied to clipboard!"
 
@@ -2317,7 +2313,7 @@ msgstr "Exports must include attribution to data source and Transparenta.eu."
 msgid "Failed to copy code"
 msgstr "Failed to copy code"
 
-#: src/components/footer/ChatFab.tsx:54
+#: src/components/footer/ChatFab.tsx:42
 msgid "Failed to copy email address."
 msgstr "Failed to copy email address."
 
@@ -2347,10 +2343,6 @@ msgstr "Failed to load alerts. Please try again."
 msgid "Failed to load data."
 msgstr "Failed to load data."
 
-#: src/components/footer/ChatFab.tsx:36
-msgid "Failed to open new tab."
-msgstr "Failed to open new tab."
-
 #: src/routes/alerts/$alertId/index.lazy.tsx:125
 msgid "Failed to save"
 msgstr "Failed to save"
@@ -2370,6 +2362,10 @@ msgstr "Favorites first"
 #: src/components/entities/EntityFinancialTrends.tsx:97
 msgid "February"
 msgstr "February"
+
+#: src/components/feedback/FeedbackFab.tsx:30
+msgid "Feedback"
+msgstr "Feedback"
 
 #: src/components/footer/AppFooter.tsx:170
 msgid "Feedback / Report an issue"
@@ -2445,7 +2441,7 @@ msgstr "Financial Trends"
 msgid "Find Entity to Monitor"
 msgstr "Find Entity to Monitor"
 
-#: src/components/footer/ChatFab.tsx:123
+#: src/components/footer/ChatFab.tsx:97
 msgid "Find resources, report issues, or get in touch."
 msgstr "Find resources, report issues, or get in touch."
 
@@ -2699,7 +2695,7 @@ msgid "Health (CASS)"
 msgstr "Health (CASS)"
 
 #. placeholder {0}: typeof window !== 'undefined' ? window.location.href : 'N/A'
-#: src/components/footer/ChatFab.tsx:43
+#: src/components/footer/ChatFab.tsx:31
 msgid ""
 "Hello,\n"
 "\n"
@@ -2926,10 +2922,6 @@ msgstr "Internal flow, inter-budget"
 #: src/components/budget-explorer/RevenueBreakdown.tsx:62
 msgid "Internal movements between sections"
 msgstr "Internal movements between sections"
-
-#: src/components/budget-explorer/SpendingBreakdown.tsx:153
-#~ msgid "Internal Transfers"
-#~ msgstr "Internal Transfers"
 
 #: src/routes/privacy.lazy.tsx:132
 msgid "International data transfers"
@@ -3489,7 +3481,7 @@ msgstr "Navigate to map view"
 msgid "Navigation"
 msgstr "Navigation"
 
-#: src/components/footer/ChatFab.tsx:120
+#: src/components/footer/ChatFab.tsx:94
 msgid "Need help?"
 msgstr "Need help?"
 
@@ -3757,10 +3749,6 @@ msgstr "Note: Romania has been under EU Excessive Deficit Procedure since 2020"
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:196
 msgid "Note: Transfer items are excluded as they represent internal movements within the public administration rather than actual expenditures or revenues."
 msgstr "Note: Transfer items are excluded as they represent internal movements within the public administration rather than actual expenditures or revenues."
-
-#: src/components/budget-explorer/SpendingBreakdown.tsx:201
-#~ msgid "Note: Transfers between institutions (ec:51) and internal transfers (ec:55.01) are excluded from effective spending as they represent movements within the public administration rather than actual expenditures."
-#~ msgstr "Note: Transfers between institutions (ec:51) and internal transfers (ec:55.01) are excluded from effective spending as they represent movements within the public administration rather than actual expenditures."
 
 #: src/components/budget-explorer/SpendingBreakdown.tsx:177
 msgid "Note: Transfers to subordinate public institutions (ec:51.01, 51.02) are excluded from effective spending as they represent movements within the consolidated perimeter rather than actual expenditures."
@@ -4031,8 +4019,8 @@ msgid "Personal Spending"
 msgstr "Personal Spending"
 
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:153
-msgid "Personalized paths, interactive lessons, and verified certificates."
-msgstr "Personalized paths, interactive lessons, and verified certificates."
+msgid "Personalized paths and interactive lessons."
+msgstr "Personalized paths and interactive lessons."
 
 #: src/features/learning/components/interactive/PromiseTracker.tsx:118
 msgid "Personnel Costs"
@@ -4164,7 +4152,7 @@ msgstr "Quarter"
 msgid "Quarterly"
 msgstr "Quarterly"
 
-#: src/components/footer/ChatFab.tsx:104
+#: src/components/footer/ChatFab.tsx:78
 msgid "Quick actions"
 msgstr "Quick actions"
 
@@ -4187,10 +4175,6 @@ msgstr "Quiz configuration error"
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:154
 msgid "Range"
 msgstr "Range"
-
-#: src/components/footer/ChatFab.tsx:72
-msgid "Read Documentation"
-msgstr "Read Documentation"
 
 #: src/routes/cookies.lazy.tsx:180
 msgid "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
@@ -4581,6 +4565,7 @@ msgstr "Selection Mode"
 msgid "Seller Keeps"
 msgstr "Seller Keeps"
 
+#: src/components/feedback/FeedbackFab.tsx:14
 #: src/components/footer/AppFooter.tsx:179
 #: src/components/sentry/SendFeedbackAction.tsx:17
 msgid "Send feedback"
@@ -4776,8 +4761,8 @@ msgid "Sign in to receive updates about the entities you care about."
 msgstr "Sign in to receive updates about the entities you care about."
 
 #: src/features/learning/components/layout/LoginBanner.tsx:22
-msgid "Sign in to track your learning journey and earn certificates."
-msgstr "Sign in to track your learning journey and earn certificates."
+msgid "Sign in to track your learning journey."
+msgstr "Sign in to track your learning journey."
 
 #: src/features/learning/components/interactive/GuidedPlatformTour.tsx:345
 msgid "Skip tour"
@@ -4917,14 +4902,6 @@ msgstr "Subject"
 #: src/features/notifications/components/EntityNotificationAnnouncement.tsx:115
 msgid "Subscribe to Updates"
 msgstr "Subscribe to Updates"
-
-#: src/components/budget-explorer/RevenueBreakdown.tsx:53
-#~ msgid "Subsidies"
-#~ msgstr "Subsidies"
-
-#: src/components/budget-explorer/RevenueBreakdown.tsx:54
-#~ msgid "Subsidies from other administrations"
-#~ msgstr "Subsidies from other administrations"
 
 #: src/components/charts/components/views/AnnotationConfigView.tsx:93
 msgid "Subtitle"
@@ -5281,10 +5258,6 @@ msgstr "Total:"
 msgid "Tour Complete!"
 msgstr "Tour Complete!"
 
-#: src/components/budget-explorer/SpendingBreakdown.tsx:126
-#~ msgid "Transfers Between Institutions"
-#~ msgstr "Transfers Between Institutions"
-
 #: src/components/entities/EntityLineItemsTabs.tsx:130
 #: src/components/entities/EntityLineItemsTabs.tsx:154
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:147
@@ -5296,17 +5269,9 @@ msgstr "Transfers Only"
 msgid "Transfers to Subordinate Institutions"
 msgstr "Transfers to Subordinate Institutions"
 
-#: src/components/budget-explorer/SpendingBreakdown.tsx:156
-#~ msgid "Transfers within public administration"
-#~ msgstr "Transfers within public administration"
-
-#: src/components/footer/ChatFab.tsx:41
+#: src/components/footer/ChatFab.tsx:29
 msgid "Transparenta.eu – Support"
 msgstr "Transparenta.eu – Support"
-
-#: src/components/budget-explorer/RevenueBreakdown.tsx:53
-#~ msgid "Treated as inter-budget flows"
-#~ msgstr "Treated as inter-budget flows"
 
 #: src/components/classification-explorer/ClassificationExplorer.tsx:220
 msgid "Tree view"

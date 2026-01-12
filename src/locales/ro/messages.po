@@ -791,10 +791,6 @@ msgstr "Grafic arie"
 msgid "As a data subject under GDPR, you have the following rights:"
 msgstr "În calitate de persoană vizată conform RGPD, aveți următoarele drepturi:"
 
-#: src/components/footer/ChatFab.tsx:78
-msgid "Ask AI Assistant"
-msgstr "Întreabă Asistentul AI"
-
 #: src/routes/cookie-policy.lazy.tsx:21
 #: src/routes/privacy.lazy.tsx:21
 #: src/routes/terms.lazy.tsx:21
@@ -1333,7 +1329,7 @@ msgstr "Contact"
 msgid "Contact and data protection officer"
 msgstr "Contact și responsabilul cu protecția datelor"
 
-#: src/components/footer/ChatFab.tsx:88
+#: src/components/footer/ChatFab.tsx:62
 msgid "Contact Support"
 msgstr "Contactează Suportul"
 
@@ -1419,7 +1415,7 @@ msgstr "Copiază seria"
 msgid "Copy Share Link"
 msgstr "Copiază linkul de partajare"
 
-#: src/components/footer/ChatFab.tsx:93
+#: src/components/footer/ChatFab.tsx:67
 msgid "Copy Support Email"
 msgstr "Copiază Emailul de Suport"
 
@@ -1932,7 +1928,7 @@ msgstr "Cheltuieli efective"
 msgid "Effective Spending Calculation"
 msgstr "Calculul cheltuielilor efective"
 
-#: src/components/footer/ChatFab.tsx:51
+#: src/components/footer/ChatFab.tsx:39
 msgid "Email address copied to clipboard!"
 msgstr "Adresa de email a fost copiată în clipboard!"
 
@@ -2317,7 +2313,7 @@ msgstr "Exporturile trebuie să includă atribuirea sursei datelor și a Transpa
 msgid "Failed to copy code"
 msgstr "Eroare la copierea codului"
 
-#: src/components/footer/ChatFab.tsx:54
+#: src/components/footer/ChatFab.tsx:42
 msgid "Failed to copy email address."
 msgstr "Copierea adresei de email a eșuat."
 
@@ -2347,10 +2343,6 @@ msgstr "Eroare la încărcarea alertelor. Vă rugăm să încercați din nou."
 msgid "Failed to load data."
 msgstr "Eroare la încărcarea datelor."
 
-#: src/components/footer/ChatFab.tsx:36
-msgid "Failed to open new tab."
-msgstr "Nu s-a putut deschide un tab nou."
-
 #: src/routes/alerts/$alertId/index.lazy.tsx:125
 msgid "Failed to save"
 msgstr "Salvare eșuată"
@@ -2370,6 +2362,10 @@ msgstr "Favoritele primele"
 #: src/components/entities/EntityFinancialTrends.tsx:97
 msgid "February"
 msgstr "Februarie"
+
+#: src/components/feedback/FeedbackFab.tsx:30
+msgid "Feedback"
+msgstr "Feedback"
 
 #: src/components/footer/AppFooter.tsx:170
 msgid "Feedback / Report an issue"
@@ -2445,7 +2441,7 @@ msgstr "Evoluție Financiară"
 msgid "Find Entity to Monitor"
 msgstr "Găsește entitate de monitorizat"
 
-#: src/components/footer/ChatFab.tsx:123
+#: src/components/footer/ChatFab.tsx:97
 msgid "Find resources, report issues, or get in touch."
 msgstr "Găsește resurse, raportează probleme sau ia legătura cu noi."
 
@@ -2699,7 +2695,7 @@ msgid "Health (CASS)"
 msgstr "Sănătate (CASS)"
 
 #. placeholder {0}: typeof window !== 'undefined' ? window.location.href : 'N/A'
-#: src/components/footer/ChatFab.tsx:43
+#: src/components/footer/ChatFab.tsx:31
 msgid ""
 "Hello,\n"
 "\n"
@@ -2921,10 +2917,6 @@ msgstr "Flux intern, inter-bugetar"
 #: src/components/budget-explorer/RevenueBreakdown.tsx:62
 msgid "Internal movements between sections"
 msgstr "Mișcări interne între secțiuni"
-
-#: src/components/budget-explorer/SpendingBreakdown.tsx:153
-#~ msgid "Internal Transfers"
-#~ msgstr "Transferuri interne"
 
 #: src/routes/privacy.lazy.tsx:132
 msgid "International data transfers"
@@ -3484,7 +3476,7 @@ msgstr "Navighează la vizualizarea hartă"
 msgid "Navigation"
 msgstr "Navigare"
 
-#: src/components/footer/ChatFab.tsx:120
+#: src/components/footer/ChatFab.tsx:94
 msgid "Need help?"
 msgstr "Ai nevoie de ajutor?"
 
@@ -3752,10 +3744,6 @@ msgstr "Notă: România se află în Procedura de Deficit Excesiv a UE din 2020"
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:196
 msgid "Note: Transfer items are excluded as they represent internal movements within the public administration rather than actual expenditures or revenues."
 msgstr "Notă: Elementele de transfer sunt excluse deoarece reprezintă mișcări interne în cadrul administrației publice, nu cheltuieli sau venituri reale."
-
-#: src/components/budget-explorer/SpendingBreakdown.tsx:201
-#~ msgid "Note: Transfers between institutions (ec:51) and internal transfers (ec:55.01) are excluded from effective spending as they represent movements within the public administration rather than actual expenditures."
-#~ msgstr "Notă: Transferurile între instituții (ec:51) și transferurile interne (ec:55.01) sunt excluse din cheltuielile efective, deoarece reprezintă mișcări în cadrul administrației publice, nu cheltuieli reale."
 
 #: src/components/budget-explorer/SpendingBreakdown.tsx:177
 msgid "Note: Transfers to subordinate public institutions (ec:51.01, 51.02) are excluded from effective spending as they represent movements within the consolidated perimeter rather than actual expenditures."
@@ -4026,8 +4014,8 @@ msgid "Personal Spending"
 msgstr "Cheltuieli de personal"
 
 #: src/features/learning/components/onboarding/LearningOnboarding.tsx:153
-msgid "Personalized paths, interactive lessons, and verified certificates."
-msgstr "Parcursuri personalizate, lecții interactive și certificate verificate."
+msgid "Personalized paths and interactive lessons."
+msgstr "Parcursuri personalizate și lecții interactive."
 
 #: src/features/learning/components/interactive/PromiseTracker.tsx:118
 msgid "Personnel Costs"
@@ -4159,7 +4147,7 @@ msgstr "Trimestru"
 msgid "Quarterly"
 msgstr "Trimestrial"
 
-#: src/components/footer/ChatFab.tsx:104
+#: src/components/footer/ChatFab.tsx:78
 msgid "Quick actions"
 msgstr "Acțiuni rapide"
 
@@ -4182,10 +4170,6 @@ msgstr "Eroare de configurare a chestionarului"
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:154
 msgid "Range"
 msgstr "Interval"
-
-#: src/components/footer/ChatFab.tsx:72
-msgid "Read Documentation"
-msgstr "Citește Documentația"
 
 #: src/routes/cookies.lazy.tsx:180
 msgid "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
@@ -4576,6 +4560,7 @@ msgstr "Mod de selecție"
 msgid "Seller Keeps"
 msgstr "Vânzătorul păstrează"
 
+#: src/components/feedback/FeedbackFab.tsx:14
 #: src/components/footer/AppFooter.tsx:179
 #: src/components/sentry/SendFeedbackAction.tsx:17
 msgid "Send feedback"
@@ -4771,8 +4756,8 @@ msgid "Sign in to receive updates about the entities you care about."
 msgstr "Autentificați-vă pentru a primi actualizări despre entitățile care vă interesează."
 
 #: src/features/learning/components/layout/LoginBanner.tsx:22
-msgid "Sign in to track your learning journey and earn certificates."
-msgstr "Autentifică-te pentru a-ți urmări progresul de învățare și a obține certificate."
+msgid "Sign in to track your learning journey."
+msgstr "Autentifică-te pentru a-ți urmări progresul de învățare."
 
 #: src/features/learning/components/interactive/GuidedPlatformTour.tsx:345
 msgid "Skip tour"
@@ -4912,14 +4897,6 @@ msgstr "Subiect"
 #: src/features/notifications/components/EntityNotificationAnnouncement.tsx:115
 msgid "Subscribe to Updates"
 msgstr "Abonați-vă la actualizări"
-
-#: src/components/budget-explorer/RevenueBreakdown.tsx:53
-#~ msgid "Subsidies"
-#~ msgstr "Subvenții"
-
-#: src/components/budget-explorer/RevenueBreakdown.tsx:54
-#~ msgid "Subsidies from other administrations"
-#~ msgstr "Subvenții de la alte administrații"
 
 #: src/components/charts/components/views/AnnotationConfigView.tsx:93
 msgid "Subtitle"
@@ -5276,10 +5253,6 @@ msgstr "Total:"
 msgid "Tour Complete!"
 msgstr "Tur Complet!"
 
-#: src/components/budget-explorer/SpendingBreakdown.tsx:126
-#~ msgid "Transfers Between Institutions"
-#~ msgstr "Transferuri între instituții"
-
 #: src/components/entities/EntityLineItemsTabs.tsx:130
 #: src/components/entities/EntityLineItemsTabs.tsx:154
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:147
@@ -5291,17 +5264,9 @@ msgstr "Doar transferuri"
 msgid "Transfers to Subordinate Institutions"
 msgstr "Transferuri către instituții subordonate"
 
-#: src/components/budget-explorer/SpendingBreakdown.tsx:156
-#~ msgid "Transfers within public administration"
-#~ msgstr "Transferuri în cadrul administrației publice"
-
-#: src/components/footer/ChatFab.tsx:41
+#: src/components/footer/ChatFab.tsx:29
 msgid "Transparenta.eu – Support"
 msgstr "Transparenta.eu – Suport"
-
-#: src/components/budget-explorer/RevenueBreakdown.tsx:53
-#~ msgid "Treated as inter-budget flows"
-#~ msgstr "Tratate ca fluxuri inter-bugetare"
 
 #: src/components/classification-explorer/ClassificationExplorer.tsx:220
 msgid "Tree view"

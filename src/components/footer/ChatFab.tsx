@@ -13,10 +13,7 @@ import { useSentryConsent } from "@/hooks/useSentryConsent";
 import { t } from "@lingui/core/macro";
 import {
     MessageSquare,
-    BookOpen,
-    Bot,
     LifeBuoy,
-    ExternalLink,
     Copy,
     Send,
 } from "lucide-react";
@@ -27,15 +24,6 @@ import { clsx } from "clsx";
 const SUPPORT_EMAIL = 'contact@transparenta.eu';
 
 const toastConfig = { duration: 1000 }
-
-const openInNewTab = (url: string) => {
-    try {
-        window.open(url, '_blank', 'noopener,noreferrer');
-    } catch (error) {
-        console.error("Failed to open new tab:", error);
-        toast.info(t`Failed to open new tab.`, toastConfig);
-    }
-};
 
 const openMailClient = () => {
     const subject = encodeURIComponent(t`Transparenta.eu – Support`);
@@ -59,7 +47,6 @@ type ActionItem = {
     label: string;
     icon: ReactNode;
     action: () => void;
-    isExternal?: boolean;
 };
 
 type Action = ActionItem | { type: 'separator' } | { type: 'component'; component: ReactNode };
@@ -68,19 +55,6 @@ export function ChatFab(): ReactElement {
     useSentryConsent();
 
     const helpActions: Action[] = [
-        {
-            label: t`Read Documentation`,
-            icon: <BookOpen className="h-4 w-4" />,
-            action: () => openInNewTab('/docs'),
-            isExternal: true,
-        },
-        {
-            label: t`Ask AI Assistant`,
-            icon: <Bot className="h-4 w-4" />,
-            action: () => openInNewTab('https://chatgpt.com/g/g-688a4179389c8191955464fd497b7c5b-transparenta-eu'),
-            isExternal: true,
-        },
-        { type: 'separator' },
         { type: 'component', component: <SendFeedbackAction /> },
         { type: 'component', component: <SendErrorAction /> },
         { type: 'separator' },
@@ -103,7 +77,7 @@ export function ChatFab(): ReactElement {
                     type="button"
                     aria-label={t`Quick actions`}
                     className={clsx(
-                        "fixed z-40 bottom-6 left-6 md:right-6 md:left-auto",
+                        "fixed z-40 bottom-6 md:bottom-[5rem] left-6 md:right-6 md:left-auto",
                         "inline-flex items-center justify-center",
                         "h-14 w-14 rounded-full",
                         "bg-primary text-primary-foreground",
@@ -132,12 +106,9 @@ export function ChatFab(): ReactElement {
                         }
                         const actionItem = item as ActionItem;
                         return (
-                            <DropdownMenuItem key={actionItem.label} onSelect={actionItem.action} className="flex cursor-pointer justify-between items-center">
-                                <div className="flex items-center gap-2">
-                                    {actionItem.icon}
-                                    <span>{actionItem.label}</span>
-                                </div>
-                                {actionItem.isExternal && <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />}
+                            <DropdownMenuItem key={actionItem.label} onSelect={actionItem.action} className="flex cursor-pointer items-center gap-2">
+                                {actionItem.icon}
+                                <span>{actionItem.label}</span>
                             </DropdownMenuItem>
                         );
                     })}

@@ -21,6 +21,7 @@ import { MobileSidebarFab } from "@/components/sidebar/mobile-sidebar-fab";
 import { FloatingEntitySearch } from "@/components/entities/FloatingEntitySearch";
 import { AppFooter } from "@/components/footer/AppFooter";
 import { ChatFab } from "@/components/footer/ChatFab";
+import { FeedbackFab } from "@/components/feedback/FeedbackFab";
 import { CookieConsentBanner } from "@/components/privacy/CookieConsentBanner";
 import { Analytics } from "@/lib/analytics";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -108,6 +109,7 @@ export function AppShell({ queryClient, ssrTheme }: AppShellProps) {
                         </main>
                         <AppFooter />
                         <ChatFab />
+                        <FeedbackFab />
                         <MobileSidebarFab />
                         <CookieConsentBanner />
                       </SidebarInset>

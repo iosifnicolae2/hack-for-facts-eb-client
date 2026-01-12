@@ -150,7 +150,7 @@ export function LearningOnboarding() {
                   {t`Learn public budgeting.`}
                 </h1>
                 <p className="text-lg text-muted-foreground font-medium max-w-sm mx-auto leading-relaxed opacity-80">
-                  {t`Personalized paths, interactive lessons, and verified certificates.`}
+                  {t`Personalized paths and interactive lessons.`}
                 </p>
               </div>
 

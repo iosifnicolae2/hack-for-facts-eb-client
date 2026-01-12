@@ -19,7 +19,7 @@ export function LoginBanner() {
               {t`Save your progress`}
             </h3>
             <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 font-medium">
-              {t`Sign in to track your learning journey and earn certificates.`}
+              {t`Sign in to track your learning journey.`}
             </p>
           </div>
           <AuthSignInButton>
