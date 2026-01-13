@@ -12,7 +12,7 @@ import { generateHash } from '@/lib/utils';
 import { GqlReportType, toReportTypeValue } from '@/schemas/reporting';
 import { getInitialFilterState, makeTrendPeriod } from '@/schemas/reporting';
 import { prepareFilterForServer, withDefaultExcludes } from '@/lib/filterUtils';
-import { readUserCurrencyPreference, readUserInflationAdjustedPreference } from '@/lib/user-preferences';
+import { DEFAULT_CURRENCY, DEFAULT_INFLATION_ADJUSTED } from '@/lib/user-preferences';
 import type { EntityDetailsData } from '@/lib/api/entities';
 import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults';
 
@@ -38,8 +38,8 @@ export const Route = createFileRoute('/entities/$cui')({
         const START_YEAR = defaultYearRange.start;
         const END_YEAR = defaultYearRange.end;
         const year = (search?.year as number | undefined) ?? END_YEAR;
-        const userCurrency = await readUserCurrencyPreference();
-        const userInflationAdjusted = await readUserInflationAdjustedPreference();
+        // SSR uses consistent defaults (RON, no inflation adjustment) to ensure
+        // predictable cache keys and avoid currency/unit mismatch with client
         const currencyParam = (search?.currency as Currency | undefined);
         const inflationAdjustedParam = (search as any)?.inflation_adjusted as boolean | undefined;
         const normalizationRaw = (search?.normalization as Normalization | undefined) ?? 'total';
@@ -53,11 +53,11 @@ export const Route = createFileRoute('/entities/$cui')({
         const currency: Currency =
             normalizationRaw === 'total_euro' || normalizationRaw === 'per_capita_euro'
                 ? 'EUR'
-                : (currencyParam ?? userCurrency);
+                : (currencyParam ?? DEFAULT_CURRENCY);
         const inflationAdjusted =
             normalization === 'percent_gdp'
                 ? false
-                : (inflationAdjustedParam ?? userInflationAdjusted);
+                : (inflationAdjustedParam ?? DEFAULT_INFLATION_ADJUSTED);
 
         const reportPeriod = getInitialFilterState(search.period ?? 'YEAR', year, search.month ?? '01', search.quarter ?? 'Q1');
         const trendPeriod = makeTrendPeriod(search.period ?? 'YEAR', year, START_YEAR, END_YEAR);

@@ -3,8 +3,8 @@ import type { Currency } from '@/schemas/charts';
 export const USER_CURRENCY_STORAGE_KEY = 'user-currency';
 export const USER_INFLATION_ADJUSTED_STORAGE_KEY = 'user-inflation-adjusted';
 
-const DEFAULT_CURRENCY: Currency = 'RON';
-const DEFAULT_INFLATION_ADJUSTED = false;
+export const DEFAULT_CURRENCY: Currency = 'RON';
+export const DEFAULT_INFLATION_ADJUSTED = false;
 const PREFERENCE_COOKIE_MAX_AGE_DAYS = 365;
 
 const VALID_CURRENCIES: readonly Currency[] = ['RON', 'EUR', 'USD'];
