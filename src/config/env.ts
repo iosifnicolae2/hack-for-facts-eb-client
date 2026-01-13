@@ -45,6 +45,9 @@ const envSchema = z.object({
 
   // Clerk
   VITE_CLERK_PUBLISHABLE_KEY: z.string().min(1).optional(),
+
+  // Better Stack
+  VITE_BETTER_STACK_STATUS_WIDGET_ID: z.string().min(1).optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;

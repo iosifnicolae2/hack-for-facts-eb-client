@@ -11,7 +11,7 @@ import { t } from "@lingui/core/macro";
 import { i18n } from "@lingui/core";
 import type { RouterContext } from "@/router-context";
 import appCss from "@/index.css?url";
-import { getSiteUrl } from "@/config/env";
+import { env, getSiteUrl } from "@/config/env";
 import {
   DEFAULT_LOCALE,
   LOCALE_COOKIE_NAME,
@@ -106,6 +106,18 @@ function getGlobalHead() {
   const description =
     "Explore Romania public finance data with charts, maps, and analytics.";
   const shareImage = `${site}/assets/images/share-image.png`;
+  // Better Stack status widget (only in production and when configured)
+  const statusWidgetScripts =
+    env.VITE_APP_ENVIRONMENT === "production" &&
+    env.VITE_BETTER_STACK_STATUS_WIDGET_ID
+      ? [
+          {
+            src: "https://uptime.betterstack.com/widgets/announcement.js",
+            "data-id": env.VITE_BETTER_STACK_STATUS_WIDGET_ID,
+            async: true,
+          },
+        ]
+      : [];
   return {
     meta: [
       { charSet: "utf-8" },
@@ -214,12 +226,8 @@ function getGlobalHead() {
           },
         }),
       },
-      // Better Stack status announcement widget
-      {
-        src: "https://uptime.betterstack.com/widgets/announcement.js",
-        "data-id": "235041",
-        async: true,
-      },
+      // Better Stack status announcement widget (only in production to avoid test interference)
+      ...statusWidgetScripts,
     ],
   };
 }
