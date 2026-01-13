@@ -81,7 +81,7 @@ msgstr "/capita"
 msgid "% of GDP"
 msgstr "% of GDP"
 
-#: src/components/footer/AppFooter.tsx:158
+#: src/components/footer/AppFooter.tsx:160
 msgid "© {defaultYear} Transparenta.eu. All rights reserved."
 msgstr "© {defaultYear} Transparenta.eu. All rights reserved."
 
@@ -430,7 +430,7 @@ msgstr "<0>What We Send:</0> Budget execution updates (monthly, quarterly, or an
 msgid "error.updateAvailable"
 msgstr "A new version of the app is available. Please reload the page to get the latest updates."
 
-#: src/components/footer/AppFooter.tsx:36
+#: src/components/footer/AppFooter.tsx:38
 msgid "A platform for exploring public financial data for citizens, journalists, public figures, and other interested parties."
 msgstr "Platformă de explorare a datelor financiare publice pentru cetățeni, jurnaliști, persoane publice, și alte persoane interesate."
 
@@ -729,7 +729,7 @@ msgstr "Analytics Cookies (opt-in only)"
 msgid "Analyze aggregated values per entity and explore top entities."
 msgstr "Analyze aggregated values per entity and explore top entities."
 
-#: src/components/footer/AppFooter.tsx:147
+#: src/components/footer/AppFooter.tsx:149
 msgid "and"
 msgstr "and"
 
@@ -865,8 +865,8 @@ msgstr "Back to Overview"
 msgid "Back to path"
 msgstr "Back to path"
 
-#: src/components/footer/AppFooter.tsx:187
-#: src/components/footer/AppFooter.tsx:189
+#: src/components/footer/AppFooter.tsx:206
+#: src/components/footer/AppFooter.tsx:208
 msgid "Back to top"
 msgstr "Back to top"
 
@@ -1090,7 +1090,7 @@ msgstr "Chart Title"
 msgid "Chart Type"
 msgstr "Chart Type"
 
-#: src/components/footer/AppFooter.tsx:101
+#: src/components/footer/AppFooter.tsx:103
 #: src/components/sidebar/nav-main.tsx:31
 #: src/components/ui/shortcuts.tsx:38
 #: src/hooks/useEntityViews.tsx:39
@@ -1367,7 +1367,7 @@ msgstr "Cookie duration"
 msgid "Cookie Policy"
 msgstr "Cookie Policy"
 
-#: src/components/footer/AppFooter.tsx:124
+#: src/components/footer/AppFooter.tsx:126
 #: src/routes/cookies.lazy.tsx:71
 msgid "Cookie Settings"
 msgstr "Cookie Settings"
@@ -1624,7 +1624,7 @@ msgstr "Data Series Filter"
 msgid "Data sharing and processors"
 msgstr "Data sharing and processors"
 
-#: src/components/footer/AppFooter.tsx:137
+#: src/components/footer/AppFooter.tsx:139
 msgid "Data source: \"Budget Transparency\" portal administered by ANAF/Ministry of Finance. See official resources:"
 msgstr "Data source: \"Budget Transparency\" portal administered by ANAF/Ministry of Finance. See official resources:"
 
@@ -2016,7 +2016,7 @@ msgstr "Entity"
 
 #: src/components/entity-analytics/EntityAnalyticsLayout.tsx:15
 #: src/components/entity-analytics/EntityAnalyticsLayout.tsx:46
-#: src/components/footer/AppFooter.tsx:91
+#: src/components/footer/AppFooter.tsx:93
 #: src/components/sidebar/nav-main.tsx:41
 msgid "Entity Analytics"
 msgstr "Entity Analytics"
@@ -2367,7 +2367,7 @@ msgstr "February"
 msgid "Feedback"
 msgstr "Feedback"
 
-#: src/components/footer/AppFooter.tsx:170
+#: src/components/footer/AppFooter.tsx:172
 msgid "Feedback / Report an issue"
 msgstr "Feedback / Report an issue"
 
@@ -2756,7 +2756,7 @@ msgstr "High opportunity"
 msgid "High risk of low execution in Romanian public administration. Investments are often the first to be cut during budget rectifications."
 msgstr "High risk of low execution in Romanian public administration. Investments are often the first to be cut during budget rectifications."
 
-#: src/components/footer/AppFooter.tsx:86
+#: src/components/footer/AppFooter.tsx:88
 msgid "Home"
 msgstr "Home"
 
@@ -3046,7 +3046,7 @@ msgstr "Learning Path"
 msgid "Leave without saving"
 msgstr "Leave without saving"
 
-#: src/components/footer/AppFooter.tsx:109
+#: src/components/footer/AppFooter.tsx:111
 msgid "Legal"
 msgstr "Legal"
 
@@ -3285,7 +3285,7 @@ msgstr "Map Filters"
 msgid "Map View"
 msgstr "Map View"
 
-#: src/components/footer/AppFooter.tsx:96
+#: src/components/footer/AppFooter.tsx:98
 msgid "Maps"
 msgstr "Maps"
 
@@ -3828,7 +3828,7 @@ msgstr "Open data follows the source license."
 msgid "Open entity search dialog"
 msgstr "Open entity search dialog"
 
-#: src/components/footer/AppFooter.tsx:177
+#: src/components/footer/AppFooter.tsx:179
 msgid "Open feedback dialog"
 msgstr "Open feedback dialog"
 
@@ -4105,7 +4105,7 @@ msgstr "Prices"
 msgid "Principal Aggregated"
 msgstr "Principal Aggregated"
 
-#: src/components/footer/AppFooter.tsx:112
+#: src/components/footer/AppFooter.tsx:114
 #: src/routes/privacy.lazy.tsx:16
 msgid "Privacy Policy"
 msgstr "Privacy Policy"
@@ -4118,7 +4118,7 @@ msgstr "Pro Tip"
 msgid "Processing..."
 msgstr "Processing..."
 
-#: src/components/footer/AppFooter.tsx:82
+#: src/components/footer/AppFooter.tsx:84
 msgid "Product"
 msgstr "Product"
 
@@ -4566,7 +4566,7 @@ msgid "Seller Keeps"
 msgstr "Seller Keeps"
 
 #: src/components/feedback/FeedbackFab.tsx:14
-#: src/components/footer/AppFooter.tsx:179
+#: src/components/footer/AppFooter.tsx:181
 #: src/components/sentry/SendFeedbackAction.tsx:17
 msgid "Send feedback"
 msgstr "Send feedback"
@@ -4927,6 +4927,14 @@ msgstr "Syncing…"
 msgid "System"
 msgstr "System"
 
+#: src/components/footer/AppFooter.tsx:190
+msgid "System status"
+msgstr "System status"
+
+#: src/components/footer/AppFooter.tsx:198
+msgid "System status badge"
+msgstr "System status badge"
+
 #: src/components/filters/EntityAnalyticsFilter.tsx:430
 #: src/components/filters/MapFilter.tsx:192
 msgid "Table"
@@ -4952,7 +4960,7 @@ msgstr "Technologies we use"
 msgid "Temporarily enable scroll wheel zoom"
 msgstr "Temporarily enable scroll wheel zoom"
 
-#: src/components/footer/AppFooter.tsx:115
+#: src/components/footer/AppFooter.tsx:117
 msgid "Terms of Service"
 msgstr "Terms of Service"
 

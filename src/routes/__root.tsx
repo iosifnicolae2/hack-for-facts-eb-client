@@ -214,6 +214,12 @@ function getGlobalHead() {
           },
         }),
       },
+      // Better Stack status announcement widget
+      {
+        src: "https://uptime.betterstack.com/widgets/announcement.js",
+        "data-id": "235041",
+        async: true,
+      },
     ],
   };
 }

@@ -2,6 +2,7 @@ import type { ReactElement } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { openSentryFeedback } from "@/lib/sentry";
 import { useSentryConsent } from "@/hooks/useSentryConsent";
+import { useTheme } from "@/components/theme/theme-provider";
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
 import { defaultYearRange } from "@/schemas/charts";
@@ -18,6 +19,7 @@ export function AppFooter(): ReactElement {
     const defaultYear = defaultYearRange.end;
     const showSentryFeedback = useSentryConsent();
     const location = useLocation();
+    const { resolvedTheme } = useTheme();
 
     const handleLinkClick = () => {
         // Scroll to top of page when navigating
@@ -180,14 +182,32 @@ export function AppFooter(): ReactElement {
                             </button>
                         )}
                     </div>
-                    <button
-                        type="button"
-                        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                        className="rounded-md border px-2.5 py-1.5 text-[11px] font-medium text-foreground hover:bg-muted"
-                        aria-label={t`Back to top`}
-                    >
-                        <Trans>Back to top</Trans>
-                    </button>
+                    <div className="flex items-center gap-4">
+                        <a
+                            href="https://status.transparenta.eu"
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            aria-label={t`System status`}
+                        >
+                            <iframe
+                                src={`https://status.transparenta.eu/badge?theme=${resolvedTheme}`}
+                                width="250"
+                                height="30"
+                                frameBorder="0"
+                                scrolling="no"
+                                title={t`System status badge`}
+                                className="pointer-events-none"
+                            />
+                        </a>
+                        <button
+                            type="button"
+                            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                            className="rounded-md border px-2.5 py-1.5 text-[11px] font-medium text-foreground hover:bg-muted"
+                            aria-label={t`Back to top`}
+                        >
+                            <Trans>Back to top</Trans>
+                        </button>
+                    </div>
                 </div>
             </div>
         </footer>
