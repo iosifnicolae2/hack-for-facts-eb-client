@@ -42,8 +42,10 @@ function mapColumnIdToSortBy(columnId: string): string {
 
 export const Route = createFileRoute('/entity-analytics')({
   headers: () => ({
-    // Entity analytics is dynamic - cache 5 min CDN, 1 hour stale-while-revalidate
-    "Cache-Control": "public, max-age=0, s-maxage=300, stale-while-revalidate=3600",
+    // Browser: don't cache; CDN: cache 5 min; allow serving stale while revalidating
+    "Cache-Control": "public, max-age=0, s-maxage=300, stale-while-revalidate=86400",
+    // Vercel-specific header for explicit CDN control
+    "Vercel-CDN-Cache-Control": "max-age=300, stale-while-revalidate=86400",
   }),
   beforeLoad: async ({ context, search }) => {
     const { queryClient } = context

@@ -20,8 +20,10 @@ export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
 
 export const Route = createFileRoute('/entities/$cui')({
     headers: () => ({
-        // Entity data is dynamic but cacheable - cache 5 min CDN, 1 hour stale-while-revalidate
-        "Cache-Control": "public, max-age=0, s-maxage=300, stale-while-revalidate=3600",
+        // Browser: don't cache; CDN: cache 5 min; allow serving stale while revalidating
+        "Cache-Control": "public, max-age=0, s-maxage=300, stale-while-revalidate=86400",
+        // Vercel-specific header for explicit CDN control
+        "Vercel-CDN-Cache-Control": "max-age=300, stale-while-revalidate=86400",
     }),
     validateSearch: entitySearchSchema,
     loader: async ({ context, params, location, preload }) => {
