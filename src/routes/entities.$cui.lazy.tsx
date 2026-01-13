@@ -94,11 +94,13 @@ function EntityDetailsPage() {
   const { cui } = useParams({ from: '/entities/$cui' })
   const search = useSearch({ from: '/entities/$cui' })
   const navigate = useNavigate({ from: '/entities/$cui' })
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
+  const loaderData = Route.useLoaderData()
   const yearSelectorRef = useRef<HTMLButtonElement>(null)
   const [userCurrency, setUserCurrency] = useUserCurrency()
   const [userInflationAdjusted, setUserInflationAdjusted] = useUserInflationAdjusted()
   const [filtersOpen, setFiltersOpen] = useState(false)
+
 
   useHotkeys('mod+;', () => yearSelectorRef.current?.click(), {
     enableOnFormTags: ['INPUT', 'TEXTAREA', 'SELECT'],
@@ -141,6 +143,15 @@ function EntityDetailsPage() {
   const trendPeriod = useMemo(() => makeTrendPeriod(period, selectedYear, START_YEAR, END_YEAR), [period, selectedYear])
   const years = useMemo(() => Array.from({ length: END_YEAR - START_YEAR + 1 }, (_, idx) => END_YEAR - idx), [])
 
+  // Derive SSR entity from rehydrated cache using SSR params (once on mount)
+  // This provides immediate data even if client params differ from SSR params
+  const ssrPlaceholder = useMemo(() => {
+    if (!loaderData?.ssrParams) return undefined
+    const ssrQueryOptions = entityDetailsQueryOptions(loaderData.ssrParams)
+    return queryClient.getQueryData<EntityDetailsData>(ssrQueryOptions.queryKey)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loaderData?.ssrParams])
+
   const { data: entity, isLoading, isError, error } = useEntityDetails({
     cui,
     normalization,
@@ -151,6 +162,8 @@ function EntityDetailsPage() {
     reportType: reportTypeState,
     trendPeriod,
     mainCreditorCui: mainCreditorState,
+  }, {
+    ssrPlaceholder,
   })
 
   useRecentEntities(entity)
@@ -329,7 +342,7 @@ function EntityDetailsPage() {
 
   if (isError) {
     return (
-      <div key={cui} className="min-h-screen bg-slate-100 dark:bg-slate-900 flex justify-center items-center p-4 motion-safe:animate-in motion-safe:fade-in-0 motion-safe:duration-300">
+      <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex justify-center items-center p-4 motion-safe:animate-in motion-safe:fade-in-0 motion-safe:duration-300">
         <Alert variant="destructive" className="max-w-lg w-full">
           <AlertTriangle className="h-5 w-5" />
           <AlertTitle><Trans>Error Fetching Entity Details</Trans></AlertTitle>
@@ -344,7 +357,7 @@ function EntityDetailsPage() {
 
   if (!entity && !isLoading) {
     return (
-      <div key={cui} className="min-h-screen bg-slate-100 dark:bg-slate-900 flex justify-center items-center p-4 motion-safe:animate-in motion-safe:fade-in-0 motion-safe:duration-300">
+      <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex justify-center items-center p-4 motion-safe:animate-in motion-safe:fade-in-0 motion-safe:duration-300">
         <Alert className="max-w-lg w-full">
           <Info className="h-5 w-5" />
           <AlertTitle><Trans>No Data Found</Trans></AlertTitle>
@@ -359,7 +372,7 @@ function EntityDetailsPage() {
   const { title: _metaTitle, description: _metaDescription } = buildEntitySeo(entity, cui, selectedYear)
 
   return (
-    <div key={cui} className="min-h-screen p-3 sm:p-4 md:p-6 lg:p-8 motion-safe:animate-in motion-safe:fade-in-0 motion-safe:duration-600">
+    <div className="min-h-screen p-3 sm:p-4 md:p-6 lg:p-8">
       {/* head handled via Route.head */}
       <EntityNotificationAnnouncement />
       <FloatingQuickNav

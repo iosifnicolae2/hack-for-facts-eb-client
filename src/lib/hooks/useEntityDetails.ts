@@ -1,5 +1,5 @@
-import { useQuery, queryOptions, keepPreviousData } from '@tanstack/react-query';
-import { getEntityDetails, getEntityExecutionLineItems, getEntityRelationships, getEntityReports, getReportsConnection, ReportsFilterInput, ReportConnection } from '@/lib/api/entities';
+import { useQuery, queryOptions } from '@tanstack/react-query';
+import { getEntityDetails, getEntityExecutionLineItems, getEntityRelationships, getEntityReports, getReportsConnection, ReportsFilterInput, ReportConnection, EntityDetailsData } from '@/lib/api/entities';
 import type { NormalizationOptions } from '@/lib/normalization';
 import { ReportPeriodInput, GqlReportType } from '@/schemas/reporting';
 import { generateHash } from '../utils';
@@ -22,7 +22,6 @@ export const entityDetailsQueryOptions = (
     queryFn: () => getEntityDetails(params),
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled: !!params.cui,
-    placeholderData: keepPreviousData,
   });
 
 }
@@ -34,10 +33,22 @@ interface UseEntityDetailsProps {
   mainCreditorCui?: string;
 }
 
+interface UseEntityDetailsOptions {
+  ssrPlaceholder?: EntityDetailsData;
+}
+
 export function useEntityDetails(
-  params: UseEntityDetailsProps & NormalizationOptions
+  params: UseEntityDetailsProps & NormalizationOptions,
+  options?: UseEntityDetailsOptions
 ) {
-  return useQuery(entityDetailsQueryOptions(params));
+  const queryOpts = entityDetailsQueryOptions(params);
+
+  return useQuery({
+    ...queryOpts,
+    // Use function to preserve keepPreviousData behavior
+    // Priority: previous data > SSR placeholder > undefined
+    placeholderData: (previousData) => previousData ?? options?.ssrPlaceholder,
+  });
 }
 
 // Lazy hooks for heavy data

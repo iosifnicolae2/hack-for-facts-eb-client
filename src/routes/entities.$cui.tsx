@@ -31,7 +31,7 @@ export const Route = createFileRoute('/entities/$cui')({
         const shouldPrefetchData = !preload || !import.meta.env.DEV;
 
         if (!shouldPrefetchData) {
-            return;
+            return { ssrParams: undefined };
         }
 
         const search = entitySearchSchema.parse(location.search);
@@ -59,12 +59,13 @@ export const Route = createFileRoute('/entities/$cui')({
                 ? false
                 : (inflationAdjustedParam ?? userInflationAdjusted);
 
-        const reportPeriod = getInitialFilterState(search.period ?? 'YEAR', year, search.month ?? '12', search.quarter ?? 'Q4');
+        const reportPeriod = getInitialFilterState(search.period ?? 'YEAR', year, search.month ?? '01', search.quarter ?? 'Q1');
         const trendPeriod = makeTrendPeriod(search.period ?? 'YEAR', year, START_YEAR, END_YEAR);
         const reportType = (search?.report_type as GqlReportType | undefined);
         const mainCreditorCui = (search?.main_creditor_cui as string | undefined);
 
-        const detailsOptions = entityDetailsQueryOptions({
+        // Build SSR params to return to client for placeholder derivation
+        const ssrParams = {
             cui: params.cui,
             normalization,
             currency,
@@ -73,8 +74,10 @@ export const Route = createFileRoute('/entities/$cui')({
             reportPeriod,
             reportType,
             trendPeriod,
-            mainCreditorCui
-        });
+            mainCreditorCui,
+        };
+
+        const detailsOptions = entityDetailsQueryOptions(ssrParams);
 
         await queryClient.ensureQueryData(detailsOptions);
 
@@ -82,7 +85,7 @@ export const Route = createFileRoute('/entities/$cui')({
         const entity = queryClient.getQueryData<EntityDetailsData>(detailsOptions.queryKey);
 
         if (!entity) {
-            return;
+            return { ssrParams };
         }
 
         if (desiredView === 'map' && entity.is_uat) {
@@ -147,6 +150,8 @@ export const Route = createFileRoute('/entities/$cui')({
                 } as Parameters<typeof queryClient.prefetchQuery>[0]);
             }
         }
+
+        return { ssrParams };
     },
     pendingComponent: ViewLoading,
     component: () => null,
