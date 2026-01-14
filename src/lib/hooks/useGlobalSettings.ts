@@ -7,13 +7,17 @@ import {
 } from '@/lib/globalSettings/params'
 import {
   setPreferenceCookie,
+  readClientCurrencyPreference,
+  readClientInflationAdjustedPreference,
   USER_CURRENCY_STORAGE_KEY,
   USER_INFLATION_ADJUSTED_STORAGE_KEY,
+  DEFAULT_CURRENCY,
+  DEFAULT_INFLATION_ADJUSTED,
 } from '@/lib/user-preferences'
 
 type SSRSettings = {
-  currency: Currency // Cookie-only value (NOT URL-mixed)
-  inflationAdjusted: boolean // Cookie-only value (NOT URL-mixed)
+  currency: Currency // Default value used during SSR
+  inflationAdjusted: boolean // Default value used during SSR
 }
 
 type ForcedOverrides = {
@@ -25,33 +29,29 @@ type SettingSource = 'forced' | 'url' | 'persisted'
 
 /**
  * Unified global settings hook that handles:
- * - URL params (highest priority for sharing)
- * - SSR hydration (matches server render)
- * - Cookie persistence (survives refresh)
+ * - URL params (source of truth for data fetching, enables sharing)
+ * - SSR hydration (uses defaults, client syncs user prefs to URL)
+ * - Cookie persistence (survives refresh, synced to URL on mount)
  * - Forced overrides (route constraints like total_euro → EUR)
  *
- * Key insight: We maintain React state for persisted values because:
- * 1. SSR loader returns cookie-only values (ssrSettings)
- * 2. This state seeds from SSR during hydration
- * 3. When user changes settings, we update BOTH cookie AND this state
- * 4. This ensures clearing URL falls back to current preference, not stale SSR
+ * Strategy for CDN cacheability:
+ * 1. SSR uses URL params only (no cookies) → same URL = same cache entry
+ * 2. On mount, client reads actual user prefs from cookies/localStorage
+ * 3. If prefs differ from URL, client updates URL → triggers refetch
+ * 4. This ensures correct data after brief flash of default currency
  */
 export function useGlobalSettings(
-  ssrSettings: SSRSettings,
+  _ssrSettings: SSRSettings, // Kept for API compatibility, but not used (always defaults)
   forcedOverrides?: ForcedOverrides
 ) {
   const search = useSearch({ strict: false })
   const router = useRouter()
   const [isHydrated, setIsHydrated] = useState(false)
+  const [hasSyncedPrefs, setHasSyncedPrefs] = useState(false)
 
-  // Persisted state - seeded from SSR, updated when cookies written
-  // This is the "live" persisted preference that survives URL clears
-  const [persistedCurrency, setPersistedCurrency] = useState<Currency>(
-    ssrSettings.currency
-  )
-  const [persistedInflation, setPersistedInflation] = useState<boolean>(
-    ssrSettings.inflationAdjusted
-  )
+  // Persisted state - seeded from defaults, updated when client prefs read or changed
+  const [persistedCurrency, setPersistedCurrency] = useState<Currency>(DEFAULT_CURRENCY)
+  const [persistedInflation, setPersistedInflation] = useState<boolean>(DEFAULT_INFLATION_ADJUSTED)
 
   useEffect(() => {
     setIsHydrated(true)
@@ -60,6 +60,56 @@ export function useGlobalSettings(
   // Parse URL params
   const urlCurrency = parseCurrencyParam(search?.currency)
   const urlInflation = parseBooleanParam(search?.inflation_adjusted)
+
+  // On mount: read client prefs and sync to URL if different (and not forced)
+  // This triggers a refetch with the user's preferred currency
+  useEffect(() => {
+    if (!isHydrated || hasSyncedPrefs) return
+
+    const clientCurrency = readClientCurrencyPreference()
+    const clientInflation = readClientInflationAdjustedPreference()
+
+    // Update persisted state with actual client prefs
+    if (clientCurrency !== null) {
+      setPersistedCurrency(clientCurrency)
+    }
+    if (clientInflation !== null) {
+      setPersistedInflation(clientInflation)
+    }
+
+    // Build URL updates for prefs that differ from current URL
+    const searchUpdates: Record<string, unknown> = {}
+
+    // Only sync currency if not forced and different from URL
+    if (
+      forcedOverrides?.currency === undefined &&
+      clientCurrency !== null &&
+      clientCurrency !== (urlCurrency ?? DEFAULT_CURRENCY)
+    ) {
+      searchUpdates.currency = clientCurrency
+    }
+
+    // Only sync inflation if not forced and different from URL
+    if (
+      forcedOverrides?.inflationAdjusted === undefined &&
+      clientInflation !== null &&
+      clientInflation !== (urlInflation ?? DEFAULT_INFLATION_ADJUSTED)
+    ) {
+      searchUpdates.inflation_adjusted = clientInflation
+    }
+
+    setHasSyncedPrefs(true)
+
+    // If we have updates, navigate to sync URL with user prefs
+    if (Object.keys(searchUpdates).length > 0) {
+      router.navigate({
+        to: '.',
+        search: (prev) => ({ ...prev, ...searchUpdates }),
+        replace: true,
+        resetScroll: false,
+      })
+    }
+  }, [isHydrated, hasSyncedPrefs, urlCurrency, urlInflation, forcedOverrides, router])
 
   // Resolve currency with full priority chain
   const { currency, currencySource } = useMemo(() => {
@@ -74,9 +124,7 @@ export function useGlobalSettings(
     if (urlCurrency !== undefined) {
       return { currency: urlCurrency, currencySource: 'url' as SettingSource }
     }
-    // 3. Persisted preference (React state, updated when cookie written)
-    // During SSR/hydration: uses ssrSettings.currency (initial state value)
-    // After user changes: uses updated persistedCurrency
+    // 3. Persisted preference
     return {
       currency: persistedCurrency,
       currencySource: 'persisted' as SettingSource,
@@ -103,14 +151,13 @@ export function useGlobalSettings(
     }
   }, [forcedOverrides?.inflationAdjusted, urlInflation, persistedInflation])
 
-  // Sync URL → cookie + React state (only when NOT forced)
+  // Sync URL → cookie (when URL has value and not forced)
   useEffect(() => {
     if (!isHydrated) return
 
-    // Only sync if value came from URL and is not being forced
     if (currencySource === 'url' && urlCurrency !== undefined) {
       setPreferenceCookie(USER_CURRENCY_STORAGE_KEY, urlCurrency)
-      setPersistedCurrency(urlCurrency) // Update React state too
+      setPersistedCurrency(urlCurrency)
     }
   }, [isHydrated, currencySource, urlCurrency])
 
@@ -118,11 +165,8 @@ export function useGlobalSettings(
     if (!isHydrated) return
 
     if (inflationSource === 'url' && urlInflation !== undefined) {
-      setPreferenceCookie(
-        USER_INFLATION_ADJUSTED_STORAGE_KEY,
-        String(urlInflation)
-      )
-      setPersistedInflation(urlInflation) // Update React state too
+      setPreferenceCookie(USER_INFLATION_ADJUSTED_STORAGE_KEY, String(urlInflation))
+      setPersistedInflation(urlInflation)
     }
   }, [isHydrated, inflationSource, urlInflation])
 

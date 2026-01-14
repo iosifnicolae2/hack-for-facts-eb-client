@@ -37,7 +37,7 @@ function normalizeBoolean(value: unknown): boolean | null {
   return null;
 }
 
-function readClientCurrencyPreference(): Currency | null {
+export function readClientCurrencyPreference(): Currency | null {
   if (typeof window === 'undefined') return null;
   const localValue = normalizeCurrency(
     parseStoredValue(window.localStorage.getItem(USER_CURRENCY_STORAGE_KEY))
@@ -46,7 +46,7 @@ function readClientCurrencyPreference(): Currency | null {
   return normalizeCurrency(readCookieValue(USER_CURRENCY_STORAGE_KEY));
 }
 
-function readClientInflationAdjustedPreference(): boolean | null {
+export function readClientInflationAdjustedPreference(): boolean | null {
   if (typeof window === 'undefined') return null;
   const localValue = normalizeBoolean(
     parseStoredValue(window.localStorage.getItem(USER_INFLATION_ADJUSTED_STORAGE_KEY))

@@ -12,7 +12,10 @@ import { generateHash } from '@/lib/utils';
 import { GqlReportType, toReportTypeValue } from '@/schemas/reporting';
 import { getInitialFilterState, makeTrendPeriod } from '@/schemas/reporting';
 import { prepareFilterForServer, withDefaultExcludes } from '@/lib/filterUtils';
-import { readUserCurrencyPreference, readUserInflationAdjustedPreference } from '@/lib/user-preferences';
+// NOTE: We intentionally do NOT read cookies during SSR for data fetching.
+// CDN caches based on URL only - reading cookies would cause cache pollution
+// (same URL with different cookies = same cache entry = wrong data).
+// The client will sync user preferences to URL after hydration.
 import { parseCurrencyParam, parseBooleanParam, DEFAULT_CURRENCY, DEFAULT_INFLATION_ADJUSTED, resolveNormalizationSettings, type NormalizationInput } from '@/lib/globalSettings/params';
 import type { EntityDetailsData } from '@/lib/api/entities';
 import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults';
@@ -32,14 +35,12 @@ export const Route = createFileRoute('/entities/$cui')({
         const shouldPrefetchData = !preload || !import.meta.env.DEV;
 
         if (!shouldPrefetchData) {
-            // Still read cookies so ssrSettings isn't undefined
-            const cookieCurrency = await readUserCurrencyPreference();
-            const cookieInflation = await readUserInflationAdjustedPreference();
+            // Use defaults - client will sync user preferences after hydration
             return {
                 ssrParams: undefined,
                 ssrSettings: {
-                    currency: cookieCurrency ?? DEFAULT_CURRENCY,
-                    inflationAdjusted: cookieInflation ?? DEFAULT_INFLATION_ADJUSTED,
+                    currency: DEFAULT_CURRENCY,
+                    inflationAdjusted: DEFAULT_INFLATION_ADJUSTED,
                 },
                 forcedOverrides: undefined,
             };
@@ -50,29 +51,23 @@ export const Route = createFileRoute('/entities/$cui')({
         const END_YEAR = defaultYearRange.end;
         const year = (search?.year as number | undefined) ?? END_YEAR;
 
-        // 1. Parse URL params (for data fetching, NOT for ssrSettings)
+        // 1. Parse URL params for data fetching
+        // NOTE: We use URL params only (no cookies) to ensure CDN cacheability.
+        // Same URL = same cache entry. Client syncs user prefs to URL after hydration.
         const urlCurrency = parseCurrencyParam(search?.currency);
         const urlInflation = parseBooleanParam((search as { inflation_adjusted?: unknown })?.inflation_adjusted);
 
-        // 2. Read cookies (SSR-readable persistence) - THIS is what ssrSettings uses
-        const cookieCurrency = await readUserCurrencyPreference();
-        const cookieInflation = await readUserInflationAdjustedPreference();
-
-        // 3. Persisted settings: cookie-only (NOT URL-mixed)
-        // This seeds the hook's React state and must match what's actually persisted
-        const persistedCurrency = cookieCurrency ?? DEFAULT_CURRENCY;
-        const persistedInflation = cookieInflation ?? DEFAULT_INFLATION_ADJUSTED;
-
-        // 4. Parse normalization and compute forced overrides
+        // 2. Parse normalization and compute forced overrides
         const normalizationRaw = (search?.normalization as NormalizationInput | undefined) ?? 'total';
         const showPeriodGrowth = Boolean((search as { show_period_growth?: unknown }).show_period_growth);
 
         const { normalization, forcedOverrides: { currency: forcedCurrency, inflationAdjusted: forcedInflation } } =
             resolveNormalizationSettings(normalizationRaw);
 
-        // 5. Effective values for data fetching: Forced > URL > Persisted
-        const currency: Currency = forcedCurrency ?? urlCurrency ?? persistedCurrency;
-        const inflationAdjusted: boolean = forcedInflation ?? urlInflation ?? persistedInflation;
+        // 3. Effective values for data fetching: Forced > URL > Default
+        // No cookies here - keeps SSR response deterministic and CDN-cacheable
+        const currency: Currency = forcedCurrency ?? urlCurrency ?? DEFAULT_CURRENCY;
+        const inflationAdjusted: boolean = forcedInflation ?? urlInflation ?? DEFAULT_INFLATION_ADJUSTED;
 
         const reportPeriod = getInitialFilterState(search.period ?? 'YEAR', year, search.month ?? '01', search.quarter ?? 'Q1');
         const trendPeriod = makeTrendPeriod(search.period ?? 'YEAR', year, START_YEAR, END_YEAR);
@@ -93,10 +88,10 @@ export const Route = createFileRoute('/entities/$cui')({
         };
 
         // SSR settings for useGlobalSettings hook
-        // COOKIE-ONLY values - seeds hook's React state for persisted prefs
+        // Use defaults here - client will read actual user prefs and sync to URL after hydration
         const ssrSettings = {
-            currency: persistedCurrency,
-            inflationAdjusted: persistedInflation,
+            currency: DEFAULT_CURRENCY,
+            inflationAdjusted: DEFAULT_INFLATION_ADJUSTED,
         };
 
         // Forced overrides for useGlobalSettings hook
