@@ -126,14 +126,15 @@ function EntityDetailsPage() {
     if (normalizationRaw === 'per_capita_euro') return 'per_capita'
     return normalizationRaw
   })()
+  // Use SSR params as fallback to ensure label matches SSR-fetched data during hydration
   const currency: 'RON' | 'EUR' | 'USD' =
     normalizationRaw === 'total_euro' || normalizationRaw === 'per_capita_euro'
       ? 'EUR'
-      : (currencyParam ?? userCurrency)
+      : (currencyParam ?? loaderData?.ssrParams?.currency ?? userCurrency)
   const inflationAdjusted =
     normalization === 'percent_gdp'
       ? false
-      : (inflationAdjustedParam ?? userInflationAdjusted)
+      : (inflationAdjustedParam ?? loaderData?.ssrParams?.inflation_adjusted ?? userInflationAdjusted)
   const treemapPrimary = search.treemapPrimary as 'fn' | 'ec' | undefined
   const accountCategory = search.accountCategory as 'ch' | 'vn' | undefined
 
