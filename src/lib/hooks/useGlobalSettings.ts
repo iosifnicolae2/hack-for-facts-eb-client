@@ -27,6 +27,11 @@ type ForcedOverrides = {
 
 type SettingSource = 'forced' | 'url' | 'persisted'
 
+export type PersistSettingsPatch = Partial<{
+  currency: Currency
+  inflationAdjusted: boolean
+}>
+
 /**
  * Unified global settings hook that handles:
  * - URL params (source of truth for data fetching, enables sharing)
@@ -61,9 +66,14 @@ export function useGlobalSettings(
   const [isHydrated, setIsHydrated] = useState(false)
   const [hasSyncedPrefs, setHasSyncedPrefs] = useState(false)
 
-  // Persisted state - seeded from defaults, updated when client prefs read or changed
-  const [persistedCurrency, setPersistedCurrency] = useState<Currency>(DEFAULT_CURRENCY)
-  const [persistedInflation, setPersistedInflation] = useState<boolean>(DEFAULT_INFLATION_ADJUSTED)
+  // Persisted state - initialized from client preferences if available (returns null during SSR)
+  // This ensures client-side navigation uses user's preference immediately, avoiding double-fetch
+  const [persistedCurrency, setPersistedCurrency] = useState<Currency>(() =>
+    readClientCurrencyPreference() ?? DEFAULT_CURRENCY
+  )
+  const [persistedInflation, setPersistedInflation] = useState<boolean>(() =>
+    readClientInflationAdjustedPreference() ?? DEFAULT_INFLATION_ADJUSTED
+  )
 
   // Display state - initialized from SSR settings, updated when fresh data arrives
   // This prevents showing new currency label with old currency value during preference sync
@@ -78,7 +88,7 @@ export function useGlobalSettings(
   const urlCurrency = parseCurrencyParam(search?.currency)
   const urlInflation = parseBooleanParam(search?.inflation_adjusted)
 
-  // On mount: read client prefs and sync to URL if different (and not forced)
+  // On mount: read client prefs and sync to URL if params are absent (and not forced)
   // This triggers a refetch with the user's preferred currency
   useEffect(() => {
     if (!isHydrated || hasSyncedPrefs) return
@@ -100,6 +110,7 @@ export function useGlobalSettings(
     // Only sync currency if not forced and different from URL
     if (
       forcedOverrides?.currency === undefined &&
+      urlCurrency === undefined &&
       clientCurrency !== null &&
       clientCurrency !== (urlCurrency ?? DEFAULT_CURRENCY)
     ) {
@@ -109,6 +120,7 @@ export function useGlobalSettings(
     // Only sync inflation if not forced and different from URL
     if (
       forcedOverrides?.inflationAdjusted === undefined &&
+      urlInflation === undefined &&
       clientInflation !== null &&
       clientInflation !== (urlInflation ?? DEFAULT_INFLATION_ADJUSTED)
     ) {
@@ -168,35 +180,40 @@ export function useGlobalSettings(
     }
   }, [forcedOverrides?.inflationAdjusted, urlInflation, persistedInflation])
 
-  // Sync URL → cookie (when URL has value and not forced)
-  useEffect(() => {
-    if (!isHydrated) return
-
-    if (currencySource === 'url' && urlCurrency !== undefined) {
-      setPreferenceCookie(USER_CURRENCY_STORAGE_KEY, urlCurrency)
-      setPersistedCurrency(urlCurrency)
-    }
-  }, [isHydrated, currencySource, urlCurrency])
-
-  useEffect(() => {
-    if (!isHydrated) return
-
-    if (inflationSource === 'url' && urlInflation !== undefined) {
-      setPreferenceCookie(USER_INFLATION_ADJUSTED_STORAGE_KEY, String(urlInflation))
-      setPersistedInflation(urlInflation)
-    }
-  }, [isHydrated, inflationSource, urlInflation])
-
   // Helper to write to BOTH cookie and React state
   const writeCurrencyPref = useCallback((value: Currency) => {
+    if (typeof window !== 'undefined') {
+      try {
+        window.localStorage.setItem(USER_CURRENCY_STORAGE_KEY, JSON.stringify(value))
+      } catch (e) {
+        console.warn('Failed to write currency preference to localStorage', e)
+      }
+    }
     setPreferenceCookie(USER_CURRENCY_STORAGE_KEY, value)
     setPersistedCurrency(value)
   }, [])
 
   const writeInflationPref = useCallback((value: boolean) => {
+    if (typeof window !== 'undefined') {
+      try {
+        window.localStorage.setItem(USER_INFLATION_ADJUSTED_STORAGE_KEY, JSON.stringify(value))
+      } catch (e) {
+        console.warn('Failed to write inflation preference to localStorage', e)
+      }
+    }
     setPreferenceCookie(USER_INFLATION_ADJUSTED_STORAGE_KEY, String(value))
     setPersistedInflation(value)
   }, [])
+
+  const persistSettings = useCallback((patch: PersistSettingsPatch) => {
+    if (patch.currency !== undefined) {
+      writeCurrencyPref(patch.currency)
+    }
+
+    if (patch.inflationAdjusted !== undefined) {
+      writeInflationPref(patch.inflationAdjusted)
+    }
+  }, [writeCurrencyPref, writeInflationPref])
 
   // Setters: update cookie + React state + URL
   // Use functional search updater (prev) => ({ ...prev, ... }) for atomic updates
@@ -206,7 +223,7 @@ export function useGlobalSettings(
         console.warn('Cannot change currency: forced by route')
         return
       }
-      writeCurrencyPref(value)
+      persistSettings({ currency: value })
       router.navigate({
         to: '.',
         search: (prev) => ({ ...prev, currency: value }),
@@ -214,7 +231,7 @@ export function useGlobalSettings(
         resetScroll: false,
       })
     },
-    [router, forcedOverrides?.currency, writeCurrencyPref]
+    [router, forcedOverrides?.currency, persistSettings]
   )
 
   const setInflationAdjusted = useCallback(
@@ -223,7 +240,7 @@ export function useGlobalSettings(
         console.warn('Cannot change inflation_adjusted: forced by route')
         return
       }
-      writeInflationPref(value)
+      persistSettings({ inflationAdjusted: value })
       router.navigate({
         to: '.',
         search: (prev) => ({ ...prev, inflation_adjusted: value }),
@@ -231,7 +248,7 @@ export function useGlobalSettings(
         resetScroll: false,
       })
     },
-    [router, forcedOverrides?.inflationAdjusted, writeInflationPref]
+    [router, forcedOverrides?.inflationAdjusted, persistSettings]
   )
 
   // Batch setter for atomic updates
@@ -243,14 +260,14 @@ export function useGlobalSettings(
         updates.currency !== undefined &&
         forcedOverrides?.currency === undefined
       ) {
-        writeCurrencyPref(updates.currency)
+        persistSettings({ currency: updates.currency })
         searchUpdates.currency = updates.currency
       }
       if (
         updates.inflationAdjusted !== undefined &&
         forcedOverrides?.inflationAdjusted === undefined
       ) {
-        writeInflationPref(updates.inflationAdjusted)
+        persistSettings({ inflationAdjusted: updates.inflationAdjusted })
         searchUpdates.inflation_adjusted = updates.inflationAdjusted
       }
 
@@ -263,7 +280,7 @@ export function useGlobalSettings(
         })
       }
     },
-    [router, forcedOverrides, writeCurrencyPref, writeInflationPref]
+    [router, forcedOverrides, persistSettings]
   )
 
   // Confirm that fresh data has loaded - syncs display values with actual values
@@ -280,6 +297,9 @@ export function useGlobalSettings(
     // For data fetching - always the current target value
     currency,
     inflationAdjusted,
+    // Persisted user preference (cookie/localStorage) - not affected by URL unless explicitly saved
+    persistedCurrency,
+    persistedInflationAdjusted: persistedInflation,
     // For UI display - lags until confirmSettingsApplied() is called
     displayCurrency,
     displayInflationAdjusted: displayInflation,
@@ -287,6 +307,7 @@ export function useGlobalSettings(
     confirmSettingsApplied,
     isPendingSync,
     // Setters
+    persistSettings,
     setCurrency,
     setInflationAdjusted,
     setSettings,

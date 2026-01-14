@@ -133,6 +133,9 @@ function EntityDetailsPage() {
     inflationAdjusted,
     displayCurrency,
     displayInflationAdjusted,
+    persistedCurrency,
+    persistedInflationAdjusted,
+    persistSettings,
     confirmSettingsApplied,
   } = useGlobalSettings(ssrSettings, forcedOverrides)
 
@@ -213,7 +216,23 @@ function EntityDetailsPage() {
     if (isNoOp) return
 
     startTransition(() => {
-      navigate({ search: (prev) => ({ ...prev, ...patch }), replace: true, resetScroll: false })
+      navigate({
+        search: (prev) => {
+          const nextSearch = { ...prev } as Record<string, unknown>
+          for (const [key, value] of Object.entries(patch)) {
+            if (value === undefined) {
+              // TanStack Router drops undefined values in serialization, but we delete
+              // for correctness and to avoid `key=undefined` in edge cases.
+              delete (nextSearch as any)[key]
+              continue
+            }
+            ;(nextSearch as any)[key] = value
+          }
+          return nextSearch
+        },
+        replace: true,
+        resetScroll: false,
+      })
     })
   }, [navigate, search])
 
@@ -267,12 +286,61 @@ function EntityDetailsPage() {
   }, [updateSearch])
 
   const handleNormalizationChange = useCallback((next: NormalizationOptions) => {
+    const nextNormalizationRaw = (next.normalization as NormalizationInput | undefined) ?? normalizationRaw
+    const { forcedOverrides: nextForcedOverrides } = resolveNormalizationSettings(nextNormalizationRaw)
+
+    const currencyChangedByUser = next.currency !== undefined && next.currency !== displayCurrency
+    const inflationChangedByUser = next.inflation_adjusted !== undefined && next.inflation_adjusted !== displayInflationAdjusted
+
+    if (currencyChangedByUser && nextForcedOverrides.currency === undefined && next.currency !== undefined) {
+      persistSettings({ currency: next.currency })
+    }
+
+    if (inflationChangedByUser && nextForcedOverrides.inflationAdjusted === undefined && next.inflation_adjusted !== undefined) {
+      persistSettings({ inflationAdjusted: next.inflation_adjusted })
+    }
+
+    const isLeavingForcedCurrency = forcedOverrides.currency !== undefined && nextForcedOverrides.currency === undefined
+    const isLeavingForcedInflation = forcedOverrides.inflationAdjusted !== undefined && nextForcedOverrides.inflationAdjusted === undefined
+
+    const nextCurrencyParam = nextForcedOverrides.currency !== undefined
+      ? undefined
+      : currencyChangedByUser && next.currency !== undefined
+        ? next.currency
+        : isLeavingForcedCurrency
+          ? persistedCurrency
+          : next.currency ?? displayCurrency
+
+    const nextInflationParam = nextForcedOverrides.inflationAdjusted !== undefined
+      ? undefined
+      : inflationChangedByUser && next.inflation_adjusted !== undefined
+        ? next.inflation_adjusted
+        : isLeavingForcedInflation
+          ? persistedInflationAdjusted
+          : next.inflation_adjusted ?? displayInflationAdjusted
+
     updateSearch({
       normalization: next.normalization,
       show_period_growth: next.show_period_growth,
+      currency: nextCurrencyParam,
+      inflation_adjusted: nextInflationParam,
     })
-    Analytics.capture(Analytics.EVENTS.EntityViewOpened, { cui, view: activeView, normalization: next.normalization, currency })
-  }, [updateSearch, cui, activeView, currency])
+
+    Analytics.capture(Analytics.EVENTS.EntityViewOpened, { cui, view: activeView, normalization: next.normalization, currency: nextForcedOverrides.currency ?? nextCurrencyParam ?? currency })
+  }, [
+    activeView,
+    currency,
+    displayCurrency,
+    displayInflationAdjusted,
+    forcedOverrides.currency,
+    forcedOverrides.inflationAdjusted,
+    cui,
+    normalizationRaw,
+    persistSettings,
+    persistedCurrency,
+    persistedInflationAdjusted,
+    updateSearch,
+  ])
 
   const updateReportPeriodInSearch = useCallback((patch: Record<string, any>) => {
     startTransition(() => {

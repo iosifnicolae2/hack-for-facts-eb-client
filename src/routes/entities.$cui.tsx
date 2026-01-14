@@ -15,8 +15,10 @@ import { prepareFilterForServer, withDefaultExcludes } from '@/lib/filterUtils';
 // NOTE: We intentionally do NOT read cookies during SSR for data fetching.
 // CDN caches based on URL only - reading cookies would cause cache pollution
 // (same URL with different cookies = same cache entry = wrong data).
-// The client will sync user preferences to URL after hydration.
+// However, during client-side navigation/prefetch, we CAN read cookies since
+// there's no CDN concern - this ensures prefetch uses correct user preference.
 import { parseCurrencyParam, parseBooleanParam, DEFAULT_CURRENCY, DEFAULT_INFLATION_ADJUSTED, resolveNormalizationSettings, type NormalizationInput } from '@/lib/globalSettings/params';
+import { readClientCurrencyPreference, readClientInflationAdjustedPreference } from '@/lib/user-preferences';
 import type { EntityDetailsData } from '@/lib/api/entities';
 import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults';
 
@@ -30,21 +32,8 @@ export const Route = createFileRoute('/entities/$cui')({
         "Vercel-CDN-Cache-Control": "max-age=300, stale-while-revalidate=86400",
     }),
     validateSearch: entitySearchSchema,
-    loader: async ({ context, params, location, preload }) => {
+    loader: async ({ context, params, location }) => {
         const { queryClient } = context;
-        const shouldPrefetchData = !preload || !import.meta.env.DEV;
-
-        if (!shouldPrefetchData) {
-            // Use defaults - client will sync user preferences after hydration
-            return {
-                ssrParams: undefined,
-                ssrSettings: {
-                    currency: DEFAULT_CURRENCY,
-                    inflationAdjusted: DEFAULT_INFLATION_ADJUSTED,
-                },
-                forcedOverrides: undefined,
-            };
-        }
 
         const search = entitySearchSchema.parse(location.search);
         const START_YEAR = defaultYearRange.start;
@@ -64,10 +53,14 @@ export const Route = createFileRoute('/entities/$cui')({
         const { normalization, forcedOverrides: { currency: forcedCurrency, inflationAdjusted: forcedInflation } } =
             resolveNormalizationSettings(normalizationRaw);
 
-        // 3. Effective values for data fetching: Forced > URL > Default
-        // No cookies here - keeps SSR response deterministic and CDN-cacheable
-        const currency: Currency = forcedCurrency ?? urlCurrency ?? DEFAULT_CURRENCY;
-        const inflationAdjusted: boolean = forcedInflation ?? urlInflation ?? DEFAULT_INFLATION_ADJUSTED;
+        // 3. Effective values for data fetching: Forced > URL > Client Preference > Default
+        // On client (navigation/prefetch): read user preference for correct prefetch cache hits
+        // On server (SSR): use default for CDN cacheability (same URL = same cache entry)
+        const isClient = typeof globalThis.window !== 'undefined';
+        const clientCurrency = isClient ? readClientCurrencyPreference() : null;
+        const clientInflation = isClient ? readClientInflationAdjustedPreference() : null;
+        const currency: Currency = forcedCurrency ?? urlCurrency ?? clientCurrency ?? DEFAULT_CURRENCY;
+        const inflationAdjusted: boolean = forcedInflation ?? urlInflation ?? clientInflation ?? DEFAULT_INFLATION_ADJUSTED;
 
         const reportPeriod = getInitialFilterState(search.period ?? 'YEAR', year, search.month ?? '01', search.quarter ?? 'Q1');
         const trendPeriod = makeTrendPeriod(search.period ?? 'YEAR', year, START_YEAR, END_YEAR);
