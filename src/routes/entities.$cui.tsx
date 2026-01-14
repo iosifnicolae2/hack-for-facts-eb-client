@@ -88,10 +88,10 @@ export const Route = createFileRoute('/entities/$cui')({
         };
 
         // SSR settings for useGlobalSettings hook
-        // Use defaults here - client will read actual user prefs and sync to URL after hydration
+        // Must match the actual currency used for data fetching so display label matches data values
         const ssrSettings = {
-            currency: DEFAULT_CURRENCY,
-            inflationAdjusted: DEFAULT_INFLATION_ADJUSTED,
+            currency,
+            inflationAdjusted,
         };
 
         // Forced overrides for useGlobalSettings hook
