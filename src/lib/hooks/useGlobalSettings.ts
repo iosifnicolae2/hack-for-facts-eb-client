@@ -39,9 +39,21 @@ type SettingSource = 'forced' | 'url' | 'persisted'
  * 2. On mount, client reads actual user prefs from cookies/localStorage
  * 3. If prefs differ from URL, client updates URL → triggers refetch
  * 4. This ensures correct data after brief flash of default currency
+ *
+ * Currency Display Strategy (Option B):
+ * =====================================
+ * To prevent currency label/value mismatch during preference sync:
+ * - `currency`: Use for data fetching (always current target)
+ * - `displayCurrency`: Use for UI display (lags until data arrives)
+ *
+ * Consumer should:
+ * 1. Pass `currency` to data fetching hooks
+ * 2. Display `displayCurrency` in the UI
+ * 3. Call `confirmSettingsApplied()` when fresh data has loaded
+ * 4. This updates `displayCurrency` to match `currency`
  */
 export function useGlobalSettings(
-  _ssrSettings: SSRSettings, // Kept for API compatibility, but not used (always defaults)
+  ssrSettings: SSRSettings,
   forcedOverrides?: ForcedOverrides
 ) {
   const search = useSearch({ strict: false })
@@ -52,6 +64,11 @@ export function useGlobalSettings(
   // Persisted state - seeded from defaults, updated when client prefs read or changed
   const [persistedCurrency, setPersistedCurrency] = useState<Currency>(DEFAULT_CURRENCY)
   const [persistedInflation, setPersistedInflation] = useState<boolean>(DEFAULT_INFLATION_ADJUSTED)
+
+  // Display state - initialized from SSR settings, updated when fresh data arrives
+  // This prevents showing new currency label with old currency value during preference sync
+  const [displayCurrency, setDisplayCurrency] = useState<Currency>(ssrSettings.currency)
+  const [displayInflation, setDisplayInflation] = useState<boolean>(ssrSettings.inflationAdjusted)
 
   useEffect(() => {
     setIsHydrated(true)
@@ -249,9 +266,27 @@ export function useGlobalSettings(
     [router, forcedOverrides, writeCurrencyPref, writeInflationPref]
   )
 
+  // Confirm that fresh data has loaded - syncs display values with actual values
+  // Call this when your data query has completed with the new settings
+  const confirmSettingsApplied = useCallback(() => {
+    setDisplayCurrency(currency)
+    setDisplayInflation(inflationAdjusted)
+  }, [currency, inflationAdjusted])
+
+  // Check if display is out of sync (data hasn't caught up yet)
+  const isPendingSync = displayCurrency !== currency || displayInflation !== inflationAdjusted
+
   return {
+    // For data fetching - always the current target value
     currency,
     inflationAdjusted,
+    // For UI display - lags until confirmSettingsApplied() is called
+    displayCurrency,
+    displayInflationAdjusted: displayInflation,
+    // Sync control
+    confirmSettingsApplied,
+    isPendingSync,
+    // Setters
     setCurrency,
     setInflationAdjusted,
     setSettings,

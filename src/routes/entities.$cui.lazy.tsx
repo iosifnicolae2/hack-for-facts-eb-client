@@ -1,4 +1,4 @@
-import { lazy, Suspense, useMemo, useRef, useCallback, memo, useState, startTransition } from 'react'
+import { lazy, Suspense, useMemo, useRef, useCallback, memo, useState, startTransition, useEffect } from 'react'
 import { createLazyFileRoute, useNavigate, useParams, useSearch } from '@tanstack/react-router'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { t } from '@lingui/core/macro'
@@ -44,11 +44,9 @@ const EntityReports = lazy(() => import('@/components/entities/EntityReports'))
 const EntityRelationships = lazy(() => import('@/components/entities/EntityRelationships').then(m => ({ default: m.EntityRelationships })))
 const ContractsView = lazy(() => import('@/components/entities/views/ContractsView').then(m => ({ default: m.ContractsView })))
 
-
 export const Route = createLazyFileRoute('/entities/$cui')({
   component: EntityDetailsPage,
 })
-
 
 const { start: START_YEAR, end: END_YEAR } = defaultYearRange
 const DEFAULT_PERIOD = 'YEAR'
@@ -99,7 +97,6 @@ function EntityDetailsPage() {
   const yearSelectorRef = useRef<HTMLButtonElement>(null)
   const [filtersOpen, setFiltersOpen] = useState(false)
 
-
   useHotkeys('mod+;', () => yearSelectorRef.current?.click(), {
     enableOnFormTags: ['INPUT', 'TEXTAREA', 'SELECT'],
   })
@@ -124,6 +121,8 @@ function EntityDetailsPage() {
   )
 
   // Use unified global settings hook
+  // currency/inflationAdjusted: for data fetching (always current target)
+  // displayCurrency/displayInflationAdjusted: for UI display (lags until data arrives)
   const ssrSettings = useMemo(() => ({
     currency: loaderData?.ssrSettings?.currency ?? DEFAULT_CURRENCY,
     inflationAdjusted: loaderData?.ssrSettings?.inflationAdjusted ?? DEFAULT_INFLATION_ADJUSTED,
@@ -132,8 +131,9 @@ function EntityDetailsPage() {
   const {
     currency,
     inflationAdjusted,
-    setCurrency: _setCurrency,
-    setInflationAdjusted: _setInflationAdjusted,
+    displayCurrency,
+    displayInflationAdjusted,
+    confirmSettingsApplied,
   } = useGlobalSettings(ssrSettings, forcedOverrides)
 
   const treemapPrimary = search.treemapPrimary as 'fn' | 'ec' | undefined
@@ -154,7 +154,7 @@ function EntityDetailsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loaderData?.ssrParams])
 
-  const { data: entity, isLoading, isError, error } = useEntityDetails({
+  const { data: entity, isLoading, isFetching, isError, error } = useEntityDetails({
     cui,
     normalization,
     currency,
@@ -168,8 +168,16 @@ function EntityDetailsPage() {
     ssrPlaceholder,
   })
 
+  // When data loads with new settings, confirm them so display values update
+  // This prevents showing new currency label with old currency value
+  useEffect(() => {
+    if (entity && !isFetching) {
+      confirmSettingsApplied()
+    }
+  }, [entity, isFetching, confirmSettingsApplied])
+
   useRecentEntities(entity)
-  const { mapFilters, updateMapFilters } = useEntityMapFilter({ year: selectedYear, currency })
+  const { mapFilters, updateMapFilters } = useEntityMapFilter({ year: selectedYear, currency: displayCurrency })
   const views = useEntityViews(entity)
 
   const debouncedPrefetch = useDebouncedCallback(
@@ -300,17 +308,17 @@ function EntityDetailsPage() {
     updateReportPeriodInSearch(patch)
   }, [updateReportPeriodInSearch])
 
-
   // Prepare filter input for FloatingQuickNav
+  // Use displayCurrency/displayInflationAdjusted for UI to prevent label/value mismatch
   const filterInput: AnalyticsFilterType = useMemo(() => ({
     entity_cuis: [cui],
     report_period: reportPeriod,
     account_category: accountCategory ?? 'ch',
     normalization: normalization,
-    currency,
-    inflation_adjusted: inflationAdjusted,
+    currency: displayCurrency,
+    inflation_adjusted: displayInflationAdjusted,
     show_period_growth: showPeriodGrowth,
-  }), [cui, reportPeriod, accountCategory, normalization, currency, inflationAdjusted, showPeriodGrowth])
+  }), [cui, reportPeriod, accountCategory, normalization, displayCurrency, displayInflationAdjusted, showPeriodGrowth])
 
   // Determine mapViewType based on entity type
   const mapViewType = useMemo<'UAT' | 'County'>(() => {
@@ -318,7 +326,6 @@ function EntityDetailsPage() {
     if (entity?.is_uat) return 'UAT'
     return 'UAT'
   }, [entity?.entity_type, entity?.is_uat])
-
 
   if (isError) {
     return (
@@ -404,8 +411,8 @@ function EntityDetailsPage() {
           activeView={activeView}
           selectedYear={selectedYear}
           normalization={normalization}
-          currency={currency}
-          inflationAdjusted={inflationAdjusted}
+          currency={displayCurrency}
+          inflationAdjusted={displayInflationAdjusted}
           showPeriodGrowth={showPeriodGrowth}
           years={years}
           period={period}
