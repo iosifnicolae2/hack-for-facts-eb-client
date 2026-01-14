@@ -14,7 +14,7 @@ export function FeedbackFab() {
       aria-label={t`Send feedback`}
       className={clsx(
         "fixed z-40 right-6",
-        "bottom-6",
+        "bottom-[9.5rem]",
         "hidden md:inline-flex items-center gap-2",
         "h-10 pl-3 pr-4 rounded-full",
         "bg-zinc-900 dark:bg-zinc-100",
@@ -27,7 +27,18 @@ export function FeedbackFab() {
       )}
     >
       <MessageSquarePlus className="h-4 w-4" />
-      <Trans>Feedback</Trans>
+      <Trans>Feedback 🫣</Trans>
+      {/* Speech bubble tail pointing down toward chat button */}
+      <span
+        aria-hidden="true"
+        className={clsx(
+          "absolute -bottom-2 right-4",
+          "w-0 h-0",
+          "border-l-12 border-l-transparent",
+          "border-r-12 border-r-transparent",
+          "border-t-12 border-t-zinc-900 dark:border-t-zinc-100"
+        )}
+      />
     </button>
   )
 }
