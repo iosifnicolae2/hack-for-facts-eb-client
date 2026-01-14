@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Home, FileQuestion } from "lucide-react";
 import { t } from "@lingui/core/macro";
 import { i18n } from "@lingui/core";
+import { z } from "zod";
 import type { RouterContext } from "@/router-context";
 import appCss from "@/index.css?url";
 import { env, getSiteUrl } from "@/config/env";
@@ -27,7 +28,26 @@ import {
 const ANONYMOUS_CROSS_ORIGIN = "anonymous" as const;
 const DEFAULT_THEME: ResolvedTheme = "light";
 
+// Global search schema for settings that persist across routes
+// Without this, TanStack Router strips unknown params on navigation
+// NOTE: Using union + transform instead of preprocess to preserve optionality for type inference
+const globalSearchSchema = z
+  .object({
+    currency: z.enum(["RON", "EUR", "USD"]).optional(),
+    // Accept boolean or string from URL, transform to boolean | undefined
+    inflation_adjusted: z
+      .union([z.boolean(), z.literal("true"), z.literal("false")])
+      .optional()
+      .transform((val) => {
+        if (val === "true") return true;
+        if (val === "false") return false;
+        return val;
+      }),
+  })
+  .passthrough(); // Allow child routes to add their own params
+
 export const Route = createRootRouteWithContext<RouterContext>()({
+  validateSearch: globalSearchSchema,
   ssr: true,
   headers: () => ({
     // Enable Vercel CDN caching: cache for 1 hour, serve stale for 24h during revalidation

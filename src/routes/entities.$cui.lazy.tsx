@@ -1,4 +1,4 @@
-import { lazy, Suspense, useMemo, useRef, useCallback, memo, useState, useEffect, startTransition } from 'react'
+import { lazy, Suspense, useMemo, useRef, useCallback, memo, useState, startTransition } from 'react'
 import { createLazyFileRoute, useNavigate, useParams, useSearch } from '@tanstack/react-router'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { t } from '@lingui/core/macro'
@@ -28,11 +28,11 @@ import { buildEntitySeo } from '@/lib/seo-entity'
 import { getSiteUrl } from '@/config/env'
 import { Overview } from '@/components/entities/views/Overview'
 import { EntityDetailsData } from '@/lib/api/entities'
-import { useUserCurrency } from '@/lib/hooks/useUserCurrency'
 import { useDebouncedCallback } from '@/lib/hooks/useDebouncedCallback'
 import { FloatingQuickNav } from '@/components/ui/FloatingQuickNav'
 import type { NormalizationOptions } from '@/lib/normalization'
-import { useUserInflationAdjusted } from '@/lib/hooks/useUserInflationAdjusted'
+import { useGlobalSettings } from '@/lib/hooks/useGlobalSettings'
+import { DEFAULT_CURRENCY, DEFAULT_INFLATION_ADJUSTED, resolveNormalizationSettings, type NormalizationInput } from '@/lib/globalSettings/params'
 import { useQueryClient } from '@tanstack/react-query'
 
 const TrendsView = lazy(() => import('@/components/entities/views/TrendsView').then(m => ({ default: m.TrendsView })))
@@ -97,8 +97,6 @@ function EntityDetailsPage() {
   const queryClient = useQueryClient()
   const loaderData = Route.useLoaderData()
   const yearSelectorRef = useRef<HTMLButtonElement>(null)
-  const [userCurrency, setUserCurrency] = useUserCurrency()
-  const [userInflationAdjusted, setUserInflationAdjusted] = useUserInflationAdjusted()
   const [filtersOpen, setFiltersOpen] = useState(false)
 
 
@@ -116,25 +114,28 @@ function EntityDetailsPage() {
   const lineItemsTab = search.lineItemsTab as 'functional' | 'funding' | 'expenseType' | undefined
   const selectedFundingKey = search.selectedFundingKey as string | undefined
   const selectedExpenseTypeKey = search.selectedExpenseTypeKey as string | undefined
-  const normalizationRaw = (search.normalization as Normalization | undefined) ?? 'total'
-  const currencyParam = (search as any).currency as 'RON' | 'EUR' | 'USD' | undefined
-  const inflationAdjustedParam = (search as any).inflation_adjusted as boolean | undefined
-  const showPeriodGrowth = Boolean((search as any).show_period_growth)
+  const normalizationRaw = (search.normalization as NormalizationInput | undefined) ?? 'total'
+  const showPeriodGrowth = Boolean((search as { show_period_growth?: unknown }).show_period_growth)
 
-  const normalization: Normalization = (() => {
-    if (normalizationRaw === 'total_euro') return 'total'
-    if (normalizationRaw === 'per_capita_euro') return 'per_capita'
-    return normalizationRaw
-  })()
-  // Use SSR params as fallback to ensure label matches SSR-fetched data during hydration
-  const currency: 'RON' | 'EUR' | 'USD' =
-    normalizationRaw === 'total_euro' || normalizationRaw === 'per_capita_euro'
-      ? 'EUR'
-      : (currencyParam ?? loaderData?.ssrParams?.currency ?? userCurrency)
-  const inflationAdjusted =
-    normalization === 'percent_gdp'
-      ? false
-      : (inflationAdjustedParam ?? loaderData?.ssrParams?.inflation_adjusted ?? userInflationAdjusted)
+  // Use shared helper for normalization resolution and forced overrides
+  const { normalization, forcedOverrides } = useMemo(
+    () => resolveNormalizationSettings(normalizationRaw),
+    [normalizationRaw]
+  )
+
+  // Use unified global settings hook
+  const ssrSettings = useMemo(() => ({
+    currency: loaderData?.ssrSettings?.currency ?? DEFAULT_CURRENCY,
+    inflationAdjusted: loaderData?.ssrSettings?.inflationAdjusted ?? DEFAULT_INFLATION_ADJUSTED,
+  }), [loaderData?.ssrSettings])
+
+  const {
+    currency,
+    inflationAdjusted,
+    setCurrency: _setCurrency,
+    setInflationAdjusted: _setInflationAdjusted,
+  } = useGlobalSettings(ssrSettings, forcedOverrides)
+
   const treemapPrimary = search.treemapPrimary as 'fn' | 'ec' | undefined
   const accountCategory = search.accountCategory as 'ch' | 'vn' | undefined
 
@@ -150,7 +151,7 @@ function EntityDetailsPage() {
     if (!loaderData?.ssrParams) return undefined
     const ssrQueryOptions = entityDetailsQueryOptions(loaderData.ssrParams)
     return queryClient.getQueryData<EntityDetailsData>(ssrQueryOptions.queryKey)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loaderData?.ssrParams])
 
   const { data: entity, isLoading, isError, error } = useEntityDetails({
@@ -207,28 +208,6 @@ function EntityDetailsPage() {
       navigate({ search: (prev) => ({ ...prev, ...patch }), replace: true, resetScroll: false })
     })
   }, [navigate, search])
-
-  useEffect(() => {
-    if (currencyParam) {
-      setUserCurrency(currencyParam)
-      updateSearch({ currency: undefined })
-      return
-    }
-    if (inflationAdjustedParam !== undefined) {
-      setUserInflationAdjusted(Boolean(inflationAdjustedParam))
-      updateSearch({ inflation_adjusted: undefined })
-      return
-    }
-    if (normalizationRaw === 'total_euro') {
-      setUserCurrency('EUR')
-      updateSearch({ normalization: 'total', currency: undefined })
-      return
-    }
-    if (normalizationRaw === 'per_capita_euro') {
-      setUserCurrency('EUR')
-      updateSearch({ normalization: 'per_capita', currency: undefined })
-    }
-  }, [currencyParam, inflationAdjustedParam, normalizationRaw, setUserCurrency, setUserInflationAdjusted, updateSearch])
 
   const handleYearChange = useCallback((year: number) => updateSearch({ year }), [updateSearch])
 

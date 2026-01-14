@@ -21,7 +21,7 @@ export function useMapFilter() {
     const setFilters = (filters: Partial<AnalyticsFilterType>) => {
         navigate({
             search: (prev) => {
-                const prevState = (prev as MapUrlState);
+                const prevState = (prev as unknown as MapUrlState);
                 const prevFilter = prevState?.filters || defaultMapFilters;
                 const newFilters = { ...prevState, filters: { ...prevFilter, ...filters } };
                 // Emit a summarized change to avoid sending sensitive data

@@ -45,7 +45,7 @@ export function useEntityAnalyticsFilter() {
   const setFilter = (partial: Partial<AnalyticsFilterType>) => {
     navigate({
       search: (prev) => {
-        const prevFilter = (prev as EntityAnalyticsSearch).filter ?? defaultEntityAnalyticsFilter
+        const prevFilter = (prev as unknown as EntityAnalyticsSearch).filter ?? defaultEntityAnalyticsFilter
         const merged = { ...prevFilter, ...partial }
         const filterHash = JSON.stringify(merged)
         Analytics.capture(Analytics.EVENTS.EntityAnalyticsFilterChanged, {
@@ -72,7 +72,7 @@ export function useEntityAnalyticsFilter() {
   const setPagination = (page: number, pageSize?: number) => {
     Analytics.capture(Analytics.EVENTS.EntityAnalyticsPaginationChanged, { page, pageSize: pageSize ?? (search as EntityAnalyticsSearch).pageSize })
     navigate({
-      search: (prev) => ({ ...prev, page, pageSize: pageSize ?? (prev as EntityAnalyticsSearch).pageSize }),
+      search: (prev) => ({ ...prev, page, pageSize: pageSize ?? (prev as unknown as EntityAnalyticsSearch).pageSize }),
       replace: true,
       resetScroll: false,
     })

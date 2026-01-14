@@ -288,7 +288,7 @@ function BudgetExplorerPage() {
         replace: true,
         resetScroll: false,
         search: (prev) => ({
-          ...(prev as BudgetExplorerState),
+          ...(prev as unknown as BudgetExplorerState),
           treemapPath: next,
         }),
       })
@@ -410,12 +410,12 @@ function BudgetExplorerPage() {
 
     navigate({
       search: (prev) => ({
-        ...(prev as BudgetExplorerState),
+        ...(prev as unknown as BudgetExplorerState),
         ...restPartial,
         primary: nextPrimary,
         filter: nextFilter,
         treemapPrimary: nextTreemapPrimary,
-        treemapPath: shouldClearPath ? undefined : (prev as BudgetExplorerState).treemapPath,
+        treemapPath: shouldClearPath ? undefined : (prev as unknown as BudgetExplorerState).treemapPath,
       }),
       replace: true,
       resetScroll: false,
