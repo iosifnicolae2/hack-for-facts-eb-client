@@ -27,7 +27,7 @@ export function FeedbackFab() {
       )}
     >
       <MessageSquarePlus className="h-4 w-4" />
-      <Trans>Feedback 🫣</Trans>
+      <Trans>Feedback</Trans> 🫣
       {/* Speech bubble tail pointing down toward chat button */}
       <span
         aria-hidden="true"

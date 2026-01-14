@@ -1536,7 +1536,7 @@ msgstr "Creating…"
 #: src/components/charts/components/series-config/SeriesFilter.tsx:609
 #: src/components/maps/HeatmapDataTable.tsx:445
 #: src/components/normalization/normalization-controls.tsx:84
-#: src/components/theme/currency-toggle.tsx:22
+#: src/components/theme/currency-toggle.tsx:55
 #: src/routes/entity-analytics.lazy.tsx:228
 msgid "Currency"
 msgstr "Currency"
@@ -1753,7 +1753,7 @@ msgstr "Detailed categories"
 msgid "Detailed Line Items Breakdown"
 msgstr "Detailed Line Items Breakdown"
 
-#: src/routes/entities.$cui.lazy.tsx:338
+#: src/routes/entities.$cui.lazy.tsx:406
 msgid "Details:"
 msgstr "Details:"
 
@@ -2058,7 +2058,7 @@ msgstr "equals"
 msgid "Error"
 msgstr "Error"
 
-#: src/routes/entities.$cui.lazy.tsx:335
+#: src/routes/entities.$cui.lazy.tsx:403
 msgid "Error Fetching Entity Details"
 msgstr "Error Fetching Entity Details"
 
@@ -2143,7 +2143,7 @@ msgid "EU Projects"
 msgstr "EU Projects"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:623
-#: src/components/theme/currency-toggle.tsx:37
+#: src/components/theme/currency-toggle.tsx:70
 msgid "EUR"
 msgstr "EUR"
 
@@ -2617,7 +2617,7 @@ msgstr "Go to Chart View"
 msgid "Go to Entity Table"
 msgstr "Go to Entity Table"
 
-#: src/routes/__root.tsx:94
+#: src/routes/__root.tsx:114
 #: src/routes/unsubscribe.$token.tsx:48
 #: src/routes/unsubscribe.$token.tsx:81
 msgid "Go to homepage"
@@ -3603,7 +3603,7 @@ msgstr "No data available for the table."
 msgid "No data available to display financial evolution."
 msgstr "No data available to display financial evolution."
 
-#: src/routes/entities.$cui.lazy.tsx:350
+#: src/routes/entities.$cui.lazy.tsx:418
 msgid "No Data Found"
 msgstr "No Data Found"
 
@@ -3639,7 +3639,7 @@ msgstr "No economic breakdown is available for income."
 msgid "No enabled series data available to display."
 msgstr "No enabled series data available to display."
 
-#: src/routes/entities.$cui.lazy.tsx:352
+#: src/routes/entities.$cui.lazy.tsx:420
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 
@@ -3713,7 +3713,7 @@ msgstr "No values to replace"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:355
 #: src/components/charts/components/series-config/SeriesFilter.tsx:648
-#: src/components/theme/inflation-toggle.tsx:31
+#: src/components/theme/inflation-toggle.tsx:65
 msgid "Nominal"
 msgstr "Nominal"
 
@@ -3926,7 +3926,7 @@ msgstr "Overview"
 msgid "error.pageRenderErrorTitle"
 msgstr "Page Failed to Load"
 
-#: src/routes/__root.tsx:85
+#: src/routes/__root.tsx:105
 msgid "Page not found"
 msgstr "Page not found"
 
@@ -4097,7 +4097,7 @@ msgstr "Preview"
 msgid "Previous"
 msgstr "Previous"
 
-#: src/components/theme/inflation-toggle.tsx:20
+#: src/components/theme/inflation-toggle.tsx:54
 msgid "Prices"
 msgstr "Prices"
 
@@ -4201,7 +4201,7 @@ msgstr "Ready to level up?"
 msgid "Real (2024 prices)"
 msgstr "Real (2024 prices)"
 
-#: src/components/theme/inflation-toggle.tsx:43
+#: src/components/theme/inflation-toggle.tsx:77
 msgid "Real (2024)"
 msgstr "Real (2024)"
 
@@ -4287,7 +4287,7 @@ msgstr "Reporting entity"
 msgid "Reporting filters"
 msgstr "Reporting filters"
 
-#: src/routes/entities.$cui.lazy.tsx:383
+#: src/routes/entities.$cui.lazy.tsx:451
 msgid "Reporting period"
 msgstr "Reporting period"
 
@@ -4372,7 +4372,7 @@ msgid "Romanian law and applicable EU law, including GDPR. Venue: Sibiu, Romania
 msgstr "Romanian law and applicable EU law, including GDPR. Venue: Sibiu, Romania."
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:622
-#: src/components/theme/currency-toggle.tsx:29
+#: src/components/theme/currency-toggle.tsx:62
 #: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:235
 msgid "RON"
 msgstr "RON"
@@ -5018,7 +5018,7 @@ msgstr "The lesson you're looking for doesn't exist or may have been moved."
 msgid "The new fiscal reality affecting your wallet."
 msgstr "The new fiscal reality affecting your wallet."
 
-#: src/routes/__root.tsx:88
+#: src/routes/__root.tsx:108
 msgid "The page you are looking for doesn't exist or has been moved."
 msgstr "The page you are looking for doesn't exist or has been moved."
 
@@ -5055,7 +5055,7 @@ msgstr "The share link you are trying to access is invalid or no longer availabl
 msgid "The state total claim is <0>{0}</0>."
 msgstr "The state total claim is <0>{0}</0>."
 
-#: src/routes/entities.$cui.lazy.tsx:337
+#: src/routes/entities.$cui.lazy.tsx:405
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "There was a problem fetching the details for CUI: <0>{cui}</0>."
 
@@ -5440,7 +5440,7 @@ msgid "Usage analytics"
 msgstr "Usage analytics"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:624
-#: src/components/theme/currency-toggle.tsx:45
+#: src/components/theme/currency-toggle.tsx:78
 msgid "USD"
 msgstr "USD"
 
