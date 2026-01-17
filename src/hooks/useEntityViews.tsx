@@ -1,5 +1,5 @@
 import { EntityDetailsData } from '@/lib/api/entities';
-import { FileText, HomeIcon, MapIcon, TrendingDownIcon, TrendingUpIcon, BarChart3, Building2Icon, UsersIcon, ScrollText } from 'lucide-react';
+import { FileText, HomeIcon, MapIcon, TrendingDownIcon, TrendingUpIcon, BarChart3, Building2Icon, UsersIcon, ScrollText, FileCheck2 } from 'lucide-react';
 import { t } from '@lingui/core/macro';
 
 export type EntityView = {
@@ -19,7 +19,7 @@ export const useEntityViews = (entity: EntityDetailsData | null | undefined): En
   }
 
   views.push({ id: 'contracts', label: t`Contracts`, icon: <ScrollText className="w-4 h-4" /> });
-
+  views.push({ id: 'angajamente', label: t`Commitments`, icon: <FileCheck2 className="w-4 h-4" /> });
 
   views.push({ id: 'expense-trends', label: t`Expense Trends`, icon: <TrendingDownIcon className="w-4 h-4" /> });
   views.push({ id: 'income-trends', label: t`Income Trends`, icon: <TrendingUpIcon className="w-4 h-4" /> });

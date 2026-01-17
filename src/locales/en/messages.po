@@ -71,6 +71,10 @@ msgstr "*Check filters panel for more details."
 msgid "/capita"
 msgstr "/capita"
 
+#: src/components/angajamente/DetailTable.tsx:89
+msgid "% Committed"
+msgstr "% Committed"
+
 #: src/components/charts/components/series-config/SeriesFilter.tsx:337
 #: src/components/entities/EntityReportControls.tsx:273
 #: src/components/filters/normalization-filter/NormalizationFilter.tsx:15
@@ -425,6 +429,10 @@ msgstr "<0>Usage Analytics (opt-in):</0> If you consent, we collect custom usage
 msgid "<0>What We Send:</0> Budget execution updates (monthly, quarterly, or annual reports) for entities you follow, and alerts about significant budget changes if you've enabled them."
 msgstr "<0>What We Send:</0> Budget execution updates (monthly, quarterly, or annual reports) for entities you follow, and alerts about significant budget changes if you've enabled them."
 
+#: src/components/angajamente/CommitmentInfoPanel.tsx:32
+msgid "A budget commitment is a <0>legal promise</0> to pay (contract, order). Although the budget exists, the money is not \"spent\" until the commitment is made."
+msgstr "A budget commitment is a <0>legal promise</0> to pay (contract, order). Although the budget exists, the money is not \"spent\" until the commitment is made."
+
 #. js-lingui-explicit-id
 #: src/lib/errors-utils.ts:9
 msgid "error.updateAvailable"
@@ -464,6 +472,10 @@ msgstr "Active Series"
 #: src/components/budget-explorer/SpendingBreakdown.tsx:159
 msgid "Actual impact on budget"
 msgstr "Actual impact on budget"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:293
+msgid "Actual Payments"
+msgstr "Actual Payments"
 
 #: src/components/charts/components/chart-view/ChartDisplayArea.tsx:109
 msgid "Add a series to visualize your data."
@@ -787,6 +799,10 @@ msgstr "Are you sure?"
 msgid "Area Chart"
 msgstr "Area Chart"
 
+#: src/components/angajamente/AngajamenteTable.tsx:186
+msgid "Arrears"
+msgstr "Arrears"
+
 #: src/routes/privacy.lazy.tsx:111
 msgid "As a data subject under GDPR, you have the following rights:"
 msgstr "As a data subject under GDPR, you have the following rights:"
@@ -824,6 +840,10 @@ msgstr "Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caract
 #: src/routes/terms.lazy.tsx:97
 msgid "Availability and changes"
 msgstr "Availability and changes"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:215
+msgid "Available"
+msgstr "Available"
 
 #: src/components/entity-analytics/EntityAnalyticsKPIs.tsx:35
 msgid "Avg per-capita"
@@ -911,9 +931,22 @@ msgstr "Both"
 msgid "Browse and download all financial reports submitted by this entity"
 msgstr "Browse and download all financial reports submitted by this entity"
 
+#: src/components/angajamente/CategoryChart.tsx:56
+msgid "Budget"
+msgstr "Budget"
+
 #: src/features/learning/components/interactive/BudgetFootprintRevealer.tsx:361
 msgid "Budget category"
 msgstr "Budget category"
+
+#: src/components/angajamente/DetailTable.tsx:80
+msgid "Budget Chapter"
+msgstr "Budget Chapter"
+
+#: src/components/angajamente/AngajamenteTable.tsx:150
+#: src/components/angajamente/DetailTable.tsx:83
+msgid "Budget Credits"
+msgstr "Budget Credits"
 
 #: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:616
 msgid "Budget Cycle Timeline"
@@ -934,6 +967,10 @@ msgstr "Budget Documents"
 #: src/routes/index.tsx:72
 msgid "Budget Explorer"
 msgstr "Budget Explorer"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:318
+msgid "Budget Planning"
+msgstr "Budget Planning"
 
 #: src/lib/chart-filter-utils.ts:42
 msgid "Budget sector"
@@ -1120,6 +1157,10 @@ msgstr "Choose operator"
 msgid "classification"
 msgstr "classification"
 
+#: src/components/angajamente/AngajamenteTable.tsx:119
+msgid "Classification"
+msgstr "Classification"
+
 #: src/components/common/classification-info-link.tsx:96
 #: src/components/common/classification-info-link.tsx:141
 msgid "Classification Details"
@@ -1230,6 +1271,22 @@ msgstr "Columns"
 #: src/routes/entity-analytics.lazy.tsx:225
 msgid "Comfortable"
 msgstr "Comfortable"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:90
+msgid "Commitment Flow"
+msgstr "Commitment Flow"
+
+#: src/components/angajamente/AngajamenteTable.tsx:159
+#: src/components/angajamente/DetailTable.tsx:86
+#: src/components/angajamente/LinearBudgetFlow.tsx:232
+#: src/hooks/useEntityViews.tsx:22
+msgid "Commitments"
+msgstr "Commitments"
+
+#: src/components/angajamente/CategoryChart.tsx:62
+#: src/components/angajamente/CategoryChart.tsx:126
+msgid "Committed"
+msgstr "Committed"
 
 #: src/components/maps/HeatmapDataTable.tsx:443
 #: src/components/maps/HeatmapDataTable.tsx:447
@@ -1753,7 +1810,7 @@ msgstr "Detailed categories"
 msgid "Detailed Line Items Breakdown"
 msgstr "Detailed Line Items Breakdown"
 
-#: src/routes/entities.$cui.lazy.tsx:406
+#: src/routes/entities.$cui.lazy.tsx:407
 msgid "Details:"
 msgstr "Details:"
 
@@ -1799,6 +1856,10 @@ msgstr "Done"
 #: src/components/entities/EntityReportCard.tsx:64
 msgid "Download"
 msgstr "Download"
+
+#: src/components/angajamente/DetailTable.tsx:70
+msgid "Download Excel"
+msgstr "Download Excel"
 
 #: src/features/learning/components/interactive/RevenueDistributionGame.tsx:181
 msgid "Drag the sliders to guess how much each source contributes."
@@ -2058,7 +2119,7 @@ msgstr "equals"
 msgid "Error"
 msgstr "Error"
 
-#: src/routes/entities.$cui.lazy.tsx:403
+#: src/routes/entities.$cui.lazy.tsx:404
 msgid "Error Fetching Entity Details"
 msgstr "Error Fetching Entity Details"
 
@@ -2129,6 +2190,10 @@ msgstr "Estimate"
 #: src/features/learning/components/interactive/RevenueDistributionGame.tsx:178
 msgid "Estimate the <0>Shares</0>"
 msgstr "Estimate the <0>Shares</0>"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:321
+msgid "Estimated money to be spent"
+msgstr "Estimated money to be spent"
 
 #: src/features/learning/components/interactive/EUComparisonChart.tsx:100
 msgid "EU Average"
@@ -2414,6 +2479,10 @@ msgstr "Filters info"
 msgid "Filters marked as exclude will remove data matching these criteria from the results."
 msgstr "Filters marked as exclude will remove data matching these criteria from the results."
 
+#: src/components/entities/views/AngajamenteView.tsx:86
+msgid "Final Budget Credits"
+msgstr "Final Budget Credits"
+
 #: src/features/learning/components/interactive/RectificationFlow.tsx:172
 msgid "Final:"
 msgstr "Final:"
@@ -2421,6 +2490,10 @@ msgstr "Final:"
 #: src/lib/chart-links.ts:29
 msgid "Financial Evolution - {entityName}"
 msgstr "Financial Evolution - {entityName}"
+
+#: src/components/entities/views/AngajamenteView.tsx:116
+msgid "Financial Flow"
+msgstr "Financial Flow"
 
 #: src/components/budget-explorer/RevenueBreakdown.tsx:273
 msgid "Financial operations"
@@ -2652,6 +2725,14 @@ msgstr "Goods and Services"
 #: src/routes/terms.lazy.tsx:100
 msgid "Governing law"
 msgstr "Governing law"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:94
+msgid "Graphical explanation of how the planned budget becomes an actual payment."
+msgstr "Graphical explanation of how the planned budget becomes an actual payment."
+
+#: src/components/entities/views/AngajamenteView.tsx:119
+msgid "Graphical View"
+msgstr "Graphical View"
 
 #: src/components/alerts/components/ConditionsList.tsx:91
 msgid "Greater or equal"
@@ -3054,6 +3135,14 @@ msgstr "Legal"
 msgid "Legal bases for processing"
 msgstr "Legal bases for processing"
 
+#: src/components/angajamente/LinearBudgetFlow.tsx:332
+msgid "Legal Commitment"
+msgstr "Legal Commitment"
+
+#: src/components/entities/views/AngajamenteView.tsx:93
+msgid "Legal Commitments"
+msgstr "Legal Commitments"
+
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:160
 #: src/routes/map.lazy.tsx:317
 msgid "Legend"
@@ -3109,6 +3198,12 @@ msgstr "Limitation of liability"
 msgid "Line Chart"
 msgstr "Line Chart"
 
+#: src/components/angajamente/AngajamenteTable.tsx:71
+msgid "Line item disappeared - possible reclassification"
+msgstr "Line item disappeared - possible reclassification"
+
+#: src/components/angajamente/AngajamenteTable.tsx:295
+#: src/components/angajamente/AngajamenteTable.tsx:402
 #: src/components/filters/EntityAnalyticsFilter.tsx:431
 msgid "Line Items"
 msgstr "Line Items"
@@ -3337,6 +3432,10 @@ msgstr "Minimum"
 msgid "Minimum Pay"
 msgstr "Minimum Pay"
 
+#: src/components/angajamente/AngajamenteTable.tsx:70
+msgid "Missing"
+msgstr "Missing"
+
 #: src/features/learning/hooks/use-learning-progress.tsx:656
 msgid "Missing content id"
 msgstr "Missing content id"
@@ -3556,6 +3655,10 @@ msgstr "No annotations yet."
 msgid "No categories to display."
 msgstr "No categories to display."
 
+#: src/components/angajamente/CategoryChart.tsx:104
+msgid "No category data available"
+msgstr "No category data available"
+
 #: src/routes/$lang/learning/certificates.$id.lazy.tsx:74
 #: src/routes/certificates.$id.tsx:74
 msgid "No certificate record was found for this ID in local storage."
@@ -3579,6 +3682,10 @@ msgstr "No charts yet"
 msgid "No classifications found"
 msgstr "No classifications found"
 
+#: src/components/angajamente/AngajamenteTable.tsx:287
+msgid "No commitment data available"
+msgstr "No commitment data available"
+
 #: src/components/alerts/components/ConditionsList.tsx:48
 msgid "No conditions added yet. Click the button below to add your first condition."
 msgstr "No conditions added yet. Click the button below to add your first condition."
@@ -3586,6 +3693,10 @@ msgstr "No conditions added yet. Click the button below to add your first condit
 #: src/features/notifications/components/alerts/AlertCard.tsx:53
 msgid "No conditions set"
 msgstr "No conditions set"
+
+#: src/components/angajamente/DetailTable.tsx:53
+msgid "No data available"
+msgstr "No data available"
 
 #: src/components/charts/components/chart-view/ChartDisplayArea.tsx:136
 msgid "No Data Available"
@@ -3603,7 +3714,7 @@ msgstr "No data available for the table."
 msgid "No data available to display financial evolution."
 msgstr "No data available to display financial evolution."
 
-#: src/routes/entities.$cui.lazy.tsx:418
+#: src/routes/entities.$cui.lazy.tsx:419
 msgid "No Data Found"
 msgstr "No Data Found"
 
@@ -3639,7 +3750,7 @@ msgstr "No economic breakdown is available for income."
 msgid "No enabled series data available to display."
 msgstr "No enabled series data available to display."
 
-#: src/routes/entities.$cui.lazy.tsx:420
+#: src/routes/entities.$cui.lazy.tsx:421
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 
@@ -3777,6 +3888,14 @@ msgstr "Now"
 #: src/components/entities/EntityFinancialTrends.tsx:98
 msgid "October"
 msgstr "October"
+
+#: src/components/entities/views/AngajamenteView.tsx:95
+msgid "of budget contracted"
+msgstr "of budget contracted"
+
+#: src/components/entities/views/AngajamenteView.tsx:104
+msgid "of commitments paid"
+msgstr "of commitments paid"
 
 #: src/features/learning/components/interactive/VATReformCard.tsx:27
 msgid "Old Rates"
@@ -3930,6 +4049,11 @@ msgstr "Page Failed to Load"
 msgid "Page not found"
 msgstr "Page not found"
 
+#: src/components/angajamente/CategoryChart.tsx:68
+#: src/components/angajamente/CategoryChart.tsx:132
+msgid "Paid"
+msgstr "Paid"
+
 #: src/components/classification-explorer/ClassificationInfo.tsx:33
 msgid "Parent"
 msgstr "Parent"
@@ -3966,6 +4090,19 @@ msgstr "Path Progress"
 #: src/features/notifications/components/alerts/AlertCard.tsx:71
 msgid "Paused"
 msgstr "Paused"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:346
+msgid "Payment and Execution"
+msgstr "Payment and Execution"
+
+#: src/components/angajamente/AngajamenteTable.tsx:177
+msgid "Payments"
+msgstr "Payments"
+
+#: src/components/angajamente/DetailTable.tsx:92
+#: src/components/entities/views/AngajamenteView.tsx:102
+msgid "Payments Made"
+msgstr "Payments Made"
 
 #: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:351
 msgid "Pension (CAS)"
@@ -4214,6 +4351,10 @@ msgstr "Reality"
 msgid "Reality Check"
 msgstr "Reality Check"
 
+#: src/components/angajamente/AngajamenteTable.tsx:168
+msgid "Receipts"
+msgstr "Receipts"
+
 #: src/routes/$lang/learning/certificates.$id.lazy.tsx:52
 msgid "Recipient"
 msgstr "Recipient"
@@ -4287,7 +4428,7 @@ msgstr "Reporting entity"
 msgid "Reporting filters"
 msgstr "Reporting filters"
 
-#: src/routes/entities.$cui.lazy.tsx:451
+#: src/routes/entities.$cui.lazy.tsx:452
 msgid "Reporting period"
 msgstr "Reporting period"
 
@@ -4764,6 +4905,10 @@ msgstr "Sign in to receive updates about the entities you care about."
 msgid "Sign in to track your learning journey."
 msgstr "Sign in to track your learning journey."
 
+#: src/components/angajamente/LinearBudgetFlow.tsx:335
+msgid "Signing contracts (Reservation)"
+msgstr "Signing contracts (Reservation)"
+
 #: src/features/learning/components/interactive/GuidedPlatformTour.tsx:345
 msgid "Skip tour"
 msgstr "Skip tour"
@@ -4793,6 +4938,7 @@ msgstr "Sort by"
 msgid "Sort Order"
 msgstr "Sort Order"
 
+#: src/components/angajamente/AngajamenteTable.tsx:231
 #: src/components/charts/components/filters-details/StaticSeriesFilter.tsx:31
 #: src/components/charts/components/series-config/StaticSeriesEditor.tsx:50
 msgid "Source"
@@ -4879,9 +5025,25 @@ msgstr "Static Series"
 msgid "Status"
 msgstr "Status"
 
+#: src/components/angajamente/CategoryChart.tsx:114
+msgid "Status by Budget Chapters"
+msgstr "Status by Budget Chapters"
+
 #: src/components/alerts/components/UnsavedChangesDialog.tsx:44
 msgid "Stay here"
 msgstr "Stay here"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:315
+msgid "Step 1"
+msgstr "Step 1"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:328
+msgid "Step 2"
+msgstr "Step 2"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:342
+msgid "Step 3"
+msgstr "Step 3"
 
 #: src/features/learning/components/player/MarkComplete.tsx:66
 msgid "Step Successfully Finished"
@@ -4940,6 +5102,11 @@ msgstr "System status badge"
 msgid "Table"
 msgstr "Table"
 
+#: src/components/angajamente/DetailTable.tsx:49
+#: src/components/angajamente/DetailTable.tsx:63
+msgid "Table Detail"
+msgstr "Table Detail"
+
 #: src/features/learning/components/interactive/BudgetFootprintRevealer.tsx:328
 msgid "Tap"
 msgstr "Tap"
@@ -4992,6 +5159,10 @@ msgstr "The classification code \"{selectedCode}\" could not be found."
 #: src/features/learning/components/interactive/DeficitVisual.tsx:24
 msgid "The Deficit"
 msgstr "The Deficit"
+
+#: src/components/angajamente/CommitmentInfoPanel.tsx:51
+msgid "The difference between <0>Commitments</0> and <1>Payments</1> shows current debts or work in progress that has not yet been paid."
+msgstr "The difference between <0>Commitments</0> and <1>Payments</1> shows current debts or work in progress that has not yet been paid."
 
 #. placeholder {0}: formatBillions(investmentData.planned)
 #: src/features/learning/components/interactive/PromiseTracker.tsx:244
@@ -5055,7 +5226,11 @@ msgstr "The share link you are trying to access is invalid or no longer availabl
 msgid "The state total claim is <0>{0}</0>."
 msgstr "The state total claim is <0>{0}</0>."
 
-#: src/routes/entities.$cui.lazy.tsx:405
+#: src/components/angajamente/CommitmentInfoPanel.tsx:29
+msgid "The Step Between Budget and Payment"
+msgstr "The Step Between Budget and Payment"
+
+#: src/routes/entities.$cui.lazy.tsx:406
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "There was a problem fetching the details for CUI: <0>{cui}</0>."
 
@@ -5160,6 +5335,11 @@ msgstr "Title Z–A"
 msgid "To exercise any of these rights, contact us at contact@transparenta.eu We will respond within 30 days."
 msgstr "To exercise any of these rights, contact us at contact@transparenta.eu We will respond within 30 days."
 
+#: src/components/angajamente/DetailTable.tsx:95
+#: src/components/angajamente/LinearBudgetFlow.tsx:280
+msgid "To Pay"
+msgstr "To Pay"
+
 #: src/routes/terms.lazy.tsx:95
 msgid "To the maximum extent permitted by applicable law, Claudiu Constantin Bogdan and any owners, contributors, and affiliates shall not be liable for any direct, indirect, incidental, special, consequential, or exemplary damages, including but not limited to, damages for loss of profits, revenue, data, goodwill, or other intangible losses, resulting from: (i) your access to, use of, or inability to use the Service; (ii) any reliance on the data, content, or visualizations presented by the Service, regardless of any errors, omissions, or inaccuracies therein; (iii) any financial, professional, personal, or other loss or damage incurred as a result of using the information from the Service; or (iv) any unauthorized access to or use of our servers and any personal information stored therein. This limitation applies whether the alleged liability is based on contract, tort, negligence, strict liability, or any other basis, even if we have been advised of the possibility of such damage. Your sole and exclusive remedy for any dispute with us is to stop using the Service."
 msgstr "To the maximum extent permitted by applicable law, Claudiu Constantin Bogdan and any owners, contributors, and affiliates shall not be liable for any direct, indirect, incidental, special, consequential, or exemplary damages, including but not limited to, damages for loss of profits, revenue, data, goodwill, or other intangible losses, resulting from: (i) your access to, use of, or inability to use the Service; (ii) any reliance on the data, content, or visualizations presented by the Service, regardless of any errors, omissions, or inaccuracies therein; (iii) any financial, professional, personal, or other loss or damage incurred as a result of using the information from the Service; or (iv) any unauthorized access to or use of our servers and any personal information stored therein. This limitation applies whether the alleged liability is based on contract, tort, negligence, strict liability, or any other basis, even if we have been advised of the possibility of such damage. Your sole and exclusive remedy for any dispute with us is to stop using the Service."
@@ -5224,6 +5404,10 @@ msgstr "total"
 msgid "Total"
 msgstr "Total"
 
+#: src/components/entities/views/AngajamenteView.tsx:84
+msgid "Total Allocated Budget"
+msgstr "Total Allocated Budget"
+
 #: src/components/entity-analytics/EntityAnalyticsKPIs.tsx:29
 #: src/components/normalization/normalization-controls.tsx:31
 msgid "Total amount"
@@ -5236,6 +5420,11 @@ msgstr "Total amount"
 #: src/routes/entity-analytics.lazy.tsx:238
 msgid "Total Amount"
 msgstr "Total Amount"
+
+#: src/components/angajamente/CategoryChart.tsx:120
+#: src/components/angajamente/LinearBudgetFlow.tsx:172
+msgid "Total Budget"
+msgstr "Total Budget"
 
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:151
 msgid "Total Duration"
@@ -5265,6 +5454,10 @@ msgstr "Total:"
 #: src/features/learning/components/interactive/GuidedPlatformTour.tsx:232
 msgid "Tour Complete!"
 msgstr "Tour Complete!"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:349
+msgid "Transfer of money to supplier"
+msgstr "Transfer of money to supplier"
 
 #: src/components/entities/EntityLineItemsTabs.tsx:130
 #: src/components/entities/EntityLineItemsTabs.tsx:154
@@ -5468,6 +5661,10 @@ msgstr "User ID"
 msgid "User responsibilities and assumption of risk"
 msgstr "User responsibilities and assumption of risk"
 
+#: src/components/angajamente/AngajamenteTable.tsx:204
+msgid "Utilization"
+msgstr "Utilization"
+
 #: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:92
 #: src/components/charts/components/series-config/CustomSeriesValueEditor.tsx:38
 msgid "Value"
@@ -5477,6 +5674,10 @@ msgstr "Value"
 #: src/components/entities/EntityLineItemsTabs.tsx:100
 msgid "Value Changed"
 msgstr "Value Changed"
+
+#: src/components/angajamente/AngajamenteTable.tsx:66
+msgid "Values decreased between months - possible correction or reclassification"
+msgstr "Values decreased between months - possible correction or reclassification"
 
 #: src/features/learning/components/interactive/VATCalculator.tsx:161
 msgid "VAT Collected"
@@ -5601,6 +5802,10 @@ msgstr "We'll start with the path that matches your goal and choices."
 msgid "Welcome back."
 msgstr "Welcome back."
 
+#: src/components/angajamente/CommitmentInfoPanel.tsx:20
+msgid "What are Commitments?"
+msgstr "What are Commitments?"
+
 #: src/features/learning/components/interactive/PromiseTracker.tsx:246
 msgid "What percentage was actually used?"
 msgstr "What percentage was actually used?"
@@ -5632,6 +5837,10 @@ msgstr "Who fuels the <0>budget</0>?"
 #: src/routes/privacy.lazy.tsx:32
 msgid "Who we are"
 msgstr "Who we are"
+
+#: src/components/angajamente/CommitmentInfoPanel.tsx:48
+msgid "Why Is It Important?"
+msgstr "Why Is It Important?"
 
 #: src/features/learning/components/interactive/VATCalculator.tsx:175
 msgid "Why it matters"
@@ -5788,3 +5997,7 @@ msgstr "Your rights under GDPR"
 #: src/routes/terms.lazy.tsx:33
 msgid "Your use of the Service is also governed by our <0>Privacy Policy</0> and <1>Cookie Policy</1>, which describe how we process personal data, including security logs, authentication data, and your communication preferences."
 msgstr "Your use of the Service is also governed by our <0>Privacy Policy</0> and <1>Cookie Policy</1>, which describe how we process personal data, including security logs, authentication data, and your communication preferences."
+
+#: src/components/angajamente/AngajamenteTable.tsx:65
+msgid "YTD Anomaly"
+msgstr "YTD Anomaly"

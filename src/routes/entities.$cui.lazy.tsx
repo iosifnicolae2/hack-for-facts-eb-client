@@ -43,6 +43,7 @@ const RelatedChartsView = lazy(() => import('@/components/entities/views/Related
 const EntityReports = lazy(() => import('@/components/entities/EntityReports'))
 const EntityRelationships = lazy(() => import('@/components/entities/EntityRelationships').then(m => ({ default: m.EntityRelationships })))
 const ContractsView = lazy(() => import('@/components/entities/views/ContractsView').then(m => ({ default: m.ContractsView })))
+const AngajamenteView = lazy(() => import('@/components/entities/views/AngajamenteView').then(m => ({ default: m.AngajamenteView })))
 
 export const Route = createLazyFileRoute('/entities/$cui')({
   component: EntityDetailsPage,
@@ -626,6 +627,7 @@ function ViewsContent(props: ViewsContentProps) {
           case 'related-charts': return <RelatedChartsView entity={entity} normalizationOptions={normalizationOptions} />
           case 'relationships': return <EntityRelationships cui={cui} />
           case 'contracts': return <ContractsView entity={entity} />
+          case 'angajamente': return <AngajamenteView entity={entity} currentYear={selectedYear} currency={normalizationOptions.currency} />
           default: return <Overview cui={cui} entity={entity} isLoading={isLoading} selectedYear={selectedYear} normalizationOptions={normalizationOptions} years={years} periodType={period} reportPeriod={reportPeriod} reportType={reportTypeState} mainCreditorCui={mainCreditorCui} search={search} onChartNormalizationChange={handleNormalizationChange} onYearChange={handleYearChange} onPeriodItemSelect={handlePeriodItemSelect} onSearchChange={handleSearchChange} onAnalyticsChange={handleAnalyticsChange} onLineItemsTabChange={handleLineItemsTabChange} onSelectedFundingKeyChange={handleSelectedFundingKeyChange} onSelectedExpenseTypeKeyChange={handleSelectedExpenseTypeKeyChange} treemapPrimary={treemapPrimary} accountCategory={accountCategory} onTreemapPrimaryChange={handleTreemapPrimaryChange} onAccountCategoryChange={handleAccountCategoryChange} treemapPath={treemapPath} onTreemapPathChange={handleTreemapPathChange} transferFilter={transferFilter} onTransferFilterChange={handleTransferFilterChange} advancedFilter={advancedFilter} onAdvancedFilterChange={handleAdvancedFilterChange} />
         }
       })()}
