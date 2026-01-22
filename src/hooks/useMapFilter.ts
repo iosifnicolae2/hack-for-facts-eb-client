@@ -6,6 +6,7 @@ import { OptionItem } from '@/components/filters/base-filter/interfaces';
 import { AnalyticsFilterType } from '@/schemas/charts';
 import { LabelStore } from '@/hooks/filters/interfaces';
 import { Analytics } from '@/lib/analytics';
+import { generateHash } from '@/lib/utils';
 
 export function useMapFilter() {
     const navigate = useNavigate({ from: '/map' });
@@ -25,7 +26,7 @@ export function useMapFilter() {
                 const prevFilter = prevState?.filters || defaultMapFilters;
                 const newFilters = { ...prevState, filters: { ...prevFilter, ...filters } };
                 // Emit a summarized change to avoid sending sensitive data
-                const filterHash = JSON.stringify(newFilters.filters);
+                const filterHash = generateHash(JSON.stringify(newFilters.filters));
                 Analytics.capture(Analytics.EVENTS.MapFilterChanged, {
                     filter_hash: filterHash,
                     ...Analytics.summarizeFilter(newFilters.filters),

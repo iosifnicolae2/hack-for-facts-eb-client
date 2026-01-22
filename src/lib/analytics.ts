@@ -10,6 +10,7 @@ const EVENTS = {
   EntitySearchPerformed: "entity_search_performed",
   EntitySearchSelected: "entity_search_selected",
   EntityViewOpened: "entity_view_opened",
+  EntityViewChanged: "entity_view_changed",
 
   ChartsBackupExported: "charts_backup_exported",
   ChartsBackupImported: "charts_backup_imported",
@@ -39,6 +40,8 @@ const EVENTS = {
   ChartAnnotationDuplicated: "chart_annotation_duplicated",
 
   AlertCreated: "alert_created",
+  AlertCreateStarted: "alert_create_started",
+  AlertCloned: "alert_cloned",
   AlertUpdated: "alert_updated",
   AlertDeleted: "alert_deleted",
   AlertOpened: "alert_opened",
@@ -56,6 +59,8 @@ const EVENTS = {
   EntityAnalyticsPaginationChanged: "entity_analytics_pagination_changed",
   EntityAnalyticsExportCsv: "entity_analytics_export_csv",
 
+  ErrorOccurred: "error_occurred",
+
   CookieConsentChanged: "cookie_consent_changed",
   LanguageChanged: "language_changed",
   DefaultLanguage: "default_language",
@@ -63,8 +68,55 @@ const EVENTS = {
 
 export type AnalyticsEventName = typeof EVENTS[keyof typeof EVENTS];
 
+const isBrowser = typeof window !== "undefined";
+let posthogInitialized = false;
+
 export function isAnalyticsEnabled(): boolean {
-  return Boolean(env.VITE_POSTHOG_ENABLED) && hasAnalyticsConsent();
+  return (
+    isBrowser &&
+    Boolean(env.VITE_POSTHOG_ENABLED) &&
+    Boolean(env.VITE_POSTHOG_API_KEY) &&
+    Boolean(env.VITE_POSTHOG_HOST) &&
+    hasAnalyticsConsent()
+  );
+}
+
+function ensurePostHogInitialized(): void {
+  if (posthogInitialized) return;
+  if (!isBrowser) return;
+  if (!env.VITE_POSTHOG_ENABLED) return;
+  if (!hasAnalyticsConsent()) return;
+
+  const apiKey = env.VITE_POSTHOG_API_KEY;
+  const apiHost = env.VITE_POSTHOG_HOST;
+  if (!apiKey || !apiHost) return;
+
+  try {
+    posthog.init(apiKey, {
+      api_host: apiHost,
+      autocapture: false,
+      rageclick: false,
+      capture_dead_clicks: false,
+      capture_exceptions: false,
+      capture_pageview: false,
+      capture_pageleave: false,
+      disable_session_recording: true,
+      person_profiles: env.VITE_POSTHOG_PERSON_PROFILES ?? "identified_only",
+    });
+    posthogInitialized = true;
+  } catch {
+    return;
+  }
+
+  try {
+    posthog.register({
+      app_version: env.VITE_APP_VERSION,
+      app_name: env.VITE_APP_NAME,
+      environment: env.VITE_APP_ENVIRONMENT,
+    });
+  } catch {
+    // Ignore PostHog registration failures.
+  }
 }
 
 let _lastEventKey = "";
@@ -77,6 +129,7 @@ export function captureEvent(
 ): void {
   try {
     if (!isAnalyticsEnabled()) return;
+    ensurePostHogInitialized();
     const sanitized = sanitizeProps(properties);
     const key = `${name}:${JSON.stringify(sanitized ?? {})}`;
     const now = Date.now();
@@ -122,7 +175,7 @@ export function summarizeFilter(
 ): Record<string, unknown> {
   return {
     period_type: filter.report_period?.type,
-    period_selection: filter.report_period?.selection.dates ? 'dates' : 'interval',
+    period_selection: filter.report_period?.selection.dates ? "dates" : "interval",
     period_len: filter.report_period?.selection.dates?.length ?? 1,
     account_category: filter.account_category,
     normalization: filter.normalization,
@@ -140,6 +193,29 @@ export function summarizeFilter(
   };
 }
 
+export function capturePageview(payload?: {
+  pathname?: string;
+  search?: string;
+}): void {
+  try {
+    if (!isAnalyticsEnabled()) return;
+    ensurePostHogInitialized();
+
+    const pathname = payload?.pathname ?? window.location.pathname;
+    const searchRaw = payload?.search ?? window.location.search ?? "";
+    const search = searchRaw && !searchRaw.startsWith("?") ? `?${searchRaw}` : searchRaw;
+
+    const url = `${window.location.origin}${pathname}${search}`;
+    posthog.capture("$pageview", {
+      $current_url: url,
+      $pathname: pathname,
+      $host: window.location.host,
+    });
+  } catch {
+    // silent
+  }
+}
+
 // Pageview tracking tied to TanStack Router location
 export function usePageviewTracking(): void {
   const location = useLocation();
@@ -153,22 +229,64 @@ export function usePageviewTracking(): void {
     if (lastKeyRef.current === key) return;
     lastKeyRef.current = key;
 
-    const url = `${window.location.origin}${pathname}${search}`;
-    posthog.capture("$pageview", {
-      $current_url: url,
-      $pathname: pathname,
-      $host: window.location.host,
-    });
+    capturePageview({ pathname, search });
   }, [location]);
+}
+
+export function clearPostHogPersistence(): void {
+  if (!isBrowser) return;
+
+  const shouldClearKey = (key: string) =>
+    key.startsWith("ph_") || key.startsWith("__ph_opt_in_out_");
+
+  try {
+    for (const key of Object.keys(window.localStorage)) {
+      if (shouldClearKey(key)) window.localStorage.removeItem(key);
+    }
+  } catch {
+    // ignore
+  }
+
+  try {
+    for (const key of Object.keys(window.sessionStorage)) {
+      if (shouldClearKey(key)) window.sessionStorage.removeItem(key);
+    }
+  } catch {
+    // ignore
+  }
+
+  try {
+    const cookieNames = document.cookie
+      .split(";")
+      .map((entry) => entry.split("=")[0]?.trim())
+      .filter((name): name is string => Boolean(name && shouldClearKey(name)));
+
+    const expires = "Thu, 01 Jan 1970 00:00:00 GMT";
+    const baseDomain = window.location.hostname
+      .split(".")
+      .slice(-2)
+      .join(".");
+    const domain = baseDomain.includes(".") ? `.${baseDomain}` : undefined;
+
+    for (const name of cookieNames) {
+      document.cookie = `${name}=; expires=${expires}; path=/`;
+      if (domain) {
+        document.cookie = `${name}=; expires=${expires}; path=/; domain=${domain}`;
+      }
+    }
+  } catch {
+    // ignore
+  }
 }
 
 export const Analytics = {
   EVENTS,
   capture: captureEvent,
   pageviewHook: usePageviewTracking,
+  capturePageview,
+  clearPostHogPersistence,
   summarizeFilter,
   safeTruncate,
 };
 
 export default Analytics;
-

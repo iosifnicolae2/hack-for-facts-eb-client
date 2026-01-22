@@ -9,7 +9,6 @@ import { getUserLocale } from "@/lib/utils";
 import { hasAnalyticsConsent, onConsentChange } from "@/lib/consent";
 import { useSentryConsent } from "@/hooks/useSentryConsent";
 import { AuthProvider, authKey } from "@/lib/auth";
-import { env } from "@/config/env";
 import { cleanupSentry, initSentry } from "@/lib/sentry";
 import { ThemeProvider, type ResolvedTheme } from "@/components/theme/theme-provider";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
@@ -58,31 +57,28 @@ export function AppShell({ queryClient, ssrTheme }: AppShellProps) {
   }, [hasSentryConsent, router]);
 
   useEffect(() => {
-    if (!hasAnalyticsConsent()) {
-      posthog.opt_out_capturing();
-    } else {
-      posthog.opt_in_capturing();
+    let lastAnalyticsConsent = hasAnalyticsConsent();
+
+    // If the user has not consented, proactively clear any existing PostHog persistence.
+    // This avoids leaving `ph_*` identifiers around from previous sessions.
+    if (!lastAnalyticsConsent) {
+      Analytics.clearPostHogPersistence();
     }
 
     const unsubscribe = onConsentChange((prefs) => {
-      if (prefs.analytics) {
-        posthog.opt_in_capturing();
-      } else {
-        posthog.opt_out_capturing();
+      // When the user opts in, capture a pageview for the current page.
+      // (Route-based pageviews won't fire until the next navigation.)
+      if (prefs.analytics && !lastAnalyticsConsent) {
+        Analytics.capturePageview();
       }
-    });
 
-    if (env.VITE_POSTHOG_ENABLED) {
-      try {
-        posthog.register({
-          app_version: env.VITE_APP_VERSION,
-          app_name: env.VITE_APP_NAME,
-          environment: env.VITE_APP_ENVIRONMENT,
-        });
-      } catch {
-        // Ignore PostHog registration failures.
+      // When the user opts out, clear PostHog cookies/localStorage identifiers.
+      if (!prefs.analytics && lastAnalyticsConsent) {
+        Analytics.clearPostHogPersistence();
       }
-    }
+
+      lastAnalyticsConsent = prefs.analytics;
+    });
 
     return () => unsubscribe();
   }, []);

@@ -4,27 +4,35 @@ import { cn } from "@/lib/utils";
 import React from "react";
 import { GripVertical } from "lucide-react";
 
+type ResizablePanelGroupProps = Omit<
+  React.ComponentProps<typeof ResizablePrimitive.Group>,
+  "orientation"
+> & {
+  direction?: "horizontal" | "vertical";
+  orientation?: "horizontal" | "vertical";
+};
+
 const ResizablePanelGroup = ({
   className,
+  direction,
+  orientation,
   ...props
-}: React.ComponentProps<typeof ResizablePrimitive.PanelGroup>) => (
-  <ResizablePrimitive.PanelGroup
-    className={cn(
-      "flex h-full w-full data-[panel-group-direction=vertical]:flex-col",
-      className
-    )}
+}: ResizablePanelGroupProps) => (
+  <ResizablePrimitive.Group
+    orientation={direction ?? orientation}
+    className={cn("flex h-full w-full", className)}
     {...props}
   />
 );
 
 const ResizablePanel = React.forwardRef<
-  React.ElementRef<typeof ResizablePrimitive.Panel>,
+  HTMLDivElement,
   React.ComponentPropsWithoutRef<typeof ResizablePrimitive.Panel>
 >(({ className, ...props }, ref) => (
   <ResizablePrimitive.Panel
-    ref={ref}
-    className={cn("min-w-[200px] min-h-[200px]", className)}
     {...props}
+    elementRef={ref}
+    className={cn("min-w-[200px] min-h-[200px]", className)}
   />
 ));
 ResizablePanel.displayName = "ResizablePanel";
@@ -33,17 +41,17 @@ const ResizableHandle = ({
   withHandle,
   className,
   ...props
-}: React.ComponentProps<typeof ResizablePrimitive.PanelResizeHandle> & {
+}: React.ComponentProps<typeof ResizablePrimitive.Separator> & {
   withHandle?: boolean;
 }) => (
-  <ResizablePrimitive.PanelResizeHandle
-    hitAreaMargins={{ coarse: 2, fine: 1 }}
+  <ResizablePrimitive.Separator
     className={cn(
       "group/handle relative flex items-center justify-center",
       // Base styles
       "bg-border transition-all z-10",
-      "w-[3px]",
-      "data-[panel-group-direction=vertical]:h-[3px] data-[panel-group-direction=vertical]:w-full",
+      // Size depending on separator orientation
+      "[&[aria-orientation=vertical]]:h-full [&[aria-orientation=vertical]]:w-[3px]",
+      "[&[aria-orientation=horizontal]]:h-[3px] [&[aria-orientation=horizontal]]:w-full",
       className
     )}
     {...props}
@@ -57,7 +65,7 @@ const ResizableHandle = ({
         <GripVertical className="h-3 w-3 z-100 text-foreground bg-muted rounded-sm" />
       </div>
     )}
-  </ResizablePrimitive.PanelResizeHandle>
+  </ResizablePrimitive.Separator>
 );
 
 export { ResizablePanelGroup, ResizablePanel, ResizableHandle };

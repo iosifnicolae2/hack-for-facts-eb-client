@@ -55,7 +55,7 @@ vi.mock('@/lib/analytics', () => ({
   Analytics: {
     capture: vi.fn(),
     EVENTS: {
-      AlertCreated: 'AlertCreated',
+      AlertCreateStarted: 'AlertCreateStarted',
     },
   },
 }))

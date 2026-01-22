@@ -63,7 +63,7 @@ function RouteComponent() {
         filter: source.filter,
         conditions: source.conditions,
       });
-      Analytics.capture('alert_cloned' as any, { source_id: copyFrom });
+      Analytics.capture(Analytics.EVENTS.AlertCloned, { source_id: copyFrom });
     } else if (!copyFrom) {
       // Fresh create (only if not waiting for copyFrom)
       newAlert = createEmptyAlert();

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
-const envSchema = z.object({
+const envSchema = z
+  .object({
   VITE_APP_VERSION: z.string().min(1),
   VITE_APP_NAME: z.string().min(1),
   VITE_APP_ENVIRONMENT: z.string().min(1),
@@ -26,7 +27,7 @@ const envSchema = z.object({
   VITE_POSTHOG_API_KEY: z.string().min(1).optional(),
   VITE_POSTHOG_HOST: z.string().url().optional(),
   VITE_POSTHOG_PERSON_PROFILES: z
-    .enum(["identified_only", "always"])
+    .enum(["identified_only", "always", "never"])
     .optional(),
 
   // Sentry
@@ -48,7 +49,25 @@ const envSchema = z.object({
 
   // Better Stack
   VITE_BETTER_STACK_STATUS_WIDGET_ID: z.string().min(1).optional(),
-});
+})
+  .superRefine((values, ctx) => {
+    if (values.VITE_POSTHOG_ENABLED) {
+      if (!values.VITE_POSTHOG_API_KEY) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["VITE_POSTHOG_API_KEY"],
+          message: "Required when VITE_POSTHOG_ENABLED=true",
+        });
+      }
+      if (!values.VITE_POSTHOG_HOST) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["VITE_POSTHOG_HOST"],
+          message: "Required when VITE_POSTHOG_ENABLED=true",
+        });
+      }
+    }
+  });
 
 export type Env = z.infer<typeof envSchema>;
 

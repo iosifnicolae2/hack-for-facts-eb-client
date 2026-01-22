@@ -1,3 +1,18 @@
+## PostHog
+
+Client-side analytics is integrated using `posthog-js` with explicit user consent.
+
+Environment variables (set in Vercel or local `.env`):
+
+```
+VITE_POSTHOG_ENABLED=true
+VITE_POSTHOG_API_KEY=your_public_project_api_key
+VITE_POSTHOG_HOST=https://eu.i.posthog.com
+VITE_POSTHOG_PERSON_PROFILES=identified_only
+```
+
+Privacy: only custom events + manual `$pageview` are captured (no autocapture, no session recordings). Events only fire if the user opts in to analytics via cookie consent.
+
 ## Sentry
 
 Client-side Sentry is integrated using `@sentry/react` with TanStack Router tracing and the user feedback widget.

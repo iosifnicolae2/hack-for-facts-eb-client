@@ -78,7 +78,10 @@ export function EntityAnalyticsCharts({ data, normalization = 'per_capita' }: Pr
               <YAxis dataKey="per_capita_amount" name="Per Capita" tickFormatter={(v) => formatNumber(v)} />
               <Tooltip
                 formatter={(v, name) => [formatCurrency(Number(v ?? 0)), name]}
-                labelFormatter={(label: string | number) => `Population: ${formatNumber(Number(label))}`}
+                labelFormatter={(label) => {
+                  const value = Number(label)
+                  return Number.isFinite(value) ? `Population: ${formatNumber(value)}` : ''
+                }}
               />
               <Legend />
               <Scatter data={scatterData} name="Entities" fill="#10b981" />
@@ -117,5 +120,4 @@ export function EntityAnalyticsCharts({ data, normalization = 'per_capita' }: Pr
     </div>
   )
 }
-
 

@@ -110,7 +110,7 @@ export function SeriesConfigView() {
     } else {
       return;
     }
-    Analytics.capture(Analytics.EVENTS.AlertCreated, {
+    Analytics.capture(Analytics.EVENTS.AlertCreateStarted, {
       alert_id: alert.id!,
       source: 'chart_series',
       chart_id: chart.id,

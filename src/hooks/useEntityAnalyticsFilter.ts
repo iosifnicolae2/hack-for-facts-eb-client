@@ -5,6 +5,7 @@ import { AnalyticsFilterSchema, AnalyticsFilterType, defaultYearRange } from '@/
 import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults'
 import { withDefaultExcludes } from '@/lib/filterUtils'
 import { Analytics } from '@/lib/analytics'
+import { generateHash } from '@/lib/utils'
 
 const viewEnum = z.enum(['table', 'chart', 'line-items'])
 
@@ -47,7 +48,7 @@ export function useEntityAnalyticsFilter() {
       search: (prev) => {
         const prevFilter = (prev as unknown as EntityAnalyticsSearch).filter ?? defaultEntityAnalyticsFilter
         const merged = { ...prevFilter, ...partial }
-        const filterHash = JSON.stringify(merged)
+        const filterHash = generateHash(JSON.stringify(merged))
         Analytics.capture(Analytics.EVENTS.EntityAnalyticsFilterChanged, {
           filter_hash: filterHash,
           ...Analytics.summarizeFilter(merged),

@@ -1,4 +1,5 @@
 import { lazy, Suspense, useMemo, useRef, useCallback, memo, useState, startTransition, useEffect } from 'react'
+import { useEntityViewAnalytics } from '@/hooks/useEntityViewAnalytics'
 import { createLazyFileRoute, useNavigate, useParams, useSearch } from '@tanstack/react-router'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { t } from '@lingui/core/macro'
@@ -23,7 +24,6 @@ import { useRecentEntities } from '@/hooks/useRecentEntities'
 import { useEntityMapFilter } from '@/components/entities/hooks/useEntityMapFilter'
 import { useEntityDetails, entityDetailsQueryOptions } from '@/lib/hooks/useEntityDetails'
 
-import { Analytics } from '@/lib/analytics'
 import { buildEntitySeo } from '@/lib/seo-entity'
 import { getSiteUrl } from '@/config/env'
 import { Overview } from '@/components/entities/views/Overview'
@@ -113,6 +113,14 @@ function EntityDetailsPage() {
   const selectedExpenseTypeKey = search.selectedExpenseTypeKey as string | undefined
   const normalizationRaw = (search.normalization as NormalizationInput | undefined) ?? 'total'
   const showPeriodGrowth = Boolean((search as { show_period_growth?: unknown }).show_period_growth)
+
+  useEntityViewAnalytics({
+    cui,
+    view: activeView,
+    period,
+    year: selectedYear,
+    normalization: normalizationRaw,
+  })
 
   // Use shared helper for normalization resolution and forced overrides
   const { normalization, forcedOverrides } = useMemo(
@@ -325,8 +333,6 @@ function EntityDetailsPage() {
       currency: nextCurrencyParam,
       inflation_adjusted: nextInflationParam,
     })
-
-    Analytics.capture(Analytics.EVENTS.EntityViewOpened, { cui, view: activeView, normalization: next.normalization, currency: nextForcedOverrides.currency ?? nextCurrencyParam ?? currency })
   }, [
     activeView,
     currency,
