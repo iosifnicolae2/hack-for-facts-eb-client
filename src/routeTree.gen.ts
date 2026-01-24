@@ -24,6 +24,7 @@ import { Route as ShareCodeRouteImport } from './routes/share.$code'
 import { Route as SettingsProfileRouteImport } from './routes/settings/profile'
 import { Route as SettingsNotificationsRouteImport } from './routes/settings/notifications'
 import { Route as EntitiesCuiRouteImport } from './routes/entities.$cui'
+import { Route as ChartsNewRouteImport } from './routes/charts/new'
 import { Route as CertificatesIdRouteImport } from './routes/certificates.$id'
 import { Route as AlertsNewRouteImport } from './routes/alerts/new'
 import { Route as ChartsChartIdRouteRouteImport } from './routes/charts/$chartId/route'
@@ -44,7 +45,6 @@ const ChartsIndexLazyRouteImport = createFileRoute('/charts/')()
 const ResearchEmployeesDataLazyRouteImport = createFileRoute(
   '/research/employees-data',
 )()
-const ChartsNewLazyRouteImport = createFileRoute('/charts/new')()
 const ChartsChartIdIndexLazyRouteImport = createFileRoute('/charts/$chartId/')()
 const AlertsAlertIdIndexLazyRouteImport = createFileRoute('/alerts/$alertId/')()
 
@@ -110,11 +110,6 @@ const ResearchEmployeesDataLazyRoute =
   } as any).lazy(() =>
     import('./routes/research/employees-data.lazy').then((d) => d.Route),
   )
-const ChartsNewLazyRoute = ChartsNewLazyRouteImport.update({
-  id: '/charts/new',
-  path: '/charts/new',
-  getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/charts/new.lazy').then((d) => d.Route))
 const UnsubscribeTokenRoute = UnsubscribeTokenRouteImport.update({
   id: '/unsubscribe/$token',
   path: '/unsubscribe/$token',
@@ -140,6 +135,11 @@ const EntitiesCuiRoute = EntitiesCuiRouteImport.update({
   path: '/entities/$cui',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/entities.$cui.lazy').then((d) => d.Route))
+const ChartsNewRoute = ChartsNewRouteImport.update({
+  id: '/charts/new',
+  path: '/charts/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CertificatesIdRoute = CertificatesIdRouteImport.update({
   id: '/certificates/$id',
   path: '/certificates/$id',
@@ -274,24 +274,24 @@ export interface FileRoutesByFullPath {
   '/charts/$chartId': typeof ChartsChartIdRouteRouteWithChildren
   '/alerts/new': typeof AlertsNewRoute
   '/certificates/$id': typeof CertificatesIdRoute
+  '/charts/new': typeof ChartsNewRoute
   '/entities/$cui': typeof EntitiesCuiRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/profile': typeof SettingsProfileRoute
   '/share/$code': typeof ShareCodeRoute
   '/unsubscribe/$token': typeof UnsubscribeTokenRoute
-  '/charts/new': typeof ChartsNewLazyRoute
   '/research/employees-data': typeof ResearchEmployeesDataLazyRoute
-  '/charts': typeof ChartsIndexLazyRoute
+  '/charts/': typeof ChartsIndexLazyRoute
   '/$lang/learning/onboarding': typeof LangLearningOnboardingRoute
   '/classifications/economic/$code': typeof ClassificationsEconomicCodeRoute
   '/classifications/functional/$code': typeof ClassificationsFunctionalCodeRoute
   '/$lang/learning/': typeof LangLearningIndexRoute
-  '/classifications/economic': typeof ClassificationsEconomicIndexRoute
-  '/classifications/functional': typeof ClassificationsFunctionalIndexRoute
+  '/classifications/economic/': typeof ClassificationsEconomicIndexRoute
+  '/classifications/functional/': typeof ClassificationsFunctionalIndexRoute
   '/alerts/$alertId/': typeof AlertsAlertIdIndexLazyRoute
   '/charts/$chartId/': typeof ChartsChartIdIndexLazyRoute
   '/$lang/learning/certificates/$id': typeof LangLearningCertificatesIdRoute
-  '/$lang/learning/$pathId': typeof LangLearningPathIdIndexRoute
+  '/$lang/learning/$pathId/': typeof LangLearningPathIdIndexRoute
   '/$lang/learning/$pathId/$moduleId/$lessonId': typeof LangLearningPathIdModuleIdLessonIdRoute
 }
 export interface FileRoutesByTo {
@@ -306,12 +306,12 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsLazyRoute
   '/alerts/new': typeof AlertsNewRoute
   '/certificates/$id': typeof CertificatesIdRoute
+  '/charts/new': typeof ChartsNewRoute
   '/entities/$cui': typeof EntitiesCuiRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/profile': typeof SettingsProfileRoute
   '/share/$code': typeof ShareCodeRoute
   '/unsubscribe/$token': typeof UnsubscribeTokenRoute
-  '/charts/new': typeof ChartsNewLazyRoute
   '/research/employees-data': typeof ResearchEmployeesDataLazyRoute
   '/charts': typeof ChartsIndexLazyRoute
   '/$lang/learning/onboarding': typeof LangLearningOnboardingRoute
@@ -342,12 +342,12 @@ export interface FileRoutesById {
   '/charts/$chartId': typeof ChartsChartIdRouteRouteWithChildren
   '/alerts/new': typeof AlertsNewRoute
   '/certificates/$id': typeof CertificatesIdRoute
+  '/charts/new': typeof ChartsNewRoute
   '/entities/$cui': typeof EntitiesCuiRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/profile': typeof SettingsProfileRoute
   '/share/$code': typeof ShareCodeRoute
   '/unsubscribe/$token': typeof UnsubscribeTokenRoute
-  '/charts/new': typeof ChartsNewLazyRoute
   '/research/employees-data': typeof ResearchEmployeesDataLazyRoute
   '/charts/': typeof ChartsIndexLazyRoute
   '/$lang/learning/onboarding': typeof LangLearningOnboardingRoute
@@ -379,24 +379,24 @@ export interface FileRouteTypes {
     | '/charts/$chartId'
     | '/alerts/new'
     | '/certificates/$id'
+    | '/charts/new'
     | '/entities/$cui'
     | '/settings/notifications'
     | '/settings/profile'
     | '/share/$code'
     | '/unsubscribe/$token'
-    | '/charts/new'
     | '/research/employees-data'
-    | '/charts'
+    | '/charts/'
     | '/$lang/learning/onboarding'
     | '/classifications/economic/$code'
     | '/classifications/functional/$code'
     | '/$lang/learning/'
-    | '/classifications/economic'
-    | '/classifications/functional'
+    | '/classifications/economic/'
+    | '/classifications/functional/'
     | '/alerts/$alertId/'
     | '/charts/$chartId/'
     | '/$lang/learning/certificates/$id'
-    | '/$lang/learning/$pathId'
+    | '/$lang/learning/$pathId/'
     | '/$lang/learning/$pathId/$moduleId/$lessonId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -411,12 +411,12 @@ export interface FileRouteTypes {
     | '/terms'
     | '/alerts/new'
     | '/certificates/$id'
+    | '/charts/new'
     | '/entities/$cui'
     | '/settings/notifications'
     | '/settings/profile'
     | '/share/$code'
     | '/unsubscribe/$token'
-    | '/charts/new'
     | '/research/employees-data'
     | '/charts'
     | '/$lang/learning/onboarding'
@@ -446,12 +446,12 @@ export interface FileRouteTypes {
     | '/charts/$chartId'
     | '/alerts/new'
     | '/certificates/$id'
+    | '/charts/new'
     | '/entities/$cui'
     | '/settings/notifications'
     | '/settings/profile'
     | '/share/$code'
     | '/unsubscribe/$token'
-    | '/charts/new'
     | '/research/employees-data'
     | '/charts/'
     | '/$lang/learning/onboarding'
@@ -482,12 +482,12 @@ export interface RootRouteChildren {
   ChartsChartIdRouteRoute: typeof ChartsChartIdRouteRouteWithChildren
   AlertsNewRoute: typeof AlertsNewRoute
   CertificatesIdRoute: typeof CertificatesIdRoute
+  ChartsNewRoute: typeof ChartsNewRoute
   EntitiesCuiRoute: typeof EntitiesCuiRoute
   SettingsNotificationsRoute: typeof SettingsNotificationsRoute
   SettingsProfileRoute: typeof SettingsProfileRoute
   ShareCodeRoute: typeof ShareCodeRoute
   UnsubscribeTokenRoute: typeof UnsubscribeTokenRoute
-  ChartsNewLazyRoute: typeof ChartsNewLazyRoute
   ResearchEmployeesDataLazyRoute: typeof ResearchEmployeesDataLazyRoute
   ChartsIndexLazyRoute: typeof ChartsIndexLazyRoute
   ClassificationsEconomicCodeRoute: typeof ClassificationsEconomicCodeRoute
@@ -564,7 +564,7 @@ declare module '@tanstack/react-router' {
     '/charts/': {
       id: '/charts/'
       path: '/charts'
-      fullPath: '/charts'
+      fullPath: '/charts/'
       preLoaderRoute: typeof ChartsIndexLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -573,13 +573,6 @@ declare module '@tanstack/react-router' {
       path: '/research/employees-data'
       fullPath: '/research/employees-data'
       preLoaderRoute: typeof ResearchEmployeesDataLazyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/charts/new': {
-      id: '/charts/new'
-      path: '/charts/new'
-      fullPath: '/charts/new'
-      preLoaderRoute: typeof ChartsNewLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/unsubscribe/$token': {
@@ -615,6 +608,13 @@ declare module '@tanstack/react-router' {
       path: '/entities/$cui'
       fullPath: '/entities/$cui'
       preLoaderRoute: typeof EntitiesCuiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/charts/new': {
+      id: '/charts/new'
+      path: '/charts/new'
+      fullPath: '/charts/new'
+      preLoaderRoute: typeof ChartsNewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/certificates/$id': {
@@ -669,14 +669,14 @@ declare module '@tanstack/react-router' {
     '/classifications/functional/': {
       id: '/classifications/functional/'
       path: '/classifications/functional'
-      fullPath: '/classifications/functional'
+      fullPath: '/classifications/functional/'
       preLoaderRoute: typeof ClassificationsFunctionalIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/classifications/economic/': {
       id: '/classifications/economic/'
       path: '/classifications/economic'
-      fullPath: '/classifications/economic'
+      fullPath: '/classifications/economic/'
       preLoaderRoute: typeof ClassificationsEconomicIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -711,7 +711,7 @@ declare module '@tanstack/react-router' {
     '/$lang/learning/$pathId/': {
       id: '/$lang/learning/$pathId/'
       path: '/$pathId'
-      fullPath: '/$lang/learning/$pathId'
+      fullPath: '/$lang/learning/$pathId/'
       preLoaderRoute: typeof LangLearningPathIdIndexRouteImport
       parentRoute: typeof LangLearningRouteRoute
     }
@@ -789,12 +789,12 @@ const rootRouteChildren: RootRouteChildren = {
   ChartsChartIdRouteRoute: ChartsChartIdRouteRouteWithChildren,
   AlertsNewRoute: AlertsNewRoute,
   CertificatesIdRoute: CertificatesIdRoute,
+  ChartsNewRoute: ChartsNewRoute,
   EntitiesCuiRoute: EntitiesCuiRoute,
   SettingsNotificationsRoute: SettingsNotificationsRoute,
   SettingsProfileRoute: SettingsProfileRoute,
   ShareCodeRoute: ShareCodeRoute,
   UnsubscribeTokenRoute: UnsubscribeTokenRoute,
-  ChartsNewLazyRoute: ChartsNewLazyRoute,
   ResearchEmployeesDataLazyRoute: ResearchEmployeesDataLazyRoute,
   ChartsIndexLazyRoute: ChartsIndexLazyRoute,
   ClassificationsEconomicCodeRoute: ClassificationsEconomicCodeRoute,
