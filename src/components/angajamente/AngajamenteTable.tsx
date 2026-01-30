@@ -105,7 +105,7 @@ function TableSkeleton() {
 
 export function AngajamenteTable({ data, isLoading, currency = 'RON', embedded = false }: Props) {
   const [sorting, setSorting] = useState<SortingState>([
-    { id: 'platiTrezor', desc: true },
+    { id: 'plati_trezor', desc: true },
   ])
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -115,13 +115,13 @@ export function AngajamenteTable({ data, isLoading, currency = 'RON', embedded =
   const columns = useMemo<ColumnDef<AngajamenteLineItem>[]>(
     () => [
       {
-        accessorKey: 'functionalCode',
+        accessorKey: 'functional_code',
         header: t`Classification`,
         cell: ({ row }) => {
-          const fn = row.original.functionalCode
-          const fnName = row.original.functionalName
-          const ec = row.original.economicCode
-          const ecName = row.original.economicName
+          const fn = row.original.functional_code
+          const fnName = row.original.functional_name
+          const ec = row.original.economic_code
+          const ecName = row.original.economic_name
           const anomaly = row.original.anomaly
 
           return (
@@ -146,7 +146,7 @@ export function AngajamenteTable({ data, isLoading, currency = 'RON', embedded =
         },
       },
       {
-        accessorKey: 'crediteButetare',
+        accessorKey: 'credite_bugetare',
         header: t`Budget Credits`,
         cell: ({ getValue }) => (
           <div className="text-right font-mono">
@@ -155,7 +155,7 @@ export function AngajamenteTable({ data, isLoading, currency = 'RON', embedded =
         ),
       },
       {
-        accessorKey: 'crediteAngajament',
+        accessorKey: 'credite_angajament',
         header: t`Commitments`,
         cell: ({ getValue }) => (
           <div className="text-right font-mono">
@@ -164,7 +164,7 @@ export function AngajamenteTable({ data, isLoading, currency = 'RON', embedded =
         ),
       },
       {
-        accessorKey: 'receptiiTotale',
+        accessorKey: 'receptii_totale',
         header: t`Receipts`,
         cell: ({ getValue }) => (
           <div className="text-right font-mono">
@@ -173,7 +173,7 @@ export function AngajamenteTable({ data, isLoading, currency = 'RON', embedded =
         ),
       },
       {
-        accessorKey: 'platiTrezor',
+        accessorKey: 'plati_trezor',
         header: t`Payments`,
         cell: ({ getValue }) => (
           <div className="text-right font-mono font-medium">
@@ -182,10 +182,10 @@ export function AngajamenteTable({ data, isLoading, currency = 'RON', embedded =
         ),
       },
       {
-        accessorKey: 'receptiiNeplatite',
+        accessorKey: 'receptii_neplatite',
         header: t`Arrears`,
         cell: ({ row }) => {
-          const value = row.original.receptiiNeplatite
+          const value = row.original.receptii_neplatite
           const hasArrears = value > 0
           return (
             <div
@@ -203,8 +203,8 @@ export function AngajamenteTable({ data, isLoading, currency = 'RON', embedded =
         id: 'utilization',
         header: t`Utilization`,
         accessorFn: (row) =>
-          row.crediteButetare > 0
-            ? (row.platiTrezor / row.crediteButetare) * 100
+          row.credite_bugetare > 0
+            ? (row.plati_trezor / row.credite_bugetare) * 100
             : 0,
         cell: ({ getValue }) => {
           const pct = getValue<number>()
@@ -227,11 +227,11 @@ export function AngajamenteTable({ data, isLoading, currency = 'RON', embedded =
         },
       },
       {
-        accessorKey: 'fundingSource',
+        accessorKey: 'funding_source_id',
         header: t`Source`,
         cell: ({ row }) => {
-          const src = row.original.fundingSource
-          const desc = row.original.fundingSourceDescription
+          const src = row.original.funding_source_id
+          const desc = row.original.funding_source_name
           return (
             <TooltipProvider>
               <Tooltip>
@@ -308,7 +308,7 @@ export function AngajamenteTable({ data, isLoading, currency = 'RON', embedded =
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
-                  const isFirstColumn = header.column.id === 'functionalCode'
+                  const isFirstColumn = header.column.id === 'functional_code'
                   return (
                     <TableHead
                       key={header.id}
@@ -352,7 +352,7 @@ export function AngajamenteTable({ data, isLoading, currency = 'RON', embedded =
                 className={cn(row.original.anomaly && 'bg-red-50/50 dark:bg-red-950/20')}
               >
                 {row.getVisibleCells().map((cell) => {
-                  const isFirstColumn = cell.column.id === 'functionalCode'
+                  const isFirstColumn = cell.column.id === 'functional_code'
                   return (
                     <TableCell
                       key={cell.id}

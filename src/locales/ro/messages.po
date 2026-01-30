@@ -71,7 +71,7 @@ msgstr "*Verificați panoul de filtre pentru mai multe detalii."
 msgid "/capita"
 msgstr "/locuitor"
 
-#: src/components/angajamente/DetailTable.tsx:89
+#: src/components/angajamente/DetailTable.tsx:588
 msgid "% Committed"
 msgstr "% Angajat"
 
@@ -473,7 +473,8 @@ msgstr "Serie Activată"
 msgid "Actual impact on budget"
 msgstr "Impact real asupra bugetului"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:293
+#: src/components/angajamente/LinearBudgetFlow.tsx:239
+#: src/components/angajamente/LinearBudgetFlow.tsx:396
 msgid "Actual Payments"
 msgstr "Plăți Efective"
 
@@ -717,6 +718,10 @@ msgstr "Sumă pe cap de locuitor"
 msgid "Amount Range"
 msgstr "Interval sumă"
 
+#: src/components/angajamente/LinearBudgetFlow.tsx:418
+msgid "Amount:"
+msgstr "Sumă:"
+
 #: src/components/ui/FloatingQuickNav.tsx:249
 msgid "Analytics"
 msgstr "Analiză"
@@ -841,7 +846,8 @@ msgstr "Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caract
 msgid "Availability and changes"
 msgstr "Disponibilitate și modificări"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:215
+#: src/components/angajamente/LinearBudgetFlow.tsx:287
+#: src/components/angajamente/LinearBudgetFlow.tsx:296
 msgid "Available"
 msgstr "Disponibil"
 
@@ -935,16 +941,20 @@ msgstr "Răsfoiți și descărcați toate rapoartele financiare depuse de aceast
 msgid "Budget"
 msgstr "Buget"
 
+#: src/components/angajamente/LinearBudgetFlow.tsx:261
+msgid "Budget → Commitments"
+msgstr "Buget → Angajamente"
+
 #: src/features/learning/components/interactive/BudgetFootprintRevealer.tsx:361
 msgid "Budget category"
 msgstr "Categorie bugetară"
 
-#: src/components/angajamente/DetailTable.tsx:80
+#: src/components/angajamente/DetailTable.tsx:567
 msgid "Budget Chapter"
 msgstr "Capitol Bugetar"
 
 #: src/components/angajamente/AngajamenteTable.tsx:150
-#: src/components/angajamente/DetailTable.tsx:83
+#: src/components/angajamente/DetailTable.tsx:574
 msgid "Budget Credits"
 msgstr "Credite Bugetare"
 
@@ -955,7 +965,7 @@ msgstr "Cronologia ciclului bugetar"
 #: src/components/entities/views/Overview.tsx:281
 #: src/components/entities/views/TrendsView.tsx:220
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:94
-#: src/routes/budget-explorer.lazy.tsx:456
+#: src/routes/budget-explorer.lazy.tsx:460
 msgid "Budget Distribution"
 msgstr "Distribuția bugetului"
 
@@ -968,7 +978,7 @@ msgstr "Documente bugetare"
 msgid "Budget Explorer"
 msgstr "Explorator Bugetar"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:318
+#: src/components/angajamente/LinearBudgetFlow.tsx:441
 msgid "Budget Planning"
 msgstr "Planificare Buget"
 
@@ -1272,16 +1282,29 @@ msgstr "Coloane"
 msgid "Comfortable"
 msgstr "Confortabil"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:90
+#: src/components/entities/views/AngajamenteView.tsx:390
+#~ msgid "Commitment"
+#~ msgstr ""
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:174
 msgid "Commitment Flow"
 msgstr "Fluxul Angajamentelor"
 
+#: src/components/entities/views/AngajamenteView.tsx:329
+#~ msgid "Commitment vs Execution"
+#~ msgstr ""
+
 #: src/components/angajamente/AngajamenteTable.tsx:159
-#: src/components/angajamente/DetailTable.tsx:86
-#: src/components/angajamente/LinearBudgetFlow.tsx:232
+#: src/components/angajamente/DetailTable.tsx:581
+#: src/components/angajamente/LinearBudgetFlow.tsx:228
+#: src/components/angajamente/LinearBudgetFlow.tsx:387
 #: src/hooks/useEntityViews.tsx:22
 msgid "Commitments"
 msgstr "Angajamente"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:322
+msgid "Commitments → Payments"
+msgstr "Angajamente → Plăți"
 
 #: src/components/angajamente/CategoryChart.tsx:62
 #: src/components/angajamente/CategoryChart.tsx:126
@@ -1784,9 +1807,13 @@ msgid "Description"
 msgstr "Descriere"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:123
-#: src/routes/budget-explorer.lazy.tsx:507
+#: src/routes/budget-explorer.lazy.tsx:511
 msgid "Detail level"
 msgstr "Nivel de detaliu"
+
+#: src/components/angajamente/DetailTable.tsx:537
+msgid "Detail Level"
+msgstr "Nivel Detaliu"
 
 #: src/components/entities/EntityReportControls.tsx:51
 #: src/components/entities/EntityReports.tsx:174
@@ -1802,15 +1829,19 @@ msgid "Detailed Budget Execution"
 msgstr "Executie bugetara detaliata"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:138
-#: src/routes/budget-explorer.lazy.tsx:520
+#: src/routes/budget-explorer.lazy.tsx:524
 msgid "Detailed categories"
 msgstr "Categorii detaliate"
+
+#: src/components/angajamente/DetailTable.tsx:545
+msgid "Detailed Categories"
+msgstr "Categorii Detaliate"
 
 #: src/components/budget-explorer/BudgetLineItemsPreview.tsx:68
 msgid "Detailed Line Items Breakdown"
 msgstr "Detalierea liniilor bugetare"
 
-#: src/routes/entities.$cui.lazy.tsx:407
+#: src/routes/entities.$cui.lazy.tsx:419
 msgid "Details:"
 msgstr "Detalii:"
 
@@ -1822,6 +1853,15 @@ msgstr "Dezvoltare"
 #: src/components/budget-explorer/RevenueBreakdown.tsx:62
 msgid "Development section transfers"
 msgstr "Transferuri secțiune dezvoltare"
+
+#: src/components/entities/views/AngajamenteView.tsx:368
+#: src/components/entities/views/AngajamenteView.tsx:392
+#~ msgid "Difference"
+#~ msgstr ""
+
+#: src/components/entities/views/AngajamenteView.tsx:374
+#~ msgid "Difference %"
+#~ msgstr ""
 
 #: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:57
 msgid "Disable All Series"
@@ -1857,7 +1897,7 @@ msgstr "Finalizat"
 msgid "Download"
 msgstr "Descarcă"
 
-#: src/components/angajamente/DetailTable.tsx:70
+#: src/components/angajamente/DetailTable.tsx:554
 msgid "Download Excel"
 msgstr "Descarcă Excel"
 
@@ -1909,6 +1949,7 @@ msgstr "Gestionați-vă cu ușurință abonamentele"
 msgid "Ec"
 msgstr "Ec"
 
+#: src/components/angajamente/DetailTable.tsx:533
 #: src/components/classification-explorer/ClassificationExplorer.tsx:195
 #: src/components/classification-explorer/ClassificationExplorer.tsx:196
 #: src/components/common/classification-info-link.tsx:89
@@ -1916,7 +1957,7 @@ msgstr "Ec"
 #: src/components/entities/views/Overview.tsx:305
 #: src/components/entities/views/TrendsView.tsx:223
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:118
-#: src/routes/budget-explorer.lazy.tsx:502
+#: src/routes/budget-explorer.lazy.tsx:506
 msgid "Economic"
 msgstr "Economic"
 
@@ -2119,7 +2160,7 @@ msgstr "este egal cu"
 msgid "Error"
 msgstr "Eroare"
 
-#: src/routes/entities.$cui.lazy.tsx:404
+#: src/routes/entities.$cui.lazy.tsx:416
 msgid "Error Fetching Entity Details"
 msgstr "Eroare la preluarea detaliilor entității"
 
@@ -2191,7 +2232,7 @@ msgstr "Estimare"
 msgid "Estimate the <0>Shares</0>"
 msgstr "Estimează <0>Proporțiile</0>"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:321
+#: src/components/angajamente/LinearBudgetFlow.tsx:442
 msgid "Estimated money to be spent"
 msgstr "Banii estimați a fi cheltuiți"
 
@@ -2289,6 +2330,10 @@ msgstr "Excluzând fluxurile inter-bugetare și operațiunile financiare"
 #: src/features/learning/components/interactive/PromiseTracker.tsx:380
 msgid "Executed"
 msgstr "Executat"
+
+#: src/components/entities/views/AngajamenteView.tsx:391
+#~ msgid "Execution"
+#~ msgstr ""
 
 #: src/hooks/useEntityViews.tsx:24
 msgid "Expense Trends"
@@ -2404,7 +2449,7 @@ msgstr "Eroare la încărcarea alertei"
 msgid "Failed to load alerts. Please try again."
 msgstr "Eroare la încărcarea alertelor. Vă rugăm să încercați din nou."
 
-#: src/routes/budget-explorer.lazy.tsx:530
+#: src/routes/budget-explorer.lazy.tsx:534
 msgid "Failed to load data."
 msgstr "Eroare la încărcarea datelor."
 
@@ -2479,7 +2524,7 @@ msgstr "Informații filtre"
 msgid "Filters marked as exclude will remove data matching these criteria from the results."
 msgstr "Filtrele marcate ca excludere vor elimina din rezultate datele care corespund acestor criterii."
 
-#: src/components/entities/views/AngajamenteView.tsx:86
+#: src/components/entities/views/AngajamenteView.tsx:238
 msgid "Final Budget Credits"
 msgstr "Credite Bugetare Definitive"
 
@@ -2491,9 +2536,9 @@ msgstr "Final:"
 msgid "Financial Evolution - {entityName}"
 msgstr "Evoluție financiară - {entityName}"
 
-#: src/components/entities/views/AngajamenteView.tsx:116
-msgid "Financial Flow"
-msgstr "Circuitul Financiar"
+#: src/components/entities/views/AngajamenteView.tsx:269
+#~ msgid "Financial Flow"
+#~ msgstr "Circuitul Financiar"
 
 #: src/components/budget-explorer/RevenueBreakdown.tsx:273
 msgid "Financial operations"
@@ -2571,6 +2616,7 @@ msgstr "S-au găsit {replacementCount} apariții"
 msgid "Full Procurement Portal"
 msgstr "Portal complet achiziții"
 
+#: src/components/angajamente/DetailTable.tsx:532
 #: src/components/classification-explorer/ClassificationExplorer.tsx:192
 #: src/components/classification-explorer/ClassificationExplorer.tsx:193
 #: src/components/common/classification-info-link.tsx:89
@@ -2578,7 +2624,7 @@ msgstr "Portal complet achiziții"
 #: src/components/entities/views/Overview.tsx:304
 #: src/components/entities/views/TrendsView.tsx:222
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:111
-#: src/routes/budget-explorer.lazy.tsx:499
+#: src/routes/budget-explorer.lazy.tsx:503
 msgid "Functional"
 msgstr "Funcțional"
 
@@ -2726,13 +2772,13 @@ msgstr "Bunuri și servicii"
 msgid "Governing law"
 msgstr "Legea aplicabilă"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:94
-msgid "Graphical explanation of how the planned budget becomes an actual payment."
-msgstr "Explicație grafică a modului în care bugetul planificat devine plată efectivă."
+#: src/components/angajamente/LinearBudgetFlow.tsx:174
+#~ msgid "Graphical explanation of how the planned budget becomes an actual payment."
+#~ msgstr "Explicație grafică a modului în care bugetul planificat devine plată efectivă."
 
-#: src/components/entities/views/AngajamenteView.tsx:119
-msgid "Graphical View"
-msgstr "Vizualizare Grafică"
+#: src/components/entities/views/AngajamenteView.tsx:272
+#~ msgid "Graphical View"
+#~ msgstr "Vizualizare Grafică"
 
 #: src/components/alerts/components/ConditionsList.tsx:91
 msgid "Greater or equal"
@@ -2758,8 +2804,9 @@ msgstr "Vizualizare grilă"
 msgid "Gross"
 msgstr "Brut"
 
+#: src/components/angajamente/DetailTable.tsx:525
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:99
-#: src/routes/budget-explorer.lazy.tsx:489
+#: src/routes/budget-explorer.lazy.tsx:493
 msgid "Grouping"
 msgstr "Grupare"
 
@@ -3130,11 +3177,11 @@ msgstr "Legal"
 msgid "Legal bases for processing"
 msgstr "Temeiuri legale pentru prelucrare"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:332
+#: src/components/angajamente/LinearBudgetFlow.tsx:449
 msgid "Legal Commitment"
 msgstr "Angajare Legală"
 
-#: src/components/entities/views/AngajamenteView.tsx:93
+#: src/components/entities/views/AngajamenteView.tsx:245
 msgid "Legal Commitments"
 msgstr "Angajamente Legale"
 
@@ -3232,9 +3279,21 @@ msgstr "Se încarcă configurația graficului..."
 msgid "Loading chart data..."
 msgstr "Se încarcă datele graficului..."
 
+#: src/components/entities/views/AngajamenteView.tsx:348
+#~ msgid "Loading comparison data (this may take a moment)..."
+#~ msgstr ""
+
 #: src/routes/map.lazy.tsx:218
 msgid "Loading data..."
 msgstr "Se încarcă datele..."
+
+#: src/components/angajamente/DetailTable.tsx:297
+msgid "Loading details..."
+msgstr "Se încarcă detaliile..."
+
+#: src/components/angajamente/DetailTable.tsx:111
+#~ msgid "Loading economic details..."
+#~ msgstr ""
 
 #: src/routes/map.lazy.tsx:222
 msgid "Loading heatmap data..."
@@ -3308,9 +3367,13 @@ msgid "Main Categories"
 msgstr "Categorii Principale"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:135
-#: src/routes/budget-explorer.lazy.tsx:517
+#: src/routes/budget-explorer.lazy.tsx:521
 msgid "Main chapters"
 msgstr "Capitole principale"
+
+#: src/components/angajamente/DetailTable.tsx:544
+msgid "Main Chapters"
+msgstr "Capitole Principale"
 
 #: src/components/entities/EntityReportControls.tsx:300
 #: src/lib/chart-filter-utils.ts:38
@@ -3394,6 +3457,10 @@ msgstr "Stăpânește aplicația cu aceste comenzi rapide puternice de la tastat
 #: src/features/learning/components/player/MarkComplete.tsx:70
 msgid "Mastering the budget one step at a time. Your progress is recorded."
 msgstr "Stăpânești bugetul pas cu pas. Progresul tău este înregistrat."
+
+#: src/components/entities/views/AngajamenteView.tsx:422
+#~ msgid "Matched periods"
+#~ msgstr ""
 
 #: src/components/ui/amount-range-picker.tsx:128
 msgid "Maximum"
@@ -3646,6 +3713,10 @@ msgstr "Nu există date agregate"
 msgid "No annotations yet."
 msgstr "Încă nu există adnotări."
 
+#: src/components/angajamente/DetailTable.tsx:322
+msgid "No breakdown available"
+msgstr "Nu există defalcare disponibilă"
+
 #: src/components/budget-explorer/BudgetCategoryList.tsx:135
 msgid "No categories to display."
 msgstr "Nicio categorie de afișat."
@@ -3681,6 +3752,10 @@ msgstr "Nu au fost găsite clasificări"
 msgid "No commitment data available"
 msgstr "Nu există date despre angajamente"
 
+#: src/components/entities/views/AngajamenteView.tsx:429
+#~ msgid "No comparison data available for this period."
+#~ msgstr ""
+
 #: src/components/alerts/components/ConditionsList.tsx:48
 msgid "No conditions added yet. Click the button below to add your first condition."
 msgstr "Nicio condiție adăugată încă. Faceți clic pe butonul de mai jos pentru a adăuga prima condiție."
@@ -3689,7 +3764,7 @@ msgstr "Nicio condiție adăugată încă. Faceți clic pe butonul de mai jos pe
 msgid "No conditions set"
 msgstr "Nicio condiție setată"
 
-#: src/components/angajamente/DetailTable.tsx:53
+#: src/components/angajamente/DetailTable.tsx:509
 msgid "No data available"
 msgstr "Nu există date disponibile"
 
@@ -3709,7 +3784,7 @@ msgstr "Nu sunt date disponibile pentru tabel."
 msgid "No data available to display financial evolution."
 msgstr "Nu sunt date disponibile pentru afișarea evoluției financiare."
 
-#: src/routes/entities.$cui.lazy.tsx:419
+#: src/routes/entities.$cui.lazy.tsx:431
 msgid "No Data Found"
 msgstr "Nu s-au găsit date"
 
@@ -3737,6 +3812,10 @@ msgstr "Nu sunt disponibile date detaliate pentru această selecție."
 msgid "No detailed records available."
 msgstr "Nu există înregistrări detaliate disponibile."
 
+#: src/components/angajamente/DetailTable.tsx:123
+#~ msgid "No economic breakdown available"
+#~ msgstr ""
+
 #: src/components/budget-explorer/BudgetCategoryList.tsx:147
 msgid "No economic breakdown is available for income."
 msgstr "Nu este disponibilă o detaliere economică pentru venituri."
@@ -3745,7 +3824,7 @@ msgstr "Nu este disponibilă o detaliere economică pentru venituri."
 msgid "No enabled series data available to display."
 msgstr "Nu există date disponibile în seriile activate pentru a fi afișate."
 
-#: src/routes/entities.$cui.lazy.tsx:421
+#: src/routes/entities.$cui.lazy.tsx:433
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "Nu s-au găsit detalii despre entitate pentru CUI: <0>{cui}</0>. Este posibil ca această entitate să nu existe sau să nu aibă date asociate."
 
@@ -3884,11 +3963,11 @@ msgstr "Acum"
 msgid "October"
 msgstr "Octombrie"
 
-#: src/components/entities/views/AngajamenteView.tsx:95
+#: src/components/entities/views/AngajamenteView.tsx:247
 msgid "of budget contracted"
 msgstr "din buget contractat"
 
-#: src/components/entities/views/AngajamenteView.tsx:104
+#: src/components/entities/views/AngajamenteView.tsx:256
 msgid "of commitments paid"
 msgstr "din angajamente plătite"
 
@@ -3950,9 +4029,9 @@ msgstr "Deschide fereastra de feedback"
 msgid "Open floating entity search"
 msgstr "Deschide căutarea flotantă de entități"
 
-#: src/routes/budget-explorer.lazy.tsx:587
-#: src/routes/budget-explorer.lazy.tsx:603
-#: src/routes/budget-explorer.lazy.tsx:623
+#: src/routes/budget-explorer.lazy.tsx:591
+#: src/routes/budget-explorer.lazy.tsx:607
+#: src/routes/budget-explorer.lazy.tsx:627
 msgid "Open in Chart Builder"
 msgstr "Deschide în Generatorul de Grafice"
 
@@ -3969,7 +4048,7 @@ msgid "Open in charts"
 msgstr "Deschide în grafice"
 
 #: src/components/entities/views/Overview.tsx:287
-#: src/routes/budget-explorer.lazy.tsx:463
+#: src/routes/budget-explorer.lazy.tsx:467
 msgid "Open in entity analytics"
 msgstr "Deschide în analitice entitate"
 
@@ -4086,7 +4165,7 @@ msgstr "Progresul parcursului"
 msgid "Paused"
 msgstr "Pauză"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:346
+#: src/components/angajamente/LinearBudgetFlow.tsx:457
 msgid "Payment and Execution"
 msgstr "Plată și Execuție"
 
@@ -4094,8 +4173,8 @@ msgstr "Plată și Execuție"
 msgid "Payments"
 msgstr "Plăți"
 
-#: src/components/angajamente/DetailTable.tsx:92
-#: src/components/entities/views/AngajamenteView.tsx:102
+#: src/components/angajamente/DetailTable.tsx:595
+#: src/components/entities/views/AngajamenteView.tsx:254
 msgid "Payments Made"
 msgstr "Plăți Efectuate"
 
@@ -4423,7 +4502,7 @@ msgstr "Entitate raportoare"
 msgid "Reporting filters"
 msgstr "Filtre de raportare"
 
-#: src/routes/entities.$cui.lazy.tsx:452
+#: src/routes/entities.$cui.lazy.tsx:464
 msgid "Reporting period"
 msgstr "Perioada de raportare"
 
@@ -4637,7 +4716,7 @@ msgstr "Creditor secundar agregat"
 msgid "Security monitoring and logs"
 msgstr "Monitorizare și jurnale de securitate"
 
-#: src/routes/budget-explorer.lazy.tsx:561
+#: src/routes/budget-explorer.lazy.tsx:565
 msgid "See advanced view"
 msgstr "Vezi vizualizarea avansată"
 
@@ -4756,6 +4835,10 @@ msgstr "Partajează link-ul"
 #: src/routes/alerts/new.lazy.tsx:106
 msgid "Share link copied"
 msgstr "Link de partajare copiat"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:429
+msgid "Share:"
+msgstr "Pondere:"
 
 #: src/components/budget-explorer/RevenueBreakdown.tsx:58
 msgid "Shares and amounts split from income tax"
@@ -4900,7 +4983,7 @@ msgstr "Autentificați-vă pentru a primi actualizări despre entitățile care 
 msgid "Sign in to track your learning journey."
 msgstr "Autentifică-te pentru a-ți urmări progresul de învățare."
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:335
+#: src/components/angajamente/LinearBudgetFlow.tsx:450
 msgid "Signing contracts (Reservation)"
 msgstr "Semnarea contractelor (Rezervare)"
 
@@ -5028,15 +5111,15 @@ msgstr "Situația pe Capitole Bugetare"
 msgid "Stay here"
 msgstr "Rămâi aici"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:315
+#: src/components/angajamente/LinearBudgetFlow.tsx:440
 msgid "Step 1"
 msgstr "Pasul 1"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:328
+#: src/components/angajamente/LinearBudgetFlow.tsx:447
 msgid "Step 2"
 msgstr "Pasul 2"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:342
+#: src/components/angajamente/LinearBudgetFlow.tsx:455
 msgid "Step 3"
 msgstr "Pasul 3"
 
@@ -5097,8 +5180,8 @@ msgstr "Insignă stare sistem"
 msgid "Table"
 msgstr "Tabel"
 
-#: src/components/angajamente/DetailTable.tsx:49
-#: src/components/angajamente/DetailTable.tsx:63
+#: src/components/angajamente/DetailTable.tsx:505
+#: src/components/angajamente/DetailTable.tsx:521
 msgid "Table Detail"
 msgstr "Detaliere Tabelară"
 
@@ -5225,7 +5308,7 @@ msgstr "Totalul reținut de stat este <0>{0}</0>."
 msgid "The Step Between Budget and Payment"
 msgstr "Pasul dintre Buget și Plată"
 
-#: src/routes/entities.$cui.lazy.tsx:406
+#: src/routes/entities.$cui.lazy.tsx:418
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "A apărut o problemă la preluarea detaliilor pentru CUI: <0>{cui}</0>."
 
@@ -5264,6 +5347,10 @@ msgstr "Această alertă este inclusă în fiecare newsletter lunar cu starea sa
 #: src/components/classification-explorer/ClassificationChildren.tsx:27
 msgid "This classification has no subcategories"
 msgstr "Această clasificare nu are subcategorii"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:183
+msgid "This diagram shows how public money flows from budget allocation to legal commitments (signed contracts) to actual payments. The width of each flow represents the proportion of funds at each stage."
+msgstr "Această diagramă arată cum circulă banii publici de la alocarea bugetară la angajamentele legale (contracte semnate) până la plățile efective. Lățimea fiecărui flux reprezintă proporția fondurilor în fiecare etapă."
 
 #: src/components/entities/EntityRelationships.tsx:22
 msgid "This entity has no funding or funded relationships."
@@ -5330,8 +5417,9 @@ msgstr "Titlu Z–A"
 msgid "To exercise any of these rights, contact us at contact@transparenta.eu We will respond within 30 days."
 msgstr "Pentru a exercita oricare dintre aceste drepturi, contactați-ne la contact@transparenta.eu Vă vom răspunde în termen de 30 de zile."
 
-#: src/components/angajamente/DetailTable.tsx:95
-#: src/components/angajamente/LinearBudgetFlow.tsx:280
+#: src/components/angajamente/DetailTable.tsx:602
+#: src/components/angajamente/LinearBudgetFlow.tsx:352
+#: src/components/angajamente/LinearBudgetFlow.tsx:361
 msgid "To Pay"
 msgstr "De Plată"
 
@@ -5371,7 +5459,7 @@ msgstr "Top 15 județe după suma totală"
 msgid "Top 15 UATs by Total Amount"
 msgstr "Top 15 UAT-uri după suma totală"
 
-#: src/routes/budget-explorer.lazy.tsx:558
+#: src/routes/budget-explorer.lazy.tsx:562
 msgid "Top Categories"
 msgstr "Categorii principale"
 
@@ -5381,7 +5469,7 @@ msgid "Top Economic Categories"
 msgstr "Categorii economice principale"
 
 #: src/components/budget-explorer/BudgetCategoryList.tsx:140
-#: src/routes/budget-explorer.lazy.tsx:619
+#: src/routes/budget-explorer.lazy.tsx:623
 msgid "Top Functional Categories"
 msgstr "Categorii funcționale principale"
 
@@ -5399,7 +5487,7 @@ msgstr "total"
 msgid "Total"
 msgstr "Total"
 
-#: src/components/entities/views/AngajamenteView.tsx:84
+#: src/components/entities/views/AngajamenteView.tsx:236
 msgid "Total Allocated Budget"
 msgstr "Total Buget Alocat"
 
@@ -5417,13 +5505,22 @@ msgid "Total Amount"
 msgstr "Sumă totală"
 
 #: src/components/angajamente/CategoryChart.tsx:120
-#: src/components/angajamente/LinearBudgetFlow.tsx:172
+#: src/components/angajamente/LinearBudgetFlow.tsx:217
+#: src/components/angajamente/LinearBudgetFlow.tsx:378
 msgid "Total Budget"
 msgstr "Buget Total"
+
+#: src/components/entities/views/AngajamenteView.tsx:356
+#~ msgid "Total Commitment"
+#~ msgstr ""
 
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:151
 msgid "Total Duration"
 msgstr "Durată totală"
+
+#: src/components/entities/views/AngajamenteView.tsx:362
+#~ msgid "Total Execution"
+#~ msgstr ""
 
 #: src/components/entities/EntityFinancialSummary.tsx:82
 msgid "Total Expenses"
@@ -5450,7 +5547,7 @@ msgstr "Total:"
 msgid "Tour Complete!"
 msgstr "Tur Complet!"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:349
+#: src/components/angajamente/LinearBudgetFlow.tsx:458
 msgid "Transfer of money to supplier"
 msgstr "Transferul banilor către furnizor"
 
@@ -5574,6 +5671,14 @@ msgstr "Tip necunoscut"
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:42
 msgid "Unlock annotation"
 msgstr "Deblochează adnotarea"
+
+#: src/components/entities/views/AngajamenteView.tsx:423
+#~ msgid "Unmatched commitment"
+#~ msgstr ""
+
+#: src/components/entities/views/AngajamenteView.tsx:424
+#~ msgid "Unmatched execution"
+#~ msgstr ""
 
 #: src/components/alerts/components/UnsavedChangesDialog.tsx:30
 #: src/routes/alerts/$alertId/index.lazy.tsx:127

@@ -1,123 +1,327 @@
 /**
  * Angajamente Bugetare (Budget Commitments) Types
  *
- * These types represent budget commitment data which tracks:
- * - Commitment credits (authorized spending limits)
- * - Budget credits (actual allocations)
- * - Receipts (goods/services received)
- * - Payments (treasury disbursements)
- * - Arrears (unpaid receipts)
+ * Real API types matching the GraphQL schema (snake_case).
+ * See docs/angajamente-api-reference.md for full specification.
  */
 
-/**
- * Individual line item from an Angajamente Bugetare report
- */
+import type { ReportPeriodInput } from '@/schemas/reporting'
+
+// ─────────────────────────────────────────────────────────────────
+// Enums
+// ─────────────────────────────────────────────────────────────────
+
+export type AngajamenteReportType =
+  | 'DETAILED'
+  | 'PRINCIPAL_AGGREGATED'
+  | 'SECONDARY_AGGREGATED'
+
+export type AngajamenteMetric =
+  | 'CREDITE_ANGAJAMENT'
+  | 'PLATI_TREZOR'
+  | 'PLATI_NON_TREZOR'
+  | 'RECEPTII_TOTALE'
+  | 'RECEPTII_NEPLATITE_CHANGE'
+  | 'LIMITA_CREDIT_ANGAJAMENT'
+  | 'CREDITE_BUGETARE'
+  | 'CREDITE_ANGAJAMENT_INITIALE'
+  | 'CREDITE_BUGETARE_INITIALE'
+  | 'CREDITE_ANGAJAMENT_DEFINITIVE'
+  | 'CREDITE_BUGETARE_DEFINITIVE'
+  | 'CREDITE_ANGAJAMENT_DISPONIBILE'
+  | 'CREDITE_BUGETARE_DISPONIBILE'
+  | 'RECEPTII_NEPLATITE'
+
+export type PeriodType = 'MONTH' | 'QUARTER' | 'YEAR'
+export type Normalization =
+  | 'total'
+  | 'total_euro'
+  | 'per_capita'
+  | 'per_capita_euro'
+  | 'percent_gdp'
+export type Currency = 'RON' | 'EUR' | 'USD'
+export type AnomalyType = 'YTD_ANOMALY' | 'MISSING_LINE_ITEM'
+
+// ─────────────────────────────────────────────────────────────────
+// Filter Inputs
+// ─────────────────────────────────────────────────────────────────
+
+export interface AngajamenteExcludeInput {
+  report_ids?: string[]
+  entity_cuis?: string[]
+  main_creditor_cui?: string
+  functional_codes?: string[]
+  functional_prefixes?: string[]
+  economic_codes?: string[]
+  economic_prefixes?: string[]
+  funding_source_ids?: string[]
+  budget_sector_ids?: string[]
+  county_codes?: string[]
+  regions?: string[]
+  uat_ids?: string[]
+  entity_types?: string[]
+}
+
+export interface AngajamenteFilterInput {
+  report_period: ReportPeriodInput
+  report_type?: AngajamenteReportType
+
+  entity_cuis?: string[]
+  main_creditor_cui?: string
+  entity_types?: string[]
+  is_uat?: boolean
+  search?: string
+
+  functional_codes?: string[]
+  functional_prefixes?: string[]
+  economic_codes?: string[]
+  economic_prefixes?: string[]
+
+  funding_source_ids?: string[]
+  budget_sector_ids?: string[]
+
+  county_codes?: string[]
+  regions?: string[]
+  uat_ids?: string[]
+
+  min_population?: number
+  max_population?: number
+
+  aggregate_min_amount?: number
+  aggregate_max_amount?: number
+  item_min_amount?: number
+  item_max_amount?: number
+
+  normalization?: Normalization
+  currency?: Currency
+  inflation_adjusted?: boolean
+  show_period_growth?: boolean
+
+  exclude?: AngajamenteExcludeInput
+  exclude_transfers?: boolean
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Pagination (shared)
+// ─────────────────────────────────────────────────────────────────
+
+export interface PageInfo {
+  totalCount: number
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+}
+
+export interface Connection<T> {
+  nodes: T[]
+  pageInfo: PageInfo
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Summary Types (Union)
+// ─────────────────────────────────────────────────────────────────
+
+export interface AngajamenteMonthlySummary {
+  __typename: 'AngajamenteMonthlySummary'
+  year: number
+  month: number
+  entity_cui: string
+  entity_name: string
+  main_creditor_cui: string | null
+  report_type: AngajamenteReportType
+  credite_angajament: number
+  plati_trezor: number
+  plati_non_trezor: number
+  receptii_totale: number
+  receptii_neplatite_change: number
+  total_plati: number
+}
+
+export interface AngajamenteQuarterlySummary {
+  __typename: 'AngajamenteQuarterlySummary'
+  year: number
+  quarter: number
+  entity_cui: string
+  entity_name: string
+  main_creditor_cui: string | null
+  report_type: AngajamenteReportType
+  credite_angajament: number
+  limita_credit_angajament: number
+  credite_bugetare: number
+  credite_angajament_initiale: number
+  credite_bugetare_initiale: number
+  credite_angajament_definitive: number
+  credite_bugetare_definitive: number
+  credite_angajament_disponibile: number
+  credite_bugetare_disponibile: number
+  receptii_totale: number
+  plati_trezor: number
+  plati_non_trezor: number
+  receptii_neplatite: number
+  total_plati: number
+  execution_rate: number | null
+  commitment_rate: number | null
+}
+
+export interface AngajamenteAnnualSummary {
+  __typename: 'AngajamenteAnnualSummary'
+  year: number
+  entity_cui: string
+  entity_name: string
+  main_creditor_cui: string | null
+  report_type: AngajamenteReportType
+  credite_angajament: number
+  limita_credit_angajament: number
+  credite_bugetare: number
+  credite_angajament_initiale: number
+  credite_bugetare_initiale: number
+  credite_angajament_definitive: number
+  credite_bugetare_definitive: number
+  credite_angajament_disponibile: number
+  credite_bugetare_disponibile: number
+  receptii_totale: number
+  plati_trezor: number
+  plati_non_trezor: number
+  receptii_neplatite: number
+  total_plati: number
+  execution_rate: number | null
+  commitment_rate: number | null
+}
+
+export type AngajamenteSummaryResult =
+  | AngajamenteMonthlySummary
+  | AngajamenteQuarterlySummary
+  | AngajamenteAnnualSummary
+
+// ─────────────────────────────────────────────────────────────────
+// Line Items
+// ─────────────────────────────────────────────────────────────────
+
 export interface AngajamenteLineItem {
-  // Identification
-  key: string // Composite key: "fn_code|ec_code|funding_source|sector_id"
-  date: string // Report date (e.g., "31-JAN-2025")
-  functionalCode: string // Functional classification (e.g., "51.01.03")
-  functionalName?: string // Functional classification name
-  economicCode?: string // Economic classification (e.g., "10.01.01")
-  economicName?: string // Economic classification name
-  fundingSource?: string // Funding source code (e.g., "A")
-  fundingSourceDescription?: string // Funding source description
+  id: string
+  year: number
+  month: number
+  report_type: AngajamenteReportType
 
-  // YTD Credit Fields
-  crediteAngajament: number // Commitment credits
-  crediteButetare: number // Budget credits
-  crediteAngajamentInitiale: number // Initial commitment credits
-  crediteButetareInitiale: number // Initial budget credits
-  crediteAngajamentDefinitive: number // Final commitment credits
-  crediteButetareDefinitive: number // Final budget credits
-  crediteAngajamentDisponibile: number // Available commitment credits
-  crediteButetareDisponibile: number // Available budget credits
+  entity_cui: string
+  entity_name: string
+  main_creditor_cui: string | null
 
-  // YTD Payment/Receipt Fields
-  receptiiTotale: number // Total receipts (goods/services received)
-  platiTrezor: number // Treasury payments
-  platiNonTrezor: number // Non-treasury payments
-  receptiiNeplatite: number // Unpaid receipts (arrears indicator)
+  budget_sector_id: number
+  budget_sector_name: string
+  funding_source_id: number
+  funding_source_name: string
+  functional_code: string
+  functional_name: string
+  economic_code: string | null
+  economic_name: string | null
 
-  // Computed Monthly Values
-  monthlyPlatiTrezor: number | null
-  monthlyReceptiiTotale: number | null
-  monthlyCrediteAngajament: number | null
+  // YTD metrics
+  credite_angajament: number
+  limita_credit_angajament: number
+  credite_bugetare: number
+  credite_angajament_initiale: number
+  credite_bugetare_initiale: number
+  credite_angajament_definitive: number
+  credite_bugetare_definitive: number
+  credite_angajament_disponibile: number
+  credite_bugetare_disponibile: number
+  receptii_totale: number
+  plati_trezor: number
+  plati_non_trezor: number
+  receptii_neplatite: number
 
-  // Data Quality Flags
-  anomaly?: 'YTD_ANOMALY' | 'MISSING_LINE_ITEM'
+  // Monthly deltas
+  monthly_plati_trezor: number
+  monthly_plati_non_trezor: number
+  monthly_receptii_totale: number
+  monthly_receptii_neplatite_change: number
+  monthly_credite_angajament: number
+
+  // Period flags
+  is_quarterly: boolean
+  quarter: number | null
+  is_yearly: boolean
+
+  // Data quality
+  anomaly: AnomalyType | null
 }
 
-/**
- * Aggregated summary of Angajamente data for an entity
- */
-export interface AngajamenteSummary {
-  totalCrediteAngajament: number
-  totalCrediteButetare: number
-  totalCrediteButetareDefinitive: number
-  totalReceptii: number
-  totalPlati: number
-  totalArierate: number // Sum of receptiiNeplatite
-  utilizationRate: number // (plati / crediteButetare) * 100
-  commitmentRate: number // (crediteAngajament / crediteButetare) * 100
+// ─────────────────────────────────────────────────────────────────
+// Aggregated
+// ─────────────────────────────────────────────────────────────────
+
+export interface AngajamenteAggregatedItem {
+  functional_code: string
+  functional_name: string
+  economic_code: string | null
+  economic_name: string | null
+  amount: number
+  count: number
 }
 
-/**
- * Pipeline stage data for visualization
- */
+// ─────────────────────────────────────────────────────────────────
+// Analytics
+// ─────────────────────────────────────────────────────────────────
+
+export interface AngajamenteAnalyticsDataPoint {
+  x: string
+  y: number
+  growth_percent: number | null
+}
+
+export interface Axis {
+  name: string
+  type: string
+  unit: string
+}
+
+export interface AngajamenteAnalyticsSeries {
+  seriesId: string
+  metric: AngajamenteMetric
+  xAxis: Axis
+  yAxis: Axis
+  data: AngajamenteAnalyticsDataPoint[]
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Commitment vs Execution
+// ─────────────────────────────────────────────────────────────────
+
+export interface CommitmentExecutionDataPoint {
+  period: string
+  commitment_value: number
+  execution_value: number
+  difference: number
+  difference_percent: number | null
+  commitment_growth_percent: number | null
+  execution_growth_percent: number | null
+  difference_growth_percent: number | null
+}
+
+export interface CommitmentExecutionComparison {
+  frequency: PeriodType
+  data: CommitmentExecutionDataPoint[]
+  total_commitment: number
+  total_execution: number
+  total_difference: number
+  overall_difference_percent: number | null
+  matched_count: number
+  unmatched_commitment_count: number
+  unmatched_execution_count: number
+}
+
+// ─────────────────────────────────────────────────────────────────
+// UI-only types (kept from previous version)
+// ─────────────────────────────────────────────────────────────────
+
 export interface PipelineStage {
   id: 'credits' | 'commitments' | 'receipts' | 'payments'
   label: string
   value: number
-  percentage: number // Relative to first stage (credits)
+  percentage: number
   status: 'healthy' | 'warning' | 'danger'
 }
 
-/**
- * Breakdown by functional classification
- */
-export interface FunctionalBreakdown {
-  functionalCode: string
-  functionalName: string
-  totalCredite: number
-  totalAngajamente: number // Total commitment credits
-  totalPlati: number
-  totalArierate: number
-  utilizationRate: number
-  commitmentRate: number // (totalAngajamente / totalCredite) * 100
-  items: AngajamenteLineItem[]
-}
-
-/**
- * Paginated response for Angajamente line items
- */
-export interface AngajamentePaginatedResult {
-  data: AngajamenteLineItem[]
-  totalCount: number
-  hasNextPage: boolean
-  hasPreviousPage: boolean
-  currentPage: number
-  pageSize: number
-  totalPages: number
-}
-
-/**
- * Parameters for fetching Angajamente data
- */
-export interface AngajamenteParams {
-  cui: string
-  year: number
-  month?: number
-  functionalCodePrefix?: string
-  economicCodePrefix?: string
-  fundingSource?: string
-  page?: number
-  pageSize?: number
-}
-
-/**
- * Funding source options
- */
 export type FundingSource = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I'
 
 export const FUNDING_SOURCE_LABELS: Record<FundingSource, string> = {
@@ -130,4 +334,27 @@ export const FUNDING_SOURCE_LABELS: Record<FundingSource, string> = {
   G: 'Subvenții de la bugetul de stat',
   H: 'Subvenții de la alte administrații',
   I: 'Alte surse',
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Validation helpers
+// ─────────────────────────────────────────────────────────────────
+
+const MONTHLY_METRICS: ReadonlySet<AngajamenteMetric> = new Set([
+  'CREDITE_ANGAJAMENT',
+  'PLATI_TREZOR',
+  'PLATI_NON_TREZOR',
+  'RECEPTII_TOTALE',
+  'RECEPTII_NEPLATITE_CHANGE',
+])
+
+export function isMetricAvailableForPeriod(
+  metric: AngajamenteMetric,
+  periodType: PeriodType
+): boolean {
+  if (periodType === 'MONTH') {
+    return MONTHLY_METRICS.has(metric)
+  }
+  // QUARTER and YEAR support all metrics except RECEPTII_NEPLATITE_CHANGE
+  return metric !== 'RECEPTII_NEPLATITE_CHANGE'
 }

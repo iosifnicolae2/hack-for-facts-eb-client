@@ -71,7 +71,7 @@ msgstr "*Check filters panel for more details."
 msgid "/capita"
 msgstr "/capita"
 
-#: src/components/angajamente/DetailTable.tsx:89
+#: src/components/angajamente/DetailTable.tsx:588
 msgid "% Committed"
 msgstr "% Committed"
 
@@ -473,7 +473,8 @@ msgstr "Active Series"
 msgid "Actual impact on budget"
 msgstr "Actual impact on budget"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:293
+#: src/components/angajamente/LinearBudgetFlow.tsx:239
+#: src/components/angajamente/LinearBudgetFlow.tsx:396
 msgid "Actual Payments"
 msgstr "Actual Payments"
 
@@ -717,6 +718,10 @@ msgstr "Amount Per Capita"
 msgid "Amount Range"
 msgstr "Amount Range"
 
+#: src/components/angajamente/LinearBudgetFlow.tsx:418
+msgid "Amount:"
+msgstr "Amount:"
+
 #: src/components/ui/FloatingQuickNav.tsx:249
 msgid "Analytics"
 msgstr "Analytics"
@@ -841,7 +846,8 @@ msgstr "Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caract
 msgid "Availability and changes"
 msgstr "Availability and changes"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:215
+#: src/components/angajamente/LinearBudgetFlow.tsx:287
+#: src/components/angajamente/LinearBudgetFlow.tsx:296
 msgid "Available"
 msgstr "Available"
 
@@ -935,16 +941,20 @@ msgstr "Browse and download all financial reports submitted by this entity"
 msgid "Budget"
 msgstr "Budget"
 
+#: src/components/angajamente/LinearBudgetFlow.tsx:261
+msgid "Budget → Commitments"
+msgstr "Budget → Commitments"
+
 #: src/features/learning/components/interactive/BudgetFootprintRevealer.tsx:361
 msgid "Budget category"
 msgstr "Budget category"
 
-#: src/components/angajamente/DetailTable.tsx:80
+#: src/components/angajamente/DetailTable.tsx:567
 msgid "Budget Chapter"
 msgstr "Budget Chapter"
 
 #: src/components/angajamente/AngajamenteTable.tsx:150
-#: src/components/angajamente/DetailTable.tsx:83
+#: src/components/angajamente/DetailTable.tsx:574
 msgid "Budget Credits"
 msgstr "Budget Credits"
 
@@ -955,7 +965,7 @@ msgstr "Budget Cycle Timeline"
 #: src/components/entities/views/Overview.tsx:281
 #: src/components/entities/views/TrendsView.tsx:220
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:94
-#: src/routes/budget-explorer.lazy.tsx:456
+#: src/routes/budget-explorer.lazy.tsx:460
 msgid "Budget Distribution"
 msgstr "Budget Distribution"
 
@@ -968,7 +978,7 @@ msgstr "Budget Documents"
 msgid "Budget Explorer"
 msgstr "Budget Explorer"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:318
+#: src/components/angajamente/LinearBudgetFlow.tsx:441
 msgid "Budget Planning"
 msgstr "Budget Planning"
 
@@ -1272,16 +1282,29 @@ msgstr "Columns"
 msgid "Comfortable"
 msgstr "Comfortable"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:90
+#: src/components/entities/views/AngajamenteView.tsx:390
+#~ msgid "Commitment"
+#~ msgstr "Commitment"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:174
 msgid "Commitment Flow"
 msgstr "Commitment Flow"
 
+#: src/components/entities/views/AngajamenteView.tsx:329
+#~ msgid "Commitment vs Execution"
+#~ msgstr "Commitment vs Execution"
+
 #: src/components/angajamente/AngajamenteTable.tsx:159
-#: src/components/angajamente/DetailTable.tsx:86
-#: src/components/angajamente/LinearBudgetFlow.tsx:232
+#: src/components/angajamente/DetailTable.tsx:581
+#: src/components/angajamente/LinearBudgetFlow.tsx:228
+#: src/components/angajamente/LinearBudgetFlow.tsx:387
 #: src/hooks/useEntityViews.tsx:22
 msgid "Commitments"
 msgstr "Commitments"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:322
+msgid "Commitments → Payments"
+msgstr "Commitments → Payments"
 
 #: src/components/angajamente/CategoryChart.tsx:62
 #: src/components/angajamente/CategoryChart.tsx:126
@@ -1784,9 +1807,13 @@ msgid "Description"
 msgstr "Description"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:123
-#: src/routes/budget-explorer.lazy.tsx:507
+#: src/routes/budget-explorer.lazy.tsx:511
 msgid "Detail level"
 msgstr "Detail level"
+
+#: src/components/angajamente/DetailTable.tsx:537
+msgid "Detail Level"
+msgstr "Detail Level"
 
 #: src/components/entities/EntityReportControls.tsx:51
 #: src/components/entities/EntityReports.tsx:174
@@ -1802,15 +1829,19 @@ msgid "Detailed Budget Execution"
 msgstr "Detailed Budget Execution"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:138
-#: src/routes/budget-explorer.lazy.tsx:520
+#: src/routes/budget-explorer.lazy.tsx:524
 msgid "Detailed categories"
 msgstr "Detailed categories"
+
+#: src/components/angajamente/DetailTable.tsx:545
+msgid "Detailed Categories"
+msgstr "Detailed Categories"
 
 #: src/components/budget-explorer/BudgetLineItemsPreview.tsx:68
 msgid "Detailed Line Items Breakdown"
 msgstr "Detailed Line Items Breakdown"
 
-#: src/routes/entities.$cui.lazy.tsx:407
+#: src/routes/entities.$cui.lazy.tsx:419
 msgid "Details:"
 msgstr "Details:"
 
@@ -1822,6 +1853,15 @@ msgstr "Development"
 #: src/components/budget-explorer/RevenueBreakdown.tsx:62
 msgid "Development section transfers"
 msgstr "Development section transfers"
+
+#: src/components/entities/views/AngajamenteView.tsx:368
+#: src/components/entities/views/AngajamenteView.tsx:392
+#~ msgid "Difference"
+#~ msgstr "Difference"
+
+#: src/components/entities/views/AngajamenteView.tsx:374
+#~ msgid "Difference %"
+#~ msgstr "Difference %"
 
 #: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:57
 msgid "Disable All Series"
@@ -1857,7 +1897,7 @@ msgstr "Done"
 msgid "Download"
 msgstr "Download"
 
-#: src/components/angajamente/DetailTable.tsx:70
+#: src/components/angajamente/DetailTable.tsx:554
 msgid "Download Excel"
 msgstr "Download Excel"
 
@@ -1909,6 +1949,7 @@ msgstr "Easily manage your subscriptions"
 msgid "Ec"
 msgstr "Ec"
 
+#: src/components/angajamente/DetailTable.tsx:533
 #: src/components/classification-explorer/ClassificationExplorer.tsx:195
 #: src/components/classification-explorer/ClassificationExplorer.tsx:196
 #: src/components/common/classification-info-link.tsx:89
@@ -1916,7 +1957,7 @@ msgstr "Ec"
 #: src/components/entities/views/Overview.tsx:305
 #: src/components/entities/views/TrendsView.tsx:223
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:118
-#: src/routes/budget-explorer.lazy.tsx:502
+#: src/routes/budget-explorer.lazy.tsx:506
 msgid "Economic"
 msgstr "Economic"
 
@@ -2119,7 +2160,7 @@ msgstr "equals"
 msgid "Error"
 msgstr "Error"
 
-#: src/routes/entities.$cui.lazy.tsx:404
+#: src/routes/entities.$cui.lazy.tsx:416
 msgid "Error Fetching Entity Details"
 msgstr "Error Fetching Entity Details"
 
@@ -2191,7 +2232,7 @@ msgstr "Estimate"
 msgid "Estimate the <0>Shares</0>"
 msgstr "Estimate the <0>Shares</0>"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:321
+#: src/components/angajamente/LinearBudgetFlow.tsx:442
 msgid "Estimated money to be spent"
 msgstr "Estimated money to be spent"
 
@@ -2289,6 +2330,10 @@ msgstr "Excluding inter-budget flows and financial operations"
 #: src/features/learning/components/interactive/PromiseTracker.tsx:380
 msgid "Executed"
 msgstr "Executed"
+
+#: src/components/entities/views/AngajamenteView.tsx:391
+#~ msgid "Execution"
+#~ msgstr "Execution"
 
 #: src/hooks/useEntityViews.tsx:24
 msgid "Expense Trends"
@@ -2404,7 +2449,7 @@ msgstr "Failed to load alert"
 msgid "Failed to load alerts. Please try again."
 msgstr "Failed to load alerts. Please try again."
 
-#: src/routes/budget-explorer.lazy.tsx:530
+#: src/routes/budget-explorer.lazy.tsx:534
 msgid "Failed to load data."
 msgstr "Failed to load data."
 
@@ -2479,7 +2524,7 @@ msgstr "Filters info"
 msgid "Filters marked as exclude will remove data matching these criteria from the results."
 msgstr "Filters marked as exclude will remove data matching these criteria from the results."
 
-#: src/components/entities/views/AngajamenteView.tsx:86
+#: src/components/entities/views/AngajamenteView.tsx:238
 msgid "Final Budget Credits"
 msgstr "Final Budget Credits"
 
@@ -2491,9 +2536,9 @@ msgstr "Final:"
 msgid "Financial Evolution - {entityName}"
 msgstr "Financial Evolution - {entityName}"
 
-#: src/components/entities/views/AngajamenteView.tsx:116
-msgid "Financial Flow"
-msgstr "Financial Flow"
+#: src/components/entities/views/AngajamenteView.tsx:269
+#~ msgid "Financial Flow"
+#~ msgstr "Financial Flow"
 
 #: src/components/budget-explorer/RevenueBreakdown.tsx:273
 msgid "Financial operations"
@@ -2571,6 +2616,7 @@ msgstr "Found {replacementCount} occurrence{0}"
 msgid "Full Procurement Portal"
 msgstr "Full Procurement Portal"
 
+#: src/components/angajamente/DetailTable.tsx:532
 #: src/components/classification-explorer/ClassificationExplorer.tsx:192
 #: src/components/classification-explorer/ClassificationExplorer.tsx:193
 #: src/components/common/classification-info-link.tsx:89
@@ -2578,7 +2624,7 @@ msgstr "Full Procurement Portal"
 #: src/components/entities/views/Overview.tsx:304
 #: src/components/entities/views/TrendsView.tsx:222
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:111
-#: src/routes/budget-explorer.lazy.tsx:499
+#: src/routes/budget-explorer.lazy.tsx:503
 msgid "Functional"
 msgstr "Functional"
 
@@ -2726,13 +2772,13 @@ msgstr "Goods and Services"
 msgid "Governing law"
 msgstr "Governing law"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:94
-msgid "Graphical explanation of how the planned budget becomes an actual payment."
-msgstr "Graphical explanation of how the planned budget becomes an actual payment."
+#: src/components/angajamente/LinearBudgetFlow.tsx:174
+#~ msgid "Graphical explanation of how the planned budget becomes an actual payment."
+#~ msgstr "Graphical explanation of how the planned budget becomes an actual payment."
 
-#: src/components/entities/views/AngajamenteView.tsx:119
-msgid "Graphical View"
-msgstr "Graphical View"
+#: src/components/entities/views/AngajamenteView.tsx:272
+#~ msgid "Graphical View"
+#~ msgstr "Graphical View"
 
 #: src/components/alerts/components/ConditionsList.tsx:91
 msgid "Greater or equal"
@@ -2758,8 +2804,9 @@ msgstr "Grid view"
 msgid "Gross"
 msgstr "Gross"
 
+#: src/components/angajamente/DetailTable.tsx:525
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:99
-#: src/routes/budget-explorer.lazy.tsx:489
+#: src/routes/budget-explorer.lazy.tsx:493
 msgid "Grouping"
 msgstr "Grouping"
 
@@ -3135,11 +3182,11 @@ msgstr "Legal"
 msgid "Legal bases for processing"
 msgstr "Legal bases for processing"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:332
+#: src/components/angajamente/LinearBudgetFlow.tsx:449
 msgid "Legal Commitment"
 msgstr "Legal Commitment"
 
-#: src/components/entities/views/AngajamenteView.tsx:93
+#: src/components/entities/views/AngajamenteView.tsx:245
 msgid "Legal Commitments"
 msgstr "Legal Commitments"
 
@@ -3237,9 +3284,21 @@ msgstr "Loading chart configuration..."
 msgid "Loading chart data..."
 msgstr "Loading chart data..."
 
+#: src/components/entities/views/AngajamenteView.tsx:348
+#~ msgid "Loading comparison data (this may take a moment)..."
+#~ msgstr "Loading comparison data (this may take a moment)..."
+
 #: src/routes/map.lazy.tsx:218
 msgid "Loading data..."
 msgstr "Loading data..."
+
+#: src/components/angajamente/DetailTable.tsx:297
+msgid "Loading details..."
+msgstr "Loading details..."
+
+#: src/components/angajamente/DetailTable.tsx:111
+#~ msgid "Loading economic details..."
+#~ msgstr "Loading economic details..."
 
 #: src/routes/map.lazy.tsx:222
 msgid "Loading heatmap data..."
@@ -3313,9 +3372,13 @@ msgid "Main Categories"
 msgstr "Main Categories"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:135
-#: src/routes/budget-explorer.lazy.tsx:517
+#: src/routes/budget-explorer.lazy.tsx:521
 msgid "Main chapters"
 msgstr "Main chapters"
+
+#: src/components/angajamente/DetailTable.tsx:544
+msgid "Main Chapters"
+msgstr "Main Chapters"
 
 #: src/components/entities/EntityReportControls.tsx:300
 #: src/lib/chart-filter-utils.ts:38
@@ -3399,6 +3462,10 @@ msgstr "Master the app with these powerful keyboard shortcuts"
 #: src/features/learning/components/player/MarkComplete.tsx:70
 msgid "Mastering the budget one step at a time. Your progress is recorded."
 msgstr "Mastering the budget one step at a time. Your progress is recorded."
+
+#: src/components/entities/views/AngajamenteView.tsx:422
+#~ msgid "Matched periods"
+#~ msgstr "Matched periods"
 
 #: src/components/ui/amount-range-picker.tsx:128
 msgid "Maximum"
@@ -3651,6 +3718,10 @@ msgstr "No aggregated data"
 msgid "No annotations yet."
 msgstr "No annotations yet."
 
+#: src/components/angajamente/DetailTable.tsx:322
+msgid "No breakdown available"
+msgstr "No breakdown available"
+
 #: src/components/budget-explorer/BudgetCategoryList.tsx:135
 msgid "No categories to display."
 msgstr "No categories to display."
@@ -3686,6 +3757,10 @@ msgstr "No classifications found"
 msgid "No commitment data available"
 msgstr "No commitment data available"
 
+#: src/components/entities/views/AngajamenteView.tsx:429
+#~ msgid "No comparison data available for this period."
+#~ msgstr "No comparison data available for this period."
+
 #: src/components/alerts/components/ConditionsList.tsx:48
 msgid "No conditions added yet. Click the button below to add your first condition."
 msgstr "No conditions added yet. Click the button below to add your first condition."
@@ -3694,7 +3769,7 @@ msgstr "No conditions added yet. Click the button below to add your first condit
 msgid "No conditions set"
 msgstr "No conditions set"
 
-#: src/components/angajamente/DetailTable.tsx:53
+#: src/components/angajamente/DetailTable.tsx:509
 msgid "No data available"
 msgstr "No data available"
 
@@ -3714,7 +3789,7 @@ msgstr "No data available for the table."
 msgid "No data available to display financial evolution."
 msgstr "No data available to display financial evolution."
 
-#: src/routes/entities.$cui.lazy.tsx:419
+#: src/routes/entities.$cui.lazy.tsx:431
 msgid "No Data Found"
 msgstr "No Data Found"
 
@@ -3742,6 +3817,10 @@ msgstr "No detailed data available for this selection."
 msgid "No detailed records available."
 msgstr "No detailed records available."
 
+#: src/components/angajamente/DetailTable.tsx:123
+#~ msgid "No economic breakdown available"
+#~ msgstr "No economic breakdown available"
+
 #: src/components/budget-explorer/BudgetCategoryList.tsx:147
 msgid "No economic breakdown is available for income."
 msgstr "No economic breakdown is available for income."
@@ -3750,7 +3829,7 @@ msgstr "No economic breakdown is available for income."
 msgid "No enabled series data available to display."
 msgstr "No enabled series data available to display."
 
-#: src/routes/entities.$cui.lazy.tsx:421
+#: src/routes/entities.$cui.lazy.tsx:433
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 
@@ -3889,11 +3968,11 @@ msgstr "Now"
 msgid "October"
 msgstr "October"
 
-#: src/components/entities/views/AngajamenteView.tsx:95
+#: src/components/entities/views/AngajamenteView.tsx:247
 msgid "of budget contracted"
 msgstr "of budget contracted"
 
-#: src/components/entities/views/AngajamenteView.tsx:104
+#: src/components/entities/views/AngajamenteView.tsx:256
 msgid "of commitments paid"
 msgstr "of commitments paid"
 
@@ -3955,9 +4034,9 @@ msgstr "Open feedback dialog"
 msgid "Open floating entity search"
 msgstr "Open floating entity search"
 
-#: src/routes/budget-explorer.lazy.tsx:587
-#: src/routes/budget-explorer.lazy.tsx:603
-#: src/routes/budget-explorer.lazy.tsx:623
+#: src/routes/budget-explorer.lazy.tsx:591
+#: src/routes/budget-explorer.lazy.tsx:607
+#: src/routes/budget-explorer.lazy.tsx:627
 msgid "Open in Chart Builder"
 msgstr "Open in Chart Builder"
 
@@ -3974,7 +4053,7 @@ msgid "Open in charts"
 msgstr "Open in charts"
 
 #: src/components/entities/views/Overview.tsx:287
-#: src/routes/budget-explorer.lazy.tsx:463
+#: src/routes/budget-explorer.lazy.tsx:467
 msgid "Open in entity analytics"
 msgstr "Open in entity analytics"
 
@@ -4091,7 +4170,7 @@ msgstr "Path Progress"
 msgid "Paused"
 msgstr "Paused"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:346
+#: src/components/angajamente/LinearBudgetFlow.tsx:457
 msgid "Payment and Execution"
 msgstr "Payment and Execution"
 
@@ -4099,8 +4178,8 @@ msgstr "Payment and Execution"
 msgid "Payments"
 msgstr "Payments"
 
-#: src/components/angajamente/DetailTable.tsx:92
-#: src/components/entities/views/AngajamenteView.tsx:102
+#: src/components/angajamente/DetailTable.tsx:595
+#: src/components/entities/views/AngajamenteView.tsx:254
 msgid "Payments Made"
 msgstr "Payments Made"
 
@@ -4428,7 +4507,7 @@ msgstr "Reporting entity"
 msgid "Reporting filters"
 msgstr "Reporting filters"
 
-#: src/routes/entities.$cui.lazy.tsx:452
+#: src/routes/entities.$cui.lazy.tsx:464
 msgid "Reporting period"
 msgstr "Reporting period"
 
@@ -4642,7 +4721,7 @@ msgstr "Secondary creditor aggregated"
 msgid "Security monitoring and logs"
 msgstr "Security monitoring and logs"
 
-#: src/routes/budget-explorer.lazy.tsx:561
+#: src/routes/budget-explorer.lazy.tsx:565
 msgid "See advanced view"
 msgstr "See advanced view"
 
@@ -4761,6 +4840,10 @@ msgstr "Share Link"
 #: src/routes/alerts/new.lazy.tsx:106
 msgid "Share link copied"
 msgstr "Share link copied"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:429
+msgid "Share:"
+msgstr "Share:"
 
 #: src/components/budget-explorer/RevenueBreakdown.tsx:58
 msgid "Shares and amounts split from income tax"
@@ -4905,7 +4988,7 @@ msgstr "Sign in to receive updates about the entities you care about."
 msgid "Sign in to track your learning journey."
 msgstr "Sign in to track your learning journey."
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:335
+#: src/components/angajamente/LinearBudgetFlow.tsx:450
 msgid "Signing contracts (Reservation)"
 msgstr "Signing contracts (Reservation)"
 
@@ -5033,15 +5116,15 @@ msgstr "Status by Budget Chapters"
 msgid "Stay here"
 msgstr "Stay here"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:315
+#: src/components/angajamente/LinearBudgetFlow.tsx:440
 msgid "Step 1"
 msgstr "Step 1"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:328
+#: src/components/angajamente/LinearBudgetFlow.tsx:447
 msgid "Step 2"
 msgstr "Step 2"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:342
+#: src/components/angajamente/LinearBudgetFlow.tsx:455
 msgid "Step 3"
 msgstr "Step 3"
 
@@ -5102,8 +5185,8 @@ msgstr "System status badge"
 msgid "Table"
 msgstr "Table"
 
-#: src/components/angajamente/DetailTable.tsx:49
-#: src/components/angajamente/DetailTable.tsx:63
+#: src/components/angajamente/DetailTable.tsx:505
+#: src/components/angajamente/DetailTable.tsx:521
 msgid "Table Detail"
 msgstr "Table Detail"
 
@@ -5230,7 +5313,7 @@ msgstr "The state total claim is <0>{0}</0>."
 msgid "The Step Between Budget and Payment"
 msgstr "The Step Between Budget and Payment"
 
-#: src/routes/entities.$cui.lazy.tsx:406
+#: src/routes/entities.$cui.lazy.tsx:418
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "There was a problem fetching the details for CUI: <0>{cui}</0>."
 
@@ -5269,6 +5352,10 @@ msgstr "This alert is included in every monthly newsletter with its current stat
 #: src/components/classification-explorer/ClassificationChildren.tsx:27
 msgid "This classification has no subcategories"
 msgstr "This classification has no subcategories"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:183
+msgid "This diagram shows how public money flows from budget allocation to legal commitments (signed contracts) to actual payments. The width of each flow represents the proportion of funds at each stage."
+msgstr "This diagram shows how public money flows from budget allocation to legal commitments (signed contracts) to actual payments. The width of each flow represents the proportion of funds at each stage."
 
 #: src/components/entities/EntityRelationships.tsx:22
 msgid "This entity has no funding or funded relationships."
@@ -5335,8 +5422,9 @@ msgstr "Title Z–A"
 msgid "To exercise any of these rights, contact us at contact@transparenta.eu We will respond within 30 days."
 msgstr "To exercise any of these rights, contact us at contact@transparenta.eu We will respond within 30 days."
 
-#: src/components/angajamente/DetailTable.tsx:95
-#: src/components/angajamente/LinearBudgetFlow.tsx:280
+#: src/components/angajamente/DetailTable.tsx:602
+#: src/components/angajamente/LinearBudgetFlow.tsx:352
+#: src/components/angajamente/LinearBudgetFlow.tsx:361
 msgid "To Pay"
 msgstr "To Pay"
 
@@ -5376,7 +5464,7 @@ msgstr "Top 15 Counties by Total Amount"
 msgid "Top 15 UATs by Total Amount"
 msgstr "Top 15 UATs by Total Amount"
 
-#: src/routes/budget-explorer.lazy.tsx:558
+#: src/routes/budget-explorer.lazy.tsx:562
 msgid "Top Categories"
 msgstr "Top Categories"
 
@@ -5386,7 +5474,7 @@ msgid "Top Economic Categories"
 msgstr "Top Economic Categories"
 
 #: src/components/budget-explorer/BudgetCategoryList.tsx:140
-#: src/routes/budget-explorer.lazy.tsx:619
+#: src/routes/budget-explorer.lazy.tsx:623
 msgid "Top Functional Categories"
 msgstr "Top Functional Categories"
 
@@ -5404,7 +5492,7 @@ msgstr "total"
 msgid "Total"
 msgstr "Total"
 
-#: src/components/entities/views/AngajamenteView.tsx:84
+#: src/components/entities/views/AngajamenteView.tsx:236
 msgid "Total Allocated Budget"
 msgstr "Total Allocated Budget"
 
@@ -5422,13 +5510,22 @@ msgid "Total Amount"
 msgstr "Total Amount"
 
 #: src/components/angajamente/CategoryChart.tsx:120
-#: src/components/angajamente/LinearBudgetFlow.tsx:172
+#: src/components/angajamente/LinearBudgetFlow.tsx:217
+#: src/components/angajamente/LinearBudgetFlow.tsx:378
 msgid "Total Budget"
 msgstr "Total Budget"
+
+#: src/components/entities/views/AngajamenteView.tsx:356
+#~ msgid "Total Commitment"
+#~ msgstr "Total Commitment"
 
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:151
 msgid "Total Duration"
 msgstr "Total Duration"
+
+#: src/components/entities/views/AngajamenteView.tsx:362
+#~ msgid "Total Execution"
+#~ msgstr "Total Execution"
 
 #: src/components/entities/EntityFinancialSummary.tsx:82
 msgid "Total Expenses"
@@ -5455,7 +5552,7 @@ msgstr "Total:"
 msgid "Tour Complete!"
 msgstr "Tour Complete!"
 
-#: src/components/angajamente/LinearBudgetFlow.tsx:349
+#: src/components/angajamente/LinearBudgetFlow.tsx:458
 msgid "Transfer of money to supplier"
 msgstr "Transfer of money to supplier"
 
@@ -5579,6 +5676,14 @@ msgstr "Unknown type"
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:42
 msgid "Unlock annotation"
 msgstr "Unlock annotation"
+
+#: src/components/entities/views/AngajamenteView.tsx:423
+#~ msgid "Unmatched commitment"
+#~ msgstr "Unmatched commitment"
+
+#: src/components/entities/views/AngajamenteView.tsx:424
+#~ msgid "Unmatched execution"
+#~ msgstr "Unmatched execution"
 
 #: src/components/alerts/components/UnsavedChangesDialog.tsx:30
 #: src/routes/alerts/$alertId/index.lazy.tsx:127

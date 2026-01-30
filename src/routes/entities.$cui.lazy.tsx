@@ -150,6 +150,8 @@ function EntityDetailsPage() {
 
   const treemapPrimary = search.treemapPrimary as 'fn' | 'ec' | undefined
   const accountCategory = search.accountCategory as 'ch' | 'vn' | undefined
+  const angajamenteGrouping = search.angajamenteGrouping as 'fn' | 'ec' | undefined
+  const angajamenteDetailLevel = search.angajamenteDetailLevel as 'chapter' | 'detailed' | undefined
 
   const transferFilter = search.transferFilter as 'all' | 'no-transfers' | 'transfers-only' | undefined
 
@@ -286,6 +288,10 @@ function EntityDetailsPage() {
 
   const handleTransferFilterChange = useCallback((filter: 'all' | 'no-transfers' | 'transfers-only') => {
     updateSearch({ transferFilter: filter })
+  }, [updateSearch])
+
+  const handleAngajamenteGroupingChange = useCallback((grouping: 'fn' | 'ec', detailLevel: 'chapter' | 'detailed') => {
+    updateSearch({ angajamenteGrouping: grouping, angajamenteDetailLevel: detailLevel })
   }, [updateSearch])
 
   const advancedFilter = search.advancedFilter as string | undefined
@@ -519,6 +525,9 @@ function EntityDetailsPage() {
           handleTransferFilterChange={handleTransferFilterChange}
           advancedFilter={advancedFilter}
           handleAdvancedFilterChange={handleAdvancedFilterChange}
+          angajamenteGrouping={angajamenteGrouping}
+          angajamenteDetailLevel={angajamenteDetailLevel}
+          handleAngajamenteGroupingChange={handleAngajamenteGroupingChange}
         />
       </div>
     </div>
@@ -565,6 +574,9 @@ interface ViewsContentProps {
   handleTransferFilterChange: (filter: 'all' | 'no-transfers' | 'transfers-only') => void;
   advancedFilter?: string;
   handleAdvancedFilterChange: (filter: string | undefined) => void;
+  angajamenteGrouping?: 'fn' | 'ec';
+  angajamenteDetailLevel?: 'chapter' | 'detailed';
+  handleAngajamenteGroupingChange: (grouping: 'fn' | 'ec', detailLevel: 'chapter' | 'detailed') => void;
 }
 
 function ViewsContent(props: ViewsContentProps) {
@@ -578,6 +590,7 @@ function ViewsContent(props: ViewsContentProps) {
     treemapPath, handleTreemapPathChange,
     transferFilter, handleTransferFilterChange,
     advancedFilter, handleAdvancedFilterChange,
+    angajamenteGrouping, angajamenteDetailLevel, handleAngajamenteGroupingChange,
   } = props;
 
   const normalizationOptions: NormalizationOptions = {
@@ -627,7 +640,7 @@ function ViewsContent(props: ViewsContentProps) {
           case 'related-charts': return <RelatedChartsView entity={entity} normalizationOptions={normalizationOptions} />
           case 'relationships': return <EntityRelationships cui={cui} />
           case 'contracts': return <ContractsView entity={entity} />
-          case 'angajamente': return <AngajamenteView entity={entity} currentYear={selectedYear} currency={normalizationOptions.currency} />
+          case 'angajamente': return <AngajamenteView entity={entity} currentYear={selectedYear} currency={normalizationOptions.currency} reportPeriod={reportPeriod} reportType={reportTypeState ?? entity?.default_report_type} normalization={normalization} inflationAdjusted={inflationAdjusted} angajamenteGrouping={angajamenteGrouping} angajamenteDetailLevel={angajamenteDetailLevel} onAngajamenteGroupingChange={handleAngajamenteGroupingChange} />
           default: return <Overview cui={cui} entity={entity} isLoading={isLoading} selectedYear={selectedYear} normalizationOptions={normalizationOptions} years={years} periodType={period} reportPeriod={reportPeriod} reportType={reportTypeState} mainCreditorCui={mainCreditorCui} search={search} onChartNormalizationChange={handleNormalizationChange} onYearChange={handleYearChange} onPeriodItemSelect={handlePeriodItemSelect} onSearchChange={handleSearchChange} onAnalyticsChange={handleAnalyticsChange} onLineItemsTabChange={handleLineItemsTabChange} onSelectedFundingKeyChange={handleSelectedFundingKeyChange} onSelectedExpenseTypeKeyChange={handleSelectedExpenseTypeKeyChange} treemapPrimary={treemapPrimary} accountCategory={accountCategory} onTreemapPrimaryChange={handleTreemapPrimaryChange} onAccountCategoryChange={handleAccountCategoryChange} treemapPath={treemapPath} onTreemapPathChange={handleTreemapPathChange} transferFilter={transferFilter} onTransferFilterChange={handleTransferFilterChange} advancedFilter={advancedFilter} onAdvancedFilterChange={handleAdvancedFilterChange} />
         }
       })()}

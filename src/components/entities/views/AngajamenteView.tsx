@@ -12,8 +12,15 @@ import { useMemo } from 'react'
 import { EntityDetailsData } from '@/lib/api/entities'
 import {
   useAngajamenteSummary,
-  useAngajamenteByFunctional,
+  useAngajamenteAggregated,
 } from '@/hooks/useAngajamenteData'
+import {
+  extractSummaryValues,
+  buildAngajamenteFilter,
+} from '@/lib/api/angajamente'
+import type { AngajamenteFilterInput } from '@/schemas/angajamente'
+import type { ReportPeriodInput, ReportPeriodType, GqlReportType, PeriodDate } from '@/schemas/reporting'
+import { getQuarterForMonth } from '@/schemas/reporting'
 import {
   StatCard,
   LinearBudgetFlow,
@@ -22,61 +29,198 @@ import {
   DetailTable,
   type CategoryData,
 } from '@/components/angajamente'
-import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
+import { getClassificationName } from '@/lib/classifications'
+import {
+  getEconomicChapterName,
+  getEconomicSubchapterName,
+} from '@/lib/economic-classifications'
+import type { Grouping, DetailLevel } from '@/components/angajamente/DetailTable'
 
 type Props = {
   readonly entity: EntityDetailsData | null | undefined
   readonly currentYear: number
   readonly currency?: 'RON' | 'EUR' | 'USD'
+  readonly reportPeriod: ReportPeriodInput
+  readonly reportType?: GqlReportType
+  readonly normalization?: string
+  readonly inflationAdjusted?: boolean
+  readonly angajamenteGrouping?: Grouping
+  readonly angajamenteDetailLevel?: DetailLevel
+  readonly onAngajamenteGroupingChange?: (grouping: Grouping, detailLevel: DetailLevel) => void
+}
+
+/**
+ * Convert a MONTH-type report period to its containing QUARTER,
+ * since angajamente data is natively quarterly.
+ */
+function toAngajamenteReportPeriod(reportPeriod: ReportPeriodInput): ReportPeriodInput {
+  if (reportPeriod.type !== 'MONTH') return reportPeriod
+
+  // Convert month interval to quarter interval
+  const interval = reportPeriod.selection.interval
+  if (interval) {
+    const startMonth = parseInt(interval.start.split('-')[1] || '1', 10)
+    const endMonth = parseInt(interval.end.split('-')[1] || '12', 10)
+    const startYear = interval.start.split('-')[0]
+    const endYear = interval.end.split('-')[0]
+    const startQ = getQuarterForMonth(startMonth)
+    const endQ = getQuarterForMonth(endMonth)
+    return {
+      type: 'QUARTER' as ReportPeriodType,
+      selection: {
+        interval: {
+          start: `${startYear}-${startQ}` as PeriodDate,
+          end: `${endYear}-${endQ}` as PeriodDate,
+        },
+      },
+    }
+  }
+
+  // Fallback: just change type to QUARTER
+  return { ...reportPeriod, type: 'QUARTER' as ReportPeriodType }
 }
 
 export function AngajamenteView({
   entity,
-  currentYear,
   currency = 'RON',
+  reportPeriod,
+  reportType,
+  normalization,
+  inflationAdjusted,
+  angajamenteGrouping,
+  angajamenteDetailLevel,
+  onAngajamenteGroupingChange,
 }: Props) {
   const cui = entity?.cui ?? ''
+  const grouping: Grouping = angajamenteGrouping ?? 'fn'
+  const detailLevel: DetailLevel = angajamenteDetailLevel ?? 'chapter'
 
-  // Fetch data
-  const { data: summary, isLoading: isSummaryLoading } = useAngajamenteSummary(
-    cui,
-    currentYear,
+  // Auto-convert MONTH → QUARTER for angajamente data
+  const angajamenteReportPeriod = useMemo(
+    () => toAngajamenteReportPeriod(reportPeriod),
+    [reportPeriod]
+  )
+
+  // Build the filter for all angajamente queries
+  const filter = useMemo<AngajamenteFilterInput>(
+    () =>
+      buildAngajamenteFilter({
+        reportPeriod: angajamenteReportPeriod,
+        reportType: reportType ?? 'PRINCIPAL_AGGREGATED',
+        cui,
+        normalization,
+        currency,
+        inflationAdjusted,
+        excludeTransfers: true,
+      }),
+    [angajamenteReportPeriod, reportType, cui, normalization, currency, inflationAdjusted]
+  )
+
+  // Fetch summary data
+  const { data: summaryData, isLoading: isSummaryLoading } = useAngajamenteSummary(
+    filter,
     { enabled: !!cui }
   )
 
-  const { data: functionalBreakdown, isLoading: isFunctionalLoading } =
-    useAngajamenteByFunctional(cui, currentYear, { enabled: !!cui })
+  // Fetch 3 parallel aggregated queries for the category chart
+  // TODO: Consider a single aggregated query with multiple metrics when the API supports it
+  const budgetAggInput = useMemo(
+    () => ({ filter, metric: 'CREDITE_BUGETARE_DEFINITIVE' as const, limit: 20 }),
+    [filter]
+  )
+  const committedAggInput = useMemo(
+    () => ({ filter, metric: 'CREDITE_ANGAJAMENT' as const, limit: 20 }),
+    [filter]
+  )
+  const paidAggInput = useMemo(
+    () => ({ filter, metric: 'PLATI_TREZOR' as const, limit: 20 }),
+    [filter]
+  )
 
-  // Transform functional breakdown to CategoryData format
+  const { data: budgetAgg, isLoading: isBudgetAggLoading } = useAngajamenteAggregated(
+    budgetAggInput,
+    { enabled: !!cui }
+  )
+  const { data: committedAgg, isLoading: isCommittedAggLoading } = useAngajamenteAggregated(
+    committedAggInput,
+    { enabled: !!cui }
+  )
+  const { data: paidAgg, isLoading: isPaidAggLoading } = useAngajamenteAggregated(
+    paidAggInput,
+    { enabled: !!cui }
+  )
+
+  const isCategoryLoading = isBudgetAggLoading || isCommittedAggLoading || isPaidAggLoading
+
+  // Extract summary values from union type
+  const summaryValues = useMemo(
+    () => extractSummaryValues(summaryData?.nodes ?? []),
+    [summaryData]
+  )
+  const { totalBudget, committed, paid } = summaryValues
+
+  // Join the 3 aggregated queries into CategoryData[]
+  // The API returns rows grouped by (functional_code, economic_code), so we
+  // must sum amounts per group code before joining across metrics.
+  // Grouping dimension (fn/ec) and detail level (chapter/detailed) are controlled
+  // by the DetailTable toggle controls.
+  const getCodeAtDepth = (code: string, depth: 2 | 4): string => {
+    const parts = code.replace(/[^0-9.]/g, '').split('.')
+    if (depth === 2) return parts[0] ?? ''
+    return parts.slice(0, 2).join('.')
+  }
+
   const categoryData = useMemo<CategoryData[]>(() => {
-    if (!functionalBreakdown) return []
-    return functionalBreakdown.map((fb) => ({
-      id: fb.functionalCode,
-      name: fb.functionalName,
-      budget: fb.totalCredite,
-      committed: fb.totalAngajamente,
-      paid: fb.totalPlati,
+    if (!budgetAgg || !committedAgg || !paidAgg) return []
+
+    const isFn = grouping === 'fn'
+    const depth: 2 | 4 = detailLevel === 'chapter' ? 2 : 4
+
+    const getGroupCode = (n: { functional_code: string; economic_code: string | null }) => {
+      const raw = isFn ? n.functional_code : (n.economic_code ?? '')
+      return getCodeAtDepth(raw, depth)
+    }
+
+    const resolveName = (code: string) => {
+      if (isFn) return getClassificationName(code)
+      if (depth === 2) return getEconomicChapterName(code)
+      return getEconomicSubchapterName(code)
+    }
+
+    const sumByGroup = (nodes: typeof budgetAgg.nodes) => {
+      const map = new Map<string, { name: string; amount: number }>()
+      for (const n of nodes) {
+        const code = getGroupCode(n)
+        if (!code) continue
+        const existing = map.get(code)
+        if (existing) {
+          existing.amount += n.amount
+        } else {
+          const fallbackName = isFn ? n.functional_name : (n.economic_name ?? code)
+          map.set(code, { name: resolveName(code) ?? fallbackName, amount: n.amount })
+        }
+      }
+      return map
+    }
+
+    const budgetMap = sumByGroup(budgetAgg.nodes)
+    const committedMap = sumByGroup(committedAgg.nodes)
+    const paidMap = sumByGroup(paidAgg.nodes)
+
+    const allCodes = new Set([...budgetMap.keys(), ...committedMap.keys(), ...paidMap.keys()])
+    return Array.from(allCodes).map((code) => ({
+      id: code,
+      name: budgetMap.get(code)?.name ?? committedMap.get(code)?.name ?? paidMap.get(code)?.name ?? code,
+      budget: budgetMap.get(code)?.amount ?? 0,
+      committed: committedMap.get(code)?.amount ?? 0,
+      paid: paidMap.get(code)?.amount ?? 0,
     }))
-  }, [functionalBreakdown])
+  }, [budgetAgg, committedAgg, paidAgg, grouping, detailLevel])
 
   if (!entity) {
     return null
   }
-
-  // Calculate derived values for display
-  // TODO: Remove mock data after testing - use real API data
-  const USE_MOCK_DATA = true // Set to false to use real API data
-
-  const totalBudget = USE_MOCK_DATA
-    ? 916_340_000 // 916.34 mil RON
-    : (summary?.totalCrediteButetareDefinitive ?? 0)
-  const committed = USE_MOCK_DATA
-    ? 785_400_000 // 785.40 mil RON (85.7% of budget - leaves 14.3% Disponibil)
-    : (summary?.totalCrediteAngajament ?? 0)
-  const paid = USE_MOCK_DATA
-    ? 490_780_000 // 490.78 mil RON (62.5% of committed - leaves 37.5% De Plată)
-    : (summary?.totalPlati ?? 0)
 
   // Calculate percentages
   const commitmentPercent =
@@ -119,14 +263,6 @@ export function AngajamenteView({
 
       {/* Level 2: Financial Flow Visualization */}
       <section>
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="font-bold text-slate-700 text-lg">
-            <Trans>Financial Flow</Trans>
-          </h3>
-          <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">
-            <Trans>Graphical View</Trans>
-          </span>
-        </div>
         <LinearBudgetFlow
           totalBudget={totalBudget}
           committed={committed}
@@ -141,7 +277,7 @@ export function AngajamenteView({
         <CategoryChart
           data={categoryData}
           currency={currency}
-          isLoading={isFunctionalLoading}
+          isLoading={isCategoryLoading}
         />
         <CommitmentInfoPanel />
       </div>
@@ -150,7 +286,11 @@ export function AngajamenteView({
       <DetailTable
         data={categoryData}
         currency={currency}
-        isLoading={isFunctionalLoading}
+        isLoading={isCategoryLoading}
+        filter={filter}
+        grouping={grouping}
+        detailLevel={detailLevel}
+        onGroupingChange={onAngajamenteGroupingChange}
       />
     </div>
   )
