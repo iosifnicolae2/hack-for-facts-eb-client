@@ -53,19 +53,19 @@ function CustomTooltip({ active, payload, currency }: CustomTooltipProps) {
         <p className="font-bold text-slate-800 mb-2">{data.name}</p>
         <div className="space-y-1">
           <p className="text-slate-500">
-            {t`Budget`}:{' '}
+            {t`Budget credits`}:{' '}
             <span className="font-semibold text-slate-700">
               {formatCurrency(data.budget, 'compact', currency)}
             </span>
           </p>
           <p className="text-blue-500">
-            {t`Committed`}:{' '}
+            {t`Legal commitments`}:{' '}
             <span className="font-semibold">
               {formatCurrency(data.committed, 'compact', currency)}
             </span>
           </p>
           <p className="text-emerald-500">
-            {t`Paid`}:{' '}
+            {t`Payments`}:{' '}
             <span className="font-semibold">
               {formatCurrency(data.paid, 'compact', currency)}
             </span>
@@ -117,19 +117,19 @@ export function CategoryChart({ data, currency = 'RON', isLoading = false }: Pro
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 bg-slate-200 rounded-sm" />
             <span className="text-slate-500">
-              <Trans>Total Budget</Trans>
+              <Trans>Budget credits</Trans>
             </span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 bg-blue-500 rounded-sm" />
             <span className="text-slate-500">
-              <Trans>Committed</Trans>
+              <Trans>Legal commitments</Trans>
             </span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 bg-emerald-400 rounded-sm" />
             <span className="text-slate-500">
-              <Trans>Paid</Trans>
+              <Trans>Payments</Trans>
             </span>
           </div>
         </div>

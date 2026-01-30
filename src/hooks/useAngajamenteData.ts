@@ -9,6 +9,7 @@ import {
   fetchAngajamenteSummary,
   fetchAngajamenteLineItems,
   fetchAngajamenteAggregated,
+  fetchAngajamenteAggregatedAll,
   fetchAngajamenteAnalytics,
   fetchCommitmentVsExecution,
 } from '@/lib/api/angajamente'
@@ -69,6 +70,32 @@ export function useAngajamenteAggregated(
   return useQuery({
     queryKey: ['angajamenteAggregated', input],
     queryFn: () => fetchAngajamenteAggregated(input),
+    staleTime: STALE_TIME,
+    enabled: options?.enabled ?? true,
+  })
+}
+
+type AggregatedAllOptions = HookOptions & {
+  pageSize?: number
+  maxPages?: number
+  maxItems?: number
+}
+
+/**
+ * Fetch all paginated aggregated nodes (client-side pagination).
+ * Use when downstream UI needs totals to reconcile (e.g. drilldowns).
+ */
+export function useAngajamenteAggregatedAll(
+  input: AngajamenteAggregatedInput,
+  options?: AggregatedAllOptions
+) {
+  const pageSize = options?.pageSize ?? 500
+  const maxPages = options?.maxPages ?? 25
+  const maxItems = options?.maxItems ?? 10_000
+
+  return useQuery({
+    queryKey: ['angajamenteAggregatedAll', input, pageSize, maxPages, maxItems],
+    queryFn: () => fetchAngajamenteAggregatedAll({ input, pageSize, maxPages, maxItems }),
     staleTime: STALE_TIME,
     enabled: options?.enabled ?? true,
   })

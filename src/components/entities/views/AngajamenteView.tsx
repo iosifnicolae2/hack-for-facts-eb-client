@@ -12,11 +12,13 @@ import { useMemo } from 'react'
 import { EntityDetailsData } from '@/lib/api/entities'
 import {
   useAngajamenteSummary,
-  useAngajamenteAggregated,
+  useAngajamenteAggregatedAll,
 } from '@/hooks/useAngajamenteData'
 import {
   extractSummaryValues,
   buildAngajamenteFilter,
+  buildPaidAggregatedInputs,
+  combineAngajamenteAggregatedNodes,
 } from '@/lib/api/angajamente'
 import type { AngajamenteFilterInput } from '@/schemas/angajamente'
 import type { ReportPeriodInput, ReportPeriodType, GqlReportType, PeriodDate } from '@/schemas/reporting'
@@ -51,10 +53,9 @@ type Props = {
 }
 
 /**
- * Convert a MONTH-type report period to its containing QUARTER,
- * since angajamente data is natively quarterly.
+ * Convert MONTH selections to QUARTER selections, since angajamente data is natively quarterly.
  */
-function toAngajamenteReportPeriod(reportPeriod: ReportPeriodInput): ReportPeriodInput {
+export function toAngajamenteReportPeriod(reportPeriod: ReportPeriodInput): ReportPeriodInput {
   if (reportPeriod.type !== 'MONTH') return reportPeriod
 
   // Convert month interval to quarter interval
@@ -77,8 +78,21 @@ function toAngajamenteReportPeriod(reportPeriod: ReportPeriodInput): ReportPerio
     }
   }
 
-  // Fallback: just change type to QUARTER
-  return { ...reportPeriod, type: 'QUARTER' as ReportPeriodType }
+  // Convert month dates → quarter dates (dedupe within the same quarter)
+  const dates = reportPeriod.selection.dates ?? []
+  const quarterDates = Array.from(new Set(
+    dates.map((date) => {
+      const [year, monthStr] = date.split('-')
+      const month = parseInt(monthStr || '1', 10)
+      const quarter = getQuarterForMonth(month)
+      return `${year}-${quarter}` as PeriodDate
+    })
+  )).sort()
+
+  return {
+    type: 'QUARTER' as ReportPeriodType,
+    selection: { dates: quarterDates },
+  }
 }
 
 export function AngajamenteView({
@@ -123,7 +137,12 @@ export function AngajamenteView({
     { enabled: !!cui }
   )
 
-  // Fetch 3 parallel aggregated queries for the category chart
+  const hasNonTreasuryPayments = useMemo(
+    () => (summaryData?.nodes ?? []).some((n) => n.plati_non_trezor > 0),
+    [summaryData]
+  )
+
+  // Fetch aggregated queries for the category chart
   // TODO: Consider a single aggregated query with multiple metrics when the API supports it
   const budgetAggInput = useMemo(
     () => ({ filter, metric: 'CREDITE_BUGETARE_DEFINITIVE' as const, limit: 20 }),
@@ -133,34 +152,39 @@ export function AngajamenteView({
     () => ({ filter, metric: 'CREDITE_ANGAJAMENT' as const, limit: 20 }),
     [filter]
   )
-  const paidAggInput = useMemo(
-    () => ({ filter, metric: 'PLATI_TREZOR' as const, limit: 20 }),
+  const { paidTreasury: paidTreasuryAggInput, paidNonTreasury: paidNonTreasuryAggInput } = useMemo(
+    () => buildPaidAggregatedInputs({ filter, limit: 20 }),
     [filter]
   )
 
-  const { data: budgetAgg, isLoading: isBudgetAggLoading } = useAngajamenteAggregated(
+  const { data: budgetAgg, isLoading: isBudgetAggLoading } = useAngajamenteAggregatedAll(
     budgetAggInput,
     { enabled: !!cui }
   )
-  const { data: committedAgg, isLoading: isCommittedAggLoading } = useAngajamenteAggregated(
+  const { data: committedAgg, isLoading: isCommittedAggLoading } = useAngajamenteAggregatedAll(
     committedAggInput,
     { enabled: !!cui }
   )
-  const { data: paidAgg, isLoading: isPaidAggLoading } = useAngajamenteAggregated(
-    paidAggInput,
+  const { data: paidTreasuryAgg, isLoading: isPaidTreasuryAggLoading } = useAngajamenteAggregatedAll(
+    paidTreasuryAggInput,
     { enabled: !!cui }
   )
+  const { data: paidNonTreasuryAgg } = useAngajamenteAggregatedAll(
+    paidNonTreasuryAggInput,
+    { enabled: !!cui && hasNonTreasuryPayments }
+  )
 
-  const isCategoryLoading = isBudgetAggLoading || isCommittedAggLoading || isPaidAggLoading
+  // `PLATI_NON_TREZOR` may be unsupported/missing in some deployments; don't block UI on it.
+  const isCategoryLoading = isBudgetAggLoading || isCommittedAggLoading || isPaidTreasuryAggLoading
 
   // Extract summary values from union type
   const summaryValues = useMemo(
     () => extractSummaryValues(summaryData?.nodes ?? []),
     [summaryData]
   )
-  const { totalBudget, committed, paid } = summaryValues
+  const { totalBudget, commitmentAuthority, committed, paid } = summaryValues
 
-  // Join the 3 aggregated queries into CategoryData[]
+  // Join the aggregated queries into CategoryData[]
   // The API returns rows grouped by (functional_code, economic_code), so we
   // must sum amounts per group code before joining across metrics.
   // Grouping dimension (fn/ec) and detail level (chapter/detailed) are controlled
@@ -172,7 +196,7 @@ export function AngajamenteView({
   }
 
   const categoryData = useMemo<CategoryData[]>(() => {
-    if (!budgetAgg || !committedAgg || !paidAgg) return []
+    if (!budgetAgg || !committedAgg || !paidTreasuryAgg) return []
 
     const isFn = grouping === 'fn'
     const depth: 2 | 4 = detailLevel === 'chapter' ? 2 : 4
@@ -206,7 +230,11 @@ export function AngajamenteView({
 
     const budgetMap = sumByGroup(budgetAgg.nodes)
     const committedMap = sumByGroup(committedAgg.nodes)
-    const paidMap = sumByGroup(paidAgg.nodes)
+    const paidNodes = combineAngajamenteAggregatedNodes(
+      paidTreasuryAgg.nodes,
+      paidNonTreasuryAgg?.nodes ?? []
+    )
+    const paidMap = sumByGroup(paidNodes)
 
     const allCodes = new Set([...budgetMap.keys(), ...committedMap.keys(), ...paidMap.keys()])
     return Array.from(allCodes).map((code) => ({
@@ -216,17 +244,33 @@ export function AngajamenteView({
       committed: committedMap.get(code)?.amount ?? 0,
       paid: paidMap.get(code)?.amount ?? 0,
     }))
-  }, [budgetAgg, committedAgg, paidAgg, grouping, detailLevel])
+  }, [budgetAgg, committedAgg, paidTreasuryAgg, paidNonTreasuryAgg, grouping, detailLevel])
+
+  const categoryChartData = useMemo(() => {
+    return [...categoryData]
+      .sort((a, b) => b.budget - a.budget)
+      .slice(0, 20)
+  }, [categoryData])
 
   if (!entity) {
     return null
   }
 
-  // Calculate percentages
-  const commitmentPercent =
-    totalBudget > 0 ? ((committed / totalBudget) * 100).toFixed(1) : '0'
-  const paymentPercent =
-    committed > 0 ? ((paid / committed) * 100).toFixed(1) : '0'
+  // Rates (keep denominators consistent with each concept):
+  // - payments vs annual budget credits (annual execution)
+  // - commitments vs commitment authority (multiannual contracting)
+  const commitmentUtilizationPercent =
+    commitmentAuthority > 0 ? ((committed / commitmentAuthority) * 100).toFixed(1) : '0'
+  const budgetExecutionPercent =
+    totalBudget > 0 ? ((paid / totalBudget) * 100).toFixed(1) : '0'
+  const commitmentsSubtitle =
+    commitmentAuthority > 0
+      ? `${commitmentUtilizationPercent}% ${t`of commitment authority`}`
+      : t`Commitment authority unavailable`
+  const paymentsSubtitle =
+    totalBudget > 0
+      ? `${budgetExecutionPercent}% ${t`of annual budget paid`}`
+      : t`Annual budget unavailable`
 
   return (
     <div className="space-y-8">
@@ -244,7 +288,7 @@ export function AngajamenteView({
         <StatCard
           title={t`Legal Commitments`}
           value={committed}
-          subtitle={`${commitmentPercent}% ${t`of budget contracted`}`}
+          subtitle={commitmentsSubtitle}
           variant="committed"
           icon="scale"
           currency={currency}
@@ -253,7 +297,7 @@ export function AngajamenteView({
         <StatCard
           title={t`Payments Made`}
           value={paid}
-          subtitle={`${paymentPercent}% ${t`of commitments paid`}`}
+          subtitle={paymentsSubtitle}
           variant="paid"
           icon="down"
           currency={currency}
@@ -265,6 +309,7 @@ export function AngajamenteView({
       <section>
         <LinearBudgetFlow
           totalBudget={totalBudget}
+          commitmentAuthority={commitmentAuthority}
           committed={committed}
           paid={paid}
           currency={currency}
@@ -275,7 +320,7 @@ export function AngajamenteView({
       {/* Level 3: Category Breakdown + Info Panel */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <CategoryChart
-          data={categoryData}
+          data={categoryChartData}
           currency={currency}
           isLoading={isCategoryLoading}
         />

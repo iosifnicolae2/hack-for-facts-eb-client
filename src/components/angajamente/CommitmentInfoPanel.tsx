@@ -5,7 +5,7 @@
  * and why they are important
  */
 
-import { FileText, Scale } from 'lucide-react'
+import { Calendar, FileText, Scale } from 'lucide-react'
 import { Trans } from '@lingui/react/macro'
 
 export function CommitmentInfoPanel() {
@@ -52,6 +52,24 @@ export function CommitmentInfoPanel() {
                   The difference between <strong>Commitments</strong> and{' '}
                   <strong>Payments</strong> shows current debts or work in
                   progress that has not yet been paid.
+                </Trans>
+              </p>
+            </div>
+          </div>
+
+          <div className="flex gap-4">
+            <div className="bg-indigo-800 p-3 rounded-lg h-fit">
+              <Calendar size={24} className="text-indigo-300" />
+            </div>
+            <div>
+              <h4 className="font-bold text-lg text-indigo-100">
+                <Trans>Annual vs Multi‑Year</Trans>
+              </h4>
+              <p className="text-indigo-200 text-sm mt-1 leading-relaxed">
+                <Trans>
+                  <strong>Budget credits</strong> are annual (they limit what can be paid in the selected year).
+                  <strong> Legal commitments</strong> are often multi‑year contract values, so they can be higher than
+                  the annual budget. To assess contracting, compare commitments to <strong>commitment authority</strong>.
                 </Trans>
               </p>
             </div>

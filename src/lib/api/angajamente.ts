@@ -244,6 +244,55 @@ export async function fetchAngajamenteAggregated(
   return data.angajamenteAggregated
 }
 
+export async function fetchAngajamenteAggregatedAll(params: {
+  input: AngajamenteAggregatedInput
+  pageSize?: number
+  maxPages?: number
+  maxItems?: number
+}): Promise<Connection<AngajamenteAggregatedItem>> {
+  const pageSize = params.pageSize ?? 500
+  const maxPages = params.maxPages ?? 25
+  const maxItems = params.maxItems ?? 10_000
+
+  let offset = params.input.offset ?? 0
+  let hasPreviousPage = offset > 0
+  let hasNextPage = false
+  let totalCount: number | undefined
+  const nodes: AngajamenteAggregatedItem[] = []
+
+  for (let page = 0; page < maxPages; page += 1) {
+    const res = await fetchAngajamenteAggregated({
+      ...params.input,
+      limit: pageSize,
+      offset,
+    })
+
+    totalCount ??= res.pageInfo.totalCount
+    nodes.push(...res.nodes)
+    hasNextPage = res.pageInfo.hasNextPage
+
+    if (!hasNextPage) break
+    if (res.nodes.length === 0) break
+    if (nodes.length >= maxItems) break
+
+    offset += res.nodes.length
+
+    if (totalCount !== undefined && offset >= totalCount) {
+      hasNextPage = false
+      break
+    }
+  }
+
+  return {
+    nodes,
+    pageInfo: {
+      totalCount: totalCount ?? nodes.length,
+      hasNextPage,
+      hasPreviousPage,
+    },
+  }
+}
+
 export interface AngajamenteAnalyticsInput {
   filter: AngajamenteFilterInput
   metric: AngajamenteMetric
@@ -306,17 +355,19 @@ export function buildAngajamenteFilter(params: {
  */
 export function extractSummaryValues(nodes: AngajamenteSummaryResult[]): {
   totalBudget: number
+  commitmentAuthority: number
   committed: number
   paid: number
   receipts: number
   arrears: number
 } {
   if (nodes.length === 0) {
-    return { totalBudget: 0, committed: 0, paid: 0, receipts: 0, arrears: 0 }
+    return { totalBudget: 0, commitmentAuthority: 0, committed: 0, paid: 0, receipts: 0, arrears: 0 }
   }
 
   // Aggregate across all nodes
   let totalBudget = 0
+  let commitmentAuthority = 0
   let committed = 0
   let paid = 0
   let receipts = 0
@@ -332,10 +383,65 @@ export function extractSummaryValues(nodes: AngajamenteSummaryResult[]): {
       committed += node.credite_angajament
     } else {
       totalBudget += node.credite_bugetare_definitive
-      committed += node.credite_angajament_definitive
+      commitmentAuthority += node.credite_angajament_definitive
+      // NOTE: `credite_angajament_definitive` is commitment authority (limit),
+      // while `credite_angajament` is the total commitments made (YTD).
+      committed += node.credite_angajament
       arrears += node.receptii_neplatite
     }
   }
 
-  return { totalBudget, committed, paid, receipts, arrears }
+  return { totalBudget, commitmentAuthority, committed, paid, receipts, arrears }
+}
+
+export function buildPaidAggregatedInputs(params: {
+  filter: AngajamenteFilterInput
+  limit?: number
+  offset?: number
+}): { paidTreasury: AngajamenteAggregatedInput; paidNonTreasury: AngajamenteAggregatedInput } {
+  return {
+    paidTreasury: {
+      filter: params.filter,
+      metric: 'PLATI_TREZOR',
+      limit: params.limit,
+      offset: params.offset,
+    },
+    paidNonTreasury: {
+      filter: params.filter,
+      metric: 'PLATI_NON_TREZOR',
+      limit: params.limit,
+      offset: params.offset,
+    },
+  }
+}
+
+type AggregatedItemKey = string
+
+function getAggregatedItemKey(item: Pick<AngajamenteAggregatedItem, 'functional_code' | 'economic_code'>): AggregatedItemKey {
+  return `${item.functional_code}||${item.economic_code ?? ''}`
+}
+
+export function combineAngajamenteAggregatedNodes(
+  ...nodeLists: readonly ReadonlyArray<AngajamenteAggregatedItem>[]
+): AngajamenteAggregatedItem[] {
+  const mergedByKey = new Map<AggregatedItemKey, AngajamenteAggregatedItem>()
+
+  for (const nodes of nodeLists) {
+    for (const node of nodes) {
+      const key = getAggregatedItemKey(node)
+      const existing = mergedByKey.get(key)
+      if (!existing) {
+        mergedByKey.set(key, { ...node })
+        continue
+      }
+
+      mergedByKey.set(key, {
+        ...existing,
+        amount: existing.amount + node.amount,
+        count: existing.count + node.count,
+      })
+    }
+  }
+
+  return Array.from(mergedByKey.values())
 }

@@ -13,6 +13,7 @@ import { formatCurrency } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Trans } from '@lingui/react/macro'
 import { useAngajamenteAggregated } from '@/hooks/useAngajamenteData'
+import { buildPaidAggregatedInputs, combineAngajamenteAggregatedNodes } from '@/lib/api/angajamente'
 import type { AngajamenteFilterInput } from '@/schemas/angajamente'
 import type { CategoryData } from './CategoryChart'
 import { getClassificationName } from '@/lib/classifications'
@@ -85,12 +86,12 @@ function codeSegmentCount(code: string): number {
  * This avoids a wasted API round-trip when `detailLevel='detailed'`
  * causes the parent to already sit at depth 4 (= subchapter level).
  */
-function initialDrillLevel(parentCode: string): DrillLevel {
+export function initialDrillLevel(parentCode: string): DrillLevel {
   const segments = codeSegmentCount(parentCode)
-  // depth 4 codes have 2 segments (e.g. "20.01") — skip subchapter (also depth 4)
-  if (segments >= 2) return 'paragraph'
   // depth 6 codes have 3 segments — go straight to leaf
   if (segments >= 3) return 'economic'
+  // depth 4 codes have 2 segments (e.g. "20.01") — skip subchapter (also depth 4)
+  if (segments >= 2) return 'paragraph'
   return 'subchapter'
 }
 
@@ -126,19 +127,25 @@ function ExpandedSubRows({
     () => ({ filter: subFilter, metric: 'CREDITE_ANGAJAMENT' as const, limit: 100 }),
     [subFilter]
   )
-  const paidInput = useMemo(
-    () => ({ filter: subFilter, metric: 'PLATI_TREZOR' as const, limit: 100 }),
+  const { paidTreasury: paidTreasuryInput, paidNonTreasury: paidNonTreasuryInput } = useMemo(
+    () => buildPaidAggregatedInputs({ filter: subFilter, limit: 100 }),
     [subFilter]
   )
 
   const { data: budgetData, isLoading: isBudgetLoading } = useAngajamenteAggregated(budgetInput)
   const { data: committedData, isLoading: isCommittedLoading } = useAngajamenteAggregated(committedInput)
-  const { data: paidData, isLoading: isPaidLoading } = useAngajamenteAggregated(paidInput)
+  const { data: paidTreasuryData, isLoading: isPaidTreasuryLoading } = useAngajamenteAggregated(paidTreasuryInput)
+  const { data: paidNonTreasuryData } = useAngajamenteAggregated(paidNonTreasuryInput)
 
-  const isLoading = isBudgetLoading || isCommittedLoading || isPaidLoading
+  const isLoading = isBudgetLoading || isCommittedLoading || isPaidTreasuryLoading
 
   const subRows = useMemo<SubRowData[]>(() => {
-    if (!budgetData || !committedData || !paidData) return []
+    if (!budgetData || !committedData || !paidTreasuryData) return []
+
+    const paidNodes = combineAngajamenteAggregatedNodes(
+      paidTreasuryData.nodes,
+      paidNonTreasuryData?.nodes ?? []
+    )
 
     // Leaf level: show the opposite dimension
     if (level === 'economic') {
@@ -161,7 +168,7 @@ function ExpandedSubRows({
 
         const budgetMap = sumByLeaf(budgetData.nodes)
         const committedMap = sumByLeaf(committedData.nodes)
-        const paidMap = sumByLeaf(paidData.nodes)
+        const paidMap = sumByLeaf(paidNodes)
 
         const allCodes = new Set([...budgetMap.keys(), ...committedMap.keys(), ...paidMap.keys()])
         return Array.from(allCodes).map((code) => ({
@@ -190,7 +197,7 @@ function ExpandedSubRows({
 
         const budgetMap = sumByLeaf(budgetData.nodes)
         const committedMap = sumByLeaf(committedData.nodes)
-        const paidMap = sumByLeaf(paidData.nodes)
+        const paidMap = sumByLeaf(paidNodes)
 
         const allCodes = new Set([...budgetMap.keys(), ...committedMap.keys(), ...paidMap.keys()])
         return Array.from(allCodes).map((code) => ({
@@ -227,7 +234,7 @@ function ExpandedSubRows({
 
       const budgetMap = sumByFunctionalAtDepth(budgetData.nodes)
       const committedMap = sumByFunctionalAtDepth(committedData.nodes)
-      const paidMap = sumByFunctionalAtDepth(paidData.nodes)
+      const paidMap = sumByFunctionalAtDepth(paidNodes)
 
       const allCodes = new Set([...budgetMap.keys(), ...committedMap.keys(), ...paidMap.keys()])
       return Array.from(allCodes).map((code) => ({
@@ -261,7 +268,7 @@ function ExpandedSubRows({
 
       const budgetMap = sumByEconomicAtDepth(budgetData.nodes)
       const committedMap = sumByEconomicAtDepth(committedData.nodes)
-      const paidMap = sumByEconomicAtDepth(paidData.nodes)
+      const paidMap = sumByEconomicAtDepth(paidNodes)
 
       const allCodes = new Set([...budgetMap.keys(), ...committedMap.keys(), ...paidMap.keys()])
       return Array.from(allCodes).map((code) => ({
@@ -272,11 +279,11 @@ function ExpandedSubRows({
         paid: paidMap.get(code)?.amount ?? 0,
       })).sort((a, b) => b.budget - a.budget)
     }
-  }, [budgetData, committedData, paidData, level, parentCode, grouping])
+  }, [budgetData, committedData, paidTreasuryData, paidNonTreasuryData, level, parentCode, grouping])
 
   // If a functional level returns no rows but we have data, skip to next level
   const nextLevel = NEXT_LEVEL[level]
-  const hasData = budgetData && committedData && paidData
+  const hasData = budgetData && committedData && paidTreasuryData
   const shouldSkip = hasData && subRows.length === 0 && level !== 'economic' && nextLevel
 
   const toggleSubRow = (id: string) => {
@@ -332,8 +339,8 @@ function ExpandedSubRows({
     <>
       {subRows.map((sub) => {
         const unpaid = sub.committed - sub.paid
-        const percentCommitted =
-          sub.budget > 0 ? Math.round((sub.committed / sub.budget) * 100) : 0
+        const executionPercent =
+          sub.budget > 0 ? Math.round((sub.paid / sub.budget) * 100) : 0
         const isSubExpanded = expandedSubRows.has(sub.id)
 
         return (
@@ -368,12 +375,12 @@ function ExpandedSubRows({
               <td className="p-4 text-right">
                 <span
                   className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                    percentCommitted > 90
+                    executionPercent > 90
                       ? 'bg-emerald-100 text-emerald-700'
                       : 'bg-slate-100 text-slate-500'
                   }`}
                 >
-                  {percentCommitted}%
+                  {executionPercent}%
                 </span>
               </td>
               <td className="p-4 text-right text-emerald-500 text-xs font-medium">
@@ -434,6 +441,20 @@ export function DetailTable({
   const [sortCol, setSortCol] = useState<SortColumn>('budget')
   const [sortDir, setSortDir] = useState<SortDir>('desc')
 
+  const totals = useMemo(() => {
+    return data.reduce(
+      (acc, item) => ({
+        budget: acc.budget + item.budget,
+        committed: acc.committed + item.committed,
+        paid: acc.paid + item.paid,
+      }),
+      { budget: 0, committed: 0, paid: 0 }
+    )
+  }, [data])
+
+  const totalUnpaid = totals.committed - totals.paid
+  const totalExecutionPercent = totals.budget > 0 ? Math.round((totals.paid / totals.budget) * 100) : 0
+
   // Reset expanded rows when grouping or detail level changes
   useEffect(() => {
     setExpandedRows(new Set())
@@ -454,7 +475,7 @@ export function DetailTable({
         case 'name': return item.name
         case 'budget': return item.budget
         case 'committed': return item.committed
-        case 'percent': return item.budget > 0 ? item.committed / item.budget : 0
+        case 'percent': return item.budget > 0 ? item.paid / item.budget : 0
         case 'paid': return item.paid
         case 'unpaid': return item.committed - item.paid
       }
@@ -578,14 +599,14 @@ export function DetailTable({
                 className="p-4 font-semibold border-b border-slate-200 text-right text-blue-700 cursor-pointer select-none hover:text-blue-800"
                 onClick={() => toggleSort('committed')}
               >
-                <Trans>Commitments</Trans>
+                <Trans>Legal commitments</Trans>
                 <SortIcon column="committed" sortCol={sortCol} sortDir={sortDir} />
               </th>
               <th
                 className="p-4 font-semibold border-b border-slate-200 text-right cursor-pointer select-none hover:text-slate-700"
                 onClick={() => toggleSort('percent')}
               >
-                <Trans>% Committed</Trans>
+                <Trans>Execution %</Trans>
                 <SortIcon column="percent" sortCol={sortCol} sortDir={sortDir} />
               </th>
               <th
@@ -607,9 +628,9 @@ export function DetailTable({
           <tbody className="text-sm">
             {sortedData.map((item, idx) => {
               const unpaid = item.committed - item.paid
-              const percentCommitted =
+              const executionPercent =
                 item.budget > 0
-                  ? Math.round((item.committed / item.budget) * 100)
+                  ? Math.round((item.paid / item.budget) * 100)
                   : 0
               const isExpanded = expandedRows.has(item.id)
 
@@ -646,12 +667,12 @@ export function DetailTable({
                     <td className="p-4 text-right">
                       <span
                         className={`px-2 py-1 rounded-full text-xs font-bold ${
-                          percentCommitted > 90
+                          executionPercent > 90
                             ? 'bg-emerald-100 text-emerald-700'
                             : 'bg-slate-100 text-slate-600'
                         }`}
                       >
-                        {percentCommitted}%
+                        {executionPercent}%
                       </span>
                     </td>
                     <td className="p-4 text-right font-semibold text-emerald-600">
@@ -680,6 +701,38 @@ export function DetailTable({
               )
             })}
           </tbody>
+          <tfoot>
+            <tr
+              className="bg-slate-50 border-t border-slate-200 text-sm"
+              data-testid="detail-table-total-row"
+            >
+              <td className="p-4 font-semibold text-slate-700">
+                <Trans>Total</Trans>
+              </td>
+              <td className="p-4 text-right font-semibold text-slate-700" data-testid="detail-table-total-budget">
+                {formatCurrency(totals.budget, 'compact', currency)}
+              </td>
+              <td className="p-4 text-right font-semibold text-blue-700" data-testid="detail-table-total-committed">
+                {formatCurrency(totals.committed, 'compact', currency)}
+              </td>
+              <td className="p-4 text-right" data-testid="detail-table-total-execution-percent">
+                <span className="px-2 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700">
+                  {totalExecutionPercent}%
+                </span>
+              </td>
+              <td className="p-4 text-right font-semibold text-emerald-700" data-testid="detail-table-total-paid">
+                {formatCurrency(totals.paid, 'compact', currency)}
+              </td>
+              <td className="p-4 text-right font-semibold text-amber-700" data-testid="detail-table-total-unpaid">
+                <div className="flex items-center justify-end gap-1">
+                  {totalUnpaid > 0 && (
+                    <AlertCircle size={12} className="text-amber-500" />
+                  )}
+                  {formatCurrency(totalUnpaid, 'compact', currency)}
+                </div>
+              </td>
+            </tr>
+          </tfoot>
         </table>
       </div>
     </div>
