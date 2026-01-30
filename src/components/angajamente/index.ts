@@ -12,6 +12,7 @@ export { StatCard } from './StatCard'
 export { LinearBudgetFlow } from './LinearBudgetFlow'
 export { CategoryChart } from './CategoryChart'
 export type { CategoryData } from './CategoryChart'
+export { AngajamenteTrends } from './angajamente-trends'
 
 // Educational
 export { CommitmentInfoPanel } from './CommitmentInfoPanel'

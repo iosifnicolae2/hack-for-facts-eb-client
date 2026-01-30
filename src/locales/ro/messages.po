@@ -72,8 +72,8 @@ msgid "/capita"
 msgstr "/locuitor"
 
 #: src/components/angajamente/DetailTable.tsx:588
-msgid "% Committed"
-msgstr "% Angajat"
+#~ msgid "% Committed"
+#~ msgstr "% Angajat"
 
 #: src/components/charts/components/series-config/SeriesFilter.tsx:337
 #: src/components/entities/EntityReportControls.tsx:273
@@ -156,6 +156,10 @@ msgstr "<0>Date de Autentificare:</0> Marcaje de timp ale autentificării, adres
 #: src/routes/privacy.lazy.tsx:128
 msgid "<0>Authentication:</0> Account access secured via Clerk with industry-standard security practices."
 msgstr "<0>Autentificare:</0> Accesul la cont este securizat prin Clerk cu practici de securitate standard în industrie."
+
+#: src/components/angajamente/CommitmentInfoPanel.tsx:69
+msgid "<0>Budget credits</0> are annual (they limit what can be paid in the selected year).<1> Legal commitments</1> are often multi‑year contract values, so they can be higher than the annual budget. To assess contracting, compare commitments to <2>commitment authority</2>."
+msgstr "<0>Creditele bugetare</0> sunt anuale (limitează ce se poate plăti în anul selectat).<1> Angajamentele legale</1> sunt adesea valori contractuale multianuale, deci pot fi mai mari decât bugetul anual. Pentru a evalua contractarea, comparați angajamentele cu <2>autorizarea de angajament</2>."
 
 #: src/routes/privacy.lazy.tsx:91
 msgid "<0>Clerk (Authentication):</0> Manages user authentication and account data. EU/US with standard contractual clauses."
@@ -475,8 +479,8 @@ msgstr "Impact real asupra bugetului"
 
 #: src/components/angajamente/LinearBudgetFlow.tsx:239
 #: src/components/angajamente/LinearBudgetFlow.tsx:396
-msgid "Actual Payments"
-msgstr "Plăți Efective"
+#~ msgid "Actual Payments"
+#~ msgstr "Plăți Efective"
 
 #: src/components/charts/components/chart-view/ChartDisplayArea.tsx:109
 msgid "Add a series to visualize your data."
@@ -719,8 +723,8 @@ msgid "Amount Range"
 msgstr "Interval sumă"
 
 #: src/components/angajamente/LinearBudgetFlow.tsx:418
-msgid "Amount:"
-msgstr "Sumă:"
+#~ msgid "Amount:"
+#~ msgstr "Sumă:"
 
 #: src/components/ui/FloatingQuickNav.tsx:249
 msgid "Analytics"
@@ -767,6 +771,18 @@ msgstr "Adnotarea nu a fost găsită"
 msgid "Annotations"
 msgstr "Adnotări"
 
+#: src/components/angajamente/LinearBudgetFlow.tsx:112
+msgid "Annual budget execution"
+msgstr "Execuția bugetului anual"
+
+#: src/components/entities/views/AngajamenteView.tsx:356
+msgid "Annual budget unavailable"
+msgstr "Buget anual indisponibil"
+
+#: src/components/angajamente/CommitmentInfoPanel.tsx:66
+msgid "Annual vs Multi‑Year"
+msgstr "Anual vs Multianual"
+
 #: src/routes/cookies.lazy.tsx:115
 msgid "Anonymous usage patterns, page views, interactions."
 msgstr "Modele de utilizare anonime, vizualizări de pagină, interacțiuni."
@@ -775,6 +791,7 @@ msgstr "Modele de utilizare anonime, vizualizări de pagină, interacțiuni."
 msgid "Apply Filters"
 msgstr "Aplică filtrele"
 
+#: src/components/angajamente/angajamente-trends.tsx:180
 #: src/components/entities/EntityFinancialTrends.tsx:97
 msgid "April"
 msgstr "Aprilie"
@@ -822,6 +839,7 @@ msgstr "Pe scurt"
 msgid "Aug 1, 2025"
 msgstr "1 august 2025"
 
+#: src/components/angajamente/angajamente-trends.tsx:184
 #: src/components/entities/EntityFinancialTrends.tsx:98
 msgid "August"
 msgstr "August"
@@ -848,8 +866,8 @@ msgstr "Disponibilitate și modificări"
 
 #: src/components/angajamente/LinearBudgetFlow.tsx:287
 #: src/components/angajamente/LinearBudgetFlow.tsx:296
-msgid "Available"
-msgstr "Disponibil"
+#~ msgid "Available"
+#~ msgstr "Disponibil"
 
 #: src/components/entity-analytics/EntityAnalyticsKPIs.tsx:35
 msgid "Avg per-capita"
@@ -938,25 +956,36 @@ msgid "Browse and download all financial reports submitted by this entity"
 msgstr "Răsfoiți și descărcați toate rapoartele financiare depuse de această entitate"
 
 #: src/components/angajamente/CategoryChart.tsx:56
-msgid "Budget"
-msgstr "Buget"
+#~ msgid "Budget"
+#~ msgstr "Buget"
 
 #: src/components/angajamente/LinearBudgetFlow.tsx:261
-msgid "Budget → Commitments"
-msgstr "Buget → Angajamente"
+#~ msgid "Budget → Commitments"
+#~ msgstr "Buget → Angajamente"
 
 #: src/features/learning/components/interactive/BudgetFootprintRevealer.tsx:361
 msgid "Budget category"
 msgstr "Categorie bugetară"
 
-#: src/components/angajamente/DetailTable.tsx:567
+#: src/components/angajamente/DetailTable.tsx:588
 msgid "Budget Chapter"
 msgstr "Capitol Bugetar"
 
+#: src/components/angajamente/angajamente-trends.tsx:373
+#: src/components/angajamente/CategoryChart.tsx:56
+#: src/components/angajamente/CategoryChart.tsx:120
+#: src/components/angajamente/LinearBudgetFlow.tsx:129
+msgid "Budget credits"
+msgstr "Credite bugetare"
+
 #: src/components/angajamente/AngajamenteTable.tsx:150
-#: src/components/angajamente/DetailTable.tsx:574
+#: src/components/angajamente/DetailTable.tsx:595
 msgid "Budget Credits"
 msgstr "Credite Bugetare"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:98
+msgid "Budget credits are annual (cash you can pay within the selected year). Legal commitments represent the total value of contracts signed (often multi-year), so they can exceed the annual budget without implying overspending. To assess contracting, compare commitments to commitment authority."
+msgstr "Creditele bugetare sunt anuale (sumele care pot fi plătite în anul selectat). Angajamentele legale reprezintă valoarea totală a contractelor semnate (adesea multianuale), deci pot depăși bugetul anual fără a implica cheltuieli excesive. Pentru a evalua contractarea, comparați angajamentele cu autorizarea de angajament."
 
 #: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:616
 msgid "Budget Cycle Timeline"
@@ -979,8 +1008,8 @@ msgid "Budget Explorer"
 msgstr "Explorator Bugetar"
 
 #: src/components/angajamente/LinearBudgetFlow.tsx:441
-msgid "Budget Planning"
-msgstr "Planificare Buget"
+#~ msgid "Budget Planning"
+#~ msgstr "Planificare Buget"
 
 #: src/lib/chart-filter-utils.ts:42
 msgid "Budget sector"
@@ -1286,30 +1315,51 @@ msgstr "Confortabil"
 #~ msgid "Commitment"
 #~ msgstr ""
 
+#: src/components/angajamente/LinearBudgetFlow.tsx:175
+msgid "Commitment authority"
+msgstr "Autorizare de angajament"
+
+#: src/components/entities/views/AngajamenteView.tsx:352
+msgid "Commitment authority unavailable"
+msgstr "Autorizare de angajament indisponibilă"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:158
+msgid "Commitment authority usage"
+msgstr "Utilizarea autorizării de angajament"
+
 #: src/components/angajamente/LinearBudgetFlow.tsx:174
-msgid "Commitment Flow"
-msgstr "Fluxul Angajamentelor"
+#~ msgid "Commitment Flow"
+#~ msgstr "Fluxul Angajamentelor"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:89
+msgid "Commitment Health"
+msgstr "Starea angajamentelor"
+
+#: src/components/angajamente/angajamente-trends.tsx:288
+msgid "Commitment Trends"
+msgstr "Tendințe angajamente"
 
 #: src/components/entities/views/AngajamenteView.tsx:329
 #~ msgid "Commitment vs Execution"
 #~ msgstr ""
 
 #: src/components/angajamente/AngajamenteTable.tsx:159
-#: src/components/angajamente/DetailTable.tsx:581
-#: src/components/angajamente/LinearBudgetFlow.tsx:228
-#: src/components/angajamente/LinearBudgetFlow.tsx:387
 #: src/hooks/useEntityViews.tsx:22
 msgid "Commitments"
 msgstr "Angajamente"
 
 #: src/components/angajamente/LinearBudgetFlow.tsx:322
-msgid "Commitments → Payments"
-msgstr "Angajamente → Plăți"
+#~ msgid "Commitments → Payments"
+#~ msgstr "Angajamente → Plăți"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:147
+msgid "Commitments vs budget"
+msgstr "Angajamente vs buget"
 
 #: src/components/angajamente/CategoryChart.tsx:62
 #: src/components/angajamente/CategoryChart.tsx:126
-msgid "Committed"
-msgstr "Angajat"
+#~ msgid "Committed"
+#~ msgstr "Angajat"
 
 #: src/components/maps/HeatmapDataTable.tsx:443
 #: src/components/maps/HeatmapDataTable.tsx:447
@@ -1742,6 +1792,7 @@ msgstr "zi"
 msgid "days"
 msgstr "zile"
 
+#: src/components/angajamente/angajamente-trends.tsx:188
 #: src/components/entities/EntityFinancialTrends.tsx:98
 msgid "December"
 msgstr "Decembrie"
@@ -1811,7 +1862,7 @@ msgstr "Descriere"
 msgid "Detail level"
 msgstr "Nivel de detaliu"
 
-#: src/components/angajamente/DetailTable.tsx:537
+#: src/components/angajamente/DetailTable.tsx:558
 msgid "Detail Level"
 msgstr "Nivel Detaliu"
 
@@ -1833,7 +1884,7 @@ msgstr "Executie bugetara detaliata"
 msgid "Detailed categories"
 msgstr "Categorii detaliate"
 
-#: src/components/angajamente/DetailTable.tsx:545
+#: src/components/angajamente/DetailTable.tsx:566
 msgid "Detailed Categories"
 msgstr "Categorii Detaliate"
 
@@ -1897,7 +1948,7 @@ msgstr "Finalizat"
 msgid "Download"
 msgstr "Descarcă"
 
-#: src/components/angajamente/DetailTable.tsx:554
+#: src/components/angajamente/DetailTable.tsx:575
 msgid "Download Excel"
 msgstr "Descarcă Excel"
 
@@ -1949,7 +2000,7 @@ msgstr "Gestionați-vă cu ușurință abonamentele"
 msgid "Ec"
 msgstr "Ec"
 
-#: src/components/angajamente/DetailTable.tsx:533
+#: src/components/angajamente/DetailTable.tsx:554
 #: src/components/classification-explorer/ClassificationExplorer.tsx:195
 #: src/components/classification-explorer/ClassificationExplorer.tsx:196
 #: src/components/common/classification-info-link.tsx:89
@@ -2233,8 +2284,8 @@ msgid "Estimate the <0>Shares</0>"
 msgstr "Estimează <0>Proporțiile</0>"
 
 #: src/components/angajamente/LinearBudgetFlow.tsx:442
-msgid "Estimated money to be spent"
-msgstr "Banii estimați a fi cheltuiți"
+#~ msgid "Estimated money to be spent"
+#~ msgstr "Banii estimați a fi cheltuiți"
 
 #: src/features/learning/components/interactive/EUComparisonChart.tsx:100
 msgid "EU Average"
@@ -2334,6 +2385,10 @@ msgstr "Executat"
 #: src/components/entities/views/AngajamenteView.tsx:391
 #~ msgid "Execution"
 #~ msgstr ""
+
+#: src/components/angajamente/DetailTable.tsx:609
+msgid "Execution %"
+msgstr "Execuție %"
 
 #: src/hooks/useEntityViews.tsx:24
 msgid "Expense Trends"
@@ -2469,6 +2524,7 @@ msgstr "Favorite"
 msgid "Favorites first"
 msgstr "Favoritele primele"
 
+#: src/components/angajamente/angajamente-trends.tsx:178
 #: src/components/entities/EntityFinancialTrends.tsx:97
 msgid "February"
 msgstr "Februarie"
@@ -2524,7 +2580,7 @@ msgstr "Informații filtre"
 msgid "Filters marked as exclude will remove data matching these criteria from the results."
 msgstr "Filtrele marcate ca excludere vor elimina din rezultate datele care corespund acestor criterii."
 
-#: src/components/entities/views/AngajamenteView.tsx:238
+#: src/components/entities/views/AngajamenteView.tsx:365
 msgid "Final Budget Credits"
 msgstr "Credite Bugetare Definitive"
 
@@ -2616,7 +2672,7 @@ msgstr "S-au găsit {replacementCount} apariții"
 msgid "Full Procurement Portal"
 msgstr "Portal complet achiziții"
 
-#: src/components/angajamente/DetailTable.tsx:532
+#: src/components/angajamente/DetailTable.tsx:553
 #: src/components/classification-explorer/ClassificationExplorer.tsx:192
 #: src/components/classification-explorer/ClassificationExplorer.tsx:193
 #: src/components/common/classification-info-link.tsx:89
@@ -2804,7 +2860,7 @@ msgstr "Vizualizare grilă"
 msgid "Gross"
 msgstr "Brut"
 
-#: src/components/angajamente/DetailTable.tsx:525
+#: src/components/angajamente/DetailTable.tsx:546
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:99
 #: src/routes/budget-explorer.lazy.tsx:493
 msgid "Grouping"
@@ -3086,6 +3142,7 @@ msgstr "Este sezonul bugetar! Noiembrie-decembrie este cel mai bun moment pentru
 msgid "Item Amount"
 msgstr "Valoare element"
 
+#: src/components/angajamente/angajamente-trends.tsx:177
 #: src/components/entities/EntityFinancialTrends.tsx:97
 msgid "January"
 msgstr "Ianuarie"
@@ -3094,10 +3151,12 @@ msgstr "Ianuarie"
 msgid "Județ"
 msgstr "Județ"
 
+#: src/components/angajamente/angajamente-trends.tsx:183
 #: src/components/entities/EntityFinancialTrends.tsx:98
 msgid "July"
 msgstr "Iulie"
 
+#: src/components/angajamente/angajamente-trends.tsx:182
 #: src/components/entities/EntityFinancialTrends.tsx:97
 msgid "June"
 msgstr "Iunie"
@@ -3178,10 +3237,18 @@ msgid "Legal bases for processing"
 msgstr "Temeiuri legale pentru prelucrare"
 
 #: src/components/angajamente/LinearBudgetFlow.tsx:449
-msgid "Legal Commitment"
-msgstr "Angajare Legală"
+#~ msgid "Legal Commitment"
+#~ msgstr "Angajare Legală"
 
-#: src/components/entities/views/AngajamenteView.tsx:245
+#: src/components/angajamente/angajamente-trends.tsx:397
+#: src/components/angajamente/CategoryChart.tsx:62
+#: src/components/angajamente/CategoryChart.tsx:126
+#: src/components/angajamente/DetailTable.tsx:602
+#: src/components/angajamente/LinearBudgetFlow.tsx:181
+msgid "Legal commitments"
+msgstr "Angajamente legale"
+
+#: src/components/entities/views/AngajamenteView.tsx:372
 msgid "Legal Commitments"
 msgstr "Angajamente Legale"
 
@@ -3287,7 +3354,7 @@ msgstr "Se încarcă datele graficului..."
 msgid "Loading data..."
 msgstr "Se încarcă datele..."
 
-#: src/components/angajamente/DetailTable.tsx:297
+#: src/components/angajamente/DetailTable.tsx:304
 msgid "Loading details..."
 msgstr "Se încarcă detaliile..."
 
@@ -3371,7 +3438,7 @@ msgstr "Categorii Principale"
 msgid "Main chapters"
 msgstr "Capitole principale"
 
-#: src/components/angajamente/DetailTable.tsx:544
+#: src/components/angajamente/DetailTable.tsx:565
 msgid "Main Chapters"
 msgstr "Capitole Principale"
 
@@ -3442,6 +3509,7 @@ msgstr "Vizualizare hartă"
 msgid "Maps"
 msgstr "Hărți"
 
+#: src/components/angajamente/angajamente-trends.tsx:179
 #: src/components/entities/EntityFinancialTrends.tsx:97
 msgid "March"
 msgstr "Martie"
@@ -3466,6 +3534,7 @@ msgstr "Stăpânești bugetul pas cu pas. Progresul tău este înregistrat."
 msgid "Maximum"
 msgstr "Maxim"
 
+#: src/components/angajamente/angajamente-trends.tsx:181
 #: src/components/entities/EntityFinancialTrends.tsx:97
 msgid "May"
 msgstr "Mai"
@@ -3549,6 +3618,7 @@ msgstr "Bani pe care vânzătorul îi colectează doar pentru a-i transmite stat
 msgid "Monitor this institution"
 msgstr "Monitorizează această instituție"
 
+#: src/components/angajamente/angajamente-trends.tsx:191
 #: src/components/entities/EntityFinancialTrends.tsx:100
 #: src/components/entities/EntityReportControls.tsx:243
 msgid "Month"
@@ -3614,6 +3684,10 @@ msgstr "Mută la dreapta"
 msgid "Move Up"
 msgstr "Mută mai sus"
 
+#: src/components/angajamente/LinearBudgetFlow.tsx:149
+#: src/components/angajamente/LinearBudgetFlow.tsx:161
+#: src/components/angajamente/LinearBudgetFlow.tsx:204
+#: src/components/angajamente/LinearBudgetFlow.tsx:216
 #: src/components/maps/utils.ts:98
 #: src/components/maps/utils.ts:122
 #: src/components/maps/utils.ts:151
@@ -3713,7 +3787,7 @@ msgstr "Nu există date agregate"
 msgid "No annotations yet."
 msgstr "Încă nu există adnotări."
 
-#: src/components/angajamente/DetailTable.tsx:322
+#: src/components/angajamente/DetailTable.tsx:329
 msgid "No breakdown available"
 msgstr "Nu există defalcare disponibilă"
 
@@ -3764,7 +3838,7 @@ msgstr "Nicio condiție adăugată încă. Faceți clic pe butonul de mai jos pe
 msgid "No conditions set"
 msgstr "Nicio condiție setată"
 
-#: src/components/angajamente/DetailTable.tsx:509
+#: src/components/angajamente/DetailTable.tsx:530
 msgid "No data available"
 msgstr "Nu există date disponibile"
 
@@ -3779,6 +3853,10 @@ msgstr "Nu sunt date disponibile pentru hartă."
 #: src/routes/map.lazy.tsx:362
 msgid "No data available for the table."
 msgstr "Nu sunt date disponibile pentru tabel."
+
+#: src/components/angajamente/angajamente-trends.tsx:328
+msgid "No data available to display commitment evolution."
+msgstr "Nu sunt date disponibile pentru afișarea evoluției angajamentelor."
 
 #: src/components/entities/EntityFinancialTrends.tsx:227
 msgid "No data available to display financial evolution."
@@ -3951,6 +4029,7 @@ msgstr "Observați decalajul: <0>Cheltuielile curente</0> (salarii, utilități)
 msgid "Notifications Settings"
 msgstr "Setări notificări"
 
+#: src/components/angajamente/angajamente-trends.tsx:187
 #: src/components/entities/EntityFinancialTrends.tsx:98
 msgid "November"
 msgstr "Noiembrie"
@@ -3959,17 +4038,26 @@ msgstr "Noiembrie"
 msgid "Now"
 msgstr "Acum"
 
+#: src/components/angajamente/angajamente-trends.tsx:186
 #: src/components/entities/EntityFinancialTrends.tsx:98
 msgid "October"
 msgstr "Octombrie"
 
+#: src/components/entities/views/AngajamenteView.tsx:355
+msgid "of annual budget paid"
+msgstr "din bugetul anual plătit"
+
 #: src/components/entities/views/AngajamenteView.tsx:247
-msgid "of budget contracted"
-msgstr "din buget contractat"
+#~ msgid "of budget contracted"
+#~ msgstr "din buget contractat"
+
+#: src/components/entities/views/AngajamenteView.tsx:351
+msgid "of commitment authority"
+msgstr "din autorizarea de angajament"
 
 #: src/components/entities/views/AngajamenteView.tsx:256
-msgid "of commitments paid"
-msgstr "din angajamente plătite"
+#~ msgid "of commitments paid"
+#~ msgstr "din angajamente plătite"
 
 #: src/features/learning/components/interactive/VATReformCard.tsx:27
 msgid "Old Rates"
@@ -4110,6 +4198,10 @@ msgstr "Alte categorii economice"
 msgid "Other Sources"
 msgstr "Alte surse"
 
+#: src/components/angajamente/LinearBudgetFlow.tsx:188
+msgid "Over authority"
+msgstr "Peste autorizare"
+
 #: src/hooks/useEntityViews.tsx:14
 msgid "Overview"
 msgstr "Prezentare generală"
@@ -4125,8 +4217,8 @@ msgstr "Pagina nu a fost găsită"
 
 #: src/components/angajamente/CategoryChart.tsx:68
 #: src/components/angajamente/CategoryChart.tsx:132
-msgid "Paid"
-msgstr "Plătit"
+#~ msgid "Paid"
+#~ msgstr "Plătit"
 
 #: src/components/classification-explorer/ClassificationInfo.tsx:33
 msgid "Parent"
@@ -4166,15 +4258,20 @@ msgid "Paused"
 msgstr "Pauză"
 
 #: src/components/angajamente/LinearBudgetFlow.tsx:457
-msgid "Payment and Execution"
-msgstr "Plată și Execuție"
+#~ msgid "Payment and Execution"
+#~ msgstr "Plată și Execuție"
 
+#: src/components/angajamente/angajamente-trends.tsx:422
 #: src/components/angajamente/AngajamenteTable.tsx:177
+#: src/components/angajamente/CategoryChart.tsx:68
+#: src/components/angajamente/CategoryChart.tsx:132
+#: src/components/angajamente/LinearBudgetFlow.tsx:135
+#: src/components/angajamente/LinearBudgetFlow.tsx:235
 msgid "Payments"
 msgstr "Plăți"
 
-#: src/components/angajamente/DetailTable.tsx:595
-#: src/components/entities/views/AngajamenteView.tsx:254
+#: src/components/angajamente/DetailTable.tsx:616
+#: src/components/entities/views/AngajamenteView.tsx:381
 msgid "Payments Made"
 msgstr "Plăți Efectuate"
 
@@ -4353,6 +4450,7 @@ msgstr "Datele privind achizițiile publice sunt furnizate de SICAP.ai, o platfo
 msgid "Public sector information from Ministerul Finanțelor. No government affiliation."
 msgstr "Informații din sectorul public de la Ministerul Finanțelor. Nicio afiliere guvernamentală."
 
+#: src/components/angajamente/angajamente-trends.tsx:191
 #: src/components/entities/EntityFinancialTrends.tsx:100
 #: src/components/entities/EntityReportControls.tsx:233
 msgid "Quarter"
@@ -4426,8 +4524,17 @@ msgid "Reality Check"
 msgstr "Verificare cu Realitatea"
 
 #: src/components/angajamente/AngajamenteTable.tsx:168
+#: src/components/angajamente/LinearBudgetFlow.tsx:229
 msgid "Receipts"
 msgstr "Recepții"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:213
+msgid "Receipts & arrears"
+msgstr "Recepții și arierate"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:202
+msgid "Receipts vs commitments"
+msgstr "Recepții vs angajamente"
 
 #: src/routes/$lang/learning/certificates.$id.lazy.tsx:52
 msgid "Recipient"
@@ -4460,6 +4567,10 @@ msgstr "Mod relativ"
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:175
 msgid "Relative Values"
 msgstr "Valori relative"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:195
+msgid "Remaining authority"
+msgstr "Autorizare rămasă"
 
 #: src/components/alerts/components/ConditionsList.tsx:73
 msgid "Remove condition"
@@ -4786,6 +4897,7 @@ msgstr "Vânzătorul păstrează"
 msgid "Send feedback"
 msgstr "Trimite feedback"
 
+#: src/components/angajamente/angajamente-trends.tsx:185
 #: src/components/entities/EntityFinancialTrends.tsx:98
 msgid "September"
 msgstr "Septembrie"
@@ -4837,8 +4949,8 @@ msgid "Share link copied"
 msgstr "Link de partajare copiat"
 
 #: src/components/angajamente/LinearBudgetFlow.tsx:429
-msgid "Share:"
-msgstr "Pondere:"
+#~ msgid "Share:"
+#~ msgstr "Pondere:"
 
 #: src/components/budget-explorer/RevenueBreakdown.tsx:58
 msgid "Shares and amounts split from income tax"
@@ -4887,6 +4999,7 @@ msgstr "Afișează diferența"
 msgid "Show Grid Lines"
 msgstr "Afișează liniile de grilă"
 
+#: src/components/angajamente/angajamente-trends.tsx:306
 #: src/components/charts/components/series-config/SeriesFilter.tsx:363
 #: src/components/charts/components/series-config/SeriesFilter.tsx:673
 #: src/components/entities/EntityFinancialTrends.tsx:206
@@ -4984,8 +5097,8 @@ msgid "Sign in to track your learning journey."
 msgstr "Autentifică-te pentru a-ți urmări progresul de învățare."
 
 #: src/components/angajamente/LinearBudgetFlow.tsx:450
-msgid "Signing contracts (Reservation)"
-msgstr "Semnarea contractelor (Rezervare)"
+#~ msgid "Signing contracts (Reservation)"
+#~ msgstr "Semnarea contractelor (Rezervare)"
 
 #: src/features/learning/components/interactive/GuidedPlatformTour.tsx:345
 msgid "Skip tour"
@@ -5112,16 +5225,16 @@ msgid "Stay here"
 msgstr "Rămâi aici"
 
 #: src/components/angajamente/LinearBudgetFlow.tsx:440
-msgid "Step 1"
-msgstr "Pasul 1"
+#~ msgid "Step 1"
+#~ msgstr "Pasul 1"
 
 #: src/components/angajamente/LinearBudgetFlow.tsx:447
-msgid "Step 2"
-msgstr "Pasul 2"
+#~ msgid "Step 2"
+#~ msgstr "Pasul 2"
 
 #: src/components/angajamente/LinearBudgetFlow.tsx:455
-msgid "Step 3"
-msgstr "Pasul 3"
+#~ msgid "Step 3"
+#~ msgstr "Pasul 3"
 
 #: src/features/learning/components/player/MarkComplete.tsx:66
 msgid "Step Successfully Finished"
@@ -5180,8 +5293,8 @@ msgstr "Insignă stare sistem"
 msgid "Table"
 msgstr "Tabel"
 
-#: src/components/angajamente/DetailTable.tsx:505
-#: src/components/angajamente/DetailTable.tsx:521
+#: src/components/angajamente/DetailTable.tsx:526
+#: src/components/angajamente/DetailTable.tsx:542
 msgid "Table Detail"
 msgstr "Detaliere Tabelară"
 
@@ -5349,8 +5462,8 @@ msgid "This classification has no subcategories"
 msgstr "Această clasificare nu are subcategorii"
 
 #: src/components/angajamente/LinearBudgetFlow.tsx:183
-msgid "This diagram shows how public money flows from budget allocation to legal commitments (signed contracts) to actual payments. The width of each flow represents the proportion of funds at each stage."
-msgstr "Această diagramă arată cum circulă banii publici de la alocarea bugetară la angajamentele legale (contracte semnate) până la plățile efective. Lățimea fiecărui flux reprezintă proporția fondurilor în fiecare etapă."
+#~ msgid "This diagram shows how public money flows from budget allocation to legal commitments (signed contracts) to actual payments. The width of each flow represents the proportion of funds at each stage."
+#~ msgstr "Această diagramă arată cum circulă banii publici de la alocarea bugetară la angajamentele legale (contracte semnate) până la plățile efective. Lățimea fiecărui flux reprezintă proporția fondurilor în fiecare etapă."
 
 #: src/components/entities/EntityRelationships.tsx:22
 msgid "This entity has no funding or funded relationships."
@@ -5417,9 +5530,7 @@ msgstr "Titlu Z–A"
 msgid "To exercise any of these rights, contact us at contact@transparenta.eu We will respond within 30 days."
 msgstr "Pentru a exercita oricare dintre aceste drepturi, contactați-ne la contact@transparenta.eu Vă vom răspunde în termen de 30 de zile."
 
-#: src/components/angajamente/DetailTable.tsx:602
-#: src/components/angajamente/LinearBudgetFlow.tsx:352
-#: src/components/angajamente/LinearBudgetFlow.tsx:361
+#: src/components/angajamente/DetailTable.tsx:623
 msgid "To Pay"
 msgstr "De Plată"
 
@@ -5477,6 +5588,7 @@ msgstr "Categorii funcționale principale"
 msgid "total"
 msgstr "total"
 
+#: src/components/angajamente/DetailTable.tsx:710
 #: src/components/budget-explorer/BudgetTreemap.tsx:683
 #: src/components/charts/components/series-config/SeriesFilter.tsx:339
 #: src/components/common/NormalizationSelector.tsx:21
@@ -5487,7 +5599,7 @@ msgstr "total"
 msgid "Total"
 msgstr "Total"
 
-#: src/components/entities/views/AngajamenteView.tsx:236
+#: src/components/entities/views/AngajamenteView.tsx:363
 msgid "Total Allocated Budget"
 msgstr "Total Buget Alocat"
 
@@ -5507,8 +5619,8 @@ msgstr "Sumă totală"
 #: src/components/angajamente/CategoryChart.tsx:120
 #: src/components/angajamente/LinearBudgetFlow.tsx:217
 #: src/components/angajamente/LinearBudgetFlow.tsx:378
-msgid "Total Budget"
-msgstr "Buget Total"
+#~ msgid "Total Budget"
+#~ msgstr "Buget Total"
 
 #: src/components/entities/views/AngajamenteView.tsx:356
 #~ msgid "Total Commitment"
@@ -5548,8 +5660,8 @@ msgid "Tour Complete!"
 msgstr "Tur Complet!"
 
 #: src/components/angajamente/LinearBudgetFlow.tsx:458
-msgid "Transfer of money to supplier"
-msgstr "Transferul banilor către furnizor"
+#~ msgid "Transfer of money to supplier"
+#~ msgstr "Transferul banilor către furnizor"
 
 #: src/components/entities/EntityLineItemsTabs.tsx:130
 #: src/components/entities/EntityLineItemsTabs.tsx:154
@@ -5680,10 +5792,22 @@ msgstr "Deblochează adnotarea"
 #~ msgid "Unmatched execution"
 #~ msgstr ""
 
+#: src/components/angajamente/LinearBudgetFlow.tsx:241
+msgid "Unpaid receipts"
+msgstr "Recepții neplătite"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:247
+msgid "Unreceived commitments"
+msgstr "Angajamente nerecepționate"
+
 #: src/components/alerts/components/UnsavedChangesDialog.tsx:30
 #: src/routes/alerts/$alertId/index.lazy.tsx:127
 msgid "Unsaved changes"
 msgstr "Modificări nesalvate"
+
+#: src/components/angajamente/LinearBudgetFlow.tsx:141
+msgid "Unspent budget"
+msgstr "Buget necheltuit"
 
 #: src/routes/unsubscribe.$token.tsx:67
 msgid "Unsubscribe error"
@@ -5966,6 +6090,7 @@ msgstr "Fără transferuri"
 msgid "X-Axis Prefix To Remove"
 msgstr "Prefix de eliminat pe axa X"
 
+#: src/components/angajamente/angajamente-trends.tsx:191
 #: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:91
 #: src/components/entities/EntityFinancialTrends.tsx:100
 #: src/components/entities/EntityReportControls.tsx:206

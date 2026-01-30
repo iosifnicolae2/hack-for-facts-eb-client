@@ -3,9 +3,10 @@
  *
  * Progressive disclosure design:
  * 1. KPI Summary (3 cards)
- * 2. Financial Flow Visualization
- * 3. Category Breakdown + Info Panel
- * 4. Detailed Table
+ * 2. Trends Chart
+ * 3. Financial Flow Visualization
+ * 4. Category Breakdown + Info Panel
+ * 5. Detailed Table
  */
 
 import { useMemo } from 'react'
@@ -13,6 +14,7 @@ import { EntityDetailsData } from '@/lib/api/entities'
 import {
   useAngajamenteSummary,
   useAngajamenteAggregatedAll,
+  useAngajamenteAnalytics,
 } from '@/hooks/useAngajamenteData'
 import {
   extractSummaryValues,
@@ -20,11 +22,15 @@ import {
   buildPaidAggregatedInputs,
   combineAngajamenteAggregatedNodes,
 } from '@/lib/api/angajamente'
-import type { AngajamenteFilterInput } from '@/schemas/angajamente'
+import type { AngajamenteAnalyticsInput } from '@/lib/api/angajamente'
+import type { AngajamenteFilterInput, AngajamenteAnalyticsSeries } from '@/schemas/angajamente'
+import type { NormalizationOptions } from '@/lib/normalization'
+import { normalizeNormalizationOptions } from '@/lib/normalization'
 import type { ReportPeriodInput, ReportPeriodType, GqlReportType, PeriodDate } from '@/schemas/reporting'
 import { getQuarterForMonth } from '@/schemas/reporting'
 import {
   StatCard,
+  AngajamenteTrends,
   LinearBudgetFlow,
   CategoryChart,
   CommitmentInfoPanel,
@@ -42,14 +48,18 @@ import type { Grouping, DetailLevel } from '@/components/angajamente/DetailTable
 type Props = {
   readonly entity: EntityDetailsData | null | undefined
   readonly currentYear: number
-  readonly currency?: 'RON' | 'EUR' | 'USD'
   readonly reportPeriod: ReportPeriodInput
+  readonly trendPeriod: ReportPeriodInput
   readonly reportType?: GqlReportType
-  readonly normalization?: string
-  readonly inflationAdjusted?: boolean
+  readonly normalizationOptions: NormalizationOptions
+  readonly onNormalizationChange: (next: NormalizationOptions) => void
   readonly angajamenteGrouping?: Grouping
   readonly angajamenteDetailLevel?: DetailLevel
   readonly onAngajamenteGroupingChange?: (grouping: Grouping, detailLevel: DetailLevel) => void
+  readonly onYearChange?: (year: number) => void
+  readonly onSelectPeriod?: (label: string) => void
+  readonly selectedQuarter?: string
+  readonly selectedMonth?: string
 }
 
 /**
@@ -97,23 +107,33 @@ export function toAngajamenteReportPeriod(reportPeriod: ReportPeriodInput): Repo
 
 export function AngajamenteView({
   entity,
-  currency = 'RON',
+  currentYear,
   reportPeriod,
+  trendPeriod,
   reportType,
-  normalization,
-  inflationAdjusted,
+  normalizationOptions,
+  onNormalizationChange,
   angajamenteGrouping,
   angajamenteDetailLevel,
   onAngajamenteGroupingChange,
+  onYearChange,
+  onSelectPeriod,
+  selectedQuarter,
+  selectedMonth,
 }: Props) {
   const cui = entity?.cui ?? ''
   const grouping: Grouping = angajamenteGrouping ?? 'fn'
   const detailLevel: DetailLevel = angajamenteDetailLevel ?? 'chapter'
+  const normalized = normalizeNormalizationOptions(normalizationOptions)
 
   // Auto-convert MONTH → QUARTER for angajamente data
   const angajamenteReportPeriod = useMemo(
     () => toAngajamenteReportPeriod(reportPeriod),
     [reportPeriod]
+  )
+  const angajamenteTrendPeriod = useMemo(
+    () => toAngajamenteReportPeriod(trendPeriod),
+    [trendPeriod]
   )
 
   // Build the filter for all angajamente queries
@@ -123,12 +143,35 @@ export function AngajamenteView({
         reportPeriod: angajamenteReportPeriod,
         reportType: reportType ?? 'PRINCIPAL_AGGREGATED',
         cui,
-        normalization,
-        currency,
-        inflationAdjusted,
+        normalization: normalized.normalization,
+        currency: normalized.currency,
+        inflationAdjusted: normalized.inflation_adjusted,
         excludeTransfers: true,
       }),
-    [angajamenteReportPeriod, reportType, cui, normalization, currency, inflationAdjusted]
+    [angajamenteReportPeriod, reportType, cui, normalized.normalization, normalized.currency, normalized.inflation_adjusted]
+  )
+
+  const trendFilter = useMemo(
+    () =>
+      buildAngajamenteFilter({
+        reportPeriod: angajamenteTrendPeriod,
+        reportType: reportType ?? 'PRINCIPAL_AGGREGATED',
+        cui,
+        normalization: normalized.normalization,
+        currency: normalized.currency,
+        inflationAdjusted: normalized.inflation_adjusted,
+        showPeriodGrowth: normalized.show_period_growth,
+        excludeTransfers: true,
+      }),
+    [
+      angajamenteTrendPeriod,
+      reportType,
+      cui,
+      normalized.normalization,
+      normalized.currency,
+      normalized.inflation_adjusted,
+      normalized.show_period_growth,
+    ]
   )
 
   // Fetch summary data
@@ -174,6 +217,37 @@ export function AngajamenteView({
     { enabled: !!cui && hasNonTreasuryPayments }
   )
 
+  const analyticsInputs = useMemo<AngajamenteAnalyticsInput[]>(() => {
+    if (!cui) return []
+    const inputs: AngajamenteAnalyticsInput[] = [
+      { filter: trendFilter, metric: 'CREDITE_BUGETARE_DEFINITIVE' as const, seriesId: 'budget' },
+      { filter: trendFilter, metric: 'CREDITE_ANGAJAMENT' as const, seriesId: 'commitments' },
+      { filter: trendFilter, metric: 'PLATI_TREZOR' as const, seriesId: 'payments_trezor' },
+    ]
+    if (hasNonTreasuryPayments) {
+      inputs.push({ filter: trendFilter, metric: 'PLATI_NON_TREZOR' as const, seriesId: 'payments_non_trezor' })
+    }
+    return inputs
+  }, [cui, trendFilter, hasNonTreasuryPayments])
+
+  const { data: analyticsSeries, isLoading: isAnalyticsLoading } = useAngajamenteAnalytics(
+    analyticsInputs,
+    { enabled: !!cui }
+  )
+
+  const analyticsMap = useMemo(() => {
+    const map = new Map<string, AngajamenteAnalyticsSeries>()
+    for (const series of analyticsSeries ?? []) {
+      map.set(series.seriesId, series)
+    }
+    return map
+  }, [analyticsSeries])
+
+  const budgetTrend = analyticsMap.get('budget') ?? null
+  const commitmentsTrend = analyticsMap.get('commitments') ?? null
+  const paymentsTrezorTrend = analyticsMap.get('payments_trezor') ?? null
+  const paymentsNonTrezorTrend = analyticsMap.get('payments_non_trezor') ?? null
+
   // `PLATI_NON_TREZOR` may be unsupported/missing in some deployments; don't block UI on it.
   const isCategoryLoading = isBudgetAggLoading || isCommittedAggLoading || isPaidTreasuryAggLoading
 
@@ -182,7 +256,7 @@ export function AngajamenteView({
     () => extractSummaryValues(summaryData?.nodes ?? []),
     [summaryData]
   )
-  const { totalBudget, commitmentAuthority, committed, paid } = summaryValues
+  const { totalBudget, commitmentAuthority, committed, paid, receipts, arrears } = summaryValues
 
   // Join the aggregated queries into CategoryData[]
   // The API returns rows grouped by (functional_code, economic_code), so we
@@ -252,6 +326,15 @@ export function AngajamenteView({
       .slice(0, 20)
   }, [categoryData])
 
+  const derivedSelectedQuarter = useMemo(() => {
+    if (selectedQuarter) return selectedQuarter
+    if (selectedMonth) {
+      const monthNumber = parseInt(selectedMonth, 10)
+      if (Number.isFinite(monthNumber)) return getQuarterForMonth(monthNumber)
+    }
+    return undefined
+  }, [selectedQuarter, selectedMonth])
+
   if (!entity) {
     return null
   }
@@ -282,7 +365,7 @@ export function AngajamenteView({
           subtitle={t`Final Budget Credits`}
           variant="budget"
           icon="up"
-          currency={currency}
+          currency={normalized.currency}
           isLoading={isSummaryLoading}
         />
         <StatCard
@@ -291,7 +374,7 @@ export function AngajamenteView({
           subtitle={commitmentsSubtitle}
           variant="committed"
           icon="scale"
-          currency={currency}
+          currency={normalized.currency}
           isLoading={isSummaryLoading}
         />
         <StatCard
@@ -300,37 +383,59 @@ export function AngajamenteView({
           subtitle={paymentsSubtitle}
           variant="paid"
           icon="down"
-          currency={currency}
+          currency={normalized.currency}
           isLoading={isSummaryLoading}
         />
       </div>
 
-      {/* Level 2: Financial Flow Visualization */}
+      {/* Level 2: Trends Chart */}
+      <section>
+        <AngajamenteTrends
+          budgetTrend={budgetTrend}
+          commitmentsTrend={commitmentsTrend}
+          treasuryPaymentsTrend={paymentsTrezorTrend}
+          nonTreasuryPaymentsTrend={paymentsNonTrezorTrend}
+          currentYear={currentYear}
+          normalizationOptions={normalizationOptions}
+          onNormalizationChange={onNormalizationChange}
+          allowPerCapita={Boolean(entity?.is_uat || entity?.entity_type === 'admin_county_council')}
+          periodType={angajamenteTrendPeriod.type}
+          onYearChange={onYearChange}
+          onSelectPeriod={onSelectPeriod}
+          selectedQuarter={derivedSelectedQuarter}
+          selectedMonth={selectedMonth}
+          isLoading={isAnalyticsLoading}
+        />
+      </section>
+
+      {/* Level 3: Financial Flow Visualization */}
       <section>
         <LinearBudgetFlow
           totalBudget={totalBudget}
           commitmentAuthority={commitmentAuthority}
           committed={committed}
           paid={paid}
-          currency={currency}
+          receipts={receipts}
+          arrears={arrears}
+          currency={normalized.currency}
           isLoading={isSummaryLoading}
         />
       </section>
 
-      {/* Level 3: Category Breakdown + Info Panel */}
+      {/* Level 4: Category Breakdown + Info Panel */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <CategoryChart
           data={categoryChartData}
-          currency={currency}
+          currency={normalized.currency}
           isLoading={isCategoryLoading}
         />
         <CommitmentInfoPanel />
       </div>
 
-      {/* Level 4: Detailed Table */}
+      {/* Level 5: Detailed Table */}
       <DetailTable
         data={categoryData}
-        currency={currency}
+        currency={normalized.currency}
         isLoading={isCategoryLoading}
         filter={filter}
         grouping={grouping}

@@ -10,7 +10,6 @@ import { formatCurrency } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import {
   Popover,
   PopoverContent,
@@ -22,6 +21,8 @@ type Props = {
   readonly commitmentAuthority: number
   readonly committed: number
   readonly paid: number
+  readonly receipts?: number
+  readonly arrears?: number
   readonly currency?: 'RON' | 'EUR' | 'USD'
   readonly isLoading?: boolean
 }
@@ -41,6 +42,8 @@ export function LinearBudgetFlow({
   commitmentAuthority,
   committed,
   paid,
+  receipts = 0,
+  arrears = 0,
   currency = 'RON',
   isLoading = false,
 }: Props) {
@@ -64,20 +67,26 @@ export function LinearBudgetFlow({
   const budgetExecutionPercent = totalBudget > 0 ? (paid / totalBudget) * 100 : 0
   const commitmentUtilizationPercent =
     commitmentAuthority > 0 ? (committed / commitmentAuthority) * 100 : 0
-  const showBudgetVsCommitmentHint = totalBudget > 0 && committed > totalBudget
+  const receiptsCoveragePercent = committed > 0 ? (receipts / committed) * 100 : 0
+  const paymentsCoveragePercent = receipts > 0 ? (paid / receipts) * 100 : 0
+  const commitmentsVsBudgetPercent = totalBudget > 0 ? (committed / totalBudget) * 100 : 0
 
   const budgetPaidClamped = clampPercent(budgetExecutionPercent)
   const commitmentUsedClamped = clampPercent(commitmentUtilizationPercent)
+  const paymentsCoverageClamped = clampPercent(paymentsCoveragePercent)
 
   const unspentBudget = Math.max(0, totalBudget - paid)
   const remainingCommitmentAuthority = Math.max(0, commitmentAuthority - committed)
   const overCommitmentAuthority = Math.max(0, committed - commitmentAuthority)
+  const normalizedArrears = Number.isFinite(arrears) ? Math.max(0, arrears) : 0
+  const unpaidReceipts = normalizedArrears > 0 ? normalizedArrears : Math.max(0, receipts - paid)
+  const unreceivedCommitments = Math.max(0, committed - receipts)
 
   return (
     <div className="w-full bg-white rounded-xl shadow-sm border border-slate-200 p-6 overflow-hidden">
       <div className="flex items-center gap-2 mb-4">
         <h3 className="text-lg font-bold text-slate-800">
-          <Trans>Budget & Commitments</Trans>
+          <Trans>Commitment Health</Trans>
         </h3>
         <Popover>
           <PopoverTrigger asChild>
@@ -96,21 +105,7 @@ export function LinearBudgetFlow({
         </Popover>
       </div>
 
-      {showBudgetVsCommitmentHint && (
-        <Alert className="mb-6 bg-slate-50 border-slate-200 text-slate-700">
-          <AlertTitle>
-            <Trans>Legal commitments can exceed the annual budget</Trans>
-          </AlertTitle>
-          <AlertDescription>
-            <Trans>
-              Legal commitments are often multi-year contract values, while the annual budget reflects what can be paid
-              within the selected year. This is common for multi-year projects.
-            </Trans>
-          </AlertDescription>
-        </Alert>
-      )}
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="rounded-xl border border-slate-200 p-5 bg-white">
           <div className="flex items-baseline justify-between gap-3">
             <h4 className="text-sm font-semibold text-slate-800">
@@ -146,6 +141,12 @@ export function LinearBudgetFlow({
               <dt className="text-slate-500">{t`Unspent budget`}</dt>
               <dd className="font-mono text-slate-800">
                 {formatCurrency(unspentBudget, 'compact', currency)}
+              </dd>
+            </div>
+            <div className="flex justify-between gap-4">
+              <dt className="text-slate-500">{t`Commitments vs budget`}</dt>
+              <dd className="font-mono text-slate-800">
+                {totalBudget > 0 ? formatPercent(commitmentsVsBudgetPercent) : t`N/A`}
               </dd>
             </div>
           </dl>
@@ -197,6 +198,57 @@ export function LinearBudgetFlow({
                 </dd>
               </div>
             )}
+            <div className="flex justify-between gap-4">
+              <dt className="text-slate-500">{t`Receipts vs commitments`}</dt>
+              <dd className="font-mono text-slate-800">
+                {committed > 0 ? formatPercent(receiptsCoveragePercent) : t`N/A`}
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+        <div className="rounded-xl border border-slate-200 p-5 bg-white">
+          <div className="flex items-baseline justify-between gap-3">
+            <h4 className="text-sm font-semibold text-slate-800">
+              <Trans>Receipts & arrears</Trans>
+            </h4>
+            <span className="text-xs text-slate-500 font-mono">
+              {receipts > 0 ? formatPercent(paymentsCoveragePercent) : t`N/A`}
+            </span>
+          </div>
+
+          <div className="mt-3 h-2 rounded-full bg-amber-100 overflow-hidden">
+            <div
+              className="h-full bg-amber-500 transition-all"
+              style={{ width: `${paymentsCoverageClamped}%` }}
+            />
+          </div>
+
+          <dl className="mt-4 space-y-2 text-sm">
+            <div className="flex justify-between gap-4">
+              <dt className="text-slate-500">{t`Receipts`}</dt>
+              <dd className="font-mono text-slate-800">
+                {formatCurrency(receipts, 'compact', currency)}
+              </dd>
+            </div>
+            <div className="flex justify-between gap-4">
+              <dt className="text-slate-500">{t`Payments`}</dt>
+              <dd className="font-mono text-slate-800">
+                {formatCurrency(paid, 'compact', currency)}
+              </dd>
+            </div>
+            <div className="flex justify-between gap-4">
+              <dt className="text-slate-500">{t`Unpaid receipts`}</dt>
+              <dd className="font-mono text-slate-800">
+                {formatCurrency(unpaidReceipts, 'compact', currency)}
+              </dd>
+            </div>
+            <div className="flex justify-between gap-4">
+              <dt className="text-slate-500">{t`Unreceived commitments`}</dt>
+              <dd className="font-mono text-slate-800">
+                {formatCurrency(unreceivedCommitments, 'compact', currency)}
+              </dd>
+            </div>
           </dl>
         </div>
       </div>

@@ -336,6 +336,7 @@ export function buildAngajamenteFilter(params: {
   normalization?: string
   currency?: string
   inflationAdjusted?: boolean
+  showPeriodGrowth?: boolean
   excludeTransfers?: boolean
 }): AngajamenteFilterInput {
   return {
@@ -345,6 +346,7 @@ export function buildAngajamenteFilter(params: {
     normalization: params.normalization as AngajamenteFilterInput['normalization'],
     currency: params.currency as AngajamenteFilterInput['currency'],
     inflation_adjusted: params.inflationAdjusted,
+    show_period_growth: params.showPeriodGrowth,
     exclude_transfers: params.excludeTransfers ?? true,
   }
 }

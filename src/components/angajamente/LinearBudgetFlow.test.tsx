@@ -4,22 +4,6 @@ import { render, screen } from '@/test/test-utils'
 import { LinearBudgetFlow } from './LinearBudgetFlow'
 
 describe('LinearBudgetFlow', () => {
-  it('shows a hint when legal commitments exceed the annual budget', () => {
-    render(
-      <LinearBudgetFlow
-        totalBudget={100}
-        commitmentAuthority={200}
-        committed={150}
-        paid={50}
-        currency="RON"
-      />
-    )
-
-    expect(
-      screen.getByText('Legal commitments can exceed the annual budget')
-    ).toBeInTheDocument()
-  })
-
   it('clamps progress bars at 100% when ratios exceed 100%', () => {
     render(
       <LinearBudgetFlow
@@ -49,4 +33,3 @@ describe('LinearBudgetFlow', () => {
     expect(screen.getByText('N/A')).toBeInTheDocument()
   })
 })
-
