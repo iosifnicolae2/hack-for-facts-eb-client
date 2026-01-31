@@ -1,31 +1,41 @@
-import { createRouter, defaultStringifySearch } from "@tanstack/react-router";
+import { createRouter, parseSearchWith, stringifySearchWith } from "@tanstack/react-router";
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
 import GlobalErrorPage from "@/components/errors/GlobalErrorPage";
 import { createQueryClient } from "@/lib/queryClient";
+import { normalizeHrefSearch, normalizeSearchEncoding } from "@/lib/router-search";
 import type { RouterContext } from "@/router-context";
 import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {
   const queryClient = createQueryClient();
-  // Normalize URL encoding to match browser/Vercel conventions and prevent SSR redirect loops.
-  // TanStack Router uses URLSearchParams internally (spaces → +, encodes ! ' ( ) ~),
-  // but browsers/Vercel use encodeURIComponent (spaces → %20, leaves ! ' ( ) ~ unescaped).
-  // This mismatch causes 307 redirects when search params contain human-readable strings.
-  // No built-in TanStack Router option exists; post-processing is the recommended approach.
+  // Normalize URL encoding to avoid SSR redirect loops caused by + vs %20.
+  // Also handle double-encoded JSON search params used across routes.
   // See: https://tanstack.com/router/v1/docs/framework/react/guide/custom-search-param-serialization
+  const searchParser = (value: string) => {
+    try {
+      return JSON.parse(value);
+    } catch {
+      // Continue to URI-decoding fallback.
+    }
+
+    try {
+      const normalized = value.replace(/\+/g, "%20");
+      return JSON.parse(decodeURIComponent(normalized));
+    } catch {
+      throw new Error("Not JSON");
+    }
+  };
+
+  const parseSearch = parseSearchWith(searchParser);
+  const baseStringifySearch = stringifySearchWith(JSON.stringify, searchParser);
   const stringifySearch = (search: Record<string, any>) =>
-    defaultStringifySearch(search)
-      .replace(/\+/g, "%20")
-      .replace(/%21/gi, "!")
-      .replace(/%27/gi, "'")
-      .replace(/%28/gi, "(")
-      .replace(/%29/gi, ")")
-      .replace(/%7e/gi, "~");
+    normalizeSearchEncoding(baseStringifySearch(search));
 
   const router = createRouter({
     routeTree,
     context: { queryClient },
     defaultErrorComponent: ({ error }) => <GlobalErrorPage error={error} />,
+    parseSearch,
     stringifySearch,
     // Enable automatic scroll-to-top on navigation
     scrollRestoration: true,
@@ -34,6 +44,15 @@ export function getRouter() {
     // Scroll both window and main content area
     scrollToTopSelectors: ["window", '[role="main"]'],
   });
+
+  const baseParseLocation = router.parseLocation.bind(router);
+  router.parseLocation = (location, previousLocation) => {
+    const parsed = baseParseLocation(location, previousLocation);
+    if (!parsed.publicHref) return parsed;
+    const normalizedPublicHref = normalizeHrefSearch(parsed.publicHref);
+    if (normalizedPublicHref === parsed.publicHref) return parsed;
+    return { ...parsed, publicHref: normalizedPublicHref };
+  };
 
   setupRouterSsrQueryIntegration({ router, queryClient });
 

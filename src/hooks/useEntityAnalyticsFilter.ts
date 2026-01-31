@@ -6,6 +6,7 @@ import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCT
 import { withDefaultExcludes } from '@/lib/filterUtils'
 import { Analytics } from '@/lib/analytics'
 import { generateHash } from '@/lib/utils'
+import { parseSearchParamJson } from '@/lib/router-search'
 
 const viewEnum = z.enum(['table', 'chart', 'line-items'])
 
@@ -23,13 +24,15 @@ export const defaultEntityAnalyticsFilter: AnalyticsFilterType = withDefaultExcl
   },
 })
 
+const filterSchema = z.preprocess(parseSearchParamJson, AnalyticsFilterSchema)
+
 const searchSchema = z.object({
   view: viewEnum.default('table'),
   sortBy: z.string().optional(),
   sortOrder: z.enum(['asc', 'desc']).default('desc'),
-  page: z.number().default(1),
-  pageSize: z.number().default(25),
-  filter: AnalyticsFilterSchema.default(defaultEntityAnalyticsFilter as AnalyticsFilterType),
+  page: z.coerce.number().default(1),
+  pageSize: z.coerce.number().default(25),
+  filter: filterSchema.default(defaultEntityAnalyticsFilter as AnalyticsFilterType),
   treemapPrimary: z.enum(['fn', 'ec']).optional(),
   treemapDepth: z.enum(['chapter', 'subchapter', 'paragraph']).optional(),
   treemapPath: z.string().optional(),

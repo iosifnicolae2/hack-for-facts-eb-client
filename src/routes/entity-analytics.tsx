@@ -5,16 +5,19 @@ import { defaultEntityAnalyticsFilter } from '@/hooks/useEntityAnalyticsFilter'
 import { AnalyticsFilterSchema } from '@/schemas/charts'
 import { convertDaysToMs, generateHash } from '@/lib/utils'
 import { readUserCurrencyPreference, readUserInflationAdjustedPreference } from '@/lib/user-preferences'
+import { parseSearchParamJson } from '@/lib/router-search'
 
 const viewEnum = z.enum(['table', 'chart', 'line-items'])
+
+const filterSchema = z.preprocess(parseSearchParamJson, AnalyticsFilterSchema)
 
 const EntityAnalyticsSchema = z.object({
   view: viewEnum.default('table'),
   sortBy: z.string().optional(),
   sortOrder: z.enum(['asc', 'desc']).default('desc'),
-  page: z.number().default(1),
-  pageSize: z.number().default(25),
-  filter: AnalyticsFilterSchema.default(defaultEntityAnalyticsFilter),
+  page: z.coerce.number().default(1),
+  pageSize: z.coerce.number().default(25),
+  filter: filterSchema.default(defaultEntityAnalyticsFilter),
 })
 
 export type EntityAnalyticsUrlState = z.infer<typeof EntityAnalyticsSchema>
