@@ -408,16 +408,12 @@ function BudgetExplorerPage() {
     if (partialFilter?.account_category !== undefined && partialFilter.account_category !== filter.account_category) shouldClearPath = true
     if (partial.depth !== undefined && partial.depth !== depth) shouldClearPath = true
 
-    // FIXME: Strip report_type from URL filter to avoid redirect loop caused by spaces in value
-    // The report_type is always the default value and will be restored when parsing
-    const { report_type: _reportType, ...urlFilter } = nextFilter
-
     navigate({
       search: (prev) => ({
         ...(prev as unknown as BudgetExplorerState),
         ...restPartial,
         primary: nextPrimary,
-        filter: urlFilter,
+        filter: nextFilter,
         treemapPrimary: nextTreemapPrimary,
         treemapPath: shouldClearPath ? undefined : (prev as unknown as BudgetExplorerState).treemapPath,
       }),

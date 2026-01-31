@@ -9,7 +9,7 @@ import { heatmapJudetQueryOptions, heatmapUATQueryOptions } from '@/hooks/useHea
 import { getTopFunctionalGroupCodes } from '@/lib/analytics-utils';
 import { getChartAnalytics } from '@/lib/api/charts';
 import { generateHash } from '@/lib/utils';
-import { GqlReportType, toReportTypeValue } from '@/schemas/reporting';
+import { GqlReportType, toExecutionReportType, toReportTypeValue } from '@/schemas/reporting';
 import { getInitialFilterState, makeTrendPeriod } from '@/schemas/reporting';
 import { prepareFilterForServer, withDefaultExcludes } from '@/lib/filterUtils';
 // NOTE: We intentionally do NOT read cookies during SSR for data fetching.
@@ -64,7 +64,8 @@ export const Route = createFileRoute('/entities/$cui')({
 
         const reportPeriod = getInitialFilterState(search.period ?? 'YEAR', year, search.month ?? '01', search.quarter ?? 'Q1');
         const trendPeriod = makeTrendPeriod(search.period ?? 'YEAR', year, START_YEAR, END_YEAR);
-        const reportType = (search?.report_type as GqlReportType | undefined);
+        const reportTypeRaw = (search?.report_type as GqlReportType | undefined);
+        const reportType = toExecutionReportType(reportTypeRaw);
         const mainCreditorCui = (search?.main_creditor_cui as string | undefined);
 
         // Build SSR params to return to client for placeholder derivation

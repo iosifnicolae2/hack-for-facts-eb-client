@@ -172,6 +172,9 @@ export default function EntityReports({ cui, initialType }: EntityReportsProps) 
                         <SelectItem value="PRINCIPAL_AGGREGATED">{t`Principal Aggregated`}</SelectItem>
                         <SelectItem value="SECONDARY_AGGREGATED">{t`Secondary Aggregated`}</SelectItem>
                         <SelectItem value="DETAILED">{t`Detailed`}</SelectItem>
+                        <SelectItem value="COMMITMENT_PRINCIPAL_AGGREGATED">{t`Commitment Principal Aggregated`}</SelectItem>
+                        <SelectItem value="COMMITMENT_SECONDARY_AGGREGATED">{t`Commitment Secondary Aggregated`}</SelectItem>
+                        <SelectItem value="COMMITMENT_DETAILED">{t`Commitment Detailed`}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

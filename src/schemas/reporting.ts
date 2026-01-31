@@ -25,12 +25,44 @@ export interface ReportPeriodInput {
   readonly selection: PeriodSelection
 }
 
-export type GqlReportType = 'PRINCIPAL_AGGREGATED' | 'SECONDARY_AGGREGATED' | 'DETAILED'
+export type ExecutionGqlReportType = 'PRINCIPAL_AGGREGATED' | 'SECONDARY_AGGREGATED' | 'DETAILED'
+export type CommitmentGqlReportType =
+  | 'COMMITMENT_PRINCIPAL_AGGREGATED'
+  | 'COMMITMENT_SECONDARY_AGGREGATED'
+  | 'COMMITMENT_DETAILED'
+export type GqlReportType = ExecutionGqlReportType | CommitmentGqlReportType
+
+export function isCommitmentReportType(type?: GqlReportType): type is CommitmentGqlReportType {
+  return (
+    type === 'COMMITMENT_PRINCIPAL_AGGREGATED' ||
+    type === 'COMMITMENT_SECONDARY_AGGREGATED' ||
+    type === 'COMMITMENT_DETAILED'
+  )
+}
+
+export function toCommitmentReportType(type?: GqlReportType): CommitmentGqlReportType | undefined {
+  if (!type) return undefined
+  if (isCommitmentReportType(type)) return type
+  if (type === 'PRINCIPAL_AGGREGATED') return 'COMMITMENT_PRINCIPAL_AGGREGATED'
+  if (type === 'SECONDARY_AGGREGATED') return 'COMMITMENT_SECONDARY_AGGREGATED'
+  return 'COMMITMENT_DETAILED'
+}
+
+export function toExecutionReportType(type?: GqlReportType): ExecutionGqlReportType | undefined {
+  if (!type) return undefined
+  if (type === 'COMMITMENT_PRINCIPAL_AGGREGATED') return 'PRINCIPAL_AGGREGATED'
+  if (type === 'COMMITMENT_SECONDARY_AGGREGATED') return 'SECONDARY_AGGREGATED'
+  if (type === 'COMMITMENT_DETAILED') return 'DETAILED'
+  return type
+}
 
 export function toReportTypeValue(gqlReportType: GqlReportType) {
   if (gqlReportType === 'PRINCIPAL_AGGREGATED') return 'Executie bugetara agregata la nivel de ordonator principal'
   if (gqlReportType === 'SECONDARY_AGGREGATED') return 'Executie bugetara agregata la nivel de ordonator secundar'
   if (gqlReportType === 'DETAILED') return 'Executie bugetara detaliata'
+  if (gqlReportType === 'COMMITMENT_PRINCIPAL_AGGREGATED') return 'Angajamente bugetare agregat principal'
+  if (gqlReportType === 'COMMITMENT_SECONDARY_AGGREGATED') return 'Angajamente bugetare agregat secundar'
+  if (gqlReportType === 'COMMITMENT_DETAILED') return 'Angajamente bugetare detaliat'
   throw new Error('Invalid GqlReportType')
 }
 
@@ -38,6 +70,12 @@ export function toReportGqlType(reportType: string) {
   if (reportType === 'Executie bugetara agregata la nivel de ordonator principal') return 'PRINCIPAL_AGGREGATED'
   if (reportType === 'Executie bugetara agregata la nivel de ordonator secundar') return 'SECONDARY_AGGREGATED'
   if (reportType === 'Executie bugetara detaliata') return 'DETAILED'
+  if (reportType === 'Executie - Angajamente bugetare agregat principal') return 'COMMITMENT_PRINCIPAL_AGGREGATED'
+  if (reportType === 'Executie - Angajamente bugetare agregat secundar') return 'COMMITMENT_SECONDARY_AGGREGATED'
+  if (reportType === 'Executie - Angajamente bugetare detaliat') return 'COMMITMENT_DETAILED'
+  if (reportType === 'Angajamente bugetare agregat principal') return 'COMMITMENT_PRINCIPAL_AGGREGATED'
+  if (reportType === 'Angajamente bugetare agregat secundar') return 'COMMITMENT_SECONDARY_AGGREGATED'
+  if (reportType === 'Angajamente bugetare detaliat') return 'COMMITMENT_DETAILED'
   throw new Error('Invalid ReportType')
 }
 
@@ -96,7 +134,12 @@ export function getInitialFilterState(period: ReportPeriodInput['type'], year: n
   throw new Error('Invalid period')
 }
 
-export const GqlReportTypeEnum = z.enum(['PRINCIPAL_AGGREGATED', 'SECONDARY_AGGREGATED', 'DETAILED'])
+export const GqlReportTypeEnum = z.enum([
+  'PRINCIPAL_AGGREGATED',
+  'SECONDARY_AGGREGATED',
+  'DETAILED',
+  'COMMITMENT_PRINCIPAL_AGGREGATED',
+  'COMMITMENT_SECONDARY_AGGREGATED',
+  'COMMITMENT_DETAILED',
+])
 export type GqlReportTypeEnumT = z.infer<typeof GqlReportTypeEnum>
-
-

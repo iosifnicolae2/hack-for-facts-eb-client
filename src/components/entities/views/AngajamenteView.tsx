@@ -27,7 +27,7 @@ import type { AngajamenteFilterInput, AngajamenteAnalyticsSeries } from '@/schem
 import type { NormalizationOptions } from '@/lib/normalization'
 import { normalizeNormalizationOptions } from '@/lib/normalization'
 import type { ReportPeriodInput, ReportPeriodType, GqlReportType, PeriodDate } from '@/schemas/reporting'
-import { getQuarterForMonth } from '@/schemas/reporting'
+import { getQuarterForMonth, toCommitmentReportType } from '@/schemas/reporting'
 import {
   StatCard,
   AngajamenteTrends,
@@ -37,6 +37,7 @@ import {
   DetailTable,
   type CategoryData,
 } from '@/components/angajamente'
+import { EntityReportsSummary } from '@/components/entities/EntityReportsSummary'
 import { t } from '@lingui/core/macro'
 import { getClassificationName } from '@/lib/classifications'
 import {
@@ -51,6 +52,7 @@ type Props = {
   readonly reportPeriod: ReportPeriodInput
   readonly trendPeriod: ReportPeriodInput
   readonly reportType?: GqlReportType
+  readonly mainCreditorCui?: string
   readonly normalizationOptions: NormalizationOptions
   readonly onNormalizationChange: (next: NormalizationOptions) => void
   readonly angajamenteGrouping?: Grouping
@@ -111,6 +113,7 @@ export function AngajamenteView({
   reportPeriod,
   trendPeriod,
   reportType,
+  mainCreditorCui,
   normalizationOptions,
   onNormalizationChange,
   angajamenteGrouping,
@@ -125,6 +128,8 @@ export function AngajamenteView({
   const grouping: Grouping = angajamenteGrouping ?? 'fn'
   const detailLevel: DetailLevel = angajamenteDetailLevel ?? 'chapter'
   const normalized = normalizeNormalizationOptions(normalizationOptions)
+  const effectiveReportType: GqlReportType = reportType ?? entity?.default_report_type ?? 'PRINCIPAL_AGGREGATED'
+  const commitmentReportType = useMemo(() => toCommitmentReportType(effectiveReportType), [effectiveReportType])
 
   // Auto-convert MONTH → QUARTER for angajamente data
   const angajamenteReportPeriod = useMemo(
@@ -141,21 +146,21 @@ export function AngajamenteView({
     () =>
       buildAngajamenteFilter({
         reportPeriod: angajamenteReportPeriod,
-        reportType: reportType ?? 'PRINCIPAL_AGGREGATED',
+        reportType: effectiveReportType,
         cui,
         normalization: normalized.normalization,
         currency: normalized.currency,
         inflationAdjusted: normalized.inflation_adjusted,
         excludeTransfers: true,
       }),
-    [angajamenteReportPeriod, reportType, cui, normalized.normalization, normalized.currency, normalized.inflation_adjusted]
+    [angajamenteReportPeriod, effectiveReportType, cui, normalized.normalization, normalized.currency, normalized.inflation_adjusted]
   )
 
   const trendFilter = useMemo(
     () =>
       buildAngajamenteFilter({
         reportPeriod: angajamenteTrendPeriod,
-        reportType: reportType ?? 'PRINCIPAL_AGGREGATED',
+        reportType: effectiveReportType,
         cui,
         normalization: normalized.normalization,
         currency: normalized.currency,
@@ -165,7 +170,7 @@ export function AngajamenteView({
       }),
     [
       angajamenteTrendPeriod,
-      reportType,
+      effectiveReportType,
       cui,
       normalized.normalization,
       normalized.currency,
@@ -442,6 +447,16 @@ export function AngajamenteView({
         detailLevel={detailLevel}
         onGroupingChange={onAngajamenteGroupingChange}
       />
+
+      <div className="mt-6">
+        <EntityReportsSummary
+          cui={cui}
+          reportPeriod={reportPeriod}
+          reportType={commitmentReportType ?? effectiveReportType}
+          mainCreditorCui={mainCreditorCui}
+          limit={12}
+        />
+      </div>
     </div>
   )
 }

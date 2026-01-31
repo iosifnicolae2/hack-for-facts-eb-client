@@ -16,7 +16,7 @@ import { AlertTriangle, Info } from 'lucide-react'
 import { EntityNotificationAnnouncement } from '@/features/notifications/components/EntityNotificationAnnouncement'
 
 import type { GqlReportType, ReportPeriodInput, ReportPeriodType, TMonth, TQuarter } from '@/schemas/reporting'
-import { getInitialFilterState, makeTrendPeriod } from '@/schemas/reporting'
+import { getInitialFilterState, makeTrendPeriod, toExecutionReportType } from '@/schemas/reporting'
 import { AnalyticsFilterType, defaultYearRange, type Normalization } from '@/schemas/charts'
 
 import { useEntityViews } from '@/hooks/useEntityViews'
@@ -106,7 +106,8 @@ function EntityDetailsPage() {
   const period = search.period ?? DEFAULT_PERIOD
   const month = search.month ?? DEFAULT_MONTH
   const quarter = search.quarter ?? DEFAULT_QUARTER
-  const reportTypeState = search.report_type
+  const reportTypeStateRaw = search.report_type as GqlReportType | undefined
+  const reportTypeState = toExecutionReportType(reportTypeStateRaw)
   const mainCreditorState = search.main_creditor_cui
   const activeView = search.view ?? 'overview'
   const lineItemsTab = search.lineItemsTab as 'functional' | 'funding' | 'expenseType' | undefined
@@ -500,6 +501,7 @@ function EntityDetailsPage() {
           reportPeriod={reportPeriod}
           trendPeriod={trendPeriod}
           reportTypeState={reportTypeState}
+          reportsTypeState={reportTypeStateRaw}
           mainCreditorCui={mainCreditorState}
           search={search}
           mapFilters={mapFilters}
@@ -549,6 +551,7 @@ interface ViewsContentProps {
   reportPeriod: ReportPeriodInput;
   trendPeriod: ReportPeriodInput;
   reportTypeState?: GqlReportType;
+  reportsTypeState?: GqlReportType;
   mainCreditorCui?: string;
   search: { expenseSearch?: string, incomeSearch?: string, [key: string]: any };
   mapFilters: AnalyticsFilterType;
@@ -582,7 +585,7 @@ interface ViewsContentProps {
 function ViewsContent(props: ViewsContentProps) {
   const {
     cui, entity, activeView, selectedYear, normalization, currency, inflationAdjusted, showPeriodGrowth, years, period, reportPeriod, trendPeriod,
-    reportTypeState, search, mapFilters, updateMapFilters, handleYearChange, mainCreditorCui,
+    reportTypeState, reportsTypeState, search, mapFilters, updateMapFilters, handleYearChange, mainCreditorCui,
     handleSearchChange, handleNormalizationChange, handlePeriodItemSelect, handleAnalyticsChange,
     lineItemsTab, handleLineItemsTabChange,
     selectedFundingKey, selectedExpenseTypeKey, handleSelectedFundingKeyChange, handleSelectedExpenseTypeKeyChange,
@@ -631,7 +634,7 @@ function ViewsContent(props: ViewsContentProps) {
     <Suspense fallback={<ViewLoading />}>
       {(() => {
         switch (activeView) {
-          case 'reports': return <EntityReports cui={cui} initialType={reportTypeState ?? entity?.default_report_type} />
+          case 'reports': return <EntityReports cui={cui} initialType={reportsTypeState ?? entity?.default_report_type} />
           case 'expense-trends': return <TrendsView {...trendsViewProps} type="expense" treemapPrimary={treemapPrimary} onTreemapPrimaryChange={handleTreemapPrimaryChange} treemapPath={treemapPath} onTreemapPathChange={handleTreemapPathChange} />
           case 'income-trends': return <TrendsView {...trendsViewProps} type="income" treemapPrimary={treemapPrimary} onTreemapPrimaryChange={handleTreemapPrimaryChange} treemapPath={treemapPath} onTreemapPathChange={handleTreemapPathChange} />
           case 'map': return <MapView entity={entity} mapFilters={mapFilters} updateMapFilters={updateMapFilters} period={reportPeriod} />
@@ -647,6 +650,7 @@ function ViewsContent(props: ViewsContentProps) {
               reportPeriod={reportPeriod}
               trendPeriod={trendPeriod}
               reportType={reportTypeState ?? entity?.default_report_type}
+              mainCreditorCui={mainCreditorCui}
               normalizationOptions={normalizationOptions}
               onNormalizationChange={handleNormalizationChange}
               angajamenteGrouping={angajamenteGrouping}
