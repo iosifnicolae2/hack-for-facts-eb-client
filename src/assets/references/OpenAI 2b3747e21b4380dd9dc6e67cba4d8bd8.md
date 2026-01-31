@@ -37,7 +37,7 @@ All these are part of the national budget system and together form the BGC. A ne
 - **Ordonanțare (Warranting/Ordering):** The authorization to pay, after verifying that goods/services were delivered.
 - **Plăți Efectuate (Actual Payments):** The cash payments made to fulfill the obligations. These are the *executed expenditures* – the money actually spent. **This is the key metric** we visualize on platforms like *transparenta.eu*, as it shows the real cash outflows for public services.
 
-In summary, an institution starts with *prevederi* (approved spending limits), makes *angajamente* (commitments) up to those limits, and finally incurs *plăți efective* (actual payments). We focus on actual payments as the realized impact of the budget.
+In summary, an institution starts with *prevederi* (approved spending limits), makes *commitments* (commitments) up to those limits, and finally incurs *plăți efective* (actual payments). We focus on actual payments as the realized impact of the budget.
 
 **Legal Basis:** The framework for budget structure and execution comes primarily from **Law 500/2002 on Public Finances** and **Law 273/2006 on Local Public Finances**. Key provisions include:
 

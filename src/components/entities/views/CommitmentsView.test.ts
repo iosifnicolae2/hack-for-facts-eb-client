@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest'
 
-import { toAngajamenteReportPeriod } from './AngajamenteView'
+import { toCommitmentsReportPeriod } from './Commitments'
 import type { ReportPeriodInput } from '@/schemas/reporting'
 
-describe('AngajamenteView period conversion', () => {
+describe('CommitmentsView period conversion', () => {
   it('converts MONTH interval selection to QUARTER interval selection', () => {
-    const result = toAngajamenteReportPeriod({
+    const result = toCommitmentsReportPeriod({
       type: 'MONTH',
       selection: { interval: { start: '2024-01', end: '2024-05' } },
     })
@@ -17,7 +17,7 @@ describe('AngajamenteView period conversion', () => {
   })
 
   it('converts MONTH dates selection to QUARTER dates selection (deduped)', () => {
-    const result = toAngajamenteReportPeriod({
+    const result = toCommitmentsReportPeriod({
       type: 'MONTH',
       selection: { dates: ['2024-01', '2024-02', '2024-04'] },
     })
@@ -30,6 +30,6 @@ describe('AngajamenteView period conversion', () => {
 
   it('passes through non-MONTH periods unchanged', () => {
     const input: ReportPeriodInput = { type: 'YEAR', selection: { dates: ['2024'] } }
-    expect(toAngajamenteReportPeriod(input)).toBe(input)
+    expect(toCommitmentsReportPeriod(input)).toBe(input)
   })
 })

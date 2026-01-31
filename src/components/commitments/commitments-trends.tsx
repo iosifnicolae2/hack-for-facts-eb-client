@@ -22,17 +22,17 @@ import { normalizeNormalizationOptions } from '@/lib/normalization'
 import type { NormalizationOptions } from '@/lib/normalization'
 import { getNormalizationUnit } from '@/lib/utils'
 import { yValueFormatter } from '@/components/charts/components/chart-renderer/utils'
-import type { AngajamenteAnalyticsSeries } from '@/schemas/angajamente'
+import type { CommitmentsAnalyticsSeries } from '@/schemas/commitments'
 import type { ReportPeriodType } from '@/schemas/reporting'
 import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
-import { AngajamenteTrendsSkeleton } from './angajamente-trends-skeleton'
+import { CommitmentsTrendsSkeleton } from './commitments-trends-skeleton'
 
-interface AngajamenteTrendsProps {
-  budgetTrend?: AngajamenteAnalyticsSeries | null
-  commitmentsTrend?: AngajamenteAnalyticsSeries | null
-  treasuryPaymentsTrend?: AngajamenteAnalyticsSeries | null
-  nonTreasuryPaymentsTrend?: AngajamenteAnalyticsSeries | null
+interface CommitmentsTrendsProps {
+  budgetTrend?: CommitmentsAnalyticsSeries | null
+  commitmentsTrend?: CommitmentsAnalyticsSeries | null
+  treasuryPaymentsTrend?: CommitmentsAnalyticsSeries | null
+  nonTreasuryPaymentsTrend?: CommitmentsAnalyticsSeries | null
   currentYear: number
   normalizationOptions: NormalizationOptions
   onNormalizationChange: (next: NormalizationOptions) => void
@@ -46,7 +46,7 @@ interface AngajamenteTrendsProps {
   onPrefetchPeriod?: (label: string) => void
 }
 
-type AnalyticsPoint = AngajamenteAnalyticsSeries['data'][number]
+type AnalyticsPoint = CommitmentsAnalyticsSeries['data'][number]
 
 type TooltipPayload = {
   name: string
@@ -58,7 +58,7 @@ type TooltipPayload = {
 
 const PAYMENT_TOTAL_SERIES = 'payments_total'
 
-function toPointMap(series?: AngajamenteAnalyticsSeries | null): Map<string, AnalyticsPoint> | null {
+function toPointMap(series?: CommitmentsAnalyticsSeries | null): Map<string, AnalyticsPoint> | null {
   if (!series?.data?.length) return null
   return new Map(series.data.map((point) => [String(point.x), point]))
 }
@@ -72,7 +72,7 @@ function computeGrowthPercent(current: number, previous: number | null): number 
   return ((current - previous) / previous) * 100
 }
 
-const AngajamenteTrendsComponent: React.FC<AngajamenteTrendsProps> = ({
+const CommitmentsTrendsComponent: React.FC<CommitmentsTrendsProps> = ({
   budgetTrend,
   commitmentsTrend,
   treasuryPaymentsTrend,
@@ -275,7 +275,7 @@ const AngajamenteTrendsComponent: React.FC<AngajamenteTrendsProps> = ({
   }, [dataSignature])
 
   if (isLoading) {
-    return <AngajamenteTrendsSkeleton />
+    return <CommitmentsTrendsSkeleton />
   }
 
   return (
@@ -290,7 +290,7 @@ const AngajamenteTrendsComponent: React.FC<AngajamenteTrendsProps> = ({
           </CardTitle>
           <div className="flex items-center gap-3">
             <Checkbox
-              id="angajamente-growth-toggle"
+              id="commitments-growth-toggle"
               checked={showPeriodGrowth}
               onCheckedChange={(checked) => {
                 onNormalizationChange({
@@ -300,7 +300,7 @@ const AngajamenteTrendsComponent: React.FC<AngajamenteTrendsProps> = ({
               }}
             />
             <Label
-              htmlFor="angajamente-growth-toggle"
+              htmlFor="commitments-growth-toggle"
               className="text-xs text-muted-foreground cursor-pointer"
             >
               <Trans>Show growth (%)</Trans>
@@ -435,7 +435,7 @@ const AngajamenteTrendsComponent: React.FC<AngajamenteTrendsProps> = ({
   )
 }
 
-function areSeriesEqual(a?: AngajamenteAnalyticsSeries | null, b?: AngajamenteAnalyticsSeries | null): boolean {
+function areSeriesEqual(a?: CommitmentsAnalyticsSeries | null, b?: CommitmentsAnalyticsSeries | null): boolean {
   if (!a && !b) return true
   if (!a || !b) return false
   if (a.seriesId !== b.seriesId || a.metric !== b.metric) return false
@@ -452,7 +452,7 @@ function areSeriesEqual(a?: AngajamenteAnalyticsSeries | null, b?: AngajamenteAn
   return true
 }
 
-function arePropsEqual(prev: AngajamenteTrendsProps, next: AngajamenteTrendsProps): boolean {
+function arePropsEqual(prev: CommitmentsTrendsProps, next: CommitmentsTrendsProps): boolean {
   return (
     areSeriesEqual(prev.budgetTrend, next.budgetTrend) &&
     areSeriesEqual(prev.commitmentsTrend, next.commitmentsTrend) &&
@@ -470,4 +470,4 @@ function arePropsEqual(prev: AngajamenteTrendsProps, next: AngajamenteTrendsProp
   )
 }
 
-export const AngajamenteTrends = React.memo(AngajamenteTrendsComponent, arePropsEqual)
+export const CommitmentsTrends = React.memo(CommitmentsTrendsComponent, arePropsEqual)

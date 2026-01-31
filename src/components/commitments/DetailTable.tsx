@@ -1,5 +1,5 @@
 /**
- * DetailTable Component for Angajamente Bugetare
+ * DetailTable Component for Commitments Bugetare
  *
  * Color-coded table showing budget chapters with commitments,
  * payments, and unpaid amounts. Rows are expandable to show
@@ -12,9 +12,9 @@ import { AlertCircle, ArrowUpDown, ChevronRight, ChevronDown, Download, Loader2 
 import { formatCurrency } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Trans } from '@lingui/react/macro'
-import { useAngajamenteAggregated } from '@/hooks/useAngajamenteData'
-import { buildPaidAggregatedInputs, combineAngajamenteAggregatedNodes } from '@/lib/api/angajamente'
-import type { AngajamenteFilterInput } from '@/schemas/angajamente'
+import { useCommitmentsAggregated } from '@/hooks/useCommitmentsData'
+import { buildPaidAggregatedInputs, combineCommitmentsAggregatedNodes } from '@/lib/api/commitments'
+import type { CommitmentsFilterInput } from '@/schemas/commitments'
 import type { CategoryData } from './CategoryChart'
 import { getClassificationName } from '@/lib/classifications'
 import {
@@ -32,7 +32,7 @@ type Props = {
   readonly currency?: 'RON' | 'EUR' | 'USD'
   readonly isLoading?: boolean
   readonly onDownload?: () => void
-  readonly filter?: AngajamenteFilterInput
+  readonly filter?: CommitmentsFilterInput
   readonly grouping: Grouping
   readonly detailLevel: DetailLevel
   readonly onGroupingChange?: (grouping: Grouping, detailLevel: DetailLevel) => void
@@ -105,14 +105,14 @@ function ExpandedSubRows({
 }: {
   readonly parentCode: string
   readonly level: DrillLevel
-  readonly filter: AngajamenteFilterInput
+  readonly filter: CommitmentsFilterInput
   readonly currency: 'RON' | 'EUR' | 'USD'
   readonly indentLevel: number
   readonly grouping: Grouping
 }) {
   const [expandedSubRows, setExpandedSubRows] = useState<Set<string>>(new Set())
 
-  const subFilter = useMemo<AngajamenteFilterInput>(
+  const subFilter = useMemo<CommitmentsFilterInput>(
     () => grouping === 'fn'
       ? { ...filter, functional_prefixes: [parentCode] }
       : { ...filter, economic_prefixes: [parentCode] },
@@ -132,17 +132,17 @@ function ExpandedSubRows({
     [subFilter]
   )
 
-  const { data: budgetData, isLoading: isBudgetLoading } = useAngajamenteAggregated(budgetInput)
-  const { data: committedData, isLoading: isCommittedLoading } = useAngajamenteAggregated(committedInput)
-  const { data: paidTreasuryData, isLoading: isPaidTreasuryLoading } = useAngajamenteAggregated(paidTreasuryInput)
-  const { data: paidNonTreasuryData } = useAngajamenteAggregated(paidNonTreasuryInput)
+  const { data: budgetData, isLoading: isBudgetLoading } = useCommitmentsAggregated(budgetInput)
+  const { data: committedData, isLoading: isCommittedLoading } = useCommitmentsAggregated(committedInput)
+  const { data: paidTreasuryData, isLoading: isPaidTreasuryLoading } = useCommitmentsAggregated(paidTreasuryInput)
+  const { data: paidNonTreasuryData } = useCommitmentsAggregated(paidNonTreasuryInput)
 
   const isLoading = isBudgetLoading || isCommittedLoading || isPaidTreasuryLoading
 
   const subRows = useMemo<SubRowData[]>(() => {
     if (!budgetData || !committedData || !paidTreasuryData) return []
 
-    const paidNodes = combineAngajamenteAggregatedNodes(
+    const paidNodes = combineCommitmentsAggregatedNodes(
       paidTreasuryData.nodes,
       paidNonTreasuryData?.nodes ?? []
     )

@@ -108,15 +108,15 @@ export const entitySearchSchema = z.object({
         .string()
         .optional()
         .describe('Advanced filter for line items (e.g., economic:personal, anomaly:missing).'),
-    // Angajamente view state
-    angajamenteGrouping: z
+    // Commitments view state
+    commitmentsGrouping: z
         .enum(['fn', 'ec'])
         .optional()
-        .describe('Angajamente table grouping dimension: fn (functional) or ec (economic).'),
-    angajamenteDetailLevel: z
+        .describe('Commitments table grouping dimension: fn (functional) or ec (economic).'),
+    commitmentsDetailLevel: z
         .enum(['chapter', 'detailed'])
         .optional()
-        .describe('Angajamente table detail level: chapter (depth 2) or detailed (depth 4).'),
+        .describe('Commitments table detail level: chapter (depth 2) or detailed (depth 4).'),
 });
 
 export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;

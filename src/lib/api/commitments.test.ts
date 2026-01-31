@@ -1,21 +1,21 @@
 import { describe, it, expect } from 'vitest'
 
 import type {
-  AngajamenteAggregatedItem,
-  AngajamenteFilterInput,
-  AngajamenteQuarterlySummary,
-} from '@/schemas/angajamente'
+  CommitmentsAggregatedItem,
+  CommitmentsFilterInput,
+  CommitmentsQuarterlySummary,
+} from '@/schemas/commitments'
 import {
   buildPaidAggregatedInputs,
-  combineAngajamenteAggregatedNodes,
+  combineCommitmentsAggregatedNodes,
   extractSummaryValues,
-} from './angajamente'
+} from './commitments'
 
-describe('angajamente api helpers', () => {
+describe('commitments api helpers', () => {
   describe('extractSummaryValues', () => {
     it('uses credite_angajament (not authority) for committed totals in quarterly/annual summaries', () => {
       const quarterlyNode = {
-        __typename: 'AngajamenteQuarterlySummary',
+        __typename: 'CommitmentsQuarterlySummary',
         year: 2024,
         quarter: 1,
         entity_cui: '123',
@@ -38,7 +38,7 @@ describe('angajamente api helpers', () => {
         total_plati: 0,
         execution_rate: null,
         commitment_rate: null,
-      } satisfies AngajamenteQuarterlySummary
+      } satisfies CommitmentsQuarterlySummary
 
       const result = extractSummaryValues([quarterlyNode])
 
@@ -51,7 +51,7 @@ describe('angajamente api helpers', () => {
 
   describe('buildPaidAggregatedInputs', () => {
     it('builds both treasury and non-treasury inputs', () => {
-      const filter: AngajamenteFilterInput = {
+      const filter: CommitmentsFilterInput = {
         report_period: { type: 'YEAR', selection: { interval: { start: '2024', end: '2024' } } },
       }
 
@@ -62,9 +62,9 @@ describe('angajamente api helpers', () => {
     })
   })
 
-  describe('combineAngajamenteAggregatedNodes', () => {
+  describe('combineCommitmentsAggregatedNodes', () => {
     it('sums amounts and counts for matching (functional_code, economic_code) pairs', () => {
-      const treasury: AngajamenteAggregatedItem[] = [
+      const treasury: CommitmentsAggregatedItem[] = [
         {
           functional_code: '51',
           functional_name: 'Fn 51',
@@ -75,7 +75,7 @@ describe('angajamente api helpers', () => {
         },
       ]
 
-      const nonTreasury: AngajamenteAggregatedItem[] = [
+      const nonTreasury: CommitmentsAggregatedItem[] = [
         {
           functional_code: '51',
           functional_name: 'Fn 51 (non)',
@@ -94,7 +94,7 @@ describe('angajamente api helpers', () => {
         },
       ]
 
-      const combined = combineAngajamenteAggregatedNodes(treasury, nonTreasury)
+      const combined = combineCommitmentsAggregatedNodes(treasury, nonTreasury)
 
       const mergedNode = combined.find((n) => n.functional_code === '51' && n.economic_code === '20')
       expect(mergedNode).toBeDefined()

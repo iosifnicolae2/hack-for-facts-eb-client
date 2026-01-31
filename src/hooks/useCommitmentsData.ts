@@ -1,75 +1,75 @@
 /**
- * React Query hooks for Angajamente Bugetare data
+ * React Query hooks for Commitments Bugetare data
  *
- * All hooks are filter-based, using AngajamenteFilterInput.
+ * All hooks are filter-based, using CommitmentsFilterInput.
  */
 
 import { useQuery } from '@tanstack/react-query'
 import {
-  fetchAngajamenteSummary,
-  fetchAngajamenteLineItems,
-  fetchAngajamenteAggregated,
-  fetchAngajamenteAggregatedAll,
-  fetchAngajamenteAnalytics,
+  fetchCommitmentsSummary,
+  fetchCommitmentsLineItems,
+  fetchCommitmentsAggregated,
+  fetchCommitmentsAggregatedAll,
+  fetchCommitmentsAnalytics,
   fetchCommitmentVsExecution,
-} from '@/lib/api/angajamente'
+} from '@/lib/api/commitments'
 import type {
-  AngajamenteAggregatedInput,
-  AngajamenteAnalyticsInput,
+  CommitmentsAggregatedInput,
+  CommitmentsAnalyticsInput,
   CommitmentExecutionComparisonInput,
-} from '@/lib/api/angajamente'
+} from '@/lib/api/commitments'
 import type {
-  AngajamenteFilterInput,
-  AngajamenteSummaryResult,
+  CommitmentsFilterInput,
+  CommitmentsSummaryResult,
   PipelineStage,
-} from '@/schemas/angajamente'
+} from '@/schemas/commitments'
 
 const STALE_TIME = 5 * 60 * 1000 // 5 minutes
 
 type HookOptions = { enabled?: boolean }
 
 /**
- * Fetch angajamente summary (union type: monthly/quarterly/annual)
+ * Fetch commitments summary (union type: monthly/quarterly/annual)
  */
-export function useAngajamenteSummary(
-  filter: AngajamenteFilterInput,
+export function useCommitmentsSummary(
+  filter: CommitmentsFilterInput,
   options?: HookOptions
 ) {
   return useQuery({
-    queryKey: ['angajamenteSummary', filter],
-    queryFn: () => fetchAngajamenteSummary(filter),
+    queryKey: ['commitmentsSummary', filter],
+    queryFn: () => fetchCommitmentsSummary(filter),
     staleTime: STALE_TIME,
     enabled: options?.enabled ?? true,
   })
 }
 
 /**
- * Fetch paginated angajamente line items
+ * Fetch paginated commitments line items
  */
-export function useAngajamenteLineItems(
-  filter: AngajamenteFilterInput,
+export function useCommitmentsLineItems(
+  filter: CommitmentsFilterInput,
   limit = 50,
   offset = 0,
   options?: HookOptions
 ) {
   return useQuery({
-    queryKey: ['angajamenteLineItems', filter, limit, offset],
-    queryFn: () => fetchAngajamenteLineItems(filter, limit, offset),
+    queryKey: ['commitmentsLineItems', filter, limit, offset],
+    queryFn: () => fetchCommitmentsLineItems(filter, limit, offset),
     staleTime: STALE_TIME,
     enabled: options?.enabled ?? true,
   })
 }
 
 /**
- * Fetch aggregated angajamente data by classification
+ * Fetch aggregated commitments data by classification
  */
-export function useAngajamenteAggregated(
-  input: AngajamenteAggregatedInput,
+export function useCommitmentsAggregated(
+  input: CommitmentsAggregatedInput,
   options?: HookOptions
 ) {
   return useQuery({
-    queryKey: ['angajamenteAggregated', input],
-    queryFn: () => fetchAngajamenteAggregated(input),
+    queryKey: ['commitmentsAggregated', input],
+    queryFn: () => fetchCommitmentsAggregated(input),
     staleTime: STALE_TIME,
     enabled: options?.enabled ?? true,
   })
@@ -85,8 +85,8 @@ type AggregatedAllOptions = HookOptions & {
  * Fetch all paginated aggregated nodes (client-side pagination).
  * Use when downstream UI needs totals to reconcile (e.g. drilldowns).
  */
-export function useAngajamenteAggregatedAll(
-  input: AngajamenteAggregatedInput,
+export function useCommitmentsAggregatedAll(
+  input: CommitmentsAggregatedInput,
   options?: AggregatedAllOptions
 ) {
   const pageSize = options?.pageSize ?? 500
@@ -94,8 +94,8 @@ export function useAngajamenteAggregatedAll(
   const maxItems = options?.maxItems ?? 10_000
 
   return useQuery({
-    queryKey: ['angajamenteAggregatedAll', input, pageSize, maxPages, maxItems],
-    queryFn: () => fetchAngajamenteAggregatedAll({ input, pageSize, maxPages, maxItems }),
+    queryKey: ['commitmentsAggregatedAll', input, pageSize, maxPages, maxItems],
+    queryFn: () => fetchCommitmentsAggregatedAll({ input, pageSize, maxPages, maxItems }),
     staleTime: STALE_TIME,
     enabled: options?.enabled ?? true,
   })
@@ -104,13 +104,13 @@ export function useAngajamenteAggregatedAll(
 /**
  * Derive pipeline stages from summary data (client-side computation)
  */
-export function useAngajamentePipeline(
-  filter: AngajamenteFilterInput,
+export function useCommitmentsPipeline(
+  filter: CommitmentsFilterInput,
   options?: HookOptions
 ) {
   return useQuery({
-    queryKey: ['angajamenteSummary', filter],
-    queryFn: () => fetchAngajamenteSummary(filter),
+    queryKey: ['commitmentsSummary', filter],
+    queryFn: () => fetchCommitmentsSummary(filter),
     staleTime: STALE_TIME,
     enabled: options?.enabled ?? true,
     select: (data): PipelineStage[] => {
@@ -127,13 +127,13 @@ export function useAngajamentePipeline(
 /**
  * Fetch analytics time-series data (multi-series)
  */
-export function useAngajamenteAnalytics(
-  inputs: AngajamenteAnalyticsInput[],
+export function useCommitmentsAnalytics(
+  inputs: CommitmentsAnalyticsInput[],
   options?: HookOptions
 ) {
   return useQuery({
-    queryKey: ['angajamenteAnalytics', inputs],
-    queryFn: () => fetchAngajamenteAnalytics(inputs),
+    queryKey: ['commitmentsAnalytics', inputs],
+    queryFn: () => fetchCommitmentsAnalytics(inputs),
     staleTime: STALE_TIME,
     enabled: (options?.enabled ?? true) && inputs.length > 0,
   })
@@ -158,7 +158,7 @@ export function useCommitmentVsExecution(
 // Internal helpers
 // ─────────────────────────────────────────────────────────────────
 
-function computePipelineStages(node: AngajamenteSummaryResult): PipelineStage[] {
+function computePipelineStages(node: CommitmentsSummaryResult): PipelineStage[] {
   const getStatus = (percentage: number): 'healthy' | 'warning' | 'danger' => {
     if (percentage >= 90) return 'healthy'
     if (percentage >= 70) return 'warning'
@@ -168,7 +168,7 @@ function computePipelineStages(node: AngajamenteSummaryResult): PipelineStage[] 
   let baseValue: number
   let receipts: number
 
-  if (node.__typename === 'AngajamenteMonthlySummary') {
+  if (node.__typename === 'CommitmentsMonthlySummary') {
     // Monthly has limited fields; use credite_angajament as base
     baseValue = node.credite_angajament
     receipts = node.receptii_totale

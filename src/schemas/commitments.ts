@@ -1,8 +1,8 @@
 /**
- * Angajamente Bugetare (Budget Commitments) Types
+ * Commitments Bugetare (Budget Commitments) Types
  *
  * Real API types matching the GraphQL schema (snake_case).
- * See docs/angajamente-api-reference.md for full specification.
+ * See docs/commitments-api-reference.md for full specification.
  */
 
 import type { ReportPeriodInput } from '@/schemas/reporting'
@@ -11,12 +11,12 @@ import type { ReportPeriodInput } from '@/schemas/reporting'
 // Enums
 // ─────────────────────────────────────────────────────────────────
 
-export type AngajamenteReportType =
+export type CommitmentsReportType =
   | 'DETAILED'
   | 'PRINCIPAL_AGGREGATED'
   | 'SECONDARY_AGGREGATED'
 
-export type AngajamenteMetric =
+export type CommitmentsMetric =
   | 'CREDITE_ANGAJAMENT'
   | 'PLATI_TREZOR'
   | 'PLATI_NON_TREZOR'
@@ -46,7 +46,7 @@ export type AnomalyType = 'YTD_ANOMALY' | 'MISSING_LINE_ITEM'
 // Filter Inputs
 // ─────────────────────────────────────────────────────────────────
 
-export interface AngajamenteExcludeInput {
+export interface CommitmentsExcludeInput {
   report_ids?: string[]
   entity_cuis?: string[]
   main_creditor_cui?: string
@@ -62,9 +62,9 @@ export interface AngajamenteExcludeInput {
   entity_types?: string[]
 }
 
-export interface AngajamenteFilterInput {
+export interface CommitmentsFilterInput {
   report_period: ReportPeriodInput
-  report_type?: AngajamenteReportType
+  report_type?: CommitmentsReportType
 
   entity_cuis?: string[]
   main_creditor_cui?: string
@@ -97,7 +97,7 @@ export interface AngajamenteFilterInput {
   inflation_adjusted?: boolean
   show_period_growth?: boolean
 
-  exclude?: AngajamenteExcludeInput
+  exclude?: CommitmentsExcludeInput
   exclude_transfers?: boolean
 }
 
@@ -120,14 +120,14 @@ export interface Connection<T> {
 // Summary Types (Union)
 // ─────────────────────────────────────────────────────────────────
 
-export interface AngajamenteMonthlySummary {
-  __typename: 'AngajamenteMonthlySummary'
+export interface CommitmentsMonthlySummary {
+  __typename: 'CommitmentsMonthlySummary'
   year: number
   month: number
   entity_cui: string
   entity_name: string
   main_creditor_cui: string | null
-  report_type: AngajamenteReportType
+  report_type: CommitmentsReportType
   credite_angajament: number
   plati_trezor: number
   plati_non_trezor: number
@@ -136,14 +136,14 @@ export interface AngajamenteMonthlySummary {
   total_plati: number
 }
 
-export interface AngajamenteQuarterlySummary {
-  __typename: 'AngajamenteQuarterlySummary'
+export interface CommitmentsQuarterlySummary {
+  __typename: 'CommitmentsQuarterlySummary'
   year: number
   quarter: number
   entity_cui: string
   entity_name: string
   main_creditor_cui: string | null
-  report_type: AngajamenteReportType
+  report_type: CommitmentsReportType
   credite_angajament: number
   limita_credit_angajament: number
   credite_bugetare: number
@@ -162,13 +162,13 @@ export interface AngajamenteQuarterlySummary {
   commitment_rate: number | null
 }
 
-export interface AngajamenteAnnualSummary {
-  __typename: 'AngajamenteAnnualSummary'
+export interface CommitmentsAnnualSummary {
+  __typename: 'CommitmentsAnnualSummary'
   year: number
   entity_cui: string
   entity_name: string
   main_creditor_cui: string | null
-  report_type: AngajamenteReportType
+  report_type: CommitmentsReportType
   credite_angajament: number
   limita_credit_angajament: number
   credite_bugetare: number
@@ -187,20 +187,20 @@ export interface AngajamenteAnnualSummary {
   commitment_rate: number | null
 }
 
-export type AngajamenteSummaryResult =
-  | AngajamenteMonthlySummary
-  | AngajamenteQuarterlySummary
-  | AngajamenteAnnualSummary
+export type CommitmentsSummaryResult =
+  | CommitmentsMonthlySummary
+  | CommitmentsQuarterlySummary
+  | CommitmentsAnnualSummary
 
 // ─────────────────────────────────────────────────────────────────
 // Line Items
 // ─────────────────────────────────────────────────────────────────
 
-export interface AngajamenteLineItem {
+export interface CommitmentsLineItem {
   id: string
   year: number
   month: number
-  report_type: AngajamenteReportType
+  report_type: CommitmentsReportType
 
   entity_cui: string
   entity_name: string
@@ -250,7 +250,7 @@ export interface AngajamenteLineItem {
 // Aggregated
 // ─────────────────────────────────────────────────────────────────
 
-export interface AngajamenteAggregatedItem {
+export interface CommitmentsAggregatedItem {
   functional_code: string
   functional_name: string
   economic_code: string | null
@@ -263,7 +263,7 @@ export interface AngajamenteAggregatedItem {
 // Analytics
 // ─────────────────────────────────────────────────────────────────
 
-export interface AngajamenteAnalyticsDataPoint {
+export interface CommitmentsAnalyticsDataPoint {
   x: string
   y: number
   growth_percent: number | null
@@ -275,12 +275,12 @@ export interface Axis {
   unit: string
 }
 
-export interface AngajamenteAnalyticsSeries {
+export interface CommitmentsAnalyticsSeries {
   seriesId: string
-  metric: AngajamenteMetric
+  metric: CommitmentsMetric
   xAxis: Axis
   yAxis: Axis
-  data: AngajamenteAnalyticsDataPoint[]
+  data: CommitmentsAnalyticsDataPoint[]
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -340,7 +340,7 @@ export const FUNDING_SOURCE_LABELS: Record<FundingSource, string> = {
 // Validation helpers
 // ─────────────────────────────────────────────────────────────────
 
-const MONTHLY_METRICS: ReadonlySet<AngajamenteMetric> = new Set([
+const MONTHLY_METRICS: ReadonlySet<CommitmentsMetric> = new Set([
   'CREDITE_ANGAJAMENT',
   'PLATI_TREZOR',
   'PLATI_NON_TREZOR',
@@ -349,7 +349,7 @@ const MONTHLY_METRICS: ReadonlySet<AngajamenteMetric> = new Set([
 ])
 
 export function isMetricAvailableForPeriod(
-  metric: AngajamenteMetric,
+  metric: CommitmentsMetric,
   periodType: PeriodType
 ): boolean {
   if (periodType === 'MONTH') {

@@ -1,5 +1,5 @@
 /**
- * Data Table for Angajamente Bugetare Line Items
+ * Data Table for Commitments Bugetare Line Items
  *
  * Displays detailed commitment data with sorting and anomaly highlighting
  */
@@ -32,7 +32,7 @@ import {
 } from '@/components/ui/tooltip'
 import { Badge } from '@/components/ui/badge'
 import { cn, formatCurrency, formatNumber } from '@/lib/utils'
-import type { AngajamenteLineItem } from '@/schemas/angajamente'
+import type { CommitmentsLineItem } from '@/schemas/commitments'
 import { AlertTriangle, Info } from 'lucide-react'
 import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
@@ -40,7 +40,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 type Props = {
-  data: AngajamenteLineItem[] | null | undefined
+  data: CommitmentsLineItem[] | null | undefined
   isLoading?: boolean
   currency?: 'RON' | 'EUR' | 'USD'
   /** When true, renders without Card wrapper (for embedding in other components) */
@@ -103,7 +103,7 @@ function TableSkeleton() {
   )
 }
 
-export function AngajamenteTable({ data, isLoading, currency = 'RON', embedded = false }: Props) {
+export function CommitmentsTable({ data, isLoading, currency = 'RON', embedded = false }: Props) {
   const [sorting, setSorting] = useState<SortingState>([
     { id: 'plati_trezor', desc: true },
   ])
@@ -112,7 +112,7 @@ export function AngajamenteTable({ data, isLoading, currency = 'RON', embedded =
     pageSize: 10,
   })
 
-  const columns = useMemo<ColumnDef<AngajamenteLineItem>[]>(
+  const columns = useMemo<ColumnDef<CommitmentsLineItem>[]>(
     () => [
       {
         accessorKey: 'functional_code',

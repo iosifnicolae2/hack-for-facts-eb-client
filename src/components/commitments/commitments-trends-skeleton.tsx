@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 
-export function AngajamenteTrendsSkeleton() {
+export function CommitmentsTrendsSkeleton() {
   return (
     <Card>
       <CardHeader>

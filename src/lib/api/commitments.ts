@@ -1,5 +1,5 @@
 /**
- * Angajamente Bugetare GraphQL API
+ * Commitments Bugetare GraphQL API
  *
  * Real API functions replacing the mock data layer.
  * Follows the pattern from src/lib/api/entity-analytics.ts.
@@ -7,27 +7,27 @@
 
 import { graphqlRequest } from './graphql'
 import type {
-  AngajamenteFilterInput,
-  AngajamenteSummaryResult,
-  AngajamenteLineItem,
-  AngajamenteAggregatedItem,
-  AngajamenteAnalyticsSeries,
-  AngajamenteMetric,
+  CommitmentsFilterInput,
+  CommitmentsSummaryResult,
+  CommitmentsLineItem,
+  CommitmentsAggregatedItem,
+  CommitmentsAnalyticsSeries,
+  CommitmentsMetric,
   CommitmentExecutionComparison,
   Connection,
-} from '@/schemas/angajamente'
+} from '@/schemas/commitments'
 import type { ReportPeriodInput } from '@/schemas/reporting'
 
 // ─────────────────────────────────────────────────────────────────
 // GraphQL Queries
 // ─────────────────────────────────────────────────────────────────
 
-const ANGAJAMENTE_SUMMARY_QUERY = /* GraphQL */ `
-  query AngajamenteSummary($filter: AngajamenteFilterInput!, $limit: Int, $offset: Int) {
-    angajamenteSummary(filter: $filter, limit: $limit, offset: $offset) {
+const COMMITMENTS_SUMMARY_QUERY = /* GraphQL */ `
+  query CommitmentsSummary($filter: CommitmentsFilterInput!, $limit: Int, $offset: Int) {
+    commitmentsSummary(filter: $filter, limit: $limit, offset: $offset) {
       nodes {
         __typename
-        ... on AngajamenteMonthlySummary {
+        ... on CommitmentsMonthlySummary {
           year
           month
           entity_cui
@@ -40,7 +40,7 @@ const ANGAJAMENTE_SUMMARY_QUERY = /* GraphQL */ `
           receptii_neplatite_change
           total_plati
         }
-        ... on AngajamenteQuarterlySummary {
+        ... on CommitmentsQuarterlySummary {
           year
           quarter
           entity_cui
@@ -63,7 +63,7 @@ const ANGAJAMENTE_SUMMARY_QUERY = /* GraphQL */ `
           execution_rate
           commitment_rate
         }
-        ... on AngajamenteAnnualSummary {
+        ... on CommitmentsAnnualSummary {
           year
           entity_cui
           entity_name
@@ -95,9 +95,9 @@ const ANGAJAMENTE_SUMMARY_QUERY = /* GraphQL */ `
   }
 `
 
-const ANGAJAMENTE_LINE_ITEMS_QUERY = /* GraphQL */ `
-  query AngajamenteLineItems($filter: AngajamenteFilterInput!, $limit: Int, $offset: Int) {
-    angajamenteLineItems(filter: $filter, limit: $limit, offset: $offset) {
+const COMMITMENTS_LINE_ITEMS_QUERY = /* GraphQL */ `
+  query CommitmentsLineItems($filter: CommitmentsFilterInput!, $limit: Int, $offset: Int) {
+    commitmentsLineItems(filter: $filter, limit: $limit, offset: $offset) {
       nodes {
         id
         year
@@ -145,9 +145,9 @@ const ANGAJAMENTE_LINE_ITEMS_QUERY = /* GraphQL */ `
   }
 `
 
-const ANGAJAMENTE_AGGREGATED_QUERY = /* GraphQL */ `
-  query AngajamenteAggregated($input: AngajamenteAggregatedInput!) {
-    angajamenteAggregated(input: $input) {
+const COMMITMENTS_AGGREGATED_QUERY = /* GraphQL */ `
+  query CommitmentsAggregated($input: CommitmentsAggregatedInput!) {
+    commitmentsAggregated(input: $input) {
       nodes {
         functional_code
         functional_name
@@ -165,9 +165,9 @@ const ANGAJAMENTE_AGGREGATED_QUERY = /* GraphQL */ `
   }
 `
 
-const ANGAJAMENTE_ANALYTICS_QUERY = /* GraphQL */ `
-  query AngajamenteAnalytics($inputs: [AngajamenteAnalyticsInput!]!) {
-    angajamenteAnalytics(inputs: $inputs) {
+const COMMITMENTS_ANALYTICS_QUERY = /* GraphQL */ `
+  query CommitmentsAnalytics($inputs: [CommitmentsAnalyticsInput!]!) {
+    commitmentsAnalytics(inputs: $inputs) {
       seriesId
       metric
       xAxis { name type unit }
@@ -206,50 +206,50 @@ const COMMITMENT_VS_EXECUTION_QUERY = /* GraphQL */ `
 // API Functions
 // ─────────────────────────────────────────────────────────────────
 
-export async function fetchAngajamenteSummary(
-  filter: AngajamenteFilterInput,
+export async function fetchCommitmentsSummary(
+  filter: CommitmentsFilterInput,
   limit = 50,
   offset = 0
-): Promise<Connection<AngajamenteSummaryResult>> {
+): Promise<Connection<CommitmentsSummaryResult>> {
   const data = await graphqlRequest<{
-    angajamenteSummary: Connection<AngajamenteSummaryResult>
-  }>(ANGAJAMENTE_SUMMARY_QUERY, { filter, limit, offset })
-  return data.angajamenteSummary
+    commitmentsSummary: Connection<CommitmentsSummaryResult>
+  }>(COMMITMENTS_SUMMARY_QUERY, { filter, limit, offset })
+  return data.commitmentsSummary
 }
 
-export async function fetchAngajamenteLineItems(
-  filter: AngajamenteFilterInput,
+export async function fetchCommitmentsLineItems(
+  filter: CommitmentsFilterInput,
   limit = 50,
   offset = 0
-): Promise<Connection<AngajamenteLineItem>> {
+): Promise<Connection<CommitmentsLineItem>> {
   const data = await graphqlRequest<{
-    angajamenteLineItems: Connection<AngajamenteLineItem>
-  }>(ANGAJAMENTE_LINE_ITEMS_QUERY, { filter, limit, offset })
-  return data.angajamenteLineItems
+    commitmentsLineItems: Connection<CommitmentsLineItem>
+  }>(COMMITMENTS_LINE_ITEMS_QUERY, { filter, limit, offset })
+  return data.commitmentsLineItems
 }
 
-export interface AngajamenteAggregatedInput {
-  filter: AngajamenteFilterInput
-  metric: AngajamenteMetric
+export interface CommitmentsAggregatedInput {
+  filter: CommitmentsFilterInput
+  metric: CommitmentsMetric
   limit?: number
   offset?: number
 }
 
-export async function fetchAngajamenteAggregated(
-  input: AngajamenteAggregatedInput
-): Promise<Connection<AngajamenteAggregatedItem>> {
+export async function fetchCommitmentsAggregated(
+  input: CommitmentsAggregatedInput
+): Promise<Connection<CommitmentsAggregatedItem>> {
   const data = await graphqlRequest<{
-    angajamenteAggregated: Connection<AngajamenteAggregatedItem>
-  }>(ANGAJAMENTE_AGGREGATED_QUERY, { input })
-  return data.angajamenteAggregated
+    commitmentsAggregated: Connection<CommitmentsAggregatedItem>
+  }>(COMMITMENTS_AGGREGATED_QUERY, { input })
+  return data.commitmentsAggregated
 }
 
-export async function fetchAngajamenteAggregatedAll(params: {
-  input: AngajamenteAggregatedInput
+export async function fetchCommitmentsAggregatedAll(params: {
+  input: CommitmentsAggregatedInput
   pageSize?: number
   maxPages?: number
   maxItems?: number
-}): Promise<Connection<AngajamenteAggregatedItem>> {
+}): Promise<Connection<CommitmentsAggregatedItem>> {
   const pageSize = params.pageSize ?? 500
   const maxPages = params.maxPages ?? 25
   const maxItems = params.maxItems ?? 10_000
@@ -258,10 +258,10 @@ export async function fetchAngajamenteAggregatedAll(params: {
   let hasPreviousPage = offset > 0
   let hasNextPage = false
   let totalCount: number | undefined
-  const nodes: AngajamenteAggregatedItem[] = []
+  const nodes: CommitmentsAggregatedItem[] = []
 
   for (let page = 0; page < maxPages; page += 1) {
-    const res = await fetchAngajamenteAggregated({
+    const res = await fetchCommitmentsAggregated({
       ...params.input,
       limit: pageSize,
       offset,
@@ -293,24 +293,24 @@ export async function fetchAngajamenteAggregatedAll(params: {
   }
 }
 
-export interface AngajamenteAnalyticsInput {
-  filter: AngajamenteFilterInput
-  metric: AngajamenteMetric
+export interface CommitmentsAnalyticsInput {
+  filter: CommitmentsFilterInput
+  metric: CommitmentsMetric
   seriesId?: string
 }
 
-export async function fetchAngajamenteAnalytics(
-  inputs: AngajamenteAnalyticsInput[]
-): Promise<AngajamenteAnalyticsSeries[]> {
+export async function fetchCommitmentsAnalytics(
+  inputs: CommitmentsAnalyticsInput[]
+): Promise<CommitmentsAnalyticsSeries[]> {
   const data = await graphqlRequest<{
-    angajamenteAnalytics: AngajamenteAnalyticsSeries[]
-  }>(ANGAJAMENTE_ANALYTICS_QUERY, { inputs })
-  return data.angajamenteAnalytics
+    commitmentsAnalytics: CommitmentsAnalyticsSeries[]
+  }>(COMMITMENTS_ANALYTICS_QUERY, { inputs })
+  return data.commitmentsAnalytics
 }
 
 export interface CommitmentExecutionComparisonInput {
-  filter: AngajamenteFilterInput
-  angajamente_metric?: AngajamenteMetric
+  filter: CommitmentsFilterInput
+  commitments_metric?: CommitmentsMetric
 }
 
 export async function fetchCommitmentVsExecution(
@@ -327,9 +327,9 @@ export async function fetchCommitmentVsExecution(
 // ─────────────────────────────────────────────────────────────────
 
 /**
- * Build an AngajamenteFilterInput from entity page params.
+ * Build an CommitmentsFilterInput from entity page params.
  */
-export function buildAngajamenteFilter(params: {
+export function buildCommitmentsFilter(params: {
   reportPeriod: ReportPeriodInput
   reportType?: string
   cui?: string
@@ -338,13 +338,13 @@ export function buildAngajamenteFilter(params: {
   inflationAdjusted?: boolean
   showPeriodGrowth?: boolean
   excludeTransfers?: boolean
-}): AngajamenteFilterInput {
+}): CommitmentsFilterInput {
   return {
     report_period: params.reportPeriod,
-    report_type: (params.reportType as AngajamenteFilterInput['report_type']) ?? 'PRINCIPAL_AGGREGATED',
+    report_type: (params.reportType as CommitmentsFilterInput['report_type']) ?? 'PRINCIPAL_AGGREGATED',
     entity_cuis: params.cui ? [params.cui] : undefined,
-    normalization: params.normalization as AngajamenteFilterInput['normalization'],
-    currency: params.currency as AngajamenteFilterInput['currency'],
+    normalization: params.normalization as CommitmentsFilterInput['normalization'],
+    currency: params.currency as CommitmentsFilterInput['currency'],
     inflation_adjusted: params.inflationAdjusted,
     show_period_growth: params.showPeriodGrowth,
     exclude_transfers: params.excludeTransfers ?? true,
@@ -355,7 +355,7 @@ export function buildAngajamenteFilter(params: {
  * Extract summary values from union-typed summary nodes.
  * Returns the totals from the first node (or zeros).
  */
-export function extractSummaryValues(nodes: AngajamenteSummaryResult[]): {
+export function extractSummaryValues(nodes: CommitmentsSummaryResult[]): {
   totalBudget: number
   commitmentAuthority: number
   committed: number
@@ -379,7 +379,7 @@ export function extractSummaryValues(nodes: AngajamenteSummaryResult[]): {
     paid += node.total_plati
     receipts += node.receptii_totale
 
-    if (node.__typename === 'AngajamenteMonthlySummary') {
+    if (node.__typename === 'CommitmentsMonthlySummary') {
       // Monthly summaries don't have definitive credits
       totalBudget += node.credite_angajament
       committed += node.credite_angajament
@@ -397,10 +397,10 @@ export function extractSummaryValues(nodes: AngajamenteSummaryResult[]): {
 }
 
 export function buildPaidAggregatedInputs(params: {
-  filter: AngajamenteFilterInput
+  filter: CommitmentsFilterInput
   limit?: number
   offset?: number
-}): { paidTreasury: AngajamenteAggregatedInput; paidNonTreasury: AngajamenteAggregatedInput } {
+}): { paidTreasury: CommitmentsAggregatedInput; paidNonTreasury: CommitmentsAggregatedInput } {
   return {
     paidTreasury: {
       filter: params.filter,
@@ -419,14 +419,14 @@ export function buildPaidAggregatedInputs(params: {
 
 type AggregatedItemKey = string
 
-function getAggregatedItemKey(item: Pick<AngajamenteAggregatedItem, 'functional_code' | 'economic_code'>): AggregatedItemKey {
+function getAggregatedItemKey(item: Pick<CommitmentsAggregatedItem, 'functional_code' | 'economic_code'>): AggregatedItemKey {
   return `${item.functional_code}||${item.economic_code ?? ''}`
 }
 
-export function combineAngajamenteAggregatedNodes(
-  ...nodeLists: readonly ReadonlyArray<AngajamenteAggregatedItem>[]
-): AngajamenteAggregatedItem[] {
-  const mergedByKey = new Map<AggregatedItemKey, AngajamenteAggregatedItem>()
+export function combineCommitmentsAggregatedNodes(
+  ...nodeLists: readonly ReadonlyArray<CommitmentsAggregatedItem>[]
+): CommitmentsAggregatedItem[] {
+  const mergedByKey = new Map<AggregatedItemKey, CommitmentsAggregatedItem>()
 
   for (const nodes of nodeLists) {
     for (const node of nodes) {

@@ -64,3 +64,5 @@ dev.html
 
 # Prompt tmp
 tmp/
+
+.claude/decisions/active/

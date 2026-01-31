@@ -1,5 +1,5 @@
 /**
- * Angajamente Bugetare View for Entity Detail Page
+ * Commitments Bugetare View for Entity Detail Page
  *
  * Progressive disclosure design:
  * 1. KPI Summary (3 cards)
@@ -12,31 +12,31 @@
 import { useMemo } from 'react'
 import { EntityDetailsData } from '@/lib/api/entities'
 import {
-  useAngajamenteSummary,
-  useAngajamenteAggregatedAll,
-  useAngajamenteAnalytics,
-} from '@/hooks/useAngajamenteData'
+  useCommitmentsSummary,
+  useCommitmentsAggregatedAll,
+  useCommitmentsAnalytics,
+} from '@/hooks/useCommitmentsData'
 import {
   extractSummaryValues,
-  buildAngajamenteFilter,
+  buildCommitmentsFilter,
   buildPaidAggregatedInputs,
-  combineAngajamenteAggregatedNodes,
-} from '@/lib/api/angajamente'
-import type { AngajamenteAnalyticsInput } from '@/lib/api/angajamente'
-import type { AngajamenteFilterInput, AngajamenteAnalyticsSeries } from '@/schemas/angajamente'
+  combineCommitmentsAggregatedNodes,
+} from '@/lib/api/commitments'
+import type { CommitmentsAnalyticsInput } from '@/lib/api/commitments'
+import type { CommitmentsFilterInput, CommitmentsAnalyticsSeries } from '@/schemas/commitments'
 import type { NormalizationOptions } from '@/lib/normalization'
 import { normalizeNormalizationOptions } from '@/lib/normalization'
 import type { ReportPeriodInput, ReportPeriodType, GqlReportType, PeriodDate } from '@/schemas/reporting'
 import { getQuarterForMonth, toCommitmentReportType } from '@/schemas/reporting'
 import {
   StatCard,
-  AngajamenteTrends,
+  CommitmentsTrends,
   LinearBudgetFlow,
   CategoryChart,
   CommitmentInfoPanel,
   DetailTable,
   type CategoryData,
-} from '@/components/angajamente'
+} from '@/components/commitments'
 import { EntityReportsSummary } from '@/components/entities/EntityReportsSummary'
 import { t } from '@lingui/core/macro'
 import { getClassificationName } from '@/lib/classifications'
@@ -44,7 +44,7 @@ import {
   getEconomicChapterName,
   getEconomicSubchapterName,
 } from '@/lib/economic-classifications'
-import type { Grouping, DetailLevel } from '@/components/angajamente/DetailTable'
+import type { Grouping, DetailLevel } from '@/components/commitments/DetailTable'
 
 type Props = {
   readonly entity: EntityDetailsData | null | undefined
@@ -55,9 +55,9 @@ type Props = {
   readonly mainCreditorCui?: string
   readonly normalizationOptions: NormalizationOptions
   readonly onNormalizationChange: (next: NormalizationOptions) => void
-  readonly angajamenteGrouping?: Grouping
-  readonly angajamenteDetailLevel?: DetailLevel
-  readonly onAngajamenteGroupingChange?: (grouping: Grouping, detailLevel: DetailLevel) => void
+  readonly commitmentsGrouping?: Grouping
+  readonly commitmentsDetailLevel?: DetailLevel
+  readonly onCommitmentsGroupingChange?: (grouping: Grouping, detailLevel: DetailLevel) => void
   readonly onYearChange?: (year: number) => void
   readonly onSelectPeriod?: (label: string) => void
   readonly selectedQuarter?: string
@@ -65,9 +65,9 @@ type Props = {
 }
 
 /**
- * Convert MONTH selections to QUARTER selections, since angajamente data is natively quarterly.
+ * Convert MONTH selections to QUARTER selections, since commitments data is natively quarterly.
  */
-export function toAngajamenteReportPeriod(reportPeriod: ReportPeriodInput): ReportPeriodInput {
+export function toCommitmentsReportPeriod(reportPeriod: ReportPeriodInput): ReportPeriodInput {
   if (reportPeriod.type !== 'MONTH') return reportPeriod
 
   // Convert month interval to quarter interval
@@ -107,7 +107,7 @@ export function toAngajamenteReportPeriod(reportPeriod: ReportPeriodInput): Repo
   }
 }
 
-export function AngajamenteView({
+export function CommitmentsView({
   entity,
   currentYear,
   reportPeriod,
@@ -116,36 +116,36 @@ export function AngajamenteView({
   mainCreditorCui,
   normalizationOptions,
   onNormalizationChange,
-  angajamenteGrouping,
-  angajamenteDetailLevel,
-  onAngajamenteGroupingChange,
+  commitmentsGrouping,
+  commitmentsDetailLevel,
+  onCommitmentsGroupingChange,
   onYearChange,
   onSelectPeriod,
   selectedQuarter,
   selectedMonth,
 }: Props) {
   const cui = entity?.cui ?? ''
-  const grouping: Grouping = angajamenteGrouping ?? 'fn'
-  const detailLevel: DetailLevel = angajamenteDetailLevel ?? 'chapter'
+  const grouping: Grouping = commitmentsGrouping ?? 'fn'
+  const detailLevel: DetailLevel = commitmentsDetailLevel ?? 'chapter'
   const normalized = normalizeNormalizationOptions(normalizationOptions)
   const effectiveReportType: GqlReportType = reportType ?? entity?.default_report_type ?? 'PRINCIPAL_AGGREGATED'
   const commitmentReportType = useMemo(() => toCommitmentReportType(effectiveReportType), [effectiveReportType])
 
-  // Auto-convert MONTH → QUARTER for angajamente data
-  const angajamenteReportPeriod = useMemo(
-    () => toAngajamenteReportPeriod(reportPeriod),
+  // Auto-convert MONTH → QUARTER for commitments data
+  const commitmentsReportPeriod = useMemo(
+    () => toCommitmentsReportPeriod(reportPeriod),
     [reportPeriod]
   )
-  const angajamenteTrendPeriod = useMemo(
-    () => toAngajamenteReportPeriod(trendPeriod),
+  const commitmentsTrendPeriod = useMemo(
+    () => toCommitmentsReportPeriod(trendPeriod),
     [trendPeriod]
   )
 
-  // Build the filter for all angajamente queries
-  const filter = useMemo<AngajamenteFilterInput>(
+  // Build the filter for all commitments queries
+  const filter = useMemo<CommitmentsFilterInput>(
     () =>
-      buildAngajamenteFilter({
-        reportPeriod: angajamenteReportPeriod,
+      buildCommitmentsFilter({
+        reportPeriod: commitmentsReportPeriod,
         reportType: effectiveReportType,
         cui,
         normalization: normalized.normalization,
@@ -153,13 +153,13 @@ export function AngajamenteView({
         inflationAdjusted: normalized.inflation_adjusted,
         excludeTransfers: true,
       }),
-    [angajamenteReportPeriod, effectiveReportType, cui, normalized.normalization, normalized.currency, normalized.inflation_adjusted]
+    [commitmentsReportPeriod, effectiveReportType, cui, normalized.normalization, normalized.currency, normalized.inflation_adjusted]
   )
 
   const trendFilter = useMemo(
     () =>
-      buildAngajamenteFilter({
-        reportPeriod: angajamenteTrendPeriod,
+      buildCommitmentsFilter({
+        reportPeriod: commitmentsTrendPeriod,
         reportType: effectiveReportType,
         cui,
         normalization: normalized.normalization,
@@ -169,7 +169,7 @@ export function AngajamenteView({
         excludeTransfers: true,
       }),
     [
-      angajamenteTrendPeriod,
+      commitmentsTrendPeriod,
       effectiveReportType,
       cui,
       normalized.normalization,
@@ -180,7 +180,7 @@ export function AngajamenteView({
   )
 
   // Fetch summary data
-  const { data: summaryData, isLoading: isSummaryLoading } = useAngajamenteSummary(
+  const { data: summaryData, isLoading: isSummaryLoading } = useCommitmentsSummary(
     filter,
     { enabled: !!cui }
   )
@@ -205,26 +205,26 @@ export function AngajamenteView({
     [filter]
   )
 
-  const { data: budgetAgg, isLoading: isBudgetAggLoading } = useAngajamenteAggregatedAll(
+  const { data: budgetAgg, isLoading: isBudgetAggLoading } = useCommitmentsAggregatedAll(
     budgetAggInput,
     { enabled: !!cui }
   )
-  const { data: committedAgg, isLoading: isCommittedAggLoading } = useAngajamenteAggregatedAll(
+  const { data: committedAgg, isLoading: isCommittedAggLoading } = useCommitmentsAggregatedAll(
     committedAggInput,
     { enabled: !!cui }
   )
-  const { data: paidTreasuryAgg, isLoading: isPaidTreasuryAggLoading } = useAngajamenteAggregatedAll(
+  const { data: paidTreasuryAgg, isLoading: isPaidTreasuryAggLoading } = useCommitmentsAggregatedAll(
     paidTreasuryAggInput,
     { enabled: !!cui }
   )
-  const { data: paidNonTreasuryAgg } = useAngajamenteAggregatedAll(
+  const { data: paidNonTreasuryAgg } = useCommitmentsAggregatedAll(
     paidNonTreasuryAggInput,
     { enabled: !!cui && hasNonTreasuryPayments }
   )
 
-  const analyticsInputs = useMemo<AngajamenteAnalyticsInput[]>(() => {
+  const analyticsInputs = useMemo<CommitmentsAnalyticsInput[]>(() => {
     if (!cui) return []
-    const inputs: AngajamenteAnalyticsInput[] = [
+    const inputs: CommitmentsAnalyticsInput[] = [
       { filter: trendFilter, metric: 'CREDITE_BUGETARE_DEFINITIVE' as const, seriesId: 'budget' },
       { filter: trendFilter, metric: 'CREDITE_ANGAJAMENT' as const, seriesId: 'commitments' },
       { filter: trendFilter, metric: 'PLATI_TREZOR' as const, seriesId: 'payments_trezor' },
@@ -235,13 +235,13 @@ export function AngajamenteView({
     return inputs
   }, [cui, trendFilter, hasNonTreasuryPayments])
 
-  const { data: analyticsSeries, isLoading: isAnalyticsLoading } = useAngajamenteAnalytics(
+  const { data: analyticsSeries, isLoading: isAnalyticsLoading } = useCommitmentsAnalytics(
     analyticsInputs,
     { enabled: !!cui }
   )
 
   const analyticsMap = useMemo(() => {
-    const map = new Map<string, AngajamenteAnalyticsSeries>()
+    const map = new Map<string, CommitmentsAnalyticsSeries>()
     for (const series of analyticsSeries ?? []) {
       map.set(series.seriesId, series)
     }
@@ -309,7 +309,7 @@ export function AngajamenteView({
 
     const budgetMap = sumByGroup(budgetAgg.nodes)
     const committedMap = sumByGroup(committedAgg.nodes)
-    const paidNodes = combineAngajamenteAggregatedNodes(
+    const paidNodes = combineCommitmentsAggregatedNodes(
       paidTreasuryAgg.nodes,
       paidNonTreasuryAgg?.nodes ?? []
     )
@@ -395,7 +395,7 @@ export function AngajamenteView({
 
       {/* Level 2: Trends Chart */}
       <section>
-        <AngajamenteTrends
+        <CommitmentsTrends
           budgetTrend={budgetTrend}
           commitmentsTrend={commitmentsTrend}
           treasuryPaymentsTrend={paymentsTrezorTrend}
@@ -404,7 +404,7 @@ export function AngajamenteView({
           normalizationOptions={normalizationOptions}
           onNormalizationChange={onNormalizationChange}
           allowPerCapita={Boolean(entity?.is_uat || entity?.entity_type === 'admin_county_council')}
-          periodType={angajamenteTrendPeriod.type}
+          periodType={commitmentsTrendPeriod.type}
           onYearChange={onYearChange}
           onSelectPeriod={onSelectPeriod}
           selectedQuarter={derivedSelectedQuarter}
@@ -445,7 +445,7 @@ export function AngajamenteView({
         filter={filter}
         grouping={grouping}
         detailLevel={detailLevel}
-        onGroupingChange={onAngajamenteGroupingChange}
+        onGroupingChange={onCommitmentsGroupingChange}
       />
 
       <div className="mt-6">

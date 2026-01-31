@@ -1,5 +1,5 @@
 /**
- * StatCard Component for Angajamente Bugetare
+ * StatCard Component for Commitments Bugetare
  *
  * Displays a KPI card with icon, value, and subtitle
  * Three variants: budget (emerald), committed (blue), paid (sky)

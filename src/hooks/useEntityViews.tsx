@@ -19,7 +19,7 @@ export const useEntityViews = (entity: EntityDetailsData | null | undefined): En
   }
 
   views.push({ id: 'contracts', label: t`Contracts`, icon: <ScrollText className="w-4 h-4" /> });
-  views.push({ id: 'angajamente', label: t`Commitments`, icon: <FileCheck2 className="w-4 h-4" /> });
+  views.push({ id: 'commitments', label: t`Commitments`, icon: <FileCheck2 className="w-4 h-4" /> });
 
   views.push({ id: 'expense-trends', label: t`Expense Trends`, icon: <TrendingDownIcon className="w-4 h-4" /> });
   views.push({ id: 'income-trends', label: t`Income Trends`, icon: <TrendingUpIcon className="w-4 h-4" /> });

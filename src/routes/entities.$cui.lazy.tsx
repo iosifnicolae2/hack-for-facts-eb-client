@@ -43,7 +43,7 @@ const RelatedChartsView = lazy(() => import('@/components/entities/views/Related
 const EntityReports = lazy(() => import('@/components/entities/EntityReports'))
 const EntityRelationships = lazy(() => import('@/components/entities/EntityRelationships').then(m => ({ default: m.EntityRelationships })))
 const ContractsView = lazy(() => import('@/components/entities/views/ContractsView').then(m => ({ default: m.ContractsView })))
-const AngajamenteView = lazy(() => import('@/components/entities/views/AngajamenteView').then(m => ({ default: m.AngajamenteView })))
+const CommitmentsView = lazy(() => import('@/components/entities/views/Commitments').then(m => ({ default: m.CommitmentsView })))
 
 export const Route = createLazyFileRoute('/entities/$cui')({
   component: EntityDetailsPage,
@@ -151,8 +151,8 @@ function EntityDetailsPage() {
 
   const treemapPrimary = search.treemapPrimary as 'fn' | 'ec' | undefined
   const accountCategory = search.accountCategory as 'ch' | 'vn' | undefined
-  const angajamenteGrouping = search.angajamenteGrouping as 'fn' | 'ec' | undefined
-  const angajamenteDetailLevel = search.angajamenteDetailLevel as 'chapter' | 'detailed' | undefined
+  const commitmentsGrouping = search.commitmentsGrouping as 'fn' | 'ec' | undefined
+  const commitmentsDetailLevel = search.commitmentsDetailLevel as 'chapter' | 'detailed' | undefined
 
   const transferFilter = search.transferFilter as 'all' | 'no-transfers' | 'transfers-only' | undefined
 
@@ -291,8 +291,8 @@ function EntityDetailsPage() {
     updateSearch({ transferFilter: filter })
   }, [updateSearch])
 
-  const handleAngajamenteGroupingChange = useCallback((grouping: 'fn' | 'ec', detailLevel: 'chapter' | 'detailed') => {
-    updateSearch({ angajamenteGrouping: grouping, angajamenteDetailLevel: detailLevel })
+  const handleCommitmentsGroupingChange = useCallback((grouping: 'fn' | 'ec', detailLevel: 'chapter' | 'detailed') => {
+    updateSearch({ commitmentsGrouping: grouping, commitmentsDetailLevel: detailLevel })
   }, [updateSearch])
 
   const advancedFilter = search.advancedFilter as string | undefined
@@ -527,9 +527,9 @@ function EntityDetailsPage() {
           handleTransferFilterChange={handleTransferFilterChange}
           advancedFilter={advancedFilter}
           handleAdvancedFilterChange={handleAdvancedFilterChange}
-          angajamenteGrouping={angajamenteGrouping}
-          angajamenteDetailLevel={angajamenteDetailLevel}
-          handleAngajamenteGroupingChange={handleAngajamenteGroupingChange}
+          commitmentsGrouping={commitmentsGrouping}
+          commitmentsDetailLevel={commitmentsDetailLevel}
+          handleCommitmentsGroupingChange={handleCommitmentsGroupingChange}
         />
       </div>
     </div>
@@ -577,9 +577,9 @@ interface ViewsContentProps {
   handleTransferFilterChange: (filter: 'all' | 'no-transfers' | 'transfers-only') => void;
   advancedFilter?: string;
   handleAdvancedFilterChange: (filter: string | undefined) => void;
-  angajamenteGrouping?: 'fn' | 'ec';
-  angajamenteDetailLevel?: 'chapter' | 'detailed';
-  handleAngajamenteGroupingChange: (grouping: 'fn' | 'ec', detailLevel: 'chapter' | 'detailed') => void;
+  commitmentsGrouping?: 'fn' | 'ec';
+  commitmentsDetailLevel?: 'chapter' | 'detailed';
+  handleCommitmentsGroupingChange: (grouping: 'fn' | 'ec', detailLevel: 'chapter' | 'detailed') => void;
 }
 
 function ViewsContent(props: ViewsContentProps) {
@@ -593,7 +593,7 @@ function ViewsContent(props: ViewsContentProps) {
     treemapPath, handleTreemapPathChange,
     transferFilter, handleTransferFilterChange,
     advancedFilter, handleAdvancedFilterChange,
-    angajamenteGrouping, angajamenteDetailLevel, handleAngajamenteGroupingChange,
+    commitmentsGrouping, commitmentsDetailLevel, handleCommitmentsGroupingChange,
   } = props;
 
   const normalizationOptions: NormalizationOptions = {
@@ -643,8 +643,8 @@ function ViewsContent(props: ViewsContentProps) {
           case 'related-charts': return <RelatedChartsView entity={entity} normalizationOptions={normalizationOptions} />
           case 'relationships': return <EntityRelationships cui={cui} />
           case 'contracts': return <ContractsView entity={entity} />
-          case 'angajamente': return (
-            <AngajamenteView
+          case 'commitments': return (
+            <CommitmentsView
               entity={entity}
               currentYear={selectedYear}
               reportPeriod={reportPeriod}
@@ -653,9 +653,9 @@ function ViewsContent(props: ViewsContentProps) {
               mainCreditorCui={mainCreditorCui}
               normalizationOptions={normalizationOptions}
               onNormalizationChange={handleNormalizationChange}
-              angajamenteGrouping={angajamenteGrouping}
-              angajamenteDetailLevel={angajamenteDetailLevel}
-              onAngajamenteGroupingChange={handleAngajamenteGroupingChange}
+              commitmentsGrouping={commitmentsGrouping}
+              commitmentsDetailLevel={commitmentsDetailLevel}
+              onCommitmentsGroupingChange={handleCommitmentsGroupingChange}
               onYearChange={handleYearChange}
               onSelectPeriod={handlePeriodItemSelect}
               selectedQuarter={search.quarter as string | undefined}
