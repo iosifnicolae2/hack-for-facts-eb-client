@@ -8,7 +8,7 @@ import { ChartCard } from './ChartCard';
 import { TrendsViewSkeleton } from './TrendsViewSkeleton';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { t } from '@lingui/core/macro';
-import { toReportTypeValue, type ReportPeriodInput, type GqlReportType, type TMonth, type TQuarter } from '@/schemas/reporting';
+import { toExecutionReportType, toReportTypeValue, type ReportPeriodInput, type GqlReportType, type TMonth, type TQuarter } from '@/schemas/reporting';
 import { usePeriodLabel } from '@/hooks/use-period-label'
 import { useEntityExecutionLineItems } from '@/lib/hooks/useEntityDetails';
 import { EntityLineItemsTabs } from '../EntityLineItemsTabs';
@@ -116,7 +116,7 @@ export const TrendsView: React.FC<BaseTrendsViewProps> = ({ entity, type, curren
         entity_cuis: [cui],
         functional_prefixes: [prefix],
         account_category: accountCategory,
-        report_type: toReportTypeValue(reportType ?? entity.default_report_type),
+        report_type: toReportTypeValue(toExecutionReportType(reportType ?? entity.default_report_type) ?? 'PRINCIPAL_AGGREGATED'),
         normalization: normalized.normalization,
         currency: normalized.currency,
         inflation_adjusted: normalized.inflation_adjusted,

@@ -141,7 +141,7 @@ export const Route = createFileRoute('/entities/$cui')({
                         entity_cuis: [params.cui],
                         functional_prefixes: [prefix],
                         account_category: accountCategory,
-                        report_type: entity.default_report_type ? toReportTypeValue(entity.default_report_type) : 'Executie bugetara agregata la nivel de ordonator principal',
+                        report_type: toReportTypeValue(toExecutionReportType(entity.default_report_type) ?? 'PRINCIPAL_AGGREGATED'),
                         normalization,
                         currency,
                         inflation_adjusted: inflationAdjusted,

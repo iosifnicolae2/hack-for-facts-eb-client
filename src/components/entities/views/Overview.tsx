@@ -5,7 +5,7 @@ import { EntityLineItemsTabs } from "../EntityLineItemsTabs"
 import { LineItemsAnalytics } from "../LineItemsAnalytics"
 import type { GqlReportType, ReportPeriodInput, ReportPeriodType, TMonth, TQuarter } from "@/schemas/reporting";
 import { getYearLabel } from "../utils";
-import { toReportTypeValue } from "@/schemas/reporting";
+import { toExecutionReportType, toReportTypeValue } from "@/schemas/reporting";
 import { useEntityExecutionLineItems } from "@/lib/hooks/useEntityDetails";
 import { EntityReportsSummary } from "../EntityReportsSummary";
 import { entityDetailsQueryOptions } from '@/lib/hooks/useEntityDetails';
@@ -237,7 +237,7 @@ export const Overview = ({
             normalization: normalized.normalization as any,
             currency: normalized.currency,
             inflation_adjusted: normalized.inflation_adjusted,
-            report_type: reportType ? toReportTypeValue(reportType) : 'Executie bugetara agregata la nivel de ordonator principal',
+            report_type: toReportTypeValue(toExecutionReportType(reportType) ?? 'PRINCIPAL_AGGREGATED'),
         },
         treemapPrimary: primary,
         treemapDepth: 'chapter',

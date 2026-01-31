@@ -56,7 +56,10 @@ export function toExecutionReportType(type?: GqlReportType): ExecutionGqlReportT
   return type
 }
 
-export function toReportTypeValue(gqlReportType: GqlReportType) {
+export function toReportTypeValue(gqlReportType: ExecutionGqlReportType): 'Executie bugetara agregata la nivel de ordonator principal' | 'Executie bugetara agregata la nivel de ordonator secundar' | 'Executie bugetara detaliata'
+export function toReportTypeValue(gqlReportType: CommitmentGqlReportType): 'Angajamente bugetare agregat principal' | 'Angajamente bugetare agregat secundar' | 'Angajamente bugetare detaliat'
+export function toReportTypeValue(gqlReportType: GqlReportType): string
+export function toReportTypeValue(gqlReportType: GqlReportType): string {
   if (gqlReportType === 'PRINCIPAL_AGGREGATED') return 'Executie bugetara agregata la nivel de ordonator principal'
   if (gqlReportType === 'SECONDARY_AGGREGATED') return 'Executie bugetara agregata la nivel de ordonator secundar'
   if (gqlReportType === 'DETAILED') return 'Executie bugetara detaliata'
