@@ -66,3 +66,4 @@ dev.html
 tmp/
 
 .claude/decisions/active/
+sentry-issues/

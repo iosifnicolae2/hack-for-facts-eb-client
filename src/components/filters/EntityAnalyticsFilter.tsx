@@ -403,8 +403,17 @@ export function EntityAnalyticsFilter() {
     (exclude.economic_prefixes?.length ?? 0)
 
   // Accordion open state - auto-open when there are active exclude filters
-  const [excludeValue, setExcludeValue] = useState<string | undefined>(undefined)
-  const accordionValue = totalExcludeFilters > 0 ? (excludeValue ?? 'exclude') : excludeValue
+  const [excludeValue, setExcludeValue] = useState<string>('')
+
+  useEffect(() => {
+    if (totalExcludeFilters > 0) {
+      setExcludeValue((prev) => (prev === '' ? 'exclude' : prev))
+      return
+    }
+    setExcludeValue('')
+  }, [totalExcludeFilters])
+
+  const accordionValue = excludeValue
 
   return (
     <Card className="flex flex-col w-full h-full">

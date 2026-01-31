@@ -7,7 +7,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Legend,
   ReferenceLine,
   LabelList,
@@ -27,6 +26,7 @@ import type { ReportPeriodType } from '@/schemas/reporting'
 import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
 import { CommitmentsTrendsSkeleton } from './commitments-trends-skeleton'
+import { SafeResponsiveContainer } from '@/components/charts/safe-responsive-container'
 
 interface CommitmentsTrendsProps {
   budgetTrend?: CommitmentsAnalyticsSeries | null
@@ -328,7 +328,7 @@ const CommitmentsTrendsComponent: React.FC<CommitmentsTrendsProps> = ({
             <Trans>No data available to display commitment evolution.</Trans>
           </p>
         ) : (
-          <ResponsiveContainer width="100%" height={400}>
+          <SafeResponsiveContainer width="100%" height={400}>
             <ComposedChart
               data={mergedData}
               margin={{ top: 30, right: 40, left: unit.length * 5 + 30, bottom: 5 }}
@@ -428,7 +428,7 @@ const CommitmentsTrendsComponent: React.FC<CommitmentsTrendsProps> = ({
                 activeDot={{ r: 6 }}
               />
             </ComposedChart>
-          </ResponsiveContainer>
+          </SafeResponsiveContainer>
         )}
       </CardContent>
     </Card>

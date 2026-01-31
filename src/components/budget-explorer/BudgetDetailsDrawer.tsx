@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { Accordion } from '@/components/ui/accordion'
 import type { AggregatedNode } from './budget-transform'
 import GroupedChapterAccordion from '@/components/entities/GroupedChapterAccordion'
@@ -94,6 +94,9 @@ export function BudgetDetailsDrawer({ open, onOpenChange, code, primary, nodes, 
       <SheetContent side="right" className="sm:max-w-xl">
         <SheetHeader>
           <SheetTitle>{title}</SheetTitle>
+          <SheetDescription className="sr-only">
+            <Trans>Breakdown of the selected classification, including grouped chapters and totals.</Trans>
+          </SheetDescription>
         </SheetHeader>
         <div className="mt-4 space-y-4 max-h-[80vh] overflow-y-auto pr-2">
           {grouped.length === 0 ? (
@@ -119,5 +122,4 @@ export function BudgetDetailsDrawer({ open, onOpenChange, code, primary, nodes, 
     </Sheet>
   )
 }
-
 

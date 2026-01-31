@@ -8,7 +8,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Legend,
   ReferenceLine,
   LabelList
@@ -31,6 +30,7 @@ import { normalizeNormalizationOptions } from '@/lib/normalization';
 import { getNormalizationUnit } from '@/lib/utils';
 import { useMediaQuery } from '@/hooks/use-media-query';
 import { NormalizationModeSelect } from '@/components/normalization/normalization-mode-select';
+import { SafeResponsiveContainer } from '@/components/charts/safe-responsive-container';
 
 interface EntityFinancialTrendsProps {
   incomeTrend?: AnalyticsSeries | null;
@@ -226,7 +226,7 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
         {!trendsAvailable ? (
           <p className="text-center text-slate-500 dark:text-slate-400 py-4"><Trans>No data available to display financial evolution.</Trans></p>
         ) : (
-          <ResponsiveContainer width="100%" height={400}>
+          <SafeResponsiveContainer width="100%" height={400}>
             <ComposedChart
               data={mergedData}
               margin={{ top: 30, right: 40, left: unit.length * 5 + 30, bottom: 5 }}
@@ -304,7 +304,7 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
                 {!isMobile && <LabelList dataKey="balance" position="top" offset={8} fontSize={11} formatter={(v: unknown) => yValueFormatter(Number(v), unit, 'compact')} />}
               </Line>
             </ComposedChart>
-          </ResponsiveContainer>
+          </SafeResponsiveContainer>
         )}
       </CardContent>
     </Card>

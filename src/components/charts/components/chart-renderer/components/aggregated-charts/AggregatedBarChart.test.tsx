@@ -62,6 +62,12 @@ vi.mock('recharts', () => ({
   },
 }))
 
+vi.mock('@/components/charts/safe-responsive-container', () => ({
+  SafeResponsiveContainer: ({ children, height }: any) => (
+    <div data-testid="responsive-container" data-height={height}>{children}</div>
+  ),
+}))
+
 // Mock ChartAnnotation
 vi.mock('../ChartAnnotation', () => ({
   ChartAnnotation: ({ annotation }: any) => (

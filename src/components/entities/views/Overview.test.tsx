@@ -121,6 +121,7 @@ vi.mock('@/lib/normalization', () => ({
 
 // Mock reporting schema
 vi.mock('@/schemas/reporting', () => ({
+  toExecutionReportType: (type: string) => type,
   toReportTypeValue: (type: string) => type,
   getInitialFilterState: () => ({
     type: 'YEAR',

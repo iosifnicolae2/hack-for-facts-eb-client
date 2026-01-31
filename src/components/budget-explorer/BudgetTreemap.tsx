@@ -1,11 +1,12 @@
 import { type FC, useCallback, useEffect, useMemo, useRef, useState, useDeferredValue, startTransition } from 'react'
-import { ResponsiveContainer, Treemap, Tooltip } from 'recharts'
+import { Treemap, Tooltip } from 'recharts'
 import { Trans } from '@lingui/react/macro'
 import { motion, useAnimationControls } from 'framer-motion'
 import { ArrowLeft, LineChart } from 'lucide-react'
 import { useNavigate } from '@tanstack/react-router'
 
 import { yValueFormatter } from '@/components/charts/components/chart-renderer/utils'
+import { SafeResponsiveContainer } from '@/components/charts/safe-responsive-container'
 import { Button } from '@/components/ui/button'
 import type { TreemapInput, ExcludedItemsSummary } from './budget-transform'
 import { FilteredSpendingInfo } from './FilteredSpendingInfo'
@@ -650,7 +651,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
                 <ArrowLeft className="h-4 w-4" />
               </Button>
             )}
-            <ResponsiveContainer width="100%" height="100%">
+            <SafeResponsiveContainer width="100%" height="100%">
               <Treemap
                 data={filteredData}
                 dataKey="value"
@@ -676,7 +677,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
                   />
                 )}
               </Treemap>
-            </ResponsiveContainer>
+            </SafeResponsiveContainer>
           </div>
           <div className="flex flex-col items-center gap-2 text-center mt-4">
             <div className="text-sm sm:text-xl font-semibold">

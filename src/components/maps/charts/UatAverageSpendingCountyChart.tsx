@@ -7,11 +7,11 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,
   LabelList,
 } from 'recharts';
 import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { formatCurrency } from '@/lib/utils';
+import { SafeResponsiveContainer } from '@/components/charts/safe-responsive-container';
 
 interface UatAverageSpendingCountyChartProps {
   data: (HeatmapUATDataPoint | HeatmapCountyDataPoint)[];
@@ -56,7 +56,7 @@ export const UatAverageSpendingCountyChart: React.FC<UatAverageSpendingCountyCha
   return (
     <div style={{ width: '100%', height: 400 }}>
       {chartTitle && <h4 className="text-md font-medium mb-2 text-center">{chartTitle}</h4>}
-      <ResponsiveContainer width="100%" height="100%">
+      <SafeResponsiveContainer width="100%" height="100%">
         <BarChart
           data={processedData}
           margin={{
@@ -75,7 +75,7 @@ export const UatAverageSpendingCountyChart: React.FC<UatAverageSpendingCountyCha
             <LabelList dataKey="average_amount" position="top"  angle={-45} offset={50} formatter={(value: React.ReactNode) => typeof value === 'number' && value > 0 ? formatCurrency(value, 'compact') : ''} fontSize={10} />
           </Bar>
         </BarChart>
-      </ResponsiveContainer>
+      </SafeResponsiveContainer>
     </div>
   );
 }; 

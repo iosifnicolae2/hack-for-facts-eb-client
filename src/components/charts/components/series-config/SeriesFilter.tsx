@@ -184,7 +184,7 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
   const excludeFundingSourceLabelsStore = useFundingSourceLabel(exclude.funding_source_ids ?? []);
 
   // Accordion open state - auto-open when there are active exclude filters
-  const [excludeValue, setExcludeValue] = useState<string | undefined>(undefined);
+  const [excludeValue, setExcludeValue] = useState<string>("");
 
   // Series filters should not auto-sync with global preferences after creation.
   // Use globals only as defaults when fields are missing, and migrate legacy values once.
@@ -527,7 +527,15 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
     (exclude.functional_prefixes?.length ?? 0) +
     (exclude.economic_prefixes?.length ?? 0);
 
-  const accordionValue = totalExcludeFilters > 0 ? (excludeValue ?? 'exclude') : excludeValue;
+  useEffect(() => {
+    if (totalExcludeFilters > 0) {
+      setExcludeValue((prev) => (prev === "" ? "exclude" : prev));
+      return;
+    }
+    setExcludeValue("");
+  }, [totalExcludeFilters]);
+
+  const accordionValue = excludeValue;
 
   const handleClearReportType = () => setReportType('Executie bugetara agregata la nivel de ordonator principal');
   const handleClearNormalization = () => setNormalization("total");
@@ -823,8 +831,8 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
         <div className="border-t mt-2">
           <Accordion type="single" collapsible value={accordionValue} onValueChange={setExcludeValue}>
             <AccordionItem value="exclude" className="border-none">
-              <AccordionTrigger className="px-4 py-3 text-sm font-medium hover:bg-muted/50 hover:no-underline">
-                <div className="flex items-center justify-between w-full gap-2">
+              <div className="flex items-center justify-between gap-2 px-4 py-3">
+                <AccordionTrigger className="flex-1 text-sm font-medium hover:bg-muted/50 hover:no-underline px-0">
                   <div className="flex items-center gap-2">
                     <MinusCircle className="w-4 h-4 text-destructive" aria-hidden="true" />
                     <span>
@@ -836,22 +844,22 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
                       </Badge>
                     )}
                   </div>
-                  {totalExcludeFilters > 0 && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        clearAllExcludeFilters();
-                      }}
-                      className="text-xs text-destructive hover:text-destructive h-auto py-1 px-2"
-                    >
-                      <XCircle className="w-3 h-3 mr-1" aria-hidden="true" />
-                      <Trans>Clear all</Trans>
-                    </Button>
-                  )}
-                </div>
-              </AccordionTrigger>
+                </AccordionTrigger>
+                {totalExcludeFilters > 0 && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      clearAllExcludeFilters();
+                    }}
+                    className="text-xs text-destructive hover:text-destructive h-auto py-1 px-2"
+                  >
+                    <XCircle className="w-3 h-3 mr-1" aria-hidden="true" />
+                    <Trans>Clear all</Trans>
+                  </Button>
+                )}
+              </div>
               <AccordionContent>
                 <div className="px-4 py-2 text-xs text-muted-foreground bg-muted/30 border-b">
                   <Trans>Filters marked as exclude will remove data matching these criteria from the results.</Trans>

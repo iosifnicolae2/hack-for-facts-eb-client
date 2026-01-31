@@ -1,4 +1,4 @@
-import { Treemap, ResponsiveContainer, Tooltip } from 'recharts';
+import { Treemap, Tooltip } from 'recharts';
 import { ChartRendererProps } from '../ChartRenderer';
 import { CustomSeriesTooltip } from '../Tooltips';
 import { AlertTriangle, Info } from 'lucide-react';
@@ -6,6 +6,7 @@ import { useMemo } from 'react';
 import { yValueFormatter } from '../../utils';
 import { DataPointPayload } from '@/components/charts/hooks/useChartData';
 import { ChartAnnotation } from '../ChartAnnotation';
+import { SafeResponsiveContainer } from '@/components/charts/safe-responsive-container';
 
 const MIN_WIDTH_FOR_NAME = 50;
 const MIN_HEIGHT_FOR_NAME = 20;
@@ -138,7 +139,7 @@ export function AggregatedTreemapChart({ chart, aggregatedData, unitMap, height,
     }
 
     return (
-        <ResponsiveContainer width="100%" height={height} style={{ padding: '2rem' }}>
+        <SafeResponsiveContainer width="100%" height={height} style={{ padding: '2rem' }}>
             <Treemap
                 data={treemapData}
                 dataKey="value"
@@ -160,6 +161,6 @@ export function AggregatedTreemapChart({ chart, aggregatedData, unitMap, height,
                     />
                 ))}
             </Treemap>
-        </ResponsiveContainer>
+        </SafeResponsiveContainer>
     );
 }

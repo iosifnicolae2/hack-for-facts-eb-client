@@ -75,8 +75,12 @@ const createMockCategory = (id: string, name: string): ChartCategory => ({
 
 describe('chartsStore', () => {
   let mockStorage: Record<string, string>
+  let consoleErrorSpy: ReturnType<typeof vi.spyOn>
+  let consoleWarnSpy: ReturnType<typeof vi.spyOn>
 
   beforeEach(() => {
+    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
     mockStorage = {}
     vi.stubGlobal('localStorage', {
       getItem: vi.fn((key: string) => mockStorage[key] || null),
@@ -93,6 +97,8 @@ describe('chartsStore', () => {
   })
 
   afterEach(() => {
+    consoleErrorSpy.mockRestore()
+    consoleWarnSpy.mockRestore()
     vi.unstubAllGlobals()
   })
 

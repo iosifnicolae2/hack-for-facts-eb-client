@@ -12,10 +12,10 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
 } from 'recharts'
 import { formatCurrency } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
+import { SafeResponsiveContainer } from '@/components/charts/safe-responsive-container'
 import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
 
@@ -135,7 +135,7 @@ export function CategoryChart({ data, currency = 'RON', isLoading = false }: Pro
         </div>
       </div>
 
-      <ResponsiveContainer width="100%" height="90%">
+      <SafeResponsiveContainer width="100%" height="90%">
         <BarChart
           data={sortedData}
           layout="vertical"
@@ -173,7 +173,7 @@ export function CategoryChart({ data, currency = 'RON', isLoading = false }: Pro
           {/* Foreground Bar - Paid */}
           <Bar dataKey="paid" barSize={8} radius={[0, 4, 4, 0]} fill="#34d399" />
         </BarChart>
-      </ResponsiveContainer>
+      </SafeResponsiveContainer>
     </div>
   )
 }

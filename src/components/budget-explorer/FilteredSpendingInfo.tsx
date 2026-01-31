@@ -3,7 +3,7 @@ import { Trans } from '@lingui/react/macro'
 import { Info, X } from 'lucide-react'
 import { yValueFormatter } from '@/components/charts/components/chart-renderer/utils'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import type { ExcludedItemsSummary } from './budget-transform'
 import { useIsMobile } from '@/hooks/use-mobile'
@@ -219,6 +219,9 @@ export function FilteredSpendingInfo({ excludedItemsSummary, unit, amountFilter 
             <DialogTitle className="text-base">
               <Trans>Spending Calculation</Trans>
             </DialogTitle>
+            <DialogDescription className="sr-only">
+              <Trans>Details about excluded items and amount filters used in this view.</Trans>
+            </DialogDescription>
             <DialogClose asChild>
               <Button variant="ghost" size="icon" className="absolute right-4 top-1/2 -translate-y-1/2">
                 <X className="w-4 h-4" />

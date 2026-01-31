@@ -38,12 +38,12 @@ let capturedEditableProps: any = null
 
 vi.mock('@visx/annotation', () => ({
   Annotation: ({ children }: any) => {
-    return <g data-testid="annotation">{children}</g>
+    return <div data-testid="annotation">{children}</div>
   },
   EditableAnnotation: ({ children, onDragEnd, ...props }: any) => {
     capturedEditableProps = { ...props, onDragEnd }
     return (
-      <g
+      <div
         data-testid="editable-annotation"
         onClick={() => {
           // Simulate drag end for testing
@@ -53,17 +53,17 @@ vi.mock('@visx/annotation', () => ({
         }}
       >
         {children}
-      </g>
+      </div>
     )
   },
   Connector: ({ stroke, type }: { stroke: string; type: string }) => (
-    <line data-testid="connector" data-stroke={stroke} data-type={type} />
+    <div data-testid="connector" data-stroke={stroke} data-type={type} />
   ),
   CircleSubject: ({ stroke }: { stroke: string }) => (
-    <circle data-testid="circle-subject" data-stroke={stroke} />
+    <div data-testid="circle-subject" data-stroke={stroke} />
   ),
   Label: (props: any) => (
-    <text
+    <span
       data-testid="label"
       data-title={props.title}
       data-subtitle={props.subtitle}
@@ -71,7 +71,7 @@ vi.mock('@visx/annotation', () => ({
       data-subtitle-font-size={props.subtitleFontSize}
     >
       {props.title}
-    </text>
+    </span>
   ),
 }))
 

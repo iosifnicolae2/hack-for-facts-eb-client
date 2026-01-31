@@ -6,13 +6,13 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Legend,
   ZAxis,
 } from 'recharts';
 import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { formatCurrency, formatNumber, getNormalizationUnit } from '@/lib/utils';
 import type { Currency, Normalization } from '@/schemas/charts';
+import { SafeResponsiveContainer } from '@/components/charts/safe-responsive-container';
 
 interface UatPopulationSpendingScatterPlotProps {
   data: (HeatmapUATDataPoint | HeatmapCountyDataPoint)[];
@@ -140,7 +140,7 @@ export const UatPopulationSpendingScatterPlot: React.FC<UatPopulationSpendingSca
   return (
     <div style={{ width: '100%', height: 400 }}>
       {chartTitle && <h4 className="text-md font-medium mb-2 text-center">{chartTitle}</h4>}
-      <ResponsiveContainer width="100%" height="100%">
+      <SafeResponsiveContainer width="100%" height="100%">
         <ScatterChart
           data={processedForScatter} // Use the filtered/processed data
           margin={{
@@ -172,7 +172,7 @@ export const UatPopulationSpendingScatterPlot: React.FC<UatPopulationSpendingSca
           <Legend verticalAlign="top" height={36} />
           <Scatter name="UAT Outliers" data={processedForScatter} fill={dotColor} />
         </ScatterChart>
-      </ResponsiveContainer>
+      </SafeResponsiveContainer>
     </div>
   );
 }; 

@@ -1,10 +1,11 @@
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, LabelList, Cell } from 'recharts';
 import { ChartRendererProps } from '../ChartRenderer';
 import { yValueFormatter } from '../../utils';
 import { ReactNode } from 'react';
 import { CustomSeriesTooltip } from '../Tooltips';
 import { AlertTriangle } from 'lucide-react';
 import { ChartAnnotation } from '../ChartAnnotation';
+import { SafeResponsiveContainer } from '@/components/charts/safe-responsive-container';
 
 
 export function AggregatedBarChart({ chart, aggregatedData, unitMap, height, onAnnotationPositionChange }: ChartRendererProps) {
@@ -31,7 +32,7 @@ export function AggregatedBarChart({ chart, aggregatedData, unitMap, height, onA
     };
 
     return (
-        <ResponsiveContainer width="100%" height={height}>
+        <SafeResponsiveContainer width="100%" height={height}>
             <BarChart data={aggregatedData} layout="vertical" margin={{ top: 50, right: 40, left: 40, bottom: 20 }}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
@@ -83,6 +84,6 @@ export function AggregatedBarChart({ chart, aggregatedData, unitMap, height, onA
                     />
                 ))}
             </BarChart>
-        </ResponsiveContainer>
+        </SafeResponsiveContainer>
     );
 }

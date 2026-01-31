@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { BarChart, Bar, PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, XAxis, YAxis, CartesianGrid, LabelList } from 'recharts';
+import { BarChart, Bar, PieChart, Pie, Cell, Tooltip, Legend, XAxis, YAxis, CartesianGrid, LabelList } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { getNormalizationUnit } from '@/lib/utils';
@@ -19,6 +19,7 @@ import { TMonth, TQuarter } from '@/schemas/reporting';
 import { getYearLabel } from './utils';
 import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults';
 import type { Currency, Normalization } from '@/schemas/charts';
+import { SafeResponsiveContainer } from '@/components/charts/safe-responsive-container';
 
 interface AnalyticsProps {
     lineItems?: { nodes: readonly import('@/lib/api/entities').ExecutionLineItem[] } | null;
@@ -190,7 +191,7 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
             </CardHeader>
             <CardContent>
                 <div className="w-full h-64 sm:h-80 md:h-96 lg:h-[480px]">
-                    <ResponsiveContainer width="100%" height="100%">
+                    <SafeResponsiveContainer width="100%" height="100%">
                         {chartType === 'bar' ? (
                             <BarChart data={activeData} margin={{ top: 20, right: 20, left: Math.max(unit.length * 4 + 20, 60), bottom: 60 }}>
                                 <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
@@ -248,7 +249,7 @@ export const LineItemsAnalytics: React.FC<AnalyticsProps> = ({
                                 />
                             </PieChart>
                         )}
-                    </ResponsiveContainer>
+                    </SafeResponsiveContainer>
                 </div>
             </CardContent>
         </Card>

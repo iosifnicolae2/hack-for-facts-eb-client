@@ -41,9 +41,13 @@ vi.mock('recharts', () => ({
     // Test label function
     if (label) {
       const result = label({ cx: 100, cy: 100, midAngle: 45, outerRadius: 80, percent: 0.25 })
+      const labelContent =
+        typeof result === 'string' || typeof result === 'number'
+          ? result
+          : result?.props?.children
       return (
         <div data-testid="pie">
-          {result && <text data-testid="pie-label">{result}</text>}
+          {result && <span data-testid="pie-label">{labelContent}</span>}
           {children}
         </div>
       )
@@ -64,6 +68,12 @@ vi.mock('recharts', () => ({
     capturedLegendProps = props
     return <div data-testid="legend" data-vertical-align={props.verticalAlign} />
   },
+}))
+
+vi.mock('@/components/charts/safe-responsive-container', () => ({
+  SafeResponsiveContainer: ({ children, height }: any) => (
+    <div data-testid="responsive-container" data-height={height}>{children}</div>
+  ),
 }))
 
 // Mock ChartAnnotation

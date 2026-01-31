@@ -1,4 +1,4 @@
-import { LabelList, Line, LineChart, ReferenceLine, ResponsiveContainer } from 'recharts';
+import { LabelList, Line, LineChart, ReferenceLine } from 'recharts';
 import { MultiAxisChartContainer } from './MultiAxisChartContainer';
 import { ChartRendererProps } from './ChartRenderer';
 import { DataPointPayload } from '@/components/charts/hooks/useChartData';
@@ -8,6 +8,7 @@ import { useChartDiff } from '../hooks/useChartDiff';
 import { DiffArea } from './diff-select/DiffArea';
 import { useChartAnimation } from '../hooks/useChartAnimation';
 import { useMemo } from 'react';
+import { SafeResponsiveContainer } from '@/components/charts/safe-responsive-container';
 
 export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotationPositionChange, onXAxisClick, xAxisMarker, margins }: ChartRendererProps) {
   const enabledSeries = useMemo(() => chart.series.filter(s => s.enabled), [chart.series]);
@@ -31,7 +32,7 @@ export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotati
   );
 
   return (
-    <ResponsiveContainer width="100%" height="100%" className="select-none">
+    <SafeResponsiveContainer width="100%" height="100%" className="select-none">
       <LineChart
         data={timeSeriesData}
         margin={{ top: 30, right: 50, left: 50, bottom: 20, ...margins }}
@@ -116,6 +117,6 @@ export function TimeSeriesLineChart({ chart, unitMap, timeSeriesData, onAnnotati
           )}
         </MultiAxisChartContainer>
       </LineChart>
-    </ResponsiveContainer>
+    </SafeResponsiveContainer>
   );
 }

@@ -1,8 +1,9 @@
-import { PieChart, Pie, Tooltip, ResponsiveContainer, Cell, Legend } from 'recharts';
+import { PieChart, Pie, Tooltip, Cell, Legend } from 'recharts';
 import { ChartRendererProps } from '../ChartRenderer';
 import { AlertTriangle } from 'lucide-react';
 import { CustomSeriesTooltip } from '../Tooltips';
 import { ChartAnnotation } from '../ChartAnnotation';
+import { SafeResponsiveContainer } from '@/components/charts/safe-responsive-container';
 
 // Modern color palette for better visual appeal
 const PIE_COLORS = [
@@ -40,7 +41,7 @@ export function AggregatedPieChart({ chart, aggregatedData, unitMap, height, onA
     };
 
     return (
-        <ResponsiveContainer width="100%" height={height}>
+        <SafeResponsiveContainer width="100%" height={height}>
             <PieChart margin={{ top: 40, right: 5, bottom: 70, left: 5 }}>
                 <Pie
                     data={aggregatedData}
@@ -137,6 +138,6 @@ export function AggregatedPieChart({ chart, aggregatedData, unitMap, height, onA
                     />
                 ))}
             </PieChart>
-        </ResponsiveContainer>
+        </SafeResponsiveContainer>
     );
 }

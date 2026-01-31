@@ -41,8 +41,26 @@ vi.mock('lucide-react', () => ({
 // Mock router
 const mockMatches = vi.fn()
 vi.mock('@tanstack/react-router', () => ({
-  Link: ({ children, to, onClick, className }: { children: React.ReactNode; to: string; onClick?: () => void; className?: string }) => (
-    <a href={to} onClick={onClick} className={className} data-testid={`link-${to}`}>
+  Link: ({
+    children,
+    to,
+    onClick,
+    className,
+  }: {
+    children: React.ReactNode
+    to: string
+    onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void
+    className?: string
+  }) => (
+    <a
+      href={to}
+      onClick={(event) => {
+        event.preventDefault()
+        onClick?.(event)
+      }}
+      className={className}
+      data-testid={`link-${to}`}
+    >
       {children}
     </a>
   ),

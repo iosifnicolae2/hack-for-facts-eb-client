@@ -54,12 +54,12 @@ let capturedEditableProps: any[] = []
 vi.mock('@visx/annotation', () => ({
   Annotation: ({ children, ...props }: any) => {
     capturedAnnotationProps.push(props)
-    return <g data-testid="annotation">{children}</g>
+    return <div data-testid="annotation">{children}</div>
   },
   EditableAnnotation: ({ children, onDragEnd, ...props }: any) => {
     capturedEditableProps.push({ ...props, onDragEnd })
     return (
-      <g
+      <div
         data-testid="editable-annotation"
         onClick={() => {
           if (onDragEnd) {
@@ -68,19 +68,19 @@ vi.mock('@visx/annotation', () => ({
         }}
       >
         {children}
-      </g>
+      </div>
     )
   },
   Connector: ({ stroke, type }: { stroke: string; type: string }) => (
-    <line data-testid="connector" data-stroke={stroke} data-type={type} />
+    <div data-testid="connector" data-stroke={stroke} data-type={type} />
   ),
   CircleSubject: ({ stroke }: { stroke: string }) => (
-    <circle data-testid="circle-subject" data-stroke={stroke} />
+    <div data-testid="circle-subject" data-stroke={stroke} />
   ),
   Label: (props: any) => (
-    <text data-testid="label" data-title={props.title}>
+    <span data-testid="label" data-title={props.title}>
       {props.title}
-    </text>
+    </span>
   ),
 }))
 

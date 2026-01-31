@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 
-import { render, screen } from '@/test/test-utils'
+import { render, screen, within } from '@/test/test-utils'
 import { LinearBudgetFlow } from './LinearBudgetFlow'
 
 describe('LinearBudgetFlow', () => {
@@ -30,6 +30,8 @@ describe('LinearBudgetFlow', () => {
       />
     )
 
-    expect(screen.getByText('N/A')).toBeInTheDocument()
+    const commitmentHeader = screen.getByText('Commitment authority usage').parentElement
+    expect(commitmentHeader).not.toBeNull()
+    expect(within(commitmentHeader as HTMLElement).getByText('N/A')).toBeInTheDocument()
   })
 })

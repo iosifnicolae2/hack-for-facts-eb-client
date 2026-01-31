@@ -1,9 +1,10 @@
 import { useMemo } from 'react'
 import type { EntityAnalyticsDataPoint } from '@/schemas/entity-analytics'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ScatterChart, Scatter, Cell } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ScatterChart, Scatter, Cell } from 'recharts'
 import { formatCurrency, formatNumber } from '@/lib/utils'
 import { useEntityAnalyticsFilter } from '@/hooks/useEntityAnalyticsFilter'
+import { SafeResponsiveContainer } from '@/components/charts/safe-responsive-container'
 
 interface Props {
   data: readonly EntityAnalyticsDataPoint[]
@@ -43,7 +44,7 @@ export function EntityAnalyticsCharts({ data, normalization = 'per_capita' }: Pr
           <CardTitle>Top 15 entities by total amount</CardTitle>
         </CardHeader>
         <CardContent className="h-[380px]">
-          <ResponsiveContainer width="100%" height="100%">
+          <SafeResponsiveContainer width="100%" height="100%">
             <BarChart data={topByTotal} margin={{ top: 8, right: 16, bottom: 24, left: 16 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="entity_name" tick={{ fontSize: 10 }} angle={-25} textAnchor="end" interval={0} />
@@ -62,7 +63,7 @@ export function EntityAnalyticsCharts({ data, normalization = 'per_capita' }: Pr
                 )}
               </Bar>
             </BarChart>
-          </ResponsiveContainer>
+          </SafeResponsiveContainer>
         </CardContent>
       </Card>
 
@@ -71,7 +72,7 @@ export function EntityAnalyticsCharts({ data, normalization = 'per_capita' }: Pr
           <CardTitle>Per-capita vs population</CardTitle>
         </CardHeader>
         <CardContent className="h-[380px]">
-          <ResponsiveContainer width="100%" height="100%">
+          <SafeResponsiveContainer width="100%" height="100%">
             <ScatterChart margin={{ top: 8, right: 16, bottom: 24, left: 16 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="population" name="Population" tickFormatter={(v) => formatNumber(v)} />
@@ -86,7 +87,7 @@ export function EntityAnalyticsCharts({ data, normalization = 'per_capita' }: Pr
               <Legend />
               <Scatter data={scatterData} name="Entities" fill="#10b981" />
             </ScatterChart>
-          </ResponsiveContainer>
+          </SafeResponsiveContainer>
         </CardContent>
       </Card>
 
@@ -95,7 +96,7 @@ export function EntityAnalyticsCharts({ data, normalization = 'per_capita' }: Pr
           <CardTitle>Top 10 counties by {barLabel.toLowerCase()}</CardTitle>
         </CardHeader>
         <CardContent className="h-[380px]">
-          <ResponsiveContainer width="100%" height="100%">
+          <SafeResponsiveContainer width="100%" height="100%">
             <BarChart data={countyAgg} margin={{ top: 8, right: 16, bottom: 24, left: 16 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="county_name" tick={{ fontSize: 11 }} angle={-25} textAnchor="end" interval={0} />
@@ -114,10 +115,9 @@ export function EntityAnalyticsCharts({ data, normalization = 'per_capita' }: Pr
                 ))}
               </Bar>
             </BarChart>
-          </ResponsiveContainer>
+          </SafeResponsiveContainer>
         </CardContent>
       </Card>
     </div>
   )
 }
-

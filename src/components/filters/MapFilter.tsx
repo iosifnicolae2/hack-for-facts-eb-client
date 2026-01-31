@@ -9,7 +9,7 @@ import { FunctionalClassificationList } from "./functional-classification-filter
 import { FilterRangeContainer } from "./base-filter/FilterRangeContainer";
 import { AmountRangeFilter } from "./amount-range-filter";
 import { useMapFilter } from "@/hooks/useMapFilter";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ViewTypeRadioGroup } from "./ViewTypeRadioGroup";
 import { EntityTypeList } from './entity-type-filter/EntityTypeList';
 import { BudgetSectorList } from './budget-sector-filter/BudgetSectorFilter';
@@ -154,15 +154,24 @@ export function MapFilter() {
         (mapState.filters.min_population ? 1 : 0) +
         (mapState.filters.max_population ? 1 : 0);
 
-	    // Accordion open state - auto-open when there are active exclude filters
-	    const [excludeValue, setExcludeValue] = useState<string | undefined>(undefined);
-	    const accordionValue = totalExcludeFilters > 0 ? (excludeValue ?? 'exclude') : excludeValue;
+    // Accordion open state - auto-open when there are active exclude filters
+    const [excludeValue, setExcludeValue] = useState<string>("");
 
-	    const selectedAccountCategoryOption = useMemo(() => mapState.filters.account_category, [mapState.filters.account_category]);
-	    const amountUnit = useMemo(
-	        () => getNormalizationUnit({ normalization: mapState.filters.normalization, currency: userCurrency }),
-	        [mapState.filters.normalization, userCurrency]
-	    );
+    useEffect(() => {
+        if (totalExcludeFilters > 0) {
+            setExcludeValue((prev) => (prev === "" ? "exclude" : prev));
+            return;
+        }
+        setExcludeValue("");
+    }, [totalExcludeFilters]);
+
+    const accordionValue = excludeValue;
+
+    const selectedAccountCategoryOption = useMemo(() => mapState.filters.account_category, [mapState.filters.account_category]);
+    const amountUnit = useMemo(
+        () => getNormalizationUnit({ normalization: mapState.filters.normalization, currency: userCurrency }),
+        [mapState.filters.normalization, userCurrency]
+    );
 
     return (
         <Card className="flex flex-col w-full h-full shadow-lg" role="region" aria-labelledby="map-filters-title">
@@ -393,8 +402,8 @@ export function MapFilter() {
                 <div className="border-t mt-2">
                     <Accordion type="single" collapsible value={accordionValue} onValueChange={setExcludeValue}>
                         <AccordionItem value="exclude" className="border-none">
-                            <AccordionTrigger className="px-4 py-3 text-sm font-medium hover:bg-muted/50 hover:no-underline">
-                                <div className="flex items-center justify-between w-full gap-2">
+                            <div className="flex items-center justify-between gap-2 px-4 py-3">
+                                <AccordionTrigger className="flex-1 text-sm font-medium hover:bg-muted/50 hover:no-underline px-0">
                                     <div className="flex items-center gap-2">
                                         <MinusCircle className="w-4 h-4 text-destructive" aria-hidden="true" />
                                         <span>
@@ -406,22 +415,22 @@ export function MapFilter() {
                                             </Badge>
                                         )}
                                     </div>
-                                    {totalExcludeFilters > 0 && (
-                                        <Button
-                                            variant="ghost"
-                                            size="sm"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                clearAllExcludeFilters();
-                                            }}
-                                            className="text-xs text-destructive hover:text-destructive h-auto py-1 px-2"
-                                        >
-                                            <XCircle className="w-3 h-3 mr-1" aria-hidden="true" />
-                                            <Trans>Clear all</Trans>
-                                        </Button>
-                                    )}
-                                </div>
-                            </AccordionTrigger>
+                                </AccordionTrigger>
+                                {totalExcludeFilters > 0 && (
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            clearAllExcludeFilters();
+                                        }}
+                                        className="text-xs text-destructive hover:text-destructive h-auto py-1 px-2"
+                                    >
+                                        <XCircle className="w-3 h-3 mr-1" aria-hidden="true" />
+                                        <Trans>Clear all</Trans>
+                                    </Button>
+                                )}
+                            </div>
                             <AccordionContent>
                                 <div className="px-4 py-2 text-xs text-muted-foreground bg-muted/30 border-b">
                                     <Trans>Filters marked as exclude will remove data matching these criteria from the results.</Trans>

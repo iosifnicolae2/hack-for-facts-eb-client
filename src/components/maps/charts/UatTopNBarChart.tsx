@@ -7,12 +7,12 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,
   LabelList,
 } from 'recharts';
 import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
 import { formatCurrency, formatNumber, getNormalizationUnit } from '@/lib/utils';
 import type { Currency, Normalization } from '@/schemas/charts';
+import { SafeResponsiveContainer } from '@/components/charts/safe-responsive-container';
 
 interface UatTopNBarChartProps {
   data: (HeatmapUATDataPoint | HeatmapCountyDataPoint)[];
@@ -93,7 +93,7 @@ export const UatTopNBarChart: React.FC<UatTopNBarChartProps> = ({
   return (
     <div style={{ width: '100%', height: 300 + topN * 10 }}>
       {chartTitle && <h4 className="text-md font-medium mb-2 text-center">{chartTitle}</h4>}
-      <ResponsiveContainer width="100%" height="100%">
+      <SafeResponsiveContainer width="100%" height="100%">
         <BarChart
           data={processedData}
           layout="vertical" 
@@ -113,7 +113,7 @@ export const UatTopNBarChart: React.FC<UatTopNBarChartProps> = ({
             <LabelList dataKey={valueKey as string} position="right" formatter={compactFormatter} fontSize={10} />
           </Bar>
         </BarChart>
-      </ResponsiveContainer>
+      </SafeResponsiveContainer>
     </div>
   );
 }; 

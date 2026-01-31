@@ -247,6 +247,7 @@ vi.mock('@/lib/utils', () => ({
 
 // Mock reporting schema
 vi.mock('@/schemas/reporting', () => ({
+  toExecutionReportType: (type: string) => type,
   toReportTypeValue: (type: string) => type,
 }))
 
