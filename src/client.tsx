@@ -5,6 +5,7 @@ import { i18n } from "@lingui/core";
 import { dynamicActivate } from "@/lib/i18n";
 import { getUserLocale } from "@/lib/utils";
 import { getReactRootErrorHandlers } from "@/lib/sentry";
+import { registerChunkErrorHandler } from "@/lib/chunk-recovery";
 
 const hasWindow = typeof window !== "undefined";
 
@@ -12,6 +13,7 @@ async function bootstrap() {
   const userLocale = hasWindow ? getUserLocale() : "ro";
 
   if (hasWindow) {
+    registerChunkErrorHandler();
     try {
       await dynamicActivate(userLocale);
     } catch (error) {

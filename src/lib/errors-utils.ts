@@ -91,6 +91,11 @@ function isUpdateAvailableMessage(message: string): boolean {
     return UPDATE_ERROR_MARKERS.some((marker) => message.includes(marker));
 }
 
+export function isUpdateAvailableError(error: unknown): boolean {
+    if (!error) return false;
+    return isUpdateAvailableMessage(getErrorText(error));
+}
+
 /**
  * Analyzes an error and classifies it for user-friendly display.
  * @param error The error object to classify.

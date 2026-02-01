@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, Home, RefreshCcw } from "lucide-react";
-import { useEffect, useMemo } from "react";
-import { classifyError, getTechnicalMessage } from "@/lib/errors-utils";
+import { useEffect, useMemo, useState } from "react";
+import { classifyError, getTechnicalMessage, isUpdateAvailableError } from "@/lib/errors-utils";
 import { env } from "@/config/env";
+import { attemptChunkRecovery } from "@/lib/chunk-recovery";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 type GlobalErrorPageProps = {
     readonly error: unknown;
@@ -23,12 +25,32 @@ export function GlobalErrorPage({ error }: GlobalErrorPageProps) {
     // Classify the error to get user-friendly, translatable messages
     const classifiedError = useMemo(() => classifyError(error), [error]);
     const technicalMessage = useMemo(() => getTechnicalMessage(error), [error]);
+    const isUpdateError = useMemo(() => isUpdateAvailableError(error), [error]);
+    const [isRecovering, setIsRecovering] = useState(false);
 
     useEffect(() => {
         if (env.NODE_ENV === "development") {
             console.error("A global error was caught:", error);
         }
     }, [error]);
+
+    useEffect(() => {
+        if (!isUpdateError) return;
+        const didTrigger = attemptChunkRecovery(error);
+        setIsRecovering(didTrigger);
+    }, [error, isUpdateError]);
+
+    if (isUpdateError && isRecovering) {
+        return (
+            <main
+                className="min-h-screen w-full flex items-center justify-center bg-background p-6"
+                role="status"
+                aria-live="polite"
+            >
+                <LoadingSpinner size="lg" />
+            </main>
+        );
+    }
 
     return (
         <main
