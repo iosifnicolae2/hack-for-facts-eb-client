@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { EntitySearchInput } from './EntitySearch';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -75,11 +75,14 @@ export function FloatingEntitySearch({ className, externalOpen, showButton, onOp
                 </Button>
             </div>}
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
-                <DialogTitle className="sr-only">{t`Search for another entity`}</DialogTitle>
                 <DialogContent hideCloseButton={true} className={cn(
                     "fixed max-w-3xl w-full p-0 bg-transparent border-0 shadow-none outline-none focus:outline-none",
                     isMobile ? "top-16 max-h-[60vh]" : "top-1/3"
                 )}>
+                    <DialogTitle className="sr-only">{t`Search for another entity`}</DialogTitle>
+                    <DialogDescription className="sr-only">
+                        {t`Search and select an entity to navigate to its page.`}
+                    </DialogDescription>
                     <EntitySearchInput
                         onSelect={handleSelect}
                         autoFocus={true}

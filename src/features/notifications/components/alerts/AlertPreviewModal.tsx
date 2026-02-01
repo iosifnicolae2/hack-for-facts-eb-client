@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { ChartPreview } from '@/components/charts/components/chart-preview/ChartPreview';
 import { t } from '@lingui/core/macro';
 import { buildAlertPreviewChartState } from '@/lib/alert-links';
@@ -20,9 +20,9 @@ export function AlertPreviewModal({ alert, isOpen, onClose }: AlertPreviewModalP
       <DialogContent className="max-w-4xl">
         <DialogHeader>
           <DialogTitle>{alert.title || t`Alert preview`}</DialogTitle>
-          {alert.description && (
-            <p className="text-sm text-muted-foreground">{alert.description}</p>
-          )}
+          <DialogDescription className={alert.description ? "text-sm text-muted-foreground" : "sr-only"}>
+            {alert.description ?? t`Preview of the alert chart and settings.`}
+          </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           <ChartPreview

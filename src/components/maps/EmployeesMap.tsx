@@ -7,7 +7,7 @@ import { EnrichedEmployeeData } from '@/schemas/employeeData'
 import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM, DEFAULT_FEATURE_STYLE, HIGHLIGHT_FEATURE_STYLE } from './constants'
 import { UatFeature } from './interfaces'
 import { MapLegend } from './MapLegend'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { HelpCircleIcon, X } from 'lucide-react'
 import { getHeatmapColor } from './utils'
@@ -149,6 +149,9 @@ export function EmployeesMap({ data, metric = 'employeesPer1000Capita' }: Employ
         <DialogContent hideCloseButton={true} className="p-0 m-0 w-full max-w-full h-full max-h-full sm:h-[calc(100%-2rem)] sm:max-h-[calc(100%-2rem)] sm:w-[calc(100%-2rem)] sm:max-w-md sm:rounded-lg flex flex-col">
           <DialogHeader className="p-4 border-b flex flex-row justify-between items-center shrink-0">
             <DialogTitle className="text-lg font-semibold">Legend</DialogTitle>
+            <DialogDescription className="sr-only">
+              Legend for employees per 1,000 residents.
+            </DialogDescription>
             <DialogClose asChild>
               <Button variant="ghost" size="icon" className="rounded-full">
                 <X className="h-5 w-5" />
@@ -168,5 +171,4 @@ export function EmployeesMap({ data, metric = 'employeesPer1000Capita' }: Employ
     </div>
   )
 }
-
 

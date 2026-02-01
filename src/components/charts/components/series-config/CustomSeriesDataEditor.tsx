@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { CustomSeriesConfigurationSchema } from '@/schemas/charts';
 import { useChartStore } from '../../hooks/useChartStore';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -67,6 +67,9 @@ export function CustomSeriesDataEditor({ series }: CustomSeriesDataEditorProps) 
           <DialogContent>
             <DialogHeader>
               <DialogTitle><Trans>Bulk Edit Data</Trans></DialogTitle>
+              <DialogDescription className="sr-only">
+                <Trans>Bulk edit custom series values by pasting year and value pairs.</Trans>
+              </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
               <p className="text-sm text-muted-foreground">

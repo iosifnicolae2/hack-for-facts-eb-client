@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Filter as FilterIcon, X, Check } from 'lucide-react'
 import { t } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
@@ -44,6 +44,9 @@ export function EntityAnalyticsLayout({ filters, children, title = t`Entity Anal
           <DialogContent hideCloseButton={true} className="p-0 m-0 w-full max-w-full h-full max-h-full sm:h-[calc(100%-2rem)] sm:max-h-[calc(100%-2rem)] sm:w-[calc(100%-2rem)] sm:max-w-md sm:rounded-lg flex flex-col">
             <DialogHeader className="p-4 border-b flex flex-row justify-between items-center shrink-0">
               <DialogTitle className="text-2xl font-semibold"><Trans>Entity Analytics</Trans></DialogTitle>
+              <DialogDescription className="sr-only">
+                <Trans>Filter entity analytics results on mobile.</Trans>
+              </DialogDescription>
               <DialogClose asChild>
                 <Button variant="ghost" size="icon" className="rounded-full">
                   <X className="h-5 w-5" />
@@ -65,5 +68,4 @@ export function EntityAnalyticsLayout({ filters, children, title = t`Entity Anal
     </div>
   )
 }
-
 
