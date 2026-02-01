@@ -1,5 +1,5 @@
-import { useCallback, useMemo, useRef } from 'react'
-import { MapContainer, GeoJSON } from 'react-leaflet'
+import React, { useCallback, useMemo, useRef } from 'react'
+import { MapContainer, GeoJSON, useMap } from 'react-leaflet'
 import L, { Layer, PathOptions } from 'leaflet'
 import { Feature, Geometry } from 'geojson'
 import { useGeoJsonData } from '@/hooks/useGeoJson'
@@ -117,6 +117,7 @@ export function EmployeesMap({ data, metric = 'employeesPer1000Capita' }: Employ
         style={{ height: '70vh', width: '100%' }}
         preferCanvas
       >
+        <MapCleanup />
         <ScrollWheelZoomControl />
         {geoJson.type === 'FeatureCollection' && (
           <GeoJSON
@@ -172,3 +173,18 @@ export function EmployeesMap({ data, metric = 'employeesPer1000Capita' }: Employ
   )
 }
 
+// Leaflet can keep animation/state tied to DOM nodes; stop/off on unmount to prevent race errors.
+const MapCleanup: React.FC = () => {
+  const map = useMap();
+  React.useLayoutEffect(() => {
+    return () => {
+      try {
+        map.stop();
+        map.off();
+      } catch {
+        // Ignore cleanup errors during unmount.
+      }
+    };
+  }, [map]);
+  return null;
+};

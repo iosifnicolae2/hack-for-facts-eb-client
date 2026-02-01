@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css';
-import React, { useCallback, useMemo, useRef, useEffect } from 'react';
+import React, { useCallback, useMemo, useRef, useEffect, useLayoutEffect } from 'react';
 import { MapContainer, GeoJSON, useMap, useMapEvents } from 'react-leaflet';
 import L, { LeafletMouseEvent, PathOptions, Layer, LatLngExpression, LatLngBoundsExpression } from 'leaflet';
 import { Feature, Geometry, GeoJsonObject } from 'geojson';
@@ -141,6 +141,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
       className="z-0 isolate"
       preferCanvas={true}
     >
+      <MapCleanup />
       {scrollWheelZoom !== false && <ScrollWheelZoomControl />}
       <MapUpdater center={center} zoom={zoom} />
       <MapViewChangeListener onViewChange={onViewChange} />
@@ -166,6 +167,22 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
     </MapContainer>
   );
 });
+
+// Leaflet can keep animation/state tied to DOM nodes; stop/off on unmount to prevent race errors.
+const MapCleanup: React.FC = () => {
+  const map = useMap();
+  useLayoutEffect(() => {
+    return () => {
+      try {
+        map.stop();
+        map.off();
+      } catch {
+        // Ignore cleanup errors during unmount.
+      }
+    };
+  }, [map]);
+  return null;
+};
 
 
 /**
