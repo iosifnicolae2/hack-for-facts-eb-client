@@ -1,4 +1,4 @@
-import { PropsWithChildren, createContext, useContext, useMemo } from 'react'
+import { PropsWithChildren, createContext, useContext, useMemo, type ComponentProps } from 'react'
 import {
   ClerkProvider,
   SignIn as ClerkSignIn,
@@ -42,11 +42,11 @@ function ClerkAuthBridge({ children }: PropsWithChildren) {
   const value = useMemo<AuthContextValue>(() => {
     const mappedUser: AuthUser | null = user
       ? {
-          id: user.id,
-          firstName: user.firstName ?? null,
-          lastName: user.lastName ?? null,
-          email: user.primaryEmailAddress?.emailAddress ?? null,
-        }
+        id: user.id,
+        firstName: user.firstName ?? null,
+        lastName: user.lastName ?? null,
+        email: user.primaryEmailAddress?.emailAddress ?? null,
+      }
       : null
     return {
       isEnabled: true,
@@ -112,28 +112,140 @@ export function useUser() {
 }
 
 // UI wrappers to avoid leaking Clerk primitives
-export function AuthSignIn({ path = '/sign-in' }: { path?: string }) {
+type DeprecatedRedirectProps = {
+  /**
+   * @deprecated Use fallbackRedirectUrl or forceRedirectUrl instead.
+   */
+  redirectUrl?: string | null
+  /**
+   * @deprecated Use fallbackRedirectUrl or forceRedirectUrl instead.
+   */
+  afterSignInUrl?: string | null
+  /**
+   * @deprecated Use signUpFallbackRedirectUrl or signUpForceRedirectUrl instead.
+   */
+  afterSignUpUrl?: string | null
+}
+
+type AuthSignInProps = Omit<ComponentProps<typeof ClerkSignIn>, keyof DeprecatedRedirectProps | 'path' | 'routing'> &
+  DeprecatedRedirectProps & {
+    path?: string
+  }
+
+type AuthSignUpProps = Omit<ComponentProps<typeof ClerkSignUp>, keyof DeprecatedRedirectProps | 'path' | 'routing'> &
+  DeprecatedRedirectProps & {
+    path?: string
+  }
+
+type AuthSignInButtonProps = PropsWithChildren<
+  Omit<ComponentProps<typeof ClerkSignInButton>, 'children'> & DeprecatedRedirectProps
+>
+
+const resolveSignInRedirects = ({
+  redirectUrl,
+  afterSignInUrl,
+  afterSignUpUrl,
+  fallbackRedirectUrl,
+  forceRedirectUrl,
+  signUpFallbackRedirectUrl,
+  signUpForceRedirectUrl,
+}: {
+  redirectUrl?: string | null
+  afterSignInUrl?: string | null
+  afterSignUpUrl?: string | null
+  fallbackRedirectUrl?: string | null
+  forceRedirectUrl?: string | null
+  signUpFallbackRedirectUrl?: string | null
+  signUpForceRedirectUrl?: string | null
+}) => ({
+  fallbackRedirectUrl: fallbackRedirectUrl ?? afterSignInUrl ?? redirectUrl,
+  forceRedirectUrl,
+  signUpFallbackRedirectUrl: signUpFallbackRedirectUrl ?? afterSignUpUrl ?? redirectUrl,
+  signUpForceRedirectUrl,
+})
+
+const resolveSignUpRedirects = ({
+  redirectUrl,
+  afterSignUpUrl,
+  afterSignInUrl,
+  fallbackRedirectUrl,
+  forceRedirectUrl,
+  signInFallbackRedirectUrl,
+  signInForceRedirectUrl,
+}: {
+  redirectUrl?: string | null
+  afterSignUpUrl?: string | null
+  afterSignInUrl?: string | null
+  fallbackRedirectUrl?: string | null
+  forceRedirectUrl?: string | null
+  signInFallbackRedirectUrl?: string | null
+  signInForceRedirectUrl?: string | null
+}) => ({
+  fallbackRedirectUrl: fallbackRedirectUrl ?? afterSignUpUrl ?? redirectUrl,
+  forceRedirectUrl,
+  signInFallbackRedirectUrl: signInFallbackRedirectUrl ?? afterSignInUrl ?? redirectUrl,
+  signInForceRedirectUrl,
+})
+
+export function AuthSignIn({ path = '/sign-in', redirectUrl, afterSignInUrl, afterSignUpUrl, ...rest }: AuthSignInProps) {
   const { isEnabled } = useAuth()
   if (!isEnabled) {
     return <div className="text-sm text-muted-foreground">Authentication is disabled.</div>
   }
-  return <ClerkSignIn routing="path" path={path} />
+  const redirectProps = resolveSignInRedirects({
+    redirectUrl,
+    afterSignInUrl,
+    afterSignUpUrl,
+    fallbackRedirectUrl: rest.fallbackRedirectUrl,
+    forceRedirectUrl: rest.forceRedirectUrl,
+    signUpFallbackRedirectUrl: rest.signUpFallbackRedirectUrl,
+    signUpForceRedirectUrl: rest.signUpForceRedirectUrl,
+  })
+  return <ClerkSignIn {...rest} {...redirectProps} routing="path" path={path} />
 }
 
-export function AuthSignUp({ path = '/sign-up' }: { path?: string }) {
+export function AuthSignUp({ path = '/sign-up', redirectUrl, afterSignInUrl, afterSignUpUrl, ...rest }: AuthSignUpProps) {
   const { isEnabled } = useAuth()
   if (!isEnabled) {
     return <div className="text-sm text-muted-foreground">Authentication is disabled.</div>
   }
-  return <ClerkSignUp routing="path" path={path} />
+  const redirectProps = resolveSignUpRedirects({
+    redirectUrl,
+    afterSignUpUrl,
+    afterSignInUrl,
+    fallbackRedirectUrl: rest.fallbackRedirectUrl,
+    forceRedirectUrl: rest.forceRedirectUrl,
+    signInFallbackRedirectUrl: rest.signInFallbackRedirectUrl,
+    signInForceRedirectUrl: rest.signInForceRedirectUrl,
+  })
+  return <ClerkSignUp {...rest} {...redirectProps} routing="path" path={path} />
 }
 
-export function AuthSignInButton({ children = 'Sign in' }: PropsWithChildren) {
+export function AuthSignInButton({
+  children = 'Sign in',
+  redirectUrl,
+  afterSignInUrl,
+  afterSignUpUrl,
+  ...rest
+}: AuthSignInButtonProps) {
   const { isEnabled } = useAuth()
   if (!isEnabled) {
     return <span>{children}</span>
   }
-  return <ClerkSignInButton>{children}</ClerkSignInButton>
+  const redirectProps = resolveSignInRedirects({
+    redirectUrl,
+    afterSignInUrl,
+    afterSignUpUrl,
+    fallbackRedirectUrl: rest.fallbackRedirectUrl,
+    forceRedirectUrl: rest.forceRedirectUrl,
+    signUpFallbackRedirectUrl: rest.signUpFallbackRedirectUrl,
+    signUpForceRedirectUrl: rest.signUpForceRedirectUrl,
+  })
+  return (
+    <ClerkSignInButton {...rest} {...redirectProps}>
+      {children}
+    </ClerkSignInButton>
+  )
 }
 
 export function AuthSignOutButton({ children = 'Sign out' }: PropsWithChildren) {
