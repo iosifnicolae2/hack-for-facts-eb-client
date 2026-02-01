@@ -16,6 +16,14 @@ export let openSentryBugReport: (() => void) | null = null;
 
 /** Small helper */
 const isBrowser = typeof window !== "undefined";
+const CSS_CROSS_ORIGIN_ERROR_MARKERS = [
+  "cssrules",
+  "cssstylesheet",
+  "cannot access rules",
+  "failed to read the 'cssrules' property",
+  "failed to read the \"cssrules\" property",
+  "securityerror",
+] as const;
 
 /**
  * Disable Sentry without tearing down the app.
@@ -151,6 +159,13 @@ export function initSentry(router: unknown): void {
       environment: env.VITE_APP_ENVIRONMENT,
       release: env.VITE_APP_VERSION,
       integrations,
+      ignoreErrors: [
+        /cssrules/i,
+        /cssstylesheet/i,
+        /cannot access rules/i,
+        /failed to read the ['"]cssrules['"] property/i,
+        /securityerror/i,
+      ],
       // Performance
       tracesSampleRate,
       replaysOnErrorSampleRate: 1.0,
@@ -162,6 +177,14 @@ export function initSentry(router: unknown): void {
         if (message && typeof message === "string") {
           // Facebook browser events: FBNavLoadEventEnd, FBNavLoadEventStart, etc.
           if (message.match(/^FB[A-Z][a-zA-Z]+Event(Start|End):/)) {
+            return null;
+          }
+          const normalizedMessage = message.toLowerCase();
+          if (
+            CSS_CROSS_ORIGIN_ERROR_MARKERS.some((marker) =>
+              normalizedMessage.includes(marker)
+            )
+          ) {
             return null;
           }
         }
