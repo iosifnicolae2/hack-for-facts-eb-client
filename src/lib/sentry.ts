@@ -24,6 +24,11 @@ const CSS_CROSS_ORIGIN_ERROR_MARKERS = [
   "failed to read the \"cssrules\" property",
   "securityerror",
 ] as const;
+const DOM_NODE_REMOVAL_ERROR_MARKERS = [
+  "removechild",
+  "not a child of this node",
+  "notfounderror",
+] as const;
 
 /**
  * Disable Sentry without tearing down the app.
@@ -165,6 +170,7 @@ export function initSentry(router: unknown): void {
         /cannot access rules/i,
         /failed to read the ['"]cssrules['"] property/i,
         /securityerror/i,
+        /failed to execute 'removechild' on 'node'/i,
       ],
       // Performance
       tracesSampleRate,
@@ -182,6 +188,13 @@ export function initSentry(router: unknown): void {
           const normalizedMessage = message.toLowerCase();
           if (
             CSS_CROSS_ORIGIN_ERROR_MARKERS.some((marker) =>
+              normalizedMessage.includes(marker)
+            )
+          ) {
+            return null;
+          }
+          if (
+            DOM_NODE_REMOVAL_ERROR_MARKERS.some((marker) =>
               normalizedMessage.includes(marker)
             )
           ) {
