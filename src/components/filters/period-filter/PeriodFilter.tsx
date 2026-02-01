@@ -104,7 +104,7 @@ export function PeriodFilter({ value, onChange, allowDeselect = true }: Props) {
   const renderDateSelectionGrid = () => {
     if (periodType === 'YEAR') {
       return (
-        <ToggleGroup type="single" value={value?.selection.dates?.[0]} onValueChange={(date) => {
+        <ToggleGroup type="single" value={value?.selection.dates?.[0] ?? ''} onValueChange={(date) => {
           if (!date && !allowDeselect) return;
           onChange?.({ type: 'YEAR', selection: { dates: date ? [date as PeriodDate] : [] } })
         }} className="grid grid-cols-3 sm:grid-cols-5 gap-2">
@@ -122,7 +122,7 @@ export function PeriodFilter({ value, onChange, allowDeselect = true }: Props) {
           {availableYears.map((year) => (
             <div key={year}>
               <Label className="text-sm font-medium">{year}</Label>
-              <ToggleGroup type="multiple" value={value?.selection.dates} onValueChange={(dates) => onChange?.({ type: periodType, selection: { dates: dates as PeriodDate[] } })} className="grid grid-cols-4 gap-2 mt-1">
+              <ToggleGroup type="multiple" value={value?.selection.dates ?? []} onValueChange={(dates) => onChange?.({ type: periodType, selection: { dates: dates as PeriodDate[] } })} className="grid grid-cols-4 gap-2 mt-1">
                 {availableQuarters.map((q) => {
                   const date = `${year}-${q.id}` as PeriodDate
                   return (
@@ -143,7 +143,7 @@ export function PeriodFilter({ value, onChange, allowDeselect = true }: Props) {
           {availableYears.map((year) => (
             <div key={year}>
               <Label className="text-sm font-medium">{year}</Label>
-              <ToggleGroup type="multiple" value={value?.selection.dates} onValueChange={(dates) => onChange?.({ type: periodType, selection: { dates: dates as PeriodDate[] } })} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 mt-1">
+              <ToggleGroup type="multiple" value={value?.selection.dates ?? []} onValueChange={(dates) => onChange?.({ type: periodType, selection: { dates: dates as PeriodDate[] } })} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 mt-1">
                 {availableMonths.map((m) => {
                   const date = `${year}-${m.id}` as PeriodDate
                   return (
