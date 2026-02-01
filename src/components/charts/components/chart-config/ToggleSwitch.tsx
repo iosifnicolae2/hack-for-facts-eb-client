@@ -5,11 +5,11 @@ import { Switch } from '@/components/ui/switch';
 interface ToggleSwitchProps {
     id: string;
     label: string;
-    checked: boolean;
+    checked?: boolean;
     onCheckedChange: (checked: boolean) => void;
 }
 
-export const ToggleSwitch = React.memo(({ id, label, checked, onCheckedChange }: ToggleSwitchProps) => (
+export const ToggleSwitch = React.memo(({ id, label, checked = false, onCheckedChange }: ToggleSwitchProps) => (
     <div className="flex items-center justify-between space-y-2">
         <Label htmlFor={id}>{label}</Label>
         <Switch id={id} checked={checked} onCheckedChange={onCheckedChange} />
