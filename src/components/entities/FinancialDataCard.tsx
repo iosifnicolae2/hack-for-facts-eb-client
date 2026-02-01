@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Accordion } from '@/components/ui/accordion';
 import { ArrowDownCircle, ArrowUpCircle } from 'lucide-react';
@@ -65,6 +65,20 @@ export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.mem
       return { totalValueFiltered: totalValue, totalPercentageFiltered: percentage };
     }, [groups, baseTotal]);
 
+    const chapterValues = useMemo(() => sortedGroups.map((ch) => ch.prefix), [sortedGroups]);
+    const [manualOpenChapters, setManualOpenChapters] = useState<string[]>([]);
+    const resolvedOpenChapters = useMemo(
+      () => (searchTerm ? chapterValues : manualOpenChapters.filter((value) => chapterValues.includes(value))),
+      [chapterValues, manualOpenChapters, searchTerm]
+    );
+
+    const handleAccordionChange = (value: string[]) => {
+      if (searchTerm) {
+        return;
+      }
+      setManualOpenChapters(value);
+    };
+
     if (groups.length === 0) {
       return (
         <div className="flex flex-col items-center justify-center h-full p-4">
@@ -77,8 +91,6 @@ export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.mem
         </div>
       );
     }
-
-	    const openChapters = searchTerm ? sortedGroups.map((ch) => ch.prefix) : [];
 
 	    const normalizationFormatOptions = {
 	      normalization: normalization ?? 'total',
@@ -106,7 +118,8 @@ export const GroupedItemsDisplay: React.FC<GroupedItemsDisplayProps> = React.mem
       <Accordion
         type="multiple"
         className="w-full"
-        {...(searchTerm ? { value: openChapters } : {})}
+        value={resolvedOpenChapters}
+        onValueChange={handleAccordionChange}
       >
         {showTotalValueHeader && <TotalValueComponent />}
         {sortedGroups.map((ch) => (

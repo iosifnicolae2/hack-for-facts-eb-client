@@ -54,7 +54,13 @@ export function ChartFiltersOverview({
 
   return (
     <Card>
-      <Accordion type="single" collapsible className="w-full px-4" onValueChange={handleAccordionChange} defaultValue={isFiltersOpen ? "filters" : undefined}>
+      <Accordion
+        type="single"
+        collapsible
+        className="w-full px-4"
+        onValueChange={handleAccordionChange}
+        value={isFiltersOpen ? "filters" : ""}
+      >
         <AccordionItem value="filters" className="border-none">
           <AccordionTrigger>
             <div className="flex items-center gap-3 w-full">
