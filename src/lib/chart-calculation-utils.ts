@@ -66,13 +66,20 @@ export function hasCalculationCycle(
 /**
  * Helper function to extract all series IDs referenced in a calculation
  */
-function addCalculationDependencies(calculation: Calculation, dependencies: Set<string>): void {
+function addCalculationDependencies(
+  calculation: Calculation,
+  dependencies: Set<string>,
+  visited: WeakSet<Calculation> = new WeakSet()
+): void {
+  if (visited.has(calculation)) return;
+  visited.add(calculation);
+
   for (const arg of calculation.args) {
     if (typeof arg === 'string') {
       dependencies.add(arg);
-    } else if (typeof arg === 'object') {
-      // Recursive calculation
-      addCalculationDependencies(arg, dependencies);
+    } else if (arg && typeof arg === 'object') {
+      // Recursive calculation; guard against circular calculation objects.
+      addCalculationDependencies(arg, dependencies, visited);
     }
   }
 }
@@ -433,11 +440,36 @@ export function getAllDependencies(series: Series, chart: Chart): Series[] {
   const seriesCalculation = series.calculation as Calculation;
   if (!seriesCalculation) return [series];
 
-  const dependenciesIds = getCalculationDependencies(seriesCalculation, chart.series);
-  const dependencies = chart.series.filter(s => dependenciesIds.includes(s.id));
-  const allDependencies = [...dependencies, ...dependencies.flatMap(d => getAllDependencies(d, chart))];
-  // Deduplicate
-  return allDependencies.filter((s, index, self) =>
-    index === self.findIndex((t) => t.id === s.id)
-  );
+  const visited = new Set<string>([series.id]);
+  const collected: Series[] = [];
+  const stack: Series[] = [];
+
+  const seedIds = getCalculationDependencies(seriesCalculation, chart.series)
+    .filter((id) => id !== series.id);
+  for (const id of seedIds) {
+    const dep = chart.series.find(s => s.id === id);
+    if (!dep || visited.has(dep.id)) continue;
+    visited.add(dep.id);
+    collected.push(dep);
+    if (dep.calculation) stack.push(dep);
+  }
+
+  while (stack.length > 0) {
+    const current = stack.pop()!;
+    const currentCalculation = current.calculation as Calculation | undefined;
+    if (!currentCalculation) continue;
+
+    const depIds = getCalculationDependencies(currentCalculation, chart.series)
+      .filter((id) => id !== current.id);
+    for (const id of depIds) {
+      if (visited.has(id)) continue;
+      const dep = chart.series.find(s => s.id === id);
+      if (!dep) continue;
+      visited.add(dep.id);
+      collected.push(dep);
+      if (dep.calculation) stack.push(dep);
+    }
+  }
+
+  return collected;
 }
