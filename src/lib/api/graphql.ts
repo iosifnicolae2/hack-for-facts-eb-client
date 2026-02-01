@@ -17,6 +17,68 @@ interface GraphQLResponse<T> {
   }>;
 }
 
+type GraphQLErrorLike = {
+  message?: unknown;
+  [key: string]: unknown;
+};
+
+const summarizeValue = (value: unknown): string => {
+  if (value == null) return String(value);
+  if (typeof value === "string") return value;
+  if (value instanceof Error) return value.message || value.name;
+  if (typeof value === "object") {
+    try {
+      return JSON.stringify(value);
+    } catch {
+      return String(value);
+    }
+  }
+  return String(value);
+};
+
+const formatGraphQLErrorMessages = (errors: unknown[]): string => {
+  const messages = errors.map((entry) => {
+    if (!entry) return "Unknown error";
+    if (typeof entry === "string") return entry;
+    if (entry instanceof Error) return entry.message || entry.name;
+    if (typeof entry === "object") {
+      const errorLike = entry as GraphQLErrorLike;
+      if (typeof errorLike.message === "string") return errorLike.message;
+      return summarizeValue(errorLike);
+    }
+    return summarizeValue(entry);
+  });
+
+  const filtered = messages.filter((message) => message.trim().length > 0);
+  return filtered.length > 0 ? filtered.join(", ") : "Unknown GraphQL error";
+};
+
+const parseJsonSafely = (text: string): unknown => {
+  if (!text) return null;
+  try {
+    return JSON.parse(text);
+  } catch {
+    return null;
+  }
+};
+
+const buildHttpErrorMessage = (response: Response, payload: unknown, rawText: string): string => {
+  if (Array.isArray(payload)) {
+    return `GraphQL request failed: ${response.status} ${response.statusText} - ${formatGraphQLErrorMessages(payload)}`;
+  }
+  if (payload && typeof payload === "object") {
+    const maybeErrors = (payload as GraphQLResponse<unknown>).errors;
+    if (Array.isArray(maybeErrors) && maybeErrors.length > 0) {
+      return `GraphQL request failed: ${response.status} ${response.statusText} - ${formatGraphQLErrorMessages(maybeErrors)}`;
+    }
+    return `GraphQL request failed: ${response.status} ${response.statusText} - ${summarizeValue(payload)}`;
+  }
+  if (rawText) {
+    return `GraphQL request failed: ${response.status} ${response.statusText} - ${rawText}`;
+  }
+  return `GraphQL request failed: ${response.status} ${response.statusText}`;
+};
+
 /**
  * Simple GraphQL client to make queries to the server
  */
@@ -44,18 +106,31 @@ export async function graphqlRequest<T = unknown>(
       }),
     })
 
+    const rawText = await response.text();
+    const parsed = parseJsonSafely(rawText);
+
     if (!response.ok) {
-      const errorText = await response.text();
+      throw new Error(buildHttpErrorMessage(response, parsed, rawText));
+    }
+
+    if (Array.isArray(parsed)) {
+      throw new Error(`GraphQL returned error array: ${formatGraphQLErrorMessages(parsed)}`);
+    }
+
+    if (!parsed || typeof parsed !== "object") {
       throw new Error(
-        `GraphQL request failed: ${response.status} ${response.statusText} - ${errorText}`
+        `GraphQL returned unexpected response type: ${parsed === null ? "null" : typeof parsed}`
       );
     }
 
-    const result: GraphQLResponse<T> = await response.json();
+    const result = parsed as GraphQLResponse<T>;
 
-    if (result.errors && result.errors.length > 0) {
-      const errorMessages = result.errors.map((e) => e.message).join(", ");
-      throw new Error(`GraphQL errors: ${errorMessages}`);
+    if (Array.isArray(result.errors) && result.errors.length > 0) {
+      throw new Error(`GraphQL errors: ${formatGraphQLErrorMessages(result.errors)}`);
+    }
+
+    if (!("data" in result)) {
+      throw new Error("GraphQL response missing data field");
     }
 
     if (!result.data) {
@@ -65,6 +140,9 @@ export async function graphqlRequest<T = unknown>(
     return result.data;
   } catch (error) {
     logger.error("GraphQL request failed", { error });
-    throw error;
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error(`GraphQL request failed: ${summarizeValue(error)}`);
   }
 }
