@@ -66,8 +66,8 @@ export function useListKeyboardNavigation(options: UseListKeyboardNavigationOpti
 
   const handleMouseDown: React.MouseEventHandler<HTMLDivElement> = useCallback((e) => {
     const container = e.currentTarget as HTMLDivElement;
-    if (container !== document.activeElement) {
-      container.focus();
+    if (container && container !== document.activeElement) {
+      container.focus?.();
     }
     const optionNodes = container.querySelectorAll<HTMLElement>('[data-list-option]');
     const target = (e.target as HTMLElement)?.closest('[data-list-option]') as HTMLElement | null;
@@ -88,4 +88,3 @@ export function useListKeyboardNavigation(options: UseListKeyboardNavigationOpti
     handleMouseDown,
   };
 }
-

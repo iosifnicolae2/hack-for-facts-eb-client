@@ -35,7 +35,10 @@ export function AnnotationConfigView() {
   }, [annotation?.title, annotation?.subtitle]);
 
   useEffect(() => {
-    titleInputRef.current?.focus();
+    const frame = requestAnimationFrame(() => {
+      titleInputRef.current?.focus();
+    });
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   const updateAnnotationField = (field: keyof TAnnotation, value: boolean | string | number) => {

@@ -54,7 +54,10 @@ export function SeriesConfigView() {
   }, [seriesLabel]);
 
   useEffect(() => {
-    inputRef.current?.focus();
+    const frame = requestAnimationFrame(() => {
+      inputRef.current?.focus();
+    });
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   // Keep local x-axis prefix in sync when the series changes elsewhere
