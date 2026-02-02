@@ -40,6 +40,7 @@ const EmployeesView = lazy(() => import('@/components/entities/views/EmployeesVi
 const MapView = lazy(() => import('@/components/entities/views/MapView').then(m => ({ default: m.MapView })))
 const RankingView = lazy(() => import('@/components/entities/views/RankingView').then(m => ({ default: m.RankingView })))
 const RelatedChartsView = lazy(() => import('@/components/entities/views/RelatedChartsView').then(m => ({ default: m.RelatedChartsView })))
+const InsStatsView = lazy(() => import('@/components/entities/views/ins-stats-view').then(m => ({ default: m.InsStatsView })))
 const EntityReports = lazy(() => import('@/components/entities/EntityReports'))
 const EntityRelationships = lazy(() => import('@/components/entities/EntityRelationships').then(m => ({ default: m.EntityRelationships })))
 const ContractsView = lazy(() => import('@/components/entities/views/ContractsView').then(m => ({ default: m.ContractsView })))
@@ -640,6 +641,7 @@ function ViewsContent(props: ViewsContentProps) {
           case 'map': return <MapView entity={entity} mapFilters={mapFilters} updateMapFilters={updateMapFilters} period={reportPeriod} />
           case 'employees': return <EmployeesView entity={entity} />
           case 'ranking': return <RankingView />
+          case 'ins-stats': return <InsStatsView entity={entity} />
           case 'related-charts': return <RelatedChartsView entity={entity} normalizationOptions={normalizationOptions} />
           case 'relationships': return <EntityRelationships cui={cui} />
           case 'contracts': return <ContractsView entity={entity} />

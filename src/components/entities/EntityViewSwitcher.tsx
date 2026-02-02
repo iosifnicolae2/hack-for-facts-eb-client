@@ -8,10 +8,14 @@ interface EntityViewSwitcherProps {
   activeView: string;
 }
 
+const DEV_ONLY_VIEWS = new Set(['commitments', 'ins-stats']);
+const isDev = import.meta.env.DEV;
+
 export const EntityViewSwitcher: React.FC<EntityViewSwitcherProps> = ({ views, activeView }) => {
   const { cui } = useParams({ from: '/entities/$cui' });
   const search = useSearch({ from: '/entities/$cui' });
   const activeTabRef = useRef<HTMLAnchorElement>(null);
+  const filteredViews = isDev ? views : views.filter((v) => !DEV_ONLY_VIEWS.has(v.id));
 
   useEffect(() => {
     if (activeTabRef.current) {
@@ -25,7 +29,7 @@ export const EntityViewSwitcher: React.FC<EntityViewSwitcherProps> = ({ views, a
 
   return (
     <div className="overflow-x-auto whitespace-nowrap py-2 scrollbar-hide">
-      {views.map((view) => (
+      {filteredViews.map((view) => (
         <Link
           key={view.id}
           ref={activeView === view.id ? activeTabRef : null}
