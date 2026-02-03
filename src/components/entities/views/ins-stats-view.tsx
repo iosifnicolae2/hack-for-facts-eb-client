@@ -24,19 +24,19 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from '@/components/ui/button';
 
 const PERIODICITY_LABELS: Record<InsPeriodicity, string> = {
-  ANNUAL: t`Anual`,
-  QUARTERLY: t`Trimestrial`,
-  MONTHLY: t`Lunar`,
+  ANNUAL: t`Annual`,
+  QUARTERLY: t`Quarterly`,
+  MONTHLY: t`Monthly`,
 };
 
 const VALUE_STATUS_LABELS: Record<string, string> = {
-  ':': t`Lipsă`,
-  c: t`Confidențial`,
-  x: t`Confidențial`,
+  ':': t`Missing`,
+  c: t`Confidential`,
+  x: t`Confidential`,
 };
 
 function formatPeriodLabel(period: InsObservation['time_period']) {
-  if (!period) return t`Necunoscut`;
+  if (!period) return t`Unknown`;
   if (period.periodicity === 'MONTHLY' && period.month) {
     const month = String(period.month).padStart(2, '0');
     return `${period.year}-${month}`;
@@ -60,7 +60,7 @@ function getObservationUnit(observation: InsObservation): string | null {
 
 function getObservationStatusLabel(status: string | null | undefined): string | null {
   if (!status) return null;
-  return VALUE_STATUS_LABELS[status] ?? t`Indisponibil`;
+  return VALUE_STATUS_LABELS[status] ?? t`Unavailable`;
 }
 
 function getClassificationLabel(observation: InsObservation): string {
@@ -166,7 +166,7 @@ function InsObservationTable({ observations }: { observations: InsObservation[] 
   if (series.length === 0) {
     return (
       <div className="py-4 text-sm text-muted-foreground">
-        <Trans>Nu există observații disponibile pentru acest indicator.</Trans>
+        <Trans>No observations available for this indicator.</Trans>
       </div>
     );
   }
@@ -176,9 +176,9 @@ function InsObservationTable({ observations }: { observations: InsObservation[] 
       <Table className="text-sm">
         <TableHeader>
           <TableRow>
-            <TableHead className="w-32"><Trans>Perioadă</Trans></TableHead>
-            <TableHead><Trans>Valoare</Trans></TableHead>
-            <TableHead className="text-right"><Trans>Detalii</Trans></TableHead>
+            <TableHead className="w-32"><Trans>Period</Trans></TableHead>
+            <TableHead><Trans>Value</Trans></TableHead>
+            <TableHead className="text-right"><Trans>Details</Trans></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -212,7 +212,7 @@ function InsObservationTable({ observations }: { observations: InsObservation[] 
           size="sm"
           onClick={() => setShowAll((prev) => !prev)}
         >
-          {showAll ? t`Arată mai puțin` : t`Arată toate perioadele`}
+          {showAll ? t`Show less` : t`Show all periods`}
         </Button>
       )}
     </div>
@@ -294,9 +294,9 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
     return (
       <Alert>
         <Info className="h-4 w-4" />
-        <AlertTitle><Trans>Indicatorii INS sunt disponibili doar pentru UAT-uri.</Trans></AlertTitle>
+        <AlertTitle><Trans>INS indicators are only available for UATs.</Trans></AlertTitle>
         <AlertDescription>
-          <Trans>Selectează o entitate locală pentru a vedea datele INS Tempo.</Trans>
+          <Trans>Select a local entity to view INS Tempo data.</Trans>
         </AlertDescription>
       </Alert>
     );
@@ -306,9 +306,9 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
     return (
       <Alert>
         <Info className="h-4 w-4" />
-        <AlertTitle><Trans>Nu există cod de județ asociat.</Trans></AlertTitle>
+        <AlertTitle><Trans>No county code associated.</Trans></AlertTitle>
         <AlertDescription>
-          <Trans>Nu putem încărca indicatorii INS fără codul județului.</Trans>
+          <Trans>Cannot load INS indicators without the county code.</Trans>
         </AlertDescription>
       </Alert>
     );
@@ -318,9 +318,9 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
     return (
       <Alert>
         <Info className="h-4 w-4" />
-        <AlertTitle><Trans>Nu există cod SIRUTA asociat.</Trans></AlertTitle>
+        <AlertTitle><Trans>No SIRUTA code associated.</Trans></AlertTitle>
         <AlertDescription>
-          <Trans>Nu putem încărca indicatorii INS fără codul SIRUTA al localității.</Trans>
+          <Trans>Cannot load INS indicators without the locality SIRUTA code.</Trans>
         </AlertDescription>
       </Alert>
     );
@@ -330,7 +330,7 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
     return (
       <Alert variant="destructive">
         <AlertTriangle className="h-4 w-4" />
-        <AlertTitle><Trans>Nu am putut încărca datele INS</Trans></AlertTitle>
+        <AlertTitle><Trans>Could not load INS data</Trans></AlertTitle>
         <AlertDescription>{error.message}</AlertDescription>
       </Alert>
     );
@@ -343,28 +343,28 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
           <div className="flex flex-wrap items-center gap-2">
             <Badge variant="secondary">INS Tempo</Badge>
             <Badge variant="outline">
-              {isCounty ? t`Nivel județ` : t`Nivel localitate`}
+              {isCounty ? t`County level` : t`Locality level`}
             </Badge>
           </div>
-          <CardTitle className="text-2xl"><Trans>Statistici locale pentru cetățeni</Trans></CardTitle>
+          <CardTitle className="text-2xl"><Trans>Local statistics for citizens</Trans></CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 text-sm text-muted-foreground">
           <p>
             {isCounty ? (
               <Trans>
-                Indicatorii provin din INS Tempo și arată evoluția comunității în timp. Valorile sunt
-                cele mai recente disponibile pentru acest județ.
+                Indicators come from INS Tempo and show community evolution over time. Values are
+                the most recent available for this county.
               </Trans>
             ) : (
               <Trans>
-                Indicatorii provin din INS Tempo și arată evoluția comunității în timp. Valorile sunt
-                cele mai recente disponibile pentru această localitate.
+                Indicators come from INS Tempo and show community evolution over time. Values are
+                the most recent available for this locality.
               </Trans>
             )}
           </p>
           {entity?.uat?.county_name && (
             <p>
-              <Trans>Județ:</Trans> <span className="font-medium text-foreground">{entity.uat.county_name}</span>
+              <Trans>County:</Trans> <span className="font-medium text-foreground">{entity.uat.county_name}</span>
             </p>
           )}
         </CardContent>
@@ -387,7 +387,7 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
           {summaryCards.map((metric) => {
             const observation = metric.observation;
             const valueLabel = observation ? formatObservationValue(observation) : { value: t`N/A` };
-            const periodLabel = observation ? formatPeriodLabel(observation.time_period) : t`Necunoscut`;
+            const periodLabel = observation ? formatPeriodLabel(observation.time_period) : t`Unknown`;
 
             return (
               <Card key={metric.code}>
@@ -407,7 +407,7 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
                     {metric.datasetName}
                   </div>
                   <div className="text-xs text-muted-foreground">
-                    <Trans>Ultima perioadă:</Trans> {periodLabel}
+                    <Trans>Last period:</Trans> {periodLabel}
                   </div>
                 </CardContent>
               </Card>
@@ -419,11 +419,11 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
       {dashboardData?.partial && (
         <Alert>
           <Info className="h-4 w-4" />
-          <AlertTitle><Trans>Date parțiale</Trans></AlertTitle>
+          <AlertTitle><Trans>Partial data</Trans></AlertTitle>
           <AlertDescription>
             <Trans>
-              Unele seturi de date au mai multe observații decât limita actuală. Afișăm cele mai
-              recente perioade disponibile.
+              Some datasets have more observations than the current limit. We display the most
+              recent available periods.
             </Trans>
           </AlertDescription>
         </Alert>
@@ -439,9 +439,9 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
             {section.missingCount > 0 && (
               <p className="text-xs text-muted-foreground">
                 {isCounty ? (
-                  <Trans>Unii indicatori nu au date disponibile pentru acest județ.</Trans>
+                  <Trans>Some indicators have no data available for this county.</Trans>
                 ) : (
-                  <Trans>Unii indicatori nu au date disponibile pentru această localitate.</Trans>
+                  <Trans>Some indicators have no data available for this locality.</Trans>
                 )}
               </p>
             )}
@@ -449,7 +449,7 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
           <CardContent>
             {section.groups.length === 0 ? (
               <div className="text-sm text-muted-foreground">
-                <Trans>Nu există date INS pentru această secțiune.</Trans>
+                <Trans>No INS data for this section.</Trans>
               </div>
             ) : (
               <Accordion type="multiple" className="w-full">
@@ -464,7 +464,7 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
                     : { value: t`N/A` };
                   const periodLabel = latestObservation
                     ? formatPeriodLabel(latestObservation.time_period)
-                    : t`Necunoscut`;
+                    : t`Unknown`;
 
                   return (
                     <AccordionItem key={group.dataset.code} value={group.dataset.code}>

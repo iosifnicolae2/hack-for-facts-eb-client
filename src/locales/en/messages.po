@@ -455,7 +455,7 @@ msgid "Account category"
 msgstr "Account category"
 
 #: src/components/alerts/components/AlertEditorView.tsx:286
-#: src/components/charts/components/views/SeriesConfigView.tsx:206
+#: src/components/charts/components/views/SeriesConfigView.tsx:209
 #: src/features/notifications/components/alerts/AlertCard.tsx:71
 msgid "Active"
 msgstr "Active"
@@ -556,7 +556,7 @@ msgstr "Aggregated Budget Execution at Main Ordering Level"
 msgid "Aggregated data"
 msgstr "Aggregated data"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:191
+#: src/components/charts/components/views/SeriesConfigView.tsx:194
 msgid "Aggregated Series Calculation"
 msgstr "Aggregated Series Calculation"
 
@@ -576,6 +576,22 @@ msgstr "Aggregated Value (% of GDP)"
 #: src/routes/map.lazy.tsx:331
 msgid "Aggregated Value Legend"
 msgstr "Aggregated Value Legend"
+
+#: src/lib/ins/ins-dashboard-config.ts:166
+msgid "Agricultural land and production."
+msgstr "Agricultural land and production."
+
+#: src/lib/ins/ins-dashboard-config.ts:197
+msgid "Agricultural prices and developed areas."
+msgstr "Agricultural prices and developed areas."
+
+#: src/lib/ins/ins-dashboard-config.ts:165
+msgid "Agriculture"
+msgstr "Agriculture"
+
+#: src/lib/ins/ins-dashboard-config.ts:196
+msgid "Agriculture & land"
+msgstr "Agriculture & land"
 
 #: src/features/notifications/components/alerts/AlertCard.tsx:55
 msgid "Alert"
@@ -672,23 +688,23 @@ msgstr "All types"
 msgid "All years"
 msgstr "All years"
 
-#: src/routes/cookies.lazy.tsx:172
+#: src/routes/cookies.lazy.tsx:204
 msgid "Allow all"
 msgstr "Allow all"
 
-#: src/routes/cookies.lazy.tsx:170
+#: src/routes/cookies.lazy.tsx:202
 msgid "Allow all cookies"
 msgstr "Allow all cookies"
 
-#: src/routes/cookies.lazy.tsx:156
+#: src/routes/cookies.lazy.tsx:188
 msgid "Allow essential cookies only"
 msgstr "Allow essential cookies only"
 
-#: src/routes/cookies.lazy.tsx:158
+#: src/routes/cookies.lazy.tsx:190
 msgid "Allow essential only"
 msgstr "Allow essential only"
 
-#: src/routes/cookies.lazy.tsx:86
+#: src/routes/cookies.lazy.tsx:118
 msgid "Always enabled"
 msgstr "Always enabled"
 
@@ -717,7 +733,7 @@ msgstr "Amount Range"
 msgid "Analytics"
 msgstr "Analytics"
 
-#: src/routes/cookies.lazy.tsx:106
+#: src/routes/cookies.lazy.tsx:138
 msgid "Analytics (PostHog)"
 msgstr "Analytics (PostHog)"
 
@@ -746,17 +762,21 @@ msgstr "and"
 msgid "Annotation {0}"
 msgstr "Annotation {0}"
 
-#: src/components/charts/components/views/AnnotationConfigView.tsx:69
+#: src/components/charts/components/views/AnnotationConfigView.tsx:72
 msgid "Annotation Configuration"
 msgstr "Annotation Configuration"
 
-#: src/components/charts/components/views/AnnotationConfigView.tsx:50
+#: src/components/charts/components/views/AnnotationConfigView.tsx:53
 msgid "Annotation not found"
 msgstr "Annotation not found"
 
 #: src/components/charts/components/chart-annotations/AnnotationsList.tsx:56
 msgid "Annotations"
 msgstr "Annotations"
+
+#: src/components/entities/views/ins-stats-view.tsx:27
+msgid "Annual"
+msgstr "Annual"
 
 #: src/components/commitments/LinearBudgetFlow.tsx:112
 msgid "Annual budget execution"
@@ -770,7 +790,7 @@ msgstr "Annual budget unavailable"
 msgid "Annual vs Multi‑Year"
 msgstr "Annual vs Multi‑Year"
 
-#: src/routes/cookies.lazy.tsx:115
+#: src/routes/cookies.lazy.tsx:147
 msgid "Anonymous usage patterns, page views, interactions."
 msgstr "Anonymous usage patterns, page views, interactions."
 
@@ -792,7 +812,7 @@ msgstr "Are you sure you want to delete this alert? This action cannot be undone
 msgid "Are you sure you want to delete this notification? This action cannot be undone."
 msgstr "Are you sure you want to delete this notification? This action cannot be undone."
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:368
+#: src/components/charts/components/views/SeriesConfigView.tsx:371
 msgid "Are you sure you want to delete this series?"
 msgstr "Are you sure you want to delete this series?"
 
@@ -800,7 +820,7 @@ msgstr "Are you sure you want to delete this series?"
 msgid "Are you sure you want to unsubscribe from this notification?"
 msgstr "Are you sure you want to unsubscribe from this notification?"
 
-#: src/components/charts/components/views/AnnotationConfigView.tsx:234
+#: src/components/charts/components/views/AnnotationConfigView.tsx:237
 msgid "Are you sure?"
 msgstr "Are you sure?"
 
@@ -863,8 +883,8 @@ msgstr "Back"
 msgid "Back to alert"
 msgstr "Back to alert"
 
-#: src/components/charts/components/views/AnnotationConfigView.tsx:52
-#: src/components/charts/components/views/SeriesConfigView.tsx:85
+#: src/components/charts/components/views/AnnotationConfigView.tsx:55
+#: src/components/charts/components/views/SeriesConfigView.tsx:88
 msgid "Back to Configuration"
 msgstr "Back to Configuration"
 
@@ -923,6 +943,10 @@ msgstr "Base Amount (100%)"
 #: src/features/learning/components/interactive/RevenueDistributionGame.tsx:249
 msgid "Based on 2024 budgetary data"
 msgstr "Based on 2024 budgetary data"
+
+#: src/lib/ins/ins-dashboard-config.ts:130
+msgid "Basic data on population, employment and housing."
+msgstr "Basic data on population, employment and housing."
 
 #: src/routes/privacy.lazy.tsx:27
 msgid "Basic security logs are kept for a short period to protect accounts."
@@ -1016,6 +1040,10 @@ msgstr "Build and manage custom visualizations of public spending data."
 msgid "Bulk Edit"
 msgstr "Bulk Edit"
 
+#: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:71
+msgid "Bulk edit custom series values by pasting year and value pairs."
+msgstr "Bulk edit custom series values by pasting year and value pairs."
+
 #: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:69
 msgid "Bulk Edit Data"
 msgstr "Bulk Edit Data"
@@ -1061,9 +1089,9 @@ msgstr "Calculations assume a basket of 40% essential goods (11% VAT) and 60% ge
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:135
 #: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:71
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:80
-#: src/components/charts/components/views/AnnotationConfigView.tsx:243
+#: src/components/charts/components/views/AnnotationConfigView.tsx:246
 #: src/components/charts/components/views/ChartConfigView.tsx:92
-#: src/components/charts/components/views/SeriesConfigView.tsx:377
+#: src/components/charts/components/views/SeriesConfigView.tsx:380
 #: src/features/notifications/components/alerts/AlertCard.tsx:122
 #: src/features/notifications/components/NotificationCard.tsx:124
 #: src/routes/$lang/learning/index.lazy.tsx:308
@@ -1072,6 +1100,14 @@ msgstr "Calculations assume a basket of 40% essential goods (11% VAT) and 60% ge
 #: src/routes/unsubscribe.$token.tsx:113
 msgid "Cancel"
 msgstr "Cancel"
+
+#: src/components/entities/views/ins-stats-view.tsx:311
+msgid "Cannot load INS indicators without the county code."
+msgstr "Cannot load INS indicators without the county code."
+
+#: src/components/entities/views/ins-stats-view.tsx:323
+msgid "Cannot load INS indicators without the locality SIRUTA code."
+msgstr "Cannot load INS indicators without the locality SIRUTA code."
 
 #: src/routes/cookie-policy.lazy.tsx:32
 msgid "Categories"
@@ -1109,9 +1145,9 @@ msgstr "Changes to this policy"
 msgid "Chart"
 msgstr "Chart"
 
-#: src/components/charts/components/views/AnnotationConfigView.tsx:211
+#: src/components/charts/components/views/AnnotationConfigView.tsx:214
 #: src/components/charts/components/views/ChartConfigView.tsx:37
-#: src/components/charts/components/views/SeriesConfigView.tsx:354
+#: src/components/charts/components/views/SeriesConfigView.tsx:357
 msgid "Chart Configuration"
 msgstr "Chart Configuration"
 
@@ -1143,7 +1179,7 @@ msgstr "Chart Type"
 #: src/components/footer/AppFooter.tsx:103
 #: src/components/sidebar/nav-main.tsx:31
 #: src/components/ui/shortcuts.tsx:38
-#: src/hooks/useEntityViews.tsx:39
+#: src/hooks/useEntityViews.tsx:43
 #: src/routes/charts/index.lazy.tsx:173
 #: src/routes/index.tsx:86
 msgid "Charts"
@@ -1157,7 +1193,7 @@ msgstr "Check your series filters and try again."
 msgid "Children's privacy"
 msgstr "Children's privacy"
 
-#: src/routes/cookies.lazy.tsx:72
+#: src/routes/cookies.lazy.tsx:104
 msgid "Choose between essential-only or all cookies, then fine-tune options below."
 msgstr "Choose between essential-only or all cookies, then fine-tune options below."
 
@@ -1257,7 +1293,7 @@ msgstr "Code"
 msgid "Code copied to clipboard"
 msgstr "Code copied to clipboard"
 
-#: src/components/charts/components/views/AnnotationConfigView.tsx:109
+#: src/components/charts/components/views/AnnotationConfigView.tsx:112
 msgid "Color"
 msgstr "Color"
 
@@ -1359,6 +1395,11 @@ msgstr "Concerning"
 msgid "Condition {0}"
 msgstr "Condition {0}"
 
+#: src/components/entities/views/ins-stats-view.tsx:34
+#: src/components/entities/views/ins-stats-view.tsx:35
+msgid "Confidential"
+msgstr "Confidential"
+
 #: src/components/charts/components/chart-view/ChartViewHeader.tsx:44
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:38
 msgid "Configure"
@@ -1373,7 +1414,7 @@ msgstr "Configure Chart"
 msgid "Configure filters for the map view including period, account category, and normalization settings"
 msgstr "Configure filters for the map view including period, account category, and normalization settings"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:153
+#: src/components/charts/components/views/SeriesConfigView.tsx:156
 msgid "Configure Series"
 msgstr "Configure Series"
 
@@ -1381,7 +1422,7 @@ msgstr "Configure Series"
 msgid "Confirm"
 msgstr "Confirm"
 
-#: src/routes/cookies.lazy.tsx:165
+#: src/routes/cookies.lazy.tsx:197
 msgid "Confirm choices"
 msgstr "Confirm choices"
 
@@ -1404,7 +1445,7 @@ msgstr "Confirm unsubscribe"
 msgid "Congratulations!"
 msgstr "Congratulations!"
 
-#: src/components/charts/components/views/AnnotationConfigView.tsx:135
+#: src/components/charts/components/views/AnnotationConfigView.tsx:138
 msgid "Connector"
 msgstr "Connector"
 
@@ -1463,7 +1504,7 @@ msgid "Cookie Policy"
 msgstr "Cookie Policy"
 
 #: src/components/footer/AppFooter.tsx:126
-#: src/routes/cookies.lazy.tsx:71
+#: src/routes/cookies.lazy.tsx:103
 msgid "Cookie Settings"
 msgstr "Cookie Settings"
 
@@ -1476,8 +1517,8 @@ msgid "Copied!"
 msgstr "Copied!"
 
 #: src/components/charts/components/ChartDataError.tsx:286
-#: src/components/charts/components/views/AnnotationConfigView.tsx:217
-#: src/components/charts/components/views/SeriesConfigView.tsx:251
+#: src/components/charts/components/views/AnnotationConfigView.tsx:220
+#: src/components/charts/components/views/SeriesConfigView.tsx:254
 msgid "Copy"
 msgstr "Copy"
 
@@ -1497,7 +1538,7 @@ msgstr "Copy Data"
 msgid "Copy error report to clipboard"
 msgstr "Copy error report to clipboard"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:250
+#: src/components/charts/components/views/SeriesConfigView.tsx:253
 msgid "Copy series"
 msgstr "Copy series"
 
@@ -1544,6 +1585,10 @@ msgstr "Could Not Load Entities"
 msgid "Could Not Load Funding Sources"
 msgstr "Could Not Load Funding Sources"
 
+#: src/components/entities/views/ins-stats-view.tsx:333
+msgid "Could not load INS data"
+msgstr "Could not load INS data"
+
 #: src/components/filters/uat-filter/UatList.tsx:79
 msgid "Could Not Load UATs"
 msgstr "Could Not Load UATs"
@@ -1570,6 +1615,11 @@ msgstr "Counties"
 msgid "County"
 msgstr "County"
 
+#: src/components/entities/views/ins-stats-view.tsx:346
+msgid "County level"
+msgstr "County level"
+
+#: src/components/entities/views/ins-stats-view.tsx:367
 #: src/components/maps/utils.ts:98
 #: src/components/maps/utils.ts:151
 msgid "County:"
@@ -1593,14 +1643,14 @@ msgstr "Create a chart for this entity to start tracking its financial evolution
 msgid "Create alert"
 msgstr "Create alert"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:244
+#: src/components/charts/components/views/SeriesConfigView.tsx:247
 #: src/features/notifications/components/alerts/AlertsList.tsx:60
 #: src/routes/alerts/$alertId/index.lazy.tsx:220
 #: src/routes/alerts/new.lazy.tsx:183
 msgid "Create Alert"
 msgstr "Create Alert"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:242
+#: src/components/charts/components/views/SeriesConfigView.tsx:245
 msgid "Create alert from this series"
 msgstr "Create alert from this series"
 
@@ -1628,6 +1678,10 @@ msgstr "Create your first chart to start visualizing public spending data."
 msgid "Creating…"
 msgstr "Creating…"
 
+#: src/lib/ins/ins-dashboard-config.ts:156
+msgid "Culture & tourism"
+msgstr "Culture & tourism"
+
 #: src/components/charts/components/series-config/SeriesFilter.tsx:617
 #: src/components/maps/HeatmapDataTable.tsx:445
 #: src/components/normalization/normalization-controls.tsx:84
@@ -1648,11 +1702,11 @@ msgstr "Current date"
 msgid "Custom Data"
 msgstr "Custom Data"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:192
+#: src/components/charts/components/views/SeriesConfigView.tsx:195
 msgid "Custom Series"
 msgstr "Custom Series"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:193
+#: src/components/charts/components/views/SeriesConfigView.tsx:196
 msgid "Custom Series Value"
 msgstr "Custom Series Value"
 
@@ -1680,7 +1734,7 @@ msgstr "Data collected with an account:"
 msgid "Data collected without an account:"
 msgstr "Data collected without an account:"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:296
+#: src/components/charts/components/views/SeriesConfigView.tsx:299
 msgid "Data Label Offset"
 msgstr "Data Label Offset"
 
@@ -1781,9 +1835,9 @@ msgstr "Deficit"
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:57
 #: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:63
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:72
-#: src/components/charts/components/views/AnnotationConfigView.tsx:230
-#: src/components/charts/components/views/AnnotationConfigView.tsx:240
-#: src/components/charts/components/views/SeriesConfigView.tsx:374
+#: src/components/charts/components/views/AnnotationConfigView.tsx:233
+#: src/components/charts/components/views/AnnotationConfigView.tsx:243
+#: src/components/charts/components/views/SeriesConfigView.tsx:377
 #: src/features/notifications/components/alerts/AlertCard.tsx:128
 #: src/features/notifications/components/NotificationCard.tsx:127
 #: src/routes/alerts/$alertId/index.lazy.tsx:323
@@ -1805,7 +1859,7 @@ msgstr "Delete Chart"
 msgid "Delete notification"
 msgstr "Delete notification"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:364
+#: src/components/charts/components/views/SeriesConfigView.tsx:367
 msgid "Delete Series"
 msgstr "Delete Series"
 
@@ -1857,11 +1911,15 @@ msgstr "Detailed Categories"
 msgid "Detailed Line Items Breakdown"
 msgstr "Detailed Line Items Breakdown"
 
+#: src/components/entities/views/ins-stats-view.tsx:181
+msgid "Details"
+msgstr "Details"
+
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:223
 msgid "Details about excluded items and amount filters used in this view."
 msgstr "Details about excluded items and amount filters used in this view."
 
-#: src/routes/entities.$cui.lazy.tsx:420
+#: src/routes/entities.$cui.lazy.tsx:421
 msgid "Details:"
 msgstr "Details:"
 
@@ -1886,7 +1944,7 @@ msgstr "Disable annotation"
 msgid "Disable Series"
 msgstr "Disable Series"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:282
+#: src/components/charts/components/views/SeriesConfigView.tsx:285
 msgid "Display data labels on the chart"
 msgstr "Display data labels on the chart"
 
@@ -1917,8 +1975,8 @@ msgid "Drag the sliders to guess how much each source contributes."
 msgstr "Drag the sliders to guess how much each source contributes."
 
 #: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:40
-#: src/components/charts/components/views/AnnotationConfigView.tsx:221
-#: src/components/charts/components/views/SeriesConfigView.tsx:248
+#: src/components/charts/components/views/AnnotationConfigView.tsx:224
+#: src/components/charts/components/views/SeriesConfigView.tsx:251
 msgid "Duplicate"
 msgstr "Duplicate"
 
@@ -1930,7 +1988,7 @@ msgstr "Duplicate Annotation"
 msgid "Duplicate selected chart series"
 msgstr "Duplicate selected chart series"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:247
+#: src/components/charts/components/views/SeriesConfigView.tsx:250
 msgid "Duplicate series"
 msgstr "Duplicate series"
 
@@ -1948,7 +2006,7 @@ msgid "e.g. Expense growth alert"
 msgstr "e.g. Expense growth alert"
 
 #: src/components/charts/components/series-config/UnitInput.tsx:14
-#: src/components/charts/components/views/SeriesConfigView.tsx:262
+#: src/components/charts/components/views/SeriesConfigView.tsx:265
 msgid "e.g., RON, %, Units..."
 msgstr "e.g., RON, %, Units..."
 
@@ -2022,6 +2080,10 @@ msgstr "Edit Annotation"
 msgid "Edit Annotations"
 msgstr "Edit Annotations"
 
+#: src/lib/ins/ins-dashboard-config.ts:141
+msgid "Education"
+msgstr "Education"
+
 #: src/features/learning/components/interactive/VATReformCard.tsx:25
 msgid "Effective Date"
 msgstr "Effective Date"
@@ -2049,6 +2111,10 @@ msgstr "Email address copied to clipboard!"
 msgid "Employees"
 msgstr "Employees"
 
+#: src/lib/ins/ins-dashboard-config.ts:23
+msgid "Employees (average)"
+msgstr "Employees (average)"
+
 #: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:53
 msgid "Enable All Series"
 msgstr "Enable All Series"
@@ -2065,7 +2131,7 @@ msgstr "Enable Scroll Zoom"
 msgid "Enable Series"
 msgstr "Enable Series"
 
-#: src/components/charts/components/views/AnnotationConfigView.tsx:127
+#: src/components/charts/components/views/AnnotationConfigView.tsx:130
 msgid "Enabled"
 msgstr "Enabled"
 
@@ -2077,7 +2143,7 @@ msgstr "Enabled alerts are evaluated monthly and included in your newsletter."
 msgid "English"
 msgstr "English"
 
-#: src/routes/cookies.lazy.tsx:138
+#: src/routes/cookies.lazy.tsx:170
 msgid "Enhanced error reporting"
 msgstr "Enhanced error reporting"
 
@@ -2085,11 +2151,11 @@ msgstr "Enhanced error reporting"
 msgid "Enter a constant value"
 msgstr "Enter a constant value"
 
-#: src/components/charts/components/views/AnnotationConfigView.tsx:101
+#: src/components/charts/components/views/AnnotationConfigView.tsx:104
 msgid "Enter annotation subtitle..."
 msgstr "Enter annotation subtitle..."
 
-#: src/components/charts/components/views/AnnotationConfigView.tsx:88
+#: src/components/charts/components/views/AnnotationConfigView.tsx:91
 msgid "Enter annotation title..."
 msgstr "Enter annotation title..."
 
@@ -2105,7 +2171,7 @@ msgstr "Enter entity name or CUI..."
 msgid "Enter new value"
 msgstr "Enter new value"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:176
+#: src/components/charts/components/views/SeriesConfigView.tsx:179
 msgid "Enter series label..."
 msgstr "Enter series label..."
 
@@ -2116,7 +2182,7 @@ msgstr "Enter series label..."
 #: src/components/filters/EntityAnalyticsFilter.tsx:655
 #: src/components/filters/MapFilter.tsx:265
 #: src/components/filters/MapFilter.tsx:442
-#: src/hooks/useEntityViews.tsx:42
+#: src/hooks/useEntityViews.tsx:46
 #: src/routes/index.tsx:79
 msgid "Entities"
 msgstr "Entities"
@@ -2159,6 +2225,10 @@ msgstr "Entity type"
 msgid "Entity Type"
 msgstr "Entity Type"
 
+#: src/lib/ins/ins-dashboard-config.ts:184
+msgid "Environment & interventions"
+msgstr "Environment & interventions"
+
 #: src/components/alerts/components/ConditionsList.tsx:94
 msgid "Equal to"
 msgstr "Equal to"
@@ -2171,7 +2241,7 @@ msgstr "equals"
 msgid "Error"
 msgstr "Error"
 
-#: src/routes/entities.$cui.lazy.tsx:417
+#: src/routes/entities.$cui.lazy.tsx:418
 msgid "Error Fetching Entity Details"
 msgstr "Error Fetching Entity Details"
 
@@ -2199,7 +2269,7 @@ msgstr "Error loading notifications"
 msgid "Error Reporting (opt-in only)"
 msgstr "Error Reporting (opt-in only)"
 
-#: src/routes/cookies.lazy.tsx:128
+#: src/routes/cookies.lazy.tsx:160
 msgid "Error reporting (Sentry)"
 msgstr "Error reporting (Sentry)"
 
@@ -2219,7 +2289,7 @@ msgstr "Error: Series not found"
 msgid "Errors"
 msgstr "Errors"
 
-#: src/routes/cookies.lazy.tsx:78
+#: src/routes/cookies.lazy.tsx:110
 msgid "Essential cookies"
 msgstr "Essential cookies"
 
@@ -2268,7 +2338,7 @@ msgstr "Ever wondered where your money actually goes?"
 msgid "Example:"
 msgstr "Example:"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:325
+#: src/components/charts/components/views/SeriesConfigView.tsx:328
 msgid "Example: 2024-"
 msgstr "Example: 2024-"
 
@@ -2341,6 +2411,10 @@ msgstr "Executed"
 #: src/components/commitments/DetailTable.tsx:609
 msgid "Execution %"
 msgstr "Execution %"
+
+#: src/lib/ins/ins-dashboard-config.ts:25
+msgid "Existing dwellings"
+msgstr "Existing dwellings"
 
 #: src/hooks/useEntityViews.tsx:24
 msgid "Expense Trends"
@@ -2418,6 +2492,10 @@ msgstr "Export CSV"
 msgid "Exporting…"
 msgstr "Exporting…"
 
+#: src/lib/ins/ins-dashboard-config.ts:29
+msgid "Exports (FOB)"
+msgstr "Exports (FOB)"
+
 #: src/routes/terms.lazy.tsx:81
 msgid "Exports and attribution"
 msgstr "Exports and attribution"
@@ -2425,6 +2503,10 @@ msgstr "Exports and attribution"
 #: src/routes/terms.lazy.tsx:25
 msgid "Exports must include attribution to data source and Transparenta.eu."
 msgstr "Exports must include attribution to data source and Transparenta.eu."
+
+#: src/lib/ins/ins-dashboard-config.ts:179
+msgid "Exports, imports and trade balance."
+msgstr "Exports, imports and trade balance."
 
 #: src/components/classification-explorer/ClassificationActions.tsx:29
 msgid "Failed to copy code"
@@ -2493,6 +2575,10 @@ msgstr "Feedback / Report an issue"
 msgid "Feedback is currently unavailable."
 msgstr "Feedback is currently unavailable."
 
+#: src/components/entity-analytics/EntityAnalyticsLayout.tsx:48
+msgid "Filter entity analytics results on mobile."
+msgstr "Filter entity analytics results on mobile."
+
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:65
 msgid "Filter field"
 msgstr "Filter field"
@@ -2522,7 +2608,7 @@ msgstr "Filters"
 msgid "Filters applied to data series will appear here."
 msgstr "Filters applied to data series will appear here."
 
-#: src/components/charts/components/filters-details/ChartFiltersOverview.tsx:62
+#: src/components/charts/components/filters-details/ChartFiltersOverview.tsx:68
 msgid "Filters info"
 msgstr "Filters info"
 
@@ -2611,6 +2697,10 @@ msgstr "For questions about this Privacy Policy, to exercise your rights, or to 
 msgid "for the selected filters."
 msgstr "for the selected filters."
 
+#: src/lib/ins/ins-dashboard-config.ts:178
+msgid "Foreign trade"
+msgstr "Foreign trade"
+
 #. placeholder {0}: replacementCount === 1 ? '' : 's'
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:114
 msgid "Found {replacementCount} occurrence{0}"
@@ -2698,7 +2788,7 @@ msgstr "Funds the pension checks and hospital bills directly. It's a huge mandat
 msgid "Gap"
 msgstr "Gap"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:231
+#: src/components/charts/components/views/SeriesConfigView.tsx:234
 msgid "Generate random color"
 msgstr "Generate random color"
 
@@ -2792,6 +2882,14 @@ msgstr "greater than"
 msgid "Greater than"
 msgstr "Greater than"
 
+#: src/lib/ins/ins-dashboard-config.ts:32
+msgid "Green spaces"
+msgstr "Green spaces"
+
+#: src/lib/ins/ins-dashboard-config.ts:185
+msgid "Green spaces, IGSU interventions and protection measures."
+msgstr "Green spaces, IGSU interventions and protection measures."
+
 #: src/components/classification-explorer/ClassificationExplorer.tsx:217
 msgid "Grid view"
 msgstr "Grid view"
@@ -2818,6 +2916,11 @@ msgstr "Hang tight while we resolve and redirect you to the destination."
 msgid "Health (CASS)"
 msgstr "Health (CASS)"
 
+#: src/lib/ins/ins-dashboard-config.ts:147
+#: src/lib/ins/ins-dashboard-config.ts:190
+msgid "Health & social"
+msgstr "Health & social"
+
 #. placeholder {0}: typeof window !== 'undefined' ? window.location.href : 'N/A'
 #: src/components/footer/ChatFab.tsx:31
 msgid ""
@@ -2833,11 +2936,11 @@ msgstr ""
 "\n"
 "Page: {0}"
 
-#: src/routes/cookies.lazy.tsx:130
+#: src/routes/cookies.lazy.tsx:162
 msgid "Help us fix problems by sending error reports. When disabled, we only send anonymous, minimal error telemetry necessary to keep the service reliable."
 msgstr "Help us fix problems by sending error reports. When disabled, we only send anonymous, minimal error telemetry necessary to keep the service reliable."
 
-#: src/routes/cookies.lazy.tsx:108
+#: src/routes/cookies.lazy.tsx:140
 msgid "Help us understand usage to improve the product. No analytics is sent unless you opt in."
 msgstr "Help us understand usage to improve the product. No analytics is sent unless you opt in."
 
@@ -2855,7 +2958,7 @@ msgstr "Hidden infrastructure you used"
 msgid "Hide"
 msgstr "Hide"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:272
+#: src/components/charts/components/views/SeriesConfigView.tsx:275
 msgid "Hide advanced settings"
 msgstr "Hide advanced settings"
 
@@ -2883,6 +2986,10 @@ msgstr "High risk of low execution in Romanian public administration. Investment
 #: src/components/footer/AppFooter.tsx:88
 msgid "Home"
 msgstr "Home"
+
+#: src/lib/ins/ins-dashboard-config.ts:148
+msgid "Hospitals, beds and medical staff."
+msgstr "Hospitals, beds and medical staff."
 
 #: src/features/learning/components/interactive/RectificationFlow.tsx:144
 msgid "How Budgets Change"
@@ -2921,13 +3028,17 @@ msgstr "If you create an account, Clerk sets the following cookies for authentic
 msgid "If you earn <0>{0}</0> gross, drag the slider to your expected net home pay."
 msgstr "If you earn <0>{0}</0> gross, drag the slider to your expected net home pay."
 
-#: src/routes/cookies.lazy.tsx:95
+#: src/routes/cookies.lazy.tsx:127
 msgid "If you sign in, authentication cookies (Clerk) are essential to manage your session. Deleting them will sign you out."
 msgstr "If you sign in, authentication cookies (Clerk) are essential to manage your session. Deleting them will sign you out."
 
 #: src/routes/unsubscribe.$token.tsx:104
 msgid "If you unsubscribe, you will no longer receive emails for this notification. You can always resubscribe later from your account settings."
 msgstr "If you unsubscribe, you will no longer receive emails for this notification. You can always resubscribe later from your account settings."
+
+#: src/lib/ins/ins-dashboard-config.ts:30
+msgid "Imports (CIF)"
+msgstr "Imports (CIF)"
 
 #: src/features/learning/components/interactive/VATCalculator.tsx:186
 msgid "in \"invisible\" consumption taxes."
@@ -2941,7 +3052,7 @@ msgstr "In one year, you will pay"
 msgid "Include visible attribution to the data source and Transparenta.eu when sharing charts/maps."
 msgstr "Include visible attribution to the data source and Transparenta.eu when sharing charts/maps."
 
-#: src/routes/cookies.lazy.tsx:139
+#: src/routes/cookies.lazy.tsx:171
 msgid "Includes additional error context. No user identity is attached."
 msgstr "Includes additional error context. No user identity is attached."
 
@@ -2996,6 +3107,14 @@ msgstr "increase"
 msgid "Independent project; no government affiliation."
 msgstr "Independent project; no government affiliation."
 
+#: src/components/entities/views/ins-stats-view.tsx:354
+msgid "Indicators come from INS Tempo and show community evolution over time. Values are the most recent available for this county."
+msgstr "Indicators come from INS Tempo and show community evolution over time. Values are the most recent available for this county."
+
+#: src/components/entities/views/ins-stats-view.tsx:359
+msgid "Indicators come from INS Tempo and show community evolution over time. Values are the most recent available for this locality."
+msgstr "Indicators come from INS Tempo and show community evolution over time. Values are the most recent available for this locality."
+
 #: src/components/charts/components/series-config/SeriesFilter.tsx:643
 msgid "Inflation Adjustment"
 msgstr "Inflation Adjustment"
@@ -3013,9 +3132,21 @@ msgstr "Informational purposes only; no warranties."
 msgid "Infrastructure"
 msgstr "Infrastructure"
 
+#: src/lib/ins/ins-dashboard-config.ts:135
+msgid "Infrastructure & utilities"
+msgstr "Infrastructure & utilities"
+
 #: src/components/filters/MapFilter.tsx:391
 msgid "inhabitants"
 msgstr "inhabitants"
+
+#: src/components/entities/views/ins-stats-view.tsx:297
+msgid "INS indicators are only available for UATs."
+msgstr "INS indicators are only available for UATs."
+
+#: src/hooks/useEntityViews.tsx:40
+msgid "INS Stats"
+msgstr "INS Stats"
 
 #: src/components/budget-explorer/RevenueBreakdown.tsx:60
 msgid "Institutional remittances"
@@ -3116,6 +3247,10 @@ msgstr "Key Activities"
 msgid "Key Deadlines"
 msgstr "Key Deadlines"
 
+#: src/lib/ins/ins-dashboard-config.ts:129
+msgid "Key indicators"
+msgstr "Key indicators"
+
 #: src/features/learning/components/interactive/EconomicCodeReference.tsx:372
 msgid "Key Lesson Insight"
 msgstr "Key Lesson Insight"
@@ -3129,7 +3264,7 @@ msgstr "Key Websites"
 msgid "Keyboard Shortcuts"
 msgstr "Keyboard Shortcuts"
 
-#: src/components/charts/components/views/AnnotationConfigView.tsx:143
+#: src/components/charts/components/views/AnnotationConfigView.tsx:146
 msgid "Label"
 msgstr "Label"
 
@@ -3144,6 +3279,10 @@ msgstr "Language"
 #: src/components/alerts/components/AlertEditorView.tsx:290
 msgid "Last evaluated"
 msgstr "Last evaluated"
+
+#: src/components/entities/views/ins-stats-view.tsx:410
+msgid "Last period:"
+msgstr "Last period:"
 
 #: src/features/learning/components/interactive/VATReformCard.tsx:23
 msgid "Law 141/2025"
@@ -3236,6 +3375,10 @@ msgstr "Lessons Completed"
 msgid "Let's find out"
 msgstr "Let's find out"
 
+#: src/lib/ins/ins-dashboard-config.ts:157
+msgid "Libraries, museums and tourist activity."
+msgstr "Libraries, museums and tourist activity."
+
 #: src/components/theme/mode-toggle.tsx:27
 msgid "Light"
 msgstr "Light"
@@ -3258,7 +3401,7 @@ msgstr "Line item disappeared - possible reclassification"
 msgid "Line Items"
 msgstr "Line Items"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:190
+#: src/components/charts/components/views/SeriesConfigView.tsx:193
 msgid "Line Items Aggregated Yearly"
 msgstr "Line Items Aggregated Yearly"
 
@@ -3341,9 +3484,17 @@ msgstr "Loading..."
 msgid "Loan repayments and other operations"
 msgstr "Loan repayments and other operations"
 
+#: src/components/entities/views/ins-stats-view.tsx:349
+msgid "Local statistics for citizens"
+msgstr "Local statistics for citizens"
+
 #: src/routes/privacy.lazy.tsx:23
 msgid "Local-first: charts and preferences are stored in your browser."
 msgstr "Local-first: charts and preferences are stored in your browser."
+
+#: src/components/entities/views/ins-stats-view.tsx:346
+msgid "Locality level"
+msgstr "Locality level"
 
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:42
 msgid "Lock annotation"
@@ -3353,7 +3504,7 @@ msgstr "Lock annotation"
 msgid "Lock In Prediction"
 msgstr "Lock In Prediction"
 
-#: src/components/charts/components/views/AnnotationConfigView.tsx:131
+#: src/components/charts/components/views/AnnotationConfigView.tsx:134
 msgid "Locked"
 msgstr "Locked"
 
@@ -3493,6 +3644,7 @@ msgid "Minimum Pay"
 msgstr "Minimum Pay"
 
 #: src/components/commitments/CommitmentsTable.tsx:70
+#: src/components/entities/views/ins-stats-view.tsx:33
 msgid "Missing"
 msgstr "Missing"
 
@@ -3554,6 +3706,7 @@ msgid "Month"
 msgstr "Month"
 
 #: src/components/entities/EntityReportControls.tsx:175
+#: src/components/entities/views/ins-stats-view.tsx:29
 #: src/components/filters/period-filter/PeriodFilter.tsx:243
 msgid "Monthly"
 msgstr "Monthly"
@@ -3617,6 +3770,9 @@ msgstr "Move Up"
 #: src/components/commitments/LinearBudgetFlow.tsx:161
 #: src/components/commitments/LinearBudgetFlow.tsx:204
 #: src/components/commitments/LinearBudgetFlow.tsx:216
+#: src/components/entities/views/ins-stats-view.tsx:153
+#: src/components/entities/views/ins-stats-view.tsx:389
+#: src/components/entities/views/ins-stats-view.tsx:464
 #: src/components/maps/utils.ts:98
 #: src/components/maps/utils.ts:122
 #: src/components/maps/utils.ts:151
@@ -3763,6 +3919,10 @@ msgstr "No conditions added yet. Click the button below to add your first condit
 msgid "No conditions set"
 msgstr "No conditions set"
 
+#: src/components/entities/views/ins-stats-view.tsx:309
+msgid "No county code associated."
+msgstr "No county code associated."
+
 #: src/components/commitments/DetailTable.tsx:530
 msgid "No data available"
 msgstr "No data available"
@@ -3787,7 +3947,7 @@ msgstr "No data available to display commitment evolution."
 msgid "No data available to display financial evolution."
 msgstr "No data available to display financial evolution."
 
-#: src/routes/entities.$cui.lazy.tsx:432
+#: src/routes/entities.$cui.lazy.tsx:433
 msgid "No Data Found"
 msgstr "No Data Found"
 
@@ -3823,7 +3983,7 @@ msgstr "No economic breakdown is available for income."
 msgid "No enabled series data available to display."
 msgstr "No enabled series data available to display."
 
-#: src/routes/entities.$cui.lazy.tsx:434
+#: src/routes/entities.$cui.lazy.tsx:435
 msgid "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 msgstr "No entity details found for CUI: <0>{cui}</0>. It's possible this entity does not exist or has no associated data."
 
@@ -3838,6 +3998,10 @@ msgstr "No Filters Applied"
 #: src/components/entities/LineItemsGroupedSection.tsx:200
 msgid "No grouping available for the selected filter."
 msgstr "No grouping available for the selected filter."
+
+#: src/components/entities/views/ins-stats-view.tsx:452
+msgid "No INS data for this section."
+msgstr "No INS data for this section."
 
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:114
 msgid "No matches yet"
@@ -3854,6 +4018,10 @@ msgstr "No maximum"
 #: src/components/ui/amount-range-picker.tsx:118
 msgid "No minimum"
 msgstr "No minimum"
+
+#: src/components/entities/views/ins-stats-view.tsx:169
+msgid "No observations available for this indicator."
+msgstr "No observations available for this indicator."
 
 #: src/components/charts/components/series-config/CalculationConfig.tsx:225
 msgid "No operands. Add a series or a new calculation."
@@ -3890,6 +4058,10 @@ msgstr "No selling of personal data."
 #: src/components/charts/components/series-config/CalculationConfig.tsx:148
 msgid "No series found."
 msgstr "No series found."
+
+#: src/components/entities/views/ins-stats-view.tsx:321
+msgid "No SIRUTA code associated."
+msgstr "No SIRUTA code associated."
 
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:96
 msgid "No values to replace"
@@ -4136,11 +4308,15 @@ msgstr "Parent"
 msgid "Parent Categories"
 msgstr "Parent Categories"
 
+#: src/components/entities/views/ins-stats-view.tsx:422
+msgid "Partial data"
+msgstr "Partial data"
+
 #: src/components/charts/components/chart-config/SeriesToolbar.tsx:37
 msgid "Paste"
 msgstr "Paste"
 
-#: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:73
+#: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:76
 msgid "Paste data from a spreadsheet. Each line should contain a year and a value, separated by a space or tab."
 msgstr "Paste data from a spreadsheet. Each line should contain a year and a value, separated by a space or tab."
 
@@ -4209,6 +4385,7 @@ msgstr "Per Capita"
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:82
 #: src/components/charts/components/series-config/SeriesFilter.tsx:686
 #: src/components/entities/EntityReportControls.tsx:170
+#: src/components/entities/views/ins-stats-view.tsx:179
 #: src/components/filters/EntityAnalyticsFilter.tsx:467
 #: src/components/filters/MapFilter.tsx:256
 #: src/components/maps/utils.ts:19
@@ -4274,6 +4451,7 @@ msgstr "Poor"
 #: src/components/maps/HeatmapDataTable.tsx:232
 #: src/components/maps/HeatmapDataTable.tsx:453
 #: src/components/maps/utils.ts:120
+#: src/lib/ins/ins-dashboard-config.ts:22
 #: src/routes/entity-analytics.lazy.tsx:236
 msgid "Population"
 msgstr "Population"
@@ -4288,7 +4466,7 @@ msgstr "Population Range"
 msgid "Population vs. Total Amount"
 msgstr "Population vs. Total Amount"
 
-#: src/components/charts/components/views/AnnotationConfigView.tsx:148
+#: src/components/charts/components/views/AnnotationConfigView.tsx:151
 msgid "Position"
 msgstr "Position"
 
@@ -4304,6 +4482,10 @@ msgstr "Preparing your share link..."
 #: src/routes/alerts/new.lazy.tsx:198
 msgid "Preview"
 msgstr "Preview"
+
+#: src/features/notifications/components/alerts/AlertPreviewModal.tsx:24
+msgid "Preview of the alert chart and settings."
+msgstr "Preview of the alert chart and settings."
 
 #: src/features/learning/components/player/LessonPlayer.tsx:579
 msgid "Previous"
@@ -4361,6 +4543,7 @@ msgid "Quarter"
 msgstr "Quarter"
 
 #: src/components/entities/EntityReportControls.tsx:174
+#: src/components/entities/views/ins-stats-view.tsx:28
 #: src/components/filters/period-filter/PeriodFilter.tsx:240
 msgid "Quarterly"
 msgstr "Quarterly"
@@ -4389,7 +4572,7 @@ msgstr "Quiz configuration error"
 msgid "Range"
 msgstr "Range"
 
-#: src/routes/cookies.lazy.tsx:180
+#: src/routes/cookies.lazy.tsx:212
 msgid "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 msgstr "Read our <0>Cookie Policy</0> and <1>Privacy Policy</1>."
 
@@ -4517,7 +4700,7 @@ msgstr "Reporting entity"
 msgid "Reporting filters"
 msgstr "Reporting filters"
 
-#: src/routes/entities.$cui.lazy.tsx:465
+#: src/routes/entities.$cui.lazy.tsx:466
 msgid "Reporting period"
 msgstr "Reporting period"
 
@@ -4525,11 +4708,11 @@ msgstr "Reporting period"
 msgid "Reporting:"
 msgstr "Reporting:"
 
-#: src/hooks/useEntityViews.tsx:44
+#: src/hooks/useEntityViews.tsx:48
 msgid "Reports"
 msgstr "Reports"
 
-#: src/routes/cookies.lazy.tsx:80
+#: src/routes/cookies.lazy.tsx:112
 msgid "Required for core functionality like security and preferences. Always on."
 msgstr "Required for core functionality like security and preferences. Always on."
 
@@ -4628,7 +4811,7 @@ msgstr "Sankey Chart (Aggregated)"
 msgid "Save"
 msgstr "Save"
 
-#: src/routes/cookies.lazy.tsx:163
+#: src/routes/cookies.lazy.tsx:195
 msgid "Save cookie preferences"
 msgstr "Save cookie preferences"
 
@@ -4640,6 +4823,10 @@ msgstr "Save your progress"
 msgid "Saving…"
 msgstr "Saving…"
 
+#: src/lib/ins/ins-dashboard-config.ts:142
+msgid "Schools, students and teachers."
+msgstr "Schools, students and teachers."
+
 #: src/features/learning/components/player/MarkComplete.tsx:94
 msgid "Seal your progress and move closer to becoming a budget expert."
 msgstr "Seal your progress and move closer to becoming a budget expert."
@@ -4648,6 +4835,10 @@ msgstr "Seal your progress and move closer to becoming a budget expert."
 #: src/components/entities/EntityRelationsList.tsx:179
 msgid "Search {0}..."
 msgstr "Search {0}..."
+
+#: src/components/entities/FloatingEntitySearch.tsx:84
+msgid "Search and select an entity to navigate to its page."
+msgstr "Search and select an entity to navigate to its page."
 
 #: src/components/filters/budget-sector-filter/BudgetSectorFilter.tsx:67
 msgid "Search budget sectors"
@@ -4699,7 +4890,7 @@ msgid "Search entity types (ex: Hospital)"
 msgstr "Search entity types (ex: Hospital)"
 
 #: src/components/entities/FloatingEntitySearch.tsx:70
-#: src/components/entities/FloatingEntitySearch.tsx:78
+#: src/components/entities/FloatingEntitySearch.tsx:82
 msgid "Search for another entity"
 msgstr "Search for another entity"
 
@@ -4743,6 +4934,10 @@ msgstr "See also our <0>Privacy Policy</0>."
 msgid "See-through, clear"
 msgstr "See-through, clear"
 
+#: src/components/entities/views/ins-stats-view.tsx:299
+msgid "Select a local entity to view INS Tempo data."
+msgstr "Select a local entity to view INS Tempo data."
+
 #: src/components/alerts/components/AlertEditorView.tsx:240
 msgid "Select a predefined dataset to track"
 msgstr "Select a predefined dataset to track"
@@ -4771,7 +4966,7 @@ msgstr "Select options"
 msgid "Select Path"
 msgstr "Select Path"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:187
+#: src/components/charts/components/views/SeriesConfigView.tsx:190
 msgid "Select Series Type"
 msgstr "Select Series Type"
 
@@ -4806,19 +5001,19 @@ msgstr "Send feedback"
 msgid "September"
 msgstr "September"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:216
+#: src/components/charts/components/views/SeriesConfigView.tsx:219
 msgid "Series Color"
 msgstr "Series Color"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:168
+#: src/components/charts/components/views/SeriesConfigView.tsx:171
 msgid "Series Label"
 msgstr "Series Label"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:83
+#: src/components/charts/components/views/SeriesConfigView.tsx:86
 msgid "Series not found"
 msgstr "Series not found"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:181
+#: src/components/charts/components/views/SeriesConfigView.tsx:184
 msgid "Series Type"
 msgstr "Series Type"
 
@@ -4869,7 +5064,7 @@ msgstr "Show"
 msgid "Show {0} more"
 msgstr "Show {0} more"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:272
+#: src/components/charts/components/views/SeriesConfigView.tsx:275
 msgid "Show advanced settings"
 msgstr "Show advanced settings"
 
@@ -4877,13 +5072,17 @@ msgstr "Show advanced settings"
 msgid "Show all"
 msgstr "Show all"
 
+#: src/components/entities/views/ins-stats-view.tsx:215
+msgid "Show all periods"
+msgstr "Show all periods"
+
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:66
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:199
 msgid "Show Annotations"
 msgstr "Show Annotations"
 
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:63
-#: src/components/charts/components/views/SeriesConfigView.tsx:280
+#: src/components/charts/components/views/SeriesConfigView.tsx:283
 msgid "Show Data Labels"
 msgstr "Show Data Labels"
 
@@ -4912,6 +5111,7 @@ msgid "Show Legend"
 msgstr "Show Legend"
 
 #: src/components/classification-explorer/ClassificationSiblings.tsx:72
+#: src/components/entities/views/ins-stats-view.tsx:215
 #: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:63
 msgid "Show less"
 msgstr "Show less"
@@ -5000,6 +5200,10 @@ msgstr "Sign in to track your learning journey."
 msgid "Skip tour"
 msgstr "Skip tour"
 
+#: src/lib/ins/ins-dashboard-config.ts:191
+msgid "Social and health indicators."
+msgstr "Social and health indicators."
+
 #: src/features/learning/components/interactive/RevenueDistributionGame.tsx:68
 msgid "Social Contrib."
 msgstr "Social Contrib."
@@ -5007,6 +5211,18 @@ msgstr "Social Contrib."
 #: src/components/charts/components/ChartDataError.tsx:232
 msgid "Some data issues were automatically resolved"
 msgstr "Some data issues were automatically resolved"
+
+#: src/components/entities/views/ins-stats-view.tsx:424
+msgid "Some datasets have more observations than the current limit. We display the most recent available periods."
+msgstr "Some datasets have more observations than the current limit. We display the most recent available periods."
+
+#: src/components/entities/views/ins-stats-view.tsx:442
+msgid "Some indicators have no data available for this county."
+msgstr "Some indicators have no data available for this county."
+
+#: src/components/entities/views/ins-stats-view.tsx:444
+msgid "Some indicators have no data available for this locality."
+msgstr "Some indicators have no data available for this locality."
 
 #: src/routes/privacy.lazy.tsx:133
 msgid "Some service providers may process data outside the EU/EEA. All transfers are protected by appropriate safeguards including:"
@@ -5104,7 +5320,7 @@ msgstr "Static dataset"
 msgid "Static Dataset"
 msgstr "Static Dataset"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:194
+#: src/components/charts/components/views/SeriesConfigView.tsx:197
 msgid "Static Series"
 msgstr "Static Series"
 
@@ -5124,7 +5340,7 @@ msgstr "Stay here"
 msgid "Step Successfully Finished"
 msgstr "Step Successfully Finished"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:316
+#: src/components/charts/components/views/SeriesConfigView.tsx:319
 msgid "Strip this prefix from x-axis labels for this series (e.g., 2024-). Helps align yearly and monthly data on a common axis."
 msgstr "Strip this prefix from x-axis labels for this series (e.g., 2024-). Helps align yearly and monthly data on a common axis."
 
@@ -5132,7 +5348,7 @@ msgstr "Strip this prefix from x-axis labels for this series (e.g., 2024-). Help
 msgid "Subcategories"
 msgstr "Subcategories"
 
-#: src/components/charts/components/views/AnnotationConfigView.tsx:139
+#: src/components/charts/components/views/AnnotationConfigView.tsx:142
 msgid "Subject"
 msgstr "Subject"
 
@@ -5140,7 +5356,7 @@ msgstr "Subject"
 msgid "Subscribe to Updates"
 msgstr "Subscribe to Updates"
 
-#: src/components/charts/components/views/AnnotationConfigView.tsx:93
+#: src/components/charts/components/views/AnnotationConfigView.tsx:96
 msgid "Subtitle"
 msgstr "Subtitle"
 
@@ -5305,7 +5521,7 @@ msgstr "The state total claim is <0>{0}</0>."
 msgid "The Step Between Budget and Payment"
 msgstr "The Step Between Budget and Payment"
 
-#: src/routes/entities.$cui.lazy.tsx:419
+#: src/routes/entities.$cui.lazy.tsx:420
 msgid "There was a problem fetching the details for CUI: <0>{cui}</0>."
 msgstr "There was a problem fetching the details for CUI: <0>{cui}</0>."
 
@@ -5394,7 +5610,7 @@ msgid "Tip: Copy/Cut/Paste with ⌘/Ctrl+C, X, V. Duplicate with ⌘/Ctrl+D."
 msgstr "Tip: Copy/Cut/Paste with ⌘/Ctrl+C, X, V. Duplicate with ⌘/Ctrl+D."
 
 #: src/components/alerts/components/AlertEditorView.tsx:136
-#: src/components/charts/components/views/AnnotationConfigView.tsx:79
+#: src/components/charts/components/views/AnnotationConfigView.tsx:82
 msgid "Title"
 msgstr "Title"
 
@@ -5418,11 +5634,11 @@ msgstr "To Pay"
 msgid "To the maximum extent permitted by applicable law, Claudiu Constantin Bogdan and any owners, contributors, and affiliates shall not be liable for any direct, indirect, incidental, special, consequential, or exemplary damages, including but not limited to, damages for loss of profits, revenue, data, goodwill, or other intangible losses, resulting from: (i) your access to, use of, or inability to use the Service; (ii) any reliance on the data, content, or visualizations presented by the Service, regardless of any errors, omissions, or inaccuracies therein; (iii) any financial, professional, personal, or other loss or damage incurred as a result of using the information from the Service; or (iv) any unauthorized access to or use of our servers and any personal information stored therein. This limitation applies whether the alleged liability is based on contract, tort, negligence, strict liability, or any other basis, even if we have been advised of the possibility of such damage. Your sole and exclusive remedy for any dispute with us is to stop using the Service."
 msgstr "To the maximum extent permitted by applicable law, Claudiu Constantin Bogdan and any owners, contributors, and affiliates shall not be liable for any direct, indirect, incidental, special, consequential, or exemplary damages, including but not limited to, damages for loss of profits, revenue, data, goodwill, or other intangible losses, resulting from: (i) your access to, use of, or inability to use the Service; (ii) any reliance on the data, content, or visualizations presented by the Service, regardless of any errors, omissions, or inaccuracies therein; (iii) any financial, professional, personal, or other loss or damage incurred as a result of using the information from the Service; or (iv) any unauthorized access to or use of our servers and any personal information stored therein. This limitation applies whether the alleged liability is based on contract, tort, negligence, strict liability, or any other basis, even if we have been advised of the possibility of such damage. Your sole and exclusive remedy for any dispute with us is to stop using the Service."
 
-#: src/routes/cookies.lazy.tsx:120
+#: src/routes/cookies.lazy.tsx:152
 msgid "Toggle analytics cookies"
 msgstr "Toggle analytics cookies"
 
-#: src/routes/cookies.lazy.tsx:144
+#: src/routes/cookies.lazy.tsx:176
 msgid "Toggle enhanced error reporting"
 msgstr "Toggle enhanced error reporting"
 
@@ -5473,6 +5689,7 @@ msgstr "total"
 #: src/components/commitments/DetailTable.tsx:710
 #: src/components/common/NormalizationSelector.tsx:21
 #: src/components/entities/EntityReportControls.tsx:267
+#: src/components/entities/views/ins-stats-view.tsx:71
 #: src/components/entities/views/MapView.tsx:166
 #: src/components/filters/normalization-filter/NormalizationFilter.tsx:13
 #: src/components/normalization/normalization-mode-select.tsx:30
@@ -5517,13 +5734,17 @@ msgstr "Total Revenues"
 msgid "Total Spending"
 msgstr "Total Spending"
 
-#: src/components/entities/FinancialDataCard.tsx:91
+#: src/components/entities/FinancialDataCard.tsx:103
 msgid "Total:"
 msgstr "Total:"
 
 #: src/features/learning/components/interactive/GuidedPlatformTour.tsx:232
 msgid "Tour Complete!"
 msgstr "Tour Complete!"
+
+#: src/lib/ins/ins-dashboard-config.ts:31
+msgid "Trade balance"
+msgstr "Trade balance"
 
 #: src/components/entities/EntityLineItemsTabs.tsx:130
 #: src/components/entities/EntityLineItemsTabs.tsx:154
@@ -5539,6 +5760,10 @@ msgstr "Transfers to Subordinate Institutions"
 #: src/components/footer/ChatFab.tsx:29
 msgid "Transparenta.eu – Support"
 msgstr "Transparenta.eu – Support"
+
+#: src/lib/ins/ins-dashboard-config.ts:136
+msgid "Transport, roads and local networks."
+msgstr "Transport, roads and local networks."
 
 #: src/components/classification-explorer/ClassificationExplorer.tsx:220
 msgid "Tree view"
@@ -5610,6 +5835,10 @@ msgstr "UAT: Yes"
 msgid "UATs"
 msgstr "UATs"
 
+#: src/components/entities/views/ins-stats-view.tsx:63
+msgid "Unavailable"
+msgstr "Unavailable"
+
 #: src/components/budget-explorer/FilteredSpendingInfo.tsx:57
 #: src/components/budget-explorer/SpendingBreakdown.tsx:51
 msgid "Understanding the consolidated general budget spending"
@@ -5619,6 +5848,10 @@ msgstr "Understanding the consolidated general budget spending"
 msgid "Undo successful"
 msgstr "Undo successful"
 
+#: src/lib/ins/ins-dashboard-config.ts:24
+msgid "Unemployment rate"
+msgstr "Unemployment rate"
+
 #: src/features/learning/components/interactive/VATReformCard.tsx:32
 msgid "Unified"
 msgstr "Unified"
@@ -5627,6 +5860,12 @@ msgstr "Unified"
 #: src/components/charts/components/series-config/UnitInput.tsx:28
 msgid "Unit"
 msgstr "Unit"
+
+#: src/components/entities/views/ins-stats-view.tsx:39
+#: src/components/entities/views/ins-stats-view.tsx:390
+#: src/components/entities/views/ins-stats-view.tsx:467
+msgid "Unknown"
+msgstr "Unknown"
 
 #: src/routes/entity-analytics.lazy.tsx:209
 msgid "Unknown error"
@@ -5698,15 +5937,15 @@ msgstr "Untitled Series"
 msgid "error.updateAvailableTitle"
 msgstr "Update Available"
 
-#: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:81
+#: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:84
 msgid "Update Data"
 msgstr "Update Data"
 
-#: src/routes/cookies.lazy.tsx:175
+#: src/routes/cookies.lazy.tsx:207
 msgid "Updated:"
 msgstr "Updated:"
 
-#: src/routes/cookies.lazy.tsx:114
+#: src/routes/cookies.lazy.tsx:146
 msgid "Usage analytics"
 msgstr "Usage analytics"
 
@@ -5743,8 +5982,9 @@ msgstr "User responsibilities and assumption of risk"
 msgid "Utilization"
 msgstr "Utilization"
 
-#: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:92
+#: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:95
 #: src/components/charts/components/series-config/CustomSeriesValueEditor.tsx:38
+#: src/components/entities/views/ins-stats-view.tsx:180
 msgid "Value"
 msgstr "Value"
 
@@ -5795,9 +6035,9 @@ msgstr "View all reports"
 msgid "View as Chart"
 msgstr "View as Chart"
 
-#: src/components/charts/components/views/AnnotationConfigView.tsx:73
+#: src/components/charts/components/views/AnnotationConfigView.tsx:76
 #: src/components/charts/components/views/ChartConfigView.tsx:45
-#: src/components/charts/components/views/SeriesConfigView.tsx:157
+#: src/components/charts/components/views/SeriesConfigView.tsx:160
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:131
 msgid "View Chart"
 msgstr "View Chart"
@@ -5940,11 +6180,11 @@ msgstr "Wipe All Data?"
 msgid "Without Transfers"
 msgstr "Without Transfers"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:314
+#: src/components/charts/components/views/SeriesConfigView.tsx:317
 msgid "X-Axis Prefix To Remove"
 msgstr "X-Axis Prefix To Remove"
 
-#: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:91
+#: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:94
 #: src/components/commitments/commitments-trends.tsx:191
 #: src/components/entities/EntityFinancialTrends.tsx:100
 #: src/components/entities/EntityReportControls.tsx:206
@@ -5969,7 +6209,7 @@ msgstr "Yes"
 msgid "You"
 msgstr "You"
 
-#: src/routes/cookies.lazy.tsx:91
+#: src/routes/cookies.lazy.tsx:123
 msgid "You are signed in. Authentication cookies (Clerk) are essential and required to keep you signed in. Deleting them will sign you out."
 msgstr "You are signed in. Authentication cookies (Clerk) are essential and required to keep you signed in. Deleting them will sign you out."
 

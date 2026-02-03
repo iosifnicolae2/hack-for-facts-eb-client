@@ -19,17 +19,17 @@ export interface InsDashboardSection {
 }
 
 export const INS_SUMMARY_METRICS = [
-  { code: 'POP107D', label: t`Populație` },
-  { code: 'FOM104D', label: t`Salariați (medie)` },
-  { code: 'SOM101F', label: t`Rata șomajului` },
-  { code: 'LOC101B', label: t`Locuințe existente` },
+  { code: 'POP107D', label: t`Population` },
+  { code: 'FOM104D', label: t`Employees (average)` },
+  { code: 'SOM101F', label: t`Unemployment rate` },
+  { code: 'LOC101B', label: t`Existing dwellings` },
 ] as const;
 
 export const INS_COUNTY_SUMMARY_METRICS = [
-  { code: 'EXP101J', label: t`Exporturi (FOB)` },
-  { code: 'EXP102J', label: t`Importuri (CIF)` },
-  { code: 'ZDF1123', label: t`Sold balanță comercială` },
-  { code: 'TOE1271', label: t`Spații verzi` },
+  { code: 'EXP101J', label: t`Exports (FOB)` },
+  { code: 'EXP102J', label: t`Imports (CIF)` },
+  { code: 'ZDF1123', label: t`Trade balance` },
+  { code: 'TOE1271', label: t`Green spaces` },
 ] as const;
 
 const CORE_INDICATOR_CODES = [
@@ -126,26 +126,26 @@ export function buildInsDashboardSections(options: {
   const sections: InsDashboardSection[] = [
     {
       id: 'core',
-      label: t`Indicatori esențiali`,
-      description: t`Date de bază despre populație, muncă și locuire.`,
+      label: t`Key indicators`,
+      description: t`Basic data on population, employment and housing.`,
       datasetCodes: CORE_INDICATOR_CODES,
     },
     {
       id: 'infrastructure',
-      label: t`Infrastructură & utilități`,
-      description: t`Transport, drumuri și rețele locale.`,
+      label: t`Infrastructure & utilities`,
+      description: t`Transport, roads and local networks.`,
       datasetCodes: INFRASTRUCTURE_CODES,
     },
     {
       id: 'education',
-      label: t`Educație`,
-      description: t`Școli, elevi și cadre didactice.`,
+      label: t`Education`,
+      description: t`Schools, students and teachers.`,
       datasetCodes: EDUCATION_CODES,
     },
     {
       id: 'health',
-      label: t`Sănătate & social`,
-      description: t`Spitale, paturi și personal medical.`,
+      label: t`Health & social`,
+      description: t`Hospitals, beds and medical staff.`,
       datasetCodes: HEALTH_CODES,
     },
   ];
@@ -153,8 +153,8 @@ export function buildInsDashboardSections(options: {
   if (options.includeCulture) {
     sections.push({
       id: 'culture',
-      label: t`Cultură & turism`,
-      description: t`Biblioteci, muzee și activitate turistică.`,
+      label: t`Culture & tourism`,
+      description: t`Libraries, museums and tourist activity.`,
       datasetCodes: CULTURE_TOURISM_CODES,
     });
   }
@@ -162,8 +162,8 @@ export function buildInsDashboardSections(options: {
   if (options.includeAgriculture) {
     sections.push({
       id: 'agriculture',
-      label: t`Agricultură`,
-      description: t`Suprafețe agricole și producție.`,
+      label: t`Agriculture`,
+      description: t`Agricultural land and production.`,
       datasetCodes: AGRICULTURE_CODES,
     });
   }
@@ -175,26 +175,26 @@ export function buildInsCountyDashboardSections(): InsDashboardSection[] {
   return [
     {
       id: 'trade',
-      label: t`Comerț exterior`,
-      description: t`Exporturi, importuri și sold comercial.`,
+      label: t`Foreign trade`,
+      description: t`Exports, imports and trade balance.`,
       datasetCodes: COUNTY_TRADE_CODES,
     },
     {
       id: 'environment',
-      label: t`Mediu & intervenții`,
-      description: t`Spații verzi, intervenții IGSU și măsuri de protecție.`,
+      label: t`Environment & interventions`,
+      description: t`Green spaces, IGSU interventions and protection measures.`,
       datasetCodes: COUNTY_ENVIRONMENT_CODES,
     },
     {
       id: 'social',
-      label: t`Sănătate & social`,
-      description: t`Indicatori sociali și de sănătate.`,
+      label: t`Health & social`,
+      description: t`Social and health indicators.`,
       datasetCodes: COUNTY_SOCIAL_CODES,
     },
     {
       id: 'agriculture',
-      label: t`Agricultură & terenuri`,
-      description: t`Prețuri agricole și suprafețe amenajate.`,
+      label: t`Agriculture & land`,
+      description: t`Agricultural prices and developed areas.`,
       datasetCodes: COUNTY_AGRICULTURE_CODES,
     },
   ];
