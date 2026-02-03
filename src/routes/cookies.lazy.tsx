@@ -1,4 +1,4 @@
-import { createLazyFileRoute, Link, useNavigate, useSearch } from '@tanstack/react-router'
+import { createLazyFileRoute, Link, useNavigate, useSearch, useRouter } from '@tanstack/react-router'
 import { z } from 'zod'
 import { useEffect, useState, useCallback } from 'react'
 import { getConsent, setConsent, type ConsentPreferences, onConsentChange, acceptAll, declineAll } from '@/lib/consent'
@@ -8,19 +8,42 @@ import { Button } from '@/components/ui/button'
 import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
 import { useAuth } from '@/lib/auth'
+import { getSiteUrl } from '@/config/env'
 
 export const Route = createLazyFileRoute('/cookies')({
   component: CookieSettingsPage,
 })
 
+type RouterInstance = ReturnType<typeof useRouter>
+type ParseLocationInput = Parameters<RouterInstance['parseLocation']>[0]
+
 const SearchSchema = z.object({
   redirect: z.string().optional(),
 })
+
+const isSafeRedirect = (value?: string): value is string =>
+  typeof value === 'string' && value.startsWith('/') && !value.startsWith('//')
+
+const buildRedirectLocation = (router: RouterInstance, redirect: string) => {
+  const origin = globalThis.location?.origin ?? getSiteUrl()
+  const url = new URL(redirect, origin)
+  const locationState = router.state.location?.state ?? { __TSR_index: 0 }
+  const location: ParseLocationInput = {
+    href: `${url.pathname}${url.search}${url.hash}`,
+    pathname: url.pathname,
+    search: url.search,
+    hash: url.hash,
+    state: locationState,
+  }
+
+  return router.parseLocation(location)
+}
 
 function CookieSettingsPage() {
   const [prefs, setPrefs] = useState<ConsentPreferences>(getConsent())
   const { isEnabled: isAuthEnabled, isSignedIn } = useAuth()
   const navigate = useNavigate({ from: '/cookies' })
+  const router = useRouter()
   const rawSearch = useSearch({ from: '/cookies' })
   const { redirect } = SearchSchema.parse(rawSearch)
 
@@ -37,17 +60,26 @@ function CookieSettingsPage() {
   }, [])
 
   const handleAnalyticsToggle = useCallback((checked: boolean) => {
-    updateConsent({ analytics: Boolean(checked) })
+    updateConsent({ analytics: checked })
   }, [updateConsent])
 
   const handleSentryToggle = useCallback((checked: boolean) => {
-    updateConsent({ sentry: Boolean(checked) })
+    updateConsent({ sentry: checked })
   }, [updateConsent])
 
   const navigateBack = useCallback(() => {
-    const target = redirect && redirect.startsWith('/') ? redirect : '/'
-    navigate({ to: target as any })
-  }, [navigate, redirect])
+    if (!isSafeRedirect(redirect)) {
+      navigate({ to: '/' })
+      return
+    }
+
+    try {
+      const parsed = buildRedirectLocation(router, redirect)
+      navigate({ href: parsed.href })
+    } catch {
+      navigate({ to: '/' })
+    }
+  }, [navigate, redirect, router])
 
   const handleAllowEssentialOnly = useCallback(() => {
     declineAll()

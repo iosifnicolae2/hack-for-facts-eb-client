@@ -38,6 +38,27 @@ import { vi } from 'vitest'
  * Use this to assert navigation calls in your tests.
  */
 export const mockNavigate = vi.fn()
+const defaultHistoryState = { __TSR_index: 0 }
+const defaultLocation = {
+  pathname: '/',
+  search: '',
+  searchStr: '',
+  hash: '',
+  state: defaultHistoryState,
+}
+
+export const mockParseLocation = (location: { href: string; state?: Record<string, unknown> }) => {
+  const url = new URL(location.href, 'http://localhost')
+  return {
+    href: url.pathname + url.search + url.hash,
+    publicHref: location.href,
+    pathname: url.pathname,
+    searchStr: url.search,
+    search: Object.fromEntries(url.searchParams.entries()),
+    hash: url.hash.replace('#', ''),
+    state: location.state ?? defaultHistoryState,
+  }
+}
 
 /**
  * Internal mutable state for router mocks.
@@ -94,14 +115,15 @@ export const setupRouterMocks = () => {
     useSearch: () => mockState.searchParams,
     useParams: () => mockState.routeParams,
     useLocation: () => ({
-      pathname: '/',
-      search: '',
-      hash: '',
-      state: {},
+      pathname: defaultLocation.pathname,
+      search: defaultLocation.search,
+      hash: defaultLocation.hash,
+      state: defaultLocation.state,
     }),
     useRouter: () => ({
       navigate: mockNavigate,
-      state: { location: { pathname: '/' } },
+      parseLocation: mockParseLocation,
+      state: { location: defaultLocation },
     }),
     Link: ({
       children,
@@ -130,14 +152,15 @@ export const routerMockConfig = {
   useSearch: () => mockState.searchParams,
   useParams: () => mockState.routeParams,
   useLocation: () => ({
-    pathname: '/',
-    search: '',
-    hash: '',
-    state: {},
+    pathname: defaultLocation.pathname,
+    search: defaultLocation.search,
+    hash: defaultLocation.hash,
+    state: defaultLocation.state,
   }),
   useRouter: () => ({
     navigate: mockNavigate,
-    state: { location: { pathname: '/' } },
+    parseLocation: mockParseLocation,
+    state: { location: defaultLocation },
   }),
   Link: ({
     children,
