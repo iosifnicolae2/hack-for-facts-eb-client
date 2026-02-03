@@ -99,7 +99,7 @@ function ensurePostHogInitialized(): void {
       capture_dead_clicks: false,
       capture_exceptions: false,
       capture_pageview: false,
-      capture_pageleave: false,
+      capture_pageleave: true,
       disable_session_recording: true,
       person_profiles: env.VITE_POSTHOG_PERSON_PROFILES ?? "identified_only",
     });
