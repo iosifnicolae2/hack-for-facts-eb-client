@@ -29,6 +29,8 @@ const DOM_NODE_REMOVAL_ERROR_MARKERS = [
   "not a child of this node",
   "notfounderror",
 ] as const;
+const CLERK_REDIRECT_URL_DEPRECATION_DOC_ANCHOR =
+  "clerk.com/docs/guides/custom-redirects#redirect-url-props";
 
 /**
  * Disable Sentry without tearing down the app.
@@ -186,6 +188,13 @@ export function initSentry(router: unknown): void {
             return null;
           }
           const normalizedMessage = message.toLowerCase();
+          // Clerk console warning noise (known deprecation emitted by ClerkJS)
+          if (
+            normalizedMessage.startsWith("clerk:") &&
+            normalizedMessage.includes(CLERK_REDIRECT_URL_DEPRECATION_DOC_ANCHOR)
+          ) {
+            return null;
+          }
           if (
             CSS_CROSS_ORIGIN_ERROR_MARKERS.some((marker) =>
               normalizedMessage.includes(marker)
