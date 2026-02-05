@@ -29,6 +29,7 @@ const DOM_NODE_REMOVAL_ERROR_MARKERS = [
   "not a child of this node",
   "notfounderror",
 ] as const;
+const FACEBOOK_IN_APP_BROWSER_MESSAGE_PREFIX = "fbnav";
 const CLERK_REDIRECT_URL_DEPRECATION_DOC_ANCHOR =
   "clerk.com/docs/guides/custom-redirects#redirect-url-props";
 
@@ -183,11 +184,14 @@ export function initSentry(router: unknown): void {
         // Filter out Facebook in-app browser telemetry noise
         const message = event.message || event.exception?.values?.[0]?.value;
         if (message && typeof message === "string") {
-          // Facebook browser events: FBNavLoadEventEnd, FBNavLoadEventStart, etc.
+          // Facebook in-app browser telemetry noise (e.g. FBNavCLS:0, FBNavLoadEventEnd:...)
           if (message.match(/^FB[A-Z][a-zA-Z]+Event(Start|End):/)) {
             return null;
           }
           const normalizedMessage = message.toLowerCase();
+          if (normalizedMessage.startsWith(FACEBOOK_IN_APP_BROWSER_MESSAGE_PREFIX)) {
+            return null;
+          }
           // Clerk console warning noise (known deprecation emitted by ClerkJS)
           if (
             normalizedMessage.startsWith("clerk:") &&
