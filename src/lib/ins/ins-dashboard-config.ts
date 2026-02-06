@@ -21,15 +21,15 @@ export interface InsDashboardSection {
 export const INS_SUMMARY_METRICS = [
   { code: 'POP107D', label: t`Population` },
   { code: 'FOM104D', label: t`Employees (average)` },
-  { code: 'SOM101F', label: t`Unemployment rate` },
+  { code: 'SOM101F', label: t`Registered unemployment share` },
   { code: 'LOC101B', label: t`Existing dwellings` },
 ] as const;
 
 export const INS_COUNTY_SUMMARY_METRICS = [
-  { code: 'EXP101J', label: t`Exports (FOB)` },
-  { code: 'EXP102J', label: t`Imports (CIF)` },
-  { code: 'ZDF1123', label: t`Trade balance` },
-  { code: 'TOE1271', label: t`Green spaces` },
+  { code: 'POP107D', label: t`Population` },
+  { code: 'FOM104D', label: t`Employees (average)` },
+  { code: 'SOM103A', label: t`Unemployment rate` },
+  { code: 'LOC101B', label: t`Existing dwellings` },
 ] as const;
 
 const CORE_INDICATOR_CODES = [

@@ -23,9 +23,35 @@ export interface InsUnit {
 }
 
 export interface InsClassification {
+  id?: string | null;
   type_code?: string | null;
+  type_name_ro?: string | null;
+  type_name_en?: string | null;
   code?: string | null;
   name_ro?: string | null;
+  name_en?: string | null;
+  sort_order?: number | null;
+}
+
+export type InsDimensionType = 'TEMPORAL' | 'TERRITORIAL' | 'CLASSIFICATION' | 'UNIT_OF_MEASURE';
+
+export interface InsClassificationTypeRef {
+  code: string;
+  name_ro?: string | null;
+  name_en?: string | null;
+}
+
+export interface InsDatasetDimension {
+  index: number;
+  type: InsDimensionType;
+  label_ro?: string | null;
+  label_en?: string | null;
+  classification_type?: InsClassificationTypeRef | null;
+}
+
+export interface InsDatasetDimensionsResult {
+  datasetCode: string;
+  dimensions: InsDatasetDimension[];
 }
 
 export interface InsObservation {
@@ -59,6 +85,7 @@ export interface InsDataset {
   context_name_en?: string | null;
   context_path?: string | null;
   metadata?: Record<string, unknown> | null;
+  dimensions?: InsDatasetDimension[] | null;
 }
 
 export interface InsUatDatasetGroup {
@@ -100,4 +127,65 @@ export interface InsObservationFilterInput {
     end: string;
   };
   hasValue?: boolean;
+}
+
+export interface InsContext {
+  id: string;
+  code: string;
+  name_ro?: string | null;
+  name_en?: string | null;
+  name_ro_markdown?: string | null;
+  name_en_markdown?: string | null;
+  level?: number | null;
+  parent_id?: number | null;
+  parent_code?: string | null;
+  path: string;
+  matrix_count?: number | null;
+}
+
+export interface InsContextFilterInput {
+  search?: string;
+  level?: number;
+  parentCode?: string;
+  rootContextCode?: string;
+}
+
+export interface InsContextConnection {
+  nodes: InsContext[];
+  pageInfo: PageInfo;
+}
+
+export interface InsDatasetFilterInput {
+  search?: string;
+  codes?: string[];
+  contextCode?: string;
+  rootContextCode?: string;
+  periodicity?: InsPeriodicity[];
+  hasUatData?: boolean;
+  hasCountyData?: boolean;
+}
+
+export interface InsDatasetConnection {
+  nodes: InsDataset[];
+  pageInfo: PageInfo;
+}
+
+export interface InsEntitySelectorInput {
+  sirutaCode?: string;
+  territoryCode?: string;
+  territoryLevel?: InsTerritoryLevel;
+}
+
+export type InsLatestMatchStrategy =
+  | 'PREFERRED_CLASSIFICATION'
+  | 'TOTAL_FALLBACK'
+  | 'REPRESENTATIVE_FALLBACK'
+  | 'NO_DATA';
+
+export interface InsLatestDatasetValue {
+  dataset: InsDataset;
+  observation?: InsObservation | null;
+  latestPeriod?: string | null;
+  matchStrategy: InsLatestMatchStrategy;
+  hasData: boolean;
 }

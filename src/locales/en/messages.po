@@ -678,6 +678,10 @@ msgstr "All processors are bound by data protection agreements and GDPR-complian
 msgid "All recorded revenue inflows"
 msgstr "All recorded revenue inflows"
 
+#: src/components/entities/views/ins-stats-view.tsx:1548
+msgid "All sections"
+msgstr "All sections"
+
 #: src/components/entities/EntityReports.tsx:168
 #: src/components/entities/EntityReports.tsx:171
 msgid "All types"
@@ -774,7 +778,7 @@ msgstr "Annotation not found"
 msgid "Annotations"
 msgstr "Annotations"
 
-#: src/components/entities/views/ins-stats-view.tsx:27
+#: src/components/entities/views/ins-stats-view.tsx:70
 msgid "Annual"
 msgstr "Annual"
 
@@ -952,6 +956,14 @@ msgstr "Basic data on population, employment and housing."
 msgid "Basic security logs are kept for a short period to protect accounts."
 msgstr "Basic security logs are kept for a short period to protect accounts."
 
+#: src/components/entities/views/ins-stats-view.tsx:503
+msgid "Birth rate per 1,000"
+msgstr "Birth rate per 1,000"
+
+#: src/components/entities/views/ins-stats-view.tsx:414
+msgid "Birth, mortality, and migration balance."
+msgstr "Birth, mortality, and migration balance."
+
 #: src/components/maps/HeatmapDataTable.tsx:448
 #: src/routes/entity-analytics.lazy.tsx:231
 msgid "Both"
@@ -1101,11 +1113,11 @@ msgstr "Calculations assume a basket of 40% essential goods (11% VAT) and 60% ge
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/components/entities/views/ins-stats-view.tsx:311
+#: src/components/entities/views/ins-stats-view.tsx:1328
 msgid "Cannot load INS indicators without the county code."
 msgstr "Cannot load INS indicators without the county code."
 
-#: src/components/entities/views/ins-stats-view.tsx:323
+#: src/components/entities/views/ins-stats-view.tsx:1340
 msgid "Cannot load INS indicators without the locality SIRUTA code."
 msgstr "Cannot load INS indicators without the locality SIRUTA code."
 
@@ -1285,6 +1297,7 @@ msgstr "Close Search"
 msgid "Close!"
 msgstr "Close!"
 
+#: src/components/entities/views/ins-stats-view.tsx:1748
 #: src/features/learning/components/interactive/ExecutionRateChart.tsx:145
 msgid "Code"
 msgstr "Code"
@@ -1292,6 +1305,11 @@ msgstr "Code"
 #: src/components/classification-explorer/ClassificationActions.tsx:26
 msgid "Code copied to clipboard"
 msgstr "Code copied to clipboard"
+
+#: src/components/entities/views/ins-stats-view.tsx:1519
+#: src/components/entities/views/ins-stats-view.tsx:1521
+msgid "Collapse explorer to side panel"
+msgstr "Collapse explorer to side panel"
 
 #: src/components/charts/components/views/AnnotationConfigView.tsx:112
 msgid "Color"
@@ -1395,8 +1413,8 @@ msgstr "Concerning"
 msgid "Condition {0}"
 msgstr "Condition {0}"
 
-#: src/components/entities/views/ins-stats-view.tsx:34
-#: src/components/entities/views/ins-stats-view.tsx:35
+#: src/components/entities/views/ins-stats-view.tsx:77
+#: src/components/entities/views/ins-stats-view.tsx:78
 msgid "Confidential"
 msgstr "Confidential"
 
@@ -1472,6 +1490,10 @@ msgstr "Contact Support"
 #: src/routes/terms.lazy.tsx:104
 msgid "Contact us at contact@transparenta.eu See also our <0>Privacy Policy</0> and <1>Cookie Policy</1>."
 msgstr "Contact us at contact@transparenta.eu See also our <0>Privacy Policy</0> and <1>Cookie Policy</1>."
+
+#: src/components/entities/views/ins-stats-view.tsx:1773
+msgid "Context"
+msgstr "Context"
 
 #: src/features/learning/components/cards/LearningPathCard.tsx:24
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:130
@@ -1585,7 +1607,11 @@ msgstr "Could Not Load Entities"
 msgid "Could Not Load Funding Sources"
 msgstr "Could Not Load Funding Sources"
 
-#: src/components/entities/views/ins-stats-view.tsx:333
+#: src/components/entities/views/ins-stats-view.tsx:1811
+msgid "Could not load historical data"
+msgstr "Could not load historical data"
+
+#: src/components/entities/views/ins-stats-view.tsx:1351
 msgid "Could not load INS data"
 msgstr "Could not load INS data"
 
@@ -1615,11 +1641,11 @@ msgstr "Counties"
 msgid "County"
 msgstr "County"
 
-#: src/components/entities/views/ins-stats-view.tsx:346
+#: src/components/entities/views/ins-stats-view.tsx:1364
 msgid "County level"
 msgstr "County level"
 
-#: src/components/entities/views/ins-stats-view.tsx:367
+#: src/components/entities/views/ins-stats-view.tsx:1383
 #: src/components/maps/utils.ts:98
 #: src/components/maps/utils.ts:151
 msgid "County:"
@@ -1632,6 +1658,10 @@ msgstr "Course Content"
 #: src/features/learning/components/layout/LearningLayout.tsx:125
 msgid "Course Progress"
 msgstr "Course Progress"
+
+#: src/components/entities/views/ins-stats-view.tsx:1759
+msgid "Coverage"
+msgstr "Coverage"
 
 #: src/components/entities/views/RelatedChartsView.tsx:59
 msgid "Create a chart for this entity to start tracking its financial evolution."
@@ -1734,6 +1764,10 @@ msgstr "Data collected with an account:"
 msgid "Data collected without an account:"
 msgstr "Data collected without an account:"
 
+#: src/components/entities/views/ins-stats-view.tsx:1856
+msgid "Data is sourced from INS Tempo. Reuse and redistribution are subject to INS terms and license."
+msgstr "Data is sourced from INS Tempo. Reuse and redistribution are subject to INS terms and license."
+
 #: src/components/charts/components/views/SeriesConfigView.tsx:299
 msgid "Data Label Offset"
 msgstr "Data Label Offset"
@@ -1797,6 +1831,14 @@ msgstr "Data View"
 msgid "Data: Eurostat 2024 (Provisional)"
 msgstr "Data: Eurostat 2024 (Provisional)"
 
+#: src/components/entities/views/ins-stats-view.tsx:1511
+msgid "Dataset explorer"
+msgstr "Dataset explorer"
+
+#: src/components/entities/views/ins-stats-view.tsx:1569
+msgid "datasets"
+msgstr "datasets"
+
 #: src/components/filters/period-filter/PeriodFilter.tsx:253
 msgid "Dates"
 msgstr "Dates"
@@ -1810,6 +1852,10 @@ msgstr "day"
 #: src/features/learning/utils/streak.ts:124
 msgid "days"
 msgstr "days"
+
+#: src/components/entities/views/ins-stats-view.tsx:509
+msgid "Death rate per 1,000"
+msgstr "Death rate per 1,000"
 
 #: src/components/commitments/commitments-trends.tsx:188
 #: src/components/entities/EntityFinancialTrends.tsx:98
@@ -1867,12 +1913,21 @@ msgstr "Delete Series"
 msgid "Delete this chart?"
 msgstr "Delete this chart?"
 
+#: src/components/entities/views/ins-stats-view.tsx:413
+msgid "Demography"
+msgstr "Demography"
+
 #: src/components/maps/HeatmapDataTable.tsx:441
 #: src/routes/entity-analytics.lazy.tsx:224
 msgid "Density"
 msgstr "Density"
 
+#: src/components/entities/views/ins-stats-view.tsx:1446
+msgid "Derived indicators"
+msgstr "Derived indicators"
+
 #: src/components/alerts/components/AlertEditorView.tsx:148
+#: src/components/entities/views/ins-stats-view.tsx:1778
 msgid "Description"
 msgstr "Description"
 
@@ -1911,7 +1966,7 @@ msgstr "Detailed Categories"
 msgid "Detailed Line Items Breakdown"
 msgstr "Detailed Line Items Breakdown"
 
-#: src/components/entities/views/ins-stats-view.tsx:181
+#: src/components/entities/views/ins-stats-view.tsx:1889
 msgid "Details"
 msgstr "Details"
 
@@ -1931,6 +1986,10 @@ msgstr "Development"
 #: src/components/budget-explorer/RevenueBreakdown.tsx:62
 msgid "Development section transfers"
 msgstr "Development section transfers"
+
+#: src/components/entities/views/ins-stats-view.tsx:1765
+msgid "Dimensions"
+msgstr "Dimensions"
 
 #: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:57
 msgid "Disable All Series"
@@ -2001,6 +2060,10 @@ msgstr "Duplicate Series"
 msgid "Duration"
 msgstr "Duration"
 
+#: src/components/entities/views/ins-stats-view.tsx:526
+msgid "Dwellings per 1,000"
+msgstr "Dwellings per 1,000"
+
 #: src/components/alerts/components/AlertEditorView.tsx:142
 msgid "e.g. Expense growth alert"
 msgstr "e.g. Expense growth alert"
@@ -2026,6 +2089,7 @@ msgstr "Ec"
 #: src/components/entities/views/Overview.tsx:305
 #: src/components/entities/views/TrendsView.tsx:223
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:118
+#: src/lib/ins/ins-metric-registry.ts:108
 #: src/routes/budget-explorer.lazy.tsx:502
 msgid "Economic"
 msgstr "Economic"
@@ -2062,6 +2126,10 @@ msgstr "Economic prefix"
 #: src/components/filters/EntityAnalyticsFilter.tsx:726
 msgid "Economic Prefixes"
 msgstr "Economic Prefixes"
+
+#: src/components/entities/views/ins-stats-view.tsx:417
+msgid "Economy & housing"
+msgstr "Economy & housing"
 
 #: src/features/notifications/components/alerts/AlertCard.tsx:89
 msgid "Edit alert"
@@ -2112,8 +2180,15 @@ msgid "Employees"
 msgstr "Employees"
 
 #: src/lib/ins/ins-dashboard-config.ts:23
+#: src/lib/ins/ins-dashboard-config.ts:30
+#: src/lib/ins/ins-metric-registry.ts:24
+#: src/lib/ins/ins-metric-registry.ts:30
 msgid "Employees (average)"
 msgstr "Employees (average)"
+
+#: src/components/entities/views/ins-stats-view.tsx:525
+msgid "Employees per 1,000"
+msgstr "Employees per 1,000"
 
 #: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:53
 msgid "Enable All Series"
@@ -2224,6 +2299,10 @@ msgstr "Entity type"
 #: src/components/filters/MapFilter.tsx:514
 msgid "Entity Type"
 msgstr "Entity Type"
+
+#: src/lib/ins/ins-metric-registry.ts:111
+msgid "Environment"
+msgstr "Environment"
 
 #: src/lib/ins/ins-dashboard-config.ts:184
 msgid "Environment & interventions"
@@ -2413,8 +2492,16 @@ msgid "Execution %"
 msgstr "Execution %"
 
 #: src/lib/ins/ins-dashboard-config.ts:25
+#: src/lib/ins/ins-dashboard-config.ts:32
+#: src/lib/ins/ins-metric-registry.ts:26
+#: src/lib/ins/ins-metric-registry.ts:32
 msgid "Existing dwellings"
 msgstr "Existing dwellings"
+
+#: src/components/entities/views/ins-stats-view.tsx:1519
+#: src/components/entities/views/ins-stats-view.tsx:1521
+msgid "Expand explorer to full width"
+msgstr "Expand explorer to full width"
 
 #: src/hooks/useEntityViews.tsx:24
 msgid "Expense Trends"
@@ -2491,10 +2578,6 @@ msgstr "Export CSV"
 #: src/routes/entity-analytics.lazy.tsx:241
 msgid "Exporting…"
 msgstr "Exporting…"
-
-#: src/lib/ins/ins-dashboard-config.ts:29
-msgid "Exports (FOB)"
-msgstr "Exports (FOB)"
 
 #: src/routes/terms.lazy.tsx:81
 msgid "Exports and attribution"
@@ -2626,6 +2709,10 @@ msgstr "Final Budget Credits"
 msgid "Final:"
 msgstr "Final:"
 
+#: src/lib/ins/ins-metric-registry.ts:109
+msgid "Finance"
+msgstr "Finance"
+
 #: src/lib/chart-links.ts:29
 msgid "Financial Evolution - {entityName}"
 msgstr "Financial Evolution - {entityName}"
@@ -2705,6 +2792,10 @@ msgstr "Foreign trade"
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:114
 msgid "Found {replacementCount} occurrence{0}"
 msgstr "Found {replacementCount} occurrence{0}"
+
+#: src/components/entities/views/ins-stats-view.tsx:1877
+msgid "Full historical observations exceeded the page cap for this view. Showing the retrieved subset."
+msgstr "Full historical observations exceeded the page cap for this view. Showing the retrieved subset."
 
 #: src/components/entities/views/ContractsView.tsx:22
 msgid "Full Procurement Portal"
@@ -2787,6 +2878,14 @@ msgstr "Funds the pension checks and hospital bills directly. It's a huge mandat
 #: src/features/learning/components/interactive/EUComparisonChart.tsx:71
 msgid "Gap"
 msgstr "Gap"
+
+#: src/components/entities/views/ins-stats-view.tsx:531
+msgid "Gas network km per 1,000"
+msgstr "Gas network km per 1,000"
+
+#: src/components/entities/views/ins-stats-view.tsx:529
+msgid "Gas per capita"
+msgstr "Gas per capita"
 
 #: src/components/charts/components/views/SeriesConfigView.tsx:234
 msgid "Generate random color"
@@ -2881,10 +2980,6 @@ msgstr "greater than"
 #: src/components/alerts/components/ConditionsList.tsx:90
 msgid "Greater than"
 msgstr "Greater than"
-
-#: src/lib/ins/ins-dashboard-config.ts:32
-msgid "Green spaces"
-msgstr "Green spaces"
 
 #: src/lib/ins/ins-dashboard-config.ts:185
 msgid "Green spaces, IGSU interventions and protection measures."
@@ -3036,10 +3131,6 @@ msgstr "If you sign in, authentication cookies (Clerk) are essential to manage y
 msgid "If you unsubscribe, you will no longer receive emails for this notification. You can always resubscribe later from your account settings."
 msgstr "If you unsubscribe, you will no longer receive emails for this notification. You can always resubscribe later from your account settings."
 
-#: src/lib/ins/ins-dashboard-config.ts:30
-msgid "Imports (CIF)"
-msgstr "Imports (CIF)"
-
 #: src/features/learning/components/interactive/VATCalculator.tsx:186
 msgid "in \"invisible\" consumption taxes."
 msgstr "in \"invisible\" consumption taxes."
@@ -3107,14 +3198,6 @@ msgstr "increase"
 msgid "Independent project; no government affiliation."
 msgstr "Independent project; no government affiliation."
 
-#: src/components/entities/views/ins-stats-view.tsx:354
-msgid "Indicators come from INS Tempo and show community evolution over time. Values are the most recent available for this county."
-msgstr "Indicators come from INS Tempo and show community evolution over time. Values are the most recent available for this county."
-
-#: src/components/entities/views/ins-stats-view.tsx:359
-msgid "Indicators come from INS Tempo and show community evolution over time. Values are the most recent available for this locality."
-msgstr "Indicators come from INS Tempo and show community evolution over time. Values are the most recent available for this locality."
-
 #: src/components/charts/components/series-config/SeriesFilter.tsx:643
 msgid "Inflation Adjustment"
 msgstr "Inflation Adjustment"
@@ -3140,13 +3223,21 @@ msgstr "Infrastructure & utilities"
 msgid "inhabitants"
 msgstr "inhabitants"
 
-#: src/components/entities/views/ins-stats-view.tsx:297
+#: src/components/entities/views/ins-stats-view.tsx:1314
 msgid "INS indicators are only available for UATs."
 msgstr "INS indicators are only available for UATs."
 
 #: src/hooks/useEntityViews.tsx:40
 msgid "INS Stats"
 msgstr "INS Stats"
+
+#: src/components/entities/views/ins-stats-view.tsx:1048
+msgid "INS Tempo"
+msgstr "INS Tempo"
+
+#: src/components/entities/views/ins-stats-view.tsx:1865
+msgid "INS terms"
+msgstr "INS terms"
 
 #: src/components/budget-explorer/RevenueBreakdown.tsx:60
 msgid "Institutional remittances"
@@ -3237,6 +3328,10 @@ msgstr "July"
 msgid "June"
 msgstr "June"
 
+#: src/lib/ins/ins-metric-registry.ts:110
+msgid "Justice"
+msgstr "Justice"
+
 #: src/features/learning/components/interactive/BudgetCycleTimeline.tsx:467
 #: src/features/learning/components/interactive/PhaseCards.tsx:397
 msgid "Key Activities"
@@ -3250,6 +3345,11 @@ msgstr "Key Deadlines"
 #: src/lib/ins/ins-dashboard-config.ts:129
 msgid "Key indicators"
 msgstr "Key indicators"
+
+#: src/components/entities/views/ins-stats-view.tsx:1372
+#: src/components/entities/views/ins-stats-view.tsx:1376
+msgid "Key indicators load first with the latest period only. Full historical series is loaded when you select a dataset."
+msgstr "Key indicators load first with the latest period only. Full historical series is loaded when you select a dataset."
 
 #: src/features/learning/components/interactive/EconomicCodeReference.tsx:372
 msgid "Key Lesson Insight"
@@ -3272,6 +3372,10 @@ msgstr "Label"
 msgid "Labor Cost Summary"
 msgstr "Labor Cost Summary"
 
+#: src/components/entities/views/ins-stats-view.tsx:418
+msgid "Labor market and housing pressure indicators."
+msgstr "Labor market and housing pressure indicators."
+
 #: src/components/theme/language-toggle.tsx:31
 msgid "Language"
 msgstr "Language"
@@ -3280,7 +3384,7 @@ msgstr "Language"
 msgid "Last evaluated"
 msgstr "Last evaluated"
 
-#: src/components/entities/views/ins-stats-view.tsx:410
+#: src/components/entities/views/ins-stats-view.tsx:1434
 msgid "Last period:"
 msgstr "Last period:"
 
@@ -3413,6 +3517,10 @@ msgstr "Lines marked as \"se scad\" inside other tax chapters are deducted here 
 msgid "Link copied to clipboard"
 msgstr "Link copied to clipboard"
 
+#: src/components/entities/views/ins-stats-view.tsx:527
+msgid "Living area per capita"
+msgstr "Living area per capita"
+
 #: src/features/learning/components/loading/LearningHubLoading.tsx:15
 msgid "Loading Academy"
 msgstr "Loading Academy"
@@ -3484,7 +3592,7 @@ msgstr "Loading..."
 msgid "Loan repayments and other operations"
 msgstr "Loan repayments and other operations"
 
-#: src/components/entities/views/ins-stats-view.tsx:349
+#: src/components/entities/views/ins-stats-view.tsx:1367
 msgid "Local statistics for citizens"
 msgstr "Local statistics for citizens"
 
@@ -3492,7 +3600,7 @@ msgstr "Local statistics for citizens"
 msgid "Local-first: charts and preferences are stored in your browser."
 msgstr "Local-first: charts and preferences are stored in your browser."
 
-#: src/components/entities/views/ins-stats-view.tsx:346
+#: src/components/entities/views/ins-stats-view.tsx:1364
 msgid "Locality level"
 msgstr "Locality level"
 
@@ -3631,6 +3739,10 @@ msgstr "Medium opportunity"
 msgid "Metadata"
 msgstr "Metadata"
 
+#: src/components/entities/views/ins-stats-view.tsx:1785
+msgid "Methodology"
+msgstr "Methodology"
+
 #: src/routes/$lang/learning/$pathId/index.lazy.tsx:272
 msgid "min"
 msgstr "min"
@@ -3644,7 +3756,7 @@ msgid "Minimum Pay"
 msgstr "Minimum Pay"
 
 #: src/components/commitments/CommitmentsTable.tsx:70
-#: src/components/entities/views/ins-stats-view.tsx:33
+#: src/components/entities/views/ins-stats-view.tsx:76
 msgid "Missing"
 msgstr "Missing"
 
@@ -3706,7 +3818,7 @@ msgid "Month"
 msgstr "Month"
 
 #: src/components/entities/EntityReportControls.tsx:175
-#: src/components/entities/views/ins-stats-view.tsx:29
+#: src/components/entities/views/ins-stats-view.tsx:72
 #: src/components/filters/period-filter/PeriodFilter.tsx:243
 msgid "Monthly"
 msgstr "Monthly"
@@ -3770,9 +3882,8 @@ msgstr "Move Up"
 #: src/components/commitments/LinearBudgetFlow.tsx:161
 #: src/components/commitments/LinearBudgetFlow.tsx:204
 #: src/components/commitments/LinearBudgetFlow.tsx:216
-#: src/components/entities/views/ins-stats-view.tsx:153
-#: src/components/entities/views/ins-stats-view.tsx:389
-#: src/components/entities/views/ins-stats-view.tsx:464
+#: src/components/entities/views/ins-stats-view.tsx:198
+#: src/components/entities/views/ins-stats-view.tsx:1403
 #: src/components/maps/utils.ts:98
 #: src/components/maps/utils.ts:122
 #: src/components/maps/utils.ts:151
@@ -3784,6 +3895,10 @@ msgstr "N/A"
 #: src/routes/certificates.$id.tsx:52
 msgid "Name"
 msgstr "Name"
+
+#: src/components/entities/views/ins-stats-view.tsx:515
+msgid "Natural increase per 1,000"
+msgstr "Natural increase per 1,000"
 
 #: src/components/ui/shortcuts.tsx:24
 msgid "Navigate to chart view"
@@ -3804,6 +3919,10 @@ msgstr "Navigation"
 #: src/components/footer/ChatFab.tsx:94
 msgid "Need help?"
 msgstr "Need help?"
+
+#: src/components/entities/views/ins-stats-view.tsx:521
+msgid "Net migration per 1,000"
+msgstr "Net migration per 1,000"
 
 #: src/features/learning/components/interactive/SalaryTaxCalculator.tsx:386
 msgid "Net Monthly Income"
@@ -3919,7 +4038,7 @@ msgstr "No conditions added yet. Click the button below to add your first condit
 msgid "No conditions set"
 msgstr "No conditions set"
 
-#: src/components/entities/views/ins-stats-view.tsx:309
+#: src/components/entities/views/ins-stats-view.tsx:1326
 msgid "No county code associated."
 msgstr "No county code associated."
 
@@ -3967,6 +4086,14 @@ msgstr "No data series yet."
 msgid "No data within the selected range."
 msgstr "No data within the selected range."
 
+#: src/components/entities/views/ins-stats-view.tsx:1801
+msgid "No dataset selected yet."
+msgstr "No dataset selected yet."
+
+#: src/components/entities/views/ins-stats-view.tsx:1587
+msgid "No datasets match your current filters."
+msgstr "No datasets match your current filters."
+
 #: src/components/budget-explorer/BudgetDetailsDrawer.tsx:104
 msgid "No detailed data available for this selection."
 msgstr "No detailed data available for this selection."
@@ -3999,10 +4126,6 @@ msgstr "No Filters Applied"
 msgid "No grouping available for the selected filter."
 msgstr "No grouping available for the selected filter."
 
-#: src/components/entities/views/ins-stats-view.tsx:452
-msgid "No INS data for this section."
-msgstr "No INS data for this section."
-
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:114
 msgid "No matches yet"
 msgstr "No matches yet"
@@ -4019,9 +4142,9 @@ msgstr "No maximum"
 msgid "No minimum"
 msgstr "No minimum"
 
-#: src/components/entities/views/ins-stats-view.tsx:169
-msgid "No observations available for this indicator."
-msgstr "No observations available for this indicator."
+#: src/components/entities/views/ins-stats-view.tsx:1816
+msgid "No observations available for the selected dataset and entity."
+msgstr "No observations available for the selected dataset and entity."
 
 #: src/components/charts/components/series-config/CalculationConfig.tsx:225
 msgid "No operands. Add a series or a new calculation."
@@ -4059,7 +4182,7 @@ msgstr "No selling of personal data."
 msgid "No series found."
 msgstr "No series found."
 
-#: src/components/entities/views/ins-stats-view.tsx:321
+#: src/components/entities/views/ins-stats-view.tsx:1338
 msgid "No SIRUTA code associated."
 msgstr "No SIRUTA code associated."
 
@@ -4086,6 +4209,10 @@ msgstr "Non-direct spending"
 msgid "Normalization"
 msgstr "Normalization"
 
+#: src/components/entities/views/ins-stats-view.tsx:1457
+msgid "Not enough latest values to compute derived indicators."
+msgstr "Not enough latest values to compute derived indicators."
+
 #: src/features/learning/components/assessment/Quiz.tsx:158
 msgid "Not Quite"
 msgstr "Not Quite"
@@ -4109,6 +4236,10 @@ msgstr "Note: Transfer items are excluded as they represent internal movements w
 #: src/components/budget-explorer/SpendingBreakdown.tsx:177
 msgid "Note: Transfers to subordinate public institutions (ec:51.01, 51.02) are excluded from effective spending as they represent movements within the consolidated perimeter rather than actual expenditures."
 msgstr "Note: Transfers to subordinate public institutions (ec:51.01, 51.02) are excluded from effective spending as they represent movements within the consolidated perimeter rather than actual expenditures."
+
+#: src/components/entities/views/ins-stats-view.tsx:1793
+msgid "Notes"
+msgstr "Notes"
 
 #: src/components/charts/components/chart-config/SeriesToolbar.tsx:18
 msgid "Nothing to paste"
@@ -4238,6 +4369,10 @@ msgstr "Open on Wikipedia"
 msgid "Open Search"
 msgstr "Open Search"
 
+#: src/components/entities/views/ins-stats-view.tsx:1851
+msgid "Open source matrix in INS Tempo"
+msgstr "Open source matrix in INS Tempo"
+
 #: src/components/budget-explorer/RevenueBreakdown.tsx:61
 msgid "Operating section transfers"
 msgstr "Operating section transfers"
@@ -4275,6 +4410,15 @@ msgstr "or"
 msgid "Original:"
 msgstr "Original:"
 
+#: src/components/entities/views/ins-stats-view.tsx:834
+#: src/components/entities/views/ins-stats-view.tsx:864
+msgid "Other"
+msgstr "Other"
+
+#: src/components/entities/views/ins-stats-view.tsx:1657
+msgid "Other datasets"
+msgstr "Other datasets"
+
 #: src/components/entities/EntityLineItemsTabs.tsx:98
 msgid "Other Economic"
 msgstr "Other Economic"
@@ -4308,9 +4452,9 @@ msgstr "Parent"
 msgid "Parent Categories"
 msgstr "Parent Categories"
 
-#: src/components/entities/views/ins-stats-view.tsx:422
-msgid "Partial data"
-msgstr "Partial data"
+#: src/components/entities/views/ins-stats-view.tsx:1875
+msgid "Partial history"
+msgstr "Partial history"
 
 #: src/components/charts/components/chart-config/SeriesToolbar.tsx:37
 msgid "Paste"
@@ -4385,7 +4529,7 @@ msgstr "Per Capita"
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:82
 #: src/components/charts/components/series-config/SeriesFilter.tsx:686
 #: src/components/entities/EntityReportControls.tsx:170
-#: src/components/entities/views/ins-stats-view.tsx:179
+#: src/components/entities/views/ins-stats-view.tsx:1887
 #: src/components/filters/EntityAnalyticsFilter.tsx:467
 #: src/components/filters/MapFilter.tsx:256
 #: src/components/maps/utils.ts:19
@@ -4401,6 +4545,10 @@ msgstr "Period Growth"
 #: src/components/filters/period-filter/PeriodFilter.tsx:233
 msgid "Period Type"
 msgstr "Period Type"
+
+#: src/components/entities/views/ins-stats-view.tsx:1753
+msgid "Periodicity"
+msgstr "Periodicity"
 
 #: src/components/entities/AdvancedFilterDropdown.tsx:48
 #: src/components/entities/EntityLineItemsTabs.tsx:96
@@ -4452,6 +4600,9 @@ msgstr "Poor"
 #: src/components/maps/HeatmapDataTable.tsx:453
 #: src/components/maps/utils.ts:120
 #: src/lib/ins/ins-dashboard-config.ts:22
+#: src/lib/ins/ins-dashboard-config.ts:29
+#: src/lib/ins/ins-metric-registry.ts:23
+#: src/lib/ins/ins-metric-registry.ts:29
 #: src/routes/entity-analytics.lazy.tsx:236
 msgid "Population"
 msgstr "Population"
@@ -4543,7 +4694,7 @@ msgid "Quarter"
 msgstr "Quarter"
 
 #: src/components/entities/EntityReportControls.tsx:174
-#: src/components/entities/views/ins-stats-view.tsx:28
+#: src/components/entities/views/ins-stats-view.tsx:71
 #: src/components/filters/period-filter/PeriodFilter.tsx:240
 msgid "Quarterly"
 msgstr "Quarterly"
@@ -4642,6 +4793,11 @@ msgstr "Redo successful"
 #: src/components/entities/EntityReports.tsx:155
 msgid "Refine your search using the options below"
 msgstr "Refine your search using the options below"
+
+#: src/lib/ins/ins-dashboard-config.ts:24
+#: src/lib/ins/ins-metric-registry.ts:25
+msgid "Registered unemployment share"
+msgstr "Registered unemployment share"
 
 #: src/components/classification-explorer/ClassificationSiblings.tsx:32
 msgid "Related Categories"
@@ -4827,6 +4983,14 @@ msgstr "Saving…"
 msgid "Schools, students and teachers."
 msgstr "Schools, students and teachers."
 
+#: src/lib/ins/ins-metric-registry.ts:113
+msgid "SDG 2020"
+msgstr "SDG 2020"
+
+#: src/lib/ins/ins-metric-registry.ts:114
+msgid "SDG 2030"
+msgstr "SDG 2030"
+
 #: src/features/learning/components/player/MarkComplete.tsx:94
 msgid "Seal your progress and move closer to becoming a budget expert."
 msgstr "Seal your progress and move closer to becoming a budget expert."
@@ -4867,6 +5031,10 @@ msgstr "Search charts…"
 #: src/components/filters/county-filter/CountyList.tsx:62
 msgid "Search counties..."
 msgstr "Search counties..."
+
+#: src/components/entities/views/ins-stats-view.tsx:1532
+msgid "Search dataset code or name"
+msgstr "Search dataset code or name"
 
 #: src/components/charts/components/series-config/DatasetList.tsx:77
 msgid "Search datasets (ex: PIB)"
@@ -4934,9 +5102,13 @@ msgstr "See also our <0>Privacy Policy</0>."
 msgid "See-through, clear"
 msgstr "See-through, clear"
 
-#: src/components/entities/views/ins-stats-view.tsx:299
+#: src/components/entities/views/ins-stats-view.tsx:1316
 msgid "Select a local entity to view INS Tempo data."
 msgstr "Select a local entity to view INS Tempo data."
+
+#: src/components/entities/views/ins-stats-view.tsx:1739
+msgid "Select a metric card or dataset from the list to load full history."
+msgstr "Select a metric card or dataset from the list to load full history."
 
 #: src/components/alerts/components/AlertEditorView.tsx:240
 msgid "Select a predefined dataset to track"
@@ -4981,6 +5153,10 @@ msgstr "Select years..."
 #: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:47
 msgid "Selected"
 msgstr "Selected"
+
+#: src/components/entities/views/ins-stats-view.tsx:1573
+msgid "Selected:"
+msgstr "Selected:"
 
 #: src/components/filters/period-filter/PeriodFilter.tsx:249
 msgid "Selection Mode"
@@ -5029,6 +5205,10 @@ msgstr "Service and data sources"
 msgid "Set the basic properties for your chart"
 msgstr "Set the basic properties for your chart"
 
+#: src/components/entities/views/ins-stats-view.tsx:530
+msgid "Sewer km per 1,000"
+msgstr "Sewer km per 1,000"
+
 #: src/routes/alerts/$alertId/index.lazy.tsx:246
 #: src/routes/alerts/new.lazy.tsx:207
 msgid "Share"
@@ -5072,7 +5252,7 @@ msgstr "Show advanced settings"
 msgid "Show all"
 msgstr "Show all"
 
-#: src/components/entities/views/ins-stats-view.tsx:215
+#: src/components/entities/views/ins-stats-view.tsx:1919
 msgid "Show all periods"
 msgstr "Show all periods"
 
@@ -5111,7 +5291,9 @@ msgid "Show Legend"
 msgstr "Show Legend"
 
 #: src/components/classification-explorer/ClassificationSiblings.tsx:72
-#: src/components/entities/views/ins-stats-view.tsx:215
+#: src/components/entities/views/ins-stats-view.tsx:661
+#: src/components/entities/views/ins-stats-view.tsx:1732
+#: src/components/entities/views/ins-stats-view.tsx:1919
 #: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:63
 msgid "Show less"
 msgstr "Show less"
@@ -5119,6 +5301,11 @@ msgstr "Show less"
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:231
 msgid "Show Less"
 msgstr "Show Less"
+
+#: src/components/entities/views/ins-stats-view.tsx:661
+#: src/components/entities/views/ins-stats-view.tsx:1732
+msgid "Show more"
+msgstr "Show more"
 
 #: src/components/charts/components/chart-quick-config/ChartQuickConfig.tsx:231
 msgid "Show More"
@@ -5200,6 +5387,10 @@ msgstr "Sign in to track your learning journey."
 msgid "Skip tour"
 msgstr "Skip tour"
 
+#: src/lib/ins/ins-metric-registry.ts:107
+msgid "Social"
+msgstr "Social"
+
 #: src/lib/ins/ins-dashboard-config.ts:191
 msgid "Social and health indicators."
 msgstr "Social and health indicators."
@@ -5211,18 +5402,6 @@ msgstr "Social Contrib."
 #: src/components/charts/components/ChartDataError.tsx:232
 msgid "Some data issues were automatically resolved"
 msgstr "Some data issues were automatically resolved"
-
-#: src/components/entities/views/ins-stats-view.tsx:424
-msgid "Some datasets have more observations than the current limit. We display the most recent available periods."
-msgstr "Some datasets have more observations than the current limit. We display the most recent available periods."
-
-#: src/components/entities/views/ins-stats-view.tsx:442
-msgid "Some indicators have no data available for this county."
-msgstr "Some indicators have no data available for this county."
-
-#: src/components/entities/views/ins-stats-view.tsx:444
-msgid "Some indicators have no data available for this locality."
-msgstr "Some indicators have no data available for this locality."
 
 #: src/routes/privacy.lazy.tsx:133
 msgid "Some service providers may process data outside the EU/EEA. All transfers are protected by appropriate safeguards including:"
@@ -5244,6 +5423,7 @@ msgstr "Sort Order"
 #: src/components/charts/components/filters-details/StaticSeriesFilter.tsx:31
 #: src/components/charts/components/series-config/StaticSeriesEditor.tsx:50
 #: src/components/commitments/CommitmentsTable.tsx:231
+#: src/components/entities/views/ins-stats-view.tsx:1789
 msgid "Source"
 msgstr "Source"
 
@@ -5325,6 +5505,7 @@ msgid "Static Series"
 msgstr "Static Series"
 
 #: src/components/alerts/components/AlertEditorView.tsx:285
+#: src/components/entities/views/ins-stats-view.tsx:1829
 msgid "Status"
 msgstr "Status"
 
@@ -5689,7 +5870,7 @@ msgstr "total"
 #: src/components/commitments/DetailTable.tsx:710
 #: src/components/common/NormalizationSelector.tsx:21
 #: src/components/entities/EntityReportControls.tsx:267
-#: src/components/entities/views/ins-stats-view.tsx:71
+#: src/components/entities/views/ins-stats-view.tsx:137
 #: src/components/entities/views/MapView.tsx:166
 #: src/components/filters/normalization-filter/NormalizationFilter.tsx:13
 #: src/components/normalization/normalization-mode-select.tsx:30
@@ -5741,10 +5922,6 @@ msgstr "Total:"
 #: src/features/learning/components/interactive/GuidedPlatformTour.tsx:232
 msgid "Tour Complete!"
 msgstr "Tour Complete!"
-
-#: src/lib/ins/ins-dashboard-config.ts:31
-msgid "Trade balance"
-msgstr "Trade balance"
 
 #: src/components/entities/EntityLineItemsTabs.tsx:130
 #: src/components/entities/EntityLineItemsTabs.tsx:154
@@ -5835,7 +6012,7 @@ msgstr "UAT: Yes"
 msgid "UATs"
 msgstr "UATs"
 
-#: src/components/entities/views/ins-stats-view.tsx:63
+#: src/components/entities/views/ins-stats-view.tsx:112
 msgid "Unavailable"
 msgstr "Unavailable"
 
@@ -5848,7 +6025,8 @@ msgstr "Understanding the consolidated general budget spending"
 msgid "Undo successful"
 msgstr "Undo successful"
 
-#: src/lib/ins/ins-dashboard-config.ts:24
+#: src/lib/ins/ins-dashboard-config.ts:31
+#: src/lib/ins/ins-metric-registry.ts:31
 msgid "Unemployment rate"
 msgstr "Unemployment rate"
 
@@ -5861,9 +6039,8 @@ msgstr "Unified"
 msgid "Unit"
 msgstr "Unit"
 
-#: src/components/entities/views/ins-stats-view.tsx:39
-#: src/components/entities/views/ins-stats-view.tsx:390
-#: src/components/entities/views/ins-stats-view.tsx:467
+#: src/components/entities/views/ins-stats-view.tsx:88
+#: src/components/entities/views/ins-stats-view.tsx:1404
 msgid "Unknown"
 msgstr "Unknown"
 
@@ -5978,13 +6155,23 @@ msgstr "User ID"
 msgid "User responsibilities and assumption of risk"
 msgstr "User responsibilities and assumption of risk"
 
+#: src/components/entities/views/ins-stats-view.tsx:421
+msgid "Utilities"
+msgstr "Utilities"
+
+#: src/lib/ins/ins-metric-registry.ts:112
+msgid "Utilities & territory"
+msgstr "Utilities & territory"
+
 #: src/components/commitments/CommitmentsTable.tsx:204
 msgid "Utilization"
 msgstr "Utilization"
 
 #: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:95
 #: src/components/charts/components/series-config/CustomSeriesValueEditor.tsx:38
-#: src/components/entities/views/ins-stats-view.tsx:180
+#: src/components/entities/views/ins-stats-view.tsx:1832
+#: src/components/entities/views/ins-stats-view.tsx:1834
+#: src/components/entities/views/ins-stats-view.tsx:1888
 msgid "Value"
 msgstr "Value"
 
@@ -6070,6 +6257,14 @@ msgstr "Warning Signs"
 #: src/components/charts/components/ChartDataError.tsx:311
 msgid "Warnings"
 msgstr "Warnings"
+
+#: src/components/entities/views/ins-stats-view.tsx:528
+msgid "Water per capita"
+msgstr "Water per capita"
+
+#: src/components/entities/views/ins-stats-view.tsx:422
+msgid "Water, gas, and network service proxies."
+msgstr "Water, gas, and network service proxies."
 
 #: src/features/learning/components/interactive/PromiseTracker.tsx:315
 msgid "Way off!"
