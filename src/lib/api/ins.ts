@@ -261,6 +261,10 @@ export interface InsDatasetHistoryResult {
   partial: boolean;
 }
 
+export interface InsObservationsSnapshotByDatasetResult {
+  observationsByDataset: Map<string, InsObservation[]>;
+}
+
 export async function getInsDatasetDimensions(datasetCode: string): Promise<InsDatasetDimensionsResult | null> {
   if (datasetCode.trim().length === 0) return null;
 
@@ -346,6 +350,31 @@ async function getInsObservationsBatch(params: {
   }
 
   return result;
+}
+
+export async function getInsObservationsSnapshotByDatasets(params: {
+  datasetCodes: string[];
+  filter: InsObservationFilterInput;
+  limit?: number;
+}): Promise<InsObservationsSnapshotByDatasetResult> {
+  const observationsByDatasetConnection = await getInsObservationsBatch({
+    datasetCodes: params.datasetCodes,
+    filter: params.filter,
+    limit: params.limit,
+  });
+
+  const observationsByDataset = new Map<string, InsObservation[]>();
+  for (const [datasetCode, connection] of observationsByDatasetConnection.entries()) {
+    observationsByDataset.set(datasetCode, connection.nodes ?? []);
+  }
+
+  for (const datasetCode of params.datasetCodes) {
+    if (!observationsByDataset.has(datasetCode)) {
+      observationsByDataset.set(datasetCode, []);
+    }
+  }
+
+  return { observationsByDataset };
 }
 
 function getLatestPeriod(observations: InsObservation[]): string | null {

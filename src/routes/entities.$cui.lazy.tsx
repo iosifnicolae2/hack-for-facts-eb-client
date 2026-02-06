@@ -641,7 +641,7 @@ function ViewsContent(props: ViewsContentProps) {
           case 'map': return <MapView entity={entity} mapFilters={mapFilters} updateMapFilters={updateMapFilters} period={reportPeriod} />
           case 'employees': return <EmployeesView entity={entity} />
           case 'ranking': return <RankingView />
-          case 'ins-stats': return <InsStatsView entity={entity} />
+          case 'ins-stats': return <InsStatsView entity={entity} reportPeriod={reportPeriod} />
           case 'related-charts': return <RelatedChartsView entity={entity} normalizationOptions={normalizationOptions} />
           case 'relationships': return <EntityRelationships cui={cui} />
           case 'contracts': return <ContractsView entity={entity} />

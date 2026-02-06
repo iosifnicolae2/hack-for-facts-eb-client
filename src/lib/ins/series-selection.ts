@@ -262,7 +262,22 @@ export function mergeSeriesSelection(
     }
 
     const optionByCode = new Map(group.options.map((option) => [option.code, option]));
-    const validSelection = selectedCodes.filter((selectedCode) => optionByCode.has(selectedCode));
+    const optionByRawCode = new Map(group.options.map((option) => [option.rawCode, option]));
+    const validSelection = Array.from(
+      new Set(
+        selectedCodes
+          .map((selectedCode) => {
+            const byCode = optionByCode.get(selectedCode);
+            if (byCode) return byCode.code;
+
+            const byRawCode = optionByRawCode.get(selectedCode);
+            if (byRawCode) return byRawCode.code;
+
+            return null;
+          })
+          .filter((selectedCode): selectedCode is string => Boolean(selectedCode))
+      )
+    );
     if (validSelection.length > 0) {
       const containsTotalLike = validSelection.some((selectedCode) => optionByCode.get(selectedCode)?.isTotalLike);
       if (containsTotalLike && validSelection.length > 1) {

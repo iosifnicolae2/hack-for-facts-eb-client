@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import {
@@ -35,15 +35,16 @@ import {
 import ReactMarkdown from 'react-markdown';
 
 import type { EntityDetailsData } from '@/lib/api/entities';
+import type { ReportPeriodInput } from '@/schemas/reporting';
 import type {
   InsDataset,
   InsEntitySelectorInput,
-  InsLatestDatasetValue,
   InsObservation,
+  InsObservationFilterInput,
   InsPeriodicity,
   InsTerritoryLevel,
 } from '@/schemas/ins';
-import { formatNumber, formatValueWithUnit } from '@/lib/utils';
+import { formatNumber, formatValueWithUnit, getUserLocale } from '@/lib/utils';
 import {
   INS_DERIVED_INDICATOR_BASE_CODES,
   INS_PRIORITIZED_DATASET_CODES_BY_LEVEL,
@@ -56,7 +57,7 @@ import {
   useInsDatasetCatalog,
   useInsDatasetDimensions,
   useInsDatasetHistory,
-  useInsLatestDatasetValues,
+  useInsObservationsSnapshotByDatasets,
 } from '@/lib/hooks/use-ins-dashboard';
 import {
   buildDefaultSeriesSelection,
@@ -94,6 +95,46 @@ const VALUE_STATUS_LABELS: Record<string, string> = {
   x: t`Confidential`,
 };
 
+type TemporalSplit = 'all' | 'year' | 'quarter' | 'month';
+type ExplorerMode = 'panel' | 'full';
+type InsUrlState = {
+  datasetCode: string | null;
+  search: string;
+  rootCode: string;
+  temporalSplit: TemporalSplit;
+  explorerMode: ExplorerMode;
+  seriesSelection: Record<string, string[]>;
+  unitKey: string | null;
+};
+
+const TEMPORAL_SPLIT_PERIODICITY_MAP: Record<TemporalSplit, InsPeriodicity[] | undefined> = {
+  all: undefined,
+  year: ['ANNUAL'],
+  quarter: ['QUARTERLY'],
+  month: ['MONTHLY'],
+};
+const TEMPORAL_SPLIT_OPTIONS: Array<{ value: Exclude<TemporalSplit, 'all'>; label: string }> = [
+  { value: 'year', label: t`Year` },
+  { value: 'quarter', label: t`Quarter` },
+  { value: 'month', label: t`Month` },
+];
+const INS_URL_KEYS = {
+  dataset: 'insDataset',
+  search: 'insSearch',
+  root: 'insRoot',
+  temporal: 'insTemporal',
+  explorer: 'insExplorer',
+  series: 'insSeries',
+  unit: 'insUnit',
+} as const;
+
+function getLocalizedText(ro: string | null | undefined, en: string | null | undefined, locale: 'ro' | 'en'): string {
+  if (locale === 'en') {
+    return en || ro || '';
+  }
+  return ro || en || '';
+}
+
 function formatDatasetPeriodicity(periodicities: InsPeriodicity[] | null | undefined): string {
   return (periodicities ?? [])
     .map((periodicity) => PERIODICITY_LABELS[periodicity] ?? periodicity)
@@ -126,6 +167,33 @@ function getObservationUnit(observation: InsObservation): string | null {
 function getObservationStatusLabel(status: string | null | undefined): string | null {
   if (!status) return null;
   return VALUE_STATUS_LABELS[status] ?? t`Unavailable`;
+}
+
+function isPercentUnit(observation: InsObservation): boolean {
+  const unitCandidates = [
+    observation.unit?.symbol,
+    observation.unit?.code,
+    observation.unit?.name_ro,
+  ]
+    .filter(Boolean)
+    .map((value) => String(value).toLowerCase());
+
+  return unitCandidates.some((value) => value.includes('%') || value.includes('procent'));
+}
+
+function getCardNumericValue(observation: InsObservation): { value: string; statusLabel?: string } {
+  const statusLabel = getObservationStatusLabel(observation.value_status);
+  if (statusLabel) return { value: '—', statusLabel };
+
+  const numericValue = parseObservationValue(observation.value);
+  if (numericValue == null) return { value: t`N/A` };
+
+  const numberValue = formatNumber(numericValue, 'compact');
+  if (isPercentUnit(observation)) {
+    return { value: `${numberValue}%` };
+  }
+
+  return { value: numberValue };
 }
 
 function normalizeLabel(value: string): string {
@@ -190,26 +258,63 @@ function normalizeSearchValue(value: string): string {
     .trim();
 }
 
-function getSearchScore(dataset: InsDataset, query: string): number {
-  if (query.trim() === '') return 100;
+function getSearchScore(params: {
+  normalizedQuery: string;
+  normalizedName: string;
+  normalizedContext: string;
+  normalizedCode: string;
+  normalizedSupplemental: string;
+}): number {
+  const { normalizedQuery, normalizedName, normalizedContext, normalizedCode, normalizedSupplemental } = params;
+  if (normalizedQuery === '') return 100;
 
-  const normalizedQuery = normalizeSearchValue(query);
-  const haystack = normalizeSearchValue(
-    `${dataset.code} ${dataset.name_ro ?? ''} ${dataset.name_en ?? ''} ${dataset.context_name_ro ?? ''}`
-  );
+  const combinedText = `${normalizedName} ${normalizedContext} ${normalizedSupplemental} ${normalizedCode}`.trim();
+  const tokens = normalizedQuery.split(/\s+/).filter(Boolean);
 
-  const directIndex = haystack.indexOf(normalizedQuery);
-  if (directIndex >= 0) {
-    return Math.max(0, 100 - directIndex);
+  const scoreByField = (field: string, base: number): number => {
+    if (!field) return -1;
+
+    if (field === normalizedQuery) return base + 120;
+    if (field.startsWith(normalizedQuery)) return base + 90 - Math.min(50, field.length - normalizedQuery.length);
+
+    const fieldWords = field.split(/\s+/).filter(Boolean);
+    if (fieldWords.some((word) => word.startsWith(normalizedQuery))) {
+      return base + 70;
+    }
+
+    if (tokens.length > 0 && tokens.every((token) => field.includes(token))) {
+      return base + 55 + Math.min(tokens.length, 6) * 5;
+    }
+
+    const directIndex = field.indexOf(normalizedQuery);
+    if (directIndex >= 0) {
+      return base + 40 - Math.min(40, directIndex);
+    }
+
+    return -1;
+  };
+
+  const nameScore = scoreByField(normalizedName, 1400);
+  if (nameScore >= 0) return nameScore;
+
+  const contextScore = scoreByField(normalizedContext, 1000);
+  if (contextScore >= 0) return contextScore;
+
+  const supplementalScore = scoreByField(normalizedSupplemental, 850);
+  if (supplementalScore >= 0) return supplementalScore;
+
+  const codeScore = scoreByField(normalizedCode, 700);
+  if (codeScore >= 0) return codeScore;
+
+  if (normalizedQuery.length > 2) {
+    return -1;
   }
 
   let queryIndex = 0;
-  for (const character of haystack) {
+  for (const character of combinedText) {
     if (character === normalizedQuery[queryIndex]) {
       queryIndex += 1;
-      if (queryIndex === normalizedQuery.length) {
-        return 15;
-      }
+      if (queryIndex === normalizedQuery.length) return 250;
     }
   }
 
@@ -220,6 +325,15 @@ type DatasetExplorerSection = {
   code: string;
   label: string;
   datasets: InsDataset[];
+};
+
+type PreparedDatasetSearchEntry = {
+  dataset: InsDataset;
+  datasetName: string;
+  normalizedName: string;
+  normalizedContext: string;
+  normalizedCode: string;
+  normalizedSupplemental: string;
 };
 
 type DatasetExplorerGroup = {
@@ -340,11 +454,11 @@ function findMetadataText(metadata: Record<string, unknown> | null | undefined, 
   return null;
 }
 
-function extractLatestNumericMap(values: InsLatestDatasetValue[]): Map<string, number> {
+function extractIndicatorNumericMap(values: Array<{ datasetCode: string; observation?: InsObservation | null }>): Map<string, number> {
   const result = new Map<string, number>();
 
   for (const row of values) {
-    const code = row.dataset.code;
+    const code = row.datasetCode;
     const value = parseObservationValue(row.observation?.value);
     if (value != null) {
       result.set(code, value);
@@ -352,6 +466,36 @@ function extractLatestNumericMap(values: InsLatestDatasetValue[]): Map<string, n
   }
 
   return result;
+}
+
+function extractIndicatorUnitMap(values: Array<{ datasetCode: string; observation?: InsObservation | null }>): Map<string, string> {
+  const result = new Map<string, string>();
+
+  for (const row of values) {
+    const unit = row.observation ? getObservationSourceUnitForDerived(row.observation) : null;
+    if (!unit) continue;
+    result.set(row.datasetCode, unit);
+  }
+
+  return result;
+}
+
+function getObservationSourceUnitForDerived(observation: InsObservation): string | null {
+  const candidates = [
+    observation.unit?.symbol,
+    observation.unit?.name_ro,
+    observation.unit?.code,
+  ];
+
+  for (const rawCandidate of candidates) {
+    if (!rawCandidate) continue;
+    const candidate = String(rawCandidate).trim();
+    if (!candidate) continue;
+    if (/^\d+$/.test(candidate)) continue;
+    return candidate;
+  }
+
+  return null;
 }
 
 function formatDerivedMetric(value: number, mode: 'rate' | 'value'): string {
@@ -382,6 +526,7 @@ type DerivedIndicator = {
     | 'gas-network-rate';
   label: string;
   value: string;
+  unitLabel: string;
   sourceDatasetCode: string | null;
 };
 
@@ -431,8 +576,9 @@ function getDerivedIndicatorGroup(id: DerivedIndicator['id']): DerivedIndicatorG
   }
 }
 
-function computeDerivedIndicators(latestValues: InsLatestDatasetValue[]) {
-  const map = extractLatestNumericMap(latestValues);
+function computeDerivedIndicators(indicatorValues: Array<{ datasetCode: string; observation?: InsObservation | null }>) {
+  const map = extractIndicatorNumericMap(indicatorValues);
+  const unitMap = extractIndicatorUnitMap(indicatorValues);
   const population = map.get('POP107D');
   if (population == null || population <= 0) {
     return [] as DerivedIndicator[];
@@ -457,57 +603,105 @@ function computeDerivedIndicators(latestValues: InsLatestDatasetValue[]) {
 
   const rows: DerivedIndicator[] = [];
 
+  const getBaseUnit = (datasetCode: string, fallbackBaseUnit: string) => unitMap.get(datasetCode) ?? fallbackBaseUnit;
+
+  const makePerThousandUnit = (datasetCode: string, fallbackBaseUnit: string) => {
+    const baseUnit = getBaseUnit(datasetCode, fallbackBaseUnit);
+    return `${baseUnit} / ${t`1,000 inhabitants`}`;
+  };
+
+  const makePerCapitaUnit = (datasetCode: string, fallbackBaseUnit: string) => {
+    const baseUnit = getBaseUnit(datasetCode, fallbackBaseUnit);
+    return `${baseUnit} / ${t`inhabitant`}`;
+  };
+
   const pushRate = (
     id: DerivedIndicator['id'],
     label: string,
     value: number | null,
-    sourceDatasetCode: string | null
+    sourceDatasetCode: string | null,
+    unitLabel: string = t`per 1,000 inhabitants`
   ) => {
     if (value == null) return;
-    rows.push({ id, label, value: formatDerivedMetric(value, 'rate'), sourceDatasetCode });
+    rows.push({ id, label, value: formatDerivedMetric(value, 'rate'), sourceDatasetCode, unitLabel });
   };
 
   const pushValue = (
     id: DerivedIndicator['id'],
     label: string,
     value: number | null,
-    sourceDatasetCode: string | null
+    sourceDatasetCode: string | null,
+    unitLabel: string = t`per capita`
   ) => {
     if (value == null) return;
-    rows.push({ id, label, value: formatDerivedMetric(value, 'value'), sourceDatasetCode });
+    rows.push({ id, label, value: formatDerivedMetric(value, 'value'), sourceDatasetCode, unitLabel });
   };
 
   pushRate(
     'birth-rate',
-    t`Birth rate per 1,000`,
+    t`Birth rate`,
     safeDivide(births, population) != null ? (births! / population) * 1000 : null,
-    'POP201D'
+    'POP201D',
+    makePerThousandUnit('POP201D', 'pers.')
   );
   pushRate(
     'death-rate',
-    t`Death rate per 1,000`,
+    t`Death rate`,
     safeDivide(deaths, population) != null ? (deaths! / population) * 1000 : null,
-    'POP206D'
+    'POP206D',
+    makePerThousandUnit('POP206D', 'pers.')
   );
   pushRate(
     'natural-increase-rate',
-    t`Natural increase per 1,000`,
+    t`Natural increase`,
     births != null && deaths != null ? ((births - deaths) / population) * 1000 : null,
-    'POP201D'
+    'POP201D',
+    makePerThousandUnit('POP201D', 'pers.')
   );
   pushRate(
     'net-migration-rate',
-    t`Net migration per 1,000`,
+    t`Net migration`,
     immigrants != null && emigrants != null ? ((immigrants - emigrants) / population) * 1000 : null,
-    'POP310E'
+    'POP310E',
+    makePerThousandUnit('POP310E', 'pers.')
   );
-  pushRate('employees-rate', t`Employees per 1,000`, employees != null ? (employees / population) * 1000 : null, 'FOM104D');
-  pushRate('dwellings-rate', t`Dwellings per 1,000`, dwellings != null ? (dwellings / population) * 1000 : null, 'LOC101B');
-  pushValue('living-area', t`Living area per capita`, livingArea != null ? livingArea / population : null, 'LOC103B');
-  pushValue('water', t`Water per capita`, water != null ? water / population : null, 'GOS107A');
-  pushValue('gas', t`Gas per capita`, gas != null ? gas / population : null, 'GOS118A');
-  pushRate('sewer-rate', t`Sewer km per 1,000`, sewerKm != null ? (sewerKm / population) * 1000 : null, 'GOS110A');
-  pushRate('gas-network-rate', t`Gas network km per 1,000`, gasNetworkKm != null ? (gasNetworkKm / population) * 1000 : null, 'GOS116A');
+  pushRate(
+    'employees-rate',
+    t`Employees`,
+    employees != null ? (employees / population) * 1000 : null,
+    'FOM104D',
+    makePerThousandUnit('FOM104D', 'pers.')
+  );
+  pushRate(
+    'dwellings-rate',
+    t`Dwellings`,
+    dwellings != null ? (dwellings / population) * 1000 : null,
+    'LOC101B',
+    makePerThousandUnit('LOC101B', 'nr.')
+  );
+  pushValue(
+    'living-area',
+    t`Living area`,
+    livingArea != null ? livingArea / population : null,
+    'LOC103B',
+    makePerCapitaUnit('LOC103B', 'm²')
+  );
+  pushValue('water', t`Water`, water != null ? water / population : null, 'GOS107A', makePerCapitaUnit('GOS107A', 'm³'));
+  pushValue('gas', t`Gas`, gas != null ? gas / population : null, 'GOS118A', makePerCapitaUnit('GOS118A', 'm³'));
+  pushRate(
+    'sewer-rate',
+    t`Sewer network`,
+    sewerKm != null ? (sewerKm / population) * 1000 : null,
+    'GOS110A',
+    makePerThousandUnit('GOS110A', 'km')
+  );
+  pushRate(
+    'gas-network-rate',
+    t`Gas network`,
+    gasNetworkKm != null ? (gasNetworkKm / population) * 1000 : null,
+    'GOS116A',
+    makePerThousandUnit('GOS116A', 'km')
+  );
 
   return rows;
 }
@@ -567,16 +761,325 @@ function buildHistoryFilter(params: {
   };
 }
 
+function getReportPeriodAnchor(reportPeriod: ReportPeriodInput): string | null {
+  const intervalAnchor = reportPeriod.selection.interval?.start;
+  if (intervalAnchor) return intervalAnchor;
+
+  const firstDate = reportPeriod.selection.dates?.[0];
+  if (firstDate) return firstDate;
+
+  return null;
+}
+
+function buildIndicatorPeriodFilter(params: {
+  reportPeriod: ReportPeriodInput;
+  isCounty: boolean;
+  countyCode: string;
+  sirutaCode: string;
+}): InsObservationFilterInput {
+  const filter: InsObservationFilterInput = buildHistoryFilter({
+    isCounty: params.isCounty,
+    countyCode: params.countyCode,
+    sirutaCode: params.sirutaCode,
+  });
+  const anchor = getReportPeriodAnchor(params.reportPeriod);
+  if (!anchor) {
+    return filter;
+  }
+
+  if (params.reportPeriod.type === 'YEAR') {
+    const year = Number(anchor);
+    if (Number.isFinite(year)) {
+      filter.periodicity = 'ANNUAL';
+      filter.years = [year];
+      filter.period = anchor;
+    }
+    return filter;
+  }
+
+  if (params.reportPeriod.type === 'QUARTER') {
+    const match = anchor.match(/^(\d{4})-Q([1-4])$/);
+    if (match) {
+      filter.periodicity = 'QUARTERLY';
+      filter.years = [Number(match[1])];
+      filter.quarters = [Number(match[2])];
+      filter.period = anchor;
+    }
+    return filter;
+  }
+
+  const match = anchor.match(/^(\d{4})-(0[1-9]|1[0-2])$/);
+  if (match) {
+    filter.periodicity = 'MONTHLY';
+    filter.years = [Number(match[1])];
+    filter.months = [Number(match[2])];
+    filter.period = anchor;
+  }
+
+  return filter;
+}
+
+function buildIndicatorFallbackFilter(params: {
+  reportPeriod: ReportPeriodInput;
+  isCounty: boolean;
+  countyCode: string;
+  sirutaCode: string;
+}): InsObservationFilterInput {
+  const filter: InsObservationFilterInput = buildHistoryFilter({
+    isCounty: params.isCounty,
+    countyCode: params.countyCode,
+    sirutaCode: params.sirutaCode,
+  });
+
+  if (params.reportPeriod.type === 'YEAR') {
+    filter.periodicity = 'ANNUAL';
+  } else if (params.reportPeriod.type === 'QUARTER') {
+    filter.periodicity = 'QUARTERLY';
+  } else {
+    filter.periodicity = 'MONTHLY';
+  }
+
+  return filter;
+}
+
+function pickDefaultIndicatorObservation(observations: InsObservation[]): InsObservation | null {
+  if (observations.length === 0) return null;
+
+  const seriesGroups = buildSeriesGroups(observations, []);
+  const defaultSeriesSelection = buildDefaultSeriesSelection(seriesGroups);
+  const unitOptions = buildUnitOptions(observations);
+  const defaultUnitSelection = getDefaultUnitSelection(unitOptions);
+
+  const strictMatches = filterObservationsBySeriesSelection(
+    observations,
+    defaultSeriesSelection,
+    defaultUnitSelection
+  );
+  if (strictMatches.length > 0) {
+    return buildStableSeries(strictMatches)[0] ?? strictMatches[0] ?? null;
+  }
+
+  const selectionOnlyMatches = filterObservationsBySeriesSelection(observations, defaultSeriesSelection, null);
+  if (selectionOnlyMatches.length > 0) {
+    return buildStableSeries(selectionOnlyMatches)[0] ?? selectionOnlyMatches[0] ?? null;
+  }
+
+  if (defaultUnitSelection) {
+    const unitOnlyMatches = filterObservationsBySeriesSelection(observations, {}, defaultUnitSelection);
+    if (unitOnlyMatches.length > 0) {
+      return buildStableSeries(unitOnlyMatches)[0] ?? unitOnlyMatches[0] ?? null;
+    }
+  }
+
+  return buildStableSeries(observations)[0] ?? observations[0] ?? null;
+}
+
 const DETAIL_SCROLL_OFFSET_MOBILE_PX = 112;
 const DETAIL_SCROLL_OFFSET_DESKTOP_PX = 168;
 const SERIES_SELECTOR_SEARCH_THRESHOLD = 10;
 const INS_TEMPO_BASE_URL = 'http://statistici.insse.ro/tempoins/index.jsp';
 const INS_TERMS_URL = 'http://insse.ro/cms/ro';
 
-function buildInsTempoDatasetUrl(datasetCode: string): string {
+function mapTemporalSplitToPeriodicity(temporalSplit: TemporalSplit): InsPeriodicity[] | undefined {
+  return TEMPORAL_SPLIT_PERIODICITY_MAP[temporalSplit];
+}
+
+function mapPeriodicityToTemporalSplit(periodicity: InsPeriodicity): Exclude<TemporalSplit, 'all'> | null {
+  switch (periodicity) {
+    case 'ANNUAL':
+      return 'year';
+    case 'QUARTERLY':
+      return 'quarter';
+    case 'MONTHLY':
+      return 'month';
+    default:
+      return null;
+  }
+}
+
+function parseSeriesSelection(value: string): Record<string, string[]> {
+  const result: Record<string, string[]> = {};
+
+  for (const segment of value.split(';')) {
+    const [rawTypeCode, ...rawValueParts] = segment.split(':');
+    const typeCode = rawTypeCode?.trim();
+    const rawValues = rawValueParts.join(':').trim();
+    if (!typeCode || !/^[A-Za-z0-9_.-]+$/.test(typeCode)) continue;
+    if (!rawValues) continue;
+
+    const values = Array.from(
+      new Set(
+        rawValues
+          .split(',')
+          .map((entry) => entry.trim())
+          .filter(Boolean)
+      )
+    );
+
+    if (values.length === 0) continue;
+    result[typeCode] = values;
+  }
+
+  return result;
+}
+
+function serializeSeriesSelection(selection: Record<string, string[]>): string {
+  return Object.entries(selection)
+    .map(([typeCode, rawValues]) => {
+      const cleanTypeCode = typeCode.trim();
+      const cleanValues = Array.from(
+        new Set(
+          rawValues
+            .map((value) => value.trim())
+            .filter(Boolean)
+        )
+      );
+
+      if (!cleanTypeCode || cleanValues.length === 0) return null;
+      return `${cleanTypeCode}:${cleanValues.join(',')}`;
+    })
+    .filter((entry): entry is string => entry !== null)
+    .sort((left, right) => left.localeCompare(right, 'ro'))
+    .join(';');
+}
+
+function extractRawSeriesCode(selectionCode: string): string {
+  if (selectionCode.startsWith('fallback:')) {
+    const payload = selectionCode.slice('fallback:'.length);
+    const [rawCode] = payload.split('|');
+    return rawCode?.trim() || selectionCode;
+  }
+
+  if (selectionCode.startsWith('id:')) {
+    return selectionCode;
+  }
+
+  return selectionCode;
+}
+
+function normalizeSeriesSelectionForUrl(
+  selection: Record<string, string[]>
+): Record<string, string[]> {
+  const normalizedSelection: Record<string, string[]> = {};
+
+  for (const [typeCode, selectedCodes] of Object.entries(selection)) {
+    const cleanedTypeCode = typeCode.trim();
+    if (!cleanedTypeCode) continue;
+
+    const cleanedCodes = Array.from(
+      new Set(
+        selectedCodes
+          .map((selectedCode) => extractRawSeriesCode(selectedCode))
+          .map((selectedCode) => selectedCode.trim())
+          .filter(Boolean)
+      )
+    );
+
+    if (cleanedCodes.length === 0) continue;
+    normalizedSelection[cleanedTypeCode] = cleanedCodes;
+  }
+
+  return normalizedSelection;
+}
+
+function parseInsUrlState(searchParams: URLSearchParams): InsUrlState {
+  const datasetCodeRaw = searchParams.get(INS_URL_KEYS.dataset)?.trim().toUpperCase() ?? '';
+  const datasetCode = /^[A-Z0-9_]+$/.test(datasetCodeRaw) ? datasetCodeRaw : null;
+
+  const search = (searchParams.get(INS_URL_KEYS.search) ?? '').trim();
+  const rootCodeRaw = searchParams.get(INS_URL_KEYS.root)?.trim() ?? '';
+  const rootCode = INS_ROOT_CONTEXTS.some((root) => root.code === rootCodeRaw) ? rootCodeRaw : '';
+
+  const temporalSplitRaw = searchParams.get(INS_URL_KEYS.temporal)?.trim() ?? '';
+  const temporalSplit: TemporalSplit =
+    temporalSplitRaw === 'year' || temporalSplitRaw === 'quarter' || temporalSplitRaw === 'month'
+      ? temporalSplitRaw
+      : 'all';
+
+  const explorerRaw = searchParams.get(INS_URL_KEYS.explorer)?.trim() ?? '';
+  const explorerMode: ExplorerMode = explorerRaw === 'full' ? 'full' : 'panel';
+  const seriesRaw = searchParams.get(INS_URL_KEYS.series)?.trim() ?? '';
+  const seriesSelection = parseSeriesSelection(seriesRaw);
+  const unitRaw = searchParams.get(INS_URL_KEYS.unit)?.trim() ?? '';
+  const unitKey = unitRaw === '' ? null : unitRaw;
+
+  return {
+    datasetCode,
+    search,
+    rootCode,
+    temporalSplit,
+    explorerMode,
+    seriesSelection,
+    unitKey,
+  };
+}
+
+function writeInsUrlState(params: {
+  datasetCode: string | null;
+  search: string;
+  rootCode: string;
+  temporalSplit: TemporalSplit;
+  explorerMode: ExplorerMode;
+  seriesSelection: Record<string, string[]>;
+  unitKey: string | null;
+}) {
+  if (typeof window === 'undefined') return;
+
+  const url = new URL(window.location.href);
+  const searchParams = url.searchParams;
+
+  if (params.datasetCode && params.datasetCode.trim() !== '') {
+    searchParams.set(INS_URL_KEYS.dataset, params.datasetCode);
+  } else {
+    searchParams.delete(INS_URL_KEYS.dataset);
+  }
+
+  if (params.search.trim() !== '') {
+    searchParams.set(INS_URL_KEYS.search, params.search.trim());
+  } else {
+    searchParams.delete(INS_URL_KEYS.search);
+  }
+
+  if (params.rootCode.trim() !== '') {
+    searchParams.set(INS_URL_KEYS.root, params.rootCode);
+  } else {
+    searchParams.delete(INS_URL_KEYS.root);
+  }
+
+  if (params.temporalSplit !== 'all') {
+    searchParams.set(INS_URL_KEYS.temporal, params.temporalSplit);
+  } else {
+    searchParams.delete(INS_URL_KEYS.temporal);
+  }
+
+  if (params.explorerMode !== 'panel') {
+    searchParams.set(INS_URL_KEYS.explorer, params.explorerMode);
+  } else {
+    searchParams.delete(INS_URL_KEYS.explorer);
+  }
+
+  const serializedSeriesSelection = serializeSeriesSelection(params.seriesSelection);
+  if (serializedSeriesSelection !== '') {
+    searchParams.set(INS_URL_KEYS.series, serializedSeriesSelection);
+  } else {
+    searchParams.delete(INS_URL_KEYS.series);
+  }
+
+  if (params.unitKey && params.unitKey.trim() !== '') {
+    searchParams.set(INS_URL_KEYS.unit, params.unitKey.trim());
+  } else {
+    searchParams.delete(INS_URL_KEYS.unit);
+  }
+
+  const nextSearch = searchParams.toString();
+  const nextUrl = `${url.pathname}${nextSearch ? `?${nextSearch}` : ''}${url.hash}`;
+  window.history.replaceState(window.history.state, '', nextUrl);
+}
+
+function buildInsTempoDatasetUrl(datasetCode: string, locale: 'ro' | 'en'): string {
   const params = new URLSearchParams({
     ind: datasetCode,
-    lang: 'ro',
+    lang: locale === 'en' ? 'en' : 'ro',
     page: 'tempo3',
   });
   return `${INS_TEMPO_BASE_URL}?${params.toString()}`;
@@ -645,22 +1148,62 @@ function ExpandableMarkdownField({
   );
 }
 
-export function InsStatsView({ entity }: { entity: EntityDetailsData | null | undefined }) {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedRootContextCode, setSelectedRootContextCode] = useState<string>('');
-  const [selectedDatasetCode, setSelectedDatasetCode] = useState<string | null>(null);
+export function InsStatsView({
+  entity,
+  reportPeriod,
+}: {
+  entity: EntityDetailsData | null | undefined;
+  reportPeriod: ReportPeriodInput;
+}) {
+  const initialUrlState = useMemo<InsUrlState>(() => {
+    if (typeof window === 'undefined') {
+      return {
+        datasetCode: null,
+        search: '',
+        rootCode: '',
+        temporalSplit: 'all',
+        explorerMode: 'panel',
+        seriesSelection: {},
+        unitKey: null,
+      };
+    }
+
+    return parseInsUrlState(new URLSearchParams(window.location.search));
+  }, []);
+
+  const [searchTerm, setSearchTerm] = useState(initialUrlState.search);
+  const [selectedRootContextCode, setSelectedRootContextCode] = useState<string>(initialUrlState.rootCode);
+  const [selectedDatasetCode, setSelectedDatasetCode] = useState<string | null>(initialUrlState.datasetCode);
+  const [temporalSplit, setTemporalSplit] = useState<TemporalSplit>(initialUrlState.temporalSplit);
   const [openRootGroups, setOpenRootGroups] = useState<string[]>([]);
   const [pendingExplorerFocusCode, setPendingExplorerFocusCode] = useState<string | null>(null);
   const [showAllRows, setShowAllRows] = useState(false);
   const [isDatasetMetaExpanded, setIsDatasetMetaExpanded] = useState(false);
-  const [isExplorerFullWidth, setIsExplorerFullWidth] = useState(false);
-  const [selectedSeriesClassifications, setSelectedSeriesClassifications] = useState<Record<string, string[]>>({});
-  const [selectedUnitKey, setSelectedUnitKey] = useState<string | null>(null);
+  const [isExplorerFullWidth, setIsExplorerFullWidth] = useState(initialUrlState.explorerMode === 'full');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(initialUrlState.search);
+  const [selectedSeriesClassifications, setSelectedSeriesClassifications] = useState<Record<string, string[]>>(
+    initialUrlState.seriesSelection
+  );
+  const [selectedUnitKey, setSelectedUnitKey] = useState<string | null>(initialUrlState.unitKey);
   const [seriesSelectorSearchByTypeCode, setSeriesSelectorSearchByTypeCode] = useState<Record<string, string>>({});
+  const lastSerializedInsUrlStateRef = useRef<string>('');
+  const hasProcessedInitialDatasetSelectionRef = useRef(false);
+  const hasAppliedInitialSeriesUrlStateRef = useRef(false);
+  const initialSeriesUrlStateRef = useRef({
+    datasetCode: initialUrlState.datasetCode,
+    seriesSelection: initialUrlState.seriesSelection,
+    unitKey: initialUrlState.unitKey,
+  });
   const detailCardRef = useRef<HTMLDivElement | null>(null);
   const rootGroupRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const datasetItemRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const locale = getUserLocale() === 'en' ? 'en' : 'ro';
+  const deferredSearchTerm = useDeferredValue(searchTerm);
+  const normalizedDeferredSearchTerm = useMemo(
+    () => normalizeSearchValue(deferredSearchTerm),
+    [deferredSearchTerm]
+  );
 
   const entityType = entity?.entity_type ?? '';
   const isCounty = entityType === 'admin_county_council';
@@ -684,12 +1227,20 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
 
   const hasEntitySelector = entitySelector !== null;
   const selectedHistoryFilter = useMemo(
-    () => buildHistoryFilter({ isCounty, countyCode, sirutaCode }),
-    [countyCode, isCounty, sirutaCode]
+    () => {
+      const base = buildHistoryFilter({ isCounty, countyCode, sirutaCode });
+      const periodicities = mapTemporalSplitToPeriodicity(temporalSplit);
+      return {
+        ...base,
+        periodicity: periodicities?.[0],
+      };
+    },
+    [countyCode, isCounty, sirutaCode, temporalSplit]
   );
 
   const topMetrics = INS_TOP_METRICS_BY_LEVEL[metricLevel];
   const topMetricCodes = useMemo(() => topMetrics.map((metric) => metric.code), [topMetrics]);
+  const derivedIndicatorCodes = useMemo(() => Array.from(INS_DERIVED_INDICATOR_BASE_CODES), []);
   const prioritizedCodes = INS_PRIORITIZED_DATASET_CODES_BY_LEVEL[metricLevel];
 
   const contextsQuery = useInsContexts({
@@ -701,26 +1252,62 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
     filter: isCounty
       ? {
           hasCountyData: true,
-          rootContextCode: selectedRootContextCode || undefined,
         }
       : {
           hasUatData: true,
-          rootContextCode: selectedRootContextCode || undefined,
         },
     limit: 500,
     enabled: hasEntitySelector,
   });
 
-  const latestSummaryQuery = useInsLatestDatasetValues({
-    entity: entitySelector ?? {},
+  const indicatorPeriodFilter = useMemo(
+    () =>
+      buildIndicatorPeriodFilter({
+        reportPeriod,
+        isCounty,
+        countyCode,
+        sirutaCode,
+      }),
+    [countyCode, isCounty, reportPeriod, sirutaCode]
+  );
+
+  const indicatorFallbackFilter = useMemo(
+    () =>
+      buildIndicatorFallbackFilter({
+        reportPeriod,
+        isCounty,
+        countyCode,
+        sirutaCode,
+      }),
+    [countyCode, isCounty, reportPeriod, sirutaCode]
+  );
+
+  const topMetricSnapshotQuery = useInsObservationsSnapshotByDatasets({
     datasetCodes: topMetricCodes,
+    filter: indicatorPeriodFilter,
     enabled: hasEntitySelector,
+    limit: 200,
   });
 
-  const derivedIndicatorsQuery = useInsLatestDatasetValues({
-    entity: entitySelector ?? {},
-    datasetCodes: Array.from(INS_DERIVED_INDICATOR_BASE_CODES),
+  const topMetricFallbackSnapshotQuery = useInsObservationsSnapshotByDatasets({
+    datasetCodes: topMetricCodes,
+    filter: indicatorFallbackFilter,
     enabled: hasEntitySelector,
+    limit: 200,
+  });
+
+  const derivedIndicatorsSnapshotQuery = useInsObservationsSnapshotByDatasets({
+    datasetCodes: derivedIndicatorCodes,
+    filter: indicatorPeriodFilter,
+    enabled: hasEntitySelector,
+    limit: 200,
+  });
+
+  const derivedIndicatorsFallbackSnapshotQuery = useInsObservationsSnapshotByDatasets({
+    datasetCodes: derivedIndicatorCodes,
+    filter: indicatorFallbackFilter,
+    enabled: hasEntitySelector,
+    limit: 200,
   });
 
   const datasetHistoryQuery = useInsDatasetHistory({
@@ -737,12 +1324,24 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
   });
 
   useEffect(() => {
+    if (!hasProcessedInitialDatasetSelectionRef.current) {
+      hasProcessedInitialDatasetSelectionRef.current = true;
+      return;
+    }
+
     setShowAllRows(false);
     setIsDatasetMetaExpanded(false);
     setSelectedSeriesClassifications({});
     setSelectedUnitKey(null);
     setSeriesSelectorSearchByTypeCode({});
   }, [selectedDatasetCode]);
+
+  useEffect(() => {
+    const timerId = window.setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 200);
+    return () => window.clearTimeout(timerId);
+  }, [searchTerm]);
 
   const contextNodes = contextsQuery.data?.nodes ?? [];
   const contextByCode = useMemo(() => {
@@ -761,43 +1360,81 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
     const rootByCode = new Map(rootNodes.map((node) => [node.code, node]));
     return INS_ROOT_CONTEXTS.map((root) => {
       const node = rootByCode.get(root.code);
-      const rawLabel = node?.name_ro || node?.name_en || root.label;
+      const rawLabel = getLocalizedText(node?.name_ro, node?.name_en, locale) || root.label;
       return {
         ...root,
         displayLabel: toPlainTextLabel(rawLabel),
       };
     });
-  }, [contextNodes]);
+  }, [contextNodes, locale]);
 
   const catalogDatasets = datasetCatalogQuery.data?.nodes ?? [];
   const prioritizedIndex = useMemo(() => {
     return new Map(prioritizedCodes.map((code, index) => [code, index]));
   }, [prioritizedCodes]);
+  const preparedDatasetSearchEntries = useMemo<PreparedDatasetSearchEntry[]>(() => {
+    return catalogDatasets.map((dataset) => {
+      const fallbackPath = dataset.context_code ? contextByCode.get(dataset.context_code)?.path : undefined;
+      const contextPathCodes = getContextPathSegments(dataset.context_path || fallbackPath).slice(1);
+      const contextLabels = contextPathCodes
+        .map((code) => {
+          const contextNode = contextByCode.get(code);
+          return getLocalizedText(contextNode?.name_ro, contextNode?.name_en, locale);
+        })
+        .filter(Boolean)
+        .join(' ');
+      const datasetName = getLocalizedText(dataset.name_ro, dataset.name_en, locale) || dataset.code;
+      const contextName = getLocalizedText(dataset.context_name_ro, dataset.context_name_en, locale);
+
+      return {
+        dataset,
+        datasetName,
+        normalizedName: normalizeSearchValue(datasetName),
+        normalizedContext: normalizeSearchValue(contextName),
+        normalizedCode: normalizeSearchValue(dataset.code),
+        normalizedSupplemental: normalizeSearchValue(contextLabels),
+      };
+    });
+  }, [catalogDatasets, contextByCode, locale]);
 
   const filteredDatasets = useMemo(() => {
-    return catalogDatasets
-      .map((dataset) => ({ dataset, searchScore: getSearchScore(dataset, searchTerm) }))
+    const hasActiveSearch = normalizedDeferredSearchTerm !== '';
+
+    return preparedDatasetSearchEntries
+      .map((entry) => {
+        const searchScore = getSearchScore({
+          normalizedQuery: normalizedDeferredSearchTerm,
+          normalizedCode: entry.normalizedCode,
+          normalizedName: entry.normalizedName,
+          normalizedContext: entry.normalizedContext,
+          normalizedSupplemental: entry.normalizedSupplemental,
+        });
+        return {
+          dataset: entry.dataset,
+          datasetName: entry.datasetName,
+          searchScore,
+        };
+      })
       .filter((entry) => entry.searchScore >= 0)
       .sort((left, right) => {
-        const leftPin = prioritizedIndex.get(left.dataset.code);
-        const rightPin = prioritizedIndex.get(right.dataset.code);
-
-        if (leftPin != null && rightPin != null && leftPin !== rightPin) {
-          return leftPin - rightPin;
-        }
-        if (leftPin != null && rightPin == null) return -1;
-        if (leftPin == null && rightPin != null) return 1;
-
         if (left.searchScore !== right.searchScore) {
           return right.searchScore - left.searchScore;
         }
 
-        const leftName = left.dataset.name_ro || left.dataset.name_en || left.dataset.code;
-        const rightName = right.dataset.name_ro || right.dataset.name_en || right.dataset.code;
-        return leftName.localeCompare(rightName, 'ro');
+        const leftPin = prioritizedIndex.get(left.dataset.code);
+        const rightPin = prioritizedIndex.get(right.dataset.code);
+        if (!hasActiveSearch) {
+          if (leftPin != null && rightPin != null && leftPin !== rightPin) {
+            return leftPin - rightPin;
+          }
+          if (leftPin != null && rightPin == null) return -1;
+          if (leftPin == null && rightPin != null) return 1;
+        }
+
+        return left.datasetName.localeCompare(right.datasetName, 'ro');
       })
       .map((entry) => entry.dataset);
-  }, [catalogDatasets, prioritizedIndex, searchTerm]);
+  }, [normalizedDeferredSearchTerm, preparedDatasetSearchEntries, prioritizedIndex]);
 
   const groupedDatasets = useMemo<DatasetExplorerGroup[]>(() => {
     const rootOrder = new Map(rootContexts.map((root, index) => [root.code, index]));
@@ -819,7 +1456,7 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
 
       const contextNode = contextByCode.get(rootCode);
       const rootMeta = rootMetaByCode.get(rootCode);
-      const rawGroupLabel = contextNode?.name_ro || contextNode?.name_en || rootMeta?.label || t`Other`;
+      const rawGroupLabel = getLocalizedText(contextNode?.name_ro, contextNode?.name_en, locale) || rootMeta?.label || t`Other`;
       const next: MutableGroup = {
         code: rootCode,
         shortLabel: rootMeta?.shortLabel ?? rootCode.toUpperCase(),
@@ -853,7 +1490,9 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
       group.sectionMap.set(sectionCode, {
         code: sectionCode,
         label: toPlainTextLabel(
-          sectionNode?.name_ro || sectionNode?.name_en || dataset.context_name_ro || dataset.context_name_en || t`Other`
+          getLocalizedText(sectionNode?.name_ro, sectionNode?.name_en, locale) ||
+            getLocalizedText(dataset.context_name_ro, dataset.context_name_en, locale) ||
+            t`Other`
         ),
         datasets: [dataset],
       });
@@ -880,7 +1519,7 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
         if (leftOrder !== rightOrder) return leftOrder - rightOrder;
         return left.label.localeCompare(right.label, 'ro');
       });
-  }, [contextByCode, filteredDatasets, rootContexts, selectedRootContextCode]);
+  }, [contextByCode, filteredDatasets, locale, rootContexts, selectedRootContextCode]);
 
   const firstDatasetCodeByContext = useMemo(() => {
     const map = new Map<string, string>();
@@ -893,7 +1532,7 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
     return map;
   }, [filteredDatasets]);
 
-  const hasSearchTerm = searchTerm.trim() !== '';
+  const hasSearchTerm = normalizedDeferredSearchTerm !== '';
   const groupedRootCodes = useMemo(() => groupedDatasets.map((group) => group.code), [groupedDatasets]);
 
   useEffect(() => {
@@ -917,25 +1556,85 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
     });
   }, [groupedRootCodes, hasSearchTerm, selectedRootContextCode]);
 
-  const latestByCode = useMemo(() => {
-    return new Map((latestSummaryQuery.data ?? []).map((entry) => [entry.dataset.code, entry]));
-  }, [latestSummaryQuery.data]);
+  const catalogDatasetByCode = useMemo(() => {
+    return new Map(catalogDatasets.map((dataset) => [dataset.code, dataset]));
+  }, [catalogDatasets]);
+
+  const selectedReportPeriodLabel = useMemo(() => {
+    const anchor = getReportPeriodAnchor(reportPeriod);
+    if (!anchor) return t`Unknown`;
+    if (reportPeriod.type === 'QUARTER') {
+      const match = anchor.match(/^(\d{4})-Q([1-4])$/);
+      if (match) return `T${match[2]} ${match[1]}`;
+    }
+    if (reportPeriod.type === 'MONTH') {
+      const match = anchor.match(/^(\d{4})-(0[1-9]|1[0-2])$/);
+      if (match) return `${match[1]}-${match[2]}`;
+    }
+    return anchor;
+  }, [reportPeriod]);
+
+  const topMetricRowsByCode = useMemo(() => {
+    const result = new Map<
+      string,
+      {
+        dataset: InsDataset | null;
+        observation: InsObservation | null;
+        periodLabel: string;
+        selectedPeriodLabel: string;
+        source: 'selected' | 'fallback' | 'none';
+        hasData: boolean;
+      }
+    >();
+
+    const selectedObservationsByDataset = topMetricSnapshotQuery.data?.observationsByDataset;
+    const fallbackObservationsByDataset = topMetricFallbackSnapshotQuery.data?.observationsByDataset;
+    for (const code of topMetricCodes) {
+      const selectedObservations = selectedObservationsByDataset?.get(code) ?? [];
+      const fallbackObservations = fallbackObservationsByDataset?.get(code) ?? [];
+      const selectedObservation = pickDefaultIndicatorObservation(selectedObservations);
+      const fallbackObservation = pickDefaultIndicatorObservation(fallbackObservations);
+      const representative = selectedObservation ?? fallbackObservation;
+      const source: 'selected' | 'fallback' | 'none' = selectedObservation
+        ? 'selected'
+        : fallbackObservation
+          ? 'fallback'
+          : 'none';
+      const periodLabel = representative ? formatPeriodLabel(representative.time_period) : t`Unknown`;
+      result.set(code, {
+        dataset: catalogDatasetByCode.get(code) ?? null,
+        observation: representative,
+        periodLabel,
+        selectedPeriodLabel: selectedReportPeriodLabel,
+        source,
+        hasData: representative !== null,
+      });
+    }
+
+    return result;
+  }, [
+    catalogDatasetByCode,
+    selectedReportPeriodLabel,
+    topMetricCodes,
+    topMetricFallbackSnapshotQuery.data?.observationsByDataset,
+    topMetricSnapshotQuery.data?.observationsByDataset,
+  ]);
 
   const defaultDatasetCode = useMemo(() => {
     for (const code of topMetricCodes) {
-      const row = latestByCode.get(code);
-      if (row?.hasData && row.observation) return code;
+      const row = topMetricRowsByCode.get(code);
+      if (row?.hasData) return code;
     }
 
     for (const code of topMetricCodes) {
-      if (latestByCode.has(code)) return code;
+      if (topMetricRowsByCode.has(code)) return code;
       if (catalogDatasets.some((dataset) => dataset.code === code)) return code;
     }
 
     if (catalogDatasets.length > 0) return catalogDatasets[0].code;
     if (filteredDatasets.length > 0) return filteredDatasets[0].code;
     return null;
-  }, [catalogDatasets, filteredDatasets, latestByCode, topMetricCodes]);
+  }, [catalogDatasets, filteredDatasets, topMetricCodes, topMetricRowsByCode]);
 
   useEffect(() => {
     if (selectedDatasetCode !== null) return;
@@ -945,14 +1644,14 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
 
   const summaryCards = useMemo(() => {
     return topMetrics.map((metric) => {
-      const row = latestByCode.get(metric.code);
+      const row = topMetricRowsByCode.get(metric.code);
       return {
         code: metric.code,
         label: metric.label,
         row,
       };
     });
-  }, [latestByCode, topMetrics]);
+  }, [topMetricRowsByCode, topMetrics]);
 
   const selectedDatasetFromCurrentSources = useMemo(() => {
     if (selectedDatasetCode === null) return null;
@@ -960,11 +1659,8 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
     const fromCatalog = catalogDatasets.find((dataset) => dataset.code === selectedDatasetCode);
     if (fromCatalog) return fromCatalog;
 
-    const fromSummary = latestByCode.get(selectedDatasetCode)?.dataset;
-    if (fromSummary) return fromSummary;
-
     return null;
-  }, [catalogDatasets, latestByCode, selectedDatasetCode]);
+  }, [catalogDatasets, selectedDatasetCode]);
 
   const selectedDatasetLookupQuery = useInsDatasetCatalog({
     filter: selectedDatasetCode ? { codes: [selectedDatasetCode] } : undefined,
@@ -979,8 +1675,46 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
 
   const selectedDatasetSourceUrl = useMemo(() => {
     if (!selectedDataset?.code) return null;
-    return buildInsTempoDatasetUrl(selectedDataset.code);
+    return buildInsTempoDatasetUrl(selectedDataset.code, locale);
+  }, [locale, selectedDataset]);
+
+  const availableTemporalOptions = useMemo(() => {
+    if (!selectedDataset) return [] as Array<{ value: Exclude<TemporalSplit, 'all'>; label: string }>;
+
+    const availableSplits = new Set<Exclude<TemporalSplit, 'all'>>();
+    for (const periodicity of selectedDataset.periodicity ?? []) {
+      const split = mapPeriodicityToTemporalSplit(periodicity);
+      if (split) availableSplits.add(split);
+    }
+
+    return TEMPORAL_SPLIT_OPTIONS.filter((option) => availableSplits.has(option.value));
   }, [selectedDataset]);
+
+  useEffect(() => {
+    if (!selectedDataset) return;
+    if (availableTemporalOptions.length === 0) return;
+
+    const isCurrentTemporalAvailable =
+      temporalSplit !== 'all' && availableTemporalOptions.some((option) => option.value === temporalSplit);
+    if (isCurrentTemporalAvailable) return;
+
+    setTemporalSplit(availableTemporalOptions[0].value);
+  }, [availableTemporalOptions, selectedDataset, temporalSplit]);
+
+  useEffect(() => {
+    if (selectedDatasetCode === null) return;
+    if (selectedDatasetFromCurrentSources) return;
+    if (selectedDatasetLookupQuery.isLoading) return;
+    if (!selectedDatasetLookupQuery.data) return;
+    if ((selectedDatasetLookupQuery.data.nodes ?? []).length === 0) {
+      setSelectedDatasetCode(null);
+    }
+  }, [
+    selectedDatasetCode,
+    selectedDatasetFromCurrentSources,
+    selectedDatasetLookupQuery.data,
+    selectedDatasetLookupQuery.isLoading,
+  ]);
 
   const selectedDatasetDetails = useMemo(() => {
     if (!selectedDataset) return null;
@@ -1010,12 +1744,16 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
 
     const source = findMetadataText(metadata, ['source', 'sursa', 'provider', 'institutie', 'institution']);
     const notes = findMetadataText(metadata, ['notes', 'note', 'observatii', 'comments']);
+    const selectedContext = contextByCode.get(selectedDataset.context_code ?? '');
+    const localizedContextMarkdown = locale === 'en'
+      ? selectedContext?.name_en_markdown || selectedContext?.name_ro_markdown
+      : selectedContext?.name_ro_markdown || selectedContext?.name_en_markdown;
+    const localizedContextLabel =
+      getLocalizedText(selectedContext?.name_ro, selectedContext?.name_en, locale) ||
+      getLocalizedText(selectedDataset.context_name_ro, selectedDataset.context_name_en, locale);
 
     const contextLabel = normalizeMarkdownText(
-      contextByCode.get(selectedDataset.context_code ?? '')?.name_ro_markdown ||
-        contextByCode.get(selectedDataset.context_code ?? '')?.name_ro ||
-        selectedDataset.context_name_ro ||
-        selectedDataset.context_name_en
+      localizedContextMarkdown || localizedContextLabel
     );
 
     const fallbackPath = selectedDataset.context_code ? contextByCode.get(selectedDataset.context_code)?.path : undefined;
@@ -1059,7 +1797,12 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
       const nodeRootCode = nodePath[0] ?? primaryRootCode;
       pushHierarchyItem({
         code,
-        rawLabel: contextNode?.name_ro_markdown || contextNode?.name_ro || contextNode?.name_en || code,
+        rawLabel:
+          (locale === 'en'
+            ? contextNode?.name_en_markdown || contextNode?.name_ro_markdown
+            : contextNode?.name_ro_markdown || contextNode?.name_en_markdown) ||
+          getLocalizedText(contextNode?.name_ro, contextNode?.name_en, locale) ||
+          code,
         kind: 'context',
         rootCode: nodeRootCode,
       });
@@ -1070,7 +1813,7 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
       const contextPath = getContextPathSegments(contextNode?.path || selectedDataset.context_path).slice(1);
       pushHierarchyItem({
         code: selectedDataset.context_code,
-        rawLabel: selectedDataset.context_name_ro || selectedDataset.context_name_en,
+        rawLabel: getLocalizedText(selectedDataset.context_name_ro, selectedDataset.context_name_en, locale),
         kind: 'context',
         rootCode: contextPath[0] ?? primaryRootCode,
       });
@@ -1083,19 +1826,22 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
       rootCode: primaryRootCode,
     });
 
-    const definition = normalizeMarkdownText(selectedDataset.definition_ro ?? selectedDataset.definition_en ?? definitionFromMetadata);
+    const definition = normalizeMarkdownText(
+      locale === 'en'
+        ? selectedDataset.definition_en ?? selectedDataset.definition_ro ?? definitionFromMetadata
+        : selectedDataset.definition_ro ?? selectedDataset.definition_en ?? definitionFromMetadata
+    );
     const rootContextLabel =
       primaryRootCode !== ''
         ? rootContexts.find((root) => root.code === primaryRootCode)?.displayLabel ||
-          contextByCode.get(primaryRootCode)?.name_ro ||
-          contextByCode.get(primaryRootCode)?.name_en ||
+          getLocalizedText(contextByCode.get(primaryRootCode)?.name_ro, contextByCode.get(primaryRootCode)?.name_en, locale) ||
           null
         : null;
     const rootContextBreadcrumbLabel = rootContextLabel ? normalizeRootLabel(toPlainTextLabel(rootContextLabel)) : null;
 
     return {
       code: selectedDataset.code,
-      title: selectedDataset.name_ro || selectedDataset.name_en || selectedDataset.code,
+      title: getLocalizedText(selectedDataset.name_ro, selectedDataset.name_en, locale) || selectedDataset.code,
       hierarchy,
       rootContextCode: primaryRootCode,
       rootContextBreadcrumbLabel,
@@ -1114,7 +1860,7 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
       source: normalizeMarkdownText(source),
       notes: normalizeMarkdownText(notes),
     };
-  }, [contextByCode, rootContexts, selectedDataset]);
+  }, [contextByCode, locale, rootContexts, selectedDataset, selectedDatasetCode]);
 
   const selectedDatasetBreadcrumbItems = useMemo(() => {
     if (!selectedDatasetDetails) return [];
@@ -1122,6 +1868,12 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
   }, [selectedDatasetDetails]);
 
   const hasDatasetMetadataPanel = selectedDatasetDetails !== null;
+  const selectedTemporalPeriodicity = mapTemporalSplitToPeriodicity(temporalSplit)?.[0];
+  const hasTemporalSelector = availableTemporalOptions.length > 1;
+  const isTemporalSplitIncompatible =
+    selectedDataset != null &&
+    selectedTemporalPeriodicity != null &&
+    !selectedDataset.periodicity.includes(selectedTemporalPeriodicity);
 
   const historyObservations = datasetHistoryQuery.data?.observations ?? [];
   const datasetDimensionMetadata = datasetDimensionsQuery.data?.dimensions ?? [];
@@ -1134,7 +1886,98 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
     return mergeSeriesSelection(seriesGroups, selectedSeriesClassifications);
   }, [selectedSeriesClassifications, seriesGroups]);
 
+  const urlSeriesSelection = useMemo(() => {
+    const normalizedSelection: Record<string, string[]> = {};
+
+    for (const [typeCode, selectedCodes] of Object.entries(selectedSeriesClassifications)) {
+      const group = seriesGroups.find((entry) => entry.typeCode === typeCode);
+      const optionByCode = new Map((group?.options ?? []).map((option) => [option.code, option]));
+      const values = Array.from(
+        new Set(
+          selectedCodes
+            .map((selectedCode) => {
+              const matchedOption = optionByCode.get(selectedCode);
+              if (matchedOption) return matchedOption.rawCode;
+              return extractRawSeriesCode(selectedCode);
+            })
+            .map((value) => value.trim())
+            .filter(Boolean)
+        )
+      );
+
+      if (values.length > 0) {
+        normalizedSelection[typeCode] = values;
+      }
+    }
+
+    return normalizeSeriesSelectionForUrl(normalizedSelection);
+  }, [selectedSeriesClassifications, seriesGroups]);
+
+  useEffect(() => {
+    const serialized = JSON.stringify({
+      datasetCode: selectedDatasetCode,
+      search: debouncedSearchTerm.trim(),
+      rootCode: selectedRootContextCode,
+      temporalSplit,
+      explorerMode: isExplorerFullWidth ? 'full' : 'panel',
+      seriesSelection: serializeSeriesSelection(urlSeriesSelection),
+      unitKey: selectedUnitKey,
+    });
+
+    if (lastSerializedInsUrlStateRef.current === serialized) return;
+    lastSerializedInsUrlStateRef.current = serialized;
+
+    writeInsUrlState({
+      datasetCode: selectedDatasetCode,
+      search: debouncedSearchTerm,
+      rootCode: selectedRootContextCode,
+      temporalSplit,
+      explorerMode: isExplorerFullWidth ? 'full' : 'panel',
+      seriesSelection: urlSeriesSelection,
+      unitKey: selectedUnitKey,
+    });
+  }, [
+    debouncedSearchTerm,
+    isExplorerFullWidth,
+    selectedDatasetCode,
+    selectedRootContextCode,
+    selectedUnitKey,
+    temporalSplit,
+    urlSeriesSelection,
+  ]);
+
   const historyUnitOptions = useMemo(() => buildUnitOptions(historyObservations), [historyObservations]);
+
+  useEffect(() => {
+    if (hasAppliedInitialSeriesUrlStateRef.current) return;
+
+    const initialSeriesState = initialSeriesUrlStateRef.current;
+    const hasInitialSeries = Object.keys(initialSeriesState.seriesSelection).length > 0;
+    const hasInitialUnit = Boolean(initialSeriesState.unitKey);
+
+    if (!hasInitialSeries && !hasInitialUnit) {
+      hasAppliedInitialSeriesUrlStateRef.current = true;
+      return;
+    }
+
+    const expectedDatasetCode = initialSeriesState.datasetCode;
+    if (expectedDatasetCode && expectedDatasetCode !== selectedDatasetCode) {
+      return;
+    }
+
+    if (seriesGroups.length === 0 && historyUnitOptions.length === 0) {
+      return;
+    }
+
+    if (hasInitialSeries) {
+      setSelectedSeriesClassifications(initialSeriesState.seriesSelection);
+    }
+    if (hasInitialUnit) {
+      setSelectedUnitKey(initialSeriesState.unitKey);
+    }
+
+    hasAppliedInitialSeriesUrlStateRef.current = true;
+  }, [historyUnitOptions.length, selectedDatasetCode, seriesGroups.length]);
 
   const effectiveUnitSelection = useMemo(() => {
     return mergeUnitSelection(historyUnitOptions, selectedUnitKey);
@@ -1248,9 +2091,49 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
     setSelectedUnitKey(getDefaultUnitSelection(historyUnitOptions));
   }, [historyUnitOptions, seriesGroups]);
 
+  const derivedIndicatorInputs = useMemo(() => {
+    const selectedObservationsByDataset = derivedIndicatorsSnapshotQuery.data?.observationsByDataset;
+    const fallbackObservationsByDataset = derivedIndicatorsFallbackSnapshotQuery.data?.observationsByDataset;
+    return derivedIndicatorCodes.map((datasetCode) => {
+      const selectedObservations = selectedObservationsByDataset?.get(datasetCode) ?? [];
+      const fallbackObservations = fallbackObservationsByDataset?.get(datasetCode) ?? [];
+      const selectedObservation = pickDefaultIndicatorObservation(selectedObservations);
+      const fallbackObservation = pickDefaultIndicatorObservation(fallbackObservations);
+      const observation = selectedObservation ?? fallbackObservation;
+      return {
+        datasetCode,
+        observation,
+        source: selectedObservation ? 'selected' as const : fallbackObservation ? 'fallback' as const : 'none' as const,
+        periodLabel: observation ? formatPeriodLabel(observation.time_period) : null,
+      };
+    });
+  }, [
+    derivedIndicatorCodes,
+    derivedIndicatorsFallbackSnapshotQuery.data?.observationsByDataset,
+    derivedIndicatorsSnapshotQuery.data?.observationsByDataset,
+  ]);
+
   const derivedIndicators = useMemo(() => {
-    return computeDerivedIndicators(derivedIndicatorsQuery.data ?? []);
-  }, [derivedIndicatorsQuery.data]);
+    return computeDerivedIndicators(derivedIndicatorInputs);
+  }, [derivedIndicatorInputs]);
+
+  const derivedIndicatorStatus = useMemo(() => {
+    const periods = Array.from(
+      new Set(
+        derivedIndicatorInputs
+          .map((row) => row.periodLabel)
+          .filter((value): value is string => Boolean(value))
+      )
+    );
+    const hasFallback = derivedIndicatorInputs.some((row) => row.source === 'fallback');
+
+    return {
+      selectedPeriodLabel: selectedReportPeriodLabel,
+      dataPeriodLabel:
+        periods.length === 0 ? t`Unknown` : periods.length === 1 ? periods[0] : t`Mixed`,
+      hasFallback,
+    };
+  }, [derivedIndicatorInputs, selectedReportPeriodLabel]);
 
   const groupedDerivedIndicators = useMemo(() => {
     const groups: Record<DerivedIndicatorGroup, DerivedIndicator[]> = {
@@ -1490,11 +2373,13 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
       const isFullWidth = options?.fullWidth ?? false;
       const periodicityLabel = formatDatasetPeriodicity(dataset.periodicity);
       const isSelected = selectedDatasetCode === dataset.code;
+      const datasetLabel = getLocalizedText(dataset.name_ro, dataset.name_en, locale) || dataset.code;
 
       return (
         <button
           type="button"
           key={dataset.code}
+          data-testid={`dataset-item-${dataset.code}`}
           ref={(element) => {
             datasetItemRefs.current[dataset.code] = element;
           }}
@@ -1516,7 +2401,7 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
                     : 'line-clamp-2 text-[13px] font-semibold leading-[1.35] tracking-[0.002em] text-slate-900'
                 }
               >
-                {dataset.name_ro || dataset.name_en || dataset.code}
+                {datasetLabel}
               </div>
               <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
                 <span
@@ -1535,7 +2420,7 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
         </button>
       );
     },
-    [handleSelectDataset, selectedDatasetCode]
+    [handleSelectDataset, locale, selectedDatasetCode]
   );
 
   if (!entity || (!entity.is_uat && !isCounty)) {
@@ -1574,7 +2459,13 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
     );
   }
 
-  const loadError = latestSummaryQuery.error || datasetCatalogQuery.error || contextsQuery.error;
+  const loadError =
+    topMetricSnapshotQuery.error ||
+    topMetricFallbackSnapshotQuery.error ||
+    derivedIndicatorsSnapshotQuery.error ||
+    derivedIndicatorsFallbackSnapshotQuery.error ||
+    datasetCatalogQuery.error ||
+    contextsQuery.error;
   if (loadError instanceof Error) {
     return (
       <Alert variant="destructive">
@@ -1587,37 +2478,7 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
 
   return (
     <div className="mx-auto max-w-[1450px] space-y-5">
-      <Card className="border-slate-200/60 bg-gradient-to-br from-white via-white to-slate-50">
-        <CardHeader className="space-y-2">
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="secondary">INS Tempo</Badge>
-            <Badge variant="outline">
-              {isCounty ? t`County level` : t`Locality level`}
-            </Badge>
-          </div>
-          <CardTitle className="text-3xl font-bold tracking-tight text-slate-900"><Trans>Local statistics for citizens</Trans></CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2 text-sm text-muted-foreground">
-          <p>
-            {isCounty ? (
-              <Trans>
-                Key indicators load first with the latest period only. Full historical series is loaded when you select a dataset.
-              </Trans>
-            ) : (
-              <Trans>
-                Key indicators load first with the latest period only. Full historical series is loaded when you select a dataset.
-              </Trans>
-            )}
-          </p>
-          {entity?.uat?.county_name && (
-            <p>
-              <Trans>County:</Trans> <span className="font-medium text-foreground">{entity.uat.county_name}</span>
-            </p>
-          )}
-        </CardContent>
-      </Card>
-
-      {latestSummaryQuery.isLoading ? (
+      {topMetricSnapshotQuery.isLoading || topMetricFallbackSnapshotQuery.isLoading ? (
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, index) => (
             <Card key={index} className="space-y-3 p-4">
@@ -1631,9 +2492,14 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
           {summaryCards.map((summary) => {
             const observation = summary.row?.observation;
-            const formattedValue = observation ? formatObservationValue(observation) : { value: t`N/A` };
-            const period = summary.row?.latestPeriod || t`Unknown`;
-            const datasetName = summary.row?.dataset.name_ro || summary.row?.dataset.name_en || summary.code;
+            const formattedValue = observation ? getCardNumericValue(observation) : { value: t`N/A` };
+            const period = summary.row?.periodLabel || t`Unknown`;
+            const selectedPeriodTag = summary.row?.selectedPeriodLabel || selectedReportPeriodLabel;
+            const isPeriodFallback =
+              summary.row?.source === 'fallback' || (period !== t`Unknown` && period !== selectedPeriodTag);
+            const periodLabelText = isPeriodFallback ? `${period} (${t`last available`})` : period;
+            const datasetName =
+              getLocalizedText(summary.row?.dataset?.name_ro, summary.row?.dataset?.name_en, locale) || summary.code;
             const isSelected = selectedDatasetCode === summary.code;
 
             return (
@@ -1662,7 +2528,7 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
                     </div>
                     <div className="line-clamp-2 text-[13px] leading-snug text-slate-600">{datasetName}</div>
                     <div className="text-[12px] font-medium text-slate-500">
-                      <Trans>Last period:</Trans> {period}
+                      <Trans>Period:</Trans> {periodLabelText}
                     </div>
                   </CardContent>
                 </Card>
@@ -1674,22 +2540,39 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
 
       <Card className="border-slate-200/80 shadow-sm">
         <CardHeader className="pb-2">
-          <CardTitle className="text-xl font-bold tracking-tight text-slate-900"><Trans>Derived indicators</Trans></CardTitle>
+          {(() => {
+            const isPeriodFallback =
+              derivedIndicatorStatus.hasFallback ||
+              (derivedIndicatorStatus.dataPeriodLabel !== t`Unknown` &&
+                derivedIndicatorStatus.dataPeriodLabel !== derivedIndicatorStatus.selectedPeriodLabel);
+            const periodLabelText = isPeriodFallback
+              ? `${derivedIndicatorStatus.dataPeriodLabel} (${t`last available`})`
+              : derivedIndicatorStatus.dataPeriodLabel;
+
+            return (
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <CardTitle className="text-xl font-bold tracking-tight text-slate-900"><Trans>Derived indicators</Trans></CardTitle>
+            <div className="text-[12px] font-medium text-slate-500">
+              <Trans>Period:</Trans> {periodLabelText}
+            </div>
+          </div>
+            );
+          })()}
         </CardHeader>
         <CardContent>
-          {derivedIndicatorsQuery.isLoading ? (
+          {derivedIndicatorsSnapshotQuery.isLoading || derivedIndicatorsFallbackSnapshotQuery.isLoading ? (
             <div className="grid gap-3 md:grid-cols-3">
               {Array.from({ length: 8 }).map((_, index) => (
                 <Skeleton key={index} className="h-8 w-full" />
               ))}
             </div>
-          ) : derivedIndicatorsQuery.error ? (
+          ) : derivedIndicatorsSnapshotQuery.error ? (
             <Alert variant="destructive">
               <AlertTriangle className="h-4 w-4" />
               <AlertTitle><Trans>Could not load derived indicators</Trans></AlertTitle>
               <AlertDescription>
-                {derivedIndicatorsQuery.error instanceof Error
-                  ? derivedIndicatorsQuery.error.message
+                {derivedIndicatorsSnapshotQuery.error instanceof Error
+                  ? derivedIndicatorsSnapshotQuery.error.message
                   : t`Unexpected error while loading derived indicators.`}
               </AlertDescription>
             </Alert>
@@ -1728,9 +2611,14 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
                             </div>
                             <span className="truncate text-[13px] font-medium text-slate-600">{row.label}</span>
                           </div>
-                          <span className="ml-3 shrink-0 text-[1.25rem] font-bold leading-none tracking-tight tabular-nums text-slate-800">
-                            {row.value}
-                          </span>
+                          <div className="ml-3 min-w-[96px] shrink-0 text-right">
+                            <div className="text-[1.25rem] font-bold leading-none tracking-tight tabular-nums text-slate-800">
+                              {row.value}
+                            </div>
+                            <div className="mt-0.5 text-[10px] font-medium leading-none text-slate-500">
+                              {row.unitLabel}
+                            </div>
+                          </div>
                         </button>
                       ))}
                     </div>
@@ -1746,7 +2634,7 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
         data-testid="ins-explorer-layout"
         className={`grid gap-4 ${isExplorerFullWidth ? 'grid-cols-1' : 'xl:grid-cols-[420px_minmax(0,1fr)]'}`}
       >
-        <Card className="border-slate-200/80 shadow-sm">
+        <Card className="flex h-[760px] flex-col border-slate-200/80 shadow-sm">
           <CardHeader className="space-y-3 px-4 pb-3 pt-4">
             <div className="flex items-center justify-between gap-2">
               <CardTitle className="text-[1.05rem] font-semibold tracking-[-0.01em] text-slate-900"><Trans>Dataset explorer</Trans></CardTitle>
@@ -1775,48 +2663,8 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
               />
             </div>
 
-            <div className={`flex flex-wrap gap-2 overflow-y-auto pr-1 ${isExplorerFullWidth ? 'max-h-40' : 'max-h-28'}`}>
-              <Button
-                variant={selectedRootContextCode === '' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => setSelectedRootContextCode('')}
-                className={`h-8 rounded-full px-3 text-[12px] font-medium tracking-[0.01em] ${
-                  selectedRootContextCode === ''
-                    ? 'bg-slate-900 text-white hover:bg-slate-800'
-                    : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
-                }`}
-              >
-                <Trans>All sections</Trans>
-              </Button>
-              {rootContexts.map((root) => (
-                <Button
-                  key={root.code}
-                  variant={selectedRootContextCode === root.code ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => setSelectedRootContextCode(root.code)}
-                  className={`h-8 rounded-full px-3 text-[12px] font-medium tracking-[0.01em] ${
-                    selectedRootContextCode === root.code
-                      ? 'bg-slate-900 text-white hover:bg-slate-800'
-                      : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
-                  }`}
-                >
-                  {normalizeRootLabel(root.displayLabel)}
-                </Button>
-              ))}
-            </div>
-
-            <div className="flex flex-wrap items-center justify-between gap-2 text-[12px] font-medium tracking-[0.01em] text-slate-500">
-              <span>
-                {filteredDatasets.length} <Trans>datasets</Trans>
-              </span>
-              {selectedDatasetCode !== null && (
-                <span className="font-medium text-slate-600">
-                  <Trans>Selected:</Trans> {selectedDataset?.code ?? selectedDatasetCode}
-                </span>
-              )}
-            </div>
           </CardHeader>
-          <CardContent className="px-4 pb-4 pt-0">
+          <CardContent className="flex-1 min-h-0 px-4 pb-4 pt-0">
             {datasetCatalogQuery.isLoading ? (
               <div className="space-y-2">
                 {Array.from({ length: 8 }).map((_, index) => (
@@ -1828,13 +2676,7 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
                 <Trans>No datasets match your current filters.</Trans>
               </div>
             ) : (
-              <ScrollArea
-                className={
-                  isExplorerFullWidth
-                    ? 'h-[700px] pr-2'
-                    : 'h-[620px] pr-2'
-                }
-              >
+              <ScrollArea className="h-full pr-2">
                 <Accordion
                   type="multiple"
                   value={openRootGroups}
@@ -1958,7 +2800,7 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
               {selectedDataset ? (
                 <div className="space-y-1">
                   <div className="text-3xl font-bold tracking-tight text-slate-900">
-                    {selectedDatasetDetails?.title || selectedDataset.name_ro || selectedDataset.name_en || selectedDataset.code}
+                    {selectedDatasetDetails?.title || getLocalizedText(selectedDataset.name_ro, selectedDataset.name_en, locale) || selectedDataset.code}
                   </div>
                   <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                     <span className="text-xl font-semibold tracking-[-0.01em] text-slate-700">{selectedDataset.code}</span>
@@ -2061,10 +2903,49 @@ export function InsStatsView({ entity }: { entity: EntityDetailsData | null | un
                 </Alert>
               ) : historySeries.length === 0 ? (
                 <div className="rounded-md border border-dashed p-6 text-sm text-muted-foreground">
-                  <Trans>No observations available for the selected dataset and entity.</Trans>
+                  <p><Trans>No observations available for the selected dataset and entity.</Trans></p>
+                  {isTemporalSplitIncompatible && availableTemporalOptions.length > 0 && (
+                    <div className="mt-2 flex items-center gap-2">
+                      <span className="text-xs">
+                        <Trans>This dataset is not available for the selected temporal split.</Trans>
+                      </span>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="h-7 px-2 text-[11px]"
+                        onClick={() => setTemporalSplit(availableTemporalOptions[0].value)}
+                      >
+                        <Trans>Reset to available period</Trans>
+                      </Button>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <>
+                  {hasTemporalSelector && (
+                    <div className="flex flex-wrap items-center gap-2 rounded-md border border-slate-200 bg-slate-50/60 px-3 py-2">
+                      <span className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500">
+                        <Trans>Period</Trans>
+                      </span>
+                      {availableTemporalOptions.map((option) => (
+                        <Button
+                          key={`detail-${option.value}`}
+                          variant={temporalSplit === option.value ? 'default' : 'ghost'}
+                          size="sm"
+                          onClick={() => setTemporalSplit(option.value)}
+                          className={`h-7 rounded-full px-3 text-[11px] font-medium tracking-[0.01em] ${
+                            temporalSplit === option.value
+                              ? 'bg-slate-900 text-white hover:bg-slate-800'
+                              : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+                          }`}
+                        >
+                          {option.label}
+                        </Button>
+                      ))}
+                    </div>
+                  )}
+
                   {hasSeriesSelectors && (
                     <div className="space-y-3 rounded-md border border-slate-200 bg-slate-50/70 p-3">
                       <div className="flex flex-wrap items-center justify-between gap-2">

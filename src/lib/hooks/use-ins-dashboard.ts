@@ -6,8 +6,10 @@ import {
   getInsDatasetHistory,
   getInsDatasetsCatalog,
   getInsLatestDatasetValues,
+  getInsObservationsSnapshotByDatasets,
   getInsUatDashboard,
   type InsDatasetHistoryResult,
+  type InsObservationsSnapshotByDatasetResult,
 } from '@/lib/api/ins';
 import { generateHash } from '@/lib/utils';
 import type {
@@ -202,4 +204,42 @@ export function useInsDatasetHistory(params: {
   enabled?: boolean;
 }) {
   return useQuery(insDatasetHistoryQueryOptions(params));
+}
+
+export const insObservationsSnapshotByDatasetsQueryOptions = (params: {
+  datasetCodes: string[];
+  filter: InsObservationFilterInput;
+  limit?: number;
+  enabled?: boolean;
+}) => {
+  const { enabled = true, ...queryParams } = params;
+  const normalizedDatasetCodes = Array.from(
+    new Set(queryParams.datasetCodes.map((datasetCode) => datasetCode.trim().toUpperCase()).filter(Boolean))
+  );
+  const hash = generateHash(
+    JSON.stringify({
+      ...queryParams,
+      datasetCodes: normalizedDatasetCodes,
+    })
+  );
+
+  return queryOptions<InsObservationsSnapshotByDatasetResult>({
+    queryKey: ['insObservationsSnapshotByDatasets', hash],
+    queryFn: () =>
+      getInsObservationsSnapshotByDatasets({
+        ...queryParams,
+        datasetCodes: normalizedDatasetCodes,
+      }),
+    enabled: enabled && normalizedDatasetCodes.length > 0,
+    staleTime: DEFAULT_STALE_TIME,
+  });
+};
+
+export function useInsObservationsSnapshotByDatasets(params: {
+  datasetCodes: string[];
+  filter: InsObservationFilterInput;
+  limit?: number;
+  enabled?: boolean;
+}) {
+  return useQuery(insObservationsSnapshotByDatasetsQueryOptions(params));
 }
