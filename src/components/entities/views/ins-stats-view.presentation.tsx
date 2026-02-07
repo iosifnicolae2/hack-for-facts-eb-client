@@ -46,8 +46,18 @@ import {
   normalizeSearchValue,
   toPlainTextLabel,
 } from './ins-stats-view.formatters';
-import { DERIVED_INDICATOR_GROUP_META, DERIVED_INDICATOR_GROUP_ORDER } from './ins-stats-view.derived';
-import type { DatasetExplorerGroup, DerivedIndicator, TemporalSplit } from './ins-stats-view.types';
+import {
+  buildDerivedIndicatorRuntimeContext,
+  DERIVED_INDICATOR_GROUP_META,
+  DERIVED_INDICATOR_GROUP_ORDER,
+  getDerivedIndicatorExplanation,
+} from './ins-stats-view.derived';
+import type {
+  DatasetExplorerGroup,
+  DerivedIndicator,
+  DerivedIndicatorRuntimeContext,
+  TemporalSplit,
+} from './ins-stats-view.types';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
@@ -283,6 +293,26 @@ function DerivedIndicatorsSectionBase(props: {
   const periodLabelText = isPeriodFallback
     ? `${derivedIndicatorStatus.dataPeriodLabel} (${t`last available`})`
     : derivedIndicatorStatus.dataPeriodLabel;
+  const runtimeContextByIndicatorId = useMemo(() => {
+    const contextById = new Map<DerivedIndicator['id'], DerivedIndicatorRuntimeContext>();
+    for (const row of derivedIndicators) {
+      contextById.set(
+        row.id,
+        buildDerivedIndicatorRuntimeContext({
+          selectedPeriodLabel: derivedIndicatorStatus.selectedPeriodLabel,
+          dataPeriodLabel: derivedIndicatorStatus.dataPeriodLabel,
+          sourceDatasetCode: row.sourceDatasetCode,
+          hasFallback: derivedIndicatorStatus.hasFallback,
+        })
+      );
+    }
+    return contextById;
+  }, [
+    derivedIndicatorStatus.dataPeriodLabel,
+    derivedIndicatorStatus.hasFallback,
+    derivedIndicatorStatus.selectedPeriodLabel,
+    derivedIndicators,
+  ]);
 
   return (
     <Card className="border-slate-200/80 shadow-sm">
@@ -333,29 +363,147 @@ function DerivedIndicatorsSectionBase(props: {
                   </div>
 
                   <div className="space-y-1">
-                    {groupRows.map((row) => (
-                      <button
-                        key={row.id}
-                        type="button"
-                        onClick={() => onSelectDerivedIndicator(row.sourceDatasetCode)}
-                        className="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left transition-colors hover:bg-slate-50"
-                      >
-                        <div className="min-w-0 flex items-center gap-2">
-                          <div className="rounded-md border border-slate-200 bg-white p-1">
-                            <DerivedIndicatorIcon id={row.id} />
-                          </div>
-                          <span className="truncate text-[13px] font-medium text-slate-600">{row.label}</span>
+                    {groupRows.map((row) => {
+                      const explanation = getDerivedIndicatorExplanation(row.id);
+                      const runtimeContext =
+                        runtimeContextByIndicatorId.get(row.id) ??
+                        buildDerivedIndicatorRuntimeContext({
+                          selectedPeriodLabel: derivedIndicatorStatus.selectedPeriodLabel,
+                          dataPeriodLabel: derivedIndicatorStatus.dataPeriodLabel,
+                          sourceDatasetCode: row.sourceDatasetCode,
+                          hasFallback: derivedIndicatorStatus.hasFallback,
+                        });
+                      const detailsButtonLabel = t`Show details for ${row.label}`;
+
+                      return (
+                        <div
+                          key={row.id}
+                          className="group flex items-center gap-2 rounded-lg border border-transparent px-1.5 py-1 transition-colors hover:border-slate-200 hover:bg-slate-50 focus-within:border-slate-300 focus-within:bg-slate-50"
+                        >
+                          <button
+                            type="button"
+                            data-testid={`derived-indicator-select-${row.id}`}
+                            onClick={() => onSelectDerivedIndicator(row.sourceDatasetCode)}
+                            className="flex min-w-0 flex-1 items-center justify-between rounded-md px-1 py-1 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1"
+                          >
+                            <div className="min-w-0 flex items-center gap-2">
+                              <div className="rounded-md border border-slate-200 bg-white p-1">
+                                <DerivedIndicatorIcon id={row.id} />
+                              </div>
+                              <span className="truncate text-[13px] font-medium text-slate-600">{row.label}</span>
+                            </div>
+                            <div className="ml-3 min-w-[96px] shrink-0 pr-1 text-right">
+                              <div className="text-[1.25rem] font-bold leading-none tracking-tight tabular-nums text-slate-800">
+                                {row.value}
+                              </div>
+                              <div className="mt-0.5 text-[10px] font-medium leading-none text-slate-500">
+                                {row.unitLabel}
+                              </div>
+                            </div>
+                          </button>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                data-testid={`derived-indicator-info-${row.id}`}
+                                aria-label={detailsButtonLabel}
+                                title={detailsButtonLabel}
+                                className="h-7 w-7 shrink-0 rounded-full border border-slate-200 bg-white text-slate-500 hover:border-slate-300 hover:bg-slate-100 hover:text-slate-900 focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1"
+                              >
+                                <Info className="h-4 w-4" aria-hidden="true" />
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent align="end" className="w-[min(460px,92vw)] border-slate-200 bg-white p-0 shadow-xl">
+                              <div className="rounded-t-md border-b border-slate-200 bg-slate-50/80 px-3 py-2.5">
+                                <div className="flex items-start justify-between gap-3">
+                                  <div className="min-w-0">
+                                    <div className="text-sm font-semibold text-slate-900">{row.label}</div>
+                                    <div className="mt-0.5 text-[11px] text-slate-500">{row.unitLabel}</div>
+                                  </div>
+                                  <div className="shrink-0 rounded-md border border-slate-200 bg-white px-2 py-1 text-right">
+                                    <div className="text-[1.05rem] font-bold leading-none tabular-nums text-slate-900">
+                                      {row.value}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="space-y-2.5 p-3">
+                                <section className="space-y-1 rounded-md border border-slate-200 bg-white p-2.5">
+                                  <h5 className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500">
+                                    <Trans>Why this matters</Trans>
+                                  </h5>
+                                  <p className="text-sm leading-5 text-slate-700">{explanation.whyItMatters}</p>
+                                </section>
+
+                                <section className="space-y-1 rounded-md border border-slate-200 bg-slate-50/60 p-2.5">
+                                  <h5 className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500">
+                                    <Trans>How calculated</Trans>
+                                  </h5>
+                                  <p className="font-mono text-[12px] leading-5 text-slate-800">{explanation.formula}</p>
+                                </section>
+
+                                <section className="space-y-1 rounded-md border border-slate-200 bg-white p-2.5">
+                                  <h5 className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500">
+                                    <Trans>Inputs used</Trans>
+                                  </h5>
+                                  <ul className="space-y-1.5">
+                                    {explanation.inputs.map((inputLabel) => (
+                                      <li
+                                        key={inputLabel}
+                                        className="rounded-md border border-slate-200 bg-slate-50 px-2 py-1 text-sm text-slate-700"
+                                      >
+                                        {inputLabel}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </section>
+
+                                <section className="space-y-1 rounded-md border border-slate-200 bg-white p-2.5">
+                                  <h5 className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500">
+                                    <Trans>Current period and source</Trans>
+                                  </h5>
+                                  <dl className="space-y-1.5 text-sm leading-5 text-slate-700">
+                                    <div className="flex items-start justify-between gap-3">
+                                      <dt className="font-medium"><Trans>Selected period:</Trans></dt>
+                                      <dd className="text-right tabular-nums">{runtimeContext.selectedPeriodLabel}</dd>
+                                    </div>
+                                    <div className="flex items-start justify-between gap-3">
+                                      <dt className="font-medium"><Trans>Data period shown:</Trans></dt>
+                                      <dd className="text-right tabular-nums">{runtimeContext.dataPeriodLabel}</dd>
+                                    </div>
+                                    <div className="flex items-start justify-between gap-3">
+                                      <dt className="font-medium"><Trans>Source dataset:</Trans></dt>
+                                      <dd className="text-right font-semibold">
+                                        {runtimeContext.sourceDatasetCode ?? t`Unavailable`}
+                                      </dd>
+                                    </div>
+                                  </dl>
+                                  {runtimeContext.hasFallback && (
+                                    <div className="mt-2 rounded-md border border-amber-200 bg-amber-50 px-2 py-1.5 text-[12px] leading-5 text-amber-900">
+                                      <span className="font-semibold"><Trans>Fallback:</Trans></span>{' '}
+                                      <Trans>
+                                        Some indicators use the latest available period because the selected period had
+                                        missing values.
+                                      </Trans>
+                                    </div>
+                                  )}
+                                </section>
+
+                                <section className="space-y-1 rounded-md border border-slate-200 bg-white p-2.5">
+                                  <h5 className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500">
+                                    <Trans>Interpretation notes</Trans>
+                                  </h5>
+                                  <p className="text-sm leading-5 text-slate-700">{explanation.notes}</p>
+                                </section>
+                              </div>
+                            </PopoverContent>
+                          </Popover>
                         </div>
-                        <div className="ml-3 min-w-[96px] shrink-0 text-right">
-                          <div className="text-[1.25rem] font-bold leading-none tracking-tight tabular-nums text-slate-800">
-                            {row.value}
-                          </div>
-                          <div className="mt-0.5 text-[10px] font-medium leading-none text-slate-500">
-                            {row.unitLabel}
-                          </div>
-                        </div>
-                      </button>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               );

@@ -2,7 +2,13 @@ import { t } from '@lingui/core/macro';
 
 import type { InsObservation } from '@/schemas/ins';
 import { formatNumber } from '@/lib/utils';
-import type { DerivedIndicator, DerivedIndicatorGroup, DerivedIndicatorId } from './ins-stats-view.types';
+import type {
+  DerivedIndicator,
+  DerivedIndicatorExplanation,
+  DerivedIndicatorGroup,
+  DerivedIndicatorId,
+  DerivedIndicatorRuntimeContext,
+} from './ins-stats-view.types';
 import { parseObservationValue } from './ins-stats-view.formatters';
 
 function extractIndicatorNumericMap(
@@ -83,6 +89,110 @@ export const DERIVED_INDICATOR_GROUP_ORDER: DerivedIndicatorGroup[] = [
   'economy_housing',
   'utilities',
 ];
+
+export const DERIVED_INDICATOR_EXPLANATIONS: Record<DerivedIndicatorId, DerivedIndicatorExplanation> = {
+  'birth-rate': {
+    whyItMatters: t`Birth rate tracks demographic renewal and future pressure on schools, childcare, and local services.`,
+    formula: t`(Live births / Population) × 1,000`,
+    inputs: [t`Live births (POP201D)`, t`Population (POP107D)`],
+    notes: t`Compare with death rate and migration to understand if growth is structural or temporary.`,
+  },
+  'death-rate': {
+    whyItMatters: t`Death rate captures health and age-structure pressure and helps explain natural change in population.`,
+    formula: t`(Deaths / Population) × 1,000`,
+    inputs: [t`Deaths (POP206D)`, t`Population (POP107D)`],
+    notes: t`Interpret together with birth rate and local age profile; short-term spikes can occur in crisis years.`,
+  },
+  'natural-increase': {
+    whyItMatters: t`Natural increase shows the absolute demographic balance from births versus deaths.`,
+    formula: t`Live births − Deaths`,
+    inputs: [t`Live births (POP201D)`, t`Deaths (POP206D)`],
+    notes: t`Positive values indicate natural growth; negative values indicate natural decline.`,
+  },
+  'natural-increase-rate': {
+    whyItMatters: t`Natural increase rate normalizes birth-death balance for locality size so territories can be compared fairly.`,
+    formula: t`((Live births − Deaths) / Population) × 1,000`,
+    inputs: [t`Live births (POP201D)`, t`Deaths (POP206D)`, t`Population (POP107D)`],
+    notes: t`A negative rate means deaths exceed births even if total population may still grow via migration.`,
+  },
+  'net-migration': {
+    whyItMatters: t`Net migration in absolute terms shows whether people are moving in or out overall.`,
+    formula: t`Immigrants − Emigrants`,
+    inputs: [t`Immigrants (POP310E)`, t`Emigrants (POP309E)`],
+    notes: t`Use alongside natural increase to separate demographic change from movement-driven change.`,
+  },
+  'net-migration-rate': {
+    whyItMatters: t`Net migration rate captures attractiveness and retention dynamics adjusted for population size.`,
+    formula: t`((Immigrants − Emigrants) / Population) × 1,000`,
+    inputs: [t`Immigrants (POP310E)`, t`Emigrants (POP309E)`, t`Population (POP107D)`],
+    notes: t`High volatility can appear in small localities where modest flows create large per-capita swings.`,
+  },
+  'employees-rate': {
+    whyItMatters: t`Employees per 1,000 inhabitants is a simple proxy for local labor-market intensity.`,
+    formula: t`(Employees / Population) × 1,000`,
+    inputs: [t`Employees (FOM104D)`, t`Population (POP107D)`],
+    notes: t`This is not an employment rate by age group; it is a general intensity indicator.`,
+  },
+  'dwellings-rate': {
+    whyItMatters: t`Dwellings per 1,000 inhabitants signals housing capacity relative to resident population.`,
+    formula: t`(Existing dwellings / Population) × 1,000`,
+    inputs: [t`Existing dwellings (LOC101B)`, t`Population (POP107D)`],
+    notes: t`Use with living-area indicator for a fuller view of housing availability and crowding pressure.`,
+  },
+  'living-area': {
+    whyItMatters: t`Living area per inhabitant measures residential space availability and housing quality pressure.`,
+    formula: t`Living area / Population`,
+    inputs: [t`Total living area (LOC103B)`, t`Population (POP107D)`],
+    notes: t`Differences can reflect housing stock structure, tourism pressure, and suburbanization patterns.`,
+  },
+  water: {
+    whyItMatters: t`Water volume per inhabitant is a proxy for household and economic utility demand intensity.`,
+    formula: t`Water distributed / Population`,
+    inputs: [t`Water distributed (GOS107A)`, t`Population (POP107D)`],
+    notes: t`Interpret with network coverage and industrial structure; utility demand is not only household demand.`,
+  },
+  gas: {
+    whyItMatters: t`Gas volume per inhabitant indicates reliance on gas infrastructure and energy-use profile.`,
+    formula: t`Gas distributed / Population`,
+    inputs: [t`Gas distributed (GOS118A)`, t`Population (POP107D)`],
+    notes: t`Weather, heating systems, and local industry can materially affect year-to-year variation.`,
+  },
+  'sewer-rate': {
+    whyItMatters: t`Sewer network length per 1,000 inhabitants approximates sanitation infrastructure intensity.`,
+    formula: t`(Sewer network length / Population) × 1,000`,
+    inputs: [t`Sewer network length (GOS110A)`, t`Population (POP107D)`],
+    notes: t`Coverage quality still depends on connection rates and settlement density, not only network length.`,
+  },
+  'gas-network-rate': {
+    whyItMatters: t`Gas network length per 1,000 inhabitants shows gas infrastructure reach relative to population size.`,
+    formula: t`(Gas network length / Population) × 1,000`,
+    inputs: [t`Gas network length (GOS116A)`, t`Population (POP107D)`],
+    notes: t`Network expansion may precede household connections, so combine with consumption indicators.`,
+  },
+};
+
+export function getDerivedIndicatorExplanation(id: DerivedIndicatorId): DerivedIndicatorExplanation {
+  return DERIVED_INDICATOR_EXPLANATIONS[id];
+}
+
+export function buildDerivedIndicatorRuntimeContext(params: {
+  selectedPeriodLabel: string;
+  dataPeriodLabel: string;
+  sourceDatasetCode: string | null;
+  hasFallback: boolean;
+}): DerivedIndicatorRuntimeContext {
+  const sourceDatasetCode =
+    params.sourceDatasetCode && params.sourceDatasetCode.trim() !== ''
+      ? params.sourceDatasetCode.trim().toUpperCase()
+      : null;
+
+  return {
+    selectedPeriodLabel: params.selectedPeriodLabel,
+    dataPeriodLabel: params.dataPeriodLabel,
+    sourceDatasetCode,
+    hasFallback: params.hasFallback,
+  };
+}
 
 export function getDerivedIndicatorGroup(id: DerivedIndicatorId): DerivedIndicatorGroup {
   switch (id) {

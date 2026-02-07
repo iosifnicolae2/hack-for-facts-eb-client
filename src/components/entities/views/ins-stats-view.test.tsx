@@ -871,6 +871,145 @@ describe('InsStatsView', () => {
     })
   })
 
+  it('shows derived indicator info popover without triggering row selection', async () => {
+    mockUseInsDatasetCatalog.mockReturnValue({
+      data: {
+        nodes: [
+          {
+            id: '1',
+            code: 'POP107D',
+            name_ro: 'Populatia dupa domiciliu',
+            name_en: null,
+            definition_ro: null,
+            definition_en: null,
+            periodicity: ['ANNUAL'],
+            has_uat_data: true,
+            has_county_data: true,
+            has_siruta: true,
+            context_code: '1130',
+            context_name_ro: '1. POPULATIA REZIDENTA',
+            context_name_en: null,
+            context_path: '0.1.13.1130',
+          },
+          {
+            id: '2',
+            code: 'POP201D',
+            name_ro: 'Nascuti vii',
+            name_en: null,
+            definition_ro: null,
+            definition_en: null,
+            periodicity: ['ANNUAL'],
+            has_uat_data: true,
+            has_county_data: true,
+            has_siruta: true,
+            context_code: '1131',
+            context_name_ro: '2. NATALITATE',
+            context_name_en: null,
+            context_path: '0.1.13.1131',
+          },
+        ],
+      },
+      isLoading: false,
+      error: null,
+    })
+
+    mockUseInsObservationsSnapshotByDatasets.mockImplementation((params: { datasetCodes: string[] }) => {
+      const observationsByDataset = new Map<string, unknown[]>()
+      for (const datasetCode of params.datasetCodes) {
+        observationsByDataset.set(datasetCode, [])
+      }
+
+      if (params.datasetCodes.includes('POP107D')) {
+        observationsByDataset.set('POP107D', [
+          {
+            dataset_code: 'POP107D',
+            value: '134308',
+            value_status: null,
+            time_period: {
+              iso_period: '2025',
+              year: 2025,
+              quarter: null,
+              month: null,
+              periodicity: 'ANNUAL',
+            },
+            territory: null,
+            unit: { code: 'PERS', symbol: 'pers.', name_ro: 'persoane' },
+            classifications: [],
+          },
+        ])
+      }
+
+      if (params.datasetCodes.includes('POP201D')) {
+        observationsByDataset.set('POP201D', [
+          {
+            dataset_code: 'POP201D',
+            value: '2400',
+            value_status: null,
+            time_period: {
+              iso_period: '2025',
+              year: 2025,
+              quarter: null,
+              month: null,
+              periodicity: 'ANNUAL',
+            },
+            territory: null,
+            unit: { code: 'PERS', symbol: 'pers.', name_ro: 'persoane' },
+            classifications: [],
+          },
+        ])
+      }
+
+      return {
+        data: {
+          observationsByDataset,
+        },
+        isLoading: false,
+        error: null,
+      }
+    })
+
+    renderInsStatsView()
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /Show details for Birth rate/i })).toBeInTheDocument()
+    })
+
+    const infoButton = screen.getByRole('button', { name: /Show details for Birth rate/i })
+    fireEvent.click(infoButton)
+
+    await waitFor(() => {
+      expect(screen.getByText('Why this matters')).toBeInTheDocument()
+      expect(screen.getByText('How calculated')).toBeInTheDocument()
+      expect(screen.getByText('Inputs used')).toBeInTheDocument()
+      expect(screen.getByText('Current period and source')).toBeInTheDocument()
+      expect(screen.getByText('Interpretation notes')).toBeInTheDocument()
+      expect(screen.getByText('(Live births / Population) × 1,000')).toBeInTheDocument()
+      expect(screen.getByText(/Selected period:/i)).toBeInTheDocument()
+      expect(screen.getByText(/Data period shown:/i)).toBeInTheDocument()
+      expect(screen.getByText(/Source dataset:/i)).toBeInTheDocument()
+    })
+
+    await waitFor(() => {
+      expect(mockUseInsDatasetHistory).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          datasetCode: 'POP107D',
+          enabled: true,
+        })
+      )
+    })
+
+    fireEvent.click(screen.getByTestId('derived-indicator-select-birth-rate'))
+
+    await waitFor(() => {
+      expect(mockUseInsDatasetHistory).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          datasetCode: 'POP201D',
+          enabled: true,
+        })
+      )
+    })
+  })
+
   it('shows N/A when selected period has no indicator data', async () => {
     mockUseInsObservationsSnapshotByDatasets.mockImplementation((params: { datasetCodes: string[] }) => {
       const observationsByDataset = new Map<string, unknown[]>()

@@ -60,4 +60,18 @@ export type DerivedIndicator = {
   sourceDatasetCode: string | null;
 };
 
+export type DerivedIndicatorExplanation = {
+  whyItMatters: string;
+  formula: string;
+  inputs: string[];
+  notes: string;
+};
+
+export type DerivedIndicatorRuntimeContext = {
+  selectedPeriodLabel: string;
+  dataPeriodLabel: string;
+  sourceDatasetCode: string | null;
+  hasFallback: boolean;
+};
+
 export type DerivedIndicatorGroup = 'demography' | 'economy_housing' | 'utilities';
