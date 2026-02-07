@@ -1,4 +1,4 @@
-import { memo, useMemo, useState, type Dispatch, type ReactNode, type SetStateAction } from 'react';
+import { memo, useMemo, useState, type CSSProperties, type Dispatch, type ReactNode, type SetStateAction } from 'react';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import AlertTriangle from 'lucide-react/dist/esm/icons/alert-triangle';
@@ -68,6 +68,24 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+
+const CHART_GRID_COLOR = 'hsl(var(--border))';
+const CHART_AXIS_COLOR = 'hsl(var(--muted-foreground))';
+const CHART_LINE_COLOR = 'hsl(var(--foreground))';
+const CHART_BRUSH_FILL = 'hsl(var(--muted))';
+const CHART_TOOLTIP_STYLE: CSSProperties = {
+  backgroundColor: 'hsl(var(--popover))',
+  border: '1px solid hsl(var(--border))',
+  borderRadius: '0.5rem',
+  color: 'hsl(var(--popover-foreground))',
+};
+const CHART_TOOLTIP_LABEL_STYLE: CSSProperties = {
+  color: 'hsl(var(--popover-foreground))',
+  fontWeight: 600,
+};
+const CHART_TOOLTIP_ITEM_STYLE: CSSProperties = {
+  color: 'hsl(var(--popover-foreground))',
+};
 
 function MarkdownDescriptionBase({ content }: { content: string }) {
   return (
@@ -144,34 +162,35 @@ export const ExpandableMarkdownField = memo(ExpandableMarkdownFieldBase);
 
 function DerivedIndicatorIcon({ id }: { id: DerivedIndicator['id'] }) {
   const iconClassName = 'h-4 w-4 text-slate-700 dark:text-slate-300';
+  const iconProps = { className: iconClassName, 'aria-hidden': true as const };
 
   switch (id) {
     case 'birth-rate':
-      return <Baby className={iconClassName} />;
+      return <Baby {...iconProps} />;
     case 'death-rate':
-      return <HeartPulse className={iconClassName} />;
+      return <HeartPulse {...iconProps} />;
     case 'natural-increase':
     case 'natural-increase-rate':
-      return <TrendingDown className={iconClassName} />;
+      return <TrendingDown {...iconProps} />;
     case 'net-migration':
     case 'net-migration-rate':
-      return <ArrowDownUp className={iconClassName} />;
+      return <ArrowDownUp {...iconProps} />;
     case 'employees-rate':
-      return <Briefcase className={iconClassName} />;
+      return <Briefcase {...iconProps} />;
     case 'dwellings-rate':
-      return <House className={iconClassName} />;
+      return <House {...iconProps} />;
     case 'living-area':
-      return <Ruler className={iconClassName} />;
+      return <Ruler {...iconProps} />;
     case 'water':
-      return <Droplets className={iconClassName} />;
+      return <Droplets {...iconProps} />;
     case 'gas':
-      return <Flame className={iconClassName} />;
+      return <Flame {...iconProps} />;
     case 'sewer-rate':
-      return <Waves className={iconClassName} />;
+      return <Waves {...iconProps} />;
     case 'gas-network-rate':
-      return <Network className={iconClassName} />;
+      return <Network {...iconProps} />;
     default:
-      return <Info className={iconClassName} />;
+      return <Info {...iconProps} />;
   }
 }
 
@@ -233,7 +252,7 @@ function SummaryMetricsSectionBase(props: {
             key={summary.code}
             type="button"
             onClick={() => onSelectDataset(summary.code)}
-            className="text-left"
+            className="w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2"
           >
             <Card className={`h-full border-slate-200/80 dark:border-slate-700/80 ${isSelected ? 'border-slate-900 ring-1 ring-slate-900/10' : ''}`}>
               <CardHeader className="pb-2 pt-4">
@@ -335,7 +354,7 @@ function DerivedIndicatorsSectionBase(props: {
           </div>
         ) : error ? (
           <Alert variant="destructive">
-            <AlertTriangle className="h-4 w-4" />
+            <AlertTriangle className="h-4 w-4" aria-hidden="true" />
             <AlertTitle><Trans>Could not load derived indicators</Trans></AlertTitle>
             <AlertDescription>
               {error instanceof Error ? error.message : t`Unexpected error while loading derived indicators.`}
@@ -564,7 +583,7 @@ function DatasetExplorerSectionBase(props: {
         ref={(element) => {
           datasetItemRefs[dataset.code] = element;
         }}
-        className={`group w-full text-left transition-all ${
+        className={`group w-full rounded-md text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1 ${
           isSelected ? 'bg-slate-100 dark:bg-slate-700' : 'bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-700/60'
         }`}
         onClick={() => onSelectDataset(dataset.code)}
@@ -614,15 +633,19 @@ function DatasetExplorerSectionBase(props: {
             aria-label={isExplorerFullWidth ? t`Collapse explorer to side panel` : t`Expand explorer to full width`}
             title={isExplorerFullWidth ? t`Collapse explorer to side panel` : t`Expand explorer to full width`}
           >
-            {isExplorerFullWidth ? <PanelRightOpen className="h-4 w-4" /> : <PanelRightClose className="h-4 w-4" />}
+            {isExplorerFullWidth ? <PanelRightOpen className="h-4 w-4" aria-hidden="true" /> : <PanelRightClose className="h-4 w-4" aria-hidden="true" />}
           </Button>
         </div>
 
         <div className="relative">
-          <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+          <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" aria-hidden="true" />
           <Input
             value={searchTerm}
             onChange={(event) => onSearchTermChange(event.target.value)}
+            type="search"
+            name="ins-dataset-search"
+            aria-label={t`Search dataset code or name`}
+            autoComplete="off"
             placeholder={t`Search dataset code or name`}
             className="h-10 w-full rounded-lg border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 pl-9 text-sm shadow-sm"
           />
@@ -840,15 +863,6 @@ function DatasetDetailSectionBase(props: {
     insTermsUrl,
     hasMultiValueSeriesSelection,
   } = props;
-  const chartGridColor = 'hsl(var(--border))';
-  const chartAxisColor = 'hsl(var(--muted-foreground))';
-  const chartLineColor = 'hsl(var(--foreground))';
-  const chartTooltipStyle = {
-    backgroundColor: 'hsl(var(--popover))',
-    border: '1px solid hsl(var(--border))',
-    borderRadius: '0.5rem',
-    color: 'hsl(var(--popover-foreground))',
-  };
 
   return (
     <Card>
@@ -878,7 +892,7 @@ function DatasetDetailSectionBase(props: {
                         type="button"
                         onClick={() => handleHierarchyNavigate(item)}
                         title={displayLabel}
-                        className="max-w-[320px] truncate font-medium tracking-[0.005em] text-slate-500 dark:text-slate-400 underline-offset-2 transition-colors hover:text-slate-800 dark:hover:text-slate-200 hover:underline"
+                        className="max-w-[320px] truncate rounded-sm font-medium tracking-[0.005em] text-slate-500 dark:text-slate-400 underline-offset-2 transition-colors hover:text-slate-800 dark:hover:text-slate-200 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1"
                       >
                         {displayLabel}
                       </button>
@@ -1008,7 +1022,7 @@ function DatasetDetailSectionBase(props: {
           </div>
         ) : datasetHistoryQuery.error instanceof Error ? (
           <Alert variant="destructive">
-            <AlertTriangle className="h-4 w-4" />
+            <AlertTriangle className="h-4 w-4" aria-hidden="true" />
             <AlertTitle><Trans>Could not load historical data</Trans></AlertTitle>
             <AlertDescription>{datasetHistoryQuery.error.message}</AlertDescription>
           </Alert>
@@ -1077,7 +1091,8 @@ function DatasetDetailSectionBase(props: {
                 <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
                   {selectableSeriesGroups.map((group) => {
                     const selectedCodes = effectiveSeriesSelection[group.typeCode] ?? [];
-                    const selectedOptions = group.options.filter((option) => selectedCodes.includes(option.code));
+                    const selectedCodeSet = new Set(selectedCodes);
+                    const selectedOptions = group.options.filter((option) => selectedCodeSet.has(option.code));
                     const selectorSearchTerm = seriesSelectorSearchByTypeCode[group.typeCode] ?? '';
                     const shouldShowSelectorSearch = group.options.length > 10;
                     const normalizedSelectorSearchTerm = normalizeSearchValue(selectorSearchTerm);
@@ -1108,7 +1123,7 @@ function DatasetDetailSectionBase(props: {
                               className="h-9 w-full justify-between border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-2 text-[13px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
                             >
                               <span className="truncate text-left">{triggerLabel}</span>
-                              <ChevronDown className="h-4 w-4 text-slate-500 dark:text-slate-400" />
+                              <ChevronDown className="h-4 w-4 text-slate-500 dark:text-slate-400" aria-hidden="true" />
                             </Button>
                           </PopoverTrigger>
                           <PopoverContent align="start" className="w-[min(420px,92vw)] border-slate-200 dark:border-slate-700 p-2">
@@ -1118,7 +1133,7 @@ function DatasetDetailSectionBase(props: {
 
                             {shouldShowSelectorSearch && (
                               <div className="relative mb-2">
-                                <Search className="pointer-events-none absolute left-2 top-2 h-3.5 w-3.5 text-slate-400 dark:text-slate-500" />
+                                <Search className="pointer-events-none absolute left-2 top-2 h-3.5 w-3.5 text-slate-400 dark:text-slate-500" aria-hidden="true" />
                                 <Input
                                   value={selectorSearchTerm}
                                   onChange={(event) =>
@@ -1127,6 +1142,10 @@ function DatasetDetailSectionBase(props: {
                                       [group.typeCode]: event.target.value,
                                     }))
                                   }
+                                  type="search"
+                                  name={`series-search-${group.typeCode}`}
+                                  aria-label={t`Search options in ${group.typeLabel}`}
+                                  autoComplete="off"
                                   placeholder={t`Search series options`}
                                   className="h-8 rounded-md border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 pl-7 text-[12px]"
                                 />
@@ -1149,9 +1168,9 @@ function DatasetDetailSectionBase(props: {
                                             onClick={() =>
                                               handleSeriesGroupSelectionChange(group.typeCode, option.code, true)
                                             }
-                                            className="inline-flex items-center gap-1 rounded-full bg-slate-900 dark:bg-slate-100 px-2 py-1 text-[11px] font-medium text-white dark:text-slate-900 transition-colors hover:bg-slate-800"
+                                            className="inline-flex items-center gap-1 rounded-full bg-slate-900 dark:bg-slate-100 px-2 py-1 text-[11px] font-medium text-white dark:text-slate-900 transition-colors hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1"
                                           >
-                                            <Check className="h-3 w-3" />
+                                            <Check className="h-3 w-3" aria-hidden="true" />
                                             <span className="max-w-[180px] truncate">{option.label}</span>
                                           </button>
                                         ))}
@@ -1164,7 +1183,7 @@ function DatasetDetailSectionBase(props: {
                                       <Trans>Options</Trans>
                                     </div>
                                     {filteredOptions.map((option) => {
-                                      const isSelected = selectedCodes.includes(option.code);
+                                      const isSelected = selectedCodeSet.has(option.code);
                                       return (
                                         <button
                                           type="button"
@@ -1176,14 +1195,14 @@ function DatasetDetailSectionBase(props: {
                                               event.shiftKey || event.ctrlKey || event.metaKey
                                             )
                                           }
-                                            className={`flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left transition-colors ${
-                                              isSelected
-                                                ? 'bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900'
-                                                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
-                                            }`}
-                                          >
+                                          className={`flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1 ${
+                                            isSelected
+                                              ? 'bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900'
+                                              : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
+                                          }`}
+                                        >
                                           <span className="text-[12px] font-medium leading-5">{option.label}</span>
-                                          {isSelected && <Check className="ml-2 h-4 w-4 shrink-0" />}
+                                          {isSelected && <Check className="ml-2 h-4 w-4 shrink-0" aria-hidden="true" />}
                                         </button>
                                       );
                                     })}
@@ -1196,7 +1215,7 @@ function DatasetDetailSectionBase(props: {
                                 </>
                               ) : (
                                 group.options.map((option) => {
-                                  const isSelected = selectedCodes.includes(option.code);
+                                  const isSelected = selectedCodeSet.has(option.code);
 
                                   return (
                                     <button
@@ -1209,14 +1228,14 @@ function DatasetDetailSectionBase(props: {
                                           event.shiftKey || event.ctrlKey || event.metaKey
                                         )
                                       }
-                                      className={`flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left transition-colors ${
+                                      className={`flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1 ${
                                         isSelected
                                           ? 'bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900'
                                           : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
                                       }`}
                                     >
                                       <span className="text-[12px] font-medium leading-5">{option.label}</span>
-                                      {isSelected && <Check className="ml-2 h-4 w-4 shrink-0" />}
+                                      {isSelected && <Check className="ml-2 h-4 w-4 shrink-0" aria-hidden="true" />}
                                     </button>
                                   );
                                 })
@@ -1264,25 +1283,25 @@ function DatasetDetailSectionBase(props: {
             <div className="h-72 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={historyChartData} margin={{ top: 10, right: 16, left: 8, bottom: 0 }}>
-                  <CartesianGrid stroke={chartGridColor} strokeDasharray="3 3" />
+                  <CartesianGrid stroke={CHART_GRID_COLOR} strokeDasharray="3 3" />
                   <XAxis
                     dataKey="period"
                     minTickGap={24}
-                    stroke={chartAxisColor}
-                    tick={{ fill: chartAxisColor, fontSize: 12 }}
-                    axisLine={{ stroke: chartGridColor }}
-                    tickLine={{ stroke: chartGridColor }}
+                    stroke={CHART_AXIS_COLOR}
+                    tick={{ fill: CHART_AXIS_COLOR, fontSize: 12 }}
+                    axisLine={{ stroke: CHART_GRID_COLOR }}
+                    tickLine={{ stroke: CHART_GRID_COLOR }}
                   />
                   <YAxis
-                    stroke={chartAxisColor}
-                    tick={{ fill: chartAxisColor, fontSize: 12 }}
-                    axisLine={{ stroke: chartGridColor }}
-                    tickLine={{ stroke: chartGridColor }}
+                    stroke={CHART_AXIS_COLOR}
+                    tick={{ fill: CHART_AXIS_COLOR, fontSize: 12 }}
+                    axisLine={{ stroke: CHART_GRID_COLOR }}
+                    tickLine={{ stroke: CHART_GRID_COLOR }}
                   />
                   <Tooltip
-                    contentStyle={chartTooltipStyle}
-                    labelStyle={{ color: 'hsl(var(--popover-foreground))', fontWeight: 600 }}
-                    itemStyle={{ color: 'hsl(var(--popover-foreground))' }}
+                    contentStyle={CHART_TOOLTIP_STYLE}
+                    labelStyle={CHART_TOOLTIP_LABEL_STYLE}
+                    itemStyle={CHART_TOOLTIP_ITEM_STYLE}
                     formatter={(value, _name, item) => {
                       if (item.payload?.statusLabel) {
                         return [item.payload.statusLabel, t`Status`];
@@ -1293,8 +1312,8 @@ function DatasetDetailSectionBase(props: {
                       return [formatNumber(value, 'standard'), t`Value`];
                     }}
                   />
-                  <Line type="monotone" dataKey="numericValue" stroke={chartLineColor} strokeWidth={2} dot={false} />
-                  <Brush dataKey="period" height={20} stroke={chartAxisColor} fill="hsl(var(--muted))" travellerWidth={8} />
+                  <Line type="monotone" dataKey="numericValue" stroke={CHART_LINE_COLOR} strokeWidth={2} dot={false} />
+                  <Brush dataKey="period" height={20} stroke={CHART_AXIS_COLOR} fill={CHART_BRUSH_FILL} travellerWidth={8} />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -1308,7 +1327,7 @@ function DatasetDetailSectionBase(props: {
                     className="inline-flex items-center gap-1.5 font-semibold text-slate-800 dark:text-slate-200 underline-offset-2 hover:text-slate-950 dark:hover:text-slate-100 hover:underline"
                   >
                     <Trans>Open source matrix in INS Tempo</Trans>
-                    <ExternalLink className="h-3.5 w-3.5" />
+                    <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
                   </a>
                   <span className="text-slate-400 dark:text-slate-500">•</span>
                   <span>
@@ -1330,7 +1349,7 @@ function DatasetDetailSectionBase(props: {
 
             {datasetHistoryQuery.data?.partial && (
               <Alert>
-                <Info className="h-4 w-4" />
+                <Info className="h-4 w-4" aria-hidden="true" />
                 <AlertTitle><Trans>Partial history</Trans></AlertTitle>
                 <AlertDescription>
                   <Trans>

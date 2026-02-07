@@ -646,11 +646,11 @@ export function InsStatsView({
   const selectedDatasetFromCurrentSources = useMemo(() => {
     if (selectedDatasetCode === null) return null;
 
-    const fromCatalog = catalogDatasets.find((dataset) => dataset.code === selectedDatasetCode);
+    const fromCatalog = catalogDatasetByCode.get(selectedDatasetCode);
     if (fromCatalog) return fromCatalog;
 
     return null;
-  }, [catalogDatasets, selectedDatasetCode]);
+  }, [catalogDatasetByCode, selectedDatasetCode]);
 
   const selectedDatasetLookupQuery = useInsDatasetCatalog({
     filter: selectedDatasetCode ? { codes: [selectedDatasetCode] } : undefined,
@@ -871,6 +871,16 @@ export function InsStatsView({
   const seriesGroups = useMemo<InsSeriesGroup[]>(() => {
     return buildSeriesGroups(historyObservations, datasetDimensionMetadata);
   }, [datasetDimensionMetadata, historyObservations]);
+  const seriesGroupByTypeCode = useMemo(() => {
+    return new Map(seriesGroups.map((group) => [group.typeCode, group]));
+  }, [seriesGroups]);
+  const seriesOptionByTypeCode = useMemo(() => {
+    const optionsByTypeCode = new Map<string, Map<string, (typeof seriesGroups)[number]['options'][number]>>();
+    for (const group of seriesGroups) {
+      optionsByTypeCode.set(group.typeCode, new Map(group.options.map((option) => [option.code, option])));
+    }
+    return optionsByTypeCode;
+  }, [seriesGroups]);
 
   const effectiveSeriesSelection = useMemo(() => {
     return mergeSeriesSelection(seriesGroups, selectedSeriesClassifications);
@@ -880,13 +890,12 @@ export function InsStatsView({
     const normalizedSelection: Record<string, string[]> = {};
 
     for (const [typeCode, selectedCodes] of Object.entries(selectedSeriesClassifications)) {
-      const group = seriesGroups.find((entry) => entry.typeCode === typeCode);
-      const optionByCode = new Map((group?.options ?? []).map((option) => [option.code, option]));
+      const optionByCode = seriesOptionByTypeCode.get(typeCode);
       const values = Array.from(
         new Set(
           selectedCodes
             .map((selectedCode) => {
-              const matchedOption = optionByCode.get(selectedCode);
+              const matchedOption = optionByCode?.get(selectedCode);
               if (matchedOption) return matchedOption.rawCode;
               return extractRawSeriesCode(selectedCode);
             })
@@ -901,7 +910,7 @@ export function InsStatsView({
     }
 
     return normalizeSeriesSelectionForUrl(normalizedSelection);
-  }, [selectedSeriesClassifications, seriesGroups]);
+  }, [selectedSeriesClassifications, seriesOptionByTypeCode]);
 
   useEffect(() => {
     const serialized = JSON.stringify({
@@ -1051,6 +1060,9 @@ export function InsStatsView({
     () => seriesGroups.filter((group) => group.options.length > 1),
     [seriesGroups]
   );
+  const historyUnitByKey = useMemo(() => {
+    return new Map(historyUnitOptions.map((option) => [option.key, option]));
+  }, [historyUnitOptions]);
   const hasSeriesSelectors = selectableSeriesGroups.length > 0 || historyUnitOptions.length > 1;
 
   const activeSeriesCriteriaParts = useMemo(() => {
@@ -1059,22 +1071,30 @@ export function InsStatsView({
     for (const group of seriesGroups) {
       const selectedCodes = effectiveSeriesSelection[group.typeCode] ?? [];
       if (selectedCodes.length === 0) continue;
+      const optionByCode = seriesOptionByTypeCode.get(group.typeCode);
       const selectedLabels = selectedCodes
-        .map((code) => group.options.find((entry) => entry.code === code)?.label)
+        .map((code) => optionByCode?.get(code)?.label)
         .filter(Boolean) as string[];
       if (selectedLabels.length === 0) continue;
       parts.push(`${group.typeLabel}: ${selectedLabels.join(', ')}`);
     }
 
     if (historyUnitOptions.length > 1 && effectiveUnitSelection) {
-      const selectedUnit = historyUnitOptions.find((option) => option.key === effectiveUnitSelection);
+      const selectedUnit = historyUnitByKey.get(effectiveUnitSelection);
       if (selectedUnit) {
         parts.push(`${t`Unit`}: ${selectedUnit.label}`);
       }
     }
 
     return parts;
-  }, [effectiveSeriesSelection, effectiveUnitSelection, historyUnitOptions, seriesGroups]);
+  }, [
+    effectiveSeriesSelection,
+    effectiveUnitSelection,
+    historyUnitByKey,
+    historyUnitOptions.length,
+    seriesGroups,
+    seriesOptionByTypeCode,
+  ]);
 
   const handleResetSeriesSelection = useCallback(() => {
     setSelectedSeriesClassifications(buildDefaultSeriesSelection(seriesGroups));
@@ -1240,9 +1260,9 @@ export function InsStatsView({
       setSelectedSeriesClassifications((current) => {
         const normalized = mergeSeriesSelection(seriesGroups, current);
         const existingCodes = normalized[typeCode] ?? [];
-        const group = seriesGroups.find((entry) => entry.typeCode === typeCode);
-        const optionByCode = new Map((group?.options ?? []).map((option) => [option.code, option]));
-        const isTotalLikeCode = (code: string) => optionByCode.get(code)?.isTotalLike ?? false;
+        const group = seriesGroupByTypeCode.get(typeCode);
+        const optionByCode = seriesOptionByTypeCode.get(typeCode);
+        const isTotalLikeCode = (code: string) => optionByCode?.get(code)?.isTotalLike ?? false;
         const defaultCode = group?.options.find((option) => option.isTotalLike)?.code ?? group?.options[0]?.code ?? selectedCode;
 
         const nextCodes = !multiSelect
@@ -1292,7 +1312,14 @@ export function InsStatsView({
         return resolveCompatibleSelectionForUnit(effectiveUnitSelection, candidateSelection);
       });
     },
-    [effectiveUnitSelection, historyObservations, resolveCompatibleSelectionForUnit, seriesGroups]
+    [
+      effectiveUnitSelection,
+      historyObservations,
+      resolveCompatibleSelectionForUnit,
+      seriesGroupByTypeCode,
+      seriesGroups,
+      seriesOptionByTypeCode,
+    ]
   );
 
   const handleUnitSelectionChange = useCallback(
@@ -1350,8 +1377,9 @@ export function InsStatsView({
     }
 
     window.requestAnimationFrame(() => {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       target.scrollIntoView({
-        behavior: 'smooth',
+        behavior: prefersReducedMotion ? 'auto' : 'smooth',
         block: 'nearest',
       });
     });
@@ -1361,7 +1389,7 @@ export function InsStatsView({
   if (!entity || (!entity.is_uat && !isCounty)) {
     return (
       <Alert>
-        <Info className="h-4 w-4" />
+        <Info className="h-4 w-4" aria-hidden="true" />
         <AlertTitle><Trans>INS indicators are only available for UATs.</Trans></AlertTitle>
         <AlertDescription>
           <Trans>Select a local entity to view INS Tempo data.</Trans>
@@ -1373,7 +1401,7 @@ export function InsStatsView({
   if (isCounty && countyCode === '') {
     return (
       <Alert>
-        <Info className="h-4 w-4" />
+        <Info className="h-4 w-4" aria-hidden="true" />
         <AlertTitle><Trans>No county code associated.</Trans></AlertTitle>
         <AlertDescription>
           <Trans>Cannot load INS indicators without the county code.</Trans>
@@ -1385,7 +1413,7 @@ export function InsStatsView({
   if (!isCounty && sirutaCode === '') {
     return (
       <Alert>
-        <Info className="h-4 w-4" />
+        <Info className="h-4 w-4" aria-hidden="true" />
         <AlertTitle><Trans>No SIRUTA code associated.</Trans></AlertTitle>
         <AlertDescription>
           <Trans>Cannot load INS indicators without the locality SIRUTA code.</Trans>
@@ -1404,7 +1432,7 @@ export function InsStatsView({
   if (loadError instanceof Error) {
     return (
       <Alert variant="destructive">
-        <AlertTriangle className="h-4 w-4" />
+        <AlertTriangle className="h-4 w-4" aria-hidden="true" />
         <AlertTitle><Trans>Could not load INS data</Trans></AlertTitle>
         <AlertDescription>{loadError.message}</AlertDescription>
       </Alert>
