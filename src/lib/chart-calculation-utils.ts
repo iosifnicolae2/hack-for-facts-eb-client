@@ -1,5 +1,14 @@
 import { Series, Calculation, Operation, AnalyticsSeries, Chart, defaultYearRange } from '@/schemas/charts';
 import type { DataValidationError } from '@/lib/chart-data-validation';
+import { parseMonth, parseQuarter } from '@/lib/chart-data-utils';
+
+type CalculationXAxisUnit = 'year' | 'quarter' | 'month';
+
+interface EvaluatedOperand {
+  points: { x: string; y: number }[];
+  isConstant: boolean;
+  constantValue?: number;
+}
 
 // ============================================================================
 // CYCLE DETECTION
@@ -88,6 +97,34 @@ function addCalculationDependencies(
 // CALCULATION EVALUATION
 // ============================================================================
 
+function normalizeXAxisUnit(unit: string | undefined | null): CalculationXAxisUnit {
+  const normalized = String(unit ?? 'year').toLowerCase();
+  if (normalized === 'month') return 'month';
+  if (normalized === 'quarter') return 'quarter';
+  return 'year';
+}
+
+function sortXAxisLabels(values: string[], unit: CalculationXAxisUnit): string[] {
+  return [...values].sort((a, b) => {
+    if (unit === 'year') return Number(a) - Number(b);
+    if (unit === 'quarter') {
+      const left = parseQuarter(a);
+      const right = parseQuarter(b);
+      const leftYear = left.y ?? 0;
+      const rightYear = right.y ?? 0;
+      if (leftYear !== rightYear) return leftYear - rightYear;
+      return (left.q ?? 0) - (right.q ?? 0);
+    }
+
+    const left = parseMonth(a);
+    const right = parseMonth(b);
+    const leftYear = left.y ?? 0;
+    const rightYear = right.y ?? 0;
+    if (leftYear !== rightYear) return leftYear - rightYear;
+    return (left.m ?? 0) - (right.m ?? 0);
+  });
+}
+
 /**
  * Evaluates a calculation series and returns its data points
  * @param calculation - The calculation to evaluate
@@ -99,44 +136,59 @@ export function evaluateCalculation(
   calculation: Calculation,
   seriesData: Map<string, AnalyticsSeries>,
   allSeries: Series[],
-  seriesIdForWarnings: string
+  seriesIdForWarnings: string,
+  xAxisUnit: CalculationXAxisUnit = 'year'
 ): { points: { x: string; y: number }[]; warnings: DataValidationError[] } {
-  const operandResults: { x: string; y: number }[][] = [];
+  const operandResults: EvaluatedOperand[] = [];
   const warnings: DataValidationError[] = [];
 
   // Evaluate each operand
   for (const operand of calculation.args) {
     if (typeof operand === 'number') {
-      // Number operand
-      const years = Array.from({ length: defaultYearRange.end - defaultYearRange.start + 1 }, (_, i) => i + defaultYearRange.start);
-      operandResults.push(years.map(year => ({ x: String(year), y: operand })));
+      operandResults.push({
+        points: [],
+        isConstant: true,
+        constantValue: operand,
+      });
     } else if (typeof operand === 'string') {
       // Direct series reference
       const data = seriesData.get(operand);
       if (data) {
-        operandResults.push(data.data);
+        operandResults.push({
+          points: data.data,
+          isConstant: false,
+        });
       } else {
         // Check if it's a calculation series that needs evaluation
         const series = allSeries.find(s => s.id === operand);
         if (series && series.type === 'aggregated-series-calculation') {
-          const result = evaluateCalculation(series.calculation, seriesData, allSeries, series.id);
-          operandResults.push(result.points);
+          const result = evaluateCalculation(series.calculation, seriesData, allSeries, series.id, xAxisUnit);
+          operandResults.push({
+            points: result.points,
+            isConstant: false,
+          });
           warnings.push(...result.warnings);
         } else {
           // Series not found or no data - use empty array
-          operandResults.push([]);
+          operandResults.push({
+            points: [],
+            isConstant: false,
+          });
         }
       }
     } else {
       // Nested calculation
-      const result = evaluateCalculation(operand, seriesData, allSeries, seriesIdForWarnings);
-      operandResults.push(result.points);
+      const result = evaluateCalculation(operand, seriesData, allSeries, seriesIdForWarnings, xAxisUnit);
+      operandResults.push({
+        points: result.points,
+        isConstant: false,
+      });
       warnings.push(...result.warnings);
     }
   }
 
   // Perform the operation
-  const opResult = performOperation(calculation.op, operandResults, seriesIdForWarnings);
+  const opResult = performOperation(calculation.op, operandResults, seriesIdForWarnings, xAxisUnit);
   return { points: opResult.points, warnings: warnings.concat(opResult.warnings) };
 }
 
@@ -145,66 +197,86 @@ export function evaluateCalculation(
  */
 function performOperation(
   operation: Operation,
-  operands: { x: string; y: number }[][],
-  seriesIdForWarnings: string
+  operands: EvaluatedOperand[],
+  seriesIdForWarnings: string,
+  xAxisUnit: CalculationXAxisUnit
 ): { points: { x: string; y: number }[]; warnings: DataValidationError[] } {
   if (operands.length === 0) {
     return { points: [], warnings: [] };
   }
 
-  // Get all unique years across all operands
-  const allYears = new Set<string>();
+  // Get all unique x labels across non-constant operands.
+  const allXLabels = new Set<string>();
   for (const operand of operands) {
-    for (const point of operand) {
-      allYears.add(point.x);
+    if (operand.isConstant) continue;
+    for (const point of operand.points) {
+      allXLabels.add(point.x);
     }
   }
 
-  // Sort years
-  const sortedYears = Array.from(allYears).sort((a, b) => Number(a) - Number(b));
+  // Fallback only when every operand is constant.
+  const hasOnlyConstantOperands = operands.every((operand) => operand.isConstant);
+  if (allXLabels.size === 0 && hasOnlyConstantOperands) {
+    const years = Array.from(
+      { length: defaultYearRange.end - defaultYearRange.start + 1 },
+      (_, i) => String(defaultYearRange.start + i)
+    );
+    years.forEach((year) => allXLabels.add(year));
+  }
+
+  const sortedLabels = sortXAxisLabels(Array.from(allXLabels), xAxisUnit);
 
   // Create maps for quick lookup
   const operandMaps = operands.map(operand => {
+    if (operand.isConstant) return null;
     const map = new Map<string, number>();
-    for (const point of operand) {
+    for (const point of operand.points) {
       map.set(point.x, point.y);
     }
     return map;
   });
 
-  // Calculate result for each year
+  const getOperandValue = (index: number, label: string): number | undefined => {
+    const operand = operands[index];
+    if (operand?.isConstant) {
+      return operand.constantValue;
+    }
+    const map = operandMaps[index];
+    return map?.get(label);
+  };
+
   const result: { x: string; y: number }[] = [];
   const warnings: DataValidationError[] = [];
 
-  for (const year of sortedYears) {
+  for (const label of sortedLabels) {
     let value: number | null = null;
 
     switch (operation) {
       case 'sum':
         value = 0;
-        for (const operandMap of operandMaps) {
-          value += operandMap.get(year) || 0;
+        for (let i = 0; i < operands.length; i++) {
+          value += getOperandValue(i, label) || 0;
         }
         break;
 
       case 'subtract':
-        if (operandMaps.length > 0) {
-          value = operandMaps[0].get(year) || 0;
-          for (let i = 1; i < operandMaps.length; i++) {
-            value -= operandMaps[i].get(year) || 0;
+        if (operands.length > 0) {
+          value = getOperandValue(0, label) || 0;
+          for (let i = 1; i < operands.length; i++) {
+            value -= getOperandValue(i, label) || 0;
           }
         }
         break;
 
       case 'multiply':
-        if (operandMaps.length > 0) {
+        if (operands.length > 0) {
           // Multiplication requires all operands to be present
           // If any operand is missing, the result is undefined (null)
           let allPresent = true;
           let tempValue = 1;
           
-          for (const operandMap of operandMaps) {
-            const operandValue = operandMap.get(year);
+          for (let i = 0; i < operands.length; i++) {
+            const operandValue = getOperandValue(i, label);
             if (operandValue === undefined) {
               allPresent = false;
               break;
@@ -221,16 +293,16 @@ function performOperation(
         break;
 
       case 'divide':
-        if (operandMaps.length >= 2) {
-          const numerator = operandMaps[0].get(year);
-          const denominator = operandMaps[1].get(year);
+        if (operands.length >= 2) {
+          const numerator = getOperandValue(0, label);
+          const denominator = getOperandValue(1, label);
 
           if (numerator !== undefined && denominator !== undefined && denominator !== 0) {
             value = numerator / denominator;
 
             // Handle additional divisors if any
-            for (let i = 2; i < operandMaps.length; i++) {
-              const divisor = operandMaps[i].get(year);
+            for (let i = 2; i < operands.length; i++) {
+              const divisor = getOperandValue(i, label);
               if (divisor !== undefined && divisor !== 0) {
                 value /= divisor;
               } else if (divisor === 0) {
@@ -238,7 +310,7 @@ function performOperation(
                 warnings.push({
                   type: 'auto_adjusted_value',
                   seriesId: seriesIdForWarnings,
-                  message: `Division by zero at year ${year} (auto-removed)`,
+                  message: `Division by zero at ${label} (auto-removed)`,
                   value: { numerator, denominator: divisor },
                 });
                 break;
@@ -252,7 +324,7 @@ function performOperation(
             warnings.push({
               type: 'auto_adjusted_value',
               seriesId: seriesIdForWarnings,
-              message: `Division by zero at year ${year} (auto-removed)`,
+              message: `Division by zero at ${label} (auto-removed)`,
               value: { numerator, denominator },
             });
           }
@@ -261,7 +333,7 @@ function performOperation(
     }
 
     if (value !== null) {
-      result.push({ x: year, y: value });
+      result.push({ x: label, y: value });
     }
   }
 
@@ -307,6 +379,38 @@ export function validateNewCalculationSeries(
   return { valid: true };
 }
 
+function resolveCalculationXAxisUnit(
+  calculation: Calculation,
+  dataSeriesMap: Map<string, AnalyticsSeries>
+): {
+  xAxisUnit: CalculationXAxisUnit;
+  isCompatible: boolean;
+  observedUnits: CalculationXAxisUnit[];
+} {
+  const dependencies = new Set<string>();
+  addCalculationDependencies(calculation, dependencies);
+
+  const observedUnits = Array.from(dependencies)
+    .map((id) => dataSeriesMap.get(id))
+    .filter((series): series is AnalyticsSeries => Boolean(series))
+    .map((series) => normalizeXAxisUnit(series.xAxis?.unit));
+
+  const uniqueUnits = Array.from(new Set(observedUnits));
+  if (uniqueUnits.length === 0) {
+    return { xAxisUnit: 'year', isCompatible: true, observedUnits: [] };
+  }
+
+  if (uniqueUnits.length === 1) {
+    return { xAxisUnit: uniqueUnits[0] as CalculationXAxisUnit, isCompatible: true, observedUnits: uniqueUnits as CalculationXAxisUnit[] };
+  }
+
+  return {
+    xAxisUnit: uniqueUnits[0] as CalculationXAxisUnit,
+    isCompatible: false,
+    observedUnits: uniqueUnits as CalculationXAxisUnit[],
+  };
+}
+
 /**
  * Example: Calculate all series data including calculations and update the dataSeriesMap.
  */
@@ -326,7 +430,7 @@ export function calculateAllSeriesData(
     if (s.type === 'custom-series') {
       dataSeriesMap.set(s.id, {
         seriesId: s.id,
-        xAxis: { name: 'Year', type: 'INTEGER', unit: '' },
+        xAxis: { name: 'Year', type: 'INTEGER', unit: 'year' },
         yAxis: { name: 'Amount', type: 'FLOAT', unit: s.unit || '' },
         data: s.data.map(d => ({ x: String(d.year), y: d.value })),
       });
@@ -334,7 +438,7 @@ export function calculateAllSeriesData(
     if (s.type === 'custom-series-value') {
       dataSeriesMap.set(s.id, {
         seriesId: s.id,
-        xAxis: { name: 'Year', type: 'INTEGER', unit: '' },
+        xAxis: { name: 'Year', type: 'INTEGER', unit: 'year' },
         yAxis: { name: 'Amount', type: 'FLOAT', unit: s.unit || '' },
         data: defaultYears.map(year => ({ x: String(year), y: s.value })),
       });
@@ -344,11 +448,28 @@ export function calculateAllSeriesData(
   // Calculate each calculation series in order
   for (const s of sortedSeries) {
     if (s.type === 'aggregated-series-calculation') {
-      const { points, warnings: calcWarnings } = evaluateCalculation(s.calculation, dataSeriesMap, series, s.id);
+      const xAxisResolution = resolveCalculationXAxisUnit(s.calculation, dataSeriesMap);
+      if (!xAxisResolution.isCompatible) {
+        warnings.push({
+          type: 'auto_adjusted_value',
+          seriesId: s.id,
+          message: `Calculation skipped due to mixed periodicities (${xAxisResolution.observedUnits.join(', ')}).`,
+          value: xAxisResolution.observedUnits,
+        });
+        continue;
+      }
+
+      const { points, warnings: calcWarnings } = evaluateCalculation(
+        s.calculation,
+        dataSeriesMap,
+        series,
+        s.id,
+        xAxisResolution.xAxisUnit
+      );
       warnings.push(...calcWarnings);
       dataSeriesMap.set(s.id, {
         seriesId: s.id,
-        xAxis: { name: 'Year', type: 'INTEGER', unit: '' },
+        xAxis: { name: 'Period', type: 'STRING', unit: xAxisResolution.xAxisUnit },
         yAxis: { name: 'Amount', type: 'FLOAT', unit: s.unit || '' },
         data: points,
       });

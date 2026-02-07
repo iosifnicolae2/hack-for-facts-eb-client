@@ -27,6 +27,7 @@ import { CustomSeriesConfigurationSchema } from '@/schemas/charts';
 import { CustomSeriesValueEditor } from '../series-config/CustomSeriesValueEditor';
 import { UnitInput } from '../series-config/UnitInput';
 import { StaticSeriesEditor } from '../series-config/StaticSeriesEditor';
+import { InsSeriesEditor } from '../series-config/InsSeriesEditor';
 import { useCopyPasteChart } from '../../hooks/useCopyPaste';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
@@ -35,6 +36,7 @@ import { buildAlertFromFilter } from '@/lib/alert-links';
 import { createEmptyAlert } from '@/schemas/alerts';
 import { Analytics } from '@/lib/analytics';
 import { DebouncedStatusInput } from '@/components/ui/debounced-status-input';
+import { InsSeriesConfigurationSchema } from '@/schemas/charts';
 
 export function SeriesConfigView() {
   const [showAdvancedSettings, setShowAdvancedSettings] = useState(false);
@@ -195,6 +197,7 @@ export function SeriesConfigView() {
                   <SelectItem value="custom-series">{t`Custom Series`}</SelectItem>
                   <SelectItem value="custom-series-value">{t`Custom Series Value`}</SelectItem>
                   <SelectItem value="static-series">{t`Static Series`}</SelectItem>
+                  <SelectItem value="ins-series">{t`INS Series`}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -348,6 +351,9 @@ export function SeriesConfigView() {
         )}
         {series.type === 'static-series' && (
           <StaticSeriesEditor series={series as z.infer<typeof StaticSeriesConfigurationSchema>} />
+        )}
+        {series.type === 'ins-series' && (
+          <InsSeriesEditor series={series as z.infer<typeof InsSeriesConfigurationSchema>} />
         )}
 
         {/* ================= Series Delete ================= */}

@@ -1,0 +1,121 @@
+import { useState } from 'react';
+import { t } from '@lingui/core/macro';
+import type { VirtualItem } from '@tanstack/react-virtual';
+
+import { useMultiSelectInfinite } from '@/components/filters/base-filter/hooks/useMultiSelectInfinite';
+import { ErrorDisplay } from '@/components/filters/base-filter/ErrorDisplay';
+import type { BaseListProps, OptionItem, PageData } from '@/components/filters/base-filter/interfaces';
+import { ListContainer } from '@/components/filters/base-filter/ListContainer';
+import { ListOption } from '@/components/filters/base-filter/ListOption';
+import { SearchInput } from '@/components/filters/base-filter/SearchInput';
+import { searchInsDatasets } from '@/lib/api/ins';
+import type { InsDataset } from '@/schemas/ins';
+import { cn, getUserLocale } from '@/lib/utils';
+
+function getDatasetDisplayName(dataset: InsDataset, locale: 'ro' | 'en'): string {
+  if (locale === 'en') {
+    return dataset.name_en || dataset.name_ro || dataset.code;
+  }
+  return dataset.name_ro || dataset.name_en || dataset.code;
+}
+
+function getDatasetListLabel(dataset: InsDataset, locale: 'ro' | 'en'): string {
+  return `${dataset.code} - ${getDatasetDisplayName(dataset, locale)}`;
+}
+
+export function InsDatasetList({
+  selectedOptions,
+  toggleSelect,
+  pageSize = 100,
+  className,
+}: BaseListProps) {
+  const [searchFilter, setSearchFilter] = useState('');
+  const locale = getUserLocale() === 'en' ? 'en' : 'ro';
+  const searchVisibilityThreshold = 15;
+
+  const {
+    items,
+    totalCount,
+    parentRef,
+    rowVirtualizer,
+    isLoading,
+    isError,
+    error,
+    refetch,
+    isFetchingNextPage,
+  } = useMultiSelectInfinite<InsDataset>({
+    itemSize: 48,
+    queryKey: ['ins-datasets', searchFilter],
+    queryFn: async ({ pageParam = 0 }): Promise<PageData<InsDataset>> => {
+      const response = await searchInsDatasets({
+        filter: { search: searchFilter.trim() || undefined },
+        limit: pageSize,
+        offset: pageParam,
+      });
+
+      return {
+        nodes: response.nodes,
+        pageInfo: response.pageInfo,
+        nextOffset: pageParam + response.nodes.length,
+      };
+    },
+  });
+
+  const showSearchInput = searchFilter.length > 0 || totalCount > searchVisibilityThreshold;
+  const showNoResults = !isLoading && !isError && items.length === 0 && searchFilter.length > 0;
+  const isEmpty = !isLoading && !isError && items.length === 0 && searchFilter.length === 0;
+
+  return (
+    <div className={cn('w-full flex flex-col space-y-3', className)}>
+      {showSearchInput && (
+        <SearchInput
+          onChange={setSearchFilter}
+          placeholder={t`Search INS datasets (ex: POP107D)`}
+          initialValue={searchFilter}
+        />
+      )}
+
+      {isError && error && (
+        <ErrorDisplay
+          error={error as Error}
+          refetch={refetch}
+          title={t`Could not load INS datasets`}
+        />
+      )}
+
+      {!isError && (
+        <ListContainer
+          ref={parentRef}
+          height={rowVirtualizer.getTotalSize()}
+          isFetchingNextPage={isFetchingNextPage}
+          isLoading={isLoading}
+          isSearchResultsEmpty={showNoResults}
+          isEmpty={isEmpty}
+          className="min-h-[10rem]"
+          ariaLabel={t`INS dataset options`}
+        >
+          {rowVirtualizer.getVirtualItems().map((virtualRow: VirtualItem) => {
+            const dataset = items[virtualRow.index];
+            if (!dataset) return null;
+
+            const optionId = dataset.code;
+            const optionLabel = getDatasetListLabel(dataset, locale);
+            const isSelected = selectedOptions.some((item: OptionItem) => String(item.id) === optionId);
+
+            return (
+              <ListOption
+                key={optionId}
+                uniqueIdPart={optionId}
+                onClick={() => toggleSelect({ id: optionId, label: optionLabel })}
+                label={optionLabel}
+                selected={isSelected}
+                optionHeight={virtualRow.size}
+                optionStart={virtualRow.start}
+              />
+            );
+          })}
+        </ListContainer>
+      )}
+    </div>
+  );
+}

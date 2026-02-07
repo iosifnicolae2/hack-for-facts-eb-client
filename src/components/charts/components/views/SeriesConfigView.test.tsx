@@ -158,6 +158,10 @@ vi.mock('../series-config/StaticSeriesEditor', () => ({
   StaticSeriesEditor: () => <div data-testid="static-series-editor">StaticSeriesEditor</div>,
 }))
 
+vi.mock('../series-config/InsSeriesEditor', () => ({
+  InsSeriesEditor: () => <div data-testid="ins-series-editor">InsSeriesEditor</div>,
+}))
+
 vi.mock('../series-config/DataLabelSelector', () => ({
   DataLabelSelector: () => <div data-testid="data-label-selector">DataLabelSelector</div>,
 }))
@@ -359,6 +363,21 @@ describe('SeriesConfigView', () => {
       render(<SeriesConfigView />)
 
       expect(screen.queryByTestId('unit-input')).not.toBeInTheDocument()
+    })
+
+    it('shows InsSeriesEditor for ins-series', () => {
+      mockChart.series = [
+        createMockSeries({
+          type: 'ins-series' as any,
+          datasetCode: 'POP107D',
+          aggregation: 'sum',
+          hasValue: true,
+        } as any),
+      ] as any
+
+      render(<SeriesConfigView />)
+
+      expect(screen.getByTestId('ins-series-editor')).toBeInTheDocument()
     })
   })
 

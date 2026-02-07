@@ -6,6 +6,10 @@ function isLineItemsSeries(series: Series): series is Extract<Series, { type: 'l
   return series.type === 'line-items-aggregated-yearly';
 }
 
+function isInsSeries(series: Series): series is Extract<Series, { type: 'ins-series' }> {
+  return series.type === 'ins-series';
+}
+
 export function chartRelatesToEntity(chart: StoredChart, entity: EntityDetailsData): boolean {
   const cui = entity.cui;
   const isUatEntity = !!entity.is_uat;
@@ -14,30 +18,45 @@ export function chartRelatesToEntity(chart: StoredChart, entity: EntityDetailsDa
   const countyCode = entity.uat?.county_code ?? undefined;
 
   return chart.series.some((s) => {
-    if (!isLineItemsSeries(s)) return false;
-    const filter = s.filter ?? {} as Record<string, unknown>;
+    if (isLineItemsSeries(s)) {
+      const filter = s.filter ?? {} as Record<string, unknown>;
 
-    const entityCuis = Array.isArray((filter as any).entity_cuis)
-      ? ((filter as any).entity_cuis as unknown[]).map(String)
-      : [];
-    if (entityCuis.includes(String(cui))) return true;
-
-    if (isUatEntity && uatId) {
-      const uatIds = Array.isArray((filter as any).uat_ids)
-        ? ((filter as any).uat_ids as unknown[]).map(String)
+      const entityCuis = Array.isArray((filter as any).entity_cuis)
+        ? ((filter as any).entity_cuis as unknown[]).map(String)
         : [];
-      if (uatIds.includes(uatId)) return true;
+      if (entityCuis.includes(String(cui))) return true;
+
+      if (isUatEntity && uatId) {
+        const uatIds = Array.isArray((filter as any).uat_ids)
+          ? ((filter as any).uat_ids as unknown[]).map(String)
+          : [];
+        if (uatIds.includes(uatId)) return true;
+      }
+
+      if (isCountyEntity && countyCode) {
+        const countyCodes = Array.isArray((filter as any).county_codes)
+          ? ((filter as any).county_codes as unknown[]).map(String)
+          : [];
+        if (countyCodes.includes(String(countyCode))) return true;
+      }
     }
 
-    if (isCountyEntity && countyCode) {
-      const countyCodes = Array.isArray((filter as any).county_codes)
-        ? ((filter as any).county_codes as unknown[]).map(String)
-        : [];
-      if (countyCodes.includes(String(countyCode))) return true;
+    if (isInsSeries(s)) {
+      const sirutaCodes = Array.isArray(s.sirutaCodes) ? s.sirutaCodes.map(String) : [];
+      const territoryCodes = Array.isArray(s.territoryCodes) ? s.territoryCodes.map(String) : [];
+
+      if (isUatEntity && uatId && sirutaCodes.includes(uatId)) {
+        return true;
+      }
+
+      if (isCountyEntity && countyCode) {
+        const normalizedCountyCode = String(countyCode).toUpperCase();
+        if (territoryCodes.map((code) => code.toUpperCase()).includes(normalizedCountyCode)) {
+          return true;
+        }
+      }
     }
 
     return false;
   });
 }
-
-

@@ -363,6 +363,78 @@ describe('CustomSeriesTooltip', () => {
 
       expect(screen.getByText('Match By Color')).toBeInTheDocument()
     })
+
+    it('keeps same-label series distinct by color', () => {
+      const sharedLabel = 'POPULATIA DUPA DOMICILIU'
+      const payloadWithDuplicateLabels = [
+        {
+          dataKey: () => {},
+          payload: {
+            'series-red': createMockDataPointPayload({
+              id: 'series-red',
+              value: 100,
+              series: {
+                ...createMockDataPointPayload().series!,
+                id: 'series-red',
+                label: sharedLabel,
+                config: { color: '#ef4444' },
+              },
+            }),
+            'series-blue': createMockDataPointPayload({
+              id: 'series-blue',
+              value: 200,
+              series: {
+                ...createMockDataPointPayload().series!,
+                id: 'series-blue',
+                label: sharedLabel,
+                config: { color: '#3b82f6' },
+              },
+            }),
+          },
+          name: sharedLabel,
+          color: '#ef4444',
+        },
+        {
+          dataKey: () => {},
+          payload: {
+            'series-red': createMockDataPointPayload({
+              id: 'series-red',
+              value: 100,
+              series: {
+                ...createMockDataPointPayload().series!,
+                id: 'series-red',
+                label: sharedLabel,
+                config: { color: '#ef4444' },
+              },
+            }),
+            'series-blue': createMockDataPointPayload({
+              id: 'series-blue',
+              value: 200,
+              series: {
+                ...createMockDataPointPayload().series!,
+                id: 'series-blue',
+                label: sharedLabel,
+                config: { color: '#3b82f6' },
+              },
+            }),
+          },
+          name: sharedLabel,
+          color: '#3b82f6',
+        },
+      ]
+
+      render(
+        <CustomSeriesTooltip
+          active={true}
+          payload={payloadWithDuplicateLabels as any}
+          chartConfig={createMockChartConfig()}
+        />
+      )
+
+      expect(screen.getAllByText(sharedLabel)).toHaveLength(2)
+      expect(screen.getByText('200 RON')).toBeInTheDocument()
+      expect(screen.getByText('100 RON')).toBeInTheDocument()
+    })
   })
 
   describe('styling', () => {

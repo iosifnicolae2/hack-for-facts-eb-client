@@ -10,6 +10,7 @@ import {
     Series,
     defaultYearRange,
     SeriesConfig,
+    InsSeriesConfiguration,
     StaticSeriesConfiguration,
 } from "@/schemas/charts";
 import { normalizeAnalyticsFilter } from "@/lib/filterUtils";
@@ -23,6 +24,7 @@ import {
     type DataValidationError,
 } from "@/lib/chart-data-validation";
 import { getXAxisUnit, parseMonth, parseQuarter } from "@/lib/chart-data-utils";
+import { insSeriesRuntimeMapper } from "@/lib/ins-chart-series-utils";
 
 interface UseChartDataProps {
     chart?: Chart;
@@ -78,6 +80,13 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
             .map((series) => series as StaticSeriesConfiguration);
     }, [chart]);
 
+    const insSeries = useMemo(() => {
+        if (!chart) return [];
+        return chart.series
+            .filter((series) => series.type === "ins-series")
+            .map((series) => series as InsSeriesConfiguration);
+    }, [chart]);
+
     const analyticsInputsHash = useMemo(
         () => getAnalyticsInputHash(analyticsInputs),
         [analyticsInputs]
@@ -95,10 +104,12 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
         () => getStaticSeriesInputHash(staticSeriesIds),
         [staticSeriesIds]
     );
+    const insSeriesHash = useMemo(() => getInsSeriesInputHash(insSeries), [insSeries]);
 
     const hasChart = !!chart;
     const hasFilters = analyticsInputs.length > 0;
     const hasStaticSeries = staticSeries.length > 0;
+    const hasInsSeries = insSeries.length > 0;
 
     // Fetch dynamic series
     const {
@@ -126,14 +137,37 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
         gcTime: convertDaysToMs(3),
     });
 
+    // Fetch INS series and map observations to chart runtime series shape
+    const {
+        data: insSeriesResults,
+        isLoading: isLoadingInsData,
+        error: insDataError,
+    } = useQuery({
+        queryKey: ["chart-data-ins", insSeriesHash],
+        queryFn: async () => {
+            const results = await Promise.all(
+                insSeries.map((series) => insSeriesRuntimeMapper.mapSeries({ series }))
+            );
+            return results;
+        },
+        enabled: enabled && hasChart && hasInsSeries,
+        staleTime: convertDaysToMs(1),
+        gcTime: convertDaysToMs(3),
+    });
+
     // Merge server data, static series, and calculated/custom series
     const computedSeries = useMemo(() => {
         if (!chart)
             return undefined as
                 | undefined
-                | { map: Map<SeriesId, AnalyticsSeries>; calcWarnings: ValidationResult["warnings"] };
+                | {
+                    map: Map<SeriesId, AnalyticsSeries>;
+                    calcWarnings: ValidationResult["warnings"];
+                    insWarnings: ValidationResult["warnings"];
+                };
 
         const map = new Map<SeriesId, AnalyticsSeries>();
+        const insWarnings: DataValidationError[] = [];
 
         if (serverChartData) {
             serverChartData.forEach((data) => {
@@ -167,13 +201,23 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
             });
         }
 
+        if (insSeriesResults) {
+            insSeriesResults.forEach((result) => {
+                insWarnings.push(...result.warnings);
+                if (result.series) {
+                    map.set(result.series.seriesId, result.series);
+                }
+            });
+        }
+
         // Include calculated/custom series
         const calc = calculateAllSeriesData(chart.series, map);
-        return { map: calc.dataSeriesMap, calcWarnings: calc.warnings };
-    }, [chart, serverChartData, staticServerChartData, staticSeries]);
+        return { map: calc.dataSeriesMap, calcWarnings: calc.warnings, insWarnings };
+    }, [chart, serverChartData, staticServerChartData, staticSeries, insSeriesResults]);
 
     const dataSeriesMap = computedSeries?.map;
     const calculationWarnings = computedSeries?.calcWarnings ?? [];
+    const insWarnings = computedSeries?.insWarnings ?? [];
 
     // Validate the data (base validation + calculation warnings)
     const validationResult = useMemo(() => {
@@ -187,8 +231,16 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
                     warnings: calculationWarnings,
                 } as ValidationResult)
                 : null;
-        return combineValidationResults(base, calcWarningsResult);
-    }, [dataSeriesMap, calculationWarnings]);
+        const insWarningsResult =
+            insWarnings.length > 0
+                ? ({
+                    isValid: true,
+                    errors: [],
+                    warnings: insWarnings,
+                } as ValidationResult)
+                : null;
+        return combineValidationResults(base, calcWarningsResult, insWarningsResult);
+    }, [dataSeriesMap, calculationWarnings, insWarnings]);
 
     // Sanitize invalid points if needed
     const sanitizedDataSeriesMap = useMemo(() => {
@@ -203,8 +255,8 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
 
     return {
         dataSeriesMap: sanitizedDataSeriesMap,
-        isLoadingData: isLoadingData || isLoadingStaticData,
-        dataError: dataError || staticDataError,
+        isLoadingData: isLoadingData || isLoadingStaticData || isLoadingInsData,
+        dataError: dataError || staticDataError || insDataError,
         validationResult,
     };
 }
@@ -224,6 +276,14 @@ function getStaticSeriesInputHash(seriesIds: string[]) {
     const payloadHash = seriesIds
         .sort((a, b) => a.localeCompare(b))
         .reduce((acc, input) => acc + input, "");
+    return generateHash(payloadHash);
+}
+
+function getInsSeriesInputHash(seriesList: InsSeriesConfiguration[]) {
+    if (seriesList.length === 0) return "";
+    const payloadHash = seriesList
+        .sort((a, b) => a.id.localeCompare(b.id))
+        .reduce((acc, series) => acc + series.id + "::" + JSON.stringify(series), "");
     return generateHash(payloadHash);
 }
 
@@ -288,8 +348,13 @@ export function convertToTimeSeriesData(
     const sortedBuckets = Array.from(buckets).sort((a, b) => {
         if (isYear) return Number(a) - Number(b);
         if (isQuarter) {
-            const qa = parseQuarter(a).q ?? 0;
-            const qb = parseQuarter(b).q ?? 0;
+            const quarterA = parseQuarter(a);
+            const quarterB = parseQuarter(b);
+            const yearA = quarterA.y ?? 0;
+            const yearB = quarterB.y ?? 0;
+            if (yearA !== yearB) return yearA - yearB;
+            const qa = quarterA.q ?? 0;
+            const qb = quarterB.q ?? 0;
             return qa - qb;
         }
         if (isMonth) {

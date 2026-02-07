@@ -28,11 +28,30 @@ export function CustomSeriesTooltip({
 
     const mappedPayload = useMemo(() => {
         if (!payload) return [];
+        const usedSeriesIds = new Set<string>();
+        const isDataPointPayload = (candidate: unknown): candidate is DataPointPayload => {
+            return (
+                !!candidate &&
+                typeof candidate === 'object' &&
+                'id' in candidate &&
+                'value' in candidate
+            );
+        };
+
+        const claimFirstUnmapped = (candidates: DataPointPayload[]): DataPointPayload | undefined => {
+            const available = candidates.find((candidate) => !usedSeriesIds.has(candidate.id));
+            if (!available) return undefined;
+            usedSeriesIds.add(available.id);
+            return available;
+        };
 
         const resolved = payload.map((entry) => {
             // Aggregated charts pass DataPointPayload directly
             if (!('payload' in entry)) {
-                return entry as DataPointPayload;
+                const candidate = entry as DataPointPayload;
+                if (!isDataPointPayload(candidate) || usedSeriesIds.has(candidate.id)) return undefined;
+                usedSeriesIds.add(candidate.id);
+                return candidate;
             }
 
             const row = entry.payload as Record<SeriesId, DataPointPayload> | undefined;
@@ -43,25 +62,39 @@ export function CustomSeriesTooltip({
                 const dk = String((entry as any).dataKey);
                 const seriesId = dk.split('.')[0];
                 const customPayload = (row as any)[seriesId];
-                if (customPayload) return customPayload as DataPointPayload;
+                if (isDataPointPayload(customPayload) && !usedSeriesIds.has(customPayload.id)) {
+                    usedSeriesIds.add(customPayload.id);
+                    return customPayload;
+                }
             }
 
-            // For function dataKeys, match by series label first, then by color as fallback
+            // For function dataKeys, prefer unique color+label matches, then color, then label.
             const name = (entry as any).name as string | undefined;
             const color = (entry as any).color as string | undefined;
-            const candidates = Object.values(row).filter((v: any) => v && typeof v === 'object' && 'series' in v && 'value' in v) as DataPointPayload[];
+            const candidates = Object.values(row).filter(isDataPointPayload);
 
-            if (name) {
-                const byLabel = candidates.find((v) => v.series?.label === name);
-                if (byLabel) return byLabel;
+            if (name && color) {
+                const byLabelAndColor = claimFirstUnmapped(
+                    candidates.filter((v) => v.series?.label === name && v.series?.config?.color === color)
+                );
+                if (byLabelAndColor) return byLabelAndColor;
             }
+
             if (color) {
-                const byColor = candidates.find((v) => v.series?.config?.color === color);
+                const byColor = claimFirstUnmapped(
+                    candidates.filter((v) => v.series?.config?.color === color)
+                );
                 if (byColor) return byColor;
             }
 
-            // Fallback: return the first candidate for this entry
-            return candidates[0];
+            if (name) {
+                const byLabel = claimFirstUnmapped(
+                    candidates.filter((v) => v.series?.label === name)
+                );
+                if (byLabel) return byLabel;
+            }
+
+            return claimFirstUnmapped(candidates);
         })
             .filter((p): p is DataPointPayload => !!p && !!(p as any).id)
             .sort((a, b) => b.value - a.value);

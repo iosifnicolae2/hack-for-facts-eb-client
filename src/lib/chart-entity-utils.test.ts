@@ -185,5 +185,53 @@ describe('chart-entity-utils', () => {
 
       expect(chartRelatesToEntity(chart, entity)).toBe(false)
     })
+
+    it('returns true when INS series matches UAT siruta code', () => {
+      const entity = createMockEntity({
+        is_uat: true,
+        uat: { siruta_code: 54975, county_code: 'CJ' },
+      })
+
+      const chart = createMockChart([
+        {
+          type: 'ins-series',
+          sirutaCodes: ['54975'],
+        },
+      ])
+
+      expect(chartRelatesToEntity(chart, entity)).toBe(true)
+    })
+
+    it('returns false for UAT when INS series matches only county territory code', () => {
+      const entity = createMockEntity({
+        is_uat: true,
+        uat: { siruta_code: 54975, county_code: 'CJ' },
+      })
+
+      const chart = createMockChart([
+        {
+          type: 'ins-series',
+          territoryCodes: ['CJ'],
+        },
+      ])
+
+      expect(chartRelatesToEntity(chart, entity)).toBe(false)
+    })
+
+    it('returns true when INS series matches county territory code', () => {
+      const entity = createMockEntity({
+        entity_type: 'admin_county_council',
+        uat: { county_code: 'TM' },
+      })
+
+      const chart = createMockChart([
+        {
+          type: 'ins-series',
+          territoryCodes: ['CJ', 'TM'],
+        },
+      ])
+
+      expect(chartRelatesToEntity(chart, entity)).toBe(true)
+    })
   })
 })

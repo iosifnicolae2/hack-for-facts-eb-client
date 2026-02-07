@@ -4,6 +4,7 @@ import { AggregatedSeriesCalculationSeriesFilter } from "./AggregatedSeriesCalcu
 import { CustomSeriesSeriesFilter } from "./CustomSeriesSeriesFilter";
 import { CustomSeriesValueSeriesFilter } from "./CustomSeriesValueSeriesFilter";
 import { StaticSeriesFilter } from "./StaticSeriesFilter";
+import { InsSeriesFilter } from "./InsSeriesFilter";
 import { z } from "zod";
 
 interface SeriesFilterDisplayProps {
@@ -23,6 +24,8 @@ export function SeriesFilterDisplay({ series, chart }: SeriesFilterDisplayProps)
       return <CustomSeriesValueSeriesFilter series={series as z.infer<typeof CustomSeriesValueConfigurationSchema>} />;
     case "static-series":
       return <StaticSeriesFilter series={series} chart={chart} />;
+    case "ins-series":
+      return <InsSeriesFilter series={series} />;
     default:
       return null;
   }

@@ -66,11 +66,9 @@ export function useListKeyboardNavigation(options: UseListKeyboardNavigationOpti
 
   const handleMouseDown: React.MouseEventHandler<HTMLDivElement> = useCallback((e) => {
     const container = e.currentTarget as HTMLDivElement;
-    if (container && container !== document.activeElement) {
-      container.focus?.();
-    }
     const optionNodes = container.querySelectorAll<HTMLElement>('[data-list-option]');
     const target = (e.target as HTMLElement)?.closest('[data-list-option]') as HTMLElement | null;
+
     if (target && optionNodes.length) {
       const idx = Array.prototype.indexOf.call(optionNodes, target);
       if (idx >= 0) {
@@ -79,6 +77,11 @@ export function useListKeyboardNavigation(options: UseListKeyboardNavigationOpti
         setActiveIndex(idx);
         setActiveDescendant(target.id || undefined);
       }
+      return;
+    }
+
+    if (container && container !== document.activeElement) {
+      container.focus?.();
     }
   }, []);
 

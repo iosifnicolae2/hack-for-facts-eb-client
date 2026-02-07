@@ -1,5 +1,13 @@
 export type InsPeriodicity = 'ANNUAL' | 'QUARTERLY' | 'MONTHLY';
 export type InsTerritoryLevel = 'NATIONAL' | 'NUTS1' | 'NUTS2' | 'NUTS3' | 'LAU';
+export type InsDimensionType = 'TEMPORAL' | 'TERRITORIAL' | 'CLASSIFICATION' | 'UNIT_OF_MEASURE';
+
+export interface InsClassificationType {
+  code?: string | null;
+  name_ro?: string | null;
+  name_en?: string | null;
+  is_hierarchical?: boolean | null;
+}
 
 export interface InsTimePeriod {
   iso_period: string;
@@ -14,12 +22,14 @@ export interface InsTerritory {
   siruta_code?: string | null;
   level?: InsTerritoryLevel | string | null;
   name_ro?: string | null;
+  name_en?: string | null;
 }
 
 export interface InsUnit {
   code?: string | null;
   symbol?: string | null;
   name_ro?: string | null;
+  name_en?: string | null;
 }
 
 export interface InsClassification {
@@ -32,8 +42,6 @@ export interface InsClassification {
   name_en?: string | null;
   sort_order?: number | null;
 }
-
-export type InsDimensionType = 'TEMPORAL' | 'TERRITORIAL' | 'CLASSIFICATION' | 'UNIT_OF_MEASURE';
 
 export interface InsClassificationTypeRef {
   code: string;
@@ -52,6 +60,29 @@ export interface InsDatasetDimension {
 export interface InsDatasetDimensionsResult {
   datasetCode: string;
   dimensions: InsDatasetDimension[];
+}
+
+export interface InsDimension {
+  index: number;
+  type: InsDimensionType;
+  label_ro?: string | null;
+  label_en?: string | null;
+  classification_type?: InsClassificationType | null;
+  is_hierarchical?: boolean | null;
+  option_count?: number | null;
+}
+
+export interface InsDimensionValue {
+  nom_item_id: number;
+  dimension_type: InsDimensionType;
+  label_ro?: string | null;
+  label_en?: string | null;
+  parent_nom_item_id?: number | null;
+  offset_order?: number | null;
+  territory?: InsTerritory | null;
+  time_period?: InsTimePeriod | null;
+  classification_value?: InsClassification | null;
+  unit?: InsUnit | null;
 }
 
 export interface InsObservation {
@@ -85,7 +116,11 @@ export interface InsDataset {
   context_name_en?: string | null;
   context_path?: string | null;
   metadata?: Record<string, unknown> | null;
-  dimensions?: InsDatasetDimension[] | null;
+  dimensions?: InsDatasetDimension[] | InsDimension[] | null;
+}
+
+export interface InsDatasetDetails extends InsDataset {
+  dimensions: InsDimension[];
 }
 
 export interface InsUatDatasetGroup {
@@ -105,28 +140,19 @@ export interface InsObservationConnection {
   pageInfo: PageInfo;
 }
 
+export interface InsDatasetConnection {
+  nodes: InsDataset[];
+  pageInfo: PageInfo;
+}
+
+export interface InsDimensionValueConnection {
+  nodes: InsDimensionValue[];
+  pageInfo: PageInfo;
+}
+
 export interface InsDashboardData {
   groups: InsUatDatasetGroup[];
   partial: boolean;
-}
-
-export interface InsObservationFilterInput {
-  territoryCodes?: string[];
-  sirutaCodes?: string[];
-  territoryLevels?: InsTerritoryLevel[];
-  unitCodes?: string[];
-  classificationValueCodes?: string[];
-  classificationTypeCodes?: string[];
-  periodicity?: InsPeriodicity;
-  years?: number[];
-  quarters?: number[];
-  months?: number[];
-  period?: string;
-  periodRange?: {
-    start: string;
-    end: string;
-  };
-  hasValue?: boolean;
 }
 
 export interface InsContext {
@@ -165,11 +191,6 @@ export interface InsDatasetFilterInput {
   hasCountyData?: boolean;
 }
 
-export interface InsDatasetConnection {
-  nodes: InsDataset[];
-  pageInfo: PageInfo;
-}
-
 export interface InsEntitySelectorInput {
   sirutaCode?: string;
   territoryCode?: string;
@@ -188,4 +209,23 @@ export interface InsLatestDatasetValue {
   latestPeriod?: string | null;
   matchStrategy: InsLatestMatchStrategy;
   hasData: boolean;
+}
+
+export interface InsObservationFilterInput {
+  territoryCodes?: string[];
+  sirutaCodes?: string[];
+  territoryLevels?: InsTerritoryLevel[];
+  unitCodes?: string[];
+  classificationValueCodes?: string[];
+  classificationTypeCodes?: string[];
+  periodicity?: InsPeriodicity;
+  years?: number[];
+  quarters?: number[];
+  months?: number[];
+  period?: string;
+  periodRange?: {
+    start: string;
+    end: string;
+  };
+  hasValue?: boolean;
 }

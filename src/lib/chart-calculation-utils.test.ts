@@ -475,6 +475,28 @@ describe('evaluateCalculation', () => {
 
       expect(result.points.find(p => p.x === '2020')?.y).toBe(150)
     })
+
+    it('should apply constants across non-year operand domains', () => {
+      const monthlySeries: AnalyticsSeries = {
+        seriesId: 'a',
+        xAxis: { name: 'Period', type: 'STRING', unit: 'month' },
+        yAxis: { name: 'Value', type: 'FLOAT', unit: 'RON' },
+        data: [
+          { x: '2024-01', y: 5 },
+          { x: '2024-02', y: 8 },
+        ],
+      }
+
+      const seriesData = new Map<string, AnalyticsSeries>([['a', monthlySeries]])
+      const calculation: Calculation = { op: 'sum', args: ['a', 10] }
+
+      const result = evaluateCalculation(calculation, seriesData, [], 'test', 'month')
+
+      expect(result.points).toEqual([
+        { x: '2024-01', y: 15 },
+        { x: '2024-02', y: 18 },
+      ])
+    })
   })
 
   describe('edge cases', () => {
@@ -496,6 +518,27 @@ describe('evaluateCalculation', () => {
       const result = evaluateCalculation(calculation, seriesData, [], 'test')
 
       expect(result.points.find(p => p.x === '2020')?.y).toBe(100)
+    })
+
+    it('should not fabricate default-range points when non-constant operands are empty', () => {
+      const seriesData = new Map<string, AnalyticsSeries>([
+        ['a', createAnalyticsSeries('a', [])],
+      ])
+      const calculation: Calculation = { op: 'sum', args: ['a', 'nonexistent'] }
+
+      const result = evaluateCalculation(calculation, seriesData, [], 'test')
+
+      expect(result.points).toEqual([])
+    })
+
+    it('should keep default-range behavior for constant-only calculations', () => {
+      const seriesData = new Map<string, AnalyticsSeries>()
+      const calculation: Calculation = { op: 'sum', args: [3, 2] }
+
+      const result = evaluateCalculation(calculation, seriesData, [], 'test')
+
+      expect(result.points.length).toBeGreaterThan(0)
+      expect(result.points.every((point) => point.y === 5)).toBe(true)
     })
   })
 })
@@ -637,6 +680,40 @@ describe('calculateAllSeriesData', () => {
     expect(result.warnings).toHaveLength(1)
     expect(result.warnings[0].type).toBe('auto_adjusted_value')
     expect(result.warnings[0].seriesId).toBe('calc_error')
+  })
+
+  it('should skip calculation series when periodicities are mixed', () => {
+    const series = [
+      createDataSeries('yearly'),
+      createDataSeries('monthly'),
+      createCalculationSeries('calc_mixed', { op: 'sum', args: ['yearly', 'monthly'] }),
+    ]
+
+    const dataSeriesMap = new Map<string, AnalyticsSeries>([
+      [
+        'yearly',
+        {
+          seriesId: 'yearly',
+          xAxis: { name: 'Year', type: 'STRING', unit: 'year' },
+          yAxis: { name: 'Value', type: 'FLOAT', unit: 'RON' },
+          data: [{ x: '2024', y: 100 }],
+        },
+      ],
+      [
+        'monthly',
+        {
+          seriesId: 'monthly',
+          xAxis: { name: 'Month', type: 'STRING', unit: 'month' },
+          yAxis: { name: 'Value', type: 'FLOAT', unit: 'RON' },
+          data: [{ x: '2024-01', y: 10 }],
+        },
+      ],
+    ])
+
+    const result = calculateAllSeriesData(series, dataSeriesMap)
+
+    expect(result.dataSeriesMap.has('calc_mixed')).toBe(false)
+    expect(result.warnings.some((warning) => warning.seriesId === 'calc_mixed')).toBe(true)
   })
 })
 

@@ -40,6 +40,11 @@ export function useMultiSelectInfinite<T>({
         [data]
     );
 
+    const totalCount = useMemo(
+        () => data?.pages[0]?.pageInfo?.totalCount ?? items.length,
+        [data, items.length]
+    );
+
     // Virtualizer setup
     const parentRef = useRef<HTMLDivElement>(null);
     const rowVirtualizer = useVirtualizer({
@@ -66,6 +71,7 @@ export function useMultiSelectInfinite<T>({
 
     return {
         items,
+        totalCount,
         parentRef,
         rowVirtualizer,
         isLoading,
@@ -77,4 +83,3 @@ export function useMultiSelectInfinite<T>({
         isFetchingNextPage,
     };
 }
-

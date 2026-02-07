@@ -5,8 +5,10 @@ import type {
   InsContextFilterInput,
   InsDataset,
   InsDatasetConnection,
+  InsDatasetDetails,
   InsDatasetDimensionsResult,
   InsDatasetFilterInput,
+  InsDimensionValueConnection,
   InsEntitySelectorInput,
   InsLatestDatasetValue,
   InsObservation,
@@ -96,6 +98,69 @@ const INS_DATASETS_QUERY = `
   query InsDatasets($filter: InsDatasetFilterInput, $limit: Int, $offset: Int) {
     insDatasets(filter: $filter, limit: $limit, offset: $offset) {
       nodes { ${INS_DATASET_FIELDS} }
+      pageInfo { totalCount hasNextPage hasPreviousPage }
+    }
+  }
+`;
+
+const INS_DATASET_DETAILS_QUERY = `
+  query InsDatasetDetails($code: String!) {
+    insDataset(code: $code) {
+      ${INS_DATASET_FIELDS}
+      dimensions {
+        index
+        type
+        label_ro
+        label_en
+        is_hierarchical
+        option_count
+        classification_type {
+          code
+          name_ro
+          name_en
+          is_hierarchical
+        }
+      }
+    }
+  }
+`;
+
+const INS_DATASET_DIMENSION_VALUES_QUERY = `
+  query InsDatasetDimensionValues(
+    $datasetCode: String!
+    $dimensionIndex: Int!
+    $search: String
+    $limit: Int
+    $offset: Int
+  ) {
+    insDatasetDimensionValues(
+      datasetCode: $datasetCode
+      dimensionIndex: $dimensionIndex
+      filter: { search: $search }
+      limit: $limit
+      offset: $offset
+    ) {
+      nodes {
+        nom_item_id
+        dimension_type
+        label_ro
+        label_en
+        parent_nom_item_id
+        offset_order
+        territory { code siruta_code level name_ro }
+        time_period { iso_period year quarter month periodicity }
+        classification_value { type_code code name_ro }
+        unit { code symbol name_ro }
+      }
+      pageInfo { totalCount hasNextPage hasPreviousPage }
+    }
+  }
+`;
+
+const INS_OBSERVATIONS_QUERY = `
+  query InsObservations($datasetCode: String!, $filter: InsObservationFilterInput, $limit: Int, $offset: Int) {
+    insObservations(datasetCode: $datasetCode, filter: $filter, limit: $limit, offset: $offset) {
+      nodes { ${INS_OBSERVATION_FIELDS} }
       pageInfo { totalCount hasNextPage hasPreviousPage }
     }
   }
@@ -234,6 +299,117 @@ export async function getInsDatasetsCatalog(params: {
   });
 
   return response.insDatasets;
+}
+
+export async function searchInsDatasets(params: {
+  filter?: InsDatasetFilterInput;
+  limit?: number;
+  offset?: number;
+}): Promise<InsDatasetConnection> {
+  const response = await graphqlRequest<{ insDatasets: InsDatasetConnection }>(INS_DATASETS_QUERY, {
+    filter: params.filter,
+    limit: params.limit ?? 50,
+    offset: params.offset ?? 0,
+  });
+
+  return response.insDatasets;
+}
+
+export async function getInsDatasetDetails(code: string): Promise<InsDatasetDetails | null> {
+  if (!code) return null;
+
+  const response = await graphqlRequest<{ insDataset: InsDatasetDetails | null }>(
+    INS_DATASET_DETAILS_QUERY,
+    { code }
+  );
+
+  return response.insDataset;
+}
+
+export async function getInsDimensionValuesPage(params: {
+  datasetCode: string;
+  dimensionIndex: number;
+  search?: string;
+  limit?: number;
+  offset?: number;
+}): Promise<InsDimensionValueConnection> {
+  if (!params.datasetCode) {
+    return {
+      nodes: [],
+      pageInfo: { totalCount: 0, hasNextPage: false, hasPreviousPage: false },
+    };
+  }
+
+  const response = await graphqlRequest<{
+    insDatasetDimensionValues: InsDimensionValueConnection;
+  }>(INS_DATASET_DIMENSION_VALUES_QUERY, {
+    datasetCode: params.datasetCode,
+    dimensionIndex: params.dimensionIndex,
+    search: params.search ?? '',
+    limit: params.limit ?? 50,
+    offset: params.offset ?? 0,
+  });
+
+  return response.insDatasetDimensionValues ?? {
+    nodes: [],
+    pageInfo: { totalCount: 0, hasNextPage: false, hasPreviousPage: false },
+  };
+}
+
+export async function getInsObservationsPage(params: {
+  datasetCode: string;
+  filter?: InsObservationFilterInput;
+  limit?: number;
+  offset?: number;
+}): Promise<InsObservationConnection> {
+  const response = await graphqlRequest<{ insObservations: InsObservationConnection }>(
+    INS_OBSERVATIONS_QUERY,
+    {
+      datasetCode: params.datasetCode,
+      filter: params.filter,
+      limit: params.limit ?? 200,
+      offset: params.offset ?? 0,
+    }
+  );
+
+  return response.insObservations;
+}
+
+export async function getAllInsObservations(params: {
+  datasetCode: string;
+  filter?: InsObservationFilterInput;
+  pageSize?: number;
+  maxPages?: number;
+}): Promise<InsObservation[]> {
+  const pageSize = Math.max(1, Math.min(params.pageSize ?? 1000, 1000));
+  const maxPages = Math.max(1, params.maxPages ?? 20);
+
+  const allNodes: InsObservation[] = [];
+  let offset = 0;
+  let page = 0;
+  let hasNext = true;
+
+  while (hasNext && page < maxPages) {
+    const response = await getInsObservationsPage({
+      datasetCode: params.datasetCode,
+      filter: params.filter,
+      limit: pageSize,
+      offset,
+    });
+
+    const nodes = response.nodes ?? [];
+    allNodes.push(...nodes);
+
+    hasNext = !!response.pageInfo?.hasNextPage;
+    offset += nodes.length;
+    page += 1;
+
+    if (nodes.length === 0) {
+      break;
+    }
+  }
+
+  return allNodes;
 }
 
 export async function getInsLatestDatasetValues(params: {
