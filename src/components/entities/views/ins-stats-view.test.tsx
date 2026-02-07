@@ -928,6 +928,166 @@ describe('InsStatsView', () => {
     })
   })
 
+  it('applies default classification selections in chart shortcut for UAT when none are selected', async () => {
+    mockUseInsDatasetDimensions.mockReturnValue({
+      data: {
+        datasetCode: 'POP107D',
+        dimensions: [
+          {
+            index: 0,
+            type: 'CLASSIFICATION',
+            label_ro: 'Sex',
+            label_en: null,
+            classification_type: { code: 'SEX', name_ro: 'Sex', name_en: null },
+          },
+          {
+            index: 1,
+            type: 'CLASSIFICATION',
+            label_ro: 'Grupa de varsta',
+            label_en: null,
+            classification_type: { code: 'AGE', name_ro: 'Grupa de varsta', name_en: null },
+          },
+        ],
+      },
+      isLoading: false,
+      error: null,
+    })
+
+    mockUseInsDatasetHistory.mockReturnValue({
+      data: {
+        observations: [
+          {
+            dataset_code: 'POP107D',
+            value: '1000',
+            value_status: null,
+            time_period: { iso_period: '2024', year: 2024, quarter: null, month: null, periodicity: 'ANNUAL' },
+            territory: null,
+            unit: { code: 'PERS', symbol: 'pers.', name_ro: 'persoane' },
+            classifications: [
+              { type_code: 'SEX', type_name_ro: 'Sex', code: 'TOTAL', name_ro: 'Total', sort_order: 1 },
+              { type_code: 'AGE', type_name_ro: 'Grupa de varsta', code: 'TOTAL', name_ro: 'Total', sort_order: 1 },
+            ],
+          },
+          {
+            dataset_code: 'POP107D',
+            value: '480',
+            value_status: null,
+            time_period: { iso_period: '2024', year: 2024, quarter: null, month: null, periodicity: 'ANNUAL' },
+            territory: null,
+            unit: { code: 'PERS', symbol: 'pers.', name_ro: 'persoane' },
+            classifications: [
+              { type_code: 'SEX', type_name_ro: 'Sex', code: 'M', name_ro: 'Masculin', sort_order: 2 },
+              { type_code: 'AGE', type_name_ro: 'Grupa de varsta', code: 'TOTAL', name_ro: 'Total', sort_order: 1 },
+            ],
+          },
+        ],
+        totalCount: 2,
+        partial: false,
+      },
+      isLoading: false,
+      error: null,
+    })
+
+    renderInsStatsView()
+
+    const shortcutLink = await screen.findByTestId('ins-open-chart-shortcut')
+    const search = JSON.parse(shortcutLink.getAttribute('data-search') || '{}')
+
+    const chartSeries = search.chart.series?.[0]
+    expect(chartSeries.type).toBe('ins-series')
+    expect(chartSeries.classificationSelections).toEqual({
+      SEX: ['TOTAL'],
+      AGE: ['TOTAL'],
+    })
+    expect(chartSeries.sirutaCodes).toEqual(['143450'])
+    expect(chartSeries.territoryCodes).toBeUndefined()
+  })
+
+  it('applies default classification selections in chart shortcut for county when none are selected', async () => {
+    mockUseInsDatasetDimensions.mockReturnValue({
+      data: {
+        datasetCode: 'POP107D',
+        dimensions: [
+          {
+            index: 0,
+            type: 'CLASSIFICATION',
+            label_ro: 'Sex',
+            label_en: null,
+            classification_type: { code: 'SEX', name_ro: 'Sex', name_en: null },
+          },
+          {
+            index: 1,
+            type: 'CLASSIFICATION',
+            label_ro: 'Grupa de varsta',
+            label_en: null,
+            classification_type: { code: 'AGE', name_ro: 'Grupa de varsta', name_en: null },
+          },
+        ],
+      },
+      isLoading: false,
+      error: null,
+    })
+
+    mockUseInsDatasetHistory.mockReturnValue({
+      data: {
+        observations: [
+          {
+            dataset_code: 'POP107D',
+            value: '1000',
+            value_status: null,
+            time_period: { iso_period: '2024', year: 2024, quarter: null, month: null, periodicity: 'ANNUAL' },
+            territory: null,
+            unit: { code: 'PERS', symbol: 'pers.', name_ro: 'persoane' },
+            classifications: [
+              { type_code: 'SEX', type_name_ro: 'Sex', code: 'TOTAL', name_ro: 'Total', sort_order: 1 },
+              { type_code: 'AGE', type_name_ro: 'Grupa de varsta', code: 'TOTAL', name_ro: 'Total', sort_order: 1 },
+            ],
+          },
+          {
+            dataset_code: 'POP107D',
+            value: '520',
+            value_status: null,
+            time_period: { iso_period: '2024', year: 2024, quarter: null, month: null, periodicity: 'ANNUAL' },
+            territory: null,
+            unit: { code: 'PERS', symbol: 'pers.', name_ro: 'persoane' },
+            classifications: [
+              { type_code: 'SEX', type_name_ro: 'Sex', code: 'F', name_ro: 'Feminin', sort_order: 3 },
+              { type_code: 'AGE', type_name_ro: 'Grupa de varsta', code: 'TOTAL', name_ro: 'Total', sort_order: 1 },
+            ],
+          },
+        ],
+        totalCount: 2,
+        partial: false,
+      },
+      isLoading: false,
+      error: null,
+    })
+
+    const countyEntity = {
+      ...entity,
+      is_uat: false,
+      entity_type: 'admin_county_council',
+      uat: {
+        ...entity.uat,
+        county_code: 'sb',
+      },
+    } as EntityDetailsData
+
+    render(<InsStatsView entity={countyEntity} reportPeriod={defaultReportPeriod} />)
+
+    const shortcutLink = await screen.findByTestId('ins-open-chart-shortcut')
+    const search = JSON.parse(shortcutLink.getAttribute('data-search') || '{}')
+
+    const chartSeries = search.chart.series?.[0]
+    expect(chartSeries.type).toBe('ins-series')
+    expect(chartSeries.classificationSelections).toEqual({
+      SEX: ['TOTAL'],
+      AGE: ['TOTAL'],
+    })
+    expect(chartSeries.territoryCodes).toEqual(['SB'])
+    expect(chartSeries.sirutaCodes).toBeUndefined()
+  })
+
   it('hides INS chart shortcut when entity scope is missing', () => {
     const countyEntityWithoutCode = {
       ...entity,

@@ -898,31 +898,42 @@ export function InsStatsView({
     return mergeSeriesSelection(seriesGroups, selectedSeriesClassifications);
   }, [selectedSeriesClassifications, seriesGroups]);
 
-  const urlSeriesSelection = useMemo(() => {
-    const normalizedSelection: Record<string, string[]> = {};
+  const mapSelectionToRawCodes = useCallback(
+    (selectionByTypeCode: Record<string, string[]>) => {
+      const normalizedSelection: Record<string, string[]> = {};
 
-    for (const [typeCode, selectedCodes] of Object.entries(selectedSeriesClassifications)) {
-      const optionByCode = seriesOptionByTypeCode.get(typeCode);
-      const values = Array.from(
-        new Set(
-          selectedCodes
-            .map((selectedCode) => {
-              const matchedOption = optionByCode?.get(selectedCode);
-              if (matchedOption) return matchedOption.rawCode;
-              return extractRawSeriesCode(selectedCode);
-            })
-            .map((value) => value.trim())
-            .filter(Boolean)
-        )
-      );
+      for (const [typeCode, selectedCodes] of Object.entries(selectionByTypeCode)) {
+        const optionByCode = seriesOptionByTypeCode.get(typeCode);
+        const values = Array.from(
+          new Set(
+            selectedCodes
+              .map((selectedCode) => {
+                const matchedOption = optionByCode?.get(selectedCode);
+                if (matchedOption) return matchedOption.rawCode;
+                return extractRawSeriesCode(selectedCode);
+              })
+              .map((value) => value.trim())
+              .filter(Boolean)
+          )
+        );
 
-      if (values.length > 0) {
-        normalizedSelection[typeCode] = values;
+        if (values.length > 0) {
+          normalizedSelection[typeCode] = values;
+        }
       }
-    }
 
-    return normalizeSeriesSelectionForUrl(normalizedSelection);
-  }, [selectedSeriesClassifications, seriesOptionByTypeCode]);
+      return normalizedSelection;
+    },
+    [seriesOptionByTypeCode]
+  );
+
+  const urlSeriesSelection = useMemo(() => {
+    return normalizeSeriesSelectionForUrl(mapSelectionToRawCodes(selectedSeriesClassifications));
+  }, [mapSelectionToRawCodes, selectedSeriesClassifications]);
+
+  const chartSeriesSelection = useMemo(() => {
+    return normalizeSeriesSelectionForUrl(mapSelectionToRawCodes(effectiveSeriesSelection));
+  }, [effectiveSeriesSelection, mapSelectionToRawCodes]);
 
   useEffect(() => {
     const serialized = JSON.stringify({
@@ -1094,7 +1105,7 @@ export function InsStatsView({
       datasetLabel: selectedDatasetDetails?.title || selectedDataset?.code || selectedDatasetCode,
       entityName: entity?.name || selectedDatasetCode,
       temporalSplit,
-      classificationSelections: urlSeriesSelection,
+      classificationSelections: chartSeriesSelection,
       unitKey: effectiveUnitSelection,
       isCounty,
       countyCode,
@@ -1110,7 +1121,7 @@ export function InsStatsView({
     selectedDatasetDetails,
     sirutaCode,
     temporalSplit,
-    urlSeriesSelection,
+    chartSeriesSelection,
   ]);
 
   const activeSeriesCriteriaParts = useMemo(() => {
