@@ -476,8 +476,8 @@ export async function getInsDatasetHistory(params: {
   pageSize?: number;
   maxPages?: number;
 }): Promise<InsDatasetHistoryResult> {
-  const pageSize = params.pageSize ?? 500;
-  const maxPages = params.maxPages ?? 20;
+  const pageSize = Math.max(1, Math.min(params.pageSize ?? 500, 1000));
+  const maxPages = Math.max(1, params.maxPages ?? 20);
 
   let offset = 0;
   let page = 0;
@@ -497,12 +497,17 @@ export async function getInsDatasetHistory(params: {
     );
 
     const connection = response.insObservations;
-    observations.push(...getConnectionNodes(connection));
+    const nodes = getConnectionNodes(connection);
+    observations.push(...nodes);
     totalCount = connection.pageInfo?.totalCount ?? totalCount;
     hasNextPage = connectionHasNextPage(connection);
 
-    offset += pageSize;
+    offset += nodes.length;
     page += 1;
+
+    if (nodes.length === 0) {
+      break;
+    }
   }
 
   return {

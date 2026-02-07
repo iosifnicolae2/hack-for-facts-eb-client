@@ -273,6 +273,24 @@ describe('InsSeriesEditor', () => {
     });
   });
 
+  it('renders INS Tempo source attribution for selected dataset', () => {
+    renderEditor({
+      datasetCode: 'POP107D',
+    });
+
+    expect(screen.getByText('Data source:')).toBeInTheDocument();
+    const sourceLink = screen.getByRole('link', { name: /INS Tempo/i });
+    expect(sourceLink).toHaveAttribute('href', expect.stringContaining('ind=POP107D'));
+    expect(sourceLink).toHaveAttribute('href', expect.stringContaining('page=tempo3'));
+  });
+
+  it('does not render source attribution when no dataset is selected', () => {
+    renderEditor();
+
+    expect(screen.queryByText('Data source:')).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /INS Tempo/i })).not.toBeInTheDocument();
+  });
+
   it('clears stale INS dimension filters when selecting a new dataset', async () => {
     mockGetInsDatasetDetails.mockResolvedValue(
       createDatasetDetails({
@@ -339,7 +357,17 @@ describe('InsSeriesEditor', () => {
     await waitFor(() => {
       expect(mockUpdateSeries).toHaveBeenCalledWith(
         'series-1',
-        expect.objectContaining({ periodicity: 'ANNUAL' })
+        expect.objectContaining({
+          period: expect.objectContaining({
+            type: 'YEAR',
+            selection: expect.objectContaining({
+              interval: expect.objectContaining({
+                start: '2020',
+                end: '2024',
+              }),
+            }),
+          }),
+        })
       );
     });
 
@@ -353,9 +381,10 @@ describe('InsSeriesEditor', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 0));
 
-    const monthlyDefaultCalls = mockUpdateSeries.mock.calls.filter(
-      ([, payload]) => payload?.periodicity === 'MONTHLY'
-    );
+    const monthlyDefaultCalls = mockUpdateSeries.mock.calls.filter(([, payload]) => {
+      const patch = payload as { period?: { type?: string } } | undefined;
+      return patch?.period?.type === 'MONTH';
+    });
     expect(monthlyDefaultCalls).toHaveLength(0);
   });
 
@@ -423,6 +452,72 @@ describe('InsSeriesEditor', () => {
       ([, payload]) => Array.isArray(payload?.unitCodes) && payload.unitCodes.includes('PERS')
     );
     expect(staleUnitFallbackCalls).toHaveLength(0);
+  });
+
+  it('applies full-interval default period from selected dataset', async () => {
+    mockGetInsDatasetDetails.mockResolvedValue(
+      createDatasetDetails({
+        code: 'POP212B',
+        periodicity: ['MONTHLY'],
+        year_range: [2022, 2023],
+      })
+    );
+
+    renderEditor();
+
+    fireEvent.click(screen.getByRole('button', { name: /Dataset POP212B/i }));
+
+    await waitFor(() => {
+      expect(mockUpdateSeries).toHaveBeenCalledWith(
+        'series-1',
+        expect.objectContaining({
+          period: {
+            type: 'MONTH',
+            selection: {
+              interval: {
+                start: '2022-01',
+                end: '2023-12',
+              },
+            },
+          },
+        })
+      );
+    });
+  });
+
+  it('replaces incompatible existing period with constrained dataset default', async () => {
+    mockGetInsDatasetDetails.mockResolvedValue(
+      createDatasetDetails({
+        code: 'POP107D',
+        periodicity: ['ANNUAL'],
+        year_range: [2020, 2024],
+      })
+    );
+
+    renderEditor({
+      datasetCode: 'POP107D',
+      period: {
+        type: 'MONTH',
+        selection: { dates: ['2025-03'] },
+      },
+    });
+
+    await waitFor(() => {
+      expect(mockUpdateSeries).toHaveBeenCalledWith(
+        'series-1',
+        expect.objectContaining({
+          period: {
+            type: 'YEAR',
+            selection: {
+              interval: {
+                start: '2020',
+                end: '2024',
+              },
+            },
+          },
+        })
+      );
+    });
   });
 
   it('supports add and remove in classification multi-select', async () => {

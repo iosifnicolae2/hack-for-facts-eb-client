@@ -246,20 +246,13 @@ export const StaticSeriesConfigurationSchema = BaseSeriesConfigurationSchema.ext
   unit: z.string().optional().default('').describe('Unit of measurement for the static dataset. Displayed in tooltips and labels. Should match other series for meaningful comparison. Examples: "RON", "RON/capita", "%", "thousands". Required for clarity when mixing with other series.'),
 }).passthrough();
 
-export const InsSeriesPeriodicitySchema = z.enum(['ANNUAL', 'QUARTERLY', 'MONTHLY']); // TODO: review. Should be consistent with the other periodicity types.
-export type InsSeriesPeriodicity = z.infer<typeof InsSeriesPeriodicitySchema>;
-
 export const InsSeriesAggregationSchema = z.enum(['sum', 'average', 'first']);
 export type InsSeriesAggregation = z.infer<typeof InsSeriesAggregationSchema>;
 
 export const InsSeriesConfigurationSchema = BaseSeriesConfigurationSchema.extend({
   type: z.literal('ins-series').describe('Series type: "ins-series" - INS Tempo dataset series. Queries INS observations from the GraphQL INS module and maps them to chart-compatible time-series points. Supports dimensions (territory, classifications, units), temporal filters, and reducer-based aggregation when multiple observations exist per period.'),
   datasetCode: z.string().optional().describe('INS dataset code (matrix code), for example "POP107D". Required for querying observations. Selected from INS datasets catalog.'),
-  periodicity: InsSeriesPeriodicitySchema.optional().describe('INS periodicity for this series. Must be one of dataset-supported periodicities: ANNUAL, QUARTERLY, or MONTHLY.'),
-  periodRange: z.object({
-    start: z.string(),
-    end: z.string(),
-  }).optional().describe('Optional INS period range using PeriodDate format. Examples: annual "2020" to "2024", quarterly "2023-Q1" to "2024-Q4", monthly "2023-01" to "2023-12".'),
+  period: ReportPeriodInputZ.optional().describe('INS period selection using the same report-period interface as execution series. Supports period type (YEAR/QUARTER/MONTH) and either dates or interval selection.'),
   aggregation: InsSeriesAggregationSchema.default('sum').describe('Reducer used when multiple INS observations match the same period. "sum" adds all values, "average" computes arithmetic mean, "first" keeps the first ordered observation.'),
   territoryCodes: z.array(z.string()).optional().describe('Optional INS territory codes filter (e.g., ["RO"], county codes at NUTS3).'),
   sirutaCodes: z.array(z.string()).optional().describe('Optional INS SIRUTA codes filter (typically LAU localities/UATs).'),

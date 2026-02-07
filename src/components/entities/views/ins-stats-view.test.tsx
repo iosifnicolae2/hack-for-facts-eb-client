@@ -291,7 +291,15 @@ describe('InsStatsView', () => {
         expect.objectContaining({
           datasetCode: 'POP107D',
           filter: expect.objectContaining({
-            periodicity: 'ANNUAL',
+            period: {
+              type: 'YEAR',
+              selection: {
+                interval: {
+                  start: '1900',
+                  end: '2100',
+                },
+              },
+            },
           }),
         })
       )
@@ -812,9 +820,15 @@ describe('InsStatsView', () => {
       expect(mockUseInsObservationsSnapshotByDatasets).toHaveBeenCalledWith(
         expect.objectContaining({
           filter: expect.objectContaining({
-            periodicity: 'ANNUAL',
-            years: [2025],
-            period: '2025',
+            period: {
+              type: 'YEAR',
+              selection: {
+                interval: {
+                  start: '2025',
+                  end: '2025',
+                },
+              },
+            },
           }),
         })
       )
@@ -836,10 +850,15 @@ describe('InsStatsView', () => {
       expect(mockUseInsObservationsSnapshotByDatasets).toHaveBeenCalledWith(
         expect.objectContaining({
           filter: expect.objectContaining({
-            periodicity: 'QUARTERLY',
-            years: [2025],
-            quarters: [2],
-            period: '2025-Q2',
+            period: {
+              type: 'QUARTER',
+              selection: {
+                interval: {
+                  start: '2025-Q2',
+                  end: '2025-Q2',
+                },
+              },
+            },
           }),
         })
       )
@@ -861,10 +880,15 @@ describe('InsStatsView', () => {
       expect(mockUseInsObservationsSnapshotByDatasets).toHaveBeenCalledWith(
         expect.objectContaining({
           filter: expect.objectContaining({
-            periodicity: 'MONTHLY',
-            years: [2025],
-            months: [3],
-            period: '2025-03',
+            period: {
+              type: 'MONTH',
+              selection: {
+                interval: {
+                  start: '2025-03',
+                  end: '2025-03',
+                },
+              },
+            },
           }),
         })
       )

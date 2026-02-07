@@ -13,7 +13,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, fireEvent } from '@/test/test-utils'
+import { render, screen, fireEvent, waitFor } from '@/test/test-utils'
 import { PeriodFilter } from './PeriodFilter'
 import type { ReportPeriodInput } from '@/schemas/reporting'
 
@@ -367,6 +367,78 @@ describe('PeriodFilter', () => {
           type: 'QUARTER',
         })
       )
+    })
+  })
+
+  describe('constraints', () => {
+    it('disables unsupported period types', () => {
+      render(
+        <PeriodFilter
+          onChange={mockOnChange}
+          allowedPeriodTypes={['YEAR']}
+        />
+      )
+
+      expect(screen.getByRole('radio', { name: /yearly/i })).toBeEnabled()
+      expect(screen.getByRole('radio', { name: /quarterly/i })).toBeDisabled()
+      expect(screen.getByRole('radio', { name: /monthly/i })).toBeDisabled()
+    })
+
+    it('auto-clamps unsupported type to first allowed type', async () => {
+      render(
+        <PeriodFilter
+          value={{
+            type: 'MONTH',
+            selection: { dates: ['2024-01'] },
+          }}
+          onChange={mockOnChange}
+          allowedPeriodTypes={['YEAR']}
+        />
+      )
+
+      await waitFor(() => {
+        expect(mockOnChange).toHaveBeenCalledWith(
+          expect.objectContaining({
+            type: 'YEAR',
+          })
+        )
+      })
+    })
+
+    it('renders only years within custom year range', () => {
+      render(
+        <PeriodFilter
+          onChange={mockOnChange}
+          yearRange={{ start: 2023, end: 2024 }}
+        />
+      )
+
+      expect(screen.getByRole('radio', { name: '2024' })).toBeEnabled()
+      expect(screen.getByRole('radio', { name: '2023' })).toBeEnabled()
+      expect(screen.queryByRole('radio', { name: '2025' })).not.toBeInTheDocument()
+      expect(screen.queryByRole('radio', { name: '2022' })).not.toBeInTheDocument()
+    })
+
+    it('renders custom year range outside default bounds', () => {
+      render(
+        <PeriodFilter
+          onChange={mockOnChange}
+          yearRange={{ start: 1990, end: 1992 }}
+        />
+      )
+
+      expect(screen.getByRole('radio', { name: '1992' })).toBeInTheDocument()
+      expect(screen.getByRole('radio', { name: '1991' })).toBeInTheDocument()
+      expect(screen.getByRole('radio', { name: '1990' })).toBeInTheDocument()
+      expect(screen.queryByRole('radio', { name: '2025' })).not.toBeInTheDocument()
+    })
+
+    it('keeps years enabled when year range is not provided', () => {
+      render(<PeriodFilter onChange={mockOnChange} />)
+
+      expect(screen.getByRole('radio', { name: '2025' })).toBeEnabled()
+      expect(screen.getByRole('radio', { name: '2024' })).toBeEnabled()
+      expect(screen.getByRole('radio', { name: '2023' })).toBeEnabled()
     })
   })
 })

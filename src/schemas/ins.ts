@@ -1,3 +1,5 @@
+import type { ReportPeriodInput } from './reporting';
+
 export type InsPeriodicity = 'ANNUAL' | 'QUARTERLY' | 'MONTHLY';
 export type InsTerritoryLevel = 'NATIONAL' | 'NUTS1' | 'NUTS2' | 'NUTS3' | 'LAU';
 export type InsDimensionType = 'TEMPORAL' | 'TERRITORIAL' | 'CLASSIFICATION' | 'UNIT_OF_MEASURE';
@@ -218,14 +220,6 @@ export interface InsObservationFilterInput {
   unitCodes?: string[];
   classificationValueCodes?: string[];
   classificationTypeCodes?: string[];
-  periodicity?: InsPeriodicity;
-  years?: number[];
-  quarters?: number[];
-  months?: number[];
-  period?: string;
-  periodRange?: {
-    start: string;
-    end: string;
-  };
+  period?: ReportPeriodInput;
   hasValue?: boolean;
 }

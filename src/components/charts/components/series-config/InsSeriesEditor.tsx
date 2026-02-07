@@ -3,25 +3,26 @@ import { useQuery } from '@tanstack/react-query';
 import { z } from 'zod';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
-import { Database, MapPin, Ruler, Tags } from 'lucide-react';
+import { Calendar, Database, ExternalLink, MapPin, Ruler, Tags } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { FilterContainer } from '@/components/filters/base-filter/FilterContainer';
 import { FilterListContainer } from '@/components/filters/base-filter/FilterListContainer';
 import type { OptionItem } from '@/components/filters/base-filter/interfaces';
+import { PeriodFilter } from '@/components/filters/period-filter/PeriodFilter';
 
-import {
-  InsSeriesConfigurationSchema,
-  type InsSeriesPeriodicity,
-} from '@/schemas/charts';
+import { InsSeriesConfigurationSchema } from '@/schemas/charts';
 import type { InsDataset, InsDatasetDetails, InsDimension } from '@/schemas/ins';
+import type { ReportPeriodInput, ReportPeriodType } from '@/schemas/reporting';
 import { useChartStore } from '../../hooks/useChartStore';
 import { getInsDatasetDetails, getInsDimensionValuesPage } from '@/lib/api/ins';
+import { getPeriodTags } from '@/lib/period-utils';
 import { getUserLocale } from '@/lib/utils';
 import {
+  areReportPeriodsEqual,
+  buildDefaultInsPeriod,
+  clampPeriodToDatasetConstraints,
+  mapDatasetPeriodicitiesToAllowedTypes,
   mapInsDimensionValueToOption,
   pickDefaultDimensionValue,
   type InsLocale,
@@ -44,23 +45,6 @@ interface InsDimensionFilterListProps {
   dimensionIndex: number;
   optionKind: InsDimensionOptionKind;
   classificationTypeCode?: string;
-}
-
-function toPeriodRangeForPeriodicity(
-  yearRange: number[] | null | undefined,
-  periodicity: InsSeriesPeriodicity
-): { start: string; end: string } | undefined {
-  if (!yearRange || yearRange.length < 2) return undefined;
-  const [startYear, endYear] = yearRange;
-
-  if (periodicity === 'MONTHLY') {
-    return { start: `${startYear}-01`, end: `${endYear}-12` };
-  }
-  if (periodicity === 'QUARTERLY') {
-    return { start: `${startYear}-Q1`, end: `${endYear}-Q4` };
-  }
-
-  return { start: String(startYear), end: String(endYear) };
 }
 
 function getDatasetDisplayName(
@@ -109,6 +93,17 @@ function toDatasetSeriesLabel(datasetCode: string, optionLabel: string): string 
   return optionLabel.trim() || datasetCode;
 }
 
+const INS_TEMPO_BASE_URL = 'http://statistici.insse.ro/tempoins/index.jsp';
+
+function buildInsTempoDatasetUrl(datasetCode: string, locale: InsLocale): string {
+  const params = new URLSearchParams({
+    ind: datasetCode,
+    lang: locale === 'en' ? 'en' : 'ro',
+    page: 'tempo3',
+  });
+  return `${INS_TEMPO_BASE_URL}?${params.toString()}`;
+}
+
 function InsDimensionFilterList({
   title,
   icon,
@@ -155,20 +150,14 @@ function InsDimensionFilterList({
 async function buildDatasetDefaultPatch(
   dataset: InsDatasetDetails
 ): Promise<Partial<z.infer<typeof InsSeriesConfigurationSchema>>> {
-  const periodicity = dataset.periodicity.includes('ANNUAL')
-    ? 'ANNUAL'
-    : dataset.periodicity[0] ?? 'ANNUAL';
+  const allowedPeriodTypes = mapDatasetPeriodicitiesToAllowedTypes(dataset.periodicity ?? []);
+  const preferredType = allowedPeriodTypes[0] ?? 'YEAR';
 
   const defaults: Partial<z.infer<typeof InsSeriesConfigurationSchema>> = {
-    periodicity,
+    period: buildDefaultInsPeriod(dataset, preferredType),
     aggregation: 'sum',
     hasValue: true,
   };
-
-  const periodRange = toPeriodRangeForPeriodicity(dataset.year_range ?? undefined, periodicity);
-  if (periodRange) {
-    defaults.periodRange = periodRange;
-  }
 
   const dimensions = dataset.dimensions ?? [];
   const classificationSelections: Record<string, string[]> = {};
@@ -251,6 +240,19 @@ export function InsSeriesEditor({ series }: InsSeriesEditorProps) {
   });
 
   const dataset = datasetDetailQuery.data;
+  const allowedPeriodTypes = useMemo(
+    () =>
+      mapDatasetPeriodicitiesToAllowedTypes(dataset?.periodicity ?? []),
+    [dataset?.periodicity]
+  );
+  const datasetYearRange = useMemo(() => {
+    const yearRange = dataset?.year_range;
+    if (!yearRange || yearRange.length < 2) return undefined;
+    const start = Math.min(yearRange[0] ?? 0, yearRange[1] ?? 0);
+    const end = Math.max(yearRange[0] ?? 0, yearRange[1] ?? 0);
+    if (!Number.isFinite(start) || !Number.isFinite(end)) return undefined;
+    return { start, end };
+  }, [dataset?.year_range]);
 
   const nonTemporalDimensions = useMemo(
     () => (dataset?.dimensions ?? []).filter((dimension) => dimension.type !== 'TEMPORAL'),
@@ -267,6 +269,28 @@ export function InsSeriesEditor({ series }: InsSeriesEditorProps) {
       updatedAt: new Date().toISOString(),
     });
   };
+
+  useEffect(() => {
+    if (!dataset) return;
+
+    const clampedPeriod = clampPeriodToDatasetConstraints(
+      series.period as ReportPeriodInput | undefined,
+      allowedPeriodTypes,
+      datasetYearRange
+    );
+
+    if (areReportPeriodsEqual(series.period as ReportPeriodInput | undefined, clampedPeriod)) {
+      return;
+    }
+
+    if (clampedPeriod) {
+      update({ period: clampedPeriod });
+      return;
+    }
+
+    const defaultPeriod = buildDefaultInsPeriod(dataset, allowedPeriodTypes[0] as ReportPeriodType | undefined);
+    update({ period: defaultPeriod });
+  }, [allowedPeriodTypes, dataset, datasetYearRange, series.period]);
 
   const beginDimensionRequest = (
     datasetCode: string,
@@ -320,6 +344,7 @@ export function InsSeriesEditor({ series }: InsSeriesEditorProps) {
     update({
       datasetCode,
       label: toDatasetSeriesLabel(datasetCode, optionLabel),
+      period: undefined,
       unitCodes: undefined,
       territoryCodes: undefined,
       sirutaCodes: undefined,
@@ -342,6 +367,7 @@ export function InsSeriesEditor({ series }: InsSeriesEditorProps) {
     latestDatasetRequestIdRef.current += 1;
     update({
       datasetCode: undefined,
+      period: undefined,
       unitCodes: undefined,
       territoryCodes: undefined,
       sirutaCodes: undefined,
@@ -358,6 +384,43 @@ export function InsSeriesEditor({ series }: InsSeriesEditorProps) {
 
     return [{ id: series.datasetCode, label: datasetLabel }];
   }, [dataset, locale, series.datasetCode, series.label]);
+  const selectedDatasetSourceUrl = useMemo(() => {
+    if (!series.datasetCode) return null;
+    return buildInsTempoDatasetUrl(series.datasetCode, locale);
+  }, [locale, series.datasetCode]);
+  const selectedPeriodOptions: OptionItem[] = useMemo(() => {
+    return getPeriodTags(series.period as ReportPeriodInput | undefined).map((tag) => ({
+      id: String(tag.value),
+      label: String(tag.value),
+    }));
+  }, [series.period]);
+
+  const clearPeriodSelection = () => {
+    update({ period: undefined });
+  };
+
+  const removeSinglePeriodOption = (option: OptionItem) => {
+    const currentPeriod = series.period as ReportPeriodInput | undefined;
+    if (!currentPeriod) return;
+
+    if (currentPeriod.selection.dates) {
+      const dateToRemove = String(option.id);
+      const nextDates = currentPeriod.selection.dates.filter((date) => date !== dateToRemove);
+      if (nextDates.length === 0) {
+        clearPeriodSelection();
+        return;
+      }
+      update({
+        period: {
+          ...currentPeriod,
+          selection: { dates: nextDates },
+        },
+      });
+      return;
+    }
+
+    clearPeriodSelection();
+  };
 
   return (
     <Card data-testid="ins-series-editor">
@@ -365,6 +428,20 @@ export function InsSeriesEditor({ series }: InsSeriesEditorProps) {
         <CardTitle>
           <Trans>INS Dataset Configuration</Trans>
         </CardTitle>
+        {selectedDatasetSourceUrl && (
+          <p className="text-xs text-muted-foreground">
+            <Trans>Data source:</Trans>{' '}
+            <a
+              href={selectedDatasetSourceUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 font-medium text-foreground underline-offset-2 hover:underline"
+            >
+              <Trans>INS Tempo</Trans>
+              <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+            </a>
+          </p>
+        )}
       </CardHeader>
       <CardContent className="space-y-5">
         <FilterContainer
@@ -387,67 +464,20 @@ export function InsSeriesEditor({ series }: InsSeriesEditorProps) {
             pageSize={100}
           />
         </FilterContainer>
-
-        <div className="space-y-2">
-          <Label>
-            <Trans>Periodicity</Trans>
-          </Label>
-          <Select
-            value={series.periodicity ?? ''}
-            onValueChange={(value) => update({ periodicity: value as InsSeriesPeriodicity })}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder={t`Select periodicity`} />
-            </SelectTrigger>
-            <SelectContent>
-              {(dataset?.periodicity ?? ['ANNUAL', 'QUARTERLY', 'MONTHLY']).map((periodicity) => (
-                <SelectItem key={periodicity} value={periodicity}>
-                  {periodicity}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label>
-              <Trans>Period Start</Trans>
-            </Label>
-            <Input
-              value={series.periodRange?.start ?? ''}
-              placeholder={t`Example: 2020 / 2020-Q1 / 2020-01`}
-              onChange={(event) => {
-                const nextStart = event.target.value;
-                update({
-                  periodRange: {
-                    start: nextStart,
-                    end: series.periodRange?.end ?? nextStart,
-                  },
-                });
-              }}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label>
-              <Trans>Period End</Trans>
-            </Label>
-            <Input
-              value={series.periodRange?.end ?? ''}
-              placeholder={t`Example: 2024 / 2024-Q4 / 2024-12`}
-              onChange={(event) => {
-                const nextEnd = event.target.value;
-                update({
-                  periodRange: {
-                    start: series.periodRange?.start ?? nextEnd,
-                    end: nextEnd,
-                  },
-                });
-              }}
-            />
-          </div>
-        </div>
+        <FilterContainer
+          title={t`Period`}
+          icon={<Calendar className="w-4 h-4" aria-hidden="true" />}
+          selectedOptions={selectedPeriodOptions}
+          onClearOption={removeSinglePeriodOption}
+          onClearAll={clearPeriodSelection}
+        >
+          <PeriodFilter
+            value={series.period as ReportPeriodInput | undefined}
+            onChange={(period) => update({ period })}
+            allowedPeriodTypes={allowedPeriodTypes}
+            yearRange={datasetYearRange}
+          />
+        </FilterContainer>
 
         {dataset && (
           <div className="border-t pt-2">

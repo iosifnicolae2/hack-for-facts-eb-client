@@ -2,6 +2,7 @@ import type { DataValidationError } from '@/lib/chart-data-validation';
 import { getAllInsObservations } from '@/lib/api/ins';
 import type { InsObservation, InsObservationFilterInput, InsPeriodicity } from '@/schemas/ins';
 import type { AnalyticsSeries, InsSeriesConfiguration } from '@/schemas/charts';
+import type { PeriodDate, ReportPeriodInput, ReportPeriodType } from '@/schemas/reporting';
 import { getUserLocale } from '@/lib/utils';
 
 export interface InsSeriesMapperInput {
@@ -46,6 +47,48 @@ function getObservationUnitLabel(observation: InsObservation): string {
   return observation.unit?.symbol || observation.unit?.code || localizedUnitName;
 }
 
+function isPeriodDateForType(date: string, type: ReportPeriodType): date is PeriodDate {
+  if (type === 'YEAR') return /^\d{4}$/.test(date);
+  if (type === 'QUARTER') return /^\d{4}-Q[1-4]$/.test(date);
+  return /^\d{4}-(0[1-9]|1[0-2])$/.test(date);
+}
+
+function normalizeSeriesPeriod(period: InsSeriesConfiguration['period']): ReportPeriodInput | undefined {
+  if (!period) return undefined;
+
+  if (period.selection.interval) {
+    const interval = period.selection.interval;
+    if (
+      !isPeriodDateForType(interval.start, period.type) ||
+      !isPeriodDateForType(interval.end, period.type)
+    ) {
+      return undefined;
+    }
+
+    return {
+      type: period.type,
+      selection: {
+        interval: {
+          start: interval.start,
+          end: interval.end,
+        },
+      },
+    };
+  }
+
+  const dates = (period.selection.dates ?? []).filter((date) =>
+    isPeriodDateForType(date, period.type)
+  );
+  if (dates.length === 0) return undefined;
+
+  return {
+    type: period.type,
+    selection: {
+      dates: Array.from(new Set(dates)),
+    },
+  };
+}
+
 function buildObservationFilter(series: InsSeriesConfiguration): InsObservationFilterInput {
   const filter: InsObservationFilterInput = {
     hasValue: series.hasValue ?? true,
@@ -60,14 +103,9 @@ function buildObservationFilter(series: InsSeriesConfiguration): InsObservationF
   if (series.unitCodes?.length) {
     filter.unitCodes = series.unitCodes;
   }
-  if (series.periodicity) {
-    filter.periodicity = series.periodicity;
-  }
-  if (series.periodRange?.start && series.periodRange?.end) {
-    filter.periodRange = {
-      start: series.periodRange.start,
-      end: series.periodRange.end,
-    };
+  const normalizedPeriod = normalizeSeriesPeriod(series.period);
+  if (normalizedPeriod) {
+    filter.period = normalizedPeriod;
   }
 
   if (series.classificationSelections && Object.keys(series.classificationSelections).length > 0) {
@@ -99,10 +137,28 @@ function selectDefaultPeriodicity(observations: InsObservation[]): InsPeriodicit
   return observations[0]?.time_period.periodicity ?? null;
 }
 
+function mapPeriodTypeToInsPeriodicity(
+  periodType: ReportPeriodType | undefined
+): InsPeriodicity | null {
+  if (periodType === 'MONTH') return 'MONTHLY';
+  if (periodType === 'QUARTER') return 'QUARTERLY';
+  if (periodType === 'YEAR') return 'ANNUAL';
+  return null;
+}
+
 function normalizePeriodicityForChart(periodicity: InsPeriodicity): 'year' | 'quarter' | 'month' {
   if (periodicity === 'MONTHLY') return 'month';
   if (periodicity === 'QUARTERLY') return 'quarter';
   return 'year';
+}
+
+function normalizePeriodTypeForChart(
+  periodType: ReportPeriodType | undefined
+): 'year' | 'quarter' | 'month' | null {
+  if (periodType === 'MONTH') return 'month';
+  if (periodType === 'QUARTER') return 'quarter';
+  if (periodType === 'YEAR') return 'year';
+  return null;
 }
 
 function observationMatchesClassificationSelection(
@@ -190,7 +246,8 @@ export async function mapInsSeriesToAnalyticsSeries(series: InsSeriesConfigurati
     new Set(classFiltered.map((observation) => observation.time_period.periodicity))
   );
 
-  let effectivePeriodicity = series.periodicity ?? selectDefaultPeriodicity(classFiltered);
+  const requestedPeriodicity = mapPeriodTypeToInsPeriodicity(series.period?.type);
+  let effectivePeriodicity = requestedPeriodicity ?? selectDefaultPeriodicity(classFiltered);
   if (!effectivePeriodicity) {
     warnings.push({
       type: 'missing_data',
@@ -200,7 +257,7 @@ export async function mapInsSeriesToAnalyticsSeries(series: InsSeriesConfigurati
     return { series: null, warnings };
   }
 
-  if (!series.periodicity && observedPeriodicities.length > 1) {
+  if (!requestedPeriodicity && observedPeriodicities.length > 1) {
     warnings.push({
       type: 'auto_adjusted_value',
       seriesId: series.id,
@@ -308,6 +365,7 @@ export async function mapInsSeriesToAnalyticsSeries(series: InsSeriesConfigurati
     .map(({ x, y }) => ({ x, y }));
 
   const inferredUnit = Array.from(unitSet)[0] ?? '';
+  const xAxisUnitFromPeriod = normalizePeriodTypeForChart(series.period?.type);
 
   return {
     series: {
@@ -315,7 +373,7 @@ export async function mapInsSeriesToAnalyticsSeries(series: InsSeriesConfigurati
       xAxis: {
         name: 'Period',
         type: 'STRING',
-        unit: normalizePeriodicityForChart(effectivePeriodicity),
+        unit: xAxisUnitFromPeriod ?? normalizePeriodicityForChart(effectivePeriodicity),
       },
       yAxis: {
         name: 'Value',

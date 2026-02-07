@@ -22,7 +22,6 @@ function createSeries(overrides: Partial<InsSeriesConfiguration> = {}): InsSerie
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     datasetCode: 'POP107D',
-    periodicity: 'ANNUAL',
     aggregation: 'sum',
     hasValue: true,
     ...overrides,
@@ -128,5 +127,41 @@ describe('ins-chart-series-utils', () => {
 
     expect(result.series?.data).toEqual([]);
     expect(result.warnings.some((warning) => warning.message.includes('mixed units'))).toBe(true);
+  });
+
+  it('builds observation filter with period object only', async () => {
+    mockedGetAllInsObservations.mockResolvedValue([
+      observation({ value: '10' }),
+    ]);
+
+    await mapInsSeriesToAnalyticsSeries(
+      createSeries({
+        period: {
+          type: 'YEAR',
+          selection: {
+            interval: {
+              start: '2023',
+              end: '2024',
+            },
+          },
+        },
+      })
+    );
+
+    expect(mockedGetAllInsObservations).toHaveBeenCalledWith(
+      expect.objectContaining({
+        filter: expect.objectContaining({
+          period: {
+            type: 'YEAR',
+            selection: {
+              interval: {
+                start: '2023',
+                end: '2024',
+              },
+            },
+          },
+        }),
+      })
+    );
   });
 });

@@ -60,6 +60,7 @@ import {
   buildIndicatorPeriodFilter,
   getReportPeriodAnchor,
   mapPeriodicityToTemporalSplit,
+  mapTemporalSplitToHistoryPeriod,
   mapTemporalSplitToPeriodicity,
   TEMPORAL_SPLIT_OPTIONS,
 } from './ins-stats-view.filters';
@@ -219,10 +220,14 @@ export function InsStatsView({
   const selectedHistoryFilter = useMemo(
     () => {
       const base = buildHistoryFilter({ isCounty, countyCode, sirutaCode });
-      const periodicities = mapTemporalSplitToPeriodicity(temporalSplit);
+      const period = mapTemporalSplitToHistoryPeriod(temporalSplit);
+      if (!period) {
+        return base;
+      }
+
       return {
         ...base,
-        periodicity: periodicities?.[0],
+        period,
       };
     },
     [countyCode, isCounty, sirutaCode, temporalSplit]
@@ -231,6 +236,9 @@ export function InsStatsView({
   const topMetrics = INS_TOP_METRICS_BY_LEVEL[metricLevel];
   const topMetricCodes = useMemo(() => topMetrics.map((metric) => metric.code), [topMetrics]);
   const derivedIndicatorCodes = useMemo(() => Array.from(INS_DERIVED_INDICATOR_BASE_CODES), []);
+  const combinedIndicatorCodes = useMemo(() => {
+    return Array.from(new Set([...topMetricCodes, ...derivedIndicatorCodes]));
+  }, [derivedIndicatorCodes, topMetricCodes]);
   const prioritizedCodes = INS_PRIORITIZED_DATASET_CODES_BY_LEVEL[metricLevel];
 
   const contextsQuery = useInsContexts({
@@ -272,31 +280,30 @@ export function InsStatsView({
     [countyCode, isCounty, reportPeriod, sirutaCode]
   );
 
-  const topMetricSnapshotQuery = useInsObservationsSnapshotByDatasets({
-    datasetCodes: topMetricCodes,
+  const selectedIndicatorsSnapshotQuery = useInsObservationsSnapshotByDatasets({
+    datasetCodes: combinedIndicatorCodes,
     filter: indicatorPeriodFilter,
     enabled: hasEntitySelector,
     limit: 200,
   });
 
-  const topMetricFallbackSnapshotQuery = useInsObservationsSnapshotByDatasets({
-    datasetCodes: topMetricCodes,
-    filter: indicatorFallbackFilter,
-    enabled: hasEntitySelector,
-    limit: 200,
-  });
+  const missingIndicatorCodesForFallback = useMemo(() => {
+    const selectedObservationsByDataset = selectedIndicatorsSnapshotQuery.data?.observationsByDataset;
+    if (!selectedObservationsByDataset) return [];
 
-  const derivedIndicatorsSnapshotQuery = useInsObservationsSnapshotByDatasets({
-    datasetCodes: derivedIndicatorCodes,
-    filter: indicatorPeriodFilter,
-    enabled: hasEntitySelector,
-    limit: 200,
-  });
+    return combinedIndicatorCodes.filter((datasetCode) => {
+      const observations = selectedObservationsByDataset.get(datasetCode);
+      return !observations || observations.length === 0;
+    });
+  }, [combinedIndicatorCodes, selectedIndicatorsSnapshotQuery.data?.observationsByDataset]);
 
-  const derivedIndicatorsFallbackSnapshotQuery = useInsObservationsSnapshotByDatasets({
-    datasetCodes: derivedIndicatorCodes,
+  const fallbackIndicatorsSnapshotQuery = useInsObservationsSnapshotByDatasets({
+    datasetCodes: missingIndicatorCodesForFallback,
     filter: indicatorFallbackFilter,
-    enabled: hasEntitySelector,
+    enabled:
+      hasEntitySelector &&
+      selectedIndicatorsSnapshotQuery.isSuccess &&
+      missingIndicatorCodesForFallback.length > 0,
     limit: 200,
   });
 
@@ -304,7 +311,7 @@ export function InsStatsView({
     datasetCode: selectedDatasetCode ?? '',
     filter: selectedHistoryFilter,
     enabled: hasEntitySelector && selectedDatasetCode !== null,
-    pageSize: 500,
+    pageSize: 1000,
     maxPages: 30,
   });
 
@@ -577,8 +584,8 @@ export function InsStatsView({
       }
     >();
 
-    const selectedObservationsByDataset = topMetricSnapshotQuery.data?.observationsByDataset;
-    const fallbackObservationsByDataset = topMetricFallbackSnapshotQuery.data?.observationsByDataset;
+    const selectedObservationsByDataset = selectedIndicatorsSnapshotQuery.data?.observationsByDataset;
+    const fallbackObservationsByDataset = fallbackIndicatorsSnapshotQuery.data?.observationsByDataset;
     for (const code of topMetricCodes) {
       const selectedObservations = selectedObservationsByDataset?.get(code) ?? [];
       const fallbackObservations = fallbackObservationsByDataset?.get(code) ?? [];
@@ -604,10 +611,10 @@ export function InsStatsView({
     return result;
   }, [
     catalogDatasetByCode,
+    fallbackIndicatorsSnapshotQuery.data?.observationsByDataset,
     selectedReportPeriodLabel,
+    selectedIndicatorsSnapshotQuery.data?.observationsByDataset,
     topMetricCodes,
-    topMetricFallbackSnapshotQuery.data?.observationsByDataset,
-    topMetricSnapshotQuery.data?.observationsByDataset,
   ]);
 
   const defaultDatasetCode = useMemo(() => {
@@ -655,7 +662,11 @@ export function InsStatsView({
   const selectedDatasetLookupQuery = useInsDatasetCatalog({
     filter: selectedDatasetCode ? { codes: [selectedDatasetCode] } : undefined,
     limit: 1,
-    enabled: hasEntitySelector && selectedDatasetCode !== null && selectedDatasetFromCurrentSources === null,
+    enabled:
+      hasEntitySelector &&
+      selectedDatasetCode !== null &&
+      selectedDatasetFromCurrentSources === null &&
+      datasetCatalogQuery.status === 'success',
   });
 
   const selectedDataset = useMemo(() => {
@@ -1102,8 +1113,8 @@ export function InsStatsView({
   }, [historyUnitOptions, seriesGroups]);
 
   const derivedIndicatorInputs = useMemo(() => {
-    const selectedObservationsByDataset = derivedIndicatorsSnapshotQuery.data?.observationsByDataset;
-    const fallbackObservationsByDataset = derivedIndicatorsFallbackSnapshotQuery.data?.observationsByDataset;
+    const selectedObservationsByDataset = selectedIndicatorsSnapshotQuery.data?.observationsByDataset;
+    const fallbackObservationsByDataset = fallbackIndicatorsSnapshotQuery.data?.observationsByDataset;
     return derivedIndicatorCodes.map((datasetCode) => {
       const selectedObservations = selectedObservationsByDataset?.get(datasetCode) ?? [];
       const fallbackObservations = fallbackObservationsByDataset?.get(datasetCode) ?? [];
@@ -1119,8 +1130,8 @@ export function InsStatsView({
     });
   }, [
     derivedIndicatorCodes,
-    derivedIndicatorsFallbackSnapshotQuery.data?.observationsByDataset,
-    derivedIndicatorsSnapshotQuery.data?.observationsByDataset,
+    fallbackIndicatorsSnapshotQuery.data?.observationsByDataset,
+    selectedIndicatorsSnapshotQuery.data?.observationsByDataset,
   ]);
 
   const derivedIndicators = useMemo(() => {
@@ -1423,10 +1434,8 @@ export function InsStatsView({
   }
 
   const loadError =
-    topMetricSnapshotQuery.error ||
-    topMetricFallbackSnapshotQuery.error ||
-    derivedIndicatorsSnapshotQuery.error ||
-    derivedIndicatorsFallbackSnapshotQuery.error ||
+    selectedIndicatorsSnapshotQuery.error ||
+    fallbackIndicatorsSnapshotQuery.error ||
     datasetCatalogQuery.error ||
     contextsQuery.error;
   if (loadError instanceof Error) {
@@ -1442,7 +1451,7 @@ export function InsStatsView({
   return (
     <div className="mx-auto max-w-[1450px] space-y-5">
       <SummaryMetricsSection
-        isLoading={topMetricSnapshotQuery.isLoading || topMetricFallbackSnapshotQuery.isLoading}
+        isLoading={selectedIndicatorsSnapshotQuery.isLoading || fallbackIndicatorsSnapshotQuery.isLoading}
         summaryCards={summaryCards}
         selectedReportPeriodLabel={selectedReportPeriodLabel}
         selectedDatasetCode={selectedDatasetCode}
@@ -1455,8 +1464,8 @@ export function InsStatsView({
       />
 
       <DerivedIndicatorsSection
-        isLoading={derivedIndicatorsSnapshotQuery.isLoading || derivedIndicatorsFallbackSnapshotQuery.isLoading}
-        error={derivedIndicatorsSnapshotQuery.error}
+        isLoading={selectedIndicatorsSnapshotQuery.isLoading || fallbackIndicatorsSnapshotQuery.isLoading}
+        error={selectedIndicatorsSnapshotQuery.error || fallbackIndicatorsSnapshotQuery.error}
         derivedIndicators={derivedIndicators}
         groupedDerivedIndicators={groupedDerivedIndicators}
         derivedIndicatorStatus={derivedIndicatorStatus}
