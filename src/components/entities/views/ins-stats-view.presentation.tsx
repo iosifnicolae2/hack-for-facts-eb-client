@@ -74,22 +74,22 @@ function MarkdownDescriptionBase({ content }: { content: string }) {
     <ReactMarkdown
       components={{
         p: ({ children }) => (
-          <p className="mb-2 text-sm leading-6 tracking-[0.005em] text-slate-700 last:mb-0">{children}</p>
+          <p className="mb-2 text-sm leading-6 tracking-[0.005em] text-slate-700 dark:text-slate-300 last:mb-0">{children}</p>
         ),
         ul: ({ children }) => (
-          <ul className="mb-2 list-disc space-y-1 pl-5 text-sm leading-6 tracking-[0.005em] text-slate-700">{children}</ul>
+          <ul className="mb-2 list-disc space-y-1 pl-5 text-sm leading-6 tracking-[0.005em] text-slate-700 dark:text-slate-300">{children}</ul>
         ),
         ol: ({ children }) => (
-          <ol className="mb-2 list-decimal space-y-1 pl-5 text-sm leading-6 tracking-[0.005em] text-slate-700">{children}</ol>
+          <ol className="mb-2 list-decimal space-y-1 pl-5 text-sm leading-6 tracking-[0.005em] text-slate-700 dark:text-slate-300">{children}</ol>
         ),
         li: ({ children }) => <li>{children}</li>,
-        strong: ({ children }) => <strong className="font-semibold text-slate-900">{children}</strong>,
+        strong: ({ children }) => <strong className="font-semibold text-slate-900 dark:text-slate-100">{children}</strong>,
         a: ({ href, children }) => {
           if (!isSafeExternalHref(href)) {
             return <span>{children}</span>;
           }
           return (
-            <a href={href} target="_blank" rel="noreferrer" className="font-medium text-blue-700 underline underline-offset-2">
+            <a href={href} target="_blank" rel="noreferrer" className="font-medium text-blue-700 dark:text-blue-300 underline underline-offset-2">
               {children}
             </a>
           );
@@ -117,12 +117,12 @@ function ExpandableMarkdownFieldBase({
   const canExpand = collapsible && (plainTextLength > 360 || content.split('\n').length > 5);
 
   return (
-    <div className="rounded-lg border border-slate-200 bg-white px-3 py-2">
-      <div className="text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500">{label}</div>
+    <div className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2">
+      <div className="text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">{label}</div>
       <div className={`mt-1 ${canExpand && !expanded ? 'relative max-h-36 overflow-hidden' : ''}`}>
         <MarkdownDescription content={content} />
         {canExpand && !expanded && (
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-white to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-white dark:from-slate-900 to-transparent" />
         )}
       </div>
       {canExpand && (
@@ -131,7 +131,7 @@ function ExpandableMarkdownFieldBase({
           variant="ghost"
           size="sm"
           onClick={() => setExpanded((current) => !current)}
-          className="mt-1 h-7 px-1.5 text-[11px] font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+          className="mt-1 h-7 px-1.5 text-[11px] font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-slate-100"
         >
           {expanded ? t`Show less` : t`Show more`}
         </Button>
@@ -143,7 +143,7 @@ function ExpandableMarkdownFieldBase({
 export const ExpandableMarkdownField = memo(ExpandableMarkdownFieldBase);
 
 function DerivedIndicatorIcon({ id }: { id: DerivedIndicator['id'] }) {
-  const iconClassName = 'h-4 w-4 text-slate-700';
+  const iconClassName = 'h-4 w-4 text-slate-700 dark:text-slate-300';
 
   switch (id) {
     case 'birth-rate':
@@ -235,14 +235,14 @@ function SummaryMetricsSectionBase(props: {
             onClick={() => onSelectDataset(summary.code)}
             className="text-left"
           >
-            <Card className={`h-full border-slate-200/80 ${isSelected ? 'border-slate-900 ring-1 ring-slate-900/10' : ''}`}>
+            <Card className={`h-full border-slate-200/80 dark:border-slate-700/80 ${isSelected ? 'border-slate-900 ring-1 ring-slate-900/10' : ''}`}>
               <CardHeader className="pb-2 pt-4">
-                <CardTitle className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                <CardTitle className="text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                   {summary.label}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 pb-4">
-                <div className="flex items-center gap-2 text-[2.2rem] font-bold leading-none tracking-tight text-slate-800">
+                <div className="flex items-center gap-2 text-[2.2rem] font-bold leading-none tracking-tight text-slate-800 dark:text-slate-200">
                   <span>{formattedValue.value}</span>
                   {formattedValue.statusLabel && (
                     <Badge variant="outline" className="text-[10px]">
@@ -250,8 +250,8 @@ function SummaryMetricsSectionBase(props: {
                     </Badge>
                   )}
                 </div>
-                <div className="line-clamp-2 text-[13px] leading-snug text-slate-600">{datasetName}</div>
-                <div className="text-[12px] font-medium text-slate-500">
+                <div className="line-clamp-2 text-[13px] leading-snug text-slate-600 dark:text-slate-300">{datasetName}</div>
+                <div className="text-[12px] font-medium text-slate-500 dark:text-slate-400">
                   <Trans>Period:</Trans> {periodLabelText}
                 </div>
               </CardContent>
@@ -315,13 +315,13 @@ function DerivedIndicatorsSectionBase(props: {
   ]);
 
   return (
-    <Card className="border-slate-200/80 shadow-sm">
+    <Card className="border-slate-200/80 dark:border-slate-700/80 shadow-sm">
       <CardHeader className="pb-2">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <CardTitle className="text-xl font-bold tracking-tight text-slate-900">
+          <CardTitle className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
             <Trans>Derived indicators</Trans>
           </CardTitle>
-          <div className="text-[12px] font-medium text-slate-500">
+          <div className="text-[12px] font-medium text-slate-500 dark:text-slate-400">
             <Trans>Period:</Trans> {periodLabelText}
           </div>
         </div>
@@ -352,12 +352,12 @@ function DerivedIndicatorsSectionBase(props: {
               if (groupRows.length === 0) return null;
 
               return (
-                <div key={groupId} className="rounded-xl border border-slate-200 bg-white p-3">
+                <div key={groupId} className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-3">
                   <div className="mb-2">
-                    <h4 className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                    <h4 className="text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                       {DERIVED_INDICATOR_GROUP_META[groupId].label}
                     </h4>
-                    <p className="text-[12px] text-slate-500">
+                    <p className="text-[12px] text-slate-500 dark:text-slate-400">
                       {DERIVED_INDICATOR_GROUP_META[groupId].description}
                     </p>
                   </div>
@@ -378,7 +378,7 @@ function DerivedIndicatorsSectionBase(props: {
                       return (
                         <div
                           key={row.id}
-                          className="group flex items-center gap-2 rounded-lg border border-transparent px-1.5 py-1 transition-colors hover:border-slate-200 hover:bg-slate-50 focus-within:border-slate-300 focus-within:bg-slate-50"
+                          className="group flex items-center gap-2 rounded-lg border border-transparent bg-transparent px-1.5 py-1 transition-colors hover:border-slate-200 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700/60 focus-within:border-slate-300 dark:focus-within:border-slate-500 focus-within:bg-slate-50 dark:focus-within:bg-slate-800"
                         >
                           <button
                             type="button"
@@ -387,16 +387,16 @@ function DerivedIndicatorsSectionBase(props: {
                             className="flex min-w-0 flex-1 items-center justify-between rounded-md px-1 py-1 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1"
                           >
                             <div className="min-w-0 flex items-center gap-2">
-                              <div className="rounded-md border border-slate-200 bg-white p-1">
+                              <div className="rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-1">
                                 <DerivedIndicatorIcon id={row.id} />
                               </div>
-                              <span className="truncate text-[13px] font-medium text-slate-600">{row.label}</span>
+                              <span className="truncate text-[13px] font-medium text-slate-600 dark:text-slate-300">{row.label}</span>
                             </div>
                             <div className="ml-3 min-w-[96px] shrink-0 pr-1 text-right">
-                              <div className="text-[1.25rem] font-bold leading-none tracking-tight tabular-nums text-slate-800">
+                              <div className="text-[1.25rem] font-bold leading-none tracking-tight tabular-nums text-slate-800 dark:text-slate-200">
                                 {row.value}
                               </div>
-                              <div className="mt-0.5 text-[10px] font-medium leading-none text-slate-500">
+                              <div className="mt-0.5 text-[10px] font-medium leading-none text-slate-500 dark:text-slate-400">
                                 {row.unitLabel}
                               </div>
                             </div>
@@ -410,20 +410,20 @@ function DerivedIndicatorsSectionBase(props: {
                                 data-testid={`derived-indicator-info-${row.id}`}
                                 aria-label={detailsButtonLabel}
                                 title={detailsButtonLabel}
-                                className="h-7 w-7 shrink-0 rounded-full border border-slate-200 bg-white text-slate-500 hover:border-slate-300 hover:bg-slate-100 hover:text-slate-900 focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1"
+                                className="h-7 w-7 shrink-0 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-slate-100 focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1"
                               >
                                 <Info className="h-4 w-4" aria-hidden="true" />
                               </Button>
                             </PopoverTrigger>
-                            <PopoverContent align="end" className="w-[min(460px,92vw)] border-slate-200 bg-white p-0 shadow-xl">
-                              <div className="rounded-t-md border-b border-slate-200 bg-slate-50/80 px-3 py-2.5">
+                            <PopoverContent align="end" className="w-[min(460px,92vw)] border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-0 shadow-xl">
+                              <div className="rounded-t-md border-b border-slate-200 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-800/80 px-3 py-2.5">
                                 <div className="flex items-start justify-between gap-3">
                                   <div className="min-w-0">
-                                    <div className="text-sm font-semibold text-slate-900">{row.label}</div>
-                                    <div className="mt-0.5 text-[11px] text-slate-500">{row.unitLabel}</div>
+                                    <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">{row.label}</div>
+                                    <div className="mt-0.5 text-[11px] text-slate-500 dark:text-slate-400">{row.unitLabel}</div>
                                   </div>
-                                  <div className="shrink-0 rounded-md border border-slate-200 bg-white px-2 py-1 text-right">
-                                    <div className="text-[1.05rem] font-bold leading-none tabular-nums text-slate-900">
+                                  <div className="shrink-0 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-2 py-1 text-right">
+                                    <div className="text-[1.05rem] font-bold leading-none tabular-nums text-slate-900 dark:text-slate-100">
                                       {row.value}
                                     </div>
                                   </div>
@@ -431,29 +431,29 @@ function DerivedIndicatorsSectionBase(props: {
                               </div>
 
                               <div className="space-y-2.5 p-3">
-                                <section className="space-y-1 rounded-md border border-slate-200 bg-white p-2.5">
-                                  <h5 className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500">
+                                <section className="space-y-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2.5">
+                                  <h5 className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400">
                                     <Trans>Why this matters</Trans>
                                   </h5>
-                                  <p className="text-sm leading-5 text-slate-700">{explanation.whyItMatters}</p>
+                                  <p className="text-sm leading-5 text-slate-700 dark:text-slate-300">{explanation.whyItMatters}</p>
                                 </section>
 
-                                <section className="space-y-1 rounded-md border border-slate-200 bg-slate-50/60 p-2.5">
-                                  <h5 className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500">
+                                <section className="space-y-1 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-800/60 p-2.5">
+                                  <h5 className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400">
                                     <Trans>How calculated</Trans>
                                   </h5>
-                                  <p className="font-mono text-[12px] leading-5 text-slate-800">{explanation.formula}</p>
+                                  <p className="font-mono text-[12px] leading-5 text-slate-800 dark:text-slate-200">{explanation.formula}</p>
                                 </section>
 
-                                <section className="space-y-1 rounded-md border border-slate-200 bg-white p-2.5">
-                                  <h5 className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500">
+                                <section className="space-y-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2.5">
+                                  <h5 className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400">
                                     <Trans>Inputs used</Trans>
                                   </h5>
                                   <ul className="space-y-1.5">
                                     {explanation.inputs.map((inputLabel) => (
                                       <li
                                         key={inputLabel}
-                                        className="rounded-md border border-slate-200 bg-slate-50 px-2 py-1 text-sm text-slate-700"
+                                        className="rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-2 py-1 text-sm text-slate-700 dark:text-slate-300"
                                       >
                                         {inputLabel}
                                       </li>
@@ -461,11 +461,11 @@ function DerivedIndicatorsSectionBase(props: {
                                   </ul>
                                 </section>
 
-                                <section className="space-y-1 rounded-md border border-slate-200 bg-white p-2.5">
-                                  <h5 className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500">
+                                <section className="space-y-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2.5">
+                                  <h5 className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400">
                                     <Trans>Current period and source</Trans>
                                   </h5>
-                                  <dl className="space-y-1.5 text-sm leading-5 text-slate-700">
+                                  <dl className="space-y-1.5 text-sm leading-5 text-slate-700 dark:text-slate-300">
                                     <div className="flex items-start justify-between gap-3">
                                       <dt className="font-medium"><Trans>Selected period:</Trans></dt>
                                       <dd className="text-right tabular-nums">{runtimeContext.selectedPeriodLabel}</dd>
@@ -482,7 +482,7 @@ function DerivedIndicatorsSectionBase(props: {
                                     </div>
                                   </dl>
                                   {runtimeContext.hasFallback && (
-                                    <div className="mt-2 rounded-md border border-amber-200 bg-amber-50 px-2 py-1.5 text-[12px] leading-5 text-amber-900">
+                                    <div className="mt-2 rounded-md border border-amber-200 dark:border-amber-700/60 bg-amber-50 dark:bg-amber-900/25 px-2 py-1.5 text-[12px] leading-5 text-amber-900 dark:text-amber-200">
                                       <span className="font-semibold"><Trans>Fallback:</Trans></span>{' '}
                                       <Trans>
                                         Some indicators use the latest available period because the selected period had
@@ -492,11 +492,11 @@ function DerivedIndicatorsSectionBase(props: {
                                   )}
                                 </section>
 
-                                <section className="space-y-1 rounded-md border border-slate-200 bg-white p-2.5">
-                                  <h5 className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500">
+                                <section className="space-y-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2.5">
+                                  <h5 className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400">
                                     <Trans>Interpretation notes</Trans>
                                   </h5>
-                                  <p className="text-sm leading-5 text-slate-700">{explanation.notes}</p>
+                                  <p className="text-sm leading-5 text-slate-700 dark:text-slate-300">{explanation.notes}</p>
                                 </section>
                               </div>
                             </PopoverContent>
@@ -565,7 +565,7 @@ function DatasetExplorerSectionBase(props: {
           datasetItemRefs[dataset.code] = element;
         }}
         className={`group w-full text-left transition-all ${
-          isSelected ? 'bg-slate-100' : 'bg-white hover:bg-slate-50'
+          isSelected ? 'bg-slate-100 dark:bg-slate-700' : 'bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-700/60'
         }`}
         onClick={() => onSelectDataset(dataset.code)}
       >
@@ -574,8 +574,8 @@ function DatasetExplorerSectionBase(props: {
             <div
               className={
                 isFullWidth
-                  ? 'line-clamp-1 text-[14px] font-semibold leading-6 tracking-[0.002em] text-slate-900'
-                  : 'line-clamp-2 text-[13px] font-semibold leading-[1.35] tracking-[0.002em] text-slate-900'
+                  ? 'line-clamp-1 text-[14px] font-semibold leading-6 tracking-[0.002em] text-slate-900 dark:text-slate-100'
+                  : 'line-clamp-2 text-[13px] font-semibold leading-[1.35] tracking-[0.002em] text-slate-900 dark:text-slate-100'
               }
             >
               {datasetLabel}
@@ -583,13 +583,13 @@ function DatasetExplorerSectionBase(props: {
             <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
               <span
                 className={`rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${
-                  isSelected ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-700'
+                  isSelected ? 'bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900' : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
                 }`}
               >
                 {dataset.code}
               </span>
               {periodicityLabel && (
-                <span className="text-[11px] font-medium text-slate-500">{periodicityLabel}</span>
+                <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400">{periodicityLabel}</span>
               )}
             </div>
           </div>
@@ -599,10 +599,10 @@ function DatasetExplorerSectionBase(props: {
   };
 
   return (
-    <Card className="flex h-[760px] flex-col border-slate-200/80 shadow-sm">
+    <Card className="flex h-[760px] flex-col border-slate-200/80 dark:border-slate-700/80 shadow-sm">
       <CardHeader className="space-y-3 px-4 pb-3 pt-4">
         <div className="flex items-center justify-between gap-2">
-          <CardTitle className="text-[1.05rem] font-semibold tracking-[-0.01em] text-slate-900">
+          <CardTitle className="text-[1.05rem] font-semibold tracking-[-0.01em] text-slate-900 dark:text-slate-100">
             <Trans>Dataset explorer</Trans>
           </CardTitle>
           <Button
@@ -610,7 +610,7 @@ function DatasetExplorerSectionBase(props: {
             variant="ghost"
             size="icon"
             onClick={onToggleExplorerWidth}
-            className="h-8 w-8 rounded-md border border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+            className="h-8 w-8 rounded-md border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-slate-100"
             aria-label={isExplorerFullWidth ? t`Collapse explorer to side panel` : t`Expand explorer to full width`}
             title={isExplorerFullWidth ? t`Collapse explorer to side panel` : t`Expand explorer to full width`}
           >
@@ -624,7 +624,7 @@ function DatasetExplorerSectionBase(props: {
             value={searchTerm}
             onChange={(event) => onSearchTermChange(event.target.value)}
             placeholder={t`Search dataset code or name`}
-            className="h-10 w-full rounded-lg border-slate-300 bg-white pl-9 text-sm shadow-sm"
+            className="h-10 w-full rounded-lg border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 pl-9 text-sm shadow-sm"
           />
         </div>
       </CardHeader>
@@ -654,22 +654,22 @@ function DatasetExplorerSectionBase(props: {
                   className={
                     isExplorerFullWidth
                       ? 'rounded-none border-0 bg-transparent px-0'
-                      : 'rounded-none border-x-0 border-t-0 border-b border-slate-200 bg-white px-1'
+                      : 'rounded-none border-x-0 border-t-0 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-1'
                   }
                   ref={(element) => {
                     rootGroupRefs[group.code] = element;
                   }}
                 >
                   <AccordionTrigger
-                    className={`items-start text-[13px] font-semibold tracking-[-0.005em] text-slate-800 hover:no-underline [&>svg]:-mt-0.5 [&>svg]:h-5 [&>svg]:w-5 [&>svg]:self-start ${
-                      isExplorerFullWidth ? 'border-b border-slate-200 px-2 py-3' : 'px-1 py-2.5'
+                    className={`items-start text-[13px] font-semibold tracking-[-0.005em] text-slate-800 dark:text-slate-200 hover:no-underline [&>svg]:-mt-0.5 [&>svg]:h-5 [&>svg]:w-5 [&>svg]:self-start ${
+                      isExplorerFullWidth ? 'border-b border-slate-200 dark:border-slate-700 px-2 py-3' : 'px-1 py-2.5'
                     }`}
                   >
                     <div className="flex w-full items-start justify-between gap-3 pr-2">
                       <div className="min-w-0 text-left">
-                        <div className="line-clamp-1 font-semibold tracking-[-0.005em] text-slate-900">{group.label}</div>
+                        <div className="line-clamp-1 font-semibold tracking-[-0.005em] text-slate-900 dark:text-slate-100">{group.label}</div>
                       </div>
-                      <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold tracking-[0.01em] text-slate-600">
+                      <span className="rounded-full bg-slate-100 dark:bg-slate-700 px-2.5 py-0.5 text-[11px] font-semibold tracking-[0.01em] text-slate-600 dark:text-slate-300">
                         {group.totalCount}
                       </span>
                     </div>
@@ -686,14 +686,14 @@ function DatasetExplorerSectionBase(props: {
                         }}
                       >
                         <div className="flex items-center justify-between gap-3 px-0.5">
-                          <span className="text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-600">
+                          <span className="text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-600 dark:text-slate-300">
                             {section.label}
                           </span>
-                          <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500">
+                          <span className="rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-[10px] font-semibold text-slate-500 dark:text-slate-400">
                             {section.datasets.length}
                           </span>
                         </div>
-                        <div className="divide-y divide-slate-100 overflow-hidden rounded-md bg-white">
+                        <div className="divide-y divide-slate-100 dark:divide-slate-700 overflow-hidden rounded-md bg-white dark:bg-slate-900">
                           {section.datasets.map((dataset) =>
                             renderDatasetListItem(dataset, { fullWidth: isExplorerFullWidth })
                           )}
@@ -704,14 +704,14 @@ function DatasetExplorerSectionBase(props: {
                     {group.unsectionedDatasets.length > 0 && (
                       <div className={`space-y-2 ${isExplorerFullWidth ? 'px-1' : 'px-0.5'}`}>
                         <div className="flex items-center justify-between gap-3 px-0.5">
-                          <span className="text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-600">
+                          <span className="text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-600 dark:text-slate-300">
                             <Trans>Other datasets</Trans>
                           </span>
-                          <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500">
+                          <span className="rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-[10px] font-semibold text-slate-500 dark:text-slate-400">
                             {group.unsectionedDatasets.length}
                           </span>
                         </div>
-                        <div className="divide-y divide-slate-100 overflow-hidden rounded-md bg-white">
+                        <div className="divide-y divide-slate-100 dark:divide-slate-700 overflow-hidden rounded-md bg-white dark:bg-slate-900">
                           {group.unsectionedDatasets.map((dataset) =>
                             renderDatasetListItem(dataset, { fullWidth: isExplorerFullWidth })
                           )}
@@ -840,12 +840,21 @@ function DatasetDetailSectionBase(props: {
     insTermsUrl,
     hasMultiValueSeriesSelection,
   } = props;
+  const chartGridColor = 'hsl(var(--border))';
+  const chartAxisColor = 'hsl(var(--muted-foreground))';
+  const chartLineColor = 'hsl(var(--foreground))';
+  const chartTooltipStyle = {
+    backgroundColor: 'hsl(var(--popover))',
+    border: '1px solid hsl(var(--border))',
+    borderRadius: '0.5rem',
+    color: 'hsl(var(--popover-foreground))',
+  };
 
   return (
     <Card>
       <CardHeader className="space-y-3 pb-4">
         {selectedDatasetDetails && selectedDatasetBreadcrumbItems.length > 0 && (
-          <nav className="text-[12px] font-medium leading-5 tracking-[0.01em] text-slate-500">
+          <nav className="text-[12px] font-medium leading-5 tracking-[0.01em] text-slate-500 dark:text-slate-400">
             <div className="flex flex-wrap items-center gap-y-1">
               {selectedDatasetBreadcrumbItems.map((item, index) => {
                 const isCurrent = index === selectedDatasetBreadcrumbItems.length - 1;
@@ -856,11 +865,11 @@ function DatasetDetailSectionBase(props: {
 
                 return (
                   <div key={`${item.code}-${index}`} className="flex items-center">
-                    {index > 0 && <span className="mx-1.5 text-slate-400">/</span>}
+                    {index > 0 && <span className="mx-1.5 text-slate-400 dark:text-slate-500">/</span>}
                     {isCurrent ? (
                       <span
                         title={displayLabel}
-                        className="max-w-[320px] truncate font-semibold tracking-[0.005em] text-slate-900"
+                        className="max-w-[320px] truncate font-semibold tracking-[0.005em] text-slate-900 dark:text-slate-100"
                       >
                         {displayLabel}
                       </span>
@@ -869,7 +878,7 @@ function DatasetDetailSectionBase(props: {
                         type="button"
                         onClick={() => handleHierarchyNavigate(item)}
                         title={displayLabel}
-                        className="max-w-[320px] truncate font-medium tracking-[0.005em] text-slate-500 underline-offset-2 transition-colors hover:text-slate-800 hover:underline"
+                        className="max-w-[320px] truncate font-medium tracking-[0.005em] text-slate-500 dark:text-slate-400 underline-offset-2 transition-colors hover:text-slate-800 dark:hover:text-slate-200 hover:underline"
                       >
                         {displayLabel}
                       </button>
@@ -883,20 +892,20 @@ function DatasetDetailSectionBase(props: {
 
         {selectedDataset ? (
           <div className="space-y-1">
-            <div className="text-3xl font-bold tracking-tight text-slate-900">
+            <div className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
               {selectedDatasetDetails?.title ||
                 getLocalizedText(selectedDataset.name_ro, selectedDataset.name_en, locale) ||
                 selectedDataset.code}
             </div>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-              <span className="text-xl font-semibold tracking-[-0.01em] text-slate-700">{selectedDataset.code}</span>
+              <span className="text-xl font-semibold tracking-[-0.01em] text-slate-700 dark:text-slate-300">{selectedDataset.code}</span>
               {hasDatasetMetadataPanel && (
                 <Button
                   type="button"
                   variant="ghost"
                   size="sm"
                   onClick={() => setIsDatasetMetaExpanded((current) => !current)}
-                  className="h-7 px-2 text-[12px] font-medium tracking-[0.01em] text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  className="h-7 px-2 text-[12px] font-medium tracking-[0.01em] text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-slate-100"
                 >
                   {isDatasetMetaExpanded ? t`Show less` : t`Show more`}
                 </Button>
@@ -905,7 +914,7 @@ function DatasetDetailSectionBase(props: {
           </div>
         ) : selectedDatasetCode !== null ? (
           <div className="space-y-1">
-            <div className="text-3xl font-bold tracking-tight text-slate-900">{selectedDatasetCode}</div>
+            <div className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">{selectedDatasetCode}</div>
             <div className="text-sm text-muted-foreground">
               <Trans>Dataset metadata is loading or unavailable, but historical data can still be viewed below.</Trans>
             </div>
@@ -918,42 +927,42 @@ function DatasetDetailSectionBase(props: {
       </CardHeader>
       <CardContent className="space-y-4">
         {selectedDatasetDetails && isDatasetMetaExpanded && (
-          <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/70 p-4">
             <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
-              <div className="rounded-lg border border-slate-200 bg-white px-3 py-2">
-                <div className="text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+              <div className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">
                   <Trans>Code</Trans>
                 </div>
-                <div className="mt-0.5 text-[1.05rem] font-semibold tracking-[-0.005em] text-slate-900">
+                <div className="mt-0.5 text-[1.05rem] font-semibold tracking-[-0.005em] text-slate-900 dark:text-slate-100">
                   {selectedDatasetDetails.code}
                 </div>
               </div>
               {selectedDatasetDetails.periodicityLabel && (
-                <div className="rounded-lg border border-slate-200 bg-white px-3 py-2">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                <div className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">
                     <Trans>Periodicity</Trans>
                   </div>
-                  <div className="mt-0.5 text-[1.05rem] font-semibold tracking-[-0.005em] text-slate-900">
+                  <div className="mt-0.5 text-[1.05rem] font-semibold tracking-[-0.005em] text-slate-900 dark:text-slate-100">
                     {selectedDatasetDetails.periodicityLabel}
                   </div>
                 </div>
               )}
               {selectedDatasetDetails.yearRange && (
-                <div className="rounded-lg border border-slate-200 bg-white px-3 py-2">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                <div className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">
                     <Trans>Coverage</Trans>
                   </div>
-                  <div className="mt-0.5 text-[1.05rem] font-semibold tracking-[-0.005em] text-slate-900">
+                  <div className="mt-0.5 text-[1.05rem] font-semibold tracking-[-0.005em] text-slate-900 dark:text-slate-100">
                     {selectedDatasetDetails.yearRange}
                   </div>
                 </div>
               )}
               {selectedDatasetDetails.dimensionCount && (
-                <div className="rounded-lg border border-slate-200 bg-white px-3 py-2">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                <div className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">
                     <Trans>Dimensions</Trans>
                   </div>
-                  <div className="mt-0.5 text-[1.05rem] font-semibold tracking-[-0.005em] text-slate-900">
+                  <div className="mt-0.5 text-[1.05rem] font-semibold tracking-[-0.005em] text-slate-900 dark:text-slate-100">
                     {selectedDatasetDetails.dimensionCount}
                   </div>
                 </div>
@@ -1026,8 +1035,8 @@ function DatasetDetailSectionBase(props: {
         ) : (
           <>
             {hasTemporalSelector && (
-              <div className="flex flex-wrap items-center gap-2 rounded-md border border-slate-200 bg-slate-50/60 px-3 py-2">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500">
+              <div className="flex flex-wrap items-center gap-2 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-800/60 px-3 py-2">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400">
                   <Trans>Period</Trans>
                 </span>
                 {availableTemporalOptions.map((option) => (
@@ -1038,8 +1047,8 @@ function DatasetDetailSectionBase(props: {
                     onClick={() => setTemporalSplit(option.value)}
                     className={`h-7 rounded-full px-3 text-[11px] font-medium tracking-[0.01em] ${
                       temporalSplit === option.value
-                        ? 'bg-slate-900 text-white hover:bg-slate-800'
-                        : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+                        ? 'bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 hover:bg-slate-800'
+                        : 'border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60'
                     }`}
                   >
                     {option.label}
@@ -1049,9 +1058,9 @@ function DatasetDetailSectionBase(props: {
             )}
 
             {hasSeriesSelectors && (
-              <div className="space-y-3 rounded-md border border-slate-200 bg-slate-50/70 p-3">
+              <div className="space-y-3 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/70 p-3">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div className="text-[12px] font-semibold uppercase tracking-[0.06em] text-slate-600">
+                  <div className="text-[12px] font-semibold uppercase tracking-[0.06em] text-slate-600 dark:text-slate-300">
                     <Trans>Series selector</Trans>
                   </div>
                   <Button
@@ -1059,7 +1068,7 @@ function DatasetDetailSectionBase(props: {
                     variant="ghost"
                     size="sm"
                     onClick={handleResetSeriesSelection}
-                    className="h-7 px-2 text-[11px] font-semibold text-slate-600 hover:bg-slate-200/70 hover:text-slate-900"
+                    className="h-7 px-2 text-[11px] font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-200/70 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-slate-100"
                   >
                     <Trans>Reset to default</Trans>
                   </Button>
@@ -1088,7 +1097,7 @@ function DatasetDetailSectionBase(props: {
                           : `${selectedOptions.length} ${t`selected`}`;
                     return (
                       <div key={group.typeCode} className="space-y-1">
-                        <label className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500">
+                        <label className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400">
                           {group.typeLabel}
                         </label>
                         <Popover>
@@ -1096,20 +1105,20 @@ function DatasetDetailSectionBase(props: {
                             <Button
                               type="button"
                               variant="outline"
-                              className="h-9 w-full justify-between border-slate-300 bg-white px-2 text-[13px] font-medium text-slate-700 hover:bg-slate-100"
+                              className="h-9 w-full justify-between border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-2 text-[13px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
                             >
                               <span className="truncate text-left">{triggerLabel}</span>
-                              <ChevronDown className="h-4 w-4 text-slate-500" />
+                              <ChevronDown className="h-4 w-4 text-slate-500 dark:text-slate-400" />
                             </Button>
                           </PopoverTrigger>
-                          <PopoverContent align="start" className="w-[min(420px,92vw)] border-slate-200 p-2">
-                            <div className="mb-1.5 text-[11px] text-slate-500">
+                          <PopoverContent align="start" className="w-[min(420px,92vw)] border-slate-200 dark:border-slate-700 p-2">
+                            <div className="mb-1.5 text-[11px] text-slate-500 dark:text-slate-400">
                               <Trans>Hold Ctrl/Cmd or Shift while clicking to multi-select.</Trans>
                             </div>
 
                             {shouldShowSelectorSearch && (
                               <div className="relative mb-2">
-                                <Search className="pointer-events-none absolute left-2 top-2 h-3.5 w-3.5 text-slate-400" />
+                                <Search className="pointer-events-none absolute left-2 top-2 h-3.5 w-3.5 text-slate-400 dark:text-slate-500" />
                                 <Input
                                   value={selectorSearchTerm}
                                   onChange={(event) =>
@@ -1119,7 +1128,7 @@ function DatasetDetailSectionBase(props: {
                                     }))
                                   }
                                   placeholder={t`Search series options`}
-                                  className="h-8 rounded-md border-slate-300 bg-white pl-7 text-[12px]"
+                                  className="h-8 rounded-md border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 pl-7 text-[12px]"
                                 />
                               </div>
                             )}
@@ -1129,7 +1138,7 @@ function DatasetDetailSectionBase(props: {
                                 <>
                                   {selectedOptions.length > 0 && (
                                     <div className="space-y-1">
-                                      <div className="px-0.5 text-[10px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+                                      <div className="px-0.5 text-[10px] font-semibold uppercase tracking-[0.06em] text-slate-500 dark:text-slate-400">
                                         <Trans>Selected</Trans>
                                       </div>
                                       <div className="flex flex-wrap gap-1">
@@ -1140,7 +1149,7 @@ function DatasetDetailSectionBase(props: {
                                             onClick={() =>
                                               handleSeriesGroupSelectionChange(group.typeCode, option.code, true)
                                             }
-                                            className="inline-flex items-center gap-1 rounded-full bg-slate-900 px-2 py-1 text-[11px] font-medium text-white transition-colors hover:bg-slate-800"
+                                            className="inline-flex items-center gap-1 rounded-full bg-slate-900 dark:bg-slate-100 px-2 py-1 text-[11px] font-medium text-white dark:text-slate-900 transition-colors hover:bg-slate-800"
                                           >
                                             <Check className="h-3 w-3" />
                                             <span className="max-w-[180px] truncate">{option.label}</span>
@@ -1151,7 +1160,7 @@ function DatasetDetailSectionBase(props: {
                                   )}
 
                                   <div className="space-y-1">
-                                    <div className="px-0.5 text-[10px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+                                    <div className="px-0.5 text-[10px] font-semibold uppercase tracking-[0.06em] text-slate-500 dark:text-slate-400">
                                       <Trans>Options</Trans>
                                     </div>
                                     {filteredOptions.map((option) => {
@@ -1167,19 +1176,19 @@ function DatasetDetailSectionBase(props: {
                                               event.shiftKey || event.ctrlKey || event.metaKey
                                             )
                                           }
-                                          className={`flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left transition-colors ${
-                                            isSelected
-                                              ? 'bg-slate-900 text-white'
-                                              : 'text-slate-700 hover:bg-slate-100'
-                                          }`}
-                                        >
+                                            className={`flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left transition-colors ${
+                                              isSelected
+                                                ? 'bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900'
+                                                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
+                                            }`}
+                                          >
                                           <span className="text-[12px] font-medium leading-5">{option.label}</span>
                                           {isSelected && <Check className="ml-2 h-4 w-4 shrink-0" />}
                                         </button>
                                       );
                                     })}
                                     {filteredOptions.length === 0 && (
-                                      <div className="rounded-md border border-dashed border-slate-200 px-2 py-2 text-[12px] text-slate-500">
+                                      <div className="rounded-md border border-dashed border-slate-200 dark:border-slate-700 px-2 py-2 text-[12px] text-slate-500 dark:text-slate-400">
                                         <Trans>No options match your search.</Trans>
                                       </div>
                                     )}
@@ -1202,8 +1211,8 @@ function DatasetDetailSectionBase(props: {
                                       }
                                       className={`flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left transition-colors ${
                                         isSelected
-                                          ? 'bg-slate-900 text-white'
-                                          : 'text-slate-700 hover:bg-slate-100'
+                                          ? 'bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900'
+                                          : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
                                       }`}
                                     >
                                       <span className="text-[12px] font-medium leading-5">{option.label}</span>
@@ -1223,7 +1232,7 @@ function DatasetDetailSectionBase(props: {
                     <div className="space-y-1">
                       <label
                         htmlFor="series-selector-unit"
-                        className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500"
+                        className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400"
                       >
                         <Trans>Unit</Trans>
                       </label>
@@ -1231,7 +1240,7 @@ function DatasetDetailSectionBase(props: {
                         id="series-selector-unit"
                         value={effectiveUnitSelection ?? ''}
                         onChange={(event) => handleUnitSelectionChange(event.target.value)}
-                        className="h-9 w-full rounded-md border border-slate-300 bg-white px-2 text-[13px] font-medium text-slate-700 shadow-sm focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-300"
+                        className="h-9 w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-2 text-[13px] font-medium text-slate-700 dark:text-slate-300 shadow-sm focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-300"
                       >
                         {historyUnitOptions.map((option) => (
                           <option key={option.key} value={option.key}>
@@ -1246,8 +1255,8 @@ function DatasetDetailSectionBase(props: {
             )}
 
             {activeSeriesCriteriaParts.length > 0 && (
-              <div className="text-[12px] leading-5 text-slate-600">
-                <span className="font-semibold text-slate-700"><Trans>Active series criteria:</Trans></span>{' '}
+              <div className="text-[12px] leading-5 text-slate-600 dark:text-slate-300">
+                <span className="font-semibold text-slate-700 dark:text-slate-300"><Trans>Active series criteria:</Trans></span>{' '}
                 {activeSeriesCriteriaParts.join(' • ')}
               </div>
             )}
@@ -1255,10 +1264,25 @@ function DatasetDetailSectionBase(props: {
             <div className="h-72 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={historyChartData} margin={{ top: 10, right: 16, left: 8, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="period" minTickGap={24} />
-                  <YAxis />
+                  <CartesianGrid stroke={chartGridColor} strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="period"
+                    minTickGap={24}
+                    stroke={chartAxisColor}
+                    tick={{ fill: chartAxisColor, fontSize: 12 }}
+                    axisLine={{ stroke: chartGridColor }}
+                    tickLine={{ stroke: chartGridColor }}
+                  />
+                  <YAxis
+                    stroke={chartAxisColor}
+                    tick={{ fill: chartAxisColor, fontSize: 12 }}
+                    axisLine={{ stroke: chartGridColor }}
+                    tickLine={{ stroke: chartGridColor }}
+                  />
                   <Tooltip
+                    contentStyle={chartTooltipStyle}
+                    labelStyle={{ color: 'hsl(var(--popover-foreground))', fontWeight: 600 }}
+                    itemStyle={{ color: 'hsl(var(--popover-foreground))' }}
                     formatter={(value, _name, item) => {
                       if (item.payload?.statusLabel) {
                         return [item.payload.statusLabel, t`Status`];
@@ -1269,24 +1293,24 @@ function DatasetDetailSectionBase(props: {
                       return [formatNumber(value, 'standard'), t`Value`];
                     }}
                   />
-                  <Line type="monotone" dataKey="numericValue" stroke="#0f172a" strokeWidth={2} dot={false} />
-                  <Brush dataKey="period" height={20} stroke="#475569" travellerWidth={8} />
+                  <Line type="monotone" dataKey="numericValue" stroke={chartLineColor} strokeWidth={2} dot={false} />
+                  <Brush dataKey="period" height={20} stroke={chartAxisColor} fill="hsl(var(--muted))" travellerWidth={8} />
                 </LineChart>
               </ResponsiveContainer>
             </div>
             {selectedDatasetSourceUrl && (
-              <div className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2.5 text-[12px] leading-5 text-slate-600">
+              <div className="rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2.5 text-[12px] leading-5 text-slate-600 dark:text-slate-300">
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                   <a
                     href={selectedDatasetSourceUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 font-semibold text-slate-800 underline-offset-2 hover:text-slate-950 hover:underline"
+                    className="inline-flex items-center gap-1.5 font-semibold text-slate-800 dark:text-slate-200 underline-offset-2 hover:text-slate-950 dark:hover:text-slate-100 hover:underline"
                   >
                     <Trans>Open source matrix in INS Tempo</Trans>
                     <ExternalLink className="h-3.5 w-3.5" />
                   </a>
-                  <span className="text-slate-400">•</span>
+                  <span className="text-slate-400 dark:text-slate-500">•</span>
                   <span>
                     <Trans>
                       Data is sourced from INS Tempo. Reuse and redistribution are subject to INS terms and license.
@@ -1295,7 +1319,7 @@ function DatasetDetailSectionBase(props: {
                       href={insTermsUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="font-medium text-slate-700 underline underline-offset-2 hover:text-slate-900"
+                      className="font-medium text-slate-700 dark:text-slate-300 underline underline-offset-2 hover:text-slate-900 dark:hover:text-slate-100"
                     >
                       <Trans>INS terms</Trans>
                     </a>
@@ -1319,13 +1343,13 @@ function DatasetDetailSectionBase(props: {
             <Table className="text-sm">
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-32 text-[12px] font-semibold tracking-[0.02em] text-slate-500">
+                  <TableHead className="w-32 text-[12px] font-semibold tracking-[0.02em] text-slate-500 dark:text-slate-400">
                     <Trans>Period</Trans>
                   </TableHead>
-                  <TableHead className="text-[12px] font-semibold tracking-[0.02em] text-slate-500">
+                  <TableHead className="text-[12px] font-semibold tracking-[0.02em] text-slate-500 dark:text-slate-400">
                     <Trans>Value</Trans>
                   </TableHead>
-                  <TableHead className="text-right text-[12px] font-semibold tracking-[0.02em] text-slate-500">
+                  <TableHead className="text-right text-[12px] font-semibold tracking-[0.02em] text-slate-500 dark:text-slate-400">
                     <Trans>Details</Trans>
                   </TableHead>
                 </TableRow>
