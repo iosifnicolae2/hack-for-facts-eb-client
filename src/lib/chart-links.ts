@@ -5,12 +5,75 @@ import { generateHash, getNormalizationUnit } from '@/lib/utils';
 import { t } from '@lingui/core/macro';
 import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults';
 import { normalizeNormalizationOptions, type NormalizationOptions } from '@/lib/normalization';
+import type { ReportPeriodInput } from '@/schemas/reporting';
 
 interface BuildEntityIncomeExpenseChartOptions {
     title?: string;
     reportType?: ReportType;
     incomeColor?: string;
     expenseColor?: string;
+}
+
+type TemporalSplit = 'all' | 'year' | 'quarter' | 'month';
+
+interface BuildInsStatsChartStateOptions {
+    datasetCode: string;
+    datasetLabel: string;
+    entityName: string;
+    temporalSplit: TemporalSplit;
+    classificationSelections?: Record<string, string[]>;
+    unitKey?: string | null;
+    isCounty: boolean;
+    countyCode?: string;
+    sirutaCode?: string;
+}
+
+function buildChartRouteLink(search: ChartUrlState) {
+    return {
+        to: '/charts/$chartId' as const,
+        params: { chartId: search.chart.id } as const,
+        search,
+    };
+}
+
+function mapTemporalSplitToInsPeriod(temporalSplit: TemporalSplit): ReportPeriodInput | undefined {
+    if (temporalSplit === 'year') {
+        return {
+            type: 'YEAR',
+            selection: {
+                interval: {
+                    start: '1900',
+                    end: '2100',
+                },
+            },
+        };
+    }
+
+    if (temporalSplit === 'quarter') {
+        return {
+            type: 'QUARTER',
+            selection: {
+                interval: {
+                    start: '1900-Q1',
+                    end: '2100-Q4',
+                },
+            },
+        };
+    }
+
+    if (temporalSplit === 'month') {
+        return {
+            type: 'MONTH',
+            selection: {
+                interval: {
+                    start: '1900-01',
+                    end: '2100-12',
+                },
+            },
+        };
+    }
+
+    return undefined;
 }
 
 /**
@@ -138,8 +201,7 @@ export function buildEntityIncomeExpenseChartLink(
     options?: BuildEntityIncomeExpenseChartOptions
 ) {
     const search = buildEntityIncomeExpenseChartState(cui, entityName, normalizationOptions, options);
-    const params = { chartId: search.chart.id } as const;
-    return { to: '/charts/$chartId' as const, params, search };
+    return buildChartRouteLink(search);
 }
 
 interface BuildTreemapChartStateOptions {
@@ -228,8 +290,103 @@ export function buildTreemapChartLink(
     options: BuildTreemapChartStateOptions
 ) {
     const search = buildTreemapChartState(options)
-    const params = { chartId: search.chart.id } as const
-    return { to: '/charts/$chartId' as const, params, search }
+    return buildChartRouteLink(search)
+}
+
+export function buildInsStatsChartState(
+    options: BuildInsStatsChartStateOptions
+): ChartUrlState {
+    const {
+        datasetCode,
+        datasetLabel,
+        entityName,
+        temporalSplit,
+        classificationSelections,
+        unitKey,
+        isCounty,
+        countyCode,
+        sirutaCode,
+    } = options;
+    const years = Array.from(
+        { length: defaultYearRange.end - defaultYearRange.start + 1 },
+        (_, i) => defaultYearRange.start + i
+    );
+
+    const normalizedDatasetLabel = datasetLabel.trim() || datasetCode;
+    const chartId = crypto.randomUUID();
+    const seriesId = crypto.randomUUID();
+
+    const normalizedClassificationSelections = Object.fromEntries(
+        Object.entries(classificationSelections ?? {})
+            .map(([typeCode, rawCodes]) => [
+                typeCode.trim(),
+                Array.from(
+                    new Set(
+                        rawCodes
+                            .map((rawCode) => rawCode.trim())
+                            .filter(Boolean)
+                    )
+                ),
+            ])
+            .filter(([typeCode, codes]) => typeCode.length > 0 && codes.length > 0)
+    );
+
+    const normalizedUnitCodes =
+        unitKey && unitKey !== '__none__' ? [unitKey] : undefined;
+    const period = mapTemporalSplitToInsPeriod(temporalSplit);
+    const normalizedSirutaCode = sirutaCode?.trim();
+    const normalizedCountyCode = countyCode?.trim().toUpperCase();
+
+    const chart: Chart = ChartSchema.parse({
+        id: chartId,
+        title: t`INS Trends - ${normalizedDatasetLabel} (${entityName})`,
+        config: {
+            chartType: 'line',
+            showGridLines: true,
+            showLegend: true,
+            showTooltip: true,
+            editAnnotations: false,
+            showAnnotations: true,
+            showDiffControl: true,
+            yearRange: { start: years[0], end: years[years.length - 1] },
+        },
+        series: [
+            {
+                id: seriesId,
+                type: 'ins-series',
+                label: normalizedDatasetLabel,
+                enabled: true,
+                unit: '',
+                datasetCode,
+                aggregation: 'sum',
+                hasValue: true,
+                period,
+                sirutaCodes: !isCounty && normalizedSirutaCode ? [normalizedSirutaCode] : undefined,
+                territoryCodes: isCounty && normalizedCountyCode ? [normalizedCountyCode] : undefined,
+                unitCodes: normalizedUnitCodes,
+                classificationSelections:
+                    Object.keys(normalizedClassificationSelections).length > 0
+                        ? normalizedClassificationSelections
+                        : undefined,
+                config: {
+                    showDataLabels: false,
+                    color: '#1d4ed8',
+                },
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+            },
+        ],
+        annotations: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+    });
+
+    return { chart, view: 'overview' };
+}
+
+export function buildInsStatsChartLink(options: BuildInsStatsChartStateOptions) {
+    const search = buildInsStatsChartState(options);
+    return buildChartRouteLink(search);
 }
 
 /**

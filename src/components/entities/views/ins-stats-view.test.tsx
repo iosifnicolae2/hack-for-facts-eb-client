@@ -19,6 +19,23 @@ vi.mock('@/lib/hooks/use-ins-dashboard', () => ({
   useInsObservationsSnapshotByDatasets: (params: unknown) => mockUseInsObservationsSnapshotByDatasets(params),
 }))
 
+vi.mock('@tanstack/react-router', async () => {
+  const actual = await vi.importActual<typeof import('@tanstack/react-router')>('@tanstack/react-router')
+  return {
+    ...actual,
+    Link: ({ children, to, params, search, ...props }: any) => (
+      <a
+        href={typeof to === 'string' ? to : ''}
+        data-params={JSON.stringify(params ?? null)}
+        data-search={JSON.stringify(search ?? null)}
+        {...props}
+      >
+        {children}
+      </a>
+    ),
+  }
+})
+
 describe('InsStatsView', () => {
   const entity = {
     is_uat: true,
@@ -803,6 +820,127 @@ describe('InsStatsView', () => {
     const params = new URLSearchParams(window.location.search)
     expect(params.get('insSeries')).toBe('PROD:B')
     expect(params.get('insUnit')).toBe('LEI__L')
+  })
+
+  it('renders INS chart shortcut with preconfigured INS series payload', async () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/entities/4270740?view=ins-stats&insDataset=POP107D&insSeries=PROD:B&insUnit=LEI__L&insTemporal=quarter'
+    )
+
+    mockUseInsDatasetCatalog.mockReturnValue({
+      data: {
+        nodes: [
+          {
+            id: '1',
+            code: 'POP107D',
+            name_ro: 'Populatia dupa domiciliu',
+            name_en: null,
+            definition_ro: null,
+            definition_en: null,
+            periodicity: ['ANNUAL', 'QUARTERLY'],
+            has_uat_data: true,
+            has_county_data: true,
+            has_siruta: true,
+            context_code: '1130',
+            context_name_ro: '1. POPULATIA REZIDENTA',
+            context_name_en: null,
+            context_path: '0.1.13.1130',
+          },
+        ],
+      },
+      isLoading: false,
+      error: null,
+    })
+
+    mockUseInsDatasetDimensions.mockReturnValue({
+      data: {
+        datasetCode: 'POP107D',
+        dimensions: [
+          {
+            index: 0,
+            type: 'CLASSIFICATION',
+            label_ro: 'Produs',
+            label_en: null,
+            classification_type: { code: 'PROD', name_ro: 'Produs', name_en: null },
+          },
+        ],
+      },
+      isLoading: false,
+      error: null,
+    })
+
+    mockUseInsDatasetHistory.mockReturnValue({
+      data: {
+        observations: [
+          {
+            dataset_code: 'POP107D',
+            value: '120',
+            value_status: null,
+            time_period: { iso_period: '2024', year: 2024, quarter: null, month: null, periodicity: 'ANNUAL' },
+            territory: null,
+            unit: { code: 'LEI__KG', symbol: 'lei/kg', name_ro: 'lei pe kilogram' },
+            classifications: [{ id: 'prod_a', type_code: 'PROD', type_name_ro: 'Produs', code: 'A', name_ro: 'Produs A', sort_order: 1 }],
+          },
+          {
+            dataset_code: 'POP107D',
+            value: '52',
+            value_status: null,
+            time_period: { iso_period: '2024', year: 2024, quarter: null, month: null, periodicity: 'ANNUAL' },
+            territory: null,
+            unit: { code: 'LEI__L', symbol: 'lei/l', name_ro: 'lei pe litru' },
+            classifications: [{ id: 'prod_b', type_code: 'PROD', type_name_ro: 'Produs', code: 'B', name_ro: 'Produs B', sort_order: 2 }],
+          },
+        ],
+        totalCount: 2,
+        partial: false,
+      },
+      isLoading: false,
+      error: null,
+    })
+
+    renderInsStatsView()
+
+    const shortcutLink = await screen.findByTestId('ins-open-chart-shortcut')
+    expect(shortcutLink).toHaveAttribute('href', '/charts/$chartId')
+
+    const params = JSON.parse(shortcutLink.getAttribute('data-params') || '{}')
+    const search = JSON.parse(shortcutLink.getAttribute('data-search') || '{}')
+    expect(params.chartId).toBe(search.chart.id)
+    expect(search.view).toBe('overview')
+
+    const chartSeries = search.chart.series?.[0]
+    expect(chartSeries.type).toBe('ins-series')
+    expect(chartSeries.datasetCode).toBe('POP107D')
+    expect(chartSeries.classificationSelections).toEqual({ PROD: ['B'] })
+    expect(chartSeries.unitCodes).toEqual(['LEI__L'])
+    expect(chartSeries.sirutaCodes).toEqual(['143450'])
+    expect(chartSeries.territoryCodes).toBeUndefined()
+    expect(chartSeries.period).toEqual({
+      type: 'QUARTER',
+      selection: {
+        interval: {
+          start: '1900-Q1',
+          end: '2100-Q4',
+        },
+      },
+    })
+  })
+
+  it('hides INS chart shortcut when entity scope is missing', () => {
+    const countyEntityWithoutCode = {
+      ...entity,
+      entity_type: 'admin_county_council',
+      uat: {
+        ...entity.uat,
+        county_code: '',
+      },
+    } as EntityDetailsData
+
+    render(<InsStatsView entity={countyEntityWithoutCode} reportPeriod={defaultReportPeriod} />)
+
+    expect(screen.queryByTestId('ins-open-chart-shortcut')).not.toBeInTheDocument()
   })
 
   it('matches indicator queries to annual report period', async () => {

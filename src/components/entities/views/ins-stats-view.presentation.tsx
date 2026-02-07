@@ -31,9 +31,11 @@ import {
   YAxis,
 } from 'recharts';
 import ReactMarkdown from 'react-markdown';
+import { Link } from '@tanstack/react-router';
 
 import type { InsDataset, InsObservation } from '@/schemas/ins';
 import type { InsSeriesGroup, InsUnitOption } from '@/lib/ins/series-selection';
+import type { ChartUrlState } from '@/components/charts/page-schema';
 import { formatNumber } from '@/lib/utils';
 import {
   formatDatasetPeriodicity,
@@ -775,6 +777,14 @@ type DatasetDetailsCardModel = {
   notes: string | null;
 };
 
+type ChartShortcutLink = {
+  to: '/charts/$chartId';
+  params: {
+    chartId: string;
+  };
+  search: ChartUrlState;
+};
+
 function DatasetDetailSectionBase(props: {
   selectedDatasetDetails: DatasetDetailsCardModel | null;
   selectedDatasetBreadcrumbItems: Array<{
@@ -826,6 +836,7 @@ function DatasetDetailSectionBase(props: {
   selectedDatasetSourceUrl: string | null;
   insTermsUrl: string;
   hasMultiValueSeriesSelection: boolean;
+  chartShortcutLink: ChartShortcutLink | null;
 }) {
   const {
     selectedDatasetDetails,
@@ -862,6 +873,7 @@ function DatasetDetailSectionBase(props: {
     selectedDatasetSourceUrl,
     insTermsUrl,
     hasMultiValueSeriesSelection,
+    chartShortcutLink,
   } = props;
 
   return (
@@ -911,8 +923,24 @@ function DatasetDetailSectionBase(props: {
                 getLocalizedText(selectedDataset.name_ro, selectedDataset.name_en, locale) ||
                 selectedDataset.code}
             </div>
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-              <span className="text-xl font-semibold tracking-[-0.01em] text-slate-700 dark:text-slate-300">{selectedDataset.code}</span>
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+              {chartShortcutLink ? (
+                <Link
+                  to={chartShortcutLink.to}
+                  params={chartShortcutLink.params}
+                  search={chartShortcutLink.search}
+                  preload="intent"
+                  data-testid="ins-open-chart-shortcut"
+                  title={t`Open in chart editor`}
+                  aria-label={`${selectedDataset.code} - ${t`Open in chart editor`}`}
+                  className="inline-flex items-center gap-1 rounded-sm px-1 py-0.5 text-xl font-semibold tracking-[-0.01em] text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1 dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:text-slate-100"
+                >
+                  <span>{selectedDataset.code}</span>
+                  <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                </Link>
+              ) : (
+                <span className="text-xl font-semibold tracking-[-0.01em] text-slate-700 dark:text-slate-300">{selectedDataset.code}</span>
+              )}
               {hasDatasetMetadataPanel && (
                 <Button
                   type="button"

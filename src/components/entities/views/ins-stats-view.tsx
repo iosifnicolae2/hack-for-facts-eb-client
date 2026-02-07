@@ -92,6 +92,7 @@ import {
 } from './ins-stats-view.presentation';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { buildInsStatsChartLink } from '@/lib/chart-links';
 
 function pickDefaultIndicatorObservation(observations: InsObservation[]): InsObservation | null {
   if (observations.length === 0) return null;
@@ -1075,6 +1076,42 @@ export function InsStatsView({
     return new Map(historyUnitOptions.map((option) => [option.key, option]));
   }, [historyUnitOptions]);
   const hasSeriesSelectors = selectableSeriesGroups.length > 0 || historyUnitOptions.length > 1;
+  const chartShortcutLink = useMemo(() => {
+    if (!selectedDatasetCode) {
+      return null;
+    }
+
+    if (isCounty) {
+      if (!countyCode) {
+        return null;
+      }
+    } else if (!sirutaCode) {
+      return null;
+    }
+
+    return buildInsStatsChartLink({
+      datasetCode: selectedDatasetCode,
+      datasetLabel: selectedDatasetDetails?.title || selectedDataset?.code || selectedDatasetCode,
+      entityName: entity?.name || selectedDatasetCode,
+      temporalSplit,
+      classificationSelections: urlSeriesSelection,
+      unitKey: effectiveUnitSelection,
+      isCounty,
+      countyCode,
+      sirutaCode,
+    });
+  }, [
+    countyCode,
+    effectiveUnitSelection,
+    entity?.name,
+    isCounty,
+    selectedDataset,
+    selectedDatasetCode,
+    selectedDatasetDetails,
+    sirutaCode,
+    temporalSplit,
+    urlSeriesSelection,
+  ]);
 
   const activeSeriesCriteriaParts = useMemo(() => {
     const parts: string[] = [];
@@ -1533,6 +1570,7 @@ export function InsStatsView({
             selectedDatasetSourceUrl={selectedDatasetSourceUrl}
             insTermsUrl={INS_TERMS_URL}
             hasMultiValueSeriesSelection={hasMultiValueSeriesSelection}
+            chartShortcutLink={chartShortcutLink}
           />
         </div>
       </div>
