@@ -350,6 +350,35 @@ describe('SeriesConfigView', () => {
 
       expect(screen.getByText('X-Axis Prefix To Remove')).toBeInTheDocument()
     })
+
+    it('shows INS advanced controls for ins-series', () => {
+      mockChart.series = [
+        createMockSeries({
+          type: 'ins-series' as any,
+          datasetCode: 'POP107D',
+          aggregation: 'sum',
+          hasValue: true,
+        } as any),
+      ] as any
+
+      render(<SeriesConfigView />)
+      fireEvent.click(screen.getByText('Show advanced settings'))
+
+      expect(screen.getByText('Aggregation')).toBeInTheDocument()
+      expect(screen.getByText('Only observations with values')).toBeInTheDocument()
+      expect(screen.getByLabelText('Aggregation help')).toBeInTheDocument()
+      expect(
+        screen.getByText('Use the total of all matching observations in each period.')
+      ).toBeInTheDocument()
+    })
+
+    it('does not show INS advanced controls for non-INS series', () => {
+      render(<SeriesConfigView />)
+      fireEvent.click(screen.getByText('Show advanced settings'))
+
+      expect(screen.queryByText('Aggregation')).not.toBeInTheDocument()
+      expect(screen.queryByText('Only observations with values')).not.toBeInTheDocument()
+    })
   })
 
   describe('series type conditional rendering', () => {

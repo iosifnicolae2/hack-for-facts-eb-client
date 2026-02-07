@@ -3,8 +3,15 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { Trash2, Settings, Eye, RotateCcw, BellPlus } from 'lucide-react';
-import { CustomSeriesValueConfigurationSchema, Series, SeriesConfiguration, SeriesGroupConfiguration, StaticSeriesConfigurationSchema } from '@/schemas/charts';
+import { Trash2, Settings, Eye, RotateCcw, BellPlus, CircleHelp } from 'lucide-react';
+import {
+  CustomSeriesValueConfigurationSchema,
+  Series,
+  SeriesConfiguration,
+  SeriesGroupConfiguration,
+  StaticSeriesConfigurationSchema,
+  type InsSeriesAggregation,
+} from '@/schemas/charts';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,6 +28,7 @@ import { Slider } from '@/components/ui/slider';
 import { DataLabelSelector } from '../series-config/DataLabelSelector';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { CalculationConfig } from '../series-config/CalculationConfig';
 import { CustomSeriesDataEditor } from '../series-config/CustomSeriesDataEditor';
 import { CustomSeriesConfigurationSchema } from '@/schemas/charts';
@@ -37,6 +45,16 @@ import { createEmptyAlert } from '@/schemas/alerts';
 import { Analytics } from '@/lib/analytics';
 import { DebouncedStatusInput } from '@/components/ui/debounced-status-input';
 import { InsSeriesConfigurationSchema } from '@/schemas/charts';
+
+function getInsAggregationDescription(aggregation: InsSeriesAggregation | undefined): string {
+  if (aggregation === 'average') {
+    return t`Use the mean value when multiple observations exist in the same period.`;
+  }
+  if (aggregation === 'first') {
+    return t`Use only the first matching observation for each period.`;
+  }
+  return t`Use the total of all matching observations in each period.`;
+}
 
 export function SeriesConfigView() {
   const [showAdvancedSettings, setShowAdvancedSettings] = useState(false);
@@ -130,6 +148,19 @@ export function SeriesConfigView() {
   };
 
   const isLineItemsSeries = series.type === 'line-items-aggregated-yearly' || series.type === 'static-series';
+  const isInsSeries = series.type === 'ins-series';
+  const insSeries = isInsSeries
+    ? (series as z.infer<typeof InsSeriesConfigurationSchema>)
+    : null;
+  const insAggregation = insSeries?.aggregation ?? 'sum';
+
+  const updateInsSeries = (patch: Partial<z.infer<typeof InsSeriesConfigurationSchema>>) => {
+    if (!isInsSeries) return;
+    updateSeries(series.id, {
+      ...patch,
+      updatedAt: new Date().toISOString(),
+    });
+  };
 
   return (
     <div className="container mx-auto space-y-6 p-4 md:p-6 w-full overflow-x-hidden">
@@ -331,6 +362,81 @@ export function SeriesConfigView() {
                     placeholder={t`Example: 2024-`}
                   />
                 </div>
+                {isInsSeries && (
+                  <div className="space-y-4 rounded-md border px-3 py-2">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <Label htmlFor="ins-aggregation">
+                          <Trans>Aggregation</Trans>
+                        </Label>
+                        <TooltipProvider delayDuration={150}>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <button
+                                type="button"
+                                className="text-muted-foreground hover:text-foreground"
+                                aria-label={t`Aggregation help`}
+                              >
+                                <CircleHelp className="h-4 w-4" />
+                              </button>
+                            </TooltipTrigger>
+                            <TooltipContent side="top" className="max-w-sm space-y-1.5">
+                              <p>
+                                <Trans>Use aggregation when multiple INS rows match the same period.</Trans>
+                              </p>
+                              <p>
+                                <Trans>Total: add all matching values (best for additive breakdowns).</Trans>
+                              </p>
+                              <p>
+                                <Trans>Average: use the mean value (best for repeated measurements).</Trans>
+                              </p>
+                              <p>
+                                <Trans>First value only: keep one deterministic row (fallback/debug).</Trans>
+                              </p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                      <Select
+                        value={insAggregation}
+                        onValueChange={(value) =>
+                          updateInsSeries({ aggregation: value as InsSeriesAggregation })
+                        }
+                      >
+                        <SelectTrigger id="ins-aggregation">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="sum">
+                            <Trans>Total (sum all values)</Trans>
+                          </SelectItem>
+                          <SelectItem value="average">
+                            <Trans>Average (mean value)</Trans>
+                          </SelectItem>
+                          <SelectItem value="first">
+                            <Trans>First value only</Trans>
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs text-muted-foreground">
+                        {getInsAggregationDescription(insAggregation)}
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="ins-has-value" className="flex flex-col space-y-1">
+                        <span><Trans>Only observations with values</Trans></span>
+                        <span className="font-normal leading-snug text-muted-foreground">
+                          <Trans>Filters out missing or non-numeric points before chart mapping.</Trans>
+                        </span>
+                      </Label>
+                      <Switch
+                        id="ins-has-value"
+                        checked={insSeries?.hasValue ?? true}
+                        onCheckedChange={(checked) => updateInsSeries({ hasValue: checked })}
+                      />
+                    </div>
+                  </div>
+                )}
               </>
             )}
           </CardContent>

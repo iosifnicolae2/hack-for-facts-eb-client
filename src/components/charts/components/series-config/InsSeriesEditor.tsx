@@ -9,14 +9,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
 import { FilterContainer } from '@/components/filters/base-filter/FilterContainer';
 import { FilterListContainer } from '@/components/filters/base-filter/FilterListContainer';
 import type { OptionItem } from '@/components/filters/base-filter/interfaces';
 
 import {
   InsSeriesConfigurationSchema,
-  type InsSeriesAggregation,
   type InsSeriesPeriodicity,
 } from '@/schemas/charts';
 import type { InsDataset, InsDatasetDetails, InsDimension } from '@/schemas/ins';
@@ -390,52 +388,25 @@ export function InsSeriesEditor({ series }: InsSeriesEditorProps) {
           />
         </FilterContainer>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label>
-              <Trans>Periodicity</Trans>
-            </Label>
-            <Select
-              value={series.periodicity ?? ''}
-              onValueChange={(value) => update({ periodicity: value as InsSeriesPeriodicity })}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder={t`Select periodicity`} />
-              </SelectTrigger>
-              <SelectContent>
-                {(dataset?.periodicity ?? ['ANNUAL', 'QUARTERLY', 'MONTHLY']).map((periodicity) => (
-                  <SelectItem key={periodicity} value={periodicity}>
-                    {periodicity}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label>
-              <Trans>Aggregation</Trans>
-            </Label>
-            <Select
-              value={(series.aggregation ?? 'sum') as string}
-              onValueChange={(value) => update({ aggregation: value as InsSeriesAggregation })}
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="sum">
-                  <Trans>Sum</Trans>
+        <div className="space-y-2">
+          <Label>
+            <Trans>Periodicity</Trans>
+          </Label>
+          <Select
+            value={series.periodicity ?? ''}
+            onValueChange={(value) => update({ periodicity: value as InsSeriesPeriodicity })}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder={t`Select periodicity`} />
+            </SelectTrigger>
+            <SelectContent>
+              {(dataset?.periodicity ?? ['ANNUAL', 'QUARTERLY', 'MONTHLY']).map((periodicity) => (
+                <SelectItem key={periodicity} value={periodicity}>
+                  {periodicity}
                 </SelectItem>
-                <SelectItem value="average">
-                  <Trans>Average</Trans>
-                </SelectItem>
-                <SelectItem value="first">
-                  <Trans>First</Trans>
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -476,22 +447,6 @@ export function InsSeriesEditor({ series }: InsSeriesEditorProps) {
               }}
             />
           </div>
-        </div>
-
-        <div className="flex items-center justify-between rounded-md border px-3 py-2">
-          <div>
-            <Label htmlFor="ins-has-value">
-              <Trans>Only observations with values</Trans>
-            </Label>
-            <p className="text-xs text-muted-foreground">
-              <Trans>Filters out missing or non-numeric points before chart mapping.</Trans>
-            </p>
-          </div>
-          <Switch
-            id="ins-has-value"
-            checked={series.hasValue ?? true}
-            onCheckedChange={(checked) => update({ hasValue: checked })}
-          />
         </div>
 
         {dataset && (
