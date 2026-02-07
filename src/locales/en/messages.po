@@ -495,7 +495,7 @@ msgid "Account category"
 msgstr "Account category"
 
 #: src/components/alerts/components/AlertEditorView.tsx:286
-#: src/components/charts/components/views/SeriesConfigView.tsx:209
+#: src/components/charts/components/views/SeriesConfigView.tsx:212
 #: src/features/notifications/components/alerts/AlertCard.tsx:71
 msgid "Active"
 msgstr "Active"
@@ -508,7 +508,7 @@ msgstr "Active filters"
 msgid "Active Series"
 msgstr "Active Series"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1250
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1278
 msgid "Active series criteria:"
 msgstr "Active series criteria:"
 
@@ -596,11 +596,11 @@ msgstr "Advanced Filtering"
 msgid "Aggregated Budget Execution at Main Ordering Level"
 msgstr "Aggregated Budget Execution at Main Ordering Level"
 
-#: src/components/charts/components/chart-renderer/components/Tooltips.tsx:80
+#: src/components/charts/components/chart-renderer/components/Tooltips.tsx:113
 msgid "Aggregated data"
 msgstr "Aggregated data"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:194
+#: src/components/charts/components/views/SeriesConfigView.tsx:196
 msgid "Aggregated Series Calculation"
 msgstr "Aggregated Series Calculation"
 
@@ -620,6 +620,10 @@ msgstr "Aggregated Value (% of GDP)"
 #: src/routes/map.lazy.tsx:331
 msgid "Aggregated Value Legend"
 msgstr "Aggregated Value Legend"
+
+#: src/components/charts/components/series-config/InsSeriesEditor.tsx:417
+msgid "Aggregation"
+msgstr "Aggregation"
 
 #: src/lib/ins/ins-dashboard-config.ts:166
 msgid "Agricultural land and production."
@@ -856,7 +860,7 @@ msgstr "Are you sure you want to delete this alert? This action cannot be undone
 msgid "Are you sure you want to delete this notification? This action cannot be undone."
 msgstr "Are you sure you want to delete this notification? This action cannot be undone."
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:371
+#: src/components/charts/components/views/SeriesConfigView.tsx:377
 msgid "Are you sure you want to delete this series?"
 msgstr "Are you sure you want to delete this series?"
 
@@ -915,6 +919,10 @@ msgstr "Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caract
 msgid "Availability and changes"
 msgstr "Availability and changes"
 
+#: src/components/charts/components/series-config/InsSeriesEditor.tsx:431
+msgid "Average"
+msgstr "Average"
+
 #: src/components/entity-analytics/EntityAnalyticsKPIs.tsx:35
 msgid "Avg per-capita"
 msgstr "Avg per-capita"
@@ -928,7 +936,7 @@ msgid "Back to alert"
 msgstr "Back to alert"
 
 #: src/components/charts/components/views/AnnotationConfigView.tsx:55
-#: src/components/charts/components/views/SeriesConfigView.tsx:88
+#: src/components/charts/components/views/SeriesConfigView.tsx:90
 msgid "Back to Configuration"
 msgstr "Back to Configuration"
 
@@ -1147,7 +1155,7 @@ msgstr "Calculations assume a basket of 40% essential goods (11% VAT) and 60% ge
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:80
 #: src/components/charts/components/views/AnnotationConfigView.tsx:246
 #: src/components/charts/components/views/ChartConfigView.tsx:92
-#: src/components/charts/components/views/SeriesConfigView.tsx:380
+#: src/components/charts/components/views/SeriesConfigView.tsx:386
 #: src/features/notifications/components/alerts/AlertCard.tsx:122
 #: src/features/notifications/components/NotificationCard.tsx:124
 #: src/routes/$lang/learning/index.lazy.tsx:308
@@ -1157,11 +1165,11 @@ msgstr "Calculations assume a basket of 40% essential goods (11% VAT) and 60% ge
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/components/entities/views/ins-stats-view.tsx:1379
+#: src/components/entities/views/ins-stats-view.tsx:1407
 msgid "Cannot load INS indicators without the county code."
 msgstr "Cannot load INS indicators without the county code."
 
-#: src/components/entities/views/ins-stats-view.tsx:1391
+#: src/components/entities/views/ins-stats-view.tsx:1419
 msgid "Cannot load INS indicators without the locality SIRUTA code."
 msgstr "Cannot load INS indicators without the locality SIRUTA code."
 
@@ -1203,7 +1211,7 @@ msgstr "Chart"
 
 #: src/components/charts/components/views/AnnotationConfigView.tsx:214
 #: src/components/charts/components/views/ChartConfigView.tsx:37
-#: src/components/charts/components/views/SeriesConfigView.tsx:357
+#: src/components/charts/components/views/SeriesConfigView.tsx:363
 msgid "Chart Configuration"
 msgstr "Chart Configuration"
 
@@ -1275,6 +1283,10 @@ msgstr "Classification Details"
 msgid "Classification Not Found"
 msgstr "Classification Not Found"
 
+#: src/components/charts/components/series-config/ins-dimension-values-list.tsx:54
+msgid "Classification options"
+msgstr "Classification options"
+
 #: src/components/classification-explorer/ClassificationGrid.tsx:49
 msgid "classifications"
 msgstr "classifications"
@@ -1341,7 +1353,7 @@ msgstr "Close Search"
 msgid "Close!"
 msgstr "Close!"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:925
+#: src/components/entities/views/ins-stats-view.presentation.tsx:948
 #: src/features/learning/components/interactive/ExecutionRateChart.tsx:145
 msgid "Code"
 msgstr "Code"
@@ -1350,8 +1362,8 @@ msgstr "Code"
 msgid "Code copied to clipboard"
 msgstr "Code copied to clipboard"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:614
-#: src/components/entities/views/ins-stats-view.presentation.tsx:615
+#: src/components/entities/views/ins-stats-view.presentation.tsx:633
+#: src/components/entities/views/ins-stats-view.presentation.tsx:634
 msgid "Collapse explorer to side panel"
 msgstr "Collapse explorer to side panel"
 
@@ -1480,7 +1492,7 @@ msgstr "Configure Chart"
 msgid "Configure filters for the map view including period, account category, and normalization settings"
 msgstr "Configure filters for the map view including period, account category, and normalization settings"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:156
+#: src/components/charts/components/views/SeriesConfigView.tsx:158
 msgid "Configure Series"
 msgstr "Configure Series"
 
@@ -1539,7 +1551,7 @@ msgstr "Contact Support"
 msgid "Contact us at contact@transparenta.eu See also our <0>Privacy Policy</0> and <1>Cookie Policy</1>."
 msgstr "Contact us at contact@transparenta.eu See also our <0>Privacy Policy</0> and <1>Cookie Policy</1>."
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:965
+#: src/components/entities/views/ins-stats-view.presentation.tsx:988
 msgid "Context"
 msgstr "Context"
 
@@ -1588,7 +1600,7 @@ msgstr "Copied!"
 
 #: src/components/charts/components/ChartDataError.tsx:286
 #: src/components/charts/components/views/AnnotationConfigView.tsx:220
-#: src/components/charts/components/views/SeriesConfigView.tsx:254
+#: src/components/charts/components/views/SeriesConfigView.tsx:257
 msgid "Copy"
 msgstr "Copy"
 
@@ -1608,7 +1620,7 @@ msgstr "Copy Data"
 msgid "Copy error report to clipboard"
 msgstr "Copy error report to clipboard"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:253
+#: src/components/charts/components/views/SeriesConfigView.tsx:256
 msgid "Copy series"
 msgstr "Copy series"
 
@@ -1637,6 +1649,10 @@ msgstr "Correct!"
 msgid "Could Not Load Budget Sectors"
 msgstr "Could Not Load Budget Sectors"
 
+#: src/components/charts/components/series-config/ins-dimension-values-list.tsx:47
+msgid "Could not load classifications"
+msgstr "Could not load classifications"
+
 #: src/components/filters/county-filter/CountyList.tsx:64
 msgid "Could Not Load Counties"
 msgstr "Could Not Load Counties"
@@ -1645,7 +1661,7 @@ msgstr "Could Not Load Counties"
 msgid "Could Not Load Datasets"
 msgstr "Could Not Load Datasets"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:339
+#: src/components/entities/views/ins-stats-view.presentation.tsx:358
 msgid "Could not load derived indicators"
 msgstr "Could not load derived indicators"
 
@@ -1659,17 +1675,33 @@ msgstr "Could Not Load Entities"
 msgid "Could Not Load Funding Sources"
 msgstr "Could Not Load Funding Sources"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1003
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1026
 msgid "Could not load historical data"
 msgstr "Could not load historical data"
 
-#: src/components/entities/views/ins-stats-view.tsx:1408
+#: src/components/entities/views/ins-stats-view.tsx:1436
 msgid "Could not load INS data"
 msgstr "Could not load INS data"
+
+#: src/components/charts/components/series-config/ins-dataset-list.tsx:82
+msgid "Could not load INS datasets"
+msgstr "Could not load INS datasets"
+
+#: src/components/charts/components/series-config/ins-dimension-values-list.tsx:50
+msgid "Could not load localities"
+msgstr "Could not load localities"
+
+#: src/components/charts/components/series-config/ins-dimension-values-list.tsx:49
+msgid "Could not load territories"
+msgstr "Could not load territories"
 
 #: src/components/filters/uat-filter/UatList.tsx:79
 msgid "Could Not Load UATs"
 msgstr "Could Not Load UATs"
+
+#: src/components/charts/components/series-config/ins-dimension-values-list.tsx:48
+msgid "Could not load units"
+msgstr "Could not load units"
 
 #: src/hooks/useSendBugReport.ts:40
 msgid "Could not send error report."
@@ -1706,7 +1738,7 @@ msgstr "Course Content"
 msgid "Course Progress"
 msgstr "Course Progress"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:944
+#: src/components/entities/views/ins-stats-view.presentation.tsx:967
 msgid "Coverage"
 msgstr "Coverage"
 
@@ -1724,14 +1756,14 @@ msgstr "Create a chart for this entity to start tracking its financial evolution
 msgid "Create alert"
 msgstr "Create alert"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:247
+#: src/components/charts/components/views/SeriesConfigView.tsx:250
 #: src/features/notifications/components/alerts/AlertsList.tsx:60
 #: src/routes/alerts/$alertId/index.lazy.tsx:220
 #: src/routes/alerts/new.lazy.tsx:183
 msgid "Create Alert"
 msgstr "Create Alert"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:245
+#: src/components/charts/components/views/SeriesConfigView.tsx:248
 msgid "Create alert from this series"
 msgstr "Create alert from this series"
 
@@ -1779,7 +1811,7 @@ msgstr "Currency is ignored for % of GDP."
 msgid "Current date"
 msgstr "Current date"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:466
+#: src/components/entities/views/ins-stats-view.presentation.tsx:485
 msgid "Current period and source"
 msgstr "Current period and source"
 
@@ -1787,11 +1819,11 @@ msgstr "Current period and source"
 msgid "Custom Data"
 msgstr "Custom Data"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:195
+#: src/components/charts/components/views/SeriesConfigView.tsx:197
 msgid "Custom Series"
 msgstr "Custom Series"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:196
+#: src/components/charts/components/views/SeriesConfigView.tsx:198
 msgid "Custom Series Value"
 msgstr "Custom Series Value"
 
@@ -1819,11 +1851,11 @@ msgstr "Data collected with an account:"
 msgid "Data collected without an account:"
 msgstr "Data collected without an account:"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1291
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1334
 msgid "Data is sourced from INS Tempo. Reuse and redistribution are subject to INS terms and license."
 msgstr "Data is sourced from INS Tempo. Reuse and redistribution are subject to INS terms and license."
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:299
+#: src/components/charts/components/views/SeriesConfigView.tsx:302
 msgid "Data Label Offset"
 msgstr "Data Label Offset"
 
@@ -1833,7 +1865,7 @@ msgstr "Data Label Offset"
 msgid "Data Labels"
 msgstr "Data Labels"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:474
+#: src/components/entities/views/ins-stats-view.presentation.tsx:493
 msgid "Data period shown:"
 msgstr "Data period shown:"
 
@@ -1890,11 +1922,15 @@ msgstr "Data View"
 msgid "Data: Eurostat 2024 (Provisional)"
 msgstr "Data: Eurostat 2024 (Provisional)"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:606
+#: src/components/charts/components/series-config/InsSeriesEditor.tsx:373
+msgid "Dataset"
+msgstr "Dataset"
+
+#: src/components/entities/views/ins-stats-view.presentation.tsx:625
 msgid "Dataset explorer"
 msgstr "Dataset explorer"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:910
+#: src/components/entities/views/ins-stats-view.presentation.tsx:933
 msgid "Dataset metadata is loading or unavailable, but historical data can still be viewed below."
 msgstr "Dataset metadata is loading or unavailable, but historical data can still be viewed below."
 
@@ -1952,7 +1988,7 @@ msgstr "Deficit"
 #: src/components/charts/components/series-config/SeriesItemMenu.tsx:72
 #: src/components/charts/components/views/AnnotationConfigView.tsx:233
 #: src/components/charts/components/views/AnnotationConfigView.tsx:243
-#: src/components/charts/components/views/SeriesConfigView.tsx:377
+#: src/components/charts/components/views/SeriesConfigView.tsx:383
 #: src/features/notifications/components/alerts/AlertCard.tsx:128
 #: src/features/notifications/components/NotificationCard.tsx:127
 #: src/routes/alerts/$alertId/index.lazy.tsx:323
@@ -1974,7 +2010,7 @@ msgstr "Delete Chart"
 msgid "Delete notification"
 msgstr "Delete notification"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:367
+#: src/components/charts/components/views/SeriesConfigView.tsx:373
 msgid "Delete Series"
 msgstr "Delete Series"
 
@@ -1991,12 +2027,12 @@ msgstr "Demography"
 msgid "Density"
 msgstr "Density"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:322
+#: src/components/entities/views/ins-stats-view.presentation.tsx:341
 msgid "Derived indicators"
 msgstr "Derived indicators"
 
 #: src/components/alerts/components/AlertEditorView.tsx:148
-#: src/components/entities/views/ins-stats-view.presentation.tsx:970
+#: src/components/entities/views/ins-stats-view.presentation.tsx:993
 msgid "Description"
 msgstr "Description"
 
@@ -2035,7 +2071,7 @@ msgstr "Detailed Categories"
 msgid "Detailed Line Items Breakdown"
 msgstr "Detailed Line Items Breakdown"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1329
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1372
 msgid "Details"
 msgstr "Details"
 
@@ -2060,7 +2096,7 @@ msgstr "Development section transfers"
 msgid "Differences can reflect housing stock structure, tourism pressure, and suburbanization patterns."
 msgstr "Differences can reflect housing stock structure, tourism pressure, and suburbanization patterns."
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:954
+#: src/components/entities/views/ins-stats-view.presentation.tsx:977
 msgid "Dimensions"
 msgstr "Dimensions"
 
@@ -2076,7 +2112,7 @@ msgstr "Disable annotation"
 msgid "Disable Series"
 msgstr "Disable Series"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:285
+#: src/components/charts/components/views/SeriesConfigView.tsx:288
 msgid "Display data labels on the chart"
 msgstr "Display data labels on the chart"
 
@@ -2108,7 +2144,7 @@ msgstr "Drag the sliders to guess how much each source contributes."
 
 #: src/components/charts/components/chart-quick-config/components/ChartQuickConfigMenu.tsx:40
 #: src/components/charts/components/views/AnnotationConfigView.tsx:224
-#: src/components/charts/components/views/SeriesConfigView.tsx:251
+#: src/components/charts/components/views/SeriesConfigView.tsx:254
 msgid "Duplicate"
 msgstr "Duplicate"
 
@@ -2120,7 +2156,7 @@ msgstr "Duplicate Annotation"
 msgid "Duplicate selected chart series"
 msgstr "Duplicate selected chart series"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:250
+#: src/components/charts/components/views/SeriesConfigView.tsx:253
 msgid "Duplicate series"
 msgstr "Duplicate series"
 
@@ -2146,7 +2182,7 @@ msgid "e.g. Expense growth alert"
 msgstr "e.g. Expense growth alert"
 
 #: src/components/charts/components/series-config/UnitInput.tsx:14
-#: src/components/charts/components/views/SeriesConfigView.tsx:265
+#: src/components/charts/components/views/SeriesConfigView.tsx:268
 msgid "e.g., RON, %, Units..."
 msgstr "e.g., RON, %, Units..."
 
@@ -2333,7 +2369,7 @@ msgstr "Enter entity name or CUI..."
 msgid "Enter new value"
 msgstr "Enter new value"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:179
+#: src/components/charts/components/views/SeriesConfigView.tsx:181
 msgid "Enter series label..."
 msgstr "Enter series label..."
 
@@ -2504,7 +2540,15 @@ msgstr "Ever wondered where your money actually goes?"
 msgid "Example:"
 msgstr "Example:"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:328
+#: src/components/charts/components/series-config/InsSeriesEditor.tsx:448
+msgid "Example: 2020 / 2020-Q1 / 2020-01"
+msgstr "Example: 2020 / 2020-Q1 / 2020-01"
+
+#: src/components/charts/components/series-config/InsSeriesEditor.tsx:467
+msgid "Example: 2024 / 2024-Q4 / 2024-12"
+msgstr "Example: 2024 / 2024-Q4 / 2024-12"
+
+#: src/components/charts/components/views/SeriesConfigView.tsx:331
 msgid "Example: 2024-"
 msgstr "Example: 2024-"
 
@@ -2589,8 +2633,8 @@ msgstr "Existing dwellings"
 msgid "Existing dwellings (LOC101B)"
 msgstr "Existing dwellings (LOC101B)"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:614
-#: src/components/entities/views/ins-stats-view.presentation.tsx:615
+#: src/components/entities/views/ins-stats-view.presentation.tsx:633
+#: src/components/entities/views/ins-stats-view.presentation.tsx:634
 msgid "Expand explorer to full width"
 msgstr "Expand explorer to full width"
 
@@ -2720,7 +2764,7 @@ msgstr "Failed to load data."
 msgid "Failed to save"
 msgstr "Failed to save"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:486
+#: src/components/entities/views/ins-stats-view.presentation.tsx:505
 msgid "Fallback:"
 msgstr "Fallback:"
 
@@ -2796,6 +2840,10 @@ msgstr "Filters info"
 msgid "Filters marked as exclude will remove data matching these criteria from the results."
 msgstr "Filters marked as exclude will remove data matching these criteria from the results."
 
+#: src/components/charts/components/series-config/InsSeriesEditor.tsx:487
+msgid "Filters out missing or non-numeric points before chart mapping."
+msgstr "Filters out missing or non-numeric points before chart mapping."
+
 #: src/components/entities/views/Commitments.tsx:370
 msgid "Final Budget Credits"
 msgstr "Final Budget Credits"
@@ -2834,6 +2882,10 @@ msgstr "Find Entity to Monitor"
 #: src/components/footer/ChatFab.tsx:97
 msgid "Find resources, report issues, or get in touch."
 msgstr "Find resources, report issues, or get in touch."
+
+#: src/components/charts/components/series-config/InsSeriesEditor.tsx:434
+msgid "First"
+msgstr "First"
 
 #: src/features/learning/components/interactive/RectificationFlow.tsx:147
 msgid "Flow"
@@ -2888,7 +2940,7 @@ msgstr "Foreign trade"
 msgid "Found {replacementCount} occurrence{0}"
 msgstr "Found {replacementCount} occurrence{0}"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1312
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1355
 msgid "Full historical observations exceeded the page cap for this view. Showing the retrieved subset."
 msgstr "Full historical observations exceeded the page cap for this view. Showing the retrieved subset."
 
@@ -3002,7 +3054,7 @@ msgstr "Gas network length per 1,000 inhabitants shows gas infrastructure reach 
 msgid "Gas volume per inhabitant indicates reliance on gas infrastructure and energy-use profile."
 msgstr "Gas volume per inhabitant indicates reliance on gas infrastructure and energy-use profile."
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:234
+#: src/components/charts/components/views/SeriesConfigView.tsx:237
 msgid "Generate random color"
 msgstr "Generate random color"
 
@@ -3168,7 +3220,7 @@ msgstr "Hidden infrastructure you used"
 msgid "Hide"
 msgstr "Hide"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:275
+#: src/components/charts/components/views/SeriesConfigView.tsx:278
 msgid "Hide advanced settings"
 msgstr "Hide advanced settings"
 
@@ -3197,7 +3249,7 @@ msgstr "High risk of low execution in Romanian public administration. Investment
 msgid "High volatility can appear in small localities where modest flows create large per-capita swings."
 msgstr "High volatility can appear in small localities where modest flows create large per-capita swings."
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1107
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1131
 msgid "Hold Ctrl/Cmd or Shift while clicking to multi-select."
 msgstr "Hold Ctrl/Cmd or Shift while clicking to multi-select."
 
@@ -3213,7 +3265,7 @@ msgstr "Hospitals, beds and medical staff."
 msgid "How Budgets Change"
 msgstr "How Budgets Change"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:443
+#: src/components/entities/views/ins-stats-view.presentation.tsx:462
 msgid "How calculated"
 msgstr "How calculated"
 
@@ -3363,13 +3415,25 @@ msgstr "inhabitant"
 msgid "inhabitants"
 msgstr "inhabitants"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:450
+#: src/components/entities/views/ins-stats-view.presentation.tsx:469
 msgid "Inputs used"
 msgstr "Inputs used"
 
-#: src/components/entities/views/ins-stats-view.tsx:1365
+#: src/components/charts/components/series-config/InsSeriesEditor.tsx:368
+msgid "INS Dataset Configuration"
+msgstr "INS Dataset Configuration"
+
+#: src/components/charts/components/series-config/ins-dataset-list.tsx:95
+msgid "INS dataset options"
+msgstr "INS dataset options"
+
+#: src/components/entities/views/ins-stats-view.tsx:1393
 msgid "INS indicators are only available for UATs."
 msgstr "INS indicators are only available for UATs."
+
+#: src/components/charts/components/views/SeriesConfigView.tsx:200
+msgid "INS Series"
+msgstr "INS Series"
 
 #: src/hooks/useEntityViews.tsx:40
 msgid "INS Stats"
@@ -3379,7 +3443,7 @@ msgstr "INS Stats"
 msgid "INS Tempo"
 msgstr "INS Tempo"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1300
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1343
 msgid "INS terms"
 msgstr "INS terms"
 
@@ -3425,7 +3489,7 @@ msgstr "Interpret together with birth rate and local age profile; short-term spi
 msgid "Interpret with network coverage and industrial structure; utility demand is not only household demand."
 msgstr "Interpret with network coverage and industrial structure; utility demand is not only household demand."
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:497
+#: src/components/entities/views/ins-stats-view.presentation.tsx:516
 msgid "Interpretation notes"
 msgstr "Interpretation notes"
 
@@ -3531,8 +3595,8 @@ msgstr "Labor market and housing pressure indicators."
 msgid "Language"
 msgstr "Language"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:226
-#: src/components/entities/views/ins-stats-view.presentation.tsx:294
+#: src/components/entities/views/ins-stats-view.presentation.tsx:245
+#: src/components/entities/views/ins-stats-view.presentation.tsx:313
 msgid "last available"
 msgstr "last available"
 
@@ -3657,7 +3721,7 @@ msgstr "Line item disappeared - possible reclassification"
 msgid "Line Items"
 msgstr "Line Items"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:193
+#: src/components/charts/components/views/SeriesConfigView.tsx:195
 msgid "Line Items Aggregated Yearly"
 msgstr "Line Items Aggregated Yearly"
 
@@ -3712,6 +3776,10 @@ msgstr "Loading chart data..."
 msgid "Loading data..."
 msgstr "Loading data..."
 
+#: src/components/charts/components/series-config/InsSeriesEditor.tsx:754
+msgid "Loading dataset dimensions..."
+msgstr "Loading dataset dimensions..."
+
 #: src/components/commitments/DetailTable.tsx:304
 msgid "Loading details..."
 msgstr "Loading details..."
@@ -3765,6 +3833,10 @@ msgstr "Loan repayments and other operations"
 #: src/routes/privacy.lazy.tsx:23
 msgid "Local-first: charts and preferences are stored in your browser."
 msgstr "Local-first: charts and preferences are stored in your browser."
+
+#: src/components/charts/components/series-config/ins-dimension-values-list.tsx:57
+msgid "Locality options"
+msgstr "Locality options"
 
 #: src/components/charts/components/chart-annotations/AnnotationItemMenu.tsx:42
 msgid "Lock annotation"
@@ -3901,7 +3973,7 @@ msgstr "Medium opportunity"
 msgid "Metadata"
 msgstr "Metadata"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:977
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1000
 msgid "Methodology"
 msgstr "Methodology"
 
@@ -3951,7 +4023,7 @@ msgstr "Missing title"
 msgid "Mission End"
 msgstr "Mission End"
 
-#: src/components/entities/views/ins-stats-view.tsx:1123
+#: src/components/entities/views/ins-stats-view.tsx:1143
 msgid "Mixed"
 msgstr "Mixed"
 
@@ -4045,7 +4117,7 @@ msgstr "Move right"
 msgid "Move Up"
 msgstr "Move Up"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1352
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1395
 msgid "Multiple selected values"
 msgstr "Multiple selected values"
 
@@ -4055,7 +4127,7 @@ msgstr "Multiple selected values"
 #: src/components/commitments/LinearBudgetFlow.tsx:216
 #: src/components/entities/views/ins-stats-view.formatters.ts:77
 #: src/components/entities/views/ins-stats-view.formatters.ts:139
-#: src/components/entities/views/ins-stats-view.presentation.tsx:221
+#: src/components/entities/views/ins-stats-view.presentation.tsx:240
 #: src/components/maps/utils.ts:98
 #: src/components/maps/utils.ts:122
 #: src/components/maps/utils.ts:151
@@ -4230,7 +4302,7 @@ msgstr "No conditions added yet. Click the button below to add your first condit
 msgid "No conditions set"
 msgstr "No conditions set"
 
-#: src/components/entities/views/ins-stats-view.tsx:1377
+#: src/components/entities/views/ins-stats-view.tsx:1405
 msgid "No county code associated."
 msgstr "No county code associated."
 
@@ -4278,11 +4350,11 @@ msgstr "No data series yet."
 msgid "No data within the selected range."
 msgstr "No data within the selected range."
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:993
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1016
 msgid "No dataset selected yet."
 msgstr "No dataset selected yet."
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:640
+#: src/components/entities/views/ins-stats-view.presentation.tsx:663
 msgid "No datasets match your current filters."
 msgstr "No datasets match your current filters."
 
@@ -4318,6 +4390,10 @@ msgstr "No Filters Applied"
 msgid "No grouping available for the selected filter."
 msgstr "No grouping available for the selected filter."
 
+#: src/components/charts/components/filters-details/InsSeriesFilter.tsx:26
+msgid "No INS filters configured."
+msgstr "No INS filters configured."
+
 #: src/components/charts/components/chart-config/FilterBulkEdit.tsx:114
 msgid "No matches yet"
 msgstr "No matches yet"
@@ -4334,7 +4410,7 @@ msgstr "No maximum"
 msgid "No minimum"
 msgstr "No minimum"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1008
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1031
 msgid "No observations available for the selected dataset and entity."
 msgstr "No observations available for the selected dataset and entity."
 
@@ -4346,7 +4422,7 @@ msgstr "No operands. Add a series or a new calculation."
 msgid "No options found."
 msgstr "No options found."
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1183
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1211
 msgid "No options match your search."
 msgstr "No options match your search."
 
@@ -4378,7 +4454,7 @@ msgstr "No selling of personal data."
 msgid "No series found."
 msgstr "No series found."
 
-#: src/components/entities/views/ins-stats-view.tsx:1389
+#: src/components/entities/views/ins-stats-view.tsx:1417
 msgid "No SIRUTA code associated."
 msgstr "No SIRUTA code associated."
 
@@ -4405,7 +4481,7 @@ msgstr "Non-direct spending"
 msgid "Normalization"
 msgstr "Normalization"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:346
+#: src/components/entities/views/ins-stats-view.presentation.tsx:365
 msgid "Not enough latest values to compute derived indicators."
 msgstr "Not enough latest values to compute derived indicators."
 
@@ -4433,7 +4509,7 @@ msgstr "Note: Transfer items are excluded as they represent internal movements w
 msgid "Note: Transfers to subordinate public institutions (ec:51.01, 51.02) are excluded from effective spending as they represent movements within the consolidated perimeter rather than actual expenditures."
 msgstr "Note: Transfers to subordinate public institutions (ec:51.01, 51.02) are excluded from effective spending as they represent movements within the consolidated perimeter rather than actual expenditures."
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:985
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1008
 msgid "Notes"
 msgstr "Notes"
 
@@ -4487,6 +4563,10 @@ msgstr "Oldest first"
 #: src/features/learning/components/interactive/EUComparisonChart.tsx:101
 msgid "One of the lowest"
 msgstr "One of the lowest"
+
+#: src/components/charts/components/series-config/InsSeriesEditor.tsx:484
+msgid "Only observations with values"
+msgstr "Only observations with values"
 
 #: src/routes/cookie-policy.lazy.tsx:57
 msgid "Only set if you consent to analytics:"
@@ -4565,7 +4645,7 @@ msgstr "Open on Wikipedia"
 msgid "Open Search"
 msgstr "Open Search"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1286
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1329
 msgid "Open source matrix in INS Tempo"
 msgstr "Open source matrix in INS Tempo"
 
@@ -4598,7 +4678,7 @@ msgstr "Optional user accounts for enhanced features like newsletters and notifi
 msgid "Optional user accounts for newsletters and notifications."
 msgstr "Optional user accounts for newsletters and notifications."
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1155
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1183
 msgid "Options"
 msgstr "Options"
 
@@ -4615,7 +4695,7 @@ msgstr "Original:"
 msgid "Other"
 msgstr "Other"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:708
+#: src/components/entities/views/ins-stats-view.presentation.tsx:731
 msgid "Other datasets"
 msgstr "Other datasets"
 
@@ -4652,7 +4732,7 @@ msgstr "Parent"
 msgid "Parent Categories"
 msgstr "Parent Categories"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1310
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1353
 msgid "Partial history"
 msgstr "Partial history"
 
@@ -4737,8 +4817,8 @@ msgstr "Per Capita"
 #: src/components/budget-explorer/BudgetExplorerHeader.tsx:82
 #: src/components/charts/components/series-config/SeriesFilter.tsx:686
 #: src/components/entities/EntityReportControls.tsx:170
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1031
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1323
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1054
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1366
 #: src/components/filters/EntityAnalyticsFilter.tsx:467
 #: src/components/filters/MapFilter.tsx:256
 #: src/components/maps/utils.ts:19
@@ -4747,20 +4827,29 @@ msgstr "Per Capita"
 msgid "Period"
 msgstr "Period"
 
+#: src/components/charts/components/series-config/InsSeriesEditor.tsx:463
+msgid "Period End"
+msgstr "Period End"
+
 #: src/components/charts/components/series-config/SeriesFilter.tsx:668
 msgid "Period Growth"
 msgstr "Period Growth"
+
+#: src/components/charts/components/series-config/InsSeriesEditor.tsx:444
+msgid "Period Start"
+msgstr "Period Start"
 
 #: src/components/filters/period-filter/PeriodFilter.tsx:233
 msgid "Period Type"
 msgstr "Period Type"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:255
-#: src/components/entities/views/ins-stats-view.presentation.tsx:325
+#: src/components/entities/views/ins-stats-view.presentation.tsx:274
+#: src/components/entities/views/ins-stats-view.presentation.tsx:344
 msgid "Period:"
 msgstr "Period:"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:934
+#: src/components/charts/components/series-config/InsSeriesEditor.tsx:396
+#: src/components/entities/views/ins-stats-view.presentation.tsx:957
 msgid "Periodicity"
 msgstr "Periodicity"
 
@@ -5114,11 +5203,11 @@ msgstr "Reset amount filter"
 msgid "Reset progress"
 msgstr "Reset progress"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1021
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1044
 msgid "Reset to available period"
 msgstr "Reset to available period"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1064
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1087
 msgid "Reset to default"
 msgstr "Reset to default"
 
@@ -5269,11 +5358,16 @@ msgstr "Search charts"
 msgid "Search charts…"
 msgstr "Search charts…"
 
+#: src/components/charts/components/series-config/ins-dimension-values-list.tsx:40
+msgid "Search classification values"
+msgstr "Search classification values"
+
 #: src/components/filters/county-filter/CountyList.tsx:62
 msgid "Search counties..."
 msgstr "Search counties..."
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:626
+#: src/components/entities/views/ins-stats-view.presentation.tsx:647
+#: src/components/entities/views/ins-stats-view.presentation.tsx:649
 msgid "Search dataset code or name"
 msgstr "Search dataset code or name"
 
@@ -5311,13 +5405,34 @@ msgstr "Search funding sources"
 msgid "Search help"
 msgstr "Search help"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1121
+#: src/components/charts/components/series-config/ins-dataset-list.tsx:73
+msgid "Search INS datasets (ex: POP107D)"
+msgstr "Search INS datasets (ex: POP107D)"
+
+#: src/components/charts/components/series-config/ins-dimension-values-list.tsx:43
+msgid "Search localities"
+msgstr "Search localities"
+
+#. placeholder {0}: group.typeLabel
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1147
+msgid "Search options in {0}"
+msgstr "Search options in {0}"
+
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1149
 msgid "Search series options"
 msgstr "Search series options"
+
+#: src/components/charts/components/series-config/ins-dimension-values-list.tsx:42
+msgid "Search territories"
+msgstr "Search territories"
 
 #: src/components/filters/uat-filter/UatList.tsx:71
 msgid "Search UATs (ex: Municipiul Arad)"
 msgstr "Search UATs (ex: Municipiul Arad)"
+
+#: src/components/charts/components/series-config/ins-dimension-values-list.tsx:41
+msgid "Search units"
+msgstr "Search units"
 
 #: src/components/entities/SearchToggleInput.tsx:24
 msgid "Search..."
@@ -5347,11 +5462,11 @@ msgstr "See also our <0>Privacy Policy</0>."
 msgid "See-through, clear"
 msgstr "See-through, clear"
 
-#: src/components/entities/views/ins-stats-view.tsx:1367
+#: src/components/entities/views/ins-stats-view.tsx:1395
 msgid "Select a local entity to view INS Tempo data."
 msgstr "Select a local entity to view INS Tempo data."
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:915
+#: src/components/entities/views/ins-stats-view.presentation.tsx:938
 msgid "Select a metric card or dataset from the list to load full history."
 msgstr "Select a metric card or dataset from the list to load full history."
 
@@ -5383,11 +5498,15 @@ msgstr "Select options"
 msgid "Select Path"
 msgstr "Select Path"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1085
+#: src/components/charts/components/series-config/InsSeriesEditor.tsx:403
+msgid "Select periodicity"
+msgstr "Select periodicity"
+
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1109
 msgid "Select series"
 msgstr "Select series"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:190
+#: src/components/charts/components/views/SeriesConfigView.tsx:192
 msgid "Select Series Type"
 msgstr "Select Series Type"
 
@@ -5399,16 +5518,16 @@ msgstr "Select specific years. If none selected, all years will be shown."
 msgid "Select years..."
 msgstr "Select years..."
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1088
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1112
 msgid "selected"
 msgstr "selected"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1133
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1161
 #: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:47
 msgid "Selected"
 msgstr "Selected"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:470
+#: src/components/entities/views/ins-stats-view.presentation.tsx:489
 msgid "Selected period:"
 msgstr "Selected period:"
 
@@ -5431,23 +5550,23 @@ msgstr "Send feedback"
 msgid "September"
 msgstr "September"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:219
+#: src/components/charts/components/views/SeriesConfigView.tsx:222
 msgid "Series Color"
 msgstr "Series Color"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:171
+#: src/components/charts/components/views/SeriesConfigView.tsx:173
 msgid "Series Label"
 msgstr "Series Label"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:86
+#: src/components/charts/components/views/SeriesConfigView.tsx:88
 msgid "Series not found"
 msgstr "Series not found"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1055
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1078
 msgid "Series selector"
 msgstr "Series selector"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:184
+#: src/components/charts/components/views/SeriesConfigView.tsx:186
 msgid "Series Type"
 msgstr "Series Type"
 
@@ -5510,7 +5629,7 @@ msgstr "Show"
 msgid "Show {0} more"
 msgstr "Show {0} more"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:275
+#: src/components/charts/components/views/SeriesConfigView.tsx:278
 msgid "Show advanced settings"
 msgstr "Show advanced settings"
 
@@ -5518,7 +5637,7 @@ msgstr "Show advanced settings"
 msgid "Show all"
 msgstr "Show all"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1362
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1405
 msgid "Show all periods"
 msgstr "Show all periods"
 
@@ -5528,7 +5647,7 @@ msgid "Show Annotations"
 msgstr "Show Annotations"
 
 #: src/components/charts/components/chart-config/GlobalSettingsCard.tsx:63
-#: src/components/charts/components/views/SeriesConfigView.tsx:283
+#: src/components/charts/components/views/SeriesConfigView.tsx:286
 msgid "Show Data Labels"
 msgstr "Show Data Labels"
 
@@ -5537,7 +5656,7 @@ msgid "Show details"
 msgstr "Show details"
 
 #. placeholder {0}: row.label
-#: src/components/entities/views/ins-stats-view.presentation.tsx:376
+#: src/components/entities/views/ins-stats-view.presentation.tsx:395
 msgid "Show details for {0}"
 msgstr "Show details for {0}"
 
@@ -5562,9 +5681,9 @@ msgid "Show Legend"
 msgstr "Show Legend"
 
 #: src/components/classification-explorer/ClassificationSiblings.tsx:72
-#: src/components/entities/views/ins-stats-view.presentation.tsx:136
-#: src/components/entities/views/ins-stats-view.presentation.tsx:901
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1362
+#: src/components/entities/views/ins-stats-view.presentation.tsx:154
+#: src/components/entities/views/ins-stats-view.presentation.tsx:924
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1405
 #: src/components/filters/base-filter/SelectedOptionsDisplay.tsx:63
 msgid "Show less"
 msgstr "Show less"
@@ -5573,8 +5692,8 @@ msgstr "Show less"
 msgid "Show Less"
 msgstr "Show Less"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:136
-#: src/components/entities/views/ins-stats-view.presentation.tsx:901
+#: src/components/entities/views/ins-stats-view.presentation.tsx:154
+#: src/components/entities/views/ins-stats-view.presentation.tsx:924
 msgid "Show more"
 msgstr "Show more"
 
@@ -5674,7 +5793,7 @@ msgstr "Social Contrib."
 msgid "Some data issues were automatically resolved"
 msgstr "Some data issues were automatically resolved"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:487
+#: src/components/entities/views/ins-stats-view.presentation.tsx:506
 msgid "Some indicators use the latest available period because the selected period had missing values."
 msgstr "Some indicators use the latest available period because the selected period had missing values."
 
@@ -5698,11 +5817,11 @@ msgstr "Sort Order"
 #: src/components/charts/components/filters-details/StaticSeriesFilter.tsx:31
 #: src/components/charts/components/series-config/StaticSeriesEditor.tsx:50
 #: src/components/commitments/CommitmentsTable.tsx:231
-#: src/components/entities/views/ins-stats-view.presentation.tsx:981
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1004
 msgid "Source"
 msgstr "Source"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:478
+#: src/components/entities/views/ins-stats-view.presentation.tsx:497
 msgid "Source dataset:"
 msgstr "Source dataset:"
 
@@ -5779,12 +5898,12 @@ msgstr "Static dataset"
 msgid "Static Dataset"
 msgstr "Static Dataset"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:197
+#: src/components/charts/components/views/SeriesConfigView.tsx:199
 msgid "Static Series"
 msgstr "Static Series"
 
 #: src/components/alerts/components/AlertEditorView.tsx:285
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1264
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1307
 msgid "Status"
 msgstr "Status"
 
@@ -5800,7 +5919,7 @@ msgstr "Stay here"
 msgid "Step Successfully Finished"
 msgstr "Step Successfully Finished"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:319
+#: src/components/charts/components/views/SeriesConfigView.tsx:322
 msgid "Strip this prefix from x-axis labels for this series (e.g., 2024-). Helps align yearly and monthly data on a common axis."
 msgstr "Strip this prefix from x-axis labels for this series (e.g., 2024-). Helps align yearly and monthly data on a common axis."
 
@@ -5823,6 +5942,10 @@ msgstr "Subtitle"
 #: src/routes/unsubscribe.$token.tsx:32
 msgid "Successfully unsubscribed"
 msgstr "Successfully unsubscribed"
+
+#: src/components/charts/components/series-config/InsSeriesEditor.tsx:428
+msgid "Sum"
+msgstr "Sum"
 
 #: src/components/budget-explorer/RevenueBreakdown.tsx:63
 msgid "Sums pending distribution"
@@ -5885,6 +6008,14 @@ msgstr "Terms of Service"
 #: src/routes/terms.lazy.tsx:16
 msgid "Terms of Use"
 msgstr "Terms of Use"
+
+#: src/components/charts/components/series-config/InsSeriesEditor.tsx:736
+msgid "Territory"
+msgstr "Territory"
+
+#: src/components/charts/components/series-config/ins-dimension-values-list.tsx:56
+msgid "Territory options"
+msgstr "Territory options"
 
 #: src/routes/test-error.tsx:9
 msgid "Test error"
@@ -6021,7 +6152,7 @@ msgstr "This alert is included in every monthly newsletter with its current stat
 msgid "This classification has no subcategories"
 msgstr "This classification has no subcategories"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1012
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1035
 msgid "This dataset is not available for the selected temporal split."
 msgstr "This dataset is not available for the selected temporal split."
 
@@ -6304,7 +6435,7 @@ msgid "UATs"
 msgstr "UATs"
 
 #: src/components/entities/views/ins-stats-view.formatters.ts:61
-#: src/components/entities/views/ins-stats-view.presentation.tsx:480
+#: src/components/entities/views/ins-stats-view.presentation.tsx:499
 msgid "Unavailable"
 msgstr "Unavailable"
 
@@ -6322,7 +6453,7 @@ msgstr "Undo successful"
 msgid "Unemployment rate"
 msgstr "Unemployment rate"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:341
+#: src/components/entities/views/ins-stats-view.presentation.tsx:360
 msgid "Unexpected error while loading derived indicators."
 msgstr "Unexpected error while loading derived indicators."
 
@@ -6331,19 +6462,24 @@ msgid "Unified"
 msgstr "Unified"
 
 #: src/components/alerts/components/ConditionsList.tsx:116
+#: src/components/charts/components/series-config/InsSeriesEditor.tsx:643
 #: src/components/charts/components/series-config/UnitInput.tsx:28
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1228
-#: src/components/entities/views/ins-stats-view.tsx:1072
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1256
+#: src/components/entities/views/ins-stats-view.tsx:1085
 msgid "Unit"
 msgstr "Unit"
 
+#: src/components/charts/components/series-config/ins-dimension-values-list.tsx:55
+msgid "Unit options"
+msgstr "Unit options"
+
 #: src/components/entities/views/ins-stats-view.formatters.ts:37
-#: src/components/entities/views/ins-stats-view.presentation.tsx:222
-#: src/components/entities/views/ins-stats-view.presentation.tsx:225
-#: src/components/entities/views/ins-stats-view.presentation.tsx:291
+#: src/components/entities/views/ins-stats-view.presentation.tsx:241
+#: src/components/entities/views/ins-stats-view.presentation.tsx:244
+#: src/components/entities/views/ins-stats-view.presentation.tsx:310
 #: src/components/entities/views/ins-stats-view.tsx:555
 #: src/components/entities/views/ins-stats-view.tsx:593
-#: src/components/entities/views/ins-stats-view.tsx:1123
+#: src/components/entities/views/ins-stats-view.tsx:1143
 msgid "Unknown"
 msgstr "Unknown"
 
@@ -6480,9 +6616,9 @@ msgstr "Utilization"
 
 #: src/components/charts/components/series-config/CustomSeriesDataEditor.tsx:95
 #: src/components/charts/components/series-config/CustomSeriesValueEditor.tsx:38
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1267
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1269
-#: src/components/entities/views/ins-stats-view.presentation.tsx:1326
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1310
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1312
+#: src/components/entities/views/ins-stats-view.presentation.tsx:1369
 msgid "Value"
 msgstr "Value"
 
@@ -6535,7 +6671,7 @@ msgstr "View as Chart"
 
 #: src/components/charts/components/views/AnnotationConfigView.tsx:76
 #: src/components/charts/components/views/ChartConfigView.tsx:45
-#: src/components/charts/components/views/SeriesConfigView.tsx:160
+#: src/components/charts/components/views/SeriesConfigView.tsx:162
 #: src/components/entity-analytics/EntityAnalyticsLineItems.tsx:131
 msgid "View Chart"
 msgstr "View Chart"
@@ -6686,7 +6822,7 @@ msgstr "Why Is It Important?"
 msgid "Why it matters"
 msgstr "Why it matters"
 
-#: src/components/entities/views/ins-stats-view.presentation.tsx:436
+#: src/components/entities/views/ins-stats-view.presentation.tsx:455
 msgid "Why this matters"
 msgstr "Why this matters"
 
@@ -6706,7 +6842,7 @@ msgstr "Wipe All Data?"
 msgid "Without Transfers"
 msgstr "Without Transfers"
 
-#: src/components/charts/components/views/SeriesConfigView.tsx:317
+#: src/components/charts/components/views/SeriesConfigView.tsx:320
 msgid "X-Axis Prefix To Remove"
 msgstr "X-Axis Prefix To Remove"
 
@@ -6719,7 +6855,7 @@ msgstr "X-Axis Prefix To Remove"
 msgid "Year"
 msgstr "Year"
 
-#: src/components/charts/components/chart-renderer/components/Tooltips.tsx:80
+#: src/components/charts/components/chart-renderer/components/Tooltips.tsx:113
 msgid "Year {headerLabel}"
 msgstr "Year {headerLabel}"
 
