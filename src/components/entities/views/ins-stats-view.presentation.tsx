@@ -1,0 +1,1224 @@
+import { memo, useMemo, useState, type Dispatch, type ReactNode, type SetStateAction } from 'react';
+import { t } from '@lingui/core/macro';
+import { Trans } from '@lingui/react/macro';
+import AlertTriangle from 'lucide-react/dist/esm/icons/alert-triangle';
+import ArrowDownUp from 'lucide-react/dist/esm/icons/arrow-down-up';
+import Baby from 'lucide-react/dist/esm/icons/baby';
+import Briefcase from 'lucide-react/dist/esm/icons/briefcase';
+import Check from 'lucide-react/dist/esm/icons/check';
+import ChevronDown from 'lucide-react/dist/esm/icons/chevron-down';
+import Droplets from 'lucide-react/dist/esm/icons/droplets';
+import ExternalLink from 'lucide-react/dist/esm/icons/external-link';
+import Flame from 'lucide-react/dist/esm/icons/flame';
+import HeartPulse from 'lucide-react/dist/esm/icons/heart-pulse';
+import House from 'lucide-react/dist/esm/icons/house';
+import Info from 'lucide-react/dist/esm/icons/info';
+import Network from 'lucide-react/dist/esm/icons/network';
+import PanelRightClose from 'lucide-react/dist/esm/icons/panel-right-close';
+import PanelRightOpen from 'lucide-react/dist/esm/icons/panel-right-open';
+import Ruler from 'lucide-react/dist/esm/icons/ruler';
+import Search from 'lucide-react/dist/esm/icons/search';
+import TrendingDown from 'lucide-react/dist/esm/icons/trending-down';
+import Waves from 'lucide-react/dist/esm/icons/waves';
+import {
+  Brush,
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
+import ReactMarkdown from 'react-markdown';
+
+import type { InsDataset, InsObservation } from '@/schemas/ins';
+import type { InsSeriesGroup, InsUnitOption } from '@/lib/ins/series-selection';
+import { formatNumber } from '@/lib/utils';
+import {
+  formatDatasetPeriodicity,
+  formatObservationValue,
+  formatPeriodLabel,
+  getCardNumericValue,
+  getClassificationLabel,
+  getLocalizedText,
+  isSafeExternalHref,
+  normalizeSearchValue,
+  toPlainTextLabel,
+} from './ins-stats-view.formatters';
+import { DERIVED_INDICATOR_GROUP_META, DERIVED_INDICATOR_GROUP_ORDER } from './ins-stats-view.derived';
+import type { DatasetExplorerGroup, DerivedIndicator, TemporalSplit } from './ins-stats-view.types';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+
+function MarkdownDescriptionBase({ content }: { content: string }) {
+  return (
+    <ReactMarkdown
+      components={{
+        p: ({ children }) => (
+          <p className="mb-2 text-sm leading-6 tracking-[0.005em] text-slate-700 last:mb-0">{children}</p>
+        ),
+        ul: ({ children }) => (
+          <ul className="mb-2 list-disc space-y-1 pl-5 text-sm leading-6 tracking-[0.005em] text-slate-700">{children}</ul>
+        ),
+        ol: ({ children }) => (
+          <ol className="mb-2 list-decimal space-y-1 pl-5 text-sm leading-6 tracking-[0.005em] text-slate-700">{children}</ol>
+        ),
+        li: ({ children }) => <li>{children}</li>,
+        strong: ({ children }) => <strong className="font-semibold text-slate-900">{children}</strong>,
+        a: ({ href, children }) => {
+          if (!isSafeExternalHref(href)) {
+            return <span>{children}</span>;
+          }
+          return (
+            <a href={href} target="_blank" rel="noreferrer" className="font-medium text-blue-700 underline underline-offset-2">
+              {children}
+            </a>
+          );
+        },
+      }}
+    >
+      {content}
+    </ReactMarkdown>
+  );
+}
+
+export const MarkdownDescription = memo(MarkdownDescriptionBase);
+
+function ExpandableMarkdownFieldBase({
+  label,
+  content,
+  collapsible = true,
+}: {
+  label: ReactNode;
+  content: string;
+  collapsible?: boolean;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const plainTextLength = useMemo(() => toPlainTextLabel(content).length, [content]);
+  const canExpand = collapsible && (plainTextLength > 360 || content.split('\n').length > 5);
+
+  return (
+    <div className="rounded-lg border border-slate-200 bg-white px-3 py-2">
+      <div className="text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500">{label}</div>
+      <div className={`mt-1 ${canExpand && !expanded ? 'relative max-h-36 overflow-hidden' : ''}`}>
+        <MarkdownDescription content={content} />
+        {canExpand && !expanded && (
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-white to-transparent" />
+        )}
+      </div>
+      {canExpand && (
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={() => setExpanded((current) => !current)}
+          className="mt-1 h-7 px-1.5 text-[11px] font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+        >
+          {expanded ? t`Show less` : t`Show more`}
+        </Button>
+      )}
+    </div>
+  );
+}
+
+export const ExpandableMarkdownField = memo(ExpandableMarkdownFieldBase);
+
+function DerivedIndicatorIcon({ id }: { id: DerivedIndicator['id'] }) {
+  const iconClassName = 'h-4 w-4 text-slate-700';
+
+  switch (id) {
+    case 'birth-rate':
+      return <Baby className={iconClassName} />;
+    case 'death-rate':
+      return <HeartPulse className={iconClassName} />;
+    case 'natural-increase':
+    case 'natural-increase-rate':
+      return <TrendingDown className={iconClassName} />;
+    case 'net-migration':
+    case 'net-migration-rate':
+      return <ArrowDownUp className={iconClassName} />;
+    case 'employees-rate':
+      return <Briefcase className={iconClassName} />;
+    case 'dwellings-rate':
+      return <House className={iconClassName} />;
+    case 'living-area':
+      return <Ruler className={iconClassName} />;
+    case 'water':
+      return <Droplets className={iconClassName} />;
+    case 'gas':
+      return <Flame className={iconClassName} />;
+    case 'sewer-rate':
+      return <Waves className={iconClassName} />;
+    case 'gas-network-rate':
+      return <Network className={iconClassName} />;
+    default:
+      return <Info className={iconClassName} />;
+  }
+}
+
+type SummaryMetricRow = {
+  dataset: InsDataset | null;
+  observation: InsObservation | null;
+  periodLabel: string;
+  selectedPeriodLabel: string;
+  source: 'selected' | 'fallback' | 'none';
+  hasData: boolean;
+};
+
+type SummaryMetricCard = {
+  code: string;
+  label: string;
+  row: SummaryMetricRow | undefined;
+};
+
+function SummaryMetricsSectionBase(props: {
+  isLoading: boolean;
+  summaryCards: SummaryMetricCard[];
+  selectedReportPeriodLabel: string;
+  selectedDatasetCode: string | null;
+  locale: 'ro' | 'en';
+  onSelectDataset: (datasetCode: string) => void;
+}) {
+  const { isLoading, summaryCards, selectedReportPeriodLabel, selectedDatasetCode, locale, onSelectDataset } = props;
+
+  if (isLoading) {
+    return (
+      <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <Card key={index} className="space-y-3 p-4">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-8 w-32" />
+            <Skeleton className="h-3 w-20" />
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+      {summaryCards.map((summary) => {
+        const observation = summary.row?.observation;
+        const formattedValue = observation ? getCardNumericValue(observation) : { value: t`N/A` };
+        const period = summary.row?.periodLabel || t`Unknown`;
+        const selectedPeriodTag = summary.row?.selectedPeriodLabel || selectedReportPeriodLabel;
+        const isPeriodFallback =
+          summary.row?.source === 'fallback' || (period !== t`Unknown` && period !== selectedPeriodTag);
+        const periodLabelText = isPeriodFallback ? `${period} (${t`last available`})` : period;
+        const datasetName =
+          getLocalizedText(summary.row?.dataset?.name_ro, summary.row?.dataset?.name_en, locale) || summary.code;
+        const isSelected = selectedDatasetCode === summary.code;
+
+        return (
+          <button
+            key={summary.code}
+            type="button"
+            onClick={() => onSelectDataset(summary.code)}
+            className="text-left"
+          >
+            <Card className={`h-full border-slate-200/80 ${isSelected ? 'border-slate-900 ring-1 ring-slate-900/10' : ''}`}>
+              <CardHeader className="pb-2 pt-4">
+                <CardTitle className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                  {summary.label}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2 pb-4">
+                <div className="flex items-center gap-2 text-[2.2rem] font-bold leading-none tracking-tight text-slate-800">
+                  <span>{formattedValue.value}</span>
+                  {formattedValue.statusLabel && (
+                    <Badge variant="outline" className="text-[10px]">
+                      {formattedValue.statusLabel}
+                    </Badge>
+                  )}
+                </div>
+                <div className="line-clamp-2 text-[13px] leading-snug text-slate-600">{datasetName}</div>
+                <div className="text-[12px] font-medium text-slate-500">
+                  <Trans>Period:</Trans> {periodLabelText}
+                </div>
+              </CardContent>
+            </Card>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+export const SummaryMetricsSection = memo(SummaryMetricsSectionBase);
+
+function DerivedIndicatorsSectionBase(props: {
+  isLoading: boolean;
+  error: unknown;
+  derivedIndicators: DerivedIndicator[];
+  groupedDerivedIndicators: Record<'demography' | 'economy_housing' | 'utilities', DerivedIndicator[]>;
+  derivedIndicatorStatus: {
+    selectedPeriodLabel: string;
+    dataPeriodLabel: string;
+    hasFallback: boolean;
+  };
+  onSelectDerivedIndicator: (datasetCode: string | null) => void;
+}) {
+  const {
+    isLoading,
+    error,
+    derivedIndicators,
+    groupedDerivedIndicators,
+    derivedIndicatorStatus,
+    onSelectDerivedIndicator,
+  } = props;
+
+  const isPeriodFallback =
+    derivedIndicatorStatus.hasFallback ||
+    (derivedIndicatorStatus.dataPeriodLabel !== t`Unknown` &&
+      derivedIndicatorStatus.dataPeriodLabel !== derivedIndicatorStatus.selectedPeriodLabel);
+  const periodLabelText = isPeriodFallback
+    ? `${derivedIndicatorStatus.dataPeriodLabel} (${t`last available`})`
+    : derivedIndicatorStatus.dataPeriodLabel;
+
+  return (
+    <Card className="border-slate-200/80 shadow-sm">
+      <CardHeader className="pb-2">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <CardTitle className="text-xl font-bold tracking-tight text-slate-900">
+            <Trans>Derived indicators</Trans>
+          </CardTitle>
+          <div className="text-[12px] font-medium text-slate-500">
+            <Trans>Period:</Trans> {periodLabelText}
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent>
+        {isLoading ? (
+          <div className="grid gap-3 md:grid-cols-3">
+            {Array.from({ length: 8 }).map((_, index) => (
+              <Skeleton key={index} className="h-8 w-full" />
+            ))}
+          </div>
+        ) : error ? (
+          <Alert variant="destructive">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertTitle><Trans>Could not load derived indicators</Trans></AlertTitle>
+            <AlertDescription>
+              {error instanceof Error ? error.message : t`Unexpected error while loading derived indicators.`}
+            </AlertDescription>
+          </Alert>
+        ) : derivedIndicators.length === 0 ? (
+          <div className="text-sm text-muted-foreground">
+            <Trans>Not enough latest values to compute derived indicators.</Trans>
+          </div>
+        ) : (
+          <div className="grid gap-4 xl:grid-cols-3">
+            {DERIVED_INDICATOR_GROUP_ORDER.map((groupId) => {
+              const groupRows = groupedDerivedIndicators[groupId];
+              if (groupRows.length === 0) return null;
+
+              return (
+                <div key={groupId} className="rounded-xl border border-slate-200 bg-white p-3">
+                  <div className="mb-2">
+                    <h4 className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                      {DERIVED_INDICATOR_GROUP_META[groupId].label}
+                    </h4>
+                    <p className="text-[12px] text-slate-500">
+                      {DERIVED_INDICATOR_GROUP_META[groupId].description}
+                    </p>
+                  </div>
+
+                  <div className="space-y-1">
+                    {groupRows.map((row) => (
+                      <button
+                        key={row.id}
+                        type="button"
+                        onClick={() => onSelectDerivedIndicator(row.sourceDatasetCode)}
+                        className="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left transition-colors hover:bg-slate-50"
+                      >
+                        <div className="min-w-0 flex items-center gap-2">
+                          <div className="rounded-md border border-slate-200 bg-white p-1">
+                            <DerivedIndicatorIcon id={row.id} />
+                          </div>
+                          <span className="truncate text-[13px] font-medium text-slate-600">{row.label}</span>
+                        </div>
+                        <div className="ml-3 min-w-[96px] shrink-0 text-right">
+                          <div className="text-[1.25rem] font-bold leading-none tracking-tight tabular-nums text-slate-800">
+                            {row.value}
+                          </div>
+                          <div className="mt-0.5 text-[10px] font-medium leading-none text-slate-500">
+                            {row.unitLabel}
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+export const DerivedIndicatorsSection = memo(DerivedIndicatorsSectionBase);
+
+function DatasetExplorerSectionBase(props: {
+  isExplorerFullWidth: boolean;
+  searchTerm: string;
+  onSearchTermChange: (value: string) => void;
+  onToggleExplorerWidth: () => void;
+  isLoading: boolean;
+  groupedDatasets: DatasetExplorerGroup[];
+  openRootGroups: string[];
+  onOpenRootGroupsChange: (value: string[]) => void;
+  selectedDatasetCode: string | null;
+  locale: 'ro' | 'en';
+  onSelectDataset: (datasetCode: string) => void;
+  rootGroupRefs: Record<string, HTMLDivElement | null>;
+  sectionRefs: Record<string, HTMLDivElement | null>;
+  datasetItemRefs: Record<string, HTMLButtonElement | null>;
+}) {
+  const {
+    isExplorerFullWidth,
+    searchTerm,
+    onSearchTermChange,
+    onToggleExplorerWidth,
+    isLoading,
+    groupedDatasets,
+    openRootGroups,
+    onOpenRootGroupsChange,
+    selectedDatasetCode,
+    locale,
+    onSelectDataset,
+    rootGroupRefs,
+    sectionRefs,
+    datasetItemRefs,
+  } = props;
+
+  const renderDatasetListItem = (dataset: InsDataset, options?: { fullWidth?: boolean }) => {
+    const isFullWidth = options?.fullWidth ?? false;
+    const periodicityLabel = formatDatasetPeriodicity(dataset.periodicity);
+    const isSelected = selectedDatasetCode === dataset.code;
+    const datasetLabel = getLocalizedText(dataset.name_ro, dataset.name_en, locale) || dataset.code;
+
+    return (
+      <button
+        type="button"
+        key={dataset.code}
+        data-testid={`dataset-item-${dataset.code}`}
+        ref={(element) => {
+          datasetItemRefs[dataset.code] = element;
+        }}
+        className={`group w-full text-left transition-all ${
+          isSelected ? 'bg-slate-100' : 'bg-white hover:bg-slate-50'
+        }`}
+        onClick={() => onSelectDataset(dataset.code)}
+      >
+        <div className={`flex items-start justify-between gap-2 ${isFullWidth ? 'px-3 py-3' : 'px-2.5 py-2.5'}`}>
+          <div className="min-w-0">
+            <div
+              className={
+                isFullWidth
+                  ? 'line-clamp-1 text-[14px] font-semibold leading-6 tracking-[0.002em] text-slate-900'
+                  : 'line-clamp-2 text-[13px] font-semibold leading-[1.35] tracking-[0.002em] text-slate-900'
+              }
+            >
+              {datasetLabel}
+            </div>
+            <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+              <span
+                className={`rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${
+                  isSelected ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-700'
+                }`}
+              >
+                {dataset.code}
+              </span>
+              {periodicityLabel && (
+                <span className="text-[11px] font-medium text-slate-500">{periodicityLabel}</span>
+              )}
+            </div>
+          </div>
+        </div>
+      </button>
+    );
+  };
+
+  return (
+    <Card className="flex h-[760px] flex-col border-slate-200/80 shadow-sm">
+      <CardHeader className="space-y-3 px-4 pb-3 pt-4">
+        <div className="flex items-center justify-between gap-2">
+          <CardTitle className="text-[1.05rem] font-semibold tracking-[-0.01em] text-slate-900">
+            <Trans>Dataset explorer</Trans>
+          </CardTitle>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={onToggleExplorerWidth}
+            className="h-8 w-8 rounded-md border border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+            aria-label={isExplorerFullWidth ? t`Collapse explorer to side panel` : t`Expand explorer to full width`}
+            title={isExplorerFullWidth ? t`Collapse explorer to side panel` : t`Expand explorer to full width`}
+          >
+            {isExplorerFullWidth ? <PanelRightOpen className="h-4 w-4" /> : <PanelRightClose className="h-4 w-4" />}
+          </Button>
+        </div>
+
+        <div className="relative">
+          <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+          <Input
+            value={searchTerm}
+            onChange={(event) => onSearchTermChange(event.target.value)}
+            placeholder={t`Search dataset code or name`}
+            className="h-10 w-full rounded-lg border-slate-300 bg-white pl-9 text-sm shadow-sm"
+          />
+        </div>
+      </CardHeader>
+      <CardContent className="flex-1 min-h-0 px-4 pb-4 pt-0">
+        {isLoading ? (
+          <div className="space-y-2">
+            {Array.from({ length: 8 }).map((_, index) => (
+              <Skeleton key={index} className="h-12 w-full" />
+            ))}
+          </div>
+        ) : groupedDatasets.length === 0 ? (
+          <div className="rounded-md border border-dashed p-4 text-sm text-muted-foreground">
+            <Trans>No datasets match your current filters.</Trans>
+          </div>
+        ) : (
+          <ScrollArea className="h-full pr-2">
+            <Accordion
+              type="multiple"
+              value={openRootGroups}
+              onValueChange={onOpenRootGroupsChange}
+              className="w-full"
+            >
+              {groupedDatasets.map((group) => (
+                <AccordionItem
+                  key={group.code}
+                  value={group.code}
+                  className={
+                    isExplorerFullWidth
+                      ? 'rounded-none border-0 bg-transparent px-0'
+                      : 'rounded-none border-x-0 border-t-0 border-b border-slate-200 bg-white px-1'
+                  }
+                  ref={(element) => {
+                    rootGroupRefs[group.code] = element;
+                  }}
+                >
+                  <AccordionTrigger
+                    className={`items-start text-[13px] font-semibold tracking-[-0.005em] text-slate-800 hover:no-underline [&>svg]:-mt-0.5 [&>svg]:h-5 [&>svg]:w-5 [&>svg]:self-start ${
+                      isExplorerFullWidth ? 'border-b border-slate-200 px-2 py-3' : 'px-1 py-2.5'
+                    }`}
+                  >
+                    <div className="flex w-full items-start justify-between gap-3 pr-2">
+                      <div className="min-w-0 text-left">
+                        <div className="line-clamp-1 font-semibold tracking-[-0.005em] text-slate-900">{group.label}</div>
+                      </div>
+                      <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold tracking-[0.01em] text-slate-600">
+                        {group.totalCount}
+                      </span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent
+                    className={`pb-3 pt-1 ${isExplorerFullWidth ? 'space-y-4 px-2 pt-2' : 'space-y-3 px-0.5'}`}
+                  >
+                    {group.sections.map((section) => (
+                      <div
+                        key={`${group.code}-${section.code}`}
+                        className={`space-y-2 ${isExplorerFullWidth ? 'px-1' : 'px-0.5'}`}
+                        ref={(element) => {
+                          sectionRefs[section.code] = element;
+                        }}
+                      >
+                        <div className="flex items-center justify-between gap-3 px-0.5">
+                          <span className="text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-600">
+                            {section.label}
+                          </span>
+                          <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500">
+                            {section.datasets.length}
+                          </span>
+                        </div>
+                        <div className="divide-y divide-slate-100 overflow-hidden rounded-md bg-white">
+                          {section.datasets.map((dataset) =>
+                            renderDatasetListItem(dataset, { fullWidth: isExplorerFullWidth })
+                          )}
+                        </div>
+                      </div>
+                    ))}
+
+                    {group.unsectionedDatasets.length > 0 && (
+                      <div className={`space-y-2 ${isExplorerFullWidth ? 'px-1' : 'px-0.5'}`}>
+                        <div className="flex items-center justify-between gap-3 px-0.5">
+                          <span className="text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-600">
+                            <Trans>Other datasets</Trans>
+                          </span>
+                          <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500">
+                            {group.unsectionedDatasets.length}
+                          </span>
+                        </div>
+                        <div className="divide-y divide-slate-100 overflow-hidden rounded-md bg-white">
+                          {group.unsectionedDatasets.map((dataset) =>
+                            renderDatasetListItem(dataset, { fullWidth: isExplorerFullWidth })
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </ScrollArea>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+export const DatasetExplorerSection = memo(DatasetExplorerSectionBase);
+
+type DatasetDetailsCardModel = {
+  code: string;
+  title: string;
+  hierarchy: Array<{
+    code: string;
+    label: string;
+    kind: 'home' | 'context' | 'dataset';
+    rootCode: string;
+  }>;
+  rootContextCode: string;
+  rootContextBreadcrumbLabel: string | null;
+  contextLabel: string | null;
+  periodicityLabel: string;
+  yearRange: string | null;
+  dimensionCount: string | null;
+  definition: string | null;
+  methodology: string | null;
+  source: string | null;
+  notes: string | null;
+};
+
+function DatasetDetailSectionBase(props: {
+  selectedDatasetDetails: DatasetDetailsCardModel | null;
+  selectedDatasetBreadcrumbItems: Array<{
+    code: string;
+    label: string;
+    kind: 'home' | 'context' | 'dataset';
+    rootCode: string;
+  }>;
+  selectedDataset: InsDataset | null;
+  selectedDatasetCode: string | null;
+  locale: 'ro' | 'en';
+  hasDatasetMetadataPanel: boolean;
+  isDatasetMetaExpanded: boolean;
+  setIsDatasetMetaExpanded: Dispatch<SetStateAction<boolean>>;
+  handleHierarchyNavigate: (item: { code: string; kind: 'home' | 'context' | 'dataset'; rootCode: string }) => void;
+  datasetHistoryQuery: {
+    isLoading: boolean;
+    error: unknown;
+    data: {
+      partial?: boolean;
+    } | undefined;
+  };
+  historySeries: InsObservation[];
+  historyRows: InsObservation[];
+  showAllRows: boolean;
+  setShowAllRows: Dispatch<SetStateAction<boolean>>;
+  isTemporalSplitIncompatible: boolean;
+  availableTemporalOptions: Array<{ value: Exclude<TemporalSplit, 'all'>; label: string }>;
+  temporalSplit: TemporalSplit;
+  setTemporalSplit: Dispatch<SetStateAction<TemporalSplit>>;
+  hasTemporalSelector: boolean;
+  hasSeriesSelectors: boolean;
+  handleResetSeriesSelection: () => void;
+  selectableSeriesGroups: InsSeriesGroup[];
+  effectiveSeriesSelection: Record<string, string[]>;
+  seriesSelectorSearchByTypeCode: Record<string, string>;
+  setSeriesSelectorSearchByTypeCode: Dispatch<SetStateAction<Record<string, string>>>;
+  handleSeriesGroupSelectionChange: (typeCode: string, selectedCode: string, multiSelect: boolean) => void;
+  historyUnitOptions: InsUnitOption[];
+  effectiveUnitSelection: string | null;
+  handleUnitSelectionChange: (unitKey: string) => void;
+  activeSeriesCriteriaParts: string[];
+  historyChartData: Array<{
+    period: string;
+    numericValue: number | null;
+    rawValue: string | null | undefined;
+    statusLabel: string | null;
+  }>;
+  selectedDatasetSourceUrl: string | null;
+  insTermsUrl: string;
+  hasMultiValueSeriesSelection: boolean;
+}) {
+  const {
+    selectedDatasetDetails,
+    selectedDatasetBreadcrumbItems,
+    selectedDataset,
+    selectedDatasetCode,
+    locale,
+    hasDatasetMetadataPanel,
+    isDatasetMetaExpanded,
+    setIsDatasetMetaExpanded,
+    handleHierarchyNavigate,
+    datasetHistoryQuery,
+    historySeries,
+    historyRows,
+    showAllRows,
+    setShowAllRows,
+    isTemporalSplitIncompatible,
+    availableTemporalOptions,
+    temporalSplit,
+    setTemporalSplit,
+    hasTemporalSelector,
+    hasSeriesSelectors,
+    handleResetSeriesSelection,
+    selectableSeriesGroups,
+    effectiveSeriesSelection,
+    seriesSelectorSearchByTypeCode,
+    setSeriesSelectorSearchByTypeCode,
+    handleSeriesGroupSelectionChange,
+    historyUnitOptions,
+    effectiveUnitSelection,
+    handleUnitSelectionChange,
+    activeSeriesCriteriaParts,
+    historyChartData,
+    selectedDatasetSourceUrl,
+    insTermsUrl,
+    hasMultiValueSeriesSelection,
+  } = props;
+
+  return (
+    <Card>
+      <CardHeader className="space-y-3 pb-4">
+        {selectedDatasetDetails && selectedDatasetBreadcrumbItems.length > 0 && (
+          <nav className="text-[12px] font-medium leading-5 tracking-[0.01em] text-slate-500">
+            <div className="flex flex-wrap items-center gap-y-1">
+              {selectedDatasetBreadcrumbItems.map((item, index) => {
+                const isCurrent = index === selectedDatasetBreadcrumbItems.length - 1;
+                const displayLabel =
+                  item.kind === 'context' && item.code === selectedDatasetDetails?.rootContextCode
+                    ? selectedDatasetDetails?.rootContextBreadcrumbLabel || item.label
+                    : item.label;
+
+                return (
+                  <div key={`${item.code}-${index}`} className="flex items-center">
+                    {index > 0 && <span className="mx-1.5 text-slate-400">/</span>}
+                    {isCurrent ? (
+                      <span
+                        title={displayLabel}
+                        className="max-w-[320px] truncate font-semibold tracking-[0.005em] text-slate-900"
+                      >
+                        {displayLabel}
+                      </span>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => handleHierarchyNavigate(item)}
+                        title={displayLabel}
+                        className="max-w-[320px] truncate font-medium tracking-[0.005em] text-slate-500 underline-offset-2 transition-colors hover:text-slate-800 hover:underline"
+                      >
+                        {displayLabel}
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </nav>
+        )}
+
+        {selectedDataset ? (
+          <div className="space-y-1">
+            <div className="text-3xl font-bold tracking-tight text-slate-900">
+              {selectedDatasetDetails?.title ||
+                getLocalizedText(selectedDataset.name_ro, selectedDataset.name_en, locale) ||
+                selectedDataset.code}
+            </div>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <span className="text-xl font-semibold tracking-[-0.01em] text-slate-700">{selectedDataset.code}</span>
+              {hasDatasetMetadataPanel && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsDatasetMetaExpanded((current) => !current)}
+                  className="h-7 px-2 text-[12px] font-medium tracking-[0.01em] text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                >
+                  {isDatasetMetaExpanded ? t`Show less` : t`Show more`}
+                </Button>
+              )}
+            </div>
+          </div>
+        ) : selectedDatasetCode !== null ? (
+          <div className="space-y-1">
+            <div className="text-3xl font-bold tracking-tight text-slate-900">{selectedDatasetCode}</div>
+            <div className="text-sm text-muted-foreground">
+              <Trans>Dataset metadata is loading or unavailable, but historical data can still be viewed below.</Trans>
+            </div>
+          </div>
+        ) : (
+          <div className="text-sm text-muted-foreground">
+            <Trans>Select a metric card or dataset from the list to load full history.</Trans>
+          </div>
+        )}
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {selectedDatasetDetails && isDatasetMetaExpanded && (
+          <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
+            <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+              <div className="rounded-lg border border-slate-200 bg-white px-3 py-2">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                  <Trans>Code</Trans>
+                </div>
+                <div className="mt-0.5 text-[1.05rem] font-semibold tracking-[-0.005em] text-slate-900">
+                  {selectedDatasetDetails.code}
+                </div>
+              </div>
+              {selectedDatasetDetails.periodicityLabel && (
+                <div className="rounded-lg border border-slate-200 bg-white px-3 py-2">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                    <Trans>Periodicity</Trans>
+                  </div>
+                  <div className="mt-0.5 text-[1.05rem] font-semibold tracking-[-0.005em] text-slate-900">
+                    {selectedDatasetDetails.periodicityLabel}
+                  </div>
+                </div>
+              )}
+              {selectedDatasetDetails.yearRange && (
+                <div className="rounded-lg border border-slate-200 bg-white px-3 py-2">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                    <Trans>Coverage</Trans>
+                  </div>
+                  <div className="mt-0.5 text-[1.05rem] font-semibold tracking-[-0.005em] text-slate-900">
+                    {selectedDatasetDetails.yearRange}
+                  </div>
+                </div>
+              )}
+              {selectedDatasetDetails.dimensionCount && (
+                <div className="rounded-lg border border-slate-200 bg-white px-3 py-2">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                    <Trans>Dimensions</Trans>
+                  </div>
+                  <div className="mt-0.5 text-[1.05rem] font-semibold tracking-[-0.005em] text-slate-900">
+                    {selectedDatasetDetails.dimensionCount}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="mt-3 space-y-3">
+              {selectedDatasetDetails.contextLabel && (
+                <ExpandableMarkdownField label={<Trans>Context</Trans>} content={selectedDatasetDetails.contextLabel} />
+              )}
+
+              {selectedDatasetDetails.definition && (
+                <ExpandableMarkdownField
+                  label={<Trans>Description</Trans>}
+                  content={selectedDatasetDetails.definition}
+                  collapsible={false}
+                />
+              )}
+
+              {selectedDatasetDetails.methodology && (
+                <ExpandableMarkdownField label={<Trans>Methodology</Trans>} content={selectedDatasetDetails.methodology} />
+              )}
+
+              {selectedDatasetDetails.source && (
+                <ExpandableMarkdownField label={<Trans>Source</Trans>} content={selectedDatasetDetails.source} />
+              )}
+
+              {selectedDatasetDetails.notes && (
+                <ExpandableMarkdownField label={<Trans>Notes</Trans>} content={selectedDatasetDetails.notes} />
+              )}
+            </div>
+          </div>
+        )}
+
+        {selectedDatasetCode === null ? (
+          <div className="rounded-md border border-dashed p-6 text-sm text-muted-foreground">
+            <Trans>No dataset selected yet.</Trans>
+          </div>
+        ) : datasetHistoryQuery.isLoading ? (
+          <div className="space-y-3">
+            <Skeleton className="h-64 w-full" />
+            <Skeleton className="h-20 w-full" />
+          </div>
+        ) : datasetHistoryQuery.error instanceof Error ? (
+          <Alert variant="destructive">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertTitle><Trans>Could not load historical data</Trans></AlertTitle>
+            <AlertDescription>{datasetHistoryQuery.error.message}</AlertDescription>
+          </Alert>
+        ) : historySeries.length === 0 ? (
+          <div className="rounded-md border border-dashed p-6 text-sm text-muted-foreground">
+            <p><Trans>No observations available for the selected dataset and entity.</Trans></p>
+            {isTemporalSplitIncompatible && availableTemporalOptions.length > 0 && (
+              <div className="mt-2 flex items-center gap-2">
+                <span className="text-xs">
+                  <Trans>This dataset is not available for the selected temporal split.</Trans>
+                </span>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="h-7 px-2 text-[11px]"
+                  onClick={() => setTemporalSplit(availableTemporalOptions[0].value)}
+                >
+                  <Trans>Reset to available period</Trans>
+                </Button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <>
+            {hasTemporalSelector && (
+              <div className="flex flex-wrap items-center gap-2 rounded-md border border-slate-200 bg-slate-50/60 px-3 py-2">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500">
+                  <Trans>Period</Trans>
+                </span>
+                {availableTemporalOptions.map((option) => (
+                  <Button
+                    key={`detail-${option.value}`}
+                    variant={temporalSplit === option.value ? 'default' : 'ghost'}
+                    size="sm"
+                    onClick={() => setTemporalSplit(option.value)}
+                    className={`h-7 rounded-full px-3 text-[11px] font-medium tracking-[0.01em] ${
+                      temporalSplit === option.value
+                        ? 'bg-slate-900 text-white hover:bg-slate-800'
+                        : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+                    }`}
+                  >
+                    {option.label}
+                  </Button>
+                ))}
+              </div>
+            )}
+
+            {hasSeriesSelectors && (
+              <div className="space-y-3 rounded-md border border-slate-200 bg-slate-50/70 p-3">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="text-[12px] font-semibold uppercase tracking-[0.06em] text-slate-600">
+                    <Trans>Series selector</Trans>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleResetSeriesSelection}
+                    className="h-7 px-2 text-[11px] font-semibold text-slate-600 hover:bg-slate-200/70 hover:text-slate-900"
+                  >
+                    <Trans>Reset to default</Trans>
+                  </Button>
+                </div>
+
+                <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
+                  {selectableSeriesGroups.map((group) => {
+                    const selectedCodes = effectiveSeriesSelection[group.typeCode] ?? [];
+                    const selectedOptions = group.options.filter((option) => selectedCodes.includes(option.code));
+                    const selectorSearchTerm = seriesSelectorSearchByTypeCode[group.typeCode] ?? '';
+                    const shouldShowSelectorSearch = group.options.length > 10;
+                    const normalizedSelectorSearchTerm = normalizeSearchValue(selectorSearchTerm);
+                    const filteredOptions =
+                      !shouldShowSelectorSearch || normalizedSelectorSearchTerm === ''
+                        ? group.options
+                        : group.options.filter((option) =>
+                            normalizeSearchValue(`${option.label} ${option.rawCode}`).includes(
+                              normalizedSelectorSearchTerm
+                            )
+                          );
+                    const triggerLabel =
+                      selectedOptions.length === 0
+                        ? t`Select series`
+                        : selectedOptions.length === 1
+                          ? selectedOptions[0].label
+                          : `${selectedOptions.length} ${t`selected`}`;
+                    return (
+                      <div key={group.typeCode} className="space-y-1">
+                        <label className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500">
+                          {group.typeLabel}
+                        </label>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              className="h-9 w-full justify-between border-slate-300 bg-white px-2 text-[13px] font-medium text-slate-700 hover:bg-slate-100"
+                            >
+                              <span className="truncate text-left">{triggerLabel}</span>
+                              <ChevronDown className="h-4 w-4 text-slate-500" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent align="start" className="w-[min(420px,92vw)] border-slate-200 p-2">
+                            <div className="mb-1.5 text-[11px] text-slate-500">
+                              <Trans>Hold Ctrl/Cmd or Shift while clicking to multi-select.</Trans>
+                            </div>
+
+                            {shouldShowSelectorSearch && (
+                              <div className="relative mb-2">
+                                <Search className="pointer-events-none absolute left-2 top-2 h-3.5 w-3.5 text-slate-400" />
+                                <Input
+                                  value={selectorSearchTerm}
+                                  onChange={(event) =>
+                                    setSeriesSelectorSearchByTypeCode((current) => ({
+                                      ...current,
+                                      [group.typeCode]: event.target.value,
+                                    }))
+                                  }
+                                  placeholder={t`Search series options`}
+                                  className="h-8 rounded-md border-slate-300 bg-white pl-7 text-[12px]"
+                                />
+                              </div>
+                            )}
+
+                            <div className="max-h-72 space-y-2 overflow-y-auto pr-1">
+                              {shouldShowSelectorSearch ? (
+                                <>
+                                  {selectedOptions.length > 0 && (
+                                    <div className="space-y-1">
+                                      <div className="px-0.5 text-[10px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+                                        <Trans>Selected</Trans>
+                                      </div>
+                                      <div className="flex flex-wrap gap-1">
+                                        {selectedOptions.map((option) => (
+                                          <button
+                                            type="button"
+                                            key={`${group.typeCode}-${option.code}-selected`}
+                                            onClick={() =>
+                                              handleSeriesGroupSelectionChange(group.typeCode, option.code, true)
+                                            }
+                                            className="inline-flex items-center gap-1 rounded-full bg-slate-900 px-2 py-1 text-[11px] font-medium text-white transition-colors hover:bg-slate-800"
+                                          >
+                                            <Check className="h-3 w-3" />
+                                            <span className="max-w-[180px] truncate">{option.label}</span>
+                                          </button>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  <div className="space-y-1">
+                                    <div className="px-0.5 text-[10px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+                                      <Trans>Options</Trans>
+                                    </div>
+                                    {filteredOptions.map((option) => {
+                                      const isSelected = selectedCodes.includes(option.code);
+                                      return (
+                                        <button
+                                          type="button"
+                                          key={`${group.typeCode}-${option.code}`}
+                                          onClick={(event) =>
+                                            handleSeriesGroupSelectionChange(
+                                              group.typeCode,
+                                              option.code,
+                                              event.shiftKey || event.ctrlKey || event.metaKey
+                                            )
+                                          }
+                                          className={`flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left transition-colors ${
+                                            isSelected
+                                              ? 'bg-slate-900 text-white'
+                                              : 'text-slate-700 hover:bg-slate-100'
+                                          }`}
+                                        >
+                                          <span className="text-[12px] font-medium leading-5">{option.label}</span>
+                                          {isSelected && <Check className="ml-2 h-4 w-4 shrink-0" />}
+                                        </button>
+                                      );
+                                    })}
+                                    {filteredOptions.length === 0 && (
+                                      <div className="rounded-md border border-dashed border-slate-200 px-2 py-2 text-[12px] text-slate-500">
+                                        <Trans>No options match your search.</Trans>
+                                      </div>
+                                    )}
+                                  </div>
+                                </>
+                              ) : (
+                                group.options.map((option) => {
+                                  const isSelected = selectedCodes.includes(option.code);
+
+                                  return (
+                                    <button
+                                      type="button"
+                                      key={`${group.typeCode}-${option.code}`}
+                                      onClick={(event) =>
+                                        handleSeriesGroupSelectionChange(
+                                          group.typeCode,
+                                          option.code,
+                                          event.shiftKey || event.ctrlKey || event.metaKey
+                                        )
+                                      }
+                                      className={`flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left transition-colors ${
+                                        isSelected
+                                          ? 'bg-slate-900 text-white'
+                                          : 'text-slate-700 hover:bg-slate-100'
+                                      }`}
+                                    >
+                                      <span className="text-[12px] font-medium leading-5">{option.label}</span>
+                                      {isSelected && <Check className="ml-2 h-4 w-4 shrink-0" />}
+                                    </button>
+                                  );
+                                })
+                              )}
+                            </div>
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+                    );
+                  })}
+
+                  {historyUnitOptions.length > 1 && (
+                    <div className="space-y-1">
+                      <label
+                        htmlFor="series-selector-unit"
+                        className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500"
+                      >
+                        <Trans>Unit</Trans>
+                      </label>
+                      <select
+                        id="series-selector-unit"
+                        value={effectiveUnitSelection ?? ''}
+                        onChange={(event) => handleUnitSelectionChange(event.target.value)}
+                        className="h-9 w-full rounded-md border border-slate-300 bg-white px-2 text-[13px] font-medium text-slate-700 shadow-sm focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-300"
+                      >
+                        {historyUnitOptions.map((option) => (
+                          <option key={option.key} value={option.key}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {activeSeriesCriteriaParts.length > 0 && (
+              <div className="text-[12px] leading-5 text-slate-600">
+                <span className="font-semibold text-slate-700"><Trans>Active series criteria:</Trans></span>{' '}
+                {activeSeriesCriteriaParts.join(' • ')}
+              </div>
+            )}
+
+            <div className="h-72 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={historyChartData} margin={{ top: 10, right: 16, left: 8, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="period" minTickGap={24} />
+                  <YAxis />
+                  <Tooltip
+                    formatter={(value, _name, item) => {
+                      if (item.payload?.statusLabel) {
+                        return [item.payload.statusLabel, t`Status`];
+                      }
+                      if (typeof value !== 'number') {
+                        return ['—', t`Value`];
+                      }
+                      return [formatNumber(value, 'standard'), t`Value`];
+                    }}
+                  />
+                  <Line type="monotone" dataKey="numericValue" stroke="#0f172a" strokeWidth={2} dot={false} />
+                  <Brush dataKey="period" height={20} stroke="#475569" travellerWidth={8} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+            {selectedDatasetSourceUrl && (
+              <div className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2.5 text-[12px] leading-5 text-slate-600">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                  <a
+                    href={selectedDatasetSourceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 font-semibold text-slate-800 underline-offset-2 hover:text-slate-950 hover:underline"
+                  >
+                    <Trans>Open source matrix in INS Tempo</Trans>
+                    <ExternalLink className="h-3.5 w-3.5" />
+                  </a>
+                  <span className="text-slate-400">•</span>
+                  <span>
+                    <Trans>
+                      Data is sourced from INS Tempo. Reuse and redistribution are subject to INS terms and license.
+                    </Trans>{' '}
+                    <a
+                      href={insTermsUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="font-medium text-slate-700 underline underline-offset-2 hover:text-slate-900"
+                    >
+                      <Trans>INS terms</Trans>
+                    </a>
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {datasetHistoryQuery.data?.partial && (
+              <Alert>
+                <Info className="h-4 w-4" />
+                <AlertTitle><Trans>Partial history</Trans></AlertTitle>
+                <AlertDescription>
+                  <Trans>
+                    Full historical observations exceeded the page cap for this view. Showing the retrieved subset.
+                  </Trans>
+                </AlertDescription>
+              </Alert>
+            )}
+
+            <Table className="text-sm">
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-32 text-[12px] font-semibold tracking-[0.02em] text-slate-500">
+                    <Trans>Period</Trans>
+                  </TableHead>
+                  <TableHead className="text-[12px] font-semibold tracking-[0.02em] text-slate-500">
+                    <Trans>Value</Trans>
+                  </TableHead>
+                  <TableHead className="text-right text-[12px] font-semibold tracking-[0.02em] text-slate-500">
+                    <Trans>Details</Trans>
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {historyRows.map((row) => {
+                  const { value, statusLabel } = formatObservationValue(row);
+                  return (
+                    <TableRow key={`${row.dataset_code}-${row.time_period.iso_period}-${row.value}`}>
+                      <TableCell className="font-medium tracking-[0.005em]">{formatPeriodLabel(row.time_period)}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <span className={statusLabel ? 'text-muted-foreground' : 'font-medium tracking-[0.005em]'}>
+                            {value}
+                          </span>
+                          {statusLabel && (
+                            <Badge variant="outline" className="text-[10px]">
+                              {statusLabel}
+                            </Badge>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-right text-muted-foreground">
+                        {hasMultiValueSeriesSelection ? t`Multiple selected values` : getClassificationLabel(row)}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+
+            {historySeries.length > 12 && (
+              <Button variant="outline" size="sm" onClick={() => setShowAllRows((previous) => !previous)}>
+                {showAllRows ? t`Show less` : t`Show all periods`}
+              </Button>
+            )}
+          </>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+export const DatasetDetailSection = memo(DatasetDetailSectionBase);

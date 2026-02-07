@@ -27,17 +27,54 @@ import type {
 const DEFAULT_STALE_TIME = 1000 * 60 * 15;
 const LONG_STALE_TIME = 1000 * 60 * 60 * 24;
 
+function buildHash(payload: unknown): string {
+  if (typeof payload === 'string') {
+    return generateHash(payload);
+  }
+  return generateHash(JSON.stringify(payload));
+}
+
+function splitEnabled<T extends object>(params: T & { enabled?: boolean }): {
+  enabled: boolean;
+  queryParams: T;
+} {
+  const { enabled = true, ...queryParams } = params;
+  return {
+    enabled,
+    queryParams: queryParams as T,
+  };
+}
+
+function normalizeDatasetCodes(datasetCodes: string[]): string[] {
+  return Array.from(new Set(datasetCodes.map((datasetCode) => datasetCode.trim().toUpperCase()).filter(Boolean)));
+}
+
+function createQueryOptions<TData>(params: {
+  key: string;
+  hashSource: unknown;
+  queryFn: () => Promise<TData>;
+  enabled: boolean;
+  staleTime: number;
+}) {
+  return queryOptions<TData>({
+    queryKey: [params.key, buildHash(params.hashSource)],
+    queryFn: params.queryFn,
+    enabled: params.enabled,
+    staleTime: params.staleTime,
+  });
+}
+
 export const insUatDashboardQueryOptions = (params: {
   sirutaCode: string;
   period?: string;
   contextCode?: string;
   enabled?: boolean;
 }) => {
-  const { enabled = true, ...queryParams } = params;
-  const hash = generateHash(JSON.stringify(queryParams));
+  const { enabled, queryParams } = splitEnabled(params);
 
-  return queryOptions<InsDashboardData>({
-    queryKey: ['insUatDashboard', hash],
+  return createQueryOptions<InsDashboardData>({
+    key: 'insUatDashboard',
+    hashSource: queryParams,
     queryFn: () => getInsUatDashboard(queryParams),
     enabled: enabled && !!queryParams.sirutaCode,
     staleTime: DEFAULT_STALE_TIME,
@@ -58,11 +95,11 @@ export const insCountyDashboardQueryOptions = (params: {
   datasetCodes: string[];
   enabled?: boolean;
 }) => {
-  const { enabled = true, ...queryParams } = params;
-  const hash = generateHash(JSON.stringify(queryParams));
+  const { enabled, queryParams } = splitEnabled(params);
 
-  return queryOptions<InsDashboardData>({
-    queryKey: ['insCountyDashboard', hash],
+  return createQueryOptions<InsDashboardData>({
+    key: 'insCountyDashboard',
+    hashSource: queryParams,
     queryFn: () => getInsCountyDashboard(queryParams),
     enabled: enabled && queryParams.countyCode.trim().length > 0 && queryParams.datasetCodes.length > 0,
     staleTime: DEFAULT_STALE_TIME,
@@ -83,11 +120,11 @@ export const insContextsQueryOptions = (params: {
   offset?: number;
   enabled?: boolean;
 }) => {
-  const { enabled = true, ...queryParams } = params;
-  const hash = generateHash(JSON.stringify(queryParams));
+  const { enabled, queryParams } = splitEnabled(params);
 
-  return queryOptions<InsContextConnection>({
-    queryKey: ['insContexts', hash],
+  return createQueryOptions<InsContextConnection>({
+    key: 'insContexts',
+    hashSource: queryParams,
     queryFn: () => getInsContexts(queryParams),
     enabled,
     staleTime: LONG_STALE_TIME,
@@ -109,11 +146,11 @@ export const insDatasetCatalogQueryOptions = (params: {
   offset?: number;
   enabled?: boolean;
 }) => {
-  const { enabled = true, ...queryParams } = params;
-  const hash = generateHash(JSON.stringify(queryParams));
+  const { enabled, queryParams } = splitEnabled(params);
 
-  return queryOptions<InsDatasetConnection>({
-    queryKey: ['insDatasetsCatalog', hash],
+  return createQueryOptions<InsDatasetConnection>({
+    key: 'insDatasetsCatalog',
+    hashSource: queryParams,
     queryFn: () => getInsDatasetsCatalog(queryParams),
     enabled,
     staleTime: LONG_STALE_TIME,
@@ -133,12 +170,12 @@ export const insDatasetDimensionsQueryOptions = (params: {
   datasetCode: string;
   enabled?: boolean;
 }) => {
-  const { enabled = true, ...queryParams } = params;
+  const { enabled, queryParams } = splitEnabled(params);
   const normalizedDatasetCode = queryParams.datasetCode.trim().toUpperCase();
-  const hash = generateHash(normalizedDatasetCode);
 
-  return queryOptions<InsDatasetDimensionsResult | null>({
-    queryKey: ['insDatasetDimensions', hash],
+  return createQueryOptions<InsDatasetDimensionsResult | null>({
+    key: 'insDatasetDimensions',
+    hashSource: normalizedDatasetCode,
     queryFn: () => getInsDatasetDimensions(normalizedDatasetCode),
     enabled: enabled && normalizedDatasetCode.length > 0,
     staleTime: LONG_STALE_TIME,
@@ -158,11 +195,11 @@ export const insLatestDatasetValuesQueryOptions = (params: {
   preferredClassificationCodes?: string[];
   enabled?: boolean;
 }) => {
-  const { enabled = true, ...queryParams } = params;
-  const hash = generateHash(JSON.stringify(queryParams));
+  const { enabled, queryParams } = splitEnabled(params);
 
-  return queryOptions<InsLatestDatasetValue[]>({
-    queryKey: ['insLatestDatasetValues', hash],
+  return createQueryOptions<InsLatestDatasetValue[]>({
+    key: 'insLatestDatasetValues',
+    hashSource: queryParams,
     queryFn: () => getInsLatestDatasetValues(queryParams),
     enabled: enabled && queryParams.datasetCodes.length > 0,
     staleTime: DEFAULT_STALE_TIME,
@@ -185,11 +222,11 @@ export const insDatasetHistoryQueryOptions = (params: {
   maxPages?: number;
   enabled?: boolean;
 }) => {
-  const { enabled = true, ...queryParams } = params;
-  const hash = generateHash(JSON.stringify(queryParams));
+  const { enabled, queryParams } = splitEnabled(params);
 
-  return queryOptions<InsDatasetHistoryResult>({
-    queryKey: ['insDatasetHistory', hash],
+  return createQueryOptions<InsDatasetHistoryResult>({
+    key: 'insDatasetHistory',
+    hashSource: queryParams,
     queryFn: () => getInsDatasetHistory(queryParams),
     enabled: enabled && queryParams.datasetCode.trim().length > 0,
     staleTime: DEFAULT_STALE_TIME,
@@ -212,24 +249,17 @@ export const insObservationsSnapshotByDatasetsQueryOptions = (params: {
   limit?: number;
   enabled?: boolean;
 }) => {
-  const { enabled = true, ...queryParams } = params;
-  const normalizedDatasetCodes = Array.from(
-    new Set(queryParams.datasetCodes.map((datasetCode) => datasetCode.trim().toUpperCase()).filter(Boolean))
-  );
-  const hash = generateHash(
-    JSON.stringify({
-      ...queryParams,
-      datasetCodes: normalizedDatasetCodes,
-    })
-  );
+  const { enabled, queryParams } = splitEnabled(params);
+  const normalizedDatasetCodes = normalizeDatasetCodes(queryParams.datasetCodes);
+  const normalizedQueryParams = {
+    ...queryParams,
+    datasetCodes: normalizedDatasetCodes,
+  };
 
-  return queryOptions<InsObservationsSnapshotByDatasetResult>({
-    queryKey: ['insObservationsSnapshotByDatasets', hash],
-    queryFn: () =>
-      getInsObservationsSnapshotByDatasets({
-        ...queryParams,
-        datasetCodes: normalizedDatasetCodes,
-      }),
+  return createQueryOptions<InsObservationsSnapshotByDatasetResult>({
+    key: 'insObservationsSnapshotByDatasets',
+    hashSource: normalizedQueryParams,
+    queryFn: () => getInsObservationsSnapshotByDatasets(normalizedQueryParams),
     enabled: enabled && normalizedDatasetCodes.length > 0,
     staleTime: DEFAULT_STALE_TIME,
   });

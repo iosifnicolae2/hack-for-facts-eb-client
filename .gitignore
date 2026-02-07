@@ -67,3 +67,5 @@ tmp/
 
 .claude/decisions/active/
 sentry-issues/
+
+.agents/

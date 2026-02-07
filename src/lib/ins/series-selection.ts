@@ -138,6 +138,16 @@ function pickDefaultOption(group: InsSeriesGroup): InsSeriesOption | null {
   return totalOption ?? group.options[0];
 }
 
+function buildSeriesOptionLookups(group: InsSeriesGroup): {
+  optionByCode: Map<string, InsSeriesOption>;
+  optionByRawCode: Map<string, InsSeriesOption>;
+} {
+  return {
+    optionByCode: new Map(group.options.map((option) => [option.code, option])),
+    optionByRawCode: new Map(group.options.map((option) => [option.rawCode, option])),
+  };
+}
+
 function sortRemainingTypeCodes(
   typeCodes: string[],
   typeLabelByCode: Map<string, string>
@@ -261,8 +271,7 @@ export function mergeSeriesSelection(
       continue;
     }
 
-    const optionByCode = new Map(group.options.map((option) => [option.code, option]));
-    const optionByRawCode = new Map(group.options.map((option) => [option.rawCode, option]));
+    const { optionByCode, optionByRawCode } = buildSeriesOptionLookups(group);
     const validSelection = Array.from(
       new Set(
         selectedCodes
@@ -348,13 +357,16 @@ export function filterObservationsBySeriesSelection(
   selectedClassificationCodes: Record<string, string[]>,
   selectedUnitKey: string | null
 ): InsObservation[] {
+  const selectionEntries = Object.entries(selectedClassificationCodes);
+  const hasNoClassificationFilters = selectionEntries.length === 0;
+
   return observations.filter((observation) => {
     if (selectedUnitKey) {
       const observationUnitKey = getObservationUnitKey(observation) ?? '__none__';
       if (observationUnitKey !== selectedUnitKey) return false;
     }
 
-    if (Object.keys(selectedClassificationCodes).length === 0) {
+    if (hasNoClassificationFilters) {
       return true;
     }
 
@@ -362,7 +374,7 @@ export function filterObservationsBySeriesSelection(
       Object.entries(getObservationClassificationSelectionMap(observation))
     );
 
-    for (const [typeCode, selectedCodes] of Object.entries(selectedClassificationCodes)) {
+    for (const [typeCode, selectedCodes] of selectionEntries) {
       if (selectedCodes.length === 0) continue;
       if (!selectedCodes.includes(observationClassifications.get(typeCode) ?? '')) {
         return false;

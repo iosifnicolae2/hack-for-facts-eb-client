@@ -265,6 +265,14 @@ export interface InsObservationsSnapshotByDatasetResult {
   observationsByDataset: Map<string, InsObservation[]>;
 }
 
+function getConnectionNodes(connection: InsObservationConnection | null | undefined): InsObservation[] {
+  return connection?.nodes ?? [];
+}
+
+function connectionHasNextPage(connection: InsObservationConnection | null | undefined): boolean {
+  return connection?.pageInfo?.hasNextPage ?? false;
+}
+
 export async function getInsDatasetDimensions(datasetCode: string): Promise<InsDatasetDimensionsResult | null> {
   if (datasetCode.trim().length === 0) return null;
 
@@ -313,9 +321,9 @@ export async function getInsDatasetHistory(params: {
     );
 
     const connection = response.insObservations;
-    observations.push(...(connection.nodes ?? []));
+    observations.push(...getConnectionNodes(connection));
     totalCount = connection.pageInfo?.totalCount ?? totalCount;
-    hasNextPage = connection.pageInfo?.hasNextPage ?? false;
+    hasNextPage = connectionHasNextPage(connection);
 
     offset += pageSize;
     page += 1;
@@ -365,7 +373,7 @@ export async function getInsObservationsSnapshotByDatasets(params: {
 
   const observationsByDataset = new Map<string, InsObservation[]>();
   for (const [datasetCode, connection] of observationsByDatasetConnection.entries()) {
-    observationsByDataset.set(datasetCode, connection.nodes ?? []);
+    observationsByDataset.set(datasetCode, getConnectionNodes(connection));
   }
 
   for (const datasetCode of params.datasetCodes) {
@@ -428,11 +436,11 @@ export async function getInsCountyDashboard(params: {
       const connection = observationsMap.get(code);
       if (!dataset || !connection) continue;
       if (!dataset.has_county_data) continue;
-      if (connection.pageInfo?.hasNextPage) {
+      if (connectionHasNextPage(connection)) {
         partial = true;
       }
 
-      const observations = connection.nodes ?? [];
+      const observations = getConnectionNodes(connection);
       if (observations.length === 0) continue;
 
       groups.push({
