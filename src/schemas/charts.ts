@@ -12,24 +12,26 @@ export const defaultExecutionPeriodStartYear = defaultYearRange.start;
 export const defaultCommitmentsPeriodStartYear = 2019;
 
 export function createDefaultExecutionYearReportPeriod() {
+  const latestDefaultYear = String(defaultYearRange.end);
   return {
     type: 'YEAR' as const,
     selection: {
       interval: {
-        start: String(defaultExecutionPeriodStartYear),
-        end: String(defaultYearRange.end),
+        start: latestDefaultYear,
+        end: latestDefaultYear,
       },
     },
   };
 }
 
 export function createDefaultCommitmentsYearReportPeriod() {
+  const latestDefaultYear = String(defaultYearRange.end);
   return {
     type: 'YEAR' as const,
     selection: {
       interval: {
-        start: String(defaultCommitmentsPeriodStartYear),
-        end: String(defaultYearRange.end),
+        start: latestDefaultYear,
+        end: latestDefaultYear,
       },
     },
   };
