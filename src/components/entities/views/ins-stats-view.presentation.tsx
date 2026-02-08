@@ -72,21 +72,24 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
-const CHART_GRID_COLOR = 'hsl(var(--border) / 0.68)';
-const CHART_AXIS_COLOR = 'hsl(var(--muted-foreground) / 0.82)';
-const CHART_LINE_COLOR = '#0284c7';
-const CHART_LINE_HIGHLIGHT_COLOR = '#0ea5e9';
-const CHART_DOT_STROKE_COLOR = '#0369a1';
-const CHART_BRUSH_FILL = 'hsl(198 93% 60% / 0.16)';
+const CHART_GRID_COLOR = 'hsl(var(--border) / 0.4)';
+const CHART_AXIS_COLOR = 'hsl(var(--muted-foreground) / 0.7)';
+const CHART_LINE_COLOR = '#0ea5e9';
+const CHART_LINE_HIGHLIGHT_COLOR = '#22d3ee';
+const CHART_DOT_STROKE_COLOR = '#0284c7';
+const CHART_BRUSH_FILL = 'hsl(199 89% 48% / 0.12)';
 const CHART_AREA_GRADIENT_ID = 'ins-history-area-gradient';
-const CHART_AREA_START_COLOR = '#22d3ee';
-const CHART_AREA_END_COLOR = '#2563eb';
+const CHART_AREA_TOP_COLOR = '#a5f3fc';
+const CHART_AREA_UPPER_COLOR = '#67e8f9';
+const CHART_AREA_MID_COLOR = '#22d3ee';
+const CHART_AREA_LOWER_COLOR = '#0ea5e9';
+const CHART_AREA_BOTTOM_COLOR = '#3b82f6';
 const CHART_TOOLTIP_STYLE: CSSProperties = {
   backgroundColor: 'hsl(var(--popover) / 0.96)',
-  border: '1px solid hsl(199 89% 48% / 0.24)',
+  border: '1px solid hsl(199 89% 48% / 0.22)',
   borderRadius: '0.5rem',
   color: 'hsl(var(--popover-foreground))',
-  boxShadow: '0 14px 34px hsl(203 84% 18% / 0.14)',
+  boxShadow: '0 14px 34px hsl(205 84% 18% / 0.12)',
 };
 
 function MarkdownDescriptionBase({ content }: { content: string }) {
@@ -1381,9 +1384,11 @@ function DatasetDetailSectionBase(props: {
                 <ComposedChart data={historyChartData} margin={{ top: 10, right: 16, left: 8, bottom: 0 }}>
                   <defs>
                     <linearGradient id={CHART_AREA_GRADIENT_ID} x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor={CHART_AREA_START_COLOR} stopOpacity={0.48} />
-                      <stop offset="55%" stopColor={CHART_AREA_START_COLOR} stopOpacity={0.2} />
-                      <stop offset="100%" stopColor={CHART_AREA_END_COLOR} stopOpacity={0.04} />
+                      <stop offset="0%" stopColor={CHART_AREA_TOP_COLOR} stopOpacity={0.55} />
+                      <stop offset="15%" stopColor={CHART_AREA_UPPER_COLOR} stopOpacity={0.42} />
+                      <stop offset="45%" stopColor={CHART_AREA_MID_COLOR} stopOpacity={0.22} />
+                      <stop offset="75%" stopColor={CHART_AREA_LOWER_COLOR} stopOpacity={0.1} />
+                      <stop offset="100%" stopColor={CHART_AREA_BOTTOM_COLOR} stopOpacity={0.02} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid stroke={CHART_GRID_COLOR} strokeDasharray="4 5" vertical={false} />
