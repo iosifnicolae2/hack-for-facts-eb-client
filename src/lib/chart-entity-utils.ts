@@ -2,8 +2,10 @@ import { EntityDetailsData } from '@/lib/api/entities';
 import { StoredChart } from '@/components/charts/chartsStore';
 import { Series } from '@/schemas/charts';
 
-function isLineItemsSeries(series: Series): series is Extract<Series, { type: 'line-items-aggregated-yearly' }> {
-  return series.type === 'line-items-aggregated-yearly';
+function isLineItemsSeries(
+  series: Series
+): series is Extract<Series, { type: 'line-items-aggregated-yearly' | 'commitments-analytics' }> {
+  return series.type === 'line-items-aggregated-yearly' || series.type === 'commitments-analytics';
 }
 
 function isInsSeries(series: Series): series is Extract<Series, { type: 'ins-series' }> {

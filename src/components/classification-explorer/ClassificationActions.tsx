@@ -11,7 +11,7 @@ import {
 import { CopyButton } from '@/components/ui/copy-button'
 import { toast } from 'sonner'
 import type { ClassificationType } from '@/types/classification-explorer'
-import { AnalyticsFilterType, defaultYearRange } from '@/schemas/charts'
+import { AnalyticsFilterType, createDefaultExecutionYearReportPeriod } from '@/schemas/charts'
 import { withDefaultExcludes } from '@/lib/filterUtils'
 
 type ClassificationActionsProps = {
@@ -38,10 +38,7 @@ export function ClassificationActions({ type, code }: ClassificationActionsProps
   const filterKey = type === 'functional' ? 'functional_prefixes' : 'economic_prefixes'
   const filter: AnalyticsFilterType = withDefaultExcludes({
     [filterKey]: [prefixCode],
-    report_period: {
-      type: 'YEAR',
-      selection: { dates: [String(defaultYearRange.end)] },
-    },
+    report_period: createDefaultExecutionYearReportPeriod(),
     account_category: 'ch' as const,
     report_type: 'Executie bugetara agregata la nivel de ordonator principal' as const,
   })

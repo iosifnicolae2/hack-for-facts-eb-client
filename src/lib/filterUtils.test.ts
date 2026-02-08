@@ -22,8 +22,10 @@ import {
   withDefaultExcludes,
   normalizeAnalyticsFilter,
   prepareFilterForServer,
+  normalizeCommitmentsFilter,
+  prepareCommitmentsFilterForServer,
 } from './filterUtils'
-import type { AnalyticsFilterType } from '@/schemas/charts'
+import type { AnalyticsFilterType, CommitmentsFilterType } from '@/schemas/charts'
 import type { ReportPeriodInput } from '@/schemas/reporting'
 
 // ============================================================================
@@ -66,12 +68,12 @@ describe('ensureReportPeriod', () => {
     expect(result.selection.interval).toBeDefined()
   })
 
-  it('should use default year range for generated period', () => {
+  it('should use default period range for generated period', () => {
     const filter: AnalyticsFilterType = { account_category: 'ch' }
 
     const result = ensureReportPeriod(filter)
 
-    // Should use defaultYearRange (2016-2025)
+    // Execution defaults start from defaultYearRange.start and end at defaultYearRange.end.
     expect(result.selection.interval?.start).toBe('2016')
     expect(result.selection.interval?.end).toBe('2025')
   })
@@ -366,5 +368,89 @@ describe('prepareFilterForServer', () => {
 
     expect(result.min_population).toBe(10000)
     expect(result.max_population).toBe(100000)
+  })
+})
+
+// ============================================================================
+// Commitments filters
+// ============================================================================
+describe('normalizeCommitmentsFilter', () => {
+  it('adds default report period and report type', () => {
+    const filter = {} as CommitmentsFilterType
+
+    const result = normalizeCommitmentsFilter(filter)
+
+    expect(result.report_period).toBeDefined()
+    expect(result.report_period?.selection.interval?.start).toBe('2019')
+    expect(result.report_period?.selection.interval?.end).toBe('2025')
+    expect(result.report_type).toBe('PRINCIPAL_AGGREGATED')
+  })
+
+  it('normalizes legacy total_euro to total + EUR', () => {
+    const filter: CommitmentsFilterType = {
+      normalization: 'total_euro',
+    }
+
+    const result = normalizeCommitmentsFilter(filter)
+
+    expect(result.normalization).toBe('total')
+    expect(result.currency).toBe('EUR')
+  })
+
+  it('defaults transfer exclusions via economic prefixes', () => {
+    const filter: CommitmentsFilterType = {}
+
+    const result = normalizeCommitmentsFilter(filter)
+
+    expect(result.exclude?.economic_prefixes).toEqual(['51.01', '51.02'])
+  })
+})
+
+describe('prepareCommitmentsFilterForServer', () => {
+  it('keeps only allowed commitments keys and include exclude object', () => {
+    const filter: CommitmentsFilterType = {
+      entity_cuis: ['123'],
+      report_type: 'PRINCIPAL_AGGREGATED',
+      report_period: {
+        type: 'YEAR',
+        selection: { interval: { start: '2024', end: '2024' } },
+      },
+      exclude: {
+        economic_prefixes: ['51.01'],
+      },
+    }
+
+    const result = prepareCommitmentsFilterForServer(filter)
+
+    expect(result.entity_cuis).toEqual(['123'])
+    expect(result.exclude?.economic_prefixes).toEqual(['51.01'])
+  })
+
+  it('coerces execution-style report type labels to commitments report type values', () => {
+    const filter: CommitmentsFilterType = {
+      report_type: 'Executie bugetara agregata la nivel de ordonator principal' as any,
+      report_period: {
+        type: 'YEAR',
+        selection: { interval: { start: '2024', end: '2024' } },
+      },
+    }
+
+    const result = prepareCommitmentsFilterForServer(filter)
+
+    expect(result.report_type).toBe('PRINCIPAL_AGGREGATED')
+  })
+
+  it('maps commitment enum-prefixed report types to plain commitments values', () => {
+    const filter: CommitmentsFilterType = {
+      report_type: 'COMMITMENT_SECONDARY_AGGREGATED' as any,
+      report_period: {
+        type: 'YEAR',
+        selection: { interval: { start: '2024', end: '2024' } },
+      },
+    }
+
+    const result = prepareCommitmentsFilterForServer(filter)
+
+    expect(result.report_type).toBe('SECONDARY_AGGREGATED')
   })
 })

@@ -1,4 +1,4 @@
-import { ChartSchema, defaultYearRange, ReportType } from '@/schemas/charts';
+import { ChartSchema, CommitmentsReportType, createDefaultCommitmentsYearReportPeriod, defaultYearRange, ReportType } from '@/schemas/charts';
 import type { Chart, Calculation, Series, Normalization } from '@/schemas/charts';
 import type { ChartUrlState } from '@/components/charts/page-schema';
 import { generateHash, getNormalizationUnit } from '@/lib/utils';
@@ -12,6 +12,14 @@ interface BuildEntityIncomeExpenseChartOptions {
     reportType?: ReportType;
     incomeColor?: string;
     expenseColor?: string;
+}
+
+interface BuildEntityCommitmentsChartOptions {
+    title?: string;
+    reportType?: string;
+    budgetColor?: string;
+    commitmentsColor?: string;
+    paymentsColor?: string;
 }
 
 type TemporalSplit = 'all' | 'year' | 'quarter' | 'month';
@@ -201,6 +209,182 @@ export function buildEntityIncomeExpenseChartLink(
     options?: BuildEntityIncomeExpenseChartOptions
 ) {
     const search = buildEntityIncomeExpenseChartState(cui, entityName, normalizationOptions, options);
+    return buildChartRouteLink(search);
+}
+
+function normalizeCommitmentsChartReportType(reportType?: string): CommitmentsReportType {
+    if (
+        reportType === "PRINCIPAL_AGGREGATED" ||
+        reportType === "SECONDARY_AGGREGATED" ||
+        reportType === "DETAILED"
+    ) {
+        return reportType;
+    }
+
+    if (reportType === "COMMITMENT_PRINCIPAL_AGGREGATED") return "PRINCIPAL_AGGREGATED";
+    if (reportType === "COMMITMENT_SECONDARY_AGGREGATED") return "SECONDARY_AGGREGATED";
+    if (reportType === "COMMITMENT_DETAILED") return "DETAILED";
+
+    return "PRINCIPAL_AGGREGATED";
+}
+
+/**
+ * Build a ChartUrlState for commitment trends for an entity.
+ * Returns an object usable directly as TanStack Router `search` for /charts/$chartId.
+ */
+export function buildEntityCommitmentsChartState(
+    cui: string,
+    entityName: string,
+    normalizationOptions: NormalizationOptions,
+    options?: BuildEntityCommitmentsChartOptions
+): ChartUrlState {
+    const normalized = normalizeNormalizationOptions(normalizationOptions);
+    const years = Array.from(
+        { length: defaultYearRange.end - defaultYearRange.start + 1 },
+        (_, i) => defaultYearRange.start + i
+    );
+    const chartId = generateHash(JSON.stringify({ cui, kind: "entity-commitments-trends" }));
+    const title = options?.title ?? t`Commitments Evolution - ${entityName}`;
+    const reportType = normalizeCommitmentsChartReportType(options?.reportType);
+    const budgetColor = options?.budgetColor ?? "#10B981";
+    const commitmentsColor = options?.commitmentsColor ?? "#3B82F6";
+    const paymentsColor = options?.paymentsColor ?? "#0EA5E9";
+
+    const baseFilter = {
+        report_period: createDefaultCommitmentsYearReportPeriod(),
+        entity_cuis: [cui],
+        report_type: reportType,
+        normalization: normalized.normalization,
+        currency: normalized.currency,
+        inflation_adjusted: normalized.inflation_adjusted,
+        show_period_growth: normalized.show_period_growth,
+        exclude: {
+            economic_prefixes: [...DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES],
+        },
+    };
+
+    const baseBudgetSeries = {
+        label: "Budget credits",
+        type: "commitments-analytics" as const,
+        metric: "CREDITE_BUGETARE_DEFINITIVE" as const,
+        unit: "",
+        filter: baseFilter,
+        config: { showDataLabels: false, color: budgetColor },
+    };
+    const baseCommitmentsSeries = {
+        label: "Legal commitments",
+        type: "commitments-analytics" as const,
+        metric: "CREDITE_ANGAJAMENT" as const,
+        unit: "",
+        filter: baseFilter,
+        config: { showDataLabels: false, color: commitmentsColor },
+    };
+    const baseTreasuryPaymentsSeries = {
+        label: "Treasury payments",
+        type: "commitments-analytics" as const,
+        metric: "PLATI_TREZOR" as const,
+        unit: "",
+        filter: baseFilter,
+        config: { showDataLabels: false, color: paymentsColor },
+    };
+    const baseNonTreasuryPaymentsSeries = {
+        label: "Non treasury payments",
+        type: "commitments-analytics" as const,
+        metric: "PLATI_NON_TREZOR" as const,
+        unit: "",
+        filter: baseFilter,
+        config: { showDataLabels: false, color: paymentsColor },
+    };
+
+    const budgetSeriesId = generateSeriesId(baseBudgetSeries);
+    const commitmentsSeriesId = generateSeriesId(baseCommitmentsSeries);
+    const treasuryPaymentsSeriesId = generateSeriesId(baseTreasuryPaymentsSeries);
+    const nonTreasuryPaymentsSeriesId = generateSeriesId(baseNonTreasuryPaymentsSeries);
+
+    const basePaymentsSeries = {
+        label: "Payments",
+        type: "aggregated-series-calculation" as const,
+        unit: getNormalizationUnit({
+            normalization: normalized.normalization,
+            currency: normalized.currency,
+            show_period_growth: normalized.show_period_growth,
+        }),
+        config: { showDataLabels: false, color: paymentsColor },
+        calculation: {
+            op: "sum" as const,
+            args: [treasuryPaymentsSeriesId, nonTreasuryPaymentsSeriesId],
+        },
+    };
+    const paymentsSeriesId = generateSeriesId(basePaymentsSeries);
+
+    const chart: Chart = ChartSchema.parse({
+        id: chartId,
+        title,
+        config: {
+            chartType: "line",
+            showGridLines: true,
+            showLegend: true,
+            showTooltip: true,
+            editAnnotations: false,
+            showAnnotations: true,
+            showDiffControl: true,
+            yearRange: { start: years[0], end: years[years.length - 1] },
+        },
+        series: [
+            {
+                ...baseBudgetSeries,
+                id: budgetSeriesId,
+                enabled: true,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+            },
+            {
+                ...baseCommitmentsSeries,
+                id: commitmentsSeriesId,
+                enabled: true,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+            },
+            {
+                ...baseTreasuryPaymentsSeries,
+                id: treasuryPaymentsSeriesId,
+                enabled: false,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+            },
+            {
+                ...baseNonTreasuryPaymentsSeries,
+                id: nonTreasuryPaymentsSeriesId,
+                enabled: false,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+            },
+            {
+                ...basePaymentsSeries,
+                id: paymentsSeriesId,
+                enabled: true,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+            },
+        ],
+        annotations: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+    });
+
+    return { chart, view: "overview" };
+}
+
+/**
+ * Convenience helper to produce params and search for the commitments trends charts route.
+ */
+export function buildEntityCommitmentsChartLink(
+    cui: string,
+    entityName: string,
+    normalizationOptions: NormalizationOptions,
+    options?: BuildEntityCommitmentsChartOptions
+) {
+    const search = buildEntityCommitmentsChartState(cui, entityName, normalizationOptions, options);
     return buildChartRouteLink(search);
 }
 

@@ -8,6 +8,33 @@ export const defaultYearRange = {
   end: 2025,
 };
 
+export const defaultExecutionPeriodStartYear = defaultYearRange.start;
+export const defaultCommitmentsPeriodStartYear = 2019;
+
+export function createDefaultExecutionYearReportPeriod() {
+  return {
+    type: 'YEAR' as const,
+    selection: {
+      interval: {
+        start: String(defaultExecutionPeriodStartYear),
+        end: String(defaultYearRange.end),
+      },
+    },
+  };
+}
+
+export function createDefaultCommitmentsYearReportPeriod() {
+  return {
+    type: 'YEAR' as const,
+    selection: {
+      interval: {
+        start: String(defaultCommitmentsPeriodStartYear),
+        end: String(defaultYearRange.end),
+      },
+    },
+  };
+}
+
 /**
  * Global chart configuration that can be overridden by individual series
  */
@@ -59,6 +86,28 @@ export type SeriesConfig = z.infer<typeof SeriesConfigSchema>;
 export const ReportTypeEnum = z.enum(['Executie bugetara agregata la nivel de ordonator principal', 'Executie bugetara agregata la nivel de ordonator secundar', 'Executie bugetara detaliata'])
   .describe('The aggregation level of budget execution reports in the Romanian public finance system. "Executie bugetara agregata la nivel de ordonator principal" (PRINCIPAL_AGGREGATED): data aggregated at the level of main budget administrators (e.g., Ministry of Education) - use for high-level analysis. "Executie bugetara agregata la nivel de ordonator secundar" (SECONDARY_AGGREGATED): data aggregated at secondary budget administrators - use for more detailed analysis. "Executie bugetara detaliata" (DETAILED): itemized budget execution with full detail - use for granular analysis. Choose based on desired detail level.');
 export type ReportType = z.infer<typeof ReportTypeEnum>;
+
+export const CommitmentsReportTypeEnum = z.enum(['PRINCIPAL_AGGREGATED', 'SECONDARY_AGGREGATED', 'DETAILED'])
+  .describe('Aggregation level for commitments reports. "PRINCIPAL_AGGREGATED" aggregates at main ordering-creditor level, "SECONDARY_AGGREGATED" aggregates at secondary level, and "DETAILED" returns line-item-level granularity.');
+export type CommitmentsReportType = z.infer<typeof CommitmentsReportTypeEnum>;
+
+export const CommitmentsMetricEnum = z.enum([
+  'CREDITE_ANGAJAMENT',
+  'PLATI_TREZOR',
+  'PLATI_NON_TREZOR',
+  'RECEPTII_TOTALE',
+  'RECEPTII_NEPLATITE_CHANGE',
+  'LIMITA_CREDIT_ANGAJAMENT',
+  'CREDITE_BUGETARE',
+  'CREDITE_ANGAJAMENT_INITIALE',
+  'CREDITE_BUGETARE_INITIALE',
+  'CREDITE_ANGAJAMENT_DEFINITIVE',
+  'CREDITE_BUGETARE_DEFINITIVE',
+  'CREDITE_ANGAJAMENT_DISPONIBILE',
+  'CREDITE_BUGETARE_DISPONIBILE',
+  'RECEPTII_NEPLATITE',
+]).describe('Commitments metric to query for the time series. Each metric maps to a backend commitments analytical field.');
+export type CommitmentsMetric = z.infer<typeof CommitmentsMetricEnum>;
 
 export const Normalization = z.enum(['total', 'total_euro', 'per_capita', 'per_capita_euro', 'percent_gdp'])
   .describe('How to normalize monetary values for fair comparison. "total": absolute amounts. "per_capita": amounts divided by population for fair comparisons between different-sized entities. "percent_gdp": express as % of GDP. "total_euro" and "per_capita_euro" are legacy; prefer normalization="total"|"per_capita" + currency="EUR".');
@@ -166,6 +215,57 @@ export const AnalyticsFilterSchema = z.object({
 
 export type AnalyticsFilterType = z.infer<typeof AnalyticsFilterSchema>;
 
+export const CommitmentsExcludeSchema = z.object({
+  report_ids: z.array(z.string()).optional(),
+  entity_cuis: z.array(z.string()).optional(),
+  main_creditor_cui: z.string().optional(),
+  functional_codes: z.array(z.string()).optional(),
+  functional_prefixes: z.array(z.string()).optional(),
+  economic_codes: z.array(z.string()).optional(),
+  economic_prefixes: z.array(z.string()).optional(),
+  funding_source_ids: z.array(z.string()).optional(),
+  budget_sector_ids: z.array(z.string()).optional(),
+  county_codes: z.array(z.string()).optional(),
+  regions: z.array(z.string()).optional(),
+  uat_ids: z.array(z.string()).optional(),
+  entity_types: z.array(z.string()).optional(),
+});
+
+export type CommitmentsExcludeType = z.infer<typeof CommitmentsExcludeSchema>;
+
+export const CommitmentsFilterSchema = z.object({
+  report_period: ReportPeriodInputZ.optional(),
+  report_type: CommitmentsReportTypeEnum.optional(),
+  entity_cuis: z.array(z.string()).optional(),
+  main_creditor_cui: z.string().optional(),
+  entity_types: z.array(z.string()).optional(),
+  is_uat: z.boolean().optional(),
+  search: z.string().optional(),
+  functional_codes: z.array(z.string()).optional(),
+  functional_prefixes: z.array(z.string()).optional(),
+  economic_codes: z.array(z.string()).optional(),
+  economic_prefixes: z.array(z.string()).optional(),
+  funding_source_ids: z.array(z.string()).optional(),
+  budget_sector_ids: z.array(z.string()).optional(),
+  county_codes: z.array(z.string()).optional(),
+  regions: z.array(z.string()).optional(),
+  uat_ids: z.array(z.string()).optional(),
+  min_population: z.number().optional(),
+  max_population: z.number().optional(),
+  aggregate_min_amount: z.number().optional(),
+  aggregate_max_amount: z.number().optional(),
+  item_min_amount: z.number().optional(),
+  item_max_amount: z.number().optional(),
+  normalization: Normalization.optional(),
+  currency: Currency.optional(),
+  inflation_adjusted: z.boolean().optional(),
+  show_period_growth: z.boolean().optional(),
+  exclude: CommitmentsExcludeSchema.optional(),
+  exclude_transfers: z.boolean().optional(),
+});
+
+export type CommitmentsFilterType = z.infer<typeof CommitmentsFilterSchema>;
+
 // ============================================================================
 // SERIES CONFIGURATION
 // ============================================================================
@@ -207,10 +307,7 @@ export const SeriesConfigurationSchema = BaseSeriesConfigurationSchema.extend({
   type: z.literal('line-items-aggregated-yearly').describe('Series type: "line-items-aggregated-yearly" - standard analytics query series. Queries budget data via GraphQL executionAnalytics API using the filter. Data is aggregated (summed) across all matching line items and grouped by time period. Most common series type for showing spending/revenue trends. Use for: education spending over time, healthcare by county, infrastructure investments. Automatic aggregation handles thousands of line items. Data points determined by report_period granularity (YEAR/MONTH/QUARTER).'),
   unit: z.string().optional().default('').describe('Unit of measurement for values. For this series type, typically comes from the API response based on normalization. "RON" for total amounts, "RON/capita" for per_capita normalization, "EUR" for euro conversions. Usually left empty to auto-fill from API. Override only if you need a custom unit label.'),
   filter: AnalyticsFilterSchema.describe('Complete analytics filter defining what data to query. This is the core configuration - specifies time period, classifications (functional/economic), entities, normalization, and all other query parameters. See AnalyticsFilterSchema for 30+ available filter fields. Example: { report_period: {...}, account_category: "ch", functional_prefixes: ["70."], normalization: "per_capita" } queries per-capita education spending.').default({
-    report_period: {
-      type: 'YEAR',
-      selection: { dates: [String(defaultYearRange.end)] },
-    },
+    report_period: createDefaultExecutionYearReportPeriod(),
     account_category: 'ch',
     report_type: 'Executie bugetara agregata la nivel de ordonator principal',
     exclude: {
@@ -261,6 +358,22 @@ export const InsSeriesConfigurationSchema = BaseSeriesConfigurationSchema.extend
   hasValue: z.boolean().default(true).describe('Whether to include only observations with non-null values. Default true for chart usability.'),
 }).passthrough();
 
+export const CommitmentsSeriesConfigurationSchema = BaseSeriesConfigurationSchema.extend({
+  type: z.literal('commitments-analytics').describe('Series type: "commitments-analytics" - commitments time-series fetched from the commitments analytics API. Uses a commitments filter and one selected commitments metric.'),
+  metric: CommitmentsMetricEnum.default('CREDITE_ANGAJAMENT').describe('Commitments metric that defines which field is queried for this series.'),
+  unit: z.string().optional().default('').describe('Unit of measurement for values. For this series type, it is typically provided by the API response based on normalization settings.'),
+  filter: CommitmentsFilterSchema.default({
+    report_period: createDefaultCommitmentsYearReportPeriod(),
+    report_type: 'PRINCIPAL_AGGREGATED',
+    normalization: 'total',
+    currency: 'RON',
+    inflation_adjusted: false,
+    exclude: {
+      economic_prefixes: [...DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES],
+    },
+  }).describe('Commitments analytics filter defining period, dimensions, transformations, and exclusions.'),
+}).loose();
+
 export const SeriesSchema = z.discriminatedUnion('type', [
   SeriesConfigurationSchema,
   SeriesGroupConfigurationSchema,
@@ -268,12 +381,14 @@ export const SeriesSchema = z.discriminatedUnion('type', [
   CustomSeriesValueConfigurationSchema,
   StaticSeriesConfigurationSchema,
   InsSeriesConfigurationSchema,
+  CommitmentsSeriesConfigurationSchema,
 ]);
 
 export type SeriesConfiguration = z.infer<typeof SeriesConfigurationSchema>;
 export type SeriesGroupConfiguration = z.infer<typeof SeriesGroupConfigurationSchema>;
 export type StaticSeriesConfiguration = z.infer<typeof StaticSeriesConfigurationSchema>;
 export type InsSeriesConfiguration = z.infer<typeof InsSeriesConfigurationSchema>;
+export type CommitmentsSeriesConfiguration = z.infer<typeof CommitmentsSeriesConfigurationSchema>;
 export type Series = z.infer<typeof SeriesSchema>;
 
 // ============================================================================
@@ -312,7 +427,7 @@ export const ChartSchema = z.object({
   config: ChartConfigSchema.describe('Global chart configuration controlling visualization appearance and behavior. Includes chart type (line/bar/pie/etc.), display options (legends, tooltips, labels), and user interactions. These settings apply to all series unless overridden at series level. See ChartConfigSchema for 11 configuration options. Critical for defining how data is visualized.'),
 
   // Series data
-  series: z.array(SeriesSchema).default([]).describe('Array of data series to display on the chart. Each series represents a dataset (query results, calculations, or custom data). Can contain multiple series for comparisons. Series types: "line-items-aggregated-yearly" (database queries), "aggregated-series-calculation" (computed from other series), "custom-series" (manual data), "custom-series-value" (constant lines), "static-series" (pre-defined datasets), "ins-series" (INS Tempo observations). Order affects rendering and legend order. Minimum 1 series for meaningful charts, but can be empty during creation.'),
+  series: z.array(SeriesSchema).default([]).describe('Array of data series to display on the chart. Each series represents a dataset (query results, calculations, or custom data). Can contain multiple series for comparisons. Series types: "line-items-aggregated-yearly" (execution analytics queries), "commitments-analytics" (commitments analytics queries), "aggregated-series-calculation" (computed from other series), "custom-series" (manual data), "custom-series-value" (constant lines), "static-series" (pre-defined datasets), "ins-series" (INS Tempo observations). Order affects rendering and legend order. Minimum 1 series for meaningful charts, but can be empty during creation.'),
 
   // Annotations
   annotations: z.array(AnnotationSchema).default([]).describe('Array of annotations marking important events, insights, or context on the chart. Each annotation points to a specific location and displays explanatory text. Use to highlight: policy changes, significant events, anomalies, milestones. Examples: "COVID-19 Pandemic", "New Budget Law Enacted", "Election Year". Annotations are optional - charts can have zero annotations. Can be created manually or programmatically. Visibility controlled by chart config.showAnnotations and individual annotation.enabled flags.'),

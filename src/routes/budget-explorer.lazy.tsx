@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { Trans } from '@lingui/react/macro'
 import { useMemo, useEffect } from 'react'
 
-import { AnalyticsFilterSchema, AnalyticsFilterType, defaultYearRange } from '@/schemas/charts'
+import { AnalyticsFilterSchema, AnalyticsFilterType, createDefaultExecutionYearReportPeriod } from '@/schemas/charts'
 import { convertDaysToMs, generateHash } from '@/lib/utils'
 import { fetchAggregatedLineItems } from '@/lib/api/entity-analytics'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -46,10 +46,7 @@ const DepthEnum = z.enum(['chapter', 'subchapter', 'paragraph'])
 const ViewEnum = z.enum(['overview', 'treemap', 'sankey', 'list'])
 
 const baseDefaultFilter: AnalyticsFilterType = {
-  report_period: {
-    type: 'YEAR',
-    selection: { dates: [String(defaultYearRange.end)] },
-  },
+  report_period: createDefaultExecutionYearReportPeriod(),
   account_category: 'ch',
   report_type: 'Executie bugetara agregata la nivel de ordonator principal',
 }

@@ -49,7 +49,13 @@ import {
   useAccountCategoryLabel,
 } from "@/hooks/filters/useFilterLabels";
 import { LabelStore } from "@/hooks/filters/interfaces";
-import type { ReportType, SeriesConfiguration } from "@/schemas/charts";
+import type {
+  CommitmentsMetric,
+  CommitmentsReportType,
+  CommitmentsSeriesConfiguration,
+  ReportType,
+  SeriesConfiguration,
+} from "@/schemas/charts";
 import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
 import { NormalizationFilter } from "@/components/filters/normalization-filter/NormalizationFilter";
@@ -63,11 +69,16 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useUserCurrency } from "@/lib/hooks/useUserCurrency";
 import { useUserInflationAdjusted } from "@/lib/hooks/useUserInflationAdjusted";
+import { isMetricAvailableForPeriod } from "@/schemas/commitments";
+import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES } from "@/lib/analytics-defaults";
 
-export type SeriesFilterMutator = (draft: SeriesConfiguration) => void;
+type FilterSeries = SeriesConfiguration | CommitmentsSeriesConfiguration;
+type FilterSeriesType = FilterSeries["type"];
+
+export type SeriesFilterMutator = (draft: FilterSeries) => void;
 
 export interface SeriesFilterAdapter {
-  series: SeriesConfiguration | undefined;
+  series: FilterSeries | undefined;
   applyChanges: (mutator: SeriesFilterMutator) => void;
 }
 
@@ -86,11 +97,43 @@ type FilterValue = string | number | boolean | undefined;
 
 type CurrencyCode = "RON" | "EUR" | "USD";
 
+const COMMITMENTS_METRIC_OPTIONS: ReadonlyArray<{ value: CommitmentsMetric; label: string }> = [
+  { value: "CREDITE_ANGAJAMENT", label: t`Legal commitments` },
+  { value: "PLATI_TREZOR", label: t`Treasury payments` },
+  { value: "PLATI_NON_TREZOR", label: t`Non-treasury payments` },
+  { value: "RECEPTII_TOTALE", label: t`Total receipts` },
+  { value: "RECEPTII_NEPLATITE_CHANGE", label: t`Unpaid receipts change` },
+  { value: "LIMITA_CREDIT_ANGAJAMENT", label: t`Commitment authority limit` },
+  { value: "CREDITE_BUGETARE", label: t`Budget credits` },
+  { value: "CREDITE_ANGAJAMENT_INITIALE", label: t`Initial commitment credits` },
+  { value: "CREDITE_BUGETARE_INITIALE", label: t`Initial budget credits` },
+  { value: "CREDITE_ANGAJAMENT_DEFINITIVE", label: t`Final commitment credits` },
+  { value: "CREDITE_BUGETARE_DEFINITIVE", label: t`Final budget credits` },
+  { value: "CREDITE_ANGAJAMENT_DISPONIBILE", label: t`Available commitment credits` },
+  { value: "CREDITE_BUGETARE_DISPONIBILE", label: t`Available budget credits` },
+  { value: "RECEPTII_NEPLATITE", label: t`Unpaid receipts` },
+];
+
+const COMMITMENTS_REPORT_TYPE_OPTIONS: ReadonlyArray<{ value: CommitmentsReportType; label: string }> = [
+  { value: "PRINCIPAL_AGGREGATED", label: t`Main aggregated` },
+  { value: "SECONDARY_AGGREGATED", label: t`Secondary aggregated` },
+  { value: "DETAILED", label: t`Detailed` },
+];
+
+function getAllowedPeriodTypesForMetric(metric: CommitmentsMetric): Array<"YEAR" | "QUARTER" | "MONTH"> {
+  const allowed: Array<"YEAR" | "QUARTER" | "MONTH"> = [];
+  if (isMetricAvailableForPeriod(metric, "YEAR")) allowed.push("YEAR");
+  if (isMetricAvailableForPeriod(metric, "QUARTER")) allowed.push("QUARTER");
+  if (isMetricAvailableForPeriod(metric, "MONTH")) allowed.push("MONTH");
+  return allowed.length > 0 ? allowed : ["YEAR"];
+}
+
 function buildSeriesFilterInitializationPatch(
-  filter: SeriesConfiguration["filter"],
+  seriesType: FilterSeriesType,
+  filter: FilterSeries["filter"],
   defaults: { currency: CurrencyCode; inflationAdjusted: boolean }
-): Partial<SeriesConfiguration["filter"]> | null {
-  const patch: Partial<SeriesConfiguration["filter"]> = {};
+): Partial<FilterSeries["filter"]> | null {
+  const patch: Record<string, unknown> = {};
 
   const normalizationRaw = filter.normalization;
 
@@ -112,7 +155,21 @@ function buildSeriesFilterInitializationPatch(
     patch.inflation_adjusted = normalizationEffective === "percent_gdp" ? false : defaults.inflationAdjusted;
   }
 
-  return Object.keys(patch).length > 0 ? patch : null;
+  if (seriesType === "commitments-analytics") {
+    if (!("report_type" in filter) || !filter.report_type) {
+      patch.report_type = "PRINCIPAL_AGGREGATED" as CommitmentsReportType;
+    }
+
+    const currentExclude = filter.exclude ?? {};
+    if (!currentExclude.economic_prefixes?.length) {
+      patch.exclude = {
+        ...currentExclude,
+        economic_prefixes: [...DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES],
+      };
+    }
+  }
+
+  return Object.keys(patch).length > 0 ? (patch as Partial<FilterSeries["filter"]>) : null;
 }
 
 export function SeriesFilter({ seriesId, className, adapter }: Readonly<SeriesFilterProps>) {
@@ -131,19 +188,21 @@ function SeriesFilterWithChart({ seriesId, className }: Readonly<{ seriesId: str
   const { chart, updateSeries } = useChartStore();
 
   const chartSeries = chart.series.find(
-    (candidate) => candidate.id === seriesId && candidate.type === "line-items-aggregated-yearly"
-  ) as SeriesConfiguration | undefined;
+    (candidate) =>
+      candidate.id === seriesId &&
+      (candidate.type === "line-items-aggregated-yearly" || candidate.type === "commitments-analytics")
+  ) as FilterSeries | undefined;
 
   const adapter = useMemo<SeriesFilterAdapter>(
     () => ({
       series: chartSeries,
       applyChanges: (mutator: SeriesFilterMutator) => {
         updateSeries(seriesId, (prevSeries) => {
-          if (prevSeries.type !== "line-items-aggregated-yearly") {
+          if (prevSeries.type !== "line-items-aggregated-yearly" && prevSeries.type !== "commitments-analytics") {
             return prevSeries;
           }
           return produce(prevSeries, (draft) => {
-            mutator(draft as SeriesConfiguration);
+            mutator(draft as FilterSeries);
           });
         });
       },
@@ -175,7 +234,7 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
   const entityTypeLabelsStore = useEntityTypeLabel();
   const accountCategoryLabelsStore = useAccountCategoryLabel();
 
-  const exclude = series?.filter.exclude ?? {};
+  const exclude = (series?.filter as any)?.exclude ?? {};
   const excludeEntityLabelsStore = useEntityLabel(exclude.entity_cuis ?? []);
   const excludeUatLabelsStore = useUatLabel(exclude.uat_ids ?? []);
   const excludeEconomicClassificationLabelsStore = useEconomicClassificationLabel(exclude.economic_codes ?? []);
@@ -192,7 +251,7 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
     if (!series) return;
     if (initializedRef.current === series.id) return;
 
-    const patch = buildSeriesFilterInitializationPatch(series.filter, {
+    const patch = buildSeriesFilterInitializationPatch(series.type, series.filter, {
       currency: userCurrency,
       inflationAdjusted: userInflationAdjusted,
     });
@@ -211,10 +270,11 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
     return null;
   }
 
-  const { filter } = series;
+  const isCommitmentsSeries = series.type === "commitments-analytics";
+  const filter = series.filter as any;
 
   const createListUpdater =
-    (filterKey: keyof typeof filter, labelStore?: LabelStore) =>
+    (filterKey: string, labelStore?: LabelStore) =>
       (action: React.SetStateAction<OptionItem<string | number>[]>) => {
         const currentOptions =
           (filter[filterKey] as (string | number)[] | undefined)?.map((id) => ({
@@ -228,18 +288,18 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
         }
 
         applyChanges((draft) => {
-          (draft.filter[filterKey] as (string | number)[]) = newState.map((option) => option.id);
+          (draft.filter as any)[filterKey] = newState.map((option) => option.id);
         });
 
         return newState;
       };
 
   const createValueUpdater =
-    (filterKey: keyof typeof filter, transform?: (value: FilterValue) => FilterValue) =>
+    (filterKey: string, transform?: (value: FilterValue) => FilterValue) =>
       (value: FilterValue) => {
         const newValue = typeof transform === "function" ? transform(value) : value;
         applyChanges((draft) => {
-          draft.filter[filterKey] = newValue as never;
+          (draft.filter as any)[filterKey] = newValue;
         });
       };
 
@@ -250,7 +310,7 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
   };
 
   const selectedEntityOptions: OptionItem[] =
-    filter.entity_cuis?.map((cui) => ({ id: cui, label: entityLabelsStore.map(cui) })) ?? [];
+    filter.entity_cuis?.map((cui: string) => ({ id: cui, label: entityLabelsStore.map(cui) })) ?? [];
   const setSelectedEntityOptions = createListUpdater("entity_cuis", entityLabelsStore);
 
   const selectedMainCreditorOption: OptionItem[] =
@@ -258,36 +318,36 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
   const setMainCreditorCui = createValueUpdater("main_creditor_cui", (value) => (value ? String(value) : undefined));
 
   const selectedUatOptions: OptionItem<string>[] =
-    filter.uat_ids?.map((id) => ({ id, label: uatLabelsStore.map(id) })) ?? [];
+    filter.uat_ids?.map((id: string) => ({ id, label: uatLabelsStore.map(id) })) ?? [];
   const setSelectedUatOptions = createListUpdater("uat_ids", uatLabelsStore);
 
   const selectedEconomicClassificationOptions: OptionItem[] =
-    filter.economic_codes?.map((id) => ({ id, label: economicClassificationLabelsStore.map(id) })) ?? [];
+    filter.economic_codes?.map((id: string) => ({ id, label: economicClassificationLabelsStore.map(id) })) ?? [];
   const setSelectedEconomicClassificationOptions = createListUpdater("economic_codes", economicClassificationLabelsStore);
 
   const selectedFunctionalClassificationOptions: OptionItem[] =
-    filter.functional_codes?.map((id) => ({ id, label: functionalClassificationLabelsStore.map(id) })) ?? [];
+    filter.functional_codes?.map((id: string) => ({ id, label: functionalClassificationLabelsStore.map(id) })) ?? [];
   const setSelectedFunctionalClassificationOptions = createListUpdater("functional_codes", functionalClassificationLabelsStore);
 
-  const selectedAccountTypeOption: OptionItem = filter.account_category
+  const selectedAccountTypeOption: OptionItem = !isCommitmentsSeries && filter.account_category
     ? { id: filter.account_category, label: accountCategoryLabelsStore.map(filter.account_category) }
     : { id: "ch", label: accountCategoryLabelsStore.map("ch") };
   const setSelectedAccountTypeOption = createValueUpdater("account_category", (value) => (value ? value : undefined));
 
   const selectedEntityTypeOptions: OptionItem[] =
-    filter.entity_types?.map((id) => ({ id, label: entityTypeLabelsStore.map(id) })) ?? [];
+    filter.entity_types?.map((id: string) => ({ id, label: entityTypeLabelsStore.map(id) })) ?? [];
   const setSelectedEntityTypeOptions = createListUpdater("entity_types", entityTypeLabelsStore);
 
   const selectedCountyOptions: OptionItem<string>[] =
-    filter.county_codes?.map((code) => ({ id: code, label: String(code) })) ?? [];
+    filter.county_codes?.map((code: string) => ({ id: code, label: String(code) })) ?? [];
   const setSelectedCountyOptions = createListUpdater("county_codes");
 
   const selectedBudgetSectorOptions: OptionItem[] =
-    filter.budget_sector_ids?.map((id) => ({ id, label: budgetSectorLabelsStore.map(id) })) ?? [];
+    filter.budget_sector_ids?.map((id: string) => ({ id, label: budgetSectorLabelsStore.map(id) })) ?? [];
   const setSelectedBudgetSectorOptions = createListUpdater("budget_sector_ids", budgetSectorLabelsStore);
 
   const selectedFundingSourceOptions: OptionItem[] =
-    filter.funding_source_ids?.map((id) => ({ id, label: fundingSourceLabelsStore.map(id) })) ?? [];
+    filter.funding_source_ids?.map((id: string) => ({ id, label: fundingSourceLabelsStore.map(id) })) ?? [];
   const setSelectedFundingSourceOptions = createListUpdater("funding_source_ids", fundingSourceLabelsStore);
 
   const selectedEconomicPrefixesOptions = filter.economic_prefixes ?? [];
@@ -315,9 +375,26 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
   const reportType = filter.report_type;
   const setReportType = (value: FilterValue) => {
     applyChanges((draft) => {
-      draft.filter.report_type = value ? (String(value) as ReportType) : undefined;
+      draft.filter.report_type = value
+        ? (isCommitmentsSeries ? (String(value) as CommitmentsReportType) : (String(value) as ReportType))
+        : undefined;
     });
   };
+
+  const commitmentsMetric: CommitmentsMetric = isCommitmentsSeries
+    ? (series.metric ?? "CREDITE_ANGAJAMENT")
+    : "CREDITE_ANGAJAMENT";
+  const setCommitmentsMetric = (value: FilterValue) => {
+    if (!isCommitmentsSeries || !value) return;
+    const metric = String(value) as CommitmentsMetric;
+    applyChanges((draft) => {
+      if (draft.type !== "commitments-analytics") return;
+      draft.metric = metric;
+    });
+  };
+  const commitmentsMetricOption: OptionItem | null = isCommitmentsSeries
+    ? { id: commitmentsMetric, label: COMMITMENTS_METRIC_OPTIONS.find((option) => option.value === commitmentsMetric)?.label ?? commitmentsMetric }
+    : null;
 
   let normalization: "total" | "per_capita" | "percent_gdp" | undefined;
   if (filter.normalization === "total_euro") {
@@ -362,7 +439,14 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
   });
   const growthOptions: OptionItem[] = showPeriodGrowth ? [{ id: "growth", label: t`Show growth (%)` }] : [];
 
-  const reportTypeOption: OptionItem | null = reportType ? { id: reportType, label: reportType } : null;
+  const reportTypeOption: OptionItem | null = reportType
+    ? {
+      id: reportType,
+      label: isCommitmentsSeries
+        ? COMMITMENTS_REPORT_TYPE_OPTIONS.find((option) => option.value === reportType)?.label ?? reportType
+        : reportType,
+    }
+    : null;
 
   const minPopulation = filter.min_population;
   const maxPopulation = filter.max_population;
@@ -378,6 +462,7 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
     id: String(tag.value),
     label: String(tag.value),
   }));
+  const allowedPeriodTypes = isCommitmentsSeries ? getAllowedPeriodTypesForMetric(commitmentsMetric) : undefined;
 
   // ============================================================================
   // EXCLUDE FILTERS STATE MANAGEMENT
@@ -385,7 +470,7 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
 
   // Helper to create exclude list updaters
   const createExcludeListUpdater =
-    (filterKey: keyof typeof exclude, labelStore?: LabelStore) =>
+    (filterKey: string, labelStore?: LabelStore) =>
       (action: React.SetStateAction<OptionItem<string | number>[]>) => {
         const currentOptions =
           (exclude[filterKey] as (string | number)[] | undefined)?.map((id) => ({
@@ -402,20 +487,20 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
           if (!draft.filter.exclude) {
             draft.filter.exclude = {};
           }
-          (draft.filter.exclude[filterKey] as (string | number)[]) = newState.map((option) => option.id);
+          (draft.filter.exclude as any)[filterKey] = newState.map((option) => option.id);
         });
 
         return newState;
       };
 
   const createExcludeValueUpdater =
-    (filterKey: keyof typeof exclude) =>
+    (filterKey: string) =>
       (value: FilterValue) => {
         applyChanges((draft) => {
           if (!draft.filter.exclude) {
             draft.filter.exclude = {};
           }
-          draft.filter.exclude[filterKey] = value as never;
+          (draft.filter.exclude as any)[filterKey] = value;
         });
       };
 
@@ -430,7 +515,7 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
 
   // Exclude filter state variables
   const excludeSelectedEntityOptions: OptionItem[] =
-    exclude.entity_cuis?.map((cui) => ({ id: cui, label: excludeEntityLabelsStore.map(cui) })) ?? [];
+    exclude.entity_cuis?.map((cui: string) => ({ id: cui, label: excludeEntityLabelsStore.map(cui) })) ?? [];
   const setExcludeSelectedEntityOptions = createExcludeListUpdater("entity_cuis", excludeEntityLabelsStore);
 
   const excludeSelectedMainCreditorOption: OptionItem[] =
@@ -438,31 +523,31 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
   const setExcludeMainCreditorCui = createExcludeValueUpdater("main_creditor_cui");
 
   const excludeSelectedUatOptions: OptionItem<string>[] =
-    exclude.uat_ids?.map((id) => ({ id: String(id), label: excludeUatLabelsStore.map(String(id)) })) ?? [];
+    exclude.uat_ids?.map((id: string) => ({ id: String(id), label: excludeUatLabelsStore.map(String(id)) })) ?? [];
   const setExcludeSelectedUatOptions = createExcludeListUpdater("uat_ids", excludeUatLabelsStore);
 
   const excludeSelectedEconomicClassificationOptions: OptionItem[] =
-    exclude.economic_codes?.map((id) => ({ id, label: excludeEconomicClassificationLabelsStore.map(id) })) ?? [];
+    exclude.economic_codes?.map((id: string) => ({ id, label: excludeEconomicClassificationLabelsStore.map(id) })) ?? [];
   const setExcludeSelectedEconomicClassificationOptions = createExcludeListUpdater("economic_codes", excludeEconomicClassificationLabelsStore);
 
   const excludeSelectedFunctionalClassificationOptions: OptionItem[] =
-    exclude.functional_codes?.map((id) => ({ id, label: excludeFunctionalClassificationLabelsStore.map(id) })) ?? [];
+    exclude.functional_codes?.map((id: string) => ({ id, label: excludeFunctionalClassificationLabelsStore.map(id) })) ?? [];
   const setExcludeSelectedFunctionalClassificationOptions = createExcludeListUpdater("functional_codes", excludeFunctionalClassificationLabelsStore);
 
   const excludeSelectedEntityTypeOptions: OptionItem[] =
-    exclude.entity_types?.map((id) => ({ id, label: entityTypeLabelsStore.map(id) })) ?? [];
+    exclude.entity_types?.map((id: string) => ({ id, label: entityTypeLabelsStore.map(id) })) ?? [];
   const setExcludeSelectedEntityTypeOptions = createExcludeListUpdater("entity_types", entityTypeLabelsStore);
 
   const excludeSelectedCountyOptions: OptionItem<string>[] =
-    exclude.county_codes?.map((code) => ({ id: code, label: String(code) })) ?? [];
+    exclude.county_codes?.map((code: string) => ({ id: code, label: String(code) })) ?? [];
   const setExcludeSelectedCountyOptions = createExcludeListUpdater("county_codes");
 
   const excludeSelectedBudgetSectorOptions: OptionItem[] =
-    exclude.budget_sector_ids?.map((id) => ({ id, label: excludeBudgetSectorLabelsStore.map(id) })) ?? [];
+    exclude.budget_sector_ids?.map((id: string) => ({ id, label: excludeBudgetSectorLabelsStore.map(id) })) ?? [];
   const setExcludeSelectedBudgetSectorOptions = createExcludeListUpdater("budget_sector_ids", excludeBudgetSectorLabelsStore);
 
   const excludeSelectedFundingSourceOptions: OptionItem[] =
-    exclude.funding_source_ids?.map((id) => ({ id, label: excludeFundingSourceLabelsStore.map(id) })) ?? [];
+    exclude.funding_source_ids?.map((id: string) => ({ id, label: excludeFundingSourceLabelsStore.map(id) })) ?? [];
   const setExcludeSelectedFundingSourceOptions = createExcludeListUpdater("funding_source_ids", excludeFundingSourceLabelsStore);
 
   const excludeSelectedEconomicPrefixesOptions = exclude.economic_prefixes ?? [];
@@ -473,6 +558,19 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
 
   const clearAllFilters = () => {
     applyChanges((draft) => {
+      if (draft.type === "commitments-analytics") {
+        draft.filter = {
+          normalization: "total",
+          currency: userCurrency,
+          inflation_adjusted: userInflationAdjusted,
+          report_type: "PRINCIPAL_AGGREGATED",
+          exclude: {
+            economic_prefixes: [...DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES],
+          },
+        } as CommitmentsSeriesConfiguration["filter"];
+        draft.metric = "CREDITE_ANGAJAMENT";
+        return;
+      }
       draft.filter = {
         account_category: "ch",
         normalization: "total",
@@ -500,7 +598,7 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
     (filter.functional_codes?.length ?? 0) +
     (filter.budget_sector_ids?.length ?? 0) +
     (filter.funding_source_ids?.length ?? 0) +
-    (filter.account_category ? 1 : 0) +
+    (!isCommitmentsSeries && filter.account_category ? 1 : 0) +
     (filter.entity_types?.length ?? 0) +
     (filter.aggregate_min_amount != null ? 1 : 0) +
     (filter.aggregate_max_amount != null ? 1 : 0) +
@@ -537,7 +635,8 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
 
   const accordionValue = excludeValue;
 
-  const handleClearReportType = () => setReportType('Executie bugetara agregata la nivel de ordonator principal');
+  const handleClearReportType = () =>
+    setReportType(isCommitmentsSeries ? "PRINCIPAL_AGGREGATED" : "Executie bugetara agregata la nivel de ordonator principal");
   const handleClearNormalization = () => setNormalization("total");
   const handleClearCurrency = () => setCurrency(userCurrency);
   const handleClearInflation = () => setInflationAdjusted(userInflationAdjusted);
@@ -594,17 +693,39 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
         </div>
       </CardHeader>
       <CardContent className="flex flex-col p-0 overflow-y-auto">
-        <FilterRadioContainer
-          title={t`Revenues/Expenses`}
-          icon={<ArrowUpDown className="w-4 h-4" aria-hidden="true" />}
-          selectedOption={selectedAccountTypeOption}
-          onClear={() => setSelectedAccountTypeOption("ch")}
-        >
-          <AccountCategoryRadio
-            accountCategory={filter.account_category}
-            setAccountCategory={setSelectedAccountTypeOption}
-          />
-        </FilterRadioContainer>
+        {!isCommitmentsSeries && (
+          <FilterRadioContainer
+            title={t`Revenues/Expenses`}
+            icon={<ArrowUpDown className="w-4 h-4" aria-hidden="true" />}
+            selectedOption={selectedAccountTypeOption}
+            onClear={() => setSelectedAccountTypeOption("ch")}
+          >
+            <AccountCategoryRadio
+              accountCategory={filter.account_category}
+              setAccountCategory={setSelectedAccountTypeOption}
+            />
+          </FilterRadioContainer>
+        )}
+        {isCommitmentsSeries && (
+          <FilterRadioContainer
+            title={t`Metric`}
+            icon={<TrendingUp className="w-4 h-4" aria-hidden="true" />}
+            selectedOption={commitmentsMetricOption}
+            onClear={() => setCommitmentsMetric("CREDITE_ANGAJAMENT")}
+          >
+            <RadioGroupButtons
+              value={commitmentsMetric}
+              onChange={(value) => {
+                if (value === undefined) return;
+                setCommitmentsMetric(value as any);
+              }}
+              options={COMMITMENTS_METRIC_OPTIONS.map((option) => ({
+                value: option.value,
+                label: option.label,
+              }))}
+            />
+          </FilterRadioContainer>
+        )}
         <FilterRadioContainer
           title={t`Normalization`}
           icon={<ArrowUpDown className="w-4 h-4" aria-hidden="true" />}
@@ -689,7 +810,11 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
           onClearOption={handleRemovePeriodTag}
           onClearAll={() => setPeriod(undefined)}
         >
-          <PeriodFilter value={filter.report_period as any} onChange={setPeriod} />
+          <PeriodFilter
+            value={filter.report_period as any}
+            onChange={setPeriod}
+            allowedPeriodTypes={allowedPeriodTypes}
+          />
         </FilterContainer>
         <FilterListContainer
           title={t`Entities`}
@@ -782,7 +907,21 @@ function SeriesFilterInternal({ adapter, className }: Readonly<SeriesFilterInter
           selectedOption={reportTypeOption}
           onClear={handleClearReportType}
         >
-          <ReportTypeFilter reportType={reportType} setReportType={setReportType} />
+          {isCommitmentsSeries ? (
+            <RadioGroupButtons
+              value={reportType}
+              onChange={(value) => {
+                if (value === undefined) return;
+                setReportType(value as any);
+              }}
+              options={COMMITMENTS_REPORT_TYPE_OPTIONS.map((option) => ({
+                value: option.value,
+                label: option.label,
+              }))}
+            />
+          ) : (
+            <ReportTypeFilter reportType={reportType} setReportType={setReportType} />
+          )}
         </FilterRadioContainer>
         <FilterContainer
           title={t`Is UAT`}

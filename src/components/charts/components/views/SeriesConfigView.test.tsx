@@ -50,6 +50,33 @@ vi.mock('@tanstack/react-router', () => ({
   useNavigate: () => mockNavigate,
 }))
 
+vi.mock('@/components/ui/select', async () => {
+  const React = await import('react')
+  const SelectContext = React.createContext<{ onValueChange?: (value: string) => void } | null>(null)
+
+  const Select = ({ value, onValueChange, children }: any) => (
+    <SelectContext.Provider value={{ onValueChange }}>
+      <div data-testid="mock-select" data-value={value}>
+        {children}
+      </div>
+    </SelectContext.Provider>
+  )
+
+  const SelectTrigger = ({ children }: any) => <div>{children}</div>
+  const SelectValue = ({ placeholder }: any) => <span>{placeholder}</span>
+  const SelectContent = ({ children }: any) => <div>{children}</div>
+  const SelectItem = ({ value, children }: any) => {
+    const context = React.useContext(SelectContext)
+    return (
+      <button type="button" onClick={() => context?.onValueChange?.(value)}>
+        {children}
+      </button>
+    )
+  }
+
+  return { Select, SelectTrigger, SelectValue, SelectContent, SelectItem }
+})
+
 // Mock Analytics
 vi.mock('@/lib/analytics', () => ({
   Analytics: {
@@ -388,7 +415,41 @@ describe('SeriesConfigView', () => {
       expect(screen.getByTestId('series-filter')).toBeInTheDocument()
     })
 
+    it('shows SeriesFilter for commitments-analytics', () => {
+      mockChart.series = [
+        createMockSeries({
+          type: 'commitments-analytics' as any,
+          metric: 'CREDITE_ANGAJAMENT',
+          filter: {
+            report_type: 'PRINCIPAL_AGGREGATED',
+            report_period: { type: 'YEAR', selection: { interval: { start: '2024', end: '2024' } } },
+          },
+        } as any),
+      ] as any
+
+      render(<SeriesConfigView />)
+
+      expect(screen.getByTestId('series-filter')).toBeInTheDocument()
+    })
+
     it('does not show unit input for line-items series', () => {
+      render(<SeriesConfigView />)
+
+      expect(screen.queryByTestId('unit-input')).not.toBeInTheDocument()
+    })
+
+    it('does not show unit input for commitments series', () => {
+      mockChart.series = [
+        createMockSeries({
+          type: 'commitments-analytics' as any,
+          metric: 'CREDITE_ANGAJAMENT',
+          filter: {
+            report_type: 'PRINCIPAL_AGGREGATED',
+            report_period: { type: 'YEAR', selection: { interval: { start: '2024', end: '2024' } } },
+          },
+        } as any),
+      ] as any
+
       render(<SeriesConfigView />)
 
       expect(screen.queryByTestId('unit-input')).not.toBeInTheDocument()
@@ -407,6 +468,49 @@ describe('SeriesConfigView', () => {
       render(<SeriesConfigView />)
 
       expect(screen.getByTestId('ins-series-editor')).toBeInTheDocument()
+    })
+
+    it('does not show create alert button for commitments series', () => {
+      mockChart.series = [
+        createMockSeries({
+          type: 'commitments-analytics' as any,
+          metric: 'CREDITE_ANGAJAMENT',
+          filter: {
+            report_type: 'PRINCIPAL_AGGREGATED',
+            report_period: { type: 'YEAR', selection: { interval: { start: '2024', end: '2024' } } },
+          },
+        } as any),
+      ] as any
+
+      render(<SeriesConfigView />)
+
+      expect(screen.queryByText('Create Alert')).not.toBeInTheDocument()
+    })
+
+    it('normalizes report type when switching from commitments to line-items', () => {
+      const commitmentsSeries = createMockSeries({
+        type: 'commitments-analytics' as any,
+        metric: 'CREDITE_ANGAJAMENT',
+        filter: {
+          report_type: 'PRINCIPAL_AGGREGATED',
+          report_period: { type: 'YEAR', selection: { interval: { start: '2024', end: '2024' } } },
+        },
+      } as any)
+
+      mockChart.series = [commitmentsSeries] as any
+
+      render(<SeriesConfigView />)
+
+      fireEvent.click(screen.getByText('Line Items Aggregated Yearly'))
+
+      expect(mockUpdateSeries).toHaveBeenCalledWith('series-1', expect.any(Function))
+      const lastCall = mockUpdateSeries.mock.calls[mockUpdateSeries.mock.calls.length - 1]
+      const updateCallback = lastCall?.[1] as ((prev: any) => any) | undefined
+      expect(updateCallback).toBeDefined()
+
+      const nextSeries = updateCallback?.(commitmentsSeries)
+      expect(nextSeries?.type).toBe('line-items-aggregated-yearly')
+      expect(nextSeries?.filter.report_type).toBe('Executie bugetara agregata la nivel de ordonator principal')
     })
   })
 

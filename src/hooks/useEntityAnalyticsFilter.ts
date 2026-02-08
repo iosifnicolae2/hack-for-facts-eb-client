@@ -1,7 +1,7 @@
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { useCallback } from 'react'
 import { z } from 'zod'
-import { AnalyticsFilterSchema, AnalyticsFilterType, defaultYearRange } from '@/schemas/charts'
+import { AnalyticsFilterSchema, AnalyticsFilterType, createDefaultExecutionYearReportPeriod } from '@/schemas/charts'
 import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults'
 import { withDefaultExcludes } from '@/lib/filterUtils'
 import { Analytics } from '@/lib/analytics'
@@ -12,10 +12,7 @@ const viewEnum = z.enum(['table', 'chart', 'line-items'])
 
 export const defaultEntityAnalyticsFilter: AnalyticsFilterType = withDefaultExcludes({
   account_category: 'ch',
-  report_period: {
-    type: 'YEAR',
-    selection: { dates: [String(defaultYearRange.end)] },
-  },
+  report_period: createDefaultExecutionYearReportPeriod(),
   normalization: 'total',
   report_type: 'Executie bugetara agregata la nivel de ordonator principal',
   exclude: {

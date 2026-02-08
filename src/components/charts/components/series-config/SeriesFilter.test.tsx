@@ -18,6 +18,8 @@ import { render, screen, fireEvent } from '@/test/test-utils'
 import { SeriesFilter, SeriesFilterAdapter } from './SeriesFilter'
 import type { SeriesConfiguration } from '@/schemas/charts'
 
+const periodFilterSpy = vi.hoisted(() => vi.fn())
+
 // ============================================================================
 // MOCKS
 // ============================================================================
@@ -150,7 +152,10 @@ vi.mock('@/components/filters/normalization-filter/NormalizationFilter', () => (
 }))
 
 vi.mock('@/components/filters/period-filter/PeriodFilter', () => ({
-  PeriodFilter: () => <div data-testid="period-filter">Period Filter</div>,
+  PeriodFilter: (props: unknown) => {
+    periodFilterSpy(props)
+    return <div data-testid="period-filter">Period Filter</div>
+  },
 }))
 
 vi.mock('@/components/ui/radio-group-buttons', () => ({
@@ -222,7 +227,7 @@ const createMockSeries = (overrides: Partial<SeriesConfiguration> = {}): SeriesC
   ...overrides,
 })
 
-const createMockAdapter = (series?: SeriesConfiguration): SeriesFilterAdapter => ({
+const createMockAdapter = (series?: any): SeriesFilterAdapter => ({
   series: series ?? createMockSeries(),
   applyChanges: vi.fn(),
 })
@@ -234,6 +239,7 @@ const createMockAdapter = (series?: SeriesConfiguration): SeriesFilterAdapter =>
 describe('SeriesFilter', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    periodFilterSpy.mockClear()
   })
 
   describe('rendering modes', () => {
@@ -324,6 +330,127 @@ describe('SeriesFilter', () => {
       render(<SeriesFilter adapter={adapter} />)
 
       expect(screen.getByTestId('filter-radio-Report Type')).toBeInTheDocument()
+    })
+
+    it('renders commitments metric section and hides revenues/expenses for commitments series', () => {
+      const commitmentsSeries = {
+        id: 'commitments-series',
+        type: 'commitments-analytics',
+        enabled: true,
+        label: 'Commitments',
+        unit: '',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        metric: 'CREDITE_ANGAJAMENT',
+        filter: {
+          report_type: 'PRINCIPAL_AGGREGATED',
+          report_period: { type: 'YEAR', selection: { interval: { start: '2024', end: '2024' } } },
+          normalization: 'total',
+          currency: 'RON',
+          inflation_adjusted: false,
+        },
+        config: {
+          showDataLabels: false,
+          color: '#0000ff',
+        },
+      }
+      const adapter = createMockAdapter(commitmentsSeries)
+
+      render(<SeriesFilter adapter={adapter} />)
+
+      expect(screen.getByTestId('filter-radio-Metric')).toBeInTheDocument()
+      expect(screen.queryByTestId('filter-radio-Revenues/Expenses')).not.toBeInTheDocument()
+    })
+
+    it('does not render exclude transfers section for commitments series', () => {
+      const commitmentsSeries = {
+        id: 'commitments-series',
+        type: 'commitments-analytics',
+        enabled: true,
+        label: 'Commitments',
+        unit: '',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        metric: 'CREDITE_ANGAJAMENT',
+        filter: {
+          report_type: 'PRINCIPAL_AGGREGATED',
+          report_period: { type: 'YEAR', selection: { interval: { start: '2024', end: '2024' } } },
+          normalization: 'total',
+          currency: 'RON',
+          inflation_adjusted: false,
+        },
+        config: {
+          showDataLabels: false,
+          color: '#0000ff',
+        },
+      }
+      const adapter = createMockAdapter(commitmentsSeries)
+
+      render(<SeriesFilter adapter={adapter} />)
+
+      expect(screen.queryByTestId('filter-container-Exclude Transfers')).not.toBeInTheDocument()
+    })
+
+    it('passes all period types for month-compatible commitments metrics', () => {
+      const commitmentsSeries = {
+        id: 'commitments-series',
+        type: 'commitments-analytics',
+        enabled: true,
+        label: 'Commitments',
+        unit: '',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        metric: 'CREDITE_ANGAJAMENT',
+        filter: {
+          report_type: 'PRINCIPAL_AGGREGATED',
+          report_period: { type: 'YEAR', selection: { interval: { start: '2024', end: '2024' } } },
+          normalization: 'total',
+          currency: 'RON',
+          inflation_adjusted: false,
+        },
+        config: {
+          showDataLabels: false,
+          color: '#0000ff',
+        },
+      }
+      const adapter = createMockAdapter(commitmentsSeries)
+
+      render(<SeriesFilter adapter={adapter} />)
+
+      const lastCallIndex = periodFilterSpy.mock.calls.length - 1
+      const lastCallArgs = periodFilterSpy.mock.calls[lastCallIndex]?.[0] as { allowedPeriodTypes?: string[] } | undefined
+      expect(lastCallArgs?.allowedPeriodTypes).toEqual(['YEAR', 'QUARTER', 'MONTH'])
+    })
+
+    it('clamps period types for non-month commitments metrics', () => {
+      const commitmentsSeries = {
+        id: 'commitments-series',
+        type: 'commitments-analytics',
+        enabled: true,
+        label: 'Commitments',
+        unit: '',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        metric: 'LIMITA_CREDIT_ANGAJAMENT',
+        filter: {
+          report_type: 'PRINCIPAL_AGGREGATED',
+          report_period: { type: 'YEAR', selection: { interval: { start: '2024', end: '2024' } } },
+          normalization: 'total',
+          currency: 'RON',
+          inflation_adjusted: false,
+        },
+        config: {
+          showDataLabels: false,
+          color: '#0000ff',
+        },
+      }
+      const adapter = createMockAdapter(commitmentsSeries)
+
+      render(<SeriesFilter adapter={adapter} />)
+
+      const lastCallIndex = periodFilterSpy.mock.calls.length - 1
+      const lastCallArgs = periodFilterSpy.mock.calls[lastCallIndex]?.[0] as { allowedPeriodTypes?: string[] } | undefined
+      expect(lastCallArgs?.allowedPeriodTypes).toEqual(['YEAR', 'QUARTER'])
     })
   })
 

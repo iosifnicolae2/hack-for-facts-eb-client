@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
 import { getChartAnalytics, getStaticChartAnalytics } from "@/lib/api/charts";
+import { fetchCommitmentsAnalytics, type CommitmentsAnalyticsInput } from "@/lib/api/commitments";
 import {
     AnalyticsFilterType,
     AnalyticsInput,
@@ -10,10 +11,11 @@ import {
     Series,
     defaultYearRange,
     SeriesConfig,
+    CommitmentsSeriesConfiguration,
     InsSeriesConfiguration,
     StaticSeriesConfiguration,
 } from "@/schemas/charts";
-import { normalizeAnalyticsFilter } from "@/lib/filterUtils";
+import { normalizeAnalyticsFilter, prepareCommitmentsFilterForServer } from "@/lib/filterUtils";
 import { generateHash, convertDaysToMs, getUserLocale } from "@/lib/utils";
 import { calculateAllSeriesData } from "@/lib/chart-calculation-utils";
 import {
@@ -87,6 +89,21 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
             .map((series) => series as InsSeriesConfiguration);
     }, [chart]);
 
+    const commitmentsSeriesInputs = useMemo<CommitmentsAnalyticsInput[]>(() => {
+        if (!chart) return [];
+
+        return chart.series
+            .filter((series) => series.type === "commitments-analytics")
+            .map((series) => {
+                const commitmentsSeries = series as CommitmentsSeriesConfiguration;
+                return {
+                    seriesId: commitmentsSeries.id,
+                    metric: commitmentsSeries.metric,
+                    filter: prepareCommitmentsFilterForServer(commitmentsSeries.filter),
+                } as CommitmentsAnalyticsInput;
+            });
+    }, [chart]);
+
     const analyticsInputsHash = useMemo(
         () => getAnalyticsInputHash(analyticsInputs),
         [analyticsInputs]
@@ -105,11 +122,16 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
         [staticSeriesIds]
     );
     const insSeriesHash = useMemo(() => getInsSeriesInputHash(insSeries), [insSeries]);
+    const commitmentsSeriesInputsHash = useMemo(
+        () => getCommitmentsSeriesInputHash(commitmentsSeriesInputs),
+        [commitmentsSeriesInputs]
+    );
 
     const hasChart = !!chart;
     const hasFilters = analyticsInputs.length > 0;
     const hasStaticSeries = staticSeries.length > 0;
     const hasInsSeries = insSeries.length > 0;
+    const hasCommitmentsSeries = commitmentsSeriesInputs.length > 0;
 
     // Fetch dynamic series
     const {
@@ -151,6 +173,18 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
             return results;
         },
         enabled: enabled && hasChart && hasInsSeries,
+        staleTime: convertDaysToMs(1),
+        gcTime: convertDaysToMs(3),
+    });
+
+    const {
+        data: commitmentsSeriesData,
+        isLoading: isLoadingCommitmentsData,
+        error: commitmentsDataError,
+    } = useQuery({
+        queryKey: ["chart-data-commitments", commitmentsSeriesInputsHash],
+        queryFn: () => fetchCommitmentsAnalytics(commitmentsSeriesInputs),
+        enabled: enabled && hasChart && hasCommitmentsSeries,
         staleTime: convertDaysToMs(1),
         gcTime: convertDaysToMs(3),
     });
@@ -210,10 +244,21 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
             });
         }
 
+        if (commitmentsSeriesData) {
+            commitmentsSeriesData.forEach((seriesData) => {
+                map.set(seriesData.seriesId, {
+                    seriesId: seriesData.seriesId,
+                    xAxis: seriesData.xAxis as AnalyticsSeries["xAxis"],
+                    yAxis: seriesData.yAxis as AnalyticsSeries["yAxis"],
+                    data: seriesData.data.map((point) => ({ x: point.x, y: point.y })),
+                });
+            });
+        }
+
         // Include calculated/custom series
         const calc = calculateAllSeriesData(chart.series, map);
         return { map: calc.dataSeriesMap, calcWarnings: calc.warnings, insWarnings };
-    }, [chart, serverChartData, staticServerChartData, staticSeries, insSeriesResults]);
+    }, [chart, serverChartData, staticServerChartData, staticSeries, insSeriesResults, commitmentsSeriesData]);
 
     const dataSeriesMap = computedSeries?.map;
     const calculationWarnings = computedSeries?.calcWarnings ?? [];
@@ -255,8 +300,8 @@ export function useChartData({ chart, enabled = true }: UseChartDataProps) {
 
     return {
         dataSeriesMap: sanitizedDataSeriesMap,
-        isLoadingData: isLoadingData || isLoadingStaticData || isLoadingInsData,
-        dataError: dataError || staticDataError || insDataError,
+        isLoadingData: isLoadingData || isLoadingStaticData || isLoadingInsData || isLoadingCommitmentsData,
+        dataError: dataError || staticDataError || insDataError || commitmentsDataError,
         validationResult,
     };
 }
@@ -284,6 +329,14 @@ function getInsSeriesInputHash(seriesList: InsSeriesConfiguration[]) {
     const payloadHash = seriesList
         .sort((a, b) => a.id.localeCompare(b.id))
         .reduce((acc, series) => acc + series.id + "::" + JSON.stringify(series), "");
+    return generateHash(payloadHash);
+}
+
+function getCommitmentsSeriesInputHash(inputs: CommitmentsAnalyticsInput[]) {
+    if (inputs.length === 0) return "";
+    const payloadHash = inputs
+        .sort((a, b) => String(a.seriesId ?? "").localeCompare(String(b.seriesId ?? "")))
+        .reduce((acc, input) => acc + (input.seriesId ?? "") + "::" + input.metric + "::" + JSON.stringify(input.filter), "");
     return generateHash(payloadHash);
 }
 

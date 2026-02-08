@@ -11,7 +11,7 @@ import {
   ReferenceLine,
   LabelList,
 } from 'recharts'
-import { TrendingUp } from 'lucide-react'
+import { ExternalLink, TrendingUp } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
@@ -27,6 +27,14 @@ import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
 import { CommitmentsTrendsSkeleton } from './commitments-trends-skeleton'
 import { SafeResponsiveContainer } from '@/components/charts/safe-responsive-container'
+import { Button } from '@/components/ui/button'
+import { Link } from '@tanstack/react-router'
+
+type ChartShortcutLink = {
+  to: '/charts/$chartId'
+  params: { chartId: string }
+  search: unknown
+}
 
 interface CommitmentsTrendsProps {
   budgetTrend?: CommitmentsAnalyticsSeries | null
@@ -44,6 +52,7 @@ interface CommitmentsTrendsProps {
   selectedQuarter?: string
   selectedMonth?: string
   onPrefetchPeriod?: (label: string) => void
+  chartShortcutLink?: ChartShortcutLink | null
 }
 
 type AnalyticsPoint = CommitmentsAnalyticsSeries['data'][number]
@@ -88,6 +97,7 @@ const CommitmentsTrendsComponent: React.FC<CommitmentsTrendsProps> = ({
   selectedQuarter,
   selectedMonth,
   onPrefetchPeriod,
+  chartShortcutLink,
 }) => {
   const isMobile = useMediaQuery('(max-width: 768px)')
   const normalized = normalizeNormalizationOptions(normalizationOptions)
@@ -287,6 +297,18 @@ const CommitmentsTrendsComponent: React.FC<CommitmentsTrendsProps> = ({
             <span>
               <Trans>Commitment Trends</Trans>
             </span>
+            {chartShortcutLink && (
+              <Button asChild variant="ghost" size="icon" className="h-7 w-7 ml-1" aria-label={t`Open in chart editor`}>
+                <Link
+                  to={chartShortcutLink.to}
+                  params={chartShortcutLink.params}
+                  search={chartShortcutLink.search as any}
+                  preload="intent"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                </Link>
+              </Button>
+            )}
           </CardTitle>
           <div className="flex items-center gap-3">
             <Checkbox
@@ -452,6 +474,15 @@ function areSeriesEqual(a?: CommitmentsAnalyticsSeries | null, b?: CommitmentsAn
   return true
 }
 
+function areChartShortcutLinksEqual(
+  left?: ChartShortcutLink | null,
+  right?: ChartShortcutLink | null
+): boolean {
+  if (!left && !right) return true
+  if (!left || !right) return false
+  return left.to === right.to && left.params.chartId === right.params.chartId
+}
+
 function arePropsEqual(prev: CommitmentsTrendsProps, next: CommitmentsTrendsProps): boolean {
   return (
     areSeriesEqual(prev.budgetTrend, next.budgetTrend) &&
@@ -466,6 +497,7 @@ function arePropsEqual(prev: CommitmentsTrendsProps, next: CommitmentsTrendsProp
     (prev.periodType ?? 'YEAR') === (next.periodType ?? 'YEAR') &&
     prev.selectedQuarter === next.selectedQuarter &&
     prev.selectedMonth === next.selectedMonth &&
+    areChartShortcutLinksEqual(prev.chartShortcutLink, next.chartShortcutLink) &&
     !!prev.isLoading === !!next.isLoading
   )
 }

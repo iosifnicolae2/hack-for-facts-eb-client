@@ -1,7 +1,7 @@
 // src/lib/chart-filter-utils.ts
 
 import { useAccountCategoryLabel, useBudgetSectorLabel, useEconomicClassificationLabel, useEntityLabel, useEntityTypeLabel, useFunctionalClassificationLabel, useFundingSourceLabel, useUatLabel } from "@/hooks/filters/useFilterLabels";
-import { AnalyticsFilterType, Chart } from "@/schemas/charts";
+import { AnalyticsFilterType, Chart, CommitmentsSeriesConfiguration, Series, SeriesConfiguration } from "@/schemas/charts";
 import { ReportPeriodInput } from "@/schemas/reporting";
 import { t } from "@lingui/core/macro";
 import { getClassificationName } from "@/lib/classifications";
@@ -196,7 +196,10 @@ export const REPLACEABLE_FILTER_KEYS: ReadonlyArray<ReplaceableFilterKey> = [
   "report_period",
 ];
 
-const isAggregatedYearlySeries = (s: { type?: unknown }) => s?.type === "line-items-aggregated-yearly";
+type FilterableSeries = SeriesConfiguration | CommitmentsSeriesConfiguration;
+
+const isFilterableSeries = (series: Series): series is FilterableSeries =>
+  series.type === "line-items-aggregated-yearly" || series.type === "commitments-analytics";
 
 // Coerce filter values to the correct type. Some keys are booleans, and need to be parsed from strings.
 const parseFilterValueForKey = (key: ReplaceableFilterKey, value: string): unknown => {
@@ -212,9 +215,8 @@ const parseFilterValueForKey = (key: ReplaceableFilterKey, value: string): unkno
 export function collectUniqueFilterValues(chart: Chart, key: ReplaceableFilterKey): string[] {
   const values = new Set<string>();
   for (const s of chart.series) {
-    if (!isAggregatedYearlySeries(s)) continue;
-    const f = s.filter as AnalyticsFilterType;
-    const v = (f as Record<string, unknown>)[key];
+    if (!isFilterableSeries(s)) continue;
+    const v = (s.filter as Record<string, unknown>)[key];
     if (v == null) continue;
     if (Array.isArray(v)) {
       for (const item of v) if (item != null) values.add(String(item));
@@ -228,9 +230,8 @@ export function collectUniqueFilterValues(chart: Chart, key: ReplaceableFilterKe
 export function countPotentialReplacements(chart: Chart, key: ReplaceableFilterKey, fromValue: string): number {
   let count = 0;
   for (const s of chart.series) {
-    if (!isAggregatedYearlySeries(s)) continue;
-    const f = s.filter as AnalyticsFilterType;
-    const v = (f as Record<string, unknown>)[key];
+    if (!isFilterableSeries(s)) continue;
+    const v = (s.filter as Record<string, unknown>)[key];
     if (v == null) continue;
     if (Array.isArray(v)) {
       count += v.filter((x) => String(x) === fromValue).length;
@@ -243,9 +244,9 @@ export function countPotentialReplacements(chart: Chart, key: ReplaceableFilterK
 
 export function replaceFilterValue(chart: Chart, key: ReplaceableFilterKey, fromValue: string, toValue: string): Chart {
   const replacementValue = parseFilterValueForKey(key, toValue);
-  const nextSeries = chart.series.map((s) => {
-    if (!isAggregatedYearlySeries(s)) return s;
-    const f = { ...(s.filter as AnalyticsFilterType) } as Record<string, unknown>;
+  const nextSeries = chart.series.map((s): Series => {
+    if (!isFilterableSeries(s)) return s;
+    const f = { ...(s.filter as Record<string, unknown>) };
     const v = f[key];
     if (v == null) return s;
 
@@ -253,11 +254,11 @@ export function replaceFilterValue(chart: Chart, key: ReplaceableFilterKey, from
       const replaced = (v as unknown[])
         .map((x) => (String(x) === fromValue ? (replacementValue as never) : x))
         .filter((x) => x !== undefined);
-      return { ...s, filter: { ...(s.filter as AnalyticsFilterType), [key]: replaced } };
+      return { ...s, filter: { ...f, [key]: replaced } as typeof s.filter } as Series;
     }
 
     if (String(v) === fromValue) {
-      return { ...s, filter: { ...(s.filter as AnalyticsFilterType), [key]: replacementValue } };
+      return { ...s, filter: { ...f, [key]: replacementValue } as typeof s.filter } as Series;
     }
 
     return s;

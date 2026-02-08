@@ -200,6 +200,16 @@ describe('chart-filter-utils', () => {
       expect(result).toEqual(['456'])
     })
 
+    it('collects values from commitments series', () => {
+      const chart = createChart([
+        { type: 'line-items-aggregated-yearly', filter: { entity_cuis: ['123'] } },
+        { type: 'commitments-analytics', filter: { entity_cuis: ['456'] } },
+      ])
+
+      const result = collectUniqueFilterValues(chart, 'entity_cuis')
+      expect(result.sort()).toEqual(['123', '456'])
+    })
+
     it('returns empty array when no values found', () => {
       const chart = createChart([{ type: 'line-items-aggregated-yearly', filter: {} }])
 
@@ -238,6 +248,16 @@ describe('chart-filter-utils', () => {
 
       expect(countPotentialReplacements(chart, 'account_category', 'ch')).toBe(2)
       expect(countPotentialReplacements(chart, 'account_category', 'vn')).toBe(1)
+    })
+
+    it('counts occurrences in commitments series', () => {
+      const chart = createChart([
+        { type: 'line-items-aggregated-yearly', filter: { entity_cuis: ['123'] } },
+        { type: 'commitments-analytics', filter: { entity_cuis: ['123', '789'] } },
+      ])
+
+      expect(countPotentialReplacements(chart, 'entity_cuis', '123')).toBe(2)
+      expect(countPotentialReplacements(chart, 'entity_cuis', '789')).toBe(1)
     })
   })
 
@@ -279,6 +299,16 @@ describe('chart-filter-utils', () => {
       const result = replaceFilterValue(chart, 'is_uat', 'false', 'true')
 
       expect((result.series[0] as any).filter.is_uat).toBe(true)
+    })
+
+    it('replaces values in commitments series', () => {
+      const chart = createChart([
+        { type: 'commitments-analytics', filter: { entity_cuis: ['123', '456'] } },
+      ])
+
+      const result = replaceFilterValue(chart, 'entity_cuis', '123', '999')
+
+      expect((result.series[0] as any).filter.entity_cuis).toEqual(['999', '456'])
     })
 
     it('updates the updatedAt timestamp', () => {

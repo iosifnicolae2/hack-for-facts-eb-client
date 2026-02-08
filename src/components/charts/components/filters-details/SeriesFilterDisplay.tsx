@@ -5,6 +5,7 @@ import { CustomSeriesSeriesFilter } from "./CustomSeriesSeriesFilter";
 import { CustomSeriesValueSeriesFilter } from "./CustomSeriesValueSeriesFilter";
 import { StaticSeriesFilter } from "./StaticSeriesFilter";
 import { InsSeriesFilter } from "./InsSeriesFilter";
+import { CommitmentsSeriesFilter } from "./CommitmentsSeriesFilter";
 import { z } from "zod";
 
 interface SeriesFilterDisplayProps {
@@ -16,6 +17,8 @@ export function SeriesFilterDisplay({ series, chart }: SeriesFilterDisplayProps)
   switch (series.type) {
     case "line-items-aggregated-yearly":
       return <LineItemsAggregatedYearlySeriesFilter series={series} />;
+    case "commitments-analytics":
+      return <CommitmentsSeriesFilter series={series} />;
     case "aggregated-series-calculation":
       return <AggregatedSeriesCalculationSeriesFilter series={series} chart={chart} />;
     case "custom-series":

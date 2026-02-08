@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { AnalyticsFilterSchema, AnalyticsFilterType, defaultYearRange } from '@/schemas/charts';
+import { AnalyticsFilterSchema, AnalyticsFilterType, createDefaultExecutionYearReportPeriod } from '@/schemas/charts';
 import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults';
 import { withDefaultExcludes } from '@/lib/filterUtils';
 
@@ -8,10 +8,7 @@ const MapViewTypeEnum = z.enum(["UAT", "County"]);
 
 export const defaultMapFilters: AnalyticsFilterType = withDefaultExcludes({
   account_category: 'ch',
-  report_period: {
-    type: 'YEAR',
-    selection: { dates: [String(defaultYearRange.end)] },
-  },
+  report_period: createDefaultExecutionYearReportPeriod(),
   normalization: 'total',
   is_uat: true,
   report_type: 'Executie bugetara agregata la nivel de ordonator principal',

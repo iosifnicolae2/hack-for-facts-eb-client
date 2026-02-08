@@ -12,7 +12,7 @@ import { t } from "@lingui/core/macro";
 import { FloatingQuickNav } from "@/components/ui/FloatingQuickNav";
 import { useHotkeys } from "react-hotkeys-hook";
 import { toast } from "sonner";
-import { defaultYearRange } from "@/schemas/charts";
+import { createDefaultExecutionYearReportPeriod } from "@/schemas/charts";
 
 export const Route = createLazyFileRoute("/charts/$chartId/")({
   component: ChartDetailPage,
@@ -55,10 +55,7 @@ function ChartDetailPage() {
           entity_cuis: [],
           uat_ids: [],
           county_codes: [],
-          report_period: {
-            type: 'YEAR',
-            selection: { dates: [String(defaultYearRange.end)] },
-          },
+          report_period: createDefaultExecutionYearReportPeriod(),
           account_category: 'ch',
           normalization: 'total',
         }}

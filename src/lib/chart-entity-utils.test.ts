@@ -163,6 +163,35 @@ describe('chart-entity-utils', () => {
       expect(chartRelatesToEntity(chart, entity)).toBe(true)
     })
 
+    it('returns true when commitments series matches entity CUI', () => {
+      const entity = createMockEntity({ cui: '12345678' })
+      const chart = createMockChart([
+        {
+          type: 'commitments-analytics',
+          metric: 'CREDITE_ANGAJAMENT',
+          filter: { entity_cuis: ['12345678'] },
+        },
+      ])
+
+      expect(chartRelatesToEntity(chart, entity)).toBe(true)
+    })
+
+    it('returns true when commitments series matches county code', () => {
+      const entity = createMockEntity({
+        entity_type: 'admin_county_council',
+        uat: { county_code: 'CJ' },
+      })
+      const chart = createMockChart([
+        {
+          type: 'commitments-analytics',
+          metric: 'CREDITE_ANGAJAMENT',
+          filter: { county_codes: ['CJ'] },
+        },
+      ])
+
+      expect(chartRelatesToEntity(chart, entity)).toBe(true)
+    })
+
     it('handles empty filter', () => {
       const entity = createMockEntity({ cui: '12345678' })
       const chart = createMockChart([

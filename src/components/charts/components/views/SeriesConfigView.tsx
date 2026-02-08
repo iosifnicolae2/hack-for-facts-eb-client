@@ -10,6 +10,7 @@ import {
   SeriesConfiguration,
   SeriesGroupConfiguration,
   StaticSeriesConfigurationSchema,
+  createDefaultCommitmentsYearReportPeriod,
   type InsSeriesAggregation,
 } from '@/schemas/charts';
 import {
@@ -45,6 +46,8 @@ import { createEmptyAlert } from '@/schemas/alerts';
 import { Analytics } from '@/lib/analytics';
 import { DebouncedStatusInput } from '@/components/ui/debounced-status-input';
 import { InsSeriesConfigurationSchema } from '@/schemas/charts';
+import { toReportTypeValue } from '@/schemas/reporting';
+import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES } from '@/lib/analytics-defaults';
 
 function getInsAggregationDescription(aggregation: InsSeriesAggregation | undefined): string {
   if (aggregation === 'average') {
@@ -54,6 +57,38 @@ function getInsAggregationDescription(aggregation: InsSeriesAggregation | undefi
     return t`Use only the first matching observation for each period.`;
   }
   return t`Use the total of all matching observations in each period.`;
+}
+
+const DEFAULT_EXECUTION_REPORT_TYPE = 'Executie bugetara agregata la nivel de ordonator principal' as const;
+
+function coerceCommitmentsReportType(reportType: unknown): 'PRINCIPAL_AGGREGATED' | 'SECONDARY_AGGREGATED' | 'DETAILED' {
+  const value = String(reportType ?? '').trim();
+  if (
+    value === 'SECONDARY_AGGREGATED' ||
+    value === 'COMMITMENT_SECONDARY_AGGREGATED' ||
+    value === 'Executie bugetara agregata la nivel de ordonator secundar' ||
+    value === 'Angajamente bugetare agregat secundar'
+  ) {
+    return 'SECONDARY_AGGREGATED';
+  }
+  if (
+    value === 'DETAILED' ||
+    value === 'COMMITMENT_DETAILED' ||
+    value === 'Executie bugetara detaliata' ||
+    value === 'Angajamente bugetare detaliat'
+  ) {
+    return 'DETAILED';
+  }
+  return 'PRINCIPAL_AGGREGATED';
+}
+
+function coerceExecutionReportType(reportType: unknown): string {
+  const commitmentsType = coerceCommitmentsReportType(reportType);
+  try {
+    return toReportTypeValue(commitmentsType);
+  } catch {
+    return DEFAULT_EXECUTION_REPORT_TYPE;
+  }
 }
 
 export function SeriesConfigView() {
@@ -88,6 +123,57 @@ export function SeriesConfigView() {
   const updateSeriesField = (field: keyof Series, value: string | object) => {
     if (!series) return;
     updateSeries(series.id, (prev) => ({ ...prev, [field]: value, updatedAt: new Date().toISOString() }));
+  };
+
+  const handleSeriesTypeChange = (nextType: string) => {
+    if (!series) return;
+    if (nextType === 'line-items-aggregated-yearly') {
+      updateSeries(series.id, (prev) => {
+        const prevFilter = (prev as any).filter ?? {};
+        return {
+          ...prev,
+          type: nextType,
+          filter: {
+            ...prevFilter,
+            report_type: coerceExecutionReportType(prevFilter.report_type),
+          },
+          updatedAt: new Date().toISOString(),
+        } as Series;
+      });
+      return;
+    }
+    if (nextType !== 'commitments-analytics') {
+      updateSeriesField('type', nextType);
+      return;
+    }
+
+    updateSeries(series.id, (prev) => {
+      const prevFilter = (prev as any).filter ?? {};
+      const commitmentsReportType = coerceCommitmentsReportType(prevFilter.report_type);
+
+      return {
+        ...prev,
+        type: 'commitments-analytics',
+        metric: (prev as any).metric ?? 'CREDITE_ANGAJAMENT',
+        unit: '',
+        filter: {
+          ...prevFilter,
+          report_type: commitmentsReportType,
+          report_period: prevFilter.report_period ?? createDefaultCommitmentsYearReportPeriod(),
+          normalization: prevFilter.normalization ?? 'total',
+          currency: prevFilter.currency ?? 'RON',
+          inflation_adjusted: prevFilter.inflation_adjusted ?? false,
+          exclude: {
+            ...(prevFilter.exclude ?? {}),
+            economic_prefixes:
+              prevFilter.exclude?.economic_prefixes?.length
+                ? prevFilter.exclude.economic_prefixes
+                : [...DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES],
+          },
+        },
+        updatedAt: new Date().toISOString(),
+      } as Series;
+    });
   };
 
   const updateSeriesConfig = (config: Partial<SeriesConfiguration['config']>) => {
@@ -217,13 +303,14 @@ export function SeriesConfigView() {
               <Label htmlFor="series-type"><Trans>Series Type</Trans></Label>
               <Select
                 value={series?.type}
-                onValueChange={(value) => updateSeriesField('type', value)}
+                onValueChange={handleSeriesTypeChange}
               >
                 <SelectTrigger>
                   <SelectValue placeholder={t`Select Series Type`} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="line-items-aggregated-yearly">{t`Line Items Aggregated Yearly`}</SelectItem>
+                  <SelectItem value="commitments-analytics">{t`Commitments Analytics`}</SelectItem>
                   <SelectItem value="aggregated-series-calculation">{t`Aggregated Series Calculation`}</SelectItem>
                   <SelectItem value="custom-series">{t`Custom Series`}</SelectItem>
                   <SelectItem value="custom-series-value">{t`Custom Series Value`}</SelectItem>
@@ -291,7 +378,7 @@ export function SeriesConfigView() {
               </div>
             </div>
 
-            {series.type !== 'line-items-aggregated-yearly' && (
+            {series.type !== 'line-items-aggregated-yearly' && series.type !== 'commitments-analytics' && (
               <UnitInput
                 id="series-unit"
                 value={series?.unit || ''}
@@ -443,7 +530,7 @@ export function SeriesConfigView() {
         </Card>
 
         {/* ================= Series Filter / Calculation ================= */}
-        {series.type === 'line-items-aggregated-yearly' && (
+        {(series.type === 'line-items-aggregated-yearly' || series.type === 'commitments-analytics') && (
           <SeriesFilter seriesId={seriesId} />
         )}
         {series.type === 'aggregated-series-calculation' && (

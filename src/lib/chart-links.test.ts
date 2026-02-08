@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  buildEntityCommitmentsChartLink,
+  buildEntityCommitmentsChartState,
   buildEntityIncomeExpenseChartLink,
   buildInsStatsChartLink,
   buildInsStatsChartState,
@@ -126,5 +128,64 @@ describe('chart-links', () => {
 
     expect(treemapLink.to).toBe('/charts/$chartId');
     expect(treemapLink.params.chartId).toBe(treemapLink.search.chart.id);
+  });
+
+  it('builds commitments chart state with normalized report type and payments sum', () => {
+    const state = buildEntityCommitmentsChartState(
+      '123',
+      'Test Entity',
+      {
+        normalization: 'per_capita',
+        currency: 'EUR',
+        inflation_adjusted: true,
+        show_period_growth: true,
+      },
+      { reportType: 'COMMITMENT_SECONDARY_AGGREGATED' }
+    );
+
+    expect(state.view).toBe('overview');
+    expect(state.chart.series).toHaveLength(5);
+
+    const commitmentsSeries = state.chart.series.filter((series) => series.type === 'commitments-analytics');
+    expect(commitmentsSeries).toHaveLength(4);
+
+    const budgetSeries = commitmentsSeries.find((series) => series.metric === 'CREDITE_BUGETARE_DEFINITIVE');
+    if (!budgetSeries) throw new Error('Expected budget commitments series');
+
+    expect(budgetSeries.filter.report_type).toBe('SECONDARY_AGGREGATED');
+    expect(budgetSeries.filter.entity_cuis).toEqual(['123']);
+    expect(budgetSeries.filter.exclude?.economic_prefixes).toEqual(['51.01', '51.02']);
+    expect(budgetSeries.filter.normalization).toBe('per_capita');
+    expect(budgetSeries.filter.currency).toBe('EUR');
+    expect(budgetSeries.filter.inflation_adjusted).toBe(true);
+    expect(budgetSeries.filter.show_period_growth).toBe(true);
+
+    const paymentsSeries = state.chart.series.find(
+      (series) => series.type === 'aggregated-series-calculation' && series.label === 'Payments'
+    );
+    if (!paymentsSeries || paymentsSeries.type !== 'aggregated-series-calculation') {
+      throw new Error('Expected calculated payments series');
+    }
+
+    expect(paymentsSeries.calculation.op).toBe('sum');
+    expect(paymentsSeries.calculation.args).toHaveLength(2);
+  });
+
+  it('builds commitments chart link with route params tied to chart id', () => {
+    const link = buildEntityCommitmentsChartLink(
+      '123',
+      'Test Entity',
+      {
+        normalization: 'total',
+        currency: 'RON',
+        inflation_adjusted: false,
+        show_period_growth: false,
+      },
+      { reportType: 'PRINCIPAL_AGGREGATED' }
+    );
+
+    expect(link.to).toBe('/charts/$chartId');
+    expect(link.params.chartId).toBe(link.search.chart.id);
+    expect(link.search.view).toBe('overview');
   });
 });

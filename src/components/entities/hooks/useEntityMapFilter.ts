@@ -1,14 +1,11 @@
-import { AnalyticsFilterType, defaultYearRange } from "@/schemas/charts";
+import { AnalyticsFilterType, createDefaultExecutionYearReportPeriod } from "@/schemas/charts";
 import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from "@/lib/analytics-defaults";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { withDefaultExcludes } from "@/lib/filterUtils";
 
 const getDefaultMapFilters = (currency: 'RON' | 'EUR' | 'USD'): AnalyticsFilterType => withDefaultExcludes({
-  report_period: {
-    type: 'YEAR',
-    selection: { dates: [String(defaultYearRange.end)] },
-  },
+  report_period: createDefaultExecutionYearReportPeriod(),
   account_category: 'ch',
   normalization: 'per_capita',
   currency,

@@ -45,6 +45,7 @@ import {
   getEconomicSubchapterName,
 } from '@/lib/economic-classifications'
 import type { Grouping, DetailLevel } from '@/components/commitments/DetailTable'
+import { buildEntityCommitmentsChartLink } from '@/lib/chart-links'
 
 type Props = {
   readonly entity: EntityDetailsData | null | undefined
@@ -125,6 +126,7 @@ export function CommitmentsView({
   selectedMonth,
 }: Props) {
   const cui = entity?.cui ?? ''
+  const entityName = entity?.name ?? ''
   const grouping: Grouping = commitmentsGrouping ?? 'fn'
   const detailLevel: DetailLevel = commitmentsDetailLevel ?? 'chapter'
   const normalized = normalizeNormalizationOptions(normalizationOptions)
@@ -340,6 +342,26 @@ export function CommitmentsView({
     return undefined
   }, [selectedQuarter, selectedMonth])
 
+  const commitmentsChartLink = useMemo(() => {
+    if (!entityName || !cui) return null
+    return buildEntityCommitmentsChartLink(cui, entityName, {
+      normalization: normalized.normalization,
+      currency: normalized.currency,
+      inflation_adjusted: normalized.inflation_adjusted,
+      show_period_growth: normalized.show_period_growth,
+    }, {
+      reportType: effectiveReportType,
+    })
+  }, [
+    entityName,
+    cui,
+    effectiveReportType,
+    normalized.normalization,
+    normalized.currency,
+    normalized.inflation_adjusted,
+    normalized.show_period_growth,
+  ])
+
   if (!entity) {
     return null
   }
@@ -410,6 +432,7 @@ export function CommitmentsView({
           selectedQuarter={derivedSelectedQuarter}
           selectedMonth={selectedMonth}
           isLoading={isAnalyticsLoading}
+          chartShortcutLink={commitmentsChartLink}
         />
       </section>
 
