@@ -369,27 +369,27 @@ function ExpandedSubRows({
               <td className="p-4 text-right text-slate-500 text-xs">
                 {formatCurrency(sub.budget, 'compact', currency)}
               </td>
-              <td className="p-4 text-right text-blue-500 text-xs font-medium">
+              <td className="p-4 text-right text-slate-600 text-xs">
                 {formatCurrency(sub.committed, 'compact', currency)}
               </td>
               <td className="p-4 text-right">
                 <span
-                  className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                  className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${
                     executionPercent > 90
-                      ? 'bg-emerald-100 text-emerald-700'
-                      : 'bg-slate-100 text-slate-500'
+                      ? 'bg-slate-100 text-slate-600'
+                      : 'bg-slate-50 text-slate-400'
                   }`}
                 >
                   {executionPercent}%
                 </span>
               </td>
-              <td className="p-4 text-right text-emerald-500 text-xs font-medium">
+              <td className="p-4 text-right text-slate-600 text-xs">
                 {formatCurrency(sub.paid, 'compact', currency)}
               </td>
-              <td className="p-4 text-right text-amber-500 text-xs font-medium">
+              <td className="p-4 text-right text-slate-600 text-xs">
                 <div className="flex items-center justify-end gap-1">
                   {unpaid > 0 && (
-                    <AlertCircle size={10} className="text-amber-300" />
+                    <AlertCircle size={10} className="text-slate-300" />
                   )}
                   {formatCurrency(unpaid, 'compact', currency)}
                 </div>
@@ -596,7 +596,7 @@ export function DetailTable({
                 <SortIcon column="budget" sortCol={sortCol} sortDir={sortDir} />
               </th>
               <th
-                className="p-4 font-semibold border-b border-slate-200 text-right text-blue-700 cursor-pointer select-none hover:text-blue-800"
+                className="p-4 font-semibold border-b border-slate-200 text-right cursor-pointer select-none hover:text-slate-700"
                 onClick={() => toggleSort('committed')}
               >
                 <Trans>Legal commitments</Trans>
@@ -610,14 +610,14 @@ export function DetailTable({
                 <SortIcon column="percent" sortCol={sortCol} sortDir={sortDir} />
               </th>
               <th
-                className="p-4 font-semibold border-b border-slate-200 text-right text-emerald-700 cursor-pointer select-none hover:text-emerald-800"
+                className="p-4 font-semibold border-b border-slate-200 text-right cursor-pointer select-none hover:text-slate-700"
                 onClick={() => toggleSort('paid')}
               >
                 <Trans>Payments Made</Trans>
                 <SortIcon column="paid" sortCol={sortCol} sortDir={sortDir} />
               </th>
               <th
-                className="p-4 font-semibold border-b border-slate-200 text-right text-amber-600 cursor-pointer select-none hover:text-amber-700"
+                className="p-4 font-semibold border-b border-slate-200 text-right cursor-pointer select-none hover:text-slate-700"
                 onClick={() => toggleSort('unpaid')}
               >
                 <Trans>To Pay</Trans>
@@ -661,27 +661,27 @@ export function DetailTable({
                     <td className="p-4 text-right text-slate-600">
                       {formatCurrency(item.budget, 'compact', currency)}
                     </td>
-                    <td className="p-4 text-right font-semibold text-blue-600">
+                    <td className="p-4 text-right text-slate-700">
                       {formatCurrency(item.committed, 'compact', currency)}
                     </td>
                     <td className="p-4 text-right">
                       <span
-                        className={`px-2 py-1 rounded-full text-xs font-bold ${
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
                           executionPercent > 90
-                            ? 'bg-emerald-100 text-emerald-700'
-                            : 'bg-slate-100 text-slate-600'
+                            ? 'bg-slate-100 text-slate-700'
+                            : 'bg-slate-50 text-slate-500'
                         }`}
                       >
                         {executionPercent}%
                       </span>
                     </td>
-                    <td className="p-4 text-right font-semibold text-emerald-600">
+                    <td className="p-4 text-right text-slate-700">
                       {formatCurrency(item.paid, 'compact', currency)}
                     </td>
-                    <td className="p-4 text-right font-medium text-amber-600">
+                    <td className="p-4 text-right text-slate-700">
                       <div className="flex items-center justify-end gap-1">
                         {unpaid > 0 && (
-                          <AlertCircle size={12} className="text-amber-400" />
+                          <AlertCircle size={12} className="text-slate-400" />
                         )}
                         {formatCurrency(unpaid, 'compact', currency)}
                       </div>
@@ -712,21 +712,21 @@ export function DetailTable({
               <td className="p-4 text-right font-semibold text-slate-700" data-testid="detail-table-total-budget">
                 {formatCurrency(totals.budget, 'compact', currency)}
               </td>
-              <td className="p-4 text-right font-semibold text-blue-700" data-testid="detail-table-total-committed">
+              <td className="p-4 text-right font-semibold text-slate-700" data-testid="detail-table-total-committed">
                 {formatCurrency(totals.committed, 'compact', currency)}
               </td>
               <td className="p-4 text-right" data-testid="detail-table-total-execution-percent">
-                <span className="px-2 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700">
+                <span className="px-2 py-1 rounded-full text-xs font-medium bg-slate-200 text-slate-700">
                   {totalExecutionPercent}%
                 </span>
               </td>
-              <td className="p-4 text-right font-semibold text-emerald-700" data-testid="detail-table-total-paid">
+              <td className="p-4 text-right font-semibold text-slate-700" data-testid="detail-table-total-paid">
                 {formatCurrency(totals.paid, 'compact', currency)}
               </td>
-              <td className="p-4 text-right font-semibold text-amber-700" data-testid="detail-table-total-unpaid">
+              <td className="p-4 text-right font-semibold text-slate-700" data-testid="detail-table-total-unpaid">
                 <div className="flex items-center justify-end gap-1">
                   {totalUnpaid > 0 && (
-                    <AlertCircle size={12} className="text-amber-500" />
+                    <AlertCircle size={12} className="text-slate-400" />
                   )}
                   {formatCurrency(totalUnpaid, 'compact', currency)}
                 </div>
