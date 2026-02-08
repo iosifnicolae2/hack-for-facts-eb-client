@@ -1086,6 +1086,17 @@ export function InsStatsView({
   const historyUnitByKey = useMemo(() => {
     return new Map(historyUnitOptions.map((option) => [option.key, option]));
   }, [historyUnitOptions]);
+  const chartUnitLabel = useMemo(() => {
+    if (historyUnitOptions.length === 0) {
+      return null;
+    }
+
+    if (effectiveUnitSelection) {
+      return historyUnitByKey.get(effectiveUnitSelection)?.label ?? null;
+    }
+
+    return historyUnitOptions[0]?.label ?? null;
+  }, [effectiveUnitSelection, historyUnitByKey, historyUnitOptions]);
   const hasSeriesSelectors = selectableSeriesGroups.length > 0 || historyUnitOptions.length > 1;
   const chartShortcutLink = useMemo(() => {
     if (!selectedDatasetCode) {
@@ -1575,6 +1586,7 @@ export function InsStatsView({
             handleSeriesGroupSelectionChange={handleSeriesGroupSelectionChange}
             historyUnitOptions={historyUnitOptions}
             effectiveUnitSelection={effectiveUnitSelection}
+            chartUnitLabel={chartUnitLabel}
             handleUnitSelectionChange={handleUnitSelectionChange}
             activeSeriesCriteriaParts={activeSeriesCriteriaParts}
             historyChartData={historyChartData}
