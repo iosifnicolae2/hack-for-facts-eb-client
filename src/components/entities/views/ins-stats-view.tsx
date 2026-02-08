@@ -1529,6 +1529,7 @@ export function InsStatsView({
         groupedDerivedIndicators={groupedDerivedIndicators}
         derivedIndicatorStatus={derivedIndicatorStatus}
         onSelectDerivedIndicator={handleSelectDerivedIndicator}
+        onSelectDataset={handleSelectDataset}
       />
 
       <div

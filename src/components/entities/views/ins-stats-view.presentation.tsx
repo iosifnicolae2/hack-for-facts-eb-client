@@ -300,6 +300,7 @@ function DerivedIndicatorsSectionBase(props: {
     hasFallback: boolean;
   };
   onSelectDerivedIndicator: (datasetCode: string | null) => void;
+  onSelectDataset: (datasetCode: string) => void;
 }) {
   const {
     isLoading,
@@ -308,6 +309,7 @@ function DerivedIndicatorsSectionBase(props: {
     groupedDerivedIndicators,
     derivedIndicatorStatus,
     onSelectDerivedIndicator,
+    onSelectDataset,
   } = props;
 
   const isPeriodFallback =
@@ -376,17 +378,17 @@ function DerivedIndicatorsSectionBase(props: {
               if (groupRows.length === 0) return null;
 
               return (
-                <div key={groupId} className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-3">
-                  <div className="mb-2">
-                    <h4 className="text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                <div key={groupId} className="rounded-2xl border border-slate-200/70 dark:border-slate-700/70 bg-slate-50/30 dark:bg-slate-800/30 p-4">
+                  <div className="mb-3">
+                    <h4 className="text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500 dark:text-slate-400">
                       {DERIVED_INDICATOR_GROUP_META[groupId].label}
                     </h4>
-                    <p className="text-[12px] text-slate-500 dark:text-slate-400">
+                    <p className="mt-1 text-[13px] text-slate-500 dark:text-slate-400 leading-relaxed">
                       {DERIVED_INDICATOR_GROUP_META[groupId].description}
                     </p>
                   </div>
 
-                  <div className="space-y-1">
+                  <div className="space-y-2">
                     {groupRows.map((row) => {
                       const explanation = getDerivedIndicatorExplanation(row.id);
                       const runtimeContext =
@@ -402,25 +404,25 @@ function DerivedIndicatorsSectionBase(props: {
                       return (
                         <div
                           key={row.id}
-                          className="group flex items-center gap-2 rounded-lg border border-transparent bg-transparent px-1.5 py-1 transition-colors hover:border-slate-200 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700/60 focus-within:border-slate-300 dark:focus-within:border-slate-500 focus-within:bg-slate-50 dark:focus-within:bg-slate-800"
+                          className="group flex items-center gap-3 rounded-xl border border-slate-200/60 dark:border-slate-700/60 bg-white dark:bg-slate-900 px-3 py-2.5 transition-all hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-sm"
                         >
                           <button
                             type="button"
                             data-testid={`derived-indicator-select-${row.id}`}
                             onClick={() => onSelectDerivedIndicator(row.sourceDatasetCode)}
-                            className="flex min-w-0 flex-1 items-center justify-between rounded-md px-1 py-1 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1"
+                            className="flex min-w-0 flex-1 items-center justify-between text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1 rounded-lg"
                           >
-                            <div className="min-w-0 flex items-center gap-2">
-                              <div className="rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-1">
+                            <div className="min-w-0 flex items-center gap-3">
+                              <div className="rounded-lg bg-slate-50 dark:bg-slate-800 p-2">
                                 <DerivedIndicatorIcon id={row.id} />
                               </div>
-                              <span className="truncate text-[13px] font-medium text-slate-600 dark:text-slate-300">{row.label}</span>
+                              <span className="truncate text-[14px] font-medium text-slate-700 dark:text-slate-300">{row.label}</span>
                             </div>
-                            <div className="ml-3 min-w-[96px] shrink-0 pr-1 text-right">
-                              <div className="text-[1.25rem] font-bold leading-none tracking-tight tabular-nums text-slate-800 dark:text-slate-200">
+                            <div className="ml-4 min-w-[100px] shrink-0 text-right">
+                              <div className="text-[1.35rem] font-bold leading-none tabular-nums text-slate-900 dark:text-slate-100">
                                 {row.value}
                               </div>
-                              <div className="mt-0.5 text-[10px] font-medium leading-none text-slate-500 dark:text-slate-400">
+                              <div className="mt-1 text-[11px] font-medium text-slate-500 dark:text-slate-400">
                                 {row.unitLabel}
                               </div>
                             </div>
@@ -434,94 +436,117 @@ function DerivedIndicatorsSectionBase(props: {
                                 data-testid={`derived-indicator-info-${row.id}`}
                                 aria-label={detailsButtonLabel}
                                 title={detailsButtonLabel}
-                                className="h-7 w-7 shrink-0 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-slate-100 focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1"
+                                className="h-8 w-8 shrink-0 rounded-lg bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-700 dark:hover:text-slate-200 focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1"
                               >
                                 <Info className="h-4 w-4" aria-hidden="true" />
                               </Button>
                             </PopoverTrigger>
-                            <PopoverContent align="end" className="w-[min(460px,92vw)] border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-0 shadow-xl">
-                              <div className="rounded-t-md border-b border-slate-200 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-800/80 px-3 py-2.5">
-                                <div className="flex items-start justify-between gap-3">
-                                  <div className="min-w-0">
-                                    <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">{row.label}</div>
-                                    <div className="mt-0.5 text-[11px] text-slate-500 dark:text-slate-400">{row.unitLabel}</div>
+                            <PopoverContent align="end" className="w-[min(480px,94vw)] border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-0 shadow-2xl">
+                              <div className="px-5 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-800/80">
+                                <div className="flex items-start justify-between gap-4">
+                                  <div className="min-w-0 flex-1">
+                                    <h3 className="text-[15px] font-semibold text-slate-900 dark:text-slate-100 leading-tight">{row.label}</h3>
+                                    <p className="mt-0.5 text-[13px] text-slate-500 dark:text-slate-400">{row.unitLabel}</p>
                                   </div>
-                                  <div className="shrink-0 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-2 py-1 text-right">
-                                    <div className="text-[1.05rem] font-bold leading-none tabular-nums text-slate-900 dark:text-slate-100">
+                                  <div className="shrink-0 text-right">
+                                    <div className="text-[1.5rem] font-bold leading-none tabular-nums text-slate-900 dark:text-slate-100">
                                       {row.value}
                                     </div>
                                   </div>
                                 </div>
                               </div>
 
-                              <div className="space-y-2.5 p-3">
-                                <section className="space-y-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2.5">
-                                  <h5 className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400">
+                              <div className="p-5 space-y-4">
+                                <div className="space-y-2">
+                                  <h4 className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">
                                     <Trans>Why this matters</Trans>
-                                  </h5>
-                                  <p className="text-sm leading-5 text-slate-700 dark:text-slate-300">{explanation.whyItMatters}</p>
-                                </section>
+                                  </h4>
+                                  <p className="text-[14px] leading-relaxed text-slate-700 dark:text-slate-300">{explanation.whyItMatters}</p>
+                                </div>
 
-                                <section className="space-y-1 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-800/60 p-2.5">
-                                  <h5 className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400">
+                                <div className="space-y-2">
+                                  <h4 className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">
                                     <Trans>How calculated</Trans>
-                                  </h5>
-                                  <p className="font-mono text-[12px] leading-5 text-slate-800 dark:text-slate-200">{explanation.formula}</p>
-                                </section>
+                                  </h4>
+                                  <code className="block px-3 py-2.5 rounded-md bg-slate-50 dark:bg-slate-800 text-[13px] font-mono text-slate-700 dark:text-slate-300">
+                                    {explanation.formula}
+                                  </code>
+                                </div>
 
-                                <section className="space-y-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2.5">
-                                  <h5 className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400">
+                                <div className="space-y-2">
+                                  <h4 className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">
                                     <Trans>Inputs used</Trans>
-                                  </h5>
-                                  <ul className="space-y-1.5">
-                                    {explanation.inputs.map((inputLabel) => (
-                                      <li
-                                        key={inputLabel}
-                                        className="rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-2 py-1 text-sm text-slate-700 dark:text-slate-300"
-                                      >
-                                        {inputLabel}
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </section>
+                                  </h4>
+                                  <div className="flex flex-wrap gap-2">
+                                    {explanation.inputs.map((inputLabel) => {
+                                      const datasetCodeMatch = inputLabel.match(/\(([A-Z0-9]+)\)$/);
+                                      const datasetCode = datasetCodeMatch ? datasetCodeMatch[1] : null;
+                                      
+                                      if (!datasetCode) {
+                                        return (
+                                          <span
+                                            key={inputLabel}
+                                            className="inline-flex items-center px-2.5 py-1.5 rounded-md bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[13px] text-slate-700 dark:text-slate-300"
+                                          >
+                                            {inputLabel}
+                                          </span>
+                                        );
+                                      }
+                                      
+                                      return (
+                                        <button
+                                          key={inputLabel}
+                                          type="button"
+                                          onClick={() => onSelectDataset(datasetCode)}
+                                          className="inline-flex items-center px-2.5 py-1.5 rounded-md bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[13px] text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors cursor-pointer"
+                                          title={t`View ${datasetCode}`}
+                                        >
+                                          {inputLabel}
+                                        </button>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
 
-                                <section className="space-y-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2.5">
-                                  <h5 className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400">
+                                <div className="space-y-3 pt-2 border-t border-slate-100 dark:border-slate-800">
+                                  <h4 className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">
                                     <Trans>Current period and source</Trans>
-                                  </h5>
-                                  <dl className="space-y-1.5 text-sm leading-5 text-slate-700 dark:text-slate-300">
-                                    <div className="flex items-start justify-between gap-3">
-                                      <dt className="font-medium"><Trans>Selected period:</Trans></dt>
-                                      <dd className="text-right tabular-nums">{runtimeContext.selectedPeriodLabel}</dd>
+                                  </h4>
+                                  <dl className="space-y-2 text-[14px]">
+                                    <div className="flex items-center justify-between">
+                                      <dt className="text-slate-600 dark:text-slate-400"><Trans>Selected period:</Trans></dt>
+                                      <dd className="tabular-nums text-slate-900 dark:text-slate-100 font-medium">{runtimeContext.selectedPeriodLabel}</dd>
                                     </div>
-                                    <div className="flex items-start justify-between gap-3">
-                                      <dt className="font-medium"><Trans>Data period shown:</Trans></dt>
-                                      <dd className="text-right tabular-nums">{runtimeContext.dataPeriodLabel}</dd>
+                                    <div className="flex items-center justify-between">
+                                      <dt className="text-slate-600 dark:text-slate-400"><Trans>Data period shown:</Trans></dt>
+                                      <dd className="tabular-nums text-slate-900 dark:text-slate-100 font-medium">{runtimeContext.dataPeriodLabel}</dd>
                                     </div>
-                                    <div className="flex items-start justify-between gap-3">
-                                      <dt className="font-medium"><Trans>Source dataset:</Trans></dt>
-                                      <dd className="text-right font-semibold">
+                                    <div className="flex items-center justify-between">
+                                      <dt className="text-slate-600 dark:text-slate-400"><Trans>Source dataset:</Trans></dt>
+                                      <dd className="font-semibold text-slate-900 dark:text-slate-100">
                                         {runtimeContext.sourceDatasetCode ?? t`Unavailable`}
                                       </dd>
                                     </div>
                                   </dl>
                                   {runtimeContext.hasFallback && (
-                                    <div className="mt-2 rounded-md border border-amber-200 dark:border-amber-700/60 bg-amber-50 dark:bg-amber-900/25 px-2 py-1.5 text-[12px] leading-5 text-amber-900 dark:text-amber-200">
-                                      <span className="font-semibold"><Trans>Fallback:</Trans></span>{' '}
-                                      <Trans>
-                                        Some indicators use the latest available period because the selected period had
-                                        missing values.
-                                      </Trans>
+                                    <div className="mt-3 rounded-lg border border-amber-200/80 dark:border-amber-700/40 bg-amber-50/60 dark:bg-amber-900/20 px-3 py-2.5">
+                                      <p className="text-[13px] leading-relaxed text-amber-800 dark:text-amber-200">
+                                        <span className="font-semibold"><Trans>Fallback:</Trans></span>{' '}
+                                        <Trans>
+                                          Some indicators use the latest available period because the selected period had
+                                          missing values.
+                                        </Trans>
+                                      </p>
                                     </div>
                                   )}
-                                </section>
+                                </div>
 
-                                <section className="space-y-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2.5">
-                                  <h5 className="text-[11px] font-semibold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400">
+                                <div className="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                                  <h4 className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">
                                     <Trans>Interpretation notes</Trans>
-                                  </h5>
-                                  <p className="text-sm leading-5 text-slate-700 dark:text-slate-300">{explanation.notes}</p>
-                                </section>
+                                  </h4>
+                                  <p className="text-[14px] leading-relaxed text-slate-700 dark:text-slate-300">{explanation.notes}</p>
+                                </div>
                               </div>
                             </PopoverContent>
                           </Popover>
