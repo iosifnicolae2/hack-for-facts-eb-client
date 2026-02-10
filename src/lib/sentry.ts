@@ -29,9 +29,101 @@ const DOM_NODE_REMOVAL_ERROR_MARKERS = [
   "not a child of this node",
   "notfounderror",
 ] as const;
+const FACEBOOK_IN_APP_BROWSER_USER_AGENT_MARKERS = [
+  "fban/",
+  "fbav/",
+  "fb_iab",
+] as const;
+const FACEBOOK_IAB_INVALID_ACCESS_ERROR_MESSAGE =
+  "the object does not support the operation or argument.";
 const FACEBOOK_IN_APP_BROWSER_MESSAGE_PREFIX = "fbnav";
 const CLERK_REDIRECT_URL_DEPRECATION_DOC_ANCHOR =
   "clerk.com/docs/guides/custom-redirects#redirect-url-props";
+
+type SentryStackFrameLike = {
+  function?: string;
+  filename?: string;
+  abs_path?: string;
+};
+
+type SentryExceptionValueLike = {
+  type?: string;
+  value?: string;
+  mechanism?: {
+    type?: string;
+  };
+  stacktrace?: {
+    frames?: SentryStackFrameLike[];
+  };
+  raw_stacktrace?: {
+    frames?: SentryStackFrameLike[];
+  };
+};
+
+type SentryBeforeSendEventLike = {
+  message?: string;
+  exception?: {
+    values?: SentryExceptionValueLike[];
+  };
+  contexts?: Record<string, unknown>;
+};
+
+function isFacebookInAppBrowserUserAgent(): boolean {
+  if (!isBrowser) return false;
+  const userAgent = window.navigator?.userAgent?.toLowerCase() ?? "";
+  return FACEBOOK_IN_APP_BROWSER_USER_AGENT_MARKERS.some((marker) =>
+    userAgent.includes(marker)
+  );
+}
+
+function isFacebookInAppPostMessageInvalidAccessError(
+  event: SentryBeforeSendEventLike
+): boolean {
+  if (!isFacebookInAppBrowserUserAgent()) return false;
+
+  const exception = event.exception?.values?.[0];
+  if (!exception) return false;
+
+  const exceptionType = exception.type?.toLowerCase() ?? "";
+  const exceptionValue = exception.value?.toLowerCase() ?? "";
+  const mechanismType = exception.mechanism?.type ?? "";
+
+  if (exceptionType !== "invalidaccesserror") return false;
+  if (!exceptionValue.includes(FACEBOOK_IAB_INVALID_ACCESS_ERROR_MESSAGE)) {
+    return false;
+  }
+  if (mechanismType !== "auto.browser.global_handlers.onunhandledrejection") {
+    return false;
+  }
+
+  const frames = [
+    ...(exception.stacktrace?.frames ?? []),
+    ...(exception.raw_stacktrace?.frames ?? []),
+  ];
+
+  const hasPostMessageFrame = frames.some((frame) =>
+    (frame.function ?? "").toLowerCase().includes("postmessage")
+  );
+  const hasNativeCodeFrame = frames.some((frame) =>
+    `${frame.filename ?? frame.abs_path ?? ""}`.toLowerCase().includes("[native code]")
+  );
+  const hasUserScriptFrame = frames.some((frame) =>
+    `${frame.filename ?? frame.abs_path ?? ""}`.toLowerCase().includes("user-script")
+  );
+
+  const invalidAccessContext = event.contexts?.InvalidAccessError as
+    | { sourceURL?: unknown }
+    | undefined;
+  const hasUserScriptContext =
+    typeof invalidAccessContext?.sourceURL === "string" &&
+    invalidAccessContext.sourceURL.toLowerCase().includes("user-script");
+
+  return (
+    (hasPostMessageFrame && hasNativeCodeFrame) ||
+    hasUserScriptFrame ||
+    hasUserScriptContext
+  );
+}
 
 /**
  * Disable Sentry without tearing down the app.
@@ -181,6 +273,14 @@ export function initSentry(router: unknown): void {
       replaysSessionSampleRate: analyticsConsent ? 0.1 : 0,
       // Respect privacy consent
       beforeSend(event) {
+        if (
+          isFacebookInAppPostMessageInvalidAccessError(
+            event as SentryBeforeSendEventLike
+          )
+        ) {
+          return null;
+        }
+
         // Filter out Facebook in-app browser telemetry noise
         const message = event.message || event.exception?.values?.[0]?.value;
         if (message && typeof message === "string") {
