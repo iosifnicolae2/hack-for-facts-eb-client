@@ -21,15 +21,14 @@ import { parseCurrencyParam, parseBooleanParam, DEFAULT_CURRENCY, DEFAULT_INFLAT
 import { readClientCurrencyPreference, readClientInflationAdjustedPreference } from '@/lib/user-preferences';
 import type { EntityDetailsData } from '@/lib/api/entities';
 import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults';
+import { createPublicPageCacheHeaders } from '@/lib/http-cache';
 
 export type EntitySearchSchema = z.infer<typeof entitySearchSchema>;
 
 export const Route = createFileRoute('/entities/$cui')({
-    headers: () => ({
-        // Browser: don't cache; CDN: cache 5 min; allow serving stale while revalidating
-        "Cache-Control": "public, max-age=0, s-maxage=300, stale-while-revalidate=86400",
-        // Vercel-specific header for explicit CDN control
-        "Vercel-CDN-Cache-Control": "max-age=300, stale-while-revalidate=86400",
+    headers: () => createPublicPageCacheHeaders({
+        sharedMaxAgeSeconds: 300,
+        staleWhileRevalidateSeconds: 86400,
     }),
     validateSearch: entitySearchSchema,
     loader: async ({ context, params, location }) => {

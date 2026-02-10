@@ -4,14 +4,16 @@ import { heatmapJudetQueryOptions, heatmapUATQueryOptions } from '@/hooks/useHea
 import { MapStateSchema } from '@/schemas/map-filters'
 import { AnalyticsFilterType } from '@/schemas/charts'
 import { readUserCurrencyPreference, readUserInflationAdjustedPreference } from '@/lib/user-preferences'
+import { createPublicPageCacheHeaders } from '@/lib/http-cache'
 
 type MapViewType = 'UAT' | 'County'
 
 export const Route = createFileRoute('/map')({
-  headers: () => ({
-    // Map data updates periodically - cache 5 min CDN, 1 hour stale-while-revalidate
-    "Cache-Control": "public, max-age=0, s-maxage=300, stale-while-revalidate=3600",
-  }),
+  headers: () =>
+    createPublicPageCacheHeaders({
+      sharedMaxAgeSeconds: 300,
+      staleWhileRevalidateSeconds: 3600,
+    }),
   beforeLoad: async ({ context, search }) => {
     const { queryClient } = context
     // Parse and normalize search params using zod defaults to ensure valid filters

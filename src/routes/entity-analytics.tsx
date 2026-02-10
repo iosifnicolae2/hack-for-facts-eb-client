@@ -6,6 +6,7 @@ import { AnalyticsFilterSchema } from '@/schemas/charts'
 import { convertDaysToMs, generateHash } from '@/lib/utils'
 import { readUserCurrencyPreference, readUserInflationAdjustedPreference } from '@/lib/user-preferences'
 import { parseSearchParamJson } from '@/lib/router-search'
+import { createPublicPageCacheHeaders } from '@/lib/http-cache'
 
 const viewEnum = z.enum(['table', 'chart', 'line-items'])
 
@@ -44,12 +45,11 @@ function mapColumnIdToSortBy(columnId: string): string {
 }
 
 export const Route = createFileRoute('/entity-analytics')({
-  headers: () => ({
-    // Browser: don't cache; CDN: cache 5 min; allow serving stale while revalidating
-    "Cache-Control": "public, max-age=0, s-maxage=300, stale-while-revalidate=86400",
-    // Vercel-specific header for explicit CDN control
-    "Vercel-CDN-Cache-Control": "max-age=300, stale-while-revalidate=86400",
-  }),
+  headers: () =>
+    createPublicPageCacheHeaders({
+      sharedMaxAgeSeconds: 300,
+      staleWhileRevalidateSeconds: 86400,
+    }),
   beforeLoad: async ({ context, search }) => {
     const { queryClient } = context
     const parsed = EntityAnalyticsSchema.parse(search)

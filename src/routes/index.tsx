@@ -11,15 +11,18 @@ import morePreview from "@/assets/images/more-to-come.png";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { getSiteUrl } from "@/config/env";
 import { cn } from "@/lib/utils";
+import { createPublicPageCacheHeaders } from "@/lib/http-cache";
 
 const title = "Transparenta.eu";
 
 export const Route = createFileRoute("/")({
   ssr: true,
-  headers: () => ({
-    // Homepage is static - cache aggressively: 1 hour CDN, 7 days stale-while-revalidate
-    "Cache-Control": "public, max-age=3600, s-maxage=3600, stale-while-revalidate=604800",
-  }),
+  headers: () =>
+    createPublicPageCacheHeaders({
+      browserMaxAgeSeconds: 3600,
+      sharedMaxAgeSeconds: 3600,
+      staleWhileRevalidateSeconds: 604800,
+    }),
   head: buildHomeHead,
   component: Index,
 });
