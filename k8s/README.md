@@ -37,8 +37,8 @@ k8s/
 
 ## Istio hosts
 
-- Dev: `hack-for-facts-dev.devostack.com`, `dev.transparenta.eu`
-- Prod: `hack-for-facts.devostack.com`, `transparenta.eu`
+- Dev: `dev.transparenta.eu`
+- Prod: `transparenta.eu`
 - Redirect: `www.transparenta.eu` -> `transparenta.eu`
 
 ## Secret sealing

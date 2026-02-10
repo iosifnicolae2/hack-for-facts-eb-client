@@ -33,12 +33,6 @@ patches:
       - op: replace
         path: /metadata/namespace
         value: hack-for-facts-prod
-      - op: replace
-        path: /spec/hosts/0
-        value: "hack-for-facts.devostack.com"
-      - op: replace
-        path: /spec/hosts/1
-        value: "transparenta.eu"
 
   - target:
       kind: ConfigMap
