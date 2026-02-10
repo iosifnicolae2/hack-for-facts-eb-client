@@ -7,7 +7,6 @@ export const entitySearchSchema = z.object({
     view: z
         .string()
         .optional()
-        .default('overview')
         .describe('Which view to render for the entity page. Examples: overview, map, income-trends, expense-trends.'),
     period: z
         .enum(['YEAR', 'MONTH', 'QUARTER'])
@@ -102,7 +101,6 @@ export const entitySearchSchema = z.object({
     transferFilter: z
         .enum(['all', 'no-transfers', 'transfers-only'])
         .optional()
-        .default('no-transfers')
         .describe('Filter for transfers between institutions.'),
     advancedFilter: z
         .string()
