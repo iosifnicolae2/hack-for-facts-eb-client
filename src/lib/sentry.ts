@@ -37,6 +37,8 @@ const FACEBOOK_IN_APP_BROWSER_USER_AGENT_MARKERS = [
 const FACEBOOK_IAB_INVALID_ACCESS_ERROR_MESSAGE =
   "the object does not support the operation or argument.";
 const FACEBOOK_IN_APP_BROWSER_MESSAGE_PREFIX = "fbnav";
+const CLERK_FAILED_TO_LOAD_MESSAGE_MARKER = "clerk: failed to load clerk";
+const CLERK_FAILED_TO_LOAD_TIMEOUT_CODE = "failed_to_load_clerk_js_timeout";
 const CLERK_REDIRECT_URL_DEPRECATION_DOC_ANCHOR =
   "clerk.com/docs/guides/custom-redirects#redirect-url-props";
 
@@ -122,6 +124,14 @@ function isFacebookInAppPostMessageInvalidAccessError(
     (hasPostMessageFrame && hasNativeCodeFrame) ||
     hasUserScriptFrame ||
     hasUserScriptContext
+  );
+}
+
+function isFacebookInAppClerkTimeoutMessage(normalizedMessage: string): boolean {
+  return (
+    isFacebookInAppBrowserUserAgent() &&
+    normalizedMessage.includes(CLERK_FAILED_TO_LOAD_MESSAGE_MARKER) &&
+    normalizedMessage.includes(CLERK_FAILED_TO_LOAD_TIMEOUT_CODE)
   );
 }
 
@@ -289,6 +299,11 @@ export function initSentry(router: unknown): void {
             return null;
           }
           const normalizedMessage = message.toLowerCase();
+          // Facebook IAB can block/timeout third-party script loading for ClerkJS.
+          // Keep this scoped to IAB + explicit timeout code to avoid hiding real Clerk incidents.
+          if (isFacebookInAppClerkTimeoutMessage(normalizedMessage)) {
+            return null;
+          }
           if (normalizedMessage.startsWith(FACEBOOK_IN_APP_BROWSER_MESSAGE_PREFIX)) {
             return null;
           }
