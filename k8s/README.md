@@ -8,10 +8,12 @@ This directory contains Kubernetes manifests for deploying `hack-for-facts-eb-cl
 k8s/
 ├── base/
 │   ├── deployment.yaml
+│   ├── hpa.yaml
 │   ├── service.yaml
 │   ├── configmap.yaml
 │   ├── virtual-service.yaml
 │   └── kustomization.yaml
+├── performance-rollout.md
 └── overlays/
     ├── dev/
     │   ├── kustomization.yaml
@@ -95,6 +97,12 @@ Actions variables/secrets, not in the runtime app secret:
 kustomize build k8s/overlays/dev
 kustomize build k8s/overlays/prod
 ```
+
+## Performance rollout
+
+For first-load latency optimization rollout and validation:
+
+- See `k8s/performance-rollout.md`
 
 ## ArgoCD applications
 

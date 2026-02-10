@@ -98,21 +98,26 @@ test.describe('Entity Details Page', () => {
   })
 
   test('displays financial evolution chart', async ({ page }) => {
-    // Check for chart title - support both languages
+    // In CI/live data, this section may render either a chart or an explicit empty state.
     const chartTitle = page.locator('text=/evoluție.*financiară|financial.*evolution/i').first()
-    const hasChart = await chartTitle.isVisible({ timeout: 10000 }).catch(() => false)
+    await expect(chartTitle).toBeVisible({ timeout: 10000 })
 
-    if (!hasChart) {
-      // Chart might not be visible in CI - check for chart container instead
-      const chartContainer = page.locator('.recharts-responsive-container, [class*="chart"]').first()
-      await expect(chartContainer).toBeVisible({ timeout: 10000 })
+    const emptyStateMessage = page
+      .locator('text=/nu există date disponibile pentru a afișa evoluția financiară|no data available to display financial evolution/i')
+      .first()
+
+    const hasEmptyState = await emptyStateMessage.isVisible({ timeout: 3000 }).catch(() => false)
+    if (hasEmptyState) {
+      await expect(emptyStateMessage).toBeVisible()
       return
     }
 
-    // Check for chart legend items (support both languages)
-    await expect(page.locator('text=/balanță|balance/i').first()).toBeVisible({ timeout: 5000 })
-    await expect(page.locator('text=/cheltuieli|expenses/i').first()).toBeVisible({ timeout: 5000 })
-    await expect(page.locator('text=/venituri|income/i').first()).toBeVisible({ timeout: 5000 })
+    const chartContainer = page.locator('.recharts-responsive-container').first()
+    await expect(chartContainer).toBeVisible({ timeout: 10000 })
+
+    // Validate legend structure without coupling to translated labels.
+    const legendItems = page.locator('.recharts-legend-item')
+    await expect(legendItems).toHaveCount(3, { timeout: 10000 })
   })
 
   test('displays budget distribution section', async ({ page }) => {

@@ -18,6 +18,7 @@ spec:
             port:
               number: 80
       retries:
-        attempts: 3
-        perTryTimeout: 30s
-      timeout: 30s
+        attempts: 2
+        perTryTimeout: 4s
+        retryOn: connect-failure,refused-stream,reset,5xx,gateway-error
+      timeout: 15s

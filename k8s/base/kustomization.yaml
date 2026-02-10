@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: hack-for-facts
 resources:
 - deployment.yaml
+- hpa.yaml
 - service.yaml
 - virtual-service.yaml
 - configmap.yaml
