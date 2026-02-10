@@ -26,7 +26,6 @@ import {
   CartesianGrid,
   ComposedChart,
   Line,
-  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
@@ -72,6 +71,7 @@ import { ResponsivePopover } from '@/components/ui/ResponsivePopover';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { SafeResponsiveContainer } from '@/components/charts/safe-responsive-container';
 
 const CHART_GRID_COLOR = 'hsl(var(--border) / 0.4)';
 const CHART_AXIS_COLOR = 'hsl(var(--muted-foreground) / 0.7)';
@@ -1420,7 +1420,7 @@ function DatasetDetailSectionBase(props: {
             )}
 
             <div className="h-72 w-full">
-              <ResponsiveContainer width="100%" height="100%">
+              <SafeResponsiveContainer width="100%" height="100%">
                 <ComposedChart data={historyChartData} margin={{ top: 10, right: 16, left: 8, bottom: 0 }}>
                   <defs>
                     <linearGradient id={CHART_AREA_GRADIENT_ID} x1="0" y1="0" x2="0" y2="1">
@@ -1473,7 +1473,7 @@ function DatasetDetailSectionBase(props: {
                   />
                   <Brush dataKey="period" height={20} stroke={CHART_AXIS_COLOR} fill={CHART_BRUSH_FILL} travellerWidth={9} />
                 </ComposedChart>
-              </ResponsiveContainer>
+              </SafeResponsiveContainer>
             </div>
             {selectedDatasetSourceUrl && (
               <div className="rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2.5 text-[12px] leading-5 text-slate-600 dark:text-slate-300">
