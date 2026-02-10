@@ -69,3 +69,9 @@ tmp/
 sentry-issues/
 
 .agents/
+
+# Kubernetes plain secrets
+*.secret.yaml
+**/*.secret.yaml
+
+.output/

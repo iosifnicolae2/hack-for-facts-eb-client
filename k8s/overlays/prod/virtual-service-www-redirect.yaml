@@ -1,0 +1,17 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: istio-transparenta-client-www-redirect
+  namespace: hack-for-facts
+spec:
+  hosts:
+    - "www.transparenta.eu"
+  gateways:
+    - istio-system/istio-https-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /
+      redirect:
+        authority: transparenta.eu
+        redirectCode: 301

@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: hack-for-facts
+resources:
+  - deployment.yaml
+  - service.yaml
+  - virtual-service.yaml
+  - configmap.yaml
+commonLabels:
+  app.kubernetes.io/name: hack-for-facts-eb-client
+  app.kubernetes.io/part-of: hack-for-facts
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: hack-for-facts-eb-client
+      spec:
+        template:
+          metadata:
+            annotations:
+              image-sha: latest
+    target:
+      kind: Deployment
+      name: hack-for-facts-eb-client
+images:
+  - name: harbor.devostack.com/hack-for-facts/hack-for-facts-eb-client
+    newName: harbor.devostack.com/hack-for-facts/hack-for-facts-eb-client
+    newTag: latest

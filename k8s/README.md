@@ -1,0 +1,108 @@
+# Kubernetes Deployment Guide (Client)
+
+This directory contains Kubernetes manifests for deploying `hack-for-facts-eb-client` with Kustomize overlays, Istio routing, and ArgoCD GitOps sync.
+
+## Structure
+
+```text
+k8s/
+├── base/
+│   ├── deployment.yaml
+│   ├── service.yaml
+│   ├── configmap.yaml
+│   ├── virtual-service.yaml
+│   └── kustomization.yaml
+└── overlays/
+    ├── dev/
+    │   ├── kustomization.yaml
+    │   └── secrets/
+    │       ├── app-secret.template.yaml
+    │       ├── convert-secret.sh
+    │       ├── sealed-app-secret.yaml
+    │       └── sealed-registry-secret.yaml
+    └── prod/
+        ├── kustomization.yaml
+        ├── virtual-service-www-redirect.yaml
+        └── secrets/
+            ├── app-secret.template.yaml
+            ├── convert-secret.sh
+            ├── sealed-app-secret.yaml
+            └── sealed-registry-secret.yaml
+```
+
+## Environments
+
+- Dev namespace: `hack-for-facts-dev`
+- Prod namespace: `hack-for-facts-prod`
+
+## Istio hosts
+
+- Dev: `hack-for-facts-dev.devostack.com`, `dev.transparenta.eu`
+- Prod: `hack-for-facts.devostack.com`, `transparenta.eu`
+- Redirect: `www.transparenta.eu` -> `transparenta.eu`
+
+## Secret sealing
+
+Plain secret manifests must never be committed.
+
+1. Create `*.secret.yaml` files locally in the overlay `secrets/` folder.
+   Use `app-secret.template.yaml` as the starting structure.
+2. Run `./convert-secret.sh` in that folder.
+3. Commit only `sealed-*.yaml` files.
+
+### App runtime secret contract
+
+`Deployment` reads `hack-for-facts-eb-client-secrets` via `envFrom.secretRef`.
+This enables one image across environments while still using environment-specific
+runtime values.
+
+Required runtime keys:
+
+- `VITE_APP_NAME`
+- `VITE_APP_ENVIRONMENT`
+- `VITE_API_URL`
+- `VITE_SITE_URL`
+- `NODE_ENV`
+
+Recommended runtime keys:
+
+- `VITE_POSTHOG_ENABLED`
+- `VITE_POSTHOG_API_KEY`
+- `VITE_POSTHOG_HOST`
+- `VITE_POSTHOG_PERSON_PROFILES`
+- `VITE_SENTRY_ENABLED`
+- `VITE_SENTRY_DSN`
+- `VITE_SENTRY_TRACES_SAMPLE_RATE`
+- `VITE_SENTRY_FEEDBACK_ENABLED`
+- `VITE_BETTER_STACK_STATUS_WIDGET_ID`
+- `VITE_CLERK_PUBLISHABLE_KEY`
+
+`VITE_APP_VERSION` is optional because the app falls back to `APP_VERSION`
+provided by the deployment annotation (`image-sha`).
+
+### Build-time CI variables (not Kubernetes app secret)
+
+These are used during CI build/release automation and should stay in GitHub
+Actions variables/secrets, not in the runtime app secret:
+
+- `SENTRY_ORG`
+- `SENTRY_PROJECT`
+- `SENTRY_AUTH_TOKEN`
+
+## Local validation
+
+```bash
+kustomize build k8s/overlays/dev
+kustomize build k8s/overlays/prod
+```
+
+## ArgoCD applications
+
+ArgoCD app definitions are under `argocd/applications/`:
+
+- `dev.yaml` -> `k8s/overlays/dev` on branch `dev`
+- `prod.yaml` -> `k8s/overlays/prod` on branch `main`
+
+## CI/CD image updates
+
+`/.github/workflows/ci.yml` deploy jobs update `k8s/base/kustomization.yaml` image tag and `image-sha` annotation with `${github.sha}`.

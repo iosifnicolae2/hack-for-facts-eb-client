@@ -1,0 +1,49 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: hack-for-facts-prod
+
+resources:
+  - ../../base
+  - ./secrets/sealed-app-secret.yaml
+  - ./secrets/sealed-registry-secret.yaml
+  - ./virtual-service-www-redirect.yaml
+
+patches:
+  - target:
+      kind: Deployment
+      name: hack-for-facts-eb-client
+    patch: |-
+      - op: replace
+        path: /metadata/namespace
+        value: hack-for-facts-prod
+
+  - target:
+      kind: Service
+      name: hack-for-facts-eb-client
+    patch: |-
+      - op: replace
+        path: /metadata/namespace
+        value: hack-for-facts-prod
+
+  - target:
+      kind: VirtualService
+      name: istio-transparenta-client-virtualservice
+    patch: |-
+      - op: replace
+        path: /metadata/namespace
+        value: hack-for-facts-prod
+      - op: replace
+        path: /spec/hosts/0
+        value: "hack-for-facts.devostack.com"
+      - op: replace
+        path: /spec/hosts/1
+        value: "transparenta.eu"
+
+  - target:
+      kind: ConfigMap
+      name: hack-for-facts-eb-client-config
+    patch: |-
+      - op: replace
+        path: /metadata/namespace
+        value: hack-for-facts-prod

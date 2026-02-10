@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hack-for-facts-eb-client
+  namespace: hack-for-facts
+  annotations:
+    image-sha: latest
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hack-for-facts-eb-client
+  template:
+    metadata:
+      labels:
+        app: hack-for-facts-eb-client
+    spec:
+      imagePullSecrets:
+        - name: registry-credentials-client
+      containers:
+        - name: hack-for-facts-eb-client
+          image: harbor.devostack.com/hack-for-facts/hack-for-facts-eb-client:latest
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: hack-for-facts-eb-client-config
+            # Secret values are mounted after ConfigMap defaults so env-specific
+            # overrides can be managed per environment in app secrets.
+            - secretRef:
+                name: hack-for-facts-eb-client-secrets
+          env:
+            - name: APP_VERSION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.annotations['image-sha']
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3

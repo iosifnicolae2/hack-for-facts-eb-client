@@ -151,7 +151,7 @@ export default defineConfig(({ mode }) => {
       lingui(),
       tanstackStart(),
       nitro({
-        preset: "vercel",
+        preset: "node_server",
         alias: {
           "lodash/memoize": "lodash/memoize.js",
         },
@@ -174,11 +174,18 @@ export default defineConfig(({ mode }) => {
         org: process.env.SENTRY_ORG,
         project: process.env.SENTRY_PROJECT,
         authToken: process.env.SENTRY_AUTH_TOKEN,
-        disable: mode !== "production",
+        disable:
+          mode !== "production" ||
+          !process.env.SENTRY_ORG ||
+          !process.env.SENTRY_PROJECT ||
+          !process.env.SENTRY_AUTH_TOKEN,
         telemetry: false,
         sourcemaps: {
-          // Specify the directory containing the build artifacts.
-          assets: "./dist/**",
+          // TanStack Start + Nitro outputs assets under .output.
+          assets: [
+            "./.output/public/assets/**",
+            "./.output/server/**/*.js.map",
+          ],
         },
       }),
     ],

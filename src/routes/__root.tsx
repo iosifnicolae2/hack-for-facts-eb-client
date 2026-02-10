@@ -12,7 +12,7 @@ import { i18n } from "@lingui/core";
 import { z } from "zod";
 import type { RouterContext } from "@/router-context";
 import appCss from "@/index.css?url";
-import { env, getSiteUrl } from "@/config/env";
+import { env, getRuntimeConfigBootstrapScript, getSiteUrl } from "@/config/env";
 import {
   DEFAULT_LOCALE,
   LOCALE_COOKIE_NAME,
@@ -213,6 +213,10 @@ function getGlobalHead() {
       { rel: "stylesheet", href: appCss },
     ],
     scripts: [
+      {
+        type: "text/javascript",
+        children: getRuntimeConfigBootstrapScript(),
+      },
       // Global WebSite & FAQ JSON-LD for AI agents
       {
         type: "application/ld+json",

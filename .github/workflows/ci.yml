@@ -52,6 +52,7 @@ jobs:
       - name: Run Vitest
         run: yarn test
 
+  # Integration should not block deployment; rely on GitHub failure emails.
   integration-tests:
     name: Integration Tests
     runs-on: ubuntu-latest
@@ -142,3 +143,149 @@ jobs:
           path: |
             learning-content-validation-results/
           retention-days: 7
+
+  deploy-dev:
+    name: Deploy Dev
+    runs-on: ubuntu-latest
+    environment: development
+    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+    needs: [typecheck, unit-tests, build, validate-learning-content]
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get Secrets from Bitwarden
+        uses: bitwarden/sm-action@v1
+        with:
+          access_token: ${{ secrets.BW_ACCESS_TOKEN }}
+          secrets: |
+            9b3cdd24-396a-457e-8d56-b2d600dda041 > DOCKER_REGISTRY_URL
+            c9992fd1-98c0-4e2c-a4e5-b2d600dd3367 > DOCKER_USERNAME
+            ca2abaf7-e7f5-40d5-a06a-b2d600dd4ba9 > DOCKER_PASSWORD
+
+      - name: Normalize Registry URL
+        run: |
+          url="${DOCKER_REGISTRY_URL#https://}"
+          url="${url#http://}"
+          echo "DOCKER_REGISTRY=${url}" >> "$GITHUB_ENV"
+
+      - name: Login to Docker Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.DOCKER_REGISTRY }}
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
+
+      - name: Build Docker Image
+        run: |
+          docker build \
+            -t ${{ env.DOCKER_REGISTRY }}/hack-for-facts-eb-client:${{ github.sha }} \
+            .
+
+      - name: Push Docker Image
+        run: docker push ${{ env.DOCKER_REGISTRY }}/hack-for-facts-eb-client:${{ github.sha }}
+
+      - name: Update Image Tag and SHA in Kustomization
+        run: |
+          cd ./k8s/base
+          kustomize edit set image ${{ env.DOCKER_REGISTRY }}/hack-for-facts-eb-client=${{ env.DOCKER_REGISTRY }}/hack-for-facts-eb-client:${{ github.sha }}
+          sed -i "s| image-sha: .*| image-sha: ${{ github.sha }}|" kustomization.yaml
+
+      - name: Commit and Push Changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add k8s/base/kustomization.yaml
+          git diff --staged --quiet || git commit -m "ci(image): Update dev image tag to ${{ github.sha }}"
+          git push origin dev
+
+  deploy-prod:
+    name: Deploy Prod
+    runs-on: ubuntu-latest
+    environment: production
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [typecheck, unit-tests, build, validate-learning-content]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve Promoted Dev Image Tag
+        id: promoted-image
+        run: |
+          image_tag="$(awk '/newTag:/{print $2; exit}' k8s/base/kustomization.yaml)"
+          if [ -z "${image_tag}" ]; then
+            echo "Could not resolve image tag from k8s/base/kustomization.yaml" >&2
+            exit 1
+          fi
+          if [ "${image_tag}" = "latest" ]; then
+            echo "Refusing to deploy with mutable image tag 'latest' in production." >&2
+            exit 1
+          fi
+          echo "Using promoted image tag: ${image_tag}"
+          echo "tag=${image_tag}" >> "$GITHUB_OUTPUT"
+
+      - name: Get Secrets from Bitwarden
+        uses: bitwarden/sm-action@v1
+        with:
+          access_token: ${{ secrets.BW_ACCESS_TOKEN }}
+          secrets: |
+            9b3cdd24-396a-457e-8d56-b2d600dda041 > DOCKER_REGISTRY_URL
+            c9992fd1-98c0-4e2c-a4e5-b2d600dd3367 > DOCKER_USERNAME
+            ca2abaf7-e7f5-40d5-a06a-b2d600dd4ba9 > DOCKER_PASSWORD
+
+      - name: Normalize Registry URL
+        run: |
+          url="${DOCKER_REGISTRY_URL#https://}"
+          url="${url#http://}"
+          echo "DOCKER_REGISTRY=${url}" >> "$GITHUB_ENV"
+
+      - name: Login to Docker Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.DOCKER_REGISTRY }}
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
+
+      - name: Verify Promoted Image Exists
+        run: |
+          docker manifest inspect \
+            "${{ env.DOCKER_REGISTRY }}/hack-for-facts-eb-client:${{ steps.promoted-image.outputs.tag }}" \
+            > /dev/null
+
+      - name: Setup Node.js (Sentry Upload)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "yarn"
+
+      - name: Install dependencies (Sentry Upload)
+        run: yarn install --frozen-lockfile
+
+      - name: Upload Sentry Sourcemaps (Prod)
+        env:
+          CI: true
+          NODE_ENV: production
+          SENTRY_ORG: ${{ vars.SENTRY_ORG || secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT || secrets.SENTRY_PROJECT }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          VITE_API_URL: ${{ vars.VITE_API_URL || 'https://api.transparenta.eu' }}
+          VITE_SITE_URL: ${{ vars.VITE_SITE_URL || 'https://transparenta.eu' }}
+          VITE_APP_VERSION: ${{ steps.promoted-image.outputs.tag }}
+          VITE_APP_NAME: ${{ vars.VITE_APP_NAME || 'Transparenta' }}
+          VITE_APP_ENVIRONMENT: ${{ vars.VITE_APP_ENVIRONMENT || 'production' }}
+          VITE_POSTHOG_ENABLED: ${{ vars.VITE_POSTHOG_ENABLED || 'false' }}
+          VITE_POSTHOG_API_KEY: ${{ vars.VITE_POSTHOG_API_KEY || secrets.VITE_POSTHOG_API_KEY }}
+          VITE_POSTHOG_HOST: ${{ vars.VITE_POSTHOG_HOST || 'https://app.posthog.com' }}
+          VITE_SENTRY_ENABLED: ${{ vars.VITE_SENTRY_ENABLED || 'true' }}
+          VITE_SENTRY_DSN: ${{ vars.VITE_SENTRY_DSN || secrets.VITE_SENTRY_DSN }}
+          VITE_SENTRY_TRACES_SAMPLE_RATE: ${{ vars.VITE_SENTRY_TRACES_SAMPLE_RATE || '0.1' }}
+          VITE_SENTRY_FEEDBACK_ENABLED: ${{ vars.VITE_SENTRY_FEEDBACK_ENABLED || 'false' }}
+        run: |
+          yarn build:app
+          test -f .output/server/index.mjs
