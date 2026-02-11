@@ -14,6 +14,12 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: hack-for-facts-prod
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      name: hack-for-facts-eb-client
+      jsonPointers:
+        - /spec/replicas
   syncPolicy:
     automated:
       prune: true
@@ -28,3 +34,4 @@ spec:
       - CreateNamespace=true
       - ApplyOutOfSyncOnly=true
       - PruneLast=true
+      - RespectIgnoreDifferences=true
