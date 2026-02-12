@@ -12,6 +12,40 @@ type GlobalErrorPageProps = {
     readonly error: unknown;
 };
 
+type UnknownError = {
+    [key: string]: unknown;
+};
+
+function isErrorLike(value: unknown): value is { message?: string; stack?: string; cause?: unknown; error?: unknown } {
+    if (!value || typeof value !== "object") return false;
+
+    const typed = value as UnknownError;
+    return typeof typed === "object" && (typeof typed.name === "string" || typeof typed.message === "string" || typeof typed.stack === "string");
+}
+
+function getRootError(error: unknown, seen = new Set<unknown>()): Error | unknown {
+    if (!error || seen.has(error)) return error;
+
+    if (error instanceof Error) {
+        return error;
+    }
+
+    if (isErrorLike(error)) {
+        const candidate = error as UnknownError;
+        seen.add(error);
+
+        const nextCandidates = [candidate.cause, candidate.error];
+        for (const next of nextCandidates) {
+            const nested = getRootError(next, seen);
+            if (nested) {
+                return nested;
+            }
+        }
+    }
+
+    return error;
+}
+
 // --- Action Handlers ---
 // These functions perform a "hard" navigation, which is crucial for resolving
 // chunk load errors by fetching the latest HTML and asset bundle. They do not
@@ -50,19 +84,26 @@ export function GlobalErrorPage({ error }: GlobalErrorPageProps) {
 
         try {
             initSentry(undefined);
-            Sentry.captureException(error, {
-                level: "error",
-                tags: {
-                    source: "global-error-page",
-                    error_name: errorFingerprint.name,
-                },
-                extra: {
+            const rootError = getRootError(error);
+
+            Sentry.withScope((scope) => {
+                scope.setLevel("error");
+                scope.setTag("source", "global-error-page");
+                scope.setTag("error_name", errorFingerprint.name);
+                scope.setContext("global_error", {
                     technicalMessage,
                     classifiedTitle: classifiedError.title.id,
                     classifiedMessage: classifiedError.friendlyMessage.id,
                     route: window.location.pathname,
                     query: window.location.search,
-                },
+                    wrappedErrorClass: typeof error,
+                    rootErrorMessage:
+                        rootError instanceof Error ? rootError.message : typeof rootError,
+                    rootErrorName:
+                        rootError instanceof Error ? rootError.name : "Object",
+                });
+
+                Sentry.captureException(rootError);
             });
         } catch {
             // Keep rendering unaffected if Sentry is unavailable.
