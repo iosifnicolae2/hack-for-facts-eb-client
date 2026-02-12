@@ -25,7 +25,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: "yarn"
 
       - name: Enable Yarn
         run: |
@@ -49,7 +48,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: "yarn"
 
       - name: Enable Yarn
         run: |
@@ -75,7 +73,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: "yarn"
 
       - name: Enable Yarn
         run: |
@@ -118,7 +115,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: "yarn"
 
       - name: Enable Yarn
         run: |
@@ -147,7 +143,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: "yarn"
 
       - name: Enable Yarn
         run: |
@@ -286,7 +281,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: "yarn"
 
       - name: Enable Yarn (Sentry Upload)
         run: |
