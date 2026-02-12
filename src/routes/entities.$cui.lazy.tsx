@@ -50,7 +50,14 @@ const RelatedChartsView = lazy(() => import('@/components/entities/views/Related
 const InsStatsView = lazy(() => import('@/components/entities/views/ins-stats-view').then(m => ({ default: m.InsStatsView })))
 const EntityReports = lazy(() => import('@/components/entities/EntityReports'))
 const EntityRelationships = lazy(() => import('@/components/entities/EntityRelationships').then(m => ({ default: m.EntityRelationships })))
-const ContractsView = lazy(() => import('@/components/entities/views/ContractsView').then(m => ({ default: m.ContractsView })))
+const ContractsView = lazy(() =>
+  import('@/components/entities/views/ContractsView')
+    .then(module => ({ default: module?.ContractsView ?? ContractsViewUnavailable }))
+    .catch((error: unknown) => {
+      console.error('Failed to load ContractsView module', error)
+      return { default: ContractsViewUnavailable }
+    })
+)
 const CommitmentsView = lazy(() => import('@/components/entities/views/Commitments').then(m => ({ default: m.CommitmentsView })))
 
 function EmployeesViewUnavailable() {
@@ -58,6 +65,18 @@ function EmployeesViewUnavailable() {
     <Alert className="max-w-lg w-full">
       <Info className="h-5 w-5" />
       <AlertTitle><Trans>Employees view unavailable</Trans></AlertTitle>
+      <AlertDescription>
+        <Trans>We could not load this section right now. Please refresh and try again.</Trans>
+      </AlertDescription>
+    </Alert>
+  )
+}
+
+function ContractsViewUnavailable() {
+  return (
+    <Alert className="max-w-lg w-full">
+      <Info className="h-5 w-5" />
+      <AlertTitle><Trans>Contracts view unavailable</Trans></AlertTitle>
       <AlertDescription>
         <Trans>We could not load this section right now. Please refresh and try again.</Trans>
       </AlertDescription>
