@@ -5,9 +5,12 @@ import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Link } from '@tanstack/react-router'
-import { Users, BarChart3, MapPin } from 'lucide-react'
+import { Info, Users, BarChart3, MapPin } from 'lucide-react'
 import { EntityEmployeesDataInfo } from '../EntityEmployeesDataInfo'
 import { CalculationLegend } from './CalculationLegend'
+import { Trans } from '@lingui/react/macro'
+
+const EMPLOYEES_DATA_DISCLAIMER_ID = 'employees-data-disclaimer'
 
 export function EmployeesView({ entity }: { entity: EntityDetailsData | null | undefined }) {
   const { data, isLoading, error } = useCsvData()
@@ -71,6 +74,28 @@ export function EmployeesView({ entity }: { entity: EntityDetailsData | null | u
 
   return (
     <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-lg border bg-muted/50 p-4">
+        <div className="flex items-start gap-3">
+          <Info className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
+          <p className="text-sm text-muted-foreground">
+            <Trans>
+              The data is presented for informational purposes, based on government data available for June 2025. This temporary view is intended to simplify the
+              Government&apos;s explanation of the simulated local administration reform.
+            </Trans>
+          </p>
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          className="shrink-0"
+          asChild
+        >
+          <a href={`#${EMPLOYEES_DATA_DISCLAIMER_ID}`}>
+            <Trans>Read more</Trans>
+          </a>
+        </Button>
+      </div>
+
       <div className="grid grid-cols-3 gap-4">
         <Card className="flex flex-col">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">Populație</CardTitle><MapPin className="h-4 w-4 text-muted-foreground" /></CardHeader>
@@ -345,7 +370,9 @@ export function EmployeesView({ entity }: { entity: EntityDetailsData | null | u
 
       <CalculationLegend />
 
-      <EntityEmployeesDataInfo />
+      <div id={EMPLOYEES_DATA_DISCLAIMER_ID}>
+        <EntityEmployeesDataInfo />
+      </div>
 
       <Separator />
 
