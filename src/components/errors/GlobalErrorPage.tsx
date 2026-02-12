@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, Home, RefreshCcw } from "lucide-react";
+import * as Sentry from "@sentry/react";
 import { useEffect, useMemo, useState } from "react";
 import { classifyError, getTechnicalMessage, isUpdateAvailableError } from "@/lib/errors-utils";
 import { env } from "@/config/env";
 import { attemptChunkRecovery } from "@/lib/chunk-recovery";
+import { initSentry } from "@/lib/sentry";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 type GlobalErrorPageProps = {
@@ -27,12 +29,49 @@ export function GlobalErrorPage({ error }: GlobalErrorPageProps) {
     const technicalMessage = useMemo(() => getTechnicalMessage(error), [error]);
     const isUpdateError = useMemo(() => isUpdateAvailableError(error), [error]);
     const [isRecovering, setIsRecovering] = useState(false);
+    const errorFingerprint = useMemo(() => {
+        if (error instanceof Error) {
+            return {
+                name: error.name,
+                message: error.message,
+                stack: error.stack,
+            };
+        }
+
+        return {
+            name: typeof error,
+            message: typeof error === "string" ? error : "Unknown error",
+            stack: null,
+        };
+    }, [error]);
 
     useEffect(() => {
+        if (typeof window === "undefined") return;
+
+        try {
+            initSentry(undefined);
+            Sentry.captureException(error, {
+                level: "error",
+                tags: {
+                    source: "global-error-page",
+                    error_name: errorFingerprint.name,
+                },
+                extra: {
+                    technicalMessage,
+                    classifiedTitle: classifiedError.title.id,
+                    classifiedMessage: classifiedError.friendlyMessage.id,
+                    route: window.location.pathname,
+                    query: window.location.search,
+                },
+            });
+        } catch {
+            // Keep rendering unaffected if Sentry is unavailable.
+        }
+
         if (env.NODE_ENV === "development") {
             console.error("A global error was caught:", error);
         }
-    }, [error]);
+    }, [classifiedError.friendlyMessage.id, classifiedError.title.id, error, errorFingerprint, technicalMessage]);
 
     useEffect(() => {
         if (!isUpdateError) return;
