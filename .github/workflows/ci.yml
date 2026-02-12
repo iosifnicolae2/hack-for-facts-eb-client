@@ -207,6 +207,15 @@ jobs:
       - name: Push Docker Image
         run: docker push ${{ env.DOCKER_REGISTRY }}/hack-for-facts-eb-client:${{ github.sha }}
 
+      - name: Setup Kustomize
+        run: |
+          KUSTOMIZE_VERSION="5.8.1"
+          INSTALL_DIR="${RUNNER_TEMP}/bin"
+          mkdir -p "${INSTALL_DIR}"
+          curl -fsSL https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh | bash -s -- "${KUSTOMIZE_VERSION}" "${INSTALL_DIR}"
+          echo "${INSTALL_DIR}" >> "$GITHUB_PATH"
+          "${INSTALL_DIR}/kustomize" version
+
       - name: Update Image Tag and SHA in Kustomization
         run: |
           cd ./k8s/base
