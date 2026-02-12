@@ -63,7 +63,7 @@ jobs:
   # Integration should not block deployment; rely on GitHub failure emails.
   integration-tests:
     name: Integration Tests
-    runs-on: ubuntu-phoenix
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - name: Checkout
@@ -83,7 +83,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Install Playwright browsers
-        run: npx playwright install chromium
+        run: npx playwright install --with-deps chromium
 
       - name: Run Integration Tests
         run: npx playwright test --project=integration --reporter=list --max-failures=5 --workers=5 --retries=2
@@ -166,7 +166,7 @@ jobs:
 
   deploy-dev:
     name: Deploy Dev
-    runs-on: ubuntu-phoenix
+    runs-on: ubuntu-latest
     environment: development
     if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
     needs: [typecheck, unit-tests, build, validate-learning-content]
@@ -235,7 +235,7 @@ jobs:
 
   deploy-prod:
     name: Deploy Prod
-    runs-on: ubuntu-phoenix
+    runs-on: ubuntu-latest
     environment: production
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [typecheck, unit-tests, build, validate-learning-content]
