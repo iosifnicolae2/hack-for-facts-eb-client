@@ -300,25 +300,29 @@ jobs:
       - name: Install dependencies (Sentry Upload)
         run: yarn install --frozen-lockfile
 
+      - name: Extract Promoted Image Sourcemaps
+        run: |
+          image="${{ env.DOCKER_REGISTRY }}/hack-for-facts-eb-client:${{ steps.promoted-image.outputs.tag }}"
+          docker pull "${image}"
+          container_id="$(docker create "${image}")"
+          trap 'docker rm -f "${container_id}" >/dev/null 2>&1 || true' EXIT
+          mkdir -p ./sentry-artifacts
+          docker cp "${container_id}:/app/.output/public/assets" "./sentry-artifacts/assets"
+          test -d ./sentry-artifacts/assets
+
       - name: Upload Sentry Sourcemaps (Prod)
         env:
-          CI: true
-          NODE_ENV: production
           SENTRY_ORG: ${{ vars.SENTRY_ORG || secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT || secrets.SENTRY_PROJECT }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          VITE_API_URL: ${{ vars.VITE_API_URL || 'https://api.transparenta.eu' }}
-          VITE_SITE_URL: ${{ vars.VITE_SITE_URL || 'https://transparenta.eu' }}
-          VITE_APP_VERSION: ${{ steps.promoted-image.outputs.tag }}
-          VITE_APP_NAME: ${{ vars.VITE_APP_NAME || 'Transparenta' }}
-          VITE_APP_ENVIRONMENT: ${{ vars.VITE_APP_ENVIRONMENT || 'production' }}
-          VITE_POSTHOG_ENABLED: ${{ vars.VITE_POSTHOG_ENABLED || 'false' }}
-          VITE_POSTHOG_API_KEY: ${{ vars.VITE_POSTHOG_API_KEY || secrets.VITE_POSTHOG_API_KEY }}
-          VITE_POSTHOG_HOST: ${{ vars.VITE_POSTHOG_HOST || 'https://app.posthog.com' }}
-          VITE_SENTRY_ENABLED: ${{ vars.VITE_SENTRY_ENABLED || 'true' }}
-          VITE_SENTRY_DSN: ${{ vars.VITE_SENTRY_DSN || secrets.VITE_SENTRY_DSN }}
-          VITE_SENTRY_TRACES_SAMPLE_RATE: ${{ vars.VITE_SENTRY_TRACES_SAMPLE_RATE || '0.1' }}
-          VITE_SENTRY_FEEDBACK_ENABLED: ${{ vars.VITE_SENTRY_FEEDBACK_ENABLED || 'false' }}
+          SENTRY_RELEASE: ${{ steps.promoted-image.outputs.tag }}
         run: |
-          yarn build:app
-          test -f .output/server/index.mjs
+          ./node_modules/.bin/sentry-cli sourcemaps upload \
+            --org "$SENTRY_ORG" \
+            --project "$SENTRY_PROJECT" \
+            --auth-token "$SENTRY_AUTH_TOKEN" \
+            --release "$SENTRY_RELEASE" \
+            --url-prefix "~/assets" \
+            --validate \
+            --wait \
+            "./sentry-artifacts/assets"
