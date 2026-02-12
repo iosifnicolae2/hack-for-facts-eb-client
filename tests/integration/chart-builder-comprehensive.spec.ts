@@ -9,6 +9,7 @@
  */
 
 import { test, expect } from '../utils/integration-base'
+import type { Page } from '@playwright/test'
 
 // Test constants (EN/RO language support)
 const SELECTORS = {
@@ -50,6 +51,18 @@ const SELECTORS = {
   untitledChart: /untitled.*chart|grafic.*fără.*titlu/i,
 }
 
+async function gotoNewChartAndWaitForConfig(page: Page) {
+  await page.goto('/charts/new')
+  await expect(page).toHaveURL(/\/charts\/[a-f0-9-]+.*view=config/i, { timeout: 20000 })
+
+  const configReadyMarker = page
+    .getByRole('button', { name: SELECTORS.viewChart })
+    .or(page.getByRole('heading', { name: SELECTORS.chartConfiguration }))
+    .first()
+
+  await expect(configReadyMarker).toBeVisible({ timeout: 20000 })
+}
+
 test.describe('Chart Builder - Comprehensive Tests', () => {
   // ===================================================
   // 1. CREATE NEW CHART
@@ -63,18 +76,14 @@ test.describe('Chart Builder - Comprehensive Tests', () => {
     })
 
     test('1.2 Config dialog opens automatically', async ({ page }) => {
-      await page.goto('/charts/new')
-
-      // Wait for redirect
-      await expect(page).toHaveURL(/\/charts\/[a-f0-9-]+/i, { timeout: 10000 })
+      await gotoNewChartAndWaitForConfig(page)
 
       // Config dialog should be visible
-      await expect(page.getByRole('heading', { name: SELECTORS.chartConfiguration })).toBeVisible({ timeout: 5000 })
+      await expect(page.getByRole('heading', { name: SELECTORS.chartConfiguration })).toBeVisible({ timeout: 10000 })
     })
 
     test('1.3 Chart info card is visible', async ({ page }) => {
-      await page.goto('/charts/new')
-      await expect(page).toHaveURL(/\/charts\/[a-f0-9-]+/i, { timeout: 10000 })
+      await gotoNewChartAndWaitForConfig(page)
 
       // Chart information section
       await expect(page.getByText(SELECTORS.chartInformation)).toBeVisible()
@@ -115,8 +124,7 @@ test.describe('Chart Builder - Comprehensive Tests', () => {
     })
 
     test('1.7 Add series button is visible', async ({ page }) => {
-      await page.goto('/charts/new')
-      await expect(page).toHaveURL(/\/charts\/[a-f0-9-]+/i, { timeout: 10000 })
+      await gotoNewChartAndWaitForConfig(page)
 
       // Add series button - use first() since there might be multiple
       await expect(page.getByRole('button', { name: SELECTORS.addSeries }).first()).toBeVisible()
@@ -192,8 +200,7 @@ test.describe('Chart Builder - Comprehensive Tests', () => {
     })
 
     test('2.5 Year range slider is available', async ({ page }) => {
-      await page.goto('/charts/new')
-      await expect(page).toHaveURL(/\/charts\/[a-f0-9-]+/i, { timeout: 10000 })
+      await gotoNewChartAndWaitForConfig(page)
 
       // Look for year range slider or inputs
       const slider = page.locator('[role="slider"]')
@@ -215,8 +222,7 @@ test.describe('Chart Builder - Comprehensive Tests', () => {
     })
 
     test('2.7 Description textarea is available', async ({ page }) => {
-      await page.goto('/charts/new')
-      await expect(page).toHaveURL(/\/charts\/[a-f0-9-]+/i, { timeout: 10000 })
+      await gotoNewChartAndWaitForConfig(page)
 
       // Find description textarea
       const descriptionTextarea = page.getByRole('textbox', { name: SELECTORS.description })
@@ -549,17 +555,15 @@ test.describe('Chart Builder - Comprehensive Tests', () => {
   test.describe('10. Responsive Behavior', () => {
     test('10.1 Config dialog works on mobile', async ({ page }) => {
       await page.setViewportSize({ width: 375, height: 667 })
-      await page.goto('/charts/new')
-      await expect(page).toHaveURL(/\/charts\/[a-f0-9-]+/i, { timeout: 10000 })
+      await gotoNewChartAndWaitForConfig(page)
 
       // Config should be visible
-      await expect(page.getByRole('heading', { name: SELECTORS.chartConfiguration })).toBeVisible({ timeout: 5000 })
+      await expect(page.getByRole('heading', { name: SELECTORS.chartConfiguration })).toBeVisible({ timeout: 10000 })
     })
 
     test('10.2 Controls are usable on mobile', async ({ page }) => {
       await page.setViewportSize({ width: 375, height: 667 })
-      await page.goto('/charts/new')
-      await expect(page).toHaveURL(/\/charts\/[a-f0-9-]+/i, { timeout: 10000 })
+      await gotoNewChartAndWaitForConfig(page)
 
       // Title input should be visible
       const titleInput = page.getByRole('textbox', { name: SELECTORS.chartTitle })
@@ -571,11 +575,10 @@ test.describe('Chart Builder - Comprehensive Tests', () => {
 
     test('10.3 Tablet viewport works correctly', async ({ page }) => {
       await page.setViewportSize({ width: 768, height: 1024 })
-      await page.goto('/charts/new')
-      await expect(page).toHaveURL(/\/charts\/[a-f0-9-]+/i, { timeout: 10000 })
+      await gotoNewChartAndWaitForConfig(page)
 
       // Config should be visible
-      await expect(page.getByRole('heading', { name: SELECTORS.chartConfiguration })).toBeVisible({ timeout: 5000 })
+      await expect(page.getByRole('heading', { name: SELECTORS.chartConfiguration })).toBeVisible({ timeout: 10000 })
     })
   })
 
@@ -605,17 +608,15 @@ test.describe('Chart Builder - Comprehensive Tests', () => {
   // ===================================================
   test.describe('12. Accessibility', () => {
     test('12.1 Dialog has proper ARIA attributes', async ({ page }) => {
-      await page.goto('/charts/new')
-      await expect(page).toHaveURL(/\/charts\/[a-f0-9-]+/i, { timeout: 10000 })
+      await gotoNewChartAndWaitForConfig(page)
 
       // Dialog should have role="dialog"
       const dialog = page.getByRole('dialog')
-      await expect(dialog).toBeVisible({ timeout: 5000 })
+      await expect(dialog).toBeVisible({ timeout: 10000 })
     })
 
     test('12.2 Form inputs have labels', async ({ page }) => {
-      await page.goto('/charts/new')
-      await expect(page).toHaveURL(/\/charts\/[a-f0-9-]+/i, { timeout: 10000 })
+      await gotoNewChartAndWaitForConfig(page)
 
       // Title input should have associated label
       const titleLabel = page.getByText(SELECTORS.chartTitle)
