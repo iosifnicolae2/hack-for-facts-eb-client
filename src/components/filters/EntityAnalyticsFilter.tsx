@@ -455,12 +455,18 @@ export function EntityAnalyticsFilter() {
           />
         </div>
 
-        <div className="p-3 border-b">
-          <h4 className="mb-2 text-sm font-medium flex items-center">
-            <Divide className="w-4 h-4 mr-2" />
-            <Trans>Normalization</Trans>
-          </h4>
-          <NormalizationModeSelect value={filter.normalization} allowPerCapita onChange={updateNormalization} triggerClassName="w-full" />
+                <div className="p-3 border-b" data-testid="entity-analytics-normalization-section">
+                    <h4 className="mb-2 text-sm font-medium flex items-center">
+                        <Divide className="w-4 h-4 mr-2" />
+                        <Trans>Normalization</Trans>
+                    </h4>
+          <NormalizationModeSelect
+            value={filter.normalization}
+            allowPerCapita
+            onChange={updateNormalization}
+            triggerClassName="w-full"
+            triggerTestId="entity-analytics-normalization-select"
+          />
         </div>
 
         <FilterContainer

@@ -16,7 +16,7 @@ export function ChartConfigView() {
     const { chart, updateChart, goToOverview, deleteChart } = useChartStore();
 
     return (
-        <div className="container mx-auto py-6 space-y-6 px-4 md:px-6">
+        <div className="container mx-auto py-6 space-y-6 px-4 md:px-6" data-testid="chart-config-view">
             <header className="space-y-2">
                 <Breadcrumb>
                     <BreadcrumbList>
@@ -33,7 +33,7 @@ export function ChartConfigView() {
                 </Breadcrumb>
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">
+                        <h1 className="text-3xl font-bold tracking-tight" data-testid="chart-config-heading">
                             <Trans>Chart Configuration</Trans>
                         </h1>
                         <p className="text-muted-foreground">{chart.title || 'Untitled Chart'}</p>

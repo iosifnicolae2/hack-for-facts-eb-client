@@ -18,6 +18,7 @@ test.describe('Map Page', () => {
 		await expect(
 			page.getByRole('region', { name: /filtre.*hartă/i })
 		).toBeVisible({ timeout: 15000 })
+		await expect(page.getByTestId('leaflet-map')).toBeVisible({ timeout: 15000 })
 		await waitForHydration(page)
 	})
 
@@ -83,7 +84,8 @@ test.describe('Map Page', () => {
     ).toBeVisible({ timeout: 5000 })
 
     // Check for combobox
-    await expect(page.getByRole('combobox')).toBeVisible()
+    const normalizationSelect = page.getByTestId('map-normalization-select')
+    await expect(normalizationSelect).toBeVisible({ timeout: 5000 })
   })
 
   test('displays period filter with year selected', async ({ page }) => {
@@ -152,12 +154,12 @@ test.describe('Map Page', () => {
   test('displays map zoom controls', async ({ page }) => {
     // Check for zoom in button
     await expect(
-      page.getByRole('button', { name: /zoom.*in/i })
+      page.getByTestId('map-zoom-in')
     ).toBeVisible({ timeout: 5000 })
 
     // Check for zoom out button
     await expect(
-      page.getByRole('button', { name: /zoom.*out/i })
+      page.getByTestId('map-zoom-out')
     ).toBeVisible()
   })
 
@@ -176,7 +178,7 @@ test.describe('Map Page', () => {
   test('displays Leaflet attribution', async ({ page }) => {
     // Check for Leaflet link in attribution
     await expect(
-      page.getByRole('link', { name: /leaflet/i })
+      page.getByTestId('map-attribution-link')
     ).toBeVisible({ timeout: 5000 })
   })
 })
@@ -187,6 +189,7 @@ test.describe('Map Page - Interactions', () => {
 		await expect(
 			page.getByRole('region', { name: /filtre.*hartă/i })
 		).toBeVisible({ timeout: 15000 })
+		await expect(page.getByTestId('leaflet-map')).toBeVisible({ timeout: 15000 })
 		await waitForHydration(page)
 	})
 
@@ -221,7 +224,7 @@ test.describe('Map Page - Interactions', () => {
 
   test('can use zoom controls', async ({ page }) => {
     // Click zoom in
-    const zoomInButton = page.getByRole('button', { name: /zoom.*in/i })
+    const zoomInButton = page.getByTestId('map-zoom-in')
     await expect(zoomInButton).toBeVisible({ timeout: 5000 })
     await zoomInButton.click()
 
@@ -229,7 +232,7 @@ test.describe('Map Page - Interactions', () => {
     await expect(zoomInButton).toBeVisible()
 
     // Click zoom out
-    const zoomOutButton = page.getByRole('button', { name: /zoom.*out/i })
+    const zoomOutButton = page.getByTestId('map-zoom-out')
     await zoomOutButton.click()
     await expect(zoomOutButton).toBeVisible()
   })

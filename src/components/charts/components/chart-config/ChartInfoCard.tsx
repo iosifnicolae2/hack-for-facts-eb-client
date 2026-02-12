@@ -22,37 +22,40 @@ export const ChartInfoCard = React.memo(({ chart, onUpdateChart }: ChartInfoCard
     }, [chart.title, chart.description]);
 
     return (
-        <SettingsCard
-            icon={<Settings className="h-5 w-5" />}
-            title={t`Chart Information`}
-            description={t`Set the basic properties for your chart`}
-        >
-            <div className="space-y-4">
-                <div className="space-y-2">
-                    <Label htmlFor="chart-title">{t`Chart Title`} *</Label>
-                    <DebouncedStatusInput
-                        id="chart-title"
-                        value={localTitle}
-                        onImmediateChange={(v) => setLocalTitle(v)}
-                        onDebouncedChange={(v) => onUpdateChart({ title: v })}
-                        debounceMs={600}
-                        placeholder={t`Enter chart title...`}
-                    />
+        <div data-testid="chart-info-card">
+            <SettingsCard
+                icon={<Settings className="h-5 w-5" />}
+                title={t`Chart Information`}
+                description={t`Set the basic properties for your chart`}
+            >
+                <div className="space-y-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="chart-title" data-testid="chart-title-label">{t`Chart Title`} *</Label>
+                        <DebouncedStatusInput
+                            id="chart-title"
+                            value={localTitle}
+                            onImmediateChange={(v) => setLocalTitle(v)}
+                            onDebouncedChange={(v) => onUpdateChart({ title: v })}
+                            debounceMs={600}
+                            placeholder={t`Enter chart title...`}
+                            data-testid="chart-title-input"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="chart-description">Description</Label>
+                        <Textarea
+                            id="chart-description"
+                            value={localDescription}
+                            onChange={(e) => {
+                                setLocalDescription(e.target.value);
+                                onUpdateChart({ description: e.target.value });
+                            }}
+                            placeholder={t`Optional description for your chart...`}
+                            rows={3}
+                        />
+                    </div>
                 </div>
-                <div className="space-y-2">
-                    <Label htmlFor="chart-description">Description</Label>
-                    <Textarea
-                        id="chart-description"
-                        value={localDescription}
-                        onChange={(e) => {
-                            setLocalDescription(e.target.value);
-                            onUpdateChart({ description: e.target.value });
-                        }}
-                        placeholder={t`Optional description for your chart...`}
-                        rows={3}
-                    />
-                </div>
-            </div>
-        </SettingsCard>
+            </SettingsCard>
+        </div>
     );
-}); 
+});

@@ -237,7 +237,7 @@ export function MapFilter() {
                     </div>
                 </div>
 
-                <div className="p-3 border-b">
+                <div className="p-3 border-b" data-testid="map-normalization-section">
                     <h4 className="mb-2 text-sm font-medium flex items-center" id="normalization-label">
                         <Divide className="w-4 h-4 mr-2" aria-hidden="true" />
                         <Trans>Normalization</Trans>
@@ -248,6 +248,7 @@ export function MapFilter() {
                             allowPerCapita
                             onChange={(normalization) => setNormalization(normalization)}
                             triggerClassName="w-full"
+                            triggerTestId="map-normalization-select"
                         />
                     </div>
                 </div>

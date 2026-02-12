@@ -128,20 +128,22 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
   }
 
   return (
-    <MapContainer
-      center={center}
-      zoom={zoom}
-      zoomSnap={0.1}
-      wheelPxPerZoomLevel={3}
+      <MapContainer
+        center={center}
+        zoom={zoom}
+        zoomSnap={0.1}
+        wheelPxPerZoomLevel={3}
       minZoom={minZoom}
       maxZoom={maxZoom}
       maxBounds={maxBounds}
-      scrollWheelZoom={false}
-      style={{ height: mapHeight, width: '100%', backgroundColor: 'transparent' }}
-      className="z-0 isolate"
-      preferCanvas={true}
-    >
+        scrollWheelZoom={false}
+        style={{ height: mapHeight, width: '100%', backgroundColor: 'transparent' }}
+        className="z-0 isolate"
+        data-testid="leaflet-map"
+        preferCanvas={true}
+      >
       <MapCleanup />
+      <MapTestIds />
       {scrollWheelZoom !== false && <ScrollWheelZoomControl />}
       <MapUpdater center={center} zoom={zoom} />
       <MapViewChangeListener onViewChange={onViewChange} />
@@ -167,6 +169,53 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
     </MapContainer>
   );
 });
+
+const MapTestIds: React.FC = () => {
+  const map = useMap();
+
+  useEffect(() => {
+    const mapContainer = map.getContainer();
+    if (!mapContainer) return;
+
+    const applyTestIds = () => {
+      mapContainer.setAttribute('data-testid', 'leaflet-map');
+
+      const zoomIn = mapContainer.querySelector('.leaflet-control-zoom-in') as HTMLElement | null;
+      if (zoomIn) {
+        zoomIn.setAttribute('data-testid', 'map-zoom-in');
+      }
+
+      const zoomOut = mapContainer.querySelector('.leaflet-control-zoom-out') as HTMLElement | null;
+      if (zoomOut) {
+        zoomOut.setAttribute('data-testid', 'map-zoom-out');
+      }
+
+      const attributionLink = mapContainer.querySelector(
+        '.leaflet-control-attribution a[href]',
+      ) as HTMLAnchorElement | null;
+      if (attributionLink) {
+        attributionLink.setAttribute('data-testid', 'map-attribution-link');
+      }
+    };
+
+    applyTestIds();
+
+    const observer = new MutationObserver(() => {
+      applyTestIds();
+    });
+
+    observer.observe(mapContainer, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [map]);
+
+  return null;
+};
 
 // Leaflet can keep animation/state tied to DOM nodes; stop/off on unmount to prevent race errors.
 const MapCleanup: React.FC = () => {

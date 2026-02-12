@@ -12,10 +12,12 @@
  */
 
 import { test, expect } from '@playwright/test'
+import { waitForHydration } from '../utils/test-helpers'
 
 test.describe('Entity Analytics Page', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/entity-analytics')
+    await waitForHydration(page)
     await page.waitForLoadState('networkidle').catch(() => {})
     // Wait for main content to appear
     await page.locator('main').waitFor({ state: 'visible', timeout: 10000 }).catch(() => {})
@@ -75,9 +77,9 @@ test.describe('Entity Analytics Page', () => {
     const normalizationHeading = page.locator('text=/normalizare|normalization/i')
     await expect(normalizationHeading.first()).toBeVisible({ timeout: 5000 })
 
-    // Check for Total option in dropdown
-    const normalizationDropdown = page.getByRole('combobox').filter({ hasText: /total/i })
-    await expect(normalizationDropdown.first()).toBeVisible()
+    // Check for normalization selector
+    const normalizationDropdown = page.getByTestId('entity-analytics-normalization-select')
+    await expect(normalizationDropdown).toBeVisible()
   })
 
   test('displays period filter', async ({ page }) => {

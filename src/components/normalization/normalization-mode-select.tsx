@@ -8,9 +8,17 @@ type Props = {
   allowPerCapita?: boolean
   className?: string
   triggerClassName?: string
+  triggerTestId?: string
 }
 
-export function NormalizationModeSelect({ value, onChange, allowPerCapita = false, className, triggerClassName }: Readonly<Props>) {
+export function NormalizationModeSelect({
+  value,
+  onChange,
+  allowPerCapita = false,
+  className,
+  triggerClassName,
+  triggerTestId,
+}: Readonly<Props>) {
   let effectiveValue: Normalization;
   if (value === 'total_euro') {
     effectiveValue = 'total';
@@ -22,8 +30,8 @@ export function NormalizationModeSelect({ value, onChange, allowPerCapita = fals
 
   return (
     <div className={className}>
-      <Select value={effectiveValue} onValueChange={(val) => onChange(val as Normalization)}>
-        <SelectTrigger className={triggerClassName}>
+        <Select value={effectiveValue} onValueChange={(val) => onChange(val as Normalization)}>
+        <SelectTrigger className={triggerClassName} data-testid={triggerTestId}>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -35,4 +43,3 @@ export function NormalizationModeSelect({ value, onChange, allowPerCapita = fals
     </div>
   )
 }
-

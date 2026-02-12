@@ -22,6 +22,7 @@
  */
 
 import { test, expect } from '../utils/integration-base'
+import { waitForHydration } from '../utils/test-helpers'
 
 // Constants for test data
 const MOCK_ENTITY_NAMES = [
@@ -330,10 +331,11 @@ test.describe('Entity Analytics - Comprehensive Tests', () => {
 
     test('displays normalization selector', async ({ page }) => {
       await page.goto('/entity-analytics')
+      await waitForHydration(page)
 
       // Check for normalization dropdown
-      const normalizationDropdown = page.getByRole('combobox').filter({ hasText: /total/i })
-      await expect(normalizationDropdown.first()).toBeVisible({ timeout: 10000 })
+      const normalizationDropdown = page.getByTestId('entity-analytics-normalization-select')
+      await expect(normalizationDropdown).toBeVisible({ timeout: 10000 })
     })
 
     test('displays period filter with year selection', async ({ page }) => {
@@ -449,10 +451,11 @@ test.describe('Entity Analytics - Comprehensive Tests', () => {
 
     test('can change normalization', async ({ page }) => {
       await page.goto('/entity-analytics')
+      await waitForHydration(page)
       await page.waitForLoadState('networkidle').catch(() => {})
 
       // Find and click normalization dropdown
-      const dropdown = page.getByRole('combobox').first()
+      const dropdown = page.getByTestId('entity-analytics-normalization-select')
       
       if (await dropdown.isVisible({ timeout: 5000 }).catch(() => false)) {
         await dropdown.click()
@@ -548,6 +551,7 @@ test.describe('Entity Analytics - Comprehensive Tests', () => {
 
     test('loads with normalization from URL', async ({ page }) => {
       await page.goto('/entity-analytics?normalization=per_capita')
+      await waitForHydration(page)
       await page.waitForLoadState('networkidle').catch(() => {})
 
       // Wait for page to load

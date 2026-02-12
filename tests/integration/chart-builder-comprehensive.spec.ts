@@ -9,6 +9,7 @@
  */
 
 import { test, expect } from '../utils/integration-base'
+import { waitForHydration } from '../utils/test-helpers'
 import type { Page } from '@playwright/test'
 
 // Test constants (EN/RO language support)
@@ -53,10 +54,12 @@ const SELECTORS = {
 
 async function gotoNewChartAndWaitForConfig(page: Page) {
   await page.goto('/charts/new')
+  await waitForHydration(page)
   await expect(page).toHaveURL(/\/charts\/[a-f0-9-]+.*view=config/i, { timeout: 20000 })
 
   const configReadyMarker = page
-    .getByRole('button', { name: SELECTORS.viewChart })
+    .getByTestId('chart-config-heading')
+    .or(page.getByRole('button', { name: SELECTORS.viewChart }))
     .or(page.getByRole('heading', { name: SELECTORS.chartConfiguration }))
     .first()
 
@@ -79,22 +82,23 @@ test.describe('Chart Builder - Comprehensive Tests', () => {
       await gotoNewChartAndWaitForConfig(page)
 
       // Config dialog should be visible
-      await expect(page.getByRole('heading', { name: SELECTORS.chartConfiguration })).toBeVisible({ timeout: 10000 })
+      await expect(page.getByTestId('chart-config-heading')).toBeVisible({ timeout: 10000 })
     })
 
     test('1.3 Chart info card is visible', async ({ page }) => {
       await gotoNewChartAndWaitForConfig(page)
 
-      // Chart information section
-      await expect(page.getByText(SELECTORS.chartInformation)).toBeVisible()
+      await expect(page.getByTestId('chart-info-card')).toBeVisible()
     })
 
     test('1.4 Chart title input is visible and editable', async ({ page }) => {
       await page.goto('/charts/new')
+      await waitForHydration(page)
       await expect(page).toHaveURL(/\/charts\/[a-f0-9-]+/i, { timeout: 10000 })
 
       // Find title input
-      const titleInput = page.getByRole('textbox', { name: SELECTORS.chartTitle })
+      const titleInput = page.getByTestId('chart-title-input')
+        .or(page.getByRole('textbox', { name: SELECTORS.chartTitle }))
         .or(page.locator('#chart-title'))
         .or(page.getByPlaceholder(/title|titlu/i))
 
@@ -119,7 +123,9 @@ test.describe('Chart Builder - Comprehensive Tests', () => {
 
       // Data series section - look for "Add Series" button which is in the DataSeriesCard
       // This confirms the DataSeriesCard component is rendered
-      const addSeriesButton = page.getByRole('button', { name: SELECTORS.addSeries }).first()
+      const addSeriesButton = page.getByTestId('add-series-button')
+        .or(page.getByRole('button', { name: SELECTORS.addSeries }))
+        .first()
       await expect(addSeriesButton).toBeVisible({ timeout: 5000 })
     })
 
@@ -127,7 +133,7 @@ test.describe('Chart Builder - Comprehensive Tests', () => {
       await gotoNewChartAndWaitForConfig(page)
 
       // Add series button - use first() since there might be multiple
-      await expect(page.getByRole('button', { name: SELECTORS.addSeries }).first()).toBeVisible()
+      await expect(page.getByTestId('add-series-button').first()).toBeVisible()
     })
   })
 
