@@ -83,7 +83,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install chromium
 
       - name: Run Integration Tests
         run: npx playwright test --project=integration --reporter=list --max-failures=5 --workers=5 --retries=2
@@ -127,6 +127,7 @@ jobs:
       - name: Build application
         run: yarn build
         env:
+          NODE_OPTIONS: --max-http-header-size=64384 --max-old-space-size=3072
           VITE_API_URL: ${{ vars.VITE_API_URL || 'https://api-dev.transparenta.eu' }}
           VITE_APP_VERSION: ${{ github.sha }}
           VITE_APP_NAME: Transparenta
