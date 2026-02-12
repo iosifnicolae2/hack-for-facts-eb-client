@@ -36,7 +36,14 @@ import { DEFAULT_CURRENCY, DEFAULT_INFLATION_ADJUSTED, resolveNormalizationSetti
 import { useQueryClient } from '@tanstack/react-query'
 
 const TrendsView = lazy(() => import('@/components/entities/views/TrendsView').then(m => ({ default: m.TrendsView })))
-const EmployeesView = lazy(() => import('@/components/entities/views/EmployeesView').then(m => ({ default: m.EmployeesView })))
+const EmployeesView = lazy(() =>
+  import('@/components/entities/views/EmployeesView')
+    .then(module => ({ default: module?.EmployeesView ?? EmployeesViewUnavailable }))
+    .catch((error: unknown) => {
+      console.error('Failed to load EmployeesView module', error)
+      return { default: EmployeesViewUnavailable }
+    })
+)
 const MapView = lazy(() => import('@/components/entities/views/MapView').then(m => ({ default: m.MapView })))
 const RankingView = lazy(() => import('@/components/entities/views/RankingView').then(m => ({ default: m.RankingView })))
 const RelatedChartsView = lazy(() => import('@/components/entities/views/RelatedChartsView').then(m => ({ default: m.RelatedChartsView })))
@@ -45,6 +52,39 @@ const EntityReports = lazy(() => import('@/components/entities/EntityReports'))
 const EntityRelationships = lazy(() => import('@/components/entities/EntityRelationships').then(m => ({ default: m.EntityRelationships })))
 const ContractsView = lazy(() => import('@/components/entities/views/ContractsView').then(m => ({ default: m.ContractsView })))
 const CommitmentsView = lazy(() => import('@/components/entities/views/Commitments').then(m => ({ default: m.CommitmentsView })))
+
+function EmployeesViewUnavailable() {
+  return (
+    <Alert className="max-w-lg w-full">
+      <Info className="h-5 w-5" />
+      <AlertTitle><Trans>Employees view unavailable</Trans></AlertTitle>
+      <AlertDescription>
+        <Trans>We could not load this section right now. Please refresh and try again.</Trans>
+      </AlertDescription>
+    </Alert>
+  )
+}
+
+function stripBoundaryQuotes(value: string): string {
+  return value.replace(/^"+|"+$/g, '')
+}
+
+function normalizeSearchPatch(patch: Record<string, any>): Record<string, any> {
+  const normalizedPatch = { ...patch }
+
+  if (typeof normalizedPatch.month === 'string') {
+    const normalizedMonth = stripBoundaryQuotes(normalizedPatch.month)
+    normalizedPatch.month = /^\d{1,2}$/.test(normalizedMonth)
+      ? normalizedMonth.padStart(2, '0')
+      : normalizedMonth
+  }
+
+  if (typeof normalizedPatch.quarter === 'string') {
+    normalizedPatch.quarter = stripBoundaryQuotes(normalizedPatch.quarter)
+  }
+
+  return normalizedPatch
+}
 
 export const Route = createLazyFileRoute('/entities/$cui')({
   component: EntityDetailsPage,
@@ -220,9 +260,11 @@ function EntityDetailsPage() {
   );
 
   const updateSearch = useCallback((patch: Record<string, any>) => {
+    const normalizedPatch = normalizeSearchPatch(patch)
+
     // Skip navigation if nothing actually changes
-    const isNoOp = Object.keys(patch).every((key) => {
-      const nextVal = (patch as any)[key]
+    const isNoOp = Object.keys(normalizedPatch).every((key) => {
+      const nextVal = (normalizedPatch as any)[key]
       const prevVal = (search as any)[key]
       return nextVal === undefined ? prevVal === undefined : prevVal === nextVal
     })
@@ -232,7 +274,7 @@ function EntityDetailsPage() {
       navigate({
         search: (prev) => {
           const nextSearch = { ...prev } as Record<string, unknown>
-          for (const [key, value] of Object.entries(patch)) {
+          for (const [key, value] of Object.entries(normalizedPatch)) {
             if (value === undefined) {
               // TanStack Router drops undefined values in serialization, but we delete
               // for correctness and to avoid `key=undefined` in edge cases.
@@ -358,18 +400,20 @@ function EntityDetailsPage() {
   ])
 
   const updateReportPeriodInSearch = useCallback((patch: Record<string, any>) => {
+    const normalizedPatch = normalizeSearchPatch(patch)
+
     startTransition(() => {
       navigate({
         search: (prev) => {
-          const nextState = { ...prev, ...patch }
+          const nextState = normalizeSearchPatch({ ...prev, ...normalizedPatch })
           const nextPeriod = nextState.period
 
           return {
             ...nextState,
             month: nextPeriod === 'MONTH' ? nextState.month : undefined,
             quarter: nextPeriod === 'QUARTER' ? nextState.quarter : undefined,
-            report_type: ('report_type' in patch && patch.report_type) ? patch.report_type : prev.report_type,
-            main_creditor_cui: ('main_creditor_cui' in patch && patch.main_creditor_cui) ? patch.main_creditor_cui : prev.main_creditor_cui,
+            report_type: ('report_type' in normalizedPatch && normalizedPatch.report_type) ? normalizedPatch.report_type : prev.report_type,
+            main_creditor_cui: ('main_creditor_cui' in normalizedPatch && normalizedPatch.main_creditor_cui) ? normalizedPatch.main_creditor_cui : prev.main_creditor_cui,
           }
         },
         replace: true,
