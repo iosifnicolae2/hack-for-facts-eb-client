@@ -22,7 +22,7 @@ export function ContractsView({ entity }: Readonly<Props>) {
                     <Info className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
                     <p className="text-sm text-muted-foreground">
                         <Trans>
-                            Datele privind achizițiile publice sunt furnizate de SICAP.ai, o platformă independentă care agregă și analizează contractele publice din Sistemul Electronic de Achiziții Publice (SEAP) din România.
+                            Public procurement data is provided by SICAP.ai, an independent platform that aggregates and analyzes public contracts from Romania's Electronic Public Procurement System (SEAP).
                         </Trans>
                     </p>
                 </div>

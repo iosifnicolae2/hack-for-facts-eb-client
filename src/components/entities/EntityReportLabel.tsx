@@ -4,12 +4,14 @@ import { Trans } from '@lingui/react/macro'
 
 type Props = {
   className?: string
-  period: ReportPeriodInput
+  period?: ReportPeriodInput
   reportType?: GqlReportType
   mainCreditorLabel?: string | null
 }
 
-function toCompactPeriodLabel(period: ReportPeriodInput): string {
+function toCompactPeriodLabel(period: ReportPeriodInput | undefined): string {
+  if (!period?.selection) return ''
+
   if (period.selection.interval) {
     const start = period.selection.interval.start
     const end = period.selection.interval.end
@@ -39,5 +41,4 @@ export function EntityReportLabel({ className, period: period, reportType, mainC
     </span>
   )
 }
-
 

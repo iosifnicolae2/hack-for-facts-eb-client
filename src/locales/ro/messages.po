@@ -931,10 +931,6 @@ msgstr "Credite bugetare disponibile"
 msgid "Available commitment credits"
 msgstr "Credite de angajament disponibile"
 
-#: src/components/charts/components/series-config/InsSeriesEditor.tsx:431
-#~ msgid "Average"
-#~ msgstr "Medie"
-
 #: src/components/charts/components/views/SeriesConfigView.tsx:501
 msgid "Average (mean value)"
 msgstr "Medie (media valorilor)"
@@ -1081,7 +1077,7 @@ msgstr "Cronologia ciclului bugetar"
 #: src/components/entities/views/Overview.tsx:281
 #: src/components/entities/views/TrendsView.tsx:220
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:94
-#: src/routes/budget-explorer.lazy.tsx:453
+#: src/routes/budget-explorer.lazy.tsx:507
 msgid "Budget Distribution"
 msgstr "Distribuția bugetului"
 
@@ -1603,7 +1599,7 @@ msgstr "Contracte"
 
 #: src/routes/entities.$cui.lazy.tsx:79
 msgid "Contracts view unavailable"
-msgstr ""
+msgstr "Vizualizarea contractelor nu este disponibilă"
 
 #: src/routes/privacy.lazy.tsx:34
 msgid "Controller: Claudiu Constantin Bogdan, persoana fizica. Contact: contact@transparenta.eu"
@@ -1975,10 +1971,6 @@ msgstr "Explorator de seturi de date"
 msgid "Dataset metadata is loading or unavailable, but historical data can still be viewed below."
 msgstr "Metadatele setului de date se încarcă sau nu sunt disponibile, dar datele istorice pot fi vizualizate mai jos."
 
-#: src/components/entities/views/ContractsView.tsx:24
-msgid "Datele privind achizițiile publice sunt furnizate de SICAP.ai, o platformă independentă care agregă și analizează contractele publice din Sistemul Electronic de Achiziții Publice (SEAP) din România."
-msgstr ""
-
 #: src/components/filters/period-filter/PeriodFilter.tsx:417
 msgid "Dates"
 msgstr "Date"
@@ -2082,7 +2074,7 @@ msgid "Description"
 msgstr "Descriere"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:123
-#: src/routes/budget-explorer.lazy.tsx:504
+#: src/routes/budget-explorer.lazy.tsx:558
 msgid "Detail level"
 msgstr "Nivel de detaliu"
 
@@ -2105,7 +2097,7 @@ msgid "Detailed Budget Execution"
 msgstr "Executie bugetara detaliata"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:138
-#: src/routes/budget-explorer.lazy.tsx:517
+#: src/routes/budget-explorer.lazy.tsx:571
 msgid "Detailed categories"
 msgstr "Categorii detaliate"
 
@@ -2249,7 +2241,7 @@ msgstr "Ec"
 #: src/components/entities/views/TrendsView.tsx:223
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:118
 #: src/lib/ins/ins-metric-registry.ts:108
-#: src/routes/budget-explorer.lazy.tsx:499
+#: src/routes/budget-explorer.lazy.tsx:553
 msgid "Economic"
 msgstr "Economic"
 
@@ -2590,14 +2582,6 @@ msgstr "Te-ai întrebat vreodată unde se duc banii tăi?"
 msgid "Example:"
 msgstr "Exemplu:"
 
-#: src/components/charts/components/series-config/InsSeriesEditor.tsx:448
-#~ msgid "Example: 2020 / 2020-Q1 / 2020-01"
-#~ msgstr "Exemplu: 2020 / 2020-Q1 / 2020-01"
-
-#: src/components/charts/components/series-config/InsSeriesEditor.tsx:467
-#~ msgid "Example: 2024 / 2024-Q4 / 2024-12"
-#~ msgstr "Exemplu: 2024 / 2024-Q4 / 2024-12"
-
 #: src/components/charts/components/views/SeriesConfigView.tsx:449
 msgid "Example: 2024-"
 msgstr "Exemplu: 2024-"
@@ -2807,7 +2791,7 @@ msgstr "Eroare la încărcarea alertei"
 msgid "Failed to load alerts. Please try again."
 msgstr "Eroare la încărcarea alertelor. Vă rugăm să încercați din nou."
 
-#: src/routes/budget-explorer.lazy.tsx:527
+#: src/routes/budget-explorer.lazy.tsx:581
 msgid "Failed to load data."
 msgstr "Eroare la încărcarea datelor."
 
@@ -2942,10 +2926,6 @@ msgstr "Găsește entitate de monitorizat"
 msgid "Find resources, report issues, or get in touch."
 msgstr "Găsește resurse, raportează probleme sau ia legătura cu noi."
 
-#: src/components/charts/components/series-config/InsSeriesEditor.tsx:434
-#~ msgid "First"
-#~ msgstr "Primul"
-
 #: src/components/charts/components/views/SeriesConfigView.tsx:504
 msgid "First value only"
 msgstr "Doar prima valoare"
@@ -3011,10 +2991,6 @@ msgstr "S-au găsit {replacementCount} apariții"
 msgid "Full historical observations exceeded the page cap for this view. Showing the retrieved subset."
 msgstr "Observațiile istorice complete au depășit limita de paginare pentru această vizualizare. Se afișează subsetul recuperat."
 
-#: src/components/entities/views/ContractsView.tsx:22
-#~ msgid "Full Procurement Portal"
-#~ msgstr "Portal complet achiziții"
-
 #: src/components/classification-explorer/ClassificationExplorer.tsx:192
 #: src/components/classification-explorer/ClassificationExplorer.tsx:193
 #: src/components/commitments/DetailTable.tsx:553
@@ -3023,7 +2999,7 @@ msgstr "Observațiile istorice complete au depășit limita de paginare pentru a
 #: src/components/entities/views/Overview.tsx:304
 #: src/components/entities/views/TrendsView.tsx:222
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:111
-#: src/routes/budget-explorer.lazy.tsx:496
+#: src/routes/budget-explorer.lazy.tsx:550
 msgid "Functional"
 msgstr "Funcțional"
 
@@ -3229,7 +3205,7 @@ msgstr "Brut"
 
 #: src/components/commitments/DetailTable.tsx:546
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:99
-#: src/routes/budget-explorer.lazy.tsx:486
+#: src/routes/budget-explorer.lazy.tsx:540
 msgid "Grouping"
 msgstr "Grupare"
 
@@ -3940,7 +3916,7 @@ msgid "Main Categories"
 msgstr "Categorii Principale"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:135
-#: src/routes/budget-explorer.lazy.tsx:514
+#: src/routes/budget-explorer.lazy.tsx:568
 msgid "Main chapters"
 msgstr "Capitole principale"
 
@@ -4697,9 +4673,9 @@ msgstr "Deschide fereastra de feedback"
 msgid "Open floating entity search"
 msgstr "Deschide căutarea flotantă de entități"
 
-#: src/routes/budget-explorer.lazy.tsx:584
-#: src/routes/budget-explorer.lazy.tsx:600
-#: src/routes/budget-explorer.lazy.tsx:620
+#: src/routes/budget-explorer.lazy.tsx:638
+#: src/routes/budget-explorer.lazy.tsx:654
+#: src/routes/budget-explorer.lazy.tsx:674
 msgid "Open in Chart Builder"
 msgstr "Deschide în Generatorul de Grafice"
 
@@ -4719,7 +4695,7 @@ msgid "Open in charts"
 msgstr "Deschide în grafice"
 
 #: src/components/entities/views/Overview.tsx:287
-#: src/routes/budget-explorer.lazy.tsx:460
+#: src/routes/budget-explorer.lazy.tsx:514
 msgid "Open in entity analytics"
 msgstr "Deschide în analitice entitate"
 
@@ -4807,7 +4783,7 @@ msgid "Overview"
 msgstr "Prezentare generală"
 
 #. js-lingui-explicit-id
-#: src/lib/errors-utils.ts:17
+#: src/lib/errors-utils.ts:22
 msgid "error.pageRenderErrorTitle"
 msgstr "Eroare la încărcarea paginii"
 
@@ -4919,17 +4895,9 @@ msgstr "Pe cap de locuitor"
 msgid "Period"
 msgstr "Perioadă"
 
-#: src/components/charts/components/series-config/InsSeriesEditor.tsx:463
-#~ msgid "Period End"
-#~ msgstr "Sfârșit perioadă"
-
 #: src/components/charts/components/series-config/SeriesFilter.tsx:789
 msgid "Period Growth"
 msgstr "Creștere pe perioadă"
-
-#: src/components/charts/components/series-config/InsSeriesEditor.tsx:444
-#~ msgid "Period Start"
-#~ msgstr "Început perioadă"
 
 #: src/components/filters/period-filter/PeriodFilter.tsx:397
 msgid "Period Type"
@@ -5091,9 +5059,9 @@ msgstr "Instituțiile publice transferă adesea fonduri între ele (de exemplu, 
 msgid "Public institutions often transfer funds between each other. These transfers can double-count spending or revenue if not filtered."
 msgstr "Instituțiile publice transferă adesea fonduri între ele. Aceste transferuri pot duce la dubla contabilizare a cheltuielilor sau veniturilor dacă nu sunt filtrate."
 
-#: src/components/entities/views/ContractsView.tsx:41
-#~ msgid "Public procurement data is provided by SICAP.ai, an independent platform that aggregates and analyzes public contracts from Romania's Electronic Public Procurement System (SEAP)."
-#~ msgstr "Datele privind achizițiile publice sunt furnizate de SICAP.ai, o platformă independentă care agregă și analizează contractele publice din Sistemul Electronic de Achiziții Publice (SEAP) din România."
+#: src/components/entities/views/ContractsView.tsx:24
+msgid "Public procurement data is provided by SICAP.ai, an independent platform that aggregates and analyzes public contracts from Romania's Electronic Public Procurement System (SEAP)."
+msgstr "Datele privind achizițiile publice sunt furnizate de SICAP.ai, o platformă independentă care agregă și analizează contractele publice din Sistemul Electronic de Achiziții Publice (SEAP) din România."
 
 #: src/routes/privacy.lazy.tsx:86
 msgid "Public sector information from Ministerul Finanțelor. No government affiliation."
@@ -5277,7 +5245,7 @@ msgstr "Filtre de raportare"
 msgid "Reporting period"
 msgstr "Perioada de raportare"
 
-#: src/components/entities/EntityReportLabel.tsx:37
+#: src/components/entities/EntityReportLabel.tsx:39
 msgid "Reporting:"
 msgstr "Raportare:"
 
@@ -5549,7 +5517,7 @@ msgstr "Creditor secundar agregat"
 msgid "Security monitoring and logs"
 msgstr "Monitorizare și jurnale de securitate"
 
-#: src/routes/budget-explorer.lazy.tsx:558
+#: src/routes/budget-explorer.lazy.tsx:612
 msgid "See advanced view"
 msgstr "Vezi vizualizarea avansată"
 
@@ -5596,10 +5564,6 @@ msgstr "Selectează opțiuni"
 #: src/features/learning/components/layout/LearningLayout.tsx:194
 msgid "Select Path"
 msgstr "Selectează parcursul"
-
-#: src/components/charts/components/series-config/InsSeriesEditor.tsx:403
-#~ msgid "Select periodicity"
-#~ msgstr "Selectează periodicitatea"
 
 #: src/components/entities/views/ins-stats-view.presentation.tsx:1248
 msgid "Select series"
@@ -5901,7 +5865,7 @@ msgid "Some service providers may process data outside the EU/EEA. All transfers
 msgstr "Unii furnizori de servicii pot prelucra date în afara UE/SEE. Toate transferurile sunt protejate prin garanții adecvate, inclusiv:"
 
 #. js-lingui-explicit-id
-#: src/lib/errors-utils.ts:21
+#: src/lib/errors-utils.ts:26
 msgid "error.genericError"
 msgstr "Ceva nu a funcționat corect la redarea acestei pagini."
 
@@ -6041,10 +6005,6 @@ msgstr "Subtitlu"
 #: src/routes/unsubscribe.$token.tsx:32
 msgid "Successfully unsubscribed"
 msgstr "Dezabonare reușită"
-
-#: src/components/charts/components/series-config/InsSeriesEditor.tsx:428
-#~ msgid "Sum"
-#~ msgstr "Sumă"
 
 #: src/components/budget-explorer/RevenueBreakdown.tsx:63
 msgid "Sums pending distribution"
@@ -6368,7 +6328,7 @@ msgstr "Top 15 județe după suma totală"
 msgid "Top 15 UATs by Total Amount"
 msgstr "Top 15 UAT-uri după suma totală"
 
-#: src/routes/budget-explorer.lazy.tsx:555
+#: src/routes/budget-explorer.lazy.tsx:609
 msgid "Top Categories"
 msgstr "Categorii principale"
 
@@ -6378,7 +6338,7 @@ msgid "Top Economic Categories"
 msgstr "Categorii economice principale"
 
 #: src/components/budget-explorer/BudgetCategoryList.tsx:140
-#: src/routes/budget-explorer.lazy.tsx:616
+#: src/routes/budget-explorer.lazy.tsx:670
 msgid "Top Functional Categories"
 msgstr "Categorii funcționale principale"
 
@@ -6885,6 +6845,11 @@ msgstr "Nu am putut încărca această secțiune acum. Vă rugăm să reîmprosp
 #: src/lib/errors-utils.ts:13
 msgid "error.validationIssue"
 msgstr "Nu am putut afișa această pagină din cauza unei probleme de validare a datelor."
+
+#. js-lingui-explicit-id
+#: src/lib/errors-utils.ts:17
+msgid "error.invalidUrlIssue"
+msgstr "Nu am putut afișa această pagină din cauza unei probleme de validare a datelor. Parametrii URL nu sunt validați. Deschideți din nou pagina cu un link valid sau folosiți butonul „Pagina principală”."
 
 #: src/routes/privacy.lazy.tsx:141
 msgid "We do not use automated decision-making or profiling that produces legal effects or similarly significantly affects you."

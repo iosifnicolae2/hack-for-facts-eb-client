@@ -14,6 +14,11 @@ export const messages = {
         id: "error.validationIssue",
         message: "We couldn't display this page due to a data validation issue.",
     }),
+    invalidUrlIssue: defineMessage({
+        id: "error.invalidUrlIssue",
+        message:
+            "We couldn't display this page due to a data validation issue. The URL parameters are invalid. Open this page again with a valid link or use the homepage button.",
+    }),
     pageRenderErrorTitle: defineMessage({
         id: "error.pageRenderErrorTitle",
         message: "Page Failed to Load",
@@ -86,6 +91,39 @@ function getErrorText(error: unknown): string {
     return messages.join(" ").toLowerCase();
 }
 
+function getValidationIssueHints(error: unknown): string[] {
+    if (!error || typeof error !== "object") return [];
+
+    const maybeAppError = error as {
+        code?: unknown;
+        issues?: unknown;
+        context?: unknown;
+    };
+
+    if (maybeAppError.code === "invalid-search-params") {
+        return ["Invalid URL parameters."];
+    }
+
+    if (!Array.isArray(maybeAppError.issues)) return [];
+
+    return maybeAppError.issues
+        .map((issue: unknown) => {
+            if (!issue || typeof issue !== "object") return "";
+            const typedIssue = issue as {
+                path?: unknown;
+                message?: unknown;
+            };
+            const path =
+                Array.isArray(typedIssue.path) && typedIssue.path.length > 0
+                    ? typedIssue.path.join(".")
+                    : "unknown field";
+            const message =
+                typeof typedIssue.message === "string" ? typedIssue.message : "invalid value";
+            return `${path}: ${message}`;
+        })
+        .filter(Boolean);
+}
+
 function isUpdateAvailableMessage(message: string): boolean {
     if (!message) return false;
     return UPDATE_ERROR_MARKERS.some((marker) => message.includes(marker));
@@ -110,6 +148,13 @@ export function classifyError(error: unknown): ClassifiedError {
     }
 
     const normalizedMessage = getErrorText(error);
+    const validationIssueHints = getValidationIssueHints(error);
+    if (validationIssueHints.length > 0) {
+        return {
+            title: messages.pageRenderErrorTitle,
+            friendlyMessage: messages.invalidUrlIssue,
+        };
+    }
 
     // Detect typical chunk/dynamic import errors after a new deployment
     if (isUpdateAvailableMessage(normalizedMessage)) {

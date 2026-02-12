@@ -4,7 +4,11 @@ import { z } from 'zod'
 import { Trans } from '@lingui/react/macro'
 import { useMemo, useEffect } from 'react'
 
-import { AnalyticsFilterSchema, AnalyticsFilterType, createDefaultExecutionYearReportPeriod } from '@/schemas/charts'
+import {
+  AnalyticsFilterSchema,
+  AnalyticsFilterType,
+  createDefaultExecutionYearReportPeriod,
+} from '@/schemas/charts'
 import { convertDaysToMs, generateHash } from '@/lib/utils'
 import { fetchAggregatedLineItems } from '@/lib/api/entity-analytics'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -34,7 +38,10 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { t } from '@lingui/core/macro'
 import { getSiteUrl } from '@/config/env'
 import { withDefaultExcludes } from '@/lib/filterUtils'
+import type { ReportPeriodInput } from '@/schemas/reporting'
 import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES, DEFAULT_INCOME_EXCLUDE_FUNCTIONAL_PREFIXES } from '@/lib/analytics-defaults'
+import { parseSearchParamJson } from '@/lib/router-search'
+import { createValidationError } from '@/lib/errors/types'
 // JSON-LD injected via Route.head
 
 export const Route = createLazyFileRoute('/budget-explorer')({
@@ -51,13 +58,48 @@ const baseDefaultFilter: AnalyticsFilterType = {
   report_type: 'Executie bugetara agregata la nivel de ordonator principal',
 }
 const defaultFilter: AnalyticsFilterType = withDefaultExcludes(baseDefaultFilter)
+const defaultReportPeriod = createDefaultExecutionYearReportPeriod() as ReportPeriodInput
+type BudgetExplorerFilter = Omit<AnalyticsFilterType, 'report_period'> & { report_period: ReportPeriodInput }
+const defaultBudgetExplorerFilter: BudgetExplorerFilter = {
+  ...defaultFilter,
+  report_period: defaultReportPeriod,
+}
+
+function normalizeBudgetExplorerFilterInput(rawValue: unknown): unknown {
+  const parsed = parseSearchParamJson(rawValue)
+
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return parsed
+
+  const rawFilter = parsed as Record<string, unknown>
+  const fixedFilter = { ...rawFilter }
+
+  if (!('report_period' in fixedFilter) && 'report_periodfsd' in fixedFilter) {
+    fixedFilter.report_period = fixedFilter.report_periodfsd
+    delete fixedFilter.report_periodfsd
+  }
+
+  return fixedFilter
+}
+
+const BudgetExplorerFilterSchema = z.preprocess(
+  normalizeBudgetExplorerFilterInput,
+  AnalyticsFilterSchema,
+).transform((filter): BudgetExplorerFilter => {
+  return {
+    ...defaultBudgetExplorerFilter,
+    ...filter,
+    report_period: (filter.report_period as ReportPeriodInput | undefined) ?? defaultBudgetExplorerFilter.report_period,
+  }
+})
 
 const SearchSchema = z.object({
   view: ViewEnum.default('overview').describe('View type: overview | treemap | sankey | list.'),
   primary: PrimaryLevelEnum.default('fn').describe('Primary grouping: fn (functional) or ec (economic).'),
   depth: DepthEnum.default('chapter').describe('Detail level: chapter (chapters) or subchapter (subcategories).'),
   search: z.string().optional().describe('Text search within categories.'),
-  filter: AnalyticsFilterSchema.default(defaultFilter).describe('Budget filter including report_period, account_category, normalization, report_type.'),
+  filter: z.preprocess((value) => (value === undefined ? defaultFilter : value), BudgetExplorerFilterSchema).describe(
+    'Budget filter including report_period, account_category, normalization, report_type.',
+  ),
   treemapPrimary: PrimaryLevelEnum.optional().describe('Explicit treemap grouping override: fn | ec.'),
   treemapPath: z.coerce.string().optional().describe('Treemap drilldown breadcrumb codes, comma-separated.'),
   year: z.coerce.number().optional().describe('Shorthand for setting report year (overrides filter.report_period).'),
@@ -75,7 +117,7 @@ const revenueTopFunctionalChapters = ['21', '10', '42', '03', '14', '01', '33'] 
 
 // JSON-LD is injected within the component render (accepted by crawlers)
 
-function computeTemporalCoverage(period: BudgetExplorerState['filter']['report_period'] | undefined): string | undefined {
+function computeTemporalCoverage(period: BudgetExplorerState['filter']['report_period']): string | undefined {
   if (!period || !period.selection) return undefined
   const { type, selection } = period
   if (type === 'YEAR' && 'dates' in selection && Array.isArray(selection.dates) && selection.dates.length) {
@@ -143,7 +185,19 @@ function buildSeriesFilter(base: AnalyticsFilterType, overrides: Partial<Analyti
 function BudgetExplorerPage() {
   const raw = useSearch({ from: '/budget-explorer' })
   const navigate = useNavigate({ from: '/budget-explorer' })
-  const search = SearchSchema.parse(raw)
+  const parsedSearch = SearchSchema.safeParse(raw)
+  if (!parsedSearch.success) {
+    const hints = parsedSearch.error.issues
+      .map((issue) => {
+        const path = issue.path.length ? issue.path.join('.') : 'search'
+        return `${path}: ${issue.message}`
+      })
+      .join('; ')
+
+    throw createValidationError('invalid-search-params', `Invalid URL parameters: ${hints}`)
+  }
+
+  const search = parsedSearch.data
   const isMobile = useIsMobile()
   const [userCurrency, setUserCurrency] = useUserCurrency()
   const [userInflationAdjusted, setUserInflationAdjusted] = useUserInflationAdjusted()

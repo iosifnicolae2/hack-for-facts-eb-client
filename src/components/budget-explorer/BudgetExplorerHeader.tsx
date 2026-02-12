@@ -4,7 +4,6 @@ import type { BudgetExplorerState } from '@/routes/budget-explorer.lazy'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { Label } from '@/components/ui/label'
 import { PeriodFilter } from '@/components/filters/period-filter/PeriodFilter'
-import type { ReportPeriodInput } from '@/schemas/reporting'
 import { Button } from '@/components/ui/button'
 import { ResponsivePopover } from '@/components/ui/ResponsivePopover'
 import { EntityReportLabel } from '@/components/entities/EntityReportLabel'
@@ -18,6 +17,7 @@ type Props = Readonly<{
 export function BudgetExplorerHeader({ state, onChange }: Props) {
   const { filter } = state
   const [advancedOpen, setAdvancedOpen] = useState(false)
+  const period = filter.report_period
   const handleNormalizationChange = (normalization: BudgetExplorerState['filter']['normalization']) => {
     onChange({
       filter: {
@@ -87,14 +87,19 @@ export function BudgetExplorerHeader({ state, onChange }: Props) {
                 onOpenChange={setAdvancedOpen}
                 trigger={
                   <Button variant="outline" className="w-full lg:w-[420px] justify-start text-left font-normal rounded-xl px-4 py-2 shadow-sm h-auto" aria-label="Reporting period">
-                    <EntityReportLabel period={filter.report_period as ReportPeriodInput} />
+                    <EntityReportLabel period={period} />
                   </Button>
                 }
                 content={
                   <PeriodFilter
-                    value={filter.report_period as ReportPeriodInput | undefined}
+                    value={period}
                     onChange={(report_period) => {
-                      onChange({ filter: { ...filter, report_period } })
+                      onChange({
+                        filter: {
+                          ...filter,
+                          report_period: report_period ?? period,
+                        } as BudgetExplorerState['filter'],
+                      })
                     }}
                     allowDeselect={false}
                   />

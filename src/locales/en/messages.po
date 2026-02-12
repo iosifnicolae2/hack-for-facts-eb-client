@@ -931,10 +931,6 @@ msgstr "Available budget credits"
 msgid "Available commitment credits"
 msgstr "Available commitment credits"
 
-#: src/components/charts/components/series-config/InsSeriesEditor.tsx:431
-#~ msgid "Average"
-#~ msgstr "Average"
-
 #: src/components/charts/components/views/SeriesConfigView.tsx:501
 msgid "Average (mean value)"
 msgstr "Average (mean value)"
@@ -1081,7 +1077,7 @@ msgstr "Budget Cycle Timeline"
 #: src/components/entities/views/Overview.tsx:281
 #: src/components/entities/views/TrendsView.tsx:220
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:94
-#: src/routes/budget-explorer.lazy.tsx:453
+#: src/routes/budget-explorer.lazy.tsx:507
 msgid "Budget Distribution"
 msgstr "Budget Distribution"
 
@@ -1975,10 +1971,6 @@ msgstr "Dataset explorer"
 msgid "Dataset metadata is loading or unavailable, but historical data can still be viewed below."
 msgstr "Dataset metadata is loading or unavailable, but historical data can still be viewed below."
 
-#: src/components/entities/views/ContractsView.tsx:24
-msgid "Datele privind achizițiile publice sunt furnizate de SICAP.ai, o platformă independentă care agregă și analizează contractele publice din Sistemul Electronic de Achiziții Publice (SEAP) din România."
-msgstr "Datele privind achizițiile publice sunt furnizate de SICAP.ai, o platformă independentă care agregă și analizează contractele publice din Sistemul Electronic de Achiziții Publice (SEAP) din România."
-
 #: src/components/filters/period-filter/PeriodFilter.tsx:417
 msgid "Dates"
 msgstr "Dates"
@@ -2082,7 +2074,7 @@ msgid "Description"
 msgstr "Description"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:123
-#: src/routes/budget-explorer.lazy.tsx:504
+#: src/routes/budget-explorer.lazy.tsx:558
 msgid "Detail level"
 msgstr "Detail level"
 
@@ -2105,7 +2097,7 @@ msgid "Detailed Budget Execution"
 msgstr "Detailed Budget Execution"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:138
-#: src/routes/budget-explorer.lazy.tsx:517
+#: src/routes/budget-explorer.lazy.tsx:571
 msgid "Detailed categories"
 msgstr "Detailed categories"
 
@@ -2249,7 +2241,7 @@ msgstr "Ec"
 #: src/components/entities/views/TrendsView.tsx:223
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:118
 #: src/lib/ins/ins-metric-registry.ts:108
-#: src/routes/budget-explorer.lazy.tsx:499
+#: src/routes/budget-explorer.lazy.tsx:553
 msgid "Economic"
 msgstr "Economic"
 
@@ -2590,14 +2582,6 @@ msgstr "Ever wondered where your money actually goes?"
 msgid "Example:"
 msgstr "Example:"
 
-#: src/components/charts/components/series-config/InsSeriesEditor.tsx:448
-#~ msgid "Example: 2020 / 2020-Q1 / 2020-01"
-#~ msgstr "Example: 2020 / 2020-Q1 / 2020-01"
-
-#: src/components/charts/components/series-config/InsSeriesEditor.tsx:467
-#~ msgid "Example: 2024 / 2024-Q4 / 2024-12"
-#~ msgstr "Example: 2024 / 2024-Q4 / 2024-12"
-
 #: src/components/charts/components/views/SeriesConfigView.tsx:449
 msgid "Example: 2024-"
 msgstr "Example: 2024-"
@@ -2807,7 +2791,7 @@ msgstr "Failed to load alert"
 msgid "Failed to load alerts. Please try again."
 msgstr "Failed to load alerts. Please try again."
 
-#: src/routes/budget-explorer.lazy.tsx:527
+#: src/routes/budget-explorer.lazy.tsx:581
 msgid "Failed to load data."
 msgstr "Failed to load data."
 
@@ -2942,10 +2926,6 @@ msgstr "Find Entity to Monitor"
 msgid "Find resources, report issues, or get in touch."
 msgstr "Find resources, report issues, or get in touch."
 
-#: src/components/charts/components/series-config/InsSeriesEditor.tsx:434
-#~ msgid "First"
-#~ msgstr "First"
-
 #: src/components/charts/components/views/SeriesConfigView.tsx:504
 msgid "First value only"
 msgstr "First value only"
@@ -3011,10 +2991,6 @@ msgstr "Found {replacementCount} occurrence{0}"
 msgid "Full historical observations exceeded the page cap for this view. Showing the retrieved subset."
 msgstr "Full historical observations exceeded the page cap for this view. Showing the retrieved subset."
 
-#: src/components/entities/views/ContractsView.tsx:22
-#~ msgid "Full Procurement Portal"
-#~ msgstr "Full Procurement Portal"
-
 #: src/components/classification-explorer/ClassificationExplorer.tsx:192
 #: src/components/classification-explorer/ClassificationExplorer.tsx:193
 #: src/components/commitments/DetailTable.tsx:553
@@ -3023,7 +2999,7 @@ msgstr "Full historical observations exceeded the page cap for this view. Showin
 #: src/components/entities/views/Overview.tsx:304
 #: src/components/entities/views/TrendsView.tsx:222
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:111
-#: src/routes/budget-explorer.lazy.tsx:496
+#: src/routes/budget-explorer.lazy.tsx:550
 msgid "Functional"
 msgstr "Functional"
 
@@ -3229,7 +3205,7 @@ msgstr "Gross"
 
 #: src/components/commitments/DetailTable.tsx:546
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:99
-#: src/routes/budget-explorer.lazy.tsx:486
+#: src/routes/budget-explorer.lazy.tsx:540
 msgid "Grouping"
 msgstr "Grouping"
 
@@ -3945,7 +3921,7 @@ msgid "Main Categories"
 msgstr "Main Categories"
 
 #: src/components/entity-analytics/EntityAnalyticsTreemap.tsx:135
-#: src/routes/budget-explorer.lazy.tsx:514
+#: src/routes/budget-explorer.lazy.tsx:568
 msgid "Main chapters"
 msgstr "Main chapters"
 
@@ -4702,9 +4678,9 @@ msgstr "Open feedback dialog"
 msgid "Open floating entity search"
 msgstr "Open floating entity search"
 
-#: src/routes/budget-explorer.lazy.tsx:584
-#: src/routes/budget-explorer.lazy.tsx:600
-#: src/routes/budget-explorer.lazy.tsx:620
+#: src/routes/budget-explorer.lazy.tsx:638
+#: src/routes/budget-explorer.lazy.tsx:654
+#: src/routes/budget-explorer.lazy.tsx:674
 msgid "Open in Chart Builder"
 msgstr "Open in Chart Builder"
 
@@ -4724,7 +4700,7 @@ msgid "Open in charts"
 msgstr "Open in charts"
 
 #: src/components/entities/views/Overview.tsx:287
-#: src/routes/budget-explorer.lazy.tsx:460
+#: src/routes/budget-explorer.lazy.tsx:514
 msgid "Open in entity analytics"
 msgstr "Open in entity analytics"
 
@@ -4812,7 +4788,7 @@ msgid "Overview"
 msgstr "Overview"
 
 #. js-lingui-explicit-id
-#: src/lib/errors-utils.ts:17
+#: src/lib/errors-utils.ts:22
 msgid "error.pageRenderErrorTitle"
 msgstr "Page Failed to Load"
 
@@ -4924,17 +4900,9 @@ msgstr "Per Capita"
 msgid "Period"
 msgstr "Period"
 
-#: src/components/charts/components/series-config/InsSeriesEditor.tsx:463
-#~ msgid "Period End"
-#~ msgstr "Period End"
-
 #: src/components/charts/components/series-config/SeriesFilter.tsx:789
 msgid "Period Growth"
 msgstr "Period Growth"
-
-#: src/components/charts/components/series-config/InsSeriesEditor.tsx:444
-#~ msgid "Period Start"
-#~ msgstr "Period Start"
 
 #: src/components/filters/period-filter/PeriodFilter.tsx:397
 msgid "Period Type"
@@ -5096,9 +5064,9 @@ msgstr "Public institutions often transfer funds between each other (e.g., from 
 msgid "Public institutions often transfer funds between each other. These transfers can double-count spending or revenue if not filtered."
 msgstr "Public institutions often transfer funds between each other. These transfers can double-count spending or revenue if not filtered."
 
-#: src/components/entities/views/ContractsView.tsx:41
-#~ msgid "Public procurement data is provided by SICAP.ai, an independent platform that aggregates and analyzes public contracts from Romania's Electronic Public Procurement System (SEAP)."
-#~ msgstr "Public procurement data is provided by SICAP.ai, an independent platform that aggregates and analyzes public contracts from Romania's Electronic Public Procurement System (SEAP)."
+#: src/components/entities/views/ContractsView.tsx:24
+msgid "Public procurement data is provided by SICAP.ai, an independent platform that aggregates and analyzes public contracts from Romania's Electronic Public Procurement System (SEAP)."
+msgstr "Public procurement data is provided by SICAP.ai, an independent platform that aggregates and analyzes public contracts from Romania's Electronic Public Procurement System (SEAP)."
 
 #: src/routes/privacy.lazy.tsx:86
 msgid "Public sector information from Ministerul Finanțelor. No government affiliation."
@@ -5282,7 +5250,7 @@ msgstr "Reporting filters"
 msgid "Reporting period"
 msgstr "Reporting period"
 
-#: src/components/entities/EntityReportLabel.tsx:37
+#: src/components/entities/EntityReportLabel.tsx:39
 msgid "Reporting:"
 msgstr "Reporting:"
 
@@ -5554,7 +5522,7 @@ msgstr "Secondary creditor aggregated"
 msgid "Security monitoring and logs"
 msgstr "Security monitoring and logs"
 
-#: src/routes/budget-explorer.lazy.tsx:558
+#: src/routes/budget-explorer.lazy.tsx:612
 msgid "See advanced view"
 msgstr "See advanced view"
 
@@ -5601,10 +5569,6 @@ msgstr "Select options"
 #: src/features/learning/components/layout/LearningLayout.tsx:194
 msgid "Select Path"
 msgstr "Select Path"
-
-#: src/components/charts/components/series-config/InsSeriesEditor.tsx:403
-#~ msgid "Select periodicity"
-#~ msgstr "Select periodicity"
 
 #: src/components/entities/views/ins-stats-view.presentation.tsx:1248
 msgid "Select series"
@@ -5906,7 +5870,7 @@ msgid "Some service providers may process data outside the EU/EEA. All transfers
 msgstr "Some service providers may process data outside the EU/EEA. All transfers are protected by appropriate safeguards including:"
 
 #. js-lingui-explicit-id
-#: src/lib/errors-utils.ts:21
+#: src/lib/errors-utils.ts:26
 msgid "error.genericError"
 msgstr "Something went wrong while trying to render this page."
 
@@ -6046,10 +6010,6 @@ msgstr "Subtitle"
 #: src/routes/unsubscribe.$token.tsx:32
 msgid "Successfully unsubscribed"
 msgstr "Successfully unsubscribed"
-
-#: src/components/charts/components/series-config/InsSeriesEditor.tsx:428
-#~ msgid "Sum"
-#~ msgstr "Sum"
 
 #: src/components/budget-explorer/RevenueBreakdown.tsx:63
 msgid "Sums pending distribution"
@@ -6373,7 +6333,7 @@ msgstr "Top 15 Counties by Total Amount"
 msgid "Top 15 UATs by Total Amount"
 msgstr "Top 15 UATs by Total Amount"
 
-#: src/routes/budget-explorer.lazy.tsx:555
+#: src/routes/budget-explorer.lazy.tsx:609
 msgid "Top Categories"
 msgstr "Top Categories"
 
@@ -6383,7 +6343,7 @@ msgid "Top Economic Categories"
 msgstr "Top Economic Categories"
 
 #: src/components/budget-explorer/BudgetCategoryList.tsx:140
-#: src/routes/budget-explorer.lazy.tsx:616
+#: src/routes/budget-explorer.lazy.tsx:670
 msgid "Top Functional Categories"
 msgstr "Top Functional Categories"
 
@@ -6890,6 +6850,11 @@ msgstr "We could not load this section right now. Please refresh and try again."
 #: src/lib/errors-utils.ts:13
 msgid "error.validationIssue"
 msgstr "We couldn't display this page due to a data validation issue."
+
+#. js-lingui-explicit-id
+#: src/lib/errors-utils.ts:17
+msgid "error.invalidUrlIssue"
+msgstr "We couldn't display this page due to a data validation issue. The URL parameters are invalid. Open this page again with a valid link or use the homepage button."
 
 #: src/routes/privacy.lazy.tsx:141
 msgid "We do not use automated decision-making or profiling that produces legal effects or similarly significantly affects you."
