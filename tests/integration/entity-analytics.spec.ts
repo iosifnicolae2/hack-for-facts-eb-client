@@ -22,9 +22,13 @@ test.describe('Entity Analytics Page', () => {
 
     await page.goto('/entity-analytics')
     await waitForHydration(page)
-    await page.waitForLoadState('networkidle').catch(() => {})
-    // Wait for main content to appear
-    await page.locator('main').waitFor({ state: 'visible', timeout: 10000 }).catch(() => {})
+
+    // Ensure the route and initial page content are fully rendered before assertions run
+    await expect(page).toHaveURL('/entity-analytics')
+    await expect(page.getByRole('main').last()).toBeVisible({ timeout: 15000 })
+    await expect(
+      page.getByRole('heading', { name: /entity.*analytics|analiza.*entităților/i, level: 1 })
+    ).toBeVisible({ timeout: 10000 })
   })
 
   test('displays page heading and description', async ({ page }) => {
