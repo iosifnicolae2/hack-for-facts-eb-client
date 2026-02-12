@@ -11,11 +11,15 @@
  * Data extracted from browser exploration on 2025-12-16
  */
 
-import { test, expect } from '@playwright/test'
+import { expect } from '@playwright/test'
+import { test } from '../utils/integration-base'
 import { waitForHydration } from '../utils/test-helpers'
 
 test.describe('Entity Analytics Page', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, mockApi }) => {
+    await mockApi.mockGraphQL('EntityAnalytics', 'entity-analytics')
+    await mockApi.mockGraphQL('AggregatedLineItems', 'aggregated-line-items')
+
     await page.goto('/entity-analytics')
     await waitForHydration(page)
     await page.waitForLoadState('networkidle').catch(() => {})

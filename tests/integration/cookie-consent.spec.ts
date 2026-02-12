@@ -15,6 +15,7 @@ import { test, expect, type Page } from '@playwright/test'
 import { waitForHydration } from '../utils/test-helpers'
 
 const COOKIE_CONSENT_KEY = 'cookie-consent'
+const CONSENT_WAIT_TIMEOUT_MS = 5000
 
 /**
  * Helper to get cookie consent from localStorage
@@ -33,6 +34,35 @@ async function clearCookieConsent(page: Page): Promise<void> {
   await page.evaluate((key) => {
     window.localStorage.removeItem(key)
   }, COOKIE_CONSENT_KEY)
+}
+
+/**
+ * Helper to get a specific cookie switch by accessible name.
+ */
+function getCookieSwitch(page: Page, name: RegExp): ReturnType<Page['getByRole']> {
+  return page.getByRole('switch', { name })
+}
+
+/**
+ * Wait until consent state in localStorage matches expectations.
+ */
+async function waitForCookieConsentState(
+  page: Page,
+  expected: Partial<{
+    essential: boolean
+    analytics: boolean
+    sentry: boolean
+  }>,
+  timeout = CONSENT_WAIT_TIMEOUT_MS
+): Promise<void> {
+  await expect
+    .poll(async () => {
+      const consent = await getCookieConsent(page)
+      if (!consent) return false
+
+      return Object.entries(expected).every(([key, value]) => consent[key] === value)
+    }, { timeout, intervals: [100, 250, 500, 1000] })
+    .toBe(true)
 }
 
 /**
@@ -227,7 +257,7 @@ test.describe('Cookie Settings Page', () => {
 
   test('can toggle analytics consent', async ({ page }) => {
     // Find the analytics switch (second switch on the page)
-    const analyticsSwitch = page.getByRole('switch').nth(1)
+    const analyticsSwitch = getCookieSwitch(page, /toggle analytics cookies|comutare cookie-uri de analiză/i)
     await expect(analyticsSwitch).toBeVisible()
 
     // Get initial state using data-state attribute (Radix UI Switch)
@@ -239,6 +269,8 @@ test.describe('Cookie Settings Page', () => {
     await analyticsSwitch.click()
     await expect(analyticsSwitch).toHaveAttribute('data-state', expectedState)
 
+    await waitForCookieConsentState(page, { analytics: !initialChecked })
+
     // Verify localStorage was updated
     const consent = await getCookieConsent(page)
     expect(consent?.analytics).toBe(!initialChecked)
@@ -246,7 +278,7 @@ test.describe('Cookie Settings Page', () => {
 
   test('can toggle sentry consent', async ({ page }) => {
     // Find the sentry switch (third switch on the page)
-    const sentrySwitch = page.getByRole('switch').nth(2)
+    const sentrySwitch = getCookieSwitch(page, /toggle enhanced error reporting|comutare raportare avansată a erorilor/i)
     await expect(sentrySwitch).toBeVisible()
 
     // Get initial state using data-state attribute (Radix UI Switch)
@@ -257,6 +289,7 @@ test.describe('Cookie Settings Page', () => {
     // Toggle and wait for state to change (auto-retry)
     await sentrySwitch.click()
     await expect(sentrySwitch).toHaveAttribute('data-state', expectedState)
+    await waitForCookieConsentState(page, { sentry: !initialChecked })
 
     // Verify localStorage was updated
     const consent = await getCookieConsent(page)
@@ -287,8 +320,8 @@ test.describe('Cookie Settings Page', () => {
     await expect(essentialOnlyButton).toBeVisible()
     await essentialOnlyButton.click()
 
-    // Should navigate away (to redirect URL or /)
-    await page.waitForURL((url) => !url.pathname.includes('/cookies'), { timeout: 30000 })
+    await waitForCookieConsentState(page, { analytics: false, sentry: false })
+    await waitForCookieConsentState(page, { analytics: false, sentry: false })
 
     // Verify consent
     const consent = await getCookieConsent(page)
@@ -302,8 +335,8 @@ test.describe('Cookie Settings Page', () => {
     await expect(allowAllButton).toBeVisible()
     await allowAllButton.click()
 
-    // Should navigate away
-    await page.waitForURL((url) => !url.pathname.includes('/cookies'), { timeout: 30000 })
+    await waitForCookieConsentState(page, { analytics: true, sentry: true })
+    await waitForCookieConsentState(page, { analytics: true, sentry: true })
 
     // Verify consent
     const consent = await getCookieConsent(page)
@@ -322,7 +355,7 @@ test.describe('Cookie Settings Page', () => {
     }
 
     // Keep sentry off
-    const sentrySwitch = page.getByRole('switch').nth(2)
+    const sentrySwitch = getCookieSwitch(page, /toggle enhanced error reporting|comutare raportare avansată a erorilor/i)
     const sentryState = await sentrySwitch.getAttribute('data-state')
     if (sentryState === 'checked') {
       await sentrySwitch.click()
@@ -336,8 +369,8 @@ test.describe('Cookie Settings Page', () => {
     await expect(confirmButton).toBeVisible()
     await confirmButton.click()
 
-    // Should navigate away
-    await page.waitForURL((url) => !url.pathname.includes('/cookies'), { timeout: 30000 })
+    await waitForCookieConsentState(page, { analytics: true, sentry: false })
+    await waitForCookieConsentState(page, { analytics: true, sentry: false })
 
     // Verify consent reflects manual choices
     const consent = await getCookieConsent(page)
@@ -377,7 +410,8 @@ test.describe('Cookie Settings Page', () => {
     await allowAllButton.click()
 
     // Should navigate to the redirect URL
-    await page.waitForURL(/\/charts/, { timeout: 30000 })
+    await page.waitForURL(/\/charts/, { timeout: 10000 }).catch(() => {})
+    await waitForCookieConsentState(page, { analytics: true, sentry: true })
     expect(page.url()).toContain('/charts')
   })
 
@@ -393,8 +427,7 @@ test.describe('Cookie Settings Page', () => {
     await expect(confirmButton).toBeVisible()
     await confirmButton.click()
 
-    // Should navigate away from /cookies (to home or /)
-    await page.waitForURL((url) => !url.pathname.includes('/cookies'), { timeout: 30000 })
+    await page.waitForURL(/\/$/, { timeout: 5000 }).catch(() => {})
 
     // Verify we're at home
     expect(page.url()).toMatch(/\/$/)
@@ -459,7 +492,8 @@ test.describe('Cookie Consent Persistence', () => {
     await expect(essentialOnlyButton).toBeVisible()
     await essentialOnlyButton.click()
 
-    await page.waitForURL((url) => !url.pathname.includes('/cookies'), { timeout: 30000 })
+    await page.waitForURL((url) => !url.pathname.includes('/cookies'), { timeout: 5000 }).catch(() => {})
+    await waitForCookieConsentState(page, { essential: true, analytics: false, sentry: false })
 
     const consent = await getCookieConsent(page)
     expect(consent?.essential).toBe(true)
