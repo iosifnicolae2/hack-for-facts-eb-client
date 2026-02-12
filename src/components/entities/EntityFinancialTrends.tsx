@@ -247,7 +247,7 @@ const EntityFinancialTrendsComponent: React.FC<EntityFinancialTrendsProps> = ({
                 tickLine={false}
                 axisLine={false}
               />
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip content={<CustomTooltip />} isAnimationActive={false} />
               <Legend wrapperStyle={{ fontSize: '14px' }} />
               <ReferenceLine y={0} stroke="#64748b" strokeWidth={1} strokeDasharray="2 4" />
 

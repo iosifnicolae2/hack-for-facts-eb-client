@@ -38,6 +38,11 @@ export function SafeResponsiveContainer({
     return null;
   });
   const containerRef = useRef<HTMLDivElement>(null);
+  const initialDimensionRef = useRef<ContainerSize | null>(null);
+
+  if (containerSize && initialDimensionRef.current === null) {
+    initialDimensionRef.current = containerSize;
+  }
 
   useEffect(() => {
     if (typeof ResizeObserver === 'undefined') {
@@ -97,7 +102,7 @@ export function SafeResponsiveContainer({
           className={className}
           style={style}
           id={id ? `${id}` : undefined}
-          initialDimension={containerSize}
+          initialDimension={initialDimensionRef.current ?? containerSize ?? undefined}
         >
           {children}
         </ResponsiveContainer>
