@@ -17,8 +17,6 @@ jobs:
   typecheck:
     name: Type Check
     runs-on: ubuntu-phoenix
-    container:
-      image: ubuntu:24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,8 +36,6 @@ jobs:
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-phoenix
-    container:
-      image: ubuntu:24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -60,8 +56,6 @@ jobs:
   integration-tests:
     name: Integration Tests
     runs-on: ubuntu-phoenix
-    container:
-      image: ubuntu:24.04
     timeout-minutes: 15
     steps:
       - name: Checkout
@@ -101,8 +95,6 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-phoenix
-    container:
-      image: ubuntu:24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -127,8 +119,6 @@ jobs:
   validate-learning-content:
     name: Validate Learning Content
     runs-on: ubuntu-phoenix
-    container:
-      image: ubuntu:24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -156,8 +146,6 @@ jobs:
   deploy-dev:
     name: Deploy Dev
     runs-on: ubuntu-phoenix
-    container:
-      image: ubuntu:24.04
     environment: development
     if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
     needs: [typecheck, unit-tests, build, validate-learning-content]
@@ -218,8 +206,6 @@ jobs:
   deploy-prod:
     name: Deploy Prod
     runs-on: ubuntu-phoenix
-    container:
-      image: ubuntu:24.04
     environment: production
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [typecheck, unit-tests, build, validate-learning-content]
