@@ -34,6 +34,7 @@ const FACEBOOK_IN_APP_BROWSER_USER_AGENT_MARKERS = [
   "fbav/",
   "fb_iab",
 ] as const;
+const FACEBOOK_DOM_PROBE_MESSAGE_PATTERN = /^[a-z_]+_and_dom:\s*[a-f0-9]{8,}$/i;
 const FACEBOOK_IAB_INVALID_ACCESS_ERROR_MESSAGE =
   "the object does not support the operation or argument.";
 const FACEBOOK_IN_APP_BROWSER_MESSAGE_PREFIX = "fbnav";
@@ -64,6 +65,7 @@ type SentryExceptionValueLike = {
 
 type SentryBeforeSendEventLike = {
   message?: string;
+  logger?: string;
   exception?: {
     values?: SentryExceptionValueLike[];
   };
@@ -133,6 +135,20 @@ function isFacebookInAppClerkTimeoutMessage(normalizedMessage: string): boolean 
     normalizedMessage.includes(CLERK_FAILED_TO_LOAD_MESSAGE_MARKER) &&
     normalizedMessage.includes(CLERK_FAILED_TO_LOAD_TIMEOUT_CODE)
   );
+}
+
+function isFacebookInAppConsoleNoiseMessage(
+  event: SentryBeforeSendEventLike,
+  normalizedMessage: string
+): boolean {
+  if (!isFacebookInAppBrowserUserAgent()) return false;
+  if (event.logger !== "console") return false;
+
+  if (normalizedMessage.startsWith(FACEBOOK_IN_APP_BROWSER_MESSAGE_PREFIX)) {
+    return true;
+  }
+
+  return FACEBOOK_DOM_PROBE_MESSAGE_PATTERN.test(normalizedMessage);
 }
 
 /**
@@ -304,7 +320,12 @@ export function initSentry(router: unknown): void {
           if (isFacebookInAppClerkTimeoutMessage(normalizedMessage)) {
             return null;
           }
-          if (normalizedMessage.startsWith(FACEBOOK_IN_APP_BROWSER_MESSAGE_PREFIX)) {
+          if (
+            isFacebookInAppConsoleNoiseMessage(
+              event as SentryBeforeSendEventLike,
+              normalizedMessage
+            )
+          ) {
             return null;
           }
           // Clerk console warning noise (known deprecation emitted by ClerkJS)
