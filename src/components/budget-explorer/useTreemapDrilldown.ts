@@ -6,6 +6,7 @@ import { getEconomicChapterName, getEconomicClassificationName, getEconomicSubch
 export type Breadcrumb = { code: string; label: string; type: 'fn' | 'ec' }
 
 const normalizeCode = (code: string | null | undefined): string => (code ?? '').replace(/[^0-9.]/g, '')
+const hasPrefix = (code: string, prefixes: string[]): boolean => prefixes.some((prefix) => code.startsWith(prefix))
 
 function buildPathLabel(primary: 'fn' | 'ec', code: string): string {
   const normalized = normalizeCode(code)
@@ -109,6 +110,14 @@ export function useTreemapDrilldown({
   const constraint = useMemo(() => (pivotIndex >= 0 ? ({ type: primary, code: fullPath[pivotIndex] }) as const : undefined), [pivotIndex, primary, fullPath])
 
   const effectiveRootDepth = useMemo(() => (pivotIndex >= 0 ? 2 : rootDepth), [pivotIndex, rootDepth])
+  const normalizedExcludeEcCodes = useMemo(
+    () => (excludeEcCodes ?? []).map((code) => normalizeCode(code)).filter(Boolean),
+    [excludeEcCodes]
+  )
+  const normalizedExcludeFnCodes = useMemo(
+    () => (excludeFnCodes ?? []).map((code) => normalizeCode(code)).filter(Boolean),
+    [excludeFnCodes]
+  )
 
   const treemapData = useMemo(() => {
     return buildTreemapDataV2({
@@ -158,17 +167,56 @@ export function useTreemapDrilldown({
   // Helper: check if advancing to a given full path yields any data
   const canAdvanceToPath = useCallback((fp: string[]): boolean => {
     const { nextActive, nextConstraint, nextPath, nextRootDepth } = evaluateForPath(fp)
-    const next = buildTreemapDataV2({
-      data: nodes ?? [],
-      primary: nextActive,
-      path: nextPath,
-      constraint: nextConstraint,
-      rootDepth: nextRootDepth,
-      excludeEcCodes,
-      excludeFnCodes,
-    })
-    return Array.isArray(next) && next.length > 0
-  }, [nodes, excludeEcCodes, excludeFnCodes, evaluateForPath])
+    const currentCode = nextPath.length > 0 ? normalizeCode(nextPath[nextPath.length - 1]) : ''
+    let depth = (currentCode ? (currentCode.split('.').length + 1) * 2 : nextRootDepth) as 2 | 4 | 6 | 8
+
+    // Mirror buildTreemapDataV2 behavior for economic classifications.
+    if (nextActive === 'ec' && depth > 6) {
+      depth = 6
+    }
+    if (depth > 6) return false
+
+    const normalizedConstraintCode = nextConstraint ? normalizeCode(nextConstraint.code) : ''
+
+    for (const item of nodes ?? []) {
+      const fnCode = normalizeCode(item.fn_c)
+      const ecCode = normalizeCode(item.ec_c)
+
+      if (normalizedExcludeEcCodes.length > 0 && hasPrefix(ecCode, normalizedExcludeEcCodes)) {
+        continue
+      }
+      if (normalizedExcludeFnCodes.length > 0 && hasPrefix(fnCode, normalizedExcludeFnCodes)) {
+        continue
+      }
+
+      if (nextConstraint) {
+        if (nextConstraint.type === 'fn' && !fnCode.startsWith(normalizedConstraintCode)) {
+          continue
+        }
+        if (nextConstraint.type === 'ec' && !ecCode.startsWith(normalizedConstraintCode)) {
+          continue
+        }
+      }
+
+      const activeCode = nextActive === 'fn' ? fnCode : ecCode
+      if (!activeCode) continue
+      if (currentCode && !activeCode.startsWith(currentCode)) continue
+
+      const codeParts = activeCode.split('.')
+      const groupCode = depth === 2
+        ? (codeParts[0] ?? '')
+        : depth === 4
+          ? codeParts.slice(0, 2).join('.')
+          : codeParts.slice(0, 3).join('.')
+
+      if (!groupCode) continue
+      if (currentCode && groupCode === currentCode) continue
+
+      return true
+    }
+
+    return false
+  }, [evaluateForPath, nodes, normalizedExcludeEcCodes, normalizedExcludeFnCodes])
 
   const onNodeClick = useCallback(
     (code: string | null) => {

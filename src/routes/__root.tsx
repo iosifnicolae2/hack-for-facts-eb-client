@@ -124,6 +124,17 @@ function getGlobalHead() {
   const description =
     "Explore Romania public finance data with charts, maps, and analytics.";
   const shareImage = `${site}/assets/images/share-image.png`;
+  const fontPreloads = import.meta.env.PROD
+    ? [
+        {
+          rel: "preload",
+          href: "/fonts/Inter/Inter-VariableFont_opsz,wght.woff2",
+          as: "font",
+          type: "font/woff2",
+          crossOrigin: ANONYMOUS_CROSS_ORIGIN,
+        },
+      ]
+    : [];
   // Better Stack status widget (only in production and when configured)
   const statusWidgetScripts =
     env.VITE_APP_ENVIRONMENT === "production" &&
@@ -180,34 +191,7 @@ function getGlobalHead() {
     ],
     links: [
       { rel: "icon", type: "image/png", href: "/logo.png" },
-      {
-        rel: "preload",
-        href: "/fonts/Inter/Inter-VariableFont_opsz,wght.woff2",
-        as: "font",
-        type: "font/woff2",
-        crossOrigin: ANONYMOUS_CROSS_ORIGIN,
-      },
-      {
-        rel: "preload",
-        href: "/fonts/Inter/Inter-VariableFont_opsz,wght.ttf",
-        as: "font",
-        type: "font/ttf",
-        crossOrigin: ANONYMOUS_CROSS_ORIGIN,
-      },
-      {
-        rel: "preload",
-        href: "/fonts/Inter/Inter-Italic-VariableFont_opsz,wght.woff2",
-        as: "font",
-        type: "font/woff2",
-        crossOrigin: ANONYMOUS_CROSS_ORIGIN,
-      },
-      {
-        rel: "preload",
-        href: "/fonts/Inter/Inter-Italic-VariableFont_opsz,wght.ttf",
-        as: "font",
-        type: "font/ttf",
-        crossOrigin: ANONYMOUS_CROSS_ORIGIN,
-      },
+      ...fontPreloads,
       { rel: "stylesheet", href: appCss },
     ],
     scripts: [

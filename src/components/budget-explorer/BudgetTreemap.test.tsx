@@ -242,6 +242,19 @@ describe('BudgetTreemap Component', () => {
       expect(screen.getByTestId('treemap')).toBeInTheDocument()
     })
 
+    it('should render label foreignObject with explicit dimensions', () => {
+      const data = createMockTreemapData(1)
+
+      const { container } = render(<BudgetTreemap data={data} primary="fn" />)
+
+      const labelForeignObject = container.querySelector('foreignObject')
+      expect(labelForeignObject).toBeInTheDocument()
+      expect(labelForeignObject?.getAttribute('width')).toBeTruthy()
+      expect(labelForeignObject?.getAttribute('height')).toBeTruthy()
+      expect(labelForeignObject?.getAttribute('width')).not.toBe('undefined')
+      expect(labelForeignObject?.getAttribute('height')).not.toBe('undefined')
+    })
+
     it('should render "Main Categories" breadcrumb by default', () => {
       const data = createMockTreemapData()
 

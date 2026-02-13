@@ -103,7 +103,7 @@ const CustomizedContent: FC<{
   // Recharts passes the original datum under `payload`. We use its fill for stable coloring.
   payload?: { fill?: string; code?: string; name?: string; value?: number }
 }> = (props) => {
-  const { name, value, depth, x, y, width, height, fill, root, normalization, currency, primary } = props
+  const { name, value, depth, x = 0, y = 0, width = 0, height = 0, fill, root, normalization, currency, primary } = props
   const hasAnimatedInRef = useRef(false)
   const [isHovered, setIsHovered] = useState(false)
   const code = props.code ?? props.payload?.code
@@ -134,6 +134,8 @@ const CustomizedContent: FC<{
   const canShowTwoLines = canShowName && height > 60
   const canShowValue = canShowName && height > (canShowTwoLines ? 80 : 50)
   const canShowPercentage = canShowName && height > (canShowTwoLines ? 100 : 70)
+  const labelWidth = Math.max(width - 8, 0)
+  const labelHeight = canShowTwoLines ? nameLineHeight * 2 : nameFontSize * 1.3
 
   const rectTransition = {
     type: 'spring',
@@ -221,6 +223,8 @@ const CustomizedContent: FC<{
       />
       {canShowName && (
         <motion.foreignObject
+          width={labelWidth}
+          height={labelHeight}
           animate={{
             x: x + 4,
             y: (() => {
@@ -233,8 +237,6 @@ const CustomizedContent: FC<{
               }
               return y + (height - textHeight) / 2
             })(),
-            width: width - 8,
-            height: canShowTwoLines ? nameLineHeight * 2 : nameFontSize * 1.3,
             opacity: 1,
             scale: textScale,
           }}
