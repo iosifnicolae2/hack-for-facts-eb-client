@@ -6099,7 +6099,7 @@ msgstr "Codul de clasificare „{selectedCode}” nu a putut fi găsit."
 
 #: src/components/entities/views/EmployeesView.tsx:81
 msgid "The data is presented for informational purposes, based on government data available for September 2025. This temporary view is intended to simplify the Government's explanation of the simulated local administration reform."
-msgstr "Datele sunt prezentate în scop informativ, pe baza datelor guvernamentale disponibile pentru luna septembrie` 2025. Această vizualizare este temporară și are rolul de a simplifica explicația Guvernului privind reforma simulată a administrației locale."
+msgstr "Datele sunt prezentate în scop informativ, pe baza datelor guvernamentale disponibile pentru luna septembrie 2025. Această vizualizare este temporară și are rolul de a simplifica explicația Guvernului privind reforma simulată a administrației locale."
 
 #: src/features/learning/components/interactive/DeficitVisual.tsx:24
 msgid "The Deficit"
