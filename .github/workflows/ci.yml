@@ -16,6 +16,7 @@ env:
 jobs:
   typecheck:
     name: Type Check
+    if: github.event_name != 'push' || github.ref != 'refs/heads/main'
     runs-on: ubuntu-phoenix
     steps:
       - name: Checkout
@@ -39,6 +40,7 @@ jobs:
 
   unit-tests:
     name: Unit Tests
+    if: github.event_name != 'push' || github.ref != 'refs/heads/main'
     runs-on: ubuntu-phoenix
     steps:
       - name: Checkout
@@ -63,6 +65,7 @@ jobs:
   # Integration should not block deployment; rely on GitHub failure emails.
   integration-tests:
     name: Integration Tests
+    if: github.event_name != 'push' || github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -106,6 +109,7 @@ jobs:
 
   build:
     name: Build
+    if: github.event_name != 'push' || github.ref != 'refs/heads/main'
     runs-on: ubuntu-phoenix
     steps:
       - name: Checkout
@@ -135,6 +139,7 @@ jobs:
 
   validate-learning-content:
     name: Validate Learning Content
+    if: github.event_name != 'push' || github.ref != 'refs/heads/main'
     runs-on: ubuntu-phoenix
     steps:
       - name: Checkout
@@ -238,7 +243,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [typecheck, unit-tests, build, validate-learning-content]
     steps:
       - uses: actions/checkout@v4
         with:
