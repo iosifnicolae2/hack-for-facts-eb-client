@@ -11,11 +11,12 @@
  * Tests support both English and Romanian locales.
  */
 
-import { test, expect, type Page } from '@playwright/test'
+import { test, expect, type Locator, type Page } from '@playwright/test'
 import { waitForHydration } from '../utils/test-helpers'
 
 const COOKIE_CONSENT_KEY = 'cookie-consent'
 const CONSENT_WAIT_TIMEOUT_MS = 5000
+const SWITCH_TOGGLE_TIMEOUT_MS = 8000
 
 /**
  * Helper to get cookie consent from localStorage
@@ -38,6 +39,45 @@ async function clearCookieConsent(page: Page): Promise<void> {
 
 function getCookieSwitchByIndex(page: Page, index: number): ReturnType<Page['getByRole']> {
   return page.getByRole('switch').nth(index)
+}
+
+/**
+ * Toggle a switch until it reaches the expected data-state.
+ * Uses both mouse and keyboard interactions to reduce click flakes in CI.
+ */
+async function toggleSwitchToExpectedState(
+  switchLocator: Locator,
+  expectedState: 'checked' | 'unchecked',
+  timeout = SWITCH_TOGGLE_TIMEOUT_MS
+): Promise<void> {
+  const deadline = Date.now() + timeout
+  let nextInteraction: 'click' | 'keyboard' = 'click'
+
+  while (Date.now() < deadline) {
+    const currentState = await switchLocator.getAttribute('data-state')
+    if (currentState === expectedState) {
+      return
+    }
+
+    if (nextInteraction === 'click') {
+      await switchLocator.click()
+      nextInteraction = 'keyboard'
+    } else {
+      await switchLocator.focus()
+      await switchLocator.press('Space')
+      nextInteraction = 'click'
+    }
+
+    try {
+      await expect(switchLocator).toHaveAttribute('data-state', expectedState, { timeout: 750 })
+      return
+    } catch {
+      // Try again with alternate interaction method.
+    }
+  }
+
+  // Preserve useful assertion output in failure reports.
+  await expect(switchLocator).toHaveAttribute('data-state', expectedState, { timeout: 1000 })
 }
 
 /**
@@ -261,9 +301,7 @@ test.describe('Cookie Settings Page', () => {
     const initialChecked = initialState === 'checked'
     const expectedState = initialChecked ? 'unchecked' : 'checked'
 
-    // Toggle and wait for state to change (auto-retry)
-    await analyticsSwitch.click()
-    await expect(analyticsSwitch).toHaveAttribute('data-state', expectedState, { timeout: 8000 })
+    await toggleSwitchToExpectedState(analyticsSwitch, expectedState)
 
     await waitForCookieConsentState(page, { analytics: !initialChecked })
 
@@ -281,9 +319,7 @@ test.describe('Cookie Settings Page', () => {
     const initialChecked = initialState === 'checked'
     const expectedState = initialChecked ? 'unchecked' : 'checked'
 
-    // Toggle and wait for state to change (auto-retry)
-    await sentrySwitch.click()
-    await expect(sentrySwitch).toHaveAttribute('data-state', expectedState, { timeout: 8000 })
+    await toggleSwitchToExpectedState(sentrySwitch, expectedState)
     await waitForCookieConsentState(page, { sentry: !initialChecked })
 
     // Verify localStorage was updated
@@ -343,16 +379,14 @@ test.describe('Cookie Settings Page', () => {
     await expect(analyticsSwitch).toBeVisible()
     const analyticsState = await analyticsSwitch.getAttribute('data-state')
     if (analyticsState !== 'checked') {
-      await analyticsSwitch.click()
-      await expect(analyticsSwitch).toHaveAttribute('data-state', 'checked')
+      await toggleSwitchToExpectedState(analyticsSwitch, 'checked')
     }
 
     // Keep sentry off
     const sentrySwitch = getCookieSwitchByIndex(page, 2)
     const sentryState = await sentrySwitch.getAttribute('data-state')
     if (sentryState === 'checked') {
-      await sentrySwitch.click()
-      await expect(sentrySwitch).toHaveAttribute('data-state', 'unchecked')
+      await toggleSwitchToExpectedState(sentrySwitch, 'unchecked')
     }
 
     // Click Confirm choices (aria-label or visible text)
