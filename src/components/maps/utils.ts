@@ -7,6 +7,11 @@ import { Feature, Geometry } from 'geojson';
 import { AnalyticsFilterType } from "@/schemas/charts";
 import { t } from "@lingui/core/macro";
 
+type LeafletGeoJsonWithMapRef = LeafletGeoJSON & {
+  _map?: {
+    getContainer?: () => HTMLElement | null;
+  };
+};
 
 /**
  * Creates a concise summary of the active map filters.
@@ -393,6 +398,12 @@ export function restyleAllFeatures(
   styleFn: (feature?: Feature<Geometry, unknown>) => PathOptions
 ) {
   if (!layerGroup) return;
+  const map = (layerGroup as LeafletGeoJsonWithMapRef)._map;
+  const container = map?.getContainer?.();
+
+  // Skip style updates while the layer is detached during map teardown.
+  if (!map || !container || !container.isConnected) return;
+
   try {
     layerGroup.eachLayer((layer) => {
       const feature = (layer as unknown as { feature?: Feature<Geometry, unknown> }).feature;

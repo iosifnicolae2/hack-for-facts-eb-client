@@ -15,12 +15,28 @@ import {
   DEFAULT_MAX_BOUNDS,
 } from './constants';
 import { HeatmapCountyDataPoint, HeatmapUATDataPoint } from '@/schemas/heatmap';
-import { generateHash } from '@/lib/utils';
 import { ScrollWheelZoomControl } from './ScrollWheelZoomControl';
 import { AnalyticsFilterType } from '@/schemas/charts';
 import { Analytics } from '@/lib/analytics';
 import { MapLabels } from './MapLabels';
 
+const MAP_VIEW_EPSILON = 1e-6;
+
+type FeatureStyleResolver = (feature?: Feature<Geometry, unknown>) => PathOptions;
+
+interface FeatureInteractionContext {
+  heatmapData: HeatmapUATDataPoint[] | HeatmapCountyDataPoint[];
+  mapViewType: 'UAT' | 'County';
+  filters: AnalyticsFilterType;
+  onFeatureClick: (properties: UatProperties, event: LeafletMouseEvent) => void;
+}
+
+type TooltipLayer = Layer & {
+  getTooltip: () => L.Tooltip | undefined;
+  bindTooltip: (content: string) => Layer;
+  setTooltipContent: (content: string) => Layer;
+  openTooltip: () => Layer;
+};
 
 interface InteractiveMapProps {
   onFeatureClick: (properties: UatProperties, event: LeafletMouseEvent) => void;
@@ -60,11 +76,15 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
   onViewChange,
 }) => {
   const geoJsonLayerRef = useRef<L.GeoJSON | null>(null);
-  const latestStyleFnRef = useRef<(feature?: Feature<Geometry, unknown>) => PathOptions>(() => DEFAULT_FEATURE_STYLE);
+  const latestFeatureStyleRef = useRef<FeatureStyleResolver>(() => DEFAULT_FEATURE_STYLE);
+  const latestInteractionContextRef = useRef<FeatureInteractionContext>({
+    heatmapData,
+    mapViewType,
+    filters,
+    onFeatureClick,
+  });
 
   const heatmapDataMap = useMemo(() => buildHeatmapDataMap(heatmapData), [heatmapData]);
-
-  const heatmapDataContentHash = useMemo(() => generateHash(JSON.stringify(heatmapData)), [heatmapData]);
 
   const highlightFeature = useCallback((layer: Layer) => {
     if (layer instanceof L.Path) {
@@ -73,8 +93,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
     }
   }, []);
 
-
-  const styleFunction = useCallback(
+  const resolveFeatureStyle = useCallback(
     (feature?: Feature<Geometry, unknown>): PathOptions =>
       getStyleForFeature(feature, { heatmapDataMap, getFeatureStyle, highlightedFeatureId }),
     [heatmapDataMap, getFeatureStyle, highlightedFeatureId]
@@ -82,14 +101,36 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
 
   // Keep a ref to the latest style function so event handlers always use fresh logic
   useEffect(() => {
-    latestStyleFnRef.current = styleFunction;
-  }, [styleFunction]);
+    latestFeatureStyleRef.current = resolveFeatureStyle;
+  }, [resolveFeatureStyle]);
+
+  useEffect(() => {
+    latestInteractionContextRef.current = {
+      heatmapData,
+      mapViewType,
+      filters,
+      onFeatureClick,
+    };
+  }, [filters, heatmapData, mapViewType, onFeatureClick]);
 
   // Re-apply styles to all features when the style function logic changes (e.g., normalization toggles)
   useEffect(() => {
-    restyleAllFeatures(geoJsonLayerRef.current, latestStyleFnRef.current);
-  }, [styleFunction]);
+    restyleAllFeatures(geoJsonLayerRef.current, latestFeatureStyleRef.current);
+  }, [resolveFeatureStyle]);
 
+  const applyTooltipForFeature = useCallback((layer: Layer, properties: UatProperties) => {
+    const tooltipLayer = layer as TooltipLayer;
+    const { heatmapData, mapViewType, filters } = latestInteractionContextRef.current;
+    const tooltipHtml = createTooltipContent(properties, heatmapData, mapViewType, filters);
+
+    if (!tooltipLayer.getTooltip()) {
+      tooltipLayer.bindTooltip(tooltipHtml);
+    } else {
+      tooltipLayer.setTooltipContent(tooltipHtml);
+    }
+
+    tooltipLayer.openTooltip();
+  }, []);
 
   const onEachFeature = useCallback(
     (feature: Feature<Geometry, unknown>, layer: Layer) => {
@@ -101,17 +142,15 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
       layer.on({
         mouseover: (e) => {
           highlightFeature(e.target);
-          if (!layer.getTooltip()) {
-            const tooltipHtml = createTooltipContent(uatProps, heatmapData, mapViewType, filters);
-            layer.bindTooltip(tooltipHtml).openTooltip();
-          }
+          applyTooltipForFeature(layer, uatProps);
         },
         mouseout: (e) => {
           // Use latest style function to avoid stale styling after data/normalization changes
-          const nextStyle = latestStyleFnRef.current(feature);
+          const nextStyle = latestFeatureStyleRef.current(feature);
           (e.target as L.Path).setStyle(nextStyle);
         },
         click: (e) => {
+          const { mapViewType, onFeatureClick } = latestInteractionContextRef.current;
           Analytics.capture(Analytics.EVENTS.MapFeatureClicked, {
             map_view_type: mapViewType,
             feature_id: uatProps?.natcode ?? uatProps?.mnemonic ?? uatProps?.id,
@@ -120,7 +159,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
         },
       });
     },
-    [highlightFeature, onFeatureClick, heatmapData, mapViewType, filters]
+    [applyTooltipForFeature, highlightFeature]
   );
 
   if (!geoJsonData) {
@@ -128,20 +167,20 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
   }
 
   return (
-      <MapContainer
-        center={center}
-        zoom={zoom}
-        zoomSnap={0.1}
-        wheelPxPerZoomLevel={3}
+    <MapContainer
+      center={center}
+      zoom={zoom}
+      zoomSnap={0.1}
+      wheelPxPerZoomLevel={3}
       minZoom={minZoom}
       maxZoom={maxZoom}
       maxBounds={maxBounds}
-        scrollWheelZoom={false}
-        style={{ height: mapHeight, width: '100%', backgroundColor: 'transparent' }}
-        className="z-0 isolate"
-        data-testid="leaflet-map"
-        preferCanvas={true}
-      >
+      scrollWheelZoom={false}
+      style={{ height: mapHeight, width: '100%', backgroundColor: 'transparent' }}
+      className="z-0 isolate"
+      data-testid="leaflet-map"
+      preferCanvas={true}
+    >
       <MapCleanup />
       <MapTestIds />
       {scrollWheelZoom !== false && <ScrollWheelZoomControl />}
@@ -150,10 +189,10 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
       {geoJsonData.type === 'FeatureCollection' && (
         <>
           <GeoJSON
-            key={`geojson-layer-${mapViewType}-${heatmapDataContentHash}-${highlightedFeatureId}`}
+            key={`geojson-layer-${mapViewType}`}
             ref={geoJsonLayerRef}
             data={geoJsonData}
-            style={styleFunction}
+            style={resolveFeatureStyle}
             onEachFeature={onEachFeature}
           />
           <MapLabels
@@ -217,14 +256,14 @@ const MapTestIds: React.FC = () => {
   return null;
 };
 
-// Leaflet can keep animation/state tied to DOM nodes; stop/off on unmount to prevent race errors.
+// Leaflet can keep animation/state tied to DOM nodes; stop animations on unmount.
 const MapCleanup: React.FC = () => {
   const map = useMap();
   useLayoutEffect(() => {
     return () => {
       try {
+        // Stop pan/zoom animations before MapContainer destroys Leaflet internals.
         map.stop();
-        map.off();
       } catch {
         // Ignore cleanup errors during unmount.
       }
@@ -233,27 +272,45 @@ const MapCleanup: React.FC = () => {
   return null;
 };
 
-
 /**
  * This component is used to update the map center and zoom when the center or zoom changes.
  * Includes defensive checks to prevent errors during map lifecycle transitions.
  */
 const MapUpdater: React.FC<{ center: LatLngExpression, zoom: number }> = ({ center, zoom }) => {
   const map = useMap();
-  useEffect(() => {
-    if (center && zoom) {
-      try {
-        // Defensive check: ensure map panes are still valid before calling setView
-        const pane = map.getPane('overlayPane');
-        if (pane) {
-          map.setView(center, zoom);
-        }
-      } catch (e) {
-        // Map is being destroyed or in invalid state, ignore
-        console.debug('MapUpdater: Could not update view, map may be unmounting');
-      }
+
+  const updateViewIfNeeded = useCallback(() => {
+    if (!center || !Number.isFinite(zoom)) {
+      return;
     }
-  }, [center, zoom, map]);
+
+    const overlayPane = map.getPane('overlayPane');
+    if (!overlayPane) {
+      return;
+    }
+
+    const currentCenter = map.getCenter();
+    const nextCenter = L.latLng(center);
+    const hasCenterChanged =
+      Math.abs(currentCenter.lat - nextCenter.lat) > MAP_VIEW_EPSILON ||
+      Math.abs(currentCenter.lng - nextCenter.lng) > MAP_VIEW_EPSILON;
+    const hasZoomChanged = Math.abs(map.getZoom() - zoom) > MAP_VIEW_EPSILON;
+
+    // Avoid redundant view updates and disable animation to reduce teardown races.
+    if (hasCenterChanged || hasZoomChanged) {
+      map.setView(center, zoom, { animate: false });
+    }
+  }, [center, map, zoom]);
+
+  useEffect(() => {
+    try {
+      updateViewIfNeeded();
+    } catch {
+      // Map is being destroyed or in invalid state, ignore.
+      console.debug('MapUpdater: Could not update view, map may be unmounting');
+    }
+  }, [updateViewIfNeeded]);
+
   return null;
 };
 
@@ -262,21 +319,17 @@ const MapUpdater: React.FC<{ center: LatLngExpression, zoom: number }> = ({ cent
  * Uses 'moveend' and 'zoomend' to avoid noisy updates while panning/zooming.
  */
 const MapViewChangeListener: React.FC<{ onViewChange?: (center: [number, number], zoom: number) => void }> = ({ onViewChange }) => {
+  const notifyViewChange = useCallback((map: L.Map) => {
+    if (!onViewChange) return;
+    const mapCenter = map.getCenter();
+    const mapZoom = map.getZoom();
+    onViewChange([Number(mapCenter.lat), Number(mapCenter.lng)], Number(mapZoom));
+  }, [onViewChange]);
+
   useMapEvents({
-    moveend: (e) => {
-      if (!onViewChange) return;
-      const map = e.target as L.Map;
-      const c = map.getCenter();
-      const z = map.getZoom();
-      onViewChange([Number(c.lat), Number(c.lng)], Number(z));
-    },
-    zoomend: (e) => {
-      if (!onViewChange) return;
-      const map = e.target as L.Map;
-      const c = map.getCenter();
-      const z = map.getZoom();
-      onViewChange([Number(c.lat), Number(c.lng)], Number(z));
-    },
+    moveend: (event) => notifyViewChange(event.target as L.Map),
+    zoomend: (event) => notifyViewChange(event.target as L.Map),
   });
+
   return null;
 };

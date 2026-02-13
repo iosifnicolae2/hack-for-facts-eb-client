@@ -173,14 +173,13 @@ export function EmployeesMap({ data, metric = 'employeesPer1000Capita' }: Employ
   )
 }
 
-// Leaflet can keep animation/state tied to DOM nodes; stop/off on unmount to prevent race errors.
+// Leaflet can keep animation/state tied to DOM nodes; stop animations on unmount.
 const MapCleanup: React.FC = () => {
   const map = useMap();
   React.useLayoutEffect(() => {
     return () => {
       try {
         map.stop();
-        map.off();
       } catch {
         // Ignore cleanup errors during unmount.
       }
