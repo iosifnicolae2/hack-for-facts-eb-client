@@ -79,7 +79,7 @@ export function EmployeesView({ entity }: { entity: EntityDetailsData | null | u
           <Info className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
           <p className="text-sm text-muted-foreground">
             <Trans>
-              The data is presented for informational purposes, based on government data available for June 2025. This temporary view is intended to simplify the
+              The data is presented for informational purposes, based on government data available for September 2025. This temporary view is intended to simplify the
               Government&apos;s explanation of the simulated local administration reform.
             </Trans>
           </p>

@@ -6103,8 +6103,8 @@ msgid "The classification code \"{selectedCode}\" could not be found."
 msgstr "The classification code \"{selectedCode}\" could not be found."
 
 #: src/components/entities/views/EmployeesView.tsx:81
-msgid "The data is presented for informational purposes, based on government data available for June 2025. This temporary view is intended to simplify the Government's explanation of the simulated local administration reform."
-msgstr "The data is presented for informational purposes, based on government data available for June 2025. This temporary view is intended to simplify the Government's explanation of the simulated local administration reform."
+msgid "The data is presented for informational purposes, based on government data available for September 2025. This temporary view is intended to simplify the Government's explanation of the simulated local administration reform."
+msgstr "The data is presented for informational purposes, based on government data available for September 2025. This temporary view is intended to simplify the Government's explanation of the simulated local administration reform."
 
 #: src/features/learning/components/interactive/DeficitVisual.tsx:24
 msgid "The Deficit"
