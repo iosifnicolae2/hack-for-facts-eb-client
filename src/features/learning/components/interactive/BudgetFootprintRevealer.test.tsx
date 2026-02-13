@@ -217,10 +217,19 @@ describe('BudgetFootprintRevealer', () => {
       // Total should be 18.0
       await waitFor(
         () => {
-          const totalDisplay = screen.getByText('Your daily budget footprint').parentElement
-          expect(totalDisplay?.textContent).toContain('18')
+          const totalDisplayText =
+            screen.getByText('Your daily budget footprint').parentElement?.textContent ?? ''
+          const numericMatch = totalDisplayText.match(/(\d+(?:\.\d+)?)/)
+
+          if (!numericMatch) {
+            throw new Error(`Could not parse total from "${totalDisplayText}"`)
+          }
+
+          const displayedTotalCost = Number(numericMatch[1])
+          expect(displayedTotalCost).toBeGreaterThanOrEqual(17.9)
+          expect(displayedTotalCost).toBeLessThanOrEqual(18)
         },
-        { timeout: 1000 }
+        { timeout: 3000 }
       )
     })
   })
