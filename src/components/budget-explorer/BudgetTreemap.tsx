@@ -70,6 +70,12 @@ const adjustColorBrightness = (hexColor: string | undefined, percentage: number)
   return `#${toHex(adjustedRed)}${toHex(adjustedGreen)}${toHex(adjustedBlue)}`
 }
 
+const isSafariBrowser = () => {
+  if (typeof navigator === 'undefined') return false
+  const userAgent = navigator.userAgent
+  return /Safari/i.test(userAgent) && !/Chrome|Chromium|CriOS|FxiOS|Edg|OPR|Android/i.test(userAgent)
+}
+
 type BreadcrumbEntry = { code: string; label: string; type?: 'fn' | 'ec' }
 
 type Props = {
@@ -100,10 +106,11 @@ const CustomizedContent: FC<{
   currency?: Currency
   primary?: 'fn' | 'ec'
   code?: string
+  allowScaleAnimation?: boolean
   // Recharts passes the original datum under `payload`. We use its fill for stable coloring.
   payload?: { fill?: string; code?: string; name?: string; value?: number }
 }> = (props) => {
-  const { name, value, depth, x = 0, y = 0, width = 0, height = 0, fill, root, normalization, currency, primary } = props
+  const { name, value, depth, x = 0, y = 0, width = 0, height = 0, fill, root, normalization, currency, primary, allowScaleAnimation = true } = props
   const hasAnimatedInRef = useRef(false)
   const [isHovered, setIsHovered] = useState(false)
   const code = props.code ?? props.payload?.code
@@ -136,6 +143,16 @@ const CustomizedContent: FC<{
   const canShowPercentage = canShowName && height > (canShowTwoLines ? 100 : 70)
   const labelWidth = Math.max(width - 8, 0)
   const labelHeight = canShowTwoLines ? nameLineHeight * 2 : nameFontSize * 1.3
+  const labelYPosition = (() => {
+    const textHeight = canShowTwoLines ? nameLineHeight * 2 : nameFontSize * 1.3
+    if (canShowValue) {
+      const valueHeight = valueFontSize + 8
+      const percentHeight = canShowPercentage ? percentageFontSize + 8 : 0
+      const totalHeight = textHeight + valueHeight + percentHeight
+      return y + (height - totalHeight) / 2
+    }
+    return y + (height - textHeight) / 2
+  })()
 
   const rectTransition = {
     type: 'spring',
@@ -227,33 +244,15 @@ const CustomizedContent: FC<{
           height={labelHeight}
           animate={{
             x: x + 4,
-            y: (() => {
-              const textHeight = canShowTwoLines ? nameLineHeight * 2 : nameFontSize * 1.3
-              if (canShowValue) {
-                const valueHeight = valueFontSize + 8
-                const percentHeight = canShowPercentage ? percentageFontSize + 8 : 0
-                const totalHeight = textHeight + valueHeight + percentHeight
-                return y + (height - totalHeight) / 2
-              }
-              return y + (height - textHeight) / 2
-            })(),
+            y: labelYPosition,
             opacity: 1,
-            scale: textScale,
+            scale: allowScaleAnimation ? textScale : 1,
           }}
           initial={hasAnimatedInRef.current ? { opacity: 0.2 } : {
             opacity: 0,
-            x: x + 4 + 20,
-            y: (() => {
-              const textHeight = canShowTwoLines ? nameLineHeight * 2 : nameFontSize * 1.3
-              if (canShowValue) {
-                const valueHeight = valueFontSize + 8
-                const percentHeight = canShowPercentage ? percentageFontSize + 8 : 0
-                const totalHeight = textHeight + valueHeight + percentHeight
-                return y + (height - totalHeight) / 2 - 6
-              }
-              return y + (height - textHeight) / 2 - 6
-            })(),
-            scale: 0.3,
+            x: allowScaleAnimation ? x + 4 + 20 : x + 4,
+            y: allowScaleAnimation ? labelYPosition - 6 : labelYPosition,
+            scale: allowScaleAnimation ? 0.3 : 1,
           }}
           transition={hasAnimatedInRef.current ? hoverTransition : {
             ...textTransition,
@@ -393,6 +392,7 @@ const CustomizedContent: FC<{
 export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, path = [], onViewDetails, showViewDetails = false, normalization, currency, excludedItemsSummary, chartFilterInput: filterInput }: Props) {
   const isMobile = useIsMobile()
   const navigate = useNavigate()
+  const [allowScaleAnimation] = useState(() => !isSafariBrowser())
 
   // Defer heavy-changing inputs to keep UI responsive while treemap layout catches up
   const deferredData = useDeferredValue(data)
@@ -511,9 +511,10 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
         normalization={normalization}
         currency={currency}
         primary={primary}
+        allowScaleAnimation={allowScaleAnimation}
       />
     )
-  }, [rootValue, normalization, currency, primary])
+  }, [rootValue, normalization, currency, primary, allowScaleAnimation])
 
   const memoizedTooltip = useMemo(() => (
     <CustomTooltip
@@ -548,7 +549,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
             </div>
             {isMobile && path.length > 2 && (
               <motion.div
-                initial={{ opacity: 0, scale: 0.1 }}
+                initial={allowScaleAnimation ? { opacity: 0, scale: 0.1 } : { opacity: 0, scale: 1 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3 }}
                 className="relative h-6 pl-5 pr-6 mr-1 flex items-center -ml-[12px]"
@@ -576,7 +577,7 @@ export function BudgetTreemap({ data, primary, onNodeClick, onBreadcrumbClick, p
               return (
                 <motion.div
                   key={key}
-                  initial={{ opacity: 0, scale: 0.1 }}
+                  initial={allowScaleAnimation ? { opacity: 0, scale: 0.1 } : { opacity: 0, scale: 1 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.3, ease: 'easeOut', delay: 0.2 }}
                   onClick={() => {
