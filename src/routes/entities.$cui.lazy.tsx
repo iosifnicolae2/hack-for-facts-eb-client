@@ -17,7 +17,7 @@ import { EntityNotificationAnnouncement } from '@/features/notifications/compone
 
 import type { GqlReportType, ReportPeriodInput, ReportPeriodType, TMonth, TQuarter } from '@/schemas/reporting'
 import { getInitialFilterState, makeTrendPeriod, toExecutionReportType } from '@/schemas/reporting'
-import { AnalyticsFilterType, defaultYearRange, type Normalization } from '@/schemas/charts'
+import { AnalyticsFilterType, DEFAULT_SELECTED_YEAR, defaultYearRange, type Normalization } from '@/schemas/charts'
 
 import { useEntityViews } from '@/hooks/useEntityViews'
 import { useRecentEntities } from '@/hooks/useRecentEntities'
@@ -117,7 +117,7 @@ const DEFAULT_QUARTER = 'Q1'
 function buildEntityHead(cui: string, yearRaw?: unknown) {
   const site = getSiteUrl()
   const yearCandidate = typeof yearRaw === 'number' ? yearRaw : Number(yearRaw)
-  const selectedYear = Number.isFinite(yearCandidate) ? Number(yearCandidate) : defaultYearRange.end
+  const selectedYear = Number.isFinite(yearCandidate) ? Number(yearCandidate) : DEFAULT_SELECTED_YEAR
   const { title, description } = buildEntitySeo(null, cui, selectedYear)
   const canonical = `${site}/entities/${encodeURIComponent(cui)}`
 
@@ -162,7 +162,7 @@ function EntityDetailsPage() {
     enableOnFormTags: ['INPUT', 'TEXTAREA', 'SELECT'],
   })
 
-  const selectedYear = search.year ?? END_YEAR
+  const selectedYear = search.year ?? DEFAULT_SELECTED_YEAR
   const period = search.period ?? DEFAULT_PERIOD
   const month = search.month ?? DEFAULT_MONTH
   const quarter = search.quarter ?? DEFAULT_QUARTER

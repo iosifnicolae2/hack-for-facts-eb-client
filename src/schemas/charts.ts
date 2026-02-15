@@ -5,14 +5,17 @@ import { DEFAULT_EXPENSE_EXCLUDE_ECONOMIC_PREFIXES } from '@/lib/analytics-defau
 
 export const defaultYearRange = {
   start: 2016,
-  end: 2025,
+  end: 2026,
 };
+
+export const DEFAULT_SELECTED_YEAR = 2025;
 
 export const defaultExecutionPeriodStartYear = defaultYearRange.start;
 export const defaultCommitmentsPeriodStartYear = 2019;
 
+
 export function createDefaultExecutionYearReportPeriod() {
-  const latestDefaultYear = String(defaultYearRange.end);
+  const latestDefaultYear = String(DEFAULT_SELECTED_YEAR);
   return {
     type: 'YEAR' as const,
     selection: {

@@ -3,7 +3,7 @@ import { ViewLoading } from '@/components/ui/ViewLoading';
 import { z } from 'zod';
 import { entityDetailsQueryOptions } from '@/lib/hooks/useEntityDetails';
 import { entitySearchSchema } from '@/components/entities/validation';
-import { AnalyticsFilterType, AnalyticsInput, Currency, defaultYearRange } from '@/schemas/charts';
+import { AnalyticsFilterType, AnalyticsInput, Currency, DEFAULT_SELECTED_YEAR, defaultYearRange } from '@/schemas/charts';
 import { geoJsonQueryOptions } from '@/hooks/useGeoJson';
 import { heatmapJudetQueryOptions, heatmapUATQueryOptions } from '@/hooks/useHeatmapData';
 import { getTopFunctionalGroupCodes } from '@/lib/analytics-utils';
@@ -37,7 +37,7 @@ export const Route = createFileRoute('/entities/$cui')({
         const search = entitySearchSchema.parse(location.search);
         const START_YEAR = defaultYearRange.start;
         const END_YEAR = defaultYearRange.end;
-        const year = (search?.year as number | undefined) ?? END_YEAR;
+        const year = (search?.year as number | undefined) ?? DEFAULT_SELECTED_YEAR;
 
         // 1. Parse URL params for data fetching
         // NOTE: We use URL params only (no cookies) to ensure CDN cacheability.
