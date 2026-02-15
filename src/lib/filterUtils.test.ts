@@ -25,6 +25,11 @@ import {
   normalizeCommitmentsFilter,
   prepareCommitmentsFilterForServer,
 } from './filterUtils'
+import {
+  defaultCommitmentsPeriodStartYear,
+  defaultExecutionPeriodStartYear,
+  defaultYearRange,
+} from '@/schemas/charts'
 import type { AnalyticsFilterType, CommitmentsFilterType } from '@/schemas/charts'
 import type { ReportPeriodInput } from '@/schemas/reporting'
 
@@ -74,8 +79,8 @@ describe('ensureReportPeriod', () => {
     const result = ensureReportPeriod(filter)
 
     // Execution defaults start from defaultYearRange.start and end at defaultYearRange.end.
-    expect(result.selection.interval?.start).toBe('2016')
-    expect(result.selection.interval?.end).toBe('2025')
+    expect(result.selection.interval?.start).toBe(String(defaultExecutionPeriodStartYear))
+    expect(result.selection.interval?.end).toBe(String(defaultYearRange.end))
   })
 })
 
@@ -381,8 +386,8 @@ describe('normalizeCommitmentsFilter', () => {
     const result = normalizeCommitmentsFilter(filter)
 
     expect(result.report_period).toBeDefined()
-    expect(result.report_period?.selection.interval?.start).toBe('2019')
-    expect(result.report_period?.selection.interval?.end).toBe('2025')
+    expect(result.report_period?.selection.interval?.start).toBe(String(defaultCommitmentsPeriodStartYear))
+    expect(result.report_period?.selection.interval?.end).toBe(String(defaultYearRange.end))
     expect(result.report_type).toBe('PRINCIPAL_AGGREGATED')
   })
 
