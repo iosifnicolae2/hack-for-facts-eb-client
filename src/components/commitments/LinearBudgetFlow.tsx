@@ -69,15 +69,12 @@ export function LinearBudgetFlow({
     commitmentAuthority > 0 ? (committed / commitmentAuthority) * 100 : 0
   const receiptsCoveragePercent = committed > 0 ? (receipts / committed) * 100 : 0
   const paymentsCoveragePercent = receipts > 0 ? (paid / receipts) * 100 : 0
-  const commitmentsVsBudgetPercent = totalBudget > 0 ? (committed / totalBudget) * 100 : 0
 
   const budgetPaidClamped = clampPercent(budgetExecutionPercent)
   const commitmentUsedClamped = clampPercent(commitmentUtilizationPercent)
   const paymentsCoverageClamped = clampPercent(paymentsCoveragePercent)
 
   const unspentBudget = Math.max(0, totalBudget - paid)
-  const remainingCommitmentAuthority = Math.max(0, commitmentAuthority - committed)
-  const overCommitmentAuthority = Math.max(0, committed - commitmentAuthority)
   const normalizedArrears = Number.isFinite(arrears) ? Math.max(0, arrears) : 0
   const unpaidReceipts = normalizedArrears > 0 ? normalizedArrears : Math.max(0, receipts - paid)
   const unreceivedCommitments = Math.max(0, committed - receipts)
@@ -126,7 +123,7 @@ export function LinearBudgetFlow({
 
           <dl className="mt-4 space-y-2 text-sm">
             <div className="flex justify-between gap-4">
-              <dt className="text-slate-500">{t`Budget credits`}</dt>
+              <dt className="text-slate-500">{t`Annual budget credits`}</dt>
               <dd className="font-mono text-slate-800">
                 {formatCurrency(totalBudget, 'compact', currency)}
               </dd>
@@ -141,12 +138,6 @@ export function LinearBudgetFlow({
               <dt className="text-slate-500">{t`Unspent budget`}</dt>
               <dd className="font-mono text-slate-800">
                 {formatCurrency(unspentBudget, 'compact', currency)}
-              </dd>
-            </div>
-            <div className="flex justify-between gap-4">
-              <dt className="text-slate-500">{t`Commitments vs budget`}</dt>
-              <dd className="font-mono text-slate-800">
-                {totalBudget > 0 ? formatPercent(commitmentsVsBudgetPercent) : t`N/A`}
               </dd>
             </div>
           </dl>
@@ -183,21 +174,6 @@ export function LinearBudgetFlow({
                 {formatCurrency(committed, 'compact', currency)}
               </dd>
             </div>
-            {overCommitmentAuthority > 0 ? (
-              <div className="flex justify-between gap-4">
-                <dt className="text-rose-600 font-medium">{t`Over authority`}</dt>
-                <dd className="font-mono text-rose-700">
-                  {formatCurrency(overCommitmentAuthority, 'compact', currency)}
-                </dd>
-              </div>
-            ) : (
-              <div className="flex justify-between gap-4">
-                <dt className="text-slate-500">{t`Remaining authority`}</dt>
-                <dd className="font-mono text-slate-800">
-                  {formatCurrency(remainingCommitmentAuthority, 'compact', currency)}
-                </dd>
-              </div>
-            )}
             <div className="flex justify-between gap-4">
               <dt className="text-slate-500">{t`Receipts vs commitments`}</dt>
               <dd className="font-mono text-slate-800">

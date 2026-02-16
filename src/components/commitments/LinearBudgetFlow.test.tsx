@@ -34,4 +34,18 @@ describe('LinearBudgetFlow', () => {
     expect(commitmentHeader).not.toBeNull()
     expect(within(commitmentHeader as HTMLElement).getByText('N/A')).toBeInTheDocument()
   })
+
+  it('removes commitments vs budget metric from annual execution card', () => {
+    render(
+      <LinearBudgetFlow
+        totalBudget={100}
+        commitmentAuthority={100}
+        committed={150}
+        paid={25}
+        currency="RON"
+      />
+    )
+
+    expect(screen.queryByText('Commitments vs budget')).not.toBeInTheDocument()
+  })
 })

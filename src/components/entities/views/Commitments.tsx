@@ -31,7 +31,6 @@ import { getQuarterForMonth, toCommitmentReportType } from '@/schemas/reporting'
 import {
   StatCard,
   CommitmentsTrends,
-  LinearBudgetFlow,
   CategoryChart,
   CommitmentInfoPanel,
   DetailTable,
@@ -263,7 +262,7 @@ export function CommitmentsView({
     () => extractSummaryValues(summaryData?.nodes ?? []),
     [summaryData]
   )
-  const { totalBudget, commitmentAuthority, committed, paid, receipts, arrears } = summaryValues
+  const { totalBudget, commitmentAuthority, committed, paid } = summaryValues
 
   // Join the aggregated queries into CategoryData[]
   // The API returns rows grouped by (functional_code, economic_code), so we
@@ -436,19 +435,7 @@ export function CommitmentsView({
         />
       </section>
 
-      {/* Level 3: Financial Flow Visualization */}
-      <section>
-        <LinearBudgetFlow
-          totalBudget={totalBudget}
-          commitmentAuthority={commitmentAuthority}
-          committed={committed}
-          paid={paid}
-          receipts={receipts}
-          arrears={arrears}
-          currency={normalized.currency}
-          isLoading={isSummaryLoading}
-        />
-      </section>
+      {/* Level 3: Financial Flow Visualization is temporarily hidden. */}
 
       {/* Level 4: Category Breakdown + Info Panel */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
