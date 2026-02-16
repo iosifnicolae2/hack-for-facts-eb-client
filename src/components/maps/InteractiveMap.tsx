@@ -19,6 +19,7 @@ import { ScrollWheelZoomControl } from './ScrollWheelZoomControl';
 import { AnalyticsFilterType } from '@/schemas/charts';
 import { Analytics } from '@/lib/analytics';
 import { MapLabels } from './MapLabels';
+import { shouldUseCanvasRenderer } from './leaflet-renderer';
 
 const MAP_VIEW_EPSILON = 1e-6;
 
@@ -77,6 +78,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
 }) => {
   const geoJsonLayerRef = useRef<L.GeoJSON | null>(null);
   const latestFeatureStyleRef = useRef<FeatureStyleResolver>(() => DEFAULT_FEATURE_STYLE);
+  const useCanvasRenderer = useMemo(() => shouldUseCanvasRenderer(), []);
   const latestInteractionContextRef = useRef<FeatureInteractionContext>({
     heatmapData,
     mapViewType,
@@ -179,7 +181,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = React.memo(({
       style={{ height: mapHeight, width: '100%', backgroundColor: 'transparent' }}
       className="z-0 isolate"
       data-testid="leaflet-map"
-      preferCanvas={true}
+      preferCanvas={useCanvasRenderer}
     >
       <MapCleanup />
       <MapTestIds />

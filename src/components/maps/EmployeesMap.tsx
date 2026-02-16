@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button'
 import { HelpCircleIcon, X } from 'lucide-react'
 import { getHeatmapColor } from './utils'
 import { ScrollWheelZoomControl } from './ScrollWheelZoomControl'
+import { shouldUseCanvasRenderer } from './leaflet-renderer'
 
 type EmployeesMapProps = {
   data: readonly EnrichedEmployeeData[] | null
@@ -21,6 +22,7 @@ type EmployeesMapProps = {
 export function EmployeesMap({ data, metric = 'employeesPer1000Capita' }: EmployeesMapProps) {
   const { data: geoJson } = useGeoJsonData('UAT')
   const geoJsonLayerRef = useRef<L.GeoJSON | null>(null)
+  const useCanvasRenderer = useMemo(() => shouldUseCanvasRenderer(), [])
 
   const uatDataBySiruta = useMemo(() => {
     const map = new Map<string | number, EnrichedEmployeeData>()
@@ -115,7 +117,7 @@ export function EmployeesMap({ data, metric = 'employeesPer1000Capita' }: Employ
         zoom={DEFAULT_MAP_ZOOM}
         scrollWheelZoom={false}
         style={{ height: '70vh', width: '100%' }}
-        preferCanvas
+        preferCanvas={useCanvasRenderer}
       >
         <MapCleanup />
         <ScrollWheelZoomControl />
