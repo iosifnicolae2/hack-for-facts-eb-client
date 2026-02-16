@@ -19,7 +19,18 @@ export const useEntityViews = (entity: EntityDetailsData | null | undefined): En
   }
 
   views.push({ id: 'contracts', label: t`Contracts`, icon: <ScrollText className="w-4 h-4" /> });
+
+  // Experimental employees data view
+  if (entity.is_uat && entity.entity_type !== "admin_county_council" && entity.uat?.siruta_code != null) {
+    views.push({ id: 'employees', label: t`Employees`, icon: <UsersIcon className="w-4 h-4" /> });
+  }
+
   views.push({ id: 'commitments', label: t`Commitments`, icon: <FileCheck2 className="w-4 h-4" /> });
+
+  if (entity.is_uat || entity.entity_type === 'admin_county_council') {
+    views.push({ id: 'ins-stats', label: t`INS Stats`, icon: <LineChart className="w-4 h-4" /> });
+  }
+
 
   views.push({ id: 'expense-trends', label: t`Expense Trends`, icon: <TrendingDownIcon className="w-4 h-4" /> });
   views.push({ id: 'income-trends', label: t`Income Trends`, icon: <TrendingUpIcon className="w-4 h-4" /> });
@@ -29,15 +40,6 @@ export const useEntityViews = (entity: EntityDetailsData | null | undefined): En
 
   if (entity.is_uat) {
     views.push({ id: 'map', label: t`Map`, icon: <MapIcon className="w-4 h-4" /> });
-  }
-
-  // Experimental employees data view
-  if (entity.is_uat && entity.entity_type !== "admin_county_council" && entity.uat?.siruta_code != null) {
-    views.push({ id: 'employees', label: t`Employees`, icon: <UsersIcon className="w-4 h-4" /> });
-  }
-
-  if (entity.is_uat || entity.entity_type === 'admin_county_council') {
-    views.push({ id: 'ins-stats', label: t`INS Stats`, icon: <LineChart className="w-4 h-4" /> });
   }
 
   views.push({ id: 'related-charts', label: t`Charts`, icon: <BarChart3 className="w-4 h-4" /> });
