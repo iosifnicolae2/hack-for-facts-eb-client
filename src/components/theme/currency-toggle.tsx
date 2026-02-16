@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "../ui/sidebar";
 import { Trans } from "@lingui/react/macro";
 import { useUserCurrency } from "@/lib/hooks/useUserCurrency";
-import { useNavigate, useSearch } from "@tanstack/react-router";
+import { useSearch } from "@tanstack/react-router";
 import { setPreferenceCookie, USER_CURRENCY_STORAGE_KEY } from "@/lib/user-preferences";
 import type { Currency } from "@/schemas/charts";
 import { parseCurrencyParam, resolveNormalizationSettings, type NormalizationInput } from "@/lib/globalSettings/params";
@@ -11,7 +11,6 @@ export function CurrencyToggle() {
     const { state } = useSidebar();
     const collapsed = state === "collapsed";
     const [userCurrency, setUserCurrency] = useUserCurrency();
-    const navigate = useNavigate();
     const search = useSearch({ strict: false });
 
     const normalizationRaw = (search as any).normalization as NormalizationInput | undefined;
@@ -35,18 +34,17 @@ export function CurrencyToggle() {
 
         const nextCurrencyParam = forcedOverrides.currency !== undefined ? undefined : next;
 
-        navigate({
-            to: '.',
-            search: (prev: any) => {
-                if (nextCurrencyParam === undefined) {
-                    const { currency: _currency, ...rest } = prev ?? {};
-                    return rest;
-                }
-                return { ...(prev ?? {}), currency: nextCurrencyParam };
-            },
-            replace: true,
-            resetScroll: false,
-        } as any);
+        if (typeof window === "undefined") return;
+
+        const nextUrl = new URL(window.location.href);
+        if (nextCurrencyParam === undefined) {
+            nextUrl.searchParams.delete("currency");
+        } else {
+            nextUrl.searchParams.set("currency", nextCurrencyParam);
+        }
+
+        // Force a full reload so route loaders and persisted hooks pick up the new currency consistently.
+        window.location.replace(`${nextUrl.pathname}${nextUrl.search}${nextUrl.hash}`);
     }
 
     return (
