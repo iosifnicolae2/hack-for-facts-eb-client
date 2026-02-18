@@ -152,25 +152,7 @@ const entityDataRoute = createRoute({
   operationId: 'getEntityData',
   tags: ['Entity Data'],
   summary: 'Get comprehensive budget data for a public entity',
-  description: `Returns all available budget data for a given entity. Use the **include** parameter to select specific sections.
-
-**Available include sections:**
-- \`details\` — Basic info (always returned)
-- \`financials\` — Total income, expenses, balance
-- \`trends\` — Historical trends (time series)
-- \`line_items\` — Detailed execution line items
-- \`reports\` — Official reports with download links
-- \`relationships\` — Parent and child entities
-- \`commitments_summary\` — Budget commitments overview
-- \`commitments_aggregated\` — Commitments by classification
-- \`commitments_analytics\` — Commitments time series
-- \`commitment_vs_execution\` — Commitments vs execution comparison
-- \`execution_analytics\` — Execution by functional category
-- \`ins_observations\` — INS statistical data (requires ins_dataset_codes)
-- \`funding_sources\` — Funding source references
-
-**By default, all sections are fetched** (except ins_observations which needs ins_dataset_codes).
-For heatmap data (per-capita spending across all UATs), use the dedicated GET /heatmap endpoint.`,
+  description: 'Returns budget data for an entity by CUI. Use the include parameter to select sections: details, financials, trends, line_items, reports, relationships, commitments, execution_analytics, etc. All sections fetched by default.',
   request: {
     params: z.object({
       cui: z.string().openapi({
@@ -471,10 +453,7 @@ const heatmapRoute = createRoute({
   operationId: 'getHeatmapData',
   tags: ['Heatmap'],
   summary: 'Get per-capita spending data for all UATs in Romania',
-  description: `Returns per-capita spending data for all UATs (municipalities, cities, communes) across Romania.
-This is a global dataset — it does not depend on a specific entity CUI.
-
-Useful for building maps, rankings, or comparisons of municipal spending.`,
+  description: 'Returns per-capita spending data for all UATs (municipalities, cities, communes) across Romania. Does not require a CUI. Useful for maps, rankings, or spending comparisons.',
   request: {
     query: z.object({
       year: z.string().optional().openapi({
