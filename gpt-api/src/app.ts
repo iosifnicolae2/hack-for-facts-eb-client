@@ -5,10 +5,11 @@ import { html } from 'hono/html'
 
 import api from './routes/api.js'
 
-const port = Number(process.env.PORT ?? 3100)
-const serverUrl = process.env.API_BASE_URL ?? `http://localhost:${port}`
+type Bindings = {
+  API_BASE_URL?: string
+}
 
-const app = new OpenAPIHono()
+const app = new OpenAPIHono<{ Bindings: Bindings }>()
 
 app.use('*', cors())
 
@@ -20,8 +21,8 @@ app.onError((err, c) => {
 // Mount API routes
 app.route('/', api)
 
-// OpenAPI spec — dynamic, single server from env
-app.doc31('/openapi.json', {
+// OpenAPI spec — dynamic, reads server URL from env bindings
+app.doc31('/openapi.json', (c) => ({
   openapi: '3.1.0',
   info: {
     title: 'Transparenta.eu Public Budget API',
@@ -36,9 +37,9 @@ app.doc31('/openapi.json', {
 All amounts are in RON unless you specify currency=EUR or normalization=per_capita. Data is sourced from official public budget execution reports submitted by Romanian public entities.`,
   },
   servers: [
-    { url: serverUrl },
+    { url: c.env?.API_BASE_URL ?? new URL('/', c.req.url).origin.replace(/^http:/, 'https:') },
   ],
-})
+}))
 
 // Swagger UI
 app.get('/swagger', swaggerUI({ url: '/openapi.json' }))

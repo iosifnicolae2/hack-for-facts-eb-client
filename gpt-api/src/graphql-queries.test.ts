@@ -305,7 +305,8 @@ describe('GraphQL queries against production API', () => {
 
 // ── REST API endpoint tests ──
 
-async function get(path: string) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function get(path: string): Promise<{ status: number; json: any }> {
   const res = await app.request(path)
   const json = await res.json()
   return { status: res.status, json }

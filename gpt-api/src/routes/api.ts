@@ -96,16 +96,10 @@ function extractBasicInfo(entity: Record<string, unknown>) {
 const searchRoute = createRoute({
   method: 'get',
   path: '/search',
+  operationId: 'searchEntities',
   tags: ['Search'],
   summary: 'Search for public entities by name, location, or type',
-  description: `Search for Romanian public entities and get their CUI identifiers.
-
-**Workflow:** Use this endpoint first to find the CUI, then call GET /entities/{cui} for budget data.
-
-**Examples:**
-- search=Cluj → entities with "Cluj" in the name
-- entity_type=admin_municipality → all municipalities
-- is_uat=true → only UAT (administrative-territorial) entities`,
+  description: 'Search for Romanian public entities and get their CUI identifiers. Use this first to find the CUI, then call GET /entities/{cui} for budget data. Supports free-text search, entity type filtering, and UAT filtering.',
   request: {
     query: z.object({
       search: z.string().optional().openapi({
@@ -155,6 +149,7 @@ app.openapi(searchRoute, async (c) => {
 const entityDataRoute = createRoute({
   method: 'get',
   path: '/entities/{cui}',
+  operationId: 'getEntityData',
   tags: ['Entity Data'],
   summary: 'Get comprehensive budget data for a public entity',
   description: `Returns all available budget data for a given entity. Use the **include** parameter to select specific sections.
@@ -473,6 +468,7 @@ app.openapi(entityDataRoute, async (c) => {
 const heatmapRoute = createRoute({
   method: 'get',
   path: '/heatmap',
+  operationId: 'getHeatmapData',
   tags: ['Heatmap'],
   summary: 'Get per-capita spending data for all UATs in Romania',
   description: `Returns per-capita spending data for all UATs (municipalities, cities, communes) across Romania.
